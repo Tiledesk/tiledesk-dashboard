@@ -30,6 +30,7 @@ import { UsersListComponent } from './users-list/users-list.component';
 
 import { UsersService } from './services/users.service';
 import { ContactsComponent } from './contacts/contacts.component';
+import { ChatComponent } from './chat/chat.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { ContactsComponent } from './contacts/contacts.component';
     HomeComponent,
     UsersListComponent,
     ContactsComponent,
+    ChatComponent,
   ],
   imports: [
     BrowserModule,
