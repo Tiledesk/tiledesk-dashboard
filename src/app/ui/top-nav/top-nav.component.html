@@ -1,0 +1,97 @@
+<nav class="nav">
+  <div class="nav-left">
+    <a class="nav-item logo" routerLink="/">
+      <img src="assets/images/chat21-logo-angular-512.png" width="28px" alt="Chat 21 logo"/> 
+      Chat 21
+      
+    </a>
+  </div>
+
+  <!-- This "nav-toggle" hamburger menu is only visible on mobile -->
+  <!-- You need JavaScript to toggle the "is-active" class on "nav-menu" -->
+  <span class="nav-toggle" (click)="toggleCollapse()" [ngClass]="{'is-active': show}">
+    <span></span>
+    <span></span>
+    <span></span>
+  </span>
+
+  <!-- This "nav-menu" is hidden on mobile -->
+  <!-- Add the modifier "is-active" to display it on mobile -->
+  <div class="nav-right nav-menu" [ngClass]="{'is-active': show}">
+    <a class="nav-item" routerLink="/login">
+      Login
+    </a>
+    <a class="nav-item" routerLink="/notes">
+      Firestore
+    </a>
+    <a class="nav-item" routerLink="/items">
+      Realtime DB
+    </a>
+    <a class="nav-item" routerLink="/uploads">
+      File Uploads
+    </a>
+    <a class="nav-item" routerLink="/userprofile">
+      User Profile 
+    </a>
+
+    <!-- <div class="has-dropdown is-hidden-mobile" style="padding-top:8px">
+      <input type="checkbox" id="ch1">   
+      <button class="button" style="border-radius: 50px;">
+        <label for="ch1"><i class="fa fa-user-o fa-1x" aria-hidden="true"></i></label>  
+      </button>
+      <div class="dropdown box" style="">
+        <div *ngIf="auth.user | async as user">
+          <button class="button" (click)="logout()" style="padding:8px; font-size:0.8em">Logout</button>
+        </div>
+      </div>
+    </div>
+    <a class="nav-item is-hidden-tablet" routerLink="/login" (click)="logout()">
+      Logout
+    </a> -->
+
+    <button class="button" style="border-radius: 50px;padding-left: 10px;padding-right: 10px;margin-top:8px;margin-left: 15px;"
+    (click)="openCurrentUserDropDown(hasClickedOpenDropDown= !hasClickedOpenDropDown)">
+        <i class="fa fa-user-o fa-1x" aria-hidden="true"></i>
+    </button>
+    <div [ngStyle]="{'display':display}" style="position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 1000;
+    float: right;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);">
+   
+    <div *ngIf="auth.user | async as user" style="display: flex;
+    align-items: center; justify-content: center;">
+    <!-- <div class="columns">
+        <div class="column">
+            <h3>{{ user.displayName }} </h3>
+        </div>
+    </div> -->
+   
+      <button class="button" (click)="logout()" style="font-size:1em;" >Logout</button>
+      
+    </div>
+    
+    </div>
+  </div>
+
+  <!-- <div class="container"> -->
+
+  <!-- </div> -->
+
+
+
+

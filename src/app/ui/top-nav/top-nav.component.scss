@@ -1,0 +1,49 @@
+nav {
+  border-bottom: 1px solid #E4E4E4;
+  box-shadow: 0 0 4px rgba(0,0,0,.1), 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 25px;
+  padding: 0 5vw;
+  padding-right: 60px;
+
+  .nav-item {
+    color: gray;
+    font-weight: normal;
+    transition: color 0.3s ease;
+    &:hover {
+      font-color: #1c90f3;
+    }
+  }
+}
+
+
+// DROPDOWN
+/* wrapper */
+.has-dropdown input[type="checkbox"] {
+  display: none;
+}
+
+.has-dropdown input[type="checkbox"]:checked ~ .dropdown {
+  display: block;
+}
+
+/* remove padding to avoid unhandled clicks on empty space of button */
+.has-dropdown button {
+  padding: 0;
+}
+/* expand label to handle click on any part of button. Set you own padding if .is-medium or .is-large */
+.has-dropdown button label {
+  padding: 4px 10px;
+}
+
+/* dropdown basic */
+.dropdown {
+  display: none;
+  position: absolute;
+  z-index: 9999;
+}
+
+/* dropdown optional styling */
+.dropdown li:hover {
+  background-color: #eee;
+  cursor: pointer;
+}

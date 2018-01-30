@@ -1,0 +1,27 @@
+
+<div *ngIf="auth.user | async as user">
+
+    <h3>Howdy, {{ user.displayName }}</h3>
+</div>
+  
+<hr>
+
+
+<div class="columns">
+    <div class="column is-half">
+        <div class="columns">
+            <div class="column is-3"  has-text-centered>
+              <a class="round-button" style="color: #dedede" routerLink="/users">
+                <i class="fa fa-users fa-2x" aria-hidden="true"></i> 
+              </a> 
+            </div>
+            <!-- style="margin-top:25px !important" -->
+            <div class="column is-9" style="display: flex; flex-direction: column; justify-content: center;" >
+              <span style="font-size:1.2em">Utenti e Ruoli</span>
+            </div>
+        </div>
+    </div>
+    <div class="column">
+      Second column
+    </div>
+</div>

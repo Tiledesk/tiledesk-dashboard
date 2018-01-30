@@ -1,0 +1,19 @@
+{
+  "rules": {
+    ".read": true,
+    ".write": false,
+
+    "uploads": {
+      ".write": "auth != null"
+    },
+   "items": {
+      ".write": "auth != null"
+    },
+    "users": {
+      ".write": "auth != null"
+    }
+
+
+
+  }
+}
