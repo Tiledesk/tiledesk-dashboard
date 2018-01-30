@@ -29,12 +29,14 @@ import { HomeComponent } from './home/home.component';
 import { UsersListComponent } from './users-list/users-list.component';
 
 import { UsersService } from './services/users.service';
+import { ContactsComponent } from './contacts/contacts.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     UsersListComponent,
+    ContactsComponent,
   ],
   imports: [
     BrowserModule,

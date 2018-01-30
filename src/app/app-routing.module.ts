@@ -6,7 +6,10 @@ import { ItemsListComponent } from './items/items-list/items-list.component';
 import { ReadmePageComponent } from './ui/readme-page/readme-page.component';
 import { NotesListComponent } from './notes/notes-list/notes-list.component';
 import { HomeComponent } from './home/home.component';
+
+// MY
 import { UsersListComponent } from './users-list/users-list.component';
+import { ContactsComponent } from './contacts/contacts.component';
 
 import { UserProfileComponent } from './ui/user-profile/user-profile.component';
 
@@ -18,9 +21,11 @@ const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'login', component: UserLoginComponent },
   { path: 'users', component: UsersListComponent, canActivate: [AuthGuard]},
+  { path: 'contacts', component: ContactsComponent, canActivate: [AuthGuard]},
   { path: 'items', component: ItemsListComponent, canActivate: [AuthGuard] },
   { path: 'notes', component: NotesListComponent, canActivate: [AuthGuard] },
   { path: 'userprofile', component: UserProfileComponent },
+
   // uploads are lazy loaded
   { path: 'uploads', loadChildren: './uploads/shared/upload.module#UploadModule', canActivate: [AuthGuard] },
 ];
