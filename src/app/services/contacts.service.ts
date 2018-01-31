@@ -59,7 +59,7 @@ export class ContactsService {
 
   public deleteContact(id: string) {
 
-    const url = `http://localhost:3000/app1/contacts/{{id}}# chat21-api-nodejs`;
+    const url = `http://localhost:3000/app1/contacts/{id}# chat21-api-nodejs`;
     console.log('DELETE URL ', url);
     const headers = new Headers();
     headers.append('Accept', 'application/json');
