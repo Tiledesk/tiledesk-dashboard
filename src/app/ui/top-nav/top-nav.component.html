@@ -18,6 +18,9 @@
   <!-- This "nav-menu" is hidden on mobile -->
   <!-- Add the modifier "is-active" to display it on mobile -->
   <div class="nav-right nav-menu" [ngClass]="{'is-active': show}">
+    <a class="nav-item" routerLink="/requests">
+      Requests
+    </a>
     <a class="nav-item" routerLink="/login">
       Login
     </a>
@@ -33,9 +36,9 @@
     <a class="nav-item" routerLink="/uploads">
       File Uploads
     </a>
-    <a class="nav-item" routerLink="/userprofile">
+    <!-- <a class="nav-item" routerLink="/userprofile">
       User Profile 
-    </a>
+    </a> -->
 
     <!-- <div class="has-dropdown is-hidden-mobile" style="padding-top:8px">
       <input type="checkbox" id="ch1">   

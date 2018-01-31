@@ -10,6 +10,8 @@ import { HomeComponent } from './home/home.component';
 // MY
 import { UsersListComponent } from './users-list/users-list.component';
 import { ContactsComponent } from './contacts/contacts.component';
+import { RequestsListComponent } from './requests-list/requests-list.component';
+
 
 import { UserProfileComponent } from './ui/user-profile/user-profile.component';
 
@@ -25,6 +27,7 @@ const routes: Routes = [
   { path: 'items', component: ItemsListComponent, canActivate: [AuthGuard] },
   { path: 'notes', component: NotesListComponent, canActivate: [AuthGuard] },
   { path: 'userprofile', component: UserProfileComponent },
+  { path: 'requests', component: RequestsListComponent },
 
   // uploads are lazy loaded
   { path: 'uploads', loadChildren: './uploads/shared/upload.module#UploadModule', canActivate: [AuthGuard] },

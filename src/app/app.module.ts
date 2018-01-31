@@ -32,6 +32,9 @@ import { ContactsService } from './services/contacts.service';
 import { UsersService } from './services/users.service';
 import { ContactsComponent } from './contacts/contacts.component';
 import { HttpModule } from '@angular/http';
+import { RequestsListComponent } from './requests-list/requests-list.component';
+
+import { RequestsService } from './services/requests.service';
 
 @NgModule({
   declarations: [
@@ -39,6 +42,7 @@ import { HttpModule } from '@angular/http';
     HomeComponent,
     UsersListComponent,
     ContactsComponent,
+    RequestsListComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,7 +56,7 @@ import { HttpModule } from '@angular/http';
     AngularFireModule.initializeApp(firebaseConfig),
     HttpModule,
   ],
-  providers: [UsersService, ContactsService],
+  providers: [UsersService, ContactsService, RequestsService],
   bootstrap: [
     AppComponent,
   ],
