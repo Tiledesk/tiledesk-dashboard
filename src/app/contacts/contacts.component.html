@@ -13,7 +13,7 @@
     </div>
   </div>
 </div>
-<button class="button is-success" (click)="createContact()" [disabled]="fullName?.length < 2 || fullName?.length > 20">
+<button class="button is-success" (click)="createContact()" [disabled]="fullName?.length < 2 || fullName?.length > 50">
   Add new contact
 </button>
 
@@ -46,13 +46,19 @@
         {{ contact?.createdAt | date: 'd/M/y'}}
       </td>
       <td style="text-align: center!important">
-          <!-- <span class="button is-small is-danger" (click)='deleteUser(user?.id)'>Delete</span> -->
-          <span class="button is-small is-danger" (click)='openDeleteModal(contact?._id, contact?.fullname, hasClickedDeleteModal = true)'>
-            Delete
-          </span>
-        </td>
+        <!-- <span class="button is-small is-danger" (click)='deleteUser(user?.id)'>Delete</span> -->
+        <span class="button is-small is-danger" (click)='openDeleteModal(contact?._id, contact?.fullname, hasClickedDeleteModal = true)'>
+          Delete
+        </span>
+      </td>
+      <td style="text-align: center!important">
+        <span class="button is-small is-warning" (click)='openUpdateModal(contact?._id, contact?.fullname, hasClickedUpdateModal = true)'>
+          Edit
+        </span>
+      </td>
     </tr>
   </tbody>
+</table>
 
   <!-- <loading-spinner></loading-spinner> -->
   <!-- MODAL -->
@@ -66,13 +72,13 @@
           </button>
           <!-- <strong></strong> -->
           <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
-            <h4 class="modal-title">Update user with id:
+            <h4 class="modal-title">Update contact with id:
               <code>{{id_toUpdate}}</code>
             </h4>
           </span>
   
           <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
-            <h4 class="modal-title">Delete user with id:
+            <h4 class="modal-title">Delete contact with id:
               <code>{{id_toDelete}}</code>
             </h4>
           </span>
@@ -81,27 +87,19 @@
   
         <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
           <div class="modal-body">
-            <p>{{displayName_toUpdate}} - {{email_toUpdate}}</p>
+            <p>{{fullName_toUpdate}}</p>
             <div class="field is-horizontal">
               <div class="field-body">
   
                 <div class="field">
                   <p class="control is-expanded has-icons-left">
-                    <input [(ngModel)]="displayName_toUpdate" placeholder="Full name" class="input">
+                    <input [(ngModel)]="fullName_toUpdate" placeholder="Full name" class="input">
                     <span class="icon is-small is-left">
                       <i class="fas fa-user fa"></i>
                     </span>
                   </p>
                 </div>
-  
-                <div class="field">
-                  <p class="control is-expanded has-icons-left">
-                    <input [(ngModel)]="email_toUpdate" placeholder="Email" class="input">
-                    <span class="icon is-small is-left">
-                      <i class="fas fa-envelope fa"></i>
-                    </span>
-                  </p>
-                </div>
+    
               </div>
             </div>
           </div>
