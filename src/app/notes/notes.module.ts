@@ -16,7 +16,7 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
     CommonModule,
     FormsModule,
     SharedModule,
-    AngularFirestoreModule.enablePersistence(),
+    // AngularFirestoreModule.enablePersistence(),
   ],
   declarations: [
     NotesListComponent,

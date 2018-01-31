@@ -28,8 +28,10 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { HomeComponent } from './home/home.component';
 import { UsersListComponent } from './users-list/users-list.component';
 
+import { ContactsService } from './services/contacts.service';
 import { UsersService } from './services/users.service';
 import { ContactsComponent } from './contacts/contacts.component';
+import { HttpModule } from '@angular/http';
 
 @NgModule({
   declarations: [
@@ -48,8 +50,9 @@ import { ContactsComponent } from './contacts/contacts.component';
     UiModule,
     NotesModule,
     AngularFireModule.initializeApp(firebaseConfig),
+    HttpModule,
   ],
-  providers: [UsersService],
+  providers: [UsersService, ContactsService],
   bootstrap: [
     AppComponent,
   ],

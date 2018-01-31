@@ -9,7 +9,7 @@ import { AuthService } from '../../core/auth.service';
 export class TopNavComponent {
 
   show = false;
-
+  hasClickedOpenDropDown: boolean;
   // set to none the property display of the modal
   display = 'none';
   HAS_CLICKED_BTN_OPEN_DROPDOWN = false;
@@ -23,12 +23,12 @@ export class TopNavComponent {
   }
 
   openCurrentUserDropDown(hasClickedOpenDropDown: boolean) {
-
-    if (hasClickedOpenDropDown) {
+    this.hasClickedOpenDropDown = hasClickedOpenDropDown;
+    if (this.hasClickedOpenDropDown) {
       this.display = 'block';
     }
 
-    if (!hasClickedOpenDropDown) {
+    if (!this.hasClickedOpenDropDown) {
       this.display = 'none';
     }
     this.HAS_CLICKED_BTN_OPEN_DROPDOWN = hasClickedOpenDropDown;

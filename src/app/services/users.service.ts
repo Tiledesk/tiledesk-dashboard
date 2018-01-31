@@ -7,7 +7,6 @@ import { User } from '../models/user-model';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 
-
 interface NewUser {
   displayName: string;
   email: string;
