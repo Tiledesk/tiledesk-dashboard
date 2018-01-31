@@ -1,269 +1,272 @@
 <!-- <div *ngFor="let user of usersList">
    {{user?.displayName}} - {{user?.email}} - {{user.uid}} - {{user?.time}}
   </div> -->
+<div class="content columns">
+  <main class="column is-8 is-offset-2">
+    <h1>Firestore Users</h1>
+    <hr>
+    <!-- ADD USER -->
+    <div class="field is-horizontal">
+      <div class="field-body">
 
-<h1>Firestore Users</h1>
-<hr>
-<!-- ADD USER -->
-<div class="field is-horizontal">
-  <div class="field-body">
+        <div class="field">
+          <p class="control is-expanded has-icons-left">
+            <input [(ngModel)]="displayName" placeholder="Full name" class="input">
+            <span class="icon is-small is-left">
+              <i class="fas fa-user fa"></i>
+            </span>
+          </p>
+        </div>
 
-    <div class="field">
-      <p class="control is-expanded has-icons-left">
-        <input [(ngModel)]="displayName" placeholder="Full name" class="input">
-        <span class="icon is-small is-left">
-          <i class="fas fa-user fa"></i>
-        </span>
-      </p>
-    </div>
-
-    <div class="field">
-      <p class="control is-expanded has-icons-left">
-        <input [(ngModel)]="email" placeholder="Email" class="input">
-        <span class="icon is-small is-left">
-          <i class="fas fa-envelope fa"></i>
-        </span>
-      </p>
-    </div>
-  </div>
-</div>
-
-<button class="button is-success" (click)="createUser()" [disabled]="displayName?.length < 2 || displayName?.length > 20">
-  Add new user
-</button>
-
-<div class="field has-addons" style="padding-top:18px">
-  <div class="control">
-    <input [(ngModel)]="searchFor" (keyup)="searchUsers($event)" class="input" type="text" placeholder="Find a user">
-  </div>
-  <!-- <div class="control" (click)='cancelSearch()' >
-      <a class="button is-static">
-            <span class="icon is-small">
-            <i class="fas fa-times fa"></i>
-          </span>
-      </a>
-    </div> -->
-  <button type="submit" class="button is-static" 
-    style="border-bottom-left-radius: 0px !important; border-top-left-radius: 0px !important;" 
-    [disabled]="disableCancelSearchBtn" (click)='cancelSearch()'>
-
-    <span class="icon is-small">
-      <i class="fas fa-times fa"></i>
-    </span>
-
-  </button>
-</div>
-<!-- USERS LIST -->
-<table class="table is-narrow is-bordered">
-  <thead>
-    <tr>
-      <th style="">
-        Id
-      </th>
-      <th>
-        Name
-
-        <!-- IS ACTIVE COLUMN NAME  -->
-        <span *ngIf="BTN_IS_ACTIVE_COLUMN_NAME == false">
-          <a class="button" 
-            style="height: 1.5em; padding-bottom:5px; padding-top:6px; padding-left:5px; padding-right:0px; border:0px !important"
-            (click)=isActiveColumnName()>
-            <i class="fa fa-exchange fa-rotate-90" aria-hidden="true" style=" opacity: 0.3;"></i>
-          </a>
-        </span>
-
-        <span *ngIf="BTN_IS_ACTIVE_COLUMN_EMAIL == false && BTN_IS_ACTIVE_COLUMN_TIME == false">
-          <!-- ORDER NAME A-Z -->
-          <span *ngIf="BTN_ORDER_NAME_AZ == true">
-            <a class="button" 
-              style="height: 1.5em; padding-bottom:5px; padding-top:6px; padding-left:5px; padding-right:0px; border:0px !important"
-              (click)=orderNameAZ()>
-              <i class="fa fa-sort-amount-asc" aria-hidden="true" style=" opacity: 0.5;"></i>
-            </a>
-          </span>
-        
-          
-          <!-- ORDER NAME Z-A -->
-          <span *ngIf="BTN_ORDER_NAME_ZA">
-            <a class="button" 
-              style="height: 1.5em; padding-bottom:5px; padding-top:6px; padding-left:5px; padding-right:0px; border:0px !important"
-              (click)=orderNameZA()>
-              <i class="fa fa-sort-amount-desc" aria-hidden="true" style=" opacity: 0.5;"></i>
-            </a>
-          </span>
-
-        </span>
-      </th>
-      <th>
-        Email
-        <!-- IS ACTIVE COLUMN EMAIL  -->
-        <span *ngIf="BTN_IS_ACTIVE_COLUMN_EMAIL == false">
-          <a class="button" 
-            style="height: 1.5em; padding-bottom:5px; padding-top:6px; padding-left:5px; padding-right:0px; border:0px !important"
-            (click)=isActiveColumnEmail()>
-            <i class="fa fa-exchange fa-rotate-90" aria-hidden="true" style=" opacity: 0.3;"></i>
-          </a>
-        </span>
-
-        <span *ngIf="BTN_IS_ACTIVE_COLUMN_NAME == false && BTN_IS_ACTIVE_COLUMN_TIME == false">
-          <!-- ORDER EMAIL A-Z -->
-          <span *ngIf="BTN_ORDER_EMAIL_AZ == true">
-            <a class="button" 
-              style="height: 1.5em; padding-bottom:5px; padding-top:6px; padding-left:5px; padding-right:0px; border:0px !important"
-              (click)=orderEmailAZ()>
-              <i class="fa fa-sort-amount-asc" aria-hidden="true" style=" opacity: 0.5;"></i>
-            </a>
-          </span>
-            
-          <!-- ORDER EMAIL Z-A -->
-          <span *ngIf="BTN_ORDER_EMAIL_ZA">
-            <a class="button" 
-              style="height: 1.5em; padding-bottom:5px; padding-top:6px; padding-left:5px; padding-right:0px; border:0px !important"
-              (click)=orderEmailZA()>
-              <i class="fa fa-sort-amount-desc" aria-hidden="true" style=" opacity: 0.5;"></i>
-            </a>
-          </span>
-        </span>
-       
-      </th>
-      <th>
-        Time
-
-        <!-- IS ACTIVE COLUMN TIME  -->
-        <span *ngIf="BTN_IS_ACTIVE_COLUMN_TIME == false">
-          <a class="button" 
-            style="height: 1.5em; padding-bottom:5px; padding-top:6px; padding-left:5px; padding-right:0px; border:0px !important"
-            (click)=isActiveColumnTime()>
-            <i class="fa fa-exchange fa-rotate-90" aria-hidden="true" style=" opacity: 0.3;"></i>
-          </a>
-        </span>
-          
-        <span *ngIf="BTN_IS_ACTIVE_COLUMN_NAME == false && BTN_IS_ACTIVE_COLUMN_EMAIL == false">
-          <!-- ORDER TIME A-Z -->
-          <span *ngIf="BTN_ORDER_TIME_AZ == true">
-            <a class="button" 
-              style="height: 1.5em; padding-bottom:5px; padding-top:6px; padding-left:5px; padding-right:0px; border:0px !important"
-              (click)=orderTimeAZ()>
-              <i class="fa fa-sort-amount-asc" aria-hidden="true" style=" opacity: 0.5;"></i>
-            </a>
-          </span>
-
-          <!-- ORDER TIME Z-A -->
-          <span *ngIf="BTN_ORDER_TIME_ZA">
-            <a class="button" 
-              style="height: 1.5em; padding-bottom:5px; padding-top:6px; padding-left:5px; padding-right:0px; border:0px !important"
-              (click)=orderTimeZA()>
-              <i class="fa fa-sort-amount-desc" aria-hidden="true" style=" opacity: 0.5;"></i>
-            </a>
-          </span>
-        </span>
-      
-      
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let user of usersList">
-
-      <td style="">{{user?.id}}
-      
-      </td>
-      <td>{{user?.displayName}} </td>
-      <!-- <td>{{user?.displayName}} </td> -->
-      <td>{{user?.email}}</td>
-      <td>{{user?.time | date: 'd/M/y'}}</td>
-      <td style="">
-        <!-- <span class="button is-small is-danger" (click)='deleteUser(user?.id)'>Delete</span> -->
-        <span class="button is-small is-danger" (click)='openDeleteModal(user?.id, user?.displayName, hasClickedDeleteModal = true)'>
-          Delete
-        </span>
-      </td>
-      <td style="">
-        <span class="button is-small is-warning" (click)='openUpdateModal(user?.id, user?.displayName, user?.email, hasClickedUpdateModal=true)'>
-          Edit
-        </span>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-
-<!-- <button type="button" class="btn btn-info btn-lg" (click)="openModal()">click to open</button> -->
-
-<!-- MODAL -->
-<!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <!-- <strong></strong> -->
-        <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
-          <h4 class="modal-title">Update user with id:
-            <code>{{id_toUpdate}}</code>
-          </h4>
-        </span>
-
-        <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
-          <h4 class="modal-title">Delete user with id:
-            <code>{{id_toDelete}}</code>
-          </h4>
-        </span>
-
+        <div class="field">
+          <p class="control is-expanded has-icons-left">
+            <input [(ngModel)]="email" placeholder="Email" class="input">
+            <span class="icon is-small is-left">
+              <i class="fas fa-envelope fa"></i>
+            </span>
+          </p>
+        </div>
       </div>
+    </div>
 
-      <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
-        <div class="modal-body">
-          <p>{{displayName_toUpdate}} - {{email_toUpdate}}</p>
-          <div class="field is-horizontal">
-            <div class="field-body">
+    <button class="button is-success" (click)="createUser()" [disabled]="displayName?.length < 2 || displayName?.length > 20">
+      Add new user
+    </button>
 
-              <div class="field">
-                <p class="control is-expanded has-icons-left">
-                  <input [(ngModel)]="displayName_toUpdate" placeholder="Full name" class="input">
-                  <span class="icon is-small is-left">
-                    <i class="fas fa-user fa"></i>
-                  </span>
-                </p>
-              </div>
+    <div class="field has-addons" style="padding-top:18px">
+      <div class="control">
+        <input [(ngModel)]="searchFor" (keyup)="searchUsers($event)" class="input" type="text" placeholder="Find a user">
+      </div>
+      <!-- <div class="control" (click)='cancelSearch()' >
+          <a class="button is-static">
+                <span class="icon is-small">
+                <i class="fas fa-times fa"></i>
+              </span>
+          </a>
+        </div> -->
+      <button type="submit" class="button is-static" 
+        style="border-bottom-left-radius: 0px !important; border-top-left-radius: 0px !important;" 
+        [disabled]="disableCancelSearchBtn" (click)='cancelSearch()'>
 
-              <div class="field">
-                <p class="control is-expanded has-icons-left">
-                  <input [(ngModel)]="email_toUpdate" placeholder="Email" class="input">
-                  <span class="icon is-small is-left">
-                    <i class="fas fa-envelope fa"></i>
-                  </span>
-                </p>
+        <span class="icon is-small">
+          <i class="fas fa-times fa"></i>
+        </span>
+
+      </button>
+    </div>
+    <!-- USERS LIST -->
+    <table class="table is-narrow is-bordered">
+      <thead>
+        <tr>
+          <th style="">
+            Id
+          </th>
+          <th>
+            Name
+
+            <!-- IS ACTIVE COLUMN NAME  -->
+            <span *ngIf="BTN_IS_ACTIVE_COLUMN_NAME == false">
+              <a class="button" 
+                style="height: 1.5em; padding-bottom:5px; padding-top:6px; padding-left:5px; padding-right:0px; border:0px !important"
+                (click)=isActiveColumnName()>
+                <i class="fa fa-exchange fa-rotate-90" aria-hidden="true" style=" opacity: 0.3;"></i>
+              </a>
+            </span>
+
+            <span *ngIf="BTN_IS_ACTIVE_COLUMN_EMAIL == false && BTN_IS_ACTIVE_COLUMN_TIME == false">
+              <!-- ORDER NAME A-Z -->
+              <span *ngIf="BTN_ORDER_NAME_AZ == true">
+                <a class="button" 
+                  style="height: 1.5em; padding-bottom:5px; padding-top:6px; padding-left:5px; padding-right:0px; border:0px !important"
+                  (click)=orderNameAZ()>
+                  <i class="fa fa-sort-amount-asc" aria-hidden="true" style=" opacity: 0.5;"></i>
+                </a>
+              </span>
+            
+              
+              <!-- ORDER NAME Z-A -->
+              <span *ngIf="BTN_ORDER_NAME_ZA">
+                <a class="button" 
+                  style="height: 1.5em; padding-bottom:5px; padding-top:6px; padding-left:5px; padding-right:0px; border:0px !important"
+                  (click)=orderNameZA()>
+                  <i class="fa fa-sort-amount-desc" aria-hidden="true" style=" opacity: 0.5;"></i>
+                </a>
+              </span>
+
+            </span>
+          </th>
+          <th>
+            Email
+            <!-- IS ACTIVE COLUMN EMAIL  -->
+            <span *ngIf="BTN_IS_ACTIVE_COLUMN_EMAIL == false">
+              <a class="button" 
+                style="height: 1.5em; padding-bottom:5px; padding-top:6px; padding-left:5px; padding-right:0px; border:0px !important"
+                (click)=isActiveColumnEmail()>
+                <i class="fa fa-exchange fa-rotate-90" aria-hidden="true" style=" opacity: 0.3;"></i>
+              </a>
+            </span>
+
+            <span *ngIf="BTN_IS_ACTIVE_COLUMN_NAME == false && BTN_IS_ACTIVE_COLUMN_TIME == false">
+              <!-- ORDER EMAIL A-Z -->
+              <span *ngIf="BTN_ORDER_EMAIL_AZ == true">
+                <a class="button" 
+                  style="height: 1.5em; padding-bottom:5px; padding-top:6px; padding-left:5px; padding-right:0px; border:0px !important"
+                  (click)=orderEmailAZ()>
+                  <i class="fa fa-sort-amount-asc" aria-hidden="true" style=" opacity: 0.5;"></i>
+                </a>
+              </span>
+                
+              <!-- ORDER EMAIL Z-A -->
+              <span *ngIf="BTN_ORDER_EMAIL_ZA">
+                <a class="button" 
+                  style="height: 1.5em; padding-bottom:5px; padding-top:6px; padding-left:5px; padding-right:0px; border:0px !important"
+                  (click)=orderEmailZA()>
+                  <i class="fa fa-sort-amount-desc" aria-hidden="true" style=" opacity: 0.5;"></i>
+                </a>
+              </span>
+            </span>
+          
+          </th>
+          <th>
+            Time
+
+            <!-- IS ACTIVE COLUMN TIME  -->
+            <span *ngIf="BTN_IS_ACTIVE_COLUMN_TIME == false">
+              <a class="button" 
+                style="height: 1.5em; padding-bottom:5px; padding-top:6px; padding-left:5px; padding-right:0px; border:0px !important"
+                (click)=isActiveColumnTime()>
+                <i class="fa fa-exchange fa-rotate-90" aria-hidden="true" style=" opacity: 0.3;"></i>
+              </a>
+            </span>
+              
+            <span *ngIf="BTN_IS_ACTIVE_COLUMN_NAME == false && BTN_IS_ACTIVE_COLUMN_EMAIL == false">
+              <!-- ORDER TIME A-Z -->
+              <span *ngIf="BTN_ORDER_TIME_AZ == true">
+                <a class="button" 
+                  style="height: 1.5em; padding-bottom:5px; padding-top:6px; padding-left:5px; padding-right:0px; border:0px !important"
+                  (click)=orderTimeAZ()>
+                  <i class="fa fa-sort-amount-asc" aria-hidden="true" style=" opacity: 0.5;"></i>
+                </a>
+              </span>
+
+              <!-- ORDER TIME Z-A -->
+              <span *ngIf="BTN_ORDER_TIME_ZA">
+                <a class="button" 
+                  style="height: 1.5em; padding-bottom:5px; padding-top:6px; padding-left:5px; padding-right:0px; border:0px !important"
+                  (click)=orderTimeZA()>
+                  <i class="fa fa-sort-amount-desc" aria-hidden="true" style=" opacity: 0.5;"></i>
+                </a>
+              </span>
+            </span>
+          
+          
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of usersList">
+
+          <td style="">{{user?.id}}
+          
+          </td>
+          <td>{{user?.displayName}} </td>
+          <!-- <td>{{user?.displayName}} </td> -->
+          <td>{{user?.email}}</td>
+          <td>{{user?.time | date: 'd/M/y'}}</td>
+          <td style="">
+            <!-- <span class="button is-small is-danger" (click)='deleteUser(user?.id)'>Delete</span> -->
+            <span class="button is-small is-danger" (click)='openDeleteModal(user?.id, user?.displayName, hasClickedDeleteModal = true)'>
+              Delete
+            </span>
+          </td>
+          <td style="">
+            <span class="button is-small is-warning" (click)='openUpdateModal(user?.id, user?.displayName, user?.email, hasClickedUpdateModal=true)'>
+              Edit
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+
+    <!-- <button type="button" class="btn btn-info btn-lg" (click)="openModal()">click to open</button> -->
+
+    <!-- MODAL -->
+    <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <!-- <strong></strong> -->
+            <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
+              <h4 class="modal-title">Update user with id:
+                <code>{{id_toUpdate}}</code>
+              </h4>
+            </span>
+
+            <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
+              <h4 class="modal-title">Delete user with id:
+                <code>{{id_toDelete}}</code>
+              </h4>
+            </span>
+
+          </div>
+
+          <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
+            <div class="modal-body">
+              <p>{{displayName_toUpdate}} - {{email_toUpdate}}</p>
+              <div class="field is-horizontal">
+                <div class="field-body">
+
+                  <div class="field">
+                    <p class="control is-expanded has-icons-left">
+                      <input [(ngModel)]="displayName_toUpdate" placeholder="Full name" class="input">
+                      <span class="icon is-small is-left">
+                        <i class="fas fa-user fa"></i>
+                      </span>
+                    </p>
+                  </div>
+
+                  <div class="field">
+                    <p class="control is-expanded has-icons-left">
+                      <input [(ngModel)]="email_toUpdate" placeholder="Email" class="input">
+                      <span class="icon is-small is-left">
+                        <i class="fas fa-envelope fa"></i>
+                      </span>
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          </span>
+
+          <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
+            <div class="modal-body">
+
+            <p> Are you sure you want to delete the user <strong>{{displayName_toDelete}}</strong> ?</p>
+            </div>
+          </span>
+
+          <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" (click)="onCloseUpdateModalHandled()">Save</button>
+            </div>
+          </span>
+
+          <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" (click)="onCloseDeleteModalHandled()">Confirm</button>
+            </div>
+          </span>
+
         </div>
-      </span>
-
-      <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
-        <div class="modal-body">
-
-         <p> Are you sure you want to delete the user <strong>{{displayName_toDelete}}</strong> ?</p>
-        </div>
-      </span>
-
-      <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" (click)="onCloseUpdateModalHandled()">Save</button>
-        </div>
-      </span>
-
-      <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" (click)="onCloseDeleteModalHandled()">Confirm</button>
-        </div>
-      </span>
-
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
+    <!-- /.modal !-->
+  </main>
 </div>
-<!-- /.modal !-->

@@ -1,131 +1,136 @@
-<h1>Mongo DB Users</h1>
-<hr>
-<div class="field is-horizontal">
-  <div class="field-body">
+<div class="content columns">
+  <main class="column is-8 is-offset-2">
 
-    <div class="field">
-      <p class="control is-expanded has-icons-left">
-        <input [(ngModel)]="fullName" placeholder="Full name" class="input">
-        <span class="icon is-small is-left">
-          <i class="fas fa-user fa"></i>
-        </span>
-      </p>
+  <h1>Mongo DB Users</h1>
+  <hr>
+  <div class="field is-horizontal">
+    <div class="field-body">
+
+      <div class="field">
+        <p class="control is-expanded has-icons-left">
+          <input [(ngModel)]="fullName" placeholder="Full name" class="input">
+          <span class="icon is-small is-left">
+            <i class="fas fa-user fa"></i>
+          </span>
+        </p>
+      </div>
     </div>
   </div>
-</div>
-<button class="button is-success" (click)="createContact()" [disabled]="fullName?.length < 2 || fullName?.length > 50">
-  Add new contact
-</button>
+  <button class="button is-success" (click)="createContact()" [disabled]="fullName?.length < 2 || fullName?.length > 50">
+    Add new contact
+  </button>
 
-<!-- MOMGO DB CONTACT LIST -->
-<table class="table is-narrow is-bordered" style="margin-top:25px">
-  <thead>
-    <tr>
-      <th style="">
-        Id
-      </th>
-      <th>
-        Full Name
-      </th>
-      <th>
-        Creation Date
-      </th>
-    </tr>
-  </thead>
+  <!-- MOMGO DB CONTACT LIST -->
+  <table class="table is-narrow is-bordered" style="margin-top:25px">
+    <thead>
+      <tr>
+        <th style="">
+          Id
+        </th>
+        <th>
+          Full Name
+        </th>
+        <th>
+          Creation Date
+        </th>
+      </tr>
+    </thead>
 
-  <tbody>
+    <tbody>
 
-    <tr *ngFor="let contact of contacts">
-      <td>
-        {{ contact?._id }}
-      </td>
-      <td>
-        {{ contact?.fullname }}
-      </td>
-      <td>
-        {{ contact?.createdAt | date: 'd/M/y'}}
-      </td>
-      <td style="text-align: center!important">
-        <!-- <span class="button is-small is-danger" (click)='deleteUser(user?.id)'>Delete</span> -->
-        <span class="button is-small is-danger" (click)='openDeleteModal(contact?._id, contact?.fullname, hasClickedDeleteModal = true)'>
-          Delete
-        </span>
-      </td>
-      <td style="text-align: center!important">
-        <span class="button is-small is-warning" (click)='openUpdateModal(contact?._id, contact?.fullname, hasClickedUpdateModal = true)'>
-          Edit
-        </span>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-  <!-- <loading-spinner></loading-spinner> -->
-  <!-- MODAL -->
-<!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <!-- <strong></strong> -->
-          <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
-            <h4 class="modal-title">Update contact with id:
-              <code>{{id_toUpdate}}</code>
-            </h4>
+      <tr *ngFor="let contact of contacts">
+        <td>
+          {{ contact?._id }}
+        </td>
+        <td>
+          {{ contact?.fullname }}
+        </td>
+        <td>
+          {{ contact?.createdAt | date: 'd/M/y'}}
+        </td>
+        <td style="text-align: center!important">
+          <!-- <span class="button is-small is-danger" (click)='deleteUser(user?.id)'>Delete</span> -->
+          <span class="button is-small is-danger" (click)='openDeleteModal(contact?._id, contact?.fullname, hasClickedDeleteModal = true)'>
+            Delete
           </span>
-  
-          <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
-            <h4 class="modal-title">Delete contact with id:
-              <code>{{id_toDelete}}</code>
-            </h4>
+        </td>
+        <td style="text-align: center!important">
+          <span class="button is-small is-warning" (click)='openUpdateModal(contact?._id, contact?.fullname, hasClickedUpdateModal = true)'>
+            Edit
           </span>
-  
-        </div>
-  
-        <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
-          <div class="modal-body">
-            <p>{{fullName_toUpdate}}</p>
-            <div class="field is-horizontal">
-              <div class="field-body">
-  
-                <div class="field">
-                  <p class="control is-expanded has-icons-left">
-                    <input [(ngModel)]="fullName_toUpdate" placeholder="Full name" class="input">
-                    <span class="icon is-small is-left">
-                      <i class="fas fa-user fa"></i>
-                    </span>
-                  </p>
-                </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+    <!-- <loading-spinner></loading-spinner> -->
+    <!-- MODAL -->
+  <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->
+  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <!-- <strong></strong> -->
+            <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
+              <h4 class="modal-title">Update contact with id:
+                <code>{{id_toUpdate}}</code>
+              </h4>
+            </span>
     
+            <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
+              <h4 class="modal-title">Delete contact with id:
+                <code>{{id_toDelete}}</code>
+              </h4>
+            </span>
+    
+          </div>
+    
+          <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
+            <div class="modal-body">
+              <p>{{fullName_toUpdate}}</p>
+              <div class="field is-horizontal">
+                <div class="field-body">
+    
+                  <div class="field">
+                    <p class="control is-expanded has-icons-left">
+                      <input [(ngModel)]="fullName_toUpdate" placeholder="Full name" class="input">
+                      <span class="icon is-small is-left">
+                        <i class="fas fa-user fa"></i>
+                      </span>
+                    </p>
+                  </div>
+      
+                </div>
               </div>
             </div>
-          </div>
-        </span>
-  
-        <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
-          <div class="modal-body">
-  
-           <p> Are you sure you want to delete the user <strong>{{fullName_toDelete}}</strong> ?</p>
-          </div>
-        </span>
-  
-        <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" (click)="onCloseUpdateModalHandled()">Save</button>
-          </div>
-        </span>
-  
-        <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" (click)="onCloseDeleteModalHandled()">Confirm</button>
-          </div>
-        </span>
-  
+          </span>
+    
+          <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
+            <div class="modal-body">
+    
+            <p> Are you sure you want to delete the user <strong>{{fullName_toDelete}}</strong> ?</p>
+            </div>
+          </span>
+    
+          <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" (click)="onCloseUpdateModalHandled()">Save</button>
+            </div>
+          </span>
+    
+          <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" (click)="onCloseDeleteModalHandled()">Confirm</button>
+            </div>
+          </span>
+    
+        </div>
+        <!-- /.modal-content -->
       </div>
-      <!-- /.modal-content -->
+      <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal-dialog -->
-  </div>
+  </main>
+</div>

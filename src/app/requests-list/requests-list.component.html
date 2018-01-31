@@ -1,57 +1,62 @@
-<h1>Firestore Requests</h1>
-<hr>
-<loading-spinner *ngIf="showSpinner"></loading-spinner>
+<div class="content columns">
+  <main class="column is-8 is-offset-2">
 
-<!-- MOMGO DB CONTACT LIST -->
-<span *ngIf="!showSpinner">
-  <table class="table is-narrow is-bordered" style="margin-top:25px">
-    <thead>
-      <tr>
-      <!-- <th style="">
-      Id
-      </th> -->
-      <th>
-        Recipient
-      </th>
-      <th>
-        Recipient Full Name
-      </th>
-      <th>
-        Sender Full Name
-      </th>
-      <th>
-        Text
-      </th>
-      <th>
-        Date
-      </th>
-      </tr>
-    </thead>
-  
-    <tbody>
-  
-      <tr *ngFor="let request of requestList">
-        <!-- <td>
-          {{ request?.id }}
-          
-        </td> -->
-        <td>
-          {{ request?.recipient }}
-        </td>
-        <td>
-          {{ request.recipient_fullname }}
-        </td>
-        <td>
-          {{ request.sender_fullname }}
-        </td>
-        <td>
-          {{ request?.text }}
-        </td>
-        <td>
-          {{ request?.timestamp | date: 'd/M/y'}}
-        </td>
- 
-      </tr>
-    </tbody>
-  </table>
-</span>
+    <h1>Firestore Requests</h1>
+    <hr>
+    <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+    <!-- MOMGO DB CONTACT LIST -->
+    <span *ngIf="!showSpinner">
+      <table class="table is-narrow is-bordered" style="margin-top:25px">
+        <thead>
+          <tr>
+          <!-- <th style="">
+          Id
+          </th> -->
+          <th>
+            Recipient
+          </th>
+          <th>
+            Recipient Full Name
+          </th>
+          <th>
+            Sender Full Name
+          </th>
+          <th>
+            Text
+          </th>
+          <th>
+            Date
+          </th>
+          </tr>
+        </thead>
+      
+        <tbody>
+      
+          <tr *ngFor="let request of requestList">
+            <!-- <td>
+              {{ request?.id }}
+              
+            </td> -->
+            <td>
+              {{ request?.recipient }}
+            </td>
+            <td>
+              {{ request.recipient_fullname }}
+            </td>
+            <td>
+              {{ request.sender_fullname }}
+            </td>
+            <td>
+              {{ request?.text }}
+            </td>
+            <td>
+              {{ request?.timestamp | date: 'd/M/y'}}
+            </td>
+    
+          </tr>
+        </tbody>
+      </table>
+    </span>
+  </main>
+</div>

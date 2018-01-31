@@ -27,6 +27,8 @@ export const firebaseConfig = environment.firebaseConfig;
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { HomeComponent } from './home/home.component';
 import { UsersListComponent } from './users-list/users-list.component';
+import { ChatComponent } from './chat/chat.component';
+
 
 import { ContactsService } from './services/contacts.service';
 import { UsersService } from './services/users.service';
@@ -43,6 +45,7 @@ import { RequestsService } from './services/requests.service';
     UsersListComponent,
     ContactsComponent,
     RequestsListComponent,
+    ChatComponent,
   ],
   imports: [
     BrowserModule,

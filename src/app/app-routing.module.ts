@@ -7,11 +7,13 @@ import { ReadmePageComponent } from './ui/readme-page/readme-page.component';
 import { NotesListComponent } from './notes/notes-list/notes-list.component';
 import { HomeComponent } from './home/home.component';
 
-// MY
+// NK
 import { UsersListComponent } from './users-list/users-list.component';
 import { ContactsComponent } from './contacts/contacts.component';
 import { RequestsListComponent } from './requests-list/requests-list.component';
 
+// Andrea
+import { ChatComponent } from './chat/chat.component';
 
 import { UserProfileComponent } from './ui/user-profile/user-profile.component';
 
@@ -28,6 +30,7 @@ const routes: Routes = [
   { path: 'notes', component: NotesListComponent, canActivate: [AuthGuard] },
   { path: 'userprofile', component: UserProfileComponent },
   { path: 'requests', component: RequestsListComponent },
+  { path: 'chat', component: ChatComponent },
 
   // uploads are lazy loaded
   { path: 'uploads', loadChildren: './uploads/shared/upload.module#UploadModule', canActivate: [AuthGuard] },
