@@ -1,8 +1,10 @@
 <h1>Firestore Requests</h1>
 <hr>
-<!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
+<loading-spinner *ngIf="showSpinner"></loading-spinner>
+
 <!-- MOMGO DB CONTACT LIST -->
-<table class="table is-narrow is-bordered" style="margin-top:25px">
+<span *ngIf="!showSpinner">
+  <table class="table is-narrow is-bordered" style="margin-top:25px">
     <thead>
       <tr>
       <!-- <th style="">
@@ -51,3 +53,5 @@
  
       </tr>
     </tbody>
+  </table>
+</span>

@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { RequestsService } from '../services/requests.service';
 import { Request } from '../models/request-model';
-import { error } from 'util';
+// import { error } from 'util';
+import { Observable } from 'rxjs/Observable';
+
+
 
 @Component({
   selector: 'requests-list',
@@ -11,13 +14,14 @@ import { error } from 'util';
 export class RequestsListComponent implements OnInit {
 
   requestList: Request[];
-  // showSpinner = true;
+  showSpinner = true;
 
   constructor(
     private requestsService: RequestsService,
   ) { }
 
   ngOnInit() {
+
     this.getRequestList();
   }
 
@@ -26,6 +30,7 @@ export class RequestsListComponent implements OnInit {
     this.requestsService.getSnapshot().subscribe((data) => {
       this.requestList = data;
       console.log('REQUESTS-LIST.COMP: SUBSCRIPTION TO getSnapshot ', data);
+      this.showSpinner = false;
     },
       (err) => {
 
