@@ -25,19 +25,25 @@ import { environment } from '../environments/environment';
 import { AngularFireModule } from 'angularfire2';
 export const firebaseConfig = environment.firebaseConfig;
 import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { HttpModule } from '@angular/http';
+
 import { HomeComponent } from './home/home.component';
-import { UsersListComponent } from './users-list/users-list.component';
+
 import { ChatComponent } from './chat/chat.component';
 
-
-import { MongoDbContactsService } from './services/mongodb-contacts.service';
+// FIRESTORE
 import { UsersService } from './services/users.service';
-import { ContactsComponent } from './contacts/contacts.component';
-import { HttpModule } from '@angular/http';
+import { UsersListComponent } from './users-list/users-list.component';
+import { RequestsService } from './services/requests.service';
 import { RequestsListComponent } from './requests-list/requests-list.component';
 
-import { RequestsService } from './services/requests.service';
+// MONGO DB
 import { MongodbConfService } from './utils/mongodb-conf.service';
+
+import { MongoDbContactsService } from './services/mongodb-contacts.service';
+import { ContactsComponent } from './contacts/contacts.component';
+import { MongodbDepartmentService } from './services/mongodb-department.service';
+import { MongodbDepartmentsComponent } from './mongodb-departments/mongodb-departments.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +53,7 @@ import { MongodbConfService } from './utils/mongodb-conf.service';
     ContactsComponent,
     RequestsListComponent,
     ChatComponent,
+    MongodbDepartmentsComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,7 +67,7 @@ import { MongodbConfService } from './utils/mongodb-conf.service';
     AngularFireModule.initializeApp(firebaseConfig),
     HttpModule,
   ],
-  providers: [UsersService, MongoDbContactsService, RequestsService, MongodbConfService],
+  providers: [UsersService, MongoDbContactsService, RequestsService, MongodbConfService, MongodbDepartmentService],
   bootstrap: [
     AppComponent,
   ],

@@ -1,5 +1,5 @@
 <div class="content columns">
-  <main class="column is-8 is-offset-2">
+  <main class="column is-10 is-offset-1">
     <div *ngIf="auth.user | async as user">
 
         <h3>Howdy, {{ user.displayName }}</h3>
@@ -8,7 +8,7 @@
     <hr>
 
 
-    <div class="columns">
+    <!-- <div class="columns">
         <div class="column is-half">
             <div class="columns">
                 <div class="column is-3"  has-text-centered>
@@ -16,7 +16,7 @@
                     <i class="fa fa-users fa-2x" aria-hidden="true"></i> 
                   </a> 
                 </div>
-                <!-- style="margin-top:25px !important" -->
+                
                 <div class="column is-9" style="display: flex; flex-direction: column; justify-content: center;" >
                   <span style="font-size:1.2em">Firestore Users</span>
                 </div>
@@ -30,13 +30,101 @@
                     <i class="fa fa-users fa-2x" aria-hidden="true"></i> 
                   </a> 
                 </div>
-                <!-- style="margin-top:25px !important" -->
+                
                 <div class="column is-5" style="display: flex; flex-direction: column; justify-content: center;" >
                   <span style="font-size:1.2em">MongoDB Contacts</span>
                 </div>
             </div>
         </div>
         </div>
-    </div>
+    </div> -->
+    
   </main>
 </div>
+
+<section class="container">
+  <div class="columns features">
+
+    <div class="column is-4">
+      
+      <div class="card" routerLink="/users" style="cursor: pointer;">
+        <div class="card-content">
+          <div class="media">
+              <div class="media-left">
+                  <div class="card-image has-text-centered">
+                    <i class="fa fa-users"></i>
+                  </div>
+              </div>
+              <div class="media-content" style=" ">
+                <p class="title is-4" style="height:100px; display: table-cell !important; vertical-align: middle !important; padding: 10px !important; color:#4e4d4d ">Firestore Users</p>
+              </div>
+            </div>
+        </div>
+      </div>
+
+    </div>
+
+      <div class="column is-4">
+
+        <div class="card" style="cursor: pointer;" routerLink="/contacts">
+            <div class="card-content">
+              <div class="media">
+                  <div class="media-left">
+                      <div class="card-image has-text-centered">
+                        <i class="fa fa-users"></i>
+                      </div>
+                  </div>
+                  <div class="media-content" style=" ">
+                    <p class="title is-4" style="height:100px; display: table-cell !important; vertical-align: middle !important; padding: 10px !important; color:#4e4d4d ">MongoDb Contacts</p>
+                  </div>
+                </div>
+            </div>
+          </div>
+
+      </div>
+      <div class="column is-4">
+
+          <div class="card" style="cursor: pointer;" routerLink="/requests">
+              <div class="card-content">
+                <div class="media">
+                    <div class="media-left">
+                        <div class="card-image has-text-centered">
+                          <!-- <i class="fa fa-users"></i> -->
+                          <i class="fa fa-commenting-o"></i>
+                        </div>
+                    </div>
+                    <div class="media-content" style=" ">
+                      <p class="title is-4" style="height:100px; display: table-cell !important; vertical-align: middle !important; padding: 10px !important; color:#4e4d4d ">Firestore Requests</p>
+                    </div>
+                  </div>
+              </div>
+            </div>
+
+      </div>
+     
+  </div>
+
+  <div class="columns features">
+
+        <div class="column is-4">
+      
+      <div class="card" routerLink="/departments" style="cursor: pointer;">
+        <div class="card-content">
+          <div class="media">
+              <div class="media-left">
+                  <div class="card-image has-text-centered">
+                    <!-- <i class="fa fa-users"></i> -->
+                    <i class="fa fa-university"></i>
+                  </div>
+              </div>
+              <div class="media-content" style=" ">
+                <p class="title is-4" style="height:100px; display: table-cell !important; vertical-align: middle !important; padding: 10px !important; color:#4e4d4d ">MongoDb Dept.</p>
+              </div>
+            </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</section>
