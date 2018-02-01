@@ -37,6 +37,7 @@ import { HttpModule } from '@angular/http';
 import { RequestsListComponent } from './requests-list/requests-list.component';
 
 import { RequestsService } from './services/requests.service';
+import { MongodbConfService } from './utils/mongodb-conf.service';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,7 @@ import { RequestsService } from './services/requests.service';
     AngularFireModule.initializeApp(firebaseConfig),
     HttpModule,
   ],
-  providers: [UsersService, ContactsService, RequestsService],
+  providers: [UsersService, ContactsService, RequestsService, MongodbConfService],
   bootstrap: [
     AppComponent,
   ],
