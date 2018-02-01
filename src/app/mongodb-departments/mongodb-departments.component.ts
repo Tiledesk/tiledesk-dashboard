@@ -32,7 +32,7 @@ export class MongodbDepartmentsComponent implements OnInit {
     private mongodbDepartmentService: MongodbDepartmentService,
   ) {
 
-   }
+  }
 
   ngOnInit() {
     this.getDepartments();
@@ -53,11 +53,25 @@ export class MongodbDepartmentsComponent implements OnInit {
    */
   createDepartment() {
     console.log('MONGO DB DEPT-NAME DIGIT BY USER ', this.dept_name);
-    this.mongodbDepartmentService.addMongoDbDepartments(this.dept_name);
+    this.mongodbDepartmentService.addMongoDbDepartments(this.dept_name)
+      .subscribe((department) => {
+        console.log('POST DATA ', department);
 
-    this.dept_name = '';
-    // RE-RUN GET CONTACT TO UPDATE THE TABLE
-    this.getDepartments();
+        this.dept_name = '';
+
+        // RE-RUN GET CONTACT TO UPDATE THE TABLE
+        // this.getDepartments();
+        this.ngOnInit();
+      },
+      (error) => {
+
+        console.log('POST REQUEST ERROR ', error);
+
+      },
+      () => {
+        console.log('POST REQUEST * COMPLETE *');
+      });
+
   }
 
   /**
@@ -86,10 +100,22 @@ export class MongodbDepartmentsComponent implements OnInit {
   onCloseDeleteModalHandled() {
     this.display = 'none';
 
-    this.mongodbDepartmentService.deleteMongoDbDeparment(this.id_toDelete);
+    this.mongodbDepartmentService.deleteMongoDbDeparment(this.id_toDelete).subscribe((data) => {
+      console.log('DELETE DATA ', data);
 
-    // RE-RUN GET CONTACT TO UPDATE THE TABLE
-    this.getDepartments();
+      // RE-RUN GET CONTACT TO UPDATE THE TABLE
+      // this.getDepartments();
+      this.ngOnInit();
+
+    },
+      (error) => {
+
+        console.log('DELETE REQUEST ERROR ', error);
+
+      },
+      () => {
+        console.log('DELETE REQUEST * COMPLETE *');
+      });
 
   }
 
@@ -125,10 +151,22 @@ export class MongodbDepartmentsComponent implements OnInit {
 
     console.log('ON MODAL UPDATE CLOSE -> CONTACT ID ', this.id_toUpdate);
     console.log('ON MODAL UPDATE CLOSE -> CONTACT FULL-NAME UPDATED ', this.deptName_toUpdate);
-    this.mongodbDepartmentService.updateMongoDbDepartment(this.id_toUpdate, this.deptName_toUpdate);
+    this.mongodbDepartmentService.updateMongoDbDepartment(this.id_toUpdate, this.deptName_toUpdate).subscribe((data) => {
+      console.log('PUT DATA ', data);
 
-    // RE-RUN GET CONTACT TO UPDATE THE TABLE
-    this.getDepartments();
+      // RE-RUN GET CONTACT TO UPDATE THE TABLE
+      // this.getDepartments();
+      this.ngOnInit();
+    },
+      (error) => {
+
+        console.log('PUT REQUEST ERROR ', error);
+
+      },
+      () => {
+        console.log('PUT REQUEST * COMPLETE *');
+      });
+
   }
 
   // CLOSE MODAL WITHOUT SAVE THE UPDATES OR WITHOUT CONFIRM THE DELETION

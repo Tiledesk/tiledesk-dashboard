@@ -23,7 +23,7 @@ export class MongoDbContactsService {
     this.http = http;
 
     this.MONGODB_BASE_URL = mongodbConfService.MONGODB_CONTACTS_BASE_URL;
-    console.log('MONGODB_CONTACTS_BASE_URL ! ', mongodbConfService.MONGODB_CONTACTS_BASE_URL );
+    console.log('MONGODB_CONTACTS_BASE_URL ! ', mongodbConfService.MONGODB_CONTACTS_BASE_URL);
 
     this.TOKEN = mongodbConfService.TOKEN;
   }
@@ -64,19 +64,20 @@ export class MongoDbContactsService {
 
     const url = this.MONGODB_BASE_URL;
 
-    this.http.post(url, JSON.stringify(body), options)
-      .map((res) => res.json())
-      .subscribe((data) => {
-        console.log('POST DATA ', data);
-      },
-      (error) => {
+    return this.http
+      .post(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+    // .subscribe((data) => {
+    //   console.log('POST DATA ', data);
+    // },
+    // (error) => {
 
-        console.log('POST REQUEST ERROR ', error);
+    //   console.log('POST REQUEST ERROR ', error);
 
-      },
-      () => {
-        console.log('POST REQUEST * COMPLETE *');
-      });
+    // },
+    // () => {
+    //   console.log('POST REQUEST * COMPLETE *');
+    // });
   }
 
   /**
@@ -94,20 +95,20 @@ export class MongoDbContactsService {
     headers.append('Content-type', 'application/json');
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
+    return this.http
+      .delete(url, options)
+      .map((res) => res.json());
+    // .subscribe((data) => {
+    //   console.log('DELETE DATA ', data);
+    // },
+    // (error) => {
 
-    this.http.delete(url, options)
-      .map((res) => res.json())
-      .subscribe((data) => {
-        console.log('DELETE DATA ', data);
-      },
-      (error) => {
+    //   console.log('DELETE REQUEST ERROR ', error);
 
-        console.log('DELETE REQUEST ERROR ', error);
-
-      },
-      () => {
-        console.log('DELETE REQUEST * COMPLETE *');
-      });
+    // },
+    // () => {
+    //   console.log('DELETE REQUEST * COMPLETE *');
+    // });
   }
 
   /**
@@ -131,19 +132,20 @@ export class MongoDbContactsService {
 
     console.log('PUT REQUEST BODY ', body);
 
-    this.http.put(url, JSON.stringify(body), options)
-      .map((res) => res.json())
-      .subscribe((data) => {
-        console.log('PUT DATA ', data);
-      },
-      (error) => {
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+    // .subscribe((data) => {
+    //   console.log('PUT DATA ', data);
+    // },
+    // (error) => {
 
-        console.log('PUT REQUEST ERROR ', error);
+    //   console.log('PUT REQUEST ERROR ', error);
 
-      },
-      () => {
-        console.log('PUT REQUEST * COMPLETE *');
-      });
+    // },
+    // () => {
+    //   console.log('PUT REQUEST * COMPLETE *');
+    // });
 
   }
 

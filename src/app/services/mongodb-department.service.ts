@@ -21,7 +21,7 @@ export class MongodbDepartmentService {
     this.http = http;
 
     this.MONGODB_BASE_URL = mongodbConfService.MONGODB_DEPARTMENTS_BASE_URL;
-    console.log('MONGODB_DEPARTMENTS_BASE_URL ! ', this.MONGODB_BASE_URL  );
+    console.log('MONGODB_DEPARTMENTS_BASE_URL ! ', this.MONGODB_BASE_URL);
 
     this.TOKEN = mongodbConfService.TOKEN;
   }
@@ -62,19 +62,20 @@ export class MongodbDepartmentService {
 
     const url = this.MONGODB_BASE_URL;
 
-    this.http.post(url, JSON.stringify(body), options)
-      .map((res) => res.json())
-      .subscribe((data) => {
-        console.log('POST DATA ', data);
-      },
-      (error) => {
+    return this.http
+      .post(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+    // .subscribe((data) => {
+    //   console.log('POST DATA ', data);
+    // },
+    // (error) => {
 
-        console.log('POST REQUEST ERROR ', error);
+    //   console.log('POST REQUEST ERROR ', error);
 
-      },
-      () => {
-        console.log('POST REQUEST * COMPLETE *');
-      });
+    // },
+    // () => {
+    //   console.log('POST REQUEST * COMPLETE *');
+    // });
   }
 
   /**
@@ -93,19 +94,20 @@ export class MongodbDepartmentService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    this.http.delete(url, options)
-      .map((res) => res.json())
-      .subscribe((data) => {
-        console.log('DELETE DATA ', data);
-      },
-      (error) => {
+    return this.http
+      .delete(url, options)
+      .map((res) => res.json());
+    // .subscribe((data) => {
+    //   console.log('DELETE DATA ', data);
+    // },
+    // (error) => {
 
-        console.log('DELETE REQUEST ERROR ', error);
+    //   console.log('DELETE REQUEST ERROR ', error);
 
-      },
-      () => {
-        console.log('DELETE REQUEST * COMPLETE *');
-      });
+    // },
+    // () => {
+    //   console.log('DELETE REQUEST * COMPLETE *');
+    // });
   }
 
   /**
@@ -129,19 +131,20 @@ export class MongodbDepartmentService {
 
     console.log('PUT REQUEST BODY ', body);
 
-    this.http.put(url, JSON.stringify(body), options)
-      .map((res) => res.json())
-      .subscribe((data) => {
-        console.log('PUT DATA ', data);
-      },
-      (error) => {
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+      // .subscribe((data) => {
+      //   console.log('PUT DATA ', data);
+      // },
+      // (error) => {
 
-        console.log('PUT REQUEST ERROR ', error);
+      //   console.log('PUT REQUEST ERROR ', error);
 
-      },
-      () => {
-        console.log('PUT REQUEST * COMPLETE *');
-      });
+      // },
+      // () => {
+      //   console.log('PUT REQUEST * COMPLETE *');
+      // });
 
   }
 

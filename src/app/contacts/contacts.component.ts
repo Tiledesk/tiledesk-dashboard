@@ -56,11 +56,22 @@ export class ContactsComponent implements OnInit {
    */
   createContact() {
     console.log('MONGO DB FULL-NAME DIGIT BY USER ', this.fullName);
-    this.contactsService.addMongoDbContacts(this.fullName);
+    this.contactsService.addMongoDbContacts(this.fullName).subscribe((contact) => {
+        console.log('POST DATA ', contact);
+        this.fullName = '';
+        // RE-RUN GET CONTACT TO UPDATE THE TABLE
+        // this.getContacts();
+        this.ngOnInit();
+      },
+      (error) => {
 
-    this.fullName = '';
-    // RE-RUN GET CONTACT TO UPDATE THE TABLE
-    this.getContacts();
+        console.log('POST REQUEST ERROR ', error);
+
+      },
+      () => {
+        console.log('POST REQUEST * COMPLETE *');
+      });
+
   }
 
   /**
@@ -89,10 +100,19 @@ export class ContactsComponent implements OnInit {
   onCloseDeleteModalHandled() {
     this.display = 'none';
 
-    this.contactsService.deleteMongoDbContact(this.id_toDelete);
+    this.contactsService.deleteMongoDbContact(this.id_toDelete).subscribe((contact: any) => {
+      console.log('DELETE CONTACT ', contact);
 
-    // RE-RUN GET CONTACT TO UPDATE THE TABLE
-    this.getContacts();
+      // RE-RUN GET CONTACT TO UPDATE THE TABLE
+      // this.getContacts();
+      this.ngOnInit();
+    },
+      (error) => {
+        console.log('DELETE REQUEST ERROR ', error);
+      },
+      () => {
+        console.log('DELETE REQUEST * COMPLETE *');
+      });
 
   }
 
@@ -128,10 +148,21 @@ export class ContactsComponent implements OnInit {
 
     console.log('ON MODAL UPDATE CLOSE -> CONTACT ID ', this.id_toUpdate);
     console.log('ON MODAL UPDATE CLOSE -> CONTACT FULL-NAME UPDATED ', this.fullName_toUpdate);
-    this.contactsService.updateMongoDbContact(this.id_toUpdate, this.fullName_toUpdate);
+    this.contactsService.updateMongoDbContact(this.id_toUpdate, this.fullName_toUpdate).subscribe((contact) => {
+      console.log('PUT DATA (UPDATED CONTACT) ', contact);
 
-    // RE-RUN GET CONTACT TO UPDATE THE TABLE
-    this.getContacts();
+      // RE-RUN GET CONTACT TO UPDATE THE TABLE
+      // this.getContacts();
+      this.ngOnInit();
+    },
+      (error) => {
+
+        console.log('PUT REQUEST ERROR ', error);
+
+      },
+      () => {
+        console.log('PUT REQUEST * COMPLETE *');
+      });
   }
 
   // CLOSE MODAL WITHOUT SAVE THE UPDATES OR WITHOUT CONFIRM THE DELETION
