@@ -30,7 +30,7 @@ import { UsersListComponent } from './users-list/users-list.component';
 import { ChatComponent } from './chat/chat.component';
 
 
-import { ContactsService } from './services/contacts.service';
+import { MongoDbContactsService } from './services/mongodb-contacts.service';
 import { UsersService } from './services/users.service';
 import { ContactsComponent } from './contacts/contacts.component';
 import { HttpModule } from '@angular/http';
@@ -60,7 +60,7 @@ import { MongodbConfService } from './utils/mongodb-conf.service';
     AngularFireModule.initializeApp(firebaseConfig),
     HttpModule,
   ],
-  providers: [UsersService, ContactsService, RequestsService, MongodbConfService],
+  providers: [UsersService, MongoDbContactsService, RequestsService, MongodbConfService],
   bootstrap: [
     AppComponent,
   ],

@@ -8,7 +8,7 @@ import 'rxjs/add/operator/map';
 import { MongodbConfService } from '../utils/mongodb-conf.service';
 
 @Injectable()
-export class ContactsService {
+export class MongoDbContactsService {
 
   // Contact: Contact[];
   http: Http;
