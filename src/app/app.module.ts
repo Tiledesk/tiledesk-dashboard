@@ -45,6 +45,9 @@ import { ContactsComponent } from './contacts/contacts.component';
 import { MongodbDepartmentService } from './services/mongodb-department.service';
 import { MongodbDepartmentsComponent } from './mongodb-departments/mongodb-departments.component';
 
+import { MongodbFaqService } from './services/mongodb-faq.service';
+import { MongodbFaqComponent } from './mongodb-faq/mongodb-faq.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,6 +57,7 @@ import { MongodbDepartmentsComponent } from './mongodb-departments/mongodb-depar
     RequestsListComponent,
     ChatComponent,
     MongodbDepartmentsComponent,
+    MongodbFaqComponent,
   ],
   imports: [
     BrowserModule,
@@ -67,7 +71,14 @@ import { MongodbDepartmentsComponent } from './mongodb-departments/mongodb-depar
     AngularFireModule.initializeApp(firebaseConfig),
     HttpModule,
   ],
-  providers: [UsersService, MongoDbContactsService, RequestsService, MongodbConfService, MongodbDepartmentService],
+  providers: [
+    UsersService,
+    MongoDbContactsService,
+    RequestsService,
+    MongodbConfService,
+    MongodbDepartmentService,
+    MongodbFaqService,
+  ],
   bootstrap: [
     AppComponent,
   ],

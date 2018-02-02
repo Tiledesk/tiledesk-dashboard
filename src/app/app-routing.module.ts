@@ -11,7 +11,8 @@ import { HomeComponent } from './home/home.component';
 import { UsersListComponent } from './users-list/users-list.component';
 import { ContactsComponent } from './contacts/contacts.component';
 import { RequestsListComponent } from './requests-list/requests-list.component';
-import {  MongodbDepartmentsComponent } from './mongodb-departments/mongodb-departments.component';
+import { MongodbDepartmentsComponent } from './mongodb-departments/mongodb-departments.component';
+import { MongodbFaqComponent } from './mongodb-faq/mongodb-faq.component';
 // Andrea
 import { ChatComponent } from './chat/chat.component';
 
@@ -32,7 +33,7 @@ const routes: Routes = [
   { path: 'requests', component: RequestsListComponent },
   { path: 'chat', component: ChatComponent },
   { path: 'departments', component: MongodbDepartmentsComponent },
- 
+  { path: 'faq', component: MongodbFaqComponent },
 
   // uploads are lazy loaded
   { path: 'uploads', loadChildren: './uploads/shared/upload.module#UploadModule', canActivate: [AuthGuard] },

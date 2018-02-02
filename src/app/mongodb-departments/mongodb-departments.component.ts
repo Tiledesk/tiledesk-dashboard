@@ -5,7 +5,7 @@ import { Department } from '../models/department-model';
 @Component({
   selector: 'mongodb-departments',
   templateUrl: './mongodb-departments.component.html',
-  styleUrls: ['./mongodb-departments.component.scss']
+  styleUrls: ['./mongodb-departments.component.scss'],
 })
 export class MongodbDepartmentsComponent implements OnInit {
 

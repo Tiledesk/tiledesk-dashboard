@@ -1,0 +1,160 @@
+<div class="content columns">
+  <main class="column is-10 is-offset-1">
+  
+    <h1>Mongo DB FAQ</h1>
+    <hr>
+    <div class="field is-horizontal">
+      <div class="field-body">
+  
+        <div class="field">
+          <p class="control is-expanded has-icons-left">
+            <input [(ngModel)]="question" placeholder="Question" class="input">
+            <span class="icon is-small is-left">
+              <!-- <i class="fas fa-user fa"></i> -->
+              <i class="fa fa-question"></i>
+            </span>
+          </p>
+        </div>
+
+        <div class="field">
+          <p class="control is-expanded has-icons-left">
+            <input [(ngModel)]="answer" placeholder="Answer" class="input">
+            <span class="icon is-small is-left">
+                <i class="fa fa-info"></i>
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <button class="button is-success" (click)="createFaq()" [disabled]="question?.length < 2 || answer?.length < 2">
+      Add new FAQ
+    </button>
+  
+    <!-- MOMGO DB DEPARTMENTS LIST -->
+    <table class="table is-narrow is-bordered" style="margin-top:25px">
+      <thead>
+        <tr>
+          <th style="">
+            Id
+          </th>
+          <th>
+            Question
+          </th>
+          <th>
+            Answer
+          </th>
+          <th>
+            Creation Date
+          </th>
+        </tr>
+      </thead>
+  
+      <tbody>
+  
+        <tr *ngFor="let faq of faq">
+          <td>
+            {{ faq?._id }}
+          </td>
+          <td>
+            {{ faq?.question }}
+          </td>
+          <td>
+            {{ faq?.answer }}
+          </td>
+          <td>
+            {{ faq?.createdAt | date: 'd/M/y'}}
+          </td>
+          <td style="text-align: center!important">
+            <!-- <span class="button is-small is-danger" (click)='deleteUser(user?.id)'>Delete</span> -->
+            <span class="button is-small is-danger" (click)='openDeleteModal(faq?._id, hasClickedDeleteModal = true)'>
+              Delete
+            </span>
+          </td>
+          <td style="text-align: center!important">
+            <span class="button is-small is-warning" (click)='openUpdateModal(faq?._id, faq?.question, faq?.answer, hasClickedUpdateModal = true)'>
+              Edit
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+         <!-- MODAL -->
+    <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <!-- <strong></strong> -->
+              <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
+                <h4 class="modal-title">Update FAQ with id:
+                  <code>{{id_toUpdate}}</code>
+                </h4>
+              </span>
+      
+              <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
+                <h4 class="modal-title">Delete FAQ with id:
+                  <code>{{id_toDelete}}</code>
+                </h4>
+              </span>
+      
+            </div>
+      
+            <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
+              <div class="modal-body">
+                <!-- <p>{{question_toUpdate}}</p> -->
+                <div class="field is-horizontal">
+                  <div class="field-body">
+      
+                    <div class="field">
+                      <p class="control is-expanded has-icons-left">
+                        <input [(ngModel)]="question_toUpdate" placeholder="Question" class="input">
+                        <span class="icon is-small is-left">
+                            <i class="fa fa-question"></i>
+                        </span>
+                      </p>
+                    </div>
+                    <div class="field">
+                        <p class="control is-expanded has-icons-left">
+                          <input [(ngModel)]="answer_toUpdate" placeholder="Answer" class="input">
+                          <span class="icon is-small is-left">
+                              <i class="fa fa-info"></i>
+                          </span>
+                        </p>
+                    </div>
+        
+                  </div>
+                </div>
+              </div>
+            </span>
+      
+            <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
+              <div class="modal-body">
+      
+              <p> Are you sure you want to delete the department <strong>{{deptName_toDelete}}</strong> ?</p>
+              </div>
+            </span>
+      
+            <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" (click)="onCloseUpdateModalHandled()">Save</button>
+              </div>
+            </span>
+      
+            <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" (click)="onCloseDeleteModalHandled()">Confirm</button>
+              </div>
+            </span>
+      
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+
+  </main>
+</div>

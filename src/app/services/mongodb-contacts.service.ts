@@ -6,14 +6,19 @@ import { Contact } from '../models/contact-model';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { MongodbConfService } from '../utils/mongodb-conf.service';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class MongoDbContactsService {
 
   // Contact: Contact[];
   http: Http;
-  MONGODB_BASE_URL: any;
-  TOKEN: any;
+
+  // MONGODB_BASE_URL: any;
+  // TOKEN: any;
+
+  MONGODB_BASE_URL = environment.mongoDbConfig.MONGODB_CONTACTS_BASE_URL;
+  TOKEN =  environment.mongoDbConfig.TOKEN;
 
   constructor(
     http: Http,
@@ -22,10 +27,9 @@ export class MongoDbContactsService {
 
     this.http = http;
 
-    this.MONGODB_BASE_URL = mongodbConfService.MONGODB_CONTACTS_BASE_URL;
-    console.log('MONGODB_CONTACTS_BASE_URL ! ', mongodbConfService.MONGODB_CONTACTS_BASE_URL);
-
-    this.TOKEN = mongodbConfService.TOKEN;
+    // this.MONGODB_BASE_URL = mongodbConfService.MONGODB_CONTACTS_BASE_URL;
+    // console.log('MONGODB_CONTACTS_BASE_URL ! ', mongodbConfService.MONGODB_CONTACTS_BASE_URL);
+    // this.TOKEN = mongodbConfService.TOKEN;
   }
 
   /**
