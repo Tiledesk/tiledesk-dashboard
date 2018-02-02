@@ -1,16 +1,13 @@
-<!-- <p>
-  chat works!
-</p> -->
 
 <!-- <iframe src="https://web.chat21.org" height="100%" width="100%" frameborder="0"></iframe>`, -->
 
-<div class="content columns" style="margin-left: 0px; margin-right: 0px; margin-top: 0px; margin-bottom: 0px; padding-top: 0px; padding-bottom: 0px; padding-left: 0px; padding-right: 0px;">
-<!-- <main class="column is-10 is-offset-1"> -->
-  <main class="column is-12" style="padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;">
-    <iframe src="https://web.chat21.org" style="width:100%; height:700px" frameBorder="0" allowfullscreen></iframe>
+  <div class="content columns" style="margin-left: 0px; margin-right: 0px; margin-top: 0px; margin-bottom: 0px; padding-top: 0px; padding-bottom: 0px; padding-left: 0px; padding-right: 0px;">
 
-  <!-- <iframe  src="https://web.chat21.org" scrolling="auto" frameborder="0" (load)="onload($event)"      
-  style=" position: relative; height: 100%; width: 100%;"> -->
-  <!-- </iframe> -->
-  </main>
-</div>
+    <main class="column is-12" style="padding-top: 0px; padding-left: 0px; padding-bottom: 0px; padding-right: 0px;">
+
+      <iframe src="https://web.chat21.org" style="width:100%;" frameBorder="0" allowfullscreen [ngStyle]="{ 'height': iframeHeight }"></iframe>
+
+    </main>
+  </div>
+
+ 
