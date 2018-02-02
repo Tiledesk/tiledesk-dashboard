@@ -1,9 +1,13 @@
-<div *ngIf="notify.msg | async as msg" class="notification"
-  [ngClass]="{ 
-    'is-danger': msg.style == 'error',
-    'is-success': msg.style == 'success',
-    'is-info': msg.style == 'info'
-  }" style="margin-top:50px">
-  <button class="delete" (click)="notify.clear()"></button>
-  {{ msg.content }}
+<div class="content columns">
+  <main class="column is-8 is-offset-2">
+    <div *ngIf="notify.msg | async as msg" class="notification"
+      [ngClass]="{ 
+        'is-danger': msg.style == 'error',
+        'is-success': msg.style == 'success',
+        'is-info': msg.style == 'info'
+      }" style="margin-top:50px">
+      <button class="delete" (click)="notify.clear()"></button>
+      {{ msg.content }}
+    </div>
+  </main>
 </div>

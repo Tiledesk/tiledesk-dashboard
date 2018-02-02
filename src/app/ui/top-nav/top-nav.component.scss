@@ -10,7 +10,7 @@ nav {
     font-weight: normal;
     transition: color 0.3s ease;
     &:hover {
-      font-color: #1c90f3;
+      color: #1c90f3;
     }
   }
 }
@@ -46,4 +46,29 @@ nav {
 .dropdown li:hover {
   background-color: #eee;
   cursor: pointer;
+}
+
+// NEW DROPDOWN
+.dropdown {
+
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1000;
+  float: right;
+  min-width: 160px;
+  padding: 5px 0;
+  margin: 2px 0 0;
+  font-size: 14px;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0,0,0,.15);
+  border-radius: 4px;
+  -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+  box-shadow: 0 6px 12px rgba(0,0,0,.175);
+
 }

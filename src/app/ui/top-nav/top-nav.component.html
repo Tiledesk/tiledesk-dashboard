@@ -22,9 +22,9 @@
     <a class="nav-item" routerLink="/requests">
       Requests
     </a>
-    <a class="nav-item" routerLink="/login">
+    <!-- <a class="nav-item" routerLink="/login">
       Login
-    </a>
+    </a> -->
     <a class="nav-item" routerLink="/chat">
       Chat
     </a>
@@ -60,40 +60,41 @@
     (click)="openCurrentUserDropDown(hasClickedOpenDropDown= !hasClickedOpenDropDown)">
         <i class="fa fa-user-o fa-1x" aria-hidden="true"></i>
     </button>
-    <div [ngStyle]="{'display':display}" style="position: absolute;
-    top: 100%;
-    right: 0;
-    z-index: 1000;
-    float: right;
-    min-width: 160px;
-    padding: 5px 0;
-    margin: 2px 0 0;
-    font-size: 14px;
-    text-align: left;
-    list-style: none;
-    background-color: #fff;
-    -webkit-background-clip: padding-box;
-    background-clip: padding-box;
-    border: 1px solid #ccc;
-    border: 1px solid rgba(0,0,0,.15);
-    border-radius: 4px;
-    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
-    box-shadow: 0 6px 12px rgba(0,0,0,.175);">
-   
-    <div *ngIf="auth.user | async as user" style="display: flex;
-    align-items: center; justify-content: center;">
-    <!-- <div class="columns">
-        <div class="column">
-            <h3>{{ user.displayName }} </h3>
+
+    <div [ngStyle]="{'display':display}" class="dropdown" style="">
+
+      <span *ngIf="auth.user | async as user; else elseBlock">
+      <div style="display: flex; align-items: left; justify-content: left;">
+        <ul>
+          <li>
+            <h3 style="padding-left:16px; padding-right:16px; padding-top:8px"><strong> {{ user.displayName }}</strong></h3>
+          </li>
+          <li>
+              <h3 style="padding-left:16px; padding-right:16px">{{ user.email }}</h3>
+            </li>
+        </ul>
+      </div>
+        <div style="display: flex; align-items: center; justify-content: center;">
+          <ul>
+            <li style="margin-top:16px; margin-bottom:8px">
+                
+              <button class="button" (click)="logout()" style="font-size:1em; ">Logout</button>
+            </li>
+          </ul>
         </div>
-    </div> -->
-   
-      <button class="button" (click)="logout()" style="font-size:1em;" >Logout</button>
-      
+      </span>
+
+      <ng-template #elseBlock>
+        <ul>
+          <li style="padding-top: 8px; padding-left: 16px; padding-bottom: 8px; padding-right: 16px;">
+            <h3 style="display: flex; align-items: center; justify-content: center;"> You are not yet logged in </h3>
+          </li>
+        </ul>
+      </ng-template>
+ 
+
     </div>
-    
-    </div>
-  </div>
+</div>
 
   <!-- <div class="container"> -->
 

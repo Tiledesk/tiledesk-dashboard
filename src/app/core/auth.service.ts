@@ -63,7 +63,7 @@ export class AuthService {
   private oAuthLogin(provider: firebase.auth.AuthProvider) {
     return this.afAuth.auth.signInWithPopup(provider)
       .then((credential) => {
-        this.notify.update('Welcome to Firestarter!!!', 'success');
+        this.notify.update('Welcome to Chat21 dashboard!!!', 'success');
         return this.updateUserData(credential.user);
       })
       .catch((error) => this.handleError(error));
@@ -96,7 +96,7 @@ export class AuthService {
         // user.displayName = displayName;
         // user.updateProfile({ 'displayName': displayName });
         this.displayName = displayName;
-        this.notify.update('Welcome to Firestarter!!!', 'success');
+        this.notify.update('Welcome to Chat21 dashboard!!!', 'success');
         this.router.navigate(['/']);
         return this.updateUserData(user); // if using firestore
       })
@@ -122,7 +122,7 @@ export class AuthService {
   emailLogin(email: string, password: string) {
     return this.afAuth.auth.signInWithEmailAndPassword(email, password)
       .then((user) => {
-        this.notify.update('Welcome to Firestarter!!!', 'success');
+        this.notify.update('Welcome to Chat21 dashboard!!!', 'success');
         this.router.navigate(['/']);
         return;
         // this.updateUserData(user); // if using firestore
