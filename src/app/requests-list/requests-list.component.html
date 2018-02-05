@@ -53,10 +53,80 @@
             <td>
               {{ request?.timestamp | date: 'd/M/y'}}
             </td>
+            <td>
+              <span class="button is-small is-warning" (click)='openViewMsgsModal(request?.recipient, hasClickedUpdateModal=true)'>
+                View
+              </span>
+            </td>
+
+
+ <!-- MODAL -->
+    <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <!-- <strong></strong> -->
+              
+                <h4 class="modal-title">Request recipient:
+                  <code>{{requestRecipient}}</code>
+                </h4>
+          
+            </div>
+  
+            
+              <div class="modal-body">
+                  
+                <div *ngFor="let message of messagesList">
+                  <span class="tag" style="background-color:#d2d2d2">
+                    <!-- <ul>
+                      <li>
+                          <p>{{ message.recipient}}</p>
+                      </li>
+                      <li>
+                          <p>{{ message.sender_fullname }}</p>
+                      </li>
+                      <li>
+                          <p>{{ message.timestamp | date: 'd/M/y'}}</p>
+                      </li>
+                    </ul> -->
+                  <p>{{ message.recipient}}</p>
+                  <p>{{ message.sender_fullname }}</p>
+                  <p>{{ message.timestamp | date: 'd/M/y'}}</p>
+                  </span>
+                </div>
+
+              </div>
+            
+         
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" (click)="onJoinHandled()">Join</button>
+                <button type="button" class="btn btn-default" (click)="onCloseModal()">Cancel</button>
+                
+              </div>
+            
+  
+ 
+  
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal !-->
+
+
+
     
           </tr>
         </tbody>
       </table>
     </span>
+
+   
+
   </main>
 </div>

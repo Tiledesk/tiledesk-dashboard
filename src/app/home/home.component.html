@@ -42,7 +42,8 @@
   </main>
 </div>
 
-<section class="container">
+<!-- SOSTITUITA CON ICONE CIRCOLARI -->
+<!-- <section class="container">
   <div class="columns features">
 
     <div class="column is-4">
@@ -56,7 +57,9 @@
                   </div>
               </div>
               <div class="media-content" style=" ">
-                <p class="title is-4" style="height:100px; display: table-cell !important; vertical-align: middle !important; padding: 10px !important; color:#4e4d4d ">Firestore Users</p>
+                <p class="title is-4" style="height:100px; display: table-cell !important; vertical-align: middle !important; padding: 10px !important; color:#4e4d4d ">
+                  Firestore Users
+                </p>
               </div>
             </div>
         </div>
@@ -75,7 +78,9 @@
                       </div>
                   </div>
                   <div class="media-content" style=" ">
-                    <p class="title is-4" style="height:100px; display: table-cell !important; vertical-align: middle !important; padding: 10px !important; color:#4e4d4d ">MongoDb Contacts</p>
+                    <p class="title is-4" style="height:100px; display: table-cell !important; vertical-align: middle !important; padding: 10px !important; color:#4e4d4d ">
+                      MongoDb Contacts
+                    </p>
                   </div>
                 </div>
             </div>
@@ -89,12 +94,13 @@
                 <div class="media">
                     <div class="media-left">
                         <div class="card-image has-text-centered">
-                          <!-- <i class="fa fa-users"></i> -->
                           <i class="fa fa-commenting-o"></i>
                         </div>
                     </div>
                     <div class="media-content" style=" ">
-                      <p class="title is-4" style="height:100px; display: table-cell !important; vertical-align: middle !important; padding: 10px !important; color:#4e4d4d ">Firestore Requests</p>
+                      <p class="title is-4" style="height:100px; display: table-cell !important; vertical-align: middle !important; padding: 10px !important; color:#4e4d4d ">
+                        Firestore Requests
+                      </p>
                     </div>
                   </div>
               </div>
@@ -113,12 +119,14 @@
           <div class="media">
               <div class="media-left">
                   <div class="card-image has-text-centered">
-                    <!-- <i class="fa fa-users"></i> -->
+                   
                     <i class="fa fa-university"></i>
                   </div>
               </div>
               <div class="media-content" style=" ">
-                <p class="title is-4" style="height:100px; display: table-cell !important; vertical-align: middle !important; padding: 10px !important; color:#4e4d4d ">MongoDb Dept.</p>
+                <p class="title is-4" style="height:100px; display: table-cell !important; vertical-align: middle !important; padding: 10px !important; color:#4e4d4d ">
+                  MongoDb Dept.
+                </p>
               </div>
             </div>
         </div>
@@ -133,12 +141,14 @@
           <div class="media">
               <div class="media-left">
                   <div class="card-image has-text-centered">
-                    <!-- <i class="fa fa-users"></i> -->
+                    
                     <i class="fa fa-question"></i>
                   </div>
               </div>
               <div class="media-content" style=" ">
-                <p class="title is-4" style="height:100px; display: table-cell !important; vertical-align: middle !important; padding: 10px !important; color:#4e4d4d ">MongoDb FAQ</p>
+                <p class="title is-4" style="height:100px; display: table-cell !important; vertical-align: middle !important; padding: 10px !important; color:#4e4d4d ">
+                  MongoDb FAQ
+                </p>
               </div>
             </div>
         </div>
@@ -149,4 +159,131 @@
 
   </div>
 
-</section>
+</section> -->
+
+<!-- NEW - AS ZENDESK CHAT -->
+<div class="content columns">
+  <main class="column is-10 is-offset-1">
+
+  <div class="sandbox">
+    <div class="tile is-ancestor" >
+      
+      <!-- FIRESTORE USERS -->
+      <div class="tile is-parent" style="display:table" routerLink="/users">
+
+        <div class="avatar">
+          <i class="fa fa-users"></i>
+        </div>
+        <div class="address" style=" display: table-cell; vertical-align: middle; padding-left: 10px ">
+          <div class="name" style="font-size: 16px; font-weight: bold;">
+            Firestore Users
+          </div> 
+          <div class="email">
+              <!-- {{firebaseProjectId}} -->
+            List of Firestore users
+          </div>
+        </div>
+
+      </div>
+
+      <!-- MONGO DB Contacts -->
+      <div class="tile is-parent" style="display:table" routerLink="/contacts">
+
+        <div class="avatar">
+          <i class="fa fa-users"></i>
+        </div>
+        <div class="address" style="display:table-cell; vertical-align: middle; padding-left: 10px ">
+          <div class="name" style="font-size: 16px; font-weight: bold;">
+            MongoDb Contacts
+          </div> 
+          <div class="email">
+            List of MongoDb contacts
+          </div>
+        </div>
+
+      </div>
+
+      <!-- FIRESTORE REQUESTS -->
+      <div class="tile is-parent" style="display:table" routerLink="/requests">
+
+        <div class="avatar">
+          <i class="fa fa-commenting-o"></i>
+        </div>
+        <div class="address" style="display:table-cell; vertical-align: middle; padding-left: 10px ">
+          <div class="name" style="font-size: 16px; font-weight: bold;">
+            Firestore Requests
+          </div> 
+          <div class="email">
+            List of Firestore requests
+          </div>
+        </div>
+
+      </div> <!-- tile is-parent! -->
+    </div> <!-- tile is-ancestor! -->
+  </div>  <!-- sandbox! -->
+  
+  <!-- NEW LINE -->
+
+  <div class="sandbox">
+      <div class="tile is-ancestor" >
+        
+        <!-- MONGO DB DEPT -->
+        <div class="tile is-parent" style="display:table" routerLink="/departments">
+  
+          <div class="avatar">
+            <i class="fa fa-university"></i>
+          </div>
+          <div class="address" style=" display: table-cell; vertical-align: middle; padding-left: 10px ">
+            <div class="name" style="font-size: 16px; font-weight: bold;">
+              MongoDb Dept.
+            </div> 
+            <div class="email">
+                <!-- {{firebaseProjectId}} -->
+              List of mongo db departments
+            </div>
+          </div>
+  
+        </div>
+  
+        <!-- MONGO DB FAQ -->
+        <div class="tile is-parent" style="display:table" routerLink="/faq">
+  
+          <div class="avatar">
+            <i class="fa fa-question" style="padding-left:18px; padding-right:18px"></i>
+          </div>
+          <div class="address" style="display:table-cell; vertical-align: middle; padding-left: 10px ">
+            <div class="name" style="font-size: 16px; font-weight: bold;">
+              MongoDb FAQ
+            </div> 
+            <div class="email">
+              List of MongoDb contacts
+            </div>
+          </div>
+  
+        </div>
+  
+        <!-- CHAT -->
+        <div class="tile is-parent" style="display:table" routerLink="/chat">
+  
+          <div class="avatar">
+            <i class="fa fa-comments-o"></i>
+            <!-- <i class="fa fa-commenting-o"></i> -->
+          </div>
+          <div class="address" style="display:table-cell; vertical-align: middle; padding-left: 10px ">
+            <div class="name" style="font-size: 16px; font-weight: bold;">
+              Chat
+            </div> 
+            <div class="email">
+              Chat21 support chat
+            </div>
+          </div>
+  
+        </div> <!-- tile is-parent! -->
+      </div> <!-- tile is-ancestor! -->
+    </div>  <!-- sandbox! -->
+
+  </main>
+</div>
+
+
+

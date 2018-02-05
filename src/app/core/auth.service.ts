@@ -23,7 +23,8 @@ export class AuthService {
   displayName?: string;
   user: Observable<User | null>;
 
-  constructor(private afAuth: AngularFireAuth,
+  constructor(
+    private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
     private router: Router,
     private notify: NotifyService) {
@@ -122,12 +123,16 @@ export class AuthService {
   emailLogin(email: string, password: string) {
     return this.afAuth.auth.signInWithEmailAndPassword(email, password)
       .then((user) => {
+        console.log('LOGGED USER ', user);
         this.notify.update('Welcome to Chat21 dashboard!!!', 'success');
         this.router.navigate(['/']);
-        return;
-        // this.updateUserData(user); // if using firestore
+        return this.updateUserDataLogin(user); // if using firestore
       })
-      .catch((error) => this.handleError(error));
+      .catch((error) => {
+        this.handleError(error);
+        console.log('xx ', error );
+      });
+
   }
 
   // Sends email allowing user to reset password
@@ -165,4 +170,18 @@ export class AuthService {
     };
     return userRef.set(data);
   }
+
+    // Sets user data to firestore after succesful login
+    private updateUserDataLogin(user: User) {
+
+      const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
+  
+      const data: User = {
+        uid: user.uid,
+        email: user.email || null,
+        photoURL: user.photoURL || 'https://goo.gl/Fz9nrQ',
+        time: new Date().getTime(),
+      };
+      return userRef.set(data);
+    }
 }

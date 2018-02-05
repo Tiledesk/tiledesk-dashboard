@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RequestsService } from '../services/requests.service';
 import { Request } from '../models/request-model';
+import { Message } from '../models/message-model';
 // import { error } from 'util';
 import { Observable } from 'rxjs/Observable';
 
@@ -15,6 +16,12 @@ export class RequestsListComponent implements OnInit {
 
   requestList: Request[];
   showSpinner = true;
+
+  messagesList: Message[];
+
+  display = 'none';
+
+  requestRecipient: string;
 
   constructor(
     private requestsService: RequestsService,
@@ -42,5 +49,40 @@ export class RequestsListComponent implements OnInit {
         // this.showSpinner = false;
       });
 
+  }
+
+  openViewMsgsModal(recipient: string) {
+    this.display = 'block';
+    console.log(' ++ ++ request recipient ', recipient);
+    this.requestRecipient = recipient;
+    this.getMessagesList();
+  }
+
+  getMessagesList() {
+    // SUBSCIPTION TO snapshotChanges
+    this.requestsService.getSnapshotMsg(this.requestRecipient ).subscribe((data) => {
+      this.messagesList = data;
+      console.log('REQUESTS-LIST.COMP: SUBSCRIPTION TO getSnapshot MSG ', data);
+      // this.showSpinner = false;
+    },
+      (err) => {
+
+        console.log('GET MESSAGE LIST ERROR ', err);
+
+      },
+      () => {
+        console.log('GET MESSAGE LIST * COMPLETE *');
+        // this.showSpinner = false;
+      });
+
+  }
+
+  // CLOSE MODAL
+  onCloseModal() {
+    this.display = 'none';
+  }
+
+  onJoinHandled() {
+    console.log('JOIN PRESSED');
   }
 }
