@@ -4,4 +4,5 @@ export interface Request {
     sender_fullname?: string;
     text?: string;
     timestamp?: number;
+    membersCount?: number;
   }

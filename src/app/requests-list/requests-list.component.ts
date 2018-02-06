@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { RequestsService } from '../services/requests.service';
 import { Request } from '../models/request-model';
 import { Message } from '../models/message-model';
@@ -13,6 +13,7 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./requests-list.component.scss'],
 })
 export class RequestsListComponent implements OnInit {
+  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
   requestList: Request[];
   showSpinner = true;
@@ -25,13 +26,17 @@ export class RequestsListComponent implements OnInit {
 
   constructor(
     private requestsService: RequestsService,
+    private elRef: ElementRef,
   ) { }
 
   ngOnInit() {
-
     this.getRequestList();
   }
 
+  // ngAfterViewInit() {
+  //   // this.elRef.nativeElement.querySelector('.modal');
+  //   console.log('MM ', this.elRef.nativeElement.querySelector('.modal').animate({ scrollTop: 0 }, 'slow') );
+  // }
   getRequestList() {
     // SUBSCIPTION TO snapshotChanges
     this.requestsService.getSnapshot().subscribe((data) => {
@@ -56,6 +61,33 @@ export class RequestsListComponent implements OnInit {
     console.log(' ++ ++ request recipient ', recipient);
     this.requestRecipient = recipient;
     this.getMessagesList();
+    // .animate({ scrollTop: 0, duration: 100 })
+
+    const objDiv = document.getElementById('scrollMe');
+    // const objDiv =  this.elRef.nativeElement.querySelector('.modal');
+    console.log('objDiv ::', objDiv);
+    if (objDiv) {
+      console.log('scrollTop1 ::', objDiv.scrollTop, objDiv.scrollHeight);
+    }
+
+
+  }
+
+  scrollToBottom(): void {
+    try {
+      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+    } catch (err) {
+      console.log('ERROR ', err);
+     }
+  }
+
+  bottomFunction() {
+    const objDiv = document.getElementById('scrollMe');
+    console.log('objDiv ::', objDiv);
+    if (objDiv) {
+      objDiv.scrollIntoView(false);
+      // objDiv.scrollToBottom()
+    }
   }
 
   getMessagesList() {

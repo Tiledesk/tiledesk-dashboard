@@ -28,6 +28,8 @@ export class MongodbFaqService {
     console.log('MONGO DB FAQ URL', url);
     // console.log('MONGO DB TOKEN', this.TOKEN);
 
+    console.log('NEW DATE (FOR THE UPDATE) ', new Date().getTime());
+
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', this.TOKEN);
@@ -93,6 +95,7 @@ export class MongodbFaqService {
     let url = this.MONGODB_BASE_URL;
     url = url += `${id}`;
     console.log('PUT URL ', url);
+
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');

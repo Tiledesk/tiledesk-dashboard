@@ -46,7 +46,8 @@ button.close {
 
 .modal-body {
     position: relative;
-    padding: 15px;
+    // padding: 15px;
+    padding-left: 15px;
 }
 
 .modal-footer {
@@ -88,12 +89,6 @@ button.close {
     border-color: #ccc;
 }
 
-.fade {
-    opacity: 0;
-    -webkit-transition: opacity .15s linear;
-    -o-transition: opacity .15s linear;
-    transition: opacity .15s linear;
-}
 /* MODAL END */
 
 // MESSAGES IN MODAL 
@@ -101,11 +96,11 @@ button.close {
     border: 2px solid #dedede;
     background-color: #f1f1f1;
     border-radius: 5px;
-    padding: 10px;
-    margin: 10px 0;
+    padding: 5px;
+    margin: 5px 0;
     display: inline-block;
-    min-width: 250px;
-    max-width: 450px;
+    min-width: 150px;
+    max-width: 350px;
 }
 
 .msgcontainer::after {
@@ -120,6 +115,15 @@ button.close {
     color: #aaa;
 }
 
+.msg_sender{
+    position: relative;
+    display: block;
+    z-index: 2;
+    float: left;
+    padding-top:10px;
+    padding-right:10px;
+}
+
 /* TABLE CONTENT VERTICAL ALIGNMENT */
 .table td, .table th {
     vertical-align: middle
@@ -129,4 +133,13 @@ button.close {
 // BODY OR WHEN USE ITS VERTICAL SCROLL BAR
 *:focus {
     outline: none;
+}
+
+// GO TO BOTTOM BTN
+
+#fixed-button {
+    bottom: 10px; 
+    right: 20px; 
+    position: absolute;
+
 }

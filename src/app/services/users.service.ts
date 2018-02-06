@@ -32,7 +32,7 @@ export class UsersService {
   }
 
   /**
-   * return an observable of ALL FIRESTORE CHAT-F21 'users' * WITH * ID
+   * return an observable of ALL FIRESTORE 'users' * WITH * ID
    */
   getSnapshot(orderBy_field: any, orderBy_direction: any): Observable<User[]> {
     // ['added', 'modified', 'removed']

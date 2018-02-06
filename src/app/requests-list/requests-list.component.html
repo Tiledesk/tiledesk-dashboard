@@ -10,20 +10,22 @@
       <table class="table is-narrow is-bordered" style="margin-top:25px">
         <thead>
           <tr>
-          <!-- <th style="">
-          Id
+          <th style="">
+          
+          </th>
+          
+          <th>
+            Id
+            <!-- Recipient -->
+          </th>
+          <!-- <th>
+            Recipient Full Name
           </th> -->
           <th>
-            Recipient
+            Sender
           </th>
           <th>
-            Recipient Full Name
-          </th>
-          <th>
-            Sender Full Name
-          </th>
-          <th>
-            Text
+            Message
           </th>
           <th>
             Date
@@ -34,16 +36,18 @@
         <tbody>
       
           <tr *ngFor="let request of requestList">
-            <!-- <td>
-              {{ request?.id }}
-              
-            </td> -->
+            
+            <td>
+              <span *ngIf="request?.membersCount == 0"> 
+                  <i style="color:red; font-size:1.5em;" class="fa fa-exclamation"></i>
+              </span>
+            </td>
             <td>
               {{ request?.recipient }}
             </td>
-            <td>
+            <!-- <td>
               {{ request.recipient_fullname }}
-            </td>
+            </td> -->
             <td>
               {{ request.sender_fullname }}
             </td>
@@ -51,7 +55,7 @@
               {{ request?.text }}
             </td>
             <td>
-              {{ request?.timestamp | date: 'd/M/y'}}
+              {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}}
             </td>
             <td style="text-align: center!important">
               <span class="button is-small " (click)='openViewMsgsModal(request?.recipient, hasClickedUpdateModal=true)'>
@@ -84,18 +88,34 @@
               </h4>
             </div>
               
-            <div class="modal-body" style="height: 250px; overflow-y: auto;">
-              <div *ngFor="let message of messagesList">
+            <!-- #scrollMe style="overflow: scroll; height: 250px;" -->
+            <div class="modal-body" >
+                <div id="scrollable" #scrollMe style="height: 250px; overflow-y: auto;">
+                  <div *ngFor="let message of messagesList" style="vertical-align:baseline">
+                      
+                    <div class="msg_sender">
+                      <p style="font-size: 0.9em"><strong> {{ message.sender_fullname }} </strong> </p>
+                    </div>
 
-                <div class="msgcontainer">        
-                  <!-- <p><code>{{ message.recipient}}</code></p> -->
-                  <p><strong>  {{ message.sender_fullname }} </strong></p>
-                  <p>{{ message.text }}</p>
-                  <span class="time-right">{{ message.timestamp | date: 'd/M/y HH:mm:ss'}}</span>
-                </div>
+                    <div class="msgcontainer">        
+                      <!-- <p><code>{{ message.recipient}}</code></p> -->
+                      <!-- <p><strong>  {{ message.sender_fullname }} </strong></p> -->
+                      <p style="font-size: 0.9em">{{ message.text }}</p>
+                      <span class="time-right" style="font-size: 0.8em">{{ message.timestamp | date: 'd/M/y HH:mm:ss'}}</span>
+                    </div>
+                  
+                  </div>
 
-              </div>
+                </div> 
+
+                <a id="fixed-button"  class="button" (click)="scrollToBottom()">
+                  <span class="icon is-small">
+                    <i class="fa fa-chevron-down"></i>
+                  </span>
+                </a>
             </div>
+            <!-- ./ modal body -->
+            
          
             <div class="modal-footer">
               <button type="button" class="button" (click)="onCloseModal()">Cancel</button>
