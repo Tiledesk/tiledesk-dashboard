@@ -45,7 +45,7 @@ export class RequestsService {
     // ['added', 'modified', 'removed']
     // .orderBy('timestamp', 'desc')
     this.messageCollection = this.afs.collection('messages',
-    (ref) => ref.where('recipient', '==', `${recipient}`) );
+    (ref) => ref.where('recipient', '==', `${recipient}`).orderBy('timestamp', 'desc') );
     return this.messageCollection.snapshotChanges().map((actions) => {
       return actions.map((a) => {
         const data = a.payload.doc.data() as Request;

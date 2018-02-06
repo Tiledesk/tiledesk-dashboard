@@ -36,7 +36,7 @@ export class RequestsListComponent implements OnInit {
     // SUBSCIPTION TO snapshotChanges
     this.requestsService.getSnapshot().subscribe((data) => {
       this.requestList = data;
-      console.log('REQUESTS-LIST.COMP: SUBSCRIPTION TO getSnapshot ', data);
+      console.log('REQUESTS-LIST.COMP: SUBSCRIPTION TO REQUESTS getSnapshot ', data);
       this.showSpinner = false;
     },
       (err) => {
@@ -60,10 +60,11 @@ export class RequestsListComponent implements OnInit {
 
   getMessagesList() {
     // SUBSCIPTION TO snapshotChanges
-    this.requestsService.getSnapshotMsg(this.requestRecipient ).subscribe((data) => {
+    this.requestsService.getSnapshotMsg(this.requestRecipient).subscribe((data) => {
       this.messagesList = data;
       console.log('REQUESTS-LIST.COMP: SUBSCRIPTION TO getSnapshot MSG ', data);
       // this.showSpinner = false;
+      // console.log('TIMESTAMP ', this.messagesList);
     },
       (err) => {
 
