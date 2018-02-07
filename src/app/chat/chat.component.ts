@@ -6,7 +6,6 @@ import { Component, OnInit, HostListener } from '@angular/core';
   styleUrls: ['./chat.component.scss'],
 })
 
-
 export class ChatComponent implements OnInit {
 
   actualHeight: any;

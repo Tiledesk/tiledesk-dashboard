@@ -48,11 +48,10 @@ export class RequestsService {
     (ref) => ref.where('recipient', '==', `${recipient}`).orderBy('timestamp', 'asc') );
     return this.messageCollection.snapshotChanges().map((actions) => {
       return actions.map((a) => {
-        const data = a.payload.doc.data() as Request;
+        const data = a.payload.doc.data() as Message;
         return { id: a.payload.doc.id, recipient: data.recipient, recipient_fullname: data.recipient_fullname, sender_fullname: data.sender_fullname, text: data.text, timestamp: data.timestamp};
       });
     });
   }
-
 
 }

@@ -87,28 +87,32 @@
                 <code>{{requestRecipient}}</code>
               </h4>
             </div>
-              
+            <!-- id="scrollable" -->
             <!-- #scrollMe style="overflow: scroll; height: 250px;" -->
             <div class="modal-body" >
-                <div id="scrollable" #scrollMe style="height: 250px; overflow-y: auto;">
+                <div  #scrollMe style="height: 250px; overflow-y: auto;" (scroll)="onScroll($event)">
                   <div *ngFor="let message of messagesList" style="vertical-align:baseline">
                       
                     <div class="msg_sender">
-                      <p style="font-size: 0.9em"><strong> {{ message.sender_fullname }} </strong> </p>
+                      <p style="font-size: 0.9em">
+                        <strong> {{ message.sender_fullname }} </strong> 
+                      </p>
                     </div>
 
                     <div class="msgcontainer">        
                       <!-- <p><code>{{ message.recipient}}</code></p> -->
                       <!-- <p><strong>  {{ message.sender_fullname }} </strong></p> -->
                       <p style="font-size: 0.9em">{{ message.text }}</p>
-                      <span class="time-right" style="font-size: 0.8em">{{ message.timestamp | date: 'd/M/y HH:mm:ss'}}</span>
+                      <span class="time-right" style="font-size: 0.8em">
+                        {{ message.timestamp | date: 'd/M/y HH:mm:ss'}}
+                      </span>
                     </div>
                   
                   </div>
 
                 </div> 
 
-                <a id="fixed-button"  class="button" (click)="scrollToBottom()">
+                <a id="fixed-button"  class="button" (click)="scrollToBottom()" [ngStyle]="{'display':displayBtnScrollToBottom }">
                   <span class="icon is-small">
                     <i class="fa fa-chevron-down"></i>
                   </span>
