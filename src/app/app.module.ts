@@ -47,6 +47,10 @@ import { MongodbDepartmentsComponent } from './mongodb-departments/mongodb-depar
 
 import { MongodbFaqService } from './services/mongodb-faq.service';
 import { MongodbFaqComponent } from './mongodb-faq/mongodb-faq.component';
+import { BotsComponent } from './bots/bots.component';
+import { SettingsComponent } from './settings/settings.component';
+import { UsersComponent } from './users/users.component';
+import { FaqKbComponent } from './faq-kb/faq-kb.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +62,10 @@ import { MongodbFaqComponent } from './mongodb-faq/mongodb-faq.component';
     ChatComponent,
     MongodbDepartmentsComponent,
     MongodbFaqComponent,
+    BotsComponent,
+    SettingsComponent,
+    UsersComponent,
+    FaqKbComponent,
   ],
   imports: [
     BrowserModule,

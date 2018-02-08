@@ -7,6 +7,8 @@ import { Message } from '../models/message-model';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/takeWhile';
 
+import 'rxjs/add/operator/finally';
+
 
 @Component({
   selector: 'requests-list',
@@ -38,7 +40,7 @@ export class RequestsListComponent implements OnInit {
     private requestsService: RequestsService,
     private elRef: ElementRef,
 
-  ) {  }
+  ) { }
 
   ngOnInit() {
     this.getRequestList();
@@ -48,12 +50,17 @@ export class RequestsListComponent implements OnInit {
   //   // this.elRef.nativeElement.querySelector('.modal');
   //   console.log('MM ', this.elRef.nativeElement.querySelector('.modal').animate({ scrollTop: 0 }, 'slow') );
   // }
+
+  /**
+   * REQUESTS (on FIRESTORE the COLLECTION is 'CONVERSATIONS')
+   */
   getRequestList() {
     // SUBSCIPTION TO snapshotChanges
     this.requestsService.getSnapshot().subscribe((data) => {
       this.requestList = data;
       console.log('REQUESTS-LIST.COMP: SUBSCRIPTION TO REQUESTS getSnapshot ', data);
       this.showSpinner = false;
+
     },
       (err) => {
 
@@ -62,6 +69,36 @@ export class RequestsListComponent implements OnInit {
       },
       () => {
         console.log('GET REQUEST LIST * COMPLETE *');
+        // this.showSpinner = false;
+      });
+
+  }
+
+  /**
+   * REQUESTS (on FIRESTORE the COLLECTION is 'MESSAGES')
+   */
+  getMessagesList() {
+    // SUBSCIPTION TO snapshotChanges
+    this.requestsService.getSnapshotMsg(this.requestRecipient)
+      // .finally(() => {
+      //   console.log('- -- -- FINISH TO GET MESSAGE !!');
+      // })
+      .subscribe((data) => {
+        this.messagesList = data;
+        console.log('REQUESTS-LIST.COMP: SUBSCRIPTION TO getSnapshot MSG ', data);
+        // this.showSpinner = false;
+        // console.log('TIMESTAMP ', this.messagesList);
+        // if (data.length) {
+          // this.scrollToBottom();
+        // }
+      },
+      (err) => {
+
+        console.log('GET MESSAGE LIST ERROR ', err);
+
+      },
+      () => {
+        console.log('GET MESSAGE LIST * COMPLETE *');
         // this.showSpinner = false;
       });
 
@@ -77,7 +114,7 @@ export class RequestsListComponent implements OnInit {
     // SCROOL TO BOTTOM THE MESSAGES LIST WHEN THE MODAL IS OPEN
     setTimeout(() => {
       this.scrollToBottom();
-    }, 300);
+    }, 1000);
 
     /**
      *  *** SCROLL TOP - SCROLL HEIGHT - VISIBLE CONTENT HEIGHT ***
@@ -154,36 +191,17 @@ export class RequestsListComponent implements OnInit {
   //   }
   // }
 
- msgLenght() {
-   this.requestsService.getSnapshotMsg(this.requestRecipient)
+  msgLenght() {
+    this.requestsService.getSnapshotMsg(this.requestRecipient)
       .subscribe((data) => {
-      this.initialMsgsArrayLength = data.length;
-      console.log('WHEN OPEN MODAL MSGS ARRAY LENGHT (FIXED) ', this.initialMsgsArrayLength );
+        this.initialMsgsArrayLength = data.length;
+        console.log('WHEN OPEN MODAL MSGS ARRAY LENGHT (FIXED) ', this.initialMsgsArrayLength);
 
-    });
-
-  }
-
-  getMessagesList() {
-    // SUBSCIPTION TO snapshotChanges
-    this.requestsService.getSnapshotMsg(this.requestRecipient).subscribe((data) => {
-      this.messagesList = data;
-      console.log('REQUESTS-LIST.COMP: SUBSCRIPTION TO getSnapshot MSG ', data);
-      // this.showSpinner = false;
-      // console.log('TIMESTAMP ', this.messagesList);
-       
-    },
-      (err) => {
-
-        console.log('GET MESSAGE LIST ERROR ', err);
-
-      },
-      () => {
-        console.log('GET MESSAGE LIST * COMPLETE *');
-        // this.showSpinner = false;
       });
 
   }
+
+
 
   // CLOSE MODAL
   onCloseModal() {
