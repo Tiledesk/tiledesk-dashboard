@@ -47,6 +47,7 @@ import { MongodbDepartmentsComponent } from './mongodb-departments/mongodb-depar
 
 import { MongodbFaqService } from './services/mongodb-faq.service';
 import { MongodbFaqComponent } from './mongodb-faq/mongodb-faq.component';
+import { BotService } from './services/bot.service';
 import { BotsComponent } from './bots/bots.component';
 import { SettingsComponent } from './settings/settings.component';
 import { UsersComponent } from './users/users.component';
@@ -86,6 +87,7 @@ import { FaqKbComponent } from './faq-kb/faq-kb.component';
     MongodbConfService,
     MongodbDepartmentService,
     MongodbFaqService,
+    BotService,
   ],
   bootstrap: [
     AppComponent,
