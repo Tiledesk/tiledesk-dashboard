@@ -51,9 +51,9 @@ const routes: Routes = [
   { path: 'faqkb', component:  FaqKbComponent, canActivate: [AuthGuard] },
   { path: 'createfaqkb', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },
   { path: 'editfaqkb/:faqkbid', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'faq/:faqkbid', component: FaqComponent, canActivate: [AuthGuard] },
+  { path: 'faq/:faqkbid', component: FaqComponent, canActivate: [AuthGuard] }, // used to pass the faq kb id from  in faq page
   { path: 'createfaq/:faqkbid', component: FaqEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'editfaq', component: FaqEditAddComponent, canActivate: [AuthGuard] },
+  { path: 'editfaq/:faqkbid/:faqid', component: FaqEditAddComponent, canActivate: [AuthGuard] },
 
 
 

@@ -46,9 +46,17 @@ export class FaqComponent implements OnInit {
     this.id_faq_kb = this.route.snapshot.params['faqkbid'];
     // console.log('FAQ KB HAS PASSED id_faq_kb ', this.id_faq_kb);
   }
+
+  // GO TO FAQ-EDIT-ADD COMPONENT AND PASS THE FAQ-KB ID (RECEIVED FROM FAQ-KB COMPONENT)
   goToEditAddPage_CREATE() {
     console.log('ID OF FAQKB ', this.id_faq_kb);
     this.router.navigate(['/createfaq', this.id_faq_kb]);
+  }
+
+  // GO TO FAQ-EDIT-ADD COMPONENT AND PASS THE FAQ ID (RECEIVED FROM THE VIEW)
+  goToEditAddPage_EDIT(faq_id: string) {
+    console.log('ID OF FAQ ', faq_id);
+    this.router.navigate(['/editfaq', this.id_faq_kb, faq_id]);
   }
 
   goBackToFaqKbList() {
@@ -68,28 +76,28 @@ export class FaqComponent implements OnInit {
   /**
    * ADD FAQ
    */
-  createFaq() {
-    console.log('MONGO DB CREATE FAQ QUESTION: ', this.question, ' ANSWER: ', this.answer, ' ID FAQ KB ', this.id_faq_kb);
-    this.mongodbFaqService.addMongoDbFaq(this.question, this.answer, this.id_faq_kb)
-      .subscribe((faq) => {
-        console.log('POST DATA ', faq);
+  // createFaq() {
+  //   console.log('MONGO DB CREATE FAQ QUESTION: ', this.question, ' ANSWER: ', this.answer, ' ID FAQ KB ', this.id_faq_kb);
+  //   this.mongodbFaqService.addMongoDbFaq(this.question, this.answer, this.id_faq_kb)
+  //     .subscribe((faq) => {
+  //       console.log('POST DATA ', faq);
 
-        this.question = '';
-        this.answer = '';
-        // RE-RUN GET FAQ TO UPDATE THE TABLE
-        // this.getDepartments();
-        this.ngOnInit();
-      },
-      (error) => {
+  //       this.question = '';
+  //       this.answer = '';
+  //       // RE-RUN GET FAQ TO UPDATE THE TABLE
+  //       // this.getDepartments();
+  //       this.ngOnInit();
+  //     },
+  //     (error) => {
 
-        console.log('POST REQUEST ERROR ', error);
+  //       console.log('POST REQUEST ERROR ', error);
 
-      },
-      () => {
-        console.log('POST REQUEST * COMPLETE *');
-      });
+  //     },
+  //     () => {
+  //       console.log('POST REQUEST * COMPLETE *');
+  //     });
 
-  }
+  // }
 
   /**
    * MODAL DELETE FAQ

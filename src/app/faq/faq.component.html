@@ -39,7 +39,7 @@
         <span class="icon" style="padding-right:16px">
           <i class="fa fa-plus-circle"></i>
         </span>
-        Aggiungi Faq Kb
+        Aggiungi FAQ
       </button>
     </div>
   
@@ -87,7 +87,7 @@
             <!-- <span class="button is-small is-warning" (click)='openUpdateModal(faq?._id, faq?.question, faq?.answer, hasClickedUpdateModal = true)'>
               Edit
             </span> -->
-            <span class="icon" style="color:#f6ca4f; cursor: pointer;" >
+            <span class="icon" style="color:#f6ca4f; cursor: pointer;" (click)="goToEditAddPage_EDIT(faq?._id)" >
               <i class="fa fa-pencil"></i>
             </span>
           </td>

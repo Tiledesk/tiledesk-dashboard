@@ -40,6 +40,22 @@ export class MongodbFaqService {
   }
 
   /**
+   * READ DETAIL (GET BY ID)
+   */
+  public getMongDbFaqById(id: string): Observable<Faq[]> {
+    let url = this.MONGODB_BASE_URL;
+    url += `${id}`;
+    console.log('MONGO DB GET BY ID FAQ URL', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
+  /**
    * CREATE (POST)
    * @param question
    */
