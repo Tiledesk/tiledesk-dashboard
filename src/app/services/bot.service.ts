@@ -4,7 +4,6 @@ import { Observable } from 'rxjs/Observable';
 import { Bot } from '../models/bot-model';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
-import { MongodbConfService } from '../utils/mongodb-conf.service';
 import { environment } from '../../environments/environment';
 
 @Injectable()

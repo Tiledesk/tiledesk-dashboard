@@ -24,6 +24,8 @@ export class MongodbFaqComponent implements OnInit {
   // set to none the property display of the modal
   display = 'none';
 
+  id_faq_kb: string;
+
   constructor(
     private mongodbFaqService: MongodbFaqService,
 
@@ -47,8 +49,8 @@ export class MongodbFaqComponent implements OnInit {
    * ADD CONTACT
    */
   createFaq() {
-    console.log('MONGO DB QUESTION DIGIT BY USER ', this.question, this.answer);
-    this.mongodbFaqService.addMongoDbFaq(this.question, this.answer)
+    console.log('MONGO DB CREATE FAQ QUESTION: ', this.question, ' ANSWER: ', this.answer, ' ID FAQ KB ', this.id_faq_kb);
+    this.mongodbFaqService.addMongoDbFaq(this.question, this.answer, this.id_faq_kb)
       .subscribe((faq) => {
         console.log('POST DATA ', faq);
 

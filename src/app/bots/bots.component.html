@@ -57,6 +57,17 @@
           {{ bot?.createdAt | date: 'd/M/y'}}
         </td>
 
+        <!-- EDIT -->
+        <td style="text-align: center!important;padding-left:0px;">
+          <!-- <span class="button is-small is-warning" (click)='openUpdateModal(bot?._id, bot?.fullname, hasClickedUpdateModal = true)'>
+            Edit
+          </span> -->
+          <span class="icon" style="color:#f6ca4f; cursor: pointer;" (click)='openUpdateModal(bot?._id, bot?.fullname, hasClickedUpdateModal = true)'>
+            <i class="fa fa-pencil"></i>
+          </span>
+        </td>
+        <!-- ./ edit -->
+
         <!-- DELETE -->
         <td style="text-align: center!important; padding-right:0px; padding-left:0px; ">
           <!-- <span class="button is-small is-danger" (click)='openDeleteModal(bot?._id, bot?.fullname, hasClickedDeleteModal = true)'>
@@ -68,16 +79,6 @@
         </td>
         <!-- /. delete -->
 
-        <!-- EDIT -->
-        <td style="text-align: center!important;padding-left:0px;">
-          <!-- <span class="button is-small is-warning" (click)='openUpdateModal(bot?._id, bot?.fullname, hasClickedUpdateModal = true)'>
-            Edit
-          </span> -->
-          <span class="icon" style="color:#f6ca4f; cursor: pointer;" (click)='openUpdateModal(bot?._id, bot?.fullname, hasClickedUpdateModal = true)'>
-            <i class="fa fa-pencil"></i>
-          </span>
-        </td>
-        <!-- ./ edit -->
       </tr>
     </tbody>
   </table>

@@ -51,7 +51,9 @@ import { BotService } from './services/bot.service';
 import { BotsComponent } from './bots/bots.component';
 import { SettingsComponent } from './settings/settings.component';
 import { UsersComponent } from './users/users.component';
+import { FaqKbService } from './services/faq-kb.service';
 import { FaqKbComponent } from './faq-kb/faq-kb.component';
+import { FaqKbEditAddComponent } from './faq-kb-edit-add/faq-kb-edit-add.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +69,7 @@ import { FaqKbComponent } from './faq-kb/faq-kb.component';
     SettingsComponent,
     UsersComponent,
     FaqKbComponent,
+    FaqKbEditAddComponent,
   ],
   imports: [
     BrowserModule,
@@ -88,6 +91,7 @@ import { FaqKbComponent } from './faq-kb/faq-kb.component';
     MongodbDepartmentService,
     MongodbFaqService,
     BotService,
+    FaqKbService,
   ],
   bootstrap: [
     AppComponent,

@@ -43,14 +43,14 @@ export class MongodbFaqService {
    * CREATE (POST)
    * @param question
    */
-  public addMongoDbFaq(question: string, answer: string) {
+  public addMongoDbFaq(question: string, answer: string, id_faq_kb: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'question': `${question}`, 'answer': `${answer}` };
+    const body = { 'question': `${question}`, 'answer': `${answer}`, 'id_faq_kb': `${id_faq_kb}` };
 
     console.log('POST REQUEST BODY ', body);
 

@@ -36,7 +36,7 @@ export class BotsComponent implements OnInit {
   }
 
   /**
-   * GET DEPTS (READ)
+   * GET BOTS (READ)
    */
   getBots() {
     this.botService.getMongDbBots().subscribe((bots: any) => {

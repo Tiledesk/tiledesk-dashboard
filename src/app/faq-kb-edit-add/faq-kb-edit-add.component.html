@@ -1,0 +1,57 @@
+
+<div class="content columns">
+  <main class="column is-10 is-offset-1">
+
+    <h1>
+      
+      <span class="icon" style="cursor: pointer;">
+        <i class="fa fa-angle-left" style="font-size:1em; color:#afafaf"></i>
+      </span>
+      <span class="title" style="padding-left: 25px;">Aggiungi Faq kb</span>
+    </h1>
+    <hr>
+
+    <div class="field is-horizontal" style="margin-top:55px">
+      <div class="field-label is-normal">
+        <label class="label">Name</label>
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <div class="control">
+            <input [(ngModel)]="faqKbName" class="input" type="text" placeholder="Faq kb name">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field is-horizontal" style="margin-top:25px">
+      <div class="field-label is-normal">
+        <label class="label">Url</label>
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <div class="control">
+            <input [(ngModel)]="faqKbUrl" class="input" type="text" placeholder="Faq kb url">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field is-horizontal">
+      <div class="field-label">
+        <!-- Left empty for spacing -->
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <div class="control">
+            <button class="button is-success" (click)="create()">
+              Crea Faq Kb
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </main>
+</div>

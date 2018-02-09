@@ -1,9 +1,9 @@
-export interface Bot {
+export interface FaqKb {
     _id: string;
     updatedAt: any;
     createdAt: any;
-    fullname: string;
-    id_faq_kb: string;
+    name: string;
+    url: string;
     appId: string;
     createdBy: string;
     __v: any;

@@ -1,3 +1,108 @@
-<p>
-  faq-kb works!
-</p>
+<div class="content columns">
+    <main class="column is-10 is-offset-1">
+  
+    <!-- <h1>Mongo DB Faq Kb</h1> -->
+    <h1>Faq knowledge base</h1>
+    <hr>
+    
+    <!-- <div class="field is-horizontal">
+      <div class="field-body">
+  
+        <div class="field">
+          <p class="control is-expanded has-icons-left">
+            <input [(ngModel)]="bot_fullname" placeholder="Bot full name" class="input">
+            <span class="icon is-small is-left">
+                <i class="fa fa-commenting-o"></i>
+            </span>
+          </p>
+        </div>
+      </div>
+    </div> -->
+  <div class="create" style="text-align: right!important; padding-top:25px; padding-bottom:15px">
+    <button class="button is-success" style="padding-left:18px" (click)="goToEditAddPage_CREATE()">
+        <!-- is-small -->
+      <span class="icon" style="padding-right:16px">
+        <i class="fa fa-plus-circle"></i>
+      </span>
+      Add new Faq Kb
+    </button>
+  </div>
+  
+    <!-- MOMGO DB BOTS LIST -->
+    <!-- is-bordered is-narrow -->
+    <table class="table is-striped" style="margin-top:5px">
+      <thead>
+        <tr>
+          <th style="width: 280px !important">
+            Id
+          </th>
+          <th>
+            Name
+          </th>
+          <th>
+            Url
+          </th>
+          <th>
+            Creation Date
+          </th>
+          <th colspan="3">
+            Actions
+          </th>
+        </tr>
+      </thead>
+  
+      <tbody>
+  
+        <tr *ngFor="let faqkb of faqkbList">
+          <td style="width: 280px !important">
+            {{ faqkb?._id }}
+          </td>
+          <td>
+            {{ faqkb?.name }}
+          </td>
+          <td>
+            {{ faqkb?.url }}
+          </td>
+          <td>
+            {{ faqkb?.createdAt | date: 'd/M/y'}}
+          </td>
+  
+          <!-- EDIT -->
+          <td style="text-align: center!important; padding-right:0px; padding-left:0px;">
+            <!-- <span class="button is-small is-warning" (click)='openUpdateModal(bot?._id, bot?.fullname, hasClickedUpdateModal = true)'>
+              Edit
+            </span> -->
+            <span class="icon" style="color:#f6ca4f; cursor: pointer;" >
+              <i class="fa fa-pencil"></i>
+            </span>
+          </td>
+          <!-- ./ edit -->
+
+          <!-- EDIT FAQ-->
+          <td style="text-align: center!important; padding-right:0px; padding-left:10px;">
+   
+            <span class="icon" style="color:#f6ca4f; cursor: pointer;" (click)='goToFaqPage(faqkb?._id)'>
+                <i style="font-size:1.5em" class="fa fa-pencil-square-o"></i>
+              Faq
+            </span>
+          </td>
+          <!-- ./ edit -->
+
+          <!-- DELETE -->
+          <td style="text-align: center!important; padding-left: 0px; padding-right: 18px; ">
+            <!-- <span class="button is-small is-danger" (click)='openDeleteModal(bot?._id, bot?.fullname, hasClickedDeleteModal = true)'>
+              Delete
+            </span> -->
+            <span class="icon" style="color:#e36456;cursor: pointer;" (click)='openDeleteModal(bot?._id, bot?.fullname, hasClickedDeleteModal = true)'>
+              <i class="fa fa-trash-o"></i>
+            </span>
+          </td>
+          <!-- /. delete -->
+  
+ 
+        </tr>
+      </tbody>
+    </table>
+
+  </main>
+</div>

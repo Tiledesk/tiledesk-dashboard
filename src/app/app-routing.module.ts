@@ -18,6 +18,8 @@ import { SettingsComponent } from './settings/settings.component';
 import { UsersComponent } from './users/users.component';
 
 import { FaqKbComponent} from './faq-kb/faq-kb.component';
+import { FaqKbEditAddComponent} from './faq-kb-edit-add/faq-kb-edit-add.component';
+
 
 // Andrea
 import { ChatComponent } from './chat/chat.component';
@@ -44,7 +46,11 @@ const routes: Routes = [
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
   { path: 'users', component:  UsersComponent, canActivate: [AuthGuard] },
   { path: 'faqkb', component:  FaqKbComponent, canActivate: [AuthGuard] },
-  { path: 'faq', component: MongodbFaqComponent, canActivate: [AuthGuard] },
+  { path: 'faq/:faqkbid', component: MongodbFaqComponent, canActivate: [AuthGuard] },
+  { path: 'createfaqkb', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },
+  { path: 'editfaqkb', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },
+
+
 
   // uploads are lazy loaded
   { path: 'uploads', loadChildren: './uploads/shared/upload.module#UploadModule', canActivate: [AuthGuard] },
