@@ -1,16 +1,20 @@
 <div class="content columns">
   <main class="column is-10 is-offset-1">
   
-    <h1>Mongo DB FAQ</h1>
+    <h1>
+      <span class="icon" style="cursor: pointer;" (click)="goBackToFaqKbList()" >
+        <i class="fa fa-angle-left" style="font-size:1em; color:#afafaf"></i>
+      </span>
+      <!-- Mongo DB FAQ -->
+      <span class="title" style="padding-left: 25px;">FAQ</span>
+    </h1>
     <hr>
-    <div class="field is-horizontal">
+    <!-- <div class="field is-horizontal">
       <div class="field-body">
-  
         <div class="field">
           <p class="control is-expanded has-icons-left">
             <input [(ngModel)]="question" placeholder="Question" class="input">
             <span class="icon is-small is-left">
-              <!-- <i class="fas fa-user fa"></i> -->
               <i class="fa fa-question"></i>
             </span>
           </p>
@@ -25,16 +29,26 @@
           </p>
         </div>
       </div>
+    </div> -->
+    <!-- <button class="button is-success" (click)="createFaq()" [disabled]="question?.length < 2 || answer?.length < 2">
+      Aggiungi FAQ
+    </button> -->
+    <div class="create" style="text-align: right!important; padding-top:25px; padding-bottom:15px">
+      <button class="button is-success" style="padding-left:18px" (click)="goToEditAddPage_CREATE()">
+          <!-- is-small -->
+        <span class="icon" style="padding-right:16px">
+          <i class="fa fa-plus-circle"></i>
+        </span>
+        Aggiungi Faq Kb
+      </button>
     </div>
-    <button class="button is-success" (click)="createFaq()" [disabled]="question?.length < 2 || answer?.length < 2">
-      Add new FAQ
-    </button>
   
-    <!-- MOMGO DB DEPARTMENTS LIST -->
-    <table class="table is-narrow is-bordered" style="margin-top:25px">
+    <!-- MOMGO DB FAQ LIST -->
+    <!-- is-narrow is-bordered -->
+    <table class="table is-striped" style="margin-top:5px">
       <thead>
         <tr>
-          <th style="">
+          <th style="width: 280px !important">
             Id
           </th>
           <th>
@@ -46,13 +60,16 @@
           <th>
             Creation Date
           </th>
+          <th colspan="2">
+            Actions
+          </th>
         </tr>
       </thead>
   
       <tbody>
   
         <tr *ngFor="let faq of faq">
-          <td>
+          <td style="width: 280px !important">
             {{ faq?._id }}
           </td>
           <td>
@@ -64,17 +81,28 @@
           <td>
             {{ faq?.createdAt | date: 'd/M/y'}}
           </td>
-          <td style="text-align: center!important">
-            <!-- <span class="button is-small is-danger" (click)='deleteUser(user?.id)'>Delete</span> -->
-            <span class="button is-small is-danger" (click)='openDeleteModal(faq?._id, hasClickedDeleteModal = true)'>
-              Delete
-            </span>
-          </td>
-          <td style="text-align: center!important">
-            <span class="button is-small is-warning" (click)='openUpdateModal(faq?._id, faq?.question, faq?.answer, hasClickedUpdateModal = true)'>
+
+          <!-- EDIT -->
+          <td style="text-align: center!important;padding-right:0px; padding-left:0px;">
+            <!-- <span class="button is-small is-warning" (click)='openUpdateModal(faq?._id, faq?.question, faq?.answer, hasClickedUpdateModal = true)'>
               Edit
+            </span> -->
+            <span class="icon" style="color:#f6ca4f; cursor: pointer;" >
+              <i class="fa fa-pencil"></i>
             </span>
           </td>
+          <!-- /. edit -->
+
+          <!-- DELETE -->
+          <td style="text-align: center!important; padding-left: 0px; padding-right: 18px;">
+            <!-- <span class="button is-small is-danger" (click)='openDeleteModal(faq?._id, hasClickedDeleteModal = true)'>
+              Delete
+            </span> -->
+            <span class="icon" style="color:#e36456;cursor: pointer;" (click)='openDeleteModal(faq?._id, hasClickedDeleteModal = true)'>
+              <i class="fa fa-trash-o"></i>
+            </span>
+          </td>
+          <!-- /. delete -->
         </tr>
       </tbody>
     </table>

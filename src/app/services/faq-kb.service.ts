@@ -33,6 +33,21 @@ export class FaqKbService {
       .get(url, { headers })
       .map((response) => response.json());
   }
+  /**
+   * READ DETAIL (GET BY ID)
+   */
+  public getMongDbFaqKbById(id: string): Observable<FaqKb[]> {
+    let url = this.MONGODB_BASE_URL;
+    url += `${id}`;
+    console.log('MONGO DB GET BY ID FAQ-KB URL', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
 
   /**
    * CREATE (POST)

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MongodbFaqService } from '../services/mongodb-faq.service';
 import { Faq } from '../models/faq-model';
+import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'faq',
@@ -28,15 +30,33 @@ export class FaqComponent implements OnInit {
 
   constructor(
     private mongodbFaqService: MongodbFaqService,
+    private router: Router,
+    private route: ActivatedRoute,
 
   ) { }
 
   ngOnInit() {
+    // GET ID_FAQ_KB FROM THE URL (IS PASSED FROM THE FAQ-KB-COMPONENT WHEN THE USER CLICK ON EDIT FAQ IN THE TABLE )
+    this.getFaqKbId();
+
     this.getFaq();
   }
 
+  getFaqKbId() {
+    this.id_faq_kb = this.route.snapshot.params['faqkbid'];
+    // console.log('FAQ KB HAS PASSED id_faq_kb ', this.id_faq_kb);
+  }
+  goToEditAddPage_CREATE() {
+    console.log('ID OF FAQKB ', this.id_faq_kb);
+    this.router.navigate(['/createfaq', this.id_faq_kb]);
+  }
+
+  goBackToFaqKbList() {
+    this.router.navigate(['/faqkb']);
+  }
+
   /**
-   * GET DEPTS (FAQ)
+   * GET FAQ
    */
   getFaq() {
     this.mongodbFaqService.getMongDbFaq().subscribe((faq: any) => {
@@ -46,7 +66,7 @@ export class FaqComponent implements OnInit {
   }
 
   /**
-   * ADD CONTACT
+   * ADD FAQ
    */
   createFaq() {
     console.log('MONGO DB CREATE FAQ QUESTION: ', this.question, ' ANSWER: ', this.answer, ' ID FAQ KB ', this.id_faq_kb);
@@ -77,7 +97,7 @@ export class FaqComponent implements OnInit {
    * @param hasClickedDeleteModal
    */
   // deptName: string,
-  openDeleteModal(id: string,  hasClickedDeleteModal: boolean) {
+  openDeleteModal(id: string, hasClickedDeleteModal: boolean) {
     console.log('HAS CLICKED OPEN DELETE MODAL TO CONFIRM BEFORE TO DELETE ', hasClickedDeleteModal);
     console.log('ON MODAL DELETE OPEN -> USER ID ', id);
     this.DISPLAY_DATA_FOR_DELETE_MODAL = hasClickedDeleteModal;
@@ -151,9 +171,9 @@ export class FaqComponent implements OnInit {
 
     console.log('ON MODAL UPDATE CLOSE -> FAQ ID ', this.id_toUpdate);
     console.log('ON MODAL UPDATE CLOSE -> FAQ QUESTION UPDATED ', this.question_toUpdate);
-    console.log('ON MODAL UPDATE CLOSE -> FAQ ANSWER UPDATED ', this.answer_toUpdate );
+    console.log('ON MODAL UPDATE CLOSE -> FAQ ANSWER UPDATED ', this.answer_toUpdate);
 
-    this.mongodbFaqService.updateMongoDbFaq(this.id_toUpdate, this.question_toUpdate, this.answer_toUpdate ).subscribe((data) => {
+    this.mongodbFaqService.updateMongoDbFaq(this.id_toUpdate, this.question_toUpdate, this.answer_toUpdate).subscribe((data) => {
       console.log('PUT DATA ', data);
 
       // RE-RUN GET CONTACT TO UPDATE THE TABLE
@@ -171,10 +191,12 @@ export class FaqComponent implements OnInit {
 
   }
 
-    // CLOSE MODAL WITHOUT SAVE THE UPDATES OR WITHOUT CONFIRM THE DELETION
-    onCloseModal() {
-      this.display = 'none';
-    }
-  
+  // CLOSE MODAL WITHOUT SAVE THE UPDATES OR WITHOUT CONFIRM THE DELETION
+  onCloseModal() {
+    this.display = 'none';
+  }
+
+
+
 
 }

@@ -54,6 +54,7 @@ import { UsersComponent } from './users/users.component';
 import { FaqKbService } from './services/faq-kb.service';
 import { FaqKbComponent } from './faq-kb/faq-kb.component';
 import { FaqKbEditAddComponent } from './faq-kb-edit-add/faq-kb-edit-add.component';
+import { FaqEditAddComponent } from './faq-edit-add/faq-edit-add.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import { FaqKbEditAddComponent } from './faq-kb-edit-add/faq-kb-edit-add.compone
     UsersComponent,
     FaqKbComponent,
     FaqKbEditAddComponent,
+    FaqEditAddComponent,
   ],
   imports: [
     BrowserModule,
