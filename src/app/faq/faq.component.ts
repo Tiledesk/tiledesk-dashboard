@@ -3,11 +3,11 @@ import { MongodbFaqService } from '../services/mongodb-faq.service';
 import { Faq } from '../models/faq-model';
 
 @Component({
-  selector: 'mongodb-faq',
-  templateUrl: './mongodb-faq.component.html',
-  styleUrls: ['./mongodb-faq.component.scss'],
+  selector: 'faq',
+  templateUrl: './faq.component.html',
+  styleUrls: ['./faq.component.scss'],
 })
-export class MongodbFaqComponent implements OnInit {
+export class FaqComponent implements OnInit {
 
   faq: Faq[];
   question: string;

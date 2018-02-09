@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MongodbFaqComponent } from './mongodb-faq.component';
+import { FaqComponent } from './faq.component';
 
 describe('MongodbFaqComponent', () => {
-  let component: MongodbFaqComponent;
-  let fixture: ComponentFixture<MongodbFaqComponent>;
+  let component: FaqComponent;
+  let fixture: ComponentFixture<FaqComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MongodbFaqComponent ]
+      declarations: [ FaqComponent ],
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MongodbFaqComponent);
+    fixture = TestBed.createComponent(FaqComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

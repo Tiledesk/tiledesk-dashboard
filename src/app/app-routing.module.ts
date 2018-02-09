@@ -12,7 +12,7 @@ import { UsersListComponent } from './users-list/users-list.component';
 import { ContactsComponent } from './contacts/contacts.component';
 import { RequestsListComponent } from './requests-list/requests-list.component';
 import { MongodbDepartmentsComponent } from './mongodb-departments/mongodb-departments.component';
-import { MongodbFaqComponent } from './mongodb-faq/mongodb-faq.component';
+import { FaqComponent } from './faq/faq.component';
 import { BotsComponent } from './bots/bots.component';
 import { SettingsComponent } from './settings/settings.component';
 import { UsersComponent } from './users/users.component';
@@ -46,7 +46,7 @@ const routes: Routes = [
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
   { path: 'users', component:  UsersComponent, canActivate: [AuthGuard] },
   { path: 'faqkb', component:  FaqKbComponent, canActivate: [AuthGuard] },
-  { path: 'faq/:faqkbid', component: MongodbFaqComponent, canActivate: [AuthGuard] },
+  { path: 'faq/:faqkbid', component: FaqComponent, canActivate: [AuthGuard] },
   { path: 'createfaqkb', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },
   { path: 'editfaqkb', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },
 

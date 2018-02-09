@@ -46,7 +46,7 @@ import { MongodbDepartmentService } from './services/mongodb-department.service'
 import { MongodbDepartmentsComponent } from './mongodb-departments/mongodb-departments.component';
 
 import { MongodbFaqService } from './services/mongodb-faq.service';
-import { MongodbFaqComponent } from './mongodb-faq/mongodb-faq.component';
+import { FaqComponent } from './faq/faq.component';
 import { BotService } from './services/bot.service';
 import { BotsComponent } from './bots/bots.component';
 import { SettingsComponent } from './settings/settings.component';
@@ -64,7 +64,7 @@ import { FaqKbEditAddComponent } from './faq-kb-edit-add/faq-kb-edit-add.compone
     RequestsListComponent,
     ChatComponent,
     MongodbDepartmentsComponent,
-    MongodbFaqComponent,
+    FaqComponent,
     BotsComponent,
     SettingsComponent,
     UsersComponent,
