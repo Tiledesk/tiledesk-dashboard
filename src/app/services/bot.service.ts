@@ -104,7 +104,7 @@ export class BotService {
    * @param id
    * @param fullName
    */
-  public updateMongoDbBot(id: string, fullName: string) {
+  public updateMongoDbBot(id: string, fullName: string, id_faq_kb: string) {
 
     let url = this.MONGODB_BASE_URL;
     url = url += `${id}`;
@@ -116,7 +116,7 @@ export class BotService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'fullname': `${fullName}` };
+    const body = { 'fullname': `${fullName}`, 'id_faq_kb': `${id_faq_kb}` };
 
     console.log('PUT REQUEST BODY ', body);
 

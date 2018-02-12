@@ -27,6 +27,7 @@ export class BotsComponent implements OnInit {
 
   botFullNAme_toDelete: string;
   id_toDelete: string;
+  id_faq_kb: string;
 
   constructor(
     private botService: BotService,
@@ -52,11 +53,11 @@ export class BotsComponent implements OnInit {
       this.router.navigate(['/createbot']);
     }
 
-      // GO TO BOT-EDIT-ADD COMPONENT AND PASS THE BOT ID (RECEIVED FROM THE VIEW) AND
-
-  goToEditAddPage_EDIT(bot_id: string) {
+  // GO TO BOT-EDIT-ADD COMPONENT AND PASS THE BOT ID (RECEIVED FROM THE VIEW) AND
+  goToEditAddPage_EDIT(bot_id: string, id_faq_kb: string) {
     console.log('BOT ID ', bot_id);
-    this.router.navigate(['/editbot', bot_id]);
+    console.log('BOT FAQ KB ID ', id_faq_kb);
+    this.router.navigate(['/editbot', bot_id, id_faq_kb]);
   }
 
   /**
@@ -155,29 +156,29 @@ export class BotsComponent implements OnInit {
  * UPDATE BOT (WHEN THE 'SAVE' BUTTON IN MODAL IS CLICKED)
  * !!! NO MORE USED IN THIS COMPONENT: MOVED IN BOT-EDIT-ADD
  */
-  onCloseUpdateModalHandled() {
-    // HIDE THE MODAL
-    this.display = 'none';
+  // onCloseUpdateModalHandled() {
+  //   // HIDE THE MODAL
+  //   this.display = 'none';
 
-    console.log('ON MODAL UPDATE CLOSE -> BOT ID ', this.id_toUpdate);
-    console.log('ON MODAL UPDATE CLOSE -> BOT FULL-NAME UPDATED ', this.botFullNAme_toUpdate);
-    this.botService.updateMongoDbBot(this.id_toUpdate, this.botFullNAme_toUpdate).subscribe((data) => {
-      console.log('PUT DATA ', data);
+  //   console.log('ON MODAL UPDATE CLOSE -> BOT ID ', this.id_toUpdate);
+  //   console.log('ON MODAL UPDATE CLOSE -> BOT FULL-NAME UPDATED ', this.botFullNAme_toUpdate);
+  //   this.botService.updateMongoDbBot(this.id_toUpdate, this.botFullNAme_toUpdate).subscribe((data) => {
+  //     console.log('PUT DATA ', data);
 
-      // RE-RUN GET CONTACT TO UPDATE THE TABLE
-      // this.getDepartments();
-      this.ngOnInit();
-    },
-      (error) => {
+  //     // RE-RUN GET CONTACT TO UPDATE THE TABLE
+  //     // this.getDepartments();
+  //     this.ngOnInit();
+  //   },
+  //     (error) => {
 
-        console.log('PUT REQUEST ERROR ', error);
+  //       console.log('PUT REQUEST ERROR ', error);
 
-      },
-      () => {
-        console.log('PUT REQUEST * COMPLETE *');
-      });
+  //     },
+  //     () => {
+  //       console.log('PUT REQUEST * COMPLETE *');
+  //     });
 
-  }
+  // }
 
   // CLOSE MODAL WITHOUT SAVE THE UPDATES OR WITHOUT CONFIRM THE DELETION
   onCloseModal() {

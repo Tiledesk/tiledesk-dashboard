@@ -57,6 +57,8 @@ import { FaqKbEditAddComponent } from './faq-kb-edit-add/faq-kb-edit-add.compone
 import { FaqEditAddComponent } from './faq-edit-add/faq-edit-add.component';
 import { BotEditAddComponent } from './bot-edit-add/bot-edit-add.component';
 
+import { ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -86,6 +88,7 @@ import { BotEditAddComponent } from './bot-edit-add/bot-edit-add.component';
     NotesModule,
     AngularFireModule.initializeApp(firebaseConfig),
     HttpModule,
+    ReactiveFormsModule,
   ],
   providers: [
     UsersService,
