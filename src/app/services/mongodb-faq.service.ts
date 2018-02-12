@@ -10,17 +10,17 @@ export class MongodbFaqService {
 
   http: Http;
   MONGODB_BASE_URL = environment.mongoDbConfig.MONGODB_FAQ_BASE_URL;
-  TOKEN =  environment.mongoDbConfig.TOKEN;
+  TOKEN = environment.mongoDbConfig.TOKEN;
 
   constructor(
     http: Http,
-   ) {
+  ) {
 
     this.http = http;
   }
 
   /**
-   * READ (GET)
+   * READ (GET ALL FAQ)
    */
   public getMongDbFaq(): Observable<Faq[]> {
     const url = this.MONGODB_BASE_URL;
@@ -40,11 +40,30 @@ export class MongodbFaqService {
   }
 
   /**
-   * READ DETAIL (GET BY ID)
+   * READ DETAIL (GET FAQ BY FAQ ID)
    */
   public getMongDbFaqById(id: string): Observable<Faq[]> {
     let url = this.MONGODB_BASE_URL;
     url += `${id}`;
+    console.log('MONGO DB GET FAQ BY FAQ-ID URL', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
+  /**
+   * GET FAQ BY FAQ-KB ID
+   * @param id_faq_kb
+   */
+  public getMongoDbFaqByFaqKbId(id_faq_kb: string): Observable<Faq[]> {
+    // let url = 'http://localhost:3000/app1/faq/?id_faq_kb=5a81598721333b920c3e5949';
+    let url = this.MONGODB_BASE_URL;
+    url += '?id_faq_kb=' + `${id_faq_kb}`;
+
     console.log('MONGO DB GET BY ID FAQ URL', url);
 
     const headers = new Headers();
@@ -119,7 +138,7 @@ export class MongodbFaqService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'question': `${question}`, 'answer': `${answer}`};
+    const body = { 'question': `${question}`, 'answer': `${answer}` };
 
     console.log('PUT REQUEST BODY ', body);
 

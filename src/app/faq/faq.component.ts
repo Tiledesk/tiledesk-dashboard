@@ -36,10 +36,15 @@ export class FaqComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // GET ID_FAQ_KB FROM THE URL (IS PASSED FROM THE FAQ-KB-COMPONENT WHEN THE USER CLICK ON EDIT FAQ IN THE TABLE )
+    // GET ID_FAQ_KB FROM THE URL PARAMS (IS PASSED FROM THE FAQ-KB-COMPONENT WHEN THE USER CLICK ON EDIT FAQ IN THE TABLE )
     this.getFaqKbId();
 
-    this.getFaq();
+    // GET ALL FAQ
+    // this.getFaq();
+
+    // GET ONLY THE FAQ WITH THE FAQ-KB ID
+    this.getFaqByFaqKbId();
+
   }
 
   getFaqKbId() {
@@ -65,11 +70,22 @@ export class FaqComponent implements OnInit {
   }
 
   /**
-   * GET FAQ
+   * GET ALL FAQ
+   * !! NO MORE USED: NOW GET ONLY THE FAQ WITH THE FAQ-KB ID (getFaqByFaqKbId()) OF THE FAQ KB SELECTED IN FAQ-KB COMP
    */
   getFaq() {
     this.mongodbFaqService.getMongDbFaq().subscribe((faq: any) => {
       console.log('MONGO DB FAQ', faq);
+      this.faq = faq;
+    });
+  }
+
+  /**
+   * GET ONLY THE FAQ WITH THE FAQ-KB ID PASSED FROM FAQ-KB COMPONENT
+   */
+  getFaqByFaqKbId() {
+    this.mongodbFaqService.getMongoDbFaqByFaqKbId(this.id_faq_kb).subscribe((faq: any) => {
+      console.log('MONGO DB FAQ GET BY FAQ-KB ID', faq);
       this.faq = faq;
     });
   }

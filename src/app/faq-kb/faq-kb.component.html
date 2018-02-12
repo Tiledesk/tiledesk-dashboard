@@ -45,8 +45,11 @@
           <th>
             Creation Date
           </th>
-          <th colspan="3">
+          <th colspan="2">
             Actions
+          </th>
+          <th colspan="2">
+            FAQ
           </th>
         </tr>
       </thead>
@@ -68,22 +71,12 @@
           </td>
   
           <!-- EDIT -->
-          <td style="text-align: center!important; padding-right:0px; padding-left:0px;">
+          <td style="text-align: center!important; padding-left:8px; padding-right:8px; ">
             <!-- <span class="button is-small is-warning" (click)='openUpdateModal(bot?._id, bot?.fullname, hasClickedUpdateModal = true)'>
               Edit
             </span> -->
             <span class="icon" style="color:#f6ca4f; cursor: pointer;" (click)=" goToEditAddPage_EDIT(faqkb?._id)">
               <i class="fa fa-pencil"></i>
-            </span>
-          </td>
-          <!-- ./ edit -->
-
-          <!-- EDIT FAQ-->
-          <td style="text-align: center!important; padding-right:0px; padding-left:10px;">
-   
-            <span class="icon" style="color:#ff8c00; cursor: pointer;" (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)'>
-                <i style="font-size:1.5em" class="fa fa-pencil-square-o"></i>
-              Faq
             </span>
           </td>
           <!-- ./ edit -->
@@ -98,6 +91,16 @@
             </span>
           </td>
           <!-- /. delete -->
+
+          <!-- EDIT FAQ-->
+          <td style="text-align: center!important; padding-right:0px; padding-left:10px;">
+
+            <span class="icon" style="color:#ff8c00; cursor: pointer;" (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)'>
+                <i style="font-size:1.5em" class="fa fa-pencil-square-o"></i>
+              Faq
+            </span>
+          </td>
+          <!-- ./ edit -->
   
  
         </tr>
@@ -126,11 +129,9 @@
               <p> Are you sure you want to delete this FAQ KB ?</p>
               </div>
       
-
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" (click)="onCloseDeleteModalHandled()">Confirm</button>
               </div>
-
       
           </div>
           <!-- /.modal-content -->
