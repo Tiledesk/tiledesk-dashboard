@@ -4,7 +4,7 @@
   <!-- <h1>Mongo DB Bots</h1> -->
   <h1>Bots</h1>
   <hr>
-  <div class="field is-horizontal">
+  <!-- <div class="field is-horizontal">
     <div class="field-body">
 
       <div class="field">
@@ -18,11 +18,18 @@
     </div>
   </div>
   <button class="button is-success" (click)="createBot()" [disabled]="bot_fullname?.length < 2 || bot_fullname?.length > 50">
-    <!-- <span class="icon is-small">
-      <i class="fa fa-plus-circle"></i>
-    </span> -->
     Add new bot
-  </button>
+  </button> -->
+
+  <div class="create" style="text-align: right!important; padding-top:25px; padding-bottom:15px">
+      <button class="button is-success" style="padding-left:18px" (click)="goToEditAddPage_CREATE()">
+          <!-- is-small -->
+        <span class="icon" style="padding-right:16px">
+          <i class="fa fa-plus-circle"></i>
+        </span>
+        Aggiungi BOT
+      </button>
+    </div>
 
   <!-- MOMGO DB BOTS LIST -->
   <!-- is-bordered is-narrow -->
@@ -47,7 +54,7 @@
     <tbody>
 
       <tr *ngFor="let bot of bots">
-        <td>
+        <td style="width: 280px !important">
           {{ bot?._id }}
         </td>
         <td>
@@ -58,18 +65,19 @@
         </td>
 
         <!-- EDIT -->
-        <td style="text-align: center!important;padding-left:0px;">
+        <td style="text-align: left!important;padding-left:8px; padding-right:8px;">
           <!-- <span class="button is-small is-warning" (click)='openUpdateModal(bot?._id, bot?.fullname, hasClickedUpdateModal = true)'>
             Edit
           </span> -->
-          <span class="icon" style="color:#f6ca4f; cursor: pointer;" (click)='openUpdateModal(bot?._id, bot?.fullname, hasClickedUpdateModal = true)'>
+          <!-- <span class="icon" style="color:#f6ca4f; cursor: pointer;" (click)='openUpdateModal(bot?._id, bot?.fullname, hasClickedUpdateModal = true)'> -->
+          <span class="icon" style="color:#f6ca4f; cursor: pointer;" (click)='goToEditAddPage_EDIT(bot?._id, bot?.fullname)'>
             <i class="fa fa-pencil"></i>
           </span>
         </td>
         <!-- ./ edit -->
 
         <!-- DELETE -->
-        <td style="text-align: center!important; padding-right:0px; padding-left:0px; ">
+        <td style="text-align: left!important; padding-left:0px; padding-right:0px;  ">
           <!-- <span class="button is-small is-danger" (click)='openDeleteModal(bot?._id, bot?.fullname, hasClickedDeleteModal = true)'>
             Delete
           </span> -->

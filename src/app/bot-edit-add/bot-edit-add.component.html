@@ -1,0 +1,94 @@
+
+<div class="content columns">
+  <main class="column is-10 is-offset-1">
+
+    <span *ngIf="CREATE_VIEW">
+      <h1>
+        <span class="icon" style="cursor: pointer;" (click)="goBackToBotList()">
+          <i class="fa fa-angle-left" style="font-size:1em; color:#afafaf"></i>
+        </span>
+        <span class="title" style="padding-left: 25px;">Aggiungi BOT</span>
+      </h1>
+      <hr>
+
+      <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
+
+      <div class="field is-horizontal" style="margin-top:55px">
+        <div class="field-label is-normal">
+          <label class="label">Bot</label>
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <input [(ngModel)]="bot_fullname" class="input" type="text" placeholder="Bot full name">
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="field is-horizontal">
+        <div class="field-label">
+          <!-- Left empty for spacing -->
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+                <!-- || bot_fullname?.length > 50 -->
+              <button class="button is-success" [disabled]="bot_fullname?.length < 2" (click)="createBot()">
+                Crea Bot 
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </span>
+    <!-- /. CREATE_VIEW -->
+
+    <span *ngIf="EDIT_VIEW">
+        <h1>
+          <!-- GO BACK -->
+          <span class="icon" style="cursor: pointer;" (click)="goBackToBotList()">
+            <i class="fa fa-angle-left" style="font-size:1em; color:#afafaf"></i>
+          </span>
+          <span class="title" style="padding-left: 25px;">Modifica Bot</span>
+        </h1>
+        <hr>
+
+        <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
+  
+        <div class="field is-horizontal" style="margin-top:55px">
+          <div class="field-label is-normal">
+            <label class="label">Bot</label>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <input [(ngModel)]="botFullNAme_toUpdate" class="input" type="text" placeholder="Bot full name">
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <div class="field is-horizontal">
+          <div class="field-label">
+            <!-- Left empty for spacing -->
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <div class="control">
+                <button class="button is-success" (click)="edit()">
+                  Modifica Bot
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+      </span>
+      <!-- /. EDIT_VIEW -->
+
+
+  </main>
+</div>

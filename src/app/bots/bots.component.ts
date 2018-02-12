@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BotService } from '../services/bot.service';
 import { Bot } from '../models/bot-model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'bots',
@@ -29,6 +30,7 @@ export class BotsComponent implements OnInit {
 
   constructor(
     private botService: BotService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -45,8 +47,21 @@ export class BotsComponent implements OnInit {
     });
   }
 
+    // GO TO  BOT-EDIT-ADD COMPONENT
+    goToEditAddPage_CREATE() {
+      this.router.navigate(['/createbot']);
+    }
+
+      // GO TO BOT-EDIT-ADD COMPONENT AND PASS THE BOT ID (RECEIVED FROM THE VIEW) AND
+
+  goToEditAddPage_EDIT(bot_id: string) {
+    console.log('BOT ID ', bot_id);
+    this.router.navigate(['/editbot', bot_id]);
+  }
+
   /**
-   * ADD CONTACT
+   * ADD BOT
+   * !!! NO MORE USED IN THIS COMPONENT: MOVED IN BOT-EDIT-ADD
    */
   createBot() {
     console.log('MONGO DB BOT-FULLNAME DIGIT BY USER ', this.bot_fullname);
