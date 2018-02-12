@@ -63,25 +63,25 @@ export class BotsComponent implements OnInit {
    * ADD BOT
    * !!! NO MORE USED IN THIS COMPONENT: MOVED IN BOT-EDIT-ADD
    */
-  createBot() {
-    console.log('MONGO DB BOT-FULLNAME DIGIT BY USER ', this.bot_fullname);
-    this.botService.addMongoDbBots(this.bot_fullname)
-      .subscribe((bot) => {
-        console.log('POST DATA ', bot);
+  // createBot() {
+  //   console.log('MONGO DB BOT-FULLNAME DIGIT BY USER ', this.bot_fullname);
+  //   this.botService.addMongoDbBots(this.bot_fullname)
+  //     .subscribe((bot) => {
+  //       console.log('POST DATA ', bot);
 
-        this.bot_fullname = '';
+  //       this.bot_fullname = '';
 
-        // RE-RUN GET CONTACT TO UPDATE THE TABLE
-        // this.getDepartments();
-        this.ngOnInit();
-      },
-      (error) => {
-        console.log('POST REQUEST ERROR ', error);
-      },
-      () => {
-        console.log('POST REQUEST * COMPLETE *');
-      });
-  }
+  //       // RE-RUN GET CONTACT TO UPDATE THE TABLE
+  //       // this.getDepartments();
+  //       this.ngOnInit();
+  //     },
+  //     (error) => {
+  //       console.log('POST REQUEST ERROR ', error);
+  //     },
+  //     () => {
+  //       console.log('POST REQUEST * COMPLETE *');
+  //     });
+  // }
 
   /**
    * MODAL DELETE BOT
@@ -153,6 +153,7 @@ export class BotsComponent implements OnInit {
 
 /**
  * UPDATE BOT (WHEN THE 'SAVE' BUTTON IN MODAL IS CLICKED)
+ * !!! NO MORE USED IN THIS COMPONENT: MOVED IN BOT-EDIT-ADD
  */
   onCloseUpdateModalHandled() {
     // HIDE THE MODAL

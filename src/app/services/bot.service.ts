@@ -35,6 +35,27 @@ export class BotService {
   }
 
   /**
+   *
+   */
+
+/**
+ * READ DETAIL (GET BOT BY BOT ID)
+ * @param id
+ */
+  public getMongDbBotById(id: string): Observable<Bot[]> {
+    let url = this.MONGODB_BASE_URL;
+    url += `${id}`;
+    console.log('MONGO DB GET BOT BY BOT ID URL', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
+  /**
    * CREATE (POST)
    * @param fullName
    */

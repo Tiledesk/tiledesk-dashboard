@@ -14,6 +14,8 @@ export class BotEditAddComponent implements OnInit {
   EDIT_VIEW = false;
   showSpinner = true;
   bot_fullname: string;
+  botFullNAme_toUpdate: string;
+  id_bot: string;
 
   constructor(
     private botService: BotService,
@@ -31,12 +33,16 @@ export class BotEditAddComponent implements OnInit {
     } else {
       console.log('HAS CLICKED EDIT ');
       this.EDIT_VIEW = true;
+      this.getBotId();
 
+      if (this.id_bot) {
+        this.getBotById();
+      }
     }
   }
 
-   // GO BACK TO FAQ COMPONENT
-   goBackToBotList() {
+  // GO BACK TO FAQ COMPONENT
+  goBackToBotList() {
     this.router.navigate(['/bots']);
   }
 
@@ -63,6 +69,46 @@ export class BotEditAddComponent implements OnInit {
 
         this.router.navigate(['/bots']);
       });
+  }
+
+  /**
+   * GET BOT BY ID (GET THE DATA OF THE BOT BY THE ID PASSED FROM BOT LIST)
+   * USED TO SHOW IN THE IMPUT FIELD THE BOT FULLNAME THAT USER WANT UPDATE
+   */
+  getBotById() {
+    this.botService.getMongDbBotById(this.id_bot).subscribe((bot: any) => {
+      console.log('MONGO DB FAQ GET BY ID', bot);
+      this.botFullNAme_toUpdate = bot.fullname;
+
+      console.log('MONGO DB BOT FULLNAME TO UPDATE', this.botFullNAme_toUpdate);
+      this.showSpinner = false;
+    });
+  }
+
+  getBotId() {
+    this.id_bot = this.route.snapshot.params['botid'];
+    console.log('BOT COMPONENT HAS PASSED id_bot ', this.id_bot);
+  }
+
+  edit() {
+    console.log('BOT ID TO UPDATE ', this.id_bot);
+    console.log('BOT FULL-NAME UPDATED ', this.botFullNAme_toUpdate);
+    this.botService.updateMongoDbBot(this.id_bot, this.botFullNAme_toUpdate).subscribe((data) => {
+      console.log('PUT DATA ', data);
+
+      // RE-RUN GET CONTACT TO UPDATE THE TABLE
+      // this.getDepartments();
+      // this.ngOnInit();
+    },
+      (error) => {
+        console.log('PUT REQUEST ERROR ', error);
+      },
+      () => {
+        console.log('PUT REQUEST * COMPLETE *');
+
+        this.router.navigate(['/bots']);
+      });
+
   }
 
 }
