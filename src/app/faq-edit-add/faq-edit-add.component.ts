@@ -35,10 +35,6 @@ export class FaqEditAddComponent implements OnInit {
 
   ngOnInit() {
 
-
-
-    this.getFaqById();
-
     // BASED ON THE URL PATH DETERMINE IF THE USER HAS SELECTED (IN FAQ PAGE) 'CREATE' OR 'EDIT'
     // if (this.router.url === '/createfaq') {
     if (this.router.url.indexOf('/createfaq') !== -1) {
@@ -54,6 +50,11 @@ export class FaqEditAddComponent implements OnInit {
       // GET THE ID OF FAQ-KB PASSED BY FAQ PAGE (AND THAT FAQ PAGE HAS RECEIVED FROM FAQ-KB)
       this.getFaqKbIdAndFaqId();
 
+      // IF EXIST THE FAQ ID (GET WITH getFaqKbIdAndFaqId RUN A CALLBACK TO OBTAIN THE FAQ OBJECT BY THE FAQ ID)
+      if (this.id_faq) {
+        this.getFaqById();
+      }
+
     }
   }
 
@@ -62,16 +63,36 @@ export class FaqEditAddComponent implements OnInit {
     console.log('FAQ HAS PASSED id_faq_kb ', this.id_faq_kb);
   }
 
+  // GET FROM ROUTE PARAMS (PASSED FROM FAQ COMPONET):
+  // THE FAQ ID - WHEN THE CALLBACK IS COMPLETED RUN GET-FAQ-BY-ID THAT RETURN THE OBJECT FAQ 
+  // AND THE FAQ KB ID (THEN USED IN THE GOBACK)
   getFaqKbIdAndFaqId() {
     this.route.params.subscribe((params) => {
       this.id_faq_kb = params.faqkbid;
       this.id_faq = params.faqid;
       // console.log(params);
       console.log('FAQ-KB ID ', this.id_faq_kb);
-      console.log('FAQ ID ', this.id_faq );
+      console.log('FAQ ID ', this.id_faq);
     });
   }
 
+  /**
+   * GET FAQ BY ID (GET THE DATA OF THE FAQ BY THE ID PASSED FROM FAQ LIST)
+   * USED TO SHOW IN THE TEXAREA THE QUESTION AND THE ANSWER THAT USER WANT UPDATE
+   */
+  getFaqById() {
+    this.mongodbFaqService.getMongDbFaqById(this.id_faq).subscribe((faq: any) => {
+      console.log('MONGO DB FAQ GET BY ID', faq);
+      this.question_toUpdate = faq.question;
+      this.answer_toUpdate = faq.answer;
+      console.log('MONGO DB FAQ QUESTION TO UPDATE', this.question_toUpdate);
+      console.log('MONGO DB FAQ ANSWER TO UPDATE', this.answer_toUpdate);
+
+      this.showSpinner = false;
+    });
+  }
+
+  // GO BACK TO FAQ COMPONENT
   goBackToFaqList() {
     this.router.navigate(['/faq', this.id_faq_kb]);
   }
@@ -104,27 +125,12 @@ export class FaqEditAddComponent implements OnInit {
 
   }
 
-  /**
-   * GET FAQ-KB BY ID
-   */
-  getFaqById() {
-    this.mongodbFaqService.getMongDbFaqById('5a7dea60da18d4815661134d').subscribe((faq: any) => {
-      console.log('MONGO DB FAQ GET BY ID', faq);
-      this.question_toUpdate = faq.question;
-      this.answer_toUpdate = faq.answer;
-      console.log('MONGO DB FAQ QUESTION TO UPDATE', this.question_toUpdate);
-      console.log('MONGO DB FAQ ANSWER TO UPDATE', this.answer_toUpdate);
-
-      this.showSpinner = false;
-    });
-  }
-
   edit() {
     console.log('FAQ QUESTION TO UPDATE ', this.question_toUpdate);
     console.log('FAQ KB URL TO UPDATE ', this.answer_toUpdate);
 
-    this.mongodbFaqService.updateMongoDbFaq(this.id_faq,  this.question_toUpdate, this.answer_toUpdate).subscribe((data) => {
-      console.log('PUT DATA ', data);
+    this.mongodbFaqService.updateMongoDbFaq(this.id_faq, this.question_toUpdate, this.answer_toUpdate).subscribe((data) => {
+      console.log('PUT DATA (UPDATE FAQ)', data);
 
       // RE-RUN GET CONTACT TO UPDATE THE TABLE
       // this.getDepartments();
@@ -132,11 +138,11 @@ export class FaqEditAddComponent implements OnInit {
     },
       (error) => {
 
-        console.log('PUT REQUEST ERROR ', error);
+        console.log('PUT (UPDATE FAQ) REQUEST ERROR ', error);
 
       },
       () => {
-        console.log('PUT REQUEST * COMPLETE *');
+        console.log('PUT (UPDATE FAQ) REQUEST * COMPLETE *');
 
         this.router.navigate(['/faq', this.id_faq_kb]);
       });

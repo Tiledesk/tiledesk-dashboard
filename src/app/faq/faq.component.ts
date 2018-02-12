@@ -53,7 +53,8 @@ export class FaqComponent implements OnInit {
     this.router.navigate(['/createfaq', this.id_faq_kb]);
   }
 
-  // GO TO FAQ-EDIT-ADD COMPONENT AND PASS THE FAQ ID (RECEIVED FROM THE VIEW)
+  // GO TO FAQ-EDIT-ADD COMPONENT AND PASS THE FAQ ID (RECEIVED FROM THE VIEW) AND
+  // THE FAQ-KB ID (RECEIVED FROM FAQ-KB COMPONENT)
   goToEditAddPage_EDIT(faq_id: string) {
     console.log('ID OF FAQ ', faq_id);
     this.router.navigate(['/editfaq', this.id_faq_kb, faq_id]);
@@ -145,7 +146,8 @@ export class FaqComponent implements OnInit {
   }
 
   /**
-   * MODAL UPDATE DEPARTMENT
+   * MODAL UPDATE FAQ
+   * !!! NO MORE USED: THE ACTION UPDATE IS IN FAQ- EDIT-ADD COMPONENT
    * @param id
    * @param question
    * @param answer
@@ -172,6 +174,7 @@ export class FaqComponent implements OnInit {
 
   /**
    * UPDATE FAQ (WHEN THE 'SAVE' BUTTON IN MODAL IS CLICKED)
+   * !!! NO MORE USED: THE ACTION UPDATE IS IN FAQ- EDIT-ADD COMPONENT
    */
   onCloseUpdateModalHandled() {
     // HIDE THE MODAL
