@@ -56,7 +56,7 @@ const routes: Routes = [
   { path: 'createfaq/:faqkbid', component: FaqEditAddComponent, canActivate: [AuthGuard] },
   { path: 'editfaq/:faqkbid/:faqid', component: FaqEditAddComponent, canActivate: [AuthGuard] },
   { path: 'createbot', component: BotEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'editbot/:botid/:faqkbid', component: BotEditAddComponent, canActivate: [AuthGuard] },
+  { path: 'editbot/:botid', component: BotEditAddComponent, canActivate: [AuthGuard] },
 
   // uploads are lazy loaded
   { path: 'uploads', loadChildren: './uploads/shared/upload.module#UploadModule', canActivate: [AuthGuard] },

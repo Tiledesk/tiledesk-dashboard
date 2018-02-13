@@ -53,11 +53,10 @@ export class BotsComponent implements OnInit {
       this.router.navigate(['/createbot']);
     }
 
-  // GO TO BOT-EDIT-ADD COMPONENT AND PASS THE BOT ID (RECEIVED FROM THE VIEW) AND
-  goToEditAddPage_EDIT(bot_id: string, id_faq_kb: string) {
+  // GO TO BOT-EDIT-ADD COMPONENT AND PASS THE BOT ID (RECEIVED FROM THE VIEW)
+  goToEditAddPage_EDIT(bot_id: string) {
     console.log('BOT ID ', bot_id);
-    console.log('BOT FAQ KB ID ', id_faq_kb);
-    this.router.navigate(['/editbot', bot_id, id_faq_kb]);
+    this.router.navigate(['/editbot', bot_id]);
   }
 
   /**

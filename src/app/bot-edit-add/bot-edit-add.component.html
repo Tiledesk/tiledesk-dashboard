@@ -21,7 +21,6 @@
           <div class="field">
             <div class="control">
               <input [(ngModel)]="bot_fullname" class="input" type="text" placeholder="Bot full name">
-              
             </div>
           </div>
         </div>
@@ -77,36 +76,23 @@
   
       <div class="field is-horizontal" >
         <div class="field-label is-normal">
-            <label class="label">FAQ KB</label>
+            <label class="label">FAQ Knowledge Base</label>
         </div>
         <!-- <div class="field has-addons"> -->
             <!-- style="  width:81%;"  -->
           <div class="field-body">
             <div class="control is-expanded" >
               <div class="select is-fullwidth" >
-                  <!-- [(ngModel)]="selectedValue" -->
-                <select  #selectElem   (change)="setSelectedFaqKb(selectElem.value)">
-                 <option selected>{{ selectedValue }}</option>
-                  <option  *ngFor="let faqKb of faqKbList" [value]="faqKb._id">
+                <!-- [(ngModel)]="selectedValue" -->
+                <select #selectElem (change)="setSelectedFaqKb(selectElem.value)"  >
+                  <option  *ngFor="let faqKb of faqKbList" [value]="faqKb._id" [selected]="selectedId === faqKb._id">
                     {{faqKb.name}}
                   </option>
                 </select>
-
-                <!-- <select [ngModel]="faqKbList">
-                    <option *ngFor="let faqKb of faqKbList" [ngValue]="faqKb.name" [selected]="faqKb.name">{{faqKb.name}}</option>
-                </select> -->
-
-
-
               </div>
             </div>
           </div>
         </div>
-        <!-- <form [formGroup]="countryForm">
-            <select id="country" formControlName="country" (change)="setSelectedFaqKbTest(select.value)">
-                <option *ngFor="let c of countries" [ngValue]="c">{{ c }}</option>
-            </select>
-        </form> -->
   
         <div class="field is-horizontal">
           <div class="field-label">

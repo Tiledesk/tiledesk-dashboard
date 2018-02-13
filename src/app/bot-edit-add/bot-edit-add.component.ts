@@ -6,9 +6,6 @@ import { FaqKbService } from '../services/faq-kb.service';
 import { forEach } from '@angular/router/src/utils/collection';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-
-
-
 @Component({
   selector: 'bot-edit-add',
   templateUrl: './bot-edit-add.component.html',
@@ -16,18 +13,12 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class BotEditAddComponent implements OnInit {
 
-  countries: string[] = ['USA', 'UK', 'Canada'];
-  default = 'UK';
-  countryForm: FormGroup;
-
   faqKbList: any;
   faqKbId: string;
 
   selectedFaqKbId: any;
-  // selectedValue = null;
   selectedValue: string;
-
-
+  selectedId: string;
 
   CREATE_VIEW = false;
   EDIT_VIEW = false;
@@ -41,21 +32,9 @@ export class BotEditAddComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private faqKbService: FaqKbService,
-  ) {
-    // this.countryForm = new FormGroup({
-    //   country: new FormControl(null),
-    // });
-    // this.countryForm.controls['country'].setValue(this.default, { onlySelf: true });
-    // console.log('THIS DEFAULT ', this.default);
-  }
+  ) {  }
 
   ngOnInit() {
-
-    // this.selectedValue = 'Selezione FAQ KB';
-    console.log('SELECTED VALUE ', this.selectedValue);
-    if (this.selectedValue === undefined) {
-      this.selectedValue = 'Selezione FAQ KB';
-    }
     // BASED ON THE URL PATH DETERMINE IF THE USER HAS SELECTED (IN FAQ PAGE) 'CREATE' OR 'EDIT'
     if (this.router.url === '/createbot') {
       console.log('HAS CLICKED CREATE ');
@@ -65,49 +44,109 @@ export class BotEditAddComponent implements OnInit {
     } else {
       console.log('HAS CLICKED EDIT ');
       this.EDIT_VIEW = true;
-      // this.getBotId();
 
-      this.getBotIdAndFaqKbId();
+      // *** GET BOT ID FROM URL PARAMS ***
+      // IS USED TO GET THE BOT OBJECT ( THE ID IS PASSED FROM BOTS COMPONENT - goToEditAddPage_EDIT())
+      this.getBotId();
+
+      // this.getBotIdAndFaqKbId();
 
       if (this.id_bot) {
         this.getBotById();
       }
-      if (this.faqKbId ) {
-        this.getFaqKbById();
-      }
 
-      // GET FAQ KB (READ) - TO SHOW IN SELECT > OPTION
+      /**
+       * *** GET ALL FAQ KB LIST ***
+       * ARE SHOWED AS OPTION TO SELECT IN THE SELECTION FIELD
+       */
       this.getFaqKb();
 
     }
-  }
-
-  /**
-   * GET FAQ-KB BY ID
-   */
-  getFaqKbById() {
-    this.faqKbService.getMongDbFaqKbById(this.faqKbId).subscribe((faqKb: any) => {
-      console.log('MONGO DB FAQ-KB GET BY ID', faqKb);
-      this.selectedValue = faqKb.name;
-      // this.faqKbUrlToUpdate = faqKb.url;
-      console.log(' ++ ++ MONGO DB FAQ-KB NAME', this.selectedValue);
-
-    });
-  }
+  } // ./ OnInit
 
   getBotId() {
     this.id_bot = this.route.snapshot.params['botid'];
     console.log('BOT COMPONENT HAS PASSED id_bot ', this.id_bot);
   }
 
-  getBotIdAndFaqKbId() {
-    this.route.params.subscribe((params) => {
-      this.id_bot = params.botid;
-      this.faqKbId = params.faqkbid;
-      // console.log(params);
-      console.log('BOT ID ', this.id_bot);
-      console.log('FAQ KB ID ', this.faqKbId);
-    });
+  // GET BOT ID AND FAQ-KB ID FROM URL PARAMS (PASSED BY BOTS COMPONENT goToEditAddPage_EDIT())
+  // !!! NO MORE USED
+  // getBotIdAndFaqKbId() {
+  //   this.route.params.subscribe((params) => {
+  //     this.id_bot = params.botid;
+  //     this.faqKbId = params.faqkbid;
+  //     // console.log(params);
+  //     console.log('BOT ID ', this.id_bot);
+  //     console.log('FAQ KB ID ', this.faqKbId);
+  //   });
+  // }
+
+  /**
+   * *** GET BOT OBJECT BY ID AND (THEN) GET FAQ-KB OBJECT BY ID ***
+   * THE ID USED TO RUN THIS getMongDbBotById IS PASSED FROM BOTS LIST (BOTS COMPONENT goToEditAddPage_EDIT))
+   * FROM THE BOT OBJECT IS USED:
+   * THE BOT FULLNAME TO SHOW IN THE INPUT FIELD (OF THE EDIT VIEW)
+   * THE FAQ-KB ID TO RUN A CALLBACK TO OBTAIN THE FAQ-KB OBJECT AND, FROM THIS,
+   * THE FAQ-KB NAME THAT IS SHOWED AS OPTION SELECTED IN THE EDIT VIEW
+   */
+  getBotById() {
+    this.botService.getMongDbBotById(this.id_bot).subscribe((bot: any) => {
+      console.log('++ > GET BOT (DETAILS) BY ID - BOT OBJECT: ', bot);
+
+      this.botFullNAme_toUpdate = bot.fullname;
+      this.faqKbId = bot.id_faq_kb;
+
+      console.log(' BOT FULLNAME TO UPDATE: ', this.botFullNAme_toUpdate);
+      console.log(' FAQ-KB ID GET FROM BOT OBJECT: ', this.faqKbId);
+
+    },
+      (error) => {
+        console.log('GET BOT BY ID - ERROR ', error);
+        this.showSpinner = false;
+      },
+      () => {
+        console.log('GET BOT BY ID - COMPLETE ');
+
+        // MOVED IN getFaqKbById
+        // this.showSpinner = false;
+
+        if (this.faqKbId === 'undefined') {
+          console.log(' !!! FAQ-KB ID UNDEFINED ', this.faqKbId);
+          this.showSpinner = false;
+          this.selectedValue = 'Selezione FAQ KB';
+
+        } else {
+          this.getFaqKbById();
+          console.log(' !!! FAQ-KB ID DEFINED ', this.faqKbId);
+        }
+      });
+
+  }
+
+  /**
+   * *** GET FAQ-KB BY ID ***
+   * THE ID OF THE FAQ-KB IS GET FROM THE BOT OBJECT (CALLBACK getBotById)
+   * FROM THE FAQ-KB OBJECT IS USED:
+   * THE FAQ-KB NAME THAT IS SHOWED AS OPTION SELECTED IN THE EDIT VIEW
+   */
+  getFaqKbById() {
+    this.faqKbService.getMongDbFaqKbById(this.faqKbId).subscribe((faqKb: any) => {
+      console.log('GET FAQ-KB (DETAILS) BY ID', faqKb);
+      this.selectedValue = faqKb.name;
+      this.selectedId = faqKb._id;
+      // this.faqKbUrlToUpdate = faqKb.url;
+      console.log(' ++ ++ FAQ-KB NAME', this.selectedValue);
+
+    },
+      (error) => {
+        console.log('GET FAQ-KB BY ID - ERROR ', error);
+        this.showSpinner = false;
+      },
+      () => {
+        console.log('GET FAQ-KB ID - COMPLETE ');
+        this.showSpinner = false;
+
+      });
 
   }
 
@@ -117,36 +156,37 @@ export class BotEditAddComponent implements OnInit {
   }
 
   /**
-   * GET FAQ KB (READ) - TO SHOW IN SELECT > OPTION
+   * *** GET ALL FAQ KB LIST ***
    */
   getFaqKb() {
     this.faqKbService.getMongDbFaqKb().subscribe((faqkb: any) => {
-      console.log('MONGO DB FAQKB', faqkb);
+      console.log('GET FAQ-KB LIST (TO SHOW IN SELECTION FIELD) ', faqkb);
       this.faqKbList = faqkb;
-    });
+    },
+      (error) => {
+        console.log('GET FAQ-KB LIST - ERROR ', error);
+
+      },
+      () => {
+        console.log('GET FAQ-KB LIST - COMPLETE ');
+
+      });
   }
 
   // WHEN THE USER EDITS A BOT CAN SELECT A FAQ-KB TO CORRELATE AT THE BOT
-  // WHEN THE BTN EDIT IS PRESSED THE VALUE OF THE ID OF THE SELECTED FAQ-KB ID IS ADDED IN THE BOT'S FIELD id_faq_kb
+  // WHEN THE BTN 'EDIT BOT' IS PRESSED THE VALUE OF THE ID OF THE SELECTED FAQ-KB IS MODIFIED IN THE BOT'S FIELD id_faq_kb
   setSelectedFaqKb(id: any): void {
     this.selectedFaqKbId = id;
-    console.log('SELECTED FAQ KB ID ', this.selectedFaqKbId);
+    console.log('FAQ-KB ID SELECTED: ', this.selectedFaqKbId);
+    // let i: any;
+    // for (i = 0; i < this.faqKbList.length; i++) {
+    //   this.faqKbId = this.faqKbList[i]._id;
+    //   if (this.selectedFaqKbId === this.faqKbId) {
+    //     this.selectedValue = this.faqKbList[i].name;
+    //     console.log('SELECTED VALUE ', this.faqKbList[i].name);
 
-    let i: any;
-    for (i = 0; i < this.faqKbList.length; i++) {
-      this.faqKbId = this.faqKbList[i]._id;
-      // console.log('FAQ KB ID ', this.faqKbId);
-
-      if (this.selectedFaqKbId === this.faqKbId) {
-        // console.log('FAQ KB OBJECT SELECTED ', this.faqKbList[i]);
-        // this.selectedValue = this.faqKbList[i].name;
-        // console.log('NAME OF FAQ KB SELECTED ', this.faqKbList[i].name);
-        this.selectedValue = this.faqKbList[i].name;
-        console.log('SELECTED VALUE ', this.faqKbList[i].name);
-
-      }
-    }
-
+    //   }
+    // }
     // Match the selected ID with the ID's in array
     // const curFaqKb = this.faqKbList.filter((value: any) => value.id === parseInt(id[0], 10));
     // console.log(curFaqKb);
@@ -175,20 +215,6 @@ export class BotEditAddComponent implements OnInit {
 
         this.router.navigate(['/bots']);
       });
-  }
-
-  /**
-   * GET BOT BY ID (GET THE DATA OF THE BOT BY THE ID PASSED FROM BOT LIST)
-   * USED TO SHOW IN THE IMPUT FIELD THE BOT FULLNAME THAT USER WANT UPDATE
-   */
-  getBotById() {
-    this.botService.getMongDbBotById(this.id_bot).subscribe((bot: any) => {
-      console.log('MONGO DB BOT GET BY ID', bot);
-      this.botFullNAme_toUpdate = bot.fullname;
-
-      console.log('MONGO DB BOT FULLNAME TO UPDATE', this.botFullNAme_toUpdate);
-      this.showSpinner = false;
-    });
   }
 
   edit() {
