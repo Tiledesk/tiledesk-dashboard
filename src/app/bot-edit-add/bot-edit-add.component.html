@@ -26,6 +26,25 @@
         </div>
       </div>
 
+      <!-- CREATE VIEW - SELECT FAQ KB -->
+      <div class="field is-horizontal" >
+        <div class="field-label is-normal">
+          <label class="label">FAQ Knowledge Base</label>
+        </div>
+        <div class="field-body">
+          <div class="control is-expanded" >
+            <div class="select is-fullwidth" >
+              <select #selectElem (change)="setSelectedFaqKb(selectElem.value)">
+                <option value="FAQKB_NOT_SELECTED">Seleziona una FAQ Knowledge Base</option>
+                <option  *ngFor="let faqKb of faqKbList" [value]="faqKb._id" [selected]="selectedId === faqKb._id">
+                  {{faqKb.name}}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="field is-horizontal">
         <div class="field-label">
           <!-- Left empty for spacing -->
@@ -34,13 +53,35 @@
           <div class="field">
             <div class="control">
                 <!-- || bot_fullname?.length > 50 -->
-              <button class="button is-success" [disabled]="bot_fullname?.length < 2" (click)="createBot()">
+              <button class="button is-success" [disabled]="bot_fullname?.length < 2 || FAQKB_NOT_SELECTED === true" (click)="createBot()">
                 Crea Bot 
               </button>
             </div>
           </div>
         </div>
       </div>
+
+      <!-- MESSAGE 'YOU NEED TO SELECTE A FAQ-KB' AND LINK TO THE FAQ-KB LIST -->
+      <div class="field is-horizontal">
+        <div class="field-label">
+          <!-- Left empty for spacing -->
+        </div>
+        <div class="field-body" style="margin-top:25px">
+          <div class="field">
+            <article class="message is-link">
+              <!-- <div class="message-header" style="background-color:#3273dc">
+                <p>Link</p>
+                <button class="delete" aria-label="delete"></button>
+              </div> -->
+              <div class="message-body" style="background-color:#fdf5f7; border-color: #ff3860">
+                Seleziona una <strong>FAQ Knowledge Base</strong> esistente da associare a questo Bot o <a routerLink="/faqkb">visualizza la lista delle FAQ Knowledge Base</a> per creare/modificare.
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+
+ 
 
     </span>
     <!-- /. CREATE_VIEW -->
@@ -70,20 +111,14 @@
           </div>
         </div>
 
-      <!-- SELECT FAQ KB -->
-
-      
-  
-      <div class="field is-horizontal" >
-        <div class="field-label is-normal">
+        <!-- EDIT VIEW - SELECT FAQ KB -->
+        <div class="field is-horizontal" >
+          <div class="field-label is-normal">
             <label class="label">FAQ Knowledge Base</label>
-        </div>
-        <!-- <div class="field has-addons"> -->
-            <!-- style="  width:81%;"  -->
+          </div>
           <div class="field-body">
             <div class="control is-expanded" >
               <div class="select is-fullwidth" >
-                <!-- [(ngModel)]="selectedValue" -->
                 <select #selectElem (change)="setSelectedFaqKb(selectElem.value)"  >
                   <option  *ngFor="let faqKb of faqKbList" [value]="faqKb._id" [selected]="selectedId === faqKb._id">
                     {{faqKb.name}}

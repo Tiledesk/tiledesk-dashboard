@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FaqKbService } from '../services/faq-kb.service';
 import { FaqKb } from '../models/faq_kb-model';
 import { Router } from '@angular/router';
+import { MongodbFaqService } from '../services/mongodb-faq.service';
 
 
 @Component({
@@ -17,9 +18,15 @@ export class FaqKbComponent implements OnInit {
   display = 'none';
   id_toDelete: string;
 
+  faqKbId: string;
+  faq_faqKbId: string;
+
+  HAS_FAQ_ASSOCIATED = false;
+
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
+    private mongodbFaqService: MongodbFaqService,
   ) { }
 
   ngOnInit() {
@@ -33,7 +40,47 @@ export class FaqKbComponent implements OnInit {
     this.faqKbService.getMongDbFaqKb().subscribe((faqkb: any) => {
       console.log('MONGO DB FAQKB', faqkb);
       this.faqkbList = faqkb;
-    });
+    },
+      (error) => {
+
+        console.log('GET FAQ KB ERROR ', error);
+
+      },
+      () => {
+        console.log('GET FAQ KB COMPLETE');
+
+        // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
+        let i: number;
+        for (i = 0; i < this.faqkbList.length; i++) {
+          console.log('ID FAQ KB ', this.faqkbList[i]._id);
+          this.faqKbId = this.faqkbList[i]._id;
+
+          this.mongodbFaqService.getMongoDbFaqByFaqKbId(this.faqKbId).subscribe((faq: any) => {
+            console.log('MONGO DB FAQ', faq);
+
+            let j: number;
+            for (j = 0; j < faq.length; j++) {
+              console.log('MONGO DB FAQ - FAQ ID', faq[j]._id);
+              console.log('MONGO DB FAQ - FAQ-KB ID', faq[j].id_faq_kb);
+              this.faq_faqKbId = faq[j].id_faq_kb;
+
+
+              for (const faqkb of this.faqkbList ) {
+                if (faqkb._id === this.faq_faqKbId ) {
+                  console.log('+> ID COINCIDONO');
+                  this.HAS_FAQ_ASSOCIATED = true;
+                  faqkb.has_faq = true;
+                }
+              }
+
+            }
+            // if (this.faqkbList[i]._id === faq.id_faq_kb) {
+
+            //   console.log('FAQ-KB HAS ASSOCIATED A FAQ ');
+            // }
+          });
+        }
+      });
   }
 
   /**

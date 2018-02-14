@@ -43,7 +43,7 @@ export class BotsComponent implements OnInit {
    */
   getBots() {
     this.botService.getMongDbBots().subscribe((bots: any) => {
-      console.log('MONGO DB DEPARTMENTS', bots);
+      console.log('GET BOTS ', bots);
       this.bots = bots;
     });
   }

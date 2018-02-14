@@ -7,4 +7,5 @@ export interface FaqKb {
     appId: string;
     createdBy: string;
     __v: any;
+    has_faq: any;
 }

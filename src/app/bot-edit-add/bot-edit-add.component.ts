@@ -27,16 +27,28 @@ export class BotEditAddComponent implements OnInit {
   botFullNAme_toUpdate: string;
   id_bot: string;
 
+  FAQKB_NOT_SELECTED = true;
+
   constructor(
     private botService: BotService,
     private router: Router,
     private route: ActivatedRoute,
     private faqKbService: FaqKbService,
-  ) {  }
+  ) { }
 
   ngOnInit() {
-    // BASED ON THE URL PATH DETERMINE IF THE USER HAS SELECTED (IN FAQ PAGE) 'CREATE' OR 'EDIT'
+
+    /**
+     * *** GET ALL FAQ KB LIST ***
+     * ARE SHOWED AS OPTIONS TO SELECT IN THE SELECTION FIELD (IN CREATE AND IN EDIT VIEW)
+     */
+    this.getFaqKb();
+
+    /**
+     * BASED ON THE URL PATH DETERMINE IF THE USER HAS SELECTED (IN FAQ PAGE) 'CREATE' OR 'EDIT'
+     */
     if (this.router.url === '/createbot') {
+
       console.log('HAS CLICKED CREATE ');
       this.CREATE_VIEW = true;
       this.showSpinner = false;
@@ -54,12 +66,6 @@ export class BotEditAddComponent implements OnInit {
       if (this.id_bot) {
         this.getBotById();
       }
-
-      /**
-       * *** GET ALL FAQ KB LIST ***
-       * ARE SHOWED AS OPTION TO SELECT IN THE SELECTION FIELD
-       */
-      this.getFaqKb();
 
     }
   } // ./ OnInit
@@ -113,7 +119,7 @@ export class BotEditAddComponent implements OnInit {
         if (this.faqKbId === 'undefined') {
           console.log(' !!! FAQ-KB ID UNDEFINED ', this.faqKbId);
           this.showSpinner = false;
-          this.selectedValue = 'Selezione FAQ KB';
+          // this.selectedValue = 'Selezione FAQ KB';
 
         } else {
           this.getFaqKbById();
@@ -132,6 +138,7 @@ export class BotEditAddComponent implements OnInit {
   getFaqKbById() {
     this.faqKbService.getMongDbFaqKbById(this.faqKbId).subscribe((faqKb: any) => {
       console.log('GET FAQ-KB (DETAILS) BY ID', faqKb);
+      // NOW USED ONLY FOR DEBUG
       this.selectedValue = faqKb.name;
       this.selectedId = faqKb._id;
       // this.faqKbUrlToUpdate = faqKb.url;
@@ -178,6 +185,11 @@ export class BotEditAddComponent implements OnInit {
   setSelectedFaqKb(id: any): void {
     this.selectedFaqKbId = id;
     console.log('FAQ-KB ID SELECTED: ', this.selectedFaqKbId);
+
+    // IN THE CREATE VIEW IF IS NOT SELECTET ANY FAQ-KB THE BUTTON 'CREATE BOT' IS DISABLED
+    if (this.selectedFaqKbId !== 'FAQKB_NOT_SELECTED') {
+      this.FAQKB_NOT_SELECTED = false;
+    }
     // let i: any;
     // for (i = 0; i < this.faqKbList.length; i++) {
     //   this.faqKbId = this.faqKbList[i]._id;
@@ -196,8 +208,9 @@ export class BotEditAddComponent implements OnInit {
    * ADD BOT
    */
   createBot() {
-    console.log('MONGO DB BOT-FULLNAME DIGIT BY USER ', this.bot_fullname);
-    this.botService.addMongoDbBots(this.bot_fullname)
+    console.log('CREATE BOT - BOT-FULLNAME DIGIT BY USER ', this.bot_fullname);
+    console.log('CREATE BOT - FAQ-KB ID', this.selectedFaqKbId);
+    this.botService.addMongoDbBot(this.bot_fullname, this.selectedFaqKbId)
       .subscribe((bot) => {
         console.log('POST DATA ', bot);
 
@@ -208,10 +221,10 @@ export class BotEditAddComponent implements OnInit {
         // this.ngOnInit();
       },
       (error) => {
-        console.log('POST REQUEST ERROR ', error);
+        console.log('CREATE BOT - POST REQUEST ERROR ', error);
       },
       () => {
-        console.log('POST REQUEST * COMPLETE *');
+        console.log('CREATE BOT - POST REQUEST COMPLETE ');
 
         this.router.navigate(['/bots']);
       });

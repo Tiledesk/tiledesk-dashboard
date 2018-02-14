@@ -59,16 +59,16 @@ export class BotService {
    * CREATE (POST)
    * @param fullName
    */
-  public addMongoDbBots(fullName: string) {
+  public addMongoDbBot(fullName: string, id_faq_kb: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'fullname': `${fullName}` };
+    const body = { 'fullname': `${fullName}`, 'id_faq_kb': `${id_faq_kb}` };
 
-    console.log('POST REQUEST BODY ', body);
+    console.log('ADD BOT POST REQUEST BODY ', body);
 
     const url = this.MONGODB_BASE_URL;
 
