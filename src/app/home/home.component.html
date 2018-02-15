@@ -1,8 +1,8 @@
-<div class="content columns">
-  <main class="column is-10 is-offset-1">
+<!-- <div class="content columns">
+  <main class="column is-10 is-offset-1"> -->
     <div *ngIf="auth.user | async as user">
 
-        <h3>Howdy, {{ user.displayName }}</h3>
+        <h3>{{ "Howdy" | translate }}, {{ user.displayName }}</h3>
     </div>
       
     <hr style="margin-bottom:54px !important">
@@ -161,16 +161,11 @@
 
 </section> -->
 
-<!-- NEW - AS ZENDESK CHAT -->
-<!-- <div class="content columns"> -->
-  <!-- <main class="column is-10 is-offset-1"> -->
-
+<!-- NEW - AS ZENDESK CHAT !!! FOR DEBUG -->
   <div class="sandbox">
     <div class="tile is-ancestor" >
-      
-      <!-- FIRESTORE USERS -->
+       <!-- FIRESTORE USERS -->
       <div class="tile is-parent" style="display:table" routerLink="/users">
-
         <div class="avatar">
           <i class="fa fa-users"></i>
         </div>
@@ -179,16 +174,13 @@
             Firestore Users
           </div> 
           <div class="email">
-              <!-- {{firebaseProjectId}} -->
-            List of Firestore users
+              List of Firestore users
           </div>
         </div>
-
       </div>
 
       <!-- MONGO DB Contacts -->
       <div class="tile is-parent" style="display:table" routerLink="/contacts">
-
         <div class="avatar">
           <i class="fa fa-users"></i>
         </div>
@@ -200,12 +192,10 @@
             List of MongoDb contacts
           </div>
         </div>
-
       </div>
 
       <!-- FIRESTORE REQUESTS -->
       <div class="tile is-parent" style="display:table" routerLink="/requests">
-
         <div class="avatar">
           <i class="fa fa-commenting-o"></i>
         </div>
@@ -282,8 +272,64 @@
       </div> <!-- tile is-ancestor! -->
     </div>  <!-- sandbox! -->
 
-  </main>
+
+
+    <!-- TEST -->
+<!-- <section class="container">
+
+<div class="sandbox">
+    <div class="tile is-ancestor">
+      <div class="tile is-parent">
+
+        <div class="box content">
+            <article class="post">
+
+              
+             
+  
+              <div class="media">
+                <div class="media-left" style="">
+                  <p class="image is-32x32">
+                    <img src="http://bulma.io/images/placeholders/128x128.png">
+                  </p>
+                </div>
+                <div class="media-content">
+                  <div class="content">
+                    <p>
+                      <a href="#">@jsmith</a> replied 34 minutes ago  &nbsp; 
+                      <span class="tag">Question</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </article>
+      </div>
+      </div>
+
+      <div class="tile is-parent">
+        <article class="tile is-child notification is-white">
+          <p class="title">Foo</p>
+          <p class="subtitle">Bar</p>
+        </article>
+      </div>
+      <div class="tile is-parent">
+        <article class="tile is-child notification is-white">
+          <p class="title">Third column</p>
+          <p class="subtitle">With some content</p>
+          <div class="content">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.</p>
+          </div>
+        </article>
+      </div>
+    </div>
 </div>
+
+</section> -->
+
+  <!-- </main>
+</div> -->
+
+
 
 
 

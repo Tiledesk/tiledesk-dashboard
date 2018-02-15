@@ -1,19 +1,48 @@
 <div id="wrapper">
   <top-nav></top-nav>
-<div>
-  <!-- <div class="content columns"> -->
-    <!-- <aside class="column is-2 is-offset-1"> -->
-      <!-- <user-profile></user-profile> -->
-    <!-- </aside> -->
+  <!-- <div> -->
+    <div class="content columns">
+    <!-- is-offset-1 -->
+    <aside class="column is-2 " style=" border-right: 1px solid #DEDEDE; background-color: #F9F9F9;">
+    <!-- <user-profile></user-profile> -->
 
-    <!-- <main class="column is-8 is-offset-2"> -->
-      
-      
+      <ul>
+        <li style="position: relative; display: block; padding-bottom: 10px;">
+          <span routerLink="/users" style="cursor:pointer; color:#3c4858">  {{ "Users" | translate }} </span>
+        </li>
+        <li style="position: relative; display: block; padding-bottom: 10px;">
+          <span routerLink="/bots" style="cursor:pointer; color:#3c4858">  Bots </span>
+        </li>
+        <li style="position: relative; display: block;padding-bottom: 10px;">
+          <span routerLink="/faqkb" style="cursor:pointer; color:#3c4858">FAQ</span>
+          
+        </li>
+        <li style="position: relative; display: block;padding-bottom: 10px;">
+            <span routerLink="/departments" style="cursor:pointer; color:#3c4858"> {{ "Departments" | translate }}</span>
+         
+        </li>
+        <li style="position: relative; display: block;padding-bottom: 10px;">
+         {{ "Resources" | translate }}
+        </li>
+      </ul>
+    </aside>
+    <!-- is-offset-2 -->
+    <main class="column is-8 is-offset-1">
 
-      <router-outlet></router-outlet>
+      <!-- TEST TRANSLATION -->
+    <!-- <h1 translate>Title</h1>
+    <div>
+      {{ 'Intro' | translate }}
+    </div>
+    <button (click)="switchLanguage('en')">en</button>
+    <button (click)="switchLanguage('it')">it</button> -->
 
-      <notification-message></notification-message>
-    <!-- </main> -->
+
+    <router-outlet></router-outlet>
+
+    <notification-message></notification-message>
+    </main>
+    
   </div>
 
   <!-- <div class="github-banner">
@@ -25,4 +54,5 @@
       .github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
     </style>
   </div> -->
+  <!-- <footer-nav></footer-nav> -->
 </div>

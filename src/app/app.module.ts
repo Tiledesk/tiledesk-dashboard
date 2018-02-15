@@ -59,6 +59,16 @@ import { BotEditAddComponent } from './bot-edit-add/bot-edit-add.component';
 
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(http: HttpClient)  {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -89,6 +99,14 @@ import { ReactiveFormsModule } from '@angular/forms';
     AngularFireModule.initializeApp(firebaseConfig),
     HttpModule,
     ReactiveFormsModule,
+    HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+          provide: TranslateLoader,
+          useFactory: HttpLoaderFactory,
+          deps: [HttpClient],
+      },
+  }),
   ],
   providers: [
     UsersService,

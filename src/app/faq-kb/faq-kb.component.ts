@@ -50,37 +50,38 @@ export class FaqKbComponent implements OnInit {
         console.log('GET FAQ KB COMPLETE');
 
         // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
-        let i: number;
-        for (i = 0; i < this.faqkbList.length; i++) {
-          console.log('ID FAQ KB ', this.faqkbList[i]._id);
-          this.faqKbId = this.faqkbList[i]._id;
+        // this.getFaqByFaqKbId();
 
-          this.mongodbFaqService.getMongoDbFaqByFaqKbId(this.faqKbId).subscribe((faq: any) => {
-            console.log('MONGO DB FAQ', faq);
+      });
+  }
+  getFaqByFaqKbId() {
+    // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
+    let i: number;
+    for (i = 0; i < this.faqkbList.length; i++) {
+      console.log('ID FAQ KB ', this.faqkbList[i]._id);
+      this.faqKbId = this.faqkbList[i]._id;
 
-            let j: number;
-            for (j = 0; j < faq.length; j++) {
-              console.log('MONGO DB FAQ - FAQ ID', faq[j]._id);
-              console.log('MONGO DB FAQ - FAQ-KB ID', faq[j].id_faq_kb);
-              this.faq_faqKbId = faq[j].id_faq_kb;
+      this.mongodbFaqService.getMongoDbFaqByFaqKbId(this.faqKbId).subscribe((faq: any) => {
+        console.log('MONGO DB FAQ', faq);
 
+        let j: number;
+        for (j = 0; j < faq.length; j++) {
+          console.log('MONGO DB FAQ - FAQ ID', faq[j]._id);
+          console.log('MONGO DB FAQ - FAQ-KB ID', faq[j].id_faq_kb);
+          this.faq_faqKbId = faq[j].id_faq_kb;
 
-              for (const faqkb of this.faqkbList ) {
-                if (faqkb._id === this.faq_faqKbId ) {
-                  console.log('+> ID COINCIDONO');
-                  this.HAS_FAQ_ASSOCIATED = true;
-                  faqkb.has_faq = true;
-                }
-              }
-
+          for (const faqkb of this.faqkbList) {
+            if (faqkb._id === this.faq_faqKbId) {
+              console.log('+> ID COINCIDONO');
+              this.HAS_FAQ_ASSOCIATED = true;
+              // set in the json the value true to the property has_faq
+              faqkb.has_faq = true;
             }
-            // if (this.faqkbList[i]._id === faq.id_faq_kb) {
+          }
 
-            //   console.log('FAQ-KB HAS ASSOCIATED A FAQ ');
-            // }
-          });
         }
       });
+    }
   }
 
   /**

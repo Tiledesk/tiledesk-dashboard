@@ -23,6 +23,8 @@
     "@angular/platform-browser-dynamic": "^5.0.2",
     "@angular/platform-server": "^5.0.2",
     "@angular/router": "^5.0.2",
+    "@ngx-translate/core": "^9.1.1",
+    "@ngx-translate/http-loader": "^2.0.1",
     "angular-bulma": "^0.3.1",
     "angularfire2": "^5.0.0-rc.4",
     "core-js": "^2.5.1",
