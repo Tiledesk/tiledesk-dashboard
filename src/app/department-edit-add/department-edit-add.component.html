@@ -1,0 +1,140 @@
+<!-- NEW FOR THIS TEMPLATE -->
+<div class="navbar-brand" style="z-index: -1;margin-top:10px; padding-left:30px">
+    <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBackToDeptsList()">keyboard_arrow_left</i>
+    <span *ngIf="CREATE_VIEW">Aggiungi Dipartimento</span>
+    <span *ngIf="EDIT_VIEW">Modifica Dipartimento</span>
+  </div>
+  
+  <div class="main-content" style="padding-top:0px">
+    <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card" style="padding-top:25px; padding-bottom:25px">
+          <div class="card-content">
+  
+            <span *ngIf="CREATE_VIEW">
+    
+              <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
+              
+              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Nome Dipartimento</label>
+              <div class="col-sm-10">
+                <input [(ngModel)]="dept_name" class="" type="text" placeholder="Nome Dipartmento">
+              </div>
+
+              <!-- SPACER -->
+              <div class="col-sm-12" style="height:10px"></div>
+
+              <!-- RADIO BUTTON -->
+              <!-- checked="true" -->
+
+              <div class="col-sm-2 col-sm-offset-2" style="padding-left:25px">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked (click)="has_clicked_fixed_bot(show_option_form = 'true', routing = 'fixed')">
+                  <label class="form-check-label" for="exampleRadios1" style="padding-left: 5px;">
+                      Fixed
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" (click)="has_clicked_pooled_bot(show_option_form = 'false', routing = 'pooled')">
+                  <label class="form-check-label" for="exampleRadios2" style="padding-left: 5px;">
+                      Pooled
+                  </label>
+                </div>
+              </div>
+              
+ 
+                    
+              <!-- SPACER -->
+              <!-- <div class="col-sm-12" style="height:15px"></div> -->
+
+              
+              <!-- CREATE VIEW - SELECT BOT -->
+              <span *ngIf="SHOW_OPTION_FORM !== 'false'">
+                <!-- <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Bot</label> -->
+                <!-- <div class="col-sm-10"> -->
+                <div class="col-sm-8" style="padding-top:5px ">
+                  <select #selectElem (change)="setSelectedBot(selectElem.value)" class="" >
+                    <option class="not_selected" value="BOT_NOT_SELECTED" >Seleziona un BOT</option>
+                    <option  *ngFor="let bot of botsList" [value]="bot._id" [selected]="selectedId === bot._id">
+                      {{ bot.fullname }}
+                    </option>
+                  </select>
+                </div>
+              </span>
+
+              <!-- SPACER -->
+              <div class="col-sm-12" style="height:15px"></div>
+
+              <label style="" class="col-sm-2 "></label>
+              <div class="col-sm-10">
+                  <!-- [disabled]="bot_fullname?.length < 2 || FAQKB_NOT_SELECTED === true" -->
+              <span *ngIf="SHOW_OPTION_FORM !== 'false'">
+                <button class="btn btn-success" [disabled]="dept_name?.length < 2 || BOT_NOT_SELECTED === true"  (click)="createDepartment()">
+                  Crea Dipartimento
+                </button>
+              </span>
+              <span *ngIf="SHOW_OPTION_FORM === 'false'">
+                <button class="btn btn-success" [disabled]="dept_name?.length < 2"  (click)="createDepartment()">
+                  Crea Dipartimento
+                </button>
+              </span>
+              </div>
+
+            </span>
+
+            <span *ngIf="EDIT_VIEW">
+  
+                <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
+  
+                <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Nome Dipartmento</label>
+                <div class="col-sm-10">
+                  <input [(ngModel)]="deptName_toUpdate" class="input" type="text" placeholder="">
+                </div>
+        
+                <!-- SPACER -->
+                <!-- <div class="col-sm-12" style="height:10px"></div> -->
+                <div class="col-sm-2 col-sm-offset-2" style="padding-left:25px">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked (click)="has_clicked_fixed_bot(show_option_form = 'true', routing = 'fixed')">
+                      <label class="form-check-label" for="exampleRadios1" style="padding-left: 5px;">
+                          Fixed
+                      </label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" (click)="has_clicked_pooled_bot(show_option_form = 'false', routing = 'pooled')">
+                      <label class="form-check-label" for="exampleRadios2" style="padding-left: 5px;">
+                          Pooled
+                      </label>
+                    </div>
+                  </div>
+  
+                <!-- <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">FAQ Knowledge Base</label> -->
+                <div class="col-sm-8">  
+                  <select #selectElem (change)="setSelectedBot(selectElem.value)"  >
+                    <!-- <option>{{selectedValue}} </option> -->
+                    <option  *ngFor="let bot of botsList" [value]="bot._id" [selected]="selectedId === bot._id">
+                      {{bot.fullname}}
+                      
+                    </option>
+                  </select>
+                </div>
+  
+                <!-- SPACER -->
+                <div class="col-sm-12" style="height:15px"></div>
+                
+                <label style="" class="col-sm-2"></label>
+                <div class="col-sm-10"> 
+                  <button class="btn btn-success" (click)="edit()">
+                    Modifica Bot
+                  </button>
+                </div>
+              </span>
+              <!-- /. EDIT_VIEW -->
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>

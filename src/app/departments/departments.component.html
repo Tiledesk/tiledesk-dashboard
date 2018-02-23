@@ -1,0 +1,327 @@
+<!-- <div class="content columns">
+    <main class="column is-10 is-offset-1">
+  
+    
+    <h1>Dipartimenti</h1>
+    <hr>
+    <div class="field is-horizontal">
+      <div class="field-body">
+  
+        <div class="field">
+          <p class="control is-expanded has-icons-left">
+            <input [(ngModel)]="dept_name" placeholder="Department name" class="input">
+            <span class="icon is-small is-left">
+              
+              <i class="fa fa-university"></i>
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <button class="button is-success" (click)="createDepartment()" [disabled]="dept_name?.length < 2 || dept_name?.length > 50">
+      Add new department
+    </button>
+  
+    
+    <table class="table is-narrow is-bordered" style="margin-top:25px">
+      <thead>
+        <tr>
+          <th style="">
+            Id
+          </th>
+          <th>
+            Dept Name
+          </th>
+          <th>
+            Creation Date
+          </th>
+        </tr>
+      </thead>
+  
+      <tbody>
+  
+        <tr *ngFor="let dept of departments">
+          <td>
+            {{ dept?._id }}
+          </td>
+          <td>
+            {{ dept?.name }}
+          </td>
+          <td>
+            {{ dept?.createdAt | date: 'd/M/y'}}
+          </td>
+          <td style="text-align: center!important">
+            
+            <span class="button is-small is-danger" (click)='openDeleteModal(dept?._id, dept?.name, hasClickedDeleteModal = true)'>
+              Delete
+            </span>
+          </td>
+          <td style="text-align: center!important">
+            <span class="button is-small is-warning" (click)='openUpdateModal(dept?._id, dept?.name, hasClickedUpdateModal = true)'>
+              Edit
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              
+              <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
+                <h4 class="modal-title">Update department with id:
+                  <code>{{id_toUpdate}}</code>
+                </h4>
+              </span>
+      
+              <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
+                <h4 class="modal-title">Delete department with id:
+                  <code>{{id_toDelete}}</code>
+                </h4>
+              </span>
+      
+            </div>
+      
+            <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
+              <div class="modal-body">
+                <p>{{deptName_toUpdate}}</p>
+                <div class="field is-horizontal">
+                  <div class="field-body">
+      
+                    <div class="field">
+                      <p class="control is-expanded has-icons-left">
+                        <input [(ngModel)]="deptName_toUpdate" placeholder="Full name" class="input">
+                        <span class="icon is-small is-left">
+                          <i class="fas fa-user fa"></i>
+                        </span>
+                      </p>
+                    </div>
+        
+                  </div>
+                </div>
+              </div>
+            </span>
+      
+            <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
+              <div class="modal-body">
+      
+              <p> Are you sure you want to delete the department <strong>{{deptName_toDelete}}</strong> ?</p>
+              </div>
+            </span>
+      
+            <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" (click)="onCloseUpdateModalHandled()">Save</button>
+              </div>
+            </span>
+      
+            <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" (click)="onCloseDeleteModalHandled()">Confirm</button>
+              </div>
+            </span>
+      
+          </div>
+         
+        </div>
+       
+      </div>
+    </main>
+  </div> -->
+
+  <!-- NEW FOR THIS TEMPALTE -->
+
+<p style="margin-top:10px; padding-left:30px" class="navbar-brand">Dipartimenti</p> 
+<div class="main-content" style="padding-top:0px">
+  <div class="container-fluid">
+
+    <div class="create" style="text-align: right!important; padding-top:25px; padding-bottom:0px">
+      <button class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="goToEditAddPage_CREATE()">
+          <!-- is-small -->
+        <span class="icon" style="padding-right:8px">
+          <i class="material-icons">add_circle</i>
+        </span>
+        Aggiungi Dipartimento
+      </button>
+    </div>
+
+    <!-- <h1>Dipartimenti</h1>
+    <hr>
+    <div class="field is-horizontal">
+      <div class="field-body">
+  
+        <div class="field">
+          <p class="control is-expanded has-icons-left">
+            <input [(ngModel)]="dept_name" placeholder="Department name" class="input">
+            <span class="icon is-small is-left">
+              
+              <i class="fa fa-university"></i>
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <button class="button is-success" (click)="createDepartment()" [disabled]="dept_name?.length < 2 || dept_name?.length > 50">
+      Add new department
+    </button> -->
+  
+    <!-- MOMGO DB DEPARTMENTS LIST -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-content table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+
+                  <th>
+                    <span style="color: #566787">
+                      <!-- Dept Name -->
+                      <strong>
+                        Nome Dipart.
+                      </strong>
+                    </span>
+                  </th>
+                  <th>
+                    <span style="color: #566787"> 
+                      <strong>
+                        Id
+                      </strong>
+                    </span>
+                  </th>
+                  <th>
+                    <span style="color: #566787">
+                      <!-- Creation Date -->
+                      <strong>
+                      Data creazione
+                      </strong>
+                    </span>
+                  </th>
+                  <th>
+                    <span style="color: #566787">
+                      <strong>
+                        Azioni
+                      </strong>  
+                    </span>
+                  </th>
+                </tr>
+              </thead>
+  
+              <tbody>
+  
+                <tr *ngFor="let dept of departments">
+                  <td>
+                    {{ dept?.name }}
+                  </td>
+                  <td style="width: 280px !important">
+                    {{ dept?._id }}
+                  </td>
+                  <td>
+                    {{ dept?.createdAt | date: 'd/M/y'}}
+                  </td>
+                  <!-- <td style="text-align: center!important">
+                    <span class="button is-small is-danger" (click)='openDeleteModal(dept?._id, dept?.name, hasClickedDeleteModal = true)'>
+                      Delete
+                    </span>
+                  </td>
+                  <td style="text-align: center!important">
+                    <span class="button is-small is-warning" (click)='goToEditAddPage_EDIT(dept?._id, dept?.name)'>
+                      Edit
+                    </span>
+                  </td> -->
+
+                  <!-- NEW EDIT ADD -->
+                  <td class="td-actions text-right">
+                    <button type="button" rel="tooltip" title="Modifica Bot" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(dept?._id, dept?.name)'>
+                      <i class="material-icons">edit</i>
+                    </button>
+                    <button type="button" rel="tooltip" title="Elimina Bot" class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal(dept?._id, dept?.name, hasClickedDeleteModal = true)'>
+                      <i class="material-icons">close</i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+  
+      <!-- <loading-spinner></loading-spinner> -->
+    <!-- MODAL -->
+    <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <!-- <strong></strong> -->
+              <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
+                <h4 class="modal-title">Update department with id:
+                  <code>{{id_toUpdate}}</code>
+                </h4>
+              </span>
+      
+              <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
+                <h4 class="modal-title">
+                  <!-- Delete department with id: -->
+                  Elimina dipartmento con id:
+                  <code>{{id_toDelete}}</code>
+                </h4>
+              </span>
+      
+            </div>
+      
+            <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
+              <div class="modal-body">
+                <p>{{deptName_toUpdate}}</p>
+                <div class="field is-horizontal">
+                  <div class="field-body">
+      
+                    <div class="field">
+                      <p class="control is-expanded has-icons-left">
+                        <input [(ngModel)]="deptName_toUpdate" placeholder="Full name" class="input">
+                        <span class="icon is-small is-left">
+                          <i class="fas fa-user fa"></i>
+                        </span>
+                      </p>
+                    </div>
+        
+                  </div>
+                </div>
+              </div>
+            </span>
+      
+            <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
+              <div class="modal-body">
+      
+              <!-- <p> Are you sure you want to delete the department <strong>{{deptName_toDelete}}</strong>?</p> -->
+              <p> Sei sicuro di voler eliminare il dipartimento <strong>{{deptName_toDelete}}</strong> ?</p>
+              </div>
+            </span>
+      
+            <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" (click)="onCloseUpdateModalHandled()">Save</button>
+              </div>
+            </span>
+      
+            <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" (click)="onCloseDeleteModalHandled()">Conferma</button>
+              </div>
+            </span>
+      
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+
+  </div>
+</div>
+    <!-- </main>
+  </div> -->

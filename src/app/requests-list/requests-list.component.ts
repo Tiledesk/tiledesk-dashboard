@@ -51,6 +51,7 @@ export class RequestsListComponent implements OnInit {
 
   JOIN_TO_GROUP_HAS_ERROR = false;
   CURRENT_USER_IS_ALREADY_MEMBER = false;
+  SEARCH_FOR_SAME_UID_FINISHED = false;
 
   constructor(
     private requestsService: RequestsService,
@@ -127,6 +128,8 @@ export class RequestsListComponent implements OnInit {
   openViewMsgsModal(recipient: string) {
 
     this.JOIN_TO_GROUP_HAS_ERROR = false;
+    this.SEARCH_FOR_SAME_UID_FINISHED = false;
+
     this.display = 'block';
     console.log(' ++ ++ request recipient ', recipient);
 
@@ -215,22 +218,33 @@ export class RequestsListComponent implements OnInit {
         let i: number;
         for (i = 0; i < lengthOfUidKeysInMemberObject; i++) {
           const uidKey = uidKeysInMemberObject[i];
-          console.log('UID KEY ', uidKey)
+          // console.log('UID KEY ', uidKey)
           if (uidKey === this.currentUserFireBaseUID) {
 
-            console.log('THE CURRENT USER IS ALREADY JOINED TO THIS CONVERSATION - SHOW BTN ENTER')
+            // console.log('THE CURRENT USER IS ALREADY JOINED TO THIS CONVERSATION - SHOW BTN ENTER')
+            console.log('THE MEMBER UID: ', uidKey, '  IS === TO CURRENT USER UID - SHOW BTN ENTER')
             this.CURRENT_USER_IS_ALREADY_MEMBER = true;
             this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = false
 
+            this.SEARCH_FOR_SAME_UID_FINISHED = true;
+            break;
+
+
           } else {
-            console.log('THE CURRENT USER !IS NOT JOINED TO THIS CONVERSATION - SHOW BTN JOIN')
+            // console.log('THE CURRENT USER !IS NOT JOINED TO THIS CONVERSATION - SHOW BTN JOIN')
+            console.log('THE MEMBER UID: ', uidKey, '  IS !== TO CURRENT USER UID - SHOW BTN JOIN')
             this.CURRENT_USER_IS_ALREADY_MEMBER = false;
             this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = false
-
+            console.log('CYCLE NUMBER ', i)
+            if (i + 1 === lengthOfUidKeysInMemberObject) {
+              console.log('END OF LOOP')
+              this.SEARCH_FOR_SAME_UID_FINISHED = true;
+            }
           }
         }
       },
       (err) => {
+        this.SEARCH_FOR_SAME_UID_FINISHED = true;
         console.log('REQUEST (ALIAS CONVERSATION) GET BY RECIPIENT ERROR ', err);
       },
       () => {

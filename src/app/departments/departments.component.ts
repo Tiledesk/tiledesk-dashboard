@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { MongodbDepartmentService } from '../services/mongodb-department.service';
 import { Department } from '../models/department-model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'mongodb-departments',
-  templateUrl: './mongodb-departments.component.html',
-  styleUrls: ['./mongodb-departments.component.scss'],
+  templateUrl: './departments.component.html',
+  styleUrls: ['./departments.component.scss'],
 })
-export class MongodbDepartmentsComponent implements OnInit {
+export class DepartmentsComponent implements OnInit {
 
   departments: Department[];
 
@@ -30,12 +31,24 @@ export class MongodbDepartmentsComponent implements OnInit {
 
   constructor(
     private mongodbDepartmentService: MongodbDepartmentService,
+    private router: Router,
   ) {
 
   }
 
   ngOnInit() {
     this.getDepartments();
+  }
+
+  // GO TO  BOT-EDIT-ADD COMPONENT
+  goToEditAddPage_CREATE() {
+    this.router.navigate(['/department/create']);
+  }
+
+  // GO TO BOT-EDIT-ADD COMPONENT AND PASS THE BOT ID (RECEIVED FROM THE VIEW)
+  goToEditAddPage_EDIT(dept_id: string) {
+    console.log('DEPT ID ', dept_id);
+    this.router.navigate(['/department/edit', dept_id]);
   }
 
   /**
@@ -49,30 +62,31 @@ export class MongodbDepartmentsComponent implements OnInit {
   }
 
   /**
-   * ADD CONTACT
+   * ADD DEPARMENT
+   * !! MOVED IN DEPARTMENT-EDIT-ADD COMPONENT
    */
-  createDepartment() {
-    console.log('MONGO DB DEPT-NAME DIGIT BY USER ', this.dept_name);
-    this.mongodbDepartmentService.addMongoDbDepartments(this.dept_name)
-      .subscribe((department) => {
-        console.log('POST DATA ', department);
+  // createDepartment() {
+  //   console.log('MONGO DB DEPT-NAME DIGIT BY USER ', this.dept_name);
+  //   this.mongodbDepartmentService.addMongoDbDepartments(this.dept_name)
+  //     .subscribe((department) => {
+  //       console.log('POST DATA ', department);
 
-        this.dept_name = '';
+  //       this.dept_name = '';
 
-        // RE-RUN GET CONTACT TO UPDATE THE TABLE
-        // this.getDepartments();
-        this.ngOnInit();
-      },
-      (error) => {
+  //       // RE-RUN GET CONTACT TO UPDATE THE TABLE
+  //       // this.getDepartments();
+  //       this.ngOnInit();
+  //     },
+  //     (error) => {
 
-        console.log('POST REQUEST ERROR ', error);
+  //       console.log('POST REQUEST ERROR ', error);
 
-      },
-      () => {
-        console.log('POST REQUEST * COMPLETE *');
-      });
+  //     },
+  //     () => {
+  //       console.log('POST REQUEST * COMPLETE *');
+  //     });
 
-  }
+  // }
 
   /**
    * MODAL DELETE DEPARTMENT
@@ -145,29 +159,29 @@ export class MongodbDepartmentsComponent implements OnInit {
   /**
    * UPDATE CONTACT (WHEN THE 'SAVE' BUTTON IN MODAL IS CLICKED)
    */
-  onCloseUpdateModalHandled() {
-    // HIDE THE MODAL
-    this.display = 'none';
+  // onCloseUpdateModalHandled() {
+  //   // HIDE THE MODAL
+  //   this.display = 'none';
 
-    console.log('ON MODAL UPDATE CLOSE -> CONTACT ID ', this.id_toUpdate);
-    console.log('ON MODAL UPDATE CLOSE -> CONTACT FULL-NAME UPDATED ', this.deptName_toUpdate);
-    this.mongodbDepartmentService.updateMongoDbDepartment(this.id_toUpdate, this.deptName_toUpdate).subscribe((data) => {
-      console.log('PUT DATA ', data);
+  //   console.log('ON MODAL UPDATE CLOSE -> CONTACT ID ', this.id_toUpdate);
+  //   console.log('ON MODAL UPDATE CLOSE -> CONTACT FULL-NAME UPDATED ', this.deptName_toUpdate);
+  //   this.mongodbDepartmentService.updateMongoDbDepartment(this.id_toUpdate, this.deptName_toUpdate).subscribe((data) => {
+  //     console.log('PUT DATA ', data);
 
-      // RE-RUN GET CONTACT TO UPDATE THE TABLE
-      // this.getDepartments();
-      this.ngOnInit();
-    },
-      (error) => {
+  //     // RE-RUN GET CONTACT TO UPDATE THE TABLE
+  //     // this.getDepartments();
+  //     this.ngOnInit();
+  //   },
+  //     (error) => {
 
-        console.log('PUT REQUEST ERROR ', error);
+  //       console.log('PUT REQUEST ERROR ', error);
 
-      },
-      () => {
-        console.log('PUT REQUEST * COMPLETE *');
-      });
+  //     },
+  //     () => {
+  //       console.log('PUT REQUEST * COMPLETE *');
+  //     });
 
-  }
+  // }
 
   // CLOSE MODAL WITHOUT SAVE THE UPDATES OR WITHOUT CONFIRM THE DELETION
   onCloseModal() {

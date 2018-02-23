@@ -113,19 +113,27 @@
                                     </span>
                                   </span>
                                 </td>
-                                <td>
-                                  <p style="font-size:0.9em">{{ request?.recipient }}</p>
+                                <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
+                                  <p style="font-size:0.9em">
+                                    {{ request?.recipient }}
+                                  </p>
                                 </td>
-                                <td>
+                                <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
                                   <!-- <p style="font-size:0.9em">{{ request.sender_fullname }}</p> -->
-                                  <p style="font-size:0.9em">{{ request.requester_fullname }}</p>
+                                  <p style="font-size:0.9em">
+                                    {{ request.requester_fullname }}
+                                  </p>
                                   
                                 </td>
-                                <td>
-                                  <p style="font-size:0.9em">{{ request?.text }}</p>
+                                <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
+                                  <p style="font-size:0.9em">
+                                    {{ request?.text }}
+                                  </p>
                                 </td>
-                                <td>
-                                  <p style="font-size:0.9em">{{ request?.timestamp | date: 'd/M/y HH:mm:ss'}}</p>
+                                <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
+                                  <p style="font-size:0.9em">
+                                    {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}}
+                                  </p>
                                 </td>
                                 <!-- <td>
                                   <span class="" (click)='openViewMsgsModal(request?.recipient, hasClickedUpdateModal=true)'>
@@ -196,42 +204,55 @@
             <div class="modal-footer">
               <button class="btn btn-white" (click)="onCloseModal()">Cancel</button>
               <span style="padding-right:25px"></span>
-
-              <!-- HAS BEEN OPENED THE MODAL WINDOW: BY DEFAULT SHOW THE BUTTON 'JOIN' 
-                   * FALSE IS THE INITIAL VALUE OF: HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST
-                   * FALSE IS THE INITIAL VALUE OF: SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING
-                   * FALSE IS THE INITIAL VALUE OF: JOIN_TO_GROUP_HAS_ERROR 
-                   * IF IS FALSE THE VALUE OF: CURRENT_USER_IS_ALREADY_MEMBER   -->
-              <span *ngIf="HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false && SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === false && JOIN_TO_GROUP_HAS_ERROR === false && CURRENT_USER_IS_ALREADY_MEMBER === false">
-                <button class="btn btn-default" (click)="onJoinHandled()">
-                  Join
-                </button>
-              </span>
-
-              <!-- THE USER CLICK ON JOIN: SHOWS THE BTN 'PROCESSING'
-                   * FALSE IS THE CURRENT VALUE OF: HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST 
-                   * TRUE IS THE CURRENT VALUE OF: SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING
-                   * FALSE IS THE CURRENT VALUE OF: JOIN_TO_GROUP_HAS_ERROR  -->
-              <span *ngIf="HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false && SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === true && JOIN_TO_GROUP_HAS_ERROR === false">
+              
+              <!-- SHOWS A SPINNER BUTTON IF THE 'FOR LOOP' OF COMPARISON OF THE MEMBERS UID KEY TO THE CURRENT USER UID IS NOT FINISHED  -->
+              <span *ngIf="!SEARCH_FOR_SAME_UID_FINISHED">
                 <button class="btn btn-default">
                   <i class="fa fa-spinner fa-spin"></i> Elaborazione
                 </button>
               </span>
 
-              <!-- IF THE CALLBALL JOIN-TO-GROUP HAS ERROR SHOWS THE BTN ERROR (DISABLED)  -->
-              <span *ngIf="JOIN_TO_GROUP_HAS_ERROR === true">
-                <button class="btn btn-danger" disabled>
-                  Errore
-                </button>
+              <!-- SHOWS THE FOLLOWING BUTTONS ONLY IF THE 'FOR LOOP' OF COMPARISON OF THE MEMBERS UID KEY TO THE CURRENT USER UID IS FINISHED  -->
+              <span *ngIf="SEARCH_FOR_SAME_UID_FINISHED">
+
+                <!-- HAS BEEN OPENED THE MODAL WINDOW: BY DEFAULT SHOW THE BUTTON 'JOIN' 
+                    * FALSE IS THE INITIAL VALUE OF: HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST
+                    * FALSE IS THE INITIAL VALUE OF: SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING
+                    * FALSE IS THE INITIAL VALUE OF: JOIN_TO_GROUP_HAS_ERROR 
+                    * IF IS FALSE THE VALUE OF: CURRENT_USER_IS_ALREADY_MEMBER   -->
+                <span *ngIf="HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false && SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === false && JOIN_TO_GROUP_HAS_ERROR === false && CURRENT_USER_IS_ALREADY_MEMBER === false">
+                  <button class="btn btn-default" (click)="onJoinHandled()">
+                    Join
+                  </button>
+                </span>
+
+                <!-- THE USER CLICK ON JOIN: SHOWS THE BTN 'PROCESSING'
+                    * FALSE IS THE CURRENT VALUE OF: HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST 
+                    * TRUE IS THE CURRENT VALUE OF: SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING
+                    * FALSE IS THE CURRENT VALUE OF: JOIN_TO_GROUP_HAS_ERROR  -->
+                <span *ngIf="HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false && SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === true && JOIN_TO_GROUP_HAS_ERROR === false">
+                  <button class="btn btn-default">
+                    <i class="fa fa-spinner fa-spin"></i> Elaborazione
+                  </button>
+                </span>
+
+                <!-- IF THE CALLBALL JOIN-TO-GROUP HAS ERROR SHOWS THE BTN ERROR (DISABLED)  -->
+                <span *ngIf="JOIN_TO_GROUP_HAS_ERROR === true">
+                  <button class="btn btn-danger" disabled>
+                    Errore
+                  </button>
+                </span>
+
+                <!-- WHEN THE JOIN TO GROUP POST REQUEST IS COMPLETE 
+                    * OR THE CURRENT USER IS ALREADY A MENBER OF THE CONVERSATION SHOW THE BTN 'ENTER' -->
+                <span *ngIf="HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === true || CURRENT_USER_IS_ALREADY_MEMBER === true">
+                  <button class="btn btn-info">
+                    <a style="color: white;" target="_blank" href="http://support.chat21.org/web/?recipient={{requestRecipient}}" > Entra </a>
+                  </button>
+                </span>
+
               </span>
 
-              <!-- WHEN THE JOIN TO GROUP POST REQUEST IS COMPLETE 
-                   * OR THE CURRENT USER IS ALREADY A MENBER OF THE CONVERSATION SHOW THE BTN 'ENTER' -->
-              <span *ngIf="HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === true || CURRENT_USER_IS_ALREADY_MEMBER === true">
-                <button class="btn btn-info">
-                  <a style="color: white;" target="_blank" href="http://support.chat21.org/web/?recipient={{requestRecipient}}" > Entra </a>
-                </button>
-              </span>
 
               <span style="padding-right:25px"></span>
 

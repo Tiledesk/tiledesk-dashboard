@@ -5,5 +5,7 @@ export interface Department {
     name: string;
     appId: string;
     createdBy: string;
+    id_bot: string;
+    routing: string;
     __v: any;
 }
