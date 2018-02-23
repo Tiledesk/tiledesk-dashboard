@@ -1,7 +1,44 @@
 /* MODAL START */
+
+// MODAL BOOTSTRAP BREAKPOINTS
+// from 992 to 1020px 
+@media (min-width: 992px) and (max-width: 1019px){
+.modal-dialog {
+        margin-left: 33%;
+    }
+}
+
+@media (min-width: 1020px) and (max-width: 1199px) {
+    .modal-dialog {
+        margin-left: 35%;
+    }
+}
+
+@media (min-width: 1200px) and (max-width: 1469px)  {
+    .modal-dialog {
+        margin-left: 37%;
+    }
+}
+
+@media (min-width: 1470px) and (max-width: 1549px) {
+    .modal-dialog {
+        margin-left: 38%;
+    }
+}
+
+@media (min-width: 1550px) and (max-width: 1649px){
+    .modal-dialog {
+        margin-left: 39%;
+    }
+}
+@media (min-width: 1650px) {
+    .modal-dialog {
+        margin-left: 40%;
+    }
+}
+
 .modal {
-    top: 25%;
-    
+    top: 0;
 }
 .modal-content {
     position: relative;
@@ -46,48 +83,55 @@ button.close {
 
 .modal-body {
     position: relative;
-    // padding: 15px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
     padding-left: 15px;
 }
 
 .modal-footer {
-    padding: 15px;
+    // padding: 15px;
     text-align: right;
     border-top: 1px solid #e5e5e5;
-}
-.btn-default {
-    color: #333;
-    background-color: #fff;
-    border-color: #ccc;
+    // background-color: #edf0f1;
+    background-color: #eeeeee;
+    padding-top:10px !important;
 }
 
-.btn {
-    display: inline-block;
-    padding: 6px 12px;
-    margin-bottom: 0;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.42857143;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    -ms-touch-action: manipulation;
-    touch-action: manipulation;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    background-image: none;
-    border: 1px solid transparent;
-    border-radius: 4px;
-}
 
-.btn-default {
-    color: #333;
-    background-color: #fff;
-    border-color: #ccc;
-}
+// .btn-default {
+//     color: #333;
+//     background-color: #fff;
+//     border-color: #ccc;
+// }
+
+// .btn {
+//     display: inline-block;
+//     padding: 6px 12px;
+//     margin-bottom: 0;
+//     font-size: 14px;
+//     font-weight: 400;
+//     line-height: 1.42857143;
+//     text-align: center;
+//     white-space: nowrap;
+//     vertical-align: middle;
+//     -ms-touch-action: manipulation;
+//     touch-action: manipulation;
+//     cursor: pointer;
+//     -webkit-user-select: none;
+//     -moz-user-select: none;
+//     -ms-user-select: none;
+//     user-select: none;
+//     background-image: none;
+//     border: 1px solid transparent;
+//     border-radius: 4px;
+// }
+
+// .btn-default {
+//     color: #333;
+//     background-color: #fff;
+//     border-color: #ccc;
+// }
 
 /* MODAL END */
 
@@ -141,5 +185,4 @@ button.close {
     bottom: 10px; 
     right: 20px; 
     position: absolute;
-
 }

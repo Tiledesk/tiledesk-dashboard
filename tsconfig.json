@@ -15,10 +15,6 @@
     "lib": [
       "es2016",
       "dom"
-    ],
-    "strict": true
-  },
-  "angularCompilerOptions": {
-    "preserveWhitespaces": false
+    ]
   }
 }

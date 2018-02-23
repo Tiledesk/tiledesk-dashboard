@@ -5,4 +5,7 @@ export interface Request {
     text?: string;
     timestamp?: number;
     membersCount?: number;
+    support_status?: number;
+    members?: boolean;
+    requester_fullname?: string;
   }

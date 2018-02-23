@@ -1,34 +1,40 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
+import { RouterModule } from '@angular/router';
 
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule } from './app.routing';
+import { ComponentsModule } from './components/components.module';
+
 import { AppComponent } from './app.component';
 
-///// Start FireStarter
-
-// Core
-import { CoreModule } from './core/core.module';
-
-// Shared/Widget
-import { SharedModule } from './shared/shared.module';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { TableListComponent } from './table-list/table-list.component';
+import { TypographyComponent } from './typography/typography.component';
+import { IconsComponent } from './icons/icons.component';
+import { MapsComponent } from './maps/maps.component';
+import { NotificationsComponent } from './notifications/notifications.component';
+import { UpgradeComponent } from './upgrade/upgrade.component';
 
 // Feature Modules
 import { ItemModule } from './items/shared/item.module';
 import { UploadModule } from './uploads/shared/upload.module';
 import { UiModule } from './ui/shared/ui.module';
 import { NotesModule } from './notes/notes.module';
-///// End FireStarter
+///// Start FireStarter
+// Core
+import { CoreModule } from './core/core.module';
 
+// Shared/Widget
+import { SharedModule } from './shared/shared.module';
 import { environment } from '../environments/environment';
-
 import { AngularFireModule } from 'angularfire2';
 export const firebaseConfig = environment.firebaseConfig;
 import { AngularFirestoreModule } from 'angularfire2/firestore';
-import { HttpModule } from '@angular/http';
 
 import { HomeComponent } from './home/home.component';
-
 import { ChatComponent } from './chat/chat.component';
 
 // FIRESTORE
@@ -38,7 +44,6 @@ import { RequestsService } from './services/requests.service';
 import { RequestsListComponent } from './requests-list/requests-list.component';
 
 // MONGO DB
-import { MongodbConfService } from './utils/mongodb-conf.service';
 
 import { MongoDbContactsService } from './services/mongodb-contacts.service';
 import { ContactsComponent } from './contacts/contacts.component';
@@ -57,21 +62,28 @@ import { FaqKbEditAddComponent } from './faq-kb-edit-add/faq-kb-edit-add.compone
 import { FaqEditAddComponent } from './faq-edit-add/faq-edit-add.component';
 import { BotEditAddComponent } from './bot-edit-add/bot-edit-add.component';
 
-import { ReactiveFormsModule } from '@angular/forms';
-
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { AnalyticsComponent } from './analytics/analytics.component';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 
 // AoT requires an exported function for factories
-export function HttpLoaderFactory(http: HttpClient)  {
+export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
-
 @NgModule({
   declarations: [
     AppComponent,
+    DashboardComponent,
+    UserProfileComponent,
+    TableListComponent,
+    TypographyComponent,
+    IconsComponent,
+    MapsComponent,
+    NotificationsComponent,
+    UpgradeComponent,
     HomeComponent,
     UsersListComponent,
     ContactsComponent,
@@ -86,6 +98,8 @@ export function HttpLoaderFactory(http: HttpClient)  {
     FaqKbEditAddComponent,
     FaqEditAddComponent,
     BotEditAddComponent,
+    AnalyticsComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -96,9 +110,11 @@ export function HttpLoaderFactory(http: HttpClient)  {
     ItemModule,
     UiModule,
     NotesModule,
+    HttpModule,
+    ComponentsModule,
+    RouterModule,
     AngularFireModule.initializeApp(firebaseConfig),
     HttpModule,
-    ReactiveFormsModule,
     HttpClientModule,
     TranslateModule.forRoot({
       loader: {
@@ -112,14 +128,14 @@ export function HttpLoaderFactory(http: HttpClient)  {
     UsersService,
     MongoDbContactsService,
     RequestsService,
-    MongodbConfService,
     MongodbDepartmentService,
     MongodbFaqService,
     BotService,
     FaqKbService,
+    {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [
-    AppComponent,
-  ],
+    AppComponent
+  ]
 })
 export class AppModule { }

@@ -1,7 +1,4 @@
-
-<!-- <div class="content columns">
-    <main class="column is-10 is-offset-1"> -->
-  
+<!--  
       <span *ngIf="CREATE_VIEW">
         <h1>
           <span class="icon" style="cursor: pointer;" (click)="goBackToFaqList()">
@@ -20,7 +17,7 @@
           <div class="field-body">
             <div class="field">
               <div class="control">
-                <!-- <input [(ngModel)]="faqQuestion" class="input" type="text" placeholder="Question"> -->
+               
                 <textarea [(ngModel)]="question" class="textarea" placeholder="Question"></textarea>
               </div>
             </div>
@@ -34,7 +31,7 @@
           <div class="field-body">
             <div class="field">
               <div class="control">
-                <!-- <input [(ngModel)]="answer" class="input" type="text" placeholder="Answer"> -->
+            
                 <textarea [(ngModel)]="answer" class="textarea" placeholder="Answer"></textarea>
               </div>
             </div>
@@ -43,7 +40,7 @@
   
         <div class="field is-horizontal">
           <div class="field-label">
-            <!-- Left empty for spacing -->
+            
           </div>
           <div class="field-body">
             <div class="field">
@@ -57,11 +54,11 @@
         </div>
   
       </span>
-      <!-- /. CREATE_VIEW -->
+      
   
       <span *ngIf="EDIT_VIEW">
           <h1>
-            <!-- GO BACK -->
+            
             <span class="icon" style="cursor: pointer;" (click)="goBackToFaqList()">
               <i class="fa fa-angle-left" style="font-size:1em; color:#afafaf"></i>
             </span>
@@ -78,7 +75,7 @@
             <div class="field-body">
               <div class="field">
                 <div class="control">
-                  <!-- <input [(ngModel)]="question_toUpdate" class="input" type="text" placeholder="Question"> -->
+                  
                   <textarea [(ngModel)]="question_toUpdate" class="textarea" placeholder="Question"></textarea>
                 </div>
               </div>
@@ -92,7 +89,7 @@
             <div class="field-body">
               <div class="field">
                 <div class="control">
-                  <!-- <input [(ngModel)]="answer_toUpdate" class="input" type="text" placeholder="Answer"> -->
+                  
                   <textarea [(ngModel)]="answer_toUpdate" class="textarea" placeholder="Answer"></textarea>
                 </div>
               </div>
@@ -101,7 +98,7 @@
     
           <div class="field is-horizontal">
             <div class="field-label">
-              <!-- Left empty for spacing -->
+             
             </div>
             <div class="field-body">
               <div class="field">
@@ -114,10 +111,88 @@
             </div>
           </div>
     
-        </span>
-        <!-- /. EDIT_VIEW -->
-  
-  
-    <!-- </main>
-  </div> -->
+        </span> -->
+   
+ 
+<!-- NEW FOR THIS TEMPLATE -->
+<div class="navbar-brand" style="z-index: -1;margin-top:10px; padding-left:30px">
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBackToFaqList()">keyboard_arrow_left</i>
+  <span *ngIf="CREATE_VIEW">Aggiungi FAQ</span>
+  <span *ngIf="EDIT_VIEW">Modifica FAQ</span>
+</div>
+
+<div class="main-content" style="padding-top:0px">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card" style="padding-top:25px; padding-bottom:25px">
+          <div class="card-content">
+
+            <span *ngIf="CREATE_VIEW">
+
+              <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Domanda</label>
+              <div class="col-sm-10">
+                <textarea style="padding-left: 5px;padding-top: 7px;" [(ngModel)]="question" class="textarea" rows="4" placeholder="Domanda"></textarea>
+              </div>
+
+              <!-- SPACER -->
+              <div class="col-sm-12" style="height:10px"></div>
+
+              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Risposta</label>
+              <div class="col-sm-10">
+                <textarea style="padding-left: 5px;padding-top: 7px;" [(ngModel)]="answer" class="textarea" rows="4" placeholder="Risposta"></textarea>
+              </div>
+
+              <!-- SPACER -->
+              <div class="col-sm-12" style="height:15px"></div>
+
+              <label style="" class="col-sm-2"></label>
+              <div class="col-sm-10"> 
+                <button class="btn btn-success" [disabled]="question?.length < 5 || answer?.length < 5" (click)="create()">
+                  Crea FAQ 
+                </button>
+              </div>
+
+
+            </span>
+            <!-- /. CREATE_VIEW -->
+
+            <span *ngIf="EDIT_VIEW">
+
+              <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Domanda</label>
+              <div class="col-sm-10">
+                <textarea style="padding-left: 5px;padding-top: 7px;" [(ngModel)]="question_toUpdate" class="textarea" rows="4" placeholder="Domanda"></textarea>
+              </div>
+
+              <!-- SPACER -->
+              <div class="col-sm-12" style="height:10px"></div>
+
+              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Risposta</label>
+              <div class="col-sm-10">
+                <textarea style="padding-left: 5px;padding-top: 7px;" [(ngModel)]="answer_toUpdate" class="textarea" rows="4" placeholder="Risposta"></textarea>
+              </div>
+
+              <div class="col-sm-12" style="height:15px"></div>
+
+              <label style="" class="col-sm-2"></label>
+              <div class="col-sm-10"> 
+                <button class="btn btn-success" (click)="edit()">
+                  Modifica FAQ
+                </button>
+              </div>
+
+
+            </span>
+            <!-- /. EDIT_VIEW -->
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
   

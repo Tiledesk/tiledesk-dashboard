@@ -1,8 +1,4 @@
-
-<!-- <div class="content columns">
-  <main class="column is-10 is-offset-1"> -->
-
-    <span *ngIf="CREATE_VIEW">
+    <!-- <span *ngIf="CREATE_VIEW">
       <h1>
         <span class="icon" style="cursor: pointer;" (click)="goBackToFaqKbList()">
           <i class="fa fa-angle-left" style="font-size:1em; color:#afafaf"></i>
@@ -41,7 +37,7 @@
 
       <div class="field is-horizontal">
         <div class="field-label">
-          <!-- Left empty for spacing -->
+          
         </div>
         <div class="field-body">
           <div class="field">
@@ -55,7 +51,7 @@
       </div>
 
     </span>
-    <!-- /. CREATE_VIEW -->
+    
 
     <span *ngIf="EDIT_VIEW">
         <h1>
@@ -96,7 +92,7 @@
   
         <div class="field is-horizontal">
           <div class="field-label">
-            <!-- Left empty for spacing -->
+           
           </div>
           <div class="field-body">
             <div class="field">
@@ -109,9 +105,100 @@
           </div>
         </div>
   
-      </span>
-      <!-- /. EDIT_VIEW -->
+      </span> -->
+    
+
+<!-- NEW FOR THIS TEMPALTE -->
+<div class="navbar-brand" style="z-index: -1;margin-top:10px; padding-left:30px">
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBackToFaqKbList()">keyboard_arrow_left</i>
+  <span *ngIf="CREATE_VIEW">Aggiungi FAQ Knowledge Base</span>
+  <span *ngIf="EDIT_VIEW">Modifica FAQ Knowledge Base</span>
+</div>
+  
+<div class="main-content" style="padding-top:0px">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card" style="padding-top:25px; padding-bottom:25px">
+          <div class="card-content">
 
 
-  <!-- </main>
-</div> -->
+            <span *ngIf="CREATE_VIEW">
+
+              <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Nome FAQ KB</label>
+              <div class="col-sm-10">
+                <!-- Faq kb name -->
+                <input [(ngModel)]="faqKbName" class="input" type="text" placeholder="Nome FAQ Knowledge Base">
+              </div>
+
+              <!-- SPACER -->
+              <div class="col-sm-12" style="height:10px"></div>
+
+              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Url FAQ KB</label>
+              <div class="col-sm-10">
+                <!-- Faq kb url -->
+                <input [(ngModel)]="faqKbUrl" class="input" type="text" placeholder="Url FAQ Knowledge Base">
+              </div>
+                
+              <!-- SPACER -->
+              <div class="col-sm-12" style="height:15px"></div>
+
+              <label style="" class="col-sm-2"></label>
+              <div class="col-sm-10"> 
+                <button class="btn btn-success" [disabled]="faqKbName?.length < 2 || faqKbUrl?.length < 5" (click)="create()">
+                  Crea FAQ KB
+                </button>
+              </div>
+
+            </span>
+            <!-- /. CREATE_VIEW -->
+
+            <span *ngIf="EDIT_VIEW">
+ 
+              <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Nome FAQ KB</label>
+              <div class="col-sm-10">
+                <input [(ngModel)]="faqKbNameToUpdate" class="input" type="text" placeholder="Nome FAQ Knowledge Base">
+              </div>
+
+              <!-- SPACER -->
+              <div class="col-sm-12" style="height:10px"></div>
+
+              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Url FAQ KB</label>
+              <div class="col-sm-10">
+                <input [(ngModel)]="faqKbUrlToUpdate" class="input" type="text" placeholder="Url FAQ Knowledge Base">
+              </div>
+
+              <!-- SPACER -->
+              <div class="col-sm-12" style="height:15px"></div>
+
+              <label style="" class="col-sm-2"></label>
+              <div class="col-sm-10"> 
+                <button class="btn btn-success" (click)="edit()">
+                  Modifica FAQ KB
+                </button>
+              </div>
+
+            </span>
+            <!-- /. EDIT_VIEW -->
+
+          </div>
+          <!-- ./ card-content -->
+
+        </div>
+        <!-- ./ card -->
+
+      </div>
+      <!-- ./ col-md-12 -->
+
+    </div>
+    <!-- ./ row -->
+
+  </div>
+  <!-- ./ container-fluid -->
+
+</div>
+<!-- ./ main-content -->

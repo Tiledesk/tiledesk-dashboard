@@ -29,6 +29,8 @@ export class BotEditAddComponent implements OnInit {
 
   FAQKB_NOT_SELECTED = true;
 
+  faqKbEdit: string;
+
   constructor(
     private botService: BotService,
     private router: Router,
@@ -230,10 +232,26 @@ export class BotEditAddComponent implements OnInit {
       });
   }
 
+  // WHEN IS PRESSES EDIT THE DATA PASSED TO THE FUNCTION updateMongoDbBot() ARE
+  // * this.id_bot: IS PASSED BY BOT COMPONENT VIA URL (see getBotId())
+  // * botFullNAme_toUpdate: IS RETURNED BY THE BOT OBJECT (see getBotById)
   edit() {
-    console.log('BOT ID TO UPDATE ', this.id_bot);
-    console.log('BOT FULL-NAME UPDATED ', this.botFullNAme_toUpdate);
-    this.botService.updateMongoDbBot(this.id_bot, this.botFullNAme_toUpdate, this.selectedFaqKbId).subscribe((data) => {
+    console.log('BOT ID WHEN EDIT IS PRESSED ', this.id_bot);
+    console.log('BOT FULL-NAME WHEN EDIT IS PRESSED ', this.botFullNAme_toUpdate);
+    console.log('BOT FAQ-KB WHEN EDIT IS PRESSED IF USER HAS SELECT ANOTHER FAQ-KB', this.faqKbId);
+    console.log('BOT FAQ-KB WHEN EDIT IS PRESSED IF USER ! DOES NOT SELECT A ANOTHER FAQ-KB', this.faqKbId);
+
+    // selectedFaqKbId
+    // IF THE USER, WHEN EDIT THE BOT, DOESN'T SELECT ANY NEW FAQ-KB this.selectedFaqKbId IS UNDEFINED
+    // SO SET this.faqKbEdit EQUAL TO THE FAQ-KB ID RETURNED BY getBotById
+    if (this.selectedFaqKbId === undefined) {
+
+      this.faqKbEdit = this.faqKbId
+
+    } else {
+      this.faqKbEdit = this.selectedFaqKbId
+    }
+    this.botService.updateMongoDbBot(this.id_bot, this.botFullNAme_toUpdate, this.faqKbEdit).subscribe((data) => {
       console.log('PUT DATA ', data);
 
       // RE-RUN GET CONTACT TO UPDATE THE TABLE

@@ -24,7 +24,7 @@ import { FaqKbComponent} from './faq-kb/faq-kb.component';
 import { FaqKbEditAddComponent} from './faq-kb-edit-add/faq-kb-edit-add.component';
 
 import { BotEditAddComponent} from './bot-edit-add/bot-edit-add.component';
-
+import { DashboardComponent} from './dashboard/dashboard.component';
 // Andrea
 import { ChatComponent } from './chat/chat.component';
 
@@ -57,6 +57,8 @@ const routes: Routes = [
   { path: 'editfaq/:faqkbid/:faqid', component: FaqEditAddComponent, canActivate: [AuthGuard] },
   { path: 'createbot', component: BotEditAddComponent, canActivate: [AuthGuard] },
   { path: 'editbot/:botid', component: BotEditAddComponent, canActivate: [AuthGuard] },
+
+  { path: 'dashboard', component: DashboardComponent },
 
   // uploads are lazy loaded
   { path: 'uploads', loadChildren: './uploads/shared/upload.module#UploadModule', canActivate: [AuthGuard] },

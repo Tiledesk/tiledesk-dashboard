@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Department } from '../models/department-model';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
-import { MongodbConfService } from '../utils/mongodb-conf.service';
+// import { MongodbConfService } from '../utils/mongodb-conf.service';
 import { environment } from '../../environments/environment';
 
 @Injectable()
@@ -19,7 +19,7 @@ export class MongodbDepartmentService {
 
   constructor(
     http: Http,
-    private mongodbConfService: MongodbConfService,
+    // private mongodbConfService: MongodbConfService,
   ) {
 
     this.http = http;

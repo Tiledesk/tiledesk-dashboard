@@ -88,7 +88,7 @@ export class AuthService {
   //// Email/Password Auth ////
 
   emailSignUp(email: string, password: string, displayName: string) {
-    console.log('x USER displa name ', displayName);
+    console.log('x USER display name ', displayName);
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then((user) => {
         console.log('x USER ', user);

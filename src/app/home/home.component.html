@@ -1,11 +1,10 @@
 <!-- <div class="content columns">
   <main class="column is-10 is-offset-1"> -->
-    <div *ngIf="auth.user | async as user">
+    
 
-        <h3>{{ "Howdy" | translate }}, {{ user.displayName }}</h3>
-    </div>
+
       
-    <hr style="margin-bottom:54px !important">
+    <!-- <hr style="margin-bottom:54px !important"> -->
 
 
     <!-- <div class="columns">
@@ -160,12 +159,112 @@
   </div>
 
 </section> -->
+<!-- NEW FOR THE CURRENT TEMPLATE -->
+<p style="margin-top:10px;  padding-left:30px " class="navbar-brand">Home</p> 
+
+<div class="main-content">
+    <div class="row">
+      <div class="col-lg-12 col-lg-offset-1 col-md-12 col-sm-12" style="">
+        <div *ngIf="auth.user | async as user">
+          <h4 style="padding-left:15px">{{ "Howdy" | translate }}, {{ user.displayName }}</h4>
+        </div>
+      </div>
+      <div class="col-lg-10 col-lg-offset-1 col-md-12 col-sm-12" style="padding-left:25px; padding-right:25px">
+        <hr style="border-color:#aaaeba; margin-top:0px; margin-bottom:40px">
+      </div>
+    </div>
+    
+  <div class="container-fluid">
+
+      <div class="row">
+          <!-- <div class="col-lg-3 col-md-6 col-sm-6"> -->
+          <div class="col-lg-5 col-lg-offset-1 col-md-6 col-sm-6" style="">  
+              <div class="card card-stats" style="max-width:350px" routerLink="/requests">
+                  <!-- <div class="card-header" data-background-color="orange"> -->
+                  <div class="card-header" data-background-color="orange">
+                      <i class="material-icons">group</i>
+                  </div>
+                  <div class="card-content">
+                      <!-- <p class="category">Used Space</p>
+                      <h3 class="title">Visitatori<small>GB</small></h3> -->
+                  </div>
+                  <div class="card-footer">
+                      <div class="stats">
+                          <!-- <i class="material-icons text-danger">warning</i> <a href="#pablo">Get More Space...</a> -->
+                          
+                          <h4 class="title">Visitatori</h4> 
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <!-- <div class="col-lg-3 col-md-6 col-sm-6"> -->
+          <div class="col-lg-5 col-lg-offset-1 col-md-6 col-sm-6" style="">
+              <div class="card card-stats" style="max-width:350px" routerLink="/chat">
+                  <!-- <div class="card-header" data-background-color="green"> -->
+                  <div class="card-header" data-background-color="orange">  
+                      <i class="material-icons">chat</i>
+                  </div>
+                  <div class="card-content">
+                      <!-- <p class="category">Revenue</p>
+                      <h3 class="title">$34,245</h3> -->
+                  </div>
+                  <div class="card-footer">
+                      <div class="stats">
+                          <!-- <i class="material-icons">date_range</i> Last 24 Hours -->
+                          <h4 class="title">Chat</h4> 
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <!-- <div class="col-lg-3 col-md-6 col-sm-6"> -->
+          <div class="col-lg-5 col-lg-offset-1 col-md-6 col-sm-6" style="">
+              <div class="card card-stats" style="max-width:350px" routerLink="/analytics">
+                  <div class="card-header" data-background-color="orange">
+                      <i class="material-icons">trending_up</i>
+                  </div>
+                  <div class="card-content">
+                      <!-- <p class="category">Fixed Issues</p>
+                      <h3 class="title">75</h3> -->
+                  </div>
+                  <div class="card-footer">
+                      <div class="stats">
+                          <!-- <i class="material-icons">local_offer</i> Tracked from Github -->
+                          <h4 class="title">Analytics</h4> 
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+          <!-- <div class="col-lg-3 col-md-6 col-sm-6"> -->
+          <div class="col-lg-5 col-lg-offset-1 col-md-6 col-sm-6" style="">
+              <div class="card card-stats" style="max-width:350px;" routerLink="/settings">
+                  <!-- <div class="card-header" data-background-color="blue"> -->
+                  <div class="card-header" data-background-color="orange" style="">  
+                      <!-- <i class="fa fa-twitter"></i> -->
+                      <i class="material-icons">settings</i>
+                  </div>
+                  <div class="card-content">
+                      <!-- <p class="category">Followers</p>
+                      <h3 class="title">+245</h3> -->
+                  </div>
+                  <div class="card-footer">
+                      <div class="stats">
+                          <!-- <i class="material-icons">update</i> Just Updated -->
+                          <h4 class="title">Settings</h4> 
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
 
 <!-- NEW - AS ZENDESK CHAT !!! FOR DEBUG -->
-  <div class="sandbox">
-    <div class="tile is-ancestor" >
+  <!-- <div class="sandbox">
+    <div class="tile is-ancestor" > -->
+   
        <!-- FIRESTORE USERS -->
-      <div class="tile is-parent" style="display:table" routerLink="/users">
+      <!-- <div class="tile is-parent" style="display:table" routerLink="/users">
         <div class="avatar">
           <i class="fa fa-users"></i>
         </div>
@@ -177,10 +276,10 @@
               List of Firestore users
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- MONGO DB Contacts -->
-      <div class="tile is-parent" style="display:table" routerLink="/contacts">
+      <!-- <div class="tile is-parent" style="display:table" routerLink="/contacts">
         <div class="avatar">
           <i class="fa fa-users"></i>
         </div>
@@ -192,10 +291,10 @@
             List of MongoDb contacts
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- FIRESTORE REQUESTS -->
-      <div class="tile is-parent" style="display:table" routerLink="/requests">
+      <!-- <div class="tile is-parent" style="display:table" routerLink="/requests">
         <div class="avatar">
           <i class="fa fa-commenting-o"></i>
         </div>
@@ -208,17 +307,17 @@
           </div>
         </div>
 
-      </div> <!-- tile is-parent! -->
-    </div> <!-- tile is-ancestor! -->
-  </div>  <!-- sandbox! -->
+      </div>
+    </div>
+  </div>   -->
   
   <!-- NEW LINE -->
 
-  <div class="sandbox">
-      <div class="tile is-ancestor" >
+  <!-- <div class="sandbox">
+      <div class="tile is-ancestor" > -->
         
         <!-- MONGO DB DEPT -->
-        <div class="tile is-parent" style="display:table" routerLink="/departments">
+        <!-- <div class="tile is-parent" style="display:table" routerLink="/departments">
   
           <div class="avatar">
             <i class="fa fa-university"></i>
@@ -228,15 +327,15 @@
               MongoDb Dept.
             </div> 
             <div class="email">
-                <!-- {{firebaseProjectId}} -->
+                
               List of mongo db departments
             </div>
           </div>
   
-        </div>
+        </div> -->
   
         <!-- MONGO DB FAQ -->
-        <div class="tile is-parent" style="display:table" routerLink="/faq">
+        <!-- <div class="tile is-parent" style="display:table" routerLink="/faq">
   
           <div class="avatar">
             <i class="fa fa-question" style="padding-left:18px; padding-right:18px"></i>
@@ -250,15 +349,14 @@
             </div>
           </div>
   
-        </div>
+        </div> -->
   
         <!-- CHAT -->
-        <div class="tile is-parent" style="display:table" routerLink="/chat">
+        <!-- <div class="tile is-parent" style="display:table" routerLink="/chat">
   
           <div class="avatar">
             <i class="fa fa-comments-o"></i>
-            <!-- <i class="fa fa-commenting-o"></i> -->
-          </div>
+           </div>
           <div class="address" style="display:table-cell; vertical-align: middle; padding-left: 10px ">
             <div class="name" style="font-size: 16px; font-weight: bold;">
               Chat
@@ -268,66 +366,9 @@
             </div>
           </div>
   
-        </div> <!-- tile is-parent! -->
-      </div> <!-- tile is-ancestor! -->
-    </div>  <!-- sandbox! -->
-
-
-
-    <!-- TEST -->
-<!-- <section class="container">
-
-<div class="sandbox">
-    <div class="tile is-ancestor">
-      <div class="tile is-parent">
-
-        <div class="box content">
-            <article class="post">
-
-              
-             
-  
-              <div class="media">
-                <div class="media-left" style="">
-                  <p class="image is-32x32">
-                    <img src="http://bulma.io/images/placeholders/128x128.png">
-                  </p>
-                </div>
-                <div class="media-content">
-                  <div class="content">
-                    <p>
-                      <a href="#">@jsmith</a> replied 34 minutes ago  &nbsp; 
-                      <span class="tag">Question</span>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </article>
-      </div>
-      </div>
-
-      <div class="tile is-parent">
-        <article class="tile is-child notification is-white">
-          <p class="title">Foo</p>
-          <p class="subtitle">Bar</p>
-        </article>
-      </div>
-      <div class="tile is-parent">
-        <article class="tile is-child notification is-white">
-          <p class="title">Third column</p>
-          <p class="subtitle">With some content</p>
-          <div class="content">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.</p>
-          </div>
-        </article>
-      </div>
-    </div>
-</div>
-
-</section> -->
-
-  <!-- </main>
-</div> -->
+        </div>
+      </div> 
+    </div>   -->
 
 
 

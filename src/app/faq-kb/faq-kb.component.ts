@@ -21,7 +21,7 @@ export class FaqKbComponent implements OnInit {
   faqKbId: string;
   faq_faqKbId: string;
 
-  HAS_FAQ_ASSOCIATED = false;
+  HAS_FAQ_RELATED = false;
 
   constructor(
     private faqKbService: FaqKbService,
@@ -50,7 +50,7 @@ export class FaqKbComponent implements OnInit {
         console.log('GET FAQ KB COMPLETE');
 
         // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
-        // this.getFaqByFaqKbId();
+        this.getFaqByFaqKbId();
 
       });
   }
@@ -62,18 +62,19 @@ export class FaqKbComponent implements OnInit {
       this.faqKbId = this.faqkbList[i]._id;
 
       this.mongodbFaqService.getMongoDbFaqByFaqKbId(this.faqKbId).subscribe((faq: any) => {
-        console.log('MONGO DB FAQ', faq);
+        // console.log('MONGO DB FAQ ARRAY', faq);
 
         let j: number;
         for (j = 0; j < faq.length; j++) {
-          console.log('MONGO DB FAQ - FAQ ID', faq[j]._id);
-          console.log('MONGO DB FAQ - FAQ-KB ID', faq[j].id_faq_kb);
+          // console.log('MONGO DB FAQ - FAQ ID', faq[j]._id);
+          // console.log('MONGO DB FAQ - FAQ-KB ID', faq[j].id_faq_kb);
+          console.log('WITH THE FAQ-KB ID ', faq[j].id_faq_kb, 'FOUND FAQ WITH ID ', faq[j]._id)
           this.faq_faqKbId = faq[j].id_faq_kb;
 
           for (const faqkb of this.faqkbList) {
             if (faqkb._id === this.faq_faqKbId) {
-              console.log('+> ID COINCIDONO');
-              this.HAS_FAQ_ASSOCIATED = true;
+              // console.log('+> ID COINCIDONO');
+
               // set in the json the value true to the property has_faq
               faqkb.has_faq = true;
             }
@@ -84,16 +85,52 @@ export class FaqKbComponent implements OnInit {
     }
   }
 
+  getFaqByFaqKbIdForDeleteModal() {
+    // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
+    // let i: number;
+    // for (i = 0; i < this.faqkbList.length; i++) {
+    //   console.log('ID FAQ KB ', this.faqkbList[i]._id);
+    //   this.faqKbId = this.faqkbList[i]._id;
+
+    // '5a84754f7d70e79db67fb0da'
+    this.mongodbFaqService.getMongoDbFaqByFaqKbId(this.id_toDelete).subscribe((faq: any) => {
+      console.log('MONGO DB FAQ RETURNED BY getFaqByFaqKbIdForDeleteModal', faq);
+      console.log('FAQ-KB ID TO DELETE (IN getFaqByFaqKbIdForDeleteModal)', this.id_toDelete);
+
+      let j: number;
+      for (j = 0; j < faq.length; j++) {
+        // console.log('MONGO DB FAQ - FAQ ID', faq[j]._id);
+        console.log('MONGO DB FAQ - THE FAQ-KB WITH ID', faq[j].id_faq_kb, ' HAS RELATED THE FAQ ' + faq[j]._id);
+        this.faq_faqKbId = faq[j].id_faq_kb;
+
+        for (const faqkb of this.faqkbList) {
+          if (faqkb._id === this.faq_faqKbId) {
+            // console.log('+> ID COINCIDONO');
+            // this.HAS_FAQ_ASSOCIATED = true;
+            // set in the json the value true to the property has_faq
+            faqkb.has_faq = true;
+          }
+        }
+
+      }
+    });
+    // }
+  }
+
   /**
    * MODAL DELETE FAQ KB
    * @param id
    */
-  openDeleteModal(id: string) {
+  openDeleteModal(id: string, HAS_FAQ_RELATED: boolean) {
     console.log('ON MODAL DELETE OPEN -> FAQ-KB ID ', id);
+    console.log('ON MODAL DELETE OPEN -> HAS_FAQ_RELATED ', HAS_FAQ_RELATED);
 
+    this.HAS_FAQ_RELATED = HAS_FAQ_RELATED;
     this.display = 'block';
 
     this.id_toDelete = id;
+
+
   }
 
   /**
@@ -104,6 +141,27 @@ export class FaqKbComponent implements OnInit {
 
     this.faqKbService.deleteMongoDbFaqKb(this.id_toDelete).subscribe((data) => {
       console.log('DELETE DATA ', data);
+
+      // SEARCH BY THE FAQ-KB ID THE RELATED FAQ TO DELETE
+      this.mongodbFaqService.getMongoDbFaqByFaqKbId(this.id_toDelete).subscribe((faq: any) => {
+        console.log(' ++ MONGO DB FAQ RETURNED WHEN CLOSE DELETE MODAL', faq);
+        console.log(' ++ FAQ-KB ID TO DELETE WHEN CLOSE DELETE MODAL', this.id_toDelete);
+        // if (faq.length > 0) {
+        //   console.log('THE FAQ-KB TO DELETE HAS FAQ RELATED ')
+        // }
+        let w: number;
+        for (w = 0; w < faq.length; w++) {
+          console.log(' ++ faq lenght to delete ', faq.length)
+
+          const relatedFaqIdToDelete = faq[w]._id
+          console.log('RELATED FAQ ID TO DELETE ', relatedFaqIdToDelete)
+
+          this.mongodbFaqService.deleteMongoDbFaq(relatedFaqIdToDelete).subscribe((faq_to_delete) => {
+            console.log('DELETE RELATED FAQ ', faq_to_delete);
+          });
+        }
+
+      });
 
       // RE-RUN GET CONTACT TO UPDATE THE TABLE
       this.ngOnInit();

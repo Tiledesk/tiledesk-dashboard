@@ -1,10 +1,10 @@
-import { FirestarterPage } from './app.po';
+import { MaterialDashboardAngularPage } from './app.po';
 
-describe('firestarter App', () => {
-  let page: FirestarterPage;
+describe('material-dashboard-angular App', () => {
+  let page: MaterialDashboardAngularPage;
 
   beforeEach(() => {
-    page = new FirestarterPage();
+    page = new MaterialDashboardAngularPage();
   });
 
   it('should display message saying app works', () => {

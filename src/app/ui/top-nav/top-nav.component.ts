@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../core/auth.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'top-nav',
@@ -18,8 +19,15 @@ export class TopNavComponent {
     this.show = !this.show;
   }
 
-  constructor(public auth: AuthService) {
+  constructor(
+    public auth: AuthService,
+    private translate: TranslateService,
+  ) {
     console.log('-> UTENTE AUTENTICATO ', auth.user);
+  }
+
+  switchLanguage(language: string) {
+    this.translate.use(language);
   }
 
   openCurrentUserDropDown(hasClickedOpenDropDown: boolean) {

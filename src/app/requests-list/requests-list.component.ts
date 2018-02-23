@@ -9,6 +9,10 @@ import 'rxjs/add/operator/takeWhile';
 
 import 'rxjs/add/operator/finally';
 
+import * as firebase from 'firebase/app';
+// import { Response } from '@angular/http/src/static_response';
+import { Headers } from '@angular/http/src/headers';
+import { Response } from '@angular/http';
 
 @Component({
   selector: 'requests-list',
@@ -18,6 +22,9 @@ import 'rxjs/add/operator/finally';
 export class RequestsListComponent implements OnInit {
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
+  // user: Observable<User | null>;
+  user: any;
+  token: any;
 
   requestList: Request[];
   showSpinner = true;
@@ -35,12 +42,46 @@ export class RequestsListComponent implements OnInit {
   // initScrollPositionPlusTwoScroll: number;
 
   requestRecipient: string;
+  currentUserFireBaseUID: string;
+
+  SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
+  HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = false;
+
+  membersObjectInRequestArray: any;
+
+  JOIN_TO_GROUP_HAS_ERROR = false;
+  CURRENT_USER_IS_ALREADY_MEMBER = false;
 
   constructor(
     private requestsService: RequestsService,
     private elRef: ElementRef,
+  ) {
 
-  ) { }
+    this.user = firebase.auth().currentUser;
+    // console.log('LOGGED USER ', this.user);
+    if (this.user) {
+      this.currentUserFireBaseUID = this.user.uid
+      console.log('FIREBASE SIGNED IN USER UID GET IN REQUEST-LIST COMPONENT', this.currentUserFireBaseUID);
+      this.getToken();
+    } else {
+      // console.log('No user is signed in');
+    }
+  }
+
+  getToken() {
+    const that = this;
+    console.log('Notification permission granted.');
+    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+      .then(function (idToken) {
+        that.token = idToken;
+        console.log('idToken.', idToken);
+      }).catch(function (error) {
+        // Handle error
+        console.log('idToken.', error);
+      });
+  }
+
+
 
   ngOnInit() {
     this.getRequestList();
@@ -56,7 +97,7 @@ export class RequestsListComponent implements OnInit {
    */
   getRequestList() {
     // SUBSCIPTION TO snapshotChanges
-    this.requestsService.getSnapshot().subscribe((data) => {
+    this.requestsService.getSnapshotConversations().subscribe((data) => {
       this.requestList = data;
       console.log('REQUESTS-LIST.COMP: SUBSCRIPTION TO REQUESTS getSnapshot ', data);
       this.showSpinner = false;
@@ -74,41 +115,27 @@ export class RequestsListComponent implements OnInit {
 
   }
 
-  /**
-   * REQUESTS (on FIRESTORE the COLLECTION is 'MESSAGES')
-   */
-  getMessagesList() {
-    // SUBSCIPTION TO snapshotChanges
-    this.requestsService.getSnapshotMsg(this.requestRecipient)
-      // .finally(() => {
-      //   console.log('- -- -- FINISH TO GET MESSAGE !!');
-      // })
-      .subscribe((data) => {
-        this.messagesList = data;
-        console.log('REQUESTS-LIST.COMP: SUBSCRIPTION TO getSnapshot MSG ', data);
-        // this.showSpinner = false;
-        // console.log('TIMESTAMP ', this.messagesList);
-        // if (data.length) {
-          // this.scrollToBottom();
-        // }
-      },
-      (err) => {
 
-        console.log('GET MESSAGE LIST ERROR ', err);
 
-      },
-      () => {
-        console.log('GET MESSAGE LIST * COMPLETE *');
-        // this.showSpinner = false;
-      });
 
-  }
-
+  // THE USER OPEN THE MODAL WINDOW:
+  // * ON CLICK THE VIEW PASS THE VALUE OF 'RECIPIENT' THAT ASSIGN TO THE LOCAL VARIABLE this.requestRecipient
+  // * GET THE MESSAGE LIST BY this.requestRecipient
+  // * GET THE REQUEST DETAILS (GET THE CONVESATION BY RECIPIENT) - IS USED FOR:
+  //   IF THE VALUE OF THE UID OF CURRENT USER IS FOUND BETWEEN THE UID KEY IN MEMBERS (is contained in the request object)
+  //   IN THE MODAL WITH THE MSGS LIST THE 'ENTER BTN' (AND NOT THE 'JOIN BTN') WILL BE DISPLAYED
   openViewMsgsModal(recipient: string) {
+
+    this.JOIN_TO_GROUP_HAS_ERROR = false;
     this.display = 'block';
     console.log(' ++ ++ request recipient ', recipient);
+
     this.requestRecipient = recipient;
+
+    this.getRequestByRecipient()
+
     this.getMessagesList();
+
     // .animate({ scrollTop: 0, duration: 100 })
     this.msgLenght();
     // SCROOL TO BOTTOM THE MESSAGES LIST WHEN THE MODAL IS OPEN
@@ -135,6 +162,107 @@ export class RequestsListComponent implements OnInit {
       // console.log('SCROLL POSITION / 2 WHEN MODAL IS OPEN ', this.initScrollPositionHalf);
 
     }, 300);
+
+  }
+
+  /**
+   * MESSAGES (on FIRESTORE the COLLECTION is 'MESSAGES')
+   */
+  getMessagesList() {
+    // SUBSCIPTION TO snapshotChanges
+    this.requestsService.getSnapshotMsg(this.requestRecipient)
+      // .finally(() => {
+      //   console.log('- -- -- FINISH TO GET MESSAGE !!');
+      // })
+      .subscribe((data) => {
+        this.messagesList = data;
+        console.log('REQUESTS-LIST.COMP: SUBSCRIPTION TO getSnapshot MSG ', data);
+        // this.showSpinner = false;
+        // console.log('TIMESTAMP ', this.messagesList);
+        // if (data.length) {
+        // this.scrollToBottom();
+        // }
+      },
+      (err) => {
+        console.log('GET MESSAGE LIST ERROR ', err);
+      },
+      () => {
+        console.log('GET MESSAGE LIST * COMPLETE *');
+        // this.showSpinner = false;
+      });
+
+  }
+
+  // GET REQUEST DETAIL (IS THE REQUEST CORRESPONDING TO THE ROW OF REQUESTS LIST ON WHICH THE USER CLICK)
+  // THEN IN THE ARRAY RETURNED GET THE 'UID KEYS' CONTAINED IN THE OBJECT MEMBERS
+  // THEN COMPARE ANY 'UID KEY' WITH THE CURRENT USER UID
+  // IF THE 'UID KEY' IS = TO 'CURRENT USER ID' SHOWS THE BUTTON ENTER AND NOT THE BUTTON JOIN
+  getRequestByRecipient() {
+    this.requestsService.getSnapshotConversationByRecipient(this.requestRecipient)
+      .subscribe((request) => {
+
+        console.log('REQUEST (ALIAS CONVERSATION) GET BY RECIPIENT ', request);
+
+        this.membersObjectInRequestArray = request[0].members;
+        console.log('OBJECT MEMBERS IN THIS REQUEST ', this.membersObjectInRequestArray);
+
+        const uidKeysInMemberObject = Object.keys(this.membersObjectInRequestArray)
+        console.log('UID KEYS CONTAINED IN MEMBER OBJECT ', Object.keys(this.membersObjectInRequestArray))
+
+        const lengthOfUidKeysInMemberObject = uidKeysInMemberObject.length;
+        console.log('LENGHT OF UID KEY CONTAINED IN MEMBER OBJECT ', lengthOfUidKeysInMemberObject)
+
+        let i: number;
+        for (i = 0; i < lengthOfUidKeysInMemberObject; i++) {
+          const uidKey = uidKeysInMemberObject[i];
+          console.log('UID KEY ', uidKey)
+          if (uidKey === this.currentUserFireBaseUID) {
+
+            console.log('THE CURRENT USER IS ALREADY JOINED TO THIS CONVERSATION - SHOW BTN ENTER')
+            this.CURRENT_USER_IS_ALREADY_MEMBER = true;
+            this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = false
+
+          } else {
+            console.log('THE CURRENT USER !IS NOT JOINED TO THIS CONVERSATION - SHOW BTN JOIN')
+            this.CURRENT_USER_IS_ALREADY_MEMBER = false;
+            this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = false
+
+          }
+        }
+      },
+      (err) => {
+        console.log('REQUEST (ALIAS CONVERSATION) GET BY RECIPIENT ERROR ', err);
+      },
+      () => {
+        console.log('REQUEST (ALIAS CONVERSATION) GET BY RECIPIENT COMPLETE');
+      });
+  }
+
+  // JOIN TO CHAT GROUP
+  onJoinHandled() {
+
+    console.log('JOIN PRESSED');
+    this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = true;
+    // this.requestsService.joinToGroup(this.currentUserFireBaseUID, this.requestRecipient)
+    this.requestsService.joinToGroup(this.requestRecipient, this.token, this.currentUserFireBaseUID)
+      .subscribe((data: any) => {
+
+        console.log('JOIN TO CHAT GROUP ', data);
+      },
+      (err) => {
+        console.log('JOIN TO CHAT GROUP ERROR ', err);
+        this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
+        this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = false;
+        this.JOIN_TO_GROUP_HAS_ERROR = true;
+
+
+      },
+      () => {
+        console.log('JOIN TO CHAT GROUP COMPLETE', );
+
+        this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
+        this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = true;
+      });
 
   }
 
@@ -208,7 +336,5 @@ export class RequestsListComponent implements OnInit {
     this.display = 'none';
   }
 
-  onJoinHandled() {
-    console.log('JOIN PRESSED');
-  }
+
 }
