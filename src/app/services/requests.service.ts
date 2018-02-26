@@ -31,7 +31,7 @@ export class RequestsService {
   user: any;
   currentUserFireBaseUID: string;
 
-  public mySubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  public mySubject: BehaviorSubject<any> = new BehaviorSubject<any[]>(null);
 
   constructor(
     http: Http,
@@ -117,7 +117,8 @@ export class RequestsService {
           recipient: data.recipient,
           recipient_fullname: data.recipient_fullname,
           sender_fullname: data.sender_fullname,
-          text: data.text, timestamp: data.timestamp,
+          text: data.text,
+          timestamp: data.timestamp,
           membersCount: data.membersCount,
           support_status: data.support_status,
           members: data.members
@@ -133,9 +134,11 @@ export class RequestsService {
 
     return this.requestsCollection.valueChanges().map((values) => {
 
-      this.mySubject.next(values.length);
+      this.mySubject.next(values);
 
-      console.log('VALUeS LENGHT ', values.length)
+      console.log('Request Service VALUeS LENGHT ', values.length)
+      
+      console.log('Request Service VALUeS', values)
       return values.length;
 
     });

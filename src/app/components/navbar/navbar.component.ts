@@ -4,7 +4,7 @@ import { Location, LocationStrategy, PathLocationStrategy } from '@angular/commo
 import { AuthService } from '../../core/auth.service';
 import { TranslateService } from '@ngx-translate/core';
 import { RequestsService } from '../../services/requests.service';
-
+declare var $: any;
 
 @Component({
     selector: 'app-navbar',
@@ -19,6 +19,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     unservedRequestCount: number;
 
     value: number
+    valueText: string;
+    lastRequest: any;
 
     constructor(
         location: Location,
@@ -51,13 +53,55 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
         // SUBSCRIBE TO COUNT OF UNSERVED REQUESTS
         this.requestsService.mySubject.subscribe(
-            value => {
-                this.unservedRequestCount = value
-                console.log('REQUEST SERVICE PUBLISH COUNT OF UNSERVED REQUEST ', this.unservedRequestCount);
+            (values) => {
+                if (values) {
+                    this.unservedRequestCount = values.length
+                    console.log('REQUEST SERVICE PUBLISH REQUESTS ', values)
+                    console.log('REQUEST SERVICE PUBLISH COUNT OF UNSERVED REQUEST ', this.unservedRequestCount);
+                    // let i: any;
+                    // for (i = 0; i < values.length; i++) {
+                    //     this.valueText = values[i].text
+                    //     console.log('REQUEST TEXT: ', this.valueText )
+                    // }
+                    this.lastRequest = values[values.length - 1];
+                    console.log('LAST REQUEST TEXT: ', this.lastRequest.text)
 
+                    this.showNotification()
+
+                }
             }
         );
     }
+
+
+
+    showNotification() {
+        console.log('show notification')
+        const type = ['', 'info', 'success', 'warning', 'danger'];
+
+        // const color = Math.floor((Math.random() * 4) + 1);
+        // the tree corresponds to the orange
+        const color = 3
+        console.log('COLOR ', color)
+        // const color = '#ffffff';
+
+        $.notify({
+            icon: 'notifications',
+            // message: 'Welcome to <b>Material Dashboard</b> - a beautiful freebie for every web developer.'
+            message: '<b>Ultima richiesta:</b> ' + this.lastRequest.text
+
+
+        }, {
+                type: type[color],
+                timer: 2000,
+                // placement: {
+                //     from: from,
+                //     align: align
+                // }
+            });
+    }
+
+
     ngAfterContentChecked() {
         // console.log(' -- --- *** ngAfterContentChecked');
     }
