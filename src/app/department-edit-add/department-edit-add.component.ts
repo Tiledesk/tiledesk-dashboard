@@ -1,3 +1,4 @@
+// tslint:disable:max-line-length
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -19,7 +20,7 @@ export class DepartmentEditAddComponent implements OnInit {
 
   botsList: any;
   selectedBotId: string;
-  BOT_NOT_SELECTED = true;
+  BOT_NOT_SELECTED: boolean;
 
   SHOW_OPTION_FORM: boolean;
 
@@ -31,6 +32,8 @@ export class DepartmentEditAddComponent implements OnInit {
   selectedValue: string;
   selectedId: string;
   botIdEdit: string;
+  dept_routing: string;
+
 
 
   constructor(
@@ -41,9 +44,8 @@ export class DepartmentEditAddComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.SHOW_OPTION_FORM = true;
-    this.ROUTING_SELECTED = 'fixed';
-    console.log('ON INIT SHOW OPTION FORM ', this.SHOW_OPTION_FORM, 'ROUTING SELECTED ', this.ROUTING_SELECTED);
+
+
     /**
      * *** GET ALL BOTS LIST ***
      * ARE SHOWED AS OPTIONS TO SELECT IN THE SELECTION FIELD (IN CREATE AND IN EDIT VIEW)
@@ -59,17 +61,38 @@ export class DepartmentEditAddComponent implements OnInit {
       console.log('HAS CLICKED CREATE ');
       this.CREATE_VIEW = true;
       // this.showSpinner = false;
+      this.SHOW_OPTION_FORM = true;
+      this.ROUTING_SELECTED = 'fixed';
+      this.BOT_NOT_SELECTED = true;
+      console.log('ON INIT (IF HAS SELECT CREATE) SHOW OPTION FORM ', this.SHOW_OPTION_FORM, 'ROUTING SELECTED ', this.ROUTING_SELECTED);
 
     } else {
       console.log('HAS CLICKED EDIT ');
       this.EDIT_VIEW = true;
 
+
       // *** GET DEPT ID FROM URL PARAMS ***
       // IS USED TO GET THE BOT OBJECT ( THE ID IS PASSED FROM BOTS COMPONENT - goToEditAddPage_EDIT())
       this.getDeptId();
+      this.SHOW_OPTION_FORM = false;
 
       if (this.id_dept) {
         this.getDeptById();
+
+        // WHEN IT IS OPENED THE EDIT VIEW IF DEPT ROUTING HAS THE VALUE POOLED IT NOT DISPAYED THE ITEM
+        // FORM FOR THE SELECTION OF A BOT (TO CORRELATE WITH THE CURRENT DEPT)
+        // NOTE: dept_routing is determinate in getDeptById()
+        // THE VALUE fixed or pooled TO dept_routing IS THEN REASSIGNED IN has_clicked_fixed() AND has_clicked_POOLED
+        if (this.dept_routing === 'pooled') {
+          this.SHOW_OPTION_FORM = false;
+          this.dept_routing = 'pooled'
+          this.BOT_NOT_SELECTED = true;
+        } else if (this.dept_routing === 'fixed') {
+          this.SHOW_OPTION_FORM = true;
+          this.dept_routing = 'fixed'
+          this.BOT_NOT_SELECTED = false;
+        }
+
       }
     }
 
@@ -106,7 +129,7 @@ export class DepartmentEditAddComponent implements OnInit {
 
   // WHEN THE USER EDITS A BOT CAN SELECT A BOT TO CORRELATE AT THE DEPARTMENT
   // WHEN THE BTN 'EDIT DEPARTMENT' IS PRESSED THE VALUE OF THE ID OF THE SELECTED DEPT IS MODIFIED IN THE DEPT'S FIELD id_bot
-  // Note: is used also for the 'CREATE'
+  // Note: is used also for the 'CREATE VIEW'
   setSelectedBot(id: any): void {
     this.selectedBotId = id;
     console.log('BOT ID SELECTED: ', this.selectedBotId);
@@ -144,33 +167,42 @@ export class DepartmentEditAddComponent implements OnInit {
       });
   }
 
-  has_clicked_fixed_bot(show_option_form: boolean, routing: string) {
+  has_clicked_fixed(show_option_form: boolean, routing: string) {
 
     // this.HAS_CLICKED_FIXED = true;
     // this.HAS_CLICKED_POOLED = false;
     this.SHOW_OPTION_FORM = show_option_form;
     this.ROUTING_SELECTED = routing
     console.log('HAS CLICKED FIXED - SHOW OPTION ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
+    // ONLY FOR THE EDIT VIEW (see above in ngOnInit the logic for the EDIT VIEW)
+    this.dept_routing = 'fixed'
+    this.BOT_NOT_SELECTED = true;
   }
 
-  has_clicked_pooled_bot(show_option_form: boolean, routing: string) {
+  has_clicked_pooled(show_option_form: boolean, routing: string) {
     // console.log('HAS CLICKED POOLED')
     // this.HAS_CLICKED_FIXED = false;
     // this.HAS_CLICKED_POOLED = true;
     this.SHOW_OPTION_FORM = show_option_form;
     this.ROUTING_SELECTED = routing
     console.log('HAS CLICKED POOLED  - SHOW OPTION ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
+    // ONLY FOR THE EDIT VIEW (see above in ngOnInit the logic for the EDIT VIEW)
+    this.dept_routing = 'pooled'
+
   }
 
- 
 
-  /** FOR EDIT
-   * *** GET DEPT OBJECT BY ID AND (THEN) GET BOT OBJECT BY ID ***
-   * THE ID USED TO RUN THIS getMongDbBotById IS PASSED FROM BOTS LIST (BOTS COMPONENT goToEditAddPage_EDIT))
-   * FROM THE BOT OBJECT IS USED:
-   * THE DEPT FULLNAME TO SHOW IN THE INPUT FIELD (OF THE EDIT VIEW)
-   * THE FAQ-KB ID TO RUN A CALLBACK TO OBTAIN THE FAQ-KB OBJECT AND, FROM THIS,
-   * THE FAQ-KB NAME THAT IS SHOWED AS OPTION SELECTED IN THE EDIT VIEW
+
+  /** === FOR EDIT VIEW === **
+   * **** GET DEPT (DETAIL) OBJECT BY ID AND (THEN) GET BOT (DETAIL) OBJECT BY ID ***
+   * THE ID USED TO RUN THIS getMongDbDeptById IS PASSED FROM THE DEPT LIST (DEPARTMENTS COMPONENT goToEditAddPage_EDIT))
+   * FROM DEPT OBJECT IS USED:
+   * THE DEPT NAME TO SHOW IN THE INPUT FIELD (OF THE EDIT VIEW)
+   * THE DEPT ROUTING (PREVIOUSLY SELECTED): dept_routing is passed in the view [checked]="dept_routing === 'pooled'"
+   * to determine the option selected
+   * THE BOT ID TO RUN ANOTHER CALLBACK TO OBTAIN THE BOT OBJECT AND, FROM THIS,
+   * THE BOT ID THAT IS USED TO OBTAIN (IN THE EDIT VIEW) THE BOT FULL-NAME AS OPTION PREVIOUSLY SELECTED
+   * (WHEN THE USER HAS CREATED THE DEPT)  (see: selectedId === bot._id)
    */
   getDeptById() {
     this.mongodbDepartmentService.getMongDbDeptById(this.id_dept).subscribe((dept: any) => {
@@ -178,9 +210,14 @@ export class DepartmentEditAddComponent implements OnInit {
 
       this.deptName_toUpdate = dept.name;
       this.botId = dept.id_bot;
+      this.dept_routing = dept.routing
+      // if (this.dept_routing === 'pooled' ) {
+      //   this.SHOW_OPTION_FORM = false;
+      // }
 
-      console.log(' DEPT FULLNAME TO UPDATE: ', this.deptName_toUpdate );
-      console.log(' BOT ID GET FROM BOT OBJECT: ', this.botId);
+      console.log(' DEPT FULLNAME TO UPDATE: ', this.deptName_toUpdate);
+      console.log(' BOT ID GET FROM DEPT OBJECT: ', this.botId);
+      console.log(' DEPT ROUTING GET FROM DEPT OBJECT: ', this.dept_routing);
 
     },
       (error) => {
@@ -206,17 +243,19 @@ export class DepartmentEditAddComponent implements OnInit {
 
   }
 
-   /**
-   * *** GET BOT BY ID ***
+  /** === FOR EDIT VIEW === **
+   * **** GET BOT BY ID ***
    * THE ID OF THE BOT IS GET FROM THE DEPT OBJECT (CALLBACK getBotById)
    * FROM THE BOT OBJECT IS USED:
-   * THE BOT NAME THAT IS SHOWED AS OPTION SELECTED IN THE EDIT VIEW
+   * THE BOT ID THAT IS USED TO OBTAIN THE BOT-FULLNAME SHOWED AS OPTION SELECTED IN THE EDIT VIEW
+   * (see: selectedId === bot._id)
    */
   getBotById() {
     this.botService.getMongDbBotById(this.botId).subscribe((bot: any) => {
       console.log('GET BOT (DETAILS) BY ID', bot);
       this.selectedId = bot._id;
-      // NOW USED ONLY FOR DEBUG
+
+      // USED ONLY FOR DEBUG
       this.selectedValue = bot.fullname;
 
       // this.faqKbUrlToUpdate = faqKb.url;
@@ -235,27 +274,27 @@ export class DepartmentEditAddComponent implements OnInit {
 
   }
 
-   // WHEN IS PRESSES EDIT THE DATA PASSED TO THE FUNCTION updateMongoDbBot() ARE
-  // * this.id_dept: IS PASSED BY BOT COMPONENT VIA URL (see getBotId())
-  // * botFullNAme_toUpdate: IS RETURNED BY THE DEPARTMENT OBJECT (see getBotById)
+  // WHEN IS PRESSES EDIT THE DATA PASSED TO THE FUNCTION updateMongoDbDepartment ARE
+  // * this.id_dept: IS PASSED BY DEPARTMENT COMPONENT VIA URL (see getDeptId())
+  // * deptName_toUpdate: IS RETURNED BY THE DEPARTMENT OBJECT (see getDeptById())
   edit() {
-    console.log('BOT ID WHEN EDIT IS PRESSED ', this.id_dept);
-    console.log('BOT FULL-NAME WHEN EDIT IS PRESSED ', this.deptName_toUpdate);
-    console.log('BOT FAQ-KB WHEN EDIT IS PRESSED IF USER HAS SELECT ANOTHER FAQ-KB', this.selectedBotId);
-    console.log('BOT FAQ-KB WHEN EDIT IS PRESSED IF USER ! DOES NOT SELECT A ANOTHER FAQ-KB', this.botId);
+    console.log('DEPT ID WHEN EDIT IS PRESSED ', this.id_dept);
+    console.log('DEPT FULL-NAME WHEN EDIT IS PRESSED ', this.deptName_toUpdate);
+    console.log('BOT ID WHEN EDIT IS PRESSED IF USER HAS SELECT ANOTHER BOT', this.selectedBotId);
+    console.log('BOT ID WHEN EDIT IS PRESSED IF USER ! DOES NOT SELECT A ANOTHER FAQ-KB', this.botId);
 
     // selectedFaqKbId
-    // IF THE USER, WHEN EDIT THE BOT, DOESN'T SELECT ANY NEW FAQ-KB this.selectedFaqKbId IS UNDEFINED
-    // SO SET this.faqKbEdit EQUAL TO THE FAQ-KB ID RETURNED BY getBotById
-    if (this.selectedBotId === undefined) {
-
-      this.botIdEdit = this.botId
-
-    } else {
-      this.botIdEdit = this.selectedBotId
+    // FIXED LOGIC IF THE USER, WHEN EDIT THE BOT (AND HAS SELECTED FIXED), DOESN'T SELECT ANY NEW BOT this.selectedBotId IS UNDEFINED
+    // SO SET this.botIdEdit EQUAL TO THE BOT ID RETURNED BY getBotById
+    if (this.ROUTING_SELECTED === 'fixed') {
+      if (this.selectedBotId === undefined) {
+        this.botIdEdit = this.botId
+      } else {
+        this.botIdEdit = this.selectedBotId
+      }
     }
     // this.faqKbEdit
-    this.mongodbDepartmentService.updateMongoDbDepartment(this.id_dept, this.deptName_toUpdate, this.botIdEdit ).subscribe((data) => {
+    this.mongodbDepartmentService.updateMongoDbDepartment(this.id_dept, this.deptName_toUpdate, this.botIdEdit, this.ROUTING_SELECTED).subscribe((data) => {
       console.log('PUT DATA ', data);
 
       // RE-RUN GET CONTACT TO UPDATE THE TABLE

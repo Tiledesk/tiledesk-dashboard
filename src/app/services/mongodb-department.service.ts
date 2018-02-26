@@ -134,7 +134,7 @@ public getMongDbDeptById(id: string): Observable<Department[]> {
    * @param id
    * @param deptName
    */
-  public updateMongoDbDepartment(id: string, deptName: string, id_bot: string) {
+  public updateMongoDbDepartment(id: string, deptName: string, id_bot: string, routing: string) {
 
     let url = this.MONGODB_BASE_URL;
     url = url += `${id}`;
@@ -146,7 +146,7 @@ public getMongDbDeptById(id: string): Observable<Department[]> {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'name': `${deptName}`, 'id_bot': `${id_bot}` };
+    const body = { 'name': `${deptName}`, 'id_bot': `${id_bot}`, 'routing': `${routing}` };
 
     console.log('PUT REQUEST BODY ', body);
 
