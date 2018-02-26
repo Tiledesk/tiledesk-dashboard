@@ -21,6 +21,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     value: number
     valueText: string;
     lastRequest: any;
+    audio: any;
 
     constructor(
         location: Location,
@@ -68,6 +69,10 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
                     this.showNotification()
 
+                    this.audio = new Audio();
+                    this.audio.src = 'assets/Carme.mp3';
+                    this.audio.load();
+                    this.audio.play();
                 }
             }
         );
