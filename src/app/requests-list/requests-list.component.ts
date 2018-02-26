@@ -14,6 +14,9 @@ import * as firebase from 'firebase/app';
 import { Headers } from '@angular/http/src/headers';
 import { Response } from '@angular/http';
 
+import * as moment from 'moment';
+import 'moment/locale/it.js';
+
 @Component({
   selector: 'requests-list',
   templateUrl: './requests-list.component.html',
@@ -52,6 +55,10 @@ export class RequestsListComponent implements OnInit {
   JOIN_TO_GROUP_HAS_ERROR = false;
   CURRENT_USER_IS_ALREADY_MEMBER = false;
   SEARCH_FOR_SAME_UID_FINISHED = false;
+
+  request_timestamp: any;
+  request_fromNow_date: any;
+  id_request: string;
 
   constructor(
     private requestsService: RequestsService,
@@ -101,6 +108,22 @@ export class RequestsListComponent implements OnInit {
     this.requestsService.getSnapshotConversations().subscribe((data) => {
       this.requestList = data;
       console.log('REQUESTS-LIST.COMP: SUBSCRIPTION TO REQUESTS getSnapshot ', data);
+
+      let i: any;
+      for (i = 0; i < this.requestList.length; i++) {
+        // console.log('REQUEST TIMESTAMP ', this.requestList[i].timestamp)
+        const timestampMs = this.requestList[i].timestamp / 1000
+        this.request_fromNow_date = moment.unix(timestampMs).fromNow();
+        // console.log('REQUEST FROM NOW DATE ', this.request_fromNow_date)
+        this.id_request = this.requestList[i].recipient;
+
+        for (const request of this.requestList) {
+          if (this.id_request === request.recipient) {
+            request.request_date_fromnow = this.request_fromNow_date;
+          }
+        }
+      }
+
       this.showSpinner = false;
 
     },

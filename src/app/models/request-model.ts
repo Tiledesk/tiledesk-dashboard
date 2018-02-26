@@ -8,4 +8,5 @@ export interface Request {
     support_status?: number;
     members?: boolean;
     requester_fullname?: string;
+    request_date_fromnow?: any;
   }

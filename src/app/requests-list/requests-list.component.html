@@ -84,7 +84,8 @@
                                   </th>
                                   <th>
                                     <span style="color: #566787">
-                                      <strong> Data creazione </strong>
+                                      <!-- <strong> Data creazione </strong> -->
+                                      <strong> Pubblicata </strong>
                                     </span>
                                   </th>
                                   <!-- <th></th> -->
@@ -132,7 +133,9 @@
                                 </td>
                                 <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
                                   <p style="font-size:0.9em">
-                                    {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}}
+                                    <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
+                                    {{ request?.request_date_fromnow }}
+                                    
                                   </p>
                                 </td>
                                 <!-- <td>
