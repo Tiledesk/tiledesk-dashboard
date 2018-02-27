@@ -48,7 +48,7 @@ import { RequestsListComponent } from './requests-list/requests-list.component';
 import { MongoDbContactsService } from './services/mongodb-contacts.service';
 import { ContactsComponent } from './contacts/contacts.component';
 import { MongodbDepartmentService } from './services/mongodb-department.service';
-import { MongodbDepartmentsComponent } from './mongodb-departments/mongodb-departments.component';
+import { DepartmentsComponent } from './departments/departments.component';
 
 import { MongodbFaqService } from './services/mongodb-faq.service';
 import { FaqComponent } from './faq/faq.component';
@@ -67,6 +67,7 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { DepartmentEditAddComponent } from './department-edit-add/department-edit-add.component';
 
 
 // AoT requires an exported function for factories
@@ -89,7 +90,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ContactsComponent,
     RequestsListComponent,
     ChatComponent,
-    MongodbDepartmentsComponent,
+    DepartmentsComponent,
     FaqComponent,
     BotsComponent,
     SettingsComponent,
@@ -99,6 +100,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     FaqEditAddComponent,
     BotEditAddComponent,
     AnalyticsComponent,
+    DepartmentEditAddComponent,
 
   ],
   imports: [

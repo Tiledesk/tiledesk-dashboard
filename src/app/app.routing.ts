@@ -25,7 +25,8 @@ import { HomeComponent } from './home/home.component';
 import { UsersListComponent } from './users-list/users-list.component';
 import { ContactsComponent } from './contacts/contacts.component';
 import { RequestsListComponent } from './requests-list/requests-list.component';
-import { MongodbDepartmentsComponent } from './mongodb-departments/mongodb-departments.component';
+import { DepartmentsComponent } from './departments/departments.component';
+import { DepartmentEditAddComponent } from './department-edit-add/department-edit-add.component';
 
 import { BotsComponent } from './bots/bots.component';
 import { SettingsComponent } from './settings/settings.component';
@@ -69,7 +70,7 @@ const routes: Routes =[
     { path: 'userprofile', component: UserProfileComponent },
     { path: 'requests', component: RequestsListComponent, canActivate: [AuthGuard]},
     { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
-    { path: 'departments', component: MongodbDepartmentsComponent, canActivate: [AuthGuard] },
+    { path: 'departments', component: DepartmentsComponent, canActivate: [AuthGuard] },
  
     { path: 'users', component:  UsersComponent, canActivate: [AuthGuard] },
     { path: 'faqkb', component:  FaqKbComponent, canActivate: [AuthGuard] },
@@ -83,11 +84,11 @@ const routes: Routes =[
     { path: 'analytics', component: AnalyticsComponent, canActivate: [AuthGuard] },
     { path: 'bots', component: BotsComponent, canActivate: [AuthGuard] },
     { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
- 
+    { path: 'department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
+    { path: 'department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
 
-  
     { path: 'dashboard', component: DashboardComponent },
-  
+
     // uploads are lazy loaded
     { path: 'uploads', loadChildren: './uploads/shared/upload.module#UploadModule', canActivate: [AuthGuard] },
 ];

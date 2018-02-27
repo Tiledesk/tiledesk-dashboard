@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MongodbDepartmentsComponent } from './mongodb-departments.component';
+import { DepartmentsComponent } from './departments.component';
 
 describe('MongodbDepartmentsComponent', () => {
-  let component: MongodbDepartmentsComponent;
-  let fixture: ComponentFixture<MongodbDepartmentsComponent>;
+  let component: DepartmentsComponent;
+  let fixture: ComponentFixture<DepartmentsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MongodbDepartmentsComponent ]
+      declarations: [ DepartmentsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MongodbDepartmentsComponent);
+    fixture = TestBed.createComponent(DepartmentsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

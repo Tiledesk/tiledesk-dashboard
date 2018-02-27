@@ -47,7 +47,7 @@ export class BotEditAddComponent implements OnInit {
     this.getFaqKb();
 
     /**
-     * BASED ON THE URL PATH DETERMINE IF THE USER HAS SELECTED (IN FAQ PAGE) 'CREATE' OR 'EDIT'
+     * BASED ON THE URL PATH DETERMINE IF THE USER HAS SELECTED (IN BOT PAGE) 'CREATE' OR 'EDIT'
      */
     if (this.router.url === '/createbot') {
 
@@ -62,13 +62,10 @@ export class BotEditAddComponent implements OnInit {
       // *** GET BOT ID FROM URL PARAMS ***
       // IS USED TO GET THE BOT OBJECT ( THE ID IS PASSED FROM BOTS COMPONENT - goToEditAddPage_EDIT())
       this.getBotId();
-
       // this.getBotIdAndFaqKbId();
-
       if (this.id_bot) {
         this.getBotById();
       }
-
     }
   } // ./ OnInit
 
@@ -192,6 +189,11 @@ export class BotEditAddComponent implements OnInit {
     if (this.selectedFaqKbId !== 'FAQKB_NOT_SELECTED') {
       this.FAQKB_NOT_SELECTED = false;
     }
+
+    if (this.selectedFaqKbId === 'FAQKB_NOT_SELECTED') {
+      this.FAQKB_NOT_SELECTED = true;
+    }
+
     // let i: any;
     // for (i = 0; i < this.faqKbList.length; i++) {
     //   this.faqKbId = this.faqKbList[i]._id;

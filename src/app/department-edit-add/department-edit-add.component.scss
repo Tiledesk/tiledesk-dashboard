@@ -1,0 +1,92 @@
+input[type=text] {
+    // min-width: 307px !important;
+    height: 36px;
+    font-size: 14px;
+    width: 100%;
+    margin-bottom: 10px;
+    -webkit-appearance: none;
+    background: #fff;
+    border: 1px solid #d9d9d9 !important;
+    border-top: 1px solid #c0c0c0;
+    /* border-radius: 2px; */
+    padding: 0 8px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border-radius: 5px;
+    background-color: #fff !important;
+    border: solid 1px #ddd;
+}
+
+select {
+    height:36px;  
+    background: #fff; 
+    border-radius: 0px; 
+    border-color: #d9d9d9; 
+}
+.card form [class*="col-"] {
+    padding: 0px;
+}
+
+// RADIO BTNS
+// .form-check-label {
+//     margin-bottom: 0;
+// }
+// label {
+//     display: inline-block;
+//     margin-bottom: .5rem;
+// }
+
+// .form-check-inline .form-check-input {
+//     position: static;
+//     margin-top: 0;
+//     margin-right: .3125rem;
+//     margin-left: 0;
+// }
+// input[type=checkbox], input[type=radio] {
+//     box-sizing: border-box;
+//     padding: 0;
+// }
+// .form-check-input {
+//     position: absolute;
+//     margin-top: .3rem;
+//     margin-left: -1.25rem;
+// }
+
+// .col-sm-12 .form-check-inline {
+//     display: -webkit-inline-box;
+//     display: -ms-inline-flexbox;
+//     display: inline-flex;
+//     -webkit-box-align: center;
+//     -ms-flex-align: center;
+//     align-items: center;
+//     padding-left: 0;
+//     margin-right: .75rem;
+// }
+// .form-check {
+//     position: relative;
+//     display: block;
+//     padding-left: 1.25rem;
+// }
+
+
+// .col-sm-2 .form-check-inline  {
+//     padding-top: 5px;
+// }
+
+
+// @media (max-width: 1354px){
+//     .col-sm-8 select {
+//         padding-top: 15px 
+            
+//     }
+// }
+
+input[type=radio] {
+    box-sizing: border-box;
+    padding: 0;
+}
+.form-check-input {
+    position: absolute;
+    margin-top: .3rem;
+    margin-left: -1.25rem;
+}

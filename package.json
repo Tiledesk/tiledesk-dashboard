@@ -36,7 +36,7 @@
     "firebase": "^4.6.2",
     "googleapis": "19.0.0",
     "jquery": "3.2.1",
-    "moment": "2.18.1",
+    "moment": "^2.18.1",
     "perfect-scrollbar": "1.1.0",
     "rxjs": "^5.5.4",
     "web-animations-js": "^2.3.1",

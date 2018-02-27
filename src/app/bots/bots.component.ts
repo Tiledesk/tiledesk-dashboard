@@ -48,10 +48,10 @@ export class BotsComponent implements OnInit {
     });
   }
 
-    // GO TO  BOT-EDIT-ADD COMPONENT
-    goToEditAddPage_CREATE() {
-      this.router.navigate(['/createbot']);
-    }
+  // GO TO  BOT-EDIT-ADD COMPONENT
+  goToEditAddPage_CREATE() {
+    this.router.navigate(['/createbot']);
+  }
 
   // GO TO BOT-EDIT-ADD COMPONENT AND PASS THE BOT ID (RECEIVED FROM THE VIEW)
   goToEditAddPage_EDIT(bot_id: string) {
@@ -151,10 +151,10 @@ export class BotsComponent implements OnInit {
     this.botFullNAme_toUpdate = botFullName;
   }
 
-/**
- * UPDATE BOT (WHEN THE 'SAVE' BUTTON IN MODAL IS CLICKED)
- * !!! NO MORE USED IN THIS COMPONENT: MOVED IN BOT-EDIT-ADD
- */
+  /**
+   * UPDATE BOT (WHEN THE 'SAVE' BUTTON IN MODAL IS CLICKED)
+   * !!! NO MORE USED IN THIS COMPONENT: MOVED IN BOT-EDIT-ADD
+   */
   // onCloseUpdateModalHandled() {
   //   // HIDE THE MODAL
   //   this.display = 'none';

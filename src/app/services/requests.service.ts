@@ -30,8 +30,10 @@ export class RequestsService {
 
   user: any;
   currentUserFireBaseUID: string;
+  unservedRequest: any;
 
-  public mySubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  // public mySubject: BehaviorSubject<any> = new BehaviorSubject<any[]>(null);
+  public mySubject: BehaviorSubject<any> = new BehaviorSubject<any[]>(null);
 
   constructor(
     http: Http,
@@ -73,7 +75,7 @@ export class RequestsService {
 
     this.requestsCollection = this.afs.collection('conversations',
       (ref) => ref.where('support_status', '<', 1000).orderBy('support_status').orderBy('timestamp', 'desc'));
-      // .orderBy('support_status', 'desc').orderBy('timestamp', 'desc')
+    // .orderBy('support_status', 'desc').orderBy('timestamp', 'desc')
 
     return this.requestsCollection.snapshotChanges().map((actions) => {
       return actions.map((a) => {
@@ -117,7 +119,8 @@ export class RequestsService {
           recipient: data.recipient,
           recipient_fullname: data.recipient_fullname,
           sender_fullname: data.sender_fullname,
-          text: data.text, timestamp: data.timestamp,
+          text: data.text,
+          timestamp: data.timestamp,
           membersCount: data.membersCount,
           support_status: data.support_status,
           members: data.members
@@ -133,10 +136,18 @@ export class RequestsService {
 
     return this.requestsCollection.valueChanges().map((values) => {
 
-      this.mySubject.next(values.length);
 
-      console.log('VALUeS LENGHT ', values.length)
+
+      console.log('Request Service VALUeS LENGHT ', values.length)
+
+      console.log('Request Service VALUeS', values)
+      if (values) {
+        this.unservedRequest = values;
+        console.log('UNSERVED REQUESTS PUBLISHED BY REQ. SERVICE ', this.unservedRequest)
+        this.mySubject.next(this.unservedRequest);
+      }
       return values.length;
+
 
     });
   }
