@@ -25,9 +25,11 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     membersObjectInRequestArray: any;
     currentUserFireBaseUID: string;
     user: any;
+    LOCAL_STORAGE_CURRENT_USER: any;
     // CURRENT_USER_UID_IS_BETWEEN_MEMBERS = false;
     // SHOW_NOTIFICATION_FOR_REQUEST_RECIPIENT: boolean;
-    REQUEST_RECIPIENT_IN_LOCAL_STORAGE: string;
+    LOCAL_STORAGE_LAST_REQUEST_RECIPIENT: string;
+
     constructor(
         location: Location,
         private element: ElementRef,
@@ -49,6 +51,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         this.listTitles = ROUTES.filter(listTitle => listTitle);
         const navbar: HTMLElement = this.element.nativeElement;
         this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
+
 
         // GET COUNT OF UNSERVED REQUESTS
         this.requestsService.getCountUnservedRequest().subscribe((count: number) => {
@@ -125,12 +128,20 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
                     // if (this.SHOW_NOTIFICATION_FOR_REQUEST_RECIPIENT === true) {
 
-                    // WHEN A NOTIFICATION IS SHOWED SET IN THE LOCAL STORAGE (see showNotification())THE LAST REQUEST RECIPIENT THEN
-                    // THE NOTIFICATION IS SHOWED ONLY IF IT THERE IS NOT IN THE LOCAL STORAGE
-                    console.log(' --  LOCAL STORAGE GET REQUEST ID ', localStorage.getItem(this.lastRequest.recipient))
-                    this.REQUEST_RECIPIENT_IN_LOCAL_STORAGE = localStorage.getItem(this.lastRequest.recipient)
+                    // WHEN A NOTIFICATION IS SHOWED SET IN THE LOCAL STORAGE (see showNotification()) THE LAST REQUEST RECIPIENT THEN
+                    // THE NOTIFICATION IS SHOWED ONLY IF IT THERE IS NOT IN THE LOCAL STORAGE AND IF EXIST THE OBJECT USER IL LOCAL STORAGE
+                    // (THIS TO AVOID THAT ARE RECEIVED NOTIFICATION WHEN THE USER IS IN THE LOGIN PAGE AND IS YET LOGGED OUT) 
+                    // console.log(' --  LOCAL STORAGE GET REQUEST ID ', localStorage.getItem(this.lastRequest.recipient))
 
-                    if (this.REQUEST_RECIPIENT_IN_LOCAL_STORAGE === null) {
+                    // GET CURRENT USER FROM LOCAL STORAGE
+                    const userKey = Object.keys(window.localStorage)
+                        .filter(it => it.startsWith('firebase:authUser'))[0];
+                    this.LOCAL_STORAGE_CURRENT_USER = userKey ? JSON.parse(localStorage.getItem(userKey)) : undefined;
+                    console.log('USER GET FROM LOCAL STORAGE ', this.LOCAL_STORAGE_CURRENT_USER)
+
+                    this.LOCAL_STORAGE_LAST_REQUEST_RECIPIENT = localStorage.getItem(this.lastRequest.recipient)
+
+                    if (this.LOCAL_STORAGE_LAST_REQUEST_RECIPIENT === null && this.LOCAL_STORAGE_CURRENT_USER !== undefined) {
 
                         this.showNotification(this.lastRequest.recipient)
                         this.audio = new Audio();
