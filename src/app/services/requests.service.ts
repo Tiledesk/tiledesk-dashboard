@@ -30,7 +30,9 @@ export class RequestsService {
 
   user: any;
   currentUserFireBaseUID: string;
+  unservedRequest: any;
 
+  // public mySubject: BehaviorSubject<any> = new BehaviorSubject<any[]>(null);
   public mySubject: BehaviorSubject<any> = new BehaviorSubject<any[]>(null);
 
   constructor(
@@ -73,7 +75,7 @@ export class RequestsService {
 
     this.requestsCollection = this.afs.collection('conversations',
       (ref) => ref.where('support_status', '<', 1000).orderBy('support_status').orderBy('timestamp', 'desc'));
-      // .orderBy('support_status', 'desc').orderBy('timestamp', 'desc')
+    // .orderBy('support_status', 'desc').orderBy('timestamp', 'desc')
 
     return this.requestsCollection.snapshotChanges().map((actions) => {
       return actions.map((a) => {
@@ -134,12 +136,18 @@ export class RequestsService {
 
     return this.requestsCollection.valueChanges().map((values) => {
 
-      this.mySubject.next(values);
+
 
       console.log('Request Service VALUeS LENGHT ', values.length)
-      
+
       console.log('Request Service VALUeS', values)
+      if (values) {
+        this.unservedRequest = values;
+        console.log('UNSERVED REQUESTS PUBLISHED BY REQ. SERVICE ', this.unservedRequest)
+        this.mySubject.next(this.unservedRequest);
+      }
       return values.length;
+
 
     });
   }

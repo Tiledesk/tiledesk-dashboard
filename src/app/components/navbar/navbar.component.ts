@@ -5,7 +5,7 @@ import { AuthService } from '../../core/auth.service';
 import { TranslateService } from '@ngx-translate/core';
 import { RequestsService } from '../../services/requests.service';
 declare var $: any;
-
+import * as firebase from 'firebase/app';
 @Component({
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
@@ -22,7 +22,10 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     valueText: string;
     lastRequest: any;
     audio: any;
-
+    membersObjectInRequestArray: any;
+    currentUserFireBaseUID: string;
+    user: any;
+    CURRENT_USER_UID_IS_BETWEEN_MEMBERS = false;
     constructor(
         location: Location,
         private element: ElementRef,
@@ -52,9 +55,10 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
         });
 
-        // SUBSCRIBE TO COUNT OF UNSERVED REQUESTS
+        // SUBSCRIBE TO UNSERVED REQUESTS PUBLISHED BY REQUEST SERVICE
         this.requestsService.mySubject.subscribe(
             (values) => {
+                console.log('xxxxx xxxxx', values)
                 if (values) {
                     this.unservedRequestCount = values.length
                     console.log('REQUEST SERVICE PUBLISH REQUESTS ', values)
@@ -66,9 +70,57 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
                     // }
                     this.lastRequest = values[values.length - 1];
                     console.log('LAST REQUEST TEXT: ', this.lastRequest.text)
+                    console.log('LAST REQUEST recipient: ', this.lastRequest.recipient)
+                    // console.log('NAVBAR - MEMBERS IN LAST REQUEST ', this.lastRequest.members)
+                    this.user = firebase.auth().currentUser;
+                    //   console.log('NAVBAR COMPONENT: LOGGED USER ', this.user);
 
+
+
+
+                    // const uidKeysInMemberObject = Object.keys(this.lastRequest.members)
+                    // console.log('UID KEYS CONTAINED IN MEMBER OBJECT ', Object.keys(uidKeysInMemberObject ))
+
+                    // let i: number;
+                    // for (i = 0; i < this.lastRequest.members.length; i++) {
+                    //     const menber = 
+                    // }
+
+                    // if (this.user) {
+                    //     this.currentUserFireBaseUID = this.user.uid
+                    //     console.log(' -- > FIREBASE SIGNED-IN USER UID GET IN NAVBAR COMPONENT', this.currentUserFireBaseUID);
+                    // }
+                    // IF THE CURRENT USER UID IS ALREADY MEMBER OF THE CONVERSATION DOES NOT SHOW THE NOTIFICATION
+                    // this.requestsService.getSnapshotConversationByRecipient(this.lastRequest.recipient)
+                    //     .subscribe((request) => {
+                    //         console.log('NAVBAR - LAST REQUEST ', request)
+                    //         this.membersObjectInRequestArray = request[0].members;
+                    //         console.log('NAVBAR - MEMBERS IN LAST REQUEST ', this.membersObjectInRequestArray)
+
+                    //         const uidKeysInMemberObject = Object.keys(this.membersObjectInRequestArray)
+                    //         console.log('UID KEYS CONTAINED IN MEMBER OBJECT ', Object.keys(this.membersObjectInRequestArray))
+
+                    //         const lengthOfUidKeysInMemberObject = uidKeysInMemberObject.length;
+                    //         console.log('LENGHT OF UID KEY CONTAINED IN MEMBER OBJECT ', lengthOfUidKeysInMemberObject)
+
+                    //         let i: number;
+                    //         for (i = 0; i < lengthOfUidKeysInMemberObject; i++) {
+                    //             const uidKey = uidKeysInMemberObject[i];
+
+                    //             if (uidKey === this.currentUserFireBaseUID) {
+                    //                 console.log('CURRENT USER IS BETWEEN THE MEMBERS')
+                    //                 this.CURRENT_USER_UID_IS_BETWEEN_MEMBERS = true;
+                    //             } else {
+                    //                 this.CURRENT_USER_UID_IS_BETWEEN_MEMBERS = false;
+                    //             }
+                    //         }
+
+                    //     });
+
+
+                } // if values
+                if (this.CURRENT_USER_UID_IS_BETWEEN_MEMBERS === false) {
                     this.showNotification()
-
                     this.audio = new Audio();
                     this.audio.src = 'assets/Carme.mp3';
                     this.audio.load();

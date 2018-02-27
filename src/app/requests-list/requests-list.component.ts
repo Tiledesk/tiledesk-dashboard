@@ -120,6 +120,8 @@ export class RequestsListComponent implements OnInit {
         for (const request of this.requestList) {
           if (this.id_request === request.recipient) {
             request.request_date_fromnow = this.request_fromNow_date;
+
+            // console.log('+++ GET REQUEST LIST - REQUEST MEMBERS ', request.members )
           }
         }
       }

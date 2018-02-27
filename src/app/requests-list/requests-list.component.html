@@ -84,6 +84,18 @@
                                   </th>
                                   <th>
                                     <span style="color: #566787">
+                                      <!-- <strong> Served by </strong> -->
+                                      <strong> Servita da </strong>
+                                    </span>
+                                  </th>
+                                  <th>
+                                   <span style="color: #566787">
+                                      
+                                      <strong> Membri </strong>
+                                    </span>
+                                  </th>
+                                  <th>
+                                    <span style="color: #566787">
                                       <!-- <strong> Data creazione </strong> -->
                                       <strong> Pubblicata </strong>
                                     </span>
@@ -115,7 +127,8 @@
                                   </span>
                                 </td>
                                 <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
-                                  <p style="font-size:0.9em">
+                                    <!-- max-width: 150px; -->
+                                  <p style="font-size:0.9em;" >
                                     {{ request?.recipient }}
                                   </p>
                                 </td>
@@ -127,8 +140,21 @@
                                   
                                 </td>
                                 <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
-                                  <p style="font-size:0.9em">
+                                    <!-- max-width: 400px -->
+                                  <p style="font-size:0.9em;">
                                     {{ request?.text }}
+                                  </p>
+                                </td>
+                                <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
+                                  <p style="font-size:0.9em">
+
+                                      <!-- Servita da -->
+                                  </p>
+                                </td>
+                                <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
+                                  <p style="font-size:0.9em">
+                                    <!-- MEMBRI -->
+                                    {{ request?.members }}
                                   </p>
                                 </td>
                                 <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
