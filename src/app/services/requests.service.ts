@@ -140,11 +140,12 @@ export class RequestsService {
 
       console.log('Request Service VALUeS LENGHT ', values.length)
 
-      console.log('Request Service VALUeS', values)
+      // console.log('Request Service VALUeS', values)
       if (values) {
         this.unservedRequest = values;
-        console.log('UNSERVED REQUESTS PUBLISHED BY REQ. SERVICE ', this.unservedRequest)
+
         this.mySubject.next(this.unservedRequest);
+        console.log(' ++ UNSERVED REQUESTS PUBLISHED BY REQ. SERVICE ', this.unservedRequest)
       }
       return values.length;
 

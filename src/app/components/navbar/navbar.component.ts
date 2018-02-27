@@ -25,7 +25,9 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     membersObjectInRequestArray: any;
     currentUserFireBaseUID: string;
     user: any;
-    CURRENT_USER_UID_IS_BETWEEN_MEMBERS = false;
+    // CURRENT_USER_UID_IS_BETWEEN_MEMBERS = false;
+    // SHOW_NOTIFICATION_FOR_REQUEST_RECIPIENT: boolean;
+    REQUEST_RECIPIENT_IN_LOCAL_STORAGE: string;
     constructor(
         location: Location,
         private element: ElementRef,
@@ -61,71 +63,83 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
                 // console.log('xxxxx xxxxx', values)
                 if (values) {
                     this.unservedRequestCount = values.length
-                    console.log('REQUEST SERVICE PUBLISH REQUESTS ', values)
-                    console.log('REQUEST SERVICE PUBLISH COUNT OF UNSERVED REQUEST ', this.unservedRequestCount);
+                    console.log('NAVBAR SUBSCRIBE TO REQUEST SERVICE PUBLISHED REQUESTS ', values)
+                    console.log('NAVBAR SUBSCRIBE TO REQUEST PUBLISHED COUNT OF UNSERVED REQUEST ', this.unservedRequestCount);
                     // let i: any;
                     // for (i = 0; i < values.length; i++) {
                     //     this.valueText = values[i].text
                     //     console.log('REQUEST TEXT: ', this.valueText )
                     // }
+
                     this.lastRequest = values[values.length - 1];
                     console.log('LAST REQUEST TEXT: ', this.lastRequest.text)
                     console.log('LAST REQUEST recipient: ', this.lastRequest.recipient)
+
                     // console.log('NAVBAR - MEMBERS IN LAST REQUEST ', this.lastRequest.members)
-                    this.user = firebase.auth().currentUser;
-                    //   console.log('NAVBAR COMPONENT: LOGGED USER ', this.user);
 
-
-
-
-                    // const uidKeysInMemberObject = Object.keys(this.lastRequest.members)
-                    // console.log('UID KEYS CONTAINED IN MEMBER OBJECT ', Object.keys(uidKeysInMemberObject ))
-
-                    // let i: number;
-                    // for (i = 0; i < this.lastRequest.members.length; i++) {
-                    //     const menber = 
+                    // this.user = firebase.auth().currentUser;
+                    // console.log('NAVBAR COMPONENT: LOGGED USER ', this.user);
+                    // if (this.user) {
+                    //     this.currentUserFireBaseUID = this.user.uid
+                    //     console.log(' -- > FIREBASE SIGNED-IN USER UID GET IN NAVBAR COMPONENT', this.currentUserFireBaseUID);
                     // }
-
-                    if (this.user) {
-                        this.currentUserFireBaseUID = this.user.uid
-                        console.log(' -- > FIREBASE SIGNED-IN USER UID GET IN NAVBAR COMPONENT', this.currentUserFireBaseUID);
-                    }
                     // IF THE CURRENT USER UID IS ALREADY MEMBER OF THE CONVERSATION DOES NOT SHOW THE NOTIFICATION
                     // this avoid a new display of the notification related to the unserved request when the user joins to
                     // the same request
-                    this.requestsService.getSnapshotConversationByRecipient(this.lastRequest.recipient)
-                        .subscribe((request) => {
-                            console.log('NAVBAR - LAST REQUEST ', request)
-                            this.membersObjectInRequestArray = request[0].members;
-                            console.log('NAVBAR - MEMBERS IN LAST REQUEST ', this.membersObjectInRequestArray)
+                    // this.requestsService.getSnapshotConversationByRecipient(this.lastRequest.recipient)
+                    //     .subscribe((request) => {
+                    //         console.log('NAVBAR - LAST REQUEST ', request)
+                    //         this.membersObjectInRequestArray = request[0].members;
+                    //         console.log('NAVBAR - MEMBERS IN LAST REQUEST ', this.membersObjectInRequestArray)
 
-                            const uidKeysInMemberObject = Object.keys(this.membersObjectInRequestArray)
-                            console.log('UID KEYS CONTAINED IN MEMBER OBJECT ', Object.keys(this.membersObjectInRequestArray))
+                    //         const uidKeysInMemberObject = Object.keys(this.membersObjectInRequestArray)
+                    //         console.log('UID KEYS CONTAINED IN MEMBER OBJECT ', Object.keys(this.membersObjectInRequestArray))
 
-                            const lengthOfUidKeysInMemberObject = uidKeysInMemberObject.length;
-                            console.log('LENGHT OF UID KEY CONTAINED IN MEMBER OBJECT ', lengthOfUidKeysInMemberObject)
+                    //         const lengthOfUidKeysInMemberObject = uidKeysInMemberObject.length;
+                    //         console.log('LENGHT OF UID KEY CONTAINED IN MEMBER OBJECT ', lengthOfUidKeysInMemberObject)
 
-                            let i: number;
-                            for (i = 0; i < lengthOfUidKeysInMemberObject; i++) {
-                                const uidKey = uidKeysInMemberObject[i];
+                    //         let i: number;
+                    //         for (i = 0; i < lengthOfUidKeysInMemberObject; i++) {
+                    //             const uidKey = uidKeysInMemberObject[i];
 
-                                if (uidKey === this.currentUserFireBaseUID) {
-                                    console.log('CURRENT USER IS BETWEEN THE MEMBERS')
-                                    this.CURRENT_USER_UID_IS_BETWEEN_MEMBERS = true;
-                                } else {
-                                    this.CURRENT_USER_UID_IS_BETWEEN_MEMBERS = false;
-                                }
-                            }
+                    //             if (uidKey === this.currentUserFireBaseUID) {
+                    //                 console.log('CURRENT USER IS BETWEEN THE MEMBERS')
+                    //                 this.CURRENT_USER_UID_IS_BETWEEN_MEMBERS = true;
+                    //             } else {
+                    //                 this.CURRENT_USER_UID_IS_BETWEEN_MEMBERS = false;
+                    //             }
+                    //         }
 
-                        });
+                    //     });
 
-                    if (this.CURRENT_USER_UID_IS_BETWEEN_MEMBERS === false) {
-                        this.showNotification()
+                    // this.requestsService.getSnapshotConversationByRecipient(this.lastRequest.recipient)
+                    //     .subscribe((request) => {
+
+                    //     });
+                    // if (this.CURRENT_USER_UID_IS_BETWEEN_MEMBERS === false) {
+                    // if (this.lastRequest) {
+
+                    // if (this.lastRequest.recipient !== this.SHOW_NOTIFICATION_FOR_REQUEST_RECIPIENT) {
+                    // this.SHOW_NOTIFICATION_FOR_REQUEST_RECIPIENT = this.lastRequest.recipient;
+                    // console.log('SHOW_NOTIFICATION_FOR_REQUEST WITH RECIPIENT ', this.SHOW_NOTIFICATION_FOR_REQUEST_RECIPIENT);
+
+                    // if (this.SHOW_NOTIFICATION_FOR_REQUEST_RECIPIENT === true) {
+
+                    // WHEN A NOTIFICATION IS SHOWED SET IN THE LOCAL STORAGE (see showNotification())THE LAST REQUEST RECIPIENT THEN
+                    // THE NOTIFICATION IS SHOWED ONLY IF IT THERE IS NOT IN THE LOCAL STORAGE
+                    console.log(' --  LOCAL STORAGE GET REQUEST ID ', localStorage.getItem(this.lastRequest.recipient))
+                    this.REQUEST_RECIPIENT_IN_LOCAL_STORAGE = localStorage.getItem(this.lastRequest.recipient)
+
+                    if (this.REQUEST_RECIPIENT_IN_LOCAL_STORAGE === null) {
+
+                        this.showNotification(this.lastRequest.recipient)
                         this.audio = new Audio();
                         this.audio.src = 'assets/Carme.mp3';
                         this.audio.load();
                         this.audio.play();
                     }
+
+
                 }
 
 
@@ -135,7 +149,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
 
 
-    showNotification() {
+    showNotification(request_recipient: string) {
         console.log('show notification')
         const type = ['', 'info', 'success', 'warning', 'danger'];
 
@@ -159,6 +173,16 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
                 //     align: align
                 // }
             });
+
+        // if (request_recipient === this.lastRequest.recipient) {
+        //     console.log('!! HO GIà VISUALIZZATO NOTIFICA PER QUESTA REQUEST  RR ', request_recipient, 'LRR ', this.lastRequest.recipient)
+        //     this.SHOW_NOTIFICATION_FOR_REQUEST_RECIPIENT = false;
+
+        // } else {
+        //     this.SHOW_NOTIFICATION_FOR_REQUEST_RECIPIENT = true;
+        // }
+        localStorage.setItem(request_recipient, request_recipient);
+        // console.log(' -- -- LOCAL STORAGE  SET REQUEST ID ', localStorage.setItem(request_recipient, request_recipient))
     }
 
 
@@ -218,6 +242,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     logout() {
         this.auth.signOut();
         // this.display = 'none';
+        localStorage.clear();
     }
 
 

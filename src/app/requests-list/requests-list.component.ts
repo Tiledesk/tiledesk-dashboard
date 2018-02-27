@@ -82,7 +82,7 @@ export class RequestsListComponent implements OnInit {
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
       .then(function (idToken) {
         that.token = idToken;
-        console.log('idToken.', idToken);
+        // console.log('idToken.', idToken);
       }).catch(function (error) {
         // Handle error
         console.log('idToken.', error);
