@@ -58,7 +58,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         // SUBSCRIBE TO UNSERVED REQUESTS PUBLISHED BY REQUEST SERVICE
         this.requestsService.mySubject.subscribe(
             (values) => {
-                console.log('xxxxx xxxxx', values)
+                // console.log('xxxxx xxxxx', values)
                 if (values) {
                     this.unservedRequestCount = values.length
                     console.log('REQUEST SERVICE PUBLISH REQUESTS ', values)
@@ -86,46 +86,49 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
                     //     const menber = 
                     // }
 
-                    // if (this.user) {
-                    //     this.currentUserFireBaseUID = this.user.uid
-                    //     console.log(' -- > FIREBASE SIGNED-IN USER UID GET IN NAVBAR COMPONENT', this.currentUserFireBaseUID);
-                    // }
+                    if (this.user) {
+                        this.currentUserFireBaseUID = this.user.uid
+                        console.log(' -- > FIREBASE SIGNED-IN USER UID GET IN NAVBAR COMPONENT', this.currentUserFireBaseUID);
+                    }
                     // IF THE CURRENT USER UID IS ALREADY MEMBER OF THE CONVERSATION DOES NOT SHOW THE NOTIFICATION
-                    // this.requestsService.getSnapshotConversationByRecipient(this.lastRequest.recipient)
-                    //     .subscribe((request) => {
-                    //         console.log('NAVBAR - LAST REQUEST ', request)
-                    //         this.membersObjectInRequestArray = request[0].members;
-                    //         console.log('NAVBAR - MEMBERS IN LAST REQUEST ', this.membersObjectInRequestArray)
+                    // this avoid a new display of the notification related to the unserved request when the user joins to
+                    // the same request
+                    this.requestsService.getSnapshotConversationByRecipient(this.lastRequest.recipient)
+                        .subscribe((request) => {
+                            console.log('NAVBAR - LAST REQUEST ', request)
+                            this.membersObjectInRequestArray = request[0].members;
+                            console.log('NAVBAR - MEMBERS IN LAST REQUEST ', this.membersObjectInRequestArray)
 
-                    //         const uidKeysInMemberObject = Object.keys(this.membersObjectInRequestArray)
-                    //         console.log('UID KEYS CONTAINED IN MEMBER OBJECT ', Object.keys(this.membersObjectInRequestArray))
+                            const uidKeysInMemberObject = Object.keys(this.membersObjectInRequestArray)
+                            console.log('UID KEYS CONTAINED IN MEMBER OBJECT ', Object.keys(this.membersObjectInRequestArray))
 
-                    //         const lengthOfUidKeysInMemberObject = uidKeysInMemberObject.length;
-                    //         console.log('LENGHT OF UID KEY CONTAINED IN MEMBER OBJECT ', lengthOfUidKeysInMemberObject)
+                            const lengthOfUidKeysInMemberObject = uidKeysInMemberObject.length;
+                            console.log('LENGHT OF UID KEY CONTAINED IN MEMBER OBJECT ', lengthOfUidKeysInMemberObject)
 
-                    //         let i: number;
-                    //         for (i = 0; i < lengthOfUidKeysInMemberObject; i++) {
-                    //             const uidKey = uidKeysInMemberObject[i];
+                            let i: number;
+                            for (i = 0; i < lengthOfUidKeysInMemberObject; i++) {
+                                const uidKey = uidKeysInMemberObject[i];
 
-                    //             if (uidKey === this.currentUserFireBaseUID) {
-                    //                 console.log('CURRENT USER IS BETWEEN THE MEMBERS')
-                    //                 this.CURRENT_USER_UID_IS_BETWEEN_MEMBERS = true;
-                    //             } else {
-                    //                 this.CURRENT_USER_UID_IS_BETWEEN_MEMBERS = false;
-                    //             }
-                    //         }
+                                if (uidKey === this.currentUserFireBaseUID) {
+                                    console.log('CURRENT USER IS BETWEEN THE MEMBERS')
+                                    this.CURRENT_USER_UID_IS_BETWEEN_MEMBERS = true;
+                                } else {
+                                    this.CURRENT_USER_UID_IS_BETWEEN_MEMBERS = false;
+                                }
+                            }
 
-                    //     });
+                        });
 
-
-                } // if values
-                if (this.CURRENT_USER_UID_IS_BETWEEN_MEMBERS === false) {
-                    this.showNotification()
-                    this.audio = new Audio();
-                    this.audio.src = 'assets/Carme.mp3';
-                    this.audio.load();
-                    this.audio.play();
+                    if (this.CURRENT_USER_UID_IS_BETWEEN_MEMBERS === false) {
+                        this.showNotification()
+                        this.audio = new Audio();
+                        this.audio.src = 'assets/Carme.mp3';
+                        this.audio.load();
+                        this.audio.play();
+                    }
                 }
+
+
             }
         );
     }
