@@ -89,7 +89,8 @@ export class RequestsService {
           membersCount: data.membersCount,
           support_status: data.support_status,
           members: data.members,
-          requester_fullname: data.requester_fullname
+          requester_fullname: data.requester_fullname,
+          requester_id: data.requester_id
         };
       });
     });

@@ -16,6 +16,7 @@ import { Response } from '@angular/http';
 
 import * as moment from 'moment';
 import 'moment/locale/it.js';
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'requests-list',
@@ -59,6 +60,11 @@ export class RequestsListComponent implements OnInit {
   request_timestamp: any;
   request_fromNow_date: any;
   id_request: string;
+
+  members_as_string: any;
+
+  requester_id: string;
+  served_by: string;
 
   constructor(
     private requestsService: RequestsService,
@@ -112,17 +118,94 @@ export class RequestsListComponent implements OnInit {
       let i: any;
       for (i = 0; i < this.requestList.length; i++) {
         // console.log('REQUEST TIMESTAMP ', this.requestList[i].timestamp)
+
+
+        /**
+         * CALCULATE THE DATE AS FROM-NOW FORMAT
+         * AND SET THIS IN THE REQUEST'S JSON KEY request.request_date_fromnow
+         */
         const timestampMs = this.requestList[i].timestamp / 1000
         this.request_fromNow_date = moment.unix(timestampMs).fromNow();
         // console.log('REQUEST FROM NOW DATE ', this.request_fromNow_date)
         this.id_request = this.requestList[i].recipient;
 
+        // set date from now in request object
         for (const request of this.requestList) {
           if (this.id_request === request.recipient) {
             request.request_date_fromnow = this.request_fromNow_date;
 
-            // console.log('+++ GET REQUEST LIST - REQUEST MEMBERS ', request.members )
           }
+
+        }
+
+        /**
+         *  * SEARCH IF THE CURRENT USER UID IS BETWEEN THE KEYS OF THE OBJECT MEMBER (CONTAINED IN REQUEST LIST)
+         *    AND SET TRUE TO THE REQUEST'S JSON KEY request.currentUserIsJoined
+         *  * CREATE A STRING OF ALL MEMBERS OF THE REQUEST AND SET THIS IN THE REQUEST'S JSON KEY request.members_as_string
+         */
+        this.membersObjectInRequestArray = this.requestList[i].members;
+        // console.log('OBJECT MEMBERS IN REQUESTS (GET REQUETS LIST) ', this.membersObjectInRequestArray);
+        if (this.membersObjectInRequestArray !== undefined) {
+
+
+          const uidKeysInMemberObject = Object.keys(this.membersObjectInRequestArray)
+          // console.log('KEYS OF MEMBER OBJECT (GET REQUETS LIST)', Object.keys(this.membersObjectInRequestArray))
+
+          const lengthOfUidKeysInMemberObject = uidKeysInMemberObject.length;
+          // console.log('KEYS LENGHT OF MEMBER OBJECT (GET REQUETS LIST)', lengthOfUidKeysInMemberObject)
+
+
+          let w: number;
+          this.members_as_string = '';
+          this.served_by = '';
+          for (w = 0; w < lengthOfUidKeysInMemberObject; w++) {
+            const uidMenbersKey = uidKeysInMemberObject[w];
+            // console.log('UID KEY ', uidMenbersKey)
+
+            // ** CREATE A STRING OF ALL MEMBERS OF THE REQUEST AND SET THIS IN THE REQUEST'S JSON
+            // USED TO SHOW THE LIST OF MEMBERS IN THE TABLE (COLUMN MEMBERS)
+            for (const request of this.requestList) {
+              if (this.id_request === request.recipient) {
+                this.members_as_string += uidMenbersKey + '<br>';
+                // SET MEMBERS AS STRING IN THE REQUEST'S JSON
+                request.members_as_string = this.members_as_string;
+                // console.log('MEMBERS AS STRING ', this.members_as_string);
+                // console.log('MEMBERS AS STRING ', request.members_as_string);
+              }
+            }
+
+            // REQUESTER ID IS USED TO OBTAIN 'SERVED BY'
+            // ('SERVED BY' IS EQUAL TO 'MEMBERS' TO WHICH IS SUBSTRACTED 'REQUESTER ID' AND 'SYSTEM' )
+            this.requester_id = this.requestList[i].requester_id
+            // console.log('REQUESTER ID ', this.requester_id)
+
+            if ((uidMenbersKey !== this.requester_id) && (uidMenbersKey !== 'system')) {
+              for (const request of this.requestList) {
+                if (this.id_request === request.recipient) {
+                  this.served_by += uidMenbersKey + '<br>'
+                  // SET SERVED BY IN THE REQUEST'S JSON
+                  request.served_by = this.served_by
+                  // console.log('SERVED BY ', request.served_by);
+                }
+              }
+            }
+
+
+            if (uidMenbersKey === this.currentUserFireBaseUID) {
+
+              console.log('THE MEMBER UID: ', uidMenbersKey, ' IS = TO CUR.USER UID')
+              // SET IN THE REQUEST ARRAY currentUserIsJoined = true
+              for (const request of this.requestList) {
+                if (request.recipient === this.id_request) {
+                  request.currentUserIsJoined = true;
+                }
+              }
+
+              break;
+            }
+          }
+
+
         }
       }
 

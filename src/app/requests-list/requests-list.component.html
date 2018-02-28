@@ -62,9 +62,11 @@
                   </div> -->
                   <loading-spinner *ngIf="showSpinner"></loading-spinner>
                   <div  *ngIf="!showSpinner" class="card-content table-responsive">
+                      <!-- style="overflow-x:auto;" -->
                       <table class="table">
                           <thead class="text">
                               <tr>
+                                  <!-- <th></th> -->
                                   <th></th>
                                   <th>
                                     <span style="color: #566787">
@@ -82,12 +84,18 @@
                                       <strong> Ultimo Messagio </strong>
                                     </span>
                                   </th>
+                                  <!-- REQUESTER ID * FOR DEBUG -->
+                                  <!-- <th>
+                                    <span style="color: #566787">
+                                      <strong> Requester Id </strong>
+                                    </span>
+                                  </th> -->
                                   <th>
                                     <span style="color: #566787">
                                       <!-- <strong> Served by </strong> -->
                                       <strong> Servita da </strong>
                                     </span>
-                                  </th>
+                                    </th>
                                   <th>
                                    <span style="color: #566787">
                                       
@@ -105,26 +113,57 @@
                           </thead>
                           <tbody>
                               <tr *ngFor="let request of requestList">
+                              
+                                <!-- FOR DEBUG: SHOW 'J' IF THE CURRENT USER UID IS BETWEEN 
+                                THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
+                                <!-- <td>
+                                  <span *ngIf="request?.currentUserIsJoined === true"> 
+                                    J
+                                  </span>
+                                </td> -->
                                 <td>
                                   <!-- <span *ngIf="request?.membersCount == 0"> 
                                     <i style="color:red;" class="material-icons">priority_high</i>
                                   </span> -->
+
+                                  <!-- IF THE REQUEST SUPPORT STATUS IS 0 (??? REQUEST) -->
+                                  <span *ngIf="request?.support_status == 0"> 
+                                    <span class="" (click)='openViewMsgsModal(request?.recipient)'>
+                                      <button class="btn btn-default pull-right" style="padding:4px 6px;"> 
+                                          <i style="font-size: 17px !important; " class="material-icons">visibility</i>
+                                      </button>
+                                    </span>
+                                  </span>
+                                  
+                                  <!-- IF THE REQUEST SUPPORT STATUS IS 100 (UNSERVED REQUEST) -->
                                   <span *ngIf="request?.support_status == 100"> 
-                                      <!-- , hasClickedUpdateModal=true -->
                                     <span class="" (click)='openViewMsgsModal(request?.recipient)'>
                                       <button class="btn btn-danger pull-right" style="padding:4px 6px;"> 
                                           <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                                       </button>
                                     </span>
                                   </span>
-                                  <span *ngIf="request?.support_status == 200"> 
-                                      <!-- , hasClickedUpdateModal=true -->
+
+                                  <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) AND THE CURRENT USER UID IS BETWEEN 
+                                  THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
+                                  <span *ngIf="request?.support_status == 200 && request?.currentUserIsJoined === true"> 
                                     <span class="" (click)='openViewMsgsModal(request?.recipient)'>
-                                      <button class="btn btn-info pull-right" style="padding:4px 6px;"> 
+                                      <button class="btn btn-success pull-right" style="padding:4px 6px;" rel="tooltip" title=""> 
                                           <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                                       </button>
                                     </span>
                                   </span>
+
+                                  <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) BUT THE CURRENT USER UID IS NOT BETWEEN 
+                                  THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has not joined to the request) -->
+                                  <span *ngIf="request?.support_status == 200 && !request?.currentUserIsJoined"> 
+                                    <span class="" (click)='openViewMsgsModal(request?.recipient)'>
+                                      <button class="btn btn-info pull-right" style="padding:4px 6px;" rel="tooltip" title=""> 
+                                        <i style="font-size: 17px !important; " class="material-icons">visibility</i>
+                                      </button>
+                                    </span>
+                                  </span>
+
                                 </td>
                                 <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
                                     <!-- max-width: 150px; -->
@@ -145,16 +184,22 @@
                                     {{ request?.text }}
                                   </p>
                                 </td>
-                                <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
+                                <!-- REQUESTER ID * FOR DEBUG-->
+                                <!-- <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
                                   <p style="font-size:0.9em">
-
-                                      <!-- Servita da -->
+                                    {{ request?.requester_id }}
+                                  </p>
+                                </td> -->
+                                <!-- SERVED BY -->
+                                <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer" >
+                                  <p style="font-size:0.9em" [innerHTML]="request?.served_by" >
+                                    <!-- {{ request?.served_by }} -->
                                   </p>
                                 </td>
+                                <!-- LIST  OF MEMBERS -->
                                 <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
-                                  <p style="font-size:0.9em">
-                                    <!-- MEMBRI -->
-                                    {{ request?.members }}
+                                  <p style="font-size:0.9em" [innerHTML]="request?.members_as_string">
+                                    <!-- {{ request?.members_as_string }} -->
                                   </p>
                                 </td>
                                 <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
