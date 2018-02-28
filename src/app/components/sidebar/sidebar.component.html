@@ -31,8 +31,8 @@
         <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <i class="material-icons">notifications</i>
-                <span class="notification"></span>
-                <p class="hidden-lg hidden-md">Notifications</p>
+                <span class="notification" routerLink="/requests">{{ unservedRequestCount }}</span>
+                <p class="hidden-lg hidden-md" routerLink="/requests">Notifications</p>
             </a>
             <!-- <ul class="dropdown-menu">
                 <li><a href="#">Mike John responded to your email</a></li>

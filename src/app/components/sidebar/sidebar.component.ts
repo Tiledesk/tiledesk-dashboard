@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { RequestsService } from '../../services/requests.service';
 
 declare const $: any;
 declare interface RouteInfo {
@@ -36,12 +37,35 @@ export class SidebarComponent implements OnInit {
 
     SHOW_SETTINGS_SUBMENU = false;
     isActive: string;
+    // switch up and down the caret of menu item settings
     trasform = 'none';
+    unservedRequestCount: number;
 
-    constructor() { }
+    constructor(
+        private requestsService: RequestsService,
+    ) { }
 
     ngOnInit() {
         this.menuItems = ROUTES.filter(menuItem => menuItem);
+
+
+        // GET COUNT OF UNSERVED REQUESTS
+        this.requestsService.getCountUnservedRequest().subscribe((count: number) => {
+            this.unservedRequestCount = count;
+            // console.log(' ++ +++ (sidebar) COUNT OF UNSERVED REQUEST ', this.unservedRequestCount);
+
+        });
+
+        // SUBSCRIBE TO UNSERVED REQUESTS PUBLISHED BY REQUEST SERVICE
+        this.requestsService.mySubject.subscribe((values) => {
+            // console.log('xxxxx xxxxx', values)
+            if (values) {
+                this.unservedRequestCount = values.length
+                // console.log('SIDEBAR SUBSCRIBE TO REQUEST SERVICE PUBLISHED REQUESTS ', values)
+                // console.log('SIDEBAR SUBSCRIBE TO REQUEST PUBLISHED COUNT OF UNSERVED REQUEST ', this.unservedRequestCount);
+            }
+        });
+
     }
     isMobileMenu() {
         if ($(window).width() > 991) {

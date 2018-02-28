@@ -56,7 +56,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         // GET COUNT OF UNSERVED REQUESTS
         this.requestsService.getCountUnservedRequest().subscribe((count: number) => {
             this.unservedRequestCount = count;
-            console.log(' ++ +++ COUNT OF UNSERVED REQUEST ', this.unservedRequestCount);
+            console.log(' ++ +++ (navbar) COUNT OF UNSERVED REQUEST ', this.unservedRequestCount);
 
         });
 
