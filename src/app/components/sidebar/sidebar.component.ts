@@ -36,6 +36,7 @@ export class SidebarComponent implements OnInit {
 
     SHOW_SETTINGS_SUBMENU = false;
     isActive: string;
+    trasform = 'none';
 
     constructor() { }
 
@@ -52,6 +53,11 @@ export class SidebarComponent implements OnInit {
     has_clicked_settings(SHOW_SETTINGS_SUBMENU: boolean) {
         this.SHOW_SETTINGS_SUBMENU = SHOW_SETTINGS_SUBMENU;
         console.log('HAS CLICKED SETTINGS - SHOW_SETTINGS_SUBMENU ', this.SHOW_SETTINGS_SUBMENU);
+        if (this.SHOW_SETTINGS_SUBMENU === true) {
+            this.trasform = 'rotate(180deg)';
+        } else {
+            this.trasform = 'none';
+        }
     }
     setActiveClassToSettings() {
         this.isActive = 'active';

@@ -77,29 +77,34 @@
                 </a>
             </li>
             <!-- SETTINGS -->
-            <li routerLinkActive="active" (click)="has_clicked_settings(SHOW_SETTINGS_SUBMENU = !SHOW_SETTINGS_SUBMENU)" >
-                <a routerLink="/settings">
+            <!-- routerLinkActive="active"  -->
+            <li (click)="has_clicked_settings(SHOW_SETTINGS_SUBMENU = !SHOW_SETTINGS_SUBMENU)" style="cursor:pointer">
+                <!-- routerLink="/settings" -->
+                <a>
                     <i class="material-icons">settings</i>
-                    <p>Settings <b class="caret"></b></p>
+                    <p>Settings <b class="caret" style="position: absolute;right: 18px; margin-top: 13px" [ngStyle]="{'transform': trasform}"></b></p>
                 </a>
             </li>
             <!--  -->
             <!-- SECTION OF SETTINGS SUBMENU -->
-            <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active-custom" style="padding-left:15px" (click)="setActiveClassToSettings()">
+            <!-- routerLinkActive="active-custom" -->
+            <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" style="padding-left:15px" (click)="setActiveClassToSettings()">
                 <a routerLink="/bots">
                     <!-- <i class="material-icons">keyboard_arrow_right</i> -->
                     <p style="padding-left:15px;">Bots</p>
                 </a>
             </li>
             <!-- margin-top: 55px -->
-            <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active-custom" style="padding-left:15px;" (click)="setActiveClassToSettings()">
+            <!-- routerLinkActive="active-custom" -->
+            <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" style="padding-left:15px;" (click)="setActiveClassToSettings()">
                 <a routerLink="/faqkb">
                     <!-- <i class="material-icons">keyboard_arrow_right</i> -->
                     <p style="padding-left:15px;">FAQ</p>
                 </a>
             </li>
             <!-- margin-top: 110px -->
-            <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active-custom" style="padding-left:15px;" (click)="setActiveClassToSettings()">
+            <!-- routerLinkActive="active-custom" -->
+            <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" style="padding-left:15px;" (click)="setActiveClassToSettings()">
                 <a routerLink="/departments">
                     <!-- <i class="material-icons">keyboard_arrow_right</i> -->
                     <p style="padding-left:15px;">Departments</p>
