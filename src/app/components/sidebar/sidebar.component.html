@@ -1,3 +1,4 @@
+<!-- <span *ngIf="!LOGIN_PAGE"> -->
 <div class="logo">
     <!-- <a href="https://www.creative-tim.com" class="simple-text"> -->
     <a routerLink="/home" class="simple-text" style="text-transform: none;">
@@ -52,6 +53,15 @@
 
     <div class="nav-container">
         <ul class="nav">
+            
+            <!-- <li> 
+                <a>
+                    <select #selectElem (change)="setSelectedBot(selectElem.value)"  style="background-color: #eeeeee">
+                        <option>Disponibile</option>
+                        <option>Non disponibile</option>
+                    </select>
+                </a>
+            </li> -->
             <!-- CHAT21 MENU -->
             <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}}">
                 <a  [routerLink]="[menuItem.path]">
@@ -123,3 +133,5 @@
 
     </div>
 </div>
+
+<!-- </span> -->

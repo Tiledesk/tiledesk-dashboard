@@ -25,6 +25,9 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     private unservedRequestCount: number;
 
+    route: string;
+    LOGIN_PAGE: boolean;
+
     @ViewChild(NavbarComponent) navbar: NavbarComponent;
 
     constructor(
@@ -56,16 +59,50 @@ export class AppComponent implements OnInit, AfterViewInit {
         const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
         const elemSidebar = <HTMLElement>document.querySelector('.sidebar .sidebar-wrapper');
 
+        // GET THE HTML ELEMENT NAVBAR AND SIDEBAR THAT WILL BE HIDDEN IF IS DETECTED THE LOGIN PAGE
+        const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
+        console.log('xxxx xxxx elemAppSidebar ', elemAppSidebar)
+        const elemNavbar = <HTMLElement>document.querySelector('.navbar');
+        console.log('xxxx xxxx elemNavbar', elemNavbar)
+
+        // detect if is login page
+
+        this.router.events.subscribe((val) => {
+            if (this.location.path() !== '') {
+                this.route = this.location.path();
+                console.log('»> ', this.route)
+                if (this.route === '/login') {
+
+                    // this.navbar.sidebarClose();
+                    elemAppSidebar.setAttribute('style', 'display:none;');
+                    elemNavbar.setAttribute('style', 'display:none;');
+
+                    console.log('DETECT LOGIN PAGE')
+                    this.LOGIN_PAGE = true;
+                } else {
+                    this.LOGIN_PAGE = false;
+                    elemAppSidebar.setAttribute('style', 'display:block;');
+                    elemNavbar.setAttribute('style', 'display:block;');
+                }
+            } else {
+
+                console.log('»> * ', this.route)
+            }
+        });
+
+
+        // /.end 
+
         this.location.subscribe((ev: PopStateEvent) => {
             this.lastPoppedUrl = ev.url;
         });
         this.router.events.subscribe((event: any) => {
             this.navbar.sidebarClose();
             if (event instanceof NavigationStart) {
-                if (event.url != this.lastPoppedUrl)
+                if (event.url !== this.lastPoppedUrl)
                     this.yScrollStack.push(window.scrollY);
             } else if (event instanceof NavigationEnd) {
-                if (event.url == this.lastPoppedUrl) {
+                if (event.url === this.lastPoppedUrl) {
                     this.lastPoppedUrl = undefined;
                     window.scrollTo(0, this.yScrollStack.pop());
                 } else

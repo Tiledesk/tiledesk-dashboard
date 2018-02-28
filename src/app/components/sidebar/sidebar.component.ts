@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { RequestsService } from '../../services/requests.service';
+import { Router } from '@angular/router'
+import { Location } from '@angular/common'
+
 
 declare const $: any;
 declare interface RouteInfo {
@@ -41,13 +44,18 @@ export class SidebarComponent implements OnInit {
     trasform = 'none';
     unservedRequestCount: number;
 
+    route: string;
+    LOGIN_PAGE: boolean;
+
+
     constructor(
         private requestsService: RequestsService,
+        private router: Router,
+        public location: Location,
     ) { }
 
     ngOnInit() {
         this.menuItems = ROUTES.filter(menuItem => menuItem);
-
 
         // GET COUNT OF UNSERVED REQUESTS
         this.requestsService.getCountUnservedRequest().subscribe((count: number) => {
