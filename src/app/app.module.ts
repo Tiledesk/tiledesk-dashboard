@@ -54,7 +54,7 @@ import { MongodbFaqService } from './services/mongodb-faq.service';
 import { FaqComponent } from './faq/faq.component';
 import { BotService } from './services/bot.service';
 import { BotsComponent } from './bots/bots.component';
-import { SettingsComponent } from './settings/settings.component';
+import { ProjectsComponent } from './projects/projects.component';
 import { UsersComponent } from './users/users.component';
 import { FaqKbService } from './services/faq-kb.service';
 import { FaqKbComponent } from './faq-kb/faq-kb.component';
@@ -93,7 +93,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     DepartmentsComponent,
     FaqComponent,
     BotsComponent,
-    SettingsComponent,
+    ProjectsComponent,
     UsersComponent,
     FaqKbComponent,
     FaqKbEditAddComponent,

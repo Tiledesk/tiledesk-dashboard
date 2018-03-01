@@ -14,7 +14,9 @@ import { RequestsListComponent } from './requests-list/requests-list.component';
 import { DepartmentsComponent } from './departments/departments.component';
 
 import { BotsComponent } from './bots/bots.component';
-import { SettingsComponent } from './settings/settings.component';
+
+import { ProjectsComponent } from './projects/projects.component';
+
 import { UsersComponent } from './users/users.component';
 
 // FAQ
@@ -47,7 +49,9 @@ const routes: Routes = [
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
   { path: 'departments', component: DepartmentsComponent, canActivate: [AuthGuard] },
   { path: 'bots', component: BotsComponent, canActivate: [AuthGuard] },
-  { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard] },
+
+  { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] },
+
   { path: 'users', component:  UsersComponent, canActivate: [AuthGuard] },
   { path: 'faqkb', component:  FaqKbComponent, canActivate: [AuthGuard] },
   { path: 'createfaqkb', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },
