@@ -3,27 +3,23 @@ import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angula
 import { RequestsService } from '../services/requests.service';
 import { Request } from '../models/request-model';
 import { Message } from '../models/message-model';
-// import { error } from 'util';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/takeWhile';
 
-import 'rxjs/add/operator/finally';
+import { Observable } from 'rxjs/Observable';
 
 import * as firebase from 'firebase/app';
-// import { Response } from '@angular/http/src/static_response';
+
 import { Headers } from '@angular/http/src/headers';
 import { Response } from '@angular/http';
 
 import * as moment from 'moment';
 import 'moment/locale/it.js';
-import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
-  selector: 'requests-list',
-  templateUrl: './requests-list.component.html',
-  styleUrls: ['./requests-list.component.scss'],
+  selector: 'app-requests-list-history',
+  templateUrl: './requests-list-history.component.html',
+  styleUrls: ['./requests-list-history.component.scss']
 })
-export class RequestsListComponent implements OnInit {
+export class RequestsListHistoryComponent implements OnInit {
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
   // user: Observable<User | null>;
@@ -101,7 +97,7 @@ export class RequestsListComponent implements OnInit {
 
 
   ngOnInit() {
-    this.getRequestList();
+    this.getHistoryRequestList();
   }
 
   // ngAfterViewInit() {
@@ -112,9 +108,9 @@ export class RequestsListComponent implements OnInit {
   /**
    * REQUESTS (on FIRESTORE the COLLECTION is 'CONVERSATIONS')
    */
-  getRequestList() {
+  getHistoryRequestList() {
     // SUBSCIPTION TO snapshotChanges
-    this.requestsService.getSnapshotConversations().subscribe((data) => {
+    this.requestsService.getSnapshotHistoryOfConversations().subscribe((data) => {
       this.requestList = data;
       console.log('REQUESTS-LIST.COMP: SUBSCRIPTION TO REQUESTS getSnapshot ', data);
 

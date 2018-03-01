@@ -71,6 +71,7 @@ import { DepartmentEditAddComponent } from './department-edit-add/department-edi
 import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.component';
 
 import { ProjectService } from './services/project.service';
+import { RequestsListHistoryComponent } from './requests-list-history/requests-list-history.component';
 
 
 
@@ -106,6 +107,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AnalyticsComponent,
     DepartmentEditAddComponent,
     ProjectEditAddComponent,
+    RequestsListHistoryComponent,
 
   ],
   imports: [

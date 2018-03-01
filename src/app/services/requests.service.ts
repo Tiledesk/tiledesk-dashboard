@@ -96,6 +96,35 @@ export class RequestsService {
     });
   }
 
+  /**
+   * HISTORY OF CONVERSATION (ALIAS REQUESTS - IN THE VIEW IS VISITORS)return an observable of ALL FIRESTORE  'conversation' * WITH * ID
+   */
+  getSnapshotHistoryOfConversations(): Observable<Request[]> {
+    // ['added', 'modified', 'removed']
+
+    this.requestsCollection = this.afs.collection('conversations',
+      (ref) => ref.where('support_status', '>=', 1000).orderBy('support_status').orderBy('timestamp', 'desc'));
+    // .orderBy('support_status', 'desc').orderBy('timestamp', 'desc')
+
+    return this.requestsCollection.snapshotChanges().map((actions) => {
+      return actions.map((a) => {
+        const data = a.payload.doc.data() as Request;
+        return {
+          id: a.payload.doc.id,
+          recipient: data.recipient,
+          recipient_fullname: data.recipient_fullname,
+          sender_fullname: data.sender_fullname,
+          text: data.text, timestamp: data.timestamp,
+          membersCount: data.membersCount,
+          support_status: data.support_status,
+          members: data.members,
+          requester_fullname: data.requester_fullname,
+          requester_id: data.requester_id
+        };
+      });
+    });
+  }
+
   // searchUsers(searchParams: any) {
   //   this.searchUserCollection = this.afs.collection('users',
   //     (ref) => ref.where('displayName', '>=', `${searchParams}`));

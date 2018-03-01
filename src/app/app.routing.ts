@@ -42,6 +42,8 @@ import { BotEditAddComponent } from './bot-edit-add/bot-edit-add.component';
 import { AnalyticsComponent } from './analytics/analytics.component';
 
 import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.component';
+import { RequestsListHistoryComponent } from './requests-list-history/requests-list-history.component';
+
 
 // import { DashboardComponent} from './dashboard/dashboard.component';
 // Andrea
@@ -92,6 +94,8 @@ const routes: Routes = [
   { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] },
   { path: 'project/create', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/edit/:projectid', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
+
+  { path: 'history', component: RequestsListHistoryComponent, canActivate: [AuthGuard] },
 
   { path: 'dashboard', component: DashboardComponent },
 
