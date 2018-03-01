@@ -34,14 +34,11 @@ export class BotService {
       .map((response) => response.json());
   }
 
-  /**
-   *
-   */
 
-/**
- * READ DETAIL (GET BOT BY BOT ID)
- * @param id
- */
+  /**
+   * READ DETAIL (GET BOT BY BOT ID)
+   * @param id
+   */
   public getMongDbBotById(id: string): Observable<Bot[]> {
     let url = this.MONGODB_BASE_URL;
     url += `${id}`;
@@ -78,10 +75,10 @@ export class BotService {
 
   }
 
-/**
- * DELETE (DELETE)
- * @param id
- */
+  /**
+   * DELETE (DELETE)
+   * @param id
+   */
   public deleteMongoDbBot(id: string) {
 
     let url = this.MONGODB_BASE_URL;

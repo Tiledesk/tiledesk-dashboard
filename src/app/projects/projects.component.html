@@ -1,3 +1,118 @@
-<p>
-  settings works!
-</p>
+<!-- NEW FOR THIS TEMPLATE -->
+<p style="margin-top:10px; padding-left:30px" class="navbar-brand">Progetti</p> 
+<div class="main-content" style="padding-top:0px">
+  <div class="container-fluid">
+  
+    <div class="create" style="text-align: right!important; padding-top:25px; padding-bottom:0px">
+      <button class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="goToEditAddPage_CREATE()">
+          <!-- is-small -->
+        <span class="icon" style="padding-right:8px">
+          <i class="material-icons">add_circle</i>
+        </span>
+        Aggiungi Progetto
+      </button>
+    </div>
+  
+    <!-- MOMGO DB PROJECTS LIST -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-content table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>
+                    <span style="color: #566787">
+                      <!-- Project Name -->
+                      <strong>Nome Progetto</strong>
+                    </span>
+                  </th>
+                  <th style="">
+                    <span style="color: #566787">
+                      <strong>Id</strong>
+                    </span>
+                  </th>
+
+                  <th>
+                    <span style="color: #566787">
+                      <!-- Creation date -->
+                      <strong> Data creazione</strong>
+                    </span>
+                  </th>
+                  <th colspan="2">
+                    <span style="color: #566787">
+                      <!-- Actions -->
+                      <strong> Azioni</strong>
+                    </span>
+                  </th>
+                </tr>
+              </thead>
+          
+              <tbody>
+          
+                <tr *ngFor="let project of projects">
+                  <td>
+                    {{ project?.name }}
+                  </td>
+
+                  <td style="width: 280px !important">
+                    {{ project?._id }}
+                  </td>
+
+                  <td>
+                    {{ project?.createdAt | date: 'd/M/y'}}
+                  </td>
+          
+                  <td class="td-actions text-right">
+                    <button type="button" rel="tooltip" title="Modifica Progetto" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(project?._id)'>
+                      <i class="material-icons">edit</i>
+                    </button>
+                    <button type="button" rel="tooltip" title="Elimina Progetto" class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal(project?._id, project?.name)'>
+                      <i class="material-icons">close</i>
+                    </button>
+                  </td>
+          
+                </tr>
+              </tbody>
+            </table>
+          
+            <!-- MODAL -->
+            <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->
+            <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+
+                    <h4 class="modal-title">
+                      <!-- Delete Project with id: -->
+                      Elimina il Progetto con id:<code>{{id_toDelete}}</code>
+                    </h4>
+
+                  </div>
+                 
+                  <div class="modal-body">
+                    <!-- Are you sure you want to delete the Project -->
+                    <p> Sei sicuro di voler eliminare il Progetto <strong>{{projectName_toDelete}}</strong> ?</p>
+                  </div>
+                  
+                  <div class="modal-footer">
+                      <!-- Confirm -->
+                    <button class="btn btn-danger" (click)="onCloseDeleteModalHandled()">Conferma</button>
+                  </div>
+                  
+            
+                </div>
+                <!-- /.modal-content -->
+              </div>
+              <!-- /.modal-dialog -->
+            </div>
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

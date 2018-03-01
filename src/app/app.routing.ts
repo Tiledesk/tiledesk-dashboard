@@ -41,6 +41,8 @@ import { FaqKbEditAddComponent } from './faq-kb-edit-add/faq-kb-edit-add.compone
 import { BotEditAddComponent } from './bot-edit-add/bot-edit-add.component';
 import { AnalyticsComponent } from './analytics/analytics.component';
 
+import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.component';
+
 // import { DashboardComponent} from './dashboard/dashboard.component';
 // Andrea
 import { ChatComponent } from './chat/chat.component';
@@ -88,6 +90,9 @@ const routes: Routes = [
 
   { path: 'department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
   { path: 'department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
+
+  { path: 'project/create', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
+  { path: 'project/edit/:projectid', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
 
   { path: 'dashboard', component: DashboardComponent },
 

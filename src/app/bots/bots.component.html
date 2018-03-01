@@ -152,14 +152,14 @@
   <div class="container-fluid">
   
     <div class="create" style="text-align: right!important; padding-top:25px; padding-bottom:0px">
-        <button class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="goToEditAddPage_CREATE()">
-            <!-- is-small -->
-          <span class="icon" style="padding-right:8px">
-            <i class="material-icons">add_circle</i>
-          </span>
-          Aggiungi BOT
-        </button>
-      </div>
+      <button class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="goToEditAddPage_CREATE()">
+          <!-- is-small -->
+        <span class="icon" style="padding-right:8px">
+          <i class="material-icons">add_circle</i>
+        </span>
+        Aggiungi BOT
+      </button>
+    </div>
   
     <!-- MOMGO DB BOTS LIST -->
     <div class="row">
@@ -171,8 +171,8 @@
                 <tr>
                   <th>
                     <span style="color: #566787">
-                        <!-- Bot Name -->
-                        <strong>Nome Bot</strong>
+                      <!-- Bot Name -->
+                      <strong>Nome Bot</strong>
                     </span>
                   </th>
                   <th style="">
@@ -211,29 +211,29 @@
                     {{ bot?.createdAt | date: 'd/M/y'}}
                   </td>
           
-                  <!-- EDIT -->
-                  <!-- <td style="text-align: left!important;padding-left:8px; padding-right:8px;">
-                    <span class="icon" style="color:#f6ca4f; cursor: pointer;" (click)='goToEditAddPage_EDIT(bot?._id, bot?.id_faq_kb)'>
-                      <i class="fa fa-pencil"></i>
-                    </span>
-                  </td> -->
-                  <!-- ./ edit -->
-          
-                  <!-- DELETE -->
-                  <!-- <td style="text-align: left!important; padding-left:0px; padding-right:0px;  ">
-                    <span class="icon" style="color:#e36456;cursor: pointer;" (click)='openDeleteModal(bot?._id, bot?.fullname, hasClickedDeleteModal = true)'>
-                      <i class="fa fa-trash-o"></i>
-                    </span>
-                  </td> -->
-                  <!-- /. delete -->
-                  <!-- NEW -->
+                    <!-- EDIT -->
+                    <!-- <td style="text-align: left!important;padding-left:8px; padding-right:8px;">
+                      <span class="icon" style="color:#f6ca4f; cursor: pointer;" (click)='goToEditAddPage_EDIT(bot?._id, bot?.id_faq_kb)'>
+                        <i class="fa fa-pencil"></i>
+                      </span>
+                    </td> -->
+                    <!-- ./ edit -->
+            
+                    <!-- DELETE -->
+                    <!-- <td style="text-align: left!important; padding-left:0px; padding-right:0px;  ">
+                      <span class="icon" style="color:#e36456;cursor: pointer;" (click)='openDeleteModal(bot?._id, bot?.fullname, hasClickedDeleteModal = true)'>
+                        <i class="fa fa-trash-o"></i>
+                      </span>
+                    </td> -->
+                    <!-- /. delete -->
+                    <!-- NEW -->
                   <td class="td-actions text-right">
-                      <button type="button" rel="tooltip" title="Modifica Bot" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(bot?._id, bot?.id_faq_kb)'>
-                          <i class="material-icons">edit</i>
-                      </button>
-                      <button type="button" rel="tooltip" title="Elimina Bot" class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal(bot?._id, bot?.fullname, hasClickedDeleteModal = true)'>
-                          <i class="material-icons">close</i>
-                      </button>
+                    <button type="button" rel="tooltip" title="Modifica Bot" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(bot?._id, bot?.id_faq_kb)'>
+                      <i class="material-icons">edit</i>
+                    </button>
+                    <button type="button" rel="tooltip" title="Elimina Bot" class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal(bot?._id, bot?.fullname, hasClickedDeleteModal = true)'>
+                      <i class="material-icons">close</i>
+                    </button>
                   </td>
           
                 </tr>
@@ -316,5 +316,5 @@
         </div>
       </div>
     </div>
-    </div>
   </div>
+</div>
