@@ -102,3 +102,37 @@
 		width: 90%;
 	}
 }
+
+// * HOME NEW STYLE *
+// CARD AS CIRCLE + BACKGROUND WHITE + ORANDE BORDER
+.card-stats .card-header {
+	border-radius: 50px;
+	// background: #EEEEEE;
+	background: #FFFFFF;
+	border: 1.5px solid;
+	border-color: #ffa726;
+}
+
+.material-icons {
+	color: #ffa726;
+}
+
+.card-stats:hover{
+	.card-header {
+		background: #ffa726;
+	}
+	.material-icons {
+		color: #fff;
+	}
+}
+
+.card-stats .card-content{
+	text-align: left;
+}
+.card-content{
+	padding-top: 15px;
+}
+.card .card-footer{
+	margin-bottom: 0px;
+}
+
