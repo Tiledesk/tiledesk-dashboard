@@ -70,4 +70,29 @@ export class ProjectsComponent implements OnInit {
       this.display = 'none';
     }
 
+  /**
+   * DELETE PROJECT (WHEN THE 'CONFIRM' BUTTON IN MODAL IS CLICKED)
+   */
+  onCloseDeleteModalHandled() {
+    this.display = 'none';
+
+    this.projectService.deleteMongoDbProject(this.id_toDelete).subscribe((data) => {
+      console.log('DELETE DATA ', data);
+
+      // RE-RUN GET CONTACT TO UPDATE THE TABLE
+      // this.getDepartments();
+      this.ngOnInit();
+
+    },
+      (error) => {
+
+        console.log('DELETE REQUEST ERROR ', error);
+
+      },
+      () => {
+        console.log('DELETE REQUEST * COMPLETE *');
+      });
+
+  }
+
 }

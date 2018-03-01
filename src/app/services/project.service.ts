@@ -34,6 +34,27 @@ export class ProjectService {
       .map((response) => response.json());
   }
 
+  /**
+   * DELETE (DELETE)
+   * @param id
+   */
+  public deleteMongoDbProject(id: string) {
+
+    let url = this.MONGODB_BASE_URL;
+    url += `${id}# chat21-api-nodejs`;
+    console.log('DELETE URL ', url);
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+    return this.http
+      .delete(url, options)
+      .map((res) => res.json());
+
+  }
+
 
 
 
