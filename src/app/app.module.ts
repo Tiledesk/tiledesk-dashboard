@@ -68,6 +68,10 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { DepartmentEditAddComponent } from './department-edit-add/department-edit-add.component';
+import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.component';
+
+import { ProjectService } from './services/project.service';
+
 
 
 // AoT requires an exported function for factories
@@ -101,6 +105,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     BotEditAddComponent,
     AnalyticsComponent,
     DepartmentEditAddComponent,
+    ProjectEditAddComponent,
 
   ],
   imports: [
@@ -134,6 +139,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MongodbFaqService,
     BotService,
     FaqKbService,
+    ProjectService,
     {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [
