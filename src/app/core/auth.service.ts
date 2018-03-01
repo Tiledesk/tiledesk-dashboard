@@ -17,6 +17,22 @@ interface User {
   time: number;
 }
 
+// start SUPER USER
+export class SuperUser {
+  constructor(
+    public email: string
+  ) { }
+}
+
+const superusers = [
+  new SuperUser('andrea.sponziello21@frontiere21.it'),
+  new SuperUser('nicola.lanzilotto@frontiere21.it'),
+  new SuperUser('lanzilottonicola74@gmail.com'),
+];
+
+// .end SUPER USER
+
+
 @Injectable()
 export class AuthService {
 
@@ -37,6 +53,18 @@ export class AuthService {
           return Observable.of(null);
         }
       });
+  }
+
+  ////// SUPER USER AUTH //////
+  superUserAuth(currentUserEmailgetFromStorage) {
+    const authenticatedSuperUser = superusers.find(u => u.email === currentUserEmailgetFromStorage);
+    if (authenticatedSuperUser && authenticatedSuperUser.email === currentUserEmailgetFromStorage) {
+      // console.log('AUTENTICATED SUPER USER ', authenticatedUser)
+      // console.log('AUTENTICATED SUPER USER EMAIL ', authenticatedUser.email)
+      // console.log('AUTH SERVICE C. USER EMAIL ', authenticatedUser.email)
+      return true;
+    }
+    return false;
   }
 
   ////// OAuth Methods /////
@@ -130,7 +158,7 @@ export class AuthService {
       })
       .catch((error) => {
         this.handleError(error);
-        console.log('xx ', error );
+        console.log('xx ', error);
       });
 
   }
@@ -171,17 +199,17 @@ export class AuthService {
     return userRef.set(data);
   }
 
-    // Sets user data to firestore after succesful login
-    private updateUserDataLogin(user: User) {
+  // Sets user data to firestore after succesful login
+  private updateUserDataLogin(user: User) {
 
-      const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
-  
-      const data: User = {
-        uid: user.uid,
-        email: user.email || null,
-        photoURL: user.photoURL || 'https://goo.gl/Fz9nrQ',
-        time: new Date().getTime(),
-      };
-      return userRef.set(data);
-    }
+    const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
+
+    const data: User = {
+      uid: user.uid,
+      email: user.email || null,
+      photoURL: user.photoURL || 'https://goo.gl/Fz9nrQ',
+      time: new Date().getTime(),
+    };
+    return userRef.set(data);
+  }
 }

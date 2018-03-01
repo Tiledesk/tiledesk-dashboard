@@ -61,16 +61,17 @@ export class AppComponent implements OnInit, AfterViewInit {
 
         // GET THE HTML ELEMENT NAVBAR AND SIDEBAR THAT WILL BE HIDDEN IF IS DETECTED THE LOGIN PAGE
         const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
-        console.log('xxxx xxxx elemAppSidebar ', elemAppSidebar)
+        // console.log('xxxx xxxx elemAppSidebar ', elemAppSidebar)
         const elemNavbar = <HTMLElement>document.querySelector('.navbar');
-        console.log('xxxx xxxx elemNavbar', elemNavbar)
+        // console.log('xxxx xxxx elemNavbar', elemNavbar)
 
         // detect if is login page
 
         this.router.events.subscribe((val) => {
             if (this.location.path() !== '') {
                 this.route = this.location.path();
-                console.log('»> ', this.route)
+
+                // console.log('»> ', this.route)
                 if (this.route === '/login') {
 
                     // this.navbar.sidebarClose();
@@ -86,7 +87,7 @@ export class AppComponent implements OnInit, AfterViewInit {
                 }
             } else {
 
-                console.log('»> * ', this.route)
+                // console.log('»> * ', this.route)
             }
         });
 

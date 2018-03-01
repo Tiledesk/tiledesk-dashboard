@@ -137,7 +137,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
                     const userKey = Object.keys(window.localStorage)
                         .filter(it => it.startsWith('firebase:authUser'))[0];
                     this.LOCAL_STORAGE_CURRENT_USER = userKey ? JSON.parse(localStorage.getItem(userKey)) : undefined;
-                    console.log('USER GET FROM LOCAL STORAGE ', this.LOCAL_STORAGE_CURRENT_USER)
+                    // console.log('NAVBAR - USER GET FROM LOCAL STORAGE ', this.LOCAL_STORAGE_CURRENT_USER)
 
                     this.LOCAL_STORAGE_LAST_REQUEST_RECIPIENT = localStorage.getItem(this.lastRequest.recipient)
 

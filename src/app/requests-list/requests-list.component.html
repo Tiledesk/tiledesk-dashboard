@@ -167,7 +167,7 @@
                                 </td>
                                 <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
                                     <!-- max-width: 150px; -->
-                                  <p style="font-size:0.9em;" >
+                                  <p style="font-size:0.8em;" >
                                     {{ request?.recipient }}
                                   </p>
                                 </td>
@@ -175,6 +175,10 @@
                                   <!-- <p style="font-size:0.9em">{{ request.sender_fullname }}</p> -->
                                   <p style="font-size:0.9em">
                                     {{ request.requester_fullname }}
+                                  </p>
+                                  
+                                  <p style="font-size:0.8em">
+                                      {{ request?.requester_id }}
                                   </p>
                                   
                                 </td>
@@ -192,13 +196,14 @@
                                 </td> -->
                                 <!-- SERVED BY -->
                                 <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer" >
-                                  <p style="font-size:0.9em" [innerHTML]="request?.served_by" >
+                                  <p style="font-size:0.8em; min-width: 220px;" [innerHTML]="request?.served_by" >
                                     <!-- {{ request?.served_by }} -->
                                   </p>
                                 </td>
                                 <!-- LIST  OF MEMBERS -->
                                 <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
-                                  <p style="font-size:0.9em" [innerHTML]="request?.members_as_string">
+                                    <!-- [class.news-in-evidence]="first" -->
+                                  <p style="font-size:0.8em; min-width: 220px;"  [innerHTML]="request?.members_as_string">
                                     <!-- {{ request?.members_as_string }} -->
                                   </p>
                                 </td>

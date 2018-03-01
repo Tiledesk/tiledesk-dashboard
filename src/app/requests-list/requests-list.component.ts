@@ -66,6 +66,9 @@ export class RequestsListComponent implements OnInit {
   requester_id: string;
   served_by: string;
 
+  openTagstrong: string;
+  closeTagstrong: string;
+
   constructor(
     private requestsService: RequestsService,
     private elRef: ElementRef,
@@ -119,6 +122,10 @@ export class RequestsListComponent implements OnInit {
       for (i = 0; i < this.requestList.length; i++) {
         // console.log('REQUEST TIMESTAMP ', this.requestList[i].timestamp)
 
+        // REQUESTER ID IS USED TO OBTAIN 'SERVED BY'
+        // ('SERVED BY' IS EQUAL TO 'MEMBERS' TO WHICH IS SUBSTRACTED 'REQUESTER ID' AND 'SYSTEM' )
+        this.requester_id = this.requestList[i].requester_id
+        // console.log('REQUESTER ID ', this.requester_id)
 
         /**
          * CALCULATE THE DATE AS FROM-NOW FORMAT
@@ -149,7 +156,7 @@ export class RequestsListComponent implements OnInit {
 
 
           const uidKeysInMemberObject = Object.keys(this.membersObjectInRequestArray)
-          // console.log('KEYS OF MEMBER OBJECT (GET REQUETS LIST)', Object.keys(this.membersObjectInRequestArray))
+          console.log('KEYS OF MEMBER OBJECT (GET REQUETS LIST)', Object.keys(this.membersObjectInRequestArray))
 
           const lengthOfUidKeysInMemberObject = uidKeysInMemberObject.length;
           // console.log('KEYS LENGHT OF MEMBER OBJECT (GET REQUETS LIST)', lengthOfUidKeysInMemberObject)
@@ -166,23 +173,30 @@ export class RequestsListComponent implements OnInit {
             // USED TO SHOW THE LIST OF MEMBERS IN THE TABLE (COLUMN MEMBERS)
             for (const request of this.requestList) {
               if (this.id_request === request.recipient) {
-                this.members_as_string += uidMenbersKey + '<br>';
+
+                // FORMAT IN BOLD STYLE THE MEMBERS KEY (IN THE MEMBER LIST) THAT IS EQUAL TO THE REQUESTER ID
+                if (uidMenbersKey === this.requester_id) {
+                  this.openTagstrong = '<strong>'
+                  this.closeTagstrong = '</strong>'
+                } else {
+                  this.openTagstrong = ''
+                  this.closeTagstrong = ''
+                }
+                this.members_as_string += '- ' + this.openTagstrong + uidMenbersKey + this.closeTagstrong + '<br>';
                 // SET MEMBERS AS STRING IN THE REQUEST'S JSON
                 request.members_as_string = this.members_as_string;
-                // console.log('MEMBERS AS STRING ', this.members_as_string);
+                console.log('MEMBERS AS STRING ', this.members_as_string);
                 // console.log('MEMBERS AS STRING ', request.members_as_string);
+
               }
             }
 
-            // REQUESTER ID IS USED TO OBTAIN 'SERVED BY'
-            // ('SERVED BY' IS EQUAL TO 'MEMBERS' TO WHICH IS SUBSTRACTED 'REQUESTER ID' AND 'SYSTEM' )
-            this.requester_id = this.requestList[i].requester_id
-            // console.log('REQUESTER ID ', this.requester_id)
+
 
             if ((uidMenbersKey !== this.requester_id) && (uidMenbersKey !== 'system')) {
               for (const request of this.requestList) {
                 if (this.id_request === request.recipient) {
-                  this.served_by += uidMenbersKey + '<br>'
+                  this.served_by += '- ' + uidMenbersKey + '<br>'
                   // SET SERVED BY IN THE REQUEST'S JSON
                   request.served_by = this.served_by
                   // console.log('SERVED BY ', request.served_by);
