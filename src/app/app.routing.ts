@@ -72,7 +72,6 @@ const routes: Routes = [
   { path: 'userprofile', component: UserProfileComponent },
   { path: 'requests', component: RequestsListComponent, canActivate: [AuthGuard] },
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
-  { path: 'departments', component: DepartmentsComponent, canActivate: [AuthGuard] },
 
   { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
   { path: 'faqkb', component: FaqKbComponent, canActivate: [AuthGuard] },
@@ -86,11 +85,11 @@ const routes: Routes = [
   { path: 'analytics', component: AnalyticsComponent, canActivate: [AuthGuard] },
   { path: 'bots', component: BotsComponent, canActivate: [AuthGuard] },
 
-  { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] },
-
+  { path: 'departments', component: DepartmentsComponent, canActivate: [AuthGuard] },
   { path: 'department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
   { path: 'department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
 
+  { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] },
   { path: 'project/create', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/edit/:projectid', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
 

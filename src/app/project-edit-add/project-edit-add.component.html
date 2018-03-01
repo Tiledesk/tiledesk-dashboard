@@ -1,3 +1,117 @@
-<p>
-  project-edit-add works!
-</p>
+<!-- NEW FOR THIS TEMPLATE -->
+<div class="navbar-brand" style="z-index: -1;margin-top:10px; padding-left:30px">
+    <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBackToProjectsList()">keyboard_arrow_left</i>
+    <span *ngIf="CREATE_VIEW">Aggiungi Progetto</span>
+    <span *ngIf="EDIT_VIEW">Modifica Progetto</span>
+  </div>
+  
+  <div class="main-content" style="padding-top:0px">
+    <div class="container-fluid">
+   
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card" style="padding-top:25px; padding-bottom:25px">
+            <div class="card-content">
+    
+              <span *ngIf="CREATE_VIEW">
+      
+                <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
+                              
+                <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Nome Progetto</label>
+                <div class="col-sm-10">
+                  <input [(ngModel)]="project_name" class="" type="text" placeholder="Nome Progetto">
+                </div>
+  
+                <!-- SPACER -->
+                <!-- <div class="col-sm-12" style="height:10px"></div> -->
+                
+                <!-- CREATE VIEW - SELECT FAQ KB -->
+                <!-- <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">FAQ Knowledge Base</label>
+                <div class="col-sm-10">
+                  <select #selectElem (change)="setSelectedFaqKb(selectElem.value)" class="" style="">
+                    <option class="not_selected" value="FAQKB_NOT_SELECTED" >Seleziona una FAQ Knowledge Base</option>
+                    <option  *ngFor="let faqKb of faqKbList" [value]="faqKb._id" [selected]="selectedId === faqKb._id">
+                      {{faqKb.name}}
+                    </option>
+                  </select>
+                </div> -->
+  
+                <!-- SPACER -->
+                <div class="col-sm-12" style="height:15px"></div>
+                <label style="" class="col-sm-2 "></label>
+  
+                <div class="col-sm-10">
+                  <button class="btn btn-success" [disabled]="project_name?.length < 2" (click)="createProject()">
+                    Crea Progetto 
+                  </button>
+                </div>
+    
+              </span>
+              <!-- /. CREATE_VIEW -->
+    
+              <span *ngIf="EDIT_VIEW">
+    
+                <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
+  
+                <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Nome Progetto</label>
+                <div class="col-sm-10">
+                  <input [(ngModel)]="projectName_toUpdate" class="input" type="text" placeholder="Nome Progetto">
+                </div>
+        
+                <!-- SPACER -->
+                <!-- <div class="col-sm-12" style="height:10px"></div>
+  
+                <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">FAQ Knowledge Base</label>
+                <div class="col-sm-10">  
+                  <select #selectElem (change)="setSelectedFaqKb(selectElem.value)"  >
+                    <option  *ngFor="let faqKb of faqKbList" [value]="faqKb._id" [selected]="selectedId === faqKb._id">
+                      {{faqKb.name}}
+                    </option>
+                  </select>
+                </div> -->
+  
+                <!-- SPACER -->
+                <div class="col-sm-12" style="height:15px"></div>
+                
+                <label style="" class="col-sm-2"></label>
+                <div class="col-sm-10"> 
+                  <button class="btn btn-success" (click)="edit()">
+                    Modifica Progetto
+                  </button>
+                </div>
+              </span>
+              <!-- /. EDIT_VIEW -->
+    
+            </div>
+            <!-- ./ card-content -->
+  
+          </div>
+          <!-- ./ card -->
+  
+          <!-- MESSAGE 'YOU NEED TO SELECTE A FAQ-KB' AND LINK TO THE FAQ-KB LIST -->
+          <!-- <span *ngIf="CREATE_VIEW">
+            <div class="alert alert-info">
+              <div class="container-fluid">
+                <div class="alert-icon">
+                  <i class="material-icons">info_outline</i>
+                </div>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true"><i class="material-icons">clear</i></span>
+                </button>
+                <b>Info:</b> Seleziona una <strong>FAQ Knowledge Base</strong> esistente da associare a questo Bot o <a routerLink="/faqkb" style="text-decoration: underline;">visualizza la lista delle FAQ Knowledge Base</a> per creare/modificare.
+              </div>
+            </div>
+          </span> -->
+  
+        </div>
+        <!-- ./ col-md-12 -->
+  
+      </div>
+      <!-- ./ row -->
+  
+    </div>
+    <!-- ./ container-fluid -->
+  
+  </div> 
+  <!-- ./ main-content -->
+  
