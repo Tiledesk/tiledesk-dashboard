@@ -134,8 +134,8 @@
                                  </td>
                                  <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
                                      <!-- max-width: 400px -->
-                                   <p style="font-size:0.9em;">
-                                     {{ request?.text }}
+                                   <p style="font-size:0.9em;" [innerHTML]="getRequestText(request?.text)">
+                                     <!-- {{ request?.text }} -->
                                    </p>
                                  </td>
                                  <!-- REQUESTER ID * FOR DEBUG-->

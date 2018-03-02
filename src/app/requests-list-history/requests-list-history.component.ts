@@ -105,6 +105,12 @@ export class RequestsListHistoryComponent implements OnInit {
   //   console.log('MM ', this.elRef.nativeElement.querySelector('.modal').animate({ scrollTop: 0 }, 'slow') );
   // }
 
+  getRequestText(text: string): string {
+    return text.length >= 30 ?
+      text.slice(0, 30) + '...' :
+      text;
+  }
+
   /**
    * REQUESTS (on FIRESTORE the COLLECTION is 'CONVERSATIONS')
    */
@@ -140,6 +146,8 @@ export class RequestsListHistoryComponent implements OnInit {
           }
 
         }
+
+   
 
         /**
          *  * SEARCH IF THE CURRENT USER UID IS BETWEEN THE KEYS OF THE OBJECT MEMBER (CONTAINED IN REQUEST LIST)
