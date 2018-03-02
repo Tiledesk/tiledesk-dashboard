@@ -95,7 +95,7 @@ export class RequestsListComponent implements OnInit {
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
       .then(function (idToken) {
         that.token = idToken;
-        // console.log('idToken.', idToken);
+        console.log('idToken.', idToken);
       }).catch(function (error) {
         // Handle error
         console.log('idToken.', error);
@@ -213,7 +213,7 @@ export class RequestsListComponent implements OnInit {
                 if (this.id_request === request.recipient) {
                   this.served_by += '- ' + uidMenbersKey + ' <br>'
 
-                  const served_by_replaceCurrentUserUid = this.served_by.replace(this.currentUserFireBaseUID, '<strong>IO</strong>');
+                  const served_by_replaceCurrentUserUid = this.served_by.replace(this.currentUserFireBaseUID, '<strong>ME</strong>');
                   // SET SERVED BY IN THE REQUEST'S JSON
                   request.served_by = served_by_replaceCurrentUserUid
                   // request.served_by = this.served_by

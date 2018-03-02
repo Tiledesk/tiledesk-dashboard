@@ -1,44 +1,121 @@
 /* MODAL START */
+// @media (min-width: 992px) {
+
+// }
+// @media (min-width: 768px) {
+//     .modal-dialog {
+//         width: 600px;
+//         margin: 30px auto;
+//     }
+// }
 
 // MODAL BOOTSTRAP BREAKPOINTS
-// from 992 to 1020px 
-@media (min-width: 992px) and (max-width: 1019px){
+
+// @media (min-width: 769px) and (max-width: 991px){
+//     .modal-dialog {
+//         width: 700px;
+//         }
+//     }
+// // from 992 to 1020px 
+// @media (min-width: 992px) and (max-width: 1019px){
+// .modal-dialog {
+//         margin-left: 33%;
+//     }
+// }
+
+// @media (min-width: 1020px) and (max-width: 1119px) {
+//     .modal-dialog {
+//         // margin-left: 35%;
+//         margin-left: 31%;
+//         width: 670px;
+//     }
+// }
+// @media (min-width: 1120px) and (max-width: 1199px) {
+//     .modal-dialog {
+//         // margin-left: 35%;
+//         margin-left: 31%;
+//         width: 700px;
+//     }
+// }
+
+// @media (min-width: 1200px) and (max-width: 1289px)  {
+//     .modal-dialog {
+//         // margin-left: 37%;
+//         margin-left: 29%;
+//         width: 800px;
+//     }
+// }
+
+// @media (min-width: 1290px) and (max-width: 1369px)  {
+//     .modal-dialog {
+//         // margin-left: 37%;
+//         margin-left: 29%;
+//         width: 850px;
+//     }
+// }
+
+// @media (min-width: 1369px) and (max-width: 1469px)  {
+//     .modal-dialog {
+//         // margin-left: 37%;
+//         margin-left: 29%;
+//         width: 850px;
+//     }
+// }
+
+// @media (min-width: 1470px) and (max-width: 1549px) {
+//     .modal-dialog {
+//         margin-left: 29%;
+//         width: 900px;
+//     }
+// }
+
+// @media (min-width: 1550px) and (max-width: 1649px){
+//     .modal-dialog {
+//         margin-left: 30%;
+//         width: 900px;
+//     }
+// }
+// @media (min-width: 1650px) and (max-width: 1679px) {
+//     .modal-dialog {
+//         // margin-left: 40%;
+//         margin-left: 31%;
+//         width: 900px;     
+//     }
+// }
+// // and (max-width: 1679px)
+// @media (min-width: 1680px)  {
+//     .modal-dialog {
+//         // margin-left: 40%;
+//         margin-left: 33%;
+//         width: 900px;     
+//     }
+// }
+@media (min-width: 991px){
 .modal-dialog {
-        margin-left: 33%;
+    left: 110px !important;
     }
 }
 
-@media (min-width: 1020px) and (max-width: 1199px) {
+@media (min-width: 768px)  {
     .modal-dialog {
-        margin-left: 35%;
+      width: 600px;
+      margin: 30px auto;
     }
-}
 
-@media (min-width: 1200px) and (max-width: 1469px)  {
-    .modal-dialog {
-        margin-left: 37%;
-    }
-}
+  }
 
-@media (min-width: 1470px) and (max-width: 1549px) {
-    .modal-dialog {
-        margin-left: 38%;
-    }
-}
 
-@media (min-width: 1550px) and (max-width: 1649px){
+    @media (min-width: 1252px) {
     .modal-dialog {
-        margin-left: 39%;
+      width: 900px;
     }
-}
-@media (min-width: 1650px) {
-    .modal-dialog {
-        margin-left: 40%;
-    }
-}
+  }
+
 
 .modal {
     top: 0;
+
+ 
 }
 .modal-content {
     position: relative;
