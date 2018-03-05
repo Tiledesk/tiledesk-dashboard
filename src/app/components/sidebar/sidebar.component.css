@@ -1,0 +1,14 @@
+span .sidebar-mini .active{
+display: none
+}
+
+.sidebar .nav > li.active {
+    
+    display: none !important;
+   
+}
+
+/* .sidebar .nav li.active > a {
+
+
+} */

@@ -85,7 +85,9 @@ export class RequestsService {
           recipient: data.recipient,
           recipient_fullname: data.recipient_fullname,
           sender_fullname: data.sender_fullname,
-          text: data.text, timestamp: data.timestamp,
+          text: data.text,
+          first_text: data.first_text,
+          timestamp: data.timestamp,
           membersCount: data.membersCount,
           support_status: data.support_status,
           members: data.members,
@@ -115,6 +117,7 @@ export class RequestsService {
           recipient_fullname: data.recipient_fullname,
           sender_fullname: data.sender_fullname,
           text: data.text, timestamp: data.timestamp,
+          first_text: data.first_text,
           membersCount: data.membersCount,
           support_status: data.support_status,
           members: data.members,
@@ -162,24 +165,47 @@ export class RequestsService {
   // GET THE COUNT OF UNSERVED REQUEST TO SHOW IN THE NAVBAR NOTIFICATIONS
   getCountUnservedRequest(): Observable<number> {
     // ['added', 'modified', 'removed']
-    this.requestsCollection = this.afs.collection('conversations', (ref) => ref.where('support_status', '<=', 100));
+    // <=
+    this.requestsCollection = this.afs.collection('conversations',
+      (ref) => ref.where('support_status', '==', 100));
 
     return this.requestsCollection.valueChanges().map((values) => {
 
-
-
       console.log('Request Service VALUeS LENGHT ', values.length)
-
       // console.log('Request Service VALUeS', values)
       if (values) {
         this.unservedRequest = values;
-
         this.mySubject.next(this.unservedRequest);
         console.log(' ++ UNSERVED REQUESTS PUBLISHED BY REQ. SERVICE ', this.unservedRequest)
       }
       return values.length;
+    });
+  }
 
+  /**
+   * LAST CONVERSATION (ALIAS LAST REQUESTS - IN THE VIEW IS VISITORS)
+   * USED TO SHOW THE LAST REQUEST (ONLY IF HAS SUPPORT-STATUS = 100) IN THE NOTIFICATION
+   */
+  getSnapshotLastConversation(): Observable<Request[]> {
+    // ['added', 'modified', 'removed']
 
+    this.requestsCollection = this.afs.collection('conversations',
+      (ref) => ref.where('support_status', '==', 100));
+    // .orderBy('support_status', 'desc').orderBy('timestamp', 'desc')
+
+    return this.requestsCollection.snapshotChanges().map((actions) => {
+      return actions.map((a) => {
+        const data = a.payload.doc.data() as Request;
+        return {
+          id: a.payload.doc.id,
+          recipient: data.recipient,
+          text: data.text,
+          first_text: data.first_text,
+          timestamp: data.timestamp,
+          support_status: data.support_status,
+          members: data.members,
+        };
+      });
     });
   }
 

@@ -115,9 +115,11 @@ export class RequestsListComponent implements OnInit {
 
   // TRUNCATE THE TEXT DISPLAYED IN THE COLUMN 'LAST MESSAGE'
   getRequestText(text: string): string {
-    return text.length >= 30 ?
-      text.slice(0, 30) + '...' :
-      text;
+    if (text) {
+      return text.length >= 30 ?
+        text.slice(0, 30) + '...' :
+        text;
+    }
   }
   /**
    * REQUESTS (on FIRESTORE the COLLECTION is 'CONVERSATIONS')

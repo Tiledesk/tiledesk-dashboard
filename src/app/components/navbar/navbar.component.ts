@@ -1,11 +1,15 @@
+// tslint:disable:max-line-length
 import { Component, OnInit, ElementRef, AfterContentChecked, AfterViewChecked } from '@angular/core';
 import { ROUTES } from '../sidebar/sidebar.component';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { AuthService } from '../../core/auth.service';
 import { TranslateService } from '@ngx-translate/core';
 import { RequestsService } from '../../services/requests.service';
+import { AuthGuard } from '../../core/auth.guard';
+
 declare var $: any;
 import * as firebase from 'firebase/app';
+
 @Component({
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
@@ -29,11 +33,13 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     // CURRENT_USER_UID_IS_BETWEEN_MEMBERS = false;
     // SHOW_NOTIFICATION_FOR_REQUEST_RECIPIENT: boolean;
     LOCAL_STORAGE_LAST_REQUEST_RECIPIENT: string;
+    USER_IS_SIGNED_IN: boolean;
 
     constructor(
         location: Location,
         private element: ElementRef,
         public auth: AuthService,
+        public authguard: AuthGuard,
         private translate: TranslateService,
         private requestsService: RequestsService,
     ) {
@@ -52,6 +58,13 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         const navbar: HTMLElement = this.element.nativeElement;
         this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
 
+        // SUBSCRIBE TO IS LOGGED IN PUBLISHED BY AUTH GUARD
+        this.authguard.IS_LOGGED_IN.subscribe((islogged: boolean) => {
+            this.USER_IS_SIGNED_IN = islogged
+            console.log('>>> >>> USER IS SIGNED IN ', this.USER_IS_SIGNED_IN);
+
+        })
+        this.getLastRequest()
 
         // GET COUNT OF UNSERVED REQUESTS
         this.requestsService.getCountUnservedRequest().subscribe((count: number) => {
@@ -66,17 +79,20 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
                 // console.log('xxxxx xxxxx', values)
                 if (values) {
                     this.unservedRequestCount = values.length
-                    console.log('NAVBAR SUBSCRIBE TO REQUEST SERVICE PUBLISHED REQUESTS ', values)
-                    console.log('NAVBAR SUBSCRIBE TO REQUEST PUBLISHED COUNT OF UNSERVED REQUEST ', this.unservedRequestCount);
+                    // console.log('NAVBAR SUBSCRIBE TO REQUEST SERVICE PUBLISHED REQUESTS ', values)
+                    // console.log('NAVBAR SUBSCRIBE TO REQUEST PUBLISHED COUNT OF UNSERVED REQUEST ', this.unservedRequestCount);
                     // let i: any;
                     // for (i = 0; i < values.length; i++) {
                     //     this.valueText = values[i].text
                     //     console.log('REQUEST TEXT: ', this.valueText )
                     // }
 
-                    this.lastRequest = values[values.length - 1];
-                    console.log('LAST REQUEST TEXT: ', this.lastRequest.text)
-                    console.log('LAST REQUEST recipient: ', this.lastRequest.recipient)
+                    // GET THE LAST REQUEST (note: lastRequest.text replaced with lastRequest.first_text)
+                    // this.lastRequest = values[values.length - 1];
+                    // console.log('NAVBAR - LAST REQUEST: ', this.lastRequest)
+                    // console.log('NAVBAR - LAST REQUEST (FIRST) TEXT: ', this.lastRequest.first_text)
+                    // console.log('NAVBAR - LAST REQUEST RECIPIENT (ID): ', this.lastRequest.recipient)
+                    // console.log('NAVBAR - LAST REQUEST SUPPORT STATUS: ', this.lastRequest.support_status)
 
                     // console.log('NAVBAR - MEMBERS IN LAST REQUEST ', this.lastRequest.members)
 
@@ -128,37 +144,83 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
                     // if (this.SHOW_NOTIFICATION_FOR_REQUEST_RECIPIENT === true) {
 
-                    // WHEN A NOTIFICATION IS SHOWED SET IN THE LOCAL STORAGE (see showNotification()) THE LAST REQUEST RECIPIENT THEN
-                    // THE NOTIFICATION IS SHOWED ONLY IF IT THERE IS NOT IN THE LOCAL STORAGE AND IF EXIST THE OBJECT USER IL LOCAL STORAGE
-                    // (THIS TO AVOID THAT ARE RECEIVED NOTIFICATION WHEN THE USER IS IN THE LOGIN PAGE AND IS YET LOGGED OUT) 
-                    // console.log(' --  LOCAL STORAGE GET REQUEST ID ', localStorage.getItem(this.lastRequest.recipient))
 
                     // GET CURRENT USER FROM LOCAL STORAGE
-                    const userKey = Object.keys(window.localStorage)
-                        .filter(it => it.startsWith('firebase:authUser'))[0];
-                    this.LOCAL_STORAGE_CURRENT_USER = userKey ? JSON.parse(localStorage.getItem(userKey)) : undefined;
+                    // const userKey = Object.keys(window.localStorage)
+                    //     .filter(it => it.startsWith('firebase:authUser'))[0];
+                    // this.LOCAL_STORAGE_CURRENT_USER = userKey ? JSON.parse(localStorage.getItem(userKey)) : undefined;
                     // console.log('NAVBAR - USER GET FROM LOCAL STORAGE ', this.LOCAL_STORAGE_CURRENT_USER)
 
-                    this.LOCAL_STORAGE_LAST_REQUEST_RECIPIENT = localStorage.getItem(this.lastRequest.recipient)
+                    // GET LAST REQUEST RECIPIENT FROM LOCAL STORAGE
+                    // this.LOCAL_STORAGE_LAST_REQUEST_RECIPIENT = localStorage.getItem(this.lastRequest.recipient)
+                    // console.log(' --  LOCAL STORAGE GET LAST REQUEST ID ',  this.LOCAL_STORAGE_LAST_REQUEST_RECIPIENT)
 
-                    if (this.LOCAL_STORAGE_LAST_REQUEST_RECIPIENT === null && this.LOCAL_STORAGE_CURRENT_USER !== undefined) {
+                    /**
+                     * ====== DISPLAY THE LAST REQUEST IN A NOTIFICATION ======
+                     * WHENEVER A NOTIFICATION IS DISPLAYED ITS REQUEST-RECIPIENT IS SAVED IN THE LOCAL STORAGE
+                     * WHEN IS GET ANOTHER LAST REQUEST THIS IS DISPLAYED IN A NOTIFICATION IF:
+                     * - ITS REQUEST-RECIPIENT IS NOT PRESENT IN THE LOCAL STORAGE
+                     *   (this so that the last request is only displayed once in the notification)
+                     * - THE CURRENT USER IS PRESENT IN THE LOCAL STORAGE
+                     *   (this so that the last request is only displayed if there is a user logged)
+                     */
 
-                        this.showNotification(this.lastRequest.recipient)
-                        this.audio = new Audio();
-                        this.audio.src = 'assets/Carme.mp3';
-                        this.audio.load();
-                        this.audio.play();
-                    }
-
+                    // if ((this.LOCAL_STORAGE_LAST_REQUEST_RECIPIENT === null) && (this.LOCAL_STORAGE_CURRENT_USER !== undefined) && (this.lastRequest.support_status === 100)) {
+                    //     this.showNotification(this.lastRequest.recipient)
+                    //     this.audio = new Audio();
+                    //     this.audio.src = 'assets/Carme.mp3';
+                    //     this.audio.load();
+                    //     this.audio.play();
+                    // }
 
                 }
 
-
             }
-        );
+        ); // mySubject.subscribe
+        // GET CURRENT USER FROM LOCAL STORAGE
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                // User is signed in.
+                this.USER_IS_SIGNED_IN = true;
+                // console.log('// NAVBAR User is signed in.', this.USER_IS_SIGNED_IN)
+
+            } else {
+                // No user is signed in.
+                this.USER_IS_SIGNED_IN = false;
+                // console.log('// NAVBAR No user is signed in.', this.USER_IS_SIGNED_IN)
+            }
+        });
+        // console.log('// NAVBAR IS user signed in. ', this.USER_IS_SIGNED_IN);
+        if (this.USER_IS_SIGNED_IN) {
+            // console.log('// NAVBAR IS user signed in. ', this.USER_IS_SIGNED_IN);
+
+        }
+
+    } // OnInit
+
+    /**
+     * ====== DISPLAY THE LAST REQUEST IN A NOTIFICATION ======
+     * WHEN IS GET ANOTHER LAST REQUEST THIS IS DISPLAYED IN A NOTIFICATION IF:
+     * - THE USER IS SIGNED IN
+     *   (this so that the last request is only displayed if there is a user logged)
+     */
+    getLastRequest() {
+        this.requestsService.getSnapshotLastConversation().subscribe((last_request) => {
+            console.log('NAVBAR - SUBSCRIPTION TO REQUEST WITH SUPPORT-STATUS = 100 ', last_request);
+
+
+            this.lastRequest = last_request[last_request.length - 1];
+            console.log('NAVBAR <-> LAST REQUEST ', this.lastRequest);
+            // && (this.USER_IS_SIGNED_IN === true)
+            if ((this.lastRequest) && (this.USER_IS_SIGNED_IN === true)) {
+                this.showNotification(this.lastRequest.recipient)
+                // this.audio = new Audio();
+                // this.audio.src = 'assets/Carme.mp3';
+                // this.audio.load();
+                // this.audio.play();
+            }
+        });
     }
-
-
 
     showNotification(request_recipient: string) {
         console.log('show notification')
@@ -192,8 +254,14 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         // } else {
         //     this.SHOW_NOTIFICATION_FOR_REQUEST_RECIPIENT = true;
         // }
-        localStorage.setItem(request_recipient, request_recipient);
+        // localStorage.setItem(request_recipient, request_recipient);
         // console.log(' -- -- LOCAL STORAGE  SET REQUEST ID ', localStorage.setItem(request_recipient, request_recipient))
+
+        this.audio = new Audio();
+        this.audio.src = 'assets/Carme.mp3';
+        this.audio.load();
+        this.audio.play();
+
     }
 
 
@@ -253,7 +321,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     logout() {
         this.auth.signOut();
         // this.display = 'none';
-        localStorage.clear();
+        // localStorage.clear();
     }
 
 

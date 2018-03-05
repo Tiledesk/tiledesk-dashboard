@@ -3,6 +3,7 @@ export interface Request {
   recipient_fullname?: string;
   sender_fullname?: string;
   text?: string;
+  first_text?: string;
   timestamp?: number;
   membersCount?: number;
   support_status?: number;

@@ -106,9 +106,11 @@ export class RequestsListHistoryComponent implements OnInit {
   // }
 
   getRequestText(text: string): string {
-    return text.length >= 30 ?
-      text.slice(0, 30) + '...' :
-      text;
+    if (text) {
+      return text.length >= 30 ?
+        text.slice(0, 30) + '...' :
+        text;
+    }
   }
 
   /**
@@ -218,13 +220,13 @@ export class RequestsListHistoryComponent implements OnInit {
             }
 
 
-             /** !!!! IT IS NOT NECESSARY FOR THE HISTORY VIEW
-             * CHECK IF THE CURRENT USER IS ALREADY JOINED TO CONVERSATION
-             * (IF THE CURRENT USER UID IS BETWEEN THE UID KEY OF THE OBJECT MEMBER (CONTAINED IN THE REQUEST ARRAY)
-             * IT MEANS THAT THE CURRENT USER IS ALREADY JOINED TO CONVERSATION SO SET TRUE TO THE REQUEST'S JSON KEY request.currentUserIsJoined)
-             *
-             * IF uidMenbersKey === this.currentUserFireBaseUID THE CURRENT USER IS ALREADY JOINED TO THE CONVERSATION
-             */
+            /** !!!! IT IS NOT NECESSARY FOR THE HISTORY VIEW
+            * CHECK IF THE CURRENT USER IS ALREADY JOINED TO CONVERSATION
+            * (IF THE CURRENT USER UID IS BETWEEN THE UID KEY OF THE OBJECT MEMBER (CONTAINED IN THE REQUEST ARRAY)
+            * IT MEANS THAT THE CURRENT USER IS ALREADY JOINED TO CONVERSATION SO SET TRUE TO THE REQUEST'S JSON KEY request.currentUserIsJoined)
+            *
+            * IF uidMenbersKey === this.currentUserFireBaseUID THE CURRENT USER IS ALREADY JOINED TO THE CONVERSATION
+            */
             // if (uidMenbersKey === this.currentUserFireBaseUID) {
 
             //   console.log('THE MEMBER UID: ', uidMenbersKey, ' IS = TO CUR.USER UID')
