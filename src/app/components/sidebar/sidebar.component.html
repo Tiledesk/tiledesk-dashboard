@@ -1,5 +1,5 @@
 <!-- <span *ngIf="!LOGIN_PAGE"> -->
-<div class="logo">
+<div class="logo" style="background-color: #eeeeee">
     <!-- <a href="https://www.creative-tim.com" class="simple-text"> -->
     <a routerLink="/home" class="simple-text" style="text-transform: none;">
        
@@ -10,7 +10,7 @@
         <span>chat21</span>
     </a>
 </div>
-<div class="sidebar-wrapper">
+<div class="sidebar-wrapper" style="background-color: #eeeeee">
     <!-- SEARCH MOBILE MENU -->
     <!-- <form class="navbar-form navbar-right" role="search" *ngIf="isMobileMenu()">
         <div class="form-group form-black is-empty">
@@ -33,7 +33,8 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <i class="material-icons">notifications</i>
                 <span class="notification" routerLink="/requests">{{ unservedRequestCount }}</span>
-                <p class="hidden-lg hidden-md" routerLink="/requests">Notifications</p>
+                <!-- Notifications -->
+                <p class="hidden-lg hidden-md" routerLink="/requests">Notifiche</p>
             </a>
             <!-- <ul class="dropdown-menu">
                 <li><a href="#">Mike John responded to your email</a></li>
@@ -46,7 +47,8 @@
         <li>
             <a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
                <i class="material-icons">person</i>
-               <p class="hidden-lg hidden-md">Profile</p>
+               <!-- Profile -->
+               <p class="hidden-lg hidden-md">Profilo</p>
             </a>
         </li>
     </ul>
@@ -54,15 +56,37 @@
     <div class="nav-container">
         <ul class="nav">
             
-            <!-- <li> 
-                <a>
-                    <select #selectElem (change)="setSelectedBot(selectElem.value)"  style="background-color: #eeeeee">
-                        <option>Disponibile</option>
-                        <option>Non disponibile</option>
-                    </select>
+            <!-- SELECT AVAILABLE / UNAVAILABLE -->
+             <li >
+                <a *ngIf="!IS_UNAVAILABLE" 
+                    style="background-color: #e5e4e5; 
+                           border-radius: 10px;
+                           display:block;
+                           margin:0 auto;
+                           width: 175px;
+                           padding: 5px 10px; 
+                           cursor: pointer" 
+                    (click)="availale_unavailable_status(hasClickedChangeStatus = !hasClickedChangeStatus)">
+
+                    <i class="material-icons" style=" font-size: 16px; color: #1eb848; margin-right:0px">fiber_manual_record</i>
+                    <p style="color:#a9afbb">Disponibile</p>
                 </a>
-            </li> -->
-            <!-- CHAT21 MENU -->
+                <a *ngIf="IS_UNAVAILABLE" 
+                    style="background-color: #e5e4e5; 
+                           border-radius: 10px;
+                           display:block;
+                           margin:0 auto;
+                           width: 175px;  
+                           padding: 5px 10px; 
+                           cursor: pointer" 
+                    (click)="availale_unavailable_status(hasClickedChangeStatus = !hasClickedChangeStatus)">
+
+                    <i class="material-icons" style=" font-size: 16px; color: #cac9c9; margin-right:0px">fiber_manual_record</i>           
+                    <p style="color:#cac9c9 ">Non disponibile</p>
+                </a>
+            </li>
+
+            <!-- HOME and VISITORS (alias REQUESTS) -->
             <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}}">
                 <a  [routerLink]="[menuItem.path]">
                     <i class="material-icons">{{menuItem.icon}}</i>

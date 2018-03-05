@@ -46,6 +46,7 @@ export class SidebarComponent implements OnInit {
 
     route: string;
     LOGIN_PAGE: boolean;
+    IS_UNAVAILABLE = false;
 
 
     constructor(
@@ -94,5 +95,25 @@ export class SidebarComponent implements OnInit {
     setActiveClassToSettings() {
         this.isActive = 'active';
         console.log('HAS CLICKED SET ACTIVE TO SETTINGS MENU ITEM ', this.isActive);
+    }
+
+    availale_unavailable_status(hasClickedChangeStatus: boolean) {
+        hasClickedChangeStatus = hasClickedChangeStatus;
+        if (hasClickedChangeStatus) {
+            //   this.display = 'block';
+
+           this.IS_UNAVAILABLE = hasClickedChangeStatus
+            console.log('HAS CLICKED CHANGE STATUS - IS_UNAVAILABLE ? ', this.IS_UNAVAILABLE);
+        }
+
+        if (!hasClickedChangeStatus) {
+            //   this.display = 'none';
+            console.log('HAS CLICKED CHANGE STATUS ', hasClickedChangeStatus);
+            this.IS_UNAVAILABLE = hasClickedChangeStatus
+            console.log('HAS CLICKED CHANGE STATUS - IS_UNAVAILABLE ? ', this.IS_UNAVAILABLE);
+        }
+        // this.HAS_CLICKED_BTN_OPEN_DROPDOWN = hasClickedOpenDropDown;
+        // console.log('HAS_CLICKED_BTN_OPEN_DROPDOWN ', hasClickedOpenDropDown);
+
     }
 }

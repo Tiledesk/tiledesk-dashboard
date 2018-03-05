@@ -90,6 +90,7 @@
 //         width: 900px;     
 //     }
 // }
+
 @media (min-width: 991px){
 .modal-dialog {
     left: 110px !important;
@@ -101,22 +102,17 @@
       width: 600px;
       margin: 30px auto;
     }
-
-  }
-
+}
 
 @media (min-width: 1252px) {
     .modal-dialog {
       width: 900px;
     }
-  }
-
-
+}
 .modal {
     top: 0;
-
- 
 }
+
 .modal-content {
     position: relative;
     background-color: #fff;
