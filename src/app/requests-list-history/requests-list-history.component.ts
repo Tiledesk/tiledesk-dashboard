@@ -115,10 +115,10 @@ export class RequestsListHistoryComponent implements OnInit {
    * REQUESTS (on FIRESTORE the COLLECTION is 'CONVERSATIONS')
    */
   getHistoryRequestList() {
-    // SUBSCIPTION TO snapshotChanges
+    // SUBSCIPTION TO snapshotChanges History Of Conversations ('>=', 1000)
     this.requestsService.getSnapshotHistoryOfConversations().subscribe((data) => {
       this.requestList = data;
-      console.log('REQUESTS-LIST.COMP: SUBSCRIPTION TO REQUESTS getSnapshot ', data);
+      console.log('REQUESTS-LIST.COMP: SUBSCRIPTION TO REQUESTS HISTORY', data);
 
       let i: any;
       for (i = 0; i < this.requestList.length; i++) {
@@ -138,7 +138,7 @@ export class RequestsListHistoryComponent implements OnInit {
         // console.log('REQUEST FROM NOW DATE ', this.request_fromNow_date)
         this.id_request = this.requestList[i].recipient;
 
-        // set date from now in request object
+        // set date from-now in request object
         for (const request of this.requestList) {
           if (this.id_request === request.recipient) {
             request.request_date_fromnow = this.request_fromNow_date;
@@ -147,12 +147,10 @@ export class RequestsListHistoryComponent implements OnInit {
 
         }
 
-   
-
         /**
-         *  * SEARCH IF THE CURRENT USER UID IS BETWEEN THE KEYS OF THE OBJECT MEMBER (CONTAINED IN REQUEST LIST)
-         *    AND SET TRUE TO THE REQUEST'S JSON KEY request.currentUserIsJoined
-         *  * CREATE A STRING OF ALL MEMBERS OF THE REQUEST AND SET THIS IN THE REQUEST'S JSON KEY request.members_as_string
+         * CREATE A STRING OF ALL MEMBERS OF THE REQUEST
+         * AND SET THIS IN THE REQUEST'S JSON KEY request.members_as_string
+         * THEN, IF BETWEEN THE UID KEY THERE IS THE CURRENT USER UID, REPALCE IT WITH 'ME' or 'IO'
          */
         this.membersObjectInRequestArray = this.requestList[i].members;
         // console.log('OBJECT MEMBERS IN REQUESTS (GET REQUETS LIST) ', this.membersObjectInRequestArray);
@@ -174,56 +172,70 @@ export class RequestsListHistoryComponent implements OnInit {
             // console.log('UID KEY ', uidMenbersKey)
 
             // ** CREATE A STRING OF ALL MEMBERS OF THE REQUEST AND SET THIS IN THE REQUEST'S JSON
-            // USED TO SHOW THE LIST OF MEMBERS IN THE TABLE (COLUMN MEMBERS)
-            for (const request of this.requestList) {
-              if (this.id_request === request.recipient) {
+            // USED TO SHOW THE LIST OF MEMBERS (LESS 'REQUESTER ID' AND 'SYSTEM') IN THE COLUMN MEMBERS OF THE TABLE
+            if ((uidMenbersKey !== 'system') && ((uidMenbersKey !== this.requester_id))) {
+              for (const request of this.requestList) {
+                if (this.id_request === request.recipient) {
 
-                // FORMAT IN BOLD STYLE THE MEMBERS KEY (IN THE MEMBER LIST) THAT IS EQUAL TO THE REQUESTER ID
-                if (uidMenbersKey === this.requester_id) {
-                  this.openTagstrong = '<strong>'
-                  this.closeTagstrong = '</strong>'
-                } else {
-                  this.openTagstrong = ''
-                  this.closeTagstrong = ''
+                  // FORMAT IN BOLD STYLE THE MEMBERS KEY (IN THE MEMBER LIST) THAT IS EQUAL TO THE REQUESTER ID
+                  // ONLY FOR DEBUG -- note: if decomment this ** REMEMBER TO COMMENT ABOVE (uidMenbersKey !== this.requester_id)
+                  // if (uidMenbersKey === this.requester_id) {
+                  //   this.openTagstrong = '<strong>'
+                  //   this.closeTagstrong = '</strong>'
+                  // } else {
+                  //   this.openTagstrong = ''
+                  //   this.closeTagstrong = ''
+                  // }
+                  // this.members_as_string += '- ' + this.openTagstrong + uidMenbersKey + this.closeTagstrong + '<br>';
+
+                  this.members_as_string += '- ' + uidMenbersKey + ' <br>';
+                  const members_as_string_replaceCurrentUserUid = this.members_as_string.replace(this.currentUserFireBaseUID, '<strong>IO</strong>');
+                  // console.log('MEMBERS AS STRING REPLACE CURRENT USER UID WITH ME ', members_as_stringReplace);
+
+                  // SET MEMBERS AS STRING IN THE REQUEST'S JSON
+                  request.members_as_string = members_as_string_replaceCurrentUserUid;
+                  // request.members_as_string = this.members_as_string;
+
+                  // console.log('MEMBERS AS STRING ', request.members_as_string);
+
                 }
-                this.members_as_string += '- ' + this.openTagstrong + uidMenbersKey + this.closeTagstrong + '<br>';
-                // SET MEMBERS AS STRING IN THE REQUEST'S JSON
-                request.members_as_string = this.members_as_string;
-                console.log('MEMBERS AS STRING ', this.members_as_string);
-                // console.log('MEMBERS AS STRING ', request.members_as_string);
-
               }
             }
 
-
-
+            // SERVED BY (AS FOR ALL MEMBERS) IF BETWEEN THE UID KEY THERE IS THE CURRENT USER UID, REPALCE IT WITH 'MYSELF' or 'ME'
             if ((uidMenbersKey !== this.requester_id) && (uidMenbersKey !== 'system')) {
               for (const request of this.requestList) {
                 if (this.id_request === request.recipient) {
                   this.served_by += '- ' + uidMenbersKey + '<br>'
+
+                  const served_by_replaceCurrentUserUid = this.served_by.replace(this.currentUserFireBaseUID, '<strong>ME</strong>');
                   // SET SERVED BY IN THE REQUEST'S JSON
-                  request.served_by = this.served_by
+                  request.served_by = served_by_replaceCurrentUserUid
+                  // request.served_by = this.served_by
                   // console.log('SERVED BY ', request.served_by);
                 }
               }
             }
 
 
-            if (uidMenbersKey === this.currentUserFireBaseUID) {
+             /** !!!! IT IS NOT NECESSARY FOR THE HISTORY VIEW
+             * CHECK IF THE CURRENT USER IS ALREADY JOINED TO CONVERSATION
+             * (IF THE CURRENT USER UID IS BETWEEN THE UID KEY OF THE OBJECT MEMBER (CONTAINED IN THE REQUEST ARRAY)
+             * IT MEANS THAT THE CURRENT USER IS ALREADY JOINED TO CONVERSATION SO SET TRUE TO THE REQUEST'S JSON KEY request.currentUserIsJoined)
+             *
+             * IF uidMenbersKey === this.currentUserFireBaseUID THE CURRENT USER IS ALREADY JOINED TO THE CONVERSATION
+             */
+            // if (uidMenbersKey === this.currentUserFireBaseUID) {
 
-              console.log('THE MEMBER UID: ', uidMenbersKey, ' IS = TO CUR.USER UID')
-              // SET IN THE REQUEST ARRAY currentUserIsJoined = true
-              for (const request of this.requestList) {
-                if (request.recipient === this.id_request) {
-                  request.currentUserIsJoined = true;
-                }
-              }
-
-              break;
-            }
+            //   console.log('THE MEMBER UID: ', uidMenbersKey, ' IS = TO CUR.USER UID')
+            //   // SET IN THE REQUEST ARRAY currentUserIsJoined = true
+            //   for (const request of this.requestList) {
+            //     if (request.recipient === this.id_request) {
+            //       request.currentUserIsJoined = true;
+            //     }
+            //   }
+            // }
           }
-
-
         }
       }
 
@@ -245,10 +257,12 @@ export class RequestsListHistoryComponent implements OnInit {
 
 
 
-  // THE USER OPEN THE MODAL WINDOW:
+  //   THE USER OPEN THE MODAL WINDOW:
   // * ON CLICK THE VIEW PASS THE VALUE OF 'RECIPIENT' THAT ASSIGN TO THE LOCAL VARIABLE this.requestRecipient
   // * GET THE MESSAGE LIST BY this.requestRecipient
-  // * GET THE REQUEST DETAILS (GET THE CONVESATION BY RECIPIENT) - IS USED FOR:
+
+  //   !!!! this.getRequestByRecipient() IS NOT NECESSARY FOR THE HISTORY VIEW
+  // * GET THE REQUEST DETAILS (GET THE CONVESATION BY RECIPIENT WITH this.getRequestByRecipient()) - IS USED FOR:
   //   IF THE VALUE OF THE UID OF CURRENT USER IS FOUND BETWEEN THE UID KEY IN MEMBERS (is contained in the request object)
   //   IN THE MODAL WITH THE MSGS LIST THE 'ENTER BTN' (AND NOT THE 'JOIN BTN') WILL BE DISPLAYED
   openViewMsgsModal(recipient: string) {
@@ -261,7 +275,7 @@ export class RequestsListHistoryComponent implements OnInit {
 
     this.requestRecipient = recipient;
 
-    this.getRequestByRecipient()
+    // this.getRequestByRecipient()
 
     this.getMessagesList();
 
@@ -322,6 +336,7 @@ export class RequestsListHistoryComponent implements OnInit {
 
   }
 
+  // !!!! getRequestByRecipient() IS NOT NECESSARY FOR THE HISTORY VIEW AND SO this.getRequestByRecipient IS COMMENTED (see above)
   // GET REQUEST DETAIL (IS THE REQUEST CORRESPONDING TO THE ROW OF REQUESTS LIST ON WHICH THE USER CLICK)
   // THEN IN THE ARRAY RETURNED GET THE 'UID KEYS' CONTAINED IN THE OBJECT MEMBERS
   // THEN COMPARE ANY 'UID KEY' WITH THE CURRENT USER UID
@@ -378,6 +393,7 @@ export class RequestsListHistoryComponent implements OnInit {
       });
   }
 
+  // IS NOT NECESSARY FOR THE HISTORY VIEW AND SO (click)="onJoinHandled() IS COMMENTED (see requests-list-history.component.html)
   // JOIN TO CHAT GROUP
   onJoinHandled() {
 

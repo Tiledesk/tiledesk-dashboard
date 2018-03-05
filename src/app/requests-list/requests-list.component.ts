@@ -123,10 +123,10 @@ export class RequestsListComponent implements OnInit {
    * REQUESTS (on FIRESTORE the COLLECTION is 'CONVERSATIONS')
    */
   getRequestList() {
-    // SUBSCIPTION TO snapshotChanges
+    // SUBSCIPTION TO snapshotChanges Conversations '<', 1000
     this.requestsService.getSnapshotConversations().subscribe((data) => {
       this.requestList = data;
-      console.log('REQUESTS-LIST.COMP: SUBSCRIPTION TO REQUESTS getSnapshot ', data);
+      console.log('REQUESTS-LIST.COMP: SUBSCRIPTION TO REQUESTS ', data);
 
       let i: any;
       for (i = 0; i < this.requestList.length; i++) {
@@ -146,7 +146,7 @@ export class RequestsListComponent implements OnInit {
         // console.log('REQUEST FROM NOW DATE ', this.request_fromNow_date)
         this.id_request = this.requestList[i].recipient;
 
-        // set date from now in request object
+        // set date from-now in request object
         for (const request of this.requestList) {
           if (this.id_request === request.recipient) {
             request.request_date_fromnow = this.request_fromNow_date;
@@ -158,6 +158,7 @@ export class RequestsListComponent implements OnInit {
         /**
          * CREATE A STRING OF ALL MEMBERS OF THE REQUEST AND
          * SET THIS IN THE REQUEST'S JSON KEY request.members_as_string
+         * THEN, IF BETWEEN THE UID KEY THERE IS THE CURRENT USER UID, REPALCE IT WITH 'ME' or 'IO'
          */
         this.membersObjectInRequestArray = this.requestList[i].members;
         // console.log('OBJECT MEMBERS IN REQUESTS (GET REQUETS LIST) ', this.membersObjectInRequestArray);
@@ -177,13 +178,13 @@ export class RequestsListComponent implements OnInit {
             // console.log('UID KEY ', uidMenbersKey)
 
             // ** CREATE A STRING OF ALL MEMBERS OF THE REQUEST AND SET THIS IN THE REQUEST'S JSON
-            // USED TO SHOW THE UID LIST OF MEMBERS (LESS REQUESTER ID AND SYSTEM) IN THE TABLE (COLUMN MEMBERS)
+            // USED TO SHOW THE LIST OF MEMBERS (LESS 'REQUESTER ID' AND 'SYSTEM') IN THE COLUMN MEMBERS OF THE TABLE
             if ((uidMenbersKey !== 'system') && ((uidMenbersKey !== this.requester_id))) {
               for (const request of this.requestList) {
                 if (this.id_request === request.recipient) {
 
                   // FORMAT IN BOLD STYLE THE MEMBERS KEY (IN THE MEMBER LIST) THAT IS EQUAL TO THE REQUESTER ID
-                  // ONLY FOR DEBUG -- note: if decommenyt this ** REMEMBER TO COMMENT ABOVE (uidMenbersKey !== this.requester_id)
+                  // ONLY FOR DEBUG -- note: if decomment this ** REMEMBER TO COMMENT ABOVE (uidMenbersKey !== this.requester_id)
                   // if (uidMenbersKey === this.requester_id) {
                   //   this.openTagstrong = '<strong>'
                   //   this.closeTagstrong = '</strong>'
@@ -207,7 +208,7 @@ export class RequestsListComponent implements OnInit {
             }
 
 
-            // SERVED BY
+            // SERVED BY (AS FOR ALL MEMBERS) IF BETWEEN THE UID KEY THERE IS THE CURRENT USER UID, REPALCE IT WITH 'MYSELF' or 'ME'
             if ((uidMenbersKey !== this.requester_id) && (uidMenbersKey !== 'system')) {
               for (const request of this.requestList) {
                 if (this.id_request === request.recipient) {
