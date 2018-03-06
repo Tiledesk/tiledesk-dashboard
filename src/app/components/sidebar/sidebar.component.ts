@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { RequestsService } from '../../services/requests.service';
 import { Router } from '@angular/router'
 import { Location } from '@angular/common'
@@ -35,12 +35,17 @@ export const ROUTES: RouteInfo[] = [
     templateUrl: './sidebar.component.html',
     styleUrls: ['./sidebar.component.css']
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, AfterViewInit {
     menuItems: any[];
 
+    // SHOW_SETTINGS_SUBMENU = false;
     SHOW_SETTINGS_SUBMENU = false;
-    isActive: string;
+    SETTINGS_SUBMENU_WAS_OPEN: any;
+    // NO MORE USED
+    // isActive: string;
+
     // switch up and down the caret of menu item settings
+    // trasform = 'none';
     trasform = 'none';
     unservedRequestCount: number;
 
@@ -75,6 +80,31 @@ export class SidebarComponent implements OnInit {
             }
         });
 
+        // WHEN THE PAGE IS REFRESHED GETS FROM LOCAL STORAGE IF THE SETTINGS SUBMENU WAS OPENED OR CLOSED
+        // this.SETTINGS_SUBMENU_WAS_OPEN = localStorage.getItem('show_settings_submenu')
+        // console.log('LOCAL STORAGE VALU OF KEY show_settings_submenu', localStorage.getItem('show_settings_submenu'))
+        // this.SHOW_SETTINGS_SUBMENU = this.SETTINGS_SUBMENU_WAS_OPEN
+        // console.log('ON INIT - SHOW SETTINGS SUBMENU ', this.SHOW_SETTINGS_SUBMENU)
+        // if (localStorage.getItem('show_settings_submenu') === 'true') {
+        //     this.trasform = 'rotate(180deg)';
+        // } else {
+        //     this.trasform = 'none';
+        // }
+    }
+
+    ngAfterViewInit() {
+        //     this.SETTINGS_SUBMENU_WAS_OPEN = localStorage.getItem('show_settings_submenu')
+        //     console.log('LOCAL STORAGE VALUE OF KEY show_settings_submenu: ', localStorage.getItem('show_settings_submenu'))
+
+        //     if (this.SETTINGS_SUBMENU_WAS_OPEN === 'true') {
+        //         console.log(' XXXXX ', this.SETTINGS_SUBMENU_WAS_OPEN)
+        //         this.trasform = 'rotate(180deg)';
+
+        //     } else {
+        //         this.trasform = 'none';
+        //         console.log(' XXXXX ', this.SETTINGS_SUBMENU_WAS_OPEN)
+        //     }
+
     }
     isMobileMenu() {
         if ($(window).width() > 991) {
@@ -86,23 +116,30 @@ export class SidebarComponent implements OnInit {
     has_clicked_settings(SHOW_SETTINGS_SUBMENU: boolean) {
         this.SHOW_SETTINGS_SUBMENU = SHOW_SETTINGS_SUBMENU;
         console.log('HAS CLICKED SETTINGS - SHOW_SETTINGS_SUBMENU ', this.SHOW_SETTINGS_SUBMENU);
+
+        // SAVE IN 'show_settings_submenu' KEY OF LOCAL STORAGE THE VALUE OF this.SHOW_SETTINGS_SUBMENU
+        // (IS USED TO DISPLAY / HIDE THE SUBMENU WHEN THE PAGE IS REFRESHED)
+        localStorage.setItem('show_settings_submenu', `${this.SHOW_SETTINGS_SUBMENU}`);
+
         if (this.SHOW_SETTINGS_SUBMENU === true) {
             this.trasform = 'rotate(180deg)';
         } else {
             this.trasform = 'none';
         }
     }
-    setActiveClassToSettings() {
-        this.isActive = 'active';
-        console.log('HAS CLICKED SET ACTIVE TO SETTINGS MENU ITEM ', this.isActive);
-    }
+
+    // NO MORE USED
+    // setActiveClassToSettings() {
+    //     this.isActive = 'active';
+    //     console.log('HAS CLICKED SET ACTIVE TO SETTINGS MENU ITEM ', this.isActive);
+    // }
 
     availale_unavailable_status(hasClickedChangeStatus: boolean) {
         hasClickedChangeStatus = hasClickedChangeStatus;
         if (hasClickedChangeStatus) {
             //   this.display = 'block';
 
-           this.IS_UNAVAILABLE = hasClickedChangeStatus
+            this.IS_UNAVAILABLE = hasClickedChangeStatus
             console.log('HAS CLICKED CHANGE STATUS - IS_UNAVAILABLE ? ', this.IS_UNAVAILABLE);
         }
 
@@ -112,8 +149,7 @@ export class SidebarComponent implements OnInit {
             this.IS_UNAVAILABLE = hasClickedChangeStatus
             console.log('HAS CLICKED CHANGE STATUS - IS_UNAVAILABLE ? ', this.IS_UNAVAILABLE);
         }
-        // this.HAS_CLICKED_BTN_OPEN_DROPDOWN = hasClickedOpenDropDown;
-        // console.log('HAS_CLICKED_BTN_OPEN_DROPDOWN ', hasClickedOpenDropDown);
+
 
     }
 }

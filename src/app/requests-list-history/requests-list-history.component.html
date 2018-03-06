@@ -31,7 +31,7 @@
                                    <th>
                                      <span style="color: #566787">
                                          <!-- Message -->
-                                       <strong> Ultimo Messagio </strong>
+                                       <strong> Messagio </strong>
                                      </span>
                                    </th>
                                    <!-- REQUESTER ID * FOR DEBUG -->
@@ -40,25 +40,24 @@
                                        <strong> Requester Id </strong>
                                      </span>
                                    </th> -->
-                                   <th>
+                                    <th>
                                      <span style="color: #566787">
                                        <!-- <strong> Served by </strong> -->
                                        <strong> Servita da </strong>
                                      </span>
-                                     </th>
-                                   <th>
+                                  </th>
+                                   <!-- <th>
                                     <span style="color: #566787">
-                                       
-                                       <strong> Membri </strong>
+                                      <strong> Membri </strong>
                                      </span>
-                                   </th>
-                                   <th>
-                                     <span style="color: #566787">
-                                       <!-- <strong> Data creazione </strong> -->
-                                       <strong> Pubblicata </strong>
-                                     </span>
-                                   </th>
-                                   <!-- <th></th> -->
+                                   </th> -->
+                                  <th>
+                                    <span style="color: #566787">
+                                      <!-- <strong> Data creazione </strong> -->
+                                      <strong> Pubblicata </strong>
+                                    </span>
+                                  </th>
+                                  <!-- <th></th> -->
                                </tr>
                            </thead>
                            <tbody>
@@ -104,15 +103,15 @@
                                      </span>
                                    </span>
  
-                                   <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) BUT THE CURRENT USER UID IS NOT BETWEEN 
-                                   THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has not joined to the request) -->
-                                   <span *ngIf="request?.support_status == 200 && !request?.currentUserIsJoined"> 
-                                     <span class="" (click)='openViewMsgsModal(request?.recipient)'>
-                                       <button class="btn btn-info pull-right" style="padding:4px 6px;" rel="tooltip" title=""> 
-                                         <i style="font-size: 17px !important; " class="material-icons">visibility</i>
-                                       </button>
-                                     </span>
-                                   </span>
+                                  <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) BUT THE CURRENT USER UID IS NOT BETWEEN 
+                                  THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has not joined to the request) -->
+                                  <span *ngIf="request?.support_status == 200 && !request?.currentUserIsJoined"> 
+                                    <span class="" (click)='openViewMsgsModal(request?.recipient)'>
+                                      <button class="btn btn-info pull-right" style="padding:4px 6px;" rel="tooltip" title=""> 
+                                        <i style="font-size: 17px !important; " class="material-icons">visibility</i>
+                                      </button>
+                                    </span>
+                                  </span>
  
                                  </td>
                                  <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
@@ -123,47 +122,43 @@
                                  </td>
                                  <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
                                    <!-- <p style="font-size:0.9em">{{ request.sender_fullname }}</p> -->
-                                   <p style="font-size:0.9em">
-                                     {{ request.requester_fullname }}
-                                   </p>
+                                  <p style="font-size:0.9em">
+                                    {{ request.requester_fullname }}
+                                  </p>
                                    
-                                   <p style="font-size:0.8em">
-                                       {{ request?.requester_id }}
-                                   </p>
-                                   
-                                 </td>
-                                 <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
-                                     <!-- max-width: 400px -->
-                                   <p style="font-size:0.9em;" [innerHTML]="getRequestText(request?.first_text)">
-                                     <!-- {{ request?.text }} -->
-                                   </p>
-                                 </td>
-                                 <!-- REQUESTER ID * FOR DEBUG-->
-                                 <!-- <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
-                                   <p style="font-size:0.9em">
-                                     {{ request?.requester_id }}
-                                   </p>
-                                 </td> -->
-                                 <!-- SERVED BY -->
-                                 <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer" >
-                                   <p style="font-size:0.8em; min-width: 220px;" [innerHTML]="request?.served_by" >
+                                  <p style="font-size:0.8em">
+                                    {{ request?.requester_id }}
+                                  </p>
+                                </td>
+                                <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
+                                    <!-- max-width: 400px -->
+                                  <p style="font-size:0.9em;" [innerHTML]="getRequestText(request?.first_text)">
+                                    <!-- {{ request?.text }} -->
+                                  </p>
+                                </td>
+                                <!-- REQUESTER ID * FOR DEBUG-->
+                                <!-- <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
+                                  <p style="font-size:0.9em">
+                                    {{ request?.requester_id }}
+                                  </p>
+                                </td> -->
+                                <!-- SERVED BY -->
+                                <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer" >
+                                  <p style="font-size:0.8em; min-width: 220px;" [innerHTML]="request?.served_by" >
                                      <!-- {{ request?.served_by }} -->
-                                   </p>
-                                 </td>
+                                  </p>
+                                </td>
                                  <!-- LIST  OF MEMBERS -->
-                                 <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
-                                     <!-- [class.news-in-evidence]="first" -->
-                                   <p style="font-size:0.8em; min-width: 220px;"  [innerHTML]="request?.members_as_string">
-                                     <!-- {{ request?.members_as_string }} -->
-                                   </p>
-                                 </td>
-                                 <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
-                                   <p style="font-size:0.9em">
-                                     <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
-                                     {{ request?.request_date_fromnow }}
+                                <!-- <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
+                                  <p style="font-size:0.8em; min-width: 220px;"  [innerHTML]="request?.members_as_string"></p>
+                                </td> -->
+                                <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
+                                  <p style="font-size:0.9em">
+                                    <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
+                                    {{ request?.request_date_fromnow }}
                                      
-                                   </p>
-                                 </td>
+                                  </p>
+                                </td>
                                  <!-- <td>
                                    <span class="" (click)='openViewMsgsModal(request?.recipient, hasClickedUpdateModal=true)'>
                                      <button class="btn btn-info pull-right" style="padding:4px 6px;"> 

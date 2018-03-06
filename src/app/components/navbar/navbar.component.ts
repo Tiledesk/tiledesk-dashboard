@@ -178,23 +178,6 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
             }
         ); // mySubject.subscribe
         // GET CURRENT USER FROM LOCAL STORAGE
-        firebase.auth().onAuthStateChanged(function (user) {
-            if (user) {
-                // User is signed in.
-                this.USER_IS_SIGNED_IN = true;
-                // console.log('// NAVBAR User is signed in.', this.USER_IS_SIGNED_IN)
-
-            } else {
-                // No user is signed in.
-                this.USER_IS_SIGNED_IN = false;
-                // console.log('// NAVBAR No user is signed in.', this.USER_IS_SIGNED_IN)
-            }
-        });
-        // console.log('// NAVBAR IS user signed in. ', this.USER_IS_SIGNED_IN);
-        if (this.USER_IS_SIGNED_IN) {
-            // console.log('// NAVBAR IS user signed in. ', this.USER_IS_SIGNED_IN);
-
-        }
 
     } // OnInit
 
@@ -203,6 +186,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
      * WHEN IS GET ANOTHER LAST REQUEST THIS IS DISPLAYED IN A NOTIFICATION IF:
      * - THE USER IS SIGNED IN
      *   (this so that the last request is only displayed if there is a user logged)
+     *   note: to get the boolean value of this.USER_IS_SIGNED_IN the navbar subscribe to IS_LOGGED_IN published by authguard)
      */
     getLastRequest() {
         this.requestsService.getSnapshotLastConversation().subscribe((last_request) => {
@@ -271,10 +255,6 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
     ngAfterViewChecked() {
         // console.log('++ ++ +++ ngAfterViewChecked');
-
-
-
-
     }
 
     sidebarOpen() {

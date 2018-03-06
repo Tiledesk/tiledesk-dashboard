@@ -81,7 +81,7 @@
                                   <th>
                                     <span style="color: #566787">
                                         <!-- Message -->
-                                      <strong> Ultimo Messagio </strong>
+                                      <strong> Messagio </strong>
                                     </span>
                                   </th>
                                   <!-- REQUESTER ID * FOR DEBUG -->
@@ -96,12 +96,11 @@
                                       <strong> Servita da </strong>
                                     </span>
                                     </th>
-                                  <th>
-                                   <span style="color: #566787">
-                                      
+                                  <!-- <th>
+                                   <span style="color: #566787">          
                                       <strong> Membri </strong>
                                     </span>
-                                  </th>
+                                  </th> -->
                                   <th>
                                     <span style="color: #566787">
                                       <!-- <strong> Data creazione </strong> -->
@@ -202,12 +201,9 @@
                                   </p>
                                 </td>
                                 <!-- LIST  OF MEMBERS -->
-                                <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined)' style="cursor:pointer">
-                                    <!-- [class.news-in-evidence]="first" -->
-                                  <p style="font-size:0.8em; min-width: 220px;"  [innerHTML]="request?.members_as_string">
-                                    <!-- {{ request?.members_as_string }} -->
-                                  </p>
-                                </td>
+                                <!-- <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined)' style="cursor:pointer">
+                                  <p style="font-size:0.8em; min-width: 220px;"  [innerHTML]="request?.members_as_string"></p>
+                                </td> -->
                                 <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined)' style="cursor:pointer">
                                   <p style="font-size:0.9em">
                                     <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
