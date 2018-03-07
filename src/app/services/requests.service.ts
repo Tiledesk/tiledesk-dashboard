@@ -67,6 +67,23 @@ export class RequestsService {
   //     });
   // }
 
+  //  TSTS
+  // .where('state', '==', 'CA')
+  // : Observable<Request[]> { 
+  getTest() {
+    console.log('GET TEST  ')
+    const db = firebase.firestore();
+    db.collection('conversations')
+      .onSnapshot(function (snapshot) {
+        snapshot.docChanges.forEach(function (change) {
+          // if (change.type === 'added') {
+          console.log(' +++ ++++ New city: ', change.doc.data());
+          // }
+        });
+      });
+  }
+  // TEST
+
   /**
    * CONVERSATION (ALIAS REQUESTS - IN THE VIEW IS VISITORS)return an observable of ALL FIRESTORE  'conversation' * WITH * ID
    */
@@ -78,6 +95,7 @@ export class RequestsService {
     // .orderBy('support_status', 'desc').orderBy('timestamp', 'desc')
 
     return this.requestsCollection.snapshotChanges().map((actions) => {
+      // return this.requestsCollection.stateChanges().map((actions) => {
       return actions.map((a) => {
         const data = a.payload.doc.data() as Request;
         return {
@@ -142,7 +160,8 @@ export class RequestsService {
   getSnapshotConversationByRecipient(recipient: string): Observable<Request[]> {
     // ['added', 'modified', 'removed']
 
-    this.requestsCollection = this.afs.collection('conversations', (ref) => ref.where('recipient', '==', `${recipient}`));
+    this.requestsCollection = this.afs.collection('conversations',
+      (ref) => ref.where('recipient', '==', `${recipient}`));
 
     return this.requestsCollection.snapshotChanges().map((actions) => {
       return actions.map((a) => {
@@ -208,6 +227,41 @@ export class RequestsService {
       });
     });
   }
+
+  // getIfStatusChange(): Observable<Request[]> {
+  //   // ['added', 'modified', 'removed']
+  //   this.requestsCollection = this.afs.collection('conversations',
+  //     (ref) => ref.where('support_status', '==', 100)
+  //   );
+  //   // .orderBy('support_status', 'desc').orderBy('timestamp', 'desc')
+
+  //   return this.requestsCollection.stateChanges(function (snapshot) {
+  //     snapshot.docChanges.forEach(function (change) {
+  //       if (change.type === 'added') {
+  //         console.log('Status Changed: ', change.doc.data());
+  //       }
+  //     });
+  //   });
+  // }
+
+
+
+  // getSnapshotLastConversationX(): Observable<Request[]> {
+  //   db.collection("cities").where("state", "==", "CA")
+  //     .onSnapshot(function (snapshot) {
+  //       snapshot.docChanges.forEach(function (change) {
+  //         if (change.type === "added") {
+  //           console.log("New city: ", change.doc.data());
+  //         }
+  //         if (change.type === "modified") {
+  //           console.log("Modified city: ", change.doc.data());
+  //         }
+  //         if (change.type === "removed") {
+  //           console.log("Removed city: ", change.doc.data());
+  //         }
+  //       });
+  //     });
+  // }
 
   /**
    * MESSAGES return an observable of ALL FIRESTORE  'message' * WITH * ID

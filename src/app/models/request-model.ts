@@ -15,4 +15,5 @@ export interface Request {
   currentUserIsJoined?: boolean;
   members_as_string?: any;
   served_by?: any;
+  notification_already_showed?: boolean;
 }

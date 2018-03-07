@@ -105,16 +105,33 @@ export class RequestsListComponent implements OnInit {
 
 
   ngOnInit() {
+    console.log('REQUEST LIST ON INIT ', )
     this.getRequestList();
+    // this.getTest();
   }
 
   // ngAfterViewInit() {
   //   // this.elRef.nativeElement.querySelector('.modal');
   //   console.log('MM ', this.elRef.nativeElement.querySelector('.modal').animate({ scrollTop: 0 }, 'slow') );
   // }
+  getTest() {
+    console.log('GET TEST  ')
+    const db = firebase.firestore();
+    db.collection('conversations')
+      .onSnapshot(function (snapshot) {
+        snapshot.docChanges.forEach(function (change) {
+          // if (change.type === 'added') {
+            // this.requestList = data;
+            console.log(' +++ ++++ DATA: ', change.doc.data());
+          // }
+        });
+      });
+  }
 
   // TRUNCATE THE TEXT DISPLAYED IN THE COLUMN 'LAST MESSAGE'
   getRequestText(text: string): string {
+    // tslint:disable-next-line:no-debugger
+
     if (text) {
       return text.length >= 30 ?
         text.slice(0, 30) + '...' :

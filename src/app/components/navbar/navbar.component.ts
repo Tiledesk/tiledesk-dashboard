@@ -6,6 +6,11 @@ import { AuthService } from '../../core/auth.service';
 import { TranslateService } from '@ngx-translate/core';
 import { RequestsService } from '../../services/requests.service';
 import { AuthGuard } from '../../core/auth.guard';
+import { Router } from '@angular/router';
+
+// FOR TEST
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { Request } from '../../models/request-model';
 
 declare var $: any;
 import * as firebase from 'firebase/app';
@@ -34,6 +39,9 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     // SHOW_NOTIFICATION_FOR_REQUEST_RECIPIENT: boolean;
     LOCAL_STORAGE_LAST_REQUEST_RECIPIENT: string;
     USER_IS_SIGNED_IN: boolean;
+    routerLink = 'routerLink="/analytics"'
+
+
 
     constructor(
         location: Location,
@@ -42,18 +50,18 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         public authguard: AuthGuard,
         private translate: TranslateService,
         private requestsService: RequestsService,
+        private router: Router,
+        // FOR TEST
+        private afs: AngularFirestore,
     ) {
         this.location = location;
         this.sidebarVisible = false;
-
         // this.unservedRequestCount = 0
-
-
-
     }
 
 
     ngOnInit() {
+
         this.listTitles = ROUTES.filter(listTitle => listTitle);
         const navbar: HTMLElement = this.element.nativeElement;
         this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
@@ -190,18 +198,77 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
      */
     getLastRequest() {
         this.requestsService.getSnapshotLastConversation().subscribe((last_request) => {
-            console.log('NAVBAR - SUBSCRIPTION TO REQUEST WITH SUPPORT-STATUS = 100 ', last_request);
+            console.log('NAVBAR - SUBSCRIPTION TO REQUEST WITH SUPPORT-STATUS == 100 ', last_request);
 
 
             this.lastRequest = last_request[last_request.length - 1];
-            console.log('NAVBAR <-> LAST REQUEST ', this.lastRequest);
+            // this.lastRequest = last_request;
+            console.log('NAVBAR <-> LAST UNSERVED REQUEST ', this.lastRequest);
             // && (this.USER_IS_SIGNED_IN === true)
             if ((this.lastRequest) && (this.USER_IS_SIGNED_IN === true)) {
-                this.showNotification(this.lastRequest.recipient)
+                // MOVED IN REQUEST DETAIL
+                // this.showNotification(this.lastRequest.recipient)
+
                 // this.audio = new Audio();
                 // this.audio.src = 'assets/Carme.mp3';
                 // this.audio.load();
                 // this.audio.play();
+
+
+                // GET LAST REQUEST DETAIL
+                this.afs.collection('conversations')
+                    .doc(this.lastRequest.recipient)
+                    .ref
+                    .get().then((doc: any) => {
+                        if (doc.exists) {
+                            console.log('LAST REQUEST DETAIL - Document data:', doc.data());
+                            // console.log('LAST REQUEST DETAIL PREVIOUS- Document data:', doc.data.previous.data() );
+                            const support_status = doc.data().support_status
+                            const id = doc.data().recipient
+                            const timestamp = doc.data().timestamp
+                            console.log('LAST REQUEST DETAIL S-Status - Document data:', support_status, ' ID ', id, ' TIMEST ', timestamp);
+
+                            if (support_status === 100) {
+
+                                this.showNotification(this.lastRequest.recipient)
+                                console.log('LAST REQUEST LENGHT ', this.lastRequest.length)
+                                // for (const r of this.lastRequest) {
+                                //     if (r.recipient === doc.data().recipient) {
+                                //         r.notification = true;
+                                //     }
+                                // }
+
+                            }
+                        } else {
+                            console.log('No such document!');
+                        }
+                    }).catch((error: any) => {
+                        console.log('Error getting document:', error);
+                    });
+
+                // GET PREVIOUS VALUE ON-UPDATE
+                // this.afs.doc(`conversations/${this.lastRequest.recipient}`)
+                //     .update(event => {
+                //         const newValue = event.data;
+                //         console.log('NEW VALUE ', newValue)
+
+                //         const previousValue = event.data.previous;
+                //         console.log('PREVIOUS VALUE ', newValue)
+                //     });
+
+
+
+                // .document('users/{userId}')
+                // .onUpdate(event => {
+                //   // Get an object representing the document
+                //   // e.g. {'name': 'Marie', 'age': 66}
+                //   var newValue = event.data.data();
+
+                //   // ...or the previous value before this update
+                //   var previousValue = event.data.previous.data();
+
+                //   // access a particular field as you would any JS property
+                //   var name = newValue.name;
             }
         });
     }
@@ -219,9 +286,12 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         $.notify({
             icon: 'notifications',
             // message: 'Welcome to <b>Material Dashboard</b> - a beautiful freebie for every web developer.'
-            message: '<b>Ultima richiesta:</b> ' + this.lastRequest.text
-
-
+            message: '<b>Ultima richiesta:</b> ' + this.lastRequest.text + '<br>ID: ' + request_recipient,
+            // url: 'routerLink="/requests"',
+            // url: 'https://github.com/mouse0270/bootstrap-notify',
+            // url: '<a routerLink="/requests">',
+            // url: this.router.navigate(['/requests']),
+            // target: '_self'
         }, {
                 type: type[color],
                 timer: 2000,
@@ -229,7 +299,11 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
                 //     from: from,
                 //     align: align
                 // }
-            });
+            },
+            {
+                onClose: this.test(),
+            }
+        );
 
         // if (request_recipient === this.lastRequest.recipient) {
         //     console.log('!! HO GIà VISUALIZZATO NOTIFICA PER QUESTA REQUEST  RR ', request_recipient, 'LRR ', this.lastRequest.recipient)
@@ -246,6 +320,11 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         this.audio.load();
         this.audio.play();
 
+
+
+    }
+    test() {
+        this.router.navigate(['/requests']);
     }
 
 
