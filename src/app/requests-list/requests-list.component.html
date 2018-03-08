@@ -205,9 +205,10 @@
                                   <p style="font-size:0.8em; min-width: 220px;"  [innerHTML]="request?.members_as_string"></p>
                                 </td> -->
                                 <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined)' style="cursor:pointer">
-                                  <p style="font-size:0.9em">
+                                  <p style="font-size:0.9em" [innerHTML]="getTimestampAsMoment(request?.timestamp)">
                                     <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
-                                    {{ request?.request_date_fromnow }}
+                                    <!-- {{ request?.request_date_fromnow }} -->
+                                    
                                     
                                   </p>
                                 </td>

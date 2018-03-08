@@ -14,6 +14,9 @@ import { environment } from '../../environments/environment';
 
 import * as firebase from 'firebase/app';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Query } from '@angular/core/src/metadata/di';
+import { QuerySnapshot, DocumentChange, DocumentSnapshot } from '@firebase/firestore-types';
+import { observeOn } from 'rxjs/operators/observeOn';
 
 @Injectable()
 export class RequestsService {
@@ -34,6 +37,8 @@ export class RequestsService {
 
   // public mySubject: BehaviorSubject<any> = new BehaviorSubject<any[]>(null);
   public mySubject: BehaviorSubject<any> = new BehaviorSubject<any[]>(null);
+
+  public unserved_requests: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
 
   constructor(
     http: Http,
@@ -69,18 +74,66 @@ export class RequestsService {
 
   //  TSTS
   // .where('state', '==', 'CA')
-  // : Observable<Request[]> { 
-  getTest() {
-    console.log('GET TEST  ')
+  // : Observable<Request[]> {
+
+
+  // getConversationsSnapshot(): Observable<QuerySnapshot> {
+  //   console.log('GET TEST  ')
+  //   // tslint:disable-next-line:no-debugger
+  //   // debugger
+  //   const db = firebase.firestore();
+  //   const query = db.collection('conversations').where('support_status', '<', 1000).orderBy('support_status').orderBy('timestamp', 'desc');
+  //   return Observable.create(query.onSnapshot.bind(query));
+  //   // .onSnapshot.bind {
+  //   // return observable
+
+
+  //   // snapshot.docChanges.forEach(function (change) {
+  //   //   // if (change.type === 'added') {
+  //   //   console.log(' +++ ++++ New city: ', change.doc.data());
+  //   //   // }
+  //   // });
+
+  // }
+
+  getRequests(): Observable<Request[]> {
     const db = firebase.firestore();
-    db.collection('conversations')
-      .onSnapshot(function (snapshot) {
-        snapshot.docChanges.forEach(function (change) {
-          // if (change.type === 'added') {
-          console.log(' +++ ++++ New city: ', change.doc.data());
-          // }
+    const query = db.collection('conversations')
+      .where('support_status', '<', 1000)
+      .orderBy('support_status')
+      .orderBy('timestamp', 'desc');
+    // const observer = Observable.create(query.onSnapshot.bind(query));
+    const observable = new Observable<Request[]>(observer => {
+      query.onSnapshot(snapshot => {
+        const requestListReturned: Request[] = snapshot.docChanges.map((c: DocumentChange) => {
+        // const requestListReturned: Request[] = snapshot.docs.map((c: DocumentSnapshot) => {
+          const r: Request = {};
+          const data = c.doc.data()
+          // const data = c.data()
+          r.recipient_fullname = data.recipient_fullname;
+          r.recipient = data.recipient;
+          r.sender_fullname = data.sender_fullname
+          r.text = data.text
+          r.first_text = data.first_text
+          r.timestamp = data.timestamp
+          r.membersCount = data.membersCount
+          r.support_status = data.support_status
+          r.members = data.members
+          r.requester_fullname = data.requester_fullname
+          r.requester_id = data.requester_id
+          return r;
         });
+        // if (snapshot.docChanges[0].type === 'added') {
+          // tslint:disable-next-line:no-debugger
+          // debugger;
+        observer.next(requestListReturned);
+        // }
+        // if (snapshot.docChanges[0].type === 'modified') {
+        // observer.next(requestListReturned);
+        // }
       });
+    });
+    return observable;
   }
   // TEST
 
@@ -88,6 +141,7 @@ export class RequestsService {
    * CONVERSATION (ALIAS REQUESTS - IN THE VIEW IS VISITORS)return an observable of ALL FIRESTORE  'conversation' * WITH * ID
    */
   getSnapshotConversations(): Observable<Request[]> {
+
     // ['added', 'modified', 'removed']
 
     this.requestsCollection = this.afs.collection('conversations',
@@ -227,6 +281,7 @@ export class RequestsService {
       });
     });
   }
+
 
   // getIfStatusChange(): Observable<Request[]> {
   //   // ['added', 'modified', 'removed']
