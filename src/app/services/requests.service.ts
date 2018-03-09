@@ -17,6 +17,9 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Query } from '@angular/core/src/metadata/di';
 import { QuerySnapshot, DocumentChange, DocumentSnapshot } from '@firebase/firestore-types';
 import { observeOn } from 'rxjs/operators/observeOn';
+import { members_as_html } from '../utils/util';
+
+
 
 @Injectable()
 export class RequestsService {
@@ -45,6 +48,7 @@ export class RequestsService {
   constructor(
     http: Http,
     private afs: AngularFirestore,
+
   ) {
     this.http = http;
     console.log('Hello Request Service!');
@@ -156,6 +160,7 @@ export class RequestsService {
           r.membersCount = data.membersCount
           r.support_status = data.support_status
           r.members = data.members
+          r.members_as_string = members_as_html(data.members, data.requester_id, firebase.auth().currentUser.uid)
           r.requester_fullname = data.requester_fullname
           r.requester_id = data.requester_id
           return r;

@@ -219,9 +219,16 @@ export class RequestsListComponent implements OnInit {
   //     });
   // }
   //
+  membersfilterAndReplace(members: any) {
+    // console.log('SERVED BY (PASSED FROM HTML ) ', served_by)
+    // const membersKeys = Object.keys(members)
+    // console.log('MEMBERS KEYS ', membersKeys)
+
+  }
+
   replace_recipient(request_recipient: string) {
     if (request_recipient) {
-     return request_recipient.replace('support-group-', '');
+      return request_recipient.replace('support-group-', '');
     }
   }
 

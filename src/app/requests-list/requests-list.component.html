@@ -197,8 +197,11 @@
                                 </td> -->
                                 <!-- SERVED BY -->
                                 <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined)' style="cursor:pointer" >
-                                  <p style="font-size:0.8em; min-width: 220px;" [innerHTML]="request?.served_by" >
+                                  <p style="font-size:0.8em; min-width: 220px;" [innerHTML]="request?.members_as_string">
                                     <!-- {{ request?.served_by }} -->
+                                    <!-- {{ membersfilterAndReplace(request?.members) }} -->
+                                    <!-- {{ request?.members }} -->
+
                                   </p>
                                 </td>
                                 <!-- LIST  OF MEMBERS -->
