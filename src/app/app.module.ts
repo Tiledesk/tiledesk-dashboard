@@ -72,6 +72,7 @@ import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.com
 
 import { ProjectService } from './services/project.service';
 import { RequestsListHistoryComponent } from './requests-list-history/requests-list-history.component';
+import { MomentModule } from 'angular2-moment';
 
 
 
@@ -125,6 +126,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AngularFireModule.initializeApp(firebaseConfig),
     HttpModule,
     HttpClientModule,
+    MomentModule,
     TranslateModule.forRoot({
       loader: {
           provide: TranslateLoader,

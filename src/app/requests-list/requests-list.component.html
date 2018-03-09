@@ -167,7 +167,8 @@
                                 <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined)' style="cursor:pointer">
                                     <!-- max-width: 150px; -->
                                   <p style="font-size:0.8em;" >
-                                    {{ request?.recipient }}
+                                    <!-- {{ request?.recipient }} -->
+                                    {{ replace_recipient(request?.recipient) }}
                                   </p>
                                 </td>
                                 <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined)' style="cursor:pointer">
@@ -208,8 +209,8 @@
                                   <p style="font-size:0.9em">
                                     <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
                                     <!-- {{ request?.request_date_fromnow }} -->
-                                    {{ getTimestampAsMoment(request?.timestamp) }}
-                                    <!-- {{ request?.timestamp | amTimeAgo }} -->
+                                    <!-- {{ getTimestampAsMoment(request?.timestamp) }} -->
+                                    {{ request?.timestamp | amTimeAgo }}
                                   </p>
                                 </td>
                                 <!-- <td>

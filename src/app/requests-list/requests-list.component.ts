@@ -219,7 +219,13 @@ export class RequestsListComponent implements OnInit {
   //     });
   // }
   //
+  replace_recipient(request_recipient: string) {
+    if (request_recipient) {
+     return request_recipient.replace('support-group-', '');
+    }
+  }
 
+  // NO MORE USED - REPLACED MOMENT WITH ANGULAR2-MOMENT
   /* CALCULATE THE DATE AS FROM-NOW FORMAT */
   getTimestampAsMoment(timestamp: number): string {
     const timestampMs = timestamp / 1000

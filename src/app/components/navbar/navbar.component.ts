@@ -80,6 +80,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
         this.notifyLastUnservedRequest();
 
+        this.checkRequestStatusInShown_requests();
+
         // TO REPLACE
         // this.getLastRequest();
         // this.getUnservedRequestLenght();
@@ -103,28 +105,46 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         });
     }
 
-    notifyLastUnservedRequest() {
+    // IS USED FOR: A REQUEST CHANGE STATE
+    // FROM -> 100 (THE R. RECIPIENT IS ADDED AND SET TO TRUE IN  shown_requests )
+    // TO -> 200 (THE R. RECIPIENT IS SET TO FALSE IN  shown_requests )
+    // SO IF THE REQUEST CHANGE AGAIN STATUS IN 100 THE NOTICATION IS AGAIN DISPLAYED
+    checkRequestStatusInShown_requests() {
+        this.requestsService.requestsList_bs.subscribe((requests) => {
+            if (requests) {
+                requests.forEach(r => {
+                    if (r.support_status !== 100) {
+                        console.log('REQUEST WITH STATUS != 100 ', r.support_status)
+                        this.shown_requests[r.id] = false;
+                    }
+                });
+            }
+        });
+    }
 
+    // NOTE: ARE DISPLAYED IN THE NOTIFICATION ONLY THE UNSERVED REQUEST (support_status = 100)
+    // THAT ARE NOT FOUND (OR HAVE THE VALUE FALSE) IN THE LOCAL DICTIONARY shown_requests
+    notifyLastUnservedRequest() {
         this.requestsService.requestsList_bs.subscribe((requests) => {
             if (requests) {
 
                 requests.forEach(r => {
-                    if (r.support_status === 100 && !this.shown_requests[r.recipient]) {
+                    if (r.support_status === 100 && !this.shown_requests[r.id]) {
 
                         // this.lastRequest = requests[requests.length - 1];
-                        console.log('LAST UNSERVED REQUEST ', this.lastRequest)
-                        this.showNotification(r.text + '<br>' + r.recipient);
+                        // console.log('LAST UNSERVED REQUEST ', this.lastRequest)
+                        this.showNotification(r.text + '<br>' + r.id);
 
-                        this.shown_requests[r.recipient] = true;
+                        this.shown_requests[r.id] = true;
                         // r.notification_already_shown = true;
                     }
                 });
                 // this.unservedRequestCount = count;
             }
         });
-
     }
 
+    // !!! NO MORE USED
     getUnservedRequestLenght() {
         // GET COUNT OF UNSERVED REQUESTS
         this.requestsService.getCountUnservedRequest().subscribe((count: number) => {
@@ -133,6 +153,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
         });
     }
+
+    // !!! NO MORE USED
     getUnservedRequestLenght_bs() {
         // SUBSCRIBE TO UNSERVED REQUESTS PUBLISHED BY REQUEST SERVICE
         this.requestsService.mySubject.subscribe(
@@ -240,7 +262,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         ); // mySubject.subscribe
     }
 
-    /**
+    /** // !!! NO MORE USED
      * ====== DISPLAY THE LAST REQUEST IN A NOTIFICATION ======
      * WHEN IS GET ANOTHER LAST REQUEST THIS IS DISPLAYED IN A NOTIFICATION IF:
      * - THE USER IS SIGNED IN
@@ -331,7 +353,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         // const color = Math.floor((Math.random() * 4) + 1);
         // the tree corresponds to the orange
         const color = 3
-        console.log('COLOR ', color)
+        // console.log('COLOR ', color)
         // const color = '#ffffff';
 
         this.notify = $.notify({

@@ -25,6 +25,7 @@
     "@angular/router": "^5.0.2",
     "@ngx-translate/core": "^9.1.1",
     "@ngx-translate/http-loader": "^2.0.1",
+    "angular2-moment": "^1.8.0",
     "angularfire2": "^5.0.0-rc.4",
     "arrive": "2.4.1",
     "bootstrap": "3.3.7",

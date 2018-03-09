@@ -146,6 +146,7 @@ export class RequestsService {
           const r: Request = {};
           const data = c.doc.data()
           // const data = c.data()
+          r.id = data.recipient;
           r.recipient_fullname = data.recipient_fullname;
           r.recipient = data.recipient;
           r.sender_fullname = data.sender_fullname
