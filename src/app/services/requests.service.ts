@@ -120,11 +120,16 @@ export class RequestsService {
     for (let i = 0; i < this.requestList.length; i++) {
       if (r.recipient === this.requestList[i].recipient) {
         this.requestList[i] = r;
+        this.reorderRequests()
         return;
       }
       // console.log('REQUEST RECIPIENT ', this.requestList[i].recipient)
     }
     this.requestList.push(r);
+    this.reorderRequests()
+  }
+  
+  reorderRequests(){
     this.requestList.sort(function compare(a: Request, b: Request) {
       if (a.timestamp > b.timestamp) {
         return -1;
@@ -134,6 +139,7 @@ export class RequestsService {
       }
       return 0;
     });
+
   }
 
   getRequests(): Observable<Request[]> {
