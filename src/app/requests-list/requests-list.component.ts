@@ -20,6 +20,7 @@ import { forEach } from '@angular/router/src/utils/collection';
 import { DocumentChange } from '@firebase/firestore-types';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
+
 @Component({
   selector: 'requests-list',
   templateUrl: './requests-list.component.html',
@@ -114,135 +115,85 @@ export class RequestsListComponent implements OnInit {
 
 
   ngOnInit() {
-    // console.log('REQUEST LIST ON INIT ', )
+    console.log('REQUEST LIST ON INIT ', )
 
-    this.requestsService.getRequests().subscribe((requests: Request[]) => {
-      this.showSpinner = false;
-      // tslint:disable-next-line:no-debugger
-      // debugger
-      // console.log('REQUESTS LIST: ', requests);
+    this.getRequestListBS()
 
-      // first foreach
-      requests.forEach((r: Request) => {
-
-        // this.ID_request = r.recipient
-        this.addOrUpdateRequestsList(r);
-        // this.requestList.push(r);
-        // this.updateBadge();
-
-
-        // this.requestList = requests
-
-
-        // if (r.recipient === id_request) {
-        // if (r.support_status === 100) {
-        // console.log('REQUESTS LIST - UNSERVED REQUESTS ID: ', r.recipient, ' STATUS: ', r.support_status)
-
-        // this.unservedRequestList.push(r);
-        // console.log('REQUESTS LIST - UNSERVED REQUESTS: ', this.unservedRequestList)
-
-
-        // unservedRequest.push(r)
-
-
-        // }
-        // }
-      });
-    },
-      error => {
-        // TODO
-      },
-      () => {
-        console.log('GET REQUEST COMPLETE')
-      });
-
-    // this.getRequestList();
-    // this.requestsService.getConversationsSnapshot().subscribe((snapshot) => {
-    //   // tslint:disable-next-line:no-debugger
-    //   // debugger;
-
+    // this.requestsService.getRequests().subscribe((requests: Request[]) => {
     //   this.showSpinner = false;
 
-    //   const requestListReturned: Request[] = snapshot.docChanges.map((c: DocumentChange) => {
-    //     // if (change.type === 'added') {
-    //     const r: Request = {};
-    //     const data = c.doc.data()
-    //     r.recipient_fullname = data.recipient_fullname;
-    //     r.recipient = data.recipient;
-    //     r.sender_fullname = data.sender_fullname
-    //     r.text = data.text
-    //     r.first_text = data.first_text
-    //     r.timestamp = data.timestamp
-    //     r.membersCount = data.membersCount
-    //     r.support_status = data.support_status
-    //     r.members = data.members
-    //     r.requester_fullname = data.requester_fullname
-    //     r.requester_id = data.requester_id
-    //     return r;
+    //   requests.forEach((r: Request) => {
+
+    //     this.addOrUpdateRequestsList(r);
+
+    //   });
+    // },
+    //   error => { },
+    //   () => {
+    //     console.log('GET REQUEST COMPLETE')
     //   });
 
-    // requestListReturned.forEach((r: Request) => {
-    //   console.log('full_name: ', r.recipient_fullname);
-    //   this.requestList.push(r);
-    // });
-
-
-    // });
   }
 
-  addOrUpdateRequestsList(r: Request) {
-    // console.log('ADD OR UPDATE ', r)
-
-    // this id is returned from the first foreach
-    console.log('ID REQUEST  ', r.recipient)
-
-    for (let i = 0; i < this.requestList.length; i++) {
-      if (r.recipient === this.requestList[i].recipient) {
-        this.requestList[i] = r;
-        return;
+  getRequestListBS() {
+    this.requestsService.requestsList_bs.subscribe((requests) => {
+      if (requests) {
+        this.showSpinner = false;
+        this.requestList = requests;
       }
-      console.log('REQUEST RECIPIENT ', this.requestList[i].recipient)
-    }
-
-    this.requestList.push(r);
-
-    this.requestList.sort(function compare(a: Request, b: Request ) {
-      if (a.timestamp > b.timestamp) {
-        return -1;
-      }
-      if (a.timestamp < b.timestamp) {
-        return 1;
-      }
-      return 0;
     });
-
-    // for (let i = 0; i < this.requestList.length; i++) {
-
-      // if (this.ID_request !== this.requestList[0].recipient) {
-
-      //   this.requestList.push(r);
-      //   console.log('REQUESTS LIST: ++  ', this.requestList[0].recipient)
-
-      // } else {
-
-      //   console.log('this item is to update ')
-      // }
-
-
-    // this.requestList.forEach(checkedRequest => {
-    //   if (checkedRequest.recipient === r.recipient) {
-    //     console.log('THIS REQUEST ALREADY EXIST ')
-    //   } else {
-
-    //     console.log('! THIS IS A NEW REQUEST ', checkedRequest.recipient)
-    //   }
-    // });
-
-    // itero l'array this.requestList
-    // cerco r per id (recipient)
-    // se trovo un elemento corrispondente lo sostituisco con r
-    // else this.requestList.push(r)
   }
+
+  // addOrUpdateRequestsList(r: Request) {
+  //   console.log('ID REQUEST  ', r.recipient)
+
+  //   for (let i = 0; i < this.requestList.length; i++) {
+  //     if (r.recipient === this.requestList[i].recipient) {
+  //       this.requestList[i] = r;
+  //       return;
+  //     }
+  //     console.log('REQUEST RECIPIENT ', this.requestList[i].recipient)
+  //   }
+
+  //   this.requestList.push(r);
+
+  //   this.requestList.sort(function compare(a: Request, b: Request) {
+  //     if (a.timestamp > b.timestamp) {
+  //       return -1;
+  //     }
+  //     if (a.timestamp < b.timestamp) {
+  //       return 1;
+  //     }
+  //     return 0;
+  //   });
+
+  // for (let i = 0; i < this.requestList.length; i++) {
+
+  // if (this.ID_request !== this.requestList[0].recipient) {
+
+  //   this.requestList.push(r);
+  //   console.log('REQUESTS LIST: ++  ', this.requestList[0].recipient)
+
+  // } else {
+
+  //   console.log('this item is to update ')
+  // }
+
+
+  // this.requestList.forEach(checkedRequest => {
+  //   if (checkedRequest.recipient === r.recipient) {
+  //     console.log('THIS REQUEST ALREADY EXIST ')
+  //   } else {
+
+  //     console.log('! THIS IS A NEW REQUEST ', checkedRequest.recipient)
+  //   }
+  // });
+
+  // itero l'array this.requestList
+  // cerco r per id (recipient)
+  // se trovo un elemento corrispondente lo sostituisco con r
+  // else this.requestList.push(r)
+  // }
   // funzionedapassare(r: Request) {
   //   console.log('full_name: ', r.recipient_fullname);
   //   this.requestList.push(r);
@@ -269,12 +220,13 @@ export class RequestsListComponent implements OnInit {
   // }
   //
 
+  /* CALCULATE THE DATE AS FROM-NOW FORMAT */
   getTimestampAsMoment(timestamp: number): string {
     const timestampMs = timestamp / 1000
     return moment.unix(timestampMs).fromNow();
   }
 
-  // TRUNCATE THE TEXT DISPLAYED IN THE COLUMN 'LAST MESSAGE'
+  /* TRUNCATE THE TEXT DISPLAYED IN THE COLUMN 'LAST MESSAGE' */
   getRequestText(text: string): string {
     if (text) {
       return text.length >= 30 ?

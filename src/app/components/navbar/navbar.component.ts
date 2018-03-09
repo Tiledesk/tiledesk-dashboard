@@ -14,6 +14,7 @@ import { Request } from '../../models/request-model';
 
 declare var $: any;
 import * as firebase from 'firebase/app';
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
     selector: 'app-navbar',
@@ -41,7 +42,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     USER_IS_SIGNED_IN: boolean;
     routerLink = 'routerLink="/analytics"'
 
-
+    notify: any;
+    private shown_requests = {};
 
     constructor(
         location: Location,
@@ -72,15 +74,66 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
             console.log('>>> >>> USER IS SIGNED IN ', this.USER_IS_SIGNED_IN);
 
         })
-        this.getLastRequest()
 
+
+        this.updateUnservedRequestCount();
+
+        this.notifyLastUnservedRequest();
+
+        // TO REPLACE
+        // this.getLastRequest();
+        // this.getUnservedRequestLenght();
+        // this.getUnservedRequestLenght_bs();
+
+
+    } // OnInit
+
+    // NEW
+    updateUnservedRequestCount() {
+        this.requestsService.requestsList_bs.subscribe((requests) => {
+            if (requests) {
+                let count = 0;
+                requests.forEach(r => {
+                    if (r.support_status === 100) {
+                        count = count + 1;
+                    }
+                });
+                this.unservedRequestCount = count;
+            }
+        });
+    }
+
+    notifyLastUnservedRequest() {
+
+        this.requestsService.requestsList_bs.subscribe((requests) => {
+            if (requests) {
+
+                requests.forEach(r => {
+                    if (r.support_status === 100 && !this.shown_requests[r.recipient]) {
+
+                        // this.lastRequest = requests[requests.length - 1];
+                        console.log('LAST UNSERVED REQUEST ', this.lastRequest)
+                        this.showNotification(r.text + '<br>' + r.recipient);
+
+                        this.shown_requests[r.recipient] = true;
+                        // r.notification_already_shown = true;
+                    }
+                });
+                // this.unservedRequestCount = count;
+            }
+        });
+
+    }
+
+    getUnservedRequestLenght() {
         // GET COUNT OF UNSERVED REQUESTS
         this.requestsService.getCountUnservedRequest().subscribe((count: number) => {
             this.unservedRequestCount = count;
             console.log(' ++ +++ (navbar) COUNT OF UNSERVED REQUEST ', this.unservedRequestCount);
 
         });
-
+    }
+    getUnservedRequestLenght_bs() {
         // SUBSCRIBE TO UNSERVED REQUESTS PUBLISHED BY REQUEST SERVICE
         this.requestsService.mySubject.subscribe(
             (values) => {
@@ -185,9 +238,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
             }
         ); // mySubject.subscribe
-        // GET CURRENT USER FROM LOCAL STORAGE
-
-    } // OnInit
+    }
 
     /**
      * ====== DISPLAY THE LAST REQUEST IN A NOTIFICATION ======
@@ -273,7 +324,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         });
     }
 
-    showNotification(request_recipient: string) {
+    showNotification(text: string) {
         console.log('show notification')
         const type = ['', 'info', 'success', 'warning', 'danger'];
 
@@ -283,10 +334,11 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         console.log('COLOR ', color)
         // const color = '#ffffff';
 
-        $.notify({
+        this.notify = $.notify({
             icon: 'notifications',
             // message: 'Welcome to <b>Material Dashboard</b> - a beautiful freebie for every web developer.'
-            message: '<b>Ultima richiesta:</b> ' + this.lastRequest.text + '<br>ID: ' + request_recipient,
+            // this.lastRequest.text + '<br>ID: ' + request_recipient,
+            message: '<b>Nuova richiesta:</b> ' + text
             // url: 'routerLink="/requests"',
             // url: 'https://github.com/mouse0270/bootstrap-notify',
             // url: '<a routerLink="/requests">',
@@ -301,7 +353,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
                 // }
             },
             {
-                onClose: this.test(),
+                // onClose: this.test(),
             }
         );
 

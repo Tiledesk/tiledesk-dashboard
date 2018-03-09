@@ -35,10 +35,12 @@ export class RequestsService {
   currentUserFireBaseUID: string;
   unservedRequest: any;
 
+  requestList: Request[] = [];
+
   // public mySubject: BehaviorSubject<any> = new BehaviorSubject<any[]>(null);
   public mySubject: BehaviorSubject<any> = new BehaviorSubject<any[]>(null);
 
-  public unserved_requests: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
+  public requestsList_bs: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
 
   constructor(
     http: Http,
@@ -95,6 +97,40 @@ export class RequestsService {
   //   // });
 
   // }
+  startRequestsQuery() {
+    console.log('startRequestsQuery()')
+    this.getRequests().subscribe((requests: Request[]) => {
+      requests.forEach((r: Request) => {
+        this.addOrUpdateRequestsList(r);
+      });
+      this.requestsList_bs.next(this.requestList);
+    },
+      error => { },
+      () => {
+        console.log('GET REQUEST COMPLETE')
+      });
+  }
+
+  addOrUpdateRequestsList(r: Request) {
+    // console.log('ID REQUEST  ', r.recipient)
+    for (let i = 0; i < this.requestList.length; i++) {
+      if (r.recipient === this.requestList[i].recipient) {
+        this.requestList[i] = r;
+        return;
+      }
+      // console.log('REQUEST RECIPIENT ', this.requestList[i].recipient)
+    }
+    this.requestList.push(r);
+    this.requestList.sort(function compare(a: Request, b: Request) {
+      if (a.timestamp > b.timestamp) {
+        return -1;
+      }
+      if (a.timestamp < b.timestamp) {
+        return 1;
+      }
+      return 0;
+    });
+  }
 
   getRequests(): Observable<Request[]> {
     const db = firebase.firestore();
@@ -106,7 +142,7 @@ export class RequestsService {
     const observable = new Observable<Request[]>(observer => {
       query.onSnapshot(snapshot => {
         const requestListReturned: Request[] = snapshot.docChanges.map((c: DocumentChange) => {
-        // const requestListReturned: Request[] = snapshot.docs.map((c: DocumentSnapshot) => {
+          // const requestListReturned: Request[] = snapshot.docs.map((c: DocumentSnapshot) => {
           const r: Request = {};
           const data = c.doc.data()
           // const data = c.data()
@@ -123,14 +159,7 @@ export class RequestsService {
           r.requester_id = data.requester_id
           return r;
         });
-        // if (snapshot.docChanges[0].type === 'added') {
-          // tslint:disable-next-line:no-debugger
-          // debugger;
         observer.next(requestListReturned);
-        // }
-        // if (snapshot.docChanges[0].type === 'modified') {
-        // observer.next(requestListReturned);
-        // }
       });
     });
     return observable;
