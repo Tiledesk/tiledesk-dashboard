@@ -418,15 +418,17 @@ export class RequestsListComponent implements OnInit {
   // * GET THE REQUEST DETAILS (GET THE CONVESATION BY RECIPIENT using this.getRequestByRecipient()) - IS USED FOR:
   //   IF THE VALUE OF THE UID OF CURRENT USER IS FOUND BETWEEN THE UID KEY IN MEMBERS (is contained in the request object)
   //   IN THE MODAL WITH THE MSGS LIST THE 'ENTER BTN' (AND NOT THE 'JOIN BTN') WILL BE DISPLAYED
-  openViewMsgsModal(recipient: string, currentUserIsJoined: boolean) {
+  openViewMsgsModal(recipient: string, currentUserIsJoined: boolean, requester_id: string) {
 
     // NEW LOGIC
     this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = false;
     this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
+    this.requester_id = requester_id;
 
     // NEW LOGIC
     this.IS_CURRENT_USER_JOINED = currentUserIsJoined
     console.log('WHEN OPEN THE MODAL - CURRENt USER IS JOINED ', this.IS_CURRENT_USER_JOINED)
+    console.log('WHEN OPEN THE MODAL - REQUESTER ID ', requester_id)
     console.log('WHEN OPEN THE MODAL - SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING ', this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING)
 
     this.JOIN_TO_GROUP_HAS_ERROR = false;
