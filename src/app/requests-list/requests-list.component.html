@@ -16,7 +16,7 @@
 
           <div  *ngIf="!showSpinner" class="card-content table-responsive">
             <!-- style="overflow-x:auto;" -->
-            <table class="table">
+            <table class="table table-hover">
               <thead class="text">
                 <tr>
                     <!-- <th></th> -->
@@ -195,7 +195,7 @@
 
           <div  *ngIf="!showSpinner" class="card-content table-responsive">
             <!-- style="overflow-x:auto;" -->
-            <table class="table">
+            <table class="table table-hover">
               <thead class="text">
                 <tr>
                   <!-- <th></th> -->
@@ -409,7 +409,7 @@
             <!-- ./ modal body -->
          
             <div class="modal-footer">
-              <button class="btn btn-white" (click)="onCloseModal()">Chiudi</button>
+              <button class="btn btn-white" (click)="onCloseModal()" style="padding:12px 16px;">Chiudi</button>
               <span style="padding-right:25px"></span>
 
                <!-- =======================================================================================================================
@@ -451,7 +451,7 @@
                           && IS_CURRENT_USER_JOINED === false 
                           && SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === false 
                           && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false">
-                  <button class="btn btn-default" (click)="onJoinHandled()">
+                  <button class="btn btn-default" (click)="onJoinHandled()" style="padding:12px 16px !important;">
                     Join
                   </button>
                 </span>
@@ -459,7 +459,7 @@
                 <!-- NEW LOGIC -->
                 <span *ngIf="HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === true || IS_CURRENT_USER_JOINED === true">
                   <!-- <button class="btn btn-info"> -->
-                    <a class="btn btn-info" role="button" style="color: white;" target="_blank" href="http://support.chat21.org/web/?recipient={{requestRecipient}}">
+                    <a class="btn btn-info" role="button" style="color: white;" target="_blank" href="http://support.chat21.org/web/?recipient={{requestRecipient}}" style="padding:12px 16px !important;">
                       Entra
                     </a>
                   <!-- </button> -->
@@ -472,14 +472,14 @@
                     * FALSE IS THE CURRENT VALUE OF: JOIN_TO_GROUP_HAS_ERROR  -->
                   
                 <span *ngIf="SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === true && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false  && JOIN_TO_GROUP_HAS_ERROR === false">
-                  <button class="btn btn-default">
+                  <button class="btn btn-default" style="padding:12px 16px !important;">
                     <i class="fa fa-spinner fa-spin"></i> Elaborazione
                   </button>
                 </span>
 
                 <!-- IF THE CALLBALL JOIN-TO-GROUP HAS ERROR SHOWS THE BTN ERROR (DISABLED)  -->
                 <span *ngIf="JOIN_TO_GROUP_HAS_ERROR === true">
-                  <button class="btn btn-danger" disabled>
+                  <button class="btn btn-danger" disabled style="padding:12px 16px !important;">
                     Errore
                   </button>
                 </span>
