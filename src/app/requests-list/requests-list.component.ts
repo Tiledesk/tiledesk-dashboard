@@ -37,7 +37,7 @@ export class RequestsListComponent implements OnInit {
 
   requestListUnserved: Request[] = [];
   requestListServed: Request[] = [];
-  
+
   showSpinner = true;
 
   messagesList: Message[];
@@ -138,23 +138,32 @@ export class RequestsListComponent implements OnInit {
   getRequestListBS() {
     this.requestsService.requestsList_bs.subscribe((requests) => {
       if (requests) {
+        console.log('REQUESTS ', requests)
         this.showSpinner = false;
         this.requestListUnserved = requests
-        .filter(r => {
-          if (r.support_status === 100) {
-            return true
-          } else {
-            return false
-          }
-        });
+          .filter(r => {
+            if (r.support_status === 100) {
+              return true
+            } else {
+              return false
+            }
+          }).sort(function compare(a: Request, b: Request) {
+            if (a.timestamp > b.timestamp) {
+              return 1;
+            }
+            if (a.timestamp < b.timestamp) {
+              return -1;
+            }
+            return 0;
+          });
         this.requestListServed = requests
-        .filter(r => {
-          if (r.support_status !== 100) {
-            return true
-          } else {
-            return false
-          }
-        });
+          .filter(r => {
+            if (r.support_status !== 100) {
+              return true
+            } else {
+              return false
+            }
+          });
       }
     });
   }
@@ -404,7 +413,7 @@ export class RequestsListComponent implements OnInit {
   // * ON CLICK THE VIEW PASS THE VALUE OF 'RECIPIENT' THAT ASSIGN TO THE LOCAL VARIABLE this.requestRecipient
   // * GET THE MESSAGE LIST BY this.requestRecipient
   // *  (!!! GET THE REQUEST DETAILS is NO MORE USED AS PERFORM THIS VERIFICATION ABOVE
-  //    - see CHECK IF THE CURRENT USER IS ALREADY JOINED TO CONVERSATION and 
+  //    - see CHECK IF THE CURRENT USER IS ALREADY JOINED TO CONVERSATION and
   //    - see the comment "NO MORE USED THE REASON" in requests-lists.component.html)
   // * GET THE REQUEST DETAILS (GET THE CONVESATION BY RECIPIENT using this.getRequestByRecipient()) - IS USED FOR:
   //   IF THE VALUE OF THE UID OF CURRENT USER IS FOUND BETWEEN THE UID KEY IN MEMBERS (is contained in the request object)

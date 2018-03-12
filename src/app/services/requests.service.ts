@@ -18,7 +18,7 @@ import { Query } from '@angular/core/src/metadata/di';
 import { QuerySnapshot, DocumentChange, DocumentSnapshot } from '@firebase/firestore-types';
 import { observeOn } from 'rxjs/operators/observeOn';
 import { members_as_html } from '../utils/util';
-
+import { currentUserUidIsInMembers } from '../utils/util';
 
 
 @Injectable()
@@ -141,6 +141,7 @@ export class RequestsService {
     });
   }
 
+
   getRequests(): Observable<Request[]> {
     const db = firebase.firestore();
     const query = db.collection('conversations')
@@ -166,6 +167,7 @@ export class RequestsService {
           r.support_status = data.support_status
           r.members = data.members
           r.members_as_string = members_as_html(data.members, data.requester_id, firebase.auth().currentUser.uid)
+          r.currentUserIsJoined = currentUserUidIsInMembers(data.members, firebase.auth().currentUser.uid)
           r.requester_fullname = data.requester_fullname
           r.requester_id = data.requester_id
           return r;

@@ -7,7 +7,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header" data-background-color="" style="background-color: #fff">
+          <div class="card-header" data-background-color="" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
             <h4 class="title" style="margin-bottom:2px; font-size:1.1em; color: #566787">Richieste non servite</h4>
             <!-- <p class="category">Here is a subtitle for this table</p> -->
           </div>
@@ -82,7 +82,7 @@
                     <!-- IF THE REQUEST SUPPORT STATUS IS 0 (??? REQUEST) -->
                     <span *ngIf="request?.support_status == 0"> 
                       <span class="" (click)='openViewMsgsModal(request?.recipient)'>
-                        <button class="btn btn-default pull-right" style="padding:4px 6px;"> 
+                        <button class="btn btn-default pull-right" style=""> 
                             <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                         </button>
                       </span>
@@ -91,7 +91,8 @@
                     <!-- IF THE REQUEST SUPPORT STATUS IS 100 (UNSERVED REQUEST) -->
                     <span *ngIf="request?.support_status == 100"> 
                       <span class="" (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined)'>
-                        <button class="btn btn-danger pull-right" style="padding:4px 6px;"> 
+                          <!-- padding:4px 6px; -->
+                        <button class="btn btn-danger pull-right" style=""> 
                             <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                         </button>
                       </span>
@@ -101,7 +102,7 @@
                     THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
                     <span *ngIf="request?.support_status == 200 && request?.currentUserIsJoined === true"> 
                       <span class="" (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined)'>
-                        <button class="btn btn-success pull-right" style="padding:4px 6px;" rel="tooltip" title=""> 
+                        <button class="btn btn-success pull-right" style="" rel="tooltip" title=""> 
                             <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                         </button>
                       </span>
@@ -111,7 +112,7 @@
                     THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has not joined to the request) -->
                     <span *ngIf="request?.support_status == 200 && !request?.currentUserIsJoined"> 
                       <span class="" (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined)'>
-                        <button class="btn btn-info pull-right" style="padding:4px 6px;" rel="tooltip" title=""> 
+                        <button class="btn btn-info pull-right" style="" rel="tooltip" title=""> 
                           <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                         </button>
                       </span>
@@ -185,7 +186,7 @@
 
         <!-- SERVED REQUESTS -->
         <div class="card">
-          <div class="card-header" data-background-color="" style="background-color: #fff">
+          <div class="card-header" data-background-color="" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
             <h4 class="title" style="margin-bottom:2px; font-size:1.1em; color: #566787">Richieste servite</h4>
             <!-- <p class="category">Here is a subtitle for this table</p> -->
           </div>
@@ -256,7 +257,7 @@
                     <!-- IF THE REQUEST SUPPORT STATUS IS 0 (??? REQUEST) -->
                     <span *ngIf="request?.support_status == 0"> 
                       <span class="" (click)='openViewMsgsModal(request?.recipient)'>
-                        <button class="btn btn-default pull-right" style="padding:4px 6px;"> 
+                        <button class="btn btn-default pull-right" style=""> 
                             <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                         </button>
                       </span>
@@ -265,7 +266,7 @@
                     <!-- IF THE REQUEST SUPPORT STATUS IS 100 (UNSERVED REQUEST) -->
                     <span *ngIf="request?.support_status == 100"> 
                       <span class="" (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined)'>
-                        <button class="btn btn-danger pull-right" style="padding:4px 6px;"> 
+                        <button class="btn btn-danger pull-right" style=""> 
                             <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                         </button>
                       </span>
@@ -275,7 +276,8 @@
                     THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
                     <span *ngIf="request?.support_status == 200 && request?.currentUserIsJoined === true"> 
                       <span class="" (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined)'>
-                        <button class="btn btn-success pull-right" style="padding:4px 6px;" rel="tooltip" title=""> 
+                          <!-- padding:4px 6px; -->
+                        <button class="btn btn-success pull-right" style="" rel="tooltip" title=""> 
                             <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                         </button>
                       </span>
@@ -285,7 +287,7 @@
                     THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has not joined to the request) -->
                     <span *ngIf="request?.support_status == 200 && !request?.currentUserIsJoined"> 
                       <span class="" (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined)'>
-                        <button class="btn btn-info pull-right" style="padding:4px 6px;" rel="tooltip" title=""> 
+                        <button class="btn btn-info pull-right" style="" rel="tooltip" title=""> 
                           <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                         </button>
                       </span>
@@ -446,7 +448,7 @@
 
                 <!-- NEW LOGIC -->
                 <span *ngIf="JOIN_TO_GROUP_HAS_ERROR === false 
-                          && IS_CURRENT_USER_JOINED === undefined 
+                          && IS_CURRENT_USER_JOINED === false 
                           && SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === false 
                           && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false">
                   <button class="btn btn-default" (click)="onJoinHandled()">
