@@ -128,8 +128,8 @@ export class RequestsService {
     this.requestList.push(r);
     this.reorderRequests()
   }
-  
-  reorderRequests(){
+
+  reorderRequests() {
     this.requestList.sort(function compare(a: Request, b: Request) {
       if (a.timestamp > b.timestamp) {
         return -1;
@@ -139,7 +139,6 @@ export class RequestsService {
       }
       return 0;
     });
-
   }
 
   getRequests(): Observable<Request[]> {
@@ -172,6 +171,7 @@ export class RequestsService {
           return r;
         });
         observer.next(requestListReturned);
+        // console.log('requestListReturned', requestListReturned)
       });
     });
     return observable;

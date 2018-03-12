@@ -91,7 +91,6 @@ export class AppComponent implements OnInit, AfterViewInit {
 
         this.requestsService.startRequestsQuery()
 
-
     }
 
 

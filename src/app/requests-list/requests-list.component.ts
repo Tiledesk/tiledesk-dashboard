@@ -35,9 +35,9 @@ export class RequestsListComponent implements OnInit {
   user: any;
   token: any;
 
-  requestList: Request[] = [];
-  unservedRequestList: Request[];
-
+  requestListUnserved: Request[] = [];
+  requestListServed: Request[] = [];
+  
   showSpinner = true;
 
   messagesList: Message[];
@@ -139,7 +139,22 @@ export class RequestsListComponent implements OnInit {
     this.requestsService.requestsList_bs.subscribe((requests) => {
       if (requests) {
         this.showSpinner = false;
-        this.requestList = requests;
+        this.requestListUnserved = requests
+        .filter(r => {
+          if (r.support_status === 100) {
+            return true
+          } else {
+            return false
+          }
+        });
+        this.requestListServed = requests
+        .filter(r => {
+          if (r.support_status !== 100) {
+            return true
+          } else {
+            return false
+          }
+        });
       }
     });
   }
@@ -219,12 +234,6 @@ export class RequestsListComponent implements OnInit {
   //     });
   // }
   //
-  membersfilterAndReplace(members: any) {
-    // console.log('SERVED BY (PASSED FROM HTML ) ', served_by)
-    // const membersKeys = Object.keys(members)
-    // console.log('MEMBERS KEYS ', membersKeys)
-
-  }
 
   replace_recipient(request_recipient: string) {
     if (request_recipient) {
@@ -250,143 +259,143 @@ export class RequestsListComponent implements OnInit {
   /**
    * REQUESTS (on FIRESTORE the COLLECTION is 'CONVERSATIONS')
    */
-  getRequestList() {
-    // SUBSCIPTION TO snapshotChanges Conversations '<', 1000
-    this.requestsService.getSnapshotConversations().subscribe((data) => {
-      this.requestList = data;
-      console.log('REQUESTS-LIST.COMP: SUBSCRIPTION TO REQUESTS ', data);
+  // getRequestList() {
+  //   // SUBSCIPTION TO snapshotChanges Conversations '<', 1000
+  //   this.requestsService.getSnapshotConversations().subscribe((data) => {
+  //     this.requestList = data;
+  //     console.log('REQUESTS-LIST.COMP: SUBSCRIPTION TO REQUESTS ', data);
 
-      let i: any;
-      for (i = 0; i < this.requestList.length; i++) {
-        // console.log('REQUEST TIMESTAMP ', this.requestList[i].timestamp)
+  //     let i: any;
+  //     for (i = 0; i < this.requestList.length; i++) {
+  //       // console.log('REQUEST TIMESTAMP ', this.requestList[i].timestamp)
 
-        // REQUESTER ID IS USED TO OBTAIN 'SERVED BY'
-        // ('SERVED BY' IS EQUAL TO 'MEMBERS' TO WHICH IS SUBSTRACTED 'REQUESTER ID' AND 'SYSTEM' )
-        this.requester_id = this.requestList[i].requester_id
-        // console.log('REQUESTER ID ', this.requester_id)
+  //       // REQUESTER ID IS USED TO OBTAIN 'SERVED BY'
+  //       // ('SERVED BY' IS EQUAL TO 'MEMBERS' TO WHICH IS SUBSTRACTED 'REQUESTER ID' AND 'SYSTEM' )
+  //       this.requester_id = this.requestList[i].requester_id
+  //       // console.log('REQUESTER ID ', this.requester_id)
 
-        /**
-         * CALCULATE THE DATE AS FROM-NOW FORMAT
-         * AND SET THIS IN THE REQUEST'S JSON KEY request.request_date_fromnow
-         */
-        const timestampMs = this.requestList[i].timestamp / 1000
-        this.request_fromNow_date = moment.unix(timestampMs).fromNow();
-        // console.log('REQUEST FROM NOW DATE ', this.request_fromNow_date)
-        this.id_request = this.requestList[i].recipient;
+  //       /**
+  //        * CALCULATE THE DATE AS FROM-NOW FORMAT
+  //        * AND SET THIS IN THE REQUEST'S JSON KEY request.request_date_fromnow
+  //        */
+  //       const timestampMs = this.requestList[i].timestamp / 1000
+  //       this.request_fromNow_date = moment.unix(timestampMs).fromNow();
+  //       // console.log('REQUEST FROM NOW DATE ', this.request_fromNow_date)
+  //       this.id_request = this.requestList[i].recipient;
 
-        // set date from-now in request object
-        for (const request of this.requestList) {
-          if (this.id_request === request.recipient) {
-            request.request_date_fromnow = this.request_fromNow_date;
+  //       // set date from-now in request object
+  //       for (const request of this.requestList) {
+  //         if (this.id_request === request.recipient) {
+  //           request.request_date_fromnow = this.request_fromNow_date;
 
-          }
+  //         }
 
-        }
+  //       }
 
-        /**
-         * CREATE A STRING OF ALL MEMBERS OF THE REQUEST AND
-         * SET THIS IN THE REQUEST'S JSON KEY request.members_as_string
-         * THEN, IF BETWEEN THE UID KEY THERE IS THE CURRENT USER UID, REPALCE IT WITH 'ME' or 'IO'
-         */
-        this.membersObjectInRequestArray = this.requestList[i].members;
-        // console.log('OBJECT MEMBERS IN REQUESTS (GET REQUETS LIST) ', this.membersObjectInRequestArray);
-        if (this.membersObjectInRequestArray !== undefined) {
-          const uidKeysInMemberObject = Object.keys(this.membersObjectInRequestArray)
-          // console.log('KEYS OF MEMBER OBJECT (GET REQUETS LIST)', Object.keys(this.membersObjectInRequestArray))
+  //       /**
+  //        * CREATE A STRING OF ALL MEMBERS OF THE REQUEST AND
+  //        * SET THIS IN THE REQUEST'S JSON KEY request.members_as_string
+  //        * THEN, IF BETWEEN THE UID KEY THERE IS THE CURRENT USER UID, REPALCE IT WITH 'ME' or 'IO'
+  //        */
+  //       this.membersObjectInRequestArray = this.requestList[i].members;
+  //       // console.log('OBJECT MEMBERS IN REQUESTS (GET REQUETS LIST) ', this.membersObjectInRequestArray);
+  //       if (this.membersObjectInRequestArray !== undefined) {
+  //         const uidKeysInMemberObject = Object.keys(this.membersObjectInRequestArray)
+  //         // console.log('KEYS OF MEMBER OBJECT (GET REQUETS LIST)', Object.keys(this.membersObjectInRequestArray))
 
-          const lengthOfUidKeysInMemberObject = uidKeysInMemberObject.length;
-          // console.log('KEYS LENGHT OF MEMBER OBJECT (GET REQUETS LIST)', lengthOfUidKeysInMemberObject)
+  //         const lengthOfUidKeysInMemberObject = uidKeysInMemberObject.length;
+  //         // console.log('KEYS LENGHT OF MEMBER OBJECT (GET REQUETS LIST)', lengthOfUidKeysInMemberObject)
 
-          let w: number;
-          this.members_as_string = '';
-          this.served_by = '';
-          for (w = 0; w < lengthOfUidKeysInMemberObject; w++) {
+  //         let w: number;
+  //         this.members_as_string = '';
+  //         this.served_by = '';
+  //         for (w = 0; w < lengthOfUidKeysInMemberObject; w++) {
 
-            const uidMenbersKey = uidKeysInMemberObject[w];
-            // console.log('UID KEY ', uidMenbersKey)
+  //           const uidMenbersKey = uidKeysInMemberObject[w];
+  //           // console.log('UID KEY ', uidMenbersKey)
 
-            // ** CREATE A STRING OF ALL MEMBERS OF THE REQUEST AND SET THIS IN THE REQUEST'S JSON
-            // USED TO SHOW THE LIST OF MEMBERS (LESS 'REQUESTER ID' AND 'SYSTEM') IN THE COLUMN MEMBERS OF THE TABLE
-            if ((uidMenbersKey !== 'system') && ((uidMenbersKey !== this.requester_id))) {
-              for (const request of this.requestList) {
-                if (this.id_request === request.recipient) {
+  //           // ** CREATE A STRING OF ALL MEMBERS OF THE REQUEST AND SET THIS IN THE REQUEST'S JSON
+  //           // USED TO SHOW THE LIST OF MEMBERS (LESS 'REQUESTER ID' AND 'SYSTEM') IN THE COLUMN MEMBERS OF THE TABLE
+  //           if ((uidMenbersKey !== 'system') && ((uidMenbersKey !== this.requester_id))) {
+  //             for (const request of this.requestList) {
+  //               if (this.id_request === request.recipient) {
 
-                  // FORMAT IN BOLD STYLE THE MEMBERS KEY (IN THE MEMBER LIST) THAT IS EQUAL TO THE REQUESTER ID
-                  // ONLY FOR DEBUG -- note: if decomment this ** REMEMBER TO COMMENT ABOVE (uidMenbersKey !== this.requester_id)
-                  // if (uidMenbersKey === this.requester_id) {
-                  //   this.openTagstrong = '<strong>'
-                  //   this.closeTagstrong = '</strong>'
-                  // } else {
-                  //   this.openTagstrong = ''
-                  //   this.closeTagstrong = ''
-                  // }
-                  // this.members_as_string += '- ' + this.openTagstrong + uidMenbersKey + this.closeTagstrong + '<br>';
+  //                 // FORMAT IN BOLD STYLE THE MEMBERS KEY (IN THE MEMBER LIST) THAT IS EQUAL TO THE REQUESTER ID
+  //                 // ONLY FOR DEBUG -- note: if decomment this ** REMEMBER TO COMMENT ABOVE (uidMenbersKey !== this.requester_id)
+  //                 // if (uidMenbersKey === this.requester_id) {
+  //                 //   this.openTagstrong = '<strong>'
+  //                 //   this.closeTagstrong = '</strong>'
+  //                 // } else {
+  //                 //   this.openTagstrong = ''
+  //                 //   this.closeTagstrong = ''
+  //                 // }
+  //                 // this.members_as_string += '- ' + this.openTagstrong + uidMenbersKey + this.closeTagstrong + '<br>';
 
-                  this.members_as_string += '- ' + uidMenbersKey + ' <br>';
-                  const members_as_string_replaceCurrentUserUid = this.members_as_string.replace(this.currentUserFireBaseUID, '<strong>IO</strong>');
-                  // console.log('MEMBERS AS STRING REPLACE CURRENT USER UID WITH ME ', members_as_stringReplace);
+  //                 this.members_as_string += '- ' + uidMenbersKey + ' <br>';
+  //                 const members_as_string_replaceCurrentUserUid = this.members_as_string.replace(this.currentUserFireBaseUID, '<strong>IO</strong>');
+  //                 // console.log('MEMBERS AS STRING REPLACE CURRENT USER UID WITH ME ', members_as_stringReplace);
 
-                  // SET MEMBERS AS STRING IN THE REQUEST'S JSON
-                  request.members_as_string = members_as_string_replaceCurrentUserUid;
-                  // request.members_as_string = this.members_as_string;
+  //                 // SET MEMBERS AS STRING IN THE REQUEST'S JSON
+  //                 request.members_as_string = members_as_string_replaceCurrentUserUid;
+  //                 // request.members_as_string = this.members_as_string;
 
-                  // console.log('MEMBERS AS STRING ', request.members_as_string);
-                }
-              }
-            }
+  //                 // console.log('MEMBERS AS STRING ', request.members_as_string);
+  //               }
+  //             }
+  //           }
 
 
-            // SERVED BY (AS FOR ALL MEMBERS) IF BETWEEN THE UID KEY THERE IS THE CURRENT USER UID, REPALCE IT WITH 'MYSELF' or 'ME'
-            if ((uidMenbersKey !== this.requester_id) && (uidMenbersKey !== 'system')) {
-              for (const request of this.requestList) {
-                if (this.id_request === request.recipient) {
-                  this.served_by += '- ' + uidMenbersKey + ' <br>'
+  //           // SERVED BY (AS FOR ALL MEMBERS) IF BETWEEN THE UID KEY THERE IS THE CURRENT USER UID, REPALCE IT WITH 'MYSELF' or 'ME'
+  //           if ((uidMenbersKey !== this.requester_id) && (uidMenbersKey !== 'system')) {
+  //             for (const request of this.requestList) {
+  //               if (this.id_request === request.recipient) {
+  //                 this.served_by += '- ' + uidMenbersKey + ' <br>'
 
-                  const served_by_replaceCurrentUserUid = this.served_by.replace(this.currentUserFireBaseUID, '<strong>ME</strong>');
-                  // SET SERVED BY IN THE REQUEST'S JSON
-                  request.served_by = served_by_replaceCurrentUserUid
-                  // request.served_by = this.served_by
-                  // console.log('SERVED BY ', request.served_by);
+  //                 const served_by_replaceCurrentUserUid = this.served_by.replace(this.currentUserFireBaseUID, '<strong>ME</strong>');
+  //                 // SET SERVED BY IN THE REQUEST'S JSON
+  //                 request.served_by = served_by_replaceCurrentUserUid
+  //                 // request.served_by = this.served_by
+  //                 // console.log('SERVED BY ', request.served_by);
 
-                }
-              }
-            }
+  //               }
+  //             }
+  //           }
 
-            /**
-             * CHECK IF THE CURRENT USER IS ALREADY JOINED TO CONVERSATION
-             * (IF THE CURRENT USER UID IS BETWEEN THE UID KEY OF THE OBJECT MEMBER (CONTAINED IN THE REQUEST ARRAY)
-             * IT MEANS THAT THE CURRENT USER IS ALREADY JOINED TO CONVERSATION SO SET TRUE TO THE REQUEST'S JSON KEY request.currentUserIsJoined)
-             *
-             * IF uidMenbersKey === this.currentUserFireBaseUID THE CURRENT USER IS ALREADY JOINED TO THE CONVERSATION
-             */
-            if (uidMenbersKey === this.currentUserFireBaseUID) {
+  //           /**
+  //            * CHECK IF THE CURRENT USER IS ALREADY JOINED TO CONVERSATION
+  //            * (IF THE CURRENT USER UID IS BETWEEN THE UID KEY OF THE OBJECT MEMBER (CONTAINED IN THE REQUEST ARRAY)
+  //            * IT MEANS THAT THE CURRENT USER IS ALREADY JOINED TO CONVERSATION SO SET TRUE TO THE REQUEST'S JSON KEY request.currentUserIsJoined)
+  //            *
+  //            * IF uidMenbersKey === this.currentUserFireBaseUID THE CURRENT USER IS ALREADY JOINED TO THE CONVERSATION
+  //            */
+  //           if (uidMenbersKey === this.currentUserFireBaseUID) {
 
-              // console.log('THE MEMBER UID: ', uidMenbersKey, ' IS = TO CUR.USER UID')
-              // SET IN THE REQUEST ARRAY currentUserIsJoined = true
-              for (const request of this.requestList) {
-                if (request.recipient === this.id_request) {
-                  request.currentUserIsJoined = true;
-                }
-              }
+  //             // console.log('THE MEMBER UID: ', uidMenbersKey, ' IS = TO CUR.USER UID')
+  //             // SET IN THE REQUEST ARRAY currentUserIsJoined = true
+  //             for (const request of this.requestList) {
+  //               if (request.recipient === this.id_request) {
+  //                 request.currentUserIsJoined = true;
+  //               }
+  //             }
 
-              // break;
-            }
-          }
-        }
-      }
+  //             // break;
+  //           }
+  //         }
+  //       }
+  //     }
 
-      this.showSpinner = false;
+  //     this.showSpinner = false;
 
-    },
-      (err) => {
-        console.log('GET REQUEST LIST ERROR ', err);
-      },
-      () => {
-        console.log('GET REQUEST LIST * COMPLETE *');
-        // this.showSpinner = false;
-      });
+  //   },
+  //     (err) => {
+  //       console.log('GET REQUEST LIST ERROR ', err);
+  //     },
+  //     () => {
+  //       console.log('GET REQUEST LIST * COMPLETE *');
+  //       // this.showSpinner = false;
+  //     });
 
-  }
+  // }
 
 
 
