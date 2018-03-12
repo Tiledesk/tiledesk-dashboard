@@ -1,3 +1,17 @@
+/* TABLE CONTENT VERTICAL ALIGNMENT */
+.table td, .table th {
+    vertical-align: middle
+}
+
+.table td {
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+.table td p{
+    margin-bottom: 0px;
+}
+
 /* MODAL START */
 // @media (min-width: 992px) {
 

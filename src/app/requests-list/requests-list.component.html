@@ -8,7 +8,7 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header" data-background-color="" style="background-color: #fff">
-            <h4 class="title" style="margin-bottom:2px; font-size:1.1em; color: #3c4858">Richieste non servite</h4>
+            <h4 class="title" style="margin-bottom:2px; font-size:1.1em; color: #566787">Richieste non servite</h4>
             <!-- <p class="category">Here is a subtitle for this table</p> -->
           </div>
 
@@ -124,14 +124,14 @@
                       {{ replace_recipient(request?.recipient) }}
                     </p>
                   </td>
-                  <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined)' style="cursor:pointer">
+                  <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
                     <!-- <p style="font-size:0.9em">{{ request.sender_fullname }}</p> -->
                     <p style="font-size:0.9em">
                       {{ request.requester_fullname }}
                     </p>
-                    <p style="font-size:0.8em">
+                    <!-- <p style="font-size:0.8em">
                         {{ request?.requester_id }}
-                    </p>
+                    </p> -->
                   </td>
                   <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined)' style="cursor:pointer">
                       <!-- max-width: 400px -->
@@ -186,7 +186,7 @@
         <!-- SERVED REQUESTS -->
         <div class="card">
           <div class="card-header" data-background-color="" style="background-color: #fff">
-            <h4 class="title" style="margin-bottom:2px; font-size:1.1em; color: #3c4858">Richieste servite</h4>
+            <h4 class="title" style="margin-bottom:2px; font-size:1.1em; color: #566787">Richieste servite</h4>
             <!-- <p class="category">Here is a subtitle for this table</p> -->
           </div>
           
@@ -299,14 +299,14 @@
                       {{ replace_recipient(request?.recipient) }}
                     </p>
                   </td>
-                  <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined)' style="cursor:pointer">
+                  <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
                     <!-- <p style="font-size:0.9em">{{ request.sender_fullname }}</p> -->
                     <p style="font-size:0.9em">
                       {{ request.requester_fullname }}
                     </p>
-                    <p style="font-size:0.8em">
+                    <!-- <p style="font-size:0.8em">
                       {{ request?.requester_id }}
-                    </p>
+                    </p> -->
                   </td>
                   <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined)' style="cursor:pointer">
                       <!-- max-width: 400px -->
