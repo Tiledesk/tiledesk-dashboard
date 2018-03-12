@@ -13,7 +13,7 @@
                    <loading-spinner *ngIf="showSpinner"></loading-spinner>
                    <div  *ngIf="!showSpinner" class="card-content table-responsive">
                        <!-- style="overflow-x:auto;" -->
-                       <table class="table">
+                       <table class="table table-hover">
                            <thead class="text">
                                <tr>
                                    <!-- <th></th> -->
@@ -78,7 +78,8 @@
                                    <!-- IF THE REQUEST SUPPORT STATUS IS 0 (??? REQUEST) -->
                                    <!-- <span *ngIf="request?.support_status == 0">  -->
                                      <span class="" (click)='openViewMsgsModal(request?.recipient)'>
-                                       <button class="btn btn-default pull-right" style="padding:4px 6px;"> 
+                                        <!-- padding:4px 6px; -->
+                                       <button class="btn btn-default pull-right" style=""> 
                                            <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                                        </button>
                                      </span>
@@ -87,7 +88,7 @@
                                    <!-- IF THE REQUEST SUPPORT STATUS IS 100 (UNSERVED REQUEST) -->
                                    <span *ngIf="request?.support_status == 100"> 
                                      <span class="" (click)='openViewMsgsModal(request?.recipient)'>
-                                       <button class="btn btn-danger pull-right" style="padding:4px 6px;"> 
+                                       <button class="btn btn-danger pull-right" style=""> 
                                            <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                                        </button>
                                      </span>
@@ -97,7 +98,7 @@
                                    THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
                                    <span *ngIf="request?.support_status == 200 && request?.currentUserIsJoined === true"> 
                                      <span class="" (click)='openViewMsgsModal(request?.recipient)'>
-                                       <button class="btn btn-success pull-right" style="padding:4px 6px;" rel="tooltip" title=""> 
+                                       <button class="btn btn-success pull-right" style="" rel="tooltip" title=""> 
                                            <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                                        </button>
                                      </span>
@@ -107,7 +108,7 @@
                                   THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has not joined to the request) -->
                                   <span *ngIf="request?.support_status == 200 && !request?.currentUserIsJoined"> 
                                     <span class="" (click)='openViewMsgsModal(request?.recipient)'>
-                                      <button class="btn btn-info pull-right" style="padding:4px 6px;" rel="tooltip" title=""> 
+                                      <button class="btn btn-info pull-right" style="" rel="tooltip" title=""> 
                                         <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                                       </button>
                                     </span>
@@ -226,7 +227,7 @@
              <!-- ./ modal body -->
           
              <div class="modal-footer">
-               <button class="btn btn-white" (click)="onCloseModal()">Chiudi</button>
+               <button class="btn btn-white" (click)="onCloseModal()" style="padding:12px 16px;">Chiudi</button>
                <!-- <span style="padding-right:25px"></span> -->
                
                <!-- SHOWS A SPINNER BUTTON IF THE 'FOR LOOP' OF COMPARISON OF THE MEMBERS UID KEY TO THE CURRENT USER UID IS NOT FINISHED  -->
