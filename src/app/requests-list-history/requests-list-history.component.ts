@@ -267,10 +267,11 @@ export class RequestsListHistoryComponent implements OnInit {
   // * GET THE REQUEST DETAILS (GET THE CONVESATION BY RECIPIENT WITH this.getRequestByRecipient()) - IS USED FOR:
   //   IF THE VALUE OF THE UID OF CURRENT USER IS FOUND BETWEEN THE UID KEY IN MEMBERS (is contained in the request object)
   //   IN THE MODAL WITH THE MSGS LIST THE 'ENTER BTN' (AND NOT THE 'JOIN BTN') WILL BE DISPLAYED
-  openViewMsgsModal(recipient: string) {
+  openViewMsgsModal(recipient: string, requester_id: string) {
 
     this.JOIN_TO_GROUP_HAS_ERROR = false;
     this.SEARCH_FOR_SAME_UID_FINISHED = false;
+    this.requester_id = requester_id;
 
     this.display = 'block';
     console.log(' ++ ++ request recipient ', recipient);

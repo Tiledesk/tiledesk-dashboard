@@ -371,10 +371,10 @@
               <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
                 <span aria-hidden="true">&times;</span>
               </button>
-              <h4 class="modal-title">Id richiesta:
+              <h4 class="modal-title" style="font-size:1.1em">Id richiesta:
                 <code>{{requestRecipient}}</code>
               </h4>
-              <h4 class="modal-title">Id richiedente:
+              <h4 class="modal-title" style="font-size:1.1em">Id richiedente:
                   <code>{{requester_id}}</code>
                 </h4>
             </div>
@@ -393,8 +393,8 @@
                     <div class="msgcontainer">        
                       <!-- <p><code>{{ message.recipient}}</code></p> -->
                       <!-- <p><strong>  {{ message.sender_fullname }} </strong></p> -->
-                      <p style="font-size: 0.9em">{{ message.text }}</p>
-                      <span class="time-right" style="font-size: 0.8em">
+                      <p style="font-size: 0.9em; margin-bottom:0px">{{ message.text }}</p>
+                      <span class="time-right" style="font-size: 0.8em;">
                         {{ message.timestamp | date: 'd/M/y HH:mm:ss'}}
                       </span>
                     </div>
