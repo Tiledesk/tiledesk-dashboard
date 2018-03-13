@@ -22,19 +22,19 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     console.log('Hello HomeComponent! ');
-    console.log(environment.firebaseConfig.projectId);
-    this.firebaseProjectId = environment.firebaseConfig.projectId;
+    // console.log(environment.firebaseConfig.projectId);
+    // this.firebaseProjectId = environment.firebaseConfig.projectId;
 
-    const userKey = Object.keys(window.localStorage)
-      .filter(it => it.startsWith('firebase:authUser'))[0];
-    this.LOCAL_STORAGE_CURRENT_USER = userKey ? JSON.parse(localStorage.getItem(userKey)) : undefined;
-    console.log('HOMEPAGE - USER GET FROM LOCAL STORAGE ', this.LOCAL_STORAGE_CURRENT_USER)
-    this.currentUserEmailgetFromStorage = this.LOCAL_STORAGE_CURRENT_USER.email
-    console.log('HOMEPAGE - USER EMAIL GET FROM LOCAL STORAGE  ', this.currentUserEmailgetFromStorage)
+    // const userKey = Object.keys(window.localStorage)
+    //   .filter(it => it.startsWith('firebase:authUser'))[0];
+    // this.LOCAL_STORAGE_CURRENT_USER = userKey ? JSON.parse(localStorage.getItem(userKey)) : undefined;
+    // console.log('HOMEPAGE - USER GET FROM LOCAL STORAGE ', this.LOCAL_STORAGE_CURRENT_USER)
+    // this.currentUserEmailgetFromStorage = this.LOCAL_STORAGE_CURRENT_USER.email
+    // console.log('HOMEPAGE - USER EMAIL GET FROM LOCAL STORAGE  ', this.currentUserEmailgetFromStorage)
 
-    if (this.currentUserEmailgetFromStorage) {
-      this.superUserAuth();
-    }
+    // if (this.currentUserEmailgetFromStorage) {
+    //   this.superUserAuth();
+    // }
   }
 
   // NOT YET USED

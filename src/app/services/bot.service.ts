@@ -5,18 +5,23 @@ import { Bot } from '../models/bot-model';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { environment } from '../../environments/environment';
+import { AuthService } from '../core/auth.service';
 
 @Injectable()
 export class BotService {
 
   http: Http;
   MONGODB_BASE_URL = environment.mongoDbConfig.MONGODB_BOTS_BASE_URL;
-  TOKEN = environment.mongoDbConfig.TOKEN;
+  // TOKEN = environment.mongoDbConfig.TOKEN;
+  TOKEN: string
 
   constructor(
     http: Http,
+    private auth: AuthService,
   ) {
     this.http = http;
+
+    this.TOKEN = auth.token;
   }
 
   /**

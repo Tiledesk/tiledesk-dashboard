@@ -76,10 +76,11 @@
                                     
                                     <p class="hidden-lg hidden-md">Profile</p>
                                 </a>
-                                <ul *ngIf="auth.user | async as user; else elseBlock" class="dropdown-menu">
+                                <!-- | async as user; else elseBlock -->
+                                <ul *ngIf="user" class="dropdown-menu">
                                     
                                     <li style="padding-right:25px; padding-left:25px; padding-bottom:15px; padding-top:15px">
-                                        <strong> {{ user.displayName }}</strong>
+                                        <strong> {{ user.firstname }}</strong>
                                     </li>
                                     <li style="padding-right:25px; padding-left:25px; padding-bottom:15px">
                                         {{ user.email }}

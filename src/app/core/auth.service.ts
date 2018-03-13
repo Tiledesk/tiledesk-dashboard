@@ -13,13 +13,16 @@ import { environment } from '../../environments/environment';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { mergeMap } from 'rxjs/operators/mergeMap';
 
-interface User {
-  uid: string;
-  email?: string | null;
-  photoURL?: string;
-  displayName?: string;
-  time: number;
-}
+import { User } from '../models/user-model';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+// interface User {
+//   uid: string;
+//   email?: string | null;
+//   displayName?: string;
+//   firstname?: string;
+//   lastname?: string;
+//   token?: string;
+// }
 
 // start SUPER USER
 export class SuperUser {
@@ -40,12 +43,18 @@ const superusers = [
 @Injectable()
 export class AuthService {
   http: Http;
-  MONGODB_BASE_URL = environment.mongoDbConfig.MONGODB_SIGNUP_BASE_URL;
-  MONGODB_PEOPLE_BASE_URL = environment.mongoDbConfig.MONGODB_PEOPLE_BASE_URL;
-  TOKEN = environment.mongoDbConfig.TOKEN;
+  SIGNUP_BASE_URL = environment.mongoDbConfig.MONGODB_SIGNUP_BASE_URL;
+  SIGNIN_BASE_URL = environment.mongoDbConfig.SIGNIN_BASE_URL
+  // MONGODB_PEOPLE_BASE_URL = environment.mongoDbConfig.MONGODB_PEOPLE_BASE_URL;
+
+  // TOKEN = environment.mongoDbConfig.TOKEN;
+  token: string;
 
   displayName?: string;
-  user: Observable<User | null>;
+  // user: Observable<User | null>;
+
+  // user: User
+  public user_bs: BehaviorSubject<User> = new BehaviorSubject<User>(null);
 
   constructor(
     http: Http,
@@ -56,21 +65,26 @@ export class AuthService {
 
     this.http = http;
 
-    this.user = this.afAuth.authState
-      .switchMap((user) => {
-        if (user) {
-          return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
-        } else {
-          return Observable.of(null);
-        }
-      });
+  
+    // this.user = this.afAuth.authState
+    //   .switchMap((user) => {
+    //     if (user) {
+    //       return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
+    //     } else {
+    //       return Observable.of(null);
+    //     }
+    //   });
+
+    // this.user = this.
+
+
   }
 
   /**
   *  //// Email/Password MONGODB Auth //// CREATE (POST)
-  * @param fullName
+  * @param email
   */
-  public mDbEmailSignUp(email: string, password: string, first_name: string, last_name: string): Observable<any> {
+  public signup(email: string, password: string, first_name: string, last_name: string): Observable<any> {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -83,10 +97,10 @@ export class AuthService {
 
     console.log('SIGNUP POST REQUEST BODY ', body);
 
-    const url = this.MONGODB_BASE_URL;
-    const personurl = this.MONGODB_PEOPLE_BASE_URL;
+    const url = this.SIGNUP_BASE_URL;
+    // const personurl = this.MONGODB_PEOPLE_BASE_URL;
     console.log('SIGNUP URL ', url)
-    console.log('PEOPLE URL ', personurl)
+    // console.log('PEOPLE URL ', personurl)
 
     return this.http
       .post(url, JSON.stringify(body), options)
@@ -96,14 +110,43 @@ export class AuthService {
         console.log('res: ', res.json())
         return res.json()
       })
-      // .pipe(mergeMap(e => {
-      //   console.log('e: ', e)
-      //   return this.http.post(personurl, JSON.stringify(bodyperson), options)
-      //   .map((res) => {res.json()})
-      // }))
+    // .pipe(mergeMap(e => {
+    //   console.log('e: ', e)
+    //   return this.http.post(personurl, JSON.stringify(bodyperson), options)
+    //   .map((res) => {res.json()})
+    // }))
     // .map((res) => {res.json()})))
+  }
 
+  signin(email: string, password: string) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
 
+    const options = new RequestOptions({ headers });
+
+    const body = { 'email': email, 'password': password };
+
+    console.log('SIGNIN POST REQUEST BODY ', body);
+
+    const url = this.SIGNIN_BASE_URL;
+
+    console.log('SIGNIN URL ', url)
+
+    return this.http
+      .post(url, JSON.stringify(body), options)
+      .map(res => {
+        // tslint:disable-next-line:no-debugger
+        // debugger
+        console.log('res: ', res.json())
+        const jsonRes = res.json()
+        const user: User = jsonRes.user
+        user.token = jsonRes.token
+        this.user_bs.next(user);
+        // this.user = jsonRes.user
+        // this.user.token = jsonRes.token
+        return jsonRes
+      })
   }
 
   ////// SUPER USER AUTH //////

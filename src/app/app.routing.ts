@@ -69,7 +69,7 @@ const routes: Routes = [
 
   // CHAT 21
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: 'home', component: HomeComponent},
   // { path: 'login', component: UserLoginComponent },
   { path: 'login', component: SigninComponent },
   { path: 'signup', component: SignupComponent },

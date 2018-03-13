@@ -67,7 +67,7 @@ export class SignupComponent implements OnInit {
   }
 
   signup() {
-    this.auth.mDbEmailSignUp(
+    this.auth.signup(
       this.userForm.value['email'],
       this.userForm.value['password'],
       this.userForm.value['firstName'],

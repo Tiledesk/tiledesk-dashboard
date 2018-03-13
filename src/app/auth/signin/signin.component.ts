@@ -2,9 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { AuthService } from '../../core/auth.service';
+import { Router } from '@angular/router';
+// import { User } from '../../models/user-model';
 
 type UserFields = 'email' | 'password';
 type FormErrors = {[u in UserFields]: string };
+
 
 @Component({
   selector: 'app-signin',
@@ -12,6 +15,7 @@ type FormErrors = {[u in UserFields]: string };
   styleUrls: ['./signin.component.scss']
 })
 export class SigninComponent implements OnInit {
+
 
   userForm: FormGroup;
   // newUser = false; // to toggle login or signup form
@@ -35,7 +39,8 @@ export class SigninComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private auth: AuthService
+    private auth: AuthService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -58,10 +63,30 @@ export class SigninComponent implements OnInit {
     });
   }
 
-  login() {
-    this.auth.emailLogin(
-      this.userForm.value['email'],
-      this.userForm.value['password']);
+  signin() {
+    // this.auth.emailLogin(
+    this.auth.signin(this.userForm.value['email'], this.userForm.value['password'])
+      .subscribe((signinResponse) => {
+        console.log('POST DATA ', signinResponse);
+
+        // this.auth.user = signinResponse.user;
+        // this.auth.user.token = signinResponse.token
+
+        // console.log('SIGNIN TOKEN ', this.auth.user.token)
+
+        if (signinResponse['success'] === true) {
+          this.router.navigate(['/home']);
+
+        }
+
+
+      },
+      (error) => {
+        console.log('SIGNIN USER - POST REQUEST ERROR ', error);
+      },
+      () => {
+        console.log('SIGNIN USER  - POST REQUEST COMPLETE ');
+      });
 
   }
 

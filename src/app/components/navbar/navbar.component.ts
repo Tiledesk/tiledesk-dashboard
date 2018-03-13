@@ -45,6 +45,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     notify: any;
     private shown_requests = {};
 
+    
     constructor(
         location: Location,
         private element: ElementRef,
@@ -63,7 +64,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
 
     ngOnInit() {
-
+        // tslint:disable-next-line:no-debugger
+        // debugger
         this.listTitles = ROUTES.filter(listTitle => listTitle);
         const navbar: HTMLElement = this.element.nativeElement;
         this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
@@ -88,6 +90,12 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         // this.getUnservedRequestLenght_bs();
 
 
+        this.auth.user_bs.subscribe((user) => {
+            console.log('USER NAV ', user)
+            // tslint:disable-next-line:no-debugger
+            debugger
+            this.user = user;
+        });
     } // OnInit
 
     // NEW

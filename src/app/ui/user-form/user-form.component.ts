@@ -43,26 +43,26 @@ export class UserFormComponent implements OnInit {
     this.newUser = !this.newUser;
   }
 
-  signup() {
-    this.auth.mDbEmailSignUp(
-      this.userForm.value['email'],
-      this.userForm.value['password'],
-      this.userForm.value['firstName'],
-      this.userForm.value['lastName'])
-      .subscribe((user) => {
-        console.log('SIGNUP Email ', this.userForm.value['email']);
-        console.log('SIGNUP Password ', this.userForm.value['password']);
-        console.log('SIGNUP Firstname ', this.userForm.value['firstName']);
-        console.log('SIGNUP Lastname ', this.userForm.value['lastName']);
-        console.log('POST DATA ', user);
-      },
-      (error) => {
-        console.log('CREATE NEW USER - POST REQUEST ERROR ', error);
-      },
-      () => {
-        console.log('CREATE NEW USER  - POST REQUEST COMPLETE ');
-      });
-  }
+  // signup() {
+  //   this.auth.mDbEmailSignUp(
+  //     this.userForm.value['email'],
+  //     this.userForm.value['password'],
+  //     this.userForm.value['firstName'],
+  //     this.userForm.value['lastName'])
+  //     .subscribe((user) => {
+  //       console.log('SIGNUP Email ', this.userForm.value['email']);
+  //       console.log('SIGNUP Password ', this.userForm.value['password']);
+  //       console.log('SIGNUP Firstname ', this.userForm.value['firstName']);
+  //       console.log('SIGNUP Lastname ', this.userForm.value['lastName']);
+  //       console.log('POST DATA ', user);
+  //     },
+  //     (error) => {
+  //       console.log('CREATE NEW USER - POST REQUEST ERROR ', error);
+  //     },
+  //     () => {
+  //       console.log('CREATE NEW USER  - POST REQUEST COMPLETE ');
+  //     });
+  // }
 
   // REGISTRAZIONE - no more used see above
   // signup() {
