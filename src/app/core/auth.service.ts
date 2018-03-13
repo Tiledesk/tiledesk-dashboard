@@ -9,6 +9,10 @@ import { NotifyService } from './notify.service';
 import { Observable } from 'rxjs/Observable';
 import { switchMap } from 'rxjs/operators';
 
+import { environment } from '../../environments/environment';
+import { Http, Headers, RequestOptions } from '@angular/http';
+import { mergeMap } from 'rxjs/operators/mergeMap';
+
 interface User {
   uid: string;
   email?: string | null;
@@ -20,7 +24,7 @@ interface User {
 // start SUPER USER
 export class SuperUser {
   constructor(
-    public email: string
+    public email: string // FOR SUPERUSER
   ) { }
 }
 
@@ -35,15 +39,22 @@ const superusers = [
 
 @Injectable()
 export class AuthService {
+  http: Http;
+  MONGODB_BASE_URL = environment.mongoDbConfig.MONGODB_SIGNUP_BASE_URL;
+  MONGODB_PEOPLE_BASE_URL = environment.mongoDbConfig.MONGODB_PEOPLE_BASE_URL;
+  TOKEN = environment.mongoDbConfig.TOKEN;
 
   displayName?: string;
   user: Observable<User | null>;
 
   constructor(
+    http: Http,
     private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
     private router: Router,
     private notify: NotifyService) {
+
+    this.http = http;
 
     this.user = this.afAuth.authState
       .switchMap((user) => {
@@ -53,6 +64,46 @@ export class AuthService {
           return Observable.of(null);
         }
       });
+  }
+
+  /**
+  *  //// Email/Password MONGODB Auth //// CREATE (POST)
+  * @param fullName
+  */
+  public mDbEmailSignUp(email: string, password: string, first_name: string, last_name: string): Observable<any> {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    // headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+    // const optionsp = new RequestOptions({ headers });
+
+    const body = { 'email': email, 'password': password, 'firstname': first_name, 'lastname': last_name };
+    // const bodyperson = { 'firstname': `${first_name}`, 'lastname': `${last_name}` };
+
+    console.log('SIGNUP POST REQUEST BODY ', body);
+
+    const url = this.MONGODB_BASE_URL;
+    const personurl = this.MONGODB_PEOPLE_BASE_URL;
+    console.log('SIGNUP URL ', url)
+    console.log('PEOPLE URL ', personurl)
+
+    return this.http
+      .post(url, JSON.stringify(body), options)
+      .map(res => {
+        // tslint:disable-next-line:no-debugger
+        // debugger
+        console.log('res: ', res.json())
+        return res.json()
+      })
+      // .pipe(mergeMap(e => {
+      //   console.log('e: ', e)
+      //   return this.http.post(personurl, JSON.stringify(bodyperson), options)
+      //   .map((res) => {res.json()})
+      // }))
+    // .map((res) => {res.json()})))
+
+
   }
 
   ////// SUPER USER AUTH //////
@@ -113,8 +164,9 @@ export class AuthService {
       });
   }
 
-  //// Email/Password Auth ////
 
+
+  //// Email/Password Auth //// NO MORE USED see ABOVE mDbEmailSignUp
   emailSignUp(email: string, password: string, displayName: string) {
     console.log('x USER display name ', displayName);
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
@@ -173,7 +225,8 @@ export class AuthService {
   }
 
   signOut() {
-    this.afAuth.auth.signOut().then(() => {
+    // this.afAuth.auth.signOut().then(() => {
+    firebase.auth().signOut().then(() => {
       this.router.navigate(['/login']);
     });
   }

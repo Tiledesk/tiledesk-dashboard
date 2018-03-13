@@ -44,6 +44,11 @@ import { AnalyticsComponent } from './analytics/analytics.component';
 import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.component';
 import { RequestsListHistoryComponent } from './requests-list-history/requests-list-history.component';
 
+// AUTH PAGE
+import { SigninComponent } from './auth/signin/signin.component';
+import { SignupComponent } from './auth/signup/signup.component';
+import { WelcomeComponent } from './auth/welcome/welcome.component';
+
 
 // import { DashboardComponent} from './dashboard/dashboard.component';
 // Andrea
@@ -65,7 +70,12 @@ const routes: Routes = [
   // CHAT 21
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
-  { path: 'login', component: UserLoginComponent },
+  // { path: 'login', component: UserLoginComponent },
+  { path: 'login', component: SigninComponent },
+  { path: 'signup', component: SignupComponent },
+  { path: 'welcome', component: WelcomeComponent },
+
+
   // firestore user CRUD
   // { path: 'users', component: UsersListComponent, canActivate: [AuthGuard]},
   { path: 'contacts', component: ContactsComponent },

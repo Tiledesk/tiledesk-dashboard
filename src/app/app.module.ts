@@ -73,6 +73,10 @@ import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.com
 import { ProjectService } from './services/project.service';
 import { RequestsListHistoryComponent } from './requests-list-history/requests-list-history.component';
 import { MomentModule } from 'angular2-moment';
+import { SigninComponent } from './auth/signin/signin.component';
+import { SignupComponent } from './auth/signup/signup.component';
+import { WelcomeComponent } from './auth/welcome/welcome.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -109,11 +113,15 @@ export function HttpLoaderFactory(http: HttpClient) {
     DepartmentEditAddComponent,
     ProjectEditAddComponent,
     RequestsListHistoryComponent,
+    SigninComponent,
+    SignupComponent,
+    WelcomeComponent,
 
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     CoreModule,
     SharedModule,

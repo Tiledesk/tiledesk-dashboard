@@ -1,0 +1,46 @@
+<div class="main-content" style="padding-top:0px">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="login-container">
+        <!-- <div class="signin-container"> -->
+
+          <form [formGroup]="userForm"  (ngSubmit)="login()">
+
+            <!-- <h3>Log in</h3> -->
+  
+            <!-- <hr> -->
+            <label for="email">Email</label>
+            <input type="email" id="email" class="input" formControlName="email" required >
+  
+            <div *ngIf="formErrors.email" class="help is-danger">
+              {{ formErrors.email }}
+            </div>
+  
+            <label for="password">Password</label>
+            <input type="password" id="password" class="input" formControlName="password" required >
+  
+            <div *ngIf="formErrors.password" class="help is-danger">
+              {{ formErrors.password }}
+            </div>
+  
+            <button type="submit" style="width: 100%; background-color: #ff9800; height: 56px; font-size: 16px;" class="btn btn-danger" [disabled]="!userForm.valid">Login</button>
+  
+            <!-- <span *ngIf="userForm.valid" class="help is-success">Form Looks Valid</span> -->
+            <div style="margin-top:16px">
+              <!-- <p class="btn button is-small" (click)="toggleForm()">Non hai ancora un account? Registrati</p> -->
+              <!-- <a (click)="toggleForm()">Non hai ancora un account? Registrati</a> -->
+              <!-- <a (click)="toggleForm()">Don't have an account yet? Sign up</a> -->
+              <a routerLink="/signup" style="color: #aaa;">Don't have an account yet? Sign up</a>
+            </div>
+  
+            <!-- <a *ngIf="!passReset && userForm.controls.email.valid" class="help is-info" (click)="resetPassword()">Reset Password for {{userForm.value.email}}?</a>
+            <p *ngIf="passReset" class="help is-info">Reset requested. Check your email instructions.</p> -->
+    
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

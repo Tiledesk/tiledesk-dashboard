@@ -58,7 +58,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         $.material.init();
 
 
-        this.hideElementsInLoginPage()
+        this.hideElementsInAuthPage()
 
         this.location.subscribe((ev: PopStateEvent) => {
             this.lastPoppedUrl = ev.url;
@@ -94,24 +94,30 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
 
-    hideElementsInLoginPage() {
+    hideElementsInAuthPage() {
         // GET THE HTML ELEMENT NAVBAR AND SIDEBAR THAT WILL BE HIDDEN IF IS DETECTED THE LOGIN PAGE
         const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
         // console.log('xxxx xxxx elemAppSidebar ', elemAppSidebar)
         const elemNavbar = <HTMLElement>document.querySelector('.navbar');
+        const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
         // console.log('xxxx xxxx elemNavbar', elemNavbar)
+        // const elemContentainerFluid = <HTMLElement>document.querySelector('.container-fluid');
+
 
         /* DETECT IF IS THE LOGIN PAGE */
         this.router.events.subscribe((val) => {
             if (this.location.path() !== '') {
                 this.route = this.location.path();
 
-                // console.log('»> ', this.route)
-                if (this.route === '/login') {
+                console.log('»> ', this.route)
+                if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/welcome')) {
 
                     // this.navbar.sidebarClose();
                     elemAppSidebar.setAttribute('style', 'display:none;');
                     elemNavbar.setAttribute('style', 'display:none;');
+                    elemMainPanel.setAttribute('style', 'width:100% !important;');
+                    // elemContentainerFluid.setAttribute('style', 'margin-top: -70px');
+                    // elemMainContent.setAttribute('style', 'margin-top: 0px');
 
                     console.log('DETECT LOGIN PAGE')
                     this.LOGIN_PAGE = true;
@@ -119,6 +125,9 @@ export class AppComponent implements OnInit, AfterViewInit {
                     this.LOGIN_PAGE = false;
                     elemAppSidebar.setAttribute('style', 'display:block;');
                     elemNavbar.setAttribute('style', 'display:block;');
+                    elemMainPanel.setAttribute('style', '');
+                    // elemMainContent.setAttribute('style', '');
+
                 }
             } else {
                 // console.log('»> * ', this.route)

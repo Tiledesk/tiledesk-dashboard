@@ -43,16 +43,37 @@ export class UserFormComponent implements OnInit {
     this.newUser = !this.newUser;
   }
 
-  // REGISTRAZIONE
   signup() {
-    this.auth.emailSignUp(
+    this.auth.mDbEmailSignUp(
       this.userForm.value['email'],
       this.userForm.value['password'],
-      this.userForm.value['displayName']);
-    console.log('SIGNUP Email ', this.userForm.value['email']);
-    console.log('SIGNUP Password ', this.userForm.value['password']);
-    console.log('SIGNUP Display Name ', this.userForm.value['displayName']);
+      this.userForm.value['firstName'],
+      this.userForm.value['lastName'])
+      .subscribe((user) => {
+        console.log('SIGNUP Email ', this.userForm.value['email']);
+        console.log('SIGNUP Password ', this.userForm.value['password']);
+        console.log('SIGNUP Firstname ', this.userForm.value['firstName']);
+        console.log('SIGNUP Lastname ', this.userForm.value['lastName']);
+        console.log('POST DATA ', user);
+      },
+      (error) => {
+        console.log('CREATE NEW USER - POST REQUEST ERROR ', error);
+      },
+      () => {
+        console.log('CREATE NEW USER  - POST REQUEST COMPLETE ');
+      });
   }
+
+  // REGISTRAZIONE - no more used see above
+  // signup() {
+  //   this.auth.emailSignUp(
+  //     this.userForm.value['email'],
+  //     this.userForm.value['password'],
+  //     this.userForm.value['displayName']);
+  //   console.log('SIGNUP Email ', this.userForm.value['email']);
+  //   console.log('SIGNUP Password ', this.userForm.value['password']);
+  //   console.log('SIGNUP Display Name ', this.userForm.value['displayName']);
+  // }
 
   login() {
     this.auth.emailLogin(
@@ -72,12 +93,20 @@ export class UserFormComponent implements OnInit {
         Validators.email,
       ]],
       'password': ['', [
-       // Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
+        // Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
         Validators.minLength(6),
         Validators.maxLength(25),
       ]],
-      'displayName': ['', [
-      ]],
+      'displayName': [
+        '', []
+      ],
+      'firstName': [
+        '', []
+      ],
+      'lastName': [
+        '', []
+      ],
+
     });
 
     this.userForm.valueChanges.subscribe((data) => this.onValueChanged(data));
