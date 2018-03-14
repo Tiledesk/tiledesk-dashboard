@@ -23,7 +23,7 @@ export class TopNavComponent {
     public auth: AuthService,
     private translate: TranslateService,
   ) {
-    console.log('-> UTENTE AUTENTICATO ', auth.user);
+    // console.log('-> UTENTE AUTENTICATO ', auth.user);
   }
 
   switchLanguage(language: string) {

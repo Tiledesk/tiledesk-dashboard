@@ -16,6 +16,8 @@ type FormErrors = {[u in UserFields]: string };
 })
 export class SigninComponent implements OnInit {
 
+  public signin_errormsg = '';
+  display = 'none';
 
   userForm: FormGroup;
   // newUser = false; // to toggle login or signup form
@@ -32,8 +34,8 @@ export class SigninComponent implements OnInit {
     'password': {
       'required': 'Password is required.',
       'pattern': 'Password must be include at one letter and one number.',
-      'minlength': 'Password must be at least 4 characters long.',
-      'maxlength': 'Password cannot be more than 40 characters long.',
+      'minlength': 'Password must be at least 6 characters long.',
+      'maxlength': 'Password cannot be more than 25 characters long.',
     },
   };
 
@@ -78,16 +80,26 @@ export class SigninComponent implements OnInit {
           this.router.navigate(['/home']);
 
         }
-
-
       },
       (error) => {
-        console.log('SIGNIN USER - POST REQUEST ERROR ', error);
+        if (error) {
+          const signin_errorbody = JSON.parse(error._body)
+          this.signin_errormsg = signin_errorbody['msg']
+          this.display = 'block';
+          // console.log('SIGNIN USER - POST REQUEST ERROR ', error);
+          // console.log('SIGNIN USER - POST REQUEST BODY ERROR ', signin_errorbody);
+
+          console.log('SIGNIN USER - POST REQUEST MSG ERROR ', this.signin_errormsg);
+        }
       },
       () => {
         console.log('SIGNIN USER  - POST REQUEST COMPLETE ');
       });
+  }
 
+  dismissAlert() {
+    console.log('DISMISS ALWRT CLICKED')
+    this.display = 'none';
   }
 
 }

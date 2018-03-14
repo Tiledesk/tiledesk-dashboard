@@ -93,7 +93,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         this.auth.user_bs.subscribe((user) => {
             console.log('USER NAV ', user)
             // tslint:disable-next-line:no-debugger
-            debugger
+            // debugger
             this.user = user;
         });
     } // OnInit

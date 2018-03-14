@@ -187,7 +187,7 @@ export class AuthService {
     return this.afAuth.auth.signInWithPopup(provider)
       .then((credential) => {
         this.notify.update('Welcome to Chat21 dashboard!!!', 'success');
-        return this.updateUserData(credential.user);
+        // return this.updateUserData(credential.user); // !!! NO MORE USED
       })
       .catch((error) => this.handleError(error));
   }
@@ -198,7 +198,7 @@ export class AuthService {
     return this.afAuth.auth.signInAnonymously()
       .then((user) => {
         this.notify.update('Welcome to Firestarter!!!', 'success');
-        return this.updateUserData(user); // if using firestore
+        // return this.updateUserData(user); // if using firestore !!! NO MORE USED
       })
       .catch((error) => {
         console.error(error.code);
@@ -222,7 +222,7 @@ export class AuthService {
         this.displayName = displayName;
         this.notify.update('Welcome to Chat21 dashboard!!!', 'success');
         this.router.navigate(['/']);
-        return this.updateUserData(user); // if using firestore
+        // return this.updateUserData(user); // if using firestore !!! NO MORE USED
       })
       .catch((error) => this.handleError(error));
   }
@@ -249,7 +249,7 @@ export class AuthService {
         console.log('LOGGED USER ', user);
         this.notify.update('Welcome to Chat21 dashboard!!!', 'success');
         this.router.navigate(['/']);
-        return this.updateUserDataLogin(user); // if using firestore
+        // return this.updateUserDataLogin(user); // if using firestore !!! NO MORE USED
       })
       .catch((error) => {
         this.handleError(error);
@@ -280,32 +280,32 @@ export class AuthService {
     this.notify.update(error.message, 'error');
   }
 
-  // Sets user data to firestore after succesful login
-  private updateUserData(user: User) {
+  // Sets user data to firestore after succesful login - !!! NO MORE USED
+  // private updateUserData(user: User) {
 
-    const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
+  //   const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
 
-    const data: User = {
-      uid: user.uid,
-      email: user.email || null,
-      displayName: this.displayName || 'nameless user',
-      photoURL: user.photoURL || 'https://goo.gl/Fz9nrQ',
-      time: new Date().getTime(),
-    };
-    return userRef.set(data);
-  }
+  //   const data: User = {
+  //     uid: user.uid,
+  //     email: user.email || null,
+  //     displayName: this.displayName || 'nameless user',
+  //     photoURL: user.photoURL || 'https://goo.gl/Fz9nrQ',
+  //     time: new Date().getTime(),
+  //   };
+  //   return userRef.set(data);
+  // }
 
-  // Sets user data to firestore after succesful login
-  private updateUserDataLogin(user: User) {
+  // Sets user data to firestore after succesful login - !!! NO MORE USED
+  // private updateUserDataLogin(user: User) {
 
-    const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
+  //   const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
 
-    const data: User = {
-      uid: user.uid,
-      email: user.email || null,
-      photoURL: user.photoURL || 'https://goo.gl/Fz9nrQ',
-      time: new Date().getTime(),
-    };
-    return userRef.set(data);
-  }
+  //   const data: User = {
+  //     uid: user.uid,
+  //     email: user.email || null,
+  //     photoURL: user.photoURL || 'https://goo.gl/Fz9nrQ',
+  //     time: new Date().getTime(),
+  //   };
+  //   return userRef.set(data);
+  // }
 }

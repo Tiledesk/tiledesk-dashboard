@@ -109,17 +109,17 @@ export class AppComponent implements OnInit, AfterViewInit {
             if (this.location.path() !== '') {
                 this.route = this.location.path();
 
-                console.log('»> ', this.route)
+                // console.log('»> ', this.route)
                 if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/welcome')) {
 
                     // this.navbar.sidebarClose();
                     elemAppSidebar.setAttribute('style', 'display:none;');
                     elemNavbar.setAttribute('style', 'display:none;');
-                    elemMainPanel.setAttribute('style', 'width:100% !important;');
+                    elemMainPanel.setAttribute('style', 'width:100% !important; margin-top: -70px');
                     // elemContentainerFluid.setAttribute('style', 'margin-top: -70px');
                     // elemMainContent.setAttribute('style', 'margin-top: 0px');
 
-                    console.log('DETECT LOGIN PAGE')
+                    // console.log('DETECT LOGIN PAGE')
                     this.LOGIN_PAGE = true;
                 } else {
                     this.LOGIN_PAGE = false;

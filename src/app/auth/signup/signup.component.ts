@@ -4,7 +4,7 @@ import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angula
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
 
-type UserFields = 'email' | 'password';
+type UserFields = 'email' | 'password' | 'firstName' | 'lastName';
 type FormErrors = {[u in UserFields]: string };
 
 @Component({
@@ -20,6 +20,8 @@ export class SignupComponent implements OnInit {
   formErrors: FormErrors = {
     'email': '',
     'password': '',
+    'firstName': '',
+    'lastName': '',
   };
   validationMessages = {
     'email': {
@@ -29,8 +31,14 @@ export class SignupComponent implements OnInit {
     'password': {
       'required': 'Password is required.',
       'pattern': 'Password must be include at one letter and one number.',
-      'minlength': 'Password must be at least 4 characters long.',
-      'maxlength': 'Password cannot be more than 40 characters long.',
+      'minlength': 'Password must be at least 6 characters long.',
+      'maxlength': 'Password cannot be more than 25 characters long.',
+    },
+    'firstName': {
+      'required': 'First Name is required.',
+    },
+    'lastName': {
+      'required': 'Last Name is required.',
     },
   };
   constructor(
@@ -41,29 +49,6 @@ export class SignupComponent implements OnInit {
 
   ngOnInit() {
     this.buildForm();
-  }
-
-  buildForm() {
-    this.userForm = this.fb.group({
-      'email': ['', [
-        Validators.required,
-        Validators.email,
-      ]],
-      'password': ['', [
-        // Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
-        Validators.minLength(6),
-        Validators.maxLength(25),
-      ]],
-      'displayName': [
-        '', []
-      ],
-      'firstName': [
-        '', []
-      ],
-      'lastName': [
-        '', []
-      ],
-    });
   }
 
   signup() {
@@ -91,4 +76,54 @@ export class SignupComponent implements OnInit {
         console.log('CREATE NEW USER  - POST REQUEST COMPLETE ');
       });
   }
+
+  buildForm() {
+    this.userForm = this.fb.group({
+      'email': ['', [
+        Validators.required,
+        Validators.email,
+      ]],
+      'password': ['', [
+        // Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
+        Validators.minLength(6),
+        Validators.maxLength(25),
+      ]],
+      'displayName': ['', []
+      ],
+      'firstName': ['', [
+        Validators.required,
+      ]],
+      'lastName': ['',
+       [
+        Validators.required,
+       ]],
+    });
+    this.userForm.valueChanges.subscribe((data) => this.onValueChanged(data));
+    this.onValueChanged(); // reset validation messages
+  }
+
+  // Updates validation state on form changes.
+  onValueChanged(data?: any) {
+    if (!this.userForm) { return; }
+    const form = this.userForm;
+    for (const field in this.formErrors) {
+      // tslint:disable-next-line:max-line-length
+      if (Object.prototype.hasOwnProperty.call(this.formErrors, field) && (field === 'email' || field === 'password' || field === 'firstName' || field === 'lastName')) {
+        // clear previous error message (if any)
+        this.formErrors[field] = '';
+        const control = form.get(field);
+        if (control && control.dirty && !control.valid) {
+          const messages = this.validationMessages[field];
+          if (control.errors) {
+            for (const key in control.errors) {
+              if (Object.prototype.hasOwnProperty.call(control.errors, key)) {
+                this.formErrors[field] += `${(messages as { [key: string]: string })[key]} `;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
 }

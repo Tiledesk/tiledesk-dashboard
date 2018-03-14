@@ -2,21 +2,34 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
+        <div style="text-align: center"> 
+          <!-- <h3 style="text-align: center">Tile Desk</h3>    -->
+          <!-- style="max-width:350px" -->
+          <img src="assets/img/tiledesk-logo.png" class="img-fluid" style="max-width: 100%; height: auto;"/>
+        </div>
         <div class="login-container">
 
           <form [formGroup]="userForm" (ngSubmit)="signup()">
 
             <!-- <h3>Registrazione nuovo utente</h3> -->
-            <!-- <h3>New user sign up</h3> -->
+            <!-- <h3>Tile Desk</h3> -->
             <!-- <hr> -->
   
-            <label for="displayName">First Name</label>
+            <label for="firstName">First Name</label>
             <input type="text" id="firstName" class="input"
                   formControlName="firstName" required>
+
+            <div *ngIf="formErrors.firstName" class="notification is-danger">
+              {{ formErrors.firstName }}
+            </div>
   
-            <label for="displayName">Last Name</label>
+            <label for="lastName">Last Name</label>
             <input type="text" id="lastName" class="input"
                   formControlName="lastName" required>
+
+            <div *ngIf="formErrors.lastName" class="notification is-danger">
+              {{ formErrors.lastName }}
+            </div>
   
             <label for="email">Email</label>
             <input type="email" id="email" class="input"
