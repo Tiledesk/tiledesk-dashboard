@@ -69,11 +69,11 @@ const routes: Routes = [
 
   // CHAT 21
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent},
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
   // { path: 'login', component: UserLoginComponent },
   { path: 'login', component: SigninComponent },
   { path: 'signup', component: SignupComponent },
-  { path: 'welcome', component: WelcomeComponent },
+  { path: 'welcome', component: WelcomeComponent, canActivate: [AuthGuard] },
 
 
   // firestore user CRUD
@@ -82,6 +82,7 @@ const routes: Routes = [
   { path: 'items', component: ItemsListComponent, canActivate: [AuthGuard] },
   { path: 'notes', component: NotesListComponent, canActivate: [AuthGuard] },
   { path: 'userprofile', component: UserProfileComponent },
+  // , canActivate: [AuthGuard]
   { path: 'requests', component: RequestsListComponent, canActivate: [AuthGuard] },
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
 

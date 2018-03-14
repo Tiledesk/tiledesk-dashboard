@@ -15,6 +15,8 @@ export class HomeComponent implements OnInit {
   currentUserEmailgetFromStorage: string;
   IS_SUPER_USER: boolean;
 
+  user: any;
+
   constructor(
     public auth: AuthService,
 
@@ -35,6 +37,16 @@ export class HomeComponent implements OnInit {
     // if (this.currentUserEmailgetFromStorage) {
     //   this.superUserAuth();
     // }
+    this.getLoggedUser()
+  }
+
+  getLoggedUser() {
+    this.auth.user_bs.subscribe((user) => {
+      console.log('USER GET IN HOME ', user)
+      // tslint:disable-next-line:no-debugger
+      // debugger
+      this.user = user;
+    });
   }
 
   // NOT YET USED
@@ -42,7 +54,7 @@ export class HomeComponent implements OnInit {
     if (!this.auth.superUserAuth(this.currentUserEmailgetFromStorage)) {
       console.log('+++ CURRENT U IS NOT SUPER USER ', this.currentUserEmailgetFromStorage);
       this.IS_SUPER_USER = false;
-    } else  {
+    } else {
       console.log('+++ !! CURRENT U IS SUPER USER ', this.currentUserEmailgetFromStorage);
       this.IS_SUPER_USER = true;
 

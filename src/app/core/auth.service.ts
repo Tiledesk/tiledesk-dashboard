@@ -15,7 +15,7 @@ import { mergeMap } from 'rxjs/operators/mergeMap';
 
 import { User } from '../models/user-model';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-// interface User {
+// interface CUser {
 //   uid: string;
 //   email?: string | null;
 //   displayName?: string;
@@ -51,7 +51,9 @@ export class AuthService {
   token: string;
 
   displayName?: string;
+
   // user: Observable<User | null>;
+
 
   // user: User
   public user_bs: BehaviorSubject<User> = new BehaviorSubject<User>(null);
@@ -65,7 +67,7 @@ export class AuthService {
 
     this.http = http;
 
-  
+
     // this.user = this.afAuth.authState
     //   .switchMap((user) => {
     //     if (user) {
@@ -75,9 +77,21 @@ export class AuthService {
     //     }
     //   });
 
-    // this.user = this.
+    // tslint:disable-next-line:no-debugger
+    // debugger
+    this.checkCredentials();
 
+  }
 
+  checkCredentials() {
+    const storedUser = localStorage.getItem('user')
+    console.log('LOCAL STORAGE USER  ', storedUser)
+    console.log('USER BS VALUE', this.user_bs.value)
+    if (storedUser !== null) {
+
+      this.user_bs.next(JSON.parse(storedUser));
+      // this.router.navigate(['/home']);
+    }
   }
 
   /**
@@ -142,7 +156,11 @@ export class AuthService {
         const jsonRes = res.json()
         const user: User = jsonRes.user
         user.token = jsonRes.token
+
         this.user_bs.next(user);
+        localStorage.setItem('user', JSON.stringify(user));
+        console.log('++ USER ', user)
+        console.log('USER BS 2 ', this.user_bs)
         // this.user = jsonRes.user
         // this.user.token = jsonRes.token
         return jsonRes
@@ -269,9 +287,14 @@ export class AuthService {
 
   signOut() {
     // this.afAuth.auth.signOut().then(() => {
-    firebase.auth().signOut().then(() => {
-      this.router.navigate(['/login']);
-    });
+    // !!! NO MORE USED
+    // firebase.auth().signOut().then(() => {
+    //   this.router.navigate(['/login']);
+    // });
+
+    this.user_bs.next(null);
+    localStorage.removeItem('user');
+    this.router.navigate(['/login']);
   }
 
   // If error, console log and notify user

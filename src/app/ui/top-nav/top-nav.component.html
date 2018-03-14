@@ -80,14 +80,15 @@
 
     <div [ngStyle]="{'display':display}" class="dropdown" style="">
 
-      <span *ngIf="auth.user | async as user; else elseBlock">
+        <!-- *ngIf="auth.user | async as user; else elseBlock" -->
+      <span >
       <div style="display: flex; align-items: left; justify-content: left;">
         <ul>
           <li>
-            <h3 style="padding-left:16px; padding-right:16px; padding-top:8px"><strong> {{ user.displayName }}</strong></h3>
+            <!-- <h3 style="padding-left:16px; padding-right:16px; padding-top:8px"><strong> {{ user.displayName }}</strong></h3> -->
           </li>
           <li>
-              <h3 style="padding-left:16px; padding-right:16px">{{ user.email }}</h3>
+              <!-- <h3 style="padding-left:16px; padding-right:16px">{{ user.email }}</h3> -->
             </li>
         </ul>
       </div>

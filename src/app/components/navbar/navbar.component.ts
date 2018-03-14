@@ -45,7 +45,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     notify: any;
     private shown_requests = {};
 
-    
+
     constructor(
         location: Location,
         private element: ElementRef,
@@ -71,11 +71,11 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
 
         // SUBSCRIBE TO IS LOGGED IN PUBLISHED BY AUTH GUARD
-        this.authguard.IS_LOGGED_IN.subscribe((islogged: boolean) => {
-            this.USER_IS_SIGNED_IN = islogged
-            console.log('>>> >>> USER IS SIGNED IN ', this.USER_IS_SIGNED_IN);
+        // this.authguard.IS_LOGGED_IN.subscribe((islogged: boolean) => {
+        //     this.USER_IS_SIGNED_IN = islogged
+        //     console.log('>>> >>> USER IS SIGNED IN ', this.USER_IS_SIGNED_IN);
 
-        })
+        // })
 
 
         this.updateUnservedRequestCount();
@@ -84,19 +84,25 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
         this.checkRequestStatusInShown_requests();
 
-        // TO REPLACE
+        this.getLoggedUser()
+
+        /* REPLACED */
         // this.getLastRequest();
         // this.getUnservedRequestLenght();
         // this.getUnservedRequestLenght_bs();
 
 
+
+    } // OnInit
+
+    getLoggedUser() {
         this.auth.user_bs.subscribe((user) => {
-            console.log('USER NAV ', user)
+            console.log('USER GET IN NAVBAR ', user)
             // tslint:disable-next-line:no-debugger
             // debugger
             this.user = user;
         });
-    } // OnInit
+    }
 
     // NEW
     updateUnservedRequestCount() {
@@ -132,12 +138,13 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
     // NOTE: ARE DISPLAYED IN THE NOTIFICATION ONLY THE UNSERVED REQUEST (support_status = 100)
     // THAT ARE NOT FOUND (OR HAVE THE VALUE FALSE) IN THE LOCAL DICTIONARY shown_requests
+    // FURTHERMORE THE NOTICATIONS WILL NOT BE DISPLAYED IF THE USER OBJECT IS NULL (i.e THERE ISN'T USER LOGGED IN)
     notifyLastUnservedRequest() {
         this.requestsService.requestsList_bs.subscribe((requests) => {
             if (requests) {
 
                 requests.forEach(r => {
-                    if (r.support_status === 100 && !this.shown_requests[r.id]) {
+                    if (r.support_status === 100 && !this.shown_requests[r.id] && this.user !== null) {
 
                         // this.lastRequest = requests[requests.length - 1];
                         // console.log('LAST UNSERVED REQUEST ', this.lastRequest)
@@ -405,10 +412,6 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
 
     }
-    test() {
-        this.router.navigate(['/requests']);
-    }
-
 
     ngAfterContentChecked() {
         // console.log(' -- --- *** ngAfterContentChecked');

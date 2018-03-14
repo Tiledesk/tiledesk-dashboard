@@ -22,8 +22,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     private _router: Subscription;
     private lastPoppedUrl: string;
     private yScrollStack: number[] = [];
-
-    private unservedRequestCount: number;
+     private unservedRequestCount: number;
 
     route: string;
     LOGIN_PAGE: boolean;
@@ -35,6 +34,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         private router: Router,
         private translate: TranslateService,
         private requestsService: RequestsService,
+        private auth: AuthService,
     ) {
         translate.setDefaultLang('it');
 
@@ -55,10 +55,13 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
+        console.log('APP COMP ')
         $.material.init();
 
-
+        // HIDE ELEMENT IF THE USER IN ONE OF THE 'AUTH' PAGES: SIGNIN, SIGUP, WELCOME
         this.hideElementsInAuthPage()
+
+
 
         this.location.subscribe((ev: PopStateEvent) => {
             this.lastPoppedUrl = ev.url;
