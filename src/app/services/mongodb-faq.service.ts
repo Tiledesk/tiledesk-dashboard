@@ -9,7 +9,7 @@ import 'rxjs/add/operator/map';
 export class MongodbFaqService {
 
   http: Http;
-  MONGODB_BASE_URL = environment.mongoDbConfig.MONGODB_FAQ_BASE_URL;
+  MONGODB_BASE_URL = environment.mongoDbConfig.FAQ_BASE_URL;
   TOKEN = environment.mongoDbConfig.TOKEN;
 
   constructor(

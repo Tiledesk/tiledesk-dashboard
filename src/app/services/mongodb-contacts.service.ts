@@ -17,7 +17,7 @@ export class MongoDbContactsService {
   // MONGODB_BASE_URL: any;
   // TOKEN: any;
 
-  MONGODB_BASE_URL = environment.mongoDbConfig.MONGODB_CONTACTS_BASE_URL;
+  MONGODB_BASE_URL = environment.mongoDbConfig.CONTACTS_BASE_URL;
   TOKEN =  environment.mongoDbConfig.TOKEN;
 
   constructor(

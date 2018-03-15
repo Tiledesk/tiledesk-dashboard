@@ -10,7 +10,7 @@ import { environment } from '../../environments/environment';
 export class FaqKbService {
 
   http: Http;
-  MONGODB_BASE_URL = environment.mongoDbConfig.MONGODB_FAQKB_BASE_URL;
+  MONGODB_BASE_URL = environment.mongoDbConfig.FAQKB_BASE_URL;
   TOKEN = environment.mongoDbConfig.TOKEN;
 
   constructor(

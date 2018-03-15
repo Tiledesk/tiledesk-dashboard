@@ -19,7 +19,7 @@ import 'moment/locale/it.js';
 import { forEach } from '@angular/router/src/utils/collection';
 import { DocumentChange } from '@firebase/firestore-types';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-
+import { AuthService } from '../core/auth.service';
 
 @Component({
   selector: 'requests-list',
@@ -33,7 +33,7 @@ export class RequestsListComponent implements OnInit {
 
   // user: Observable<User | null>;
   user: any;
-  token: any;
+  firebase_token: any;
 
   requestListUnserved: Request[] = [];
   requestListServed: Request[] = [];
@@ -85,32 +85,24 @@ export class RequestsListComponent implements OnInit {
   constructor(
     private requestsService: RequestsService,
     private elRef: ElementRef,
+    public auth: AuthService,
   ) {
 
-    this.user = firebase.auth().currentUser;
-    // console.log('LOGGED USER ', this.user);
+    this.user = auth.user_bs.value
+    // this.user = firebase.auth().currentUser;
+
+    console.log('LOGGED USER ', this.user);
     if (this.user) {
-      this.currentUserFireBaseUID = this.user.uid
-      console.log('FIREBASE SIGNED IN USER UID GET IN REQUEST-LIST COMPONENT', this.currentUserFireBaseUID);
-      this.getToken();
+      // this.currentUserFireBaseUID = this.user.uid
+      this.currentUserFireBaseUID = this.user._id
+      console.log('USER UID GET IN REQUEST-LIST COMPONENT', this.currentUserFireBaseUID);
+      // this.getToken();
     } else {
       // console.log('No user is signed in');
     }
   }
 
-  // USED TO JOIN TO CHAT GROUP (SEE onJoinHandled())
-  getToken() {
-    const that = this;
-    // console.log('Notification permission granted.');
-    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
-      .then(function (idToken) {
-        that.token = idToken;
-        // console.log('idToken.', idToken);
-      }).catch(function (error) {
-        // Handle error
-        console.log('idToken.', error);
-      });
-  }
+
 
 
 
@@ -561,32 +553,49 @@ export class RequestsListComponent implements OnInit {
       });
   }
 
+  // USED TO JOIN TO CHAT GROUP (SEE onJoinHandled())
+  getFirebaseToken(callback) {
+    const that = this;
+    // console.log('Notification permission granted.');
+    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+      .then(function (idToken) {
+        that.firebase_token = idToken;
+
+        // qui richiama la callback
+        callback();
+        console.log('Firebase Token (for join-to-chat)', idToken);
+      }).catch(function (error) {
+        // Handle error
+        console.log('idToken.', error);
+        callback();
+      });
+  }
+
   // JOIN TO CHAT GROUP
   onJoinHandled() {
+    this.getFirebaseToken(() => {
 
-    console.log('JOIN PRESSED');
-    this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = true;
-    // this.requestsService.joinToGroup(this.currentUserFireBaseUID, this.requestRecipient)
-    this.requestsService.joinToGroup(this.requestRecipient, this.token, this.currentUserFireBaseUID)
-      .subscribe((data: any) => {
+      console.log('JOIN PRESSED');
+      this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = true;
+      // this.requestsService.joinToGroup(this.currentUserFireBaseUID, this.requestRecipient)
+      this.requestsService.joinToGroup(this.requestRecipient, this.firebase_token, this.currentUserFireBaseUID)
+        .subscribe((data: any) => {
 
-        console.log('JOIN TO CHAT GROUP ', data);
-      },
-      (err) => {
-        console.log('JOIN TO CHAT GROUP ERROR ', err);
-        this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
-        this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = false;
-        this.JOIN_TO_GROUP_HAS_ERROR = true;
+          console.log('JOIN TO CHAT GROUP ', data);
+        },
+        (err) => {
+          console.log('JOIN TO CHAT GROUP ERROR ', err);
+          this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
+          this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = false;
+          this.JOIN_TO_GROUP_HAS_ERROR = true;
+        },
+        () => {
+          console.log('JOIN TO CHAT GROUP COMPLETE', );
 
-
-      },
-      () => {
-        console.log('JOIN TO CHAT GROUP COMPLETE', );
-
-        this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
-        this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = true;
-      });
-
+          this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
+          this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = true;
+        });
+    });
   }
 
   // LISTEN TO SCROLL POSITION

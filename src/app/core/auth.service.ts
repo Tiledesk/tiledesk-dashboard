@@ -43,11 +43,13 @@ const superusers = [
 @Injectable()
 export class AuthService {
   http: Http;
-  SIGNUP_BASE_URL = environment.mongoDbConfig.MONGODB_SIGNUP_BASE_URL;
+  SIGNUP_BASE_URL = environment.mongoDbConfig.SIGNUP_BASE_URL;
   SIGNIN_BASE_URL = environment.mongoDbConfig.SIGNIN_BASE_URL
+  FIREBASE_SIGNIN_BASE_URL = environment.mongoDbConfig.FIREBASE_SIGNIN_BASE_URL
   // MONGODB_PEOPLE_BASE_URL = environment.mongoDbConfig.MONGODB_PEOPLE_BASE_URL;
 
   // TOKEN = environment.mongoDbConfig.TOKEN;
+
   token: string;
 
   displayName?: string;
@@ -82,7 +84,7 @@ export class AuthService {
     this.checkCredentials();
 
   }
-
+  // GET THE USER OBJECT FROM LOCAL STORAGE AND PASS IT IN user_bs
   checkCredentials() {
     const storedUser = localStorage.getItem('user')
     console.log('LOCAL STORAGE USER  ', storedUser)
@@ -136,7 +138,6 @@ export class AuthService {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
-
     const options = new RequestOptions({ headers });
 
     const body = { 'email': email, 'password': password };
@@ -152,20 +153,70 @@ export class AuthService {
       .map(res => {
         // tslint:disable-next-line:no-debugger
         // debugger
-        console.log('res: ', res.json())
+        console.log('SIGNIN RES: ', res.json())
         const jsonRes = res.json()
         const user: User = jsonRes.user
+
+
+
+        // ASSIGN THE RETURNED TOKEN TO THE USER OBJECT
         user.token = jsonRes.token
 
         this.user_bs.next(user);
+
+        // SET USER IN LOCAL STORAGE
         localStorage.setItem('user', JSON.stringify(user));
         console.log('++ USER ', user)
-        console.log('USER BS 2 ', this.user_bs)
+
+        if (user) {
+          this.firebaseSignin(email, password).subscribe(r => {
+
+          })
+        }
         // this.user = jsonRes.user
         // this.user.token = jsonRes.token
         return jsonRes
       })
   }
+
+  // NODE.JS FIREBASE SIGNIN
+  firebaseSignin(email: string, password: string) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    const options = new RequestOptions({ headers });
+    const url = this.FIREBASE_SIGNIN_BASE_URL;
+    console.log('FIREBASE SIGNIN URL ', url)
+
+    const body = { 'email': email, 'password': password };
+    console.log('FIREBASE SIGNIN URL BODY ', body);
+    // tslint:disable-next-line:no-debugger
+    // debugger
+    return this.http
+      .post(url, JSON.stringify(body), options)
+      .map((res) => {
+        // tslint:disable-next-line:no-debugger
+        // debugger
+        console.log('FIREBASE SIGNIN RES TOKEN', res.text())
+        const firebaseToken = res.text()
+
+        if (firebaseToken) {
+          firebase.auth().signInWithCustomToken(firebaseToken)
+          .then(data => {
+            console.log('FIREBASE CUSTOM AUTH DATA ', data)
+          })
+          .catch(function (error) {
+            // Handle Errors here.
+            const errorCode = error.code;
+            console.log('FIREBASE CUSTOM AUTH ERROR CODE ', errorCode)
+            const errorMessage = error.message;
+            console.log('FIREBASE CUSTOM AUTH ERROR MSG ', errorMessage)
+          });
+        }
+      });
+  }
+
+
 
   ////// SUPER USER AUTH //////
   superUserAuth(currentUserEmailgetFromStorage) {
@@ -294,6 +345,7 @@ export class AuthService {
 
     this.user_bs.next(null);
     localStorage.removeItem('user');
+    firebase.auth().signOut()
     this.router.navigate(['/login']);
   }
 

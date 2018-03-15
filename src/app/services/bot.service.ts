@@ -11,9 +11,9 @@ import { AuthService } from '../core/auth.service';
 export class BotService {
 
   http: Http;
-  MONGODB_BASE_URL = environment.mongoDbConfig.MONGODB_BOTS_BASE_URL;
-  // TOKEN = environment.mongoDbConfig.TOKEN;
-  TOKEN: string
+  MONGODB_BASE_URL = environment.mongoDbConfig.BOTS_BASE_URL;
+  TOKEN = environment.mongoDbConfig.TOKEN;
+  // TOKEN: string
 
   constructor(
     http: Http,
@@ -21,7 +21,8 @@ export class BotService {
   ) {
     this.http = http;
 
-    this.TOKEN = auth.token;
+    // this.TOKEN = auth.user_bs.value.token;
+    console.log('BOT SERVICE - TOKEN ', this.TOKEN)
   }
 
   /**
