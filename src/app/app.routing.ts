@@ -73,7 +73,7 @@ const routes: Routes = [
   // { path: 'login', component: UserLoginComponent },
   { path: 'login', component: SigninComponent },
   { path: 'signup', component: SignupComponent },
-  { path: 'welcome', component: WelcomeComponent, canActivate: [AuthGuard] },
+  { path: 'welcome', component: WelcomeComponent},
 
 
   // firestore user CRUD

@@ -19,6 +19,7 @@ import { QuerySnapshot, DocumentChange, DocumentSnapshot } from '@firebase/fires
 import { observeOn } from 'rxjs/operators/observeOn';
 import { members_as_html } from '../utils/util';
 import { currentUserUidIsInMembers } from '../utils/util';
+import { AuthService } from '../core/auth.service';
 
 
 @Injectable()
@@ -35,7 +36,7 @@ export class RequestsService {
   FIREBASE_ID_TOKEN: any;
 
   user: any;
-  currentUserFireBaseUID: string;
+  currentUserID: string;
   unservedRequest: any;
 
   requestList: Request[] = [];
@@ -48,7 +49,7 @@ export class RequestsService {
   constructor(
     http: Http,
     private afs: AngularFirestore,
-
+    public auth: AuthService
   ) {
     this.http = http;
     console.log('Hello Request Service!');
@@ -63,6 +64,16 @@ export class RequestsService {
     // } else {
     //   console.log('No user is signed in');
     // }
+
+    this.user = auth.user_bs.value
+    if (this.user) {
+      // this.currentUserFireBaseUID = this.user.uid
+      this.currentUserID = this.user._id
+      console.log('USER UID GET IN REQUEST-LIST COMPONENT', this.currentUserID);
+      // this.getToken();
+    } else {
+      console.log('No user is signed in');
+    }
   }
 
   // getToken() {
@@ -166,8 +177,8 @@ export class RequestsService {
           r.membersCount = data.membersCount
           r.support_status = data.support_status
           r.members = data.members
-          r.members_as_string = members_as_html(data.members, data.requester_id, firebase.auth().currentUser.uid)
-          r.currentUserIsJoined = currentUserUidIsInMembers(data.members, firebase.auth().currentUser.uid)
+          r.members_as_string = members_as_html(data.members, data.requester_id,  this.currentUserID)
+          r.currentUserIsJoined = currentUserUidIsInMembers(data.members,  this.currentUserID)
           r.requester_fullname = data.requester_fullname
           r.requester_id = data.requester_id
           return r;
@@ -381,7 +392,7 @@ export class RequestsService {
   public joinToGroup(group_id: string, firebaseToken: any, currentUserUid: string) {
 
     this.FIREBASE_ID_TOKEN = firebaseToken;
-    this.currentUserFireBaseUID = currentUserUid;
+    this.currentUserID = currentUserUid;
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -400,7 +411,7 @@ export class RequestsService {
     // IF THE MEMBER ID VALUE IS PASSED FROM REQUEST LIST COMPONENT
     // const body = { 'member_id': `${member_id}` };
 
-    const body = { 'member_id': this.currentUserFireBaseUID };
+    const body = { 'member_id': this.currentUserID };
     console.log('JOIN TO GROUP POST REQUEST BODY ', body);
 
     // TEST WITH HARDCODED VALUES

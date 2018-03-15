@@ -53,7 +53,7 @@ export class RequestsListComponent implements OnInit {
   // initScrollPositionPlusTwoScroll: number;
 
   requestRecipient: string;
-  currentUserFireBaseUID: string;
+  currentUserID: string;
 
   membersObjectInRequestArray: any;
 
@@ -90,12 +90,11 @@ export class RequestsListComponent implements OnInit {
 
     this.user = auth.user_bs.value
     // this.user = firebase.auth().currentUser;
-
     console.log('LOGGED USER ', this.user);
     if (this.user) {
       // this.currentUserFireBaseUID = this.user.uid
-      this.currentUserFireBaseUID = this.user._id
-      console.log('USER UID GET IN REQUEST-LIST COMPONENT', this.currentUserFireBaseUID);
+      this.currentUserID = this.user._id
+      console.log('USER UID GET IN REQUEST-LIST COMPONENT', this.currentUserID);
       // this.getToken();
     } else {
       // console.log('No user is signed in');
@@ -520,7 +519,7 @@ export class RequestsListComponent implements OnInit {
         for (i = 0; i < lengthOfUidKeysInMemberObject; i++) {
           const uidKey = uidKeysInMemberObject[i];
           // console.log('UID KEY ', uidKey)
-          if (uidKey === this.currentUserFireBaseUID) {
+          if (uidKey === this.currentUserID) {
 
             // console.log('THE CURRENT USER IS ALREADY JOINED TO THIS CONVERSATION - SHOW BTN ENTER')
             console.log('THE MEMBER UID: ', uidKey, '  IS === TO CURRENT USER UID - SHOW BTN ENTER')
@@ -578,7 +577,7 @@ export class RequestsListComponent implements OnInit {
       console.log('JOIN PRESSED');
       this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = true;
       // this.requestsService.joinToGroup(this.currentUserFireBaseUID, this.requestRecipient)
-      this.requestsService.joinToGroup(this.requestRecipient, this.firebase_token, this.currentUserFireBaseUID)
+      this.requestsService.joinToGroup(this.requestRecipient, this.firebase_token, this.currentUserID)
         .subscribe((data: any) => {
 
           console.log('JOIN TO CHAT GROUP ', data);

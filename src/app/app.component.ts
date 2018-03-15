@@ -10,6 +10,7 @@ import { AuthService } from './core/auth.service';
 import { TranslateService } from '@ngx-translate/core';
 
 import { RequestsService } from './services/requests.service';
+import * as firebase from 'firebase/app';
 
 declare const $: any;
 
@@ -22,7 +23,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     private _router: Subscription;
     private lastPoppedUrl: string;
     private yScrollStack: number[] = [];
-     private unservedRequestCount: number;
+    private unservedRequestCount: number;
 
     route: string;
     LOGIN_PAGE: boolean;
@@ -91,8 +92,18 @@ export class AppComponent implements OnInit, AfterViewInit {
             let ps = new PerfectScrollbar(elemMainPanel);
             ps = new PerfectScrollbar(elemSidebar);
         }
+        const self = this
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                console.log('// User is signed in. ', user)
 
-        this.requestsService.startRequestsQuery()
+                self.requestsService.startRequestsQuery()
+            } else {
+                console.log('// // No user is signed in. ', user)
+                // No user is signed in.
+            }
+        });
+        // this.requestsService.startRequestsQuery()
 
     }
 

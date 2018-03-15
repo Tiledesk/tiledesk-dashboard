@@ -15,6 +15,7 @@ import { mergeMap } from 'rxjs/operators/mergeMap';
 
 import { User } from '../models/user-model';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 // interface CUser {
 //   uid: string;
 //   email?: string | null;
@@ -65,9 +66,12 @@ export class AuthService {
     private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
     private router: Router,
-    private notify: NotifyService) {
+    private notify: NotifyService,
+   
+  ) {
 
     this.http = http;
+
 
 
     // this.user = this.afAuth.authState
@@ -97,9 +101,12 @@ export class AuthService {
   }
 
   /**
-  *  //// Email/Password MONGODB Auth //// CREATE (POST)
-  * @param email
-  */
+   *  //// NODEJS SIGNUP //// CREATE (POST)
+   * @param email
+   * @param password
+   * @param first_name
+   * @param last_name
+   */
   public signup(email: string, password: string, first_name: string, last_name: string): Observable<any> {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -134,18 +141,21 @@ export class AuthService {
     // .map((res) => {res.json()})))
   }
 
+  /**
+   * NODEJS SIGN-IN: SIGN-IN THE USER AND CREATE THE 'OBJECT USER' INCLUDED THE RETURNED (FROM SIGNIN) JWT TOKEN
+   * NODEJS FIREBASE SIGN-IN: GET FIREBASE TOKEN THEN USED FOR
+   * FIREBASE SIGN-IN USING CUSTOM TOKEN
+   * @param email
+   * @param password
+   */
   signin(email: string, password: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
     const options = new RequestOptions({ headers });
-
     const body = { 'email': email, 'password': password };
-
     console.log('SIGNIN POST REQUEST BODY ', body);
-
     const url = this.SIGNIN_BASE_URL;
-
     console.log('SIGNIN URL ', url)
 
     return this.http
@@ -156,30 +166,24 @@ export class AuthService {
         console.log('SIGNIN RES: ', res.json())
         const jsonRes = res.json()
         const user: User = jsonRes.user
-
-
-
         // ASSIGN THE RETURNED TOKEN TO THE USER OBJECT
         user.token = jsonRes.token
-
         this.user_bs.next(user);
-
         // SET USER IN LOCAL STORAGE
         localStorage.setItem('user', JSON.stringify(user));
         console.log('++ USER ', user)
 
-        if (user) {
-          this.firebaseSignin(email, password).subscribe(r => {
-
-          })
-        }
+        // if (user) {
+        //   this.firebaseSignin(email, password).subscribe(r => {
+        //   })
+        // }
         // this.user = jsonRes.user
         // this.user.token = jsonRes.token
         return jsonRes
       })
   }
 
-  // NODE.JS FIREBASE SIGNIN
+  // NODE.JS FIREBASE SIGNIN (USED TO GET THE TOKEN THEN USED FOR Firebase Sign in using custom tokens)
   firebaseSignin(email: string, password: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -198,23 +202,15 @@ export class AuthService {
         // tslint:disable-next-line:no-debugger
         // debugger
         console.log('FIREBASE SIGNIN RES TOKEN', res.text())
-        const firebaseToken = res.text()
+        // const firebaseToken = res.text()
+        return res.text()
 
-        if (firebaseToken) {
-          firebase.auth().signInWithCustomToken(firebaseToken)
-          .then(data => {
-            console.log('FIREBASE CUSTOM AUTH DATA ', data)
-          })
-          .catch(function (error) {
-            // Handle Errors here.
-            const errorCode = error.code;
-            console.log('FIREBASE CUSTOM AUTH ERROR CODE ', errorCode)
-            const errorMessage = error.message;
-            console.log('FIREBASE CUSTOM AUTH ERROR MSG ', errorMessage)
-          });
-        }
       });
   }
+
+  
+
+  
 
 
 
@@ -346,6 +342,11 @@ export class AuthService {
     this.user_bs.next(null);
     localStorage.removeItem('user');
     firebase.auth().signOut()
+      .then(function () {
+        console.log('Signed Out');
+      }, function (error) {
+        console.error('Sign Out Error', error);
+      });
     this.router.navigate(['/login']);
   }
 
