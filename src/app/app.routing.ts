@@ -49,6 +49,12 @@ import { SigninComponent } from './auth/signin/signin.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { WelcomeComponent } from './auth/welcome/welcome.component';
 
+import { ResourcesComponent } from './resources/resources.component';
+import { ScriptComponent } from './script/script.component';
+import { ChannelsComponent } from './channels/channels.component';
+import { SocialComponent } from './social/social.component';
+
+
 
 // import { DashboardComponent} from './dashboard/dashboard.component';
 // Andrea
@@ -58,7 +64,7 @@ import { ChatComponent } from './chat/chat.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
-  
+
   { path: 'table-list', component: TableListComponent },
   { path: 'typography', component: TypographyComponent },
   { path: 'icons', component: IconsComponent },
@@ -108,6 +114,12 @@ const routes: Routes = [
 
   { path: 'history', component: RequestsListHistoryComponent, canActivate: [AuthGuard] },
   { path: 'user-profile', component: UserProfileComponent },
+  { path: 'resources', component: ResourcesComponent },
+  { path: 'script', component: ScriptComponent },
+  { path: 'channels', component: ChannelsComponent },
+  { path: 'social', component: SocialComponent },
+  
+
 
   { path: 'dashboard', component: DashboardComponent },
 

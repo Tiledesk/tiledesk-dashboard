@@ -179,6 +179,43 @@
                     <!-- <p style="padding-left:15px;">Dipartimenti</p> -->
                 </a>
             </li>
+
+            <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" style="" >
+                <a routerLink="/resources">
+                    <span class="sidebar-mini">
+                        R
+                    </span>
+                    <span class="sidebar-normal">Risorse</span> 
+                </a>
+            </li>
+
+            <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" style="" >
+                <a routerLink="/script">
+                    <span class="sidebar-mini">
+                        S
+                    </span>
+                    <span class="sidebar-normal">Script</span> 
+                </a>
+            </li>
+
+            <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" style="" >
+                <a routerLink="/channels">
+                    <span class="sidebar-mini">
+                        C
+                    </span>
+                    <span class="sidebar-normal">Channels</span> 
+                </a>
+            </li>
+
+            <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" style="" >
+                <a routerLink="/social">
+                    <span class="sidebar-mini">
+                        S
+                    </span>
+                    <span class="sidebar-normal">Social</span> 
+                </a>
+            </li>
+            
                 
 
             <!-- </span> -->
