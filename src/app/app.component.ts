@@ -92,6 +92,8 @@ export class AppComponent implements OnInit, AfterViewInit {
             let ps = new PerfectScrollbar(elemMainPanel);
             ps = new PerfectScrollbar(elemSidebar);
         }
+
+        // GET ALL REQUESTS (AFTER THE CHECK 'IF THE USER IS SIGNED IN')
         const self = this
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
@@ -101,6 +103,12 @@ export class AppComponent implements OnInit, AfterViewInit {
             } else {
                 console.log('// // No user is signed in. ', user)
                 // No user is signed in.
+                // tslint:disable-next-line:no-debugger
+                debugger
+                if (self.requestsService.unsubscribe) {
+                    self.requestsService.unsubscribe()
+                    self.requestsService.resetRequestsList()
+                }
             }
         });
         // this.requestsService.startRequestsQuery()

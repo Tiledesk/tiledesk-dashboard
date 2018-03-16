@@ -15,7 +15,7 @@ import { mergeMap } from 'rxjs/operators/mergeMap';
 
 import { User } from '../models/user-model';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-
+// import { RequestsService } from '../services/requests.service';
 // interface CUser {
 //   uid: string;
 //   email?: string | null;
@@ -66,14 +66,9 @@ export class AuthService {
     private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
     private router: Router,
-    private notify: NotifyService,
-   
+    private notify: NotifyService
   ) {
-
     this.http = http;
-
-
-
     // this.user = this.afAuth.authState
     //   .switchMap((user) => {
     //     if (user) {
@@ -208,12 +203,6 @@ export class AuthService {
       });
   }
 
-  
-
-  
-
-
-
   ////// SUPER USER AUTH //////
   superUserAuth(currentUserEmailgetFromStorage) {
     const authenticatedSuperUser = superusers.find(u => u.email === currentUserEmailgetFromStorage);
@@ -333,14 +322,13 @@ export class AuthService {
   }
 
   signOut() {
-    // this.afAuth.auth.signOut().then(() => {
     // !!! NO MORE USED
-    // firebase.auth().signOut().then(() => {
-    //   this.router.navigate(['/login']);
-    // });
+    // this.afAuth.auth.signOut()
+
 
     this.user_bs.next(null);
     localStorage.removeItem('user');
+
     firebase.auth().signOut()
       .then(function () {
         console.log('Signed Out');

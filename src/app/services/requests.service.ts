@@ -41,6 +41,8 @@ export class RequestsService {
 
   requestList: Request[] = [];
 
+  unsubscribe: any;
+
   // public mySubject: BehaviorSubject<any> = new BehaviorSubject<any[]>(null);
   public mySubject: BehaviorSubject<any> = new BehaviorSubject<any[]>(null);
 
@@ -66,6 +68,16 @@ export class RequestsService {
     // }
 
     this.user = auth.user_bs.value
+    this.checkUser()
+
+    this.auth.user_bs.subscribe((user) => {
+      this.user = user;
+      this.checkUser()
+    });
+
+  }
+
+  checkUser() {
     if (this.user) {
       // this.currentUserFireBaseUID = this.user.uid
       this.currentUserID = this.user._id
@@ -74,7 +86,10 @@ export class RequestsService {
     } else {
       console.log('No user is signed in');
     }
+
   }
+
+
 
   // getToken() {
   //   const that = this;
@@ -114,10 +129,12 @@ export class RequestsService {
   // }
   startRequestsQuery() {
     console.log('startRequestsQuery()')
+    // GET ALL REQUESTS AND EVALUATING THE REQUEST'S ID ADD OR UPDATE
     this.getRequests().subscribe((requests: Request[]) => {
       requests.forEach((r: Request) => {
         this.addOrUpdateRequestsList(r);
       });
+      // PUBLISH THE REQUESTS LIST (ORDERED AND WITH THE CHANGES MANAGED BY addOrUpdateRequestsList)
       this.requestsList_bs.next(this.requestList);
     },
       error => { },
@@ -130,12 +147,14 @@ export class RequestsService {
     // console.log('ID REQUEST  ', r.recipient)
     for (let i = 0; i < this.requestList.length; i++) {
       if (r.recipient === this.requestList[i].recipient) {
+        // UPDATE: SUBSTITUTE THE EXISTING REQUEST WITH THE MODIFIED ONE ...
         this.requestList[i] = r;
         this.reorderRequests()
         return;
       }
       // console.log('REQUEST RECIPIENT ', this.requestList[i].recipient)
     }
+    // ... ELSE ADD THE REQUEST
     this.requestList.push(r);
     this.reorderRequests()
   }
@@ -151,6 +170,10 @@ export class RequestsService {
       return 0;
     });
   }
+  resetRequestsList() {
+    this.requestList = []
+    this.requestsList_bs.next(this.requestList);
+  }
 
 
   getRequests(): Observable<Request[]> {
@@ -161,7 +184,7 @@ export class RequestsService {
       .orderBy('timestamp', 'desc');
     // const observer = Observable.create(query.onSnapshot.bind(query));
     const observable = new Observable<Request[]>(observer => {
-      query.onSnapshot(snapshot => {
+      this.unsubscribe = query.onSnapshot(snapshot => {
         const requestListReturned: Request[] = snapshot.docChanges.map((c: DocumentChange) => {
           // const requestListReturned: Request[] = snapshot.docs.map((c: DocumentSnapshot) => {
           const r: Request = {};
@@ -177,19 +200,20 @@ export class RequestsService {
           r.membersCount = data.membersCount
           r.support_status = data.support_status
           r.members = data.members
-          r.members_as_string = members_as_html(data.members, data.requester_id,  this.currentUserID)
-          r.currentUserIsJoined = currentUserUidIsInMembers(data.members,  this.currentUserID)
+          r.members_as_string = members_as_html(data.members, data.requester_id, this.currentUserID)
+          r.currentUserIsJoined = currentUserUidIsInMembers(data.members, this.currentUserID)
           r.requester_fullname = data.requester_fullname
           r.requester_id = data.requester_id
           return r;
         });
         observer.next(requestListReturned);
-        // console.log('requestListReturned', requestListReturned)
+        console.log('requestListReturned', requestListReturned)
       });
     });
     return observable;
   }
-  // TEST
+
+
 
   /**
    * CONVERSATION (ALIAS REQUESTS - IN THE VIEW IS VISITORS)return an observable of ALL FIRESTORE  'conversation' * WITH * ID

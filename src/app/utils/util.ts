@@ -24,8 +24,8 @@ export function currentUserUidIsInMembers(members: object, currentUserFireBaseUI
     Object.keys(members).forEach(m => {
 
         if (m === currentUserFireBaseUID) {
-            console.log('- MEMBERS ', members)
-            console.log('- CURRENT_USER_JOINED ', currentUserFireBaseUID);
+            // console.log('- MEMBERS ', members)
+            // console.log('- CURRENT_USER_JOINED ', currentUserFireBaseUID);
             currentUserIsJoined = true;
             return
         }

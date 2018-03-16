@@ -112,28 +112,24 @@ export class RequestsListComponent implements OnInit {
 
     // this.requestsService.getRequests().subscribe((requests: Request[]) => {
     //   this.showSpinner = false;
-
     //   requests.forEach((r: Request) => {
-
     //     this.addOrUpdateRequestsList(r);
-
     //   });
     // },
     //   error => { },
     //   () => {
     //     console.log('GET REQUEST COMPLETE')
     //   });
-
   }
 
   getRequestListBS() {
     this.requestsService.requestsList_bs.subscribe((requests) => {
       if (requests) {
-        console.log('REQUESTS ', requests)
-        this.showSpinner = false;
+        // console.log('REQUESTS ', requests)
         this.requestListUnserved = requests
           .filter(r => {
             if (r.support_status === 100) {
+              this.showSpinner = false;
               return true
             } else {
               return false
@@ -150,12 +146,18 @@ export class RequestsListComponent implements OnInit {
         this.requestListServed = requests
           .filter(r => {
             if (r.support_status !== 100) {
+              this.showSpinner = false;
               return true
             } else {
               return false
             }
           });
       }
+      if (requests.length === 0) {
+        this.showSpinner = false
+      }
+    }, error => {
+      this.showSpinner = false
     });
   }
 
