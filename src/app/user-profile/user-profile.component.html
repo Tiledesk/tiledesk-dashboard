@@ -1,14 +1,46 @@
 <div class="main-content">
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card">
-                <div class="card-header" data-background-color="red">
+                <!-- <div class="card-header" data-background-color="red">
                     <h4 class="title">Edit Profile</h4>
                     <p class="category">Complete your profile</p>
-                </div>
-                <div class="card-content">
-                    <form>
+                </div> -->
+                <div class="card-content" style="padding-top: 25px;">
+                        <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Nome</label>
+                        <div class="col-sm-10">
+                          <input [(ngModel)]="user.firstname" class="" type="text" placeholder="Nome">
+                        </div>
+
+                        <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Cognome</label>
+                        <div class="col-sm-10">
+                          <input [(ngModel)]="user.lastname" class="" type="text" placeholder="Cognome">
+                        </div>
+
+                        <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2">Email</label>
+                        <div class="col-sm-10">
+                          <input style="color:#999999" [(ngModel)]="user.email" class="" type="text" placeholder="Email" disabled>
+                        </div>
+
+                        <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2">ID Utente</label>
+                        <div class="col-sm-10">
+                          <input style="color:#999999" [(ngModel)]="user._id" class="" type="text" placeholder="Email" disabled>
+                        </div>
+
+                        <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2">Avatar</label>
+                        <div class="col-sm-10">
+                            <!-- <div class="card card-profile"> -->
+                            <div class="card-avatar" style="padding-bottom:15px">
+                                        
+                                <img style="vertical-align: middle; width: 60px; height: 60px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" class="img" src="../assets/img/faces/no_image_user.png" />
+                                
+                                <button style="padding-left:16px; padding-right:16px; font-size:0.8em" type="submit" class="btn btn-white" >Upload immagine</button>
+                                    <!-- </div> -->
+                            </div> 
+                        </div>
+
+                    <!-- <form>
                         <div class="row">
                             <div class="col-md-5">
                                 <div class="form-group form-black label-floating is-empty">
@@ -89,11 +121,11 @@
 
                         <button type="submit" class="btn btn-danger pull-right">Update Profile</button>
                         <div class="clearfix"></div>
-                    </form>
+                    </form> -->
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <!-- <div class="col-md-4">
             <div class="card card-profile">
                 <div class="card-avatar">
                     <a href="#pablo">
@@ -110,7 +142,7 @@
                     <a href="#pablo" class="btn btn-danger btn-round">Follow</a>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </div>
 </div>

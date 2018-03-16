@@ -9,7 +9,8 @@ import { Component, OnInit, HostListener } from '@angular/core';
 export class ChatComponent implements OnInit {
 
   actualHeight: any;
-  navbarHeight = 51;
+  // navbarHeight = 51;
+  navbarAndFooterHeight = 130;
 
   newInnerHeight: any;
   // newInnerWidth: any;
@@ -39,7 +40,8 @@ export class ChatComponent implements OnInit {
     // this.newInnerWidth = event.target.innerWidth;
     this.newInnerHeight = event.target.innerHeight;
     console.log('NEW INNER HEIGHT ', this.newInnerHeight);
-    this.iframeHeight = this.newInnerHeight - this.navbarHeight;
+    // this.iframeHeight = this.newInnerHeight - this.navbarHeight;
+    this.iframeHeight = this.newInnerHeight - this.navbarAndFooterHeight;
     console.log('ON RESIZE -> IFRAME HEIGHT (ACTUAL HEIGHT - NAVBAR HEIGHT) ', this.iframeHeight);
 
     return { 'height': this.iframeHeight += 'px'};
@@ -49,7 +51,8 @@ export class ChatComponent implements OnInit {
     this.actualHeight = window.innerHeight;
     console.log('ACTUAL HEIGHT ', this.actualHeight);
     // this.iframeHeight = this.actualHeight += 'px';
-    this.iframeHeight = this.actualHeight - this.navbarHeight;
+    // this.iframeHeight = this.actualHeight - this.navbarHeight;
+    this.iframeHeight = this.actualHeight - this.navbarAndFooterHeight;
     console.log('ON INIT -> IFRAME HEIGHT (ACTUAL HEIGHT - NAVBAR HEIGHT) ', this.iframeHeight);
 
     return { 'height': this.iframeHeight += 'px'};

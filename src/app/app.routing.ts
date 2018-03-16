@@ -58,7 +58,7 @@ import { ChatComponent } from './chat/chat.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
-  { path: 'user-profile', component: UserProfileComponent },
+  
   { path: 'table-list', component: TableListComponent },
   { path: 'typography', component: TypographyComponent },
   { path: 'icons', component: IconsComponent },
@@ -107,6 +107,7 @@ const routes: Routes = [
   { path: 'project/edit/:projectid', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
 
   { path: 'history', component: RequestsListHistoryComponent, canActivate: [AuthGuard] },
+  { path: 'user-profile', component: UserProfileComponent },
 
   { path: 'dashboard', component: DashboardComponent },
 
