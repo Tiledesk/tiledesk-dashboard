@@ -15,11 +15,11 @@ export const environment = {
         FAQ_BASE_URL: 'http://api.chat21.org/app1/faq/',
         BOTS_BASE_URL: 'http://api.chat21.org/app1/bots/',
         FAQKB_BASE_URL: 'http://api.chat21.org/app1/faq_kb/',
-        MONGODB_PROJECTS_BASE_URL: 'http://api.chat21.org/app1/projects/',
+        PROJECTS_BASE_URL: 'http://api.chat21.org/app1/projects/',
+        PROJECT_USER_BASE_URL: 'http://api.chat21.org/app1/project_users/',
         SIGNUP_BASE_URL: 'http://api.chat21.org/auth/signup',
         SIGNIN_BASE_URL: 'http://api.chat21.org/auth/signin',
         MONGODB_PEOPLE_BASE_URL: 'http://api.chat21.org/app1/people/',
-
         FIREBASE_SIGNIN_BASE_URL: 'http://api.chat21.org/firebase/auth/signin',
         TOKEN: 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnt9LCJnZXR0ZXJzIjp7fSwid2FzUG9wdWxhdGVkIjpmYWxzZSwiYWN0aXZlUGF0aHMiOnsicGF0aHMiOnsicGFzc3dvcmQiOiJpbml0IiwidXNlcm5hbWUiOiJpbml0IiwiX192IjoiaW5pdCIsIl9pZCI6ImluaXQifSwic3RhdGVzIjp7Imlnbm9yZSI6e30sImRlZmF1bHQiOnt9LCJpbml0Ijp7Il9fdiI6dHJ1ZSwicGFzc3dvcmQiOnRydWUsInVzZXJuYW1lIjp0cnVlLCJfaWQiOnRydWV9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7fX0sInN0YXRlTmFtZXMiOlsicmVxdWlyZSIsIm1vZGlmeSIsImluaXQiLCJkZWZhdWx0IiwiaWdub3JlIl19LCJlbWl0dGVyIjp7ImRvbWFpbiI6bnVsbCwiX2V2ZW50cyI6e30sIl9ldmVudHNDb3VudCI6MCwiX21heExpc3RlbmVycyI6MH19LCJpc05ldyI6ZmFsc2UsIl9kb2MiOnsiX192IjowLCJwYXNzd29yZCI6IiQyYSQxMCQ3WDBEOFY5T1dIYnNhZi91TTcuNml1ZUdCQjFUSWpoNGRnanFUS1dPOVk3UnQ1RjBwckVoTyIsInVzZXJuYW1lIjoiYW5kcmVhIiwiX2lkIjoiNWE2YWU1MjUwNmY2MmI2MDA3YTZkYzAwIn0sImlhdCI6MTUxNjk1NTA3Nn0.MHjEJFGmqqsEhm8sglvO6Hpt2bKBYs25VvGNP6W8JbI',
     },

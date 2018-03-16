@@ -81,12 +81,11 @@ export class RequestsService {
     if (this.user) {
       // this.currentUserFireBaseUID = this.user.uid
       this.currentUserID = this.user._id
-      console.log('USER UID GET IN REQUEST-LIST COMPONENT', this.currentUserID);
+      console.log('USER UID GET IN REQUEST-SERV', this.currentUserID);
       // this.getToken();
     } else {
       console.log('No user is signed in');
     }
-
   }
 
 
