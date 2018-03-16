@@ -14,8 +14,7 @@ declare interface RouteInfo {
 export const ROUTES: RouteInfo[] = [
     { path: 'home', title: 'Home', icon: 'dashboard', class: '' },
     { path: 'requests', title: 'Visitatori', icon: 'group', class: '' },
-    // MOVED IN THE TEMPLATE: IS NECESSARY TO LINK THE CHAT IN A EXTERNAL PAGE
-    // { path: 'chat', title: 'Chat', icon: 'chat', class: '' },
+    { path: 'chat', title: 'Chat', icon: 'chat', class: '' },
     // { path: 'analytics', title: 'Analytics', icon: 'trending_up', class: '' },
     // MOVED IN THE TEMPLATE: IS NECESSARY TO MANAGE THE SETTING SUB MENU
     // { path: 'settings', title: 'Impostazioni',  icon: 'settings', class: '' },

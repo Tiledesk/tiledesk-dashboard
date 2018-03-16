@@ -29,6 +29,8 @@ export class ChatComponent implements OnInit {
   ngOnInit() {
 
     this.onInitframeHeight();
+    // const elemNavbar = <HTMLElement>document.querySelector('.navbar');
+    // console.log('NAVBAR QUERY SELECTOR IN CHAT ', elemNavbar)
 
   }
 

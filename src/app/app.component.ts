@@ -104,7 +104,7 @@ export class AppComponent implements OnInit, AfterViewInit {
                 console.log('// // No user is signed in. ', user)
                 // No user is signed in.
                 // tslint:disable-next-line:no-debugger
-                debugger
+                // debugger
                 if (self.requestsService.unsubscribe) {
                     self.requestsService.unsubscribe()
                     self.requestsService.resetRequestsList()
