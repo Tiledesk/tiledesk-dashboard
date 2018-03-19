@@ -14,7 +14,9 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { mergeMap } from 'rxjs/operators/mergeMap';
 
 import { User } from '../models/user-model';
+
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+// import { ProjectService } from '../services/project.service';
 // import { RequestsService } from '../services/requests.service';
 // interface CUser {
 //   uid: string;
@@ -61,12 +63,15 @@ export class AuthService {
   // user: User
   public user_bs: BehaviorSubject<User> = new BehaviorSubject<User>(null);
 
+  public projectid_bs: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+
   constructor(
     http: Http,
     private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
     private router: Router,
-    private notify: NotifyService
+    private notify: NotifyService,
+    // private projectService: ProjectService,
   ) {
     this.http = http;
     // this.user = this.afAuth.authState
@@ -321,6 +326,12 @@ export class AuthService {
       .catch((error) => this.handleError(error));
   }
 
+    // THE project_id IS PASSED FROM PROJCT COMPONENT WHEN THE USER SELECT A PROJECT
+    projectIdSelected(project_id) {
+      // PUBLISH THE project_id TO WHICH THE SIDEBAR IS SUBSCRIBED
+      this.projectid_bs.next(project_id);
+    }
+
   signOut() {
     // !!! NO MORE USED
     // this.afAuth.auth.signOut()
@@ -328,6 +339,12 @@ export class AuthService {
 
     this.user_bs.next(null);
     localStorage.removeItem('user');
+    localStorage.removeItem('projectid');
+    this.projectid_bs.next(null);
+
+    // tslint:disable-next-line:no-debugger
+    // debugger
+    // this.projectService.projectid_bs.next(null)
 
     firebase.auth().signOut()
       .then(function () {

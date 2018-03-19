@@ -74,7 +74,13 @@ const routes: Routes = [
   // { path: '',               redirectTo: 'dashboard', pathMatch: 'full' }
 
   // CHAT 21
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  // PROJECTS IS THE NEW HOME
+  { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] },
+  { path: '', redirectTo: 'projects', pathMatch: 'full' },
+
+  { path: 'project/create', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
+  { path: 'project/edit/:projectid', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
+
   // { path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
   { path: 'project/:projectid/home', component: HomeComponent, canActivate: [AuthGuard]},
   // { path: 'login', component: UserLoginComponent },
@@ -108,10 +114,6 @@ const routes: Routes = [
   { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard] },
   { path: 'department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
   { path: 'department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
-
-  { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] },
-  { path: 'project/create', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'project/edit/:projectid', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/history', component: RequestsListHistoryComponent, canActivate: [AuthGuard] },
   { path: 'user-profile', component: UserProfileComponent },

@@ -92,16 +92,17 @@ export class ProjectEditAddComponent implements OnInit {
       .subscribe((project) => {
         console.log('POST DATA PROJECT', project);
 
-        // if (project._id) {
-        //   this.projectService.createUserProject(project._id)
-        //   .subscribe((project_user) => {
+        // if (project) {
 
-        //     console.log('POST DATA PROJECT-USER ', project_user);
-        //   },
-        //   (error) => {
-        //     console.log('CREATE PROJECT-USER - POST REQUEST ERROR ', error);
-        //   },
-        // );
+          //   this.projectService.createUserProject(project._id)
+          //   .subscribe((project_user) => {
+
+          //     console.log('POST DATA PROJECT-USER ', project_user);
+          //   },
+          //   (error) => {
+          //     console.log('CREATE PROJECT-USER - POST REQUEST ERROR ', error);
+          //   },
+          // );
 
         // }
       },

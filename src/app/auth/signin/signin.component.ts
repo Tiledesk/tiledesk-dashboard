@@ -45,7 +45,7 @@ export class SigninComponent implements OnInit {
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router,
-   
+
   ) { }
 
   ngOnInit() {
@@ -91,8 +91,9 @@ export class SigninComponent implements OnInit {
                 .then(data => {
                   console.log('3. FIREBASE CUSTOM AUTH DATA ', data)
 
+                  // this.router.navigate(['/home']);
+                  this.router.navigate(['/projects']);
 
-                  this.router.navigate(['/home']);
                 })
                 .catch(function (error) {
                   // Handle Errors here.

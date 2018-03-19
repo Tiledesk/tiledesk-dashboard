@@ -86,17 +86,40 @@
                 </a>
             </li>
 
-            <!-- HOME and VISITORS (alias REQUESTS) -->
-            <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}}">
+            <!-- !!!! NO MORE USED HOME - VISITORS (alias REQUESTS) - CHAT -->
+            <!-- <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}}">
                 <a  [routerLink]="[menuItem.path]">
                     <i class="material-icons">{{menuItem.icon}}</i>
                     <p>{{menuItem.title}}</p>
                 </a>
+            </li> -->
+            
+            <!-- HOME  -->
+            <!-- WITHOUT THE CONDITION *ngIf="projectid" THE MENU ITEM 'HOME' IT IS NOT RENDERED AS ACTIVE -->
+            <li *ngIf="projectid" routerLinkActive="active" >
+                <a routerLink="project/{{ projectid }}/home">
+                    <i class="material-icons">dashboard</i>
+                    <p>Home</p>
+                </a>
             </li>
-            <!-- [ngClass]="{'active': true }" -->
-            <!-- class="{{isActive}}" -->
 
-            <!-- CHAT AS TARGET BLANK // MOVED IN THE CONTROLLER: IS NO MORE NECESSARY TO LINK THE CHAT IN A EXTERNAL PAGE-->
+            <!-- REQUESTS (VISITORS)  -->
+            <li routerLinkActive="active" >
+                <a routerLink="project/{{ projectid }}/requests">
+                    <i class="material-icons">group</i>
+                    <p>Visitatori</p>
+                </a>
+            </li>
+
+            <!-- CHAT  -->
+            <li routerLinkActive="active" >
+                <a routerLink="/chat">
+                    <i class="material-icons">chat</i>
+                    <p>Chat</p>
+                </a>
+            </li>
+
+            <!-- CHAT AS TARGET BLANK // SEE ABOVE: IS NO MORE NECESSARY TO LINK THE CHAT IN A EXTERNAL PAGE-->
             <!-- <li>
                 <a target="_blank" href="http://support.tiledesk.com/web/">
                     <i class="material-icons">chat</i>

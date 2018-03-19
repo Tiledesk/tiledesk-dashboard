@@ -6,9 +6,12 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../core/auth.service';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class ProjectService {
+
+ 
 
   http: Http;
   PROJECT_BASE_URL = environment.mongoDbConfig.PROJECTS_BASE_URL;
@@ -47,8 +50,6 @@ export class ProjectService {
       console.log('No user is signed in');
     }
   }
-
-
 
   /**
    * READ (GET)
@@ -149,12 +150,6 @@ export class ProjectService {
   //     .map((res) => res.json());
   // }
 
-
-
-
-
-
-
   /**
    * UPDATE (PUT)
    * @param id
@@ -162,27 +157,25 @@ export class ProjectService {
    */
   public updateMongoDbProject(id: string, name: string) {
 
-  let url = this.PROJECT_BASE_URL;
-  url = url += `${id}`;
-  console.log('PUT URL ', url);
+    let url = this.PROJECT_BASE_URL;
+    url += id;
+    console.log('PUT URL ', url);
 
-  const headers = new Headers();
-  headers.append('Accept', 'application/json');
-  headers.append('Content-type', 'application/json');
-  headers.append('Authorization', this.TOKEN);
-  const options = new RequestOptions({ headers });
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
 
-  const body = { 'name': `${name}` };
+    const body = { 'name': `${name}` };
 
-  console.log('PUT REQUEST BODY ', body);
+    console.log('PUT REQUEST BODY ', body);
 
-  return this.http
-    .put(url, JSON.stringify(body), options)
-    .map((res) => res.json());
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
 
-}
-
-
+  }
 
 
 }

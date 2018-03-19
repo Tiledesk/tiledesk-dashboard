@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ProjectService } from '../services/project.service';
 import { Project } from '../models/project-model';
 import { Router } from '@angular/router';
+import { AuthService } from '../core/auth.service';
+
+
 
 @Component({
   selector: 'projects',
@@ -23,10 +26,25 @@ export class ProjectsComponent implements OnInit {
   constructor(
     private projectService: ProjectService,
     private router: Router,
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
     this.getProjects();
+
+  }
+
+  // project/:projectid/home
+  goToHome(project_id: string) {
+    this.router.navigate([`/project/${project_id}/home`]);
+
+    // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
+    // THE SIDEBAR SIGNS UP FOR ITS PUBLICATION
+    this.auth.projectIdSelected(project_id)
+
+    // SET THE project_id IN THE LOCAL STORAGE
+    // WHEN THE PAGE IS RELOADED THE SIDEBAR GET THE PROJECT ID FROM THE LOCAL STORAGE
+    localStorage.setItem('projectid', project_id);
   }
 
   // GO TO  PROJECT-EDIT-ADD COMPONENT

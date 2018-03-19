@@ -1,8 +1,11 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { RequestsService } from '../../services/requests.service';
-import { Router } from '@angular/router'
-import { Location } from '@angular/common'
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
+// import { ProjectService } from '../../services/project.service';
+import { AuthService } from '../../core/auth.service';
 
 declare const $: any;
 declare interface RouteInfo {
@@ -50,26 +53,44 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     trasform = 'none';
     unservedRequestCount: number;
 
-    route: string;
+    // route: string;
     LOGIN_PAGE: boolean;
     IS_UNAVAILABLE = false;
 
-    projectid = '111'
+    projectid: string;
+
     ROUTES: RouteInfo[];
 
     constructor(
         private requestsService: RequestsService,
         private router: Router,
         public location: Location,
-    ) { }
+        private route: ActivatedRoute,
+        // private projectService: ProjectService,
+        private auth: AuthService
+    ) {
+
+        console.log('00 -> HELLO SIDEBAR - PROJECT ID ', this.projectid)
+
+        this.auth.projectid_bs.subscribe((project_id) => {
+
+            this.projectid = project_id
+            console.log('00 -> SIDEBAR project id Project service subscription  ', project_id)
+        });
+
+        // WHEN THE PAGE IS RELOADED THE project_id RETURNED FRON THE SUBSCRIPTION IS NULL SO IT IS GET FROM LOCAL STORAGE
+        this.projectid = localStorage.getItem('projectid')
+        console.log('00 -> SIDEBAR project id get from local storage ', this.projectid)
+    }
 
     ngOnInit() {
-        this.ROUTES = [
-            { path: `project/${this.projectid}/home`, title: 'Home', icon: 'dashboard', class: '' },
-            { path: `project/${this.projectid}/requests`, title: 'Visitatori', icon: 'group', class: '' },
-            { path: 'chat', title: 'Chat', icon: 'chat', class: '' }
-        ]
-        this.menuItems = this.ROUTES.filter(menuItem => menuItem);
+        // !!!! NO MORE USED
+        // this.ROUTES = [
+        //     { path: `project/${this.projectid}/home`, title: 'Home', icon: 'dashboard', class: '' },
+        //     { path: `project/${this.projectid}/requests`, title: 'Visitatori', icon: 'group', class: '' },
+        //     { path: 'chat', title: 'Chat', icon: 'chat', class: '' }
+        // ]
+        // this.menuItems = this.ROUTES.filter(menuItem => menuItem);
 
         // GET COUNT OF UNSERVED REQUESTS
         this.requestsService.getCountUnservedRequest().subscribe((count: number) => {
@@ -99,6 +120,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         //     this.trasform = 'none';
         // }
     }
+
+
+
 
     ngAfterViewInit() {
         //     this.SETTINGS_SUBMENU_WAS_OPEN = localStorage.getItem('show_settings_submenu')

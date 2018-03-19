@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
 
   user: any;
 
-  projectid: string;
+  // projectid: string;
 
   constructor(
     public auth: AuthService,
@@ -46,9 +46,13 @@ export class HomeComponent implements OnInit {
   }
 
   getProjectId() {
-    this.projectid = this.route.snapshot.params['projectid'];
-    console.log('CURRENT projectid ', this.projectid);
-  }
+    // this.projectid = this.route.snapshot.params['projectid'];
+    // console.log('SIDEBAR - - - - - CURRENT projectid ', this.projectid);
+    this.route.params.subscribe(params => {
+        // const param = params['projectid'];
+       console.log('NAVBAR - - - - - CURRENT projectid ', params );
+    });
+}
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
