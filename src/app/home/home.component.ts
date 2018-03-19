@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService, SuperUser } from '../core/auth.service';
 import { environment } from '../../environments/environment';
+import { ActivatedRoute } from '@angular/router';
+
 @Component({
   selector: 'home',
   templateUrl: './home.component.html',
@@ -17,9 +19,11 @@ export class HomeComponent implements OnInit {
 
   user: any;
 
+  projectid: string;
+
   constructor(
     public auth: AuthService,
-
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit() {
@@ -38,6 +42,12 @@ export class HomeComponent implements OnInit {
     //   this.superUserAuth();
     // }
     this.getLoggedUser()
+    this.getProjectId()
+  }
+
+  getProjectId() {
+    this.projectid = this.route.snapshot.params['projectid'];
+    console.log('CURRENT projectid ', this.projectid);
   }
 
   getLoggedUser() {

@@ -11,23 +11,25 @@ declare interface RouteInfo {
     icon: string;
     class: string;
 }
-export const ROUTES: RouteInfo[] = [
-    { path: 'home', title: 'Home', icon: 'dashboard', class: '' },
-    { path: 'requests', title: 'Visitatori', icon: 'group', class: '' },
-    { path: 'chat', title: 'Chat', icon: 'chat', class: '' },
-    // { path: 'analytics', title: 'Analytics', icon: 'trending_up', class: '' },
-    // MOVED IN THE TEMPLATE: IS NECESSARY TO MANAGE THE SETTING SUB MENU
-    // { path: 'settings', title: 'Impostazioni',  icon: 'settings', class: '' },
 
-    // { path: 'dashboard', title: 'Dashboard', icon: 'dashboard', class: '' },
-    // { path: 'user-profile', title: 'User Profile', icon: 'person', class: '' },
-    // { path: 'table-list', title: 'Table List', icon: 'content_paste', class: '' },
-    // { path: 'typography', title: 'Typography', icon: 'library_books', class: '' },
-    // { path: 'icons', title: 'Icons', icon: 'bubble_chart', class: '' },
-    // { path: 'maps', title: 'Maps', icon: 'location_on', class: '' },
-    // { path: 'notifications', title: 'Notifications', icon: 'notifications', class: '' },
-    // { path: 'upgrade', title: 'Upgrade to PRO', icon: 'unarchive', class: 'active-pro' },
-];
+//    export const ROUTES: RouteInfo[];
+//  = [
+//     { path: `project/${this.projectid}/home`, title: 'Home', icon: 'dashboard', class: '' },
+//     { path: 'requests', title: 'Visitatori', icon: 'group', class: '' },
+//     { path: 'chat', title: 'Chat', icon: 'chat', class: '' },
+//     // { path: 'analytics', title: 'Analytics', icon: 'trending_up', class: '' },
+//     // MOVED IN THE TEMPLATE: IS NECESSARY TO MANAGE THE SETTING SUB MENU
+//     // { path: 'settings', title: 'Impostazioni',  icon: 'settings', class: '' },
+
+//     // { path: 'dashboard', title: 'Dashboard', icon: 'dashboard', class: '' },
+//     // { path: 'user-profile', title: 'User Profile', icon: 'person', class: '' },
+//     // { path: 'table-list', title: 'Table List', icon: 'content_paste', class: '' },
+//     // { path: 'typography', title: 'Typography', icon: 'library_books', class: '' },
+//     // { path: 'icons', title: 'Icons', icon: 'bubble_chart', class: '' },
+//     // { path: 'maps', title: 'Maps', icon: 'location_on', class: '' },
+//     // { path: 'notifications', title: 'Notifications', icon: 'notifications', class: '' },
+//     // { path: 'upgrade', title: 'Upgrade to PRO', icon: 'unarchive', class: 'active-pro' },
+// ];
 
 @Component({
     selector: 'app-sidebar',
@@ -52,6 +54,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     LOGIN_PAGE: boolean;
     IS_UNAVAILABLE = false;
 
+    projectid = '111'
+    ROUTES: RouteInfo[];
 
     constructor(
         private requestsService: RequestsService,
@@ -60,7 +64,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     ) { }
 
     ngOnInit() {
-        this.menuItems = ROUTES.filter(menuItem => menuItem);
+        this.ROUTES = [
+            { path: `project/${this.projectid}/home`, title: 'Home', icon: 'dashboard', class: '' },
+            { path: `project/${this.projectid}/requests`, title: 'Visitatori', icon: 'group', class: '' },
+            { path: 'chat', title: 'Chat', icon: 'chat', class: '' }
+        ]
+        this.menuItems = this.ROUTES.filter(menuItem => menuItem);
 
         // GET COUNT OF UNSERVED REQUESTS
         this.requestsService.getCountUnservedRequest().subscribe((count: number) => {

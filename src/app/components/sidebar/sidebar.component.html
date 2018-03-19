@@ -107,7 +107,7 @@
 
             <!-- ANALYTICS -->
             <li routerLinkActive="active" >
-                <a routerLink="/analytics">
+                <a routerLink="project/{{ projectid }}/analytics">
                     <i class="material-icons">trending_up</i>
                     <p>Analytics</p>
                 </a>
@@ -115,7 +115,7 @@
             
             <!-- REQUESTS HISTORY -->
             <li routerLinkActive="active" >
-                <a routerLink="/history">
+                <a routerLink="project/{{ projectid }}/history">
                     <i class="material-icons">history</i>
                     <p>Cronologia</p>
                 </a>
@@ -136,7 +136,7 @@
             <!-- padding-left:15px -->
             <!-- (click)="setActiveClassToSettings()" -->
             <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" style="" >
-                <a routerLink="/bots">
+                <a routerLink="project/{{ projectid }}/bots">
                     <!-- <i class="material-icons">keyboard_arrow_right</i> -->
                     <!-- color: #a9afbb; -->
                     <span class="sidebar-mini">
@@ -152,7 +152,7 @@
             <!-- (click)="setActiveClassToSettings()" -->
             <!-- padding-left:15px; -->
             <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" style="" >
-                <a routerLink="/faqkb">
+                <a routerLink="project/{{ projectid }}/faqkb">
                     <!-- <i class="material-icons">keyboard_arrow_right</i> -->
                     <span class="sidebar-mini">
                         F 
@@ -168,7 +168,7 @@
             <!-- (click)="setActiveClassToSettings()" -->
             <!-- padding-left:15px; -->
             <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" style="" >
-                <a routerLink="/departments">
+                <a routerLink="project/{{ projectid }}/departments">
                     <!-- <i class="material-icons">keyboard_arrow_right</i> -->
                     <span class="sidebar-mini">
                         D
@@ -181,7 +181,7 @@
             </li>
 
             <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" style="" >
-                <a routerLink="/resources">
+                <a routerLink="project/{{ projectid }}/resources">
                     <span class="sidebar-mini">
                         R
                     </span>
@@ -190,7 +190,7 @@
             </li>
 
             <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" style="" >
-                <a routerLink="/script">
+                <a routerLink="project/{{ projectid }}/script">
                     <span class="sidebar-mini">
                         S
                     </span>
@@ -199,7 +199,7 @@
             </li>
 
             <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" style="" >
-                <a routerLink="/channels">
+                <a routerLink="project/{{ projectid }}/channels">
                     <span class="sidebar-mini">
                         C
                     </span>
@@ -208,7 +208,7 @@
             </li>
 
             <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" style="" >
-                <a routerLink="/social">
+                <a routerLink="project/{{ projectid }}/social">
                     <span class="sidebar-mini">
                         S
                     </span>

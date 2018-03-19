@@ -75,7 +75,8 @@ const routes: Routes = [
 
   // CHAT 21
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
+  // { path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
+  { path: 'project/:projectid/home', component: HomeComponent, canActivate: [AuthGuard]},
   // { path: 'login', component: UserLoginComponent },
   { path: 'login', component: SigninComponent },
   { path: 'signup', component: SignupComponent },
@@ -89,11 +90,11 @@ const routes: Routes = [
   { path: 'notes', component: NotesListComponent, canActivate: [AuthGuard] },
   { path: 'userprofile', component: UserProfileComponent },
   // , canActivate: [AuthGuard]
-  { path: 'requests', component: RequestsListComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/requests', component: RequestsListComponent, canActivate: [AuthGuard] },
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
 
   { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
-  { path: 'faqkb', component: FaqKbComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/faqkb', component: FaqKbComponent, canActivate: [AuthGuard] },
   { path: 'createfaqkb', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },
   { path: 'editfaqkb/:faqkbid', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },
   { path: 'faq/:faqkbid', component: FaqComponent, canActivate: [AuthGuard] }, // used to pass the faq kb id from  in faq page
@@ -101,10 +102,10 @@ const routes: Routes = [
   { path: 'editfaq/:faqkbid/:faqid', component: FaqEditAddComponent, canActivate: [AuthGuard] },
   { path: 'createbot', component: BotEditAddComponent, canActivate: [AuthGuard] },
   { path: 'editbot/:botid', component: BotEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'analytics', component: AnalyticsComponent, canActivate: [AuthGuard] },
-  { path: 'bots', component: BotsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/analytics', component: AnalyticsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/bots', component: BotsComponent, canActivate: [AuthGuard] },
 
-  { path: 'departments', component: DepartmentsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard] },
   { path: 'department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
   { path: 'department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
 
@@ -112,13 +113,13 @@ const routes: Routes = [
   { path: 'project/create', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/edit/:projectid', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
 
-  { path: 'history', component: RequestsListHistoryComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/history', component: RequestsListHistoryComponent, canActivate: [AuthGuard] },
   { path: 'user-profile', component: UserProfileComponent },
-  { path: 'resources', component: ResourcesComponent },
-  { path: 'script', component: ScriptComponent },
-  { path: 'channels', component: ChannelsComponent },
-  { path: 'social', component: SocialComponent },
-  
+  { path: 'project/:projectid/resources', component: ResourcesComponent },
+  { path: 'project/:projectid/script', component: ScriptComponent },
+  { path: 'project/:projectid/channels', component: ChannelsComponent },
+  { path: 'project/:projectid/social', component: SocialComponent },
+
 
 
   { path: 'dashboard', component: DashboardComponent },

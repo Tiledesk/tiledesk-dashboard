@@ -1,6 +1,6 @@
 // tslint:disable:max-line-length
 import { Component, OnInit, ElementRef, AfterContentChecked, AfterViewChecked } from '@angular/core';
-import { ROUTES } from '../sidebar/sidebar.component';
+// import { ROUTES } from '../sidebar/sidebar.component';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { AuthService } from '../../core/auth.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -66,7 +66,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     ngOnInit() {
         // tslint:disable-next-line:no-debugger
         // debugger
-        this.listTitles = ROUTES.filter(listTitle => listTitle);
+        // this.listTitles = ROUTES.filter(listTitle => listTitle);
         const navbar: HTMLElement = this.element.nativeElement;
         this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
 
