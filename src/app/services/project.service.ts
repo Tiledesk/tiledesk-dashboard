@@ -104,8 +104,9 @@ export class ProjectService {
   }
 
   /**
-   * CREATE (POST)
+   * CREATE (POST) THE PROJECT AND AT THE SAME TIME CREATE THE PROJECT-USER IN THE RELATIONAL TABLE
    * @param name
+   * @param id_user
    */
   public addMongoDbProject(name: string) {
     const headers = new Headers();
@@ -114,7 +115,7 @@ export class ProjectService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'name': `${name}` };
+    const body = { 'name': `${name}`, 'id_user': this.currentUserID };
 
     console.log('ADD PROJECT POST REQUEST BODY ', body);
 
@@ -129,24 +130,24 @@ export class ProjectService {
    * CREATE USER-PROJECT RELATION
    * @param id_project
    */
-  public createUserProject(id_project: string) {
+  // public createUserProject(id_project: string) {
 
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+  //   const headers = new Headers();
+  //   headers.append('Accept', 'application/json');
+  //   headers.append('Content-type', 'application/json');
+  //   headers.append('Authorization', this.TOKEN);
+  //   const options = new RequestOptions({ headers });
 
-    const body = { 'id_project': `${id_project}`, 'id_user': this.currentUserID, 'role': 'admin'};
+  //   const body = { 'id_project': `${id_project}`, 'id_user': this.currentUserID, 'role': 'admin'};
 
-    console.log('ADD PROJECT POST REQUEST BODY ', body);
+  //   console.log('ADD PROJECT POST REQUEST BODY ', body);
 
-    const url = this.PROJECT_USER_BASE_URL;
+  //   const url = this.PROJECT_USER_BASE_URL;
 
-    return this.http
-      .post(url, JSON.stringify(body), options)
-      .map((res) => res.json());
-  }
+  //   return this.http
+  //     .post(url, JSON.stringify(body), options)
+  //     .map((res) => res.json());
+  // }
 
 
 
