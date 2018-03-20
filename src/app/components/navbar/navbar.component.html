@@ -23,11 +23,12 @@
                         </li> -->
 
                         <!-- PROJECTS -->
-                         <li>
+                         <li *ngIf="project">
                                 <!--  -->
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="material-icons">apps</i>
-                                Progetti
+                                <!-- Progetti -->
+                                {{ project.name }}
                                 <p class="hidden-lg hidden-md">Projects</p>
                             </a>
                             <ul class="dropdown-menu">

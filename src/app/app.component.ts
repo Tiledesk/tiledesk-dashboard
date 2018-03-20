@@ -99,7 +99,7 @@ export class AppComponent implements OnInit, AfterViewInit {
             if (user) {
                 console.log('// User is signed in. ', user)
 
-                self.requestsService.startRequestsQuery()
+                // self.requestsService.startRequestsQuery()
             } else {
                 console.log('// // No user is signed in. ', user)
                 // No user is signed in.
@@ -132,7 +132,8 @@ export class AppComponent implements OnInit, AfterViewInit {
                 this.route = this.location.path();
 
                 // console.log('»> ', this.route)
-                if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/welcome')) {
+                // tslint:disable-next-line:max-line-length
+                if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/welcome') || (this.route === '/projects')) {
 
                     // this.navbar.sidebarClose();
                     elemAppSidebar.setAttribute('style', 'display:none;');

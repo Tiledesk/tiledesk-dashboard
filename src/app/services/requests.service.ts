@@ -20,6 +20,8 @@ import { observeOn } from 'rxjs/operators/observeOn';
 import { members_as_html } from '../utils/util';
 import { currentUserUidIsInMembers } from '../utils/util';
 import { AuthService } from '../core/auth.service';
+import { Project } from '../models/project-model';
+
 
 
 @Injectable()
@@ -48,6 +50,7 @@ export class RequestsService {
 
   public requestsList_bs: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
 
+  project: Project;
   constructor(
     http: Http,
     private afs: AngularFirestore,
@@ -75,6 +78,28 @@ export class RequestsService {
       this.checkUser()
     });
 
+    this.getCurrentProject()
+  }
+
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+      if (project) {
+        if (this.unsubscribe) {
+          this.unsubscribe();
+          this.resetRequestsList();
+        }
+        this.project = project;
+        this.startRequestsQuery();
+      } else {
+        if (this.unsubscribe) {
+          this.unsubscribe();
+          this.resetRequestsList();
+        }
+        this.project = project;
+      }
+
+      console.log('00 -> REQUEST SERVICE project from AUTH service subscription  ', project)
+    });
   }
 
   checkUser() {
@@ -169,16 +194,18 @@ export class RequestsService {
       return 0;
     });
   }
+
   resetRequestsList() {
     this.requestList = []
+    console.log('RESET REQUEST LIST - REQUEST LIST ', this.requestList)
     this.requestsList_bs.next(this.requestList);
   }
-
 
   getRequests(): Observable<Request[]> {
     const db = firebase.firestore();
     const query = db.collection('conversations')
       .where('support_status', '<', 1000)
+      .where('projectid', '==', this.project._id)
       .orderBy('support_status')
       .orderBy('timestamp', 'desc');
     // const observer = Observable.create(query.onSnapshot.bind(query));

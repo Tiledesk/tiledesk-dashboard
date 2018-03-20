@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 
 // import { ProjectService } from '../../services/project.service';
 import { AuthService } from '../../core/auth.service';
+import { Project } from '../../models/project-model';
 
 declare const $: any;
 declare interface RouteInfo {
@@ -57,7 +58,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     LOGIN_PAGE: boolean;
     IS_UNAVAILABLE = false;
 
-    projectid: string;
+    project: Project;
 
     ROUTES: RouteInfo[];
 
@@ -70,17 +71,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         private auth: AuthService
     ) {
 
-        console.log('00 -> HELLO SIDEBAR - PROJECT ID ', this.projectid)
+        console.log('00 -> HELLO SIDEBAR - PROJECT ID ', this.project)
 
-        this.auth.projectid_bs.subscribe((project_id) => {
+        this.auth.project_bs.subscribe((project) => {
+            this.project = project
+            console.log('00 -> SIDEBAR project from AUTH service subscription  ', project)
 
-            this.projectid = project_id
-            console.log('00 -> SIDEBAR project id Project service subscription  ', project_id)
         });
-
-        // WHEN THE PAGE IS RELOADED THE project_id RETURNED FRON THE SUBSCRIPTION IS NULL SO IT IS GET FROM LOCAL STORAGE
-        this.projectid = localStorage.getItem('projectid')
-        console.log('00 -> SIDEBAR project id get from local storage ', this.projectid)
     }
 
     ngOnInit() {

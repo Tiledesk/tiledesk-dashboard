@@ -4,6 +4,8 @@ import { Project } from '../models/project-model';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 
+import { RequestsService } from '../services/requests.service';
+
 
 
 @Component({
@@ -26,7 +28,8 @@ export class ProjectsComponent implements OnInit {
   constructor(
     private projectService: ProjectService,
     private router: Router,
-    private auth: AuthService
+    private auth: AuthService,
+    private requestsService: RequestsService
   ) { }
 
   ngOnInit() {
@@ -35,16 +38,24 @@ export class ProjectsComponent implements OnInit {
   }
 
   // project/:projectid/home
-  goToHome(project_id: string) {
+  goToHome(project_id: string, project_name: string) {
     this.router.navigate([`/project/${project_id}/home`]);
 
     // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
     // THE SIDEBAR SIGNS UP FOR ITS PUBLICATION
-    this.auth.projectIdSelected(project_id)
+    const project: Project = {
+      _id: project_id,
+      name: project_name
+    }
+
+    this.auth.projectSelected(project)
+    console.log('PROJECT ', project)
 
     // SET THE project_id IN THE LOCAL STORAGE
     // WHEN THE PAGE IS RELOADED THE SIDEBAR GET THE PROJECT ID FROM THE LOCAL STORAGE
-    localStorage.setItem('projectid', project_id);
+    localStorage.setItem('project', JSON.stringify(project));
+
+
   }
 
   // GO TO  PROJECT-EDIT-ADD COMPONENT
@@ -83,10 +94,10 @@ export class ProjectsComponent implements OnInit {
     this.projectName_toDelete = projectName;
   }
 
-    // CLOSE MODAL WITHOUT SAVE THE UPDATES OR WITHOUT CONFIRM THE DELETION
-    onCloseModal() {
-      this.display = 'none';
-    }
+  // CLOSE MODAL WITHOUT SAVE THE UPDATES OR WITHOUT CONFIRM THE DELETION
+  onCloseModal() {
+    this.display = 'none';
+  }
 
   /**
    * DELETE PROJECT (WHEN THE 'CONFIRM' BUTTON IN MODAL IS CLICKED)

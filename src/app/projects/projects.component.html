@@ -51,7 +51,7 @@
               <tbody>
           
                 <tr *ngFor="let project of projects">
-                  <td (click)='goToHome(project?._id)'>
+                  <td (click)='goToHome(project?._id, project?.name)'>
                     {{ project?.name }}
                   </td>
 

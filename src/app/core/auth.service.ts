@@ -14,6 +14,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { mergeMap } from 'rxjs/operators/mergeMap';
 
 import { User } from '../models/user-model';
+import { Project } from '../models/project-model';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 // import { ProjectService } from '../services/project.service';
@@ -63,7 +64,7 @@ export class AuthService {
   // user: User
   public user_bs: BehaviorSubject<User> = new BehaviorSubject<User>(null);
 
-  public projectid_bs: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+  public project_bs: BehaviorSubject<Project> = new BehaviorSubject<Project>(null);
 
   constructor(
     http: Http,
@@ -87,7 +88,15 @@ export class AuthService {
     // debugger
     this.checkCredentials();
 
+    this.getProjectFromLocalStorage();
   }
+
+  getProjectFromLocalStorage() {
+    // WHEN THE PAGE IS RELOADED THE project_id RETURNED FRON THE SUBSCRIPTION IS NULL SO IT IS GET FROM LOCAL STORAGE
+    const storedProject = localStorage.getItem('project')
+    this.project_bs.next(JSON.parse(storedProject));
+  }
+
   // GET THE USER OBJECT FROM LOCAL STORAGE AND PASS IT IN user_bs
   checkCredentials() {
     const storedUser = localStorage.getItem('user')
@@ -326,25 +335,23 @@ export class AuthService {
       .catch((error) => this.handleError(error));
   }
 
-    // THE project_id IS PASSED FROM PROJCT COMPONENT WHEN THE USER SELECT A PROJECT
-    projectIdSelected(project_id) {
-      // PUBLISH THE project_id TO WHICH THE SIDEBAR IS SUBSCRIBED
-      this.projectid_bs.next(project_id);
-    }
+
+
+  // THE project_id IS PASSED FROM PROJECT COMPONENT WHEN THE USER SELECT A PROJECT
+  projectSelected(project: Project) {
+    // PUBLISH THE project_id TO WHICH THE SIDEBAR IS SUBSCRIBED
+    this.project_bs.next(project);
+  }
 
   signOut() {
     // !!! NO MORE USED
     // this.afAuth.auth.signOut()
 
-
     this.user_bs.next(null);
-    localStorage.removeItem('user');
-    localStorage.removeItem('projectid');
-    this.projectid_bs.next(null);
+    this.project_bs.next(null);
 
-    // tslint:disable-next-line:no-debugger
-    // debugger
-    // this.projectService.projectid_bs.next(null)
+    localStorage.removeItem('user');
+    localStorage.removeItem('project');
 
     firebase.auth().signOut()
       .then(function () {

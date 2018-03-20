@@ -16,6 +16,8 @@ declare var $: any;
 import * as firebase from 'firebase/app';
 import { forEach } from '@angular/router/src/utils/collection';
 
+import { Project } from '../../models/project-model';
+
 @Component({
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
@@ -45,6 +47,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     notify: any;
     private shown_requests = {};
 
+    project: Project;
 
     constructor(
         location: Location,
@@ -60,6 +63,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         this.location = location;
         this.sidebarVisible = false;
         // this.unservedRequestCount = 0
+
+
     }
 
 
@@ -84,16 +89,23 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
         this.checkRequestStatusInShown_requests();
 
-        this.getLoggedUser()
+        this.getLoggedUser();
 
         /* REPLACED */
         // this.getLastRequest();
         // this.getUnservedRequestLenght();
         // this.getUnservedRequestLenght_bs();
 
-
+        this.getCurrentProject();
 
     } // OnInit
+
+    getCurrentProject() {
+        this.auth.project_bs.subscribe((project) => {
+            this.project = project
+            console.log('00 -> SIDEBAR project from AUTH service subscription  ', project)
+        });
+    }
 
     getLoggedUser() {
         this.auth.user_bs.subscribe((user) => {
