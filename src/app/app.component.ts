@@ -126,21 +126,18 @@ export class AppComponent implements OnInit, AfterViewInit {
         // const elemContentainerFluid = <HTMLElement>document.querySelector('.container-fluid');
 
 
-        /* DETECT IF IS THE LOGIN PAGE */
+        /* DETECT IF IS THE LOGIN PAGE - SIGNUP - WELCOME */
         this.router.events.subscribe((val) => {
             if (this.location.path() !== '') {
                 this.route = this.location.path();
 
                 // console.log('»> ', this.route)
                 // tslint:disable-next-line:max-line-length
-                if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/welcome') || (this.route === '/projects')) {
+                if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/welcome')) {
 
-                    // this.navbar.sidebarClose();
-                    elemAppSidebar.setAttribute('style', 'display:none;');
                     elemNavbar.setAttribute('style', 'display:none;');
+                    elemAppSidebar.setAttribute('style', 'display:none;');
                     elemMainPanel.setAttribute('style', 'width:100% !important; margin-top: -70px');
-                    // elemContentainerFluid.setAttribute('style', 'margin-top: -70px');
-                    // elemMainContent.setAttribute('style', 'margin-top: 0px');
 
                     // console.log('DETECT LOGIN PAGE')
                     this.LOGIN_PAGE = true;
@@ -149,8 +146,29 @@ export class AppComponent implements OnInit, AfterViewInit {
                     elemAppSidebar.setAttribute('style', 'display:block;');
                     elemNavbar.setAttribute('style', 'display:block;');
                     elemMainPanel.setAttribute('style', '');
-                    // elemMainContent.setAttribute('style', '');
 
+                }
+            } else {
+                // console.log('»> * ', this.route)
+            }
+        });
+
+        /* DETECT IF IS PROJECT PAGE*/
+        this.router.events.subscribe((val) => {
+            if (this.location.path() !== '') {
+                this.route = this.location.path();
+                // console.log('»> ', this.route)
+                if (this.route === '/projects') {
+
+                    elemAppSidebar.setAttribute('style', 'display:none;');
+                    elemMainPanel.setAttribute('style', 'width:100% !important;');
+
+                    // console.log('DETECT LOGIN PAGE')
+                    this.LOGIN_PAGE = true;
+                } else {
+                    this.LOGIN_PAGE = false;
+                    elemAppSidebar.setAttribute('style', 'display:block;');
+                    elemMainPanel.setAttribute('style', '');
                 }
             } else {
                 // console.log('»> * ', this.route)

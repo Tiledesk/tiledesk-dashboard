@@ -32,13 +32,14 @@
                                 <p class="hidden-lg hidden-md">Projects</p>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a routerLink="/projects">Visualizza tutti i progetti</a></li>
+                                    <!-- routerLink="/projects" -->
+                                <li (click)="goToProjects()" ><a >Visualizza tutti i progetti</a></li>
                                 <li><a routerLink="/project/create">Aggiungi un progetto</a></li>
                             </ul>
                         </li>
 
                         <!-- NOTIFICATION -->
-                        <li class="dropdown">
+                        <li *ngIf="project" class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="material-icons">notifications</i>
 
@@ -83,7 +84,7 @@
                                     <div class="card card-profile" style="box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0)">
                                         <div class="card-avatar" style="max-width:80px; max-height:80px;background-color:#ffffff">
                                             <a>
-                                                <img class="img" src="../assets/img/faces/no_image_user.png" />
+                                                <img class="img" src="assets/img/no_image_user.png" />
                                             </a>
                                             
                                         </div>

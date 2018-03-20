@@ -343,6 +343,12 @@ export class AuthService {
     this.project_bs.next(project);
   }
 
+  hasClickedGoToProjects() {
+    console.log('HAS BEEN CALLED HAS CLICKED GOTO PROJECTS')
+    this.project_bs.next(null);
+    localStorage.removeItem('project');
+  }
+
   signOut() {
     // !!! NO MORE USED
     // this.afAuth.auth.signOut()

@@ -18,6 +18,7 @@ import { forEach } from '@angular/router/src/utils/collection';
 
 import { Project } from '../../models/project-model';
 
+
 @Component({
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
@@ -103,7 +104,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     getCurrentProject() {
         this.auth.project_bs.subscribe((project) => {
             this.project = project
-            console.log('00 -> SIDEBAR project from AUTH service subscription  ', project)
+            console.log('00 -> NAVBAR project from AUTH service subscription  ', this.project )
         });
     }
 
@@ -114,6 +115,15 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
             // debugger
             this.user = user;
         });
+    }
+
+    goToProjects() {
+        console.log('HAS CLICCKED GO TO PROJECT ')
+        this.router.navigate(['/projects']);
+
+        // (in AUTH SERVICE ) RESET PROJECT_BS AND REMOVE ITEM PROJECT FROM STORAGE WHEN THE USER GO TO PROJECTS PAGE
+        this.auth.hasClickedGoToProjects()
+        console.log('00 -> NAVBAR project AFTER GOTO PROJECTS ', this.project )
     }
 
     // NEW
