@@ -15,7 +15,7 @@ export const environment = {
         FAQ_BASE_URL: 'http://localhost:3000/app1/faq/',
         BOTS_BASE_URL: 'http://localhost:3000/app1/bots/',
         FAQKB_BASE_URL: 'http://localhost:3000/app1/faq_kb/',
-        PROJECTS_BASE_URL: 'http://localhost:3000/app1/projects/',
+        PROJECTS_BASE_URL: 'http://localhost:3000/projects/',
         PROJECT_USER_BASE_URL: 'http://localhost:3000/app1/project_users/',
         SIGNUP_BASE_URL: 'http://localhost:3000/auth/signup',
         SIGNIN_BASE_URL: 'http://localhost:3000/auth/signin',

@@ -3,6 +3,9 @@ import { MongodbDepartmentService } from '../services/mongodb-department.service
 import { Department } from '../models/department-model';
 import { Router } from '@angular/router';
 
+import { Project } from '../models/project-model';
+import { AuthService } from '../core/auth.service';
+
 @Component({
   selector: 'mongodb-departments',
   templateUrl: './departments.component.html',
@@ -29,26 +32,35 @@ export class DepartmentsComponent implements OnInit {
   id_toUpdate: string;
   deptName_toUpdate: string;
 
+  project: Project;
+
   constructor(
     private mongodbDepartmentService: MongodbDepartmentService,
     private router: Router,
-  ) {
-
-  }
+    private auth: AuthService
+  ) {  }
 
   ngOnInit() {
     this.getDepartments();
+    this.getCurrentProject();
+  }
+
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+      this.project = project
+      console.log('00 -> DEPT COMP project ID from AUTH service subscription  ', this.project._id)
+    });
   }
 
   // GO TO  BOT-EDIT-ADD COMPONENT
   goToEditAddPage_CREATE() {
-    this.router.navigate(['/department/create']);
+    this.router.navigate(['project/' + this.project._id  + '/department/create']);
   }
 
   // GO TO BOT-EDIT-ADD COMPONENT AND PASS THE BOT ID (RECEIVED FROM THE VIEW)
   goToEditAddPage_EDIT(dept_id: string) {
     console.log('DEPT ID ', dept_id);
-    this.router.navigate(['/department/edit', dept_id]);
+    this.router.navigate(['project/' + this.project._id + '/department/edit', dept_id]);
   }
 
   /**

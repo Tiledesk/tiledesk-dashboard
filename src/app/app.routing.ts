@@ -100,20 +100,27 @@ const routes: Routes = [
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
 
   { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
+
   { path: 'project/:projectid/faqkb', component: FaqKbComponent, canActivate: [AuthGuard] },
-  { path: 'createfaqkb', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'editfaqkb/:faqkbid', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'faq/:faqkbid', component: FaqComponent, canActivate: [AuthGuard] }, // used to pass the faq kb id from  in faq page
-  { path: 'createfaq/:faqkbid', component: FaqEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'editfaq/:faqkbid/:faqid', component: FaqEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'createbot', component: BotEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'editbot/:botid', component: BotEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/analytics', component: AnalyticsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/createfaqkb', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/editfaqkb/:faqkbid', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },
+  
+  // { path: 'faq/:faqkbid', component: FaqComponent, canActivate: [AuthGuard] }, // used to pass the faq kb id from  in faq page
+  // tslint:disable-next-line:max-line-length
+  { path: 'project/:projectid/faq/:faqkbid', component: FaqComponent, canActivate: [AuthGuard] }, // used to pass the faq kb id from  in faq page
+  { path: 'project/:projectid/createfaq/:faqkbid', component: FaqEditAddComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/editfaq/:faqkbid/:faqid', component: FaqEditAddComponent, canActivate: [AuthGuard] },
+
   { path: 'project/:projectid/bots', component: BotsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/createbot', component: BotEditAddComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/editbot/:botid', component: BotEditAddComponent, canActivate: [AuthGuard] },
+
+  { path: 'project/:projectid/analytics', component: AnalyticsComponent, canActivate: [AuthGuard] },
+ 
 
   { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard] },
-  { path: 'department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/history', component: RequestsListHistoryComponent, canActivate: [AuthGuard] },
   { path: 'user-profile', component: UserProfileComponent },

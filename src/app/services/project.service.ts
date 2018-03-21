@@ -11,8 +11,6 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 @Injectable()
 export class ProjectService {
 
- 
-
   http: Http;
   PROJECT_BASE_URL = environment.mongoDbConfig.PROJECTS_BASE_URL;
   PROJECT_USER_BASE_URL = environment.mongoDbConfig.PROJECT_USER_BASE_URL;

@@ -44,7 +44,7 @@
                                 <i class="material-icons">notifications</i>
 
                                 <!-- SHOW THE BADGE OVER NOTIFICATION IF THE COUNT OF UNRESOLVED REQUESTS IN > 0 -->
-                                <span *ngIf="unservedRequestCount > 0" routerLink="/requests">
+                                <span *ngIf="unservedRequestCount > 0" routerLink="project/{{ project._id }}/requests">
                                     <span class="notification">{{unservedRequestCount}}</span>
                                 </span>
 

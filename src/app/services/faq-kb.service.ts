@@ -4,6 +4,7 @@ import { FaqKb } from '../models/faq_kb-model';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { environment } from '../../environments/environment';
+import { AuthService } from '../core/auth.service';
 
 
 @Injectable()
@@ -11,12 +12,35 @@ export class FaqKbService {
 
   http: Http;
   MONGODB_BASE_URL = environment.mongoDbConfig.FAQKB_BASE_URL;
-  TOKEN = environment.mongoDbConfig.TOKEN;
+  // TOKEN = environment.mongoDbConfig.TOKEN;
+  TOKEN: string
+  user: any;
+ 
 
   constructor(
     http: Http,
+    private auth: AuthService
   ) {
     this.http = http;
+
+    // SUBSCRIBE TO USER BS
+    this.user = auth.user_bs.value
+    this.checkUser()
+
+    this.auth.user_bs.subscribe((user) => {
+      this.user = user;
+      this.checkUser()
+    });
+
+  }
+
+  checkUser() {
+    if (this.user) {
+      this.TOKEN = this.user.token
+      // this.getToken();
+    } else {
+      console.log('No user is signed in');
+    }
   }
 
   /**

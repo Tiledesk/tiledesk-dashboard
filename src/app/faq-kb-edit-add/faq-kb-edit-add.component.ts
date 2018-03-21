@@ -3,6 +3,9 @@ import { FaqKbService } from '../services/faq-kb.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 
+import { Project } from '../models/project-model';
+import { AuthService } from '../core/auth.service';
+
 @Component({
   selector: 'faq-kb-edit-add',
   templateUrl: './faq-kb-edit-add.component.html',
@@ -23,31 +26,45 @@ export class FaqKbEditAddComponent implements OnInit {
 
   showSpinner = true;
 
+  project: Project;
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
     private route: ActivatedRoute,
+    private auth: AuthService
   ) {
 
   }
 
   ngOnInit() {
 
-    // GET THE ID OF FAQ-KB PASSED BY FAQ-KB PAGE
-    this.getFaqKbId();
 
-    // GET THE DETAIL OF FAQ-KB BY THE ID AS ABOVE
-    this.getFaqKbById();
 
     // BASED ON THE URL PATH DETERMINE IF THE USER HAS SELECTED (IN FAQ-KB PAGE) 'CREATE' OR 'EDIT'
-    if (this.router.url === '/createfaqkb') {
+    // if (this.router.url === '/createfaqkb') {
+    if (this.router.url.indexOf('/createfaqkb') !== -1) {
       console.log('HAS CLICKED CREATE ');
       this.CREATE_VIEW = true;
       this.showSpinner = false;
     } else {
       console.log('HAS CLICKED EDIT ');
       this.EDIT_VIEW = true;
+
+      // GET THE ID OF FAQ-KB PASSED BY FAQ-KB PAGE
+      this.getFaqKbId();
+
+      // GET THE DETAIL OF FAQ-KB BY THE ID AS ABOVE
+      this.getFaqKbById();
     }
+
+    this.getCurrentProject();
+  }
+
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+      this.project = project
+      console.log('00 -> DEPT COMP project ID from AUTH service subscription  ', this.project._id)
+    });
   }
 
   getFaqKbId() {
@@ -90,7 +107,7 @@ export class FaqKbEditAddComponent implements OnInit {
       () => {
         console.log('POST REQUEST * COMPLETE *');
 
-        this.router.navigate(['/faqkb']);
+        this.router.navigate(['project/' + this.project._id + '/faqkb']);
       });
   }
 
@@ -98,7 +115,7 @@ export class FaqKbEditAddComponent implements OnInit {
     console.log('FAQ KB NAME TO UPDATE ', this.faqKbNameToUpdate);
     console.log('FAQ KB URL TO UPDATE ', this.faqKbUrlToUpdate);
 
-    this.faqKbService.updateMongoDbFaqKb(this.id_faq_kb,  this.faqKbNameToUpdate, this.faqKbUrlToUpdate).subscribe((data) => {
+    this.faqKbService.updateMongoDbFaqKb(this.id_faq_kb, this.faqKbNameToUpdate, this.faqKbUrlToUpdate).subscribe((data) => {
       console.log('PUT DATA ', data);
 
       // RE-RUN GET CONTACT TO UPDATE THE TABLE
@@ -113,12 +130,12 @@ export class FaqKbEditAddComponent implements OnInit {
       () => {
         console.log('PUT REQUEST * COMPLETE *');
 
-        this.router.navigate(['/faqkb']);
+        this.router.navigate(['project/' + this.project._id + '/faqkb']);
       });
   }
 
   goBackToFaqKbList() {
-    this.router.navigate(['/faqkb']);
+    this.router.navigate(['project/' + this.project._id + '/faqkb']);
   }
 
 

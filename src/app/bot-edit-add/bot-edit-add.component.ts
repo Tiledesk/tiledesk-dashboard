@@ -6,6 +6,9 @@ import { FaqKbService } from '../services/faq-kb.service';
 import { forEach } from '@angular/router/src/utils/collection';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
+import { Project } from '../models/project-model';
+import { AuthService } from '../core/auth.service';
+
 @Component({
   selector: 'bot-edit-add',
   templateUrl: './bot-edit-add.component.html',
@@ -31,11 +34,14 @@ export class BotEditAddComponent implements OnInit {
 
   faqKbEdit: string;
 
+  project: Project;
+
   constructor(
     private botService: BotService,
     private router: Router,
     private route: ActivatedRoute,
     private faqKbService: FaqKbService,
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
@@ -49,7 +55,8 @@ export class BotEditAddComponent implements OnInit {
     /**
      * BASED ON THE URL PATH DETERMINE IF THE USER HAS SELECTED (IN BOT PAGE) 'CREATE' OR 'EDIT'
      */
-    if (this.router.url === '/createbot') {
+    // if (this.router.url === '/createbot') {
+    if (this.router.url.indexOf('/createbot') !== -1) {
 
       console.log('HAS CLICKED CREATE ');
       this.CREATE_VIEW = true;
@@ -67,7 +74,16 @@ export class BotEditAddComponent implements OnInit {
         this.getBotById();
       }
     }
+
+    this.getCurrentProject();
   } // ./ OnInit
+
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+      this.project = project
+      console.log('00 -> DEPT COMP project ID from AUTH service subscription  ', this.project._id)
+    });
+  }
 
   getBotId() {
     this.id_bot = this.route.snapshot.params['botid'];
@@ -158,7 +174,7 @@ export class BotEditAddComponent implements OnInit {
 
   // GO BACK TO FAQ COMPONENT
   goBackToBotList() {
-    this.router.navigate(['/bots']);
+    this.router.navigate(['project/' + this.project._id  + '/bots']);
   }
 
   /**
@@ -230,7 +246,7 @@ export class BotEditAddComponent implements OnInit {
       () => {
         console.log('CREATE BOT - POST REQUEST COMPLETE ');
 
-        this.router.navigate(['/bots']);
+        this.router.navigate(['project/' + this.project._id  + '/bots']);
       });
   }
 
@@ -266,7 +282,7 @@ export class BotEditAddComponent implements OnInit {
       () => {
         console.log('PUT REQUEST * COMPLETE *');
 
-        this.router.navigate(['/bots']);
+        this.router.navigate(['project/' + this.project._id  + '/bots']);
       });
 
   }

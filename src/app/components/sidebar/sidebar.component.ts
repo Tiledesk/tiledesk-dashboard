@@ -59,6 +59,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     IS_UNAVAILABLE = false;
 
     project: Project;
+    user: any;
 
     ROUTES: RouteInfo[];
 
@@ -116,6 +117,16 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // } else {
         //     this.trasform = 'none';
         // }
+        this.getLoggedUser();
+    }
+
+    getLoggedUser() {
+        this.auth.user_bs.subscribe((user) => {
+            console.log('USER GET IN SIDEBAR ', user)
+            // tslint:disable-next-line:no-debugger
+            // debugger
+            this.user = user;
+        });
     }
 
 
@@ -178,7 +189,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             this.IS_UNAVAILABLE = hasClickedChangeStatus
             console.log('HAS CLICKED CHANGE STATUS - IS_UNAVAILABLE ? ', this.IS_UNAVAILABLE);
         }
+    }
 
+    logout() {
+        this.auth.signOut();
 
     }
 }

@@ -15,7 +15,7 @@ export const environment = {
         FAQ_BASE_URL: 'http://api.chat21.org/app1/faq/',
         BOTS_BASE_URL: 'http://api.chat21.org/app1/bots/',
         FAQKB_BASE_URL: 'http://api.chat21.org/app1/faq_kb/',
-        PROJECTS_BASE_URL: 'http://api.chat21.org/app1/projects/',
+        PROJECTS_BASE_URL: 'http://api.chat21.org/projects/',
         PROJECT_USER_BASE_URL: 'http://api.chat21.org/app1/project_users/',
         SIGNUP_BASE_URL: 'http://api.chat21.org/auth/signup',
         SIGNIN_BASE_URL: 'http://api.chat21.org/auth/signin',

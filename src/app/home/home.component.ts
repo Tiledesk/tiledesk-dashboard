@@ -3,6 +3,9 @@ import { AuthService, SuperUser } from '../core/auth.service';
 import { environment } from '../../environments/environment';
 import { ActivatedRoute } from '@angular/router';
 
+import { Project } from '../models/project-model';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'home',
   templateUrl: './home.component.html',
@@ -18,12 +21,13 @@ export class HomeComponent implements OnInit {
   IS_SUPER_USER: boolean;
 
   user: any;
-
+  project: Project;
   // projectid: string;
 
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -43,16 +47,34 @@ export class HomeComponent implements OnInit {
     // }
     this.getLoggedUser()
     this.getProjectId()
+
+    this.auth.project_bs.subscribe((project) => {
+      this.project = project
+      console.log('00 -> HOME project from AUTH service subscription  ', project)
+
+    });
+  }
+
+  goToRequests() {
+    this.router.navigate(['project/' + this.project._id + '/requests']);
+  }
+
+  goToAnalytics() {
+    this.router.navigate(['project/' + this.project._id + '/analytics']);
+  }
+
+  goToHistory() {
+    this.router.navigate(['project/' + this.project._id + '/history']);
   }
 
   getProjectId() {
     // this.projectid = this.route.snapshot.params['projectid'];
     // console.log('SIDEBAR - - - - - CURRENT projectid ', this.projectid);
     this.route.params.subscribe(params => {
-        // const param = params['projectid'];
-       console.log('NAVBAR - - - - - CURRENT projectid ', params );
+      // const param = params['projectid'];
+      console.log('NAVBAR - - - - - CURRENT projectid ', params);
     });
-}
+  }
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {

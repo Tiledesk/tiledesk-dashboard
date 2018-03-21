@@ -4,6 +4,9 @@ import { Faq } from '../models/faq-model';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 
+import { Project } from '../models/project-model';
+import { AuthService } from '../core/auth.service';
+
 @Component({
   selector: 'faq',
   templateUrl: './faq.component.html',
@@ -28,11 +31,13 @@ export class FaqComponent implements OnInit {
 
   id_faq_kb: string;
 
+  project: Project;
+
   constructor(
     private mongodbFaqService: MongodbFaqService,
     private router: Router,
     private route: ActivatedRoute,
-
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
@@ -45,6 +50,14 @@ export class FaqComponent implements OnInit {
     // GET ONLY THE FAQ WITH THE FAQ-KB ID
     this.getFaqByFaqKbId();
 
+    this.getCurrentProject();
+  }
+
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+      this.project = project
+      console.log('00 -> FAQ COMP project ID from AUTH service subscription  ', this.project._id)
+    });
   }
 
   getFaqKbId() {
@@ -55,18 +68,18 @@ export class FaqComponent implements OnInit {
   // GO TO FAQ-EDIT-ADD COMPONENT AND PASS THE FAQ-KB ID (RECEIVED FROM FAQ-KB COMPONENT)
   goToEditAddPage_CREATE() {
     console.log('ID OF FAQKB ', this.id_faq_kb);
-    this.router.navigate(['/createfaq', this.id_faq_kb]);
+    this.router.navigate(['project/' + this.project._id  + '/createfaq', this.id_faq_kb]);
   }
 
   // GO TO FAQ-EDIT-ADD COMPONENT AND PASS THE FAQ ID (RECEIVED FROM THE VIEW) AND
   // THE FAQ-KB ID (RECEIVED FROM FAQ-KB COMPONENT)
   goToEditAddPage_EDIT(faq_id: string) {
     console.log('ID OF FAQ ', faq_id);
-    this.router.navigate(['/editfaq', this.id_faq_kb, faq_id]);
+    this.router.navigate(['project/' + this.project._id  + '/editfaq', this.id_faq_kb, faq_id]);
   }
 
   goBackToFaqKbList() {
-    this.router.navigate(['/faqkb']);
+    this.router.navigate(['project/' + this.project._id + '/faqkb']);
   }
 
   /**

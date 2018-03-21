@@ -184,7 +184,8 @@
       <div class="row">
           <!-- <div class="col-lg-3 col-md-6 col-sm-6"> -->
           <div class="col-lg-5 col-lg-offset-1 col-md-6 col-sm-6" style="">  
-              <div class="card card-stats" style="max-width:350px" routerLink="/requests">
+              <!-- routerLink="/requests" -->
+              <div class="card card-stats" style="max-width:350px" (click)="goToRequests()">
                   <!-- <div class="card-header" data-background-color="orange"> -->
                   <div class="card-header" data-background-color="orange">
                       <i class="material-icons">group</i>
@@ -226,7 +227,8 @@
           </div>
           <!-- <div class="col-lg-3 col-md-6 col-sm-6"> -->
           <div class="col-lg-5 col-lg-offset-1 col-md-6 col-sm-6" style="">
-              <div class="card card-stats" style="max-width:350px" routerLink="/analytics">
+              <!-- routerLink="/analytics" -->
+              <div class="card card-stats" style="max-width:350px" (click)="goToAnalytics()">
                   <div class="card-header" data-background-color="orange">
                       <i class="material-icons">trending_up</i>
                   </div>
@@ -248,7 +250,8 @@
           <!-- <div class="col-lg-3 col-md-6 col-sm-6"> -->
           <div class="col-lg-5 col-lg-offset-1 col-md-6 col-sm-6" style="">
               <!-- routerLink="/projects" -->
-              <div class="card card-stats" style="max-width:350px;" routerLink="/history">
+              <!-- routerLink="/history" -->
+              <div class="card card-stats" style="max-width:350px;" (click)="goToHistory()">
                   <!-- <div class="card-header" data-background-color="blue"> -->
                   <div class="card-header" data-background-color="orange" style="">  
                       <!-- <i class="fa fa-twitter"></i> -->

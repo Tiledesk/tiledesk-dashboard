@@ -5,6 +5,9 @@ import { ActivatedRoute } from '@angular/router';
 import { MongodbDepartmentService } from '../services/mongodb-department.service';
 import { BotService } from '../services/bot.service';
 
+import { Project } from '../models/project-model';
+import { AuthService } from '../core/auth.service';
+
 @Component({
   selector: 'app-department-edit-add',
   templateUrl: './department-edit-add.component.html',
@@ -34,13 +37,14 @@ export class DepartmentEditAddComponent implements OnInit {
   botIdEdit: string;
   dept_routing: string;
 
-
+  project: Project;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private mongodbDepartmentService: MongodbDepartmentService,
     private botService: BotService,
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
@@ -96,6 +100,14 @@ export class DepartmentEditAddComponent implements OnInit {
       }
     }
 
+    this.getCurrentProject();
+  }
+
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+      this.project = project
+      console.log('00 -> DEPT COMP project ID from AUTH service subscription  ', this.project._id)
+    });
   }
 
   getDeptId() {
@@ -124,7 +136,7 @@ export class DepartmentEditAddComponent implements OnInit {
 
   // GO BACK TO DEPARTMENTS COMPONENT
   goBackToDeptsList() {
-    this.router.navigate(['/departments']);
+    this.router.navigate(['project/' + this.project._id  + '/departments']);
   }
 
   // WHEN THE USER EDITS A BOT CAN SELECT A BOT TO CORRELATE AT THE DEPARTMENT
@@ -163,7 +175,7 @@ export class DepartmentEditAddComponent implements OnInit {
       },
       () => {
         console.log('DEPT POST REQUEST * COMPLETE *');
-        this.router.navigate(['/departments']);
+        this.router.navigate(['project/' + this.project._id  + '/departments']);
       });
   }
 
@@ -281,7 +293,7 @@ export class DepartmentEditAddComponent implements OnInit {
     console.log('DEPT ID WHEN EDIT IS PRESSED ', this.id_dept);
     console.log('DEPT FULL-NAME WHEN EDIT IS PRESSED ', this.deptName_toUpdate);
     console.log('BOT ID WHEN EDIT IS PRESSED IF USER HAS SELECT ANOTHER BOT', this.selectedBotId);
-    console.log('BOT ID WHEN EDIT IS PRESSED IF USER ! DOES NOT SELECT A ANOTHER FAQ-KB', this.botId);
+    console.log('BOT ID WHEN EDIT IS PRESSED IF USER ! DOES NOT SELECT A ANOTHER BOT', this.botId);
 
     // selectedFaqKbId
     // FIXED LOGIC IF THE USER, WHEN EDIT THE BOT (AND HAS SELECTED FIXED), DOESN'T SELECT ANY NEW BOT this.selectedBotId IS UNDEFINED
@@ -307,7 +319,7 @@ export class DepartmentEditAddComponent implements OnInit {
       () => {
         console.log('PUT REQUEST * COMPLETE *');
 
-        this.router.navigate(['/departments']);
+        this.router.navigate(['project/' + this.project._id  + '/departments']);
       });
 
   }

@@ -104,3 +104,17 @@
 *:focus {
     outline: none;
 }
+
+// DROPDOWN MENU (USER PROFILE AND LOGOUT)
+// @media (max-width: 767px){
+//     .navbar-nav .open .dropdown-menu {
+//         float: right !important;
+//     }
+// }
+
+@media (max-width: 991px) {
+
+.navbar-header .collapse, .navbar-toggle {
+    display: block !important;
+}
+}

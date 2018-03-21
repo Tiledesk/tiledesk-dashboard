@@ -12,17 +12,34 @@ export class BotService {
 
   http: Http;
   MONGODB_BASE_URL = environment.mongoDbConfig.BOTS_BASE_URL;
-  TOKEN = environment.mongoDbConfig.TOKEN;
-  // TOKEN: string
+  // TOKEN = environment.mongoDbConfig.TOKEN;
+  TOKEN: string
+  user: any;
 
   constructor(
     http: Http,
-    private auth: AuthService,
+    private auth: AuthService
   ) {
     this.http = http;
 
-    // this.TOKEN = auth.user_bs.value.token;
-    console.log('BOT SERVICE - TOKEN ', this.TOKEN)
+    // SUBSCRIBE TO USER BS
+    this.user = auth.user_bs.value
+    this.checkUser()
+
+    this.auth.user_bs.subscribe((user) => {
+      this.user = user;
+      this.checkUser()
+    });
+
+  }
+
+  checkUser() {
+    if (this.user) {
+      this.TOKEN = this.user.token
+      // this.getToken();
+    } else {
+      console.log('No user is signed in');
+    }
   }
 
   /**

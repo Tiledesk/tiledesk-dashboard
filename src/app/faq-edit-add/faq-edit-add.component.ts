@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { MongodbFaqService } from '../services/mongodb-faq.service';
 
+import { Project } from '../models/project-model';
+import { AuthService } from '../core/auth.service';
+
 @Component({
   selector: 'faq-edit-add',
   templateUrl: './faq-edit-add.component.html',
@@ -26,11 +29,13 @@ export class FaqEditAddComponent implements OnInit {
   id_faq_kb: string;
   id_faq: string;
 
+  project: Project;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private mongodbFaqService: MongodbFaqService,
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
@@ -56,6 +61,15 @@ export class FaqEditAddComponent implements OnInit {
       }
 
     }
+
+    this.getCurrentProject();
+  }
+
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+      this.project = project
+      console.log('00 -> DEPT COMP project ID from AUTH service subscription  ', this.project._id)
+    });
   }
 
   getFaqKbId() {
@@ -94,7 +108,7 @@ export class FaqEditAddComponent implements OnInit {
 
   // GO BACK TO FAQ COMPONENT
   goBackToFaqList() {
-    this.router.navigate(['/faq', this.id_faq_kb]);
+    this.router.navigate(['project/' + this.project._id  + '/faq', this.id_faq_kb]);
   }
 
   /**
@@ -120,7 +134,7 @@ export class FaqEditAddComponent implements OnInit {
       () => {
         console.log('POST REQUEST * COMPLETE *');
 
-        this.router.navigate(['/faq', this.id_faq_kb]);
+        this.router.navigate(['project/' + this.project._id  + '/faq', this.id_faq_kb]);
       });
 
   }
@@ -144,7 +158,7 @@ export class FaqEditAddComponent implements OnInit {
       () => {
         console.log('PUT (UPDATE FAQ) REQUEST * COMPLETE *');
 
-        this.router.navigate(['/faq', this.id_faq_kb]);
+        this.router.navigate(['project/' + this.project._id  + '/faq', this.id_faq_kb]);
       });
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, HostListener } from '@angular/core';
 import { ProjectService } from '../services/project.service';
 import { Project } from '../models/project-model';
 import { Router } from '@angular/router';
@@ -25,16 +25,37 @@ export class ProjectsComponent implements OnInit {
   projectName_toDelete: string;
   id_toDelete: string;
 
+  user: any;
+  private toggleButton: any;
+  private sidebarVisible: boolean;
+  newInnerWidth: any;
+
   constructor(
     private projectService: ProjectService,
     private router: Router,
     private auth: AuthService,
-    private requestsService: RequestsService
+    private requestsService: RequestsService,
+    private element: ElementRef,
   ) { }
 
   ngOnInit() {
-    this.getProjects();
+    const navbar: HTMLElement = this.element.nativeElement;
+    this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
 
+    this.getProjects();
+    this.getLoggedUser();
+
+  }
+
+  getLoggedUser() {
+    this.auth.user_bs.subscribe((user) => {
+      console.log('USER GET IN PROJECT COMP ', user)
+      this.user = user;
+    });
+  }
+
+  logout() {
+    this.auth.signOut();
   }
 
   // project/:projectid/home
@@ -123,5 +144,47 @@ export class ProjectsComponent implements OnInit {
       });
 
   }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.newInnerWidth = event.target.innerWidth;
+    console.log('INNER WIDTH ', this.newInnerWidth)
+
+    if (this.newInnerWidth >= 992) {
+      const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
+      elemAppSidebar.setAttribute('style', 'display:none;');
+    }
+  }
+
+  sidebarOpen() {
+    const toggleButton = this.toggleButton;
+    const body = document.getElementsByTagName('body')[0];
+    setTimeout(function () {
+      toggleButton.classList.add('toggled');
+    }, 500);
+    body.classList.add('nav-open');
+
+    this.sidebarVisible = true;
+    const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
+    elemAppSidebar.setAttribute('style', 'display:block;');
+  };
+  sidebarClose() {
+    const body = document.getElementsByTagName('body')[0];
+    this.toggleButton.classList.remove('toggled');
+    this.sidebarVisible = false;
+    body.classList.remove('nav-open');
+
+    const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
+    elemAppSidebar.setAttribute('style', 'display:none;');
+  };
+  sidebarToggle() {
+    // const toggleButton = this.toggleButton;
+    // const body = document.getElementsByTagName('body')[0];
+    if (this.sidebarVisible === false) {
+      this.sidebarOpen();
+    } else {
+      this.sidebarClose();
+    }
+  };
 
 }

@@ -3,6 +3,9 @@ import { BotService } from '../services/bot.service';
 import { Bot } from '../models/bot-model';
 import { Router } from '@angular/router';
 
+import { Project } from '../models/project-model';
+import { AuthService } from '../core/auth.service';
+
 @Component({
   selector: 'bots',
   templateUrl: './bots.component.html',
@@ -29,13 +32,24 @@ export class BotsComponent implements OnInit {
   id_toDelete: string;
   id_faq_kb: string;
 
+  project: Project;
+
   constructor(
     private botService: BotService,
     private router: Router,
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
     this.getBots();
+    this.getCurrentProject();
+  }
+
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+      this.project = project
+      console.log('00 -> BOTS COMP project ID from AUTH service subscription  ', this.project._id)
+    });
   }
 
   /**
@@ -50,13 +64,13 @@ export class BotsComponent implements OnInit {
 
   // GO TO  BOT-EDIT-ADD COMPONENT
   goToEditAddPage_CREATE() {
-    this.router.navigate(['/createbot']);
+    this.router.navigate(['project/' + this.project._id  + '/createbot']);
   }
 
   // GO TO BOT-EDIT-ADD COMPONENT AND PASS THE BOT ID (RECEIVED FROM THE VIEW)
   goToEditAddPage_EDIT(bot_id: string) {
     console.log('BOT ID ', bot_id);
-    this.router.navigate(['/editbot', bot_id]);
+    this.router.navigate(['project/' + this.project._id  + '/editbot', bot_id]);
   }
 
   /**
