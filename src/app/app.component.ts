@@ -124,6 +124,8 @@ export class AppComponent implements OnInit, AfterViewInit {
         const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
         // console.log('xxxx xxxx elemNavbar', elemNavbar)
         // const elemContentainerFluid = <HTMLElement>document.querySelector('.container-fluid');
+        
+        const elemNavbarToogle = <HTMLElement>document.querySelector('.navbar-toggle');
 
 
         /* DETECT IF IS THE LOGIN PAGE - SIGNUP - WELCOME */
@@ -133,7 +135,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
                 // console.log('»> ', this.route)
                 // tslint:disable-next-line:max-line-length
-                if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/welcome')) {
+                if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/welcome') || (this.route === '/projects')) {
 
                     elemNavbar.setAttribute('style', 'display:none;');
                     elemAppSidebar.setAttribute('style', 'display:none;');
@@ -154,26 +156,33 @@ export class AppComponent implements OnInit, AfterViewInit {
         });
 
         /* DETECT IF IS PROJECT PAGE*/
-        this.router.events.subscribe((val) => {
-            if (this.location.path() !== '') {
-                this.route = this.location.path();
-                // console.log('»> ', this.route)
-                if (this.route === '/projects') {
+        // this.router.events.subscribe((val) => {
+        //     if (this.location.path() !== '') {
+        //         this.route = this.location.path();
+        //         console.log('»> ', this.route)
+        //         if (this.route === '/projects') {
 
-                    elemAppSidebar.setAttribute('style', 'display:none;');
-                    elemMainPanel.setAttribute('style', 'width:100% !important;');
+        //             elemAppSidebar.setAttribute('style', 'display:none;');
+        //             elemMainPanel.setAttribute('style', 'width:100% !important;');
+        //             elemNavbarToogle.setAttribute('style', 'display:none;');
 
-                    // console.log('DETECT LOGIN PAGE')
-                    this.LOGIN_PAGE = true;
-                } else {
-                    this.LOGIN_PAGE = false;
-                    elemAppSidebar.setAttribute('style', 'display:block;');
-                    elemMainPanel.setAttribute('style', '');
-                }
-            } else {
-                // console.log('»> * ', this.route)
-            }
-        });
+        //             if (window.matchMedia(`(min-width: 960px)`).matches) {
+        //                 console.log('MATCH min-width: 960px)')
+        //             }
+
+        //             // console.log('DETECT LOGIN PAGE')
+        //             // tslint:disable-next-line:max-line-length
+        //         } else if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/welcome')) {
+
+        //             elemNavbar.setAttribute('style', 'display:none;');
+        //             elemAppSidebar.setAttribute('style', 'display:none;');
+        //             elemMainPanel.setAttribute('style', 'width:100% !important; margin-top: -70px');
+
+        //         }
+        //     } else {
+        //         // console.log('»> * ', this.route)
+        //     }
+        // });
     }
 
     ngAfterViewInit() {

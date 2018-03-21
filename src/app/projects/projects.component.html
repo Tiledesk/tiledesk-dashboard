@@ -1,6 +1,48 @@
 <!-- NEW FOR THIS TEMPLATE -->
-<p style="margin-top:10px; padding-left:30px" class="navbar-brand">Progetti</p> 
-<div class="main-content" style="padding-top:0px">
+<p style="margin-top:80px; padding-left:30px" class="navbar-brand">Progetti</p> 
+<div class="row">
+<nav class="navbar navbar-transparent navbar-absolute">
+    <div class="container-fluid">
+    <ul class="nav navbar-nav navbar-right">
+<li class="dropdown">
+    <!-- class="dropdown-toggle" -->
+    <!-- margin-top:56px; display:block; text-align:right; padding-top:15px;padding-bottom:15px; padding-right:28px; color: #555555;" -->
+  <a  data-toggle="dropdown" href="#" style="display:block; margin-top:70px;">
+    <i style="font-size:20px" class="material-icons">person</i>
+    <!-- <p class="hidden-lg hidden-md">Profile</p> -->
+  </a>
+  <!-- float:right !important; right:0px!important; left:1px!important  -->
+  <ul class="dropdown-menu" style="">
+
+      <div class="card card-profile" style="box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0)" >
+          <div class="card-avatar" style="max-width:80px; max-height:80px;background-color:#ffffff">
+              <a>
+                  <img class="img" src="assets/img/no_image_user.png" />
+              </a>
+              
+          </div>
+          <div class="content">
+              <h6 class="category text-gray"><a routerLink="/user-profile">PROFILO</a></h6>
+              <h4 class="card-title" style="padding-right:16px; padding-left:16px; font-size:1em; color: #3C4858">
+                 <!-- <strong> {{ user.firstname }} {{ user.lastname }} </strong> -->
+              </h4>
+              <!-- <h4 class="card-title" style="padding-right:16px; padding-left:16px; font-size:1em; margin-bottom:30px">{{ user.email }}</h4> -->
+              <!-- <p class="card-content">{{ user.email }}</p> -->
+
+             
+          </div>
+          <button style="padding-left:26px; padding-right:26px; font-size:0.9em" type="submit" class="btn btn-white" (click)="logout()">Logout</button>
+      </div>
+  </ul>
+</li>
+    </ul>
+    </div>
+  </nav>
+</div>
+
+
+
+<div class="main-content" style="padding-top:0px;">
   <div class="container-fluid">
   
     <div class="create" style="text-align: right!important; padding-top:25px; padding-bottom:0px">
