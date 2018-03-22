@@ -114,7 +114,8 @@ export class ProjectService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'name': `${name}`, 'id_user': this.currentUserID };
+    // , 'id_user': this.currentUserID
+    const body = { 'name': name };
 
     console.log('ADD PROJECT POST REQUEST BODY ', body);
 
