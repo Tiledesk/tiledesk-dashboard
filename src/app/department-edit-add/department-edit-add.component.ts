@@ -116,7 +116,7 @@ export class DepartmentEditAddComponent implements OnInit {
   }
 
   /**
- * *** GET ALL FAQ KB LIST ***
+ * *** GET ALL BOTS LIST ***
  */
   getBots() {
     this.botService.getMongDbBots().subscribe((bots: any) => {
@@ -136,7 +136,7 @@ export class DepartmentEditAddComponent implements OnInit {
 
   // GO BACK TO DEPARTMENTS COMPONENT
   goBackToDeptsList() {
-    this.router.navigate(['project/' + this.project._id  + '/departments']);
+    this.router.navigate(['project/' + this.project._id + '/departments']);
   }
 
   // WHEN THE USER EDITS A BOT CAN SELECT A BOT TO CORRELATE AT THE DEPARTMENT
@@ -175,7 +175,7 @@ export class DepartmentEditAddComponent implements OnInit {
       },
       () => {
         console.log('DEPT POST REQUEST * COMPLETE *');
-        this.router.navigate(['project/' + this.project._id  + '/departments']);
+        this.router.navigate(['project/' + this.project._id + '/departments']);
       });
   }
 
@@ -294,19 +294,25 @@ export class DepartmentEditAddComponent implements OnInit {
     console.log('DEPT FULL-NAME WHEN EDIT IS PRESSED ', this.deptName_toUpdate);
     console.log('BOT ID WHEN EDIT IS PRESSED IF USER HAS SELECT ANOTHER BOT', this.selectedBotId);
     console.log('BOT ID WHEN EDIT IS PRESSED IF USER ! DOES NOT SELECT A ANOTHER BOT', this.botId);
+    console.log('* DEPT_ROUTING WHEN EDIT IS PRESSED ', this.dept_routing);
+    console.log('* ROUTING_SELECTED WHEN EDIT IS PRESSED ', this.ROUTING_SELECTED);
 
     // selectedFaqKbId
-    // FIXED LOGIC IF THE USER, WHEN EDIT THE BOT (AND HAS SELECTED FIXED), DOESN'T SELECT ANY NEW BOT this.selectedBotId IS UNDEFINED
+    // FIXED LOGIC IF THE USER, WHEN EDIT THE DEPT (AND HAS SELECTED FIXED), DOESN'T SELECT ANY NEW BOT this.selectedBotId IS UNDEFINED
     // SO SET this.botIdEdit EQUAL TO THE BOT ID RETURNED BY getBotById
-    if (this.ROUTING_SELECTED === 'fixed') {
+    // if (this.ROUTING_SELECTED === 'fixed') {
+    if (this.dept_routing === 'fixed') {
       if (this.selectedBotId === undefined) {
         this.botIdEdit = this.botId
       } else {
         this.botIdEdit = this.selectedBotId
       }
     }
+
+
     // this.faqKbEdit
-    this.mongodbDepartmentService.updateMongoDbDepartment(this.id_dept, this.deptName_toUpdate, this.botIdEdit, this.ROUTING_SELECTED).subscribe((data) => {
+    // this.ROUTING_SELECTED
+    this.mongodbDepartmentService.updateMongoDbDepartment(this.id_dept, this.deptName_toUpdate, this.botIdEdit, this.dept_routing).subscribe((data) => {
       console.log('PUT DATA ', data);
 
       // RE-RUN GET CONTACT TO UPDATE THE TABLE
@@ -319,7 +325,7 @@ export class DepartmentEditAddComponent implements OnInit {
       () => {
         console.log('PUT REQUEST * COMPLETE *');
 
-        this.router.navigate(['project/' + this.project._id  + '/departments']);
+        this.router.navigate(['project/' + this.project._id + '/departments']);
       });
 
   }
