@@ -36,19 +36,49 @@ export class FaqKbComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getFaqKb();
     this.getCurrentProject();
+
+    // this.getFaqKb();
+    this.getFaqKbByProjectId();
   }
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
-      console.log('00 -> FAQKB COMP project ID from AUTH service subscription  ', this.project._id)
+      if (this.project) {
+        console.log('00 -> FAQKB COMP project ID from AUTH service subscription  ', this.project._id)
+      }
     });
   }
 
   /**
-   * GET FAQ KB (READ)
+   * GET FAQ-KB BY CURRENT PROJECT ID
+   */
+  getFaqKbByProjectId() {
+    this.faqKbService.getFaqKbByProjectId(this.project._id).subscribe((faqKb: any) => {
+      console.log('FAQs-KB GET BY PROJECT ID', faqKb);
+      this.faqkbList = faqKb;
+      // this.showSpinner = false;
+    },
+      (error) => {
+
+        console.log('GET FAQ KB ERROR ', error);
+
+      },
+      () => {
+        console.log('GET FAQ KB COMPLETE');
+
+        // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
+        this.getFaqByFaqKbId();
+
+      });
+
+  }
+
+
+  /**
+   * !!! NO MORE USED: NOW THE FAQ-KB ARE GET BY FILTERING FOR THE ID OF THE CURRENT PROJECT (see above)
+   * GET ALL FAQ KB (READ)
    */
   getFaqKb() {
     this.faqKbService.getMongDbFaqKb().subscribe((faqkb: any) => {
@@ -199,12 +229,12 @@ export class FaqKbComponent implements OnInit {
 
   // GO TO THE COMPONENT FAQ-KB-EDIT-ADD
   goToEditAddPage_CREATE() {
-    this.router.navigate(['project/' + this.project._id  + '/createfaqkb']);
+    this.router.navigate(['project/' + this.project._id + '/createfaqkb']);
   }
 
   // GO TO THE COMPONENT FAQ-KB-EDIT-ADD
   goToEditAddPage_EDIT(idFaqKb: string) {
-    this.router.navigate(['project/' + this.project._id  + '/editfaqkb', idFaqKb]);
+    this.router.navigate(['project/' + this.project._id + '/editfaqkb', idFaqKb]);
   }
 
   // GO TO FAQ-COMPONET (TO ADD OR EDIT FAQ)

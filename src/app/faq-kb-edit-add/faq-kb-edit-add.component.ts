@@ -32,13 +32,9 @@ export class FaqKbEditAddComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private auth: AuthService
-  ) {
-
-  }
+  ) {  }
 
   ngOnInit() {
-
-
 
     // BASED ON THE URL PATH DETERMINE IF THE USER HAS SELECTED (IN FAQ-KB PAGE) 'CREATE' OR 'EDIT'
     // if (this.router.url === '/createfaqkb') {
@@ -63,7 +59,7 @@ export class FaqKbEditAddComponent implements OnInit {
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
-      console.log('00 -> DEPT COMP project ID from AUTH service subscription  ', this.project._id)
+      console.log('00 -> FAQ-KB COMP project ID from AUTH service subscription  ', this.project._id)
     });
   }
 
@@ -86,12 +82,14 @@ export class FaqKbEditAddComponent implements OnInit {
     });
   }
 
+
   // CREATE (mongoDB)
   create() {
-    console.log('HAS CLICKED CREATE');
+    console.log('HAS CLICKED CREATE NEW FAQ-KB');
     console.log('Create Faq Kb - NAME ', this.faqKbName);
     console.log('Create Faq Kb - URL ', this.faqKbUrl);
-    this.faqKbService.addMongoDbFaqKb(this.faqKbName, this.faqKbUrl)
+    console.log('Create Faq Kb - PROJ ID ', this.project._id);
+    this.faqKbService.addMongoDbFaqKb(this.faqKbName, this.faqKbUrl, this.project._id)
       .subscribe((faqKb) => {
         console.log('POST DATA ', faqKb);
 

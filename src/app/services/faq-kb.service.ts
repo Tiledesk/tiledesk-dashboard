@@ -15,7 +15,6 @@ export class FaqKbService {
   // TOKEN = environment.mongoDbConfig.TOKEN;
   TOKEN: string
   user: any;
- 
 
   constructor(
     http: Http,
@@ -57,6 +56,24 @@ export class FaqKbService {
       .get(url, { headers })
       .map((response) => response.json());
   }
+
+  /**
+   * READ (GET ALL FAQKB WITH THE CURRENT PROJECT ID)
+   */
+  public getFaqKbByProjectId(id_project: string): Observable<FaqKb[]> {
+    let url = this.MONGODB_BASE_URL;
+    url += '?id_project=' + `${id_project}`;
+
+    console.log('GET FAQ-KB BY PROJECT ID URL', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
   /**
    * READ DETAIL (GET BY ID)
    */
@@ -77,14 +94,14 @@ export class FaqKbService {
    * CREATE (POST)
    * @param fullName
    */
-  public addMongoDbFaqKb(name: string, urlfaqkb: string) {
+  public addMongoDbFaqKb(name: string, urlfaqkb: string, project_id: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'name': `${name}`, 'url': `${urlfaqkb}` };
+    const body = { 'name': name, 'url': urlfaqkb, 'id_project': project_id };
 
     console.log('POST REQUEST BODY ', body);
 
