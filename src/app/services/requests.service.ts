@@ -82,6 +82,7 @@ export class RequestsService {
   }
 
   getCurrentProject() {
+    // IF EXIST A PROJECT UNSUSCRIBE query.onSnapshot AND RESET REQUEST LIST
     this.auth.project_bs.subscribe((project) => {
       if (project) {
         if (this.unsubscribe) {

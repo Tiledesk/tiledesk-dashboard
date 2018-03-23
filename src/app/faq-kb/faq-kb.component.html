@@ -158,10 +158,16 @@
                         <strong>Nome </strong>
                       </span>
                     </th>
-                    <th style="width: 280px !important">
+                    <!-- width: 280px !important -->
+                    <th style="">
                       <span style="color: #566787">
                         <strong>Id</strong>
                       </span>
+                    </th>
+                    <th>
+                      <span style="color: #566787">
+                        <strong> Id remoto</strong>
+                      </span> 
                     </th>
                     <!-- <th>
                       <span style="color: #566787">
@@ -196,8 +202,12 @@
                     <td>
                       {{ faqkb?.name }}
                     </td>
-                    <td style="width: 280px !important">
+                    <!-- width: 280px !important -->
+                    <td style="">
                       {{ faqkb?._id }}
+                    </td>
+                    <td>
+                      {{ faqkb?.kbkey_remote }}
                     </td>
                     <!-- <td>
                       {{ faqkb?.url }}

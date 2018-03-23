@@ -2,40 +2,41 @@
 
 // MODAL BOOTSTRAP BREAKPOINTS
 // from 992 to 1020px 
-@media (min-width: 992px) and (max-width: 1019px){
-    .modal-dialog {
-            margin-left: 33%;
-        }
-    }
+// @media (min-width: 992px) and (max-width: 1019px){
+//     .modal-dialog {
+//             margin-left: 33%;
+//         }
+//     }
     
-    @media (min-width: 1020px) and (max-width: 1199px) {
-        .modal-dialog {
-            margin-left: 35%;
-        }
-    }
+// @media (min-width: 1020px) and (max-width: 1199px) {
+//     .modal-dialog {
+//         margin-left: 35%;
+//     }
+// }
     
-    @media (min-width: 1200px) and (max-width: 1469px)  {
-        .modal-dialog {
-            margin-left: 37%;
-        }
-    }
+// @media (min-width: 1200px) and (max-width: 1469px)  {
+//     .modal-dialog {
+//         margin-left: 37%;
+//     }
+// }
     
-    @media (min-width: 1470px) and (max-width: 1549px) {
-        .modal-dialog {
-            margin-left: 38%;
-        }
-    }
+// @media (min-width: 1470px) and (max-width: 1549px) {
+//     .modal-dialog {
+//         margin-left: 38%;
+//     }
+// }
     
-    @media (min-width: 1550px) and (max-width: 1649px){
-        .modal-dialog {
-            margin-left: 39%;
-        }
-    }
-    @media (min-width: 1650px) {
-        .modal-dialog {
-            margin-left: 40%;
-        }
-    }
+// @media (min-width: 1550px) and (max-width: 1649px){
+//     .modal-dialog {
+//         margin-left: 39%;
+//     }
+// }
+
+// @media (min-width: 1650px) {
+//     .modal-dialog {
+//         margin-left: 40%;
+//     }
+// }
     
     .modal {
         top: 0;
@@ -114,7 +115,26 @@
 
 @media (max-width: 991px) {
 
-.navbar-header .collapse, .navbar-toggle {
-    display: block !important;
+    .navbar-header .collapse, .navbar-toggle {
+        display: block !important;
+    }
 }
+
+input[type=text] {
+    // min-width: 307px !important;
+    height: 36px;
+    font-size: 14px;
+    width: 100%;
+    margin-bottom: 10px;
+    -webkit-appearance: none;
+    background: #fff;
+    border: 1px solid #d9d9d9 !important;
+    border-top: 1px solid #c0c0c0;
+    /* border-radius: 2px; */
+    padding: 0 8px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border-radius: 5px;
+    background-color: #fff !important;
+    border: solid 1px #ddd;
 }

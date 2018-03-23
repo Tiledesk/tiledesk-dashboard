@@ -59,31 +59,104 @@
 </div>
 
 
-<p style="margin-top:10px; padding-left:30px" class="navbar-brand">Progetti</p> 
+<p style="margin-top:10px; padding-left:30px" class="navbar-brand">
+  <!-- Progetti -->
+  <img style="width:25%" src="assets/img/tiledesk-logo.png"/>
+</p> 
 <div class="main-content" style="padding-top:0px;">
   <div class="container-fluid">
   
-    <div class="create" style="text-align: right!important; padding-top:25px; padding-bottom:0px">
+    <!-- <div class="create" style="text-align: right!important; padding-top:25px; padding-bottom:0px">
       <button class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="goToEditAddPage_CREATE()">
-          <!-- is-small -->
         <span class="icon" style="padding-right:8px">
           <i class="material-icons">add_circle</i>
         </span>
         Aggiungi Progetto
       </button>
-    </div>
+    </div> -->
   
     <!-- MOMGO DB PROJECTS LIST -->
+    <!-- NEW -->
+    <div class="row" style="margin-right:100px; margin-left:100px;">
+      <h3 style="padding-left:15px; margin-top:55px" >Benvenuto in Tile Desk. </h3>
+    </div>
+    <div class="row" style="margin-right:100px; margin-left:100px;">
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card" (click)='openCreateModal()'>
+          <div class="card-content">
+            <h3 class="title" style="color: #55b9d1; text-align: center; padding-top:25px">
+              <i class="material-icons" style="font-size:48px">add</i>
+            </h3>
+            <h4 class="card-title" style="color: #55b9d1; text-align: center; margin-bottom: 15px;">
+              Aggiungi progetto
+            </h4>
+          </div>
+        </div>
+      </div>
+      <div *ngFor="let project of projects" class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card" (click)='goToHome(project?.id_project._id, project?.id_project.name)'>
+          <div class="card-content">
+            <h3 class="title" style="color: #566787; font-size:20px; margin-bottom: 0px;">
+              {{ project?.id_project.name }}
+            </h3>
+
+            <p class="category" style="font-size:14px !important; color: rgba(0,0,0,0.38)">
+              {{ project?.id_project._id }}
+            </p>
+            <h4 class="category" style="font-size:16px; margin-top: 16px;">
+              {{ project?.role }}
+            </h4>
+          </div>
+          <div class="card-footer">
+            <div class="stats">
+              <i class="material-icons">date_range</i> {{ project?.id_project.createdAt | date: 'd/M/y'}}
+
+              <!-- <button type="button" rel="tooltip" title="Modifica Progetto" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(project?._id)'> -->
+              <!-- <i class="material-icons">edit</i> -->
+                <!-- </button> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">
+              Aggiungi un progetto
+            </h4>
+          </div>
+          <div class="modal-body">
+              <!-- <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Nome Progetto</label> -->
+              <div class="col-sm-10">
+                <input [(ngModel)]="project_name" class="" type="text" placeholder="Nome Progetto">
+              </div>
+          </div>
+          <div class="modal-footer" style="margin-top: 35px;">
+            <button class="btn btn-info" (click)="createProject()">Crea Progetto</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+    <!-- // END NEW -->
+
     <div class="row">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-content table-responsive">
-            <table class="table">
+      <!-- <div class="col-md-12"> -->
+        <!-- <div class="card"> -->
+          <!-- <div class="card-content table-responsive"> -->
+            <!-- <table class="table">
               <thead>
                 <tr>
                   <th>
                     <span style="color: #566787">
-                      <!-- Project Name -->
+                      
                       <strong>Nome Progetto</strong>
                     </span>
                   </th>
@@ -95,14 +168,13 @@
 
                   <th>
                     <span style="color: #566787">
-                      <!-- Creation date -->
+                      
                       <strong> Data creazione</strong>
                     </span>
                   </th>
                   <th colspan="2">
                     <span style="color: #566787">
-                      <!-- Actions -->
-                      <!-- <strong> Azioni</strong> -->
+  
                       <strong> Ruolo </strong> 
                     </span>
                   </th>
@@ -117,14 +189,14 @@
                   </td>
 
                   <td style="width: 280px !important">
-                    <!-- {{ project?._id }} -->
+                    
                     {{ project?.id_project._id }}
                   </td>
 
                   <td>
-                    <!-- {{ project?.createdAt | date: 'd/M/y'}} -->
+                    
                     {{ project?.id_project.createdAt | date: 'd/M/y'}}
-                  </td>
+                  </td> -->
           
                   <!-- ACTION - TO MOVE IN PROJECT SETTINGS -->
                   <!-- <td class="td-actions text-right">
@@ -136,51 +208,40 @@
                     </button>
                   </td> -->
 
-                  <td>
+                  <!-- <td>
                     {{ project?.role }}
                   </td>
           
                 </tr>
               </tbody>
-            </table>
+            </table> -->
           
             <!-- MODAL -->
             <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->
-            <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}">
+            <!-- <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
                       <span aria-hidden="true">&times;</span>
                     </button>
-
                     <h4 class="modal-title">
-                      <!-- Delete Project with id: -->
                       Elimina il Progetto con id:<code>{{id_toDelete}}</code>
                     </h4>
-
                   </div>
-                 
                   <div class="modal-body">
-                    <!-- Are you sure you want to delete the Project -->
                     <p> Sei sicuro di voler eliminare il Progetto <strong>{{projectName_toDelete}}</strong> ?</p>
                   </div>
-                  
                   <div class="modal-footer">
-                      <!-- Confirm -->
                     <button class="btn btn-danger" (click)="onCloseDeleteModalHandled()">Conferma</button>
                   </div>
-                  
-            
                 </div>
-                <!-- /.modal-content -->
               </div>
-              <!-- /.modal-dialog -->
-            </div>
+            </div> -->
   
-          </div>
-        </div>
-      </div>
+          <!-- </div> -->
+        <!-- </div> -->
+      <!-- </div> -->
     </div>
   </div>
 </div>

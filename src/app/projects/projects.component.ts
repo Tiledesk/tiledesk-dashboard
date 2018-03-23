@@ -30,6 +30,7 @@ export class ProjectsComponent implements OnInit {
   private sidebarVisible: boolean;
   newInnerWidth: any;
 
+
   constructor(
     private projectService: ProjectService,
     private router: Router,
@@ -106,8 +107,8 @@ export class ProjectsComponent implements OnInit {
    * @param projectName
    */
   openDeleteModal(id: string, projectName: string) {
-    console.log('ON OPEN DELETE MODAL -> PROJECT ID ', id);
-
+    console.log('OPEN DELETE MODAL');
+    // -> PROJECT ID ', id
     this.display = 'block';
 
 
@@ -115,12 +116,21 @@ export class ProjectsComponent implements OnInit {
     this.projectName_toDelete = projectName;
   }
 
+
+ openCreateModal() {
+   console.log('OPEN CREATE MODAL');
+   // -> PROJECT ID ', id
+   this.display = 'block';
+
+
+ }
+
   // CLOSE MODAL WITHOUT SAVE THE UPDATES OR WITHOUT CONFIRM THE DELETION
   onCloseModal() {
     this.display = 'none';
   }
 
-  /**
+  /** !! NO MORE USED
    * DELETE PROJECT (WHEN THE 'CONFIRM' BUTTON IN MODAL IS CLICKED)
    */
   onCloseDeleteModalHandled() {
@@ -143,6 +153,41 @@ export class ProjectsComponent implements OnInit {
         console.log('DELETE REQUEST * COMPLETE *');
       });
 
+  }
+
+  createProject() {
+    console.log('CREATE PROJECT - PROJECT-NAME DIGIT BY USER ', this.project_name);
+
+    this.projectService.addMongoDbProject(this.project_name)
+      .subscribe((project) => {
+        console.log('POST DATA PROJECT', project);
+
+        // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
+        // THE SIDEBAR SIGNS UP FOR ITS PUBLICATION
+        const newproject: Project = {
+          _id: project._id,
+          name: project.name
+        }
+
+        this.auth.projectSelected(newproject)
+        console.log('PROJECT ', newproject)
+
+        // SET THE project_id IN THE LOCAL STORAGE
+        // WHEN THE PAGE IS RELOADED THE SIDEBAR GET THE PROJECT ID FROM THE LOCAL STORAGE
+        localStorage.setItem('project', JSON.stringify(newproject));
+
+        this.display = 'none';
+
+        this.router.navigate([`/project/${project._id}/home`]);
+      },
+      (error) => {
+        console.log('CREATE PROJECT - POST REQUEST ERROR ', error);
+      },
+      () => {
+        console.log('CREATE PROJECT - POST REQUEST COMPLETE ');
+
+        // this.router.navigate(['/projects']);
+      });
   }
 
   @HostListener('window:resize', ['$event'])
