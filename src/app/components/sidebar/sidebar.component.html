@@ -165,35 +165,33 @@
             </li>
             <!--  -->
             <!-- SECTION OF SETTINGS SUBMENU -->
-            <!-- NO MORE USED -->
-            <!-- routerLinkActive="active-custom" -->
-            <!-- padding-left:15px -->
-            <!-- (click)="setActiveClassToSettings()" -->
-            <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" style="" >
+
+            <!-- BOT: NO MORE USED - THE CURRENT BOT (see down) IS FAQKB RENAMED TO BOT-->
+            <!-- <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" style="" >
                 <a  *ngIf="project" routerLink="project/{{ project._id }}/bots">
-                    <!-- <i class="material-icons">keyboard_arrow_right</i> -->
-                    <!-- color: #a9afbb; -->
                     <span class="sidebar-mini">
                         B 
                     </span>
                     <span class="sidebar-normal">Bots</span> 
-                    <!-- <p style="padding-left:15px;">Bots</p> -->
                 </a>
-            </li>
+            </li> -->
+
             <!-- NO MORE USED  -->
             <!-- margin-top: 55px -->
             <!-- routerLinkActive="active-custom" -->
             <!-- (click)="setActiveClassToSettings()" -->
             <!-- padding-left:15px; -->
+
+            <!-- FAQ (alias FAQKB) HAS BEEN RENAMED IN BOT (BOT - see above - IS CURRENTLY COMMENTED) -->
             <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" style="" >
                 <a *ngIf="project" routerLink="project/{{ project._id }}/faqkb">
                     <!-- <i class="material-icons">keyboard_arrow_right</i> -->
                     <span class="sidebar-mini">
-                        F 
+                        B 
                     </span>
-                    <span class="sidebar-normal">FAQ</span> 
-                   
-                    <!-- <p style="padding-left:15px;">FAQ</p> -->
+                    <!-- <span class="sidebar-normal">FAQ</span>  -->
+                    <span class="sidebar-normal">Bots</span> 
+              
                 </a>
             </li>
             <!-- NO MORE USED  -->

@@ -126,17 +126,20 @@
 
     <!-- <h1>FAQ Knowledge Base +</h1>
     <hr> -->
-  <p style="margin-top:10px; padding-left:30px" class="navbar-brand">FAQ Knowledge Base</p>   
+  <!-- <p style="margin-top:10px; padding-left:30px" class="navbar-brand">FAQ Knowledge Base</p>   -->
+  <p style="margin-top:10px; padding-left:30px" class="navbar-brand">Bot</p>   
   <div class="main-content" style="padding-top:0px">
     <div class="container-fluid">
 
         <div class="create" style="text-align: right!important; padding-top:25px; padding-bottom:0px">
           <button class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="goToEditAddPage_CREATE()">
               <!-- is-small -->
-            <span class="icon" style="padding-right:16px">
-              <i class="fa fa-plus-circle"></i>
+            <span class="icon" style="padding-right:8px">
+              <!-- <i class="fa fa-plus-circle"></i> -->
+              <i class="material-icons">add_circle</i>
             </span>
-            Aggiungi FAQ Knowledge Base
+            <!-- Aggiungi FAQ Knowledge Base -->
+            Aggiungi Bot
           </button>
         </div>
   
@@ -229,10 +232,12 @@
                     
                     <!-- NEW EDIT / DELETE FAQ-KB   -->
                     <td class="td-actions text-right" style="padding-top:16px">
-                        <button type="button" rel="tooltip" title="Modifica FAQ Knowledge Base" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(faqkb?._id)'>
+                        <!-- Modifica FAQ Knowledge Base -->
+                        <button type="button" rel="tooltip" title="Modifica Bot" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(faqkb?._id)'>
                             <i class="material-icons">edit</i>
                         </button>
-                        <button type="button" rel="tooltip" title="Elimima FAQ Knowledge Base " class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal(faqkb?._id, HAS_FAQ_RELATED=faqkb?.has_faq)'>
+                        <!-- Elimima FAQ Knowledge Base -->
+                        <button type="button" rel="tooltip" title="Elimima Bot" class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal(faqkb?._id, HAS_FAQ_RELATED=faqkb?.has_faq)'>
                             <i class="material-icons">close</i>
                         </button>
                     </td>
@@ -244,7 +249,7 @@
                         </button>
                       </span>
                       <span *ngIf="!faqkb?.has_faq">
-                        <button style="margin-top:5px; padding-left: 3px;" type="button" rel="tooltip" title="Aggiungi / modifica FAQ (non esistono ancora FAQ correlate)" class="btn btn-warning btn-simple btn-xs" (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)'>
+                        <button style="margin-top:5px; padding-left: 3px;" type="button" rel="tooltip" title="Aggiungi / modifica FAQ (non esistono FAQ correlate a questo Bot)" class="btn btn-warning btn-simple btn-xs" (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)'>
                           <i class="material-icons">list</i>
                         </button>
                       </span>
@@ -270,7 +275,8 @@
                       </button>         
                       <h4 class="modal-title">
                         <!-- Delete FAQ Knowledge Base with id: -->
-                        Elimina FAQ Knowledge Base con id:
+                        <!-- Elimina FAQ Knowledge Base con id: -->
+                        Elimina Bot con id:
                         <code>{{id_toDelete}}</code>
                       </h4>    
                     </div>
@@ -278,16 +284,19 @@
                     <span *ngIf="!HAS_FAQ_RELATED">
                       <div class="modal-body">    
                         <!-- <p> Are you sure you want to delete this FAQ KB?</p> -->
-                        <p>Sei sicuro di voler eliminare questa FAQ Knowledge Base?</p>
+                        <!-- <p>Sei sicuro di voler eliminare questa FAQ Knowledge Base?</p> -->
+                        <p>Sei sicuro di voler eliminare questo Bot?</p>
                        </div>
                     </span>
                     <span *ngIf="HAS_FAQ_RELATED ">
                       <div class="modal-body">
-                        <p>Sei sicuro di voler eliminare questa FAQ Knowledge Base e le FAQ a questa correlate?</p>
+                        <!-- <p>Sei sicuro di voler eliminare questa FAQ Knowledge Base e le FAQ a questa correlate?</p> -->
+                        <p>Sei sicuro di voler eliminare questo Bot e le FAQ a questo correlate?</p>
                       </div>
                     </span>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-danger" (click)="onCloseDeleteModalHandled()">Confirm</button>
+                        <!-- Confirm -->
+                      <button type="button" class="btn btn-danger" (click)="onCloseDeleteModalHandled()">Conferma</button>
                     </div>
               
                   </div>

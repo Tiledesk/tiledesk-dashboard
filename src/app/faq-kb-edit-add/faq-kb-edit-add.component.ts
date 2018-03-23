@@ -91,7 +91,7 @@ export class FaqKbEditAddComponent implements OnInit {
     console.log('Create Faq Kb - PROJ ID ', this.project._id);
     this.faqKbService.addMongoDbFaqKb(this.faqKbName, this.faqKbUrl, this.project._id)
       .subscribe((faqKb) => {
-        console.log('POST DATA ', faqKb);
+        console.log('CREATE FAQKB - POST DATA ', faqKb);
 
         // this.bot_fullname = '';
 
@@ -100,10 +100,17 @@ export class FaqKbEditAddComponent implements OnInit {
         // this.ngOnInit();
       },
       (error) => {
-        console.log('POST REQUEST ERROR ', error);
+        console.log('CREATE FAQKB - POST REQUEST ERROR ', error);
       },
       () => {
-        console.log('POST REQUEST * COMPLETE *');
+        console.log('CREATE FAQKB - POST REQUEST * COMPLETE *');
+
+        // this.faqKbService.createFaqKbKey()
+        // .subscribe((faqKbKey) => {
+
+        //   console.log('CREATE FAQKB KEY - POST DATA ', faqKbKey);
+
+        // });
 
         this.router.navigate(['project/' + this.project._id + '/faqkb']);
       });

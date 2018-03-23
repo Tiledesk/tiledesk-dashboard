@@ -80,24 +80,25 @@ export class FaqKbComponent implements OnInit {
    * !!! NO MORE USED: NOW THE FAQ-KB ARE GET BY FILTERING FOR THE ID OF THE CURRENT PROJECT (see above)
    * GET ALL FAQ KB (READ)
    */
-  getFaqKb() {
-    this.faqKbService.getMongDbFaqKb().subscribe((faqkb: any) => {
-      console.log('MONGO DB FAQKB', faqkb);
-      this.faqkbList = faqkb;
-    },
-      (error) => {
+  // getFaqKb() {
+  //   this.faqKbService.getMongDbFaqKb().subscribe((faqkb: any) => {
+  //     console.log('MONGO DB FAQKB', faqkb);
+  //     this.faqkbList = faqkb;
+  //   },
+  //     (error) => {
 
-        console.log('GET FAQ KB ERROR ', error);
+  //       console.log('GET FAQ KB ERROR ', error);
 
-      },
-      () => {
-        console.log('GET FAQ KB COMPLETE');
+  //     },
+  //     () => {
+  //       console.log('GET FAQ KB COMPLETE');
 
-        // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
-        this.getFaqByFaqKbId();
+  //       // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
+  //       this.getFaqByFaqKbId();
 
-      });
-  }
+  //     });
+  // }
+
   getFaqByFaqKbId() {
     // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
     let i: number;

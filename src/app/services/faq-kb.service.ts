@@ -44,6 +44,9 @@ export class FaqKbService {
 
   /**
    * READ (GET)
+   * USED IN bot-edit-add.component.ts
+   * !!! NO MORE USED IN FAQ COMPONENT WHERE THE FAQ-KB LIST IS GET BY FILTERING
+   *     FOR THE ID OF THE CURRENT PROJECT (see getFaqKbByProjectId)
    */
   public getMongDbFaqKb(): Observable<FaqKb[]> {
     const url = this.MONGODB_BASE_URL;
@@ -112,6 +115,36 @@ export class FaqKbService {
       .map((res) => res.json());
 
   }
+
+  /**
+   * CREATE KBKEY
+   * AFTER THAT A NEW FAQKB WAS CREATED RUN A CALLBACK VS qna_kbmanagement/create
+   * THAT RETURN THE kbkey THEN USED TO RUN ANOTHER CALLBACK WHEN A NEW FAQ WAS CREATED
+   */
+
+  // {
+  //   "username": "frontiere21",
+  //   "password": "password",
+  //   "language": "italian"
+  // }
+  // public createFaqKbKey() {
+  //   const headers = new Headers();
+  //   headers.append('Accept', 'application/json');
+  //   headers.append('Content-type', 'application/json');
+  //   headers.append('Authorization', 'Basic YWRtaW46YWRtaW5wNHNzdzByZA==');
+  //   const options = new RequestOptions({ headers });
+
+  //   const body = { 'username': 'frontiere21', 'password': 'password', 'language': 'italian' };
+
+  //   console.log('CREATE FAQKB KEY - POST REQUEST BODY ', body);
+
+  //   const url = 'http://ec2-52-47-168-118.eu-west-3.compute.amazonaws.com/qna_kbmanagement/create';
+
+  //   return this.http
+  //     .post(url, JSON.stringify(body), options)
+  //     .map((res) => res.json());
+
+  // }
 
   /**
    * DELETE (DELETE)

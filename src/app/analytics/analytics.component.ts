@@ -67,6 +67,34 @@ export class AnalyticsComponent implements OnInit {
     seq2 = 0;
   };
   ngOnInit() {
+
+    /* ----------==========    NUMBER OF REQUEST for DEPARTMENT ** PIE CHART ** ==========---------- */
+
+    //   const data = {
+    //     series: [35.03, 32.12, 19.99, 6.24, 5.41, 0.82, 0.23, 0.15, 0.012, 0]
+    //   };
+
+    //   const sum = function (a, b) { return a + b };
+
+    //  const requstForDept = new Chartist.Pie('.ct-chart', data, {
+    //     labelInterpolationFnc: function (value) {
+    //       return Math.round(value / data.series.reduce(sum) * 100) + '%';
+    //     }
+    //   });
+
+    const dataPreferences = {
+      labels: ['35.03%', '32.12%', '19.99%', '6.24%'],
+      series: [35.03, 32.12, 19.99, 6.24]
+    };
+
+    const optionsPreferences = {
+      height: '230px'
+    };
+
+    // tslint:disable-next-line:no-unused-expression
+    new Chartist.Pie('#chartPreferences', dataPreferences, optionsPreferences);
+
+    
     /* ----------==========    NUMBER OF REQUEST   ==========---------- */
 
     const dataDailySalesChart: any = {
@@ -147,7 +175,7 @@ export class AnalyticsComponent implements OnInit {
     ];
     var emailsSubscriptionChart = new Chartist.Bar('#emailsSubscriptionChart', dataEmailsSubscriptionChart, optionsEmailsSubscriptionChart, responsiveOptions);
 
-    //start animation for the Emails Subscription Chart
+    //s tart animation for the Emails Subscription Chart
     this.startAnimationForBarChart(emailsSubscriptionChart);
   }
 
