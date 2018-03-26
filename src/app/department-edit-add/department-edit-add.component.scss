@@ -90,3 +90,10 @@ input[type=radio] {
     margin-top: .3rem;
     margin-left: -1.25rem;
 }
+
+// OPTION ITEM MENU
+@media (max-width: 768px){
+    .col-sm-9 {
+         padding-top:5px !important; 
+        }
+    }
