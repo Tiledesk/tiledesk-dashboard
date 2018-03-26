@@ -3,7 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { MongodbDepartmentService } from '../services/mongodb-department.service';
-import { BotService } from '../services/bot.service';
+
+import { BotService } from '../services/bot.service'; // no more used
+import { FaqKbService } from '../services/faq-kb.service';
+
 
 import { Project } from '../models/project-model';
 import { AuthService } from '../core/auth.service';
@@ -21,7 +24,9 @@ export class DepartmentEditAddComponent implements OnInit {
   id_dept: string;
   dept_name: string;
 
+  // !!! NOTE: IS CALLED BOT LIST BUT REALLY IS THE LIST OF FAQ-KB LIST
   botsList: any;
+
   selectedBotId: string;
   BOT_NOT_SELECTED: boolean;
 
@@ -44,6 +49,7 @@ export class DepartmentEditAddComponent implements OnInit {
     private route: ActivatedRoute,
     private mongodbDepartmentService: MongodbDepartmentService,
     private botService: BotService,
+    private faqKbService: FaqKbService,
     private auth: AuthService
   ) { }
 
@@ -51,10 +57,18 @@ export class DepartmentEditAddComponent implements OnInit {
 
 
     /**
+     * ==================================================================
+     * !!! NO MORE USED - getBots() HAS BEEN REPLACED BY getFaqKbByProjecId()
+     * (IN THE HTML THE USER CONTINUE TO SEE 'Select a Bot' but, really,
+     * in the options form are displayed the faq-kb list)
+     * ==================================================================
+     *
      * *** GET ALL BOTS LIST ***
-     * ARE SHOWED AS OPTIONS TO SELECT IN THE SELECTION FIELD (IN CREATE AND IN EDIT VIEW)
+     * ARE SHOWED AS OPTIONS TO SELECT IN THE SELECTION FIELD (IN CREATE VIEW)
      */
-    this.getBots();
+    // this.getBots();
+
+
 
     /**
      * BASED ON THE URL PATH DETERMINE IF THE USER HAS SELECTED (IN DEPARTMENTS PAGE) 'CREATE' OR 'EDIT'
@@ -101,6 +115,12 @@ export class DepartmentEditAddComponent implements OnInit {
     }
 
     this.getCurrentProject();
+
+    /**
+     * ======================= GET FAQ-KB LIST =========================
+     * (THE FAQ-KB LIST COME BACK FROM THE CALLBACK - IS USED IN CREATE VIEW)
+     */
+    this.getFaqKbByProjecId()
   }
 
   getCurrentProject() {
@@ -116,8 +136,10 @@ export class DepartmentEditAddComponent implements OnInit {
   }
 
   /**
- * *** GET ALL BOTS LIST ***
- */
+   * !!! NO MORE USED (see THE COMMENT ABOVE)
+   * === GET ALL BOTS LIST ===
+   * * USED IN THE CREATE VIEW *
+   */
   getBots() {
     this.botService.getMongDbBots().subscribe((bots: any) => {
       console.log('GET BOTS LIST (TO SHOW IN SELECTION FIELD) ', bots);
@@ -125,12 +147,28 @@ export class DepartmentEditAddComponent implements OnInit {
     },
       (error) => {
         console.log('GET BOTS LIST - ERROR ', error);
-
       },
       () => {
         console.log('GET BOTS LIST - COMPLETE ');
-
       });
+  }
+
+  /**
+   * GET THE FAQ-KB LIST FILTERING ALL THE FAQ-KB FOR THE CURRENT PROJECT ID
+   * * USED IN YHE OPTION ITEM FORM OF THE CREATE VIEW *
+   */
+  getFaqKbByProjecId() {
+    this.faqKbService.getFaqKbByProjectId(this.project._id).subscribe((faqkb: any) => {
+      console.log('GET FAQ-KB LIST - SUBSTITUTE BOT (TO SHOW IN SELECTION FIELD) ', faqkb);
+      this.botsList = faqkb;
+    },
+      (error) => {
+        console.log('GET FAQ-KB LIST - SUBSTITUTE BOT - ERROR ', error);
+      },
+      () => {
+        console.log('GET FAQ-KB LIST - SUBSTITUTE BOT - COMPLETE ');
+      });
+
   }
 
 
@@ -139,14 +177,14 @@ export class DepartmentEditAddComponent implements OnInit {
     this.router.navigate(['project/' + this.project._id + '/departments']);
   }
 
-  // WHEN THE USER EDITS A BOT CAN SELECT A BOT TO CORRELATE AT THE DEPARTMENT
-  // WHEN THE BTN 'EDIT DEPARTMENT' IS PRESSED THE VALUE OF THE ID OF THE SELECTED DEPT IS MODIFIED IN THE DEPT'S FIELD id_bot
+  // WHEN THE USER EDITS A DEPTS CAN SELECT A BOT TO CORRELATE AT THE DEPARTMENT
+  // WHEN THE BTN 'EDIT DEPARTMENT' IS PRESSED THE VALUE OF THE ID OF THE SELECTED BOT IS MODIFIED IN THE DEPT'S FIELD id_bot
   // Note: is used also for the 'CREATE VIEW'
   setSelectedBot(id: any): void {
     this.selectedBotId = id;
-    console.log('BOT ID SELECTED: ', this.selectedBotId);
+    console.log('FAQ-KB ID SELECTED (SUBSTITUTE BOT): ', this.selectedBotId);
 
-    // IN THE CREATE VIEW IF IS NOT SELECTET ANY FAQ-KB THE BUTTON 'CREATE BOT' IS DISABLED
+    // IN THE CREATE VIEW IF IS NOT SELECTET ANY FAQ-KB (SUBSTITUTE BOT) THE BUTTON 'CREATE BOT' IS DISABLED
     if (this.selectedBotId !== 'BOT_NOT_SELECTED') {
       this.BOT_NOT_SELECTED = false;
     }
@@ -206,14 +244,14 @@ export class DepartmentEditAddComponent implements OnInit {
 
 
   /** === FOR EDIT VIEW === **
-   * **** GET DEPT (DETAIL) OBJECT BY ID AND (THEN) GET BOT (DETAIL) OBJECT BY ID ***
+   * **** GET DEPT (DETAILS) OBJECT BY ID AND (THEN) GET BOT OBJECT BY ID (GET BOT DETAILS) ***
    * THE ID USED TO RUN THIS getMongDbDeptById IS PASSED FROM THE DEPT LIST (DEPARTMENTS COMPONENT goToEditAddPage_EDIT))
    * FROM DEPT OBJECT IS USED:
    * THE DEPT NAME TO SHOW IN THE INPUT FIELD (OF THE EDIT VIEW)
    * THE DEPT ROUTING (PREVIOUSLY SELECTED): dept_routing is passed in the view [checked]="dept_routing === 'pooled'"
    * to determine the option selected
-   * THE BOT ID TO RUN ANOTHER CALLBACK TO OBTAIN THE BOT OBJECT AND, FROM THIS,
-   * THE BOT ID THAT IS USED TO OBTAIN (IN THE EDIT VIEW) THE BOT FULL-NAME AS OPTION PREVIOUSLY SELECTED
+   * THE BOT ID (IT'S ACTUALLY THE FAQ-KB ID) TO RUN ANOTHER CALLBACK TO OBTAIN THE FAQ-KB OBJECT (SUBSTITUTE BOT) AND, FROM THIS,
+   * THE FAQ-KB ID THAT IS USED TO OBTAIN (IN THE EDIT VIEW) THE FAQ-KB NAME AS OPTION PREVIOUSLY SELECTED
    * (WHEN THE USER HAS CREATED THE DEPT)  (see: selectedId === bot._id)
    */
   getDeptById() {
@@ -228,16 +266,16 @@ export class DepartmentEditAddComponent implements OnInit {
       // }
 
       console.log(' DEPT FULLNAME TO UPDATE: ', this.deptName_toUpdate);
-      console.log(' BOT ID GET FROM DEPT OBJECT: ', this.botId);
+      console.log(' BOT ID (IT IS ACTUALLY FAQ-KB ID) GET FROM DEPT OBJECT: ', this.botId);
       console.log(' DEPT ROUTING GET FROM DEPT OBJECT: ', this.dept_routing);
 
     },
       (error) => {
-        console.log('GET BOT BY ID - ERROR ', error);
+        console.log('GET DEPT BY ID - ERROR ', error);
         // this.showSpinner = false;
       },
       () => {
-        console.log('GET BOT BY ID - COMPLETE ');
+        console.log('GET DEPT BY ID - COMPLETE ');
 
         // MOVED IN getFaqKbById
         // this.showSpinner = false;
@@ -256,30 +294,33 @@ export class DepartmentEditAddComponent implements OnInit {
   }
 
   /** === FOR EDIT VIEW === **
-   * **** GET BOT BY ID ***
-   * THE ID OF THE BOT IS GET FROM THE DEPT OBJECT (CALLBACK getBotById)
-   * FROM THE BOT OBJECT IS USED:
-   * THE BOT ID THAT IS USED TO OBTAIN THE BOT-FULLNAME SHOWED AS OPTION SELECTED IN THE EDIT VIEW
+   * **** GET FAQ-KB BY ID (SUBSTITUTE BOT) ***
+   * THE ID OF THE BOT (IT'S ACTUALLY IS THE ID OF THE FAQ-KB) IS GET FROM THE DEPT OBJECT (CALLBACK getDeptById)
+   * FROM THE FAQ-KB OBJECT (SUBSTITUTE BOT) IS USED:
+   * THE FAQ-KB ID (SUBSTITUTE BOT) THAT IS USED TO OBTAIN THE FAQ-KB NAME SHOWED AS OPTION SELECTED IN THE EDIT VIEW
    * (see: selectedId === bot._id)
    */
   getBotById() {
-    this.botService.getMongDbBotById(this.botId).subscribe((bot: any) => {
-      console.log('GET BOT (DETAILS) BY ID', bot);
-      this.selectedId = bot._id;
+    // this.botService.getMongDbBotById(this.botId).subscribe((bot: any) => { // NO MORE USED
+    this.faqKbService.getMongDbFaqKbById(this.botId).subscribe((faqkb: any) => {
+      console.log('GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
+      // this.selectedId = bot._id;
+      this.selectedId = faqkb._id;
 
       // USED ONLY FOR DEBUG
-      this.selectedValue = bot.fullname;
+      // this.selectedValue = bot.fullname;
+      this.selectedValue = faqkb.name;
 
       // this.faqKbUrlToUpdate = faqKb.url;
-      console.log(' ++ ++ BOT NAME', this.selectedValue);
+      console.log('FAQ-KB NAME (SUBSTITUTE BOT) ', this.selectedValue);
 
     },
       (error) => {
-        console.log('GET BOT BY ID - ERROR ', error);
+        console.log('GET FAQ-KB BY ID (SUBSTITUTE BOT) - ERROR ', error);
         // this.showSpinner = false;
       },
       () => {
-        console.log('GET BOT ID - COMPLETE ');
+        console.log('GET FAQ-KB ID (SUBSTITUTE BOT) - COMPLETE ');
         // this.showSpinner = false;
 
       });
@@ -298,7 +339,8 @@ export class DepartmentEditAddComponent implements OnInit {
     console.log('* ROUTING_SELECTED WHEN EDIT IS PRESSED ', this.ROUTING_SELECTED);
 
     // selectedFaqKbId
-    // FIXED LOGIC IF THE USER, WHEN EDIT THE DEPT (AND HAS SELECTED FIXED), DOESN'T SELECT ANY NEW BOT this.selectedBotId IS UNDEFINED
+    // 'FIXED' (NOW, IN THE HTML, RENAMED IN 'BOT') OPTION WORK-FLOW:
+    // IF THE USER, WHEN EDIT THE DEPT (AND HAS SELECTED FIXED), DOESN'T SELECT ANY NEW BOT this.selectedBotId IS UNDEFINED
     // SO SET this.botIdEdit EQUAL TO THE BOT ID RETURNED BY getBotById
     // if (this.ROUTING_SELECTED === 'fixed') {
     if (this.dept_routing === 'fixed') {
@@ -308,7 +350,6 @@ export class DepartmentEditAddComponent implements OnInit {
         this.botIdEdit = this.selectedBotId
       }
     }
-
 
     // this.faqKbEdit
     // this.ROUTING_SELECTED

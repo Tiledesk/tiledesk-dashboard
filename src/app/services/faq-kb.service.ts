@@ -45,8 +45,11 @@ export class FaqKbService {
   /**
    * READ (GET)
    * USED IN bot-edit-add.component.ts
-   * !!! NO MORE USED IN FAQ COMPONENT WHERE THE FAQ-KB LIST IS GET BY FILTERING
-   *     FOR THE ID OF THE CURRENT PROJECT (see getFaqKbByProjectId)
+   * !!! NO MORE USED
+   *     * IN FAQ COMPONENT THE FAQ-KB LIST IS CURRENTLY OBTAINED BY FILTERING
+   *     ALL THE FAQ-KB FOR THE ID OF THE CURRENT PROJECT (see BELOW getFaqKbByProjectId)
+   *     getMongDbFaqKb() was also used in bot-edit-add.component.ts ma currently THE BOTs ARE NO LONGER USED
+   *     (in the view the menu item FAQ (alias faq-kb) have been renamed in BOT)
    */
   public getMongDbFaqKb(): Observable<FaqKb[]> {
     const url = this.MONGODB_BASE_URL;
