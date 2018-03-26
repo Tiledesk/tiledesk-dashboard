@@ -52,7 +52,7 @@ export class FaqKbComponent implements OnInit {
   }
 
   /**
-   * GET FAQ-KB BY CURRENT PROJECT ID
+   * GETS ONLY THE FAQ-KB WITH THE CURRENT PROJECT ID
    */
   getFaqKbByProjectId() {
     this.faqKbService.getFaqKbByProjectId(this.project._id).subscribe((faqKb: any) => {

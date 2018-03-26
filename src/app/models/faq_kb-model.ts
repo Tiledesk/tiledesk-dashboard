@@ -5,6 +5,7 @@ export interface FaqKb {
     name: string;
     url: string;
     kbkey_remote: string;
+    id_project: string;
     appId: string;
     createdBy: string;
     __v: any;

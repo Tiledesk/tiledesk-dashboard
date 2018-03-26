@@ -38,11 +38,13 @@ export class DepartmentsComponent implements OnInit {
     private mongodbDepartmentService: MongodbDepartmentService,
     private router: Router,
     private auth: AuthService
-  ) {  }
+  ) { }
 
   ngOnInit() {
-    this.getDepartments();
     this.getCurrentProject();
+
+    // this.getDepartments();
+    this.getDeptsByProjectId();
   }
 
   getCurrentProject() {
@@ -54,7 +56,7 @@ export class DepartmentsComponent implements OnInit {
 
   // GO TO  BOT-EDIT-ADD COMPONENT
   goToEditAddPage_CREATE() {
-    this.router.navigate(['project/' + this.project._id  + '/department/create']);
+    this.router.navigate(['project/' + this.project._id + '/department/create']);
   }
 
   // GO TO BOT-EDIT-ADD COMPONENT AND PASS THE BOT ID (RECEIVED FROM THE VIEW)
@@ -64,14 +66,27 @@ export class DepartmentsComponent implements OnInit {
   }
 
   /**
-   * GET DEPTS (READ)
+   * GETS ONLY THE DEPTs WITH THE CURRENT PROJECT ID
    */
-  getDepartments() {
-    this.mongodbDepartmentService.getMongDbDepartments().subscribe((departments: any) => {
-      console.log('MONGO DB DEPARTMENTS', departments);
+  getDeptsByProjectId() {
+    this.mongodbDepartmentService.getDeptsByProjectId(this.project._id).subscribe((departments: any) => {
+      console.log('MONGO DB DEPARTMENTS (FILTERED FOR PROJECT ID)', departments);
       this.departments = departments;
     });
   }
+
+  /**
+   * !!! NO MORE USED
+   * - CURRENTLY ARE DISPLAYED ONLY THE DEPTS WITH THAT HAVE THE ID OF THE CURRENT PROJECT (see ABOVE)
+   *
+   * GET DEPTS (READ)
+   */
+  // getDepartments() {
+  //   this.mongodbDepartmentService.getMongDbDepartments().subscribe((departments: any) => {
+  //     console.log('MONGO DB DEPARTMENTS', departments);
+  //     this.departments = departments;
+  //   });
+  // }
 
   /**
    * ADD DEPARMENT

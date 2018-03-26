@@ -198,15 +198,10 @@ export class DepartmentEditAddComponent implements OnInit {
    */
   createDepartment() {
     console.log('MONGO DB DEPT-NAME DIGIT BY USER ', this.dept_name);
-    this.mongodbDepartmentService.addMongoDbDepartments(this.dept_name, this.selectedBotId, this.ROUTING_SELECTED)
+    this.mongodbDepartmentService.addMongoDbDepartments(this.dept_name, this.selectedBotId, this.ROUTING_SELECTED, this.project._id)
       .subscribe((department) => {
         console.log('POST DATA DEPT', department);
 
-        // this.dept_name = '';
-
-        // RE-RUN GET CONTACT TO UPDATE THE TABLE
-        // this.getDepartments();
-        // this.ngOnInit();
       },
       (error) => {
         console.log('DEPT POST REQUEST ERROR ', error);
