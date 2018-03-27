@@ -4,7 +4,6 @@ export interface Department {
     createdAt: any;
     name: string;
     id_project: string;
-    appId: string;
     createdBy: string;
     id_bot: string;
     routing: string;

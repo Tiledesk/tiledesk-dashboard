@@ -10,10 +10,13 @@ import { AuthService } from '../core/auth.service';
 export class MongodbFaqService {
 
   http: Http;
-  MONGODB_BASE_URL = environment.mongoDbConfig.FAQ_BASE_URL;
+  // MONGODB_BASE_URL = environment.mongoDbConfig.FAQ_BASE_URL;
+  BASE_URL = environment.mongoDbConfig.BASE_URL;
+  MONGODB_BASE_URL: any;
   // TOKEN = environment.mongoDbConfig.TOKEN;
   TOKEN: string
   user: any;
+  project: any;
 
   constructor(
     http: Http,
@@ -28,6 +31,23 @@ export class MongodbFaqService {
     this.auth.user_bs.subscribe((user) => {
       this.user = user;
       this.checkUser()
+    });
+
+    this.getCurrentProject();
+  }
+
+  getCurrentProject() {
+    console.log('FAQ SERV - SUBSCRIBE TO CURRENT PROJ ')
+    // tslint:disable-next-line:no-debugger
+    // debugger
+    this.auth.project_bs.subscribe((project) => {
+      this.project = project
+      // tslint:disable-next-line:no-debugger
+      // debugger
+      if (this.project) {
+        console.log('00 -> FAQ SERVICE project ID from AUTH service subscription  ', this.project._id)
+        this.MONGODB_BASE_URL = this.BASE_URL + this.project._id + '/faq/'
+      }
     });
   }
 

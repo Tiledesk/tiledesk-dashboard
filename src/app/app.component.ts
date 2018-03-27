@@ -12,6 +12,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { RequestsService } from './services/requests.service';
 import * as firebase from 'firebase/app';
 
+// import { FaqKbService } from './services/faq-kb.service';
+
 declare const $: any;
 
 @Component({
@@ -36,15 +38,16 @@ export class AppComponent implements OnInit, AfterViewInit {
         private translate: TranslateService,
         private requestsService: RequestsService,
         private auth: AuthService,
+        // private faqKbService: FaqKbService,
     ) {
-        translate.setDefaultLang('it');
+        translate.setDefaultLang('en');
 
         const browserLang = this.translate.getBrowserLang();
         if (browserLang) {
-            if (browserLang === 'en') {
-                this.translate.use('en');
-            } else {
+            if (browserLang === 'it') {
                 this.translate.use('it');
+            } else {
+                this.translate.use('en');
             }
         }
 
@@ -124,7 +127,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
         // console.log('xxxx xxxx elemNavbar', elemNavbar)
         // const elemContentainerFluid = <HTMLElement>document.querySelector('.container-fluid');
-        
+
         const elemNavbarToogle = <HTMLElement>document.querySelector('.navbar-toggle');
 
 

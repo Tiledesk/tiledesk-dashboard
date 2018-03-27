@@ -33,8 +33,12 @@
                             </a>
                             <ul class="dropdown-menu">
                                     <!-- routerLink="/projects" -->
-                                <li (click)="goToProjects()" ><a >Visualizza tutti i progetti</a></li>
-                                <li><a routerLink="/project/edit/{{ project._id }}">Impostazioni</a></li>
+                                <li  (click)="goToProjects()" ><a >Visualizza tutti i progetti</a></li>
+
+                                <li>
+                                    {{ project }}
+                                    <a routerLink="/project/edit/{{ project._id }}">Impostazioni</a>
+                                </li>
                             </ul>
                         </li>
 

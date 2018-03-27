@@ -18,6 +18,8 @@ export class ProjectEditAddComponent implements OnInit {
   projectName_toUpdate: string;
   id_project: string;
 
+  display = 'none'
+
   constructor(
     private projectService: ProjectService,
     private router: Router,
@@ -94,15 +96,15 @@ export class ProjectEditAddComponent implements OnInit {
 
         // if (project) {
 
-          //   this.projectService.createUserProject(project._id)
-          //   .subscribe((project_user) => {
+        //   this.projectService.createUserProject(project._id)
+        //   .subscribe((project_user) => {
 
-          //     console.log('POST DATA PROJECT-USER ', project_user);
-          //   },
-          //   (error) => {
-          //     console.log('CREATE PROJECT-USER - POST REQUEST ERROR ', error);
-          //   },
-          // );
+        //     console.log('POST DATA PROJECT-USER ', project_user);
+        //   },
+        //   (error) => {
+        //     console.log('CREATE PROJECT-USER - POST REQUEST ERROR ', error);
+        //   },
+        // );
 
         // }
       },
@@ -126,17 +128,28 @@ export class ProjectEditAddComponent implements OnInit {
     this.projectService.updateMongoDbProject(this.id_project, this.projectName_toUpdate)
       .subscribe((data) => {
         console.log('PUT DATA ', data);
-
       },
       (error) => {
         console.log('PUT REQUEST ERROR ', error);
       },
       () => {
         console.log('PUT REQUEST * COMPLETE *');
-
         this.router.navigate(['/projects']);
       });
+  }
 
+  /**
+   * MODAL DELETE PROJECT
+   * @param id
+   * @param projectName
+   */
+  openDeleteModal() {
+    console.log('OPEN DELETE MODAL -> PROJECT ID ', this.id_project);
+    this.display = 'block';
+  }
+
+  onCloseModal() {
+    this.display = 'none';
   }
 
 

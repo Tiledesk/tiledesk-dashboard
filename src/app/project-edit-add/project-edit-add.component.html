@@ -2,7 +2,7 @@
 <div class="navbar-brand" style="z-index: -1;margin-top:10px; padding-left:30px">
     <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBackToProjectsList()">keyboard_arrow_left</i>
     <span *ngIf="CREATE_VIEW">Aggiungi Progetto</span>
-    <span *ngIf="EDIT_VIEW">Modifica Progetto</span>
+    <span *ngIf="EDIT_VIEW">Impostazioni Progetto</span>
   </div>
   
   <div class="main-content" style="padding-top:0px">
@@ -21,6 +21,7 @@
                 <div class="col-sm-10">
                   <input [(ngModel)]="project_name" class="" type="text" placeholder="Nome Progetto">
                 </div>
+
   
                 <!-- SPACER -->
                 <!-- <div class="col-sm-12" style="height:10px"></div> -->
@@ -57,6 +58,11 @@
                 <div class="col-sm-10">
                   <input [(ngModel)]="projectName_toUpdate" class="input" type="text" placeholder="Nome Progetto">
                 </div>
+
+                <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2">Id Progetto</label>
+                <div class="col-sm-10">
+                  <input style="color:#999999" [(ngModel)]="id_project" class="input" type="text" disabled>
+                </div>
         
                 <!-- SPACER -->
                 <!-- <div class="col-sm-12" style="height:10px"></div>
@@ -76,7 +82,7 @@
                 <label style="" class="col-sm-2"></label>
                 <div class="col-sm-10"> 
                   <button class="btn btn-success" (click)="edit()">
-                    Modifica Progetto
+                    Aggiorna Progetto
                   </button>
                 </div>
               </span>
@@ -111,10 +117,39 @@
       <!-- ./ row -->
       <div class="row">
 
-        <div class="col-md-12" style="text-align: center">
-          <h4>Elimina Progetto</h4>
+        <div class="col-md-12" style="text-align: center; border-top: 1px solid #cccccc; margin-top:25px">
+          <div style="color:#aaaaaa; margin-top:25px; cursor:pointer" (click)="openDeleteModal()">
+            <i class="material-icons" style="vertical-align: middle">delete_forever</i> <span style="vertical-align: middle">ELIMINA PROGETTO</span>
+          </div>
+          <!-- <h5 style="color:#aaaaaa; margin-top:25px; font-size:1em">ELIMINA PROGETTO</h5> -->
         </div>
+      </div>
 
+      <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header" style="background-color:#ff5252; padding-bottom:24px">
+              <!-- <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+                <span aria-hidden="true">&times;</span>
+              </button> -->
+              <h4 class="modal-title" style="color: #fff">
+                  <i class="material-icons" style="vertical-align: middle">report_problem</i><span style="vertical-align: middle; padding-left:8px"> Elimina progetto</span>
+              </h4>
+              <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em ">Il progetto Bpll verra eliminato</h4>
+            </div>
+            <div class="modal-body">
+                <label style="font-weight:100; text-align: left; padding-bottom:12px" class="col-sm-10 ">
+                  Per eliminare il progetto, digita l'ID del progetto: <span style="color:#212121"><strong> {{ id_project }}</strong> </span>
+                </label>
+                <div class="col-sm-10">
+                  <input [(ngModel)]="project_name" class="" type="text" placeholder="ID progetto">
+                </div>
+            </div>
+            <div class="modal-footer" style="margin-top: 75px;">
+              <button style="margin-top:0px" class="btn btn-danger" disabled= {{disabled}} (click)="createProject()">Elimina Progetto</button>
+            </div>
+          </div>
+        </div>
       </div>
   
     </div>

@@ -339,7 +339,7 @@ export class AuthService {
 
   // THE project_id IS PASSED FROM PROJECT COMPONENT WHEN THE USER SELECT A PROJECT
   projectSelected(project: Project) {
-    // PUBLISH THE project_id TO WHICH THE SIDEBAR IS SUBSCRIBED
+    // PUBLISH THE project
     this.project_bs.next(project);
   }
 

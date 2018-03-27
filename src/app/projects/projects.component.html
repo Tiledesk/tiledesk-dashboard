@@ -81,7 +81,7 @@
       <h3 style="padding-left:15px; margin-top:55px" >Benvenuto in Tile Desk. </h3>
     </div>
     <div class="row" style="margin-right:100px; margin-left:100px;">
-      <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="col-lg-3 col-md-6 col-sm-6" style="cursor:pointer">
         <div class="card" (click)='openCreateModal()'>
           <div class="card-content">
             <h3 class="title" style="color: #55b9d1; text-align: center; padding-top:25px">
@@ -93,7 +93,7 @@
           </div>
         </div>
       </div>
-      <div *ngFor="let project of projects" class="col-lg-3 col-md-6 col-sm-6">
+      <div *ngFor="let project of projects" class="col-lg-3 col-md-6 col-sm-6" style="cursor:pointer">
         <div class="card" (click)='goToHome(project?.id_project._id, project?.id_project.name)'>
           <div class="card-content">
             <h3 class="title" style="color: #566787; font-size:20px; margin-bottom: 0px;">

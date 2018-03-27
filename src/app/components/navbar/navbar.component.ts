@@ -104,7 +104,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     getCurrentProject() {
         this.auth.project_bs.subscribe((project) => {
             this.project = project
-            console.log('00 -> NAVBAR project from AUTH service subscription  ', this.project )
+            // console.log('00 -> NAVBAR project from AUTH service subscription  ', this.project )
         });
     }
 

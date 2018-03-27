@@ -11,15 +11,23 @@ import { AuthService } from '../core/auth.service';
 export class FaqKbService {
 
   http: Http;
-  MONGODB_BASE_URL = environment.mongoDbConfig.FAQKB_BASE_URL;
+  // MONGODB_BASE_URL = environment.mongoDbConfig.FAQKB_BASE_URL;
   // TOKEN = environment.mongoDbConfig.TOKEN;
+  BASE_URL = environment.mongoDbConfig.BASE_URL;
+  MONGODB_BASE_URL: any;
+
   TOKEN: string
   user: any;
+
+  project: any;
 
   constructor(
     http: Http,
     private auth: AuthService
   ) {
+    // // tslint:disable-next-line:no-debugger
+    // debugger
+    console.log('hello faq-kb service')
     this.http = http;
 
     // SUBSCRIBE TO USER BS
@@ -27,18 +35,39 @@ export class FaqKbService {
     this.checkUser()
 
     this.auth.user_bs.subscribe((user) => {
+      // // tslint:disable-next-line:no-debugger
+      // debugger
       this.user = user;
       this.checkUser()
     });
 
+    this.getCurrentProject();
+
+  }
+
+  getCurrentProject() {
+    console.log('FAQ-KB SERV - SUBSCRIBE TO CURRENT PROJ ')
+    // tslint:disable-next-line:no-debugger
+    // debugger
+    this.auth.project_bs.subscribe((project) => {
+      this.project = project
+      // tslint:disable-next-line:no-debugger
+      // debugger
+
+      if (this.project) {
+        console.log('00 -> FAQKB SERVICE project ID from AUTH service subscription  ', this.project._id)
+        this.MONGODB_BASE_URL = this.BASE_URL + this.project._id + '/faq_kb/'
+      }
+    });
   }
 
   checkUser() {
     if (this.user) {
       this.TOKEN = this.user.token
       // this.getToken();
+      console.log('FAQ KB SERVICE user is signed in');
     } else {
-      console.log('No user is signed in');
+      console.log('FAQ KB SERVICE No user is signed in');
     }
   }
 
@@ -67,9 +96,9 @@ export class FaqKbService {
    * READ (GET ALL FAQKB WITH THE CURRENT PROJECT ID)
    */
   public getFaqKbByProjectId(id_project: string): Observable<FaqKb[]> {
-    let url = this.MONGODB_BASE_URL;
-    url += '?id_project=' + `${id_project}`;
-
+    const url = this.MONGODB_BASE_URL;
+    // url += '?id_project=' + `${id_project}`;
+    // const url = `http://localhost:3000/${id_project}/faq_kb/`;
     console.log('GET FAQ-KB BY PROJECT ID URL', url);
 
     const headers = new Headers();
@@ -112,6 +141,7 @@ export class FaqKbService {
     console.log('POST REQUEST BODY ', body);
 
     const url = this.MONGODB_BASE_URL;
+    // let url = `http://localhost:3000/${project_id}/faq_kb/`;
 
     return this.http
       .post(url, JSON.stringify(body), options)

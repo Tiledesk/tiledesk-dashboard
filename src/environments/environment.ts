@@ -11,10 +11,11 @@ export const environment = {
     },
     mongoDbConfig: {
         CONTACTS_BASE_URL: 'http://localhost:3000/app1/contacts/',
-        DEPARTMENTS_BASE_URL: 'http://localhost:3000/app1/departments/',
-        FAQ_BASE_URL: 'http://localhost:3000/app1/faq/',
+        // DEPARTMENTS_BASE_URL: 'http://localhost:3000/app1/departments/', // URL BUILT directly IN DEPARTMENTS SERVICE
+        // FAQ_BASE_URL: 'http://localhost:3000/app1/faq/', // URL BUILT directly IN FAQ SERVICE
         BOTS_BASE_URL: 'http://localhost:3000/app1/bots/',
-        FAQKB_BASE_URL: 'http://localhost:3000/app1/faq_kb/',
+        // FAQKB_BASE_URL: 'http://localhost:3000/app1/faq_kb/', // URL BUILT directly IN FAQ-KB SERVICE
+        BASE_URL: 'http://localhost:3000/',
         PROJECTS_BASE_URL: 'http://localhost:3000/projects/',
         PROJECT_USER_BASE_URL: 'http://localhost:3000/app1/project_users/',
         SIGNUP_BASE_URL: 'http://localhost:3000/auth/signup',

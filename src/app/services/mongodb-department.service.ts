@@ -13,10 +13,13 @@ export class MongodbDepartmentService {
 
   http: Http;
 
-  MONGODB_BASE_URL = environment.mongoDbConfig.DEPARTMENTS_BASE_URL;
+  // MONGODB_BASE_URL = environment.mongoDbConfig.DEPARTMENTS_BASE_URL;
+  BASE_URL = environment.mongoDbConfig.BASE_URL;
+  MONGODB_BASE_URL: any;
   // TOKEN =  environment.mongoDbConfig.TOKEN;
   TOKEN: string
   user: any;
+  project: any;
 
   constructor(
     http: Http,
@@ -37,6 +40,23 @@ export class MongodbDepartmentService {
     this.auth.user_bs.subscribe((user) => {
       this.user = user;
       this.checkUser()
+    });
+
+    this.getCurrentProject();
+  }
+
+  getCurrentProject() {
+    console.log('DEPT SERVICE - SUBSCRIBE TO CURRENT PROJ ')
+    // tslint:disable-next-line:no-debugger
+    // debugger
+    this.auth.project_bs.subscribe((project) => {
+      this.project = project
+      // tslint:disable-next-line:no-debugger
+      // debugger
+      if (this.project) {
+        console.log('00 -> DEPT SERVICE project ID from AUTH service subscription  ', this.project._id)
+        this.MONGODB_BASE_URL = this.BASE_URL + this.project._id + '/departments/'
+      }
     });
   }
 
@@ -71,8 +91,8 @@ export class MongodbDepartmentService {
   }
 
   public getDeptsByProjectId(id_project: string): Observable<Department[]> {
-    let url = this.MONGODB_BASE_URL;
-    url += '?id_project=' + id_project;
+    const url = this.MONGODB_BASE_URL;
+    // url += '?id_project=' + id_project;
 
     console.log('DEPARTMENTS URL', url);
     const headers = new Headers();

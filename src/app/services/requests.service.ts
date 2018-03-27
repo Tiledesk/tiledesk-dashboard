@@ -74,6 +74,8 @@ export class RequestsService {
     this.checkUser()
 
     this.auth.user_bs.subscribe((user) => {
+      // // tslint:disable-next-line:no-debugger
+      // debugger
       this.user = user;
       this.checkUser()
     });
@@ -84,6 +86,8 @@ export class RequestsService {
   getCurrentProject() {
     // IF EXIST A PROJECT UNSUSCRIBE query.onSnapshot AND RESET REQUEST LIST
     this.auth.project_bs.subscribe((project) => {
+      // // tslint:disable-next-line:no-debugger
+      // debugger
       if (project) {
         if (this.unsubscribe) {
           this.unsubscribe();

@@ -46,7 +46,7 @@ export class FaqKbComponent implements OnInit {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
       if (this.project) {
-        console.log('00 -> FAQKB COMP project ID from AUTH service subscription  ', this.project._id)
+        // console.log('00 -> FAQKB COMP project ID from AUTH service subscription  ', this.project._id)
       }
     });
   }
