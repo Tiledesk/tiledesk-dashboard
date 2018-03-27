@@ -5,8 +5,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 
 import { RequestsService } from '../services/requests.service';
-
-
+import { MongodbDepartmentService } from '../services/mongodb-department.service';
 
 @Component({
   selector: 'projects',
@@ -37,6 +36,7 @@ export class ProjectsComponent implements OnInit {
     private auth: AuthService,
     private requestsService: RequestsService,
     private element: ElementRef,
+    private departmentService: MongodbDepartmentService,
   ) { }
 
   ngOnInit() {
@@ -117,13 +117,13 @@ export class ProjectsComponent implements OnInit {
   }
 
 
- openCreateModal() {
-   console.log('OPEN CREATE MODAL');
-   // -> PROJECT ID ', id
-   this.display = 'block';
+  openCreateModal() {
+    console.log('OPEN CREATE MODAL');
+    // -> PROJECT ID ', id
+    this.display = 'block';
 
 
- }
+  }
 
   // CLOSE MODAL WITHOUT SAVE THE UPDATES OR WITHOUT CONFIRM THE DELETION
   onCloseModal() {
@@ -179,6 +179,11 @@ export class ProjectsComponent implements OnInit {
         this.display = 'none';
 
         this.router.navigate([`/project/${project._id}/home`]);
+
+        if (project) {
+          // CREATES THE 'DEFAULT DEPARTMENT' WHEN A NEW PROJECT IS CREATED
+          this.createDepartment();
+        }
       },
       (error) => {
         console.log('CREATE PROJECT - POST REQUEST ERROR ', error);
@@ -187,6 +192,25 @@ export class ProjectsComponent implements OnInit {
         console.log('CREATE PROJECT - POST REQUEST COMPLETE ');
 
         // this.router.navigate(['/projects']);
+      });
+  }
+
+  /**
+   * ADD DEFAULT DEPARMENT
+   */
+  createDepartment() {
+
+    this.departmentService.addMongoDbDepartments('Default Department', undefined, 'pooled', true)
+      .subscribe((department) => {
+        console.log('POST DATA DEFAULT DEPT', department);
+
+      },
+      (error) => {
+        console.log('DEFAULT DEPT POST REQUEST ERROR ', error);
+      },
+      () => {
+        console.log('DEFAULT DEPT POST REQUEST * COMPLETE *');
+
       });
   }
 

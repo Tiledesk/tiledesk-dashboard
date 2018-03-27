@@ -199,10 +199,9 @@ export class DepartmentEditAddComponent implements OnInit {
    */
   createDepartment() {
     console.log('MONGO DB DEPT-NAME DIGIT BY USER ', this.dept_name);
-    this.mongodbDepartmentService.addMongoDbDepartments(this.dept_name, this.selectedBotId, this.ROUTING_SELECTED)
+    this.mongodbDepartmentService.addMongoDbDepartments(this.dept_name, this.selectedBotId, this.ROUTING_SELECTED, false)
       .subscribe((department) => {
         console.log('POST DATA DEPT', department);
-
       },
       (error) => {
         console.log('DEPT POST REQUEST ERROR ', error);
