@@ -94,8 +94,9 @@ export class FaqKbService {
 
   /**
    * READ (GET ALL FAQKB WITH THE CURRENT PROJECT ID)
+   * NOTE: chat21-api-node.js READ THE CURRENT PROJECT ID FROM THE URL SO IT SO NO LONGER NECESSARY TO PASS THE PROJECT ID AS PARAMETER
    */
-  public getFaqKbByProjectId(id_project: string): Observable<FaqKb[]> {
+  public getFaqKbByProjectId(): Observable<FaqKb[]> {
     const url = this.MONGODB_BASE_URL;
     // url += '?id_project=' + `${id_project}`;
     // const url = `http://localhost:3000/${id_project}/faq_kb/`;
@@ -129,14 +130,14 @@ export class FaqKbService {
    * CREATE (POST)
    * @param fullName
    */
-  public addMongoDbFaqKb(name: string, urlfaqkb: string, project_id: string) {
+  public addMongoDbFaqKb(name: string, urlfaqkb: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'name': name, 'url': urlfaqkb, 'id_project': project_id };
+    const body = { 'name': name, 'url': urlfaqkb, 'id_project': this.project._id };
 
     console.log('POST REQUEST BODY ', body);
 

@@ -10,14 +10,14 @@ export const environment = {
         messagingSenderId: '77360455507',
     },
     mongoDbConfig: {
-        CONTACTS_BASE_URL: 'http://localhost:3000/app1/contacts/',
-        // DEPARTMENTS_BASE_URL: 'http://localhost:3000/app1/departments/', // URL BUILT directly IN DEPARTMENTS SERVICE
-        // FAQ_BASE_URL: 'http://localhost:3000/app1/faq/', // URL BUILT directly IN FAQ SERVICE
-        BOTS_BASE_URL: 'http://localhost:3000/app1/bots/',
-        // FAQKB_BASE_URL: 'http://localhost:3000/app1/faq_kb/', // URL BUILT directly IN FAQ-KB SERVICE
         BASE_URL: 'http://localhost:3000/',
+        // DEPARTMENTS_BASE_URL: 'http://localhost:3000/app1/departments/', // URL BUILT directly IN DEPARTMENTS SERVICE
+        // FAQKB_BASE_URL: 'http://localhost:3000/app1/faq_kb/', // URL BUILT directly IN FAQ-KB SERVICE
+        // FAQ_BASE_URL: 'http://localhost:3000/app1/faq/', // URL BUILT directly IN FAQ SERVICE
+        CONTACTS_BASE_URL: 'http://localhost:3000/app1/contacts/',
+        BOTS_BASE_URL: 'http://localhost:3000/app1/bots/',
+        // PROJECT_USER_BASE_URL: 'http://localhost:3000/app1/project_users/', // NO MORE USED - THE RELATION PROJECT -> PROJECT USER IT'S DONE chat21-api-node.js
         PROJECTS_BASE_URL: 'http://localhost:3000/projects/',
-        PROJECT_USER_BASE_URL: 'http://localhost:3000/app1/project_users/',
         SIGNUP_BASE_URL: 'http://localhost:3000/auth/signup',
         SIGNIN_BASE_URL: 'http://localhost:3000/auth/signin',
         MONGODB_PEOPLE_BASE_URL: 'http://localhost:3000/app1/people/',

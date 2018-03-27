@@ -90,7 +90,11 @@ export class MongodbDepartmentService {
       .map((response) => response.json());
   }
 
-  public getDeptsByProjectId(id_project: string): Observable<Department[]> {
+  /**
+   * READ (GET ALL DEPTS WITH THE CURRENT PROJECT ID)
+   * NOTE: chat21-api-node.js READ THE CURRENT PROJECT ID FROM THE URL SO IT SO NO LONGER NECESSARY TO PASS THE PROJECT ID AS PARAMETER
+   */
+  public getDeptsByProjectId(): Observable<Department[]> {
     const url = this.MONGODB_BASE_URL;
     // url += '?id_project=' + id_project;
 
@@ -124,14 +128,14 @@ export class MongodbDepartmentService {
    * CREATE (POST)
    * @param fullName
    */
-  public addMongoDbDepartments(deptName: string, id_bot: string, routing: string, id_project: string) {
+  public addMongoDbDepartments(deptName: string, id_bot: string, routing: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'name': `${deptName}`, 'id_bot': `${id_bot}`, 'routing': `${routing}`, 'id_project': id_project  };
+    const body = { 'name': `${deptName}`, 'id_bot': `${id_bot}`, 'routing': `${routing}`, 'id_project': this.project._id };
 
     console.log('POST REQUEST BODY ', body);
 

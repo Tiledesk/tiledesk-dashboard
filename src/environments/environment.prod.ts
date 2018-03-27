@@ -10,13 +10,14 @@ export const environment = {
         messagingSenderId: '77360455507',
     },
     mongoDbConfig: {
+        BASE_URL: 'http://api.chat21.org/',
+        // DEPARTMENTS_BASE_URL: 'http://api.chat21.org/app1/departments/', // URL BUILT directly IN DEPARTMENTS SERVICE
+        // FAQKB_BASE_URL: 'http://api.chat21.org/app1/faq_kb/', // URL BUILT directly IN FAQ-KB SERVICE
+        // FAQ_BASE_URL: 'http://api.chat21.org/app1/faq/', // URL BUILT directly IN FAQ SERVICE
         CONTACTS_BASE_URL: 'http://api.chat21.org/app1/contacts/',
-        DEPARTMENTS_BASE_URL: 'http://api.chat21.org/app1/departments/',
-        FAQ_BASE_URL: 'http://api.chat21.org/app1/faq/',
         BOTS_BASE_URL: 'http://api.chat21.org/app1/bots/',
-        FAQKB_BASE_URL: 'http://api.chat21.org/app1/faq_kb/',
+        // PROJECT_USER_BASE_URL: 'http://api.chat21.org/app1/project_users/', // NO MORE USED - THE RELATION PROJECT -> PROJECT USER IT'S DONE chat21-api-node.js
         PROJECTS_BASE_URL: 'http://api.chat21.org/projects/',
-        PROJECT_USER_BASE_URL: 'http://api.chat21.org/app1/project_users/',
         SIGNUP_BASE_URL: 'http://api.chat21.org/auth/signup',
         SIGNIN_BASE_URL: 'http://api.chat21.org/auth/signin',
         MONGODB_PEOPLE_BASE_URL: 'http://api.chat21.org/app1/people/',

@@ -50,7 +50,7 @@ export class DepartmentsComponent implements OnInit {
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
-      console.log('00 -> DEPT COMP project ID from AUTH service subscription  ', this.project._id)
+      // console.log('00 -> DEPTS COMP project ID from AUTH service subscription  ', this.project._id)
     });
   }
 
@@ -65,11 +65,13 @@ export class DepartmentsComponent implements OnInit {
     this.router.navigate(['project/' + this.project._id + '/department/edit', dept_id]);
   }
 
+
   /**
    * GETS ONLY THE DEPTs WITH THE CURRENT PROJECT ID
+   * NOTE: THE CURREN PROJECT ID IS OBTAINED IN THE FAQ-KB SERVICE
    */
   getDeptsByProjectId() {
-    this.mongodbDepartmentService.getDeptsByProjectId(this.project._id).subscribe((departments: any) => {
+    this.mongodbDepartmentService.getDeptsByProjectId().subscribe((departments: any) => {
       console.log('MONGO DB DEPARTMENTS (FILTERED FOR PROJECT ID)', departments);
       this.departments = departments;
     });

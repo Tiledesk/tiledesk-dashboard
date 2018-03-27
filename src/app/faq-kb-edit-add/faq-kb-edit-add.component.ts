@@ -59,7 +59,7 @@ export class FaqKbEditAddComponent implements OnInit {
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
-      console.log('00 -> FAQ-KB COMP project ID from AUTH service subscription  ', this.project._id)
+      // console.log('00 -> FAQ-KB EDIT ADD COMP project ID from AUTH service subscription  ', this.project._id)
     });
   }
 
@@ -89,7 +89,7 @@ export class FaqKbEditAddComponent implements OnInit {
     console.log('Create Faq Kb - NAME ', this.faqKbName);
     console.log('Create Faq Kb - URL ', this.faqKbUrl);
     console.log('Create Faq Kb - PROJ ID ', this.project._id);
-    this.faqKbService.addMongoDbFaqKb(this.faqKbName, this.faqKbUrl, this.project._id)
+    this.faqKbService.addMongoDbFaqKb(this.faqKbName, this.faqKbUrl)
       .subscribe((faqKb) => {
         console.log('CREATE FAQKB - POST DATA ', faqKb);
 

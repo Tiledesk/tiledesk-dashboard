@@ -126,7 +126,7 @@ export class DepartmentEditAddComponent implements OnInit {
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
-      console.log('00 -> DEPT COMP project ID from AUTH service subscription  ', this.project._id)
+      // console.log('00 -> DEPT EDIT/ADD COMP project ID from AUTH service subscription  ', this.project._id)
     });
   }
 
@@ -155,10 +155,11 @@ export class DepartmentEditAddComponent implements OnInit {
 
   /**
    * GET THE FAQ-KB LIST FILTERING ALL THE FAQ-KB FOR THE CURRENT PROJECT ID
-   * * USED IN YHE OPTION ITEM FORM OF THE CREATE VIEW *
+   * NOTE: THE CURREN PROJECT ID IS OBTAINED IN THE FAQ-KB SERVICE
+   * * USED IN THE OPTION ITEM FORM OF THE CREATE VIEW *
    */
   getFaqKbByProjecId() {
-    this.faqKbService.getFaqKbByProjectId(this.project._id).subscribe((faqkb: any) => {
+    this.faqKbService.getFaqKbByProjectId().subscribe((faqkb: any) => {
       console.log('GET FAQ-KB LIST - SUBSTITUTE BOT (TO SHOW IN SELECTION FIELD) ', faqkb);
       this.botsList = faqkb;
     },
@@ -198,7 +199,7 @@ export class DepartmentEditAddComponent implements OnInit {
    */
   createDepartment() {
     console.log('MONGO DB DEPT-NAME DIGIT BY USER ', this.dept_name);
-    this.mongodbDepartmentService.addMongoDbDepartments(this.dept_name, this.selectedBotId, this.ROUTING_SELECTED, this.project._id)
+    this.mongodbDepartmentService.addMongoDbDepartments(this.dept_name, this.selectedBotId, this.ROUTING_SELECTED)
       .subscribe((department) => {
         console.log('POST DATA DEPT', department);
 

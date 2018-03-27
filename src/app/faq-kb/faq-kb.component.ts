@@ -53,9 +53,10 @@ export class FaqKbComponent implements OnInit {
 
   /**
    * GETS ONLY THE FAQ-KB WITH THE CURRENT PROJECT ID
+   * NOTE: THE CURREN PROJECT ID IS OBTAINED IN THE FAQ-KB SERVICE
    */
   getFaqKbByProjectId() {
-    this.faqKbService.getFaqKbByProjectId(this.project._id).subscribe((faqKb: any) => {
+    this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
       console.log('FAQs-KB GET BY PROJECT ID', faqKb);
       this.faqkbList = faqKb;
       // this.showSpinner = false;
