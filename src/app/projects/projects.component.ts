@@ -180,10 +180,6 @@ export class ProjectsComponent implements OnInit {
 
         this.router.navigate([`/project/${project._id}/home`]);
 
-        if (project) {
-          // CREATES THE 'DEFAULT DEPARTMENT' WHEN A NEW PROJECT IS CREATED
-          this.createDepartment();
-        }
       },
       (error) => {
         console.log('CREATE PROJECT - POST REQUEST ERROR ', error);
@@ -195,24 +191,6 @@ export class ProjectsComponent implements OnInit {
       });
   }
 
-  /**
-   * ADD DEFAULT DEPARMENT
-   */
-  createDepartment() {
-
-    this.departmentService.addMongoDbDepartments('Default Department', undefined, 'pooled', true)
-      .subscribe((department) => {
-        console.log('POST DATA DEFAULT DEPT', department);
-
-      },
-      (error) => {
-        console.log('DEFAULT DEPT POST REQUEST ERROR ', error);
-      },
-      () => {
-        console.log('DEFAULT DEPT POST REQUEST * COMPLETE *');
-
-      });
-  }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {

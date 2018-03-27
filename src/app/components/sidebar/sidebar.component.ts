@@ -153,6 +153,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         return true;
     };
 
+    goToProjects() {
+        console.log('SIDEBAR IS MOBILE -  HAS CLICCKED GO TO PROJECT  ')
+        this.router.navigate(['/projects']);
+
+        // (in AUTH SERVICE ) RESET PROJECT_BS AND REMOVE ITEM PROJECT FROM STORAGE WHEN THE USER GO TO PROJECTS PAGE
+        this.auth.hasClickedGoToProjects()
+        console.log('00 -> SIDEBAR IS MOBILE project AFTER GOTO PROJECTS ', this.project )
+    }
+
     has_clicked_settings(SHOW_SETTINGS_SUBMENU: boolean) {
         this.SHOW_SETTINGS_SUBMENU = SHOW_SETTINGS_SUBMENU;
         console.log('HAS CLICKED SETTINGS - SHOW_SETTINGS_SUBMENU ', this.SHOW_SETTINGS_SUBMENU);

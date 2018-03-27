@@ -128,14 +128,14 @@ export class MongodbDepartmentService {
    * CREATE (POST)
    * @param fullName
    */
-  public addMongoDbDepartments(deptName: string, id_bot: string, routing: string, defaultdept: boolean) {
+  public addMongoDbDepartments(deptName: string, id_bot: string, routing: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'name': `${deptName}`, 'id_bot': `${id_bot}`, 'routing': `${routing}`, 'id_project': this.project._id, 'default': defaultdept };
+    const body = { 'name': `${deptName}`, 'id_bot': `${id_bot}`, 'routing': `${routing}`, 'id_project': this.project._id};
 
     console.log('POST REQUEST BODY ', body);
 

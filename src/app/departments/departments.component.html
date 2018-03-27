@@ -241,7 +241,7 @@
                     <button type="button" rel="tooltip" title="Modifica Bot" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(dept?._id, dept?.name)'>
                       <i class="material-icons">edit</i>
                     </button>
-                    <button type="button" rel="tooltip" title="Elimina Bot" class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal(dept?._id, dept?.name, hasClickedDeleteModal = true)'>
+                    <button *ngIf="dept?.default !== true" type="button" rel="tooltip" title="Elimina Bot" class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal(dept?._id, dept?.name, hasClickedDeleteModal = true)'>
                       <i class="material-icons">close</i>
                     </button>
                   </td>
