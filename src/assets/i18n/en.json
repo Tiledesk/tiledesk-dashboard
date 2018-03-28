@@ -11,6 +11,9 @@
         "CopyScript": "Copy Script",
         "EmbedTheTileDeskChatWidget": "Embed the Tile Desk chat widget",
         "ToChatWithYourVisitors...": "To chat with your visitors embeds the widget on your website",
-        "CopyTheFollowingScript...": "Copy the following script and insert it into your website's HTML source between the "
+        "CopyTheFollowingScript...": "Copy the following script and insert it into your website's HTML source between the ",
+        "IncludeThePreChatForm_1": "Include the PRE-CHAT FORM: ",
+        "IncludeThePreChatForm_2": "requires visitors to complete a form (full name, email and first message) before starting a chat"
+
     }
 }

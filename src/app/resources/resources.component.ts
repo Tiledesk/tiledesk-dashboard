@@ -12,6 +12,9 @@ export class ResourcesComponent implements OnInit {
   project: Project;
 
   projectId: string;
+  preChatForm: boolean;
+ 
+  // preChatForm = 'preChatForm'
 
 
   constructor(
@@ -37,4 +40,13 @@ export class ResourcesComponent implements OnInit {
     document.execCommand('copy');
   }
 
+  toggleCheckBox(event) {
+    if (event.target.checked) {
+      this.preChatForm = true;
+      console.log('INCLUDE PRE CHAT FORM ', this.preChatForm)
+    } else {
+      this.preChatForm = false;
+      console.log('INCLUDE PRE CHAT FORM ', this.preChatForm)
+    }
+  }
 }

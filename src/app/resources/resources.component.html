@@ -18,6 +18,16 @@
                             <h6 class="category text-gray" style="text-transform: none; padding-left:15px">
                                 {{ 'Resourcepage.CopyTheFollowingScript...' | translate  }}<code><em>&lt;head&gt;</em></code> tags
                             </h6>
+
+                            <h6 class="category text-gray" style="text-transform: none; padding-left:15px">
+                                <div class="form-check">
+                                    <input style="height:16px; width:16px" type="checkbox" class="form-check-input" id="exampleCheck1" (change)="toggleCheckBox($event)">
+                                    <label style="color: #999999" class="form-check-label" for="exampleCheck1">
+                                        {{ 'Resourcepage.IncludeThePreChatForm_1' | translate }} <span style="font-weight:100">{{ 'Resourcepage.IncludeThePreChatForm_2' | translate }}</span>
+                                    </label>
+                                </div>
+                                
+                            </h6>
                             <!-- Copy the following script and insert it into your website's HTML source code between the <head> tags -->
                             <!-- <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Risposta</label> -->
                             <div class="col-sm-12">
@@ -28,7 +38,15 @@
 
                                     <div class="row">
                                         <div class="col-sm-12">
-<textarea name="exampleClipboard" class="textarea" readonly rows="7" value="&lt;app-root projectid='{{ projectId }}'&gt;&lt;/app-root&gt;
+<textarea  *ngIf="!preChatForm" name="exampleClipboard" class="textarea" readonly rows="7" value="&lt;app-root projectid='{{ projectId }}'&gt;&lt;/app-root&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;https://chat21-web.firebaseapp.com/inline.bundle.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;https://chat21-web.firebaseapp.com/polyfills.bundle.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;https://chat21-web.firebaseapp.com/scripts.bundle.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;https://chat21-web.firebaseapp.com/styles.bundle.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;https://chat21-web.firebaseapp.com/vendor.bundle.js&quot;&gt;&lt;/script&gt;
+&lt;script type=&quot;text/javascript&quot; src=&quot;https://chat21-web.firebaseapp.com/main.bundle.js&quot;&gt;&lt;/script&gt;" type="text">
+</textarea>
+<textarea  *ngIf="preChatForm" name="exampleClipboard" class="textarea" readonly rows="7" value="&lt;app-root preChatForm projectid='{{ projectId }}'&gt;&lt;/app-root&gt;
 &lt;script type=&quot;text/javascript&quot; src=&quot;https://chat21-web.firebaseapp.com/inline.bundle.js&quot;&gt;&lt;/script&gt;
 &lt;script type=&quot;text/javascript&quot; src=&quot;https://chat21-web.firebaseapp.com/polyfills.bundle.js&quot;&gt;&lt;/script&gt;
 &lt;script type=&quot;text/javascript&quot; src=&quot;https://chat21-web.firebaseapp.com/scripts.bundle.js&quot;&gt;&lt;/script&gt;
