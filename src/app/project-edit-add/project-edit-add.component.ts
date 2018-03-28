@@ -118,9 +118,6 @@ export class ProjectEditAddComponent implements OnInit {
       });
   }
 
-  // WHEN IS PRESSES EDIT THE DATA PASSED TO THE FUNCTION updateMongoDbBot() ARE
-  // * this.id_project: IS PASSED BY PROJECT COMPONENT VIA URL (see getProjectId())
-  // * botFullNAme_toUpdate: IS RETURNED BY THE BOT OBJECT (see getProjectById()) AND THEN (PERHAPS) EDITED BY USER
   edit() {
     console.log('PROJECT ID WHEN EDIT IS PRESSED ', this.id_project);
     console.log('PROJECT NAME WHEN EDIT IS PRESSED ', this.projectName_toUpdate);

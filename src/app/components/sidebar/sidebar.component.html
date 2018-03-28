@@ -53,10 +53,10 @@
                 <!-- color: #3C4858 -->
                 <h6 style="text-align: center; text-transform: none; font-size: 0.7; color: #333"> 
                     <strong>
-                        {{ user.firstname }} {{ user.lastname }}
+                        {{ user?.firstname }} {{ user?.lastname }}
                     </strong>
                 </h6>
-                <h6 style="text-align: center; text-transform: none; font-size: 0.7; color: #333">{{ user.email }}</h6>
+                <h6 style="text-align: center; text-transform: none; font-size: 0.7; color: #333">{{ user?.email }}</h6>
                 <li><a style="text-align: center; cursor: pointer" (click)="logout()">LOGOUT</a></li>
             </ul>
         </li>

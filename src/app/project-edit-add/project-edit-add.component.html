@@ -135,7 +135,7 @@
               <h4 class="modal-title" style="color: #fff">
                   <i class="material-icons" style="vertical-align: middle">report_problem</i><span style="vertical-align: middle; padding-left:8px"> Elimina progetto</span>
               </h4>
-              <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em ">Il progetto Bpll verra eliminato</h4>
+              <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em ">Il progetto verrà eliminato</h4>
             </div>
             <div class="modal-body">
                 <label style="font-weight:100; text-align: left; padding-bottom:12px" class="col-sm-10 ">
@@ -146,6 +146,7 @@
                 </div>
             </div>
             <div class="modal-footer" style="margin-top: 75px;">
+              <button class="btn btn-white" (click)="onCloseModal()" style="padding:12px 16px;">Chiudi</button>
               <button style="margin-top:0px" class="btn btn-danger" disabled (click)="createProject()">Elimina Progetto</button>
             </div>
           </div>

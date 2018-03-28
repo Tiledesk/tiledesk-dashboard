@@ -1,4 +1,4 @@
-<p style="margin-top:10px; padding-left:30px" class="navbar-brand">Risorse</p> 
+<p style="margin-top:10px; padding-left:30px" class="navbar-brand">{{ 'Resourcepage.Resources' | translate }}</p> 
 
 <div class="main-content">
     <div class="container-fluid">
@@ -9,24 +9,40 @@
 
                         <!-- WIDGET -->
                         <div class="col-sm-12">
-                            <h4 class="card-title" style="text-transform: none; color: #566787">1. Incorpora il widget Tile Desk</h4>
-                            <h6 class="category text-gray" style="text-transform: none; padding-left:15px">Per chattare con i tuoi visitatori incorpora il widget nel tuo sito</h6>
-                            <h6 class="category text-gray" style="text-transform: none; padding-left:15px">Copia il seguente script e inseriscilo nel sorgente HTML tra le tags <code><em>&lt;head&gt;</em></code></h6>
+                            <h4 class="card-title" style="text-transform: none; color: #566787">
+                                1. {{ 'Resourcepage.EmbedTheTileDeskChatWidget' | translate }}
+                            </h4>
+                            <h6 class="category text-gray" style="text-transform: none; padding-left:15px">
+                                {{ 'Resourcepage.ToChatWithYourVisitors...' | translate  }}
+                            </h6>
+                            <h6 class="category text-gray" style="text-transform: none; padding-left:15px">
+                                {{ 'Resourcepage.CopyTheFollowingScript...' | translate  }}<code><em>&lt;head&gt;</em></code> tags
+                            </h6>
                             <!-- Copy the following script and insert it into your website's HTML source code between the <head> tags -->
                             <!-- <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Risposta</label> -->
                             <div class="col-sm-12">
                                 <div style="padding-top: 5px; padding-bottom: 25px;">
-                                    <pre>
-&lt;app-root preChatForm tenant='' recipientId='' projectid='' userId='' userEmail='' userPassword='' userFullname=''&gt;&lt;/app-root&gt;
+                                    
+                                    <!-- &lt;app-root preChatForm tenant='' recipientId='' projectid='' userId='' userEmail='' userPassword='' userFullname=''&gt;&lt;/app-root&gt; -->
 
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+<textarea name="exampleClipboard" class="textarea" readonly rows="7" value="&lt;app-root projectid='{{ projectId }}'&gt;&lt;/app-root&gt;
 &lt;script type=&quot;text/javascript&quot; src=&quot;https://chat21-web.firebaseapp.com/inline.bundle.js&quot;&gt;&lt;/script&gt;
 &lt;script type=&quot;text/javascript&quot; src=&quot;https://chat21-web.firebaseapp.com/polyfills.bundle.js&quot;&gt;&lt;/script&gt;
 &lt;script type=&quot;text/javascript&quot; src=&quot;https://chat21-web.firebaseapp.com/scripts.bundle.js&quot;&gt;&lt;/script&gt;
 &lt;script type=&quot;text/javascript&quot; src=&quot;https://chat21-web.firebaseapp.com/styles.bundle.js&quot;&gt;&lt;/script&gt;
 &lt;script type=&quot;text/javascript&quot; src=&quot;https://chat21-web.firebaseapp.com/vendor.bundle.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://chat21-web.firebaseapp.com/main.bundle.js&quot;&gt; 
-&lt;/script&gt;</pre>
+&lt;script type=&quot;text/javascript&quot; src=&quot;https://chat21-web.firebaseapp.com/main.bundle.js&quot;&gt;&lt;/script&gt;" type="text">
+</textarea>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button style="margin-top:0px" (click)="copyToClipboard()" class="btn btn-white">{{ 'Resourcepage.CopyScript' | translate }}</button>
+                                   </div>
                                 </div>
+                                
                             </div>
                         </div>
 

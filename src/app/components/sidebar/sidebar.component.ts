@@ -72,7 +72,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         private auth: AuthService
     ) {
 
-        console.log('00 -> HELLO SIDEBAR - PROJECT ID ', this.project)
+        // console.log('00 -> HELLO SIDEBAR - PROJECT ID ', this.project)
 
         this.auth.project_bs.subscribe((project) => {
             this.project = project
