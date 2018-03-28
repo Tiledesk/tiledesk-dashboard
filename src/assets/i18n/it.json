@@ -4,15 +4,27 @@
     "Change dashboard Language": "Cambia lingua dashboard (in questa posizione per testare le traduzioni)",
     "Howdy": "Salve",
     "Users": "Utenti",
-    "Departments": "Dipartmenti",
     "Name": "Nome",
+
+    "Available": "Disponibile",
+    "Unavailable": "Non disponibile",
+    "Visitors": "Visitatori",
+    "History": "Cronologia",
+    "Settings": "Impostazioni",
+    "Departments": "Dipartmenti",
+    "Resources": "Risorse",
     "Resourcepage": {
-        "Resources": "Risorse",
         "CopyScript": "Copia Script",
         "EmbedTheTileDeskChatWidget": "Incorpora il chat widget Tile Desk",
         "ToChatWithYourVisitors...": "Per chattare con i tuoi visitatori incorpora il widget nel tuo sito",
         "CopyTheFollowingScript...": "Copia il seguente script e inseriscilo nel sorgente HTML tra le ",
         "IncludeThePreChatForm_1": "Includi il FORM PRE-CHAT: ",
-        "IncludeThePreChatForm_2": "richiede ai visitatori di completare un form (nome dell'utente, email e primo messaggio) prima di iniziare una chat"  
+        "IncludeThePreChatForm_2": "richiede ai visitatori di completare un form (nome dell'utente, email e primo messaggio) prima di iniziare una chat"
+    },
+    "DepartmentsPage": {
+        
+    },
+    "VisitorsPage": {
+        
     }
 }

@@ -55,6 +55,9 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  goToResources() {
+    this.router.navigate(['project/' + this.project._id + '/resources']);
+  }
   goToRequests() {
     this.router.navigate(['project/' + this.project._id + '/requests']);
   }
@@ -63,6 +66,7 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['project/' + this.project._id + '/analytics']);
   }
 
+  // NO MORE USED
   goToHistory() {
     this.router.navigate(['project/' + this.project._id + '/history']);
   }

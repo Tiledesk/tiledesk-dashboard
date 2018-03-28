@@ -1,9 +1,9 @@
 <!-- <span *ngIf="!LOGIN_PAGE"> -->
-<div class="logo" style="background-color: #eeeeee">
+<div *ngIf="project" class="logo" style="background-color: #eeeeee">
     <!-- <a href="https://www.creative-tim.com" class="simple-text"> -->
-    <a routerLink="/home" class="simple-text" style="text-transform: none;">
+    <a routerLink="project/{{ project._id }}/home" class="simple-text" style="text-transform: none; padding-left: 40px;">
        
-        <div class="logo-img" >
+        <div class="logo-img">
             
             <img style="width:50%" src="assets/img/tiledesk-logo.png"/>
         </div>
@@ -26,7 +26,7 @@
         <li  *ngIf="project">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 <i class="material-icons">apps</i>
-                <p class="hidden-lg hidden-md">{{ project.name }}</p>
+                <p class="hidden-lg hidden-md">{{ project?.name }}</p>
             </a>
             <ul *ngIf="project" class="dropdown-menu">
                 <li (click)="goToProjects()"><a >Visualizza tutti i progetti</a></li>
@@ -78,7 +78,7 @@
                     (click)="availale_unavailable_status(hasClickedChangeStatus = !hasClickedChangeStatus)">
 
                     <i class="material-icons" style=" font-size: 16px; color: #1eb848; margin-right:0px">fiber_manual_record</i>
-                    <p style="color:#a9afbb">Disponibile</p>
+                    <p style="color:#a9afbb">{{ 'Available' | translate }}</p>
                 </a>
                 <a *ngIf="IS_UNAVAILABLE" 
                     style="background-color: #e5e4e5; 
@@ -91,7 +91,7 @@
                     (click)="availale_unavailable_status(hasClickedChangeStatus = !hasClickedChangeStatus)">
 
                     <i class="material-icons" style=" font-size: 16px; color: #cac9c9; margin-right:0px">fiber_manual_record</i>           
-                    <p style="color:#cac9c9 ">Non disponibile</p>
+                    <p style="color:#cac9c9">{{ 'Unavailable' | translate }}</p>
                 </a>
             </li>
 
@@ -116,7 +116,7 @@
             <li *ngIf="project" routerLinkActive="active" >
                 <a routerLink="project/{{ project._id }}/requests">
                     <i class="material-icons">group</i>
-                    <p>Visitatori</p>
+                    <p>{{ 'Visitors' | translate }}</p>
                 </a>
             </li>
 
@@ -149,7 +149,7 @@
             <li *ngIf="project" routerLinkActive="active" >
                 <a routerLink="project/{{ project._id }}/history">
                     <i class="material-icons">history</i>
-                    <p>Cronologia</p>
+                    <p>{{ 'History' | translate }}</p>
                 </a>
             </li>
             <!-- SETTINGS -->
@@ -158,7 +158,7 @@
                 <!-- routerLink="/settings" -->
                 <a>
                     <i class="material-icons">settings</i>
-                    <p>Settings <b class="caret" style="position: absolute;right: 18px; margin-top: 13px" [ngStyle]="{'transform': trasform}"></b></p>
+                    <p>{{ 'Settings' | translate }} <b class="caret" style="position: absolute;right: 18px; margin-top: 13px" [ngStyle]="{'transform': trasform}"></b></p>
                 </a>
             </li>
             <!--  -->
@@ -203,7 +203,7 @@
                     <span class="sidebar-mini">
                         D
                     </span>
-                    <span class="sidebar-normal">Dipartimenti</span> 
+                    <span class="sidebar-normal">{{ 'Departments' | translate }}</span> 
                     
                     <!-- Departments -->
                     <!-- <p style="padding-left:15px;">Dipartimenti</p> -->
@@ -215,7 +215,7 @@
                     <span class="sidebar-mini">
                         R
                     </span>
-                    <span class="sidebar-normal">Risorse</span> 
+                    <span class="sidebar-normal">{{ 'Resources' | translate }}</span> 
                 </a>
             </li>
 

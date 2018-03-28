@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgModule } from '@angular/core';
 import { RequestsService } from '../../services/requests.service';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -7,6 +7,8 @@ import { ActivatedRoute } from '@angular/router';
 // import { ProjectService } from '../../services/project.service';
 import { AuthService } from '../../core/auth.service';
 import { Project } from '../../models/project-model';
+// import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+// import { SharedModule } from '../../shared/shared.module';
 
 declare const $: any;
 declare interface RouteInfo {
@@ -159,7 +161,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
         // (in AUTH SERVICE ) RESET PROJECT_BS AND REMOVE ITEM PROJECT FROM STORAGE WHEN THE USER GO TO PROJECTS PAGE
         this.auth.hasClickedGoToProjects()
-        console.log('00 -> SIDEBAR IS MOBILE project AFTER GOTO PROJECTS ', this.project )
+        console.log('00 -> SIDEBAR IS MOBILE project AFTER GOTO PROJECTS ', this.project)
     }
 
     has_clicked_settings(SHOW_SETTINGS_SUBMENU: boolean) {

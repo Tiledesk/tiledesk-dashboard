@@ -171,7 +171,7 @@
           <h4 style="padding-left:15px">{{ "Howdy" | translate }}, {{ user.displayName }}</h4>
         </div> -->
         <div *ngIf="user">
-          <h4 style="padding-left:15px">{{ "Howdy" | translate }}, {{ user.firstname }}</h4>
+          <h4 style="padding-left:15px">{{ "Howdy" | translate }}, {{ user?.firstname }}</h4>
         </div>
       </div>
       <div class="col-lg-10 col-lg-offset-1 col-md-12 col-sm-12" style="padding-left:25px; padding-right:25px">
@@ -182,7 +182,32 @@
   <div class="container-fluid">
 
       <div class="row">
-          <!-- <div class="col-lg-3 col-md-6 col-sm-6"> -->
+
+          <!-- RESOURCES -->
+          <div class="col-lg-5 col-lg-offset-1 col-md-6 col-sm-6" style="cursor:pointer">  
+            <!-- routerLink="/requests" -->
+            <div class="card card-stats" style="max-width:350px" (click)="goToResources()">
+                <!-- <div class="card-header" data-background-color="orange"> -->
+                <div class="card-header" data-background-color="orange">
+                    <i class="material-icons">code</i>
+                </div>
+                <div class="card-content">
+                    <p class="category" style="font-size: 1.1em;">Widget</p>
+                    <!-- <h3 class="title">Visitatori<small>GB</small></h3> -->
+                </div>
+                <div class="card-footer">
+                    <div class="stats">
+                        <!-- <i class="material-icons text-danger">warning</i> <a href="#pablo">Get More Space...</a> -->
+                        
+                        <!-- THERE WERE THIS -->
+                        <!-- <h4 class="title">Visitatori</h4>  -->
+                    </div>
+                </div>
+            </div>
+          </div>
+
+          
+         <!-- REQUESTS -->
           <div class="col-lg-5 col-lg-offset-1 col-md-6 col-sm-6" style="cursor:pointer">  
               <!-- routerLink="/requests" -->
               <div class="card card-stats" style="max-width:350px" (click)="goToRequests()">
@@ -191,7 +216,7 @@
                       <i class="material-icons">group</i>
                   </div>
                   <div class="card-content">
-                      <p class="category" style="font-size: 1.1em;">Visitatori</p>
+                      <p class="category" style="font-size: 1.1em;">{{ 'Visitors' | translate }}</p>
                       <!-- <h3 class="title">Visitatori<small>GB</small></h3> -->
                   </div>
                   <div class="card-footer">
@@ -204,6 +229,8 @@
                   </div>
               </div>
           </div>
+
+          <!-- CHAT -->
           <!-- <div class="col-lg-3 col-md-6 col-sm-6"> -->
           <div class="col-lg-5 col-lg-offset-1 col-md-6 col-sm-6" style="cursor:pointer">
               <div class="card card-stats" style="max-width:350px" routerLink="/chat">
@@ -225,6 +252,8 @@
                   </div>
               </div>
           </div>
+
+          <!-- ANALYTICS -->
           <!-- <div class="col-lg-3 col-md-6 col-sm-6"> -->
           <div class="col-lg-5 col-lg-offset-1 col-md-6 col-sm-6" style="cursor:pointer">
               <!-- routerLink="/analytics" -->
@@ -247,31 +276,22 @@
               </div>
           </div>
 
-          <!-- <div class="col-lg-3 col-md-6 col-sm-6"> -->
-          <div class="col-lg-5 col-lg-offset-1 col-md-6 col-sm-6" style="cursor:pointer">
-              <!-- routerLink="/projects" -->
-              <!-- routerLink="/history" -->
+          <!-- HISTORY -->
+          <!-- <div class="col-lg-5 col-lg-offset-1 col-md-6 col-sm-6" style="cursor:pointer">
               <div class="card card-stats" style="max-width:350px;" (click)="goToHistory()">
-                  <!-- <div class="card-header" data-background-color="blue"> -->
                   <div class="card-header" data-background-color="orange" style="">  
-                      <!-- <i class="fa fa-twitter"></i> -->
-                      <!-- <i class="material-icons">settings</i> -->
-                      <!-- <i class="material-icons">security</i> -->
                       <i class="material-icons">history</i>
                   </div>
                   <div class="card-content">
-                      <p class="category" style="font-size: 1.1em;">Cronologia</p>
-                      <!-- <h3 class="title">+245</h3> -->
+                      <p class="category" style="font-size: 1.1em;">{{ 'History' | translate }}</p>
                   </div>
                   <div class="card-footer">
                       <div class="stats">
-                          <!-- <i class="material-icons">update</i> Just Updated -->
-                          <!-- THERE WERE THIS -->
-                          <!-- <h4 class="title">Projects</h4>  -->
                       </div>
                   </div>
               </div>
-          </div>
+          </div> -->
+
       </div>
   </div>
 </div>

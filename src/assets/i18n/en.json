@@ -4,16 +4,28 @@
     "Change dashboard Language": "Change dashboard Language (in this position to test the translations)",
     "Howdy": "Howdy",
     "Users": "Users",
-    "Departments": "Departments",
     "Name": "Name",
+
+    "Available": "Available",
+    "Unavailable": "Unavailable",
+    "Visitors": "Visitors",
+    "History": "History",
+    "Settings": "Settings",
+    "Departments": "Departments",
+    "Resources": "Resources",
     "Resourcepage": {
-        "Resources": "Resources",
         "CopyScript": "Copy Script",
         "EmbedTheTileDeskChatWidget": "Embed the Tile Desk chat widget",
         "ToChatWithYourVisitors...": "To chat with your visitors embeds the widget on your website",
         "CopyTheFollowingScript...": "Copy the following script and insert it into your website's HTML source between the ",
         "IncludeThePreChatForm_1": "Include the PRE-CHAT FORM: ",
         "IncludeThePreChatForm_2": "requires visitors to complete a form (full name, email and first message) before starting a chat"
-
+    },
+    "DepartmentsPage": {
+        
+    },
+    "VisitorsPage": {
+        
     }
+
 }
