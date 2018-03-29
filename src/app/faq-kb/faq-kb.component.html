@@ -263,6 +263,12 @@
                           <i class="material-icons">list</i>
                         </button>
                       </span>
+                      
+                      <span *ngIf="faqkb?.kbkey_remote">
+                        <button style="margin-top:5px; padding-left: 3px;" type="button" rel="tooltip" title="Test FAQ" class="btn btn-info btn-simple btn-xs" (click)='goToTestFaqPage(faqkb?.kbkey_remote)'>
+                          <i class="material-icons">playlist_play</i>
+                        </button>
+                      </span>
                       <!-- <span *ngIf="faqkb?.has_faq">
                         HA FAQ
                       </span> -->

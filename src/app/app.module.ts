@@ -81,6 +81,7 @@ import { ResourcesComponent } from './resources/resources.component';
 import { ScriptComponent } from './script/script.component';
 import { ChannelsComponent } from './channels/channels.component';
 import { SocialComponent } from './social/social.component';
+import { FaqTestComponent } from './faq-test/faq-test.component';
 
 
 
@@ -124,6 +125,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ScriptComponent,
     ChannelsComponent,
     SocialComponent,
+    FaqTestComponent,
 
   ],
   imports: [

@@ -55,3 +55,12 @@ export const environment = {
 
 And finally `ng serve`
 
+# Build 
+Run `ng build --prod --base-href /dashboard/`
+
+# Deploy on AWS CloudFront and AWS S3
+
+```
+aws s3 sync ./dist/ s3://tiledesk-dashboard/dashboard
+```
+

@@ -243,6 +243,7 @@ export class FaqComponent implements OnInit {
     if (fileList.length > 0) {
       const file: File = fileList[0];
       const formData: FormData = new FormData();
+      formData.set('id_faq_kb', this.id_faq_kb)
       formData.append('uploadFile', file, file.name);
       console.log('FORM DATA ', formData)
 

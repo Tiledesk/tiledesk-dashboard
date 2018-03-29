@@ -114,7 +114,8 @@ export class FaqKbComponent implements OnInit {
         for (j = 0; j < faq.length; j++) {
           // console.log('MONGO DB FAQ - FAQ ID', faq[j]._id);
           // console.log('MONGO DB FAQ - FAQ-KB ID', faq[j].id_faq_kb);
-          console.log('WITH THE FAQ-KB ID ', faq[j].id_faq_kb, 'FOUND FAQ WITH ID ', faq[j]._id)
+          
+          // console.log('WITH THE FAQ-KB ID ', faq[j].id_faq_kb, 'FOUND FAQ WITH ID ', faq[j]._id)
           this.faq_faqKbId = faq[j].id_faq_kb;
 
           for (const faqkb of this.faqkbList) {
@@ -244,6 +245,12 @@ export class FaqKbComponent implements OnInit {
     console.log('ID OF FAQKB SELECTED ', idFaqKb);
 
     this.router.navigate(['project/' + this.project._id + '/faq', idFaqKb]);
+  }
+
+  goToTestFaqPage(remoteFaqKbKey: string) {
+    console.log('REMOTE FAQKB KEY SELECTED ', remoteFaqKbKey);
+
+    this.router.navigate(['project/' + this.project._id + '/faq/test', remoteFaqKbKey]);
   }
 
 }

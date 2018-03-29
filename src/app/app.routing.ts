@@ -54,6 +54,8 @@ import { ScriptComponent } from './script/script.component';
 import { ChannelsComponent } from './channels/channels.component';
 import { SocialComponent } from './social/social.component';
 
+import { FaqTestComponent } from './faq-test/faq-test.component';
+
 
 
 // import { DashboardComponent} from './dashboard/dashboard.component';
@@ -110,6 +112,9 @@ const routes: Routes = [
   { path: 'project/:projectid/faq/:faqkbid', component: FaqComponent, canActivate: [AuthGuard] }, // used to pass the faq kb id from  in faq page
   { path: 'project/:projectid/createfaq/:faqkbid', component: FaqEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/editfaq/:faqkbid/:faqid', component: FaqEditAddComponent, canActivate: [AuthGuard] },
+
+  // TEST-FAQ PAGE
+  { path: 'project/:projectid/faq/test/:remoteFaqKbKey', component: FaqTestComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/bots', component: BotsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/createbot', component: BotEditAddComponent, canActivate: [AuthGuard] },

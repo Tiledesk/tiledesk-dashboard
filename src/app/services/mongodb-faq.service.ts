@@ -140,19 +140,20 @@ export class MongodbFaqService {
 
   // UPLOAD CSV
   public uploadFaqCsv(formData: any) {
-      const headers = new Headers();
-      /** No need to include Content-Type in Angular 4 */
-      // headers.append('Content-Type', 'multipart/form-data');
-      headers.append('Accept', 'text/csv');
-      headers.append('Authorization', this.TOKEN);
-      const url = this.MONGODB_BASE_URL + 'uploadcsv';
-      const options = new RequestOptions({ headers: headers });
-      this.http.post(url, formData, options)
-        .map(res => res.json())
-        .subscribe(
-          data => console.log('success'),
-          error => console.log(error)
-        )
+    const headers = new Headers();
+    /** No need to include Content-Type in Angular 4 */
+    // headers.append('Content-Type', 'multipart/form-data');
+    headers.append('Accept', 'text/csv');
+    headers.append('Authorization', this.TOKEN);
+    const url = this.MONGODB_BASE_URL + 'uploadcsv';
+    const options = new RequestOptions({ headers: headers });
+    this.http.post(url, formData, options)
+      .map(res => res.json())
+      .subscribe(data => {
+        console.log('UPLOAD FILE CSV success ', data)
+      },
+        error => console.log(error)
+      )
 
   }
 
@@ -204,6 +205,28 @@ export class MongodbFaqService {
 
     return this.http
       .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+
+  }
+
+  public searchRemoteFaqByRemoteFaqKbKey(remoteFaqKbKey: string, question: string) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    // headers.append('Authorization', 'Basic YWRtaW46YWRtaW5wNHNzdzByZA==');
+    headers.append('Authorization', this.TOKEN);
+    const url = this.MONGODB_BASE_URL + 'askbot';
+    const options = new RequestOptions({ headers });
+
+    const body = { 'question': question, 'doctype': 'normal', 'min_score': '0.0', 'remote_faqkb_key': remoteFaqKbKey };
+
+    console.log('SEARCH FAQ WITH THE REMOTE FAQKB KEY - POST REQUEST BODY ', body);
+
+    // tslint:disable-next-line:max-line-length
+    // const url = `http://ec2-52-47-168-118.eu-west-3.compute.amazonaws.com/qnamaker/v2.0/knowledgebases/` + remoteFaqKbKey + `/generateAnswer`;
+
+    return this.http
+      .post(url, JSON.stringify(body), options)
       .map((res) => res.json());
 
   }
