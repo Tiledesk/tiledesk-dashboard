@@ -14,6 +14,7 @@ export class FaqTestComponent implements OnInit {
   project: Project;
   questionToTest: string;
   remote_faq_kb_key: string;
+  hits: any;
 
   constructor(
     private router: Router,
@@ -49,6 +50,10 @@ export class FaqTestComponent implements OnInit {
     this.faqService.searchRemoteFaqByRemoteFaqKbKey(this.remote_faq_kb_key, this.questionToTest )
     .subscribe((remoteFaq) => {
       console.log('REMOTE FAQ FOUND - POST DATA ', remoteFaq);
+
+      this.hits = remoteFaq.hits
+
+      
     },
     (error) => {
       console.log('REMOTE FAQ - POST REQUEST ERROR ', error);

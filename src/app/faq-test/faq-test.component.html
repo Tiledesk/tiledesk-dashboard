@@ -29,7 +29,57 @@
              </div>
           </div>
         </div>
-      </div>
+
+          <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-content table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+
+                            <th>
+                                <span style="color: #566787">
+                                    <!-- Name -->
+                                  <strong>Score </strong>
+                                </span>
+                              </th>
+      
+                          <th>
+                            <span style="color: #566787">
+                                <!-- Name -->
+                              <strong>Domanda </strong>
+                            </span>
+                          </th>
+
+                          <th>
+                              <span style="color: #566787">
+                                  <!-- Name -->
+                                <strong>Risposta </strong>
+                              </span>
+                            </th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                          <!--  -->
+                          <tr *ngFor="let hit of hits">
+                              <td>
+                                  {{ hit.score }}
+                                </td>
+
+                              <td>
+                                  {{ hit.document.question }}
+                                </td>
+                                <td>
+                                    {{ hit.document.answer }}
+                                </td>
+                          </tr>
+                      </tbody>
+
+                    </table>
+       
+                  </div>
     </div>
   </div>
 </div>
