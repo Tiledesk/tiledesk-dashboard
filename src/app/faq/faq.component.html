@@ -190,14 +190,30 @@
   <div class="container-fluid">
   
     <div class="create" style="text-align: right!important; padding-top:25px; padding-bottom:0px">
-        <button class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="goToEditAddPage_CREATE()">
-            <!-- is-small -->
-          <span class="icon" style="padding-right:8px">
-            <i class="material-icons">add_circle</i>
-          </span>
-          Aggiungi FAQ
-        </button>
-      </div>
+      <button class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="goToEditAddPage_CREATE()">
+          <!-- is-small -->
+        <span class="icon" style="padding-right:8px">
+          <i class="material-icons">add_circle</i>
+        </span>
+        Aggiungi FAQ
+      </button>
+<!-- 
+      <button class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (change)="fileChange($event)">
+          
+        <span class="icon" style="padding-right:8px">
+            <i class="material-icons">file_upload</i>
+        </span>
+        Carica FAQs da CSV
+      </button> -->
+
+      <input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".csv">
+      
+      <!-- <div class="file">
+        <label for="file-input">Pick a file</label>
+        <input id="file-input" type="file" class="upload" (change)="changeListener($event.target.files)">
+      </div> -->
+
+    </div>
 
 
     <!-- <div class="content columns">

@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Project } from '../models/project-model';
 import { AuthService } from '../core/auth.service';
+import { Http, Headers, RequestOptions } from '@angular/http';
 
 @Component({
   selector: 'faq',
@@ -68,14 +69,14 @@ export class FaqComponent implements OnInit {
   // GO TO FAQ-EDIT-ADD COMPONENT AND PASS THE FAQ-KB ID (RECEIVED FROM FAQ-KB COMPONENT)
   goToEditAddPage_CREATE() {
     console.log('ID OF FAQKB ', this.id_faq_kb);
-    this.router.navigate(['project/' + this.project._id  + '/createfaq', this.id_faq_kb]);
+    this.router.navigate(['project/' + this.project._id + '/createfaq', this.id_faq_kb]);
   }
 
   // GO TO FAQ-EDIT-ADD COMPONENT AND PASS THE FAQ ID (RECEIVED FROM THE VIEW) AND
   // THE FAQ-KB ID (RECEIVED FROM FAQ-KB COMPONENT)
   goToEditAddPage_EDIT(faq_id: string) {
     console.log('ID OF FAQ ', faq_id);
-    this.router.navigate(['project/' + this.project._id  + '/editfaq', this.id_faq_kb, faq_id]);
+    this.router.navigate(['project/' + this.project._id + '/editfaq', this.id_faq_kb, faq_id]);
   }
 
   goBackToFaqKbList() {
@@ -234,6 +235,47 @@ export class FaqComponent implements OnInit {
   // CLOSE MODAL WITHOUT SAVE THE UPDATES OR WITHOUT CONFIRM THE DELETION
   onCloseModal() {
     this.display = 'none';
+  }
+
+  // UPLOAD FAQ FROM CSV
+  fileChange(event) {
+    const fileList: FileList = event.target.files;
+    if (fileList.length > 0) {
+      const file: File = fileList[0];
+      const formData: FormData = new FormData();
+      formData.append('uploadFile', file, file.name);
+      console.log('FORM DATA ', formData)
+
+      this.mongodbFaqService.uploadFaqCsv(formData)
+      // const headers = new Headers();
+      // /** No need to include Content-Type in Angular 4 */
+      // headers.append('Content-Type', 'multipart/form-data');
+      // headers.append('Accept', 'application/json');
+      // const options = new RequestOptions({ headers: headers });
+      // this.http.post(`${this.apiEndPoint}`, formData, options)
+      //   .map(res => res.json())
+      //   .catch(error => Observable.throw(error))
+      //   .subscribe(
+      //     data => console.log('success'),
+      //     error => console.log(error)
+      //   )
+    }
+  }
+
+  public changeListener(files: FileList) {
+    console.log(files);
+    if (files && files.length > 0) {
+      const file: File = files.item(0);
+      console.log(file.name);
+      console.log(file.size);
+      console.log(file.type);
+      const reader: FileReader = new FileReader();
+      reader.readAsText(file);
+      reader.onload = (e) => {
+        const csv: string = reader.result;
+        console.log(csv);
+      }
+    }
   }
 
 

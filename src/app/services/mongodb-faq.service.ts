@@ -138,6 +138,25 @@ export class MongodbFaqService {
 
   }
 
+  // UPLOAD CSV
+  public uploadFaqCsv(formData: any) {
+      const headers = new Headers();
+      /** No need to include Content-Type in Angular 4 */
+      // headers.append('Content-Type', 'multipart/form-data');
+      headers.append('Accept', 'text/csv');
+      headers.append('Authorization', this.TOKEN);
+      const url = this.MONGODB_BASE_URL + 'uploadcsv';
+      const options = new RequestOptions({ headers: headers });
+      this.http.post(url, formData, options)
+        .map(res => res.json())
+        .subscribe(
+          data => console.log('success'),
+          error => console.log(error)
+        )
+
+  }
+
+
   /**
    * DELETE (DELETE)
    * @param id

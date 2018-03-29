@@ -1,3 +1,8 @@
+/* TABLE CONTENT VERTICAL ALIGNMENT */
+.table td, .table th {
+    vertical-align: middle
+}
+
 /* MODAL START */
 
 // MODAL BOOTSTRAP BREAKPOINTS
@@ -111,3 +116,45 @@
 .table td, .table th {
     vertical-align: middle
 }
+
+// UPLOAD CSV
+.file {
+    position: relative;
+    // height: 30px;
+    // width: 100px;
+  }
+  
+  .file > input[type="file"] {
+    position: absoulte;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0
+  }
+  
+  .file > label {
+    position: relative;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color:  #00bcd4;;
+    color: #fff;
+    border-radius: 3px;
+    // line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+    padding: 12px 30px;
+    margin: 10px 1px;
+    font-size: 12px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0;
+    will-change: box-shadow, transform;
+    -webkit-transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), -webkit-box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1);
+    transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), -webkit-box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1);
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1), background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), -webkit-box-shadow 0.2s cubic-bezier(0.4, 0, 1, 1);
+  }
+  
