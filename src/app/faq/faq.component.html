@@ -206,8 +206,11 @@
         Carica FAQs da CSV
       </button> -->
 
-      <input type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".csv">
       
+      <input style="display:inline" name="file" id="file" class="inputfile" type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".csv"/>
+      <label class="btn btn-info" for="file" style="padding-left:15px; padding-right:15px">
+          <i class="material-icons">file_upload</i>
+        CARICA FAQs DA CSV </label>
       <!-- <div class="file">
         <label for="file-input">Pick a file</label>
         <input id="file-input" type="file" class="upload" (change)="changeListener($event.target.files)">
@@ -348,10 +351,10 @@
 
                 <!-- NEW -->
                 <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" title="Modifica FAQ" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(faq?._id)'>
+                    <button style="padding-top:0px" type="button" rel="tooltip" title="Modifica FAQ" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(faq?._id)'>
                         <i class="material-icons">edit</i>
                     </button>
-                    <button type="button" rel="tooltip" title="Elimina FAQ" class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal(faq?._id, hasClickedDeleteModal = true)'>
+                    <button style="padding-top:0px" type="button" rel="tooltip" title="Elimina FAQ" class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal(faq?._id, hasClickedDeleteModal = true)'>
                         <i class="material-icons">close</i>
                     </button>
                 </td>
