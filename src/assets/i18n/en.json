@@ -21,6 +21,7 @@
     },
     "Resourcepage": {
         "CopyScript": "Copy Script",
+        "TestWidget": "Test Widget page",
         "EmbedTheTileDeskChatWidget": "Embed the Tile Desk chat widget",
         "ToChatWithYourVisitors...": "To chat with your visitors embeds the widget on your website",
         "CopyTheFollowingScript...": "Copy the following script and insert it into your website's HTML source between the ",

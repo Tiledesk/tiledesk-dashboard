@@ -18,6 +18,8 @@ type FormErrors = {[u in UserFields]: string };
 })
 export class SigninComponent implements OnInit {
 
+  showSpinnerInLoginBtn = false;
+
   public signin_errormsg = '';
   display = 'none';
 
@@ -63,12 +65,39 @@ export class SigninComponent implements OnInit {
         Validators.minLength(6),
         Validators.maxLength(25),
       ]],
-
-
     });
+
+    this.userForm.valueChanges.subscribe((data) => this.onValueChanged(data));
+    this.onValueChanged(); // reset validation messages
   }
 
+    // Updates validation state on form changes.
+    onValueChanged(data?: any) {
+      if (!this.userForm) { return; }
+      const form = this.userForm;
+      for (const field in this.formErrors) {
+        // tslint:disable-next-line:max-line-length
+        if (Object.prototype.hasOwnProperty.call(this.formErrors, field) && (field === 'email' || field === 'password')) {
+          // clear previous error message (if any)
+          this.formErrors[field] = '';
+          const control = form.get(field);
+          if (control && control.dirty && !control.valid) {
+            const messages = this.validationMessages[field];
+            if (control.errors) {
+              for (const key in control.errors) {
+                if (Object.prototype.hasOwnProperty.call(control.errors, key)) {
+                  this.formErrors[field] += `${(messages as { [key: string]: string })[key]} `;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
   signin() {
+
+    this.showSpinnerInLoginBtn = true
     // this.auth.emailLogin(
     const self = this;
     this.auth.signin(this.userForm.value['email'], this.userForm.value['password'])
@@ -108,6 +137,8 @@ export class SigninComponent implements OnInit {
           },
             (error) => {
               if (error) {
+                this.showSpinnerInLoginBtn = false;
+
                 const signin_errorbody = JSON.parse(error._body)
                 this.signin_errormsg = signin_errorbody['msg']
                 this.display = 'block';
@@ -120,6 +151,8 @@ export class SigninComponent implements OnInit {
       },
       (error) => {
         if (error) {
+          this.showSpinnerInLoginBtn = false;
+
           const signin_errorbody = JSON.parse(error._body)
           this.signin_errormsg = signin_errorbody['msg']
           this.display = 'block';
@@ -135,7 +168,7 @@ export class SigninComponent implements OnInit {
   }
 
   dismissAlert() {
-    console.log('DISMISS ALWRT CLICKED')
+    console.log('DISMISS ALERT CLICKED')
     this.display = 'none';
   }
 

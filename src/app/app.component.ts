@@ -131,6 +131,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         const elemNavbarToogle = <HTMLElement>document.querySelector('.navbar-toggle');
 
 
+
         /* DETECT IF IS THE LOGIN PAGE - SIGNUP - WELCOME */
         this.router.events.subscribe((val) => {
             if (this.location.path() !== '') {
@@ -158,39 +159,39 @@ export class AppComponent implements OnInit, AfterViewInit {
             }
         });
 
-        /* DETECT IF IS PROJECT PAGE*/
-        // this.router.events.subscribe((val) => {
-        //     if (this.location.path() !== '') {
-        //         this.route = this.location.path();
-        //         console.log('»> ', this.route)
-        //         if (this.route === '/projects') {
 
-        //             elemAppSidebar.setAttribute('style', 'display:none;');
-        //             elemMainPanel.setAttribute('style', 'width:100% !important;');
-        //             elemNavbarToogle.setAttribute('style', 'display:none;');
-
-        //             if (window.matchMedia(`(min-width: 960px)`).matches) {
-        //                 console.log('MATCH min-width: 960px)')
-        //             }
-
-        //             // console.log('DETECT LOGIN PAGE')
-        //             // tslint:disable-next-line:max-line-length
-        //         } else if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/welcome')) {
-
-        //             elemNavbar.setAttribute('style', 'display:none;');
-        //             elemAppSidebar.setAttribute('style', 'display:none;');
-        //             elemMainPanel.setAttribute('style', 'width:100% !important; margin-top: -70px');
-
-        //         }
-        //     } else {
-        //         // console.log('»> * ', this.route)
-        //     }
-        // });
     }
 
     ngAfterViewInit() {
         this.runOnRouteChange();
+
+        const elemFooter = <HTMLElement>document.querySelector('footer');
+        console.log('xxxx xxxx APP FOOTER ', elemFooter)
+
+
+        /* HIDE FOOTER IF IS LOGIN PAGE - SIGNUP PAGE */
+        this.router.events.subscribe((val) => {
+            if (this.location.path() !== '') {
+                this.route = this.location.path();
+                // console.log('»> ', this.route)
+                if ((this.route === '/login') || (this.route === '/signup')) {
+
+                    elemFooter.setAttribute('style', 'display:none;');
+                    // console.log('DETECT LOGIN PAGE')
+                    // tslint:disable-next-line:max-line-length
+                } else  {
+
+                    elemFooter.setAttribute('style', '');
+
+                }
+            } else {
+                // console.log('»> * ', this.route)
+            }
+        });
+
     }
+
+
     isMaps(path) {
         var titlee = this.location.prepareExternalUrl(this.location.path());
         titlee = titlee.slice(1);

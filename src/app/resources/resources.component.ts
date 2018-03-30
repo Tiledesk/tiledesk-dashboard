@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
+import { Http, Headers, RequestOptions } from '@angular/http';
 
 @Component({
   selector: 'app-resources',
@@ -12,14 +13,16 @@ export class ResourcesComponent implements OnInit {
   project: Project;
 
   projectId: string;
-  preChatForm: boolean;
- 
+  preChatForm = false;
+  http: Http;
+
   // preChatForm = 'preChatForm'
 
 
   constructor(
+    http: Http,
     private auth: AuthService
-  ) { }
+  ) { this.http = http }
 
   ngOnInit() {
 
@@ -49,4 +52,23 @@ export class ResourcesComponent implements OnInit {
       console.log('INCLUDE PRE CHAT FORM ', this.preChatForm)
     }
   }
+
+  // testWidget() {
+  //   const headers = new Headers();
+  //   headers.append('Content-Type', 'application/x-www-form-urlencoded');
+  //   const options = new RequestOptions({ headers });
+  //   // const url = 'http://support.chat21.org/testsite/?projectid=' + this.projectId + '&prechatform=' + this.preChatForm;
+  //   const url = 'http://support.tiledesk.com/testsite/?projectid=' + this.projectId + '&prechatform=' + this.preChatForm;
+
+
+  //   this.http.post(url, options).subscribe(data => {
+  //     console.log('===== > POST WIDGET PAGE ', data);
+  //   });
+  // }
+
+  testWidgetPage() {
+    const url = 'http://support.tiledesk.com/testsite/?projectid=' + this.projectId + '&prechatform=' + this.preChatForm;
+    window.open(url, '_blank');
+  }
+
 }
