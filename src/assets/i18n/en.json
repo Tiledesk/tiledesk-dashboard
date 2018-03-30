@@ -13,6 +13,12 @@
     "Settings": "Settings",
     "Departments": "Departments",
     "Resources": "Resources",
+    "DepartmentsPage": {
+        
+    },
+    "VisitorsPage": {
+        
+    },
     "Resourcepage": {
         "CopyScript": "Copy Script",
         "EmbedTheTileDeskChatWidget": "Embed the Tile Desk chat widget",
@@ -21,11 +27,16 @@
         "IncludeThePreChatForm_1": "Include the PRE-CHAT FORM: ",
         "IncludeThePreChatForm_2": "requires visitors to complete a form (full name, email and first message) before starting a chat"
     },
-    "DepartmentsPage": {
-        
+    "ScriptPage": {
+        "EnterYourScript": "Enter your script",
+        "EnterYourScriptHere": "Enter your script here",
+        "Save": "Save"
     },
-    "VisitorsPage": {
-        
+    "ChannelsPage": {
+        "ConnectWithFacebook": "Connect with Facebook",
+        "ConnectWithTwitter": "Connect with Twitter",
+        "EmailIntegration_1": "Email integration in Tile Desk Support works out of the box. Emails sent to your support address: ",
+        "EmailIntegration_2": "automatically become requests."
     }
 
 }

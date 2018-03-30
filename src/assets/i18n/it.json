@@ -13,6 +13,12 @@
     "Settings": "Impostazioni",
     "Departments": "Dipartmenti",
     "Resources": "Risorse",
+    "DepartmentsPage": {
+        
+    },
+    "VisitorsPage": {
+        
+    },
     "Resourcepage": {
         "CopyScript": "Copia Script",
         "EmbedTheTileDeskChatWidget": "Incorpora il chat widget Tile Desk",
@@ -21,10 +27,17 @@
         "IncludeThePreChatForm_1": "Includi il FORM PRE-CHAT: ",
         "IncludeThePreChatForm_2": "richiede ai visitatori di completare un form (nome dell'utente, email e primo messaggio) prima di iniziare una chat"
     },
-    "DepartmentsPage": {
-        
+    "ScriptPage": {
+        "EnterYourScript": "Inserisci il tuo script",
+        "EnterYourScriptHere": "Inserisci qui il tuo script",
+        "Save": "Salva"
     },
-    "VisitorsPage": {
-        
+    "ChannelsPage": {
+        "ConnectWithFacebook": "Connettiti con Facebook",
+        "ConnectWithTwitter": "Connettiti con Twitter",
+        "EmailIntegration_1": "Integrazione nativa dell' email nel Supporto Tile Desk. Le email inviate al tuo indirizzo di supporto: ",
+        "EmailIntegration_2": "diventano automaticamente richieste."
     }
+  
+
 }
