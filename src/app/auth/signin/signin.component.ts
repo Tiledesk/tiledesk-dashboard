@@ -51,7 +51,17 @@ export class SigninComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+    // console.log('xxxx ', this.userForm)
     this.buildForm();
+
+    // const x = document.getElementsByTagName('input');
+    // console.log('XX ', x)
+    // for (let i = 0; i <= x.length - 1; i++) {
+    //   if (x.item(i).type !== 'button') {
+    //     x.item(i).value = '';
+    //   }
+    // }
   }
 
   buildForm() {
@@ -71,29 +81,29 @@ export class SigninComponent implements OnInit {
     this.onValueChanged(); // reset validation messages
   }
 
-    // Updates validation state on form changes.
-    onValueChanged(data?: any) {
-      if (!this.userForm) { return; }
-      const form = this.userForm;
-      for (const field in this.formErrors) {
-        // tslint:disable-next-line:max-line-length
-        if (Object.prototype.hasOwnProperty.call(this.formErrors, field) && (field === 'email' || field === 'password')) {
-          // clear previous error message (if any)
-          this.formErrors[field] = '';
-          const control = form.get(field);
-          if (control && control.dirty && !control.valid) {
-            const messages = this.validationMessages[field];
-            if (control.errors) {
-              for (const key in control.errors) {
-                if (Object.prototype.hasOwnProperty.call(control.errors, key)) {
-                  this.formErrors[field] += `${(messages as { [key: string]: string })[key]} `;
-                }
+  // Updates validation state on form changes.
+  onValueChanged(data?: any) {
+    if (!this.userForm) { return; }
+    const form = this.userForm;
+    for (const field in this.formErrors) {
+      // tslint:disable-next-line:max-line-length
+      if (Object.prototype.hasOwnProperty.call(this.formErrors, field) && (field === 'email' || field === 'password')) {
+        // clear previous error message (if any)
+        this.formErrors[field] = '';
+        const control = form.get(field);
+        if (control && control.dirty && !control.valid) {
+          const messages = this.validationMessages[field];
+          if (control.errors) {
+            for (const key in control.errors) {
+              if (Object.prototype.hasOwnProperty.call(control.errors, key)) {
+                this.formErrors[field] += `${(messages as { [key: string]: string })[key]} `;
               }
             }
           }
         }
       }
     }
+  }
 
   signin() {
 
@@ -149,22 +159,22 @@ export class SigninComponent implements OnInit {
             });
         }
       },
-      (error) => {
-        if (error) {
-          this.showSpinnerInLoginBtn = false;
+        (error) => {
+          if (error) {
+            this.showSpinnerInLoginBtn = false;
 
-          const signin_errorbody = JSON.parse(error._body)
-          this.signin_errormsg = signin_errorbody['msg']
-          this.display = 'block';
-          // console.log('SIGNIN USER - POST REQUEST ERROR ', error);
-          // console.log('SIGNIN USER - POST REQUEST BODY ERROR ', signin_errorbody);
+            const signin_errorbody = JSON.parse(error._body)
+            this.signin_errormsg = signin_errorbody['msg']
+            this.display = 'block';
+            // console.log('SIGNIN USER - POST REQUEST ERROR ', error);
+            // console.log('SIGNIN USER - POST REQUEST BODY ERROR ', signin_errorbody);
 
-          console.log('SIGNIN USER - POST REQUEST MSG ERROR ', this.signin_errormsg);
-        }
-      },
-      () => {
-        console.log('SIGNIN USER  - POST REQUEST COMPLETE ');
-      });
+            console.log('SIGNIN USER - POST REQUEST MSG ERROR ', this.signin_errormsg);
+          }
+        },
+        () => {
+          console.log('SIGNIN USER  - POST REQUEST COMPLETE ');
+        });
   }
 
   dismissAlert() {
