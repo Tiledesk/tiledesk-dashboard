@@ -164,14 +164,15 @@
 
 <div class="main-content">
     <div class="row">
-      <div class="col-lg-11 col-lg-offset-1 col-md-12 col-sm-12">
+      <!-- <div class="col-lg-11 col-lg-offset-1 col-md-12 col-sm-12"> -->
+          <div class="col-lg-11 col-lg-offset-1 col-md-12 col-sm-12"> 
         <!-- progetto corrente {{ projectid }} -->
       <!-- <div class="col-lg-11 col-centered" style="background-color:#aaaeba"> -->
         <!-- <div *ngIf="auth.user | async as user">
           <h4 style="padding-left:15px">{{ "Howdy" | translate }}, {{ user.displayName }}</h4>
         </div> -->
         <div *ngIf="user">
-          <h4 style="padding-left:15px">{{ "Howdy" | translate }}, {{ user?.firstname }}</h4>
+          <h4 style="padding-left:15px; font-weight: 500">{{ "Howdy" | translate }}, {{ user?.firstname }}</h4>
         </div>
       </div>
       <div class="col-lg-10 col-lg-offset-1 col-md-12 col-sm-12" style="padding-left:25px; padding-right:25px">
@@ -183,10 +184,10 @@
 
       <div class="row">
 
-          <!-- RESOURCES -->
+          <!-- WIDGET -->
           <div class="col-lg-5 col-lg-offset-1 col-md-6 col-sm-6" style="cursor:pointer">  
             <!-- routerLink="/requests" -->
-            <div class="card card-stats" style="max-width:350px" (click)="goToResources()">
+            <div class="card card-stats" style="max-width:500px" (click)="goToResources()">
                 <!-- <div class="card-header" data-background-color="orange"> -->
                 <div class="card-header" data-background-color="orange">
                     <i class="material-icons">code</i>
@@ -200,7 +201,9 @@
                         <!-- <i class="material-icons text-danger">warning</i> <a href="#pablo">Get More Space...</a> -->
                         
                         <!-- THERE WERE THIS -->
-                        <!-- <h4 class="title">Visitatori</h4>  -->
+                        <h4 class="title" style="font-size:12px; padding-bottom:10px; margin-left: 100px">
+                            {{ 'HomePage.WidgetSubtitle' | translate }}
+                        </h4> 
                     </div>
                 </div>
             </div>
@@ -210,7 +213,7 @@
          <!-- REQUESTS -->
           <div class="col-lg-5 col-lg-offset-1 col-md-6 col-sm-6" style="cursor:pointer">  
               <!-- routerLink="/requests" -->
-              <div class="card card-stats" style="max-width:350px" (click)="goToRequests()">
+              <div class="card card-stats" style="max-width:500px" (click)="goToRequests()">
                   <!-- <div class="card-header" data-background-color="orange"> -->
                   <div class="card-header" data-background-color="orange">
                       <i class="material-icons">group</i>
@@ -224,7 +227,9 @@
                           <!-- <i class="material-icons text-danger">warning</i> <a href="#pablo">Get More Space...</a> -->
                           
                           <!-- THERE WERE THIS -->
-                          <!-- <h4 class="title">Visitatori</h4>  -->
+                          <h4 class="title" style="font-size:12px; padding-bottom:10px; margin-left: 100px">
+                              {{ 'HomePage.VisitorsSubtitle' | translate }}
+                          </h4> 
                       </div>
                   </div>
               </div>
@@ -233,7 +238,7 @@
           <!-- CHAT -->
           <!-- <div class="col-lg-3 col-md-6 col-sm-6"> -->
           <div class="col-lg-5 col-lg-offset-1 col-md-6 col-sm-6" style="cursor:pointer">
-              <div class="card card-stats" style="max-width:350px" routerLink="/chat">
+              <div class="card card-stats" style="max-width:500px" routerLink="/chat">
                   <!-- <div class="card-header" data-background-color="green"> -->
                   <div class="card-header" data-background-color="orange">  
                       <i class="material-icons">chat</i>
@@ -247,7 +252,9 @@
                           <!-- <i class="material-icons">date_range</i> Last 24 Hours -->
 
                           <!-- THERE WERE THIS -->
-                          <!-- <h4 class="title">Chat</h4>  -->
+                          <h4 class="title" style="font-size:12px; padding-bottom:10px;">
+                              {{ 'HomePage.ChatSubtitle' | translate }}
+                          </h4> 
                       </div>
                   </div>
               </div>
@@ -257,7 +264,7 @@
           <!-- <div class="col-lg-3 col-md-6 col-sm-6"> -->
           <div class="col-lg-5 col-lg-offset-1 col-md-6 col-sm-6" style="cursor:pointer">
               <!-- routerLink="/analytics" -->
-              <div class="card card-stats" style="max-width:350px" (click)="goToAnalytics()">
+              <div class="card card-stats" style="max-width:500px" (click)="goToAnalytics()">
                   <div class="card-header" data-background-color="orange">
                       <i class="material-icons">trending_up</i>
                   </div>
@@ -270,7 +277,9 @@
                           <!-- <i class="material-icons">local_offer</i> Tracked from Github -->
 
                           <!-- THERE WERE THIS -->
-                          <!-- <h4 class="title">Analytics</h4>  -->
+                          <h4 class="title" style="font-size:12px; padding-bottom:10px;">
+                              {{ 'HomePage.AnalyticsSubtitle' | translate }}
+                          </h4> 
                       </div>
                   </div>
               </div>

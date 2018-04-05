@@ -24,6 +24,13 @@
         "ModalCreateProject":"Crea Progetto",    
         "UserProfile": "PROFILO" 
     },
+    "HomePage":{
+        "WidgetSubtitle":  "Incorpora e personalizza il chat widget sul tuo sito web",
+        "VisitorsSubtitle":"Visualizza un elenco di tutti i tuoi visitatori Web e chatta con loro",
+        "ChatSubtitle":    "Visualizza la chat history",
+        "AnalyticsSubtitle":"Tieni traccia delle chat che hai con i clienti"
+        
+    },
     "DepartmentsPage": {
         
     },
