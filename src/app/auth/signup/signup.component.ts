@@ -57,6 +57,8 @@ export class SignupComponent implements OnInit {
   }
 
   signup() {
+    this.showSpinnerInLoginBtn = true;
+
     this.auth.signup(
       this.userForm.value['email'],
       this.userForm.value['password'],
@@ -78,10 +80,14 @@ export class SignupComponent implements OnInit {
 
           this.signin_errormsg = signupResponse['msg'];
           this.display = 'block';
+
+          this.showSpinnerInLoginBtn = false;
         }
       },
         (error) => {
           console.log('CREATE NEW USER - POST REQUEST ERROR ', error);
+
+          this.showSpinnerInLoginBtn = false;
         },
         () => {
           console.log('CREATE NEW USER  - POST REQUEST COMPLETE ');
@@ -89,7 +95,7 @@ export class SignupComponent implements OnInit {
   }
 
   autoSignin() {
-    this.showSpinnerInLoginBtn = true
+    
     const self = this;
     this.auth.signin(this.userForm.value['email'], this.userForm.value['password'])
       .subscribe((signinResponse) => {

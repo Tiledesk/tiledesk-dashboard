@@ -62,7 +62,10 @@
   
             <!-- <div *ngIf="userForm.valid" class="notification is-success">Form is valid</div> -->
             <!-- SUBMIT -->
-            <button style="width: 100%; background-color: #ff9800; height: 56px; font-size: 16px; letter-spacing: 2px;" type="submit" class="btn" [disabled]="!userForm.valid">SignUp</button>
+            <button style="width: 100%; background-color: #ff9800; height: 56px; font-size: 16px; letter-spacing: 2px;" type="submit" class="btn" [disabled]="!userForm.valid">
+              <span *ngIf="!showSpinnerInLoginBtn"> SignUp </span>
+              <span *ngIf="showSpinnerInLoginBtn"> <i class="fa fa-spinner fa-spin"></i></span>
+            </button>
   
             <div style="margin-top:16px; text-align: center">
               <!-- <p class="button is-small" (click)="toggleForm()">Sei già registrato?</p> -->
