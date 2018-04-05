@@ -106,7 +106,6 @@ export class SigninComponent implements OnInit {
   }
 
   signin() {
-
     this.showSpinnerInLoginBtn = true
     // this.auth.emailLogin(
     const self = this;

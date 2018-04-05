@@ -31,7 +31,8 @@
             </div>
   
             <label for="email">Email</label>
-            <input autocomplete="off" type="email" id="email" class="input"
+            <!-- id="email" -->
+            <input autocomplete="off" type="email"  class="input"
                   formControlName="email" required >
   
             <div *ngIf="formErrors.email" class="is-danger">
@@ -59,6 +60,17 @@
           </form>
 
         </div>
+        <!-- ./login-container -->
+
+        <div class="row" *ngIf="signin_errormsg" [ngStyle]="{'display':display}">
+          <div class="col-md-6 col-md-offset-3 text-center">
+            <div class="alert alert-danger">
+              <button type="button" aria-hidden="true" class="close" (click)="dismissAlert()">×</button>
+              <span><b> Danger  -  </b> {{ signin_errormsg }}</span>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>

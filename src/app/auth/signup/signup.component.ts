@@ -3,6 +3,7 @@ import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angula
 
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
+import * as firebase from 'firebase/app';
 
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName';
 type FormErrors = {[u in UserFields]: string };
@@ -13,6 +14,10 @@ type FormErrors = {[u in UserFields]: string };
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit {
+
+  showSpinnerInLoginBtn = false;
+  public signin_errormsg = '';
+  display = 'none';
 
   userForm: FormGroup;
   // newUser = false; // to toggle login or signup form
@@ -64,18 +69,95 @@ export class SignupComponent implements OnInit {
         console.log('SIGNUP Lastname ', this.userForm.value['lastName']);
         console.log('POST DATA ', signupResponse);
         if (signupResponse['success'] === true) {
-          this.router.navigate(['/welcome']);
+          // this.router.navigate(['/welcome']);
+
+          this.autoSignin();
+
         } else {
-          console.log('SIGNUP ERROR MSG', signupResponse['msg'])
+          console.log('SIGNUP ERROR MSG', signupResponse['msg']);
+
+          this.signin_errormsg = signupResponse['msg'];
+          this.display = 'block';
         }
       },
-      (error) => {
-        console.log('CREATE NEW USER - POST REQUEST ERROR ', error);
-      },
-      () => {
-        console.log('CREATE NEW USER  - POST REQUEST COMPLETE ');
-      });
+        (error) => {
+          console.log('CREATE NEW USER - POST REQUEST ERROR ', error);
+        },
+        () => {
+          console.log('CREATE NEW USER  - POST REQUEST COMPLETE ');
+        });
   }
+
+  autoSignin() {
+    this.showSpinnerInLoginBtn = true
+    const self = this;
+    this.auth.signin(this.userForm.value['email'], this.userForm.value['password'])
+      .subscribe((signinResponse) => {
+        console.log('1. POST DATA ', signinResponse);
+        // this.auth.user = signinResponse.user;
+        // this.auth.user.token = signinResponse.token
+        // console.log('SIGNIN TOKEN ', this.auth.user.token)
+
+        if (signinResponse['success'] === true) {
+
+          self.auth.firebaseSignin(self.userForm.value['email'], self.userForm.value['password']).subscribe(token => {
+
+            console.log('2. FIREBASE SIGNIN RESPO ', token)
+            if (token) {
+
+              // Firebase Sign in using custom token
+              firebase.auth().signInWithCustomToken(token)
+                .then(data => {
+                  console.log('3. FIREBASE CUSTOM AUTH DATA ', data)
+
+                  // this.router.navigate(['/home']);
+                  this.router.navigate(['/projects']);
+
+                })
+                .catch(function (error) {
+                  // Handle Errors here.
+                  const errorCode = error.code;
+                  console.log('FIREBASE CUSTOM AUTH ERROR CODE ', errorCode)
+                  const errorMessage = error.message;
+                  console.log('FIREBASE CUSTOM AUTH ERROR MSG ', errorMessage)
+                });
+            }
+
+          },
+            (error) => {
+              if (error) {
+                this.showSpinnerInLoginBtn = false;
+
+                const signin_errorbody = JSON.parse(error._body)
+                this.signin_errormsg = signin_errorbody['msg']
+                this.display = 'block';
+                // console.log('SIGNIN USER - POST REQUEST ERROR ', error);
+                // console.log('SIGNIN USER - POST REQUEST BODY ERROR ', signin_errorbody);
+                console.log('SIGNIN USER - POST REQUEST MSG ERROR ', this.signin_errormsg);
+              }
+            });
+        }
+      },
+        (error) => {
+          if (error) {
+            this.showSpinnerInLoginBtn = false;
+
+            const signin_errorbody = JSON.parse(error._body)
+            this.signin_errormsg = signin_errorbody['msg']
+            this.display = 'block';
+            // console.log('SIGNIN USER - POST REQUEST ERROR ', error);
+            // console.log('SIGNIN USER - POST REQUEST BODY ERROR ', signin_errorbody);
+
+            console.log('SIGNIN USER - POST REQUEST MSG ERROR ', this.signin_errormsg);
+          }
+        },
+        () => {
+          console.log('SIGNIN USER  - POST REQUEST COMPLETE ');
+        });
+  }
+
+
+
 
   buildForm() {
     this.userForm = this.fb.group({
@@ -94,9 +176,9 @@ export class SignupComponent implements OnInit {
         Validators.required,
       ]],
       'lastName': ['',
-       [
-        Validators.required,
-       ]],
+        [
+          Validators.required,
+        ]],
     });
     this.userForm.valueChanges.subscribe((data) => this.onValueChanged(data));
     this.onValueChanged(); // reset validation messages
@@ -124,6 +206,11 @@ export class SignupComponent implements OnInit {
         }
       }
     }
+  }
+
+  dismissAlert() {
+    console.log('DISMISS ALERT CLICKED')
+    this.display = 'none';
   }
 
 }

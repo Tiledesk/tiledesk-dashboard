@@ -166,7 +166,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.runOnRouteChange();
 
         const elemFooter = <HTMLElement>document.querySelector('footer');
-        console.log('xxxx xxxx APP FOOTER ', elemFooter)
+        // console.log('xxxx xxxx APP FOOTER ', elemFooter)
 
 
         /* HIDE FOOTER IF IS LOGIN PAGE - SIGNUP PAGE */
