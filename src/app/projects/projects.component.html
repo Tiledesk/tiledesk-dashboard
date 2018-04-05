@@ -34,7 +34,7 @@
 
                 </div>
                 <div class="content">
-                  <h6 class="category text-gray"><a routerLink="/user-profile">PROFILO</a></h6>
+                  <h6 class="category text-gray"><a routerLink="/user-profile"> {{ 'ProjectsPage.UserProfile' | translate }} </a></h6>
                   <h4 class="card-title" style="padding-right:16px; padding-left:16px; font-size:1em; color: #3C4858">
                     <strong> 
                       {{ user.firstname }} {{ user.lastname }} 
@@ -63,7 +63,7 @@
   <!-- Progetti -->
   <img style="width:25%" src="assets/img/tiledesk-logo.png"/>
 </p> 
-<div class="main-content" style="padding-top:0px;">
+<div class="main-content" style="padding-top:0px; background-repeat: no-repeat; background-image: url(http://www.frontiere21.com/wp-content/uploads/2016/08/chat21-frontiere21-head-.png); background-attachment: scroll; background-position: top right; ">
   <div class="container-fluid">
   
     <!-- <div class="create" style="text-align: right!important; padding-top:25px; padding-bottom:0px">
@@ -78,7 +78,8 @@
     <!-- MOMGO DB PROJECTS LIST -->
     <!-- NEW -->
     <div class="row" style="margin-right:100px; margin-left:100px;">
-      <h3 style="padding-left:15px; margin-top:55px" >Benvenuto in Tile Desk. </h3>
+      <h3 style="padding-left:15px; margin-top:55px; margin-bottom: 5px;" >{{ 'ProjectsPage.Welcome' | translate }} in Tile Desk. </h3>
+      <h4 style="padding-left:15px; color: rgba(0,0,0,0.54); font-size:16px; margin-top: 0px;" > {{ 'ProjectsPage.BuildYourCustomer_1' | translate }} <br> {{ 'ProjectsPage.BuildYourCustomer_2' | translate }}  </h4>
     </div>
     <div class="row" style="margin-right:100px; margin-left:100px;">
       <div class="col-lg-3 col-md-6 col-sm-6" style="cursor:pointer">
@@ -88,7 +89,7 @@
               <i class="material-icons" style="font-size:48px">add</i>
             </h3>
             <h4 class="card-title" style="color: #55b9d1; text-align: center; margin-bottom: 15px;">
-              Aggiungi progetto
+                {{ 'ProjectsPage.AddProject' | translate }}
             </h4>
           </div>
         </div>
@@ -128,17 +129,19 @@
               <span aria-hidden="true">&times;</span>
             </button>
             <h4 class="modal-title">
-              Aggiungi un progetto
+              <!-- Aggiungi un progetto -->
+              {{ 'ProjectsPage.ModalAddAProject' | translate }} 
             </h4>
           </div>
           <div class="modal-body">
-              <!-- <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Nome Progetto</label> -->
+              <!-- height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right; -->
+              <label style="font-weight:200" class="col-sm-12 ">{{ 'ProjectsPage.ModalAddAProjectLabel' | translate }}</label>
               <div class="col-sm-10">
-                <input [(ngModel)]="project_name" class="" type="text" placeholder="Nome Progetto">
+                <input [(ngModel)]="project_name" class="" type="text" placeholder="{{ 'ProjectsPage.ModalPlaceHolder' | translate }}">
               </div>
           </div>
-          <div class="modal-footer" style="margin-top: 35px;">
-            <button class="btn btn-info" (click)="createProject()">Crea Progetto</button>
+          <div class="modal-footer" style="margin-top: 75px;">
+            <button class="btn btn-info" (click)="createProject()">{{ 'ProjectsPage.ModalCreateProject' | translate }} </button>
           </div>
         </div>
       </div>

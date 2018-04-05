@@ -13,6 +13,17 @@
     "Settings": "Impostazioni",
     "Departments": "Dipartmenti",
     "Resources": "Risorse",
+    "ProjectsPage": {
+        "Welcome": "Benvenuto",
+        "BuildYourCustomer_1": "Costruisci il tuo supporto clienti con bots intelligenti",
+        "BuildYourCustomer_2": "e piattaforma multicanale.",
+        "AddProject": "Aggiungi progetto",
+        "ModalAddAProject": "Aggiungi un progetto",
+        "ModalAddAProjectLabel": "Inserisci il nome del tuo progetto, ad esempio il nome del tuo sito",
+        "ModalPlaceHolder":"Nome progetto", 
+        "ModalCreateProject":"Crea Progetto",    
+        "UserProfile": "PROFILO" 
+    },
     "DepartmentsPage": {
         
     },
