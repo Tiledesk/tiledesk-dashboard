@@ -33,6 +33,7 @@ export class DepartmentsComponent implements OnInit {
   deptName_toUpdate: string;
 
   project: Project;
+  showSpinner = true;
 
   constructor(
     private mongodbDepartmentService: MongodbDepartmentService,
@@ -72,9 +73,19 @@ export class DepartmentsComponent implements OnInit {
    */
   getDeptsByProjectId() {
     this.mongodbDepartmentService.getDeptsByProjectId().subscribe((departments: any) => {
-      console.log('MONGO DB DEPARTMENTS (FILTERED FOR PROJECT ID)', departments);
+      console.log('DEPARTMENTS (FILTERED FOR PROJECT ID)', departments);
+
+      this.showSpinner = false;
       this.departments = departments;
-    });
+    },
+      error => {
+        this.showSpinner = false;
+        console.log('DEPARTMENTS (FILTERED FOR PROJECT ID) - ERROR', error);
+      },
+      () => {
+        console.log('DEPARTMENTS (FILTERED FOR PROJECT ID) - COMPLETE')
+      });
+
   }
 
   /**

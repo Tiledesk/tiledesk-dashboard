@@ -49,7 +49,7 @@
         "EditDept": "Edit Department",
         "DeptName":"Department Name",
         "SelectABot":"Select a Bot",
-        "orCreateABot":" or Create a Bot",
+        "orCreateABot":"Create a new Bot",
         "CreateDept":"Create Department",
         "UpdateDept": "Update Department"
     },
