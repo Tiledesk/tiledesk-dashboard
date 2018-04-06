@@ -28,6 +28,7 @@ export class FaqKbComponent implements OnInit {
   HAS_FAQ_RELATED = false;
 
   project: Project;
+  showSpinner = true;
 
   constructor(
     private faqKbService: FaqKbService,
@@ -61,13 +62,14 @@ export class FaqKbComponent implements OnInit {
   getFaqKbByProjectId() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
       console.log('FAQs-KB GET BY PROJECT ID', faqKb);
+
       this.faqkbList = faqKb;
-      // this.showSpinner = false;
+      this.showSpinner = false;
     },
       (error) => {
 
         console.log('GET FAQ KB ERROR ', error);
-
+        this.showSpinner = false;
       },
       () => {
         console.log('GET FAQ KB COMPLETE');

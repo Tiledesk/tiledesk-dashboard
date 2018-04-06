@@ -34,6 +34,23 @@
         "ChatSubtitle": "Visualizza la chat history",
         "AnalyticsSubtitle": "Tieni traccia delle chat che hai con i clienti"
     },
+    "BotsPage": {
+        "AddBot":"Aggiungi Bot",
+        "Name":"Nome",
+        "RemoteId":"Id remoto",
+        "CreationDate": "Data creazione",
+        "Actions": "Azioni",
+        "NoBot": "Nessun Bot",
+        "tooltipEditBot":"Modifica Bot",
+        "tooltipDeleteBot":"Elimina Bot",
+        "tooltipViewAddEditFaq":"Visualizza / aggiungi / modifica FAQ",
+        "tooltipAddEditFaqNoRelatedFaq":"Aggiungi / modifica FAQ (non esistono FAQ correlate a questo Bot)",
+        "DeleteBotWithId": "Elimina Bot con id:",
+        "AreYouSureDeleteBot": "Sei sicuro di voler eliminare questo Bot?",
+        "AreYouSureDeleteBotAndRElatedFAq": "Sei sicuro di voler eliminare questo Bot e le FAQ a questo correlate?",
+        "Confirm": "Conferma"
+        
+},
     "DepartmentsPage": {
         "AddDepartment":"Aggiungi Dipartimento",
         "CreationDate": "Data creazione",

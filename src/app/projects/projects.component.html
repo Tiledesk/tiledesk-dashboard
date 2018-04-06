@@ -98,32 +98,32 @@
       </div>
 
       <loading-spinner *ngIf="showSpinner"></loading-spinner>
-      <span *ngIf="!showSpinner">
-      <div *ngFor="let project of projects" class="col-lg-3 col-md-6 col-sm-6" style="cursor:pointer">
-        <div class="card" (click)='goToHome(project?.id_project._id, project?.id_project.name)'>
-          <div class="card-content">
-            <h3 class="title" style="color: #566787; font-size:20px; margin-bottom: 0px;">
-              {{ project?.id_project.name }}
-            </h3>
+        <span *ngIf="!showSpinner">
+        <div *ngFor="let project of projects" class="col-lg-3 col-md-6 col-sm-6" style="cursor:pointer">
+          <div class="card" (click)='goToHome(project?.id_project._id, project?.id_project.name)'>
+            <div class="card-content">
+              <h3 class="title" style="color: #566787; font-size:20px; margin-bottom: 0px;">
+                {{ project?.id_project.name }}
+              </h3>
 
-            <p class="category" style="font-size:14px !important; color: rgba(0,0,0,0.38)">
-              {{ project?.id_project._id }}
-            </p>
-            <h4 class="category" style="font-size:16px; margin-top: 16px;">
-              {{ project?.role }}
-            </h4>
-          </div>
-          <div class="card-footer">
-            <div class="stats">
-              <i class="material-icons">date_range</i> {{ project?.id_project.createdAt | date: 'd/M/y'}}
+              <p class="category" style="font-size:14px !important; color: rgba(0,0,0,0.38)">
+                {{ project?.id_project._id }}
+              </p>
+              <h4 class="category" style="font-size:16px; margin-top: 16px;">
+                {{ project?.role }}
+              </h4>
+            </div>
+            <div class="card-footer">
+              <div class="stats">
+                <i class="material-icons">date_range</i> {{ project?.id_project.createdAt | date: 'd/M/y'}}
 
-              <!-- <button type="button" rel="tooltip" title="Modifica Progetto" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(project?._id)'> -->
-              <!-- <i class="material-icons">edit</i> -->
-                <!-- </button> -->
+                <!-- <button type="button" rel="tooltip" title="Modifica Progetto" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(project?._id)'> -->
+                <!-- <i class="material-icons">edit</i> -->
+                  <!-- </button> -->
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </span>
 
     </div>
@@ -148,7 +148,7 @@
               </div>
           </div>
           <div class="modal-footer" style="margin-top: 75px;">
-            <button class="btn btn-info" (click)="createProject()">{{ 'ProjectsPage.ModalCreateProject' | translate }} </button>
+            <button [disabled]="project_name?.length < 2" class="btn btn-info" (click)="createProject()">{{ 'ProjectsPage.ModalCreateProject' | translate }} </button>
           </div>
         </div>
       </div>
