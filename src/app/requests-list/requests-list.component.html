@@ -1,6 +1,9 @@
 
 <!-- MOMGO DB REQUEST (ALIAS VISITORS) LIST -->
-<p style="margin-top:10px; padding-left:30px" class="navbar-brand">Visitatori</p> 
+<p style="margin-top:10px; padding-left:30px" class="navbar-brand">
+  <!-- Visitatori -->
+  {{ 'Visitors' | translate }}
+</p> 
 
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
@@ -8,7 +11,10 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header" data-background-color="" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
-            <h4 class="title" style="margin-bottom:2px; font-size:1.1em; color: #566787">Richieste non servite</h4>
+            <h4 class="title" style="margin-bottom:2px; font-size:1.1em; color: #566787">
+              <!-- Richieste non servite -->
+              {{ 'VisitorsPage.UnservedRequests' | translate }}
+            </h4>
             <!-- <p class="category">Here is a subtitle for this table</p> -->
           </div>
 
@@ -28,13 +34,18 @@
                     </th>
                     <th>
                       <span style="color: #566787">
-                        <strong> Richiedente </strong>
+                        <strong> 
+                          <!-- Richiedente  -->
+                          {{ 'VisitorsPage.Requester' | translate }}
+                        </strong>
                       </span>
                     </th>
                     <th>
                       <span style="color: #566787">
-                          <!-- Message -->
-                        <strong> Messagio </strong>
+                        <strong>
+                          <!-- Messagio  -->
+                          {{ 'VisitorsPage.Message' | translate }}
+                        </strong>
                       </span>
                     </th>
                     <!-- REQUESTER ID * FOR DEBUG -->
@@ -45,8 +56,10 @@
                     </th> -->
                     <th>
                       <span style="color: #566787">
-                        <!-- <strong> Served by </strong> -->
-                        <strong> Servita da </strong>
+                        <strong> 
+                        <!-- Servita da  -->
+                        {{ 'VisitorsPage.ServedBy' | translate }}
+                        </strong>
                       </span>
                       </th>
                     <!-- <th>
@@ -57,7 +70,10 @@
                     <th>
                       <span style="color: #566787">
                         <!-- <strong> Data creazione </strong> -->
-                        <strong> Pubblicata </strong>
+                        <strong> 
+                          <!-- Pubblicata  -->
+                          {{ 'VisitorsPage.Published' | translate }}
+                        </strong>
                       </span>
                     </th>
                     <!-- <th></th> -->
@@ -66,6 +82,17 @@
 
               <!-- UNSERVED FOR -->
               <tbody>
+
+                <!-- IF THERE ISN'T REQUEST (SERVED OR UNSERVED) -->
+                <tr *ngIf="requestListServed.length === 0 && requestListUnserved.length === 0"> 
+                  <td colspan="6" style="text-align: center; padding-top: 16px; cursor: pointer" (click)="testWidgetPage()">
+                      <p style="font-size:1em; color: #ff5252">
+                        <!-- Nessun Visitatore! Clicca qui per simulare un visitatore. -->
+                        {{ 'VisitorsPage.NoVisitorClickHere' | translate }}
+                      </p>
+                  </td>
+                </tr>
+
                 <tr *ngFor="let request of requestListUnserved">
                   <!-- FOR DEBUG: SHOW 'J' IF THE CURRENT USER UID IS BETWEEN 
                   THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
@@ -187,7 +214,11 @@
         <!-- SERVED REQUESTS -->
         <div class="card">
           <div class="card-header" data-background-color="" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
-            <h4 class="title" style="margin-bottom:2px; font-size:1.1em; color: #566787">Richieste servite</h4>
+            <h4 class="title" style="margin-bottom:2px; font-size:1.1em; color: #566787">
+              <!-- Richieste servite  -->
+              {{ 'VisitorsPage.ServedRequests' | translate }}
+            
+            </h4>
             <!-- <p class="category">Here is a subtitle for this table</p> -->
           </div>
           
@@ -207,13 +238,19 @@
                   </th>
                   <th>
                     <span style="color: #566787">
-                      <strong> Richiedente </strong>
+                      <strong> 
+                        <!-- Richiedente  -->
+                        {{ 'VisitorsPage.Requester' | translate }}
+                      </strong>
                     </span>
                   </th>
                   <th>
                     <span style="color: #566787">
                         <!-- Message -->
-                      <strong> Messagio </strong>
+                      <strong> 
+                        <!-- Messagio -->
+                        {{ 'VisitorsPage.Message' | translate }}
+                      </strong>
                     </span>
                   </th>
                   <!-- REQUESTER ID * FOR DEBUG -->
@@ -225,7 +262,11 @@
                   <th>
                     <span style="color: #566787">
                       <!-- <strong> Served by </strong> -->
-                      <strong> Servita da </strong>
+                      <strong> 
+                        <!-- Servita da -->
+                        {{ 'VisitorsPage.ServedBy' | translate }}
+                      
+                      </strong>
                     </span>
                   </th>
                   <!-- <th>
@@ -236,7 +277,10 @@
                   <th>
                     <span style="color: #566787">
                       <!-- <strong> Data creazione </strong> -->
-                      <strong> Pubblicata </strong>
+                      <strong> 
+                        <!-- Pubblicata  -->
+                        {{ 'VisitorsPage.Published' | translate }}
+                      </strong>
                     </span>
                   </th>
                             <!-- <th></th> -->
@@ -244,6 +288,16 @@
               </thead>
               <tbody>
               
+                 <!-- IF THERE ISN'T REQUEST (SERVED OR UNSERVED) -->
+                <tr *ngIf="requestListServed.length === 0 && requestListUnserved.length === 0"> 
+                  <td colspan="6" style="text-align: center; padding-top: 16px; cursor: pointer" (click)="testWidgetPage()">
+                      <p style="font-size:1em; color: #ff5252">
+                        <!-- Nessun Visitatore! Clicca qui per simulare un visitatore. -->
+                        {{ 'VisitorsPage.NoVisitorClickHere' | translate }}
+                      </p>
+                  </td>
+                </tr>
+
                 <tr *ngFor="let request of requestListServed">
                             
                   <!-- FOR DEBUG: SHOW 'J' IF THE CURRENT USER UID IS BETWEEN 
@@ -253,6 +307,7 @@
                       J
                     </span>
                   </td> -->
+                  
                   <td>
                     <!-- IF THE REQUEST SUPPORT STATUS IS 0 (??? REQUEST) -->
                     <span *ngIf="request?.support_status == 0"> 
@@ -371,10 +426,14 @@
               <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
                 <span aria-hidden="true">&times;</span>
               </button>
-              <h4 class="modal-title" style="font-size:1.1em">Id richiesta:
+              <h4 class="modal-title" style="font-size:1.1em">
+                <!-- Id richiesta: -->
+                {{ 'VisitorsPage.RequestId' | translate }}
                 <code>{{requestRecipient}}</code>
               </h4>
-              <h4 class="modal-title" style="font-size:1.1em">Id richiedente:
+              <h4 class="modal-title" style="font-size:1.1em">
+                <!-- Id richiedente: -->
+                {{ 'VisitorsPage.RequesterId' | translate }}
                   <code>{{requester_id}}</code>
                 </h4>
             </div>
@@ -412,7 +471,11 @@
             <!-- ./ modal body -->
          
             <div class="modal-footer">
-              <button class="btn btn-white" (click)="onCloseModal()" style="padding:12px 16px;">Chiudi</button>
+              <button class="btn btn-white" (click)="onCloseModal()" style="padding:12px 16px;">
+                <!-- Chiudi -->
+                {{ 'VisitorsPage.Close' | translate }}
+
+              </button>
               <span style="padding-right:25px"></span>
 
                <!-- =======================================================================================================================
@@ -468,7 +531,8 @@
                     <a class="btn btn-info" role="button" style="color: white;" 
                         target="_blank" href="http://support.tiledesk.com/web/?recipient={{requestRecipient}}" 
                         style="padding:12px 16px !important;">   
-                      Entra
+                      <!-- Entra -->
+                      {{ 'VisitorsPage.Enter' | translate }}
                     </a>
                   <!-- </button> -->
                 </span>
@@ -481,14 +545,17 @@
                   
                 <span *ngIf="SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === true && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false  && JOIN_TO_GROUP_HAS_ERROR === false">
                   <button class="btn btn-default" style="padding:12px 16px !important;">
-                    <i class="fa fa-spinner fa-spin"></i> Elaborazione
+                    <i class="fa fa-spinner fa-spin"></i> 
+                    <!-- Elaborazione -->
+                    {{ 'VisitorsPage.Loading' | translate }}
                   </button>
                 </span>
 
                 <!-- IF THE CALLBALL JOIN-TO-GROUP HAS ERROR SHOWS THE BTN ERROR (DISABLED)  -->
                 <span *ngIf="JOIN_TO_GROUP_HAS_ERROR === true">
                   <button class="btn btn-danger" disabled style="padding:12px 16px !important;">
-                    Errore
+                    <!-- Errore -->
+                    {{ 'VisitorsPage.Error' | translate }}
                   </button>
                 </span>
 

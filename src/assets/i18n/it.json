@@ -5,7 +5,6 @@
     "Howdy": "Salve",
     "Users": "Utenti",
     "Name": "Nome",
-
     "Available": "Disponibile",
     "Unavailable": "Non disponibile",
     "Visitors": "Visitatori",
@@ -13,6 +12,11 @@
     "Settings": "Impostazioni",
     "Departments": "Dipartmenti",
     "Resources": "Risorse",
+    "NavBar": {
+        "ViewAllProjects": "Visualizza tutti i progetti",
+        "ProjectSettings": "Impostazioni progetto",
+        "UserProfile": "PROFILO"
+    },
     "ProjectsPage": {
         "Welcome": "Benvenuto",
         "BuildYourCustomer_1": "Costruisci il tuo supporto clienti con bots intelligenti",
@@ -20,22 +24,31 @@
         "AddProject": "Aggiungi progetto",
         "ModalAddAProject": "Aggiungi un progetto",
         "ModalAddAProjectLabel": "Inserisci il nome del tuo progetto, ad esempio il nome del tuo sito",
-        "ModalPlaceHolder":"Nome progetto", 
-        "ModalCreateProject":"Crea Progetto",    
-        "UserProfile": "PROFILO" 
+        "ModalPlaceHolder": "Nome progetto",
+        "ModalCreateProject": "Crea Progetto",
+        "UserProfile": "PROFILO"
     },
-    "HomePage":{
-        "WidgetSubtitle":  "Incorpora e personalizza il chat widget sul tuo sito web",
-        "VisitorsSubtitle":"Visualizza un elenco di tutti i tuoi visitatori Web e chatta con loro",
-        "ChatSubtitle":    "Visualizza la chat history",
-        "AnalyticsSubtitle":"Tieni traccia delle chat che hai con i clienti"
-        
+    "HomePage": {
+        "WidgetSubtitle": "Incorpora e personalizza il chat widget sul tuo sito web",
+        "VisitorsSubtitle": "Visualizza un elenco di tutti i tuoi visitatori Web e chatta con loro",
+        "ChatSubtitle": "Visualizza la chat history",
+        "AnalyticsSubtitle": "Tieni traccia delle chat che hai con i clienti"
     },
-    "DepartmentsPage": {
-        
-    },
+    "DepartmentsPage": {},
     "VisitorsPage": {
-        
+        "UnservedRequests": "Richieste non servite",
+        "ServedRequests": "Richieste servite",
+        "Requester": "Richiedente",
+        "Message": "Messagio",
+        "ServedBy": "Servita da",
+        "Published": "Pubblicata",
+        "NoVisitorClickHere": "Nessun Visitatore! Clicca qui per simulare un visitatore.",
+        "RequestId": "Id richiesta:",
+        "RequesterId": "Id richiedente:",
+        "Close": "Chiudi",
+        "Enter": "Entra",
+        "Loading": "Elaborazione",
+        "Error": "Errore"
     },
     "Resourcepage": {
         "CopyScript": "Copia Script",
@@ -57,6 +70,4 @@
         "EmailIntegration_1": "Integrazione nativa dell' email nel Supporto Tile Desk. Le email inviate al tuo indirizzo di supporto: ",
         "EmailIntegration_2": "diventano automaticamente richieste."
     }
-  
-
 }

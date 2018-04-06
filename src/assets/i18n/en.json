@@ -5,7 +5,6 @@
     "Howdy": "Howdy",
     "Users": "Users",
     "Name": "Name",
-
     "Available": "Available",
     "Unavailable": "Unavailable",
     "Visitors": "Visitors",
@@ -13,28 +12,43 @@
     "Settings": "Settings",
     "Departments": "Departments",
     "Resources": "Resources",
+    "NavBar": {
+        "ViewAllProjects": "View all projects",
+        "ProjectSettings": "Project settings",
+        "UserProfile": "PROFILE"
+    },
     "ProjectsPage": {
         "Welcome": "Welcome",
         "BuildYourCustomer_1": "Build your customer support with intelligent bots",
         "BuildYourCustomer_2": "and a multi-channel platform.",
         "AddProject": "Add project",
         "ModalAddAProject": "Add a project",
-        "ModalAddAProjectLabel": "Enter the name of your project, for example the name of your site", 
-        "ModalPlaceHolder":"Project name",  
-        "ModalCreateProject":"Create Project",      
-        "UserProfile": "PROFILE" 
+        "ModalAddAProjectLabel": "Enter the name of your project, for example the name of your site",
+        "ModalPlaceHolder": "Project name",
+        "ModalCreateProject": "Create Project",
+        "UserProfile": "PROFILE"
     },
-    "HomePage":{
-        "WidgetSubtitle":  "Embed and customize the chat widget on your website   ",
-        "VisitorsSubtitle":"See a list of all your web visitors and chat with them",
-        "ChatSubtitle":    "See the chat history",
-        "AnalyticsSubtitle":"Track the chats you have with customers"
+    "HomePage": {
+        "WidgetSubtitle": "Embed and customize the chat widget on your website   ",
+        "VisitorsSubtitle": "See a list of all your web visitors and chat with them",
+        "ChatSubtitle": "See the chat history",
+        "AnalyticsSubtitle": "Track the chats you have with customers"
     },
-    "DepartmentsPage": {
-        
-    },
+    "DepartmentsPage": {},
     "VisitorsPage": {
-        
+        "UnservedRequests": "Unserved requests",
+        "ServedRequests": "Served requests",
+        "Requester": "Requester",
+        "Message": "Message",
+        "ServedBy": "Served by",
+        "Published": "Published",
+        "NoVisitorClickHere": "No Visitor! Click here to simulate a visitor.",
+        "RequestId": "Request Id:",
+        "RequesterId": "Requester Id:",
+        "Close": "Close",
+        "Enter": "Enter",
+        "Loading": "Loading",
+        "Error": "Error"
     },
     "Resourcepage": {
         "CopyScript": "Copy Script",
@@ -56,5 +70,4 @@
         "EmailIntegration_1": "Email integration in Tile Desk Support works out of the box. Emails sent to your support address: ",
         "EmailIntegration_2": "automatically become requests."
     }
-
 }

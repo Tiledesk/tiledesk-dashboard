@@ -20,6 +20,7 @@ import { forEach } from '@angular/router/src/utils/collection';
 import { DocumentChange } from '@firebase/firestore-types';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { AuthService } from '../core/auth.service';
+import { Project } from '../models/project-model';
 
 @Component({
   selector: 'requests-list',
@@ -82,6 +83,9 @@ export class RequestsListComponent implements OnInit {
   // FOR NEW
   ID_request
 
+  project: Project;
+  projectId: string;
+
   constructor(
     private requestsService: RequestsService,
     private elRef: ElementRef,
@@ -103,9 +107,19 @@ export class RequestsListComponent implements OnInit {
 
 
 
-
-
   ngOnInit() {
+
+    // GET THE CURRENT PROJECT ID
+    this.auth.project_bs.subscribe((project) => {
+      this.project = project
+      console.log('00 -> REQUEST-LIST COMP project from AUTH service subscription  ', project)
+
+      if (project) {
+        this.projectId = project._id
+      }
+    });
+
+
     console.log('REQUEST LIST ON INIT ', )
 
     this.getRequestListBS()
@@ -125,7 +139,8 @@ export class RequestsListComponent implements OnInit {
   getRequestListBS() {
     this.requestsService.requestsList_bs.subscribe((requests) => {
       if (requests) {
-        // console.log('REQUESTS ', requests)
+        // console.log('REQUESTS-LIST COMP - REQUESTS ', requests)
+        // console.log('REQUESTS-LIST COMP - REQUESTS LENGHT', requests.length)
         this.requestListUnserved = requests
           .filter(r => {
             if (r.support_status === 100) {
@@ -153,14 +168,22 @@ export class RequestsListComponent implements OnInit {
             }
           });
       }
-      if (requests.length === 0) {
-        this.showSpinner = false
-      }
+      setTimeout(() => {
+        if (requests.length === 0) {
+          this.showSpinner = false
+        }
+      }, 2000);
+
     }, error => {
       this.showSpinner = false
     });
   }
 
+  // + '&prechatform=' + this.preChatForm
+  testWidgetPage() {
+    const url = 'http://support.tiledesk.com/testsite/?projectid=' + this.projectId;
+    window.open(url, '_blank');
+  }
   // addOrUpdateRequestsList(r: Request) {
   //   console.log('ID REQUEST  ', r.recipient)
 
@@ -486,13 +509,13 @@ export class RequestsListComponent implements OnInit {
         // this.scrollToBottom();
         // }
       },
-      (err) => {
-        console.log('GET MESSAGE LIST ERROR ', err);
-      },
-      () => {
-        console.log('GET MESSAGE LIST * COMPLETE *');
-        // this.showSpinner = false;
-      });
+        (err) => {
+          console.log('GET MESSAGE LIST ERROR ', err);
+        },
+        () => {
+          console.log('GET MESSAGE LIST * COMPLETE *');
+          // this.showSpinner = false;
+        });
 
   }
 
@@ -545,13 +568,13 @@ export class RequestsListComponent implements OnInit {
           }
         }
       },
-      (err) => {
-        this.SEARCH_FOR_SAME_UID_FINISHED = true;
-        console.log('REQUEST (ALIAS CONVERSATION) GET BY RECIPIENT ERROR ', err);
-      },
-      () => {
-        console.log('REQUEST (ALIAS CONVERSATION) GET BY RECIPIENT COMPLETE');
-      });
+        (err) => {
+          this.SEARCH_FOR_SAME_UID_FINISHED = true;
+          console.log('REQUEST (ALIAS CONVERSATION) GET BY RECIPIENT ERROR ', err);
+        },
+        () => {
+          console.log('REQUEST (ALIAS CONVERSATION) GET BY RECIPIENT COMPLETE');
+        });
   }
 
   // USED TO JOIN TO CHAT GROUP (SEE onJoinHandled())
@@ -584,18 +607,18 @@ export class RequestsListComponent implements OnInit {
 
           console.log('JOIN TO CHAT GROUP ', data);
         },
-        (err) => {
-          console.log('JOIN TO CHAT GROUP ERROR ', err);
-          this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
-          this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = false;
-          this.JOIN_TO_GROUP_HAS_ERROR = true;
-        },
-        () => {
-          console.log('JOIN TO CHAT GROUP COMPLETE', );
+          (err) => {
+            console.log('JOIN TO CHAT GROUP ERROR ', err);
+            this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
+            this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = false;
+            this.JOIN_TO_GROUP_HAS_ERROR = true;
+          },
+          () => {
+            console.log('JOIN TO CHAT GROUP COMPLETE', );
 
-          this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
-          this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = true;
-        });
+            this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
+            this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = true;
+          });
     });
   }
 
