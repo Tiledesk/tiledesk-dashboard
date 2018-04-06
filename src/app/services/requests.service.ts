@@ -286,7 +286,7 @@ export class RequestsService {
     // ['added', 'modified', 'removed']
 
     this.requestsCollection = this.afs.collection('conversations',
-      (ref) => ref.where('support_status', '>=', 1000).orderBy('support_status').orderBy('timestamp', 'desc'));
+      (ref) => ref.where('support_status', '>=', 1000).where('projectid', '==', this.project._id).orderBy('support_status').orderBy('timestamp', 'desc'));
     // .orderBy('support_status', 'desc').orderBy('timestamp', 'desc')
 
     return this.requestsCollection.snapshotChanges().map((actions) => {
@@ -303,7 +303,8 @@ export class RequestsService {
           support_status: data.support_status,
           members: data.members,
           requester_fullname: data.requester_fullname,
-          requester_id: data.requester_id
+          requester_id: data.requester_id,
+          projectid: data.projectid
         };
       });
     });

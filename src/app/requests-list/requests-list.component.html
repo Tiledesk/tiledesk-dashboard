@@ -86,7 +86,8 @@
                 <!-- IF THERE ISN'T REQUEST (SERVED OR UNSERVED) -->
                 <tr *ngIf="requestListServed.length === 0 && requestListUnserved.length === 0"> 
                   <td colspan="6" style="text-align: center; padding-top: 16px; cursor: pointer" (click)="testWidgetPage()">
-                      <p style="font-size:1em; color: #ff5252">
+                    <!-- color: #ff5252   -->
+                    <p style="font-size:1em; ">
                         <!-- Nessun Visitatore! Clicca qui per simulare un visitatore. -->
                         {{ 'VisitorsPage.NoVisitorClickHere' | translate }}
                       </p>
@@ -291,7 +292,8 @@
                  <!-- IF THERE ISN'T REQUEST (SERVED OR UNSERVED) -->
                 <tr *ngIf="requestListServed.length === 0 && requestListUnserved.length === 0"> 
                   <td colspan="6" style="text-align: center; padding-top: 16px; cursor: pointer" (click)="testWidgetPage()">
-                      <p style="font-size:1em; color: #ff5252">
+                    <!-- color: #ff5252   -->
+                    <p style="font-size:1em; ">
                         <!-- Nessun Visitatore! Clicca qui per simulare un visitatore. -->
                         {{ 'VisitorsPage.NoVisitorClickHere' | translate }}
                       </p>

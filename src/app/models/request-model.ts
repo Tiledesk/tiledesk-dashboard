@@ -10,6 +10,7 @@ export interface Request {
   members?: boolean;
   requester_fullname?: string;
   requester_id?: string;
+  projectid?: string;
 
   id?: string;
   request_date_fromnow?: any;
