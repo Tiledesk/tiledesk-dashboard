@@ -96,6 +96,9 @@
           </div>
         </div>
       </div>
+
+      <loading-spinner *ngIf="showSpinner"></loading-spinner>
+      <span *ngIf="!showSpinner">
       <div *ngFor="let project of projects" class="col-lg-3 col-md-6 col-sm-6" style="cursor:pointer">
         <div class="card" (click)='goToHome(project?.id_project._id, project?.id_project.name)'>
           <div class="card-content">
@@ -121,6 +124,8 @@
           </div>
         </div>
       </div>
+      </span>
+
     </div>
 
     <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}">

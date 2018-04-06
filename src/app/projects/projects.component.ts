@@ -28,7 +28,7 @@ export class ProjectsComponent implements OnInit {
   private toggleButton: any;
   private sidebarVisible: boolean;
   newInnerWidth: any;
-
+  showSpinner = true;
 
   constructor(
     private projectService: ProjectService,
@@ -97,8 +97,17 @@ export class ProjectsComponent implements OnInit {
   getProjects() {
     this.projectService.getMongDbProjects().subscribe((projects: any) => {
       console.log('GET PROJECTS ', projects);
+
+      this.showSpinner = false;
       this.projects = projects;
-    });
+    },
+      error => { 
+        this.showSpinner = false;
+        console.log('GET PROJECTS - ERROR ', error)
+      },
+      () => {
+        console.log('GET PROJECTS - COMPLETE')
+      });
   }
 
   /**
@@ -181,14 +190,14 @@ export class ProjectsComponent implements OnInit {
         this.router.navigate([`/project/${project._id}/home`]);
 
       },
-      (error) => {
-        console.log('CREATE PROJECT - POST REQUEST ERROR ', error);
-      },
-      () => {
-        console.log('CREATE PROJECT - POST REQUEST COMPLETE ');
+        (error) => {
+          console.log('CREATE PROJECT - POST REQUEST ERROR ', error);
+        },
+        () => {
+          console.log('CREATE PROJECT - POST REQUEST COMPLETE ');
 
-        // this.router.navigate(['/projects']);
-      });
+          // this.router.navigate(['/projects']);
+        });
   }
 
 
