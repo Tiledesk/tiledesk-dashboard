@@ -34,7 +34,25 @@
         "ChatSubtitle": "Visualizza la chat history",
         "AnalyticsSubtitle": "Tieni traccia delle chat che hai con i clienti"
     },
-    "DepartmentsPage": {},
+    "DepartmentsPage": {
+        "AddDepartment":"Aggiungi Dipartimento",
+        "CreationDate": "Data creazione",
+        "Actions": "Azioni",
+        "DeleteDepartmentWithId":"Elimina dipartmento con id:",
+        "AreYouSure":"Sei sicuro di voler eliminare il dipartimento ",
+        "Confirm":"Conferma",
+        "tooltipDeleteDept":"Elimina Dipartimento",
+        "tooltipEditDept":"Modifica Dipartimento"
+    },
+    "DeptsAddEditPage": {
+        "AddDept": "Aggiungi Dipartimento",
+        "EditDept": "Modifica Dipartimento",
+        "DeptName":"Nome Dipartimento",
+        "SelectABot":"Seleziona un BOT ",
+        "orCreateABot":" o Crea un nuovo Bot",
+        "CreateDept":"Crea Dipartimento",
+        "UpdateDept": "Aggiorna Dipartimento"
+    },
     "VisitorsPage": {
         "UnservedRequests": "Richieste non servite",
         "ServedRequests": "Richieste servite",

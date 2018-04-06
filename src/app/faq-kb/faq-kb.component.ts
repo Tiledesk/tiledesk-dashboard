@@ -6,6 +6,7 @@ import { MongodbFaqService } from '../services/mongodb-faq.service';
 
 import { Project } from '../models/project-model';
 import { AuthService } from '../core/auth.service';
+import { Location } from '@angular/common';
 
 
 @Component({
@@ -32,7 +33,8 @@ export class FaqKbComponent implements OnInit {
     private faqKbService: FaqKbService,
     private router: Router,
     private mongodbFaqService: MongodbFaqService,
-    private auth: AuthService
+    private auth: AuthService,
+    private _location: Location
   ) { }
 
   ngOnInit() {
@@ -40,6 +42,7 @@ export class FaqKbComponent implements OnInit {
 
     // this.getFaqKb();
     this.getFaqKbByProjectId();
+
   }
 
   getCurrentProject() {

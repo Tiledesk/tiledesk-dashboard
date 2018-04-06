@@ -366,6 +366,10 @@ export class DepartmentEditAddComponent implements OnInit {
 
   }
 
+  goTo_BotEditAddPage_CREATE() {
+    this.router.navigate(['project/' + this.project._id + '/createfaqkb']);
+  }
+
 
 
 }

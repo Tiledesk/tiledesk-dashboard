@@ -136,7 +136,7 @@
 
   <!-- NEW FOR THIS TEMPALTE -->
 
-<p style="margin-top:10px; padding-left:30px" class="navbar-brand">Dipartimenti</p> 
+<p style="margin-top:10px; padding-left:30px" class="navbar-brand">{{ "Departments" | translate }}</p> 
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
 
@@ -146,7 +146,8 @@
         <span class="icon" style="padding-right:8px">
           <i class="material-icons">add_circle</i>
         </span>
-        Aggiungi Dipartimento
+        <!-- Aggiungi Dipartimento -->
+        {{ "DepartmentsPage.AddDepartment" | translate }}
       </button>
     </div>
 
@@ -199,14 +200,14 @@
                     <span style="color: #566787">
                       <!-- Creation Date -->
                       <strong>
-                      Data creazione
+                        {{ "DepartmentsPage.CreationDate" | translate }}
                       </strong>
                     </span>
                   </th>
                   <th>
                     <span style="color: #566787">
                       <strong>
-                        Azioni
+                        {{ "DepartmentsPage.Actions" | translate }}
                       </strong>  
                     </span>
                   </th>
@@ -238,10 +239,10 @@
 
                   <!-- NEW EDIT ADD -->
                   <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" title="Modifica Bot" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(dept?._id, dept?.name)'>
+                    <button type="button" rel="tooltip" title="{{ 'DepartmentsPage.tooltipEditDept' | translate }}" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(dept?._id, dept?.name)'>
                       <i class="material-icons">edit</i>
                     </button>
-                    <button *ngIf="dept?.default !== true" type="button" rel="tooltip" title="Elimina Bot" class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal(dept?._id, dept?.name, hasClickedDeleteModal = true)'>
+                    <button *ngIf="dept?.default !== true" type="button" rel="tooltip" title="{{ 'DepartmentsPage.tooltipDeleteDept' | translate }}" class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal(dept?._id, dept?.name, hasClickedDeleteModal = true)'>
                       <i class="material-icons">close</i>
                     </button>
                   </td>
@@ -269,7 +270,7 @@
               <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
                 <h4 class="modal-title">
                   <!-- Delete department with id: -->
-                  Elimina dipartmento con id:
+                  {{ "DepartmentsPage.DeleteDepartmentWithId" | translate }}
                   <code>{{id_toDelete}}</code>
                 </h4>
               </span>
@@ -300,7 +301,7 @@
               <div class="modal-body">
       
               <!-- <p> Are you sure you want to delete the department <strong>{{deptName_toDelete}}</strong>?</p> -->
-              <p> Sei sicuro di voler eliminare il dipartimento <strong>{{deptName_toDelete}}</strong> ?</p>
+              <p> {{ "DepartmentsPage.AreYouSure" | translate }}<strong>{{deptName_toDelete}}</strong> ?</p>
               </div>
             </span>
       
@@ -312,7 +313,7 @@
       
             <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
               <div class="modal-footer">
-                <button type="button" class="btn btn-danger" (click)="onCloseDeleteModalHandled()">Conferma</button>
+                <button type="button" class="btn btn-danger" (click)="onCloseDeleteModalHandled()">{{ "DepartmentsPage.Confirm" | translate }}</button>
               </div>
             </span>
       

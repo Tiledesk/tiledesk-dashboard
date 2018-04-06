@@ -34,7 +34,25 @@
         "ChatSubtitle": "See the chat history",
         "AnalyticsSubtitle": "Track the chats you have with customers"
     },
-    "DepartmentsPage": {},
+    "DepartmentsPage": {
+        "AddDepartment": "Add Department",
+        "CreationDate": "Creation date",
+        "Actions": "Actions",
+        "DeleteDepartmentWithId": "Delete department with id:",
+        "AreYouSure": "Are you sure you want to delete the department ",
+        "Confirm": "Confirm",
+        "tooltipDeleteDept":"Delete Department",
+        "tooltipEditDept":"Edit Department"
+    },
+    "DeptsAddEditPage": {
+        "AddDept": "Add Department",
+        "EditDept": "Edit Department",
+        "DeptName":"Department Name",
+        "SelectABot":"Select a Bot",
+        "orCreateABot":" or Create a Bot",
+        "CreateDept":"Create Department",
+        "UpdateDept": "Update Department"
+    },
     "VisitorsPage": {
         "UnservedRequests": "Unserved requests",
         "ServedRequests": "Served requests",
