@@ -36,7 +36,8 @@ export class ProjectsComponent implements OnInit {
     private auth: AuthService,
     private requestsService: RequestsService,
     private element: ElementRef,
-    private departmentService: MongodbDepartmentService,
+    private departmentService: MongodbDepartmentService
+
   ) { }
 
   ngOnInit() {
@@ -47,6 +48,8 @@ export class ProjectsComponent implements OnInit {
     this.getLoggedUser();
 
   }
+
+
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
@@ -92,7 +95,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   /**
-   * GET BOTS (READ)
+   * GET PROJECTs (READ)
    */
   getProjects() {
     this.projectService.getMongDbProjects().subscribe((projects: any) => {
@@ -100,15 +103,19 @@ export class ProjectsComponent implements OnInit {
 
       this.showSpinner = false;
       this.projects = projects;
+
     },
-      error => { 
+      error => {
         this.showSpinner = false;
         console.log('GET PROJECTS - ERROR ', error)
       },
       () => {
         console.log('GET PROJECTS - COMPLETE')
+
       });
   }
+
+
 
   /**
    * MODAL DELETE PROJECT

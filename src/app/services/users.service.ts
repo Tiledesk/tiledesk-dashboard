@@ -60,7 +60,7 @@ export class UsersService {
 
 
   getCurrentProject() {
-    console.log('DEPT SERVICE - SUBSCRIBE TO CURRENT PROJ ')
+    console.log('USER SERVICE - SUBSCRIBE TO CURRENT PROJ ')
     // tslint:disable-next-line:no-debugger
     // debugger
     this.auth.project_bs.subscribe((project) => {
@@ -68,7 +68,7 @@ export class UsersService {
       // tslint:disable-next-line:no-debugger
       // debugger
       if (this.project) {
-        console.log('00 -> USERSERVICE project ID from AUTH service subscription  ', this.project._id)
+        console.log('-- -- >>>> 00 -> USERS SERVICE project ID from AUTH service subscription  ', this.project._id)
         this.MONGODB_BASE_URL = this.BASE_URL + this.project._id + '/project_users/'
         // '/project_users/'
       }
@@ -149,21 +149,21 @@ export class UsersService {
     // return this.usersCollection.doc('PXmRJVrtzFAHsxjs7voD5R').set(user);
   }
 
-  // tslint:disable-next-line:max-line-length
+
   /// ================================== PROJECT USER FROM MONGO DB ================================== ///
   /**
    * NOTE: the PROJECT-USER returned has nested the object user
    */
   public getProjectUsersByProjectId(): Observable<ProjectUser[]> {
-    const url = this.MONGODB_BASE_URL;
-    // url += '?id_project=' + id_project;
+      const url = this.MONGODB_BASE_URL;
 
-    console.log('PROJECT USERS URL', url);
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
-  }
+      console.log('PROJECT USERS URL', url);
+      const headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+      headers.append('Authorization', this.TOKEN);
+      return this.http
+        .get(url, { headers })
+        .map((response) => response.json());
+    }
+
 }

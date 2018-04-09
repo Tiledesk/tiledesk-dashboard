@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Project } from '../models/project-model';
 import { Router } from '@angular/router';
+import { UsersService } from '../services/users.service';
 
 @Component({
   selector: 'home',
@@ -27,7 +28,8 @@ export class HomeComponent implements OnInit {
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private usersService: UsersService
   ) { }
 
   ngOnInit() {
@@ -86,7 +88,28 @@ export class HomeComponent implements OnInit {
       // tslint:disable-next-line:no-debugger
       // debugger
       this.user = user;
+
+      if (this.user) {
+
+        this.getAllUsersOfCurrentProject();
+      }
     });
+  }
+
+  getAllUsersOfCurrentProject() {
+    this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
+      console.log('HOME COMP - PROJECT USERS (FILTERED FOR PROJECT ID)', projectUsers);
+
+      //   this.showSpinner = false;
+      //   this.projectUsersList = projectUsers;
+    },
+      error => {
+        // this.showSpinner = false;
+        console.log('PROJECT-USERS (FILTERED FOR PROJECT ID) - ERROR', error);
+      },
+      () => {
+        console.log('PROJECT-USERS (FILTERED FOR PROJECT ID) - COMPLETE')
+      });
   }
 
   // NOT YET USED

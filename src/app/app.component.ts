@@ -37,7 +37,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         private router: Router,
         private translate: TranslateService,
         private requestsService: RequestsService,
-        private auth: AuthService,
+        private auth: AuthService
         // private faqKbService: FaqKbService,
     ) {
         translate.setDefaultLang('en');
@@ -179,7 +179,7 @@ export class AppComponent implements OnInit, AfterViewInit {
                     elemFooter.setAttribute('style', 'display:none;');
                     // console.log('DETECT LOGIN PAGE')
                     // tslint:disable-next-line:max-line-length
-                } else  {
+                } else {
 
                     elemFooter.setAttribute('style', '');
 

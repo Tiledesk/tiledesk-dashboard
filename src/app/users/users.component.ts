@@ -17,11 +17,12 @@ export class UsersComponent implements OnInit {
 
   ngOnInit() {
 
-    this.getProjectUsersByProjectId();
+    this.getAllUsersOfCurrentProject();
   }
 
 
-  getProjectUsersByProjectId() {
+  // used to o
+  getAllUsersOfCurrentProject() {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
       console.log('PROJECT USERS (FILTERED FOR PROJECT ID)', projectUsers);
 
