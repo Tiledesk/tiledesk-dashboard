@@ -180,6 +180,20 @@
             <!-- (click)="setActiveClassToSettings()" -->
             <!-- padding-left:15px; -->
 
+            <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active">
+                <a *ngIf="project" routerLink="project/{{ project._id }}/users">
+                   
+                    <span class="sidebar-mini">
+                        U 
+                    </span>
+                   
+                    <span class="sidebar-normal">
+                        {{ 'Users' | translate }} 
+                    </span> 
+                
+                </a>
+            </li>
+
             <!-- FAQ (alias FAQKB) HAS BEEN RENAMED IN BOT (BOT - see above - IS CURRENTLY COMMENTED) -->
             <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active">
                 <a *ngIf="project" routerLink="project/{{ project._id }}/faqkb">

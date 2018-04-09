@@ -101,7 +101,7 @@ const routes: Routes = [
   { path: 'project/:projectid/requests', component: RequestsListComponent, canActivate: [AuthGuard] },
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
 
-  { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/users', component: UsersComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/faqkb', component: FaqKbComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/createfaqkb', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },

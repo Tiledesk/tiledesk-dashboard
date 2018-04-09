@@ -34,6 +34,12 @@
         "ChatSubtitle": "See the chat history",
         "AnalyticsSubtitle": "Track the chats you have with customers"
     },
+    "UsersPage": {
+        "Firstname":"Firstname",
+        "Lastname":"Lastname",
+        "UserId":"User Id",
+        "Role":"Role"
+    },
     "BotsPage": {
         "AddBot":"Add Bot",
         "Name":"Name",

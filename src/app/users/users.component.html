@@ -1,3 +1,105 @@
-<p>
-  users works!
-</p>
+<p style="margin-top:10px; padding-left:30px" class="navbar-brand">{{ "Users" | translate }}</p> 
+
+<div class="main-content" style="padding-top:0px">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+  
+          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+  
+          <div *ngIf="!showSpinner" class="card-content table-responsive">
+              
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>
+                    <span style="color: #566787">
+                      <strong>
+                        Project_User Id
+                      </strong>
+                    </span>
+                  </th>
+
+                  <th>
+                    <span style="color: #566787">
+                      <strong>
+                        {{ "UsersPage.Firstname" | translate }}
+                      </strong>
+                    </span>
+                  </th>
+
+                  <th>
+                    <span style="color: #566787">
+                      <strong>
+                        {{ "UsersPage.Lastname" | translate }}
+                      </strong>
+                    </span>
+                  </th>
+
+                  <th>
+                    <span style="color: #566787">
+                      <strong>
+                        Email
+                      </strong>
+                    </span>
+                  </th>
+
+                  <th>
+                    <span style="color: #566787">
+                      <strong>
+                        {{ "UsersPage.UserId" | translate }}
+                      </strong>
+                    </span>
+                  </th>
+
+                  <th>
+                    <span style="color: #566787">
+                      <strong>
+                        {{ "UsersPage.Role" | translate }}
+                      </strong>
+                    </span>
+                  </th>
+
+                </tr>
+
+              </thead>
+
+              <tbody>
+
+                <tr *ngFor="let projectUser of projectUsersList">
+                  <td>
+                    {{ projectUser?._id }}
+                  </td>
+
+                  <td>
+                    {{ projectUser?.id_user?.firstname }}
+                  </td>
+
+                  <td>
+                    {{ projectUser?.id_user?.lastname }}
+                  </td>
+
+                  <td>
+                    {{ projectUser?.id_user?.email }}
+                  </td>
+
+                  <td>
+                    {{ projectUser?.id_user?._id }}
+                  </td>
+
+                  <td>
+                    {{ projectUser?.role }}
+                  </td>
+
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>  
+  </div>
+</div>      

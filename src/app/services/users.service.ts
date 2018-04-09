@@ -3,9 +3,14 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 
 import { User } from '../models/user-model';
+import { ProjectUser } from '../models/project-user';
 
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
+
+import { AuthService } from '../core/auth.service';
+import { Http, Headers, RequestOptions } from '@angular/http';
+import { environment } from '../../environments/environment';
 
 interface NewUser {
   displayName: string;
@@ -16,6 +21,12 @@ interface NewUser {
 @Injectable()
 export class UsersService {
 
+  http: Http;
+  BASE_URL = environment.mongoDbConfig.BASE_URL;
+  MONGODB_BASE_URL: any;
+  TOKEN: string
+  user: any;
+
   orderBy_field: any;
   orderBy_direction: any;
 
@@ -24,11 +35,53 @@ export class UsersService {
 
   searchUserCollection: AngularFirestoreCollection<User>;
 
+  project: any;
+
   constructor(
+    http: Http,
     private afs: AngularFirestore,
+    private auth: AuthService
   ) {
     // this.usersCollection = this.afs.collection('users', (ref) => ref.orderBy('time', 'desc').limit(5));
     // this.searchUserCollection = this.afs.collection('users', (ref) => ref.where('displayName', '>=', 'B'));
+
+    this.http = http;
+    // SUBSCRIBE TO USER BS
+    this.user = auth.user_bs.value
+    this.checkUser()
+
+    this.auth.user_bs.subscribe((user) => {
+      this.user = user;
+      this.checkUser()
+    });
+
+    this.getCurrentProject();
+  }
+
+
+  getCurrentProject() {
+    console.log('DEPT SERVICE - SUBSCRIBE TO CURRENT PROJ ')
+    // tslint:disable-next-line:no-debugger
+    // debugger
+    this.auth.project_bs.subscribe((project) => {
+      this.project = project
+      // tslint:disable-next-line:no-debugger
+      // debugger
+      if (this.project) {
+        console.log('00 -> USERSERVICE project ID from AUTH service subscription  ', this.project._id)
+        this.MONGODB_BASE_URL = this.BASE_URL + this.project._id + '/project_users/'
+        // '/project_users/'
+      }
+    });
+  }
+
+  checkUser() {
+    if (this.user) {
+      this.TOKEN = this.user.token
+      // this.getToken();
+    } else {
+      console.log('No user is signed in');
+    }
   }
 
   /**
@@ -96,5 +149,21 @@ export class UsersService {
     // return this.usersCollection.doc('PXmRJVrtzFAHsxjs7voD5R').set(user);
   }
 
+  // tslint:disable-next-line:max-line-length
+  /// ================================== PROJECT USER FROM MONGO DB ================================== ///
+  /**
+   * NOTE: the PROJECT-USER returned has nested the object user
+   */
+  public getProjectUsersByProjectId(): Observable<ProjectUser[]> {
+    const url = this.MONGODB_BASE_URL;
+    // url += '?id_project=' + id_project;
 
+    console.log('PROJECT USERS URL', url);
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
 }

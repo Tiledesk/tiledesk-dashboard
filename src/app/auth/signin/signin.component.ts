@@ -128,7 +128,10 @@ export class SigninComponent implements OnInit {
               firebase.auth().signInWithCustomToken(token)
                 .then(data => {
                   console.log('3. FIREBASE CUSTOM AUTH DATA ', data)
-
+                  /** 
+                   * TO-DO
+                   * SALVARE DATI 
+                   */
                   // this.router.navigate(['/home']);
                   this.router.navigate(['/projects']);
 
