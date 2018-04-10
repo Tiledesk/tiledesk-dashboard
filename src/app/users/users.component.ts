@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../services/users.service';
 
+import { Router } from '@angular/router';
+import { AuthService } from '../core/auth.service';
+import { Project } from '../models/project-model';
+
 @Component({
   selector: 'users',
   templateUrl: './users.component.html',
@@ -13,13 +17,29 @@ export class UsersComponent implements OnInit {
 
   // set to none the property display of the modal
   display = 'none';
+  project: Project;
 
   constructor(
     private usersService: UsersService,
+    private router: Router,
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
     this.getAllUsersOfCurrentProject();
+    this.getCurrentProject();
+  }
+
+
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+      this.project = project
+      console.log('00 -> USER COMP project ID from AUTH service subscription  ', this.project._id)
+    });
+  }
+
+  goToAddUser() {
+    this.router.navigate(['project/' + this.project._id + '/user/add']);
   }
 
   getAllUsersOfCurrentProject() {

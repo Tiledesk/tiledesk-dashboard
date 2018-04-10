@@ -82,6 +82,7 @@ import { ScriptComponent } from './script/script.component';
 import { ChannelsComponent } from './channels/channels.component';
 import { SocialComponent } from './social/social.component';
 import { FaqTestComponent } from './faq-test/faq-test.component';
+import { UserEditAddComponent } from './user-edit-add/user-edit-add.component';
 
 
 
@@ -126,6 +127,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ChannelsComponent,
     SocialComponent,
     FaqTestComponent,
+    UserEditAddComponent,
 
   ],
   imports: [

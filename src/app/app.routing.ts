@@ -55,6 +55,8 @@ import { ChannelsComponent } from './channels/channels.component';
 import { SocialComponent } from './social/social.component';
 
 import { FaqTestComponent } from './faq-test/faq-test.component';
+import { UserEditAddComponent } from './user-edit-add/user-edit-add.component';
+
 
 
 
@@ -102,6 +104,7 @@ const routes: Routes = [
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/users', component: UsersComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/user/add', component: UserEditAddComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/faqkb', component: FaqKbComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/createfaqkb', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },

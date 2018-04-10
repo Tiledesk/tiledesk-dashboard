@@ -1,0 +1,44 @@
+<div class="navbar-brand" style="z-index: -1;margin-top:10px; padding-left:30px">
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBackToUsersList()">keyboard_arrow_left</i>
+  Add User
+
+</div>
+<div class="main-content" style="padding-top:0px">
+  <div class="container-fluid">
+
+      <div class="row">
+          <div class="col-md-12">
+            <div class="card" style="padding-top:25px; padding-bottom:25px">
+              <div class="card-content">
+
+                  <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
+                    Email utente
+                  </label>
+                  <div class="col-sm-10">
+                    <input [(ngModel)]="user_email" class="" type="text" placeholder="Email utente">
+                  </div>
+
+                  <div class="col-sm-12" style="height:10px"></div>
+
+                  <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
+                    Ruolo
+                  </label>
+                  <div class="col-sm-10" style="">
+                    <select #selectElem (change)="setSelected(selectElem.value)" class="" >
+                      <option class="not_selected" value="ROLE_NOT_SELECTED">Seleziona un ruolo</option> 
+                      
+                      <option [ngValue]="admin" [selected]="selected === admin">Admin </option>
+                      <option [ngValue]="guest" [selected]="selected === guest">Guest </option>
+                    </select>
+                  </div>
+
+                  <!-- SPACER -->
+                  <div class="col-sm-12" style="height:15px"></div>
+
+                  <label style="" class="col-sm-2"></label>
+                  <div class="col-sm-10">
+                      <!-- [disabled]="bot_fullname?.length < 2 || FAQKB_NOT_SELECTED === true" -->
+                    <button class="btn btn-success" [disabled]="user_email?.length < 2 || ROLE_NOT_SELECTED === true" (click)="inviteUser()">
+                      Invita
+                    </button>
+                  </div>
