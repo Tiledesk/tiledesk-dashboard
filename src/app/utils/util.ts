@@ -19,11 +19,11 @@ export function members_as_html(members: object, requester_id: string, currentUs
                 if (currentUserFireBaseUID === m) {
                     members_as_string = members_as_string.replace(user['firstname'], '<strong>ME</strong>');
                 }
+            } else {
+
+                members_as_string += '- ' + m + ' <br>';
+                members_as_string = members_as_string.replace(currentUserFireBaseUID, '<strong>ME</strong>');
             }
-
-            // members_as_string += '- ' + m + ' <br>';
-            // members_as_string = members_as_string.replace(currentUserFireBaseUID, '<strong>ME</strong>');
-
 
         }
 
