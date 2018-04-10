@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Project } from '../models/project-model';
 import { AuthService } from '../core/auth.service';
 import { Router } from '@angular/router';
+import { UsersService } from '../services/users.service';
 
 @Component({
   selector: 'app-user-edit-add',
@@ -17,7 +18,8 @@ export class UserEditAddComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private auth: AuthService
+    private auth: AuthService,
+    private usersService: UsersService
   ) { }
 
   ngOnInit() {
@@ -45,8 +47,16 @@ export class UserEditAddComponent implements OnInit {
     }
 
   }
-  inviteUser() {
+
+  invite() {
     console.log('INVITE THE USER EMAIL ', this.user_email)
-    console.log('INVITE THE USER ROLE ',  this.role)
+    console.log('INVITE THE USER ROLE ', this.role)
+
+    this.usersService.inviteUser(this.user_email, this.role).subscribe((project_user: any) => {
+      console.log('POST PROJECT-USER ', project_user);
+      this.router.navigate(['project/' + this.project._id + '/users']);
+    });
+
+
   }
 }

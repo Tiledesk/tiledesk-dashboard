@@ -24,6 +24,7 @@ export class UsersService {
   http: Http;
   BASE_URL = environment.mongoDbConfig.BASE_URL;
   MONGODB_BASE_URL: any;
+  INVITE_USER_URL: any;
   TOKEN: string
   user: any;
 
@@ -70,6 +71,7 @@ export class UsersService {
       if (this.project) {
         console.log('-- -- >>>> 00 -> USERS SERVICE project ID from AUTH service subscription  ', this.project._id)
         this.MONGODB_BASE_URL = this.BASE_URL + this.project._id + '/project_users/'
+        this.INVITE_USER_URL = this.BASE_URL + this.project._id + '/project_users/invite'
         // '/project_users/'
       }
     });
@@ -155,15 +157,34 @@ export class UsersService {
    * NOTE: the PROJECT-USER returned has nested the user's object
    */
   public getProjectUsersByProjectId(): Observable<ProjectUser[]> {
-      const url = this.MONGODB_BASE_URL;
+    const url = this.MONGODB_BASE_URL;
 
-      console.log('PROJECT USERS URL', url);
-      const headers = new Headers();
-      headers.append('Content-Type', 'application/json');
-      headers.append('Authorization', this.TOKEN);
-      return this.http
-        .get(url, { headers })
-        .map((response) => response.json());
-    }
+    console.log('PROJECT USERS URL', url);
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
+  public inviteUser(email: string, role: string) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = { 'email': email, 'role': role, 'id_project': this.project._id };
+
+    console.log('POST INVITE USER - REQUEST BODY ', body);
+
+    const url = this.INVITE_USER_URL;
+
+    return this.http
+      .post(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+
+  }
 
 }

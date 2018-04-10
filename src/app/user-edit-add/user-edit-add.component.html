@@ -27,8 +27,8 @@
                     <select #selectElem (change)="setSelected(selectElem.value)" class="" >
                       <option class="not_selected" value="ROLE_NOT_SELECTED">Seleziona un ruolo</option> 
                       
-                      <option [ngValue]="admin" [selected]="selected === admin">Admin </option>
-                      <option [ngValue]="guest" [selected]="selected === guest">Guest </option>
+                      <option [ngValue]="admin" [selected]="selected === admin">admin </option>
+                      <option [ngValue]="guest" [selected]="selected === guest">guest </option>
                     </select>
                   </div>
 
@@ -38,7 +38,7 @@
                   <label style="" class="col-sm-2"></label>
                   <div class="col-sm-10">
                       <!-- [disabled]="bot_fullname?.length < 2 || FAQKB_NOT_SELECTED === true" -->
-                    <button class="btn btn-success" [disabled]="user_email?.length < 2 || ROLE_NOT_SELECTED === true" (click)="inviteUser()">
+                    <button class="btn btn-success" [disabled]="user_email?.length < 2 || ROLE_NOT_SELECTED === true" (click)="invite()">
                       Invita
                     </button>
                   </div>
