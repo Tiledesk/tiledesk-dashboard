@@ -35,10 +35,17 @@
         "AnalyticsSubtitle": "Track the chats you have with customers"
     },
     "UsersPage": {
+        "Invites":"Invites",
+        "User":"User",
         "Firstname":"Firstname",
         "Lastname":"Lastname",
         "UserId":"User Id",
-        "Role":"Role"
+        "Role":"Role",
+        "Actions":"Actions",
+        "tootipDeleteUser":"Delete Member",
+        "modalDeleteUser":"Delete Member",
+        "AreYouSure":"Are you sure you want to delete this member?",
+        "Confirm":"Confirm" 
     },
     "BotsPage": {
         "AddBot":"Add Bot",

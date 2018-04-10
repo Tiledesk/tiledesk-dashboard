@@ -1,7 +1,16 @@
 <p style="margin-top:10px; padding-left:30px" class="navbar-brand">{{ "Users" | translate }}</p> 
-
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
+
+    <div class="create" style="text-align: right!important; padding-top:25px; padding-bottom:0px">
+      <button class="btn btn-info" style="padding-left:8px; padding-right: 16px;">
+          <!-- is-small -->
+        <span class="icon" style="padding-right:8px">
+          <i class="material-icons">person_add</i>
+        </span>
+        {{ "UsersPage.Invites" | translate }}
+      </button>
+    </div>
 
     <div class="row">
       <div class="col-md-12">
@@ -14,18 +23,19 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th>
+                  <!-- FOR DEBUG: ID OF THE PROJECT-USER  -->
+                  <!-- <th>
                     <span style="color: #566787">
                       <strong>
                         Project_User Id
                       </strong>
                     </span>
-                  </th>
+                  </th> -->
 
                   <th>
                     <span style="color: #566787">
                       <strong>
-                        {{ "UsersPage.Firstname" | translate }}
+                        {{ "UsersPage.User" | translate }}
                       </strong>
                     </span>
                   </th>
@@ -33,7 +43,7 @@
                   <th>
                     <span style="color: #566787">
                       <strong>
-                        {{ "UsersPage.Lastname" | translate }}
+                        {{ "UsersPage.Role" | translate }}
                       </strong>
                     </span>
                   </th>
@@ -48,19 +58,20 @@
 
                   <th>
                     <span style="color: #566787">
+                      <!-- Actions -->
+                      <strong> 
+                          {{ "UsersPage.Actions" | translate }}
+                      </strong>
+                    </span>
+                  </th>
+                  <!-- FOR DEBUG: USER ID -->
+                  <!-- <th>
+                    <span style="color: #566787">
                       <strong>
                         {{ "UsersPage.UserId" | translate }}
                       </strong>
                     </span>
-                  </th>
-
-                  <th>
-                    <span style="color: #566787">
-                      <strong>
-                        {{ "UsersPage.Role" | translate }}
-                      </strong>
-                    </span>
-                  </th>
+                  </th> -->
 
                 </tr>
 
@@ -69,33 +80,76 @@
               <tbody>
 
                 <tr *ngFor="let projectUser of projectUsersList">
-                  <td>
+                  <!-- FOR DEBUG: ID OF THE PROJECT-USER  -->
+                  <!-- <td>
                     {{ projectUser?._id }}
-                  </td>
+                  </td> -->
 
                   <td>
-                    {{ projectUser?.id_user?.firstname }}
-                  </td>
-
-                  <td>
-                    {{ projectUser?.id_user?.lastname }}
-                  </td>
-
-                  <td>
-                    {{ projectUser?.id_user?.email }}
-                  </td>
-
-                  <td>
-                    {{ projectUser?.id_user?._id }}
+                     {{ projectUser?.id_user?.firstname }} <span style="text-transform: uppercase"> {{ projectUser?.id_user?.lastname }} </span>
                   </td>
 
                   <td>
                     {{ projectUser?.role }}
                   </td>
 
+                  <td>
+                    {{ projectUser?.id_user?.email }}
+                  </td>
+
+                  <td class="td-actions text-right">
+                    <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipDeleteUser' | translate }}" class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal()'>
+                      <i class="material-icons">close</i>
+                    </button>
+                  </td>
+
+                  <!-- FOR DEBUG: USER ID -->
+                  <!-- <td>
+                    {{ projectUser?.id_user?._id }}
+                  </td> -->
+
+
+
                 </tr>
               </tbody>
             </table>
+
+            <!-- MODAL -->
+            <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->
+            <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+
+                        <h4 class="modal-title">
+                          {{ "UsersPage.modalDeleteUser" | translate }}
+                          <!-- <code>{{id_toDelete}}</code> -->
+                        </h4>
+
+                    </div>
+   
+                      <div class="modal-body">
+                        <p>
+                          {{ "UsersPage.AreYouSure" | translate }}
+                        </p>
+                      </div>
+
+                      <div class="modal-footer">
+                          <!-- Confirm -->
+                        <button class="btn btn-danger" (click)="onCloseDeleteModalHandled()">
+                            {{ "UsersPage.Confirm" | translate }}
+                        </button>
+                      </div>
+  
+              
+                  </div>
+                  <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+              </div>
 
           </div>
         </div>
