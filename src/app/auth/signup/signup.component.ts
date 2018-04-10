@@ -94,73 +94,108 @@ export class SignupComponent implements OnInit {
         });
   }
 
+
   autoSignin() {
-    
+
+    // this.auth.emailLogin(
     const self = this;
-    this.auth.signin(this.userForm.value['email'], this.userForm.value['password'])
-      .subscribe((signinResponse) => {
-        console.log('1. POST DATA ', signinResponse);
-        // this.auth.user = signinResponse.user;
-        // this.auth.user.token = signinResponse.token
-        // console.log('SIGNIN TOKEN ', this.auth.user.token)
+    // this.auth.signin(this.userForm.value['email'], this.userForm.value['password'])
+    //   .subscribe((error) => {
+    this.auth.signin(this.userForm.value['email'], this.userForm.value['password'], function (error) {
+      console.log('1. POST DATA ', error);
+      // this.auth.user = signinResponse.user;
+      // this.auth.user.token = signinResponse.token
+      // console.log('SIGNIN TOKEN ', this.auth.user.token)
+      // tslint:disable-next-line:no-debugger
+      // debugger
+      if (!error) {
 
-        if (signinResponse['success'] === true) {
+        self.router.navigate(['/projects']);
 
-          self.auth.firebaseSignin(self.userForm.value['email'], self.userForm.value['password']).subscribe(token => {
+      } else {
+        self.showSpinnerInLoginBtn = false;
 
-            console.log('2. FIREBASE SIGNIN RESPO ', token)
-            if (token) {
+        const signin_errorbody = JSON.parse(error._body)
+        self.signin_errormsg = signin_errorbody['msg']
+        self.display = 'block';
+        // console.log('SIGNIN USER - POST REQUEST ERROR ', error);
+        // console.log('SIGNIN USER - POST REQUEST BODY ERROR ', signin_errorbody);
+        console.log('SIGNIN USER - POST REQUEST MSG ERROR ', self.signin_errormsg);
+      }
+      // tslint:disable-next-line:no-debugger
+      // debugger
+    });
 
-              // Firebase Sign in using custom token
-              firebase.auth().signInWithCustomToken(token)
-                .then(data => {
-                  console.log('3. FIREBASE CUSTOM AUTH DATA ', data)
 
-                  // this.router.navigate(['/home']);
-                  this.router.navigate(['/projects']);
-
-                })
-                .catch(function (error) {
-                  // Handle Errors here.
-                  const errorCode = error.code;
-                  console.log('FIREBASE CUSTOM AUTH ERROR CODE ', errorCode)
-                  const errorMessage = error.message;
-                  console.log('FIREBASE CUSTOM AUTH ERROR MSG ', errorMessage)
-                });
-            }
-
-          },
-            (error) => {
-              if (error) {
-                this.showSpinnerInLoginBtn = false;
-
-                const signin_errorbody = JSON.parse(error._body)
-                this.signin_errormsg = signin_errorbody['msg']
-                this.display = 'block';
-                // console.log('SIGNIN USER - POST REQUEST ERROR ', error);
-                // console.log('SIGNIN USER - POST REQUEST BODY ERROR ', signin_errorbody);
-                console.log('SIGNIN USER - POST REQUEST MSG ERROR ', this.signin_errormsg);
-              }
-            });
-        }
-      },
-        (error) => {
-          if (error) {
-            this.showSpinnerInLoginBtn = false;
-
-            const signin_errorbody = JSON.parse(error._body)
-            this.signin_errormsg = signin_errorbody['msg']
-            this.display = 'block';
-            // console.log('SIGNIN USER - POST REQUEST ERROR ', error);
-            // console.log('SIGNIN USER - POST REQUEST BODY ERROR ', signin_errorbody);
-
-            console.log('SIGNIN USER - POST REQUEST MSG ERROR ', this.signin_errormsg);
-          }
-        },
-        () => {
-          console.log('SIGNIN USER  - POST REQUEST COMPLETE ');
-        });
   }
+
+  // autoSignin() {
+
+  //   const self = this;
+  //   this.auth.signin(this.userForm.value['email'], this.userForm.value['password'])
+  //     .subscribe((signinResponse) => {
+  //       console.log('1. POST DATA ', signinResponse);
+  //       // this.auth.user = signinResponse.user;
+  //       // this.auth.user.token = signinResponse.token
+  //       // console.log('SIGNIN TOKEN ', this.auth.user.token)
+
+  //       if (signinResponse['success'] === true) {
+
+  //         self.auth.firebaseSignin(self.userForm.value['email'], self.userForm.value['password']).subscribe(token => {
+
+  //           console.log('2. FIREBASE SIGNIN RESPO ', token)
+  //           if (token) {
+
+  //             // Firebase Sign in using custom token
+  //             firebase.auth().signInWithCustomToken(token)
+  //               .then(data => {
+  //                 console.log('3. FIREBASE CUSTOM AUTH DATA ', data)
+
+  //                 // this.router.navigate(['/home']);
+  //                 this.router.navigate(['/projects']);
+
+  //               })
+  //               .catch(function (error) {
+  //                 // Handle Errors here.
+  //                 const errorCode = error.code;
+  //                 console.log('FIREBASE CUSTOM AUTH ERROR CODE ', errorCode)
+  //                 const errorMessage = error.message;
+  //                 console.log('FIREBASE CUSTOM AUTH ERROR MSG ', errorMessage)
+  //               });
+  //           }
+
+  //         },
+  //           (error) => {
+  //             if (error) {
+  //               this.showSpinnerInLoginBtn = false;
+
+  //               const signin_errorbody = JSON.parse(error._body)
+  //               this.signin_errormsg = signin_errorbody['msg']
+  //               this.display = 'block';
+  //               // console.log('SIGNIN USER - POST REQUEST ERROR ', error);
+  //               // console.log('SIGNIN USER - POST REQUEST BODY ERROR ', signin_errorbody);
+  //               console.log('SIGNIN USER - POST REQUEST MSG ERROR ', this.signin_errormsg);
+  //             }
+  //           });
+  //       }
+  //     },
+  //       (error) => {
+  //         if (error) {
+  //           this.showSpinnerInLoginBtn = false;
+
+  //           const signin_errorbody = JSON.parse(error._body)
+  //           this.signin_errormsg = signin_errorbody['msg']
+  //           this.display = 'block';
+  //           // console.log('SIGNIN USER - POST REQUEST ERROR ', error);
+  //           // console.log('SIGNIN USER - POST REQUEST BODY ERROR ', signin_errorbody);
+
+  //           console.log('SIGNIN USER - POST REQUEST MSG ERROR ', this.signin_errormsg);
+  //         }
+  //       },
+  //       () => {
+  //         console.log('SIGNIN USER  - POST REQUEST COMPLETE ');
+  //       });
+  // }
 
 
 

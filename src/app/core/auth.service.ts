@@ -17,6 +17,7 @@ import { User } from '../models/user-model';
 import { Project } from '../models/project-model';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import 'rxjs/add/operator/toPromise';
 // import { ProjectService } from '../services/project.service';
 // import { RequestsService } from '../services/requests.service';
 // interface CUser {
@@ -75,6 +76,7 @@ export class AuthService {
     // private projectService: ProjectService,
   ) {
     this.http = http;
+
     // this.user = this.afAuth.authState
     //   .switchMap((user) => {
     //     if (user) {
@@ -157,7 +159,7 @@ export class AuthService {
    * @param email
    * @param password
    */
-  signin(email: string, password: string) {
+  signin(email: string, password: string, callback) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -169,9 +171,8 @@ export class AuthService {
 
     return this.http
       .post(url, JSON.stringify(body), options)
-      .map(res => {
-        // tslint:disable-next-line:no-debugger
-        // debugger
+      .toPromise().then(res => {
+
         console.log('SIGNIN RES: ', res.json())
         const jsonRes = res.json()
         const user: User = jsonRes.user
@@ -182,14 +183,78 @@ export class AuthService {
         localStorage.setItem('user', JSON.stringify(user));
         console.log('++ USER ', user)
 
-        // if (user) {
-        //   this.firebaseSignin(email, password).subscribe(r => {
-        //   })
-        // }
-        // this.user = jsonRes.user
-        // this.user.token = jsonRes.token
-        return jsonRes
+        ///////////////////
+        console.log('1. POST DATA ', jsonRes);
+        if (jsonRes['success'] === true) {
+
+          this.firebaseSignin(email, password).subscribe(token => {
+
+            console.log('2. FIREBASE SIGNIN RESPO ', token)
+            if (token) {
+
+              // Firebase Sign in using custom token
+              firebase.auth().signInWithCustomToken(token)
+                .then(data => {
+                  console.log('3. FIREBASE CUSTOM AUTH DATA ', data)
+                  /**
+                   * CHAT21-CLOUD-FUNCTIONS - CRETE CONTACT
+                   */
+                  this.cloudFunctionsCreateContact(user.firstname, user.lastname, user.email)
+                  // this.router.navigate(['/home']);
+                  // this.router.navigate(['/projects']);
+                  // return null;
+                  callback(null);
+                })
+                .catch(function (error) {
+                  // return error;
+                  callback(error);
+                  // Handle Errors here.
+                  // const errorCode = error.code;
+                  // console.log('FIREBASE CUSTOM AUTH ERROR CODE ', errorCode)
+                  // const errorMessage = error.message;
+                  // console.log('FIREBASE CUSTOM AUTH ERROR MSG ', errorMessage)
+                });
+            } else {
+              callback({ code: '4569', message: 'Error token not generated' });
+            }
+            // tslint:disable-next-line:no-debugger
+            // debugger
+          })
+        } else {
+          callback({ code: jsonRes.code, message: jsonRes.message });
+        }
+        /////////////
       })
+  }
+
+  // CREATE CONTACT ON FIREBASE Realtime Database
+  cloudFunctionsCreateContact(firstname, lastname, email) {
+    const self = this;
+    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+      .then(function (token) {
+
+        // console.log('idToken.', idToken);
+        const headers = new Headers();
+        headers.append('Accept', 'application/json');
+        headers.append('Content-type', 'application/json');
+        headers.append('Authorization', 'Bearer ' + token);
+
+        const options = new RequestOptions({ headers });
+        const url = 'https://us-central1-chat-v2-dev.cloudfunctions.net/api/tilechat/contacts';
+        const body = { 'firstname': firstname, 'lastname': lastname, 'email': email };
+
+        self.http
+          .post(url, JSON.stringify(body), options)
+          .toPromise().then(res => {
+            console.log('Cloud Functions Create Contact RES ', res)
+          });
+
+      }).catch(function (error) {
+        // Handle error
+        console.log('idToken.', error);
+      });
+
+
   }
 
   // NODE.JS FIREBASE SIGNIN (USED TO GET THE TOKEN THEN USED FOR Firebase Sign in using custom tokens)
@@ -210,7 +275,7 @@ export class AuthService {
       .map((res) => {
         // tslint:disable-next-line:no-debugger
         // debugger
-        console.log('FIREBASE SIGNIN RES TOKEN', res.text())
+        // console.log('FIREBASE SIGNIN RES TOKEN', res.text())
         // const firebaseToken = res.text()
         return res.text()
 
