@@ -98,8 +98,15 @@ export class HomeComponent implements OnInit {
 
   getAllUsersOfCurrentProject() {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
-      console.log('HOME COMP - PROJECT USERS (FILTERED FOR PROJECT ID)', projectUsers);
+      // console.log('HOME COMP - PROJECT-USERS (FILTERED FOR PROJECT ID)', projectUsers);
 
+      if (projectUsers) {
+        projectUsers.forEach(projectUser => {
+          console.log('HOME COMP - PROJECT-USERS - USER ', projectUser.id_user, projectUser.id_user._id)
+          localStorage.setItem(projectUser.id_user._id, JSON.stringify(projectUser.id_user));
+        });
+    }
+      // localStorage.setItem('project', JSON.stringify(project));
       //   this.showSpinner = false;
       //   this.projectUsersList = projectUsers;
     },

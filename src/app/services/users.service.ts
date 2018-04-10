@@ -150,9 +150,9 @@ export class UsersService {
   }
 
 
-  /// ================================== PROJECT USER FROM MONGO DB ================================== ///
+  /// ================================== PROJECT-USER FROM MONGO DB ================================== ///
   /**
-   * NOTE: the PROJECT-USER returned has nested the object user
+   * NOTE: the PROJECT-USER returned has nested the user's object
    */
   public getProjectUsersByProjectId(): Observable<ProjectUser[]> {
       const url = this.MONGODB_BASE_URL;

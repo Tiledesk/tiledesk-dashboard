@@ -108,7 +108,7 @@ export class RequestsListComponent implements OnInit {
 
 
   ngOnInit() {
-
+    // localStorage.getItem('show_settings_submenu'))
     // GET THE CURRENT PROJECT ID
     this.auth.project_bs.subscribe((project) => {
       this.project = project
