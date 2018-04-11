@@ -25,6 +25,7 @@ export class UsersService {
   BASE_URL = environment.mongoDbConfig.BASE_URL;
   MONGODB_BASE_URL: any;
   INVITE_USER_URL: any;
+  PROJECT_USER_DTLS_URL: any;
   TOKEN: string
   user: any;
 
@@ -72,6 +73,7 @@ export class UsersService {
         console.log('-- -- >>>> 00 -> USERS SERVICE project ID from AUTH service subscription  ', this.project._id)
         this.MONGODB_BASE_URL = this.BASE_URL + this.project._id + '/project_users/'
         this.INVITE_USER_URL = this.BASE_URL + this.project._id + '/project_users/invite'
+        this.PROJECT_USER_DTLS_URL = this.BASE_URL + this.project._id + '/member/'
         // '/project_users/'
       }
     });
@@ -185,6 +187,18 @@ export class UsersService {
       .post(url, JSON.stringify(body), options)
       .map((res) => res.json());
 
+  }
+
+  public getProjectUserById(user_id: string): Observable<ProjectUser[]> {
+    const url = this.PROJECT_USER_DTLS_URL + user_id;
+
+    console.log('PROJECT USER DTLS URL', url);
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
   }
 
 }
