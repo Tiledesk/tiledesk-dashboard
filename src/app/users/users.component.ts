@@ -18,6 +18,7 @@ export class UsersComponent implements OnInit {
   // set to none the property display of the modal
   display = 'none';
   project: Project;
+  id_project: string;
 
   constructor(
     private usersService: UsersService,
@@ -34,12 +35,15 @@ export class UsersComponent implements OnInit {
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
-      console.log('00 -> USER COMP project ID from AUTH service subscription  ', this.project._id)
+      if (this.project) {
+        this.id_project = project._id
+
+      }
     });
   }
 
   goToAddUser() {
-    this.router.navigate(['project/' + this.project._id + '/user/add']);
+    this.router.navigate(['project/' + this.id_project + '/user/add']);
   }
 
   getAllUsersOfCurrentProject() {

@@ -12,9 +12,19 @@ import { UsersService } from '../services/users.service';
 export class UserEditAddComponent implements OnInit {
 
   project: Project;
+  project_name: string;
+  id_project: string;
+
   user_email: string;
   role: string;
   ROLE_NOT_SELECTED = true
+
+  admin: string;
+  agent: string;
+  selected: any;
+
+  display = 'none';
+  SHOW_CIRCULAR_SPINNER = false;
 
   constructor(
     private router: Router,
@@ -30,16 +40,21 @@ export class UserEditAddComponent implements OnInit {
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
-
+      console.log('USER EDIT ADD - PROJECT ', this.project)
+      if (this.project) {
+        this.project_name = project.name;
+        this.id_project = project._id;
+      }
     });
   }
   goBackToUsersList() {
-    this.router.navigate(['project/' + this.project._id + '/users']);
+    this.router.navigate(['project/' + this.id_project + '/users']);
   }
 
   setSelected(role) {
-    console.log('Selected ROLE ', role)
+
     this.role = role;
+    console.log('Selected ROLE ', this.role)
 
     if (role !== 'ROLE_NOT_SELECTED') {
       this.ROLE_NOT_SELECTED = false;
@@ -49,14 +64,31 @@ export class UserEditAddComponent implements OnInit {
   }
 
   invite() {
+    // show the modal windows
+    this.display = 'block';
+
+    this.SHOW_CIRCULAR_SPINNER = true
+
+    setTimeout(() => {
+
+      this.SHOW_CIRCULAR_SPINNER = false
+
+    }, 1000);
+
     console.log('INVITE THE USER EMAIL ', this.user_email)
     console.log('INVITE THE USER ROLE ', this.role)
 
     this.usersService.inviteUser(this.user_email, this.role).subscribe((project_user: any) => {
       console.log('POST PROJECT-USER ', project_user);
-      this.router.navigate(['project/' + this.project._id + '/users']);
+
     });
+  }
 
-
+  onCloseModalHandled() {
+    console.log('CONTINUE PRESSED')
+    this.router.navigate(['project/' + this.id_project + '/users']);
+  }
+  onCloseModal() {
+    this.display = 'none';
   }
 }

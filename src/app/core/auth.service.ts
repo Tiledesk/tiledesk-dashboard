@@ -199,10 +199,7 @@ export class AuthService {
                   /**
                    * CHAT21-CLOUD-FUNCTIONS - CRETE CONTACT
                    */
-                  this.cloudFunctionsCreateContact(user.firstname, user.lastname, user.email)
-                  // this.router.navigate(['/home']);
-                  // this.router.navigate(['/projects']);
-                  // return null;
+                  this.cloudFunctionsCreateContact(user.firstname, user.lastname, user.email);
                   callback(null);
                 })
                 .catch(function (error) {
@@ -215,15 +212,20 @@ export class AuthService {
                   // console.log('FIREBASE CUSTOM AUTH ERROR MSG ', errorMessage)
                 });
             } else {
+
               callback({ code: '4569', message: 'Error token not generated' });
             }
             // tslint:disable-next-line:no-debugger
             // debugger
           })
         } else {
+
           callback({ code: jsonRes.code, message: jsonRes.message });
         }
         /////////////
+      }).catch(function (error) {
+        console.log('TO PROMISE ERROR ', error);
+        callback(error);
       })
   }
 

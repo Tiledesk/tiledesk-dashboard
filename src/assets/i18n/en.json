@@ -47,6 +47,19 @@
         "AreYouSure":"Are you sure you want to delete this member?",
         "Confirm":"Confirm" 
     },
+    "UserEditAddPage": {
+        "AddUserToThe":"Add User to the",
+        "Project": "project",
+        "UserEmail": "User email",
+        "Role":"Role",
+        "SelectRole": "Select a role",
+        "Invites":"Invites",
+        "modalInviteUser":"Invites User",
+        "Processing":"Processing...",
+        "Completed":"Completed",
+        "TheUserHasBeenInvited":"The user has been invited.",
+        "Continue": "Continue"  
+    },
     "BotsPage": {
         "AddBot":"Add Bot",
         "Name":"Name",

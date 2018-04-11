@@ -45,7 +45,22 @@
         "tootipDeleteUser":"Elimina Membro",
         "modalDeleteUser":"Delete Member",
         "AreYouSure":"Sei sicuro di voler eliminare questo utente?",
-        "Confirm":"Conferma" 
+        "Confirm":"Conferma",
+        "TheUserHasBeenInvited":"L'utente è stato invitato.",
+        "Continue": "Continua"   
+    },
+    "UserEditAddPage": {
+        "AddUserToThe":"Aggiungi Utente al progetto ",
+        "Project": "",
+        "UserEmail": "Email utente",
+        "Role":"Ruolo",
+        "SelectRole": "Seleziona un ruolo",
+        "Invites":"Invita",
+        "modalInviteUser":"Invita Utente",
+        "Processing":"Elaborazione...",
+        "Completed":"Completato", 
+        "TheUserHasBeenInvited":"L'utente è stato invitato.",
+        "Continue": "Continue"    
     },
     "BotsPage": {
         "AddBot":"Aggiungi Bot",

@@ -112,7 +112,7 @@ export class SigninComponent implements OnInit {
     // this.auth.signin(this.userForm.value['email'], this.userForm.value['password'])
     //   .subscribe((error) => {
     this.auth.signin(this.userForm.value['email'], this.userForm.value['password'], function (error) {
-      console.log('1. POST DATA ', error);
+      console.log('1. POST DATA ERROR', error);
       // this.auth.user = signinResponse.user;
       // this.auth.user.token = signinResponse.token
       // console.log('SIGNIN TOKEN ', this.auth.user.token)
