@@ -70,9 +70,7 @@ export class UserEditAddComponent implements OnInit {
     this.SHOW_CIRCULAR_SPINNER = true
 
     setTimeout(() => {
-
       this.SHOW_CIRCULAR_SPINNER = false
-
     }, 1000);
 
     console.log('INVITE THE USER EMAIL ', this.user_email)

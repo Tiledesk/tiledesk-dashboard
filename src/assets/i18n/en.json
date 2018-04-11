@@ -24,9 +24,15 @@
         "AddProject": "Add project",
         "ModalAddAProject": "Add a project",
         "ModalAddAProjectLabel": "Enter the name of your project, for example the name of your site",
+        "ModalMustBeAtLeast": "Must be at least 4 characters long",
         "ModalPlaceHolder": "Project name",
-        "ModalCreateProject": "Create Project",
-        "UserProfile": "PROFILE"
+        "ModalCreateProjectBtn": "Create Project",
+        "UserProfile": "PROFILE",
+        "modalCreateProject":"Create Project",
+        "Processing":"Processing...",
+        "Completed":"Completed",
+        "YourNewProjectIsReady": "Your new project is ready",
+        "Continue": "Continue"
     },
     "HomePage": {
         "WidgetSubtitle": "Embed and customize the chat widget on your website   ",

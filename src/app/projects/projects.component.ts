@@ -16,10 +16,12 @@ export class ProjectsComponent implements OnInit {
 
   projects: Project[];
 
+  id_project: string;
   project_name: string;
 
   // set to none the property display of the modal
-  display = 'none';
+  displayCreateModal = 'none';
+  displayInfoModal = 'none';
 
   projectName_toDelete: string;
   id_toDelete: string;
@@ -29,6 +31,8 @@ export class ProjectsComponent implements OnInit {
   private sidebarVisible: boolean;
   newInnerWidth: any;
   showSpinner = true;
+
+  SHOW_CIRCULAR_SPINNER = false;
 
   constructor(
     private projectService: ProjectService,
@@ -122,56 +126,53 @@ export class ProjectsComponent implements OnInit {
    * @param id
    * @param projectName
    */
-  openDeleteModal(id: string, projectName: string) {
-    console.log('OPEN DELETE MODAL');
-    // -> PROJECT ID ', id
-    this.display = 'block';
-
-
-    this.id_toDelete = id;
-    this.projectName_toDelete = projectName;
-  }
+  // openDeleteModal(id: string, projectName: string) {
+  //   console.log('OPEN DELETE MODAL');
+  //   this.display = 'block';
+  //   this.id_toDelete = id;
+  //   this.projectName_toDelete = projectName;
+  // }
 
 
   openCreateModal() {
-    console.log('OPEN CREATE MODAL');
-    // -> PROJECT ID ', id
-    this.display = 'block';
+    console.log('OPEN CREATE MODAL ');
 
+    this.displayCreateModal = 'block';
 
   }
 
   // CLOSE MODAL WITHOUT SAVE THE UPDATES OR WITHOUT CONFIRM THE DELETION
   onCloseModal() {
-    this.display = 'none';
+    this.displayCreateModal = 'none';
+    this.displayInfoModal = 'none';
   }
 
   /** !! NO MORE USED
    * DELETE PROJECT (WHEN THE 'CONFIRM' BUTTON IN MODAL IS CLICKED)
    */
-  onCloseDeleteModalHandled() {
-    this.display = 'none';
-
-    this.projectService.deleteMongoDbProject(this.id_toDelete).subscribe((data) => {
-      console.log('DELETE DATA ', data);
-
-      // RE-RUN GET CONTACT TO UPDATE THE TABLE
-      // this.getDepartments();
-      this.ngOnInit();
-
-    },
-      (error) => {
-
-        console.log('DELETE REQUEST ERROR ', error);
-
-      },
-      () => {
-        console.log('DELETE REQUEST * COMPLETE *');
-      });
-
-  }
+  // onCloseDeleteModalHandled() {
+  //   this.displayCreateModal = 'none';
+  //   this.projectService.deleteMongoDbProject(this.id_toDelete).subscribe((data) => {
+  //     console.log('DELETE DATA ', data);
+  //     // RE-RUN GET CONTACT TO UPDATE THE TABLE
+  //     // this.getDepartments();
+  //     this.ngOnInit();
+  //   },
+  //     (error) => {
+  //       console.log('DELETE REQUEST ERROR ', error);
+  //     },
+  //     () => {
+  //       console.log('DELETE REQUEST * COMPLETE *');
+  //     });
+  // }
 
   createProject() {
+    console.log('OPEN CREATE MODAL ');
+    // hide the create Modal and display the info Modal and the spinner in the info Modal
+    this.displayInfoModal = 'block'
+    this.displayCreateModal = 'none';
+    this.SHOW_CIRCULAR_SPINNER = true;
+
     console.log('CREATE PROJECT - PROJECT-NAME DIGIT BY USER ', this.project_name);
 
     this.projectService.addMongoDbProject(this.project_name)
@@ -186,25 +187,35 @@ export class ProjectsComponent implements OnInit {
         }
 
         this.auth.projectSelected(newproject)
-        console.log('PROJECT ', newproject)
+        console.log('CREATED PROJECT ', newproject)
 
+        this.id_project = newproject._id
         // SET THE project_id IN THE LOCAL STORAGE
         // WHEN THE PAGE IS RELOADED THE SIDEBAR GET THE PROJECT ID FROM THE LOCAL STORAGE
         localStorage.setItem('project', JSON.stringify(newproject));
 
-        this.display = 'none';
+        // this.display = 'none';
 
-        this.router.navigate([`/project/${project._id}/home`]);
+        // this.router.navigate([`/project/${project._id}/home`]);
 
       },
         (error) => {
+          this.SHOW_CIRCULAR_SPINNER = false;
           console.log('CREATE PROJECT - POST REQUEST ERROR ', error);
         },
         () => {
           console.log('CREATE PROJECT - POST REQUEST COMPLETE ');
 
+          setTimeout(() => {
+            this.SHOW_CIRCULAR_SPINNER = false
+          }, 300);
+
           // this.router.navigate(['/projects']);
         });
+  }
+
+  onCloseInfoModalHandled() {
+    this.router.navigate([`/project/${this.id_project}/home`]);
   }
 
 
