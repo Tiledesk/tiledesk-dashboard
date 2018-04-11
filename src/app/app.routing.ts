@@ -56,8 +56,7 @@ import { SocialComponent } from './social/social.component';
 
 import { FaqTestComponent } from './faq-test/faq-test.component';
 import { UserEditAddComponent } from './user-edit-add/user-edit-add.component';
-
-
+import { UsersProfileComponent } from './users-profile/users-profile.component';
 
 
 // import { DashboardComponent} from './dashboard/dashboard.component';
@@ -103,13 +102,19 @@ const routes: Routes = [
   { path: 'project/:projectid/requests', component: RequestsListComponent, canActivate: [AuthGuard] },
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
 
+  // tslint:disable-next-line:max-line-length
+  // ARE ALL THE USER OF A PROJECT (e.g. THE USER THAT HAS CREATED THE PROJECT AND THE USERS THAT HE HAS INVITED (THE OTHER MEMBERS OF THE PROJECT))
   { path: 'project/:projectid/users', component: UsersComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/user/add', component: UserEditAddComponent, canActivate: [AuthGuard] },
+
+  // DISPLAY THE PROFILE OF THE MEMBER (USERS WHO HAVE BEEN INVITED)
+  { path: 'project/:projectid/member/:memberid', component: UsersProfileComponent, canActivate: [AuthGuard] },
+
 
   { path: 'project/:projectid/faqkb', component: FaqKbComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/createfaqkb', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/editfaqkb/:faqkbid', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },
-  
+
   // { path: 'faq/:faqkbid', component: FaqComponent, canActivate: [AuthGuard] }, // used to pass the faq kb id from  in faq page
   // tslint:disable-next-line:max-line-length
   { path: 'project/:projectid/faq/:faqkbid', component: FaqComponent, canActivate: [AuthGuard] }, // used to pass the faq kb id from  in faq page

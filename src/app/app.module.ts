@@ -83,6 +83,7 @@ import { ChannelsComponent } from './channels/channels.component';
 import { SocialComponent } from './social/social.component';
 import { FaqTestComponent } from './faq-test/faq-test.component';
 import { UserEditAddComponent } from './user-edit-add/user-edit-add.component';
+import { UsersProfileComponent } from './users-profile/users-profile.component';
 
 
 
@@ -128,6 +129,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     SocialComponent,
     FaqTestComponent,
     UserEditAddComponent,
+    UsersProfileComponent,
 
   ],
   imports: [

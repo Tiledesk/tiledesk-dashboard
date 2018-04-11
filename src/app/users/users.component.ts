@@ -73,4 +73,8 @@ export class UsersComponent implements OnInit {
     this.display = 'none';
   }
 
+  goToMemberProfile(member_id: string) {
+    this.router.navigate(['project/' + this.id_project + '/member/' + member_id]);
+  }
+
 }
