@@ -12,6 +12,14 @@
     "Settings": "Impostazioni",
     "Departments": "Dipartmenti",
     "Resources": "Risorse",
+    "UserProfile": {
+        "Profile":"Profilo",
+        "UploadImage": "Carica immagine",
+        "Name":"Nome",
+        "Lastname":"Cognome",
+        "UserId": "Id utente",
+        "Update": "Aggiorna"
+    },
     "NavBar": {
         "ViewAllProjects": "Visualizza tutti i progetti",
         "ProjectSettings": "Impostazioni progetto",
