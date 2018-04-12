@@ -31,6 +31,7 @@ export function members_as_html(members: object, requester_id: string, currentUs
     return members_as_string
 }
 
+
 export function currentUserUidIsInMembers(members: object, currentUserFireBaseUID: string): boolean {
     // console.log('- MEMBERS ', members)
     // console.log('- CURRENT_USER_JOINED ', currentUserFireBaseUID)

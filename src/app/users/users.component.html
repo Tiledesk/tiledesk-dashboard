@@ -65,13 +65,13 @@
                     </span>
                   </th>
                   <!-- FOR DEBUG: USER ID -->
-                  <th>
+                  <!-- <th>
                     <span style="color: #566787">
                       <strong>
                         {{ "UsersPage.UserId" | translate }}
                       </strong>
                     </span>
-                  </th>
+                  </th> -->
 
                 </tr>
 
@@ -85,15 +85,15 @@
                     {{ projectUser?._id }}
                   </td> -->
 
-                  <td>
+                  <td (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
                      {{ projectUser?.id_user?.firstname }} <span style="text-transform: uppercase"> {{ projectUser?.id_user?.lastname }} </span>
                   </td>
 
-                  <td>
+                  <td (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
                     {{ projectUser?.role }}
                   </td>
 
-                  <td>
+                  <td (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
                     {{ projectUser?.id_user?.email }}
                   </td>
 
@@ -104,11 +104,9 @@
                   </td>
 
                   <!-- FOR DEBUG: USER ID -->
-                  <td (click)="goToMemberProfile(projectUser?.id_user?._id)">
+                  <!-- <td (click)="goToMemberProfile(projectUser?.id_user?._id)">
                     {{ projectUser?.id_user?._id }}
-                  </td>
-
-
+                  </td> -->
 
                 </tr>
               </tbody>

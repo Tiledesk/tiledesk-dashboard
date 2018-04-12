@@ -21,6 +21,7 @@ import { DocumentChange } from '@firebase/firestore-types';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'requests-list',
@@ -80,16 +81,15 @@ export class RequestsListComponent implements OnInit {
   closeTagstrong: string;
   uidMenbersKey: string;
 
-  // FOR NEW
-  ID_request
-
   project: Project;
   projectId: string;
+
 
   constructor(
     private requestsService: RequestsService,
     private elRef: ElementRef,
     public auth: AuthService,
+    private router: Router
   ) {
 
     this.user = auth.user_bs.value
@@ -105,8 +105,6 @@ export class RequestsListComponent implements OnInit {
     }
   }
 
-
-
   ngOnInit() {
     // localStorage.getItem('show_settings_submenu'))
     // GET THE CURRENT PROJECT ID
@@ -118,7 +116,6 @@ export class RequestsListComponent implements OnInit {
         this.projectId = project._id
       }
     });
-
 
     console.log('REQUEST LIST ON INIT ', )
 
@@ -136,11 +133,43 @@ export class RequestsListComponent implements OnInit {
     //   });
   }
 
+  goToMemberProfile(member_id: any) {
+    console.log('has clicked GO To MEMBER ', member_id)
+
+    this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
+  }
+
+  members_replace(m) {
+    // console.log('Members replace ', m)
+    const user = JSON.parse((localStorage.getItem(m)));
+    if (user) {
+      // console.log('user ', user)
+      return m = '- ' + user['firstname']
+    } else {
+      return '- ' + m
+    }
+  }
+
   getRequestListBS() {
     this.requestsService.requestsList_bs.subscribe((requests) => {
       if (requests) {
-        // console.log('REQUESTS-LIST COMP - REQUESTS ', requests)
-        // console.log('REQUESTS-LIST COMP - REQUESTS LENGHT', requests.length)
+
+        console.log('REQUESTS-LIST COMP - REQUESTS ', requests)
+
+        // start NEW: GET MEMBERS
+        for (const request of requests) {
+          console.log('request', request)
+          requests.forEach(r => {
+            if (request.id === r.id) {
+
+              r.members_array = Object.keys(r.members);
+
+            }
+          })
+
+        }
+        // end NEW: GET MEMBERS
+        console.log('REQUESTS-LIST COMP - REQUESTS LENGHT', requests.length)
         this.requestListUnserved = requests
           .filter(r => {
             if (r.support_status === 100) {
@@ -276,6 +305,7 @@ export class RequestsListComponent implements OnInit {
   /* TRUNCATE THE TEXT DISPLAYED IN THE COLUMN 'LAST MESSAGE' */
   getRequestText(text: string): string {
     if (text) {
+      // console.log('text ', text)
       return text.length >= 30 ?
         text.slice(0, 30) + '...' :
         text;

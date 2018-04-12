@@ -129,7 +129,6 @@ const routes: Routes = [
   { path: 'project/:projectid/editbot/:botid', component: BotEditAddComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/analytics', component: AnalyticsComponent, canActivate: [AuthGuard] },
- 
 
   { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },

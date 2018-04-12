@@ -1,3 +1,47 @@
-<p>
-  users-profile works!
-</p>
+<div class="navbar-brand" style="z-index: -1;margin-top:10px; padding-left:30px">
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">keyboard_arrow_left</i>
+  Profilo
+</div>
+<div class="main-content" style="padding-top:0px">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-content" style="padding-top: 25px;">
+
+            <label style="height: 36px; padding-top: 20px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2">Avatar</label>
+            <div class="col-sm-10">
+                
+              <div class="card-avatar" style="padding-bottom:15px">
+                          
+                <img style="vertical-align: middle; width: 60px; height: 60px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" class="img" src="assets/img/no_image_user.png" />
+                      
+              </div> 
+            </div>
+
+            <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Nome</label>
+            <div class="col-sm-10">
+              <input style="color:#999999" [(ngModel)]="user.firstname" class="" type="text" placeholder="Nome" disabled>
+            </div>
+
+            <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Cognome</label>
+            <div class="col-sm-10">
+              <input style="color:#999999" [(ngModel)]="user.lastname" class="" type="text" placeholder="Cognome" disabled>
+            </div>
+
+            <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2">Email</label>
+            <div class="col-sm-10">
+              <input style="color:#999999" [(ngModel)]="user.email" class="" type="text" placeholder="Email" disabled>
+            </div>
+
+            <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right; margin-bottom:25px" class="col-sm-2">ID Utente</label>
+            <div class="col-sm-10">
+              <input style="color:#999999" [(ngModel)]="user._id" class="" type="text" placeholder="ID Utente" disabled>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

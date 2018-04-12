@@ -12,6 +12,8 @@ export interface Request {
   requester_id?: string;
   projectid?: string;
 
+  members_array?: any;
+
   id?: string;
   request_date_fromnow?: any;
   currentUserIsJoined?: boolean;

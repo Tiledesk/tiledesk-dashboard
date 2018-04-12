@@ -189,16 +189,4 @@ export class UsersService {
 
   }
 
-  public getProjectUserById(user_id: string): Observable<ProjectUser[]> {
-    const url = this.PROJECT_USER_DTLS_URL + user_id;
-
-    console.log('PROJECT USER DTLS URL', url);
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
-  }
-
-}
+ }
