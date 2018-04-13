@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Project } from '../models/project-model';
 import { Router } from '@angular/router';
 import { UsersService } from '../services/users.service';
+import { UsersLocalDbService } from '../services/users-local-db.service';
 
 @Component({
   selector: 'home',
@@ -29,7 +30,8 @@ export class HomeComponent implements OnInit {
     public auth: AuthService,
     private route: ActivatedRoute,
     private router: Router,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private usersLocalDbService: UsersLocalDbService
   ) { }
 
   ngOnInit() {
@@ -103,7 +105,8 @@ export class HomeComponent implements OnInit {
       if (projectUsers) {
         projectUsers.forEach(projectUser => {
           console.log('HOME COMP - PROJECT-USERS - USER ', projectUser.id_user, projectUser.id_user._id)
-          localStorage.setItem(projectUser.id_user._id, JSON.stringify(projectUser.id_user));
+          // localStorage.setItem(projectUser.id_user._id, JSON.stringify(projectUser.id_user));
+          this.usersLocalDbService.saveMembersInStorage(projectUser.id_user._id, projectUser.id_user);
         });
     }
       // localStorage.setItem('project', JSON.stringify(project));

@@ -84,6 +84,7 @@ import { SocialComponent } from './social/social.component';
 import { FaqTestComponent } from './faq-test/faq-test.component';
 import { UserEditAddComponent } from './user-edit-add/user-edit-add.component';
 import { UsersProfileComponent } from './users-profile/users-profile.component';
+import { UsersLocalDbService } from './services/users-local-db.service';
 
 
 
@@ -166,6 +167,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     BotService,
     FaqKbService,
     ProjectService,
+    UsersLocalDbService,
     {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [

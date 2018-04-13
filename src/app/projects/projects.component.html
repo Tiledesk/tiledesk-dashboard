@@ -34,14 +34,20 @@
 
                 </div>
                 <div class="content">
-                  <h6 class="category text-gray"><a routerLink="/user-profile"> {{ 'ProjectsPage.UserProfile' | translate }} </a></h6>
+                  <button  class="btn btn-info" routerLink="/user-profile" style="padding-top:3.5px; padding-bottom:3.5px; padding-right:7.5px; padding-left:7.5px"  >
+                    <!-- <h6 class="category text-gray"> -->
+                      <!-- <a routerLink="/user-profile">  -->
+                       <span style="font-size:0.8em"> {{ 'ProjectsPage.UserProfile' | translate }} </span>
+                      <!-- </a> -->
+                    <!-- </h6> -->
+                  </button>
                   <h4 class="card-title" style="padding-right:16px; padding-left:16px; font-size:1em; color: #3C4858">
                     <strong> 
-                      {{ user.firstname }} {{ user.lastname }} 
+                      {{ user?.firstname }} {{ user?.lastname }} 
                     </strong>
                   </h4>
                   <h4 class="card-title" style="padding-right:16px; padding-left:16px; font-size:1em; margin-bottom:30px">
-                    {{ user.email }}
+                    {{ user?.email }}
                   </h4>
                   <!-- <p class="card-content">{{ user.email }}</p> -->
                 </div>

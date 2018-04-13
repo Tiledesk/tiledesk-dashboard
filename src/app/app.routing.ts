@@ -113,6 +113,9 @@ const routes: Routes = [
   // IS THE PROFILE OF THE LOGGED USER
   { path: 'project/:projectid/user-profile', component: UserProfileComponent },
 
+   // IS THE PROFILE OF THE LOGGED USER THAT IS ON THE PROJECTS PAGE (THE USER HAS NOT YET SELECTED A PROJECT)
+   { path: 'user-profile', component: UserProfileComponent },
+
   { path: 'project/:projectid/faqkb', component: FaqKbComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/createfaqkb', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/editfaqkb/:faqkbid', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },

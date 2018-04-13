@@ -22,6 +22,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
 import { Router } from '@angular/router';
+import { UsersLocalDbService } from '../services/users-local-db.service';
 
 @Component({
   selector: 'requests-list',
@@ -89,7 +90,8 @@ export class RequestsListComponent implements OnInit {
     private requestsService: RequestsService,
     private elRef: ElementRef,
     public auth: AuthService,
-    private router: Router
+    private router: Router,
+    private usersLocalDbService: UsersLocalDbService
   ) {
 
     this.user = auth.user_bs.value
@@ -139,14 +141,15 @@ export class RequestsListComponent implements OnInit {
     this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
   }
 
-  members_replace(m) {
+  members_replace(member_id) {
     // console.log('Members replace ', m)
-    const user = JSON.parse((localStorage.getItem(m)));
+    // const user = JSON.parse((localStorage.getItem(member_id)));
+    const user = this.usersLocalDbService.getMemberFromStorage(member_id);
     if (user) {
       // console.log('user ', user)
-      return m = '- ' + user['firstname']
+      return member_id = '- ' + user['firstname']
     } else {
-      return '- ' + m
+      return '- ' + member_id
     }
   }
 
