@@ -213,7 +213,8 @@ export class RequestsListComponent implements OnInit {
 
   // + '&prechatform=' + this.preChatForm
   testWidgetPage() {
-    const url = 'http://support.tiledesk.com/testsite/?projectid=' + this.projectId;
+    // const url = 'http://support.tiledesk.com/testsite/?projectid=' + this.projectId;
+    const url = 'http://testwidget.tiledesk.com/testsite/?projectid=' + this.projectId;
     window.open(url, '_blank');
   }
   // addOrUpdateRequestsList(r: Request) {

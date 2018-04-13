@@ -67,7 +67,8 @@ export class ResourcesComponent implements OnInit {
   // }
 
   testWidgetPage() {
-    const url = 'http://support.tiledesk.com/testsite/?projectid=' + this.projectId + '&prechatform=' + this.preChatForm;
+    // http://testwidget.tiledesk.com/testsite/?projectid=5ad069b123c415001469574f&prechatform=false
+    const url = 'http://testwidget.tiledesk.com/testsite/?projectid=' + this.projectId + '&prechatform=' + this.preChatForm;
     window.open(url, '_blank');
   }
 
