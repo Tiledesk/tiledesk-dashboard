@@ -110,6 +110,8 @@ const routes: Routes = [
   // DISPLAY THE PROFILE OF THE MEMBER (USERS WHO HAVE BEEN INVITED)
   { path: 'project/:projectid/member/:memberid', component: UsersProfileComponent, canActivate: [AuthGuard] },
 
+  // IS THE PROFILE OF THE LOGGED USER
+  { path: 'project/:projectid/user-profile', component: UserProfileComponent },
 
   { path: 'project/:projectid/faqkb', component: FaqKbComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/createfaqkb', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },
@@ -135,7 +137,7 @@ const routes: Routes = [
   { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/history', component: RequestsListHistoryComponent, canActivate: [AuthGuard] },
-  { path: 'user-profile', component: UserProfileComponent },
+  
   { path: 'project/:projectid/resources', component: ResourcesComponent },
   { path: 'project/:projectid/script', component: ScriptComponent },
   { path: 'project/:projectid/channels', component: ChannelsComponent },

@@ -99,12 +99,14 @@
                                             
                                         </div>
                                         <div class="content">
-                                            <h6 class="category text-gray">
-                                                <a routerLink="/user-profile">
-                                                    <!-- PROFILO -->
+                                            <!-- PROFILO -->
+                                            <button class="btn btn-info" routerLink="project/{{ project._id }}/user-profile">
+                                            <!-- <h6 class="category text-gray"> -->
+                                                <!-- <a routerLink="/user-profile"> -->
                                                     {{ 'NavBar.UserProfile' | translate }}
-                                                </a>
-                                            </h6>
+                                                <!-- </a> -->
+                                            <!-- </h6> -->
+                                            </button>
                                             <h4 class="card-title" style="padding-right:16px; padding-left:16px; font-size:1em; color: #3C4858">
                                                <strong> {{ user?.firstname }} {{ user?.lastname }} </strong>
                                             </h4>

@@ -2,7 +2,7 @@ input[type=text] {
      /* min-width: 307px !important; */
     height: 36px;
     font-size: 14px;
-    width: 400px;
+    width: 100%;
     margin-bottom: 10px;
     -webkit-appearance: none;
     background: #fff;
@@ -26,3 +26,19 @@ select {
 .card form [class*="col-"] {
     padding: 0px;
 }
+
+/* CUSTOM PADDING TO THE AVATAR LABEL WHEN THE WINDOWS WIDTH IS < OF 768  */
+@media (max-width: 767px){
+    label.col-sm-2.avatar_label {
+        padding-top:10px !important
+    }
+}
+
+/* CUSTOM INPUT WIDTH WHEN THE WINDOWS WIDTH IS < OF 768  */
+@media (min-width: 767px){
+    input[type=text] {
+        width: 400px !important
+    }
+}
+
+
