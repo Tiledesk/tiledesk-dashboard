@@ -13,10 +13,10 @@
     "Departments": "Departments",
     "Resources": "Resources",
     "UserProfile": {
-        "Profile":"Profile",
+        "Profile": "Profile",
         "UploadImage": "Upload image",
-        "Name":"Name",
-        "Lastname":"Lastname",
+        "Name": "Name",
+        "Lastname": "Lastname",
         "UserId": "User Id",
         "Update": "Update"
     },
@@ -123,6 +123,16 @@
         "Enter": "Enter",
         "Loading": "Loading",
         "Error": "Error"
+    },
+    "HistoryPage": {
+        "Requester":"Requester",
+        "Message":"Message",
+        "ServedBy":"Served by",
+        "Published":"Published",
+        "NoRequests": "No requests",
+        "RequestId": "Request Id:",
+        "RequesterId": "Requester Id:",
+        "Close": "Close"
     },
     "Resourcepage": {
         "CopyScript": "Copy Script",
