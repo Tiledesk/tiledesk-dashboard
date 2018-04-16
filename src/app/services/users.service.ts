@@ -26,6 +26,7 @@ export class UsersService {
   MONGODB_BASE_URL: any;
   INVITE_USER_URL: any;
   PROJECT_USER_DTLS_URL: any;
+  GET_PROJECT_USER_URL: any;
   TOKEN: string
   user: any;
 
@@ -50,10 +51,12 @@ export class UsersService {
     this.http = http;
     // SUBSCRIBE TO USER BS
     this.user = auth.user_bs.value
+    console.log('++ ++++ 1. USER SERVICE User' , this.user )
     this.checkUser()
 
     this.auth.user_bs.subscribe((user) => {
       this.user = user;
+      console.log('++ ++++ 2. USER SERVICE User' , this.user )
       this.checkUser()
     });
 
@@ -73,8 +76,12 @@ export class UsersService {
         console.log('-- -- >>>> 00 -> USERS SERVICE project ID from AUTH service subscription  ', this.project._id)
         this.MONGODB_BASE_URL = this.BASE_URL + this.project._id + '/project_users/'
         this.INVITE_USER_URL = this.BASE_URL + this.project._id + '/project_users/invite'
+
+        // MAYBE NOT USED anymore
         this.PROJECT_USER_DTLS_URL = this.BASE_URL + this.project._id + '/member/'
-        // '/project_users/'
+
+        // PROJECT-USER BY PROJECT ID AND CURRENT USER ID
+        this.GET_PROJECT_USER_URL = this.BASE_URL + this.project._id + '/project_users/'
       }
     });
   }
@@ -154,7 +161,7 @@ export class UsersService {
   }
 
 
-  /// ================================== PROJECT-USER FROM MONGO DB ================================== ///
+  /// ================================== ALL PROJECT-USER FROM MONGO DB ================================== ///
   /**
    * NOTE: the PROJECT-USER returned has nested the user's object
    */
@@ -170,6 +177,7 @@ export class UsersService {
       .map((response) => response.json());
   }
 
+  /// ================================== INVITE USER (ALIAS CREATE A MEMBER) ================================== ///
   public inviteUser(email: string, role: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -189,4 +197,18 @@ export class UsersService {
 
   }
 
- }
+  /// ================================== GET PROJECT-USER BY PROJECT ID AND CURRENT USER ID ================================== ///
+  public getProjectUsersByProjectIdAndUserId(user_id: string): Observable<ProjectUser[]> {
+    const url = this.GET_PROJECT_USER_URL + '?user_id=' + user_id;
+    
+
+    console.log('GET PROJECT USERS BY PROJECT-ID & CURRENT-USER-ID URL', url);
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
+}

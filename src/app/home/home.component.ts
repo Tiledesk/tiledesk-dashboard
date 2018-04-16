@@ -94,8 +94,23 @@ export class HomeComponent implements OnInit {
       if (this.user) {
 
         this.getAllUsersOfCurrentProject();
+        this.getProjectUser();
       }
     });
+  }
+
+
+  getProjectUser() {
+    this.usersService.getProjectUsersByProjectIdAndUserId(this.user._id).subscribe((projectUser: any) => {
+      console.log('PROJECT-USER GET BY PROJECT ID & CURRENT USER ID ', projectUser)
+
+    },
+      (error) => {
+        console.log('PROJECT-USER GET BY PROJECT ID & CURRENT USER ID  ', error);
+      },
+      () => {
+        console.log('PROJECT-USER GET BY PROJECT ID & CURRENT USER ID  * COMPLETE *');
+      });
   }
 
   getAllUsersOfCurrentProject() {
@@ -108,7 +123,7 @@ export class HomeComponent implements OnInit {
           // localStorage.setItem(projectUser.id_user._id, JSON.stringify(projectUser.id_user));
           this.usersLocalDbService.saveMembersInStorage(projectUser.id_user._id, projectUser.id_user);
         });
-    }
+      }
       // localStorage.setItem('project', JSON.stringify(project));
       //   this.showSpinner = false;
       //   this.projectUsersList = projectUsers;

@@ -3,7 +3,7 @@ export interface Project {
     updatedAt?: any;
     createdAt?: any;
     name?: string;
-    user_available?: boolean;
+
     createdBy?: string;
     __v?: any;
 }

@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 
 // import { ProjectService } from '../../services/project.service';
 import { AuthService } from '../../core/auth.service';
+import { UsersService } from '../../services/users.service';
 import { Project } from '../../models/project-model';
 // import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 // import { SharedModule } from '../../shared/shared.module';
@@ -59,6 +60,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // route: string;
     LOGIN_PAGE: boolean;
     IS_UNAVAILABLE = false;
+    USER_IS_AVAILABLE: boolean;
 
     project: Project;
     user: any;
@@ -71,14 +73,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         public location: Location,
         private route: ActivatedRoute,
         // private projectService: ProjectService,
-        private auth: AuthService
+        private auth: AuthService,
+        private usersService: UsersService
+
     ) {
 
         // console.log('00 -> HELLO SIDEBAR - PROJECT ID ', this.project)
 
         this.auth.project_bs.subscribe((project) => {
             this.project = project
-            console.log('00 -> SIDEBAR project from AUTH service subscription  ', project)
+            console.log('00 -> SIDEBAR project from AUTH service subscription  ', this.project)
+
+
 
         });
     }
@@ -131,7 +137,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
             if (user) {
                 const currentUserId = user._id;
-                console.log('Current USER ID ', currentUserId)
+                console.log(' xxxx xxxxx xxxxx Current USER ID ', currentUserId)
+
             }
         });
     }
