@@ -67,14 +67,15 @@ export class ProjectsComponent implements OnInit {
   }
 
   // project/:projectid/home
-  goToHome(project_id: string, project_name: string) {
+  goToHome(project_id: string, project_name: string, available: boolean) {
     this.router.navigate([`/project/${project_id}/home`]);
 
     // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
     // THE SIDEBAR SIGNS UP FOR ITS PUBLICATION
     const project: Project = {
       _id: project_id,
-      name: project_name
+      name: project_name,
+      user_available: available
     }
 
     this.auth.projectSelected(project)

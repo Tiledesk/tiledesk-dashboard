@@ -100,7 +100,7 @@ export class HomeComponent implements OnInit {
 
   getAllUsersOfCurrentProject() {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
-      // console.log('HOME COMP - PROJECT-USERS (FILTERED FOR PROJECT ID)', projectUsers);
+      console.log('HOME COMP - PROJECT-USERS (FILTERED FOR PROJECT ID)', projectUsers);
 
       if (projectUsers) {
         projectUsers.forEach(projectUser => {

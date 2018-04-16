@@ -86,11 +86,17 @@
     <!-- MOMGO DB PROJECTS LIST -->
     <!-- NEW -->
     <div class="row" style="margin-right:100px; margin-left:100px;">
-      <h3 style="padding-left:15px; margin-top:55px; margin-bottom: 5px;" >{{ 'ProjectsPage.Welcome' | translate }} in Tile Desk. </h3>
-      <h4 style="padding-left:15px; color: rgba(0,0,0,0.54); font-size:16px; margin-top: 0px;" > {{ 'ProjectsPage.BuildYourCustomer_1' | translate }} <br> {{ 'ProjectsPage.BuildYourCustomer_2' | translate }}  </h4>
+      <h3 style="padding-left:15px; margin-top:55px; margin-bottom: 5px;" >
+        {{ 'ProjectsPage.Welcome' | translate }} in Tile Desk. 
+      </h3>
+      <h4 style="padding-left:15px; color: rgba(0,0,0,0.54); font-size:16px; margin-top: 0px;" > 
+        {{ 'ProjectsPage.BuildYourCustomer_1' | translate }} <br> {{ 'ProjectsPage.BuildYourCustomer_2' | translate }} 
+      </h4>
     </div>
     <div class="row" style="margin-right:100px; margin-left:100px;">
       <div class="col-lg-3 col-md-6 col-sm-6" style="cursor:pointer">
+
+        <!-- CARD ADD PROJECT -->
         <div class="card" (click)='openCreateModal()'>
           <div class="card-content">
             <h3 class="title" style="color: #55b9d1; text-align: center; padding-top:25px">
@@ -101,12 +107,15 @@
             </h4>
           </div>
         </div>
+
       </div>
 
       <loading-spinner *ngIf="showSpinner"></loading-spinner>
         <span *ngIf="!showSpinner">
         <div *ngFor="let project of projects" class="col-lg-3 col-md-6 col-sm-6" style="cursor:pointer">
-          <div class="card" (click)='goToHome(project?.id_project._id, project?.id_project.name)'>
+
+          <!-- CARDS FROM THE PROJECT 'FOR' -->
+          <div class="card" (click)='goToHome(project?.id_project._id, project?.id_project.name, project?.available)'>
             <div class="card-content">
               <h3 class="title" style="color: #566787; font-size:20px; margin-bottom: 0px;">
                 {{ project?.id_project.name }}

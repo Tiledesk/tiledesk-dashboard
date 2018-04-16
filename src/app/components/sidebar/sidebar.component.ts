@@ -128,6 +128,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             // tslint:disable-next-line:no-debugger
             // debugger
             this.user = user;
+
+            if (user) {
+                const currentUserId = user._id;
+                console.log('Current USER ID ', currentUserId)
+            }
         });
     }
 
