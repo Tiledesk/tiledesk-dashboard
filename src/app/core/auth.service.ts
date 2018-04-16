@@ -18,6 +18,7 @@ import { Project } from '../models/project-model';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/toPromise';
+
 // import { ProjectService } from '../services/project.service';
 // import { RequestsService } from '../services/requests.service';
 // interface CUser {
@@ -195,12 +196,14 @@ export class AuthService {
               // Firebase Sign in using custom token
               firebase.auth().signInWithCustomToken(token)
                 .then(data => {
-                  console.log('3. FIREBASE CUSTOM AUTH DATA ', data)
-                  /**
-                   * CHAT21-CLOUD-FUNCTIONS - CREATE CONTACT
-                   */
+                  console.log('3. FIREBASE CUSTOM AUTH DATA ', data);
 
-                   // QUI INSERIRE CHIAMATA PER AGGGIURE ALL'AUTENTICAZIONE EMAIL E PASSWORD
+                  /* UPDATE THE THE USER CREATE ON FIREBASE WITH THE CUSTOM TOKEN WITH THE EMAIL AND THE PASSWORD */
+                  data.updateEmail(email);
+                  data.updatePassword(password)
+
+
+                  /* CHAT21-CLOUD-FUNCTIONS - CREATE CONTACT */
                   this.cloudFunctionsCreateContact(user.firstname, user.lastname, user.email);
                   callback(null);
                 })
