@@ -74,7 +74,11 @@
         "Processing": "Elaborazione...",
         "Completed": "Completato",
         "TheUserHasBeenInvited": "L'utente è stato invitato.",
-        "Continue": "Continua"
+        "Continue": "Continua",
+        "NotAllowedAction":"Azione non consentita",
+        "YouCanNotInviteYourself":"Non puoi invitare te stesso",
+        "Error":"Errore",
+        "AnErrorHasOccurred":"Si è verificato un errore"
     },
     "BotsPage": {
         "AddBot": "Aggiungi Bot",

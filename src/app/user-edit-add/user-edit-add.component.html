@@ -76,15 +76,55 @@
 
                       <span *ngIf="!SHOW_CIRCULAR_SPINNER">
                         <div  class="loader" style="top:5%">
-                          <i class="material-icons" style="color:#70b665">done</i>
-                          <span style="color:#70b665">
-                              {{ "UserEditAddPage.Completed" | translate }}
-                          </span> 
+
+                          <!--      WHEN NO ERROR OCCUR      -->
+                          <span *ngIf="!INVITE_FORBIDDEN_ERROR && !INVITE_OTHER_ERROR">
+                            <i class="material-icons" style="color:#70b665">done</i>
+                            <span style="color:#70b665">
+                                {{ "UserEditAddPage.Completed" | translate }}
+                            </span> 
+                          </span>
+
+                          <!--      ERROR - Not Allowed Action      -->
+                          <span *ngIf="INVITE_FORBIDDEN_ERROR && !INVITE_OTHER_ERROR">
+                            <i class="material-icons" style="color:#ff5252">report_problem</i>
+                            <span style="color:#ff5252">
+                                {{ "UserEditAddPage.Error" | translate }}
+                            </span> 
+                          </span>
+
+                          <!--      ERROR - other error     -->
+                          <span *ngIf="!INVITE_FORBIDDEN_ERROR && INVITE_OTHER_ERROR">
+                            <i class="material-icons" style="color:#ff5252">report_problem</i>
+                            <span style="color:#ff5252">
+                                {{ "UserEditAddPage.Error" | translate }}
+                            </span> 
+                          </span>
 
                         </div>
-                        <p style="margin-top: 50px; text-align: center;">
+
+                        <!--      WHEN NO ERROR OCCUR      -->
+                        <span *ngIf="!INVITE_FORBIDDEN_ERROR && !INVITE_OTHER_ERROR">
+                          <p style="margin-top: 50px; text-align: center;">
                             {{ "UserEditAddPage.TheUserHasBeenInvited" | translate }}
-                        </p>
+                          </p>
+                        </span>
+
+                        <!--      ERROR - Not Allowed Action      -->
+                        <span *ngIf="INVITE_FORBIDDEN_ERROR && !INVITE_OTHER_ERROR">
+                          <p style="margin-top: 50px; text-align: center;">
+                            {{ "UserEditAddPage.YouCanNotInviteYourself" | translate }}
+                          </p>
+                        </span>
+
+                        <!--      ERROR - other error     -->
+                        <span *ngIf="!INVITE_FORBIDDEN_ERROR && INVITE_OTHER_ERROR">
+                          <p style="margin-top: 50px; text-align: center;">
+                            {{ "UserEditAddPage.AnErrorHasOccurred" | translate }}
+                          </p>
+                        </span>
+
+
                       </span>
                     </div>
 

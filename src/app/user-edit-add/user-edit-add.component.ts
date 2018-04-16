@@ -25,6 +25,8 @@ export class UserEditAddComponent implements OnInit {
 
   display = 'none';
   SHOW_CIRCULAR_SPINNER = false;
+  INVITE_FORBIDDEN_ERROR: boolean;
+  INVITE_OTHER_ERROR: boolean;
 
   constructor(
     private router: Router,
@@ -77,9 +79,28 @@ export class UserEditAddComponent implements OnInit {
     console.log('INVITE THE USER ROLE ', this.role)
 
     this.usersService.inviteUser(this.user_email, this.role).subscribe((project_user: any) => {
-      console.log('POST PROJECT-USER ', project_user);
+      console.log('INVITE USER - POST SUBSCRIPTION PROJECT-USER ', project_user);
 
-    });
+    },
+      (error) => {
+        console.log('INVITE USER  ERROR ', error);
+
+        const invite_errorbody = JSON.parse(error._body)
+        console.log('INVITE USER  ERROR BODY ', invite_errorbody);
+        if ((invite_errorbody['success'] === false) && (invite_errorbody['msg'] === 'Forbidden')) {
+          console.log('!!! Forbidden, you can not invite yourself')
+          this.INVITE_FORBIDDEN_ERROR = true;
+        } else if (invite_errorbody['success'] === false) {
+          this.INVITE_FORBIDDEN_ERROR = false;
+          this.INVITE_OTHER_ERROR = true;
+        }
+      },
+      () => {
+        console.log('INVITE USER  * COMPLETE *');
+        this.INVITE_FORBIDDEN_ERROR = false;
+        this.INVITE_OTHER_ERROR = false;
+      });
+
   }
 
   onCloseModalHandled() {

@@ -197,8 +197,10 @@ export class AuthService {
                 .then(data => {
                   console.log('3. FIREBASE CUSTOM AUTH DATA ', data)
                   /**
-                   * CHAT21-CLOUD-FUNCTIONS - CRETE CONTACT
+                   * CHAT21-CLOUD-FUNCTIONS - CREATE CONTACT
                    */
+
+                   // QUI INSERIRE CHIAMATA PER AGGGIURE ALL'AUTENTICAZIONE EMAIL E PASSWORD
                   this.cloudFunctionsCreateContact(user.firstname, user.lastname, user.email);
                   callback(null);
                 })

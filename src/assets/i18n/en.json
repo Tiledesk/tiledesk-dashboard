@@ -72,7 +72,11 @@
         "Processing": "Processing...",
         "Completed": "Completed",
         "TheUserHasBeenInvited": "The user has been invited.",
-        "Continue": "Continue"
+        "Continue": "Continue",
+        "NotAllowedAction":"NotAllowedAction",
+        "YouCanNotInviteYourself":"You can't invite yourself",
+        "Error":"Error",
+        "AnErrorHasOccurred":"An error has occurred"
     },
     "BotsPage": {
         "AddBot": "Add Bot",
