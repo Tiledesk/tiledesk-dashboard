@@ -11,6 +11,7 @@ import { map } from 'rxjs/operators';
 import { AuthService } from '../core/auth.service';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { environment } from '../../environments/environment';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 interface NewUser {
   displayName: string;
@@ -21,12 +22,15 @@ interface NewUser {
 @Injectable()
 export class UsersService {
 
+  public user_is_available_bs: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  public project_user_id_bs: BehaviorSubject<string> = new BehaviorSubject<string>('');
+
   http: Http;
   BASE_URL = environment.mongoDbConfig.BASE_URL;
   MONGODB_BASE_URL: any;
   INVITE_USER_URL: any;
   PROJECT_USER_DTLS_URL: any;
-  GET_PROJECT_USER_URL: any;
+  // GET_PROJECT_USER_URL: any;
   TOKEN: string
   user: any;
 
@@ -51,12 +55,12 @@ export class UsersService {
     this.http = http;
     // SUBSCRIBE TO USER BS
     this.user = auth.user_bs.value
-    console.log('++ ++++ 1. USER SERVICE User' , this.user )
+    console.log('++ ++++ 1. USER SERVICE User', this.user)
     this.checkUser()
 
     this.auth.user_bs.subscribe((user) => {
       this.user = user;
-      console.log('++ ++++ 2. USER SERVICE User' , this.user )
+      console.log('++ ++++ 2. USER SERVICE User', this.user)
       this.checkUser()
     });
 
@@ -81,7 +85,7 @@ export class UsersService {
         this.PROJECT_USER_DTLS_URL = this.BASE_URL + this.project._id + '/member/'
 
         // PROJECT-USER BY PROJECT ID AND CURRENT USER ID
-        this.GET_PROJECT_USER_URL = this.BASE_URL + this.project._id + '/project_users/'
+        // this.PROJECT_USER_URL = this.BASE_URL + this.project._id + '/project_users/'
       }
     });
   }
@@ -197,18 +201,53 @@ export class UsersService {
 
   }
 
-  /// ================================== GET PROJECT-USER BY PROJECT ID AND CURRENT USER ID ================================== ///
-  public getProjectUsersByProjectIdAndUserId(user_id: string): Observable<ProjectUser[]> {
-    const url = this.GET_PROJECT_USER_URL + '?user_id=' + user_id;
-    
+  /// ============================= GET PROJECT-USER BY CURRENT-PROJECT-ID AND CURRENT-USER-ID ============================= ///
+  public getProjectUsersByProjectIdAndUserId(user_id: string, project_id: string): Observable<ProjectUser[]> {
+    const url = this.MONGODB_BASE_URL + user_id + '/' + project_id;
 
     console.log('GET PROJECT USERS BY PROJECT-ID & CURRENT-USER-ID URL', url);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', this.TOKEN);
+    // console.log('TOKEN TO COPY ', this.TOKEN)
     return this.http
       .get(url, { headers })
       .map((response) => response.json());
+  }
+
+  // ======================  PUBLISH projectUser_id AND user_available ======================
+  // NOTE: THE projectUser_id AND user_available ARE PASSED FROM HOME.COMPONENT
+  public user_availability(projectUser_id: string, user_available: boolean) {
+    console.log('USER SERVICE - PROJECT-USER-ID ', projectUser_id)
+    console.log('USER SERVICE - USER AVAILABLE ', user_available)
+
+    this.project_user_id_bs.next(projectUser_id);
+    this.user_is_available_bs.next(user_available);
+  }
+
+  /**
+   * UPDATE (PUT)
+   */
+  public updateProjectUser(projectUser_id: string, user_is_available: boolean) {
+
+    let url = this.MONGODB_BASE_URL;
+    url += projectUser_id;
+    console.log('PROJECT-USER UPDATE (PUT) URL ', url);
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = { 'user_available': user_is_available };
+
+    console.log('PUT REQUEST BODY ', body);
+
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+
   }
 
 }

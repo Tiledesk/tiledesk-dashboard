@@ -8,12 +8,15 @@ import { Router } from '@angular/router';
 import { UsersService } from '../services/users.service';
 import { UsersLocalDbService } from '../services/users-local-db.service';
 
+
 @Component({
   selector: 'home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
+
+
 
   firebaseProjectId: any;
   LOCAL_STORAGE_CURRENT_USER: any;
@@ -24,7 +27,8 @@ export class HomeComponent implements OnInit {
 
   user: any;
   project: Project;
-  // projectid: string;
+  projectId: string;
+  // user_is_available: boolean;
 
   constructor(
     public auth: AuthService,
@@ -50,29 +54,40 @@ export class HomeComponent implements OnInit {
     //   this.superUserAuth();
     // }
     this.getLoggedUser()
-    this.getProjectId()
+    // this.getProjectId()
+    this.getCurrentProject()
 
+    // get the PROJECT-USER BY CURRENT-PROJECT-ID AND CURRENT-USER-ID
+    // IS USED TO DETERMINE IF THE USER IS AVAILABLE OR NOT AVAILABLE
+    this.getProjectUser();
+
+  }
+
+  getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
       console.log('00 -> HOME project from AUTH service subscription  ', project)
 
+      if (this.project) {
+        this.projectId = this.project._id
+      }
     });
   }
 
   goToResources() {
-    this.router.navigate(['project/' + this.project._id + '/resources']);
+    this.router.navigate(['project/' + this.projectId + '/resources']);
   }
   goToRequests() {
-    this.router.navigate(['project/' + this.project._id + '/requests']);
+    this.router.navigate(['project/' + this.projectId + '/requests']);
   }
 
   goToAnalytics() {
-    this.router.navigate(['project/' + this.project._id + '/analytics']);
+    this.router.navigate(['project/' + this.projectId + '/analytics']);
   }
 
   // NO MORE USED
   goToHistory() {
-    this.router.navigate(['project/' + this.project._id + '/history']);
+    this.router.navigate(['project/' + this.projectId + '/history']);
   }
 
   getProjectId() {
@@ -80,7 +95,7 @@ export class HomeComponent implements OnInit {
     // console.log('SIDEBAR - - - - - CURRENT projectid ', this.projectid);
     this.route.params.subscribe(params => {
       // const param = params['projectid'];
-      console.log('NAVBAR - - - - - CURRENT projectid ', params);
+      console.log('NAVBAR - CURRENT projectid ', params);
     });
   }
 
@@ -94,22 +109,34 @@ export class HomeComponent implements OnInit {
       if (this.user) {
 
         this.getAllUsersOfCurrentProject();
-        this.getProjectUser();
+
       }
     });
   }
 
 
   getProjectUser() {
-    this.usersService.getProjectUsersByProjectIdAndUserId(this.user._id).subscribe((projectUser: any) => {
-      console.log('PROJECT-USER GET BY PROJECT ID & CURRENT USER ID ', projectUser)
+
+    this.usersService.getProjectUsersByProjectIdAndUserId(this.user._id, this.projectId).subscribe((projectUser: any) => {
+      console.log('PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
+      if (projectUser) {
+        console.log('PROJECT-USER ID ', projectUser[0]._id)
+        console.log('USER IS AVAILABLE ', projectUser[0].user_available)
+        // this.user_is_available_bs = projectUser.user_available;
+
+        if (projectUser[0].user_available !== undefined) {
+          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available)
+        }
+      }
+
+
 
     },
       (error) => {
-        console.log('PROJECT-USER GET BY PROJECT ID & CURRENT USER ID  ', error);
+        console.log('PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID  ', error);
       },
       () => {
-        console.log('PROJECT-USER GET BY PROJECT ID & CURRENT USER ID  * COMPLETE *');
+        console.log('PROJECT-USER GET BY PROJECT ID & CURRENT-USER-ID  * COMPLETE *');
       });
   }
 

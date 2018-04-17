@@ -59,8 +59,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     // route: string;
     LOGIN_PAGE: boolean;
-    IS_UNAVAILABLE = false;
-    USER_IS_AVAILABLE: boolean;
+    // IS_UNAVAILABLE = false;
+    IS_AVAILABLE: boolean;
+    projectUser_id: string;
 
     project: Project;
     user: any;
@@ -80,13 +81,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
         // console.log('00 -> HELLO SIDEBAR - PROJECT ID ', this.project)
 
-        this.auth.project_bs.subscribe((project) => {
-            this.project = project
-            console.log('00 -> SIDEBAR project from AUTH service subscription  ', this.project)
-
-
-
-        });
     }
 
     ngOnInit() {
@@ -126,6 +120,70 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         //     this.trasform = 'none';
         // }
         this.getLoggedUser();
+        this.getCurrentProject();
+
+        this.getUserAvailability();
+        this.getProjectUserId();
+    }
+
+    getUserAvailability() {
+        this.usersService.user_is_available_bs.subscribe((user_available) => {
+            this.IS_AVAILABLE = user_available;
+            console.log('SIDEBAR - USER IS AVAILABLE ', this.IS_AVAILABLE);
+            if (this.IS_AVAILABLE) {
+                console.log('dispo')
+            } else {
+                console.log('!! dispo')
+            }
+        });
+
+    }
+
+    getProjectUserId() {
+        this.usersService.project_user_id_bs.subscribe((projectUser_id) => {
+            console.log('SIDEBAR - PROJECT-USER-ID ', projectUser_id);
+            this.projectUser_id = projectUser_id;
+        });
+    }
+
+    changeAvailabilityState(IS_AVAILABLE) {
+        console.log('CHANGE STATUS - USER IS AVAILABLE ? ', IS_AVAILABLE);
+
+        this.usersService.updateProjectUser(this.projectUser_id, IS_AVAILABLE).subscribe((projectUser: any) => {
+            console.log('PROJECT-USER UPDATED ', projectUser)
+
+        },
+            (error) => {
+                console.log('PROJECT-USER UPDATED ERR  ', error);
+            },
+            () => {
+                console.log('PROJECT-USER UPDATED  * COMPLETE *');
+            });
+    }
+
+    availale_unavailable_status(hasClickedChangeStatus: boolean) {
+        hasClickedChangeStatus = hasClickedChangeStatus;
+        if (hasClickedChangeStatus) {
+            //   this.display = 'block';
+
+            this.IS_AVAILABLE = hasClickedChangeStatus
+            console.log('HAS CLICKED CHANGE STATUS - IS_AVAILABLE ? ', this.IS_AVAILABLE);
+        }
+
+        if (!hasClickedChangeStatus) {
+            //   this.display = 'none';
+            console.log('HAS CLICKED CHANGE STATUS ', hasClickedChangeStatus);
+            this.IS_AVAILABLE = hasClickedChangeStatus
+            console.log('HAS CLICKED CHANGE STATUS - IS_AVAILABLE ? ', this.IS_AVAILABLE);
+        }
+    }
+
+
+    getCurrentProject() {
+        this.auth.project_bs.subscribe((project) => {
+            this.project = project
+            console.log('00 -> SIDEBAR project from AUTH service subscription  ', this.project)
+        });
     }
 
     getLoggedUser() {
@@ -137,13 +195,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
             if (user) {
                 const currentUserId = user._id;
-                console.log(' xxxx xxxxx xxxxx Current USER ID ', currentUserId)
+                console.log('Current USER ID ', currentUserId)
 
             }
         });
     }
-
-
 
 
     ngAfterViewInit() {
@@ -197,22 +253,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     //     console.log('HAS CLICKED SET ACTIVE TO SETTINGS MENU ITEM ', this.isActive);
     // }
 
-    availale_unavailable_status(hasClickedChangeStatus: boolean) {
-        hasClickedChangeStatus = hasClickedChangeStatus;
-        if (hasClickedChangeStatus) {
-            //   this.display = 'block';
 
-            this.IS_UNAVAILABLE = hasClickedChangeStatus
-            console.log('HAS CLICKED CHANGE STATUS - IS_UNAVAILABLE ? ', this.IS_UNAVAILABLE);
-        }
-
-        if (!hasClickedChangeStatus) {
-            //   this.display = 'none';
-            console.log('HAS CLICKED CHANGE STATUS ', hasClickedChangeStatus);
-            this.IS_UNAVAILABLE = hasClickedChangeStatus
-            console.log('HAS CLICKED CHANGE STATUS - IS_UNAVAILABLE ? ', this.IS_UNAVAILABLE);
-        }
-    }
 
     logout() {
         this.auth.signOut();

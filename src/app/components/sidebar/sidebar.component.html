@@ -67,7 +67,9 @@
             
             <!-- SELECT AVAILABLE / UNAVAILABLE -->
              <li *ngIf="project">
-                <a *ngIf="!IS_UNAVAILABLE" 
+                <!-- <a *ngIf="!IS_UNAVAILABLE"  -->
+
+                <a *ngIf="IS_AVAILABLE" 
                     style="background-color: #e5e4e5; 
                            border-radius: 10px;
                            display:block;
@@ -75,12 +77,13 @@
                            width: 175px;
                            padding: 5px 10px; 
                            cursor: pointer" 
-                    (click)="availale_unavailable_status(hasClickedChangeStatus = !hasClickedChangeStatus)">
+                    (click)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)">
 
                     <i class="material-icons" style=" font-size: 16px; color: #1eb848; margin-right:0px">fiber_manual_record</i>
                     <p style="color:#a9afbb">{{ 'Available' | translate }}</p>
                 </a>
-                <a *ngIf="IS_UNAVAILABLE" 
+                <!-- <a *ngIf="IS_UNAVAILABLE"  -->
+                <a *ngIf="!IS_AVAILABLE" 
                     style="background-color: #e5e4e5; 
                            border-radius: 10px;
                            display:block;
@@ -88,7 +91,7 @@
                            width: 175px;  
                            padding: 5px 10px; 
                            cursor: pointer" 
-                    (click)="availale_unavailable_status(hasClickedChangeStatus = !hasClickedChangeStatus)">
+                      (click)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)">
 
                     <i class="material-icons" style=" font-size: 16px; color: #cac9c9; margin-right:0px">fiber_manual_record</i>           
                     <p style="color:#cac9c9">{{ 'Unavailable' | translate }}</p>

@@ -25,7 +25,7 @@ export class ChannelsComponent implements OnInit {
       this.project = project
       console.log('00 -> CHANNELS project from AUTH service subscription  ', this.project)
 
-      if(this.project){
+      if (this.project) {
         this.project_name = this.project.name;
       }
 
