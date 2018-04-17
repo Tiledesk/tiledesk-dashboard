@@ -38,18 +38,31 @@
               <!-- checked="true" -->
 
               <div class="col-sm-1 col-sm-offset-2" style="padding-left:30px; padding-top:15px">
-
-                <!-- POOLED -->
+                <!--     ASSIGNABLE (CREATE VIEW)     -->
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" (click)="has_clicked_pooled(show_option_form = 'false', routing = 'pooled')">
+                  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3"
+                  (click)="has_clicked_assigned(show_option_form = 'false', routing = 'assigned')">
+                  
+                  <label class="form-check-label" for="exampleRadios3" style="padding-left: 5px;">
+                    Assigned
+                  </label>
+                </div>
+
+                <!--     POOLED (CREATE VIEW)     -->
+                <div class="form-check" style="padding-top:8px;">
+                  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" 
+                  (click)="has_clicked_pooled(show_option_form = 'false', routing = 'pooled')">
+
                   <label class="form-check-label" for="exampleRadios2" style="padding-left: 5px;">
                     Pooled
                   </label>
                 </div>
 
-                <!-- BOT (IT'S ACTUALLY FAQ-KB) -->
+                <!--    BOT (IT'S ACTUALLY FAQ-KB) (CREATE VIEW)     -->
                 <div class="form-check" style="padding-top:8px; padding-bottom:8px">
-                  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked (click)="has_clicked_fixed(show_option_form = 'true', routing = 'fixed')">
+                  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked 
+                  (click)="has_clicked_fixed(show_option_form = 'true', routing = 'fixed')">
+
                   <label class="form-check-label" for="exampleRadios1" style="padding-left: 5px;">
                     <!-- Fixed -->
                     Bot
@@ -64,7 +77,7 @@
               <span *ngIf="SHOW_OPTION_FORM !== 'false'">
                 <!-- <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Bot</label> -->
                 <!-- <div class="col-sm-10"> -->
-                <div class="col-sm-9" style="padding-top:40px">
+                <div class="col-sm-9" style="padding-top:73px">
                   <select #selectElem (change)="setSelectedBot(selectElem.value)" class="" >
                     <option class="not_selected" value="BOT_NOT_SELECTED">{{ "DeptsAddEditPage.SelectABot" | translate}}</option> 
                     <!-- NOTE: botsList IT'S ACTUALLY THE FAQ-KB LIST -->
@@ -89,7 +102,7 @@
 
                 <!-- ======== SWITCH THE BUTTON 'CREATE DEPT' ========
                      ACCORDING TO THE VALUE OF SHOW_OPTION_FOR 
-                     IT IS 'TRUE' IT MEANS THAT THE USER HAS SELCTED 'FIXED' SO THE BTN IS DISABLED 
+                     IT IS 'TRUE' IT MEANS THAT THE USER HAS SELECTED 'FIXED' SO THE BTN IS DISABLED 
                      IF THE LENGHT OF DEPT IS < 2 AND IF IS NOT SELECTED ANY BOT  -->
                 <span *ngIf="SHOW_OPTION_FORM !== 'false'">
                   <button class="btn btn-success" [disabled]="dept_name?.length < 2 || BOT_NOT_SELECTED === true"  (click)="createDepartment()">
@@ -122,31 +135,47 @@
 
                 <div class="col-sm-1 col-sm-offset-2" style="padding-left:30px; padding-top:15px">
 
-                  <!-- POOLED -->
+                  <!--     ASSIGNABLE (EDIT_VIEW)     -->
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" (click)="has_clicked_pooled(show_option_form = 'false', routing = 'pooled')" [checked]="dept_routing === 'pooled'" >
-                    <label class="form-check-label" for="exampleRadios2" style="padding-left: 5px;">
-                        Pooled
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3"
+                    (click)="has_clicked_assigned(show_option_form = 'false', routing = 'assigned')" [checked]="dept_routing === 'assigned'">
+                    
+                    <label class="form-check-label" for="exampleRadios3" style="padding-left: 5px;">
+                      Assigned
                     </label>
                   </div>
 
-                  <!-- BOT (IT'S ACTUALLY FAQ-KB) -->
+                  <!--     POOLED (EDIT_VIEW)      -->
+                  <div class="form-check" style="padding-top:8px;">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" 
+                    (click)="has_clicked_pooled(show_option_form = 'false', routing = 'pooled')" [checked]="dept_routing === 'pooled'">
+
+                    <label class="form-check-label" for="exampleRadios2" style="padding-left: 5px;">
+                      Pooled
+                    </label>
+                  </div>
+
+                  <!--     BOT (IT'S ACTUALLY FAQ-KB)  (EDIT_VIEW)     -->
                   <div class="form-check" style="padding-top:8px; padding-bottom:8px; ">
                       <!-- checked="true" -->
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" (click)="has_clicked_fixed(show_option_form = 'true', routing = 'fixed')" [checked]="dept_routing === 'fixed'" >
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" 
+                    (click)="has_clicked_fixed(show_option_form = 'true', routing = 'fixed')" [checked]="dept_routing === 'fixed'">
+
                     <label class="form-check-label" for="exampleRadios1" style="padding-left: 5px;">
-                        <!-- Fixed -->
-                        Bot
+                      <!-- Fixed -->
+                      Bot
                     </label>
                   </div>
                 </div>
                 <!-- SHOW_OPTION_FORM !== 'false' ||  -->
                 <!-- dept_routing === 'fixed' && -->
-                <span *ngIf="dept_routing !== 'pooled'">
+
+                <!-- <span *ngIf="dept_routing !== 'pooled'"> -->
+                <span *ngIf="dept_routing === 'fixed'">  
                   <span *ngIf=" SHOW_OPTION_FORM !== 'false'">
                     
                   <!-- <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">FAQ Knowledge Base</label> -->
-                    <div class="col-sm-9" style="padding-top:40px">  
+                    <div class="col-sm-9" style="padding-top:73px">  
                       <select #selectElem (change)="setSelectedBot(selectElem.value)"  >
                         <!-- <option>{{selectedValue}} </option> -->
                         <option class="not_selected" value="BOT_NOT_SELECTED" >{{ "DeptsAddEditPage.SelectABot" | translate }}</option>

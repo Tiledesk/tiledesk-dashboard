@@ -97,7 +97,7 @@ export class DepartmentEditAddComponent implements OnInit {
       if (this.id_dept) {
         this.getDeptById();
 
-        // WHEN IT IS OPENED THE EDIT VIEW IF DEPT ROUTING HAS THE VALUE POOLED IT NOT DISPAYED THE ITEM
+        // WHEN IT IS OPENED THE EDIT VIEW IF DEPT ROUTING HAS THE VALUE POOLED IT NOT DISPLAYED THE ITEM
         // FORM FOR THE SELECTION OF A BOT (TO CORRELATE WITH THE CURRENT DEPT)
         // NOTE: dept_routing is determinate in getDeptById()
         // THE VALUE fixed or pooled TO dept_routing IS THEN REASSIGNED IN has_clicked_fixed() AND has_clicked_POOLED
@@ -109,8 +109,11 @@ export class DepartmentEditAddComponent implements OnInit {
           this.SHOW_OPTION_FORM = true;
           this.dept_routing = 'fixed'
           this.BOT_NOT_SELECTED = false;
+        } else if (this.dept_routing === 'assigned') {
+          this.SHOW_OPTION_FORM = false;
+          this.dept_routing = 'fixed'
+          this.BOT_NOT_SELECTED = true;
         }
-
       }
     }
 
@@ -203,17 +206,27 @@ export class DepartmentEditAddComponent implements OnInit {
       .subscribe((department) => {
         console.log('POST DATA DEPT', department);
       },
-      (error) => {
-        console.log('DEPT POST REQUEST ERROR ', error);
-      },
-      () => {
-        console.log('DEPT POST REQUEST * COMPLETE *');
-        this.router.navigate(['project/' + this.project._id + '/departments']);
-      });
+        (error) => {
+          console.log('DEPT POST REQUEST ERROR ', error);
+        },
+        () => {
+          console.log('DEPT POST REQUEST * COMPLETE *');
+          this.router.navigate(['project/' + this.project._id + '/departments']);
+        });
   }
 
-  has_clicked_fixed(show_option_form: boolean, routing: string) {
+  has_clicked_assigned(show_option_form: boolean, routing: string) {
 
+    this.SHOW_OPTION_FORM = show_option_form;
+    this.ROUTING_SELECTED = routing
+    console.log('HAS CLICKED ASSIGNABLE - SHOW OPTION ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
+
+    // ONLY FOR THE EDIT VIEW (see above in ngOnInit the logic for the EDIT VIEW)
+    this.dept_routing = 'assigned'
+  }
+
+  // is the option (called Bot in the html) that provides for the selection of a faq-kb (also this called Bot in the html)
+  has_clicked_fixed(show_option_form: boolean, routing: string) {
     // this.HAS_CLICKED_FIXED = true;
     // this.HAS_CLICKED_POOLED = false;
     this.SHOW_OPTION_FORM = show_option_form;
@@ -231,6 +244,7 @@ export class DepartmentEditAddComponent implements OnInit {
     this.SHOW_OPTION_FORM = show_option_form;
     this.ROUTING_SELECTED = routing
     console.log('HAS CLICKED POOLED  - SHOW OPTION ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
+    
     // ONLY FOR THE EDIT VIEW (see above in ngOnInit the logic for the EDIT VIEW)
     this.dept_routing = 'pooled'
 
