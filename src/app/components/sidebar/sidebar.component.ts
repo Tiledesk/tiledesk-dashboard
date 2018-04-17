@@ -64,6 +64,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     projectUser_id: string;
 
     project: Project;
+    projectId: string;
     user: any;
 
     ROUTES: RouteInfo[];
@@ -161,29 +162,63 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             });
     }
 
-    availale_unavailable_status(hasClickedChangeStatus: boolean) {
-        hasClickedChangeStatus = hasClickedChangeStatus;
-        if (hasClickedChangeStatus) {
-            //   this.display = 'block';
+    // NO MORE USED - SUBSTITUDED WITH changeAvailabilityState
+    // availale_unavailable_status(hasClickedChangeStatus: boolean) {
+    //     hasClickedChangeStatus = hasClickedChangeStatus;
+    //     if (hasClickedChangeStatus) {
+    //         //   this.display = 'block';
 
-            this.IS_AVAILABLE = hasClickedChangeStatus
-            console.log('HAS CLICKED CHANGE STATUS - IS_AVAILABLE ? ', this.IS_AVAILABLE);
-        }
+    //         this.IS_AVAILABLE = hasClickedChangeStatus
+    //         console.log('HAS CLICKED CHANGE STATUS - IS_AVAILABLE ? ', this.IS_AVAILABLE);
+    //     }
 
-        if (!hasClickedChangeStatus) {
-            //   this.display = 'none';
-            console.log('HAS CLICKED CHANGE STATUS ', hasClickedChangeStatus);
-            this.IS_AVAILABLE = hasClickedChangeStatus
-            console.log('HAS CLICKED CHANGE STATUS - IS_AVAILABLE ? ', this.IS_AVAILABLE);
-        }
-    }
+    //     if (!hasClickedChangeStatus) {
+    //         //   this.display = 'none';
+    //         console.log('HAS CLICKED CHANGE STATUS ', hasClickedChangeStatus);
+    //         this.IS_AVAILABLE = hasClickedChangeStatus
+    //         console.log('HAS CLICKED CHANGE STATUS - IS_AVAILABLE ? ', this.IS_AVAILABLE);
+    //     }
+    // }
 
 
     getCurrentProject() {
         this.auth.project_bs.subscribe((project) => {
             this.project = project
             console.log('00 -> SIDEBAR project from AUTH service subscription  ', this.project)
+
+            if (this.project) {
+
+                this.projectId = this.project._id
+
+                // IS USED TO GET THE PROJECT-USER AND DETERMINE IF THE USER IS AVAILAVLE / UNAVAILABLE
+                // WHEN THE PAGE IS REFRESHED
+                this.getProjectUser()
+            }
         });
+    }
+
+
+    getProjectUser() {
+
+        this.usersService.getProjectUsersByProjectIdAndUserId(this.user._id, this.projectId).subscribe((projectUser: any) => {
+            console.log('SB PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
+            if (projectUser) {
+                console.log('SB PROJECT-USER ID ', projectUser[0]._id)
+                console.log('SB USER IS AVAILABLE ', projectUser[0].user_available)
+                // this.user_is_available_bs = projectUser.user_available;
+
+                if (projectUser[0].user_available !== undefined) {
+                    this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available)
+                }
+            }
+
+        },
+            (error) => {
+                console.log('SB PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID  ', error);
+            },
+            () => {
+                console.log('SB PROJECT-USER GET BY PROJECT ID & CURRENT-USER-ID  * COMPLETE *');
+            });
     }
 
     getLoggedUser() {

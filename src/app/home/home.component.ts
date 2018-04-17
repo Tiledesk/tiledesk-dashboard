@@ -114,29 +114,27 @@ export class HomeComponent implements OnInit {
     });
   }
 
-
+  // IS USED TO GET THE PROJECT-USER AND DETERMINE IF THE USER IS AVAILAVLE / UNAVAILABLE
+  // WHEN THE USER ENTER IN HOME (GET THE PROJECT-USER CAN NOT BE DONE IN THE SIDEBAR BECAUSE WHEN THE PROJECT
+  // IS SELECTED THE SIDEBAR HAS BEEN ALREADY CALLED)
   getProjectUser() {
-
     this.usersService.getProjectUsersByProjectIdAndUserId(this.user._id, this.projectId).subscribe((projectUser: any) => {
-      console.log('PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
+      console.log('H PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
       if (projectUser) {
-        console.log('PROJECT-USER ID ', projectUser[0]._id)
-        console.log('USER IS AVAILABLE ', projectUser[0].user_available)
+        console.log('H PROJECT-USER ID ', projectUser[0]._id)
+        console.log('H USER IS AVAILABLE ', projectUser[0].user_available)
         // this.user_is_available_bs = projectUser.user_available;
 
         if (projectUser[0].user_available !== undefined) {
           this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available)
         }
       }
-
-
-
     },
       (error) => {
-        console.log('PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID  ', error);
+        console.log('H PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID  ', error);
       },
       () => {
-        console.log('PROJECT-USER GET BY PROJECT ID & CURRENT-USER-ID  * COMPLETE *');
+        console.log('H PROJECT-USER GET BY PROJECT ID & CURRENT-USER-ID  * COMPLETE *');
       });
   }
 

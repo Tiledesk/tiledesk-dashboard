@@ -97,7 +97,7 @@
                     {{ projectUser?.id_user?.email }}
                   </td>
 
-                  <td class="td-actions text-right">
+                  <td *ngIf="projectUser?.role !== 'owner'" class="td-actions text-right">
                     <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipDeleteUser' | translate }}" class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal()'>
                       <i class="material-icons">close</i>
                     </button>
