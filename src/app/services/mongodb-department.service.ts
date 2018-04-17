@@ -108,9 +108,9 @@ export class MongodbDepartmentService {
   }
 
   /**
- * READ DETAIL (GET BOT BY BOT ID)
- * @param id
- */
+   * READ DETAIL (GET BOT BY BOT ID)
+   * @param id
+   */
   public getMongDbDeptById(id: string): Observable<Department[]> {
     let url = this.MONGODB_BASE_URL;
     url += `${id}`;
@@ -135,7 +135,10 @@ export class MongodbDepartmentService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'name': `${deptName}`, 'id_bot': `${id_bot}`, 'routing': `${routing}`, 'id_project': this.project._id};
+    const body = { 'name': `${deptName}`, 'routing': `${routing}`, 'id_project': this.project._id };
+    if (id_bot) {
+      body['id_bot'] = id_bot;
+    }
 
     console.log('POST REQUEST BODY ', body);
 
@@ -197,7 +200,7 @@ export class MongodbDepartmentService {
   public updateMongoDbDepartment(id: string, deptName: string, id_bot: string, routing: string) {
 
     let url = this.MONGODB_BASE_URL;
-    url = url += `${id}`;
+    url += id;
     console.log('PUT URL ', url);
 
     const headers = new Headers();
@@ -206,7 +209,12 @@ export class MongodbDepartmentService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'name': `${deptName}`, 'id_bot': `${id_bot}`, 'routing': `${routing}` };
+    const body = { 'name': `${deptName}`, 'routing': `${routing}` };
+    if (id_bot) {
+      body['id_bot'] = id_bot;
+    } else {
+      body['id_bot'] = null;
+    }
 
     console.log('PUT REQUEST BODY ', body);
 
@@ -225,6 +233,23 @@ export class MongodbDepartmentService {
     //   console.log('PUT REQUEST * COMPLETE *');
     // });
 
+  }
+
+/**
+ * READ DETAIL (TEST CHAT 21 router.get('/:departmentid/assignees')
+ * @param id
+ */
+  public testChat21AssignesFunction(id: string): Observable<Department[]> {
+    let url = this.MONGODB_BASE_URL;
+    url += id + '/assignees';
+    console.log('-- -- -- URL FOR TEST CHAT21 FUNC ', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
   }
 
 }

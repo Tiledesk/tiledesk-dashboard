@@ -114,6 +114,9 @@ export class DepartmentEditAddComponent implements OnInit {
           this.dept_routing = 'fixed'
           this.BOT_NOT_SELECTED = true;
         }
+
+        // TEST CHAT21-API-NODEJS router.get('/:departmentid/assignees'
+        this.getDeptByIdToTestChat21AssigneesFunction()
       }
     }
 
@@ -358,7 +361,10 @@ export class DepartmentEditAddComponent implements OnInit {
       } else {
         this.botIdEdit = this.selectedBotId
       }
+    } else {
+      this.botIdEdit = null;
     }
+
 
     // this.faqKbEdit
     // this.ROUTING_SELECTED
@@ -382,6 +388,23 @@ export class DepartmentEditAddComponent implements OnInit {
 
   goTo_BotEditAddPage_CREATE() {
     this.router.navigate(['project/' + this.project._id + '/createfaqkb']);
+  }
+
+  // TEST CHAT21-API-NODEJS router.get('/:departmentid/assignees'
+  getDeptByIdToTestChat21AssigneesFunction() {
+    this.mongodbDepartmentService.testChat21AssignesFunction(this.id_dept).subscribe((dept: any) => {
+      console.log('-- -- -- TEST func - GET DEPT (DETAILS) BY ID - DEPT OBJECT: ', dept);
+
+    },
+      (error) => {
+        console.log('-- -- -- TEST func - GET DEPT BY ID - ERROR ', error);
+        // this.showSpinner = false;
+      },
+      () => {
+        console.log('-- -- --TEST func - GET DEPT BY ID - COMPLETE ');
+
+      });
+
   }
 
 
