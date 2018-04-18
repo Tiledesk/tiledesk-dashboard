@@ -219,15 +219,15 @@
               </thead>
   
               <tbody>
-  
+                
                 <tr *ngFor="let dept of departments">
-                  <td>
+                  <td *ngIf="dept?.default !== true">
                     {{ dept?.name }}
                   </td>
-                  <td style="width: 280px !important">
+                  <td *ngIf="dept?.default !== true" style="width: 280px !important">
                     {{ dept?._id }}
                   </td>
-                  <td>
+                  <td *ngIf="dept?.default !== true">
                     {{ dept?.createdAt | date: 'd/M/y'}}
                   </td>
                   <!-- <td style="text-align: center!important">
@@ -242,7 +242,7 @@
                   </td> -->
 
                   <!-- NEW EDIT ADD -->
-                  <td class="td-actions text-right">
+                  <td *ngIf="dept?.default !== true" class="td-actions text-right">
                     <button type="button" rel="tooltip" title="{{ 'DepartmentsPage.tooltipEditDept' | translate }}" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(dept?._id, dept?.name)'>
                       <i class="material-icons">edit</i>
                     </button>

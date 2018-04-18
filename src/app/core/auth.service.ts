@@ -195,12 +195,25 @@ export class AuthService {
 
               // Firebase Sign in using custom token
               firebase.auth().signInWithCustomToken(token)
-                .then(data => {
-                  console.log('3. FIREBASE CUSTOM AUTH DATA ', data);
+                .then(firebase_user => {
+                  console.log('3. FIREBASE CUSTOM AUTH DATA ', firebase_user);
 
                   /* UPDATE THE THE USER CREATE ON FIREBASE WITH THE CUSTOM TOKEN WITH THE EMAIL AND THE PASSWORD */
-                  // data.updateEmail(email);
-                  // data.updatePassword(password);
+                  firebase_user.updatePassword(password).then(function () {
+                    firebase_user.updateEmail(email);
+                    // Update successful.
+                    console.log('// Firebase credentials - Update successful.')
+                  }).catch(function (error) {
+                    // An error happened.
+                    console.log('// Firebase credentials - An error happened.', error)
+                  });
+
+
+
+                  //   const credential = firebase.auth.EmailAuthProvider.credential(
+                  //     user.email, 
+                  //     userProvidedPassword
+                  // );
 
 
                   /* CHAT21-CLOUD-FUNCTIONS - CREATE CONTACT */
