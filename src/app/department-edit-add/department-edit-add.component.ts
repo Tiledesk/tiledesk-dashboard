@@ -115,7 +115,8 @@ export class DepartmentEditAddComponent implements OnInit {
           this.BOT_NOT_SELECTED = true;
         }
 
-        // TEST CHAT21-API-NODEJS router.get('/:departmentid/assignees'
+        // TEST CHAT21-API-NODEJS router.get('/:departmentid/operators'
+        /* GET OPERATORS OF A DEPT */
         this.getDeptByIdToTestChat21AssigneesFunction()
       }
     }
@@ -292,11 +293,12 @@ export class DepartmentEditAddComponent implements OnInit {
         // MOVED IN getFaqKbById
         // this.showSpinner = false;
 
-        if (this.botId === 'undefined') {
+        if (this.botId === undefined) {
           console.log(' !!! BOT ID UNDEFINED ', this.botId);
           // this.showSpinner = false;
           // this.selectedValue = 'Selezione FAQ KB';
 
+          // getBotById() IS RUNNED ONLY IF THE BOT-ID (returned in the DEPT OBJECT) IS NOT undefined
         } else {
           this.getBotById();
           console.log(' !!! BOT ID DEFINED ', this.botId);
@@ -391,10 +393,10 @@ export class DepartmentEditAddComponent implements OnInit {
   }
 
   // TEST CHAT21-API-NODEJS router.get('/:departmentid/operators'
+  /* GET OPERATORS OF A DEPT */
   getDeptByIdToTestChat21AssigneesFunction() {
     this.mongodbDepartmentService.testChat21AssignesFunction(this.id_dept).subscribe((dept: any) => {
       console.log('-- -- -- TEST func - RESULT: ', dept);
-
     },
       (error) => {
         console.log('-- -- -- TEST func - ERROR ', error);
@@ -402,9 +404,7 @@ export class DepartmentEditAddComponent implements OnInit {
       },
       () => {
         console.log('-- -- --TEST func * COMPLETE *');
-
       });
-
   }
 
 
