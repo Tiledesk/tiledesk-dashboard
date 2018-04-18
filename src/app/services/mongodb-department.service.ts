@@ -235,10 +235,10 @@ export class MongodbDepartmentService {
 
   }
 
-/**
- * READ DETAIL (TEST CHAT 21 router.get('/:departmentid/operators')
- * @param id
- */
+  /**
+   * READ DETAIL (TEST CHAT 21 router.get('/:departmentid/operators')
+   * @param id
+   */
   public testChat21AssignesFunction(id: string): Observable<Department[]> {
     let url = this.MONGODB_BASE_URL;
     url += id + '/operators';
@@ -247,6 +247,7 @@ export class MongodbDepartmentService {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', this.TOKEN);
+    console.log('TOKEN TO COPY ', this.TOKEN)
     return this.http
       .get(url, { headers })
       .map((response) => response.json());
