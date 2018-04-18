@@ -32,8 +32,6 @@ import { UsersLocalDbService } from '../services/users-local-db.service';
 export class RequestsListComponent implements OnInit {
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
-
-
   // user: Observable<User | null>;
   user: any;
   firebase_token: any;
@@ -84,7 +82,7 @@ export class RequestsListComponent implements OnInit {
 
   project: Project;
   projectId: string;
-
+  projectName: string;
 
   constructor(
     private requestsService: RequestsService,
@@ -115,7 +113,8 @@ export class RequestsListComponent implements OnInit {
       console.log('00 -> REQUEST-LIST COMP project from AUTH service subscription  ', project)
 
       if (project) {
-        this.projectId = project._id
+        this.projectId = project._id;
+        this.projectName = project.name;
       }
     });
 
@@ -214,7 +213,7 @@ export class RequestsListComponent implements OnInit {
   // + '&prechatform=' + this.preChatForm
   testWidgetPage() {
     // const url = 'http://support.tiledesk.com/testsite/?projectid=' + this.projectId;
-    const url = 'http://testwidget.tiledesk.com/testsite/?projectid=' + this.projectId;
+    const url = 'http://testwidget.tiledesk.com/testsite?projectid=' + this.projectId + '&projectname=' + this.projectName;
     window.open(url, '_blank');
   }
   // addOrUpdateRequestsList(r: Request) {

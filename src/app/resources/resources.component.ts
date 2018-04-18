@@ -14,6 +14,8 @@ export class ResourcesComponent implements OnInit {
 
   projectId: string;
   preChatForm = false;
+  projectName: string;
+
   http: Http;
 
   // preChatForm = 'preChatForm'
@@ -31,7 +33,8 @@ export class ResourcesComponent implements OnInit {
       console.log('00 -> RESOURCES COMP project from AUTH service subscription  ', project)
 
       if (project) {
-        this.projectId = project._id
+        this.projectId = project._id;
+        this.projectName = project.name;
       }
     });
 
@@ -68,7 +71,8 @@ export class ResourcesComponent implements OnInit {
 
   testWidgetPage() {
     // http://testwidget.tiledesk.com/testsite/?projectid=5ad069b123c415001469574f&prechatform=false
-    const url = 'http://testwidget.tiledesk.com/testsite/?projectid=' + this.projectId + '&prechatform=' + this.preChatForm;
+    // tslint:disable-next-line:max-line-length
+    const url = 'http://testwidget.tiledesk.com/testsite?projectid=' + this.projectId + '&prechatform=' + this.preChatForm + '&projectname=' + this.projectName;
     window.open(url, '_blank');
   }
 

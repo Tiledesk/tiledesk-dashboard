@@ -199,8 +199,8 @@ export class AuthService {
                   console.log('3. FIREBASE CUSTOM AUTH DATA ', data);
 
                   /* UPDATE THE THE USER CREATE ON FIREBASE WITH THE CUSTOM TOKEN WITH THE EMAIL AND THE PASSWORD */
-                  data.updateEmail(email);
-                  data.updatePassword(password)
+                  // data.updateEmail(email);
+                  // data.updatePassword(password);
 
 
                   /* CHAT21-CLOUD-FUNCTIONS - CREATE CONTACT */
