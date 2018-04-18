@@ -390,18 +390,18 @@ export class DepartmentEditAddComponent implements OnInit {
     this.router.navigate(['project/' + this.project._id + '/createfaqkb']);
   }
 
-  // TEST CHAT21-API-NODEJS router.get('/:departmentid/assignees'
+  // TEST CHAT21-API-NODEJS router.get('/:departmentid/operators'
   getDeptByIdToTestChat21AssigneesFunction() {
     this.mongodbDepartmentService.testChat21AssignesFunction(this.id_dept).subscribe((dept: any) => {
-      console.log('-- -- -- TEST func - GET DEPT (DETAILS) BY ID - DEPT OBJECT: ', dept);
+      console.log('-- -- -- TEST func - RESULT: ', dept);
 
     },
       (error) => {
-        console.log('-- -- -- TEST func - GET DEPT BY ID - ERROR ', error);
+        console.log('-- -- -- TEST func - ERROR ', error);
         // this.showSpinner = false;
       },
       () => {
-        console.log('-- -- --TEST func - GET DEPT BY ID - COMPLETE ');
+        console.log('-- -- --TEST func * COMPLETE *');
 
       });
 

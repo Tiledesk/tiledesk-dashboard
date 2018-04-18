@@ -236,12 +236,12 @@ export class MongodbDepartmentService {
   }
 
 /**
- * READ DETAIL (TEST CHAT 21 router.get('/:departmentid/assignees')
+ * READ DETAIL (TEST CHAT 21 router.get('/:departmentid/operators')
  * @param id
  */
   public testChat21AssignesFunction(id: string): Observable<Department[]> {
     let url = this.MONGODB_BASE_URL;
-    url += id + '/assignees';
+    url += id + '/operators';
     console.log('-- -- -- URL FOR TEST CHAT21 FUNC ', url);
 
     const headers = new Headers();
