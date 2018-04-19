@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { MongodbDepartmentService } from '../services/mongodb-department.service';
 import { Department } from '../models/department-model';
 import { FaqKbService } from '../services/faq-kb.service';
+import { Router } from '@angular/router';
+import { AuthService } from '../core/auth.service';
+import { Project } from '../models/project-model';
 
 @Component({
   selector: 'app-routing-page',
@@ -25,16 +28,34 @@ export class RoutingPageComponent implements OnInit {
   selectedBotId: string;
   botIdEdit: string;
   selectedId: string;
+  showSpinner: boolean
+
+  displayInfoModal = 'none';
+  SHOW_CIRCULAR_SPINNER = false;
+  project: Project;
 
   constructor(
     private mongodbDepartmentService: MongodbDepartmentService,
     private faqKbService: FaqKbService,
+    private router: Router,
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
+    this.showSpinner = true;
+
     this.getDeptsByProjectId();
 
     this.getFaqKbByProjecId();
+
+    this.getCurrentProject();
+  }
+
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+      this.project = project
+      // console.log('00 -> DEPT EDIT/ADD COMP project ID from AUTH service subscription  ', this.project._id)
+    });
   }
 
   getDeptsByProjectId() {
@@ -59,11 +80,11 @@ export class RoutingPageComponent implements OnInit {
           }
         })
       }
-      // this.showSpinner = false;
+      this.showSpinner = false;
       // this.departments = departments;
     },
       error => {
-        // this.showSpinner = false;
+        this.showSpinner = false;
         console.log('ROUTING PAGE - DEPTS (FILTERED FOR PROJECT ID) - ERROR', error);
       },
       () => {
@@ -71,11 +92,11 @@ export class RoutingPageComponent implements OnInit {
 
         if (this.botId === undefined) {
           console.log(' !!! BOT ID UNDEFINED ', this.botId);
-          // this.showSpinner = false;
-          // this.selectedValue = 'Selezione FAQ KB';
+          this.showSpinner = false;
+
 
         } else if (this.botId == null) {
-
+          this.showSpinner = false;
           console.log(' !!! BOT ID NULL ', this.botId);
         } else {
 
@@ -103,11 +124,11 @@ export class RoutingPageComponent implements OnInit {
     },
       (error) => {
         console.log('GET FAQ-KB BY ID (SUBSTITUTE BOT) - ERROR ', error);
-        // this.showSpinner = false;
+        this.showSpinner = false;
       },
       () => {
         console.log('GET FAQ-KB ID (SUBSTITUTE BOT) - COMPLETE ');
-        // this.showSpinner = false;
+        this.showSpinner = false;
 
       });
 
@@ -176,6 +197,9 @@ export class RoutingPageComponent implements OnInit {
   }
 
   edit() {
+    this.displayInfoModal = 'block'
+    this.SHOW_CIRCULAR_SPINNER = true;
+
     console.log('DEPT ID WHEN EDIT IS PRESSED ', this.id_dept);
     console.log('DEPT FULL-NAME WHEN EDIT IS PRESSED ', this.default_dept_name);
     console.log('BOT ID WHEN EDIT IS PRESSED IF USER HAS SELECT ANOTHER BOT', this.selectedBotId);
@@ -211,13 +235,26 @@ export class RoutingPageComponent implements OnInit {
     },
       (error) => {
         console.log('PUT REQUEST ERROR ', error);
+        this.SHOW_CIRCULAR_SPINNER = false;
       },
       () => {
         console.log('PUT REQUEST * COMPLETE *');
-
+        this.SHOW_CIRCULAR_SPINNER = false;
 
       });
 
+  }
+
+  onCloseInfoModalHandled() {
+    this.displayInfoModal = 'none'
+  }
+
+  onCloseModal() {
+    this.displayInfoModal = 'none';
+  }
+
+  goTo_BotEditAddPage_CREATE() {
+    this.router.navigate(['project/' + this.project._id + '/createfaqkb']);
   }
 
 }
