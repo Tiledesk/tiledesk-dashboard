@@ -1,16 +1,18 @@
 <!-- <span *ngIf="!LOGIN_PAGE"> -->
-<div *ngIf="project" class="logo" style="background-color: #eeeeee">
+<!-- #eeeeee -->
+<div *ngIf="project" class="logo" style="background-color: #191919; padding-bottom: 10px; ">
     <!-- <a href="https://www.creative-tim.com" class="simple-text"> -->
     <a routerLink="project/{{ project._id }}/home" class="simple-text" style="text-transform: none; padding-left: 40px;">
        
         <div class="logo-img">
             
-            <img style="width:50%" src="assets/img/tiledesk-logo.svg"/>
+            <img style="width:50%; padding-top: 5px;" src="assets/img/tiledesk-logo.svg"/>
         </div>
         <!-- <span>chat21</span> -->
     </a>
 </div>
-<div class="sidebar-wrapper" style="background-color: #eeeeee">
+<!-- #eeeeee -->
+<div class="sidebar-wrapper" style="background-color: #191919">
     <!-- SEARCH MOBILE MENU -->
     <!-- <form class="navbar-form navbar-right" role="search" *ngIf="isMobileMenu()">
         <div class="form-group form-black is-empty">
@@ -29,9 +31,15 @@
                 <p class="hidden-lg hidden-md">{{ project?.name }}</p>
             </a>
             <ul *ngIf="project" class="dropdown-menu">
-                <li (click)="goToProjects()"><a >Visualizza tutti i progetti</a></li>
+                <li (click)="goToProjects()">
+                    <a>
+                        Visualizza tutti i progetti
+                    </a>
+                </li>
                 <li>
-                    <a routerLink="/project/edit/{{ project._id }}">Impostazioni</a>
+                    <a routerLink="/project/edit/{{ project._id }}">
+                        Impostazioni progetto
+                    </a>
                 </li>
             </ul>
         </li>
@@ -49,15 +57,27 @@
                <p class="hidden-lg hidden-md">Profilo</p>
             </a>
             <ul *ngIf="user" class="dropdown-menu">
-                <h6 style="text-align: center; margin-top:0px"><a routerLink="/user-profile"> VEDI PROFILO </a></h6>
+                <h6 style="text-align: center; margin-top:0px;">
+                    <li>
+                        <a style="color: rgba(255,255,255,0.6) " routerLink="/user-profile"> 
+                            VEDI PROFILO 
+                        </a>
+                    </li>
+                 </h6>
                 <!-- color: #3C4858 -->
                 <h6 style="text-align: center; text-transform: none; font-size: 0.7; color: #333"> 
                     <strong>
                         {{ user?.firstname }} {{ user?.lastname }}
                     </strong>
                 </h6>
-                <h6 style="text-align: center; text-transform: none; font-size: 0.7; color: #333">{{ user?.email }}</h6>
-                <li><a style="text-align: center; cursor: pointer" (click)="logout()">LOGOUT</a></li>
+                <h6 style="text-align: center; text-transform: none; font-size: 0.7; color: #333">
+                    {{ user?.email }}
+                </h6>
+                <li>
+                    <a style="text-align: center; cursor: pointer" (click)="logout()">
+                        LOGOUT
+                    </a>
+                </li>
             </ul>
         </li>
     </ul>
@@ -66,35 +86,51 @@
         <ul class="nav">
             
             <!-- SELECT AVAILABLE / UNAVAILABLE -->
-             <li *ngIf="project">
+             <li *ngIf="project" style="margin-left: 10px;">
                 <!-- <a *ngIf="!IS_UNAVAILABLE"  -->
-
+                <!-- width: 175px; -->
+                <!-- #e5e4e5; -->
                 <a *ngIf="IS_AVAILABLE" 
-                    style="background-color: #e5e4e5; 
+                    style="background-color: rgba(255,255,255,0.2);                  
                            border-radius: 10px;
                            display:block;
                            margin:0 auto;
-                           width: 175px;
+                           width: 208px;
                            padding: 5px 10px; 
                            cursor: pointer" 
                     (click)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)">
 
-                    <i class="material-icons" style=" font-size: 16px; color: #1eb848; margin-right:0px">fiber_manual_record</i>
-                    <p style="color:#a9afbb">{{ 'Available' | translate }}</p>
+                    <i class="material-icons" style="font-size: 16px; color: #1eb848; margin-right:0px; padding-right: 8px">
+                        fiber_manual_record
+                    </i>
+                    <!-- #a9afbb -->
+                    <p style="color:#fff ;">
+                        <span style="padding-left: 8px">
+                            {{ 'Available' | translate }}
+                        </span>
+                     </p>
                 </a>
                 <!-- <a *ngIf="IS_UNAVAILABLE"  -->
+
+                <!-- width: 175px;  -->
                 <a *ngIf="!IS_AVAILABLE" 
-                    style="background-color: #e5e4e5; 
+                    style="background-color: rgba(255,255,255,0.2); 
                            border-radius: 10px;
                            display:block;
                            margin:0 auto;
-                           width: 175px;  
+                           width: 208px;  
                            padding: 5px 10px; 
                            cursor: pointer" 
                       (click)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)">
 
-                    <i class="material-icons" style=" font-size: 16px; color: #cac9c9; margin-right:0px">fiber_manual_record</i>           
-                    <p style="color:#cac9c9">{{ 'Unavailable' | translate }}</p>
+                    <i class="material-icons" style=" font-size: 16px; color: #cac9c9; margin-right:0px; padding-right: 8px ">
+                        fiber_manual_record
+                    </i>           
+                    <p style="color:#cac9c9">
+                        <span style="padding-left: 8px">
+                            {{ 'Unavailable' | translate }}
+                        </span>
+                    </p>
                 </a>
             </li>
 
@@ -111,7 +147,7 @@
             <li *ngIf="project" routerLinkActive="active" >
                 <a routerLink="project/{{ project._id }}/home">
                     <i class="material-icons">dashboard</i>
-                    <p>Home</p>
+                    <p class="onBlackBckgrnd">Home</p>
                 </a>
             </li>
 
@@ -119,7 +155,7 @@
             <li *ngIf="project" routerLinkActive="active" >
                 <a routerLink="project/{{ project._id }}/requests">
                     <i class="material-icons">group</i>
-                    <p>{{ 'Visitors' | translate }}</p>
+                    <p class="onBlackBckgrnd">{{ 'Visitors' | translate }}</p>
                 </a>
             </li>
 
@@ -127,7 +163,7 @@
             <li *ngIf="project" routerLinkActive="active" >
                 <a routerLink="/chat">
                     <i class="material-icons">chat</i>
-                    <p>Chat</p>
+                    <p class="onBlackBckgrnd">Chat</p>
                 </a>
             </li>
 
@@ -144,7 +180,7 @@
             <li *ngIf="project" routerLinkActive="active" >
                 <a routerLink="project/{{ project._id }}/analytics">
                     <i class="material-icons">trending_up</i>
-                    <p>Analytics</p>
+                    <p class="onBlackBckgrnd">Analytics</p>
                 </a>
             </li>
             
@@ -152,7 +188,7 @@
             <li *ngIf="project" routerLinkActive="active" >
                 <a routerLink="project/{{ project._id }}/history">
                     <i class="material-icons">history</i>
-                    <p>{{ 'History' | translate }}</p>
+                    <p class="onBlackBckgrnd">{{ 'History' | translate }}</p>
                 </a>
             </li>
             <!-- SETTINGS -->
@@ -161,7 +197,7 @@
                 <!-- routerLink="/settings" -->
                 <a>
                     <i class="material-icons">settings</i>
-                    <p>{{ 'Settings' | translate }} <b class="caret" style="position: absolute;right: 18px; margin-top: 13px" [ngStyle]="{'transform': trasform}"></b></p>
+                    <p class="onBlackBckgrnd">{{ 'Settings' | translate }} <b class="caret" style="position: absolute;right: 18px; margin-top: 13px" [ngStyle]="{'transform': trasform}"></b></p>
                 </a>
             </li>
             <!--  -->

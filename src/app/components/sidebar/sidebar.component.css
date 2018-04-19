@@ -14,3 +14,48 @@ li.active a span.sidebar-mini  {
     color: #a9afbb;
     font-size:1.2em
 }
+
+/* START - USED WITH SIDWBAR WITH BLACK BACKGROUND */
+.onBlackBckgrnd {
+    color: rgba(255,255,255,0.6)
+}
+
+li.active a p.onBlackBckgrnd {
+    color: #ffffff !important
+}
+
+span.sidebar-normal {
+    color: rgba(255,255,255,0.6)
+}
+
+li.active a span.sidebar-normal {
+    color: #ffffff !important
+}
+
+
+/* start - mobile sidebar USED WITH SIDWBAR WITH BLACK BACKGROUND */
+p.hidden-lg.hidden-md{
+    color: rgba(255,255,255,0.6)
+}
+li.active p.hidden-lg.hidden-md {
+    color: rgba(25,25,25,1) !important
+}
+.nav .open > a > p.hidden-lg.hidden-md {
+    color: rgba(25,25,25,1) !important
+}
+ul.dropdown-menu > li > a {
+    color: rgba(255,255,255,0.6)
+}
+/* end - mobile sidebar USED WITH SIDWBAR WITH BLACK BACKGROUND */
+/* END - USED WITH SIDWBAR WITH BLACK BACKGROUND */
+
+
+li.active a span.sidebar-mini  {
+
+    color: #ffffff !important
+}
+
+/* CUSTOM MARGIN BETWEEN THE MENU ITEM*/
+.nav li > a  {
+    margin: 5px 15px !important;
+}
