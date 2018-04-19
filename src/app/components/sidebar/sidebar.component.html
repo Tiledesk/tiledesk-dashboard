@@ -183,6 +183,22 @@
             <!-- (click)="setActiveClassToSettings()" -->
             <!-- padding-left:15px; -->
 
+            <!-- ROUTING -->
+            <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active">
+                <a *ngIf="project" routerLink="project/{{ project._id }}/routing">
+                   
+                    <span class="sidebar-mini">
+                        R 
+                    </span>
+                   
+                    <span class="sidebar-normal">
+                        Routing 
+                    </span> 
+                
+                </a>
+            </li>
+
+            <!-- USERS (ALIAS MEMBERS) -->
             <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active">
                 <a *ngIf="project" routerLink="project/{{ project._id }}/users">
                    

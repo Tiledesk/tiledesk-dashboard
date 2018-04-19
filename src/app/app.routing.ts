@@ -57,7 +57,7 @@ import { SocialComponent } from './social/social.component';
 import { FaqTestComponent } from './faq-test/faq-test.component';
 import { UserEditAddComponent } from './user-edit-add/user-edit-add.component';
 import { UsersProfileComponent } from './users-profile/users-profile.component';
-
+import { RoutingPageComponent } from './routing-page/routing-page.component';
 
 // import { DashboardComponent} from './dashboard/dashboard.component';
 // Andrea
@@ -85,11 +85,11 @@ const routes: Routes = [
   { path: 'project/edit/:projectid', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
 
   // { path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
-  { path: 'project/:projectid/home', component: HomeComponent, canActivate: [AuthGuard]},
+  { path: 'project/:projectid/home', component: HomeComponent, canActivate: [AuthGuard] },
   // { path: 'login', component: UserLoginComponent },
   { path: 'login', component: SigninComponent },
   { path: 'signup', component: SignupComponent },
-  { path: 'welcome', component: WelcomeComponent},
+  { path: 'welcome', component: WelcomeComponent },
 
 
   // firestore user CRUD
@@ -113,8 +113,8 @@ const routes: Routes = [
   // IS THE PROFILE OF THE LOGGED USER
   { path: 'project/:projectid/user-profile', component: UserProfileComponent },
 
-   // IS THE PROFILE OF THE LOGGED USER THAT IS ON THE PROJECTS PAGE (THE USER HAS NOT YET SELECTED A PROJECT)
-   { path: 'user-profile', component: UserProfileComponent },
+  // IS THE PROFILE OF THE LOGGED USER THAT IS ON THE PROJECTS PAGE (THE USER HAS NOT YET SELECTED A PROJECT)
+  { path: 'user-profile', component: UserProfileComponent },
 
   { path: 'project/:projectid/faqkb', component: FaqKbComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/createfaqkb', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },
@@ -140,11 +140,13 @@ const routes: Routes = [
   { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/history', component: RequestsListHistoryComponent, canActivate: [AuthGuard] },
-  
-  { path: 'project/:projectid/resources', component: ResourcesComponent },
-  { path: 'project/:projectid/script', component: ScriptComponent },
-  { path: 'project/:projectid/channels', component: ChannelsComponent },
-  { path: 'project/:projectid/social', component: SocialComponent },
+
+  { path: 'project/:projectid/resources', component: ResourcesComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/script', component: ScriptComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/channels', component: ChannelsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/social', component: SocialComponent, canActivate: [AuthGuard] },
+
+  { path: 'project/:projectid/routing', component: RoutingPageComponent, canActivate: [AuthGuard] },
 
 
 

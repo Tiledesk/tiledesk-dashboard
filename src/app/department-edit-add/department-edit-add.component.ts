@@ -248,7 +248,7 @@ export class DepartmentEditAddComponent implements OnInit {
     this.SHOW_OPTION_FORM = show_option_form;
     this.ROUTING_SELECTED = routing
     console.log('HAS CLICKED POOLED  - SHOW OPTION ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
-    
+
     // ONLY FOR THE EDIT VIEW (see above in ngOnInit the logic for the EDIT VIEW)
     this.dept_routing = 'pooled'
 
