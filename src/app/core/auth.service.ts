@@ -211,7 +211,7 @@ export class AuthService {
 
 
                   //   const credential = firebase.auth.EmailAuthProvider.credential(
-                  //     user.email, 
+                  //     user.email,
                   //     userProvidedPassword
                   // );
 

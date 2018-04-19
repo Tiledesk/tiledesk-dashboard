@@ -85,6 +85,7 @@ import { FaqTestComponent } from './faq-test/faq-test.component';
 import { UserEditAddComponent } from './user-edit-add/user-edit-add.component';
 import { UsersProfileComponent } from './users-profile/users-profile.component';
 import { UsersLocalDbService } from './services/users-local-db.service';
+import { RoutingPageComponent } from './routing-page/routing-page.component';
 
 
 
@@ -131,6 +132,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     FaqTestComponent,
     UserEditAddComponent,
     UsersProfileComponent,
+    RoutingPageComponent,
 
   ],
   imports: [

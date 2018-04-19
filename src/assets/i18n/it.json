@@ -55,6 +55,7 @@
         "Lastname": "Cognome",
         "UserId": "Id utente",
         "Role": "Ruolo",
+        "Available":"Disponibile",
         "Actions": "Azioni",
         "tootipDeleteUser": "Elimina Membro",
         "modalDeleteUser": "Elimina Membro",

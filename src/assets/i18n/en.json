@@ -55,6 +55,7 @@
         "Lastname": "Lastname",
         "UserId": "User Id",
         "Role": "Role",
+        "Available":"Available",
         "Actions": "Actions",
         "tootipDeleteUser": "Delete Member",
         "modalDeleteUser": "Delete Member",
