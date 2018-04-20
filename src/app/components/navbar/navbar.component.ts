@@ -17,6 +17,7 @@ import * as firebase from 'firebase/app';
 import { forEach } from '@angular/router/src/utils/collection';
 
 import { Project } from '../../models/project-model';
+import { UsersService } from '../../services/users.service';
 
 
 @Component({
@@ -49,6 +50,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     private shown_requests = {};
 
     project: Project;
+    projectUser_id: string;
 
     constructor(
         location: Location,
@@ -60,6 +62,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         private router: Router,
         // FOR TEST
         private afs: AngularFirestore,
+        private usersService: UsersService
     ) {
         this.location = location;
         this.sidebarVisible = false;
@@ -99,6 +102,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
         this.getCurrentProject();
 
+        this.getProjectUserId();
+
     } // OnInit
 
     getCurrentProject() {
@@ -123,7 +128,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
         // (in AUTH SERVICE ) RESET PROJECT_BS AND REMOVE ITEM PROJECT FROM STORAGE WHEN THE USER GO TO PROJECTS PAGE
         this.auth.hasClickedGoToProjects()
-        console.log('00 -> NAVBAR project AFTER GOTO PROJECTS ', this.project )
+        console.log('00 -> NAVBAR project AFTER GOTO PROJECTS ', this.project)
     }
 
     // NEW
@@ -484,12 +489,36 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         return 'Dashboard';
     }
 
+
+
+    getProjectUserId() {
+        this.usersService.project_user_id_bs.subscribe((projectUser_id) => {
+            console.log('NAV-BAR - PROJECT-USER-ID ', projectUser_id);
+            this.projectUser_id = projectUser_id;
+        });
+    }
+
+
+    setUnavailableAndlogout() {
+
+        this.usersService.updateProjectUser(this.projectUser_id, false).subscribe((projectUser: any) => {
+            console.log('PROJECT-USER UPDATED ', projectUser)
+        },
+            (error) => {
+                console.log('PROJECT-USER UPDATED ERR  ', error);
+            },
+            () => {
+                console.log('PROJECT-USER UPDATED  * COMPLETE *');
+                this.logout();
+            });
+    }
+
     logout() {
+        console.log('RUN LOGOUT FROM NAV-BAR')
         this.auth.signOut();
         // this.display = 'none';
         // localStorage.clear();
     }
-
 
 
 }

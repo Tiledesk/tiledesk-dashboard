@@ -65,7 +65,9 @@ export class UsersService {
     });
 
     this.getCurrentProject();
+
   }
+
 
 
   getCurrentProject() {
@@ -225,6 +227,7 @@ export class UsersService {
     this.user_is_available_bs.next(user_available);
   }
 
+
   /**
    * UPDATE (PUT)
    */
@@ -249,5 +252,7 @@ export class UsersService {
       .map((res) => res.json());
 
   }
+
+
 
 }
