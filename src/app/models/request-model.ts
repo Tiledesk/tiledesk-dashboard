@@ -20,5 +20,5 @@ export interface Request {
   members_as_string?: any;
   served_by?: any;
   notification_already_shown?: boolean;
-
+  departmentName?: string;
 }

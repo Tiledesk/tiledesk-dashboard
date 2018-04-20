@@ -26,19 +26,23 @@
 
     <ul class="nav nav-mobile-menu" *ngIf="isMobileMenu()">
         <li  *ngIf="project">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" (click)="has_cliked_hidden_project(SHOW_PRJCT_SUB = !SHOW_PRJCT_SUB)" style="cursor:pointer">
                 <i class="material-icons">apps</i>
-                <p class="hidden-lg hidden-md">{{ project?.name }}</p>
+                <p class="hidden-lg hidden-md">{{ project?.name }} 
+                    <b style="position: absolute; top: 23px; right: 15px;" class="caret" [ngStyle]="{'transform': trasform_projectname_caret}"></b>
+                </p>
             </a>
             <ul *ngIf="project" class="dropdown-menu">
                 <li (click)="goToProjects()">
-                    <a>
-                        Visualizza tutti i progetti
+                    <a style="cursor:pointer">
+                        <!-- Visualizza tutti i progetti -->
+                        {{ "SideBar.ViewAllProjects" | translate }}
                     </a>
                 </li>
                 <li>
                     <a routerLink="/project/edit/{{ project._id }}">
-                        Impostazioni progetto
+                        <!-- Impostazioni progetto -->
+                        {{ "SideBar.ProjectSettings" | translate }}
                     </a>
                 </li>
             </ul>
@@ -51,28 +55,35 @@
             </a>
         </li> -->
         <li>
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" (click)="has_cliked_hidden_profile(SHOW_PROFILE_SUB = !SHOW_PROFILE_SUB)">
                <i class="material-icons">person</i>
                <!-- Profile -->
-               <p class="hidden-lg hidden-md">Profilo</p>
+               <p class="hidden-lg hidden-md">
+                   <!-- Profilo -->
+                   {{ user?.firstname }} {{ user?.lastname }}
+                   <b style="position: absolute; top: 23px; right: 15px;" class="caret" [ngStyle]="{'transform': transform_user_profile_caret}"></b>
+                </p>
             </a>
             <ul *ngIf="user" class="dropdown-menu">
-                <h6 style="text-align: center; margin-top:0px;">
+                <!-- <h6 style="text-align: center; margin-top:0px;"> -->
                     <li>
-                        <a style="color: rgba(255,255,255,0.6) " routerLink="/user-profile"> 
-                            VEDI PROFILO 
+                        <a style="color: rgba(255,255,255,0.6); text-align: center; " routerLink="/user-profile"> 
+                            <!-- VEDI PROFILO  -->
+                            {{ "SideBar.UserProfile" | translate }}
                         </a>
                     </li>
-                 </h6>
+                 <!-- </h6> -->
                 <!-- color: #3C4858 -->
-                <h6 style="text-align: center; text-transform: none; font-size: 0.7; color: #333"> 
+
+                <!-- COMMENTED FOR NOW -->
+                <!-- <h6 style="text-align: center; text-transform: none; font-size: 0.7; color: #333"> 
                     <strong>
                         {{ user?.firstname }} {{ user?.lastname }}
                     </strong>
                 </h6>
                 <h6 style="text-align: center; text-transform: none; font-size: 0.7; color: #333">
                     {{ user?.email }}
-                </h6>
+                </h6> -->
                 <li>
                     <a style="text-align: center; cursor: pointer" (click)="logout()">
                         LOGOUT
@@ -197,7 +208,10 @@
                 <!-- routerLink="/settings" -->
                 <a>
                     <i class="material-icons">settings</i>
-                    <p class="onBlackBckgrnd">{{ 'Settings' | translate }} <b class="caret" style="position: absolute;right: 18px; margin-top: 13px" [ngStyle]="{'transform': trasform}"></b></p>
+                    <p class="onBlackBckgrnd">
+                        {{ 'Settings' | translate }} 
+                        <b class="caret" style="position: absolute;right: 18px; margin-top: 13px" [ngStyle]="{'transform': trasform}"></b>
+                    </p>
                 </a>
             </li>
             <!--  -->

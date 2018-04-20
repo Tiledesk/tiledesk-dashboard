@@ -25,6 +25,11 @@
         "ProjectSettings": "Project settings",
         "UserProfile": "VIEW PROFILE"
     },
+    "SideBar": {
+        "ViewAllProjects": "View all projects",
+        "ProjectSettings": "Project settings",
+       "UserProfile": "VIEW PROFILE"
+    },
     "ProjectsPage": {
         "Welcome": "Welcome",
         "BuildYourCustomer_1": "Build your customer support with intelligent bots",

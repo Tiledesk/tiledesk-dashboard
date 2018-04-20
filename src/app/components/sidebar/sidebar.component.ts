@@ -49,12 +49,20 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // SHOW_SETTINGS_SUBMENU = false;
     SHOW_SETTINGS_SUBMENU = false;
     SETTINGS_SUBMENU_WAS_OPEN: any;
+
+    // FOR THE CARETS IN SIDEBAR IN MOBILE MODE
+    SHOW_PRJCT_SUB = false;
+    SHOW_PROFILE_SUB = false;
+
     // NO MORE USED
     // isActive: string;
 
     // switch up and down the caret of menu item settings
     // trasform = 'none';
     trasform = 'none';
+    trasform_projectname_caret = 'none';
+    transform_user_profile_caret = 'none';
+
     unservedRequestCount: number;
 
     // route: string;
@@ -279,6 +287,26 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             this.trasform = 'rotate(180deg)';
         } else {
             this.trasform = 'none';
+        }
+    }
+
+    // USED FOR SIDEBAR IN MOBILE MODE (TOGGLE THE CARET OF THE 'PROJECT NAME' DROPDOWN-MENU)
+    has_cliked_hidden_project(SHOW_PRJCT_SUB) {
+        console.log('HAS CLICKED PROJECT NAME ON MOBILE - SHOW SUBMENU ', this.SHOW_PRJCT_SUB);
+        if (this.SHOW_PRJCT_SUB === true) {
+            this.trasform_projectname_caret = 'rotate(180deg)';
+        } else {
+            this.trasform_projectname_caret = 'none';
+        }
+    }
+
+    // USED FOR SIDEBAR IN MOBILE MODE (TOGGLE THE CARET OF THE 'NAME OF THE CURRENT USER' DROPDOWN-MENU)
+    has_cliked_hidden_profile(SHOW_PROFILE_SUB) {
+        console.log('HAS CLICKED NAME OF THE CURRENT USER ON MOBILE - SHOW SUBMENU ', this.SHOW_PRJCT_SUB);
+        if (this.SHOW_PROFILE_SUB === true) {
+            this.transform_user_profile_caret = 'rotate(180deg)';
+        } else {
+            this.transform_user_profile_caret = 'none';
         }
     }
 

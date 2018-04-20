@@ -216,6 +216,7 @@ export class RequestsService {
     // const observer = Observable.create(query.onSnapshot.bind(query));
     const observable = new Observable<Request[]>(observer => {
       this.unsubscribe = query.onSnapshot(snapshot => {
+        console.log('REQUEST SNAPSHOT ', snapshot)
         const requestListReturned: Request[] = snapshot.docChanges.map((c: DocumentChange) => {
           // const requestListReturned: Request[] = snapshot.docs.map((c: DocumentSnapshot) => {
           const r: Request = {};
@@ -235,6 +236,7 @@ export class RequestsService {
           r.currentUserIsJoined = currentUserUidIsInMembers(data.members, this.currentUserID)
           r.requester_fullname = data.requester_fullname
           r.requester_id = data.requester_id
+          r.departmentName = data.departmentName
           return r;
         });
         observer.next(requestListReturned);
