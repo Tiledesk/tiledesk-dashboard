@@ -59,14 +59,16 @@
                         <strong> Requester Id </strong>
                       </span>
                     </th> -->
-                    <th>
+
+                    <!-- SERVED BY OF UNSERVED REQUEST -->
+                    <!-- <th>
                       <span style="color: #566787">
                         <strong> 
-                        <!-- Servita da  -->
+                       
                         {{ 'VisitorsPage.ServedBy' | translate }}
                         </strong>
                       </span>
-                      </th>
+                    </th> -->
                     <!-- <th>
                       <span style="color: #566787">          
                         <strong> Membri </strong>
@@ -195,15 +197,16 @@
                     </p>
                   </td> -->
 
-                  <!--    NEW SERVED BY    -->
-                  <span *ngFor="let m of request?.members_array"  style="font-size:0.8em; cursor: pointer;">
+                  <!--    NEW SERVED BY  OF UNSERVED REQUEST  -->
+                  <!-- <span *ngFor="let m of request?.members_array"  style="font-size:0.8em; cursor: pointer;">
                     <span *ngIf="m !== request?.requester_id && m !== 'system' && m !== currentUserID"> 
                       <p (click)="goToMemberProfile( m )" [innerHTML]="members_replace( m )" style="padding-top:1px; padding-bottom:1px;">  </p>
                     </span> 
                     <p *ngIf="m === currentUserID" style="padding-top:1px; padding-bottom:1px;"> 
                       - <strong> 'ME' </strong>
                     </p>
-                  </span>
+                  </span> -->
+
                   <!-- LIST  OF MEMBERS -->
                   <!-- <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined)' style="cursor:pointer">
                     <p style="font-size:0.8em; min-width: 220px;"  [innerHTML]="request?.members_as_string"></p>
@@ -574,7 +577,7 @@
                        target="_blank" href="http://support.chat21.org/web/?recipient={{requestRecipient}}" 
                        style="padding:12px 16px !important;"> -->
                     <a class="btn btn-info" role="button" style="color: white;" 
-                        target="_blank" href="http://support.tiledesk.com/web/?recipient={{requestRecipient}}" 
+                        target="_blank" href="http://support.tiledesk.com/chat/?recipient={{requestRecipient}}" 
                         style="padding:12px 16px !important;">   
                       <!-- Entra -->
                       {{ 'VisitorsPage.Enter' | translate }}
