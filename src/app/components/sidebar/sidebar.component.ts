@@ -317,6 +317,19 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // }
 
 
+    setUnavailableAndlogout() {
+
+        this.usersService.updateProjectUser(this.projectUser_id, false).subscribe((projectUser: any) => {
+            console.log('PROJECT-USER UPDATED ', projectUser)
+        },
+            (error) => {
+                console.log('PROJECT-USER UPDATED ERR  ', error);
+            },
+            () => {
+                console.log('PROJECT-USER UPDATED  * COMPLETE *');
+                this.logout();
+            });
+    }
 
     logout() {
         this.auth.signOut();
