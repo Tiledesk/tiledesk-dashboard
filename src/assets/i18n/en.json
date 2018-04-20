@@ -122,6 +122,7 @@
     "VisitorsPage": {
         "UnservedRequests": "Unserved requests",
         "ServedRequests": "Served requests",
+        "Department":"Department",
         "Requester": "Requester",
         "Message": "Message",
         "ServedBy": "Served by",

@@ -237,6 +237,7 @@ export class RequestsService {
           r.requester_fullname = data.requester_fullname
           r.requester_id = data.requester_id
           r.departmentName = data.departmentName
+          r.attributes = data.attributes
           return r;
         });
         observer.next(requestListReturned);

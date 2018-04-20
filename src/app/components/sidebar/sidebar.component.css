@@ -56,6 +56,6 @@ li.active a span.sidebar-mini  {
 }
 
 /* CUSTOM MARGIN BETWEEN THE MENU ITEM*/
-.nav li > a  {
+.nav li > a.customAncor  {
     margin: 5px 15px !important;
 }

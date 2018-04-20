@@ -28,16 +28,16 @@
             <!-- id="email" -->
             <input type="email" class="input" formControlName="email" required>
               
-            <div *ngIf="formErrors.email" class="is-danger">
+            <!-- <div *ngIf="formErrors.email" class="is-danger">
               {{ formErrors.email }}
-            </div>
+            </div> -->
   
             <label for="password">Password</label>
             <input type="password" id="password" class="input" formControlName="password" required>
   
-            <div *ngIf="formErrors.password" class="is-danger">
+            <!-- <div *ngIf="formErrors.password" class="is-danger">
               {{ formErrors.password }}
-            </div>
+            </div> -->
   
             <button type="submit" style="width: 100%; background-color: #ff9800; height: 56px; font-size: 16px; letter-spacing: 2px;" class="btn btn-danger" [disabled]="!userForm.valid">
               <span *ngIf="!showSpinnerInLoginBtn"> Login </span>

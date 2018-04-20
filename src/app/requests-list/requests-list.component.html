@@ -34,6 +34,11 @@
                     </th>
                     <th>
                       <span style="color: #566787">
+                        <strong>{{ 'VisitorsPage.Department' | translate }}</strong>
+                      </span>  
+                    </th>
+                    <th>
+                      <span style="color: #566787">
                         <strong> 
                           <!-- Richiedente  -->
                           {{ 'VisitorsPage.Requester' | translate }}
@@ -85,7 +90,7 @@
 
                 <!-- IF THERE ISN'T REQUEST (SERVED OR UNSERVED) -->
                 <tr *ngIf="requestListServed.length === 0 && requestListUnserved.length === 0"> 
-                  <td colspan="6" style="text-align: center; padding-top: 16px; cursor: pointer" (click)="testWidgetPage()">
+                  <td colspan="7" style="text-align: center; padding-top: 16px; cursor: pointer" (click)="testWidgetPage()">
                     <!-- color: #ff5252   -->
                     <p style="font-size:1em; color:#999999; font-weight: 400">
                         <!-- Nessun Visitatore! Clicca qui per simulare un visitatore. -->
@@ -153,6 +158,15 @@
                       {{ replace_recipient(request?.recipient) }}
                     </p>
                   </td>
+
+                  <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id)' style="cursor:pointer">
+                    
+                    <p style="font-size:0.8em;" >
+
+                      {{ request?.attributes?.departmentName }}
+                    </p>
+                  </td>
+
                   <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
                     <!-- <p style="font-size:0.9em">{{ request.sender_fullname }}</p> -->
                     <p style="font-size:0.9em">
@@ -243,6 +257,13 @@
                       <strong>Id</strong>
                     </span>  
                   </th>
+
+                  <th>
+                    <span style="color: #566787">
+                      <strong>{{ 'VisitorsPage.Department' | translate }}</strong>
+                    </span>  
+                  </th>
+
                   <th>
                     <span style="color: #566787">
                       <strong> 
@@ -299,7 +320,7 @@
               
                  <!-- IF THERE ISN'T REQUEST (SERVED OR UNSERVED) -->
                 <tr *ngIf="requestListServed.length === 0 && requestListUnserved.length === 0"> 
-                  <td colspan="6" style="text-align: center; padding-top: 16px; cursor: pointer" (click)="testWidgetPage()">
+                  <td colspan="7" style="text-align: center; padding-top: 16px; cursor: pointer" (click)="testWidgetPage()">
                     <!-- color: #ff5252   -->
                     <p style="font-size:1em; color:#999999; font-weight: 400">
                         <!-- Nessun Visitatore! Clicca qui per simulare un visitatore. -->
@@ -366,6 +387,13 @@
                       {{ replace_recipient(request?.recipient) }}
                     </p>
                   </td>
+
+                  <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
+                    <p style="font-size:0.9em">
+                      {{ request?.attributes?.departmentName }}
+                    </p>
+                  </td>
+
                   <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
                     <!-- <p style="font-size:0.9em">{{ request.sender_fullname }}</p> -->
                     <p style="font-size:0.9em">

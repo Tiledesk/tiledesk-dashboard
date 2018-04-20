@@ -124,6 +124,7 @@
     "VisitorsPage": {
         "UnservedRequests": "Richieste non servite",
         "ServedRequests": "Richieste servite",
+        "Department":"Departimento",
         "Requester": "Richiedente",
         "Message": "Messagio",
         "ServedBy": "Servita da",
