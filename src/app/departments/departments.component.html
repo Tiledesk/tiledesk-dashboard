@@ -228,6 +228,17 @@
               </thead>
   
               <tbody>
+   
+                <!-- IF THERE ISN'T DEPARTMENTS -->
+                <tr *ngIf="departments.length === 1"> 
+                  <td colspan="5" style="text-align: center; padding-top: 16px;">
+                    <!-- color: #ff5252   -->
+                    <p style="font-size:1em; color:#999999; font-weight: 400">
+                        <!-- Nessun Visitatore! Clicca qui per simulare un visitatore. -->
+                        {{ 'DepartmentsPage.NoDept' | translate }}
+                      </p>
+                  </td>
+                </tr>
                 
                 <tr *ngFor="let dept of departments">
                   <td *ngIf="dept?.default !== true">

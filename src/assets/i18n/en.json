@@ -108,6 +108,7 @@
         "AddDepartment": "Add Department",
         "CreationDate": "Creation date",
         "Actions": "Actions",
+        "NoDept": "No Departments",
         "DeleteDepartmentWithId": "Delete department with id:",
         "AreYouSure": "Are you sure you want to delete the department ",
         "Confirm": "Confirm",

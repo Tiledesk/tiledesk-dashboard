@@ -110,6 +110,7 @@
         "AddDepartment": "Aggiungi Dipartimento",
         "CreationDate": "Data creazione",
         "Actions": "Azioni",
+        "NoDept": "Nessun Dipartimento",
         "DeleteDepartmentWithId": "Elimina dipartmento con id:",
         "AreYouSure": "Sei sicuro di voler eliminare il dipartimento ",
         "Confirm": "Conferma",
