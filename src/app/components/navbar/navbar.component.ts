@@ -18,6 +18,7 @@ import { forEach } from '@angular/router/src/utils/collection';
 
 import { Project } from '../../models/project-model';
 import { UsersService } from '../../services/users.service';
+import { environment } from '../../../environments/environment';
 
 
 @Component({
@@ -52,8 +53,9 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     project: Project;
     projectUser_id: string;
     route: string;
-    
+
     DETECTED_CHAT_PAGE = false;
+    CHAT_BASE_URL = environment.chat.CHAT_BASE_URL
 
     constructor(
         location: Location,

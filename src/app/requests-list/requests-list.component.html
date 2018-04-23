@@ -576,8 +576,10 @@
                     <!-- <a class="btn btn-info" role="button" style="color: white;" 
                        target="_blank" href="http://support.chat21.org/web/?recipient={{requestRecipient}}" 
                        style="padding:12px 16px !important;"> -->
+
+                       <!-- href="http://support.tiledesk.com/chat/?recipient={{requestRecipient}}" -->
                     <a class="btn btn-info" role="button" style="color: white;" 
-                        target="_blank" href="http://support.tiledesk.com/chat/?recipient={{requestRecipient}}" 
+                        target="_blank" href="{{ CHAT_BASE_URL }}?recipient={{requestRecipient}}" 
                         style="padding:12px 16px !important;">   
                       <!-- Entra -->
                       {{ 'VisitorsPage.Enter' | translate }}

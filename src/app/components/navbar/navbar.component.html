@@ -22,7 +22,8 @@
                             </a>
                         </li> -->
                         <li *ngIf="DETECTED_CHAT_PAGE">
-                            <a target="_blank" href="http://support.tiledesk.com/chat/">
+                                <!-- href="http://support.tiledesk.com/chat/" -->
+                            <a target="_blank" href="{{ CHAT_BASE_URL }}">
                             <i class="material-icons">open_in_new</i>
                                 
                                 {{ "NavBar.RunChatInAStandAloneTab"  | translate }}

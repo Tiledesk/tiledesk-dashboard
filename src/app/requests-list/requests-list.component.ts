@@ -23,6 +23,7 @@ import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
 import { Router } from '@angular/router';
 import { UsersLocalDbService } from '../services/users-local-db.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'requests-list',
@@ -32,6 +33,7 @@ import { UsersLocalDbService } from '../services/users-local-db.service';
 export class RequestsListComponent implements OnInit {
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
+  CHAT_BASE_URL = environment.chat.CHAT_BASE_URL
   // user: Observable<User | null>;
   user: any;
   firebase_token: any;

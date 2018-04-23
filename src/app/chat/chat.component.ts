@@ -1,4 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
+import { environment } from '../../environments/environment';
+import { DomSanitizer } from '@angular/platform-browser'
 
 @Component({
   selector: 'chat',
@@ -7,7 +9,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 })
 
 export class ChatComponent implements OnInit {
-
+  CHAT_BASE_URL: any;
   actualHeight: any;
   // navbarHeight = 51;
   navbarAndFooterHeight = 130;
@@ -16,15 +18,17 @@ export class ChatComponent implements OnInit {
   // newInnerWidth: any;
   iframeHeight: any;
 
-  constructor() {
+  constructor(
+    private sanitizer: DomSanitizer
+  ) {
+    this.CHAT_BASE_URL = sanitizer.bypassSecurityTrustResourceUrl(environment.chat.CHAT_BASE_URL);
+    // // User screen size
+    // const screenHeight = window.screen.height;
+    // const screenWidth = window.screen.width;
 
-  // // User screen size
-  // const screenHeight = window.screen.height;
-  // const screenWidth = window.screen.width;
-
-  // // Actual space available in navigator
-  // const actualHeight = window.innerHeight;
-  // const actualWidth = window.innerWidth;
+    // // Actual space available in navigator
+    // const actualHeight = window.innerHeight;
+    // const actualWidth = window.innerWidth;
   }
 
   ngOnInit() {
@@ -44,7 +48,7 @@ export class ChatComponent implements OnInit {
     this.iframeHeight = this.newInnerHeight - this.navbarAndFooterHeight;
     console.log('ON RESIZE -> IFRAME HEIGHT (ACTUAL HEIGHT - NAVBAR HEIGHT) ', this.iframeHeight);
 
-    return { 'height': this.iframeHeight += 'px'};
+    return { 'height': this.iframeHeight += 'px' };
   }
 
   onInitframeHeight(): any {
@@ -55,7 +59,7 @@ export class ChatComponent implements OnInit {
     this.iframeHeight = this.actualHeight - this.navbarAndFooterHeight;
     console.log('ON INIT -> IFRAME HEIGHT (ACTUAL HEIGHT - NAVBAR HEIGHT) ', this.iframeHeight);
 
-    return { 'height': this.iframeHeight += 'px'};
+    return { 'height': this.iframeHeight += 'px' };
   }
 
 }
