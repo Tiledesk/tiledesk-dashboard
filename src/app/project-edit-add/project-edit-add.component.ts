@@ -3,6 +3,9 @@ import { ProjectService } from '../services/project.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 
+// USED FOR go back last page
+import { Location } from '@angular/common';
+
 @Component({
   selector: 'app-project-edit-add',
   templateUrl: './project-edit-add.component.html',
@@ -24,6 +27,7 @@ export class ProjectEditAddComponent implements OnInit {
     private projectService: ProjectService,
     private router: Router,
     private route: ActivatedRoute,
+    private _location: Location
   ) { }
 
   ngOnInit() {
@@ -51,9 +55,13 @@ export class ProjectEditAddComponent implements OnInit {
     }
   }
 
-  // GO BACK TO FAQ COMPONENT
+  // !!! NO MORE USED - GO BACK TO PROJECT LIST
   goBackToProjectsList() {
     this.router.navigate(['/projects']);
+  }
+
+  goBack() {
+    this._location.back();
   }
 
   getProjectId() {
