@@ -109,6 +109,9 @@ const routes: Routes = [
 
   // DISPLAY THE PROFILE OF THE MEMBER (USERS WHO HAVE BEEN INVITED)
   { path: 'project/:projectid/member/:memberid', component: UsersProfileComponent, canActivate: [AuthGuard] },
+  // DISPLAY THE PROFILE OF THE BOT
+  { path: 'project/:projectid/botprofile/:memberid', component: UsersProfileComponent, canActivate: [AuthGuard] },
+
 
   // IS THE PROFILE OF THE LOGGED USER
   { path: 'project/:projectid/user-profile', component: UserProfileComponent },

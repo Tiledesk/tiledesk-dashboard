@@ -18,7 +18,10 @@
         "Name": "Name",
         "Lastname": "Lastname",
         "UserId": "User Id",
-        "Update": "Update"
+        "Update": "Update",
+        "FaqKbId":"Id",
+        "FaqKbRemoteId":"Remote Id",
+        "FaqKbCreatedAt": "Created at"
     },
     "NavBar": {
         "ViewAllProjects": "View all projects",

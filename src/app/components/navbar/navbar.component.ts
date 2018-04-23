@@ -51,6 +51,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
     project: Project;
     projectUser_id: string;
+    route: string;
 
     constructor(
         location: Location,
@@ -70,6 +71,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
 
     }
+
 
 
     ngOnInit() {
@@ -104,7 +106,21 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
         this.getProjectUserId();
 
+        this.detectChatPage();
+
     } // OnInit
+
+    /* DETECT IF IS THE CHAT PAGE */
+    detectChatPage() {
+
+        this.router.events.subscribe((val) => {
+
+
+            if (this.location.path() !== '') {
+                this.route = this.location.path();
+            }
+        });
+    }
 
     getCurrentProject() {
         this.auth.project_bs.subscribe((project) => {

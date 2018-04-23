@@ -238,7 +238,8 @@
                   </td>
 
                   <td *ngIf="dept?.default !== true" style="width: 280px !important; text-transform: capitalize;">
-                    {{ dept?.routing }}
+                    <span *ngIf="dept?.routing !== 'fixed'"> {{ dept?.routing }}</span>
+                    <span *ngIf="dept?.routing === 'fixed'"> Bot </span>
                   </td>
 
                   <td *ngIf="dept?.default !== true">

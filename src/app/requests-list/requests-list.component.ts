@@ -135,9 +135,14 @@ export class RequestsListComponent implements OnInit {
   }
 
   goToMemberProfile(member_id: any) {
-    console.log('has clicked GO To MEMBER ', member_id)
+    console.log('has clicked GO To MEMBER ', member_id);
+    if (member_id.indexOf('bot_') !== -1) {
+      console.log('IS A BOT !');
 
-    this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
+      this.router.navigate(['project/' + this.projectId + '/botprofile/' + member_id]);
+    } else {
+      this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
+    }
   }
 
   members_replace(member_id) {

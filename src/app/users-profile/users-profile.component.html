@@ -8,6 +8,8 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
+
+          <!-- // USER PROFILE -->
           <div *ngIf="user" class="card-content" style="padding-top: 25px;">
 
             <label style="height: 36px; padding-top: 20px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 avatar_label">
@@ -59,6 +61,52 @@
             </div>
 
           </div>
+
+          <!-- // FAQ-KB PROFILE  -->
+          <div *ngIf="faqKb" class="card-content" style="padding-top: 25px;">
+
+              <label style="height: 36px; padding-top: 20px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 avatar_label">
+                Avatar
+              </label>
+              <div class="col-sm-10">
+                  
+                <div class="card-avatar" style="padding-bottom:15px">
+                            
+                  <img style="vertical-align: middle; width: 60px; height: 60px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" class="img" src="assets/img/bot_image.png" />
+                        
+                </div> 
+              </div>
+  
+              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
+                
+                {{ "UserProfile.Name" | translate }}            
+              </label>
+              <div class="col-sm-10">
+               
+                <input  style="color:#999999" [(ngModel)]="faqKb_name" class="" type="text" placeholder='' disabled>
+              </div>
+  
+              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
+                {{ "UserProfile.FaqKbId" | translate }}
+              </label>
+              <div class="col-sm-10">             
+                <input style="color:#999999" [(ngModel)]="faqKb_id " class="" type="text" placeholder='' disabled>
+              </div>
+              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2">
+                {{ "UserProfile.FaqKbRemoteId" | translate }}
+              </label>
+              <div class="col-sm-10">
+                <input style="color:#999999" [(ngModel)]="faqKb_remoteId" class="" type="text" placeholder="" disabled>
+              </div>
+              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right; margin-bottom:25px" class="col-sm-2">
+                {{ "UserProfile.FaqKbCreatedAt" | translate }}
+              </label>
+              <div class="col-sm-10">
+                <input style="color:#999999" [(ngModel)]="faqKb_createdAt" class="" type="text" placeholder='' disabled>
+              </div>
+  
+            </div>
+
         </div>
       </div>
     </div>
