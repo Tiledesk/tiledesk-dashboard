@@ -200,6 +200,15 @@
                       </strong>
                     </span>
                   </th>
+
+                  <th>
+                    <span style="color: #566787"> 
+                      <strong>
+                        Routing
+                      </strong>
+                    </span>
+                  </th>
+                  
                   <th>
                     <span style="color: #566787">
                       <!-- Creation Date -->
@@ -227,6 +236,11 @@
                   <td *ngIf="dept?.default !== true" style="width: 280px !important">
                     {{ dept?._id }}
                   </td>
+
+                  <td *ngIf="dept?.default !== true" style="width: 280px !important; text-transform: capitalize;">
+                    {{ dept?.routing }}
+                  </td>
+
                   <td *ngIf="dept?.default !== true">
                     {{ dept?.createdAt | date: 'd/M/y'}}
                   </td>

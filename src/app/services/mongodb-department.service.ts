@@ -247,7 +247,7 @@ export class MongodbDepartmentService {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', this.TOKEN);
-    console.log('TOKEN TO COPY ', this.TOKEN)
+    // console.log('TOKEN TO COPY ', this.TOKEN)
     return this.http
       .get(url, { headers })
       .map((response) => response.json());

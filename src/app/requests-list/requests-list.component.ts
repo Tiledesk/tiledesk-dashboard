@@ -614,18 +614,22 @@ export class RequestsListComponent implements OnInit {
   getFirebaseToken(callback) {
     const that = this;
     // console.log('Notification permission granted.');
-    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
-      .then(function (idToken) {
-        that.firebase_token = idToken;
+    const firebase_currentUser = firebase.auth().currentUser;
+    console.log(' // firebase current user ', firebase_currentUser);
+    if (firebase_currentUser) {
+      firebase_currentUser.getIdToken(/* forceRefresh */ true)
+        .then(function (idToken) {
+          that.firebase_token = idToken;
 
-        // qui richiama la callback
-        callback();
-        console.log('Firebase Token (for join-to-chat)', idToken);
-      }).catch(function (error) {
-        // Handle error
-        console.log('idToken.', error);
-        callback();
-      });
+          // qui richiama la callback
+          callback();
+          console.log('Firebase Token (for join-to-chat)', idToken);
+        }).catch(function (error) {
+          // Handle error
+          console.log('idToken.', error);
+          callback();
+        });
+    }
   }
 
   // JOIN TO CHAT GROUP
@@ -719,29 +723,29 @@ export class RequestsListComponent implements OnInit {
   }
 
   /// - DARIO
-//   scrollToBottom() {
-//     const that = this;
-//     setTimeout(function() {
-//         try {
-//             const objDiv = document.getElementById('scrollMe');
-//             //objDiv.addEventListener('scroll', this.setScrolling());
-//             console.log('scrollTop1 ::', objDiv.scrollTop,  objDiv.scrollHeight);
-//             // if (objDiv.scrollTop !== objDiv.scrollHeight) {
-//             //     objDiv.scrollTop = objDiv.scrollHeight + 10;
-//             //     console.log('scrollTop1 ::', objDiv.scrollTop);
-//             // }
-//             //// https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
-//             document.getElementById('scrollMe').scrollIntoView(false);
-//             //that.badgeNewMessages = 0;
-//             that.showButtonToBottom = false;
-//         } catch (err) {
-//             console.log('RIPROVO ::', that.isShowed);
-//             if (that.isShowed === true) {
-//                 that.scrollToBottom();
-//             }
-//         }
-//     }, 300);
-// }
+  //   scrollToBottom() {
+  //     const that = this;
+  //     setTimeout(function() {
+  //         try {
+  //             const objDiv = document.getElementById('scrollMe');
+  //             //objDiv.addEventListener('scroll', this.setScrolling());
+  //             console.log('scrollTop1 ::', objDiv.scrollTop,  objDiv.scrollHeight);
+  //             // if (objDiv.scrollTop !== objDiv.scrollHeight) {
+  //             //     objDiv.scrollTop = objDiv.scrollHeight + 10;
+  //             //     console.log('scrollTop1 ::', objDiv.scrollTop);
+  //             // }
+  //             //// https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView
+  //             document.getElementById('scrollMe').scrollIntoView(false);
+  //             //that.badgeNewMessages = 0;
+  //             that.showButtonToBottom = false;
+  //         } catch (err) {
+  //             console.log('RIPROVO ::', that.isShowed);
+  //             if (that.isShowed === true) {
+  //                 that.scrollToBottom();
+  //             }
+  //         }
+  //     }, 300);
+  // }
 
 
   ///
