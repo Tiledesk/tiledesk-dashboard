@@ -26,7 +26,8 @@
     "NavBar": {
         "ViewAllProjects": "Visualizza tutti i progetti",
         "ProjectSettings": "Impostazioni progetto",
-        "UserProfile": "VEDI PROFILO"
+        "UserProfile": "VEDI PROFILO",
+        "RunChatInAStandAloneTab": "Esegui la chat in una scheda autonoma"
     },
     "SideBar": {
         "ViewAllProjects": "Visualizza tutti i progetti",

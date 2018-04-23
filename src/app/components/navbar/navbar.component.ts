@@ -52,6 +52,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     project: Project;
     projectUser_id: string;
     route: string;
+    
+    DETECTED_CHAT_PAGE = false;
 
     constructor(
         location: Location,
@@ -118,6 +120,13 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
             if (this.location.path() !== '') {
                 this.route = this.location.path();
+                // console.log('»> »> »> NAVBAR ROUTE DETECTED »> ', this.route)
+                if (this.route === '/chat') {
+                    console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
+                    this.DETECTED_CHAT_PAGE = true;
+                } else {
+                    this.DETECTED_CHAT_PAGE = false;
+                }
             }
         });
     }

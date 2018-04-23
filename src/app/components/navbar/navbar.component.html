@@ -21,8 +21,12 @@
                                 <p class="hidden-lg hidden-md">Dashboard</p>
                             </a>
                         </li> -->
-                        <li>
+                        <li *ngIf="DETECTED_CHAT_PAGE">
+                            <a target="_blank" href="http://support.tiledesk.com/chat/">
                             <i class="material-icons">open_in_new</i>
+                                
+                                {{ "NavBar.RunChatInAStandAloneTab"  | translate }}
+                            </a>
                         </li>
 
                         <!-- PROJECTS -->

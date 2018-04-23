@@ -19,19 +19,20 @@
         "Lastname": "Lastname",
         "UserId": "User Id",
         "Update": "Update",
-        "FaqKbId":"Id",
-        "FaqKbRemoteId":"Remote Id",
+        "FaqKbId": "Id",
+        "FaqKbRemoteId": "Remote Id",
         "FaqKbCreatedAt": "Created at"
     },
     "NavBar": {
         "ViewAllProjects": "View all projects",
         "ProjectSettings": "Project settings",
-        "UserProfile": "VIEW PROFILE"
+        "UserProfile": "VIEW PROFILE",
+        "RunChatInAStandAloneTab": "Run chat in a stand-alone tab"
     },
     "SideBar": {
         "ViewAllProjects": "View all projects",
         "ProjectSettings": "Project settings",
-       "UserProfile": "VIEW PROFILE"
+        "UserProfile": "VIEW PROFILE"
     },
     "ProjectsPage": {
         "Welcome": "Welcome",
@@ -63,7 +64,7 @@
         "Lastname": "Lastname",
         "UserId": "User Id",
         "Role": "Role",
-        "Available":"Available",
+        "Available": "Available",
         "Actions": "Actions",
         "tootipDeleteUser": "Delete Member",
         "modalDeleteUser": "Delete Member",
@@ -82,10 +83,10 @@
         "Completed": "Completed",
         "TheUserHasBeenInvited": "The user has been invited.",
         "Continue": "Continue",
-        "NotAllowedAction":"NotAllowedAction",
-        "YouCanNotInviteYourself":"You can't invite yourself",
-        "Error":"Error",
-        "AnErrorHasOccurred":"An error has occurred"
+        "NotAllowedAction": "NotAllowedAction",
+        "YouCanNotInviteYourself": "You can't invite yourself",
+        "Error": "Error",
+        "AnErrorHasOccurred": "An error has occurred"
     },
     "BotsPage": {
         "AddBot": "Add Bot",
@@ -125,7 +126,7 @@
     "VisitorsPage": {
         "UnservedRequests": "Unserved requests",
         "ServedRequests": "Served requests",
-        "Department":"Department",
+        "Department": "Department",
         "Requester": "Requester",
         "Message": "Message",
         "ServedBy": "Served by",
@@ -139,10 +140,10 @@
         "Error": "Error"
     },
     "HistoryPage": {
-        "Requester":"Requester",
-        "Message":"Message",
-        "ServedBy":"Served by",
-        "Published":"Published",
+        "Requester": "Requester",
+        "Message": "Message",
+        "ServedBy": "Served by",
+        "Published": "Published",
         "NoRequests": "No requests",
         "RequestId": "Request Id:",
         "RequesterId": "Requester Id:",
