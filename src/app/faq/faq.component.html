@@ -88,6 +88,17 @@
         
             <tbody>
         
+              <!-- IF THERE ISN'T FAQ -->
+              <tr *ngIf="faq?.length === 0"> 
+                <td colspan="5" style="text-align: center; padding-top: 16px;">
+                  <!-- color: #ff5252   -->
+                  <p style="font-size:1em; color:#999999; font-weight: 400">
+                      
+                      No FAQ
+                    </p>
+                </td>
+              </tr>
+
               <tr *ngFor="let faq of faq">
                 <td>
                   {{ faq?.question }}
@@ -237,7 +248,7 @@
                             <p style="margin:5px">myexample.csv</p>
                           </div>
                         <div class="col-md-4 col-md-offset-4" style="text-align:center; border-left: 1px solid #eeeeee; border-right: 1px solid #eeeeee">
-                          <p style="margin:5px"><span><em>Query?</em></span> <span><strong>{{csvColumnsDelimiter}}</strong> </span> <span><em>Answer</em></span> </p>
+                          <p style="margin:5px"><span><em>Question</em></span> <span><strong>{{csvColumnsDelimiter}}</strong> </span> <span><em>Answer</em></span> </p>
                         </div>
   
                       </div>
