@@ -34,6 +34,15 @@ export class FaqComponent implements OnInit {
 
   project: Project;
 
+  displayInfoModal = 'none';
+  SHOW_CIRCULAR_SPINNER = false;
+  displayImportModal = 'none';
+  csvColumnsDelimiter = ','
+  parse_done: boolean;
+  parse_err: boolean;
+ 
+  modalChoosefileDisabled: boolean;
+
   constructor(
     private mongodbFaqService: MongodbFaqService,
     private router: Router,
@@ -235,49 +244,93 @@ export class FaqComponent implements OnInit {
   // CLOSE MODAL WITHOUT SAVE THE UPDATES OR WITHOUT CONFIRM THE DELETION
   onCloseModal() {
     this.display = 'none';
+    this.displayInfoModal = 'none';
+    this.displayImportModal = 'none';
   }
 
+  openImportModal() {
+    this.displayImportModal = 'block';
+  }
+
+  onCloseInfoModalHandledSuccess() {
+    console.log('onCloseInfoModalHandledSuccess')
+    this.displayInfoModal = 'none';
+    this.ngOnInit();
+  }
+  onCloseInfoModalHandledError() {
+    console.log('onCloseInfoModalHandledError')
+    this.displayInfoModal = 'none';
+    // this.router.navigate(['project/' + this.project._id + '/faqkb']);
+    this.ngOnInit();
+  }
+
+  countDelimiterDigit(event) {
+    console.log(' # OF DIGIT ', this.csvColumnsDelimiter.length)
+    if (this.csvColumnsDelimiter.length !== 1) {
+      (<HTMLInputElement>document.getElementById('file')).disabled = true;
+      this.modalChoosefileDisabled = true;
+    } else {
+      (<HTMLInputElement>document.getElementById('file')).disabled = false;
+      this.modalChoosefileDisabled = false;
+    }
+  }
   // UPLOAD FAQ FROM CSV
   fileChange(event) {
+    this.displayImportModal = 'none';
+    this.displayInfoModal = 'block';
+
+    this.SHOW_CIRCULAR_SPINNER = true;
+
+    console.log('CSV COLUMNS DELIMITER ', this.csvColumnsDelimiter)
     const fileList: FileList = event.target.files;
     if (fileList.length > 0) {
       const file: File = fileList[0];
       const formData: FormData = new FormData();
-      formData.set('id_faq_kb', this.id_faq_kb)
+      formData.set('id_faq_kb', this.id_faq_kb);
+      formData.set('delimiter', this.csvColumnsDelimiter);
       formData.append('uploadFile', file, file.name);
       console.log('FORM DATA ', formData)
 
       this.mongodbFaqService.uploadFaqCsv(formData)
-      // const headers = new Headers();
-      // /** No need to include Content-Type in Angular 4 */
-      // headers.append('Content-Type', 'multipart/form-data');
-      // headers.append('Accept', 'application/json');
-      // const options = new RequestOptions({ headers: headers });
-      // this.http.post(`${this.apiEndPoint}`, formData, options)
-      //   .map(res => res.json())
-      //   .catch(error => Observable.throw(error))
-      //   .subscribe(
-      //     data => console.log('success'),
-      //     error => console.log(error)
-      //   )
+        .subscribe(data => {
+          console.log('UPLOAD CSV DATA ', data);
+          if (data['success'] === true) {
+            this.parse_done = true;
+            this.parse_err = false;
+          } else if (data['success'] === false) {
+            this.parse_done = false;
+            this.parse_err = true;
+          }
+        },
+          (error) => {
+            console.log('UPLOAD CSV - ERROR ', error);
+            this.SHOW_CIRCULAR_SPINNER = false;
+          },
+          () => {
+            console.log('UPLOAD CSV * COMPLETE *');
+            setTimeout(() => {
+              this.SHOW_CIRCULAR_SPINNER = false
+            }, 300);
+          });
+
     }
   }
 
-  public changeListener(files: FileList) {
-    console.log(files);
-    if (files && files.length > 0) {
-      const file: File = files.item(0);
-      console.log(file.name);
-      console.log(file.size);
-      console.log(file.type);
-      const reader: FileReader = new FileReader();
-      reader.readAsText(file);
-      reader.onload = (e) => {
-        const csv: string = reader.result;
-        console.log(csv);
-      }
-    }
-  }
+  // public changeListener(files: FileList) {
+  //   console.log(files);
+  //   if (files && files.length > 0) {
+  //     const file: File = files.item(0);
+  //     console.log(file.name);
+  //     console.log(file.size);
+  //     console.log(file.type);
+  //     const reader: FileReader = new FileReader();
+  //     reader.readAsText(file);
+  //     reader.onload = (e) => {
+  //       const csv: string = reader.result;
+  //       console.log(csv);
+  //     }
+  //   }
+  // }
 
 
 

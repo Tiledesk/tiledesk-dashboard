@@ -7,40 +7,40 @@
 
 // MODAL BOOTSTRAP BREAKPOINTS
 // from 992 to 1020px 
-@media (min-width: 992px) and (max-width: 1019px){
-    .modal-dialog {
-            margin-left: 33%;
-        }
-    }
+// @media (min-width: 992px) and (max-width: 1019px){
+//     .modal-dialog {
+//             margin-left: 33%;
+//         }
+//     }
     
-    @media (min-width: 1020px) and (max-width: 1199px) {
-        .modal-dialog {
-            margin-left: 35%;
-        }
-    }
+//     @media (min-width: 1020px) and (max-width: 1199px) {
+//         .modal-dialog {
+//             margin-left: 35%;
+//         }
+//     }
     
-    @media (min-width: 1200px) and (max-width: 1469px)  {
-        .modal-dialog {
-            margin-left: 37%;
-        }
-    }
+//     @media (min-width: 1200px) and (max-width: 1469px)  {
+//         .modal-dialog {
+//             margin-left: 37%;
+//         }
+//     }
     
-    @media (min-width: 1470px) and (max-width: 1549px) {
-        .modal-dialog {
-            margin-left: 38%;
-        }
-    }
+//     @media (min-width: 1470px) and (max-width: 1549px) {
+//         .modal-dialog {
+//             margin-left: 38%;
+//         }
+//     }
     
-    @media (min-width: 1550px) and (max-width: 1649px){
-        .modal-dialog {
-            margin-left: 39%;
-        }
-    }
-    @media (min-width: 1650px) {
-        .modal-dialog {
-            margin-left: 40%;
-        }
-    }
+//     @media (min-width: 1550px) and (max-width: 1649px){
+//         .modal-dialog {
+//             margin-left: 39%;
+//         }
+//     }
+//     @media (min-width: 1650px) {
+//         .modal-dialog {
+//             margin-left: 40%;
+//         }
+//     }
     
     .modal {
         top: 0;
@@ -163,6 +163,7 @@
 	position: absolute;
 	z-index: -1;
 }
+
 
 // .inputfile + label {
 //     font-size: 12px;

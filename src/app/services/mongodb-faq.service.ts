@@ -147,13 +147,14 @@ export class MongodbFaqService {
     headers.append('Authorization', this.TOKEN);
     const url = this.MONGODB_BASE_URL + 'uploadcsv';
     const options = new RequestOptions({ headers: headers });
-    this.http.post(url, formData, options)
+    return this.http
+    .post(url, formData, options)
       .map(res => res.json())
-      .subscribe(data => {
-        console.log('UPLOAD FILE CSV success ', data)
-      },
-        error => console.log(error)
-      )
+      // .subscribe(data => {
+      //   console.log('UPLOAD FILE CSV success ', data)
+      // },
+      //   error => console.log(error)
+      // )
 
   }
 
