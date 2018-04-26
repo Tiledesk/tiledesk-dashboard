@@ -76,6 +76,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     user: any;
 
     ROUTES: RouteInfo[];
+    displayLogoutModal = 'none';
 
     constructor(
         private requestsService: RequestsService,
@@ -209,8 +210,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     getProjectUser() {
 
         this.usersService.getProjectUsersByProjectIdAndUserId(this.user._id, this.projectId).subscribe((projectUser: any) => {
-            console.log('SB PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
-            if ((projectUser) && (projectUser !== undefined)) {
+            console.log('SB PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser);
+            console.log('SB PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID LENGTH', projectUser.length);
+            if ((projectUser) && (projectUser.length !== 0)) {
                 console.log('SB PROJECT-USER ID ', projectUser[0]._id)
                 console.log('SB USER IS AVAILABLE ', projectUser[0].user_available)
                 // this.user_is_available_bs = projectUser.user_available;
@@ -218,6 +220,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 if (projectUser[0].user_available !== undefined) {
                     this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available)
                 }
+            } else {
+                // this could be the case in which the current user was deleted as a member of the current project
+                console.log('SB PROJECT-USER UNDEFINED ')
             }
 
         },
@@ -317,24 +322,44 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // }
 
 
-    setUnavailableAndlogout() {
-        console.log('PRESSED SIDEBAR LOGOUT  - PRJ-USER ID ', this.projectUser_id)
-        if (this.projectUser_id) {
-            this.usersService.updateProjectUser(this.projectUser_id, false).subscribe((projectUser: any) => {
-                console.log('PROJECT-USER UPDATED ', projectUser)
-            },
-                (error) => {
-                    console.log('PROJECT-USER UPDATED ERR  ', error);
-                },
-                () => {
-                    console.log('PROJECT-USER UPDATED  * COMPLETE *');
-                    this.logout();
-                });
-        } else {
-            console.log('PRESSED SIDEBAR LOGOUT - PRJ-USER IS NOT DEFINED - RUN ONLY THE LOGOUT')
-            this.logout();
-        }
+    // !! NO MORE USED
+    // setUnavailableAndlogout() {
+    //     console.log('PRESSED SIDEBAR LOGOUT  - PRJ-USER ID ', this.projectUser_id)
+    //     if (this.projectUser_id) {
+    //         this.usersService.updateProjectUser(this.projectUser_id, false).subscribe((projectUser: any) => {
+    //             console.log('PROJECT-USER UPDATED ', projectUser)
+    //         },
+    //             (error) => {
+    //                 console.log('PROJECT-USER UPDATED ERR  ', error);
+    //             },
+    //             () => {
+    //                 console.log('PROJECT-USER UPDATED  * COMPLETE *');
+    //                 this.logout();
+    //             });
+    //     } else {
+    //         // this could be the case in which the current user was deleted as a member of the current project
+    //         console.log('PRESSED SIDEBAR LOGOUT - PRJ-USER IS NOT DEFINED - RUN ONLY THE LOGOUT')
+    //         this.logout();
+    //     }
+    // }
+
+    openLogoutModal() {
+        this.displayLogoutModal = 'block';
     }
+
+    onCloseModal() {
+        this.displayLogoutModal = 'none';
+    }
+
+    onCloseLogoutModalHandled() {
+        this.displayLogoutModal = 'none';
+    }
+
+    onLogoutModalHandled() {
+        this.logout();
+        this.displayLogoutModal = 'none';
+    }
+
 
     logout() {
         this.auth.signOut();

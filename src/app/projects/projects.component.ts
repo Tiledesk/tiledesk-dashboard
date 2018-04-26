@@ -33,6 +33,7 @@ export class ProjectsComponent implements OnInit {
   showSpinner = true;
 
   SHOW_CIRCULAR_SPINNER = false;
+  displayLogoutModal = 'none';
 
   constructor(
     private projectService: ProjectService,
@@ -60,10 +61,6 @@ export class ProjectsComponent implements OnInit {
       console.log('USER GET IN PROJECT COMP ', user)
       this.user = user;
     });
-  }
-
-  logout() {
-    this.auth.signOut();
   }
 
   // project/:projectid/home
@@ -144,6 +141,7 @@ export class ProjectsComponent implements OnInit {
   onCloseModal() {
     this.displayCreateModal = 'none';
     this.displayInfoModal = 'none';
+    this.displayLogoutModal = 'none';
   }
 
   /** !! NO MORE USED
@@ -259,5 +257,24 @@ export class ProjectsComponent implements OnInit {
       this.sidebarClose();
     }
   };
+
+
+  openLogoutModal() {
+    this.displayLogoutModal = 'block';
+  }
+
+  onCloseLogoutModalHandled() {
+    this.displayLogoutModal = 'none';
+  }
+
+  onLogoutModalHandled() {
+    this.logout();
+    this.displayLogoutModal = 'none';
+  }
+
+
+  logout() {
+    this.auth.signOut();
+  }
 
 }

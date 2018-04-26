@@ -57,6 +57,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     DETECTED_CHAT_PAGE = false;
     CHAT_BASE_URL = environment.chat.CHAT_BASE_URL
 
+    displayLogoutModal = 'none';
+
     constructor(
         location: Location,
         private element: ElementRef,
@@ -526,30 +528,49 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     }
 
 
-    setUnavailableAndlogout() {
-        console.log('PRESSED NAVBAR LOGOUT  - PRJ-USER ID ', this.projectUser_id);
-        if (this.projectUser_id) {
-        this.usersService.updateProjectUser(this.projectUser_id, false).subscribe((projectUser: any) => {
-            console.log('PROJECT-USER UPDATED ', projectUser)
-        },
-            (error) => {
-                console.log('PROJECT-USER UPDATED ERR  ', error);
-            },
-            () => {
-                console.log('PROJECT-USER UPDATED  * COMPLETE *');
-                this.logout();
-            });
-        } else {
-            console.log('PRESSED NAVBAR LOGOUT - PRJ-USER ID IS NOT DEFINED - RUN ONLY THE LOGOUT')
-            this.logout();
-        }
+    // !! NO MORE USED
+    // setUnavailableAndlogout() {
+    //     console.log('PRESSED NAVBAR LOGOUT  - PRJ-USER ID ', this.projectUser_id);
+    //     if (this.projectUser_id) {
+    //         this.usersService.updateProjectUser(this.projectUser_id, false).subscribe((projectUser: any) => {
+    //             console.log('PROJECT-USER UPDATED ', projectUser)
+    //         },
+    //             (error) => {
+    //                 console.log('PROJECT-USER UPDATED ERR  ', error);
+    //             },
+    //             () => {
+    //                 console.log('PROJECT-USER UPDATED  * COMPLETE *');
+    //                 this.logout();
+    //             });
+    //     } else {
+    //         // this could be the case in which the current user was deleted as a member of the current project
+    //         console.log('PRESSED NAVBAR LOGOUT - PRJ-USER ID IS NOT DEFINED - RUN ONLY THE LOGOUT')
+    //         this.logout();
+    //     }
+    // }
+
+
+
+    openLogoutModal() {
+        this.displayLogoutModal = 'block';
+    }
+
+    onCloseModal() {
+        this.displayLogoutModal = 'none';
+    }
+
+    onCloseLogoutModalHandled() {
+        this.displayLogoutModal = 'none';
+    }
+
+    onLogoutModalHandled() {
+        this.logout();
+        this.displayLogoutModal = 'none';
     }
 
     logout() {
         console.log('RUN LOGOUT FROM NAV-BAR')
         this.auth.signOut();
-        // this.display = 'none';
-        // localStorage.clear();
     }
 
 
