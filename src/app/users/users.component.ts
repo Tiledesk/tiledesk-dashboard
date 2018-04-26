@@ -14,6 +14,7 @@ export class UsersComponent implements OnInit {
 
   showSpinner = true;
   projectUsersList: any;
+  id_projectUser: string;
 
   // set to none the property display of the modal
   display = 'none';
@@ -43,7 +44,7 @@ export class UsersComponent implements OnInit {
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
-      this.project = project
+      this.project = project;
       if (this.project) {
         this.id_project = project._id
 
@@ -67,17 +68,33 @@ export class UsersComponent implements OnInit {
         console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
       },
       () => {
-        console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE')
+        console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
       });
   }
 
-  openDeleteModal() {
+  openDeleteModal(projectUser_id: string) {
     this.display = 'block';
+    this.id_projectUser = projectUser_id;
+    console.log('DELETE PROJECT-USER with ID ', this.id_projectUser);
   }
 
   onCloseDeleteModalHandled() {
-    console.log('Confirm Delete Project Member')
+    this.display = 'none';
+    // console.log('Confirm Delete Project-User');
+    this.usersService.deleteProjectUser(this.id_projectUser).subscribe((projectUsers: any) => {
+      console.log('DELETE PROJECT USERS ', projectUsers);
+
+      this.ngOnInit();
+
+    }, error => {
+      this.showSpinner = false;
+      console.log('DELETE PROJECT USERS - ERROR ', error);
+    },
+      () => {
+        console.log('DELETE PROJECT USERS * COMPLETE *');
+      });
   }
+
   onCloseModal() {
     this.display = 'none';
   }

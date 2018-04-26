@@ -527,7 +527,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
 
     setUnavailableAndlogout() {
-
+        console.log('PRESSED NAVBAR LOGOUT  - PRJ-USER ID ', this.projectUser_id);
+        if (this.projectUser_id) {
         this.usersService.updateProjectUser(this.projectUser_id, false).subscribe((projectUser: any) => {
             console.log('PROJECT-USER UPDATED ', projectUser)
         },
@@ -538,6 +539,10 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
                 console.log('PROJECT-USER UPDATED  * COMPLETE *');
                 this.logout();
             });
+        } else {
+            console.log('PRESSED NAVBAR LOGOUT - PRJ-USER ID IS NOT DEFINED - RUN ONLY THE LOGOUT')
+            this.logout();
+        }
     }
 
     logout() {

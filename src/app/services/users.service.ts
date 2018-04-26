@@ -236,7 +236,7 @@ export class UsersService {
   }
 
   /**
-   * UPDATE (PUT)
+   * UPDATE PROJECT-USER (PUT)
    */
   public updateProjectUser(projectUser_id: string, user_is_available: boolean) {
 
@@ -257,9 +257,26 @@ export class UsersService {
     return this.http
       .put(url, JSON.stringify(body), options)
       .map((res) => res.json());
-
   }
 
+  /**
+   * DELETE PROJECT-USER (PUT)
+   */
+  public deleteProjectUser(projectUser_id: string) {
+    let url = this.MONGODB_BASE_URL;
+    url += projectUser_id + '# chat21-api-nodejs';
+    console.log('PROJECT-USER DELETE URL ', url);
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    return this.http
+      .delete(url, options)
+      .map((res) => res.json());
+
+  }
 
 
 }

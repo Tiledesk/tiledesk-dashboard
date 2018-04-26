@@ -210,7 +210,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
         this.usersService.getProjectUsersByProjectIdAndUserId(this.user._id, this.projectId).subscribe((projectUser: any) => {
             console.log('SB PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
-            if (projectUser) {
+            if ((projectUser) && (projectUser !== undefined)) {
                 console.log('SB PROJECT-USER ID ', projectUser[0]._id)
                 console.log('SB USER IS AVAILABLE ', projectUser[0].user_available)
                 // this.user_is_available_bs = projectUser.user_available;
@@ -318,17 +318,22 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
     setUnavailableAndlogout() {
-
-        this.usersService.updateProjectUser(this.projectUser_id, false).subscribe((projectUser: any) => {
-            console.log('PROJECT-USER UPDATED ', projectUser)
-        },
-            (error) => {
-                console.log('PROJECT-USER UPDATED ERR  ', error);
+        console.log('PRESSED SIDEBAR LOGOUT  - PRJ-USER ID ', this.projectUser_id)
+        if (this.projectUser_id) {
+            this.usersService.updateProjectUser(this.projectUser_id, false).subscribe((projectUser: any) => {
+                console.log('PROJECT-USER UPDATED ', projectUser)
             },
-            () => {
-                console.log('PROJECT-USER UPDATED  * COMPLETE *');
-                this.logout();
-            });
+                (error) => {
+                    console.log('PROJECT-USER UPDATED ERR  ', error);
+                },
+                () => {
+                    console.log('PROJECT-USER UPDATED  * COMPLETE *');
+                    this.logout();
+                });
+        } else {
+            console.log('PRESSED SIDEBAR LOGOUT - PRJ-USER IS NOT DEFINED - RUN ONLY THE LOGOUT')
+            this.logout();
+        }
     }
 
     logout() {
