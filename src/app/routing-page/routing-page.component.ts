@@ -112,22 +112,22 @@ export class RoutingPageComponent implements OnInit {
      ====== GET FAQ-KB BY ID (SUBSTITUTE BOT) ======
    * THE ID OF THE BOT (IT'S ACTUALLY IS THE ID OF THE FAQ-KB) IS GET FROM THE DEPT OBJECT (CALLBACK getDeptById)
    * FROM THE FAQ-KB OBJECT (SUBSTITUTE BOT) IS USED:
-   * THE FAQ-KB ID (SUBSTITUTE BOT) THAT IS USED TO OBTAIN THE FAQ-KB NAME SHOWED AS OPTION SELECTED IN THE EDIT VIEW
+   * THE FAQ-KB ID (SUBSTITUTES BOT) THAT IS USED TO OBTAIN THE FAQ-KB NAME SHOWED AS OPTION SELECTED IN THE EDIT VIEW
    * (see: selectedId === bot._id)
    */
   getBotById() {
     // this.botService.getMongDbBotById(this.botId).subscribe((bot: any) => { // NO MORE USED
     this.faqKbService.getMongDbFaqKbById(this.botId).subscribe((faqkb: any) => {
-      console.log('GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
+      console.log('ROUTING PAGE - GET FAQ-KB (DETAILS) BY ID (SUBSTITUTES BOT) ', faqkb);
 
       this.selectedId = faqkb._id;
     },
       (error) => {
-        console.log('GET FAQ-KB BY ID (SUBSTITUTE BOT) - ERROR ', error);
+        console.log('ROUTING PAGE - GET FAQ-KB BY ID (SUBSTITUTES BOT) - ERROR ', error);
         this.showSpinner = false;
       },
       () => {
-        console.log('GET FAQ-KB ID (SUBSTITUTE BOT) - COMPLETE ');
+        console.log('ROUTING PAGE - GET FAQ-KB ID (SUBSTITUTES BOT) - COMPLETE ');
         this.showSpinner = false;
 
       });

@@ -19,6 +19,7 @@ export class UsersComponent implements OnInit {
   display = 'none';
   project: Project;
   id_project: string;
+  USER_ROLE: string;
 
   constructor(
     private usersService: UsersService,
@@ -29,8 +30,16 @@ export class UsersComponent implements OnInit {
   ngOnInit() {
     this.getAllUsersOfCurrentProject();
     this.getCurrentProject();
+    this.getProjectUserRole();
   }
 
+  getProjectUserRole() {
+
+    this.usersService.project_user_role_bs.subscribe((user_role) => {
+      this.USER_ROLE = user_role;
+      console.log('USERS-COMP - PROJECT USER ROLE ', this.USER_ROLE);
+    });
+  }
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {

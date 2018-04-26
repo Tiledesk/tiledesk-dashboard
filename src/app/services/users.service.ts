@@ -24,6 +24,7 @@ export class UsersService {
 
   public user_is_available_bs: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   public project_user_id_bs: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  public project_user_role_bs: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
   http: Http;
   BASE_URL = environment.mongoDbConfig.BASE_URL;
@@ -227,6 +228,12 @@ export class UsersService {
     this.user_is_available_bs.next(user_available);
   }
 
+  // ======================  PUBLISH PROJECT-USER ROLE ======================
+  // NOTE: THE projectUser_role IS PASSED FROM HOME.COMPONENT
+  public user_role(projectUser_role: string) {
+    console.log('USER SERVICE - USER ROLE ', projectUser_role);
+    this.project_user_role_bs.next(projectUser_role);
+  }
 
   /**
    * UPDATE (PUT)

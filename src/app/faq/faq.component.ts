@@ -66,7 +66,7 @@ export class FaqComponent implements OnInit {
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
-      console.log('00 -> FAQ COMP project ID from AUTH service subscription  ', this.project._id)
+      console.log('00 -> FAQ COMP project from AUTH service subscription  ', this.project)
     });
   }
 

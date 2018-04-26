@@ -114,8 +114,8 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  // IS USED TO GET THE PROJECT-USER AND DETERMINE IF THE USER IS AVAILAVLE / UNAVAILABLE
-  // WHEN THE USER ENTER IN HOME (GET THE PROJECT-USER CAN NOT BE DONE IN THE SIDEBAR BECAUSE WHEN THE PROJECT
+  // IS USED TO GET THE PROJECT-USER AND DETERMINE IF THE USER IS AVAILAVLE/UNAVAILABLE WHEN THE USER ENTER IN HOME
+  // (GET THE PROJECT-USER CAN NOT BE DONE IN THE SIDEBAR BECAUSE WHEN THE PROJECT
   // IS SELECTED THE SIDEBAR HAS BEEN ALREADY CALLED)
   getProjectUser() {
     this.usersService.getProjectUsersByProjectIdAndUserId(this.user._id, this.projectId).subscribe((projectUser: any) => {
@@ -126,8 +126,13 @@ export class HomeComponent implements OnInit {
         // this.user_is_available_bs = projectUser.user_available;
 
         if (projectUser[0].user_available !== undefined) {
-          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available)
+          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available);
         }
+        if (projectUser[0].role !== undefined) {
+          console.log('H CURRENT USER ROLE IN THIS PROJECT ', projectUser[0].role);
+          this.usersService.user_role(projectUser[0].role);
+        }
+
       }
     },
       (error) => {

@@ -3,13 +3,15 @@
   <div class="container-fluid">
 
     <div class="create" style="text-align: right!important; padding-top:25px; padding-bottom:0px">
-      <button class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="goToAddUser()">
-          <!-- is-small -->
+      
+      <!-- the invite button is displayed for non-agent roles -->
+      <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="goToAddUser()">
         <span class="icon" style="padding-right:8px">
           <i class="material-icons">person_add</i>
         </span>
         {{ "UsersPage.Invites" | translate }}
       </button>
+
     </div>
 
     <div class="row">

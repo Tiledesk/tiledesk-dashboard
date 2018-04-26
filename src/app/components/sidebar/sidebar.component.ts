@@ -139,11 +139,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.usersService.user_is_available_bs.subscribe((user_available) => {
             this.IS_AVAILABLE = user_available;
             console.log('SIDEBAR - USER IS AVAILABLE ', this.IS_AVAILABLE);
-            if (this.IS_AVAILABLE) {
-                console.log('dispo')
-            } else {
-                console.log('!! dispo')
-            }
+            // if (this.IS_AVAILABLE) {
+            //     console.log('dispo')
+            // } else {
+            //     console.log('!! dispo')
+            // }
         });
 
     }
