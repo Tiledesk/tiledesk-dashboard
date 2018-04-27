@@ -189,6 +189,26 @@ export class AppComponent implements OnInit, AfterViewInit {
             }
         });
 
+        const elemAppFooter = <HTMLElement>document.querySelector('app-footer');
+        this.router.events.subscribe((val) => {
+            if (this.location.path() !== '') {
+                this.route = this.location.path();
+                // console.log('»> ', this.route)
+                if (this.route.indexOf('/verify') !== -1 ) {
+
+                    elemAppFooter.setAttribute('style', 'display:none;');
+                    // console.log('DETECT LOGIN PAGE')
+                    // tslint:disable-next-line:max-line-length
+                } else {
+
+                    elemAppFooter.setAttribute('style', '');
+
+                }
+            } else {
+                // console.log('»> * ', this.route)
+            }
+        });
+
     }
 
 

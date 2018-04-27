@@ -254,4 +254,10 @@ export class SignupComponent implements OnInit {
     this.display = 'none';
   }
 
+  goToTileDeskDotCom() {
+    const url = 'http://tiledesk.com/'
+    window.open(url);
+    // , '_blank'
+  }
+
 }

@@ -42,15 +42,21 @@ export class VerifyEmailComponent implements OnInit {
 
         if (error.status === 500) {
           this.error_msg_title = 'Sorry, something went wrong!';
-          this.error_msg_subtitle  = 'An error occured during data processing';
+          this.error_msg_subtitle = 'An error occured during data processing';
         } else if (error.status === 404) {
           this.error_msg_title = 'Sorry, something went wrong!';
-          this.error_msg_subtitle  = 'Verification failed';
+          this.error_msg_subtitle = 'Verification failed';
         }
       },
       () => {
         console.log('VERIFY-EMAIL PUT REQUEST * COMPLETE *');
 
       });
+  }
+
+  goToTileDeskDotCom() {
+    const url = 'http://tiledesk.com/'
+    window.open(url);
+    // , '_blank'
   }
 }
