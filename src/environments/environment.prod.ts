@@ -22,6 +22,7 @@ export const environment = {
         SIGNUP_BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/auth/signup',
         SIGNIN_BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/auth/signin',
         FIREBASE_SIGNIN_BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/firebase/auth/signin',
+        VERIFY_EMAIL_BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/auth/verifyemail/',
 
 
         // DEPARTMENTS_BASE_URL: 'http://api.chat21.org/app1/departments/', // URL BUILT directly IN DEPARTMENTS SERVICE

@@ -7,9 +7,30 @@
   <div class="container-fluid">
 
       <div class="row" style="margin-right:100px; margin-left:100px;">
-        <h3 style="padding-left:15px; margin-top:55px; margin-bottom: 5px; text-align: center" >
+        <h3 style="padding-left:15px; margin-top:85px; margin-bottom: 5px; text-align: center" >
           Verify email
         </h3>
+
+        <span *ngIf="error_msg_title">
+          <!-- <h3 style="text-align: center"> {{ error_msg_title }}</h3> -->
+          <h4 style="text-align: center; color: #ff5252"> 
+            <i class="material-icons" style="vertical-align: middle">report_problem</i>
+            <span style="vertical-align: middle; padding-left:8px">
+                {{ error_msg_subtitle }}
+            </span>
+          </h4>
+        </span>
+
+        <span *ngIf="success_msg">
+        
+            <h4 style="text-align: center; color: #218838"> 
+              <i class="material-icons" style="vertical-align: middle">done</i>
+              <span style="vertical-align: middle; padding-left:8px">
+                  {{ success_msg }}
+              </span>
+            </h4>
+          </span>
+
       </div>
 
   </div>

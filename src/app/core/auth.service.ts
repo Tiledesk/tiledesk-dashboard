@@ -50,8 +50,9 @@ const superusers = [
 export class AuthService {
   http: Http;
   SIGNUP_BASE_URL = environment.mongoDbConfig.SIGNUP_BASE_URL;
-  SIGNIN_BASE_URL = environment.mongoDbConfig.SIGNIN_BASE_URL
-  FIREBASE_SIGNIN_BASE_URL = environment.mongoDbConfig.FIREBASE_SIGNIN_BASE_URL
+  SIGNIN_BASE_URL = environment.mongoDbConfig.SIGNIN_BASE_URL;
+  FIREBASE_SIGNIN_BASE_URL = environment.mongoDbConfig.FIREBASE_SIGNIN_BASE_URL;
+  VERIFY_EMAIL_BASE_URL = environment.mongoDbConfig.VERIFY_EMAIL_BASE_URL;
   // MONGODB_PEOPLE_BASE_URL = environment.mongoDbConfig.MONGODB_PEOPLE_BASE_URL;
 
   // TOKEN = environment.mongoDbConfig.TOKEN;
@@ -301,6 +302,29 @@ export class AuthService {
 
       });
   }
+
+  /// ===================== VERIFY EMAIL ===================== ///
+  emailVerify(user_id: string): Observable<User[]> {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    const options = new RequestOptions({ headers });
+
+    const url = this.VERIFY_EMAIL_BASE_URL + user_id;
+
+    console.log('VERIFY EMAIL URL ', url)
+
+    const body = { 'emailverified': true };
+
+    return this.http
+    // .get(url, { headers })
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+
+  }
+
+
+
 
   ////// SUPER USER AUTH //////
   superUserAuth(currentUserEmailgetFromStorage) {
