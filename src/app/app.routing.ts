@@ -58,6 +58,8 @@ import { FaqTestComponent } from './faq-test/faq-test.component';
 import { UserEditAddComponent } from './user-edit-add/user-edit-add.component';
 import { UsersProfileComponent } from './users-profile/users-profile.component';
 import { RoutingPageComponent } from './routing-page/routing-page.component';
+import { VerifyEmailComponent } from './verify-email/verify-email.component';
+
 
 // import { DashboardComponent} from './dashboard/dashboard.component';
 // Andrea
@@ -90,6 +92,7 @@ const routes: Routes = [
   { path: 'login', component: SigninComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'welcome', component: WelcomeComponent },
+  { path: 'verify/email/:user_id', component: VerifyEmailComponent },
 
 
   // firestore user CRUD

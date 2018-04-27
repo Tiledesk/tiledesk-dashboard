@@ -51,7 +51,6 @@ export class ProjectsComponent implements OnInit {
 
     this.getProjects();
     this.getLoggedUser();
-
   }
 
 
@@ -86,6 +85,13 @@ export class ProjectsComponent implements OnInit {
   // GO TO  PROJECT-EDIT-ADD COMPONENT
   goToEditAddPage_CREATE() {
     this.router.navigate(['/project/create']);
+  }
+
+  // TEST VERIFY-EMAIL
+  testVerifyEmail() {
+    if (this.user) {
+      this.router.navigate(['/verify/email/', this.user._id]);
+    }
   }
 
   // GO TO PROJECT-EDIT-ADD COMPONENT AND PASS THE PROJECT ID (RECEIVED FROM THE VIEW)

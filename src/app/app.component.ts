@@ -132,14 +132,14 @@ export class AppComponent implements OnInit, AfterViewInit {
 
 
 
-        /* DETECT IF IS THE LOGIN PAGE - SIGNUP - WELCOME */
+        /* DETECT IF IS THE LOGIN PAGE - SIGNUP - WELCOME - VERIFY-EMAIL */
         this.router.events.subscribe((val) => {
             if (this.location.path() !== '') {
                 this.route = this.location.path();
 
-                // console.log('»> ', this.route)
+                console.log('»> ', this.route)
                 // tslint:disable-next-line:max-line-length
-                if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/welcome') || (this.route === '/projects')) {
+                if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/welcome') || (this.route === '/projects') || (this.route.indexOf('/verify') !== -1 ) ) {
 
                     elemNavbar.setAttribute('style', 'display:none;');
                     elemAppSidebar.setAttribute('style', 'display:none;');
