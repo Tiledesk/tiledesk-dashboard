@@ -46,18 +46,41 @@ export class AuthGuard implements CanActivate {
   detectVerifyEmailRoute() {
 
     // this.router.events.subscribe((val) => {
-      if (this.location.path() !== '') {
-        this.route = this.location.path();
-        console.log('AUTH GUARD »> »> ', this.route);
-        if (this.route.indexOf('/verify') !== -1) {
-          // this.router.navigate([`${this.route}`]);
-          this.is_verify_email_page = true;
-        } else {
-          this.is_verify_email_page = false;
-        }
+    if (this.location.path() !== '') {
+      this.route = this.location.path();
+      console.log('AUTH GUARD »> »> ', this.route);
+      if (this.route.indexOf('/verify') !== -1) {
+        // this.router.navigate([`${this.route}`]);
+        this.is_verify_email_page = true;
+        console.log('»> »>  AUTH GUARD - IS VERIFY EMAIL PAGE »> »> ', this.is_verify_email_page);
+
+      } else {
+        this.is_verify_email_page = false;
+        console.log('»> »>  AUTH GUARD - IS VERIFY EMAIL PAGE »> »> ', this.is_verify_email_page);
+
       }
+    }
 
     // });
+  }
+
+  canActivate() {
+    console.log('AlwaysAuthGuard');
+
+    if ((this.user) || (this.is_verify_email_page === true)) {
+      // this.router.navigate(['/home']);
+      return true;
+      // if ((!this.user) || (this.is_verify_email_page === false))
+    } else  {
+      // tslint:disable-next-line:no-debugger
+      // debugger
+      this.router.navigate(['/login']);
+      return false;
+    }
+    // else if ((this.is_verify_email_page === false)) {
+    //   this.router.navigate(['verify/email/']);
+    //   return false;
+    // }
   }
 
   // canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
@@ -88,24 +111,7 @@ export class AuthGuard implements CanActivate {
   //   return false;
   // }
 
-  canActivate() {
-    console.log('AlwaysAuthGuard');
 
-    if ((this.user) || (this.is_verify_email_page === true))  {
-      // this.router.navigate(['/home']);
-      return true;
-      // if ((!this.user))
-    } else {
-      // tslint:disable-next-line:no-debugger
-      // debugger
-      this.router.navigate(['/login']);
-      return false;
-    }
-    // else if ((this.is_verify_email_page === false)) {
-    //   this.router.navigate(['verify/email/']);
-    //   return false;
-    // }
-  }
 
 
 }

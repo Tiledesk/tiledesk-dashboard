@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../core/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-verify-email',
@@ -16,7 +17,8 @@ export class VerifyEmailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private auth: AuthService
+    private auth: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -54,9 +56,24 @@ export class VerifyEmailComponent implements OnInit {
       });
   }
 
-  goToTileDeskDotCom() {
-    const url = 'http://tiledesk.com/'
-    window.open(url);
-    // , '_blank'
+  // goToTileDeskDotCom() {
+  //   const url = 'http://tiledesk.com/'
+  //   window.open(url);
+  //   // , '_blank'
+  // }
+  getUserAndGoToLoginOrProjects() {
+    this.auth.user_bs.subscribe((user) => {
+      console.log('USER GET in VERIFY EMAIL ', user)
+      // tslint:disable-next-line:no-debugger
+      // debugger
+
+      if (user) {
+        this.router.navigate(['/projects']);
+      } else {
+        this.router.navigate(['/login']);
+      }
+    });
   }
+
+
 }

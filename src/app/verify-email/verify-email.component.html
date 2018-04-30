@@ -1,13 +1,15 @@
 <div class="row" style="margin-top:55px; border-color: #ebebeb; background-color: #ffffff">
   <div class="col-sm-12" style="height: 100px; box-shadow: 0 0 2px 1px rgba(0,0,0,0.1);">
     <div class="col-sm-6">
-      <p style="margin-top:0px; padding-left:30px; cursor:pointer" class="navbar-brand" (click)="goToTileDeskDotCom()">
-          <!-- Progetti -->
-          <img style="width:250px; margin-left: 50px" src="assets/img/tiledesk-logo.svg"/>
-      </p> 
+      <!-- <p style="margin-top:0px; padding-left:30px; cursor:pointer" class="navbar-brand" (click)="goToTileDeskDotCom()">
+        <img style="width:250px; margin-left: 50px" src="assets/img/tiledesk-logo.svg"/>
+      </p>  -->
+      <a style="margin-top:0px; padding-left:30px;" class="navbar-brand" href="http://www.tiledesk.com">
+        <img style="width:250px; margin-left: 50px" src="assets/img/tiledesk-logo.svg"/>
+      </a>
     </div>
     <div class="col-sm-6" style="margin-top: 15px; text-align: right !important; ">
-      <p class="gotohome" (click)="goToTileDeskDotCom()">GO TO HOME</p>
+      <!-- <p class="gotohome" (click)="goToTileDeskDotCom()">GO TO HOME</p> -->
     </div>
   </div>
 </div>
@@ -15,12 +17,15 @@
 
   <div class="container-fluid">
 
-    <div style="text-align: center; padding-top: 70px; cursor:pointer" (click)="goToTileDeskDotCom()">
-      <img style="height: 136px; margin-top: 35px;" src="assets/img/tiledesk-logo.svg" alt="tiledesk-logo">
+    <div style="text-align: center; padding-top: 70px;">
+      <a href="http://www.tiledesk.com">
+        <img style="height: 136px; margin-top: 35px;" src="assets/img/tiledesk-logo.svg" alt="tiledesk-logo">
+      </a>
     </div>	
 
+
     <div style="font-size:24px; text-align: center">
-      <p class="page_title" style="">
+      <p class="page_title">
         Verify email
       </p>
     </div>
@@ -44,13 +49,20 @@
 
       <span *ngIf="success_msg">
       
-          <h4 style="text-align: center; color: #218838; font-weight: 400; letter-spacing: .056em; font-size: 20px;"> 
-            <i class="material-icons" style="vertical-align: middle">done</i>
-            <span style="vertical-align: middle; padding-left:8px">
-                {{ success_msg }}
-            </span>
-          </h4>
-        </span>
+        <h4 style="text-align: center; color: #67ac5b; font-weight: 400; letter-spacing: .056em; font-size: 20px;"> 
+          <i class="material-icons" style="vertical-align: middle">done</i>
+          <span style="vertical-align: middle; padding-left:8px">
+              {{ success_msg }}
+          </span>
+        </h4>
+
+        <div style="text-align: center;margin-top: 25px;"> 
+          <button type="button" class="btn btn-success btn-lg" (click)="getUserAndGoToLoginOrProjects()">
+            GO TO CONSOLE
+          </button>
+        </div>
+      </span>
+      
 
     </div>
 
