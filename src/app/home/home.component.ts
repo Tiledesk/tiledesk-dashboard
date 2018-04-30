@@ -74,8 +74,10 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  // <!-- RESOUCES (link renamed in WIDGET) -->
   goToResources() {
-    this.router.navigate(['project/' + this.projectId + '/resources']);
+    // this.router.navigate(['project/' + this.projectId + '/resources']);
+    this.router.navigate(['project/' + this.projectId + '/widget']);
   }
   goToRequests() {
     this.router.navigate(['project/' + this.projectId + '/requests']);

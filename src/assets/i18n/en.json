@@ -169,5 +169,12 @@
         "ConnectWithTwitter": "Connect with Twitter",
         "EmailIntegration_1": "Email integration in Tile Desk Support works out of the box. Emails sent to your support address: ",
         "EmailIntegration_2": "automatically become requests."
+    },
+    "VerifyEmailPage":{
+        "VerifyEmail":"Verify email",
+        "EmailVerificationFailed":"Email verification failed",
+        "YourEmailHasSuccess":"Your email has successfully been verified",
+        "GoToCONSOLE":"GO TO CONSOLE"
+
     }
 }

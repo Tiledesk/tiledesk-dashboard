@@ -26,7 +26,8 @@
 
     <div style="font-size:24px; text-align: center">
       <p class="page_title">
-        Verify email
+        <!-- Verify email -->
+        {{ "VerifyEmailPage.VerifyEmail" | translate }}
       </p>
     </div>
 
@@ -42,7 +43,8 @@
         <h4 style="text-align: center; color: #ff5252;font-weight: 400; letter-spacing: .056em; font-size: 20px; "> 
           <i class="material-icons" style="vertical-align: middle">report_problem</i>
           <span style="vertical-align: middle; padding-left:8px">
-              {{ error_msg_subtitle }}
+              <!-- {{ error_msg_subtitle }} -->
+              {{ "VerifyEmailPage.EmailVerificationFailed" | translate }}
           </span>
         </h4>
       </span>
@@ -52,13 +54,14 @@
         <h4 style="text-align: center; color: #67ac5b; font-weight: 400; letter-spacing: .056em; font-size: 20px;"> 
           <i class="material-icons" style="vertical-align: middle">done</i>
           <span style="vertical-align: middle; padding-left:8px">
-              {{ success_msg }}
+              <!-- {{ success_msg }} -->
+              {{ "VerifyEmailPage.YourEmailHasSuccess" | translate }}
           </span>
         </h4>
 
         <div style="text-align: center;margin-top: 25px;"> 
           <button type="button" class="btn btn-success btn-lg" (click)="getUserAndGoToLoginOrProjects()">
-            GO TO CONSOLE
+            {{ "VerifyEmailPage.GoToCONSOLE" |  translate }}
           </button>
         </div>
       </span>

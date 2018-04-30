@@ -171,5 +171,12 @@
         "ConnectWithTwitter": "Connettiti con Twitter",
         "EmailIntegration_1": "Integrazione nativa dell' email nel Supporto Tile Desk. Le email inviate al tuo indirizzo di supporto: ",
         "EmailIntegration_2": "diventano automaticamente richieste."
+    },
+    "VerifyEmailPage":{
+        "VerifyEmail":"Verifica email",
+        "EmailVerificationFailed":"Verifica email fallita",
+        "YourEmailHasSuccess":"La tua email è stata verificata con successo",
+        "GoToCONSOLE":"VAI ALLA CONSOLE"
+
     }
 }

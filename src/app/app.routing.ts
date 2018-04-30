@@ -147,7 +147,8 @@ const routes: Routes = [
 
   { path: 'project/:projectid/history', component: RequestsListHistoryComponent, canActivate: [AuthGuard] },
 
-  { path: 'project/:projectid/resources', component: ResourcesComponent, canActivate: [AuthGuard] },
+  // page RESOURCES (RENAMED WIDGET)   // path: 'project/:projectid/resources'
+  { path: 'project/:projectid/widget', component: ResourcesComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/script', component: ScriptComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/channels', component: ChannelsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/social', component: SocialComponent, canActivate: [AuthGuard] },
