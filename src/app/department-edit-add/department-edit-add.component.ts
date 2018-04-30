@@ -79,8 +79,10 @@ export class DepartmentEditAddComponent implements OnInit {
       console.log('HAS CLICKED CREATE ');
       this.CREATE_VIEW = true;
       // this.showSpinner = false;
-      this.SHOW_OPTION_FORM = true;
-      this.ROUTING_SELECTED = 'fixed';
+      // this.SHOW_OPTION_FORM = true;
+      // this.ROUTING_SELECTED = 'fixed';
+      this.SHOW_OPTION_FORM = false;
+      this.ROUTING_SELECTED = 'assigned';
       this.BOT_NOT_SELECTED = true;
       console.log('ON INIT (IF HAS SELECT CREATE) SHOW OPTION FORM ', this.SHOW_OPTION_FORM, 'ROUTING SELECTED ', this.ROUTING_SELECTED);
 

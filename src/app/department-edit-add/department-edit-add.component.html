@@ -15,7 +15,7 @@
     <div class="container-fluid">
 
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-8">
         <div class="card" style="padding-top:25px; padding-bottom:25px">
           <div class="card-content">
   
@@ -23,12 +23,12 @@
     
               <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
               
-              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2">
+              <label style="height: 36px; padding-top: 0px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2">
                 <!-- Nome Dipartimento -->
                 {{ "DeptsAddEditPage.DeptName" | translate}}
               </label>
               <div class="col-sm-10">
-                <input [(ngModel)]="dept_name" class="" type="text" placeholder='{{ "DeptsAddEditPage.DeptName" | translate}}'>
+                <input [(ngModel)]="dept_name" class="" type="text" placeholder='{{ "DeptsAddEditPage.DeptName" | translate}}' style="margin-top: 2px">
               </div>
 
               <!-- SPACER -->
@@ -38,9 +38,9 @@
               <!-- checked="true" -->
 
               <div class="col-sm-1 col-sm-offset-2" style="padding-left:30px; padding-top:15px">
-                <!--     ASSIGNABLE (CREATE VIEW)     -->
+                <!--     ASSIGNED (CREATE VIEW)     -->
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3"
+                  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3" checked
                   (click)="has_clicked_assigned(show_option_form = 'false', routing = 'assigned')">
                   
                   <label class="form-check-label" for="exampleRadios3" style="padding-left: 5px;">
@@ -60,7 +60,7 @@
 
                 <!--    BOT (IT'S ACTUALLY FAQ-KB) (CREATE VIEW)     -->
                 <div class="form-check" style="padding-top:8px; padding-bottom:8px">
-                  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked 
+                  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1"  
                   (click)="has_clicked_fixed(show_option_form = 'true', routing = 'fixed')">
 
                   <label class="form-check-label" for="exampleRadios1" style="padding-left: 5px;">
@@ -74,7 +74,7 @@
               <!-- <div class="col-sm-12" style="height:15px"></div> -->
               
               <!-- CREATE VIEW - SELECT BOT -->
-              <span *ngIf="SHOW_OPTION_FORM !== 'false'">
+              <span *ngIf="SHOW_OPTION_FORM === 'true'">
                 <!-- <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Bot</label> -->
                 <!-- <div class="col-sm-10"> -->
                 <div class="col-sm-9" style="padding-top:73px">
@@ -104,13 +104,13 @@
                      ACCORDING TO THE VALUE OF SHOW_OPTION_FOR 
                      IT IS 'TRUE' IT MEANS THAT THE USER HAS SELECTED 'FIXED' SO THE BTN IS DISABLED 
                      IF THE LENGHT OF DEPT IS < 2 AND IF IS NOT SELECTED ANY BOT  -->
-                <span *ngIf="SHOW_OPTION_FORM !== 'false'">
+                <span *ngIf="SHOW_OPTION_FORM === 'true'">
                   <button class="btn btn-success" [disabled]="dept_name?.length < 2 || BOT_NOT_SELECTED === true"  (click)="createDepartment()">
                     <!-- Crea Dipartimento -->
                     {{ "DeptsAddEditPage.CreateDept" | translate}}
                   </button>
                 </span>
-                <span *ngIf="SHOW_OPTION_FORM === 'false'">
+                <span *ngIf="SHOW_OPTION_FORM !== 'true'">
                   <button class="btn btn-success" [disabled]="dept_name?.length < 2"  (click)="createDepartment()">
                     <!-- Crea Dipartimento -->
                     {{ "DeptsAddEditPage.CreateDept" | translate}}
@@ -125,9 +125,13 @@
   
                 <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
   
-                <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Nome Dipartmento</label>
+                <label style="height: 36px; padding-top: 0px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
+                  <!-- Nome Dipartmento -->
+                  {{ "DeptsAddEditPage.DeptName" | translate}}
+                  
+                </label>
                 <div class="col-sm-10">
-                  <input [(ngModel)]="deptName_toUpdate" class="input" type="text" placeholder="">
+                  <input [(ngModel)]="deptName_toUpdate" class="input" type="text" style="margin-top: 2px">
                 </div>
         
                 <!-- SPACER -->
@@ -224,6 +228,43 @@
           </div>
         </div>
       </div>
+      <!-- /. col-md-8 -->
+      
+      <!-- RIGHT SIDEBAR -->
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-content" style="padding-top: 25px; ">
+            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; margin-bottom: 15px">
+              Quick tips
+            </h4>
 
-    </div>
+            <p style="margin-bottom: 3px"> <strong>Assigned </strong></p>
+            <p style="color:#999999">
+                
+                Assigned chats help maintain an even workload distribution, especially for larger teams. Chat limits keep agents from getting overwhelmed by chats, especially during high traffic. Experienced agents can help clear the queue faster with the Hybrid Assignment Mode. Enable Reassignments and Automatic Idle to reduce visitor wait time by preventing chats from getting assigned to inactive agents.
+            </p>
+
+            <p style="margin-bottom: 3px"> <strong>Pooled </strong></p>
+            <p style="color:#999999">
+                
+                Pooled chats give agents more autonomy, allowing them to work at their own pace. Set a chat limit to control quality by preventing agents from taking on too many chats at once.
+            </p>
+
+            <p style="margin-bottom: 3px"> <strong>Bot </strong></p>
+            <p style="color:#999999">
+                
+                Select a bot that responds automatically.
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- /. col-md-4 -->
+
+    </div> 
+    <!-- /. row -->
   </div>
+  <!-- /. container-fluid -->
+
+</div>
+<!-- /. main-content -->
+
