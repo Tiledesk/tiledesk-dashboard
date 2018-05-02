@@ -87,6 +87,7 @@ import { UsersProfileComponent } from './users-profile/users-profile.component';
 import { UsersLocalDbService } from './services/users-local-db.service';
 import { RoutingPageComponent } from './routing-page/routing-page.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
+import { RequestsMsgsComponent } from './requests-msgs/requests-msgs.component';
 
 
 
@@ -136,6 +137,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     UsersProfileComponent,
     RoutingPageComponent,
     VerifyEmailComponent,
+    RequestsMsgsComponent,
 
   ],
   imports: [

@@ -316,7 +316,7 @@
                       </strong>
                     </span>
                   </th>
-                            <!-- <th></th> -->
+                            <th>TEST</th>
                 </tr>
               </thead>
               <tbody>
@@ -446,6 +446,7 @@
                       {{ request?.timestamp | amTimeAgo }}
                     </p>
                   </td>
+                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer"> T </td>
                   <!-- <td>
                     <span class="" (click)='openViewMsgsModal(request?.recipient, hasClickedUpdateModal=true)'>
                       <button class="btn btn-info pull-right" style="padding:4px 6px;"> 

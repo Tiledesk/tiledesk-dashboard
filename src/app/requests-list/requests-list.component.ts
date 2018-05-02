@@ -462,6 +462,11 @@ export class RequestsListComponent implements OnInit {
 
   // }
 
+  goToRequestMsgs(request_recipient: string) {
+
+    this.router.navigate(['project/' + this.projectId + '/request/' + request_recipient + '/messages']);
+
+  }
 
 
 

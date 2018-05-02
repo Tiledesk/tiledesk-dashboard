@@ -59,6 +59,7 @@ import { UserEditAddComponent } from './user-edit-add/user-edit-add.component';
 import { UsersProfileComponent } from './users-profile/users-profile.component';
 import { RoutingPageComponent } from './routing-page/routing-page.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
+import { RequestsMsgsComponent } from './requests-msgs/requests-msgs.component';
 
 
 // import { DashboardComponent} from './dashboard/dashboard.component';
@@ -104,6 +105,9 @@ const routes: Routes = [
   // , canActivate: [AuthGuard]
   { path: 'project/:projectid/requests', component: RequestsListComponent, canActivate: [AuthGuard] },
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
+
+  // MESSAGES OF A REQUEST (IT BEFORE WERE DISPLAYED IN A MODAL WINDOW)
+  { path: 'project/:projectid/request/:requestid/messages', component: RequestsMsgsComponent, canActivate: [AuthGuard] },
 
   // tslint:disable-next-line:max-line-length
   // ARE ALL THE USER OF A PROJECT (e.g. THE USER THAT HAS CREATED THE PROJECT AND THE USERS THAT HE HAS INVITED (THE OTHER MEMBERS OF THE PROJECT))
