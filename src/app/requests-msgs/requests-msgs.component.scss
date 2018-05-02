@@ -31,64 +31,6 @@
     padding-right:10px;
 }
 
-// new
-// body{
-// 	margin-top: 50px;
-// 	background-color: #0191C8;
-// }
-.comment-main{
-	background-color: #74C2E1;
-	box-shadow: 1px 2px 6px 2px #005B9A;
-}
-.comment-main ul{
-	list-style: none;
-}
-.sub-cmt-img{
-	width: 55px !important;
-    height: 55px !important;
-    border-radius: 50%;
-} 
-// .main-cmt-img{
-//     width: 40px !important;
-//     height: 40px !important;
-//     border-radius: 50%;
-// }
-// .border-bottom{
-// 	font-size: 13px;
-// 	border-bottom: 1px solid #d3d3d3;
-// }
-.user-comment{
-	background-color: #f3f3f3 !important;
-    box-shadow: 0px 5px 8px -4px #c1c1c1;
-}
-.user-comment-desc, .user-comment span{
-	color: #a0a0a0;
-}
-.user-comment-desc p{
-	font-size: 12px;
-	display: inline-block;
-	float: left;
-}
-.send-icon i{
-	font-size: 20px;
-	background: #f3f3f3;
-	padding: 6px 5px;
-	border-radius: 50%;
-	color: #74C2E1;
-	height: 35px;
-	width: 35px;
-}
-.user-comment:before{
-    content: "";
-    height: 0;
-    width: 0;
-    top: 0;
-    left: -10px;
-    position: absolute;
-    border-style: solid;
-    border-width: 13px 0 0 13px;
-	border-color: #f3f3f3 transparent transparent transparent; 
-}
 
 // new 2
 /* Right triangle placed top left flush. */
