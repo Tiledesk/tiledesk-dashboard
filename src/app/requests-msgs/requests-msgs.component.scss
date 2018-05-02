@@ -1,0 +1,154 @@
+// MESSAGES IN MODAL 
+.msgcontainer  {
+    border: 2px solid #dedede;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px 0;
+    display: inline-block;
+    min-width: 150px;
+    max-width: 350px;
+}
+
+.msgcontainer::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+/* Style time text */
+.time-right {
+    float: right;
+    color: #aaa;
+}
+
+.msg_sender{
+    position: relative;
+    display: block;
+    z-index: 2;
+    float: left;
+    padding-top:10px;
+    padding-right:10px;
+}
+
+// new
+// body{
+// 	margin-top: 50px;
+// 	background-color: #0191C8;
+// }
+.comment-main{
+	background-color: #74C2E1;
+	box-shadow: 1px 2px 6px 2px #005B9A;
+}
+.comment-main ul{
+	list-style: none;
+}
+.sub-cmt-img{
+	width: 55px !important;
+    height: 55px !important;
+    border-radius: 50%;
+} 
+// .main-cmt-img{
+//     width: 40px !important;
+//     height: 40px !important;
+//     border-radius: 50%;
+// }
+// .border-bottom{
+// 	font-size: 13px;
+// 	border-bottom: 1px solid #d3d3d3;
+// }
+.user-comment{
+	background-color: #f3f3f3 !important;
+    box-shadow: 0px 5px 8px -4px #c1c1c1;
+}
+.user-comment-desc, .user-comment span{
+	color: #a0a0a0;
+}
+.user-comment-desc p{
+	font-size: 12px;
+	display: inline-block;
+	float: left;
+}
+.send-icon i{
+	font-size: 20px;
+	background: #f3f3f3;
+	padding: 6px 5px;
+	border-radius: 50%;
+	color: #74C2E1;
+	height: 35px;
+	width: 35px;
+}
+.user-comment:before{
+    content: "";
+    height: 0;
+    width: 0;
+    top: 0;
+    left: -10px;
+    position: absolute;
+    border-style: solid;
+    border-width: 13px 0 0 13px;
+	border-color: #f3f3f3 transparent transparent transparent; 
+}
+
+// new 2
+/* Right triangle placed top left flush. */
+.tri-right.border.left-top:before {
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+  left: -40px;
+	right: auto;
+  top: -8px;
+	bottom: auto;
+	border: 32px solid;
+	border-color: #666 transparent transparent transparent;
+}
+.tri-right.left-top:after{
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+  left: -20px;
+	right: auto;
+  top: 0px;
+	bottom: auto;
+	border: 22px solid;
+	border-color: #f1f1f1 transparent transparent transparent;
+}
+/* CSS talk bubble */
+.talk-bubble {
+	// margin: 40px;
+  display: inline-block;
+  position: relative;
+	width: 350px;
+	height: auto;
+    background-color: #f1f1f1;
+    box-shadow: 0px 5px 8px -4px #c1c1c1;
+}
+
+/* Right triangle, left side slightly down */
+.tri-right.border.left-in:before {
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+  left: -40px;
+	right: auto;
+  top: 30px;
+	bottom: auto;
+	border: 20px solid;
+	border-color: #666 #666 transparent transparent;
+}
+.tri-right.left-in:after{
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+  left: -20px;
+	right: auto;
+  top: 38px;
+	bottom: auto;
+	border: 12px solid;
+	border-color: #f1f1f1 #f1f1f1 transparent transparent;
+}
