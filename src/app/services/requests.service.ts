@@ -342,7 +342,11 @@ export class RequestsService {
           timestamp: data.timestamp,
           membersCount: data.membersCount,
           support_status: data.support_status,
-          members: data.members
+          members: data.members,
+          attributes: data.attributes,
+          currentUserIsJoined: currentUserUidIsInMembers(data.members, this.currentUserID),
+          requester_fullname: data.requester_fullname,
+          requester_id: data.requester_id
         };
       });
     });

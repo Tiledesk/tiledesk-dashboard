@@ -83,7 +83,7 @@
                         </strong>
                       </span>
                     </th>
-                    <!-- <th></th> -->
+                    <th>TEST</th>
                 </tr>
               </thead>
 
@@ -116,7 +116,7 @@
 
                     <!-- IF THE REQUEST SUPPORT STATUS IS 0 (??? REQUEST) -->
                     <span *ngIf="request?.support_status == 0"> 
-                      <span class="" (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id)'>
+                      <span class="" (click)='goToRequestMsgs(request?.recipient)'>
                         <button class="btn btn-default" style=""> 
                             <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                         </button>
@@ -125,7 +125,7 @@
                     
                     <!-- IF THE REQUEST SUPPORT STATUS IS 100 (UNSERVED REQUEST) -->
                     <span *ngIf="request?.support_status == 100"> 
-                      <span class="" (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id)'>
+                      <span class="" (click)='goToRequestMsgs(request?.recipient)'>
                           <!-- padding:4px 6px; -->
                         <button class="btn btn-danger" style=""> 
                             <i style="font-size: 17px !important; " class="material-icons">visibility</i>
@@ -136,7 +136,7 @@
                     <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) AND THE CURRENT USER UID IS BETWEEN 
                     THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
                     <span *ngIf="request?.support_status == 200 && request?.currentUserIsJoined === true"> 
-                      <span class="" (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id)'>
+                      <span class="" (click)='goToRequestMsgs(request?.recipient)'>
                         <button class="btn btn-success" style="" rel="tooltip" title=""> 
                             <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                         </button>
@@ -146,14 +146,14 @@
                     <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) BUT THE CURRENT USER UID IS NOT BETWEEN 
                     THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has not joined to the request) -->
                     <span *ngIf="request?.support_status == 200 && !request?.currentUserIsJoined"> 
-                      <span class="" (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id)'>
+                      <span class="" (click)='goToRequestMsgs(request?.recipient)'>
                         <button class="btn btn-info" style="" rel="tooltip" title=""> 
                           <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                         </button>
                       </span>
                     </span>
                   </td>
-                  <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id)' style="cursor:pointer">
+                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
                       <!-- max-width: 150px; -->
                     <p style="font-size:0.8em;" >
                       <!-- {{ request?.recipient }} -->
@@ -161,7 +161,7 @@
                     </p>
                   </td>
 
-                  <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id)' style="cursor:pointer">
+                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
                     
                     <p style="font-size:0.8em;" >
 
@@ -169,7 +169,7 @@
                     </p>
                   </td>
 
-                  <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
+                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
                     <!-- <p style="font-size:0.9em">{{ request.sender_fullname }}</p> -->
                     <p style="font-size:0.9em">
                       {{ request.requester_fullname }}
@@ -178,7 +178,7 @@
                         {{ request?.requester_id }}
                     </p> -->
                   </td>
-                  <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id )' style="cursor:pointer">
+                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
                       <!-- max-width: 400px -->
                     <p style="font-size:0.9em;" [innerHTML]="getRequestText(request?.first_text)">
                       <!-- {{ request?.text }} -->
@@ -211,7 +211,8 @@
                   <!-- <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined)' style="cursor:pointer">
                     <p style="font-size:0.8em; min-width: 220px;"  [innerHTML]="request?.members_as_string"></p>
                   </td> -->
-                  <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id)' style="cursor:pointer">
+                  
+                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
                     <p style="font-size:0.9em">
                       <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
                       <!-- {{ request?.request_date_fromnow }} -->
@@ -219,6 +220,12 @@
                       {{ request?.timestamp | amTimeAgo }}
                     </p>
                   </td>
+
+                  
+                  <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id)' style="cursor:pointer"> 
+                    Test Modal 
+                  </td>
+                  
                   <!-- <td>
                     <span class="" (click)='openViewMsgsModal(request?.recipient, hasClickedUpdateModal=true)'>
                       <button class="btn btn-info pull-right" style="padding:4px 6px;"> 
@@ -345,7 +352,7 @@
                   <td style="text-align:center">
                     <!-- IF THE REQUEST SUPPORT STATUS IS 0 (??? REQUEST) -->
                     <span *ngIf="request?.support_status == 0"> 
-                      <span class="" (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id)'>
+                      <span class="" (click)='goToRequestMsgs(request?.recipient)'>
                         <button class="btn btn-default" style=""> 
                             <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                         </button>
@@ -354,7 +361,7 @@
                 
                     <!-- IF THE REQUEST SUPPORT STATUS IS 100 (UNSERVED REQUEST) -->
                     <span *ngIf="request?.support_status == 100"> 
-                      <span class="" (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id)'>
+                      <span class="" (click)='goToRequestMsgs(request?.recipient)'>
                         <button class="btn btn-danger" style=""> 
                             <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                         </button>
@@ -364,7 +371,7 @@
                     <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) AND THE CURRENT USER UID IS BETWEEN 
                     THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
                     <span *ngIf="request?.support_status == 200 && request?.currentUserIsJoined === true"> 
-                      <span class="" (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id)'>
+                      <span class="" (click)='goToRequestMsgs(request?.recipient)'>
                           <!-- padding:4px 6px; -->
                         <button class="btn btn-success" style="" rel="tooltip" title=""> 
                             <i style="font-size: 17px !important; " class="material-icons">visibility</i>
@@ -375,7 +382,7 @@
                     <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) BUT THE CURRENT USER UID IS NOT BETWEEN 
                     THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has not joined to the request) -->
                     <span *ngIf="request?.support_status == 200 && !request?.currentUserIsJoined"> 
-                      <span class="" (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id)'>
+                      <span class="" (click)='goToRequestMsgs(request?.recipient)'>
                         <button class="btn btn-info" style="" rel="tooltip" title=""> 
                           <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                         </button>
@@ -383,7 +390,8 @@
                     </span>
 
                   </td>
-                  <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id)' style="cursor:pointer">
+                  <!-- openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id) -->
+                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
                       <!-- max-width: 150px; -->
                     <p style="font-size:0.8em;" >
                       <!-- {{ request?.recipient }} -->
@@ -391,13 +399,16 @@
                     </p>
                   </td>
 
-                  <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
+                  <!-- openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id) -->
+                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
                     <p style="font-size:0.9em">
                       {{ request?.attributes?.departmentName }}
                     </p>
                   </td>
 
-                  <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
+                  
+                  <!-- openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id) -->
+                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
                     <!-- <p style="font-size:0.9em">{{ request.sender_fullname }}</p> -->
                     <p style="font-size:0.9em">
                       {{ request.requester_fullname }}
@@ -406,7 +417,9 @@
                       {{ request?.requester_id }}
                     </p> -->
                   </td>
-                  <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id)' style="cursor:pointer">
+                  
+                  <!-- openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id) -->
+                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
                       <!-- max-width: 400px -->
                     <p style="font-size:0.9em;" [innerHTML]="getRequestText(request?.first_text)">
                       <!-- {{ request?.text }} -->
@@ -423,9 +436,9 @@
                   <!-- SERVED BY -->
                   <td>
                     <!-- [innerHTML]="request?.members_as_string" -->
-                    <span *ngFor="let m of request?.members_array"  style="font-size:0.8em; cursor: pointer;">
+                    <span *ngFor="let m of request?.members_array"  style="font-size:0.8em;">
                       <span *ngIf="m !== request?.requester_id && m !== 'system' && m !== currentUserID"> 
-                        <p class="member" (click)="goToMemberProfile( m )" [innerHTML]="members_replace( m )" style="padding-top:1px; padding-bottom:1px;">  </p>
+                        <p class="member" (click)="goToMemberProfile( m )" [innerHTML]="members_replace( m )" style="padding-top:1px; padding-bottom:1px; cursor: pointer;">  </p>
                       </span> 
                       <p *ngIf="m === currentUserID" style="padding-top:1px; padding-bottom:1px;"> 
                         - <strong> 'ME' </strong>
@@ -438,7 +451,8 @@
                   <!-- <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined)' style="cursor:pointer">
                     <p style="font-size:0.8em; min-width: 220px;"  [innerHTML]="request?.members_as_string"></p>
                   </td> -->
-                  <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id)' style="cursor:pointer">
+                  
+                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
                     <p style="font-size:0.9em">
                       <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
                       <!-- {{ request?.request_date_fromnow }} -->
@@ -446,7 +460,10 @@
                       {{ request?.timestamp | amTimeAgo }}
                     </p>
                   </td>
-                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer"> T </td>
+
+                  <td (click)='openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id)' style="cursor:pointer"> 
+                    Test modal
+                  </td>
                   <!-- <td>
                     <span class="" (click)='openViewMsgsModal(request?.recipient, hasClickedUpdateModal=true)'>
                       <button class="btn btn-info pull-right" style="padding:4px 6px;"> 

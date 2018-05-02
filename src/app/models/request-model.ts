@@ -7,7 +7,7 @@ export interface Request {
   timestamp?: number;
   membersCount?: number;
   support_status?: number;
-  members?: boolean;
+  members?: any;
   requester_fullname?: string;
   requester_id?: string;
   projectid?: string;
