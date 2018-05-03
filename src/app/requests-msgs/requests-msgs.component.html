@@ -110,40 +110,104 @@
 
       <!-- // SIDEBAR // -->
       <div class="col-sm-5">
-        <div class="card" style="padding-top:5px; padding-bottom:25px;">
+        <div class="card" style="padding-top:5px; padding-bottom:5px;">
 
-          <div class="card-content">
-            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; margin-bottom: 15px">
-              Request info
+          <div class="card-content" style="padding-top:5px;">
+            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; margin-bottom: 25px; border-bottom: 1px solid #eeeeee; padding-bottom: 15px;">
+              <!-- Request info -->
+              Request <code style="color: #566787; font-weight: 400" >{{ id_request }} </code>
             </h4>
 
-            <p style="margin-bottom: 3px"> <strong>Request Id </strong></p>
-            <p style="color:#999999">  
+            <p style="margin-bottom: 10px"> 
+              <!-- IF IS AN UNSERVED REQUEST -->
+                <span *ngIf="request?.support_status == 100"> 
+                <i style="font-size: 24px !important; vertical-align: middle; color: #f44336" class="material-icons">visibility</i>
+              
+                <span style="vertical-align: middle; color: #f44336">
+                  <strong>Request unserved </strong>
+                </span>
+              </span>
+
+              <!-- IF IS A SERVED REQUEST AND BETWEEN THE MEMBERS THERE IS THE CURRENT USER -->
+              <span *ngIf="request?.support_status == 200 && request?.currentUserIsJoined === true"> 
+                <i style="font-size: 24px !important; vertical-align: middle; color: #4CAF50" class="material-icons">visibility</i>
+              
+                <span style="vertical-align: middle; color: #4CAF50">
+                  <strong>Request served by: </strong>
+                </span>
+
+              </span>
+
+              <span *ngIf="request?.support_status == 200 && !request?.currentUserIsJoined"> 
+                <i style="font-size: 24px !important; vertical-align: middle; color: #00bcd4" class="material-icons">visibility</i>
+              
+                <span style="vertical-align: middle; color: #00bcd4;">
+                  <strong>Request served by: </strong>
+                </span>
+              </span>
+
+
+              <span *ngFor="let m of members_array"  style="">
+                <span *ngIf="m !== request?.requester_id && m !== 'system' && m !== currentUserID"> 
+                  <span class="tag_member" (click)="goToMemberProfile( m )" [innerHTML]="members_replace( m )" style="cursor: pointer;"> 
+                    
+                  </span>
+                </span> 
+                <span *ngIf="m === currentUserID" style=""> 
+                    <span class="tag_member_me"> ME </span>
+                </span>
+              </span>   
+            </p>
+
+            <p style="margin-bottom: 3px; color:#566787; padding-top: 10px;"> 
+              <strong>Published </strong>
+            </p>
+              <p style="color:#999999; font-weight: 500">  
+                {{ request?.timestamp | amTimeAgo }}
+              </p>
+            
+
+ 
+            <!-- <p style="margin-bottom: 3px; color:#566787"> 
+              <strong>Request Id </strong>
+            </p>
+              <p style="color:#999999; font-weight: 500">    
               {{ id_request }}
+            </p> -->
+            
+
+            <p style="margin-bottom: 3px; color:#566787"> 
+              <strong>Requester </strong>
+            </p>
+            <p style="color:#999999; font-weight: 500">  
+              {{ requester_fullname }} 
             </p>
 
-            <p style="margin-bottom: 3px"> <strong>Requester </strong></p>
-            <p style="color:#999999">  
-              {{ requester_fullname }}
+            <p style="margin-bottom: 3px; color:#566787"> 
+              <strong>Requester Id</strong>
             </p>
-
-            <p style="margin-bottom: 3px"> <strong>Requester Id</strong></p>
-            <p style="color:#999999">  
+            <p style="color:#999999; font-weight: 500">  
               {{ requester_id }}
             </p>
 
-            <p style="margin-bottom: 3px"> <strong>Department Name</strong></p>
-            <p style="color:#999999">  
+            <p style="margin-bottom: 3px; color:#566787"> 
+              <strong>Department Name</strong>
+            </p>
+            <p style="color:#999999; font-weight: 500">  
               {{ department_name }}
             </p>
 
-            <p style="margin-bottom: 3px"> <strong>Department Id</strong></p>
-            <p style="color:#999999">  
+            <p style="margin-bottom: 3px; color:#566787"> 
+              <strong>Department Id</strong>
+            </p>
+            <p style="color:#999999; font-weight: 500">  
               {{ department_id }}
             </p>
 
-            <p style="margin-bottom: 3px"> <strong>Source page</strong></p>
-            <p style="color:#999999; word-wrap: break-word;">  
+            <p style="margin-bottom: 3px; color:#566787"> 
+              <strong>Source page</strong>
+            </p>
+            <p style="color:#999999; word-wrap: break-word; font-weight: 500">  
               {{ source_page }}
             </p>
 

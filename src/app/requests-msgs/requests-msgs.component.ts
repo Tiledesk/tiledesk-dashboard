@@ -6,6 +6,7 @@ import { RequestsService } from '../services/requests.service';
 import { AuthService } from '../core/auth.service';
 import { environment } from '../../environments/environment';
 import * as firebase from 'firebase/app';
+import { UsersLocalDbService } from '../services/users-local-db.service';
 
 @Component({
   selector: 'app-requests-msgs',
@@ -31,6 +32,9 @@ export class RequestsMsgsComponent implements OnInit {
   firebase_token: any;
   currentUserID: string;
 
+  request: any;
+  members_array: any
+
   requester_fullname: string;
   requester_id: string;
   department_name: string;
@@ -41,7 +45,8 @@ export class RequestsMsgsComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private requestsService: RequestsService,
-    private auth: AuthService
+    private auth: AuthService,
+    private usersLocalDbService: UsersLocalDbService
   ) { }
 
   ngOnInit() {
@@ -115,9 +120,15 @@ export class RequestsMsgsComponent implements OnInit {
   getRequestByRecipient() {
     this.requestsService.getSnapshotConversationByRecipient(this.id_request)
       .subscribe((request) => {
-        console.log('--> REQUEST ', request);
+        // console.log('--> REQUEST ', request);
 
         if (request) {
+          this.request = request[0];
+          console.log('--> THIS REQUEST ', this.request);
+
+          this.members_array = Object.keys(request[0].members);
+          console.log('MEMBERS ARRAY ', this.members_array)
+
           this.IS_CURRENT_USER_JOINED = request[0].currentUserIsJoined;
           console.log('* IS_CURRENT_USER_JOINED: ', this.IS_CURRENT_USER_JOINED);
 
@@ -221,5 +232,28 @@ export class RequestsMsgsComponent implements OnInit {
   // GO BACK REQUESTS LIST
   goBackToRequestsList() {
     this.router.navigate(['project/' + this.id_project + '/requests']);
+  }
+
+  members_replace(member_id) {
+    // console.log('Members replace ', m)
+    // const user = JSON.parse((localStorage.getItem(member_id)));
+    const user = this.usersLocalDbService.getMemberFromStorage(member_id);
+    if (user) {
+      // console.log('user ', user)
+      return member_id = user['firstname'] + ' ' + user['lastname']
+    } else {
+      return member_id
+    }
+  }
+
+  goToMemberProfile(member_id: any) {
+    console.log('has clicked GO To MEMBER ', member_id);
+    if (member_id.indexOf('bot_') !== -1) {
+      console.log('IS A BOT !');
+
+      this.router.navigate(['project/' + this.id_project + '/botprofile/' + member_id]);
+    } else {
+      this.router.navigate(['project/' + this.id_project + '/member/' + member_id]);
+    }
   }
 }

@@ -95,3 +95,34 @@
 	border: 12px solid;
 	border-color: #f1f1f1 #f1f1f1 transparent transparent;
 }
+
+.tag_member {
+
+   border: 1px solid #00bcd4;
+   padding: 2px 4px;
+   margin: 0 6px 6px 0;
+   color: #00bcd4;
+   font-size:12px;
+   font-weight: 400
+}
+
+.tag_member:hover {
+
+    border: 1px solid #fff;
+    padding: 2px 4px;
+    margin: 0 6px 6px 0;
+    color: #fff;
+    font-size:12px;
+    background-color: #00bcd4
+ }
+
+.tag_member_me {
+    border: 1px solid #4caf50;
+    padding: 1px 3px;
+    margin: 0 6px 6px 0;
+    color: #4caf50;
+    font-size:12px;
+    font-weight: 600
+
+
+}
