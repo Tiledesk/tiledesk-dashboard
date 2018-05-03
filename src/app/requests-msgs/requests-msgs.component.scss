@@ -20,6 +20,7 @@
 .time-right {
     float: right;
     color: #aaa;
+    padding-right: 0px !important;
 }
 
 .msg_sender{
@@ -63,7 +64,7 @@
 	// margin: 40px;
   display: inline-block;
   position: relative;
-	width: 350px;
+	// width: 350px;
 	height: auto;
     background-color: #f1f1f1;
     box-shadow: 0px 5px 8px -4px #c1c1c1;
