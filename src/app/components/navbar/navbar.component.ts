@@ -575,7 +575,6 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     }
 
     testExpiredSessionFirebaseLogout() {
-
         this.auth.testExpiredSessionFirebaseLogout(true)
     }
 

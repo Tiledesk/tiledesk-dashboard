@@ -284,4 +284,7 @@ export class ProjectsComponent implements OnInit {
     this.auth.signOut();
   }
 
+  testExpiredSessionFirebaseLogout() {
+    this.auth.testExpiredSessionFirebaseLogout(true)
+  }
 }
