@@ -1,11 +1,11 @@
-<div class="row" style="margin-top:55px; border-color: #ebebeb; background-color: #ffffff">
+<div class="row" style="margin-top:60px; border-color: #ebebeb; background-color: #ffffff">
   <div class="col-sm-12" style="height: 100px; box-shadow: 0 0 2px 1px rgba(0,0,0,0.1);">
     <div class="col-sm-6">
       <!-- <p style="margin-top:0px; padding-left:30px; cursor:pointer" class="navbar-brand" (click)="goToTileDeskDotCom()">
         <img style="width:250px; margin-left: 50px" src="assets/img/tiledesk-logo.svg"/>
       </p>  -->
       <a style="margin-top:0px; padding-left:30px;" class="navbar-brand" href="http://www.tiledesk.com" target="_blank">
-        <img style="width:250px; margin-left: 50px" src="assets/img/tiledesk-logo.svg"/>
+        <img class="img-responsive" style="width:240px; margin-left: 30px" src="assets/img/tiledesk-logo.svg"/>
       </a>
     </div>
     <div class="col-sm-6" style="margin-top: 15px; text-align: right !important; ">
@@ -17,11 +17,13 @@
 
   <div class="container-fluid">
 
+
     <div style="text-align: center; padding-top: 70px;">
       <a href="http://www.tiledesk.com" target="_blank">
-        <img style="height: 136px; margin-top: 35px;" src="assets/img/tiledesk-logo.svg" alt="tiledesk-logo">
+        <img class="img-responsive" style="height: 136px; margin-top: 35px; display: inline" src="assets/img/tiledesk-logo.svg" alt="tiledesk-logo">
       </a>
     </div>	
+
 
 
     <div style="font-size:24px; text-align: center">
@@ -32,40 +34,45 @@
     </div>
 
     <hr style="margin-bottom: 12px; width: 50%; text-align: center; margin-left: 25%; margin-right: 25%;">
+    <!-- margin-right:100px; margin-left:100px; -->
+    <div class="row" style="">
+      <div class="col-md-12" style="text-align: center">
+        <!-- <h3 style="padding-left:15px; margin-top:0px; margin-bottom: 5px; text-align: center" >
+          Verify email
+        </h3> -->
 
-    <div class="row" style="margin-right:100px; margin-left:100px;">
-      <!-- <h3 style="padding-left:15px; margin-top:0px; margin-bottom: 5px; text-align: center" >
-        Verify email
-      </h3> -->
-
-      <span *ngIf="error_msg_title">
-        <!-- <h3 style="text-align: center"> {{ error_msg_title }}</h3> -->
-        <h4 style="text-align: center; color: #ff5252;font-weight: 400; letter-spacing: .056em; font-size: 20px; "> 
-          <i class="material-icons" style="vertical-align: middle">report_problem</i>
-          <span style="vertical-align: middle; padding-left:8px">
-              <!-- {{ error_msg_subtitle }} -->
-              {{ "VerifyEmailPage.EmailVerificationFailed" | translate }}
+        <!-- IF ERROR -->
+        <span *ngIf="error_msg_title">
+          <!-- <h3 style="text-align: center"> {{ error_msg_title }}</h3> -->
+          <i class="material-icons" style="vertical-align: middle; color: #ff5252;">report_problem</i>
+          <span style="text-align: center; color: #ff5252;font-weight: 400; letter-spacing: .056em; font-size: 20px; vertical-align: middle; padding-left:8px "> 
+            
+            <!-- <span style="vertical-align: middle; padding-left:8px"> -->
+                <!-- {{ error_msg_subtitle }} -->
+                {{ "VerifyEmailPage.EmailVerificationFailed" | translate }}
+            <!-- </span> -->
           </span>
-        </h4>
-      </span>
+        </span>
 
-      <span *ngIf="success_msg">
-      
-        <h4 style="text-align: center; color: #67ac5b; font-weight: 400; letter-spacing: .056em; font-size: 20px;"> 
-          <i class="material-icons" style="vertical-align: middle">done</i>
-          <span style="vertical-align: middle; padding-left:8px">
+        <!-- IF SUCCESS -->
+        <span *ngIf="success_msg" style="text-align: center">
+          
+          <i class="material-icons" style="vertical-align: middle; color: #67ac5b;">done</i>
+          <span style="text-align: center; color: #67ac5b; font-weight: 400; letter-spacing: .056em; font-size: 20px; vertical-align: middle; padding-left:8px"> 
+          <!-- <span style="vertical-align: middle; padding-left:8px"> -->
               <!-- {{ success_msg }} -->
               {{ "VerifyEmailPage.YourEmailHasSuccess" | translate }}
+          <!-- </span> -->
           </span>
-        </h4>
 
-        <div style="text-align: center;margin-top: 25px;"> 
-          <button type="button" class="btn btn-success btn-lg" (click)="getUserAndGoToLoginOrProjects()">
-            {{ "VerifyEmailPage.GoToCONSOLE" |  translate }}
-          </button>
-        </div>
-      </span>
-      
+          <div style="text-align: center;margin-top: 25px;"> 
+            <button type="button" class="btn btn-success btn-lg" (click)="getUserAndGoToLoginOrProjects()">
+              {{ "VerifyEmailPage.GoToCONSOLE" |  translate }}
+            </button>
+          </div>
+
+        </span>
+      </div>
 
     </div>
 

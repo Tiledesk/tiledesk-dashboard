@@ -212,7 +212,7 @@ export class RequestsService {
 
     // RESOLVE THE ISSUE: The behavior for Date objects stored in Firestore is going to change AND YOUR APP MAY BREAK.
     //    !!! COMMENT THE LINE BELOW TO SEE THE ERROR MESSAGE IN CONSOLE !!!
-    db.settings({ timestampsInSnapshots: true });
+    // db.settings({ timestampsInSnapshots: true });
 
     const query = db.collection('conversations')
       .where('support_status', '<', 1000)
