@@ -106,7 +106,9 @@ export class SigninComponent implements OnInit {
   }
 
   signin() {
-    this.showSpinnerInLoginBtn = true
+    this.showSpinnerInLoginBtn = true;
+
+    this.auth.showExpiredSessionPopup(true);
     // this.auth.emailLogin(
     const self = this;
     // this.auth.signin(this.userForm.value['email'], this.userForm.value['password'])

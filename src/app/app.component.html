@@ -6,6 +6,9 @@
     </div>
     <div class="main-panel">
         <app-navbar></app-navbar>
+
+        <notification-message></notification-message>
+        
         <router-outlet></router-outlet>
         <div *ngIf="isMaps('maps')">
             <app-footer></app-footer>

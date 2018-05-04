@@ -59,6 +59,8 @@ export class SignupComponent implements OnInit {
   signup() {
     this.showSpinnerInLoginBtn = true;
 
+    this.auth.showExpiredSessionPopup(true);
+
     this.auth.signup(
       this.userForm.value['email'],
       this.userForm.value['password'],

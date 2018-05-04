@@ -69,6 +69,8 @@ export class AuthService {
 
   public project_bs: BehaviorSubject<Project> = new BehaviorSubject<Project>(null);
 
+  show_ExpiredSessionPopup: boolean
+
   constructor(
     http: Http,
     private afAuth: AngularFireAuth,
@@ -93,6 +95,7 @@ export class AuthService {
     this.checkCredentials();
 
     this.getProjectFromLocalStorage();
+
   }
 
   getProjectFromLocalStorage() {
@@ -317,7 +320,7 @@ export class AuthService {
     const body = { 'emailverified': true };
 
     return this.http
-    // .get(url, { headers })
+      // .get(url, { headers })
       .put(url, JSON.stringify(body), options)
       .map((res) => res.json());
 
@@ -456,6 +459,38 @@ export class AuthService {
     console.log('HAS BEEN CALLED HAS CLICKED GOTO PROJECTS')
     this.project_bs.next(null);
     localStorage.removeItem('project');
+  }
+
+  // RUN THE FIREBASE LOGOUT FOR TEST OF THE EXIPERD SESIION MODAL WINDOW
+  testExpiredSessionFirebaseLogout(logoutFromFireBase) {
+
+    console.log('TEST EXIPERD SESSION - LOGOUT FROM FIREBASE');
+    firebase.auth().signOut()
+      .then(function () {
+        console.log('Signed Out');
+      }, function (error) {
+        console.error('Sign Out Error', error);
+      });
+
+  }
+
+  showExpiredSessionPopup(showExpiredSessionPopup) {
+    this.show_ExpiredSessionPopup = showExpiredSessionPopup;
+    console.log('AUTH SERV - SHOW EXPIRED SESSION POPUP ', this.show_ExpiredSessionPopup )
+  }
+
+  // hasPressedLogOut(logoutPressed) {
+  //   this.logoutPressed = logoutPressed
+  //   console.log('AUTH SERV - HAS PRESSED LOGOUT ', this.logoutPressed)
+  // }
+  // PASSED FROM APP.COMPONENT.TS
+  userIsSignedIn(user_is_signed_in: boolean) {
+    console.log('AUTH SERVICE - USER IS SIGNED IN ', user_is_signed_in);
+
+    if (this.show_ExpiredSessionPopup === true) {
+      this.notify.showExiperdSessionPopup(user_is_signed_in);
+    }
+
   }
 
   signOut() {

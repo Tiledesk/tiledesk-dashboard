@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, Self } from '@angular/core';
 import { Location, LocationStrategy, PathLocationStrategy, PopStateEvent } from '@angular/common';
 import 'rxjs/add/operator/filter';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -11,6 +11,8 @@ import { TranslateService } from '@ngx-translate/core';
 
 import { RequestsService } from './services/requests.service';
 import * as firebase from 'firebase/app';
+
+import { NotifyService } from './core/notify.service';
 
 // import { FaqKbService } from './services/faq-kb.service';
 
@@ -30,14 +32,20 @@ export class AppComponent implements OnInit, AfterViewInit {
     route: string;
     LOGIN_PAGE: boolean;
 
+    userIsSignedIn: boolean;
+
     @ViewChild(NavbarComponent) navbar: NavbarComponent;
+
+    @ViewChild('myModal') myModal: ElementRef;
 
     constructor(
         public location: Location,
         private router: Router,
         private translate: TranslateService,
         private requestsService: RequestsService,
-        private auth: AuthService
+        private auth: AuthService,
+        private notify: NotifyService
+
         // private faqKbService: FaqKbService,
     ) {
         translate.setDefaultLang('en');
@@ -52,6 +60,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         }
 
         // this.unservedRequestCount = 0
+
     }
 
     switchLanguage(language: string) {
@@ -60,6 +69,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         console.log('APP COMP ')
+
         $.material.init();
 
         // HIDE ELEMENT IF THE USER IN ONE OF THE 'AUTH' PAGES: SIGNIN, SIGUP, WELCOME
@@ -101,10 +111,18 @@ export class AppComponent implements OnInit, AfterViewInit {
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
                 console.log('// User is signed in. ', user)
+                this.userIsSignedIn = true
 
                 // self.requestsService.startRequestsQuery()
             } else {
                 console.log('// // No user is signed in. ', user)
+
+                this.userIsSignedIn = false
+                console.log('// // User is signed in. ', this.userIsSignedIn)
+
+                // USED TO DETERMINE WHEN VISUALIZING THE POPUP WINDOW 'SESSION EXPIRED'
+                self.auth.userIsSignedIn(this.userIsSignedIn);
+
                 // No user is signed in.
                 // tslint:disable-next-line:no-debugger
                 // debugger
@@ -139,7 +157,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
                 // console.log('»> ', this.route)
                 // tslint:disable-next-line:max-line-length
-                if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/welcome') || (this.route === '/projects') || (this.route.indexOf('/verify') !== -1 ) ) {
+                if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/welcome') || (this.route === '/projects') || (this.route.indexOf('/verify') !== -1)) {
 
                     elemNavbar.setAttribute('style', 'display:none;');
                     elemAppSidebar.setAttribute('style', 'display:none;');
@@ -164,6 +182,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     ngAfterViewInit() {
         this.runOnRouteChange();
+
+
 
         const elemFooter = <HTMLElement>document.querySelector('footer');
         // console.log('xxxx xxxx APP FOOTER ', elemFooter)
@@ -194,7 +214,7 @@ export class AppComponent implements OnInit, AfterViewInit {
             if (this.location.path() !== '') {
                 this.route = this.location.path();
                 // console.log('»> ', this.route)
-                if (this.route.indexOf('/verify') !== -1 ) {
+                if (this.route.indexOf('/verify') !== -1) {
 
                     elemAppFooter.setAttribute('style', 'display:none;');
                     // console.log('DETECT LOGIN PAGE')

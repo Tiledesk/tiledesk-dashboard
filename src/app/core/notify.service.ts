@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Subject } from 'rxjs/Subject';
+import { AuthService } from './../core/auth.service';
 
 /// Notify users about errors and other helpful stuff
 export interface Msg {
@@ -10,6 +11,8 @@ export interface Msg {
 
 @Injectable()
 export class NotifyService {
+
+  displayExpiredSessionModal: string
 
   private _msgSource = new Subject<Msg | null>();
 
@@ -22,5 +25,22 @@ export class NotifyService {
 
   clear() {
     this._msgSource.next(null);
+  }
+
+  showExiperdSessionPopup(user_is_signed_in: boolean) {
+    if (user_is_signed_in === false) {
+
+      this.displayExpiredSessionModal = 'block'
+    }
+
+  }
+
+  onCloseExpiredSessionModal() {
+    this.displayExpiredSessionModal = 'none'
+  }
+
+  onOkExpiredSessionModal() {
+    this.displayExpiredSessionModal = 'none'
+  
   }
 }

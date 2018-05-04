@@ -138,7 +138,7 @@ export class HomeComponent implements OnInit {
       }
     },
       (error) => {
-        console.log('H PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID  ', error);
+        console.log('H PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ERROR ', error);
       },
       () => {
         console.log('H PROJECT-USER GET BY PROJECT ID & CURRENT-USER-ID  * COMPLETE *');

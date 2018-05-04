@@ -280,6 +280,7 @@ export class ProjectsComponent implements OnInit {
 
 
   logout() {
+    this.auth.showExpiredSessionPopup(false);
     this.auth.signOut();
   }
 

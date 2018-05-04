@@ -570,7 +570,13 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
     logout() {
         console.log('RUN LOGOUT FROM NAV-BAR')
+        this.auth.showExpiredSessionPopup(false);
         this.auth.signOut();
+    }
+
+    testExpiredSessionFirebaseLogout() {
+
+        this.auth.testExpiredSessionFirebaseLogout(true)
     }
 
 
