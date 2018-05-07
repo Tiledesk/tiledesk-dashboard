@@ -5,6 +5,9 @@ import { Project } from '../models/project-model';
 import { ActivatedRoute } from '@angular/router';
 import { MongodbFaqService } from '../services/mongodb-faq.service';
 
+// USED FOR go back last page
+import { Location } from '@angular/common';
+
 @Component({
   selector: 'app-faq-test',
   templateUrl: './faq-test.component.html',
@@ -20,7 +23,8 @@ export class FaqTestComponent implements OnInit {
     private router: Router,
     private auth: AuthService,
     private route: ActivatedRoute,
-    private faqService: MongodbFaqService
+    private faqService: MongodbFaqService,
+    private _location: Location
 
   ) { }
 
@@ -41,8 +45,14 @@ export class FaqTestComponent implements OnInit {
     });
   }
 
+  // NO MORE USED (SUBSTITUTED BY goBack()) BECAUSE THE FAQ TEST PAGE CAN BE CALLED FROM THE FAQ-KB LIST PAGE (faq-kb.component.ts)
+  // AND FROM THE FAQ PAGE (faq.component.ts)
   goBackToFaqKbList() {
     this.router.navigate(['project/' + this.project._id + '/faqkb']);
+  }
+
+  goBack() {
+    this._location.back();
   }
 
   searchRemoteFaq() {
@@ -53,7 +63,6 @@ export class FaqTestComponent implements OnInit {
 
       this.hits = remoteFaq.hits
 
-      
     },
     (error) => {
       console.log('REMOTE FAQ - POST REQUEST ERROR ', error);

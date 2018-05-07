@@ -9,7 +9,7 @@
     <div class="create" style="text-align: right!important; padding-top:25px; padding-bottom:0px">
       <button class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="goToEditAddPage_CREATE()">
           <!-- is-small -->
-        <span class="icon" style="padding-right:8px">
+        <span class="icon" style="padding-right:0px">
           <i class="material-icons">add_circle</i>
         </span>
         Aggiungi FAQ
@@ -18,12 +18,19 @@
       <!-- NEW UPLAD CSV FILE -->
       <button class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="openImportModal()">
           
-        <span class="icon" style="padding-right:0px">
+        <span class="icon" style="padding-right:0px; text-transform:none">
           <i class="material-icons">file_upload</i>
         </span>
         CARICA FAQs DA CSV 
       </button>
 
+      <button class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="goToTestFaqPage()">
+          
+        <span class="icon" style="padding-right:0px; text-transform:none">
+          <i class="material-icons">play_arrow</i>
+        </span>
+        FAQ TEST
+      </button>
       <!-- MOVED IN INPORT MODAL -->
       <!-- <input style="display:inline" name="file" id="file" class="inputfile" type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".csv"/>
       <label class="btn btn-info" for="file" style="padding-left:15px; padding-right:15px; text-transform: none">

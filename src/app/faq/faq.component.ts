@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Project } from '../models/project-model';
 import { AuthService } from '../core/auth.service';
 import { Http, Headers, RequestOptions } from '@angular/http';
+import { FaqKbService } from '../services/faq-kb.service';
 
 @Component({
   selector: 'faq',
@@ -31,6 +32,7 @@ export class FaqComponent implements OnInit {
   display = 'none';
 
   id_faq_kb: string;
+  faq_kb_remoteKey: string;
 
   project: Project;
 
@@ -40,14 +42,16 @@ export class FaqComponent implements OnInit {
   csvColumnsDelimiter = ','
   parse_done: boolean;
   parse_err: boolean;
- 
+
   modalChoosefileDisabled: boolean;
+
 
   constructor(
     private mongodbFaqService: MongodbFaqService,
     private router: Router,
     private route: ActivatedRoute,
-    private auth: AuthService
+    private auth: AuthService,
+    private faqKbService: FaqKbService
   ) { }
 
   ngOnInit() {
@@ -73,7 +77,41 @@ export class FaqComponent implements OnInit {
   getFaqKbId() {
     this.id_faq_kb = this.route.snapshot.params['faqkbid'];
     // console.log('FAQ KB HAS PASSED id_faq_kb ', this.id_faq_kb);
+
+    if (this.id_faq_kb) {
+
+      this.getFaqKbById();
+
+    }
   }
+
+  // GET FAQ-KB BY ID (FAQ-KB DETAILS)
+  // USED TO OBTAIN THE FAQ-KB REMOTE KEY NECESSARY TO PASS IT
+  // TO THE FAQ-TEST COMPONENT WHEN THE USER PRESS ON THE "FAQ TEST" BUTTON
+  getFaqKbById() {
+    // this.botService.getMongDbBotById(this.botId).subscribe((bot: any) => { // NO MORE USED
+    this.faqKbService.getMongDbFaqKbById(this.id_faq_kb).subscribe((faqkb: any) => {
+      console.log('GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
+      this.faq_kb_remoteKey = faqkb.kbkey_remote
+      console.log('GET FAQ-KB (DETAILS) BY ID - FAQKB REMOTE KEY ', this.faq_kb_remoteKey);
+    },
+      (error) => {
+        console.log('GET FAQ-KB BY ID (SUBSTITUTE BOT) - ERROR ', error);
+        // this.showSpinner = false;
+      },
+      () => {
+        console.log('GET FAQ-KB ID (SUBSTITUTE BOT) - COMPLETE ');
+        // this.showSpinner = false;
+
+      });
+
+  }
+
+  goToTestFaqPage() {
+    console.log('GO TO TEST FAQ PAGE - REMOTE FAQKB KEY ', this.faq_kb_remoteKey);
+    this.router.navigate(['project/' + this.project._id + '/faq/test', this.faq_kb_remoteKey]);
+  }
+
 
   // GO TO FAQ-EDIT-ADD COMPONENT AND PASS THE FAQ-KB ID (RECEIVED FROM FAQ-KB COMPONENT)
   goToEditAddPage_CREATE() {
