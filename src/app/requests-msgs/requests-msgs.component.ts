@@ -37,6 +37,8 @@ export class RequestsMsgsComponent implements OnInit {
 
   requester_fullname: string;
   requester_id: string;
+  user_name: string;
+  user_email: string;
   department_name: string;
   department_id: string;
   source_page: string;
@@ -138,9 +140,24 @@ export class RequestsMsgsComponent implements OnInit {
           this.requester_id = request[0].requester_id;
           console.log('* REQUESTER ID: ', this.requester_id);
 
-          if(request[0].attributes.departmentName) {
-          this.department_name = request[0].attributes.departmentName;
-          console.log('* DEPATMENT NAME: ', this.department_name);
+          if (request[0].attributes.userName) {
+            this.user_name = request[0].attributes.userName;
+            console.log('* USER NAME: ', this.user_name);
+          } else {
+            this.user_name = 'n.a.'
+          }
+
+
+          if (request[0].attributes.userEmail) {
+            this.user_email = request[0].attributes.userEmail;
+            console.log('* USER EMAIL: ', this.user_email);
+          } else {
+            this.user_email = 'n.a.'
+          }
+
+          if (request[0].attributes.departmentName) {
+            this.department_name = request[0].attributes.departmentName;
+            console.log('* DEPATMENT NAME: ', this.department_name);
           } else {
             this.department_name = 'n.a.'
           }
@@ -154,10 +171,10 @@ export class RequestsMsgsComponent implements OnInit {
 
           if (request[0].attributes.sourcePage) {
             this.source_page = request[0].attributes.sourcePage;
-            console.log('* SOURCE PAGE: ', this.source_page );
+            console.log('* SOURCE PAGE: ', this.source_page);
           } else {
             this.source_page = 'n.a.'
-            console.log('* SOURCE PAGE: ', this.source_page );
+            console.log('* SOURCE PAGE: ', this.source_page);
           }
         }
       });

@@ -119,7 +119,7 @@ export class FaqKbComponent implements OnInit {
         for (j = 0; j < faq.length; j++) {
           // console.log('MONGO DB FAQ - FAQ ID', faq[j]._id);
           // console.log('MONGO DB FAQ - FAQ-KB ID', faq[j].id_faq_kb);
-          
+
           // console.log('WITH THE FAQ-KB ID ', faq[j].id_faq_kb, 'FOUND FAQ WITH ID ', faq[j]._id)
           this.faq_faqKbId = faq[j].id_faq_kb;
 
@@ -186,21 +186,27 @@ export class FaqKbComponent implements OnInit {
   }
 
   /**
-   * DELETE FAQ (WHEN THE 'CONFIRM' BUTTON IN MODAL IS CLICKED)
-   */
+    * ON CLOSE DELETE MODAL:
+    * - SEARCH FOR ANY FAQ WITH THE ID of the FAQ-KB THAT THE USER INTENDS TO DELETE
+    * - IF THERE ARE FAQs RELATED TO THE FAQ-KB, ARE FIRST DELETED THE FAQs AND THEN IS DELETED the FAQ-KB
+    * - IF THERE ARE NO FAQ, THE FAQ-KB IS IMMEDIATELY DELETED
+    * NOTE: THIS WF RESOLVES THE ISSUE 'FAQ-KB-ID NOT FOUND' WHEN IN CHAT21-SUPPORT-NODEJS-API ARE DELETED THE REMOTE FAQ
+    */
+
   onCloseDeleteModalHandled() {
     this.display = 'none';
 
-    this.faqKbService.deleteMongoDbFaqKb(this.id_toDelete).subscribe((data) => {
-      console.log('DELETE DATA ', data);
+    // this.faqKbService.deleteMongoDbFaqKb(this.id_toDelete).subscribe((data) => {
+    //   console.log('DELETE DATA ', data);
 
-      // SEARCH BY THE FAQ-KB ID THE RELATED FAQ TO DELETE
-      this.mongodbFaqService.getMongoDbFaqByFaqKbId(this.id_toDelete).subscribe((faq: any) => {
-        console.log(' ++ MONGO DB FAQ RETURNED WHEN CLOSE DELETE MODAL', faq);
-        console.log(' ++ FAQ-KB ID TO DELETE WHEN CLOSE DELETE MODAL', this.id_toDelete);
-        // if (faq.length > 0) {
-        //   console.log('THE FAQ-KB TO DELETE HAS FAQ RELATED ')
-        // }
+    // SEARCH BY THE FAQ-KB ID THE RELATED FAQ TO DELETE
+    this.mongodbFaqService.getMongoDbFaqByFaqKbId(this.id_toDelete).subscribe((faq: any) => {
+      console.log(' ++ MONGO DB FAQ RETURNED WHEN CLOSE DELETE MODAL', faq);
+      console.log(' ++ FAQ-KB ID TO DELETE WHEN CLOSE DELETE MODAL', this.id_toDelete);
+
+      if (faq.length > 0 && faq !== undefined) {
+        console.log('THE FAQ-KB TO DELETE HAS FAQ RELATED ')
+
         let w: number;
         for (w = 0; w < faq.length; w++) {
           console.log(' ++ faq lenght to delete ', faq.length)
@@ -210,25 +216,58 @@ export class FaqKbComponent implements OnInit {
 
           this.mongodbFaqService.deleteMongoDbFaq(relatedFaqIdToDelete).subscribe((faq_to_delete) => {
             console.log('DELETE RELATED FAQ ', faq_to_delete);
-          });
+
+          },
+            (error) => {
+
+              console.log('DELETE RELATED FAQ - ERROR ', error);
+
+            },
+            () => {
+              console.log('DELETE RELATED FAQ * COMPLETE *');
+
+              this.deleteFaqKb();
+            });
+
         }
 
-      });
+      } else {
 
-      // RE-RUN GET CONTACT TO UPDATE THE TABLE
-      this.ngOnInit();
+        this.deleteFaqKb();
+      }
 
     },
       (error) => {
 
-        console.log('DELETE REQUEST ERROR ', error);
+        console.log('GET FAQ BY FAQ-KB ID - ERROR ', error);
 
       },
       () => {
-        console.log('DELETE REQUEST * COMPLETE *');
+        console.log('GET FAQ BY FAQ-KB * COMPLETE *');
       });
 
   }
+
+  deleteFaqKb() {
+
+    this.faqKbService.deleteMongoDbFaqKb(this.id_toDelete).subscribe((data) => {
+      console.log('DELETE FAQ-KB ', data);
+
+    }, (error) => {
+
+      console.log('DELETE FAQ-KB REQUEST ERROR ', error);
+
+    },
+      () => {
+        console.log('DELETE FAQ-KB REQUEST * COMPLETE *');
+
+        // RE-RUN ngOnInit() TO UPDATE THE TABLE
+        this.ngOnInit()
+      });
+
+  }
+
+
 
   // CLOSE MODAL WITHOUT SAVE THE UPDATES OR WITHOUT CONFIRM THE DELETION
   onCloseModal() {
