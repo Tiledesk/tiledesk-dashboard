@@ -106,6 +106,17 @@
         "AreYouSureDeleteBotAndRElatedFAq": "Sei sicuro di voler eliminare questo Bot e le FAQ a questo correlate?",
         "Confirm": "Conferma"
     },
+    "BotsAddEditPage": {
+        "AddBot":"Aggiungi Bot",
+        "EditBot":"Modifica Bot",
+        "BotName":"Nome Bot",
+        "CreateBot":"Crea Bot",
+        "UpdateBot":"Aggiorna Bot",
+        "Processing":"Elaborazione...",
+        "Completed":"Completato",
+        "BotCreated":"Bot creato",
+        "Continue":"Continua"
+    },
     "DepartmentsPage": {
         "AddDepartment": "Aggiungi Dipartimento",
         "CreationDate": "Data creazione",

@@ -27,12 +27,15 @@ export class FaqKbEditAddComponent implements OnInit {
   showSpinner = true;
 
   project: Project;
+
+  displayInfoModal = 'none';
+  SHOW_CIRCULAR_SPINNER = false;
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
     private route: ActivatedRoute,
     private auth: AuthService
-  ) {  }
+  ) { }
 
   ngOnInit() {
 
@@ -85,6 +88,9 @@ export class FaqKbEditAddComponent implements OnInit {
 
   // CREATE (mongoDB)
   create() {
+    this.displayInfoModal = 'block'
+    this.SHOW_CIRCULAR_SPINNER = true;
+
     console.log('HAS CLICKED CREATE NEW FAQ-KB');
     console.log('Create Faq Kb - NAME ', this.faqKbName);
     console.log('Create Faq Kb - URL ', this.faqKbUrl);
@@ -99,21 +105,32 @@ export class FaqKbEditAddComponent implements OnInit {
         // this.getDepartments();
         // this.ngOnInit();
       },
-      (error) => {
-        console.log('CREATE FAQKB - POST REQUEST ERROR ', error);
-      },
-      () => {
-        console.log('CREATE FAQKB - POST REQUEST * COMPLETE *');
+        (error) => {
+          console.log('CREATE FAQKB - POST REQUEST ERROR ', error);
+        },
+        () => {
+          console.log('CREATE FAQKB - POST REQUEST * COMPLETE *');
 
-        // this.faqKbService.createFaqKbKey()
-        // .subscribe((faqKbKey) => {
+          // this.faqKbService.createFaqKbKey()
+          // .subscribe((faqKbKey) => {
 
-        //   console.log('CREATE FAQKB KEY - POST DATA ', faqKbKey);
+          //   console.log('CREATE FAQKB KEY - POST DATA ', faqKbKey);
 
-        // });
+          // });
+          setTimeout(() => {
+            this.SHOW_CIRCULAR_SPINNER = false
+          }, 300);
 
-        this.router.navigate(['project/' + this.project._id + '/faqkb']);
-      });
+          // this.router.navigate(['project/' + this.project._id + '/faqkb']);
+        });
+  }
+
+  onCloseInfoModalHandled() {
+    this.router.navigate(['project/' + this.project._id + '/faqkb']);
+  }
+
+  onCloseModal() {
+    this.displayInfoModal = 'none';
   }
 
   edit() {

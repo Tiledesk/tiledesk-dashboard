@@ -196,17 +196,18 @@
                       <span style="color: #566787">
                           <!-- Actions -->
                         <strong>
-                            {{ "BotsPage.Actions" | translate }}
+                          {{ "BotsPage.Actions" | translate }}
                         </strong>
                       </span>
                     </th>
-                    <th>
+                    <th colspan="2">
                       <span style="color: #566787">
                         <strong> 
                           FAQ 
                         </strong>
                       </span>  
                     </th>
+
                   </tr>
                 </thead>
             
@@ -279,24 +280,30 @@
                     <!-- NEW VIEW / EDIT FAQ - SWITCH BUTTON IF THERE IS OR THERE ISN'T FAQ RELATED TO THE FAQ-KB -->
                     <td class="">
                       <span *ngIf="faqkb?.has_faq">
-                        <button style="margin-top:5px; padding-left: 3px;" type="button" rel="tooltip" title="{{ 'BotsPage.tooltipViewAddEditFaq' | translate }}" class="btn btn-success btn-simple btn-xs" (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)'>
+                        <button style="margin-top:5px; padding-left: 3px; padding-right: 3px;" type="button" rel="tooltip" title="{{ 'BotsPage.tooltipViewAddEditFaq' | translate }}" class="btn btn-success btn-simple btn-xs" (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)'>
                           <i class="material-icons">list</i>
                         </button>
                       </span>
                       <span *ngIf="!faqkb?.has_faq">
-                        <button style="margin-top:5px; padding-left: 3px;" type="button" rel="tooltip" title="{{ 'BotsPage.tooltipAddEditFaqNoRelatedFaq' | translate }}" class="btn btn-warning btn-simple btn-xs" (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)'>
+                        <button style="margin-top:5px; padding-left: 3px; padding-right: 3px;" type="button" rel="tooltip" title="{{ 'BotsPage.tooltipAddEditFaqNoRelatedFaq' | translate }}" class="btn btn-warning btn-simple btn-xs" (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)'>
                           <i class="material-icons">list</i>
                         </button>
                       </span>
                       
-                      <span *ngIf="faqkb?.kbkey_remote">
-                        <button style="margin-top:5px; padding-left: 3px;" type="button" rel="tooltip" title="Test FAQ" class="btn btn-info btn-simple btn-xs" (click)='goToTestFaqPage(faqkb?.kbkey_remote)'>
-                          <i class="material-icons">playlist_play</i>
-                        </button>
-                      </span>
+
                       <!-- <span *ngIf="faqkb?.has_faq">
                         HA FAQ
                       </span> -->
+                    </td>
+
+                    <td>
+                      <!-- TEST FAQ -->
+                      <!-- <span *ngIf="faqkb?.kbkey_remote"> -->
+                        <span *ngIf="faqkb?.has_faq">
+                          <button style="margin-top:5px; padding-left: 3px;" type="button" rel="tooltip" title="Test FAQ" class="btn btn-info btn-simple btn-xs" (click)='goToTestFaqPage(faqkb?.kbkey_remote)'>
+                              <i class="material-icons">play_arrow</i>
+                          </button>
+                        </span>
                     </td>
 
           
@@ -355,6 +362,7 @@
             </div>
           </div>
         </div>
+        <!-- /. end col-md-12 -->
     </div>
     </div>
   </div>
