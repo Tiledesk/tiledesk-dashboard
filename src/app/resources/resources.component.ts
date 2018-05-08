@@ -27,7 +27,7 @@ export class ResourcesComponent implements OnInit {
   ) { this.http = http }
 
   ngOnInit() {
-
+    this.auth.checkRole();
     this.auth.project_bs.subscribe((project) => {
       this.project = project
       console.log('00 -> RESOURCES COMP project from AUTH service subscription  ', project)

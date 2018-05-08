@@ -10,6 +10,7 @@ import { UsersService } from '../../services/users.service';
 import { Project } from '../../models/project-model';
 // import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 // import { SharedModule } from '../../shared/shared.module';
+import { UsersLocalDbService } from '../../services/users-local-db.service';
 
 declare const $: any;
 declare interface RouteInfo {
@@ -78,6 +79,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     ROUTES: RouteInfo[];
     displayLogoutModal = 'none';
 
+    USER_ROLE: string;
+
     constructor(
         private requestsService: RequestsService,
         private router: Router,
@@ -85,7 +88,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         private route: ActivatedRoute,
         // private projectService: ProjectService,
         private auth: AuthService,
-        private usersService: UsersService
+        private usersService: UsersService,
+        private usersLocalDbService: UsersLocalDbService
 
     ) {
 
@@ -134,6 +138,33 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
         this.getUserAvailability();
         this.getProjectUserId();
+
+        this.getProjectUserRole();
+    }
+
+    getProjectUserRole() {
+
+        this.usersService.project_user_role_bs.subscribe((user_role) => {
+            this.USER_ROLE = user_role;
+            console.log('SIDEBAR - 1. PROJECT USER ROLE ', this.USER_ROLE);
+            if (this.USER_ROLE) {
+                console.log('SIDEBAR - PROJECT USER ROLE ', this.USER_ROLE);
+                if (this.USER_ROLE === 'agent') {
+                    this.SHOW_SETTINGS_SUBMENU = false;
+                }
+            } else {
+                // used when the page is refreshed
+                this.USER_ROLE = this.usersLocalDbService.getUserRoleFromStorage();
+                console.log('SIDEBAR - 2. PROJECT USER ROLE ', this.USER_ROLE);
+                if (this.USER_ROLE === 'agent') {
+                    this.SHOW_SETTINGS_SUBMENU = false;
+                }
+            }
+
+
+        });
+
+
     }
 
     getUserAvailability() {

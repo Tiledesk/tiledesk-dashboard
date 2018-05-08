@@ -205,7 +205,8 @@
             </li>
             <!-- SETTINGS -->
             <!-- routerLinkActive="active"  -->
-            <li *ngIf="project" (click)="has_clicked_settings(SHOW_SETTINGS_SUBMENU = !SHOW_SETTINGS_SUBMENU)" style="cursor:pointer">
+
+            <li *ngIf="project && USER_ROLE !== 'agent'" (click)="has_clicked_settings(SHOW_SETTINGS_SUBMENU = !SHOW_SETTINGS_SUBMENU)" style="cursor:pointer">
                 <!-- routerLink="/settings" -->
                 <a class="customAncor">
                     <i class="material-icons">settings</i>

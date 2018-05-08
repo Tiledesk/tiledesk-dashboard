@@ -29,6 +29,9 @@ export class UsersComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+    this.auth.checkRole();
+    
     this.getAllUsersOfCurrentProject();
     this.getCurrentProject();
     this.getProjectUserRole();

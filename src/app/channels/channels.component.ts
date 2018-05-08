@@ -18,6 +18,7 @@ export class ChannelsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.auth.checkRole();
     this.getCurrentProject()
   }
   getCurrentProject() {

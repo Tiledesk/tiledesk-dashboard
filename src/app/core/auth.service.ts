@@ -18,6 +18,7 @@ import { Project } from '../models/project-model';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/toPromise';
+import { UsersLocalDbService } from '../services/users-local-db.service';
 
 // import { ProjectService } from '../services/project.service';
 // import { RequestsService } from '../services/requests.service';
@@ -69,7 +70,9 @@ export class AuthService {
 
   public project_bs: BehaviorSubject<Project> = new BehaviorSubject<Project>(null);
 
-  show_ExpiredSessionPopup: boolean
+  show_ExpiredSessionPopup: boolean;
+
+  _user_role: string;
 
   constructor(
     http: Http,
@@ -77,6 +80,7 @@ export class AuthService {
     private afs: AngularFirestore,
     private router: Router,
     private notify: NotifyService,
+    private usersLocalDbService: UsersLocalDbService
     // private projectService: ProjectService,
   ) {
     this.http = http;
@@ -97,6 +101,8 @@ export class AuthService {
     this.getProjectFromLocalStorage();
 
   }
+
+
 
   getProjectFromLocalStorage() {
     // WHEN THE PAGE IS RELOADED THE project_id RETURNED FROM THE SUBSCRIPTION IS NULL SO IT IS GET FROM LOCAL STORAGE
@@ -476,7 +482,7 @@ export class AuthService {
 
   showExpiredSessionPopup(showExpiredSessionPopup) {
     this.show_ExpiredSessionPopup = showExpiredSessionPopup;
-    console.log('AUTH SERV - SHOW EXPIRED SESSION POPUP ', this.show_ExpiredSessionPopup )
+    console.log('AUTH SERV - SHOW EXPIRED SESSION POPUP ', this.show_ExpiredSessionPopup)
   }
 
   // hasPressedLogOut(logoutPressed) {
@@ -502,6 +508,7 @@ export class AuthService {
 
     localStorage.removeItem('user');
     localStorage.removeItem('project');
+    localStorage.removeItem('role')
 
     firebase.auth().signOut()
       .then(function () {
@@ -516,6 +523,30 @@ export class AuthService {
   private handleError(error: Error) {
     console.error(error);
     this.notify.update(error.message, 'error');
+  }
+
+
+  // NOTE: THE projectUser_role IS PASSED FROM HOME.COMPONENT
+  // public user_role(projectUser_role: string) {
+
+  //   this._user_role = projectUser_role;
+  //   console.log('AUTH SERV - USER ROLE ', this._user_role)
+  // }
+
+  // NOTE: THE projectUser_role is saved in storage from home.comp
+
+
+  checkRole() {
+    this._user_role = this.usersLocalDbService.getUserRoleFromStorage();
+
+    if (this._user_role) {
+      if (this._user_role === 'agent' || this._user_role === undefined) {
+        console.log('AUTH SERV - CHECK ROLE ', this._user_role)
+        this.router.navigate(['/unauthorized']);
+      } else {
+        console.log('AUTH SERV - CHECK ROLE ', this._user_role)
+      }
+    }
   }
 
   // Sets user data to firestore after succesful login - !!! NO MORE USED

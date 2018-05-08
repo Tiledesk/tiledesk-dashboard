@@ -23,5 +23,16 @@ export class UsersLocalDbService {
   }
 
 
+  saveUserRoleInStorage(user_role: string) {
+    localStorage.setItem('role', user_role);
+    console.log('HEY - SAVE ROLE IN STORAGE !!! ');
+  }
+
+  getUserRoleFromStorage() {
+    const user_role = localStorage.getItem('role');
+    console.log('HEY USER ROLE !!! ', user_role)
+    return user_role
+  }
+
 }
 

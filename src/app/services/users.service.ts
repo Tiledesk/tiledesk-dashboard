@@ -235,6 +235,7 @@ export class UsersService {
     this.project_user_role_bs.next(projectUser_role);
   }
 
+
   /**
    * UPDATE PROJECT-USER (PUT)
    */

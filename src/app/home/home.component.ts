@@ -133,6 +133,11 @@ export class HomeComponent implements OnInit {
         if (projectUser[0].role !== undefined) {
           console.log('H CURRENT USER ROLE IN THIS PROJECT ', projectUser[0].role);
           this.usersService.user_role(projectUser[0].role);
+
+          // save the user role in storage - then the value is get by auth.service:
+          // the user with agent role can not access to the pages under the settings sub-menu
+          // this.auth.user_role(projectUser[0].role);
+          this.usersLocalDbService.saveUserRoleInStorage(projectUser[0].role);
         }
 
       }

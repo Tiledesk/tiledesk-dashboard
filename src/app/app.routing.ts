@@ -92,7 +92,7 @@ const routes: Routes = [
   // { path: 'login', component: UserLoginComponent },
   { path: 'login', component: SigninComponent },
   { path: 'signup', component: SignupComponent },
-  { path: 'welcome', component: WelcomeComponent },
+  { path: 'unauthorized', component: WelcomeComponent },
   { path: 'verify/email/:user_id', component: VerifyEmailComponent },
 
 

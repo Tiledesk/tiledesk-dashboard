@@ -19,6 +19,7 @@ import { forEach } from '@angular/router/src/utils/collection';
 import { Project } from '../../models/project-model';
 import { UsersService } from '../../services/users.service';
 import { environment } from '../../../environments/environment';
+import { isDevMode } from '@angular/core';
 
 
 @Component({
@@ -59,6 +60,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
     displayLogoutModal = 'none';
 
+    APP_IS_DEV_MODE: boolean;
+
     constructor(
         location: Location,
         private element: ElementRef,
@@ -75,7 +78,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         this.sidebarVisible = false;
         // this.unservedRequestCount = 0
 
-
+        console.log('IS DEV MODE ', isDevMode());
+        this.APP_IS_DEV_MODE = isDevMode()
     }
 
 

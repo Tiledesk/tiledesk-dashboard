@@ -39,6 +39,7 @@ export class FaqKbComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.auth.checkRole();
     this.getCurrentProject();
 
     // this.getFaqKb();

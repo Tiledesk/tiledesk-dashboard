@@ -83,6 +83,7 @@ export class AuthGuard implements CanActivate {
     // }
   }
 
+
   // canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
 
   //   console.log('CAN ACTIVATE (auth.guard.ts) ', firebase.auth().currentUser);
