@@ -221,3 +221,22 @@
   .senderFullname {
     font-family: Tahoma, Verdana, Segoe, sans-serif;
   }
+
+  #fixed-button {
+    bottom: 85px;
+    right: 55px;
+    position: absolute;
+    background-color: #eeeeee;
+    padding-right: 6px;
+    padding-left: 6px;
+    padding-top: 3px;
+    border-radius: 100px;
+    padding-bottom: 3px;
+    color:#00bcd4;
+    cursor: pointer
+}
+
+#fixed-button:hover {
+  color:#fff;
+  background-color: #00bcd4;
+} 

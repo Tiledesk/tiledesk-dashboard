@@ -64,3 +64,6 @@ Run `ng build --prod --base-href /dashboard/`
 aws s3 sync ./dist/ s3://tiledesk-dashboard/dashboard
 ```
 
+```
+aws cloudfront create-invalidation --distribution-id E2DTAKWHWQ7C3J --paths "/*
+```
