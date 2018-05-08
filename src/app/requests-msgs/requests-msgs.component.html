@@ -12,9 +12,9 @@
     <div *ngIf="!showSpinner"class="row">
 
       <div class="col-sm-7">
-        <div class="card" style="padding-top:0px; padding-bottom:0px; padding-left:25px; padding-right:25px">
+        <div class="card" style="padding-top:0px; padding-bottom:0px; padding-left:25px; padding-right:25px" >
 
-          <div #scrollMe class="card-content" style="height: 400px; overflow-y: auto;">
+          <div #scrollMe class="card-content" style="height: 400px; overflow-y: auto;" (scroll)="onScroll($event)">
 
             <!-- OLD CHAT -->
             <!-- <div *ngFor="let message of messagesList" style="vertical-align:baseline">
@@ -87,8 +87,8 @@
                 <!-- <div class="time">5 min ago</div> -->
               </div>
             </div>
-            <!-- [ngStyle]="{'display':displayBtnScrollToBottom }" -->
-            <a id="fixed-button"  class="button" (click)="scrollToBottom()" >
+           
+            <a id="fixed-button"  class="button" [ngStyle]="{'display':displayBtnScrollToBottom }" (click)="scrollToBottom()" >
               <span class="icon is-small">
                 <i class="fa fa-chevron-down"></i>
               </span>

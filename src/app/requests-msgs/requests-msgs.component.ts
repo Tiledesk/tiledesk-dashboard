@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { Message } from '../models/message-model';
@@ -13,7 +13,7 @@ import { UsersLocalDbService } from '../services/users-local-db.service';
   templateUrl: './requests-msgs.component.html',
   styleUrls: ['./requests-msgs.component.scss']
 })
-export class RequestsMsgsComponent implements OnInit {
+export class RequestsMsgsComponent implements OnInit, AfterViewInit {
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
   CHAT_BASE_URL = environment.chat.CHAT_BASE_URL
@@ -43,6 +43,8 @@ export class RequestsMsgsComponent implements OnInit {
   department_id: string;
   source_page: string;
 
+  displayBtnScrollToBottom = 'none';
+ 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -53,11 +55,15 @@ export class RequestsMsgsComponent implements OnInit {
 
   ngOnInit() {
 
+
     this.getRequestId();
     this.getCurrentProject();
     this.getLoggedUser();
   }
 
+  ngAfterViewInit() {
+
+  }
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
       console.log('USER GET IN REQUEST-MSGS COMP ', user)
@@ -264,10 +270,38 @@ export class RequestsMsgsComponent implements OnInit {
       const initialScrollPosition = this.myScrollContainer.nativeElement;
       console.log('SCROLL CONTAINER ', initialScrollPosition)
       //  objDiv.scrollTop = objDiv.scrollHeight;
-      initialScrollPosition.scrollTop = initialScrollPosition.scrollHeight
-      console.log('SCROLL HEIGHT ', initialScrollPosition.scrollHeight)
+      initialScrollPosition.scrollTop = initialScrollPosition.scrollHeight;
+      console.log('SCROLL HEIGHT ', initialScrollPosition.scrollHeight);
     }, 100);
 
+  }
+
+  // LISTEN TO SCROLL POSITION
+  onScroll(event: any): void {
+    console.log('RICHIAMO ON SCROLL ')
+    const scrollPosition = this.myScrollContainer.nativeElement.scrollTop;
+
+    const scrollHeight = this.myScrollContainer.nativeElement.scrollHeight;
+    console.log('ON SCROLL - SCROLL POSITION ', scrollPosition);
+    console.log('ON SCROLL - SCROLL HEIGHT ', scrollHeight);
+
+    const scrollHeighLessScrollPosition = scrollHeight - scrollPosition;
+    console.log('ON SCROLL - SCROLL OVERFLOW ', scrollHeighLessScrollPosition);
+    if (scrollHeighLessScrollPosition > 400) {
+      this.displayBtnScrollToBottom = 'block';
+    } else {
+      this.displayBtnScrollToBottom = 'none';
+    }
+  }
+
+  scrollToBottom(): void {
+    try {
+      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+      // tslint:disable-next-line:max-line-length
+      console.log('RUN SCROLL TO BOTTOM - SCROLL TOP ', this.myScrollContainer.nativeElement.scrollHeight, ' SCROLL HEIGHT ', this.myScrollContainer.nativeElement.scrollHeight);
+    } catch (err) {
+      console.log('ERROR ', err);
+    }
   }
 
   cut_support_group_from_request_id(request_id: string) {
