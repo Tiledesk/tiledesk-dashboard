@@ -151,6 +151,22 @@
         "Loading": "Loading",
         "Error": "Error"
     },
+    "RequestMsgsPage": {
+        "Request":"Request",
+        "Enter":"Enter",
+        "Loading":"Loading",
+        "Error":"Error",
+        "RequestUnserved":"Request unserved",
+        "RequestServedBy":"Request served by",
+        "Published":"Published",
+        "Requester":"Requester",
+        "RequesterId":"Requester Id",
+        "ChatFormUserName":"Chat form: user name",
+        "ChatFormUserEmail":"Chat form: user email",
+        "DepartmentName":"Department name",
+        "DepartmentId":"Department Id",
+        "SourcePage":"Source page"        
+    },
     "HistoryPage": {
         "Requester": "Requester",
         "Message": "Message",

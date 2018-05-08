@@ -1,6 +1,8 @@
 <div class="navbar-brand" style="z-index: -1;margin-top:10px; padding-left:30px">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBackToRequestsList()">keyboard_arrow_left</i>
-  Request <code style="color:#3f87a6; border: 1px solid #cee9f9; font-size:0.8em"> {{cut_support_group_from_request_id(id_request)}} </code>
+  <!-- Request  -->
+  {{ "RequestMsgsPage.Request" | translate }}
+  <code style="color:#3f87a6; border: 1px solid #cee9f9; font-size:0.8em"> {{cut_support_group_from_request_id(id_request)}} </code>
 </div>
 
 <div class="main-content" style="padding-top:0px">
@@ -99,7 +101,8 @@
                     target="_blank" href="{{ CHAT_BASE_URL }}?recipient={{id_request}}" 
                     style="padding:12px 16px !important;">   
                   <!-- Entra -->
-                  {{ 'VisitorsPage.Enter' | translate }}
+                  
+                  {{ 'RequestMsgsPage.Enter' | translate }}
                 </a>
               </span>
 
@@ -120,7 +123,7 @@
                 <button class="btn btn-default" style="padding:12px 16px !important;" btn-block>
                   <i class="fa fa-spinner fa-spin"></i> 
                     <!-- Elaborazione -->
-                    {{ 'VisitorsPage.Loading' | translate }}
+                    {{ 'RequestMsgsPage.Loading' | translate }}
                 </button>
               </span>
 
@@ -128,7 +131,7 @@
               <span *ngIf="JOIN_TO_GROUP_HAS_ERROR === true">
                 <button class="btn btn-danger" disabled style="padding:12px 16px !important;">
                   <!-- Errore -->
-                  {{ 'VisitorsPage.Error' | translate }}
+                  {{ 'RequestMsgsPage.Error' | translate }}
                 </button>
               </span>
 
@@ -145,8 +148,9 @@
 
           <div class="card-content" style="padding-top:5px;">
             <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; margin-bottom: 25px; border-bottom: 1px solid #eeeeee; padding-bottom: 15px;">
-              <!-- Request info -->
-              Request <code style="color: #566787; font-weight: 400" >{{ id_request }} </code>
+              <!-- Request  -->
+              {{ "RequestMsgsPage.Request" | translate }}
+              <code style="color: #566787; font-weight: 400" >{{ id_request }} </code>
             </h4>
 
             <p style="margin-bottom: 10px"> 
@@ -155,7 +159,10 @@
                 <i style="font-size: 24px !important; vertical-align: middle; color: #f44336" class="material-icons">visibility</i>
               
                 <span style="vertical-align: middle; color: #f44336">
-                  <strong>Request unserved </strong>
+                  <strong>
+                    <!-- Request unserved  -->
+                    {{ "RequestMsgsPage.RequestUnserved" | translate }}
+                  </strong>
                 </span>
               </span>
 
@@ -164,7 +171,10 @@
                 <i style="font-size: 24px !important; vertical-align: middle; color: #4CAF50" class="material-icons">visibility</i>
               
                 <span style="vertical-align: middle; color: #4CAF50">
-                  <strong>Request served by: </strong>
+                  <strong>
+                    <!-- Request served by:  -->
+                    {{ "RequestMsgsPage.RequestServedBy" | translate }}
+                  </strong>
                 </span>
 
               </span>
@@ -173,7 +183,10 @@
                 <i style="font-size: 24px !important; vertical-align: middle; color: #00bcd4" class="material-icons">visibility</i>
               
                 <span style="vertical-align: middle; color: #00bcd4;">
-                  <strong>Request served by: </strong>
+                  <strong>
+                    <!-- Request served by:  -->
+                    {{ "RequestMsgsPage.RequestServedBy" | translate }}
+                  </strong>
                 </span>
               </span>
 
@@ -191,7 +204,11 @@
             </p>
 
             <p style="margin-bottom: 3px; color:#566787; padding-top: 10px;"> 
-              <strong>Published </strong>
+              <strong>
+                <!-- Published  -->
+                {{ "RequestMsgsPage.Published" | translate }}
+              
+              </strong>
             </p>
               <p style="color:#999999; font-weight: 500">  
                 {{ request?.timestamp | amTimeAgo }}
@@ -208,49 +225,70 @@
             
 
             <p style="margin-bottom: 3px; color:#566787"> 
-              <strong>Requester </strong>
+              <strong>
+                <!-- Requester  -->
+                {{ "RequestMsgsPage.Requester" | translate }}
+              </strong>
             </p>
             <p style="color:#999999; font-weight: 500">  
               {{ requester_fullname }} 
             </p>
 
             <p style="margin-bottom: 3px; color:#566787"> 
-              <strong>Requester Id</strong>
+              <strong>
+                <!-- Requester Id -->
+                {{ "RequestMsgsPage.RequesterId" | translate }}
+              </strong>
             </p>
             <p style="color:#999999; font-weight: 500">  
               {{ requester_id }}
             </p>
 
             <p style="margin-bottom: 3px; color:#566787"> 
-              <strong>Chat form: user name</strong>
+              <strong>
+                <!-- Chat form: user name -->
+                {{ "RequestMsgsPage.ChatFormUserName" | translate }}
+              </strong>
             </p>
             <p style="color:#999999; font-weight: 500">  
               {{ user_name }}
             </p>
 
             <p style="margin-bottom: 3px; color:#566787"> 
-                <strong>Chat form: user email</strong>
+              <strong>
+                <!-- Chat form: user email -->
+                {{ "RequestMsgsPage.ChatFormUserEmail" | translate }}
+              </strong>
             </p>
             <p style="color:#999999; font-weight: 500">  
               {{ user_email }}
             </p>
 
             <p style="margin-bottom: 3px; color:#566787"> 
-              <strong>Department Name</strong>
+              <strong>
+                <!-- Department Name -->
+                {{ "RequestMsgsPage.DepartmentName" | translate }}
+              </strong>
             </p>
             <p style="color:#999999; font-weight: 500">  
               {{ department_name }}
             </p>
 
             <p style="margin-bottom: 3px; color:#566787"> 
-              <strong>Department Id</strong>
+              <strong>
+                <!-- Department Id -->
+                {{ "RequestMsgsPage.DepartmentId" | translate }}
+              </strong>
             </p>
             <p style="color:#999999; font-weight: 500">  
               {{ department_id }}
             </p>
 
             <p style="margin-bottom: 3px; color:#566787"> 
-              <strong>Source page</strong>
+              <strong>
+                <!-- Source page -->
+                {{ "RequestMsgsPage.SourcePage" | translate }}
+              </strong>
             </p>
             <p style="color:#999999; word-wrap: break-word; font-weight: 500">  
               {{ source_page }}

@@ -153,6 +153,22 @@
         "Loading": "Elaborazione",
         "Error": "Errore"
     },
+    "RequestMsgsPage": {
+        "Request":"Richiesta",
+        "Enter":"Entra",
+        "Loading":"Elaborazione",
+        "Error":"Errore",
+        "RequestUnserved":"Richiesta non servita",
+        "RequestServedBy":"Richiesta servita da",
+        "Published":"Pubblicata",
+        "Requester":"Richiedente",
+        "RequesterId":"Id richiedente",
+        "ChatFormUserName":"Chat form: nome utente",
+        "ChatFormUserEmail":"Chat form: email utente",
+        "DepartmentName":"Nome dipartimento",
+        "DepartmentId":"Id dipartimento",
+        "SourcePage":"Pagina di origine"        
+    },
     "HistoryPage": {
         "Requester":"Richiedente",
         "Message":"Messagio",
