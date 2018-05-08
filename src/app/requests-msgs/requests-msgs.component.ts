@@ -117,6 +117,14 @@ export class RequestsMsgsComponent implements OnInit {
 
   }
 
+  messageSenderInitialLetter(sender_fullname) {
+    // console.log('SENDER FULLNAME INITIAL LETTER ', sender_fullname.charAt(0))
+    if (sender_fullname) {
+      return sender_fullname.charAt(0);
+    }
+
+  }
+
   // GET DETAIL OF THE REQUEST - USED FOR:
   // GET IF THE USER IS JOINED OR NOT JOINED
   getRequestByRecipient() {
@@ -140,41 +148,63 @@ export class RequestsMsgsComponent implements OnInit {
           this.requester_id = request[0].requester_id;
           console.log('* REQUESTER ID: ', this.requester_id);
 
-          if (request[0].attributes.userName) {
-            this.user_name = request[0].attributes.userName;
-            console.log('* USER NAME: ', this.user_name);
+          if (request[0].attributes) {
+            if (request[0].attributes.userName) {
+              this.user_name = request[0].attributes.userName;
+              console.log('* USER NAME: ', this.user_name);
+            } else {
+              this.user_name = 'n.a.'
+            }
           } else {
+
             this.user_name = 'n.a.'
           }
 
-
-          if (request[0].attributes.userEmail) {
-            this.user_email = request[0].attributes.userEmail;
-            console.log('* USER EMAIL: ', this.user_email);
+          if (request[0].attributes) {
+            if (request[0].attributes.userEmail) {
+              this.user_email = request[0].attributes.userEmail;
+              console.log('* USER EMAIL: ', this.user_email);
+            } else {
+              this.user_email = 'n.a.'
+            }
           } else {
+
             this.user_email = 'n.a.'
           }
 
-          if (request[0].attributes.departmentName) {
-            this.department_name = request[0].attributes.departmentName;
-            console.log('* DEPATMENT NAME: ', this.department_name);
+          if (request[0].attributes) {
+            if (request[0].attributes.departmentName) {
+              this.department_name = request[0].attributes.departmentName;
+              console.log('* DEPATMENT NAME: ', this.department_name);
+            } else {
+              this.department_name = 'n.a.'
+            }
           } else {
             this.department_name = 'n.a.'
           }
 
-          if (request[0].attributes.departmentId) {
-            this.department_id = request[0].attributes.departmentId;
-            console.log('* DEPATMENT ID: ', this.department_id);
+          if (request[0].attributes) {
+            if (request[0].attributes.departmentId) {
+              this.department_id = request[0].attributes.departmentId;
+              console.log('* DEPATMENT ID: ', this.department_id);
+            } else {
+              this.department_id = 'n.a.'
+            }
           } else {
             this.department_id = 'n.a.'
           }
 
-          if (request[0].attributes.sourcePage) {
-            this.source_page = request[0].attributes.sourcePage;
-            console.log('* SOURCE PAGE: ', this.source_page);
+          if (request[0].attributes) {
+            if (request[0].attributes.sourcePage) {
+              this.source_page = request[0].attributes.sourcePage;
+              console.log('* SOURCE PAGE: ', this.source_page);
+            } else {
+              this.source_page = 'n.a.'
+              console.log('* SOURCE PAGE: ', this.source_page);
+            }
           } else {
+
             this.source_page = 'n.a.'
-            console.log('* SOURCE PAGE: ', this.source_page);
           }
         }
       });

@@ -14,10 +14,9 @@
 
           <div #scrollMe class="card-content" style="height: 400px; overflow-y: auto;">
 
-            <div *ngFor="let message of messagesList" style="vertical-align:baseline">
-          
+            <!-- OLD CHAT -->
+            <!-- <div *ngFor="let message of messagesList" style="vertical-align:baseline">
               <div class="row">
-                  <!-- margin-left: 10px; -->
                 <div class="col-sm-11" style="padding-left: 0px; ">
                   <div class="msg_sender" style="padding-right: 0px">
                     <p style="font-size: 0.8em; margin-bottom:0px">
@@ -26,37 +25,69 @@
                   </div>
                 </div>
               </div>
-
-              <!-- <div class="msgcontainer">        
-                <p style="font-size: 0.9em; margin-bottom:0px">{{ message.text }}</p>
-                <span class="time-right" style="font-size: 0.8em;">
-                  {{ message.timestamp | date: 'd/M/y HH:mm:ss'}}
-                </span>
-              </div> -->
               <div class="row">
-              
                 <div class="col-sm-12">
                   <div class="talk-bubble tri-right left-top" style="margin-bottom: 12px; min-width: 450px;">
                     <div class="talktext">
-                      <div class="col-sm-8">
+                      <div class="col-xs-8">
                         <p style="padding: 10px; margin-bottom: 0px; font-size: 13px; font-family: Tahoma, Verdana, Segoe, sans-serif;">
-                          <!-- TEXT FOR TEST This one adds a right triangle on the left, flush at the top by using .tri-right and .left-top to specify the location. -->
                           {{ message.text }}
                         </p>
                       </div>
-                  
-                      <div class="col-sm-4">
+                      <div class="col-xs-4">
                         <span class="time-right" style="font-size: 11px; padding-right: 10px; padding-bottom: 5px; padding-top: 10px">
                           {{ message.timestamp | date: 'd/M/y HH:mm:ss'}}
                         </span>
                       </div>
                     </div>
-
                   </div>
                 </div>
               </div>
-              <!-- ./ row -->
+            </div> -->
+
+            <div class="chat-body" style="vertical-align:baseline">
+              <div style="padding-bottom: 3px;" class="answer left" *ngFor="let message of messagesList">
+                <div class="avatar" style="  width: 35px; height: 35px; position: absolute;">
+                  <!-- <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User name" style="display: block;border-radius: 20px; height: 100%; margin-top: 35px;"> -->
+                  <div style="display: block;border-radius: 20px; height: 100%; margin-top: 35px; background-color: #ebebeb">
+                    <span class="senderFullname" style="position: absolute; top:43px; margin-left:13px; color: #999999">
+                      {{ messageSenderInitialLetter( message.sender_fullname )}}
+                    </span>
+                  </div>
+  
+                </div>
+                <div class="name">
+                  <strong>{{ message.sender_fullname }}</strong>
+                </div>
+                <div class="row">
+  
+                <div class="col-xs-11 text" style=" margin-left: 6px; vertical-align: middle; padding-top: 5px;padding-bottom: 5px;">
+                  <!-- <div class="text"> -->
+                        <!-- <div  style=" background: #ebebeb; height: 100%; float: right"> -->
+                          <span class="messageTime" style=" float: right; padding-right: 0px; font-size: 11px; color:#aaa">
+                              {{ message.timestamp | date: 'd/M/y HH:mm:ss'}}
+                          </span>
+                        <!-- </div> -->
+                        <div class="col-xs-8 col-sm-8 col-lg-8" style=" padding-left: 5px; padding-top: 5px;">
+                            <!-- min-width: 300px; -->
+                          <div class="messageText" style="font-size: 13px; line-height: normal; ">
+                              {{ message.text }}
+                              
+                          </div>
+                        </div>
+                  <!-- </div> -->
+
+
+                </div>
+
+                
+                </div>
+                <!-- <div class="time">5 min ago</div> -->
+              </div>
             </div>
+            
+
+
           </div>
 
           <div class="card-footer" style="text-align: center; margin-bottom: 0px;padding-top: 2px;">
