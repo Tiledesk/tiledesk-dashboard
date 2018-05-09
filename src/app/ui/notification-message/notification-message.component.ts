@@ -21,4 +21,6 @@ export class NotificationMessageComponent {
     this.notify.onOkExpiredSessionModal();
     this.auth.signOut();
   }
+
+  
 }

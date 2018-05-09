@@ -62,7 +62,7 @@
 
       <!-- EDIT VIEW -->
       <span *ngIf="EDIT_VIEW">
-        <div class="col-md-8">
+        <div class="col-md-12">
           <div class="card" style="padding-top:25px; padding-bottom:25px">
             <div class="card-content">
 
@@ -70,7 +70,7 @@
                 {{ "UserEditAddPage.UserEmail" | translate }}
               </label>
               <div class="col-sm-10">
-                <input [(ngModel)]="user_email" class="" type="text" placeholder='{{ "UserEditAddPage.UserEmail" | translate }}'>
+                <input style="color:#999999" [(ngModel)]="user_email" class="" type="text" placeholder='{{ "UserEditAddPage.UserEmail" | translate }}' disabled>
               </div>
 
               <div class="col-sm-12" style="height:10px"></div>
@@ -103,7 +103,7 @@
       </span>
       
       <!-- RIGHT SIDEBAR -->
-      <div class="col-md-4">
+      <!-- <div class="col-md-4">
         <div class="card" style="padding-top:25px; padding-bottom:25px">
             <div class="card-content" style="padding-top: 0px;">
               <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; margin-bottom: 15px">
@@ -113,20 +113,18 @@
               <p style="margin-bottom: 3px"> <strong>Admin</strong></p>
               <p style="color:#999999">
                   
-                  An Administrator has full power over the app and can do everything related to TileDesk administration. Administrators can create more Administrators, invite new users, remove users, change user roles, and serve Visitors. 
+                  An Administrator has full power over the app and can do everything related to TileDesk administration. Administrators can create more Administrators, invite new users, remove users, change user roles, serve Visitors ... 
               </p>
 
               <p style="margin-bottom: 3px"> <strong>Agent</strong></p>
               <p style="color:#999999">
                   
-                  An Agent can only serve Visitors. 
+                  An Agent can serve Visitors... 
               </p>
 
             </div>
         </div>
-
-
-      </div>
+      </div> -->
 
 
     </div>

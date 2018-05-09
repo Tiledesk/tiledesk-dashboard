@@ -4,6 +4,7 @@ import { AuthService } from '../core/auth.service';
 import { Router } from '@angular/router';
 import { UsersService } from '../services/users.service';
 import { ActivatedRoute } from '@angular/router';
+import { NotifyService } from '../core/notify.service';
 
 @Component({
   selector: 'app-user-edit-add',
@@ -40,7 +41,8 @@ export class UserEditAddComponent implements OnInit {
     private router: Router,
     private auth: AuthService,
     private usersService: UsersService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private notify: NotifyService
   ) { }
 
   ngOnInit() {
@@ -99,9 +101,14 @@ export class UserEditAddComponent implements OnInit {
       },
         (error) => {
           console.log('PROJECT-USER UPDATED ERR  ', error);
+          // tslint:disable-next-line:quotemark
+          this.notify.showNotification("An error occurred while updating user's role", 4, 'report_problem')
         },
         () => {
           console.log('PROJECT-USER UPDATED  * COMPLETE *');
+          this.notify.showNotification('User role updated', 2, 'done');
+
+          this.router.navigate(['project/' + this.id_project + '/users']);
         });
   }
 

@@ -4,6 +4,7 @@ import { Subject } from 'rxjs/Subject';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 
+declare var $: any;
 /// Notify users about errors and other helpful stuff
 export interface Msg {
   content: string;
@@ -20,6 +21,7 @@ export class NotifyService {
   msg = this._msgSource.asObservable();
 
   route: string;
+  notify: any;
 
   constructor(
     private router: Router,
@@ -60,6 +62,34 @@ export class NotifyService {
 
   onOkExpiredSessionModal() {
     this.displayExpiredSessionModal = 'none'
+  }
+
+  // showNotification(from, align) {
+  showNotification(message, notificationColor, icon) {
+    const type = ['', 'info', 'success', 'warning', 'danger'];
+    // const color = Math.floor((Math.random() * 4) + 1);
+    const color = notificationColor
+
+    this.notify = $.notify({
+      // icon: 'glyphicon glyphicon-warning-sign',
+      // message: message
+
+    }, {
+        type: type[color],
+        timer: 1000,
+        delay: 100,
+        placement: {
+          from: 'top',
+          align: 'center'
+        },
+        template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" style="text-align: center;" role="alert">' +
+          '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+          // '<span data-notify="title" style="max-width: 100%; font-size:1.1em; ">TileDesk</span> ' +
+          // tslint:disable-next-line:max-line-length
+          '<span data-notify="icon" style="display: inline;"><i style="vertical-align: middle" class="material-icons">' + icon + '</i> </span> ' +
+          '<span data-notify="message" style="display: inline; vertical-align: middle ">' + message + '</span>' +
+          '</div>'
+      });
   }
 
 
