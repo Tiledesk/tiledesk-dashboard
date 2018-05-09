@@ -47,7 +47,7 @@ import { RequestsListHistoryComponent } from './requests-list-history/requests-l
 // AUTH PAGE
 import { SigninComponent } from './auth/signin/signin.component';
 import { SignupComponent } from './auth/signup/signup.component';
-import { WelcomeComponent } from './auth/welcome/welcome.component';
+import { UnauthorizedComponent } from './auth/unauthorized/unauthorized.component';
 
 import { ResourcesComponent } from './resources/resources.component';
 import { ScriptComponent } from './script/script.component';
@@ -92,7 +92,7 @@ const routes: Routes = [
   // { path: 'login', component: UserLoginComponent },
   { path: 'login', component: SigninComponent },
   { path: 'signup', component: SignupComponent },
-  { path: 'unauthorized', component: WelcomeComponent },
+  { path: 'unauthorized', component: UnauthorizedComponent },
   { path: 'verify/email/:user_id', component: VerifyEmailComponent },
 
 

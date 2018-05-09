@@ -75,7 +75,7 @@ import { RequestsListHistoryComponent } from './requests-list-history/requests-l
 import { MomentModule } from 'angular2-moment';
 import { SigninComponent } from './auth/signin/signin.component';
 import { SignupComponent } from './auth/signup/signup.component';
-import { WelcomeComponent } from './auth/welcome/welcome.component';
+import { UnauthorizedComponent } from './auth/unauthorized/unauthorized.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ResourcesComponent } from './resources/resources.component';
 import { ScriptComponent } from './script/script.component';
@@ -126,7 +126,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     RequestsListHistoryComponent,
     SigninComponent,
     SignupComponent,
-    WelcomeComponent,
+    UnauthorizedComponent,
     ResourcesComponent,
     ScriptComponent,
     ChannelsComponent,
