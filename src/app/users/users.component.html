@@ -116,6 +116,9 @@
                   <!-- <td *ngIf="projectUser?.user_available === false" (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer"> </td> -->
 
                   <td *ngIf="projectUser?.role !== 'owner'" class="td-actions text-right">
+                    <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipEditUser' | translate }}" class="btn btn-primary btn-simple btn-xs" (click)='goToEditUser(projectUser?._id)'>
+                      <i class="material-icons">edit</i>
+                    </button>
                     <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipDeleteUser' | translate }}" class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal(projectUser?._id)'>
                       <i class="material-icons">close</i>
                     </button>

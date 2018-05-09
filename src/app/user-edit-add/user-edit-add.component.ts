@@ -3,6 +3,7 @@ import { Project } from '../models/project-model';
 import { AuthService } from '../core/auth.service';
 import { Router } from '@angular/router';
 import { UsersService } from '../services/users.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-user-edit-add',
@@ -10,6 +11,9 @@ import { UsersService } from '../services/users.service';
   styleUrls: ['./user-edit-add.component.scss']
 })
 export class UserEditAddComponent implements OnInit {
+
+  CREATE_VIEW = false;
+  EDIT_VIEW = false;
 
   project: Project;
   project_name: string;
@@ -28,15 +32,77 @@ export class UserEditAddComponent implements OnInit {
   INVITE_FORBIDDEN_ERROR: boolean;
   INVITE_OTHER_ERROR: boolean;
 
+  project_user_id: string;
+  user_role: string;
+
+
   constructor(
     private router: Router,
     private auth: AuthService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
+    if (this.router.url.indexOf('/add') !== -1) {
+
+      console.log('HAS CLICKED INVITES ');
+      this.CREATE_VIEW = true;
+
+    } else {
+      console.log('HAS CLICKED EDIT ');
+      this.EDIT_VIEW = true;
+
+      this.getProjectUserId()
+    }
 
     this.getCurrentProject();
+
+  }
+
+  getProjectUserId() {
+    this.project_user_id = this.route.snapshot.params['projectuserid'];
+    console.log('USER-EDIT-ADD COMP PROJ-USER ID ', this.project_user_id);
+
+    if (this.project_user_id) {
+      this.getProjectUsersById();
+    }
+  }
+
+
+  getProjectUsersById() {
+    this.usersService.getProjectUsersById(this.project_user_id).subscribe((projectUser: any) => {
+      console.log('PROJECT-USER DETAILS: ', projectUser);
+
+      this.user_email = projectUser[0].id_user.email;
+      console.log('PROJECT-USER DETAILS - EMAIL: ', this.user_email);
+
+      this.user_role = projectUser[0].role;
+      console.log('PROJECT-USER DETAILS - ROLE: ', this.user_role);
+    },
+      (error) => {
+        console.log('PROJECT-USER DETAILS - ERR  ', error);
+      },
+      () => {
+        console.log('PROJECT-USER DETAILS * COMPLETE *');
+      });
+  }
+
+
+
+
+  updateUserRole() {
+    this.usersService.updateProjectUserRole(this.project_user_id, this.role)
+      .subscribe((projectUser: any) => {
+        console.log('PROJECT-USER UPDATED ', projectUser)
+
+      },
+        (error) => {
+          console.log('PROJECT-USER UPDATED ERR  ', error);
+        },
+        () => {
+          console.log('PROJECT-USER UPDATED  * COMPLETE *');
+        });
   }
 
   getCurrentProject() {
@@ -54,15 +120,12 @@ export class UserEditAddComponent implements OnInit {
   }
 
   setSelected(role) {
-
     this.role = role;
     console.log('Selected ROLE ', this.role)
 
     if (role !== 'ROLE_NOT_SELECTED') {
       this.ROLE_NOT_SELECTED = false;
-
     }
-
   }
 
   invite() {

@@ -218,6 +218,20 @@ export class UsersService {
       .map((response) => response.json());
   }
 
+  /// ========================= GET PROJECT-USER BY ID (PROJECT USER DETAIL) ======================= ///
+  public getProjectUsersById(projectuser_id: string): Observable<ProjectUser[]> {
+    const url = this.MONGODB_BASE_URL + 'details/' + projectuser_id;
+
+    console.log('GET PROJECT USERS BY ID ', url);
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    // console.log('TOKEN TO COPY ', this.TOKEN)
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
   // ======================  PUBLISH projectUser_id AND user_available ======================
   // NOTE: THE projectUser_id AND user_available ARE PASSED FROM HOME.COMPONENT
   public user_availability(projectUser_id: string, user_available: boolean) {
@@ -237,7 +251,7 @@ export class UsersService {
 
 
   /**
-   * UPDATE PROJECT-USER (PUT)
+   * UPDATE PROJECT-USER AVAILABILITY (PUT) 
    */
   public updateProjectUser(projectUser_id: string, user_is_available: boolean) {
 
@@ -252,6 +266,30 @@ export class UsersService {
     const options = new RequestOptions({ headers });
 
     const body = { 'user_available': user_is_available };
+
+    console.log('PUT REQUEST BODY ', body);
+
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
+  /**
+   * UPDATE PROJECT-USER ROLE (PUT)
+   */
+  public updateProjectUserRole(projectUser_id: string, user_role: string) {
+
+    let url = this.MONGODB_BASE_URL;
+    url += projectUser_id;
+    console.log('PROJECT-USER UPDATE (PUT) URL ', url);
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = { 'role': user_role };
 
     console.log('PUT REQUEST BODY ', body);
 

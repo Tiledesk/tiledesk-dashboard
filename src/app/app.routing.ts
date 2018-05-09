@@ -113,6 +113,7 @@ const routes: Routes = [
   // ARE ALL THE USER OF A PROJECT (e.g. THE USER THAT HAS CREATED THE PROJECT AND THE USERS THAT HE HAS INVITED (THE OTHER MEMBERS OF THE PROJECT))
   { path: 'project/:projectid/users', component: UsersComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/user/add', component: UserEditAddComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/user/edit/:projectuserid', component: UserEditAddComponent, canActivate: [AuthGuard] },
 
   // DISPLAY THE PROFILE OF THE MEMBER (USERS WHO HAVE BEEN INVITED)
   { path: 'project/:projectid/member/:memberid', component: UsersProfileComponent, canActivate: [AuthGuard] },

@@ -66,6 +66,7 @@
         "Role": "Ruolo",
         "Available":"Disponibile",
         "Actions": "Azioni",
+        "tootipEditUser": "Modifica ruolo membro",
         "tootipDeleteUser": "Elimina Membro",
         "modalDeleteUser": "Elimina Membro",
         "AreYouSure": "Sei sicuro di voler eliminare questo utente?",
@@ -76,10 +77,12 @@
     "UserEditAddPage": {
         "AddUserToThe": "Aggiungi Utente al progetto ",
         "Project": "",
+        "EditUserRole": "Modifica ruolo utente",
         "UserEmail": "Email utente",
         "Role": "Ruolo",
         "SelectRole": "Seleziona un ruolo",
         "Invites": "Invita",
+        "Update": "Update",
         "modalInviteUser": "Invita Utente",
         "Processing": "Elaborazione...",
         "Completed": "Completato",
@@ -207,7 +210,7 @@
     },
     "UnauthorizedPage": {
         "UnauthorizedAccess":"Accesso non autorizzato!",
-        "OopsYouDontHave":"Oops! Non hai il permessi di accesso a questa pagina."
+        "OopsYouDontHave":"Oops! Non hai il permessi per accedere a questa pagina."
 
     }
 }

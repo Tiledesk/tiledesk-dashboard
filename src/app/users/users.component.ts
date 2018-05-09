@@ -31,7 +31,7 @@ export class UsersComponent implements OnInit {
   ngOnInit() {
 
     this.auth.checkRole();
-    
+
     this.getAllUsersOfCurrentProject();
     this.getCurrentProject();
     this.getProjectUserRole();
@@ -57,6 +57,9 @@ export class UsersComponent implements OnInit {
 
   goToAddUser() {
     this.router.navigate(['project/' + this.id_project + '/user/add']);
+  }
+  goToEditUser(projectUser_id) {
+    this.router.navigate(['project/' + this.id_project + '/user/edit/' + projectUser_id]);
   }
 
   getAllUsersOfCurrentProject() {

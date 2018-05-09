@@ -1,149 +1,232 @@
 <div class="navbar-brand" style="z-index: -1;margin-top:10px; padding-left:30px">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBackToUsersList()">keyboard_arrow_left</i>
-    {{ "UserEditAddPage.AddUserToThe" | translate }}  <span style="color: #566787; font-weight:400">{{project_name}}</span>  {{ "UserEditAddPage.Project" | translate }}
+  <span *ngIf="CREATE_VIEW">
+    {{ "UserEditAddPage.AddUserToThe" | translate }}  
+    <span style="color: #566787; font-weight:400">{{project_name}}</span>  {{ "UserEditAddPage.Project" | translate }}
+  </span>
 
+  <span *ngIf="EDIT_VIEW">
+    {{ "UserEditAddPage.EditUserRole" | translate }}  
+
+  </span>
 </div>
 <div class="main-content" style="padding-top: 0px">
   <div class="container-fluid">
 
     <div class="row">
-      <div class="col-md-12">
+
+      <!-- CREATE VIEW -->
+      <span *ngIf="CREATE_VIEW">
+        <div class="col-md-8">
+          <div class="card" style="padding-top:25px; padding-bottom:25px">
+            <div class="card-content">
+
+              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
+                {{ "UserEditAddPage.UserEmail" | translate }}
+              </label>
+              <div class="col-sm-10">
+                <input [(ngModel)]="user_email" class="" type="text" placeholder='{{ "UserEditAddPage.UserEmail" | translate }}'>
+              </div>
+
+              <div class="col-sm-12" style="height:10px"></div>
+
+              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
+                {{ "UserEditAddPage.Role" | translate }}
+              </label>
+              <div class="col-sm-10" style="">
+                <select #selectElem (change)="setSelected(selectElem.value)" class="" >
+                  <option class="not_selected" value="ROLE_NOT_SELECTED" [selected]="selected == true">
+                    {{ "UserEditAddPage.SelectRole" | translate }}
+                  </option>              
+                  <option value="admin">admin </option>
+                  <option value="agent">agent </option>
+                </select>
+              </div>
+
+              <!-- SPACER -->
+              <div class="col-sm-12" style="height:15px"></div>
+
+              <label style="" class="col-sm-2"></label>
+              <div class="col-sm-10">
+                <!-- [disabled]="bot_fullname?.length < 2 || FAQKB_NOT_SELECTED === true" -->
+                <button class="btn btn-success" [disabled]="user_email?.length < 2 || ROLE_NOT_SELECTED === true" (click)="invite()">
+                  {{ "UserEditAddPage.Invites" | translate }}
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      <!-- /. end col-md-8 -->
+      </span>
+
+      <!-- EDIT VIEW -->
+      <span *ngIf="EDIT_VIEW">
+        <div class="col-md-8">
+          <div class="card" style="padding-top:25px; padding-bottom:25px">
+            <div class="card-content">
+
+              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
+                {{ "UserEditAddPage.UserEmail" | translate }}
+              </label>
+              <div class="col-sm-10">
+                <input [(ngModel)]="user_email" class="" type="text" placeholder='{{ "UserEditAddPage.UserEmail" | translate }}'>
+              </div>
+
+              <div class="col-sm-12" style="height:10px"></div>
+
+              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
+                {{ "UserEditAddPage.Role" | translate }}
+              </label>
+              <div *ngIf="user_role" class="col-sm-10" style="">
+                <select #selectElem (change)="setSelected(selectElem.value)" class="" >
+            
+                  <option value="admin" [selected]="user_role === 'admin'">admin </option>
+                  <option value="agent" [selected]="user_role === 'agent'">agent </option>
+                </select>
+              </div>
+
+              <!-- SPACER -->
+              <div class="col-sm-12" style="height:15px"></div>
+
+              <label style="" class="col-sm-2"></label>
+              <div class="col-sm-10">
+                <!-- [disabled]="bot_fullname?.length < 2 || FAQKB_NOT_SELECTED === true" -->
+                <button class="btn btn-success" [disabled]="ROLE_NOT_SELECTED === true" (click)="updateUserRole()">
+                  {{ "UserEditAddPage.Update" | translate }}
+                </button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </span>
+      
+      <!-- RIGHT SIDEBAR -->
+      <div class="col-md-4">
         <div class="card" style="padding-top:25px; padding-bottom:25px">
-          <div class="card-content">
+            <div class="card-content" style="padding-top: 0px;">
+              <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; margin-bottom: 15px">
+                User Roles
+              </h4>
 
-            <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
-              {{ "UserEditAddPage.UserEmail" | translate }}
-            </label>
-            <div class="col-sm-10">
-              <input [(ngModel)]="user_email" class="" type="text" placeholder='{{ "UserEditAddPage.UserEmail" | translate }}'>
+              <p style="margin-bottom: 3px"> <strong>Admin</strong></p>
+              <p style="color:#999999">
+                  
+                  An Administrator has full power over the app and can do everything related to TileDesk administration. Administrators can create more Administrators, invite new users, remove users, change user roles, and serve Visitors. 
+              </p>
+
+              <p style="margin-bottom: 3px"> <strong>Agent</strong></p>
+              <p style="color:#999999">
+                  
+                  An Agent can only serve Visitors. 
+              </p>
+
+            </div>
+        </div>
+
+
+      </div>
+
+
+    </div>
+
+    <!-- MODAL - INFO WINDOWS -->
+    <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->  
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}" style="background-color: rgba(90,90,90,0.5);">
+        <div class="modal-dialog modal-sm" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+
+              <h4 class="modal-title">
+                {{ "UserEditAddPage.modalInviteUser" | translate }}
+                <!-- <code>{{id_toDelete}}</code> -->
+              </h4>
             </div>
 
-            <div class="col-sm-12" style="height:10px"></div>
+            <div class="modal-body">
+            
+              <span *ngIf="SHOW_CIRCULAR_SPINNER">
+                <div  class="loader" style="top:25%">
+                  <svg class="circular" viewBox="25 25 50 50">
+                    <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+                  </svg>
 
-            <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
-              {{ "UserEditAddPage.Role" | translate }}
-            </label>
-            <div class="col-sm-10" style="">
-              <select #selectElem (change)="setSelected(selectElem.value)" class="" >
-                <option class="not_selected" value="ROLE_NOT_SELECTED" [selected]="selected == true">
-                  {{ "UserEditAddPage.SelectRole" | translate }}
-                </option>              
-                <option value="admin">admin </option>
-                <option value="agent">agent </option>
-              </select>
+                </div>
+                <p style="margin-top: 50px; text-align: center;">
+                    {{ "UserEditAddPage.Processing" | translate }}
+                </p>
+              </span>
+
+              <span *ngIf="!SHOW_CIRCULAR_SPINNER">
+                <div  class="loader" style="top:5%">
+
+                  <!--      WHEN NO ERROR OCCUR      -->
+                  <span *ngIf="!INVITE_FORBIDDEN_ERROR && !INVITE_OTHER_ERROR">
+                    <i class="material-icons" style="color:#70b665">done</i>
+                    <span style="color:#70b665">
+                        {{ "UserEditAddPage.Completed" | translate }}
+                    </span> 
+                  </span>
+
+                  <!--      ERROR - Not Allowed Action      -->
+                  <span *ngIf="INVITE_FORBIDDEN_ERROR && !INVITE_OTHER_ERROR">
+                    <i class="material-icons" style="color:#ff5252">report_problem</i>
+                    <span style="color:#ff5252">
+                        {{ "UserEditAddPage.Error" | translate }}
+                    </span> 
+                  </span>
+
+                  <!--      ERROR - other error     -->
+                  <span *ngIf="!INVITE_FORBIDDEN_ERROR && INVITE_OTHER_ERROR">
+                    <i class="material-icons" style="color:#ff5252">report_problem</i>
+                    <span style="color:#ff5252">
+                        {{ "UserEditAddPage.Error" | translate }}
+                    </span> 
+                  </span>
+
+                </div>
+
+                <!--      WHEN NO ERROR OCCUR      -->
+                <span *ngIf="!INVITE_FORBIDDEN_ERROR && !INVITE_OTHER_ERROR">
+                  <p style="margin-top: 50px; text-align: center;">
+                    {{ "UserEditAddPage.TheUserHasBeenInvited" | translate }}
+                  </p>
+                </span>
+
+                <!--      ERROR - Not Allowed Action      -->
+                <span *ngIf="INVITE_FORBIDDEN_ERROR && !INVITE_OTHER_ERROR">
+                  <p style="margin-top: 50px; text-align: center;">
+                    {{ "UserEditAddPage.YouCanNotInviteYourself" | translate }}
+                  </p>
+                </span>
+
+                <!--      ERROR - other error     -->
+                <span *ngIf="!INVITE_FORBIDDEN_ERROR && INVITE_OTHER_ERROR">
+                  <p style="margin-top: 50px; text-align: center;">
+                    {{ "UserEditAddPage.AnErrorHasOccurred" | translate }}
+                  </p>
+                </span>
+
+
+              </span>
             </div>
 
-            <!-- SPACER -->
-            <div class="col-sm-12" style="height:15px"></div>
-
-            <label style="" class="col-sm-2"></label>
-            <div class="col-sm-10">
-              <!-- [disabled]="bot_fullname?.length < 2 || FAQKB_NOT_SELECTED === true" -->
-              <button class="btn btn-success" [disabled]="user_email?.length < 2 || ROLE_NOT_SELECTED === true" (click)="invite()">
-                {{ "UserEditAddPage.Invites" | translate }}
+            <div class="modal-footer" style="text-align: center;">
+              <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseModalHandled()">
+                  {{ "UserEditAddPage.Continue" | translate }}
               </button>
             </div>
 
-            <!-- MODAL - INFO WINDOWS -->
-            <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->  
-            <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}" style="background-color: rgba(90,90,90,0.5);">
-                <div class="modal-dialog modal-sm" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-
-                      <h4 class="modal-title">
-                        {{ "UserEditAddPage.modalInviteUser" | translate }}
-                        <!-- <code>{{id_toDelete}}</code> -->
-                      </h4>
-                    </div>
-   
-                    <div class="modal-body">
-                    
-                      <span *ngIf="SHOW_CIRCULAR_SPINNER">
-                        <div  class="loader" style="top:25%">
-                          <svg class="circular" viewBox="25 25 50 50">
-                            <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10"/>
-                          </svg>
-
-                        </div>
-                        <p style="margin-top: 50px; text-align: center;">
-                            {{ "UserEditAddPage.Processing" | translate }}
-                        </p>
-                      </span>
-
-                      <span *ngIf="!SHOW_CIRCULAR_SPINNER">
-                        <div  class="loader" style="top:5%">
-
-                          <!--      WHEN NO ERROR OCCUR      -->
-                          <span *ngIf="!INVITE_FORBIDDEN_ERROR && !INVITE_OTHER_ERROR">
-                            <i class="material-icons" style="color:#70b665">done</i>
-                            <span style="color:#70b665">
-                                {{ "UserEditAddPage.Completed" | translate }}
-                            </span> 
-                          </span>
-
-                          <!--      ERROR - Not Allowed Action      -->
-                          <span *ngIf="INVITE_FORBIDDEN_ERROR && !INVITE_OTHER_ERROR">
-                            <i class="material-icons" style="color:#ff5252">report_problem</i>
-                            <span style="color:#ff5252">
-                                {{ "UserEditAddPage.Error" | translate }}
-                            </span> 
-                          </span>
-
-                          <!--      ERROR - other error     -->
-                          <span *ngIf="!INVITE_FORBIDDEN_ERROR && INVITE_OTHER_ERROR">
-                            <i class="material-icons" style="color:#ff5252">report_problem</i>
-                            <span style="color:#ff5252">
-                                {{ "UserEditAddPage.Error" | translate }}
-                            </span> 
-                          </span>
-
-                        </div>
-
-                        <!--      WHEN NO ERROR OCCUR      -->
-                        <span *ngIf="!INVITE_FORBIDDEN_ERROR && !INVITE_OTHER_ERROR">
-                          <p style="margin-top: 50px; text-align: center;">
-                            {{ "UserEditAddPage.TheUserHasBeenInvited" | translate }}
-                          </p>
-                        </span>
-
-                        <!--      ERROR - Not Allowed Action      -->
-                        <span *ngIf="INVITE_FORBIDDEN_ERROR && !INVITE_OTHER_ERROR">
-                          <p style="margin-top: 50px; text-align: center;">
-                            {{ "UserEditAddPage.YouCanNotInviteYourself" | translate }}
-                          </p>
-                        </span>
-
-                        <!--      ERROR - other error     -->
-                        <span *ngIf="!INVITE_FORBIDDEN_ERROR && INVITE_OTHER_ERROR">
-                          <p style="margin-top: 50px; text-align: center;">
-                            {{ "UserEditAddPage.AnErrorHasOccurred" | translate }}
-                          </p>
-                        </span>
-
-
-                      </span>
-                    </div>
-
-                    <div class="modal-footer" style="text-align: center;">
-                      <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseModalHandled()">
-                          {{ "UserEditAddPage.Continue" | translate }}
-                      </button>
-                    </div>
-
-                  </div>
-                  <!-- /.modal-content -->
-                </div>
-                <!-- /.modal-dialog -->
-              </div>
-
-
           </div>
+          <!-- /.modal-content -->
         </div>
+        <!-- /.modal-dialog -->
       </div>
-    </div>
+
+
   </div>
 </div>
