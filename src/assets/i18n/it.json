@@ -204,6 +204,10 @@
         "EmailVerificationFailed":"Verifica email fallita",
         "YourEmailHasSuccess":"La tua email è stata verificata con successo",
         "GoToCONSOLE":"VAI ALLA CONSOLE"
+    },
+    "UnauthorizedPage": {
+        "UnauthorizedAccess":"Accesso non autorizzato!",
+        "OopsYouDontHave":"Oops! Non hai il permessi di accesso a questa pagina."
 
     }
 }

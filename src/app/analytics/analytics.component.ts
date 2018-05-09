@@ -1,6 +1,7 @@
 // tslint:disable:max-line-length
 import { Component, OnInit } from '@angular/core';
 import * as Chartist from 'chartist';
+import { AuthService } from '../core/auth.service';
 
 @Component({
   selector: 'app-analytics',
@@ -9,7 +10,12 @@ import * as Chartist from 'chartist';
 })
 export class AnalyticsComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private auth: AuthService
+  ) {
+    this.auth.checkRole();
+  }
+
   startAnimationForLineChart(chart) {
     let seq: any, delays: any, durations: any;
     seq = 0;
@@ -94,7 +100,7 @@ export class AnalyticsComponent implements OnInit {
     // tslint:disable-next-line:no-unused-expression
     new Chartist.Pie('#chartPreferences', dataPreferences, optionsPreferences);
 
-    
+
     /* ----------==========    NUMBER OF REQUEST   ==========---------- */
 
     const dataDailySalesChart: any = {

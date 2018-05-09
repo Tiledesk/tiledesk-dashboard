@@ -6,6 +6,7 @@ import { AuthService } from '../core/auth.service';
 
 import { RequestsService } from '../services/requests.service';
 import { MongodbDepartmentService } from '../services/mongodb-department.service';
+import { isDevMode } from '@angular/core';
 
 @Component({
   selector: 'projects',
@@ -35,6 +36,8 @@ export class ProjectsComponent implements OnInit {
   SHOW_CIRCULAR_SPINNER = false;
   displayLogoutModal = 'none';
 
+  APP_IS_DEV_MODE: boolean;
+
   constructor(
     private projectService: ProjectService,
     private router: Router,
@@ -43,7 +46,10 @@ export class ProjectsComponent implements OnInit {
     private element: ElementRef,
     private departmentService: MongodbDepartmentService
 
-  ) { }
+  ) {
+    console.log('IS DEV MODE ', isDevMode());
+    this.APP_IS_DEV_MODE = isDevMode()
+  }
 
   ngOnInit() {
     const navbar: HTMLElement = this.element.nativeElement;

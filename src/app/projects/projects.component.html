@@ -18,7 +18,7 @@
         <ul class="nav navbar-nav navbar-right">
 
           <!-- // ======= START - TEST - LOGOUT FROM FIREBASE ======= // -->
-          <li style="cursor:pointer">                 
+          <li *ngIf="APP_IS_DEV_MODE == true" style="cursor:pointer">                 
               <a (click)="testExpiredSessionFirebaseLogout()">
                   <i class="material-icons">lock_open</i>
                     FireBase Logout

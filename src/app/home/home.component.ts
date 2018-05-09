@@ -30,6 +30,8 @@ export class HomeComponent implements OnInit {
   projectId: string;
   // user_is_available: boolean;
 
+  USER_ROLE: string;
+
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -138,6 +140,9 @@ export class HomeComponent implements OnInit {
           // the user with agent role can not access to the pages under the settings sub-menu
           // this.auth.user_role(projectUser[0].role);
           this.usersLocalDbService.saveUserRoleInStorage(projectUser[0].role);
+
+          // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
+          this.USER_ROLE = projectUser[0].role;
         }
 
       }
