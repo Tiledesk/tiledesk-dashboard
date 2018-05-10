@@ -9,12 +9,16 @@
   <div class="container-fluid">
 
     <loading-spinner *ngIf="showSpinner"></loading-spinner>
-    <div *ngIf="!showSpinner"class="row">
+    <div *ngIf="!showSpinner" class="row is-flex">
 
       <div class="col-sm-7">
         <div class="card" style="padding-top:0px; padding-bottom:0px; padding-left:25px; padding-right:25px" >
-
-          <div #scrollMe class="card-content" style="height: 400px; overflow-y: auto;" (scroll)="onScroll($event)">
+            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; margin-top: 18px; margin-bottom: 0px; border-bottom: 1px solid #eeeeee; padding-bottom: 15px;">
+                <!-- Request  -->
+                {{ "RequestMsgsPage.MessagesOfTheRequest" | translate }}
+                <code style="color: #566787; font-weight: 400" >{{cut_support_group_from_request_id(id_request)}} </code>
+              </h4>
+          <div #scrollMe class="card-content" style="height: 500px; overflow-y: auto;" (scroll)="onScroll($event)">
 
             <!-- OLD CHAT -->
             <!-- <div *ngFor="let message of messagesList" style="vertical-align:baseline">
@@ -52,7 +56,7 @@
                 <div class="avatar" style="  width: 35px; height: 35px; position: absolute;">
                   <!-- <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User name" style="display: block;border-radius: 20px; height: 100%; margin-top: 35px;"> -->
                   <div style="display: block;border-radius: 20px; height: 100%; margin-top: 35px; background-color: #ebebeb">
-                    <span class="senderFullname" style="position: absolute; top:43px; margin-left:13px; color: #999999">
+                    <span class="senderFullname" style="position: absolute; top:43px; margin-left:13px; color: #999999; text-transform: uppercase">
                       {{ messageSenderInitialLetter( message.sender_fullname )}}
                     </span>
                   </div>
@@ -151,10 +155,15 @@
         <div class="card" style="padding-top:5px; padding-bottom:5px;">
 
           <div class="card-content" style="padding-top:5px;">
-            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; margin-bottom: 25px; border-bottom: 1px solid #eeeeee; padding-bottom: 15px;">
+            <h4 class="card-title requestattibutestitle" style="text-transform: none; color: #566787; font-weight:600; margin-bottom: 16px; border-bottom: 1px solid #eeeeee; padding-bottom: 15px;">
               <!-- Request  -->
-              {{ "RequestMsgsPage.Request" | translate }}
-              <code style="color: #566787; font-weight: 400" >{{ id_request }} </code>
+              <span class="requestattibutes">{{ "RequestMsgsPage.RequestAttributes" | translate }}</span>
+
+              <span class="requestattibutestime" style="font-size: 14px; color:#999999; float: right;">
+                  <i class="material-icons" style="vertical-align: middle">access_time</i>
+                  <span style="vertical-align: middle; font-weight: 500"> {{ "RequestMsgsPage.Published" | translate }}: {{ request?.timestamp | amTimeAgo }}</span>
+              </span>
+              
             </h4>
 
             <p style="margin-bottom: 10px"> 
@@ -207,17 +216,25 @@
               </span>   
             </p>
 
+            <!-- PUBLISHED -->
+            <!-- <p style="margin-bottom: 3px; color:#566787; padding-top: 10px;"> 
+              <strong>
+                {{ "RequestMsgsPage.Published" | translate }}
+               </strong>
+            </p>
+            <p style="color:#999999; font-weight: 500">  
+              {{ request?.timestamp | amTimeAgo }}
+            </p> -->
+            
+            <!-- REQUEST ID -->
             <p style="margin-bottom: 3px; color:#566787; padding-top: 10px;"> 
               <strong>
-                <!-- Published  -->
-                {{ "RequestMsgsPage.Published" | translate }}
-              
-              </strong>
+                {{ "RequestMsgsPage.RequestId" | translate }}
+                </strong>
             </p>
-              <p style="color:#999999; font-weight: 500">  
-                {{ request?.timestamp | amTimeAgo }}
-              </p>
-            
+            <p style="color:#999999; font-weight: 500">  
+                {{ id_request }}
+            </p>
 
  
             <!-- <p style="margin-bottom: 3px; color:#566787"> 
@@ -265,7 +282,9 @@
               </strong>
             </p>
             <p style="color:#999999; font-weight: 500">  
-              {{ user_email }}
+              
+              <a *ngIf="user_email !== 'n.a.'" href="mailto:{{user_email}}">{{ user_email }}</a>
+              <a *ngIf="user_email === 'n.a.'" style="color:#999999;">{{ user_email }}</a>
             </p>
 
             <p style="margin-bottom: 3px; color:#566787"> 
@@ -295,7 +314,8 @@
               </strong>
             </p>
             <p style="color:#999999; word-wrap: break-word; font-weight: 500">  
-              {{ source_page }}
+              
+              <a href="{{source_page}}" target="_blank">{{source_page}}</a>
             </p>
 
           </div>

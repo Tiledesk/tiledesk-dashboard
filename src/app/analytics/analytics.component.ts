@@ -105,7 +105,7 @@ export class AnalyticsComponent implements OnInit {
 
     const dataDailySalesChart: any = {
       // labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
-      labels: ['L', 'M', 'M', 'G', 'V', 'S', 'D'],
+      labels: ['V', 'S', 'D', 'L', 'M', 'M', 'G'],
       series: [
         [12, 17, 7, 17, 23, 18, 38]
       ]
@@ -129,7 +129,8 @@ export class AnalyticsComponent implements OnInit {
 
     const dataCompletedTasksChart: any = {
       // labels: ['12am', '3pm', '6pm', '9pm', '12pm', '3am', '6am', '9am'],
-      labels: ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'],
+      // labels: ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'],
+      labels: ['Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic', 'Gen', 'Feb', 'Mar', 'Apr', 'Mag'],
       series: [
         [50, 60, 100, 45, 40, 65, 70, 91, 70, 75, 95, 98]
       ]
@@ -155,7 +156,8 @@ export class AnalyticsComponent implements OnInit {
 
     var dataEmailsSubscriptionChart = {
       // labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-      labels: ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'],
+      // labels: ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'],
+      labels: ['Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic', 'Gen', 'Feb', 'Mar', 'Apr', 'Mag'],
       series: [
         [542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 360]
 

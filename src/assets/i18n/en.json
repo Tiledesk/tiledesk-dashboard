@@ -155,12 +155,15 @@
         "Error": "Error"
     },
     "RequestMsgsPage": {
+        "MessagesOfTheRequest":"Messages of the request",
+        "RequestAttributes":"Request's Attributes",
         "Request":"Request",
         "Enter":"Enter",
         "Loading":"Loading",
         "Error":"Error",
         "RequestUnserved":"Request unserved",
         "RequestServedBy":"Request served by",
+        "RequestId":"Request Id",
         "Published":"Published",
         "Requester":"Requester",
         "RequesterId":"Requester Id",

@@ -157,12 +157,15 @@
         "Error": "Errore"
     },
     "RequestMsgsPage": {
+        "MessagesOfTheRequest":"Messagi della richiesta",
+        "RequestAttributes":"Attributi richiesta",
         "Request":"Richiesta",
         "Enter":"Entra",
         "Loading":"Elaborazione",
         "Error":"Errore",
         "RequestUnserved":"Richiesta non servita",
         "RequestServedBy":"Richiesta servita da",
+        "RequestId":"Id richiesta",
         "Published":"Pubblicata",
         "Requester":"Richiedente",
         "RequesterId":"Id richiedente",

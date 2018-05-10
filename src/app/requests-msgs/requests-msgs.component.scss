@@ -240,3 +240,25 @@
   color:#fff;
   background-color: #00bcd4;
 } 
+
+// TITLE: REQUEST ATTRIBUTES
+// from 767px to 1330px 
+@media (min-width: 767px) and (max-width: 1205px){
+  .requestattibutestitle {
+    height: 69px;
+    
+  }
+  .requestattibutestime {
+    float: left !important;
+  }
+  .requestattibutes {
+    float: left !important;
+  }
+}
+
+@media (min-width: 940px) and (max-width: 991px){
+  .requestattibutestitle {
+    height: 42px;
+    
+  }
+}
