@@ -45,6 +45,8 @@ export class FaqComponent implements OnInit {
 
   modalChoosefileDisabled: boolean;
 
+  faqKb_name: string;
+
 
   constructor(
     private mongodbFaqService: MongodbFaqService,
@@ -88,12 +90,15 @@ export class FaqComponent implements OnInit {
   // GET FAQ-KB BY ID (FAQ-KB DETAILS)
   // USED TO OBTAIN THE FAQ-KB REMOTE KEY NECESSARY TO PASS IT
   // TO THE FAQ-TEST COMPONENT WHEN THE USER PRESS ON THE "FAQ TEST" BUTTON
+  // AND ALSO TO OBTAIN THE NAME of the FAQ-KB TO DISPLAY IT IN THE DIV navbar-brand
   getFaqKbById() {
     // this.botService.getMongDbBotById(this.botId).subscribe((bot: any) => { // NO MORE USED
     this.faqKbService.getMongDbFaqKbById(this.id_faq_kb).subscribe((faqkb: any) => {
       console.log('GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
       this.faq_kb_remoteKey = faqkb.kbkey_remote
       console.log('GET FAQ-KB (DETAILS) BY ID - FAQKB REMOTE KEY ', this.faq_kb_remoteKey);
+
+      this.faqKb_name = faqkb.name;
     },
       (error) => {
         console.log('GET FAQ-KB BY ID (SUBSTITUTE BOT) - ERROR ', error);

@@ -108,15 +108,18 @@
         "Confirm": "Confirm"
     },
     "BotsAddEditPage": {
-        "AddBot":"Add Bot",
-        "EditBot":"Edit Bot",
-        "BotName":"Bot Name",
-        "CreateBot":"Create Bot",
-        "UpdateBot":"Update Bot",
-        "Processing":"Processing...",
-        "Completed":"Completed",
-        "BotCreated":"Bot created",
-        "Continue":"Continue"
+        "AddBot": "Add Bot",
+        "EditBot": "Edit Bot",
+        "BotName": "Bot Name",
+        "CreateBot": "Create Bot",
+        "UpdateBot": "Update Bot",
+        "Processing": "Processing...",
+        "Completed": "Completed",
+        "BotCreated": "Bot created",
+        "Continue": "Continue"
+    },
+    "FaqPage": {
+        "FAQsOfBOT": "FAQs of BOT:"
     },
     "DepartmentsPage": {
         "AddDepartment": "Add Department",
@@ -155,23 +158,23 @@
         "Error": "Error"
     },
     "RequestMsgsPage": {
-        "MessagesOfTheRequest":"Messages of the request",
-        "RequestAttributes":"Request's Attributes",
-        "Request":"Request",
-        "Enter":"Enter",
-        "Loading":"Loading",
-        "Error":"Error",
-        "RequestUnserved":"Request unserved",
-        "RequestServedBy":"Request served by",
-        "RequestId":"Request Id",
-        "Published":"Published",
-        "Requester":"Requester",
-        "RequesterId":"Requester Id",
-        "ChatFormUserName":"Chat form: user name",
-        "ChatFormUserEmail":"Chat form: user email",
-        "DepartmentName":"Department name",
-        "DepartmentId":"Department Id",
-        "SourcePage":"Source page"        
+        "MessagesOfTheRequest": "Messages of the request",
+        "RequestAttributes": "Request's Attributes",
+        "Request": "Request",
+        "Enter": "Enter",
+        "Loading": "Loading",
+        "Error": "Error",
+        "RequestUnserved": "Request unserved",
+        "RequestServedBy": "Request served by",
+        "RequestId": "Request Id",
+        "Published": "Published",
+        "Requester": "Requester",
+        "RequesterId": "Requester Id",
+        "ChatFormUserName": "Chat form: user name",
+        "ChatFormUserEmail": "Chat form: user email",
+        "DepartmentName": "Department name",
+        "DepartmentId": "Department Id",
+        "SourcePage": "Source page"
     },
     "HistoryPage": {
         "Requester": "Requester",
@@ -203,16 +206,14 @@
         "EmailIntegration_1": "Email integration in Tile Desk Support works out of the box. Emails sent to your support address: ",
         "EmailIntegration_2": "automatically become requests."
     },
-    "VerifyEmailPage":{
-        "VerifyEmail":"Verify email",
-        "EmailVerificationFailed":"Email verification failed",
-        "YourEmailHasSuccess":"Your email has successfully been verified",
-        "GoToCONSOLE":"GO TO CONSOLE"
+    "VerifyEmailPage": {
+        "VerifyEmail": "Verify email",
+        "EmailVerificationFailed": "Email verification failed",
+        "YourEmailHasSuccess": "Your email has successfully been verified",
+        "GoToCONSOLE": "GO TO CONSOLE"
     },
     "UnauthorizedPage": {
-        "UnauthorizedAccess":"Unauthorized  access!",
-        "OopsYouDontHave":"Oops! You don't have permission to access this page."
-
+        "UnauthorizedAccess": "Unauthorized  access!",
+        "OopsYouDontHave": "Oops! You don't have permission to access this page."
     }
-
 }

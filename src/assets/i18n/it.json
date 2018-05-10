@@ -109,6 +109,9 @@
         "AreYouSureDeleteBotAndRElatedFAq": "Sei sicuro di voler eliminare questo Bot e le FAQ a questo correlate?",
         "Confirm": "Conferma"
     },
+    "FaqPage": {
+        "FAQsOfBOT": "FAQs del BOT:"
+    },
     "BotsAddEditPage": {
         "AddBot":"Aggiungi Bot",
         "EditBot":"Modifica Bot",
