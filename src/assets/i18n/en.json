@@ -105,7 +105,13 @@
         "DeleteBotWithId": "Delete bot with id:",
         "AreYouSureDeleteBot": "Are you sure you want to delete this bot?",
         "AreYouSureDeleteBotAndRElatedFAq": "Are you sure you want to delete this bot and the related FAQs?",
-        "Confirm": "Confirm"
+        "Confirm": "Confirm",
+        "DeleteBot":"Delete Bot",
+        "Processing": "Processing...",
+        "Completed": "Completed",
+        "BotDeleted":"Bot deleted",
+        "Continue": "Continue"
+
     },
     "BotsAddEditPage": {
         "AddBot": "Add Bot",

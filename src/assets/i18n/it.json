@@ -107,7 +107,12 @@
         "DeleteBotWithId": "Elimina Bot con id:",
         "AreYouSureDeleteBot": "Sei sicuro di voler eliminare questo Bot?",
         "AreYouSureDeleteBotAndRElatedFAq": "Sei sicuro di voler eliminare questo Bot e le FAQ a questo correlate?",
-        "Confirm": "Conferma"
+        "Confirm": "Conferma",
+        "DeleteBot":"Elimina Bot",
+        "Processing": "Elaborazione...",
+        "Completed":"Completato",
+        "BotDeleted":"Bot eliminato",
+        "Continue":"Continua"
     },
     "FaqPage": {
         "FAQsOfBOT": "FAQs del BOT:",
