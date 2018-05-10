@@ -256,14 +256,14 @@ export class FaqKbComponent implements OnInit {
 
     }, (error) => {
 
-      console.log('DELETE FAQ-KB REQUEST ERROR ', error);
+      console.log('DELETE FAQ-KB (BOT) REQUEST ERROR ', error);
 
     },
       () => {
-        console.log('DELETE FAQ-KB REQUEST * COMPLETE *');
+        console.log('DELETE FAQ-KB (BOT) REQUEST * COMPLETE *');
 
         // RE-RUN ngOnInit() TO UPDATE THE TABLE
-        this.ngOnInit()
+        // this.ngOnInit()
       });
 
   }

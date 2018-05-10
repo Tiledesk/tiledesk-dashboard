@@ -110,7 +110,31 @@
         "Confirm": "Conferma"
     },
     "FaqPage": {
-        "FAQsOfBOT": "FAQs del BOT:"
+        "FAQsOfBOT": "FAQs del BOT:",
+        "AddFaq":"Aggiungi Faq",
+        "UploadFaqsFromCsv":"CARICA FAQs DA CSV",
+        "BotQuery":"INTERROGA BOT",
+        "Question":"Domanda",
+        "Answer":"Risposta",
+        "CreationDate":"Data creazione",
+        "Actions":"Azioni",
+        "NoFAQ":"Nessuna FAQ",
+        "tooltipEditFaq":"Modifica FAQ",
+        "tooltipDeleteFaq":"Elimina FAQ",
+        "modalDeleteFaqWithId":"Elimina FAQ con Id",
+        "AreYouSure":"Sei sicuro di voler eliminare questa FAQ?",
+        "Confirm":"Conferma",
+        "ImportCsvFile":"Importa file CSV",
+        "ColumnsSeparatedWith":"Colonne separate da:",
+        "DelimiterOptionMustBe":"L' opzione delimitatore deve essere lunga un carattere",
+        "ChooseFile":"SCEGLI IL FILE",
+        "UploadCsv":"Carica CSV",
+        "Processing":"Elaborazione...",
+        "Completed":"Completato",
+        "Error":"Errore",
+        "FaqsSuccessfullyUploaded":"FAQs caricate con successo",
+        "AnErrorOccurredDuringTheUpload":"Si è verificato un errore durante il caricamento",
+        "Continue":"Continua"
     },
     "BotsAddEditPage": {
         "AddBot":"Aggiungi Bot",

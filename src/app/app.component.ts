@@ -70,6 +70,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     ngOnInit() {
         console.log('APP COMP ')
 
+        // NEW (SEE ALSO )
+        const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+        console.log('APP COMP - MAIN PANEL ', _elemMainPanel)
+        _elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;');
+
         $.material.init();
 
         // HIDE ELEMENT IF THE USER IN ONE OF THE 'AUTH' PAGES: SIGNIN, SIGUP, WELCOME
@@ -169,7 +174,7 @@ export class AppComponent implements OnInit, AfterViewInit {
                     this.LOGIN_PAGE = false;
                     elemAppSidebar.setAttribute('style', 'display:block;');
                     elemNavbar.setAttribute('style', 'display:block;');
-                    elemMainPanel.setAttribute('style', '');
+                    elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;');
 
                 }
             } else {

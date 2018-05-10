@@ -1,193 +1,41 @@
-<!-- <div class="content columns">
-  <main class="column is-10 is-offset-1"> -->
-    
 
-
-      
-    <!-- <hr style="margin-bottom:54px !important"> -->
-
-
-    <!-- <div class="columns">
-        <div class="column is-half">
-            <div class="columns">
-                <div class="column is-3"  has-text-centered>
-                  <a class="round-button" style="color: #dedede" routerLink="/users">
-                    <i class="fa fa-users fa-2x" aria-hidden="true"></i> 
-                  </a> 
-                </div>
-                
-                <div class="column is-9" style="display: flex; flex-direction: column; justify-content: center;" >
-                  <span style="font-size:1.2em">Firestore Users</span>
-                </div>
-            </div>
-        </div>
-        <div class="column">
-          <div class="column is-half">
-            <div class="columns">
-                <div class="column is-5"  has-text-centered>
-                  <a class="round-button" style="color: #dedede" routerLink="/contacts">
-                    <i class="fa fa-users fa-2x" aria-hidden="true"></i> 
-                  </a> 
-                </div>
-                
-                <div class="column is-5" style="display: flex; flex-direction: column; justify-content: center;" >
-                  <span style="font-size:1.2em">MongoDB Contacts</span>
-                </div>
-            </div>
-        </div>
-        </div>
-    </div>
-    
-  </main>
-</div> -->
-
-<!-- SOSTITUITA CON ICONE CIRCOLARI -->
-<!-- <section class="container">
-  <div class="columns features">
-
-    <div class="column is-4">
-      
-      <div class="card" routerLink="/users" style="cursor: pointer;">
-        <div class="card-content">
-          <div class="media">
-              <div class="media-left">
-                  <div class="card-image has-text-centered">
-                    <i class="fa fa-users"></i>
-                  </div>
-              </div>
-              <div class="media-content" style=" ">
-                <p class="title is-4" style="height:100px; display: table-cell !important; vertical-align: middle !important; padding: 10px !important; color:#4e4d4d ">
-                  Firestore Users
-                </p>
-              </div>
-            </div>
-        </div>
-      </div>
-
-    </div>
-
-      <div class="column is-4">
-
-        <div class="card" style="cursor: pointer;" routerLink="/contacts">
-            <div class="card-content">
-              <div class="media">
-                  <div class="media-left">
-                      <div class="card-image has-text-centered">
-                        <i class="fa fa-users"></i>
-                      </div>
-                  </div>
-                  <div class="media-content" style=" ">
-                    <p class="title is-4" style="height:100px; display: table-cell !important; vertical-align: middle !important; padding: 10px !important; color:#4e4d4d ">
-                      MongoDb Contacts
-                    </p>
-                  </div>
-                </div>
-            </div>
-          </div>
-
-      </div>
-      <div class="column is-4">
-
-          <div class="card" style="cursor: pointer;" routerLink="/requests">
-              <div class="card-content">
-                <div class="media">
-                    <div class="media-left">
-                        <div class="card-image has-text-centered">
-                          <i class="fa fa-commenting-o"></i>
-                        </div>
-                    </div>
-                    <div class="media-content" style=" ">
-                      <p class="title is-4" style="height:100px; display: table-cell !important; vertical-align: middle !important; padding: 10px !important; color:#4e4d4d ">
-                        Firestore Requests
-                      </p>
-                    </div>
-                  </div>
-              </div>
-            </div>
-
-      </div>
-     
-  </div>
-
-  <div class="columns features">
-
-    <div class="column is-4">
-      
-      <div class="card" routerLink="/departments" style="cursor: pointer;">
-        <div class="card-content">
-          <div class="media">
-              <div class="media-left">
-                  <div class="card-image has-text-centered">
-                   
-                    <i class="fa fa-university"></i>
-                  </div>
-              </div>
-              <div class="media-content" style=" ">
-                <p class="title is-4" style="height:100px; display: table-cell !important; vertical-align: middle !important; padding: 10px !important; color:#4e4d4d ">
-                  MongoDb Dept.
-                </p>
-              </div>
-            </div>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="column is-4">
-      
-      <div class="card" routerLink="/faq" style="cursor: pointer;">
-        <div class="card-content">
-          <div class="media">
-              <div class="media-left">
-                  <div class="card-image has-text-centered">
-                    
-                    <i class="fa fa-question"></i>
-                  </div>
-              </div>
-              <div class="media-content" style=" ">
-                <p class="title is-4" style="height:100px; display: table-cell !important; vertical-align: middle !important; padding: 10px !important; color:#4e4d4d ">
-                  MongoDb FAQ
-                </p>
-              </div>
-            </div>
-        </div>
-      </div>
-
-    </div>
-
-
-  </div>
-
-</section> -->
 <!-- NEW FOR THE CURRENT TEMPLATE -->
 <p style="margin-top:10px;  padding-left:30px " class="navbar-brand">Home</p> 
 
-<div class="main-content">
-    <div class="row">
-      <!-- <div class="col-lg-11 col-lg-offset-1 col-md-12 col-sm-12"> -->
-          <div class="col-lg-11 col-lg-offset-1 col-md-12 col-sm-12"> 
-        <!-- progetto corrente {{ projectid }} -->
-      <!-- <div class="col-lg-11 col-centered" style="background-color:#aaaeba"> -->
-        <!-- <div *ngIf="auth.user | async as user">
-          <h4 style="padding-left:15px">{{ "Howdy" | translate }}, {{ user.displayName }}</h4>
-        </div> -->
-        <div *ngIf="user">
-          <h4 style="padding-left:15px; font-weight: 500">{{ "Howdy" | translate }}, {{ user?.firstname }}</h4>
-        </div>
-      </div>
-      <div class="col-lg-10 col-lg-offset-1 col-md-12 col-sm-12" style="padding-left:25px; padding-right:25px">
-        <hr style="border-color:#aaaeba; margin-top:0px; margin-bottom:40px">
+<div class="main-content" style="padding-top: 8px;">
+  <!-- <div class="row">
+    <div class="col-lg-12  col-md-12 col-sm-12"> 
+      <div *ngIf="user">
+        <h4 style="padding-left:15px; font-weight: 500">{{ "Howdy" | translate }}, {{ user?.firstname }}</h4>
       </div>
     </div>
+    <div class="col-lg-12 col-md-12 col-sm-12" style="padding-left:25px; padding-right:25px"> 
+      <hr style="border-color:#aaaeba; margin-top:0px; margin-bottom:40px">
+    </div>
+  </div> -->
     
-  <div class="container-fluid">
+  <div class="container-fluid" style="text-align: center">
+      <div class="row">
+
+        <div class="col-lg-12 col-md-12 col-sm-12"> 
+  
+          <div *ngIf="user" style="float: left">
+            <h4 style="padding-left:15px; font-weight: 500">{{ "Howdy" | translate }}, {{ user?.firstname }}</h4>
+          </div>
+        </div>
+  
+        <div class="col-lg-12 col-md-12 col-sm-12" style="padding-left:25px; padding-right:25px"> 
+          <hr style="border-color:#aaaeba; margin-top:0px; margin-bottom:40px">
+        </div>
+      </div>
 
       <div class="row">
 
           <!-- WIDGET -->
-          <div *ngIf="USER_ROLE !== 'agent'" class="col-lg-5 col-lg-offset-1 col-md-6 col-sm-6" style="cursor:pointer">  
+          <!-- col-lg-5 col-lg-offset-1 col-md-6 col-sm-6 -->
+          <div *ngIf="USER_ROLE !== 'agent'" class="col-lg-6 col-md-6 col-sm-6" style="cursor:pointer">  
             <!-- routerLink="/requests" -->
-            <div class="card card-stats" style="max-width:440px" (click)="goToResources()">
+            <div class="card card-stats" style="max-width:480px;" (click)="goToResources()">
                 <!-- <div class="card-header" data-background-color="orange"> -->
                 <div class="card-header" data-background-color="orange">
                     <i class="material-icons">code</i>
@@ -197,11 +45,11 @@
                     <!-- <h3 class="title">Visitatori<small>GB</small></h3> -->
                 </div>
                 <div class="card-footer">
-                    <div class="stats">
+                    <div class="stats" style="float: left;">
                         <!-- <i class="material-icons text-danger">warning</i> <a href="#pablo">Get More Space...</a> -->
                         
                         <!-- THERE WERE THIS -->
-                        <h4 class="title" style="font-size:12px; padding-bottom:10px; margin-left: 100px">
+                        <h4 class="title" style="font-size:12px; padding-bottom:10px; margin-left: 100px; text-align: left">
                             {{ 'HomePage.WidgetSubtitle' | translate }}
                         </h4> 
                     </div>
@@ -211,9 +59,10 @@
 
           
          <!-- REQUESTS -->
-          <div class="col-lg-5 col-lg-offset-1 col-md-6 col-sm-6" style="cursor:pointer">  
+         <!-- col-lg-5 col-lg-offset-1 col-md-6 col-sm-6 -->
+          <div class="col-lg-6 col-md-6 col-sm-6" style="cursor:pointer">  
               <!-- routerLink="/requests" -->
-              <div class="card card-stats" style="max-width:440px" (click)="goToRequests()">
+              <div class="card card-stats" style="max-width:480px;" (click)="goToRequests()">
                   <!-- <div class="card-header" data-background-color="orange"> -->
                   <div class="card-header" data-background-color="orange">
                       <i class="material-icons">group</i>
@@ -223,11 +72,11 @@
                       <!-- <h3 class="title">Visitatori<small>GB</small></h3> -->
                   </div>
                   <div class="card-footer">
-                      <div class="stats">
+                      <div class="stats" style="float: left;">
                           <!-- <i class="material-icons text-danger">warning</i> <a href="#pablo">Get More Space...</a> -->
                           
                           <!-- THERE WERE THIS -->
-                          <h4 class="title" style="font-size:12px; padding-bottom:10px; margin-left: 100px">
+                          <h4 class="title" style="font-size:12px; padding-bottom:10px; margin-left: 100px; text-align: left">
                               {{ 'HomePage.VisitorsSubtitle' | translate }}
                           </h4> 
                       </div>
@@ -237,8 +86,9 @@
 
           <!-- CHAT -->
           <!-- <div class="col-lg-3 col-md-6 col-sm-6"> -->
-          <div class="col-lg-5 col-lg-offset-1 col-md-6 col-sm-6" style="cursor:pointer">
-              <div class="card card-stats" style="max-width:440px" routerLink="/chat">
+              <!-- col-lg-5 col-lg-offset-1 col-md-6 col-sm-6 -->
+          <div class="col-lg-6  col-md-6 col-sm-6" style="cursor:pointer">
+              <div class="card card-stats" style="max-width:480px;" routerLink="/chat">
                   <!-- <div class="card-header" data-background-color="green"> -->
                   <div class="card-header" data-background-color="orange">  
                       <i class="material-icons">chat</i>
@@ -248,11 +98,11 @@
                       <!-- <h3 class="title">$34,245</h3> -->
                   </div>
                   <div class="card-footer">
-                      <div class="stats">
+                      <div class="stats" style="float: left;">
                           <!-- <i class="material-icons">date_range</i> Last 24 Hours -->
 
                           <!-- THERE WERE THIS -->
-                          <h4 class="title" style="font-size:12px; padding-bottom:10px;">
+                          <h4 class="title" style="font-size:12px; padding-bottom:10px; text-align: left;">
                               {{ 'HomePage.ChatSubtitle' | translate }}
                           </h4> 
                       </div>
@@ -262,9 +112,10 @@
 
           <!-- ANALYTICS -->
           <!-- <div class="col-lg-3 col-md-6 col-sm-6"> -->
-          <div *ngIf="USER_ROLE !== 'agent'" class="col-lg-5 col-lg-offset-1 col-md-6 col-sm-6" style="cursor:pointer">
+           <!-- col-lg-5 col-lg-offset-1 col-md-6 col-sm-6 -->
+          <div *ngIf="USER_ROLE !== 'agent'" class="col-lg-6 col-md-6 col-sm-6" style="cursor:pointer">
               <!-- routerLink="/analytics" -->
-              <div class="card card-stats" style="max-width:440px" (click)="goToAnalytics()">
+              <div class="card card-stats" style="max-width:480px;" (click)="goToAnalytics()">
                   <div class="card-header" data-background-color="orange">
                       <i class="material-icons">trending_up</i>
                   </div>
@@ -273,11 +124,11 @@
                       <!-- <h3 class="title">75</h3> -->
                   </div>
                   <div class="card-footer">
-                      <div class="stats">
+                      <div class="stats" style="float: left;">
                           <!-- <i class="material-icons">local_offer</i> Tracked from Github -->
 
                           <!-- THERE WERE THIS -->
-                          <h4 class="title" style="font-size:12px; padding-bottom:10px;">
+                          <h4 class="title" style="font-size:12px; padding-bottom:10px; text-align: left;">
                               {{ 'HomePage.AnalyticsSubtitle' | translate }}
                           </h4> 
                       </div>

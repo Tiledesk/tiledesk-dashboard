@@ -3,7 +3,7 @@
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" rel="tooltip" title="Torna in Bot" (click)="goBackToFaqKbList()">keyboard_arrow_left</i>
   <!-- FAQs of BOT:  -->
     {{ 'FaqPage.FAQsOfBOT' | translate }}
-  <span style="color: #566787; font-weight:400"> {{ faqKb_name }} </span>
+    <span style="color: #566787; font-weight:400"> {{ faqKb_name }} </span>
 </div> 
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
@@ -14,16 +14,18 @@
         <span class="icon" style="padding-right:0px">
           <i class="material-icons">add_circle</i>
         </span>
-        Aggiungi FAQ
+        <!-- Aggiungi FAQ -->
+        {{ 'FaqPage.AddFaq' | translate }}
       </button>
 
       <!-- NEW UPLAD CSV FILE -->
-      <button class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="openImportModal()">
+      <button class="btn btn-info" style="padding-left:8px; padding-right: 16px; text-transform:none" (click)="openImportModal()">
           
-        <span class="icon" style="padding-right:0px; text-transform:none">
+        <span class="icon" style="padding-right:0px;">
           <i class="material-icons">file_upload</i>
         </span>
-        CARICA FAQs DA CSV 
+        <!-- CARICA FAQs DA CSV  -->
+        {{ 'FaqPage.UploadFaqsFromCsv' | translate }}
       </button>
 
       <button class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="goToTestFaqPage()">
@@ -31,7 +33,9 @@
         <span class="icon" style="padding-right:0px; text-transform:none">
           <i class="material-icons">play_arrow</i>
         </span>
-        FAQ TEST
+        <!-- INTERROGA BOT -->
+        {{ 'FaqPage.BotQuery' | translate }}
+
       </button>
       <!-- MOVED IN INPORT MODAL -->
       <!-- <input style="display:inline" name="file" id="file" class="inputfile" type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".csv"/>
@@ -56,7 +60,7 @@
                   <!-- Question -->
                   <span style="color: #566787">
                     <strong>
-                      Domanda
+                      {{ 'FaqPage.Question' | translate }}
                     </strong>
                   </span>
                 </th>
@@ -64,7 +68,7 @@
                   <!-- Answer -->
                   <span style="color: #566787">
                     <strong>
-                      Risposta
+                      {{ 'FaqPage.Answer' | translate }}
                     </strong>
                   </span>
                 </th>
@@ -79,7 +83,7 @@
                   <!-- Creation Date -->
                   <span style="color: #566787">
                     <strong>
-                      Data creazione
+                      {{ 'FaqPage.CreationDate' | translate }}
                     </strong>
 
                   </span>
@@ -88,7 +92,7 @@
                   <!-- Actions -->
                   <span style="color: #566787">
                     <strong>
-                      Azioni
+                      {{ 'FaqPage.Actions' | translate }}
                     </strong>
                   </span>
                 </th>
@@ -102,9 +106,9 @@
                 <td colspan="5" style="text-align: center; padding-top: 16px;">
                   <!-- color: #ff5252   -->
                   <p style="font-size:1em; color:#999999; font-weight: 400">
-                      
-                      No FAQ
-                    </p>
+                    <!-- NO FAQ   -->
+                    {{ 'FaqPage.NoFAQ' | translate }}
+                  </p>
                 </td>
               </tr>
 
@@ -140,10 +144,10 @@
 
                 <!-- NEW -->
                 <td class="td-actions text-right">
-                    <button style="padding-top:0px" type="button" rel="tooltip" title="Modifica FAQ" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(faq?._id)'>
+                    <button style="padding-top:0px" type="button" rel="tooltip" title="{{ 'FaqPage.tooltipEditFaq' | translate }}" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(faq?._id)'>
                         <i class="material-icons">edit</i>
                     </button>
-                    <button style="padding-top:0px" type="button" rel="tooltip" title="Elimina FAQ" class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal(faq?._id, hasClickedDeleteModal = true)'>
+                    <button style="padding-top:0px" type="button" rel="tooltip" title="{{ 'FaqPage.tooltipDeleteFaq' | translate }}" class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal(faq?._id, hasClickedDeleteModal = true)'>
                         <i class="material-icons">close</i>
                     </button>
                 </td>
@@ -164,7 +168,8 @@
                     </button>
                     <!-- <strong></strong> -->
                     <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
-                      <h4 class="modal-title">Update FAQ with id:
+                      <h4 class="modal-title">
+                        <!-- Update FAQ with id: -->
                         <code>{{id_toUpdate}}</code>
                       </h4>
                     </span>
@@ -172,7 +177,7 @@
                     <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
                       <h4 class="modal-title">
                         <!-- Delete FAQ with id: -->
-                        Elimina FAQ con id:
+                        {{ 'FaqPage.modalDeleteFaqWithId' | translate }}
                         <code>{{id_toDelete}}</code>
                       </h4>
                     </span>
@@ -211,7 +216,10 @@
                     <div class="modal-body">
                                 
                     <!-- <p> Are you sure you want to delete this FAQ ?</p> -->
-                    <p> Sei sicuro di voler eliminare questa FAQ?</p>
+                    <p> 
+                      <!-- Sei sicuro di voler eliminare questa FAQ? -->
+                      {{ 'FaqPage.AreYouSure' | translate }}
+                    </p>
                     </div>
                   </span>
             
@@ -224,7 +232,10 @@
                   <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
                     <div class="modal-footer">
                         <!-- Confirm -->
-                      <button type="button" class="btn btn-danger" (click)="onCloseDeleteModalHandled()">Conferma</button>
+                      <button type="button" class="btn btn-danger" (click)="onCloseDeleteModalHandled()">
+                        <!-- Conferma -->
+                        {{ 'FaqPage.Confirm' | translate }}
+                      </button>
                     </div>
                   </span>
             
@@ -246,7 +257,8 @@
                       </button>
           
                       <h4 class="modal-title">
-                        Import CSV file
+                        <!-- Import CSV file -->
+                        {{ 'FaqPage.ImportCsvFile' | translate }}
                       </h4>
                     </div>
           
@@ -257,14 +269,33 @@
                             <p style="margin:5px">myexample.csv</p>
                           </div>
                         <div class="col-md-4 col-md-offset-4" style="text-align:center; border-left: 1px solid #eeeeee; border-right: 1px solid #eeeeee">
-                          <p style="margin:5px"><span><em>Question</em></span> <span><strong>{{csvColumnsDelimiter}}</strong> </span> <span><em>Answer</em></span> </p>
+                          <p style="margin:5px">
+                            <span>
+                              <em>
+                                <!-- Question -->
+                                {{ 'FaqPage.Question' | translate }}
+                              </em>
+                            </span> 
+                            <span>
+                              <strong>
+                                {{csvColumnsDelimiter}}
+                              </strong> 
+                            </span> 
+                            <span>
+                              <em>
+                                <!-- Answer -->
+                                {{ 'FaqPage.Answer' | translate }}
+                              </em>
+                            </span>
+                          </p>
                         </div>
   
                       </div>
                       <div class="row" style="margin-right: 0px;">
                           <div class="col-sm-12">
                               <label style="height: 36px; padding-top:10px; padding-left:16px; padding-right:16px; text-align:right;" class="col-sm-6 ">
-                                Columns separated with:
+                                <!-- Columns separated with: -->
+                                {{ 'FaqPage.ColumnsSeparatedWith' | translate }}
                               </label>
                               <div class="col-sm-6" style="text-align:start">
                                 <input style="padding-left:5px; margin-top:7px; width:55px" [(ngModel)]="csvColumnsDelimiter" (keyup)="countDelimiterDigit($event)">
@@ -274,7 +305,8 @@
                           <div class="col-sm-12" style="text-align: center">
 
                             <span *ngIf="modalChoosefileDisabled" style="color:#ff5252">
-                              Delimiter option must be one character long 
+                              <!-- Delimiter option must be one character long  -->
+                              {{ 'FaqPage.DelimiterOptionMustBe' | translate }}
                             </span>
                           </div>
                           
@@ -288,7 +320,8 @@
                       <input style="display:inline" name="file" id="file" class="inputfile" type="file" (change)="fileChange($event)" accept=".csv"/>
                       <label class="btn btn-info" for="file" style="padding-left:15px; padding-right:15px; text-transform: none" [ngClass]="{'disabled': modalChoosefileDisabled }">
                           <!-- <i class="material-icons">file_upload</i> -->
-                          CHOOSE FILE 
+                          <!-- CHOOSE FILE  -->
+                          {{ 'FaqPage.ChooseFile' | translate }}
                       </label>
                     </div>
           
@@ -310,8 +343,8 @@
                         </button>
             
                         <h4 class="modal-title">
-                          Upload CSV
-                          <!-- <code>{{id_toDelete}}</code> -->
+                          <!-- Upload CSV -->
+                          {{ 'FaqPage.UploadCsv' | translate }}
                         </h4>
                       </div>
             
@@ -325,7 +358,7 @@
             
                           </div>
                           <p style="margin-top: 50px; text-align: center;">
-                              {{ "ProjectsPage.Processing" | translate }}
+                              {{ "FaqPage.Processing" | translate }}
                           </p>
                         </span>
             
@@ -336,7 +369,7 @@
                             <span *ngIf="parse_done">
                               <i class="material-icons" style="color:#70b665">done</i>
                               <span style="color:#70b665">
-                                  {{ "ProjectsPage.Completed" | translate }}
+                                  {{ "FaqPage.Completed" | translate }}
                               </span> 
                             </span>
 
@@ -345,7 +378,7 @@
                               <i class="material-icons" style="color:#ff5252">report_problem</i>
                               <br>
                               <span style="color:#ff5252">
-                                  Error
+                                  {{ "FaqPage.Error" | translate }}
                               </span> 
                             </span>
             
@@ -354,14 +387,16 @@
                           <!-- // IF SUCCESSFULLY UPLOADED -->
                           <span *ngIf="parse_done">
                             <p style="margin-top: 50px; text-align: center;">
-                              FAQs successfully uploaded
+                              <!-- FAQs successfully uploaded -->
+                              {{ "FaqPage.FaqsSuccessfullyUploaded" | translate }}
                             </p>
                           </span>
 
                           <!-- // IF AN ERROR OCCURRED DURING THE UPLOAD -->
                           <span *ngIf="parse_err">
                             <p style="margin-top: 50px; text-align: center;">
-                              An error occurred during the upload
+                              <!-- An error occurred during the upload -->
+                              {{ "FaqPage.AnErrorOccurredDuringTheUpload" | translate }}
                             </p>
                           </span>
 
@@ -374,7 +409,8 @@
                             Ok
                         </button>
                         <button *ngIf="parse_err" class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseInfoModalHandledError()">
-                            Continue
+                            <!-- Continue -->
+                            {{ "FaqPage.Continue" | translate }}
                         </button>
                       </div>
             

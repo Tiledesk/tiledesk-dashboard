@@ -119,7 +119,31 @@
         "Continue": "Continue"
     },
     "FaqPage": {
-        "FAQsOfBOT": "FAQs of BOT:"
+        "FAQsOfBOT": "FAQs of BOT:",
+        "AddFaq":"Add Faq",
+        "UploadFaqsFromCsv":"UPLOAD FAQs FROM CSV",
+        "BotQuery":"Bot Query",
+        "Question":"Question",
+        "Answer":"Answer",
+        "CreationDate":"Creation date",
+        "Actions":"Actions",
+        "NoFAQ":"No FAQ",
+        "tooltipEditFaq":"Edit FAQ",
+        "tooltipDeleteFaq":"Delete FAQ",
+        "modalDeleteFaqWithId":"Delete FAQ with Id",
+        "AreYouSure":"Are you sure you want to delete this FAQ?",
+        "Confirm":"Confirm",
+        "ImportCsvFile":"Import CSV File",
+        "ColumnsSeparatedWith":"Columns separated with:",
+        "DelimiterOptionMustBe":"Delimiter option must be one character long",
+        "ChooseFile":"CHOOSE FILE",
+        "UploadCsv":"Upload CSV",
+        "Processing":"Processing...",
+        "Completed":"Completed",
+        "Error":"Error",
+        "FaqsSuccessfullyUploaded":"FAQs successfully uploaded",
+        "AnErrorOccurredDuringTheUpload":"An error occurred during the upload",
+        "Continue":"Continue"
     },
     "DepartmentsPage": {
         "AddDepartment": "Add Department",
