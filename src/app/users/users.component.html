@@ -2,7 +2,7 @@
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
 
-    <div class="create" style="text-align: right!important; padding-top:25px; padding-bottom:0px">
+    <div class="create" style="text-align: right!important; padding-top:5px; padding-bottom:0px">
       
       <!-- the invite button is displayed for non-agent roles -->
       <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="goToAddUser()">
@@ -66,6 +66,15 @@
                     </span>
                   </th>
 
+                  <!-- FOR DEBUG: USER ID -->
+                  <th>
+                    <span style="color: #566787">
+                      <strong>
+                        {{ "UsersPage.UserId" | translate }}
+                      </strong>
+                    </span>
+                  </th>
+
                   <th>
                     <span style="color: #566787">
                       <!-- Actions -->
@@ -74,14 +83,6 @@
                       </strong>
                     </span>
                   </th>
-                  <!-- FOR DEBUG: USER ID -->
-                  <!-- <th>
-                    <span style="color: #566787">
-                      <strong>
-                        {{ "UsersPage.UserId" | translate }}
-                      </strong>
-                    </span>
-                  </th> -->
 
                 </tr>
 
@@ -115,64 +116,66 @@
                   </td>
                   <!-- <td *ngIf="projectUser?.user_available === false" (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer"> </td> -->
 
-                  <td *ngIf="projectUser?.role !== 'owner'" class="td-actions text-right">
+                  <!-- FOR DEBUG: USER ID -->
+                  <td (click)="goToMemberProfile(projectUser?.id_user?._id)">
+                    {{ projectUser?.id_user?._id }}
+                  </td>
+
+                  <!-- ACTIONS -->
+                  <td  class="td-actions text-right">
+                    <span *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id">
                     <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipEditUser' | translate }}" class="btn btn-primary btn-simple btn-xs" (click)='goToEditUser(projectUser?._id)'>
                       <i class="material-icons">edit</i>
                     </button>
                     <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipDeleteUser' | translate }}" class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal(projectUser?._id)'>
                       <i class="material-icons">close</i>
                     </button>
+                    </span>
                   </td>
-
-                  <!-- FOR DEBUG: USER ID -->
-                  <!-- <td (click)="goToMemberProfile(projectUser?.id_user?._id)">
-                    {{ projectUser?.id_user?._id }}
-                  </td> -->
 
                 </tr>
               </tbody>
             </table>
-
-            <!-- MODAL -->
-            <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->
-            <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-
-                        <h4 class="modal-title">
-                          {{ "UsersPage.modalDeleteUser" | translate }}
-                          <!-- <code>{{id_toDelete}}</code> -->
-                        </h4>
-
-                    </div>
-   
-                      <div class="modal-body">
-                        <p>
-                          {{ "UsersPage.AreYouSure" | translate }}
-                        </p>
-                      </div>
-
-                      <div class="modal-footer">
-                          <!-- Confirm -->
-                        <button class="btn btn-danger" (click)="onCloseDeleteModalHandled()">
-                            {{ "UsersPage.Confirm" | translate }}
-                        </button>
-                      </div>
-  
-              
-                  </div>
-                  <!-- /.modal-content -->
-                </div>
-                <!-- /.modal-dialog -->
-              </div>
-
           </div>
         </div>
       </div>
     </div>  
   </div>
 </div>      
+
+<!-- ============ MODAL ============ -->
+<!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+
+            <h4 class="modal-title">
+              {{ "UsersPage.modalDeleteUser" | translate }}
+              <!-- <code>{{id_toDelete}}</code> -->
+            </h4>
+
+        </div>
+
+          <div class="modal-body">
+            <p>
+              {{ "UsersPage.AreYouSure" | translate }}
+            </p>
+          </div>
+
+          <div class="modal-footer">
+              <!-- Confirm -->
+            <button class="btn btn-danger" (click)="onCloseDeleteModalHandled()">
+                {{ "UsersPage.Confirm" | translate }}
+            </button>
+          </div>
+
+  
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>

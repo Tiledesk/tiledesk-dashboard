@@ -21,6 +21,7 @@ export class UsersComponent implements OnInit {
   project: Project;
   id_project: string;
   USER_ROLE: string;
+  CURRENT_USER_ID: string;
 
   constructor(
     private usersService: UsersService,
@@ -35,13 +36,26 @@ export class UsersComponent implements OnInit {
     this.getAllUsersOfCurrentProject();
     this.getCurrentProject();
     this.getProjectUserRole();
+    this.getLoggedUser();
+  }
+
+  getLoggedUser() {
+    this.auth.user_bs.subscribe((user) => {
+      console.log('LOGGED USER GET IN USERS-COMP ', user)
+
+      if (user) {
+        this.CURRENT_USER_ID = user._id;
+        console.log('Current USER ID ', this.CURRENT_USER_ID)
+
+      }
+    });
   }
 
   getProjectUserRole() {
 
     this.usersService.project_user_role_bs.subscribe((user_role) => {
       this.USER_ROLE = user_role;
-      console.log('USERS-COMP - PROJECT USER ROLE ', this.USER_ROLE);
+      console.log('USERS-COMP - PROJECT USER ROLE: ', this.USER_ROLE);
     });
   }
 
