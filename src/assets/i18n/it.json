@@ -112,6 +112,8 @@
         "Processing": "Elaborazione...",
         "Completed":"Completato",
         "BotDeleted":"Bot eliminato",
+        "Error":"Errore",
+        "AnErrorHasOccurred":"Si è verificato un errore",
         "Continue":"Continua"
     },
     "FaqPage": {

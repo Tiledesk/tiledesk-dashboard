@@ -35,6 +35,8 @@ export class FaqKbComponent implements OnInit {
 
   NUMBER_OF_CICLE: number;
 
+  DELETE_BOT_ERROR = false;
+
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -240,6 +242,7 @@ export class FaqKbComponent implements OnInit {
                 console.log('DELETE RELATED FAQ - ERROR ', error);
 
                 this.SHOW_CIRCULAR_SPINNER = false;
+
               },
               () => {
 
@@ -264,6 +267,7 @@ export class FaqKbComponent implements OnInit {
 
           this.SHOW_CIRCULAR_SPINNER = false;
 
+          this.DELETE_BOT_ERROR = true;
         },
         () => {
           console.log('GET FAQ BY FAQ-KB * COMPLETE *');
@@ -272,6 +276,7 @@ export class FaqKbComponent implements OnInit {
             this.SHOW_CIRCULAR_SPINNER = false
           }, 300);
 
+          this.DELETE_BOT_ERROR = false;
         });
 
   }
@@ -285,11 +290,13 @@ export class FaqKbComponent implements OnInit {
         console.log('DELETE FAQ-KB (BOT) REQUEST ERROR ', error);
 
         this.SHOW_CIRCULAR_SPINNER = false;
+        this.DELETE_BOT_ERROR = true;
       },
         () => {
           console.log('DELETE FAQ-KB (BOT) REQUEST * COMPLETE *');
           // RE-RUN ngOnInit() TO UPDATE THE TABLE
           // this.ngOnInit()
+          this.DELETE_BOT_ERROR = false;
         });
 
   }

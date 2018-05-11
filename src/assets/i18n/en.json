@@ -110,6 +110,8 @@
         "Processing": "Processing...",
         "Completed": "Completed",
         "BotDeleted":"Bot deleted",
+        "Error": "Error",
+        "AnErrorHasOccurred": "An error has occurred",
         "Continue": "Continue"
 
     },
