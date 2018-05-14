@@ -81,6 +81,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     USER_ROLE: string;
 
+    currentUserId: string
+
     constructor(
         private requestsService: RequestsService,
         private router: Router,
@@ -217,7 +219,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.usersService.has_changed_availability_in_users.subscribe((has_changed_availability) => {
             console.log('SIDEBAR SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE USERS COMP', has_changed_availability)
 
-            this.getProjectUser()
+            if (this.project) {
+                this.getProjectUser()
+            }
         })
 
     }
@@ -240,6 +244,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // }
 
 
+    // GET CURRENT PROJECT - IF IS DEFINED THE CURRENT PROJECT GET THE PROJECTUSER
+
     getCurrentProject() {
         this.auth.project_bs.subscribe((project) => {
             this.project = project
@@ -251,14 +257,29 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
                 // IS USED TO GET THE PROJECT-USER AND DETERMINE IF THE USER IS AVAILAVLE / UNAVAILABLE
                 // WHEN THE PAGE IS REFRESHED
-                this.getProjectUser()
+                this.getProjectUser();
+
+
+            }
+        });
+    }
+    getLoggedUser() {
+        this.auth.user_bs.subscribe((user) => {
+            console.log('USER GET IN SIDEBAR ', user)
+            // tslint:disable-next-line:no-debugger
+            // debugger
+            this.user = user;
+
+            if (user) {
+                this.currentUserId = user._id;
+                console.log('Current USER ID ', this.currentUserId)
+
             }
         });
     }
 
-
     getProjectUser() {
-        this.usersService.getProjectUsersByProjectIdAndUserId(this.user._id, this.projectId).subscribe((projectUser: any) => {
+        this.usersService.getProjectUsersByProjectIdAndUserId(this.currentUserId, this.projectId).subscribe((projectUser: any) => {
             console.log('SB PROJECT-USER GET BY PROJECT-ID ', this.projectId);
             console.log('SB PROJECT-USER GET BY CURRENT-USER-ID ', this.user._id);
             console.log('SB PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser);
@@ -285,20 +306,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             });
     }
 
-    getLoggedUser() {
-        this.auth.user_bs.subscribe((user) => {
-            console.log('USER GET IN SIDEBAR ', user)
-            // tslint:disable-next-line:no-debugger
-            // debugger
-            this.user = user;
 
-            if (user) {
-                const currentUserId = user._id;
-                console.log('Current USER ID ', currentUserId)
-
-            }
-        });
-    }
 
 
     ngAfterViewInit() {
