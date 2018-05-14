@@ -157,7 +157,7 @@ export class UserEditAddComponent implements OnInit {
 
         const invite_errorbody = JSON.parse(error._body)
         console.log('INVITE USER  ERROR BODY ', invite_errorbody);
-        if ((invite_errorbody['success'] === false) && (invite_errorbody['msg'] === 'Forbidden')) {
+        if ((invite_errorbody['success'] === false) && (invite_errorbody['msg'] === 'Forbidden.')) {
           console.log('!!! Forbidden, you can not invite yourself')
           this.INVITE_FORBIDDEN_ERROR = true;
         } else if (invite_errorbody['success'] === false) {
