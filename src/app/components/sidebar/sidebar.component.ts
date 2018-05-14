@@ -140,6 +140,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.getProjectUserId();
 
         this.getProjectUserRole();
+
+        this.hasChangedAvailabilityStatusInUsersComp();
     }
 
     getProjectUserRole() {
@@ -167,17 +169,19 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     }
 
+    // ============ SUBSCRIPTION TO user_is_available_bs  AND project_user_id_bs PUBLISHED BY THE USER SERVICE USED
+    /* WF: when the user select A PROJECT,
+       - in the HOME COMP is made a call-back to get the PROJECT-USER OBJECT
+         (filtering all PROJECT-USER OBJECTS the  by the id of the logged user and by the id of the project selected)
+       - the HOME COMP PASS THE PROJECT-USER AVAILABILITY AND THE PROJECT-USER ID TO THE  USER SERVICE
+       - the USER-SERVICE PUBLISH THE PROJECT-USER AVAILABILITY AND THE PROJECT-USER ID
+       - the SIDEBAR (this component) SUBSCRIBES THESE VALUES TO PERFORM the updateProjectUser()
+    */
     getUserAvailability() {
         this.usersService.user_is_available_bs.subscribe((user_available) => {
             this.IS_AVAILABLE = user_available;
             console.log('SIDEBAR - USER IS AVAILABLE ', this.IS_AVAILABLE);
-            // if (this.IS_AVAILABLE) {
-            //     console.log('dispo')
-            // } else {
-            //     console.log('!! dispo')
-            // }
         });
-
     }
 
     getProjectUserId() {
@@ -193,15 +197,30 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.usersService.updateProjectUser(this.projectUser_id, IS_AVAILABLE).subscribe((projectUser: any) => {
             console.log('PROJECT-USER UPDATED ', projectUser)
 
+            // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
+            this.usersService.availability_btn_clicked(true)
+
         },
             (error) => {
                 console.log('PROJECT-USER UPDATED ERR  ', error);
             },
             () => {
                 console.log('PROJECT-USER UPDATED  * COMPLETE *');
+
+                // this.getUserAvailability()
             });
     }
 
+    // IF THE AVAILABILITY STATUS IS CHANGED from THE USER.COMP AVAILABLE / UNAVAILABLE TOGGLE BTN
+    // RE-RUN getAllUsersOfCurrentProject TO UPDATE AVAILABLE / UNAVAILABLE BTN ON THE TOP OF THE SIDEBAR
+    hasChangedAvailabilityStatusInUsersComp() {
+        this.usersService.has_changed_availability_in_users.subscribe((has_changed_availability) => {
+            console.log('SIDEBAR SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE USERS COMP', has_changed_availability)
+
+            this.getProjectUser()
+        })
+
+    }
     // NO MORE USED - SUBSTITUDED WITH changeAvailabilityState
     // availale_unavailable_status(hasClickedChangeStatus: boolean) {
     //     hasClickedChangeStatus = hasClickedChangeStatus;
@@ -239,8 +258,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
     getProjectUser() {
-
         this.usersService.getProjectUsersByProjectIdAndUserId(this.user._id, this.projectId).subscribe((projectUser: any) => {
+            console.log('SB PROJECT-USER GET BY PROJECT-ID ', this.projectId);
+            console.log('SB PROJECT-USER GET BY CURRENT-USER-ID ', this.user._id);
             console.log('SB PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser);
             console.log('SB PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID LENGTH', projectUser.length);
             if ((projectUser) && (projectUser.length !== 0)) {

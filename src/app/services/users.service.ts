@@ -25,6 +25,8 @@ export class UsersService {
   public user_is_available_bs: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   public project_user_id_bs: BehaviorSubject<string> = new BehaviorSubject<string>('');
   public project_user_role_bs: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  public has_changed_availability_in_sidebar: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  public has_changed_availability_in_users: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
   http: Http;
   BASE_URL = environment.mongoDbConfig.BASE_URL;
@@ -240,6 +242,21 @@ export class UsersService {
 
     this.project_user_id_bs.next(projectUser_id);
     this.user_is_available_bs.next(user_available);
+  }
+
+  // ======================  PUBLISH WHEN THE SIDEBAR AVAILABLE / UNAVAILABLE BUTTON IS CLICKED  ======================
+  // NOTE: USER COMP SUBSCRIBES TO has_changed_availability TO RE-RUN getAllUsersOfCurrentProject
+  // WITCH UPDATE THE LIST OF THE PROJECT' MEMBER
+  public availability_btn_clicked(clicked: boolean) {
+    this.has_changed_availability_in_sidebar.next(clicked)
+  }
+
+  // ======================  PUBLISH WHEN THE USERS-COMP AVAILABLE / UNAVAILABLE Toggle Switch BTN IS CLICKED  ======================
+  // NOTE: SIDEBAR SUBSCRIBES TO has_changed_availability TO RE-RUN getAllUsersOfCurrentProject
+  // WITCH UPDATE THE LIST OF THE PROJECT' MEMBER
+  public availability_switch_clicked(clicked: boolean) {
+    this.has_changed_availability_in_users.next(clicked)
+
   }
 
   // ======================  PUBLISH PROJECT-USER ROLE ======================

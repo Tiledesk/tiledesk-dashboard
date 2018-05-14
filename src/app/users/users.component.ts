@@ -23,6 +23,8 @@ export class UsersComponent implements OnInit {
   USER_ROLE: string;
   CURRENT_USER_ID: string;
 
+  IS_AVAILABLE: boolean;
+
   constructor(
     private usersService: UsersService,
     private router: Router,
@@ -37,6 +39,8 @@ export class UsersComponent implements OnInit {
     this.getCurrentProject();
     this.getProjectUserRole();
     this.getLoggedUser();
+
+    this.hasChangedAvailabilityStatusInSidebar();
   }
 
   getLoggedUser() {
@@ -82,6 +86,7 @@ export class UsersComponent implements OnInit {
 
       this.showSpinner = false;
       this.projectUsersList = projectUsers;
+
     },
       error => {
         this.showSpinner = false;
@@ -121,6 +126,47 @@ export class UsersComponent implements OnInit {
 
   goToMemberProfile(member_id: string) {
     this.router.navigate(['project/' + this.id_project + '/member/' + member_id]);
+  }
+
+  changeAvailabilityStatus(IS_AVAILABLE: boolean, projectUser_id: string) {
+    console.log('USERS COMP - CHANGE STATUS - WHEN CLICK USER IS AVAILABLE ? ', IS_AVAILABLE);
+    console.log('USERS COMP - CHANGE STATUS - WHEN CLICK USER PROJECT-USER ID ', projectUser_id);
+    if (IS_AVAILABLE === true) {
+
+      this.IS_AVAILABLE = false
+      console.log('USERS COMP - CHANGE STATUS - NEW USER AVAILABLITY  ', this.IS_AVAILABLE);
+    }
+    if (IS_AVAILABLE === false) {
+
+      this.IS_AVAILABLE = true
+      console.log('USERS COMP - CHANGE STATUS - NEW USER AVAILABLITY  ', this.IS_AVAILABLE);
+    }
+
+    this.usersService.updateProjectUser(projectUser_id, this.IS_AVAILABLE).subscribe((projectUser: any) => {
+      console.log('PROJECT-USER UPDATED ', projectUser)
+
+      // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
+      this.usersService.availability_switch_clicked(true)
+
+    },
+      (error) => {
+        console.log('PROJECT-USER UPDATED ERR  ', error);
+      },
+      () => {
+        console.log('PROJECT-USER UPDATED  * COMPLETE *');
+
+        // RE-RUNS getAllUsersOfCurrentProject TO UPDATE THE TABLE
+        this.getAllUsersOfCurrentProject();
+      });
+  }
+
+  // IF THE AVAILABILITY STATUS IS CHANGED BY THE SIDEBAR AVAILABILITY / UNAVAILABILITY BUTTON
+  // RE-RUN getAllUsersOfCurrentProject TO UPDATE THE LIST OF THE PROJECT' MEMBER
+  hasChangedAvailabilityStatusInSidebar() {
+    this.usersService.has_changed_availability_in_sidebar.subscribe((has_changed_availability) => {
+      console.log('USER COMP SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE SIDEBAR', has_changed_availability)
+      this.getAllUsersOfCurrentProject();
+    })
   }
 
 }

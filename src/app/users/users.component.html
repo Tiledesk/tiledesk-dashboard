@@ -1,9 +1,9 @@
-<p style="margin-top:10px; padding-left:30px" class="navbar-brand">{{ "Users" | translate }}</p> 
+<p style="margin-top:10px; padding-left:30px" class="navbar-brand">{{ "Users" | translate }}</p>
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
 
     <div class="create" style="text-align: right!important; padding-top:5px; padding-bottom:0px">
-      
+
       <!-- the invite button is displayed for non-agent roles -->
       <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="goToAddUser()">
         <span class="icon" style="padding-right:8px">
@@ -17,11 +17,11 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-  
+
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
-  
+
           <div *ngIf="!showSpinner" class="card-content table-responsive">
-              
+
             <table class="table table-hover">
               <thead>
                 <tr>
@@ -58,6 +58,16 @@
                     </span>
                   </th>
 
+                  <!-- OLD: AVAILABLE / UNAVAILABLE INDICATOR -->
+                  <!-- <th>
+                    <span style="color: #566787">
+                      <strong>
+                        {{ "UsersPage.Available" | translate }}
+                      </strong>
+                    </span>
+                  </th> -->
+
+                  <!-- SWITCH BTN AVAILABLE / UNAVAILABLE  -->
                   <th>
                     <span style="color: #566787">
                       <strong>
@@ -67,19 +77,19 @@
                   </th>
 
                   <!-- FOR DEBUG: USER ID -->
-                  <th>
+                  <!-- <th>
                     <span style="color: #566787">
                       <strong>
                         {{ "UsersPage.UserId" | translate }}
                       </strong>
                     </span>
-                  </th>
+                  </th> -->
 
                   <th>
                     <span style="color: #566787">
                       <!-- Actions -->
-                      <strong> 
-                          {{ "UsersPage.Actions" | translate }}
+                      <strong>
+                        {{ "UsersPage.Actions" | translate }}
                       </strong>
                     </span>
                   </th>
@@ -97,7 +107,8 @@
                   </td> -->
 
                   <td (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
-                     {{ projectUser?.id_user?.firstname }} <span style="text-transform: uppercase"> {{ projectUser?.id_user?.lastname }} </span>
+                    {{ projectUser?.id_user?.firstname }}
+                    <span style="text-transform: uppercase"> {{ projectUser?.id_user?.lastname }} </span>
                   </td>
 
                   <td (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
@@ -108,28 +119,39 @@
                     {{ projectUser?.id_user?.email }}
                   </td>
 
-                  <!-- ONLINE / OFFLINE -->
-                  <td (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
-                    <!-- {{ projectUser?.user_available }} -->
-                    <i  *ngIf="projectUser?.user_available === true" class="material-icons" style=" font-size: 16px; color: #1eb848; margin-right:0px">fiber_manual_record</i>
-                    <i  *ngIf="projectUser?.user_available === false" class="material-icons" style=" font-size: 16px; color: #cac9c9; margin-right:0px">fiber_manual_record</i>
+                  <!-- OLD: AVAILABLE / UNAVAILABLE INDICATOR -->
+                  <!-- <td (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
+                    <i *ngIf="projectUser?.user_available === true" class="material-icons" style=" font-size: 16px; color: #1eb848; margin-right:0px">fiber_manual_record</i>
+                    <i *ngIf="projectUser?.user_available === false" class="material-icons" style=" font-size: 16px; color: #cac9c9; margin-right:0px">fiber_manual_record</i>
+                  </td> -->
+                  
+
+                  <!-- SWITCH AVAILABLE / UNAILABLE  -->
+                  <td>
+
+                    <label class="switch" style="margin-bottom: 0px;">
+                      <input type="checkbox" (click)="changeAvailabilityStatus(projectUser?.user_available, projectUser?._id)" [checked]="projectUser?.user_available === true">
+                      <span class="slider round"></span>
+                    </label>
                   </td>
-                  <!-- <td *ngIf="projectUser?.user_available === false" (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer"> </td> -->
+
 
                   <!-- FOR DEBUG: USER ID -->
-                  <td (click)="goToMemberProfile(projectUser?.id_user?._id)">
+                  <!-- <td (click)="goToMemberProfile(projectUser?.id_user?._id)">
                     {{ projectUser?.id_user?._id }}
-                  </td>
+                  </td> -->
 
                   <!-- ACTIONS -->
-                  <td  class="td-actions text-right">
+                  <td class="td-actions text-right">
                     <span *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id">
-                    <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipEditUser' | translate }}" class="btn btn-primary btn-simple btn-xs" (click)='goToEditUser(projectUser?._id)'>
-                      <i class="material-icons">edit</i>
-                    </button>
-                    <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipDeleteUser' | translate }}" class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal(projectUser?._id)'>
-                      <i class="material-icons">close</i>
-                    </button>
+                      <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipEditUser' | translate }}" class="btn btn-primary btn-simple btn-xs"
+                        (click)='goToEditUser(projectUser?._id)'>
+                        <i class="material-icons">edit</i>
+                      </button>
+                      <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipDeleteUser' | translate }}" class="btn btn-danger btn-simple btn-xs"
+                        (click)='openDeleteModal(projectUser?._id)'>
+                        <i class="material-icons">close</i>
+                      </button>
                     </span>
                   </td>
 
@@ -139,43 +161,43 @@
           </div>
         </div>
       </div>
-    </div>  
+    </div>
   </div>
-</div>      
+</div>
 
 <!-- ============ MODAL ============ -->
 <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
-            <span aria-hidden="true">&times;</span>
-          </button>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
 
-            <h4 class="modal-title">
-              {{ "UsersPage.modalDeleteUser" | translate }}
-              <!-- <code>{{id_toDelete}}</code> -->
-            </h4>
+        <h4 class="modal-title">
+          {{ "UsersPage.modalDeleteUser" | translate }}
+          <!-- <code>{{id_toDelete}}</code> -->
+        </h4>
 
-        </div>
-
-          <div class="modal-body">
-            <p>
-              {{ "UsersPage.AreYouSure" | translate }}
-            </p>
-          </div>
-
-          <div class="modal-footer">
-              <!-- Confirm -->
-            <button class="btn btn-danger" (click)="onCloseDeleteModalHandled()">
-                {{ "UsersPage.Confirm" | translate }}
-            </button>
-          </div>
-
-  
       </div>
-      <!-- /.modal-content -->
+
+      <div class="modal-body">
+        <p>
+          {{ "UsersPage.AreYouSure" | translate }}
+        </p>
+      </div>
+
+      <div class="modal-footer">
+        <!-- Confirm -->
+        <button class="btn btn-danger" (click)="onCloseDeleteModalHandled()">
+          {{ "UsersPage.Confirm" | translate }}
+        </button>
+      </div>
+
+
     </div>
-    <!-- /.modal-dialog -->
+    <!-- /.modal-content -->
   </div>
+  <!-- /.modal-dialog -->
+</div>
