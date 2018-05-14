@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { UsersService } from '../services/users.service';
-
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
+import { UsersService } from '../services/users.service';
+import { NotifyService } from '../core/notify.service';
+
 
 @Component({
   selector: 'users',
@@ -28,7 +29,8 @@ export class UsersComponent implements OnInit {
   constructor(
     private usersService: UsersService,
     private router: Router,
-    private auth: AuthService
+    private auth: AuthService,
+    private notify: NotifyService
   ) { }
 
   ngOnInit() {
@@ -117,6 +119,9 @@ export class UsersComponent implements OnInit {
     },
       () => {
         console.log('DELETE PROJECT USERS * COMPLETE *');
+
+        // =========== NOTIFY SUCCESS ===========
+        this.notify.showNotification('Member successfully deleted', 2, 'done');
       });
   }
 

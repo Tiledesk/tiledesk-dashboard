@@ -76,17 +76,17 @@ export class NotifyService {
 
     }, {
         type: type[color],
-        timer: 1000,
-        delay: 100,
+        // timer: 55000,
+        // delay: 100,
         placement: {
           from: 'top',
-          align: 'center'
+          align: 'right'
         },
         template: '<div data-notify="container" class="col-xs-11 col-sm-3 alert alert-{0}" style="text-align: center;" role="alert">' +
           '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
           // '<span data-notify="title" style="max-width: 100%; font-size:1.1em; ">TileDesk</span> ' +
           // tslint:disable-next-line:max-line-length
-          '<span data-notify="icon" style="display: inline;"><i style="vertical-align: middle" class="material-icons">' + icon + '</i> </span> ' +
+          '<span data-notify="icon" style="display: inline;"><i style="vertical-align: middle; padding-right: 15px;" class="material-icons">' + icon + '</i> </span> ' +
           '<span data-notify="message" style="display: inline; vertical-align: middle ">' + message + '</span>' +
           '</div>'
       });

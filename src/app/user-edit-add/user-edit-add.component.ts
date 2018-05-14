@@ -90,9 +90,6 @@ export class UserEditAddComponent implements OnInit {
       });
   }
 
-
-
-
   updateUserRole() {
     this.usersService.updateProjectUserRole(this.project_user_id, this.role)
       .subscribe((projectUser: any) => {
@@ -101,12 +98,15 @@ export class UserEditAddComponent implements OnInit {
       },
         (error) => {
           console.log('PROJECT-USER UPDATED ERR  ', error);
+          // =========== NOTIFY ERROR ===========
           // tslint:disable-next-line:quotemark
           this.notify.showNotification("An error occurred while updating user's role", 4, 'report_problem')
         },
         () => {
           console.log('PROJECT-USER UPDATED  * COMPLETE *');
-          this.notify.showNotification('User role updated', 2, 'done');
+
+          // =========== NOTIFY SUCCESS===========
+          this.notify.showNotification('user role successfully updated', 2, 'done');
 
           this.router.navigate(['project/' + this.id_project + '/users']);
         });
