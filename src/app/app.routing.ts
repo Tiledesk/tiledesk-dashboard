@@ -61,6 +61,8 @@ import { RoutingPageComponent } from './routing-page/routing-page.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { RequestsMsgsComponent } from './requests-msgs/requests-msgs.component';
 import { GroupsComponent } from './groups/groups.component';
+import { GroupEditAddComponent } from './group-edit-add/group-edit-add.component';
+
 
 // import { DashboardComponent} from './dashboard/dashboard.component';
 // Andrea
@@ -117,6 +119,9 @@ const routes: Routes = [
 
   // GROUPS
   { path: 'project/:projectid/groups', component: GroupsComponent, canActivate: [AuthGuard] },
+  // GROUP EDIT/ADD
+  { path: 'project/:projectid/group/create', component: GroupEditAddComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/group/edit', component: GroupEditAddComponent, canActivate: [AuthGuard] },
 
   // DISPLAY THE PROFILE OF THE MEMBER (USERS WHO HAVE BEEN INVITED)
   { path: 'project/:projectid/member/:memberid', component: UsersProfileComponent, canActivate: [AuthGuard] },

@@ -92,6 +92,17 @@
         "Error": "Error",
         "AnErrorHasOccurred": "An error has occurred"
     },
+    "GroupsPage":{
+        "Groups": "Groups",
+        "AddGroup": "Add Group",
+        "Name": "Group name",
+        "CreationDate": "Creation date",
+        "Actions": "Actions",
+        "Members":"Members",
+        "NoGroups":"No Groups",
+        "tooltipEditGroup":"Edit Group",
+        "tooltipDeleteGroup":"Delete Group"
+    },
     "BotsPage": {
         "AddBot": "Add Bot",
         "Name": "Name",

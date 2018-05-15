@@ -91,6 +91,7 @@ import { RequestsMsgsComponent } from './requests-msgs/requests-msgs.component';
 
 import { GroupService } from './services/group.service';
 import { GroupsComponent } from './groups/groups.component';
+import { GroupEditAddComponent } from './group-edit-add/group-edit-add.component';
 
 
 
@@ -141,6 +142,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     VerifyEmailComponent,
     RequestsMsgsComponent,
     GroupsComponent,
+    GroupEditAddComponent,
 
   ],
   imports: [

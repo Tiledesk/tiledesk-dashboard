@@ -1,3 +1,132 @@
-<p>
-  groups works!
-</p>
+<p style="margin-top:10px; padding-left:30px" class="navbar-brand">
+  {{ "GroupsPage.Groups" | translate }} 
+</p>   
+<div class="main-content" style="padding-top:0px">
+  <div class="container-fluid">
+    <div class="create" style="text-align: right!important; padding-top:5px; padding-bottom:0px">
+      <button class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="goToEditAddPage_create()">
+        <span class="icon" style="padding-right:8px">
+          <i class="material-icons">add_circle</i>
+        </span>
+          {{ "GroupsPage.AddGroup" | translate }} 
+      </button>
+    </div>
+  
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+
+        <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+          <div *ngIf="!showSpinner" class="card-content table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>
+                    <span style="color: #566787">
+                      <!-- Name -->
+                      <strong>
+                        {{ "GroupsPage.Name" | translate }} 
+                      </strong>
+                    </span>
+                  </th>
+
+                  <th>
+                    <span style="color: #566787">
+                      <strong>Id</strong>
+                    </span>
+                  </th>
+
+                  <th>
+                    <span style="color: #566787">
+                      <!-- Creation Date -->
+                      <strong>
+                        {{ "GroupsPage.CreationDate" | translate }} 
+                      </strong>
+                    </span>  
+                  </th>
+
+                  <th>
+                    <span style="color: #566787">
+                      <!-- Actions -->
+                      <strong>
+                        {{ "GroupsPage.Actions" | translate }}
+                      </strong>
+                    </span>
+                  </th>
+                  
+                  <th>
+                    <span style="color: #566787">
+                      <strong> 
+                        {{ "GroupsPage.Members" | translate }}
+                      </strong>
+                    </span>  
+                  </th>
+
+                </tr>
+              </thead>
+            
+              <tbody>
+
+                <!-- IF THERE ISN'T GROUPS-->
+                <tr *ngIf="groupsList && groupsList.length === 0"> 
+                  <td colspan="5" style="text-align: center; padding-top: 16px;">
+                    <!-- color: #ff5252   -->
+                    <p style="font-size:1em; margin-bottom: 0px; color:#999999; font-weight: 400">
+                      {{ 'GroupsPage.NoGroups' | translate }}
+                    </p>
+                  </td>
+                </tr>
+            
+                <tr *ngFor="let group of groupsList">
+
+                  <td>
+                    {{ group?.name }}
+                  </td>
+                   
+                  <td>
+                    {{ group?._id }}
+                  </td>
+
+                  <td>
+                    {{ group?.createdAt | date: 'd/M/y'}}
+                  </td>
+                    
+                  <!-- EDIT / DELETE GROUPS  -->
+                  <td class="td-actions text-right" style="padding-top:16px">
+                    <!-- Modifica Gruppo -->
+                    <button type="button" rel="tooltip" title="{{ 'GroupsPage.tooltipEditGroup' | translate }}" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(group?._id)'>
+                      <i class="material-icons">edit</i>
+                    </button>
+                    <!-- Elimima Gruppo -->
+                    <button type="button" rel="tooltip" title="{{ 'GroupsPage.tooltipDeleteGroup' | translate }}" class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal(group?._id)'>
+                      <i class="material-icons">close</i>
+                    </button>
+                  </td>
+                  <!-- SWITCH BUTTON IF THERE IS OR THERE ISN'T FAQ RELATED TO THE FAQ-KB -->
+                  <!-- <td class="">
+                    <span *ngIf="faqkb?.has_faq">
+                      <button style="margin-top:5px; padding-left: 3px; padding-right: 3px;" type="button" rel="tooltip" title="{{ 'BotsPage.tooltipViewAddEditFaq' | translate }}" class="btn btn-success btn-simple btn-xs" (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)'>
+                        <i class="material-icons">list</i>
+                      </button>
+                    </span>
+                    <span *ngIf="!faqkb?.has_faq">
+                      <button style="margin-top:5px; padding-left: 3px; padding-right: 3px;" type="button" rel="tooltip" title="{{ 'BotsPage.tooltipAddEditFaqNoRelatedFaq' | translate }}" class="btn btn-warning btn-simple btn-xs" (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)'>
+                        <i class="material-icons">list</i>
+                      </button>
+                    </span> 
+                  </td> -->
+
+     
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+      <!-- /. end col-md-12 -->
+    </div>
+  </div>
+</div>
