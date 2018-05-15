@@ -15,53 +15,78 @@
             <div class="card-content" style="padding-top: 25px; ">
 
                 <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; padding-left: 15px">
-                  Setting up Tile Desk routing rules
+                  Setting up Tile Desk routing rules + 
                 </h4>
                 
-                  <div class="col-sm-8" style="display: none">
+                <!-- // COMMENTO QUESTO -->
+                  <!-- <div class="col-sm-8" style="display: none">
                     <input [(ngModel)]="default_dept_name" class="" type="text">
-                  </div>
+                  </div> -->
 
-                  <div class="col-sm-1" style="padding-left:45px; padding-top:15px">
+                  <div class="col-sm-12" style="padding-left:45px; padding-top:0px">
 
-                    <!--     ASSIGNABLE (EDIT_VIEW)     -->
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3"
-                      (click)="has_clicked_assigned(show_option_form = 'false', routing = 'assigned')" [checked]="dept_routing === 'assigned'">
-                      
-                      <label class="form-check-label" for="exampleRadios3" style="padding-left: 5px;">
-                        Assigned
-                      </label>
+                    <!--     ASSIGNABLE    -->
+                    <div class="col-sm-2">
+                      <div class="form-check" style="padding-top: 8px;">
+                        <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3"
+                        (click)="has_clicked_assigned(show_option_form = 'false', routing = 'assigned')" [checked]="dept_routing === 'assigned'">
+                        
+                        <label class="form-check-label" for="exampleRadios3" style="padding-left: 5px;">
+                          Assigned
+                        </label>
+                      </div>
                     </div>
+
+                    <!-- // NEW - START SELECT GROUP FOR ROUTING ASSIGNED -->
+                    <div class="col-sm-10">
+                      <select #selectElem (change)="setSelectedGroup(selectElem.value)"  >
+                      
+                        <option class="not_selected" value="ALL_USERS_SELECTED">All users</option>
+                      
+                        <option  *ngFor="let group of groupsList" [value]="group._id" [selected]="selectedGroupId === group._id">
+
+                          {{group.name}}
+                          
+                        </option>
+                      </select>
+                    </div>
+
+
+                    <!-- // END - SELECT GROUP -->
   
                     <!--     POOLED (EDIT_VIEW)      -->
-                    <div class="form-check" style="padding-top:8px;">
-                      <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" 
-                      (click)="has_clicked_pooled(show_option_form = 'false', routing = 'pooled')" [checked]="dept_routing === 'pooled'">
-  
-                      <label class="form-check-label" for="exampleRadios2" style="padding-left: 5px;">
-                        Pooled
-                      </label>
+                    <div class="col-sm-12">
+                      <div class="form-check" style="padding-top:8px;">
+                        <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" 
+                        (click)="has_clicked_pooled(show_option_form = 'false', routing = 'pooled')" [checked]="dept_routing === 'pooled'">
+    
+                        <label class="form-check-label" for="exampleRadios2" style="padding-left: 5px;">
+                          Pooled
+                        </label>
+                      </div>
                     </div>
   
                     <!--     BOT (IT'S ACTUALLY FAQ-KB)  (EDIT_VIEW)     -->
-                    <div class="form-check" style="padding-top:8px; padding-bottom:8px; ">
-                        <!-- checked="true" -->
-                      <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" 
-                      (click)="has_clicked_fixed(show_option_form = 'true', routing = 'fixed')" [checked]="dept_routing === 'fixed'">
-  
-                      <label class="form-check-label" for="exampleRadios1" style="padding-left: 5px;">
-                        <!-- Fixed -->
-                        Bot
-                      </label>
+                    <div class="col-sm-2">
+                      <div class="form-check" style="padding-top:8px; padding-bottom:8px; ">
+                          <!-- checked="true" -->
+                        <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" 
+                        (click)="has_clicked_fixed(show_option_form = 'true', routing = 'fixed')" [checked]="dept_routing === 'fixed'">
+    
+                        <label class="form-check-label" for="exampleRadios1" style="padding-left: 5px;">
+                          <!-- Fixed -->
+                          Bot
+                        </label>
+                      </div>
                     </div>
-                  </div>
 
+
+                <div class="col-sm-10">
                   <span *ngIf="dept_routing === 'fixed'">  
                     <span *ngIf=" SHOW_OPTION_FORM !== 'false'">
                       
                     <!-- <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">FAQ Knowledge Base</label> -->
-                      <div class="col-sm-8" style="padding-top:73px; left: 25px">  
+                      <!-- <div class="col-sm-8" style="padding-top:73px; left: 25px">   -->
                         <select #selectElem (change)="setSelectedBot(selectElem.value)"  >
                           <!-- <option>{{selectedValue}} </option> -->
                           <option class="not_selected" value="BOT_NOT_SELECTED" >{{ "DeptsAddEditPage.SelectABot" | translate }}</option>
@@ -78,9 +103,13 @@
                           {{ "DeptsAddEditPage.orCreateABot" | translate }}
   
                         </a>
-                      </div>
+                      <!-- </div> -->
                     </span>
                   </span>
+                </div>
+
+                </div>
+                <!-- ./end col-sm-12 -->
 
                   <!-- SPACER -->
                   <div class="col-sm-12" style="height:15px"></div>

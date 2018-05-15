@@ -5,6 +5,8 @@ import { FaqKbService } from '../services/faq-kb.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
+import { GroupService } from '../services/group.service';
+import { Group } from '../models/group-model';
 
 @Component({
   selector: 'app-routing-page',
@@ -26,19 +28,23 @@ export class RoutingPageComponent implements OnInit {
   SHOW_OPTION_FORM: boolean;
   ROUTING_SELECTED: string;
   selectedBotId: string;
+  selectedGroupId: string;
   botIdEdit: string;
   selectedId: string;
+
   showSpinner: boolean
 
   displayInfoModal = 'none';
   SHOW_CIRCULAR_SPINNER = false;
   project: Project;
+  groupsList: Group[];
 
   constructor(
     private mongodbDepartmentService: MongodbDepartmentService,
     private faqKbService: FaqKbService,
     private router: Router,
-    private auth: AuthService
+    private auth: AuthService,
+    private groupService: GroupService
   ) { }
 
   ngOnInit() {
@@ -51,6 +57,36 @@ export class RoutingPageComponent implements OnInit {
     this.getFaqKbByProjecId();
 
     this.getCurrentProject();
+
+    this.getGroupsByProjectId();
+
+
+  }
+
+
+
+  /*
+   * GETS ALL GROUPS WITH THE CURRENT PROJECT-ID
+   */
+  getGroupsByProjectId() {
+    this.groupService.getGroupsByProjectId().subscribe((groups: any) => {
+      console.log('GROUPS GET BY PROJECT ID', groups);
+
+      this.groupsList = groups;
+
+      // this.showSpinner = false;
+    },
+      (error) => {
+
+        console.log('GET GROUPS - ERROR ', error);
+
+        // this.showSpinner = false;
+      },
+      () => {
+        console.log('GET GROUPS * COMPLETE');
+
+      });
+
   }
 
   getCurrentProject() {
@@ -76,9 +112,14 @@ export class RoutingPageComponent implements OnInit {
 
             this.botId = dept.id_bot;
 
-            this.id_dept = dept._id
+            this.id_dept = dept._id;
+
+            this.selectedGroupId = dept.id_group;
+
+
 
             console.log('ROUTING PAGE - BOT ID: ', this.botId);
+            console.log('ROUTING PAGE - GROUP ID: ', this.selectedGroupId);
           }
         })
       }
@@ -106,8 +147,26 @@ export class RoutingPageComponent implements OnInit {
           this.getBotById();
           console.log(' BOT ID DEFINED ', this.botId);
         }
+
+
+        this.getDeptByIdToTestChat21AssigneesFunction();
       });
 
+  }
+
+  // TEST CHAT21-API-NODEJS router.get('/:departmentid/operators'
+  /* GET OPERATORS OF A DEPT */
+  getDeptByIdToTestChat21AssigneesFunction() {
+    this.mongodbDepartmentService.testChat21AssignesFunction(this.id_dept).subscribe((dept: any) => {
+      console.log('-- -- -- TEST func - RESULT: ', dept);
+    },
+      (error) => {
+        console.log('-- -- -- TEST func - ERROR ', error);
+        // this.showSpinner = false;
+      },
+      () => {
+        console.log('-- -- --TEST func * COMPLETE *');
+      });
   }
 
   /*
@@ -163,6 +222,21 @@ export class RoutingPageComponent implements OnInit {
     }
   }
 
+  setSelectedGroup(id: any): void {
+    this.selectedGroupId = id;
+    console.log('GROUP ID SELECTED: ', this.selectedGroupId);
+
+    // IN THE CREATE VIEW IF IS NOT SELECTET ANY FAQ-KB (SUBSTITUTE BOT) THE BUTTON 'CREATE BOT' IS DISABLED
+    if (this.selectedGroupId !== 'ALL_USERS_SELECTED') {
+      // this.BOT_NOT_SELECTED = false;
+    }
+    if (this.selectedGroupId === 'ALL_USERS_SELECTED') {
+      // this.BOT_NOT_SELECTED = true;
+      this.selectedGroupId = null;
+    }
+  }
+
+
   has_clicked_assigned(show_option_form: boolean, routing: string) {
 
     this.SHOW_OPTION_FORM = show_option_form;
@@ -206,6 +280,7 @@ export class RoutingPageComponent implements OnInit {
     console.log('DEPT FULL-NAME WHEN EDIT IS PRESSED ', this.default_dept_name);
     console.log('BOT ID WHEN EDIT IS PRESSED IF USER HAS SELECT ANOTHER BOT', this.selectedBotId);
     console.log('BOT ID WHEN EDIT IS PRESSED IF USER ! DOES NOT SELECT A ANOTHER BOT', this.botId);
+    console.log('GROP ID WHEN EDIT IS PRESSED ', this.selectedGroupId);
     console.log('* DEPT_ROUTING WHEN EDIT IS PRESSED ', this.dept_routing);
     console.log('* ROUTING_SELECTED WHEN EDIT IS PRESSED ', this.ROUTING_SELECTED);
 
@@ -228,7 +303,7 @@ export class RoutingPageComponent implements OnInit {
     // this.faqKbEdit
     // this.ROUTING_SELECTED
     // tslint:disable-next-line:max-line-length
-    this.mongodbDepartmentService.updateMongoDbDepartment(this.id_dept, this.default_dept_name, this.botIdEdit, this.dept_routing).subscribe((data) => {
+    this.mongodbDepartmentService.updateMongoDbDepartment(this.id_dept, this.default_dept_name, this.botIdEdit, this.selectedGroupId, this.dept_routing).subscribe((data) => {
       console.log('PUT DATA ', data);
 
       // RE-RUN GET CONTACT TO UPDATE THE TABLE

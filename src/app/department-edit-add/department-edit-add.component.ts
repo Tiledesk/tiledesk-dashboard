@@ -28,6 +28,8 @@ export class DepartmentEditAddComponent implements OnInit {
   botsList: any;
 
   selectedBotId: string;
+  selectedGroupId: string;
+
   BOT_NOT_SELECTED: boolean;
 
   SHOW_OPTION_FORM: boolean;
@@ -372,7 +374,7 @@ export class DepartmentEditAddComponent implements OnInit {
 
     // this.faqKbEdit
     // this.ROUTING_SELECTED
-    this.mongodbDepartmentService.updateMongoDbDepartment(this.id_dept, this.deptName_toUpdate, this.botIdEdit, this.dept_routing).subscribe((data) => {
+    this.mongodbDepartmentService.updateMongoDbDepartment(this.id_dept, this.deptName_toUpdate, this.botIdEdit, this.selectedGroupId, this.dept_routing).subscribe((data) => {
       console.log('PUT DATA ', data);
 
       // RE-RUN GET CONTACT TO UPDATE THE TABLE
