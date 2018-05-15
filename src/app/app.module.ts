@@ -88,6 +88,8 @@ import { UsersLocalDbService } from './services/users-local-db.service';
 import { RoutingPageComponent } from './routing-page/routing-page.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { RequestsMsgsComponent } from './requests-msgs/requests-msgs.component';
+
+import { GroupService } from './services/group.service';
 import { GroupsComponent } from './groups/groups.component';
 
 
@@ -176,6 +178,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     FaqKbService,
     ProjectService,
     UsersLocalDbService,
+    GroupService,
     {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [
