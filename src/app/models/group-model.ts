@@ -4,6 +4,7 @@ export interface Group {
     createdAt: any;
     name: string;
     members: any;
+    id_project: string;
     createdBy: string;
     __v: any;
 }

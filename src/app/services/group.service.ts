@@ -14,7 +14,7 @@ export class GroupService {
 
   TOKEN: string;
 
-  project: any;
+  project_id: any;
   user: any;
 
   constructor(
@@ -42,11 +42,12 @@ export class GroupService {
     console.log('GROUP-SERV - SUBSCRIBE TO CURRENT PROJ ')
 
     this.auth.project_bs.subscribe((project) => {
-      this.project = project
 
-      if (this.project) {
-        console.log('00 -> GROUP-SERV project ID from AUTH service subscription  ', this.project._id)
-        this.MONGODB_BASE_URL = this.BASE_URL + this.project._id + '/groups/'
+
+      if (project) {
+        this.project_id = project._id;
+        console.log('00 -> GROUP-SERV project ID from AUTH service subscription  ', this.project_id)
+        this.MONGODB_BASE_URL = this.BASE_URL + this.project_id + '/groups/'
       }
     });
   }
@@ -78,6 +79,30 @@ export class GroupService {
       .map((response) => response.json());
   }
 
+  /**
+   * CREATE (POST)
+   * @param name
+   */
+  public createGroup(name: string) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    // , 'id_project': this.project_id
+    const body = { 'name': name };
+
+    console.log('POST REQUEST BODY ', body);
+
+    const url = this.MONGODB_BASE_URL;
+    // let url = `http://localhost:3000/${project_id}/faq_kb/`;
+
+    return this.http
+      .post(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+
+  }
 
 
 
