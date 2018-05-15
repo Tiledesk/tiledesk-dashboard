@@ -265,6 +265,21 @@
                 </a>
             </li>
 
+            <!-- GROUPS -->
+            <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active">
+                <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/groups">
+                    
+                    <span class="sidebar-mini">
+                        G 
+                    </span>
+                    
+                    <span class="sidebar-normal">
+                        {{ 'Groups' | translate }} 
+                    </span> 
+                
+                </a>
+            </li>
+
             <!-- FAQ (alias FAQKB) HAS BEEN RENAMED IN BOT (BOT - see above - IS CURRENTLY COMMENTED) -->
             <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active">
                 <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/faqkb">
