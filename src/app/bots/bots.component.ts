@@ -41,6 +41,7 @@ export class BotsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.auth.checkRole();
     this.getBots();
     this.getCurrentProject();
   }
