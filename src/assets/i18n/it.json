@@ -105,6 +105,13 @@
         "tooltipEditGroup":"Modifica Group",
         "tooltipDeleteGroup":"Elimina Group"
     },
+    "GroupsAddEditPage":{
+        "AddGroup":"Aggiungi Gruppo",
+        "EditGroup":"Modifica Gruppo",
+        "GroupName":"Nome Gruppo",
+        "CreateGroup":"Crea Gruppo",
+        "UpdateGroup":"Aggiorna Gruppo"
+    },
     "BotsPage": {
         "AddBot": "Aggiungi Bot",
         "Name": "Nome",

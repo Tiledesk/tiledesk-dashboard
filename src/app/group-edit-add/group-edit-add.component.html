@@ -1,3 +1,82 @@
-<p>
-  group-edit-add works!
-</p>
+<div class="navbar-brand" style="z-index: -1;margin-top:10px; padding-left:30px">
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBackGroupList()">keyboard_arrow_left</i>
+
+  <span *ngIf="CREATE_VIEW">
+    {{ "GroupsAddEditPage.AddGroup" | translate }}
+  </span>
+  
+  <span *ngIf="EDIT_VIEW">
+   {{ "GroupsAddEditPage.EditGroup" | translate }}
+  </span>
+</div>
+    
+<div class="main-content" style="padding-top:0px">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card" style="padding-top:25px; padding-bottom:25px">
+          <div class="card-content">
+  
+  
+            <span *ngIf="CREATE_VIEW">
+  
+              <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+                <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
+                  {{ "GroupsAddEditPage.GroupName" | translate }}
+                </label>
+                <div class="col-sm-10">
+                  <input [(ngModel)]="groupName" class="input" type="text" placeholder='{{ "GroupsAddEditPage.GroupName" | translate }}'>
+                </div>
+   
+                <!-- SPACER -->
+                <div class="col-sm-12" style="height:15px"></div>
+    
+                <label style="" class="col-sm-2"></label>
+                <div class="col-sm-10"> 
+    
+                <button class="btn btn-success" [disabled]="groupName?.length < 2" (click)="create()">
+                    {{ "GroupsAddEditPage.CreateGroup" | translate }}
+                  </button>
+                </div>
+  
+            </span>
+            <!-- /. CREATE_VIEW -->
+  
+            <span *ngIf="EDIT_VIEW">
+   
+              <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
+
+                {{ "GroupsAddEditPage.GroupName" | translate }}
+              </label>
+              <div class="col-sm-10">
+                <input [(ngModel)]="groupName" class="input" type="text" placeholder="">
+              </div>
+     
+              <!-- SPACER -->
+              <div class="col-sm-12" style="height:15px"></div>
+  
+              <label class="col-sm-2"></label>
+              <div class="col-sm-10"> 
+                <button class="btn btn-success" (click)="edit()">
+
+                  {{ "GroupsAddEditPage.UpdateGroup" | translate }}
+                </button>
+              </div>
+  
+            </span>
+            <!-- /. EDIT_VIEW -->
+  
+          </div>
+          <!-- ./ card-content -->
+  
+        </div>
+        <!-- ./ card -->
+  
+      </div>
+      <!-- ./ col-md-12 -->
+    </div>
+  </div>    
+</div>
