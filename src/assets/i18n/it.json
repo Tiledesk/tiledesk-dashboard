@@ -58,6 +58,15 @@
         "ChatSubtitle": "Visualizza la chat history",
         "AnalyticsSubtitle": "Tieni traccia delle chat che hai con i clienti"
     },
+    "RoutingPage": {
+        "SettingUpTileDeskRoutingRules": "Imposta le regole di routing di Tile Desk",
+        "AllUsers": "Tutti gli utenti",
+        "UpdateRoutingRules": "Aggiorna le regole di routing",
+        "QuickTips": "Consigli veloci",
+        "Processing": "Elaborazione...",
+        "Completed": "Completato",
+        "RoutingRulesSuccessfullyUpdated": "Regole di routing aggiornate con successo"
+    },
     "UsersPage": {
         "Invites": "Invita",
         "User": "Utente",

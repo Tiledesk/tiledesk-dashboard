@@ -14,8 +14,9 @@
           <div class="card">
             <div class="card-content" style="padding-top: 25px; ">
 
-                <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; padding-left: 15px">
-                  Setting up Tile Desk routing rules + 
+                <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; padding-left: 15px; padding-bottom: 15px;">
+                  <!-- Setting up Tile Desk routing rules -->
+                  {{ "RoutingPage.SettingUpTileDeskRoutingRules" | translate  }}
                 </h4>
                 
                 <!-- // COMMENTO QUESTO -->
@@ -26,10 +27,10 @@
                   <div class="col-sm-12" style="padding-left:45px; padding-top:0px">
 
                     <!--     ASSIGNABLE    -->
-                    <div class="col-sm-2">
+                    <div class="col-sm-2" style="height: 36px;">
                       <div class="form-check" style="padding-top: 8px;">
                         <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3"
-                        (click)="has_clicked_assigned(show_option_form = 'false', routing = 'assigned')" [checked]="dept_routing === 'assigned'">
+                        (click)="has_clicked_assigned(show_group_option_form = 'true', show_option_form = 'false', routing = 'assigned')" [checked]="dept_routing === 'assigned'">
                         
                         <label class="form-check-label" for="exampleRadios3" style="padding-left: 5px;">
                           Assigned
@@ -38,27 +39,29 @@
                     </div>
 
                     <!-- // NEW - START SELECT GROUP FOR ROUTING ASSIGNED -->
-                    <div class="col-sm-10">
-                      <select #selectElem (change)="setSelectedGroup(selectElem.value)"  >
-                      
-                        <option class="not_selected" value="ALL_USERS_SELECTED">All users</option>
-                      
-                        <option  *ngFor="let group of groupsList" [value]="group._id" [selected]="selectedGroupId === group._id">
-
-                          {{group.name}}
-                          
-                        </option>
-                      </select>
-                    </div>
-
-
+                    <span *ngIf="dept_routing === 'assigned'">
+                      <span *ngIf="SHOW_GROUP_OPTION_FORM !== 'false'"> 
+                        <div class="col-sm-10">
+                          <select #selectElem (change)="setSelectedGroup(selectElem.value)" style="min-width: 150px;" >
+                            <option class="not_selected" value="ALL_USERS_SELECTED">
+                              <!-- All users -->
+                              {{ "RoutingPage.AllUsers" | translate  }}
+                            
+                            </option>
+                            <option  *ngFor="let group of groupsList" [value]="group._id" [selected]="selectedGroupId === group._id">
+                              {{group.name}}
+                            </option>
+                          </select>
+                        </div>
+                      </span>
+                    </span> 
                     <!-- // END - SELECT GROUP -->
   
                     <!--     POOLED (EDIT_VIEW)      -->
                     <div class="col-sm-12">
                       <div class="form-check" style="padding-top:8px;">
                         <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" 
-                        (click)="has_clicked_pooled(show_option_form = 'false', routing = 'pooled')" [checked]="dept_routing === 'pooled'">
+                        (click)="has_clicked_pooled(show_group_option_form = 'false', show_option_form = 'false', routing = 'pooled')" [checked]="dept_routing === 'pooled'">
     
                         <label class="form-check-label" for="exampleRadios2" style="padding-left: 5px;">
                           Pooled
@@ -67,11 +70,11 @@
                     </div>
   
                     <!--     BOT (IT'S ACTUALLY FAQ-KB)  (EDIT_VIEW)     -->
-                    <div class="col-sm-2">
-                      <div class="form-check" style="padding-top:8px; padding-bottom:8px; ">
+                    <div class="col-sm-2" style="height: 36px;">
+                      <div class="form-check" style="padding-top:10px; padding-bottom:8px; ">
                           <!-- checked="true" -->
                         <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" 
-                        (click)="has_clicked_fixed(show_option_form = 'true', routing = 'fixed')" [checked]="dept_routing === 'fixed'">
+                        (click)="has_clicked_fixed(show_group_option_form = 'false', show_option_form = 'true', routing = 'fixed')" [checked]="dept_routing === 'fixed'">
     
                         <label class="form-check-label" for="exampleRadios1" style="padding-left: 5px;">
                           <!-- Fixed -->
@@ -81,35 +84,28 @@
                     </div>
 
 
-                <div class="col-sm-10">
-                  <span *ngIf="dept_routing === 'fixed'">  
-                    <span *ngIf=" SHOW_OPTION_FORM !== 'false'">
-                      
-                    <!-- <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">FAQ Knowledge Base</label> -->
-                      <!-- <div class="col-sm-8" style="padding-top:73px; left: 25px">   -->
-                        <select #selectElem (change)="setSelectedBot(selectElem.value)"  >
-                          <!-- <option>{{selectedValue}} </option> -->
-                          <option class="not_selected" value="BOT_NOT_SELECTED" >{{ "DeptsAddEditPage.SelectABot" | translate }}</option>
+                    <span *ngIf="dept_routing === 'fixed'">  
+                      <span *ngIf=" SHOW_OPTION_FORM !== 'false'">
+                        <div class="col-sm-10">
+                          <select #selectElem (change)="setSelectedBot(selectElem.value)"  >
+    
+                            <option class="not_selected" value="BOT_NOT_SELECTED" >{{ "DeptsAddEditPage.SelectABot" | translate }}</option>
                             <!-- NOTE: botsList IT'S ACTUALLY THE FAQ-KB LIST -->
-                          <option  *ngFor="let bot of botsList" [value]="bot._id" [selected]="selectedId === bot._id">
-                            <!-- {{bot.fullname}} -->
-                            {{bot.name}}
-                            
-                          </option>
-                        </select>
+                            <option  *ngFor="let bot of botsList" [value]="bot._id" [selected]="selectedId === bot._id">
+                              {{bot.name}} 
+                            </option>
+                          </select>
   
-                        <a style="margin-left: 8px; color: #03a5e8; cursor:pointer" (click)="goTo_BotEditAddPage_CREATE()"> 
+                          <a style="margin-left: 8px; color: #03a5e8; cursor:pointer" (click)="goTo_BotEditAddPage_CREATE()"> 
                           <!-- o Crea un nuovo Bot  -->
                           {{ "DeptsAddEditPage.orCreateABot" | translate }}
-  
-                        </a>
-                      <!-- </div> -->
+                          </a>
+                        </div>
+                      </span>
                     </span>
-                  </span>
-                </div>
 
-                </div>
-                <!-- ./end col-sm-12 -->
+                  </div>
+                  <!-- ./end col-sm-12 -->
 
                   <!-- SPACER -->
                   <div class="col-sm-12" style="height:15px"></div>
@@ -117,18 +113,17 @@
                   <div class="col-sm-10" style="margin-left: 16px; margin-bottom: 25px;"> 
                     <span *ngIf=" SHOW_OPTION_FORM !== 'false'">
                       <button class="btn btn-success" (click)="edit()" [disabled]="BOT_NOT_SELECTED === true">             
-                        Update routing rules
+                        <!-- Update routing rules -->
+                        {{ "RoutingPage.UpdateRoutingRules" | translate  }}
                       </button>
                     </span>
                     <span *ngIf=" SHOW_OPTION_FORM === 'false'">
                       <button class="btn btn-success" (click)="edit()">
-                        Update routing rules
+                        <!-- Update routing rules -->
+                        {{ "RoutingPage.UpdateRoutingRules" | translate  }}
                       </button>
                     </span>
                   </div>
-
-                
-
 
                 </div> 
                 <!-- // /.end card content -->
@@ -140,7 +135,8 @@
                 <div class="card">
                     <div class="card-content" style="padding-top: 25px; ">
                       <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; margin-bottom: 15px">
-                        Quick tips
+                        <!-- Quick tips -->
+                        {{ "RoutingPage.QuickTips" | translate  }}
                       </h4>
 
                       <p style="margin-bottom: 3px"> <strong>Assigned </strong></p>
@@ -165,7 +161,7 @@
             </div>
     </span>
 
-        <!-- MODAL - INFO WINDOWS -->
+    <!-- MODAL - INFO WINDOWS -->
     <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->  
     <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayInfoModal}" style="background-color: rgba(90,90,90,0.5);">
         <div class="modal-dialog modal-sm" role="document">
@@ -176,8 +172,9 @@
               </button>
   
               <h4 class="modal-title">
-                Update routing rules
-                <!-- <code>{{id_toDelete}}</code> -->
+                <!-- Update routing rules -->
+                {{ "RoutingPage.UpdateRoutingRules" | translate  }}
+
               </h4>
             </div>
   
@@ -191,7 +188,7 @@
   
                 </div>
                 <p style="margin-top: 50px; text-align: center;">
-                    {{ "ProjectsPage.Processing" | translate }}
+                    {{ "RoutingPage.Processing" | translate }}
                 </p>
               </span>
   
@@ -199,12 +196,13 @@
                 <div  class="loader" style="top:5%">
                   <i class="material-icons" style="color:#70b665">done</i>
                   <span style="color:#70b665">
-                      {{ "ProjectsPage.Completed" | translate }}
+                      {{ "RoutingPage.Completed" | translate }}
                   </span> 
   
                 </div>
                 <p style="margin-top: 50px; text-align: center;">
-                    Routing rules successfully updated
+                    <!-- Routing rules successfully updated -->
+                    {{ "RoutingPage.RoutingRulesSuccessfullyUpdated" | translate }}
                 </p>
               </span>
             </div>

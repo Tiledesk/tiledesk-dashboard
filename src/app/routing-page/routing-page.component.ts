@@ -26,6 +26,7 @@ export class RoutingPageComponent implements OnInit {
 
   BOT_NOT_SELECTED: boolean;
   SHOW_OPTION_FORM: boolean;
+  SHOW_GROUP_OPTION_FORM: boolean;
   ROUTING_SELECTED: string;
   selectedBotId: string;
   selectedGroupId: string;
@@ -226,46 +227,51 @@ export class RoutingPageComponent implements OnInit {
     this.selectedGroupId = id;
     console.log('GROUP ID SELECTED: ', this.selectedGroupId);
 
-    // IN THE CREATE VIEW IF IS NOT SELECTET ANY FAQ-KB (SUBSTITUTE BOT) THE BUTTON 'CREATE BOT' IS DISABLED
-    if (this.selectedGroupId !== 'ALL_USERS_SELECTED') {
-      // this.BOT_NOT_SELECTED = false;
-    }
+    // if (this.selectedGroupId !== 'ALL_USERS_SELECTED') {
+    // }
+    
+    // SET TO null THE ID OF GROUP IF IS SELECTED 'ALL USER'
     if (this.selectedGroupId === 'ALL_USERS_SELECTED') {
-      // this.BOT_NOT_SELECTED = true;
+
       this.selectedGroupId = null;
     }
   }
 
+  has_clicked_assigned(show_group_option_form: boolean, show_option_form: boolean, routing: string) {
 
-  has_clicked_assigned(show_option_form: boolean, routing: string) {
-
+    this.SHOW_GROUP_OPTION_FORM = show_group_option_form;
     this.SHOW_OPTION_FORM = show_option_form;
     this.ROUTING_SELECTED = routing
-    console.log('HAS CLICKED ASSIGNABLE - SHOW OPTION ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
+    // tslint:disable-next-line:max-line-length
+    console.log('HAS CLICKED ASSIGNABLE - SHOW GROUP OPTION: ',  this.SHOW_GROUP_OPTION_FORM , ' SHOW BOT OPTION: ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
 
     // ONLY FOR THE EDIT VIEW (see above in ngOnInit the logic for the EDIT VIEW)
     this.dept_routing = 'assigned'
   }
 
   // is the option (called Bot in the html) that provides for the selection of a faq-kb (also this called Bot in the html)
-  has_clicked_fixed(show_option_form: boolean, routing: string) {
+  has_clicked_fixed(show_group_option_form: boolean, show_option_form: boolean, routing: string) {
     // this.HAS_CLICKED_FIXED = true;
     // this.HAS_CLICKED_POOLED = false;
+    this.SHOW_GROUP_OPTION_FORM = show_group_option_form;
     this.SHOW_OPTION_FORM = show_option_form;
     this.ROUTING_SELECTED = routing
-    console.log('HAS CLICKED FIXED - SHOW OPTION ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
+    // tslint:disable-next-line:max-line-length
+    console.log('HAS CLICKED FIXED - SHOW GROUP OPTION: ' , this.SHOW_GROUP_OPTION_FORM , ' SHOW BOT OPTION: ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
     // ONLY FOR THE EDIT VIEW (see above in ngOnInit the logic for the EDIT VIEW)
     this.dept_routing = 'fixed'
     this.BOT_NOT_SELECTED = true;
   }
 
-  has_clicked_pooled(show_option_form: boolean, routing: string) {
+  has_clicked_pooled(show_group_option_form: boolean, show_option_form: boolean, routing: string) {
     // console.log('HAS CLICKED POOLED')
     // this.HAS_CLICKED_FIXED = false;
     // this.HAS_CLICKED_POOLED = true;
+    this.SHOW_GROUP_OPTION_FORM = show_group_option_form;
     this.SHOW_OPTION_FORM = show_option_form;
     this.ROUTING_SELECTED = routing
-    console.log('HAS CLICKED POOLED  - SHOW OPTION ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
+    // tslint:disable-next-line:max-line-length
+    console.log('HAS CLICKED POOLED: - SHOW GROUP OPTION: ', this.SHOW_GROUP_OPTION_FORM , ' SHOW BOT OPTION: ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
 
     // ONLY FOR THE EDIT VIEW (see above in ngOnInit the logic for the EDIT VIEW)
     this.dept_routing = 'pooled'
