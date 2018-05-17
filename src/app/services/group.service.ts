@@ -104,6 +104,32 @@ export class GroupService {
 
   }
 
+  // UPDATE GROUP
+  public updateGroup(id_group, users_selected_array) {
+    console.log('ARRAY OF USERS SELECTED FOR THE GROUP', users_selected_array);
+    const url = this.MONGODB_BASE_URL + id_group;
+
+    console.log('GROUPS UPDATE - PUT URL ', url);
+
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = { 'members': users_selected_array };
+
+    console.log('PUT REQUEST BODY ', body);
+
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+
+  }
+
+
+
 
 
 }

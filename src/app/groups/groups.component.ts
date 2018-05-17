@@ -17,7 +17,13 @@ export class GroupsComponent implements OnInit {
   project_id: string;
   display_users_list_modal = 'none';
   group_name: string;
+  id_group: string;
+
   projectUsersList: any;
+
+  users_selected = [];
+
+  add_btn_disabled: boolean;
 
   constructor(
     private auth: AuthService,
@@ -70,8 +76,11 @@ export class GroupsComponent implements OnInit {
     this.router.navigate(['project/' + this.project_id + '/group/create']);
   }
 
-  open_user_list_modal(group_name: string) {
+  open_users_list_modal(id_group: string, group_name: string) {
+    this.id_group = id_group;
     this.group_name = group_name;
+    console.log('GROUP SELECTED -> NAME: ', this.group_name, ' -> ID: ', this.id_group)
+
     this.getAllUsersOfCurrentProject();
     this.display_users_list_modal = 'block';
   }
@@ -97,12 +106,48 @@ export class GroupsComponent implements OnInit {
     this.display_users_list_modal = 'none';
   }
 
+
+
+
+  change(obj) {
+
+    console.log('obj', obj);
+
+    const index = this.users_selected.indexOf(obj);
+
+    console.log('INDEX ', index);
+
+    if (index > -1) {
+      this.users_selected.splice(index, 1);
+    } else {
+      this.users_selected.push(obj);
+    }
+
+    console.log('ARRAY OF SELECTED USERS ', this.users_selected);
+    console.log('ARRAY OF SELECTED USERS lenght ', this.users_selected.length);
+
+    // DISABLE THE ADD BUTTON
+    // if (this.users_selected.length < 1) {
+    //   this.add_btn_disabled = true;
+
+    // } else {
+    //   this.add_btn_disabled = false;
+    // }
+  }
+
   onCloseModalHandled() {
     this.display_users_list_modal = 'none';
+    this.groupsService.updateGroup(this.id_group, this.users_selected).subscribe((group) => {
+
+      console.log('UPDATED GROUP ', group);
+    },
+      (error) => {
+        console.log('UPDATED GROUP - ERROR ', error);
+      },
+      () => {
+        console.log('UPDATED GROUP * COMPLETE *');
+      });
   }
 
-  selectUser(user_id) {
-    console.log('USER ID SELECTED ', user_id)
 
-  }
 }
