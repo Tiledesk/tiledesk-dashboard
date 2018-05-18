@@ -97,7 +97,7 @@
                   <td class="td-actions text-right" style="padding-top:16px">
                     <!-- Modifica Gruppo -->
                     <button type="button" rel="tooltip" title="{{ 'GroupsPage.tooltipEditGroup' | translate }}" class="btn btn-primary btn-simple btn-xs" 
-                      (click)='goToEditAddPage_EDIT(group?._id)'>
+                      (click)='goToEditAddPage_edit(group?._id)'>
                         <i class="material-icons">edit</i>
                     </button>
                     <!-- Elimima Gruppo -->
@@ -196,12 +196,17 @@
                 <tr class="tr_table-fixed" *ngFor="let project_user of projectUsersList" style="overflow-y: auto;">
 
                   <td class="td_table-fixed" style="text-align: center;">
-                      
-                    <div class="form-check" >
+                      <!-- *ngIf="project_user?.is_group_member" -->
+                    <div class="form-check" *ngIf="!project_user?.is_group_member" >
+                      <input type="checkbox" class="form-check-input" style="width: 16px;height: 16px;" value="{{project_user?.id_user?._id}}" 
+                      (click)="change(project_user?.id_user?._id)">
+                    </div>
+
+                    <!-- // FOR DEBUG -->
+                    <!-- <div class="form-check"  >
                       <input type="checkbox" class="form-check-input" style="width: 16px;height: 16px;" value="{{project_user?.id_user?._id}}" 
                       (click)="change(project_user?.id_user?._id)" [checked]="project_user?.is_group_member">
-                        
-                    </div>
+                    </div> -->
 
                   </td>
                   <td class="td_table-fixed" style="padding-left:10px">

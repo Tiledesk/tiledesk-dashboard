@@ -81,6 +81,10 @@ export class GroupsComponent implements OnInit {
     this.router.navigate(['project/' + this.project_id + '/group/create']);
   }
 
+  goToEditAddPage_edit(id_group: string) {
+    this.router.navigate(['project/' + this.project_id + '/group/edit/' + id_group]);
+  }
+
   open_users_list_modal(id_group: string, group_name: string, group_members: any) {
     this.id_group = id_group;
     this.group_name = group_name;
@@ -90,6 +94,8 @@ export class GroupsComponent implements OnInit {
 
     console.log('GROUP SELECTED -> group NAME: ', this.group_name, ' -> group ID: ', this.id_group)
     console.log('GROUP SELECTED -> MEMBERS; ', this.group_members);
+
+    this.users_selected = this.group_members;
     console.log('ARRAY OF SELECTED USERS WHEN OPEN MODAL ', this.users_selected);
 
 
@@ -148,7 +154,7 @@ export class GroupsComponent implements OnInit {
 
 
   change(obj) {
-
+    // + this.group_members
     console.log('obj', obj);
 
     const index = this.users_selected.indexOf(obj);
@@ -175,15 +181,30 @@ export class GroupsComponent implements OnInit {
 
   onCloseModalHandled() {
     this.display_users_list_modal = 'none';
+
+    // this.group_members.forEach(group_members => {
+    //   console.log(' ++ +++ group_members ', group_members)
+
+    //   this.users_selected.forEach(users_selected => {
+    //     if (users_selected !== group_members) {
+
+    //       console.log('XXX ', users_selected)
+    //     }
+    //   });
+    // });
+
     this.groupsService.updateGroup(this.id_group, this.users_selected).subscribe((group) => {
 
-      console.log('UPDATED GROUP ', group);
+      console.log('UPDATED GROUP WITH THE USER SELECTED', group);
     },
       (error) => {
-        console.log('UPDATED GROUP - ERROR ', error);
+        console.log('UPDATED GROUP WITH THE USER SELECTED - ERROR ', error);
       },
       () => {
-        console.log('UPDATED GROUP * COMPLETE *');
+        console.log('UPDATED GROUP WITH THE USER SELECTED* COMPLETE *');
+
+        // UPDATE THE GROUP LIST
+        this.ngOnInit()
       });
   }
 

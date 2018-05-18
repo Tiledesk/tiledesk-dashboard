@@ -121,7 +121,7 @@ const routes: Routes = [
   { path: 'project/:projectid/groups', component: GroupsComponent, canActivate: [AuthGuard] },
   // GROUP EDIT/ADD
   { path: 'project/:projectid/group/create', component: GroupEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/group/edit', component: GroupEditAddComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/group/edit/:groupid', component: GroupEditAddComponent, canActivate: [AuthGuard] },
 
   // DISPLAY THE PROFILE OF THE MEMBER (USERS WHO HAVE BEEN INVITED)
   { path: 'project/:projectid/member/:memberid', component: UsersProfileComponent, canActivate: [AuthGuard] },

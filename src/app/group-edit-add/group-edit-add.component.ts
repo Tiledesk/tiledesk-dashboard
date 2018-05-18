@@ -35,11 +35,12 @@ export class GroupEditAddComponent implements OnInit {
       console.log('HAS CLICKED CREATE ');
 
       this.CREATE_VIEW = true;
-
       this.showSpinner = false;
+      
     } else {
       console.log('HAS CLICKED EDIT ');
       this.EDIT_VIEW = true;
+      this.showSpinner = false;
     }
   }
 
