@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { GroupService } from '../services/group.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-group-edit-add',
@@ -14,13 +15,15 @@ export class GroupEditAddComponent implements OnInit {
   showSpinner = true;
   groupName: string;
   project_id: string;
+  group_id: string;
   displayInfoModal = 'none'
   SHOW_CIRCULAR_SPINNER = false;
 
   constructor(
     private router: Router,
     private auth: AuthService,
-    private groupService: GroupService
+    private groupService: GroupService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
@@ -36,12 +39,39 @@ export class GroupEditAddComponent implements OnInit {
 
       this.CREATE_VIEW = true;
       this.showSpinner = false;
-      
+
     } else {
       console.log('HAS CLICKED EDIT ');
       this.EDIT_VIEW = true;
-      this.showSpinner = false;
+      // this.showSpinner = false;
+
+      // GET THE ID OF GROUP PASSED BY GROUP-LIST PAGE
+      this.getGroupId();
     }
+  }
+  getGroupId() {
+    this.group_id = this.route.snapshot.params['groupid'];
+    console.log('GROUP-LIST PAGE HAS PASSED group_id ', this.group_id);
+
+    if (this.group_id) {
+      this.getGroupById();
+    }
+
+  }
+
+  /**
+ * GET FAQ-KB BY ID
+ */
+  getGroupById() {
+    this.groupService.getGroupById(this.group_id).subscribe((group: any) => {
+      console.log('GROUP GET BY ID', group);
+
+      // console.log('MONGO DB FAQ-KB NAME', this.faqKbNameToUpdate);
+      if (group) {
+        this.groupName = group.name
+      }
+      this.showSpinner = false;
+    });
   }
 
   getCurrentProject() {

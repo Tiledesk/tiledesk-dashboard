@@ -105,7 +105,7 @@ export class GroupService {
   }
 
   // UPDATE GROUP
-  public updateGroup(id_group, users_selected_array) {
+  public updateGroup(id_group: string, users_selected_array: any) {
     console.log('ARRAY OF USERS SELECTED FOR THE GROUP', users_selected_array);
     const url = this.MONGODB_BASE_URL + id_group;
 
@@ -128,6 +128,21 @@ export class GroupService {
 
   }
 
+    /**
+   * READ DETAIL (GET BY ID)
+   */
+  public getGroupById(id_group: string): Observable<Group[]> {
+    const url = this.MONGODB_BASE_URL + id_group;
+    // url += `${id}`;
+    console.log('GET GROUP BY ID URL', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
 
 
 
