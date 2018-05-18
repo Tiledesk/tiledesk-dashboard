@@ -7,5 +7,6 @@ export interface ProjectUser {
     user_available?: boolean;
     role: string;
     createdBy: string;
+    is_group_member: boolean;
     __v: any;
 }
