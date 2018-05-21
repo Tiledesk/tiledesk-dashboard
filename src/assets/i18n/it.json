@@ -119,7 +119,9 @@
         "EditGroup":"Modifica Gruppo",
         "GroupName":"Nome Gruppo",
         "CreateGroup":"Crea Gruppo",
-        "UpdateGroup":"Aggiorna Gruppo"
+        "UpdateGroup":"Aggiorna nome Gruppo",
+        "GroupCreated": "Gruppo Creato",
+        "AnErrorHasOccurred":"Si è verificato un errore"
     },
     "BotsPage": {
         "AddBot": "Aggiungi Bot",

@@ -104,7 +104,7 @@ export class GroupService {
 
   }
 
-  // UPDATE GROUP
+  // UPDATE GROUP MEMBERS
   public updateGroup(id_group: string, users_selected_array: any) {
     console.log('ARRAY OF USERS SELECTED FOR THE GROUP', users_selected_array);
     const url = this.MONGODB_BASE_URL + id_group;
@@ -128,9 +128,32 @@ export class GroupService {
 
   }
 
-    /**
-   * READ DETAIL (GET BY ID)
-   */
+  // UPDATE GROUP NAME
+  public updateGroupName(id_group: string, group_name: string) {
+    console.log('NEW GROUP NAME', group_name);
+    const url = this.MONGODB_BASE_URL + id_group;
+
+    console.log('GROUPS UPDATE - PUT URL ', url);
+
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = { 'name': group_name };
+
+    console.log('PUT REQUEST BODY ', body);
+
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
+  /**
+ * READ DETAIL (GET BY ID)
+ */
   public getGroupById(id_group: string): Observable<Group[]> {
     const url = this.MONGODB_BASE_URL + id_group;
     // url += `${id}`;

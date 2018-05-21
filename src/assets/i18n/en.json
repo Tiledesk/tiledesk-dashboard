@@ -117,7 +117,9 @@
         "EditGroup": "Edit Group",
         "GroupName": "GroupName",
         "CreateGroup": "Create Group",
-        "UpdateGroup": "Update Group"
+        "UpdateGroup": "Update Group name",
+        "GroupCreated": "Group Created",
+        "AnErrorHasOccurred": "An error has occurred"
     },
     "BotsPage": {
         "AddBot": "Add Bot",

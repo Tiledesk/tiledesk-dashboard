@@ -15,9 +15,10 @@ export class GroupEditAddComponent implements OnInit {
   EDIT_VIEW = false;
   showSpinner = true;
   groupName: string;
+  groupNameToUpdate: string;
   project_id: string;
   group_id: string;
-  displayInfoModal = 'none'
+  // displayInfoModal = 'none'
   SHOW_CIRCULAR_SPINNER = false;
 
   projectUsersList: any;
@@ -26,6 +27,9 @@ export class GroupEditAddComponent implements OnInit {
   group_members: any;
   users_selected = [];
   id_group: string;
+  displayCreateGroupModal = 'none';
+  CREATE_GROUP_ERROR: boolean;
+ 
 
   constructor(
     private router: Router,
@@ -71,7 +75,7 @@ export class GroupEditAddComponent implements OnInit {
   }
 
   /**
-   * GET GROUP BY ID
+   * GET GROUP BY ID (FOR EDIT VIEW)
    */
   getGroupById() {
     this.groupService.getGroupById(this.group_id).subscribe((group: any) => {
@@ -79,7 +83,7 @@ export class GroupEditAddComponent implements OnInit {
 
       // console.log('MONGO DB FAQ-KB NAME', this.faqKbNameToUpdate);
       if (group) {
-        this.groupName = group.name;
+        this.groupNameToUpdate = group.name;
         this.group_members = group.members;
         this.id_group = group._id;
 
@@ -89,6 +93,12 @@ export class GroupEditAddComponent implements OnInit {
       }
       this.showSpinner = false;
     });
+  }
+
+  focusFunction() {
+    console.log('FOCUS FUNCTION WORKS ', )
+    const lengthOfTheString = this.groupNameToUpdate.length
+    console.log('LENGHT OF THE STRING ', lengthOfTheString)
   }
 
   getCurrentProject() {
@@ -104,8 +114,9 @@ export class GroupEditAddComponent implements OnInit {
 
   // CREATE (mongoDB)
   create() {
-    this.displayInfoModal = 'block'
+    this.displayCreateGroupModal = 'block'
     this.SHOW_CIRCULAR_SPINNER = true;
+    this.CREATE_GROUP_ERROR = false;
 
     console.log('HAS CLICKED CREATE NEW GROUP');
     console.log('Create GROUP - NAME ', this.groupName);
@@ -122,6 +133,7 @@ export class GroupEditAddComponent implements OnInit {
       },
         (error) => {
           console.log('CREATE GROUP - POST REQUEST ERROR ', error);
+          this.CREATE_GROUP_ERROR = true;
         },
         () => {
           console.log('CREATE GROUP - POST REQUEST * COMPLETE *');
@@ -138,6 +150,36 @@ export class GroupEditAddComponent implements OnInit {
 
           // this.router.navigate(['project/' + this.project._id + '/faqkb']);
         });
+  }
+
+  onClosedisplayCreateGroupModalHandled() {
+
+    this.displayCreateGroupModal = 'none'
+    this.router.navigate(['project/' + this.project_id + '/groups']);
+  }
+
+  onClosedisplayCreateGroupModal() {
+    this.displayCreateGroupModal = 'none'
+
+  }
+
+  editGroupName() {
+    this.groupsService.updateGroupName(this.id_group, this.groupNameToUpdate).subscribe((group) => {
+
+      console.log('UPDATED GROUP WITH UPDATED NAME', group);
+    },
+      (error) => {
+        console.log('UPDATED GROUP WITH UPDATED NAME - ERROR ', error);
+      },
+      () => {
+        console.log('UPDATED GROUP WITH UPDATED NAME * COMPLETE *');
+
+        this.router.navigate(['project/' + this.project_id + '/groups']);
+
+        // UPDATE THE GROUP LIST
+        // this.ngOnInit()
+      });
+
   }
 
   goBackGroupList() {
@@ -178,7 +220,7 @@ export class GroupEditAddComponent implements OnInit {
             if (p.id_user._id === group_member) {
               if (projectUser._id === p._id) {
                 p.is_group_member = true;
-                console.log('GROUP MEMBERS ', group_member)
+                console.log('GROUP MEMBER ', group_member)
                 console.log('IS MEMBER OF THE GROUP THE USER ', p.id_user._id, ' - ', p.is_group_member)
               }
             }
