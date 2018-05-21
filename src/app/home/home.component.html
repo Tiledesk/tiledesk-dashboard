@@ -31,6 +31,32 @@
 
       <div class="row">
 
+        <!-- REQUESTS -->
+         <!-- col-lg-5 col-lg-offset-1 col-md-6 col-sm-6 -->
+         <div class="col-lg-6 col-md-6 col-sm-6" style="cursor:pointer">  
+            <!-- routerLink="/requests" -->
+            <div class="card card-stats" style="max-width:480px;" (click)="goToRequests()">
+                <!-- <div class="card-header" data-background-color="orange"> -->
+                <div class="card-header" data-background-color="orange">
+                    <i class="material-icons">group</i>
+                </div>
+                <div class="card-content">
+                    <p class="category" style="font-size: 1.1em;">{{ 'Visitors' | translate }}</p>
+                    <!-- <h3 class="title">Visitatori<small>GB</small></h3> -->
+                </div>
+                <div class="card-footer">
+                    <div class="stats" style="float: left;">
+                        <!-- <i class="material-icons text-danger">warning</i> <a href="#pablo">Get More Space...</a> -->
+                        
+                        <!-- THERE WERE THIS -->
+                        <h4 class="title" style="font-size:12px; padding-bottom:10px; margin-left: 100px; text-align: left">
+                            {{ 'HomePage.VisitorsSubtitle' | translate }}
+                        </h4> 
+                    </div>
+                </div>
+            </div>
+          </div>
+
           <!-- WIDGET -->
           <!-- col-lg-5 col-lg-offset-1 col-md-6 col-sm-6 -->
           <div *ngIf="USER_ROLE !== 'agent'" class="col-lg-6 col-md-6 col-sm-6" style="cursor:pointer">  
@@ -58,31 +84,7 @@
           </div>
 
           
-         <!-- REQUESTS -->
-         <!-- col-lg-5 col-lg-offset-1 col-md-6 col-sm-6 -->
-          <div class="col-lg-6 col-md-6 col-sm-6" style="cursor:pointer">  
-              <!-- routerLink="/requests" -->
-              <div class="card card-stats" style="max-width:480px;" (click)="goToRequests()">
-                  <!-- <div class="card-header" data-background-color="orange"> -->
-                  <div class="card-header" data-background-color="orange">
-                      <i class="material-icons">group</i>
-                  </div>
-                  <div class="card-content">
-                      <p class="category" style="font-size: 1.1em;">{{ 'Visitors' | translate }}</p>
-                      <!-- <h3 class="title">Visitatori<small>GB</small></h3> -->
-                  </div>
-                  <div class="card-footer">
-                      <div class="stats" style="float: left;">
-                          <!-- <i class="material-icons text-danger">warning</i> <a href="#pablo">Get More Space...</a> -->
-                          
-                          <!-- THERE WERE THIS -->
-                          <h4 class="title" style="font-size:12px; padding-bottom:10px; margin-left: 100px; text-align: left">
-                              {{ 'HomePage.VisitorsSubtitle' | translate }}
-                          </h4> 
-                      </div>
-                  </div>
-              </div>
-          </div>
+
 
           <!-- CHAT -->
           <!-- <div class="col-lg-3 col-md-6 col-sm-6"> -->
