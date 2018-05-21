@@ -30,7 +30,9 @@ export class GroupEditAddComponent implements OnInit {
   id_group: string;
   displayCreateGroupModal = 'none';
   CREATE_GROUP_ERROR: boolean;
- 
+
+  displayDeleteModal = 'none';
+  id_user_to_delete: string;
 
   constructor(
     private router: Router,
@@ -301,10 +303,24 @@ export class GroupEditAddComponent implements OnInit {
       });
   }
 
-  deleteMemberFromTheGroup(id_user: string) {
-    console.log('DELETE MEMBER ', id_user, ' FROM THE GROUP ', this.group_members);
 
-    const index = this.group_members.indexOf(id_user);
+  // =========== DELETE MODAL ===========
+  openDeleteModal(id_user, user_email) {
+
+    this.displayDeleteModal = 'block';
+    console.log('OPEN DELETE MODAL - ID USER: ', id_user, ' USER EMAIL ', user_email);
+    this.id_user_to_delete = id_user;
+  }
+
+  onCloseDeleteModal() {
+    this.displayDeleteModal = 'none';
+  }
+
+  deleteMemberFromTheGroup() {
+    this.displayDeleteModal = 'none';
+    console.log('DELETE MEMBER ', this.id_user_to_delete, ' FROM THE GROUP ', this.group_members);
+
+    const index = this.group_members.indexOf(this.id_user_to_delete);
     console.log('INDEX OF THE MEMBER ', index);
     if (index > -1) {
       this.group_members.splice(index, 1);

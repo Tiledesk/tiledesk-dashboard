@@ -126,9 +126,18 @@ button.close {
     visibility: hidden;
 }
 
-// button add members
-.btn-xs:hover {
+// button add members hover
+.addMember:hover {
    background-color: #4caf50 !important;
     color: #fff !important;
     // display: none
+}
+// button add members
+.addMember {
+    margin-top: 0px; 
+    margin-bottom: 0px; 
+    border-radius: 50%; 
+    padding:2px; 
+    margin-left:15px;
+    border: solid 1px; 
 }
