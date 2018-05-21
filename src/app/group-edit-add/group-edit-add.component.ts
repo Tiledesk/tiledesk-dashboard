@@ -4,6 +4,7 @@ import { AuthService } from '../core/auth.service';
 import { GroupService } from '../services/group.service';
 import { ActivatedRoute } from '@angular/router';
 import { UsersService } from '../services/users.service';
+import { NotifyService } from '../core/notify.service';
 
 @Component({
   selector: 'app-group-edit-add',
@@ -37,7 +38,8 @@ export class GroupEditAddComponent implements OnInit {
     private groupService: GroupService,
     private route: ActivatedRoute,
     private groupsService: GroupService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private notify: NotifyService
   ) { }
 
   ngOnInit() {
@@ -292,6 +294,8 @@ export class GroupEditAddComponent implements OnInit {
       () => {
         console.log('UPDATED GROUP WITH THE USER SELECTED* COMPLETE *');
 
+        // =========== NOTIFY SUCCESS===========
+        this.notify.showNotification('group successfully updated', 2, 'done');
         // UPDATE THE GROUP LIST
         this.ngOnInit()
       });
@@ -316,6 +320,8 @@ export class GroupEditAddComponent implements OnInit {
         },
         () => {
           console.log('UPDATED GROUP WITH THE USER SELECTED* COMPLETE *');
+
+          this.notify.showNotification('member successfully deleted', 2, 'done');
 
           // UPDATE THE GROUP LIST
           this.ngOnInit()
