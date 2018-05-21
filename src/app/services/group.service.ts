@@ -151,6 +151,29 @@ export class GroupService {
       .map((res) => res.json());
   }
 
+  // UPDATE THE GROUP WITH TRASHED = TRUE
+  public setTrashedToTheGroup(id_group: string) {
+
+    const url = this.MONGODB_BASE_URL + id_group;
+
+    console.log('GROUPS UPDATE - PUT URL ', url);
+
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = { 'trashed': true };
+
+    console.log('PUT REQUEST BODY ', body);
+
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
   /**
  * READ DETAIL (GET BY ID)
  */

@@ -29,6 +29,9 @@ export class GroupsComponent implements OnInit {
 
   add_btn_disabled: boolean;
 
+  displayDeleteModal = 'none';
+  id_group_to_delete: string;
+
 
   constructor(
     private auth: AuthService,
@@ -206,5 +209,33 @@ export class GroupsComponent implements OnInit {
       });
   }
 
+  openDeleteModal(id_group: string) {
+    this.displayDeleteModal = 'block';
+    this.id_group_to_delete = id_group;
+    console.log('OPEN DELETE MODAL - ID OF THE GROUP OF DELETE ', this.id_group_to_delete)
+  }
+
+  onCloseDeleteModal() {
+    this.displayDeleteModal = 'none';
+  }
+
+  deleteGroup() {
+    this.displayDeleteModal = 'none';
+    this.groupsService.setTrashedToTheGroup(this.id_group_to_delete).subscribe((group) => {
+
+      console.log('UPDATED GROUP WITH TRASHED = TRUE ', group);
+    },
+      (error) => {
+        console.log('UPDATED GROUP WITH TRASHED = TRUE - ERROR ', error);
+      },
+      () => {
+        console.log('UPDATED GROUP WITH TRASHED = TRUE * COMPLETE *');
+
+        // =========== NOTIFY SUCCESS===========
+        // this.notify.showNotification('group successfully updated', 2, 'done');
+        // UPDATE THE GROUP LIST
+        this.ngOnInit()
+      });
+  }
 
 }
