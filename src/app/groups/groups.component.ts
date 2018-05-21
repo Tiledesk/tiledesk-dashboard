@@ -151,8 +151,6 @@ export class GroupsComponent implements OnInit {
   }
 
 
-
-
   change(obj) {
     // + this.group_members
     console.log('obj', obj);

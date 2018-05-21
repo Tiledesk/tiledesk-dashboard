@@ -12,15 +12,18 @@
     
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card" style="padding-top:25px; padding-bottom:25px">
-          <div class="card-content">
-  
-  
-            <span *ngIf="CREATE_VIEW">
-  
-              <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+    <span *ngIf="CREATE_VIEW">
+
+      <loading-spinner *ngIf="showSpinner"></loading-spinner>
+      <span *ngIf="!showSpinner">
+
+        <div class="row">
+          <div class="col-md-12">
+
+            <div class="card" style="padding-top:25px; padding-bottom:25px">
+
+              <div class="card-content">
 
                 <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
                   {{ "GroupsAddEditPage.GroupName" | translate }}
@@ -28,59 +31,359 @@
                 <div class="col-sm-10">
                   <input [(ngModel)]="groupName" class="input" type="text" placeholder='{{ "GroupsAddEditPage.GroupName" | translate }}'>
                 </div>
-   
+
                 <!-- SPACER -->
                 <div class="col-sm-12" style="height:15px"></div>
-    
+
                 <label style="" class="col-sm-2"></label>
                 <div class="col-sm-10"> 
-    
-                <button class="btn btn-success" [disabled]="groupName?.length < 2" (click)="create()">
+                  <button class="btn btn-success" [disabled]="groupName?.length < 2" (click)="create()">
                     {{ "GroupsAddEditPage.CreateGroup" | translate }}
                   </button>
                 </div>
-  
-            </span>
-            <!-- /. CREATE_VIEW -->
-  
-            <span *ngIf="EDIT_VIEW">
-   
-              <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
-              <span *ngIf="!showSpinner">
+              </div>
+              <!-- ./ card-content -->
 
-                <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
+            </div>
+            <!-- ./ card -->
 
-                  {{ "GroupsAddEditPage.GroupName" | translate }}
-                </label>
-                <div class="col-sm-10">
-                  <input [(ngModel)]="groupName" class="input" type="text" placeholder="">
-                </div>
-      
-                <!-- SPACER -->
-                <div class="col-sm-12" style="height:15px"></div>
-    
-                <label class="col-sm-2"></label>
-                <div class="col-sm-10"> 
-                  <button class="btn btn-success" (click)="edit()">
-
-                    {{ "GroupsAddEditPage.UpdateGroup" | translate }}
-                  </button>
-                </div>
-              </span>
-            </span>
-            <!-- /. EDIT_VIEW -->
-  
           </div>
-          <!-- ./ card-content -->
-  
+          <!-- ./ col-md-12 -->
         </div>
-        <!-- ./ card -->
+        <!-- ./ row -->
 
-        
-  
-      </div>
-      <!-- ./ col-md-12 -->
-    </div>
+      </span>
+      <!-- /. CREATE_VIEW showSpinner -->
+
+    </span>
+    <!-- CREATE VIEW  -->
+
+    <span *ngIf="EDIT_VIEW">
+
+      <loading-spinner *ngIf="showSpinner"></loading-spinner>
+      <span *ngIf="!showSpinner">
+        <div class="row">
+          <div class="col-md-12">
+
+            <div class="card" style="padding-top:25px; padding-bottom:25px; margin-bottom: 5px;">
+
+              <div class="card-content">
+
+                <div class="row">
+                  <div class="col-md-12">
+
+                    <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right; margin-top: 12px" class="col-sm-2 groupName">
+                      {{ "GroupsAddEditPage.GroupName" | translate }}
+                    </label>
+                    <div class="col-sm-6" style="margin-top: 12px">
+                      <input [(ngModel)]="groupName" class="input" type="text" placeholder="">
+                    </div>
+
+
+                    <!-- <label class="col-sm-2"></label> -->
+                    <div class="col-sm-4"> 
+                      <button class="btn btn-success" (click)="edit()">
+                        {{ "GroupsAddEditPage.UpdateGroup" | translate }}
+                      </button>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <!-- ./ card -->
+          </div>
+          <!-- ./ col-md-12 -->
+        </div>
+        <!-- ./ row -->
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="create" style="text-align: left!important; padding-top:5px; padding-bottom:0px">
+
+              <button class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="open_users_list_modal()">
+                <span class="icon" style="padding-right:0px">
+                  <i class="material-icons">add_circle</i>
+                </span>
+                
+                AGGIUNGI MEMBRI
+              </button>
+            </div>
+          </div>
+          <!-- ./ col-md-12 -->
+        </div>
+        <!-- ./ row -->
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card" style="padding-top:25px; padding-bottom:25px; margin-top: 5px;">
+              <div class="card-content">
+
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <!-- FOR DEBUG: ID OF THE PROJECT-USER  -->
+                      <!-- <th>
+                        <span style="color: #566787">
+                          <strong>
+                            Project_User Id
+                          </strong>
+                        </span>
+                      </th> -->
+    
+                      <th>
+                        <span style="color: #566787">
+                          <strong>
+                            {{ "UsersPage.User" | translate }}
+                          </strong>
+                        </span>
+                      </th>
+    
+                      <th>
+                        <span style="color: #566787">
+                          <strong>
+                            {{ "UsersPage.Role" | translate }}
+                          </strong>
+                        </span>
+                      </th>
+    
+                      <th>
+                        <span style="color: #566787">
+                          <strong>
+                            Email
+                          </strong>
+                        </span>
+                      </th>
+    
+                      <!-- OLD: AVAILABLE / UNAVAILABLE INDICATOR -->
+                      <!-- <th>
+                        <span style="color: #566787">
+                          <strong>
+                            {{ "UsersPage.Available" | translate }}
+                          </strong>
+                        </span>
+                      </th> -->
+    
+                      <!-- SWITCH BTN AVAILABLE / UNAVAILABLE  -->
+                      <!-- <th>
+                        <span style="color: #566787">
+                          <strong>
+                            {{ "UsersPage.Available" | translate }}
+                          </strong>
+                        </span>
+                      </th> -->
+    
+                      <!-- FOR DEBUG: USER ID -->
+                      <th>
+                        <span style="color: #566787">
+                          <strong>
+                            {{ "UsersPage.UserId" | translate }}
+                          </strong>
+                        </span>
+                      </th>
+    
+                      <th>
+                        <span style="color: #566787">
+                          <!-- Actions -->
+                          <strong>
+                            {{ "UsersPage.Actions" | translate }}
+                          </strong>
+                        </span>
+                      </th>
+    
+                    </tr>
+    
+                  </thead>
+    
+                  <tbody>
+    
+                    <tr *ngFor="let projectUser of projectUsersList">
+                      
+                      <!-- FOR DEBUG: ID OF THE PROJECT-USER  -->
+                      <!-- <td *ngIf="projectUser?.is_group_member">
+                        {{ projectUser?._id }}
+                      </td> -->
+                      
+                      <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
+                        {{ projectUser?.id_user?.firstname }}
+                        <span style="text-transform: uppercase"> {{ projectUser?.id_user?.lastname }} </span>
+                      </td>
+    
+                      <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
+                        {{ projectUser?.role }}
+                      </td>
+    
+                      <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
+                        {{ projectUser?.id_user?.email }}
+                      </td>
+    
+                      <!-- OLD: AVAILABLE / UNAVAILABLE INDICATOR -->
+                      <!-- <td (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
+                        <i *ngIf="projectUser?.user_available === true" class="material-icons" style=" font-size: 16px; color: #1eb848; margin-right:0px">fiber_manual_record</i>
+                        <i *ngIf="projectUser?.user_available === false" class="material-icons" style=" font-size: 16px; color: #cac9c9; margin-right:0px">fiber_manual_record</i>
+                      </td> -->
+                      
+    
+                      <!-- SWITCH AVAILABLE / UNAILABLE  -->
+                      <!-- <td>
+    
+                        <label class="switch" style="margin-bottom: 0px;">
+                          <input type="checkbox" (click)="changeAvailabilityStatus(projectUser?.user_available, projectUser?._id)" [checked]="projectUser?.user_available === true">
+                          <span class="slider round"></span>
+                        </label>
+                      </td> -->
+    
+    
+                      <!-- FOR DEBUG: USER ID -->
+                      <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?.id_user?._id)">
+                        {{ projectUser?.id_user?._id }}
+                      </td>
+    
+                      <!-- ACTIONS -->
+                      <td *ngIf="projectUser?.is_group_member" class="td-actions text-right">
+                        <!-- <span *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id"> -->
+                          <!-- <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipEditUser' | translate }}" class="btn btn-primary btn-simple btn-xs"
+                            (click)='goToEditUser(projectUser?._id)'>
+                            <i class="material-icons">edit</i>
+                          </button> -->
+                          <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipDeleteUser' | translate }}" class="btn btn-danger btn-simple btn-xs"
+                            (click)='deleteMemberFromTheGroup(projectUser?.id_user?._id)'>
+                            <i class="material-icons">close</i>
+                          </button>
+                        <!-- </span> -->
+                      </td>
+                      
+                     
+                    </tr>
+                  </tbody>
+                </table>
+
+
+              </div>
+            </div>
+          </div>
+          <!-- ./ col-md-12 -->
+        </div>
+        <!-- ./ row -->
+
+      </span>
+      <!-- EDIT VIEW showSpinner -->
+    </span>
+    <!-- /. EDIT_VIEW -->
   </div>    
 </div>
+
+
+<!-- ============ MODAL ADD MEMBER TO A GROUP ============ -->
+<!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display_users_list_modal}" style="background-color: rgba(90,90,90,0.5);">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>         
+          <h4 class="modal-title">
+            Add users to the<span style="color: #566787; font-weight: 500; text-transform: uppercase"> {{ groupName }} </span> group
+          </h4>    
+        </div>
+
+          <div class="modal-body" style="padding-top: 10px; padding-bottom: 0px; padding-right: 15px;">
+
+            <loading-spinner *ngIf="showSpinnerInModal"></loading-spinner>
+
+            <table *ngIf="!showSpinnerInModal" class="table table-fixed table-striped">
+              <thead style="color: #f9f9f9">
+                <tr class="tr_table-fixed">
+                  <th class="th_table-fixed"></th>
+                  <th class="th_table-fixed">
+                    <span style="color: #566787">
+                      <strong>
+                        User
+                      </strong>
+                    </span>
+                  </th>
+                  <th class="th_table-fixed">
+                    <span style="color: #566787">
+                      <strong>
+                        Role
+                      </strong>
+                    </span>
+                  </th>
+                  <th class="th_table-fixed"> 
+                    <span class="text" style="color: #566787">
+                      <strong>
+                        Email
+                      </strong>
+                    </span>
+                  </th>
+                  <!-- <th class="th_table-fixed"></th> -->
+                </tr>
+              </thead>
+              
+              <tbody class="tbody_table-fixed" style="height: 250px;">
+                  
+                <tr class="tr_table-fixed" *ngFor="let project_user of projectUsersList" style="overflow-y: auto;">
+
+                  <td class="td_table-fixed" style="text-align: center;">
+                      <!-- *ngIf="project_user?.is_group_member" -->
+                    <div class="form-check" *ngIf="!project_user?.is_group_member" >
+                      <input type="checkbox" class="form-check-input" style="width: 16px;height: 16px;" value="{{project_user?.id_user?._id}}" 
+                      (click)="change(project_user?.id_user?._id)">
+                    </div>
+
+                    <!-- // FOR DEBUG -->
+                    <!-- <div class="form-check"  >
+                      <input type="checkbox" class="form-check-input" style="width: 16px;height: 16px;" value="{{project_user?.id_user?._id}}" 
+                      (click)="change(project_user?.id_user?._id)" [checked]="project_user?.is_group_member">
+                    </div> -->
+
+                  </td>
+                  <td class="td_table-fixed" style="padding-left:10px">
+                    {{ project_user?.id_user?.firstname }} {{project_user?.id_user?.lastname}}
+
+                    <p>{{ project_user?.id_user?._id }}  </p>
+                  </td>
+
+                  <td class="td_table-fixed" style="padding-left:16px">
+
+                    {{ project_user?.role }} 
+                  </td>
+
+                  <td class="td_table-fixed" style="padding-left:16px">
+
+                    {{project_user?.id_user?.email}}
+                  </td>
+
+                  <!-- <td class="td-actions text-left td_table-fixed" style="padding-top:10px">
+
+                    <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal(faqkb?._id, HAS_FAQ_RELATED=faqkb?.has_faq)'>
+                      <i class="material-icons">close</i>
+                    </button>
+                  </td> -->
+
+                </tr>
+              
+              </tbody>
+            </table>
+
+          </div>
+      
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-white" (click)="onCloseModal()" >
+            Annulla
+          </button>
+
+          <button type="button" class="btn btn-info" (click)="addMembersToTheGroup()" [disabled]="add_btn_disabled">
+            ADD
+          </button>
+        </div>
+  
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
