@@ -27,6 +27,7 @@
                   <div class="col-sm-12" style="padding-left:45px; padding-top:0px">
 
                     <!--     ASSIGNABLE    -->
+                    <div class="row">
                     <div class="col-sm-2" style="height: 36px;">
                       <div class="form-check" style="padding-top: 8px;">
                         <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3"
@@ -39,14 +40,14 @@
                     </div>
 
                     <!-- // NEW - START SELECT GROUP FOR ROUTING ASSIGNED -->
-                    <span *ngIf="dept_routing === 'assigned' || dept_routing === 'pooled' ">
+                    <span *ngIf="dept_routing === 'assigned' ">
                       <span *ngIf="SHOW_GROUP_OPTION_FORM !== 'false'"> 
                         <div class="col-sm-10">
                           <select #selectElem (change)="setSelectedGroup(selectElem.value)" style="min-width: 150px;" [ngClass]="{'errorGroup' : GROUP_ID_NOT_EXIST}">
   
                             <!-- // IF THE GROUP ASSIGNED TO THE DEFAULT DEPT HAS BEEN DELETED, IT IS DISPLAYED: 'THE GROUP DOES NOT EXIST' -->
                             <option style="color: #ff5252 !important;" *ngIf="GROUP_ID_NOT_EXIST" [selected]="GROUP_ID_NOT_EXIST">
-                              <p>Group error</p>
+                              <p>Error: group id {{ selectedGroupId }} trashed</p>
                             </option>
                             
                             <option class="not_selected" value="ALL_USERS_SELECTED">
@@ -62,10 +63,13 @@
                         </div>
                       </span>
                     </span> 
+
+                  </div>
                     <!-- // END - SELECT GROUP -->
   
                     <!--    POOLED     -->
-                    <div class="col-sm-12">
+                    <div class="row">
+                    <div class="col-sm-2" style="height: 36px;">
                       <div class="form-check" style="padding-top:8px;">
                         <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" 
                         (click)="has_clicked_pooled(show_group_option_form = 'true', show_option_form = 'false', routing = 'pooled')" [checked]="dept_routing === 'pooled'">
@@ -77,24 +81,32 @@
                     </div>
 
                     <!-- // NEW - START SELECT GROUP FOR ROUTING POOLED -->
-                    <!-- <span *ngIf="dept_routing === 'pooled'">
+                    <span *ngIf="dept_routing === 'pooled'">
                       <span *ngIf="SHOW_GROUP_OPTION_FORM !== 'false'"> 
                         <div class="col-sm-10">
-                          <select #selectElem (change)="setSelectedGroup(selectElem.value)" style="min-width: 150px;" >
-                            <option class="not_selected" value="ALL_USERS_SELECTED">
-
-                              {{ "RoutingPage.AllUsers" | translate  }}
+                          <select #selectElem (change)="setSelectedGroup(selectElem.value)" style="min-width: 150px;" [ngClass]="{'errorGroup' : GROUP_ID_NOT_EXIST}">
                             
+                            <!-- // IF THE GROUP ASSIGNED TO THE DEFAULT DEPT HAS BEEN DELETED, IT IS DISPLAYED: 'THE GROUP DOES NOT EXIST' -->
+                            <option style="color: #ff5252 !important;" *ngIf="GROUP_ID_NOT_EXIST" [selected]="GROUP_ID_NOT_EXIST">
+                              <p>Error: group id {{ selectedGroupId }} trashed</p>
                             </option>
+
+                            <option class="not_selected" value="ALL_USERS_SELECTED">
+                              {{ "RoutingPage.AllUsers" | translate  }}
+                            </option>
+
                             <option  *ngFor="let group of groupsList" [value]="group._id" [selected]="selectedGroupId === group._id">
                               {{group.name}}
                             </option>
+
                           </select>
                         </div>
                       </span>
-                    </span>  -->
+                    </span> 
+                  </div>
   
-                    <!--     BOT (IT'S ACTUALLY FAQ-KB)  (EDIT_VIEW)     -->
+                    <!--     BOT (IT'S ACTUALLY FAQ-KB)   -->
+                    <div class="row">
                     <div class="col-sm-2" style="height: 36px;">
                       <div class="form-check" style="padding-top:10px; padding-bottom:8px; ">
                           <!-- checked="true" -->
@@ -114,7 +126,7 @@
                         <div class="col-sm-10">
                           <select #selectElem (change)="setSelectedBot(selectElem.value)"  >
     
-                            <option class="not_selected" value="BOT_NOT_SELECTED" >{{ "DeptsAddEditPage.SelectABot" | translate }}</option>
+                            <option class="not_selected" value="BOT_NOT_SELECTED">{{ "DeptsAddEditPage.SelectABot" | translate }}</option>
                             <!-- NOTE: botsList IT'S ACTUALLY THE FAQ-KB LIST -->
                             <option  *ngFor="let bot of botsList" [value]="bot._id" [selected]="selectedId === bot._id">
                               {{bot.name}} 
@@ -130,21 +142,28 @@
                     </span>
 
                   </div>
+                </div>
                   <!-- ./end col-sm-12 -->
 
                   <!-- SPACER -->
                   <div class="col-sm-12" style="height:15px"></div>
              
                   <div class="col-sm-10" style="margin-left: 16px; margin-bottom: 25px;"> 
-                    <span *ngIf="SHOW_OPTION_FORM === 'true'">
+
+                    <!-- <span *ngIf="SHOW_OPTION_FORM === 'true'"> -->
+                        <span *ngIf="dept_routing === 'fixed'">  
                       <button class="btn btn-success" (click)="edit()" [disabled]="BOT_NOT_SELECTED === true">             
                         <!-- Update routing rules -->
+                        <!-- ROUTING: {{ dept_routing }} BOT_NOT_SELECTED: {{BOT_NOT_SELECTED }} -->
                         {{ "RoutingPage.UpdateRoutingRules" | translate  }}
                       </button>
                     </span>
-                    <span *ngIf="SHOW_OPTION_FORM !== 'true'">
+                    <!-- <span *ngIf="SHOW_OPTION_FORM !== 'true'"> -->
+                        <span *ngIf="dept_routing === 'assigned' || dept_routing === 'pooled'">
                       <button class="btn btn-success" (click)="edit()" [disabled]='GROUP_ID_NOT_EXIST'>
                          <!-- Update routing rules -->
+                       
+                        <!-- ROUTING: {{ dept_routing }} GROUP_ID_NOT_EXIST: {{GROUP_ID_NOT_EXIST }} -->
                         {{ "RoutingPage.UpdateRoutingRules" | translate  }}
                       </button>
                     </span>

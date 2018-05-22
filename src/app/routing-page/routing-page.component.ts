@@ -25,7 +25,7 @@ export class RoutingPageComponent implements OnInit {
   botsList: any;
 
   BOT_NOT_SELECTED: boolean;
-  SHOW_OPTION_FORM = false;
+  SHOW_OPTION_FORM: boolean;
 
   SHOW_GROUP_OPTION_FORM: boolean;
   ROUTING_SELECTED: string;
@@ -145,6 +145,7 @@ export class RoutingPageComponent implements OnInit {
 
             console.log('ROUTING PAGE - DEPT - BOT ID: ', this.botId);
             console.log('ROUTING PAGE - DEPT - GROUP ID: ', this.selectedGroupId);
+            console.log('ROUTING PAGE - DEPT - ROUTING: ', this.selectedGroupId);
           }
         })
       }
@@ -170,6 +171,8 @@ export class RoutingPageComponent implements OnInit {
 
           // getBotById() IS RUNNED ONLY IF THE BOT-ID (returned in the DEPT OBJECT) IS NOT undefined and IS NOT null
           this.getBotById();
+
+          // this.SHOW_OPTION_FORM = false;
           console.log(' BOT ID DEFINED ', this.botId);
         }
 
@@ -295,7 +298,9 @@ export class RoutingPageComponent implements OnInit {
     console.log('HAS CLICKED FIXED - SHOW GROUP OPTION: ', this.SHOW_GROUP_OPTION_FORM, ' SHOW BOT OPTION: ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
     // ONLY FOR THE EDIT VIEW (see above in ngOnInit the logic for the EDIT VIEW)
     this.dept_routing = 'fixed'
+
     this.BOT_NOT_SELECTED = true;
+    console.log('BOT_NOT_SELECTED ', this.BOT_NOT_SELECTED);
   }
 
   has_clicked_pooled(show_group_option_form: boolean, show_option_form: boolean, routing: string) {
