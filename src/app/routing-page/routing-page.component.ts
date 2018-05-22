@@ -69,7 +69,6 @@ export class RoutingPageComponent implements OnInit {
   }
 
 
-
   /*
    * GETS ALL GROUPS WITH THE CURRENT PROJECT-ID
    */
@@ -83,7 +82,9 @@ export class RoutingPageComponent implements OnInit {
 
         console.log('for DEBUG GROUP ID SELECTED', this.selectedGroupId);
 
-        if (this.selectedGroupId !== null) {
+        // CHECK IN THE GROUPS LIST THE GROUP-ID RETURNED FROM THE DEPT OBJECT.
+        // IF THE GROUP-ID DOES NOT EXIST MEANS THAT WAS DELETED
+        if (this.selectedGroupId !== null && this.selectedGroupId !== undefined) {
           this.checkGroupId(this.selectedGroupId, this.groupsList)
         }
       }
