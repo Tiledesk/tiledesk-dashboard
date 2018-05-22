@@ -25,7 +25,8 @@ export class RoutingPageComponent implements OnInit {
   botsList: any;
 
   BOT_NOT_SELECTED: boolean;
-  SHOW_OPTION_FORM: boolean;
+  SHOW_OPTION_FORM = false;
+
   SHOW_GROUP_OPTION_FORM: boolean;
   ROUTING_SELECTED: string;
   selectedBotId: string;
@@ -50,6 +51,8 @@ export class RoutingPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+    console.log('ng ON INIT - SHOW_OPTION_FORM  ', this.SHOW_OPTION_FORM)
     this.auth.checkRole();
 
     this.showSpinner = true;
