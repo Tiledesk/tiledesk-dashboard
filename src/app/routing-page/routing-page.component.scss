@@ -23,6 +23,14 @@ select {
     border-radius: 0px; 
     border-color: #d9d9d9; 
 }
+
+// select, option {
+//     color: #3062B8 !important;
+// }
+.errorGroup {
+    color: #ff5252 !important;
+}
+
 .card form [class*="col-"] {
     padding: 0px;
 }
@@ -108,3 +116,6 @@ button.close {
 }
 /* MODAL END */
  
+select option:first-child{
+    color: green;
+  }

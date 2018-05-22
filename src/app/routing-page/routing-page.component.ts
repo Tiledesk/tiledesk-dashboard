@@ -29,7 +29,7 @@ export class RoutingPageComponent implements OnInit {
   SHOW_GROUP_OPTION_FORM: boolean;
   ROUTING_SELECTED: string;
   selectedBotId: string;
-  selectedGroupId: string;
+  selectedGroupId: any;
   botIdEdit: string;
   selectedId: string;
 
@@ -39,6 +39,7 @@ export class RoutingPageComponent implements OnInit {
   SHOW_CIRCULAR_SPINNER = false;
   project: Project;
   groupsList: Group[];
+  GROUP_ID_NOT_EXIST: boolean;
 
   constructor(
     private mongodbDepartmentService: MongodbDepartmentService,
@@ -73,12 +74,19 @@ export class RoutingPageComponent implements OnInit {
     this.groupService.getGroupsByProjectId().subscribe((groups: any) => {
       console.log('GROUPS GET BY PROJECT ID', groups);
 
-      this.groupsList = groups;
+      if (groups) {
+        this.groupsList = groups;
 
+
+        console.log('for DEBUG GROUP ID SELECTED', this.selectedGroupId);
+
+        if (this.selectedGroupId !== null) {
+          this.checkGroupId(this.selectedGroupId, this.groupsList)
+        }
+      }
       // this.showSpinner = false;
     },
       (error) => {
-
         console.log('GET GROUPS - ERROR ', error);
 
         // this.showSpinner = false;
@@ -88,6 +96,20 @@ export class RoutingPageComponent implements OnInit {
 
       });
 
+  }
+
+  checkGroupId(groupIdSelected, groups_list) {
+    this.GROUP_ID_NOT_EXIST = true;
+
+    for (let i = 0; i < groups_list.length; i++) {
+      const group_id = groups_list[i]._id;
+      if (group_id === groupIdSelected) {
+        this.GROUP_ID_NOT_EXIST = false;
+        break;
+      }
+    }
+    console.log('CHECK FOR GROUP ID - NOT EXIST?: ', this.GROUP_ID_NOT_EXIST)
+    return this.GROUP_ID_NOT_EXIST;
   }
 
   getCurrentProject() {
@@ -118,9 +140,8 @@ export class RoutingPageComponent implements OnInit {
             this.selectedGroupId = dept.id_group;
 
 
-
-            console.log('ROUTING PAGE - BOT ID: ', this.botId);
-            console.log('ROUTING PAGE - GROUP ID: ', this.selectedGroupId);
+            console.log('ROUTING PAGE - DEPT - BOT ID: ', this.botId);
+            console.log('ROUTING PAGE - DEPT - GROUP ID: ', this.selectedGroupId);
           }
         })
       }
@@ -222,14 +243,25 @@ export class RoutingPageComponent implements OnInit {
       this.BOT_NOT_SELECTED = true;
     }
   }
+  focusFunction() {
+    console.log('ON click WORKS ', this.selectedGroupId)
+  }
 
   setSelectedGroup(id: any): void {
     this.selectedGroupId = id;
     console.log('GROUP ID SELECTED: ', this.selectedGroupId);
 
+    // IF THE GROUP ASSIGNED TO THE DEFAULT DEPT HAS BEEN DELETED,
+    // this.GROUP_ID_NOT_EXIST IS SET TO TRUE - IN THIS USE-CASE IS SHOWED THE SELECT OPTION
+    // 'GROUP ERROR' AND the CLASS errorGroup OF THE HTML TAG select IS SET TO TRUE
+    // - IF THE USER SELECT ANOTHER OPTION this.GROUP_ID_NOT_EXIST IS SET TO false
+    if (this.selectedGroupId !== 'Group error') {
+      this.GROUP_ID_NOT_EXIST = false
+    }
+
     // if (this.selectedGroupId !== 'ALL_USERS_SELECTED') {
     // }
-    
+
     // SET TO null THE ID OF GROUP IF IS SELECTED 'ALL USER'
     if (this.selectedGroupId === 'ALL_USERS_SELECTED') {
 
@@ -243,7 +275,7 @@ export class RoutingPageComponent implements OnInit {
     this.SHOW_OPTION_FORM = show_option_form;
     this.ROUTING_SELECTED = routing
     // tslint:disable-next-line:max-line-length
-    console.log('HAS CLICKED ASSIGNABLE - SHOW GROUP OPTION: ',  this.SHOW_GROUP_OPTION_FORM , ' SHOW BOT OPTION: ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
+    console.log('HAS CLICKED ASSIGNABLE - SHOW GROUP OPTION: ', this.SHOW_GROUP_OPTION_FORM, ' SHOW BOT OPTION: ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
 
     // ONLY FOR THE EDIT VIEW (see above in ngOnInit the logic for the EDIT VIEW)
     this.dept_routing = 'assigned'
@@ -257,7 +289,7 @@ export class RoutingPageComponent implements OnInit {
     this.SHOW_OPTION_FORM = show_option_form;
     this.ROUTING_SELECTED = routing
     // tslint:disable-next-line:max-line-length
-    console.log('HAS CLICKED FIXED - SHOW GROUP OPTION: ' , this.SHOW_GROUP_OPTION_FORM , ' SHOW BOT OPTION: ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
+    console.log('HAS CLICKED FIXED - SHOW GROUP OPTION: ', this.SHOW_GROUP_OPTION_FORM, ' SHOW BOT OPTION: ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
     // ONLY FOR THE EDIT VIEW (see above in ngOnInit the logic for the EDIT VIEW)
     this.dept_routing = 'fixed'
     this.BOT_NOT_SELECTED = true;
@@ -271,7 +303,7 @@ export class RoutingPageComponent implements OnInit {
     this.SHOW_OPTION_FORM = show_option_form;
     this.ROUTING_SELECTED = routing
     // tslint:disable-next-line:max-line-length
-    console.log('HAS CLICKED POOLED: - SHOW GROUP OPTION: ', this.SHOW_GROUP_OPTION_FORM , ' SHOW BOT OPTION: ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
+    console.log('HAS CLICKED POOLED: - SHOW GROUP OPTION: ', this.SHOW_GROUP_OPTION_FORM, ' SHOW BOT OPTION: ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
 
     // ONLY FOR THE EDIT VIEW (see above in ngOnInit the logic for the EDIT VIEW)
     this.dept_routing = 'pooled'
@@ -322,7 +354,10 @@ export class RoutingPageComponent implements OnInit {
       },
       () => {
         console.log('PUT REQUEST * COMPLETE *');
-        this.SHOW_CIRCULAR_SPINNER = false;
+        setTimeout(() => {
+          this.SHOW_CIRCULAR_SPINNER = false
+        }, 300);
+
 
       });
 

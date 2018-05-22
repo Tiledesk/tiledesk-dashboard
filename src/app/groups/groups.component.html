@@ -80,21 +80,21 @@
                 </tr>
             
                 <tr *ngFor="let group of groupsList" >
-
-                  <td *ngIf="!group?.trashed">
+                    <!-- *ngIf="!group?.trashed" -->
+                  <td>
                     {{ group?.name }}
                   </td>
                    
-                  <td *ngIf="!group?.trashed">
+                  <td>
                     {{ group?._id }}
                   </td>
 
-                  <td *ngIf="!group?.trashed">
+                  <td>
                     {{ group?.createdAt | date: 'd/M/y'}}
                   </td>
                     
                   <!-- EDIT / DELETE GROUPS  -->
-                  <td *ngIf="!group?.trashed" class="td-actions text-right" style="padding-top:16px">
+                  <td class="td-actions text-right" style="padding-top:16px">
                     <!-- Modifica Gruppo -->
                     <button type="button" rel="tooltip" title="{{ 'GroupsPage.tooltipEditGroup' | translate }}" class="btn btn-primary btn-simple btn-xs" 
                       (click)='goToEditAddPage_edit(group?._id)'>
@@ -128,7 +128,7 @@
                     </button>
                   </td> -->
 
-                  <td *ngIf="!group?.trashed">
+                  <td>
                     {{ group?.members.length }}  
 
                   </td>
