@@ -37,7 +37,7 @@ export class GroupEditAddComponent implements OnInit {
   constructor(
     private router: Router,
     private auth: AuthService,
-    private groupService: GroupService,
+    // private groupService: GroupService,
     private route: ActivatedRoute,
     private groupsService: GroupService,
     private usersService: UsersService,
@@ -82,7 +82,7 @@ export class GroupEditAddComponent implements OnInit {
    * GET GROUP BY ID (FOR EDIT VIEW)
    */
   getGroupById() {
-    this.groupService.getGroupById(this.group_id).subscribe((group: any) => {
+    this.groupsService.getGroupById(this.group_id).subscribe((group: any) => {
       console.log('GROUP GET BY ID', group);
 
       // console.log('MONGO DB FAQ-KB NAME', this.faqKbNameToUpdate);
@@ -125,7 +125,7 @@ export class GroupEditAddComponent implements OnInit {
     console.log('HAS CLICKED CREATE NEW GROUP');
     console.log('Create GROUP - NAME ', this.groupName);
 
-    this.groupService.createGroup(this.groupName)
+    this.groupsService.createGroup(this.groupName)
       .subscribe((group) => {
         console.log('CREATE GROUP - POST DATA ', group);
 

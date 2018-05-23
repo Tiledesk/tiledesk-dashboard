@@ -5,12 +5,17 @@ import { Router } from '@angular/router';
 
 import { Project } from '../models/project-model';
 import { AuthService } from '../core/auth.service';
+import { GroupService } from '../services/group.service';
+
 
 @Component({
   selector: 'mongodb-departments',
   templateUrl: './departments.component.html',
   styleUrls: ['./departments.component.scss'],
 })
+
+
+
 export class DepartmentsComponent implements OnInit {
 
   departments: Department[];
@@ -35,10 +40,15 @@ export class DepartmentsComponent implements OnInit {
   project: Project;
   showSpinner = true;
 
+  groupName: string;
+  id_group: string;
+  groupIsTrashed: string;
+
   constructor(
     private mongodbDepartmentService: MongodbDepartmentService,
     private router: Router,
-    private auth: AuthService
+    private auth: AuthService,
+    private groupsService: GroupService
   ) { }
 
   ngOnInit() {
@@ -77,7 +87,24 @@ export class DepartmentsComponent implements OnInit {
       console.log('DEPARTMENTS (FILTERED FOR PROJECT ID)', departments);
 
       this.showSpinner = false;
-      this.departments = departments;
+
+      if (departments) {
+        this.departments = departments;
+
+        this.departments.forEach(dept => {
+
+           if (dept.routing === 'assigned' || dept.routing === 'pooled') {
+
+            if (dept.id_group !== null && dept.id_group !== undefined) {
+              this.getGroupById(dept.id_group)
+            }
+
+          }
+
+        });
+      }
+
+
     },
       error => {
         this.showSpinner = false;
@@ -86,6 +113,42 @@ export class DepartmentsComponent implements OnInit {
       () => {
         console.log('DEPARTMENTS (FILTERED FOR PROJECT ID) - COMPLETE')
       });
+
+  }
+
+
+ /**
+  * GET GROUP BY ID
+  */
+  getGroupById(id_group) {
+    this.groupsService.getGroupById(id_group).subscribe((group: any) => {
+
+      if (group) {
+        console.log(' -- > GROUP GET BY ID', group);
+
+        this.groupName = group.name
+        this.groupIsTrashed = group.trashed
+        console.log(' -- > GROUP NAME ', this.groupName, 'is TRASHED ', this.groupIsTrashed);
+        for (const dept of this.departments) {
+
+          if (dept.id_group === group._id) {
+
+            if (dept.routing === 'assigned' || dept.routing === 'pooled') {
+
+              dept.hasGroupName = this.groupName
+
+              if (group.trashed === true ) {
+
+                dept.groupHasBeenTrashed = true
+              }
+
+            }
+          }
+        }
+
+      }
+
+    });
 
   }
 

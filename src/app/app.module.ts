@@ -92,7 +92,7 @@ import { RequestsMsgsComponent } from './requests-msgs/requests-msgs.component';
 import { GroupService } from './services/group.service';
 import { GroupsComponent } from './groups/groups.component';
 import { GroupEditAddComponent } from './group-edit-add/group-edit-add.component';
-
+import { GroupNamePipe } from './groupname.pipe';
 
 
 // AoT requires an exported function for factories
@@ -143,7 +143,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     RequestsMsgsComponent,
     GroupsComponent,
     GroupEditAddComponent,
-
+    GroupNamePipe
   ],
   imports: [
     BrowserModule,

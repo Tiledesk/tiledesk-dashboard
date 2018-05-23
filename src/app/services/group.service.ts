@@ -174,7 +174,7 @@ export class GroupService {
       .map((res) => res.json());
   }
 
-  /**
+/**
  * READ DETAIL (GET BY ID)
  */
   public getGroupById(id_group: string): Observable<Group[]> {

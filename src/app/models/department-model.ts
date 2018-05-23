@@ -7,6 +7,8 @@ export interface Department {
     createdBy: string;
     id_bot: string;
     id_group: string;
+    hasGroupName: string;
+    groupHasBeenTrashed: boolean;
     routing: string;
     __v: any;
 }
