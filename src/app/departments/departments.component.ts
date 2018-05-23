@@ -27,7 +27,7 @@ export class DepartmentsComponent implements OnInit {
   DISPLAY_DATA_FOR_UPDATE_MODAL = false;
   DISPLAY_DATA_FOR_DELETE_MODAL = false;
   // set to none the property display of the modal
-  display = 'none';
+  displayDeleteModal = 'none';
 
   // DATA DISPLAYED IN THE 'DELETE' MODAL
   id_toDelete: string;
@@ -93,7 +93,7 @@ export class DepartmentsComponent implements OnInit {
 
         this.departments.forEach(dept => {
 
-           if (dept.routing === 'assigned' || dept.routing === 'pooled') {
+          if (dept.routing === 'assigned' || dept.routing === 'pooled') {
 
             if (dept.id_group !== null && dept.id_group !== undefined) {
               this.getGroupById(dept.id_group)
@@ -117,9 +117,9 @@ export class DepartmentsComponent implements OnInit {
   }
 
 
- /**
-  * GET GROUP BY ID
-  */
+  /**
+   * GET GROUP BY ID
+   */
   getGroupById(id_group) {
     this.groupsService.getGroupById(id_group).subscribe((group: any) => {
 
@@ -137,7 +137,7 @@ export class DepartmentsComponent implements OnInit {
 
               dept.hasGroupName = this.groupName
 
-              if (group.trashed === true ) {
+              if (group.trashed === true) {
 
                 dept.groupHasBeenTrashed = true
               }
@@ -196,17 +196,16 @@ export class DepartmentsComponent implements OnInit {
    * MODAL DELETE DEPARTMENT
    * @param id
    * @param deptName
-   * @param hasClickedDeleteModal
    */
-  openDeleteModal(id: string, deptName: string, hasClickedDeleteModal: boolean) {
-    console.log('HAS CLICKED OPEN DELETE MODAL TO CONFIRM BEFORE TO DELETE ', hasClickedDeleteModal);
-    console.log('ON MODAL DELETE OPEN -> USER ID ', id);
-    this.DISPLAY_DATA_FOR_DELETE_MODAL = hasClickedDeleteModal;
+  openDeleteModal(id: string, deptName: string) {
+
+    console.log('ON MODAL DELETE OPEN -> DEPT ID ', id);
+
     this.DISPLAY_DATA_FOR_UPDATE_MODAL = false;
 
-    if (hasClickedDeleteModal) {
-      this.display = 'block';
-    }
+
+    this.displayDeleteModal = 'block';
+
 
     this.id_toDelete = id;
     this.deptName_toDelete = deptName;
@@ -216,7 +215,7 @@ export class DepartmentsComponent implements OnInit {
    * DELETE DEPARTMENT (WHEN THE 'CONFIRM' BUTTON IN MODAL IS CLICKED)
    */
   onCloseDeleteModalHandled() {
-    this.display = 'none';
+    this.displayDeleteModal = 'none';
 
     this.mongodbDepartmentService.deleteMongoDbDeparment(this.id_toDelete).subscribe((data) => {
       console.log('DELETE DATA ', data);
@@ -237,28 +236,28 @@ export class DepartmentsComponent implements OnInit {
 
   }
 
-  /**
-   * MODAL UPDATE DEPARTMENT
+  /** !!! NO MORE USED
+   * MODAL UPDATE DEPARTMENT 
    * @param id
    * @param deptName
    * @param hasClickedUpdateModal
    */
-  openUpdateModal(id: string, deptName: string, hasClickedUpdateModal: boolean) {
-    // display the modal windows (change the display value in the view)
-    console.log('HAS CLICKED OPEN MODAL TO UPDATE USER DATA ', hasClickedUpdateModal);
-    this.DISPLAY_DATA_FOR_UPDATE_MODAL = hasClickedUpdateModal;
-    this.DISPLAY_DATA_FOR_DELETE_MODAL = false;
+  // openUpdateModal(id: string, deptName: string, hasClickedUpdateModal: boolean) {
+  //   // display the modal windows (change the display value in the view)
+  //   console.log('HAS CLICKED OPEN MODAL TO UPDATE USER DATA ', hasClickedUpdateModal);
+  //   this.DISPLAY_DATA_FOR_UPDATE_MODAL = hasClickedUpdateModal;
+  //   this.DISPLAY_DATA_FOR_DELETE_MODAL = false;
 
-    if (hasClickedUpdateModal) {
-      this.display = 'block';
-    }
+  //   if (hasClickedUpdateModal) {
+  //     this.display = 'block';
+  //   }
 
-    console.log('ON MODAL OPEN -> CONTACT ID ', id);
-    console.log('ON MODAL OPEN -> CONTACT FULL-NAME TO UPDATE', deptName);
+  //   console.log('ON MODAL OPEN -> CONTACT ID ', id);
+  //   console.log('ON MODAL OPEN -> CONTACT FULL-NAME TO UPDATE', deptName);
 
-    this.id_toUpdate = id;
-    this.deptName_toUpdate = deptName;
-  }
+  //   this.id_toUpdate = id;
+  //   this.deptName_toUpdate = deptName;
+  // }
 
   /**
    * UPDATE CONTACT (WHEN THE 'SAVE' BUTTON IN MODAL IS CLICKED)
@@ -289,7 +288,7 @@ export class DepartmentsComponent implements OnInit {
 
   // CLOSE MODAL WITHOUT SAVE THE UPDATES OR WITHOUT CONFIRM THE DELETION
   onCloseModal() {
-    this.display = 'none';
+    this.displayDeleteModal = 'none';
   }
 
 }

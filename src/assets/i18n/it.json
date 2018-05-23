@@ -189,8 +189,11 @@
         "CreationDate": "Data creazione",
         "Actions": "Azioni",
         "NoDept": "Nessun Dipartimento",
-        "DeleteDepartmentWithId": "Elimina dipartmento con id:",
+        "DeleteDepartment": "Elimina dipartmento",
+        "DeleteDepartmentWithId": "Il dipartmento con id:",
+        "WillBeDeleted":"sarà eliminato",
         "AreYouSure": "Sei sicuro di voler eliminare il dipartimento ",
+        "Cancel":"Annulla",
         "Confirm": "Conferma",
         "tooltipDeleteDept": "Elimina Dipartimento",
         "tooltipEditDept": "Modifica Dipartimento"

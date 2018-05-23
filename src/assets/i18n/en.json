@@ -187,8 +187,11 @@
         "CreationDate": "Creation date",
         "Actions": "Actions",
         "NoDept": "No Departments",
-        "DeleteDepartmentWithId": "Delete department with id:",
+        "DeleteDepartment": "Delete department",
+        "DeleteDepartmentWithId": "The department with id:",
+        "WillBeDeleted":"will be deleted",
         "AreYouSure": "Are you sure you want to delete the department ",
+        "Cancel":"Cancel",
         "Confirm": "Confirm",
         "tooltipDeleteDept": "Delete Department",
         "tooltipEditDept": "Edit Department"
