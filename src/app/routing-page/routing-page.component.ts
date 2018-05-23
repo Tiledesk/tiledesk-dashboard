@@ -250,9 +250,7 @@ export class RoutingPageComponent implements OnInit {
       this.BOT_NOT_SELECTED = true;
     }
   }
-  focusFunction() {
-    console.log('ON click WORKS ', this.selectedGroupId)
-  }
+
 
   setSelectedGroup(id: any): void {
     this.selectedGroupId = id;
@@ -327,7 +325,7 @@ export class RoutingPageComponent implements OnInit {
     console.log('DEPT FULL-NAME WHEN EDIT IS PRESSED ', this.default_dept_name);
     console.log('BOT ID WHEN EDIT IS PRESSED IF USER HAS SELECT ANOTHER BOT', this.selectedBotId);
     console.log('BOT ID WHEN EDIT IS PRESSED IF USER ! DOES NOT SELECT A ANOTHER BOT', this.botId);
-    console.log('GROP ID WHEN EDIT IS PRESSED ', this.selectedGroupId);
+    console.log('GROUP ID WHEN EDIT IS PRESSED ', this.selectedGroupId);
     console.log('* DEPT_ROUTING WHEN EDIT IS PRESSED ', this.dept_routing);
     console.log('* ROUTING_SELECTED WHEN EDIT IS PRESSED ', this.ROUTING_SELECTED);
 

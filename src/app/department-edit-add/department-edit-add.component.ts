@@ -36,6 +36,7 @@ export class DepartmentEditAddComponent implements OnInit {
   BOT_NOT_SELECTED: boolean;
 
   SHOW_OPTION_FORM: boolean;
+  SHOW_GROUP_OPTION_FORM: boolean;
 
   ROUTING_SELECTED: string;
 
@@ -50,6 +51,7 @@ export class DepartmentEditAddComponent implements OnInit {
   project: Project;
 
   groupsList: Group[];
+  GROUP_ID_NOT_EXIST: boolean;
 
   constructor(
     private router: Router,
@@ -90,6 +92,7 @@ export class DepartmentEditAddComponent implements OnInit {
       // this.ROUTING_SELECTED = 'fixed';
       this.SHOW_OPTION_FORM = false;
       this.ROUTING_SELECTED = 'assigned';
+      this.dept_routing = 'assigned';
       this.BOT_NOT_SELECTED = true;
       console.log('ON INIT (IF HAS SELECT CREATE) SHOW OPTION FORM ', this.SHOW_OPTION_FORM, 'ROUTING SELECTED ', this.ROUTING_SELECTED);
 
@@ -164,6 +167,28 @@ export class DepartmentEditAddComponent implements OnInit {
         console.log('+ + GET GROUPS * COMPLETE');
 
       });
+  }
+
+  setSelectedGroup(id: any): void {
+    this.selectedGroupId = id;
+    console.log('GROUP ID SELECTED: ', this.selectedGroupId);
+
+    // IF THE GROUP ASSIGNED TO THE DEPT HAS BEEN DELETED,
+    // this.GROUP_ID_NOT_EXIST IS SET TO TRUE - IN THIS USE-CASE IS SHOWED THE SELECT OPTION
+    // 'GROUP ERROR' AND the CLASS errorGroup OF THE HTML TAG select IS SET TO TRUE
+    // - IF THE USER SELECT ANOTHER OPTION this.GROUP_ID_NOT_EXIST IS SET TO false
+    if (this.selectedGroupId !== 'Group error') {
+      this.GROUP_ID_NOT_EXIST = false
+    }
+
+    // if (this.selectedGroupId !== 'ALL_USERS_SELECTED') {
+    // }
+
+    // SET TO null THE ID OF GROUP IF IS SELECTED 'ALL USER'
+    if (this.selectedGroupId === 'ALL_USERS_SELECTED') {
+
+      this.selectedGroupId = null;
+    }
   }
 
   getCurrentProject() {
@@ -242,7 +267,8 @@ export class DepartmentEditAddComponent implements OnInit {
    */
   createDepartment() {
     console.log('MONGO DB DEPT-NAME DIGIT BY USER ', this.dept_name);
-    this.mongodbDepartmentService.addMongoDbDepartments(this.dept_name, this.selectedBotId, this.ROUTING_SELECTED)
+    console.log('GROUP ID WHEN CREATE IS PRESSED ', this.selectedGroupId);
+    this.mongodbDepartmentService.addMongoDbDepartments(this.dept_name, this.selectedBotId, this.selectedGroupId, this.ROUTING_SELECTED)
       .subscribe((department) => {
         console.log('POST DATA DEPT', department);
       },
@@ -255,11 +281,12 @@ export class DepartmentEditAddComponent implements OnInit {
         });
   }
 
-  has_clicked_assigned(show_option_form: boolean, routing: string) {
+  has_clicked_assigned(show_group_option_form: boolean, show_option_form: boolean, routing: string) {
 
+    this.SHOW_GROUP_OPTION_FORM = show_group_option_form;
     this.SHOW_OPTION_FORM = show_option_form;
     this.ROUTING_SELECTED = routing
-    console.log('HAS CLICKED ASSIGNABLE - SHOW OPTION ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
+    console.log('HAS CLICKED ASSIGNABLE - SHOW GROUP OPTION ',this.SHOW_GROUP_OPTION_FORM , ' SHOW BOT OPTION: ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
 
     // ONLY FOR THE EDIT VIEW (see above in ngOnInit the logic for the EDIT VIEW)
     this.dept_routing = 'assigned'
@@ -277,13 +304,14 @@ export class DepartmentEditAddComponent implements OnInit {
     this.BOT_NOT_SELECTED = true;
   }
 
-  has_clicked_pooled(show_option_form: boolean, routing: string) {
+  has_clicked_pooled(show_group_option_form: boolean, show_option_form: boolean, routing: string) {
     // console.log('HAS CLICKED POOLED')
     // this.HAS_CLICKED_FIXED = false;
     // this.HAS_CLICKED_POOLED = true;
+    this.SHOW_GROUP_OPTION_FORM = show_group_option_form;
     this.SHOW_OPTION_FORM = show_option_form;
     this.ROUTING_SELECTED = routing
-    console.log('HAS CLICKED POOLED  - SHOW OPTION ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
+    console.log('HAS CLICKED POOLED  - SHOW GROUP OPTION ', this.SHOW_GROUP_OPTION_FORM, ' SHOW BOT OPTION: ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
 
     // ONLY FOR THE EDIT VIEW (see above in ngOnInit the logic for the EDIT VIEW)
     this.dept_routing = 'pooled'

@@ -26,7 +26,7 @@
 
                   <div class="col-sm-12" style="padding-left:45px; padding-top:0px">
 
-                    <!--     ASSIGNABLE    -->
+                    <!--     ASSIGNED    -->
                     <div class="row">
                     <div class="col-sm-2" style="height: 36px;">
                       <div class="form-check" style="padding-top: 8px;">
@@ -40,7 +40,7 @@
                     </div>
 
                     <!-- // NEW - START SELECT GROUP FOR ROUTING ASSIGNED -->
-                    <span *ngIf="dept_routing === 'assigned' ">
+                    <span *ngIf="dept_routing === 'assigned'">
                       <span *ngIf="SHOW_GROUP_OPTION_FORM !== 'false'"> 
                         <div class="col-sm-10">
                           <select #selectElem (change)="setSelectedGroup(selectElem.value)" style="min-width: 150px;" [ngClass]="{'errorGroup' : GROUP_ID_NOT_EXIST}">

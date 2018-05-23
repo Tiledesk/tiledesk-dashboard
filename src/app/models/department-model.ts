@@ -6,6 +6,7 @@ export interface Department {
     id_project: string;
     createdBy: string;
     id_bot: string;
+    id_group: string;
     routing: string;
     __v: any;
 }
