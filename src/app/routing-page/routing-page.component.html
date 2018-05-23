@@ -3,32 +3,31 @@
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
 
-      <div class="row">
+    <div class="row">
 
-        <loading-spinner *ngIf="showSpinner"></loading-spinner>
+      <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
         <span *ngIf="!showSpinner">
-        <div class="col-md-8">
+          <div class="col-md-8">
 
+            <div class="card">
+              <div class="card-content" style="padding-top: 25px; ">
 
-          <div class="card">
-            <div class="card-content" style="padding-top: 25px; ">
-
-                <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; padding-left: 15px; padding-bottom: 15px;">
-                  <!-- Setting up Tile Desk routing rules -->
-                  {{ "RoutingPage.SettingUpTileDeskRoutingRules" | translate  }}
-                </h4>
-                
-                <!-- // COMMENTO QUESTO -->
-                  <!-- <div class="col-sm-8" style="display: none">
-                    <input [(ngModel)]="default_dept_name" class="" type="text">
-                  </div> -->
+                  <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; padding-left: 15px; padding-bottom: 15px;">
+                    <!-- Setting up Tile Desk routing rules -->
+                    {{ "RoutingPage.SettingUpTileDeskRoutingRules" | translate  }}
+                  </h4>
+                  
+                    <!-- // COMMENTO QUESTO -->
+                    <!-- <div class="col-sm-8" style="display: none">
+                      <input [(ngModel)]="default_dept_name" class="" type="text">
+                    </div> -->
 
                   <div class="col-sm-12" style="padding-left:45px; padding-top:0px">
 
                     <!--     ASSIGNED    -->
                     <div class="row">
-                    <div class="col-sm-2" style="height: 36px;">
+                    <div class="col-sm-2 col-md-3" style="height: 36px;">
                       <div class="form-check" style="padding-top: 8px;">
                         <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3"
                         (click)="has_clicked_assigned(show_group_option_form = 'true', show_option_form = 'false', routing = 'assigned')" [checked]="dept_routing === 'assigned'">
@@ -42,9 +41,9 @@
                     <!-- // NEW - START SELECT GROUP FOR ROUTING ASSIGNED -->
                     <span *ngIf="dept_routing === 'assigned'">
                       <span *ngIf="SHOW_GROUP_OPTION_FORM !== 'false'"> 
-                        <div class="col-sm-10">
+                        <div class="col-sm-10 col-md-9">
                           <select #selectElem (change)="setSelectedGroup(selectElem.value)" style="min-width: 150px;" [ngClass]="{'errorGroup' : GROUP_ID_NOT_EXIST}">
-  
+
                             <!-- // IF THE GROUP ASSIGNED TO THE DEFAULT DEPT HAS BEEN DELETED, IT IS DISPLAYED: 'THE GROUP DOES NOT EXIST' -->
                             <option style="color: #ff5252 !important;" *ngIf="GROUP_ID_NOT_EXIST" [selected]="GROUP_ID_NOT_EXIST">
                               <p>Error: group id {{ selectedGroupId }} trashed</p>
@@ -55,7 +54,7 @@
                               {{ "RoutingPage.AllUsers" | translate  }}                          
                             </option>
                       
-         
+          
                             <option  *ngFor="let group of groupsList" [value]="group?._id" [selected]="selectedGroupId === group?._id">
                               {{group?.name}}
                             </option>
@@ -66,10 +65,10 @@
 
                   </div>
                     <!-- // END - SELECT GROUP -->
-  
-                    <!--    POOLED     -->
-                    <div class="row">
-                    <div class="col-sm-2" style="height: 36px;">
+
+                  <!--    POOLED     -->
+                  <div class="row">
+                    <div class="col-sm-2 col-md-3" style="height: 36px;">
                       <div class="form-check" style="padding-top:8px;">
                         <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" 
                         (click)="has_clicked_pooled(show_group_option_form = 'true', show_option_form = 'false', routing = 'pooled')" [checked]="dept_routing === 'pooled'">
@@ -83,7 +82,7 @@
                     <!-- // NEW - START SELECT GROUP FOR ROUTING POOLED -->
                     <span *ngIf="dept_routing === 'pooled'">
                       <span *ngIf="SHOW_GROUP_OPTION_FORM !== 'false'"> 
-                        <div class="col-sm-10">
+                        <div class="col-sm-10 col-md-9">
                           <select #selectElem (change)="setSelectedGroup(selectElem.value)" style="min-width: 150px;" [ngClass]="{'errorGroup' : GROUP_ID_NOT_EXIST}">
                             
                             <!-- // IF THE GROUP ASSIGNED TO THE DEFAULT DEPT HAS BEEN DELETED, IT IS DISPLAYED: 'THE GROUP DOES NOT EXIST' -->
@@ -104,10 +103,10 @@
                       </span>
                     </span> 
                   </div>
-  
-                    <!--     BOT (IT'S ACTUALLY FAQ-KB)   -->
-                    <div class="row">
-                    <div class="col-sm-2" style="height: 36px;">
+
+                  <!--     BOT (IT'S ACTUALLY FAQ-KB)   -->
+                  <div class="row">
+                    <div class="col-sm-2 col-md-3" style="height: 36px;">
                       <div class="form-check" style="padding-top:10px; padding-bottom:8px; ">
                           <!-- checked="true" -->
                         <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" 
@@ -123,7 +122,7 @@
 
                     <span *ngIf="dept_routing === 'fixed'">  
                       <span *ngIf=" SHOW_OPTION_FORM !== 'false'">
-                        <div class="col-sm-10">
+                        <div class="col-sm-10 col-md-9">
                           <select #selectElem (change)="setSelectedBot(selectElem.value)"  >
     
                             <option class="not_selected" value="BOT_NOT_SELECTED">{{ "DeptsAddEditPage.SelectABot" | translate }}</option>
@@ -132,7 +131,7 @@
                               {{bot.name}} 
                             </option>
                           </select>
-  
+
                           <a style="margin-left: 8px; color: #03a5e8; cursor:pointer" (click)="goTo_BotEditAddPage_CREATE()"> 
                           <!-- o Crea un nuovo Bot  -->
                           {{ "DeptsAddEditPage.orCreateABot" | translate }}
@@ -143,125 +142,128 @@
 
                   </div>
                 </div>
-                  <!-- ./end col-sm-12 -->
+                <!-- ./end col-sm-12 -->
 
-                  <!-- SPACER -->
-                  <div class="col-sm-12" style="height:15px"></div>
-             
-                  <div class="col-sm-10" style="margin-left: 16px; margin-bottom: 25px;"> 
+                <!-- SPACER -->
+                <div class="col-sm-12" style="height:15px"></div>
+              
+                <!-- // BUTTONS -->
+                <div class="col-sm-10" style="margin-left: 16px; margin-bottom: 25px;"> 
 
-                    <!-- <span *ngIf="SHOW_OPTION_FORM === 'true'"> -->
-                        <span *ngIf="dept_routing === 'fixed'">  
-                      <button class="btn btn-success" (click)="edit()" [disabled]="BOT_NOT_SELECTED === true">             
+                  <!-- <span *ngIf="SHOW_OPTION_FORM === 'true'"> -->
+                  <span *ngIf="dept_routing === 'fixed'">  
+                    <button class="btn btn-success" (click)="edit()" [disabled]="BOT_NOT_SELECTED === true">             
+                      <!-- Update routing rules -->
+                      <!-- ROUTING: {{ dept_routing }} BOT_NOT_SELECTED: {{BOT_NOT_SELECTED }} -->
+                      {{ "RoutingPage.UpdateRoutingRules" | translate  }}
+                    </button>
+                  </span>
+                  <!-- <span *ngIf="SHOW_OPTION_FORM !== 'true'"> -->
+                  <span *ngIf="dept_routing === 'assigned' || dept_routing === 'pooled'">
+                    <button class="btn btn-success" (click)="edit()" [disabled]='GROUP_ID_NOT_EXIST'>
                         <!-- Update routing rules -->
-                        <!-- ROUTING: {{ dept_routing }} BOT_NOT_SELECTED: {{BOT_NOT_SELECTED }} -->
-                        {{ "RoutingPage.UpdateRoutingRules" | translate  }}
-                      </button>
-                    </span>
-                    <!-- <span *ngIf="SHOW_OPTION_FORM !== 'true'"> -->
-                        <span *ngIf="dept_routing === 'assigned' || dept_routing === 'pooled'">
-                      <button class="btn btn-success" (click)="edit()" [disabled]='GROUP_ID_NOT_EXIST'>
-                         <!-- Update routing rules -->
-                       
-                        <!-- ROUTING: {{ dept_routing }} GROUP_ID_NOT_EXIST: {{GROUP_ID_NOT_EXIST }} -->
-                        {{ "RoutingPage.UpdateRoutingRules" | translate  }}
-                      </button>
-                    </span>
-                  </div>
+                      
+                      <!-- ROUTING: {{ dept_routing }} GROUP_ID_NOT_EXIST: {{GROUP_ID_NOT_EXIST }} -->
+                      {{ "RoutingPage.UpdateRoutingRules" | translate  }}
+                    </button>
+                  </span>
+                </div>
 
-                </div> 
-                <!-- // /.end card content -->
+              </div> 
+              <!-- // /.end card content -->
+            </div>
+          </div>
+
+          <!-- RIGHT SIDEBAR -->
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-content" style="padding-top: 25px; ">
+                <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; margin-bottom: 15px">
+                  <!-- Quick tips -->
+                  {{ "RoutingPage.QuickTips" | translate  }}
+                </h4>
+
+                <p style="margin-bottom: 3px"> <strong>Assigned </strong></p>
+                <p style="color:#999999">
+                    
+                    Assigned chats help maintain an even workload distribution, especially for larger teams. Chat limits keep agents from getting overwhelmed by chats, especially during high traffic. Experienced agents can help clear the queue faster with the Hybrid Assignment Mode. Enable Reassignments and Automatic Idle to reduce visitor wait time by preventing chats from getting assigned to inactive agents.
+                </p>
+
+                <p style="margin-bottom: 3px"> <strong>Pooled </strong></p>
+                <p style="color:#999999">
+                    
+                    Pooled chats give agents more autonomy, allowing them to work at their own pace. Set a chat limit to control quality by preventing agents from taking on too many chats at once.
+                </p>
+
+                <p style="margin-bottom: 3px"> <strong>Bot </strong></p>
+                <p style="color:#999999">
+                    
+                    Select a bot that responds automatically.
+                </p>
               </div>
             </div>
-
-            <!-- RIGHT SIDEBAR -->
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-content" style="padding-top: 25px; ">
-                      <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; margin-bottom: 15px">
-                        <!-- Quick tips -->
-                        {{ "RoutingPage.QuickTips" | translate  }}
-                      </h4>
-
-                      <p style="margin-bottom: 3px"> <strong>Assigned </strong></p>
-                      <p style="color:#999999">
-                          
-                          Assigned chats help maintain an even workload distribution, especially for larger teams. Chat limits keep agents from getting overwhelmed by chats, especially during high traffic. Experienced agents can help clear the queue faster with the Hybrid Assignment Mode. Enable Reassignments and Automatic Idle to reduce visitor wait time by preventing chats from getting assigned to inactive agents.
-                      </p>
-
-                      <p style="margin-bottom: 3px"> <strong>Pooled </strong></p>
-                      <p style="color:#999999">
-                          
-                          Pooled chats give agents more autonomy, allowing them to work at their own pace. Set a chat limit to control quality by preventing agents from taking on too many chats at once.
-                      </p>
-
-                      <p style="margin-bottom: 3px"> <strong>Bot </strong></p>
-                      <p style="color:#999999">
-                          
-                          Select a bot that responds automatically.
-                      </p>
-                    </div>
-                </div>
-            </div>
-    </span>
-
-    <!-- MODAL - INFO WINDOWS -->
-    <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->  
-    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayInfoModal}" style="background-color: rgba(90,90,90,0.5);">
-        <div class="modal-dialog modal-sm" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
-                <span aria-hidden="true">&times;</span>
-              </button>
-  
-              <h4 class="modal-title">
-                <!-- Update routing rules -->
-                {{ "RoutingPage.UpdateRoutingRules" | translate  }}
-
-              </h4>
-            </div>
-  
-            <div class="modal-body">
-            
-              <span *ngIf="SHOW_CIRCULAR_SPINNER">
-                <div  class="loader" style="top:25%">
-                  <svg class="circular" viewBox="25 25 50 50">
-                    <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10"/>
-                  </svg>
-  
-                </div>
-                <p style="margin-top: 50px; text-align: center;">
-                    {{ "RoutingPage.Processing" | translate }}
-                </p>
-              </span>
-  
-              <span *ngIf="!SHOW_CIRCULAR_SPINNER">
-                <div  class="loader" style="top:5%">
-                  <i class="material-icons" style="color:#70b665">done</i>
-                  <span style="color:#70b665">
-                      {{ "RoutingPage.Completed" | translate }}
-                  </span> 
-  
-                </div>
-                <p style="margin-top: 50px; text-align: center;">
-                    <!-- Routing rules successfully updated -->
-                    {{ "RoutingPage.RoutingRulesSuccessfullyUpdated" | translate }}
-                </p>
-              </span>
-            </div>
-  
-            <div class="modal-footer" style="text-align: center;">
-              <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseInfoModalHandled()">
-                  Ok
-              </button>
-            </div>
-  
           </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
+        </span>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ============= MODAL - INFO WINDOWS ============= -->
+<!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->  
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayInfoModal}" style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title">
+          <!-- Update routing rules -->
+          {{ "RoutingPage.UpdateRoutingRules" | translate  }}
+
+        </h4>
       </div>
 
+      <div class="modal-body">
+      
+        <span *ngIf="SHOW_CIRCULAR_SPINNER">
+          <div  class="loader" style="top:25%">
+            <svg class="circular" viewBox="25 25 50 50">
+              <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+            </svg>
+
+          </div>
+          <p style="margin-top: 50px; text-align: center;">
+              {{ "RoutingPage.Processing" | translate }}
+          </p>
+        </span>
+
+        <span *ngIf="!SHOW_CIRCULAR_SPINNER">
+          <div  class="loader" style="top:5%">
+            <i class="material-icons" style="color:#70b665">done</i>
+            <span style="color:#70b665">
+                {{ "RoutingPage.Completed" | translate }}
+            </span> 
+
+          </div>
+          <p style="margin-top: 50px; text-align: center;">
+              <!-- Routing rules successfully updated -->
+              {{ "RoutingPage.RoutingRulesSuccessfullyUpdated" | translate }}
+          </p>
+        </span>
+      </div>
+
+      <div class="modal-footer" style="text-align: center;">
+        <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseInfoModalHandled()">
+            Ok
+        </button>
+      </div>
+
+    </div>
+    <!-- /.modal-content -->
   </div>
+  <!-- /.modal-dialog -->
 </div>

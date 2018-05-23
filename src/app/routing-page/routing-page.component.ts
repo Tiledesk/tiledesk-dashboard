@@ -146,7 +146,7 @@ export class RoutingPageComponent implements OnInit {
 
             console.log('ROUTING PAGE - DEPT - BOT ID: ', this.botId);
             console.log('ROUTING PAGE - DEPT - GROUP ID: ', this.selectedGroupId);
-            console.log('ROUTING PAGE - DEPT - ROUTING: ', this.selectedGroupId);
+            console.log('ROUTING PAGE - DEPT - ROUTING: ', this.dept_routing);
           }
         })
       }

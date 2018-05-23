@@ -156,6 +156,14 @@ export class DepartmentEditAddComponent implements OnInit {
 
       if (groups) {
         this.groupsList = groups;
+
+        console.log('for DEBUG GROUP ID SELECTED', this.selectedGroupId);
+
+        // CHECK IN THE GROUPS LIST THE GROUP-ID RETURNED FROM THE DEPT OBJECT.
+        // IF THE GROUP-ID DOES NOT EXIST MEANS THAT WAS DELETED
+        if (this.selectedGroupId !== null && this.selectedGroupId !== undefined) {
+          this.checkGroupId(this.selectedGroupId, this.groupsList)
+        }
       }
     },
       (error) => {
@@ -167,6 +175,20 @@ export class DepartmentEditAddComponent implements OnInit {
         console.log('+ + GET GROUPS * COMPLETE');
 
       });
+  }
+
+  checkGroupId(groupIdSelected, groups_list) {
+    this.GROUP_ID_NOT_EXIST = true;
+
+    for (let i = 0; i < groups_list.length; i++) {
+      const group_id = groups_list[i]._id;
+      if (group_id === groupIdSelected) {
+        this.GROUP_ID_NOT_EXIST = false;
+        break;
+      }
+    }
+    console.log('CHECK FOR GROUP ID - NOT EXIST?: ', this.GROUP_ID_NOT_EXIST)
+    return this.GROUP_ID_NOT_EXIST;
   }
 
   setSelectedGroup(id: any): void {
@@ -286,7 +308,7 @@ export class DepartmentEditAddComponent implements OnInit {
     this.SHOW_GROUP_OPTION_FORM = show_group_option_form;
     this.SHOW_OPTION_FORM = show_option_form;
     this.ROUTING_SELECTED = routing
-    console.log('HAS CLICKED ASSIGNABLE - SHOW GROUP OPTION ',this.SHOW_GROUP_OPTION_FORM , ' SHOW BOT OPTION: ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
+    console.log('HAS CLICKED ASSIGNABLE - SHOW GROUP OPTION ', this.SHOW_GROUP_OPTION_FORM, ' SHOW BOT OPTION: ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
 
     // ONLY FOR THE EDIT VIEW (see above in ngOnInit the logic for the EDIT VIEW)
     this.dept_routing = 'assigned'
@@ -337,7 +359,8 @@ export class DepartmentEditAddComponent implements OnInit {
 
       this.deptName_toUpdate = dept.name;
       this.botId = dept.id_bot;
-      this.dept_routing = dept.routing
+      this.dept_routing = dept.routing;
+      this.selectedGroupId = dept.id_group;
       // if (this.dept_routing === 'pooled' ) {
       //   this.SHOW_OPTION_FORM = false;
       // }
@@ -345,6 +368,7 @@ export class DepartmentEditAddComponent implements OnInit {
       console.log(' DEPT FULLNAME TO UPDATE: ', this.deptName_toUpdate);
       console.log(' BOT ID (IT IS ACTUALLY FAQ-KB ID) GET FROM DEPT OBJECT: ', this.botId);
       console.log(' DEPT ROUTING GET FROM DEPT OBJECT: ', this.dept_routing);
+      console.log(' GROUP ID GET FROM DEPT OBJECT: ', this.selectedGroupId);
 
     },
       (error) => {
@@ -362,8 +386,13 @@ export class DepartmentEditAddComponent implements OnInit {
           // this.showSpinner = false;
           // this.selectedValue = 'Selezione FAQ KB';
 
-          // getBotById() IS RUNNED ONLY IF THE BOT-ID (returned in the DEPT OBJECT) IS NOT undefined
+        } else if (this.botId == null) {
+
+          console.log(' !!! BOT ID NULL ', this.botId);
+
         } else {
+          // getBotById() IS RUNNED ONLY IF THE BOT-ID (returned in the DEPT OBJECT) 
+          // IS NOT undefined AND IS NOT null
           this.getBotById();
           console.log(' !!! BOT ID DEFINED ', this.botId);
         }
