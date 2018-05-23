@@ -11,6 +11,9 @@ import { FaqKbService } from '../services/faq-kb.service';
 import { Project } from '../models/project-model';
 import { AuthService } from '../core/auth.service';
 
+import { GroupService } from '../services/group.service';
+import { Group } from '../models/group-model';
+
 @Component({
   selector: 'app-department-edit-add',
   templateUrl: './department-edit-add.component.html',
@@ -46,17 +49,19 @@ export class DepartmentEditAddComponent implements OnInit {
 
   project: Project;
 
+  groupsList: Group[];
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private mongodbDepartmentService: MongodbDepartmentService,
     private botService: BotService,
     private faqKbService: FaqKbService,
-    private auth: AuthService
+    private auth: AuthService,
+    private groupService: GroupService
   ) { }
 
   ngOnInit() {
-
 
     /**
      * ==================================================================
@@ -129,9 +134,36 @@ export class DepartmentEditAddComponent implements OnInit {
 
     /**
      * ======================= GET FAQ-KB LIST =========================
-     * (THE FAQ-KB LIST COME BACK FROM THE CALLBACK - IS USED IN CREATE VIEW)
+     * THE FAQ-KB LIST COME BACK FROM THE CALLBACK
+     * IS USED TO POPULATE THE DROP-DOWN LIST 'SELECT A BOT' OF CREATE VIEW AND OF IN THE EDIT VIEW)
      */
     this.getFaqKbByProjecId()
+
+    this.getGroupsByProjectId();
+  }
+
+
+  /**
+   * ======================= GETS ALL GROUPS WITH THE CURRENT PROJECT-ID =======================
+   * USED TO POPULATE THE DROP-DOWN LIST 'GROUPS' ASSOCIATED TO THE ASSIGNED ANF POOLED ROUTING
+   */
+  getGroupsByProjectId() {
+    this.groupService.getGroupsByProjectId().subscribe((groups: any) => {
+      console.log('+ + GROUPS GET BY PROJECT ID', groups);
+
+      if (groups) {
+        this.groupsList = groups;
+      }
+    },
+      (error) => {
+        console.log('+ + GET GROUPS - ERROR ', error);
+
+        // this.showSpinner = false;
+      },
+      () => {
+        console.log('+ + GET GROUPS * COMPLETE');
+
+      });
   }
 
   getCurrentProject() {
@@ -166,8 +198,8 @@ export class DepartmentEditAddComponent implements OnInit {
 
   /**
    * GET THE FAQ-KB LIST FILTERING ALL THE FAQ-KB FOR THE CURRENT PROJECT ID
-   * NOTE: THE CURREN PROJECT ID IS OBTAINED IN THE FAQ-KB SERVICE
-   * * USED IN THE OPTION ITEM FORM OF THE CREATE VIEW *
+   * NOTE: THE CURRENT PROJECT ID IS OBTAINED IN THE FAQ-KB SERVICE
+   * * USED IN THE OPTION ITEM FORM OF THE CREATE VIEW AND OF THE EDIT VIEW *
    */
   getFaqKbByProjecId() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqkb: any) => {

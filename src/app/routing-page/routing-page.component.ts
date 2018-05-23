@@ -65,12 +65,12 @@ export class RoutingPageComponent implements OnInit {
 
     this.getGroupsByProjectId();
 
-
   }
 
 
-  /*
-   * GETS ALL GROUPS WITH THE CURRENT PROJECT-ID
+  /**
+   * ======================= GETS ALL GROUPS WITH THE CURRENT PROJECT-ID =======================
+   * USED TO POPULATE THE DROP-DOWN LIST 'GROUPS' ASSOCIATED TO THE ASSIGNED ANF POOLED ROUTING
    */
   getGroupsByProjectId() {
     this.groupService.getGroupsByProjectId().subscribe((groups: any) => {
