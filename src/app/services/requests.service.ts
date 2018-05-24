@@ -175,6 +175,9 @@ export class RequestsService {
 
   addOrUpdateRequestsList(r: Request) {
     // console.log('ID REQUEST  ', r.recipient)
+    if (r === null || r === undefined) {
+      return;
+    }
     for (let i = 0; i < this.requestList.length; i++) {
       if (r.recipient === this.requestList[i].recipient) {
         // UPDATE: SUBSTITUTE THE EXISTING REQUEST WITH THE MODIFIED ONE ...
@@ -214,6 +217,7 @@ export class RequestsService {
     //    !!! COMMENT THE LINE BELOW TO SEE THE ERROR MESSAGE IN CONSOLE !!!
     // db.settings({ timestampsInSnapshots: true });
 
+    // .where('departmentId', '==', '5b05319ffb1e724de404df57')
     const query = db.collection('conversations')
       .where('support_status', '<', 1000)
       .where('projectid', '==', this.project._id)
@@ -242,14 +246,24 @@ export class RequestsService {
           r.currentUserIsJoined = currentUserUidIsInMembers(data.members, this.currentUserID)
           r.requester_fullname = data.requester_fullname
           r.requester_id = data.requester_id
-          r.departmentName = data.departmentName
+          // r.departmentName = data.departmentName
+          // r.departmentId = data.departmentId
           r.attributes = data.attributes
 
-          // if (r.departmentID!=ITUOI DIP) {
-          //     salta
-          // }else {
-          return r;
+          // 5b05319ffb1e724de404df57 <- MIO DEPT
+          // && r.attributes.departmentId !== '5b05319ffb1e724de404df58'
+
+          // (!r.attributes.departmentId) &&
+
+          /* IF DIFFERENT OF MY DEPTS */
+          // if ((r.attributes.departmentId !== '5b05319ffb1e724de404df58')) {
+          //   console.log('KKKKK 1 -----> ', r.attributes.departmentId)
+          //   return null;
+          // } else {
+            console.log('KKKKK 2 -----> ', r.attributes.departmentId)
+            return r;
           // }
+
         });
         observer.next(requestListReturned);
         console.log('requestListReturned', requestListReturned)

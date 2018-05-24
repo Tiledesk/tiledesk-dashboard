@@ -16,6 +16,7 @@ export class MongodbDepartmentService {
   // MONGODB_BASE_URL = environment.mongoDbConfig.DEPARTMENTS_BASE_URL;
   BASE_URL = environment.mongoDbConfig.BASE_URL;
   MONGODB_BASE_URL: any;
+  MY_DEPTS_BASE_URL: any;
   // TOKEN =  environment.mongoDbConfig.TOKEN;
   TOKEN: string
   user: any;
@@ -56,6 +57,7 @@ export class MongodbDepartmentService {
       if (this.project) {
         console.log('00 -> DEPT SERVICE project ID from AUTH service subscription  ', this.project._id)
         this.MONGODB_BASE_URL = this.BASE_URL + this.project._id + '/departments/'
+        this.MY_DEPTS_BASE_URL = this.BASE_URL + this.project._id + '/departments/mydepartments'
       }
     });
   }
@@ -106,6 +108,21 @@ export class MongodbDepartmentService {
       .get(url, { headers })
       .map((response) => response.json());
   }
+
+  // GET MY_DEPTS
+  public getMyDepts(): Observable<Department[]> {
+    const url = this.MY_DEPTS_BASE_URL;
+    // url += '?id_project=' + id_project;
+
+    console.log('MY DEPS URL', url);
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
 
   /**
    * READ DETAIL (GET BOT BY BOT ID)

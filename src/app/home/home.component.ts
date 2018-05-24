@@ -7,7 +7,7 @@ import { Project } from '../models/project-model';
 import { Router } from '@angular/router';
 import { UsersService } from '../services/users.service';
 import { UsersLocalDbService } from '../services/users-local-db.service';
-
+import { MongodbDepartmentService } from '../services/mongodb-department.service';
 
 @Component({
   selector: 'home',
@@ -37,7 +37,8 @@ export class HomeComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private usersService: UsersService,
-    private usersLocalDbService: UsersLocalDbService
+    private usersLocalDbService: UsersLocalDbService,
+    private departmentService: MongodbDepartmentService
   ) { }
 
   ngOnInit() {
@@ -63,6 +64,22 @@ export class HomeComponent implements OnInit {
     // IS USED TO DETERMINE IF THE USER IS AVAILABLE OR NOT AVAILABLE
     this.getProjectUser();
 
+    // ====== GET MY DEPTS ======
+    this.getMyDepts();
+  }
+
+  getMyDepts() {
+
+    this.departmentService.getMyDepts().subscribe((depts: any) => {
+      console.log('HOME COMP - GET MY DEPTS', depts);
+
+    },
+      (error) => {
+        console.log('HOME COMP - GET MY DEPTS ', error);
+      },
+      () => {
+        console.log('HOME COMP - GET MY DEPTS * COMPLETE *');
+      });
   }
 
   getCurrentProject() {

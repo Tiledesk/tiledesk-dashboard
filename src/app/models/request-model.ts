@@ -21,5 +21,6 @@ export interface Request {
   served_by?: any;
   notification_already_shown?: boolean;
   attributes?: any;
-  departmentName?: string;
+  // departmentName?: string;
+  // departmentId?: string;
 }
