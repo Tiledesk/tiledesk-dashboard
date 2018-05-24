@@ -244,7 +244,12 @@ export class RequestsService {
           r.requester_id = data.requester_id
           r.departmentName = data.departmentName
           r.attributes = data.attributes
+
+          // if (r.departmentID!=ITUOI DIP) {
+          //     salta
+          // }else {
           return r;
+          // }
         });
         observer.next(requestListReturned);
         console.log('requestListReturned', requestListReturned)

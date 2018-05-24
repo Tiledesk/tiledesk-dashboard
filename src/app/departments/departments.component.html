@@ -1,5 +1,3 @@
-
-
 <p style="margin-top:10px; padding-left:30px" class="navbar-brand">{{ "Departments" | translate }}</p> 
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
@@ -32,7 +30,6 @@
                     <span style="color: #566787">
                       <!-- Dept Name -->
                       <strong>
-                        <!-- Nome Dipart. -->
                         {{ "Name" | translate }}
                       </strong>
                     </span>
@@ -69,6 +66,7 @@
                       </strong>
                     </span>
                   </th>
+
                   <th>
                     <span style="color: #566787">
                       <strong>
@@ -86,9 +84,9 @@
                   <td colspan="5" style="text-align: center; padding-top: 16px;">
                     <!-- color: #ff5252   -->
                     <p style="font-size:1em; color:#999999; font-weight: 400">
-                        <!-- Nessun Visitatore! Clicca qui per simulare un visitatore. -->
-                        {{ 'DepartmentsPage.NoDept' | translate }}
-                      </p>
+                      <!-- Nessun Visitatore! Clicca qui per simulare un visitatore. -->
+                      {{ 'DepartmentsPage.NoDept' | translate }}
+                    </p>
                   </td>
                 </tr>
                 
@@ -110,20 +108,20 @@
   
                     <!-- USE CASE 1: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NOT NULL AND NOT UNDEFINED + THE GROUP NOT HAS TRASHED VALUE -->
                     <span *ngIf="dept?.routing !== 'fixed' && dept?.hasGroupName && !dept?.groupHasBeenTrashed"> 
-                      <span style="color: #aaaaaa"> group:</span> {{ dept?.hasGroupName }}  
+                      <span style="color: #aaaaaa"> {{ 'DepartmentsPage.Group' | translate }}</span> {{ dept?.hasGroupName }}  
                     </span>
 
                     <!-- USE CASE 2: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NOT NULL AND NOT UNDEFINED + THE GROUP HAS TRASHED VALUE = TRUE -->
                     <span *ngIf="dept?.routing !== 'fixed' && dept?.hasGroupName && dept?.groupHasBeenTrashed === true"> 
-                      <span style="color: #aaaaaa; vertical-align: middle; "> group: </span> 
+                      <span style="color: #aaaaaa; vertical-align: middle; "> {{ 'DepartmentsPage.Group' | translate }} </span> 
                       <span style="vertical-align: middle;">{{ dept?.hasGroupName }} </span>
                       <i class="material-icons" style="vertical-align: middle; font-size:16px; color: #ff5252;">report_problem</i> 
-                      <span style="color: #ff5252; vertical-align: middle;">the group has been trashed </span> 
+                      <span style="color: #ff5252; vertical-align: middle;">{{ 'DepartmentsPage.TheGroupHasBeenTrashed' | translate }} </span> 
                     </span>
 
                     <!-- USE CASE 3: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NULL OR NOT UNDEFINED -->
                     <span *ngIf="dept?.routing !== 'fixed' && !dept?.hasGroupName"> 
-                      All user
+                        {{ 'DepartmentsPage.AllUsers' | translate }}
                     </span>
 
                     <span *ngIf="dept?.routing === 'fixed'"> {{ dept?.id_bot }} </span>
@@ -155,53 +153,53 @@
                 </tr>
               </tbody>
             </table>
-  
+            
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
        
-        <!-- ============= DELETE MODAL =============-->
-        
-        <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDeleteModal}" style="background-color: rgba(90,90,90,0.5);">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header" style="background-color:#ff5252; padding-bottom:24px">
-                <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
-                  <span aria-hidden="true" style="color: #fff">&times;</span>
-                </button>
-     
-                  <h4 class="modal-title" style="color: #fff">
-                    <!-- Delete department with id: -->
-                    <i class="material-icons" style="vertical-align: middle">report_problem</i>
-                    <span style="vertical-align: middle; padding-left:8px">
-                      {{ "DepartmentsPage.DeleteDepartment" | translate }}
-                    </span>
+<!-- ============= DELETE MODAL =============-->
 
-                  </h4>
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDeleteModal}" style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
 
-                <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em;">
-                    {{ "DepartmentsPage.DeleteDepartmentWithId" | translate }} <code>{{id_toDelete}}</code> {{ "DepartmentsPage.WillBeDeleted" | translate }}
-                </h4>
-                
-        
-              </div>
-    
-                <div class="modal-body">
-        
-                <!-- <p> Are you sure you want to delete the department <strong>{{deptName_toDelete}}</strong>?</p> -->
-                <p style="font-weight:100; text-align: left; margin-top: 10px; color: #AAAAAA"> 
-                  {{ "DepartmentsPage.AreYouSure" | translate }}<strong>{{deptName_toDelete}}</strong>?
-                </p>
-                </div>
-   
-                <div class="modal-footer" style="margin-top: 0px;">
-                    <button class="btn btn-white" (click)="onCloseModal()" style="padding:12px 16px;">{{ "DepartmentsPage.Cancel" | translate }}</button>
-                  <button type="button" class="btn btn-danger" (click)="onCloseDeleteModalHandled()">{{ "DepartmentsPage.Confirm" | translate }}</button>
-                </div>
-              
-        
-            </div>
-            <!-- /.modal-content -->
-          </div>
-          <!-- /.modal-dialog -->
-        </div>
+      <div class="modal-header" style="background-color:#ff5252; padding-bottom:24px">
+        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+          <span aria-hidden="true" style="color: #fff">&times;</span>
+        </button>
+
+        <h4 class="modal-title" style="color: #fff">
+          <!-- Delete department with id: -->
+          <i class="material-icons" style="vertical-align: middle">report_problem</i>
+          <span style="vertical-align: middle; padding-left:8px">
+            {{ "DepartmentsPage.DeleteDepartment" | translate }}
+          </span>
+        </h4>
+
+        <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em;">
+          {{ "DepartmentsPage.DeleteDepartmentWithId" | translate }} <code>{{id_toDelete}}</code> {{ "DepartmentsPage.WillBeDeleted" | translate }}
+        </h4>
+      </div>
+
+      <div class="modal-body">
+        <!-- <p> Are you sure you want to delete the department <strong>{{deptName_toDelete}}</strong>?</p> -->
+        <p style="font-weight:100; text-align: left; margin-top: 10px; color: #AAAAAA"> 
+          {{ "DepartmentsPage.AreYouSure" | translate }}<strong>{{deptName_toDelete}}</strong>?
+        </p>
+      </div>
+
+      <div class="modal-footer" style="margin-top: 0px;">
+        <button class="btn btn-white" (click)="onCloseModal()" style="padding:12px 16px;">{{ "DepartmentsPage.Cancel" | translate }}</button>
+        <button type="button" class="btn btn-danger" (click)="onCloseDeleteModalHandled()">{{ "DepartmentsPage.Confirm" | translate }}</button>
+      </div>
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

@@ -60,7 +60,7 @@
 
                           <!-- // IF THE GROUP ASSIGNED TO THE DEFAULT DEPT HAS BEEN DELETED, IT IS DISPLAYED: 'THE GROUP DOES NOT EXIST' -->
                           <option style="color: #ff5252 !important;" *ngIf="GROUP_ID_NOT_EXIST" [selected]="GROUP_ID_NOT_EXIST">
-                            <p>Error: group id {{ selectedGroupId }} trashed</p>
+                            <p>{{ "DeptsAddEditPage.ErrorGroupId" | translate}} {{ selectedGroupId }} {{ "DeptsAddEditPage.Trashed" | translate}} </p>
                           </option>
                           
                           <option class="not_selected" value="ALL_USERS_SELECTED">
@@ -99,7 +99,7 @@
                           
                           <!-- // IF THE GROUP ASSIGNED TO THE DEFAULT DEPT HAS BEEN DELETED, IT IS DISPLAYED: 'THE GROUP DOES NOT EXIST' -->
                           <option style="color: #ff5252 !important;" *ngIf="GROUP_ID_NOT_EXIST" [selected]="GROUP_ID_NOT_EXIST">
-                            <p>Error: group id {{ selectedGroupId }} trashed</p>
+                            <p>{{ "DeptsAddEditPage.ErrorGroupId" | translate}} {{ selectedGroupId }} {{ "DeptsAddEditPage.Trashed" | translate}}</p>
                           </option>
 
                           <option class="not_selected" value="ALL_USERS_SELECTED">
@@ -225,7 +225,7 @@
   
                             <!-- // IF THE GROUP ASSIGNED TO THE DEFAULT DEPT HAS BEEN DELETED, IT IS DISPLAYED: 'THE GROUP DOES NOT EXIST' -->
                             <option style="color: #ff5252 !important;" *ngIf="GROUP_ID_NOT_EXIST" [selected]="GROUP_ID_NOT_EXIST">
-                              <p>Error: group id {{ selectedGroupId }} trashed</p>
+                              <p>{{ "DeptsAddEditPage.ErrorGroupId" | translate}} {{ selectedGroupId }} {{ "DeptsAddEditPage.Trashed" | translate}}</p>
                             </option>
                             
                             <option class="not_selected" value="ALL_USERS_SELECTED">
@@ -265,7 +265,7 @@
                             
                             <!-- // IF THE GROUP ASSIGNED TO THE DEFAULT DEPT HAS BEEN DELETED, IT IS DISPLAYED: 'THE GROUP DOES NOT EXIST' -->
                             <option style="color: #ff5252 !important;" *ngIf="GROUP_ID_NOT_EXIST" [selected]="GROUP_ID_NOT_EXIST">
-                              <p>Error: group id {{ selectedGroupId }} trashed</p>
+                              <p>{{ "DeptsAddEditPage.ErrorGroupId" | translate}} {{ selectedGroupId }} {{ "DeptsAddEditPage.Trashed" | translate}}</p>
                             </option>
 
                             <option class="not_selected" value="ALL_USERS_SELECTED">
