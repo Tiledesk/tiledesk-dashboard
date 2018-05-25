@@ -68,7 +68,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-        console.log('APP COMP ')
+        console.log(' ====== >>> APP COMP <<< ====== ')
 
         // NEW (SEE ALSO )
         const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
@@ -138,9 +138,24 @@ export class AppComponent implements OnInit, AfterViewInit {
             }
         });
         // this.requestsService.startRequestsQuery()
-
+        this.getCurrentProject();
     }
 
+    getCurrentProject() {
+        this.auth.project_bs.subscribe((project) => {
+            //   this.project = project
+            console.log(' ====== >>> APP COMP PROJECT <<< ====== ', project)
+            if (project !== null) {
+
+                this.getMyDepts();
+            }
+        });
+    }
+
+    getMyDepts() {
+
+        this.requestsService.getMyDeptsAndStartRequestsQuery()
+    }
 
     hideElementsInAuthPage() {
         // GET THE HTML ELEMENT NAVBAR AND SIDEBAR THAT WILL BE HIDDEN IF IS DETECTED THE LOGIN PAGE

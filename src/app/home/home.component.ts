@@ -67,7 +67,7 @@ export class HomeComponent implements OnInit {
     this.getProjectUser();
 
     // ====== GET MY DEPTS ======
-    this.getMyDepts();
+    // this.getMyDepts();
   }
 
   getMyDepts() {

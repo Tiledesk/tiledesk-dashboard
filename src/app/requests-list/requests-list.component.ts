@@ -134,7 +134,7 @@ export class RequestsListComponent implements OnInit {
     //   () => {
     //     console.log('GET REQUEST COMPLETE')
     //   });
-    this.getMyDepts();
+    // this.getMyDepts();
   }
 
   getMyDepts() {

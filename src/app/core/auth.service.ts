@@ -84,7 +84,7 @@ export class AuthService {
     // private projectService: ProjectService,
   ) {
     this.http = http;
-
+    console.log('====== AUTH SERVICE ====== ')
     // this.user = this.afAuth.authState
     //   .switchMap((user) => {
     //     if (user) {
