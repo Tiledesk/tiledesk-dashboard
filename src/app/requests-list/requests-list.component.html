@@ -161,7 +161,7 @@
                     </p>
                   </td>
 
-                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
+                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" rel="tooltip" title="department id:{{ request?.attributes?.departmentId }}">
                     
                     <p style="font-size:0.8em;">
 
@@ -169,7 +169,7 @@
                     </p>
                   </td>
 
-                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
+                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" rel="tooltip" title="requester id:{{ request?.requester_id }}">
                     <!-- <p style="font-size:0.9em">{{ request.sender_fullname }}</p> -->
                     <p style="font-size:0.9em">
                       {{ request.requester_fullname }}

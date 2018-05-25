@@ -134,6 +134,11 @@ export class RequestsListComponent implements OnInit {
     //   () => {
     //     console.log('GET REQUEST COMPLETE')
     //   });
+    this.getMyDepts();
+  }
+
+  getMyDepts() {
+    this.requestsService.getMyDeptsAndStartRequestsQuery()
   }
 
   goToMemberProfile(member_id: any) {

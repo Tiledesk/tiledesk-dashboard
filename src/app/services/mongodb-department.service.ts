@@ -112,33 +112,35 @@ export class MongodbDepartmentService {
       .map((response) => response.json());
   }
 
-  // GET MY_DEPTS
-  public getMyDepts(): Observable<Department[]> {
-    const url = this.MY_DEPTS_BASE_URL;
-    // url += '?id_project=' + id_project;
+  // !!!! NO MORE USED - MOVED IN REQUEST SERVICE
+  // // GET MY_DEPTS
+  // public getMyDepts(): Observable<Department[]> {
+  //   const url = this.MY_DEPTS_BASE_URL;
+  //   // url += '?id_project=' + id_project;
+  //   // this.BASE_URL + this.project._id + '/departments/mydepartments'
 
-    console.log('MY DEPS URL', url);
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
-  }
+  //   console.log('MY DEPS URL', url);
+  //   const headers = new Headers();
+  //   headers.append('Content-Type', 'application/json');
+  //   headers.append('Authorization', this.TOKEN);
+  //   return this.http
+  //     .get(url, { headers })
+  //     .map((response) => response.json());
+  // }
 
-  publishMyDepts() {
-    this.getMyDepts().subscribe((depts: any) => {
-      console.log('DEPTS SERV - MY DEPTS (publish)', depts);
-      // PUBBLISH MY DEPTS
-      this.myDepts_bs.next(depts);
-    },
-      (error) => {
-        console.log('DEPTS SERV - MY DEPTS ', error);
-      },
-      () => {
-        console.log('DEPTS SERV - MY DEPTS * COMPLETE *');
-      });
-  }
+  // publishMyDepts() {
+  //   this.getMyDepts().subscribe((depts: any) => {
+  //     console.log('DEPTS SERV - MY DEPTS (publish)', depts);
+  //     // PUBBLISH MY DEPTS
+  //     this.myDepts_bs.next(depts);
+  //   },
+  //     (error) => {
+  //       console.log('DEPTS SERV - MY DEPTS ', error);
+  //     },
+  //     () => {
+  //       console.log('DEPTS SERV - MY DEPTS * COMPLETE *');
+  //     });
+  // }
 
   /**
    * READ DETAIL (GET BOT BY BOT ID)

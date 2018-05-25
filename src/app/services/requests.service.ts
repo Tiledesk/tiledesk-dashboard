@@ -47,6 +47,10 @@ export class RequestsService {
 
   myDepts: Department[]
 
+  BASE_URL = environment.mongoDbConfig.BASE_URL;
+  TOKEN: string
+  MY_DEPTS_BASE_URL: any;
+
   // public mySubject: BehaviorSubject<any> = new BehaviorSubject<any[]>(null);
   public mySubject: BehaviorSubject<any> = new BehaviorSubject<any[]>(null);
 
@@ -59,6 +63,7 @@ export class RequestsService {
     public auth: AuthService,
     private departmentService: MongodbDepartmentService
   ) {
+
     this.http = http;
     console.log('Hello Request Service!');
 
@@ -77,11 +82,11 @@ export class RequestsService {
     this.checkUser()
 
     this.auth.user_bs.subscribe((user) => {
-      // // tslint:disable-next-line:no-debugger
-      // debugger
+
       this.user = user;
       this.checkUser()
     });
+
 
     this.getCurrentProject();
 
@@ -94,12 +99,17 @@ export class RequestsService {
       // // tslint:disable-next-line:no-debugger
       // debugger
       if (project) {
+        console.log('REQ SERV PROJECT ', project)
+        this.MY_DEPTS_BASE_URL = this.BASE_URL + project._id + '/departments/mydepartments'
+
         if (this.unsubscribe) {
           this.unsubscribe();
           this.resetRequestsList();
         }
         this.project = project;
-        this.startRequestsQuery();
+
+        // this.startRequestsQuery();
+        this.getMyDepts();
       } else {
         if (this.unsubscribe) {
           this.unsubscribe();
@@ -114,6 +124,7 @@ export class RequestsService {
 
   checkUser() {
     if (this.user) {
+      this.TOKEN = this.user.token
       // this.currentUserFireBaseUID = this.user.uid
       this.currentUserID = this.user._id
       console.log('USER UID GET IN REQUEST-SERV', this.currentUserID);
@@ -161,12 +172,53 @@ export class RequestsService {
   //   // });
 
   // }
+
+  // GET MY_DEPTS
+  public getMyDepts(): Observable<Department[]> {
+ 
+    const url = this.MY_DEPTS_BASE_URL;
+    // url += '?id_project=' + id_project;
+    // this.BASE_URL + this.project._id + '/departments/mydepartments'
+
+    console.log('MY DEPTS URL', url);
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
+  getMyDeptsAndStartRequestsQuery() {
+    this.getMyDepts().subscribe((depts: any) => {
+      console.log('REQUESTS SERV - MY DEPTS', depts);
+      // PUBBLISH MY DEPTS
+      // this.myDepts_bs.next(depts);
+      this.myDepts = depts
+      if (this.myDepts) {
+
+        this.startRequestsQuery();
+      }
+    },
+      (error) => {
+        console.log('REQUESTS SERV - MY DEPTS ', error);
+      },
+      () => {
+        console.log('REQUESTS SERV - MY DEPTS * COMPLETE *');
+      });
+  }
+
   startRequestsQuery() {
-    console.log('startRequestsQuery()')
+    console.log('++ ++ ++ ++ ++ ++ START REQUEST QUERY')
     // GET ALL REQUESTS AND EVALUATING THE REQUEST'S ID ADD OR UPDATE
     this.getRequests().subscribe((requests: Request[]) => {
+      console.log('START REQUEST QUERY - REQUESTS ', requests)
       requests.forEach((r: Request) => {
+
+
         this.addOrUpdateRequestsList(r);
+
+
       });
       // PUBLISH THE REQUESTS LIST (ORDERED AND WITH THE CHANGES MANAGED BY addOrUpdateRequestsList)
       this.requestsList_bs.next(this.requestList);
@@ -179,7 +231,9 @@ export class RequestsService {
 
   addOrUpdateRequestsList(r: Request) {
     // console.log('ID REQUEST  ', r.recipient)
+    // || this.myDepts.includes(r.attributes.departmentId) === false
     if (r === null || r === undefined) {
+      // console.log('MY DEPT - IS IN ARRAY myDepts THE DEPT ID ', r.attributes.departmentId, ' :', this.myDepts.includes(r.attributes.departmentId))
       return;
     }
     for (let i = 0; i < this.requestList.length; i++) {
@@ -217,15 +271,16 @@ export class RequestsService {
   /*
    * THE CURRENT USER DISPLAY ONLY THE REQUESTS OF THE DEPTS WITH id_group:
    * null, undefined, or which corresponds to a group of which he is a member
-   * to solve this is made a subscription to MY DEPTS published by the home.comp
+   * to solve this is made a subscription to MY DEPTS published by the DEPTS serv
    */
-  getMyDepts() {
-    this.departmentService.myDepts_bs.subscribe((myDepts) => {
+  // getMyDepts() {
+  //   this.departmentService.myDepts_bs.subscribe((myDepts) => {
 
-      this.myDepts = myDepts
-      console.log('REQUEST SERV - MY DEPTS (subscribes) ', this.myDepts)
-    });
-  }
+  //     this.myDepts = myDepts
+  //     console.log('REQUESTS SERV - MY DEPTS (subscribes) ', this.myDepts)
+
+  //    });
+  // }
 
 
   getRequests(): Observable<Request[]> {
@@ -274,16 +329,20 @@ export class RequestsService {
           // (!r.attributes.departmentId) &&
 
           /* IF DIFFERENT OF MY DEPTS */
-          // this.myDepts.forEach(myDept => {
-          //   console.log('REQUESTS SERV - MY DEPT ', myDept )
+          const reqDeptIsInMyDeptArray = this.myDepts.includes(r.attributes.departmentId);
+          console.log('MY DEPT - IS IN ARRAY myDepts THE DEPT ID ', r.attributes.departmentId, ' :', reqDeptIsInMyDeptArray)
+          if (reqDeptIsInMyDeptArray === false) {
+            return null;
+          } else {
+            return r;
+          }
 
-          // });
           // if ((r.attributes.departmentId !== '5b05319ffb1e724de404df58')) {
           //   console.log('KKKKK 1 -----> ', r.attributes.departmentId)
           //   return null;
           // } else {
-          console.log('KKKKK 2 -----> ', r.attributes.departmentId)
-          return r;
+          // console.log('KKKKK 2 -----> ', r.attributes.departmentId)
+          // return r;
           // }
 
         });
