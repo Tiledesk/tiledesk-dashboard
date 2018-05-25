@@ -9,6 +9,7 @@ import { UsersService } from '../services/users.service';
 import { UsersLocalDbService } from '../services/users-local-db.service';
 import { MongodbDepartmentService } from '../services/mongodb-department.service';
 
+
 @Component({
   selector: 'home',
   templateUrl: './home.component.html',
@@ -16,7 +17,7 @@ import { MongodbDepartmentService } from '../services/mongodb-department.service
 })
 export class HomeComponent implements OnInit {
 
-
+ 
 
   firebaseProjectId: any;
   LOCAL_STORAGE_CURRENT_USER: any;
@@ -65,21 +66,26 @@ export class HomeComponent implements OnInit {
     this.getProjectUser();
 
     // ====== GET MY DEPTS ======
-    this.getMyDepts();
+    this.publishMyDepts();
   }
 
-  getMyDepts() {
+  publishMyDepts() {
 
-    this.departmentService.getMyDepts().subscribe((depts: any) => {
-      console.log('HOME COMP - GET MY DEPTS', depts);
+    this.departmentService.publishMyDepts()
 
-    },
-      (error) => {
-        console.log('HOME COMP - GET MY DEPTS ', error);
-      },
-      () => {
-        console.log('HOME COMP - GET MY DEPTS * COMPLETE *');
-      });
+    // .subscribe((depts: any) => {
+    //   console.log('HOME COMP - GET MY DEPTS', depts);
+    //   // PUBBLISH MY DEPTS ???
+    //   // this.myDepts_bs.next(depts);
+
+
+    // },
+    //   (error) => {
+    //     console.log('HOME COMP - GET MY DEPTS ', error);
+    //   },
+    //   () => {
+    //     console.log('HOME COMP - GET MY DEPTS * COMPLETE *');
+    //   });
   }
 
   getCurrentProject() {

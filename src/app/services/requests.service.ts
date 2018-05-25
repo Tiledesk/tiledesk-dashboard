@@ -21,8 +21,8 @@ import { members_as_html } from '../utils/util';
 import { currentUserUidIsInMembers } from '../utils/util';
 import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
-
-
+import { Department } from '../models/department-model';
+import { MongodbDepartmentService } from '../services/mongodb-department.service';
 
 @Injectable()
 export class RequestsService {
@@ -45,6 +45,8 @@ export class RequestsService {
 
   unsubscribe: any;
 
+  myDepts: Department[]
+
   // public mySubject: BehaviorSubject<any> = new BehaviorSubject<any[]>(null);
   public mySubject: BehaviorSubject<any> = new BehaviorSubject<any[]>(null);
 
@@ -54,7 +56,8 @@ export class RequestsService {
   constructor(
     http: Http,
     private afs: AngularFirestore,
-    public auth: AuthService
+    public auth: AuthService,
+    private departmentService: MongodbDepartmentService
   ) {
     this.http = http;
     console.log('Hello Request Service!');
@@ -80,8 +83,9 @@ export class RequestsService {
       this.checkUser()
     });
 
-    this.getCurrentProject()
+    this.getCurrentProject();
 
+    this.getMyDepts();
   }
 
   getCurrentProject() {
@@ -210,6 +214,20 @@ export class RequestsService {
     this.requestsList_bs.next(this.requestList);
   }
 
+  /*
+   * THE CURRENT USER DISPLAY ONLY THE REQUESTS OF THE DEPTS WITH id_group:
+   * null, undefined, or which corresponds to a group of which he is a member
+   * to solve this is made a subscription to MY DEPTS published by the home.comp
+   */
+  getMyDepts() {
+    this.departmentService.myDepts_bs.subscribe((myDepts) => {
+
+      this.myDepts = myDepts
+      console.log('REQUEST SERV - MY DEPTS (subscribes) ', this.myDepts)
+    });
+  }
+
+
   getRequests(): Observable<Request[]> {
     const db = firebase.firestore();
 
@@ -256,12 +274,16 @@ export class RequestsService {
           // (!r.attributes.departmentId) &&
 
           /* IF DIFFERENT OF MY DEPTS */
+          // this.myDepts.forEach(myDept => {
+          //   console.log('REQUESTS SERV - MY DEPT ', myDept )
+
+          // });
           // if ((r.attributes.departmentId !== '5b05319ffb1e724de404df58')) {
           //   console.log('KKKKK 1 -----> ', r.attributes.departmentId)
           //   return null;
           // } else {
-            console.log('KKKKK 2 -----> ', r.attributes.departmentId)
-            return r;
+          console.log('KKKKK 2 -----> ', r.attributes.departmentId)
+          return r;
           // }
 
         });

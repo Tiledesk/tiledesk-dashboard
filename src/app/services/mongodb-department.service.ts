@@ -7,9 +7,12 @@ import 'rxjs/add/operator/map';
 // import { MongodbConfService } from '../utils/mongodb-conf.service';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../core/auth.service';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class MongodbDepartmentService {
+
+  public myDepts_bs: BehaviorSubject<Department[]> = new BehaviorSubject<Department[]>([]);
 
   http: Http;
 
@@ -123,6 +126,19 @@ export class MongodbDepartmentService {
       .map((response) => response.json());
   }
 
+  publishMyDepts() {
+    this.getMyDepts().subscribe((depts: any) => {
+      console.log('DEPTS SERV - MY DEPTS (publish)', depts);
+      // PUBBLISH MY DEPTS
+      this.myDepts_bs.next(depts);
+    },
+      (error) => {
+        console.log('DEPTS SERV - MY DEPTS ', error);
+      },
+      () => {
+        console.log('DEPTS SERV - MY DEPTS * COMPLETE *');
+      });
+  }
 
   /**
    * READ DETAIL (GET BOT BY BOT ID)
