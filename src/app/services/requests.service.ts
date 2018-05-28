@@ -65,7 +65,7 @@ export class RequestsService {
   ) {
 
     this.http = http;
-    console.log('Hello Request Service!');
+    console.log(' ============ HELLO REQUESTS SERVICE! ============ ');
 
     /* CORRENTLY MANAGED IN REQUEST-LIST.COMPONENT */
     // this.user = firebase.auth().currentUser;
@@ -96,10 +96,11 @@ export class RequestsService {
   getCurrentProject() {
     // IF EXIST A PROJECT UNSUSCRIBE query.onSnapshot AND RESET REQUEST LIST
     this.auth.project_bs.subscribe((project) => {
+      console.log('REQUEST SERVICE: SUBSCRIBE TO THE PROJECT PUBLISHED BY AUTH SERVICE ', project)
       // // tslint:disable-next-line:no-debugger
       // debugger
       if (project) {
-        console.log('REQ SERV PROJECT ', project)
+        // console.log('REQ SERV PROJECT ', project)
         this.MY_DEPTS_BASE_URL = this.BASE_URL + project._id + '/departments/mydepartments'
 
         if (this.unsubscribe) {
@@ -108,8 +109,9 @@ export class RequestsService {
         }
         this.project = project;
 
-        // this.startRequestsQuery();
-        this.getMyDepts();
+        this.startRequestsQuery();
+        // this.getMyDepts();
+        // this.getMyDeptsAndStartRequestsQuery();
       } else {
         if (this.unsubscribe) {
           this.unsubscribe();
@@ -173,9 +175,9 @@ export class RequestsService {
 
   // }
 
-  // GET MY_DEPTS
+  // !!!! NO MORE USED ---- GET MY_DEPTS
   public getMyDepts(): Observable<Department[]> {
- 
+
     const url = this.MY_DEPTS_BASE_URL;
     // url += '?id_project=' + id_project;
     // this.BASE_URL + this.project._id + '/departments/mydepartments'
@@ -189,15 +191,17 @@ export class RequestsService {
       .map((response) => response.json());
   }
 
+   // !!!! NO MORE USED
   getMyDeptsAndStartRequestsQuery() {
+    console.log('----> CHECK MY MY DEPT - RUN GET MY DEPTS AND START REQUESTS QUERY')
     this.getMyDepts().subscribe((depts: any) => {
-      console.log('REQUESTS SERV - MY DEPTS', depts);
+      console.log('----> CHECK MY MY DEPT - RUN GET MY DEPTS AND START REQUESTS QUERY - >> MY DEPTS << ', depts);
       // PUBBLISH MY DEPTS
       // this.myDepts_bs.next(depts);
       this.myDepts = depts
       if (this.myDepts) {
 
-        this.startRequestsQuery();
+        // this.startRequestsQuery();
       }
     },
       (error) => {
@@ -209,7 +213,7 @@ export class RequestsService {
   }
 
   startRequestsQuery() {
-    console.log('++ ++ ++ ++ ++ ++ START REQUEST QUERY')
+    console.log('****** START REQUEST QUERY ******')
     // GET ALL REQUESTS AND EVALUATING THE REQUEST'S ID ADD OR UPDATE
     this.getRequests().subscribe((requests: Request[]) => {
       console.log('START REQUEST QUERY - REQUESTS ', requests)
@@ -230,8 +234,8 @@ export class RequestsService {
   }
 
   addOrUpdateRequestsList(r: Request) {
-    // console.log('ID REQUEST  ', r.recipient)
-    // || this.myDepts.includes(r.attributes.departmentId) === false
+    console.log('****** ADD OR UPDATE REQUEST LIST ******')
+
     if (r === null || r === undefined) {
       // console.log('MY DEPT - IS IN ARRAY myDepts THE DEPT ID ', r.attributes.departmentId, ' :', this.myDepts.includes(r.attributes.departmentId))
       return;
@@ -323,26 +327,14 @@ export class RequestsService {
           // r.departmentId = data.departmentId
           r.attributes = data.attributes
 
-          // 5b05319ffb1e724de404df57 <- MIO DEPT
-          // && r.attributes.departmentId !== '5b05319ffb1e724de404df58'
-
-          // (!r.attributes.departmentId) &&
-
           /* IF DIFFERENT OF MY DEPTS */
-          const reqDeptIsInMyDeptArray = this.myDepts.includes(r.attributes.departmentId);
-          console.log('MY DEPT - IS IN ARRAY myDepts THE DEPT ID ', r.attributes.departmentId, ' :', reqDeptIsInMyDeptArray)
-          if (reqDeptIsInMyDeptArray === false) {
-            return null;
-          } else {
-            return r;
-          }
-
-          // if ((r.attributes.departmentId !== '5b05319ffb1e724de404df58')) {
-          //   console.log('KKKKK 1 -----> ', r.attributes.departmentId)
+          // const reqDeptIsInMyDeptArray = this.myDepts.includes(r.attributes.departmentId);
+          // console.log('----> CHECK MY MY DEPT - ARRAY myDepts ', this.myDepts)
+          // console.log('----> CHECK MY MY DEPT - IS IN ARRAY myDepts THE DEPT ID ', r.attributes.departmentId, ' :', reqDeptIsInMyDeptArray)
+          // if (reqDeptIsInMyDeptArray === false) {
           //   return null;
           // } else {
-          // console.log('KKKKK 2 -----> ', r.attributes.departmentId)
-          // return r;
+            return r;
           // }
 
         });

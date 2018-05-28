@@ -455,9 +455,10 @@ export class AuthService {
 
 
 
-  // THE project_id IS PASSED FROM PROJECT COMPONENT WHEN THE USER SELECT A PROJECT
+  // the project (name and id) IS PASSED FROM PROJECT COMPONENT WHEN THE USER SELECT A PROJECT
   projectSelected(project: Project) {
     // PUBLISH THE project
+    console.log('AUTH SERVICE: I PUBLISH THE PROJECT RECEIVED FROM PROJECT COMP ', project)
     this.project_bs.next(project);
   }
 

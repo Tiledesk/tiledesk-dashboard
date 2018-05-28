@@ -138,19 +138,19 @@ export class AppComponent implements OnInit, AfterViewInit {
             }
         });
         // this.requestsService.startRequestsQuery()
-        this.getCurrentProject();
+        // this.getCurrentProject();
     }
 
-    getCurrentProject() {
-        this.auth.project_bs.subscribe((project) => {
-            //   this.project = project
-            console.log(' ====== >>> APP COMP PROJECT <<< ====== ', project)
-            if (project !== null) {
+    // getCurrentProject() {
+    //     this.auth.project_bs.subscribe((project) => {
+    //         //   this.project = project
+    //         console.log(' ====== >>> APP COMP PROJECT <<< ====== ', project)
+    //         if (project !== null) {
 
-                this.getMyDepts();
-            }
-        });
-    }
+    //             this.getMyDepts();
+    //         }
+    //     });
+    // }
 
     getMyDepts() {
 

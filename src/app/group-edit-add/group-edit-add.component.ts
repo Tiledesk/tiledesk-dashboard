@@ -346,4 +346,11 @@ export class GroupEditAddComponent implements OnInit {
     }
   }
 
+  goToMemberProfile(member_id: any) {
+    console.log('has clicked GO To MEMBER ', member_id);
+
+    this.router.navigate(['project/' + this.project_id + '/member/' + member_id]);
+
+  }
+
 }

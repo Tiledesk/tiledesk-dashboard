@@ -11,6 +11,7 @@ import { Project } from '../../models/project-model';
 // import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
 // import { SharedModule } from '../../shared/shared.module';
 import { UsersLocalDbService } from '../../services/users-local-db.service';
+import { NotifyService } from '../../core/notify.service';
 
 declare const $: any;
 declare interface RouteInfo {
@@ -91,8 +92,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // private projectService: ProjectService,
         private auth: AuthService,
         private usersService: UsersService,
-        private usersLocalDbService: UsersLocalDbService
-
+        private usersLocalDbService: UsersLocalDbService,
+        private notify: NotifyService
     ) {
 
         // console.log('00 -> HELLO SIDEBAR - PROJECT ID ', this.project)
@@ -194,7 +195,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     changeAvailabilityState(IS_AVAILABLE) {
-        console.log('CHANGE STATUS - USER IS AVAILABLE ? ', IS_AVAILABLE);
+        console.log('SB - CHANGE STATUS - USER IS AVAILABLE ? ', IS_AVAILABLE);
+        console.log('SB - CHANGE STATUS - PROJECT USER ID: ', this.projectUser_id);
 
         this.usersService.updateProjectUser(this.projectUser_id, IS_AVAILABLE).subscribe((projectUser: any) => {
             console.log('PROJECT-USER UPDATED ', projectUser)
@@ -205,10 +207,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         },
             (error) => {
                 console.log('PROJECT-USER UPDATED ERR  ', error);
+                // =========== NOTIFY ERROR ===========
+                // tslint:disable-next-line:quotemark
+                this.notify.showNotification("An error occurred while updating status", 4, 'report_problem')
             },
             () => {
                 console.log('PROJECT-USER UPDATED  * COMPLETE *');
 
+                // =========== NOTIFY SUCCESS===========
+                this.notify.showNotification('status successfully updated', 2, 'done');
                 // this.getUserAvailability()
             });
     }

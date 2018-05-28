@@ -74,7 +74,7 @@ export class UsersService {
 
 
   getCurrentProject() {
-    console.log('USER SERVICE - SUBSCRIBE TO CURRENT PROJ ')
+    console.log('============ USER SERVICE - SUBSCRIBE TO CURRENT PROJ ============')
     // tslint:disable-next-line:no-debugger
     // debugger
     this.auth.project_bs.subscribe((project) => {
