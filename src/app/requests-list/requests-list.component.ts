@@ -88,7 +88,7 @@ export class RequestsListComponent implements OnInit {
 
   displayDeleteRequestModal = 'none';
 
-  id_request_to_delete: string;
+  id_request_to_archive: string;
 
   constructor(
     private requestsService: RequestsService,
@@ -233,7 +233,8 @@ export class RequestsListComponent implements OnInit {
   // ======================== DELETE A REQUEST ========================
   openDeleteRequestModal(request_recipient: string) {
     console.log('ID OF REQUEST TO DELETE ', request_recipient)
-    this.id_request_to_delete = request_recipient;
+    this.id_request_to_archive = request_recipient;
+    
     this.displayDeleteRequestModal = 'block'
   }
 

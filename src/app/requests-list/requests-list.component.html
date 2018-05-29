@@ -85,7 +85,7 @@
                     </th>
                     <!-- <th>TEST</th> -->
 
-                    <!-- DELETE Action -->
+                    <!-- ARCHIVE Action -->
                     <th>
                       <strong>
                         <span style="color: #566787">
@@ -243,11 +243,11 @@
                     </span>
                   </td> -->
 
-                  <!-- DELETE Action -->
+                  <!-- ARCHIVE Action -->
                   <td class="td-actions text-right">                 
-                    <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipDeleteRequest' | translate }}" class="btn btn-danger btn-simple btn-xs"
+                    <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}" class="btn btn-info btn-simple btn-xs"
                       (click)='openDeleteRequestModal((request?.recipient))'>
-                      <i class="material-icons">close</i>
+                      <i class="material-icons">archive</i>
                     </button>
                   </td>
 
@@ -344,7 +344,7 @@
                   
                   <!-- <th>TEST</th> -->
 
-                  <!-- DELETE Action -->
+                  <!-- ARCHIVE Action -->
                   <th>
                     <span style="color: #566787">
                       <strong> 
@@ -501,11 +501,11 @@
                     </span>
                   </td> -->
 
-                  <!-- DELETE Action -->
+                  <!-- ARCHIVE Action -->
                   <td class="td-actions text-right">                 
-                    <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipDeleteRequest' | translate }}" class="btn btn-danger btn-simple btn-xs"
+                    <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}" class="btn btn-info btn-simple btn-xs"
                       (click)='openDeleteRequestModal(request?.recipient)'>
-                      <i class="material-icons">close</i>
+                      <i class="material-icons">archive</i>
                     </button>
                   </td>
 
@@ -524,21 +524,23 @@
   <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDeleteRequestModal}" style="background-color: rgba(90,90,90,0.5);">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
-          <div class="modal-header" style="background-color:#ff5252; padding-bottom:24px">
+            <!-- background-color:#ff5252; -->
+          <div class="modal-header" style="padding-bottom:24px">
             <button type="button" class="close" aria-label="Close" (click)="onCloseDeleteRequestModal()">
-              <span aria-hidden="true" style="color: #fff">&times;</span>
+                <!-- color: #fff -->
+              <span aria-hidden="true" style="">&times;</span>
             </button>
-            <h4 class="modal-title" style="color: #fff">
-                <i class="material-icons" style="vertical-align: middle">report_problem</i>
+            <h4 class="modal-title" style="color: #00bcd4">
+                <i class="material-icons" style="vertical-align: middle">info</i>
                 <span style="vertical-align: middle; padding-left:8px">
                   <!-- Elimina richiesta -->
-                  {{ "VisitorsPage.DeleteRequest" | translate }}
+                  {{ "VisitorsPage.ArchiveRequest" | translate }}
                 </span>
             </h4>
             <!-- padding-left: 36px  -->
-            <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em;">
+            <h4 class="modal-title" style="color: #566787; padding-top:10px; font-size: 1.1em;">
               <!-- La richiesta con ID: <code>{{ id_request_to_delete }}</code> verrà eliminata -->
-              {{ "VisitorsPage.TheRequestWithId" | translate }} <code>{{ id_request_to_delete }}</code> {{ "VisitorsPage.WillBeDeleted" | translate }} 
+              {{ "VisitorsPage.TheRequestWithId" | translate }} <code style="color: #566787">{{ id_request_to_archive }}</code> {{ "VisitorsPage.WillBeArchived" | translate }} 
             </h4>
           </div>
           <div class="modal-body">
@@ -553,9 +555,9 @@
               <!-- Annulla -->
               {{ "VisitorsPage.Cancel" | translate }}
             </button>
-            <button style="margin-top:0px" class="btn btn-danger" (click)="deleteTheRequestHandler()" style="padding:12px 16px;">
+            <button style="margin-top:0px" class="btn btn-info" (click)="deleteTheRequestHandler()" style="padding:12px 16px;">
               <!-- Elimina Richiesta -->
-              {{ "VisitorsPage.DeleteRequest" | translate }}
+              {{ "VisitorsPage.ArchiveRequest" | translate }}
             </button>
           </div>
         </div>
