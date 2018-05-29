@@ -191,7 +191,7 @@ export class RequestsService {
       .map((response) => response.json());
   }
 
-   // !!!! NO MORE USED
+  // !!!! NO MORE USED
   getMyDeptsAndStartRequestsQuery() {
     console.log('----> CHECK MY MY DEPT - RUN GET MY DEPTS AND START REQUESTS QUERY')
     this.getMyDepts().subscribe((depts: any) => {
@@ -236,7 +236,8 @@ export class RequestsService {
   addOrUpdateRequestsList(r: Request) {
     console.log('****** ADD OR UPDATE REQUEST LIST ******')
 
-    if (r === null || r === undefined) {
+    // || !r.hasAgent(this.currentUserID))
+    if (r === null || r === undefined ) {
       // console.log('MY DEPT - IS IN ARRAY myDepts THE DEPT ID ', r.attributes.departmentId, ' :', this.myDepts.includes(r.attributes.departmentId))
       return;
     }
@@ -323,8 +324,7 @@ export class RequestsService {
           r.currentUserIsJoined = currentUserUidIsInMembers(data.members, this.currentUserID)
           r.requester_fullname = data.requester_fullname
           r.requester_id = data.requester_id
-          // r.departmentName = data.departmentName
-          // r.departmentId = data.departmentId
+          r.agents = data.agents
           r.attributes = data.attributes
 
           /* IF DIFFERENT OF MY DEPTS */
@@ -334,8 +334,17 @@ export class RequestsService {
           // if (reqDeptIsInMyDeptArray === false) {
           //   return null;
           // } else {
-            return r;
-          // }
+          console.log('AGENTS ', r.agents, ', ID REQUEST: ', r.id)
+          // const agent_array = []
+          // r.agents.forEach(agent => {
+          //   console.log('AGENT ', agent)
+          //   console.log('AGENT - ID USER ', agent.id_user)
+          //   if (agent.id_user === this.currentUserID) {
+          //     agent_array.push(agent.id_user);
+          //   }
+          //   console.log('ARRAY AGENT ', agent_array)
+          // });
+          return r;
 
         });
         observer.next(requestListReturned);

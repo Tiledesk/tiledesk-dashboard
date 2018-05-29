@@ -89,7 +89,7 @@
                     <th>
                       <strong>
                         <span style="color: #566787">
-                          Action
+                          {{ 'VisitorsPage.Archive' | translate }}
                         </span>
                       </strong>
                     </th>
@@ -244,7 +244,8 @@
                   </td> -->
 
                   <!-- ARCHIVE Action -->
-                  <td class="td-actions text-right">                 
+                  <!-- class="td-actions text-right" -->
+                  <td>                 
                     <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}" class="btn btn-info btn-simple btn-xs"
                       (click)='openDeleteRequestModal((request?.recipient))'>
                       <i class="material-icons">archive</i>
@@ -348,7 +349,7 @@
                   <th>
                     <span style="color: #566787">
                       <strong> 
-                        {{ 'VisitorsPage.Actions' | translate }}
+                        {{ 'VisitorsPage.Archive' | translate }}
                       </strong>         
                     </span>
                   </th>
@@ -502,7 +503,8 @@
                   </td> -->
 
                   <!-- ARCHIVE Action -->
-                  <td class="td-actions text-right">                 
+                  <!-- class="td-actions text-right" -->
+                  <td>                 
                     <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}" class="btn btn-info btn-simple btn-xs"
                       (click)='openDeleteRequestModal(request?.recipient)'>
                       <i class="material-icons">archive</i>

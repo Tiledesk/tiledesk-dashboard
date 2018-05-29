@@ -234,7 +234,7 @@ export class RequestsListComponent implements OnInit {
   openDeleteRequestModal(request_recipient: string) {
     console.log('ID OF REQUEST TO DELETE ', request_recipient)
     this.id_request_to_archive = request_recipient;
-    
+
     this.displayDeleteRequestModal = 'block'
   }
 

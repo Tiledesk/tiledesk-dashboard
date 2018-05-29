@@ -1,4 +1,4 @@
-export interface Request {
+export class Request {
   recipient?: string;
   recipient_fullname?: string;
   sender_fullname?: string;
@@ -20,7 +20,6 @@ export interface Request {
   members_as_string?: any;
   served_by?: any;
   notification_already_shown?: boolean;
+  agents?: any;
   attributes?: any;
-  // departmentName?: string;
-  // departmentId?: string;
 }
