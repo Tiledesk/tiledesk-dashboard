@@ -34,6 +34,12 @@ export class GroupEditAddComponent implements OnInit {
   displayDeleteModal = 'none';
   id_user_to_delete: string;
 
+  openModalAddMembers = true
+  group_name: string;
+  id_new_group: string;
+
+  has_completed_getGroupById = false;
+  a = 24
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -48,6 +54,8 @@ export class GroupEditAddComponent implements OnInit {
     this.detectsCreateEditInTheUrl();
 
     this.getCurrentProject();
+
+    console.log('AAAAAA = ', this.a)
   }
 
 
@@ -96,7 +104,18 @@ export class GroupEditAddComponent implements OnInit {
         console.log('GROUP MEMBERS ', this.group_members)
       }
       this.showSpinner = false;
-    });
+
+    },
+      (error) => {
+        console.log('GROUP GET BY ID - ERROR ', error);
+      },
+      () => {
+        console.log('GROUP GET BY ID * COMPLETE *');
+        this.has_completed_getGroupById = true;
+        console.log('HAS COMPLETED getGroupById ', this.has_completed_getGroupById)
+
+
+      });
   }
 
   focusFunction() {
@@ -129,7 +148,10 @@ export class GroupEditAddComponent implements OnInit {
       .subscribe((group) => {
         console.log('CREATE GROUP - POST DATA ', group);
 
-        // this.bot_fullname = '';
+        if (group) {
+          this.group_name = group.name;
+          this.id_new_group = group._id
+        }
 
         // RE-RUN GET CONTACT TO UPDATE THE TABLE
         // this.getDepartments();
@@ -156,15 +178,33 @@ export class GroupEditAddComponent implements OnInit {
         });
   }
 
-  onClosedisplayCreateGroupModalHandled() {
 
-    this.displayCreateGroupModal = 'none'
-    this.router.navigate(['project/' + this.project_id + '/groups']);
+  // WHEN A NEW GROUP IS CREATED IN THE MODAL WINDOW 'CREATE GROUP', TWO ACTIONS ARE POSSIBLE:
+  // "ADD GROUP MEMBERS NOW" and "RETURN TO THE LIST (ADD AFTER)". DEFAULT IS SELECTED THE FIRST ACTION.
+  // WHEN THE USER CLICK ON "CONTINUE" WILL BE ADDRESSED: TO THE VIEW OF "EDIT GROUP" or,
+  // IF THE USER SELECT THE SECOND OPTION, TO THE LIST OF GROUPS
+  actionAfterGroupCreation(openModalAddMembers) {
+    console.log('OPEN MODAL TO ADD MEMBERS ', openModalAddMembers)
+    this.openModalAddMembers = openModalAddMembers
   }
+
+  // CREATE GROUP MODAL - HANDLE THE ACTION OF THE BUTTON 'CONTINUE'
+  onCloseCreateGroupModal() {
+    this.displayCreateGroupModal = 'none'
+
+    if (this.openModalAddMembers === true) {
+      this.router.navigate(['project/' + this.project_id + '/group/edit/' + this.id_new_group]);
+      console.log('1) check if HAS COMPLETED getGroupById ', this.has_completed_getGroupById)
+
+    } else {
+      this.router.navigate(['project/' + this.project_id + '/groups']);
+    }
+  }
+
+
 
   onClosedisplayCreateGroupModal() {
     this.displayCreateGroupModal = 'none'
-
   }
 
   editGroupName() {
@@ -352,5 +392,7 @@ export class GroupEditAddComponent implements OnInit {
     this.router.navigate(['project/' + this.project_id + '/member/' + member_id]);
 
   }
+
+
 
 }

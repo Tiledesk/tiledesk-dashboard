@@ -414,8 +414,9 @@
     <!-- /.modal-dialog -->
   </div>
 
-  <!-- ============ MODAL - INFO WINDOWS - GROUP CREATION COMPLETED ============ -->
+  <!-- ============ MODAL - INFO WINDOWS - CREATION GROUP COMPLETED ============ -->
   <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayCreateGroupModal}" style="background-color: rgba(90,90,90,0.5);">
+      <!--  -->
     <div class="modal-dialog modal-sm" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -471,8 +472,38 @@
             <span *ngIf="!CREATE_GROUP_ERROR">
               <p style="margin-top: 0px; text-align: center; font-weight: 500">
                 <!-- Group created -->
-                {{ "GroupsAddEditPage.GroupCreated" | translate }}
+                {{ "GroupsAddEditPage.GroupCreated1" | translate }} 
+                <span style="color: #566787"> <strong>{{ group_name }} </strong></span>
+                {{ "GroupsAddEditPage.GroupCreated2" | translate }}
               </p>
+              
+              <!-- 
+              <input type="radio" value="openaddGroupMembers" (change)="onSelectionChange()" > Add members to the group
+              <input type="radio" value="returnToGroupList" (change)="onSelectionChange()" > Return to groups list -->
+
+              <div class="row">
+                  <!-- col-sm-offset-1 -->
+                <div class="col-sm-12">
+                  <label class="form-check">
+                    <input class="form-check-input" type="radio" name="mode" [checked]="true" (change)="actionAfterGroupCreation(openModalAddMembers = true)">
+                      <span style="margin-left: 8px;">
+                        Add now members to the group
+                      </span>
+                  </label>
+                </div>
+              </div>
+              <div class="row">
+                  <!-- col-sm-offset-1 -->
+                <div class="col-sm-12">
+                  <label class="form-check">
+                    <input class="form-check-input" type="radio" name="mode" [value]="false" (change)="actionAfterGroupCreation(openModalAddMembers = false)">
+                      <span style="margin-left: 8px;"> 
+                        Return to the group list (add later)
+                      </span>
+                  </label>
+                </div>
+              </div>
+
             </span>
   
             <!--    ERROR     -->
@@ -486,7 +517,7 @@
         </div>
   
         <div class="modal-footer" style="text-align: center;">
-          <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onClosedisplayCreateGroupModalHandled()">
+          <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseCreateGroupModal()">
               {{ "UserEditAddPage.Continue" | translate }}
           </button>
         </div>
@@ -517,7 +548,7 @@
             </h4>
           </div>
           <div class="modal-body">
-              <p style="font-weight:100; text-align: left; margin-top: 10px; color: #AAAAAA">
+              <p style="font-weight:500; text-align: left; margin-top: 10px; color: #999">
                 Sei sicuro di voler rimuovere il membro selezionato dal gruppo <span style="font-weight:600;">{{ groupNameToUpdate }}</span>?
                 <!-- <span style="color:#212121"><strong> {{ id_project }}</strong> </span> -->
               </p>

@@ -102,35 +102,20 @@
                     </button>
                     <!-- Elimima Gruppo -->
                     <button type="button" rel="tooltip" title="{{ 'GroupsPage.tooltipDeleteGroup' | translate }}" class="btn btn-danger btn-simple btn-xs" 
-                      (click)='openDeleteModal(group?._id)'>
+                      (click)='openDeleteModal(group?._id, group?.name)'>
                         <i class="material-icons">close</i>
                     </button>
                   </td>
-                  <!-- SWITCH BUTTON IF THERE IS OR THERE ISN'T FAQ RELATED TO THE FAQ-KB -->
-                  <!-- <td class="">
-                    <span *ngIf="faqkb?.has_faq">
-                      <button style="margin-top:5px; padding-left: 3px; padding-right: 3px;" type="button" rel="tooltip" title="{{ 'BotsPage.tooltipViewAddEditFaq' | translate }}" class="btn btn-success btn-simple btn-xs" (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)'>
-                        <i class="material-icons">list</i>
-                      </button>
-                    </span>
-                    <span *ngIf="!faqkb?.has_faq">
-                      <button style="margin-top:5px; padding-left: 3px; padding-right: 3px;" type="button" rel="tooltip" title="{{ 'BotsPage.tooltipAddEditFaqNoRelatedFaq' | translate }}" class="btn btn-warning btn-simple btn-xs" (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)'>
-                        <i class="material-icons">list</i>
-                      </button>
-                    </span> 
-                  </td> -->
-
-                  <!-- // ADD MEMBERS TO A AGROUP MOVED IN  GROUP-EDIT-ADD COMPONENT -->
-                  <!-- <td>
-                    <button style="margin-top: 0px; margin-bottom: 0px;" type="button" rel="tooltip" title="" class="btn btn-warning btn-simple btn-xs" 
-                      (click)='open_users_list_modal(group?._id, group?.name, group?.members)'>
-                        <i class="material-icons">group_add</i>
-                    </button>
-                  </td> -->
 
                   <td>
                     {{ group?.members.length }}  
 
+                    <span *ngIf="group?.members.length === 0" style="padding-left: 8px">
+                        <i class="material-icons" style="vertical-align: middle; color:#ec971f; font-size: 12px">report_problem</i>
+                        <span style="vertical-align: middle; color:#ec971f; font-size: 12px"> 
+                          pending add members
+                        </span>
+                    </span>
                   </td>
 
      
@@ -240,7 +225,6 @@
             </table>
 
           </div>
-      
 
         <div class="modal-footer">
           <button type="button" class="btn btn-white" (click)="onCloseModal()" >
@@ -267,7 +251,8 @@
                 <span aria-hidden="true" style="color: #fff">&times;</span>
               </button>
               <h4 class="modal-title" style="color: #fff">
-                  <i class="material-icons" style="vertical-align: middle">report_problem</i><span style="vertical-align: middle; padding-left:8px">
+                  <i class="material-icons" style="vertical-align: middle">report_problem</i>
+                  <span style="vertical-align: middle; padding-left:8px">
                     Elimina gruppo
                   </span>
               </h4>
@@ -277,8 +262,10 @@
               </h4>
             </div>
             <div class="modal-body">
-                <p style="font-weight:100; text-align: left; margin-top: 10px; color: #AAAAAA">
-                  Sei sicuro di voler rimuovere il gruppo selezionato?
+                <p style="font-weight:500; text-align: left; margin-top: 10px; color: #999">
+                  Sei sicuro di voler rimuovere il gruppo <span style="color: #566787"> 
+                    <strong> {{ name_group_to_delete }} </strong>
+                  </span>?
                   <!-- <span style="color:#212121"><strong> {{ id_project }}</strong> </span> -->
                 </p>
   

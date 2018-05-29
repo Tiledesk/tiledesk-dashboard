@@ -118,7 +118,8 @@
         "GroupName": "GroupName",
         "CreateGroup": "Create Group",
         "UpdateGroup": "Update Group name",
-        "GroupCreated": "Group Created",
+        "GroupCreated1": "The group",
+        "GroupCreated2": "was created",
         "AnErrorHasOccurred": "An error has occurred"
     },
     "BotsPage": {

@@ -31,6 +31,7 @@ export class GroupsComponent implements OnInit {
 
   displayDeleteModal = 'none';
   id_group_to_delete: string;
+  name_group_to_delete: string;
 
 
   constructor(
@@ -209,9 +210,10 @@ export class GroupsComponent implements OnInit {
       });
   }
 
-  openDeleteModal(id_group: string) {
+  openDeleteModal(id_group: string, group_name: string) {
     this.displayDeleteModal = 'block';
     this.id_group_to_delete = id_group;
+    this.name_group_to_delete = group_name;
     console.log('OPEN DELETE MODAL - ID OF THE GROUP OF DELETE ', this.id_group_to_delete)
   }
 

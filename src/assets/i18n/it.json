@@ -120,7 +120,8 @@
         "GroupName":"Nome Gruppo",
         "CreateGroup":"Crea Gruppo",
         "UpdateGroup":"Aggiorna nome Gruppo",
-        "GroupCreated": "Gruppo Creato",
+        "GroupCreated1": "Il gruppo",
+        "GroupCreated2": "è stato creato",
         "AnErrorHasOccurred":"Si è verificato un errore"
     },
     "BotsPage": {

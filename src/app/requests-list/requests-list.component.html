@@ -84,6 +84,13 @@
                       </span>
                     </th>
                     <!-- <th>TEST</th> -->
+
+                    <!-- DELETE Action -->
+                    <th>
+                      <span style="color: #566787">
+                        Action
+                      </span>
+                    </th>
                 </tr>
               </thead>
 
@@ -233,6 +240,15 @@
                       </button>
                     </span>
                   </td> -->
+
+                  <!-- DELETE Action -->
+                  <td class="td-actions text-right">                 
+                    <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipDeleteUser' | translate }}" class="btn btn-danger btn-simple btn-xs"
+                      (click)='openDeleteRequestModal((request?.recipient))'>
+                      <i class="material-icons">close</i>
+                    </button>
+                  </td>
+
                 </tr>
                 <!-- /. END UNSERVED REQUESTS -->
                           
@@ -325,6 +341,13 @@
                   </th>
                   
                   <!-- <th>TEST</th> -->
+
+                  <!-- DELETE Action -->
+                  <th>
+                    <span style="color: #566787">
+                      Action
+                    </span>
+                  </th>
 
                 </tr>
               </thead>
@@ -473,6 +496,15 @@
                       </button>
                     </span>
                   </td> -->
+
+                  <!-- DELETE Action -->
+                  <td class="td-actions text-right">                 
+                    <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipDeleteUser' | translate }}" class="btn btn-danger btn-simple btn-xs"
+                      (click)='openDeleteRequestModal(request?.recipient)'>
+                      <i class="material-icons">close</i>
+                    </button>
+                  </td>
+
                 </tr>
               </tbody>
             </table>
