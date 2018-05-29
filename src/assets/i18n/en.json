@@ -219,13 +219,20 @@
         "Message": "Message",
         "ServedBy": "Served by",
         "Published": "Published",
+        "Actions":"Actions",
+        "tootipDeleteRequest":"Delete request",
         "NoVisitorClickHere": "No Visitor! Click here to simulate a visitor.",
         "RequestId": "Request Id:",
         "RequesterId": "Requester Id:",
         "Close": "Close",
         "Enter": "Enter",
         "Loading": "Loading",
-        "Error": "Error"
+        "Error": "Error",
+        "DeleteRequest":"Delete request",
+        "TheRequestWithId":"The request with id:",
+        "WillBeDeleted":"will be deleted",
+        "AreYouSure":"Are you sure you want to delete the selected request?",
+        "Cancel":"Cancel"
     },
     "RequestMsgsPage": {
         "MessagesOfTheRequest": "Messages of the request",

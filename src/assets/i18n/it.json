@@ -221,13 +221,20 @@
         "Message": "Messagio",
         "ServedBy": "Servita da",
         "Published": "Pubblicata",
+        "Actions":"Azioni",
+        "tootipDeleteRequest":"Elimina richiesta",
         "NoVisitorClickHere": "Nessun Visitatore! Clicca qui per simulare un visitatore.",
         "RequestId": "Id richiesta:",
         "RequesterId": "Id richiedente:",
         "Close": "Chiudi",
         "Enter": "Entra",
         "Loading": "Elaborazione",
-        "Error": "Errore"
+        "Error": "Errore",
+        "DeleteRequest":"Elimina richiesta",
+        "TheRequestWithId":"La richiesta con id:",
+        "WillBeDeleted":"verrà eliminata",
+        "AreYouSure":"Sei sicuro di voler eliminare la richiesta selezionata?",
+        "Cancel":"Annulla"
     },
     "RequestMsgsPage": {
         "MessagesOfTheRequest":"Messagi della richiesta",

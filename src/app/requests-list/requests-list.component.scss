@@ -114,24 +114,24 @@ button {
 //     }
 // }
 
-@media (min-width: 991px){
-.modal-dialog {
-    left: 110px !important;
-    }
-}
+// @media (min-width: 991px){
+// .modal-dialog {
+//     left: 110px !important;
+//     }
+// }
 
-@media (min-width: 768px)  {
-    .modal-dialog {
-      width: 600px;
-      margin: 30px auto;
-    }
-}
+// @media (min-width: 768px)  {
+//     .modal-dialog {
+//       width: 600px;
+//       margin: 30px auto;
+//     }
+// }
 
-@media (min-width: 1252px) {
-    .modal-dialog {
-      width: 900px;
-    }
-}
+// @media (min-width: 1252px) {
+//     .modal-dialog {
+//       width: 900px;
+//     }
+// }
 .modal {
     top: 0;
 }
@@ -179,8 +179,8 @@ button.close {
 
 .modal-body {
     position: relative;
-    padding-top: 0px;
-    padding-bottom: 0px;
+    padding-top: 35px;
+    padding-bottom: 35px;
     padding-right: 0px;
     padding-left: 15px;
 }

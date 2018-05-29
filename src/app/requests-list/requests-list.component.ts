@@ -86,6 +86,10 @@ export class RequestsListComponent implements OnInit {
   projectId: string;
   projectName: string;
 
+  displayDeleteRequestModal = 'none';
+
+  id_request_to_delete: string;
+
   constructor(
     private requestsService: RequestsService,
     private elRef: ElementRef,
@@ -134,7 +138,7 @@ export class RequestsListComponent implements OnInit {
     //   () => {
     //     console.log('GET REQUEST COMPLETE')
     //   });
-    
+
   }
 
 
@@ -225,6 +229,23 @@ export class RequestsListComponent implements OnInit {
     const url = 'http://testwidget.tiledesk.com/testsite?projectid=' + this.projectId + '&projectname=' + this.projectName;
     window.open(url, '_blank');
   }
+
+  // ======================== DELETE A REQUEST ========================
+  openDeleteRequestModal(request_recipient: string) {
+    console.log('ID OF REQUEST TO DELETE ', request_recipient)
+    this.id_request_to_delete = request_recipient;
+    this.displayDeleteRequestModal = 'block'
+  }
+
+  deleteTheRequestHandler() {
+    this.displayDeleteRequestModal = 'none'
+  }
+
+  onCloseDeleteRequestModal() {
+    this.displayDeleteRequestModal = 'none'
+  }
+
+
   // addOrUpdateRequestsList(r: Request) {
   //   console.log('ID REQUEST  ', r.recipient)
 
