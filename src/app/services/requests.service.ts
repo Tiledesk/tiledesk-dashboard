@@ -236,11 +236,15 @@ export class RequestsService {
   addOrUpdateRequestsList(r: Request) {
     console.log('****** ADD OR UPDATE REQUEST LIST ******')
 
-    // || !r.hasAgent(this.currentUserID))
-    if (r === null || r === undefined ) {
+    // r.hasAgent(this.currentUserID)) PASS THE CURRENT USER ID TO THE 'REQUEST' MODEL WHICH AFTER COMPARING
+    // THE CURRENT USER ID WITH THE 'USER ID' CONTAINED IN THE ARRAY 'AGENTS' (NESTED IN THE 'REQUEST' OBJECT) 
+    // RETURNS TRUE OR FALSE
+    if (r === null || r === undefined || !r.hasAgent(this.currentUserID)) {
+      console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID))
       // console.log('MY DEPT - IS IN ARRAY myDepts THE DEPT ID ', r.attributes.departmentId, ' :', this.myDepts.includes(r.attributes.departmentId))
       return;
     }
+    console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID))
     for (let i = 0; i < this.requestList.length; i++) {
       if (r.recipient === this.requestList[i].recipient) {
         // UPDATE: SUBSTITUTE THE EXISTING REQUEST WITH THE MODIFIED ONE ...
@@ -307,7 +311,7 @@ export class RequestsService {
         console.log('REQUEST SNAPSHOT ', snapshot)
         const requestListReturned: Request[] = snapshot.docChanges.map((c: DocumentChange) => {
           // const requestListReturned: Request[] = snapshot.docs.map((c: DocumentSnapshot) => {
-          const r: Request = {};
+          const r: Request = new Request();
           const data = c.doc.data()
           // const data = c.data()
           r.id = data.recipient;
@@ -326,6 +330,7 @@ export class RequestsService {
           r.requester_id = data.requester_id
           r.agents = data.agents
           r.attributes = data.attributes
+          // r.hasAgent(this.currentUserID)
 
           /* IF DIFFERENT OF MY DEPTS */
           // const reqDeptIsInMyDeptArray = this.myDepts.includes(r.attributes.departmentId);

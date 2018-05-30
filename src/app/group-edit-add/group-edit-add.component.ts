@@ -39,7 +39,7 @@ export class GroupEditAddComponent implements OnInit {
   id_new_group: string;
 
   has_completed_getGroupById = false;
-  a = 24
+  
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -54,8 +54,6 @@ export class GroupEditAddComponent implements OnInit {
     this.detectsCreateEditInTheUrl();
 
     this.getCurrentProject();
-
-    console.log('AAAAAA = ', this.a)
   }
 
 

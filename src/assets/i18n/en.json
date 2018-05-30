@@ -115,7 +115,7 @@
     "GroupsAddEditPage": {
         "AddGroup": "Add Group",
         "EditGroup": "Edit Group",
-        "GroupName": "GroupName",
+        "GroupName": "Group Name",
         "CreateGroup": "Create Group",
         "UpdateGroup": "Update Group name",
         "GroupCreated1": "The group",

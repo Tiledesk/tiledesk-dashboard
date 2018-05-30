@@ -1,4 +1,4 @@
-export class Request {
+export interface Request {
   recipient?: string;
   recipient_fullname?: string;
   sender_fullname?: string;
@@ -22,4 +22,28 @@ export class Request {
   notification_already_shown?: boolean;
   agents?: any;
   attributes?: any;
+  showRequest?: boolean;
+  hasAgent?(user_id: string): boolean;
+}
+
+export class Request implements Request {
+  hasAgent?(current_user_id: string): boolean {
+    console.log('MODEL REQUEST - USER ID ', current_user_id)
+
+    let found = false
+    if (this.agents !== undefined) {
+      console.log('MODEL REQUEST - AGENT ', this.agents)
+
+      this.agents.forEach(agent => {
+
+        console.log('AGENT - ID USER ', agent.id_user)
+        if (current_user_id === agent.id_user) {
+          found = true
+        }
+      });
+
+    }
+    return found;
+  }
+
 }
