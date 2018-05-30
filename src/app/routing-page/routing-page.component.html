@@ -30,7 +30,7 @@
                     <div class="col-sm-2 col-md-3" style="height: 36px;">
                       <div class="form-check" style="padding-top: 8px;">
                         <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3"
-                        (click)="has_clicked_assigned(show_group_option_form = 'true', show_option_form = 'false', routing = 'assigned')" [checked]="dept_routing === 'assigned'">
+                        (click)="has_clicked_assigned(show_group_option_form = 'true', show_option_form = 'true', routing = 'assigned')" [checked]="dept_routing === 'assigned'">
                         
                         <label class="form-check-label" for="exampleRadios3" style="padding-left: 5px;">
                           Assigned
@@ -71,7 +71,7 @@
                     <div class="col-sm-2 col-md-3" style="height: 36px;">
                       <div class="form-check" style="padding-top:8px;">
                         <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" 
-                        (click)="has_clicked_pooled(show_group_option_form = 'true', show_option_form = 'false', routing = 'pooled')" [checked]="dept_routing === 'pooled'">
+                        (click)="has_clicked_pooled(show_group_option_form = 'true', show_option_form = 'true', routing = 'pooled')" [checked]="dept_routing === 'pooled'">
     
                         <label class="form-check-label" for="exampleRadios2" style="padding-left: 5px;">
                           Pooled
@@ -104,41 +104,53 @@
                     </span> 
                   </div>
 
-                  <!--     BOT (IT'S ACTUALLY FAQ-KB)   -->
+                 
                   <div class="row">
-                    <div class="col-sm-2 col-md-3" style="height: 36px;">
+
+                    <!--     BOT (IT'S ACTUALLY FAQ-KB)   -->
+                    <!-- <div class="col-sm-2 col-md-3" style="height: 36px;">
                       <div class="form-check" style="padding-top:10px; padding-bottom:8px; ">
-                          <!-- checked="true" -->
-                        <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" 
+                        <input class="form-check-input" type="checkbox" name="exampleRadios" id="exampleRadios1" value="option1" 
                         (click)="has_clicked_fixed(show_group_option_form = 'false', show_option_form = 'true', routing = 'fixed')" [checked]="dept_routing === 'fixed'">
-    
                         <label class="form-check-label" for="exampleRadios1" style="padding-left: 5px;">
-                          <!-- Fixed -->
                           Bot
                         </label>
                       </div>
+                    </div> -->
+
+                    <!-- ============= NEW LOGIC - BOT AS CHECKBOX ============= -->
+                    <!-- [checked]="on_init_SHOW_BOT_DROPDOWN" -->
+                    <div class="col-sm-2 col-md-3" style="height: 36px;">
+                      <div class="form-check" style="padding-top:10px; padding-bottom:8px;">
+                          <!-- (change)="toggleEditable($event)" -->
+                          <!--  -->
+                        <input #input style="width: 14px; height: 14px;" type="checkbox" class="form-check-input" id="exampleCheck1" 
+                        (click)="has_clicked_bot(show_option_form = !show_option_form)" [checked]="show_option_form">
+                        <label style="padding-left: 5px;" class="form-check-label" for="exampleCheck1">Bot</label>
+                      </div>
                     </div>
+                    
 
 
-                    <span *ngIf="dept_routing === 'fixed'">  
-                      <span *ngIf=" SHOW_OPTION_FORM !== 'false'">
-                        <div class="col-sm-10 col-md-9">
-                          <select #selectElem (change)="setSelectedBot(selectElem.value)"  >
-    
-                            <option class="not_selected" value="BOT_NOT_SELECTED">{{ "DeptsAddEditPage.SelectABot" | translate }}</option>
-                            <!-- NOTE: botsList IT'S ACTUALLY THE FAQ-KB LIST -->
-                            <option  *ngFor="let bot of botsList" [value]="bot._id" [selected]="selectedId === bot._id">
-                              {{bot.name}} 
-                            </option>
-                          </select>
+                    <!-- <span *ngIf="dept_routing === 'fixed'">   -->
+                    <span *ngIf="show_option_form === true">
+                      <div class="col-sm-10 col-md-9">
+                        <select #selectElem (change)="setSelectedBot(selectElem.value)"  >
+  
+                          <option class="not_selected" value="BOT_NOT_SELECTED">{{ "DeptsAddEditPage.SelectABot" | translate }}</option>
+                          <!-- NOTE: botsList IT'S ACTUALLY THE FAQ-KB LIST -->
+                          <option  *ngFor="let bot of botsList" [value]="bot._id" [selected]="selectedId === bot._id">
+                            {{bot.name}} 
+                          </option>
+                        </select>
 
-                          <a style="margin-left: 8px; color: #03a5e8; cursor:pointer" (click)="goTo_BotEditAddPage_CREATE()"> 
-                          <!-- o Crea un nuovo Bot  -->
-                          {{ "DeptsAddEditPage.orCreateABot" | translate }}
-                          </a>
-                        </div>
-                      </span>
+                        <a style="margin-left: 8px; color: #03a5e8; cursor:pointer" (click)="goTo_BotEditAddPage_CREATE()"> 
+                        <!-- o Crea un nuovo Bot  -->
+                        {{ "DeptsAddEditPage.orCreateABot" | translate }}
+                        </a>
+                      </div>
                     </span>
+                    <!-- </span> -->
 
                   </div>
                 </div>
@@ -149,22 +161,19 @@
               
                 <!-- // BUTTONS -->
                 <div class="col-sm-10" style="margin-left: 16px; margin-bottom: 25px;"> 
-
                   <!-- <span *ngIf="SHOW_OPTION_FORM === 'true'"> -->
-                  <span *ngIf="dept_routing === 'fixed'">  
+                  <span *ngIf="show_option_form === true">  
                     <button class="btn btn-success" (click)="edit()" [disabled]="BOT_NOT_SELECTED === true">             
-                      <!-- Update routing rules -->
-                      <!-- ROUTING: {{ dept_routing }} BOT_NOT_SELECTED: {{BOT_NOT_SELECTED }} -->
-                      {{ "RoutingPage.UpdateRoutingRules" | translate  }}
+                      ++++ {{ "RoutingPage.UpdateRoutingRules" | translate  }}
                     </button>
                   </span>
-                  <!-- <span *ngIf="SHOW_OPTION_FORM !== 'true'"> -->
-                  <span *ngIf="dept_routing === 'assigned' || dept_routing === 'pooled'">
+             
+                  <span *ngIf="show_option_form !== true">
                     <button class="btn btn-success" (click)="edit()" [disabled]='GROUP_ID_NOT_EXIST'>
                         <!-- Update routing rules -->
                       
                       <!-- ROUTING: {{ dept_routing }} GROUP_ID_NOT_EXIST: {{GROUP_ID_NOT_EXIST }} -->
-                      {{ "RoutingPage.UpdateRoutingRules" | translate  }}
+                      --- {{ "RoutingPage.UpdateRoutingRules" | translate  }}
                     </button>
                   </span>
                 </div>
@@ -186,7 +195,7 @@
                 <p style="margin-bottom: 3px"> <strong>Assigned </strong></p>
                 <p style="color:#999999">
                     
-                    Assigned chats help maintain an even workload distribution, especially for larger teams. Chat limits keep agents from getting overwhelmed by chats, especially during high traffic. Experienced agents can help clear the queue faster with the Hybrid Assignment Mode. Enable Reassignments and Automatic Idle to reduce visitor wait time by preventing chats from getting assigned to inactive agents.
+                    Assigned chats help maintain an even workload distribution, especially for larger teams.
                 </p>
 
                 <p style="margin-bottom: 3px"> <strong>Pooled </strong></p>

@@ -28,15 +28,15 @@ export interface Request {
 
 export class Request implements Request {
   hasAgent?(current_user_id: string): boolean {
-    console.log('MODEL REQUEST - USER ID ', current_user_id)
+    // console.log('MODEL REQUEST - USER ID ', current_user_id)
 
     let found = false
     if (this.agents !== undefined) {
-      console.log('MODEL REQUEST - AGENT ', this.agents)
+      // console.log('MODEL REQUEST - AGENT ', this.agents)
 
       this.agents.forEach(agent => {
 
-        console.log('AGENT - ID USER ', agent.id_user)
+        // console.log('AGENT - ID USER ', agent.id_user)
         if (current_user_id === agent.id_user) {
           found = true
         }

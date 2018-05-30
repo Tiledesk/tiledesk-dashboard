@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MongodbDepartmentService } from '../services/mongodb-department.service';
 import { Department } from '../models/department-model';
 import { FaqKbService } from '../services/faq-kb.service';
@@ -42,6 +42,8 @@ export class RoutingPageComponent implements OnInit {
   groupsList: Group[];
   GROUP_ID_NOT_EXIST: boolean;
 
+  show_option_form: boolean;
+
   constructor(
     private mongodbDepartmentService: MongodbDepartmentService,
     private faqKbService: FaqKbService,
@@ -64,9 +66,9 @@ export class RoutingPageComponent implements OnInit {
     this.getCurrentProject();
 
     this.getGroupsByProjectId();
+    // tslint:disable-next-line:quotemark
 
   }
-
 
   /**
    * ======================= GETS ALL GROUPS WITH THE CURRENT PROJECT-ID =======================
@@ -79,9 +81,7 @@ export class RoutingPageComponent implements OnInit {
       if (groups) {
         this.groupsList = groups;
 
-
         console.log('for DEBUG GROUP ID SELECTED', this.selectedGroupId);
-
         // CHECK IN THE GROUPS LIST THE GROUP-ID RETURNED FROM THE DEPT OBJECT.
         // IF THE GROUP-ID DOES NOT EXIST MEANS THAT WAS DELETED
         if (this.selectedGroupId !== null && this.selectedGroupId !== undefined) {
@@ -92,14 +92,11 @@ export class RoutingPageComponent implements OnInit {
     },
       (error) => {
         console.log('GET GROUPS - ERROR ', error);
-
         // this.showSpinner = false;
       },
       () => {
         console.log('GET GROUPS * COMPLETE');
-
       });
-
   }
 
   checkGroupId(groupIdSelected, groups_list) {
@@ -133,7 +130,6 @@ export class RoutingPageComponent implements OnInit {
             this.default_dept = dept
             console.log('ROUTING PAGE - DEFAULT DEPT (FILTERED FOR PROJECT ID)', this.default_dept);
 
-
             this.default_dept_name = dept.name;
             this.dept_routing = dept.routing
 
@@ -142,7 +138,6 @@ export class RoutingPageComponent implements OnInit {
             this.id_dept = dept._id;
 
             this.selectedGroupId = dept.id_group;
-
 
             console.log('ROUTING PAGE - DEPT - BOT ID: ', this.botId);
             console.log('ROUTING PAGE - DEPT - GROUP ID: ', this.selectedGroupId);
@@ -163,21 +158,21 @@ export class RoutingPageComponent implements OnInit {
         if (this.botId === undefined) {
           console.log(' !!! BOT ID UNDEFINED ', this.botId);
           this.showSpinner = false;
-
+          this.selectedBotId = 'BOT_NOT_SELECTED'
 
         } else if (this.botId == null) {
           this.showSpinner = false;
           console.log(' !!! BOT ID NULL ', this.botId);
+          this.selectedBotId = 'BOT_NOT_SELECTED'
         } else {
-
           // getBotById() IS RUNNED ONLY IF THE BOT-ID (returned in the DEPT OBJECT) IS NOT undefined and IS NOT null
           this.getBotById();
 
           // this.SHOW_OPTION_FORM = false;
+          this.show_option_form = true;
+
           console.log(' BOT ID DEFINED ', this.botId);
         }
-
-
         this.getDeptByIdToTestChat21AssigneesFunction();
       });
 
@@ -251,6 +246,15 @@ export class RoutingPageComponent implements OnInit {
     }
   }
 
+  // ============ NEW - SUBSTITUTES has_clicked_fixed ============
+  has_clicked_bot(show_option_form: boolean) {
+
+    console.log('HAS CLICKED BOT - SHOW DROPDOWN ', show_option_form);
+    if (show_option_form === false) {
+      this.selectedBotId = null
+    }
+  }
+
 
   setSelectedGroup(id: any): void {
     this.selectedGroupId = id;
@@ -286,6 +290,7 @@ export class RoutingPageComponent implements OnInit {
     this.dept_routing = 'assigned'
   }
 
+  // !!!! NO MORE USED - IS SUBSTITUTED BY has_clicked_bot()
   // is the option (called Bot in the html) that provides for the selection of a faq-kb (also this called Bot in the html)
   has_clicked_fixed(show_group_option_form: boolean, show_option_form: boolean, routing: string) {
     // this.HAS_CLICKED_FIXED = true;
@@ -301,6 +306,8 @@ export class RoutingPageComponent implements OnInit {
     this.BOT_NOT_SELECTED = true;
     console.log('BOT_NOT_SELECTED ', this.BOT_NOT_SELECTED);
   }
+
+
 
   has_clicked_pooled(show_group_option_form: boolean, show_option_form: boolean, routing: string) {
     // console.log('HAS CLICKED POOLED')
@@ -333,16 +340,16 @@ export class RoutingPageComponent implements OnInit {
     // 'FIXED' (NOW, IN THE HTML, RENAMED IN 'BOT') OPTION WORK-FLOW:
     // IF THE USER, WHEN EDIT THE DEPT (AND HAS SELECTED FIXED), DOESN'T SELECT ANY NEW BOT this.selectedBotId IS UNDEFINED
     // SO SET this.botIdEdit EQUAL TO THE BOT ID RETURNED BY getBotById
-    // if (this.ROUTING_SELECTED === 'fixed') {
-    if (this.dept_routing === 'fixed') {
-      if (this.selectedBotId === undefined) {
-        this.botIdEdit = this.botId
-      } else {
-        this.botIdEdit = this.selectedBotId
-      }
+
+    // if (this.dept_routing === 'fixed') {
+    if (this.selectedBotId === undefined) {
+      this.botIdEdit = this.botId
     } else {
-      this.botIdEdit = null;
+      this.botIdEdit = this.selectedBotId
     }
+    // } else {
+    //   this.botIdEdit = null;
+    // }
 
 
     // this.faqKbEdit

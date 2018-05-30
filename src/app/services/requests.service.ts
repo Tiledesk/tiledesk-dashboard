@@ -332,23 +332,6 @@ export class RequestsService {
           r.attributes = data.attributes
           // r.hasAgent(this.currentUserID)
 
-          /* IF DIFFERENT OF MY DEPTS */
-          // const reqDeptIsInMyDeptArray = this.myDepts.includes(r.attributes.departmentId);
-          // console.log('----> CHECK MY MY DEPT - ARRAY myDepts ', this.myDepts)
-          // console.log('----> CHECK MY MY DEPT - IS IN ARRAY myDepts THE DEPT ID ', r.attributes.departmentId, ' :', reqDeptIsInMyDeptArray)
-          // if (reqDeptIsInMyDeptArray === false) {
-          //   return null;
-          // } else {
-          console.log('AGENTS ', r.agents, ', ID REQUEST: ', r.id)
-          // const agent_array = []
-          // r.agents.forEach(agent => {
-          //   console.log('AGENT ', agent)
-          //   console.log('AGENT - ID USER ', agent.id_user)
-          //   if (agent.id_user === this.currentUserID) {
-          //     agent_array.push(agent.id_user);
-          //   }
-          //   console.log('ARRAY AGENT ', agent_array)
-          // });
           return r;
 
         });
