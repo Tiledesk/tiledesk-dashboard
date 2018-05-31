@@ -53,7 +53,8 @@
 
                               <div class="form-check" style="padding-top:4px; padding-bottom:4px;">
                                 <input style="width: 14px; height: 14px;" type="checkbox" class="form-check-input" id="exampleCheck1" 
-                                  (click)="has_clicked_bot(has_selected_bot = !has_selected_bot)" [checked]="has_selected_bot">
+                                  (click)="has_clicked_bot(has_selected_bot = !has_selected_bot)" 
+                                  [checked]="has_selected_bot">
                                 <label style="padding-left: 8px; padding-top: 1px;" class="form-check-label" for="exampleCheck1">Bot</label>
                               </div>
                             </div>
@@ -62,7 +63,9 @@
                               <div class="col-sm-10 col-md-9" style="padding-top: 2px;">
                                 <select #selectElem (change)="setSelectedBot(selectElem.value)"  >
           
-                                  <option class="not_selected" value="BOT_NOT_SELECTED">{{ "DeptsAddEditPage.SelectABot" | translate }}</option>
+                                  <option class="not_selected" value="BOT_NOT_SELECTED" [selected]="BOT_NOT_SELECTED">
+                                    {{ "DeptsAddEditPage.SelectABot" | translate }}
+                                  </option>
                                   <!-- NOTE: botsList IT'S ACTUALLY THE FAQ-KB LIST -->
                                   <option  *ngFor="let bot of botsList" [value]="bot._id" [selected]="selectedId === bot._id">
                                     {{bot.name}} 
@@ -83,8 +86,10 @@
                             <div class="col-sm-2 col-md-3" style="height: 38px;">
                               <div class="form-check" style="padding-top:8px; padding-bottom:4px;">
                                   <!-- (click)="" [checked]="" -->
-                                <input style="width: 14px; height: 14px;" type="checkbox" class="form-check-input" id="exampleCheck2" [disabled]="!has_selected_bot"
-                                (click)="has_clicked_only_bot(has_selected_only_bot = !has_selected_only_bot)" >
+                                <input style="width: 14px; height: 14px;" type="checkbox" class="form-check-input" id="exampleCheck2" 
+                                  [disabled]="!has_selected_bot"
+                                  (click)="has_clicked_only_bot(has_selected_only_bot = !has_selected_only_bot)" 
+                                  [checked]="has_selected_only_bot">
                                 <label style="padding-left: 8px; padding-top: 1px;" class="form-check-label" for="exampleCheck2">
                                   Bot only
                                 </label>
@@ -195,8 +200,6 @@
                     </div>
                     <!-- /.row -->
                   </div>
-
-                 
 
                 </div>
                 <!-- ./end col-sm-12 -->

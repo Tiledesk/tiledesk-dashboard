@@ -46,6 +46,7 @@ export class RoutingPageComponent implements OnInit {
   has_selected_bot: boolean
   BOT_NOT_SELECTED: boolean;
   bot_only: boolean;
+  has_selected_only_bot: boolean;
 
   onlybot_disable_routing: boolean;
   constructor(
@@ -131,7 +132,7 @@ export class RoutingPageComponent implements OnInit {
         departments.forEach(dept => {
           if (dept.default === true) {
             this.default_dept = dept
-            console.log('ROUTING PAGE - DEFAULT DEPT (FILTERED FOR PROJECT ID)', this.default_dept);
+            console.log('++ ROUTING PAGE - DEFAULT DEPT (FILTERED FOR PROJECT ID)', this.default_dept);
 
             this.default_dept_name = dept.name;
             this.dept_routing = dept.routing
@@ -141,10 +142,18 @@ export class RoutingPageComponent implements OnInit {
             this.id_dept = dept._id;
 
             this.selectedGroupId = dept.id_group;
+            this.bot_only = dept.bot_only
+            if (this.bot_only === false || this.bot_only === undefined || this.bot_only === null) {
+              this.has_selected_only_bot = false;
+            } else {
+              this.has_selected_only_bot = true;
+              this.onlybot_disable_routing = true;
+            }
 
-            console.log('ROUTING PAGE - DEPT - BOT ID: ', this.botId);
-            console.log('ROUTING PAGE - DEPT - GROUP ID: ', this.selectedGroupId);
-            console.log('ROUTING PAGE - DEPT - ROUTING: ', this.dept_routing);
+            console.log('++ ROUTING PAGE - DEPT - BOT ID: ', this.botId);
+            console.log('++ ROUTING PAGE - DEPT - ONLY BOT: ', this.bot_only);
+            console.log('++ ROUTING PAGE - DEPT - GROUP ID: ', this.selectedGroupId);
+            console.log('++ ROUTING PAGE - DEPT - ROUTING: ', this.dept_routing);
           }
         })
       }
@@ -161,6 +170,8 @@ export class RoutingPageComponent implements OnInit {
         if (this.botId === undefined) {
 
           this.showSpinner = false;
+          
+          this.selectedBotId = null;
 
           this.BOT_NOT_SELECTED = true;
           this.has_selected_bot = false;
@@ -170,6 +181,8 @@ export class RoutingPageComponent implements OnInit {
 
           this.showSpinner = false;
 
+          this.selectedBotId = null;
+
           this.BOT_NOT_SELECTED = true;
           this.has_selected_bot = false;
           console.log(' !!! BOT ID NULL ', this.botId, ', BOT NOT SELECTED: ', this.BOT_NOT_SELECTED);
@@ -177,11 +190,11 @@ export class RoutingPageComponent implements OnInit {
         } else {
           // getBotById() IS RUNNED ONLY IF THE BOT-ID (returned in the DEPT OBJECT) IS NOT undefined and IS NOT null
           this.getBotById();
-
           // this.SHOW_OPTION_FORM = false;
           // this.show_option_form = true;
-          this.has_selected_bot = true
 
+          // if the bot is defined it means that the user had selected the bot
+          this.has_selected_bot = true
           console.log('BOT ID DEFINED ', this.botId);
         }
         this.getDeptByIdToTestChat21AssigneesFunction();
@@ -259,11 +272,20 @@ export class RoutingPageComponent implements OnInit {
 
   // ============ NEW - SUBSTITUTES has_clicked_fixed ============
   has_clicked_bot(has_selected_bot: boolean) {
-    console.log('HAS CLICKED BOT - BOT NOT SELECTED ', this.BOT_NOT_SELECTED);
+
     console.log('HAS CLICKED BOT - SHOW DROPDOWN ', has_selected_bot);
     if (has_selected_bot === false) {
-      // this.BOT_NOT_SELECTED = true;
+      this.BOT_NOT_SELECTED = true;
+      console.log('HAS CLICKED BOT - BOT NOT SELECTED ', this.BOT_NOT_SELECTED);
+
+
       this.selectedBotId = null;
+      console.log('SELECTED BOT ID ', this.selectedBotId)
+
+      // ONLY BOT AUEOMATIC DESELECTION IF has_selected_bot IS FALSE
+      this.has_selected_only_bot = false
+      this.onlybot_disable_routing = false;
+      this.bot_only = false;
     }
   }
 
@@ -380,25 +402,25 @@ export class RoutingPageComponent implements OnInit {
     // this.ROUTING_SELECTED
     // tslint:disable-next-line:max-line-length
     this.mongodbDepartmentService.updateMongoDbDepartment(this.id_dept, this.default_dept_name, this.botIdEdit, this.bot_only, this.selectedGroupId, this.dept_routing)
-    .subscribe((data) => {
-      console.log('PUT DATA ', data);
+      .subscribe((data) => {
+        console.log('PUT DATA ', data);
 
-      // RE-RUN GET CONTACT TO UPDATE THE TABLE
-      // this.getDepartments();
-      // this.ngOnInit();
-    },
-      (error) => {
-        console.log('PUT REQUEST ERROR ', error);
-        this.SHOW_CIRCULAR_SPINNER = false;
+        // RE-RUN GET CONTACT TO UPDATE THE TABLE
+        // this.getDepartments();
+        // this.ngOnInit();
       },
-      () => {
-        console.log('PUT REQUEST * COMPLETE *');
-        setTimeout(() => {
-          this.SHOW_CIRCULAR_SPINNER = false
-        }, 300);
+        (error) => {
+          console.log('PUT REQUEST ERROR ', error);
+          this.SHOW_CIRCULAR_SPINNER = false;
+        },
+        () => {
+          console.log('PUT REQUEST * COMPLETE *');
+          setTimeout(() => {
+            this.SHOW_CIRCULAR_SPINNER = false
+          }, 300);
 
-
-      });
+          this.ngOnInit();
+        });
 
   }
 
