@@ -23,147 +23,211 @@
     
               <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
               
-              <label style="height: 36px; padding-top: 0px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2">
-                <!-- Nome Dipartimento -->
+              <!-- <label style="height: 36px; padding-top: 8px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2">
                 {{ "DeptsAddEditPage.DeptName" | translate}}
-              </label>
-              <div class="col-sm-10">
+              </label> -->
+              <div class="col-sm-12">
                 <input [(ngModel)]="dept_name" class="" type="text" placeholder='{{ "DeptsAddEditPage.DeptName" | translate}}' style="margin-top: 2px">
               </div>
 
-              <!-- SPACER -->
-              <!-- <div class="col-sm-12" style="height:10px"></div> -->
-
-              <!-- RADIO BUTTON -->
-              <!-- checked="true" -->
-
-              <div class="col-sm-10 col-sm-offset-2" style="padding-left:30px; padding-top:15px">
+              <!-- col-sm-10 col-sm-offset-2 -->
+              <div class="col-sm-12" style="padding-top:15px">
                 
+                <!-- ============= NEW LOGIC - BOT AS CHECKBOX (CREATE VIEW) ============= -->
+                <div class="oaerror info">
+                  <div class="row"> 
+                    <div class="col-sm-12"> 
+                      <!-- <strong>Info!</strong>  -->
+                      <p style="color: #566787; font-weight:500; font-size: 16px">
+                        <!-- Select a bot that will respond to visitor's requests before agent's commitment -->
+                        {{ "RoutingPage.SelectABotThatWill" | translate  }}
+                      </p>
+                    </div>
+                     
+                    <div class="col-sm-12" style="margin-top: 8px"> 
+                      <div class="col-sm-2 col-md-3" style="height: 38px;">
+
+                        <div class="form-check" style="padding-top:4px; padding-bottom:4px;">
+                          <input style="width: 14px; height: 14px;" type="checkbox" class="form-check-input" id="exampleCheck1" 
+                            (click)="has_clicked_bot(has_selected_bot = !has_selected_bot)" 
+                            [checked]="has_selected_bot">
+                          <label style="padding-left: 8px; padding-top: 1px;" class="form-check-label" for="exampleCheck1">
+                            Bot
+                          </label>
+                        </div>
+                      </div>
+    
+                      <span *ngIf="has_selected_bot === true">
+                        <div class="col-sm-10 col-md-9" style="padding-top: 2px;">
+                          <select #selectElem (change)="setSelectedBot(selectElem.value)"  >
+    
+                            <option class="not_selected" value="BOT_NOT_SELECTED" [selected]="BOT_NOT_SELECTED">
+                              {{ "DeptsAddEditPage.SelectABot" | translate }}
+                            </option>
+                            <!-- NOTE: botsList IT'S ACTUALLY THE FAQ-KB LIST -->
+                            <option  *ngFor="let bot of botsList" [value]="bot._id" [selected]="selectedId === bot._id">
+                              {{bot.name}} 
+                            </option>
+                          </select>
+  
+                          <a style="margin-left: 8px; color: #03a5e8; cursor:pointer" (click)="goTo_BotEditAddPage_CREATE()"> 
+                          <!-- o Crea un nuovo Bot  -->
+                          {{ "DeptsAddEditPage.orCreateABot" | translate }}
+                          </a>
+                        </div>
+                      </span>
+
+                    </div>
+
+                    <!-- // ONLY BOT -->
+                    <div class="col-sm-12" style="margin-top: 8px"> 
+                      <div class="col-sm-2 col-md-3" style="height: 38px;">
+                        <div class="form-check" style="padding-top:8px; padding-bottom:4px;">
+                            <!-- (click)="" [checked]="" -->
+                          <input style="width: 14px; height: 14px;" type="checkbox" class="form-check-input" id="exampleCheck2" 
+                            [disabled]="!has_selected_bot"
+                            (click)="has_clicked_only_bot(has_selected_only_bot = !has_selected_only_bot)" 
+                            [checked]="has_selected_only_bot">
+                          <label style="padding-left: 8px; padding-top: 1px;" class="form-check-label" for="exampleCheck2">
+                            <!-- Bot only -->
+                            {{ "RoutingPage.BotOnly" | translate  }}
+                          </label>
+                        </div>
+                      </div>
+                    </div>  
+                  </div>
+                </div>
+                <!-- ./ oaerror -->
+
                 <!--     ASSIGNED (CREATE VIEW)     -->
-                <div class="row">
-                  <div class="col-sm-2 col-md-3" style="height: 36px;">
-                    <div class="form-check" style="padding-top: 8px;">
-                      <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3" checked
-                      (click)="has_clicked_assigned(show_group_option_form = 'true', show_option_form = 'false', routing = 'assigned')">
-                      
-                      <label class="form-check-label" for="exampleRadios3" style="padding-left: 5px;">
-                        Assigned
-                      </label>
-                    </div>
-                  </div>
-                  
-                  <!-- // NEW - START SELECT GROUP FOR ROUTING ASSIGNED -->
-                  <span *ngIf="dept_routing === 'assigned'">
-                    <span *ngIf="SHOW_GROUP_OPTION_FORM !== 'false'"> 
-                      <div class="col-sm-10 col-md-9">
-                        <select #selectElem (change)="setSelectedGroup(selectElem.value)" style="min-width: 150px;" [ngClass]="{'errorGroup' : GROUP_ID_NOT_EXIST}">
+                <div class="oaerror info" style="margin-top:8px" [ngClass]="{'disabled' : onlybot_disable_routing}">
+                  <div class="row">
 
-                          <!-- // IF THE GROUP ASSIGNED TO THE DEFAULT DEPT HAS BEEN DELETED, IT IS DISPLAYED: 'THE GROUP DOES NOT EXIST' -->
-                          <option style="color: #ff5252 !important;" *ngIf="GROUP_ID_NOT_EXIST" [selected]="GROUP_ID_NOT_EXIST">
-                            <p>{{ "DeptsAddEditPage.ErrorGroupId" | translate}} {{ selectedGroupId }} {{ "DeptsAddEditPage.Trashed" | translate}} </p>
-                          </option>
+                    <div class="col-sm-12"> 
+                      <!-- <strong>Info!</strong>  -->
+                      <p style="color: #566787; font-weight:500; font-size: 16px">
+                        <!-- Set routing rules for agents commitment -->
+                        {{ "RoutingPage.SetRoutingRules" | translate  }}
+                      </p>
+                    </div>
+                    <div class="col-sm-12" style="margin-top: 8px"> 
+                      <div class="col-sm-2 col-md-3" style="height: 36px;">
+                        <div class="form-check" style="padding-top: 4px;">
+                          <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3" checked
+                          (click)="has_clicked_assigned(show_group_option_form = 'true', show_option_form = 'false', routing = 'assigned')">
                           
-                          <option class="not_selected" value="ALL_USERS_SELECTED">
-                            <!-- All users -->
-                            {{ "RoutingPage.AllUsers" | translate  }}                          
-                          </option>
+                          <label class="form-check-label" for="exampleRadios3" style="padding-left: 5px;">
+                            Assigned
+                          </label>
+                        </div>
+                      </div>
                     
-        
-                          <option  *ngFor="let group of groupsList" [value]="group?._id" [selected]="selectedGroupId === group?._id">
-                            {{group?.name}}
-                          </option>
-                        </select>
-                      </div>
-                    </span>
-                  </span> 
-                </div>
+                      <!-- // NEW - START SELECT GROUP FOR ROUTING ASSIGNED -->
+                      <span *ngIf="dept_routing === 'assigned'">
+                        <span *ngIf="SHOW_GROUP_OPTION_FORM !== 'false'"> 
+                          <div class="col-sm-10 col-md-9">
+                            <select #selectElem (change)="setSelectedGroup(selectElem.value)" style="min-width: 150px;" [ngClass]="{'errorGroup' : GROUP_ID_NOT_EXIST}">
 
-                <!--     POOLED (CREATE VIEW)     -->
-                <div class="row">
-                  <div class="col-sm-2 col-md-3" style="height: 36px;">
-                    <div class="form-check" style="padding-top:8px;">
-                      <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" 
-                      (click)="has_clicked_pooled(show_group_option_form = 'true', show_option_form = 'false', routing = 'pooled')">
-
-                      <label class="form-check-label" for="exampleRadios2" style="padding-left: 5px;">
-                        Pooled
-                      </label>
+                              <!-- // IF THE GROUP ASSIGNED TO THE DEFAULT DEPT HAS BEEN DELETED, IT IS DISPLAYED: 'THE GROUP DOES NOT EXIST' -->
+                              <option style="color: #ff5252 !important;" *ngIf="GROUP_ID_NOT_EXIST" [selected]="GROUP_ID_NOT_EXIST">
+                                <p>{{ "DeptsAddEditPage.ErrorGroupId" | translate}} {{ selectedGroupId }} {{ "DeptsAddEditPage.Trashed" | translate}} </p>
+                              </option>
+                              
+                              <option class="not_selected" value="ALL_USERS_SELECTED">
+                                <!-- All users -->
+                                {{ "RoutingPage.AllUsers" | translate  }}                          
+                              </option>
+                        
+            
+                              <option  *ngFor="let group of groupsList" [value]="group?._id" [selected]="selectedGroupId === group?._id">
+                                {{group?.name}}
+                              </option>
+                            </select>
+                          </div>
+                        </span>
+                      </span> 
                     </div>
                   </div>
+                  <!-- // END - SELECT GROUP -->
 
-                  <!-- // NEW - START SELECT GROUP FOR ROUTING POOLED -->
-                  <span *ngIf="dept_routing === 'pooled'">
-                    <span *ngIf="SHOW_GROUP_OPTION_FORM !== 'false'"> 
-                      <div class="col-sm-10 col-md-9">
-                        <select #selectElem (change)="setSelectedGroup(selectElem.value)" style="min-width: 150px;" [ngClass]="{'errorGroup' : GROUP_ID_NOT_EXIST}">
-                          
-                          <!-- // IF THE GROUP ASSIGNED TO THE DEFAULT DEPT HAS BEEN DELETED, IT IS DISPLAYED: 'THE GROUP DOES NOT EXIST' -->
-                          <option style="color: #ff5252 !important;" *ngIf="GROUP_ID_NOT_EXIST" [selected]="GROUP_ID_NOT_EXIST">
-                            <p>{{ "DeptsAddEditPage.ErrorGroupId" | translate}} {{ selectedGroupId }} {{ "DeptsAddEditPage.Trashed" | translate}}</p>
-                          </option>
+                  <!--     POOLED (CREATE VIEW)     -->
+                  <div class="row">
+                    <div class="col-sm-12" style="margin-top: 8px">
+                      <div class="col-sm-2 col-md-3" style="height: 36px;">
+                        <div class="form-check" style="padding-top:4px;">
+                          <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" 
+                          (click)="has_clicked_pooled(show_group_option_form = 'true', show_option_form = 'false', routing = 'pooled')">
 
-                          <option class="not_selected" value="ALL_USERS_SELECTED">
-                            {{ "RoutingPage.AllUsers" | translate  }}
-                          </option>
-
-                          <option  *ngFor="let group of groupsList" [value]="group._id" [selected]="selectedGroupId === group._id">
-                            {{group.name}}
-                          </option>
-
-                        </select>
+                          <label class="form-check-label" for="exampleRadios2" style="padding-left: 5px;">
+                            Pooled
+                          </label>
+                        </div>
                       </div>
-                    </span>
-                  </span>                                 
 
+                      <!-- // NEW - START SELECT GROUP FOR ROUTING POOLED -->
+                      <span *ngIf="dept_routing === 'pooled'">
+                        <span *ngIf="SHOW_GROUP_OPTION_FORM !== 'false'"> 
+                          <div class="col-sm-10 col-md-9">
+                            <select #selectElem (change)="setSelectedGroup(selectElem.value)" style="min-width: 150px;" [ngClass]="{'errorGroup' : GROUP_ID_NOT_EXIST}">
+                              
+                              <!-- // IF THE GROUP ASSIGNED TO THE DEFAULT DEPT HAS BEEN DELETED, IT IS DISPLAYED: 'THE GROUP DOES NOT EXIST' -->
+                              <option style="color: #ff5252 !important;" *ngIf="GROUP_ID_NOT_EXIST" [selected]="GROUP_ID_NOT_EXIST">
+                                <p>{{ "DeptsAddEditPage.ErrorGroupId" | translate}} {{ selectedGroupId }} {{ "DeptsAddEditPage.Trashed" | translate}}</p>
+                              </option>
+
+                              <option class="not_selected" value="ALL_USERS_SELECTED">
+                                {{ "RoutingPage.AllUsers" | translate  }}
+                              </option>
+
+                              <option  *ngFor="let group of groupsList" [value]="group._id" [selected]="selectedGroupId === group._id">
+                                {{group.name}}
+                              </option>
+
+                            </select>
+                          </div>
+                        </span>
+                      </span>                                 
+
+                    </div>
+                  </div>
                 </div>
-
+                <!-- ./ oaerror -->
 
                 <!--    BOT (IT'S ACTUALLY FAQ-KB) (CREATE VIEW)     -->
-                <div class="row">
+                <!-- <div class="row">
                   <div class="col-sm-2 col-md-3" style="height: 36px;">  
                     <div class="form-check" style="padding-top:8px; padding-bottom:8px">
                       <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1"  
                       (click)="has_clicked_fixed(show_option_form = 'true', routing = 'fixed')">
-
                       <label class="form-check-label" for="exampleRadios1" style="padding-left: 5px;">
-                        <!-- Fixed -->
                         Bot
                       </label>
                     </div>
                   </div>
-
-                
-                  <!-- CREATE VIEW - SELECT BOT -->
                   <span *ngIf="SHOW_OPTION_FORM === 'true'">
-
                     <div class="col-sm-10 col-md-9" style="padding-top:0px">
                       <select #selectElem (change)="setSelectedBot(selectElem.value)" class="" >
                         <option class="not_selected" value="BOT_NOT_SELECTED">{{ "DeptsAddEditPage.SelectABot" | translate}}</option> 
-                        <!-- NOTE: botsList IT'S ACTUALLY THE FAQ-KB LIST -->
                         <option  *ngFor="let bot of botsList" [value]="bot._id" [selected]="selectedId === bot._id">
                           {{ bot.name }}
                         </option>
                       </select>
-    
                       <a style="margin-left: 8px; color: #03a5e8; cursor:pointer" (click)="goTo_BotEditAddPage_CREATE()"> 
-                        <!-- o Crea un nuovo Bot  -->
                         {{ "DeptsAddEditPage.orCreateABot" | translate}}
                       </a>
                     </div>
                   </span>
-                </div>
+                </div> -->
 
               </div>
+              <!-- ./ col-sm-10 col-sm-offset-2 -->
                 
-
-
               <!-- SPACER -->
-              <div class="col-sm-12" style="height:7px"></div>
+              <div class="col-sm-12" style="height:15px"></div>
 
               <!-- // BUTTONS -->
-              <label style="" class="col-sm-2"></label>
-              <div class="col-sm-10">
-                  <!-- [disabled]="bot_fullname?.length < 2 || FAQKB_NOT_SELECTED === true" -->
+              <!-- <label style="" class="col-sm-2"></label> -->
+              <div class="col-sm-12">
 
                 <!-- ======== SWITCH THE BUTTON 'CREATE DEPT' ========
                      ACCORDING TO THE VALUE OF SHOW_OPTION_FOR 
@@ -367,7 +431,7 @@
             <p style="margin-bottom: 3px"> <strong>Assigned </strong></p>
             <p style="color:#999999">
                 
-                Assigned chats help maintain an even workload distribution, especially for larger teams. Chat limits keep agents from getting overwhelmed by chats, especially during high traffic. Experienced agents can help clear the queue faster with the Hybrid Assignment Mode. Enable Reassignments and Automatic Idle to reduce visitor wait time by preventing chats from getting assigned to inactive agents.
+                Assigned chats help maintain an even workload distribution, especially for larger teams.
             </p>
 
             <p style="margin-bottom: 3px"> <strong>Pooled </strong></p>
