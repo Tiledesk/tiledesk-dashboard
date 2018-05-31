@@ -53,6 +53,8 @@ export class DepartmentEditAddComponent implements OnInit {
   groupsList: Group[];
   GROUP_ID_NOT_EXIST: boolean;
 
+  bot_only: boolean;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -463,7 +465,7 @@ export class DepartmentEditAddComponent implements OnInit {
 
     // this.faqKbEdit
     // this.ROUTING_SELECTED
-    this.mongodbDepartmentService.updateMongoDbDepartment(this.id_dept, this.deptName_toUpdate, this.botIdEdit, this.selectedGroupId, this.dept_routing).subscribe((data) => {
+    this.mongodbDepartmentService.updateMongoDbDepartment(this.id_dept, this.deptName_toUpdate, this.botIdEdit, this.bot_only, this.selectedGroupId, this.dept_routing).subscribe((data) => {
       console.log('PUT DATA ', data);
 
       // RE-RUN GET CONTACT TO UPDATE THE TABLE

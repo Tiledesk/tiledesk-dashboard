@@ -45,6 +45,7 @@ export class RoutingPageComponent implements OnInit {
   // show_option_form: boolean;
   has_selected_bot: boolean
   BOT_NOT_SELECTED: boolean;
+  bot_only: boolean;
 
   onlybot_disable_routing: boolean;
   constructor(
@@ -270,8 +271,10 @@ export class RoutingPageComponent implements OnInit {
     console.log('HAS CLICKED ONLY BOT ', has_selected_only_bot);
     if (has_selected_only_bot === true) {
       this.onlybot_disable_routing = true;
+      this.bot_only = true;
     } else {
       this.onlybot_disable_routing = false;
+      this.bot_only = false;
     }
 
   }
@@ -376,7 +379,8 @@ export class RoutingPageComponent implements OnInit {
     // this.faqKbEdit
     // this.ROUTING_SELECTED
     // tslint:disable-next-line:max-line-length
-    this.mongodbDepartmentService.updateMongoDbDepartment(this.id_dept, this.default_dept_name, this.botIdEdit, this.selectedGroupId, this.dept_routing).subscribe((data) => {
+    this.mongodbDepartmentService.updateMongoDbDepartment(this.id_dept, this.default_dept_name, this.botIdEdit, this.bot_only, this.selectedGroupId, this.dept_routing)
+    .subscribe((data) => {
       console.log('PUT DATA ', data);
 
       // RE-RUN GET CONTACT TO UPDATE THE TABLE

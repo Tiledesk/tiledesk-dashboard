@@ -232,7 +232,7 @@ export class MongodbDepartmentService {
    * @param id
    * @param deptName
    */
-  public updateMongoDbDepartment(id: string, deptName: string, id_bot: string, id_group: string, routing: string) {
+  public updateMongoDbDepartment(id: string, deptName: string, id_bot: string, bot_only: boolean, id_group: string, routing: string) {
 
     let url = this.MONGODB_BASE_URL;
     url += id;
@@ -247,8 +247,10 @@ export class MongodbDepartmentService {
     const body = { 'name': `${deptName}`, id_group: id_group, 'routing': `${routing}` };
     if (id_bot) {
       body['id_bot'] = id_bot;
+      body['bot_only'] = bot_only;
     } else {
       body['id_bot'] = null;
+      body['bot_only'] = null;
     }
 
     console.log('PUT REQUEST BODY ', body);

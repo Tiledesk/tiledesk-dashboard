@@ -6,6 +6,7 @@ export interface Department {
     id_project: string;
     createdBy: string;
     id_bot: string;
+    bot_only: boolean;
     id_group: string;
     hasGroupName: string;
     groupHasBeenTrashed: boolean;
