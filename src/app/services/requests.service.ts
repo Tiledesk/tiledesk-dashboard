@@ -240,8 +240,8 @@ export class RequestsService {
     // THE CURRENT USER ID WITH THE 'USER ID' CONTAINED IN THE ARRAY 'AGENTS' (NESTED IN THE 'REQUEST' OBJECT) 
     // RETURNS TRUE OR FALSE
     if (r === null || r === undefined || !r.hasAgent(this.currentUserID)) {
-      console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID))
-      // console.log('MY DEPT - IS IN ARRAY myDepts THE DEPT ID ', r.attributes.departmentId, ' :', this.myDepts.includes(r.attributes.departmentId))
+      // console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID))
+      
       return;
     }
     console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID))

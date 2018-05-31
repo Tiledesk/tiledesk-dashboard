@@ -24,7 +24,7 @@ export class RoutingPageComponent implements OnInit {
   // !!! NOTE: IS CALLED BOT LIST BUT REALLY IS THE LIST OF FAQ-KB LIST
   botsList: any;
 
-  BOT_NOT_SELECTED: boolean;
+
   SHOW_OPTION_FORM: boolean;
 
   SHOW_GROUP_OPTION_FORM: boolean;
@@ -42,8 +42,11 @@ export class RoutingPageComponent implements OnInit {
   groupsList: Group[];
   GROUP_ID_NOT_EXIST: boolean;
 
-  show_option_form: boolean;
+  // show_option_form: boolean;
+  has_selected_bot: boolean
+  BOT_NOT_SELECTED: boolean;
 
+  onlybot_disable_routing: boolean;
   constructor(
     private mongodbDepartmentService: MongodbDepartmentService,
     private faqKbService: FaqKbService,
@@ -54,7 +57,6 @@ export class RoutingPageComponent implements OnInit {
 
   ngOnInit() {
 
-    console.log('ng ON INIT - SHOW_OPTION_FORM  ', this.SHOW_OPTION_FORM)
     this.auth.checkRole();
 
     this.showSpinner = true;
@@ -156,22 +158,30 @@ export class RoutingPageComponent implements OnInit {
         console.log('ROUTING PAGE - DEPTS (FILTERED FOR PROJECT ID) - COMPLETE')
 
         if (this.botId === undefined) {
-          console.log(' !!! BOT ID UNDEFINED ', this.botId);
+
           this.showSpinner = false;
-          this.selectedBotId = 'BOT_NOT_SELECTED'
+
+          this.BOT_NOT_SELECTED = true;
+          this.has_selected_bot = false;
+          console.log(' !!! BOT ID UNDEFINED ', this.botId, ', BOT NOT SELECTED: ', this.BOT_NOT_SELECTED);
 
         } else if (this.botId == null) {
+
           this.showSpinner = false;
-          console.log(' !!! BOT ID NULL ', this.botId);
-          this.selectedBotId = 'BOT_NOT_SELECTED'
+
+          this.BOT_NOT_SELECTED = true;
+          this.has_selected_bot = false;
+          console.log(' !!! BOT ID NULL ', this.botId, ', BOT NOT SELECTED: ', this.BOT_NOT_SELECTED);
+
         } else {
           // getBotById() IS RUNNED ONLY IF THE BOT-ID (returned in the DEPT OBJECT) IS NOT undefined and IS NOT null
           this.getBotById();
 
           // this.SHOW_OPTION_FORM = false;
-          this.show_option_form = true;
+          // this.show_option_form = true;
+          this.has_selected_bot = true
 
-          console.log(' BOT ID DEFINED ', this.botId);
+          console.log('BOT ID DEFINED ', this.botId);
         }
         this.getDeptByIdToTestChat21AssigneesFunction();
       });
@@ -237,7 +247,7 @@ export class RoutingPageComponent implements OnInit {
     this.selectedBotId = id;
     console.log('FAQ-KB ID SELECTED (SUBSTITUTE BOT): ', this.selectedBotId);
 
-    // IN THE CREATE VIEW IF IS NOT SELECTET ANY FAQ-KB (SUBSTITUTE BOT) THE BUTTON 'CREATE BOT' IS DISABLED
+    // IF IS NOT SELECTET ANY FAQ-KB (SUBSTITUTE BOT) THE BUTTON 'CREATE BOT' IS DISABLED
     if (this.selectedBotId !== 'BOT_NOT_SELECTED') {
       this.BOT_NOT_SELECTED = false;
     }
@@ -247,12 +257,23 @@ export class RoutingPageComponent implements OnInit {
   }
 
   // ============ NEW - SUBSTITUTES has_clicked_fixed ============
-  has_clicked_bot(show_option_form: boolean) {
-
-    console.log('HAS CLICKED BOT - SHOW DROPDOWN ', show_option_form);
-    if (show_option_form === false) {
-      this.selectedBotId = null
+  has_clicked_bot(has_selected_bot: boolean) {
+    console.log('HAS CLICKED BOT - BOT NOT SELECTED ', this.BOT_NOT_SELECTED);
+    console.log('HAS CLICKED BOT - SHOW DROPDOWN ', has_selected_bot);
+    if (has_selected_bot === false) {
+      // this.BOT_NOT_SELECTED = true;
+      this.selectedBotId = null;
     }
+  }
+
+  has_clicked_only_bot(has_selected_only_bot) {
+    console.log('HAS CLICKED ONLY BOT ', has_selected_only_bot);
+    if (has_selected_only_bot === true) {
+      this.onlybot_disable_routing = true;
+    } else {
+      this.onlybot_disable_routing = false;
+    }
+
   }
 
 
