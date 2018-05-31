@@ -113,7 +113,8 @@
                     <span *ngIf="group?.members.length === 0" style="padding-left: 8px">
                         <i class="material-icons" style="vertical-align: middle; color:#ec971f; font-size: 12px">report_problem</i>
                         <span style="vertical-align: middle; color:#ec971f; font-size: 12px"> 
-                          pending add members
+                          <!-- pending add members -->
+                          {{ 'GroupsPage.PendingAddMembers' | translate }}
                         </span>
                     </span>
                   </td>

@@ -114,6 +114,7 @@
         "Actions": "Azioni",
         "Members":"Membri",
         "NoGroups":"Nessun Gruppo",
+        "PendingAddMembers":"in sospeso aggiungi membri",
         "tooltipEditGroup":"Modifica Group",
         "tooltipDeleteGroup":"Elimina Group"
     },

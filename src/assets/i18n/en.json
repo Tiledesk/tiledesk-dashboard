@@ -112,6 +112,7 @@
         "Actions": "Actions",
         "Members": "Members",
         "NoGroups": "No Groups",
+        "PendingAddMembers":"pending add members",
         "tooltipEditGroup": "Edit Group",
         "tooltipDeleteGroup": "Delete Group"
     },
