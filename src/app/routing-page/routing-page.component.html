@@ -32,7 +32,8 @@
                           <div class="col-sm-12"> 
                             <!-- <strong>Info!</strong>  -->
                             <p style="color: #566787; font-weight:500; font-size: 16px">
-                              Select a bot that will respond to visitor's requests before agent's commitment
+                              <!-- Select a bot that will respond to visitor's requests before agent's commitment -->
+                              {{ "RoutingPage.SelectABotThatWill" | translate  }}
                             </p>
                           </div>
 
@@ -91,7 +92,8 @@
                                   (click)="has_clicked_only_bot(has_selected_only_bot = !has_selected_only_bot)" 
                                   [checked]="has_selected_only_bot">
                                 <label style="padding-left: 8px; padding-top: 1px;" class="form-check-label" for="exampleCheck2">
-                                  Bot only
+                                  <!-- Bot only -->
+                                  {{ "RoutingPage.BotOnly" | translate  }}
                                 </label>
                               </div>
                             </div>
@@ -109,7 +111,8 @@
                       <div class="col-sm-12"> 
                         <!-- <strong>Info!</strong>  -->
                         <p style="color: #566787; font-weight:500; font-size: 16px">
-                          Set routing rules for agents commitment
+                          <!-- Set routing rules for agents commitment -->
+                          {{ "RoutingPage.SetRoutingRules" | translate  }}
                         </p>
                       </div>
                       <div class="col-sm-12" style="margin-top: 8px"> 

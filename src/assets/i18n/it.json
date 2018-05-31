@@ -60,6 +60,9 @@
     },
     "RoutingPage": {
         "SettingUpTileDeskRoutingRules": "Imposta le regole di routing",
+        "SelectABotThatWill":"Seleziona un bot che risponderà alle richieste del visitatore prima dell'ingaggio di un agente",
+        "BotOnly":"Solo bot",
+        "SetRoutingRules":"Imposta le regole di routing per gli agenti ingaggiati",
         "AllUsers": "Tutti gli utenti",
         "UpdateRoutingRules": "Aggiorna le regole di routing",
         "QuickTips": "Consigli veloci",

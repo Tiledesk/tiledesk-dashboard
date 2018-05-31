@@ -60,6 +60,9 @@
     },
     "RoutingPage": {
         "SettingUpTileDeskRoutingRules": "Setting up routing rules",
+        "SelectABotThatWill":"Select a bot that will respond to visitor's requests before agent's commitment",
+        "BotOnly":"Bot only",
+        "SetRoutingRules":"Set routing rules for agents commitment",
         "AllUsers": "All users",
         "UpdateRoutingRules": "Update routing rules",
         "QuickTips": "Quick tips",
