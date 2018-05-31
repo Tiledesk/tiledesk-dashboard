@@ -7,6 +7,7 @@ import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
 import { GroupService } from '../services/group.service';
 import { Group } from '../models/group-model';
+import { NotifyService } from '../core/notify.service';
 
 @Component({
   selector: 'app-routing-page',
@@ -54,7 +55,8 @@ export class RoutingPageComponent implements OnInit {
     private faqKbService: FaqKbService,
     private router: Router,
     private auth: AuthService,
-    private groupService: GroupService
+    private groupService: GroupService,
+    private notify: NotifyService
   ) { }
 
   ngOnInit() {
@@ -170,7 +172,7 @@ export class RoutingPageComponent implements OnInit {
         if (this.botId === undefined) {
 
           this.showSpinner = false;
-          
+
           this.selectedBotId = null;
 
           this.BOT_NOT_SELECTED = true;
@@ -412,6 +414,10 @@ export class RoutingPageComponent implements OnInit {
         (error) => {
           console.log('PUT REQUEST ERROR ', error);
           this.SHOW_CIRCULAR_SPINNER = false;
+
+          // =========== NOTIFY ERROR ===========
+          // tslint:disable-next-line:quotemark
+          this.notify.showNotification("An error occurred while updating routing rules", 4, 'report_problem')
         },
         () => {
           console.log('PUT REQUEST * COMPLETE *');
@@ -420,6 +426,8 @@ export class RoutingPageComponent implements OnInit {
           }, 300);
 
           this.ngOnInit();
+          // =========== NOTIFY SUCCESS===========
+          this.notify.showNotification('routing rules successfully updated', 2, 'done');
         });
 
   }
