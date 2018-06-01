@@ -55,7 +55,10 @@
                               <input style="width: 14px; height: 14px;" type="checkbox" class="form-check-input" id="exampleCheck1" 
                                 (click)="has_clicked_bot(has_selected_bot = !has_selected_bot)" 
                                 [checked]="has_selected_bot">
-                              <label style="padding-left: 8px; padding-top: 1px;" class="form-check-label" for="exampleCheck1">Bot</label>
+                              <label style="padding-left: 8px; padding-top: 1px;" class="form-check-label" for="exampleCheck1">
+                               <!-- Activate Bot -->
+                               {{ "RoutingPage.ActivateBOT" | translate  }}
+                              </label>
                             </div>
                           </div>
       
@@ -64,17 +67,17 @@
                               <select #selectElem (change)="setSelectedBot(selectElem.value)"  >
         
                                 <option class="not_selected" value="BOT_NOT_SELECTED" [selected]="BOT_NOT_SELECTED">
-                                  {{ "DeptsAddEditPage.SelectABot" | translate }}
+                                  {{ "RoutingPage.SelectABot" | translate }}
                                 </option>
                                 <!-- NOTE: botsList IT'S ACTUALLY THE FAQ-KB LIST -->
                                 <option  *ngFor="let bot of botsList" [value]="bot._id" [selected]="selectedId === bot._id">
-                                  {{bot.name}} 
+                                  {{ bot.name }} 
                                 </option>
                               </select>
       
                               <a style="margin-left: 8px; color: #03a5e8; cursor:pointer" (click)="goTo_BotEditAddPage_CREATE()"> 
                               <!-- o Crea un nuovo Bot  -->
-                              {{ "DeptsAddEditPage.orCreateABot" | translate }}
+                              {{ "RoutingPage.orCreateABot" | translate }}
                               </a>
                             </div>
                           </span>
@@ -103,9 +106,8 @@
                       <!-- /. row -->
                     </div>
 
-
-                    <!--     ASSIGNED    -->
                     <div class="oaerror info" style="margin-top:8px" [ngClass]="{'disabled' : onlybot_disable_routing}">
+                      <!--     ASSIGNED    -->
                       <div class="row">
                         <div class="col-sm-12"> 
                           <!-- <strong>Info!</strong>  -->
@@ -138,8 +140,12 @@
                                   [disabled]="onlybot_disable_routing">
 
                                   <!-- // IF THE GROUP ASSIGNED TO THE DEFAULT DEPT HAS BEEN DELETED, IT IS DISPLAYED: 'THE GROUP DOES NOT EXIST' -->
-                                  <option style="color: #ff5252 !important;" *ngIf="GROUP_ID_NOT_EXIST" [selected]="GROUP_ID_NOT_EXIST">
-                                    <p>Error: group id {{ selectedGroupId }} trashed</p>
+                                  <option style="color: #ff5252 !important;" *ngIf="GROUP_ID_NOT_EXIST" 
+                                  [selected]="GROUP_ID_NOT_EXIST">
+                                    <p>
+                                      <!-- Error: group id {{ selectedGroupId }} trashed -->
+                                      {{ "RoutingPage.ErrorGroupId" | translate  }} {{ selectedGroupId }} {{ "RoutingPage.Trashed" | translate  }} 
+                                    </p>
                                   </option>
                                   
                                   <option class="not_selected" value="ALL_USERS_SELECTED">
@@ -166,7 +172,8 @@
                             <div class="form-check" style="padding-top:4px;">
                               <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" 
                               (click)="has_clicked_pooled(show_group_option_form = 'true', show_option_form = 'true', routing = 'pooled')" 
-                              [checked]="dept_routing === 'pooled'" [disabled]="onlybot_disable_routing">
+                              [checked]="dept_routing === 'pooled'" 
+                              [disabled]="onlybot_disable_routing">
           
                               <label class="form-check-label" for="exampleRadios2" style="padding-left: 8px;">
                                 Pooled
@@ -182,8 +189,12 @@
                                 [ngClass]="{'errorGroup' : GROUP_ID_NOT_EXIST, 'selectCustomDisabled' : onlybot_disable_routing}">
                                   
                                   <!-- // IF THE GROUP ASSIGNED TO THE DEFAULT DEPT HAS BEEN DELETED, IT IS DISPLAYED: 'THE GROUP DOES NOT EXIST' -->
-                                  <option style="color: #ff5252 !important;" *ngIf="GROUP_ID_NOT_EXIST" [selected]="GROUP_ID_NOT_EXIST">
-                                    <p>Error: group id {{ selectedGroupId }} trashed</p>
+                                  <option style="color: #ff5252 !important;" *ngIf="GROUP_ID_NOT_EXIST" 
+                                    [selected]="GROUP_ID_NOT_EXIST">
+                                    <p>
+                                      <!-- Error: group id {{ selectedGroupId }} trashed -->
+                                      {{ "RoutingPage.ErrorGroupId" | translate  }} {{ selectedGroupId }} {{ "RoutingPage.Trashed" | translate  }}
+                                    </p>
                                   </option>
 
                                   <option class="not_selected" value="ALL_USERS_SELECTED">
@@ -209,7 +220,7 @@
                 <!-- SPACER -->
                 <div class="col-sm-12" style="height:15px"></div>
               
-                <!-- // BUTTONS -->
+                <!-- ======================== BUTTONS ======================== -->
                 <div class="col-sm-10" style="margin-left: 0px; margin-bottom: 25px;"> 
                   <!-- <span *ngIf="SHOW_OPTION_FORM === 'true'"> -->
                   <span *ngIf="has_selected_bot === true">  

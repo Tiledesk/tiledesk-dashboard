@@ -399,14 +399,21 @@ export class DepartmentEditAddComponent implements OnInit {
       this.botId = dept.id_bot;
       this.dept_routing = dept.routing;
       this.selectedGroupId = dept.id_group;
-      // if (this.dept_routing === 'pooled' ) {
-      //   this.SHOW_OPTION_FORM = false;
-      // }
 
-      console.log(' DEPT FULLNAME TO UPDATE: ', this.deptName_toUpdate);
-      console.log(' BOT ID (IT IS ACTUALLY FAQ-KB ID) GET FROM DEPT OBJECT: ', this.botId);
-      console.log(' DEPT ROUTING GET FROM DEPT OBJECT: ', this.dept_routing);
-      console.log(' GROUP ID GET FROM DEPT OBJECT: ', this.selectedGroupId);
+      this.bot_only = dept.bot_only
+
+      if (this.bot_only === false || this.bot_only === undefined || this.bot_only === null) {
+        this.has_selected_only_bot = false;
+      } else {
+        this.has_selected_only_bot = true;
+        this.onlybot_disable_routing = true;
+      }
+
+      console.log('++ DEPT DTLS - DEPT FULLNAME TO UPDATE: ', this.deptName_toUpdate);
+      console.log('++ DEPT DTLS - BOT ID (IT IS ACTUALLY FAQ-KB ID) GET FROM DEPT OBJECT: ', this.botId);
+      console.log('++ DEPT DTLS - ONLY BOT: ', this.bot_only);
+      console.log('++ DEPT DTLS - DEPT ROUTING GET FROM DEPT OBJECT: ', this.dept_routing);
+      console.log('++ DEPT DTLS - GROUP ID GET FROM DEPT OBJECT: ', this.selectedGroupId);
 
     },
       (error) => {
@@ -420,17 +427,31 @@ export class DepartmentEditAddComponent implements OnInit {
         // this.showSpinner = false;
 
         if (this.botId === undefined) {
-          console.log(' !!! BOT ID UNDEFINED ', this.botId);
+
+          this.selectedBotId = null;
+
+          this.BOT_NOT_SELECTED = true;
+          this.has_selected_bot = false;
+
+          console.log(' !!! BOT ID UNDEFINED ', this.botId, ', BOT NOT SELECTED: ', this.BOT_NOT_SELECTED);
           // this.showSpinner = false;
           // this.selectedValue = 'Selezione FAQ KB';
 
         } else if (this.botId == null) {
 
-          console.log(' !!! BOT ID NULL ', this.botId);
+          this.selectedBotId = null;
 
+          this.BOT_NOT_SELECTED = true;
+          this.has_selected_bot = false;
+          console.log(' !!! BOT ID NULL ', this.botId, ', BOT NOT SELECTED: ', this.BOT_NOT_SELECTED);
+          // this.showSpinner = false;
         } else {
           // getBotById() IS RUNNED ONLY IF THE BOT-ID (returned in the DEPT OBJECT) 
           // IS NOT undefined AND IS NOT null
+
+          // if the bot is defined it means that the user had selected the bot
+          this.has_selected_bot = true
+
           this.getBotById();
           console.log(' !!! BOT ID DEFINED ', this.botId);
         }
@@ -488,15 +509,16 @@ export class DepartmentEditAddComponent implements OnInit {
     // IF THE USER, WHEN EDIT THE DEPT (AND HAS SELECTED FIXED), DOESN'T SELECT ANY NEW BOT this.selectedBotId IS UNDEFINED
     // SO SET this.botIdEdit EQUAL TO THE BOT ID RETURNED BY getBotById
     // if (this.ROUTING_SELECTED === 'fixed') {
-    if (this.dept_routing === 'fixed') {
+
+    // if (this.dept_routing === 'fixed') {
       if (this.selectedBotId === undefined) {
         this.botIdEdit = this.botId
       } else {
         this.botIdEdit = this.selectedBotId
       }
-    } else {
-      this.botIdEdit = null;
-    }
+    // } else {
+    //   this.botIdEdit = null;
+    // }
 
 
     // this.faqKbEdit

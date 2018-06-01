@@ -174,11 +174,10 @@ export class MongodbDepartmentService {
     if (id_bot) {
       body['id_bot'] = id_bot;
       body['bot_only'] = bot_only;
+    } else {
+      body['id_bot'] = null;
+      body['bot_only'] = null;
     }
-    // else {
-    //   body['id_bot'] = null;
-    //   body['bot_only'] = null;
-    // }
 
     console.log('POST REQUEST BODY ', body);
 

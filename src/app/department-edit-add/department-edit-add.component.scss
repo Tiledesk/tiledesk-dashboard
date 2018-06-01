@@ -82,6 +82,16 @@ select {
 //     }
 // }
 
+// from 992 to 1020px 
+@media (min-width: 992px) and (max-width: 1283px){
+    .deptname {
+        padding-top: 0px !important;
+
+    }
+}
+
+
+
 input[type=radio] {
     box-sizing: border-box;
     padding: 0;
