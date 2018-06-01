@@ -33,9 +33,6 @@ export class DepartmentEditAddComponent implements OnInit {
   selectedBotId: string;
   selectedGroupId: string;
 
-  BOT_NOT_SELECTED: boolean;
-
-  SHOW_OPTION_FORM: boolean;
   SHOW_GROUP_OPTION_FORM: boolean;
 
   ROUTING_SELECTED: string;
@@ -53,7 +50,12 @@ export class DepartmentEditAddComponent implements OnInit {
   groupsList: Group[];
   GROUP_ID_NOT_EXIST: boolean;
 
+  has_selected_bot: boolean
+  BOT_NOT_SELECTED: boolean;
+  SHOW_OPTION_FORM: boolean;
+  has_selected_only_bot: boolean;
   bot_only: boolean;
+  onlybot_disable_routing: boolean;
 
   constructor(
     private router: Router,
@@ -92,10 +94,14 @@ export class DepartmentEditAddComponent implements OnInit {
       // this.showSpinner = false;
       // this.SHOW_OPTION_FORM = true;
       // this.ROUTING_SELECTED = 'fixed';
-      this.SHOW_OPTION_FORM = false;
+
       this.ROUTING_SELECTED = 'assigned';
       this.dept_routing = 'assigned';
+
+      this.SHOW_OPTION_FORM = false;
       this.BOT_NOT_SELECTED = true;
+      this.has_selected_bot = false;
+      this.selectedBotId = null;
       console.log('ON INIT (IF HAS SELECT CREATE) SHOW OPTION FORM ', this.SHOW_OPTION_FORM, 'ROUTING SELECTED ', this.ROUTING_SELECTED);
 
     } else {
@@ -147,6 +153,36 @@ export class DepartmentEditAddComponent implements OnInit {
     this.getGroupsByProjectId();
   }
 
+  // ============ NEW - SUBSTITUTES has_clicked_fixed ============
+  has_clicked_bot(has_selected_bot: boolean) {
+
+    console.log('HAS CLICKED BOT - SHOW DROPDOWN ', has_selected_bot);
+    if (has_selected_bot === false) {
+      this.BOT_NOT_SELECTED = true;
+      console.log('HAS CLICKED BOT - BOT NOT SELECTED ', this.BOT_NOT_SELECTED);
+
+
+      this.selectedBotId = null;
+      console.log('SELECTED BOT ID ', this.selectedBotId)
+
+      // ONLY BOT AUEOMATIC DESELECTION IF has_selected_bot IS FALSE
+      this.has_selected_only_bot = false
+      this.onlybot_disable_routing = false;
+      this.bot_only = false;
+    }
+  }
+
+  has_clicked_only_bot(has_selected_only_bot) {
+    console.log('HAS CLICKED ONLY BOT ', has_selected_only_bot);
+    if (has_selected_only_bot === true) {
+      this.onlybot_disable_routing = true;
+      this.bot_only = true;
+    } else {
+      this.onlybot_disable_routing = false;
+      this.bot_only = false;
+    }
+
+  }
 
   /**
    * ======================= GETS ALL GROUPS WITH THE CURRENT PROJECT-ID =======================
@@ -292,9 +328,9 @@ export class DepartmentEditAddComponent implements OnInit {
   createDepartment() {
     console.log('MONGO DB DEPT-NAME DIGIT BY USER ', this.dept_name);
     console.log('GROUP ID WHEN CREATE IS PRESSED ', this.selectedGroupId);
-    this.mongodbDepartmentService.addMongoDbDepartments(this.dept_name, this.selectedBotId, this.selectedGroupId, this.ROUTING_SELECTED)
+    this.mongodbDepartmentService.addMongoDbDepartments(this.dept_name, this.selectedBotId, this.bot_only, this.selectedGroupId, this.ROUTING_SELECTED)
       .subscribe((department) => {
-        console.log('POST DATA DEPT', department);
+        console.log('+++ ++++ POST DATA DEPT', department);
       },
         (error) => {
           console.log('DEPT POST REQUEST ERROR ', error);

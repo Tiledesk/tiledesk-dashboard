@@ -19,7 +19,7 @@ import { NotifyService } from './core/notify.service';
 declare const $: any;
 
 @Component({
-    selector: 'app-root',
+    selector: 'appdashboard-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css']
 })

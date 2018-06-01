@@ -48,8 +48,8 @@ export class RoutingPageComponent implements OnInit {
   BOT_NOT_SELECTED: boolean;
   bot_only: boolean;
   has_selected_only_bot: boolean;
-
   onlybot_disable_routing: boolean;
+  
   constructor(
     private mongodbDepartmentService: MongodbDepartmentService,
     private faqKbService: FaqKbService,

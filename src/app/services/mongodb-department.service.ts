@@ -163,7 +163,7 @@ export class MongodbDepartmentService {
    * CREATE (POST)
    * @param fullName
    */
-  public addMongoDbDepartments(deptName: string, id_bot: string, id_group: string, routing: string) {
+  public addMongoDbDepartments(deptName: string, id_bot: string, bot_only: boolean, id_group: string, routing: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -173,7 +173,12 @@ export class MongodbDepartmentService {
     const body = { 'name': `${deptName}`, id_group: id_group, 'routing': `${routing}`, 'id_project': this.project._id };
     if (id_bot) {
       body['id_bot'] = id_bot;
+      body['bot_only'] = bot_only;
     }
+    // else {
+    //   body['id_bot'] = null;
+    //   body['bot_only'] = null;
+    // }
 
     console.log('POST REQUEST BODY ', body);
 

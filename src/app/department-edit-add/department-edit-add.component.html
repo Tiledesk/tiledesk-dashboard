@@ -46,7 +46,6 @@
                      
                     <div class="col-sm-12" style="margin-top: 8px"> 
                       <div class="col-sm-2 col-md-3" style="height: 38px;">
-
                         <div class="form-check" style="padding-top:4px; padding-bottom:4px;">
                           <input style="width: 14px; height: 14px;" type="checkbox" class="form-check-input" id="exampleCheck1" 
                             (click)="has_clicked_bot(has_selected_bot = !has_selected_bot)" 
@@ -230,9 +229,9 @@
               <div class="col-sm-12">
 
                 <!-- ======== SWITCH THE BUTTON 'CREATE DEPT' ========
-                     ACCORDING TO THE VALUE OF SHOW_OPTION_FOR 
-                     IT IS 'TRUE' IT MEANS THAT THE USER HAS SELECTED 'FIXED' SO THE BTN IS DISABLED 
-                     IF THE LENGHT OF DEPT IS < 2 AND IF IS NOT SELECTED ANY BOT  -->
+                    ACCORDING TO THE VALUE OF SHOW_OPTION_FOR 
+                    IT IS 'TRUE' IT MEANS THAT THE USER HAS SELECTED 'FIXED' SO THE BTN IS DISABLED 
+                    IF THE LENGHT OF DEPT IS < 2 AND IF IS NOT SELECTED ANY BOT  -->
                 <span *ngIf="SHOW_OPTION_FORM === 'true'">
                   <button class="btn btn-success" [disabled]="dept_name?.length < 2 || BOT_NOT_SELECTED === true"  (click)="createDepartment()">
                     <!-- Crea Dipartimento -->
@@ -246,27 +245,20 @@
                   </button>
                 </span>
               </div>
-
             </span>
 
             <!-- EDIT_VIEW -->
             <span *ngIf="EDIT_VIEW">
   
-                <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
-  
-                <label style="height: 36px; padding-top: 0px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
-                  <!-- Nome Dipartmento -->
-                  {{ "DeptsAddEditPage.DeptName" | translate}}
-                  
-                </label>
-                <div class="col-sm-10">
-                  <input [(ngModel)]="deptName_toUpdate" class="input" type="text" style="margin-top: 2px">
-                </div>
-        
-                <!-- SPACER -->
-                <!-- <div class="col-sm-12" style="height:10px"></div> -->
-
-                <div class="col-sm-10 col-sm-offset-2" style="padding-left:30px; padding-top:15px">
+              <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
+              <!-- <label style="height: 36px; padding-top: 0px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
+                {{ "DeptsAddEditPage.DeptName" | translate}}
+              </label> -->
+              <div class="col-sm-12">
+                <input [(ngModel)]="deptName_toUpdate" class="input" type="text" style="margin-top: 2px">
+              </div>
+              <!-- col-sm-10 col-sm-offset-2 -->
+              <div class="col-sm-12" style="padding-left:30px; padding-top:15px">
 
                   <!--     ASSIGNED (EDIT_VIEW)     -->
                   <div class="row">
