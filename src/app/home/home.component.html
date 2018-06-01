@@ -20,13 +20,18 @@
         <div class="col-lg-12 col-md-12 col-sm-12"> 
   
           <div *ngIf="user" style="float: left">
-            <h4 style="padding-left:15px; font-weight: 500">{{ "Howdy" | translate }}, {{ user?.firstname }}</h4>
+            <h4 style="padding-left:15px; font-weight: 700; margin-bottom: 5px;">{{ "Howdy" | translate }}, {{ user?.firstname }}!
+            <!-- <span style="font-weight: 500;"> to start configure your Widget !</span> -->
+            </h4>
           </div>
         </div>
   
         <div class="col-lg-12 col-md-12 col-sm-12" style="padding-left:25px; padding-right:25px"> 
-          <hr style="border-color:#aaaeba; margin-top:0px; margin-bottom:40px">
+          <hr style="border-color:#aaaeba; margin-top:0px; margin-bottom:15px">
+
+          <!-- <h4 style="padding-left:15px; font-weight: 500; margin-bottom: 35px;">To start configure your Widget </h4> -->
         </div>
+
       </div>
 
       <div class="row">
@@ -62,13 +67,17 @@
           <div *ngIf="USER_ROLE !== 'agent'" class="col-lg-6 col-md-6 col-sm-6" style="cursor:pointer">  
             <!-- routerLink="/requests" -->
             <div class="card card-stats" style="max-width:480px;" (click)="goToResources()">
-                <!-- <div class="card-header" data-background-color="orange"> -->
+                <!-- inverse -->
                 <div class="card-header" data-background-color="orange">
-                    <i class="material-icons">code</i>
+                    <!-- inverse   -->
+                  <i class="material-icons">code</i>
                 </div>
                 <div class="card-content">
-                    <p class="category" style="font-size: 1.1em;">Widget</p>
-                    <!-- <h3 class="title">Visitatori<small>GB</small></h3> -->
+                    <p class="category" style="font-size: 1.1em; font-weight: 500">
+                      <!-- Widget -->
+                      {{ 'HomePage.Widget' | translate }}
+                    </p>
+
                 </div>
                 <div class="card-footer">
                     <div class="stats" style="float: left;">

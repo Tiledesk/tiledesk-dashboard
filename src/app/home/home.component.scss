@@ -113,6 +113,7 @@
 	border-color: #ffa726;
 }
 
+
 .material-icons {
 	color: #ffa726;
 }
@@ -124,8 +125,26 @@
 	.material-icons {
 		color: #fff;
 	}
+	.material-icons.inverse {
+		color: #ffa726;
+	}
+}
+// start FOR WIDGET COLOR INVERTED
+.card-stats .card-header.inverse {
+	background: #ffa726;
+	border: 1.5px solid;
+	border-color: #ffa726;
 }
 
+.card-stats .card-header.inverse:hover {
+	background: #FFFFFF;
+	border-color: #ffa726;
+}
+
+.material-icons.inverse  {
+	color: #fff;
+}
+// ./end FOR WIDGET COLOR INVERTED
 .card-stats .card-content{
 	text-align: left;
 }
