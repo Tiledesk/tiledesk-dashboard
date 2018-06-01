@@ -557,19 +557,14 @@
               <!-- Annulla -->
               {{ "VisitorsPage.Cancel" | translate }}
             </button>
-            <button style="margin-top:0px" class="btn btn-info" (click)="deleteTheRequestHandler()" style="padding:12px 16px;">
-              <!-- Elimina Richiesta -->
+            <button style="margin-top:0px" class="btn btn-info" (click)="archiveTheRequestHandler()" style="padding:12px 16px;">
+              <!-- Archivia Richiesta -->
               {{ "VisitorsPage.ArchiveRequest" | translate }}
             </button>
           </div>
         </div>
       </div>
     </div>
-
-
-
-
-
 
     <!-- ============ !!! NO MORE USED - MODAL MSGS OF THE REQUEST ============ -->
     <div class="backdrop" [ngStyle]="{'display':display}"></div>

@@ -238,8 +238,28 @@ export class RequestsListComponent implements OnInit {
     this.displayDeleteRequestModal = 'block'
   }
 
-  deleteTheRequestHandler() {
+  archiveTheRequestHandler() {
+    console.log('HAS CLICKED ARCHIVE REQUEST ')
     this.displayDeleteRequestModal = 'none'
+
+    this.getFirebaseToken(() => {
+
+      this.requestsService.closeSupportGroup(this.id_request_to_archive, this.firebase_token)
+        .subscribe((data: any) => {
+
+          console.log('CLOSE SUPPORT GROUP - DATA ', data);
+        },
+          (err) => {
+            console.log('CLOSE SUPPORT GROUP - ERROR ', err);
+
+          },
+          () => {
+            console.log('CLOSE SUPPORT GROUP - COMPLETE', );
+
+          });
+    });
+
+
   }
 
   onCloseDeleteRequestModal() {
