@@ -56,7 +56,8 @@
         "WidgetSubtitle": "Embed and customize the chat widget on your site",
         "VisitorsSubtitle": "See a list of all your web visitors and chat with them",
         "ChatSubtitle": "See the chat history",
-        "AnalyticsSubtitle": "Track the chats you have with customers"
+        "AnalyticsSubtitle": "Track the chats you have with customers",
+        "HistorySubtitle":"See the closed chat"
     },
     "RoutingPage": {
         "SettingUpTileDeskRoutingRules": "Setting up routing rules",

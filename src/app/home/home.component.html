@@ -113,46 +113,43 @@
           </div>
 
           <!-- ANALYTICS -->
-          <!-- <div class="col-lg-3 col-md-6 col-sm-6"> -->
-           <!-- col-lg-5 col-lg-offset-1 col-md-6 col-sm-6 -->
-          <div *ngIf="USER_ROLE !== 'agent'" class="col-lg-6 col-md-6 col-sm-6" style="cursor:pointer">
-              <!-- routerLink="/analytics" -->
-              <div class="card card-stats" style="max-width:480px;" (click)="goToAnalytics()">
-                  <div class="card-header" data-background-color="orange">
-                      <i class="material-icons">trending_up</i>
-                  </div>
-                  <div class="card-content">
-                      <p class="category" style="font-size: 1.1em;">Analytics</p>
-                      <!-- <h3 class="title">75</h3> -->
-                  </div>
-                  <div class="card-footer">
-                      <div class="stats" style="float: left;">
-                          <!-- <i class="material-icons">local_offer</i> Tracked from Github -->
-
-                          <!-- THERE WERE THIS -->
-                          <h4 class="title" style="font-size:12px; padding-bottom:10px; text-align: left;">
-                              {{ 'HomePage.AnalyticsSubtitle' | translate }}
-                          </h4> 
-                      </div>
-                  </div>
+          <!-- <div *ngIf="USER_ROLE !== 'agent'" class="col-lg-6 col-md-6 col-sm-6" style="cursor:pointer">
+            <div class="card card-stats" style="max-width:480px;" (click)="goToAnalytics()">
+              <div class="card-header" data-background-color="orange">
+                <i class="material-icons">trending_up</i>
               </div>
-          </div>
+              <div class="card-content">
+                <p class="category" style="font-size: 1.1em;">Analytics</p>
+              </div>
+              <div class="card-footer">
+                <div class="stats" style="float: left;">
+                  <h4 class="title" style="font-size:12px; padding-bottom:10px; text-align: left;">
+                    {{ 'HomePage.AnalyticsSubtitle' | translate }}
+                  </h4> 
+                </div>
+              </div>
+            </div>
+          </div> -->
 
           <!-- HISTORY -->
-          <!-- <div class="col-lg-5 col-lg-offset-1 col-md-6 col-sm-6" style="cursor:pointer">
-              <div class="card card-stats" style="max-width:350px;" (click)="goToHistory()">
-                  <div class="card-header" data-background-color="orange" style="">  
-                      <i class="material-icons">history</i>
-                  </div>
-                  <div class="card-content">
-                      <p class="category" style="font-size: 1.1em;">{{ 'History' | translate }}</p>
-                  </div>
-                  <div class="card-footer">
-                      <div class="stats">
-                      </div>
-                  </div>
+          <!-- col-lg-5 col-lg-offset-1 col-md-6 col-sm-6 -->
+          <div class="col-lg-6 col-md-6 col-sm-6" style="cursor:pointer">
+            <div class="card card-stats" style="max-width:480px;" (click)="goToHistory()">
+              <div class="card-header" data-background-color="orange" style="">  
+                <i class="material-icons">history</i>
               </div>
-          </div> -->
+              <div class="card-content">
+                <p class="category" style="font-size: 1.1em;">{{ 'History' | translate }}</p>
+              </div>
+              <div class="card-footer">
+                <div class="stats" style="float: left;">
+                  <h4 class="title" style="font-size:12px; padding-bottom:10px; text-align: left;">
+                    {{ 'HomePage.HistorySubtitle' | translate }}
+                  </h4> 
+                </div>
+              </div>
+            </div>
+          </div>
 
       </div>
   </div>

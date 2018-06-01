@@ -189,12 +189,12 @@
 
 
             <!-- ANALYTICS -->
-            <li *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="active" >
+            <!-- <li *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="active" >
                 <a class="customAncor" routerLink="project/{{ project._id }}/analytics">
                     <i class="material-icons">trending_up</i>
                     <p class="onBlackBckgrnd">Analytics</p>
                 </a>
-            </li>
+            </li> -->
             
             <!-- REQUESTS HISTORY -->
             <li *ngIf="project" routerLinkActive="active" >
@@ -332,14 +332,15 @@
                 </a>
             </li>
 
-            <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active">
+            <!-- /// CHANNELS -->
+            <!-- <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active">
                 <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/channels">
                     <span class="sidebar-mini">
                         C
                     </span>
                     <span class="sidebar-normal">Channels</span> 
                 </a>
-            </li>
+            </li> -->
 
             <!-- <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" style="" >
                 <a routerLink="project/{{ projectid }}/social">
