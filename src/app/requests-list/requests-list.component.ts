@@ -173,7 +173,8 @@ export class RequestsListComponent implements OnInit {
 
         // start NEW: GET MEMBERS
         for (const request of requests) {
-          console.log('request', request)
+          // console.log('request', request)
+          console.log('REQUEST TEXT ', request.first_text, ' , SUPP STATUS ', request.support_status )
           requests.forEach(r => {
             if (request.id === r.id) {
 
@@ -230,9 +231,9 @@ export class RequestsListComponent implements OnInit {
     window.open(url, '_blank');
   }
 
-  // ======================== DELETE A REQUEST ========================
+  // ======================== ARCHIVE A REQUEST ========================
   openDeleteRequestModal(request_recipient: string) {
-    console.log('ID OF REQUEST TO DELETE ', request_recipient)
+    console.log('ID OF REQUEST TO ARCHIVE ', request_recipient)
     this.id_request_to_archive = request_recipient;
 
     this.displayDeleteRequestModal = 'block'
@@ -679,7 +680,7 @@ export class RequestsListComponent implements OnInit {
 
           // qui richiama la callback
           callback();
-          console.log('Firebase Token (for join-to-chat)', idToken);
+          console.log('Firebase Token (for join-to-chat & close-support-group)', idToken);
         }).catch(function (error) {
           // Handle error
           console.log('idToken.', error);
