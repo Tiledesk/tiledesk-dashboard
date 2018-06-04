@@ -265,6 +265,7 @@
         "OpenTheChat": "Open the chat",
         "Loading": "Loading",
         "Error": "Error",
+        "RequestClosed": "Request closed",
         "RequestUnserved": "Request unserved",
         "RequestServedBy": "Request served by",
         "RequestId": "Request Id",

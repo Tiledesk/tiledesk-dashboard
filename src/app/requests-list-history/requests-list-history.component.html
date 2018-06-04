@@ -1,215 +1,210 @@
-<!-- NEW FOR THE CURRENT TEMPLATE -->
- <!-- MOMGO DB REQUEST HISTORY (ALIAS VISITORS) LIST -->
+ <!-- MONGO DB REQUEST HISTORY LIST -->
  <p style="margin-top:10px; padding-left:30px" class="navbar-brand">
    <!-- Cronologia -->
   {{ "History" | translate }}
-  </p> 
- <div class="main-content" style="padding-top:0px">
-   <div class="container-fluid">
-       <div class="row">
-           <div class="col-md-12">
-               <div class="card">
-                   <!-- <div class="card-header" data-background-color="red">
-                       <h4 class="title">Visitatori</h4>
-                       <p class="category">Here is a subtitle for this table</p>
-                   </div> -->
-                   <loading-spinner *ngIf="showSpinner"></loading-spinner>
-                   <div  *ngIf="!showSpinner" class="card-content table-responsive">
-                       <!-- style="overflow-x:auto;" -->
-                       <table class="table table-hover">
-                           <thead class="text">
-                               <tr>
-                                   <!-- <th></th> -->
-                                   <th></th>
-                                   <th>
-                                     <span style="color: #566787">
-                                       <strong>
-                                         Id
-                                        </strong>
-                                     </span>  
-                                   </th>
-                                   <th>
-                                     <span style="color: #566787">
-                                       <strong> 
-                                         <!-- Richiedente  -->
-                                         {{ 'HistoryPage.Requester' | translate }}
-                                        </strong>
-                                     </span>
-                                   </th>
-                                   <th>
-                                     <span style="color: #566787">
-                                         <!-- Message -->
-                                        <strong> 
-                                         <!-- Messagio -->
-                                         {{ 'HistoryPage.Message' | translate }}
-                                        </strong>
-                                     </span>
-                                   </th>
-                                   <!-- REQUESTER ID * FOR DEBUG -->
-                                   <!-- <th>
-                                     <span style="color: #566787">
-                                       <strong> Requester Id </strong>
-                                     </span>
-                                   </th> -->
-                                    <th>
-                                     <span style="color: #566787">
-                                       <!-- <strong> Served by </strong> -->
-                                       <strong> 
-                                         <!-- Servita da  -->
-                                         {{ 'HistoryPage.ServedBy' | translate }}
-                                        </strong>
-                                     </span>
-                                  </th>
-                                   <!-- <th>
-                                    <span style="color: #566787">
-                                      <strong> Membri </strong>
-                                     </span>
-                                   </th> -->
-                                  <th>
-                                    <span style="color: #566787">
-                                      <!-- <strong> Data creazione </strong> -->
-                                      <strong> 
-                                      <!-- Pubblicata  -->
-                                      {{ 'HistoryPage.Published' | translate }}
-                                      </strong>
-                                    </span>
-                                  </th>
-                                  <!-- <th></th> -->
-                               </tr>
-                           </thead>
-                           <tbody>
+</p> 
+<div class="main-content" style="padding-top:0px">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <!-- <div class="card-header" data-background-color="red">
+            <h4 class="title">Visitatori</h4>
+            <p class="category">Here is a subtitle for this table</p>
+          </div> -->
+          <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
-                              <!-- IF THERE ISN'T HISTORY REQUEST  -->
-                              <tr *ngIf="requestList.length === 0"> 
-                                <td colspan="6" style="text-align: center; padding-top: 16px; cursor: pointer">
-                                  <!-- color: #ff5252   -->
-                                  <p style="font-size:1em; color:#999999; font-weight: 400">
-                                      <!-- Nessun Visitatore! Clicca qui per simulare un visitatore. -->
-                                      {{ 'HistoryPage.NoRequests' | translate }}
-                                    </p>
-                                </td>
-                              </tr> 
+          <div  *ngIf="!showSpinner" class="card-content table-responsive">
 
-                               <tr *ngFor="let request of requestList">
-                               
-                                 <!-- FOR DEBUG: SHOW 'J' IF THE CURRENT USER UID IS BETWEEN 
-                                 THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
-                                 <!-- <td>
-                                   <span *ngIf="request?.currentUserIsJoined === true"> 
-                                     J
-                                   </span>
-                                 </td> -->
-                                 <td style="text-align:center">
-                                   <!-- <span *ngIf="request?.membersCount == 0"> 
-                                     <i style="color:red;" class="material-icons">priority_high</i>
-                                   </span> -->
+            <table class="table table-hover">
+              <thead class="text">
+                <tr>
+                  <!-- <th></th> -->
+                  <th></th>
+                  <th>
+                    <span style="color: #566787">
+                      <strong>
+                        Id
+                      </strong>
+                    </span>  
+                  </th>
+                  <th>
+                    <span style="color: #566787">
+                      <strong> 
+                        <!-- Richiedente  -->
+                        {{ 'HistoryPage.Requester' | translate }}
+                      </strong>
+                    </span>
+                  </th>
+                  <th>
+                    <span style="color: #566787">
+                        <!-- Message -->
+                      <strong> 
+                        <!-- Messagio -->
+                        {{ 'HistoryPage.Message' | translate }}
+                      </strong>
+                    </span>
+                  </th>
+                  <!-- REQUESTER ID * FOR DEBUG -->
+                  <!-- <th>
+                    <span style="color: #566787">
+                      <strong> Requester Id </strong>
+                    </span>
+                  </th> -->
+                  <th>
+                    <span style="color: #566787">
+                      <!-- <strong> Served by </strong> -->
+                      <strong> 
+                        <!-- Servita da  -->
+                        {{ 'HistoryPage.ServedBy' | translate }}
+                      </strong>
+                    </span>
+                  </th>
+                    <!-- <th>
+                    <span style="color: #566787">
+                      <strong> Membri </strong>
+                      </span>
+                    </th> -->
+                  <th>
+                    <span style="color: #566787">
+                      <!-- <strong> Data creazione </strong> -->
+                      <strong> 
+                      <!-- Pubblicata  -->
+                      {{ 'HistoryPage.Published' | translate }}
+                      </strong>
+                    </span>
+                  </th>
+                  <!-- <th></th> -->
+                </tr>
+              </thead>
+              <tbody>
+
+                <!-- IF THERE ISN'T HISTORY REQUEST  -->
+                <tr *ngIf="requestList.length === 0"> 
+                  <td colspan="6" style="text-align: center; padding-top: 16px; cursor: pointer">
+                    <!-- color: #ff5252   -->
+                    <p style="font-size:1em; color:#999999; font-weight: 400">
+                        <!-- Nessun Visitatore! Clicca qui per simulare un visitatore. -->
+                        {{ 'HistoryPage.NoRequests' | translate }}
+                      </p>
+                  </td>
+                </tr> 
+
+                <tr *ngFor="let request of requestList">
+                  
+                  <!-- FOR DEBUG: SHOW 'J' IF THE CURRENT USER UID IS BETWEEN 
+                  THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
+                  <!-- <td>
+                    <span *ngIf="request?.currentUserIsJoined === true"> 
+                      J
+                    </span>
+                  </td> -->
+                  <td style="text-align:center">
+
+                    <!-- CLOSED REQUEST -->
+                    <!-- 'openViewMsgsModal(request?.recipient, request?.requester_id)' -->
+                    <span (click)='goToRequestMsgs(request?.recipient)'>
+                      <!-- pull-right -->
+                      <button class="btn btn-default">
+                        <i style="font-size: 17px !important; " class="material-icons">visibility</i>
+                      </button>
+                    </span>
+                    
+                    <!-- IF THE REQUEST SUPPORT STATUS IS 100 (UNSERVED REQUEST) -->
+                    <!-- <span *ngIf="request?.support_status == 100"> 
+                      <span class="" (click)='openViewMsgsModal(request?.recipient, request?.requester_id)'>
+                        <button class="btn btn-danger" style=""> 
+                            <i style="font-size: 17px !important; " class="material-icons">visibility</i>
+                        </button>
+                      </span>
+                    </span> -->
+
+                    <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) AND THE CURRENT USER UID IS BETWEEN 
+                    THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
+                    <!-- <span *ngIf="request?.support_status == 200 && request?.currentUserIsJoined === true"> 
+                      <span class="" (click)='openViewMsgsModal(request?.recipient, request?.requester_id)'>
+                        <button class="btn btn-success" style="" rel="tooltip" title=""> 
+                          <i style="font-size: 17px !important; " class="material-icons">visibility</i>
+                        </button>
+                      </span>
+                    </span> -->
+
+                    <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) BUT THE CURRENT USER UID IS NOT BETWEEN 
+                    THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has not joined to the request) -->
+                    <!-- <span *ngIf="request?.support_status == 200 && !request?.currentUserIsJoined"> 
+                      <span class="" (click)='openViewMsgsModal(request?.recipient, request?.requester_id)'>
+                        <button class="btn btn-info" style="" rel="tooltip" title=""> 
+                          <i style="font-size: 17px !important; " class="material-icons">visibility</i>
+                        </button>
+                      </span>
+                    </span> -->
+
+                  </td>
+                  
+                  <!-- // !!! NO MORE USED - OPEN THE MSGS OF A REQUEST IN A MODAL  -->
+                  <!-- 'openViewMsgsModal(request?.recipient, request?.requester_id)' -->
+
+                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
+                    <p style="font-size:0.8em;" >
+                      {{ request?.recipient }}
+                    </p>
+                  </td>
+                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
+
+                    <p style="font-size:0.9em">
+                      {{ request.requester_fullname }}
+                    </p>
+                    
+                    <!-- <p style="font-size:0.8em">
+                      {{ request?.requester_id }}
+                    </p> -->
+                  </td>
+                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
+
+                    <p style="font-size:0.9em;" [innerHTML]="getRequestText(request?.first_text)">
+                      <!-- {{ request?.text }} -->
+                    </p>
+                  </td>
+                  <!-- REQUESTER ID * FOR DEBUG-->
+                  <!-- <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
+                    <p style="font-size:0.9em">
+                      {{ request?.requester_id }}
+                    </p>
+                  </td> -->
+                  <!-- SERVED BY -->
+                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" >
+                    <p style="font-size:0.8em; min-width: 220px;" [innerHTML]="request?.served_by" >
+                      <!-- {{ request?.served_by }} -->
+                    </p>
+                  </td>
+                  <!-- LIST  OF MEMBERS -->
+                  <!-- <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
+                    <p style="font-size:0.8em; min-width: 220px;"  [innerHTML]="request?.members_as_string"></p>
+                  </td> -->
+                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
+                    <p style="font-size:0.9em">
+                      <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
+                      {{ request?.request_date_fromnow }}
+                      
+                    </p>
+                  </td>
+                  <!-- <td>
+                    <span class="" (click)='openViewMsgsModal(request?.recipient, hasClickedUpdateModal=true)'>
+                      <button class="btn btn-info pull-right" style="padding:4px 6px;"> 
+                          <i style="font-size: 17px !important; " class="material-icons">visibility</i>
+                      </button>
+                    </span>
+                  </td> -->
+                </tr>
+              </tbody>
+            </table>
+          </div> <!-- ./ card-content table-responsive -->
+        </div> <!-- ./ card -->
+      </div> <!-- ./ col-md-12 -->
+    </div> <!-- ./ row -->
  
-                                   <!-- IF THE REQUEST SUPPORT STATUS IS 0 (??? REQUEST) -->
-                                   <!-- <span *ngIf="request?.support_status == 0">  -->
-                                     <span class="" (click)='openViewMsgsModal(request?.recipient, request?.requester_id)'>
-                                        <!-- padding:4px 6px; -->
-                                        <!-- pull-right -->
-                                       <button class="btn btn-default" style=""> 
-                                           <i style="font-size: 17px !important; " class="material-icons">visibility</i>
-                                       </button>
-                                     </span>
-                                   <!-- </span> -->
-                                   
-                                   <!-- IF THE REQUEST SUPPORT STATUS IS 100 (UNSERVED REQUEST) -->
-                                   <span *ngIf="request?.support_status == 100"> 
-                                     <span class="" (click)='openViewMsgsModal(request?.recipient, request?.requester_id)'>
-                                        <!-- pull-right -->
-                                       <button class="btn btn-danger" style=""> 
-                                           <i style="font-size: 17px !important; " class="material-icons">visibility</i>
-                                       </button>
-                                     </span>
-                                   </span>
- 
-                                   <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) AND THE CURRENT USER UID IS BETWEEN 
-                                   THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
-                                   <span *ngIf="request?.support_status == 200 && request?.currentUserIsJoined === true"> 
-                                     <span class="" (click)='openViewMsgsModal(request?.recipient, request?.requester_id)'>
-                                        <!-- pull-right  -->
-                                      <button class="btn btn-success" style="" rel="tooltip" title=""> 
-                                           <i style="font-size: 17px !important; " class="material-icons">visibility</i>
-                                       </button>
-                                     </span>
-                                   </span>
- 
-                                  <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) BUT THE CURRENT USER UID IS NOT BETWEEN 
-                                  THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has not joined to the request) -->
-                                  <span *ngIf="request?.support_status == 200 && !request?.currentUserIsJoined"> 
-                                    <span class="" (click)='openViewMsgsModal(request?.recipient, request?.requester_id)'>
-                                        <!-- pull-right -->
-                                      <button class="btn btn-info" style="" rel="tooltip" title=""> 
-                                        <i style="font-size: 17px !important; " class="material-icons">visibility</i>
-                                      </button>
-                                    </span>
-                                  </span>
- 
-                                 </td>
-                                 <td (click)='openViewMsgsModal(request?.recipient, request?.requester_id)' style="cursor:pointer">
-                                     <!-- max-width: 150px; -->
-                                   <p style="font-size:0.8em;" >
-                                     {{ request?.recipient }}
-                                   </p>
-                                 </td>
-                                 <td (click)='openViewMsgsModal(request?.recipient, request?.requester_id)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
-                                   <!-- <p style="font-size:0.9em">{{ request.sender_fullname }}</p> -->
-                                  <p style="font-size:0.9em">
-                                    {{ request.requester_fullname }}
-                                  </p>
-                                   
-                                  <!-- <p style="font-size:0.8em">
-                                    {{ request?.requester_id }}
-                                  </p> -->
-                                </td>
-                                <td (click)='openViewMsgsModal(request?.recipient, request?.requester_id)' style="cursor:pointer">
-                                    <!-- max-width: 400px -->
-                                  <p style="font-size:0.9em;" [innerHTML]="getRequestText(request?.first_text)">
-                                    <!-- {{ request?.text }} -->
-                                  </p>
-                                </td>
-                                <!-- REQUESTER ID * FOR DEBUG-->
-                                <!-- <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
-                                  <p style="font-size:0.9em">
-                                    {{ request?.requester_id }}
-                                  </p>
-                                </td> -->
-                                <!-- SERVED BY -->
-                                <td (click)='openViewMsgsModal(request?.recipient, request?.requester_id)' style="cursor:pointer" >
-                                  <p style="font-size:0.8em; min-width: 220px;" [innerHTML]="request?.served_by" >
-                                     <!-- {{ request?.served_by }} -->
-                                  </p>
-                                </td>
-                                 <!-- LIST  OF MEMBERS -->
-                                <!-- <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
-                                  <p style="font-size:0.8em; min-width: 220px;"  [innerHTML]="request?.members_as_string"></p>
-                                </td> -->
-                                <td (click)='openViewMsgsModal(request?.recipient, request?.requester_id)' style="cursor:pointer">
-                                  <p style="font-size:0.9em">
-                                    <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
-                                    {{ request?.request_date_fromnow }}
-                                     
-                                  </p>
-                                </td>
-                                 <!-- <td>
-                                   <span class="" (click)='openViewMsgsModal(request?.recipient, hasClickedUpdateModal=true)'>
-                                     <button class="btn btn-info pull-right" style="padding:4px 6px;"> 
-                                         <i style="font-size: 17px !important; " class="material-icons">visibility</i>
-                                     </button>
-                                   </span>
-                                 </td> -->
-                               </tr>
-                           </tbody>
-                       </table>
-                   </div> <!-- ./ card-content table-responsive -->
-               </div> <!-- ./ card -->
-           </div> <!-- ./ col-md-12 -->
-       </div> <!-- ./ row -->
- 
-   </div> <!-- ./ container-fluid -->
- </div> <!-- ./ main-content -->
+  </div> <!-- ./ container-fluid -->
+</div> <!-- ./ main-content -->
  
  
      <!-- MODAL -->

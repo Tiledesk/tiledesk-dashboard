@@ -7,6 +7,8 @@ import { AuthService } from '../core/auth.service';
 import { environment } from '../../environments/environment';
 import * as firebase from 'firebase/app';
 import { UsersLocalDbService } from '../services/users-local-db.service';
+// USED FOR go back last page
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-requests-msgs',
@@ -50,7 +52,8 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private requestsService: RequestsService,
     private auth: AuthService,
-    private usersLocalDbService: UsersLocalDbService
+    private usersLocalDbService: UsersLocalDbService,
+    private _location: Location
   ) { }
 
   ngOnInit() {
@@ -310,9 +313,15 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // GO BACK REQUESTS LIST
+  // !!! NO MORE USED SUBSTITUTED BY goBack()
+  // SINCE THE COMPONENTS THAT CALL 'requests-msgs' CAN BE 'requests-list.comp' OR 'requests-list-history.comp'
+  // -  GO BACK REQUESTS LIST
   goBackToRequestsList() {
     this.router.navigate(['project/' + this.id_project + '/requests']);
+  }
+
+  goBack() {
+    this._location.back();
   }
 
   members_replace(member_id) {

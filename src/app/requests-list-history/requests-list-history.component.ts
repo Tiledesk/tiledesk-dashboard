@@ -13,6 +13,8 @@ import { Response } from '@angular/http';
 
 import * as moment from 'moment';
 import 'moment/locale/it.js';
+import { AuthService } from '../core/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-requests-list-history',
@@ -64,20 +66,33 @@ export class RequestsListHistoryComponent implements OnInit {
 
   openTagstrong: string;
   closeTagstrong: string;
+  projectId: any;
 
   constructor(
     private requestsService: RequestsService,
     private elRef: ElementRef,
-  ) {
+    public auth: AuthService,
+    private router: Router
+  ) { }
 
+
+  ngOnInit() {
+    this.getCurrentUserFirebaseUid();
+
+    this.getHistoryRequestList();
+
+    this.getCurrentProject();
+  }
+
+  getCurrentUserFirebaseUid() {
     this.user = firebase.auth().currentUser;
     // console.log('LOGGED USER ', this.user);
     if (this.user) {
       this.currentUserFireBaseUID = this.user.uid
-      console.log('FIREBASE SIGNED IN USER UID GET IN REQUEST-LIST COMPONENT', this.currentUserFireBaseUID);
+      console.log('FIREBASE SIGNED IN USER UID GET IN REQUEST-LIST HISTORY COMPONENT', this.currentUserFireBaseUID);
       this.getToken();
     } else {
-      // console.log('No user is signed in');
+      console.log('No user is signed in');
     }
   }
 
@@ -94,16 +109,28 @@ export class RequestsListHistoryComponent implements OnInit {
       });
   }
 
+  // GET THE CURRENT PROJECT ID
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
 
+      console.log('00 -> REQUEST-LIST HISTORY COMP project from AUTH service subscription  ', project)
 
-  ngOnInit() {
-    this.getHistoryRequestList();
+      if (project) {
+        this.projectId = project._id;
+
+      }
+    });
   }
-
   // ngAfterViewInit() {
   //   // this.elRef.nativeElement.querySelector('.modal');
   //   console.log('MM ', this.elRef.nativeElement.querySelector('.modal').animate({ scrollTop: 0 }, 'slow') );
   // }
+
+  goToRequestMsgs(request_recipient: string) {
+
+    this.router.navigate(['project/' + this.projectId + '/request/' + request_recipient + '/messages']);
+
+  }
 
   getRequestText(text: string): string {
     if (text) {
@@ -329,13 +356,13 @@ export class RequestsListHistoryComponent implements OnInit {
         // this.scrollToBottom();
         // }
       },
-      (err) => {
-        console.log('GET MESSAGE LIST ERROR ', err);
-      },
-      () => {
-        console.log('GET MESSAGE LIST * COMPLETE *');
-        // this.showSpinner = false;
-      });
+        (err) => {
+          console.log('GET MESSAGE LIST ERROR ', err);
+        },
+        () => {
+          console.log('GET MESSAGE LIST * COMPLETE *');
+          // this.showSpinner = false;
+        });
 
   }
 
@@ -387,13 +414,13 @@ export class RequestsListHistoryComponent implements OnInit {
           }
         }
       },
-      (err) => {
-        this.SEARCH_FOR_SAME_UID_FINISHED = true;
-        console.log('REQUEST (ALIAS CONVERSATION) GET BY RECIPIENT ERROR ', err);
-      },
-      () => {
-        console.log('REQUEST (ALIAS CONVERSATION) GET BY RECIPIENT COMPLETE');
-      });
+        (err) => {
+          this.SEARCH_FOR_SAME_UID_FINISHED = true;
+          console.log('REQUEST (ALIAS CONVERSATION) GET BY RECIPIENT ERROR ', err);
+        },
+        () => {
+          console.log('REQUEST (ALIAS CONVERSATION) GET BY RECIPIENT COMPLETE');
+        });
   }
 
   // IS NOT NECESSARY FOR THE HISTORY VIEW AND SO (click)="onJoinHandled() IS COMMENTED (see requests-list-history.component.html)
@@ -408,20 +435,20 @@ export class RequestsListHistoryComponent implements OnInit {
 
         console.log('JOIN TO CHAT GROUP ', data);
       },
-      (err) => {
-        console.log('JOIN TO CHAT GROUP ERROR ', err);
-        this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
-        this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = false;
-        this.JOIN_TO_GROUP_HAS_ERROR = true;
+        (err) => {
+          console.log('JOIN TO CHAT GROUP ERROR ', err);
+          this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
+          this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = false;
+          this.JOIN_TO_GROUP_HAS_ERROR = true;
 
 
-      },
-      () => {
-        console.log('JOIN TO CHAT GROUP COMPLETE', );
+        },
+        () => {
+          console.log('JOIN TO CHAT GROUP COMPLETE', );
 
-        this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
-        this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = true;
-      });
+          this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
+          this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = true;
+        });
 
   }
 
