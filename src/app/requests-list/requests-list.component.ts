@@ -24,6 +24,7 @@ import { Project } from '../models/project-model';
 import { Router } from '@angular/router';
 import { UsersLocalDbService } from '../services/users-local-db.service';
 import { environment } from '../../environments/environment';
+import { NotifyService } from '../core/notify.service';
 
 @Component({
   selector: 'requests-list',
@@ -86,8 +87,10 @@ export class RequestsListComponent implements OnInit {
   projectId: string;
   projectName: string;
 
-  displayDeleteRequestModal = 'none';
-
+  displayArchiveRequestModal = 'none';
+  displayArchivingInfoModal = 'none';
+  SHOW_CIRCULAR_SPINNER = false;
+  ARCHIVE_REQUEST_ERROR = false;
   id_request_to_archive: string;
 
   constructor(
@@ -95,7 +98,8 @@ export class RequestsListComponent implements OnInit {
     private elRef: ElementRef,
     public auth: AuthService,
     private router: Router,
-    private usersLocalDbService: UsersLocalDbService
+    private usersLocalDbService: UsersLocalDbService,
+    private notify: NotifyService
   ) {
 
     this.user = auth.user_bs.value
@@ -174,7 +178,7 @@ export class RequestsListComponent implements OnInit {
         // start NEW: GET MEMBERS
         for (const request of requests) {
           // console.log('request', request)
-          console.log('REQUEST TEXT ', request.first_text, ' , SUPP STATUS ', request.support_status )
+          console.log('REQUEST TEXT ', request.first_text, ' , SUPP STATUS ', request.support_status)
           requests.forEach(r => {
             if (request.id === r.id) {
 
@@ -236,12 +240,16 @@ export class RequestsListComponent implements OnInit {
     console.log('ID OF REQUEST TO ARCHIVE ', request_recipient)
     this.id_request_to_archive = request_recipient;
 
-    this.displayDeleteRequestModal = 'block'
+    this.displayArchiveRequestModal = 'block'
   }
 
   archiveTheRequestHandler() {
-    console.log('HAS CLICKED ARCHIVE REQUEST ')
-    this.displayDeleteRequestModal = 'none'
+    console.log('HAS CLICKED ARCHIVE REQUEST ');
+
+    this.displayArchiveRequestModal = 'none';
+
+    this.SHOW_CIRCULAR_SPINNER = true;
+    this.displayArchivingInfoModal = 'block'
 
     this.getFirebaseToken(() => {
 
@@ -252,19 +260,31 @@ export class RequestsListComponent implements OnInit {
         },
           (err) => {
             console.log('CLOSE SUPPORT GROUP - ERROR ', err);
-
+            this.SHOW_CIRCULAR_SPINNER = false;
+            this.ARCHIVE_REQUEST_ERROR = true;
+            // =========== NOTIFY ERROR ===========
+            // tslint:disable-next-line:quotemark
+            this.notify.showNotification("An error has occurred archiving the request", 4, 'report_problem')
           },
           () => {
+            // this.ngOnInit();
             console.log('CLOSE SUPPORT GROUP - COMPLETE', );
+            this.SHOW_CIRCULAR_SPINNER = false;
+            this.ARCHIVE_REQUEST_ERROR = false;
 
+            // =========== NOTIFY SUCCESS===========
+            this.notify.showNotification(`request with id: ${this.id_request_to_archive} has been moved to History`, 2, 'done');
           });
     });
 
 
   }
 
-  onCloseDeleteRequestModal() {
-    this.displayDeleteRequestModal = 'none'
+  onCloseArchiveRequestModal() {
+    this.displayArchiveRequestModal = 'none'
+  }
+  onCloseArchivingInfoModal() {
+    this.displayArchivingInfoModal = 'none'
   }
 
 

@@ -238,7 +238,8 @@
         "Published": "Published",
         "Archive": "Archive",
         "tootipArchiveRequest": "Archive request",
-        "NoVisitorClickHere": "No Visitor! Click here to simulate a visitor.",
+        "NoVisitor": "No Visitor!",
+        "ClickHereToSimulate":"Click here to simulate a visitor",
         "RequestId": "Request Id:",
         "RequesterId": "Requester Id:",
         "Close": "Close",
@@ -249,7 +250,12 @@
         "TheRequestWithId": "The request with id:",
         "WillBeArchived": "will be archived",
         "AreYouSure": "Are you sure you want to archive the selected request?",
-        "Cancel": "Cancel"
+        "Cancel": "Cancel",
+        "Processing":"Processing...",
+        "Completed":"Completed",
+        "RequestArchived":"Request archived",
+        "AnErrorHasOccurred":"An error has occurred archiving the request",
+        "Continue":"Continue"
     },
     "RequestMsgsPage": {
         "MessagesOfTheRequest": "Messages of the request",

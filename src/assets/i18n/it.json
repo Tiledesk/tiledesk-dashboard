@@ -240,7 +240,8 @@
         "Published": "Pubblicata",
         "Archive": "Archivia",
         "tootipArchiveRequest": "Archivia richiesta",
-        "NoVisitorClickHere": "Nessun Visitatore! Clicca qui per simulare un visitatore.",
+        "NoVisitor": "Nessun Visitatore!",
+        "ClickHereToSimulate": "Clicca qui per simulare un visitatore",
         "RequestId": "Id richiesta:",
         "RequesterId": "Id richiedente:",
         "Close": "Chiudi",
@@ -251,7 +252,12 @@
         "TheRequestWithId": "La richiesta con id:",
         "WillBeArchived": "sarà archiviata",
         "AreYouSure": "Sei sicuro di voler archiviare la richiesta selezionata?",
-        "Cancel": "Annulla"
+        "Cancel": "Annulla",
+        "Processing":"Elaborazione...",
+        "Completed":"Completato",
+        "RequestArchived":"Richiesta archiviata",
+        "AnErrorHasOccurred":"Si è verificato un errore durante l'archiviazione della richiesta",
+        "Continue":"Continua"
     },
     "RequestMsgsPage": {
         "MessagesOfTheRequest": "Messagi della richiesta",
