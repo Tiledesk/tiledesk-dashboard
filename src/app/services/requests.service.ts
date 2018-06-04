@@ -240,8 +240,8 @@ export class RequestsService {
     // r.hasAgent(this.currentUserID)) PASS THE CURRENT USER ID TO THE 'REQUEST' MODEL WHICH AFTER COMPARING
     // THE CURRENT USER ID WITH THE 'USER ID' CONTAINED IN THE ARRAY 'AGENTS' (NESTED IN THE 'REQUEST' OBJECT) 
     // RETURNS TRUE OR FALSE
-    // 
-    if (r === null || r === undefined || !r.hasAgent(this.currentUserID)) {
+    // || !r.hasAgent(this.currentUserID)
+    if (r === null || r === undefined) {
       // console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID))
       return;
     }
@@ -563,7 +563,7 @@ export class RequestsService {
 
     headers.append('Authorization', 'Bearer ' + this.FIREBASE_ID_TOKEN);
     const options = new RequestOptions({ headers });
-
+    console.log('JOIN FUNCT OPTIONS  ', options)
     // TEST WITH HARDCODED VALUES
     // const body = { 'member_id': 'HzyKSXSuzjgYq1ib6n9E8PMjoYp1' };
 
@@ -585,23 +585,34 @@ export class RequestsService {
   }
 
   public closeSupportGroup(group_id: string, firebaseToken: any) {
+    this.FIREBASE_ID_TOKEN = firebaseToken;
+    // https://us-central1-chat-v2-dev.cloudfunctions.net/supportapi/tilechat/groups/'
 
     // example: https://us-central1-chat-v2-dev.cloudfunctions.net/supportapi/tilechat/groups/support-group-L5xro2P81zHs7YA7-DX/
     // https://us-central1-chat-v2-dev.cloudfunctions.net/supportapi/tilechat/groups/support-group-LDawab4g-RmUB6Xp6H3
-    // const url = this.CHAT21_CLOUD_FUNC_CLOSE_GROUP_BASE_URL + group_id
-    const url = 'https://us-central1-chat-v2-dev.cloudfunctions.net/supportapi/tilechat/groups/support-group-LDawTPrh6qERTSHxnRN/'
-    console.log('CLOUD FUNCT CLOSE SUPPORT GROUP URL ', url);
+
+    // https://us-central1-chat-v2-dev.cloudfunctions.net/supportapi/tilechat/groups/'
+
+    // const url = 'https://us-central1-chat-v2-dev.cloudfunctions.net/supportapi/tilechat/groups/support-group-LDawTPrh6qERTSHxnRN/'
+
 
     const headers = new Headers();
-    // headers.append('Accept', 'application/json');
+    headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
-    // headers.append('Authorization', 'Bearer ' + firebaseToken);
-    headers.append('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImFhNzE5ZDE4MjQ2OTAyN2ZkYWQ5YzVlMjVmNTA0NWUzZjRhZTBjMTAifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vY2hhdC12Mi1kZXYiLCJhdWQiOiJjaGF0LXYyLWRldiIsImF1dGhfdGltZSI6MTUyNzYwODA5NCwidXNlcl9pZCI6IjVhZDA4ODQ2ZWExODFlMmU5Y2MyZDIwZCIsInN1YiI6IjVhZDA4ODQ2ZWExODFlMmU5Y2MyZDIwZCIsImlhdCI6MTUyNzg3MTU1NywiZXhwIjoxNTI3ODc1MTU3LCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7fSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.0O1BBDcI-cBZi4LVCTALbgHlZ5EjoywMm_-rniwk_jOoJdjpnDiCMNSaFEQgYmARF9oewXrnEX6wc6I20fzX9JHKjg4mf0xCza5ICyGLpS0wVcwDRWlsgdezIdZFVSYx9t918LuhDaGNF4Z1lAxBm7-K0vaW-l7tA5qQcUq7EgAj_d4s41K_fQ6JZWOYud6-Ov5Je3wYPZbV_syfkkUgpr4oZYoqxBGlottR_YuO6Y7wqz5w3Xd-H1_28GLgvUoobn5mi4lq9IGcXQmkRHZ3Yqu8Vxopn5-ps7K06cgvCEQ9wLOCpx5B3ikN9yzyF4s9kWVt4pbBdB1yOnbOP08qTQ');
+    headers.append('Authorization', 'Bearer ' + this.FIREBASE_ID_TOKEN);
+    // headers.append('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImFhNzE5ZDE4MjQ2OTAyN2ZkYWQ5YzVlMjVmNTA0NWUzZjRhZTBjMTAifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vY2hhdC12Mi1kZXYiLCJhdWQiOiJjaGF0LXYyLWRldiIsImF1dGhfdGltZSI6MTUyNzYwODA5NCwidXNlcl9pZCI6IjVhZDA4ODQ2ZWExODFlMmU5Y2MyZDIwZCIsInN1YiI6IjVhZDA4ODQ2ZWExODFlMmU5Y2MyZDIwZCIsImlhdCI6MTUyNzg3MTU1NywiZXhwIjoxNTI3ODc1MTU3LCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7fSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.0O1BBDcI-cBZi4LVCTALbgHlZ5EjoywMm_-rniwk_jOoJdjpnDiCMNSaFEQgYmARF9oewXrnEX6wc6I20fzX9JHKjg4mf0xCza5ICyGLpS0wVcwDRWlsgdezIdZFVSYx9t918LuhDaGNF4Z1lAxBm7-K0vaW-l7tA5qQcUq7EgAj_d4s41K_fQ6JZWOYud6-Ov5Je3wYPZbV_syfkkUgpr4oZYoqxBGlottR_YuO6Y7wqz5w3Xd-H1_28GLgvUoobn5mi4lq9IGcXQmkRHZ3Yqu8Vxopn5-ps7K06cgvCEQ9wLOCpx5B3ikN9yzyF4s9kWVt4pbBdB1yOnbOP08qTQ');
 
     const options = new RequestOptions({ headers });
     console.log('CLOUD FUNCT CLOSE SUPPORT OPTIONS  ', options)
+
+    const body = { 'group_id': group_id };
+    console.log('JOIN TO GROUP POST REQUEST BODY ', body);
+
+    const url = this.CHAT21_CLOUD_FUNC_CLOSE_GROUP_BASE_URL;
+    console.log('CLOUD FUNCT CLOSE SUPPORT GROUP URL ', url);
     return this.http
-      .put('https://us-central1-chat-v2-dev.cloudfunctions.net/supportapi/tilechat/groups/support-group-LDawTPrh6qERTSHxnRN/', options)
+      // .put('https://us-central1-chat-v2-dev.cloudfunctions.net/supportapi/tilechat/groups/support-group-LDawTPrh6qERTSHxnRN/', options)
+      .put(url, options)
       .map((res) => res.json());
   }
 
