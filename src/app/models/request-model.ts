@@ -23,6 +23,7 @@ export interface Request {
   agents?: any;
   attributes?: any;
   showRequest?: boolean;
+  firebaseDocChangeType?: string;
   hasAgent?(user_id: string): boolean;
 }
 

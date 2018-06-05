@@ -241,17 +241,34 @@ export class RequestsService {
     // THE CURRENT USER ID WITH THE 'USER ID' CONTAINED IN THE ARRAY 'AGENTS' (NESTED IN THE 'REQUEST' OBJECT) 
     // RETURNS TRUE OR FALSE
     // || !r.hasAgent(this.currentUserID)
-    if (r === null || r === undefined ) {
+    if (r === null || r === undefined) {
       // console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID))
       return;
     }
     console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID))
     for (let i = 0; i < this.requestList.length; i++) {
+      // IF THE ID OF THE REQUEST RETURNED FROM DOCUMENT CHANGE (i.e. r.recipient) IS ALREADY IN THE REQUEST LIST this.requestList[i].recipient
+      // THIS MEAN THAT THE TYPE OF DocumentChange RETURNED FROM THE QUERY IS MODIFIED OR REMOVED
       if (r.recipient === this.requestList[i].recipient) {
-        // UPDATE: SUBSTITUTE THE EXISTING REQUEST WITH THE MODIFIED ONE ...
-        this.requestList[i] = r;
-        this.reorderRequests()
-        return;
+
+        // USE CASE: DocumentChange TYPE = MODIFIED
+        // - run an UPDATE: SUBSTITUTE THE EXISTING REQUEST WITH THE MODIFIED ONE ...
+        if (r.firebaseDocChangeType === 'modified') {
+          console.log('2) »»»»» DOCUMENT CHANGE TYPE ', r.firebaseDocChangeType)
+          this.requestList[i] = r;
+          this.reorderRequests()
+          return;
+        } else {
+          // USE CASE REQUEST ARCHIVED - DocumentChange TYPE = REMOVED
+          // run a SPLICE to remove the request from the list
+          console.log('2) »»»»» DOCUMENT CHANGE TYPE ', r.firebaseDocChangeType)
+          const index = this.requestList.indexOf(this.requestList[i]);
+          console.log('INDEX OF THE REQUEST TO REMOVE ', index)
+          if (index > -1) {
+            this.requestList.splice(index, 1);
+          }
+          return;
+        }
       }
       // console.log('REQUEST RECIPIENT ', this.requestList[i].recipient)
     }
@@ -309,8 +326,10 @@ export class RequestsService {
     // const observer = Observable.create(query.onSnapshot.bind(query));
     const observable = new Observable<Request[]>(observer => {
       this.unsubscribe = query.onSnapshot(snapshot => {
-        console.log('REQUEST SNAPSHOT ', snapshot)
+        // console.log('REQUEST SNAPSHOT ', snapshot)
         const requestListReturned: Request[] = snapshot.docChanges.map((c: DocumentChange) => {
+          console.log(' »»» »»» »»» »»» »»» »»» REQUEST SERVICE - DOCUMENT CHANGE - TYPE: ', c.type);
+          console.log(' »»» »»» DOCUMENT CHANGE - DOC DATA ', c.doc.data())
           // const requestListReturned: Request[] = snapshot.docs.map((c: DocumentSnapshot) => {
           const r: Request = new Request();
           const data = c.doc.data()
@@ -331,6 +350,7 @@ export class RequestsService {
           r.requester_id = data.requester_id
           r.agents = data.agents
           r.attributes = data.attributes
+          r.firebaseDocChangeType = c.type
           // r.hasAgent(this.currentUserID)
 
           return r;
@@ -595,7 +615,7 @@ export class RequestsService {
     const options = new RequestOptions({ headers });
     console.log('CLOUD FUNCT CLOSE SUPPORT OPTIONS  ', options)
 
-    const body = {  };
+    const body = {};
     // console.log('CLOUD FUNCT CLOSE SUPPORT GROUP REQUEST BODY ', body);
 
     const url = this.CHAT21_CLOUD_FUNC_CLOSE_GROUP_BASE_URL + group_id;

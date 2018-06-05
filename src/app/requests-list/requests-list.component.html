@@ -130,7 +130,7 @@
                     <span *ngIf="request?.support_status == 0"> 
                       <span class="" (click)='goToRequestMsgs(request?.recipient)'>
                         <button class="btn btn-default" style=""> 
-                            <i style="font-size: 17px !important; " class="material-icons">visibility</i>
+                          <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                         </button>
                       </span>
                     </span>
@@ -140,7 +140,7 @@
                       <span class="" (click)='goToRequestMsgs(request?.recipient)'>
                           <!-- padding:4px 6px; -->
                         <button class="btn btn-danger" style=""> 
-                            <i style="font-size: 17px !important; " class="material-icons">visibility</i>
+                          <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                         </button>
                       </span>
                     </span>
@@ -150,7 +150,7 @@
                     <span *ngIf="request?.support_status == 200 && request?.currentUserIsJoined === true"> 
                       <span class="" (click)='goToRequestMsgs(request?.recipient)'>
                         <button class="btn btn-success" style="" rel="tooltip" title=""> 
-                            <i style="font-size: 17px !important; " class="material-icons">visibility</i>
+                          <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                         </button>
                       </span>
                     </span>
@@ -166,7 +166,6 @@
                     </span>
                   </td>
                   <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
-                      <!-- max-width: 150px; -->
                     <p style="font-size:0.8em;" >
                       <!-- {{ request?.recipient }} -->
                       {{ replace_recipient(request?.recipient) }}
@@ -174,9 +173,7 @@
                   </td>
 
                   <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" rel="tooltip" title="department id:{{ request?.attributes?.departmentId }}">
-                    
                     <p style="font-size:0.8em;">
-
                       {{ request?.attributes?.departmentName }}
                     </p>
                   </td>
