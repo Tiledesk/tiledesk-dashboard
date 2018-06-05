@@ -55,8 +55,8 @@
 
     <span *ngIf="EDIT_VIEW">
 
-      <loading-spinner *ngIf="showSpinner"></loading-spinner>
-      <span *ngIf="!showSpinner">
+      <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
+      <!-- <span *ngIf="!showSpinner"> -->
         <div class="row">
           <div class="col-md-12">
 
@@ -124,7 +124,8 @@
                 <!-- <p class="category">Here is a subtitle for this table</p> -->
               </div>
 
-              <div class="card-content table-responsive">
+              <loading-spinner *ngIf="showSpinner"></loading-spinner>
+              <div *ngIf="!showSpinner" class="card-content table-responsive">
 
                 <table class="table table-hover">
                   <thead>
@@ -185,7 +186,6 @@
                   </thead>
     
                   <tbody>
-
                     <!-- IF THERE ISN'T GROUP'S MEMBERS -->
                     <tr *ngIf="group_members.length === 0">                   
                       <td colspan="5" style="text-align: center; padding-top: 16px;">
@@ -245,7 +245,7 @@
           <!-- ./ col-md-12 -->
         </div>
         <!-- ./ row -->
-      </span>
+      <!-- </span> -->
       <!-- EDIT VIEW showSpinner -->
     </span>
     <!-- /. EDIT_VIEW -->

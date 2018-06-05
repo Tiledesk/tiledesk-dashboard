@@ -104,10 +104,11 @@ export class GroupEditAddComponent implements OnInit {
         this.users_selected = this.group_members;
         console.log('GROUP MEMBERS ', this.group_members)
       }
-      this.showSpinner = false;
+      // this.showSpinner = false;
 
     },
       (error) => {
+        this.showSpinner = false;
         console.log('GROUP GET BY ID - ERROR ', error);
       },
       () => {
@@ -116,6 +117,45 @@ export class GroupEditAddComponent implements OnInit {
         console.log('HAS COMPLETED getGroupById ', this.has_completed_getGroupById)
 
 
+      });
+  }
+
+    // is used to display name lastname role in the members list table
+  // if the id of the user in the project_user object is equal match with one of id contains 
+  // in the array 'this.group_members' the user_project property 'is_group_member' is set to true
+  getAllUsersOfCurrentProject() {
+    this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
+      console.log('GROUPS-COMP - PROJECT-USERS (FILTERED FOR PROJECT ID)', projectUsers);
+
+      this.showSpinner = false;
+      this.showSpinnerInModal = false;
+      this.projectUsersList = projectUsers;
+
+      // CHECK IF THE USER-ID IS BETWEEN THE MEMBER OF THE GROUP
+      this.projectUsersList.forEach(projectUser => {
+
+        for (const p of this.projectUsersList) {
+          // console.log('vv', projectUser._id)
+          this.group_members.forEach(group_member => {
+            if (p.id_user._id === group_member) {
+              if (projectUser._id === p._id) {
+                p.is_group_member = true;
+                console.log('GROUP MEMBER ', group_member)
+                console.log('IS MEMBER OF THE GROUP THE USER ', p.id_user._id, ' - ', p.is_group_member)
+              }
+            }
+          });
+        }
+      });
+
+    },
+      error => {
+        this.showSpinner = false;
+        this.showSpinnerInModal = false;
+        console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
+      },
+      () => {
+        console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
       });
   }
 
@@ -243,42 +283,7 @@ export class GroupEditAddComponent implements OnInit {
     this.display_users_list_modal = 'block';
   }
 
-  // is used to display name lastname role in the members list table
-  // if the id of the user in the project_user object is equal match with one of id contains 
-  // in the array 'this.group_members' the user_project property 'is_group_member' is set to true
-  getAllUsersOfCurrentProject() {
-    this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
-      console.log('GROUPS-COMP - PROJECT-USERS (FILTERED FOR PROJECT ID)', projectUsers);
 
-      this.showSpinnerInModal = false;
-      this.projectUsersList = projectUsers;
-
-      // CHECK IF THE USER-ID IS BETWEEN THE MEMBER OF THE GROUP
-      this.projectUsersList.forEach(projectUser => {
-
-        for (const p of this.projectUsersList) {
-          // console.log('vv', projectUser._id)
-          this.group_members.forEach(group_member => {
-            if (p.id_user._id === group_member) {
-              if (projectUser._id === p._id) {
-                p.is_group_member = true;
-                console.log('GROUP MEMBER ', group_member)
-                console.log('IS MEMBER OF THE GROUP THE USER ', p.id_user._id, ' - ', p.is_group_member)
-              }
-            }
-          });
-        }
-      });
-
-    },
-      error => {
-        this.showSpinnerInModal = false;
-        console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
-      },
-      () => {
-        console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
-      });
-  }
 
   onCloseModal() {
     this.display_users_list_modal = 'none';
