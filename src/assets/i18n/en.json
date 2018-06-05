@@ -53,12 +53,12 @@
         "Continue": "Continue"
     },
     "HomePage": {
-        "Widget":"To start configure your Widget !",
+        "Widget": "To start configure your Widget !",
         "WidgetSubtitle": "Embed and customize the chat widget on your site",
         "VisitorsSubtitle": "See a list of all your web visitors and chat with them",
         "ChatSubtitle": "See the chat history",
         "AnalyticsSubtitle": "Track the chats you have with customers",
-        "HistorySubtitle":"See the closed chat"
+        "HistorySubtitle": "See the closed chat"
     },
     "RoutingPage": {
         "SettingUpTileDeskRoutingRules": "Setting up routing rules",
@@ -129,9 +129,26 @@
         "GroupName": "Group Name",
         "CreateGroup": "Create Group",
         "UpdateGroup": "Update Group name",
+        "Members": "Members",
+        "AddMembers": "Add members",
+        "User": "User",
+        "Role": "Role",
+        "UserId": "User Id",
+        "Actions": "Actions",
+        "NoMembers":"No members",
+        "AddMembersToTheGroup":"Add members to the group:",
+        "Cancel":"Cancel",
+        "Add":"Add",
         "GroupCreated1": "The group",
         "GroupCreated2": "was created",
-        "AnErrorHasOccurred": "An error has occurred"
+        "AddNow":"Add now members to the group",
+        "AddLater":"Return to the groups list (add later)",
+        "AnErrorHasOccurred": "An error has occurred",
+        "Continue":"Continue",
+        "RemoveMember":"Remove member",
+        "TheMemberWithId":"The member with Id:",
+        "WillBeRemoved":"will be removed",
+        "AreYouSureRemoveMember":"Are you sure you want to remove the selected member from the group"
     },
     "BotsPage": {
         "AddBot": "Add Bot",
@@ -220,13 +237,13 @@
         "BotOnly": "Bot only",
         "SetRoutingRules": "Set routing rules for agents commitment",
         "ErrorGroupId": "Error: group id",
-        "AllUsers":"All users",
+        "AllUsers": "All users",
         "Trashed": "trashed",
         "SelectABot": "Select a Bot",
         "orCreateABot": "Create a new Bot",
         "CreateDept": "Create Department",
         "UpdateDept": "Update Department",
-        "QuickTips" : "Quick tips"
+        "QuickTips": "Quick tips"
     },
     "VisitorsPage": {
         "UnservedRequests": "Unserved requests",
@@ -239,7 +256,7 @@
         "Archive": "Archive",
         "tootipArchiveRequest": "Archive request",
         "NoVisitor": "No Visitor!",
-        "ClickHereToSimulate":"Click here to simulate a visitor",
+        "ClickHereToSimulate": "Click here to simulate a visitor",
         "RequestId": "Request Id:",
         "RequesterId": "Requester Id:",
         "Close": "Close",
@@ -251,11 +268,11 @@
         "WillBeArchived": "will be archived",
         "AreYouSure": "Are you sure you want to archive the selected request?",
         "Cancel": "Cancel",
-        "Processing":"Processing...",
-        "Completed":"Completed",
-        "RequestArchived":"Request archived",
-        "AnErrorHasOccurred":"An error has occurred archiving the request",
-        "Continue":"Continue"
+        "Processing": "Processing...",
+        "Completed": "Completed",
+        "RequestArchived": "Request archived",
+        "AnErrorHasOccurred": "An error has occurred archiving the request",
+        "Continue": "Continue"
     },
     "RequestMsgsPage": {
         "MessagesOfTheRequest": "Messages of the request",
