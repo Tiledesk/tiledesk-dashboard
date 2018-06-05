@@ -39,7 +39,10 @@ export class GroupEditAddComponent implements OnInit {
   id_new_group: string;
 
   has_completed_getGroupById = false;
-  
+  displayAddingMembersModal = 'none';
+  ADD_MEMBER_TO_GROUP_ERROR = false;
+  COUNT_OF_MEMBERS_ADDED: number;
+
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -116,11 +119,6 @@ export class GroupEditAddComponent implements OnInit {
       });
   }
 
-  focusFunction() {
-    console.log('FOCUS FUNCTION WORKS ', )
-    const lengthOfTheString = this.groupNameToUpdate.length
-    console.log('LENGHT OF THE STRING ', lengthOfTheString)
-  }
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
@@ -133,7 +131,7 @@ export class GroupEditAddComponent implements OnInit {
     });
   }
 
-  // CREATE (mongoDB)
+  // CREATE
   create() {
     this.displayCreateGroupModal = 'block'
     this.SHOW_CIRCULAR_SPINNER = true;
@@ -200,7 +198,6 @@ export class GroupEditAddComponent implements OnInit {
   }
 
 
-
   onClosedisplayCreateGroupModal() {
     this.displayCreateGroupModal = 'none'
   }
@@ -246,6 +243,9 @@ export class GroupEditAddComponent implements OnInit {
     this.display_users_list_modal = 'block';
   }
 
+  // is used to display name lastname role in the members list table
+  // if the id of the user in the project_user object is equal match with one of id contains 
+  // in the array 'this.group_members' the user_project property 'is_group_member' is set to true
   getAllUsersOfCurrentProject() {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
       console.log('GROUPS-COMP - PROJECT-USERS (FILTERED FOR PROJECT ID)', projectUsers);
@@ -311,36 +311,42 @@ export class GroupEditAddComponent implements OnInit {
   }
 
   addMembersToTheGroup() {
+    this.showSpinner = true;
     this.display_users_list_modal = 'none';
 
-    // this.group_members.forEach(group_members => {
-    //   console.log(' ++ +++ group_members ', group_members)
-
-    //   this.users_selected.forEach(users_selected => {
-    //     if (users_selected !== group_members) {
-
-    //       console.log('XXX ', users_selected)
-    //     }
-    //   });
-    // });
+    this.SHOW_CIRCULAR_SPINNER = true;
+    this.displayAddingMembersModal = 'block';
 
     this.groupsService.updateGroup(this.id_group, this.users_selected).subscribe((group) => {
 
       console.log('UPDATED GROUP WITH THE USER SELECTED', group);
+
+      this.COUNT_OF_MEMBERS_ADDED = group.members.length;
+      console.log('# OF MEMBERS ADDED ', group.members.length);
     },
       (error) => {
         console.log('UPDATED GROUP WITH THE USER SELECTED - ERROR ', error);
+        this.SHOW_CIRCULAR_SPINNER = false;
+        this.ADD_MEMBER_TO_GROUP_ERROR = true;
       },
       () => {
-        console.log('UPDATED GROUP WITH THE USER SELECTED* COMPLETE *');
+        console.log('UPDATED GROUP WITH THE USER SELECTED * COMPLETE *');
+        this.SHOW_CIRCULAR_SPINNER = false;
+        this.ADD_MEMBER_TO_GROUP_ERROR = false;
 
         // =========== NOTIFY SUCCESS===========
         this.notify.showNotification('group successfully updated', 2, 'done');
+
+
         // UPDATE THE GROUP LIST
         this.ngOnInit()
+        // this.getAllUsersOfCurrentProject();
       });
   }
 
+  onCloseAddingMembersModal() {
+    this.displayAddingMembersModal = 'none';
+  }
 
   // =========== DELETE MODAL ===========
   openDeleteModal(id_user, user_email) {
@@ -364,10 +370,10 @@ export class GroupEditAddComponent implements OnInit {
       this.group_members.splice(index, 1);
       console.log('GROUP AFTER MEMBER DELETED ', this.group_members);
 
-
       this.groupsService.updateGroup(this.id_group, this.group_members).subscribe((group) => {
 
         console.log('UPDATED GROUP WITH THE USER SELECTED', group);
+
       },
         (error) => {
           console.log('UPDATED GROUP WITH THE USER SELECTED - ERROR ', error);
@@ -379,6 +385,7 @@ export class GroupEditAddComponent implements OnInit {
 
           // UPDATE THE GROUP LIST
           this.ngOnInit()
+          // this.getAllUsersOfCurrentProject();
         });
 
     }
