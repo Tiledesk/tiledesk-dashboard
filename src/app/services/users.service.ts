@@ -186,6 +186,19 @@ export class UsersService {
       .map((response) => response.json());
   }
 
+  /// ================ TEST FUNCTION -- ALL AVAILABLE PROJECT-USER (OF CURRENT PROJECT) ====================== ///
+  public getAvailableProjectUsersByProjectId(): Observable<ProjectUser[]> {
+    const url = this.MONGODB_BASE_URL + '/availables';
+
+    console.log('PROJECT USERS URL', url);
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
   /// ================================== INVITE USER (ALIAS CREATE A MEMBER) ================================== ///
   public inviteUser(email: string, role: string) {
     const headers = new Headers();
@@ -219,6 +232,8 @@ export class UsersService {
       .get(url, { headers })
       .map((response) => response.json());
   }
+
+
 
   /// ========================= GET PROJECT-USER BY ID (PROJECT USER DETAIL) ======================= ///
   public getProjectUsersById(projectuser_id: string): Observable<ProjectUser[]> {

@@ -17,7 +17,7 @@ import { RequestsService } from '../services/requests.service';
 })
 export class HomeComponent implements OnInit {
 
- 
+
 
   firebaseProjectId: any;
   LOCAL_STORAGE_CURRENT_USER: any;
@@ -68,7 +68,17 @@ export class HomeComponent implements OnInit {
 
     // ====== GET MY DEPTS ======
     // this.getMyDepts();
+
+    // TEST FUNCTION : GET ALL AVAILABLE PROJECT USER
+    this.getAvailableProjectUsersByProjectId();
   }
+
+  // TEST FUNCTION : GET ALL AVAILABLE PROJECT USER
+  getAvailableProjectUsersByProjectId() {
+    this.usersService.getAvailableProjectUsersByProjectId().subscribe((available_project) => {
+      console.log('»»»»»»» AVAILABLE PROJECT USERS ', available_project)
+  })
+}
 
   getMyDepts() {
 
