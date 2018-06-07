@@ -137,6 +137,7 @@
         "UpdateGroupName": "Update Group name",
         "Members": "Members",
         "AddMembers": "Add members",
+        "Select":"Select",
         "User": "User",
         "Role": "Role",
         "UserId": "User Id",

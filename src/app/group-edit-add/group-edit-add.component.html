@@ -117,7 +117,7 @@
 
                     {{ "GroupsAddEditPage.Members" | translate }} <span style="font-weight: 500">({{ group_members?.length }})</span>  
                     
-                  <button type="button" rel="tooltip" title="{{ 'GroupsAddEditPage.AddMembers' | translate }}" class="btn btn-success btn-simple btn-xs addMember" style="padding-left: 4px;padding-right: 4px;" (click)='open_users_list_modal()'>
+                  <button type="button" rel="tooltip" title="{{ 'GroupsAddEditPage.AddMembers' | translate }}" class="btn btn-success btn-simple btn-xs addMember" style="padding: 2px" (click)='open_users_list_modal()'>
                     <i class="material-icons">add</i>
                   </button>
                 </h4>
@@ -273,7 +273,13 @@
         <table *ngIf="!showSpinnerInModal" class="table table-fixed table-striped">
           <thead style="color: #f9f9f9">
             <tr class="tr_table-fixed">
-              <th class="th_table-fixed"></th>
+              <th class="th_table-fixed" style="text-align: center;">
+                <span style="color: #566787">
+                  <strong>
+                    {{ "GroupsAddEditPage.Select" | translate }}
+                  </strong>
+                </span>
+              </th>
               
               <th class="th_table-fixed">
                 <span style="color: #566787">

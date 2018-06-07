@@ -46,6 +46,14 @@
                       </strong>
                     </span>  
                   </th>
+                  
+                  <th>
+                    <span style="color: #566787">
+                      <strong> 
+                       # {{ "GroupsPage.Members" | translate }}
+                      </strong>
+                    </span>  
+                  </th>
 
                   <th>
                     <span style="color: #566787">
@@ -54,14 +62,6 @@
                         {{ "GroupsPage.Actions" | translate }}
                       </strong>
                     </span>
-                  </th>
-                  
-                  <th>
-                    <span style="color: #566787">
-                      <strong> 
-                       # {{ "GroupsPage.Members" | translate }}
-                      </strong>
-                    </span>  
                   </th>
 
                 </tr>
@@ -92,6 +92,18 @@
                   <td>
                     {{ group?.createdAt | date: 'd/M/y'}}
                   </td>
+
+                  <td>
+                    {{ group?.members.length }}  
+
+                    <span *ngIf="group?.members.length === 0" style="padding-left: 8px">
+                        <i class="material-icons" style="vertical-align: middle; color:#ec971f; font-size: 12px">report_problem</i>
+                        <span style="vertical-align: middle; color:#ec971f; font-size: 12px"> 
+                          <!-- pending add members -->
+                          {{ 'GroupsPage.PendingAddMembers' | translate }}
+                        </span>
+                    </span>
+                  </td>
                     
                   <!-- EDIT / DELETE GROUPS  -->
                   <td class="td-actions text-right" style="padding-top:16px">
@@ -107,17 +119,7 @@
                     </button>
                   </td>
 
-                  <td>
-                    {{ group?.members.length }}  
-
-                    <span *ngIf="group?.members.length === 0" style="padding-left: 8px">
-                        <i class="material-icons" style="vertical-align: middle; color:#ec971f; font-size: 12px">report_problem</i>
-                        <span style="vertical-align: middle; color:#ec971f; font-size: 12px"> 
-                          <!-- pending add members -->
-                          {{ 'GroupsPage.PendingAddMembers' | translate }}
-                        </span>
-                    </span>
-                  </td>
+ 
 
      
                 </tr>
