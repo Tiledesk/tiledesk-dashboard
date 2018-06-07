@@ -62,6 +62,7 @@
     },
     "RoutingPage": {
         "SettingUpTileDeskRoutingRules": "Setting up routing rules",
+        "TheFollowingRules":"The following rules will be ignored if at least one department exists",
         "SelectABotThatWill": "Select a bot that will respond to visitor's requests before agent's commitment",
         "ActivateBOT": "Activate Bot",
         "SelectABot": "Select a Bot",

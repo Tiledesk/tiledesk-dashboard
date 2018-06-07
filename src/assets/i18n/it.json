@@ -62,6 +62,7 @@
     },
     "RoutingPage": {
         "SettingUpTileDeskRoutingRules": "Imposta le regole di routing",
+        "TheFollowingRules":"Le seguenti regole saranno ignorate se esiste almeno un dipartimento",
         "SelectABotThatWill": "Seleziona un bot che risponderà alle richieste del visitatore prima dell'ingaggio di un agente",
         "ActivateBOT": "Attiva BOT",
         "SelectABot": "Select a Bot",
