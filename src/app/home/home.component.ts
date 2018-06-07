@@ -70,11 +70,12 @@ export class HomeComponent implements OnInit {
     // this.getMyDepts();
 
     // TEST FUNCTION : GET ALL AVAILABLE PROJECT USER
-    // this.getAvailableProjectUsersByProjectId();
+    this.getAvailableProjectUsersByProjectId();
   }
 
   // TEST FUNCTION : GET ALL AVAILABLE PROJECT USER
   getAvailableProjectUsersByProjectId() {
+    console.log('... CALLING GET AVAILABLE PROJECT USERS' )
     this.usersService.getAvailableProjectUsersByProjectId().subscribe((available_project) => {
       console.log('»»»»»»» AVAILABLE PROJECT USERS ', available_project)
   })

@@ -188,9 +188,9 @@ export class UsersService {
 
   /// ================ TEST FUNCTION -- ALL AVAILABLE PROJECT-USER (OF CURRENT PROJECT) ====================== ///
   public getAvailableProjectUsersByProjectId(): Observable<ProjectUser[]> {
-    const url = this.MONGODB_BASE_URL + '/availables';
+    const url = this.MONGODB_BASE_URL + 'availables';
 
-    console.log('PROJECT USERS URL', url);
+    console.log('»»»» »»»» PROJECT USERS URL', url);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', this.TOKEN);
