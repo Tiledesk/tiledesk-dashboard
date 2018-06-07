@@ -70,7 +70,7 @@ export class HomeComponent implements OnInit {
     // this.getMyDepts();
 
     // TEST FUNCTION : GET ALL AVAILABLE PROJECT USER
-    this.getAvailableProjectUsersByProjectId();
+    // this.getAvailableProjectUsersByProjectId();
   }
 
   // TEST FUNCTION : GET ALL AVAILABLE PROJECT USER

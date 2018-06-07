@@ -115,9 +115,9 @@
               <div class="card-header" data-background-color="" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
                 <h4 class="title" style="margin-bottom:2px; font-size:1.1em; color: #566787">
 
-                    {{ "GroupsAddEditPage.Members" | translate }} <span style="font-weight: 500">({{ group_members.length }})</span>  
+                    {{ "GroupsAddEditPage.Members" | translate }} <span style="font-weight: 500">({{ group_members?.length }})</span>  
                     
-                  <button type="button" rel="tooltip" title="{{ 'GroupsAddEditPage.AddMembers' | translate }}" class="btn btn-success btn-simple btn-xs addMember" (click)='open_users_list_modal()'>
+                  <button type="button" rel="tooltip" title="{{ 'GroupsAddEditPage.AddMembers' | translate }}" class="btn btn-success btn-simple btn-xs addMember" style="padding-left: 4px;padding-right: 4px;" (click)='open_users_list_modal()'>
                     <i class="material-icons">add</i>
                   </button>
                 </h4>
@@ -187,7 +187,7 @@
     
                   <tbody>
                     <!-- IF THERE ISN'T GROUP'S MEMBERS -->
-                    <tr *ngIf="group_members.length === 0">                   
+                    <tr *ngIf="group_members?.length === 0">                   
                       <td colspan="5" style="text-align: center; padding-top: 16px;">
 
                         <p style="font-size:1em; color:#999999; font-weight: 400">
