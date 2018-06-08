@@ -103,7 +103,6 @@ export class AuthService {
   }
 
 
-
   getProjectFromLocalStorage() {
     // WHEN THE PAGE IS RELOADED THE project_id RETURNED FROM THE SUBSCRIPTION IS NULL SO IT IS GET FROM LOCAL STORAGE
     const storedProject = localStorage.getItem('project')

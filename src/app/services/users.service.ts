@@ -48,6 +48,10 @@ export class UsersService {
   project: any;
   PROJECT_BASE_URL = environment.mongoDbConfig.PROJECTS_BASE_URL;
   AVAILABLE_USERS_URL: any;
+
+  UPDATE_USER_URL = environment.mongoDbConfig.UPDATE_USER_LASTNAME_FIRSTNAME;
+  currentUserId: string;
+
   constructor(
     http: Http,
     private afs: AngularFirestore,
@@ -72,8 +76,6 @@ export class UsersService {
 
   }
 
-
-
   getCurrentProject() {
     console.log('============ USER SERVICE - SUBSCRIBE TO CURRENT PROJ ============')
     // tslint:disable-next-line:no-debugger
@@ -90,7 +92,8 @@ export class UsersService {
         // MAYBE NOT USED anymore
         this.PROJECT_USER_DTLS_URL = this.BASE_URL + this.project._id + '/member/'
 
-        this.AVAILABLE_USERS_URL =  this.PROJECT_BASE_URL + this.project._id + '/users/availables'
+        this.AVAILABLE_USERS_URL = this.PROJECT_BASE_URL + this.project._id + '/users/availables'
+
         // PROJECT-USER BY PROJECT ID AND CURRENT USER ID
         // this.PROJECT_USER_URL = this.BASE_URL + this.project._id + '/project_users/'
       }
@@ -100,6 +103,7 @@ export class UsersService {
   checkUser() {
     if (this.user) {
       this.TOKEN = this.user.token
+      this.currentUserId = this.user._id
       // this.getToken();
     } else {
       console.log('No user is signed in');
@@ -235,8 +239,6 @@ export class UsersService {
       .map((response) => response.json());
   }
 
-
-
   /// ========================= GET PROJECT-USER BY ID (PROJECT USER DETAIL) ======================= ///
   public getProjectUsersById(projectuser_id: string): Observable<ProjectUser[]> {
     const url = this.MONGODB_BASE_URL + 'details/' + projectuser_id;
@@ -309,8 +311,7 @@ export class UsersService {
   }
 
   /**
-   * UPDATE PROJECT-USER ROLE (PUT)
-   */
+   * UPDATE PROJECT-USER ROLE (PUT) */
   public updateProjectUserRole(projectUser_id: string, user_role: string) {
 
     let url = this.MONGODB_BASE_URL;
@@ -333,8 +334,7 @@ export class UsersService {
   }
 
   /**
-   * DELETE PROJECT-USER (PUT)
-   */
+   * DELETE PROJECT-USER (PUT)  */
   public deleteProjectUser(projectUser_id: string) {
     let url = this.MONGODB_BASE_URL;
     url += projectUser_id + '# chat21-api-nodejs';
@@ -351,5 +351,26 @@ export class UsersService {
 
   }
 
+  // ================== UPDATE CURRENT USER LASTNAME / FIRSTNAME ==================
+  public updateCurrentUserLastnameFirstname(user_firstname: string, user_lastname: string) {
+
+    const url = this.UPDATE_USER_URL + this.currentUserId;
+
+    console.log('UPDATE CURRENT USER (PUT) URL ', url);
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = { 'firstname': user_firstname, 'lastname': user_lastname };
+
+    console.log('UPDATE CURRENT USER BODY ', body);
+
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
 
 }

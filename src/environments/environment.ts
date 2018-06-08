@@ -17,6 +17,7 @@ export const environment = {
         SIGNIN_BASE_URL: 'http://localhost:3000/auth/signin',
         FIREBASE_SIGNIN_BASE_URL: 'http://localhost:3000/firebase/auth/signin',
         VERIFY_EMAIL_BASE_URL: 'http://localhost:3000/auth/verifyemail/',
+        UPDATE_USER_LASTNAME_FIRSTNAME: 'http://localhost:3000/users/updateuser/',
 
         // DEPARTMENTS_BASE_URL: 'http://localhost:3000/app1/departments/', // URL BUILT directly IN DEPARTMENTS SERVICE
         // FAQKB_BASE_URL: 'http://localhost:3000/app1/faq_kb/', // URL BUILT directly IN FAQ-KB SERVICE

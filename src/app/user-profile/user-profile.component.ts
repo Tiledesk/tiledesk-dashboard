@@ -4,6 +4,8 @@ import { AuthService } from '../core/auth.service';
 // USED FOR go back last page
 import { Location } from '@angular/common';
 import { Project } from '../models/project-model';
+import { UsersService } from '../services/users.service';
+
 
 @Component({
   selector: 'app-user-profile',
@@ -13,25 +15,25 @@ import { Project } from '../models/project-model';
 export class UserProfileComponent implements OnInit {
   user: any;
   project: Project;
+  userFirstname: string;
+  userLastname: string;
 
   constructor(
     public auth: AuthService,
-    private _location: Location
+    private _location: Location,
+    private usersService: UsersService
   ) { }
 
   ngOnInit() {
     this.getLoggedUser();
 
-    
-
     this.getCurrentProject();
-  }
 
+  }
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
-
 
       if (this.project) {
         console.log('00 -> USER PROFILE project from AUTH service subscription  ', project)
@@ -54,12 +56,47 @@ export class UserProfileComponent implements OnInit {
       console.log('USER GET IN USER PROFILE ', user)
       // tslint:disable-next-line:no-debugger
       // debugger
-      this.user = user;
+      if (user) {
+        this.user = user;
+
+        this.userFirstname = user.firstname;
+        this.userLastname = user.lastname;
+      }
+
     });
   }
 
   goBack() {
     this._location.back();
+  }
+
+  updateCurrentUserFirstnameLastname() {
+
+    console.log('»» »» »» WHEN CLICK UPDATE - USER FIRST NAME ', this.userFirstname);
+    console.log('»» »» »» WHEN CLICK UPDATE - USER LAST NAME ', this.userLastname);
+    this.usersService.updateCurrentUserLastnameFirstname(this.userFirstname, this.userLastname).subscribe((user: any) => {
+      console.log('»» »» »» UPDATED CURRENT USER ', user);
+    },
+      (error) => {
+        console.log('»» »» »» UPDATE CURRENT USER - ERROR ', error);
+        // this.showSpinner = false;
+      },
+      () => {
+        console.log('»» »» »» UPDATE CURRENT USER  * COMPLETE');
+
+        const storedUser = localStorage.getItem('user');
+
+        const parsedStoredUser = JSON.parse(storedUser);
+        console.log('»» »» »» STORED USER ', parsedStoredUser);
+
+        const updateduserObject = parsedStoredUser['firstname'] = 'Nicola';
+        // updateduserObject = parsedStoredUser['lastname'] = 'La Trottola';
+
+        // localStorage.setItem('user', JSON.stringify(updateduserObject));
+
+
+      });
+
   }
 
 }

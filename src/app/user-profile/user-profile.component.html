@@ -37,7 +37,7 @@
                             {{ "UserProfile.Name" | translate }}
                         </label>
                         <div class="col-sm-10">
-                          <input [(ngModel)]="user.firstname" class="" type="text" placeholder='{{ "UserProfile.Name" | translate }}'>
+                          <input [(ngModel)]="userFirstname" class="" type="text" placeholder='{{ "UserProfile.Name" | translate }}'>
                         </div>
 
                         <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
@@ -45,7 +45,7 @@
                             {{ "UserProfile.Lastname" | translate }}
                         </label>
                         <div class="col-sm-10">
-                          <input [(ngModel)]="user.lastname" class="" type="text" placeholder='{{ "UserProfile.Lastname" | translate }}'>
+                          <input [(ngModel)]="userLastname" class="" type="text" placeholder='{{ "UserProfile.Lastname" | translate }}'>
                         </div>
 
                         <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2">
@@ -77,8 +77,8 @@
 
                         <label style="" class="col-sm-2"></label>
                         <div class="col-sm-10">
-                            <!-- [disabled]="bot_fullname?.length < 2 || FAQKB_NOT_SELECTED === true" -->
-                            <button class="btn btn-success" [disabled]="true" style="margin-bottom: 25px;">
+                                <!-- [disabled]="true" -->
+                            <button class="btn btn-success" (click)="updateCurrentUserFirstnameLastname()" style="margin-bottom: 25px;">
                                 <!-- Aggiorna -->
                                 {{ "UserProfile.Update" | translate }}
                             </button>
