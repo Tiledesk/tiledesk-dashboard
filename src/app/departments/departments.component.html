@@ -45,6 +45,14 @@
                   <th>
                     <span style="color: #566787"> 
                       <strong>
+                        Bot
+                      </strong>
+                    </span>
+                  </th>
+
+                  <th>
+                    <span style="color: #566787"> 
+                      <strong>
                         Routing
                       </strong>
                     </span>
@@ -99,20 +107,30 @@
                     {{ dept?._id }}
                   </td>
 
-                  <td *ngIf="dept?.default !== true" style="text-transform: capitalize;">
-                    <span *ngIf="dept?.routing !== 'fixed'"> {{ dept?.routing }}</span>
-                    <span *ngIf="dept?.routing === 'fixed'"> Bot </span>
+                  <!-- // BOT -->
+                  <td *ngIf="dept?.default !== true" style="">
+                    <span *ngIf="dept?.id_bot"> <span style="color: #aaaaaa">activatet bot: </span> {{ dept?.id_bot }} </span>
+                    <span *ngIf="!dept?.id_bot" style="color: #aaaaaa"> no bot activated</span>
                   </td>
 
+                  <td *ngIf="dept?.default !== true" style="text-transform: capitalize;">
+                      <!-- *ngIf="dept?.routing !== 'fixed'" -->
+                    <span > {{ dept?.routing }}</span>
+                    <!-- <span *ngIf="dept?.routing === 'fixed'"> Bot </span> -->
+                  </td>
+
+                  <!-- // OPERATORS -->
                   <td *ngIf="dept?.default !== true" style="">
   
                     <!-- USE CASE 1: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NOT NULL AND NOT UNDEFINED + THE GROUP NOT HAS TRASHED VALUE -->
-                    <span *ngIf="dept?.routing !== 'fixed' && dept?.hasGroupName && !dept?.groupHasBeenTrashed"> 
+                    <!-- dept?.routing !== 'fixed' &&  -->
+                    <span *ngIf="dept?.hasGroupName && !dept?.groupHasBeenTrashed"> 
                       <span style="color: #aaaaaa"> {{ 'DepartmentsPage.Group' | translate }}</span> {{ dept?.hasGroupName }}  
                     </span>
 
                     <!-- USE CASE 2: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NOT NULL AND NOT UNDEFINED + THE GROUP HAS TRASHED VALUE = TRUE -->
-                    <span *ngIf="dept?.routing !== 'fixed' && dept?.hasGroupName && dept?.groupHasBeenTrashed === true"> 
+                    <!-- dept?.routing !== 'fixed' &&  -->
+                    <span *ngIf="dept?.hasGroupName && dept?.groupHasBeenTrashed === true"> 
                       <span style="color: #aaaaaa; vertical-align: middle; "> {{ 'DepartmentsPage.Group' | translate }} </span> 
                       <span style="vertical-align: middle;">{{ dept?.hasGroupName }} </span>
                       <i class="material-icons" style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i> 
@@ -120,11 +138,12 @@
                     </span>
 
                     <!-- USE CASE 3: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NULL OR NOT UNDEFINED -->
-                    <span *ngIf="dept?.routing !== 'fixed' && !dept?.hasGroupName"> 
+                    <!-- dept?.routing !== 'fixed' &&  -->
+                    <span *ngIf="!dept?.hasGroupName"> 
                         {{ 'DepartmentsPage.AllUsers' | translate }}
                     </span>
 
-                    <span *ngIf="dept?.routing === 'fixed'"> {{ dept?.id_bot }} </span>
+                    
                   </td>
 
                   <td *ngIf="dept?.default !== true">
