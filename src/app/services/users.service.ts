@@ -46,7 +46,8 @@ export class UsersService {
   searchUserCollection: AngularFirestoreCollection<User>;
 
   project: any;
-
+  PROJECT_BASE_URL = environment.mongoDbConfig.PROJECTS_BASE_URL;
+  AVAILABLE_USERS_URL: any;
   constructor(
     http: Http,
     private afs: AngularFirestore,
@@ -89,6 +90,7 @@ export class UsersService {
         // MAYBE NOT USED anymore
         this.PROJECT_USER_DTLS_URL = this.BASE_URL + this.project._id + '/member/'
 
+        this.AVAILABLE_USERS_URL =  this.PROJECT_BASE_URL + this.project._id + '/availables'
         // PROJECT-USER BY PROJECT ID AND CURRENT USER ID
         // this.PROJECT_USER_URL = this.BASE_URL + this.project._id + '/project_users/'
       }
@@ -188,9 +190,9 @@ export class UsersService {
 
   /// ================ TEST FUNCTION -- ALL AVAILABLE PROJECT-USER (OF CURRENT PROJECT) ====================== ///
   public getAvailableProjectUsersByProjectId(): Observable<ProjectUser[]> {
-    const url = this.MONGODB_BASE_URL + 'availables';
-
-    console.log('»»»» »»»» PROJECT USERS URL', url);
+    // const url = this.MONGODB_BASE_URL + 'availables';
+    const url = this.AVAILABLE_USERS_URL;
+    console.log('»»»» »»»» PROJECT USERS AVAILABLE URL', url);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', this.TOKEN);
@@ -283,7 +285,7 @@ export class UsersService {
 
 
   /**
-   * UPDATE PROJECT-USER AVAILABILITY (PUT) 
+   * UPDATE PROJECT-USER AVAILABILITY (PUT)
    */
   public updateProjectUser(projectUser_id: string, user_is_available: boolean) {
 
