@@ -109,7 +109,21 @@
 
                   <!-- // BOT -->
                   <td *ngIf="dept?.default !== true" style="">
-                    <span *ngIf="dept?.id_bot"> <span style="color: #aaaaaa">{{ 'DepartmentsPage.ActivatedBot' | translate }} </span> {{ dept?.id_bot }} </span>
+                      <!-- {{ dept?.id_bot }}  -->
+                    <span *ngIf="dept?.id_bot"> 
+                      <span style="color: #aaaaaa">{{ 'DepartmentsPage.ActivatedBot' | translate }} </span> 
+
+                      <!-- use case: NO ERROR to get the bot -->
+                      {{ dept?.hasDeptName }}<span *ngIf="dept.bot_only == true" style="font-size: 12px; color: #31708f; font-weight: 500"> {{ 'DepartmentsPage.OnlyBot' | translate }} </span> 
+
+                      <!-- use case: ERROR to get the bot: for example the bot has been deleted (while the bot id is yet in the dept object) 
+                      so getBotById return an error  -->
+                      <!-- <i class="material-icons" style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i> 
+                      <span style="color: #ff5252; font-size:12px; vertical-align: middle;">      
+                        bot non trovato 
+                      </span>  -->
+                    </span>
+
                     <span *ngIf="!dept?.id_bot" style="color: #aaaaaa">{{ 'DepartmentsPage.NoBotActivated' | translate }} </span>
                   </td>
 

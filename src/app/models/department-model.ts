@@ -10,6 +10,7 @@ export interface Department {
     id_group: string;
     hasGroupName: string;
     groupHasBeenTrashed: boolean;
+    hasDeptName: string;
     routing: string;
     __v: any;
 }

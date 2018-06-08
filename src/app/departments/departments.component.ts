@@ -6,15 +6,13 @@ import { Router } from '@angular/router';
 import { Project } from '../models/project-model';
 import { AuthService } from '../core/auth.service';
 import { GroupService } from '../services/group.service';
-
+import { FaqKbService } from '../services/faq-kb.service';
 
 @Component({
   selector: 'mongodb-departments',
   templateUrl: './departments.component.html',
   styleUrls: ['./departments.component.scss'],
 })
-
-
 
 export class DepartmentsComponent implements OnInit {
 
@@ -43,12 +41,14 @@ export class DepartmentsComponent implements OnInit {
   groupName: string;
   id_group: string;
   groupIsTrashed: string;
+  botName: string;
 
   constructor(
     private mongodbDepartmentService: MongodbDepartmentService,
     private router: Router,
     private auth: AuthService,
-    private groupsService: GroupService
+    private groupsService: GroupService,
+    private faqKbService: FaqKbService
   ) { }
 
   ngOnInit() {
@@ -80,11 +80,10 @@ export class DepartmentsComponent implements OnInit {
 
   /**
    * GETS ONLY THE DEPTs WITH THE CURRENT PROJECT ID
-   * NOTE: THE CURREN PROJECT ID IS OBTAINED IN THE FAQ-KB SERVICE
-   */
+   * note: the project id is passed get and passed by mongodbDepartmentService */
   getDeptsByProjectId() {
     this.mongodbDepartmentService.getDeptsByProjectId().subscribe((departments: any) => {
-      console.log('DEPARTMENTS (FILTERED FOR PROJECT ID)', departments);
+      console.log('»»» »»» DEPTS PAGE - DEPTS (FILTERED FOR PROJECT ID)', departments);
 
       this.showSpinner = false;
 
@@ -99,12 +98,12 @@ export class DepartmentsComponent implements OnInit {
               this.getGroupById(dept.id_group)
             }
 
+            if (dept.id_bot !== null && dept.id_bot !== undefined) {
+              this.getBotById(dept.id_bot);
+            }
           }
-
         });
       }
-
-
     },
       error => {
         this.showSpinner = false;
@@ -113,13 +112,44 @@ export class DepartmentsComponent implements OnInit {
       () => {
         console.log('DEPARTMENTS (FILTERED FOR PROJECT ID) - COMPLETE')
       });
-
   }
 
+  /**
+   * GET BOT BY ID  */
+  getBotById(id_bot) {
+
+    this.faqKbService.getMongDbFaqKbById(id_bot).subscribe((bot: any) => {
+      if (bot) {
+        console.log(' -- > BOT GET BY ID', bot);
+        this.botName = bot.name;
+
+        for (const dept of this.departments) {
+          if (dept.id_bot === bot._id) {
+            dept.hasDeptName = this.botName
+          }
+        }
+      }
+    },
+      error => {
+        console.log('-- > BOT GET BY ID - ERROR', error);
+
+        const errorBody = JSON.parse(error._body)
+        console.log('BOT GET BY ID - ERROR BODY', errorBody);
+        if (errorBody.msg === 'Object not found.') {
+          console.log('BOT GET BY ID - ERROR BODY MSG', errorBody.msg);
+          console.log('BOT GET BY ID - ERROR url', error.url);
+          const IdOfBotNotFound = error.url.split('/').pop();
+          console.log('BOT GET BY ID - ERROR - ID OF BOT NOT FOUND ', IdOfBotNotFound);
+
+        }
+      },
+      () => {
+        console.log('-- > BOT GET BY ID - COMPLETE')
+      });
+  }
 
   /**
-   * GET GROUP BY ID
-   */
+   * GET GROUP BY ID  */
   getGroupById(id_group) {
     this.groupsService.getGroupById(id_group).subscribe((group: any) => {
 
@@ -141,15 +171,17 @@ export class DepartmentsComponent implements OnInit {
 
                 dept.groupHasBeenTrashed = true
               }
-
             }
           }
         }
-
       }
-
-    });
-
+    },
+      error => {
+        console.log('-- > GROUP GET BY ID - ERROR', error);
+      },
+      () => {
+        console.log('-- > GROUP GET BY ID - COMPLETE')
+      });
   }
 
   /**
@@ -203,17 +235,14 @@ export class DepartmentsComponent implements OnInit {
 
     this.DISPLAY_DATA_FOR_UPDATE_MODAL = false;
 
-
     this.displayDeleteModal = 'block';
-
 
     this.id_toDelete = id;
     this.deptName_toDelete = deptName;
   }
 
   /**
-   * DELETE DEPARTMENT (WHEN THE 'CONFIRM' BUTTON IN MODAL IS CLICKED)
-   */
+   * DELETE DEPARTMENT (WHEN THE 'CONFIRM' BUTTON IN MODAL IS CLICKED) */
   onCloseDeleteModalHandled() {
     this.displayDeleteModal = 'none';
 
@@ -226,18 +255,15 @@ export class DepartmentsComponent implements OnInit {
 
     },
       (error) => {
-
         console.log('DELETE REQUEST ERROR ', error);
-
       },
       () => {
         console.log('DELETE REQUEST * COMPLETE *');
       });
-
   }
 
   /** !!! NO MORE USED
-   * MODAL UPDATE DEPARTMENT 
+   * MODAL UPDATE DEPARTMENT
    * @param id
    * @param deptName
    * @param hasClickedUpdateModal
