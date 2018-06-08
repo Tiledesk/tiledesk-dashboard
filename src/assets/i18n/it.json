@@ -225,6 +225,8 @@
         "CreationDate": "Data creazione",
         "Actions": "Azioni",
         "NoDept": "Nessun Dipartimento",
+        "ActivatedBot": "bot attivato:",
+        "NoBotActivated": "nessun bot attivato",
         "Group": "gruppo:",
         "TheGroupHasBeenTrashed": "il gruppo è stato eliminato",
         "AllUsers": "Tutti gli utenti",

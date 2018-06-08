@@ -88,8 +88,8 @@
               <tbody>
    
                 <!-- IF THERE ISN'T DEPARTMENTS -->
-                <tr *ngIf="departments.length === 1"> 
-                  <td colspan="5" style="text-align: center; padding-top: 16px;">
+                <tr *ngIf="departments?.length === 1"> 
+                  <td colspan="7" style="text-align: center; padding-top: 16px;">
                     <!-- color: #ff5252   -->
                     <p style="font-size:1em; color:#999999; font-weight: 400">
                       <!-- Nessun Visitatore! Clicca qui per simulare un visitatore. -->
@@ -109,8 +109,8 @@
 
                   <!-- // BOT -->
                   <td *ngIf="dept?.default !== true" style="">
-                    <span *ngIf="dept?.id_bot"> <span style="color: #aaaaaa">activatet bot: </span> {{ dept?.id_bot }} </span>
-                    <span *ngIf="!dept?.id_bot" style="color: #aaaaaa"> no bot activated</span>
+                    <span *ngIf="dept?.id_bot"> <span style="color: #aaaaaa">{{ 'DepartmentsPage.ActivatedBot' | translate }} </span> {{ dept?.id_bot }} </span>
+                    <span *ngIf="!dept?.id_bot" style="color: #aaaaaa">{{ 'DepartmentsPage.NoBotActivated' | translate }} </span>
                   </td>
 
                   <td *ngIf="dept?.default !== true" style="text-transform: capitalize;">

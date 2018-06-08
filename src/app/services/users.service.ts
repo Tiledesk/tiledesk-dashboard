@@ -90,7 +90,7 @@ export class UsersService {
         // MAYBE NOT USED anymore
         this.PROJECT_USER_DTLS_URL = this.BASE_URL + this.project._id + '/member/'
 
-        this.AVAILABLE_USERS_URL =  this.PROJECT_BASE_URL + this.project._id + '/availables'
+        this.AVAILABLE_USERS_URL =  this.PROJECT_BASE_URL + this.project._id + '/users/availables'
         // PROJECT-USER BY PROJECT ID AND CURRENT USER ID
         // this.PROJECT_USER_URL = this.BASE_URL + this.project._id + '/project_users/'
       }
