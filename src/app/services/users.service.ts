@@ -352,7 +352,7 @@ export class UsersService {
   }
 
   // ================== UPDATE CURRENT USER LASTNAME / FIRSTNAME ==================
-  public updateCurrentUserLastnameFirstname(user_firstname: string, user_lastname: string) {
+  public updateCurrentUserLastnameFirstname(user_firstname: string, user_lastname: string, callback) {
 
     const url = this.UPDATE_USER_URL + this.currentUserId;
 
@@ -370,7 +370,19 @@ export class UsersService {
 
     return this.http
       .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+      .toPromise().then(res => {
+
+        console.log('UPDATE USER RES: ', res.json())
+
+        const jsonRes = res.json()
+        const user: User = jsonRes;
+
+        user.token = this.TOKEN;
+        console.log('TEST USER ', user)
+
+        // SET USER IN LOCAL STORAGE
+        localStorage.setItem('user', JSON.stringify(user));
+      })
   }
 
 }

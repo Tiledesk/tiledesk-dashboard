@@ -74,28 +74,27 @@ export class UserProfileComponent implements OnInit {
 
     console.log('»» »» »» WHEN CLICK UPDATE - USER FIRST NAME ', this.userFirstname);
     console.log('»» »» »» WHEN CLICK UPDATE - USER LAST NAME ', this.userLastname);
-    this.usersService.updateCurrentUserLastnameFirstname(this.userFirstname, this.userLastname).subscribe((user: any) => {
-      console.log('»» »» »» UPDATED CURRENT USER ', user);
-    },
-      (error) => {
-        console.log('»» »» »» UPDATE CURRENT USER - ERROR ', error);
-        // this.showSpinner = false;
-      },
-      () => {
-        console.log('»» »» »» UPDATE CURRENT USER  * COMPLETE');
-
-        const storedUser = localStorage.getItem('user');
-
-        const parsedStoredUser = JSON.parse(storedUser);
-        console.log('»» »» »» STORED USER ', parsedStoredUser);
-
-        const updateduserObject = parsedStoredUser['firstname'] = 'Nicola';
-        // updateduserObject = parsedStoredUser['lastname'] = 'La Trottola';
-
-        // localStorage.setItem('user', JSON.stringify(updateduserObject));
+    this.usersService.updateCurrentUserLastnameFirstname(this.userFirstname, this.userLastname, function (error) {
 
 
-      });
+    })
+    // , function (error) {
+
+
+
+
+    // const storedUser = localStorage.getItem('user');
+
+    // const parsedStoredUser = JSON.parse(storedUser);
+    // console.log('»» »» »» STORED USER ', parsedStoredUser);
+
+    // const updateduserObject = parsedStoredUser['firstname'] = 'Nicola';
+    // updateduserObject = parsedStoredUser['lastname'] = 'La Trottola';
+
+    // localStorage.setItem('user', JSON.stringify(updateduserObject));
+
+
+    // });
 
   }
 
