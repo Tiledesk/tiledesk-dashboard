@@ -7,6 +7,7 @@ import { Project } from '../models/project-model';
 import { UsersService } from '../services/users.service';
 
 import { NotifyService } from '../core/notify.service';
+import * as firebase from 'firebase/app';
 
 @Component({
   selector: 'app-user-profile',
@@ -18,6 +19,9 @@ export class UserProfileComponent implements OnInit {
   project: Project;
   userFirstname: string;
   userLastname: string;
+  displayModalUpdatingUser = 'none';
+  SHOW_CIRCULAR_SPINNER = false;
+  UPDATE_USER_ERROR = false;
 
   constructor(
     public auth: AuthService,
@@ -74,25 +78,36 @@ export class UserProfileComponent implements OnInit {
 
   updateCurrentUserFirstnameLastname() {
 
+    this.displayModalUpdatingUser = 'block';
+    this.SHOW_CIRCULAR_SPINNER = true;
+
     console.log('»» »» »» WHEN CLICK UPDATE - USER FIRST NAME ', this.userFirstname);
     console.log('»» »» »» WHEN CLICK UPDATE - USER LAST NAME ', this.userLastname);
-    this.usersService.updateCurrentUserLastnameFirstname(this.userFirstname, this.userLastname, function (error) {
+    this.usersService.updateCurrentUserLastnameFirstname(this.userFirstname, this.userLastname, (response) => {
 
-      if (!error) {
+      console.log('»»»» CALLBACK RESPONSE ', response)
+      if (response === 'user successfully updated on firebase') {
 
-        // HERE ERROR IS NULL
-        console.log('USER PROFILE COMP - ERROR ', error)
-
+        this.SHOW_CIRCULAR_SPINNER = false;
+        this.UPDATE_USER_ERROR = false;
         // =========== NOTIFY SUCCESS===========
-        // this.notify.showNotification('your profile has been successfully updated', 2, 'done');
+        this.notify.showNotification('your profile has been successfully updated', 2, 'done');
 
-      } else {
-        console.log('USER PROFILE COMP - ERROR ', error)
-
-        // this.notify.showNotification('An error has occurred updating your profile', 4, 'report_problem')
+      } else if (response === 'error') {
+        this.SHOW_CIRCULAR_SPINNER = false;
+        this.UPDATE_USER_ERROR = true;
+        // =========== NOTIFY ERROR ===========
+        this.notify.showNotification('An error has occurred updating your profile', 4, 'report_problem')
       }
     });
     // this.notify.showNotification()
+    // this.displayModalUpdatingUser = 'block'
+  }
+
+  closeModalUpdatingUser() {
+
+    this.displayModalUpdatingUser = 'none';
+
   }
 
 }

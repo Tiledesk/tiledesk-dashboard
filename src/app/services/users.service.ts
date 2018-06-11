@@ -53,6 +53,7 @@ export class UsersService {
 
   UPDATE_USER_URL = environment.mongoDbConfig.UPDATE_USER_LASTNAME_FIRSTNAME;
   currentUserId: string;
+  // firebase_token: any;
 
   constructor(
     http: Http,
@@ -375,13 +376,17 @@ export class UsersService {
 
     return this.http
       .put(url, JSON.stringify(body), options)
-      .toPromise().then(res => {
+      .toPromise()
+      .then(res => {
 
         console.log('NODEJS: UPDATED USER RESPONSE: ', res.json())
 
         const jsonRes = res.json()
 
         if (jsonRes['success'] === true) {
+
+          callback('user successfully updated on mdb');
+
           const user: User = jsonRes.updatedUser;
 
           user.token = this.TOKEN;
@@ -399,23 +404,26 @@ export class UsersService {
 
           // chat21-cloud-functions - Update my FirstName and Last Name
           // on firebase Realtime Database
-          this.cloudFunctionsUpdateContact(user_firstname, user_lastname);
-          callback(null);
+          this.cloudFunctionsUpdateContact(user_firstname, user_lastname, callback);
+
+
+
 
         } else {
 
           callback('error');
+
         }
       })
       .catch(res => Promise.reject(`my error is: ${res}`))
       .then(res => console.log('good', res),
         err => {
           console.log('* Bad *', err)
-          callback(err)
+          callback('error')
         });
   }
 
-  cloudFunctionsUpdateContact(updated_firstname: string, updated_lastname: string) {
+  cloudFunctionsUpdateContact(updated_firstname: string, updated_lastname: string, callback) {
 
     const self = this;
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
@@ -439,14 +447,22 @@ export class UsersService {
           .put(url, JSON.stringify(body), options)
           .toPromise().then(res => {
             console.log('Cloud Functions Update Contact RESPONSE ', res)
+            console.log('Cloud Functions Update Contact RESPONSE STATUS', res.status)
+
+            if (res.status === 200) {
+              callback('user successfully updated on firebase')
+            }
           });
 
 
       }).catch(function (error) {
         // Handle error
         console.log('idToken.', error);
+        callback('error')
       });
   }
+
+
 
 
 }
