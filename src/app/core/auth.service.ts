@@ -188,7 +188,10 @@ export class AuthService {
         const user: User = jsonRes.user
         // ASSIGN THE RETURNED TOKEN TO THE USER OBJECT
         user.token = jsonRes.token
+
+        // PUBLISH THE USER OBJECT
         this.user_bs.next(user);
+
         // SET USER IN LOCAL STORAGE
         localStorage.setItem('user', JSON.stringify(user));
         console.log('++ USER ', user)
@@ -216,8 +219,6 @@ export class AuthService {
                     // An error happened.
                     console.log('// Firebase credentials - An error happened.', error)
                   });
-
-
 
                   //   const credential = firebase.auth.EmailAuthProvider.credential(
                   //     user.email,
@@ -286,7 +287,7 @@ export class AuthService {
 
   }
 
-  // NODE.JS FIREBASE SIGNIN (USED TO GET THE TOKEN THEN USED FOR Firebase Sign in using custom tokens)
+  // NODE.JS FIREBASE SIGNIN (USED TO GET THE TOKEN THEN USED FOR Firebase Signin using custom token)
   firebaseSignin(email: string, password: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -332,7 +333,18 @@ export class AuthService {
   }
 
 
+  /* ===================== REPUBLISH AND RESET IN STORAGE THE (UPDATED) USER ===================== */
+  // WHEN THE USER UPGRADES HIS OWN PROFILE (NAME AND / OR SURNAME) THE USER-SERVICE
+  // SEND THE UPDATED USER OBJECT TO AUTH SERVICE (THIS COMPONENT) THAT REPUBLISH IT
+  public publishUpdatedUser(updated_user) {
+    console.log('AUTH SERV - UPDATED USER OBJECT RECEIVED FROM USER SERV (BEFORE TO REPUBLISH IT): ', updated_user);
 
+    // REPUBLISH THE (UPDATED) USER OBJECT
+    this.user_bs.next(updated_user);
+
+    // RESET THE (UPDATED) USER OBJECT IN LOCAL STORAGE
+    localStorage.setItem('user', JSON.stringify(updated_user));
+  }
 
   ////// SUPER USER AUTH //////
   superUserAuth(currentUserEmailgetFromStorage) {

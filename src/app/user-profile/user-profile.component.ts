@@ -6,6 +6,7 @@ import { Location } from '@angular/common';
 import { Project } from '../models/project-model';
 import { UsersService } from '../services/users.service';
 
+import { NotifyService } from '../core/notify.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -21,7 +22,8 @@ export class UserProfileComponent implements OnInit {
   constructor(
     public auth: AuthService,
     private _location: Location,
-    private usersService: UsersService
+    private usersService: UsersService,
+    public notify: NotifyService
   ) { }
 
   ngOnInit() {
@@ -76,26 +78,21 @@ export class UserProfileComponent implements OnInit {
     console.log('»» »» »» WHEN CLICK UPDATE - USER LAST NAME ', this.userLastname);
     this.usersService.updateCurrentUserLastnameFirstname(this.userFirstname, this.userLastname, function (error) {
 
+      if (!error) {
 
-    })
-    // , function (error) {
+        // HERE ERROR IS NULL
+        console.log('USER PROFILE COMP - ERROR ', error)
 
+        // =========== NOTIFY SUCCESS===========
+        // this.notify.showNotification('your profile has been successfully updated', 2, 'done');
 
+      } else {
+        console.log('USER PROFILE COMP - ERROR ', error)
 
-
-    // const storedUser = localStorage.getItem('user');
-
-    // const parsedStoredUser = JSON.parse(storedUser);
-    // console.log('»» »» »» STORED USER ', parsedStoredUser);
-
-    // const updateduserObject = parsedStoredUser['firstname'] = 'Nicola';
-    // updateduserObject = parsedStoredUser['lastname'] = 'La Trottola';
-
-    // localStorage.setItem('user', JSON.stringify(updateduserObject));
-
-
-    // });
-
+        // this.notify.showNotification('An error has occurred updating your profile', 4, 'report_problem')
+      }
+    });
+    // this.notify.showNotification()
   }
 
 }

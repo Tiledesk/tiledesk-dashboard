@@ -39,6 +39,7 @@ export const environment = {
     cloudFunctions: {
         cloud_func_close_support_group_base_url: 'https://us-central1-chat-v2-dev.cloudfunctions.net/supportapi/tilechat/groups/',
         cloud_functions_base_url: 'https://us-central1-chat-v2-dev.cloudfunctions.net/api/tilechat/groups/',
+        cloud_func_update_firstname_and_lastname: 'https://us-central1-chat-v2-dev.cloudfunctions.net/api/tilechat/contacts/me'
         // firebase_IdToken: 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6ImUxNmI4ZWFlNTczOTk2NGM1MWJjMTUyNWI1ZmU2ZmRjY2Y1ODJjZDQifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vY2hhdC12Mi1kZXYiLCJhdWQiOiJjaGF0LXYyLWRldiIsImF1dGhfdGltZSI6MTUxOTAzNTQ0NSwidXNlcl9pZCI6Ikh6eUtTWFN1empnWXExaWI2bjlFOFBNam9ZcDEiLCJzdWIiOiJIenlLU1hTdXpqZ1lxMWliNm45RThQTWpvWXAxIiwiaWF0IjoxNTE5MDY0NjQ0LCJleHAiOjE1MTkwNjgyNDQsImVtYWlsIjoibmljb2xhLmxhbnppbG90dG9AZnJvbnRpZXJlMjEuaXQiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsibmljb2xhLmxhbnppbG90dG9AZnJvbnRpZXJlMjEuaXQiXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.HUkoNGKD_7AgKHft8dOs9StrHCwDjsbdg7tYAuTccGdKFVU2Cx-AnO7ueP1OOaMZFgGMxca-H7hzQe_dVlTZogNu4iPcb-hosMQy8fWyy6LrDZF6xNgbY7As9e6cHNiLxQOPB0bjOQ2dNIIMVdEDh-hj9GJJv4He_Fc9BqZuqW7quW2w164xya1c8rR19Mg7gyDbye0MXDCY7ickGVqOyNSus_wusTRG8r2BS6YQAn5SkVI4mdnuks_vO_j_WVNlN1ld3fqud7Pha8Z73edz4aG5_kcXlGUnNjmKg4-8E1QtBg6jvcq19bTsrBEjmUuGHaBKJgywHVkqypP30YLpdQ',
     },
     chat: {

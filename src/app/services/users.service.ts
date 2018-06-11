@@ -12,6 +12,7 @@ import { AuthService } from '../core/auth.service';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import * as firebase from 'firebase/app';
 
 interface NewUser {
   displayName: string;
@@ -30,6 +31,7 @@ export class UsersService {
 
   http: Http;
   BASE_URL = environment.mongoDbConfig.BASE_URL;
+  CLOUD_FUNC_UPDATE_USER_URL = environment.cloudFunctions.cloud_func_update_firstname_and_lastname;
   MONGODB_BASE_URL: any;
   INVITE_USER_URL: any;
   PROJECT_USER_DTLS_URL: any;
@@ -356,6 +358,9 @@ export class UsersService {
 
     const url = this.UPDATE_USER_URL + this.currentUserId;
 
+    // ERROR TEST WITH A currentUserId that does not exist
+    // const url = this.UPDATE_USER_URL + '5ad08846ea181e2e9cc2d20g';
+
     console.log('UPDATE CURRENT USER (PUT) URL ', url);
 
     const headers = new Headers();
@@ -372,17 +377,76 @@ export class UsersService {
       .put(url, JSON.stringify(body), options)
       .toPromise().then(res => {
 
-        console.log('UPDATE USER RES: ', res.json())
+        console.log('NODEJS: UPDATED USER RESPONSE: ', res.json())
 
         const jsonRes = res.json()
-        const user: User = jsonRes;
 
-        user.token = this.TOKEN;
-        console.log('TEST USER ', user)
+        if (jsonRes['success'] === true) {
+          const user: User = jsonRes.updatedUser;
 
-        // SET USER IN LOCAL STORAGE
-        localStorage.setItem('user', JSON.stringify(user));
+          user.token = this.TOKEN;
+          console.log('UPDATED USER + token (before to set in storage) ', user)
+
+          /* REPUBLISH AND RESET IN STORAGE THE (UPDATED) USER */
+          // that, when the user logged in, the AUTH SERVICE had published and set in memory)
+          // this.user_bs.next(user);
+          // localStorage.setItem('user', JSON.stringify(user));
+
+          // SEND THE UPDATED USER OBJECT TO THE AUTH SERVICE THAT:
+          // -  PUBLISHES IT AGAIN and
+          // -  RESET IT IN LOCAL STORAGE
+          this.auth.publishUpdatedUser(user)
+
+          // chat21-cloud-functions - Update my FirstName and Last Name
+          // on firebase Realtime Database
+          this.cloudFunctionsUpdateContact(user_firstname, user_lastname);
+          callback(null);
+
+        } else {
+
+          callback('error');
+        }
       })
+      .catch(res => Promise.reject(`my error is: ${res}`))
+      .then(res => console.log('good', res),
+        err => {
+          console.log('* Bad *', err)
+          callback(err)
+        });
   }
+
+  cloudFunctionsUpdateContact(updated_firstname: string, updated_lastname: string) {
+
+    const self = this;
+    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+      .then(function (token) {
+        console.log('USER SERV - FIREBASE idToken.', token);
+
+
+        const headers = new Headers();
+        headers.append('Accept', 'application/json');
+        headers.append('Content-type', 'application/json');
+        headers.append('Authorization', 'Bearer ' + token);
+
+        const options = new RequestOptions({ headers });
+        const url = self.CLOUD_FUNC_UPDATE_USER_URL;
+
+        console.log('CLOUD FUNCT - UPDATE CONTACT URL ', url)
+
+        const body = { 'firstname': updated_firstname, 'lastname': updated_lastname };
+
+        self.http
+          .put(url, JSON.stringify(body), options)
+          .toPromise().then(res => {
+            console.log('Cloud Functions Update Contact RESPONSE ', res)
+          });
+
+
+      }).catch(function (error) {
+        // Handle error
+        console.log('idToken.', error);
+      });
+  }
+
 
 }
