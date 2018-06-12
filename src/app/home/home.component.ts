@@ -178,7 +178,6 @@ export class HomeComponent implements OnInit {
 
   getFaqKbByProjectId() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-      
 
       if (faqKb) {
         console.log('HOME - FAQs-KB (i.e. BOT) GET BY PROJECT ID', faqKb);

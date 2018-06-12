@@ -53,7 +53,6 @@ export class UsersService {
 
   UPDATE_USER_URL = environment.mongoDbConfig.UPDATE_USER_LASTNAME_FIRSTNAME;
   currentUserId: string;
-  // firebase_token: any;
 
   constructor(
     http: Http,
@@ -370,9 +369,11 @@ export class UsersService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
+    console.log('»»» »»» UPDATE CURRENT USER - LASTNAME ', user_lastname);
+
     const body = { 'firstname': user_firstname, 'lastname': user_lastname };
 
-    console.log('UPDATE CURRENT USER BODY ', body);
+    console.log('»»» »»» UPDATE CURRENT USER - BODY ', body);
 
     return this.http
       .put(url, JSON.stringify(body), options)
