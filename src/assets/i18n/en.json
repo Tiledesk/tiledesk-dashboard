@@ -31,6 +31,12 @@
         "Continue":"Continue",
         "ChangePsw":"Change password"
     },
+    "ChangePsw": {
+        "ChangePsw":"Change password",
+        "CurrentPsw":"Current password",
+        "NewPsw":"New password",
+        "ConfirmNewPsw":"Confirm new password"
+    },
     "NavBar": {
         "ViewAllProjects": "View all projects",
         "ProjectSettings": "Project settings",

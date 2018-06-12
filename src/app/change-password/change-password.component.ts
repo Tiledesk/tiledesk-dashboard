@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+// USED FOR go back last page
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'appdashboard-change-password',
@@ -7,9 +9,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChangePasswordComponent implements OnInit {
 
-  constructor() { }
+  oldPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
+
+
+  constructor(
+    private _location: Location
+  ) { }
 
   ngOnInit() {
+  }
+
+
+  goBack() {
+    this._location.back();
   }
 
 }

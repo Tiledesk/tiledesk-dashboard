@@ -34,7 +34,7 @@ select {
     }
 }
 
-/* CUSTOM INPUT WIDTH WHEN THE WINDOWS WIDTH IS < OF 768  */
+/* CUSTOM INPUT WIDTH WHEN THE WINDOWS WIDTH IS > OF 768  */
 @media (min-width: 767px){
     input[type=text] {
         width: 400px !important

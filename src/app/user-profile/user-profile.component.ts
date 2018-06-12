@@ -9,6 +9,7 @@ import { UsersService } from '../services/users.service';
 import { NotifyService } from '../core/notify.service';
 import * as firebase from 'firebase/app';
 import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
