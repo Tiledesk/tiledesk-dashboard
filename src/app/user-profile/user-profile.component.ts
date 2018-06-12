@@ -8,7 +8,7 @@ import { UsersService } from '../services/users.service';
 
 import { NotifyService } from '../core/notify.service';
 import * as firebase from 'firebase/app';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
@@ -28,11 +28,13 @@ export class UserProfileComponent implements OnInit {
   HAS_EDIT_FIRSTNAME = false;
   HAS_EDIT_LASTNAME = false;
 
+  projectId: string;
   constructor(
     public auth: AuthService,
     private _location: Location,
     private usersService: UsersService,
-    public notify: NotifyService
+    public notify: NotifyService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -47,6 +49,7 @@ export class UserProfileComponent implements OnInit {
       this.project = project
 
       if (this.project) {
+        this.projectId = project._id
         console.log('00 -> USER PROFILE project from AUTH service subscription  ', project)
       } else {
         console.log('00 -> USER PROFILE project from AUTH service subscription ? ', project)
@@ -153,4 +156,7 @@ export class UserProfileComponent implements OnInit {
     this.HAS_EDIT_LASTNAME = false;
   }
 
+  goToChangePsw() {
+    this.router.navigate(['project/' + this.projectId + '/password/change']);
+  }
 }

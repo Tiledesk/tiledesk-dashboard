@@ -62,7 +62,7 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { RequestsMsgsComponent } from './requests-msgs/requests-msgs.component';
 import { GroupsComponent } from './groups/groups.component';
 import { GroupEditAddComponent } from './group-edit-add/group-edit-add.component';
-
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 // import { DashboardComponent} from './dashboard/dashboard.component';
 // Andrea
@@ -170,7 +170,8 @@ const routes: Routes = [
 
   { path: 'project/:projectid/routing', component: RoutingPageComponent, canActivate: [AuthGuard] },
 
-
+  // CHANGE PSWRD
+  { path: 'project/:projectid/password/change', component: ChangePasswordComponent, canActivate: [AuthGuard] },
 
   { path: 'dashboard', component: DashboardComponent },
 

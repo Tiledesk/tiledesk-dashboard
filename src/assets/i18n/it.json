@@ -28,7 +28,8 @@
         "UserSuccessfullyUpdated": "Profilo aggiornato con successo",
         "Error":"Errore",
         "AnErrorHasOccurred":"Si è verificato un errore durante l'aggiornamento del profilo",
-        "Continue":"Continua"
+        "Continue":"Continua",
+        "ChangePsw":"Cambia password"
     },
     "NavBar": {
         "ViewAllProjects": "Visualizza tutti i progetti",
