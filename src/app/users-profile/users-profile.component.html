@@ -7,10 +7,10 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-        <div class="card">
+        <div class="card" style="padding-top:25px; padding-bottom:25px">
 
           <!-- // USER PROFILE -->
-          <div *ngIf="user" class="card-content" style="padding-top: 25px;">
+          <div *ngIf="user" class="card-content">
 
             <label style="height: 36px; padding-top: 20px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 avatar_label">
               Avatar
@@ -51,7 +51,7 @@
               <input style="color:#999999" [(ngModel)]="user_email" class="" type="text" placeholder="Email" disabled>
             </div>
 
-            <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right; margin-bottom:25px" class="col-sm-2">
+            <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2">
               <!-- ID Utente -->
               {{ "UserProfile.UserId" | translate }}
             </label>

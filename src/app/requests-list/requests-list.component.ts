@@ -163,7 +163,8 @@ export class RequestsListComponent implements OnInit {
     const user = this.usersLocalDbService.getMemberFromStorage(member_id);
     if (user) {
       // console.log('user ', user)
-      return member_id = '- ' + user['firstname']
+      const lastnameInizial = user['lastname'].charAt(0)
+      return member_id = '- ' + user['firstname'] + ' ' + lastnameInizial + '.'
     } else {
       return '- ' + member_id
     }
