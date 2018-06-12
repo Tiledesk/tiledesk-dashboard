@@ -93,7 +93,7 @@ import { GroupService } from './services/group.service';
 import { GroupsComponent } from './groups/groups.component';
 import { GroupEditAddComponent } from './group-edit-add/group-edit-add.component';
 import { GroupNamePipe } from './groupname.pipe';
-
+import { BotLocalDbService } from './services/bot-local-db.service';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -181,6 +181,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ProjectService,
     UsersLocalDbService,
     GroupService,
+    BotLocalDbService,
     {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [

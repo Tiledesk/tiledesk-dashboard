@@ -135,8 +135,10 @@ const routes: Routes = [
   // IS THE PROFILE OF THE LOGGED USER THAT IS ON THE PROJECTS PAGE (THE USER HAS NOT YET SELECTED A PROJECT)
   { path: 'user-profile', component: UserProfileComponent },
 
+  // FAQKB (i.e. BOT)
   { path: 'project/:projectid/faqkb', component: FaqKbComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/createfaqkb', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },
+
   { path: 'project/:projectid/editfaqkb/:faqkbid', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },
 
   // { path: 'faq/:faqkbid', component: FaqComponent, canActivate: [AuthGuard] }, // used to pass the faq kb id from  in faq page

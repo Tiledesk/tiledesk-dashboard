@@ -9,6 +9,9 @@ import { UsersService } from '../services/users.service';
 import { UsersLocalDbService } from '../services/users-local-db.service';
 import { MongodbDepartmentService } from '../services/mongodb-department.service';
 import { RequestsService } from '../services/requests.service';
+import { FaqKbService } from '../services/faq-kb.service';
+import { BotLocalDbService } from '../services/bot-local-db.service';
+
 
 @Component({
   selector: 'home',
@@ -40,7 +43,9 @@ export class HomeComponent implements OnInit {
     private usersService: UsersService,
     private usersLocalDbService: UsersLocalDbService,
     private departmentService: MongodbDepartmentService,
-    private requestsService: RequestsService
+    private requestsService: RequestsService,
+    private faqKbService: FaqKbService,
+    private botLocalDbService: BotLocalDbService
   ) { }
 
   ngOnInit() {
@@ -66,8 +71,7 @@ export class HomeComponent implements OnInit {
     // IS USED TO DETERMINE IF THE USER IS AVAILABLE OR NOT AVAILABLE
     this.getProjectUser();
 
-    // ====== GET MY DEPTS ======
-    // this.getMyDepts();
+    this.getFaqKbByProjectId();
 
     // TEST FUNCTION : GET ALL AVAILABLE PROJECT USER
     this.getAvailableProjectUsersByProjectId();
@@ -75,30 +79,12 @@ export class HomeComponent implements OnInit {
 
   // TEST FUNCTION : GET ALL AVAILABLE PROJECT USER
   getAvailableProjectUsersByProjectId() {
-    console.log('... CALLING GET AVAILABLE PROJECT USERS' )
+    console.log('... CALLING GET AVAILABLE PROJECT USERS')
     this.usersService.getAvailableProjectUsersByProjectId().subscribe((available_project) => {
       console.log('»»»»»»» AVAILABLE PROJECT USERS ', available_project)
-  })
-}
-
-  getMyDepts() {
-
-    this.requestsService.getMyDeptsAndStartRequestsQuery()
-
-    // .subscribe((depts: any) => {
-    //   console.log('HOME COMP - GET MY DEPTS', depts);
-    //   // PUBBLISH MY DEPTS ???
-    //   // this.myDepts_bs.next(depts);
-
-
-    // },
-    //   (error) => {
-    //     console.log('HOME COMP - GET MY DEPTS ', error);
-    //   },
-    //   () => {
-    //     console.log('HOME COMP - GET MY DEPTS * COMPLETE *');
-    //   });
+    })
   }
+
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
@@ -188,6 +174,25 @@ export class HomeComponent implements OnInit {
       () => {
         console.log('H PROJECT-USER GET BY PROJECT ID & CURRENT-USER-ID  * COMPLETE *');
       });
+  }
+
+  getFaqKbByProjectId() {
+    this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
+      
+
+      if (faqKb) {
+        console.log('HOME - FAQs-KB (i.e. BOT) GET BY PROJECT ID', faqKb);
+        this.botLocalDbService.saveBotsInStorage(faqKb._id, faqKb);
+      }
+    },
+      (error) => {
+        console.log('HOME - GET FAQs-KB (i.e. BOT) - ERROR ', error);
+      },
+      () => {
+        console.log('HOME - GET FAQs-KB * COMPLETE');
+
+      });
+
   }
 
   getAllUsersOfCurrentProject() {
