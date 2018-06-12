@@ -36,7 +36,7 @@
                             {{ "UserProfile.Name" | translate }}
                         </label>
                         <div class="col-sm-10">
-                            <input [(ngModel)]="userFirstname" class="" type="text" placeholder='{{ "UserProfile.Name" | translate }}'>
+                            <input (input)="onEditFirstname($event.target.value)" [(ngModel)]="userFirstname" class="" type="text" placeholder='{{ "UserProfile.Name" | translate }}'>
                         </div>
 
                         <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
@@ -44,7 +44,7 @@
                             {{ "UserProfile.Lastname" | translate }}
                         </label>
                         <div class="col-sm-10">
-                            <input [(ngModel)]="userLastname" class="" type="text" placeholder='{{ "UserProfile.Lastname" | translate }}'>
+                            <input (input)="onEditLastname($event.target.value)" [(ngModel)]="userLastname" class="" type="text" placeholder='{{ "UserProfile.Lastname" | translate }}'>
                         </div>
 
                         <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2">
@@ -77,7 +77,7 @@
                         <label style="" class="col-sm-2"></label>
                         <div class="col-sm-10">
                                 <!-- [disabled]="true" -->
-                            <button class="btn btn-success" (click)="updateCurrentUserFirstnameLastname()">
+                            <button class="btn btn-success" (click)="updateCurrentUserFirstnameLastname()" [disabled]="!HAS_EDIT_FIRSTNAME && !HAS_EDIT_LASTNAME"  >
                                 <!-- Aggiorna -->
                                 {{ "UserProfile.UpdateProfile" | translate }}
                             </button>
@@ -252,7 +252,7 @@
         </div>
 
         <div class="modal-footer" style="text-align: center;">
-            <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="closeModalUpdatingUser()" style="padding:12px 16px;">
+            <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="closeModalUpdatingUserHandler()" style="padding:12px 16px;">
                 {{ "UserProfile.Continue" | translate }}
             </button>
         </div>

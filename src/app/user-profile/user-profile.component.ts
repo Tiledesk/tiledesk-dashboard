@@ -23,6 +23,10 @@ export class UserProfileComponent implements OnInit {
   SHOW_CIRCULAR_SPINNER = false;
   UPDATE_USER_ERROR = false;
   showSpinner = true;
+  firstnameCurrentValue: string;
+  lastnameCurrentValue: string;
+  HAS_EDIT_FIRSTNAME = false;
+  HAS_EDIT_LASTNAME = false;
 
   constructor(
     public auth: AuthService,
@@ -70,6 +74,9 @@ export class UserProfileComponent implements OnInit {
         this.userFirstname = user.firstname;
         this.userLastname = user.lastname;
 
+        this.firstnameCurrentValue = user.firstname;
+        this.lastnameCurrentValue = user.lastname;
+
         this.showSpinner = false;
       }
 
@@ -78,6 +85,30 @@ export class UserProfileComponent implements OnInit {
       this.showSpinner = false;
     });
 
+  }
+
+  onEditFirstname(updatedFirstname) {
+    console.log('==> firstname previous value ', this.firstnameCurrentValue);
+    console.log('==> firstname updated value', updatedFirstname);
+    if (this.firstnameCurrentValue !== updatedFirstname) {
+      this.HAS_EDIT_FIRSTNAME = true;
+      console.log('HAS CHANGED FIRSTNAME: ', this.HAS_EDIT_FIRSTNAME);
+    } else {
+      this.HAS_EDIT_FIRSTNAME = false;
+      console.log('HAS CHANGED FIRSTNAME: ', this.HAS_EDIT_FIRSTNAME);
+    }
+  }
+
+  onEditLastname(updatedLastname) {
+    console.log('==> lastname previous value ', this.lastnameCurrentValue);
+    console.log('==> lastname updated value', updatedLastname);
+    if (this.lastnameCurrentValue !== updatedLastname) {
+      this.HAS_EDIT_LASTNAME = true;
+      console.log('HAS CHANGED LASTNAME: ', this.HAS_EDIT_LASTNAME);
+    } else {
+      this.HAS_EDIT_LASTNAME = false;
+      console.log('HAS CHANGED LASTNAME: ', this.HAS_EDIT_LASTNAME);
+    }
   }
 
   goBack() {
@@ -113,9 +144,13 @@ export class UserProfileComponent implements OnInit {
   }
 
   closeModalUpdatingUser() {
-
     this.displayModalUpdatingUser = 'none';
+  }
 
+  closeModalUpdatingUserHandler() {
+    this.displayModalUpdatingUser = 'none';
+    this.HAS_EDIT_FIRSTNAME = false;
+    this.HAS_EDIT_LASTNAME = false;
   }
 
 }
