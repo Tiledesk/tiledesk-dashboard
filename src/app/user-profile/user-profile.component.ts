@@ -22,6 +22,7 @@ export class UserProfileComponent implements OnInit {
   displayModalUpdatingUser = 'none';
   SHOW_CIRCULAR_SPINNER = false;
   UPDATE_USER_ERROR = false;
+  showSpinner = true;
 
   constructor(
     public auth: AuthService,
@@ -59,17 +60,24 @@ export class UserProfileComponent implements OnInit {
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
-      console.log('USER GET IN USER PROFILE ', user)
+      console.log('==> USER GET IN USER PROFILE ', user)
       // tslint:disable-next-line:no-debugger
       // debugger
       if (user) {
+
         this.user = user;
 
         this.userFirstname = user.firstname;
         this.userLastname = user.lastname;
+
+        this.showSpinner = false;
       }
 
+    }, (error) => {
+      console.log('==> USER GET IN USER PROFILE', error);
+      this.showSpinner = false;
     });
+
   }
 
   goBack() {

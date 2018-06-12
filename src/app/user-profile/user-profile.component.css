@@ -105,3 +105,8 @@ button.close {
 }
 /*  MODAL END */
 
+@media (max-width: 767px){
+    .col-sm-12.spacer {
+        display: none !important;
+    }
+ }

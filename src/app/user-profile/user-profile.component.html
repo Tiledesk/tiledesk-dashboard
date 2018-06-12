@@ -8,12 +8,14 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="card">
+                <div class="card" style="padding-top: 25px;padding-bottom: 25px;">
                     <!-- <div class="card-header" data-background-color="red">
                         <h4 class="title">Edit Profile</h4>
                         <p class="category">Complete your profile</p>
                     </div> -->
-                    <div class="card-content" style="padding-top: 25px;">
+                    <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+                    <div *ngIf="!showSpinner" class="card-content" >
                         <label style="height: 36px; padding-top: 20px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 avatar_label">
                             Avatar
                         </label>
@@ -70,12 +72,12 @@
                         </div> -->
 
                         <!-- SPACER -->
-                        <div class="col-sm-12" style="height:15px"></div>
+                        <div class="col-sm-12 spacer" style="height:15px"></div>
 
                         <label style="" class="col-sm-2"></label>
                         <div class="col-sm-10">
                                 <!-- [disabled]="true" -->
-                            <button class="btn btn-success" (click)="updateCurrentUserFirstnameLastname()" style="margin-bottom: 25px;">
+                            <button class="btn btn-success" (click)="updateCurrentUserFirstnameLastname()">
                                 <!-- Aggiorna -->
                                 {{ "UserProfile.UpdateProfile" | translate }}
                             </button>
@@ -189,7 +191,7 @@
 </div>
 
 
-<!-- ============ INFO MODAL: ARCHIVING REQUEST IN PROGRESS ============ -->
+<!-- ============ INFO MODAL: UPDATING PROFILE IN PROGRESS ============ -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayModalUpdatingUser}" style="background-color: rgba(90,90,90,0.5);">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
