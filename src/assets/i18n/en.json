@@ -39,7 +39,8 @@
         "ConfirmNewPsw":"Confirm new password",
         "PasswordSuccessfullyChanged":"Password successfully changed",
         "CurrentPasswordIsInvalid":"Current password is invalid",
-        "AnErrorHasOccurred":"An error has occurred"
+        "AnErrorHasOccurred":"An error has occurred",
+        "PasswordMustBe":"Password must be at least 6 characters long."
     },
     "NavBar": {
         "ViewAllProjects": "View all projects",

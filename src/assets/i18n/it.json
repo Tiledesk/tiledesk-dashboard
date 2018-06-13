@@ -39,7 +39,8 @@
         "ConfirmNewPsw":"Conferma nuova password",
         "PasswordSuccessfullyChanged":"Password cambiata con successo",
         "CurrentPasswordIsInvalid":"La password corrente non è valida",
-        "AnErrorHasOccurred":"Si è verificato un errore"
+        "AnErrorHasOccurred":"Si è verificato un errore",
+        "PasswordMustBe":"La password deve essere lunga almeno 6 caratteri."
     },
     "NavBar": {
         "ViewAllProjects": "Visualizza tutti i progetti",
