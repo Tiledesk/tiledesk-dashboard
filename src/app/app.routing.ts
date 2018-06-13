@@ -171,7 +171,7 @@ const routes: Routes = [
   { path: 'project/:projectid/routing', component: RoutingPageComponent, canActivate: [AuthGuard] },
 
   // CHANGE PSWRD
-  { path: 'project/:projectid/password/change', component: ChangePasswordComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/user/:userid/password/change', component: ChangePasswordComponent, canActivate: [AuthGuard] },
 
   { path: 'dashboard', component: DashboardComponent },
 

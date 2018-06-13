@@ -20,6 +20,7 @@ export class UserProfileComponent implements OnInit {
   project: Project;
   userFirstname: string;
   userLastname: string;
+  userId: string;
   displayModalUpdatingUser = 'none';
   SHOW_CIRCULAR_SPINNER = false;
   UPDATE_USER_ERROR = false;
@@ -77,6 +78,7 @@ export class UserProfileComponent implements OnInit {
 
         this.userFirstname = user.firstname;
         this.userLastname = user.lastname;
+        this.userId = user._id;
 
         this.firstnameCurrentValue = user.firstname;
         this.lastnameCurrentValue = user.lastname;
@@ -158,6 +160,6 @@ export class UserProfileComponent implements OnInit {
   }
 
   goToChangePsw() {
-    this.router.navigate(['project/' + this.projectId + '/password/change']);
+    this.router.navigate(['project/' + this.projectId + '/user/' + this.userId   + '/password/change']);
   }
 }

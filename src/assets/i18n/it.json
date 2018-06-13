@@ -35,7 +35,7 @@
         "ChangePsw":"Cambia password",
         "CurrentPsw":"Vecchia password",
         "NewPsw":"Nuova password",
-        "ConfirmNewPsw":"Conferma password"
+        "ConfirmNewPsw":"Conferma"
     },
     "NavBar": {
         "ViewAllProjects": "Visualizza tutti i progetti",
