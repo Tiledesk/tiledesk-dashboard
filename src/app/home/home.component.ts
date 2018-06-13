@@ -200,7 +200,9 @@ export class HomeComponent implements OnInit {
 
       if (projectUsers) {
         projectUsers.forEach(projectUser => {
-          console.log('HOME COMP - PROJECT-USERS - USER ', projectUser.id_user, projectUser.id_user._id)
+          if (projectUser && projectUser !== null) {
+            console.log('HOME COMP - PROJECT-USERS - USER ', projectUser.id_user, projectUser.id_user._id)
+          }
           // localStorage.setItem(projectUser.id_user._id, JSON.stringify(projectUser.id_user));
           this.usersLocalDbService.saveMembersInStorage(projectUser.id_user._id, projectUser.id_user);
         });

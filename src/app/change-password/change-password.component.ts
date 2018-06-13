@@ -21,6 +21,7 @@ export class ChangePasswordComponent implements OnInit {
   constructor(
     private _location: Location,
     private route: ActivatedRoute,
+    private usersService: UsersService
   ) { }
 
   ngOnInit() {
@@ -60,6 +61,23 @@ export class ChangePasswordComponent implements OnInit {
       console.log('CONFIRM PASSWORD IS NOT EQUAL TO NEW PASSWORD ', this.DISABLE_UPDATE_PSW_BTN)
     }
 
+  }
+
+  changePsw() {
+    console.log('on CHANGE PSW - OLD PSW ', this.oldPassword)
+    console.log('on CHANGE PSW - NEW PSW ', this.newPassword)
+    this.usersService.changePassword(this.userId, this.oldPassword, this.newPassword)
+      .subscribe((user) => {
+        console.log('CHANGE PASSWORD - DATA ', user);
+
+
+      },
+        (error) => {
+          console.log('CHANGE PASSWORD - ERROR ', error);
+        },
+        () => {
+          console.log('CHANGE PASSWORD * COMPLETE *');
+        });
   }
 
 

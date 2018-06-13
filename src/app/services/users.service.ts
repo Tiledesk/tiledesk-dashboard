@@ -35,6 +35,7 @@ export class UsersService {
   MONGODB_BASE_URL: any;
   INVITE_USER_URL: any;
   PROJECT_USER_DTLS_URL: any;
+
   // GET_PROJECT_USER_URL: any;
   TOKEN: string
   user: any;
@@ -51,7 +52,9 @@ export class UsersService {
   PROJECT_BASE_URL = environment.mongoDbConfig.PROJECTS_BASE_URL;
   AVAILABLE_USERS_URL: any;
 
+  // http://localhost:3000/users/updateuser/'
   UPDATE_USER_URL = environment.mongoDbConfig.UPDATE_USER_LASTNAME_FIRSTNAME;
+  CHANGE_PSW_URL = environment.mongoDbConfig.CHANGE_PSW;
   currentUserId: string;
 
   constructor(
@@ -407,9 +410,6 @@ export class UsersService {
           // on firebase Realtime Database
           this.cloudFunctionsUpdateContact(user_firstname, user_lastname, callback);
 
-
-
-
         } else {
 
           callback('error');
@@ -463,7 +463,26 @@ export class UsersService {
       });
   }
 
+  public changePassword(user_id: string, old_psw: string, new_psw: string) {
+    const url = this.CHANGE_PSW_URL;
 
+    console.log('CHSNGE PSW (PUT) URL ', url);
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = { 'userid': user_id, 'oldpsw': old_psw, 'newpsw': new_psw };
+
+    console.log('PUT REQUEST BODY ', body);
+
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+
+  }
 
 
 }
