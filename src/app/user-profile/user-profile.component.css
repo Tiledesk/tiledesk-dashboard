@@ -110,3 +110,22 @@ button.close {
         display: none !important;
     }
  }
+
+ /* start CHANGE PLACEHOLDER COLOR */
+ ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #999999;
+    opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #999999;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+    color: #999999;
+}
+ /* end CHANGE PLACEHOLDER COLOR */
+
+ :disabled:hover {
+    cursor: not-allowed
+ }
