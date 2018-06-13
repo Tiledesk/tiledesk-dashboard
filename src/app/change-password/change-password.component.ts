@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 // USED FOR go back last page
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
@@ -9,7 +9,7 @@ import { UsersService } from '../services/users.service';
   templateUrl: './change-password.component.html',
   styleUrls: ['./change-password.component.scss']
 })
-export class ChangePasswordComponent implements OnInit {
+export class ChangePasswordComponent implements OnInit, AfterViewInit {
 
   oldPassword: string;
   newPassword: string;
@@ -17,6 +17,12 @@ export class ChangePasswordComponent implements OnInit {
   DISABLE_UPDATE_PSW_BTN = true
 
   userId: string;
+  displayModalChangingPsw = 'none';
+  SHOW_CIRCULAR_SPINNER: boolean;
+
+  CHANGE_PSW_NO_ERROR: boolean;
+  CURRENT_PSW_INVALID_ERROR: boolean;
+  CHANGE_PSW_OTHER_ERROR: boolean;
 
   constructor(
     private _location: Location,
@@ -26,6 +32,25 @@ export class ChangePasswordComponent implements OnInit {
 
   ngOnInit() {
     this.getUserIdFromRouteParams()
+  }
+
+  ngAfterViewInit() {
+    if (document.getElementsByTagName) {
+
+      const inputElements = document.getElementsByTagName('input');
+      console.log('» input elemnts ', inputElements)
+
+      for (let i = 0; inputElements[i]; i++) {
+
+        // if (inputElements[i].className && (inputElements[i].className.indexOf('disableAutoComplete') !== -1)) {
+        console.log('» qui entro')
+        inputElements[i].setAttribute('autocomplete', 'off');
+
+        // }
+
+      }
+
+    }
   }
 
   getUserIdFromRouteParams() {
@@ -66,19 +91,49 @@ export class ChangePasswordComponent implements OnInit {
   changePsw() {
     console.log('on CHANGE PSW - OLD PSW ', this.oldPassword)
     console.log('on CHANGE PSW - NEW PSW ', this.newPassword)
+
+    this.displayModalChangingPsw = 'block';
+    this.SHOW_CIRCULAR_SPINNER = true;
+
     this.usersService.changePassword(this.userId, this.oldPassword, this.newPassword)
       .subscribe((user) => {
         console.log('CHANGE PASSWORD - DATA ', user);
 
-
       },
         (error) => {
           console.log('CHANGE PASSWORD - ERROR ', error);
+          this.SHOW_CIRCULAR_SPINNER = false;
+          this.CHANGE_PSW_NO_ERROR = false;
+          
+          const error_body = JSON.parse(error._body);
+
+          if (error_body.msg === 'Current password is invalid.') {
+            this.CURRENT_PSW_INVALID_ERROR = true;
+            this.CHANGE_PSW_OTHER_ERROR = false;
+            
+          } else {
+            this.CHANGE_PSW_OTHER_ERROR = true;
+            this.CURRENT_PSW_INVALID_ERROR = false;
+          }
+
         },
         () => {
           console.log('CHANGE PASSWORD * COMPLETE *');
+          this.CHANGE_PSW_OTHER_ERROR = false;
+          this.CURRENT_PSW_INVALID_ERROR = false;
+          this.SHOW_CIRCULAR_SPINNER = false;
+          this.CHANGE_PSW_NO_ERROR = true;
         });
   }
 
+  closeModalChangingPswHandler() {
 
+    this.displayModalChangingPsw = 'none';
+
+    this._location.back();
+  }
+
+  closeModalChangingPsw() {
+    this.displayModalChangingPsw = 'none';
+  }
 }

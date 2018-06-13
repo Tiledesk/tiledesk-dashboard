@@ -33,10 +33,13 @@
     },
     "ChangePsw": {
         "ChangePsw":"Cambia password",
-        "CurrentPsw":"Vecchia password",
+        "CurrentPsw":"Password corrente",
         "NewPsw":"Nuova password",
         "Confirm":"Conferma",
-        "ConfirmNewPsw":"Conferma nuova password"
+        "ConfirmNewPsw":"Conferma nuova password",
+        "PasswordSuccessfullyChanged":"Password cambiata con successo",
+        "CurrentPasswordIsInvalid":"La password corrente non è valida",
+        "AnErrorHasOccurred":"Si è verificato un errore"
     },
     "NavBar": {
         "ViewAllProjects": "Visualizza tutti i progetti",

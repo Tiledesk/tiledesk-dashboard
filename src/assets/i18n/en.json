@@ -36,7 +36,10 @@
         "CurrentPsw":"Current password",
         "NewPsw":"New password",
         "Confirm":"Confirm",
-        "ConfirmNewPsw":"Confirm new password"
+        "ConfirmNewPsw":"Confirm new password",
+        "PasswordSuccessfullyChanged":"Password successfully changed",
+        "CurrentPasswordIsInvalid":"Current password is invalid",
+        "AnErrorHasOccurred":"An error has occurred"
     },
     "NavBar": {
         "ViewAllProjects": "View all projects",
