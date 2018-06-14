@@ -52,7 +52,14 @@
               <!-- <p class="btn button is-small" (click)="toggleForm()">Non hai ancora un account? Registrati</p> -->
               <!-- <a (click)="toggleForm()">Non hai ancora un account? Registrati</a> -->
               <!-- <a (click)="toggleForm()">Don't have an account yet? Sign up</a> -->
-              <a routerLink="/signup" style="color: #666666; font-size: 1.1em">Don't have an account yet? <span style="color: #03a5e8">Sign up</span></a>
+              <a routerLink="/signup" style="color: #666666; font-size: 1.1em">
+                <!-- Don't have an account yet?  -->
+                {{ "DontHaveAnAccountYet" | translate }}
+                <span style="color: #03a5e8">
+                  <!-- Sign up -->
+                  {{ "SignUp" | translate }}
+                
+                </span></a>
             </div>
   
             <!-- <a *ngIf="!passReset && userForm.controls.email.valid" class="help is-info" (click)="resetPassword()">Reset Password for {{userForm.value.email}}?</a>

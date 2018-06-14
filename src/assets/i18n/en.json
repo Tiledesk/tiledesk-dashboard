@@ -17,6 +17,10 @@
     "LastName":"Last Name",
     "iAgree":"I agree",
     "TermsAndConditions":"Terms and Conditions",
+    "And":"and",
+    "SignUp":"Sign Up",
+    "AlreadyHaveAnAccount":"Already have an account?",
+    "DontHaveAnAccountYet":"Don't have an account yet?",
     "UserProfile": {
         "Profile": "Profile",
         "UploadImage": "Upload image",

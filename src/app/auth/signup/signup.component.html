@@ -33,7 +33,7 @@
   
             <label for="firstName">
               <!-- First Name -->
-              {{ "FirstName" | translate }}*
+              {{ "FirstName" | translate }} <span style="color:#ff5252">*</span>
             </label>
             <input type="text" id="firstName" class="input" formControlName="firstName" required>
 
@@ -53,7 +53,7 @@
               {{ formErrors.lastName }}
             </div> -->
   
-            <label for="email">Email* </label>
+            <label for="email">Email <span style="color:#ff5252">*</span></label>
             <!-- id="email" -->
             <input autocomplete="off" type="email"  class="input"
                   formControlName="email" required >
@@ -62,7 +62,7 @@
               {{ formErrors.email }}
             </div>
   
-            <label for="password">Password*</label>
+            <label for="password">Password <span style="color:#ff5252">*</span></label>
             <input type="password" id="password" class="input"
                   formControlName="password" required >
   
@@ -77,7 +77,11 @@
                 topic
               </label> -->
               <!-- <a style="color: white;" target="_blank" href="http://support.chat21.org/web/?recipient={{requestRecipient}}" >  color: white; -->
-              <label class="container" for="terms" >{{ "iAgree" | translate }} <a style="color: #03a5e8" target="_blank" href="" >{{ "TermsAndConditions" | translate }}</a>
+              <label class="container" for="terms" >
+                  {{ "iAgree" | translate }} 
+                <a style="color: #03a5e8" target="_blank" href="" >{{ "TermsAndConditions" | translate }}</a>
+                  {{ "And" | translate }} 
+                <a style="color: #03a5e8" target="_blank" href="" >Privacy</a>
                 <input type="checkbox" formControlName="terms" id="terms"  (change)="onChange($event)" [checked]="checkModel" required />
                 <span class="checkmark"></span>
               </label>
@@ -90,7 +94,10 @@
             <!-- <div *ngIf="userForm.valid" class="notification is-success">Form is valid</div> -->
             <!-- SUBMIT -->
             <button style="width: 100%; background-color: #ff9800; height: 56px; font-size: 16px; letter-spacing: 2px;" type="submit" class="btn" [disabled]="!userForm.valid">
-              <span *ngIf="!showSpinnerInLoginBtn"> SignUp </span>
+              <span *ngIf="!showSpinnerInLoginBtn"> 
+                <!-- SignUp  -->
+                {{ "SignUp" | translate }}
+              </span>
               <span *ngIf="showSpinnerInLoginBtn"> <i class="fa fa-spinner fa-spin"></i></span>
             </button>
   
@@ -98,7 +105,10 @@
               <!-- <p class="button is-small" (click)="toggleForm()">Sei già registrato?</p> -->
               <!-- <a (click)="toggleForm()">Sei già registrato? </a> -->
               <!-- <a (click)="toggleForm()">Already have an account? Login </a> -->
-              <a routerLink="/login" style="color: #666666; font-size: 1.1em">Already have an account? <span style="color: #03a5e8">Login</span> </a>
+              <a routerLink="/login" style="color: #666666; font-size: 1.1em">
+                <!-- Already have an account?  -->
+                {{ "AlreadyHaveAnAccount" | translate }}
+                <span style="color: #03a5e8">Login</span> </a>
             </div>
           </form>
 

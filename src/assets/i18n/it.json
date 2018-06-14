@@ -17,6 +17,10 @@
     "LastName":"Cognome",
     "iAgree":"Accetto",
     "TermsAndConditions":"Termini e Condizioni",
+    "And":"e",
+    "SignUp":"Registrati",
+    "AlreadyHaveAnAccount":"Hai già un account?",
+    "DontHaveAnAccountYet":"Non hai ancora un account?",
     "UserProfile": {
         "Profile": "Profilo",
         "UploadImage": "Carica immagine",
