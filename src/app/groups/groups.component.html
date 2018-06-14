@@ -3,7 +3,7 @@
 </p>   
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
-    <div class="create" style="text-align: right!important; padding-top:5px; padding-bottom:0px">
+    <div class="create" style="text-align: left!important; padding-top:5px; padding-bottom:0px">
       <button class="btn btn-info" style="padding-left:8px; padding-right: 16px; margin-bottom: 0px" (click)="goToEditAddPage_create()">
         <span class="icon" style="padding-right:8px">
           <i class="material-icons">add_circle</i>
@@ -14,10 +14,10 @@
   
 
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-8">
         <div class="card">
 
-        <loading-spinner *ngIf="showSpinner"></loading-spinner>
+          <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
           <div *ngIf="!showSpinner" class="card-content table-responsive">
             <table class="table table-hover">
@@ -32,20 +32,20 @@
                     </span>
                   </th>
 
-                  <th>
+                  <!-- <th>
                     <span style="color: #566787">
                       <strong>Id</strong>
                     </span>
-                  </th>
+                  </th> -->
 
-                  <th>
+                  <!-- Creation Date -->
+                  <!-- <th>
                     <span style="color: #566787">
-                      <!-- Creation Date -->
                       <strong>
                         {{ "GroupsPage.CreationDate" | translate }} 
                       </strong>
                     </span>  
-                  </th>
+                  </th> -->
                   
                   <th>
                     <span style="color: #566787">
@@ -81,17 +81,17 @@
             
                 <tr *ngFor="let group of groupsList" >
                     <!-- *ngIf="!group?.trashed" -->
-                  <td>
+                  <td rel="tooltip" title="{{ group?._id }}">
                     {{ group?.name }}
                   </td>
                    
-                  <td>
+                  <!-- <td>
                     {{ group?._id }}
-                  </td>
+                  </td> -->
 
-                  <td>
+                  <!-- <td>
                     {{ group?.createdAt | date: 'd/M/y'}}
-                  </td>
+                  </td> -->
 
                   <td>
                     {{ group?.members.length }}  
@@ -118,10 +118,7 @@
                         <i class="material-icons">close</i>
                     </button>
                   </td>
-
- 
-
-     
+    
                 </tr>
               </tbody>
             </table>
@@ -129,7 +126,20 @@
           </div>
         </div>
       </div>
-      <!-- /. end col-md-12 -->
+      <!-- /. end col-md-8 -->
+
+      <!-- // RIGHT SIDEBAR -->
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-content">
+              <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; margin-bottom: 15px">
+                <!-- Quick tips -->
+                {{ "DeptsAddEditPage.QuickTips" | translate }}
+              </h4>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
