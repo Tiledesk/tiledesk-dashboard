@@ -1,5 +1,5 @@
 
-# chat21-support-dashboard
+# Tiledesk-dashboard
 
 
 ## Features
@@ -12,10 +12,10 @@
 ## Prerequisite
 
 For Firebase Auth and Firebase Database: create an account at https://firebase.google.com/
-For MongoDB CRUD: install and running chat21-api-nodejs (https://github.com/chat21/chat21-api-nodejs)
+For MongoDB CRUD: install and running tiledesk-api-nodejs (https://github.com/Tiledesk/tiledesk-api-nodejs)
 
-- `git clone https://github.com/chat21/chat21-support-dashboard.git`
-- `cd chat21-support-dashboard`
+- `git clone https://github.com/Tiledesk/tiledesk-dashboard.git`
+- `cd tiledesk-dashboard`
 - `npm install`
 
 Edit the environment.ts file and create the enviroment.prod.ts in `src/environments/`.
@@ -33,10 +33,10 @@ export const environment = {
         messagingSenderId: '123456789'
     },
     mongoDbConfig: {
-        MONGODB_CONTACTS_BASE_URL: 'http://localhost:3000/app1/contacts/',
-        MONGODB_DEPARTMENTS_BASE_URL: 'http://localhost:3000/app1/departments/',
-        MONGODB_FAQ_BASE_URL: 'http://localhost:3000/app1/faq/',
-        TOKEN: 'JWT_TOKEN'
+        BASE_URL: 'http://localhost:3000/',
+        PROJECTS_BASE_URL: 'http://localhost:3000/projects/',
+        SIGNUP_BASE_URL: 'http://localhost:3000/auth/signup',
+        SIGNIN_BASE_URL: 'http://localhost:3000/auth/signin',
     },
 };
 ```
