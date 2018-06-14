@@ -13,6 +13,10 @@
     "Settings": "Settings",
     "Departments": "Departments",
     "Resources": "Resources",
+    "FirstName": "First Name",
+    "LastName":"Last Name",
+    "iAgree":"I agree",
+    "TermsAndConditions":"Terms and Conditions",
     "UserProfile": {
         "Profile": "Profile",
         "UploadImage": "Upload image",

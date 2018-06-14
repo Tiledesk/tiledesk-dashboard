@@ -31,22 +31,29 @@
             <!-- <h3>Tile Desk</h3> -->
             <!-- <hr> -->
   
-            <label for="firstName">First Name</label>
+            <label for="firstName">
+              <!-- First Name -->
+              {{ "FirstName" | translate }}*
+            </label>
             <input type="text" id="firstName" class="input" formControlName="firstName" required>
 
             <div *ngIf="formErrors.firstName" class="is-danger">
               {{ formErrors.firstName }}
             </div>
   
-            <label for="lastName">Last Name</label>
+            <label for="lastName">
+              <!-- Last Name -->
+              {{ "LastName" | translate }}
+            </label>
             <input type="text" id="lastName" class="input"
-                  formControlName="lastName" required>
+                  formControlName="lastName">
+                  <!-- required -->
 
-            <div *ngIf="formErrors.lastName" class="is-danger">
+            <!-- <div *ngIf="formErrors.lastName" class="is-danger">
               {{ formErrors.lastName }}
-            </div>
+            </div> -->
   
-            <label for="email">Email</label>
+            <label for="email">Email* </label>
             <!-- id="email" -->
             <input autocomplete="off" type="email"  class="input"
                   formControlName="email" required >
@@ -55,7 +62,7 @@
               {{ formErrors.email }}
             </div>
   
-            <label for="password">Password</label>
+            <label for="password">Password*</label>
             <input type="password" id="password" class="input"
                   formControlName="password" required >
   
@@ -63,6 +70,23 @@
               {{ formErrors.password }}
             </div>
   
+            <!-- TERMS AND CONDITION -->
+            <!-- <div class="form-check"> -->
+              <!-- <input (change)="onChange(f)" #f  class="form-check-input" type="checkbox" [value]="topic" name="topicgroup" id="topic">
+              <label class="form-check-label" for="defaultCheck1" style="font-weight: normal">
+                topic
+              </label> -->
+              <!-- <a style="color: white;" target="_blank" href="http://support.chat21.org/web/?recipient={{requestRecipient}}" >  color: white; -->
+              <label class="container" for="terms" >{{ "iAgree" | translate }} <a style="color: #03a5e8" target="_blank" href="" >{{ "TermsAndConditions" | translate }}</a>
+                <input type="checkbox" formControlName="terms" id="terms"  (change)="onChange($event)" [checked]="checkModel" required />
+                <span class="checkmark"></span>
+              </label>
+
+              <div *ngIf="formErrors.terms" class="is-danger">
+                {{ formErrors.terms }}
+              </div>
+            <!-- </div> -->
+
             <!-- <div *ngIf="userForm.valid" class="notification is-success">Form is valid</div> -->
             <!-- SUBMIT -->
             <button style="width: 100%; background-color: #ff9800; height: 56px; font-size: 16px; letter-spacing: 2px;" type="submit" class="btn" [disabled]="!userForm.valid">

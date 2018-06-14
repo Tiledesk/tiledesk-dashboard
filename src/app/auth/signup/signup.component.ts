@@ -5,8 +5,8 @@ import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
 import * as firebase from 'firebase/app';
 
-type UserFields = 'email' | 'password' | 'firstName' | 'lastName';
-type FormErrors = {[u in UserFields]: string };
+type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
+type FormErrors = { [u in UserFields]: string };
 
 @Component({
   selector: 'app-signup',
@@ -27,6 +27,7 @@ export class SignupComponent implements OnInit {
     'password': '',
     'firstName': '',
     'lastName': '',
+    'terms': '',
   };
   validationMessages = {
     'email': {
@@ -44,6 +45,9 @@ export class SignupComponent implements OnInit {
     },
     'lastName': {
       'required': 'Last Name is required.',
+    },
+    'terms': {
+      'required': 'Please accept Terms and Conditions.',
     },
   };
   constructor(
@@ -220,6 +224,10 @@ export class SignupComponent implements OnInit {
       ]],
       'lastName': ['',
         [
+          // Validators.required,
+        ]],
+      'terms': ['',
+        [
           Validators.required,
         ]],
     });
@@ -233,7 +241,7 @@ export class SignupComponent implements OnInit {
     const form = this.userForm;
     for (const field in this.formErrors) {
       // tslint:disable-next-line:max-line-length
-      if (Object.prototype.hasOwnProperty.call(this.formErrors, field) && (field === 'email' || field === 'password' || field === 'firstName' || field === 'lastName')) {
+      if (Object.prototype.hasOwnProperty.call(this.formErrors, field) && (field === 'email' || field === 'password' || field === 'firstName' || field === 'lastName' || field === 'terms')) {
         // clear previous error message (if any)
         this.formErrors[field] = '';
         const control = form.get(field);
@@ -260,6 +268,11 @@ export class SignupComponent implements OnInit {
     const url = 'http://tiledesk.com/'
     window.open(url);
     // , '_blank'
+  }
+
+  onChange($event) {
+    const checkModel = $event.target.checked;
+    console.log('CHECK MODEL ', checkModel)
   }
 
 }

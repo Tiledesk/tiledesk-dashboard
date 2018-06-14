@@ -13,6 +13,10 @@
     "Settings": "Impostazioni",
     "Departments": "Dipartmenti",
     "Resources": "Risorse",
+    "FirstName": "Nome",
+    "LastName":"Cognome",
+    "iAgree":"Accetto",
+    "TermsAndConditions":"Termini e Condizioni",
     "UserProfile": {
         "Profile": "Profilo",
         "UploadImage": "Carica immagine",

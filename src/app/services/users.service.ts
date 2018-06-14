@@ -455,7 +455,6 @@ export class UsersService {
             }
           });
 
-
       }).catch(function (error) {
         // Handle error
         console.log('idToken.', error);
