@@ -3,6 +3,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { UsersService } from '../services/users.service';
+import { AuthService } from '../core/auth.service';
 
 @Component({
   selector: 'appdashboard-change-password',
@@ -27,12 +28,36 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
   constructor(
     private _location: Location,
     private route: ActivatedRoute,
-    private usersService: UsersService
+    private usersService: UsersService,
+    public auth: AuthService
   ) { }
 
   ngOnInit() {
-    this.getUserIdFromRouteParams()
+    this.getUserIdFromRouteParams();
+
+    this.getCurrentProject();
   }
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+
+      if (project) {
+
+        console.log('00 -> CHANGE PSW - project from AUTH service subscription  ', project)
+      } else {
+        console.log('00 -> CHANGE PSW - project from AUTH service subscription ? ', project)
+
+        this.hideSidebar();
+      }
+    });
+  }
+
+  // hides the sidebar if the user is in the CHANGE PSW PAGE but has not yet selected a project
+  hideSidebar() {
+    const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
+    console.log('USER PROFILE  elemAppSidebar ', elemAppSidebar)
+    elemAppSidebar.setAttribute('style', 'display:none;');
+  }
+
 
   ngAfterViewInit() {
     if (document.getElementsByTagName) {
@@ -104,13 +129,13 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
           console.log('CHANGE PASSWORD - ERROR ', error);
           this.SHOW_CIRCULAR_SPINNER = false;
           this.CHANGE_PSW_NO_ERROR = false;
-          
+
           const error_body = JSON.parse(error._body);
 
           if (error_body.msg === 'Current password is invalid.') {
             this.CURRENT_PSW_INVALID_ERROR = true;
             this.CHANGE_PSW_OTHER_ERROR = false;
-            
+
           } else {
             this.CHANGE_PSW_OTHER_ERROR = true;
             this.CURRENT_PSW_INVALID_ERROR = false;
