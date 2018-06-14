@@ -71,18 +71,14 @@
             </div>
   
             <!-- TERMS AND CONDITION -->
-            <!-- <div class="form-check"> -->
-              <!-- <input (change)="onChange(f)" #f  class="form-check-input" type="checkbox" [value]="topic" name="topicgroup" id="topic">
-              <label class="form-check-label" for="defaultCheck1" style="font-weight: normal">
-                topic
-              </label> -->
-              <!-- <a style="color: white;" target="_blank" href="http://support.chat21.org/web/?recipient={{requestRecipient}}" >  color: white; -->
+            
               <label class="container" for="terms" >
                   {{ "iAgree" | translate }} 
-                <a style="color: #03a5e8" target="_blank" href="" >{{ "TermsAndConditions" | translate }}</a>
+                <a style="color: #03a5e8" target="_blank" href="http://www.tiledesk.com/termsofservice.html" >{{ "TermsAndConditions" | translate }}</a>
                   {{ "And" | translate }} 
-                <a style="color: #03a5e8" target="_blank" href="" >Privacy</a>
-                <input type="checkbox" formControlName="terms" id="terms"  (change)="onChange($event)" [checked]="checkModel" required />
+                <a style="color: #03a5e8" target="_blank" href="http://www.tiledesk.com/privacy.html">Privacy Policy</a>
+                <!-- [checked]="checkModel" -->
+                <input type="checkbox" formControlName="terms" id="terms"  (change)="onChange($event)"  required />
                 <span class="checkmark"></span>
               </label>
 

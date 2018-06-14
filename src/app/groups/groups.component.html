@@ -78,8 +78,8 @@
                     </p>
                   </td>
                 </tr>
-            
-                <tr *ngFor="let group of groupsList" >
+                <!-- | sortBy : {{ group?.name }} -->
+                <tr *ngFor="let group of groupsList">
                     <!-- *ngIf="!group?.trashed" -->
                   <td rel="tooltip" title="{{ group?._id }}">
                     {{ group?.name }}
@@ -136,6 +136,10 @@
                 <!-- Quick tips -->
                 {{ "DeptsAddEditPage.QuickTips" | translate }}
               </h4>
+
+              <p style="color:#999999">
+                Use groups to ogranize support teams. You can group agents based on skills and assign groups of agents to your departments.
+              </p>
           </div>
         </div>
       </div>
