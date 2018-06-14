@@ -160,6 +160,11 @@ export class UserProfileComponent implements OnInit {
   }
 
   goToChangePsw() {
-    this.router.navigate(['project/' + this.projectId + '/user/' + this.userId   + '/password/change']);
+    console.log('»» GO TO CHANGE PSW - PROJECT ID ', this.projectId)
+    if (this.projectId === undefined) {
+      this.router.navigate(['project/user/' + this.userId + '/password/change']);
+    } else {
+      this.router.navigate(['project/' + this.projectId + '/user/' + this.userId + '/password/change']);
+    }
   }
 }

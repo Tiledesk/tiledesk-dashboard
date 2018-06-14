@@ -170,8 +170,10 @@ const routes: Routes = [
 
   { path: 'project/:projectid/routing', component: RoutingPageComponent, canActivate: [AuthGuard] },
 
-  // CHANGE PSWRD
+  // CHANGE PSWRD if project is defined (use case: THE USER SELECTED A PROJECT)
   { path: 'project/:projectid/user/:userid/password/change', component: ChangePasswordComponent, canActivate: [AuthGuard] },
+  // CHANGE PSWRD if project is undefined (use case: THE USER HAS NOT YET SELECTED A PROJECT)
+  { path: 'project/user/:userid/password/change', component: ChangePasswordComponent, canActivate: [AuthGuard] },
 
   { path: 'dashboard', component: DashboardComponent },
 
