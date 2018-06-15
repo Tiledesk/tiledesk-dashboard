@@ -83,9 +83,9 @@
   <!-- <span (click)="testVerifyEmail()">VERIFY EMAIL</span> -->
 </p> 
 <!-- http://www.frontiere21.com/wp-content/uploads/2016/08/chat21-frontiere21-head-.png -->
-<div class="main-content" style="padding-top:0px; background-repeat: no-repeat; background-image: url(assets/img/chat21-frontiere21-head-.png); background-attachment: scroll; background-position: top right; ">
-  
-  <div class="container-fluid">
+<div class="main-content"  style="padding-top:0px; background-repeat: no-repeat; background-image: url(assets/img/chat21-frontiere21-head-.png); background-attachment: scroll; background-position: top right; ">
+  <!-- margin-right:100px; margin-left:100px; -->
+  <div class="container-fluid" style="max-width: 960px">
   
     <!-- <div class="create" style="text-align: right!important; padding-top:25px; padding-bottom:0px">
       <button class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="goToEditAddPage_CREATE()">
@@ -98,7 +98,7 @@
   
     <!-- MOMGO DB PROJECTS LIST -->
     <!-- NEW -->
-    <div class="row" style="margin-right:100px; margin-left:100px;">
+    <div class="row">
       <h3 style="padding-left:15px; margin-top:55px; margin-bottom: 5px;" >
         {{ 'ProjectsPage.Welcome' | translate }} in Tile Desk. 
       </h3>
@@ -106,12 +106,13 @@
         {{ 'ProjectsPage.BuildYourCustomer_1' | translate }} <br> {{ 'ProjectsPage.BuildYourCustomer_2' | translate }} 
       </h4>
     </div>
-    <div class="row" style="margin-right:100px; margin-left:100px;">
-      <div class="col-lg-3 col-md-6 col-sm-6" style="cursor:pointer">
+    <div class="row">
+      <div class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer">
 
         <!-- CARD ADD PROJECT -->
-        <div class="card" (click)='openCreateModal()'>
-          <div class="card-content">
+        <!-- style="max-width: 256px;" -->
+        <div class="card" (click)='openCreateModal()' >
+          <div class="card-content" style="height:204px">
             <h3 class="title" style="color: #55b9d1; text-align: center; padding-top:25px">
               <i class="material-icons" style="font-size:48px">add</i>
             </h3>
@@ -125,11 +126,12 @@
 
       <loading-spinner *ngIf="showSpinner"></loading-spinner>
         <span *ngIf="!showSpinner">
-        <div *ngFor="let project of projects" class="col-lg-3 col-md-6 col-sm-6" style="cursor:pointer">
+        <div *ngFor="let project of projects" class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer">
 
           <!-- CARDS FROM THE PROJECT 'FOR' -->
+          <!-- style="max-width: 256px;" -->
           <div class="card" (click)='goToHome(project?.id_project._id, project?.id_project.name)'>
-            <div class="card-content">
+            <div class="card-content"  style="height:160px">
               <h3 class="title" style="color: #566787; font-size:20px; margin-bottom: 0px;">
                 {{ project?.id_project.name }}
               </h3>

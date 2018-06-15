@@ -8,7 +8,7 @@ import * as firebase from 'firebase/app';
 // import { User } from '../../models/user-model';
 
 type UserFields = 'email' | 'password';
-type FormErrors = {[u in UserFields]: string };
+type FormErrors = { [u in UserFields]: string };
 
 
 @Component({
@@ -21,6 +21,7 @@ export class SigninComponent implements OnInit {
   showSpinnerInLoginBtn = false;
 
   public signin_errormsg = '';
+  public signin_error_statusZero: boolean;
   display = 'none';
 
   userForm: FormGroup;
@@ -114,7 +115,7 @@ export class SigninComponent implements OnInit {
     // this.auth.signin(this.userForm.value['email'], this.userForm.value['password'])
     //   .subscribe((error) => {
     this.auth.signin(this.userForm.value['email'], this.userForm.value['password'], function (error) {
-      console.log('1. POST DATA ERROR', error);
+
       // this.auth.user = signinResponse.user;
       // this.auth.user.token = signinResponse.token
       // console.log('SIGNIN TOKEN ', this.auth.user.token)
@@ -126,13 +127,24 @@ export class SigninComponent implements OnInit {
 
       } else {
         self.showSpinnerInLoginBtn = false;
+        console.log('1. POST DATA ERROR', error);
+        console.log('2. POST DATA ERROR status', error.status);
 
-        const signin_errorbody = JSON.parse(error._body)
-        self.signin_errormsg = signin_errorbody['msg']
-        self.display = 'block';
-        // console.log('SIGNIN USER - POST REQUEST ERROR ', error);
-        // console.log('SIGNIN USER - POST REQUEST BODY ERROR ', signin_errorbody);
-        console.log('SIGNIN USER - POST REQUEST MSG ERROR ', self.signin_errormsg);
+        if (error.status === 0) {
+
+          self.display = 'block';
+          self.signin_errormsg = 'Sorry, there was an error connecting to the server'
+        } else {
+          self.display = 'block';
+          // if ( )
+          const signin_errorbody = JSON.parse(error._body)
+          console.log('SIGNIN ERROR BODY ', signin_errorbody)
+          self.signin_errormsg = signin_errorbody['msg']
+
+          // console.log('SIGNIN USER - POST REQUEST ERROR ', error);
+          // console.log('SIGNIN USER - POST REQUEST BODY ERROR ', signin_errorbody);
+          console.log('SIGNIN USER - POST REQUEST MSG ERROR ', self.signin_errormsg);
+        }
       }
       // tslint:disable-next-line:no-debugger
       // debugger

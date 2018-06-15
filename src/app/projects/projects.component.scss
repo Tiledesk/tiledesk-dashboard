@@ -138,3 +138,9 @@ input[type=text] {
     background-color: #fff !important;
     border: solid 1px #ddd;
 }
+
+@media (min-width: 1700px) and (max-width: 1019px){
+    .modal-dialog {
+            margin-left: 33%;
+        }
+    }
