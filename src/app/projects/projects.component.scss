@@ -139,8 +139,7 @@ input[type=text] {
     border: solid 1px #ddd;
 }
 
-@media (min-width: 1700px) and (max-width: 1019px){
-    .modal-dialog {
-            margin-left: 33%;
-        }
-    }
+.card:hover {
+
+background-color: #fafafa
+}
