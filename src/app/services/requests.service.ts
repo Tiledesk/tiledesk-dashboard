@@ -238,10 +238,10 @@ export class RequestsService {
     console.log('****** ADD OR UPDATE REQUEST LIST ******')
 
     // r.hasAgent(this.currentUserID)) PASS THE CURRENT USER ID TO THE 'REQUEST' MODEL WHICH AFTER COMPARING
-    // THE CURRENT USER ID WITH THE 'USER ID' CONTAINED IN THE ARRAY 'AGENTS' (NESTED IN THE 'REQUEST' OBJECT) 
+    // THE CURRENT USER ID WITH THE 'USER ID' CONTAINED IN THE ARRAY 'AGENTS' (NESTED IN THE 'REQUEST' OBJECT)
     // RETURNS TRUE OR FALSE
-    //  || !r.hasAgent(this.currentUserID)
-    if (r === null || r === undefined) {
+
+    if (r === null || r === undefined || !r.hasAgent(this.currentUserID))  {
       console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID))
       return;
     }

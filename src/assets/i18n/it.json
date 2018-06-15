@@ -149,6 +149,7 @@
         "Members": "Membri",
         "NoGroups": "Nessun Gruppo",
         "PendingAddMembers": "in sospeso aggiungi membri",
+        "QuickTips": "Consigli veloci",
         "tooltipEditGroup": "Modifica Group",
         "tooltipDeleteGroup": "Elimina Group"
     },
@@ -162,7 +163,11 @@
         "MemberAddedtoGroup":"Membro aggiunto al gruppo",
         "MembersAddedtoGroup":"Membro aggiunto al gruppo",
         "CreateGroup": "Crea Gruppo",
+        "QuickTips": "Consigli veloci",
         "UpdateGroupName": "Aggiorna nome Gruppo",
+        "GroupAttributes": "Attributi gruppo",
+        
+        "GroupID":"Id gruppo",
         "Members": "Membri",
         "AddMembers": "Aggiungi membri",
         "Select":"Seleziona",

@@ -19,10 +19,8 @@
       <span *ngIf="!showSpinner">
 
         <div class="row">
-          <div class="col-md-12">
-
+          <div class="col-md-8">
             <div class="card" style="padding-top:25px; padding-bottom:25px">
-
               <div class="card-content">
                 <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
                   {{ "GroupsAddEditPage.GroupName" | translate }}
@@ -45,7 +43,25 @@
             </div>
             <!-- ./ card -->
           </div>
-          <!-- ./ col-md-12 -->
+          <!-- ./ col-md-8 -->
+          <!-- // RIGHT SIDEBAR CREATE VIEW -->
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-content">
+                <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; margin-bottom: 15px">
+                  <!-- Quick tips -->
+                  {{ "GroupsAddEditPage.QuickTips" | translate }}
+                </h4>
+  
+                <p style="color:#999999">
+                  Use groups to organize support teams.
+                  <br>
+                  You can group agents based on skills and assign groups of agents to your departments.
+                </p>
+              </div>
+            </div>
+          </div>
+
         </div>
         <!-- ./ row -->
       </span>
@@ -58,37 +74,70 @@
       <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
       <!-- <span *ngIf="!showSpinner"> -->
         <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-8">
+            <div class="card" style="padding-top:28px; padding-bottom:28px; margin-bottom: 5px;">
 
-            <div class="card" style="padding-top:25px; padding-bottom:25px; margin-bottom: 5px;">
+              <div class="card-content" style="margin-top: 16px">
 
-              <div class="card-content">
+                <!-- <div class="row"> -->
+                  <!-- <div class="col-md-12"> -->
 
-                <div class="row">
-                  <div class="col-md-12">
-
-                    <!-- <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right; margin-top: 12px" class="col-sm-2 groupName">
+                     <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 groupName">
                       {{ "GroupsAddEditPage.GroupName" | translate }}
-                    </label> -->
-                    <div class="col-sm-6" style="margin-top: 12px">
+                    </label>
+                    <div class="col-sm-10">
                       <input [(ngModel)]="groupNameToUpdate" class="input" type="text">
                     </div>
 
+                     <!-- SPACER -->
+                    <div class="col-sm-12 spacer" style="height:15px"></div>
+
                     <!-- <label class="col-sm-2"></label> -->
-                    <div class="col-sm-6"> 
+                    <div class="col-sm-10 col-sm-offset-2"> 
                       <button class="btn btn-success" (click)="editGroupName()">
                         {{ "GroupsAddEditPage.UpdateGroupName" | translate }}
                       </button>
                     </div>
 
-                  </div>
-                </div>
+                  <!-- </div> -->
+                <!-- </div> -->
 
               </div>
             </div>
             <!-- ./ card -->
           </div>
-          <!-- ./ col-md-12 -->
+          <!-- ./ col-md-8 -->
+
+          <!-- // RIGHT SIDEBAR EDIT VIEW -->
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-content">
+                <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; margin-bottom: 15px">
+                  <!-- Quick tips -->
+                  {{ "GroupsAddEditPage.GroupAttributes" | translate }}
+                </h4>
+  
+                <p style="margin-bottom: 3px; color:#566787; padding-top: 10px;"> 
+                  <strong>
+                    {{ "GroupsAddEditPage.GroupID" | translate }}
+                  </strong>
+                </p>
+                <p style="color:#999999; font-weight: 500">  
+                    {{ id_group }}
+                </p>
+
+                <p style="margin-bottom: 3px; color:#566787; padding-top: 10px;"> 
+                  <strong>
+                    {{ "GroupsPage.CreationDate" | translate }}
+                  </strong>
+                </p>
+                <p style="color:#999999; font-weight: 500">  
+                    {{ groupCreatedAt | date: 'd/M/y'}}
+                </p>
+              </div>
+            </div>
+          </div>
+
         </div>
         <!-- ./ row -->
 

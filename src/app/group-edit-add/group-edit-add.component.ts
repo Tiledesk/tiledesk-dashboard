@@ -17,6 +17,7 @@ export class GroupEditAddComponent implements OnInit {
   showSpinner = true;
   groupName: string;
   groupNameToUpdate: string;
+  groupCreatedAt: string;
   project_id: string;
   group_id: string;
   // displayInfoModal = 'none'
@@ -99,7 +100,7 @@ export class GroupEditAddComponent implements OnInit {
         this.groupNameToUpdate = group.name;
         this.group_members = group.members;
         this.id_group = group._id;
-
+        this.groupCreatedAt = group.createdAt
 
         this.users_selected = this.group_members;
         console.log('GROUP MEMBERS ', this.group_members)
