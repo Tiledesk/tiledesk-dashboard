@@ -98,7 +98,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 
 // PIPE
 import { GroupNamePipe } from './groupname.pipe';
-import { SortPipe } from './sort.pipe';
+import { SortByPipe } from './sortby.pipe';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -149,7 +149,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     GroupsComponent,
     GroupEditAddComponent,
     GroupNamePipe,
-    SortPipe,
+    SortByPipe,
     ChangePasswordComponent
   ],
   imports: [

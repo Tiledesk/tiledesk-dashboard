@@ -15,11 +15,8 @@ export class GroupNamePipe implements PipeTransform {
     transform(id_group: string): any {
         console.log('RUN THE PIPE  ', id_group)
 
-
         this.groupsService.getGroupById(id_group)
             .subscribe((group: any) => {
-
-
 
                 if (group) {
                     console.log('RUN THE PIPE - GROUP GET BY ID', group);
@@ -37,16 +34,11 @@ export class GroupNamePipe implements PipeTransform {
 
                 });
 
-
-
-
         // if (this.groupName) {
         //     return this.groupName
         // }
 
     }
-
-
 
 }
 
