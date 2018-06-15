@@ -161,17 +161,26 @@
         <h4 class="modal-title" style="color: #fff">
             <i class="material-icons" style="vertical-align: middle">report_problem</i>
             <span style="vertical-align: middle; padding-left:8px">
-              Elimina gruppo
+              <!-- Elimina gruppo -->
+              {{ "GroupsPage.DeleteGroup" | translate }}
             </span>
         </h4>
         <!-- padding-left: 36px  -->
         <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em;">
-          Il gruppo con ID: <code>{{ id_group_to_delete }}</code> verrà eliminato
+          <!-- Il gruppo con ID:  -->
+          {{ "GroupsPage.TheGroupWithId" | translate }}
+
+          <code>{{ id_group_to_delete }}</code>
+          <!-- verrà eliminato -->
+          {{ "GroupsPage.WillBeRemoved" | translate }}
         </h4>
       </div>
       <div class="modal-body">
         <p style="font-weight:500; text-align: left; margin-top: 10px; color: #999">
-          Sei sicuro di voler rimuovere il gruppo <span style="color: #566787"> 
+          <!-- Sei sicuro di voler rimuovere il gruppo  -->
+          {{ "GroupsPage.AreYouSureDeleteGroup" | translate }}
+
+          <span style="color: #566787"> 
             <strong> {{ name_group_to_delete }} </strong>
           </span>?
           <!-- <span style="color:#212121"><strong> {{ id_project }}</strong> </span> -->
@@ -179,8 +188,15 @@
 
       </div>
       <div class="modal-footer" style="margin-top: 0px;">
-        <button class="btn btn-white" (click)="onCloseDeleteModal()" style="padding:12px 16px;">Annulla</button>
-        <button style="margin-top:0px" class="btn btn-danger" (click)="deleteGroup()">Elimina Gruppo</button>
+        <button class="btn btn-white" (click)="onCloseDeleteModal()" style="padding:12px 16px;">
+          <!-- Annulla -->
+          {{ "GroupsPage.Cancel" | translate }}
+        </button>
+        <button style="margin-top:0px" class="btn btn-danger" (click)="deleteGroup()">
+          <!-- Elimina Gruppo -->
+          {{ "GroupsPage.DeleteGroup" | translate }}
+
+        </button>
       </div>
     </div>
   </div>

@@ -153,7 +153,12 @@
         "PendingAddMembers": "in sospeso aggiungi membri",
         "QuickTips": "Consigli veloci",
         "tooltipEditGroup": "Modifica Group",
-        "tooltipDeleteGroup": "Elimina Group"
+        "tooltipDeleteGroup": "Elimina Group",
+        "DeleteGroup":"Elimina gruppo",
+        "TheGroupWithId":"Il gruppo con Id:",
+        "WillBeRemoved": "sarà eliminato",
+        "AreYouSureDeleteGroup": "Sei sicuro di voler rimuovere il gruppo",
+        "Cancel":"Annulla"
     },
     "GroupsAddEditPage": {
         "AddGroup": "Aggiungi Gruppo",

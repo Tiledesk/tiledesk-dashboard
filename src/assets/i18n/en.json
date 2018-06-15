@@ -151,7 +151,12 @@
         "PendingAddMembers": "pending add members",
         "QuickTips": "Quick tips",
         "tooltipEditGroup": "Edit Group",
-        "tooltipDeleteGroup": "Delete Group"
+        "tooltipDeleteGroup": "Delete Group",
+        "DeleteGroup":"Delete group",
+        "TheGroupWithId":"The group with Id:",
+        "WillBeRemoved": "will be removed",
+        "AreYouSureDeleteGroup": "Are you sure you want to delete the group",
+        "Cancel":"Cancel"
     },
     "GroupsAddEditPage": {
         "AddGroup": "Add Group",
