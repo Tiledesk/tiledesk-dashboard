@@ -63,6 +63,7 @@ import { RequestsMsgsComponent } from './requests-msgs/requests-msgs.component';
 import { GroupsComponent } from './groups/groups.component';
 import { GroupEditAddComponent } from './group-edit-add/group-edit-add.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { HoursComponent } from './hours/hours.component';
 
 // import { DashboardComponent} from './dashboard/dashboard.component';
 // Andrea
@@ -174,6 +175,9 @@ const routes: Routes = [
   { path: 'project/:projectid/user/:userid/password/change', component: ChangePasswordComponent, canActivate: [AuthGuard] },
   // CHANGE PSWRD if project is undefined (use case: THE USER HAS NOT YET SELECTED A PROJECT)
   { path: 'user/:userid/password/change', component: ChangePasswordComponent, canActivate: [AuthGuard] },
+
+  // HOURS
+  { path: 'project/:projectid/hours', component: HoursComponent, canActivate: [AuthGuard] },
 
   { path: 'dashboard', component: DashboardComponent },
 

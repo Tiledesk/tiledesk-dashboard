@@ -323,6 +323,16 @@
                 </a>
             </li>
 
+            <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active">
+                <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/hours">
+                    <span class="sidebar-mini">
+                        H
+                    </span>
+                    <!-- {{ 'Resources' | translate }} -->
+                    <span class="sidebar-normal"> Hours </span> 
+                </a>
+            </li>
+
             <!-- // SCRIPT -->
             <!-- <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active">
                 <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/script">

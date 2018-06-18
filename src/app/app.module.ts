@@ -99,6 +99,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 // PIPE
 import { GroupNamePipe } from './groupname.pipe';
 import { SortByPipe } from './sortby.pipe';
+import { HoursComponent } from './hours/hours.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -150,7 +151,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     GroupEditAddComponent,
     GroupNamePipe,
     SortByPipe,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    HoursComponent
   ],
   imports: [
     BrowserModule,
