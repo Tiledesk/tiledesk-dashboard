@@ -26,6 +26,8 @@
     "QuickTipsAssigned":"Le chat assegnate aiutano a mantenere una distribuzione uniforme del carico di lavoro, soprattutto per i team più grandi.",
     "QuickTipsPooled":"Le chat 'pooled' offrono agli agenti maggiore autonomia, consentendo loro di lavorare secondo i propri ritmi.",
     "QuickTipsBot":"Seleziona un bot che risponde automaticamente.",
+    "GroupsQuickTips1":"Utilizza i gruppi per organizzare i team di supporto.",
+    "GroupsQuickTips2":"È possibile raggruppare agenti in base alle competenze e assegnare gruppi di agenti ai propri dipartimenti.",
     "UserProfile": {
         "Profile": "Profilo",
         "UploadImage": "Carica immagine",

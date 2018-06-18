@@ -26,6 +26,8 @@
     "QuickTipsAssigned":"Assigned chats help maintain an even workload distribution, especially for larger teams.",
     "QuickTipsPooled":"Pooled chats give agents more autonomy, allowing them to work at their own pace.",
     "QuickTipsBot":"Select a bot that responds automatically.",
+    "GroupsQuickTips1":"Use groups to organize support teams.",
+    "GroupsQuickTips2":"You can group agents based on skills and assign groups of agents to your departments.",
     "UserProfile": {
         "Profile": "Profile",
         "UploadImage": "Upload image",
