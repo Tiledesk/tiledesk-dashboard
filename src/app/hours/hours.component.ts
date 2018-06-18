@@ -14,7 +14,16 @@ export class HoursComponent implements OnInit {
   ngOnInit() {
     this.auth.checkRole();
 
-    
+
   }
 
+
+  updateHours() {
+
+  }
+
+  onChange($event) {
+    const checkModel = $event.target.checked;
+    console.log('CHECK MODEL ', checkModel)
+  }
 }

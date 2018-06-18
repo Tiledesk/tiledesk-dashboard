@@ -15,6 +15,8 @@
     "Settings": "Impostazioni",
     "Departments": "Dipartmenti",
     "Resources": "Risorse",
+    "Hours":"Orari",
+    "H":"O",
     "FirstName": "Nome",
     "LastName": "Cognome",
     "iAgree": "Accetto",
@@ -393,5 +395,9 @@
     "UnauthorizedPage": {
         "UnauthorizedAccess": "Accesso non autorizzato!",
         "OopsYouDontHave": "Oops! Non hai il permessi per accedere a questa pagina."
+    },
+    "HoursPage":{
+        "ActivateTimetables": "Attiva orari",
+        "UpdateHours":"Aggiorna Orari"
     }
 }

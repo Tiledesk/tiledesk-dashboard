@@ -1,3 +1,51 @@
-<p>
-  hours works!
-</p>
+<div class="navbar-brand" style="z-index: -1;margin-top:10px; padding-left:30px">
+    <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">keyboard_arrow_left</i>
+    {{ "Hours" | translate }}
+  </div>
+  
+  <div class="main-content" style="padding-top:0px">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card" style="padding-top: 25px;padding-bottom: 25px;">
+            <div class="card-content">
+
+             
+              <div class="col-sm-10 col-sm-offset-2">
+                <label class="container" for="hoursActive" style="margin-left: 0px;" >
+                    {{ "HoursPage.ActivateTimetables" | translate }} 
+                  
+                  <!-- [checked]="checkModel" -->
+                  <input type="checkbox" id="hoursActive"  (change)="onChange($event)"/>
+                  <span class="checkmark"></span>
+                </label>
+              </div>
+
+              <!-- SPACER -->
+              <div class="col-sm-12 spacer" style="height:15px"></div>
+
+              <label  class="col-sm-2" style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;">
+                {{ "Hours" | translate }}
+              </label>
+              <div class="col-sm-10">
+                <input [(ngModel)]="hours" class="" type="text" placeholder='{{ "Hours" | translate }}'>
+              </div>
+ 
+  
+            </div>
+  
+            <!-- SPACER -->
+            <!-- <div class="col-sm-12 spacer" style="height:15px"></div> -->
+            
+            <div style="padding-left:25px" class="col-sm-10 col-sm-offset-2">
+              <button class="btn btn-success" (click)="updateHours()">
+
+                {{ "HoursPage.UpdateHours" | translate }}
+              </button>
+            </div>
+  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
