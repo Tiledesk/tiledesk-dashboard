@@ -107,19 +107,31 @@
         <div class="card" style="padding-top:25px; padding-bottom:25px">
             <div class="card-content" style="padding-top: 0px;">
               <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; margin-bottom: 15px">
-                User Roles
+                <!-- User Roles -->
+                {{ "UserEditAddPage.UserRoles" | translate }}
               </h4>
 
-              <p style="margin-bottom: 3px"> <strong>Admin</strong></p>
+              <p style="margin-bottom: 3px">
+                <strong>
+                  <!-- Admin -->
+                  {{ "UserEditAddPage.Admin" | translate }}
+                </strong>
+              </p>
               <p style="color:#999999">
-                  
-                  An Administrator has full power over the app and can do everything related to TileDesk administration. Administrators can create more Administrators, invite new users, remove users, change user roles, serve Visitors ... 
+                <!-- An Administrator has full power over the app and can do everything related to TileDesk administration. Administrators can create more Administrators, invite new users, remove users, change user roles, serve Visitors.  -->
+                {{ "UserEditAddPage.AnAdministratorHas" | translate }}
               </p>
 
-              <p style="margin-bottom: 3px"> <strong>Agent</strong></p>
+              <p style="margin-bottom: 3px">
+                <strong>
+                  <!-- Agent -->
+                  {{ "UserEditAddPage.Agent" | translate }}
+                </strong>
+              </p>
               <p style="color:#999999">
-                  
-                  An Agent can serve Visitors... 
+                <!-- An Agent can use this control panel to monitor help requests and chat with Visitors. -->
+                {{ "UserEditAddPage.AnAgentCan" | translate }}
+
               </p>
 
             </div>
