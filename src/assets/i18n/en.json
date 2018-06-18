@@ -15,8 +15,7 @@
     "Settings": "Settings",
     "Departments": "Departments",
     "Resources": "Resources",
-    "Hours":"Hours",
-    "H":"H",
+    "Hours":"Operating Hours",
     "FirstName": "First Name",
     "LastName":"Last Name",
     "iAgree":"I agree",
@@ -395,7 +394,7 @@
         "OopsYouDontHave": "Oops! You don't have permission to access this page."
     },
     "HoursPage":{
-        "ActivateTimetables": "Activate timetables",
-        "UpdateHours":"Update hours"
+        "ActivateTimetables": "Activate operating hours",
+        "UpdateHours":"Update operating hours"
     }
 }

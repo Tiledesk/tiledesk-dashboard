@@ -85,7 +85,6 @@ export class HomeComponent implements OnInit {
     })
   }
 
-
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project

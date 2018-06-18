@@ -52,6 +52,7 @@ export class UsersService {
   PROJECT_BASE_URL = environment.mongoDbConfig.PROJECTS_BASE_URL;
   AVAILABLE_USERS_URL: any;
 
+
   // http://localhost:3000/users/updateuser/'
   UPDATE_USER_URL = environment.mongoDbConfig.UPDATE_USER_LASTNAME_FIRSTNAME;
   CHANGE_PSW_URL = environment.mongoDbConfig.CHANGE_PSW;
@@ -209,6 +210,8 @@ export class UsersService {
       .get(url, { headers })
       .map((response) => response.json());
   }
+
+ 
 
   /// ================================== INVITE USER (ALIAS CREATE A MEMBER) ================================== ///
   public inviteUser(email: string, role: string) {

@@ -28,7 +28,7 @@
                 {{ "Hours" | translate }}
               </label>
               <div class="col-sm-10">
-                <input [(ngModel)]="hours" class="" type="text" placeholder='{{ "Hours" | translate }}'>
+                <input [(ngModel)]="operatingHours" class="" type="text" placeholder='{{ "Hours" | translate }}'>
               </div>
  
   
@@ -38,7 +38,7 @@
             <!-- <div class="col-sm-12 spacer" style="height:15px"></div> -->
             
             <div style="padding-left:25px" class="col-sm-10 col-sm-offset-2">
-              <button class="btn btn-success" (click)="updateHours()">
+              <button class="btn btn-success" (click)="updateProjectOperatingHours()">
 
                 {{ "HoursPage.UpdateHours" | translate }}
               </button>

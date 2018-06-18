@@ -3,8 +3,8 @@ export interface Project {
     updatedAt?: any;
     createdAt?: any;
     name?: string;
-    hoursActive?: boolean;
-    hours?: any
+    activeOperatingHours?: boolean;
+    operatingHours?: any
     createdBy?: string;
     __v?: any;
 }
