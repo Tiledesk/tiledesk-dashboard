@@ -23,6 +23,9 @@
     "SignUp":"Sign Up",
     "AlreadyHaveAnAccount":"Already have an account?",
     "DontHaveAnAccountYet":"Don't have an account yet?",
+    "QuickTipsAssigned":"Assigned chats help maintain an even workload distribution, especially for larger teams.",
+    "QuickTipsPooled":"Pooled chats give agents more autonomy, allowing them to work at their own pace.",
+    "QuickTipsBot":"Select a bot that responds automatically.",
     "UserProfile": {
         "Profile": "Profile",
         "UploadImage": "Upload image",
