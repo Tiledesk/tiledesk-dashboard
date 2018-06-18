@@ -51,6 +51,7 @@ export class UsersService {
   project: any;
   PROJECT_BASE_URL = environment.mongoDbConfig.PROJECTS_BASE_URL;
   AVAILABLE_USERS_URL: any;
+  NEW_AVAILABLE_USERS_URL: any;
 
 
   // http://localhost:3000/users/updateuser/'
@@ -99,7 +100,7 @@ export class UsersService {
         this.PROJECT_USER_DTLS_URL = this.BASE_URL + this.project._id + '/member/'
 
         this.AVAILABLE_USERS_URL = this.PROJECT_BASE_URL + this.project._id + '/users/availables'
-
+        this.NEW_AVAILABLE_USERS_URL = this.PROJECT_BASE_URL + this.project._id + '/users/newavailables'
         // PROJECT-USER BY PROJECT ID AND CURRENT USER ID
         // this.PROJECT_USER_URL = this.BASE_URL + this.project._id + '/project_users/'
       }
@@ -211,7 +212,19 @@ export class UsersService {
       .map((response) => response.json());
   }
 
- 
+   /* // ================ TEST FUNCTION -- ALL AVAILABLE PROJECT-USER (OF CURRENT PROJECT)
+   ALSO CONSIDERING OPERATING HOURS ====================== */
+   public getAvailableProjectUsersConsideringOperatingHours(): Observable<ProjectUser[]> {
+    // const url = this.MONGODB_BASE_URL + 'availables';
+    const url = this.NEW_AVAILABLE_USERS_URL;
+    console.log('»»»» »»»» PROJECT USERS NEW AVAILABLE URL', url);
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
 
   /// ================================== INVITE USER (ALIAS CREATE A MEMBER) ================================== ///
   public inviteUser(email: string, role: string) {

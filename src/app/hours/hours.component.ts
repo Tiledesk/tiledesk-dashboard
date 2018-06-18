@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../core/auth.service';
 
 import { ProjectService } from '../services/project.service';
-
+import { UsersService } from '../services/users.service';
 @Component({
   selector: 'appdashboard-hours',
   templateUrl: './hours.component.html',
@@ -13,7 +13,8 @@ export class HoursComponent implements OnInit {
   operatingHours: any;
   constructor(
     private auth: AuthService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private usersService: UsersService
   ) { }
 
   ngOnInit() {
@@ -38,6 +39,13 @@ export class HoursComponent implements OnInit {
     })
   }
 
+  testAvailableProjectUserConsideringProjectOperatingHours() {
+
+    this.usersService.getAvailableProjectUsersConsideringOperatingHours().subscribe((available_project) => {
+      console.log('»»»»»»» NEW - GET AVAILABLE PROJECT USERS (CONSIDERING OPERATING HOURS)', available_project)
+    })
+
+  }
 
 
 }
