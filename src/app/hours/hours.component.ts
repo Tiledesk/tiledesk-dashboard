@@ -40,6 +40,12 @@ export class HoursComponent implements OnInit {
   }
 
   testAvailableProjectUserConsideringProjectOperatingHours() {
+    const offset = new Date().getTimezoneOffset();
+    console.log('OFFEST ', offset);
+
+    const time = new Date('2001-01-01T06:00:00+08:00');
+    console.log('TIME ', time);
+    console.log('TIME ', time.toUTCString());
 
     this.usersService.getAvailableProjectUsersConsideringOperatingHours().subscribe((available_project) => {
       console.log('»»»»»»» NEW - GET AVAILABLE PROJECT USERS (CONSIDERING OPERATING HOURS)', available_project)
