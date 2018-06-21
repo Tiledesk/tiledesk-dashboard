@@ -53,5 +53,9 @@ export class HoursComponent implements OnInit {
 
   }
 
+  changeOpenedClosedStatus() {
+console.log('CLICKED CHANGE STATUS OPENED/CLOSED')
+  }
+
 
 }
