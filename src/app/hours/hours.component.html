@@ -31,21 +31,107 @@
                     <div class="card-content table-responsive">
 
                       <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th>
+                            <span style="color: #566787">
+                              <strong>
+                                Weekday
+                              </strong>
+                            </span>
+                            </th>
+                            
+                              <th colspan="2">
+                                <span style="color: #566787">
+                                  <strong>
+                                    Status
+                                  </strong>
+                                </span>
+                              </th>
+
+                              <th>
+                                  <span style="color: #566787">
+                                    <strong>
+                                      Hours
+                                    </strong>
+                                  </span>
+                                </th>
+
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                              <tr>
+
+                        </thead>
+
                         <tbody>
-                          <td>
+                          <tr *ngFor="let d of days">
+                           
+                            <td>
+                              {{ d.weekday }}
+                            </td>
 
-                            Domenica 
-                          </td>
+                            <td style="white-space: nowrap; width: 1%;">
+                              <label class="switch" style="margin-bottom: 0px;">
+                                  <!-- [checked]="projectUser?.user_available === true" -->
+                                  <!-- (click)="changeOpenedClosedStatus(d._id, d.weekday, isOpen = !isOpen)"  -->
+                                <input type="checkbox" (change)="onChangeOpenedClosedStatus($event, d._id, d.weekday)"[checked]="d.isOpen == true"  >
+                                <span class="slider round"></span>
+                              </label>
 
-                          <td>
+                            </td>
+                            
+                            <td>
+                             <span *ngIf="d.isOpen">
+                                APERTO
+                              </span>
+                              <span *ngIf="!d.isOpen">
+                                CHIUSO
+                              </span>
+                            </td>
+      
+                            <td>
+                            <!-- <span *ngFor="let oh of d.operatingHours"> -->
+                              <tr *ngFor="let oh of d.operatingHours">
+                                  <td> {{ oh.start }} </td>
+                                  <td> {{ oh.end }}  </td>
+                                  
+                              </tr>
+                                
+                                <!-- </span> -->
 
-                            <label class="switch" style="margin-bottom: 0px;">
-                                <!-- [checked]="projectUser?.user_available === true" -->
-                              <input type="checkbox" (click)="changeOpenedClosedStatus()" >
-                              <span class="slider round"></span>
-                            </label>
-                          </td>
+                            </td>
 
+                            <td>
+
+                              <!-- <input atp-time-picker value="19:00"/> -->
+                  
+                              <!-- <tr  *ngFor="let oh of d.operatingHours">
+                                <button (click)="open(d?._id)">Time</button>
+                                <input type="time" value="{{ oh.start  }}">
+                                <button (click)="open(d?._id)">Time</button>
+                                <input type="time" value="{{ oh.end  }}">
+                              </tr>  -->
+                            </td>
+                            <td>
+                                <button (click)="openAmStart(d?._id)">Time</button>
+                                <input type="time" value="{{ d.operatingHoursAmStart }}">
+
+                                <button (click)="openAmEnd(d?._id)">Time</button>
+                                <input type="time" value="{{ d.operatingHoursAmEnd }}">
+
+
+                            </td>
+
+                            <td>
+                                <button (click)="openPmStart(d?._id)">Time</button>
+                                <input type="time" value="{{ d.operatingHoursPmStart }}">
+
+                                <button (click)="openPmEnd(d?._id)">Time</button>
+                                <input type="time" value="{{ d.operatingHoursPmEnd }}">
+                            </td>
+ 
+                          </tr>
                         </tbody>
                       </table>
                     </div>

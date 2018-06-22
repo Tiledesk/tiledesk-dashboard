@@ -26,6 +26,7 @@
     "@firebase/app": "^0.1.10",
     "@ngx-translate/core": "^9.1.1",
     "@ngx-translate/http-loader": "^2.0.1",
+    "amazing-time-picker": "^1.5.3",
     "angular2-moment": "^1.8.0",
     "angularfire2": "^5.0.0-rc.7.2-next",
     "arrive": "2.4.1",

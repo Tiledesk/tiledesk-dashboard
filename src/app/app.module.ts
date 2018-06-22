@@ -101,6 +101,8 @@ import { GroupNamePipe } from './groupname.pipe';
 import { SortByPipe } from './sortby.pipe';
 import { HoursComponent } from './hours/hours.component';
 
+import { AmazingTimePickerModule } from 'amazing-time-picker';
+
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -171,6 +173,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     HttpModule,
     HttpClientModule,
     MomentModule,
+    AmazingTimePickerModule,
     TranslateModule.forRoot({
       loader: {
           provide: TranslateLoader,
