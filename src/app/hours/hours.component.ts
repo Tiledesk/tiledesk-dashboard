@@ -6,6 +6,7 @@ import { ProjectService } from '../services/project.service';
 import { UsersService } from '../services/users.service';
 
 import { AmazingTimePickerService } from 'amazing-time-picker';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'appdashboard-hours',
   templateUrl: './hours.component.html',
@@ -42,12 +43,16 @@ export class HoursComponent implements OnInit {
   public selectedTime: any;
   projectOffsetfromUtcZero: any;
   offsetDirectionFromUtcZero: any;
+  isActiveOperatingHours: boolean;
+  browser_lang: string;
 
   constructor(
     private auth: AuthService,
     private projectService: ProjectService,
     private usersService: UsersService,
-    private atp: AmazingTimePickerService
+    private atp: AmazingTimePickerService,
+    private translate: TranslateService
+
   ) { }
 
   ngOnInit() {
@@ -58,7 +63,9 @@ export class HoursComponent implements OnInit {
 
     this.projectOffsetfromUtcZero = this.getPrjctOffsetHoursfromTzOffset();
     console.log('»» »» HOURS COMP - PRJCT OFFSET FROM UTC 0::: ', this.projectOffsetfromUtcZero);
-
+ 
+    this.browser_lang = this.translate.getBrowserLang();
+    console.log('»» »» HOURS COMP - BROWSER LANGUAGE ', this.browser_lang);
   }
 
   getPrjctOffsetHoursfromTzOffset() {
@@ -114,57 +121,64 @@ export class HoursComponent implements OnInit {
 
   getProjectById() {
     this.projectService.getMongDbProjectById(this.projectid).subscribe((project: any) => {
-      console.log('≈≈≈≈ > HOURS - PROJECT (DETAILS) BY ID - PROJECT OBJECT: ', project);
+      console.log('≈≈≈≈ > HOURS comp - on init PROJECT (DETAILS) BY ID - PROJECT OBJECT: ', project);
 
-      this.project_operatingHours = JSON.parse(project.operatingHours);
-      console.log('≈≈≈≈ > HOURS - PROJECT OPERARITING HOURS: ', this.project_operatingHours);
+      if (project) {
+        this.project_operatingHours = JSON.parse(project.operatingHours);
+        console.log('≈≈≈≈ > HOURS comp - on init PROJECT OPERARITING HOURS: ', this.project_operatingHours);
 
-      // SE NEL OGGETTO OPERATING HOURS DEL PROGETTO E PRESENTE LA KEY CHE INDICA IL GIORNO AGGIUNGO OPERATING 
-      // HOURS ALL OBJECT DAY
-      let i;
-      for (i = 0; i < 7; i++) {
-        console.log('CICLO I =  ', i)
-        if (this.project_operatingHours.hasOwnProperty(i)) {
+        // used for the checkbox "Activate operating hours"
 
-          console.log(this.days[i].weekday, ' IS SETTED ')
-          console.log('operating hours start', this.project_operatingHours[i]);
+        this.isActiveOperatingHours = project.activeOperatingHours;
+        console.log('≈≈≈≈ > HOURS comp - on init PROJECT OPERARITING HOURS IS ACTIVE: ', this.isActiveOperatingHours);
 
-          this.days[i].operatingHours = this.project_operatingHours[i];
+        // SE NEL OGGETTO OPERATING HOURS DEL PROGETTO E PRESENTE LA KEY CHE INDICA IL GIORNO AGGIUNGO OPERATING
+        // HOURS ALL OBJECT DAY (CREO COSì L'OGGETTO DAYS CHE USO NEL TEMPLATE)
+        let i;
+        for (i = 0; i < 7; i++) {
+          // console.log('CICLO I =  ', i)
+          if (this.project_operatingHours.hasOwnProperty(i)) {
 
-          this.days[i].isOpen = true;
+            console.log(this.days[i].weekday, ' IS SETTED ')
+            console.log('operating hours start', this.project_operatingHours[i]);
 
-          this.days[i].operatingHoursAmStart = this.project_operatingHours[i][0].start
-          this.days[i].operatingHoursAmEnd = this.project_operatingHours[i][0].end
+            this.days[i].operatingHours = this.project_operatingHours[i];
 
-          if (this.project_operatingHours[i][1]) {
-            this.days[i].operatingHoursPmStart = this.project_operatingHours[i][1].start
-            this.days[i].operatingHoursPmEnd = this.project_operatingHours[i][1].end
+            this.days[i].isOpen = true;
+
+            this.days[i].operatingHoursAmStart = this.project_operatingHours[i][0].start
+            this.days[i].operatingHoursAmEnd = this.project_operatingHours[i][0].end
+
+            if (this.project_operatingHours[i][1]) {
+              this.days[i].operatingHoursPmStart = this.project_operatingHours[i][1].start
+              this.days[i].operatingHoursPmEnd = this.project_operatingHours[i][1].end
+            }
+
+            // this.project_operatingHours[i].forEach(hours => {
+            //   console.log('hours start  ', hours.start, 'hours end  ', hours.end)
+            //   this.days[i].operatingHoursAmStart = hours.start
+            //   this.days[i].operatingHoursAmEnd =  hours.end
+            // });
+
+            // this.days.forEach(day => {
+            //   const num = i
+            //   console.log('operating hours ', this.project_operatingHours[i] )
+
+            //   if (day._id === this.project_operatingHours[i]) {
+            //     console.log('day id ', day._id, ' i:  ', i)
+            //     day.isOpen = true;
+            //     day.operatingHours = this.project_operatingHours[i]
+            //     // console.log('DAY IS OPEN ', day.isOpen)
+            console.log('DAYS ON INIT ', this.days)
+            //   }
+            // });
+
+          } else {
+            console.log(this.days[i].weekday, ' IS ! NOT SETTED ')
           }
-
-          // this.project_operatingHours[i].forEach(hours => {
-          //   console.log('hours start  ', hours.start, 'hours end  ', hours.end)
-          //   this.days[i].operatingHoursAmStart = hours.start
-          //   this.days[i].operatingHoursAmEnd =  hours.end
-          // });
-
-          // this.days.forEach(day => {
-          //   const num = i
-          //   console.log('operating hours ', this.project_operatingHours[i] )
-
-          //   if (day._id === this.project_operatingHours[i]) {
-          //     console.log('day id ', day._id, ' i:  ', i)
-          //     day.isOpen = true;
-          //     day.operatingHours = this.project_operatingHours[i]
-          //     // console.log('DAY IS OPEN ', day.isOpen)
-          console.log('DAYS ON INIT ', this.days)
-          //   }
-          // });
-
-        } else {
-          console.log(this.days[i].weekday, ' IS ! NOT SETTED ')
         }
-      }
 
+      }
     },
       (error) => {
         console.log('HOURS COMP - PROJECT BY ID - ERROR ', error);
@@ -267,11 +281,6 @@ export class HoursComponent implements OnInit {
     let j;
     for (j = 0; j < 7; j++) {
       if (this.days[j].isOpen === true) {
-        // tslint:disable-next-line:max-line-length
-        // const updday =  { '_id': j, 'weekday': 'Sunday', 'isOpen': false, 'operatingHours': '', 'operatingHoursAmStart': '', 'operatingHoursAmEnd': '', 'operatingHoursPmStart': '', 'operatingHoursPmEnd': '' };
-        // {j : {
-
-        // }}
         // tslint:disable-next-line:max-line-length
         operatingHoursUpdated[j] = [{ 'start': this.days[j].operatingHoursAmStart, 'end': this.days[j].operatingHoursAmEnd }, { 'start': this.days[j].operatingHoursPmStart, 'end': this.days[j].operatingHoursPmEnd }];
       }

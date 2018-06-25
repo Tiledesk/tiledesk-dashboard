@@ -15,7 +15,7 @@
     "Settings": "Impostazioni",
     "Departments": "Dipartmenti",
     "Resources": "Risorse",
-    "Hours":"Orario di attività",
+    "Hours": "Orario di attività",
     "FirstName": "Nome",
     "LastName": "Cognome",
     "iAgree": "Accetto",
@@ -395,8 +395,21 @@
         "UnauthorizedAccess": "Accesso non autorizzato!",
         "OopsYouDontHave": "Oops! Non hai il permessi per accedere a questa pagina."
     },
-    "HoursPage":{
+    "HoursPage": {
         "ActivateTimetables": "Attiva orario di attività",
-        "UpdateHours":"Aggiorna orario di attività"
-    }
+        "Day": "Giorno",
+        "Status": "Stato",
+        "Opened": "Aperto",
+        "Closed": "Chiuso",
+        "Morning": "Mattina",
+        "Evening": "Sera",
+        "UpdateHours": "Aggiorna orario di attività"
+    },
+    "Sunday": "Domenica",
+    "Monday": "Lunedì",
+    "Tuesday": "Martedì",
+    "Wednesday": "Mercoledì",
+    "Thursday": "Giovedì",
+    "Friday": "Venerdì",
+    "Saturday": "Sabato"
 }
