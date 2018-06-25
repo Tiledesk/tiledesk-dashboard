@@ -20,7 +20,6 @@ export class HoursComponent implements OnInit {
   public days = [
     // tslint:disable-next-line:max-line-length
     { '_id': '0', 'weekday': 'Sunday', 'isOpen': false, 'operatingHours': '', 'operatingHoursAmStart': '', 'operatingHoursAmEnd': '', 'operatingHoursPmStart': '', 'operatingHoursPmEnd': '' },
-
     // tslint:disable-next-line:max-line-length
     { '_id': '1', 'weekday': 'Monday', 'isOpen': false, 'operatingHours': '', 'operatingHoursAmStart': '', 'operatingHoursAmEnd': '', 'operatingHoursPmStart': '', 'operatingHoursPmEnd': '' },
     // tslint:disable-next-line:max-line-length
@@ -41,6 +40,8 @@ export class HoursComponent implements OnInit {
   projectid: string
   project_operatingHours: any;
   public selectedTime: any;
+  projectOffsetfromUtcZero: any;
+  offsetDirectionFromUtcZero: any;
 
   constructor(
     private auth: AuthService,
@@ -55,11 +56,48 @@ export class HoursComponent implements OnInit {
     // this.daysList = this.days
     this.auth.checkRole();
 
+    this.projectOffsetfromUtcZero = this.getPrjctOffsetHoursfromTzOffset();
+    console.log('»» »» HOURS COMP - PRJCT OFFSET FROM UTC 0::: ', this.projectOffsetfromUtcZero);
+
+  }
+
+  getPrjctOffsetHoursfromTzOffset() {
+    // The getTimezoneOffset() method returns the time difference between UTC time and local time, in minutes
+    // e.g.: -120
+    const offset = new Date().getTimezoneOffset();
+    console.log('»» »» HOURS COMP - GET DATE', new Date());
+    // assign _offset (that is of type number) to offset (that is of type any)
+    // to be able to divide direction and minutes
+
+    console.log('»» »» HOURS COMP - GET TIMEZONE OFFSET ', offset);
+
+    const offsetStr = offset.toString();
+    console.log('»» »» HOURS COMP - GET TIMEZONE OFFSET (AS STRING) ', offsetStr);
+
+    const offsetOperator = offsetStr.substring(0, 1);
+    console.log('»» »» HOURS COMP - TIMEZONE OFFSET OPERATOR ', offsetOperator);
+    // the purpose is to transform the timezone from -120 into the form +2
+    // that is, transform the difference in minutes between the local time of the client and the utc in the form UTC +/- (hours)
+    if (offsetOperator === '-') {
+      this.offsetDirectionFromUtcZero = '+'
+      console.log('»» »» HOURS COMP - TIMEZONE OFFSET DIRECTION from UTC 0: ', this.offsetDirectionFromUtcZero);
+    } else if (offsetOperator === '+') {
+      this.offsetDirectionFromUtcZero = '-'
+      console.log('»» »» HOURS COMP - TIMEZONE OFFSET DIRECTION from UTC 0: ', this.offsetDirectionFromUtcZero);
+    }
+    const offsetMinutesAsString = offsetStr.substr(1);
+    const offsetMinutes = parseInt(offsetMinutesAsString, 0)
+    console.log('»» »» HOURS COMP - TIMEZONE OFFSET MINUTES: ', offsetMinutes);
+    const offsetHours = offsetMinutes / 60
+    console.log('»» »» HOURS COMP - TIMEZONE OFFSET HOURS: ', offsetHours);
+
+    return this.offsetDirectionFromUtcZero + offsetHours;
+
+
   }
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
-
 
       if (project) {
         this.projectid = project._id
@@ -94,6 +132,7 @@ export class HoursComponent implements OnInit {
           this.days[i].operatingHours = this.project_operatingHours[i];
 
           this.days[i].isOpen = true;
+
           this.days[i].operatingHoursAmStart = this.project_operatingHours[i][0].start
           this.days[i].operatingHoursAmEnd = this.project_operatingHours[i][0].end
 
@@ -125,7 +164,6 @@ export class HoursComponent implements OnInit {
           console.log(this.days[i].weekday, ' IS ! NOT SETTED ')
         }
       }
-
 
     },
       (error) => {
@@ -169,7 +207,7 @@ export class HoursComponent implements OnInit {
   // changeOpenedClosedStatus(weekdayid: number, weekdayname: string, isOpen: boolean) {
   //   console.log('CLICKED CHANGE STATUS OPENED/CLOSED for the WEEKDAY ID ', weekdayid, ' - ', weekdayname, 'IS OPEN ', isOpen)
   //   // if (isOpen === true) {
-  //   //   for 
+  //   //   for
   //   //   this.days.weekday = true
   //   // }
   // }
@@ -182,16 +220,95 @@ export class HoursComponent implements OnInit {
       if (weekdayid === day._id && $event.target.checked === true) {
         day.isOpen = true;
         console.log('DAY IS OPEN ', day.isOpen)
+        console.log('DAYS ', this.days);
+        day.operatingHoursAmStart = '09:00';
+        day.operatingHoursAmEnd = '13:30'
+        day.operatingHoursPmStart = '15:00';
+        day.operatingHoursPmEnd = '19:30'
+        console.log('AM START ', day.operatingHoursAmStart, 'AM END ', day.operatingHoursAmEnd);
+        console.log('AM START ', day.operatingHoursPmStart, 'AM END ', day.operatingHoursPmEnd);
+
       } else if (weekdayid === day._id && $event.target.checked === false) {
+
         day.isOpen = false;
+        console.log('DAYS ', this.days);
+        day.operatingHoursAmStart = '';
+        day.operatingHoursAmEnd = ''
+        day.operatingHoursPmStart = '';
+        day.operatingHoursPmEnd = ''
       }
 
     });
     // this.days = $event.target.checked;
   }
 
+  // open(dayid) {
+  //   console.log('DAY ID ', dayid)
+  //   const amazingTimePicker = this.atp.open({
+  //     // time: this.selectedTime,
+  //     time: this.days[dayid].operatingHoursAmStart,
+  //     theme: 'dark',
+  //     arrowStyle: {
+  //       background: 'red',
+  //       color: 'white'
+  //     }
+  //   });
+  //   amazingTimePicker.afterClose().subscribe(time => {
+  //     this.days[dayid].operatingHoursAmStart = time;
+  //     console.log('SELECTED TIME  ', this.days[dayid].operatingHoursAmStart)
+  //     console.log('DAYS  ', this.days)
+  //   });
+  // }
+
+  save() {
+    console.log('WHEN SAVE - DAYS ', this.days)
+
+    const operatingHoursUpdated = {};
+    let j;
+    for (j = 0; j < 7; j++) {
+      if (this.days[j].isOpen === true) {
+        // tslint:disable-next-line:max-line-length
+        // const updday =  { '_id': j, 'weekday': 'Sunday', 'isOpen': false, 'operatingHours': '', 'operatingHoursAmStart': '', 'operatingHoursAmEnd': '', 'operatingHoursPmStart': '', 'operatingHoursPmEnd': '' };
+        // {j : {
+
+        // }}
+        // tslint:disable-next-line:max-line-length
+        operatingHoursUpdated[j] = [{ 'start': this.days[j].operatingHoursAmStart, 'end': this.days[j].operatingHoursAmEnd }, { 'start': this.days[j].operatingHoursPmStart, 'end': this.days[j].operatingHoursPmEnd }];
+      }
+    }
+    // operatingHoursUpdated = '"tz": "+2"'
+    operatingHoursUpdated['tz'] = this.projectOffsetfromUtcZero
+    console.log('OPERATING HOURS UPDATED', operatingHoursUpdated);
+    const operatingHoursUpdatedStr = JSON.stringify(operatingHoursUpdated);
+    this.projectService.updateProjectOperatingHours(this.activeOperatingHours, operatingHoursUpdatedStr).subscribe((project) => {
+      console.log('»»»»»»» UPDATED PROJECT ', project)
+    })
+  }
+
+  onChangeAmStartFromArrow(time, weekdayid) {
+    console.log('ON CHANGE AM START FROM  UP/DOWN ARROW - DAY ID', weekdayid, ' - TIME: ', time);
+    this.days[weekdayid].operatingHoursAmStart = time;
+  }
+
+  onChangeAmEndFromArrow(time, weekdayid) {
+    console.log('ON CHANGE AM END FROM  UP/DOWN ARROW - DAY ID', weekdayid, ' - TIME: ', time);
+    this.days[weekdayid].operatingHoursAmEnd = time;
+  }
+
+  onChangePmStartFromArrow(time, weekdayid) {
+    console.log('ON CHANGE PM START FROM  UP/DOWN ARROW - DAY ID:', weekdayid, ' - TIME: ', time);
+    this.days[weekdayid].operatingHoursPmStart = time;
+  }
+
+  onChangePmEndFromArrow(time, weekdayid) {
+    console.log('ON CHANGE PM END FROM  UP/DOWN ARROW - DAY ID:', weekdayid, ' - TIME: ', time);
+    this.days[weekdayid].operatingHoursPmEnd = time;
+  }
+
+
+
   openAmStart(dayid) {
-    console.log('DAY ID ', dayid)
+    console.log('DAY ID ', dayid);
     const amazingTimePicker = this.atp.open({
       // time: this.selectedTime,
       time: this.days[dayid].operatingHoursAmStart,
@@ -203,13 +320,13 @@ export class HoursComponent implements OnInit {
     });
     amazingTimePicker.afterClose().subscribe(time => {
       this.days[dayid].operatingHoursAmStart = time;
-      console.log('SELECTED TIME  ', this.days[dayid].operatingHoursAmStart)
-      console.log('DAYS  ', this.days)
+      console.log('SELECTED TIME  ', this.days[dayid].operatingHoursAmStart);
+      console.log('DAYS  ', this.days);
     });
   }
 
   openAmEnd(dayid) {
-    console.log('DAY ID ', dayid)
+    console.log('DAY ID ', dayid);
     const amazingTimePicker = this.atp.open({
       // time: this.selectedTime,
       time: this.days[dayid].operatingHoursAmEnd,
@@ -221,12 +338,13 @@ export class HoursComponent implements OnInit {
     });
     amazingTimePicker.afterClose().subscribe(time => {
       this.days[dayid].operatingHoursAmEnd = time;
-      console.log('SELECTED TIME  ', this.selectedTime)
+      console.log('SELECTED TIME  ', this.selectedTime);
+      console.log('DAYS  ', this.days);
     });
   }
 
   openPmStart(dayid) {
-    console.log('DAY ID ', dayid)
+    console.log('DAY ID ', dayid);
     const amazingTimePicker = this.atp.open({
       // time: this.selectedTime,
       time: this.days[dayid].operatingHoursPmStart,
@@ -238,11 +356,12 @@ export class HoursComponent implements OnInit {
     });
     amazingTimePicker.afterClose().subscribe(time => {
       this.days[dayid].operatingHoursPmStart = time;
-      console.log('SELECTED TIME  ', this.selectedTime)
+      console.log('SELECTED TIME  ', this.selectedTime);
+      console.log('DAYS  ', this.days);
     });
   }
   openPmEnd(dayid) {
-    console.log('DAY ID ', dayid)
+    console.log('DAY ID ', dayid);
     const amazingTimePicker = this.atp.open({
       // time: this.selectedTime,
       time: this.days[dayid].operatingHoursPmEnd,
@@ -254,7 +373,8 @@ export class HoursComponent implements OnInit {
     });
     amazingTimePicker.afterClose().subscribe(time => {
       this.days[dayid].operatingHoursPmEnd = time;
-      console.log('SELECTED TIME  ', this.selectedTime)
+      console.log('SELECTED TIME  ', this.selectedTime);
+      console.log('DAYS  ', this.days);
     });
   }
 }

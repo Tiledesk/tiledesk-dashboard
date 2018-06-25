@@ -75,7 +75,8 @@
                               <label class="switch" style="margin-bottom: 0px;">
                                   <!-- [checked]="projectUser?.user_available === true" -->
                                   <!-- (click)="changeOpenedClosedStatus(d._id, d.weekday, isOpen = !isOpen)"  -->
-                                <input type="checkbox" (change)="onChangeOpenedClosedStatus($event, d._id, d.weekday)"[checked]="d.isOpen == true"  >
+                                <input type="checkbox" (change)="onChangeOpenedClosedStatus($event, d._id, d.weekday)"
+                                  [checked]="d.isOpen == true"  >
                                 <span class="slider round"></span>
                               </label>
 
@@ -95,7 +96,6 @@
                               <tr *ngFor="let oh of d.operatingHours">
                                   <td> {{ oh.start }} </td>
                                   <td> {{ oh.end }}  </td>
-                                  
                               </tr>
                                 
                                 <!-- </span> -->
@@ -103,32 +103,57 @@
                             </td>
 
                             <td>
-
-                              <!-- <input atp-time-picker value="19:00"/> -->
-                  
                               <!-- <tr  *ngFor="let oh of d.operatingHours">
-                                <button (click)="open(d?._id)">Time</button>
+                                <button type="button" rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-xs"
+                                  (click)='open(d?._id)'>
+                                  <i class="material-icons">edit</i>
+                                </button>
                                 <input type="time" value="{{ oh.start  }}">
-                                <button (click)="open(d?._id)">Time</button>
+                                <button type="button" rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-xs"
+                                  (click)='open(d?._id)'>
+                                  <i class="material-icons">edit</i>
+                                </button>
                                 <input type="time" value="{{ oh.end  }}">
                               </tr>  -->
                             </td>
+
+                            <!-- AM HOURS -->
                             <td>
-                                <button (click)="openAmStart(d?._id)">Time</button>
-                                <input type="time" value="{{ d.operatingHoursAmStart }}">
+                                <!-- AM START HOUR -->
+                                <button [disabled]="d.isOpen != true"  [ngClass]="{'disabled' : d.isOpen != true}" type="button" rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-xs"
+                                  (click)='openAmStart(d?._id)' style="padding-right: 4px;">
+                                  from 
+                                  <!-- <i class="material-icons">schedule</i> -->
+                                </button>
+                                <input [disabled]="d.isOpen != true" (input)="onChangeAmStartFromArrow($event.target.value, d?._id)"  [ngClass]="{'disabled' : d.isOpen != true}" type="time" value="{{ d.operatingHoursAmStart }}">
 
-                                <button (click)="openAmEnd(d?._id)">Time</button>
-                                <input type="time" value="{{ d.operatingHoursAmEnd }}">
-
-
+                                <!-- AM END HOUR -->
+                                <button [disabled]="d.isOpen != true"  [ngClass]="{'disabled' : d.isOpen != true}" type="button" rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-xs"
+                                  (click)='openAmEnd(d?._id)' style="padding-right: 4px;">
+                                  to 
+                                  <!-- <i class="material-icons">schedule</i> -->
+                                </button>
+                                <input [disabled]="d.isOpen != true" (input)="onChangeAmEndFromArrow($event.target.value, d?._id)" [ngClass]="{'disabled' : d.isOpen != true}" type="time" value="{{ d.operatingHoursAmEnd }}">
                             </td>
 
+                            <!-- PM HOURS -->
                             <td>
-                                <button (click)="openPmStart(d?._id)">Time</button>
-                                <input type="time" value="{{ d.operatingHoursPmStart }}">
+                                <!-- PM START HOUR -->
+                                <button  [disabled]="d.isOpen != true"  [ngClass]="{'disabled' : d.isOpen != true}"  type="button" rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-xs"
+                                  (click)='openPmStart(d?._id)' style="padding-right: 4px;">
+                                  from 
+                                  <!-- <i class="material-icons">schedule</i> -->
+                                </button>
+                                <input [disabled]="d.isOpen != true" (input)="onChangePmStartFromArrow($event.target.value, d?._id)" [ngClass]="{'disabled' : d.isOpen != true}" type="time" value="{{ d.operatingHoursPmStart }}">
 
-                                <button (click)="openPmEnd(d?._id)">Time</button>
-                                <input type="time" value="{{ d.operatingHoursPmEnd }}">
+                                <!-- PM END HOUR -->
+                                <button [disabled]="d.isOpen != true"  [ngClass]="{'disabled' : d.isOpen != true}" type="button" rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-xs"
+                                  (click)='openPmEnd(d?._id)' style="padding-right: 4px;">
+                                  to
+                                  <!-- <i class="material-icons">schedule</i> -->
+                                </button>
+                                <input [disabled]="d.isOpen != true" (input)="onChangePmEndFromArrow($event.target.value, d?._id)" [ngClass]="{'disabled' : d.isOpen != true}" type="time" value="{{ d.operatingHoursPmEnd }}">
+
                             </td>
  
                           </tr>
@@ -139,6 +164,15 @@
                   </div>
                 </div>
               </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <button class="btn btn-success" (click)="save()">
+                    Save
+                  </button>
+                </div>
+              </div>
+
 
               <label  class="col-sm-2" style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;">
                + {{ "Hours" | translate }}
@@ -155,14 +189,12 @@
             
             <div style="padding-left:25px" class="col-sm-10 col-sm-offset-2">
               <button class="btn btn-success" (click)="updateProjectOperatingHours()">
-
                 {{ "HoursPage.UpdateHours" | translate }}
               </button>
 
               <button class="btn btn-success" (click)="testAvailableProjectUserConsideringProjectOperatingHours()">
-
-                  TEST AVAILABLE
-                </button>
+                TEST AVAILABLE
+              </button>
             </div>
   
           </div>
