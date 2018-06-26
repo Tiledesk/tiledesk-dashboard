@@ -103,7 +103,7 @@ select {
 .switch {
   position: relative;
   display: inline-block;
-  width: 60px;
+  width: 40px;
   // height: 34px;
   height: 20px;
 }
@@ -156,9 +156,9 @@ input:checked + .slider {
 //   }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(40px);
-  -ms-transform: translateX(40px);
-  transform: translateX(40px);
+  -webkit-transform: translateX(20px);
+  -ms-transform: translateX(20px);
+  transform: translateX(20px);
 }
 
 /* Rounded sliders */
@@ -252,3 +252,28 @@ input:checked + .slider:before {
   background-color: #4caf50 !important;
   color: #fff !important;
 }
+
+  // START - CUSTOM NOTIFICATION 
+  // https://bootsnipp.com/snippets/featured/a-different-approach-to-bootstrap-alert
+  .oaerror {
+    width: 100%; /* Configure it fit in your design  */
+    margin: 0 auto; /* Centering Stuff */
+    background-color: #FFFFFF; /* Default background */
+    // padding: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left:20px;
+    padding-right:20px;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+    margin: 0 auto;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+  }
+
+  .info {
+    border-left-color: #5bc0de;
+    // background-color: rgba(91, 192, 222, 0.1);
+  }
+   // END - CUSTOM NOTIFICATION 

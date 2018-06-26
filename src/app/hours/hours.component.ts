@@ -135,6 +135,8 @@ export class HoursComponent implements OnInit {
 
     this.browser_lang = this.translate.getBrowserLang();
     console.log('»» »» HOURS COMP - BROWSER LANGUAGE ', this.browser_lang);
+
+    console.log('TIMEZONE NAME ', Intl.DateTimeFormat().resolvedOptions().timeZone)
   }
 
   getPrjctOffsetHoursfromTzOffset() {
