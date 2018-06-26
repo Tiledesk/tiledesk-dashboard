@@ -1,183 +1,183 @@
-input[type=text] {
-    /* min-width: 307px !important; */
-   height: 36px;
-   font-size: 14px;
-   width: 100%;
-   margin-bottom: 10px;
-   -webkit-appearance: none;
-   background: #fff;
-   border: 1px solid #d9d9d9 !important;
-   border-top: 1px solid #c0c0c0;
-   /* border-radius: 2px; */
-   padding: 0 8px;
-   box-sizing: border-box;
-   -moz-box-sizing: border-box;
-   border-radius: 5px;
-   background-color: #fff !important;
-   border: solid 1px #ddd;
+input[type="text"] {
+  /* min-width: 307px !important; */
+  height: 36px;
+  font-size: 14px;
+  width: 100%;
+  margin-bottom: 10px;
+  -webkit-appearance: none;
+  background: #fff;
+  border: 1px solid #d9d9d9 !important;
+  border-top: 1px solid #c0c0c0;
+  /* border-radius: 2px; */
+  padding: 0 8px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  border-radius: 5px;
+  background-color: #fff !important;
+  border: solid 1px #ddd;
 }
 
 select {
-    height:36px;  
-    background: #fff; 
-    border-radius: 0px; 
-    border-color: #d9d9d9; 
- }
- .card form [class*="col-"] {
-    padding: 0px;
- }
+  height: 36px;
+  background: #fff;
+  border-radius: 0px;
+  border-color: #d9d9d9;
+}
+.card form [class*="col-"] {
+  padding: 0px;
+}
 
- // start CHECKBOX 
+// start CHECKBOX
 /* Customize the label (the container) */
 .container {
-    display: block;
-    position: relative;
-    padding-left: 35px;
-    margin-bottom: 12px;
-    cursor: pointer;
-    font-size: 14px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    padding-top:3px;
-  }
-  
-  /* Hide the browser's default checkbox */
-  .container input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-  }
-  
-  /* Create a custom checkbox */
-  .checkmark {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 25px;
-    width: 25px;
-    background-color: #fff;
-    border: solid 1px #ddd;
-    border-radius: 5px;
-  }
-  
-  /* On mouse-over, add a grey background color */
-  // .container:hover input ~ .checkmark {
-  //   background-color: #ccc;
-  // }
-  
-  /* When the checkbox is checked, add a blue background */
-  .container input:checked ~ .checkmark {
-    background-color: #2196F3;
-  }
-  
-  /* Create the checkmark/indicator (hidden when not checked) */
-  .checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
-  }
-  
-  /* Show the checkmark when checked */
-  .container input:checked ~ .checkmark:after {
-    display: block;
-  }
-  
-  /* Style the checkmark/indicator */
-  .container .checkmark:after {
-    left: 9px;
-    top: 5px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
-  }
-  // end CHECKBOX
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  padding-top: 3px;
+}
 
-  // <!-- SWITCH  -->
+/* Hide the browser's default checkbox */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #fff;
+  border: solid 1px #ddd;
+  border-radius: 5px;
+}
+
+/* On mouse-over, add a grey background color */
+// .container:hover input ~ .checkmark {
+//   background-color: #ccc;
+// }
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #2196f3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+// end CHECKBOX
+
+// <!-- SWITCH  -->
 /* The switch - the box around the slider */
 .switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    // height: 34px;
-    height: 20px;
-  }
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  // height: 34px;
+  height: 20px;
+}
 
-  /* Hide default HTML checkbox */
-.switch input {display:none;}
+/* Hide default HTML checkbox */
+.switch input {
+  display: none;
+}
 
 /* The slider */
 .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #fff;
-    -webkit-transition: .4s;
-    transition: .4s;
-    border: 1px solid #ccc; 
-  }
-  
-  .slider:before {
-    position: absolute;
-    content: "";
-    // height: 26px;
-    // width: 26px;
-    height: 11px;
-    width: 11px;
-    left: 4px;
-    bottom: 4px;
-    // background-color: white;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
-  }
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  border: 1px solid #ccc;
+}
 
-  input:checked + .slider:before {
-    background-color: #1eb848;
-  }
+.slider:before {
+  position: absolute;
+  content: "";
+  // height: 26px;
+  // width: 26px;
+  height: 11px;
+  width: 11px;
+  left: 4px;
+  bottom: 4px;
+  // background-color: white;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
 
-  
-  input:checked + .slider {
-    // background-color: #2196F3;
-    background: #fff;
-   
-  }
-  
+input:checked + .slider:before {
+  background-color: #1eb848;
+}
+
+input:checked + .slider {
+  // background-color: #2196F3;
+  background: #fff;
+}
+
 //   input:focus + .slider {
 //     box-shadow: 0 0 1px #2196F3;
 //   }
-  
-  input:checked + .slider:before {
-    -webkit-transform: translateX(40px);
-    -ms-transform: translateX(40px);
-    transform: translateX(40px);
-  }
 
-  /* Rounded sliders */
-.slider.round {
-    border-radius: 34px;
-  }
-  
-.slider.round:before {
-    border-radius: 50%;
+input:checked + .slider:before {
+  -webkit-transform: translateX(40px);
+  -ms-transform: translateX(40px);
+  transform: translateX(40px);
 }
-  // <!-- END SWITCH BTN -->
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+// <!-- END SWITCH BTN -->
 
 .disabled {
-      color: #ddd !important;
-  }
+  color: #ddd !important;
+}
 
-  .it {
-      display: none;
-  }
+.it {
+  display: none;
+}
 
 // from 992 to 1007px (USED FROR THE BTN LABELS 'OPENING - CLOSING')
 // @media (min-width: 992px) and (max-width: 1007px){
@@ -186,22 +186,69 @@ select {
 //     }
 // }
 
+// from 992 to 1015px (USED FROR THE BTN LABELS 'FROM - TO')
+@media (min-width: 992px) and (max-width: 1015px) {
+  .edithours_btnlabel {
+    display: none;
+  }
+  .edithours_btnlabelTo {
+    display: none;
+  }
+}
+
 // ACTIVES THE HTML TAG <BR> WHEN THE WINDOWS WIDTH IS < of di 1332
-@media (min-width: 1332px){
-    .newline {
-        display: none;
-    }
+@media (min-width: 1332px) {
+  .newline {
+    display: none;
+  }
 }
 
 // BTN LABEL 'TO'
-@media (max-width: 1332px){
-    .edithours_btnlabelTo {
-        // display: none;
-        padding-left: 14px !important;
-    }
+@media (max-width: 1332px) {
+  .edithours_btnlabelTo {
+    // display: none;
+    padding-left: 14px !important;
+  }
 
-    .edithours_btnlabelTo.it_custom {
-        // display: none;
-        padding-left: 6px !important;
-    }
+  .edithours_btnlabelTo.it_custom {
+    // display: none;
+    padding-left: 6px !important;
+  }
+}
+
+.close_pm:hover {
+  background-color: #f44336 !important;
+  color: #fff !important;
+}
+.close_pm {
+  margin-top: 0px; 
+  margin-bottom: 0px; 
+  border-radius: 50%; 
+  padding-top:1px; 
+  padding-left:0px;
+  padding-right:0px;
+  padding-bottom:0px;
+  // margin-left:15px;
+  border: solid 1px; 
+  width: 16px;
+  height: 16px
+}
+
+.open_pm {
+  margin-top: 0px; 
+  margin-bottom: 0px; 
+  border-radius: 50%; 
+  padding-top:1px; 
+  padding-left:0px;
+  padding-right:0px;
+  padding-bottom:0px;
+  // margin-left:15px;
+  border: solid 1px; 
+  width: 16px;
+  height: 16px
+}
+
+.open_pm:hover {
+  background-color: #4caf50 !important;
+  color: #fff !important;
 }
