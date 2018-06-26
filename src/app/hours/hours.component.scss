@@ -178,3 +178,30 @@ select {
   .it {
       display: none;
   }
+
+// from 992 to 1007px (USED FROR THE BTN LABELS 'OPENING - CLOSING')
+// @media (min-width: 992px) and (max-width: 1007px){
+//     .edithours_btnlabel {
+//         display: none;
+//     }
+// }
+
+// ACTIVES THE HTML TAG <BR> WHEN THE WINDOWS WIDTH IS < of di 1332
+@media (min-width: 1332px){
+    .newline {
+        display: none;
+    }
+}
+
+// BTN LABEL 'TO'
+@media (max-width: 1332px){
+    .edithours_btnlabelTo {
+        // display: none;
+        padding-left: 14px !important;
+    }
+
+    .edithours_btnlabelTo.it_custom {
+        // display: none;
+        padding-left: 6px !important;
+    }
+}

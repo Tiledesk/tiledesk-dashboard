@@ -236,11 +236,11 @@ export class HoursComponent implements OnInit {
         console.log('DAY IS OPEN ', day.isOpen)
         console.log('DAYS ', this.days);
         day.operatingHoursAmStart = '09:00';
-        day.operatingHoursAmEnd = '13:30'
-        day.operatingHoursPmStart = '15:00';
-        day.operatingHoursPmEnd = '19:30'
+        day.operatingHoursAmEnd = '13:00'
+        day.operatingHoursPmStart = '14:00';
+        day.operatingHoursPmEnd = '18:00'
         console.log('AM START ', day.operatingHoursAmStart, 'AM END ', day.operatingHoursAmEnd);
-        console.log('AM START ', day.operatingHoursPmStart, 'AM END ', day.operatingHoursPmEnd);
+        console.log('PM START ', day.operatingHoursPmStart, 'PM END ', day.operatingHoursPmEnd);
 
       } else if (weekdayid === day._id && $event.target.checked === false) {
 
