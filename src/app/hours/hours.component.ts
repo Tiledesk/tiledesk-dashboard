@@ -110,6 +110,7 @@ export class HoursComponent implements OnInit {
   IS_OPEN = false;
 
   projectid: string;
+  projectname: string;
   project_operatingHours: any;
   public selectedTime: any;
   projectOffsetfromUtcZero: any;
@@ -118,6 +119,9 @@ export class HoursComponent implements OnInit {
   browser_lang: string;
   IS_CLOSED_IN_PM: boolean;
   timezone_name: string;
+  current_prjct_timezone_name: string;
+  current_prjct_UTC: any;
+  timezone_NamesAndUTC_list: any;
 
   constructor(
     private auth: AuthService,
@@ -142,14 +146,41 @@ export class HoursComponent implements OnInit {
 
     // console.log('TIMEZONE NAME ', Intl.DateTimeFormat().resolvedOptions().timeZone)
 
-    this.timezone_name = moment.tz.guess();
-    console.log('»» »» HOURS COMP - TIMEZONE NAME ', this.timezone_name);
+    this.current_prjct_timezone_name = moment.tz.guess();
+    console.log('»» »» HOURS COMP - CURRENT PROJECT TIMEZONE-NAME DETECTED ', this.current_prjct_timezone_name);
+    this.current_prjct_UTC = moment.tz(this.current_prjct_timezone_name).format('Z');
+    console.log('»» »» HOURS COMP - CURRENT PROJECT TIMEZONE-UTC ', this.current_prjct_UTC);
 
     // const timezone_offset = moment.tz(timezone_name).utcOffset()
     // const timezone_offset = moment.tz(moment.utc(), 'America/New_York').utcOffset()
-    const timezone_offset = moment.tz(moment.utc(), 'Europe/Rome').utcOffset()
+    // const timezone_offset = moment.tz(moment.utc(), 'Europe/Rome').utcOffset()
 
-    console.log('»» »» HOURS COMP - TIMEZONE * OFFSET * ', timezone_offset);
+    // console.log('»» »» HOURS COMP - TIMEZONE * OFFSET * ', timezone_offset);
+
+
+    // console.log('TIMEZONE NAMES ', timezone_names);
+
+    // const offsetTmz = [];
+
+    // for (var i in timeZones) {
+    //   offsetTmz.push(' (GMT' + moment.tz(timeZones[i]).format('Z') + ')' + timeZones[i]);
+    // }
+
+    const timezone_names = moment.tz.names();
+    // (UTC + 00: 00) Etc / UTC
+    this.timezone_NamesAndUTC_list = []
+    timezone_names.forEach(timezone_name => {
+      const tzNameAndUTC = '(UTC ' + moment.tz(timezone_name).format('Z') + ') ' + timezone_name
+      // console.log('(UTC ', moment.tz(timezone_name).format('Z'), ') ', timezone_name);
+      this.timezone_NamesAndUTC_list.push({tz: tzNameAndUTC, value: timezone_name})
+
+    });
+    console.log('»» »» HOURS COMP - TIMEZONE NAME & OFFSET ARRAY ', this.timezone_NamesAndUTC_list)
+  }
+
+  setSelectedTimeZone(timezone_name: any): void {
+
+    console.log('TIMEZONE SELECTED ', timezone_name)
   }
 
   getPrjctOffsetHoursfromTzOffset() {
@@ -205,9 +236,10 @@ export class HoursComponent implements OnInit {
     this.auth.project_bs.subscribe(project => {
       if (project) {
         this.projectid = project._id;
-        console.log('00 -> HOURS project from AUTH service subscription  ', project);
-
-        console.log('00 -> HOURS project ID PROJECT  ', this.projectid);
+        this.projectname = project.name;
+        console.log('»» »» HOURS COMP - PROJECT (from AUTH SERV subscription) ', project);
+        console.log('»» »» HOURS COMP - PROJECT: PROJECT ID ', this.projectid);
+        console.log('»» »» HOURS COMP - PROJECT: PROJECT NAME ', this.projectname);
 
         if (this.projectid) {
           this.getProjectById();

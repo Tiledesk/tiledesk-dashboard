@@ -13,8 +13,8 @@
               <!-- <div class="oaerror info">
                 <div class="row">             
                   <div class="col-sm-12"> 
-                    <p style="color: #566787; font-weight:500; font-size: 16px; ">
-                      {{ "RoutingPage.SelectABotThatWill" | translate  }}
+                    <p style="color: #566787; font-weight:500; font-size: 14px; ">
+                      The project <span style="font-weight:600">{{ this.projectname }}</span> is set to (UTC {{current_prjct_UTC}}) {{current_prjct_timezone_name}} timezone
                     </p>
                   </div>
                 </div>
@@ -31,17 +31,35 @@
               <div class="row">
                 <div class="col-md-12">
                   <div class="card">
-                        <div class="card-header" data-background-color="" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
-                          <h4 class="title" style="margin-bottom:2px; font-size:1.1em; color: #566787">
-                           
-                              <label class="container" for="hoursActive" style="margin-left: 0px; margin-bottom: 6px;" >
-                                  {{ "HoursPage.ActivateTimetables" | translate }} 
-                                   <input type="checkbox" id="hoursActive"  (change)="onChange($event)" [checked]="isActiveOperatingHours"/>
-                                  <span class="checkmark"></span>
-                                </label>
-                          </h4>
-                         
-                        </div>
+                    <div class="card-header" data-background-color="" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
+                      <p class="category" style="color: #aaaaaa;">
+                        The project <span style="font-weight:500">”{{ this.projectname }}”</span> is set to <span style="font-weight:600">(UTC {{current_prjct_UTC}}) {{current_prjct_timezone_name}} </span>timezone
+                      </p>
+                      <p class="category" style="color: #aaaaaa;  padding-bottom: 8px;">
+                        Select another timezone for your project.
+                        <select #selectElem (change)="setSelectedTimeZone(selectElem.value)" style="height: 26px;color: #666666; font-size: 12px; font-weight: 500">
+                            <!-- [selected]="selectedId === faqKb._id" -->
+                            <!-- [value]="faqKb._id" [selected]="" -->
+                          <option  *ngFor="let tz of timezone_NamesAndUTC_list" [value]="tz.value" >
+                            {{ tz.tz }}
+                          </option>
+                        </select>
+                      </p>
+                     
+                      <div>
+       
+                      </div>
+                      <h4 class="title" style="margin-bottom:2px; font-size:1.1em; color: #566787">
+                        
+                        <label class="container" for="hoursActive" style="margin-left: 0px; margin-bottom: 6px;" >
+                          {{ "HoursPage.ActivateTimetables" | translate }} 
+                            <input type="checkbox" id="hoursActive"  (change)="onChange($event)" [checked]="isActiveOperatingHours"/>
+                          <span class="checkmark"></span>
+                        </label>
+                      </h4>
+
+                      
+                    </div>
 
                     <div class="card-content table-responsive">
 

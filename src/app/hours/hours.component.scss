@@ -53,10 +53,13 @@ select {
 /* Create a custom checkbox */
 .checkmark {
   position: absolute;
-  top: 0;
+  // top: 0;
+  top: 2;
   left: 0;
-  height: 25px;
-  width: 25px;
+  // height: 25px;
+  // width: 25px;
+  height: 20px;
+  width: 20px;
   background-color: #fff;
   border: solid 1px #ddd;
   border-radius: 5px;
@@ -86,8 +89,10 @@ select {
 
 /* Style the checkmark/indicator */
 .container .checkmark:after {
-  left: 9px;
-  top: 5px;
+  // left: 9px;
+  // top: 5px;
+  left: 7px;
+  top: 3px;
   width: 5px;
   height: 10px;
   border: solid white;
