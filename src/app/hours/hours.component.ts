@@ -6,6 +6,10 @@ import { UsersService } from '../services/users.service';
 
 import { AmazingTimePickerService } from 'amazing-time-picker';
 import { TranslateService } from '@ngx-translate/core';
+
+// import * as moment from 'moment';
+import * as moment from 'moment-timezone'
+
 @Component({
   selector: 'appdashboard-hours',
   templateUrl: './hours.component.html',
@@ -113,6 +117,7 @@ export class HoursComponent implements OnInit {
   isActiveOperatingHours: boolean;
   browser_lang: string;
   IS_CLOSED_IN_PM: boolean;
+  timezone_name: string;
 
   constructor(
     private auth: AuthService,
@@ -129,25 +134,49 @@ export class HoursComponent implements OnInit {
     this.auth.checkRole();
 
     this.projectOffsetfromUtcZero = this.getPrjctOffsetHoursfromTzOffset();
-    console.log(
-      '»» »» HOURS COMP - PRJCT OFFSET FROM UTC 0::: ', this.projectOffsetfromUtcZero
-    );
+    console.log('»» »» HOURS COMP - PRJCT OFFSET FROM UTC 0::: ', this.projectOffsetfromUtcZero);
 
     this.browser_lang = this.translate.getBrowserLang();
     console.log('»» »» HOURS COMP - BROWSER LANGUAGE ', this.browser_lang);
 
-    console.log('TIMEZONE NAME ', Intl.DateTimeFormat().resolvedOptions().timeZone)
+
+    // console.log('TIMEZONE NAME ', Intl.DateTimeFormat().resolvedOptions().timeZone)
+
+    this.timezone_name = moment.tz.guess();
+    console.log('»» »» HOURS COMP - TIMEZONE NAME ', this.timezone_name);
+
+    // const timezone_offset = moment.tz(timezone_name).utcOffset()
+    // const timezone_offset = moment.tz(moment.utc(), 'America/New_York').utcOffset()
+    const timezone_offset = moment.tz(moment.utc(), 'Europe/Rome').utcOffset()
+
+    console.log('»» »» HOURS COMP - TIMEZONE * OFFSET * ', timezone_offset);
   }
 
   getPrjctOffsetHoursfromTzOffset() {
     // The getTimezoneOffset() method returns the time difference between UTC time and local time, in minutes
     // e.g.: -120
     const offset = new Date().getTimezoneOffset();
-    console.log('»» »» HOURS COMP - GET DATE', new Date());
-    // assign _offset (that is of type number) to offset (that is of type any)
-    // to be able to divide direction and minutes
+    console.log('»» »» HOURS COMP - GET CURRENT DATE', new Date());
+
 
     console.log('»» »» HOURS COMP - GET TIMEZONE OFFSET ', offset);
+
+    const a = moment.tz('2013-11-18 11:55', 'Asia/Taipei');
+    const testdate = a.format();
+    console.log('TEST DATE  ', testdate);
+    const _testdate = new Date(testdate);
+    console.log('NEW TEST DATE ', _testdate);
+    console.log('OFFSET OF TEST DATE  ', _testdate.getTimezoneOffset())
+
+    // moment.tz.zone('America/Los_Angeles').utcOffset(1403465838805);
+    // NEW  FOR DEBUG ==============================================
+    //  -3 | -2 | -1 | UTC | +1 | +2 | +3 |
+    if (offset < 0) {
+      // EXAMPLE -2 hours after UTC
+      console.log(offset / 60 + ' hours after UTC');
+    } else {
+      document.write(offset / 60 + ' hours before UTC')
+    }
 
     const offsetStr = offset.toString();
     console.log('»» »» HOURS COMP - GET TIMEZONE OFFSET (AS STRING) ', offsetStr);
@@ -353,24 +382,27 @@ export class HoursComponent implements OnInit {
     console.log('WHEN SAVE - DAYS ', this.days);
 
     const operatingHoursUpdated = {};
+
     let j;
     for (j = 0; j < 7; j++) {
       if (this.days[j].isOpen === true) {
         // tslint:disable-next-line:max-line-length
         operatingHoursUpdated[j] = [
           {
-            start: this.days[j].operatingHoursAmStart,
-            end: this.days[j].operatingHoursAmEnd
+            start: this.days[j].operatingHoursAmStart, end: this.days[j].operatingHoursAmEnd
           },
           {
-            start: this.days[j].operatingHoursPmStart,
-            end: this.days[j].operatingHoursPmEnd
+            start: this.days[j].operatingHoursPmStart, end: this.days[j].operatingHoursPmEnd
           }
         ];
       }
     }
-    // operatingHoursUpdated = '"tz": "+2"'
+
+    // e.g.: operatingHoursUpdated = '"tz": "+2"'
     operatingHoursUpdated['tz'] = this.projectOffsetfromUtcZero;
+
+    // e.g.: Europe/Rome
+    operatingHoursUpdated['tzname'] = this.timezone_name;
     console.log('OPERATING HOURS UPDATED: ', operatingHoursUpdated);
     const operatingHoursUpdatedStr = JSON.stringify(operatingHoursUpdated);
     this.projectService
