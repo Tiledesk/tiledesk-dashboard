@@ -24,6 +24,7 @@
                       {{ "HoursPage.ActivateTimetables" | translate }} 
                     </p>
                 
+                    <!-- xx {{ isActiveOperatingHours }} -->
                     <label class="container" for="hoursActive" style="margin-left: 0px; margin-bottom: 6px;" [ngClass]="{'chekboxCustomHeight' : isActiveOperatingHours == false }" >
                         <span *ngIf="isActiveOperatingHours === true "> {{ "HoursPage.OpeningHoursActivated" | translate }} </span>
                         <span *ngIf="isActiveOperatingHours === false"> {{ "HoursPage.OpeningHoursDeactivated" | translate }} </span>

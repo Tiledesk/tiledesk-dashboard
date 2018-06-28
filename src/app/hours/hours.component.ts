@@ -147,27 +147,12 @@ export class HoursComponent implements OnInit {
     console.log('»» »» HOURS COMP - BROWSER LANGUAGE ', this.browser_lang);
 
 
-    // console.log('TIMEZONE NAME ', Intl.DateTimeFormat().resolvedOptions().timeZone)
-
-    this.current_prjct_timezone_name = moment.tz.guess();
-    console.log('»» »» HOURS COMP - CURRENT PROJECT TIMEZONE-NAME DETECTED ', this.current_prjct_timezone_name);
     this.current_prjct_UTC = moment.tz(this.current_prjct_timezone_name).format('Z');
     console.log('»» »» HOURS COMP - CURRENT PROJECT TIMEZONE-UTC ', this.current_prjct_UTC);
 
     // const timezone_offset = moment.tz(timezone_name).utcOffset()
     // const timezone_offset = moment.tz(moment.utc(), 'America/New_York').utcOffset()
     // const timezone_offset = moment.tz(moment.utc(), 'Europe/Rome').utcOffset()
-
-    // console.log('»» »» HOURS COMP - TIMEZONE * OFFSET * ', timezone_offset);
-
-
-    // console.log('TIMEZONE NAMES ', timezone_names);
-
-    // const offsetTmz = [];
-
-    // for (var i in timeZones) {
-    //   offsetTmz.push(' (GMT' + moment.tz(timeZones[i]).format('Z') + ')' + timeZones[i]);
-    // }
 
     const timezone_names = moment.tz.names();
     // (UTC + 00: 00) Etc / UTC
@@ -182,10 +167,7 @@ export class HoursComponent implements OnInit {
 
   }
 
-
-
   setSelectedTimeZone(): void {
-
     console.log('TIMEZONE SELECTED ', this.current_prjct_timezone_name)
   }
 
@@ -258,62 +240,79 @@ export class HoursComponent implements OnInit {
   getProjectById() {
     this.projectService.getMongDbProjectById(this.projectid).subscribe(
       (project: any) => {
-        console.log('≈≈≈≈ > HOURS comp - on init PROJECT (DETAILS) BY ID - PROJECT OBJECT: ', project);
+        console.log('»» »» > HOURS comp - on init PROJECT (DETAILS) BY ID - PROJECT OBJECT: ', project);
 
         if (project) {
-          this.project_operatingHours = JSON.parse(project.operatingHours);
-          console.log('≈≈≈≈ > HOURS comp - on init PROJECT OPERARITING HOURS: ', this.project_operatingHours);
+          console.log('»» »» > HOURS comp - on init PROJECT OPERATING HOURS (first to assign): ', project.operatingHours);
 
           // used for the checkbox "Activate operating hours"
-
           this.isActiveOperatingHours = project.activeOperatingHours;
-          console.log('≈≈≈≈ > HOURS comp - on init PROJECT OPERARITING HOURS IS ACTIVE: ', this.isActiveOperatingHours );
+          console.log('»» »» > HOURS comp - on init PROJECT OPERATING HOURS IS ACTIVE: ', this.isActiveOperatingHours);
 
-          // SE NEL OGGETTO OPERATING HOURS DEL PROGETTO E PRESENTE LA KEY CHE INDICA IL GIORNO AGGIUNGO OPERATING
-          // HOURS ALL OBJECT DAY (CREO COSì L'OGGETTO DAYS CHE USO NEL TEMPLATE)
-          let i;
-          for (i = 0; i < 7; i++) {
-            // console.log('CICLO I =  ', i)
-            if (this.project_operatingHours.hasOwnProperty(i)) {
-              console.log(this.days[i].weekday, ' IS SETTED');
-              console.log('operating hours start ', this.project_operatingHours[i]);
+          if (project.operatingHours !== undefined) {
+            this.project_operatingHours = JSON.parse(project.operatingHours);
+            console.log('»» »» > HOURS comp - on init PROJECT OPERATING HOURS: ', this.project_operatingHours);
 
-              this.days[i].operatingHours = this.project_operatingHours[i];
 
-              this.days[i].isOpen = true;
 
-              this.days[i].operatingHoursAmStart = this.project_operatingHours[i][0].start;
-              this.days[i].operatingHoursAmEnd = this.project_operatingHours[i][0].end;
+            console.log('»» »» > HOURS comp - on init PROJECT TIMEZONE NAME: ', this.project_operatingHours['tzname']);
 
-              if (this.project_operatingHours[i][1]) {
-                this.days[i].operatingHoursPmStart = this.project_operatingHours[i][1].start;
-                this.days[i].operatingHoursPmEnd = this.project_operatingHours[i][1].end;
+
+            this.current_prjct_timezone_name = this.project_operatingHours['tzname'];
+
+            // SE NEL OGGETTO OPERATING HOURS DEL PROGETTO E PRESENTE LA KEY CHE INDICA IL GIORNO AGGIUNGO OPERATING
+            // HOURS ALL OBJECT DAY (CREO COSì L'OGGETTO DAYS CHE USO NEL TEMPLATE)
+            let i;
+            for (i = 0; i < 7; i++) {
+              // console.log('CICLO I =  ', i)
+              if (this.project_operatingHours.hasOwnProperty(i)) {
+                console.log(this.days[i].weekday, ' IS SETTED');
+                console.log('operating hours start ', this.project_operatingHours[i]);
+
+                this.days[i].operatingHours = this.project_operatingHours[i];
+
+                this.days[i].isOpen = true;
+
+                this.days[i].operatingHoursAmStart = this.project_operatingHours[i][0].start;
+                this.days[i].operatingHoursAmEnd = this.project_operatingHours[i][0].end;
+
+                if (this.project_operatingHours[i][1]) {
+                  this.days[i].operatingHoursPmStart = this.project_operatingHours[i][1].start;
+                  this.days[i].operatingHoursPmEnd = this.project_operatingHours[i][1].end;
+                }
+
+                // this.project_operatingHours[i].forEach(hours => {
+                //   console.log('hours start  ', hours.start, 'hours end  ', hours.end)
+                //   this.days[i].operatingHoursAmStart = hours.start
+                //   this.days[i].operatingHoursAmEnd =  hours.end
+                // });
+
+                // this.days.forEach(day => {
+                //   const num = i
+                //   console.log('operating hours ', this.project_operatingHours[i] )
+
+                //   if (day._id === this.project_operatingHours[i]) {
+                //     console.log('day id ', day._id, ' i:  ', i)
+                //     day.isOpen = true;
+                //     day.operatingHours = this.project_operatingHours[i]
+                //     // console.log('DAY IS OPEN ', day.isOpen)
+                console.log('DAYS ON INIT ', this.days);
+                if (this.days[i].operatingHoursPmStart === '') {
+                  this.days[i].isOpenPm = false;
+                }
+                //   }
+                // });
+              } else {
+                console.log(this.days[i].weekday, ' IS ! NOT SETTED ');
               }
-
-              // this.project_operatingHours[i].forEach(hours => {
-              //   console.log('hours start  ', hours.start, 'hours end  ', hours.end)
-              //   this.days[i].operatingHoursAmStart = hours.start
-              //   this.days[i].operatingHoursAmEnd =  hours.end
-              // });
-
-              // this.days.forEach(day => {
-              //   const num = i
-              //   console.log('operating hours ', this.project_operatingHours[i] )
-
-              //   if (day._id === this.project_operatingHours[i]) {
-              //     console.log('day id ', day._id, ' i:  ', i)
-              //     day.isOpen = true;
-              //     day.operatingHours = this.project_operatingHours[i]
-              //     // console.log('DAY IS OPEN ', day.isOpen)
-              console.log('DAYS ON INIT ', this.days);
-              if (this.days[i].operatingHoursPmStart === '') {
-                this.days[i].isOpenPm = false;
-              }
-              //   }
-              // });
-            } else {
-              console.log(this.days[i].weekday, ' IS ! NOT SETTED ');
             }
+          } else {
+            console.log('OPERATING HOURS ARE UNDEFINED', project.operatingHours);
+
+            // IF THE OPERATING HOURS OBJECT IS UNDEFINED TAKES THE NAME OF THE TIMEZONE FROM THE MOMENT LIBRARY
+            // note: current_prjct_timezone_name is the timezone name displayed as selected in the timezone deropdownlist
+            this.current_prjct_timezone_name = moment.tz.guess();
+            console.log('»» »» HOURS COMP - CURRENT PROJECT TIMEZONE-NAME DETECTED ', this.current_prjct_timezone_name);
           }
         }
       },
@@ -328,8 +327,8 @@ export class HoursComponent implements OnInit {
 
   onChange($event) {
     this.activeOperatingHours = $event.target.checked;
-    
-    // used in the template to change the checkbox label text 
+
+    // used in the template to change the checkbox label text
     this.isActiveOperatingHours = this.activeOperatingHours;
     console.log('OPERATING HOURS ARE ACTIVE ', this.activeOperatingHours);
   }
@@ -368,7 +367,6 @@ export class HoursComponent implements OnInit {
   //   //   this.days.weekday = true
   //   // }
   // }
-
   onChangeOpenedClosedStatus($event, weekdayid: string, weekdayname: string) {
     // console.log('XXXX ', $event.target.checked)
     // tslint:disable-next-line:max-line-length
@@ -428,22 +426,21 @@ export class HoursComponent implements OnInit {
       if (this.days[j].isOpen === true) {
         // tslint:disable-next-line:max-line-length
         operatingHoursUpdated[j] = [
-          {
-            start: this.days[j].operatingHoursAmStart, end: this.days[j].operatingHoursAmEnd
-          },
-          {
-            start: this.days[j].operatingHoursPmStart, end: this.days[j].operatingHoursPmEnd
-          }
+          { start: this.days[j].operatingHoursAmStart, end: this.days[j].operatingHoursAmEnd },
+          { start: this.days[j].operatingHoursPmStart, end: this.days[j].operatingHoursPmEnd }
         ];
       }
     }
 
     // e.g.: operatingHoursUpdated = '"tz": "+2"'
     operatingHoursUpdated['tz'] = this.projectOffsetfromUtcZero;
-
+    console.log('»»» PROJECT OFFSET FROM UTC : ', this.projectOffsetfromUtcZero);
     // e.g.: Europe/Rome
-    operatingHoursUpdated['tzname'] = this.timezone_name;
+
+    operatingHoursUpdated['tzname'] = this.current_prjct_timezone_name;
     console.log('OPERATING HOURS UPDATED: ', operatingHoursUpdated);
+    console.log('»»» THIS TIMEZONE NAME: ', this.current_prjct_timezone_name);
+
     const operatingHoursUpdatedStr = JSON.stringify(operatingHoursUpdated);
     this.projectService
       .updateProjectOperatingHours(this.activeOperatingHours, operatingHoursUpdatedStr)
