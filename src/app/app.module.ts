@@ -103,6 +103,10 @@ import { HoursComponent } from './hours/hours.component';
 
 import { AmazingTimePickerModule } from 'amazing-time-picker';
 
+import { NgSelectModule } from '@ng-select/ng-select';
+
+
+
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -154,7 +158,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     GroupNamePipe,
     SortByPipe,
     ChangePasswordComponent,
-    HoursComponent
+    HoursComponent,
   ],
   imports: [
     BrowserModule,
@@ -174,6 +178,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     HttpClientModule,
     MomentModule,
     AmazingTimePickerModule,
+    NgSelectModule,
     TranslateModule.forRoot({
       loader: {
           provide: TranslateLoader,

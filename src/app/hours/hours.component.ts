@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AuthService } from '../core/auth.service';
 
 import { ProjectService } from '../services/project.service';
@@ -13,8 +13,11 @@ import * as moment from 'moment-timezone'
 @Component({
   selector: 'appdashboard-hours',
   templateUrl: './hours.component.html',
-  styleUrls: ['./hours.component.scss']
+  styleUrls: ['./hours.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
+
+
 export class HoursComponent implements OnInit {
   activeOperatingHours: boolean;
   operatingHours: any;
@@ -137,8 +140,8 @@ export class HoursComponent implements OnInit {
     // this.daysList = this.days
     this.auth.checkRole();
 
-    this.projectOffsetfromUtcZero = this.getPrjctOffsetHoursfromTzOffset();
-    console.log('»» »» HOURS COMP - PRJCT OFFSET FROM UTC 0::: ', this.projectOffsetfromUtcZero);
+    // this.projectOffsetfromUtcZero = this.getPrjctOffsetHoursfromTzOffset();
+    // console.log('»» »» HOURS COMP - PRJCT OFFSET FROM UTC 0::: ', this.projectOffsetfromUtcZero);
 
     this.browser_lang = this.translate.getBrowserLang();
     console.log('»» »» HOURS COMP - BROWSER LANGUAGE ', this.browser_lang);
@@ -172,17 +175,21 @@ export class HoursComponent implements OnInit {
     timezone_names.forEach(timezone_name => {
       const tzNameAndUTC = '(UTC ' + moment.tz(timezone_name).format('Z') + ') ' + timezone_name
       // console.log('(UTC ', moment.tz(timezone_name).format('Z'), ') ', timezone_name);
-      this.timezone_NamesAndUTC_list.push({tz: tzNameAndUTC, value: timezone_name})
+      this.timezone_NamesAndUTC_list.push({ tz: tzNameAndUTC, value: timezone_name })
 
     });
     console.log('»» »» HOURS COMP - TIMEZONE NAME & OFFSET ARRAY ', this.timezone_NamesAndUTC_list)
+
   }
 
-  setSelectedTimeZone(timezone_name: any): void {
 
-    console.log('TIMEZONE SELECTED ', timezone_name)
+
+  setSelectedTimeZone(): void {
+
+    console.log('TIMEZONE SELECTED ', this.current_prjct_timezone_name)
   }
 
+  // !! NO MORE USED
   getPrjctOffsetHoursfromTzOffset() {
     // The getTimezoneOffset() method returns the time difference between UTC time and local time, in minutes
     // e.g.: -120
@@ -260,9 +267,7 @@ export class HoursComponent implements OnInit {
           // used for the checkbox "Activate operating hours"
 
           this.isActiveOperatingHours = project.activeOperatingHours;
-          console.log('≈≈≈≈ > HOURS comp - on init PROJECT OPERARITING HOURS IS ACTIVE: ',
-            this.isActiveOperatingHours
-          );
+          console.log('≈≈≈≈ > HOURS comp - on init PROJECT OPERARITING HOURS IS ACTIVE: ', this.isActiveOperatingHours );
 
           // SE NEL OGGETTO OPERATING HOURS DEL PROGETTO E PRESENTE LA KEY CHE INDICA IL GIORNO AGGIUNGO OPERATING
           // HOURS ALL OBJECT DAY (CREO COSì L'OGGETTO DAYS CHE USO NEL TEMPLATE)
@@ -323,6 +328,9 @@ export class HoursComponent implements OnInit {
 
   onChange($event) {
     this.activeOperatingHours = $event.target.checked;
+    
+    // used in the template to change the checkbox label text 
+    this.isActiveOperatingHours = this.activeOperatingHours;
     console.log('OPERATING HOURS ARE ACTIVE ', this.activeOperatingHours);
   }
 
@@ -438,10 +446,7 @@ export class HoursComponent implements OnInit {
     console.log('OPERATING HOURS UPDATED: ', operatingHoursUpdated);
     const operatingHoursUpdatedStr = JSON.stringify(operatingHoursUpdated);
     this.projectService
-      .updateProjectOperatingHours(
-        this.activeOperatingHours,
-        operatingHoursUpdatedStr
-      )
+      .updateProjectOperatingHours(this.activeOperatingHours, operatingHoursUpdatedStr)
       .subscribe(project => {
         console.log('»»»»»»» UPDATED PROJECT ', project);
       });

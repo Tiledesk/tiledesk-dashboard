@@ -22,7 +22,8 @@
           "../node_modules/bootstrap/dist/css/bootstrap.css",
           "../node_modules/perfect-scrollbar/css/perfect-scrollbar.css",
           "./assets/sass/material-dashboard.scss",
-          "./assets/css/demo.css"
+          "./assets/css/demo.css",
+          "../node_modules/@ng-select/ng-select/themes/default.theme.css"
       ],
       "scripts": [
           "../node_modules/jquery/dist/jquery.js",

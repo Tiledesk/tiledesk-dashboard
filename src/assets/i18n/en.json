@@ -394,7 +394,10 @@
         "OopsYouDontHave": "Oops! You don't have permission to access this page."
     },
     "HoursPage": {
-        "ActivateTimetables": "Activate operating hours",
+        "ActivateTimetables": "Activate opening hours",
+        "TheProjectTimezoneIsSettedTo":"The project timezone is setted to:",
+        "OpeningHoursActivated":"requests will be assigned to agents based on their availability status evaluated in the range of opening hours",
+        "OpeningHoursDeactivated":"requests will be assigned to agents based on their availability status",
         "Day": "Day",
         "Status": "Status",
         "Morning": "Morning",

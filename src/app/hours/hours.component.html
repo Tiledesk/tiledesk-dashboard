@@ -7,59 +7,82 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
-          <div class="card" style="padding-top: 25px;padding-bottom: 25px;">
-            <div class="card-content">
-
-              <!-- <div class="oaerror info">
-                <div class="row">             
-                  <div class="col-sm-12"> 
+            <!-- padding-top: 25px; -->
+          <div class="card" style="padding-bottom: 25px;">
+            <div class="card-content" style="padding-top: 25px;">
+                <!-- <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; padding-left: 15px; padding-bottom: 0px;">
+                    Imposta gli orari di apertura
+                </h4> -->
+            <div class="row" >
+              <div class="col-md-6">
+                  <!-- style="display: flex;" -->
+              <div class="oaerror info" >
+                <!-- <div class="row">              -->
+                  <!-- <div class="col-sm-12"> -->
+                    <!-- margin-bottom: 17px -->
                     <p style="color: #566787; font-weight:500; font-size: 14px; ">
-                      The project <span style="font-weight:600">{{ this.projectname }}</span> is set to (UTC {{current_prjct_UTC}}) {{current_prjct_timezone_name}} timezone
+                      {{ "HoursPage.ActivateTimetables" | translate }} 
                     </p>
+                
+                    <label class="container" for="hoursActive" style="margin-left: 0px; margin-bottom: 6px;" [ngClass]="{'chekboxCustomHeight' : isActiveOperatingHours == false }" >
+                        <span *ngIf="isActiveOperatingHours === true "> {{ "HoursPage.OpeningHoursActivated" | translate }} </span>
+                        <span *ngIf="isActiveOperatingHours === false"> {{ "HoursPage.OpeningHoursDeactivated" | translate }} </span>
+                        <input type="checkbox" id="hoursActive"  (change)="onChange($event)" [checked]="isActiveOperatingHours"/>
+                      <span class="checkmark" ></span>
+                    </label>
+                  <!-- </div> -->
+                <!-- </div> -->
+              </div>
+            </div>
+
+            <div class="col-md-6">
+                <!-- style="display: flex;" -->
+                <div class="oaerror info" >
+                  <div class="row">             
+                    <div class="col-sm-12"> 
+  
+                      <p style="color: #566787; font-weight:500; font-size: 14px; margin-bottom: 16px">
+                          <!-- is set to (UTC {{current_prjct_UTC}}) {{current_prjct_timezone_name}} timezone -->
+                          <!-- <span style="font-weight:600">{{ this.projectname }}</span> -->
+                        <!-- The project timezone is setted to: -->
+                        {{ "HoursPage.TheProjectTimezoneIsSettedTo" | translate }}                       
+                      </p>
+                      <!-- // note: with ngModel is set the previously selected value on the select option dropdown -->
+                      <ng-select #selectElem class="custom" [(ngModel)]="current_prjct_timezone_name" (change)="setSelectedTimeZone()" style="margin-bottom: 6px;">
+          
+                        <ng-option *ngFor="let tz of timezone_NamesAndUTC_list" [value]="tz.value" style="height: 16px !important">
+                          {{ tz.tz }}
+                        </ng-option>
+                      </ng-select>
+                    </div>
                   </div>
                 </div>
-              </div> -->
+              </div>
+            </div>
              
-              <!-- <div class="col-sm-12">
-                <label class="container" for="hoursActive" style="margin-left: 0px;" >
-                  {{ "HoursPage.ActivateTimetables" | translate }} 
-                   <input type="checkbox" id="hoursActive"  (change)="onChange($event)" [checked]="isActiveOperatingHours"/>
-                  <span class="checkmark"></span>
-                </label>
-              </div> -->
 
               <div class="row">
                 <div class="col-md-12">
                   <div class="card">
-                    <div class="card-header" data-background-color="" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
-                      <p class="category" style="color: #aaaaaa;">
-                        The project <span style="font-weight:500">”{{ this.projectname }}”</span> is set to <span style="font-weight:600">(UTC {{current_prjct_UTC}}) {{current_prjct_timezone_name}} </span>timezone
-                      </p>
+
+                    <!-- <div class="card-header" data-background-color="" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
                       <p class="category" style="color: #aaaaaa;  padding-bottom: 8px;">
-                        Select another timezone for your project.
-                        <select #selectElem (change)="setSelectedTimeZone(selectElem.value)" style="height: 26px;color: #666666; font-size: 12px; font-weight: 500">
-                            <!-- [selected]="selectedId === faqKb._id" -->
-                            <!-- [value]="faqKb._id" [selected]="" -->
-                          <option  *ngFor="let tz of timezone_NamesAndUTC_list" [value]="tz.value" >
+                        Project timezone
+                        <select #selectElem (change)="setSelectedTimeZone(selectElem.value)" [(ngModel)]="current_prjct_timezone_name"
+                          style="height: 100%;color: #666666; font-size: 12px; font-weight: 500; overflow:hidden">
+                            <option  *ngFor="let tz of timezone_NamesAndUTC_list" [value]="tz.value" >
                             {{ tz.tz }}
                           </option>
                         </select>
                       </p>
-                     
-                      <div>
-       
-                      </div>
                       <h4 class="title" style="margin-bottom:2px; font-size:1.1em; color: #566787">
-                        
-                        <label class="container" for="hoursActive" style="margin-left: 0px; margin-bottom: 6px;" >
+                        <label class="container" for="hoursActive" style="margin-left: 0px; margin-bottom: 6px; white-space: nowrap; width: 1%" >
                           {{ "HoursPage.ActivateTimetables" | translate }} 
                             <input type="checkbox" id="hoursActive"  (change)="onChange($event)" [checked]="isActiveOperatingHours"/>
                           <span class="checkmark"></span>
                         </label>
                       </h4>
-
-                      
-                    </div>
+                    </div> -->
 
                     <div class="card-content table-responsive">
 
@@ -187,14 +210,14 @@
                             <!-- // CLOSE / OPEN AFTERNOON TIMES -->
                             <td style="white-space: nowrap; width: 1%;">
                               <button *ngIf="d?.isOpenPm === true && d?.isOpen === true" type="button" rel="tooltip" title="delete afternoon opening times" class="btn btn-danger btn-simple btn-xs  btn-circle close_pm"
-                                (click)="close_Pm(d?._id)">
+                                (click)="close_Pm(d?._id)" style="padding-left: 1px;padding-top: 1px; padding-right: 4px">
                                 <i class="material-icons"  style="font-size: 12px; font-weight: 600; padding-bottom: 2px">
                                   clear
                                 </i>
                               </button>
 
                               <button *ngIf="d?.isOpenPm === false && d?.isOpen === true" type="button" rel="tooltip" title="add opening times" class="btn btn-success btn-simple btn-xs  btn-circle open_pm"
-                                (click)="open_Pm(d?._id)">
+                                (click)="open_Pm(d?._id)" style="padding-left: 1px;padding-top: 1px; padding-right: 4px">
                                 <i class="material-icons"  style="font-size: 12px; font-weight: 600; padding-bottom: 2px">
                                   add
                                 </i>
