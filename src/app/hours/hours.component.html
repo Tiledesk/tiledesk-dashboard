@@ -1,8 +1,10 @@
-<div class="navbar-brand" style="z-index: -1;margin-top:10px; padding-left:30px">
+<!-- <div class="navbar-brand" style="z-index: -1;margin-top:10px; padding-left:30px">
     <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">keyboard_arrow_left</i>
     {{ "Hours" | translate }}
-  </div>
-  
+</div> -->
+<p style="margin-top:10px; padding-left:30px" class="navbar-brand">
+  {{ "Hours" | translate }}
+</p> 
   <div class="main-content" style="padding-top:0px">
     <div class="container-fluid">
       <div class="row">
@@ -24,12 +26,13 @@
                       {{ "HoursPage.ActivateTimetables" | translate }} 
                     </p>
                 
-                    <!-- xx {{ isActiveOperatingHours }} -->
-                    <label class="container" for="hoursActive" style="margin-left: 0px; margin-bottom: 6px;" [ngClass]="{'chekboxCustomHeight' : isActiveOperatingHours == false }" >
-                        <span *ngIf="isActiveOperatingHours === true "> {{ "HoursPage.OpeningHoursActivated" | translate }} </span>
-                        <span *ngIf="isActiveOperatingHours === false"> {{ "HoursPage.OpeningHoursDeactivated" | translate }} </span>
+                    <!-- [ngClass]="{'chekboxCustomHeight' : isActiveOperatingHours == false }" -->
+                    <label class="container" for="hoursActive" style="margin-left: 0px; margin-bottom: 6px;">
+                        {{ "HoursPage.OpeningHoursActivated" | translate }} 
+                        <!-- <span *ngIf="isActiveOperatingHours === true "> {{ "HoursPage.OpeningHoursActivated" | translate }} </span>
+                        <span *ngIf="isActiveOperatingHours === false"> {{ "HoursPage.OpeningHoursDeactivated" | translate }} </span> -->
                         <input type="checkbox" id="hoursActive"  (change)="onChange($event)" [checked]="isActiveOperatingHours"/>
-                      <span class="checkmark" ></span>
+                      <span class="checkmark" style="margin-top: 8px;"></span>
                     </label>
                   <!-- </div> -->
                 <!-- </div> -->
@@ -270,7 +273,7 @@
 
               <div class="row">
                 <div class="col-md-12">
-                  <button class="btn btn-success" (click)="save()">
+                  <button class="btn btn-success" (click)="updateProject()">
                     {{ "HoursPage.UpdateHours" | translate }}
                   </button>
 

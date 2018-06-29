@@ -150,12 +150,16 @@ export class HoursComponent implements OnInit {
     this.current_prjct_UTC = moment.tz(this.current_prjct_timezone_name).format('Z');
     console.log('»» »» HOURS COMP - CURRENT PROJECT TIMEZONE-UTC ', this.current_prjct_UTC);
 
+    /* ====== DEBUG ====== */
     // const timezone_offset = moment.tz(timezone_name).utcOffset()
     // const timezone_offset = moment.tz(moment.utc(), 'America/New_York').utcOffset()
+    // const timezone_offset = moment.tz(moment.utc(), 'EST5EDT').utcOffset()
     // const timezone_offset = moment.tz(moment.utc(), 'Europe/Rome').utcOffset()
+    // console.log('»» »» HOURS COMP - TIMEZONE OOOFFSET ', timezone_offset);
 
     const timezone_names = moment.tz.names();
-    // (UTC + 00: 00) Etc / UTC
+    console.log('»» »» HOURS COMP - TIMEZONE NAMES ', timezone_names);
+ 
     this.timezone_NamesAndUTC_list = []
     timezone_names.forEach(timezone_name => {
       const tzNameAndUTC = '(UTC ' + moment.tz(timezone_name).format('Z') + ') ' + timezone_name
@@ -357,7 +361,15 @@ export class HoursComponent implements OnInit {
       .getAvailableProjectUsersConsideringOperatingHours()
       .subscribe(available_project => {
         console.log('»»»»»»» NEW - GET AVAILABLE PROJECT USERS (CONSIDERING OPERATING HOURS)', available_project);
-      });
+      },
+        (error) => {
+          console.log('»»»»»»» NEW - GET AVAILABLE PROJECT USERS (CONSIDERING OPERATING HOURS) - ERROR ', error);
+          // this.showSpinner = false;
+        },
+        () => {
+          console.log('»»»»»»» NEW - GET AVAILABLE PROJECT USERS (CONSIDERING OPERATING HOURS) * COMPLETE');
+        });
+
   }
 
   // changeOpenedClosedStatus(weekdayid: number, weekdayname: string, isOpen: boolean) {
@@ -416,7 +428,7 @@ export class HoursComponent implements OnInit {
   //   });
   // }
 
-  save() {
+  updateProject() {
     console.log('WHEN SAVE - DAYS ', this.days);
 
     const operatingHoursUpdated = {};
@@ -574,4 +586,5 @@ export class HoursComponent implements OnInit {
       }
     });
   }
+
 }
