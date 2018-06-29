@@ -249,18 +249,27 @@ export class HoursComponent implements OnInit {
         if (project) {
           console.log('»» »» > HOURS comp - on init PROJECT OPERATING HOURS (first to assign): ', project.operatingHours);
 
+          /*  CHECK IF THE PROPERTY activeOperatingHours IS DEFINED */
+          // (e.g. THE VALUE OF activeOperatingHours WILL BE 'undefined' FOR A PROJECT CREATED BEFORE
+          // THE IMPLEMENTATION IN CHAT21-NODEJS-API > ROUTES > PROJECT OF THE PROPERTY activeOperatingHours = false)
+          if ( project.activeOperatingHours !== undefined) {
           // used for the checkbox "Activate operating hours"
           this.isActiveOperatingHours = project.activeOperatingHours;
           console.log('»» »» > HOURS comp - on init PROJECT OPERATING HOURS IS ACTIVE: ', this.isActiveOperatingHours);
+          } else {
+            console.log('»» »» > HOURS comp - on init PROJECT OPERATING HOURS IS ACTIVE: ', this.isActiveOperatingHours);
+            // this.isActiveOperatingHours = false
+          }
 
+          /*  CHECK IF THE OBJECT activeOperatingHours IS DEFINED */
+          // (e.g. FOR NEW PROJECT THE OBJECT activeOperatingHours WILL BE ALWAYS 'undefined'
+          // NOTE: if activeOperatingHours is 'undefined' the value of the timezone selected is setted equal to
+          // the current tiemzone get with moment (see the else block)
           if (project.operatingHours !== undefined) {
             this.project_operatingHours = JSON.parse(project.operatingHours);
             console.log('»» »» > HOURS comp - on init PROJECT OPERATING HOURS: ', this.project_operatingHours);
 
-
-
             console.log('»» »» > HOURS comp - on init PROJECT TIMEZONE NAME: ', this.project_operatingHours['tzname']);
-
 
             this.current_prjct_timezone_name = this.project_operatingHours['tzname'];
 
@@ -337,7 +346,8 @@ export class HoursComponent implements OnInit {
     console.log('OPERATING HOURS ARE ACTIVE ', this.activeOperatingHours);
   }
 
-  // UPDATE PROJECT OPERATING HOURS
+  // UPDATE PROJECT OPERATING HOURS - USED (FOR TEST) TO 'INIECT' THE JSON 'OPERATING HOURS' FROM THE INPUT FIELS
+  // see in yhe template
   updateProjectOperatingHours() {
     console.log('ON UPDATE OPERATING HOURS - OPERATING HOURS ARE ACTIVE ', this.activeOperatingHours);
     console.log('ON UPDATE OPERATING HOURS - OPERATING HOURS ', this.operatingHours);
