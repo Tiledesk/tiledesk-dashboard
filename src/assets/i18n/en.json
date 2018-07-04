@@ -395,7 +395,9 @@
     },
     "HoursPage": {
         "ActivateTimetables": "Activate opening hours",
-        "TheProjectTimezoneIsSettedTo":"The project timezone is setted to:",
+        "TheProject":"The project ",
+        "IsSettedTo":"is setted to:",
+        "CurrentTimezone":"current timezone",
         "OpeningHoursActivated":"requests will be assigned to agents based on their availability status evaluated in the range of opening hours",
         "OpeningHoursDeactivated":"requests will be assigned to agents based on their availability status",
         "Day": "Day",

@@ -49,8 +49,10 @@
                           <!-- is set to (UTC {{current_prjct_UTC}}) {{current_prjct_timezone_name}} timezone -->
                           <!-- <span style="font-weight:600">{{ this.projectname }}</span> -->
                         <!-- The project timezone is setted to: -->
-                        {{ "HoursPage.TheProjectTimezoneIsSettedTo" | translate }}                       
+                        {{ "HoursPage.TheProject" | translate }}<span class="tooltipx">timezone <span class="tooltiptext">{{ "HoursPage.CurrentTimezone" | translate }} (UTC {{ timezoneUTCOffsetForTooltip}}) {{timezoneNameForTooltip}}</span> </span> {{ "HoursPage.IsSettedTo" | translate }}          
                       </p>
+
+
                       <!-- // note: with ngModel is set the previously selected value on the select option dropdown -->
                       <ng-select #selectElem class="custom" [(ngModel)]="current_prjct_timezone_name" (change)="setSelectedTimeZone()" style="margin-bottom: 6px;">
           
@@ -277,9 +279,9 @@
                     {{ "HoursPage.UpdateHours" | translate }}
                   </button>
 
-                  <button class="btn btn-success" (click)="testAvailableProjectUserConsideringProjectOperatingHours()">
+                  <!-- <button class="btn btn-success" (click)="testAvailableProjectUserConsideringProjectOperatingHours()">
                     TEST AVAILABLE
-                  </button>
+                  </button> -->
                 </div>
               </div>
 

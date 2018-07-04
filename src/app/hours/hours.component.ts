@@ -125,6 +125,8 @@ export class HoursComponent implements OnInit {
   current_prjct_timezone_name: string;
   current_prjct_UTC: any;
   timezone_NamesAndUTC_list: any;
+  timezoneNameForTooltip: any;
+  timezoneUTCOffsetForTooltip: any;
 
   constructor(
     private auth: AuthService,
@@ -150,6 +152,12 @@ export class HoursComponent implements OnInit {
     this.current_prjct_UTC = moment.tz(this.current_prjct_timezone_name).format('Z');
     console.log('»» »» HOURS COMP - CURRENT PROJECT TIMEZONE-UTC ', this.current_prjct_UTC);
 
+    // tooltip timezone
+    this.timezoneNameForTooltip = moment.tz.guess();
+    console.log('»» »» HOURS COMP - TIMEZONE NAME FOR TOOLTIP  ', this.timezoneNameForTooltip);
+
+    this.timezoneUTCOffsetForTooltip = moment.tz(this.timezoneNameForTooltip).format('Z')
+    console.log('»» »» HOURS COMP - TIMEZONE OFFSET FOR TOOLTIP  ', this.timezoneUTCOffsetForTooltip);
     /* ====== DEBUG ====== */
     // const timezone_offset = moment.tz(timezone_name).utcOffset()
     // const timezone_offset = moment.tz(moment.utc(), 'America/New_York').utcOffset()
@@ -159,7 +167,7 @@ export class HoursComponent implements OnInit {
 
     const timezone_names = moment.tz.names();
     console.log('»» »» HOURS COMP - TIMEZONE NAMES ', timezone_names);
- 
+
     this.timezone_NamesAndUTC_list = []
     timezone_names.forEach(timezone_name => {
       const tzNameAndUTC = '(UTC ' + moment.tz(timezone_name).format('Z') + ') ' + timezone_name
@@ -252,10 +260,10 @@ export class HoursComponent implements OnInit {
           /*  CHECK IF THE PROPERTY activeOperatingHours IS DEFINED */
           // (e.g. THE VALUE OF activeOperatingHours WILL BE 'undefined' FOR A PROJECT CREATED BEFORE
           // THE IMPLEMENTATION IN CHAT21-NODEJS-API > ROUTES > PROJECT OF THE PROPERTY activeOperatingHours = false)
-          if ( project.activeOperatingHours !== undefined) {
-          // used for the checkbox "Activate operating hours"
-          this.isActiveOperatingHours = project.activeOperatingHours;
-          console.log('»» »» > HOURS comp - on init PROJECT OPERATING HOURS IS ACTIVE: ', this.isActiveOperatingHours);
+          if (project.activeOperatingHours !== undefined) {
+            // used for the checkbox "Activate operating hours"
+            this.isActiveOperatingHours = project.activeOperatingHours;
+            console.log('»» »» > HOURS comp - on init PROJECT OPERATING HOURS IS ACTIVE: ', this.isActiveOperatingHours);
           } else {
             console.log('»» »» > HOURS comp - on init PROJECT OPERATING HOURS IS ACTIVE: ', this.isActiveOperatingHours);
             // this.isActiveOperatingHours = false

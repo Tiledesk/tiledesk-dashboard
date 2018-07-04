@@ -283,7 +283,7 @@ export class MongodbDepartmentService {
   public testChat21AssignesFunction(id: string): Observable<Department[]> {
     let url = this.MONGODB_BASE_URL;
     // + '?nobot=' + true
-    url += id + '/operators';
+    url += id + '/operators' ;
     console.log('-- -- -- URL FOR TEST CHAT21 FUNC ', url);
 
     const headers = new Headers();
