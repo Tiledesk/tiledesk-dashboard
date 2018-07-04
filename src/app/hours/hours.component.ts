@@ -346,8 +346,8 @@ export class HoursComponent implements OnInit {
     console.log('OPERATING HOURS ARE ACTIVE ', this.activeOperatingHours);
   }
 
-  // UPDATE PROJECT OPERATING HOURS - USED (FOR TEST) TO 'INIECT' THE JSON 'OPERATING HOURS' FROM THE INPUT FIELS
-  // see in yhe template
+  // UPDATE PROJECT OPERATING HOURS - USED (FOR TEST) TO 'INIECT' THE JSON 'OPERATING HOURS' FROM THE INPUT FIELD
+  // (see in the template)
   updateProjectOperatingHours() {
     console.log('ON UPDATE OPERATING HOURS - OPERATING HOURS ARE ACTIVE ', this.activeOperatingHours);
     console.log('ON UPDATE OPERATING HOURS - OPERATING HOURS ', this.operatingHours);
@@ -454,11 +454,12 @@ export class HoursComponent implements OnInit {
       }
     }
 
+    /* !!!! NO MORE USED */
     // e.g.: operatingHoursUpdated = '"tz": "+2"'
-    operatingHoursUpdated['tz'] = this.projectOffsetfromUtcZero;
-    console.log('»»» PROJECT OFFSET FROM UTC : ', this.projectOffsetfromUtcZero);
-    // e.g.: Europe/Rome
+    // operatingHoursUpdated['tz'] = this.projectOffsetfromUtcZero;
+    // console.log('»»» PROJECT OFFSET FROM UTC : ', this.projectOffsetfromUtcZero);
 
+    // e.g.: Europe/Rome
     operatingHoursUpdated['tzname'] = this.current_prjct_timezone_name;
     console.log('OPERATING HOURS UPDATED: ', operatingHoursUpdated);
     console.log('»»» THIS TIMEZONE NAME: ', this.current_prjct_timezone_name);
