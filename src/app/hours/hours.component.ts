@@ -131,6 +131,7 @@ export class HoursComponent implements OnInit {
   displayModalUpdatingOperatingHours = 'none'
   SHOW_CIRCULAR_SPINNER = false;
   UPDATE_HOURS_ERROR = false;
+  TIMEZONE_NAME_IS_NULL = false;
 
   constructor(
     private auth: AuthService,
@@ -475,34 +476,47 @@ export class HoursComponent implements OnInit {
     // operatingHoursUpdated['tz'] = this.projectOffsetfromUtcZero;
     // console.log('»»» PROJECT OFFSET FROM UTC : ', this.projectOffsetfromUtcZero);
 
-    // e.g.: Europe/Rome
-    operatingHoursUpdated['tzname'] = this.current_prjct_timezone_name;
-    console.log('OPERATING HOURS UPDATED: ', operatingHoursUpdated);
-    console.log('»»» THIS TIMEZONE NAME: ', this.current_prjct_timezone_name);
+    if (this.current_prjct_timezone_name !== null) {
+      // e.g.: Europe/Rome
+      operatingHoursUpdated['tzname'] = this.current_prjct_timezone_name;
 
-    const operatingHoursUpdatedStr = JSON.stringify(operatingHoursUpdated);
-    this.projectService
-      .updateProjectOperatingHours(this.activeOperatingHours, operatingHoursUpdatedStr)
-      .subscribe(project => {
-        console.log('HOURS COMP »»»»»»» UPDATED PROJECT ', project);
-      },
-        (error) => {
-          console.log('HOURS COMP »»»»»»» UPDATE PROJECT - ERROR ', error);
-          this.SHOW_CIRCULAR_SPINNER = false;
-          this.UPDATE_HOURS_ERROR = true;
-          this.notify.showNotification('An error has occurred updating operating hours', 4, 'report_problem')
+
+      console.log('OPERATING HOURS UPDATED: ', operatingHoursUpdated);
+      console.log('»»» THIS TIMEZONE NAME: ', this.current_prjct_timezone_name);
+
+      const operatingHoursUpdatedStr = JSON.stringify(operatingHoursUpdated);
+      this.projectService
+        .updateProjectOperatingHours(this.activeOperatingHours, operatingHoursUpdatedStr)
+        .subscribe(project => {
+          console.log('HOURS COMP »»»»»»» UPDATED PROJECT ', project);
         },
-        () => {
-          console.log('HOURS COMP »»»»»»» UPDATE PROJECT * COMPLETE *');
+          (error) => {
+            console.log('HOURS COMP »»»»»»» UPDATE PROJECT - ERROR ', error);
+            this.SHOW_CIRCULAR_SPINNER = false;
+            this.UPDATE_HOURS_ERROR = true;
+            this.notify.showNotification('An error has occurred updating operating hours', 4, 'report_problem')
+          },
+          () => {
+            console.log('HOURS COMP »»»»»»» UPDATE PROJECT * COMPLETE *');
 
-          setTimeout(() => {
-            this.SHOW_CIRCULAR_SPINNER = false
-          }, 300);
+            setTimeout(() => {
+              this.SHOW_CIRCULAR_SPINNER = false
+            }, 300);
 
-          this.UPDATE_HOURS_ERROR = false;
-          this.notify.showNotification('operating hours has been successfully updated', 2, 'done');
-        });
+            this.UPDATE_HOURS_ERROR = false;
+            this.notify.showNotification('operating hours has been successfully updated', 2, 'done');
+          });
 
+    } else {
+      // the timezone name is null
+      setTimeout(() => {
+        this.SHOW_CIRCULAR_SPINNER = false
+        this.UPDATE_HOURS_ERROR = true;
+        this.TIMEZONE_NAME_IS_NULL = true;
+      }, 300);
+
+
+    }
   }
 
   closeModalOperatingHours() {

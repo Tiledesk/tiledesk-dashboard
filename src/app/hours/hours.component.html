@@ -326,7 +326,7 @@
             </p> 
           </div>
           <p style="margin-top:10px; text-align: center; color: #566787; font-weight: 500">
-            {{ "HoursPage.AnErrorHasOccurred" | translate }}
+            <span *ngIf="!TIMEZONE_NAME_IS_NULL">{{ "HoursPage.AnErrorHasOccurred" | translate }}</span> <span *ngIf="TIMEZONE_NAME_IS_NULL">{{ "HoursPage.ErrorSelectTheProjectTimezone" | translate }}</span>
           </p>
         </span>
       </div>
