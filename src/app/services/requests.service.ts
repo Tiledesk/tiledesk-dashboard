@@ -137,8 +137,6 @@ export class RequestsService {
     }
   }
 
-
-
   // getToken() {
   //   const that = this;
   //   console.log('Notification permission granted.');
@@ -228,9 +226,11 @@ export class RequestsService {
       // PUBLISH THE REQUESTS LIST (ORDERED AND WITH THE CHANGES MANAGED BY addOrUpdateRequestsList)
       this.requestsList_bs.next(this.requestList);
     },
-      error => { },
+      error => {
+        console.log('GET REQUEST - ERROR ', error)
+      },
       () => {
-        console.log('GET REQUEST COMPLETE')
+        console.log('GET REQUEST * COMPLETE')
       });
   }
 
@@ -241,7 +241,7 @@ export class RequestsService {
     // THE CURRENT USER ID WITH THE 'USER ID' CONTAINED IN THE ARRAY 'AGENTS' (NESTED IN THE 'REQUEST' OBJECT)
     // RETURNS TRUE OR FALSE
 
-    if (r === null || r === undefined || !r.hasAgent(this.currentUserID))  {
+    if (r === null || r === undefined || !r.hasAgent(this.currentUserID)) {
       console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID))
       return;
     }
@@ -622,7 +622,9 @@ export class RequestsService {
     console.log('CLOUD FUNCT CLOSE SUPPORT GROUP URL ', url);
     return this.http
       .put(url, body, options)
-      .map((res) => res.json());
+      // commented because the service not return nothing and if try to map the json obtain the error:
+      // ERROR  SyntaxError: Unexpected end of JSON
+    // .map((res) => res.json());
   }
 
 }
