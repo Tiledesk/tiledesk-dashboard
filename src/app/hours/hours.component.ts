@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 // import * as moment from 'moment';
 import * as moment from 'moment-timezone'
+import { NotifyService } from '../core/notify.service';
 
 @Component({
   selector: 'appdashboard-hours',
@@ -127,13 +128,17 @@ export class HoursComponent implements OnInit {
   timezone_NamesAndUTC_list: any;
   timezoneNameForTooltip: any;
   timezoneUTCOffsetForTooltip: any;
+  displayModalUpdatingOperatingHours = 'none'
+  SHOW_CIRCULAR_SPINNER = false;
+  UPDATE_HOURS_ERROR = false;
 
   constructor(
     private auth: AuthService,
     private projectService: ProjectService,
     private usersService: UsersService,
     private atp: AmazingTimePickerService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    public notify: NotifyService
   ) { }
 
   ngOnInit() {
@@ -354,7 +359,7 @@ export class HoursComponent implements OnInit {
     console.log('OPERATING HOURS ARE ACTIVE ', this.activeOperatingHours);
   }
 
-  // UPDATE PROJECT OPERATING HOURS - USED (FOR TEST) TO 'INIECT' THE JSON 'OPERATING HOURS' FROM THE INPUT FIELD
+  // !!! TEST FUNCTION - UPDATE PROJECT OPERATING HOURS - USED (FOR TEST) TO 'INIECT' THE JSON 'OPERATING HOURS' FROM THE INPUT FIELD
   // (see in the template)
   updateProjectOperatingHours() {
     console.log('ON UPDATE OPERATING HOURS - OPERATING HOURS ARE ACTIVE ', this.activeOperatingHours);
@@ -447,7 +452,10 @@ export class HoursComponent implements OnInit {
   // }
 
   updateProject() {
-    console.log('WHEN SAVE - DAYS ', this.days);
+    this.displayModalUpdatingOperatingHours = 'block'
+    this.SHOW_CIRCULAR_SPINNER = true;
+
+    console.log('WHEN UPDATE PROJECT - DAYS ', this.days);
 
     const operatingHoursUpdated = {};
 
@@ -476,8 +484,33 @@ export class HoursComponent implements OnInit {
     this.projectService
       .updateProjectOperatingHours(this.activeOperatingHours, operatingHoursUpdatedStr)
       .subscribe(project => {
-        console.log('»»»»»»» UPDATED PROJECT ', project);
-      });
+        console.log('HOURS COMP »»»»»»» UPDATED PROJECT ', project);
+      },
+        (error) => {
+          console.log('HOURS COMP »»»»»»» UPDATE PROJECT - ERROR ', error);
+          this.SHOW_CIRCULAR_SPINNER = false;
+          this.UPDATE_HOURS_ERROR = true;
+          this.notify.showNotification('An error has occurred updating operating hours', 4, 'report_problem')
+        },
+        () => {
+          console.log('HOURS COMP »»»»»»» UPDATE PROJECT * COMPLETE *');
+
+          setTimeout(() => {
+            this.SHOW_CIRCULAR_SPINNER = false
+          }, 300);
+
+          this.UPDATE_HOURS_ERROR = false;
+          this.notify.showNotification('operating hours has been successfully updated', 2, 'done');
+        });
+
+  }
+
+  closeModalOperatingHours() {
+    this.displayModalUpdatingOperatingHours = 'none'
+  }
+
+  closeModalOperatingHoursHandler() {
+    this.displayModalUpdatingOperatingHours = 'none'
   }
 
   onChangeAmStartFromArrow(time, weekdayid) {
