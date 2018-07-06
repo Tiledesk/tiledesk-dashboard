@@ -386,6 +386,34 @@ button.close {
 }
 /*  MODAL END */
 
+.opened_label {
+  background-color: #4caf50; color: white; padding: 4px 8px; border-radius: 3px; letter-spacing: 1px; font-size: 0.8em;
+}
+
+.closed_label {
+  background-color: #f44336; color: white; padding: 4px 8px; border-radius: 3px; letter-spacing: 1.3px; font-size: 0.8em; 
+}
+
+// start DISABLED STYLE (APPLIED WHEN OPERATING HOURS IS NOT ACTIVE)
+
+// SECTION 'SELECT A TIMEZONE' 
+.oaerror_info_disabled {
+  border-left-color: #999;
+  background-color: rgba(192, 192, 192, 0.1);
+}
+
+// CARD BACKGROUND
+.card_disabled {
+  background-color: rgba(192, 192, 192, 0.1);
+}
+
+.opened_closed_label_disabled {
+  background-color: #bbbcbb;
+
+}
+
+// /.end DISABLED STYLE (APPLIED WHEN OPERATING HOURS IS NOT ACTIVE)
+
 // NG-SELECT css
 .ng-select.ng-select-opened>.ng-select-container{
   background:#fff;border-color:#b3b3b3 #ccc #d9d9d9

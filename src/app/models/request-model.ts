@@ -5,6 +5,7 @@ export interface Request {
   text?: string;
   first_text?: string;
   timestamp?: number;
+  created_on?: any;
   membersCount?: number;
   support_status?: number;
   members?: any;

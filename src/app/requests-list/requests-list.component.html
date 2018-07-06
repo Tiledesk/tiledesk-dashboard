@@ -227,8 +227,8 @@
                       <!-- {{ request?.request_date_fromnow }} -->
                       <!-- {{ getTimestampAsMoment(request?.timestamp) }} -->
 
-                      {{ request?.timestamp | amTimeAgo }}
-                      <!-- {{ request?.created_on | amTimeAgo }} -->
+                      <!-- {{ request?.timestamp | amTimeAgo }} -->
+                      {{ request?.created_on | date: 'd/M/y HH:mm:ss' }}
                       
                     </p>
                   </td>
@@ -494,8 +494,8 @@
                       <!-- {{ request?.request_date_fromnow }} -->
                       <!-- {{ getTimestampAsMoment(request?.timestamp) }} -->
 
-                      {{ request?.timestamp | amTimeAgo }}
-                      <!-- {{ request?.created_on | amTimeAgo }} -->
+                      <!-- {{ request?.timestamp | amTimeAgo }} -->
+                      {{ request?.created_on | date: 'd/M/y HH:mm:ss' }}
                     </p>
                   </td>
 

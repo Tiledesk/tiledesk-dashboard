@@ -357,6 +357,7 @@ export class HoursComponent implements OnInit {
 
     // used in the template to change the checkbox label text
     this.isActiveOperatingHours = this.activeOperatingHours;
+
     console.log('OPERATING HOURS ARE ACTIVE ', this.activeOperatingHours);
   }
 
@@ -404,6 +405,7 @@ export class HoursComponent implements OnInit {
   //   // }
   // }
   onChangeOpenedClosedStatus($event, weekdayid: string, weekdayname: string) {
+ 
     // console.log('XXXX ', $event.target.checked)
     // tslint:disable-next-line:max-line-length
     console.log('CLICKED CHANGE STATUS OPENED/CLOSED for the WEEKDAY ID ', weekdayid, ' - ', weekdayname, 'IS OPEN ', $event.target.checked);

@@ -240,7 +240,7 @@ export class RequestsService {
     // r.hasAgent(this.currentUserID)) PASS THE CURRENT USER ID TO THE 'REQUEST' MODEL WHICH AFTER COMPARING
     // THE CURRENT USER ID WITH THE 'USER ID' CONTAINED IN THE ARRAY 'AGENTS' (NESTED IN THE 'REQUEST' OBJECT)
     // RETURNS TRUE OR FALSE
-
+    //
     if (r === null || r === undefined || !r.hasAgent(this.currentUserID)) {
       console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID))
       return;
@@ -322,7 +322,7 @@ export class RequestsService {
       .where('support_status', '<', 1000)
       .where('projectid', '==', this.project._id)
       .orderBy('support_status')
-      .orderBy('timestamp', 'desc');
+      .orderBy('created_on', 'desc');
     // const observer = Observable.create(query.onSnapshot.bind(query));
     const observable = new Observable<Request[]>(observer => {
       this.unsubscribe = query.onSnapshot(snapshot => {
@@ -341,6 +341,7 @@ export class RequestsService {
           r.text = data.text
           r.first_text = data.first_text
           r.timestamp = data.timestamp
+          r.created_on = data.created_on
           r.membersCount = data.membersCount
           r.support_status = data.support_status
           r.members = data.members

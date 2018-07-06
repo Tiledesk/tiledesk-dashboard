@@ -90,7 +90,7 @@ export class ResourcesComponent implements OnInit {
   testWidgetPage() {
     // http://testwidget.tiledesk.com/testsite/?projectid=5ad069b123c415001469574f&prechatform=false
     // tslint:disable-next-line:max-line-length
-    const url = 'http://testwidget.tiledesk.com/testsite?projectid=' + this.projectId + '&prechatform=' + this.preChatForm + '&projectname=' + this.projectName;
+    const url = 'http://testwidget.tiledesk.com/testsite?projectid=' + this.projectId + '&prechatform=' + this.preChatForm + '&projectname=' + this.projectName + '&callout_timer=' + this.hasSelectedCalloutTimer;
     window.open(url, '_blank');
   }
 

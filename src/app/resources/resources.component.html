@@ -56,14 +56,13 @@
             <div class="row">
                 <div class="col-sm-12">
                         <!-- *ngIf="!preChatForm"  -->
-<textarea *ngIf="!hasSelectedCalloutTimer" name="exampleClipboard" class="textarea" readonly rows="17" value="" type="text">
+<textarea *ngIf="!hasSelectedCalloutTimer" name="exampleClipboard" class="textarea" readonly rows="16" value="" type="text">
 &lt;script type=&quot;application/javascript&quot;&gt;
     window.tiledeskSettings = 
         {
             projectid: &quot;{{ projectId }}&quot;,
             projectname: &quot;{{projectName}}&quot;,
             preChatForm: {{preChatFormValue}}
-            
         };
 
     (function(d, s, id) {
