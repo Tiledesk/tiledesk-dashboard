@@ -14,7 +14,7 @@
           <div class="card-content" style="padding-top: 25px;">
 
             <div class="row" >
-              <div class="col-md-6">
+              <div class="col-md-12">
                 <div class="oaerror info" >
                   <p style="color: #566787; font-weight:500; font-size: 14px; ">
                     {{ "HoursPage.ActivateTimetables" | translate }} 
@@ -26,22 +26,26 @@
                     <!-- <span *ngIf="isActiveOperatingHours === true "> {{ "HoursPage.OpeningHoursActivated" | translate }} </span>
                     <span *ngIf="isActiveOperatingHours === false"> {{ "HoursPage.OpeningHoursDeactivated" | translate }} </span> -->
                     <input type="checkbox" id="hoursActive"  (change)="onChange($event)" [checked]="isActiveOperatingHours"/>
-                    <span class="checkmark" style="margin-top: 8px;"></span>
+                    <span class="checkmark" style="margin-top: 2px;"></span>
                   </label>
 
                 </div>
               </div>
-
-              <div class="col-md-6">
+            </div> 
+            <div class="row" > 
+              <div class="col-md-12">
               
                 <div class="oaerror info" >
-                  <div class="row">             
-                    <div class="col-sm-12"> 
+                  <div class="row">  
 
-                      <p style="color: #566787; font-weight:500; font-size: 14px; margin-bottom: 16px">
+                    <!-- /* THE PROJECT TIME ZONE IS SETTED TO */ -->
+                    <div class="col-sm-6"> 
+                      <p style="color: #566787; font-weight:500; font-size: 14px; margin-bottom: 8px">
                         <!-- The project timezone is setted to: -->
-                        {{ "HoursPage.TheProject" | translate }}<span class="tooltipx">timezone <span class="tooltiptext">{{ "HoursPage.CurrentTimezone" | translate }} (UTC {{ timezoneUTCOffsetForTooltip}}) {{timezoneNameForTooltip}}</span> </span> {{ "HoursPage.IsSettedTo" | translate }}          
+                        {{ "HoursPage.TheProject" | translate }} time zone {{ "HoursPage.IsSettedTo" | translate }}          
                       </p>
+                      <!-- // TOOLTIP -->
+                      <!-- <span class="tooltipx">time zone <span class="tooltiptext"></span>{{ "HoursPage.CurrentTimezone" | translate }} (UTC {{ timezoneUTCOffsetForTooltip}}) {{timezoneNameForTooltip}}</span> </span>  -->
 
                       <!-- // note: with ngModel is set the previously selected value on the select option dropdown -->
                       <ng-select #selectElem class="custom" [(ngModel)]="current_prjct_timezone_name" (change)="setSelectedTimeZone()" style="margin-bottom: 6px;">
@@ -49,6 +53,16 @@
                           {{ tz.tz }}
                         </ng-option>
                       </ng-select>
+                    </div>
+
+                     <!-- /* YOU ARE CURRENTLY AT */ -->
+                    <div class="col-sm-6">    
+                      <p style="color: #566787; font-weight:500; font-size: 14px; margin-bottom: 6px">
+                        You are currently at:  (UTC {{ timezoneUTCOffsetForTooltip}}) {{timezoneNameForTooltip}}
+                      </p>  
+                          <button class="btn btn-outline"  disabled (click)="updateProject()" style="padding-top: 9px; padding-bottom: 9px; margin-top: 2px;">
+                          Set project to your time zone
+                        </button>
                     </div>
                   </div>
                 </div>

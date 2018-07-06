@@ -15,7 +15,9 @@ export class ResourcesComponent implements OnInit {
   projectId: string;
   preChatForm = false;
   projectName: string;
-
+  calloutTimer: string;
+  hasSelectedCalloutTimer = false;
+  preChatFormValue = 'false';
   http: Http;
 
   // preChatForm = 'preChatForm'
@@ -49,10 +51,26 @@ export class ResourcesComponent implements OnInit {
   toggleCheckBox(event) {
     if (event.target.checked) {
       this.preChatForm = true;
+      this.preChatFormValue = 'true'
       console.log('INCLUDE PRE CHAT FORM ', this.preChatForm)
     } else {
       this.preChatForm = false;
+      this.preChatFormValue = 'false'
       console.log('INCLUDE PRE CHAT FORM ', this.preChatForm)
+    }
+  }
+
+  toggleCheckBoxCalloutTimer(event) {
+    if (event.target.checked) {
+      console.log('INCLUDE CALLOUT TIMER ', event.target.checked)
+      this.calloutTimer = 'calloutTimer: 5';
+      this.hasSelectedCalloutTimer = true
+      console.log('CALLOUT TIMER VALUE  ', this.calloutTimer)
+    } else {
+      console.log('INCLUDE CALLOUT TIMER ', event.target.checked)
+      this.calloutTimer = '';
+      this.hasSelectedCalloutTimer = false
+      console.log('CALLOUT TIMER VALUE ', this.calloutTimer)
     }
   }
 

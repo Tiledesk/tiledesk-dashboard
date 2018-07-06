@@ -21,7 +21,8 @@
                             <h6 class="category text-gray" style="text-transform: none; padding-left:15px">
                                 {{ 'Resourcepage.CopyTheFollowingScript...' | translate  }}<code><em>&lt;head&gt;</em></code> tags
                             </h6>
-
+                            
+                            <!-- // INCLUDE PRECHAT FORM -->
                             <h6 class="category text-gray" style="text-transform: none; padding-left:15px">
                                 <div class="form-check">
                                     <input style="height:16px; width:16px" type="checkbox" class="form-check-input" id="exampleCheck1" (change)="toggleCheckBox($event)">
@@ -30,16 +31,82 @@
                                     </label>
                                     <span style="font-weight:100">{{ 'Resourcepage.IncludeThePreChatForm_2' | translate }}</span>
                                 </div>
+
+                                <!-- // INCLUDE CALLOUT TIMER -->
+                                <div class="form-check">
+                                    <input style="height:16px; width:16px" type="checkbox" class="form-check-input" id="exampleCheck1" (change)="toggleCheckBoxCalloutTimer($event)">
+                                    <label style="color: #999999" class="form-check-label" for="exampleCheck1">
+                                        {{ 'Resourcepage.IncludeTheCalloutTimer_1' | translate }} 
+                                    </label>
+                                    <span style="font-weight:100">{{ 'Resourcepage.IncludeTheCalloutTimer_2' | translate }}</span>
+                                </div>
                                 
                             </h6>
                             <!-- Copy the following script and insert it into your website's HTML source code between the <head> tags -->
                             <!-- <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Risposta</label> -->
-                            <div class="col-sm-12">
-                                <div style="padding-top: 5px; padding-bottom: 25px;">
-                                    
-                                    <!-- &lt;app-root preChatForm tenant='' recipientId='' projectid='' userId='' userEmail='' userPassword='' userFullname=''&gt;&lt;/app-root&gt; -->
 
-                                    
+<!-- // NEW WIDGET START -->
+
+<div class="col-sm-12">
+        <div style="padding-top: 5px; padding-bottom: 25px;">
+            
+            <!-- &lt;app-root preChatForm tenant='' recipientId='' projectid='' userId='' userEmail='' userPassword='' userFullname=''&gt;&lt;/app-root&gt; -->
+
+            
+            <div class="row">
+                <div class="col-sm-12">
+                        <!-- *ngIf="!preChatForm"  -->
+<textarea *ngIf="!hasSelectedCalloutTimer" name="exampleClipboard" class="textarea" readonly rows="17" value="" type="text">
+&lt;script type=&quot;application/javascript&quot;&gt;
+    window.tiledeskSettings = 
+        {
+            projectid: &quot;{{ projectId }}&quot;,
+            projectname: &quot;{{projectName}}&quot;,
+            preChatForm: {{preChatFormValue}}
+            
+        };
+
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id; //js.async=!0;
+        js.src = &quot;https://widget.tiledesk.com/tiledesk.js&quot;;
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, &#39;script&#39;, &#39;tiledesk-jssdk&#39;));
+&lt;/script&gt;</textarea>
+
+<textarea  *ngIf="hasSelectedCalloutTimer" name="exampleClipboard" class="textarea" readonly rows="17" value="" type="text">
+&lt;script type=&quot;application/javascript&quot;&gt;
+    window.tiledeskSettings = 
+        {
+            projectid: &quot;{{ projectId }}&quot;,
+            projectname: &quot;{{projectName}}&quot;,
+            preChatForm: {{preChatFormValue}},
+            calloutTimer: 5
+        };
+
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id; //js.async=!0;
+        js.src = &quot;https://widget.tiledesk.com/tiledesk.js&quot;;
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, &#39;script&#39;, &#39;tiledesk-jssdk&#39;));
+&lt;/script&gt;</textarea>
+                </div>
+            </div>
+            <div>
+                <button style="margin-top:0px" (click)="copyToClipboard()" class="btn btn-white">{{ 'Resourcepage.CopyScript' | translate }}</button>
+
+                <button style="margin-top:0px" (click)="testWidgetPage()" class="btn btn-success">{{ 'Resourcepage.TestWidget' | translate }}</button>
+           </div>
+        </div>
+        
+    </div>
+<!-- // NEW WIDGET /END -->
+
+                            <!-- <div class="col-sm-12">
+                                <div style="padding-top: 5px; padding-bottom: 25px;">
                                     <div class="row">
                                         <div class="col-sm-12">
 <textarea  *ngIf="!preChatForm" name="exampleClipboard" class="textarea" readonly rows="6" value="&lt;app-root projectid='{{ projectId }}' projectname='{{projectName}}'&gt;&lt;/app-root&gt;
@@ -65,7 +132,7 @@
                                    </div>
                                 </div>
                                 
-                            </div>
+                            </div> -->
                         </div>
 
                         <!-- ANDROID SDK -->
