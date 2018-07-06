@@ -39,13 +39,13 @@
                   <div class="row">  
 
                     <!-- /* THE PROJECT TIME ZONE IS SETTED TO */ -->
-                    <div class="col-sm-6"> 
+                    <div class="col-sm-6 custom_col" style=""> 
                       <p style="color: #566787; font-weight:500; font-size: 14px; margin-bottom: 8px">
                         <!-- The project timezone is setted to: -->
                         {{ "HoursPage.TheProject" | translate }} time zone {{ "HoursPage.IsSettedTo" | translate }}          
                       </p>
                       <!-- // TOOLTIP -->
-                      <!-- <span class="tooltipx">time zone <span class="tooltiptext"></span>{{ "HoursPage.CurrentTimezone" | translate }} (UTC {{ timezoneUTCOffsetForTooltip}}) {{timezoneNameForTooltip}}</span> </span>  -->
+                      <!-- <span class="tooltipx">time zone <span class="tooltiptext">{{ "HoursPage.CurrentTimezone" | translate }} (UTC {{ timezoneUTCOffsetForTooltip}}) {{timezoneNameForTooltip}}</span> </span>  -->
 
                       <!-- // note: with ngModel is set the previously selected value on the select option dropdown -->
                       <ng-select #selectElem class="custom" [(ngModel)]="current_prjct_timezone_name" (change)="setSelectedTimeZone()" style="margin-bottom: 6px;" [disabled]="!isActiveOperatingHours">
@@ -58,11 +58,15 @@
                      <!-- /* YOU ARE CURRENTLY AT */ -->
                     <div class="col-sm-6">    
                       <p style="color: #566787; font-weight:500; font-size: 14px; margin-bottom: 6px">
-                        You are currently at:  (UTC {{ timezoneUTCOffsetForTooltip}}) {{timezoneNameForTooltip}}
+                        {{ "HoursPage.YouAreCurrentlyAt" | translate }}  (UTC {{ timezoneUTCOffsetForTooltip}}) {{timezoneNameForTooltip}}
                       </p>  
-                          <button class="btn btn-outline"  disabled (click)="updateProject()" style="padding-top: 9px; padding-bottom: 9px; margin-top: 2px;">
-                          Set project to your time zone
-                        </button>
+                      <button class="btn btn-default" [disabled]="timeZoneSelectedIsUnlikeCurrentTimezone === false || !isActiveOperatingHours" (click)="setProjectToYourTimezone()" style="padding-top: 9px; padding-bottom: 9px; padding-right: 15px; padding-left: 15px; margin-top: 2px;">
+                        <span class="tooltipx">{{ "HoursPage.SetProjectToYourTimeZone" | translate }}
+                          <span *ngIf="timeZoneSelectedIsUnlikeCurrentTimezone === false" class="tooltiptext">
+                            {{ "HoursPage.TheProjectIsAlreadySettedOnYourTZ" | translate }}
+                          </span>
+                          </span> 
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -137,7 +141,7 @@
                               <input type="checkbox" (change)="onChangeOpenedClosedStatus($event, d?._id, d?.weekday)"
                                 [checked]="d?.isOpen == true" [disabled]="!isActiveOperatingHours">
                                 <!-- [ngClass]="{'open_close_switch_disabled' : !isActiveOperatingHours}" -->
-                              <span class="slider round"></span>
+                              <span class="slider round" [ngClass]="{'open_close_switch_disabled' : !isActiveOperatingHours}"></span>
                             </label>
                           </td>
                             

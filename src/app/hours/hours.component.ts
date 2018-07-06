@@ -132,6 +132,7 @@ export class HoursComponent implements OnInit {
   SHOW_CIRCULAR_SPINNER = false;
   UPDATE_HOURS_ERROR = false;
   TIMEZONE_NAME_IS_NULL = false;
+  timeZoneSelectedIsUnlikeCurrentTimezone: boolean;
 
   constructor(
     private auth: AuthService,
@@ -144,6 +145,8 @@ export class HoursComponent implements OnInit {
 
   ngOnInit() {
     console.log('DAYS ', this.days);
+
+    // getCurrentProject > getProjectById > BUILD THE OBJECT DAYS
     this.getCurrentProject();
     // this.daysList = this.days
     this.auth.checkRole();
@@ -158,12 +161,16 @@ export class HoursComponent implements OnInit {
     this.current_prjct_UTC = moment.tz(this.current_prjct_timezone_name).format('Z');
     console.log('»» »» HOURS COMP - CURRENT PROJECT TIMEZONE-UTC ', this.current_prjct_UTC);
 
-    // tooltip timezone
+    // current TIMEZONE NAME - USED IN THE BOX 'You are currently at:' and
+    // to set to the current timezone the timezone selected in the option input
     this.timezoneNameForTooltip = moment.tz.guess();
     console.log('»» »» HOURS COMP - TIMEZONE NAME FOR TOOLTIP  ', this.timezoneNameForTooltip);
 
+    // current TIMEZONE OFFSET - USED IN THE BOX 'You are currently at:'
     this.timezoneUTCOffsetForTooltip = moment.tz(this.timezoneNameForTooltip).format('Z')
     console.log('»» »» HOURS COMP - TIMEZONE OFFSET FOR TOOLTIP  ', this.timezoneUTCOffsetForTooltip);
+
+
     /* ====== DEBUG ====== */
     // const timezone_offset = moment.tz(timezone_name).utcOffset()
     // const timezone_offset = moment.tz(moment.utc(), 'America/New_York').utcOffset()
@@ -185,8 +192,27 @@ export class HoursComponent implements OnInit {
 
   }
 
+  setProjectToYourTimezone() {
+    console.log('SET TIMEZONE TO YOUR TIMEZONE ', this.timezoneNameForTooltip);
+    this.current_prjct_timezone_name = this.timezoneNameForTooltip
+
+    if (this.current_prjct_timezone_name !== this.timezoneNameForTooltip) {
+      this.timeZoneSelectedIsUnlikeCurrentTimezone = true;
+      console.log('TIMEZONE SELECTED id != OF CURRENT TIMEZONE ? ', this.timeZoneSelectedIsUnlikeCurrentTimezone);
+    } else {
+      this.timeZoneSelectedIsUnlikeCurrentTimezone = false;
+    }
+  }
+
   setSelectedTimeZone(): void {
-    console.log('TIMEZONE SELECTED ', this.current_prjct_timezone_name)
+    console.log('TIMEZONE SELECTED ', this.current_prjct_timezone_name);
+
+    if (this.current_prjct_timezone_name !== this.timezoneNameForTooltip) {
+      this.timeZoneSelectedIsUnlikeCurrentTimezone = true;
+      console.log('TIMEZONE SELECTED id != OF CURRENT TIMEZONE ? ', this.timeZoneSelectedIsUnlikeCurrentTimezone);
+    } else {
+      this.timeZoneSelectedIsUnlikeCurrentTimezone = false;
+    }
   }
 
   // !! NO MORE USED
@@ -255,6 +281,10 @@ export class HoursComponent implements OnInit {
     });
   }
 
+  /* --------------------------------------------------------------------------------------------------
+   * GET THE PROJECT BY ID AND WITH THE DATA OF OPERATING HOURS (PRESENT OR LESS)
+   * BUILD THE OBJECT DAYS
+   * --------------------------------------------------------------------------------------------------*/
   getProjectById() {
     this.projectService.getMongDbProjectById(this.projectid).subscribe(
       (project: any) => {
@@ -277,7 +307,7 @@ export class HoursComponent implements OnInit {
 
           /*  CHECK IF THE OBJECT activeOperatingHours IS DEFINED */
           // (e.g. FOR NEW PROJECT THE OBJECT activeOperatingHours WILL BE ALWAYS 'undefined'
-          // NOTE: if activeOperatingHours is 'undefined' the value of the timezone selected is setted equal to
+          // NOTE: if activeOperatingHours is 'undefined' the value of the timezone name selected is setted equal to
           // the current tiemzone get with moment (see the else block)
           if (project.operatingHours !== undefined) {
             this.project_operatingHours = JSON.parse(project.operatingHours);
@@ -286,6 +316,21 @@ export class HoursComponent implements OnInit {
             console.log('»» »» > HOURS comp - on init PROJECT TIMEZONE NAME: ', this.project_operatingHours['tzname']);
 
             this.current_prjct_timezone_name = this.project_operatingHours['tzname'];
+
+            // GET THE TIMEZONE NAME FROM THE OBJECT OPERATING HOURS PF THE PROJECT
+            // IF IT IS != BY THE CURRENT TIMEZONE SET TO TRUE timeZoneSelectedIsUnlikeCurrentTimezone
+            // USED TO DISABLED / ENABLED THE BTN 'SET PROJWCT TIMEZONE TO CURRENT TIMEZONE'
+
+            if (this.current_prjct_timezone_name !== this.timezoneNameForTooltip) {
+              this.timeZoneSelectedIsUnlikeCurrentTimezone = true
+              // tslint:disable-next-line:max-line-length
+              console.log('»» »» > HOURS comp - on init TIMEZONE SELECTED id != OF CURRENT TIMEZONE? ', this.timeZoneSelectedIsUnlikeCurrentTimezone);
+
+            } else {
+              this.timeZoneSelectedIsUnlikeCurrentTimezone = false
+            }
+
+
 
             // SE NEL OGGETTO OPERATING HOURS DEL PROGETTO E PRESENTE LA KEY CHE INDICA IL GIORNO AGGIUNGO OPERATING
             // HOURS ALL OBJECT DAY (CREO COSì L'OGGETTO DAYS CHE USO NEL TEMPLATE)
@@ -340,6 +385,8 @@ export class HoursComponent implements OnInit {
             // note: current_prjct_timezone_name is the timezone name displayed as selected in the timezone deropdownlist
             this.current_prjct_timezone_name = moment.tz.guess();
             console.log('»» »» HOURS COMP - CURRENT PROJECT TIMEZONE-NAME DETECTED ', this.current_prjct_timezone_name);
+            
+            this.timeZoneSelectedIsUnlikeCurrentTimezone = false
           }
         }
       },
@@ -405,7 +452,6 @@ export class HoursComponent implements OnInit {
   //   // }
   // }
   onChangeOpenedClosedStatus($event, weekdayid: string, weekdayname: string) {
- 
     // console.log('XXXX ', $event.target.checked)
     // tslint:disable-next-line:max-line-length
     console.log('CLICKED CHANGE STATUS OPENED/CLOSED for the WEEKDAY ID ', weekdayid, ' - ', weekdayname, 'IS OPEN ', $event.target.checked);
@@ -654,5 +700,7 @@ export class HoursComponent implements OnInit {
       }
     });
   }
+
+
 
 }

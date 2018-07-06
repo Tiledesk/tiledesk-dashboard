@@ -293,7 +293,7 @@ input:checked + .slider:before {
 .tooltipx {
   position: relative;
   display: inline-block;
-  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  // border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
 }
 
 /* Tooltip text */
@@ -310,7 +310,7 @@ input:checked + .slider:before {
   position: absolute;
   z-index: 1;
   /* Position the tooltip text - TOP */
-  width: 320px;
+  width: 420px;
   bottom: 100%;
   left: 50%; 
   margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
@@ -407,12 +407,38 @@ button.close {
   background-color: rgba(192, 192, 192, 0.1);
 }
 
+// labels 'OPENED' / 'CLOSED'
 .opened_closed_label_disabled {
   background-color: #bbbcbb;
-
 }
 
+.open_close_switch_disabled {
+  cursor: not-allowed
+}
 // /.end DISABLED STYLE (APPLIED WHEN OPERATING HOURS IS NOT ACTIVE)
+
+.row.vdivide [class*='col-']:not(:last-child):after {
+  background: #e0e0e0;
+  width: 1px;
+  content: "";
+  display:block;
+  position: absolute;
+  top:0;
+  bottom: 0;
+  right: 0;
+  min-height: 70px;
+}
+
+// WHEN IS > 
+@media (min-width: 768px) {
+  .custom_col {
+    border-right: 1px solid #e0e0e0;
+  }
+}
+
+
+
+
 
 // NG-SELECT css
 .ng-select.ng-select-opened>.ng-select-container{
