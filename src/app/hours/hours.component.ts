@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { AuthService } from '../core/auth.service';
 
 import { ProjectService } from '../services/project.service';
@@ -11,6 +11,8 @@ import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment-timezone'
 import { NotifyService } from '../core/notify.service';
 
+import { Router, NavigationEnd, RoutesRecognized, NavigationStart, ActivatedRoute } from '@angular/router';
+
 @Component({
   selector: 'appdashboard-hours',
   templateUrl: './hours.component.html',
@@ -19,7 +21,7 @@ import { NotifyService } from '../core/notify.service';
 })
 
 
-export class HoursComponent implements OnInit {
+export class HoursComponent implements OnInit, OnDestroy {
   activeOperatingHours: boolean;
   operatingHours: any;
 
@@ -134,13 +136,16 @@ export class HoursComponent implements OnInit {
   TIMEZONE_NAME_IS_NULL = false;
   timeZoneSelectedIsUnlikeCurrentTimezone: boolean;
 
+  // hasSaved: boolean
+
   constructor(
     private auth: AuthService,
     private projectService: ProjectService,
     private usersService: UsersService,
     private atp: AmazingTimePickerService,
     private translate: TranslateService,
-    public notify: NotifyService
+    public notify: NotifyService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -179,7 +184,7 @@ export class HoursComponent implements OnInit {
     // console.log('»» »» HOURS COMP - TIMEZONE OOOFFSET ', timezone_offset);
 
     const timezone_names = moment.tz.names();
-    console.log('»» »» HOURS COMP - TIMEZONE NAMES ', timezone_names);
+    // console.log('»» »» HOURS COMP - TIMEZONE NAMES ', timezone_names);
 
     this.timezone_NamesAndUTC_list = []
     timezone_names.forEach(timezone_name => {
@@ -188,7 +193,28 @@ export class HoursComponent implements OnInit {
       this.timezone_NamesAndUTC_list.push({ tz: tzNameAndUTC, value: timezone_name })
 
     });
-    console.log('»» »» HOURS COMP - TIMEZONE NAME & OFFSET ARRAY ', this.timezone_NamesAndUTC_list)
+    console.log('»» »» HOURS COMP - TIMEZONE NAME & OFFSET ARRAY ', this.timezone_NamesAndUTC_list);
+
+    // this.router.events
+    //   .filter((event: any) => event instanceof NavigationStart)
+    //   .subscribe((event: any) => {
+    //     console.log(event);
+    //     const nextUrl = event.url;
+    //     console.log('»» »» HOURS COMP - NEXT URL ', nextUrl);
+    //     // this.router.navigate(['/hours'])
+    //     console.log('»» »» HOURS COMP HAS SAVED ', this.hasSaved)
+    //     if (this.hasSaved !== true && this.isActiveOperatingHours === true) {
+    //       console.log('»» »» HOURS COMP HAS SAVED ', this.hasSaved)
+    //       this.displayModalUpdatingOperatingHours = 'block'
+    //       this.router.navigate(['/hours'])
+    //     }
+    //   });
+
+
+  }
+
+  ngOnDestroy() {
+    console.log('»» »» HOURS COMP - NG ON DESTROY ')
 
   }
 
@@ -385,7 +411,7 @@ export class HoursComponent implements OnInit {
             // note: current_prjct_timezone_name is the timezone name displayed as selected in the timezone deropdownlist
             this.current_prjct_timezone_name = moment.tz.guess();
             console.log('»» »» HOURS COMP - CURRENT PROJECT TIMEZONE-NAME DETECTED ', this.current_prjct_timezone_name);
-            
+
             this.timeZoneSelectedIsUnlikeCurrentTimezone = false
           }
         }
@@ -501,6 +527,8 @@ export class HoursComponent implements OnInit {
   // }
 
   updateProject() {
+    // this.hasSaved = true;
+
     this.displayModalUpdatingOperatingHours = 'block'
     this.SHOW_CIRCULAR_SPINNER = true;
 
