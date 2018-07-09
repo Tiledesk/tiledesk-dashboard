@@ -58,7 +58,7 @@
                      <!-- /* YOU ARE CURRENTLY AT */ -->
                     <div class="col-sm-6">    
                       <p style="color: #566787; font-weight:500; font-size: 14px; margin-bottom: 6px">
-                        {{ "HoursPage.YouAreCurrentlyAt" | translate }}  (UTC {{ timezoneUTCOffsetForTooltip}}) {{timezoneNameForTooltip}}
+                        {{ "HoursPage.YouAreCurrentlyAt" | translate }} <span style="font-weight:600;"> (UTC {{ timezoneUTCOffsetForTooltip}}) {{timezoneNameForTooltip}} </span>
                       </p>  
                       <button class="btn btn-default" [disabled]="timeZoneSelectedIsUnlikeCurrentTimezone === false || !isActiveOperatingHours" (click)="setProjectToYourTimezone()" style="padding-top: 9px; padding-bottom: 9px; padding-right: 15px; padding-left: 15px; margin-top: 2px;">
                         <span class="tooltipx">{{ "HoursPage.SetProjectToYourTimeZone" | translate }}
@@ -164,38 +164,63 @@
                             </tr>
                           </td> -->
 
-                          <!-- AM HOURS -->
+                     <!-- ===================================================================================================
+                          ========================================== AM HOUR ================================================
+                          =================================================================================================== -->
                           <td style="padding-top: 6px; padding-bottom: 6px;">
-                            <!-- AM START HOUR -->
+
+                            <!-- =================================== AM START HOUR ========================================== -->
+                            <!-- AM START HOUR - ONLY THE LABEL-BTN 'FROM' -->
                             <button [disabled]="d.isOpen != true || !isActiveOperatingHours"  [ngClass]="{'disabled' : d.isOpen != true || !isActiveOperatingHours}" type="button" rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-xs"
-                              (click)='openAmStart(d?._id)' style="padding-right: 4px;">
+                              (click)='openAmStart(d?._id)' style="padding-right: 4px; color: #566787">
                               <span class="edithours_btnlabel">
-                                <!-- Opening -->
-                                <!-- From -->
                                 {{ "HoursPage.From" | translate }} 
                               </span> 
-                              <i class="material-icons">schedule</i>
+                              <!-- <i class="material-icons">schedule</i> -->
                             </button>
 
+                            <!-- AM START HOUR - THE INPUT/VISUALIZATION FIELD -->
                             <input [disabled]="d.isOpen != true || !isActiveOperatingHours" (input)="onChangeAmStartFromArrow($event.target.value, d?._id)"  [ngClass]="{'disabled' : d.isOpen != true || !isActiveOperatingHours}" type="time" value="{{ d.operatingHoursAmStart }}">
+
+                            <!-- AM START HOUR - ONLY THE ICON-BTN FOR 'FROM' -->
+                            <button [disabled]="d.isOpen != true || !isActiveOperatingHours"  [ngClass]="{'disabled' : d.isOpen != true || !isActiveOperatingHours}" type="button" rel="tooltip" title="edit hour" 
+                              class="btn btn-primary btn-simple btn-xs custom_schedule_btn"
+                              (click)='openAmStart(d?._id)' style="padding-right: 7px; padding-left: 1px;">
+                              
+                              <!-- <span class="edithours_btnlabel">
+                                {{ "HoursPage.From" | translate }} 
+                              </span>  -->
+                              <i class="material-icons">schedule</i>
+                            </button>
 
                             <br class="newline">
   
-                            <!-- AM END HOUR -->
+                            <!-- =================================== AM END HOUR ========================================== -->
+                            <!-- AM END HOUR - ONLY THE LABEL-BTN 'TO' -->
                             <button [disabled]="d.isOpen != true || !isActiveOperatingHours"  [ngClass]="{'disabled' : d.isOpen != true || !isActiveOperatingHours}" type="button" rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-xs"
-                              (click)='openAmEnd(d?._id)' style="padding-right: 4px;">
-                              <!-- <span class="edithours_btnlabel">Closing</span>  -->
+                              (click)='openAmEnd(d?._id)' style="padding-right: 4px; color: #566787">
                               <span class="edithours_btnlabelTo" [ngClass]="{'it_custom' : browser_lang == 'it'}">
-                                <!-- To -->
                                 {{ "HoursPage.To" | translate }} 
                               </span>
-                              
+                              <!-- <i class="material-icons">schedule</i> -->
+                            </button>
+
+                            <!-- AM END HOUR - THE INPUT/VISUALIZATION FIELD -->
+                            <input [disabled]="d.isOpen != true || !isActiveOperatingHours" (input)="onChangeAmEndFromArrow($event.target.value, d?._id)" [ngClass]="{'disabled' : d.isOpen != true || !isActiveOperatingHours}" type="time" value="{{ d.operatingHoursAmEnd }}">
+
+                            <!-- AM END HOUR - ONLY THE ICON-BTN FOR 'TO' -->
+                            <button [disabled]="d.isOpen != true || !isActiveOperatingHours"  [ngClass]="{'disabled' : d.isOpen != true || !isActiveOperatingHours}" type="button" rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-xs"
+                              (click)='openAmEnd(d?._id)' style="padding-right: 7px; padding-left: 1px;">
+                              <!-- AM END HOUR - LABEL 'TO' -->
+                              <!-- <span class="edithours_btnlabelTo" [ngClass]="{'it_custom' : browser_lang == 'it'}">
+                                {{ "HoursPage.To" | translate }} 
+                              </span> -->
                               <i class="material-icons">schedule</i>
                             </button>
-                            <input [disabled]="d.isOpen != true || !isActiveOperatingHours" (input)="onChangeAmEndFromArrow($event.target.value, d?._id)" [ngClass]="{'disabled' : d.isOpen != true || !isActiveOperatingHours}" type="time" value="{{ d.operatingHoursAmEnd }}">
+
                           </td>
                             
-                          <!-- CLOSE / OPEN AFTERNOON TIMES -->
+                          <!-- =================================== BTNS: CLOSE / OPEN THE TIMES OF THE SECOND INTERVAL =================================== -->
                           <td style="white-space: nowrap; width: 1%;">
                             <!-- placeholder button - is dispalyed when the day is closed and when operating hours are not active -->
                             <button *ngIf="d?.isOpen === false || !isActiveOperatingHours" type="button" rel="tooltip" title="remove second interval" class="btn btn-default btn-simple btn-xs  btn-circle close_pm disabled"
@@ -220,35 +245,57 @@
                             </button>
                           </td>
 
-                          <!-- PM HOURS -->
+                     <!-- ===================================================================================================
+                          ========================================== PM HOUR ================================================
+                          =================================================================================================== -->
                           <td style="padding-top: 6px; padding-bottom: 6px;">
-                            <!-- PM START HOUR -->
+
+                            <!-- =================================== PM START HOUR ========================================== -->
+                            <!-- PM START HOUR - ONLY THE LABEL-BTN 'FROM' -->
                             <button  [disabled]="d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours" type="button" rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-xs"
-                              [ngClass]="{'disabled' : d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours}" (click)='openPmStart(d?._id)' style="padding-right: 4px;">
-                                
+                              [ngClass]="{'disabled' : d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours}" (click)='openPmStart(d?._id)' style="padding-right: 4px;color: #566787">                     
                               <span class="edithours_btnlabel">
-                                    <!-- From  -->
                                 {{ "HoursPage.From" | translate }} 
                               </span>
+                              <!-- <i class="material-icons">schedule</i> -->
+                            </button>
+
+                            <!-- PM START HOUR - THE INPUT/VISUALIZATION FIELD -->
+                            <input [disabled]="d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours" (input)="onChangePmStartFromArrow($event.target.value, d?._id)" 
+                                   [ngClass]="{'disabled' : d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours}" type="time" value="{{ d.operatingHoursPmStart }}">
+
+                            <!-- PM START HOUR - ONLY THE ICON-BTN FOR 'FROM' -->
+                            <button  [disabled]="d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours" type="button" rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-xs"
+                              [ngClass]="{'disabled' : d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours}" (click)='openPmStart(d?._id)' style="padding-right: 7px; padding-left: 1px;">                     
+                              <!-- <span class="edithours_btnlabel">{{ "HoursPage.From" | translate }}</span> -->
+                              <i class="material-icons">schedule</i>
+                            </button>     
+
+                            <br class="newline">
+
+                            <!-- =================================== PM END HOUR ========================================== -->
+                            <!-- PM END HOUR - ONLY THE LABEL-BTN 'TO' -->
+                            <button [disabled]="d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours"  type="button" rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-xs"
+                              [ngClass]="{'disabled' : d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours}" (click)='openPmEnd(d?._id)' style="padding-right: 4px; color: #566787">
+                              <span class="edithours_btnlabelTo" [ngClass]="{'it_custom' : browser_lang == 'it'}">
+                                {{ "HoursPage.To" | translate }} 
+                              </span>
+                              <!-- <i class="material-icons">schedule</i> -->
+                            </button>
+
+                            <!-- PM END HOUR - THE INPUT/VISUALIZATION FIELD -->
+                            <input [disabled]="d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours" (input)="onChangePmEndFromArrow($event.target.value, d?._id)" 
+                                   [ngClass]="{'disabled' : d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours}" type="time" value="{{ d.operatingHoursPmEnd }}">
+
+                            <!-- PM END HOUR - ONLY THE ICON-BTN FOR 'TO' -->
+                            <button [disabled]="d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours"  type="button" rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-xs"
+                            [ngClass]="{'disabled' : d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours}" (click)='openPmEnd(d?._id)' style="padding-right: 7px;padding-left: 1px;">
+                              <!-- <span class="edithours_btnlabelTo" [ngClass]="{'it_custom' : browser_lang == 'it'}">
+                                {{ "HoursPage.To" | translate }} 
+                              </span> -->
                               <i class="material-icons">schedule</i>
                             </button>
-                            <input [disabled]="d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours" (input)="onChangePmStartFromArrow($event.target.value, d?._id)" 
-                                  [ngClass]="{'disabled' : d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours}" type="time" value="{{ d.operatingHoursPmStart }}">
 
-                              <br class="newline">
-
-                              <!-- PM END HOUR -->
-                              <button [disabled]="d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours"  type="button" rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-xs"
-                                [ngClass]="{'disabled' : d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours}" (click)='openPmEnd(d?._id)' style="padding-right: 4px;">
-  
-                                <span class="edithours_btnlabelTo" [ngClass]="{'it_custom' : browser_lang == 'it'}">
-                                  <!-- To -->
-                                  {{ "HoursPage.To" | translate }} 
-                                </span>
-                                <i class="material-icons">schedule</i>
-                              </button>
-                            <input [disabled]="d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours" (input)="onChangePmEndFromArrow($event.target.value, d?._id)" 
-                              [ngClass]="{'disabled' : d.isOpen != true || d.isOpenPm == false || !isActiveOperatingHours}" type="time" value="{{ d.operatingHoursPmEnd }}">
                           </td>
 
                         </tr>

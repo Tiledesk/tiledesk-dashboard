@@ -226,6 +226,16 @@ input:checked + .slider:before {
   }
 }
 
+// FOR THE ICON-BTN SCHEDULE
+// .custom_schedule_btn {
+//   padding:1px !important;
+// }
+
+// .custom_schedule_btn:hover {
+//  background-color: #9c27b0 !important;
+//  color: #fff !important;
+// }
+
 .close_pm:hover {
   background-color: #f44336 !important;
   color: #fff !important;
@@ -322,6 +332,7 @@ input:checked + .slider:before {
 }
 // /.end TOOLTIP 
 
+
 /*  MODAL  */
 .modal {
   top: 0;
@@ -394,8 +405,8 @@ button.close {
   background-color: #f44336; color: white; padding: 4px 8px; border-radius: 3px; letter-spacing: 1.3px; font-size: 0.8em; 
 }
 
-// start DISABLED STYLE (APPLIED WHEN OPERATING HOURS IS NOT ACTIVE)
 
+// start DISABLED STYLE (APPLIED WHEN OPERATING HOURS IS NOT ACTIVE)
 // SECTION 'SELECT A TIMEZONE' 
 .oaerror_info_disabled {
   border-left-color: #999;
