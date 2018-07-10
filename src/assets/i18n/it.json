@@ -374,6 +374,7 @@
         "IncludeThePreChatForm_1": "Includi il FORM PRE-CHAT: ",
         "IncludeThePreChatForm_2": "richiede ai visitatori di completare un form (nome dell'utente, email e primo messaggio) prima di iniziare una chat",
         "IncludeTheCalloutTimer_1": "Includi il CALLOUT TIMER: ",
+        "CalloutTimer_1": "CALLOUT TIMER: ",
         "IncludeTheCalloutTimer_2": "apre la finestra della chat dopo 5 secondi"
     },
     "ScriptPage": {

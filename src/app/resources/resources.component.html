@@ -29,17 +29,53 @@
                                     <label style="color: #999999" class="form-check-label" for="exampleCheck1">
                                         {{ 'Resourcepage.IncludeThePreChatForm_1' | translate }} 
                                     </label>
-                                    <span style="font-weight:100">{{ 'Resourcepage.IncludeThePreChatForm_2' | translate }}</span>
+                                    <p style="font-weight:100; padding-right:20px">{{ 'Resourcepage.IncludeThePreChatForm_2' | translate }}</p>
                                 </div>
 
                                 <!-- // INCLUDE CALLOUT TIMER -->
                                 <div class="form-check">
-                                    <input style="height:16px; width:16px" type="checkbox" class="form-check-input" id="exampleCheck1" (change)="toggleCheckBoxCalloutTimer($event)">
+                                    <!-- <input style="height:16px; width:16px" type="checkbox" class="form-check-input" id="exampleCheck1" (change)="toggleCheckBoxCalloutTimer($event)"> -->
+
+       
+
                                     <label style="color: #999999" class="form-check-label" for="exampleCheck1">
-                                        {{ 'Resourcepage.IncludeTheCalloutTimer_1' | translate }} 
+                                        {{ 'Resourcepage.CalloutTimer_1' | translate }} 
                                     </label>
-                                    <span style="font-weight:100">{{ 'Resourcepage.IncludeTheCalloutTimer_2' | translate }}</span>
+                                    <select #selectElem (change)="setSelectedCalloutTimer(selectElem.value)" style="min-width: 150px;" >
+                                      
+                                        <option *ngFor="let option of options">
+                                            {{ option.seconds}}    
+                                        </option>
+                          
+                                            <!-- <option  *ngFor="let group of groupsList" [value]="group?._id" [selected]="selectedGroupId === group?._id">
+                                              {{group?.name}}
+                                            </option> -->
+                                          </select>
+                                    <p *ngIf="calloutTimerSecondSelected == -1" style="font-weight:100">opens the chat window when the user click on the launcher button</p>      
+                                    <p *ngIf="calloutTimerSecondSelected == 0" style="font-weight:100"> opens the chat window immediately</p>
+                                    <p *ngIf="calloutTimerSecondSelected !== -1 && calloutTimerSecondSelected !== 0" style="font-weight:100">{{ 'Resourcepage.IncludeTheCalloutTimer_2' | translate }} {{calloutTimerSecondSelected}} seconds</p>
                                 </div>
+
+                                <div class="form-check">
+                                    <label style="color: #999999" class="form-check-label" for="exampleCheck1">
+                                       ALIGN THE WIDGET:
+                                    </label>
+                                    <select #selectElem (change)="setSelectedAlignment(selectElem.value)" style="min-width: 150px;" >
+                                        
+                                        <option>
+                                            bottom right    
+                                        </option>
+                                        <option>
+                                            bottom left    
+                                        </option>
+                                        
+                                            <!-- <option  *ngFor="let group of groupsList" [value]="group?._id" [selected]="selectedGroupId === group?._id">
+                                                {{group?.name}}
+                                            </option> -->
+                                    </select>
+                                    <p> align the widget to the bottom right of the window </p>
+                                </div>
+                                
                                 
                             </h6>
                             <!-- Copy the following script and insert it into your website's HTML source code between the <head> tags -->
@@ -56,13 +92,15 @@
             <div class="row">
                 <div class="col-sm-12">
                         <!-- *ngIf="!preChatForm"  -->
-<textarea *ngIf="!hasSelectedCalloutTimer" name="exampleClipboard" class="textarea" readonly rows="16" value="" type="text">
+<textarea *ngIf="!hasSelectedCalloutTimer" name="exampleClipboard" class="textarea" readonly rows="18" value="" type="text">
 &lt;script type=&quot;application/javascript&quot;&gt;
     window.tiledeskSettings = 
         {
             projectid: &quot;{{ projectId }}&quot;,
             projectname: &quot;{{projectName}}&quot;,
-            preChatForm: {{preChatFormValue}}
+            preChatForm: {{preChatFormValue}},
+            calloutTimer: {{ calloutTimerSecondSelected }},
+            align: {{ alignmentSelected }}
         };
 
     (function(d, s, id) {
@@ -81,7 +119,7 @@
             projectid: &quot;{{ projectId }}&quot;,
             projectname: &quot;{{projectName}}&quot;,
             preChatForm: {{preChatFormValue}},
-            calloutTimer: 5
+            calloutTimer: {{ calloutTimerSecondSelected }}
         };
 
     (function(d, s, id) {

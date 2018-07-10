@@ -19,9 +19,19 @@ export class ResourcesComponent implements OnInit {
   hasSelectedCalloutTimer = false;
   preChatFormValue = 'false';
   http: Http;
-
+  calloutTimerSecondSelected = -1;
+  alignmentSelected = 'right'
   // preChatForm = 'preChatForm'
-
+  options = [
+    { seconds: 'never' },
+    { seconds: 'immediately' },
+    { seconds: '5' },
+    { seconds: '10' },
+    { seconds: '15' },
+    { seconds: '20' },
+    { seconds: '25' },
+    { seconds: '30' }
+  ]
 
   constructor(
     http: Http,
@@ -42,6 +52,32 @@ export class ResourcesComponent implements OnInit {
 
   }
 
+  setSelectedCalloutTimer(timer) {
+    if (timer === 'immediately') {
+      this.calloutTimerSecondSelected = 0;
+      console.log('»»» CALLOUT TIMER', this.calloutTimerSecondSelected)
+
+    } else if (timer === 'never') {
+      this.calloutTimerSecondSelected = -1
+      console.log('»»» CALLOUT TIMER', this.calloutTimerSecondSelected)
+
+    } else {
+      this.calloutTimerSecondSelected = timer
+      console.log('»»» CALLOUT TIMER', this.calloutTimerSecondSelected)
+
+    }
+  }
+
+  setSelectedAlignment(align) {
+    if (align === 'bottom right') {
+      this.alignmentSelected = 'right'
+      console.log('»»» ALIGNMENT SELECTED ', this.alignmentSelected)
+    } else if (align === 'bottom left') {
+      this.alignmentSelected = 'left'
+      console.log('»»» ALIGNMENT SELECTED ', this.alignmentSelected)
+
+    }
+  }
 
   copyToClipboard() {
     document.querySelector('textarea').select();
@@ -86,11 +122,11 @@ export class ResourcesComponent implements OnInit {
   //     console.log('===== > POST WIDGET PAGE ', data);
   //   });
   // }
-
+// + '&align=' + this.alignmentSelected
   testWidgetPage() {
     // http://testwidget.tiledesk.com/testsite/?projectid=5ad069b123c415001469574f&prechatform=false
     // tslint:disable-next-line:max-line-length
-    const url = 'http://testwidget.tiledesk.com/testsite?projectid=' + this.projectId + '&prechatform=' + this.preChatForm + '&projectname=' + this.projectName + '&callout_timer=' + this.hasSelectedCalloutTimer;
+    const url = 'http://testwidget.tiledesk.com/testsite?projectid=' + this.projectId + '&prechatform=' + this.preChatForm + '&projectname=' + this.projectName + '&callout_timer=' + this.calloutTimerSecondSelected;
     window.open(url, '_blank');
   }
 
