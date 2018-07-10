@@ -277,12 +277,24 @@ export class RequestsService {
     this.reorderRequests()
   }
 
+  // reorderRequests() {
+  //   this.requestList.sort(function compare(a: Request, b: Request) {
+  //     if (a.timestamp > b.timestamp) {
+  //       return -1;
+  //     }
+  //     if (a.timestamp < b.timestamp) {
+  //       return 1;
+  //     }
+  //     return 0;
+  //   });
+  // }
+
   reorderRequests() {
     this.requestList.sort(function compare(a: Request, b: Request) {
-      if (a.timestamp > b.timestamp) {
+      if (a.created_on > b.created_on) {
         return -1;
       }
-      if (a.timestamp < b.timestamp) {
+      if (a.created_on < b.created_on) {
         return 1;
       }
       return 0;
