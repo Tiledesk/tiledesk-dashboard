@@ -22,8 +22,8 @@ export class ResourcesComponent implements OnInit {
   calloutTimerSecondSelected = -1;
   alignmentSelected = 'right'
   // preChatForm = 'preChatForm'
-  options = [
-    { seconds: 'never' },
+  calloutTimerOptions = [
+    { seconds: 'disabled' },
     { seconds: 'immediately' },
     { seconds: '5' },
     { seconds: '10' },
@@ -53,11 +53,12 @@ export class ResourcesComponent implements OnInit {
   }
 
   setSelectedCalloutTimer(timer) {
+    console.log('»»» CALLOUT TIMER', timer)
     if (timer === 'immediately') {
       this.calloutTimerSecondSelected = 0;
       console.log('»»» CALLOUT TIMER', this.calloutTimerSecondSelected)
 
-    } else if (timer === 'never') {
+    } else if (timer === 'disabled') {
       this.calloutTimerSecondSelected = -1
       console.log('»»» CALLOUT TIMER', this.calloutTimerSecondSelected)
 
@@ -96,19 +97,20 @@ export class ResourcesComponent implements OnInit {
     }
   }
 
-  toggleCheckBoxCalloutTimer(event) {
-    if (event.target.checked) {
-      console.log('INCLUDE CALLOUT TIMER ', event.target.checked)
-      this.calloutTimer = 'calloutTimer: 5';
-      this.hasSelectedCalloutTimer = true
-      console.log('CALLOUT TIMER VALUE  ', this.calloutTimer)
-    } else {
-      console.log('INCLUDE CALLOUT TIMER ', event.target.checked)
-      this.calloutTimer = '';
-      this.hasSelectedCalloutTimer = false
-      console.log('CALLOUT TIMER VALUE ', this.calloutTimer)
-    }
-  }
+  // !! NO MORE USED
+  // toggleCheckBoxCalloutTimer(event) {
+  //   if (event.target.checked) {
+  //     console.log('INCLUDE CALLOUT TIMER ', event.target.checked)
+  //     this.calloutTimer = 'calloutTimer: 5';
+  //     this.hasSelectedCalloutTimer = true
+  //     console.log('CALLOUT TIMER VALUE  ', this.calloutTimer)
+  //   } else {
+  //     console.log('INCLUDE CALLOUT TIMER ', event.target.checked)
+  //     this.calloutTimer = '';
+  //     this.hasSelectedCalloutTimer = false
+  //     console.log('CALLOUT TIMER VALUE ', this.calloutTimer)
+  //   }
+  // }
 
   // testWidget() {
   //   const headers = new Headers();
@@ -122,11 +124,11 @@ export class ResourcesComponent implements OnInit {
   //     console.log('===== > POST WIDGET PAGE ', data);
   //   });
   // }
-// + '&align=' + this.alignmentSelected
+
   testWidgetPage() {
     // http://testwidget.tiledesk.com/testsite/?projectid=5ad069b123c415001469574f&prechatform=false
     // tslint:disable-next-line:max-line-length
-    const url = 'http://testwidget.tiledesk.com/testsite?projectid=' + this.projectId + '&prechatform=' + this.preChatForm + '&projectname=' + this.projectName + '&callout_timer=' + this.calloutTimerSecondSelected;
+    const url = 'http://testwidget.tiledesk.com/testsite?projectid=' + this.projectId + '&prechatform=' + this.preChatForm + '&projectname=' + this.projectName + '&callout_timer=' + this.calloutTimerSecondSelected + '&align=' + this.alignmentSelected;
     window.open(url, '_blank');
   }
 
