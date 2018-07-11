@@ -26,21 +26,34 @@
                             <!-- <hr align="left" width="50%" style="margin-bottom: 6px;"> -->
                             <!-- <h6 style="text-transform: none; color: #566787; font-weight:600;">Pre-Chat</h6> -->
                             <h6 class="category text-gray" style="text-transform: none; padding-left:15px">
-                                <div class="form-check">
-                                    <div class="row" style="border-left: #5bc0de 2px solid">
-                                            <!-- col-sm-offset-1 -->
-                                        <div class="col-sm-4">
+                                <!-- <div class="form-check"> -->
+                                    <div>
+                                    <!-- <div class="row" style="border-left: #5bc0de 2px solid">
+                                        <div class="col-sm-12"> -->
                                             <label style="color: #566787;" class="form-check-label" for="exampleCheck1">
                                                 {{ 'Resourcepage.IncludeThePreChatForm_1' | translate }} 
                                             </label>
+                                            <!-- <input style="height:16px; width:16px" type="checkbox" class="form-check-input" id="exampleCheck1" (change)="toggleCheckBox($event)"  style=""> -->
+                                            <!-- <p style="font-weight:100; font-size:12px; margin-bottom:0px">
+                                                {{ 'Resourcepage.IncludeThePreChatForm_2' | translate }} 
+                                            </p> -->
+                                        <!-- </div> -->
+                                        <div class="row" style="border-left: #5bc0de 2px solid; margin-left: 0px;">
+                                        <div class="col-lg-12">
+                                            <!-- <input style="height:16px; width:16px" type="checkbox" class="form-check-input" id="exampleCheck1" (change)="toggleCheckBox($event)"  style="height: 21px;width: 21px;margin-top: 0px;"> -->
+
+                                        <label class="container" for="preChatForm" style="margin-left: 0px; margin-bottom: 6px;">
+                                                
+                                                
+                                            <input type="checkbox" id="preChatForm"  (change)="toggleCheckBox($event)" />
+                                            <span class="checkmark" style=""></span>
+                                        </label>
                                         </div>
-                                        <div class="col-sm-8">
-                                            <input style="height:16px; width:16px" type="checkbox" class="form-check-input" id="exampleCheck1" (change)="toggleCheckBox($event)">
-                                        </div>
-                                    
-                                        <!-- padding-left:20px; -->
-                                        <div class="col-sm-12">
-                                            <p style="font-weight:100; font-size:12px; margin-bottom:0px">{{ 'Resourcepage.IncludeThePreChatForm_2' | translate }}</p>
+                                        
+                                        <div class="col-lg-12" style="margin-top: 25px">
+                                            <p style="font-weight:100; font-size:12px; margin-bottom:0px">
+                                                {{ 'Resourcepage.IncludeThePreChatForm_2' | translate }} 
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
@@ -52,25 +65,46 @@
                             <h6 class="category text-gray" style="text-transform: none; padding-left:15px">        
                                 <div>    
                                     <!-- <input style="height:16px; width:16px" type="checkbox" class="form-check-input" id="exampleCheck1" (change)="toggleCheckBoxCalloutTimer($event)"> -->
-                                    <div class="row" style="border-left: #5bc0de 2px solid">
-                                        <div class="col-sm-4">
+                                    <!-- <div class="row" style="border-left: #5bc0de 2px solid">
+                                        <div class="col-sm-12"> -->
                                             <label style="color: #566787;" class="form-check-label" for="exampleCheck1">
                                             {{ 'Resourcepage.CalloutTimer' | translate }} 
                                             </label>
-                                        </div>
-                                        <div class="col-sm-8">
-                                            <select #selectElemCallout (change)="setSelectedCalloutTimer(selectElemCallout.value)" style="min-width: 60px; background-color:#fff; color:#333333">
+
+                                            <!-- <select #selectElemCallout (change)="setSelectedCalloutTimer(selectElemCallout.value)" style="min-width: 60px; background-color:#fff; color:#333333">
                                                 <option *ngFor="let option of calloutTimerOptions">
                                                     {{ option.seconds}}    
                                                 </option>
-                                            </select>
+                                            </select> -->
+                                            <!-- <p *ngIf="calloutTimerSecondSelected == -1" style="font-weight:100;font-size:12px; margin-bottom:0px">
+                                                {{ 'Resourcepage.WhenDisabled' | translate }}
+                                            </p>      
+                                            <p *ngIf="calloutTimerSecondSelected == 0" style="font-weight:100; font-size:12px; margin-bottom:0px"> 
+                                                {{ 'Resourcepage.OpensTheChatImmediately' | translate }}
+                                            </p>
+                                            <p *ngIf="calloutTimerSecondSelected !== -1 && calloutTimerSecondSelected !== 0;" style="font-weight:100;font-size:12px; margin-bottom:0px">
+                                                {{ 'Resourcepage.OpensTheChatAfter' | translate }} {{calloutTimerSecondSelected}} seconds
+                                            </p> -->
+                                        <!-- </div> -->
+                                        <div class="row" style="border-left: #5bc0de 2px solid; margin-left: 0px;">
+                                        <div class="col-sm-4">
+                                            <ng-select #selectElemCallout [(ngModel)]="calloutTimerSecondSelected" (change)="setSelectedCalloutTimer()" style="min-width: 60px; background-color:#fff; color:#333333">
+                                                <ng-option *ngFor="let option of calloutTimerOptions" [value]="option.value">
+                                                    {{ option.seconds}}    
+                                                </ng-option>
+                                            </ng-select>
                                         </div>
 
-                                        <div class="col-sm-12">
-                                            <!-- padding-left:20px;  -->
-                                            <p *ngIf="calloutTimerSecondSelected == -1" style="font-weight:100;font-size:12px; margin-bottom:0px">{{ 'Resourcepage.WhenDisabled' | translate }}</p>      
-                                            <p *ngIf="calloutTimerSecondSelected == 0" style="font-weight:100; font-size:12px; margin-bottom:0px"> {{ 'Resourcepage.OpensTheChatImmediately' | translate }}</p>
-                                            <p *ngIf="calloutTimerSecondSelected !== -1 && calloutTimerSecondSelected !== 0;" style="font-weight:100;font-size:12px; margin-bottom:0px">{{ 'Resourcepage.OpensTheChatAfter' | translate }} {{calloutTimerSecondSelected}} seconds</p>
+                                        <div class="col-lg-12" style="margin-top: 10px">
+                                            <p *ngIf="calloutTimerSecondSelected == -1" style="font-weight:100;font-size:12px; margin-bottom:0px">
+                                                {{ 'Resourcepage.WhenDisabled' | translate }}
+                                            </p>      
+                                            <p *ngIf="calloutTimerSecondSelected == 0" style="font-weight:100; font-size:12px; margin-bottom:0px"> 
+                                                {{ 'Resourcepage.OpensTheChatImmediately' | translate }}
+                                            </p>
+                                            <p *ngIf="calloutTimerSecondSelected !== -1 && calloutTimerSecondSelected !== 0;" style="font-weight:100;font-size:12px; margin-bottom:0px">
+                                                {{ 'Resourcepage.OpensTheChatAfter' | translate }} {{calloutTimerSecondSelected}} seconds
+                                            </p>
                                         </div>    
                                     </div>
                                 </div>
@@ -81,27 +115,31 @@
                             <!-- <h6 style="text-transform: none; color: #566787; font-weight:600">Alignment</h6>   -->
                             <h6 class="category text-gray" style="text-transform: none; padding-left:15px"> 
                                 
-                                <div class="form-check">
-                                    <div class="row" style="border-left: #5bc0de 2px solid">
-                                        <div class="col-sm-4">
+                                <!-- <div class="form-check"> -->
+                                <div>    
+                                    <!-- <div class="row" style="border-left: #5bc0de 2px solid"> -->
+                                        <!-- <div class="col-sm-12"> -->
                                             <label style="color: #566787;" class="form-check-label" for="exampleCheck1">
                                                 {{ 'Resourcepage.WidgetAlignment' | translate }}
                                             </label>
-                                        </div>
+                                            <!-- <select #selectElemAlign (change)="setSelectedAlignment(selectElemAlign.value)" style="min-width: 60px; background-color:#fff; color:#333333;" >
+                                                <option *ngFor="let option of alignmentOptions">
+                                                    {{ option.alignTo }}
+                                                </option>
+                                            </select> -->
+                                        <!-- </div> -->
+                                        <div class="row" style="border-left: #5bc0de 2px solid; margin-left: 0px;">
                                         <div class="col-sm-4">
-                                            <select #selectElemAlign (change)="setSelectedAlignment(selectElemAlign.value)" style="min-width: 60px; background-color:#fff; color:#333333;" >
-                                                <option>
-                                                    bottom right  
-                                                </option>
-                                                <option>
-                                                    bottom left   
-                                                </option>
-                                            </select>
+                                            <ng-select #selectElemAlign [(ngModel)]="alignmentSelected" (change)="setSelectedAlignment()" style="min-width: 60px; background-color:#fff; color:#333333;" >
+                                                <ng-option *ngFor="let option of alignmentOptions" [value]="option.value">
+                                                    {{ option.alignTo }}
+                                                </ng-option>
+                                            </ng-select>
                                         </div>    
-                                        <div class="col-sm-12">  
-                                            <!-- padding-left:20px;   -->
+                                        <div class="col-lg-12" style="margin-top: 10px">  
                                             <p style="font-weight:100;font-size: 12px; margin-bottom:0px"> 
-                                                {{ 'Resourcepage.AlignsTheWidgetToThe' | translate }} {{ alignmentSelected | translate }} {{ 'Resourcepage.OfTneWindow' | translate }} </p>
+                                                {{ 'Resourcepage.AlignsTheWidgetToThe' | translate }} {{ alignmentSelected | translate }} {{ 'Resourcepage.OfTneWindow' | translate }}
+                                            </p>
                                         </div>    
                                     </div>    
                                 </div>

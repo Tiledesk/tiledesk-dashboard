@@ -23,16 +23,20 @@ export class ResourcesComponent implements OnInit {
   alignmentSelected = 'right'
   // preChatForm = 'preChatForm'
   calloutTimerOptions = [
-    { seconds: 'disabled' },
-    { seconds: 'immediately' },
-    { seconds: '5' },
-    { seconds: '10' },
-    { seconds: '15' },
-    { seconds: '20' },
-    { seconds: '25' },
-    { seconds: '30' }
+    { seconds: 'disabled', value: -1 },
+    { seconds: 'immediately', value: 0 },
+    { seconds: '5', value: 5 },
+    { seconds: '10', value: 10 },
+    { seconds: '15', value: 15 },
+    { seconds: '20', value: 20 },
+    { seconds: '25', value: 25 },
+    { seconds: '30', value: 30 }
   ]
 
+  alignmentOptions = [
+    { alignTo: 'bottom right', value: 'right' },
+    { alignTo: 'bottom left', value: 'left'}
+  ]
   constructor(
     http: Http,
     private auth: AuthService
@@ -52,32 +56,33 @@ export class ResourcesComponent implements OnInit {
 
   }
 
-  setSelectedCalloutTimer(timer) {
-    console.log('»»» CALLOUT TIMER', timer)
-    if (timer === 'immediately') {
-      this.calloutTimerSecondSelected = 0;
-      console.log('»»» CALLOUT TIMER', this.calloutTimerSecondSelected)
+  setSelectedCalloutTimer() {
+    console.log('»»» CALLOUT TIMER', this.calloutTimerSecondSelected)
+    // if (timer === 'immediately') {
+    //   this.calloutTimerSecondSelected = 0;
+    //   console.log('»»» CALLOUT TIMER', this.calloutTimerSecondSelected)
 
-    } else if (timer === 'disabled') {
-      this.calloutTimerSecondSelected = -1
-      console.log('»»» CALLOUT TIMER', this.calloutTimerSecondSelected)
+    // } else if (timer === 'disabled') {
+    //   this.calloutTimerSecondSelected = -1
+    //   console.log('»»» CALLOUT TIMER', this.calloutTimerSecondSelected)
 
-    } else {
-      this.calloutTimerSecondSelected = timer
-      console.log('»»» CALLOUT TIMER', this.calloutTimerSecondSelected)
+    // } else {
+    //   this.calloutTimerSecondSelected = timer
+    //   console.log('»»» CALLOUT TIMER', this.calloutTimerSecondSelected)
 
-    }
+    // }
   }
 
-  setSelectedAlignment(align) {
-    if (align === 'bottom right') {
-      this.alignmentSelected = 'right'
-      console.log('»»» ALIGNMENT SELECTED ', this.alignmentSelected)
-    } else if (align === 'bottom left') {
-      this.alignmentSelected = 'left'
-      console.log('»»» ALIGNMENT SELECTED ', this.alignmentSelected)
+  setSelectedAlignment() {
+    console.log('»»» ALIGNMENT SELECTED ', this.alignmentSelected)
+    // if (align === 'bottom right') {
+    //   this.alignmentSelected = 'right'
+    //   console.log('»»» ALIGNMENT SELECTED ', this.alignmentSelected)
+    // } else if (align === 'bottom left') {
+    //   this.alignmentSelected = 'left'
+    //   console.log('»»» ALIGNMENT SELECTED ', this.alignmentSelected)
 
-    }
+    // }
   }
 
   copyToClipboard() {
