@@ -58,8 +58,11 @@ export class MongodbDepartmentService {
       // tslint:disable-next-line:no-debugger
       // debugger
       if (this.project) {
-        console.log('00 -> DEPT SERVICE project ID from AUTH service subscription  ', this.project._id)
+        console.log('00 -> DEPT SERVICE project ID from AUTH service subscription  ', this.project._id);
         this.MONGODB_BASE_URL = this.BASE_URL + this.project._id + '/departments/'
+
+        // FOR TEST - CAUSES ERROR WITH A NO VALID PROJECT ID
+        // this.MONGODB_BASE_URL = this.BASE_URL + '5b3fa93a6f0537d8b01968fX' + '/departments/'
         this.MY_DEPTS_BASE_URL = this.BASE_URL + this.project._id + '/departments/mydepartments'
       }
     });
@@ -283,7 +286,7 @@ export class MongodbDepartmentService {
   public testChat21AssignesFunction(id: string): Observable<Department[]> {
     let url = this.MONGODB_BASE_URL;
     // + '?nobot=' + true
-    url += id + '/operators' ;
+    url += id + '/operators';
     console.log('-- -- -- URL FOR TEST CHAT21 FUNC ', url);
 
     const headers = new Headers();
