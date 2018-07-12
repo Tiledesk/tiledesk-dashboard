@@ -365,7 +365,8 @@
     },
     "Resourcepage": {
         "CopyScript": "Copy Script",
-        "TestWidget": "Test this code !",
+        "TestThisCode": "Test this code !",
+        "TestTheWidget": "Test the widget !",
         "EmbedTheTileDeskChatWidget": "Embed the Tile Desk chat widget",
         "ToChatWithYourVisitors...": "To chat with your visitors please embed this html into your web site",
         "CopyTheFollowingScript...": "Copy the following script and insert it into your website's HTML source between the ",
