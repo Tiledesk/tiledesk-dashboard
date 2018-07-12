@@ -277,8 +277,6 @@ export class RequestsListComponent implements OnInit {
             this.notify.showNotification(`request with id: ${this.id_request_to_archive} has been moved to History`, 2, 'done');
           });
     });
-
-
   }
 
   onCloseArchiveRequestModal() {

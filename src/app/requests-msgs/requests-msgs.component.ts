@@ -9,6 +9,7 @@ import * as firebase from 'firebase/app';
 import { UsersLocalDbService } from '../services/users-local-db.service';
 // USED FOR go back last page
 import { Location } from '@angular/common';
+import { NotifyService } from '../core/notify.service';
 
 @Component({
   selector: 'app-requests-msgs',
@@ -46,14 +47,21 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit {
   source_page: string;
 
   displayBtnScrollToBottom = 'none';
- 
+  displayArchiveRequestModal = 'none';
+  id_request_to_archive: string;
+
+  SHOW_CIRCULAR_SPINNER = false;
+  displayArchivingInfoModal = 'none';
+  ARCHIVE_REQUEST_ERROR = false;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private requestsService: RequestsService,
     private auth: AuthService,
     private usersLocalDbService: UsersLocalDbService,
-    private _location: Location
+    private _location: Location,
+    private notify: NotifyService
   ) { }
 
   ngOnInit() {
@@ -219,6 +227,59 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit {
       });
   }
 
+  // ARCHIVE REQUEST - OPEN THE POPUP
+  openArchiveRequestModal(request_recipient: string) {
+    console.log('»»» »»» ID OF REQUEST TO ARCHIVE ', request_recipient)
+    this.id_request_to_archive = request_recipient;
+
+    this.displayArchiveRequestModal = 'block'
+  }
+
+  onCloseArchiveRequestModal() {
+    this.displayArchiveRequestModal = 'none'
+  }
+
+  onCloseArchivingInfoModal() {
+    this.displayArchivingInfoModal = 'none'
+  }
+
+  archiveTheRequestHandler() {
+    console.log('HAS CLICKED ARCHIVE REQUEST ');
+
+    this.displayArchiveRequestModal = 'none';
+
+    this.SHOW_CIRCULAR_SPINNER = true;
+
+    this.displayArchivingInfoModal = 'block'
+
+    this.getFirebaseToken(() => {
+
+      this.requestsService.closeSupportGroup(this.id_request_to_archive, this.firebase_token)
+        .subscribe((data: any) => {
+
+          console.log('CLOSE SUPPORT GROUP - DATA ', data);
+        },
+          (err) => {
+            console.log('CLOSE SUPPORT GROUP - ERROR ', err);
+            this.SHOW_CIRCULAR_SPINNER = false;
+            this.ARCHIVE_REQUEST_ERROR = true;
+            // =========== NOTIFY ERROR ===========
+            // tslint:disable-next-line:quotemark
+            this.notify.showNotification("An error has occurred archiving the request", 4, 'report_problem')
+          },
+          () => {
+            // this.ngOnInit();
+            console.log('CLOSE SUPPORT GROUP - COMPLETE', );
+            this.SHOW_CIRCULAR_SPINNER = false;
+            this.ARCHIVE_REQUEST_ERROR = false;
+
+            // =========== NOTIFY SUCCESS===========
+            this.notify.showNotification(`request with id: ${this.id_request_to_archive} has been moved to History`, 2, 'done');
+          });
+    });
+  }
+
+
   // USED TO JOIN TO CHAT GROUP (SEE onJoinHandled())
   getFirebaseToken(callback) {
     const that = this;
@@ -266,6 +327,12 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit {
             this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = true;
           });
     });
+  }
+
+  // <!--target="_blank" href="{{ CHAT_BASE_URL }}?recipient={{id_request}}"   -->
+  openChatInNewWindow() {
+    const url = this.CHAT_BASE_URL + '?recipient=' + this.id_request
+    window.open(url, '_blank');
   }
 
   scrollCardContetToBottom() {
