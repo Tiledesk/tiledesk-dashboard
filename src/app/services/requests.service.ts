@@ -480,7 +480,8 @@ export class RequestsService {
           attributes: data.attributes,
           currentUserIsJoined: currentUserUidIsInMembers(data.members, this.currentUserID),
           requester_fullname: data.requester_fullname,
-          requester_id: data.requester_id
+          requester_id: data.requester_id,
+          created_on: data.created_on
         };
       });
     });

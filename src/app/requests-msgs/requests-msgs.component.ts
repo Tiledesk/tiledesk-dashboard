@@ -290,7 +290,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit {
 
     const scrollHeighLessScrollPosition = scrollHeight - scrollPosition;
     console.log('ON SCROLL - SCROLL OVERFLOW ', scrollHeighLessScrollPosition);
-    if (scrollHeighLessScrollPosition > 500) {
+    if (scrollHeighLessScrollPosition > 550) {
       this.displayBtnScrollToBottom = 'block';
     } else {
       this.displayBtnScrollToBottom = 'none';

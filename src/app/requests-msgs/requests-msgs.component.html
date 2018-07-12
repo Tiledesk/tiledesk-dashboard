@@ -18,7 +18,7 @@
                 {{ "RequestMsgsPage.MessagesOfTheRequest" | translate }}
                 <code style="color: #566787; font-weight: 400" >{{cut_support_group_from_request_id(id_request)}} </code>
               </h4>
-          <div #scrollMe class="card-content" style="height: 500px; overflow-y: auto;" (scroll)="onScroll($event)">
+          <div #scrollMe class="card-content" style="height: 550px; overflow-y: auto;" (scroll)="onScroll($event)">
 
             <!-- OLD CHAT -->
             <!-- <div *ngFor="let message of messagesList" style="vertical-align:baseline">
@@ -160,10 +160,13 @@
               <!-- Request  -->
               <span class="requestattibutes">{{ "RequestMsgsPage.RequestAttributes" | translate }}</span>
 
-              <span class="requestattibutestime" style="font-size: 14px; color:#999999; float: right;">
+              <!-- {{ request?.timestamp | amTimeAgo }} -->
+              <!-- <span class="requestattibutestime" style="font-size: 14px; color:#999999; float: right;">
                   <i class="material-icons" style="vertical-align: middle">access_time</i>
-                  <span style="vertical-align: middle; font-weight: 500"> {{ "RequestMsgsPage.Published" | translate }}: {{ request?.timestamp | amTimeAgo }}</span>
-              </span>
+                  <span style="vertical-align: middle; font-weight: 500">
+                    {{ "RequestMsgsPage.Published" | translate }}: {{ request?.created_on | date: 'd/M/y HH:mm:ss' }}
+                  </span>
+              </span> -->
               
             </h4>
 
@@ -239,9 +242,19 @@
             <p style="color:#999999; font-weight: 500">  
               {{ request?.timestamp | amTimeAgo }}
             </p> -->
+
+            <!-- PUBLISHED -->
+            <p style="margin-bottom: 3px; color:#566787; padding-top: 10px;"> 
+              <strong>
+                {{ "RequestMsgsPage.Published" | translate }} 
+              </strong>
+            </p>
+            <p style="color:#999999; font-weight: 500">  
+              {{ request?.created_on | date: 'd/M/y HH:mm:ss' }}
+            </p>
             
             <!-- REQUEST ID -->
-            <p style="margin-bottom: 3px; color:#566787; padding-top: 10px;"> 
+            <p style="margin-bottom: 3px; color:#566787;"> 
               <strong>
                 {{ "RequestMsgsPage.RequestId" | translate }}
                 </strong>
