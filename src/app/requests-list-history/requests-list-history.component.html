@@ -184,8 +184,8 @@
                   <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
                     <p style="font-size:0.9em">
                       <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
-                      {{ request?.request_date_fromnow }}
-                      
+                      <!-- {{ request?.request_date_fromnow }} -->
+                      {{ request?.created_on | date: 'd/M/y HH:mm:ss' }}
                     </p>
                   </td>
                   <!-- <td>

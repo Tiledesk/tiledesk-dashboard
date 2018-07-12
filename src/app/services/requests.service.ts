@@ -240,8 +240,8 @@ export class RequestsService {
     // r.hasAgent(this.currentUserID)) PASS THE CURRENT USER ID TO THE 'REQUEST' MODEL WHICH AFTER COMPARING
     // THE CURRENT USER ID WITH THE 'USER ID' CONTAINED IN THE ARRAY 'AGENTS' (NESTED IN THE 'REQUEST' OBJECT)
     // RETURNS TRUE OR FALSE
-    //
-    if (r === null || r === undefined || !r.hasAgent(this.currentUserID)) {
+    // || !r.hasAgent(this.currentUserID)
+    if (r === null || r === undefined ) {
       console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID))
       return;
     }
@@ -418,7 +418,11 @@ export class RequestsService {
     // ['added', 'modified', 'removed']
 
     this.requestsCollection = this.afs.collection('conversations',
-      (ref) => ref.where('support_status', '>=', 1000).where('projectid', '==', this.project._id).orderBy('support_status').orderBy('timestamp', 'desc'));
+      (ref) => ref
+      .where('support_status', '>=', 1000)
+      .where('projectid', '==', this.project._id)
+      .orderBy('support_status')
+      .orderBy('created_on', 'desc'));
     // .orderBy('support_status', 'desc').orderBy('timestamp', 'desc')
 
     return this.requestsCollection.snapshotChanges().map((actions) => {
@@ -436,7 +440,8 @@ export class RequestsService {
           members: data.members,
           requester_fullname: data.requester_fullname,
           requester_id: data.requester_id,
-          projectid: data.projectid
+          projectid: data.projectid,
+          created_on: data.created_on
         };
       });
     });
