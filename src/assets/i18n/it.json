@@ -384,6 +384,7 @@
         "WhenDisabled":"quando disabilitato, la finestra della chat sarà aperta quando l'utente fa clic sul pulsante di avvio",
         "OpensTheChatImmediately":"apre la finestra della chat immediatamente",
         "OpensTheChatAfter": "apre la finestra della chat dopo",
+        "Seconds":"secondi",
         "WidgetAlignment":"Allineamento Widget",
         "BottomRight":"in basso a destra",
         "BottomLeft":"in basso a sinistra",

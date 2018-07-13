@@ -383,6 +383,7 @@
         "WhenDisabled":"when disabled the chat window will be open when the user click on the launcher button",
         "OpensTheChatImmediately":"opens the chat window immediately",
         "OpensTheChatAfter": "opens the chat window after",
+        "Seconds":"seconds",
         "WidgetAlignment":"Widget Alignment",
         "BottomRight":"bottom right",
         "BottomLeft":"bottom left",
