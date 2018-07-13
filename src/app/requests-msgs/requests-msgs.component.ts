@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { Message } from '../models/message-model';
@@ -54,6 +54,9 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit {
   displayArchivingInfoModal = 'none';
   ARCHIVE_REQUEST_ERROR = false;
 
+  newInnerWidth: any;
+  windowWidth: any;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -64,12 +67,24 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit {
     private notify: NotifyService
   ) { }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+
+    this.newInnerWidth = event.target.innerWidth;
+    console.log('ON RESIZE -> WINDOW WITH ', this.newInnerWidth);
+  }
+
   ngOnInit() {
-
-
     this.getRequestId();
     this.getCurrentProject();
     this.getLoggedUser();
+  }
+
+  onInitWindowWidth(): any {
+    this.windowWidth = window.innerWidth;
+    console.log('ON INIT WINDOW WIDTH ', this.windowWidth);
+
+    return;
   }
 
   ngAfterViewInit() {

@@ -270,13 +270,37 @@
   background-color: #999999;
 } 
 
-// ARCHIVE BTN OUTLINE STYLE
+// !!! no more used (substitutes by close_request_btn )- 
+// ARCHIVE BTN - OUTLINE STYLE
 .archive_btn {
   background-color: #fff; 
   border: 1px solid #00bcd4; 
   color: #00bcd4;
   box-shadow: 0 2px 2px 0 rgba(0, 188, 212, 0), 0 3px 1px -2px rgba(0, 188, 212, 0.2), 0 1px 5px 0 rgba(0, 188, 212, 0.12);
+  padding: 11px 11px;
 }
+// CLOSE BTN - OUTLINE STYLE
+.close_request_btn {
+  background-color: #fff; 
+  border: 1px solid #f44336; 
+  color: #f44336;
+  padding: 11px 11px;
+  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0), 0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
+  // border-radius:50px
+}
+
+// da
+// @media (min-width: 1063px){
+//   .archive_btn {
+//     float: right !important;
+//   }
+// }
+// da -> a
+// @media (min-width: 768px) and (max-width: 803px){
+//   .open_the_chat_btn {
+//     margin-left: 0px !important;
+//   }
+// }
 
 // CHANGE THE COLOR TO THE ARCHIVE BTN IF IT IS DISABLED 
 .disable_archive_btn {
@@ -336,8 +360,8 @@ button.close {
 
 .modal-body {
   position: relative;
-  padding-top: 35px;
-  padding-bottom: 35px;
+  padding-top: 20px;
+  padding-bottom: 20px;
   padding-right: 0px;
   padding-left: 15px;
 }
@@ -363,19 +387,19 @@ button.close {
 /* Tooltip text */
 .tooltipx .tooltiptext {
   visibility: hidden;
-  width: 120px;
+  // width: 120px;
   background-color: black; 
   // background-color: rgba(0,0,0,0.6);
   color: #fff;
   text-align: center;
-  padding: 5px 0;
-  border-radius: 6px;
+  padding: 5px 5px;
+  border-radius: 5px;
+  font-size: 12px !important;
 
   /* Position the tooltip text */
   position: absolute;
   z-index: 1;
   /* Position the tooltip text - TOP */
-  // width: 420px;
   bottom: 100%;
   left: 50%; 
   margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
