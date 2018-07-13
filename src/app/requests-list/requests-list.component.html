@@ -89,7 +89,7 @@
                     <th>
                       <strong>
                         <span style="color: #566787">
-                          {{ 'VisitorsPage.Archive' | translate }}
+                          {{ 'VisitorsPage.Actions' | translate }}
                         </span>
                       </strong>
                     </th>
@@ -250,9 +250,9 @@
                   <!-- ARCHIVE Action -->
                   <!-- class="td-actions text-right" -->
                   <td>                 
-                    <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}" class="btn btn-info btn-simple btn-xs"
+                    <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}" class="btn btn-danger btn-simple btn-xs"
                       (click)='openDeleteRequestModal((request?.recipient))'>
-                      <i class="material-icons">archive</i>
+                      <i class="material-icons">clear</i>
                     </button>
                   </td>
 
@@ -353,7 +353,7 @@
                   <th>
                     <span style="color: #566787">
                       <strong> 
-                        {{ 'VisitorsPage.Archive' | translate }}
+                        {{ 'VisitorsPage.Actions' | translate }}
                       </strong>         
                     </span>
                   </th>
@@ -515,9 +515,9 @@
                   <!-- ARCHIVE Action -->
                   <!-- class="td-actions text-right" -->
                   <td>                 
-                    <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}" class="btn btn-info btn-simple btn-xs"
+                    <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}" class="btn btn-danger btn-simple btn-xs"
                       (click)='openDeleteRequestModal(request?.recipient)'>
-                      <i class="material-icons">archive</i>
+                      <i class="material-icons">clear</i>
                     </button>
                   </td>
 
@@ -537,12 +537,12 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
             <!-- background-color:#ff5252; -->
-          <div class="modal-header" style="padding-bottom:24px">
+          <div class="modal-header" style="padding-bottom:15px">
             <button type="button" class="close" aria-label="Close" (click)="onCloseArchiveRequestModal()">
                 <!-- color: #fff -->
               <span aria-hidden="true" style="">&times;</span>
             </button>
-            <h4 class="modal-title" style="color: #00bcd4">
+            <h4 class="modal-title" style="color: #f44336">
                 <i class="material-icons" style="vertical-align: middle">info</i>
                 <span style="vertical-align: middle; padding-left:8px">
                   <!-- Elimina richiesta -->
@@ -550,15 +550,25 @@
                 </span>
             </h4>
             <!-- padding-left: 36px  -->
-            <h4 class="modal-title" style="color: #566787; padding-top:10px; font-size: 1.1em;">
+            <h4 class="modal-title" 
+            style="color: #566787; padding-top:10px; font-size: 1.1em; font-weight: 500">
               <!-- La richiesta con ID: <code>{{ id_request_to_delete }}</code> verrà eliminata -->
-              {{ "VisitorsPage.TheRequestWithId" | translate }} <code style="color: #566787">{{ id_request_to_archive }}</code> {{ "VisitorsPage.WillBeArchived" | translate }} 
+              {{ "VisitorsPage.TheRequestWithId" | translate }} 
+              <code style="color: #566787">
+                {{ id_request_to_archive }}
+              </code> 
+              {{ "VisitorsPage.WillBeArchived" | translate }} 
             </h4>
           </div>
           <div class="modal-body">
-              <p style="font-weight:500; text-align: left; margin-top: 10px; color: #999">
+              <p style="font-weight:500; text-align: left; margin-top: 10px; color: #566787; font-weight: 500">
                 <!-- Sei sicuro di voler rimuovere la richiesta selezionata? -->
-                {{ "VisitorsPage.AreYouSure" | translate }}
+                {{ "VisitorsPage.AreYouSure" | translate }} <br>
+                <span style="font-weight:100; color: #999; font-size:12px"> 
+                  <em>
+                    {{ "VisitorsPage.Note" | translate }}
+                  </em>
+                </span> 
               </p>
 
           </div>
@@ -567,7 +577,7 @@
               <!-- Annulla -->
               {{ "VisitorsPage.Cancel" | translate }}
             </button>
-            <button style="margin-top:0px" class="btn btn-info" (click)="archiveTheRequestHandler()" style="padding:12px 16px;">
+            <button style="margin-top:0px" class="btn btn-danger" (click)="archiveTheRequestHandler()" style="padding:12px 16px;">
               <!-- Archivia Richiesta -->
               {{ "VisitorsPage.ArchiveRequest" | translate }}
             </button>
