@@ -11,19 +11,35 @@
                     <div class="card-content" style="padding-top: 25px;">
 
                         <!-- WIDGET -->
-                        <div class="col-sm-12" >
-                            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600">
-                                {{ 'Resourcepage.EmbedTheTileDeskChatWidget' | translate }}
-                            </h4>
-                            <h6 class="category text-gray" style="text-transform: none; padding-left:15px">
-                                {{ 'Resourcepage.ToChatWithYourVisitors...' | translate  }}
-                            </h6>
-                            <h6 class="category text-gray" style="text-transform: none; padding-left:15px; margin-top:0px">
-                                {{ 'Resourcepage.CopyTheFollowingScript...' | translate  }}<code><em>&lt;head&gt;</em></code> tags
-                            </h6>
+                        <div class="col-sm-12" style="margin-bottom: 25px">
+                            
+                            <!-- <div class="col-xs-6 col-md-8"> -->
+                                <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600">
+                                    {{ 'Resourcepage.EmbedTheTileDeskChatWidget' | translate }}
+                                </h4>
+                                <h6 class="category text-gray" style="text-transform: none; padding-left:15px">
+                                    {{ 'Resourcepage.ToChatWithYourVisitors...' | translate  }}
+                                </h6>
+                                <h6 class="category text-gray" style="text-transform: none; padding-left:15px; margin-top:0px">
+                                    {{ 'Resourcepage.CopyTheFollowingScript...' | translate  }}<code><em>&lt;head&gt;</em></code> tags
+                                </h6>
+                            <!-- </div> -->
+                            <!-- <div class="col-xs-6 col-md-4" style="background-repeat: no-repeat; background-image: url(assets/img/tiledesk-logo.svg); background-position: center; background-size: contain;">
+                                <div style="padding: 15px; padding-bottom:0px">
+                                        <img *ngIf="preChatForm === false" [ngClass]="{'float_left_chat_img' : alignmentSelected === 'left'}"
+                                        style="width:50%; box-shadow: rgba(0,0,0,.18) 0 0 38px; float: right; margin-bottom: 0px; max-width:245px;" 
+                                        src="assets/img/tiledesk-chat-2.png"/>
+        
+                                        <img *ngIf="preChatForm === true" [ngClass]="{'float_left_chat_img' : alignmentSelected === 'left'}"
+                                        style="width:50%; box-shadow: rgba(0,0,0,.18) 0 0 38px; float: right; margin-bottom: 2px; max-width:245px; " 
+                                        src="assets/img/tiledesk-chat-with-form-2.png"/>
 
-                            <div class="row">
-                            <div class="col-sm-6 col-xs-12">
+                                </div>
+                            </div> -->
+
+                            <div class="row" style=" margin-top: 15px;">
+                            <div class="col-sm-5 col-xs-12">
+                            
                              <!-- ========================= INCLUDE PRECHAT FORM ========================= -->
                             <!-- <hr align="left" width="50%" style="margin-bottom: 6px;"> -->
                             <!-- <h6 style="text-transform: none; color: #566787; font-weight:600;">Pre-Chat</h6> -->
@@ -45,7 +61,7 @@
                                             <!-- <input style="height:16px; width:16px" type="checkbox" class="form-check-input" id="exampleCheck1" (change)="toggleCheckBox($event)"  style="height: 21px;width: 21px;margin-top: 0px;"> -->
 
                                         <label class="container" for="preChatForm" style="margin-left: 0px; margin-bottom: 6px;">
-                                                
+                                            
                                                 
                                             <input type="checkbox" id="preChatForm"  (change)="toggleCheckBox($event)" />
                                             <span class="checkmark" style=""></span>
@@ -90,9 +106,9 @@
                                         <!-- </div> -->
                                         <div class="row" style="border-left: #5bc0de 2px solid; margin-left: 0px;">
                                         <div class="col-sm-8">
-                                            <ng-select #selectElemCallout [(ngModel)]="calloutTimerSecondSelected" (change)="setSelectedCalloutTimer()" style="min-width: 60px; background-color:#fff; color:#333333">
+                                            <ng-select #selectElemCallout [clearable]='false' [(ngModel)]="calloutTimerSecondSelected" (change)="setSelectedCalloutTimer()" style="min-width: 60px; background-color:#fff; color:#333333">
                                                 <ng-option *ngFor="let option of calloutTimerOptions" [value]="option.value">
-                                                    {{ option.seconds}}    
+                                                    {{ option.seconds }}    
                                                 </ng-option>
                                             </ng-select>
                                         </div>
@@ -132,7 +148,7 @@
                                         <!-- </div> -->
                                         <div class="row" style="border-left: #5bc0de 2px solid; margin-left: 0px;">
                                         <div class="col-sm-8">
-                                            <ng-select #selectElemAlign [(ngModel)]="alignmentSelected" (change)="setSelectedAlignment()" style="min-width: 60px; background-color:#fff; color:#333333;" >
+                                            <ng-select #selectElemAlign [clearable]='false' [(ngModel)]="alignmentSelected" (change)="setSelectedAlignment()" style="min-width: 60px; background-color:#fff; color:#333333;" >
                                                 <ng-option *ngFor="let option of alignmentOptions" [value]="option.value">
                                                     {{ option.alignTo }}
                                                 </ng-option>
@@ -150,24 +166,48 @@
                             </h6>
                             <!-- Copy the following script and insert it into your website's HTML source code between the <head> tags -->
                             <!-- <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Risposta</label> -->
-
+                              
                         </div> <!-- end col sm 6 --> 
 
                         <!-- PREVIEW DIV -->
-                        <!--  -->
-                        <div class="col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1" style="background-repeat: no-repeat; background-image: url(assets/img/tiledesk-logo.svg); background-position: center;background-size: contain; padding: 18px;">
+                        <!-- style="background-repeat: no-repeat; background-image: url(assets/img/tiledesk-logo.svg); background-position: center; background-size: contain;" -->
+                        <div class="col-sm-7 col-sm-offset-0 col-xs-10 col-xs-offset-1" >
                                 <!-- width:50%; padding-top: 5px; -->
-                            <img *ngIf="preChatForm === false" [ngClass]="{'float_left_chat_img' : alignmentSelected === 'left'}"
-                            style="width:50%; box-shadow: rgba(0,0,0,.18) 0 0 38px; float: right; margin-bottom: 14px" 
-                            src="assets/img/tiledesk-chat-2.png"/>
+                            
+                            <div style="padding-top: 15px; padding-bottom:0px; padding-left:0px">
+                                <!-- <img *ngIf="preChatForm === false" [ngClass]="{'float_left_chat_img' : alignmentSelected === 'left'}"
+                                style="width:50%; box-shadow: rgba(0,0,0,.18) 0 0 38px; float: right; margin-bottom: 0px; max-width:245px;" 
+                                src="assets/img/tiledesk-chat-2.png"/>
 
-                            <img *ngIf="preChatForm === true" [ngClass]="{'float_left_chat_img' : alignmentSelected === 'left'}"
-                            style="width:50%; box-shadow: rgba(0,0,0,.18) 0 0 38px; float: right; margin-bottom: 15px" 
-                            src="assets/img/tiledesk-chat-with-form-2.png"/>
+                                <img *ngIf="preChatForm === true" [ngClass]="{'float_left_chat_img' : alignmentSelected === 'left'}"
+                                style="width:50%; box-shadow: rgba(0,0,0,.18) 0 0 38px; float: right; margin-bottom: 2px; max-width:245px; " 
+                                src="assets/img/tiledesk-chat-with-form-2.png"/>
 
-                            <div class="col-sm-12 col-xs-12" style="text-align: center">
-                                <button style="margin-top:0px" (click)="testWidgetPage()" class="btn btn-success">{{ 'Resourcepage.TestTheWidget' | translate }}</button>
-                            </div>
+                                <div class="col-sm-12 col-xs-12" style="text-align: center">
+                                    <button style="margin-top:0px" (click)="testWidgetPage()" class="btn btn-success">{{ 'Resourcepage.TestTheWidget' | translate }}</button>
+                                </div> -->
+                            
+
+<textarea  name="exampleClipboard" class="textarea" readonly rows="17" value="" type="text" style="font-size: 12px; line-height: 18px; padding:5px">
+&lt;script type=&quot;application/javascript&quot;&gt;
+  window.tiledeskSettings = 
+    {
+      projectid: &quot;{{ projectId }}&quot;,
+      projectname: &quot;{{projectName}}&quot;,
+      preChatForm: {{preChatFormValue}},
+      calloutTimer: {{ calloutTimerSecondSelected }},
+      align: '{{ alignmentSelected }}'
+    };
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id; //js.async=!0;
+      js.src = &quot;https://widget.tiledesk.com/tiledesk.js&quot;;
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, &#39;script&#39;, &#39;tiledesk-jssdk&#39;));
+&lt;/script&gt;</textarea>
+
+</div>
                         </div>
 
                         </div> <!-- end row -->        
@@ -180,9 +220,11 @@
             
             <div class="row">
                 <div class="col-sm-12">
+
+                    
                         <!-- *ngIf="!preChatForm"  -->
                         <!-- *ngIf="!hasSelectedCalloutTimer" -->
-<textarea  name="exampleClipboard" class="textarea" readonly rows="18" value="" type="text" style="font-size: 12px">
+<!-- <textarea  name="exampleClipboard" class="textarea" readonly rows="17" value="" type="text" style="font-size: 12px; line-height: 18px;">
 &lt;script type=&quot;application/javascript&quot;&gt;
     window.tiledeskSettings = 
         {
@@ -192,7 +234,6 @@
             calloutTimer: {{ calloutTimerSecondSelected }},
             align: '{{ alignmentSelected }}'
         };
-
     (function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) return;
@@ -200,7 +241,7 @@
         js.src = &quot;https://widget.tiledesk.com/tiledesk.js&quot;;
         fjs.parentNode.insertBefore(js, fjs);
     }(document, &#39;script&#39;, &#39;tiledesk-jssdk&#39;));
-&lt;/script&gt;</textarea>
+&lt;/script&gt;</textarea> -->
 
 <!-- <textarea  *ngIf="hasSelectedCalloutTimer" name="exampleClipboard" class="textarea" readonly rows="17" value="" type="text">
 &lt;script type=&quot;application/javascript&quot;&gt;
@@ -223,9 +264,9 @@
                 </div>
             </div>
             <div>
-                <button style="margin-top:0px" (click)="copyToClipboard()" class="btn btn-white">{{ 'Resourcepage.CopyScript' | translate }}</button>
 
-                <button style="margin-top:0px" (click)="testWidgetPage()" class="btn btn-success">{{ 'Resourcepage.TestThisCode' | translate }}</button>
+                <button style="margin-top:0px" (click)="testWidgetPage()" class="btn btn-success pull-right">{{ 'Resourcepage.TestThisCode' | translate }}</button>
+                <button style="margin-top:0px" (click)="copyToClipboard()" class="btn btn-white pull-right">{{ 'Resourcepage.CopyScript' | translate }}</button>
            </div>
         </div>
         

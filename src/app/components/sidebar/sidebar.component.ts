@@ -12,6 +12,7 @@ import { Project } from '../../models/project-model';
 // import { SharedModule } from '../../shared/shared.module';
 import { UsersLocalDbService } from '../../services/users-local-db.service';
 import { NotifyService } from '../../core/notify.service';
+import { environment } from '../../../environments/environment';
 
 declare const $: any;
 declare interface RouteInfo {
@@ -83,6 +84,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     USER_ROLE: string;
 
     currentUserId: string
+
+    CHAT_BASE_URL = environment.chat.CHAT_BASE_URL
 
     constructor(
         private requestsService: RequestsService,

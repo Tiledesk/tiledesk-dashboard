@@ -98,7 +98,11 @@ textarea {
     float: left !important;
   }
 
-
+  .vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
   
 // .full-img {
 //     background-image: url(assets/img/tiledesk-chat.png);
