@@ -36,6 +36,8 @@ export class HomeComponent implements OnInit {
 
   USER_ROLE: string;
 
+  CHAT_BASE_URL = environment.chat.CHAT_BASE_URL
+
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -107,6 +109,12 @@ export class HomeComponent implements OnInit {
 
   goToAnalytics() {
     this.router.navigate(['project/' + this.projectId + '/analytics']);
+  }
+
+  openChat() {
+
+    const url = this.CHAT_BASE_URL
+    window.open(url, '_blank');
   }
 
   // NO MORE USED
