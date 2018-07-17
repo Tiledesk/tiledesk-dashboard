@@ -1,8 +1,18 @@
 
 # Tiledesk-dashboard
 
-Tiledesk.com backoffice application was finally released on GitHub with the AAPL licence.
+Tiledesk.com backoffice application was finally released on GitHub with the AGPL-3.0 licence.
 Follow this instructions to setup the environment.
+
+Consider that Tiledesk.com cloud service makes every module available with the same open source licence.
+
+- Web Widget component
+- iOS Widget API (work in progress)
+- full iOS App
+- full Android App
+- Tiledesk Backoffice (this repo)
+- All the chat components are available thanks to the Chat21 open source project, also available on GitHub (https://github.com/chat21)
+
 Feel free to ask for support on http://tiledesk.com, using the live chat widget on the the website.
 
 ## Features
