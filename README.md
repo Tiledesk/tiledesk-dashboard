@@ -1,7 +1,7 @@
 
 # Tiledesk-dashboard
 
-Tiledesk.com backoffice application was finally released on GitHub with the AGPL-3.0 licence.
+Tiledesk.com backoffice application is available on GitHub with the AGPL-3.0 licence.
 Follow this instructions to setup the environment.
 
 Consider that Tiledesk.com cloud service makes every module available with the same open source licence.
