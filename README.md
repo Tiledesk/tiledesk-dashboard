@@ -1,6 +1,9 @@
 
 # Tiledesk-dashboard
 
+Tiledesk.com backoffice application was finally released on GitHub with the AAPL licence.
+Follow this instructions to setup the environment.
+Feel free to ask for support on http://tiledesk.com, using the live chat widget on the the website.
 
 ## Features
 
