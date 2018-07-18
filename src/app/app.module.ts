@@ -104,6 +104,7 @@ import { HoursComponent } from './hours/hours.component';
 import { AmazingTimePickerModule } from 'amazing-time-picker';
 
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ResetPswComponent } from './reset-psw/reset-psw.component';
 
 
 
@@ -159,6 +160,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     SortByPipe,
     ChangePasswordComponent,
     HoursComponent,
+    ResetPswComponent,
   ],
   imports: [
     BrowserModule,

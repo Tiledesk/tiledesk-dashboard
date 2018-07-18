@@ -44,8 +44,6 @@ export class SigninComponent implements OnInit {
     },
   };
 
-  HAS_CLICKED_RECOVER_PSW = false;
-
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
@@ -239,9 +237,8 @@ export class SigninComponent implements OnInit {
     // , '_blank'
   }
 
-  recoverPsw() {
-
-    this.HAS_CLICKED_RECOVER_PSW = true
-    console.log('HAS CLICKED FORGOT PWS ', this.HAS_CLICKED_RECOVER_PSW);
+  goToResetPsw() {
+    console.log('HAS CLICKED FORGOT PWS ');
+    this.router.navigate(['forgotpsw']);
   }
 }

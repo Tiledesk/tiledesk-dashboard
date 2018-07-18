@@ -64,6 +64,8 @@ import { GroupsComponent } from './groups/groups.component';
 import { GroupEditAddComponent } from './group-edit-add/group-edit-add.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { HoursComponent } from './hours/hours.component';
+import { ResetPswComponent } from './reset-psw/reset-psw.component';
+
 
 // import { DashboardComponent} from './dashboard/dashboard.component';
 // Andrea
@@ -178,6 +180,9 @@ const routes: Routes = [
 
   // HOURS
   { path: 'project/:projectid/hours', component: HoursComponent, canActivate: [AuthGuard] },
+
+  // RESET PASSORD (i.e. page forgot psw & reset psw )
+  { path: 'forgotpsw', component: ResetPswComponent },
 
   { path: 'dashboard', component: DashboardComponent },
 
