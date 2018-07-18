@@ -24,6 +24,7 @@ export const environment = {
         SIGNIN_BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/auth/signin',
         FIREBASE_SIGNIN_BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/firebase/auth/signin',
         VERIFY_EMAIL_BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/auth/verifyemail/',
+        PSW_RESET_REQUEST: 'https://chat21-api-nodejs.herokuapp.com/auth/pswresetrequest',
         UPDATE_USER_LASTNAME_FIRSTNAME: 'https://chat21-api-nodejs.herokuapp.com/users/updateuser/',
         CHANGE_PSW: 'https://chat21-api-nodejs.herokuapp.com/users/changepsw/',
 

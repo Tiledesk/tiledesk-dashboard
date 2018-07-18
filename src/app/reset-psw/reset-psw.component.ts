@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {ReactiveFormsModule,  FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ResetPswService } from '../services/reset-psw.service';
 
 type EmailField = 'email';
 type EmailFormErrors = { [u in EmailField]: string };
@@ -14,7 +15,7 @@ type PswFormErrors = { [u in PswFields]: string };
   styleUrls: ['./reset-psw.component.scss']
 })
 export class ResetPswComponent implements OnInit {
-  
+
   emailForm: FormGroup;
 
   pswForm: FormGroup;
@@ -44,6 +45,7 @@ export class ResetPswComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+    private resetPswService: ResetPswService
   ) { }
 
   ngOnInit() {
@@ -76,51 +78,61 @@ export class ResetPswComponent implements OnInit {
     this.onPswValueChanged(); // reset validation messages
   }
 
-    // Updates validation state on form changes.
-    onEmailValueChanged(data?: any) {
-      if (!this.emailForm) { return; }
-      const form = this.emailForm;
-      for (const field in this.emailformErrors) {
-        // tslint:disable-next-line:max-line-length
-        if (Object.prototype.hasOwnProperty.call(this.emailformErrors, field) && (field === 'email')) {
-          // clear previous error message (if any)
-          this.emailformErrors[field] = '';
-          const control = form.get(field);
-          if (control && control.dirty && !control.valid) {
-            const messages = this.emailvalidationMessages[field];
-            if (control.errors) {
-              for (const key in control.errors) {
-                if (Object.prototype.hasOwnProperty.call(control.errors, key)) {
-                  this.emailformErrors[field] += `${(messages as { [key: string]: string })[key]} `;
-                }
+  // Updates validation state on form changes.
+  onEmailValueChanged(data?: any) {
+    if (!this.emailForm) { return; }
+    const form = this.emailForm;
+    for (const field in this.emailformErrors) {
+      // tslint:disable-next-line:max-line-length
+      if (Object.prototype.hasOwnProperty.call(this.emailformErrors, field) && (field === 'email')) {
+        // clear previous error message (if any)
+        this.emailformErrors[field] = '';
+        const control = form.get(field);
+        if (control && control.dirty && !control.valid) {
+          const messages = this.emailvalidationMessages[field];
+          if (control.errors) {
+            for (const key in control.errors) {
+              if (Object.prototype.hasOwnProperty.call(control.errors, key)) {
+                this.emailformErrors[field] += `${(messages as { [key: string]: string })[key]} `;
               }
             }
           }
         }
       }
     }
+  }
 
-    onPswValueChanged(data?: any) {
-      if (!this.pswForm) { return; }
-      const form = this.pswForm;
-      for (const field in this.pswformErrors) {
-        // tslint:disable-next-line:max-line-length
-        if (Object.prototype.hasOwnProperty.call(this.pswformErrors, field) && (field === 'password')) {
-          // clear previous error message (if any)
-          this.pswformErrors[field] = '';
-          const control = form.get(field);
-          if (control && control.dirty && !control.valid) {
-            const messages = this.paswvalidationMessages[field];
-            if (control.errors) {
-              for (const key in control.errors) {
-                if (Object.prototype.hasOwnProperty.call(control.errors, key)) {
-                  this.pswformErrors[field] += `${(messages as { [key: string]: string })[key]} `;
-                }
+  onPswValueChanged(data?: any) {
+    if (!this.pswForm) { return; }
+    const form = this.pswForm;
+    for (const field in this.pswformErrors) {
+      // tslint:disable-next-line:max-line-length
+      if (Object.prototype.hasOwnProperty.call(this.pswformErrors, field) && (field === 'password')) {
+        // clear previous error message (if any)
+        this.pswformErrors[field] = '';
+        const control = form.get(field);
+        if (control && control.dirty && !control.valid) {
+          const messages = this.paswvalidationMessages[field];
+          if (control.errors) {
+            for (const key in control.errors) {
+              if (Object.prototype.hasOwnProperty.call(control.errors, key)) {
+                this.pswformErrors[field] += `${(messages as { [key: string]: string })[key]} `;
               }
             }
           }
         }
       }
     }
+  }
+
+
+  pswResetRequest() {
+    console.log('USER EMAIL ', this.emailForm.value['email']);
+
+    this.resetPswService.resetPswRequest(this.emailForm.value['email']).subscribe((user) => {
+      console.log('VERIFY-EMAIL PUT ', user);
+
+    });
+  }
 
 }
