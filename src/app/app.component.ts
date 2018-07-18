@@ -175,13 +175,14 @@ export class AppComponent implements OnInit, AfterViewInit {
             if (this.location.path() !== '') {
                 this.route = this.location.path();
 
-                // console.log('»> ', this.route)
+                console.log('»> ', this.route)
                 // tslint:disable-next-line:max-line-length
                 if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/welcome') || (this.route === '/projects') || (this.route.indexOf('/verify') !== -1)) {
 
                     elemNavbar.setAttribute('style', 'display:none;');
                     elemAppSidebar.setAttribute('style', 'display:none;');
-                    elemMainPanel.setAttribute('style', 'width:100% !important; margin-top: -70px');
+                    // margin-top: -70px
+                    elemMainPanel.setAttribute('style', 'width:100% !important; overflow-x: hidden !important;');
 
                     // console.log('DETECT LOGIN PAGE')
                     this.LOGIN_PAGE = true;
