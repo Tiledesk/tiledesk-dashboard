@@ -31,6 +31,8 @@
     "GroupsQuickTips2": "You can group agents based on skills and assign groups of agents to your departments.",
     "ForgotYourPassword":"Forgot your password",
     "ClickHere":"Click here",
+    "ToRequestAPswReseTEmail": "To request a password reset email, please enter your account email address",
+    "RequestNewPsw": "Request new password",
     "UserProfile": {
         "Profile": "Profile",
         "UploadImage": "Upload image",

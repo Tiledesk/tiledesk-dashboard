@@ -31,6 +31,8 @@
     "GroupsQuickTips2": "È possibile raggruppare agenti in base alle competenze e assegnare gruppi di agenti ai propri dipartimenti.",
     "ForgotYourPassword":"Hai dimenticato la password",
     "ClickHere":"Clicca qui",
+    "ToRequestAPswReseTEmail": " Per richiedere un'email di reimpostazione della password, inserisci l'indirizzo email del tuo account",
+    "RequestNewPsw": "Richiedi nuova password",
     "UserProfile": {
         "Profile": "Profilo",
         "UploadImage": "Carica immagine",

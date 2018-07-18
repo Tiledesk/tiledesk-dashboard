@@ -105,6 +105,7 @@ import { AmazingTimePickerModule } from 'amazing-time-picker';
 
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ResetPswComponent } from './reset-psw/reset-psw.component';
+import { ResetPswService } from './services/reset-psw.service';
 
 
 
@@ -201,6 +202,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     UsersLocalDbService,
     GroupService,
     BotLocalDbService,
+    ResetPswService,
     {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [
