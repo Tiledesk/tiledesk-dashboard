@@ -29,6 +29,8 @@
     "QuickTipsBot": "Seleziona un bot che risponde automaticamente.",
     "GroupsQuickTips1": "Utilizza i gruppi per organizzare i team di supporto.",
     "GroupsQuickTips2": "È possibile raggruppare agenti in base alle competenze e assegnare gruppi di agenti ai propri dipartimenti.",
+    "ForgotYourPassword":"Hai dimenticato la password",
+    "ClickHere":"Clicca qui",
     "UserProfile": {
         "Profile": "Profilo",
         "UploadImage": "Carica immagine",

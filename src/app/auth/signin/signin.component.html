@@ -62,11 +62,22 @@
                 </span></a>
             </div>
   
+            <p style="color: #666666; font-size: 1.1em; text-align: center; margin-top: 16px;">
+              {{ "ForgotYourPassword" | translate }}? 
+              <span style="color: #03a5e8; cursor:pointer" (click)="recoverPsw()">
+                {{ "ClickHere" | translate }} 
+              </span>
+            </p>
             <!-- <a *ngIf="!passReset && userForm.controls.email.valid" class="help is-info" (click)="resetPassword()">Reset Password for {{userForm.value.email}}?</a>
             <p *ngIf="passReset" class="help is-info">Reset requested. Check your email instructions.</p> -->
     
           </form>
 
+          <!-- ****** FORGOT PSW ****** -->
+          <form *ngIf="HAS_CLICKED_RECOVER_PSW" [formGroup]="userForm"  (ngSubmit)="signin()">
+            <label for="email">Email</label>
+            <input type="email" class="input" formControlName="email" required>
+          </form>
         </div>
         <!-- ./login-container -->
 
