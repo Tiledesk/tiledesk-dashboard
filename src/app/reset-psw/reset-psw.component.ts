@@ -4,11 +4,12 @@ import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angula
 import { ActivatedRoute } from '@angular/router';
 import { ResetPswService } from '../services/reset-psw.service';
 import { Location } from '@angular/common';
+import { PasswordValidation } from './password-validation';
 
 type EmailField = 'email';
 type EmailFormErrors = { [u in EmailField]: string };
 
-type PswFields = 'password';
+type PswFields = 'password' | 'confirmPassword';
 type PswFormErrors = { [u in PswFields]: string };
 
 @Component({
@@ -34,6 +35,7 @@ export class ResetPswComponent implements OnInit {
 
   pswformErrors: PswFormErrors = {
     'password': '',
+    'confirmPassword': '',
   };
   paswvalidationMessages = {
     'password': {
@@ -41,6 +43,9 @@ export class ResetPswComponent implements OnInit {
       'pattern': 'Password must be include at one letter and one number.',
       'minlength': 'Password must be at least 6 characters long.',
       'maxlength': 'Password cannot be more than 25 characters long.',
+    },
+    'confirmPassword': {
+      'required': 'Confirm Password is required.',
     },
   };
 
@@ -64,7 +69,7 @@ export class ResetPswComponent implements OnInit {
     this.detectResetPswRoute();
     this.buildEmailForm();
     this.buildPswForm();
-    
+
   }
 
   detectResetPswRoute() {
@@ -112,7 +117,11 @@ export class ResetPswComponent implements OnInit {
         Validators.minLength(6),
         Validators.maxLength(25),
       ]],
-    });
+      'confirmPassword': ['', Validators.required]
+      // Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
+    },
+      { validator: PasswordValidation.MatchPassword }
+    );
 
     this.pswForm.valueChanges.subscribe((data) => this.onPswValueChanged(data));
     this.onPswValueChanged(); // reset validation messages
