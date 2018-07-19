@@ -45,7 +45,7 @@
         <div class="login-container">
         <!-- <div class="signin-container"> -->
          
-          <form [formGroup]="emailForm"  (ngSubmit)="pswResetRequest()">
+          <form *ngIf="!IS_RESET_PSW_ROUTE" [formGroup]="emailForm"  (ngSubmit)="pswResetRequest()">
 
               
 
@@ -72,22 +72,21 @@
    
           </form>
           
-          <!-- <form [formGroup]="pswForm"  (ngSubmit)="resetPsw()"> -->
-            <!-- <label for="password">Password</label>
-            <input type="password" id="password" class="input" formControlName="password" required> -->
+          <form *ngIf="IS_RESET_PSW_ROUTE" [formGroup]="pswForm"  (ngSubmit)="resetPsw()">
+            <label for="password">Password</label>
+            <input type="password" id="password" class="input" formControlName="password" required>
   
             <!-- <div *ngIf="formErrors.password" class="is-danger">
               {{ formErrors.password }}
             </div> -->
   
-            <!-- <button type="submit" style="width: 100%; background-color: #ff9800; height: 56px; font-size: 16px; letter-spacing: 2px;" class="btn btn-danger" [disabled]="!userForm.valid">
-              <span *ngIf="!showSpinnerInLoginBtn"> Login </span>
+            <button type="submit" style="width: 100%; background-color: #ff9800; height: 56px; font-size: 16px; letter-spacing: 2px;" class="btn btn-danger" [disabled]="!pswForm.valid">
+              <span *ngIf="!showSpinnerInLoginBtn"> RESET PSW </span>
               <span *ngIf="showSpinnerInLoginBtn"> <i class="fa fa-spinner fa-spin"></i></span>
-            </button> -->
-  
+            </button>   
 
     
-          <!-- </form> -->
+          </form>
 
       </div>
     </div>

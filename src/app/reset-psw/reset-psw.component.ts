@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+
+import { ActivatedRoute } from '@angular/router';
 import { ResetPswService } from '../services/reset-psw.service';
+import { Location } from '@angular/common';
 
 type EmailField = 'email';
 type EmailFormErrors = { [u in EmailField]: string };
@@ -46,15 +48,49 @@ export class ResetPswComponent implements OnInit {
   display = 'none';
   showSpinnerInLoginBtn = false;
   displayResetPswEmailSentAlert = 'none';
+  resetPswRequestId: string;
+  route: string;
+  IS_RESET_PSW_ROUTE: boolean;
 
-  constructor(
+  constructor
+    (
     private fb: FormBuilder,
-    private resetPswService: ResetPswService
-  ) { }
+    private resetPswService: ResetPswService,
+    private activetedRoute: ActivatedRoute,
+    public location: Location
+    ) { }
 
   ngOnInit() {
+    this.detectResetPswRoute();
     this.buildEmailForm();
     this.buildPswForm();
+    
+  }
+
+  detectResetPswRoute() {
+    if (this.location.path() !== '') {
+      this.route = this.location.path();
+      console.log('RESET PSW »> »> ', this.route);
+      if (this.route.indexOf('/resetpassword') !== -1) {
+        // this.router.navigate([`${this.route}`]);
+        this.IS_RESET_PSW_ROUTE = true;
+        console.log('»> »> RESET PSW - IS RESET PSW PAGE »> »> ', this.IS_RESET_PSW_ROUTE);
+
+        /**
+         * ****** GET RESET PSW REQUEST ID ******
+         */
+        this.getResetPswRequestId();
+
+      } else {
+        this.IS_RESET_PSW_ROUTE = false;
+        console.log('»> »> RESET PSW - IS RESET PSW PAGE »> »> ', this.IS_RESET_PSW_ROUTE);
+      }
+    }
+  }
+
+  getResetPswRequestId() {
+    this.resetPswRequestId = this.activetedRoute.snapshot.params['resetpswrequestid'];
+    console.log('»»» »»» RESET PSW - ID OF THE REQUEST FOR RESET THE PSW ', this.resetPswRequestId);
   }
 
   buildEmailForm() {

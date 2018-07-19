@@ -17,24 +17,47 @@ export const environment = {
         // SIGNIN_BASE_URL: 'http://api.chat21.org/auth/signin',
         // FIREBASE_SIGNIN_BASE_URL: 'http://api.chat21.org/firebase/auth/signin',
 
-        // NEW IS HTTPS
-        BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/',
-        PROJECTS_BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/projects/',
-        SIGNUP_BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/auth/signup',
-        SIGNIN_BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/auth/signin',
-        FIREBASE_SIGNIN_BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/firebase/auth/signin',
-        VERIFY_EMAIL_BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/auth/verifyemail/',
-        PSW_RESET_REQUEST: 'https://chat21-api-nodejs.herokuapp.com/auth/pswresetrequest',
-        UPDATE_USER_LASTNAME_FIRSTNAME: 'https://chat21-api-nodejs.herokuapp.com/users/updateuser/',
-        CHANGE_PSW: 'https://chat21-api-nodejs.herokuapp.com/users/changepsw/',
+        // NEW IS HTTPS -- REPLACE https://chat21-api-nodejs.herokuapp.com/ WITH https://api.tiledesk.com/v1
+        // ********* SEE BELOW *********
+        // BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/',
+        // PROJECTS_BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/projects/',
+        // SIGNUP_BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/auth/signup',
+        // SIGNIN_BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/auth/signin',
+        // FIREBASE_SIGNIN_BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/firebase/auth/signin',
+        // VERIFY_EMAIL_BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/auth/verifyemail/',
+        // PSW_RESET_REQUEST: 'https://chat21-api-nodejs.herokuapp.com/auth/pswresetrequest',
+        // UPDATE_USER_LASTNAME_FIRSTNAME: 'https://chat21-api-nodejs.herokuapp.com/users/updateuser/',
+        // CHANGE_PSW: 'https://chat21-api-nodejs.herokuapp.com/users/changepsw/',
+
+        /* NEW IS HTTPS & https://api.tiledesk.com/v1 */
+        BASE_URL: 'https://api.tiledesk.com/v1/',
+        PROJECTS_BASE_URL: 'https://api.tiledesk.com/v1projects/',
+        SIGNUP_BASE_URL: 'https://api.tiledesk.com/v1/auth/signup',
+        SIGNIN_BASE_URL: 'https://api.tiledesk.com/v1/auth/signin',
+        FIREBASE_SIGNIN_BASE_URL: 'https://api.tiledesk.com/v1/firebase/auth/signin',
+        VERIFY_EMAIL_BASE_URL: 'https://api.tiledesk.com/v1/auth/verifyemail/',
+        PSW_RESET_REQUEST: 'https://api.tiledesk.com/v1/auth/pswresetrequest',
+        UPDATE_USER_LASTNAME_FIRSTNAME: 'https://api.tiledesk.com/v1/users/updateuser/',
+        CHANGE_PSW: 'https://api.tiledesk.com/v1/users/changepsw/',
+
+
+
 
         // DEPARTMENTS_BASE_URL: 'http://api.chat21.org/app1/departments/', // URL BUILT directly IN DEPARTMENTS SERVICE
         // FAQKB_BASE_URL: 'http://api.chat21.org/app1/faq_kb/', // URL BUILT directly IN FAQ-KB SERVICE
         // FAQ_BASE_URL: 'http://api.chat21.org/app1/faq/', // URL BUILT directly IN FAQ SERVICE
-        CONTACTS_BASE_URL: 'http://api.chat21.org/app1/contacts/',
-        BOTS_BASE_URL: 'http://api.chat21.org/app1/bots/',
         // PROJECT_USER_BASE_URL: 'http://api.chat21.org/app1/project_users/', // NO MORE USED - THE RELATION PROJECT -> PROJECT USER IT'S DONE chat21-api-node.js
-        MONGODB_PEOPLE_BASE_URL: 'http://api.chat21.org/app1/people/',
+
+        /* EVEN IF NO MORE USED REPLACE http://api.chat21.org WITH https://api.tiledesk.com/v1 */
+        // ********* SEE BELOW *********
+        // CONTACTS_BASE_URL: 'http://api.chat21.org/app1/contacts/',
+        // BOTS_BASE_URL: 'http://api.chat21.org/app1/bots/',
+        // MONGODB_PEOPLE_BASE_URL: 'http://api.chat21.org/app1/people/',
+
+        CONTACTS_BASE_URL: 'https://api.tiledesk.com/v1/app1/contacts/',
+        BOTS_BASE_URL: 'https://api.tiledesk.com/v1/app1/bots/',
+        MONGODB_PEOPLE_BASE_URL: 'https://api.tiledesk.com/v1/app1/people/',
+
         TOKEN: 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnt9LCJnZXR0ZXJzIjp7fSwid2FzUG9wdWxhdGVkIjpmYWxzZSwiYWN0aXZlUGF0aHMiOnsicGF0aHMiOnsicGFzc3dvcmQiOiJpbml0IiwidXNlcm5hbWUiOiJpbml0IiwiX192IjoiaW5pdCIsIl9pZCI6ImluaXQifSwic3RhdGVzIjp7Imlnbm9yZSI6e30sImRlZmF1bHQiOnt9LCJpbml0Ijp7Il9fdiI6dHJ1ZSwicGFzc3dvcmQiOnRydWUsInVzZXJuYW1lIjp0cnVlLCJfaWQiOnRydWV9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7fX0sInN0YXRlTmFtZXMiOlsicmVxdWlyZSIsIm1vZGlmeSIsImluaXQiLCJkZWZhdWx0IiwiaWdub3JlIl19LCJlbWl0dGVyIjp7ImRvbWFpbiI6bnVsbCwiX2V2ZW50cyI6e30sIl9ldmVudHNDb3VudCI6MCwiX21heExpc3RlbmVycyI6MH19LCJpc05ldyI6ZmFsc2UsIl9kb2MiOnsiX192IjowLCJwYXNzd29yZCI6IiQyYSQxMCQ3WDBEOFY5T1dIYnNhZi91TTcuNml1ZUdCQjFUSWpoNGRnanFUS1dPOVk3UnQ1RjBwckVoTyIsInVzZXJuYW1lIjoiYW5kcmVhIiwiX2lkIjoiNWE2YWU1MjUwNmY2MmI2MDA3YTZkYzAwIn0sImlhdCI6MTUxNjk1NTA3Nn0.MHjEJFGmqqsEhm8sglvO6Hpt2bKBYs25VvGNP6W8JbI',
     },
     cloudFunctions: {

@@ -41,7 +41,7 @@ export class AuthGuard implements CanActivate {
 
     this.detectVerifyEmailRoute();
     this.detectSignUpRoute();
-    this.detectResetPswRoute()
+    this.detectResetPswRoute();
     this.canActivate();
 
   }
@@ -92,14 +92,11 @@ export class AuthGuard implements CanActivate {
         // this.router.navigate([`${this.route}`]);
         this.is_reset_psw_page = true;
         console.log('»> »>  AUTH GUARD - IS RESET PSW PAGE »> »> ', this.is_reset_psw_page);
-
       } else {
         this.is_reset_psw_page = false;
         console.log('»> »>  AUTH GUARD - IS RESET PSW PAGE »> »> ', this.is_reset_psw_page);
-
       }
     }
-
   }
 
   canActivate() {

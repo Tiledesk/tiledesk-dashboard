@@ -177,7 +177,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
                 console.log('»> ', this.route)
                 // tslint:disable-next-line:max-line-length
-                if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/forgotpsw') || (this.route === '/projects') || (this.route.indexOf('/verify') !== -1)) {
+                if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/forgotpsw') || (this.route === '/projects') || (this.route.indexOf('/verify') !== -1) || (this.route.indexOf('/resetpassword') !== -1)) {
 
                     elemNavbar.setAttribute('style', 'display:none;');
                     elemAppSidebar.setAttribute('style', 'display:none;');
