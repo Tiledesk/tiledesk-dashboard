@@ -47,8 +47,7 @@ export class SigninComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
-    private router: Router,
-
+    private router: Router
   ) { }
 
   ngOnInit() {

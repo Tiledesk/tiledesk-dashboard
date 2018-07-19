@@ -42,6 +42,9 @@ export class ResetPswComponent implements OnInit {
     },
   };
 
+  public signin_errormsg = '';
+  display = 'none';
+  showSpinnerInLoginBtn = false;
 
   constructor(
     private fb: FormBuilder,
@@ -125,14 +128,33 @@ export class ResetPswComponent implements OnInit {
     }
   }
 
+  dismissAlert() {
+    console.log('DISMISS ALERT CLICKED')
+    this.display = 'none';
+  }
 
   pswResetRequest() {
-    console.log('USER EMAIL ', this.emailForm.value['email']);
+    this.showSpinnerInLoginBtn = true;
+    console.log('RESET PSW USER EMAIL ', this.emailForm.value['email']);
 
     this.resetPswService.resetPswRequest(this.emailForm.value['email']).subscribe((user) => {
-      console.log('VERIFY-EMAIL PUT ', user);
+      console.log('RESET PSW - UPDATED USER ', user);
 
-    });
+    },
+      (error) => {
+        this.showSpinnerInLoginBtn = true;
+        console.log('RESET PSW - ERROR ', error);
+        const signin_errorbody = JSON.parse(error._body);
+        console.log('SIGNIN ERROR BODY ', signin_errorbody)
+        this.signin_errormsg = signin_errorbody['msg']
+        this.display = 'block';
+      },
+      () => {
+        console.log('RESET PSW - * COMPLETE *');
+        this.showSpinnerInLoginBtn = false;
+      });
+
+
   }
 
 }
