@@ -45,6 +45,7 @@ export class ResetPswComponent implements OnInit {
   public signin_errormsg = '';
   display = 'none';
   showSpinnerInLoginBtn = false;
+  displayResetPswEmailSentAlert = 'none';
 
   constructor(
     private fb: FormBuilder,
@@ -133,6 +134,11 @@ export class ResetPswComponent implements OnInit {
     this.display = 'none';
   }
 
+  dismissResetPswEmailSentAlert() {
+    console.log('DISMISS RESET PSW EMAIL ALERT CLICKED')
+    this.displayResetPswEmailSentAlert = 'none';
+  }
+
   pswResetRequest() {
     this.showSpinnerInLoginBtn = true;
     console.log('RESET PSW USER EMAIL ', this.emailForm.value['email']);
@@ -144,14 +150,23 @@ export class ResetPswComponent implements OnInit {
       (error) => {
         this.showSpinnerInLoginBtn = true;
         console.log('RESET PSW - ERROR ', error);
-        const signin_errorbody = JSON.parse(error._body);
-        console.log('SIGNIN ERROR BODY ', signin_errorbody)
-        this.signin_errormsg = signin_errorbody['msg']
-        this.display = 'block';
+        this.showSpinnerInLoginBtn = false;
+        if (error.status === 0) {
+          this.signin_errormsg = 'Sorry, there was an error connecting to the server'
+          this.display = 'block';
+        }
+        // const signin_errorbody = JSON.parse(error._body);
+        // console.log('SIGNIN ERROR BODY ', signin_errorbody)
+        // this.signin_errormsg = signin_errorbody['msg']
+
       },
       () => {
         console.log('RESET PSW - * COMPLETE *');
-        this.showSpinnerInLoginBtn = false;
+        setTimeout(() => {
+          this.showSpinnerInLoginBtn = false;
+          this.displayResetPswEmailSentAlert = 'block'
+        }, 300);
+
       });
 
 

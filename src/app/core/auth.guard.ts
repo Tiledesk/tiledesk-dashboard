@@ -21,6 +21,8 @@ export class AuthGuard implements CanActivate {
   user: any;
   is_verify_email_page: boolean;
   is_signup_page: boolean;
+  is_reset_psw_page: boolean;
+
   constructor(
     private auth: AuthService,
     private router: Router,
@@ -39,6 +41,7 @@ export class AuthGuard implements CanActivate {
 
     this.detectVerifyEmailRoute();
     this.detectSignUpRoute();
+    this.detectResetPswRoute()
     this.canActivate();
 
   }
@@ -65,30 +68,48 @@ export class AuthGuard implements CanActivate {
   }
 
   detectSignUpRoute() {
-  if (this.location.path() !== '') {
-    this.route = this.location.path();
-    console.log('AUTH GUARD »> »> ', this.route);
-    if (this.route.indexOf('/signup') !== -1) {
-      // this.router.navigate([`${this.route}`]);
-      this.is_signup_page = true;
-      console.log('»> »>  AUTH GUARD - IS SIGNUP PAGE »> »> ', this.is_signup_page);
+    if (this.location.path() !== '') {
+      this.route = this.location.path();
+      console.log('AUTH GUARD »> »> ', this.route);
+      if (this.route.indexOf('/signup') !== -1) {
+        // this.router.navigate([`${this.route}`]);
+        this.is_signup_page = true;
+        console.log('»> »>  AUTH GUARD - IS SIGNUP PAGE »> »> ', this.is_signup_page);
 
-    } else {
-      this.is_signup_page = false;
-      console.log('»> »>  AUTH GUARD - IS SIGNUP PAGE »> »> ', this.is_signup_page);
+      } else {
+        this.is_signup_page = false;
+        console.log('»> »>  AUTH GUARD - IS SIGNUP PAGE »> »> ', this.is_signup_page);
 
+      }
     }
   }
-}
+
+  detectResetPswRoute() {
+    if (this.location.path() !== '') {
+      this.route = this.location.path();
+      console.log('AUTH GUARD »> »> ', this.route);
+      if (this.route.indexOf('/resetpassword') !== -1) {
+        // this.router.navigate([`${this.route}`]);
+        this.is_reset_psw_page = true;
+        console.log('»> »>  AUTH GUARD - IS RESET PSW PAGE »> »> ', this.is_reset_psw_page);
+
+      } else {
+        this.is_reset_psw_page = false;
+        console.log('»> »>  AUTH GUARD - IS RESET PSW PAGE »> »> ', this.is_reset_psw_page);
+
+      }
+    }
+
+  }
 
   canActivate() {
     console.log('AlwaysAuthGuard');
 
-    if ((this.user) || (this.is_verify_email_page === true) || (this.is_signup_page === true)) {
+    if ((this.user) || (this.is_verify_email_page === true) || (this.is_signup_page === true) || (this.is_reset_psw_page === true)) {
       // this.router.navigate(['/home']);
       return true;
       // if ((!this.user) || (this.is_verify_email_page === false))
-    } else  {
+    } else {
       // tslint:disable-next-line:no-debugger
       // debugger
       this.router.navigate(['/login']);

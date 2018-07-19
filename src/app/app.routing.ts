@@ -183,6 +183,7 @@ const routes: Routes = [
 
   // RESET PASSORD (i.e. page forgot psw & reset psw )
   { path: 'forgotpsw', component: ResetPswComponent },
+  { path: 'resetpassword/:resetpswrequestid', component: ResetPswComponent },
 
   { path: 'dashboard', component: DashboardComponent },
 
