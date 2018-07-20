@@ -25,7 +25,7 @@ export const environment = {
         // SIGNIN_BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/auth/signin',
         // FIREBASE_SIGNIN_BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/firebase/auth/signin',
         // VERIFY_EMAIL_BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/auth/verifyemail/',
-        // PSW_RESET_REQUEST: 'https://chat21-api-nodejs.herokuapp.com/auth/pswresetrequest',
+        // PSW_RESET_REQUEST: 'https://chat21-api-nodejs.herokuapp.com/auth/requestresetpsw',
         // RESET_PSW: 'https://chat21-api-nodejs.herokuapp.com/auth/resetpsw',
         // CHECK_PSW_RESET_KEY: 'https://chat21-api-nodejs.herokuapp.com/auth/checkpswresetkey/',
         // UPDATE_USER_LASTNAME_FIRSTNAME: 'https://chat21-api-nodejs.herokuapp.com/users/updateuser/',
@@ -33,7 +33,7 @@ export const environment = {
 
         /* NEW IS HTTPS & https://api.tiledesk.com/v1 */
         BASE_URL: 'https://api.tiledesk.com/v1/',
-        PROJECTS_BASE_URL: 'https://api.tiledesk.com/v1projects/',
+        PROJECTS_BASE_URL: 'https://api.tiledesk.com/v1/projects/',
         SIGNUP_BASE_URL: 'https://api.tiledesk.com/v1/auth/signup',
         SIGNIN_BASE_URL: 'https://api.tiledesk.com/v1/auth/signin',
         FIREBASE_SIGNIN_BASE_URL: 'https://api.tiledesk.com/v1/firebase/auth/signin',
