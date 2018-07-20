@@ -52,10 +52,14 @@ export class ResetPswComponent implements OnInit {
   public signin_errormsg = '';
   display = 'none';
   showSpinnerInRequestNewPswBtn = false;
+  showSpinnerInResetPswBtn = false;
   displayResetPswEmailSentAlert = 'none';
   resetPswRequestId: string;
   route: string;
   IS_RESET_PSW_ROUTE: boolean;
+  RESET_PSW_REQUEST_ID_IS_VALID: boolean;
+  showSpinner = true;
+  PSW_HAS_BEEN_CHANGED = false;
 
   constructor
     (
@@ -72,6 +76,16 @@ export class ResetPswComponent implements OnInit {
 
   }
 
+  // to test in localhost the resetpassword route paste the following url and edit an user on mongpdb adding
+  // "resetpswrequestid" : "afc4uekjjskvnko",
+  // http://localhost:4200/#/resetpassword/afc4uekjjskvnko
+
+  /**
+   * *** WORKFLOW ***
+   * 1) DETECT IF IS THE resetpassword ROUTE
+   * 2) IF IS THE resetpassword ROUTE GET THE REQUEST RESET PSW ID (getResetPswRequestId)
+   * 3) CHECK (IN MONGO DB) IF THE GOT REQUEST RESET PSW ID EXIST (checkIfExistResetPswRequestId)
+   */
   detectResetPswRoute() {
     if (this.location.path() !== '') {
       this.route = this.location.path();
@@ -88,6 +102,7 @@ export class ResetPswComponent implements OnInit {
 
       } else {
         this.IS_RESET_PSW_ROUTE = false;
+        this.showSpinner = false;
         console.log('»> »> RESET PSW - IS RESET PSW PAGE »> »> ', this.IS_RESET_PSW_ROUTE);
       }
     }
@@ -96,6 +111,34 @@ export class ResetPswComponent implements OnInit {
   getResetPswRequestId() {
     this.resetPswRequestId = this.activetedRoute.snapshot.params['resetpswrequestid'];
     console.log('»»» »»» RESET PSW - ID OF THE REQUEST FOR RESET THE PSW ', this.resetPswRequestId);
+
+    if (this.resetPswRequestId) {
+      this.checkIfExistResetPswRequestId();
+    }
+  }
+
+  checkIfExistResetPswRequestId() {
+    this.resetPswService.getUserByPswRequestId(this.resetPswRequestId).subscribe((user) => {
+      console.log('»»» »»» CHECK RESET PSW REQUEST ID  ', user);
+
+    },
+      (error) => {
+        console.log('»»» »»» CHECK RESET PSW REQUEST ID - ERROR ', error);
+        const ckeckrequestid_errorbody = JSON.parse(error._body);
+        console.log('»»» »»» CHECK RESET PSW REQUEST ID - ERROR BODY ', ckeckrequestid_errorbody)
+        if (error && ckeckrequestid_errorbody.msg === 'Invalid password reset key') {
+
+          this.RESET_PSW_REQUEST_ID_IS_VALID = false;
+          console.log('»»» »»» CHECK RESET PSW REQUEST ID - IS VALID REQUEST ID ', this.RESET_PSW_REQUEST_ID_IS_VALID);
+          this.showSpinner = false;
+        }
+      },
+      () => {
+        this.RESET_PSW_REQUEST_ID_IS_VALID = true;
+        console.log('»»» »»» CHECK RESET PSW REQUEST ID - COMPLETE ');
+        console.log('»»» »»» CHECK RESET PSW REQUEST ID - IS VALID REQUEST ID ', this.RESET_PSW_REQUEST_ID_IS_VALID);
+        this.showSpinner = false
+      });
   }
 
   buildEmailForm() {
@@ -216,12 +259,27 @@ export class ResetPswComponent implements OnInit {
   }
 
   resetPsw() {
+    this.showSpinnerInResetPswBtn = true;
     console.log('RESET PSW - NEW PSW ', this.pswForm.value['password']);
 
-    this.resetPswService.getUserByResetpswrequestidAndResetPsw(this.resetPswRequestId, this.pswForm.value['password']).subscribe((user) => {
-      console.log('REQUEST RESET PSW - UPDATED USER ', user);
+    this.resetPswService.getUserByResetPswRequestIdAndResetPsw(this.resetPswRequestId, this.pswForm.value['password']).subscribe((user) => {
+      console.log('RESET PSW - UPDATED USER ', user);
 
-    })
+    },
+      (error) => {
+        console.log('RESET PSW - ERR ', error);
+        this.showSpinnerInResetPswBtn = false;
+      },
+      () => {
+        console.log('RESET PSW   * COMPLETE *');
+        setTimeout(() => {
+          this.showSpinnerInResetPswBtn = false;
+          this.PSW_HAS_BEEN_CHANGED = true;
+        }, 300);
+      });
+  }
+
+  goToLoginForm() {
 
   }
 

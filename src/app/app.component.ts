@@ -215,7 +215,8 @@ export class AppComponent implements OnInit, AfterViewInit {
             if (this.location.path() !== '') {
                 this.route = this.location.path();
                 // console.log('»> ', this.route)
-                if ((this.route === '/login') || (this.route === '/signup')) {
+                // tslint:disable-next-line:max-line-length
+                if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/forgotpsw') || (this.route.indexOf('/resetpassword') !== -1)) {
 
                     elemFooter.setAttribute('style', 'display:none;');
                     // console.log('DETECT LOGIN PAGE')

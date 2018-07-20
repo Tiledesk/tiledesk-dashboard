@@ -10,6 +10,7 @@ export class ResetPswService {
 
   REQUEST_RESET_PSW_URL = environment.mongoDbConfig.REQUEST_RESET_PSW;
   RESET_PSW_BASE_URL =  environment.mongoDbConfig.RESET_PSW;
+  CHECK_PSW_RESET_KEY_BASE_URL = environment.mongoDbConfig.CHECK_PSW_RESET_KEY;
   constructor(
     http: Http,
   ) {
@@ -36,7 +37,7 @@ export class ResetPswService {
   }
 
 
-  getUserByResetpswrequestidAndResetPsw(reset_psw_request_id: string, newpsw: string) {
+  getUserByResetPswRequestIdAndResetPsw(reset_psw_request_id: string, newpsw: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -51,4 +52,23 @@ export class ResetPswService {
       .put(url, JSON.stringify(body), options)
       .map((res) => res.json());
   }
+
+
+
+  // GETTING THE USER BY THE REQUEST ID IF THE USER NOT EXIST MEANS THAT THE USER HAS ALREADY USED THE LINK
+  // THE LINK IS NO MORE VALID AND HAS PRESSEN ON THE BUTTON 'RESET PSW'
+  // IN FACT resetpswrequestid IS RESET WHEN THE USER ON THE BUTTON 'RESET PSW'
+  getUserByPswRequestId(reset_psw_request_id: string ) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+
+    const url = this.CHECK_PSW_RESET_KEY_BASE_URL + reset_psw_request_id;
+    console.log('GET USER BY PSW REQUEST ID ', url)
+    return this.http
+    .get(url, { headers })
+    .map((response) => response.json());
+  }
+
+
 }

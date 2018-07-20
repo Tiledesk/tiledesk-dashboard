@@ -27,6 +27,7 @@ export const environment = {
         // VERIFY_EMAIL_BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/auth/verifyemail/',
         // PSW_RESET_REQUEST: 'https://chat21-api-nodejs.herokuapp.com/auth/pswresetrequest',
         // RESET_PSW: 'https://chat21-api-nodejs.herokuapp.com/auth/resetpsw',
+        // CHECK_PSW_RESET_KEY: 'https://chat21-api-nodejs.herokuapp.com/auth/checkpswresetkey/',
         // UPDATE_USER_LASTNAME_FIRSTNAME: 'https://chat21-api-nodejs.herokuapp.com/users/updateuser/',
         // CHANGE_PSW: 'https://chat21-api-nodejs.herokuapp.com/users/changepsw/',
 
