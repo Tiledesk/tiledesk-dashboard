@@ -5,10 +5,10 @@ export class PasswordValidation {
         const password = AC.get('password').value; // to get value in input tag
         const confirmPassword = AC.get('confirmPassword').value; // to get value in input tag
         if (password !== confirmPassword) {
-            console.log('false');
+            console.log('PSW MACTH CONFIRM-PSW: false');
             AC.get('confirmPassword').setErrors({ MatchPassword: true })
         } else {
-            console.log('true');
+            console.log('PSW MACTH CONFIRM-PSW: true');
             return null
         }
     }

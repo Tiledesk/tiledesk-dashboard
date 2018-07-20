@@ -17,7 +17,9 @@ export const environment = {
         SIGNIN_BASE_URL: 'http://localhost:3000/auth/signin',
         FIREBASE_SIGNIN_BASE_URL: 'http://localhost:3000/firebase/auth/signin',
         VERIFY_EMAIL_BASE_URL: 'http://localhost:3000/auth/verifyemail/',
-        PSW_RESET_REQUEST: 'http://localhost:3000/auth/pswresetrequest',
+        REQUEST_RESET_PSW: 'http://localhost:3000/auth/requestresetpsw',
+        RESET_PSW: 'http://localhost:3000/auth/resetpsw/',
+        CHECK_PSW_RESET_KEY: 'http://localhost:3000/auth/checkpswresetkey/',
         UPDATE_USER_LASTNAME_FIRSTNAME: 'http://localhost:3000/users/updateuser/',
         CHANGE_PSW: 'http://localhost:3000/users/changepsw/',
 

@@ -26,6 +26,7 @@ export const environment = {
         // FIREBASE_SIGNIN_BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/firebase/auth/signin',
         // VERIFY_EMAIL_BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/auth/verifyemail/',
         // PSW_RESET_REQUEST: 'https://chat21-api-nodejs.herokuapp.com/auth/pswresetrequest',
+        // RESET_PSW: 'https://chat21-api-nodejs.herokuapp.com/auth/resetpsw',
         // UPDATE_USER_LASTNAME_FIRSTNAME: 'https://chat21-api-nodejs.herokuapp.com/users/updateuser/',
         // CHANGE_PSW: 'https://chat21-api-nodejs.herokuapp.com/users/changepsw/',
 
@@ -36,7 +37,9 @@ export const environment = {
         SIGNIN_BASE_URL: 'https://api.tiledesk.com/v1/auth/signin',
         FIREBASE_SIGNIN_BASE_URL: 'https://api.tiledesk.com/v1/firebase/auth/signin',
         VERIFY_EMAIL_BASE_URL: 'https://api.tiledesk.com/v1/auth/verifyemail/',
-        PSW_RESET_REQUEST: 'https://api.tiledesk.com/v1/auth/pswresetrequest',
+        REQUEST_RESET_PSW: 'https://api.tiledesk.com/v1/auth/requestresetpsw',
+        RESET_PSW: 'https://api.tiledesk.com/v1/auth/resetpsw/',
+        CHECK_PSW_RESET_KEY: 'https://api.tiledesk.com/v1/auth/checkpswresetkey/',
         UPDATE_USER_LASTNAME_FIRSTNAME: 'https://api.tiledesk.com/v1/users/updateuser/',
         CHANGE_PSW: 'https://api.tiledesk.com/v1/users/changepsw/',
 

@@ -45,7 +45,7 @@
         <div class="login-container">
         <!-- <div class="signin-container"> -->
          
-          <form *ngIf="!IS_RESET_PSW_ROUTE" [formGroup]="emailForm"  (ngSubmit)="pswResetRequest()">
+          <form *ngIf="!IS_RESET_PSW_ROUTE" [formGroup]="emailForm"  (ngSubmit)="requestResetPsw()">
 
               
 
@@ -63,10 +63,10 @@
 
             <button type="submit" style="width: 100%; background-color: #ff9800; height: 56px; font-size: 16px; letter-spacing: 2px;" class="btn btn-danger" 
             [disabled]="!emailForm.valid">
-              <span *ngIf="!showSpinnerInLoginBtn"> 
+              <span *ngIf="!showSpinnerInRequestNewPswBtn"> 
                   {{ "RequestNewPsw" | translate }}
                </span>
-              <span *ngIf="showSpinnerInLoginBtn"> <i class="fa fa-spinner fa-spin"></i></span>
+              <span *ngIf="showSpinnerInRequestNewPswBtn"> <i class="fa fa-spinner fa-spin"></i></span>
             </button>
 
    
@@ -86,7 +86,9 @@
             <!-- <div *ngIf="pswformErrors.password" class="is-danger">
               {{ pswformErrors.confirmPassword }}
             </div> -->
-            <div *ngIf="pswForm.controls.confirmPassword.errors?.MatchPassword" class="is-danger">Password not match</div>
+            <div *ngIf="pswForm.controls.confirmPassword.errors?.MatchPassword" class="is-danger">
+              Password not match
+            </div>
   
             <button type="submit" style="width: 100%; background-color: #ff9800; height: 56px; font-size: 16px; letter-spacing: 2px;" class="btn btn-danger" [disabled]="!pswForm.valid">
               <span *ngIf="!showSpinnerInLoginBtn"> RESET PSW </span>

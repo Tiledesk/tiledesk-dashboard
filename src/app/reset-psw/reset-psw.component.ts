@@ -51,7 +51,7 @@ export class ResetPswComponent implements OnInit {
 
   public signin_errormsg = '';
   display = 'none';
-  showSpinnerInLoginBtn = false;
+  showSpinnerInRequestNewPswBtn = false;
   displayResetPswEmailSentAlert = 'none';
   resetPswRequestId: string;
   route: string;
@@ -184,18 +184,18 @@ export class ResetPswComponent implements OnInit {
     this.displayResetPswEmailSentAlert = 'none';
   }
 
-  pswResetRequest() {
-    this.showSpinnerInLoginBtn = true;
-    console.log('RESET PSW USER EMAIL ', this.emailForm.value['email']);
+  requestResetPsw() {
+    this.showSpinnerInRequestNewPswBtn = true;
+    console.log('REQUEST RESET PSW USER EMAIL ', this.emailForm.value['email']);
 
-    this.resetPswService.resetPswRequest(this.emailForm.value['email']).subscribe((user) => {
-      console.log('RESET PSW - UPDATED USER ', user);
+    this.resetPswService.sendResetPswEmailAndUpdateUserWithResetPswRequestId(this.emailForm.value['email']).subscribe((user) => {
+      console.log('REQUEST RESET PSW - UPDATED USER ', user);
 
     },
       (error) => {
-        this.showSpinnerInLoginBtn = true;
-        console.log('RESET PSW - ERROR ', error);
-        this.showSpinnerInLoginBtn = false;
+        this.showSpinnerInRequestNewPswBtn = true;
+        console.log('REQUEST RESET PSW - ERROR ', error);
+        this.showSpinnerInRequestNewPswBtn = false;
         if (error.status === 0) {
           this.signin_errormsg = 'Sorry, there was an error connecting to the server'
           this.display = 'block';
@@ -206,14 +206,22 @@ export class ResetPswComponent implements OnInit {
 
       },
       () => {
-        console.log('RESET PSW - * COMPLETE *');
+        console.log('REQUEST RESET PSW - * COMPLETE *');
         setTimeout(() => {
-          this.showSpinnerInLoginBtn = false;
+          this.showSpinnerInRequestNewPswBtn = false;
           this.displayResetPswEmailSentAlert = 'block'
         }, 300);
 
       });
+  }
 
+  resetPsw() {
+    console.log('RESET PSW - NEW PSW ', this.pswForm.value['password']);
+
+    this.resetPswService.getUserByResetpswrequestidAndResetPsw(this.resetPswRequestId, this.pswForm.value['password']).subscribe((user) => {
+      console.log('REQUEST RESET PSW - UPDATED USER ', user);
+
+    })
 
   }
 
