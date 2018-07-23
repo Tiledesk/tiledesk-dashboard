@@ -47,7 +47,7 @@ export class SignupComponent implements OnInit {
       'required': 'Last Name is required.',
     },
     'terms': {
-      'required': 'Please accept Terms and Conditions.',
+      'required': 'Please accept Terms and Conditions and Privacy Policy',
     },
   };
   constructor(
