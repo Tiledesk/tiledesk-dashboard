@@ -37,7 +37,7 @@
             </label>
             <input type="text" id="firstName" class="input" formControlName="firstName" required>
 
-            <div *ngIf="formErrors.firstName" class="is-danger">
+            <div *ngIf="formErrors.firstName" class="is-danger" translate>
               {{ formErrors.firstName }}
             </div>
   
@@ -58,7 +58,7 @@
             <input autocomplete="off" type="email"  class="input"
                   formControlName="email" required >
   
-            <div *ngIf="formErrors.email" class="is-danger">
+            <div *ngIf="formErrors.email" class="is-danger" translate>
               {{ formErrors.email }}
             </div>
   
@@ -66,7 +66,7 @@
             <input type="password" id="password" class="input"
                   formControlName="password" required >
   
-            <div *ngIf="formErrors.password" class="is-danger">
+            <div *ngIf="formErrors.password" class="is-danger" translate>
               {{ formErrors.password }}
             </div>
   

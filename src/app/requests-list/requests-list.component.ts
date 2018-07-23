@@ -192,7 +192,8 @@ export class RequestsListComponent implements OnInit {
         // end NEW: GET MEMBERS
         console.log('REQUESTS-LIST COMP - REQUESTS LENGHT', requests.length)
         /**
-         * FOR THE UNSERVED REQUEST THE OLDEST IS THE MORE IMPORTANT
+         * FOR THE UNSERVED REQUEST THE OLDEST IS THE MORE IMPORTANT SO IS DISPLAYED ON TOP OF THE
+         * LIST
          */
         this.requestListUnserved = requests
           .filter(r => {
