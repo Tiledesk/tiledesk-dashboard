@@ -62,6 +62,7 @@ export class ResetPswComponent implements OnInit {
   PSW_HAS_BEEN_CHANGED = false;
   HAS_REQUEST_NEW_PSW = false;
 
+  CONFIRM_PSW_LENGHT_IS_SAME_OR_MAJOR_OF_PWS = false
   constructor
     (
     private fb: FormBuilder,
@@ -77,9 +78,12 @@ export class ResetPswComponent implements OnInit {
 
   }
 
-  // to test in localhost the resetpassword route paste the following url and edit an user on mongpdb adding
-  // "resetpswrequestid" : "afc4uekjjskvnko",
-  // http://localhost:4200/#/resetpassword/afc4uekjjskvnko
+  /**
+   * ****** TEST URL ******
+   * to test in localhost the resetpassword route paste the following url and edit an user on mongpdb adding
+   * "resetpswrequestid" : "afc4uekjjskvnko",
+   * http://localhost:4200/#/resetpassword/afc4uekjjskvnko
+   */
 
   /**
    * *** WORKFLOW ***
@@ -200,7 +204,7 @@ export class ResetPswComponent implements OnInit {
     const form = this.pswForm;
     for (const field in this.pswformErrors) {
       // tslint:disable-next-line:max-line-length
-      if (Object.prototype.hasOwnProperty.call(this.pswformErrors, field) && (field === 'password')) {
+      if (Object.prototype.hasOwnProperty.call(this.pswformErrors, field) && (field === 'password' || field === 'confirmPassword')) {
         // clear previous error message (if any)
         this.pswformErrors[field] = '';
         const control = form.get(field);
@@ -283,6 +287,14 @@ export class ResetPswComponent implements OnInit {
   }
 
   // goToLoginForm() {
+  // }
+  // onDigitCofirmPsw() {
+  //   console.log('WRITING CONFIRM PSW - CONFIRM PSW LENGTH: ', this.pswForm.value['confirmPassword'].length);
+  //   console.log('WRITING CONFIRM PSW - PSW LENGTH: ', this.pswForm.value['password'].length);
+  //   if (this.pswForm.value['confirmPassword'].length >= this.pswForm.value['password'].length) {
+  //     this.CONFIRM_PSW_LENGHT_IS_SAME_OR_MAJOR_OF_PWS = true
+  //     console.log('CONFIRM PSW LENGTH IS = or > of PSW LENGTH', this.CONFIRM_PSW_LENGHT_IS_SAME_OR_MAJOR_OF_PWS);
+  //   }
   // }
 
 }

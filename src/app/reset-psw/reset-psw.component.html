@@ -124,6 +124,7 @@
                       <!-- Confirm Password -->
                       {{ "ConfirmPsw" | translate }}
                     </label>
+                    <!-- (input)="onDigitCofirmPsw()"  -->
                     <input type="password" id="confirmPassword" class="input" formControlName="confirmPassword" required>
                     <!-- <div *ngIf="pswformErrors.password" class="is-danger">
                       {{ pswformErrors.confirmPassword }}
@@ -131,9 +132,10 @@
 
                     <!-- 
                     *************************************************************************
-                    THE ERROR "Password not match" IS DISPLAYED IF THERE IS NOT PWS ERROR
+                    CONFIRM PSW ERROR - THE ERROR "Password not match" IS DISPLAYED IF THERE IS NOT PWS ERROR
                     *************************************************************************
                     -->
+                    <!-- && !CONFIRM_PSW_LENGHT_IS_SAME_OR_MAJOR_OF_PWS -->
                     <div *ngIf="!pswformErrors.password">
                       <div *ngIf="pswForm.controls.confirmPassword.errors?.MatchPassword" class="is-danger">
                         <!-- Password not match -->

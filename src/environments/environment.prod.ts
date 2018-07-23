@@ -17,8 +17,11 @@ export const environment = {
         // SIGNIN_BASE_URL: 'http://api.chat21.org/auth/signin',
         // FIREBASE_SIGNIN_BASE_URL: 'http://api.chat21.org/firebase/auth/signin',
 
-        // NEW IS HTTPS -- REPLACE https://chat21-api-nodejs.herokuapp.com/ WITH https://api.tiledesk.com/v1
-        // ********* SEE BELOW *********
+        /**
+         *  NEW IS HTTPS -- !!! NO MORE USED
+         *  The url https://chat21-api-nodejs.herokuapp.com/ HAS BEEN REPLACED
+         *  WITH https://api.tiledesk.com/v1 ********* SEE BELOW *********
+         */
         // BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/',
         // PROJECTS_BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/projects/',
         // SIGNUP_BASE_URL: 'https://chat21-api-nodejs.herokuapp.com/auth/signup',
@@ -31,7 +34,9 @@ export const environment = {
         // UPDATE_USER_LASTNAME_FIRSTNAME: 'https://chat21-api-nodejs.herokuapp.com/users/updateuser/',
         // CHANGE_PSW: 'https://chat21-api-nodejs.herokuapp.com/users/changepsw/',
 
-        /* NEW IS HTTPS & https://api.tiledesk.com/v1 */
+        /**
+         *  NEW IS HTTPS & https://api.tiledesk.com/v1
+         */
         BASE_URL: 'https://api.tiledesk.com/v1/',
         PROJECTS_BASE_URL: 'https://api.tiledesk.com/v1/projects/',
         SIGNUP_BASE_URL: 'https://api.tiledesk.com/v1/auth/signup',
