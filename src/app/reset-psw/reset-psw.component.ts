@@ -62,7 +62,7 @@ export class ResetPswComponent implements OnInit {
   PSW_HAS_BEEN_CHANGED = false;
   HAS_REQUEST_NEW_PSW = false;
 
-  CONFIRM_PSW_LENGHT_IS_SAME_OR_MAJOR_OF_PWS = false
+  CONFIRM_PSW_IS_SAME_OF_PWS: boolean
   constructor
     (
     private fb: FormBuilder,
@@ -291,9 +291,12 @@ export class ResetPswComponent implements OnInit {
   // onDigitCofirmPsw() {
   //   console.log('WRITING CONFIRM PSW - CONFIRM PSW LENGTH: ', this.pswForm.value['confirmPassword'].length);
   //   console.log('WRITING CONFIRM PSW - PSW LENGTH: ', this.pswForm.value['password'].length);
-  //   if (this.pswForm.value['confirmPassword'].length >= this.pswForm.value['password'].length) {
-  //     this.CONFIRM_PSW_LENGHT_IS_SAME_OR_MAJOR_OF_PWS = true
-  //     console.log('CONFIRM PSW LENGTH IS = or > of PSW LENGTH', this.CONFIRM_PSW_LENGHT_IS_SAME_OR_MAJOR_OF_PWS);
+  //   if (this.pswForm.value['confirmPassword'] === this.pswForm.value['password']) {
+  //     this.CONFIRM_PSW_IS_SAME_OF_PWS = true;
+  //     console.log('CONFIRM PSW IS PSW ', this.CONFIRM_PSW_IS_SAME_OF_PWS);
+  //   } else {
+  //     this.CONFIRM_PSW_IS_SAME_OF_PWS = false;
+  //     console.log('CONFIRM PSW IS PSW ', this.CONFIRM_PSW_IS_SAME_OF_PWS);
   //   }
   // }
 

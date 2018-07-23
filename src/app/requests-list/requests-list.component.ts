@@ -191,6 +191,9 @@ export class RequestsListComponent implements OnInit {
         }
         // end NEW: GET MEMBERS
         console.log('REQUESTS-LIST COMP - REQUESTS LENGHT', requests.length)
+        /**
+         * FOR THE UNSERVED REQUEST THE OLDEST IS THE MORE IMPORTANT
+         */
         this.requestListUnserved = requests
           .filter(r => {
             if (r.support_status === 100) {
@@ -200,10 +203,10 @@ export class RequestsListComponent implements OnInit {
               return false
             }
           }).sort(function compare(a: Request, b: Request) {
-            if (a.timestamp > b.timestamp) {
+            if (a.created_on > b.created_on) {
               return 1;
             }
-            if (a.timestamp < b.timestamp) {
+            if (a.created_on < b.created_on) {
               return -1;
             }
             return 0;

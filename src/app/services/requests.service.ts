@@ -292,14 +292,19 @@ export class RequestsService {
   reorderRequests() {
     this.requestList.sort(function compare(a: Request, b: Request) {
       if (a.created_on > b.created_on) {
+        console.log('zone a > b - A CREATED ON ', a.created_on);
+        console.log('zone a > b - B CREATED ON ', b.created_on);
         return -1;
       }
       if (a.created_on < b.created_on) {
+        console.log('zone a < b - A CREATED ON ', a.created_on);
+        console.log('zone a < b - B CREATED ON ', b.created_on);
         return 1;
       }
       return 0;
     });
   }
+
 
   resetRequestsList() {
     this.requestList = []

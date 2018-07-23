@@ -99,6 +99,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 // PIPE
 import { GroupNamePipe } from './groupname.pipe';
 import { SortByPipe } from './sortby.pipe';
+import { SortByDesPipe } from './sortbydes.pipe';
 import { HoursComponent } from './hours/hours.component';
 
 import { AmazingTimePickerModule } from 'amazing-time-picker';
@@ -159,6 +160,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     GroupEditAddComponent,
     GroupNamePipe,
     SortByPipe,
+    SortByDesPipe,
     ChangePasswordComponent,
     HoursComponent,
     ResetPswComponent,
