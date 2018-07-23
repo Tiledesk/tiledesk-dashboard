@@ -13,12 +13,12 @@
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
           <!-- 
-            *************************************************************************************************
-            USE CASE ROUTE: /forgotpsw (i.e., THE USER HAS CLICKED THE LINK FORGOT PASSWORD IN THE LOGIN FORM)
-            *************************************************************************************************
+          *************************************************************************************************
+          USE CASE ROUTE: /forgotpsw (i.e., THE USER HAS CLICKED THE LINK FORGOT PASSWORD IN THE LOGIN FORM)
+          *************************************************************************************************
           -->
           <div *ngIf="!IS_RESET_PSW_ROUTE && !showSpinner">
-
+            
             <!-- ALERT WITH ERROR MESSAGE -->
             <div class="row" *ngIf="signin_errormsg" [ngStyle]="{'display':display}" style="transform: translateY(30%);">
               <div class="col-md-4 col-md-offset-4" align="center">
@@ -28,58 +28,84 @@
                   <div style="padding-left: 5px; display:table-cell;">{{ signin_errormsg }}</div>
                 </div>
               </div>
-            </div>
+              </div>
 
-            <!-- ALERT RESET PSW SENT EMAIL -->
-            <div class="row" [ngStyle]="{'display':displayResetPswEmailSentAlert}" style="transform: translateY(30%);">
-              <div class="col-md-4 col-md-offset-4" align="center">
-                <div class="alert" style="max-width: 340px; background-color: #FCF1C8">
-                  <button type="button" aria-hidden="true" class="close" (click)="dismissResetPswEmailSentAlert()">×</button>
-                  <div class="glyphicon glyphicon-info-sign" style="display:table-cell; font-size:1.2em"></div>
-                  <div style="padding-left: 5px; display:table-cell;">
-                    You will receive an email with a link to reset your password.
+              <!-- !!! NO MORE USED - (SUBSTITUTES FROM A MSG IN A DIV)
+                ALERT RESET PSW SENT EMAIL -->
+              <!-- <div class="row" [ngStyle]="{'display':displayResetPswEmailSentAlert}" style="transform: translateY(30%);">
+                <div class="col-md-4 col-md-offset-4" align="center">
+                  <div class="alert" style="max-width: 340px; background-color: #FCF1C8">
+                    <button type="button" aria-hidden="true" class="close" (click)="dismissResetPswEmailSentAlert()">×</button>
+                    <div class="glyphicon glyphicon-info-sign" style="display:table-cell; font-size:1.2em"></div>
+                    <div style="padding-left: 5px; display:table-cell;">
+                      {{ "YouWillReceiveAnEmail" | translate }}
+                    </div>
                   </div>
                 </div>
+              </div> -->
+            
+              <div class="login-container">
+                <div *ngIf="!HAS_REQUEST_NEW_PSW">
+                  <form [formGroup]="emailForm"  (ngSubmit)="requestResetPsw()">
+
+                    <label for="email">Email</label>
+                    <input type="email" class="input" formControlName="email" required>
+                  
+                    <h6 style="text-transform: none">
+                      <!-- To request a password reset email, please enter your account email address -->
+                      {{ "ToRequestAPswReseTEmail" | translate }}
+                    </h6>
+                    <!-- <div *ngIf="formErrors.email" class="is-danger">
+                      {{ formErrors.email }}
+                    </div> -->
+
+                    <button type="submit" style="width: 100%; background-color: #ff9800; height: 56px; font-size: 16px; letter-spacing: 2px;" class="btn btn-danger" 
+                    [disabled]="!emailForm.valid">
+                      <span *ngIf="!showSpinnerInRequestNewPswBtn"> 
+                        {{ "RequestNewPsw" | translate }}
+                      </span>
+                      <span *ngIf="showSpinnerInRequestNewPswBtn"> <i class="fa fa-spinner fa-spin"></i></span>
+                    </button>
+                    <!-- text-align: center -->
+                    <div style="margin-top: 16px" routerLink="/login">
+                      <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;">keyboard_arrow_left</i>
+                      <span style="font-size: 1.1em; vertical-align: middle !important; font-weight: 300; cursor:pointer"> 
+                        <!-- Back to login  -->
+                        {{ "BackToLogin" | translate }}
+                      </span>
+                    </div>
+                  </form>
+                </div>
+                <!-- 
+                *************************************************************************************************
+                USE CASE ROUTE: /forgotpsw THE USER HAS CLICKED THE BTN "Request new password" SO IS DISPLAYED 
+                THE MESSAGE 'You will receive an email ... '
+                *************************************************************************************************
+                -->
+                <div *ngIf="HAS_REQUEST_NEW_PSW" style="text-align: center">
+                  <i class="material-icons" style="vertical-align: middle !important; color:#4caf50; font-size: 40px;">check_circle_outline</i>
+                  <!-- style="font-weight: 500" -->
+                  <h4> {{ "PswResetEmailSent" | translate }} </h4>
+                  <h4 style="vertical-align: middle; line-height: normal; font-size: 1.1em;"> 
+                    <!-- Your password has been changed -->
+                    {{ "YouWillReceiveAnEmail" | translate }}
+                  </h4>
+                </div>
               </div>
-            </div>
-          
-            <div class="login-container">
-              <form [formGroup]="emailForm"  (ngSubmit)="requestResetPsw()">
-
-                <label for="email">Email</label>
-                <input type="email" class="input" formControlName="email" required>
-              
-                <h6 style="text-transform: none">
-                  <!-- To request a password reset email, please enter your account email address -->
-                  {{ "ToRequestAPswReseTEmail" | translate }}
-                </h6>
-                <!-- <div *ngIf="formErrors.email" class="is-danger">
-                  {{ formErrors.email }}
-                </div> -->
-
-                <button type="submit" style="width: 100%; background-color: #ff9800; height: 56px; font-size: 16px; letter-spacing: 2px;" class="btn btn-danger" 
-                [disabled]="!emailForm.valid">
-                  <span *ngIf="!showSpinnerInRequestNewPswBtn"> 
-                      {{ "RequestNewPsw" | translate }}
-                  </span>
-                  <span *ngIf="showSpinnerInRequestNewPswBtn"> <i class="fa fa-spinner fa-spin"></i></span>
-                </button>
-              </form>
-            </div>
-          </div> 
+            </div> 
  
           <!-- 
-            *************************************************************************************************
-            USE CASE ROUTE: /resetpassword (i.e., THE USER HAS CLICKED THE LINK IN THE PASSWORD RESET EMAIL)
-            *************************************************************************************************
+          *************************************************************************************************
+          USE CASE ROUTE: /resetpassword (i.e., THE USER HAS CLICKED THE LINK IN THE PASSWORD RESET EMAIL)
+          *************************************************************************************************
           -->
           <div *ngIf="IS_RESET_PSW_ROUTE && !showSpinner">
 
             <!-- 
-              *************************************************************************************************
-              USE CASE ROUTE: /resetpassword + THE RESET PSW REQUEST ID EXIST
-              (i.e., THE USER HAS CLICKED THE LINK IN THE PASSWORD RESET EMAIL AND NOT HAS YET RESETTED HIS PSW)
-              *************************************************************************************************
+            *************************************************************************************************
+            USE CASE ROUTE: /resetpassword + THE RESET PSW REQUEST ID EXIST
+            (i.e., THE USER HAS CLICKED THE LINK IN THE PASSWORD RESET EMAIL AND NOT HAS YET RESETTED HIS PSW)
+            *************************************************************************************************
             -->
             <div *ngIf="RESET_PSW_REQUEST_ID_IS_VALID">
               
@@ -90,23 +116,36 @@
                     <label for="password">Password</label>
                     <input type="password" id="password" class="input" formControlName="password" required>
 
-                    <div *ngIf="pswformErrors.password" class="is-danger">
+                    <div *ngIf="pswformErrors.password" class="is-danger" translate>
                       {{ pswformErrors.password }}
                     </div>
 
-                    <label for="confirmPassword">Confirm Password</label>
+                    <label for="confirmPassword">
+                      <!-- Confirm Password -->
+                      {{ "ConfirmPsw" | translate }}
+                    </label>
                     <input type="password" id="confirmPassword" class="input" formControlName="confirmPassword" required>
-          
                     <!-- <div *ngIf="pswformErrors.password" class="is-danger">
                       {{ pswformErrors.confirmPassword }}
                     </div> -->
-                    <div *ngIf="pswForm.controls.confirmPassword.errors?.MatchPassword" class="is-danger">
-                      Password not match
+
+                    <!-- 
+                    *************************************************************************
+                    THE ERROR "Password not match" IS DISPLAYED IF THERE IS NOT PWS ERROR
+                    *************************************************************************
+                    -->
+                    <div *ngIf="!pswformErrors.password">
+                      <div *ngIf="pswForm.controls.confirmPassword.errors?.MatchPassword" class="is-danger">
+                        <!-- Password not match -->
+                        {{ "PswNotMatch" | translate }}
+                      </div>
                     </div>
           
                     <button type="submit" style="width: 100%; background-color: #ff9800; height: 56px; font-size: 16px; letter-spacing: 2px;" class="btn btn-danger" [disabled]="!pswForm.valid">
                       <span *ngIf="!showSpinnerInResetPswBtn"> 
-                        RESET PASSWORD 
+                        <!-- RESET PASSWORD  -->
+                        {{ "ResetPsw" | translate }}
+
                       </span>
                       <span *ngIf="showSpinnerInResetPswBtn"> <i class="fa fa-spinner fa-spin"></i></span>
                     </button>   
@@ -124,11 +163,14 @@
                   
                   <i class="material-icons" style="vertical-align: middle !important; color:#4caf50; font-size: 40px;">check_circle_outline</i>
                   <h4 style="vertical-align: middle; line-height: normal;"> 
-                    Your passwword has been changed
+                    <!-- Your password has been changed -->
+                    {{ "YourPswHasBeenChanged" | translate }}
                   </h4>
                   <!-- (click)="goToLoginForm()" -->
-                    <button type="submit" style="width: 100%; background-color: #ff9800; height: 56px; font-size: 16px; letter-spacing: 2px; margin-top: 30px;" class="btn btn-danger" routerLink="/login">
-                      GO TO LOGIN
+                    <button type="submit" style="width: 100%; background-color: #ff9800; height: 56px; font-size: 16px; letter-spacing: 2px; margin-top: 30px;" 
+                      class="btn btn-danger" routerLink="/login">
+                      <!-- GO TO LOGIN -->
+                      {{ "GoToLogin" | translate }}
                     <span *ngIf="showSpinnerInResetPswBtn"> <i class="fa fa-spinner fa-spin"></i></span>
                   </button> 
                 </div>
@@ -145,7 +187,8 @@
             <div *ngIf="!RESET_PSW_REQUEST_ID_IS_VALID" style="height:100px; line-height:100px; text-align: center;">
               <!-- <i class="material-icons" style="vertical-align: middle !important; color:#f44336">report_problem</i> -->
               <h4 style="display: inline-block; vertical-align: middle; line-height: normal;">
-                Invalid password reset key
+                <!-- Invalid password reset key -->
+                {{ "InvalidPswResetKey" | translate }}
               </h4>
             </div>
           </div>

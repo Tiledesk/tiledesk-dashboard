@@ -60,6 +60,7 @@ export class ResetPswComponent implements OnInit {
   RESET_PSW_REQUEST_ID_IS_VALID: boolean;
   showSpinner = true;
   PSW_HAS_BEEN_CHANGED = false;
+  HAS_REQUEST_NEW_PSW = false;
 
   constructor
     (
@@ -236,6 +237,7 @@ export class ResetPswComponent implements OnInit {
 
     },
       (error) => {
+        this.HAS_REQUEST_NEW_PSW = false
         this.showSpinnerInRequestNewPswBtn = true;
         console.log('REQUEST RESET PSW - ERROR ', error);
         this.showSpinnerInRequestNewPswBtn = false;
@@ -253,6 +255,7 @@ export class ResetPswComponent implements OnInit {
         setTimeout(() => {
           this.showSpinnerInRequestNewPswBtn = false;
           this.displayResetPswEmailSentAlert = 'block'
+          this.HAS_REQUEST_NEW_PSW = true
         }, 300);
 
       });
@@ -279,8 +282,7 @@ export class ResetPswComponent implements OnInit {
       });
   }
 
-  goToLoginForm() {
-
-  }
+  // goToLoginForm() {
+  // }
 
 }
