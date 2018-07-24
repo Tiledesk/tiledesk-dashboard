@@ -30,7 +30,8 @@
 
             <label style="" class="col-sm-2"></label>
             <div class="col-sm-10"> 
-              <button class="btn btn-success" (click)="editBotName()">
+
+              <button #editbotbtn class="btn btn-success" (click)="editBotName()" >
                   {{ "BotsAddEditPage.UpdateBotName" | translate }}
               </button>
             </div>
@@ -77,8 +78,6 @@
           </div>
         </div>
       </div>
-
-
     </div> <!-- ./ row -->
 
 

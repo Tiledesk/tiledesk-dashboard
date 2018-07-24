@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, } from '@angular/core';
 import { MongodbFaqService } from '../services/mongodb-faq.service';
 import { Faq } from '../models/faq-model';
 import { Router } from '@angular/router';
@@ -8,6 +8,7 @@ import { Project } from '../models/project-model';
 import { AuthService } from '../core/auth.service';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { FaqKbService } from '../services/faq-kb.service';
+import { NotifyService } from '../core/notify.service';
 
 @Component({
   selector: 'faq',
@@ -15,7 +16,8 @@ import { FaqKbService } from '../services/faq-kb.service';
   styleUrls: ['./faq.component.scss'],
 })
 export class FaqComponent implements OnInit {
-
+  @ViewChild('editbotbtn') private elementRef: ElementRef;
+  
   faq: Faq[];
   question: string;
   answer: string;
@@ -55,7 +57,8 @@ export class FaqComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private auth: AuthService,
-    private faqKbService: FaqKbService
+    private faqKbService: FaqKbService,
+    private notify: NotifyService
   ) { }
 
   ngOnInit() {
@@ -123,7 +126,6 @@ export class FaqComponent implements OnInit {
       () => {
         console.log('GET FAQ-KB ID (SUBSTITUTE BOT) - COMPLETE ');
         // this.showSpinner = false;
-
       });
 
   }
@@ -132,15 +134,23 @@ export class FaqComponent implements OnInit {
    * *** EDIT BOT ***
    * HAS BEEN MOVED in this COMPONENT FROM faq-kb-edit-add.component  */
   editBotName() {
+
+    // REMOVE THE focus on clicked button
+    this.elementRef.nativeElement.blur();
+
     console.log('FAQ KB NAME TO UPDATE ', this.faqKb_name);
     this.faqKbService.updateMongoDbFaqKb(this.id_faq_kb, this.faqKb_name, this.faqKbUrlToUpdate).subscribe((faqKb) => {
       console.log('EDIT BOT - FAQ KB UPDATED ', faqKb);
     },
       (error) => {
         console.log('EDIT BOT -  ERROR ', error);
+        // =========== NOTIFY ERROR ===========
+        this.notify.showNotification('An error occurred while updating the bot', 4, 'report_problem');
       },
       () => {
         console.log('EDIT BOT - * COMPLETE *');
+        // =========== NOTIFY SUCCESS===========
+        this.notify.showNotification('bot successfully updated', 2, 'done');
       });
   }
 
@@ -406,8 +416,5 @@ export class FaqComponent implements OnInit {
   //     }
   //   }
   // }
-
-
-
 
 }
