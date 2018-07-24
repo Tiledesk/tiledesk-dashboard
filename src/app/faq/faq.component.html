@@ -8,6 +8,80 @@
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
   
+    <!-- 
+    *****************************************************************************************
+    NEW - BOT PAGE AS GROUP PAGE - EDIT THE NAME OF THE BOT (BEFORE IN THE faq-kb-edit.comp)
+    ***************************************************************************************** 
+    -->
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card" style="padding-top:25px; padding-bottom:30px">
+          <div class="card-content"style="margin-top: 16px">
+            
+            <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
+              {{ "BotsAddEditPage.BotName" | translate }}
+            </label>
+            <div class="col-sm-10">
+              <input [(ngModel)]="faqKb_name" class="input" type="text" placeholder='{{ "BotsAddEditPage.GroupName" | translate }}'>
+            </div>
+
+            <!-- SPACER -->
+            <div class="col-sm-12" style="height:15px"></div>
+
+            <label style="" class="col-sm-2"></label>
+            <div class="col-sm-10"> 
+              <button class="btn btn-success" (click)="editBotName()">
+                  {{ "BotsAddEditPage.UpdateBotName" | translate }}
+              </button>
+            </div>
+
+          </div> <!-- ./ card-content -->
+        </div> <!-- ./ card -->
+      </div> <!-- ./ col-md-8 -->
+
+      <!-- // RIGHT SIDEBAR EDIT VIEW 'GROUP ATTRIBUTES' -->
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-content">
+            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; margin-bottom: 0px;margin-top: 0px;">
+              <!-- Quick tips -->
+              {{ "BotsAddEditPage.BotAttributes" | translate }}
+            </h4>
+
+            <p style="margin-bottom: 3px; color:#566787; padding-top: 5px;"> 
+              <strong>
+                {{ "BotsAddEditPage.BotID" | translate }}
+              </strong>
+            </p>
+            <p style="color:#999999; font-weight: 500; margin-bottom: 0px;">  
+              {{ faqKb_id }}
+            </p>
+
+            <p style="margin-bottom: 3px; color:#566787; padding-top: 5px;"> 
+              <strong>
+                {{ "BotsPage.RemoteId" | translate }}
+              </strong>
+            </p>
+            <p style="color:#999999; font-weight: 500; margin-bottom: 0px;">  
+              {{ faq_kb_remoteKey }}
+            </p>
+
+            <p style="margin-bottom: 3px; color:#566787; padding-top: 5px;"> 
+              <strong>
+                {{ "BotsAddEditPage.CreationDate" | translate }}
+              </strong>
+            </p>
+            <p style="color:#999999; font-weight: 500; margin-bottom: 0px;">  
+                {{ faqKb_created_at | date: 'd/M/y'}}
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+    </div> <!-- ./ row -->
+
+
     <div class="create" style="text-align: right!important; padding-top:5px; padding-bottom:0px">
       <button class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="goToEditAddPage_CREATE()">
           <!-- is-small -->

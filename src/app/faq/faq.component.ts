@@ -46,7 +46,9 @@ export class FaqComponent implements OnInit {
   modalChoosefileDisabled: boolean;
 
   faqKb_name: string;
-
+  faqKbUrlToUpdate: string;
+  faqKb_id: string;
+  faqKb_created_at: any;
 
   constructor(
     private mongodbFaqService: MongodbFaqService,
@@ -87,18 +89,32 @@ export class FaqComponent implements OnInit {
     }
   }
 
-  // GET FAQ-KB BY ID (FAQ-KB DETAILS)
-  // USED TO OBTAIN THE FAQ-KB REMOTE KEY NECESSARY TO PASS IT
-  // TO THE FAQ-TEST COMPONENT WHEN THE USER PRESS ON THE "FAQ TEST" BUTTON
-  // AND ALSO TO OBTAIN THE NAME of the FAQ-KB TO DISPLAY IT IN THE DIV navbar-brand
+  /**
+   * *** GET FAQ-KB BY ID (FAQ-KB DETAILS) ***
+   * USED TO OBTAIN THE FAQ-KB REMOTE KEY NECESSARY TO PASS IT
+   * TO THE FAQ-TEST COMPONENT WHEN THE USER PRESS ON THE "FAQ TEST" BUTTON
+   * AND ALSO TO OBTAIN THE NAME of the FAQ-KB TO DISPLAY IT IN THE DIV navbar-brand
+   * *** NEW IMPLENTATION ***
+   * THE 'EDIT BOT' LOGIC HAS BEEN MOVED FROM THE COMPONENT editBotName TO THIS COMPONENT
+   * SO THE DATA RETURNED FROM getFaqKbById ARE ALSO USED TO DISPLAY THE NAME OF THE BOT IN TH 'UPDATE BOT' SECTION
+   * AND THE FAQ-KB ID, ID AND REMOTE ID IN THE 'BOT ATTRIBUTE' SECTION
+   */
   getFaqKbById() {
     // this.botService.getMongDbBotById(this.botId).subscribe((bot: any) => { // NO MORE USED
     this.faqKbService.getMongDbFaqKbById(this.id_faq_kb).subscribe((faqkb: any) => {
       console.log('GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
+
       this.faq_kb_remoteKey = faqkb.kbkey_remote
       console.log('GET FAQ-KB (DETAILS) BY ID - FAQKB REMOTE KEY ', this.faq_kb_remoteKey);
 
       this.faqKb_name = faqkb.name;
+      console.log('GET FAQ-KB (DETAILS) BY ID - FAQKB NAME', this.faqKb_name);
+
+      this.faqKb_id = faqkb._id;
+      console.log('GET FAQ-KB (DETAILS) BY ID - FAQKB ID', this.faqKb_id);
+
+      this.faqKb_created_at = faqkb.createdAt;
+      console.log('GET FAQ-KB (DETAILS) BY ID - CREATED AT ', this.faqKb_created_at);
     },
       (error) => {
         console.log('GET FAQ-KB BY ID (SUBSTITUTE BOT) - ERROR ', error);
@@ -110,6 +126,22 @@ export class FaqComponent implements OnInit {
 
       });
 
+  }
+
+  /**
+   * *** EDIT BOT ***
+   * HAS BEEN MOVED in this COMPONENT FROM faq-kb-edit-add.component  */
+  editBotName() {
+    console.log('FAQ KB NAME TO UPDATE ', this.faqKb_name);
+    this.faqKbService.updateMongoDbFaqKb(this.id_faq_kb, this.faqKb_name, this.faqKbUrlToUpdate).subscribe((faqKb) => {
+      console.log('EDIT BOT - FAQ KB UPDATED ', faqKb);
+    },
+      (error) => {
+        console.log('EDIT BOT -  ERROR ', error);
+      },
+      () => {
+        console.log('EDIT BOT - * COMPLETE *');
+      });
   }
 
   goToTestFaqPage() {

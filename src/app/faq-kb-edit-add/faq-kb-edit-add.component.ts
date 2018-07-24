@@ -133,6 +133,7 @@ export class FaqKbEditAddComponent implements OnInit {
     this.displayInfoModal = 'none';
   }
 
+  // NO MORE USED IN THIS COMPONENT - MOVED IN faq.component.html
   edit() {
     console.log('FAQ KB NAME TO UPDATE ', this.faqKbNameToUpdate);
     console.log('FAQ KB URL TO UPDATE ', this.faqKbUrlToUpdate);
