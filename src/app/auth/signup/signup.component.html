@@ -26,10 +26,6 @@
         <div class="login-container">
 
           <form [formGroup]="userForm" (ngSubmit)="signup()" autocomplete="off">
-
-            <!-- <h3>Registrazione nuovo utente</h3> -->
-            <!-- <h3>Tile Desk</h3> -->
-            <!-- <hr> -->
   
             <label for="firstName">
               <!-- First Name -->
@@ -63,8 +59,8 @@
             </div>
   
             <label for="password">Password <span style="color:#ff5252">*</span></label>
-            <input type="password" id="password" class="input"
-                  formControlName="password" required >
+            <input type="text" id="password" class="input secure" formControlName="password" required>
+                       
   
             <div *ngIf="formErrors.password" class="is-danger" translate>
               {{ formErrors.password }}

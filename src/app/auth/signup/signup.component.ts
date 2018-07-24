@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { AuthService } from '../../core/auth.service';
@@ -13,7 +13,7 @@ type FormErrors = { [u in UserFields]: string };
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent implements OnInit, AfterViewInit {
 
   showSpinnerInLoginBtn = false;
   public signin_errormsg = '';
@@ -58,6 +58,30 @@ export class SignupComponent implements OnInit {
 
   ngOnInit() {
     this.buildForm();
+
+  }
+
+  ngAfterViewInit() {
+
+    const elemPswInput = <HTMLInputElement>document.getElementById('password');
+    console.log('ELEMENT INPUT PSW ', elemPswInput)
+    const style = window.getComputedStyle(elemPswInput);
+    console.log('ELEMENT INPUT PSW STYLE', style)
+
+   /**
+    * THE HTML ELEMENT FOR INSERTING THE PASSWORD IS OF TEXT TYPE (instead of PASSWORD TYPE) TO AVOID THE CHROME SELF-COMPLETION
+    * (e.g., "USE PASSWORD FOR"").
+    * TO AVOID THAT THE TEXT INSERTED IN THE PASSWORD FIELD IS DISPLAYED AT ELEMEMT HAS BEEN SETTED THE STYLE
+    * 'webkitTextSecurity' THAT HIDES THE USER INPUT.
+    * HOWEVER THE STYLE 'webkitTextSecurity' IS NOT COMPATIPLE ON ALL THE BROWSER,
+    * FOR WHETHER IF THE webkitTextSecurity STYLE THERE IS NOT, IS ADDED THE ATTRIBUTE PASSWORD TO THE FIELD
+    */
+    if (style['-webkitTextSecurity']) {
+      console.log('ELEMENT INPUT PSW HAS STYLE webkitTextSecurity: YES')
+    } else {
+      console.log('ELEMENT INPUT PSW HAS STYLE webkitTextSecurity: FALSE')
+      elemPswInput.setAttribute('type', 'password');
+    }
   }
 
   signup() {
@@ -274,5 +298,7 @@ export class SignupComponent implements OnInit {
     const checkModel = $event.target.checked;
     console.log('CHECK MODEL ', checkModel)
   }
+
+
 
 }

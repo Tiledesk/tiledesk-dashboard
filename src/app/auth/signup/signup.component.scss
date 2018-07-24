@@ -135,3 +135,7 @@ label {
   transform: rotate(45deg);
 }
 // end CHECKBOX TERMS AND CONDITIONS
+
+input.secure {
+  -webkit-text-security: disc;
+}
