@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, NgModule } from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgModule, ElementRef, ViewChild, } from '@angular/core';
 import { RequestsService } from '../../services/requests.service';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -47,6 +47,9 @@ declare interface RouteInfo {
     styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit, AfterViewInit {
+
+    @ViewChild('openchatbtn') private elementRef: ElementRef;
+
     menuItems: any[];
 
     // SHOW_SETTINGS_SUBMENU = false;
@@ -102,6 +105,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // console.log('00 -> HELLO SIDEBAR - PROJECT ID ', this.project)
 
     }
+
 
     ngOnInit() {
         // !!!! NO MORE USED
@@ -434,5 +438,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.auth.showExpiredSessionPopup(false);
         this.auth.signOut();
 
+    }
+
+    // RESOLVE THE BUG 'chat button remains focused after clicking'
+    removeChatBtnFocus() {
+        this.elementRef.nativeElement.blur();
     }
 }

@@ -135,7 +135,7 @@ export class FaqComponent implements OnInit {
    * HAS BEEN MOVED in this COMPONENT FROM faq-kb-edit-add.component  */
   editBotName() {
 
-    // REMOVE THE focus on clicked button
+    // RESOLVE THE BUG 'edit button remains focused after clicking'
     this.elementRef.nativeElement.blur();
 
     console.log('FAQ KB NAME TO UPDATE ', this.faqKb_name);
