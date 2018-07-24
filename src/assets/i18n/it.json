@@ -252,6 +252,7 @@
         "Continue": "Continua"
     },
     "FaqPage": {
+        "EditBOT": "Modifica BOT",
         "FAQsOfBOT": "FAQs del BOT:",
         "AddFaq": "Aggiungi Faq",
         "UploadFaqsFromCsv": "CARICA FAQs DA CSV",

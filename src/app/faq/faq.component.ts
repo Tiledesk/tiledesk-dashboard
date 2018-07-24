@@ -174,7 +174,8 @@ export class FaqComponent implements OnInit {
   }
 
   goBackToFaqKbList() {
-    this.router.navigate(['project/' + this.project._id + '/faqkb']);
+    // this.router.navigate(['project/' + this.project._id + '/faqkb']);
+    this.router.navigate(['project/' + this.project._id + '/bots']);
   }
 
   /**

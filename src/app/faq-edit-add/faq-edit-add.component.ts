@@ -134,7 +134,8 @@ export class FaqEditAddComponent implements OnInit {
       () => {
         console.log('POST REQUEST * COMPLETE *');
 
-        this.router.navigate(['project/' + this.project._id  + '/faq', this.id_faq_kb]);
+        // this.router.navigate(['project/' + this.project._id  + '/faq', this.id_faq_kb]);
+        this.router.navigate(['project/' + this.project._id  + '/bots', this.id_faq_kb]);
       });
 
   }

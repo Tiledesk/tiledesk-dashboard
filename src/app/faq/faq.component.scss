@@ -208,3 +208,55 @@ select {
 //     background-color: #00bcd4
 // }
   
+.add_faq_btn {
+    margin-top: 0px; 
+    margin-bottom: 0px; 
+    border-radius: 50%; 
+    padding-top:1px; 
+    padding-left:0px;
+    padding-right:16px;
+    padding-bottom:15px;
+    margin-left:15px;
+    border: solid 1px; 
+    width: 16px;
+    height: 16px
+  }
+
+  .add_faq_btn:hover {
+    background-color: #4caf50 !important;
+    color: #fff !important;
+  }
+
+  // start TOOLTIP
+/* Tooltip container */
+.tooltipx {
+    position: relative;
+    display: inline-block;
+    // border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  }
+  
+  /* Tooltip text */
+  .tooltipx .tooltiptext {
+    visibility: hidden;
+    // width: 120px;
+    background-color: black; 
+    // background-color: rgba(0,0,0,0.6);
+    color: #fff;
+    text-align: center;
+    padding: 5px 5px;
+    border-radius: 5px;
+    font-size: 12px !important;
+  
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 1;
+    /* Position the tooltip text - TOP */
+    bottom: 100%;
+    left: 50%; 
+    margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+  }
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .tooltipx:hover .tooltiptext {
+    visibility: visible;
+  }

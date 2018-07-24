@@ -126,14 +126,15 @@ export class FaqKbEditAddComponent implements OnInit {
   }
 
   onCloseInfoModalHandled() {
-    this.router.navigate(['project/' + this.project._id + '/faqkb']);
+    // this.router.navigate(['project/' + this.project._id + '/faqkb']);
+    this.router.navigate(['project/' + this.project._id + '/bots']);
   }
 
   onCloseModal() {
     this.displayInfoModal = 'none';
   }
 
-  // NO MORE USED IN THIS COMPONENT - MOVED IN faq.component.html
+  // !!! NO MORE USED IN THIS COMPONENT - MOVED IN faq.component.html
   edit() {
     console.log('FAQ KB NAME TO UPDATE ', this.faqKbNameToUpdate);
     console.log('FAQ KB URL TO UPDATE ', this.faqKbUrlToUpdate);
@@ -158,7 +159,8 @@ export class FaqKbEditAddComponent implements OnInit {
   }
 
   goBackToFaqKbList() {
-    this.router.navigate(['project/' + this.project._id + '/faqkb']);
+    // this.router.navigate(['project/' + this.project._id + '/faqkb']);
+    this.router.navigate(['project/' + this.project._id + '/bots']);
   }
 
 

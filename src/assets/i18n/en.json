@@ -265,6 +265,7 @@
         "Continue": "Continue"
     },
     "FaqPage": {
+        "EditBOT": "Edit BOT",
         "FAQsOfBOT": "FAQs of BOT:",
         "AddFaq": "Add Faq",
         "UploadFaqsFromCsv": "UPLOAD FAQs FROM CSV",

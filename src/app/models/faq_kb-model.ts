@@ -9,4 +9,5 @@ export interface FaqKb {
     createdBy: string;
     __v: any;
     has_faq: any;
+    faqs_number: number;
 }

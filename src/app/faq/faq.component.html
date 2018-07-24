@@ -1,9 +1,13 @@
 
 <div class="navbar-brand" style="z-index: -1;margin-top:10px; padding-left:30px">
-  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" rel="tooltip" title="Torna in Bot" (click)="goBackToFaqKbList()">keyboard_arrow_left</i>
-  <!-- FAQs of BOT:  -->
-    {{ 'FaqPage.FAQsOfBOT' | translate }}
-    <span style="color: #566787; font-weight:400"> {{ faqKb_name }} </span>
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" rel="tooltip" title="" 
+  (click)="goBackToFaqKbList()">keyboard_arrow_left</i>
+    <!-- FAQs of BOT:  -->
+    <!-- {{ 'FaqPage.FAQsOfBOT' | translate }} -->
+    {{ 'FaqPage.EditBOT' | translate }}
+    <span style="color: #566787; font-weight:400">
+        “{{ faqKb_name }}”
+     </span>
 </div> 
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
@@ -15,7 +19,7 @@
     -->
     <div class="row">
       <div class="col-md-8">
-        <div class="card" style="padding-top:25px; padding-bottom:30px">
+        <div class="card" style="padding-top:28px; padding-bottom:28px; margin-bottom: 5px;">
           <div class="card-content"style="margin-top: 16px">
             
             <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
@@ -26,7 +30,7 @@
             </div>
 
             <!-- SPACER -->
-            <div class="col-sm-12" style="height:15px"></div>
+            <div class="col-sm-12" style="height:10px"></div>
 
             <label style="" class="col-sm-2"></label>
             <div class="col-sm-10"> 
@@ -40,39 +44,43 @@
         </div> <!-- ./ card -->
       </div> <!-- ./ col-md-8 -->
 
-      <!-- // RIGHT SIDEBAR EDIT VIEW 'GROUP ATTRIBUTES' -->
+      <!-- 
+      ********************************************
+      ****** RIGHT SIDEBAR 'BOT ATTRIBUTES' ******
+      ********************************************
+      -->
       <div class="col-md-4">
         <div class="card">
           <div class="card-content">
-            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; margin-bottom: 0px;margin-top: 0px;">
+            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; margin-bottom: 6px;">
               <!-- Quick tips -->
               {{ "BotsAddEditPage.BotAttributes" | translate }}
             </h4>
 
-            <p style="margin-bottom: 3px; color:#566787; padding-top: 5px;"> 
+            <p style="margin-bottom: 3px; color:#566787; padding-top: 10px;"> 
               <strong>
                 {{ "BotsAddEditPage.BotID" | translate }}
               </strong>
             </p>
-            <p style="color:#999999; font-weight: 500; margin-bottom: 0px;">  
+            <p style="color:#999999; font-weight: 500;">  
               {{ faqKb_id }}
             </p>
 
-            <p style="margin-bottom: 3px; color:#566787; padding-top: 5px;"> 
+            <!-- <p style="margin-bottom: 3px; color:#566787; padding-top: 5px;"> 
               <strong>
                 {{ "BotsPage.RemoteId" | translate }}
               </strong>
             </p>
             <p style="color:#999999; font-weight: 500; margin-bottom: 0px;">  
               {{ faq_kb_remoteKey }}
-            </p>
+            </p> -->
 
-            <p style="margin-bottom: 3px; color:#566787; padding-top: 5px;"> 
+            <p style="margin-bottom: 3px; color:#566787; padding-top: 10px;"> 
               <strong>
                 {{ "BotsAddEditPage.CreationDate" | translate }}
               </strong>
             </p>
-            <p style="color:#999999; font-weight: 500; margin-bottom: 0px;">  
+            <p style="color:#999999; font-weight: 500;">  
                 {{ faqKb_created_at | date: 'd/M/y'}}
             </p>
           </div>
@@ -81,35 +89,38 @@
     </div> <!-- ./ row -->
 
 
-    <div class="create" style="text-align: right!important; padding-top:5px; padding-bottom:0px">
-      <button class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="goToEditAddPage_CREATE()">
-          <!-- is-small -->
+    <!-- 
+    *******************************************************
+    BTNS MOVED IN THE CARD HEADER 
+    *******************************************************
+    -->
+    <!-- <div class="create" style="text-align: right!important; padding-top:5px; padding-bottom:0px"> -->
+
+      <!-- Aggiungi FAQ -->
+      <!-- <button class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="goToEditAddPage_CREATE()">
         <span class="icon" style="padding-right:0px">
           <i class="material-icons">add_circle</i>
         </span>
-        <!-- Aggiungi FAQ -->
         {{ 'FaqPage.AddFaq' | translate }}
-      </button>
+      </button> -->
 
       <!-- NEW UPLAD CSV FILE -->
-      <button class="btn btn-info" style="padding-left:8px; padding-right: 16px; text-transform:none" (click)="openImportModal()">
-          
+      <!-- <button class="btn btn-info" style="padding-left:8px; padding-right: 16px; text-transform:none" (click)="openImportModal()">
         <span class="icon" style="padding-right:0px;">
           <i class="material-icons">file_upload</i>
         </span>
-        <!-- CARICA FAQs DA CSV  -->
         {{ 'FaqPage.UploadFaqsFromCsv' | translate }}
-      </button>
-
-      <button class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="goToTestFaqPage()">
-          
+      </button> -->
+      
+      <!-- INTERROGA BOT -->
+      <!-- <button class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="goToTestFaqPage()">
         <span class="icon" style="padding-right:0px; text-transform:none">
           <i class="material-icons">play_arrow</i>
         </span>
-        <!-- INTERROGA BOT -->
         {{ 'FaqPage.BotQuery' | translate }}
+      </button> -->
 
-      </button>
+
       <!-- MOVED IN INPORT MODAL -->
       <!-- <input style="display:inline" name="file" id="file" class="inputfile" type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".csv"/>
       <label class="btn btn-info" for="file" style="padding-left:15px; padding-right:15px; text-transform: none">
@@ -117,13 +128,59 @@
           CARICA FAQs DA CSV 
       </label> -->
  
-    </div>
+    <!-- </div> -->
 
         
   <!-- MOMGO DB FAQ LIST -->
   <div class="row">
       <div class="col-md-12">
         <div class="card">
+
+          <div class="card-header" data-background-color="" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
+            <h4 class="title" style="margin-bottom:2px; font-size:1.1em; color: #566787">
+                FAQs <span style="font-weight: 500">(6)</span> 
+
+              <!-- // ADD FAQ - CIRCLE BTN -->
+              <!-- <button type="button" rel="tooltip" title="" class="btn btn-success btn-simple btn-xs add_faq_btn tooltipx" 
+              (click)="goToEditAddPage_CREATE()">
+                <i class="material-icons" style="font-size: 16px; font-weight: 600; padding-bottom: 2px">add</i>
+                <span class="tooltiptext">{{ 'FaqPage.AddFaq' | translate }}</span>
+              </button> -->
+
+              <button class="btn btn-info tooltipx" style="padding:6px;  margin-top: 0px; margin-bottom: 0px; margin-left: 15px" 
+              (click)="goToEditAddPage_CREATE()">
+                  <!-- is-small -->
+                <span class="icon" style="padding-right:0px">
+                  <i class="material-icons">add</i>
+                </span>
+                <!-- Aggiungi FAQ -->
+                <span class="tooltiptext"> {{ 'FaqPage.AddFaq' | translate }} </span>
+              </button>
+
+              <!-- NEW UPLAD CSV FILE -->
+              <button class="btn btn-info tooltipx" style="padding:6px; text-transform:none; margin-top: 0px; margin-bottom: 0px; margin-left: 10px" 
+              (click)="openImportModal()">
+                
+                <span class="icon" style="padding-right:0px;">
+                  <i class="material-icons">file_upload</i>
+                </span>
+                <!-- CARICA FAQs DA CSV  -->
+                <span class="tooltiptext">{{ 'FaqPage.UploadFaqsFromCsv' | translate }}</span>
+              </button>
+
+              <button class="btn btn-info tooltipx" style="padding:6px;margin-top: 0px; margin-bottom: 0px; margin-left: 10px" 
+              (click)="goToTestFaqPage()">
+                <span class="icon" style="padding-right:0px; text-transform:none">
+                  <i class="material-icons">play_arrow</i>
+                </span>
+                <!-- INTERROGA BOT -->
+                <span class="tooltiptext">{{ 'FaqPage.BotQuery' | translate }}</span>
+              </button>
+
+            </h4>
+            <!-- <p class="category">Here is a subtitle for this table</p> -->
+          </div>
+
           <div class="card-content table-responsive">
           <table class="table">
             <thead>

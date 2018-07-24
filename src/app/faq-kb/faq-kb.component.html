@@ -8,7 +8,8 @@
     <div class="container-fluid">
       <!-- padding-top:25px -->
         <div class="create" style="text-align: right!important; padding-top:5px; padding-bottom:0px">
-          <button class="btn btn-info" style="padding-left:8px; padding-right: 16px; margin-bottom: 0px;" (click)="goToEditAddPage_CREATE()">
+          <button class="btn btn-info" style="padding-left:8px; padding-right: 16px; margin-bottom: 0px;" 
+          (click)="goToEditAddPage_CREATE()">
               <!-- is-small -->
             <span class="icon" style="padding-right:8px">
               <!-- <i class="fa fa-plus-circle"></i> -->
@@ -40,34 +41,35 @@
                         </strong>
                       </span>
                     </th>
-                    <!-- width: 280px !important -->
-                    <th style="">
+
+                    <!-- <th style="">
                       <span style="color: #566787">
                         <strong>Id</strong>
                       </span>
-                    </th>
-                    <th>
+                    </th> -->
+
+                    <!-- <th>
                       <span style="color: #566787">
                         <strong>
-                          <!-- Id remoto -->
                           {{ "BotsPage.RemoteId" | translate }} 
                         </strong>
                       </span> 
-                    </th>
+                    </th> -->
+
                     <!-- <th>
                       <span style="color: #566787">
                         <strong> Url</strong>
                       </span> 
                     </th> -->
-                    <th>
+                    
+                    <!-- <th>
                       <span style="color: #566787">
-                          <!-- Creation Date -->
                         <strong>
                           {{ "BotsPage.CreationDate" | translate }} 
                         </strong>
                       </span>  
-                    </th>
-                    <!-- colspan="2" -->
+                    </th> -->
+
                     <th>
                       <span style="color: #566787">
                           <!-- Actions -->
@@ -76,13 +78,14 @@
                         </strong>
                       </span>
                     </th>
-                    <th colspan="2">
+
+                    <!-- <th colspan="2">
                       <span style="color: #566787">
                         <strong> 
                           FAQ 
                         </strong>
                       </span>  
-                    </th>
+                    </th> -->
 
                   </tr>
                 </thead>
@@ -104,19 +107,20 @@
                     <td>
                       {{ faqkb?.name }}
                     </td>
-                    <!-- width: 280px !important -->
-                    <td>
+
+                    <!-- <td>
                       {{ faqkb?._id }}
-                    </td>
-                    <td>
+                    </td> -->
+                    <!-- <td>
                       {{ faqkb?.kbkey_remote }}
-                    </td>
+                    </td> -->
                     <!-- <td>
                       {{ faqkb?.url }}
                     </td> -->
-                    <td>
+
+                    <!-- <td>
                       {{ faqkb?.createdAt | date: 'd/M/y'}}
-                    </td>
+                    </td> -->
             
                     <!-- EDIT -->
                     <!-- <td style="text-align: center!important; padding-left:8px; padding-right:8px; ">
@@ -145,7 +149,9 @@
                     <!-- NEW EDIT / DELETE FAQ-KB   -->
                     <td class="td-actions text-right" style="padding-top:16px">
                         <!-- Modifica FAQ Knowledge Base -->
-                        <button type="button" rel="tooltip" title="{{ 'BotsPage.tooltipEditBot' | translate }}" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(faqkb?._id)'>
+                        <!-- goToEditAddPage_EDIT(faqkb?._id) -->
+                        <button type="button" rel="tooltip" title="{{ 'BotsPage.tooltipEditBot' | translate }}" class="btn btn-primary btn-simple btn-xs" 
+                        (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)'>
                             <i class="material-icons">edit</i>
                         </button>
                         <!-- Elimima FAQ Knowledge Base -->
@@ -154,32 +160,33 @@
                         </button>
                     </td>
                     <!-- NEW VIEW / EDIT FAQ - SWITCH BUTTON IF THERE IS OR THERE ISN'T FAQ RELATED TO THE FAQ-KB -->
-                    <td class="">
+                    <!-- <td class="">
                       <span *ngIf="faqkb?.has_faq">
-                        <button style="margin-top:5px; padding-left: 3px; padding-right: 3px;" type="button" rel="tooltip" title="{{ 'BotsPage.tooltipViewAddEditFaq' | translate }}" class="btn btn-success btn-simple btn-xs" (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)'>
+                        <button style="margin-top:5px; padding-left: 3px; padding-right: 3px;" type="button" rel="tooltip" title="{{ 'BotsPage.tooltipViewAddEditFaq' | translate }}" class="btn btn-success btn-simple btn-xs" 
+                        (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)'>
                           <i class="material-icons">list</i>
                         </button>
                       </span>
                       <span *ngIf="!faqkb?.has_faq">
-                        <button style="margin-top:5px; padding-left: 3px; padding-right: 3px;" type="button" rel="tooltip" title="{{ 'BotsPage.tooltipAddEditFaqNoRelatedFaq' | translate }}" class="btn btn-warning btn-simple btn-xs" (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)'>
+                        <button style="margin-top:5px; padding-left: 3px; padding-right: 3px;" type="button" rel="tooltip" title="{{ 'BotsPage.tooltipAddEditFaqNoRelatedFaq' | translate }}" class="btn btn-warning btn-simple btn-xs" 
+                        (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)'>
                           <i class="material-icons">list</i>
                         </button>
-                      </span> 
+                      </span>  -->
 
                       <!-- <span *ngIf="faqkb?.has_faq">
                         HA FAQ
                       </span> -->
-                    </td>
-
-                    <td>
-                      <!-- TEST FAQ -->
-                      <!-- <span *ngIf="faqkb?.kbkey_remote"> -->
-                        <span *ngIf="faqkb?.has_faq">
+                    <!-- </td> -->
+                    
+                    <!-- TEST FAQ -->
+                    <!-- <td>
+                      <span *ngIf="faqkb?.has_faq">
                           <button style="margin-top:5px; padding-left: 3px;" type="button" rel="tooltip" title="Test FAQ" class="btn btn-info btn-simple btn-xs" (click)='goToTestFaqPage(faqkb?.kbkey_remote)'>
                               <i class="material-icons">play_arrow</i>
                           </button>
                         </span>
-                    </td>
+                    </td> -->
   
                   </tr>
                 </tbody>

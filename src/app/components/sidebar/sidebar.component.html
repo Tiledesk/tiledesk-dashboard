@@ -283,7 +283,8 @@
 
             <!-- FAQ (alias FAQKB) HAS BEEN RENAMED IN BOT (BOT - see above - IS CURRENTLY COMMENTED) -->
             <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active">
-                <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/faqkb">
+                <!-- routerLink="project/{{ project._id }}/faqkb" -->
+                <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/bots">
                     <!-- <i class="material-icons">keyboard_arrow_right</i> -->
                     <span class="sidebar-mini">
                         B 

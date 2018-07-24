@@ -139,15 +139,21 @@ const routes: Routes = [
   { path: 'user-profile', component: UserProfileComponent },
 
   // FAQKB (i.e. BOT)
-  { path: 'project/:projectid/faqkb', component: FaqKbComponent, canActivate: [AuthGuard] },
+  /* path /faqkb commented and duplicated RENAMED IN /bots */
+  // { path: 'project/:projectid/faqkb', component: FaqKbComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/bots', component: FaqKbComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/createfaqkb', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/editfaqkb/:faqkbid', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },
 
   // { path: 'faq/:faqkbid', component: FaqComponent, canActivate: [AuthGuard] }, // used to pass the faq kb id from  in faq page
-  // tslint:disable-next-line:max-line-length
-  { path: 'project/:projectid/faq/:faqkbid', component: FaqComponent, canActivate: [AuthGuard] }, // used to pass the faq kb id from  in faq page
+
+  /* path /faq/:faqkbid' commented and duplicated RENAMED IN /bots/:faqkbid ( used to pass the faq kb id from  in faq page) */
+  // { path: 'project/:projectid/faq/:faqkbid', component: FaqComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/bots/:faqkbid', component: FaqComponent, canActivate: [AuthGuard] },
+
   { path: 'project/:projectid/createfaq/:faqkbid', component: FaqEditAddComponent, canActivate: [AuthGuard] },
+
   { path: 'project/:projectid/editfaq/:faqkbid/:faqid', component: FaqEditAddComponent, canActivate: [AuthGuard] },
 
   // TEST-FAQ PAGE

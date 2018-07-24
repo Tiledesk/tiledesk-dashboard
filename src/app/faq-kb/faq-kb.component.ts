@@ -37,6 +37,8 @@ export class FaqKbComponent implements OnInit {
 
   DELETE_BOT_ERROR = false;
 
+  FAQ_LENGTH: number;
+
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -69,7 +71,7 @@ export class FaqKbComponent implements OnInit {
    */
   getFaqKbByProjectId() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-      console.log('FAQs-KB GET BY PROJECT ID', faqKb);
+      console.log('»»» »»» FAQs-KB GET BY PROJECT ID', faqKb);
 
       this.faqkbList = faqKb;
       this.showSpinner = false;
@@ -121,7 +123,9 @@ export class FaqKbComponent implements OnInit {
       this.faqKbId = this.faqkbList[i]._id;
 
       this.mongodbFaqService.getMongoDbFaqByFaqKbId(this.faqKbId).subscribe((faq: any) => {
-        // console.log('MONGO DB FAQ ARRAY', faq);
+        console.log('»»»» FAQ-KB LIST - FAQS ARRAY', faq);
+        this.FAQ_LENGTH = faq.length;
+        console.log('»»»» FAQ-KB LIST - FAQS LENGTH', this.FAQ_LENGTH);
 
         let j: number;
         for (j = 0; j < faq.length; j++) {
@@ -136,6 +140,7 @@ export class FaqKbComponent implements OnInit {
               // console.log('+> ID COINCIDONO');
 
               // set in the json the value true to the property has_faq
+              faqkb.faqs_number = faq.length
               faqkb.has_faq = true;
             }
           }
@@ -234,22 +239,13 @@ export class FaqKbComponent implements OnInit {
 
             this.mongodbFaqService.deleteMongoDbFaq(relatedFaqIdToDelete).subscribe((faq_to_delete) => {
               console.log('DELETE RELATED FAQ ', faq_to_delete);
-
-
             },
               (error) => {
-
                 console.log('DELETE RELATED FAQ - ERROR ', error);
-
                 this.SHOW_CIRCULAR_SPINNER = false;
-
               },
               () => {
-
-
-
                 console.log('DELETE RELATED FAQ * COMPLETE *');
-
                 this.deleteFaqKb();
               });
 
@@ -322,11 +318,15 @@ export class FaqKbComponent implements OnInit {
     this.router.navigate(['project/' + this.project._id + '/editfaqkb', idFaqKb]);
   }
 
-  // GO TO FAQ-COMPONET (TO ADD OR EDIT FAQ)
+  /**
+   * GO TO FAQ-COMPONET TO:
+   * ADD OR EDIT FAQ
+   * EDIT THE BOT NAME
+   */
   goToFaqPage_ADD_EDIT_FAQ(idFaqKb: string) {
-    console.log('ID OF FAQKB SELECTED ', idFaqKb);
-
-    this.router.navigate(['project/' + this.project._id + '/faq', idFaqKb]);
+    console.log('ID OF THE BOT (FAQKB) SELECTED ', idFaqKb);
+    // this.router.navigate(['project/' + this.project._id + '/faq', idFaqKb]);
+    this.router.navigate(['project/' + this.project._id + '/bots', idFaqKb]);
   }
 
   goToTestFaqPage(remoteFaqKbKey: string) {
