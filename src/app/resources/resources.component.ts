@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
 import { Http, Headers, RequestOptions } from '@angular/http';
@@ -9,6 +9,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
   styleUrls: ['./resources.component.scss']
 })
 export class ResourcesComponent implements OnInit {
+  @ViewChild('testwidgetbtn') private elementRef: ElementRef;
 
   project: Project;
 
@@ -131,9 +132,11 @@ export class ResourcesComponent implements OnInit {
   // }
 
   testWidgetPage() {
+    this.elementRef.nativeElement.blur();
     // http://testwidget.tiledesk.com/testsite/?projectid=5ad069b123c415001469574f&prechatform=false
+    // + '&projectname=' + this.projectName
     // tslint:disable-next-line:max-line-length
-    const url = 'http://testwidget.tiledesk.com/testsite?projectid=' + this.projectId + '&prechatform=' + this.preChatForm + '&projectname=' + this.projectName + '&callout_timer=' + this.calloutTimerSecondSelected + '&align=' + this.alignmentSelected;
+    const url = 'http://testwidget.tiledesk.com/testsite?projectid=' + this.projectId + '&prechatform=' + this.preChatForm  + '&callout_timer=' + this.calloutTimerSecondSelected + '&align=' + this.alignmentSelected;
     window.open(url, '_blank');
   }
 

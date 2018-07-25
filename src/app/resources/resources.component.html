@@ -85,7 +85,7 @@
                                     <!-- <input style="height:16px; width:16px" type="checkbox" class="form-check-input" id="exampleCheck1" (change)="toggleCheckBoxCalloutTimer($event)"> -->
                                     <!-- <div class="row" style="border-left: #5bc0de 2px solid">
                                         <div class="col-sm-12"> -->
-                                            <label style="color: #566787;" class="form-check-label" for="exampleCheck1">
+                                            <label style="color: #566787; margin-top: 5px" class="form-check-label" for="exampleCheck1">
                                             {{ 'Resourcepage.CalloutTimer' | translate }} 
                                             </label>
 
@@ -137,7 +137,7 @@
                                 <div>    
                                     <!-- <div class="row" style="border-left: #5bc0de 2px solid"> -->
                                         <!-- <div class="col-sm-12"> -->
-                                            <label style="color: #566787;" class="form-check-label" for="exampleCheck1">
+                                            <label style="color: #566787; margin-top: 5px" class="form-check-label" for="exampleCheck1">
                                                 {{ 'Resourcepage.WidgetAlignment' | translate }}
                                             </label>
                                             <!-- <select #selectElemAlign (change)="setSelectedAlignment(selectElemAlign.value)" style="min-width: 60px; background-color:#fff; color:#333333;" >
@@ -187,13 +187,12 @@
                                     <button style="margin-top:0px" (click)="testWidgetPage()" class="btn btn-success">{{ 'Resourcepage.TestTheWidget' | translate }}</button>
                                 </div> -->
                             
-
-<textarea  name="exampleClipboard" class="textarea" readonly rows="17" value="" type="text" style="font-size: 12px; line-height: 18px; padding:5px">
+ <!-- projectname: &quot;{{projectName}}&quot;, -->
+<textarea  name="exampleClipboard" class="textarea" readonly rows="16" value="" type="text" style="font-size: 12px; line-height: 20px; padding:5px">
 &lt;script type=&quot;application/javascript&quot;&gt;
   window.tiledeskSettings = 
     {
       projectid: &quot;{{ projectId }}&quot;,
-      projectname: &quot;{{projectName}}&quot;,
       preChatForm: {{preChatFormValue}},
       calloutTimer: {{ calloutTimerSecondSelected }},
       align: '{{ alignmentSelected }}'
@@ -265,7 +264,7 @@
             </div>
             <div>
 
-                <button style="margin-top:0px" (click)="testWidgetPage()" class="btn btn-success pull-right">{{ 'Resourcepage.TestThisCode' | translate }}</button>
+                <button #testwidgetbtn style="margin-top:0px" (click)="testWidgetPage()" class="btn btn-success pull-right">{{ 'Resourcepage.TestThisCode' | translate }}</button>
                 <button style="margin-top:0px" (click)="copyToClipboard()" class="btn btn-white pull-right">{{ 'Resourcepage.CopyScript' | translate }}</button>
            </div>
         </div>
