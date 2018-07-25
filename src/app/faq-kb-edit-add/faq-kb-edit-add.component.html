@@ -1,7 +1,10 @@
 
 <!-- NEW FOR THIS TEMPALTE -->
 <div class="navbar-brand" style="z-index: -1;margin-top:10px; padding-left:30px">
-  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBackToFaqKbList()">keyboard_arrow_left</i>
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" 
+  (click)="goBackToFaqKbList()">
+    keyboard_arrow_left
+  </i>
   <!-- Aggiungi FAQ Knowledge Base -->
   <span *ngIf="CREATE_VIEW">
     <!-- Aggiungi Bot -->
@@ -17,7 +20,7 @@
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-8">
         <div class="card" style="padding-top:25px; padding-bottom:25px">
           <div class="card-content">
 
@@ -99,17 +102,27 @@
         </div>
         <!-- ./ card -->
 
-      </div>
-      <!-- ./ col-md-12 -->
+      </div> <!-- ./ col-md-8 -->
+
 
       <!-- RIGHT SIDEBAR -->
-      <!-- <div class="col-md-4">
-        <div class="card" style="padding-top:25px; padding-bottom:25px">
+      <div class="col-md-4">
+          <!-- padding-top:25px; padding-bottom:25px -->
+        <div class="card" style="">
           <div class="card-content">
   
-            </div>
+            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; margin-bottom: 15px">
+              {{ "QuickTips" | translate }}
+            </h4>
+
+            <p style="color:#999999">
+
+              <br>
+
+            </p>
           </div>
-        </div> -->
+        </div>
+      </div>
         
 
     </div>
