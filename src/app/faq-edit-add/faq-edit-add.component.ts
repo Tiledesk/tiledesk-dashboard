@@ -108,7 +108,8 @@ export class FaqEditAddComponent implements OnInit {
 
   // GO BACK TO FAQ COMPONENT
   goBackToFaqList() {
-    this.router.navigate(['project/' + this.project._id  + '/faq', this.id_faq_kb]);
+    // this.router.navigate(['project/' + this.project._id  + '/faq', this.id_faq_kb]);
+    this.router.navigate(['project/' + this.project._id  + '/bots', this.id_faq_kb]);
   }
 
   /**
@@ -142,7 +143,7 @@ export class FaqEditAddComponent implements OnInit {
 
   edit() {
     console.log('FAQ QUESTION TO UPDATE ', this.question_toUpdate);
-    console.log('FAQ KB URL TO UPDATE ', this.answer_toUpdate);
+    console.log('FAQ ANSWER TO UPDATE ', this.answer_toUpdate);
 
     this.mongodbFaqService.updateMongoDbFaq(this.id_faq, this.question_toUpdate, this.answer_toUpdate).subscribe((data) => {
       console.log('PUT DATA (UPDATE FAQ)', data);
@@ -159,7 +160,8 @@ export class FaqEditAddComponent implements OnInit {
       () => {
         console.log('PUT (UPDATE FAQ) REQUEST * COMPLETE *');
 
-        this.router.navigate(['project/' + this.project._id  + '/faq', this.id_faq_kb]);
+        // this.router.navigate(['project/' + this.project._id  + '/faq', this.id_faq_kb]);
+        this.router.navigate(['project/' + this.project._id  + '/bots', this.id_faq_kb]);
       });
   }
 

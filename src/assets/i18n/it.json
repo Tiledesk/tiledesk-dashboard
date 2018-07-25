@@ -50,6 +50,7 @@
     "YourPswHasBeenChanged":"La tua password è stata modificata",
     "GoToLogin":"Go to Login",
     "InvalidPswResetKey":"Chiave di reimpostazione password non valida",
+    "QuickTips": "Consigli veloci",
     "UserProfile": {
         "Profile": "Profilo",
         "UploadImage": "Carica immagine",
@@ -230,11 +231,12 @@
     },
     "BotsPage": {
         "AddBot": "Aggiungi Bot",
-        "Name": "Nome",
+        "Name": "Nome bot",
         "RemoteId": "Id remoto",
         "CreationDate": "Data creazione",
         "Actions": "Azioni",
         "NoBot": "Nessun Bot",
+        "PendingAddFaqs": "in sospeso aggiungi FAQs",
         "tooltipEditBot": "Modifica Bot",
         "tooltipDeleteBot": "Elimina Bot",
         "tooltipViewAddEditFaq": "Visualizza / aggiungi / modifica FAQ",

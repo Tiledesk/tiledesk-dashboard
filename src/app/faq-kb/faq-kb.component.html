@@ -6,24 +6,24 @@
   <p style="margin-top:10px; padding-left:30px" class="navbar-brand">Bot</p>   
   <div class="main-content" style="padding-top:0px">
     <div class="container-fluid">
-      <!-- padding-top:25px -->
-        <div class="create" style="text-align: right!important; padding-top:5px; padding-bottom:0px">
-          <button class="btn btn-info" style="padding-left:8px; padding-right: 16px; margin-bottom: 0px;" 
-          (click)="goToEditAddPage_CREATE()">
-              <!-- is-small -->
-            <span class="icon" style="padding-right:8px">
-              <!-- <i class="fa fa-plus-circle"></i> -->
-              <i class="material-icons">add_circle</i>
-            </span>
-            <!-- Aggiungi FAQ Knowledge Base -->
-            <!-- Aggiungi Bot -->
-            {{ "BotsPage.AddBot" | translate }} 
-          </button>
-        </div>
+      <!-- text-align: right!important;-->
+      <div class="create" style="padding-top:5px; padding-bottom:0px">
+        <button class="btn btn-info" style="padding-left:8px; padding-right: 16px; margin-bottom: 0px;" 
+        (click)="goToEditAddPage_CREATE()">
+            <!-- is-small -->
+          <span class="icon" style="padding-right:8px">
+            <!-- <i class="fa fa-plus-circle"></i> -->
+            <i class="material-icons">add_circle</i>
+          </span>
+          <!-- Aggiungi FAQ Knowledge Base -->
+          <!-- Aggiungi Bot -->
+          {{ "BotsPage.AddBot" | translate }} 
+        </button>
+      </div>
   
-    <!-- MOMGO DB FAQ Knowledge Base LIST -->
-    <div class="row">
-        <div class="col-md-12">
+      <!-- MOMGO DB FAQ Knowledge Base LIST -->
+      <div class="row">
+        <div class="col-md-8">
           <div class="card">
 
             <loading-spinner *ngIf="showSpinner"></loading-spinner>
@@ -32,7 +32,6 @@
               <table class="table">
                 <thead>
                   <tr>
-
                     <th>
                       <span style="color: #566787">
                           <!-- Name -->
@@ -42,13 +41,13 @@
                       </span>
                     </th>
 
-                      <th>
-                        <span style="color: #566787">
-                          <strong>
-                            # FAQs
-                          </strong>
-                        </span>
-                      </th>
+                    <th>
+                      <span style="color: #566787">
+                        <strong>
+                          # FAQs
+                        </strong>
+                      </span>
+                    </th>
 
                     <!-- <th style="">
                       <span style="color: #566787">
@@ -102,7 +101,7 @@
 
                   <!-- IF THERE ISN'T BOT -->
                   <tr *ngIf="faqkbList && faqkbList.length === 0"> 
-                    <td colspan="6" style="text-align: center; padding-top: 16px;">
+                    <td colspan="3" style="text-align: center; padding-top: 16px;">
                       <!-- color: #ff5252   -->
                       <p style="font-size:1em; margin-bottom: 0px; color:#999999; font-weight: 400">
                         {{ 'BotsPage.NoBot' | translate }}
@@ -124,13 +123,13 @@
                         </i>
                         <span style="vertical-align: middle; color:#ec971f; font-size: 12px"> 
                           <!-- pending add members -->
-                          {{ 'GroupsPage.PendingAddMembers' | translate }}
+                          {{ 'BotsPage.PendingAddFaqs' | translate }}
                         </span>
                       </span>
 
-                      <!-- <span *ngIf="faqkb?.has_faq"> -->
+                      <span *ngIf="faqkb?.has_faq">
                         {{ faqkb?.faqs_number }}
-                      <!-- </span> -->
+                      </span>
                     </td>
 
                     <!-- <td>
@@ -220,12 +219,30 @@
             </div>
           </div>
         </div>
-        <!-- /. end col-md-12 -->
-    </div>
+        <!-- /. end col-md-8 -->
+
+        <!-- // RIGHT SIDEBAR -->
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-content">
+              <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; margin-bottom: 15px">
+                {{ "QuickTips" | translate }}
+              </h4>
+
+              <p style="color:#999999">
+
+                <br>
+
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 
-  <!-- ============ MODAL WINDOWS ============ -->
+  <!-- ============ MODAL WINDOW ============ -->
 
   <!-- MODAL CONFIRM DELETE -->
   <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->

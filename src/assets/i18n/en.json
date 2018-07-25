@@ -50,6 +50,7 @@
     "YourPswHasBeenChanged":"Your password has been changed",
     "GoToLogin":"Go to Login",
     "InvalidPswResetKey":"Invalid password reset key",
+    "QuickTips": "Quick tips",
     "UserProfile": {
         "Profile": "Profile",
         "UploadImage": "Upload image",
@@ -228,11 +229,12 @@
     },
     "BotsPage": {
         "AddBot": "Add Bot",
-        "Name": "Name",
+        "Name": "Bot name",
         "RemoteId": "Remote Id",
         "CreationDate": "Creation date",
         "Actions": "Actions",
         "NoBot": "No Bot",
+        "PendingAddFaqs": "pending add FAQs",
         "tooltipEditBot": "Edit Bot",
         "tooltipDeleteBot": "Delete Bot",
         "tooltipViewAddEditFaq": "View / add / edit FAQ",
