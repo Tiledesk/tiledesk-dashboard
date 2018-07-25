@@ -42,6 +42,14 @@
                       </span>
                     </th>
 
+                      <th>
+                        <span style="color: #566787">
+                          <strong>
+                            # FAQs
+                          </strong>
+                        </span>
+                      </th>
+
                     <!-- <th style="">
                       <span style="color: #566787">
                         <strong>Id</strong>
@@ -92,8 +100,8 @@
             
                 <tbody>
 
-                <!-- IF THERE ISN'T BOT -->
-                <tr *ngIf="faqkbList && faqkbList.length === 0"> 
+                  <!-- IF THERE ISN'T BOT -->
+                  <tr *ngIf="faqkbList && faqkbList.length === 0"> 
                     <td colspan="6" style="text-align: center; padding-top: 16px;">
                       <!-- color: #ff5252   -->
                       <p style="font-size:1em; margin-bottom: 0px; color:#999999; font-weight: 400">
@@ -106,6 +114,23 @@
 
                     <td>
                       {{ faqkb?.name }}
+                    </td>
+
+                    <td>
+                      <span *ngIf="!faqkb?.has_faq">
+                        0
+                        <i class="material-icons" style="vertical-align: middle; color:#ec971f; font-size: 12px; padding-left: 8px">
+                          report_problem
+                        </i>
+                        <span style="vertical-align: middle; color:#ec971f; font-size: 12px"> 
+                          <!-- pending add members -->
+                          {{ 'GroupsPage.PendingAddMembers' | translate }}
+                        </span>
+                      </span>
+
+                      <!-- <span *ngIf="faqkb?.has_faq"> -->
+                        {{ faqkb?.faqs_number }}
+                      <!-- </span> -->
                     </td>
 
                     <!-- <td>

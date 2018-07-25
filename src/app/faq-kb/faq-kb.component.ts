@@ -37,8 +37,6 @@ export class FaqKbComponent implements OnInit {
 
   DELETE_BOT_ERROR = false;
 
-  FAQ_LENGTH: number;
-
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -74,10 +72,11 @@ export class FaqKbComponent implements OnInit {
       console.log('»»» »»» FAQs-KB GET BY PROJECT ID', faqKb);
 
       this.faqkbList = faqKb;
-      this.showSpinner = false;
+
+      /* moved in getFaqByFaqKbId */
+      // this.showSpinner = false;
     },
       (error) => {
-
         console.log('GET FAQ KB ERROR ', error);
         this.showSpinner = false;
       },
@@ -123,30 +122,45 @@ export class FaqKbComponent implements OnInit {
       this.faqKbId = this.faqkbList[i]._id;
 
       this.mongodbFaqService.getMongoDbFaqByFaqKbId(this.faqKbId).subscribe((faq: any) => {
-        console.log('»»»» FAQ-KB LIST - FAQS ARRAY', faq);
-        this.FAQ_LENGTH = faq.length;
-        console.log('»»»» FAQ-KB LIST - FAQS LENGTH', this.FAQ_LENGTH);
+        console.log('GET BOT FAQs - FAQs ARRAY ', faq);
 
-        let j: number;
-        for (j = 0; j < faq.length; j++) {
-          // console.log('MONGO DB FAQ - FAQ ID', faq[j]._id);
-          // console.log('MONGO DB FAQ - FAQ-KB ID', faq[j].id_faq_kb);
+        if (faq) {
 
-          // console.log('WITH THE FAQ-KB ID ', faq[j].id_faq_kb, 'FOUND FAQ WITH ID ', faq[j]._id)
-          this.faq_faqKbId = faq[j].id_faq_kb;
+          let j: number;
+          for (j = 0; j < faq.length; j++) {
+            // console.log('MONGO DB FAQ - FAQ ID', faq[j]._id);
+            // console.log('MONGO DB FAQ - FAQ-KB ID', faq[j].id_faq_kb);
 
-          for (const faqkb of this.faqkbList) {
-            if (faqkb._id === this.faq_faqKbId) {
-              // console.log('+> ID COINCIDONO');
+            // console.log('WITH THE FAQ-KB ID ', faq[j].id_faq_kb, 'FOUND FAQ WITH ID ', faq[j]._id)
+            this.faq_faqKbId = faq[j].id_faq_kb;
 
-              // set in the json the value true to the property has_faq
-              faqkb.faqs_number = faq.length
-              faqkb.has_faq = true;
+            for (const faqkb of this.faqkbList) {
+
+              if (faqkb._id === this.faq_faqKbId) {
+                console.log('+> ID COINCIDONO');
+
+
+                faqkb.faqs_number = faq.length
+                console.log('»»» BOT ID', faqkb._id, 'FAQ LENGHT ', faq.length);
+                // set in the json the value true to the property has_faq
+                faqkb.has_faq = true;
+              }
             }
+
           }
 
         }
-      });
+      },
+        (error) => {
+          console.log('GET BOT FAQs - ERROR ', error)
+          this.showSpinner = false;
+        },
+        () => {
+          console.log('GET BOT FAQs - COMPLETE ');
+          this.showSpinner = false;
+
+
+        });
     }
   }
 
