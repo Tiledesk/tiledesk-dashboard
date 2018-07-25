@@ -29,7 +29,7 @@
             <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
             <div *ngIf="!showSpinner" class="card-content table-responsive">
-              <table class="table">
+              <table class="table table-hover">
                 <thead>
                   <tr>
                     <th>
@@ -100,7 +100,7 @@
                 <tbody>
 
                   <!-- IF THERE ISN'T BOT -->
-                  <tr *ngIf="faqkbList && faqkbList.length === 0"> 
+                  <tr *ngIf="faqkbList && faqkbList?.length === 0"> 
                     <td colspan="3" style="text-align: center; padding-top: 16px;">
                       <!-- color: #ff5252   -->
                       <p style="font-size:1em; margin-bottom: 0px; color:#999999; font-weight: 400">
@@ -111,11 +111,11 @@
             
                   <tr *ngFor="let faqkb of faqkbList">
 
-                    <td>
+                    <td (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)' style="cursor: pointer;">
                       {{ faqkb?.name }}
                     </td>
 
-                    <td>
+                    <td (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)' style="cursor: pointer;">
                       <span *ngIf="!faqkb?.has_faq">
                         0
                         <i class="material-icons" style="vertical-align: middle; color:#ec971f; font-size: 12px; padding-left: 8px">
@@ -179,7 +179,8 @@
                             <i class="material-icons">edit</i>
                         </button>
                         <!-- Elimima FAQ Knowledge Base -->
-                        <button type="button" rel="tooltip" title="{{ 'BotsPage.tooltipDeleteBot' | translate }}" class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal(faqkb?._id, HAS_FAQ_RELATED=faqkb?.has_faq)'>
+                        <button type="button" rel="tooltip" title="{{ 'BotsPage.tooltipDeleteBot' | translate }}" class="btn btn-danger btn-simple btn-xs" 
+                        (click)='openDeleteModal(faqkb?._id, faqkb?.name, faqkb?.has_faq)'>
                             <i class="material-icons">close</i>
                         </button>
                     </td>
@@ -243,7 +244,6 @@
   </div>
 
   <!-- ============ MODAL WINDOW ============ -->
-
   <!-- MODAL CONFIRM DELETE -->
   <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->
   <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}" style="background-color: rgba(90,90,90,0.5);">
@@ -362,3 +362,61 @@
       <!-- /.modal-dialog -->
     </div>
     <!-- // END MODAL - INFO WINDOWS  - 'DELETE ACTION' COMPLETED -->
+
+
+    <!-- 
+    ***********************************  
+    *** NEW DELETE BOT MODAL WINDOW ***
+    *********************************** -->
+    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDeleteBotModal}" style="background-color: rgba(90,90,90,0.5);">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content" style="border-radius: 6px;">
+            <div class="modal-header">
+              <button type="button" class="close" aria-label="Close" (click)="onCloseDeleteBotModal()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title" style="color: #fff">
+                  <i class="material-icons" style="vertical-align: middle">
+                    report_problem
+                  </i>
+                  <span style="vertical-align: middle; padding-left:8px">
+                    <!-- Elimina bot -->
+                    {{ "BotsPage.DeleteBot" | translate }}
+                  </span>
+              </h4>
+              <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em ">
+                {{ "BotsPage.TheBot" | translate }} 
+                <span style="font-weight: 400;"> 
+                  “{{ bot_name_to_delete}}”
+                </span>
+                {{ "BotsPage.WillBeDeleted" | translate }}
+              </h4>
+            </div>
+            <div class="modal-body">
+                <p style="font-weight: 400; color: rgba(0,0,0,0.87)">
+                    {{ "BotsPage.IfYouDeleted" | translate }}
+                </p>
+
+                <label style="font-weight:400; text-align: left; padding-top:16px; font-size: 13px; color: rgba(0,0,0,0.54) " class="col-sm-10 ">
+                  {{ "BotsPage.ToDeleteTheBotType" | translate }}
+                  <span style="color:#212121">
+                    <strong> {{id_toDelete}}</strong> 
+                  </span>
+                </label>
+                <div class="col-sm-10">
+                  <input [(ngModel)]="bot_id_typed" (input)="checkIdBotTyped()" class="" type="text" placeholder="ID bot">
+                </div>
+            </div>
+            <!-- margin-top: 75px; -->
+            <div class="modal-footer" style="">
+              <button class="btn btn-white" (click)="onCloseDeleteBotModal()" style="padding:12px 16px;">
+                {{ "BotsPage.Cancel" | translate }}
+              </button>
+              <button style="margin-top:0px" class="btn btn-danger"  [disabled]="!ID_BOT_TYPED_MATCHES_THE_BOT_ID" (click)="trashTheBot()">
+                <!-- Elimina bot -->
+                {{ "BotsPage.DeleteBot" | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>

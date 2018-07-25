@@ -7,6 +7,7 @@ import { MongodbFaqService } from '../services/mongodb-faq.service';
 import { Project } from '../models/project-model';
 import { AuthService } from '../core/auth.service';
 import { Location } from '@angular/common';
+import { NotifyService } from '../core/notify.service';
 
 
 @Component({
@@ -19,7 +20,8 @@ export class FaqKbComponent implements OnInit {
   faqkbList: FaqKb[];
 
   // set to none the property display of the modal
-  display = 'none';
+  display = 'none';  // NO MORE USED (IS THE OLD MODAL USED TO DELETE THE BOT)
+  displayDeleteBotModal = 'none'; // THE NEW MODAL USED TO DELETE THE BOT
   displayDeleteInfoModal = 'none';
   SHOW_CIRCULAR_SPINNER = false;
 
@@ -36,13 +38,17 @@ export class FaqKbComponent implements OnInit {
   NUMBER_OF_CICLE: number;
 
   DELETE_BOT_ERROR = false;
+  bot_id_typed: string;
+  ID_BOT_TYPED_MATCHES_THE_BOT_ID: boolean;
+  bot_name_to_delete: string;
 
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
     private mongodbFaqService: MongodbFaqService,
     private auth: AuthService,
-    private _location: Location
+    private _location: Location,
+    private notify: NotifyService
   ) { }
 
   ngOnInit() {
@@ -70,10 +76,17 @@ export class FaqKbComponent implements OnInit {
   getFaqKbByProjectId() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
       console.log('»»» »»» FAQs-KB GET BY PROJECT ID', faqKb);
-
       this.faqkbList = faqKb;
 
-      /* moved in getFaqByFaqKbId */
+      if (this.faqkbList) {
+
+        if (this.faqkbList.length === 0) {
+          this.showSpinner = false;
+        }
+      }
+      /* this.showSpinner = false moved in getFaqByFaqKbId:
+       * in this callback stop the spinner only if there isn't faq-kb and
+       * if there is an error */
       // this.showSpinner = false;
     },
       (error) => {
@@ -82,10 +95,8 @@ export class FaqKbComponent implements OnInit {
       },
       () => {
         console.log('GET FAQ KB COMPLETE');
-
         // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
         this.getFaqByFaqKbId();
-
       });
 
   }
@@ -146,24 +157,19 @@ export class FaqKbComponent implements OnInit {
                 faqkb.has_faq = true;
               }
             }
-
           }
-
         }
-      },
-        (error) => {
-          console.log('GET BOT FAQs - ERROR ', error)
-          this.showSpinner = false;
-        },
-        () => {
-          console.log('GET BOT FAQs - COMPLETE ');
-          this.showSpinner = false;
-
-
-        });
+      }, (error) => {
+        console.log('GET BOT FAQs - ERROR ', error)
+        this.showSpinner = false;
+      }, () => {
+        console.log('GET BOT FAQs - COMPLETE ');
+        this.showSpinner = false;
+      });
     }
   }
 
+  // !!! NO MORE USED ????
   getFaqByFaqKbIdForDeleteModal() {
     // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
     // let i: number;
@@ -190,7 +196,6 @@ export class FaqKbComponent implements OnInit {
             faqkb.has_faq = true;
           }
         }
-
       }
     });
     // }
@@ -200,15 +205,60 @@ export class FaqKbComponent implements OnInit {
    * MODAL DELETE FAQ KB
    * @param id
    */
-  openDeleteModal(id: string, HAS_FAQ_RELATED: boolean) {
+  openDeleteModal(id: string, bot_name: string, HAS_FAQ_RELATED: boolean) {
     console.log('ON MODAL DELETE OPEN -> FAQ-KB ID ', id);
+    console.log('ON MODAL DELETE OPEN -> FAQ-KB NAME ', bot_name);
     console.log('ON MODAL DELETE OPEN -> HAS_FAQ_RELATED ', HAS_FAQ_RELATED);
 
     this.HAS_FAQ_RELATED = HAS_FAQ_RELATED;
-    this.display = 'block';
+
+    // this.display = 'block'; // NO MORE USED (IS THE OLD MODAL USED TO DELETE THE BOT)
+
+    this.displayDeleteBotModal = 'block'; // THE NEW MODAL USED TO DELETE THE BOT
 
     this.id_toDelete = id;
+    this.bot_name_to_delete = bot_name;
+  }
 
+  /**
+   * ********************* NEW DELETE BOT *********************
+   * THE BOT (AND THE ANY RELATED FAQ) ARE NO MORE REALLY DELETED
+   * BUT THE BOT IS ONLY EDITED WITH THE PROPERTY trashed = true
+   */
+
+  onCloseDeleteBotModal() {
+    this.displayDeleteBotModal = 'none';
+  }
+  // ENABLED THE BUTTON 'DELETE BOT' IF THE BOT ID TYPED BY THE USER
+  // MATCHES TO THE BOT ID
+  checkIdBotTyped() {
+    console.log('BOT ID TYPED BY USER', this.bot_id_typed);
+
+    if (this.id_toDelete === this.bot_id_typed) {
+      this.ID_BOT_TYPED_MATCHES_THE_BOT_ID = true;
+      console.log('»» BOT ID TYPED MATCHES THE BOT ID ', this.ID_BOT_TYPED_MATCHES_THE_BOT_ID)
+    } else {
+      this.ID_BOT_TYPED_MATCHES_THE_BOT_ID = false;
+      console.log('»» BOT ID TYPED MATCHES THE BOT ID ', this.ID_BOT_TYPED_MATCHES_THE_BOT_ID)
+    }
+  }
+
+  trashTheBot() {
+    this.faqKbService.updateFaqKbAsTrashed(this.id_toDelete, true).subscribe((updatedFaqKb: any) => {
+      console.log('TRASH THE BOT - UPDATED FAQ-KB ', updatedFaqKb);
+    }, (error) => {
+      // =========== NOTIFY ERROR ===========
+      this.notify.showNotification('An error occurred while deleting the bot', 4, 'report_problem');
+      console.log('TRASH THE BOT - ERROR ', error);
+    }, () => {
+      console.log('TRASH THE BOT - COMPLETE');
+      // =========== NOTIFY SUCCESS===========
+      this.notify.showNotification('bot successfully deleted', 2, 'done');
+
+      this.getFaqKbByProjectId();
+      this.displayDeleteBotModal = 'none';
+
+    });
 
   }
 
@@ -219,7 +269,6 @@ export class FaqKbComponent implements OnInit {
     * - IF THERE ARE NO FAQ, THE FAQ-KB IS IMMEDIATELY DELETED
     * NOTE: THIS WF RESOLVES THE ISSUE 'FAQ-KB-ID NOT FOUND' WHEN IN CHAT21-SUPPORT-NODEJS-API ARE DELETED THE REMOTE FAQ
     */
-
   onCloseDeleteModalHandled() {
     this.display = 'none';
 
@@ -253,52 +302,38 @@ export class FaqKbComponent implements OnInit {
 
             this.mongodbFaqService.deleteMongoDbFaq(relatedFaqIdToDelete).subscribe((faq_to_delete) => {
               console.log('DELETE RELATED FAQ ', faq_to_delete);
-            },
-              (error) => {
-                console.log('DELETE RELATED FAQ - ERROR ', error);
-                this.SHOW_CIRCULAR_SPINNER = false;
-              },
-              () => {
-                console.log('DELETE RELATED FAQ * COMPLETE *');
-                this.deleteFaqKb();
-              });
-
+            }, (error) => {
+              console.log('DELETE RELATED FAQ - ERROR ', error);
+              this.SHOW_CIRCULAR_SPINNER = false;
+            }, () => {
+              console.log('DELETE RELATED FAQ * COMPLETE *');
+              this.deleteFaqKb();
+            });
           }
-
         } else {
-
           this.deleteFaqKb();
         }
 
-      },
-        (error) => {
-
-          console.log('GET FAQ BY FAQ-KB ID - ERROR ', error);
-
-          this.SHOW_CIRCULAR_SPINNER = false;
-
-          this.DELETE_BOT_ERROR = true;
-        },
-        () => {
-          console.log('GET FAQ BY FAQ-KB * COMPLETE *');
-
-          setTimeout(() => {
-            this.SHOW_CIRCULAR_SPINNER = false
-          }, 300);
-
-          this.DELETE_BOT_ERROR = false;
-        });
+      }, (error) => {
+        console.log('GET FAQ BY FAQ-KB ID - ERROR ', error);
+        this.SHOW_CIRCULAR_SPINNER = false;
+        this.DELETE_BOT_ERROR = true;
+      }, () => {
+        console.log('GET FAQ BY FAQ-KB * COMPLETE *');
+        setTimeout(() => {
+          this.SHOW_CIRCULAR_SPINNER = false
+        }, 300);
+        this.DELETE_BOT_ERROR = false;
+      });
 
   }
 
   deleteFaqKb() {
-
     this.faqKbService.deleteMongoDbFaqKb(this.id_toDelete)
       .subscribe((data) => {
         console.log('DELETE FAQ-KB ', data);
       }, (error) => {
         console.log('DELETE FAQ-KB (BOT) REQUEST ERROR ', error);
-
         this.SHOW_CIRCULAR_SPINNER = false;
         this.DELETE_BOT_ERROR = true;
       },

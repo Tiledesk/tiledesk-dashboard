@@ -1,3 +1,23 @@
+input[type=text] {
+    // min-width: 307px !important;
+    height: 36px;
+    font-size: 14px;
+    width: 100%;
+    margin-bottom: 10px;
+    -webkit-appearance: none;
+    background: #fff;
+    border: 1px solid #d9d9d9 !important;
+    border-top: 1px solid #c0c0c0;
+    /* border-radius: 2px; */
+    padding: 0 8px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border-radius: 5px;
+    background-color: #fff !important;
+    border: solid 1px #ddd;
+}
+
+
 /* TABLE CONTENT VERTICAL ALIGNMENT */
 .table td, .table th {
     vertical-align: middle
@@ -41,7 +61,9 @@
 //             margin-left: 40%;
 //         }
 //     }
-    
+   /**
+    * MODAL DELETE TYPE (RED MODAL HEADER)
+    */
     .modal {
         top: 0;
     }
@@ -61,6 +83,8 @@
     .modal-header {
         padding: 15px;
         border-bottom: 1px solid #e5e5e5;
+        border-radius: 6px 6px 0px 0px;
+        background-color: #ff5252;
     }
     
     .modal-title {
@@ -88,10 +112,11 @@
     
     .modal-body {
         position: relative;
-        padding-top: 35px;
-        padding-bottom: 35px;
+        // padding-top: 35px;
+        // padding-bottom: 35px;
         padding-right: 0px;
         padding-left: 15px;
+        min-height:150px
     }
     
     .modal-footer {

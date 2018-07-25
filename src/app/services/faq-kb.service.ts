@@ -229,5 +229,32 @@ export class FaqKbService {
 
   }
 
+   /**
+   * UPDATE (PUT) the BOT WITH trashed = true WHEN THE USER CLICKED THE BTN 'DELETE BOT' 
+   * @param id
+   * @param fullName
+   */
+  public updateFaqKbAsTrashed(id: string, _trashed: boolean) {
+
+    let url = this.MONGODB_BASE_URL;
+    url = url += `${id}`;
+    console.log('PUT URL ', url);
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = { 'trashed': _trashed };
+
+    console.log('PUT REQUEST BODY ', body);
+
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+
+  }
+
 
 }
