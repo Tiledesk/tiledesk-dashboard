@@ -38,6 +38,8 @@ select {
 .modal {
     top: 0;
 }
+
+
 .modal-content {
     position: relative;
     background-color: #fff;
@@ -49,6 +51,12 @@ select {
     outline: 0;
     -webkit-box-shadow: 0 3px 9px rgba(0,0,0,.5);
     box-shadow: 0 3px 9px rgba(0,0,0,.5);
+}
+
+@media screen and (min-width: 767px) {
+    .modal-content {
+        width: 360px
+    }
 }
 
 .modal-header {
