@@ -359,8 +359,9 @@
               <!-- <th class="th_table-fixed"></th> -->
             </tr>
           </thead>
-          
-          <tbody class="tbody_table-fixed" style="height: 250px;">
+          <!-- style="height: 250px;" -->
+          {{users_list_modal_height }}
+          <tbody class="tbody_table-fixed" [ngStyle]="{ 'height': users_list_modal_height }">
               
             <tr class="tr_table-fixed" *ngFor="let project_user of projectUsersList" style="overflow-y: auto;">
 

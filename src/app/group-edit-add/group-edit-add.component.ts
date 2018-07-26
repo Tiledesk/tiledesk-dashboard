@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { GroupService } from '../services/group.service';
@@ -47,6 +47,11 @@ export class GroupEditAddComponent implements OnInit {
 
   browser_lang: string;
 
+  // users_list_modal_height = '150px'
+  users_list_modal_height: any
+  windowActualHeight: any
+  newInnerHeight: any
+
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -59,10 +64,36 @@ export class GroupEditAddComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.onInitUsersListModalHeight();
     this.detectBrowserLang();
     this.detectsCreateEditInTheUrl();
 
     this.getCurrentProject();
+  }
+
+  onInitUsersListModalHeight() {
+
+    this.windowActualHeight = window.innerHeight;
+    console.log('»»» GROUP EDIT ADD - ACTUAL HEIGHT ', this.windowActualHeight);
+
+    this.users_list_modal_height = this.windowActualHeight - 400
+    console.log('»»» GROUP EDIT ADD - ON INIT USER LIST MODAL HEIGHT ', this.users_list_modal_height);
+
+    return { 'height': this.users_list_modal_height += 'px' };
+  }
+
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    // this.newInnerWidth = event.target.innerWidth;
+    this.newInnerHeight = event.target.innerHeight;
+    this.users_list_modal_height = this.newInnerHeight - 400
+
+    console.log('»»» GROUP EDIT ADD - NEW INNER HEIGHT ', this.newInnerHeight);
+    console.log('»»» GROUP EDIT ADD - ON RESIZE USER LIST MODAL HEIGHT ', this.users_list_modal_height);
+
+    return { 'height': this.users_list_modal_height += 'px' };
+
   }
 
   detectBrowserLang() {
