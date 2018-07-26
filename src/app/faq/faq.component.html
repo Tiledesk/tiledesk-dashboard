@@ -147,8 +147,15 @@
                 <span class="tooltiptext">{{ 'FaqPage.AddFaq' | translate }}</span>
               </button> -->
 
-              <button class="btn btn-info tooltipx" style="padding:6px;  margin-top: 0px; margin-bottom: 0px; margin-left: 15px" 
-              (click)="goToEditAddPage_CREATE()">
+              <!-- 
+              *********************************  
+              BUTTON ADD FAQ 
+              *********************************
+              -->
+              <!-- btn-simple btn-xs  -->
+              <button class="btn btn-info tooltipx" 
+                style="padding:4px;  margin-top: 0px; margin-bottom: 0px; margin-left: 15px; border-radius: 50px;" 
+                (click)="goToEditAddPage_CREATE()">
                   <!-- is-small -->
                 <span class="icon" style="padding-right:0px">
                   <i class="material-icons">add</i>
@@ -157,9 +164,14 @@
                 <span class="tooltiptext"> {{ 'FaqPage.AddFaq' | translate }} </span>
               </button>
 
-              <!-- NEW UPLAD CSV FILE -->
-              <button class="btn btn-info tooltipx" style="padding:6px; text-transform:none; margin-top: 0px; margin-bottom: 0px; margin-left: 10px" 
-              (click)="openImportModal()">
+              <!-- 
+              *********************************  
+              BUTTON ADD FAQ FROM CSV FILE
+              *********************************
+              -->
+              <button class="btn btn-info tooltipx" 
+                style="padding:4px; text-transform:none; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;" 
+                (click)="openImportModal()">
                 
                 <span class="icon" style="padding-right:0px;">
                   <i class="material-icons">file_upload</i>
@@ -168,8 +180,14 @@
                 <span class="tooltiptext">{{ 'FaqPage.UploadFaqsFromCsv' | translate }}</span>
               </button>
 
-              <button class="btn btn-info tooltipx" style="padding:6px;margin-top: 0px; margin-bottom: 0px; margin-left: 10px" 
-              (click)="goToTestFaqPage()">
+              <!-- 
+              *********************************  
+              BUTTON TEST BOT 
+              *********************************
+              -->
+              <button class="btn btn-info tooltipx"
+                style="padding:4px; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;" 
+                (click)="goToTestFaqPage()">
                 <span class="icon" style="padding-right:0px; text-transform:none">
                   <i class="material-icons">play_arrow</i>
                 </span>
@@ -202,22 +220,32 @@
                     </strong>
                   </span>
                 </th>
-                <th style="width: 280px !important">
+
+
+                <!-- 
+                *******************  
+                ID
+                ******************* -->
+                <!-- <th style="width: 280px !important">
                   <span style="color: #566787">
                     <strong>
                       Id
                     </strong>
                   </span>
-                </th>
-                <th>
-                  <!-- Creation Date -->
+                </th> -->
+
+                <!-- 
+                *******************  
+                Creation Date 
+                ******************* -->
+                <!-- <th>
                   <span style="color: #566787">
                     <strong>
                       {{ 'FaqPage.CreationDate' | translate }}
                     </strong>
-
                   </span>
-                </th>
+                </th> -->
+
                 <th>
                   <!-- Actions -->
                   <span style="color: #566787">
@@ -233,7 +261,7 @@
         
               <!-- IF THERE ISN'T FAQ -->
               <tr *ngIf="faq?.length === 0"> 
-                <td colspan="5" style="text-align: center; padding-top: 16px;">
+                <td colspan="3" style="text-align: center; padding-top: 16px;">
                   <!-- color: #ff5252   -->
                   <p style="font-size:1em; color:#999999; font-weight: 400">
                     <!-- NO FAQ   -->
@@ -250,28 +278,15 @@
                   {{ faq?.answer }}
                 </td>
                 <!-- style="width: 280px !important" -->
-                <td>
+
+                <!-- <td>
                   {{ faq?._id }}
-                </td>
-                <td>
+                </td> -->
+
+                <!-- <td>
                   {{ faq?.createdAt | date: 'd/M/y'}}
-                </td>
-      
-                <!-- EDIT -->
-                <!-- <td style="text-align: center!important;padding-left:8px; padding-right:8px;">
-                  <span class="icon" style="color:#f6ca4f; cursor: pointer;" (click)="goToEditAddPage_EDIT(faq?._id)" >
-                    <i class="fa fa-pencil"></i>
-                  </span>
                 </td> -->
-                <!-- /. edit -->
       
-                <!-- DELETE -->
-                <!-- <td style="text-align: center!important; padding-left: 0px; padding-right: 18px;">
-                      <span class="icon" style="color:#e36456;cursor: pointer;" (click)='openDeleteModal(faq?._id, hasClickedDeleteModal = true)'>
-                    <i class="fa fa-trash-o"></i>
-                  </span>
-                </td> -->
-                <!-- /. delete -->
 
                 <!-- NEW -->
                 <td class="td-actions text-right">
