@@ -206,6 +206,13 @@ export class FaqKbComponent implements OnInit {
    * @param id
    */
   openDeleteModal(id: string, bot_name: string, HAS_FAQ_RELATED: boolean) {
+
+    // FIX THE BUG: WHEN THE MODAL IS OPENED, IF ANOTHER BOT HAS BEEN DELETED PREVIOUSLY, IS DISPLAYED THE ID OF THE BOT DELETED PREVIOUSLY
+    this.bot_id_typed = '';
+    // FIX THE BUG: WHEN THE MODAL IS OPENED, IF ANOTHER BOT HAS BEEN DELETED PREVIOUSLY, THE BUTTON 'DELETE BOT' IS ACTIVE
+    this.ID_BOT_TYPED_MATCHES_THE_BOT_ID = false;
+
+    console.log('»» ON MODAL DELETE OPEN - BOT ID TYPED BY USER', this.bot_id_typed);
     console.log('ON MODAL DELETE OPEN -> FAQ-KB ID ', id);
     console.log('ON MODAL DELETE OPEN -> FAQ-KB NAME ', bot_name);
     console.log('ON MODAL DELETE OPEN -> HAS_FAQ_RELATED ', HAS_FAQ_RELATED);
@@ -227,6 +234,7 @@ export class FaqKbComponent implements OnInit {
    */
 
   onCloseDeleteBotModal() {
+    
     this.displayDeleteBotModal = 'none';
   }
   // ENABLED THE BUTTON 'DELETE BOT' IF THE BOT ID TYPED BY THE USER
