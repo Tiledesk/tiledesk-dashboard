@@ -36,7 +36,7 @@ export class GroupEditAddComponent implements OnInit {
   displayDeleteModal = 'none';
   id_user_to_delete: string;
 
-  openModalAddMembers = true
+  goToEditGroup = true
   group_name: string;
   id_new_group: string;
 
@@ -205,7 +205,14 @@ export class GroupEditAddComponent implements OnInit {
       },
         (error) => {
           console.log('CREATE GROUP - POST REQUEST ERROR ', error);
-          this.CREATE_GROUP_ERROR = true;
+          setTimeout(() => {
+            this.SHOW_CIRCULAR_SPINNER = false
+            this.CREATE_GROUP_ERROR = true;
+          }, 300);
+
+          // IF THERE IS AN ERROR, PREVENT THAT THE USER BE ADDRESSED TO THE PAGE 'EDIT BOT'
+          // WHEN CLICK ON THE BUTTON 'CONTINUE' OF THE MODAL 'CREATE BOT'
+          this.goToEditGroup = false;
         },
         () => {
           console.log('CREATE GROUP - POST REQUEST * COMPLETE *');
@@ -229,16 +236,16 @@ export class GroupEditAddComponent implements OnInit {
   // "ADD GROUP MEMBERS NOW" and "RETURN TO THE LIST (ADD AFTER)". DEFAULT IS SELECTED THE FIRST ACTION.
   // WHEN THE USER CLICK ON "CONTINUE" WILL BE ADDRESSED: TO THE VIEW OF "EDIT GROUP" or,
   // IF THE USER SELECT THE SECOND OPTION, TO THE LIST OF GROUPS
-  actionAfterGroupCreation(openModalAddMembers) {
-    console.log('OPEN MODAL TO ADD MEMBERS ', openModalAddMembers)
-    this.openModalAddMembers = openModalAddMembers
+  actionAfterGroupCreation(goToEditGroup) {
+    console.log('OPEN MODAL TO ADD MEMBERS ', goToEditGroup)
+    this.goToEditGroup = goToEditGroup
   }
 
   // CREATE GROUP MODAL - HANDLE THE ACTION OF THE BUTTON 'CONTINUE'
   onCloseCreateGroupModal() {
     this.displayCreateGroupModal = 'none'
 
-    if (this.openModalAddMembers === true) {
+    if (this.goToEditGroup === true) {
       this.router.navigate(['project/' + this.project_id + '/group/edit/' + this.id_new_group]);
       console.log('1) check if HAS COMPLETED getGroupById ', this.has_completed_getGroupById)
 
@@ -267,8 +274,8 @@ export class GroupEditAddComponent implements OnInit {
 
         // this.router.navigate(['project/' + this.project_id + '/groups']);
 
-         // =========== NOTIFY SUCCESS===========
-         this.notify.showNotification('group successfully updated', 2, 'done');
+        // =========== NOTIFY SUCCESS===========
+        this.notify.showNotification('group successfully updated', 2, 'done');
 
         // UPDATE THE GROUP LIST
         // this.ngOnInit()
@@ -394,28 +401,27 @@ export class GroupEditAddComponent implements OnInit {
 
         console.log('UPDATED GROUP WITH THE USER SELECTED', group);
 
-      },
-        (error) => {
-          console.log('UPDATED GROUP WITH THE USER SELECTED - ERROR ', error);
-        },
-        () => {
-          console.log('UPDATED GROUP WITH THE USER SELECTED* COMPLETE *');
+      }, (error) => {
+        console.log('UPDATED GROUP WITH THE USER SELECTED - ERROR ', error);
+        // =========== NOTIFY ERROR ===========
+        this.notify.showNotification('An error occurred while removing the member', 4, 'report_problem');
 
-          this.notify.showNotification('member successfully deleted', 2, 'done');
+      }, () => {
+        console.log('UPDATED GROUP WITH THE USER SELECTED* COMPLETE *');
 
-          // UPDATE THE GROUP LIST
-          this.ngOnInit()
-          // this.getAllUsersOfCurrentProject();
-        });
+        // =========== NOTIFY SUCCESS===========
+        this.notify.showNotification('member successfully removed', 2, 'done');
 
+        // UPDATE THE GROUP LIST
+        this.ngOnInit()
+        // this.getAllUsersOfCurrentProject();
+      });
     }
   }
 
   goToMemberProfile(member_id: any) {
     console.log('has clicked GO To MEMBER ', member_id);
-
     this.router.navigate(['project/' + this.project_id + '/member/' + member_id]);
-
   }
 
 

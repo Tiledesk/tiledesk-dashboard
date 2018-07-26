@@ -51,6 +51,7 @@
     "GoToLogin": "Go to Login",
     "InvalidPswResetKey": "Invalid password reset key",
     "QuickTips": "Quick tips",
+    "Error":"Error",
     "UserProfile": {
         "Profile": "Profile",
         "UploadImage": "Upload image",
@@ -277,6 +278,7 @@
         "HasBeenCreated": "has been successfully created",
         "AddFaqToTheBot":"Add FAQs to the bot",
         "ReturnToTheBotList":"Return to the bot list",
+        "AnErrorHasOccurred":"An error has occurred",
         "Continue": "Continue"
     },
     "FaqPage": {

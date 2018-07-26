@@ -37,6 +37,8 @@ export class FaqKbEditAddComponent implements OnInit {
   newBot_Id: string;
   browser_lang: string;
 
+  CREATE_BOT_ERROR: boolean;
+
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -103,6 +105,7 @@ export class FaqKbEditAddComponent implements OnInit {
   create() {
     this.displayInfoModal = 'block'
     this.SHOW_CIRCULAR_SPINNER = true;
+    this.CREATE_BOT_ERROR = false;
 
     console.log('HAS CLICKED CREATE NEW FAQ-KB');
     console.log('Create Faq Kb - NAME ', this.faqKbName);
@@ -124,6 +127,14 @@ export class FaqKbEditAddComponent implements OnInit {
       },
         (error) => {
           console.log('CREATE FAQKB - POST REQUEST ERROR ', error);
+          setTimeout(() => {
+            this.SHOW_CIRCULAR_SPINNER = false
+            this.CREATE_BOT_ERROR = true;
+          }, 300);
+
+          // IF THERE IS AN ERROR, PREVENT THAT THE USER BE ADDRESSED TO THE PAGE 'EDIT BOT'
+          // WHEN CLICK ON THE BUTTON 'CONTINUE' OF THE MODAL 'CREATE BOT'
+          this.goToEditBot = false;
         },
         () => {
           console.log('CREATE FAQKB - POST REQUEST * COMPLETE *');

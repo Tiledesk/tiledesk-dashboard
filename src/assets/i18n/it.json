@@ -51,6 +51,7 @@
     "GoToLogin":"Go to Login",
     "InvalidPswResetKey":"Chiave di reimpostazione password non valida",
     "QuickTips": "Consigli veloci",
+    "Error":"Errore",
     "UserProfile": {
         "Profile": "Profilo",
         "UploadImage": "Carica immagine",
@@ -305,6 +306,7 @@
         "HasBeenCreated": "è stato creato con successo",
         "AddFaqToTheBot":"Aggiungi FAQs al Bot",
         "ReturnToTheBotList":"Ritorna all'elenco dei bot",
+        "AnErrorHasOccurred":"Si è verificato un errore",
         "Continue": "Continua"
     },
     "DepartmentsPage": {
