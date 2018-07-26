@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Project } from '../models/project-model';
 import { AuthService } from '../core/auth.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'faq-kb-edit-add',
@@ -30,14 +31,22 @@ export class FaqKbEditAddComponent implements OnInit {
 
   displayInfoModal = 'none';
   SHOW_CIRCULAR_SPINNER = false;
+  goToEditBot = true;
+
+  newBot_name: string;
+  newBot_Id: string;
+  browser_lang: string;
+
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
     private route: ActivatedRoute,
-    private auth: AuthService
+    private auth: AuthService,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
+    this.detectBrowserLang();
 
     // BASED ON THE URL PATH DETERMINE IF THE USER HAS SELECTED (IN FAQ-KB PAGE) 'CREATE' OR 'EDIT'
     // if (this.router.url === '/createfaqkb') {
@@ -59,6 +68,10 @@ export class FaqKbEditAddComponent implements OnInit {
     this.getCurrentProject();
   }
 
+  detectBrowserLang() {
+    this.browser_lang = this.translate.getBrowserLang();
+    console.log('»» »» FAQ-KB-EDIT-ADD COMP - BROWSER LANGUAGE ', this.browser_lang);
+  }
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
@@ -99,6 +112,10 @@ export class FaqKbEditAddComponent implements OnInit {
       .subscribe((faqKb) => {
         console.log('CREATE FAQKB - POST DATA ', faqKb);
 
+        if (faqKb) {
+          this.newBot_name = faqKb.name;
+          this.newBot_Id = faqKb._id;
+        }
         // this.bot_fullname = '';
 
         // RE-RUN GET CONTACT TO UPDATE THE TABLE
@@ -125,9 +142,22 @@ export class FaqKbEditAddComponent implements OnInit {
         });
   }
 
+  // WHEN A BOT IS CREATED IN THE MODAL WINDOW 'CREATE BOT', TWO ACTIONS ARE POSSIBLE:
+  // "ADD FAQS NOW" and "RETURN TO THE BOT LIST (ADD AFTER)". DEFAULT IS SELECTED THE FIRST ACTION.
+  // WHEN THE USER CLICK ON "CONTINUE" WILL BE ADDRESSED: TO THE VIEW OF "EDIT BOT" or,
+  // IF THE USER SELECT THE SECOND OPTION, TO THE LIST OF BOT
+  actionAfterGroupCreation(goToEditBot) {
+    this.goToEditBot = goToEditBot;
+    console.log('»»» »»» GO TO EDIT BOT ', goToEditBot)
+  }
+
   onCloseInfoModalHandled() {
     // this.router.navigate(['project/' + this.project._id + '/faqkb']);
-    this.router.navigate(['project/' + this.project._id + '/bots']);
+    if (this.goToEditBot === true) {
+      this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id]);
+    } else {
+      this.router.navigate(['project/' + this.project._id + '/bots']);
+    }
   }
 
   onCloseModal() {
@@ -162,6 +192,8 @@ export class FaqKbEditAddComponent implements OnInit {
     // this.router.navigate(['project/' + this.project._id + '/faqkb']);
     this.router.navigate(['project/' + this.project._id + '/bots']);
   }
+
+
 
 
 }

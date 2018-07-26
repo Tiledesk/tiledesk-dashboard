@@ -5,6 +5,7 @@ import { GroupService } from '../services/group.service';
 import { ActivatedRoute } from '@angular/router';
 import { UsersService } from '../services/users.service';
 import { NotifyService } from '../core/notify.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-group-edit-add',
@@ -44,6 +45,8 @@ export class GroupEditAddComponent implements OnInit {
   ADD_MEMBER_TO_GROUP_ERROR = false;
   COUNT_OF_MEMBERS_ADDED: number;
 
+  browser_lang: string;
+
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -51,15 +54,21 @@ export class GroupEditAddComponent implements OnInit {
     private route: ActivatedRoute,
     private groupsService: GroupService,
     private usersService: UsersService,
-    private notify: NotifyService
+    private notify: NotifyService,
+    private translate: TranslateService,
   ) { }
 
   ngOnInit() {
+    this.detectBrowserLang();
     this.detectsCreateEditInTheUrl();
 
     this.getCurrentProject();
   }
 
+  detectBrowserLang() {
+    this.browser_lang = this.translate.getBrowserLang();
+    console.log('»» »» GROUP-EDIT-ADD COMP - BROWSER LANGUAGE ', this.browser_lang);
+  }
 
   detectsCreateEditInTheUrl() {
     if (this.router.url.indexOf('/create') !== -1) {
@@ -121,7 +130,7 @@ export class GroupEditAddComponent implements OnInit {
       });
   }
 
-    // is used to display name lastname role in the members list table
+  // is used to display name lastname role in the members list table
   // if the id of the user in the project_user object is equal match with one of id contains 
   // in the array 'this.group_members' the user_project property 'is_group_member' is set to true
   getAllUsersOfCurrentProject() {
@@ -250,11 +259,16 @@ export class GroupEditAddComponent implements OnInit {
     },
       (error) => {
         console.log('UPDATED GROUP WITH UPDATED NAME - ERROR ', error);
+        // =========== NOTIFY ERROR ===========
+        this.notify.showNotification('An error occurred while updating the group', 4, 'report_problem');
       },
       () => {
         console.log('UPDATED GROUP WITH UPDATED NAME * COMPLETE *');
 
-        this.router.navigate(['project/' + this.project_id + '/groups']);
+        // this.router.navigate(['project/' + this.project_id + '/groups']);
+
+         // =========== NOTIFY SUCCESS===========
+         this.notify.showNotification('group successfully updated', 2, 'done');
 
         // UPDATE THE GROUP LIST
         // this.ngOnInit()

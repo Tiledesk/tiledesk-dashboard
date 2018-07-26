@@ -299,6 +299,10 @@
         "Processing": "Elaborazione...",
         "Completed": "Completato",
         "BotCreated": "Bot creato",
+        "TheBot":"Il bot",
+        "HasBeenCreated": "è stato creato con successo",
+        "AddFaqToTheBot":"Aggiungi FAQs al Bot",
+        "ReturnToTheBotList":"Ritorna all'elenco dei bot",
         "Continue": "Continua"
     },
     "DepartmentsPage": {

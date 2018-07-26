@@ -81,7 +81,7 @@
 
                 <tr *ngFor="let group of groupsList | sortBy : 'name'">
                     <!-- *ngIf="!group?.trashed" -->
-                  <td rel="tooltip" title="{{ group?._id }}">
+                  <td rel="tooltip" title="{{ group?._id }}" (click)='goToEditAddPage_edit(group?._id)' style="cursor: pointer;">
                     {{ group?.name }}
                   </td>
                    
@@ -93,7 +93,7 @@
                     {{ group?.createdAt | date: 'd/M/y'}}
                   </td> -->
 
-                  <td>
+                  <td (click)='goToEditAddPage_edit(group?._id)' style="cursor: pointer;">
                     {{ group?.members.length }}  
 
                     <span *ngIf="group?.members.length === 0" style="padding-left: 8px">

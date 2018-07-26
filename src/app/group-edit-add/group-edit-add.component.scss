@@ -54,7 +54,7 @@ select {
 }
 
 @media screen and (min-width: 767px) {
-    .modal-content {
+    .custom-modal-content {
         width: 360px
     }
 }
@@ -148,4 +148,9 @@ button.close {
     padding:2px; 
     margin-left:15px;
     border: solid 1px; 
+}
+
+.it_custom_add_members_now {
+    padding-right: 16px !important;
+    padding-left: 14px !important;
 }

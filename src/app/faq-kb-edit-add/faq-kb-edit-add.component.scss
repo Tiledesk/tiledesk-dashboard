@@ -44,6 +44,12 @@ select {
     box-shadow: 0 3px 9px rgba(0,0,0,.5);
 }
 
+@media screen and (min-width: 767px) {
+    .custom-modal-content {
+        width: 360px
+    }
+}
+
 .modal-header {
     padding: 15px;
     border-bottom: 1px solid #e5e5e5;
@@ -89,3 +95,9 @@ button.close {
     padding-top:10px !important;
 }
 /* MODAL END */
+
+.it_custom_add_faq_now {
+
+    padding-left: 4px !important;  
+    padding-right: 26px !important;
+}

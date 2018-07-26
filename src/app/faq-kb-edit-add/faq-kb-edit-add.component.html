@@ -127,22 +127,17 @@
 
     </div>
     <!-- ./ row -->
-
-    
-
-
-
-  </div> 
+   </div> 
   <!-- ./ container-fluid -->
 
 </div>
 <!-- ./ main-content -->
 
 <!-- MODAL - INFO WINDOWS -->
-<!-- -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayInfoModal }" style="background-color: rgba(90,90,90,0.5);">
+    <!-- modal-sm -->
     <div class="modal-dialog modal-sm" role="document">
-      <div class="modal-content">
+      <div class="modal-content custom-modal-content">
         <div class="modal-header">
           <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
             <span aria-hidden="true">&times;</span>
@@ -177,8 +172,41 @@
 
             </div>
             <p style="margin-top: 10px; text-align: center; font-weight: 500">
-                {{ "BotsAddEditPage.BotCreated" | translate }}
+              <!-- {{ "BotsAddEditPage.BotCreated" | translate }} -->
+              {{ "BotsAddEditPage.TheBot" | translate }} 
+              <span style="color: #566787"> 
+                <strong>{{ newBot_name }} </strong>
+              </span>
+              {{ "BotsAddEditPage.HasBeenCreated" | translate }}
             </p>
+              <div class="row">
+                <div class="col-md-12" style="text-align: center; padding-left: 3px; padding-right: 6px;" 
+                  [ngClass]="{'it_custom_add_faq_now' : browser_lang == 'it'}">
+                  <label class="form-check">
+                    <input class="form-check-input" type="radio" name="mode" [checked]="true" 
+                    (change)="actionAfterGroupCreation(goToEditBot = true)">
+                      <span style="margin-left: 8px; color:rgba(90,90,90,0.54); font-weight: 500;">
+                        {{ "BotsAddEditPage.AddFaqToTheBot" | translate }} 
+                      </span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="row">
+                <!-- col-xs-8 col-xs-offset-2 -->
+                <div class="col-md-12" style="text-align: center">
+                  <label class="form-check">
+                    <input class="form-check-input" type="radio" name="mode" [value]="false" 
+                    (change)="actionAfterGroupCreation(goToEditBot = false)">
+                      <span style="margin-left: 8px; color:rgba(90,90,90,0.54); font-weight: 500"> 
+
+                        {{ "BotsAddEditPage.ReturnToTheBotList" | translate }} 
+                      </span>
+                  </label>
+                </div>
+              </div>
+
+
           </span>
         </div>
 
