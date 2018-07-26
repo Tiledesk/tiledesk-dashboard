@@ -51,6 +51,7 @@ export class FaqComponent implements OnInit {
   faqKbUrlToUpdate: string;
   faqKb_id: string;
   faqKb_created_at: any;
+  faq_lenght: number;
 
   constructor(
     private mongodbFaqService: MongodbFaqService,
@@ -194,8 +195,17 @@ export class FaqComponent implements OnInit {
    */
   getFaqByFaqKbId() {
     this.mongodbFaqService.getMongoDbFaqByFaqKbId(this.id_faq_kb).subscribe((faq: any) => {
-      console.log('MONGO DB FAQ GET BY FAQ-KB ID', faq);
+      console.log('>> FAQs GOT BY FAQ-KB ID', faq);
       this.faq = faq;
+
+      if (faq) {
+        this.faq_lenght = faq.length
+      }
+    }, (error) => {
+      console.log('>> FAQs GOT BY FAQ-KB ID - ERROR', error);
+
+    }, () => {
+      console.log('>> FAQs GOT BY FAQ-KB ID - COMPLETE');
     });
   }
 

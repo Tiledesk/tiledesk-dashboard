@@ -138,7 +138,7 @@
 
           <div class="card-header" data-background-color="" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
             <h4 class="title" style="margin-bottom:2px; font-size:1.1em; color: #566787">
-                FAQs <span style="font-weight: 500"></span> 
+                FAQs <span style="font-weight: 500">({{ faq_lenght }})</span> 
 
               <!-- // ADD FAQ - CIRCLE BTN -->
               <!-- <button type="button" rel="tooltip" title="" class="btn btn-success btn-simple btn-xs add_faq_btn tooltipx" 
@@ -249,7 +249,8 @@
                 <td>
                   {{ faq?.answer }}
                 </td>
-                <td style="width: 280px !important">
+                <!-- style="width: 280px !important" -->
+                <td>
                   {{ faq?._id }}
                 </td>
                 <td>
@@ -274,10 +275,12 @@
 
                 <!-- NEW -->
                 <td class="td-actions text-right">
-                    <button style="padding-top:0px" type="button" rel="tooltip" title="{{ 'FaqPage.tooltipEditFaq' | translate }}" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(faq?._id)'>
+                    <button style="padding-top:0px" type="button" rel="tooltip" title="{{ 'FaqPage.tooltipEditFaq' | translate }}" class="btn btn-primary btn-simple btn-xs" 
+                      (click)='goToEditAddPage_EDIT(faq?._id)'>
                         <i class="material-icons">edit</i>
                     </button>
-                    <button style="padding-top:0px" type="button" rel="tooltip" title="{{ 'FaqPage.tooltipDeleteFaq' | translate }}" class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal(faq?._id, hasClickedDeleteModal = true)'>
+                    <button style="padding-top:0px" type="button" rel="tooltip" title="{{ 'FaqPage.tooltipDeleteFaq' | translate }}" class="btn btn-danger btn-simple btn-xs" 
+                      (click)='openDeleteModal(faq?._id, hasClickedDeleteModal = true)'>
                         <i class="material-icons">close</i>
                     </button>
                 </td>
