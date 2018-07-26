@@ -17,7 +17,7 @@ import { NotifyService } from '../core/notify.service';
 })
 export class FaqComponent implements OnInit {
   @ViewChild('editbotbtn') private elementRef: ElementRef;
-  
+
   faq: Faq[];
   question: string;
   answer: string;
@@ -241,15 +241,12 @@ export class FaqComponent implements OnInit {
    * @param hasClickedDeleteModal
    */
   // deptName: string,
-  openDeleteModal(id: string, hasClickedDeleteModal: boolean) {
-    console.log('HAS CLICKED OPEN DELETE MODAL TO CONFIRM BEFORE TO DELETE ', hasClickedDeleteModal);
-    console.log('ON MODAL DELETE OPEN -> USER ID ', id);
-    this.DISPLAY_DATA_FOR_DELETE_MODAL = hasClickedDeleteModal;
-    this.DISPLAY_DATA_FOR_UPDATE_MODAL = false;
+  openDeleteModal(id: string) {
 
-    if (hasClickedDeleteModal) {
-      this.display = 'block';
-    }
+    console.log('ON OPEN MODAL TO DELETE FAQ -> FAQ ID ', id);
+
+    this.display = 'block';
+
 
     this.id_toDelete = id;
     // this.faq_toDelete = deptName;

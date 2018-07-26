@@ -295,7 +295,7 @@
                         <i class="material-icons">edit</i>
                     </button>
                     <button style="padding-top:0px" type="button" rel="tooltip" title="{{ 'FaqPage.tooltipDeleteFaq' | translate }}" class="btn btn-danger btn-simple btn-xs" 
-                      (click)='openDeleteModal(faq?._id, hasClickedDeleteModal = true)'>
+                      (click)='openDeleteModal(faq?._id)'>
                         <i class="material-icons">close</i>
                     </button>
                 </td>
@@ -305,268 +305,13 @@
             </tbody>
           </table>
       
-          <!-- MODAL -->
-          <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->
-          <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                    <!-- <strong></strong> -->
-                    <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
-                      <h4 class="modal-title">
-                        <!-- Update FAQ with id: -->
-                        <code>{{id_toUpdate}}</code>
-                      </h4>
-                    </span>
-            
-                    <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
-                      <h4 class="modal-title">
-                        <!-- Delete FAQ with id: -->
-                        {{ 'FaqPage.modalDeleteFaqWithId' | translate }}
-                        <code>{{id_toDelete}}</code>
-                      </h4>
-                    </span>
-            
-                  </div>
-            
-                  <!-- <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
-                    <div class="modal-body">
-                      
-                      <div class="field is-horizontal">
-                        <div class="field-body">
-            
-                          <div class="field">
-                            <p class="control is-expanded has-icons-left">
-                              <input [(ngModel)]="question_toUpdate" placeholder="Question" class="input">
-                              <span class="icon is-small is-left">
-                                  <i class="fa fa-question"></i>
-                              </span>
-                            </p>
-                          </div>
-                          <div class="field">
-                              <p class="control is-expanded has-icons-left">
-                                <input [(ngModel)]="answer_toUpdate" placeholder="Answer" class="input">
-                                <span class="icon is-small is-left">
-                                    <i class="fa fa-info"></i>
-                                </span>
-                              </p>
-                          </div>
-              
-                        </div>
-                      </div>
-                    </div>
-                  </span> -->
-            
-                  <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
-                    <div class="modal-body">
-                                
-                    <!-- <p> Are you sure you want to delete this FAQ ?</p> -->
-                    <p> 
-                      <!-- Sei sicuro di voler eliminare questa FAQ? -->
-                      {{ 'FaqPage.AreYouSure' | translate }}
-                    </p>
-                    </div>
-                  </span>
-            
-                  <!-- <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-default" (click)="onCloseUpdateModalHandled()">Save</button>
-                    </div>
-                  </span> -->
-            
-                  <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
-                    <div class="modal-footer">
-                        <!-- Confirm -->
-                      <button type="button" class="btn btn-danger" (click)="onCloseDeleteModalHandled()">
-                        <!-- Conferma -->
-                        {{ 'FaqPage.Confirm' | translate }}
-                      </button>
-                    </div>
-                  </span>
-            
-                </div>
-                <!-- /.modal-content -->
-              </div>
-              <!-- /.modal-dialog -->
-            </div>
 
 
-            <!-- MODAL - INPORT CSV  -->
-            <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayImportModal}" style="background-color: rgba(90,90,90,0.5);">
-                <!-- modal-sm   -->
-              <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-          
-                      <h4 class="modal-title">
-                        <!-- Import CSV file -->
-                        {{ 'FaqPage.ImportCsvFile' | translate }}
-                      </h4>
-                    </div>
-          
-                    <div class="modal-body">
-                   
-                      <div class="row" style="margin-right: 0px; margin-bottom:8px">
-                          <div class="col-md-4 col-md-offset-4" style="text-align:center; border: 1px solid #eeeeee;background-color: antiquewhite">
-                            <p style="margin:5px">myexample.csv</p>
-                          </div>
-                        <div class="col-md-4 col-md-offset-4" style="text-align:center; border-left: 1px solid #eeeeee; border-right: 1px solid #eeeeee">
-                          <p style="margin:5px">
-                            <span>
-                              <em>
-                                <!-- Question -->
-                                {{ 'FaqPage.Question' | translate }}
-                              </em>
-                            </span> 
-                            <span>
-                              <strong>
-                                {{csvColumnsDelimiter}}
-                              </strong> 
-                            </span> 
-                            <span>
-                              <em>
-                                <!-- Answer -->
-                                {{ 'FaqPage.Answer' | translate }}
-                              </em>
-                            </span>
-                          </p>
-                        </div>
-  
-                      </div>
-                      <div class="row" style="margin-right: 0px;">
-                          <div class="col-sm-12">
-                              <label style="height: 36px; padding-top:10px; padding-left:16px; padding-right:16px; text-align:right;" class="col-sm-6 ">
-                                <!-- Columns separated with: -->
-                                {{ 'FaqPage.ColumnsSeparatedWith' | translate }}
-                              </label>
-                              <div class="col-sm-6" style="text-align:start">
-                                <input style="padding-left:5px; margin-top:7px; width:55px" [(ngModel)]="csvColumnsDelimiter" (keyup)="countDelimiterDigit($event)">
-                              </div>
-                             
-                          </div>
-                          <div class="col-sm-12" style="text-align: center">
-
-                            <span *ngIf="modalChoosefileDisabled" style="color:#ff5252">
-                              <!-- Delimiter option must be one character long  -->
-                              {{ 'FaqPage.DelimiterOptionMustBe' | translate }}
-                            </span>
-                          </div>
-                          
-                        </div>
-                     
-          
-                    </div>
-          
-                    <div class="modal-footer" style="text-align: center;">
-                      
-                      <input style="display:inline" name="file" id="file" class="inputfile" type="file" (change)="fileChange($event)" accept=".csv"/>
-                      <label class="btn btn-info" for="file" style="padding-left:15px; padding-right:15px; text-transform: none" [ngClass]="{'disabled': modalChoosefileDisabled }">
-                          <!-- <i class="material-icons">file_upload</i> -->
-                          <!-- CHOOSE FILE  -->
-                          {{ 'FaqPage.ChooseFile' | translate }}
-                      </label>
-                    </div>
-          
-                  </div>
-                  <!-- /.modal-content -->
-                </div>
-                <!-- /.modal-dialog -->
-              </div>
 
 
-              <!-- MODAL - INFO WINDOWS -->
-              <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->  
-              <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayInfoModal}" style="background-color: rgba(90,90,90,0.5);">
-                  <div class="modal-dialog modal-sm" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-            
-                        <h4 class="modal-title">
-                          <!-- Upload CSV -->
-                          {{ 'FaqPage.UploadCsv' | translate }}
-                        </h4>
-                      </div>
-            
-                      <div class="modal-body">
-                      
-                        <span *ngIf="SHOW_CIRCULAR_SPINNER">
-                          <div  class="loader" style="top:25%">
-                            <svg class="circular" viewBox="25 25 50 50">
-                              <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10"/>
-                            </svg>
-            
-                          </div>
-                          <p style="margin-top: 50px; text-align: center;">
-                              {{ "FaqPage.Processing" | translate }}
-                          </p>
-                        </span>
-            
-                        <span *ngIf="!SHOW_CIRCULAR_SPINNER">
-                          <div  class="loader" style="top:5%">
 
-                            <!-- // IF SUCCESSFULLY UPLOADED -->
-                            <span *ngIf="parse_done">
-                              <i class="material-icons" style="color:#70b665">done</i>
-                              <span style="color:#70b665">
-                                  {{ "FaqPage.Completed" | translate }}
-                              </span> 
-                            </span>
 
-                            <!-- // IF AN ERROR OCCURRED DURING THE UPLOAD -->
-                            <span *ngIf="parse_err">
-                              <i class="material-icons" style="color:#ff5252">report_problem</i>
-                              <br>
-                              <span style="color:#ff5252">
-                                  {{ "FaqPage.Error" | translate }}
-                              </span> 
-                            </span>
-            
-                          </div>
-                          
-                          <!-- // IF SUCCESSFULLY UPLOADED -->
-                          <span *ngIf="parse_done">
-                            <p style="margin-top: 50px; text-align: center;">
-                              <!-- FAQs successfully uploaded -->
-                              {{ "FaqPage.FaqsSuccessfullyUploaded" | translate }}
-                            </p>
-                          </span>
 
-                          <!-- // IF AN ERROR OCCURRED DURING THE UPLOAD -->
-                          <span *ngIf="parse_err">
-                            <p style="margin-top: 50px; text-align: center;">
-                              <!-- An error occurred during the upload -->
-                              {{ "FaqPage.AnErrorOccurredDuringTheUpload" | translate }}
-                            </p>
-                          </span>
-
-                        </span>
-                      </div>
-            
-                      <div class="modal-footer" style="text-align: center;">
-                        <!-- // IF SUCCESSFULLY UPLOADED -->
-                        <button *ngIf="parse_done" class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseInfoModalHandledSuccess()">
-                            Ok
-                        </button>
-                        <button *ngIf="parse_err" class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseInfoModalHandledError()">
-                            <!-- Continue -->
-                            {{ "FaqPage.Continue" | translate }}
-                        </button>
-                      </div>
-            
-                    </div>
-                    <!-- /.modal-content -->
-                  </div>
-                  <!-- /.modal-dialog -->
-                </div>
 
           </div>
         </div>
@@ -574,3 +319,236 @@
   </div>
   <div>
 <div>
+
+
+<!-- 
+**********************************************************************************************  
+**************************************** MODAL WINDOWS ***************************************
+**********************************************************************************************
+-->
+
+<!-- =================== MODAL DELETE FAQ =================== -->
+<!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}" style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color: #ff5252; border-radius: 6px 6px 0px 0px;">
+        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+          <span aria-hidden="true" style="color: #fff">&times;</span>
+        </button>
+
+        <h4 class="modal-title" style="color: #fff">
+          <!-- Update FAQ with id: -->
+          <i class="material-icons" style="vertical-align: middle">
+            report_problem
+          </i>
+          <span style="vertical-align: middle; padding-left:8px">
+            {{ "FaqPage.tooltipDeleteFaq" | translate }}
+          </span>
+        </h4>
+
+        <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em">
+          <!-- Delete FAQ with id: -->
+          {{ 'FaqPage.modalDeleteFaqWithId' | translate }}
+          <code>{{id_toDelete}}</code>
+        </h4>
+
+      </div>
+
+      <div class="modal-body">
+                    
+        <!-- <p> Are you sure you want to delete this FAQ ?</p> -->
+        <p> 
+          <!-- Sei sicuro di voler eliminare questa FAQ? -->
+          {{ 'FaqPage.AreYouSure' | translate }}
+        </p>
+      </div>
+
+      <div class="modal-footer">
+          <!-- Confirm -->
+        <button type="button" class="btn btn-danger" (click)="onCloseDeleteModalHandled()">
+          <!-- Conferma -->
+          {{ 'FaqPage.Confirm' | translate }}
+        </button>
+      </div>
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+
+<!-- MODAL - INPORT CSV  -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayImportModal}" style="background-color: rgba(90,90,90,0.5);">
+  <!-- modal-sm   -->
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title">
+          <!-- Import CSV file -->
+          {{ 'FaqPage.ImportCsvFile' | translate }}
+        </h4>
+      </div>
+
+      <div class="modal-body">
+      
+        <div class="row" style="margin-right: 0px; margin-bottom:8px">
+            <div class="col-md-4 col-md-offset-4" style="text-align:center; border: 1px solid #eeeeee;background-color: antiquewhite">
+              <p style="margin:5px">myexample.csv</p>
+            </div>
+          <div class="col-md-4 col-md-offset-4" style="text-align:center; border-left: 1px solid #eeeeee; border-right: 1px solid #eeeeee">
+            <p style="margin:5px">
+              <span>
+                <em>
+                  <!-- Question -->
+                  {{ 'FaqPage.Question' | translate }}
+                </em>
+              </span> 
+              <span>
+                <strong>
+                  {{csvColumnsDelimiter}}
+                </strong> 
+              </span> 
+              <span>
+                <em>
+                  <!-- Answer -->
+                  {{ 'FaqPage.Answer' | translate }}
+                </em>
+              </span>
+            </p>
+          </div>
+
+        </div>
+        <div class="row" style="margin-right: 0px;">
+            <div class="col-sm-12">
+                <label style="height: 36px; padding-top:10px; padding-left:16px; padding-right:16px; text-align:right;" class="col-sm-6 ">
+                  <!-- Columns separated with: -->
+                  {{ 'FaqPage.ColumnsSeparatedWith' | translate }}
+                </label>
+                <div class="col-sm-6" style="text-align:start">
+                  <input style="padding-left:5px; margin-top:7px; width:55px" [(ngModel)]="csvColumnsDelimiter" (keyup)="countDelimiterDigit($event)">
+                </div>
+                
+            </div>
+            <div class="col-sm-12" style="text-align: center">
+
+              <span *ngIf="modalChoosefileDisabled" style="color:#ff5252">
+                <!-- Delimiter option must be one character long  -->
+                {{ 'FaqPage.DelimiterOptionMustBe' | translate }}
+              </span>
+            </div>
+            
+          </div>
+        
+
+      </div>
+
+      <div class="modal-footer" style="text-align: center;">
+        
+        <input style="display:inline" name="file" id="file" class="inputfile" type="file" (change)="fileChange($event)" accept=".csv"/>
+        <label class="btn btn-info" for="file" style="padding-left:15px; padding-right:15px; text-transform: none" [ngClass]="{'disabled': modalChoosefileDisabled }">
+            <!-- <i class="material-icons">file_upload</i> -->
+            <!-- CHOOSE FILE  -->
+            {{ 'FaqPage.ChooseFile' | translate }}
+        </label>
+      </div>
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+
+<!-- MODAL - INFO WINDOWS -->
+<!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->  
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayInfoModal}" style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title">
+          <!-- Upload CSV -->
+          {{ 'FaqPage.UploadCsv' | translate }}
+        </h4>
+      </div>
+
+      <div class="modal-body">
+      
+        <span *ngIf="SHOW_CIRCULAR_SPINNER">
+          <div  class="loader" style="top:25%">
+            <svg class="circular" viewBox="25 25 50 50">
+              <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+            </svg>
+
+          </div>
+          <p style="margin-top: 50px; text-align: center;">
+              {{ "FaqPage.Processing" | translate }}
+          </p>
+        </span>
+
+        <span *ngIf="!SHOW_CIRCULAR_SPINNER">
+          <div  class="loader" style="top:5%">
+
+            <!-- // IF SUCCESSFULLY UPLOADED -->
+            <span *ngIf="parse_done">
+              <i class="material-icons" style="color:#70b665">done</i>
+              <span style="color:#70b665">
+                  {{ "FaqPage.Completed" | translate }}
+              </span> 
+            </span>
+
+            <!-- // IF AN ERROR OCCURRED DURING THE UPLOAD -->
+            <span *ngIf="parse_err">
+              <i class="material-icons" style="color:#ff5252">report_problem</i>
+              <br>
+              <span style="color:#ff5252">
+                  {{ "FaqPage.Error" | translate }}
+              </span> 
+            </span>
+
+          </div>
+          
+          <!-- // IF SUCCESSFULLY UPLOADED -->
+          <span *ngIf="parse_done">
+            <p style="margin-top: 50px; text-align: center;">
+              <!-- FAQs successfully uploaded -->
+              {{ "FaqPage.FaqsSuccessfullyUploaded" | translate }}
+            </p>
+          </span>
+
+          <!-- // IF AN ERROR OCCURRED DURING THE UPLOAD -->
+          <span *ngIf="parse_err">
+            <p style="margin-top: 50px; text-align: center;">
+              <!-- An error occurred during the upload -->
+              {{ "FaqPage.AnErrorOccurredDuringTheUpload" | translate }}
+            </p>
+          </span>
+
+        </span>
+      </div>
+
+      <div class="modal-footer" style="text-align: center;">
+        <!-- // IF SUCCESSFULLY UPLOADED -->
+        <button *ngIf="parse_done" class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseInfoModalHandledSuccess()">
+            Ok
+        </button>
+        <button *ngIf="parse_err" class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseInfoModalHandledError()">
+            <!-- Continue -->
+            {{ "FaqPage.Continue" | translate }}
+        </button>
+      </div>
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
