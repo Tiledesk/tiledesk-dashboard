@@ -189,8 +189,10 @@
         "tooltipDeleteGroup": "Elimina Group",
         "DeleteGroup": "Elimina gruppo",
         "TheGroupWithId": "Il gruppo con Id:",
+        "TheGroup":"Il gruppo",
         "WillBeRemoved": "sarà eliminato",
         "AreYouSureDeleteGroup": "Sei sicuro di voler rimuovere il gruppo",
+        "IdGroup":"Id gruppo",
         "Cancel": "Annulla"
     },
     "GroupsAddEditPage": {
@@ -201,7 +203,7 @@
         "Processing": "Elaborazione...",
         "Completed": "Completato",
         "MemberAddedtoGroup": "Membro aggiunto al gruppo",
-        "MembersAddedtoGroup": "Membro aggiunto al gruppo",
+        "MembersAddedtoGroup": "Membri aggiunti al gruppo",
         "CreateGroup": "Crea Gruppo",
         "QuickTips": "Consigli veloci",
         "UpdateGroupName": "Aggiorna nome Gruppo",

@@ -5,7 +5,7 @@ import { Group } from '../models/group-model';
 import { Router } from '@angular/router';
 import { UsersService } from '../services/users.service';
 import { forEach } from '@angular/router/src/utils/collection';
-
+import { NotifyService } from '../core/notify.service';
 
 @Component({
   selector: 'app-groups',
@@ -33,13 +33,15 @@ export class GroupsComponent implements OnInit {
   displayDeleteModal = 'none';
   id_group_to_delete: string;
   name_group_to_delete: string;
+  
 
 
   constructor(
     private auth: AuthService,
     private groupsService: GroupService,
     private router: Router,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private notify: NotifyService
 
   ) { }
 
@@ -183,6 +185,8 @@ export class GroupsComponent implements OnInit {
     // }
   }
 
+
+  // !!! NO MORE USED  - MOVED IN group-edit-add.comp 
   onCloseModalHandled() {
     this.display_users_list_modal = 'none';
 
@@ -231,12 +235,14 @@ export class GroupsComponent implements OnInit {
     },
       (error) => {
         console.log('UPDATED GROUP WITH TRASHED = TRUE - ERROR ', error);
+      // =========== NOTIFY ERROR ===========
+      this.notify.showNotification('An error occurred while deleting the group', 4, 'report_problem');
       },
       () => {
         console.log('UPDATED GROUP WITH TRASHED = TRUE * COMPLETE *');
 
-        // =========== NOTIFY SUCCESS===========
-        // this.notify.showNotification('group successfully updated', 2, 'done');
+      // =========== NOTIFY SUCCESS===========
+      this.notify.showNotification('group successfully deleted', 2, 'done');
         // UPDATE THE GROUP LIST
         this.ngOnInit()
       });

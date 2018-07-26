@@ -156,7 +156,7 @@
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDeleteModal}" style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header" style="background-color:#ff5252; padding-bottom:24px">
+      <div class="modal-header" style="background-color:#ff5252;">
         <button type="button" class="close" aria-label="Close" (click)="onCloseDeleteModal()">
           <span aria-hidden="true" style="color: #fff">&times;</span>
         </button>
@@ -165,28 +165,41 @@
             <span style="vertical-align: middle; padding-left:8px">
               <!-- Elimina gruppo -->
               {{ "GroupsPage.DeleteGroup" | translate }}
+
             </span>
         </h4>
         <!-- padding-left: 36px  -->
         <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em;">
           <!-- Il gruppo con ID:  -->
-          {{ "GroupsPage.TheGroupWithId" | translate }}
-
+          <!-- {{ "GroupsPage.TheGroupWithId" | translate }}
           <code>{{ id_group_to_delete }}</code>
-          <!-- verrà eliminato -->
+          {{ "GroupsPage.WillBeRemoved" | translate }} -->
+          {{ "GroupsPage.TheGroup" | translate }}
+          <span style="font-weight: 400;"> 
+            “{{ name_group_to_delete }}”
+          </span>
           {{ "GroupsPage.WillBeRemoved" | translate }}
         </h4>
       </div>
       <div class="modal-body">
-        <p style="font-weight:500; text-align: left; margin-top: 10px; color: #999">
+        <p style="font-weight: 400; color: rgba(0,0,0,0.87)">
           <!-- Sei sicuro di voler rimuovere il gruppo  -->
           {{ "GroupsPage.AreYouSureDeleteGroup" | translate }}
 
-          <span style="color: #566787"> 
+          <span style="color: rgba(0,0,0,0.87)"> 
             <strong> {{ name_group_to_delete }} </strong>
           </span>?
           <!-- <span style="color:#212121"><strong> {{ id_project }}</strong> </span> -->
         </p>
+       
+        <label style="font-weight:400;  padding-top:16px; font-size: 14px; color: rgba(0,0,0,0.54)" class="col-md-10">
+          {{ "GroupsPage.IdGroup" | translate }}:
+          <span style="color:rgba(0,0,0,0.87)">
+            <!-- <strong>  -->
+              {{id_group_to_delete }}
+            <!-- </strong>  -->
+          </span>
+        </label>
 
       </div>
       <div class="modal-footer" style="margin-top: 0px;">

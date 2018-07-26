@@ -189,8 +189,10 @@
         "tooltipDeleteGroup": "Delete Group",
         "DeleteGroup": "Delete group",
         "TheGroupWithId": "The group with Id:",
-        "WillBeRemoved": "will be removed",
+        "TheGroup":"The group",
+        "WillBeRemoved": "will be deleted",
         "AreYouSureDeleteGroup": "Are you sure you want to delete the group",
+        "IdGroup":"Id group",
         "Cancel": "Cancel"
     },
     "GroupsAddEditPage": {
