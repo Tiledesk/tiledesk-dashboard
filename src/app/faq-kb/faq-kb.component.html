@@ -386,16 +386,22 @@
                   </span>
               </h4>
               <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em ">
-                {{ "BotsPage.TheBot" | translate }} 
-                <span style="font-weight: 400;"> 
+                {{ "BotsPage.TheBotWithID" | translate }} 
+                <code>{{ id_toDelete }}</code>
+                 <!-- BOT NAME -->
+                <!-- <span style="font-weight: 400;"> 
                   “{{ bot_name_to_delete}}”
-                </span>
+                </span> -->
                 {{ "BotsPage.WillBeDeleted" | translate }}
               </h4>
             </div>
             <div class="modal-body">
                 <p style="font-weight: 400; color: rgba(0,0,0,0.87)">
-                    {{ "BotsPage.IfYouDeleted" | translate }}
+                    {{ "BotsPage.IfYouDeletedTheBot" | translate }}
+
+                    <strong> “{{ bot_name_to_delete}}”</strong>, 
+
+                    {{ "BotsPage.YouAlsoDeleteItsFaqs" | translate }}
                 </p>
 
                 <label style="font-weight:400; text-align: left; padding-top:16px; font-size: 14px; color: rgba(0,0,0,0.54) " class="col-sm-10 ">

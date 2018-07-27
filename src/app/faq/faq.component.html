@@ -294,7 +294,7 @@
                       (click)='goToEditAddPage_EDIT(faq?._id)'>
                         <i class="material-icons">edit</i>
                     </button>
-                    <button style="padding-top:0px" type="button" rel="tooltip" title="{{ 'FaqPage.tooltipDeleteFaq' | translate }}" class="btn btn-danger btn-simple btn-xs" 
+                    <button style="padding-top:0px" type="button" rel="tooltip" title="{{ 'FaqPage.DeleteFaq' | translate }}" class="btn btn-danger btn-simple btn-xs" 
                       (click)='openDeleteModal(faq?._id)'>
                         <i class="material-icons">close</i>
                     </button>
@@ -343,14 +343,15 @@
             report_problem
           </i>
           <span style="vertical-align: middle; padding-left:8px">
-            {{ "FaqPage.tooltipDeleteFaq" | translate }}
+            {{ "FaqPage.DeleteFaq" | translate }}
           </span>
         </h4>
 
         <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em">
           <!-- Delete FAQ with id: -->
-          {{ 'FaqPage.modalDeleteFaqWithId' | translate }}
+          {{ 'FaqPage.TheFaqWithID' | translate }}
           <code>{{id_toDelete}}</code>
+          {{ 'FaqPage.WillBeDeleted' | translate }}
         </h4>
 
       </div>
@@ -358,17 +359,21 @@
       <div class="modal-body">
                     
         <!-- <p> Are you sure you want to delete this FAQ ?</p> -->
-        <p> 
+        <p style="font-weight: 400; color: rgba(0,0,0,0.87);"> 
           <!-- Sei sicuro di voler eliminare questa FAQ? -->
           {{ 'FaqPage.AreYouSure' | translate }}
         </p>
       </div>
 
       <div class="modal-footer">
+          <button class="btn btn-white" (click)="onCloseModal()" style="padding:12px 16px;">
+            <!-- Annulla -->
+            {{ "GroupsPage.Cancel" | translate }}
+          </button>
           <!-- Confirm -->
         <button type="button" class="btn btn-danger" (click)="onCloseDeleteModalHandled()">
           <!-- Conferma -->
-          {{ 'FaqPage.Confirm' | translate }}
+          {{ 'FaqPage.DeleteFaq' | translate }}
         </button>
       </div>
 
