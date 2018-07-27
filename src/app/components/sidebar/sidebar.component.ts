@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, NgModule, ElementRef, ViewChild, } from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgModule, ElementRef, ViewChild } from '@angular/core';
 import { RequestsService } from '../../services/requests.service';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -155,7 +155,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     getProjectUserRole() {
-
         this.usersService.project_user_role_bs.subscribe((user_role) => {
             this.USER_ROLE = user_role;
             console.log('SIDEBAR - 1. PROJECT USER ROLE ', this.USER_ROLE);
@@ -172,11 +171,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     this.SHOW_SETTINGS_SUBMENU = false;
                 }
             }
-
-
         });
-
-
     }
 
     // ============ SUBSCRIPTION TO user_is_available_bs  AND project_user_id_bs PUBLISHED BY THE USER SERVICE USED

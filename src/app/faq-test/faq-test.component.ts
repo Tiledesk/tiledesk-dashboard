@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
@@ -14,6 +14,8 @@ import { Location } from '@angular/common';
   styleUrls: ['./faq-test.component.scss']
 })
 export class FaqTestComponent implements OnInit {
+
+  @ViewChild('runtestbtn') private elementRef: ElementRef;
   project: Project;
   questionToTest: string;
   remote_faq_kb_key: string;
@@ -56,20 +58,24 @@ export class FaqTestComponent implements OnInit {
   }
 
   searchRemoteFaq() {
+    // BUG FIX 'RUN TEST button remains focused after clicking'
+    this.elementRef.nativeElement.blur();
     console.log('SEARCH QUESTION ', this.questionToTest)
-    this.faqService.searchRemoteFaqByRemoteFaqKbKey(this.remote_faq_kb_key, this.questionToTest )
-    .subscribe((remoteFaq) => {
-      console.log('REMOTE FAQ FOUND - POST DATA ', remoteFaq);
+    this.faqService.searchRemoteFaqByRemoteFaqKbKey(this.remote_faq_kb_key, this.questionToTest)
+      .subscribe((remoteFaq) => {
+        console.log('REMOTE FAQ FOUND - POST DATA ', remoteFaq);
 
-      this.hits = remoteFaq.hits
+        if (remoteFaq) {
+          this.hits = remoteFaq.hits
+        }
 
-    },
-    (error) => {
-      console.log('REMOTE FAQ - POST REQUEST ERROR ', error);
-    },
-    () => {
-      console.log('REMOTE FAQ - POST REQUEST * COMPLETE *');
-    });
+      },
+        (error) => {
+          console.log('REMOTE FAQ - POST REQUEST ERROR ', error);
+        },
+        () => {
+          console.log('REMOTE FAQ - POST REQUEST * COMPLETE *');
+        });
   }
 
 }
