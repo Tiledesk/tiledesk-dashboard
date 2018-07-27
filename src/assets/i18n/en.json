@@ -325,6 +325,12 @@
         "FaqID":"FAQ Id",
         "CreationDate":"Creation date"
     },
+    "FaqTestPage":{
+        "Question":"Question",
+        "Answer":"Answer",
+        "EnterTheQuestion":"Enter the question",
+        "RunTest":"Run Test"
+    },
     "DepartmentsPage": {
         "AddDepartment": "Add Department",
         "CreationDate": "Creation date",
