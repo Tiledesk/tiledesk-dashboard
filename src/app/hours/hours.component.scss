@@ -309,18 +309,18 @@ input:checked + .slider:before {
 /* Tooltip text */
 .tooltipx .tooltiptext {
   visibility: hidden;
-  width: 120px;
+  // width: 120px;
   background-color: black;
   color: #fff;
   text-align: center;
-  padding: 5px 0;
-  border-radius: 6px;
-
+  padding: 5px 5px;
+  border-radius: 5px;
+  font-size: 12px !important;
   /* Position the tooltip text */
   position: absolute;
   z-index: 1;
   /* Position the tooltip text - TOP */
-  width: 420px;
+  // width: 420px;
   bottom: 100%;
   left: 50%; 
   margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
