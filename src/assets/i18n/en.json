@@ -420,8 +420,8 @@
         "Published": "Published",
         "Requester": "Requester",
         "RequesterId": "Requester Id",
-        "ChatFormUserName": "Chat form: user name",
-        "ChatFormUserEmail": "Chat form: user email",
+        "ChatFormUserName": "User name",
+        "ChatFormUserEmail": "Email",
         "DepartmentName": "Department name",
         "DepartmentId": "Department Id",
         "SourcePage": "Source page"
