@@ -26,3 +26,52 @@ select {
 .card form [class*="col-"] {
     padding: 0px;
 }
+
+
+// @media (max-width: 768px) { /* use the max to specify at each container level */
+//     .td_answer {    
+//         width:360px;  /* adjust to desired wrapping */
+//         display:table;
+//         white-space: pre-wrap; /* css-3 */
+//         white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+//         white-space: -pre-wrap; /* Opera 4-6 */
+//         white-space: -o-pre-wrap; /* Opera 7 */
+//         word-wrap: break-word; /* Internet Explorer 5.5+ */
+//     }
+// }
+
+// start TOOLTIP
+/* Tooltip container */
+.tooltipx {
+    position: relative;
+    display: inline-block;
+    // border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  }
+  
+  /* Tooltip text */
+  .tooltipx .tooltiptext {
+    visibility: hidden;
+    // width: 120px;
+    background-color: black; 
+    // background-color: rgba(0,0,0,0.6);
+    color: #fff;
+    text-align: center;
+    padding: 5px 5px;
+    border-radius: 5px;
+    font-size: 12px !important;
+  
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 1;
+    /* Position the tooltip text - TOP */
+    bottom: 100%;
+    left: 50%; 
+    margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+  }
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .tooltipx:hover .tooltiptext {
+    visibility: visible;
+  }
+
+  // end TOOLTIP

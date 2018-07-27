@@ -20,6 +20,7 @@ export class FaqTestComponent implements OnInit {
   questionToTest: string;
   remote_faq_kb_key: string;
   hits: any;
+  faq_number_of_found: number;
 
   constructor(
     private router: Router,
@@ -67,15 +68,41 @@ export class FaqTestComponent implements OnInit {
 
         if (remoteFaq) {
           this.hits = remoteFaq.hits
+          this.faq_number_of_found = remoteFaq.total;
+          console.log('REMOTE FAQ LENGHT ', this.faq_number_of_found);
+
         }
 
-      },
-        (error) => {
-          console.log('REMOTE FAQ - POST REQUEST ERROR ', error);
-        },
-        () => {
-          console.log('REMOTE FAQ - POST REQUEST * COMPLETE *');
-        });
+      }, (error) => {
+        console.log('REMOTE FAQ - POST REQUEST ERROR ', error);
+      }, () => {
+        console.log('REMOTE FAQ - POST REQUEST * COMPLETE *');
+      });
+  }
+
+
+  goToEditFaqPage(id_faq: string) {
+    console.log('ID OF FAQ Pressed', id_faq);
+
+    // this.getFaqById(id_faq);
+    // this.router.navigate(['project/' + this.project._id + '/editfaq', this.id_faq_kb, faq_id]);
+  }
+
+  getFaqKbIdAndGoToEditFaqPage(id_faq) {
+    this.faqService.getMongDbFaqById(id_faq).subscribe((faq: any) => {
+      console.log('FAQ GET BY ID', faq);
+
+      if (faq) {
+        this.router.navigate(['project/' + this.project._id + '/editfaq', faq.id_faq_kb, id_faq]);
+      }
+
+    }, (error) => {
+      console.log('FAQ GET BY ID - ERROR ', error);
+
+    }, () => {
+      console.log('FAQ GET BY ID - COMPLETE ');
+
+    });
   }
 
 }

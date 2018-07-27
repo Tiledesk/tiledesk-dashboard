@@ -1,6 +1,10 @@
 <!-- NEW FOR THIS TEMPLATE -->
 <div class="navbar-brand" style="z-index: -1;margin-top:10px; padding-left:30px">
-  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBackToFaqList()">keyboard_arrow_left</i>
+    <!-- goBack() -->
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" 
+    (click)="goBackToFaqList()">
+    keyboard_arrow_left
+  </i>
   <span *ngIf="CREATE_VIEW">
     <!-- Aggiungi FAQ -->
     {{ "FaqEditAddPage.AddFaq" | translate }}

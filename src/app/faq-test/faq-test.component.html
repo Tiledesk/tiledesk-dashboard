@@ -11,7 +11,6 @@
         <div class="card" style="padding-top:25px; padding-bottom:25px; margin-bottom:0px">
           <div class="card-content">
 
-
             <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
               <!-- Domanda -->
               {{ "FaqTestPage.Question" | translate }}
@@ -31,7 +30,7 @@
                  {{ "FaqTestPage.RunTest" | translate }}
                </button>
              </div>
-          </div>
+           </div>
         </div>
       </div>
     </div>  
@@ -39,10 +38,23 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
+          <div class="card-header" data-background-color="" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
+            <h4 class="title" style="margin-bottom:2px; font-size:1.1em; color: #566787">
+              FAQs <span style="font-weight: 500">({{ faq_number_of_found }})</span> 
+            </h4>
+          </div>        
           <div class="card-content table-responsive">
-            <table class="table">
+            <table class="table table-hover">
               <thead>
                 <tr>
+                  <!-- // FOR DEBUG - FAQ ID -->
+                  <!-- <th>
+                    <span style="color: #566787">
+                      <strong>
+                        FAQ ID 
+                      </strong>
+                    </span>
+                  </th> -->
 
                   <th>
                     <span style="color: #566787">
@@ -60,7 +72,7 @@
                     </span>
                   </th>
 
-                  <th>
+                  <th >
                     <span style="color: #566787">
                       <strong>
                         {{ "FaqTestPage.Answer" | translate }}
@@ -73,16 +85,32 @@
               <tbody>
                   
                 <tr *ngFor="let hit of hits">
-                  <td>
-                    {{ hit.score }}
+                  <!-- // FOR DEBUG - FAQ ID -->
+                  <!-- <td>
+                    {{ hit?.document.id }}
+                  </td> -->
+
+                  <td (click)="getFaqKbIdAndGoToEditFaqPage(hit?.document.id)" style="cursor: pointer;" >
+                    <span class="tooltipx">
+                      {{ hit?.score }}
+                      <span class="tooltiptext"> click to edit FAQ id: <br> {{ hit?.document.id }} </span>
+                    </span>
                   </td>
 
-                  <td>
-                    {{ hit.document.question }}
+                  <td (click)="getFaqKbIdAndGoToEditFaqPage(hit?.document.id)" style="cursor: pointer;">
+                    <span class="tooltipx">
+                      {{ hit?.document.question }}
+                      <span class="tooltiptext"> click to edit FAQ id: <br> {{ hit?.document.id }} </span>
+                    </span>
                   </td>
-                  <td>
-                    {{ hit.document.answer }}
+
+                  <td class="td_answer" (click)="getFaqKbIdAndGoToEditFaqPage(hit?.document.id)" style="cursor: pointer;">
+                    <span class="tooltipx">
+                      {{ hit?.document.answer }}
+                      <span class="tooltiptext"> click to edit FAQ id: <br> {{ hit?.document.id }} </span>
+                    </span>  
                   </td>
+
                 </tr>
               </tbody>
 

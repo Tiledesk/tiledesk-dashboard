@@ -6,6 +6,7 @@ import { MongodbFaqService } from '../services/mongodb-faq.service';
 import { Project } from '../models/project-model';
 import { AuthService } from '../core/auth.service';
 import { NotifyService } from '../core/notify.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'faq-edit-add',
@@ -37,7 +38,8 @@ export class FaqEditAddComponent implements OnInit {
     private route: ActivatedRoute,
     private mongodbFaqService: MongodbFaqService,
     private auth: AuthService,
-    private notify: NotifyService
+    private notify: NotifyService,
+    public location: Location
   ) { }
 
   ngOnInit() {
@@ -119,6 +121,12 @@ export class FaqEditAddComponent implements OnInit {
     // this.router.navigate(['project/' + this.project._id  + '/faq', this.id_faq_kb]);
     this.router.navigate(['project/' + this.project._id + '/bots', this.id_faq_kb]);
   }
+
+
+  goBack() {
+    this.location.back();
+  }
+
 
   /**
    * ADD FAQ
