@@ -247,22 +247,17 @@ export class FaqComponent implements OnInit {
 
     this.display = 'block';
 
-
     this.id_toDelete = id;
     // this.faq_toDelete = deptName;
   }
 
   /**
-   * DELETE FAQ (WHEN THE 'CONFIRM' BUTTON IN MODAL IS CLICKED)
-   */
+   * DELETE FAQ (WHEN THE 'CONFIRM' BUTTON IN MODAL IS CLICKED)  */
   onCloseDeleteModalHandled() {
     this.display = 'none';
 
     this.mongodbFaqService.deleteMongoDbFaq(this.id_toDelete).subscribe((data) => {
       console.log('DELETE FAQ ', data);
-
-
-
       // this.ngOnInit();
       // RE-RUN GET FAQ BY FAQ KB ID TO UPDATE THE TABLE
       this.getFaqByFaqKbId();

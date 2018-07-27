@@ -168,10 +168,21 @@
 
                     {{ "GroupsAddEditPage.Members" | translate }} <span style="font-weight: 500">({{ group_members?.length }})</span>  
                     
-                  <button type="button" rel="tooltip" title="{{ 'GroupsAddEditPage.AddMembers' | translate }}" class="btn btn-success btn-simple btn-xs addMember" style="padding: 2px" 
+                  <!-- <button type="button" rel="tooltip" title="{{ 'GroupsAddEditPage.AddMembers' | translate }}" class="btn btn-success btn-simple btn-xs addMember" style="padding: 2px" 
                     (click)='open_users_list_modal()'>
                     <i class="material-icons" style="padding-top: 1px;">add</i>
-                  </button>
+                  </button> -->
+
+                  <!-- NEW BTN - ADD MEMBERS TO THE GROUP -->
+                  <button class="btn btn-info tooltipx" 
+                    style="padding:4px;  margin-top: 0px; margin-bottom: 0px; margin-left: 15px; border-radius: 50px;" 
+                    (click)="open_users_list_modal()">
+                  <span class="icon" style="padding-right:0px">
+                    <i class="material-icons">add</i>
+                  </span>
+                  <span class="tooltiptext"> {{ 'GroupsAddEditPage.AddMembers' | translate }} </span>
+                </button>
+
                 </h4>
                 <!-- <p class="category">Here is a subtitle for this table</p> -->
               </div>
