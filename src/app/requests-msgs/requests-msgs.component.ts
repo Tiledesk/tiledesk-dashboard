@@ -181,8 +181,8 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit {
           console.log('* REQUESTER ID: ', this.requester_id);
 
           if (request[0].attributes) {
-            if (request[0].attributes.userName) {
-              this.user_name = request[0].attributes.userName;
+            if (request[0].attributes.userFullname) {
+              this.user_name = request[0].attributes.userFullname;
               console.log('* USER NAME: ', this.user_name);
             } else {
               this.user_name = 'n.a.'

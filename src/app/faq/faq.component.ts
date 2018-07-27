@@ -9,7 +9,7 @@ import { AuthService } from '../core/auth.service';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { FaqKbService } from '../services/faq-kb.service';
 import { NotifyService } from '../core/notify.service';
-
+// declare const $: any;
 @Component({
   selector: 'faq',
   templateUrl: './faq.component.html',
@@ -258,10 +258,25 @@ export class FaqComponent implements OnInit {
 
     this.mongodbFaqService.deleteMongoDbFaq(this.id_toDelete).subscribe((data) => {
       console.log('DELETE FAQ ', data);
-      // this.ngOnInit();
-      // RE-RUN GET FAQ BY FAQ KB ID TO UPDATE THE TABLE
-      this.getFaqByFaqKbId();
 
+      // RE-RUN GET FAQ BY FAQ KB ID TO UPDATE THE TABLE
+      // this.getFaqByFaqKbId();
+      this.ngOnInit();
+
+      /* https://stackoverflow.com/questions/21315306/how-to-stop-window-scroll-after-specific-event */
+      // const $window = $(window);
+      // let previousScrollTop = 0;
+      // const scrollLock = true;
+      // console.log('»»» 1) SCROLL LOCK ', scrollLock)
+      // $window.scroll(function (event) {
+      //   if (scrollLock) {
+      //     console.log('»»» 2)SCROLL LOCK ', scrollLock)
+      //     $window.scrollTop(previousScrollTop);
+      //   }
+
+      //   previousScrollTop = $window.scrollTop();
+
+      // });
     },
       (error) => {
 

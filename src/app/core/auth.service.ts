@@ -211,14 +211,14 @@ export class AuthService {
                   console.log('3. FIREBASE CUSTOM AUTH DATA ', firebase_user);
 
                   /* UPDATE THE THE USER CREATE ON FIREBASE WITH THE CUSTOM TOKEN WITH THE EMAIL AND THE PASSWORD */
-                  firebase_user.updatePassword(password).then(function () {
-                    firebase_user.updateEmail(email);
-                    // Update successful.
-                    console.log('// Firebase credentials - Update successful.')
-                  }).catch(function (error) {
-                    // An error happened.
-                    console.log('// Firebase credentials - An error happened.', error)
-                  });
+                  // firebase_user.updatePassword(password).then(function () {
+                  //   firebase_user.updateEmail(email);
+                  //   // Update successful.
+                  //   console.log('// Firebase credentials - Update successful.')
+                  // }).catch(function (error) {
+                  //   // An error happened.
+                  //   console.log('// Firebase credentials - An error happened.', error)
+                  // });
 
                   //   const credential = firebase.auth.EmailAuthProvider.credential(
                   //     user.email,
