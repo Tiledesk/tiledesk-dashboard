@@ -5,6 +5,7 @@ import { MongodbFaqService } from '../services/mongodb-faq.service';
 
 import { Project } from '../models/project-model';
 import { AuthService } from '../core/auth.service';
+import { NotifyService } from '../core/notify.service';
 
 @Component({
   selector: 'faq-edit-add',
@@ -35,7 +36,8 @@ export class FaqEditAddComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private mongodbFaqService: MongodbFaqService,
-    private auth: AuthService
+    private auth: AuthService,
+    private notify: NotifyService
   ) { }
 
   ngOnInit() {
@@ -122,10 +124,10 @@ export class FaqEditAddComponent implements OnInit {
    * ADD FAQ
    */
   create() {
-    console.log('MONGO DB CREATE FAQ QUESTION: ', this.question, ' ANSWER: ', this.answer, ' ID FAQ KB ', this.id_faq_kb);
+    console.log('MONGO DB CREATE FAQ - QUESTION: ', this.question, ' - ANSWER: ', this.answer, ' - ID FAQ KB ', this.id_faq_kb);
     this.mongodbFaqService.addMongoDbFaq(this.question, this.answer, this.id_faq_kb)
       .subscribe((faq) => {
-        console.log('POST DATA ', faq);
+        console.log('CREATED FAQ ', faq);
 
         // this.question = '';
         // this.answer = '';
@@ -135,11 +137,15 @@ export class FaqEditAddComponent implements OnInit {
       },
         (error) => {
 
-          console.log('POST REQUEST ERROR ', error);
+          console.log('CREATED FAQ - ERROR ', error);
+          // =========== NOTIFY ERROR ===========
+          this.notify.showNotification('An error occurred while creating the FAQ', 4, 'report_problem');
 
         },
         () => {
-          console.log('POST REQUEST * COMPLETE *');
+          console.log('CREATED FAQ * COMPLETE *');
+          // =========== NOTIFY SUCCESS===========
+          this.notify.showNotification('FAQ successfully created', 2, 'done');
 
           // this.router.navigate(['project/' + this.project._id  + '/faq', this.id_faq_kb]);
           this.router.navigate(['project/' + this.project._id + '/bots', this.id_faq_kb]);
@@ -154,17 +160,19 @@ export class FaqEditAddComponent implements OnInit {
     this.mongodbFaqService.updateMongoDbFaq(this.id_faq, this.question_toUpdate, this.answer_toUpdate).subscribe((data) => {
       console.log('PUT DATA (UPDATE FAQ)', data);
 
-      // RE-RUN GET CONTACT TO UPDATE THE TABLE
-      // this.getDepartments();
-      this.ngOnInit();
+      // RE-RUN TO UPDATE THE TABLE
+      // this.ngOnInit();
     },
       (error) => {
-
         console.log('PUT (UPDATE FAQ) REQUEST ERROR ', error);
+        // =========== NOTIFY ERROR ===========
+        this.notify.showNotification('An error occurred while updating the FAQ', 4, 'report_problem');
 
       },
       () => {
         console.log('PUT (UPDATE FAQ) REQUEST * COMPLETE *');
+        // =========== NOTIFY SUCCESS===========
+        this.notify.showNotification('FAQ successfully updated', 2, 'done');
 
         // this.router.navigate(['project/' + this.project._id  + '/faq', this.id_faq_kb]);
         this.router.navigate(['project/' + this.project._id + '/bots', this.id_faq_kb]);
