@@ -259,20 +259,25 @@ export class FaqComponent implements OnInit {
     this.display = 'none';
 
     this.mongodbFaqService.deleteMongoDbFaq(this.id_toDelete).subscribe((data) => {
-      console.log('DELETE DATA ', data);
+      console.log('DELETE FAQ ', data);
 
-      // RE-RUN GET CONTACT TO UPDATE THE TABLE
-      // this.getDepartments();
-      this.ngOnInit();
+
+
+      // this.ngOnInit();
+      // RE-RUN GET FAQ BY FAQ KB ID TO UPDATE THE TABLE
+      this.getFaqByFaqKbId();
 
     },
       (error) => {
 
-        console.log('DELETE REQUEST ERROR ', error);
-
+        console.log('DELETE FAQ ERROR ', error);
+        // =========== NOTIFY ERROR ===========
+        this.notify.showNotification('An error occurred while deleting the FAQ', 4, 'report_problem');
       },
       () => {
-        console.log('DELETE REQUEST * COMPLETE *');
+        console.log('DELETE FAQ * COMPLETE *');
+        // =========== NOTIFY SUCCESS===========
+        this.notify.showNotification('FAQ successfully deleted', 2, 'done');
       });
 
   }

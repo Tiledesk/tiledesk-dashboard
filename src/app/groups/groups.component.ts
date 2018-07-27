@@ -33,7 +33,7 @@ export class GroupsComponent implements OnInit {
   displayDeleteModal = 'none';
   id_group_to_delete: string;
   name_group_to_delete: string;
-  
+
 
 
   constructor(
@@ -121,13 +121,10 @@ export class GroupsComponent implements OnInit {
       // CHECK IF THE USER-ID IS BETWEEN THE MEMBER OF THE GROUP
       this.projectUsersList.forEach(projectUser => {
 
-
         for (const p of this.projectUsersList) {
-
           // console.log('vv', projectUser._id)
 
           this.group_members.forEach(group_member => {
-
 
             if (p.id_user._id === group_member) {
               if (projectUser._id === p._id) {
@@ -135,23 +132,16 @@ export class GroupsComponent implements OnInit {
                 console.log('GROUP MEMBERS ', group_member)
                 console.log('IS MEMBER OF THE GROUP THE USER ', p.id_user._id, ' - ', p.is_group_member)
               }
-
             }
-
           });
-
         }
-
       });
-
-    },
-      error => {
-        this.showSpinnerInModal = false;
-        console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
-      },
-      () => {
-        console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
-      });
+    }, error => {
+      this.showSpinnerInModal = false;
+      console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
+    }, () => {
+      console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
+    });
   }
 
   onCloseModal() {
@@ -235,14 +225,14 @@ export class GroupsComponent implements OnInit {
     },
       (error) => {
         console.log('UPDATED GROUP WITH TRASHED = TRUE - ERROR ', error);
-      // =========== NOTIFY ERROR ===========
-      this.notify.showNotification('An error occurred while deleting the group', 4, 'report_problem');
+        // =========== NOTIFY ERROR ===========
+        this.notify.showNotification('An error occurred while deleting the group', 4, 'report_problem');
       },
       () => {
         console.log('UPDATED GROUP WITH TRASHED = TRUE * COMPLETE *');
 
-      // =========== NOTIFY SUCCESS===========
-      this.notify.showNotification('group successfully deleted', 2, 'done');
+        // =========== NOTIFY SUCCESS===========
+        this.notify.showNotification('group successfully deleted', 2, 'done');
         // UPDATE THE GROUP LIST
         this.ngOnInit()
       });
