@@ -164,7 +164,9 @@ export class FaqKbComponent implements OnInit {
         this.showSpinner = false;
       }, () => {
         console.log('GET BOT FAQs - COMPLETE ');
-        this.showSpinner = false;
+        setTimeout(() => {
+          this.showSpinner = false;
+        }, 100);
       });
     }
   }
@@ -234,7 +236,7 @@ export class FaqKbComponent implements OnInit {
    */
 
   onCloseDeleteBotModal() {
-    
+
     this.displayDeleteBotModal = 'none';
   }
   // ENABLED THE BUTTON 'DELETE BOT' IF THE BOT ID TYPED BY THE USER

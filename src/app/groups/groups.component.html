@@ -81,8 +81,12 @@
 
                 <tr *ngFor="let group of groupsList | sortBy : 'name'">
                     <!-- *ngIf="!group?.trashed" -->
-                  <td rel="tooltip" title="{{ group?._id }}" (click)='goToEditAddPage_edit(group?._id)' style="cursor: pointer;">
-                    {{ group?.name }}
+                    <!-- rel="tooltip" title="{{ group?._id }}" -->
+                  <td (click)='goToEditAddPage_edit(group?._id)' style="cursor: pointer;">
+                    <span class="tooltipx">
+                      {{ group?.name }}
+                      <span class="tooltiptext">{{ 'GroupsPage.GroupId' | translate }}: <br> {{ group?._id }} </span>
+                    </span>  
                   </td>
                    
                   <!-- <td>
@@ -94,14 +98,18 @@
                   </td> -->
 
                   <td (click)='goToEditAddPage_edit(group?._id)' style="cursor: pointer;">
-                    {{ group?.members.length }}  
+                    <span class="tooltipx">
+                      {{ group?.members.length }}  
 
-                    <span *ngIf="group?.members.length === 0" style="padding-left: 8px">
+                      <span *ngIf="group?.members.length === 0" style="padding-left: 8px">
                         <i class="material-icons" style="vertical-align: middle; color:#ec971f; font-size: 12px">report_problem</i>
                         <span style="vertical-align: middle; color:#ec971f; font-size: 12px"> 
                           <!-- pending add members -->
                           {{ 'GroupsPage.PendingAddMembers' | translate }}
                         </span>
+                      </span>
+
+                      <span class="tooltiptext">{{ 'GroupsPage.GroupId' | translate }}: <br> {{ group?._id }} </span>
                     </span>
                   </td>
                     

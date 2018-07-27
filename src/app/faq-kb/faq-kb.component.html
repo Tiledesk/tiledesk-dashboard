@@ -112,23 +112,31 @@
                   <tr *ngFor="let faqkb of faqkbList">
 
                     <td (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)' style="cursor: pointer;">
-                      {{ faqkb?.name }}
+                      <span class="tooltipx">
+                        {{ faqkb?.name }}
+
+                        <span class="tooltiptext">{{ 'BotsPage.BotId' | translate }}: <br> {{ faqkb?._id  }} </span>
+                      </span>  
                     </td>
 
                     <td (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)' style="cursor: pointer;">
-                      <span *ngIf="!faqkb?.has_faq">
-                        0
-                        <i class="material-icons" style="vertical-align: middle; color:#ec971f; font-size: 12px; padding-left: 8px">
-                          report_problem
-                        </i>
-                        <span style="vertical-align: middle; color:#ec971f; font-size: 12px"> 
-                          <!-- pending add members -->
-                          {{ 'BotsPage.PendingAddFaqs' | translate }}
+                      <span class="tooltipx">
+                        <span *ngIf="!faqkb?.has_faq">
+                          0
+                          <i class="material-icons" style="vertical-align: middle; color:#ec971f; font-size: 12px; padding-left: 8px">
+                            report_problem
+                          </i>
+                          <span style="vertical-align: middle; color:#ec971f; font-size: 12px"> 
+                            <!-- pending add members -->
+                            {{ 'BotsPage.PendingAddFaqs' | translate }}
+                          </span>
                         </span>
-                      </span>
 
-                      <span *ngIf="faqkb?.has_faq">
-                        {{ faqkb?.faqs_number }}
+                        <span *ngIf="faqkb?.has_faq">
+                          {{ faqkb?.faqs_number }}
+                        </span>
+
+                        <span class="tooltiptext">{{ 'BotsPage.BotId' | translate }}: <br> {{ faqkb?._id  }} </span>
                       </span>
                     </td>
 

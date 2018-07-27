@@ -93,21 +93,21 @@
                   <td (click)="getFaqKbIdAndGoToEditFaqPage(hit?.document.id)" style="cursor: pointer;" >
                     <span class="tooltipx">
                       {{ hit?.score }}
-                      <span class="tooltiptext"> click to edit FAQ id: <br> {{ hit?.document.id }} </span>
+                      <span class="tooltiptext"> {{ "FaqEditAddPage.FaqID" | translate }}: <br> {{ hit?.document.id }} </span>
                     </span>
                   </td>
 
                   <td (click)="getFaqKbIdAndGoToEditFaqPage(hit?.document.id)" style="cursor: pointer;">
                     <span class="tooltipx">
                       {{ hit?.document.question }}
-                      <span class="tooltiptext"> click to edit FAQ id: <br> {{ hit?.document.id }} </span>
+                      <span class="tooltiptext"> {{ "FaqEditAddPage.FaqID" | translate }}: <br> {{ hit?.document.id }} </span>
                     </span>
                   </td>
 
                   <td class="td_answer" (click)="getFaqKbIdAndGoToEditFaqPage(hit?.document.id)" style="cursor: pointer;">
                     <span class="tooltipx">
                       {{ hit?.document.answer }}
-                      <span class="tooltiptext"> click to edit FAQ id: <br> {{ hit?.document.id }} </span>
+                      <span class="tooltiptext"> {{ "FaqEditAddPage.FaqID" | translate }}: <br> {{ hit?.document.id }} </span>
                     </span>  
                   </td>
 
