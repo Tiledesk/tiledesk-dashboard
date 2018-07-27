@@ -1,148 +1,46 @@
-<!--  
-      <span *ngIf="CREATE_VIEW">
-        <h1>
-          <span class="icon" style="cursor: pointer;" (click)="goBackToFaqList()">
-            <i class="fa fa-angle-left" style="font-size:1em; color:#afafaf"></i>
-          </span>
-          <span class="title" style="padding-left: 25px;">Aggiungi FAQ</span>
-        </h1>
-        <hr>
-  
-        <loading-spinner *ngIf="showSpinner"></loading-spinner>
-  
-        <div class="field is-horizontal" style="margin-top:55px">
-          <div class="field-label is-normal">
-            <label class="label">Question</label>
-          </div>
-          <div class="field-body">
-            <div class="field">
-              <div class="control">
-               
-                <textarea [(ngModel)]="question" class="textarea" placeholder="Question"></textarea>
-              </div>
-            </div>
-          </div>
-        </div>
-  
-        <div class="field is-horizontal" style="margin-top:25px">
-          <div class="field-label is-normal">
-            <label class="label">Answer</label>
-          </div>
-          <div class="field-body">
-            <div class="field">
-              <div class="control">
-            
-                <textarea [(ngModel)]="answer" class="textarea" placeholder="Answer"></textarea>
-              </div>
-            </div>
-          </div>
-        </div>
-  
-        <div class="field is-horizontal">
-          <div class="field-label">
-            
-          </div>
-          <div class="field-body">
-            <div class="field">
-              <div class="control">
-                <button class="button is-success" [disabled]="question?.length < 5 || answer?.length < 5" (click)="create()">
-                  Crea FAQ 
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-  
-      </span>
-      
-  
-      <span *ngIf="EDIT_VIEW">
-          <h1>
-            
-            <span class="icon" style="cursor: pointer;" (click)="goBackToFaqList()">
-              <i class="fa fa-angle-left" style="font-size:1em; color:#afafaf"></i>
-            </span>
-            <span class="title" style="padding-left: 25px;">Modifica FAQ</span>
-          </h1>
-          <hr>
-  
-          <loading-spinner *ngIf="showSpinner"></loading-spinner>
-    
-          <div class="field is-horizontal" style="margin-top:55px">
-            <div class="field-label is-normal">
-              <label class="label">Question</label>
-            </div>
-            <div class="field-body">
-              <div class="field">
-                <div class="control">
-                  
-                  <textarea [(ngModel)]="question_toUpdate" class="textarea" placeholder="Question"></textarea>
-                </div>
-              </div>
-            </div>
-          </div>
-    
-          <div class="field is-horizontal" style="margin-top:25px">
-            <div class="field-label is-normal">
-              <label class="label">Answer</label>
-            </div>
-            <div class="field-body">
-              <div class="field">
-                <div class="control">
-                  
-                  <textarea [(ngModel)]="answer_toUpdate" class="textarea" placeholder="Answer"></textarea>
-                </div>
-              </div>
-            </div>
-          </div>
-    
-          <div class="field is-horizontal">
-            <div class="field-label">
-             
-            </div>
-            <div class="field-body">
-              <div class="field">
-                <div class="control">
-                  <button class="button is-success" (click)="edit()">
-                    Modifica FAQ
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-    
-        </span> -->
-   
- 
 <!-- NEW FOR THIS TEMPLATE -->
 <div class="navbar-brand" style="z-index: -1;margin-top:10px; padding-left:30px">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBackToFaqList()">keyboard_arrow_left</i>
-  <span *ngIf="CREATE_VIEW">Aggiungi FAQ</span>
-  <span *ngIf="EDIT_VIEW">Modifica FAQ</span>
+  <span *ngIf="CREATE_VIEW">
+    <!-- Aggiungi FAQ -->
+    {{ "FaqEditAddPage.AddFaq" | translate }}
+  </span>
+  <span *ngIf="EDIT_VIEW">
+    <!-- Modifica FAQ -->
+    {{ "FaqEditAddPage.EditFaq" | translate }}
+  </span>
 </div>
 
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card" style="padding-top:25px; padding-bottom:25px">
-          <div class="card-content">
 
-            <span *ngIf="CREATE_VIEW">
+    <span *ngIf="CREATE_VIEW">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card" style="padding-top:25px; padding-bottom:25px">
+            <div class="card-content">
 
               <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
-              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Domanda</label>
+              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
+                <!-- Domanda -->
+                {{ "FaqEditAddPage.Question" | translate }}
+              </label>
               <div class="col-sm-10">
-                <textarea style="padding-left: 5px;padding-top: 7px;" [(ngModel)]="question" class="textarea" rows="4" placeholder="Domanda"></textarea>
+                <textarea [(ngModel)]="question" class="textarea" rows="4" placeholder='{{ "FaqEditAddPage.Question" | translate }}'>
+                </textarea>
               </div>
 
               <!-- SPACER -->
               <div class="col-sm-12" style="height:10px"></div>
 
-              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Risposta</label>
+              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
+                <!-- Risposta -->
+                {{ "FaqEditAddPage.Answer" | translate }}
+              </label>
               <div class="col-sm-10">
-                <textarea style="padding-left: 5px;padding-top: 7px;" [(ngModel)]="answer" class="textarea" rows="4" placeholder="Risposta"></textarea>
+                <textarea [(ngModel)]="answer" class="textarea" rows="4" placeholder='{{ "FaqEditAddPage.Answer" | translate }}'>
+                </textarea>
               </div>
 
               <!-- SPACER -->
@@ -151,48 +49,99 @@
               <label style="" class="col-sm-2"></label>
               <div class="col-sm-10"> 
                 <button class="btn btn-success" [disabled]="question?.length < 2 || answer?.length < 2" (click)="create()">
-                  Crea FAQ 
+                  <!-- Crea FAQ  -->
+                  {{ "FaqEditAddPage.CreateFaq" | translate }}
                 </button>
               </div>
 
+            </div>
+          </div>
+        </div>
+      </div>
+    </span>
+    <!-- /. CREATE_VIEW -->
 
-            </span>
-            <!-- /. CREATE_VIEW -->
-
-            <span *ngIf="EDIT_VIEW">
+    <span *ngIf="EDIT_VIEW">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="card" style="padding-top:6px; padding-bottom:6px">
+            <div class="card-content">
 
               <loading-spinner *ngIf="showSpinner"></loading-spinner>
-
-              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Domanda</label>
-              <div class="col-sm-10">
-                <textarea style="padding-left: 5px;padding-top: 7px;" [(ngModel)]="question_toUpdate" class="textarea" rows="4" placeholder="Domanda"></textarea>
+              <!-- height: 36px; -->
+              <label style="padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: left;" class="col-sm-12 ">
+                <!-- Domanda -->
+                {{ "FaqEditAddPage.Question" | translate }}
+              </label>
+              <div class="col-sm-12">
+                <textarea [(ngModel)]="question_toUpdate" class="textarea" rows="4" placeholder='{{ "FaqEditAddPage.Question" | translate }}'>
+                </textarea>
               </div>
 
               <!-- SPACER -->
               <div class="col-sm-12" style="height:10px"></div>
-
-              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Risposta</label>
-              <div class="col-sm-10">
-                <textarea style="padding-left: 5px;padding-top: 7px;" [(ngModel)]="answer_toUpdate" class="textarea" rows="4" placeholder="Risposta"></textarea>
-              </div>
+                
+                <!-- height: 36px; -->
+                <label style="padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: left;" class="col-sm-12 ">
+                  <!-- Risposta -->
+                  {{ "FaqEditAddPage.Answer" | translate }}
+                </label>
+                <div class="col-sm-12">
+                  <textarea [(ngModel)]="answer_toUpdate" class="textarea" rows="4" placeholder='{{ "FaqEditAddPage.Answer" | translate }}'>
+                  </textarea>
+                </div>
 
               <div class="col-sm-12" style="height:15px"></div>
 
-              <label style="" class="col-sm-2"></label>
-              <div class="col-sm-10"> 
+              <!-- <label style="" class="col-sm-2"></label> -->
+              <div class="col-sm-12"> 
                 <button class="btn btn-success" (click)="edit()">
-                  Modifica FAQ
+                  <!-- Aggiorna FAQ -->
+                  {{ "FaqEditAddPage.UpdateFaq" | translate }}
                 </button>
               </div>
 
-
-            </span>
-            <!-- /. EDIT_VIEW -->
-
+            </div>
           </div>
-        </div>
+        </div>  <!-- col-md-8 -->
+
+        <!-- 
+        ********************************************
+        ****** RIGHT SIDEBAR 'FAQ ATTRIBUTES' ******
+        ******************************************** -->
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-content">
+              <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; margin-bottom: 6px;">
+                {{ "FaqEditAddPage.FaqAttributes" | translate }}
+              </h4>
+  
+              <p style="margin-bottom: 3px; color:#566787; padding-top: 10px;"> 
+                <strong>
+                  {{ "FaqEditAddPage.FaqID" | translate }}
+                </strong>
+              </p>
+              <p style="color:#999999; font-weight: 500;">  
+                {{ id_faq }}
+              </p>
+       
+              <p style="margin-bottom: 3px; color:#566787; padding-top: 10px;"> 
+                <strong>
+                  {{ "FaqEditAddPage.CreationDate" | translate }}
+                </strong>
+              </p>
+              <p style="color:#999999; font-weight: 500;">  
+                  {{ faq_creationDate | date: 'd/M/y'}}
+              </p>
+            </div>
+          </div>
+        </div> <!-- ./ col-md-4 -->
+
+
+
       </div>
-    </div>
-  </div>
-</div>
+    </span> <!-- /. EDIT_VIEW -->
+
+  </div> <!-- /. container-fluid -->
+</div> <!-- /. main-content -->
   

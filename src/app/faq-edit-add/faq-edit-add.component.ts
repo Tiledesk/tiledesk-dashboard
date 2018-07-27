@@ -28,7 +28,7 @@ export class FaqEditAddComponent implements OnInit {
 
   id_faq_kb: string;
   id_faq: string;
-
+  faq_creationDate: any;
   project: Project;
 
   constructor(
@@ -59,9 +59,7 @@ export class FaqEditAddComponent implements OnInit {
       if (this.id_faq) {
         this.getFaqById();
       }
-
     }
-
     this.getCurrentProject();
   }
 
@@ -96,12 +94,20 @@ export class FaqEditAddComponent implements OnInit {
    */
   getFaqById() {
     this.mongodbFaqService.getMongDbFaqById(this.id_faq).subscribe((faq: any) => {
-      console.log('MONGO DB FAQ GET BY ID', faq);
-      this.question_toUpdate = faq.question;
-      this.answer_toUpdate = faq.answer;
-      console.log('MONGO DB FAQ QUESTION TO UPDATE', this.question_toUpdate);
-      console.log('MONGO DB FAQ ANSWER TO UPDATE', this.answer_toUpdate);
+      console.log('FAQ GET BY ID', faq);
+      if (faq) {
+        this.question_toUpdate = faq.question;
+        this.answer_toUpdate = faq.answer;
+        this.faq_creationDate = faq.createdAt
+        console.log('FAQ QUESTION TO UPDATE', this.question_toUpdate);
+        console.log('FAQ ANSWER TO UPDATE', this.answer_toUpdate);
+      }
 
+    }, (error) => {
+      console.log('FAQ GET BY ID - ERROR ', error);
+      this.showSpinner = false;
+    }, () => {
+      console.log('FAQ GET BY ID - COMPLETE ');
       this.showSpinner = false;
     });
   }
@@ -109,7 +115,7 @@ export class FaqEditAddComponent implements OnInit {
   // GO BACK TO FAQ COMPONENT
   goBackToFaqList() {
     // this.router.navigate(['project/' + this.project._id  + '/faq', this.id_faq_kb]);
-    this.router.navigate(['project/' + this.project._id  + '/bots', this.id_faq_kb]);
+    this.router.navigate(['project/' + this.project._id + '/bots', this.id_faq_kb]);
   }
 
   /**
@@ -127,17 +133,17 @@ export class FaqEditAddComponent implements OnInit {
         // this.getDepartments();
         // this.ngOnInit();
       },
-      (error) => {
+        (error) => {
 
-        console.log('POST REQUEST ERROR ', error);
+          console.log('POST REQUEST ERROR ', error);
 
-      },
-      () => {
-        console.log('POST REQUEST * COMPLETE *');
+        },
+        () => {
+          console.log('POST REQUEST * COMPLETE *');
 
-        // this.router.navigate(['project/' + this.project._id  + '/faq', this.id_faq_kb]);
-        this.router.navigate(['project/' + this.project._id  + '/bots', this.id_faq_kb]);
-      });
+          // this.router.navigate(['project/' + this.project._id  + '/faq', this.id_faq_kb]);
+          this.router.navigate(['project/' + this.project._id + '/bots', this.id_faq_kb]);
+        });
 
   }
 
@@ -161,7 +167,7 @@ export class FaqEditAddComponent implements OnInit {
         console.log('PUT (UPDATE FAQ) REQUEST * COMPLETE *');
 
         // this.router.navigate(['project/' + this.project._id  + '/faq', this.id_faq_kb]);
-        this.router.navigate(['project/' + this.project._id  + '/bots', this.id_faq_kb]);
+        this.router.navigate(['project/' + this.project._id + '/bots', this.id_faq_kb]);
       });
   }
 

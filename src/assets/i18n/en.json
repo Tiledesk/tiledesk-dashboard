@@ -51,7 +51,7 @@
     "GoToLogin": "Go to Login",
     "InvalidPswResetKey": "Invalid password reset key",
     "QuickTips": "Quick tips",
-    "Error":"Error",
+    "Error": "Error",
     "UserProfile": {
         "Profile": "Profile",
         "UploadImage": "Upload image",
@@ -190,10 +190,10 @@
         "tooltipDeleteGroup": "Delete Group",
         "DeleteGroup": "Delete group",
         "TheGroupWithId": "The group with Id",
-        "TheGroup":"The group",
+        "TheGroup": "The group",
         "WillBeRemoved": "will be deleted",
         "AreYouSureDeleteGroup": "Are you sure you want to delete the group",
-        "IdGroup":"Id group",
+        "IdGroup": "Id group",
         "Cancel": "Cancel"
     },
     "GroupsAddEditPage": {
@@ -252,10 +252,10 @@
         "TheBot": "The bot",
         "TheBotWithID": "The bot with Id",
         "WillBeDeleted": "will be deleted",
-        "IfYouDeletedTheBot":"If you delete the bot",
+        "IfYouDeletedTheBot": "If you delete the bot",
         "YouAlsoDeleteItsFaqs": "you also delete all its FAQs.",
-        "ToDeleteTheBotType":"To delete the bot, type the bot ID:",
-        "Cancel":"Cancel",
+        "ToDeleteTheBotType": "To delete the bot, type the bot ID:",
+        "Cancel": "Cancel",
         "Processing": "Processing...",
         "Completed": "Completed",
         "BotDeleted": "Bot deleted",
@@ -276,11 +276,11 @@
         "Processing": "Processing...",
         "Completed": "Completed",
         "BotCreated": "Bot created",
-        "TheBot":"The bot",
+        "TheBot": "The bot",
         "HasBeenCreated": "has been successfully created",
-        "AddFaqToTheBot":"Add FAQs to the bot",
-        "ReturnToTheBotList":"Return to the bot list",
-        "AnErrorHasOccurred":"An error has occurred",
+        "AddFaqToTheBot": "Add FAQs to the bot",
+        "ReturnToTheBotList": "Return to the bot list",
+        "AnErrorHasOccurred": "An error has occurred",
         "Continue": "Continue"
     },
     "FaqPage": {
@@ -301,7 +301,7 @@
         "modalDeleteFaqWithId": "Delete FAQ with Id",
         "AreYouSure": "Are you sure you want to delete this FAQ?",
         "Confirm": "Confirm",
-        "Cancel":"Cancel",
+        "Cancel": "Cancel",
         "ImportCsvFile": "Import CSV File",
         "ColumnsSeparatedWith": "Columns separated with:",
         "DelimiterOptionMustBe": "Delimiter option must be one character long",
@@ -313,6 +313,17 @@
         "FaqsSuccessfullyUploaded": "FAQs successfully uploaded",
         "AnErrorOccurredDuringTheUpload": "An error occurred during the upload",
         "Continue": "Continue"
+    },
+    "FaqEditAddPage": {
+        "AddFaq":"Add FAQ",
+        "EditFaq":"Edit FAQ",
+        "Question":"Question",
+        "Answer":"Answer",
+        "CreateFaq":"Create FAQ",
+        "UpdateFaq":"Update FAQ",
+        "FaqAttributes": "FAQ attributes",
+        "FaqID":"FAQ Id",
+        "CreationDate":"Creation date"
     },
     "DepartmentsPage": {
         "AddDepartment": "Add Department",
