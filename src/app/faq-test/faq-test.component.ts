@@ -22,6 +22,8 @@ export class FaqTestComponent implements OnInit {
   hits: any;
   faq_number_of_found: number;
   showSpinner = false;
+  hideScore = false;
+
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -40,9 +42,10 @@ export class FaqTestComponent implements OnInit {
     if (this.questionToTest) {
       this.showSpinner = true;
 
+      // SET A TIMEOUT TO AVOID THAR REMOTE FAQ ARE NOT UPDATED
       setTimeout(() => {
         this.onInitSearchRemoteFaq(this.questionToTest);
-       }, 500);
+      }, 500);
     }
   }
 
@@ -157,6 +160,12 @@ export class FaqTestComponent implements OnInit {
       console.log('FAQ GET BY ID - COMPLETE ');
 
     });
+  }
+
+  onChangeHideScore($event) {
+
+    this.hideScore = $event.target.checked;
+    console.log('ON CHANGE - HIDE SCORE', this.hideScore);
   }
 
 }

@@ -8,7 +8,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-        <div class="card" style="padding-top:25px; padding-bottom:25px; margin-bottom:0px">
+        <div class="card custom_card" style="padding-top:25px; padding-bottom:25px; margin-bottom:0px">
           <div class="card-content">
 
             <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
@@ -20,7 +20,7 @@
             </div>
 
              <!-- SPACER -->
-             <div class="col-sm-12" style="height:15px"></div>
+             <div class="col-sm-12 spacer_div" style="height:15px"></div>
 
              <label class="col-sm-2"></label>
 
@@ -41,6 +41,13 @@
           <div class="card-header" data-background-color="" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
             <h4 class="title" style="margin-bottom:2px; font-size:1.1em; color: #566787">
               FAQs <span style="font-weight: 500">({{ faq_number_of_found }})</span> 
+
+              <span style="margin-left: 16px">
+                <input type="checkbox" class="form-check-input" style="width: 16px;height: 16px;" 
+                (change)="onChangeHideScore($event)">
+                <!-- Hide Score  -->
+                {{ "FaqTestPage.HideScore" | translate }}
+              </span>
             </h4>
           </div>   
           
@@ -60,13 +67,13 @@
                     </span>
                   </th> -->
 
-                  <th>
+                  <!-- <th>
                     <span style="color: #566787">
                       <strong>
                         Score 
                       </strong>
                     </span>
-                  </th>
+                  </th> -->
 
                   <th>
                     <span style="color: #566787">
@@ -96,28 +103,28 @@
                     {{ hit?.document.id }}
                   </td> -->
 
-                  <td (click)="getFaqKbIdAndGoToEditFaqPage(hit?.document.id)" style="cursor: pointer;" >
+                  <!-- <td (click)="getFaqKbIdAndGoToEditFaqPage(hit?.document.id)" style="cursor: pointer;" >
                     <span class="tooltipx" style="font-size: 12px;">
                       {{ hit?.score }}
                       <span class="tooltiptext"> {{ "FaqEditAddPage.FaqID" | translate }}: <br> {{ hit?.document.id }} </span>
                     </span>
-                    <!-- <span class="tooltipxcustom">
-                    <span class="tooltiptextcustom">content</span>
-                    </span> -->
-                  </td>
+                  </td> -->
 
-                  <td (click)="getFaqKbIdAndGoToEditFaqPage(hit?.document.id)" style="cursor: pointer;">
+                  <td (click)="getFaqKbIdAndGoToEditFaqPage(hit?.document.id)" style="cursor: pointer; white-space: normal !important; word-wrap: break-word;">
                     <span class="tooltipx">
                       {{ hit?.document.question }}
                       <span class="tooltiptext"> {{ "FaqEditAddPage.FaqID" | translate }}: <br> {{ hit?.document.id }} </span>
                     </span>
+                   
                   </td>
 
-                  <td class="td_answer" (click)="getFaqKbIdAndGoToEditFaqPage(hit?.document.id)" style="cursor: pointer;">
-                    <span class="tooltipx">
+                  <td class="td_answer" (click)="getFaqKbIdAndGoToEditFaqPage(hit?.document.id)" style="cursor: pointer; white-space: normal !important; word-wrap: break-word;">
+                      <!-- margin-bottom: 15px -->
+                    <span class="tooltipx" style="margin-bottom: 15px">
                       {{ hit?.document.answer }}
                       <span class="tooltiptext"> {{ "FaqEditAddPage.FaqID" | translate }}: <br> {{ hit?.document.id }} </span>
                     </span>  
+                    <span *ngIf='hideScore === false' class="score"> Score: {{ hit?.score }} </span>
                   </td>
                  
                 </tr>

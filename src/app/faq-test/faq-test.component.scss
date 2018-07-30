@@ -75,36 +75,91 @@ select {
   }
 // end TOOLTIP
 
-// start TOOLTIP CUSTOM
-// /* Tooltip container */
-// .tooltipxcustom{
-//     position: relative;
-//     display: inline-block;
-//     // border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+.score {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    position: relative;
+    // left: -75px;
+    bottom: 0px;
+}
+
+/* START NEW FOR TABLE */
+// table { 
+//     width: 100%; 
+//     border-collapse: collapse; 
 //   }
-//   /* Tooltip text */
-//   .tooltipxcustom .tooltiptextcustom {
-//     // visibility: hidden;
-//     // width: 120px;
-//     background-color: black; 
-//     // background-color: rgba(0,0,0,0.6);
-//     color: #fff;
-//     text-align: center;
-//     padding: 5px 5px;
-//     border-radius: 5px;
-//     font-size: 12px !important;
-  
-//     /* Position the tooltip text */
-//     position: absolute;
-//     z-index: 1;
-//     /* Position the tooltip text - TOP */
-//     bottom: 100%;
-//     left: 50%; 
-//     margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+//   /* Zebra striping */
+//   tr:nth-of-type(odd) { 
+//     background: #eee; 
 //   }
-  
-//   /* Show the tooltip text when you mouse over the tooltip container */
-//   .tooltipxcustom:hover .tooltiptextcustom {
-//     visibility: visible;
+//   th { 
+//     background: #333; 
+//     color: white; 
+//     font-weight: bold; 
 //   }
-// end TOOLTIP CUSTOM
+//   td, th { 
+//     padding: 6px; 
+//     border: 1px solid #ccc; 
+//     text-align: left; 
+//   }
+/* 
+Max width before this PARTICULAR table gets nasty
+This query will take effect for any screen smaller than 760px
+and also iPads specifically.
+*/
+@media 
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+
+	/* Force table to not be like tables anymore */
+	table, thead, tbody, th, td, tr { 
+		display: block; 
+	}
+	
+	/* Hide table headers (but not display: none;, for accessibility) */
+	thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	
+	tr { border: 1px solid #ccc; }
+	
+	td { 
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid #eee; 
+		position: relative;
+		padding-left: 50%; 
+	}
+	
+	td:before { 
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+        white-space: nowrap;
+    }
+}
+    /* END NEW FOR TABLE */
+
+/**
+ * *** WHEN THE SCREEN IS < OF 768 PX  ***
+ * CARD - CUSTOM PADDING AND MARGIN 
+ * SPACER DIV HIDDEN
+ */    
+@media only screen and (max-width: 768px) {
+    .custom_card {
+        margin-top: 5px !important;
+        padding-top:5px !important; 
+        padding-bottom:5px !important;
+    }
+    .spacer_div {
+        display: none !important;
+    }
+}

@@ -332,7 +332,8 @@
         "Question":"Question",
         "Answer":"Answer",
         "EnterTheQuestion":"Enter the question",
-        "RunTest":"Run Test"
+        "RunTest":"Run Test",
+        "HideScore":"Hide Score"
     },
     "DepartmentsPage": {
         "AddDepartment": "Add Department",
