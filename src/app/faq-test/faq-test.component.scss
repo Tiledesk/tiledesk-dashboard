@@ -163,3 +163,8 @@ only screen and (max-width: 760px),
         display: none !important;
     }
 }
+
+// if score is hidden remove the margin bottom to the td 'question'
+.hideScoreHidden {
+    margin-bottom: 0px !important;
+}

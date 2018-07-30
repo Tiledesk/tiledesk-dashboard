@@ -120,10 +120,11 @@
 
                   <td class="td_answer" (click)="getFaqKbIdAndGoToEditFaqPage(hit?.document.id)" style="cursor: pointer; white-space: normal !important; word-wrap: break-word;">
                       <!-- margin-bottom: 15px -->
-                    <span class="tooltipx" style="margin-bottom: 15px">
+                    <span class="tooltipx" style="margin-bottom: 15px" [ngClass]="{ 'hideScoreHidden': hideScore}">
                       {{ hit?.document.answer }}
                       <span class="tooltiptext"> {{ "FaqEditAddPage.FaqID" | translate }}: <br> {{ hit?.document.id }} </span>
                     </span>  
+                    <br>
                     <span *ngIf='hideScore === false' class="score"> Score: {{ hit?.score }} </span>
                   </td>
                  
