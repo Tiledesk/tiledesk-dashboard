@@ -183,7 +183,15 @@ export class FaqEditAddComponent implements OnInit {
         this.notify.showNotification('FAQ successfully updated', 2, 'done');
 
         // this.router.navigate(['project/' + this.project._id  + '/faq', this.id_faq_kb]);
-        this.router.navigate(['project/' + this.project._id + '/bots', this.id_faq_kb]);
+
+        /**
+         * THE FAQ-TEST PAGE (THAT CAN BE ONE OF THE PAGES FROM WICH EDIT-FAQ IS CALLED)
+         * DISPLAY THE REMOTE FAQ AFTER A SEARCH BY THE QUESTION TYPED BY THE USER.
+         * TO AVOID THAT THE REMOTE FAQ DISPLAYED ARE NOT UPDATED COMMENT THE AUTOMATIC 'NAVIGATE'
+         * AFTER THE USER CLICK ON THE 'UPDATE BUTTON'
+         */
+        // this.router.navigate(['project/' + this.project._id + '/bots', this.id_faq_kb]);
+        // this.location.back();
       });
   }
 

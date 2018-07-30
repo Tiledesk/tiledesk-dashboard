@@ -175,7 +175,7 @@ export class AppComponent implements OnInit, AfterViewInit {
             if (this.location.path() !== '') {
                 this.route = this.location.path();
 
-                console.log('»> ', this.route)
+                // console.log('»> ', this.route)
                 // tslint:disable-next-line:max-line-length
                 if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/forgotpsw') || (this.route === '/projects') || (this.route.indexOf('/verify') !== -1) || (this.route.indexOf('/resetpassword') !== -1)) {
 

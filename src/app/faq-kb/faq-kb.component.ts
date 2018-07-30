@@ -254,6 +254,8 @@ export class FaqKbComponent implements OnInit {
   }
 
   trashTheBot() {
+    this.showSpinner = true;
+
     this.faqKbService.updateFaqKbAsTrashed(this.id_toDelete, true).subscribe((updatedFaqKb: any) => {
       console.log('TRASH THE BOT - UPDATED FAQ-KB ', updatedFaqKb);
     }, (error) => {
@@ -266,7 +268,12 @@ export class FaqKbComponent implements OnInit {
       this.notify.showNotification('bot successfully deleted', 2, 'done');
 
       this.getFaqKbByProjectId();
+
       this.displayDeleteBotModal = 'none';
+      setTimeout(() => {
+        this.showSpinner = false;
+      }, 100);
+
 
     });
 

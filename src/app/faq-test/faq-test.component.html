@@ -42,9 +42,13 @@
             <h4 class="title" style="margin-bottom:2px; font-size:1.1em; color: #566787">
               FAQs <span style="font-weight: 500">({{ faq_number_of_found }})</span> 
             </h4>
-          </div>        
-          <div class="card-content table-responsive">
-            <table class="table table-hover">
+          </div>   
+          
+          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+          
+          <div *ngIf="!showSpinner" class="card-content table-responsive">
+
+            <table  class="table table-hover">
               <thead>
                 <tr>
                   <!-- // FOR DEBUG - FAQ ID -->
@@ -82,19 +86,24 @@
                 </tr>
               </thead>
 
+              
               <tbody>
-                  
+                
                 <tr *ngFor="let hit of hits">
+                    
                   <!-- // FOR DEBUG - FAQ ID -->
                   <!-- <td>
                     {{ hit?.document.id }}
                   </td> -->
 
                   <td (click)="getFaqKbIdAndGoToEditFaqPage(hit?.document.id)" style="cursor: pointer;" >
-                    <span class="tooltipx">
+                    <span class="tooltipx" style="font-size: 12px;">
                       {{ hit?.score }}
                       <span class="tooltiptext"> {{ "FaqEditAddPage.FaqID" | translate }}: <br> {{ hit?.document.id }} </span>
                     </span>
+                    <!-- <span class="tooltipxcustom">
+                    <span class="tooltiptextcustom">content</span>
+                    </span> -->
                   </td>
 
                   <td (click)="getFaqKbIdAndGoToEditFaqPage(hit?.document.id)" style="cursor: pointer;">
@@ -110,11 +119,26 @@
                       <span class="tooltiptext"> {{ "FaqEditAddPage.FaqID" | translate }}: <br> {{ hit?.document.id }} </span>
                     </span>  
                   </td>
-
+                 
                 </tr>
+   
+                
               </tbody>
 
+
             </table>
+
+            <!-- <div class="row" *ngFor="let hit of hits">
+              <div class="col-xs-6 col-md-6 col-lg-6" style="border-top: 1px solid #ddd;">
+                {{ hit?.document.question }}
+              </div>
+              <div class="col-xs-6 col-md-6 col-lg-6" style="border-top: 1px solid #ddd;">
+                {{ hit?.document.answer }}
+              </div>
+              <div class="col-xs-12 col-md-12 col-lg-12" style="border-bottom: 1px solid #ddd;">
+                Score: {{ hit?.score }}
+              </div>
+            </div> -->
 
           </div>
         </div>

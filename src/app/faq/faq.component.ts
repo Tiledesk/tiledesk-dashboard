@@ -63,6 +63,10 @@ export class FaqComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log('»»» HELLO FAQ COMP')
+
+    this.clearSearchedQuestionStored();
+
     // GET ID_FAQ_KB FROM THE URL PARAMS (IS PASSED FROM THE FAQ-KB-COMPONENT WHEN THE USER CLICK ON EDIT FAQ IN THE TABLE )
     this.getFaqKbId();
 
@@ -73,6 +77,17 @@ export class FaqComponent implements OnInit {
     this.getFaqByFaqKbId();
 
     this.getCurrentProject();
+  }
+
+ /**
+  * ****** CLEAR SEARCHED QUESTION FROM LOCAL STORAGE ******
+  * IN THE FAQ-TEST COMP, WHEN THE USER SEARCH FOR A QUESTION TO TEST
+  * THE QUESTION IS SAVED IN THE STORAGE SO, IN THE EVENT THAT CLICK ON THE FAQ
+  * TO EDIT IT, WHEN CLICK ON THE BACK BUTTON IN THE FAQ EDIT PAGE AND RETURN IN THE FAQ TEST PAGE, THE
+  * TEST PAGE DISPLAY THE PREVIOUS RESULT OF RESEARCH.
+  * WHEN THE USER RETURN IN THE EDIT BOT PAGE (THIS COMPONENT) THE RESEARCHED QUESTION IS RESETTED */
+   clearSearchedQuestionStored() {
+    localStorage.setItem('searchedQuestion', '');
   }
 
   getCurrentProject() {

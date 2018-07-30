@@ -4,7 +4,7 @@ import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
 import { ActivatedRoute } from '@angular/router';
 import { MongodbFaqService } from '../services/mongodb-faq.service';
-
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 // USED FOR go back last page
 import { Location } from '@angular/common';
 
@@ -21,7 +21,7 @@ export class FaqTestComponent implements OnInit {
   remote_faq_kb_key: string;
   hits: any;
   faq_number_of_found: number;
-
+  showSpinner = false;
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -32,8 +32,34 @@ export class FaqTestComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.getSearchedQuestionFromStorage()
+
     this.getCurrentProject();
     this.getRemoteFaqKbKey();
+
+    if (this.questionToTest) {
+      this.showSpinner = true;
+
+      setTimeout(() => {
+        this.onInitSearchRemoteFaq(this.questionToTest);
+       }, 500);
+    }
+  }
+
+  // setTimeout(() => {
+  //   this.SHOW_CIRCULAR_SPINNER = false
+  //   this.CREATE_BOT_ERROR = true;
+  // }, 300);
+
+  /**
+   * WHEN THE USER RUN A TEST, THE QUESTION FOR THAT SEARCH IS SAVED IN THE STORAGE
+   * IF CLICK ON A FAQ TO EDIT IT AND THEN RETURN IN THE FAQ TEST PAGE, IN THE FAQ-TEST PAGE
+   * (THIS COMPONENT) IS RUNNED THE onInitSearchRemoteFaq THAT SEARCH FOR THE REMOTE FAQ
+   * USING THE QUESTION SAVED IN THE STORAGE.
+   * WHEN THE USER GO TO THE PAGE 'EDIT BOT' (faq.comp) THE STORED SEARCHED QUESTION IS CLEARED  */
+  getSearchedQuestionFromStorage() {
+    this.questionToTest = localStorage.getItem('searchedQuestion');
+    console.log('SEARCHED QUESTION - FROM LOcAL STORAGE ', this.questionToTest)
   }
 
   getRemoteFaqKbKey() {
@@ -58,10 +84,38 @@ export class FaqTestComponent implements OnInit {
     this._location.back();
   }
 
+  onInitSearchRemoteFaq(questionToTest) {
+    console.log('ON INIT QUESTION TO TEST ', questionToTest)
+
+
+    this.faqService.searchRemoteFaqByRemoteFaqKbKey(this.remote_faq_kb_key, questionToTest)
+      .subscribe((remoteFaq) => {
+        console.log('REMOTE FAQ FOUND - POST DATA ', remoteFaq);
+
+        if (remoteFaq) {
+          this.hits = remoteFaq.hits
+          this.faq_number_of_found = remoteFaq.total;
+          console.log('REMOTE FAQ LENGHT ', this.faq_number_of_found);
+
+        }
+
+      }, (error) => {
+        console.log('REMOTE FAQ - POST REQUEST ERROR ', error);
+
+        this.showSpinner = false;
+      }, () => {
+        console.log('REMOTE FAQ - POST REQUEST * COMPLETE *');
+
+        this.showSpinner = false;
+      });
+  }
+
   searchRemoteFaq() {
     // BUG FIX 'RUN TEST button remains focused after clicking'
     this.elementRef.nativeElement.blur();
-    console.log('SEARCH QUESTION ', this.questionToTest)
+
+    localStorage.setItem('searchedQuestion', this.questionToTest);
+
     this.faqService.searchRemoteFaqByRemoteFaqKbKey(this.remote_faq_kb_key, this.questionToTest)
       .subscribe((remoteFaq) => {
         console.log('REMOTE FAQ FOUND - POST DATA ', remoteFaq);

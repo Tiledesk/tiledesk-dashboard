@@ -51,7 +51,7 @@ export class AuthGuard implements CanActivate {
     // this.router.events.subscribe((val) => {
     if (this.location.path() !== '') {
       this.route = this.location.path();
-      console.log('AUTH GUARD »> »> ', this.route);
+      // console.log('AUTH GUARD »> »> ', this.route);
       if (this.route.indexOf('/verify') !== -1) {
         // this.router.navigate([`${this.route}`]);
         this.is_verify_email_page = true;
@@ -70,7 +70,7 @@ export class AuthGuard implements CanActivate {
   detectSignUpRoute() {
     if (this.location.path() !== '') {
       this.route = this.location.path();
-      console.log('AUTH GUARD »> »> ', this.route);
+      // console.log('AUTH GUARD »> »> ', this.route);
       if (this.route.indexOf('/signup') !== -1) {
         // this.router.navigate([`${this.route}`]);
         this.is_signup_page = true;
@@ -87,7 +87,7 @@ export class AuthGuard implements CanActivate {
   detectResetPswRoute() {
     if (this.location.path() !== '') {
       this.route = this.location.path();
-      console.log('AUTH GUARD »> »> ', this.route);
+      // console.log('AUTH GUARD »> »> ', this.route);
       if (this.route.indexOf('/resetpassword') !== -1) {
         // this.router.navigate([`${this.route}`]);
         this.is_reset_psw_page = true;

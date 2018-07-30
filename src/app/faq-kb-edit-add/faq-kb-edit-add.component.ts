@@ -48,6 +48,9 @@ export class FaqKbEditAddComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log('»»»» HELLO FAQ-KB-EDIT-ADD')
+
+
     this.detectBrowserLang();
 
     // BASED ON THE URL PATH DETERMINE IF THE USER HAS SELECTED (IN FAQ-KB PAGE) 'CREATE' OR 'EDIT'
