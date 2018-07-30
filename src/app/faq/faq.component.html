@@ -271,14 +271,14 @@
               </tr>
 
               <tr *ngFor="let faq of faq">
-                <td>
+                <td style="white-space: normal !important; word-wrap: break-word;">
                   <span class="tooltipx">
                     {{ faq?.question }}
                     <span class="tooltiptext">{{ 'FaqPage.FaqId' | translate }}: <br> {{ faq?._id }} </span>
                   </span>
                 </td>
 
-                <td>
+                <td style="white-space: normal !important; word-wrap: break-word;">
                     <span class="tooltipx">
                       {{ faq?.answer }}
                       <span class="tooltiptext">{{ 'FaqPage.FaqId' | translate }}: <br> {{ faq?._id }} </span>
