@@ -30,8 +30,9 @@ export class UserEditAddComponent implements OnInit {
 
   display = 'none';
   SHOW_CIRCULAR_SPINNER = false;
-  INVITE_FORBIDDEN_ERROR: boolean;
+  INVITE_YOURSELF_ERROR: boolean;
   INVITE_OTHER_ERROR: boolean;
+  INVITE_USER_ALREADY_MEMBER_ERROR: boolean;
 
   project_user_id: string;
   user_role: string;
@@ -95,21 +96,19 @@ export class UserEditAddComponent implements OnInit {
       .subscribe((projectUser: any) => {
         console.log('PROJECT-USER UPDATED ', projectUser)
 
-      },
-        (error) => {
-          console.log('PROJECT-USER UPDATED ERR  ', error);
-          // =========== NOTIFY ERROR ===========
-          // tslint:disable-next-line:quotemark
-          this.notify.showNotification("An error occurred while updating user's role", 4, 'report_problem')
-        },
-        () => {
-          console.log('PROJECT-USER UPDATED  * COMPLETE *');
+      }, (error) => {
+        console.log('PROJECT-USER UPDATED ERR  ', error);
+        // =========== NOTIFY ERROR ===========
+        // tslint:disable-next-line:quotemark
+        this.notify.showNotification("An error occurred while updating user's role", 4, 'report_problem')
+      }, () => {
+        console.log('PROJECT-USER UPDATED  * COMPLETE *');
 
-          // =========== NOTIFY SUCCESS===========
-          this.notify.showNotification('user role successfully updated', 2, 'done');
+        // =========== NOTIFY SUCCESS===========
+        this.notify.showNotification('user role successfully updated', 2, 'done');
 
-          this.router.navigate(['project/' + this.id_project + '/users']);
-        });
+        this.router.navigate(['project/' + this.id_project + '/users']);
+      });
   }
 
   getCurrentProject() {
@@ -122,6 +121,7 @@ export class UserEditAddComponent implements OnInit {
       }
     });
   }
+
   goBackToUsersList() {
     this.router.navigate(['project/' + this.id_project + '/users']);
   }
@@ -151,25 +151,35 @@ export class UserEditAddComponent implements OnInit {
     this.usersService.inviteUser(this.user_email, this.role).subscribe((project_user: any) => {
       console.log('INVITE USER - POST SUBSCRIPTION PROJECT-USER ', project_user);
 
-    },
-      (error) => {
-        console.log('INVITE USER  ERROR ', error);
+    }, (error) => {
+      console.log('INVITE USER  ERROR ', error);
 
-        const invite_errorbody = JSON.parse(error._body)
-        console.log('INVITE USER  ERROR BODY ', invite_errorbody);
-        if ((invite_errorbody['success'] === false) && (invite_errorbody['msg'] === 'Forbidden.')) {
-          console.log('!!! Forbidden, you can not invite yourself')
-          this.INVITE_FORBIDDEN_ERROR = true;
-        } else if (invite_errorbody['success'] === false) {
-          this.INVITE_FORBIDDEN_ERROR = false;
-          this.INVITE_OTHER_ERROR = true;
-        }
-      },
-      () => {
-        console.log('INVITE USER  * COMPLETE *');
-        this.INVITE_FORBIDDEN_ERROR = false;
-        this.INVITE_OTHER_ERROR = false;
-      });
+      const invite_errorbody = JSON.parse(error._body)
+      console.log('INVITE USER  ERROR BODY ', invite_errorbody);
+      if ((invite_errorbody['success'] === false) && (invite_errorbody['code'] === 4000)) {
+        console.log('!!! Forbidden, you can not invite yourself')
+
+        this.INVITE_YOURSELF_ERROR = true;
+        this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
+
+      } else if ((invite_errorbody['success'] === false) && (invite_errorbody['code'] === 4001)) {
+        console.log('!!! Forbidden, user is already a member')
+
+        this.INVITE_USER_ALREADY_MEMBER_ERROR = true;
+        this.INVITE_YOURSELF_ERROR = false;
+
+      } else if (invite_errorbody['success'] === false) {
+        
+        this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
+        this.INVITE_YOURSELF_ERROR = false;
+        this.INVITE_OTHER_ERROR = true;
+      }
+    }, () => {
+      console.log('INVITE USER  * COMPLETE *');
+      this.INVITE_YOURSELF_ERROR = false;
+      this.INVITE_OTHER_ERROR = false;
+      this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
+    });
 
   }
 

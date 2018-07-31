@@ -173,6 +173,7 @@
         "Continue": "Continue",
         "NotAllowedAction": "NotAllowedAction",
         "YouCanNotInviteYourself": "You can't invite yourself",
+        "YouCanNotInviteAProjectMember": "You can not invite a user already member of the project",
         "Error": "Error",
         "AnErrorHasOccurred": "An error has occurred"
     },
@@ -184,7 +185,7 @@
         "Actions": "Actions",
         "Members": "Members",
         "NoGroups": "No Groups",
-        "GroupId":"Group Id",
+        "GroupId": "Group Id",
         "PendingAddMembers": "pending add members",
         "QuickTips": "Quick tips",
         "tooltipEditGroup": "Edit Group",
@@ -240,7 +241,7 @@
         "CreationDate": "Creation date",
         "Actions": "Actions",
         "NoBot": "No Bot",
-        "BotId":"Bot Id",
+        "BotId": "Bot Id",
         "PendingAddFaqs": "pending add FAQs",
         "tooltipEditBot": "Edit Bot",
         "tooltipDeleteBot": "Delete Bot",
@@ -318,22 +319,22 @@
         "Continue": "Continue"
     },
     "FaqEditAddPage": {
-        "AddFaq":"Add FAQ",
-        "EditFaq":"Edit FAQ",
-        "Question":"Question",
-        "Answer":"Answer",
-        "CreateFaq":"Create FAQ",
-        "UpdateFaq":"Update FAQ",
+        "AddFaq": "Add FAQ",
+        "EditFaq": "Edit FAQ",
+        "Question": "Question",
+        "Answer": "Answer",
+        "CreateFaq": "Create FAQ",
+        "UpdateFaq": "Update FAQ",
         "FaqAttributes": "FAQ attributes",
-        "FaqID":"FAQ Id",
-        "CreationDate":"Creation date"
+        "FaqID": "FAQ Id",
+        "CreationDate": "Creation date"
     },
-    "FaqTestPage":{
-        "Question":"Question",
-        "Answer":"Answer",
-        "EnterTheQuestion":"Enter the question",
-        "RunTest":"Run Test",
-        "HideScore":"Hide Score"
+    "FaqTestPage": {
+        "Question": "Question",
+        "Answer": "Answer",
+        "EnterTheQuestion": "Enter the question",
+        "RunTest": "Run Test",
+        "HideScore": "Hide Score"
     },
     "DepartmentsPage": {
         "AddDepartment": "Add Department",

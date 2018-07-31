@@ -173,6 +173,7 @@
         "Continue": "Continua",
         "NotAllowedAction": "Azione non consentita",
         "YouCanNotInviteYourself": "Non puoi invitare te stesso",
+        "YouCanNotInviteAProjectMember": "Non puoi invitare un utente già membro del progetto",
         "Error": "Errore",
         "AnErrorHasOccurred": "Si è verificato un errore"
     },
@@ -184,7 +185,7 @@
         "Actions": "Azioni",
         "Members": "Membri",
         "NoGroups": "Nessun Gruppo",
-        "GroupId":"Id gruppo",
+        "GroupId": "Id gruppo",
         "PendingAddMembers": "in sospeso aggiungi membri",
         "QuickTips": "Consigli veloci",
         "tooltipEditGroup": "Modifica Group",
@@ -240,7 +241,7 @@
         "CreationDate": "Data creazione",
         "Actions": "Azioni",
         "NoBot": "Nessun Bot",
-        "BotId":"Id bot",
+        "BotId": "Id bot",
         "PendingAddFaqs": "in sospeso aggiungi FAQs",
         "tooltipEditBot": "Modifica Bot",
         "tooltipDeleteBot": "Elimina Bot",
@@ -328,12 +329,12 @@
         "FaqID": "Id FAQ",
         "CreationDate": "Data creazione"
     },
-    "FaqTestPage":{
-        "Question":"Domanda",
-        "Answer":"Risposta",
-        "EnterTheQuestion":"Inserisci la domanda",
-        "RunTest":"Esegui Test",
-        "HideScore":"Nascondi Score"
+    "FaqTestPage": {
+        "Question": "Domanda",
+        "Answer": "Risposta",
+        "EnterTheQuestion": "Inserisci la domanda",
+        "RunTest": "Esegui Test",
+        "HideScore": "Nascondi Score"
     },
     "DepartmentsPage": {
         "AddDepartment": "Aggiungi Dipartimento",

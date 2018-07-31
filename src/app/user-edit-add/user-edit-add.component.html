@@ -179,7 +179,7 @@
           <div style="text-align: center">
 
             <!--      WHEN NO ERROR OCCUR      -->
-            <span *ngIf="!INVITE_FORBIDDEN_ERROR && !INVITE_OTHER_ERROR">
+            <span *ngIf="!INVITE_YOURSELF_ERROR && !INVITE_OTHER_ERROR && !INVITE_USER_ALREADY_MEMBER_ERROR">
               <i class="material-icons" style="color:#70b665">done</i>
               <p style="color:#70b665; font-weight: 500">
                   {{ "UserEditAddPage.Completed" | translate }}
@@ -187,7 +187,7 @@
             </span>
 
             <!--      ERROR - Not Allowed Action      -->
-            <span *ngIf="INVITE_FORBIDDEN_ERROR && !INVITE_OTHER_ERROR">
+            <span *ngIf="INVITE_YOURSELF_ERROR ||  INVITE_OTHER_ERROR || INVITE_USER_ALREADY_MEMBER_ERROR">
               <i class="material-icons" style="color:#ff5252">report_problem</i>
               <p style="color:#ff5252; font-weight: 500">
                   {{ "UserEditAddPage.Error" | translate }}
@@ -195,31 +195,38 @@
             </span>
 
             <!--      ERROR - other error     -->
-            <span *ngIf="!INVITE_FORBIDDEN_ERROR && INVITE_OTHER_ERROR">
+            <!-- <span *ngIf="!INVITE_YOURSELF_ERROR && INVITE_OTHER_ERROR">
               <i class="material-icons" style="color:#ff5252">report_problem</i>
               <p style="color:#ff5252; font-weight: 500">
                   {{ "UserEditAddPage.Error" | translate }}
               </p> 
-            </span>
+            </span> -->
 
           </div>
 
           <!--      WHEN NO ERROR OCCUR      -->
-          <span *ngIf="!INVITE_FORBIDDEN_ERROR && !INVITE_OTHER_ERROR">
+          <span *ngIf="!INVITE_YOURSELF_ERROR && !INVITE_OTHER_ERROR && !INVITE_USER_ALREADY_MEMBER_ERROR">
             <p style="margin-top: 0px; text-align: center; font-weight: 500">
               {{ "UserEditAddPage.TheUserHasBeenInvited" | translate }}
             </p>
           </span>
 
-          <!--      ERROR - Not Allowed Action      -->
-          <span *ngIf="INVITE_FORBIDDEN_ERROR && !INVITE_OTHER_ERROR">
+          <!--      ERROR - Not Allowed Action * You Can Not Invite Yourself *    -->
+          <span *ngIf="INVITE_YOURSELF_ERROR && !INVITE_OTHER_ERROR && !INVITE_USER_ALREADY_MEMBER_ERROR">
             <p style="margin-top: 0px; text-align: center; font-weight: 500">
               {{ "UserEditAddPage.YouCanNotInviteYourself" | translate }}
             </p>
           </span>
 
+          <!--      ERROR - Not Allowed Action * You can not invite a user already member of the project *    -->
+          <span *ngIf="!INVITE_YOURSELF_ERROR && !INVITE_OTHER_ERROR && INVITE_USER_ALREADY_MEMBER_ERROR">
+            <p style="margin-top: 0px; text-align: center; font-weight: 500">
+              {{ "UserEditAddPage.YouCanNotInviteAProjectMember" | translate }}
+            </p>
+          </span>
+
           <!--      ERROR - other error     -->
-          <span *ngIf="!INVITE_FORBIDDEN_ERROR && INVITE_OTHER_ERROR">
+          <span *ngIf="!INVITE_YOURSELF_ERROR && INVITE_OTHER_ERROR && !INVITE_USER_ALREADY_MEMBER_ERROR">
             <p style="margin-top: 0px; text-align: center; font-weight: 500">
               {{ "UserEditAddPage.AnErrorHasOccurred" | translate }}
             </p>
