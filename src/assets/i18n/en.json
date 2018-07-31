@@ -200,7 +200,7 @@
     "GroupsAddEditPage": {
         "AddGroup": "Add Group",
         "EditGroup": "Edit Group",
-        "GroupName": "Group Name",
+        "GroupName": "Name",
         "UpdateGroup": "Update Group",
         "Processing": "Processing...",
         "Completed": "Completed",
@@ -268,7 +268,7 @@
     "BotsAddEditPage": {
         "AddBot": "Add Bot",
         "EditBot": "Edit Bot",
-        "BotName": "Bot Name",
+        "BotName": "Name",
         "CreateBot": "Create Bot",
         "UpdateBot": "Update Bot",
         "UpdateBotName": "Update Bot Name",

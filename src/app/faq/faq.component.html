@@ -20,7 +20,8 @@
     <div class="row">
       <div class="col-md-8">
         <div class="card custom_card" style="padding-top:25px; padding-bottom:25px; margin-bottom: 5px;">
-          <div class="card-content"style="margin-top: 16px">
+            <!-- style="margin-top: 16px" -->
+          <div class="card-content">
             
             <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
               {{ "BotsAddEditPage.BotName" | translate }}
@@ -57,7 +58,7 @@
               {{ "BotsAddEditPage.BotAttributes" | translate }}
             </h4>
 
-            <p style="margin-bottom: 3px; color:#566787; padding-top: 10px;"> 
+            <p style="margin-bottom: 3px; color:#566787; padding-top: 5px;"> 
               <strong>
                 {{ "BotsAddEditPage.BotID" | translate }}
               </strong>
@@ -75,12 +76,12 @@
               {{ faq_kb_remoteKey }}
             </p> -->
 
-            <p style="margin-bottom: 3px; color:#566787; padding-top: 10px;"> 
+            <p style="margin-bottom: 3px; color:#566787; padding-top: 0px;"> 
               <strong>
                 {{ "BotsAddEditPage.CreationDate" | translate }}
               </strong>
             </p>
-            <p style="color:#999999; font-weight: 500;">  
+            <p style="color:#999999; font-weight: 500; margin-bottom: 9px">  
                 {{ faqKb_created_at | date: 'd/M/y'}}
             </p>
           </div>

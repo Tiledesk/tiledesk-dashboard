@@ -188,3 +188,19 @@ button.close {
   .tooltipx:hover .tooltiptext {
     visibility: visible;
   }
+
+  /**
+ * *** WHEN THE SCREEN IS < OF 768 PX  ***
+ * CARD - CUSTOM PADDING AND MARGIN 
+ * SPACER DIV HIDDEN
+ */    
+@media only screen and (max-width: 768px) {
+    .custom_card {
+        margin-top: 5px !important;
+        padding-top:5px !important; 
+        padding-bottom:5px !important;
+    }
+    .spacer_div {
+        display: none !important;
+    }
+}

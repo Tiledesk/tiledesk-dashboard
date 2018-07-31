@@ -6,7 +6,10 @@
   </span>
   
   <span *ngIf="EDIT_VIEW">
-   {{ "GroupsAddEditPage.EditGroup" | translate }} <span style="color: #566787; font-weight:400">{{ groupNameToUpdate }}</span> 
+   {{ "GroupsAddEditPage.EditGroup" | translate }} 
+   <span style="color: #566787; font-weight:400">
+     {{ groupNameToUpdate }}
+    </span> 
   </span>
 </div>
     
@@ -77,9 +80,10 @@
       <!-- <span *ngIf="!showSpinner"> -->
         <div class="row">
           <div class="col-md-8">
-            <div class="card" style="padding-top:28px; padding-bottom:28px; margin-bottom: 5px;">
+            <div class="card custom_card" style="padding-top:25px; padding-bottom:25px; margin-bottom: 5px;">
 
-              <div class="card-content" style="margin-top: 16px">
+                <!-- style="margin-top: 16px" -->
+              <div class="card-content">
 
                 <!-- <div class="row"> -->
                   <!-- <div class="col-md-12"> -->
@@ -92,7 +96,7 @@
                     </div>
 
                      <!-- SPACER -->
-                    <div class="col-sm-12 spacer" style="height:10px"></div>
+                    <div class="col-sm-12 spacer_div" style="height:15px"></div>
 
                     <!-- <label class="col-sm-2"></label> -->
                     <div class="col-sm-10 col-sm-offset-2"> 
@@ -110,7 +114,10 @@
           </div>
           <!-- ./ col-md-8 -->
 
-          <!-- // RIGHT SIDEBAR EDIT VIEW 'GROUP ATTRIBUTES' -->
+          <!-- 
+          ******************************************
+          RIGHT SIDEBAR EDIT VIEW 'GROUP ATTRIBUTES' 
+          ****************************************** -->
           <div class="col-md-4">
             <div class="card">
               <div class="card-content">
@@ -119,7 +126,7 @@
                   {{ "GroupsAddEditPage.GroupAttributes" | translate }}
                 </h4>
   
-                <p style="margin-bottom: 3px; color:#566787; padding-top: 10px;"> 
+                <p style="margin-bottom: 3px; color:#566787; padding-top: 5px;"> 
                   <strong>
                     {{ "GroupsAddEditPage.GroupID" | translate }}
                   </strong>
@@ -128,12 +135,12 @@
                     {{ id_group }}
                 </p>
 
-                <p style="margin-bottom: 3px; color:#566787; padding-top: 10px;"> 
+                <p style="margin-bottom: 3px; color:#566787; padding-top: 0px;"> 
                   <strong>
                     {{ "GroupsPage.CreationDate" | translate }}
                   </strong>
                 </p>
-                <p style="color:#999999; font-weight: 500">  
+                <p style="color:#999999; font-weight: 500; margin-bottom: 9px">  
                     {{ groupCreatedAt | date: 'd/M/y'}}
                 </p>
               </div>
