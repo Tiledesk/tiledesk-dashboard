@@ -58,6 +58,8 @@ export class UsersService {
   UPDATE_USER_URL = environment.mongoDbConfig.UPDATE_USER_LASTNAME_FIRSTNAME;
   CHANGE_PSW_URL = environment.mongoDbConfig.CHANGE_PSW;
   currentUserId: string;
+  project_id: string;
+  project_name: string;
 
   constructor(
     http: Http,
@@ -92,6 +94,8 @@ export class UsersService {
       // tslint:disable-next-line:no-debugger
       // debugger
       if (this.project) {
+        this.project_id = this.project._id;
+        this.project_name = this.project.name;
         console.log('-- -- >>>> 00 -> USERS SERVICE project ID from AUTH service subscription  ', this.project._id)
         this.MONGODB_BASE_URL = this.BASE_URL + this.project._id + '/project_users/'
         this.INVITE_USER_URL = this.BASE_URL + this.project._id + '/project_users/invite'
@@ -234,7 +238,7 @@ export class UsersService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'email': email, 'role': role, 'id_project': this.project._id };
+    const body = { 'email': email, 'role': role, 'id_project': this.project_id, 'project_name': this.project_name};
 
     console.log('POST INVITE USER - REQUEST BODY ', body);
 
