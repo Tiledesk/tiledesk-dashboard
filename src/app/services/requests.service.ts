@@ -254,16 +254,16 @@ export class RequestsService {
         // USE CASE: DocumentChange TYPE = MODIFIED
         // - run an UPDATE: SUBSTITUTE THE EXISTING REQUEST WITH THE MODIFIED ONE ...
         if (r.firebaseDocChangeType === 'modified') {
-          console.log('2) »»»»» DOCUMENT CHANGE TYPE ', r.firebaseDocChangeType)
+          // console.log('2) »»»»» DOCUMENT CHANGE TYPE ', r.firebaseDocChangeType)
           this.requestList[i] = r;
           this.reorderRequests()
           return;
         } else {
           // USE CASE REQUEST ARCHIVED - DocumentChange TYPE = REMOVED
           // run a SPLICE to remove the request from the list
-          console.log('2) »»»»» DOCUMENT CHANGE TYPE ', r.firebaseDocChangeType)
+          // console.log('2) »»»»» DOCUMENT CHANGE TYPE ', r.firebaseDocChangeType)
           const index = this.requestList.indexOf(this.requestList[i]);
-          console.log('INDEX OF THE REQUEST TO REMOVE ', index)
+          // console.log('INDEX OF THE REQUEST TO REMOVE ', index)
           if (index > -1) {
             this.requestList.splice(index, 1);
           }
@@ -292,13 +292,13 @@ export class RequestsService {
   reorderRequests() {
     this.requestList.sort(function compare(a: Request, b: Request) {
       if (a.created_on > b.created_on) {
-        console.log('zone a > b - A CREATED ON ', a.created_on);
-        console.log('zone a > b - B CREATED ON ', b.created_on);
+        // console.log('zone a > b - A CREATED ON ', a.created_on);
+        // console.log('zone a > b - B CREATED ON ', b.created_on);
         return -1;
       }
       if (a.created_on < b.created_on) {
-        console.log('zone a < b - A CREATED ON ', a.created_on);
-        console.log('zone a < b - B CREATED ON ', b.created_on);
+        // console.log('zone a < b - A CREATED ON ', a.created_on);
+        // console.log('zone a < b - B CREATED ON ', b.created_on);
         return 1;
       }
       return 0;
@@ -345,8 +345,8 @@ export class RequestsService {
       this.unsubscribe = query.onSnapshot(snapshot => {
         // console.log('REQUEST SNAPSHOT ', snapshot)
         const requestListReturned: Request[] = snapshot.docChanges.map((c: DocumentChange) => {
-          console.log(' »»» »»» »»» »»» »»» »»» REQUEST SERVICE - DOCUMENT CHANGE - TYPE: ', c.type);
-          console.log(' »»» »»» DOCUMENT CHANGE - DOC DATA ', c.doc.data())
+          // console.log(' »»» »»» »»» »»» »»» »»» REQUEST SERVICE - DOCUMENT CHANGE - TYPE: ', c.type);
+          // console.log(' »»» »»» DOCUMENT CHANGE - DOC DATA ', c.doc.data())
           // const requestListReturned: Request[] = snapshot.docs.map((c: DocumentSnapshot) => {
           const r: Request = new Request();
           const data = c.doc.data()
