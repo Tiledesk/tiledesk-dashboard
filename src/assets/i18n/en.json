@@ -109,6 +109,16 @@
         "YourNewProjectIsReady": "Your new project is ready",
         "Continue": "Continue"
     },
+    "ProjectEditPage": {
+        "ProjectSettings": "Project Settings",
+        "ProjectName": "Project Name",
+        "ProjectId": "Project Id",
+        "UpdateProject": "Update Project",
+        "DeleteProject": "Delete Project",
+        "TheProjectWillBeDeleted": "The project will be deleted",
+        "ToDeleteTheProject": "To delete the project, enter the project ID",
+        "Calcel": "Cancel"
+    },
     "HomePage": {
         "Widget": "To start configure your Widget !",
         "WidgetSubtitle": "Embed and customize the chat widget on your site",

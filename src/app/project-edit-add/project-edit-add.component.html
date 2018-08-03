@@ -3,7 +3,10 @@
     <!-- (click)="goBackToProjectsList() -->
     <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">keyboard_arrow_left</i>
     <span *ngIf="CREATE_VIEW">Aggiungi Progetto</span>
-    <span *ngIf="EDIT_VIEW">Impostazioni Progetto</span>
+    <span *ngIf="EDIT_VIEW">
+      <!-- Impostazioni Progetto -->
+    {{ "ProjectEditPage.ProjectSettings" | translate }}
+    </span>
   </div>
   
   <div class="main-content" style="padding-top:0px">
@@ -18,7 +21,10 @@
       
                 <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
                               
-                <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Nome Progetto</label>
+                <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
+                  <!-- Nome Progetto -->
+                  {{ "ProjectEditPage.ProjectName" | translate }}
+                </label>
                 <div class="col-sm-10">
                   <input [(ngModel)]="project_name" class="" type="text" placeholder="Nome Progetto">
                 </div>
@@ -55,12 +61,17 @@
     
                 <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
   
-                <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Nome Progetto</label>
+                <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
+                  {{ "ProjectEditPage.ProjectName" | translate }}
+                </label>
                 <div class="col-sm-10">
                   <input [(ngModel)]="projectName_toUpdate" class="input" type="text" placeholder="Nome Progetto">
                 </div>
 
-                <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2">Id Progetto</label>
+                <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2">
+                  <!-- Id Progetto -->
+                  {{ "ProjectEditPage.ProjectId" | translate }}
+                </label>
                 <div class="col-sm-10">
                   <input style="color:#999999" [(ngModel)]="id_project" class="input" type="text" disabled>
                 </div>
@@ -83,7 +94,8 @@
                 <label style="" class="col-sm-2"></label>
                 <div class="col-sm-10"> 
                   <button class="btn btn-success" (click)="edit()">
-                    Aggiorna Progetto
+                    <!-- Aggiorna Progetto -->
+                    {{ "ProjectEditPage.UpdateProject" | translate }}
                   </button>
                 </div>
               </span>
@@ -120,7 +132,11 @@
 
         <div class="col-md-12" style="text-align: center; border-top: 1px solid #cccccc; margin-top:25px">
           <div style="color:#aaaaaa; margin-top:25px; cursor:pointer" (click)="openDeleteModal()">
-            <i class="material-icons" style="vertical-align: middle">delete_forever</i> <span style="vertical-align: middle">ELIMINA PROGETTO</span>
+            <i class="material-icons" style="vertical-align: middle">delete_forever</i> 
+            <span style="vertical-align: middle; text-transform: uppercase">
+              <!-- ELIMINA PROGETTO -->
+              {{ "ProjectEditPage.DeleteProject" | translate }}
+            </span>
           </div>
           <!-- <h5 style="color:#aaaaaa; margin-top:25px; font-size:1em">ELIMINA PROGETTO</h5> -->
         </div>
@@ -138,21 +154,38 @@
                 <span aria-hidden="true">&times;</span>
               </button> -->
               <h4 class="modal-title" style="color: #fff">
-                  <i class="material-icons" style="vertical-align: middle">report_problem</i><span style="vertical-align: middle; padding-left:8px"> Elimina progetto</span>
+                  <i class="material-icons" style="vertical-align: middle">report_problem</i>
+                  <span style="vertical-align: middle; padding-left:8px"> 
+                    <!-- Elimina progetto -->
+                    {{ "ProjectEditPage.DeleteProject" | translate }}
+                  </span>
               </h4>
-              <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em ">Il progetto verrà eliminato</h4>
+              <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em ">
+                <!-- Il progetto verrà eliminato -->
+                {{ "ProjectEditPage.TheProjectWillBeDeleted" | translate }}
+              </h4>
             </div>
             <div class="modal-body">
                 <label style="font-weight:100; text-align: left; padding-bottom:12px" class="col-sm-10 ">
-                  Per eliminare il progetto, digita l'ID del progetto: <span style="color:#212121"><strong> {{ id_project }}</strong> </span>
+                  <!-- Per eliminare il progetto, digita l'ID del progetto: -->
+                  {{ "ProjectEditPage.ToDeleteTheProject" | translate }}:
+                    <span style="color:#212121">
+                      <strong> {{ id_project }}</strong> 
+                    </span>
                 </label>
                 <div class="col-sm-10">
-                  <input [(ngModel)]="project_name" class="" type="text" placeholder="ID progetto">
+                  <input [(ngModel)]="project_name" class="" type="text" placeholder="{{ 'ProjectEditPage.ProjectId' | translate }}">
                 </div>
             </div>
             <div class="modal-footer" style="margin-top: 75px;">
-              <button class="btn btn-white" (click)="onCloseModal()" style="padding:12px 16px;">Chiudi</button>
-              <button style="margin-top:0px" class="btn btn-danger" disabled (click)="createProject()">Elimina Progetto</button>
+              <button class="btn btn-white" (click)="onCloseModal()" style="padding:12px 16px;">
+                <!-- Chiudi -->
+                {{ "ProjectEditPage.Calcel" | translate }}
+              </button>
+              <button style="margin-top:0px" class="btn btn-danger" disabled (click)="createProject()">
+                <!-- Elimina Progetto -->
+                {{ "ProjectEditPage.DeleteProject" | translate }}
+              </button>
             </div>
           </div>
         </div>
