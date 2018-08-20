@@ -68,7 +68,8 @@
         "Error": "Error",
         "AnErrorHasOccurred": "An error has occurred updating your profile",
         "Continue": "Continue",
-        "ChangePsw": "Change password"
+        "ChangePsw": "Change password",
+        "PendingEmailVerification": "Pending email verification"
     },
     "ChangePsw": {
         "ChangePsw": "Change password",
@@ -85,7 +86,8 @@
         "ViewAllProjects": "View all projects",
         "ProjectSettings": "Project settings",
         "UserProfile": "VIEW PROFILE",
-        "RunChatInAStandAloneTab": "Run chat in a stand-alone tab"
+        "RunChatInAStandAloneTab": "Run chat in a stand-alone tab",
+        "PendingVerification":"Pending email verification"
     },
     "SideBar": {
         "ViewAllProjects": "View all projects",

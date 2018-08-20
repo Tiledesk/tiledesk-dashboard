@@ -29,7 +29,7 @@ export class UserProfileComponent implements OnInit {
   lastnameCurrentValue: string;
   HAS_EDIT_FIRSTNAME = false;
   HAS_EDIT_LASTNAME = false;
-
+  emailverified: boolean;
   projectId: string;
   constructor(
     public auth: AuthService,
@@ -82,7 +82,8 @@ export class UserProfileComponent implements OnInit {
 
         this.firstnameCurrentValue = user.firstname;
         this.lastnameCurrentValue = user.lastname;
-
+        this.emailverified = user.emailverified;
+        console.log('EMAIL VERIFIED ',  this.emailverified)
         this.showSpinner = false;
       }
 

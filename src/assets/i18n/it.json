@@ -68,7 +68,8 @@
         "Error": "Errore",
         "AnErrorHasOccurred": "Si è verificato un errore durante l'aggiornamento del profilo",
         "Continue": "Continua",
-        "ChangePsw": "Cambia password"
+        "ChangePsw": "Cambia password",
+        "PendingEmailVerification": "Email non verificata"
     },
     "ChangePsw": {
         "ChangePsw": "Cambia password",
@@ -85,7 +86,8 @@
         "ViewAllProjects": "Visualizza tutti i progetti",
         "ProjectSettings": "Impostazioni progetto",
         "UserProfile": "VEDI PROFILO",
-        "RunChatInAStandAloneTab": "Esegui la chat in una scheda autonoma"
+        "RunChatInAStandAloneTab": "Esegui la chat in una scheda autonoma",
+        "PendingVerification":"Email non verificata"
     },
     "SideBar": {
         "ViewAllProjects": "Visualizza tutti i progetti",

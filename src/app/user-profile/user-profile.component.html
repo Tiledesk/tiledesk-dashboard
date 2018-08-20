@@ -48,11 +48,17 @@
                         </div>
 
                         <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2">
-                            Email
+                          Email
                         </label>
                         <div class="col-sm-10">
                             <input style="color:#808080" [(ngModel)]="user.email" class="" type="text" placeholder="Email" disabled>
-                        </div>
+                            <span *ngIf="emailverified == false">
+                                <i class="material-icons" style="vertical-align: middle; color:#f44336;">report_problem</i>
+                                <span style="vertical-align: middle; color:#f44336;"> 
+                                {{ "UserProfile.PendingEmailVerification" | translate }}
+                                </span>
+                            </span>
+                        </div> 
 
                         <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2">
                             <!-- ID Utente -->

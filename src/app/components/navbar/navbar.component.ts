@@ -148,7 +148,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
     getLoggedUser() {
         this.auth.user_bs.subscribe((user) => {
-            console.log('USER GET IN NAVBAR ', user)
+            console.log('»»» »»» USER GET IN NAVBAR ', user)
             // tslint:disable-next-line:no-debugger
             // debugger
             this.user = user;
