@@ -32,6 +32,16 @@
             <a  data-toggle="dropdown" href="#" style="display:block !important; margin-top:0px; opacity:100 !important">
             <i style="font-size:20px; display:block !important; float: right; color: #555555 !important; " class="material-icons">person</i>
             <!-- <p class="hidden-lg hidden-md">Profile</p> -->
+
+            <span class="tooltipx"> 
+                <span  *ngIf="user?.emailverified == false" class="notification" style="font-weight: 200; font-size:12px; right:11px; top:3px">
+                    !
+                    <span class="tooltiptext">
+                        {{"NavBar.PendingVerification" | translate }}
+                    </span>
+                           
+                </span>
+            </span>
             </a>
           <!-- float:right !important; right:0px!important; left:1px!important  -->
             <ul class="dropdown-menu" style="">
