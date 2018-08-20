@@ -164,9 +164,13 @@ export class UsersComponent implements OnInit {
     },
       (error) => {
         console.log('PROJECT-USER UPDATED ERR  ', error);
+        // =========== NOTIFY ERROR ===========
+        this.notify.showNotification('An error occurred while updating status', 4, 'report_problem')
       },
       () => {
         console.log('PROJECT-USER UPDATED  * COMPLETE *');
+        // =========== NOTIFY SUCCESS===========
+        this.notify.showNotification('status successfully updated', 2, 'done');
 
         // RE-RUNS getAllUsersOfCurrentProject TO UPDATE THE TABLE
         this.getAllUsersOfCurrentProject();
