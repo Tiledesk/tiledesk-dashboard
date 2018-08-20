@@ -16,6 +16,8 @@ export class UsersComponent implements OnInit {
   showSpinner = true;
   projectUsersList: any;
   id_projectUser: string;
+  user_firstname: string;
+  user_lastname: string;
 
   // set to none the property display of the modal
   display = 'none';
@@ -99,10 +101,12 @@ export class UsersComponent implements OnInit {
       });
   }
 
-  openDeleteModal(projectUser_id: string) {
+  openDeleteModal(projectUser_id: string, userFirstname: string, userLastname: string) {
     this.display = 'block';
     this.id_projectUser = projectUser_id;
-    console.log('DELETE PROJECT-USER with ID ', this.id_projectUser);
+    this.user_firstname = userFirstname;
+    this.user_lastname = userLastname;
+    console.log('DELETE PROJECT-USER with ID ', this.id_projectUser, ' - (Firstname: ', userFirstname, '; Lastname: ', userLastname, ')');
   }
 
   onCloseDeleteModalHandled() {
@@ -116,12 +120,13 @@ export class UsersComponent implements OnInit {
     }, error => {
       this.showSpinner = false;
       console.log('DELETE PROJECT USERS - ERROR ', error);
+      // =========== NOTIFY ERROR ===========
+      this.notify.showNotification('An error occurred while removing the member', 4, 'report_problem');
     },
       () => {
         console.log('DELETE PROJECT USERS * COMPLETE *');
-
         // =========== NOTIFY SUCCESS ===========
-        this.notify.showNotification('Member successfully deleted', 2, 'done');
+        this.notify.showNotification('Member successfully removed', 2, 'done');
       });
   }
 
