@@ -154,6 +154,7 @@
         "Role": "Ruolo",
         "Available": "Disponibile",
         "Actions": "Azioni",
+        "ViewProfileUser":"vedi profilo utente",
         "tootipEditUser": "Modifica ruolo membro",
         "tootipDeleteUser": "Rimuovi Membro",
         "modalDeleteUser": "Rimuovi Membro",

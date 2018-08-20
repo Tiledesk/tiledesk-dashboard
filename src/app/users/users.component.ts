@@ -18,6 +18,7 @@ export class UsersComponent implements OnInit {
   id_projectUser: string;
   user_firstname: string;
   user_lastname: string;
+  user_id: string;
 
   // set to none the property display of the modal
   display = 'none';
@@ -101,11 +102,13 @@ export class UsersComponent implements OnInit {
       });
   }
 
-  openDeleteModal(projectUser_id: string, userFirstname: string, userLastname: string) {
+  openDeleteModal(projectUser_id: string, userID: string, userFirstname: string, userLastname: string) {
     this.display = 'block';
     this.id_projectUser = projectUser_id;
+    this.user_id = userID;
     this.user_firstname = userFirstname;
     this.user_lastname = userLastname;
+
     console.log('DELETE PROJECT-USER with ID ', this.id_projectUser, ' - (Firstname: ', userFirstname, '; Lastname: ', userLastname, ')');
   }
 

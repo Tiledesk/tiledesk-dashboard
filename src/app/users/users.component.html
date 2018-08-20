@@ -26,13 +26,13 @@
               <thead>
                 <tr>
                   <!-- FOR DEBUG: ID OF THE PROJECT-USER  -->
-                  <th>
+                  <!-- <th>
                     <span style="color: #566787">
                       <strong>
                         Project_User Id
                       </strong>
                     </span>
-                  </th>
+                  </th> -->
 
                   <th>
                     <span style="color: #566787">
@@ -102,21 +102,39 @@
 
                 <tr *ngFor="let projectUser of projectUsersList">
                   <!-- FOR DEBUG: ID OF THE PROJECT-USER  -->
-                  <td>
+                  <!-- <td>
                     {{ projectUser?._id }}
+                  </td> -->
+
+                  <td (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
+                    <span class="tooltipx">
+                      {{ projectUser?.id_user?.firstname }}
+                      <span style="text-transform: uppercase"> 
+                        {{ projectUser?.id_user?.lastname }} 
+                      </span>
+                      <span class="tooltiptext">
+                        {{"UsersPage.ViewProfileUser" | translate }} {{projectUser?.id_user?._id}}
+                      </span>
+
+                    </span>
                   </td>
 
                   <td (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
-                    {{ projectUser?.id_user?.firstname }}
-                    <span style="text-transform: uppercase"> {{ projectUser?.id_user?.lastname }} </span>
+                    <span class="tooltipx">
+                      {{ projectUser?.role }}
+                      <span class="tooltiptext">
+                        {{"UsersPage.ViewProfileUser" | translate }} {{projectUser?.id_user?._id}}
+                      </span>
+                    </span>
                   </td>
 
                   <td (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
-                    {{ projectUser?.role }}
-                  </td>
-
-                  <td (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
-                    {{ projectUser?.id_user?.email }}
+                    <span class="tooltipx">
+                      {{ projectUser?.id_user?.email }}
+                      <span class="tooltiptext">
+                        {{"UsersPage.ViewProfileUser" | translate }} {{projectUser?.id_user?._id}}
+                      </span>
+                    </span>
                   </td>
 
                   <!-- OLD: AVAILABLE / UNAVAILABLE INDICATOR -->
@@ -148,7 +166,7 @@
                         <i class="material-icons">edit</i>
                       </button>
                       <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipDeleteUser' | translate }}" class="btn btn-danger btn-simple btn-xs"
-                        (click)='openDeleteModal(projectUser?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'>
+                        (click)='openDeleteModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'>
                         <i class="material-icons">close</i>
                       </button>
                     </span>
@@ -183,7 +201,7 @@
         <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em;">
           <!-- Il membro con ID:  -->
           {{ "UsersPage.TheMemberWithId" | translate }}
-          <code>{{id_projectUser}}</code>
+          <code>{{user_id}}</code>
           {{ "UsersPage.WillBeRemoved" | translate }}
         </h4>
 
