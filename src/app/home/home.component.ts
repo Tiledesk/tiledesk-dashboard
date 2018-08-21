@@ -112,7 +112,6 @@ export class HomeComponent implements OnInit {
   }
 
   openChat() {
-
     const url = this.CHAT_BASE_URL
     window.open(url, '_blank');
   }
@@ -122,6 +121,7 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['project/' + this.projectId + '/history']);
   }
 
+  // no more used
   getProjectId() {
     // this.projectid = this.route.snapshot.params['projectid'];
     // console.log('SIDEBAR - - - - - CURRENT projectid ', this.projectid);
@@ -149,9 +149,11 @@ export class HomeComponent implements OnInit {
   // IS USED TO GET THE PROJECT-USER AND DETERMINE IF THE USER IS AVAILAVLE/UNAVAILABLE WHEN THE USER ENTER IN HOME
   // (GET THE PROJECT-USER CAN NOT BE DONE IN THE SIDEBAR BECAUSE WHEN THE PROJECT
   // IS SELECTED THE SIDEBAR HAS BEEN ALREADY CALLED)
+  // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE SIDEBAR.COMP ***
   getProjectUser() {
+    console.log('!!! HOME CALL GET-PROJECT-USER' )
     this.usersService.getProjectUsersByProjectIdAndUserId(this.user._id, this.projectId).subscribe((projectUser: any) => {
-      console.log('H PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
+      console.log('!!! H PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
       if (projectUser) {
         console.log('H PROJECT-USER ID ', projectUser[0]._id)
         console.log('H USER IS AVAILABLE ', projectUser[0].user_available)
@@ -161,7 +163,7 @@ export class HomeComponent implements OnInit {
           this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available);
         }
         if (projectUser[0].role !== undefined) {
-          console.log('H CURRENT USER ROLE IN THIS PROJECT ', projectUser[0].role);
+          console.log('!!! H CURRENT USER ROLE IN THIS PROJECT ', projectUser[0].role);
           this.usersService.user_role(projectUser[0].role);
 
           // save the user role in storage - then the value is get by auth.service:

@@ -8,7 +8,7 @@ export class UsersLocalDbService {
   getMemberFromStorage(member_id: string) {
     if (member_id) {
       const member = JSON.parse((localStorage.getItem(member_id)));
-      // console.log('HEY MEMBER !!! ', member)
+      console.log('HEY MEMBER !!! ', member)
       return member;
     }
   }

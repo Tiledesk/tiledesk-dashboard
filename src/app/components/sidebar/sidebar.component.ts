@@ -102,7 +102,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         private notify: NotifyService
     ) {
 
-        // console.log('00 -> HELLO SIDEBAR - PROJECT ID ', this.project)
+        console.log('!!!!! HELLO SIDEBAR')
 
     }
 
@@ -157,7 +157,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     getProjectUserRole() {
         this.usersService.project_user_role_bs.subscribe((user_role) => {
             this.USER_ROLE = user_role;
-            console.log('SIDEBAR - 1. PROJECT USER ROLE ', this.USER_ROLE);
+            console.log('!!! SIDEBAR - 1. PROJECT USER ROLE ', this.USER_ROLE);
             if (this.USER_ROLE) {
                 console.log('SIDEBAR - PROJECT USER ROLE ', this.USER_ROLE);
                 if (this.USER_ROLE === 'agent') {
@@ -166,7 +166,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             } else {
                 // used when the page is refreshed
                 this.USER_ROLE = this.usersLocalDbService.getUserRoleFromStorage();
-                console.log('SIDEBAR - 2. PROJECT USER ROLE ', this.USER_ROLE);
+                console.log('!!! SIDEBAR - 2. PROJECT USER ROLE ', this.USER_ROLE);
                 if (this.USER_ROLE === 'agent') {
                     this.SHOW_SETTINGS_SUBMENU = false;
                 }
@@ -185,7 +185,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     getUserAvailability() {
         this.usersService.user_is_available_bs.subscribe((user_available) => {
             this.IS_AVAILABLE = user_available;
-            console.log('SIDEBAR - USER IS AVAILABLE ', this.IS_AVAILABLE);
+            console.log('!!! SIDEBAR - USER IS AVAILABLE ', this.IS_AVAILABLE);
         });
     }
 
@@ -288,6 +288,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     getProjectUser() {
+        console.log('!!! SIDEBAR CALL GET-PROJECT-USER')
         this.usersService.getProjectUsersByProjectIdAndUserId(this.currentUserId, this.projectId).subscribe((projectUser: any) => {
             console.log('SB PROJECT-USER GET BY PROJECT-ID ', this.projectId);
             console.log('SB PROJECT-USER GET BY CURRENT-USER-ID ', this.user._id);
@@ -301,18 +302,27 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 if (projectUser[0].user_available !== undefined) {
                     this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available)
                 }
+
+                // ADDED 21 AGO
+                if (projectUser[0].role !== undefined) {
+                    console.log('!!! SB CURRENT USER ROLE IN THIS PROJECT ', projectUser[0].role);
+                    this.usersService.user_role(projectUser[0].role);
+
+                    // save the user role in storage - then the value is get by auth.service:
+                    // the user with agent role can not access to the pages under the settings sub-menu
+                    // this.auth.user_role(projectUser[0].role);
+                    this.usersLocalDbService.saveUserRoleInStorage(projectUser[0].role);
+                }
             } else {
                 // this could be the case in which the current user was deleted as a member of the current project
                 console.log('SB PROJECT-USER UNDEFINED ')
             }
 
-        },
-            (error) => {
-                console.log('SB PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID  ', error);
-            },
-            () => {
-                console.log('SB PROJECT-USER GET BY PROJECT ID & CURRENT-USER-ID  * COMPLETE *');
-            });
+        }, (error) => {
+            console.log('SB PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID  ', error);
+        }, () => {
+            console.log('SB PROJECT-USER GET BY PROJECT ID & CURRENT-USER-ID  * COMPLETE *');
+        });
     }
 
 

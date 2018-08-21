@@ -69,10 +69,11 @@ export class ProjectsComponent implements OnInit {
   }
 
   // project/:projectid/home
-  goToHome(project_id: string, project_name: string, available: boolean) {
+  // , available: boolean
+  goToHome(project_id: string, project_name: string) {
     this.router.navigate([`/project/${project_id}/home`]);
 
-    // WHEN THE USER SELECT A PROJECT ITS ID, NAME and USER AVAILABLE IS SEND IN THE AUTH SERVICE THAT PUBLISHES IT
+    // WHEN THE USER SELECT A PROJECT ITS ID and NAME IS SEND IN THE AUTH SERVICE THAT PUBLISHES IT
     const project: Project = {
       _id: project_id,
       name: project_name,

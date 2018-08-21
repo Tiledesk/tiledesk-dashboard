@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 // ActivatedRouteSnapshot, RouterStateSnapshot,
 // tslint:disable-next-line:max-line-length
-import { CanActivate, Router, NavigationStart, NavigationEnd, NavigationError, NavigationCancel, RoutesRecognized, ActivatedRoute } from '@angular/router';
+import { CanActivate, Router, NavigationEnd } from '@angular/router';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AuthService } from './auth.service';
@@ -14,6 +14,7 @@ import * as firebase from 'firebase/app';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Location } from '@angular/common';
 import { ProjectService } from '../services/project.service';
+import { Project } from '../models/project-model';
 
 import 'rxjs/add/operator/pairwise';
 
@@ -29,13 +30,13 @@ export class AuthGuard implements CanActivate {
 
   nav_project_id: string;
   current_project_id: string;
+  nav_project_name: string;
 
   constructor(
     private auth: AuthService,
     private router: Router,
     private notify: NotifyService,
     public location: Location,
-    private activatedRoute: ActivatedRoute,
     private projectService: ProjectService
   ) {
     console.log('HELLO AUTH GUARD !!!')
@@ -53,26 +54,37 @@ export class AuthGuard implements CanActivate {
     this.detectResetPswRoute();
     this.canActivate();
 
-    // router.events.subscribe((val) => {
-    //   // see also RoutesRecognized
-    //   // console.log('AUTH GUARD - NavigationEnd ', val instanceof NavigationEnd);
-    //   console.log('AUTH GUARD - RoutesRecognized ', val instanceof RoutesRecognized)
-    // });
 
     // this.router.events.pairwise().subscribe((event) => {
     //   console.log('-» -» -» AUTH GUARD EVENT ', event);
     // });
 
 
+    /**
+     * NEW: initialize the new project when the id of the project get from url does not match with the current project id
+     */
     this.getCurrentProject();
     this.getProjectIdFromUrl();
 
+  }
 
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+      console.log('!! AUTH GUARD - CURRENT PROJECT: ', project)
+      // tslint:disable-next-line:no-debugger
+      // debugger
 
+      if (project) {
+        console.log('!! AUTH GUARD - CURRENT PROJECT ID : ', project._id)
+        this.current_project_id = project._id;
 
+      }
+    });
   }
 
   getProjectIdFromUrl() {
+    // tslint:disable-next-line:no-debugger
+    // debugger
     this.router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
         // console.log('!! AUTH GUARD - EVENT ', e);
@@ -97,41 +109,87 @@ export class AuthGuard implements CanActivate {
     });
   }
 
-  getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
-      console.log('!! AUTH GUARD - CURRENT PROJECT: ', project)
 
-      if (project) {
-        console.log('!! AUTH GUARD - CURRENT PROJECT ID : ', project._id)
-        this.current_project_id = project._id;
-      }
-    });
-  }
 
   checkIf_NavPrjctIdMatchesCurrentPrjctId() {
-
     if (this.nav_project_id && this.current_project_id && this.nav_project_id === this.current_project_id) {
-      console.log('!!!!!! OOOOOK - AUTH GUARD - NAVIGATION-PROJECT-ID MATCHES CURRENT-PROJECT-ID')
+      console.log('!!!!!! OOOOOK - AUTH GUARD - (N.P.I) NAVIGATION-PROJECT-ID >>> MATCHES <<< (C.P.I) CURRENT-PROJECT-ID')
     } else {
-      console.log('!!!!!! KKKKKO - AUTH GUARD - NAVIGATION-PROJECT-ID DO NOT MATCHES CURRENT-PROJECT-ID')
-      // this.getProjectById();
+      console.log('!!!!!! KKKKKO - AUTH GUARD - (N.P.I) NAVIGATION-PROJECT-ID >>> DOES NOT MATCHES <<< (C.P.I) CURRENT-PROJECT-ID')
+
+      // for debug get the current storedProject
+      const storedProject = localStorage.getItem('project')
+      console.log('!!!!!! 1) AUTH GUARD - CURRENT STORED PROJECT: ', storedProject);
+      // tslint:disable-next-line:no-debugger
+      // debugger
+
+
+      /*
+       * *** GET PROJECT BY NAV PROJECT ID ***
+       * THE PROJECT NAME IS NECESSARY TO INITIALIZE THE PROJECT SO RUN getProjectById()
+       * TO GET THE PROJECT OBJECT (AND FROM THIS THE PROJECT NAME) BY THE PROJECT-ID GET FROM URL
+       * (i.e., BY THE (N.P.I) NAVIGATION-PROJECT-ID)  */
+      this.getProjectById();
+
     }
   }
 
-  /**
-   * *** GET PROJECT OBJECT BY ID ***
-   */
+
+
+
+
   getProjectById() {
     this.projectService.getMongDbProjectById(this.nav_project_id).subscribe((project: any) => {
-      console.log('++ > GET PROJECT (DETAILS) BY ID - PROJECT OBJECT: ', project);
+
+      if (project) {
+        // console.log('!!!!!! AUTH GUARD - N.P.I DOES NOT MATCH C.P.I - PROJECT GOT BY THE NAV PROJECT ID (N.P.I): ', project);
+
+        this.nav_project_name = project.name;
+        console.log('!!!!!! AUTH GUARD - PROJECT NAME GOT BY THE NAV PROJECT ID (N.P.I): ', this.nav_project_name);
+
+      }
+
     },
       (error) => {
-        console.log('GET PROJECT BY ID - ERROR ', error);
+        console.log('!!!!!! AUTH GUARD - GET PROJECT BY ID - ERROR ', error);
       },
       () => {
-        console.log('GET PROJECT BY ID - COMPLETE ');
+        console.log('!!!!!! AUTH GUARD - GET PROJECT BY ID - COMPLETE ');
 
+        this.resetCurrentProjectAndInizializeNewProject();
       });
+  }
+
+  resetCurrentProjectAndInizializeNewProject() {
+    this.resetProject();
+
+    if (this.nav_project_name) {
+
+      const project: Project = {
+        _id: this.nav_project_id,
+        name: this.nav_project_name,
+      }
+
+      // PROJECT ID and NAME ARE SENT TO THE AUTH SERVICE THAT PUBLISHES THEM
+      this.auth.projectSelected(project)
+      console.log('!!!!!! AUTH GUARD - PROJECT SENT TO THE AUTH SERVICE ', project)
+
+      // PROJECT ID and NAME ARE SETTED IN THE STORAGE
+      localStorage.setItem('project', JSON.stringify(project));
+
+      // for debug get the current storedProject
+      const storedProject = localStorage.getItem('project')
+      console.log('!!!!!! 2) AUTH GUARD - CURRENT STORED PROJECT: ', storedProject);
+    }
+  }
+
+
+  resetProject() {
+    // tslint:disable-next-line:no-debugger
+    // debugger
+    console.log('!!!!!! AUTH GUARD - RESET CURRENT PROJECT');
+    this.auth.project_bs.next(null);
+    localStorage.removeItem('project');
   }
 
   detectVerifyEmailRoute() {

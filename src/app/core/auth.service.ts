@@ -469,6 +469,8 @@ export class AuthService {
   projectSelected(project: Project) {
     // PUBLISH THE project
     console.log('AUTH SERVICE: I PUBLISH THE PROJECT RECEIVED FROM PROJECT COMP ', project)
+    // tslint:disable-next-line:no-debugger
+    // debugger
     this.project_bs.next(project);
   }
 

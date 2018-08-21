@@ -279,10 +279,10 @@ export class UsersService {
   }
 
   // ======================  PUBLISH projectUser_id AND user_available ======================
-  // NOTE: THE projectUser_id AND user_available ARE PASSED FROM HOME.COMPONENT
+  // NOTE: THE projectUser_id AND user_available ARE PASSED FROM HOME.COMPONENT and from SIDEBAR.COMP
   public user_availability(projectUser_id: string, user_available: boolean) {
-    console.log('USER SERVICE - PROJECT-USER-ID ', projectUser_id)
-    console.log('USER SERVICE - USER AVAILABLE ', user_available)
+    console.log('!!! USER SERVICE - PROJECT-USER-ID ', projectUser_id)
+    console.log('!!! USER SERVICE - USER AVAILABLE ', user_available)
 
     this.project_user_id_bs.next(projectUser_id);
     this.user_is_available_bs.next(user_available);
