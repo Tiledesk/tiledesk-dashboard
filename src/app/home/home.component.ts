@@ -161,7 +161,10 @@ export class HomeComponent implements OnInit {
 
       if (this.user) {
 
-        this.getAllUsersOfCurrentProject();
+        // !!!! NO MORE USED - MOVED IN USER SERVICE
+        // this.getAllUsersOfCurrentProject();
+
+        this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
 
       }
     });
@@ -204,9 +207,6 @@ export class HomeComponent implements OnInit {
     });
   }
 
-
-
-
   getFaqKbByProjectId() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
 
@@ -214,17 +214,16 @@ export class HomeComponent implements OnInit {
         console.log('HOME - FAQs-KB (i.e. BOT) GET BY PROJECT ID', faqKb);
         this.botLocalDbService.saveBotsInStorage(faqKb._id, faqKb);
       }
-    },
-      (error) => {
-        console.log('HOME - GET FAQs-KB (i.e. BOT) - ERROR ', error);
-      },
-      () => {
-        console.log('HOME - GET FAQs-KB * COMPLETE');
+    }, (error) => {
+      console.log('HOME - GET FAQs-KB (i.e. BOT) - ERROR ', error);
+    }, () => {
+      console.log('HOME - GET FAQs-KB * COMPLETE');
 
-      });
+    });
 
   }
 
+  // !!!! NO MORE USED - MOVED IN USER SERVICE
   getAllUsersOfCurrentProject() {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
       console.log('HOME COMP - PROJECT-USERS (FILTERED FOR PROJECT ID)', projectUsers);
@@ -244,14 +243,12 @@ export class HomeComponent implements OnInit {
       // localStorage.setItem('project', JSON.stringify(project));
       //   this.showSpinner = false;
       //   this.projectUsersList = projectUsers;
-    },
-      error => {
-        // this.showSpinner = false;
-        console.log('PROJECT-USERS (FILTERED FOR PROJECT ID) - ERROR', error);
-      },
-      () => {
-        console.log('PROJECT-USERS (FILTERED FOR PROJECT ID) - COMPLETE')
-      });
+    }, error => {
+      // this.showSpinner = false;
+      console.log('PROJECT-USERS (FILTERED FOR PROJECT ID) - ERROR', error);
+    }, () => {
+      console.log('PROJECT-USERS (FILTERED FOR PROJECT ID) - COMPLETE')
+    });
   }
 
   // NOT YET USED

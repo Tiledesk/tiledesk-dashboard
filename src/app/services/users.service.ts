@@ -197,7 +197,7 @@ export class UsersService {
   public getProjectUsersByProjectId(): Observable<ProjectUser[]> {
     const url = this.MONGODB_BASE_URL;
 
-    console.log('PROJECT USERS URL', url);
+    console.log('!! GET PROJECT USERS BY PROJECT ID - URL', url);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     headers.append('Authorization', this.TOKEN);
@@ -281,7 +281,7 @@ export class UsersService {
       .map((response) => response.json());
   }
 
-  // NEW - 22 AGO
+  // NEW - 22 AGO - DA SOSTITUIRE A getProjectUser() USATO COMPONENTI SIDEBAR AND HOME
   getProjectUserAvailabilityAndRole() {
     this.getProjectUsersByProjectIdAndUserId(this.currentUserId, this.project_id).subscribe((projectUser: any) => {
       console.log('!! USER SERVICE - PROJECT-USER GET BY PROJECT-ID ', this.project_id);
@@ -320,6 +320,33 @@ export class UsersService {
   });
 }
 
+// NEW 22 AGO - 
+getAllUsersOfCurrentProjectAndSaveInStorage() {
+  this.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
+    console.log('!! USER SERVICE  - PROJECT-USERS (FILTERED FOR PROJECT ID)', projectUsers);
+
+    if (projectUsers) {
+      projectUsers.forEach(projectUser => {
+        if (projectUser && projectUser !== null) {
+          if (projectUser.id_user) {
+            console.log('!! USER SERVICE  - PROJECT-USERS - USER ', projectUser.id_user, projectUser.id_user._id)
+
+            // localStorage.setItem(projectUser.id_user._id, JSON.stringify(projectUser.id_user));
+            this.usersLocalDbService.saveMembersInStorage(projectUser.id_user._id, projectUser.id_user);
+          }
+        }
+      });
+    }
+    // localStorage.setItem('project', JSON.stringify(project));
+    //   this.showSpinner = false;
+    //   this.projectUsersList = projectUsers;
+  }, error => {
+    // this.showSpinner = false;
+    console.log('!! USER SERVICE - PROJECT-USERS (FILTERED FOR PROJECT ID) - ERROR', error);
+  }, () => {
+    console.log('!! USER SERVICE - PROJECT-USERS (FILTERED FOR PROJECT ID) - COMPLETE')
+  });
+}
 
   // ======================  PUBLISH projectUser_id AND user_available ======================
   // NOTE: THE projectUser_id AND user_available ARE PASSED FROM HOME.COMPONENT and from SIDEBAR.COMP
