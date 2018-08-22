@@ -92,7 +92,7 @@ const routes: Routes = [
   { path: 'project/create', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/edit/:projectid', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
 
-  // { path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
+  // { path: 'home', component: HomeComponent, canActivate: [AuthGuard]}, // , canDeactivate: [AuthGuard]
   { path: 'project/:projectid/home', component: HomeComponent, canActivate: [AuthGuard] },
   // { path: 'login', component: UserLoginComponent },
   { path: 'login', component: SigninComponent },
@@ -112,6 +112,7 @@ const routes: Routes = [
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
 
   // MESSAGES OF A REQUEST (IT BEFORE WERE DISPLAYED IN A MODAL WINDOW)
+  // tslint:disable-next-line:max-line-length
   { path: 'project/:projectid/request/:requestid/messages', component: RequestsMsgsComponent, canActivate: [AuthGuard] },
 
   // tslint:disable-next-line:max-line-length

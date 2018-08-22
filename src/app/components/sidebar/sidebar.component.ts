@@ -206,20 +206,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
             this.usersService.availability_btn_clicked(true)
 
-        },
-            (error) => {
-                console.log('PROJECT-USER UPDATED ERR  ', error);
-                // =========== NOTIFY ERROR ===========
-                // tslint:disable-next-line:quotemark
-                this.notify.showNotification("An error occurred while updating status", 4, 'report_problem')
-            },
-            () => {
-                console.log('PROJECT-USER UPDATED  * COMPLETE *');
+        }, (error) => {
+            console.log('PROJECT-USER UPDATED ERR  ', error);
+            // =========== NOTIFY ERROR ===========
+            // tslint:disable-next-line:quotemark
+            this.notify.showNotification("An error occurred while updating status", 4, 'report_problem')
+        }, () => {
+            console.log('PROJECT-USER UPDATED  * COMPLETE *');
 
-                // =========== NOTIFY SUCCESS===========
-                this.notify.showNotification('status successfully updated', 2, 'done');
-                // this.getUserAvailability()
-            });
+            // =========== NOTIFY SUCCESS===========
+            this.notify.showNotification('status successfully updated', 2, 'done');
+            // this.getUserAvailability()
+        });
     }
 
     // IF THE AVAILABILITY STATUS IS CHANGED from THE USER.COMP AVAILABLE / UNAVAILABLE TOGGLE BTN
@@ -254,7 +252,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
     // GET CURRENT PROJECT - IF IS DEFINED THE CURRENT PROJECT GET THE PROJECTUSER
-
     getCurrentProject() {
         this.auth.project_bs.subscribe((project) => {
             this.project = project
@@ -272,6 +269,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             }
         });
     }
+
     getLoggedUser() {
         this.auth.user_bs.subscribe((user) => {
             console.log('USER GET IN SIDEBAR ', user)
@@ -287,6 +285,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         });
     }
 
+    // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE SIDEBAR.COMP ***
     getProjectUser() {
         console.log('!!! SIDEBAR CALL GET-PROJECT-USER')
         this.usersService.getProjectUsersByProjectIdAndUserId(this.currentUserId, this.projectId).subscribe((projectUser: any) => {

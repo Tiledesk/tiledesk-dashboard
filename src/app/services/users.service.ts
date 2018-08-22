@@ -14,6 +14,8 @@ import { environment } from '../../environments/environment';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as firebase from 'firebase/app';
 
+import { UsersLocalDbService } from '../services/users-local-db.service';
+
 interface NewUser {
   displayName: string;
   email: string;
@@ -64,7 +66,8 @@ export class UsersService {
   constructor(
     http: Http,
     private afs: AngularFirestore,
-    private auth: AuthService
+    private auth: AuthService,
+    private usersLocalDbService: UsersLocalDbService
   ) {
     // this.usersCollection = this.afs.collection('users', (ref) => ref.orderBy('time', 'desc').limit(5));
     // this.searchUserCollection = this.afs.collection('users', (ref) => ref.where('displayName', '>=', 'B'));
@@ -216,9 +219,9 @@ export class UsersService {
       .map((response) => response.json());
   }
 
-   /* // ================ TEST FUNCTION -- ALL AVAILABLE PROJECT-USER (OF CURRENT PROJECT)
-   ALSO CONSIDERING OPERATING HOURS ====================== */
-   public getAvailableProjectUsersConsideringOperatingHours(): Observable<ProjectUser[]> {
+  /* // ================ TEST FUNCTION -- ALL AVAILABLE PROJECT-USER (OF CURRENT PROJECT)
+  ALSO CONSIDERING OPERATING HOURS ====================== */
+  public getAvailableProjectUsersConsideringOperatingHours(): Observable<ProjectUser[]> {
     // const url = this.MONGODB_BASE_URL + 'availables';
     const url = this.NEW_AVAILABLE_USERS_URL;
     console.log('»»»» »»»» PROJECT USERS NEW AVAILABLE URL', url);
@@ -238,7 +241,7 @@ export class UsersService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'email': email, 'role': role, 'id_project': this.project_id, 'project_name': this.project_name};
+    const body = { 'email': email, 'role': role, 'id_project': this.project_id, 'project_name': this.project_name };
 
     console.log('POST INVITE USER - REQUEST BODY ', body);
 
@@ -277,6 +280,46 @@ export class UsersService {
       .get(url, { headers })
       .map((response) => response.json());
   }
+
+  // NEW - 22 AGO
+  getProjectUserAvailabilityAndRole() {
+    this.getProjectUsersByProjectIdAndUserId(this.currentUserId, this.project_id).subscribe((projectUser: any) => {
+      console.log('!! USER SERVICE - PROJECT-USER GET BY PROJECT-ID ', this.project_id);
+      console.log('!! USER SERVICE - GET BY CURRENT-USER-ID ', this.currentUserId);
+      console.log('!! USER SERVICE - PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser);
+      console.log('!! USER SERVICE - PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID LENGTH', projectUser.length);
+      if ((projectUser) && (projectUser.length !== 0)) {
+          console.log('!! USER SERVICE - PROJECT-USER ID ', projectUser[0]._id)
+          console.log('!! USER SERVICE - USER IS AVAILABLE ', projectUser[0].user_available)
+          // this.user_is_available_bs = projectUser.user_available;
+
+          if (projectUser[0].user_available !== undefined) {
+              this.user_availability(projectUser[0]._id, projectUser[0].user_available)
+          }
+
+          // ADDED 21 AGO
+          if (projectUser[0].role !== undefined) {
+              console.log('!! USER SERVICE - CURRENT USER ROLE IN THIS PROJECT ', projectUser[0].role);
+              this.user_role(projectUser[0].role);
+
+              // save the user role in storage - then the value is get by auth.service:
+              // the user with agent role can not access to the pages under the settings sub-menu
+              // this.auth.user_role(projectUser[0].role);
+
+              this.usersLocalDbService.saveUserRoleInStorage(projectUser[0].role);
+          }
+      } else {
+          // this could be the case in which the current user was deleted as a member of the current project
+          console.log('!! USER SERVICE - PROJECT-USER UNDEFINED ')
+      }
+
+  }, (error) => {
+      console.log('!! USER SERVICE - PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID  ', error);
+  }, () => {
+      console.log('!! USER SERVICE - PROJECT-USER GET BY PROJECT ID & CURRENT-USER-ID  * COMPLETE *');
+  });
+}
+
 
   // ======================  PUBLISH projectUser_id AND user_available ======================
   // NOTE: THE projectUser_id AND user_available ARE PASSED FROM HOME.COMPONENT and from SIDEBAR.COMP

@@ -51,7 +51,7 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log('Hello HomeComponent! ');
+    console.log('!!! Hello HomeComponent! ');
     // console.log(environment.firebaseConfig.projectId);
     // this.firebaseProjectId = environment.firebaseConfig.projectId;
 
@@ -77,6 +77,27 @@ export class HomeComponent implements OnInit {
 
     // TEST FUNCTION : GET ALL AVAILABLE PROJECT USER
     this.getAvailableProjectUsersByProjectId();
+
+    this.getUserRole();
+
+  }
+
+  // RISOLVE lo USE-CASE: L'UTENTE è NELLA HOME DEL PROGETTO A (DI CUI è OWNER)
+  // SEGUE UN LINK CHE LO PORTA (AD ESEMPIO) AL DETTAGLIO DI UNA RICHIESTA DEL PROGETTO B (DI CUI è AGENT)
+  // AVVIENE IL CAMBIO DAL PROGETTO A AL PROGETTO B 'ON THE FLY'
+  // DOPO AVER VISUALIZZATO IL DETTAGLIO DELLA RICHIESTA L'UTENTE PREME SUL PULSANTE BACK E TORNA INDIETRO ALLA HOME DEL PROGETTO A
+  // ANCHE SE NELLO STORAGE IL RUOLO DELL'UTENTE è STATO AGGIORNATO (DA AGENT A OWNER) LA PAGINA HOME NON VISUALIZZA
+  // IL PULSANTE 'WIDGET' NN AVENDO FATTO IN TEMPO A AGGIORNARE IL 'ROLE' NELL'HTML
+  // CON getUserRole() AGGIORNO this.USER_ROLE QUANDO LA SIDEBAR, NEL MOMENTO
+  // IN CUI ESGUE getProjectUser() PASSA LO USER ROLE ALLO USER SERVICE CHE LO PUBBLICA
+  // NOTA: LA SIDEBAR AGGIORNA LO USER ROLE PRIMA DELLA HOME
+  getUserRole() {
+    this.usersService.project_user_role_bs.subscribe((userRole) => {
+
+      console.log('!! HOME - SUBSCRIPTION TO USER ROLE ', userRole)
+      // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
+      this.USER_ROLE = userRole;
+    })
   }
 
   // TEST FUNCTION : GET ALL AVAILABLE PROJECT USER
@@ -151,7 +172,7 @@ export class HomeComponent implements OnInit {
   // IS SELECTED THE SIDEBAR HAS BEEN ALREADY CALLED)
   // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE SIDEBAR.COMP ***
   getProjectUser() {
-    console.log('!!! HOME CALL GET-PROJECT-USER' )
+    console.log('!!! HOME CALL GET-PROJECT-USER')
     this.usersService.getProjectUsersByProjectIdAndUserId(this.user._id, this.projectId).subscribe((projectUser: any) => {
       console.log('!!! H PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
       if (projectUser) {
@@ -176,14 +197,15 @@ export class HomeComponent implements OnInit {
         }
 
       }
-    },
-      (error) => {
-        console.log('H PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ERROR ', error);
-      },
-      () => {
-        console.log('H PROJECT-USER GET BY PROJECT ID & CURRENT-USER-ID  * COMPLETE *');
-      });
+    }, (error) => {
+      console.log('H PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ERROR ', error);
+    }, () => {
+      console.log('H PROJECT-USER GET BY PROJECT ID & CURRENT-USER-ID  * COMPLETE *');
+    });
   }
+
+
+
 
   getFaqKbByProjectId() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {

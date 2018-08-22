@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 // ActivatedRouteSnapshot, RouterStateSnapshot,
 // tslint:disable-next-line:max-line-length
-import { CanActivate, Router, NavigationEnd } from '@angular/router';
+import { CanActivate, Router, NavigationEnd, CanDeactivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AuthService } from './auth.service';
@@ -17,7 +17,10 @@ import { ProjectService } from '../services/project.service';
 import { Project } from '../models/project-model';
 
 import 'rxjs/add/operator/pairwise';
+// import { RequestsMsgsComponent } from '../requests-msgs/requests-msgs.component';
+// import { HomeComponent } from '../home/home.component';
 
+// CanDeactivate<RequestsMsgsComponent | HomeComponent>
 @Injectable()
 export class AuthGuard implements CanActivate {
 
@@ -31,6 +34,8 @@ export class AuthGuard implements CanActivate {
   nav_project_id: string;
   current_project_id: string;
   nav_project_name: string;
+
+  allow_navigation = true;
 
   constructor(
     private auth: AuthService,
@@ -55,6 +60,7 @@ export class AuthGuard implements CanActivate {
     this.canActivate();
 
 
+
     // this.router.events.pairwise().subscribe((event) => {
     //   console.log('-» -» -» AUTH GUARD EVENT ', event);
     // });
@@ -67,6 +73,16 @@ export class AuthGuard implements CanActivate {
     this.getProjectIdFromUrl();
 
   }
+
+  // canDeactivate(
+  //   component: RequestsMsgsComponent | HomeComponent,
+  //   route: ActivatedRouteSnapshot,
+  //   state: RouterStateSnapshot
+  // ): Observable<boolean> | boolean {
+  //   console.log('!! CAN DEACTIVATE !! - ALLOW NAVIGATION ', this.allow_navigation)
+  //   return this.allow_navigation;
+  // }
+
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
@@ -94,6 +110,7 @@ export class AuthGuard implements CanActivate {
         const url_segments = current_url.split('/');
         console.log('!! AUTH GUARD - CURRENT URL SEGMENTS ', url_segments);
 
+
         this.nav_project_id = url_segments[2];
         console.log('!! AUTH GUARD - CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id);
 
@@ -109,12 +126,16 @@ export class AuthGuard implements CanActivate {
     });
   }
 
-
-
   checkIf_NavPrjctIdMatchesCurrentPrjctId() {
     if (this.nav_project_id && this.current_project_id && this.nav_project_id === this.current_project_id) {
+      // this.allow_navigation = true;
       console.log('!!!!!! OOOOOK - AUTH GUARD - (N.P.I) NAVIGATION-PROJECT-ID >>> MATCHES <<< (C.P.I) CURRENT-PROJECT-ID')
     } else {
+      // this.allow_navigation = false;
+
+      // this.notify.showExiperdSessionPopup(false);
+      // window.confirm('Discard changes?');
+     
       console.log('!!!!!! KKKKKO - AUTH GUARD - (N.P.I) NAVIGATION-PROJECT-ID >>> DOES NOT MATCHES <<< (C.P.I) CURRENT-PROJECT-ID')
 
       // for debug get the current storedProject
@@ -134,10 +155,6 @@ export class AuthGuard implements CanActivate {
     }
   }
 
-
-
-
-
   getProjectById() {
     this.projectService.getMongDbProjectById(this.nav_project_id).subscribe((project: any) => {
 
@@ -146,7 +163,8 @@ export class AuthGuard implements CanActivate {
 
         this.nav_project_name = project.name;
         console.log('!!!!!! AUTH GUARD - PROJECT NAME GOT BY THE NAV PROJECT ID (N.P.I): ', this.nav_project_name);
-
+        // tslint:disable-next-line:max-line-length
+        this.notify.showNotificationChangeProject(`You have been redirected to the project <span style="color:#ffffff; display: inline-block;max-width: 100%;"> ${this.nav_project_name} </span>`, 0, 'info');
       }
 
     },
@@ -247,6 +265,7 @@ export class AuthGuard implements CanActivate {
   canActivate() {
     console.log('AlwaysAuthGuard');
 
+    // tslint:disable-next-line:max-line-length
     if ((this.user) || (this.is_verify_email_page === true) || (this.is_signup_page === true) || (this.is_reset_psw_page === true)) {
       // this.router.navigate(['/home']);
       return true;

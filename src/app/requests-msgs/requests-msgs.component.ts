@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, HostListener } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, HostListener, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { Message } from '../models/message-model';
@@ -11,12 +11,14 @@ import { UsersLocalDbService } from '../services/users-local-db.service';
 import { Location } from '@angular/common';
 import { NotifyService } from '../core/notify.service';
 
+import { PlatformLocation } from '@angular/common'
+
 @Component({
   selector: 'app-requests-msgs',
   templateUrl: './requests-msgs.component.html',
   styleUrls: ['./requests-msgs.component.scss']
 })
-export class RequestsMsgsComponent implements OnInit, AfterViewInit {
+export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
   CHAT_BASE_URL = environment.chat.CHAT_BASE_URL
@@ -64,8 +66,15 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit {
     private auth: AuthService,
     private usersLocalDbService: UsersLocalDbService,
     private _location: Location,
-    private notify: NotifyService
-  ) { }
+    private notify: NotifyService,
+    private platformLocation: PlatformLocation
+  ) {
+
+    this.platformLocation.onPopState(() => {
+
+      console.log('PLATFORM LOCATION ON POP STATE')
+    });
+  }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -74,7 +83,23 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit {
     console.log('ON RESIZE -> WINDOW WITH ', this.newInnerWidth);
   }
 
+  // detect browser back button click
+  @HostListener('window:popstate', ['$event'])
+  onPopState(event) {
+    console.log('»»»» Back button pressed');
+    // window.onbeforeunload = function () {
+    //   return 'Are you sure you want to leave?';
+    // };
+  }
+
   ngOnInit() {
+    // prevent browser back button navigation
+    // history.pushState(null, null, location.href);
+    // window.onpopstate = function (event) {
+    //   history.go(1);
+    // };
+
+
     this.getRequestId();
     this.getCurrentProject();
     this.getLoggedUser();
@@ -404,6 +429,11 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit {
 
   goBack() {
     this._location.back();
+
+    // this._location.replaceState('/')
+    // this.router.navigate(['project/' + this.id_project + '/home'], { replaceUrl: true });
+    // window.history.replaceState('HOME', 'http://localhost:4200/#/projects')
+    // console.log('WINDOWS HISTORY ', window.history.replaceState);
   }
 
   members_replace(member_id) {
@@ -427,5 +457,9 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit {
     } else {
       this.router.navigate(['project/' + this.id_project + '/member/' + member_id]);
     }
+  }
+
+  ngOnDestroy() {
+    console.log('»»» REQUEST MSG COMP >>>>> ON DESTROY <<<<< ')
   }
 }
