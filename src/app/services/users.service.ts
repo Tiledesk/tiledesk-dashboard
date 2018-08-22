@@ -289,64 +289,64 @@ export class UsersService {
       console.log('!! USER SERVICE - PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser);
       console.log('!! USER SERVICE - PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID LENGTH', projectUser.length);
       if ((projectUser) && (projectUser.length !== 0)) {
-          console.log('!! USER SERVICE - PROJECT-USER ID ', projectUser[0]._id)
-          console.log('!! USER SERVICE - USER IS AVAILABLE ', projectUser[0].user_available)
-          // this.user_is_available_bs = projectUser.user_available;
+        console.log('!! USER SERVICE - PROJECT-USER ID ', projectUser[0]._id)
+        console.log('!! USER SERVICE - USER IS AVAILABLE ', projectUser[0].user_available)
+        // this.user_is_available_bs = projectUser.user_available;
 
-          if (projectUser[0].user_available !== undefined) {
-              this.user_availability(projectUser[0]._id, projectUser[0].user_available)
-          }
+        if (projectUser[0].user_available !== undefined) {
+          this.user_availability(projectUser[0]._id, projectUser[0].user_available)
+        }
 
-          // ADDED 21 AGO
-          if (projectUser[0].role !== undefined) {
-              console.log('!! USER SERVICE - CURRENT USER ROLE IN THIS PROJECT ', projectUser[0].role);
-              this.user_role(projectUser[0].role);
+        // ADDED 21 AGO
+        if (projectUser[0].role !== undefined) {
+          console.log('!! USER SERVICE - CURRENT USER ROLE IN THIS PROJECT ', projectUser[0].role);
+          this.user_role(projectUser[0].role);
 
-              // save the user role in storage - then the value is get by auth.service:
-              // the user with agent role can not access to the pages under the settings sub-menu
-              // this.auth.user_role(projectUser[0].role);
+          // save the user role in storage - then the value is get by auth.service:
+          // the user with agent role can not access to the pages under the settings sub-menu
+          // this.auth.user_role(projectUser[0].role);
 
-              this.usersLocalDbService.saveUserRoleInStorage(projectUser[0].role);
-          }
+          this.usersLocalDbService.saveUserRoleInStorage(projectUser[0].role);
+        }
       } else {
-          // this could be the case in which the current user was deleted as a member of the current project
-          console.log('!! USER SERVICE - PROJECT-USER UNDEFINED ')
+        // this could be the case in which the current user was deleted as a member of the current project
+        console.log('!! USER SERVICE - PROJECT-USER UNDEFINED ')
       }
 
-  }, (error) => {
+    }, (error) => {
       console.log('!! USER SERVICE - PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID  ', error);
-  }, () => {
+    }, () => {
       console.log('!! USER SERVICE - PROJECT-USER GET BY PROJECT ID & CURRENT-USER-ID  * COMPLETE *');
-  });
-}
+    });
+  }
 
-// NEW 22 AGO - 
-getAllUsersOfCurrentProjectAndSaveInStorage() {
-  this.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
-    console.log('!! USER SERVICE  - PROJECT-USERS (FILTERED FOR PROJECT ID)', projectUsers);
+  // NEW 22 AGO - GET AND SAVE ALL USERS OF CURRENT PROJECT IN LOCAL STORAGE
+  getAllUsersOfCurrentProjectAndSaveInStorage() {
+    this.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
+      console.log('!! USER SERVICE  - PROJECT-USERS (FILTERED FOR PROJECT ID ', this.project_id, ')', projectUsers);
 
-    if (projectUsers) {
-      projectUsers.forEach(projectUser => {
-        if (projectUser && projectUser !== null) {
-          if (projectUser.id_user) {
-            console.log('!! USER SERVICE  - PROJECT-USERS - USER ', projectUser.id_user, projectUser.id_user._id)
+      if (projectUsers) {
+        projectUsers.forEach(projectUser => {
+          if (projectUser && projectUser !== null) {
+            if (projectUser.id_user) {
+              console.log('!! USER SERVICE  - PROJECT-USERS - USER ', projectUser.id_user, projectUser.id_user._id)
 
-            // localStorage.setItem(projectUser.id_user._id, JSON.stringify(projectUser.id_user));
-            this.usersLocalDbService.saveMembersInStorage(projectUser.id_user._id, projectUser.id_user);
+              // localStorage.setItem(projectUser.id_user._id, JSON.stringify(projectUser.id_user));
+              this.usersLocalDbService.saveMembersInStorage(projectUser.id_user._id, projectUser.id_user);
+            }
           }
-        }
-      });
-    }
-    // localStorage.setItem('project', JSON.stringify(project));
-    //   this.showSpinner = false;
-    //   this.projectUsersList = projectUsers;
-  }, error => {
-    // this.showSpinner = false;
-    console.log('!! USER SERVICE - PROJECT-USERS (FILTERED FOR PROJECT ID) - ERROR', error);
-  }, () => {
-    console.log('!! USER SERVICE - PROJECT-USERS (FILTERED FOR PROJECT ID) - COMPLETE')
-  });
-}
+        });
+      }
+      // localStorage.setItem('project', JSON.stringify(project));
+      //   this.showSpinner = false;
+      //   this.projectUsersList = projectUsers;
+    }, error => {
+      // this.showSpinner = false;
+      console.log('!! USER SERVICE - PROJECT-USERS (FILTERED FOR PROJECT ID) - ERROR', error);
+    }, () => {
+      console.log('!! USER SERVICE - PROJECT-USERS (FILTERED FOR PROJECT ID) - COMPLETE')
+    });
+  }
 
   // ======================  PUBLISH projectUser_id AND user_available ======================
   // NOTE: THE projectUser_id AND user_available ARE PASSED FROM HOME.COMPONENT and from SIDEBAR.COMP

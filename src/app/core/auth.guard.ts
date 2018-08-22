@@ -15,6 +15,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Location } from '@angular/common';
 import { ProjectService } from '../services/project.service';
 import { Project } from '../models/project-model';
+import { UsersService } from '../services/users.service';
 
 import 'rxjs/add/operator/pairwise';
 // import { RequestsMsgsComponent } from '../requests-msgs/requests-msgs.component';
@@ -42,7 +43,8 @@ export class AuthGuard implements CanActivate {
     private router: Router,
     private notify: NotifyService,
     public location: Location,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private usersService: UsersService
   ) {
     console.log('HELLO AUTH GUARD !!!')
 
@@ -127,31 +129,31 @@ export class AuthGuard implements CanActivate {
   }
 
   checkIf_NavPrjctIdMatchesCurrentPrjctId() {
-    if (this.nav_project_id && this.current_project_id && this.nav_project_id === this.current_project_id) {
+    if (this.nav_project_id && this.current_project_id) {
       // this.allow_navigation = true;
-      console.log('!!!!!! OOOOOK - AUTH GUARD - (N.P.I) NAVIGATION-PROJECT-ID >>> MATCHES <<< (C.P.I) CURRENT-PROJECT-ID')
-    } else {
-      // this.allow_navigation = false;
+      if (this.nav_project_id === this.current_project_id) {
+        console.log('!!!!!! OOOOOK - AUTH GUARD - (N.P.I) NAVIGATION-PROJECT-ID >>> MATCHES <<< (C.P.I) CURRENT-PROJECT-ID')
+      } else {
+        // this.allow_navigation = false;
 
-      // this.notify.showExiperdSessionPopup(false);
-      // window.confirm('Discard changes?');
-     
-      console.log('!!!!!! KKKKKO - AUTH GUARD - (N.P.I) NAVIGATION-PROJECT-ID >>> DOES NOT MATCHES <<< (C.P.I) CURRENT-PROJECT-ID')
+        // this.notify.showExiperdSessionPopup(false);
+        // window.confirm('Discard changes?');
 
-      // for debug get the current storedProject
-      const storedProject = localStorage.getItem('project')
-      console.log('!!!!!! 1) AUTH GUARD - CURRENT STORED PROJECT: ', storedProject);
-      // tslint:disable-next-line:no-debugger
-      // debugger
+        console.log('!!!!!! KKKKKO - AUTH GUARD - (N.P.I) NAVIGATION-PROJECT-ID >>> DOES NOT MATCHES <<< (C.P.I) CURRENT-PROJECT-ID')
+
+        // for debug get the current storedProject
+        const storedProject = localStorage.getItem('project')
+        console.log('!!!!!! 1) AUTH GUARD - CURRENT STORED PROJECT: ', storedProject);
 
 
-      /*
-       * *** GET PROJECT BY NAV PROJECT ID ***
-       * THE PROJECT NAME IS NECESSARY TO INITIALIZE THE PROJECT SO RUN getProjectById()
-       * TO GET THE PROJECT OBJECT (AND FROM THIS THE PROJECT NAME) BY THE PROJECT-ID GET FROM URL
-       * (i.e., BY THE (N.P.I) NAVIGATION-PROJECT-ID)  */
-      this.getProjectById();
+        /*
+         * *** GET PROJECT BY NAV PROJECT ID ***
+         * THE PROJECT NAME IS NECESSARY TO INITIALIZE THE PROJECT SO RUN getProjectById()
+         * TO GET THE PROJECT OBJECT (AND FROM THIS THE PROJECT NAME) BY THE PROJECT-ID GET FROM URL
+         * (i.e., BY THE (N.P.I) NAVIGATION-PROJECT-ID)  */
+        this.getProjectById();
 
+      }
     }
   }
 
@@ -164,7 +166,7 @@ export class AuthGuard implements CanActivate {
         this.nav_project_name = project.name;
         console.log('!!!!!! AUTH GUARD - PROJECT NAME GOT BY THE NAV PROJECT ID (N.P.I): ', this.nav_project_name);
         // tslint:disable-next-line:max-line-length
-        this.notify.showNotificationChangeProject(`You have been redirected to the project <span style="color:#ffffff; display: inline-block;max-width: 100%;"> ${this.nav_project_name} </span>`, 0, 'info');
+        this.notify.showNotificationChangeProject(`You have been redirected to the project <span style="color:#ffffff; display: inline-block; max-width: 100%;"> ${this.nav_project_name} </span>`, 0, 'info');
       }
 
     },
@@ -194,6 +196,9 @@ export class AuthGuard implements CanActivate {
 
       // PROJECT ID and NAME ARE SETTED IN THE STORAGE
       localStorage.setItem('project', JSON.stringify(project));
+
+      // GET AND SAVE ALL USERS OF CURRENT PROJECT IN LOCAL STORAGE
+      this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
 
       // for debug get the current storedProject
       const storedProject = localStorage.getItem('project')
