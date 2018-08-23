@@ -158,7 +158,7 @@ export class AuthGuard implements CanActivate {
   }
 
   getProjectById() {
-    this.projectService.getMongDbProjectById(this.nav_project_id).subscribe((project: any) => {
+    this.projectService.getProjectById(this.nav_project_id).subscribe((project: any) => {
 
       if (project) {
         // console.log('!!!!!! AUTH GUARD - N.P.I DOES NOT MATCH C.P.I - PROJECT GOT BY THE NAV PROJECT ID (N.P.I): ', project);
@@ -169,15 +169,13 @@ export class AuthGuard implements CanActivate {
         this.notify.showNotificationChangeProject(`You have been redirected to the project <span style="color:#ffffff; display: inline-block; max-width: 100%;"> ${this.nav_project_name} </span>`, 0, 'info');
       }
 
-    },
-      (error) => {
-        console.log('!!!!!! AUTH GUARD - GET PROJECT BY ID - ERROR ', error);
-      },
-      () => {
-        console.log('!!!!!! AUTH GUARD - GET PROJECT BY ID - COMPLETE ');
+    }, (error) => {
+      console.log('!!!!!! AUTH GUARD - GET PROJECT BY ID - ERROR ', error);
+    }, () => {
+      console.log('!!!!!! AUTH GUARD - GET PROJECT BY ID - COMPLETE ');
 
-        this.resetCurrentProjectAndInizializeNewProject();
-      });
+      this.resetCurrentProjectAndInizializeNewProject();
+    });
   }
 
   resetCurrentProjectAndInizializeNewProject() {

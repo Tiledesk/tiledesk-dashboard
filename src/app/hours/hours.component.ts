@@ -312,7 +312,7 @@ export class HoursComponent implements OnInit, OnDestroy {
    * BUILD THE OBJECT DAYS
    * --------------------------------------------------------------------------------------------------*/
   getProjectById() {
-    this.projectService.getMongDbProjectById(this.projectid).subscribe(
+    this.projectService.getProjectById(this.projectid).subscribe(
       (project: any) => {
         console.log('»» »» > HOURS comp - on init PROJECT (DETAILS) BY ID - PROJECT OBJECT: ', project);
 

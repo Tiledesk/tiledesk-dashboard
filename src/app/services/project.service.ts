@@ -27,6 +27,8 @@ export class ProjectService {
     http: Http,
     public auth: AuthService
   ) {
+    console.log('HELLO PROJECT SERVICE !!!!')
+
     this.http = http;
 
     this.user = auth.user_bs.value
@@ -42,7 +44,7 @@ export class ProjectService {
   }
 
   getCurrentProject() {
-    console.log('============ USER SERVICE - SUBSCRIBE TO CURRENT PROJ ============')
+    console.log('============ PROJECT SERVICE - SUBSCRIBE TO CURRENT PROJ ============');
     // tslint:disable-next-line:no-debugger
     // debugger
     this.auth.project_bs.subscribe((project) => {
@@ -63,7 +65,7 @@ export class ProjectService {
       // this.currentUserFireBaseUID = this.user.uid
       this.currentUserID = this.user._id
       this.TOKEN = this.user.token
-      console.log('USER UID GET IN PROJECT SERV ', this.currentUserID);
+      console.log('!!! USER UID GET IN PROJECT SERV ', this.currentUserID);
       // this.getToken();
     } else {
       console.log('No user is signed in');
@@ -110,7 +112,7 @@ export class ProjectService {
    * READ DETAIL (GET PROJECT BY PROJECT ID)
    * @param id
    */
-  public getMongDbProjectById(id: string): Observable<Project[]> {
+  public getProjectById(id: string): Observable<Project[]> {
     let url = this.PROJECT_BASE_URL;
     url += `${id}`;
     console.log('MONGO DB GET PROJECT BY PEOJECT ID URL', url);
@@ -197,8 +199,8 @@ export class ProjectService {
 
   }
 
-   /// ================ UPDATE OPERATING HOURS ====================== ///
-   public updateProjectOperatingHours(_activeOperatingHours: boolean, _operatingHours: any): Observable<Project[]> {
+  /// ================ UPDATE OPERATING HOURS ====================== ///
+  public updateProjectOperatingHours(_activeOperatingHours: boolean, _operatingHours: any): Observable<Project[]> {
 
     const url = this.UPDATE_OPERATING_HOURS_URL;
     console.log('»»»» »»»» UPDATE PROJECT OPERATING HOURS ', url);

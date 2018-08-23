@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 
 import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -20,7 +20,6 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/toPromise';
 import { UsersLocalDbService } from '../services/users-local-db.service';
 
-// import { ProjectService } from '../services/project.service';
 // import { RequestsService } from '../services/requests.service';
 // interface CUser {
 //   uid: string;
@@ -37,13 +36,11 @@ export class SuperUser {
     public email: string // FOR SUPERUSER
   ) { }
 }
-
 const superusers = [
   new SuperUser('andrea.sponziello21@frontiere21.it'),
   new SuperUser('nicola.lanzilotto@frontiere21.it'),
   new SuperUser('lanzilottonicola74@gmail.com'),
 ];
-
 // .end SUPER USER
 
 
@@ -80,11 +77,12 @@ export class AuthService {
     private afs: AngularFirestore,
     private router: Router,
     private notify: NotifyService,
-    private usersLocalDbService: UsersLocalDbService
+    private usersLocalDbService: UsersLocalDbService,
+    // private projectService: ProjectService
     // private projectService: ProjectService,
   ) {
     this.http = http;
-    console.log('====== AUTH SERVICE ====== ')
+    console.log('====== AUTH SERVICE !!! ====== ')
     // this.user = this.afAuth.authState
     //   .switchMap((user) => {
     //     if (user) {
@@ -98,14 +96,56 @@ export class AuthService {
     // debugger
     this.checkCredentials();
 
-    this.getProjectFromLocalStorage();
+    /* !!! NO MORE USED - REPLACED BY getAndPublish_NavProjectIdAndProjectName() */
+    // this.getProjectFromLocalStorage();
 
+    this.getAndPublish_NavProjectIdAndProjectName();
   }
 
+  /**
+   * // REPLACE getProjectFromLocalStorage()
+   * FROM THE PROJECT ID, GOT FROM THE URL GOT THE PROJECT NAME FROM THE LOCAL STORAGE,
+   * THEN PROJECT ID AND PROJECT NAME THAT ARE PUBLISHED
+   * **** THIS RESOLVE THE BUG: WHEN A PAGE IS RELOADED THE PROJECT ID AND THE PROJECT NAME RETURNED FROM SUBDCRIPTION
+   * TO project_bs ARE NULL
+   * *** NOTE: THE ITEMS IN THE STORAGE ARE SETTED IN PROJECT-COMP AND IN AUTH-GUARD (WHEN THERE IS A CHANGE PROJECT 'ON THE FLY')
+   */
+  getAndPublish_NavProjectIdAndProjectName() {
 
+    this.router.events.subscribe((e) => {
+      if (e instanceof NavigationEnd) {
+        // console.log('!! AUTH GUARD - EVENT ', e);
+        const current_url = e.url
+        console.log('!! »»»»» AUTH SERV - CURRENT URL ', current_url);
+
+        const url_segments = current_url.split('/');
+        console.log('!! »»»»» AUTH SERV - CURRENT URL SEGMENTS ', url_segments);
+
+
+        const nav_project_id = url_segments[2];
+        console.log('!! »»»»» AUTH SERV - CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', nav_project_id);
+
+        if (nav_project_id) {
+
+          const project_name = (localStorage.getItem(nav_project_id));
+          console.log('!! »»»»» AUTH SERV - PROJECT NAME GET FROM STORAGE: ', project_name);
+
+              const project: Project = {
+                _id: nav_project_id,
+                name: project_name,
+              }
+              console.log('!! »»»»» AUTH SERV - PROJECT THAT IS PUBLISHED: ',  project);
+              this.project_bs.next(project);
+        }
+      }
+    });
+  }
+
+  // !!! NO MORE USED
+  // WHEN THE PAGE IS RELOADED THE project_id RETURNED FROM THE SUBSCRIPTION IS NULL SO IT IS GET FROM LOCAL STORAGE
   getProjectFromLocalStorage() {
-    // WHEN THE PAGE IS RELOADED THE project_id RETURNED FROM THE SUBSCRIPTION IS NULL SO IT IS GET FROM LOCAL STORAGE
     const storedProject = localStorage.getItem('project')
+    console.log('!! getProjectFromLocalStorage ', storedProject)
     this.project_bs.next(JSON.parse(storedProject));
   }
 
@@ -113,7 +153,7 @@ export class AuthService {
   checkCredentials() {
     const storedUser = localStorage.getItem('user')
     console.log('LOCAL STORAGE USER  ', storedUser)
-    console.log('USER BS VALUE', this.user_bs.value)
+    // console.log('USER BS VALUE', this.user_bs.value)
     if (storedUser !== null) {
 
       this.user_bs.next(JSON.parse(storedUser));

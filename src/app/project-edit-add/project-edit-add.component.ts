@@ -75,7 +75,7 @@ export class ProjectEditAddComponent implements OnInit {
    * FROM THE BOT OBJECT IS USED:
    */
   getProjectById() {
-    this.projectService.getMongDbProjectById(this.id_project).subscribe((project: any) => {
+    this.projectService.getProjectById(this.id_project).subscribe((project: any) => {
       console.log('++ > GET PROJECT (DETAILS) BY ID - PROJECT OBJECT: ', project);
 
       this.projectName_toUpdate = project.name;

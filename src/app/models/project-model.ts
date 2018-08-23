@@ -6,5 +6,6 @@ export interface Project {
     activeOperatingHours?: boolean;
     operatingHours?: any
     createdBy?: string;
+    id_project?: any;
     __v?: any;
 }

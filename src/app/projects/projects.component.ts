@@ -112,20 +112,28 @@ export class ProjectsComponent implements OnInit {
    */
   getProjects() {
     this.projectService.getMongDbProjects().subscribe((projects: any) => {
-      console.log('GET PROJECTS ', projects);
+      console.log('!!! GET PROJECTS ', projects);
 
       this.showSpinner = false;
-      this.projects = projects;
 
-    },
-      error => {
-        this.showSpinner = false;
-        console.log('GET PROJECTS - ERROR ', error)
-      },
-      () => {
-        console.log('GET PROJECTS - COMPLETE')
+      if (projects) {
+        this.projects = projects;
 
-      });
+        // SET THE IDs and the NAMES OF THE PROJECT IN THE LOCAL STORAGE.
+        // WHEN IS REFRESHED A PAGE THE AUTSERVICE USE THE NAVIGATION PROJECT ID TO GET FROM STORAGE THE NAME OF THE PROJECT
+        // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
+        this.projects.forEach(project => {
+          localStorage.setItem(project.id_project._id, project.id_project.name );
+        });
+      }
+
+    }, error => {
+      this.showSpinner = false;
+      console.log('GET PROJECTS - ERROR ', error)
+    }, () => {
+      console.log('GET PROJECTS - COMPLETE')
+
+    });
   }
 
 
@@ -208,20 +216,18 @@ export class ProjectsComponent implements OnInit {
 
         // this.router.navigate([`/project/${project._id}/home`]);
 
-      },
-        (error) => {
-          this.SHOW_CIRCULAR_SPINNER = false;
-          console.log('CREATE PROJECT - POST REQUEST ERROR ', error);
-        },
-        () => {
-          console.log('CREATE PROJECT - POST REQUEST COMPLETE ');
+      }, (error) => {
+        this.SHOW_CIRCULAR_SPINNER = false;
+        console.log('CREATE PROJECT - POST REQUEST ERROR ', error);
+      }, () => {
+        console.log('CREATE PROJECT - POST REQUEST COMPLETE ');
 
-          setTimeout(() => {
-            this.SHOW_CIRCULAR_SPINNER = false
-          }, 300);
+        setTimeout(() => {
+          this.SHOW_CIRCULAR_SPINNER = false
+        }, 300);
 
-          // this.router.navigate(['/projects']);
-        });
+        // this.router.navigate(['/projects']);
+      });
   }
 
   onCloseInfoModalHandled() {
