@@ -50,8 +50,9 @@ export class ProjectService {
     this.auth.project_bs.subscribe((project) => {
 
       if (project) {
-        console.log('-- -- >>>> 00 -> PROJECT SERVICE project ID from AUTH service subscription ')
+
         this.projectID = project._id;
+        console.log('-- -- >>>> 00 -> PROJECT SERVICE project ID from AUTH service subscription ', this.projectID);
         this.UPDATE_OPERATING_HOURS_URL = this.PROJECT_BASE_URL + this.projectID;
 
         // PROJECT-USER BY PROJECT ID AND CURRENT USER ID

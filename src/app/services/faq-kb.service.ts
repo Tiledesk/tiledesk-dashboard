@@ -46,7 +46,7 @@ export class FaqKbService {
   }
 
   getCurrentProject() {
-    console.log('FAQ-KB SERV - SUBSCRIBE TO CURRENT PROJ ')
+    // console.log('FAQ-KB SERV - SUBSCRIBE TO CURRENT PROJ ')
     // tslint:disable-next-line:no-debugger
     // debugger
     this.auth.project_bs.subscribe((project) => {

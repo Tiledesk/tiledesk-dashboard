@@ -69,12 +69,14 @@ export class AuthGuard implements CanActivate {
 
 
     /**
-     * NEW: initialize the new project when the id of the project get from url does not match with the current project id
-     */
-    this.getCurrentProject();
+     * !!! having made a change of logic getCurrentProject() is no more used
+     * NEW: initialize the new project when the id of the project get from url does not match with the current project id  */
+    // this.getCurrentProject();
     this.getProjectIdFromUrl();
 
   }
+
+
 
   // canDeactivate(
   //   component: RequestsMsgsComponent | HomeComponent,
@@ -117,17 +119,78 @@ export class AuthGuard implements CanActivate {
         console.log('!! AUTH GUARD - CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id);
 
         /**
+         * !!! NO MORE USED checkIf_NavPrjctIdMatchesCurrentPrjctId()
          * *** CHECK IF THE PROJECT ID GET FROM THE CURRENT URL IS THE SAME OF THE CURRENT PROJECT ***
          * THE ID OF THE CURRENT PROJECT MAY BE DIFFERENT FROM THE ID OF THE PROJECT RETURNS FROM
          * THE URL (the navigation project id) FOR EXAMPLE IN CASE THE USER ACCESSES A PAGE OF THE
          * DASHBOARD FROM A LINK PRESENT IN THE EMAIL OF A REQUEST OR IN THE EMAIL OF INVITATION
-         * TO A NEW PROJECT
-         */
-        this.checkIf_NavPrjctIdMatchesCurrentPrjctId();
+         * TO A NEW PROJECT  */
+        // this.checkIf_NavPrjctIdMatchesCurrentPrjctId();
+
+        /**
+         * WITH THE PROJECT ID GOT FROM URL RUN A CHECK FOR PROJECT NAME
+         * IF THE PROJECT NAME IS NULL MEANS THAT THE USER IS ACCESSING A PAGE OF A NEW
+         * PROJECT WITHOUT BEING PASSED FROM THE LIST OF PROJECTS (FOR EXAMPLE AFTER HAVING
+         * CLICKED ON THE LINK IN THE INVITATION EMAIL TO PARTICIPATE IN A PROJECT)
+         * IN THIS CASE, A CALL IS DONE TO OBTAIN THE NAME OF THE PROJECT AND AFTER THE ID
+         * AND NAME OF THE PROJECT ARE SAVED IN THE LOCAL STORAGE AND PASSES TO THE SERVICE THAT PUBLISHES */
+        if (this.nav_project_id) {
+          this.checkStoredProject(this.nav_project_id)
+        }
       }
     });
   }
 
+  checkStoredProject(navigationProjectId) {
+    const project_name = (localStorage.getItem(navigationProjectId));
+    console.log('!! »»»»»» AUTH GUARD - PROJECT NAME GET FROM STORAGE ', project_name);
+    if (project_name === null) {
+      console.log('!! »»»»»» AUTH GUARD -  PROJECT NAME IS NULL')
+
+      this.getProjectById();
+
+    }
+  }
+
+  getProjectById() {
+    this.projectService.getProjectById(this.nav_project_id).subscribe((prjct: any) => {
+
+      if (prjct) {
+        // console.log('!!!!!! AUTH GUARD - N.P.I DOES NOT MATCH C.P.I - PROJECT GOT BY THE NAV PROJECT ID (N.P.I): ', project);
+
+        this.nav_project_name = prjct.name;
+        console.log('!!!!!! AUTH GUARD - PROJECT NAME GOT BY THE NAV PROJECT ID (N.P.I): ', this.nav_project_name);
+        // tslint:disable-next-line:max-line-length
+        // this.notify.showNotificationChangeProject(`You have been redirected to the project <span style="color:#ffffff; display: inline-block; max-width: 100%;"> ${this.nav_project_name} </span>`, 0, 'info');
+
+        const project: Project = {
+          _id: this.nav_project_id,
+          name: this.nav_project_name,
+        }
+        console.log('!!!!!!! AUTH GUARD - PROJECT THAT IS PUBLISHED and SAVED IN THE STORAGE: ', project);
+        // this.project_bs.next(project);
+
+        // SET THE ID and the NAME OF THE PROJECT IN THE LOCAL STORAGE.
+        localStorage.setItem(this.nav_project_id, this.nav_project_name);
+
+        // PROJECT ID and NAME ARE SENT TO THE AUTH SERVICE THAT PUBLISHES THEM
+        this.auth.projectSelected(project);
+
+        // GET AND SAVE ALL USERS OF CURRENT PROJECT IN LOCAL STORAGE
+        this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
+
+      }
+
+    }, (error) => {
+      console.log('!!!!!! AUTH GUARD - GET PROJECT BY ID - ERROR ', error);
+    }, () => {
+      console.log('!!!!!! AUTH GUARD - GET PROJECT BY ID - COMPLETE ');
+
+      // this.resetCurrentProjectAndInizializeNewProject();
+    });
+  }
+
+  // !!! NO MORE USED
   checkIf_NavPrjctIdMatchesCurrentPrjctId() {
     if (this.nav_project_id && this.current_project_id) {
       // this.allow_navigation = true;
@@ -157,27 +220,7 @@ export class AuthGuard implements CanActivate {
     }
   }
 
-  getProjectById() {
-    this.projectService.getProjectById(this.nav_project_id).subscribe((project: any) => {
-
-      if (project) {
-        // console.log('!!!!!! AUTH GUARD - N.P.I DOES NOT MATCH C.P.I - PROJECT GOT BY THE NAV PROJECT ID (N.P.I): ', project);
-
-        this.nav_project_name = project.name;
-        console.log('!!!!!! AUTH GUARD - PROJECT NAME GOT BY THE NAV PROJECT ID (N.P.I): ', this.nav_project_name);
-        // tslint:disable-next-line:max-line-length
-        this.notify.showNotificationChangeProject(`You have been redirected to the project <span style="color:#ffffff; display: inline-block; max-width: 100%;"> ${this.nav_project_name} </span>`, 0, 'info');
-      }
-
-    }, (error) => {
-      console.log('!!!!!! AUTH GUARD - GET PROJECT BY ID - ERROR ', error);
-    }, () => {
-      console.log('!!!!!! AUTH GUARD - GET PROJECT BY ID - COMPLETE ');
-
-      this.resetCurrentProjectAndInizializeNewProject();
-    });
-  }
-
+  // !!! NO MORE USED
   resetCurrentProjectAndInizializeNewProject() {
     this.resetProject();
 
@@ -204,7 +247,7 @@ export class AuthGuard implements CanActivate {
     }
   }
 
-
+  // !!! NO MORE USED
   resetProject() {
     // tslint:disable-next-line:no-debugger
     // debugger

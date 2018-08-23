@@ -86,7 +86,7 @@ export class FaqEditAddComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.id_faq_kb = params.faqkbid;
       this.id_faq = params.faqid;
-      // console.log(params);
+      console.log('!! FAQ-EDIT-ADD PARAMS', params);
       console.log('FAQ-KB ID ', this.id_faq_kb);
       console.log('FAQ ID ', this.id_faq);
     });

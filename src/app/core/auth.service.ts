@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 
 import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -78,6 +78,7 @@ export class AuthService {
     private router: Router,
     private notify: NotifyService,
     private usersLocalDbService: UsersLocalDbService,
+    private route: ActivatedRoute
     // private projectService: ProjectService
     // private projectService: ProjectService,
   ) {
@@ -100,15 +101,24 @@ export class AuthService {
     // this.getProjectFromLocalStorage();
 
     this.getAndPublish_NavProjectIdAndProjectName();
+
+    this.getParamsProjectId();
+  }
+
+  getParamsProjectId() {
+    this.route.params.subscribe((params) => {
+      console.log('!!! AUTH SETVICE - »»» TEST »»»- GET PROJECT ID ', params)
+    })
   }
 
   /**
    * // REPLACE getProjectFromLocalStorage()
-   * FROM THE PROJECT ID, GOT FROM THE URL GOT THE PROJECT NAME FROM THE LOCAL STORAGE,
+   * GOT THE PROJECT ID FROM THE URL, AND THEN (WITH PROJECT ID) THE NAME OF THE PROJECT FROM LOCAL STORAGE - (^NOTE),
    * THEN PROJECT ID AND PROJECT NAME THAT ARE PUBLISHED
-   * **** THIS RESOLVE THE BUG: WHEN A PAGE IS RELOADED THE PROJECT ID AND THE PROJECT NAME RETURNED FROM SUBDCRIPTION
-   * TO project_bs ARE NULL
-   * *** NOTE: THE ITEMS IN THE STORAGE ARE SETTED IN PROJECT-COMP AND IN AUTH-GUARD (WHEN THERE IS A CHANGE PROJECT 'ON THE FLY')
+   * **** THIS RESOLVE THE BUG: WHEN A PAGE IS RELOADED (BY HAND OR BY ACCESSING THE DASHBOARD BY LINK)
+   *  THE PROJECT ID AND THE PROJECT NAME RETURNED FROM SUBDCRIPTION TO project_bs ARE NULL
+   * *** ^NOTE: THE ITEMS THE PROJECT ID AND THE PROJECT NAME IN THE STORAGE ARE SETTED IN PROJECT-COMP
+   * A SIMILAR 'WORKFLOW' IS PERFORMED IN THE AUTH.GUARD IN CASE, AFTER A CHECK FOR ID PROJECT IN THE STORAGE, THE PROJECT NAME IS NULL
    */
   getAndPublish_NavProjectIdAndProjectName() {
 
@@ -128,14 +138,20 @@ export class AuthService {
         if (nav_project_id) {
 
           const project_name = (localStorage.getItem(nav_project_id));
+
           console.log('!! »»»»» AUTH SERV - PROJECT NAME GET FROM STORAGE: ', project_name);
 
-              const project: Project = {
-                _id: nav_project_id,
-                name: project_name,
-              }
-              console.log('!! »»»»» AUTH SERV - PROJECT THAT IS PUBLISHED: ',  project);
-              this.project_bs.next(project);
+          const project: Project = {
+            _id: nav_project_id,
+            name: project_name,
+          }
+          console.log('!! »»»»» AUTH SERV - PROJECT THAT IS PUBLISHED: ', project);
+          this.project_bs.next(project);
+
+          // SE NN C'è IL PROJECT NAME COMUNQUE PUBBLICO PERCHè CON L'ID DEL PROGETTO VENGONO EFFETTUATE DIVERSE CALLBACK
+          if (project_name === null) {
+            console.log('!! »»»»» AUTH SERV - PROJECT NAME IS NULL')
+          }
         }
       }
     });

@@ -91,18 +91,19 @@ export class RequestsService {
 
     this.getCurrentProject();
 
-    this.getMyDepts();
+    // !! NO MORE USED
+    // this.getMyDepts();
   }
 
   getCurrentProject() {
     // IF EXIST A PROJECT UNSUSCRIBE query.onSnapshot AND RESET REQUEST LIST
     this.auth.project_bs.subscribe((project) => {
-      console.log('REQUEST SERVICE: SUBSCRIBE TO THE PROJECT PUBLISHED BY AUTH SERVICE ', project)
+      console.log('!!! REQUEST SERVICE: SUBSCRIBE TO THE PROJECT PUBLISHED BY AUTH SERVICE ', project)
       // // tslint:disable-next-line:no-debugger
       // debugger
       if (project) {
         // console.log('REQ SERV PROJECT ', project)
-        this.MY_DEPTS_BASE_URL = this.BASE_URL + project._id + '/departments/mydepartments'
+        // this.MY_DEPTS_BASE_URL = this.BASE_URL + project._id + '/departments/mydepartments'
 
         if (this.unsubscribe) {
           this.unsubscribe();
@@ -121,7 +122,7 @@ export class RequestsService {
         this.project = project;
       }
 
-      console.log('00 -> REQUEST SERVICE project from AUTH service subscription  ', project)
+      // console.log('00 -> REQUEST SERVICE project from AUTH service subscription ', project)
     });
   }
 
@@ -202,13 +203,11 @@ export class RequestsService {
 
         // this.startRequestsQuery();
       }
-    },
-      (error) => {
-        console.log('REQUESTS SERV - MY DEPTS ', error);
-      },
-      () => {
-        console.log('REQUESTS SERV - MY DEPTS * COMPLETE *');
-      });
+    }, (error) => {
+      console.log('REQUESTS SERV - MY DEPTS ', error);
+    }, () => {
+      console.log('REQUESTS SERV - MY DEPTS * COMPLETE *');
+    });
   }
 
   startRequestsQuery() {
@@ -225,13 +224,11 @@ export class RequestsService {
       });
       // PUBLISH THE REQUESTS LIST (ORDERED AND WITH THE CHANGES MANAGED BY addOrUpdateRequestsList)
       this.requestsList_bs.next(this.requestList);
-    },
-      error => {
-        console.log('GET REQUEST - ERROR ', error)
-      },
-      () => {
-        console.log('GET REQUEST * COMPLETE')
-      });
+    }, error => {
+      console.log('GET REQUEST - ERROR ', error)
+    }, () => {
+      console.log('GET REQUEST * COMPLETE')
+    });
   }
 
   addOrUpdateRequestsList(r: Request) {
@@ -241,7 +238,7 @@ export class RequestsService {
     // THE CURRENT USER ID WITH THE 'USER ID' CONTAINED IN THE ARRAY 'AGENTS' (NESTED IN THE 'REQUEST' OBJECT)
     // RETURNS TRUE OR FALSE
     // || !r.hasAgent(this.currentUserID)
-    if (r === null || r === undefined || !r.hasAgent(this.currentUserID)) {
+    if (r === null || r === undefined) {
       console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID))
       return;
     }
@@ -424,10 +421,10 @@ export class RequestsService {
 
     this.requestsCollection = this.afs.collection('conversations',
       (ref) => ref
-      .where('support_status', '>=', 1000)
-      .where('projectid', '==', this.project._id)
-      .orderBy('support_status')
-      .orderBy('created_on', 'desc'));
+        .where('support_status', '>=', 1000)
+        .where('projectid', '==', this.project._id)
+        .orderBy('support_status')
+        .orderBy('created_on', 'desc'));
     // .orderBy('support_status', 'desc').orderBy('timestamp', 'desc')
 
     return this.requestsCollection.snapshotChanges().map((actions) => {
@@ -646,8 +643,8 @@ export class RequestsService {
     console.log('CLOUD FUNCT CLOSE SUPPORT GROUP URL ', url);
     return this.http
       .put(url, body, options)
-      // commented because the service not return nothing and if try to map the json obtain the error:
-      // ERROR  SyntaxError: Unexpected end of JSON
+    // commented because the service not return nothing and if try to map the json obtain the error:
+    // ERROR  SyntaxError: Unexpected end of JSON
     // .map((res) => res.json());
   }
 

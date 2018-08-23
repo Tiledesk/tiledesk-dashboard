@@ -48,6 +48,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 
         // private faqKbService: FaqKbService,
     ) {
+
+        console.log('!!! =========== HELLO APP.COMP (constructor) ===========')
         translate.setDefaultLang('en');
 
         const browserLang = this.translate.getBrowserLang();
@@ -68,7 +70,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-        console.log(' ====== >>> APP COMP <<< ====== ')
+        console.log(' ====== >>> HELLO APP.COMP (ngOnInit) <<< ====== ')
 
         // NEW (SEE ALSO )
         const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
