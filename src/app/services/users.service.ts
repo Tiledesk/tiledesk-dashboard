@@ -15,6 +15,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as firebase from 'firebase/app';
 
 import { UsersLocalDbService } from '../services/users-local-db.service';
+import { Router } from '@angular/router';
 
 interface NewUser {
   displayName: string;
@@ -67,7 +68,8 @@ export class UsersService {
     http: Http,
     private afs: AngularFirestore,
     private auth: AuthService,
-    private usersLocalDbService: UsersLocalDbService
+    private usersLocalDbService: UsersLocalDbService,
+    private router: Router
   ) {
     // this.usersCollection = this.afs.collection('users', (ref) => ref.orderBy('time', 'desc').limit(5));
     // this.searchUserCollection = this.afs.collection('users', (ref) => ref.where('displayName', '>=', 'B'));
@@ -374,11 +376,29 @@ export class UsersService {
   }
 
   // ======================  PUBLISH PROJECT-USER ROLE ======================
-  // NOTE: THE projectUser_role IS PASSED FROM HOME.COMPONENT
+  // NOTE: THE projectUser_role IS PASSED FROM HOME.COMPONENT AND FROM SIDEBAR
   public user_role(projectUser_role: string) {
-    console.log('USER SERVICE - USER ROLE ', projectUser_role);
+    console.log('!!! »»» USER SERVICE PUBLISH THE USER-ROLE ', projectUser_role);
     this.project_user_role_bs.next(projectUser_role);
   }
+
+  // checkRole() {
+  //   this.project_user_role_bs.subscribe((user_role) => {
+  //     if (user_role) {
+  //       if (user_role === 'agent' || user_role === undefined) {
+  //         console.log('»> »> !!! »»» USERS SERV - CHECK ROLE (FROM SUBSCRIPTION) »»» ', user_role);
+
+  //         return true
+  //         // this.router.navigate(['/unauthorized']);
+  //       } else {
+  //         console.log('»> »> !!! »»» USERS SERV - CHECK ROLE (GOT SUBSCRIPTION) »»» ', user_role);
+
+  //         return false
+  //       }
+  //     }
+  //   })
+  // }
+
 
 
   /**

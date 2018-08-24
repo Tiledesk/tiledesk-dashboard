@@ -30,7 +30,7 @@ export class UsersLocalDbService {
 
   getUserRoleFromStorage() {
     const user_role = localStorage.getItem('role');
-    console.log('HEY USER ROLE !!! ', user_role)
+    console.log('HEY - GET USER ROLE FROM STORAGE !!! ', user_role)
     return user_role
   }
 

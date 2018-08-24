@@ -80,8 +80,8 @@ export class AuthService {
     private notify: NotifyService,
     private usersLocalDbService: UsersLocalDbService,
     private route: ActivatedRoute
-    // private projectService: ProjectService
-    // private projectService: ProjectService,
+
+
   ) {
     this.http = http;
     console.log('====== AUTH SERVICE !!! ====== ')
@@ -341,7 +341,6 @@ export class AuthService {
         // Handle error
         console.log('idToken.', error);
       });
-
 
   }
 
@@ -608,16 +607,19 @@ export class AuthService {
 
 
   checkRole() {
-    this._user_role = this.usersLocalDbService.getUserRoleFromStorage();
+    // setTimeout(() => {
+    // this._user_role = this.usersLocalDbService.getUserRoleFromStorage();
+    // this._user_role = 'agent';
 
-    if (this._user_role) {
-      if (this._user_role === 'agent' || this._user_role === undefined) {
-        console.log('AUTH SERV - CHECK ROLE ', this._user_role)
-        this.router.navigate(['/unauthorized']);
-      } else {
-        console.log('AUTH SERV - CHECK ROLE ', this._user_role)
-      }
-    }
+    // if (this._user_role) {
+    //   if (this._user_role === 'agent' || this._user_role === undefined) {
+    //     console.log('!!! »»» AUTH SERV - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role)
+    //     this.router.navigate(['/unauthorized']);
+    //   } else {
+    //     console.log('!!! »»» AUTH SERV - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role)
+    //   }
+    // }
+    // }, 50);
   }
 
   // Sets user data to firestore after succesful login - !!! NO MORE USED

@@ -61,7 +61,6 @@ export class UsersComponent implements OnInit {
   }
 
   getProjectUserRole() {
-
     this.usersService.project_user_role_bs.subscribe((user_role) => {
       this.USER_ROLE = user_role;
       console.log('USERS-COMP - PROJECT USER ROLE: ', this.USER_ROLE);

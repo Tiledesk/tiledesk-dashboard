@@ -37,6 +37,9 @@ export class AuthGuard implements CanActivate {
   nav_project_name: string;
 
   allow_navigation = true;
+  unauthorizedPage: boolean;
+
+  USER_ROLE: string;
 
   constructor(
     private auth: AuthService,
@@ -60,7 +63,6 @@ export class AuthGuard implements CanActivate {
     this.detectSignUpRoute();
     this.detectResetPswRoute();
     this.canActivate();
-
 
 
     // this.router.events.pairwise().subscribe((event) => {
@@ -260,7 +262,7 @@ export class AuthGuard implements CanActivate {
     // this.router.events.subscribe((val) => {
     if (this.location.path() !== '') {
       this.route = this.location.path();
-      // console.log('AUTH GUARD »> »> ', this.route);
+      // console.log('»> »> AUTH GUARD »> »> ', this.route);
       if (this.route.indexOf('/verify') !== -1) {
         // this.router.navigate([`${this.route}`]);
         this.is_verify_email_page = true;
@@ -272,14 +274,13 @@ export class AuthGuard implements CanActivate {
 
       }
     }
-
     // });
   }
 
   detectSignUpRoute() {
     if (this.location.path() !== '') {
       this.route = this.location.path();
-      // console.log('AUTH GUARD »> »> ', this.route);
+      // console.log('»> »> AUTH GUARD »> »> ', this.route);
       if (this.route.indexOf('/signup') !== -1) {
         // this.router.navigate([`${this.route}`]);
         this.is_signup_page = true;
@@ -296,7 +297,7 @@ export class AuthGuard implements CanActivate {
   detectResetPswRoute() {
     if (this.location.path() !== '') {
       this.route = this.location.path();
-      // console.log('AUTH GUARD »> »> ', this.route);
+      // console.log('»> »> AUTH GUARD »> »> ', this.route);
       if (this.route.indexOf('/resetpassword') !== -1) {
         // this.router.navigate([`${this.route}`]);
         this.is_reset_psw_page = true;
@@ -328,9 +329,6 @@ export class AuthGuard implements CanActivate {
     // }
   }
 
-
-
-
   // canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
 
   //   console.log('CAN ACTIVATE (auth.guard.ts) ', firebase.auth().currentUser);
@@ -358,8 +356,6 @@ export class AuthGuard implements CanActivate {
   //   }
   //   return false;
   // }
-
-
 
 
 }

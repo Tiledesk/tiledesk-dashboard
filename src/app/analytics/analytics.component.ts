@@ -2,6 +2,8 @@
 import { Component, OnInit } from '@angular/core';
 import * as Chartist from 'chartist';
 import { AuthService } from '../core/auth.service';
+import { UsersService } from '../services/users.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-analytics',
@@ -11,10 +13,28 @@ import { AuthService } from '../core/auth.service';
 export class AnalyticsComponent implements OnInit {
 
   constructor(
-    private auth: AuthService
+    private auth: AuthService,
+    private usersService: UsersService,
+    private router: Router
+
   ) {
     this.auth.checkRole();
+    // this.checkRole()
   }
+
+  // checkRole() {
+  //   this.usersService.project_user_role_bs.subscribe((user_role) => {
+  //     if (user_role) {
+  //       if (user_role === 'agent' || user_role === undefined) {
+  //         console.log('»> »> !!! »»» ANALYTICS COMP - CHECK ROLE (FROM SUBSCRIPTION) »»» ', user_role);
+          
+  //         this.router.navigate(['project/5b3fa93a6f0537d8b01968f7/home']);
+  //       } else {
+  //         console.log('»> »> !!! »»» ANALYTICS COMP - CHECK ROLE (GOT SUBSCRIPTION) »»» ', user_role);
+  //       }
+  //     }
+  //   });
+  // }
 
   startAnimationForLineChart(chart) {
     let seq: any, delays: any, durations: any;

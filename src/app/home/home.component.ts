@@ -94,7 +94,7 @@ export class HomeComponent implements OnInit {
   getUserRole() {
     this.usersService.project_user_role_bs.subscribe((userRole) => {
 
-      console.log('!! HOME - SUBSCRIPTION TO USER ROLE ', userRole)
+      console.log('!! »»» HOME - SUBSCRIPTION TO USER ROLE »»» ', userRole)
       // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
       this.USER_ROLE = userRole;
     })
@@ -187,13 +187,15 @@ export class HomeComponent implements OnInit {
           this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available);
         }
         if (projectUser[0].role !== undefined) {
-          console.log('!!! H CURRENT USER ROLE IN THIS PROJECT ', projectUser[0].role);
+          console.log('!!! »»» HOME GET THE USER ROLE FOR THE PROJECT »»', this.projectId, '»»» ', projectUser[0].role);
+
+          // SEND THE ROLE TO USER SERVICE THAT PUBLISH
           this.usersService.user_role(projectUser[0].role);
 
           // save the user role in storage - then the value is get by auth.service:
           // the user with agent role can not access to the pages under the settings sub-menu
           // this.auth.user_role(projectUser[0].role);
-          this.usersLocalDbService.saveUserRoleInStorage(projectUser[0].role);
+          // this.usersLocalDbService.saveUserRoleInStorage(projectUser[0].role);
 
           // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
           this.USER_ROLE = projectUser[0].role;

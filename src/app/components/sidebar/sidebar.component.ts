@@ -157,20 +157,23 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     getProjectUserRole() {
         this.usersService.project_user_role_bs.subscribe((user_role) => {
             this.USER_ROLE = user_role;
-            console.log('!!! SIDEBAR - 1. PROJECT USER ROLE ', this.USER_ROLE);
+            console.log('!!! SIDEBAR - 1. SUBSCRIBE PROJECT_USER_ROLE_BS ', this.USER_ROLE);
             if (this.USER_ROLE) {
                 console.log('SIDEBAR - PROJECT USER ROLE ', this.USER_ROLE);
                 if (this.USER_ROLE === 'agent') {
                     this.SHOW_SETTINGS_SUBMENU = false;
                 }
-            } else {
-                // used when the page is refreshed
-                this.USER_ROLE = this.usersLocalDbService.getUserRoleFromStorage();
-                console.log('!!! SIDEBAR - 2. PROJECT USER ROLE ', this.USER_ROLE);
-                if (this.USER_ROLE === 'agent') {
-                    this.SHOW_SETTINGS_SUBMENU = false;
-                }
             }
+            //  else {
+            //     // used when the page is refreshed
+            //     // this.USER_ROLE = this.usersLocalDbService.getUserRoleFromStorage();
+
+            //     /*  IF USER_ROLE IS NULL FROM SUBSCRIPTION IS GOT FROM THE getProjectUser CALLBACK */
+            //     console.log('!!! SIDEBAR - 2. PROJECT_USER_ROLE_BS IS NULL GET USER ROLE FROM getProjectUser CALLBACK ', this.USER_ROLE);
+            //     if (this.USER_ROLE === 'agent') {
+            //         this.SHOW_SETTINGS_SUBMENU = false;
+            //     }
+            // }
         });
     }
 
@@ -304,13 +307,21 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
                 // ADDED 21 AGO
                 if (projectUser[0].role !== undefined) {
-                    console.log('!!! SB CURRENT USER ROLE IN THIS PROJECT ', projectUser[0].role);
+                    console.log('!!! »» SIDEBAR GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser[0].role);
+
+                    // ASSIGN THE projectUser[0].role VALUE TO USER_ROLE
+                    this.USER_ROLE = projectUser[0].role;
+
+                    // SEND THE ROLE TO USER SERVICE THAT PUBLISH
                     this.usersService.user_role(projectUser[0].role);
+
+
 
                     // save the user role in storage - then the value is get by auth.service:
                     // the user with agent role can not access to the pages under the settings sub-menu
                     // this.auth.user_role(projectUser[0].role);
-                    this.usersLocalDbService.saveUserRoleInStorage(projectUser[0].role);
+
+                    // this.usersLocalDbService.saveUserRoleInStorage(projectUser[0].role);
                 }
             } else {
                 // this could be the case in which the current user was deleted as a member of the current project
