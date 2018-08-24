@@ -34,8 +34,6 @@ export class GroupsComponent implements OnInit {
   id_group_to_delete: string;
   name_group_to_delete: string;
 
-
-
   constructor(
     private auth: AuthService,
     private groupsService: GroupService,
@@ -46,7 +44,7 @@ export class GroupsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.auth.checkRole();
+    // this.auth.checkRole();
     this.getCurrentProject();
     this.getGroupsByProjectId();
   }

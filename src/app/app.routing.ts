@@ -123,7 +123,7 @@ const routes: Routes = [
   { path: 'project/:projectid/user/edit/:projectuserid', component: UserEditAddComponent, canActivate: [AuthGuard] },
 
   // GROUPS
-  { path: 'project/:projectid/groups', component: GroupsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/groups', component: GroupsComponent, canActivate: [AuthGuard, AdminGuard] },
   // GROUP EDIT/ADD
   { path: 'project/:projectid/group/create', component: GroupEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/group/edit/:groupid', component: GroupEditAddComponent, canActivate: [AuthGuard] },
