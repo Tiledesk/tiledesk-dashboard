@@ -51,6 +51,7 @@ export class AuthService {
   SIGNIN_BASE_URL = environment.mongoDbConfig.SIGNIN_BASE_URL;
   FIREBASE_SIGNIN_BASE_URL = environment.mongoDbConfig.FIREBASE_SIGNIN_BASE_URL;
   VERIFY_EMAIL_BASE_URL = environment.mongoDbConfig.VERIFY_EMAIL_BASE_URL;
+  CLOUDFUNCTION_CREATE_CONTACT_URL = environment.cloudFunctions.cloud_func_create_contact_url;
   // MONGODB_PEOPLE_BASE_URL = environment.mongoDbConfig.MONGODB_PEOPLE_BASE_URL;
 
   // TOKEN = environment.mongoDbConfig.TOKEN;
@@ -326,7 +327,8 @@ export class AuthService {
         headers.append('Authorization', 'Bearer ' + token);
 
         const options = new RequestOptions({ headers });
-        const url = 'https://us-central1-chat-v2-dev.cloudfunctions.net/api/tilechat/contacts';
+        // const url = 'https://us-central1-chat-v2-dev.cloudfunctions.net/api/tilechat/contacts';
+        const url = this.CLOUDFUNCTION_CREATE_CONTACT_URL
         const body = { 'firstname': firstname, 'lastname': lastname, 'email': email };
 
         self.http
