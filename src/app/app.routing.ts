@@ -13,6 +13,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { UpgradeComponent } from './upgrade/upgrade.component';
 
 import { AuthGuard } from './core/auth.guard';
+import { AdminGuard } from './core/admin.guard';
 import { CoreModule } from './core/core.module';
 
 import { UserLoginComponent } from './ui/user-login/user-login.component';
@@ -142,7 +143,7 @@ const routes: Routes = [
   // FAQKB (i.e. BOT)
   /* path /faqkb commented and duplicated RENAMED IN /bots */
   // { path: 'project/:projectid/faqkb', component: FaqKbComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/bots', component: FaqKbComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/bots', component: FaqKbComponent, canActivate: [AuthGuard, AdminGuard] },
   { path: 'project/:projectid/createfaqkb', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/editfaqkb/:faqkbid', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },
@@ -160,11 +161,11 @@ const routes: Routes = [
   // TEST-FAQ PAGE
   { path: 'project/:projectid/faq/test/:remoteFaqKbKey', component: FaqTestComponent, canActivate: [AuthGuard] },
 
-  { path: 'project/:projectid/bots', component: BotsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/bots', component: BotsComponent, canActivate: [AuthGuard, AdminGuard] },
   { path: 'project/:projectid/createbot', component: BotEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/editbot/:botid', component: BotEditAddComponent, canActivate: [AuthGuard] },
 
-  { path: 'project/:projectid/analytics', component: AnalyticsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/analytics', component: AnalyticsComponent, canActivate: [AuthGuard, AdminGuard] },
 
   { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
