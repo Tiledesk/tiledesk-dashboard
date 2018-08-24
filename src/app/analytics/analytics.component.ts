@@ -4,6 +4,7 @@ import * as Chartist from 'chartist';
 import { AuthService } from '../core/auth.service';
 import { UsersService } from '../services/users.service';
 import { Router } from '@angular/router';
+import { AdminGuard } from '../core/admin.guard';
 
 @Component({
   selector: 'app-analytics',
@@ -15,10 +16,11 @@ export class AnalyticsComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private usersService: UsersService,
-    private router: Router
+    private router: Router,
+    private adminGuard: AdminGuard
 
   ) {
-    this.auth.checkRole();
+    this.adminGuard.checkRole();
     // this.checkRole()
   }
 
