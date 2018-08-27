@@ -238,7 +238,7 @@ export class AuthGuard implements CanActivate {
       console.log('!!!!!! AUTH GUARD - PROJECT SENT TO THE AUTH SERVICE ', project)
 
       // PROJECT ID and NAME ARE SETTED IN THE STORAGE
-      localStorage.setItem('project', JSON.stringify(project));
+      // localStorage.setItem('project', JSON.stringify(project));
 
       // GET AND SAVE ALL USERS OF CURRENT PROJECT IN LOCAL STORAGE
       this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
@@ -310,7 +310,7 @@ export class AuthGuard implements CanActivate {
   }
 
   canActivate() {
-    console.log('AlwaysAuthGuard');
+    console.log('»> »> !!! »»» AUTH GUARD - CAN ACTIVATE AlwaysAuthGuard');
 
     // tslint:disable-next-line:max-line-length
     if ((this.user) || (this.is_verify_email_page === true) || (this.is_signup_page === true) || (this.is_reset_psw_page === true)) {

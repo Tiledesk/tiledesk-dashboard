@@ -103,9 +103,10 @@ export class AuthService {
 
     this.getAndPublish_NavProjectIdAndProjectName();
 
-    this.getParamsProjectId();
+    // this.getParamsProjectId();
   }
 
+  // USED ONLY FOR A TEST
   getParamsProjectId() {
     this.route.params.subscribe((params) => {
       console.log('!!! AUTH SETVICE - »»» TEST »»»- GET PROJECT ID ', params)
@@ -118,11 +119,9 @@ export class AuthService {
    * THEN PROJECT ID AND PROJECT NAME THAT ARE PUBLISHED
    * **** THIS RESOLVE THE BUG: WHEN A PAGE IS RELOADED (BY HAND OR BY ACCESSING THE DASHBOARD BY LINK)
    *  THE PROJECT ID AND THE PROJECT NAME RETURNED FROM SUBDCRIPTION TO project_bs ARE NULL
-   * *** ^NOTE: THE ITEMS THE PROJECT ID AND THE PROJECT NAME IN THE STORAGE ARE SETTED IN PROJECT-COMP
-   * A SIMILAR 'WORKFLOW' IS PERFORMED IN THE AUTH.GUARD IN CASE, AFTER A CHECK FOR ID PROJECT IN THE STORAGE, THE PROJECT NAME IS NULL
-   */
+   * **** ^NOTE: THE ITEMS PROJECT ID AND PROJECT NAME IN THE STORAGE ARE SETTED IN PROJECT-COMP
+   * A SIMILAR 'WORKFLOW' IS PERFORMED IN THE AUTH.GUARD IN CASE, AFTER A CHECK FOR ID PROJECT IN THE STORAGE, THE PROJECT NAME IS NULL */
   getAndPublish_NavProjectIdAndProjectName() {
-
     this.router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
         // console.log('!! AUTH GUARD - EVENT ', e);
@@ -147,9 +146,12 @@ export class AuthService {
             name: project_name,
           }
           console.log('!! »»»»» AUTH SERV - PROJECT THAT IS PUBLISHED: ', project);
+          // SE NN C'è IL PROJECT NAME COMUNQUE PUBBLICO PERCHè CON L'ID DEL PROGETTO VENGONO EFFETTUATE DIVERSE CALLBACK
           this.project_bs.next(project);
 
-          // SE NN C'è IL PROJECT NAME COMUNQUE PUBBLICO PERCHè CON L'ID DEL PROGETTO VENGONO EFFETTUATE DIVERSE CALLBACK
+          // NOTA: AUTH GUARD ESEGUE UN CHECK DEL PROGETTO SALVATO NEL LOCAL STORAGE E SE IL PROJECT NAME è NULL DOPO AVER 'GET' IL
+          // PROGETTO PER nav_project_id SET THE ID and the NAME OF THE PROJECT IN THE LOCAL STORAGE and
+          // SENT THEM TO THE AUTH SERVICE THAT PUBLISHES
           if (project_name === null) {
             console.log('!! »»»»» AUTH SERV - PROJECT NAME IS NULL')
           }
@@ -522,10 +524,10 @@ export class AuthService {
 
 
 
-  // the project (name and id) IS PASSED FROM PROJECT COMPONENT WHEN THE USER SELECT A PROJECT
+  // RECEIVE THE the project (name and id) AND PUBLISHES
   projectSelected(project: Project) {
     // PUBLISH THE project
-    console.log('AUTH SERVICE: I PUBLISH THE PROJECT RECEIVED FROM PROJECT COMP ', project)
+    console.log('!!!AUTH SERVICE: I PUBLISH THE PROJECT RECEIVED FROM PROJECT COMP ', project)
     // tslint:disable-next-line:no-debugger
     // debugger
     this.project_bs.next(project);

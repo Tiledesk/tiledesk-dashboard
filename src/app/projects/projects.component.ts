@@ -80,13 +80,12 @@ export class ProjectsComponent implements OnInit {
     }
 
     this.auth.projectSelected(project)
-    console.log('PROJECT ', project)
+    console.log('!!! GO TO HOME PROJECT ', project)
 
     // SET THE project_id IN THE LOCAL STORAGE
     // WHEN THE PAGE IS RELOADED THE SIDEBAR GET THE PROJECT ID FROM THE LOCAL STORAGE
-    localStorage.setItem('project', JSON.stringify(project));
-
-
+    // !!! NO MORE USED - NOW THE ALL PROJECTS ARE SETTED IN THE STORAGE IN getProjects()
+    // localStorage.setItem('project', JSON.stringify(project));
   }
 
   // GO TO  PROJECT-EDIT-ADD COMPONENT
@@ -123,6 +122,7 @@ export class ProjectsComponent implements OnInit {
         // WHEN IS REFRESHED A PAGE THE AUTSERVICE USE THE NAVIGATION PROJECT ID TO GET FROM STORAGE THE NAME OF THE PROJECT
         // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
         this.projects.forEach(project => {
+          console.log('!!! SET PROJECT IN STORAGE')
           localStorage.setItem(project.id_project._id, project.id_project.name );
         });
       }
@@ -204,13 +204,14 @@ export class ProjectsComponent implements OnInit {
           name: project.name
         }
 
+        // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH
         this.auth.projectSelected(newproject)
-        console.log('CREATED PROJECT ', newproject)
+        console.log('!!! CREATED PROJECT ', newproject)
 
         this.id_project = newproject._id
         // SET THE project_id IN THE LOCAL STORAGE
         // WHEN THE PAGE IS RELOADED THE SIDEBAR GET THE PROJECT ID FROM THE LOCAL STORAGE
-        localStorage.setItem('project', JSON.stringify(newproject));
+        // localStorage.setItem('project', JSON.stringify(newproject));
 
         // this.display = 'none';
 

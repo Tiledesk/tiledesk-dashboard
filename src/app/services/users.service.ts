@@ -269,6 +269,28 @@ export class UsersService {
       .map((response) => response.json());
   }
 
+  /// ======================== GET PROJECT-USER ROLE BY CURRENT-PROJECT-ID AND CURRENT-USER-ID To PROMISE ===================== ///
+  // !! NOT USED  (to use with AdminGuard)
+  // public getUserRole(user_id: string, project_id: string): Promise<ProjectUser[]> {
+  //   const url = this.MONGODB_BASE_URL + user_id + '/' + project_id;
+
+  //   console.log('GET PROJECT USERS BY PROJECT-ID & CURRENT-USER-ID URL', url);
+  //   const headers = new Headers();
+  //   headers.append('Content-Type', 'application/json');
+  //   headers.append('Authorization', this.TOKEN);
+  //   // console.log('TOKEN TO COPY ', this.TOKEN)
+
+  //   return this.http
+  //     .get(url, { headers })
+  //     .toPromise()
+  //     .then(response => {
+  //       console.log('»> »> !!! »»» USER SERVICE - GET USER ROLE RESPONSE ', response.json());
+  //       return 'nicol';
+  //     })
+  //     .catch(err => err);
+  // }
+  // end To PROMISE
+
   /// ========================= GET PROJECT-USER BY ID (PROJECT USER DETAIL) ======================= ///
   public getProjectUsersById(projectuser_id: string): Observable<ProjectUser[]> {
     const url = this.MONGODB_BASE_URL + 'details/' + projectuser_id;
@@ -382,21 +404,25 @@ export class UsersService {
     this.project_user_role_bs.next(projectUser_role);
   }
 
+  /* used by admin.guard (for the moment not used) */
   // checkRole() {
+  //   let result: boolean
   //   this.project_user_role_bs.subscribe((user_role) => {
   //     if (user_role) {
-  //       if (user_role === 'agent' || user_role === undefined) {
+  //       if (user_role !== 'agent') {
   //         console.log('»> »> !!! »»» USERS SERV - CHECK ROLE (FROM SUBSCRIPTION) »»» ', user_role);
 
-  //         return true
+  //         result = true
   //         // this.router.navigate(['/unauthorized']);
-  //       } else {
+  //         // || user_role === undefined
+  //       } else if (user_role === 'agent' || user_role === undefined) {
   //         console.log('»> »> !!! »»» USERS SERV - CHECK ROLE (GOT SUBSCRIPTION) »»» ', user_role);
 
-  //         return false
+  //         result = false
   //       }
   //     }
   //   })
+  //   return result
   // }
 
 

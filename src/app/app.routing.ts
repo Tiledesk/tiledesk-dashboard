@@ -98,9 +98,9 @@ const routes: Routes = [
   // { path: 'login', component: UserLoginComponent },
   { path: 'login', component: SigninComponent },
   { path: 'signup', component: SignupComponent },
-  { path: 'unauthorized', component: UnauthorizedComponent },
   { path: 'verify/email/:user_id', component: VerifyEmailComponent },
-
+  
+  { path: 'project/:projectid/unauthorized', component: UnauthorizedComponent },
 
   // firestore user CRUD
   // { path: 'users', component: UsersListComponent, canActivate: [AuthGuard]},
@@ -123,7 +123,7 @@ const routes: Routes = [
   { path: 'project/:projectid/user/edit/:projectuserid', component: UserEditAddComponent, canActivate: [AuthGuard] },
 
   // GROUPS
-  { path: 'project/:projectid/groups', component: GroupsComponent, canActivate: [AuthGuard, AdminGuard] },
+  { path: 'project/:projectid/groups', component: GroupsComponent, canActivate: [AuthGuard] },
   // GROUP EDIT/ADD
   { path: 'project/:projectid/group/create', component: GroupEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/group/edit/:groupid', component: GroupEditAddComponent, canActivate: [AuthGuard] },
@@ -143,7 +143,7 @@ const routes: Routes = [
   // FAQKB (i.e. BOT)
   /* path /faqkb commented and duplicated RENAMED IN /bots */
   // { path: 'project/:projectid/faqkb', component: FaqKbComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/bots', component: FaqKbComponent, canActivate: [AuthGuard, AdminGuard] },
+  { path: 'project/:projectid/bots', component: FaqKbComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/createfaqkb', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/editfaqkb/:faqkbid', component: FaqKbEditAddComponent, canActivate: [AuthGuard] },
@@ -161,11 +161,11 @@ const routes: Routes = [
   // TEST-FAQ PAGE
   { path: 'project/:projectid/faq/test/:remoteFaqKbKey', component: FaqTestComponent, canActivate: [AuthGuard] },
 
-  { path: 'project/:projectid/bots', component: BotsComponent, canActivate: [AuthGuard, AdminGuard] },
+  { path: 'project/:projectid/bots', component: BotsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/createbot', component: BotEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/editbot/:botid', component: BotEditAddComponent, canActivate: [AuthGuard] },
 
-  { path: 'project/:projectid/analytics', component: AnalyticsComponent, canActivate: [AuthGuard, AdminGuard] },
+  { path: 'project/:projectid/analytics', component: AnalyticsComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
@@ -206,6 +206,6 @@ const routes: Routes = [
     RouterModule.forRoot(routes)
   ],
   exports: [RouterModule],
-  providers: [AuthGuard],
+  providers: [AuthGuard, AdminGuard]
 })
 export class AppRoutingModule { }
