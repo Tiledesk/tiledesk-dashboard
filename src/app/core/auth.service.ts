@@ -115,6 +115,7 @@ export class AuthService {
 
   /**
    * // REPLACE getProjectFromLocalStorage()
+   * IF THE PROJECT RETURNED FROM THE project_bs SUBSCRIPTION IS NULL 
    * GOT THE PROJECT ID FROM THE URL, AND THEN (WITH PROJECT ID) THE NAME OF THE PROJECT FROM LOCAL STORAGE - (^NOTE),
    * THEN PROJECT ID AND PROJECT NAME THAT ARE PUBLISHED
    * **** THIS RESOLVE THE BUG: WHEN A PAGE IS RELOADED (BY HAND OR BY ACCESSING THE DASHBOARD BY LINK)
@@ -122,42 +123,56 @@ export class AuthService {
    * **** ^NOTE: THE ITEMS PROJECT ID AND PROJECT NAME IN THE STORAGE ARE SETTED IN PROJECT-COMP
    * A SIMILAR 'WORKFLOW' IS PERFORMED IN THE AUTH.GUARD IN CASE, AFTER A CHECK FOR ID PROJECT IN THE STORAGE, THE PROJECT NAME IS NULL */
   getAndPublish_NavProjectIdAndProjectName() {
-    this.router.events.subscribe((e) => {
-      if (e instanceof NavigationEnd) {
-        // console.log('!! AUTH GUARD - EVENT ', e);
-        const current_url = e.url
-        console.log('!! »»»»» AUTH SERV - CURRENT URL ', current_url);
+    this.project_bs.subscribe((prjct) => {
 
-        const url_segments = current_url.split('/');
-        console.log('!! »»»»» AUTH SERV - CURRENT URL SEGMENTS ', url_segments);
+      console.log('!! »»»»» AUTH SERV - PROJECT FROM SUBSCRIP', prjct);
+
+      if (prjct === null) {
+
+        // 
+        this.router.events.subscribe((e) => {
+          if (e instanceof NavigationEnd) {
+            // console.log('!! AUTH GUARD - EVENT ', e);
+            const current_url = e.url
+            console.log('!! »»»»» AUTH SERV - CURRENT URL ', current_url);
+
+            const url_segments = current_url.split('/');
+            console.log('!! »»»»» AUTH SERV - CURRENT URL SEGMENTS ', url_segments);
 
 
-        const nav_project_id = url_segments[2];
-        console.log('!! »»»»» AUTH SERV - CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', nav_project_id);
+            const nav_project_id = url_segments[2];
+            console.log('!! »»»»» AUTH SERV - CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', nav_project_id);
 
-        if (nav_project_id) {
+            if (nav_project_id) {
 
-          const project_name = (localStorage.getItem(nav_project_id));
+              const project_object = JSON.parse((localStorage.getItem(nav_project_id)));
+              console.log('!! »»»»» AUTH SERV - PROJECT FROM STORAGE', prjct);
+              const project_name = project_object['name'];
 
-          console.log('!! »»»»» AUTH SERV - PROJECT NAME GET FROM STORAGE: ', project_name);
+              console.log('!! »»»»» AUTH SERV - PROJECT NAME GET FROM STORAGE: ', project_name);
 
-          const project: Project = {
-            _id: nav_project_id,
-            name: project_name,
+              const project: Project = {
+                _id: nav_project_id,
+                name: project_name,
+              }
+              console.log('!! »»»»» AUTH SERV - PROJECT THAT IS PUBLISHED: ', project);
+              // SE NN C'è IL PROJECT NAME COMUNQUE PUBBLICO PERCHè CON L'ID DEL PROGETTO VENGONO EFFETTUATE DIVERSE CALLBACK
+
+              /**** ******* ******* ***** *** ** ** */
+              this.project_bs.next(project);
+
+              // NOTA: AUTH GUARD ESEGUE UN CHECK DEL PROGETTO SALVATO NEL LOCAL STORAGE E SE IL PROJECT NAME è NULL DOPO AVER 'GET' IL
+              // PROGETTO PER nav_project_id SET THE ID and the NAME OF THE PROJECT IN THE LOCAL STORAGE and
+              // SENT THEM TO THE AUTH SERVICE THAT PUBLISHES
+              if (project_name === null) {
+                console.log('!! »»»»» AUTH SERV - PROJECT NAME IS NULL')
+              }
+            }
           }
-          console.log('!! »»»»» AUTH SERV - PROJECT THAT IS PUBLISHED: ', project);
-          // SE NN C'è IL PROJECT NAME COMUNQUE PUBBLICO PERCHè CON L'ID DEL PROGETTO VENGONO EFFETTUATE DIVERSE CALLBACK
-          this.project_bs.next(project);
-
-          // NOTA: AUTH GUARD ESEGUE UN CHECK DEL PROGETTO SALVATO NEL LOCAL STORAGE E SE IL PROJECT NAME è NULL DOPO AVER 'GET' IL
-          // PROGETTO PER nav_project_id SET THE ID and the NAME OF THE PROJECT IN THE LOCAL STORAGE and
-          // SENT THEM TO THE AUTH SERVICE THAT PUBLISHES
-          if (project_name === null) {
-            console.log('!! »»»»» AUTH SERV - PROJECT NAME IS NULL')
-          }
-        }
+        });
       }
     });
+
   }
 
   // !!! NO MORE USED

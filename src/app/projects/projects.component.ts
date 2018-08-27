@@ -107,8 +107,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   /**
-   * GET PROJECTs (READ)
-   */
+   * GET PROJECTS AND SAVE IN THE STORAGE: PROJECT ID - PROJECT NAME - USE ROLE   */
   getProjects() {
     this.projectService.getMongDbProjects().subscribe((projects: any) => {
       console.log('!!! GET PROJECTS ', projects);
@@ -123,7 +122,13 @@ export class ProjectsComponent implements OnInit {
         // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
         this.projects.forEach(project => {
           console.log('!!! SET PROJECT IN STORAGE')
-          localStorage.setItem(project.id_project._id, project.id_project.name );
+
+          const prjct: Project = {
+            _id: project.id_project._id,
+            name: project.id_project.name,
+            role: project.role
+          }
+          localStorage.setItem(project.id_project._id,  JSON.stringify(prjct));
         });
       }
 
@@ -291,7 +296,6 @@ export class ProjectsComponent implements OnInit {
     this.logout();
     this.displayLogoutModal = 'none';
   }
-
 
   logout() {
     this.auth.showExpiredSessionPopup(false);
