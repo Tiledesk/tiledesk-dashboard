@@ -76,7 +76,7 @@ export class AnalyticsComponent implements OnInit {
     seq2 = 0;
   };
   ngOnInit() {
-    this.auth.checkRoleForCurrentProjectAndRedirect();
+    this.auth.checkRoleForCurrentProject();
 
     /* ----------==========    NUMBER OF REQUEST for DEPARTMENT ** PIE CHART ** ==========---------- */
 

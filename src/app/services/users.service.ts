@@ -16,6 +16,7 @@ import * as firebase from 'firebase/app';
 
 import { UsersLocalDbService } from '../services/users-local-db.service';
 import { Router } from '@angular/router';
+import { Project } from '../models/project-model';
 
 interface NewUser {
   displayName: string;
@@ -402,6 +403,7 @@ export class UsersService {
   public user_role(projectUser_role: string) {
     console.log('!!! »»» USER SERVICE PUBLISH THE USER-ROLE ', projectUser_role);
     this.project_user_role_bs.next(projectUser_role);
+
   }
 
   /* used by admin.guard (for the moment not used) */

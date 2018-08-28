@@ -142,11 +142,36 @@ export class AuthGuard implements CanActivate {
   checkStoredProject(navigationProjectId) {
     const storedProjectJson = localStorage.getItem(navigationProjectId);
     console.log('!! »»»»» AUTH GUARD - PROJECT JSON GET FROM STORAGE ', storedProjectJson);
+
+
     if (storedProjectJson === null) {
       console.log('!! »»»»» AUTH GUARD - PROJECT JSON IS NULL - RUN getProjectById() ')
-
       this.getProjectPublishAndSaveInStorage();
 
+    } else {
+      const projectObject = JSON.parse(storedProjectJson);
+      const projectNameStored = projectObject['name']
+      console.log('!! »»»»» AUTH GUARD - PROJECT NAME FROM STORAGE ', projectNameStored);
+
+      if (projectNameStored === undefined) {
+        console.log('!! »»»»» AUTH GUARD - PROJECT NAME IS UNDEFINED - RUN getProjectById() ')
+        // this.getProjectPublishAndSaveInStorage();
+      }
+
+      // const userRoleStored = projectObject['role']
+      // if ( )
+
+      this.usersService.project_user_role_bs.subscribe((user_role) => {
+        console.log('!! »»»»» AUTH GUARD - USER ROLE FROM SUBSCRIPTION ', user_role);
+        const userRoleStored = projectObject['role'];
+        console.log('!! »»»»» AUTH GUARD - USER ROLE FROM STORAGE ', userRoleStored);
+
+        if (userRoleStored !== user_role) {
+          console.log('!! »»»»» AUTH GUARD - USER ROLE STORED NOT MATCHES USER ROLE PUBLISHED  - RUN getProjectById() ')
+          // this.getProjectPublishAndSaveInStorage();
+
+        }
+      })
     }
   }
 
@@ -158,7 +183,6 @@ export class AuthGuard implements CanActivate {
       const prjct = prjcts.filter(p => p.id_project._id === this.nav_project_id);
 
       console.log('!! »»»»» AUTH GUARD - PROJECT OBJCT FILTERED FOR PROJECT ID ', prjct);
-
 
       if (prjct) {
         console.log('!! »»»»» AUTH GUARD - TEST --- QUI ENTRO');
@@ -186,7 +210,6 @@ export class AuthGuard implements CanActivate {
         // SET THE ID, the NAME OF THE PROJECT and THE USER ROLE IN THE LOCAL STORAGE.
         console.log('!! »»»»» AUTH GUARD - PROJECT THAT IS STORED', projectForStorage);
         localStorage.setItem(this.nav_project_id, JSON.stringify(projectForStorage));
-
 
         // GET AND SAVE ALL USERS OF CURRENT PROJECT IN LOCAL STORAGE
         this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();

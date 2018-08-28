@@ -195,7 +195,8 @@ export class AuthService {
                 console.log('!! »»» AUTH SERV - FOR THE PRJCT ID ', this.nav_project_id, ' THERE IS NOT STORED PRJCT-JSON - SEE AUTH GUARD')
                 // this.projectService.getProjectById(this.nav_project_id).subscribe((prjct: any) => {
 
-                //  public anyway to immediately make the project id available to subscribers
+                // public anyway to immediately make the project id available to subscribers
+                // the project name will be published by the auth.guard
                 const project: Project = {
                   _id: this.nav_project_id,
                 }
@@ -208,7 +209,7 @@ export class AuthService {
     });
   }
 
-  checkRoleForCurrentProjectAndRedirect() {
+  checkRoleForCurrentProject() {
     console.log('!! »»»»» AUTH SERV - CHECK ROLE »»»»» CALLING checkRoleForCurrentProjectAndRedirect');
     // this.router.events.subscribe((e) => {
     //   console.log('!! »»»»» AUTH SERV - CHECK ROLE »»»»» CALLING checkRoleForCurrentProjectAndRedirect');
@@ -234,12 +235,12 @@ export class AuthService {
 
       if (this._user_role) {
         if (this._user_role === 'agent' || this._user_role === undefined) {
-          console.log('!!! »»» AUTH SERV - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role);
+          console.log('!! »»» AUTH SERV - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role);
 
           this.router.navigate([`project/${this.nav_project_id}/unauthorized`]);
           // this.router.navigate(['/unauthorized']);
         } else {
-          console.log('!!! »»» AUTH SERV - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role)
+          console.log('!! »»» AUTH SERV - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role)
         }
       }
 

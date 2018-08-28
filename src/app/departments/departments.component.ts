@@ -52,7 +52,7 @@ export class DepartmentsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.auth.checkRole();
+    this.auth.checkRoleForCurrentProject();
     this.getCurrentProject();
 
     // this.getDepartments();
