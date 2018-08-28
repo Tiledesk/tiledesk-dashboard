@@ -87,7 +87,8 @@ export class FaqComponent implements OnInit {
   * TEST PAGE DISPLAY THE PREVIOUS RESULT OF RESEARCH.
   * WHEN THE USER RETURN IN THE EDIT BOT PAGE (THIS COMPONENT) THE RESEARCHED QUESTION IS RESETTED */
    clearSearchedQuestionStored() {
-    localStorage.setItem('searchedQuestion', '');
+    // localStorage.setItem('searchedQuestion', '');
+    localStorage.removeItem('searchedQuestion')
   }
 
   getCurrentProject() {
