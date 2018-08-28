@@ -144,10 +144,10 @@ export class AuthGuard implements CanActivate {
   }
 
   checkStoredProject(navigationProjectId) {
-    const project_name = (localStorage.getItem(navigationProjectId));
-    console.log('!! »»»»»» AUTH GUARD - PROJECT NAME GET FROM STORAGE ', project_name);
-    if (project_name === null) {
-      console.log('!! »»»»»» AUTH GUARD -  PROJECT NAME IS NULL')
+    const storedProjectJson = localStorage.getItem(navigationProjectId);
+    console.log('!! »»»»» AUTH GUARD - PROJECT JSON GET FROM STORAGE ', storedProjectJson);
+    if (storedProjectJson === null) {
+      console.log('!! »»»»» AUTH GUARD - PROJECT JSON IS NULL - RUN getProjectById() ')
 
       this.getProjectById();
 
@@ -161,7 +161,7 @@ export class AuthGuard implements CanActivate {
         // console.log('!!!!!! AUTH GUARD - N.P.I DOES NOT MATCH C.P.I - PROJECT GOT BY THE NAV PROJECT ID (N.P.I): ', project);
 
         this.nav_project_name = prjct.name;
-        console.log('!!!!!! AUTH GUARD - PROJECT NAME GOT BY THE NAV PROJECT ID (N.P.I): ', this.nav_project_name);
+        console.log('!! »»»»» AUTH GUARD - PROJECT NAME GOT BY THE NAV PROJECT ID (N.P.I): ', this.nav_project_name);
         // tslint:disable-next-line:max-line-length
         // this.notify.showNotificationChangeProject(`You have been redirected to the project <span style="color:#ffffff; display: inline-block; max-width: 100%;"> ${this.nav_project_name} </span>`, 0, 'info');
 
@@ -169,14 +169,19 @@ export class AuthGuard implements CanActivate {
           _id: this.nav_project_id,
           name: this.nav_project_name,
         }
-        console.log('!!!!!!! AUTH GUARD - PROJECT THAT IS PUBLISHED and SAVED IN THE STORAGE: ', project);
+        // PROJECT ID and NAME ARE SENT TO THE AUTH SERVICE THAT PUBLISHES
+        this.auth.projectSelected(project);
+        console.log('!! »»»»» AUTH GUARD - PROJECT THAT IS PUBLISHED ', project);
         // this.project_bs.next(project);
 
-        // SET THE ID and the NAME OF THE PROJECT IN THE LOCAL STORAGE.
-        localStorage.setItem(this.nav_project_id, this.nav_project_name);
+        const projectForStorage: Project = {
+          _id: this.nav_project_id,
+          name: this.nav_project_name,
+          role: prjct.role
+        }
+        // SET THE ID, the NAME OF THE PROJECT and THE USER ROLE IN THE LOCAL STORAGE.
+        localStorage.setItem(this.nav_project_id,  JSON.stringify(projectForStorage));
 
-        // PROJECT ID and NAME ARE SENT TO THE AUTH SERVICE THAT PUBLISHES THEM
-        this.auth.projectSelected(project);
 
         // GET AND SAVE ALL USERS OF CURRENT PROJECT IN LOCAL STORAGE
         this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();

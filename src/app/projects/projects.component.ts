@@ -55,7 +55,7 @@ export class ProjectsComponent implements OnInit {
     const navbar: HTMLElement = this.element.nativeElement;
     this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
 
-    this.getProjects();
+    this.getProjectsAndSaveInStorage();
     this.getLoggedUser();
   }
 
@@ -82,9 +82,9 @@ export class ProjectsComponent implements OnInit {
     this.auth.projectSelected(project)
     console.log('!!! GO TO HOME PROJECT ', project)
 
-    // SET THE project_id IN THE LOCAL STORAGE
-    // WHEN THE PAGE IS RELOADED THE SIDEBAR GET THE PROJECT ID FROM THE LOCAL STORAGE
-    // !!! NO MORE USED - NOW THE ALL PROJECTS ARE SETTED IN THE STORAGE IN getProjects()
+   /* !!! NO MORE USED - NOW THE ALL PROJECTS ARE SETTED IN THE STORAGE IN getProjectsAndSaveInStorage()
+    * SET THE project_id IN THE LOCAL STORAGE
+    * WHEN THE PAGE IS RELOADED THE SIDEBAR GET THE PROJECT ID FROM THE LOCAL STORAGE */
     // localStorage.setItem('project', JSON.stringify(project));
   }
 
@@ -108,7 +108,7 @@ export class ProjectsComponent implements OnInit {
 
   /**
    * GET PROJECTS AND SAVE IN THE STORAGE: PROJECT ID - PROJECT NAME - USE ROLE   */
-  getProjects() {
+  getProjectsAndSaveInStorage() {
     this.projectService.getMongDbProjects().subscribe((projects: any) => {
       console.log('!!! GET PROJECTS ', projects);
 
@@ -140,8 +140,6 @@ export class ProjectsComponent implements OnInit {
 
     });
   }
-
-
 
   /**
    * MODAL DELETE PROJECT
@@ -214,8 +212,10 @@ export class ProjectsComponent implements OnInit {
         console.log('!!! CREATED PROJECT ', newproject)
 
         this.id_project = newproject._id
-        // SET THE project_id IN THE LOCAL STORAGE
-        // WHEN THE PAGE IS RELOADED THE SIDEBAR GET THE PROJECT ID FROM THE LOCAL STORAGE
+
+       /* !!! NO MORE USED - NOW THE ALL PROJECTS ARE SETTED IN THE STORAGE IN getProjectsAndSaveInStorage()
+        * SET THE project_id IN THE LOCAL STORAGE
+        * WHEN THE PAGE IS RELOADED THE SIDEBAR GET THE PROJECT ID FROM THE LOCAL STORAGE */
         // localStorage.setItem('project', JSON.stringify(newproject));
 
         // this.display = 'none';

@@ -74,7 +74,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
         // NEW (SEE ALSO )
         const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-        console.log('APP COMP - MAIN PANEL ', _elemMainPanel)
+        // console.log('APP COMP - MAIN PANEL ', _elemMainPanel)
         _elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;');
 
         $.material.init();

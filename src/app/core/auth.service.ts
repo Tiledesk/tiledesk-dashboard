@@ -20,6 +20,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/toPromise';
 import { UsersLocalDbService } from '../services/users-local-db.service';
 
+
 // import { RequestsService } from '../services/requests.service';
 // interface CUser {
 //   uid: string;
@@ -80,8 +81,6 @@ export class AuthService {
     private notify: NotifyService,
     private usersLocalDbService: UsersLocalDbService,
     private route: ActivatedRoute
-
-
   ) {
     this.http = http;
     console.log('====== AUTH SERVICE !!! ====== ')
@@ -98,10 +97,10 @@ export class AuthService {
     // debugger
     this.checkCredentials();
 
-    /* !!! NO MORE USED - REPLACED BY getAndPublish_NavProjectIdAndProjectName() */
+    /* !!! NO MORE USED - REPLACED BY checkStoredProjectAndPublish() */
     // this.getProjectFromLocalStorage();
 
-    this.getAndPublish_NavProjectIdAndProjectName();
+    this.checkStoredProjectAndPublish();
 
     // this.getParamsProjectId();
   }
@@ -113,23 +112,33 @@ export class AuthService {
     })
   }
 
+
+  // RECEIVE THE the project (name and id) AND PUBLISHES
+  projectSelected(project: Project) {
+    // PUBLISH THE project
+    console.log('!!! AUTH SERVICE: I PUBLISH THE PROJECT RECEIVED FROM PROJECT COMP ', project)
+    // tslint:disable-next-line:no-debugger
+    // debugger
+    this.project_bs.next(project);
+  }
+
   /**
    * // REPLACE getProjectFromLocalStorage()
-   * IF THE PROJECT RETURNED FROM THE project_bs SUBSCRIPTION IS NULL 
+   * IF THE PROJECT RETURNED FROM THE project_bs SUBSCRIPTION IS NULL
    * GOT THE PROJECT ID FROM THE URL, AND THEN (WITH PROJECT ID) THE NAME OF THE PROJECT FROM LOCAL STORAGE - (^NOTE),
    * THEN PROJECT ID AND PROJECT NAME THAT ARE PUBLISHED
    * **** THIS RESOLVE THE BUG: WHEN A PAGE IS RELOADED (BY HAND OR BY ACCESSING THE DASHBOARD BY LINK)
    *  THE PROJECT ID AND THE PROJECT NAME RETURNED FROM SUBDCRIPTION TO project_bs ARE NULL
    * **** ^NOTE: THE ITEMS PROJECT ID AND PROJECT NAME IN THE STORAGE ARE SETTED IN PROJECT-COMP
-   * A SIMILAR 'WORKFLOW' IS PERFORMED IN THE AUTH.GUARD IN CASE, AFTER A CHECK FOR ID PROJECT IN THE STORAGE, THE PROJECT NAME IS NULL */
-  getAndPublish_NavProjectIdAndProjectName() {
+   * A SIMILAR 'WORKFLOW' IS PERFORMED IN THE AUTH.GUARD IN CASE, AFTER A CHECK FOR ID PROJECT IN THE STORAGE, THE PROJECT JSON IS NULL */
+  // getAndPublish_NavProjectIdAndProjectName() {
+  checkStoredProjectAndPublish() {
     this.project_bs.subscribe((prjct) => {
 
       console.log('!! »»»»» AUTH SERV - PROJECT FROM SUBSCRIP', prjct);
 
       if (prjct === null) {
 
-        // 
         this.router.events.subscribe((e) => {
           if (e instanceof NavigationEnd) {
             // console.log('!! AUTH GUARD - EVENT ', e);
@@ -145,27 +154,45 @@ export class AuthService {
 
             if (nav_project_id) {
 
-              const project_object = JSON.parse((localStorage.getItem(nav_project_id)));
-              console.log('!! »»»»» AUTH SERV - PROJECT FROM STORAGE', prjct);
-              const project_name = project_object['name'];
+              const storedProjectJson = localStorage.getItem(nav_project_id);
+              console.log('!! »»»»» AUTH SERV - JSON OF STORED PROJECT: ', storedProjectJson);
 
-              console.log('!! »»»»» AUTH SERV - PROJECT NAME GET FROM STORAGE: ', project_name);
+              // RUN THE BELOW ONLY IF EXIST THE PROJECT JSON SAVED IN THE STORAGE
+              if (storedProjectJson) {
 
-              const project: Project = {
-                _id: nav_project_id,
-                name: project_name,
-              }
-              console.log('!! »»»»» AUTH SERV - PROJECT THAT IS PUBLISHED: ', project);
-              // SE NN C'è IL PROJECT NAME COMUNQUE PUBBLICO PERCHè CON L'ID DEL PROGETTO VENGONO EFFETTUATE DIVERSE CALLBACK
+                const storedProjectObject = JSON.parse(storedProjectJson);
+                console.log('!! »»»»» AUTH SERV - OBJECT OF STORED PROJECT', storedProjectObject);
 
-              /**** ******* ******* ***** *** ** ** */
-              this.project_bs.next(project);
+                const project_name = storedProjectObject['name'];
 
-              // NOTA: AUTH GUARD ESEGUE UN CHECK DEL PROGETTO SALVATO NEL LOCAL STORAGE E SE IL PROJECT NAME è NULL DOPO AVER 'GET' IL
-              // PROGETTO PER nav_project_id SET THE ID and the NAME OF THE PROJECT IN THE LOCAL STORAGE and
-              // SENT THEM TO THE AUTH SERVICE THAT PUBLISHES
-              if (project_name === null) {
-                console.log('!! »»»»» AUTH SERV - PROJECT NAME IS NULL')
+                console.log('!! »»»»» AUTH SERV - PROJECT NAME GET FROM STORAGE: ', project_name);
+
+                const project: Project = {
+                  _id: nav_project_id,
+                  name: project_name,
+                }
+                console.log('!! »»»»» AUTH SERV - PROJECT THAT IS PUBLISHED: ', project);
+                // SE NN C'è IL PROJECT NAME COMUNQUE PUBBLICO PERCHè CON L'ID DEL PROGETTO VENGONO EFFETTUATE DIVERSE CALLBACK
+
+                /**** ******* ******* ***** *** ** ***/
+                this.project_bs.next(project);
+
+                // NOTA: AUTH GUARD ESEGUE UN CHECK DEL PROGETTO SALVATO NEL LOCAL STORAGE E SE IL PROJECT NAME è NULL DOPO AVER 'GET' IL
+                // PROGETTO PER nav_project_id SET THE ID and the NAME OF THE PROJECT IN THE LOCAL STORAGE and
+                // SENT THEM TO THE AUTH SERVICE THAT PUBLISHES
+                // if (project_name === null) {
+                //   console.log('!! »»»»» AUTH SERV - PROJECT NAME IS NULL')
+                // }
+              } else {
+                // USE-CASE: FOR THE ID (GOT FROM URL) OF THE CURRENT PROJECT THERE IS NO THE JSON SAVED IN THE STORAGE:
+                // IT IS THE CASE IN WHICH THE USER ACCESS TO A NEW PROJECT IN THE DASHBOARD BY LINKS
+                // WITHOUT BEING PASSED FROM THE PROJECT LIST.
+                // IF THE STORED JSON OF THE PROJECT IS NULL  IS THE AUTH-GUARD THAT RUNS A REMOTE CALLBACK TO OBTAIN THE
+                // PROJECT BY ID AND THAT THEN PUBLISH IT AND SAVE IT (THE REMOTE CALLBACK IS PERFORMED IN AUTH-GUARD BECAUSE 
+                // IS NOT POSSIBLE TO DO IT IN THIS SERVICE (CIRCULAR DEPEBDENCY)  )
+                console.log('!! »»»»» AUTH SERV - FOR THE PROJECT ID ', nav_project_id, ' THERE IS NOT STORED PRJCT-JSON - SEE AUTH GUARD')
+                // this.projectService.getProjectById(this.nav_project_id).subscribe((prjct: any) => {
+
               }
             }
           }
@@ -535,17 +562,6 @@ export class AuthService {
     return fbAuth.sendPasswordResetEmail(email)
       .then(() => this.notify.update('Password update email sent', 'info'))
       .catch((error) => this.handleError(error));
-  }
-
-
-
-  // RECEIVE THE the project (name and id) AND PUBLISHES
-  projectSelected(project: Project) {
-    // PUBLISH THE project
-    console.log('!!!AUTH SERVICE: I PUBLISH THE PROJECT RECEIVED FROM PROJECT COMP ', project)
-    // tslint:disable-next-line:no-debugger
-    // debugger
-    this.project_bs.next(project);
   }
 
   hasClickedGoToProjects() {
