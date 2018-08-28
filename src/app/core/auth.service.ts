@@ -72,6 +72,7 @@ export class AuthService {
   show_ExpiredSessionPopup: boolean;
 
   _user_role: string;
+  nav_project_id: string;
 
   constructor(
     http: Http,
@@ -122,6 +123,7 @@ export class AuthService {
     this.project_bs.next(project);
   }
 
+
   /**
    * // REPLACE getProjectFromLocalStorage()
    * IF THE PROJECT RETURNED FROM THE project_bs SUBSCRIPTION IS NULL
@@ -149,12 +151,12 @@ export class AuthService {
             console.log('!! »»»»» AUTH SERV - CURRENT URL SEGMENTS ', url_segments);
 
 
-            const nav_project_id = url_segments[2];
-            console.log('!! »»»»» AUTH SERV - CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', nav_project_id);
+            this.nav_project_id = url_segments[2];
+            console.log('!! »»»»» AUTH SERV - CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id);
 
-            if (nav_project_id) {
+            if (this.nav_project_id) {
 
-              const storedProjectJson = localStorage.getItem(nav_project_id);
+              const storedProjectJson = localStorage.getItem(this.nav_project_id);
               console.log('!! »»»»» AUTH SERV - JSON OF STORED PROJECT: ', storedProjectJson);
 
               // RUN THE BELOW ONLY IF EXIST THE PROJECT JSON SAVED IN THE STORAGE
@@ -168,7 +170,7 @@ export class AuthService {
                 console.log('!! »»»»» AUTH SERV - PROJECT NAME GET FROM STORAGE: ', project_name);
 
                 const project: Project = {
-                  _id: nav_project_id,
+                  _id: this.nav_project_id,
                   name: project_name,
                 }
                 console.log('!! »»»»» AUTH SERV - PROJECT THAT IS PUBLISHED: ', project);
@@ -188,18 +190,62 @@ export class AuthService {
                 // IT IS THE CASE IN WHICH THE USER ACCESS TO A NEW PROJECT IN THE DASHBOARD BY LINKS
                 // WITHOUT BEING PASSED FROM THE PROJECT LIST.
                 // IF THE STORED JSON OF THE PROJECT IS NULL  IS THE AUTH-GUARD THAT RUNS A REMOTE CALLBACK TO OBTAIN THE
-                // PROJECT BY ID AND THAT THEN PUBLISH IT AND SAVE IT (THE REMOTE CALLBACK IS PERFORMED IN AUTH-GUARD BECAUSE 
-                // IS NOT POSSIBLE TO DO IT IN THIS SERVICE (CIRCULAR DEPEBDENCY)  )
-                console.log('!! »»»»» AUTH SERV - FOR THE PROJECT ID ', nav_project_id, ' THERE IS NOT STORED PRJCT-JSON - SEE AUTH GUARD')
+                // PROJECT BY ID AND THAT THEN PUBLISH IT AND SAVE IT (THE REMOTE CALLBACK IS PERFORMED IN AUTH-GUARD BECAUSE
+                // IS NOT POSSIBLE TO DO IT IN THIS SERVICE (BECAUSE OF THE CIRCULAR DEPEDENCY WARNING)  )
+                console.log('!! »»» AUTH SERV - FOR THE PRJCT ID ', this.nav_project_id, ' THERE IS NOT STORED PRJCT-JSON - SEE AUTH GUARD')
                 // this.projectService.getProjectById(this.nav_project_id).subscribe((prjct: any) => {
 
+                //  public anyway to immediately make the project id available to subscribers
+                const project: Project = {
+                  _id: this.nav_project_id,
+                }
+                this.project_bs.next(project);
               }
             }
           }
         });
       }
     });
+  }
 
+  checkRoleForCurrentProjectAndRedirect() {
+    console.log('!! »»»»» AUTH SERV - CHECK ROLE »»»»» CALLING checkRoleForCurrentProjectAndRedirect');
+    // this.router.events.subscribe((e) => {
+    //   console.log('!! »»»»» AUTH SERV - CHECK ROLE »»»»» CALLING checkRoleForCurrentProjectAndRedirect');
+    //   console.log('!! »»»»» AUTH SERV - CHECK ROLE - EVENT ', e);
+    //   if (e instanceof NavigationEnd) {
+    // console.log('!! AUTH GUARD - EVENT ', e);
+    // const current_url = e.url
+    // console.log('!! »»»»» AUTH SERV - CHECK ROLE - CURRENT URL ', current_url);
+
+    // const url_segments = current_url.split('/');
+    // console.log('!! »»»»» AUTH SERV - CHECK ROLE - CURRENT URL SEGMENTS ', url_segments);
+
+    // const nav_project_id = url_segments[2];
+    // console.log('!! »»»»» AUTH SERV - CHECK ROLE - NAVIGATION PROJECT ID: ', nav_project_id);
+
+    const storedProjectJson = localStorage.getItem(this.nav_project_id);
+    if (storedProjectJson) {
+
+      const storedProjectObject = JSON.parse(storedProjectJson);
+      console.log('!! »»»»» AUTH SERV - CHECK ROLE - OBJECT OF STORED PROJECT', storedProjectObject);
+
+      this._user_role = storedProjectObject['role'];
+
+      if (this._user_role) {
+        if (this._user_role === 'agent' || this._user_role === undefined) {
+          console.log('!!! »»» AUTH SERV - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role);
+
+          this.router.navigate([`project/${this.nav_project_id}/unauthorized`]);
+          // this.router.navigate(['/unauthorized']);
+        } else {
+          console.log('!!! »»» AUTH SERV - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role)
+        }
+      }
+
+    }
+    //   }
+    // });
   }
 
   // !!! NO MORE USED
@@ -636,24 +682,10 @@ export class AuthService {
   //   console.log('AUTH SERV - USER ROLE ', this._user_role)
   // }
 
-  // NOTE: THE projectUser_role is saved in storage from home.comp
 
 
-  checkRole() {
-    // setTimeout(() => {
-    // this._user_role = this.usersLocalDbService.getUserRoleFromStorage();
-    // this._user_role = 'agent';
 
-    // if (this._user_role) {
-    //   if (this._user_role === 'agent' || this._user_role === undefined) {
-    //     console.log('!!! »»» AUTH SERV - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role)
-    //     this.router.navigate(['/unauthorized']);
-    //   } else {
-    //     console.log('!!! »»» AUTH SERV - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role)
-    //   }
-    // }
-    // }, 50);
-  }
+
 
   // Sets user data to firestore after succesful login - !!! NO MORE USED
   // private updateUserData(user: User) {

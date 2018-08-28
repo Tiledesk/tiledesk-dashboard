@@ -1,7 +1,7 @@
 // tslint:disable:max-line-length
 import { Component, OnInit } from '@angular/core';
 import * as Chartist from 'chartist';
-
+import { AuthService } from '../core/auth.service';
 
 
 @Component({
@@ -12,9 +12,10 @@ import * as Chartist from 'chartist';
 export class AnalyticsComponent implements OnInit {
 
   constructor(
-
+    private auth: AuthService,
   ) {
-
+    console.log('!!! »»» HELLO ANALYTICS »»» ');
+  
   }
 
 
@@ -75,6 +76,7 @@ export class AnalyticsComponent implements OnInit {
     seq2 = 0;
   };
   ngOnInit() {
+    this.auth.checkRoleForCurrentProjectAndRedirect();
 
     /* ----------==========    NUMBER OF REQUEST for DEPARTMENT ** PIE CHART ** ==========---------- */
 

@@ -64,11 +64,9 @@ export class AuthGuard implements CanActivate {
     this.detectResetPswRoute();
     this.canActivate();
 
-
     // this.router.events.pairwise().subscribe((event) => {
     //   console.log('-» -» -» AUTH GUARD EVENT ', event);
     // });
-
 
     /**
      * !!! having made a change of logic getCurrentProject() is no more used
@@ -77,8 +75,6 @@ export class AuthGuard implements CanActivate {
     this.getProjectIdFromUrl();
 
   }
-
-
 
   // canDeactivate(
   //   component: RequestsMsgsComponent | HomeComponent,
@@ -149,19 +145,27 @@ export class AuthGuard implements CanActivate {
     if (storedProjectJson === null) {
       console.log('!! »»»»» AUTH GUARD - PROJECT JSON IS NULL - RUN getProjectById() ')
 
-      this.getProjectById();
+      this.getProjectPublishAndSaveInStorage();
 
     }
   }
 
-  getProjectById() {
-    this.projectService.getProjectById(this.nav_project_id).subscribe((prjct: any) => {
+  getProjectPublishAndSaveInStorage() {
+    // this.projectService.getProjectAndUserDetailsByProjectId(this.nav_project_id).subscribe((prjct: any) => {
+    this.projectService.getProjects().subscribe((prjcts: any) => {
+      console.log('!! »»»»» AUTH GUARD - PROJECTS OBJCTS FROM REMOTE CALLBACK ', prjcts);
+
+      const prjct = prjcts.filter(p => p.id_project._id === this.nav_project_id);
+
+      console.log('!! »»»»» AUTH GUARD - PROJECT OBJCT FILTERED FOR PROJECT ID ', prjct);
+
 
       if (prjct) {
+        console.log('!! »»»»» AUTH GUARD - TEST --- QUI ENTRO');
         // console.log('!!!!!! AUTH GUARD - N.P.I DOES NOT MATCH C.P.I - PROJECT GOT BY THE NAV PROJECT ID (N.P.I): ', project);
 
-        this.nav_project_name = prjct.name;
-        console.log('!! »»»»» AUTH GUARD - PROJECT NAME GOT BY THE NAV PROJECT ID (N.P.I): ', this.nav_project_name);
+        this.nav_project_name = prjct[0].id_project.name;
+        console.log('!! »»»»» AUTH GUARD - PROJECT NAME GOT BY THE NAV PROJECT ID ', this.nav_project_name);
         // tslint:disable-next-line:max-line-length
         // this.notify.showNotificationChangeProject(`You have been redirected to the project <span style="color:#ffffff; display: inline-block; max-width: 100%;"> ${this.nav_project_name} </span>`, 0, 'info');
 
@@ -177,10 +181,11 @@ export class AuthGuard implements CanActivate {
         const projectForStorage: Project = {
           _id: this.nav_project_id,
           name: this.nav_project_name,
-          role: prjct.role
+          role: prjct[0].role
         }
         // SET THE ID, the NAME OF THE PROJECT and THE USER ROLE IN THE LOCAL STORAGE.
-        localStorage.setItem(this.nav_project_id,  JSON.stringify(projectForStorage));
+        console.log('!! »»»»» AUTH GUARD - PROJECT THAT IS STORED', projectForStorage);
+        localStorage.setItem(this.nav_project_id, JSON.stringify(projectForStorage));
 
 
         // GET AND SAVE ALL USERS OF CURRENT PROJECT IN LOCAL STORAGE
@@ -221,7 +226,7 @@ export class AuthGuard implements CanActivate {
          * THE PROJECT NAME IS NECESSARY TO INITIALIZE THE PROJECT SO RUN getProjectById()
          * TO GET THE PROJECT OBJECT (AND FROM THIS THE PROJECT NAME) BY THE PROJECT-ID GET FROM URL
          * (i.e., BY THE (N.P.I) NAVIGATION-PROJECT-ID)  */
-        this.getProjectById();
+        // this.getProjectById();
 
       }
     }

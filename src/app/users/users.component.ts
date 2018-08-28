@@ -38,7 +38,7 @@ export class UsersComponent implements OnInit {
 
   ngOnInit() {
     console.log('=========== USERS COMP ============')
-    this.auth.checkRole();
+    // this.auth.checkRole();
 
     this.getAllUsersOfCurrentProject();
     this.getCurrentProject();

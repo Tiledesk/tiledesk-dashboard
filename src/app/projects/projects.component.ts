@@ -109,7 +109,7 @@ export class ProjectsComponent implements OnInit {
   /**
    * GET PROJECTS AND SAVE IN THE STORAGE: PROJECT ID - PROJECT NAME - USE ROLE   */
   getProjectsAndSaveInStorage() {
-    this.projectService.getMongDbProjects().subscribe((projects: any) => {
+    this.projectService.getProjects().subscribe((projects: any) => {
       console.log('!!! GET PROJECTS ', projects);
 
       this.showSpinner = false;

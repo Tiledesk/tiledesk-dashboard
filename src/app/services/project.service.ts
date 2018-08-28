@@ -74,9 +74,8 @@ export class ProjectService {
   }
 
   /**
-   * READ (GET)
-   */
-  public getMongDbProjects(): Observable<Project[]> {
+   * READ (GET ALL) */
+  public getProjects(): Observable<Project[]> {
     const url = this.PROJECT_BASE_URL;
     console.log('MONGO DB PROJECTS URL', url);
 
@@ -116,7 +115,7 @@ export class ProjectService {
   public getProjectById(id: string): Observable<Project[]> {
     let url = this.PROJECT_BASE_URL;
     url += `${id}`;
-    console.log('MONGO DB GET PROJECT BY PEOJECT ID URL', url);
+    console.log('!!! GET PROJECT BY ID URL', url);
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
