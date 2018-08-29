@@ -398,11 +398,40 @@ export class UsersService {
 
   }
 
-  // ======================  PUBLISH PROJECT-USER ROLE ======================
+  // ===================  PUBLISH PROJECT-USER ROLE AND CHECK THE ROLE (FOR THE CURRENT PROJECT) SAVED IN THE STORAGE ======================
   // NOTE: THE projectUser_role IS PASSED FROM HOME.COMPONENT AND FROM SIDEBAR
+  // NOTE: IF THE USER ROLE STORED NOT MATCHES THE USER ROLE PUBLISHED IS RESER IN THE STORAGE YìTJE JSON PROJECT UPDATED WITH THE NEW ROLE
   public user_role(projectUser_role: string) {
-    console.log('!!! »»» USER SERVICE PUBLISH THE USER-ROLE ', projectUser_role);
+    console.log('!! »»»»» USER SERVICE PUBLISH THE USER-ROLE  >>', projectUser_role, '<< FOR THE PROJECT ID ', this.project_id);
+
+    // PUBLISH THE USER ROLE
     this.project_user_role_bs.next(projectUser_role);
+
+    // COMPARE THE STORED ROLE WITH THE USER ROLE PUBLISHED
+    const storedProjectJson = localStorage.getItem(this.project_id);
+    if (storedProjectJson) {
+      const projectObject = JSON.parse(storedProjectJson);
+      const storedUserRole = projectObject['role'];
+      const storedProjectName = projectObject['name'];
+      const storedProjectId = projectObject['_id'];
+      console.log('!! »»»»» USER SERVICE USER ROLE FROM STORAGE >>', storedUserRole, '<<');
+      console.log('!! »»»»» USER SERVICE PROJECT NAME FROM STORAGE ', storedProjectName);
+      console.log('!! »»»»» USER SERVICE PROJECT ID FROM STORAGE ', storedProjectId);
+
+      if (storedUserRole !== projectUser_role) {
+        console.log('!! »»»»» USER SERVICE - USER ROLE STORED !!! NOT MATCHES USER ROLE PUBLISHED - RESET PROJECT IN STORAGE ');
+
+        const projectForStorage: Project = {
+          _id: storedProjectId,
+          name: storedProjectName,
+          role: projectUser_role
+        }
+
+        // RE-SET THE PROJECT IN THE STORAGE WITH THE UPDATED ROLE
+        localStorage.setItem(storedProjectId, JSON.stringify(projectForStorage));
+
+      }
+    }
 
   }
 

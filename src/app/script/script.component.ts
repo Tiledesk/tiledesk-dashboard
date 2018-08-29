@@ -13,7 +13,7 @@ export class ScriptComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.auth.checkRole();
+    this.auth.checkRoleForCurrentProject();
   }
 
 }

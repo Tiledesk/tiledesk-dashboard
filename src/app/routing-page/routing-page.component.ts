@@ -61,7 +61,7 @@ export class RoutingPageComponent implements OnInit {
 
   ngOnInit() {
 
-    // this.auth.checkRole();
+    this.auth.checkRoleForCurrentProject();
 
     this.showSpinner = true;
 

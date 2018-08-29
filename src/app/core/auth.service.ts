@@ -235,12 +235,12 @@ export class AuthService {
 
       if (this._user_role) {
         if (this._user_role === 'agent' || this._user_role === undefined) {
-          console.log('!! »»» AUTH SERV - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role);
+          console.log('!! »»»»» AUTH SERV - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role);
 
           this.router.navigate([`project/${this.nav_project_id}/unauthorized`]);
           // this.router.navigate(['/unauthorized']);
         } else {
-          console.log('!! »»» AUTH SERV - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role)
+          console.log('!! »»»»» AUTH SERV - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role)
         }
       }
 

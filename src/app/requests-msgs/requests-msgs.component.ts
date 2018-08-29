@@ -333,10 +333,10 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
 
           // qui richiama la callback
           callback();
-          console.log('Firebase Token (for join-to-chat)', idToken);
+          console.log('!! »»» Firebase Token (for join-to-chat and for archive request)', idToken);
         }).catch(function (error) {
           // Handle error
-          console.log('idToken.', error);
+          console.log('!! »»» idToken.', error);
           callback();
         });
     }

@@ -147,32 +147,33 @@ export class AuthGuard implements CanActivate {
     if (storedProjectJson === null) {
       console.log('!! »»»»» AUTH GUARD - PROJECT JSON IS NULL - RUN getProjectById() ')
       this.getProjectPublishAndSaveInStorage();
-
-    } else {
-      const projectObject = JSON.parse(storedProjectJson);
-      const projectNameStored = projectObject['name']
-      console.log('!! »»»»» AUTH GUARD - PROJECT NAME FROM STORAGE ', projectNameStored);
-
-      if (projectNameStored === undefined) {
-        console.log('!! »»»»» AUTH GUARD - PROJECT NAME IS UNDEFINED - RUN getProjectById() ')
-        // this.getProjectPublishAndSaveInStorage();
-      }
-
-      // const userRoleStored = projectObject['role']
-      // if ( )
-
-      this.usersService.project_user_role_bs.subscribe((user_role) => {
-        console.log('!! »»»»» AUTH GUARD - USER ROLE FROM SUBSCRIPTION ', user_role);
-        const userRoleStored = projectObject['role'];
-        console.log('!! »»»»» AUTH GUARD - USER ROLE FROM STORAGE ', userRoleStored);
-
-        if (userRoleStored !== user_role) {
-          console.log('!! »»»»» AUTH GUARD - USER ROLE STORED NOT MATCHES USER ROLE PUBLISHED  - RUN getProjectById() ')
-          // this.getProjectPublishAndSaveInStorage();
-
-        }
-      })
     }
+
+    // else {
+    //   const projectObject = JSON.parse(storedProjectJson);
+    //   const projectNameStored = projectObject['name']
+    //   console.log('!! »»»»» AUTH GUARD - PROJECT NAME FROM STORAGE ', projectNameStored);
+
+    //   if (projectNameStored === undefined) {
+    //     console.log('!! »»»»» AUTH GUARD - PROJECT NAME IS UNDEFINED - RUN getProjectById() ')
+    //     // this.getProjectPublishAndSaveInStorage();
+    //   }
+
+    //   this.usersService.project_user_role_bs.subscribe((user_role) => {
+    //     console.log('!! »»»»» AUTH GUARD - USER ROLE FROM SUBSCRIPTION ', user_role);
+    //     if (user_role !== null) {
+
+    //       const userRoleStored = projectObject['role'];
+    //       console.log('!! »»»»» AUTH GUARD - USER ROLE FROM STORAGE ', userRoleStored);
+
+    //       if (userRoleStored !== user_role) {
+    //         console.log('!! »»»»» AUTH GUARD - USER ROLE STORED NOT MATCHES USER ROLE PUBLISHED  - RUN getProjectById() ')
+    //         this.getProjectPublishAndSaveInStorage();
+
+    //       }
+    //     }
+    //   })
+    // }
   }
 
   getProjectPublishAndSaveInStorage() {
