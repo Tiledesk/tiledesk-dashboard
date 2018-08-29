@@ -63,6 +63,8 @@ export class FaqComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.auth.checkRoleForCurrentProject();
+
     console.log('»»» HELLO FAQ COMP')
 
     this.clearSearchedQuestionStored();

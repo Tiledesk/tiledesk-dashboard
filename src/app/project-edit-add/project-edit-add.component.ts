@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 
 // USED FOR go back last page
 import { Location } from '@angular/common';
+import { AuthService } from '../core/auth.service';
 
 @Component({
   selector: 'app-project-edit-add',
@@ -27,11 +28,12 @@ export class ProjectEditAddComponent implements OnInit {
     private projectService: ProjectService,
     private router: Router,
     private route: ActivatedRoute,
-    private _location: Location
+    private _location: Location,
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
-
+    this.auth.checkRoleForCurrentProject();
     /**
      * BASED ON THE URL PATH DETERMINE IF THE USER HAS SELECTED (IN BOT PAGE) 'CREATE' OR 'EDIT'
      */

@@ -49,7 +49,7 @@ export class FaqKbEditAddComponent implements OnInit {
 
   ngOnInit() {
     console.log('»»»» HELLO FAQ-KB-EDIT-ADD')
-
+    this.auth.checkRoleForCurrentProject();
 
     this.detectBrowserLang();
 

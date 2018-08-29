@@ -91,7 +91,7 @@ const routes: Routes = [
   { path: '', redirectTo: 'projects', pathMatch: 'full' },
 
   { path: 'project/create', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'project/edit/:projectid', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/edit', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
 
   // { path: 'home', component: HomeComponent, canActivate: [AuthGuard]}, // , canDeactivate: [AuthGuard]
   { path: 'project/:projectid/home', component: HomeComponent, canActivate: [AuthGuard] },

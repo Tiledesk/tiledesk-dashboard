@@ -210,7 +210,7 @@ export class AuthService {
   }
 
   checkRoleForCurrentProject() {
-    console.log('!! »»»»» AUTH SERV - CHECK ROLE »»»»» CALLING checkRoleForCurrentProjectAndRedirect');
+    console.log('!! »»»»» AUTH SERV - CHECK ROLE »»»»» CALLING CHECK-ROLE-FOR-CURRENT-PRJCT');
     // this.router.events.subscribe((e) => {
     //   console.log('!! »»»»» AUTH SERV - CHECK ROLE »»»»» CALLING checkRoleForCurrentProjectAndRedirect');
     //   console.log('!! »»»»» AUTH SERV - CHECK ROLE - EVENT ', e);

@@ -40,6 +40,7 @@ export class UserProfileComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
     this.getLoggedUser();
 
     this.getCurrentProject();

@@ -47,6 +47,9 @@ export class UserEditAddComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+    this.auth.checkRoleForCurrentProject();
+    
     if (this.router.url.indexOf('/add') !== -1) {
 
       console.log('HAS CLICKED INVITES ');

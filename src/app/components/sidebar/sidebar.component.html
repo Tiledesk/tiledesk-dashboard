@@ -156,8 +156,8 @@
             
             <!-- HOME  -->
             <!-- WITHOUT THE CONDITION *ngIf="projectid" THE MENU ITEM 'HOME' IT IS NOT RENDERED AS ACTIVE -->
-            <li *ngIf="project" routerLinkActive="active" >
-                <a class="customAncor" routerLink="project/{{ project._id }}/home">
+            <li *ngIf="project" routerLinkActive="active">
+                <a #homebtn class="customAncor" routerLink="project/{{ project._id }}/home">
                     <i class="material-icons">dashboard</i>
                     <p class="onBlackBckgrnd">Home</p>
                 </a>

@@ -49,8 +49,11 @@ declare interface RouteInfo {
 export class SidebarComponent implements OnInit, AfterViewInit {
 
     @ViewChild('openchatbtn') private elementRef: ElementRef;
+    @ViewChild('homebtn') private homeBtnElement: ElementRef;
 
     menuItems: any[];
+
+    checked_route: string;
 
     // SHOW_SETTINGS_SUBMENU = false;
     SHOW_SETTINGS_SUBMENU = false;
@@ -108,6 +111,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
     ngOnInit() {
+
         // !!!! NO MORE USED
         // this.ROUTES = [
         //     { path: `project/${this.projectid}/home`, title: 'Home', icon: 'dashboard', class: '' },
@@ -339,6 +343,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
     ngAfterViewInit() {
+        // this.checkForUnathorizedRoute();
+
         //     this.SETTINGS_SUBMENU_WAS_OPEN = localStorage.getItem('show_settings_submenu')
         //     console.log('LOCAL STORAGE VALUE OF KEY show_settings_submenu: ', localStorage.getItem('show_settings_submenu'))
 
@@ -459,4 +465,23 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     removeChatBtnFocus() {
         this.elementRef.nativeElement.blur();
     }
+
+    // SE IMPLEMENTATO NELL 'AFTER VIEW INIT' RITORNA ERRORE:
+    // Cannot read property 'nativeElement' of undefined
+    // PER ORA LO COMMENTO NELL 'AFTER VIEW INIT' 
+    checkForUnathorizedRoute() {
+        this.router.events.subscribe((val) => {
+            if (this.location.path() !== '') {
+                this.checked_route = this.location.path();
+                console.log('!! »»» SIDEBAR CHECKED ROUTE ', this.checked_route)
+                if (this.checked_route.indexOf('/unauthorized') !== -1) {
+
+                    // RESOLVE THE BUG 'HOME button remains focused WHEN AN USER WITH AGENT ROLE TRY TO ACCESS TO AN UNATHORIZED PAGE 
+                    // IS REDIRECTED TO THE unauthorized page
+                    this.homeBtnElement.nativeElement.blur();
+                }
+            }
+        })
+    }
+
 }

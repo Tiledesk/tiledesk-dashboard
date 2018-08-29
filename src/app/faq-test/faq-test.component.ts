@@ -34,6 +34,7 @@ export class FaqTestComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.auth.checkRoleForCurrentProject();
     this.getSearchedQuestionFromStorage()
 
     this.getCurrentProject();

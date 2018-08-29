@@ -64,6 +64,7 @@ export class GroupEditAddComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.auth.checkRoleForCurrentProject();
     this.onInitUsersListModalHeight();
     this.detectBrowserLang();
     this.detectsCreateEditInTheUrl();

@@ -43,6 +43,7 @@ export class FaqEditAddComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.auth.checkRoleForCurrentProject();
 
     // BASED ON THE URL PATH DETERMINE IF THE USER HAS SELECTED (IN FAQ PAGE) 'CREATE' OR 'EDIT'
     // if (this.router.url === '/createfaq') {

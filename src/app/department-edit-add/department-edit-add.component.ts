@@ -68,7 +68,7 @@ export class DepartmentEditAddComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
+    this.auth.checkRoleForCurrentProject();
     /**
      * ==================================================================
      * !!! NO MORE USED - getBots() HAS BEEN REPLACED BY getFaqKbByProjecId()
