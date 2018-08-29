@@ -142,7 +142,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     getCurrentProject() {
         this.auth.project_bs.subscribe((project) => {
             this.project = project
-            console.log('00 -> NAVBAR project from AUTH service subscription  ', this.project )
+            console.log('00 -> NAVBAR project from AUTH service subscription  ', this.project)
         });
     }
 
@@ -207,8 +207,9 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
                     if (r.support_status === 100 && !this.shown_requests[r.id] && this.user !== null) {
 
                         // this.lastRequest = requests[requests.length - 1];
-                        // console.log('LAST UNSERVED REQUEST ', this.lastRequest)
-                        this.showNotification(r.text + '<br>' + r.id);
+                        // console.log('!!! »»» LAST UNSERVED REQUEST ', this.lastRequest)
+                        console.log('!!! »»» UNSERVED REQUEST IN BOOTSTRAP NOTIFY ', r)
+                        this.showNotification('<span style="font-weight: 400; font-family: Google Sans, sans-serif;">' + r.requester_fullname + '</span>' + '<em style="font-family: Google Sans, sans-serif;">' + r.first_text + '</em>');
 
                         this.shown_requests[r.id] = true;
                         // r.notification_already_shown = true;
@@ -435,7 +436,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
             icon: 'notifications',
             // message: 'Welcome to <b>Material Dashboard</b> - a beautiful freebie for every web developer.'
             // this.lastRequest.text + '<br>ID: ' + request_recipient,
-            message: '<b>Nuova richiesta:</b> ' + text
+            message: text
             // url: 'routerLink="/requests"',
             // url: 'https://github.com/mouse0270/bootstrap-notify',
             // url: '<a routerLink="/requests">',
@@ -443,7 +444,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
             // target: '_self'
         }, {
                 type: type[color],
-                timer: 2000,
+                timer: 200000,
                 // placement: {
                 //     from: from,
                 //     align: align
