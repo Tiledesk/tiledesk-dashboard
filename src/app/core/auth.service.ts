@@ -419,7 +419,7 @@ export class AuthService {
 
         const options = new RequestOptions({ headers });
         // const url = 'https://us-central1-chat-v2-dev.cloudfunctions.net/api/tilechat/contacts';
-        const url = this.CLOUDFUNCTION_CREATE_CONTACT_URL
+        const url = self.CLOUDFUNCTION_CREATE_CONTACT_URL
         const body = { 'firstname': firstname, 'lastname': lastname, 'email': email };
 
         self.http

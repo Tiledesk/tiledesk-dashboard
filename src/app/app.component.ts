@@ -71,7 +71,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         console.log(' ====== >>> HELLO APP.COMP (ngOnInit) <<< ====== ')
-
+        console.log('!! FIREBASE  ', firebase);
         // NEW (SEE ALSO )
         const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
         // console.log('APP COMP - MAIN PANEL ', _elemMainPanel)
