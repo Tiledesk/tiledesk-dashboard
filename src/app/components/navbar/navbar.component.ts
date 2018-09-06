@@ -444,7 +444,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
             // target: '_self'
         }, {
                 type: type[color],
-                timer: 200000,
+                timer: 2000,
                 // placement: {
                 //     from: from,
                 //     align: align

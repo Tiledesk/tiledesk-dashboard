@@ -437,6 +437,7 @@
         "RequestServedBy": "Richiesta servita da",
         "RequestId": "Id richiesta",
         "Published": "Pubblicata",
+        "Date":"Data",
         "Requester": "Richiedente",
         "RequesterId": "Id richiedente",
         "ChatFormUserName": "Nome utente",

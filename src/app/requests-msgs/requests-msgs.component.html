@@ -263,18 +263,18 @@
               {{ request?.timestamp | amTimeAgo }}
             </p> -->
 
-            <!-- PUBLISHED -->
-            <!-- <p style="margin-bottom: 3px; color:#566787; padding-top: 10px;"> 
+            <!-- ============ PUBLICATION DATE ============ -->
+            <p style="margin-bottom: 3px; color:#566787; padding-top: 10px;"> 
               <strong>
-                {{ "RequestMsgsPage.Published" | translate }} 
+                {{ "RequestMsgsPage.Date" | translate }} 
               </strong>
             </p>
             <p style="color:#999999; font-weight: 500">  
               {{ request?.created_on | date: 'd/M/y HH:mm:ss' }}
-            </p> -->
+            </p>
             
             <!-- REQUEST ID -->
-            <p style="margin-bottom: 3px; color:#566787; padding-top: 10px;"> 
+            <p style="margin-bottom: 3px; color:#566787;"> 
               <strong>
                 {{ "RequestMsgsPage.RequestId" | translate }}
                 </strong>
@@ -290,10 +290,10 @@
               {{ id_request }}
             </p> -->
 
+            <!-- ========== Requester  ========== -->
             <p style="margin-bottom: 3px; color:#566787"> 
               <strong>
-                <!-- Requester  -->
-                {{ "RequestMsgsPage.Requester" | translate }}
+                 {{ "RequestMsgsPage.Requester" | translate }}
               </strong>
             </p>
             <p style="color:#999999; font-weight: 500">  
@@ -342,15 +342,15 @@
               {{ department_name }}
             </p>
 
-            <p style="margin-bottom: 3px; color:#566787"> 
+            <!-- ========== Department Id ========== -->
+            <!-- <p style="margin-bottom: 3px; color:#566787"> 
               <strong>
-                <!-- Department Id -->
                 {{ "RequestMsgsPage.DepartmentId" | translate }}
               </strong>
             </p>
             <p style="color:#999999; font-weight: 500">  
               {{ department_id }}
-            </p>
+            </p> -->
 
             <p style="margin-bottom: 3px; color:#566787"> 
               <strong>
