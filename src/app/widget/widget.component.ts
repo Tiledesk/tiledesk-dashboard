@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
 import { Http, Headers, RequestOptions } from '@angular/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-widget',
@@ -40,7 +41,8 @@ export class WidgetComponent implements OnInit {
   ]
   constructor(
     http: Http,
-    private auth: AuthService
+    private auth: AuthService,
+    private router: Router
   ) { this.http = http }
 
   ngOnInit() {
@@ -140,4 +142,7 @@ export class WidgetComponent implements OnInit {
     window.open(url, '_blank');
   }
 
+  goToWidgetDesign() {
+    this.router.navigate(['project/' + this.project._id  + '/widget/design']);
+  }
 }

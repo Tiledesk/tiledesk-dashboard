@@ -51,6 +51,8 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { UnauthorizedComponent } from './auth/unauthorized/unauthorized.component';
 
 import { WidgetComponent } from './widget/widget.component';
+import { WidgetDesignComponent } from './widget-design/widget-design.component';
+
 import { ScriptComponent } from './script/script.component';
 import { ChannelsComponent } from './channels/channels.component';
 import { SocialComponent } from './social/social.component';
@@ -175,6 +177,8 @@ const routes: Routes = [
 
   // page RESOURCES (RENAMED WIDGET)   // path: 'project/:projectid/resources'
   { path: 'project/:projectid/widget', component: WidgetComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/widget/design', component: WidgetDesignComponent, canActivate: [AuthGuard] },
+  
   { path: 'project/:projectid/script', component: ScriptComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/channels', component: ChannelsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/social', component: SocialComponent, canActivate: [AuthGuard] },
@@ -195,8 +199,10 @@ const routes: Routes = [
 
   { path: 'dashboard', component: DashboardComponent },
 
+
   // uploads are lazy loaded
   { path: 'uploads', loadChildren: './uploads/shared/upload.module#UploadModule', canActivate: [AuthGuard] },
+
 ];
 
 @NgModule({
