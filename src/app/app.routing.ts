@@ -50,7 +50,7 @@ import { SigninComponent } from './auth/signin/signin.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { UnauthorizedComponent } from './auth/unauthorized/unauthorized.component';
 
-import { ResourcesComponent } from './resources/resources.component';
+import { WidgetComponent } from './widget/widget.component';
 import { ScriptComponent } from './script/script.component';
 import { ChannelsComponent } from './channels/channels.component';
 import { SocialComponent } from './social/social.component';
@@ -174,7 +174,7 @@ const routes: Routes = [
   { path: 'project/:projectid/history', component: RequestsListHistoryComponent, canActivate: [AuthGuard] },
 
   // page RESOURCES (RENAMED WIDGET)   // path: 'project/:projectid/resources'
-  { path: 'project/:projectid/widget', component: ResourcesComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/widget', component: WidgetComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/script', component: ScriptComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/channels', component: ChannelsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/social', component: SocialComponent, canActivate: [AuthGuard] },

@@ -77,7 +77,7 @@ import { SigninComponent } from './auth/signin/signin.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { UnauthorizedComponent } from './auth/unauthorized/unauthorized.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ResourcesComponent } from './resources/resources.component';
+import { WidgetComponent } from './widget/widget.component';
 import { ScriptComponent } from './script/script.component';
 import { ChannelsComponent } from './channels/channels.component';
 import { SocialComponent } from './social/social.component';
@@ -147,7 +147,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     SigninComponent,
     SignupComponent,
     UnauthorizedComponent,
-    ResourcesComponent,
+    WidgetComponent,
     ScriptComponent,
     ChannelsComponent,
     SocialComponent,

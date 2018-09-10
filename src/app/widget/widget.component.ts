@@ -4,11 +4,11 @@ import { Project } from '../models/project-model';
 import { Http, Headers, RequestOptions } from '@angular/http';
 
 @Component({
-  selector: 'app-resources',
-  templateUrl: './resources.component.html',
-  styleUrls: ['./resources.component.scss']
+  selector: 'app-widget',
+  templateUrl: './widget.component.html',
+  styleUrls: ['./widget.component.scss']
 })
-export class ResourcesComponent implements OnInit {
+export class WidgetComponent implements OnInit {
   @ViewChild('testwidgetbtn') private elementRef: ElementRef;
 
   project: Project;
