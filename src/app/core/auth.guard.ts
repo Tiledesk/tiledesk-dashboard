@@ -114,7 +114,7 @@ export class AuthGuard implements CanActivate {
 
 
         this.nav_project_id = url_segments[2];
-        console.log('!! AUTH GUARD - CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id);
+        console.log('!! »»»»» AUTH GUARD - CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id);
 
         /**
          * !!! NO MORE USED checkIf_NavPrjctIdMatchesCurrentPrjctId()
@@ -131,8 +131,11 @@ export class AuthGuard implements CanActivate {
          * PROJECT WITHOUT BEING PASSED FROM THE LIST OF PROJECTS (FOR EXAMPLE AFTER HAVING
          * CLICKED ON THE LINK IN THE INVITATION EMAIL TO PARTICIPATE IN A PROJECT)
          * IN THIS CASE, A CALL IS DONE TO OBTAIN THE NAME OF THE PROJECT AND AFTER THE ID
-         * AND NAME OF THE PROJECT ARE SAVED IN THE LOCAL STORAGE AND PASSES TO THE SERVICE THAT PUBLISHES */
-        if (this.nav_project_id) {
+         * AND NAME OF THE PROJECT ARE SAVED IN THE LOCAL STORAGE AND PASSES TO THE SERVICE THAT PUBLISHES
+         * (note: the NAVIGATION PROJECT ID returned from CURRENT URL SEGMENTS is = to 'email' 
+         * if the user navigate to the e-mail verification page)
+         * */
+        if (this.nav_project_id && this.nav_project_id !== 'email') {
           this.checkStoredProject(this.nav_project_id)
         }
       }
@@ -184,8 +187,9 @@ export class AuthGuard implements CanActivate {
       const prjct = prjcts.filter(p => p.id_project._id === this.nav_project_id);
 
       console.log('!! »»»»» AUTH GUARD - PROJECT OBJCT FILTERED FOR PROJECT ID ', prjct);
+      console.log('!! »»»»» AUTH GUARD - PROJECT OBJCT FILTERED FOR PROJECT ID LENGHT ', prjct.length);
 
-      if (prjct) {
+      if (prjct && prjct.length > 0) {
         console.log('!! »»»»» AUTH GUARD - TEST --- QUI ENTRO');
         // console.log('!!!!!! AUTH GUARD - N.P.I DOES NOT MATCH C.P.I - PROJECT GOT BY THE NAV PROJECT ID (N.P.I): ', project);
 
@@ -215,6 +219,9 @@ export class AuthGuard implements CanActivate {
         // GET AND SAVE ALL USERS OF CURRENT PROJECT IN LOCAL STORAGE
         this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
 
+      } else {
+
+        console.log('!! »»»»» AUTH GUARD - PROJECT OBJCT FILTERED FOR PROJECT ID !! NOT FOUND ');
       }
 
     }, (error) => {

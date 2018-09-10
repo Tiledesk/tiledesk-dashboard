@@ -154,7 +154,11 @@ export class AuthService {
             this.nav_project_id = url_segments[2];
             console.log('!! »»»»» AUTH SERV - CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id);
 
-            if (this.nav_project_id) {
+            /*
+             * (note: the NAVIGATION PROJECT ID returned from CURRENT URL SEGMENTS is = to 'email'
+             * if the user navigate to the e-mail verification page)
+             * */
+            if (this.nav_project_id && this.nav_project_id !== 'email') {
 
               const storedProjectJson = localStorage.getItem(this.nav_project_id);
               console.log('!! »»»»» AUTH SERV - JSON OF STORED PROJECT: ', storedProjectJson);
@@ -260,7 +264,7 @@ export class AuthService {
   // GET THE USER OBJECT FROM LOCAL STORAGE AND PASS IT IN user_bs
   checkCredentials() {
     const storedUser = localStorage.getItem('user')
-    console.log('LOCAL STORAGE USER  ', storedUser)
+    console.log('AUTH SERVICE - CHECK CREDENTIAL - STORED USER  ', storedUser)
     // console.log('USER BS VALUE', this.user_bs.value)
     if (storedUser !== null) {
 
@@ -481,10 +485,12 @@ export class AuthService {
 
 
   /* ===================== REPUBLISH AND RESET IN STORAGE THE (UPDATED) USER ===================== */
-  // WHEN THE USER UPGRADES HIS OWN PROFILE (NAME AND / OR SURNAME) THE USER-SERVICE
-  // SEND THE UPDATED USER OBJECT TO AUTH SERVICE (THIS COMPONENT) THAT REPUBLISH IT
+  // * WHEN THE USER UPGRADES HIS OWN PROFILE (NAME AND / OR SURNAME) THE USER-SERVICE
+  //   SEND THE UPDATED USER OBJECT TO AUTH SERVICE (THIS COMPONENT) THAT REPUBLISH IT
+  // * WHEN THE USER VERIFY HIS EMAIL THE VERIFY-EMAIL.COMP SENT UPDATED USER OBJECT 
+  // TO AUTH SERVICE (THIS COMPONENT) THAT REPUBLISH IT
   public publishUpdatedUser(updated_user) {
-    console.log('AUTH SERV - UPDATED USER OBJECT RECEIVED FROM USER SERV (BEFORE TO REPUBLISH IT): ', updated_user);
+    console.log('AUTH SERV - UPDATED USER OBJECT RECEIVED FROM USER.SERV or VERY-EMAIL.COM (BEFORE TO REPUBLISH IT): ', updated_user);
 
     // REPUBLISH THE (UPDATED) USER OBJECT
     this.user_bs.next(updated_user);

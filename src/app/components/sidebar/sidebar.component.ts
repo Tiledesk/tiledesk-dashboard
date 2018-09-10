@@ -292,7 +292,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         });
     }
 
-    // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE SIDEBAR.COMP ***
+    // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE HOME.COMP ***
     getProjectUser() {
         console.log('!!! SIDEBAR CALL GET-PROJECT-USER')
         this.usersService.getProjectUsersByProjectIdAndUserId(this.currentUserId, this.projectId).subscribe((projectUser: any) => {
