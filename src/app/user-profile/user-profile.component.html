@@ -1,7 +1,7 @@
 <div class="navbar-brand" style="z-index: -1;margin-top:10px; padding-left:30px">
     <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">keyboard_arrow_left</i>
     <!-- Profilo -->
-    {{ "UserProfile.Profile" | translate }}
+   {{ "UserProfile.Profile" | translate }}
 </div>
 
 <div class="main-content" style="padding-top:0px">
@@ -23,7 +23,9 @@
                             
                             <div class="card-avatar" style="padding-bottom:15px;">
                                 <img style="vertical-align: middle; width: 60px; height: 60px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" class="img" src="assets/img/no_image_user.png" />
-                                <button style="padding-left:16px; padding-right:16px; font-size:0.8em" type="submit" class="btn btn-white" >
+
+                                <input type="file" (change)="upload($event)" accept=".png,.jpg" />
+                                <button style="padding-left:16px; padding-right:16px; font-size:0.8em" type="submit" class="btn btn-white" (click)='uploadUserAvatar()'>
                                     <!-- Upload immagine -->
                                     {{ "UserProfile.UploadImage" | translate }}
                                 </button>

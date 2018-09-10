@@ -108,6 +108,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { ResetPswComponent } from './reset-psw/reset-psw.component';
 import { ResetPswService } from './services/reset-psw.service';
 import { WidgetDesignComponent } from './widget-design/widget-design.component';
+import { UploadImageService } from './services/upload-image.service';
+
 
 
 
@@ -208,6 +210,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     GroupService,
     BotLocalDbService,
     ResetPswService,
+    UploadImageService,
     {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [

@@ -5,6 +5,7 @@ import { AuthService } from '../core/auth.service';
 import { Location } from '@angular/common';
 import { Project } from '../models/project-model';
 import { UsersService } from '../services/users.service';
+import { UploadImageService } from '../services/upload-image.service';
 
 import { NotifyService } from '../core/notify.service';
 import * as firebase from 'firebase/app';
@@ -36,7 +37,8 @@ export class UserProfileComponent implements OnInit {
     private _location: Location,
     private usersService: UsersService,
     public notify: NotifyService,
-    private router: Router
+    private router: Router,
+    private uploadImageService: UploadImageService
   ) { }
 
   ngOnInit() {
@@ -84,7 +86,7 @@ export class UserProfileComponent implements OnInit {
         this.firstnameCurrentValue = user.firstname;
         this.lastnameCurrentValue = user.lastname;
         this.emailverified = user.emailverified;
-        console.log('EMAIL VERIFIED ',  this.emailverified)
+        console.log('EMAIL VERIFIED ', this.emailverified)
         this.showSpinner = false;
       }
 
@@ -168,5 +170,17 @@ export class UserProfileComponent implements OnInit {
     } else {
       this.router.navigate(['project/' + this.projectId + '/user/' + this.userId + '/password/change']);
     }
+  }
+
+
+  uploadUserAvatar() {
+
+  }
+
+  upload(event) {
+
+    const file = event.target.files[0]
+
+    this.uploadImageService.uploadUserAvatar(file, this.userId)
   }
 }
