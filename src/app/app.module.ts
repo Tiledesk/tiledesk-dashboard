@@ -107,6 +107,7 @@ import { AmazingTimePickerModule } from 'amazing-time-picker';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ResetPswComponent } from './reset-psw/reset-psw.component';
 import { ResetPswService } from './services/reset-psw.service';
+import { WidgetDesignComponent } from './widget-design/widget-design.component';
 
 
 
@@ -165,6 +166,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ChangePasswordComponent,
     HoursComponent,
     ResetPswComponent,
+    WidgetDesignComponent,
   ],
   imports: [
     BrowserModule,
