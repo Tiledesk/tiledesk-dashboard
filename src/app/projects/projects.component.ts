@@ -7,6 +7,8 @@ import { AuthService } from '../core/auth.service';
 import { RequestsService } from '../services/requests.service';
 import { MongodbDepartmentService } from '../services/mongodb-department.service';
 import { isDevMode } from '@angular/core';
+import { UsersService } from '../services/users.service';
+import { UploadImageService } from '../services/upload-image.service';
 
 @Component({
   selector: 'projects',
@@ -37,15 +39,16 @@ export class ProjectsComponent implements OnInit {
   displayLogoutModal = 'none';
 
   APP_IS_DEV_MODE: boolean;
-
+  userProfileImageExist: boolean;
   constructor(
     private projectService: ProjectService,
     private router: Router,
     private auth: AuthService,
     private requestsService: RequestsService,
     private element: ElementRef,
-    private departmentService: MongodbDepartmentService
-
+    private departmentService: MongodbDepartmentService,
+    private usersService: UsersService,
+    private uploadImageService: UploadImageService
   ) {
     console.log('IS DEV MODE ', isDevMode());
     this.APP_IS_DEV_MODE = isDevMode()
@@ -57,8 +60,25 @@ export class ProjectsComponent implements OnInit {
 
     this.getProjectsAndSaveInStorage();
     this.getLoggedUser();
+
+    this.checkUserImageUploadIsComplete()
+
+    // used when the page is refreshed
+    this.checkUserImageExist()
   }
 
+  checkUserImageExist() {
+    this.usersService.userProfileImageExist.subscribe((image_exist) => {
+      console.log('USER-PROFILE - USER PROFILE EXIST ? ', image_exist);
+      this.userProfileImageExist = image_exist;
+    });
+  }
+  checkUserImageUploadIsComplete() {
+    this.uploadImageService.imageExist.subscribe((image_exist) => {
+      console.log('USER-PROFILE - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
+      this.userProfileImageExist = image_exist;
+    });
+  }
 
 
   getLoggedUser() {

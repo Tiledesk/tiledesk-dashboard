@@ -32,6 +32,8 @@ export class UserProfileComponent implements OnInit {
   HAS_EDIT_LASTNAME = false;
   emailverified: boolean;
   projectId: string;
+  userProfileImageExist: boolean;
+
   constructor(
     public auth: AuthService,
     private _location: Location,
@@ -47,6 +49,24 @@ export class UserProfileComponent implements OnInit {
 
     this.getCurrentProject();
 
+    this.checkUserImageUploadIsComplete()
+
+    // used when the page is refreshed
+    this.checkUserImageExist()
+
+  }
+
+  checkUserImageExist() {
+    this.usersService.userProfileImageExist.subscribe((image_exist) => {
+      console.log('USER-PROFILE - USER PROFILE EXIST ? ', image_exist);
+      this.userProfileImageExist = image_exist;
+    });
+  }
+  checkUserImageUploadIsComplete() {
+    this.uploadImageService.imageExist.subscribe((image_exist) => {
+      console.log('USER-PROFILE - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
+      this.userProfileImageExist = image_exist;
+    });
   }
 
   getCurrentProject() {
@@ -68,6 +88,10 @@ export class UserProfileComponent implements OnInit {
     const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
     console.log('USER PROFILE  elemAppSidebar ', elemAppSidebar)
     elemAppSidebar.setAttribute('style', 'display:none;');
+
+    const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+    console.log('USER PROFILE  elemMainPanel ', elemMainPanel)
+    elemMainPanel.setAttribute('style', 'width:100% !important; overflow-x: hidden !important;');
   }
 
   getLoggedUser() {
@@ -83,6 +107,10 @@ export class UserProfileComponent implements OnInit {
         this.userLastname = user.lastname;
         this.userId = user._id;
 
+        /// ===== CHECK USER PROFILE IMAGE ===== 
+        // this.verifyUserProfileImageOnStorage(this.userId);
+
+
         this.firstnameCurrentValue = user.firstname;
         this.lastnameCurrentValue = user.lastname;
         this.emailverified = user.emailverified;
@@ -94,7 +122,37 @@ export class UserProfileComponent implements OnInit {
       console.log('==> USER GET IN USER PROFILE', error);
       this.showSpinner = false;
     });
+  }
 
+  verifyUserProfileImageOnStorage(user_id) {
+    // tslint:disable-next-line:max-line-length
+    const url = 'https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F' + user_id + '%2F8a533bcc-59df-421a-98f0-f499ca40fbdf-01-01-1529932001.jpeg?alt=media';
+    const self = this;
+    this.verifyImageURL(url, function (imageExists) {
+
+
+      if (imageExists === true) {
+        // alert('Image Exists');
+        console.log('=== === USER PROFILE IMAGE EXIST ', imageExists)
+        self.userProfileImageExist = true;
+      } else {
+        // alert('Image does not Exist');
+        console.log('=== === USER PROFILE IMAGE EXIST ', imageExists)
+        self.userProfileImageExist = false;
+      }
+    });
+  }
+
+
+  verifyImageURL(image_url, callBack) {
+    const img = new Image();
+    img.src = image_url;
+    img.onload = function () {
+      callBack(true);
+    };
+    img.onerror = function () {
+      callBack(false);
+    };
   }
 
   onEditFirstname(updatedFirstname) {
@@ -172,10 +230,6 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-
-  uploadUserAvatar() {
-
-  }
 
   upload(event) {
 

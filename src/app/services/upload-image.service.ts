@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase/app';
 import 'firebase/storage';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 @Injectable()
 export class UploadImageService {
+
+  public imageExist: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
   constructor() { }
 
@@ -31,17 +34,48 @@ export class UploadImageService {
     // Listen for state changes, errors, and completion of the upload.
     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
       (snapshot) => {
-        console.log('SNAPSHOT ', snapshot)
+        // console.log('SNAPSHOT ', snapshot)
         const progress = (uploadTask.snapshot.bytesTransferred / uploadTask.snapshot.totalBytes) * 100;
+
+        if ( progress === 100 ) {
+          const self = this
+
+          this.imageExist.next(true);
+          console.log('=== === UPLOAD-IMG-SERV PUBLISH - USER PROFILE IMAGE UPLOAD COMPLETE ', true )
+        }
         console.log('Upload is ' + progress + '% done');
-      }, function (error) {
+        switch (uploadTask.snapshot.state) {
+          case firebase.storage.TaskState.PAUSED: // or 'paused'
+            console.log('Upload is paused');
+            break;
+          case firebase.storage.TaskState.RUNNING: // or 'running'
+            console.log('Upload is running');
+            break;
+        }
+      }, (error: any) => {
+        // A full list of error codes is available at
+        // https://firebase.google.com/docs/storage/web/handle-errors
         console.log('ERROR ', error)
-      }, function () {
+        switch (error.code) {
+          case 'storage/unauthorized':
+            // User doesn't have permission to access the object
+            break;
+          case 'storage/canceled':
+            // User canceled the upload
+            break;
+          case 'storage/unknown':
+            // Unknown error occurred, inspect error.serverResponse
+            break;
+        }
+      }, () => {
         // Upload completed successfully, now we can get the download URL
-
-
+        uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+          console.log('File available at', downloadURL);
+  
+        });
       }
     );
   }
+
 
 }

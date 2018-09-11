@@ -20,11 +20,19 @@
                             Avatar
                         </label>
                         <div class="col-sm-10">
-                            
+                            <!-- src="assets/img/no_image_user.png" -->
+                            <!-- 2F5b7af638109dc06fedefe063 -->
                             <div class="card-avatar" style="padding-bottom:15px;">
-                                <img style="vertical-align: middle; width: 60px; height: 60px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" class="img" src="assets/img/no_image_user.png" />
+                                <img *ngIf="userProfileImageExist === true" style="vertical-align: middle; width: 60px; height: 60px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
+                                class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{userId}}%2F8a533bcc-59df-421a-98f0-f499ca40fbdf-01-01-1529932001.jpeg?alt=media" />
+                                
+                                <img *ngIf="userProfileImageExist !== true" style="vertical-align: middle; width: 60px; height: 60px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
+                                class="user-img" src="assets/img/no_image_user.png"/>
+                                <!-- <img style="vertical-align: middle; width: 60px; height: 60px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
+                                class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{userId}}%2F8a533bcc-59df-421a-98f0-f499ca40fbdf-01-01-1529932001.jpeg?alt=media" 
+                                onerror="this.onerror=null; this.src='assets/img/no_image_user.png';"/> -->
 
-                                <input type="file" (change)="upload($event)" accept=".png,.jpg" />
+                                <input type="file" (change)="upload($event)" accept=".jpg" />
                                 <button style="padding-left:16px; padding-right:16px; font-size:0.8em" type="submit" class="btn btn-white" (click)='uploadUserAvatar()'>
                                     <!-- Upload immagine -->
                                     {{ "UserProfile.UploadImage" | translate }}

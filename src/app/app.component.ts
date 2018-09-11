@@ -82,8 +82,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         // HIDE ELEMENT IF THE USER IN ONE OF THE 'AUTH' PAGES: SIGNIN, SIGUP, WELCOME
         this.hideElementsInAuthPage()
 
-
-
         this.location.subscribe((ev: PopStateEvent) => {
             this.lastPoppedUrl = ev.url;
         });

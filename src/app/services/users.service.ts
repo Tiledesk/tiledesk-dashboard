@@ -32,6 +32,7 @@ export class UsersService {
   public project_user_role_bs: BehaviorSubject<string> = new BehaviorSubject<string>('');
   public has_changed_availability_in_sidebar: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public has_changed_availability_in_users: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  public userProfileImageExist: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
   http: Http;
   BASE_URL = environment.mongoDbConfig.BASE_URL;
@@ -122,9 +123,41 @@ export class UsersService {
       this.TOKEN = this.user.token
       this.currentUserId = this.user._id
       // this.getToken();
+      this.verifyUserProfileImageOnStorage(this.currentUserId);
     } else {
       console.log('No user is signed in');
     }
+  }
+
+  verifyUserProfileImageOnStorage(user_id) {
+    // tslint:disable-next-line:max-line-length
+    const url = 'https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F' + user_id + '%2F8a533bcc-59df-421a-98f0-f499ca40fbdf-01-01-1529932001.jpeg?alt=media';
+    const self = this;
+    this.verifyImageURL(url, function(imageExists) {
+
+      if (imageExists === true) {
+        // alert('Image Exists');
+        console.log('=== === USER-SERV PUBLISH - USER PROFILE IMAGE EXIST ', imageExists )
+        self.userProfileImageExist.next(imageExists);
+      } else {
+        // alert('Image does not Exist');
+        console.log('=== === USER-SERV PUBLISH - USER PROFILE IMAGE EXIST ', imageExists )
+        // self.userProfileImageExist = false;
+        self.userProfileImageExist.next(imageExists);
+      }
+    });
+  }
+
+
+  verifyImageURL(image_url, callBack) {
+    const img = new Image();
+    img.src = image_url;
+    img.onload = function () {
+      callBack(true);
+    };
+    img.onerror = function () {
+      callBack(false);
+    };
   }
 
   /**
