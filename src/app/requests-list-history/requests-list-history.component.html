@@ -195,8 +195,11 @@
 
                   <!-- RATING -->
                   <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" >
-                    <p style="font-size:0.8em;">
+                    <p *ngIf="request?.rating" style="font-size:0.8em;">
                         {{ request?.rating }} / 5
+                    </p>
+                    <p *ngIf="!request?.rating" style="font-size:0.8em;">
+                        - / 5
                     </p>
                   </td>
 
