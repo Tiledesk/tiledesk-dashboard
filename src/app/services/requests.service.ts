@@ -365,6 +365,8 @@ export class RequestsService {
           r.requester_id = data.requester_id
           r.agents = data.agents
           r.attributes = data.attributes
+          r.rating = data.rating
+          r.rating_message = data.rating_message
           r.firebaseDocChangeType = c.type
           // r.hasAgent(this.currentUserID)
 
@@ -443,7 +445,9 @@ export class RequestsService {
           requester_fullname: data.requester_fullname,
           requester_id: data.requester_id,
           projectid: data.projectid,
-          created_on: data.created_on
+          created_on: data.created_on,
+          rating: data.rating,
+          rating_message: data.rating_message
         };
       });
     });
@@ -483,7 +487,9 @@ export class RequestsService {
           currentUserIsJoined: currentUserUidIsInMembers(data.members, this.currentUserID),
           requester_fullname: data.requester_fullname,
           requester_id: data.requester_id,
-          created_on: data.created_on
+          created_on: data.created_on,
+          rating: data.rating,
+          rating_message: data.rating_message
         };
       });
     });

@@ -21,13 +21,15 @@
                 <tr>
                   <!-- <th></th> -->
                   <th></th>
-                  <th>
+
+                  <!-- ===== REQUEST ID ===== -->
+                  <!-- <th>
                     <span style="color: #566787">
                       <strong>
                         Id
                       </strong>
                     </span>  
-                  </th>
+                  </th> -->
                   <th>
                     <span style="color: #566787">
                       <strong> 
@@ -60,6 +62,16 @@
                       </strong>
                     </span>
                   </th>
+                  
+                  <!-- RATING  -->
+                  <th>
+                    <span style="color: #566787">
+                      <strong> 
+                        {{ 'HistoryPage.Rating' | translate }}
+                      </strong>
+                    </span>
+                  </th>
+
                     <!-- <th>
                     <span style="color: #566787">
                       <strong> Membri </strong>
@@ -144,15 +156,16 @@
                   <!-- // !!! NO MORE USED - OPEN THE MSGS OF A REQUEST IN A MODAL  -->
                   <!-- 'openViewMsgsModal(request?.recipient, request?.requester_id)' -->
 
-                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
+                  <!-- ===== REQUEST ID ===== -->
+                  <!-- <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
                     <p style="font-size:0.8em;" >
                       {{ request?.recipient }}
                     </p>
-                  </td>
+                  </td> -->
                   <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
 
                     <p style="font-size:0.9em">
-                      {{ request.requester_fullname }}
+                      {{ request?.requester_fullname }}
                     </p>
                     
                     <!-- <p style="font-size:0.8em">
@@ -171,12 +184,22 @@
                       {{ request?.requester_id }}
                     </p>
                   </td> -->
+
                   <!-- SERVED BY -->
+                  <!-- min-width: 220px; -->
                   <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" >
-                    <p style="font-size:0.8em; min-width: 220px;" [innerHTML]="request?.served_by" >
+                    <p style="font-size:0.8em;" [innerHTML]="request?.served_by" >
                       <!-- {{ request?.served_by }} -->
                     </p>
                   </td>
+
+                  <!-- RATING -->
+                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" >
+                    <p style="font-size:0.8em;">
+                        {{ request?.rating }} / 5
+                    </p>
+                  </td>
+
                   <!-- LIST  OF MEMBERS -->
                   <!-- <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
                     <p style="font-size:0.8em; min-width: 220px;"  [innerHTML]="request?.members_as_string"></p>

@@ -25,6 +25,8 @@ export interface Request {
   attributes?: any;
   showRequest?: boolean;
   firebaseDocChangeType?: string;
+  rating?: any;
+  rating_message?: string;
   hasAgent?(user_id: string): boolean;
 }
 

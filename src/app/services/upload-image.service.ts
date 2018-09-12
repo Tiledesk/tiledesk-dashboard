@@ -12,7 +12,7 @@ export class UploadImageService {
   public uploadUserAvatar(file: any, user_id: string) {
     console.log('UPLOAD IMAGE SERVICE - FILE ', file)
 
-    const file_name = file.name;
+    const file_name = 'photo.jpg';
     console.log('UPLOAD IMAGE SERVICE - FILE NAME ', file_name);
     const file_metadata = { contentType: file.type };
     console.log('UPLOAD IMAGE SERVICE - FILE METADATA ', file_metadata);

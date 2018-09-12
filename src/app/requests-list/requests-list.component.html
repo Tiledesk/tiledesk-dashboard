@@ -25,13 +25,14 @@
             <table class="table table-hover">
               <thead class="text">
                 <tr>
-                    <!-- <th></th> -->
+
                     <th></th>
-                    <th>
+                    <!-- ====== REQUEST ID ====== -->
+                    <!-- <th>
                       <span style="color: #566787">
                         <strong>Id</strong>
                       </span>  
-                    </th>
+                    </th> -->
                     <th>
                       <span style="color: #566787">
                         <strong>{{ 'VisitorsPage.Department' | translate }}</strong>
@@ -101,7 +102,7 @@
 
                 <!-- IF THERE ISN'T REQUEST (SERVED OR UNSERVED) -->
                 <tr *ngIf="requestListServed.length === 0 && requestListUnserved.length === 0"> 
-                  <td colspan="7" style="text-align: center; padding-top: 16px; cursor: pointer" (click)="testWidgetPage()">
+                  <td colspan="6" style="text-align: center; padding-top: 16px; cursor: pointer" (click)="testWidgetPage()">
                     <!-- color: #ff5252   -->
                     <p style="font-size:1em; color:#999999; font-weight: 400">
                         <!-- Nessun Visitatore! Clicca qui per simulare un visitatore. -->
@@ -166,16 +167,20 @@
                       </span>
                     </span>
                   </td>
-                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
-                    <p style="font-size:0.8em;" >
-                      <!-- {{ request?.recipient }} -->
+
+                  <!-- ===== REQUEST ID ===== -->  <!-- {{ request?.recipient }} -->
+                  <!-- <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
+                    <p style="font-size:0.8em;" >                 
                       {{ replace_recipient(request?.recipient) }}
                     </p>
-                  </td>
+                  </td> -->
 
                   <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" rel="tooltip" title="department id:{{ request?.attributes?.departmentId }}">
-                    <p style="font-size:0.8em;">
+                    <p *ngIf="request?.attributes?.departmentName" style="font-size:0.9em;">
                       {{ request?.attributes?.departmentName }}
+                    </p>
+                    <p *ngIf="!request?.attributes?.departmentName" style="font-size:0.9em;">
+                      {{ 'VisitorsPage.Default' | translate }}
                     </p>
                   </td>
 
@@ -286,11 +291,13 @@
                 <tr>
                   <!-- <th></th> -->
                   <th></th>
-                  <th>
+
+                  <!-- ====== SERVED REQUETS ID ===== -->
+                  <!-- <th>
                     <span style="color: #566787">
                       <strong>Id</strong>
                     </span>  
-                  </th>
+                  </th> -->
 
                   <th>
                     <span style="color: #566787">
@@ -365,7 +372,7 @@
               
                  <!-- IF THERE ISN'T REQUEST (SERVED OR UNSERVED) -->
                 <tr *ngIf="requestListServed.length === 0 && requestListUnserved.length === 0"> 
-                  <td colspan="8" style="text-align: center; padding-top: 16px; cursor: pointer" (click)="testWidgetPage()">
+                  <td colspan="7" style="text-align: center; padding-top: 16px; cursor: pointer" (click)="testWidgetPage()">
                     <!-- color: #ff5252   -->
                     <p style="font-size:1em; color:#999999; font-weight: 400">
                         <!-- Nessun Visitatore! Clicca qui per simulare un visitatore. -->
@@ -429,18 +436,22 @@
 
                   </td>
                   <!-- openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id) -->
-                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
-                      <!-- max-width: 150px; -->
+
+                  <!-- ===== REQUEST ID ===== -->
+                  <!-- {{ request?.recipient }} -->
+                  <!-- <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
                     <p style="font-size:0.8em;" >
-                      <!-- {{ request?.recipient }} -->
                       {{ replace_recipient(request?.recipient) }}
                     </p>
-                  </td>
+                  </td> -->
 
                   <!-- openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id) -->
                   <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
-                    <p style="font-size:0.9em">
+                    <p *ngIf="request?.attributes?.departmentName" style="font-size:0.9em">
                       {{ request?.attributes?.departmentName }}
+                    </p>
+                    <p *ngIf="!request?.attributes?.departmentName" style="font-size:0.9em">
+                        {{ 'VisitorsPage.Default' | translate }}
                     </p>
                   </td>
 

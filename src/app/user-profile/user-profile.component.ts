@@ -126,7 +126,7 @@ export class UserProfileComponent implements OnInit {
 
   verifyUserProfileImageOnStorage(user_id) {
     // tslint:disable-next-line:max-line-length
-    const url = 'https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F' + user_id + '%2F8a533bcc-59df-421a-98f0-f499ca40fbdf-01-01-1529932001.jpeg?alt=media';
+    const url = 'https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F' + user_id + '%2Fphoto.jpg?alt=media';
     const self = this;
     this.verifyImageURL(url, function (imageExists) {
 

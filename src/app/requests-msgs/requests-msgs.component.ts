@@ -46,6 +46,8 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   user_email: string;
   department_name: string;
   department_id: string;
+  rating: string;
+  rating_message: string;
   source_page: string;
 
   displayBtnScrollToBottom = 'none';
@@ -234,7 +236,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
               this.department_name = request[0].attributes.departmentName;
               console.log('* DEPATMENT NAME: ', this.department_name);
             } else {
-              this.department_name = 'n.a.'
+              this.department_name = 'Default'
             }
           } else {
             this.department_name = 'n.a.'
@@ -249,6 +251,18 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
             }
           } else {
             this.department_id = 'n.a.'
+          }
+
+          if (request[0].rating) {
+            this.rating = request[0].rating + '/5'
+          } else {
+            this.rating = 'n.a.'
+          }
+
+          if (request[0].rating_message) {
+            this.rating_message = request[0].rating_message
+          } else {
+            this.rating_message = 'n.a.'
           }
 
           if (request[0].attributes) {
@@ -309,7 +323,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
           },
           () => {
             // this.ngOnInit();
-            console.log('CLOSE SUPPORT GROUP - COMPLETE', );
+            console.log('CLOSE SUPPORT GROUP - COMPLETE');
             this.SHOW_CIRCULAR_SPINNER = false;
             this.ARCHIVE_REQUEST_ERROR = false;
 
@@ -361,7 +375,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.JOIN_TO_GROUP_HAS_ERROR = true;
           },
           () => {
-            console.log('JOIN TO CHAT GROUP COMPLETE', );
+            console.log('JOIN TO CHAT GROUP COMPLETE');
 
             this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
             this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = true;

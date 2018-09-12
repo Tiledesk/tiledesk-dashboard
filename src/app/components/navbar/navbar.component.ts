@@ -20,7 +20,7 @@ import { Project } from '../../models/project-model';
 import { UsersService } from '../../services/users.service';
 import { environment } from '../../../environments/environment';
 import { isDevMode } from '@angular/core';
-
+import { UploadImageService } from '../../services/upload-image.service';
 
 @Component({
     selector: 'app-navbar',
@@ -62,6 +62,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
     APP_IS_DEV_MODE: boolean;
 
+    userProfileImageExist: boolean;
     constructor(
         location: Location,
         private element: ElementRef,
@@ -72,7 +73,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         private router: Router,
         // FOR TEST
         private afs: AngularFirestore,
-        private usersService: UsersService
+        private usersService: UsersService,
+        private uploadImageService: UploadImageService
     ) {
         this.location = location;
         this.sidebarVisible = false;
@@ -118,7 +120,25 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
         this.detectChatPage();
 
+        this.checkUserImageUploadIsComplete()
+
+        // used when the page is refreshed
+        this.checkUserImageExist()
+
     } // OnInit
+
+    checkUserImageExist() {
+        this.usersService.userProfileImageExist.subscribe((image_exist) => {
+          console.log('USER-PROFILE - USER PROFILE EXIST ? ', image_exist);
+          this.userProfileImageExist = image_exist;
+        });
+      }
+      checkUserImageUploadIsComplete() {
+        this.uploadImageService.imageExist.subscribe((image_exist) => {
+          console.log('USER-PROFILE - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
+          this.userProfileImageExist = image_exist;
+        });
+      }
 
     /* DETECT IF IS THE CHAT PAGE */
     detectChatPage() {
