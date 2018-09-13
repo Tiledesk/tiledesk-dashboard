@@ -79,6 +79,59 @@
 
         <!-- test  -->
         <div class="row">
+
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="card card-stats" >
+                    <div class="card-content" style="text-align: center;">
+                        <!-- <p class="">Numero Richieste</p> -->
+                        <div class="request_count" style="color: #ff9800" >
+                            {{ activeRequestsCount }}    
+                        </div>
+                    </div>
+                    <div class="card-footer request_count_footer" style="color:rgba(0,0,0,.54); text-align: center;">
+                        {{ 'VisitorsPage.ActiveRequests' | translate }}
+                        <!-- <div class="stats">
+                            <i class="material-icons">date_range</i> Ultimo mese
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="card card-stats" >
+                    <div class="card-content" style="text-align: center;">
+                        <!-- <p class="">Numero Richieste</p> -->
+                        <div class="request_count" style="color: #00bcd4" >
+                            {{ servedRequestsCount }}    
+                        </div>
+                    </div>
+                    <div class="card-footer request_count_footer" style="color:rgba(0,0,0,.54); text-align: center;">
+                        {{ 'VisitorsPage.ServedRequests' | translate }}
+                        <!-- <div class="stats">
+                            <i class="material-icons">date_range</i> Ultimo mese
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="card card-stats" >
+                    <div class="card-content" style="text-align: center;">
+                        <!-- <p class="">Numero Richieste</p> -->
+                        <div class="request_count" style="color: #f44336" >
+                            {{ unservedRequestsCount }}    
+                        </div>
+                    </div>
+                    <div class="card-footer request_count_footer" style="color:rgba(0,0,0,.54); text-align: center;">
+                        {{ 'VisitorsPage.UnservedRequests' | translate }}
+                        <!-- <div class="stats">
+                            <i class="material-icons">date_range</i> Ultimo mese
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+         </div>
+
+        <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="card card-stats" >
                     <div class="card-header" data-background-color="orange">

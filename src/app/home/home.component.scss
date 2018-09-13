@@ -1,3 +1,4 @@
+@import url(https://fonts.googleapis.com/css?family=Google+Sans);
 .round-button {
 	box-sizing: border-box;
 	display:block;
@@ -153,5 +154,13 @@
 }
 .card .card-footer{
 	margin-bottom: 0px;
+}
+
+.custom_title {
+	font-family: 'Google Sans', sans-serif !important;
+}
+
+.custom_subtitle {
+	font-family: 'Google Sans', sans-serif !important;
 }
 

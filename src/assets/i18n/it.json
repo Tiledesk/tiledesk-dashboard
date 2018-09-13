@@ -123,11 +123,12 @@
     },
     "HomePage": {
         "Widget": "Per iniziare configura il tuo Widget!",
-        "WidgetSubtitle": "Incorpora e personalizza il chat widget sul tuo sito web",
+        "WidgetSubtitle": "Per iniziare incorpora e personalizza il chat widget sul tuo sito web",
         "VisitorsSubtitle": "Visualizza l'elenco dei tuoi visitatori Web e chatta con loro",
         "ChatSubtitle": "Visualizza la chat history",
         "AnalyticsSubtitle": "Tieni traccia delle chat che hai con i clienti",
-        "HistorySubtitle": "Visualizza le chat chiuse"
+        "HistorySubtitle": "Visualizza le chat chiuse",
+        "DownloadTiledesk":"Scarica le app Tiledesk per iPhone e Android"
     },
     "RoutingPage": {
         "SettingUpTileDeskRoutingRules": "Imposta le regole di routing",
@@ -393,6 +394,7 @@
     "VisitorsPage": {
         "UnservedRequests": "Richieste non servite",
         "ServedRequests": "Richieste servite",
+        "ActiveRequests": "Richieste attive",
         "Department": "Dipartimento",
         "Default": "Predefinito",
         "Requester": "Richiedente",

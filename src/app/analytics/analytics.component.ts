@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as Chartist from 'chartist';
 import { AuthService } from '../core/auth.service';
-
+import { RequestsService } from './../services/requests.service';
 
 @Component({
   selector: 'app-analytics',
@@ -10,13 +10,55 @@ import { AuthService } from '../core/auth.service';
   styleUrls: ['./analytics.component.scss']
 })
 export class AnalyticsComponent implements OnInit {
-
+  activeRequestsCount
+  unservedRequestsCount: number;
+  servedRequestsCount: number;
+  MYCount: number;
   constructor(
     private auth: AuthService,
+    private requestsService: RequestsService
   ) {
+
     console.log('!!! »»» HELLO ANALYTICS »»» ');
-  
+    this.servedAndUnservedRequestCount();
+    // this.MYCount = 200
+    // const interval = setInterval(() => {
+    //   this.MYCount--;
+    //   if (this.MYCount === 0) {
+    //     clearInterval(interval)
+    //   };
+
+    // }, 200)
+    // console.log('INTERVAL ', interval)
+
   }
+  servedAndUnservedRequestCount() {
+    this.requestsService.requestsList_bs.subscribe((requests) => {
+      console.log('!!! ANALYTICS SUBSCRIBE TO REQUEST SERVICE - REQUEST LIST: ', requests);
+      if (requests) {
+        let count_unserved = 0;
+        let count_served = 0
+        requests.forEach(r => {
+
+          if (r.support_status === 100) {
+            count_unserved = count_unserved + 1;
+          }
+          if (r.support_status === 200) {
+            count_served = count_served + 1
+          }
+        });
+        this.unservedRequestsCount = count_unserved;
+        console.log('!!! ANALYTICS - # OF UNSERVED REQUESTS:  ', this.unservedRequestsCount);
+
+        this.servedRequestsCount = count_served;
+        console.log('!!! ANALYTICS - # OF SERVED REQUESTS:  ', this.servedRequestsCount);
+
+        this.activeRequestsCount = this.unservedRequestsCount + this.servedRequestsCount
+        console.log('!!! ANALYTICS - # OF ACTIVE REQUESTS:  ', this.activeRequestsCount);
+      }
+    });
+  }
+
 
 
   startAnimationForLineChart(chart) {
