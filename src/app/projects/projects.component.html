@@ -37,7 +37,7 @@
                 <span  *ngIf="user?.emailverified == false" class="notification" style="font-weight: 200; font-size:12px; right:11px; top:3px">
                     !
                     <span class="tooltiptext">
-                        {{"NavBar.PendingVerification" | translate }}
+                      {{"NavBar.PendingVerification" | translate }}
                     </span>
                            
                 </span>
@@ -91,14 +91,11 @@
 </div>
 </div>
 
-
-<p style="margin-top:3px; padding-left:30px; cursor: pointer;" class="navbar-brand" (click)="testVerifyEmail()">
-  <!-- Progetti -->
+<a target="_blank" href="http://www.tiledesk.com" style="margin-top:3px; padding-left:30px; cursor: pointer;" class="navbar-brand">
   <img style="width:25%" src="assets/img/tiledesk-logo.png"/>
-
   <!-- TEST EMAIL VERIFY -->
   <!-- <span (click)="testVerifyEmail()">VERIFY EMAIL</span> -->
-</p> 
+</a> 
 
 
 <!-- http://www.frontiere21.com/wp-content/uploads/2016/08/chat21-frontiere21-head-.png -->
