@@ -1,13 +1,69 @@
 @import url(https://fonts.googleapis.com/css?family=Google+Sans);
 
+// START - CARDS WITH THE COUNTS OF THE REQUESTS: TOTALS SERVED AND UNSERVED
+.card-header {
+    padding:0px !important; 
+    -webkit-box-shadow:none !important;  
+    box-shadow: none !important; 
+    width: 0;height: 0 !important;
+    position: relative !important;
+    top: 24px !important;
+}
+
+.card_content_header {
+    text-align: right
+}
+
+.card-header_icon {
+    background-color: #ffffff !important; 
+    font-size: 46px;
+}
+
+.card_content_header_last_update{
+    text-align: right;
+    line-height: 22px;
+    color: #999999;
+    font-size: 12px;
+    top: 10px;
+    position: relative;
+}
+
+.card_content_header_last_update_icons {
+    font-size: 16px; 
+    position: relative; 
+    top: 4px;
+
+}
+
 .request_count {
     font-size: 72px;
     line-height: 72px;
     font-family: 'Google Sans', sans-serif !important;
+
+    margin-top: 35px;
 }
 
+.request_count_icons {
+    font-size: 46px;
+    position: relative;
+    top: 1px;
+    left: -52px;
+}
+
+
+
+.request_count_icons_numbers {
+    // position: relative;
+    // left: -31px;
+
+}
 .request_count_footer {
     font-family: 'Google Sans', sans-serif !important;
     font-size: 16px;
-    text-transform: uppercase;
+    color:rgba(0,0,0,.54); 
+    text-align: center;
 }
+// END - CARDS WITH THE COUNTS OF THE REQUESTS: TOTALS SERVED AND UNSERVED
+
+
+

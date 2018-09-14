@@ -13,7 +13,8 @@ export class AnalyticsComponent implements OnInit {
   activeRequestsCount
   unservedRequestsCount: number;
   servedRequestsCount: number;
-  MYCount: number;
+  date: any;
+
   constructor(
     private auth: AuthService,
     private requestsService: RequestsService
@@ -21,20 +22,15 @@ export class AnalyticsComponent implements OnInit {
 
     console.log('!!! »»» HELLO ANALYTICS »»» ');
     this.servedAndUnservedRequestCount();
-    // this.MYCount = 200
-    // const interval = setInterval(() => {
-    //   this.MYCount--;
-    //   if (this.MYCount === 0) {
-    //     clearInterval(interval)
-    //   };
 
-    // }, 200)
-    // console.log('INTERVAL ', interval)
 
   }
   servedAndUnservedRequestCount() {
+
     this.requestsService.requestsList_bs.subscribe((requests) => {
-      console.log('!!! ANALYTICS SUBSCRIBE TO REQUEST SERVICE - REQUEST LIST: ', requests);
+      this.date = new Date();
+      console.log('!!! ANALYTICS - CURRENT DATE : ', this.date);
+      console.log('!!! ANALYTICS - SUBSCRIBE TO REQUEST SERVICE - REQUESTS LIST: ', requests);
       if (requests) {
         let count_unserved = 0;
         let count_served = 0
