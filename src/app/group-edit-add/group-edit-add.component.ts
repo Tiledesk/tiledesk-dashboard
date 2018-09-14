@@ -173,32 +173,31 @@ export class GroupEditAddComponent implements OnInit {
       this.showSpinnerInModal = false;
       this.projectUsersList = projectUsers;
 
-      // CHECK IF THE USER-ID IS BETWEEN THE MEMBER OF THE GROUP
-      this.projectUsersList.forEach(projectUser => {
+      if (this.projectUsersList) {
+        // CHECK IF THE USER-ID IS BETWEEN THE MEMBER OF THE GROUP
+        this.projectUsersList.forEach(projectUser => {
 
-        for (const p of this.projectUsersList) {
-          // console.log('vv', projectUser._id)
-          this.group_members.forEach(group_member => {
-            if (p.id_user._id === group_member) {
-              if (projectUser._id === p._id) {
-                p.is_group_member = true;
-                console.log('GROUP MEMBER ', group_member)
-                console.log('IS MEMBER OF THE GROUP THE USER ', p.id_user._id, ' - ', p.is_group_member)
+          for (const p of this.projectUsersList) {
+            // console.log('vv', projectUser._id)
+            this.group_members.forEach(group_member => {
+              if (p.id_user._id === group_member) {
+                if (projectUser._id === p._id) {
+                  p.is_group_member = true;
+                  console.log('GROUP MEMBER ', group_member)
+                  console.log('IS MEMBER OF THE GROUP THE USER ', p.id_user._id, ' - ', p.is_group_member)
+                }
               }
-            }
-          });
-        }
-      });
-
-    },
-      error => {
-        this.showSpinner = false;
-        this.showSpinnerInModal = false;
-        console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
-      },
-      () => {
-        console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
-      });
+            });
+          }
+        });
+      }
+    }, error => {
+      this.showSpinner = false;
+      this.showSpinnerInModal = false;
+      console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
+    }, () => {
+      console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
+    });
   }
 
 

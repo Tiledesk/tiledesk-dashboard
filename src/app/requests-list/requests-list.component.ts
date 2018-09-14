@@ -128,7 +128,7 @@ export class RequestsListComponent implements OnInit {
       }
     });
 
-    console.log('REQUEST LIST ON INIT ', )
+    console.log('REQUEST LIST ON INIT ')
 
     this.getRequestListBS()
 
@@ -184,7 +184,7 @@ export class RequestsListComponent implements OnInit {
             if (request.id === r.id) {
 
               r.members_array = Object.keys(r.members);
-
+              // console.log('!!! REQUEST LIST MEMBERS ARRAY  ', r.members_array)
             }
           })
 
@@ -274,7 +274,7 @@ export class RequestsListComponent implements OnInit {
           },
           () => {
             // this.ngOnInit();
-            console.log('CLOSE SUPPORT GROUP - COMPLETE', );
+            console.log('CLOSE SUPPORT GROUP - COMPLETE');
             this.SHOW_CIRCULAR_SPINNER = false;
             this.ARCHIVE_REQUEST_ERROR = false;
 
@@ -732,7 +732,7 @@ export class RequestsListComponent implements OnInit {
             this.JOIN_TO_GROUP_HAS_ERROR = true;
           },
           () => {
-            console.log('JOIN TO CHAT GROUP COMPLETE', );
+            console.log('JOIN TO CHAT GROUP COMPLETE');
 
             this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
             this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = true;
