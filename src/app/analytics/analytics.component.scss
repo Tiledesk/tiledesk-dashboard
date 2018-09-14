@@ -1,7 +1,8 @@
 @import url(https://fonts.googleapis.com/css?family=Google+Sans);
 
 // START - CARDS WITH THE COUNTS OF THE REQUESTS: TOTALS SERVED AND UNSERVED
-.card-header {
+
+.tiledesk_card_header {
     padding:0px !important; 
     -webkit-box-shadow:none !important;  
     box-shadow: none !important; 
@@ -9,7 +10,6 @@
     position: relative !important;
     top: 24px !important;
 }
-
 .card_content_header {
     text-align: right
 }
