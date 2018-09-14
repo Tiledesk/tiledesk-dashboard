@@ -52,6 +52,11 @@
     "InvalidPswResetKey": "Chiave di reimpostazione password non valida",
     "QuickTips": "Consigli veloci",
     "Error": "Errore",
+    "Updated": "Aggiornato",
+    "Request":"Richiesta",
+    "TotalActive":"Totale attive",
+    "Served":"Servite",
+    "Unserved":"Non servite",
     "UserProfile": {
         "Profile": "Profilo",
         "UploadImage": "Carica immagine",

@@ -52,6 +52,11 @@
     "InvalidPswResetKey": "Invalid password reset key",
     "QuickTips": "Quick tips",
     "Error": "Error",
+    "Updated": "Updated",
+    "Request":"Request",
+    "TotalActive":"Total active",
+    "Served":"Served",
+    "Unserved":"Unserved",
     "UserProfile": {
         "Profile": "Profile",
         "UploadImage": "Upload image",
