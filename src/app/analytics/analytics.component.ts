@@ -18,6 +18,10 @@ export class AnalyticsComponent implements OnInit {
   users_id_array = [];
   users_reqs_dict = {};
 
+  // users_reqs_dict_array: any;
+  projectUsers: any;
+  showSpinner = true;
+
   constructor(
     private auth: AuthService,
     private requestsService: RequestsService,
@@ -157,22 +161,32 @@ export class AnalyticsComponent implements OnInit {
       if (projectUsers) {
 
 
+        this.projectUsers = projectUsers;
 
         projectUsers.forEach(prjctuser => {
 
-          this.users_reqs_dict[prjctuser['id_user']['_id']] = { 'val': 0, 'user': prjctuser['id_user'] }
+          console.log('!!! ANALYTICS - PROJECT USERS RETURNED FROM THE CALLBACK', prjctuser)
+
+          /**
+            * ANDREA:
+            * CREATES AN OBJECT WITH HAS FOR 'KEY' THE USER ID OF THE ITERATED 'PROJECT USERS' AND A NESTED OBJECT THAT HAS FOR KEY 'VAL' WITH AN INITIAL VALUE= 0 */
+          // , 'user': prjctuser['id_user']
+          this.users_reqs_dict[prjctuser['id_user']['_id']] = { 'val': 0 }
 
 
-          console.log('!!! ANALYTICS - PROJECT USER ', prjctuser)
           const _user_id = prjctuser['id_user']['_id']
           console.log('!!! ANALYTICS - USER ID ', _user_id)
 
-          // this.users_id_array.push(_user_id);
+          /**
+           * NK:
+           * CREATES AN ARRAY OF ALL THE USER ID OF THE ITERATED 'PROJECT USERS' */
+          this.users_id_array.push(_user_id);
 
         })
 
-        // console.log('!!! ANALYTICS - ARRAY OF USERS ID ', this.users_id_array)
+        console.log('!!! ANALYTICS - ARRAY OF USERS ID ', this.users_id_array)
         console.log('!!! ANALYTICS - USERS DICTIONARY ', this.users_reqs_dict)
+        // console.log('!!! ANALYTICS - USERS DICTIONARY - array  ', this.users_reqs_dict_array)
 
       }
 
@@ -195,33 +209,89 @@ export class AnalyticsComponent implements OnInit {
 
 
       if (requests) {
-        // console.log('!!! ANALYTICS - REQUESTS LENGHT ', requests.length)
-        // let flat = [];
-        // for (let i = 0; i < requests.length; i++) {
-        //   flat = flat.concat(Object.keys(requests[i].members));
+        console.log('!!! ANALYTICS - REQUESTS LENGHT ', requests.length)
+
+        /**
+         * NK:
+         * CREATES AN UNIQUE ARRAY FROM ALL THE ARRAYS OF 'MEMBERS' THAT ARE NESTED IN THE ITERATED REQUESTS  */
+        let flat_members_array = [];
+        for (let i = 0; i < requests.length; i++) {
+          flat_members_array = flat_members_array.concat(Object.keys(requests[i].members));
+        }
+        // Result of the concatenation of the single arrays of members
+        console.log('!!! ANALYTICS - FLAT-MEMBERS-ARRAY  ', flat_members_array)
+
+        /**
+         * FOR EACH USER-ID IN THE 'USER_ID_ARRAY' IS RUNNED 'getOccurrenceAndAssignToProjectUsers'
+         * THAT RETURNS THE COUNT OF HOW MAMY TIMES THE USER-ID IS PRESENT IN THE 'flat_members_array' AND THEN
+         * ASSIGN THE VALUE OF 'COUNT' TO THE PROPERTY 'VALUE' OF THE OBJECT 'PROJECT-USERS' */
+        for (let i = 0; i < this.users_id_array.length; i++) {
+          this.getOccurrenceAndAssignToProjectUsers(flat_members_array, this.users_id_array[i])
+        }
+
+        /**
+         * ANDREA:
+         * RUNS A 'FOR EACH' OVER OF ANY MEMBERS OF EACH REQUEST AND ADDS '1' TO THE PROPERTY 'val'
+         * OF THE OBJECT 'users_reqs_dict' THAT HAS THE SAME ID OF THE ITERED MEMBER
+         */
+        // requests.forEach(req => {
+        //   Object.keys(req.members).forEach(m => {
+        //     if ((m !== 'system') && (m !== req.requester_id)) {
+        //       this.users_reqs_dict[m]['val'] = this.users_reqs_dict[m]['val'] + 1
+        //     }
+        //   })
+        // });
+        // console.log('!!! ANALYTICS - USERS DICTIONARY (updated)', this.users_reqs_dict)
+
+
+        /**
+         * ANDREA:
+         * ADD 'this.users_reqs_dict[m]['val']' TO THE PROPERTY 'value' OF THE OBJECT PROJECT-USERS
+         */
+        // if (this.projectUsers) {
+        //  console.log('!!! ANALYTICS - PROJECT USERS ', this.projectUsers)
+        //   for (const p of this.projectUsers) {
+
+        //     console.log('!!! ANALYTICS - USERS DICTIONARY - DICT KEY (updated) ', Object.keys(this.users_reqs_dict))
+
+        //     Object.keys(this.users_reqs_dict).forEach(element => {
+        //       console.log('!!! ANALYTICS - USERS DICTIONARY - ELEMENT ', element)
+        //       console.log('!!! ANALYTICS - USERS DICTIONARY  -PROJECT USER ID (updated) ', p.id_user._id)
+        //       if (element === p.id_user._id) {
+        //         console.log('!!! ANALYTICS - USERS DICTIONARY - IS THE SAME ', element, p.id_user._id)
+        //         console.log('!!! ANALYTICS - USERS DICTIONARY - IS THE SAME  value', this.users_reqs_dict[p.id_user._id]['val'])
+        //         p.value = this.users_reqs_dict[p.id_user._id]['val']
+        //       }
+        //     });
+        //   }
         // }
-        // console.log('!!! ANALYTICS - FLAT ', flat)
-        // for (let i = 0; i < this.users_id_array.length; i++) {
-        //   this.getOccurrence(flat, this.users_id_array[i])
-        // }
-
-        requests.forEach(req => {
-          Object.keys(req.members).forEach(m => {
-            if ((m !== 'system') && (m !== req.requester_id)) {
-              // console.log('!!! ANALYTICS - USERS DICTIONARY -- M -- ', m)
-              this.users_reqs_dict[m]['val'] = this.users_reqs_dict[m]['val'] + 1
-              // console.log('!!! ANALYTICS - USERS DICTIONARY -- VAL -- ', this.users_reqs_dict[m]['val'])
-            }
-          })
 
 
-        });
-        console.log('!!! ANALYTICS - USERS DICTIONARY (updated)', this.users_reqs_dict)
+        /* trasforma un  json in array */
+        // const self = this;
+        // this.users_reqs_dict_array = Object.keys(this.users_reqs_dict).map(function (k) {
+
+        //   return self.users_reqs_dict[k];
+        // });
+
       }
 
     });
   }
-  /*
+
+  getOccurrenceAndAssignToProjectUsers(array, value) {
+    let count = 0;
+    array.forEach((v) => (v === value && count++));
+    console.log('!!! ANALYTICS - #', count, ' REQUESTS ASSIGNED TO THE USER ', value)
+    for (const p of this.projectUsers) {
+      if (value === p.id_user._id) {
+        p.value = count
+      }
+    }
+    this.showSpinner = false;
+    return count;
+  }
+  /* ANDREA - PSEUDO CODICE
   users_reqs_dict = {}
   for u in proj_users {
     users_reqs_dict[u.id] = { val: 0, "user" : u };
@@ -232,15 +302,8 @@ export class AnalyticsComponent implements OnInit {
     })
   })
   */
-  getOccurrence(array, value) {
-    let count = 0;
-    array.forEach((v) => (v === value && count++));
-    console.log('!!! ANALYTICS xxx', count)
-    return count;
-  }
 
   servedAndUnservedRequestCount() {
-
     this.requestsService.requestsList_bs.subscribe((requests) => {
       this.date = new Date();
       console.log('!!! ANALYTICS - CURRENT DATE : ', this.date);
@@ -259,36 +322,7 @@ export class AnalyticsComponent implements OnInit {
           if (r.support_status === 200) {
             count_served = count_served + 1
           }
-
-
-          // REQUESTS X AGENT
-
-          if (r.members) {
-            const membersKeys_array = Object.keys(r.members)
-            // console.log('!!! ANALYTICS - MEMBERS:', membersKeys_array)
-          }
-
-          // const concatenedArray =  Object.keys(r.members).concat(Object.keys(r.members));
-          // console.log('!!! ANALYTICS - CONCATENAT:', concatenedArray)
-          const arr = [];
-          Object.keys(r.members).forEach(m => {
-
-            if ((m !== 'system') && (m !== r.requester_id)) {
-              // console.log('!!! ANALYTICS - MEMBER:', m)
-              // console.log('!!! ANALYTICS - MEMBERS LENGHT: ', m.length)
-              arr.push(m)
-
-              // if (m === '5ad08846ea181e2e9cc2d20d') {
-              // console.log('!!! ANALYTICS XXXX ', m)
-              // }
-
-            }
-
-          });
-          // console.log('!!! ANALYTICS ARRAY ', arr);
-
         });
-
 
         this.unservedRequestsCount = count_unserved;
         console.log('!!! ANALYTICS - # OF UNSERVED REQUESTS:  ', this.unservedRequestsCount);
@@ -298,8 +332,6 @@ export class AnalyticsComponent implements OnInit {
 
         this.activeRequestsCount = this.unservedRequestsCount + this.servedRequestsCount
         console.log('!!! ANALYTICS - # OF ACTIVE REQUESTS:  ', this.activeRequestsCount);
-
-
 
       }
     });

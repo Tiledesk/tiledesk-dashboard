@@ -1,4 +1,5 @@
-<div class="main-content">
+<p style="margin-top:10px; padding-left:30px" class="navbar-brand">Analytics</p>
+<div class="main-content" style="padding-top:0px">
 
     <div class="container-fluid">
         <!-- <div class="row">
@@ -200,8 +201,78 @@
                     </div>
                 </div>
             </div>
-         </div>
+        </div>
          <!-- // END NEW ROW -->
+
+        <!-- /// ======== --- TABLE "REQUESTS X AGENT" --- ======== /// -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+    
+                    <loading-spinner *ngIf="showSpinner"></loading-spinner>
+                    <div *ngIf="!showSpinner" class="card-content table-responsive">
+                        <table class="table table-hover">
+
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <span style="color: #566787">
+                                            <strong>
+                                            {{ "UsersPage.User" | translate }}
+                                            </strong>
+                                        </span>
+                                    </th>
+
+                                    <th>
+                                        <span style="color: #566787">
+                                            <strong>
+                                            Email
+                                            </strong>
+                                        </span>
+                                    </th>
+
+                                    <th>
+                                        <span style="color: #566787">
+                                            <strong>
+                                            Assigned Requests
+                                            </strong>
+                                        </span>
+                                    </th>
+                                </tr>
+
+                            </thead>
+
+                            
+                            <tbody>
+                                <tr *ngFor="let member of projectUsers">
+                                    <td  style="cursor:pointer">
+                                        {{ member?.id_user?.lastname }} {{ member?.id_user?.firstname }} 
+                                    </td>
+                                    <td>
+                                        {{ member?.id_user?.email }}
+                                    </td>
+
+                                    <td>
+                                        {{ member?.value }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+                                
+
+
+
+
+
+
+        <!-- /// ======== --- TABLE "REQUESTS X AGENT" --- ======== /// -->
+
+
+
 
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6">
