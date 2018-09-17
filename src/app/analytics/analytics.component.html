@@ -206,37 +206,46 @@
 
         <!-- /// ======== --- TABLE "REQUESTS X AGENT" --- ======== /// -->
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-4">
                 <div class="card">
+                    <div class="card-header" data-background-color="" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
+                        <h4 class="title" style="margin-bottom:2px; font-size:1.1em; color: #566787">
+                            
+                            Requests for member
+                   
+                        </h4>
+                     </div>
     
                     <loading-spinner *ngIf="showSpinner"></loading-spinner>
-                    <div *ngIf="!showSpinner" class="card-content table-responsive">
+                    <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-top: 0px">
                         <table class="table table-hover">
 
                             <thead>
                                 <tr>
+                                    <!-- ------====== column IMAGE (note: THE COLUMN HEADING IS 'USER') ======------ -->
                                     <th>
-                                        <span style="color: #566787">
+                                        <!-- <span style="color: #566787">
                                             <strong>
                                             {{ "UsersPage.User" | translate }}
                                             </strong>
-                                        </span>
+                                        </span> -->
+                                    </th>
+                                    <!-- ------====== column USER (NAME + LASTNAME) ======------ -->
+                                    <th>
+                                        <!-- <span style="color: #566787">
+                                            <strong>
+                                            {{ "UsersPage.User" | translate }}
+                                            </strong>
+                                        </span> -->
                                     </th>
 
+                                     <!-- ------====== column # OF ASSIGNEDE REQUESTS  ======------ -->
                                     <th>
-                                        <span style="color: #566787">
+                                        <!-- <span style="color: #566787">
                                             <strong>
-                                            Email
+                                            #
                                             </strong>
-                                        </span>
-                                    </th>
-
-                                    <th>
-                                        <span style="color: #566787">
-                                            <strong>
-                                            Assigned Requests
-                                            </strong>
-                                        </span>
+                                        </span> -->
                                     </th>
                                 </tr>
 
@@ -245,15 +254,23 @@
                             
                             <tbody>
                                 <tr *ngFor="let member of projectUsers">
-                                    <td  style="cursor:pointer">
-                                        {{ member?.id_user?.lastname }} {{ member?.id_user?.firstname }} 
-                                    </td>
-                                    <td>
-                                        {{ member?.id_user?.email }}
+                                    <td style="width:45px; padding-top:4px !important; padding-bottom:4px!important">
+                                            <!-- *ngIf="userProfileImageExist === true"  -->
+                                        <img style="vertical-align: middle; width: 30px; height: 30px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
+                                        class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{member?.id_user?._id}}%2Fphoto.jpg?alt=media" onerror="this.src='assets/img/no_image_user.png'"/>
+    
+                                        <!-- <img *ngIf="userProfileImageExist !== true" style="vertical-align: middle; width: 60px; height: 60px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
+                                        class="user-img" src="assets/img/no_image_user.png"/> -->
+
                                     </td>
 
+                                    <td style="cursor:pointer"  (click)="goToMemberProfile(member?.id_user?._id)">
+                                       <span style="text-transform: uppercase">{{ member?.id_user?.lastname }}</span>  {{ member?.id_user?.firstname }} 
+                                    </td>
+                
                                     <td>
-                                        {{ member?.value }}
+                                       <span style="font-weight: 500">  {{ member?.value }}</span> 
+                                       <!-- <span style="color: #999999; font-size:0.9em"> request </span> -->
                                     </td>
                                 </tr>
                             </tbody>

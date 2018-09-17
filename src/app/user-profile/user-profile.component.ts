@@ -124,36 +124,36 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
-  verifyUserProfileImageOnStorage(user_id) {
-    // tslint:disable-next-line:max-line-length
-    const url = 'https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F' + user_id + '%2Fphoto.jpg?alt=media';
-    const self = this;
-    this.verifyImageURL(url, function (imageExists) {
+  // verifyUserProfileImageOnStorage(user_id) {
+  //   // tslint:disable-next-line:max-line-length
+  //   const url = 'https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F' + user_id + '%2Fphoto.jpg?alt=media';
+  //   const self = this;
+  //   this.verifyImageURL(url, function (imageExists) {
 
 
-      if (imageExists === true) {
-        // alert('Image Exists');
-        console.log('=== === USER PROFILE IMAGE EXIST ', imageExists)
-        self.userProfileImageExist = true;
-      } else {
-        // alert('Image does not Exist');
-        console.log('=== === USER PROFILE IMAGE EXIST ', imageExists)
-        self.userProfileImageExist = false;
-      }
-    });
-  }
+  //     if (imageExists === true) {
+  //       // alert('Image Exists');
+  //       console.log('=== === USER PROFILE IMAGE EXIST ', imageExists)
+  //       self.userProfileImageExist = true;
+  //     } else {
+  //       // alert('Image does not Exist');
+  //       console.log('=== === USER PROFILE IMAGE EXIST ', imageExists)
+  //       self.userProfileImageExist = false;
+  //     }
+  //   });
+  // }
 
 
-  verifyImageURL(image_url, callBack) {
-    const img = new Image();
-    img.src = image_url;
-    img.onload = function () {
-      callBack(true);
-    };
-    img.onerror = function () {
-      callBack(false);
-    };
-  }
+  // verifyImageURL(image_url, callBack) {
+  //   const img = new Image();
+  //   img.src = image_url;
+  //   img.onload = function () {
+  //     callBack(true);
+  //   };
+  //   img.onerror = function () {
+  //     callBack(false);
+  //   };
+  // }
 
   onEditFirstname(updatedFirstname) {
     console.log('==> firstname previous value ', this.firstnameCurrentValue);

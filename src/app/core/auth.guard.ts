@@ -264,40 +264,39 @@ export class AuthGuard implements CanActivate {
   }
 
   // !!! NO MORE USED
-  resetCurrentProjectAndInizializeNewProject() {
-    this.resetProject();
+  // resetCurrentProjectAndInizializeNewProject() {
+  //   this.resetProject();
 
-    if (this.nav_project_name) {
+  //   if (this.nav_project_name) {
 
-      const project: Project = {
-        _id: this.nav_project_id,
-        name: this.nav_project_name,
-      }
+  //     const project: Project = {
+  //       _id: this.nav_project_id,
+  //       name: this.nav_project_name,
+  //     }
 
-      // PROJECT ID and NAME ARE SENT TO THE AUTH SERVICE THAT PUBLISHES THEM
-      this.auth.projectSelected(project)
-      console.log('!!!!!! AUTH GUARD - PROJECT SENT TO THE AUTH SERVICE ', project)
+  //     // PROJECT ID and NAME ARE SENT TO THE AUTH SERVICE THAT PUBLISHES THEM
+  //     this.auth.projectSelected(project)
+  //     console.log('!!!!!! AUTH GUARD - PROJECT SENT TO THE AUTH SERVICE ', project)
 
-      // PROJECT ID and NAME ARE SETTED IN THE STORAGE
-      // localStorage.setItem('project', JSON.stringify(project));
+  //     // PROJECT ID and NAME ARE SETTED IN THE STORAGE
+  //     // localStorage.setItem('project', JSON.stringify(project));
 
-      // GET AND SAVE ALL USERS OF CURRENT PROJECT IN LOCAL STORAGE
-      this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
+  //     // GET AND SAVE ALL USERS OF CURRENT PROJECT IN LOCAL STORAGE
+  //     this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
 
-      // for debug get the current storedProject
-      const storedProject = localStorage.getItem('project')
-      console.log('!!!!!! 2) AUTH GUARD - CURRENT STORED PROJECT: ', storedProject);
-    }
-  }
+  //     // for debug get the current storedProject
+  //     const storedProject = localStorage.getItem('project')
+  //     console.log('!!!!!! 2) AUTH GUARD - CURRENT STORED PROJECT: ', storedProject);
+  //   }
+  // }
 
   // !!! NO MORE USED
-  resetProject() {
-    // tslint:disable-next-line:no-debugger
-    // debugger
-    console.log('!!!!!! AUTH GUARD - RESET CURRENT PROJECT');
-    this.auth.project_bs.next(null);
-    localStorage.removeItem('project');
-  }
+  // resetProject() {
+
+  //   console.log('!!!!!! AUTH GUARD - RESET CURRENT PROJECT');
+  //   this.auth.project_bs.next(null);
+  //   localStorage.removeItem('project');
+  // }
 
   detectVerifyEmailRoute() {
     // this.router.events.subscribe((val) => {

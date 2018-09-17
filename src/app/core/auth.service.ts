@@ -84,7 +84,7 @@ export class AuthService {
     private route: ActivatedRoute
   ) {
     this.http = http;
-    console.log('====== AUTH SERVICE !!! ====== ')
+    console.log('!!! ====== AUTH SERVICE !!! ====== ')
     // this.user = this.afAuth.authState
     //   .switchMap((user) => {
     //     if (user) {

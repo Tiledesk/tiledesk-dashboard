@@ -123,31 +123,31 @@ export class UsersService {
       this.TOKEN = this.user.token
       this.currentUserId = this.user._id
       // this.getToken();
-      this.verifyUserProfileImageOnStorage(this.currentUserId);
+      this.verifyUserProfileImageOnFirebaseStorage(this.currentUserId);
     } else {
       console.log('No user is signed in');
     }
   }
 
-  verifyUserProfileImageOnStorage(user_id) {
+
+  verifyUserProfileImageOnFirebaseStorage(user_id) {
     // tslint:disable-next-line:max-line-length
     const url = 'https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F' + user_id + '%2Fphoto.jpg?alt=media';
     const self = this;
-    this.verifyImageURL(url, function(imageExists) {
+    this.verifyImageURL(url, function (imageExists) {
 
       if (imageExists === true) {
         // alert('Image Exists');
-        console.log('=== === USER-SERV PUBLISH - USER PROFILE IMAGE EXIST ', imageExists )
+        console.log('=== === USER-SERV PUBLISH - USER PROFILE IMAGE EXIST ', imageExists)
         self.userProfileImageExist.next(imageExists);
       } else {
         // alert('Image does not Exist');
-        console.log('=== === USER-SERV PUBLISH - USER PROFILE IMAGE EXIST ', imageExists )
+        console.log('=== === USER-SERV PUBLISH - USER PROFILE IMAGE EXIST ', imageExists)
         // self.userProfileImageExist = false;
         self.userProfileImageExist.next(imageExists);
       }
     });
   }
-
 
   verifyImageURL(image_url, callBack) {
     const img = new Image();

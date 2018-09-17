@@ -224,6 +224,7 @@ export class RequestsService {
       });
       // PUBLISH THE REQUESTS LIST (ORDERED AND WITH THE CHANGES MANAGED BY addOrUpdateRequestsList)
       this.requestsList_bs.next(this.requestList);
+      console.log('!!! REQUESTS-SERVICE PUBLISH REQUEST LIST ', this.requestList)
     }, error => {
       console.log('GET REQUEST - ERROR ', error)
     }, () => {

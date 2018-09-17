@@ -1,15 +1,18 @@
 // tslint:disable:max-line-length
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import * as Chartist from 'chartist';
 import { AuthService } from '../core/auth.service';
 import { RequestsService } from './../services/requests.service';
 import { UsersService } from '../services/users.service';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+
 @Component({
   selector: 'app-analytics',
   templateUrl: './analytics.component.html',
   styleUrls: ['./analytics.component.scss']
 })
-export class AnalyticsComponent implements OnInit {
+export class AnalyticsComponent implements OnInit, OnDestroy {
   activeRequestsCount
   unservedRequestsCount: number;
   servedRequestsCount: number;
@@ -21,11 +24,15 @@ export class AnalyticsComponent implements OnInit {
   // users_reqs_dict_array: any;
   projectUsers: any;
   showSpinner = true;
-
+  userProfileImageExist: boolean;
+  id_project: any;
+  subscription: Subscription;
+  subscriptionToRequestServiceForRequestCount: Subscription;
   constructor(
     private auth: AuthService,
     private requestsService: RequestsService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private router: Router
   ) {
 
     console.log('!!! »»» HELLO ANALYTICS »»» ');
@@ -148,12 +155,22 @@ export class AnalyticsComponent implements OnInit {
     // start animation for the Emails Subscription Chart
     this.startAnimationForBarChart(emailsSubscriptionChart);
 
-    this.getCountOfRequesrForMember()
+    /* ----------==========   TILEDESK ANALYTICS   ==========---------- */
+    this.getCurrentProject();
+    this.getCountOfRequestForMember()
     this.getAllUsersOfCurrentProject();
-    // const arr = [2, 3, 1, 3, 4, 5, 3, 1];
-    // this.getOccurrence(arr, 1)
+
   }
   /* ----------==========   end ON INIT    ==========---------- */
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+
+      if (project) {
+        this.id_project = project._id
+
+      }
+    });
+  }
 
   getAllUsersOfCurrentProject() {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
@@ -175,6 +192,10 @@ export class AnalyticsComponent implements OnInit {
 
 
           const _user_id = prjctuser['id_user']['_id']
+
+
+          // this.verifyUserProfileImageOnFirebaseStorage(_user_id);
+
           console.log('!!! ANALYTICS - USER ID ', _user_id)
 
           /**
@@ -198,15 +219,9 @@ export class AnalyticsComponent implements OnInit {
     });
   }
 
-
-
-  /*
-   * 1) CREATE A UNIQUE ARRAY BY CONCATENATING ALL MEMBERS ARRAYS
-   * 2) FROM THE FLAT ARRAY I LOOK FOR THE OCCURRENCE
-   */
-  getCountOfRequesrForMember() {
-    this.requestsService.requestsList_bs.subscribe((requests) => {
-
+  getCountOfRequestForMember() {
+    this.subscription = this.requestsService.requestsList_bs.subscribe((requests) => {
+      console.log('!!! ANALYTICS - !!!!! SUBSCRIPTION TO REQUESTS-LIST-BS');
 
       if (requests) {
         console.log('!!! ANALYTICS - REQUESTS LENGHT ', requests.length)
@@ -279,6 +294,8 @@ export class AnalyticsComponent implements OnInit {
     });
   }
 
+
+
   getOccurrenceAndAssignToProjectUsers(array, value) {
     let count = 0;
     array.forEach((v) => (v === value && count++));
@@ -304,7 +321,7 @@ export class AnalyticsComponent implements OnInit {
   */
 
   servedAndUnservedRequestCount() {
-    this.requestsService.requestsList_bs.subscribe((requests) => {
+    this.subscriptionToRequestServiceForRequestCount = this.requestsService.requestsList_bs.subscribe((requests) => {
       this.date = new Date();
       console.log('!!! ANALYTICS - CURRENT DATE : ', this.date);
       console.log('!!! ANALYTICS - SUBSCRIBE TO REQUEST SERVICE - REQUESTS LIST: ', requests);
@@ -337,7 +354,15 @@ export class AnalyticsComponent implements OnInit {
     });
   }
 
+  goToMemberProfile(member_id: string) {
+    this.router.navigate(['project/' + this.id_project + '/member/' + member_id]);
+  }
 
+  ngOnDestroy() {
+    console.log('!!! ANALYTICS - !!!!! UN - SUBSCRIPTION TO REQUESTS-LIST-BS');
+    this.subscription.unsubscribe();
+    this.subscriptionToRequestServiceForRequestCount.unsubscribe();
+  }
 
   startAnimationForLineChart(chart) {
     let seq: any, delays: any, durations: any;
