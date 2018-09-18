@@ -101,17 +101,17 @@ export class AuthGuard implements CanActivate {
   }
 
   getProjectIdFromUrl() {
-    // tslint:disable-next-line:no-debugger
-    // debugger
-    this.router.events.subscribe((e) => {
-      if (e instanceof NavigationEnd) {
-        // console.log('!! AUTH GUARD - EVENT ', e);
-        const current_url = e.url
+
+
+    // this.router.events.subscribe((e) => {
+    //   if (e instanceof NavigationEnd) {
+        // const current_url = e.url
+        if (this.location.path() !== '') {
+        const current_url = this.location.path()
         console.log('!! AUTH GUARD - CURRENT URL ', current_url);
 
         const url_segments = current_url.split('/');
         console.log('!! AUTH GUARD - CURRENT URL SEGMENTS ', url_segments);
-
 
         this.nav_project_id = url_segments[2];
         console.log('!! »»»»» AUTH GUARD - CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id);
@@ -139,7 +139,7 @@ export class AuthGuard implements CanActivate {
           this.checkStoredProject(this.nav_project_id)
         }
       }
-    });
+    // }); // this.router.events.subscribe((e)
   }
 
   checkStoredProject(navigationProjectId) {
