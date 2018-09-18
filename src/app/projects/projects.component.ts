@@ -40,6 +40,7 @@ export class ProjectsComponent implements OnInit {
 
   APP_IS_DEV_MODE: boolean;
   userProfileImageExist: boolean;
+  userImageHasBeenUploaded: boolean;
   constructor(
     private projectService: ProjectService,
     private router: Router,
@@ -76,7 +77,7 @@ export class ProjectsComponent implements OnInit {
   checkUserImageUploadIsComplete() {
     this.uploadImageService.imageExist.subscribe((image_exist) => {
       console.log('USER-PROFILE - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
-      this.userProfileImageExist = image_exist;
+      this.userImageHasBeenUploaded = image_exist;
     });
   }
 

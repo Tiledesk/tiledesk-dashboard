@@ -133,10 +133,10 @@
                                         <a>
                                             <!-- <img class="img" src="assets/img/no_image_user.png" /> -->
 
-                                            <img *ngIf="userProfileImageExist === true" 
+                                            <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" 
                                             class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{user?._id}}%2Fphoto.jpg?alt=media" />
                                             
-                                            <img *ngIf="userProfileImageExist !== true" 
+                                            <img *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true" 
                                             class="user-img" src="assets/img/no_image_user.png"/>
 
                                         </a>

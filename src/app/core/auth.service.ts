@@ -20,7 +20,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/toPromise';
 import { UsersLocalDbService } from '../services/users-local-db.service';
 import { Location } from '@angular/common';
-
+import { Subscription } from 'rxjs/Subscription';
 
 // import { RequestsService } from '../services/requests.service';
 // interface CUser {
@@ -74,9 +74,7 @@ export class AuthService {
 
   _user_role: string;
   nav_project_id: string;
-
-  public href = '';
-
+  subscription: Subscription;
   constructor(
     http: Http,
     private afAuth: AngularFireAuth,
@@ -90,10 +88,6 @@ export class AuthService {
     this.http = http;
     console.log('!!! ====== AUTH SERVICE !!! ====== ')
 
-    // this.href = this.router.url;
-    // console.log('!! »»»»» AUTH SERV ROUTER URL ', this.router.url);
-
-  
     // this.user = this.afAuth.authState
     //   .switchMap((user) => {
     //     if (user) {
@@ -126,7 +120,7 @@ export class AuthService {
   // RECEIVE THE the project (name and id) AND PUBLISHES
   projectSelected(project: Project) {
     // PUBLISH THE project
-    console.log('!!! AUTH SERVICE: I PUBLISH THE PROJECT RECEIVED FROM PROJECT COMP ', project)
+    console.log('!!C-U AUTH SERVICE: I PUBLISH THE PROJECT RECEIVED FROM PROJECT COMP ', project)
     // tslint:disable-next-line:no-debugger
     // debugger
     this.project_bs.next(project);
@@ -146,23 +140,24 @@ export class AuthService {
   checkStoredProjectAndPublish() {
     this.project_bs.subscribe((prjct) => {
 
-      console.log('!! »»»»» AUTH SERV - PROJECT FROM SUBSCRIP', prjct);
-
+      console.log('!!C-U »»»»» AUTH SERV - PROJECT FROM SUBSCRIP', prjct);
+ 
       if (prjct === null) {
         console.log('!! »»»»» AUTH SERV - PROJECT IS NULL: ', prjct);
 
         /**
-         * REPLACES 'router.events.subscribe' WITH 'location.path()' BECAUSE OF 'events.subscribe' THAT IS ACTIVATED FOR THE FIRST
+         * !!!! NO MORE - REPLACES 'router.events.subscribe' WITH 'location.path()'
+         * BECAUSE OF 'events.subscribe' THAT IS ACTIVATED FOR THE FIRST
          * TIME WHEN THE PROJECT IS NULL AND THEN IS ALWAYS CALLED EVEN IF THE  PROJECT IS DEFINED */
-        // this.router.events.subscribe((e) => {
-        // if (e instanceof NavigationEnd) {
-        if (this.location.path() !== '') {
-          const current_url = this.location.path()
-          // const current_url = e.url
-          console.log('!! »»»»» AUTH SERV - CURRENT URL ', current_url);
+        this.subscription = this.router.events.subscribe((e) => {
+        if (e instanceof NavigationEnd) {
+        // if (this.location.path() !== '') {
+          // const current_url = this.location.path()
+          const current_url = e.url
+          console.log('!!C-U »»»»» AUTH SERV - CURRENT URL ', current_url);
 
           const url_segments = current_url.split('/');
-          console.log('!! »»»»» AUTH SERV - CURRENT URL SEGMENTS ', url_segments);
+          console.log('!!C-U »»»»» AUTH SERV - CURRENT URL SEGMENTS ', url_segments);
 
 
           this.nav_project_id = url_segments[2];
@@ -173,6 +168,8 @@ export class AuthService {
            * if the user navigate to the e-mail verification page)
            * */
           if (this.nav_project_id && this.nav_project_id !== 'email') {
+
+            this.subscription.unsubscribe();
 
             const storedProjectJson = localStorage.getItem(this.nav_project_id);
             console.log('!! »»»»» AUTH SERV - JSON OF STORED PROJECT: ', storedProjectJson);
@@ -191,7 +188,7 @@ export class AuthService {
                 _id: this.nav_project_id,
                 name: project_name,
               }
-              console.log('!! »»»»» AUTH SERV - PROJECT THAT IS PUBLISHED: ', project);
+              console.log('!!C-U »»»»» AUTH SERV - 1) PROJECT THAT IS PUBLISHED: ', project);
               // SE NN C'è IL PROJECT NAME COMUNQUE PUBBLICO PERCHè CON L'ID DEL PROGETTO VENGONO EFFETTUATE DIVERSE CALLBACK
 
               /**** ******* ******* ***** *** ** ***/
@@ -218,11 +215,12 @@ export class AuthService {
               const project: Project = {
                 _id: this.nav_project_id,
               }
+              console.log('!! »»»»» AUTH SERV - 2) PROJECT THAT IS PUBLISHED: ', project);
               this.project_bs.next(project);
             }
           }
         }
-        // }); // this.router.events.subscribe((e)
+        }); // this.router.events.subscribe((e)
       }
     });
   }
@@ -269,11 +267,11 @@ export class AuthService {
 
   // !!! NO MORE USED
   // WHEN THE PAGE IS RELOADED THE project_id RETURNED FROM THE SUBSCRIPTION IS NULL SO IT IS GET FROM LOCAL STORAGE
-  getProjectFromLocalStorage() {
-    const storedProject = localStorage.getItem('project')
-    console.log('!! getProjectFromLocalStorage ', storedProject)
-    this.project_bs.next(JSON.parse(storedProject));
-  }
+  // getProjectFromLocalStorage() {
+  //   const storedProject = localStorage.getItem('project')
+  //   console.log('!! getProjectFromLocalStorage ', storedProject)
+  //   this.project_bs.next(JSON.parse(storedProject));
+  // }
 
   // GET THE USER OBJECT FROM LOCAL STORAGE AND PASS IT IN user_bs
   checkCredentials() {
@@ -632,8 +630,8 @@ export class AuthService {
   }
 
   hasClickedGoToProjects() {
-    console.log('HAS BEEN CALLED HAS CLICKED GOTO PROJECTS')
     this.project_bs.next(null);
+    console.log('!!C-U »»»»» AUTH SERV - HAS BEEN CALLED "HAS CLICKED GOTO PROJECTS" - PUBLISH PRJCT = ', this.project_bs.next(null))
     localStorage.removeItem('project');
   }
 

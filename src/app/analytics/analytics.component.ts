@@ -26,8 +26,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   showSpinner = true;
   userProfileImageExist: boolean;
   id_project: any;
-  subscription: Subscription;
-  subscriptionToRequestServiceForRequestCount: Subscription;
+  subscriptionToRequestService_RequestForAgent: Subscription;
+  subscriptionToRequestService_RequestsCount: Subscription;
   constructor(
     private auth: AuthService,
     private requestsService: RequestsService,
@@ -37,7 +37,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
     console.log('!!! »»» HELLO ANALYTICS »»» ');
     this.servedAndUnservedRequestCount();
-
+    // this.getAllUsersOfCurrentProject();
   }
 
   ngOnInit() {
@@ -157,7 +157,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
     /* ----------==========   TILEDESK ANALYTICS   ==========---------- */
     this.getCurrentProject();
-    this.getCountOfRequestForMember()
+    // this.getCountOfRequestForAgent()
     this.getAllUsersOfCurrentProject();
 
   }
@@ -174,9 +174,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   getAllUsersOfCurrentProject() {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
-      console.log('!!! ANALYTICS - PROJECT USERS ARRAY ', projectUsers)
+      console.log('!!! ANALYTICS - !!!!! PROJECT USERS ARRAY ', projectUsers)
       if (projectUsers) {
-
 
         this.projectUsers = projectUsers;
 
@@ -188,13 +187,9 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
             * ANDREA:
             * CREATES AN OBJECT WITH HAS FOR 'KEY' THE USER ID OF THE ITERATED 'PROJECT USERS' AND A NESTED OBJECT THAT HAS FOR KEY 'VAL' WITH AN INITIAL VALUE= 0 */
           // , 'user': prjctuser['id_user']
-          this.users_reqs_dict[prjctuser['id_user']['_id']] = { 'val': 0 }
-
+          // this.users_reqs_dict[prjctuser['id_user']['_id']] = { 'val': 0 }
 
           const _user_id = prjctuser['id_user']['_id']
-
-
-          // this.verifyUserProfileImageOnFirebaseStorage(_user_id);
 
           console.log('!!! ANALYTICS - USER ID ', _user_id)
 
@@ -205,7 +200,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
         })
 
-        console.log('!!! ANALYTICS - ARRAY OF USERS ID ', this.users_id_array)
+        console.log('!!! ANALYTICS - !!!!! ARRAY OF USERS ID ', this.users_id_array)
         console.log('!!! ANALYTICS - USERS DICTIONARY ', this.users_reqs_dict)
         // console.log('!!! ANALYTICS - USERS DICTIONARY - array  ', this.users_reqs_dict_array)
 
@@ -213,18 +208,20 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
     }, error => {
 
-      console.log('!!! ANALYTICS - PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
+      console.log('!!! ANALYTICS - !!!!! PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
     }, () => {
-      console.log('!!! ANALYTICS - PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
+      console.log('!!! ANALYTICS - !!!!!  PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
+      this.getCountOfRequestForAgent()
     });
   }
 
-  getCountOfRequestForMember() {
-    this.subscription = this.requestsService.requestsList_bs.subscribe((requests) => {
+  getCountOfRequestForAgent() {
+    console.log('!!! ANALYTICS - !!!!! CALL GET COUNT OF REQUEST FOR AGENT');
+    this.subscriptionToRequestService_RequestForAgent = this.requestsService.requestsList_bs.subscribe((requests) => {
       console.log('!!! ANALYTICS - !!!!! SUBSCRIPTION TO REQUESTS-LIST-BS');
 
       if (requests) {
-        console.log('!!! ANALYTICS - REQUESTS LENGHT ', requests.length)
+        console.log('!!! ANALYTICS - !!!!! REQUESTS LENGHT ', requests.length)
 
         /**
          * NK:
@@ -234,14 +231,18 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
           flat_members_array = flat_members_array.concat(Object.keys(requests[i].members));
         }
         // Result of the concatenation of the single arrays of members
-        console.log('!!! ANALYTICS - FLAT-MEMBERS-ARRAY  ', flat_members_array)
-
+        console.log('!!! ANALYTICS - !!!!! FLAT-MEMBERS-ARRAY  ', flat_members_array)
+        console.log('!!! ANALYTICS - !!!!! USER_ID_ARRAY - LENGTH ', this.users_id_array.length);
         /**
          * FOR EACH USER-ID IN THE 'USER_ID_ARRAY' IS RUNNED 'getOccurrenceAndAssignToProjectUsers'
          * THAT RETURNS THE COUNT OF HOW MAMY TIMES THE USER-ID IS PRESENT IN THE 'flat_members_array' AND THEN
          * ASSIGN THE VALUE OF 'COUNT' TO THE PROPERTY 'VALUE' OF THE OBJECT 'PROJECT-USERS' */
-        for (let i = 0; i < this.users_id_array.length; i++) {
-          this.getOccurrenceAndAssignToProjectUsers(flat_members_array, this.users_id_array[i])
+
+        if (flat_members_array) {
+          for (let i = 0; i < this.users_id_array.length; i++) {
+            console.log('!!! ANALYTICS - !!!!! USER_ID_ARRAY - LENGTH ', this.users_id_array.length);
+            this.getOccurrenceAndAssignToProjectUsers(flat_members_array, this.users_id_array[i])
+          }
         }
 
         /**
@@ -297,15 +298,17 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
 
   getOccurrenceAndAssignToProjectUsers(array, value) {
+    console.log('!!! ANALYTICS - !!!!! CALLING GET OCCURRENCE AND ASSIGN TO PROJECT USERS');
     let count = 0;
     array.forEach((v) => (v === value && count++));
-    console.log('!!! ANALYTICS - #', count, ' REQUESTS ASSIGNED TO THE USER ', value)
+    console.log('!!! ANALYTICS - !!!!! #', count, ' REQUESTS ASSIGNED TO THE USER ', value);
     for (const p of this.projectUsers) {
       if (value === p.id_user._id) {
         p.value = count
       }
     }
     this.showSpinner = false;
+    // console.log('!!! ANALYTICS - !!!!! SHOW SPINNER', this.showSpinner);
     return count;
   }
   /* ANDREA - PSEUDO CODICE
@@ -321,7 +324,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   */
 
   servedAndUnservedRequestCount() {
-    this.subscriptionToRequestServiceForRequestCount = this.requestsService.requestsList_bs.subscribe((requests) => {
+    this.subscriptionToRequestService_RequestsCount = this.requestsService.requestsList_bs.subscribe((requests) => {
       this.date = new Date();
       console.log('!!! ANALYTICS - CURRENT DATE : ', this.date);
       console.log('!!! ANALYTICS - SUBSCRIBE TO REQUEST SERVICE - REQUESTS LIST: ', requests);
@@ -360,8 +363,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     console.log('!!! ANALYTICS - !!!!! UN - SUBSCRIPTION TO REQUESTS-LIST-BS');
-    this.subscription.unsubscribe();
-    this.subscriptionToRequestServiceForRequestCount.unsubscribe();
+    this.subscriptionToRequestService_RequestsCount.unsubscribe();
+    this.subscriptionToRequestService_RequestForAgent.unsubscribe();
   }
 
   startAnimationForLineChart(chart) {

@@ -57,6 +57,7 @@
     "TotalActive":"Total active",
     "Served":"Served",
     "Unserved":"Unserved",
+    "RequestsForAgent":"Requests for agent",
     "UserProfile": {
         "Profile": "Profile",
         "UploadImage": "Upload image",

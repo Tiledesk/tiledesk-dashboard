@@ -211,7 +211,7 @@
                     <div class="card-header" data-background-color="" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
                         <h4 class="title" style="margin-bottom:2px; font-size:1.1em; color: #566787">
                             
-                            Requests for member
+                            {{ "RequestsForAgent" | translate }}
                    
                         </h4>
                      </div>
@@ -254,10 +254,12 @@
                             
                             <tbody>
                                 <tr *ngFor="let member of projectUsers">
-                                    <td style="width:45px; padding-top:4px !important; padding-bottom:4px!important">
-                                            <!-- *ngIf="userProfileImageExist === true"  -->
+                                    <td style="width:45px; padding-top:4px !important; padding-bottom:4px!important; cursor:pointer"
+                                        (click)="goToMemberProfile(member?.id_user?._id)">
+                                   
                                         <img style="vertical-align: middle; width: 30px; height: 30px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
-                                        class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{member?.id_user?._id}}%2Fphoto.jpg?alt=media" onerror="this.src='assets/img/no_image_user.png'"/>
+                                        class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{member?.id_user?._id}}%2Fphoto.jpg?alt=media" 
+                                        onerror="this.src='assets/img/no_image_user.png'"/>
     
                                         <!-- <img *ngIf="userProfileImageExist !== true" style="vertical-align: middle; width: 60px; height: 60px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
                                         class="user-img" src="assets/img/no_image_user.png"/> -->

@@ -33,7 +33,7 @@ export class UserProfileComponent implements OnInit {
   emailverified: boolean;
   projectId: string;
   userProfileImageExist: boolean;
-
+  userImageHasBeenUploaded: boolean;
   constructor(
     public auth: AuthService,
     private _location: Location,
@@ -58,14 +58,14 @@ export class UserProfileComponent implements OnInit {
 
   checkUserImageExist() {
     this.usersService.userProfileImageExist.subscribe((image_exist) => {
-      console.log('USER-PROFILE - USER PROFILE EXIST ? ', image_exist);
+      console.log('USER-PROFILE - USER PROFILE IMAGE EXIST ? ', image_exist);
       this.userProfileImageExist = image_exist;
     });
   }
   checkUserImageUploadIsComplete() {
     this.uploadImageService.imageExist.subscribe((image_exist) => {
       console.log('USER-PROFILE - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
-      this.userProfileImageExist = image_exist;
+      this.userImageHasBeenUploaded = image_exist;
     });
   }
 

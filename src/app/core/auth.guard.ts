@@ -16,7 +16,7 @@ import { Location } from '@angular/common';
 import { ProjectService } from '../services/project.service';
 import { Project } from '../models/project-model';
 import { UsersService } from '../services/users.service';
-
+import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/pairwise';
 // import { RequestsMsgsComponent } from '../requests-msgs/requests-msgs.component';
 // import { HomeComponent } from '../home/home.component';
@@ -40,6 +40,7 @@ export class AuthGuard implements CanActivate {
   unauthorizedPage: boolean;
 
   USER_ROLE: string;
+  subscription: Subscription;
 
   constructor(
     private auth: AuthService,
@@ -103,15 +104,15 @@ export class AuthGuard implements CanActivate {
   getProjectIdFromUrl() {
 
 
-    // this.router.events.subscribe((e) => {
-    //   if (e instanceof NavigationEnd) {
-        // const current_url = e.url
-        if (this.location.path() !== '') {
-        const current_url = this.location.path()
-        console.log('!! AUTH GUARD - CURRENT URL ', current_url);
+    this.subscription = this.router.events.subscribe((e) => {
+      if (e instanceof NavigationEnd) {
+        const current_url = e.url
+        // if (this.location.path() !== '') {
+        // const current_url = this.location.path()
+        console.log('!!C-U AUTH GUARD - CURRENT URL ', current_url);
 
         const url_segments = current_url.split('/');
-        console.log('!! AUTH GUARD - CURRENT URL SEGMENTS ', url_segments);
+        console.log('!!C-U AUTH GUARD - CURRENT URL SEGMENTS ', url_segments);
 
         this.nav_project_id = url_segments[2];
         console.log('!! »»»»» AUTH GUARD - CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id);
@@ -136,10 +137,13 @@ export class AuthGuard implements CanActivate {
          * if the user navigate to the e-mail verification page)
          * */
         if (this.nav_project_id && this.nav_project_id !== 'email') {
+
+          this.subscription.unsubscribe();
+
           this.checkStoredProject(this.nav_project_id)
         }
       }
-    // }); // this.router.events.subscribe((e)
+    }); // this.router.events.subscribe((e)
   }
 
   checkStoredProject(navigationProjectId) {
@@ -148,7 +152,7 @@ export class AuthGuard implements CanActivate {
 
 
     if (storedProjectJson === null) {
-      console.log('!! »»»»» AUTH GUARD - PROJECT JSON IS NULL - RUN getProjectById() ')
+      console.log('!!C-U  »»»»» AUTH GUARD - PROJECT JSON IS NULL - RUN getProjectById() ')
       this.getProjectPublishAndSaveInStorage();
     }
 
@@ -204,7 +208,7 @@ export class AuthGuard implements CanActivate {
         }
         // PROJECT ID and NAME ARE SENT TO THE AUTH SERVICE THAT PUBLISHES
         this.auth.projectSelected(project);
-        console.log('!! »»»»» AUTH GUARD - PROJECT THAT IS PUBLISHED ', project);
+        console.log('!!C-U »»»»» AUTH GUARD - PROJECT THAT IS PUBLISHED ', project);
         // this.project_bs.next(project);
 
         const projectForStorage: Project = {
