@@ -1,11 +1,12 @@
 // tslint:disable:max-line-length
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import * as Chartist from 'chartist';
+
 import { AuthService } from '../core/auth.service';
 import { RequestsService } from './../services/requests.service';
 import { UsersService } from '../services/users.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
+// import * as Chartist from 'chartist';
 
 @Component({
   selector: 'app-analytics',
@@ -57,103 +58,104 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     //     }
     //   });
 
-    const dataPreferences = {
-      labels: ['35.03%', '32.12%', '19.99%', '6.24%'],
-      series: [35.03, 32.12, 19.99, 6.24]
-    };
+    // !!!!!! COMMEMNTO DA QUI SINO A TILEDESK ANALYTICS
+    // const dataPreferences = {
+    //   labels: ['35.03%', '32.12%', '19.99%', '6.24%'],
+    //   series: [35.03, 32.12, 19.99, 6.24]
+    // };
 
-    const optionsPreferences = {
-      height: '230px'
-    };
+    // const optionsPreferences = {
+    //   height: '230px'
+    // };
 
-    // tslint:disable-next-line:no-unused-expression
-    new Chartist.Pie('#chartPreferences', dataPreferences, optionsPreferences);
-
-
-    /* ----------==========    NUMBER OF REQUEST   ==========---------- */
-
-    const dataDailySalesChart: any = {
-      // labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
-      labels: ['V', 'S', 'D', 'L', 'M', 'M', 'G'],
-      series: [
-        [12, 17, 7, 17, 23, 18, 38]
-      ]
-    };
-
-    const optionsDailySalesChart: any = {
-      lineSmooth: Chartist.Interpolation.cardinal({
-        tension: 0
-      }),
-      low: 0,
-      high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-      chartPadding: { top: 0, right: 0, bottom: 0, left: 0 },
-    }
-
-    const dailySalesChart = new Chartist.Line('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
-
-    this.startAnimationForLineChart(dailySalesChart);
+    // // tslint:disable-next-line:no-unused-expression
+    // new Chartist.Pie('#chartPreferences', dataPreferences, optionsPreferences);
 
 
-    /* ----------==========     Users satisfaction    ==========---------- */
+    // /* ----------==========    NUMBER OF REQUEST   ==========---------- */
 
-    const dataCompletedTasksChart: any = {
-      // labels: ['12am', '3pm', '6pm', '9pm', '12pm', '3am', '6am', '9am'],
-      // labels: ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'],
-      labels: ['Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic', 'Gen', 'Feb', 'Mar', 'Apr', 'Mag'],
-      series: [
-        [50, 60, 100, 45, 40, 65, 70, 91, 70, 75, 95, 98]
-      ]
-    };
+    // const dataDailySalesChart: any = {
+    //   // labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+    //   labels: ['V', 'S', 'D', 'L', 'M', 'M', 'G'],
+    //   series: [
+    //     [12, 17, 7, 17, 23, 18, 38]
+    //   ]
+    // };
 
-    const optionsCompletedTasksChart: any = {
-      lineSmooth: Chartist.Interpolation.cardinal({
-        tension: 0
-      }),
-      low: 0,
-      high: 150, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-      chartPadding: { top: 0, right: 0, bottom: 0, left: 0 }
-    }
+    // const optionsDailySalesChart: any = {
+    //   lineSmooth: Chartist.Interpolation.cardinal({
+    //     tension: 0
+    //   }),
+    //   low: 0,
+    //   high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+    //   chartPadding: { top: 0, right: 0, bottom: 0, left: 0 },
+    // }
 
-    const completedTasksChart = new Chartist.Line('#completedTasksChart', dataCompletedTasksChart, optionsCompletedTasksChart);
+    // const dailySalesChart = new Chartist.Line('#dailySalesChart', dataDailySalesChart, optionsDailySalesChart);
 
-    // start animation for the Completed Tasks Chart - Line Chart
-    this.startAnimationForLineChart(completedTasksChart);
+    // this.startAnimationForLineChart(dailySalesChart);
 
 
+    // /* ----------==========     Users satisfaction    ==========---------- */
 
-    /* ----------==========    Chat average duration    ==========---------- */
+    // const dataCompletedTasksChart: any = {
+    //   // labels: ['12am', '3pm', '6pm', '9pm', '12pm', '3am', '6am', '9am'],
+    //   // labels: ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'],
+    //   labels: ['Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic', 'Gen', 'Feb', 'Mar', 'Apr', 'Mag'],
+    //   series: [
+    //     [50, 60, 100, 45, 40, 65, 70, 91, 70, 75, 95, 98]
+    //   ]
+    // };
 
-    const dataEmailsSubscriptionChart = {
-      // labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-      // labels: ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'],
-      labels: ['Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic', 'Gen', 'Feb', 'Mar', 'Apr', 'Mag'],
-      series: [
-        [542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 360]
+    // const optionsCompletedTasksChart: any = {
+    //   lineSmooth: Chartist.Interpolation.cardinal({
+    //     tension: 0
+    //   }),
+    //   low: 0,
+    //   high: 150, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+    //   chartPadding: { top: 0, right: 0, bottom: 0, left: 0 }
+    // }
 
-      ]
-    };
-    const optionsEmailsSubscriptionChart = {
-      axisX: {
-        showGrid: false
-      },
-      low: 0,
-      high: 1000,
-      chartPadding: { top: 0, right: 5, bottom: 0, left: 0 }
-    };
-    const responsiveOptions: any[] = [
-      ['screen and (max-width: 640px)', {
-        seriesBarDistance: 5,
-        axisX: {
-          labelInterpolationFnc: function (value) {
-            return value[0];
-          }
-        }
-      }]
-    ];
-    const emailsSubscriptionChart = new Chartist.Bar('#emailsSubscriptionChart', dataEmailsSubscriptionChart, optionsEmailsSubscriptionChart, responsiveOptions);
+    // const completedTasksChart = new Chartist.Line('#completedTasksChart', dataCompletedTasksChart, optionsCompletedTasksChart);
 
-    // start animation for the Emails Subscription Chart
-    this.startAnimationForBarChart(emailsSubscriptionChart);
+    // // start animation for the Completed Tasks Chart - Line Chart
+    // this.startAnimationForLineChart(completedTasksChart);
+
+
+
+    // /* ----------==========    Chat average duration    ==========---------- */
+
+    // const dataEmailsSubscriptionChart = {
+    //   // labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    //   // labels: ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'],
+    //   labels: ['Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic', 'Gen', 'Feb', 'Mar', 'Apr', 'Mag'],
+    //   series: [
+    //     [542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 360]
+
+    //   ]
+    // };
+    // const optionsEmailsSubscriptionChart = {
+    //   axisX: {
+    //     showGrid: false
+    //   },
+    //   low: 0,
+    //   high: 1000,
+    //   chartPadding: { top: 0, right: 5, bottom: 0, left: 0 }
+    // };
+    // const responsiveOptions: any[] = [
+    //   ['screen and (max-width: 640px)', {
+    //     seriesBarDistance: 5,
+    //     axisX: {
+    //       labelInterpolationFnc: function (value) {
+    //         return value[0];
+    //       }
+    //     }
+    //   }]
+    // ];
+    // const emailsSubscriptionChart = new Chartist.Bar('#emailsSubscriptionChart', dataEmailsSubscriptionChart, optionsEmailsSubscriptionChart, responsiveOptions);
+
+    // // start animation for the Emails Subscription Chart
+    // this.startAnimationForBarChart(emailsSubscriptionChart);
 
     /* ----------==========   TILEDESK ANALYTICS   ==========---------- */
     this.getCurrentProject();
@@ -367,62 +369,63 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     this.subscriptionToRequestService_RequestForAgent.unsubscribe();
   }
 
-  startAnimationForLineChart(chart) {
-    let seq: any, delays: any, durations: any;
-    seq = 0;
-    delays = 80;
-    durations = 500;
+  // !!!!! COMMENTO DA QUI
+  // startAnimationForLineChart(chart) {
+  //   let seq: any, delays: any, durations: any;
+  //   seq = 0;
+  //   delays = 80;
+  //   durations = 500;
 
-    chart.on('draw', function (data) {
-      if (data.type === 'line' || data.type === 'area') {
-        data.element.animate({
-          d: {
-            begin: 600,
-            dur: 700,
-            from: data.path.clone().scale(1, 0).translate(0, data.chartRect.height()).stringify(),
-            to: data.path.clone().stringify(),
-            easing: Chartist.Svg.Easing.easeOutQuint
-          }
-        });
-      } else if (data.type === 'point') {
-        seq++;
-        data.element.animate({
-          opacity: {
-            begin: seq * delays,
-            dur: durations,
-            from: 0,
-            to: 1,
-            easing: 'ease'
-          }
-        });
-      }
-    });
+  //   chart.on('draw', function (data) {
+  //     if (data.type === 'line' || data.type === 'area') {
+  //       data.element.animate({
+  //         d: {
+  //           begin: 600,
+  //           dur: 700,
+  //           from: data.path.clone().scale(1, 0).translate(0, data.chartRect.height()).stringify(),
+  //           to: data.path.clone().stringify(),
+  //           easing: Chartist.Svg.Easing.easeOutQuint
+  //         }
+  //       });
+  //     } else if (data.type === 'point') {
+  //       seq++;
+  //       data.element.animate({
+  //         opacity: {
+  //           begin: seq * delays,
+  //           dur: durations,
+  //           from: 0,
+  //           to: 1,
+  //           easing: 'ease'
+  //         }
+  //       });
+  //     }
+  //   });
 
-    seq = 0;
-  };
-  startAnimationForBarChart(chart) {
-    let seq2: any, delays2: any, durations2: any;
+  //   seq = 0;
+  // };
+  // startAnimationForBarChart(chart) {
+  //   let seq2: any, delays2: any, durations2: any;
 
-    seq2 = 0;
-    delays2 = 80;
-    durations2 = 500;
-    chart.on('draw', function (data) {
-      if (data.type === 'bar') {
-        seq2++;
-        data.element.animate({
-          opacity: {
-            begin: seq2 * delays2,
-            dur: durations2,
-            from: 0,
-            to: 1,
-            easing: 'ease'
-          }
-        });
-      }
-    });
+  //   seq2 = 0;
+  //   delays2 = 80;
+  //   durations2 = 500;
+  //   chart.on('draw', function (data) {
+  //     if (data.type === 'bar') {
+  //       seq2++;
+  //       data.element.animate({
+  //         opacity: {
+  //           begin: seq2 * delays2,
+  //           dur: durations2,
+  //           from: 0,
+  //           to: 1,
+  //           easing: 'ease'
+  //         }
+  //       });
+  //     }
+  //   });
 
-    seq2 = 0;
-  };
+  //   seq2 = 0;
+  // };
 
 
 }
