@@ -159,8 +159,12 @@
                         </div>
 
                         <span style="color: #00bcd4" > 
-                            <span *ngIf="servedRequestsCount > 1 || servedRequestsCount == 0" > {{ "Requests" | translate }} </span>
-                            <span *ngIf="servedRequestsCount == 1"> {{ "Request" | translate }} </span>
+                            <span *ngIf="servedRequestsCount > 1 || servedRequestsCount == 0"> 
+                                {{ "Requests" | translate }} 
+                            </span>
+                            <span *ngIf="servedRequestsCount == 1"> 
+                                {{ "Request" | translate }} 
+                            </span>
                         </span>
                     </div>
 
@@ -198,7 +202,9 @@
                             </span>    
                         </div>
                         <span style="color: #f44336" > 
-                            <span *ngIf="unservedRequestsCount > 1 || unservedRequestsCount == 0" > {{ "Requests" | translate }} </span>
+                            <span *ngIf="unservedRequestsCount > 1 || unservedRequestsCount == 0" > 
+                                {{ "Requests" | translate }} 
+                            </span>
                             <span *ngIf="unservedRequestsCount == 1"> {{ "Request" | translate }} </span>
                         </span>
 

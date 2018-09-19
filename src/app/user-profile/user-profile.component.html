@@ -16,7 +16,7 @@
                     <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
                     <div *ngIf="!showSpinner" class="card-content" >
-                        <label style="height: 36px; padding-top: 20px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 avatar_label">
+                        <label style="height: 36px; padding-top: 20px; padding-left: 16px; padding-right: 16px; text-align: right; margin-top:12px" class="col-sm-2 avatar_label">
                             Avatar
                         </label>
                         <div class="col-sm-10">
@@ -24,10 +24,10 @@
                             <!-- 2F5b7af638109dc06fedefe063 -->
                             <!-- userProfileImageExist: {{ userProfileImageExist }} - userImageHasBeenUploaded:{{ userImageHasBeenUploaded }} -->
                             <div class="card-avatar" style="padding-bottom:15px;">
-                                <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" style="vertical-align: middle; width: 60px; height: 60px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
+                                <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
                                 class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{userId}}%2Fphoto.jpg?alt=media" />
                                
-                                <img *ngIf="userProfileImageExist === false && userImageHasBeenUploaded !== true" style="vertical-align: middle; width: 60px; height: 60px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
+                                <img *ngIf="userProfileImageExist === false && userImageHasBeenUploaded !== true" style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
                                 class="user-img" src="assets/img/no_image_user.png"/>
                                 <!-- <img style="vertical-align: middle; width: 60px; height: 60px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
                                 class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{userId}}%2F8a533bcc-59df-421a-98f0-f499ca40fbdf-01-01-1529932001.jpeg?alt=media" 
