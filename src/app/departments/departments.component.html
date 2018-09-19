@@ -34,13 +34,14 @@
                       </strong>
                     </span>
                   </th>
-                  <th>
+
+                  <!-- <th>
                     <span style="color: #566787"> 
                       <strong>
                         Id
                       </strong>
                     </span>
-                  </th>
+                  </th> -->
 
                   <th>
                     <span style="color: #566787"> 
@@ -100,12 +101,17 @@
                 
                 <tr *ngFor="let dept of departments">
                   <td *ngIf="dept?.default !== true">
-                    {{ dept?.name }}
+                      <span class="tooltipx">
+                        {{ dept?.name }}
+                      
+                      <span class="tooltiptext">Id: <br> {{ dept?._id   }} </span>
+                      </span>
+                      
                   </td>
-                  <!-- width: 280px !important -->
-                  <td *ngIf="dept?.default !== true" style="">
+                  
+                  <!-- <td *ngIf="dept?.default !== true">
                     {{ dept?._id }}
-                  </td>
+                  </td> -->
 
                   <!-- // BOT -->
                   <td *ngIf="dept?.default !== true" style="">
