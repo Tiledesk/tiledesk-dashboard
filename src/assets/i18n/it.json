@@ -290,7 +290,8 @@
         "BotDeleted": "Bot eliminato",
         "Error": "Errore",
         "AnErrorHasOccurred": "Si è verificato un errore",
-        "Continue": "Continua"
+        "Continue": "Continua",
+        "BotQuickTipsText":"Quando un cliente entra in chat tramite TileDesk, potresti non essere sempre in grado di rispondere. Fortunatamente, puoi configurare un Bot per aiutarti e poi attivarlo in un Dipartimento"
     },
     "BotsAddEditPage": {
         "AddBot": "Aggiungi Bot",
