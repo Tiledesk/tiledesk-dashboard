@@ -58,6 +58,8 @@
     "Served":"Servite",
     "Unserved":"Non servite",
     "RequestsForAgent":"Richieste per agente",
+    "NumberOfRequestsLast7Days":"Numero di richieste ultimi 7 giorni",
+    "LastMonth": "Ultimo mese", 
     "UserProfile": {
         "Profile": "Profilo",
         "UploadImage": "Carica immagine",

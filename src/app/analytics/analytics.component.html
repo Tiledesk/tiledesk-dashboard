@@ -1,5 +1,5 @@
 <p style="margin-top:10px; padding-left:30px" class="navbar-brand">
-    Analytics
+    Analytics  
 </p>
 <div class="main-content" style="padding-top:0px">
 
@@ -80,18 +80,13 @@
         </div> -->
         <!-- ./ row -->
 
-            <div class="row" style="text-align: center">
-                <div class="col-md-12" >
-                    <h3 class="section-title">
-                        Real-Time Monitoring
-                    </h3>
-                    <!-- <div style="width: 100%; height: 20px; border-bottom: 1px solid black; text-align: center">
-                        <span style="font-size: 40px; background-color: #F3F5F6; padding: 0 10px;">
-                            Section Title
-                        </span>
-                    </div> -->
-                </div>
+        <div class="row" style="text-align: center">
+            <div class="col-md-12" >
+                <h3 class="section-title">
+                    Real-Time Monitoring
+                </h3>
             </div>
+        </div>
         <div class="row">
             <!-- ============ TOTAL ACTIVE REQUESTS ============ -->
             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
@@ -218,12 +213,11 @@
 
         
         <div class="row">
-
             <!-- /// start ======== --- TABLE "REQUESTS X AGENT" --- ======== /// -->
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header" data-background-color="" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
-                        <h4 class="title" style="margin-bottom:2px; font-size:1.1em; color: #566787">
+                        <h4 class="c21-title" style="margin-bottom:2px; margin-top:2px;">
                             
                             {{ "RequestsForAgent" | translate }}
                    
@@ -262,9 +256,7 @@
                                         </span> -->
                                     </th>
                                 </tr>
-
                             </thead>
-
                             
                             <tbody>
                                 <tr *ngFor="let member of projectUsers">
@@ -295,35 +287,81 @@
                 </div>
             </div>
             <!-- /// end ======== --- TABLE "REQUESTS X AGENT" --- ======== /// -->
+
+            <!-- /// start ======== --- INFO BOX --- ======== /// -->
+            <!-- <div class="col-md-8">
+                <div class="card">
+                    <div class="card-content" style="text-align: center">
+            
+                        <h3>
+                            Lorem ipsum.... 
+                        </h3>
+            
+                    </div>
+                </div>
+            </div> -->
+
+
         </div>
  
+  
         <div class="row">
-            <div class="col-md-12">
-                <p style="margin-top:10px; padding-left:30px" class="navbar-brand">
-                    Analytics
-                </p>
-            </div>
-        </div>
 
-        <div class="row">
+            <!-- /// start ======== --- CARD "LAST MONTH REQUESTS COUNT" --- ======== /// -->
+            <div class="col-md-4">
+                <div class="card card-stats">
+                    
+                    <div class="card-header tiledesk_card_header">
+                        <i class="material-icons card-header_icon " style="color: #ff9800; ">
+                            message
+                        </i>
+                    </div>
+    
+                    <div class="card-content" style="text-align: center">
+    
+                        <div class="request_count" style="color: #ff9800">
+                            
+                            <span class="request_count_icons_numbers">  
+                                {{ lastMonthrequestsCount }}
+                            </span>
+                                                
+                        </div>
+
+                        <span style="color: #ff9800" > 
+                            <span *ngIf="lastMonthrequestsCount > 1 || lastMonthrequestsCount == 0" > {{ "Requests" | translate }} </span>
+                            <span *ngIf="lastMonthrequestsCount == 1"> {{ "Request" | translate }} </span>
+                        </span>
+
+                    </div>
+                    <div class="card-footer request_count_footer" style="margin-bottom: 11px;">
+                        {{ "LastMonth" | translate }} 
+                    </div>
+                </div>
+            </div>
+
+
             <!-- /// start ======== --- GRAPHICS "REQUESTS BY DAY" --- ======== /// -->
             <div class="col-md-8">
                 <div class="card" >
                     <div class="card-header card-chart" data-background-color="green">
                         <div class="ct-chart" id="requestsByDayChart"></div>
                     </div>
-                    <div class="card-content">
-                        <h4 class="title">Numero Richieste</h4>
-                        <p class="category"><span class="text-success"><i class="fa fa-long-arrow-up"></i> 55%  </span> aumento delle richieste oggi.</p>
+                    <div class="card-content" style="padding-top: 10px; padding-bottom: 2px;">
+                        <h4 class="request_count_footer" style="padding-top:0px; padding-bottom:0px">
+                            {{ "NumberOfRequestsLast7Days" | translate }}  
+                        </h4>
+                        <!-- <p class="category"><span class="text-success"><i class="fa fa-long-arrow-up"></i> 55%  </span> aumento delle richieste oggi.</p> -->
                     </div>
                 </div>
             </div>
+
+
+
         </div>
 
 
-
-
-        <div class="row">
+        <!-- COMMENTO DA QUI -->
+        <!-- <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6">
                 <div class="card card-stats" >
                     <div class="card-header" data-background-color="orange">
@@ -396,13 +434,13 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!-- ./ test -->
 
         <!-- graphics -->
 
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-md-4">
                 <div class="card" >
                     <div class="card-header card-chart" data-background-color="green">
@@ -438,30 +476,11 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!-- my graphics -->
 
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header " data-background-color="red">
-                        <i class="material-icons">message</i>
-                    </div>
-                    <div class="card-content">
-                        <h4 class="card-title">Numero di richieste per dipartimento</h4>
-                    </div>
-                    <div id="chartPreferences" class="ct-chart"></div>
-                    <div class="card-footer">
-                        <h6>Legenda</h6>
-                        <i class="fa fa-circle text-info"></i> Agenti <br>
-                        <i class="fa fa-circle text-danger"></i> Area processi organizzativi <br>
-                        <i class="fa fa-circle text-warning"></i> Area commerciale <br> 
-                        <i class="fa fa-circle" style="color:#8f31aa"></i> Area personale <br>
-                    </div>
-                </div>
-            </div>
-        </div>
+       
 
     </div>
 </div>
