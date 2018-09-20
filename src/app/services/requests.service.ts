@@ -43,7 +43,7 @@ export class RequestsService {
   unservedRequest: any;
 
   requestList: Request[] = [];
-  allrequest_List: Request[] = [];
+  allRequestList: Request[] = [];
 
   unsubscribe: any;
 
@@ -57,7 +57,7 @@ export class RequestsService {
   public mySubject: BehaviorSubject<any> = new BehaviorSubject<any[]>(null);
 
   public requestsList_bs: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
-  public alltheRequestsList_bs: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
+  public allRequestsList_bs: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
 
   project: Project;
   constructor(
@@ -228,8 +228,8 @@ export class RequestsService {
       this.requestsList_bs.next(this.requestList);
       console.log('!!! REQUESTS-SERVICE PUBLISH REQUEST LIST ', this.requestList);
 
-      this.alltheRequestsList_bs.next(this.allrequest_List);
-      console.log('!!! REQUESTS-SERVICE PUBLISH FULL REQUEST LIST ', this.allrequest_List)
+      this.allRequestsList_bs.next(this.allRequestList);
+      console.log('!!! REQUESTS-SERVICE PUBLISH THE LIST OF * ALL * REQUESTS ', this.allRequestList)
     }, error => {
       console.log('GET REQUEST - ERROR ', error)
     }, () => {
@@ -288,26 +288,26 @@ export class RequestsService {
     if (r === null || r === undefined) {
       return;
     }
-    for (let i = 0; i < this.allrequest_List.length; i++) {
+    for (let i = 0; i < this.allRequestList.length; i++) {
       // IF THE ID OF THE REQUEST RETURNED FROM DOCUMENT CHANGE (i.e. r.recipient) IS ALREADY IN THE REQUEST LIST this.requestList[i].recipient
       // THIS MEAN THAT THE TYPE OF DocumentChange RETURNED FROM THE QUERY IS MODIFIED OR REMOVED
-      if (r.recipient === this.allrequest_List[i].recipient) {
+      if (r.recipient === this.allRequestList[i].recipient) {
 
         // USE CASE: DocumentChange TYPE = MODIFIED
         // - run an UPDATE: SUBSTITUTE THE EXISTING REQUEST WITH THE MODIFIED ONE ...
         if (r.firebaseDocChangeType === 'modified') {
           // console.log('2) »»»»» DOCUMENT CHANGE TYPE ', r.firebaseDocChangeType)
-          this.allrequest_List[i] = r;
+          this.allRequestList[i] = r;
           // this.reorderRequests()
           return;
         } else {
           // USE CASE REQUEST ARCHIVED - DocumentChange TYPE = REMOVED
           // run a SPLICE to remove the request from the list
           // console.log('2) »»»»» DOCUMENT CHANGE TYPE ', r.firebaseDocChangeType)
-          const index = this.allrequest_List.indexOf(this.requestList[i]);
+          const index = this.allRequestList.indexOf(this.requestList[i]);
           // console.log('INDEX OF THE REQUEST TO REMOVE ', index)
           if (index > -1) {
-            this.allrequest_List.splice(index, 1);
+            this.allRequestList.splice(index, 1);
           }
           return;
         }
@@ -315,7 +315,7 @@ export class RequestsService {
       // console.log('REQUEST RECIPIENT ', this.requestList[i].recipient)
     }
     // ... ELSE ADD THE REQUEST
-    this.allrequest_List.push(r);
+    this.allRequestList.push(r);
     // this.reorderRequests()
   }
 
@@ -350,8 +350,11 @@ export class RequestsService {
 
   resetRequestsList() {
     this.requestList = []
-    console.log('RESET REQUEST LIST - REQUEST LIST ', this.requestList)
+    this.allRequestList = []
+    console.log('RESET LIST OF REQUESTS  - REQUEST-LIST ', this.requestList);
+    console.log('RESET LIST OF ALL REQUESTS  - ALL-REQUEST-LIST ', this.allRequestList);
     this.requestsList_bs.next(this.requestList);
+    this.allRequestsList_bs.next(this.allRequestList);
   }
 
   /*

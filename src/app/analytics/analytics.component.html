@@ -217,7 +217,7 @@
         </div>
          <!-- // END NEW ROW -->
 
-        <!-- // START GLOBAL REQUESTS COUNT (SERVED UNSERVED ACTIVE) -->
+        <!-- // START ALL THE REQUESTS COUNT (SERVED UNSERVED ACTIVE) -->
          <div class="row" style="text-align: center">
                 <div class="col-md-12" >
                     <h4 class="section-title">
@@ -226,7 +226,7 @@
                 </div>
             </div>
             <div class="row">
-                <!-- ============ TOTAL ACTIVE - OVER GLOBAL REQUESTS ============ -->
+                <!-- ============ TOTAL ACTIVE - OVER ALL THE REQUESTS ============ -->
                 <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                     <div class="card card-stats">
                         
@@ -271,7 +271,7 @@
                     </div>
                 </div>
     
-                <!-- ============ SERVED - OVER GLOBAL REQUESTS ============ -->
+                <!-- ============ SERVED - OVER ALL THE REQUESTS ============ -->
                 <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                     <div class="card card-stats">
                        
@@ -316,7 +316,7 @@
                     </div>
                 </div>
     
-                <!-- ============ UNSERVED - OVER GLOBAL REQUESTS ============ -->
+                <!-- ============ UNSERVED - COUNT OVER ALL THE REQUESTS ============ -->
                 <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                     <div class="card card-stats">
     
@@ -442,18 +442,51 @@
             </div>
             <!-- /// end ======== --- TABLE "REQUESTS X AGENT" --- ======== /// -->
 
-            <!-- /// start ======== --- INFO BOX --- ======== /// -->
-            <!-- <div class="col-md-8">
-                <div class="card">
-                    <div class="card-content" style="text-align: center">
+            <!-- /// start ======== --- TABLE "REQUESTS X DEPTS" --- ======== /// -->
+                <div class="col-md-4">
+                    <div class="card">
+                            <div class="card-header" data-background-color="" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
+                                <h4 class="c21-title" style="margin-bottom:2px; margin-top:2px;">
+                                    
+                                    {{ "RequestsForDept" | translate }}
+                           
+                                </h4>
+                             </div>
             
-                        <h3>
-                            Lorem ipsum.... 
-                        </h3>
-            
-                    </div>
-                </div>
-            </div> -->
+                            <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
+                            <div class="card-content table-responsive" style="padding-top: 0px">
+                                <table class="table table-hover">
+        
+                                    <thead>
+                                        <tr>
+                                            <!-- ------====== column DEPT NAME ======------ -->
+                                            <th> </th>
+        
+                                             <!-- ------====== column # OF ASSIGNED REQUESTS  ======------ -->
+                                            <th> </th>
+                                        </tr>
+                                    </thead>
+                                    
+                                    <tbody>
+                                        <tr *ngFor="let dept of departments">
+                   
+                                            <td style="cursor:pointer">
+                                               
+                                                {{ dept?.name }}
+                                            </td>
+                        
+                                            <td>
+                                                <span style="font-weight: 500">  
+                                                    {{ dept?.value }}
+                                                </span> 
+                                               <!-- <span style="color: #999999; font-size:0.9em"> request </span> -->
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+            </div>
 
 
         </div>

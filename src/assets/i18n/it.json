@@ -58,6 +58,7 @@
     "Served":"Servite",
     "Unserved":"Non servite",
     "RequestsForAgent":"Richieste per agente",
+    "RequestsForDept":"Richieste per dipartimento",
     "NumberOfRequestsLast7Days":"Numero di richieste ultimi 7 giorni",
     "LastMonth": "Ultimo mese", 
     "UserProfile": {

@@ -32,11 +32,13 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   showSpinner = true;
   userProfileImageExist: boolean;
   id_project: any;
-  subscriptionToRequestService_RequestForAgent: Subscription;
-  subscriptionToRequestService_RequestsCount: Subscription;
-  subscriptionToRequestService_GlobalRequestsCount: Subscription;
+  // subscriptionToRequestService_RequestForAgent: Subscription;
+  // subscriptionToRequestService_RequestsCount: Subscription;
+  // subscriptionToRequestService_GlobalRequestsCount: Subscription;
+  subscription: Subscription;
   lastMonthrequestsCount: number;
   monthNames: any;
+  departments: any;
   constructor(
     private auth: AuthService,
     private requestsService: RequestsService,
@@ -181,10 +183,10 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     // this.getCountOfRequestForAgent()
     this.servedAndUnservedRequestsCount();
     this.globalServedAndUnservedRequestsCount();
-    this.getGlobalRequestsCountForAgent();
+    this.getCountOf_AllRequestsForAgent();
     this.getRequestsByDay();
     this.getlastMonthRequetsCount();
-    this.getDeptsByProjectId();
+    this.getCountOf_AllRequestsForDept();
   }
   /* ----------==========   end ON INIT    ==========---------- */
 
@@ -260,33 +262,83 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   /**
   /* GETS ONLY THE DEPTs WITH THE CURRENT PROJECT ID
   /* note: the project id is passed get and passed by mongodbDepartmentService */
-  getDeptsByProjectId() {
-    this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
-      console.log('!!! ANALYTICS - DEPTS ', departments);
+  getCountOf_AllRequestsForDept() {
+    this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
+      console.log('!!! ANALYTICS ALL REQUESTS X DEPT - GET DEPTS RESPONSE ', _departments);
 
-      if (departments) {
-        departments.forEach(dept => {
+      this.departments  = _departments
+      const depts_names_array = [];
+      if (this.departments) {
+        this.departments.forEach(dept => {
 
-          console.log('!!! ANALYTICS - DEPT ', dept);
+          // console.log('!!! ANALYTICS - DEPT ', dept);
+          console.log('!!! ANALYTICS ALL REQUESTS X DEPT - DEPT NAME: ', dept['name']);
+          depts_names_array.push(dept['name']);
         });
       }
+      console.log('!!! ANALYTICS ALL REQUESTS X DEPT - ARRAY OF DEPTS NAMES: ', depts_names_array);
+
+
+      this.subscription = this.requestsService.allRequestsList_bs.subscribe((global_requests) => {
+        console.log('!!! ANALYTICS ALL REQUESTS X DEPT - !!!!! SUBSCRIPTION TO ALL-THE-REQUESTS-LIST-BS ', global_requests);
+
+        const depts_names_InAllRequests_array = []
+        if (global_requests) {
+          global_requests.forEach(g_r => {
+
+            depts_names_InAllRequests_array.push(g_r.attributes.departmentName)
+
+          });
+        }
+
+        console.log('!!! ALL REQUESTS X DEPT - ARRAY OF DEPARTMENT NAME ', depts_names_InAllRequests_array)
+
+        depts_names_array.forEach(dept_name => {
+          this.getDeptNameOccurrence(depts_names_InAllRequests_array, dept_name)
+        });
+      })
+
     }, error => {
       this.showSpinner = false;
-      console.log('!!! ANALYTICS - DEPTS - ERROR', error);
+      console.log('!!! ALL REQUESTS X DEPT - GET DEPTS - ERROR: ', error);
     }, () => {
-      console.log('!!! ANALYTICS - DEPTS - COMPLETE')
+      console.log('!!! ALL REQUESTS X DEPT - GET DEPTS * COMPLETE *')
     });
   }
 
-  getGlobalRequestsCountForAgent() {
+  getDeptNameOccurrence(array, value) {
+    // console.log('!!! ANALYTICS - ALL REQUESTS X DEPT - GET DEP OCCURRENCE FOR DEPTS ');
+    let count = 0;
+    array.forEach((v) => (v === value && count++));
+    console.log('!!! ANALYTICS - ALL REQUESTS X DEPT - #', count, ' REQUESTS ASSIGNED TO DEPT ', value);
+    for (const dept of this.departments) {
+      if (value === dept.name) {
+        dept.value = count
+      }
+    }
+    // this.showSpinner = false;
+    // console.log('!!! ANALYTICS - !!!!! SHOW SPINNER', this.showSpinner);
+    return count;
+  }
+
+  /**
+   * ********************************************************************************************
+   * ========================== COUNT OF ** ALL ** REQUESTS X AGENT =============================
+   * ********************************************************************************************
+   * GET THE OCCURRENCES OF THE USER-ID IN THE MEMBERS ARRAYS OF ALL THE REQUESTS OF THE PROJECT
+   * (i.e. the requests are not filtered for the current_user_id and so an user with ADMIN role will be able to see
+   * also the requests of a group to which it does not belong)
+   */
+  getCountOf_AllRequestsForAgent() {
+    this.getProjectUsersAndRunFlatMembersArray();
+  }
+
+  getProjectUsersAndRunFlatMembersArray() {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
       console.log('!!! ANALYTICS - !!!!! PROJECT USERS ARRAY ', projectUsers)
       if (projectUsers) {
-
         this.projectUsers = projectUsers;
-
         projectUsers.forEach(prjctuser => {
-
           console.log('!!! ANALYTICS - PROJECT USERS RETURNED FROM THE CALLBACK', prjctuser)
 
           const _user_id = prjctuser['id_user']['_id']
@@ -301,28 +353,23 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
           * NK:
           * CREATES AN ARRAY OF ALL THE USER ID OF THE ITERATED 'PROJECT USERS' */
           this.users_id_array.push(_user_id);
-
         })
-
         console.log('!!! ANALYTICS - !!!!! ARRAY OF USERS ID ', this.users_id_array)
         // console.log('!!! ANALYTICS - USERS DICTIONARY ', this.users_reqs_dict)
         // console.log('!!! ANALYTICS - USERS DICTIONARY - array  ', this.users_reqs_dict_array)
-
       }
-
     }, error => {
-
       console.log('!!! ANALYTICS - !!!!! PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
     }, () => {
       console.log('!!! ANALYTICS - !!!!!  PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
-      this.getCountOfRequestForAgent()
+      this.getFlatMembersArrayFromAllRequestsAndRunGetOccurrence()
     });
   }
 
-  getCountOfRequestForAgent() {
+  getFlatMembersArrayFromAllRequestsAndRunGetOccurrence() {
     console.log('!!! ANALYTICS - !!!!! CALL GET COUNT OF REQUEST FOR AGENT');
-    this.subscriptionToRequestService_RequestForAgent = this.requestsService.alltheRequestsList_bs.subscribe((requests) => {
-      console.log('!!! ANALYTICS - !!!!! SUBSCRIPTION TO REQUESTS-LIST-BS');
+    this.subscription = this.requestsService.allRequestsList_bs.subscribe((requests) => {
+      console.log('!!! ANALYTICS - !!!!! SUBSCRIPTION TO ALL-THE-REQUESTS-LIST-BS');
 
       if (requests) {
         console.log('!!! ANALYTICS - !!!!! REQUESTS LENGHT ', requests.length)
@@ -345,7 +392,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
         if (flat_members_array) {
           for (let i = 0; i < this.users_id_array.length; i++) {
             console.log('!!! ANALYTICS - !!!!! USER_ID_ARRAY - LENGTH ', this.users_id_array.length);
-            this.getOccurrenceAndAssignToPrjctUsers(flat_members_array, this.users_id_array[i])
+            this.getOccurrenceAndAssignToProjectUser(flat_members_array, this.users_id_array[i])
           }
         }
 
@@ -395,12 +442,9 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
         // });
 
       }
-
     });
   }
-
-
-  getOccurrenceAndAssignToPrjctUsers(array, value) {
+  getOccurrenceAndAssignToProjectUser(array, value) {
     console.log('!!! ANALYTICS - !!!!! CALLING GET OCCURRENCE REQUESTS FOR AGENT AND ASSIGN TO PROJECT USERS');
     let count = 0;
     array.forEach((v) => (v === value && count++));
@@ -426,8 +470,13 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   })
   */
 
+  /**
+   * ******************************************************************************************
+   * ====== COUNT OF SERVED, UNSERVED AND OF THE ACTIVE (i.e. SERVED + UNSERVED) REQUESTS ======
+   * ******************************************************************************************
+   */
   servedAndUnservedRequestsCount() {
-    this.subscriptionToRequestService_RequestsCount = this.requestsService.requestsList_bs.subscribe((requests) => {
+    this.subscription = this.requestsService.requestsList_bs.subscribe((requests) => {
       this.date = new Date();
       console.log('!!! ANALYTICS - CURRENT DATE : ', this.date);
       console.log('!!! ANALYTICS - SUBSCRIBE TO REQUEST SERVICE - REQUESTS LIST: ', requests);
@@ -460,8 +509,13 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * *****************************************************************************************************
+   * ====== COUNT OF ** ALL ** SERVED, UNSERVED AND OF THE ACTIVE (i.e. SERVED + UNSERVED) REQUESTS ======
+   * *****************************************************************************************************
+   */
   globalServedAndUnservedRequestsCount() {
-    this.subscriptionToRequestService_GlobalRequestsCount = this.requestsService.alltheRequestsList_bs.subscribe((global_requests) => {
+    this.subscription = this.requestsService.allRequestsList_bs.subscribe((global_requests) => {
       this.date = new Date();
       console.log('!!! ANALYTICS - CURRENT DATE : ', this.date);
       console.log('!!! ANALYTICS - SUBSCRIBE TO REQUEST SERVICE - GLOBAL REQUESTS LIST: ', global_requests);
@@ -493,6 +547,11 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * *****************************************************************************************************
+   * ======================== COUNT OF ** ALL ** THE REQUESTS OF THE LAST MONTH ==========================
+   * *****************************************************************************************************
+   */
   getlastMonthRequetsCount() {
     this.requestsService.lastMonthRequetsCount().subscribe((_lastMonthrequestsCount: any) => {
       console.log('!!! ANALYTICS - LAST MONTH REQUESTS COUNT - RESPONSE ', _lastMonthrequestsCount);
@@ -518,9 +577,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     console.log('!!! ANALYTICS - !!!!! UN - SUBSCRIPTION TO REQUESTS-LIST-BS');
-    this.subscriptionToRequestService_RequestsCount.unsubscribe();
-    this.subscriptionToRequestService_RequestForAgent.unsubscribe();
-    this.subscriptionToRequestService_GlobalRequestsCount.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
 
