@@ -14,9 +14,14 @@ import * as Chartist from 'chartist';
   styleUrls: ['./analytics.component.scss']
 })
 export class AnalyticsComponent implements OnInit, OnDestroy {
-  activeRequestsCount
+  activeRequestsCount: number;
   unservedRequestsCount: number;
   servedRequestsCount: number;
+
+  global_activeRequestsCount: number;
+  global_unservedRequestsCount: number;
+  global_servedRequestsCount: number;
+
   date: any;
   requests: any;
   users_id_array = [];
@@ -29,6 +34,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   id_project: any;
   subscriptionToRequestService_RequestForAgent: Subscription;
   subscriptionToRequestService_RequestsCount: Subscription;
+  subscriptionToRequestService_GlobalRequestsCount: Subscription;
   lastMonthrequestsCount: number;
   monthNames: any;
   constructor(
@@ -40,7 +46,6 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   ) {
 
     console.log('!!! »»» HELLO ANALYTICS »»» ');
-    this.servedAndUnservedRequestCount();
     // this.getAllUsersOfCurrentProject();
     this.getBrowserLangAndSwitchMonthName();
   }
@@ -173,7 +178,9 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     /* ----------==========   TILEDESK ANALYTICS   ==========---------- */
     this.getCurrentProject();
     // this.getCountOfRequestForAgent()
-    this.getAllUsersOfCurrentProjectAndAssignRequestsOccurrence();
+    this.servedAndUnservedRequestsCount();
+    this.globalServedAndUnservedRequestsCount();
+    this.getGlobalRequestsCountForAgent();
     this.getRequestsByDay();
     this.getlastMonthRequetsCount();
   }
@@ -248,7 +255,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     });
   }
 
-  getAllUsersOfCurrentProjectAndAssignRequestsOccurrence() {
+  getGlobalRequestsCountForAgent() {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
       console.log('!!! ANALYTICS - !!!!! PROJECT USERS ARRAY ', projectUsers)
       if (projectUsers) {
@@ -291,7 +298,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   getCountOfRequestForAgent() {
     console.log('!!! ANALYTICS - !!!!! CALL GET COUNT OF REQUEST FOR AGENT');
-    this.subscriptionToRequestService_RequestForAgent = this.requestsService.requestsList_bs.subscribe((requests) => {
+    this.subscriptionToRequestService_RequestForAgent = this.requestsService.alltheRequestsList_bs.subscribe((requests) => {
       console.log('!!! ANALYTICS - !!!!! SUBSCRIPTION TO REQUESTS-LIST-BS');
 
       if (requests) {
@@ -396,7 +403,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   })
   */
 
-  servedAndUnservedRequestCount() {
+  servedAndUnservedRequestsCount() {
     this.subscriptionToRequestService_RequestsCount = this.requestsService.requestsList_bs.subscribe((requests) => {
       this.date = new Date();
       console.log('!!! ANALYTICS - CURRENT DATE : ', this.date);
@@ -430,6 +437,42 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     });
   }
 
+  globalServedAndUnservedRequestsCount() {
+    this.subscriptionToRequestService_GlobalRequestsCount = this.requestsService.alltheRequestsList_bs.subscribe((global_requests) => {
+      this.date = new Date();
+      console.log('!!! ANALYTICS - CURRENT DATE : ', this.date);
+      console.log('!!! ANALYTICS - SUBSCRIBE TO REQUEST SERVICE - GLOBAL REQUESTS LIST: ', global_requests);
+
+      // this.requests = global_requests;
+
+      if (global_requests) {
+        let count_globalUnserved = 0;
+        let count_globalServed = 0
+        global_requests.forEach(g_r => {
+
+          if (g_r.support_status === 100) {
+            count_globalUnserved = count_globalUnserved + 1;
+          }
+          if (g_r.support_status === 200) {
+            count_globalServed = count_globalServed + 1
+          }
+        });
+
+        this.global_unservedRequestsCount = count_globalUnserved;
+        console.log('!!! ANALYTICS - # OF GLOBAL UNSERVED REQUESTS:  ', this.global_unservedRequestsCount);
+
+        this.global_servedRequestsCount = count_globalServed;
+        console.log('!!! ANALYTICS - # OF GLOBAL SERVED REQUESTS:  ', this.global_servedRequestsCount);
+
+        this.global_activeRequestsCount = this.global_unservedRequestsCount + this.global_servedRequestsCount
+        console.log('!!! ANALYTICS - # OF GLOBAL ACTIVE REQUESTS:  ', this.global_activeRequestsCount);
+
+      }
+    });
+
+
+  }
+
   getlastMonthRequetsCount() {
     this.requestsService.lastMonthRequetsCount().subscribe((_lastMonthrequestsCount: any) => {
       console.log('!!! ANALYTICS - LAST MONTH REQUESTS COUNT - RESPONSE ', _lastMonthrequestsCount);
@@ -457,6 +500,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     console.log('!!! ANALYTICS - !!!!! UN - SUBSCRIPTION TO REQUESTS-LIST-BS');
     this.subscriptionToRequestService_RequestsCount.unsubscribe();
     this.subscriptionToRequestService_RequestForAgent.unsubscribe();
+    this.subscriptionToRequestService_GlobalRequestsCount.unsubscribe();
   }
 
 

@@ -43,6 +43,7 @@ export class RequestsService {
   unservedRequest: any;
 
   requestList: Request[] = [];
+  allrequest_List: Request[] = [];
 
   unsubscribe: any;
 
@@ -56,6 +57,7 @@ export class RequestsService {
   public mySubject: BehaviorSubject<any> = new BehaviorSubject<any[]>(null);
 
   public requestsList_bs: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
+  public alltheRequestsList_bs: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
 
   project: Project;
   constructor(
@@ -192,23 +194,23 @@ export class RequestsService {
   }
 
   // !!!! NO MORE USED
-  getMyDeptsAndStartRequestsQuery() {
-    console.log('----> CHECK MY MY DEPT - RUN GET MY DEPTS AND START REQUESTS QUERY')
-    this.getMyDepts().subscribe((depts: any) => {
-      console.log('----> CHECK MY MY DEPT - RUN GET MY DEPTS AND START REQUESTS QUERY - >> MY DEPTS << ', depts);
-      // PUBBLISH MY DEPTS
-      // this.myDepts_bs.next(depts);
-      this.myDepts = depts
-      if (this.myDepts) {
+  // getMyDeptsAndStartRequestsQuery() {
+  //   console.log('----> CHECK MY MY DEPT - RUN GET MY DEPTS AND START REQUESTS QUERY')
+  //   this.getMyDepts().subscribe((depts: any) => {
+  //     console.log('----> CHECK MY MY DEPT - RUN GET MY DEPTS AND START REQUESTS QUERY - >> MY DEPTS << ', depts);
+  //     // PUBBLISH MY DEPTS
+  //     // this.myDepts_bs.next(depts);
+  //     this.myDepts = depts
+  //     if (this.myDepts) {
 
-        // this.startRequestsQuery();
-      }
-    }, (error) => {
-      console.log('REQUESTS SERV - MY DEPTS ', error);
-    }, () => {
-      console.log('REQUESTS SERV - MY DEPTS * COMPLETE *');
-    });
-  }
+  //       // this.startRequestsQuery();
+  //     }
+  //   }, (error) => {
+  //     console.log('REQUESTS SERV - MY DEPTS ', error);
+  //   }, () => {
+  //     console.log('REQUESTS SERV - MY DEPTS * COMPLETE *');
+  //   });
+  // }
 
   startRequestsQuery() {
     console.log('****** START REQUEST QUERY ******')
@@ -219,12 +221,15 @@ export class RequestsService {
 
 
         this.addOrUpdateRequestsList(r);
-
+        this.addOrUpdate_AllRequestsList(r)
 
       });
       // PUBLISH THE REQUESTS LIST (ORDERED AND WITH THE CHANGES MANAGED BY addOrUpdateRequestsList)
       this.requestsList_bs.next(this.requestList);
-      console.log('!!! REQUESTS-SERVICE PUBLISH REQUEST LIST ', this.requestList)
+      console.log('!!! REQUESTS-SERVICE PUBLISH REQUEST LIST ', this.requestList);
+
+      this.alltheRequestsList_bs.next(this.allrequest_List);
+      console.log('!!! REQUESTS-SERVICE PUBLISH FULL REQUEST LIST ', this.allrequest_List)
     }, error => {
       console.log('GET REQUEST - ERROR ', error)
     }, () => {
@@ -273,6 +278,45 @@ export class RequestsService {
     // ... ELSE ADD THE REQUEST
     this.requestList.push(r);
     this.reorderRequests()
+  }
+
+
+
+  addOrUpdate_AllRequestsList(r: Request) {
+    console.log('****** ADD OR UPDATE * ALL * REQUEST LIST ******')
+
+    if (r === null || r === undefined) {
+      return;
+    }
+    for (let i = 0; i < this.allrequest_List.length; i++) {
+      // IF THE ID OF THE REQUEST RETURNED FROM DOCUMENT CHANGE (i.e. r.recipient) IS ALREADY IN THE REQUEST LIST this.requestList[i].recipient
+      // THIS MEAN THAT THE TYPE OF DocumentChange RETURNED FROM THE QUERY IS MODIFIED OR REMOVED
+      if (r.recipient === this.allrequest_List[i].recipient) {
+
+        // USE CASE: DocumentChange TYPE = MODIFIED
+        // - run an UPDATE: SUBSTITUTE THE EXISTING REQUEST WITH THE MODIFIED ONE ...
+        if (r.firebaseDocChangeType === 'modified') {
+          // console.log('2) »»»»» DOCUMENT CHANGE TYPE ', r.firebaseDocChangeType)
+          this.allrequest_List[i] = r;
+          // this.reorderRequests()
+          return;
+        } else {
+          // USE CASE REQUEST ARCHIVED - DocumentChange TYPE = REMOVED
+          // run a SPLICE to remove the request from the list
+          // console.log('2) »»»»» DOCUMENT CHANGE TYPE ', r.firebaseDocChangeType)
+          const index = this.allrequest_List.indexOf(this.requestList[i]);
+          // console.log('INDEX OF THE REQUEST TO REMOVE ', index)
+          if (index > -1) {
+            this.allrequest_List.splice(index, 1);
+          }
+          return;
+        }
+      }
+      // console.log('REQUEST RECIPIENT ', this.requestList[i].recipient)
+    }
+    // ... ELSE ADD THE REQUEST
+    this.allrequest_List.push(r);
+    // this.reorderRequests()
   }
 
   // reorderRequests() {

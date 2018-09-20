@@ -82,9 +82,9 @@
 
         <div class="row" style="text-align: center">
             <div class="col-md-12" >
-                <h3 class="section-title">
-                    Real-Time Monitoring
-                </h3>
+                <h4 class="section-title">
+                   Real-Time Monitoring
+                </h4>
             </div>
         </div>
         <div class="row">
@@ -216,6 +216,154 @@
             </div>
         </div>
          <!-- // END NEW ROW -->
+
+        <!-- // START GLOBAL REQUESTS COUNT (SERVED UNSERVED ACTIVE) -->
+         <div class="row" style="text-align: center">
+                <div class="col-md-12" >
+                    <h4 class="section-title">
+                       Real-Time Monitoring (global)
+                    </h4>
+                </div>
+            </div>
+            <div class="row">
+                <!-- ============ TOTAL ACTIVE - OVER GLOBAL REQUESTS ============ -->
+                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                    <div class="card card-stats">
+                        
+                        <div class="card-header tiledesk_card_header">
+                            <i class="material-icons card-header_icon " style="color: #ff9800; ">
+                                message
+                            </i>
+                        </div>
+    
+                        <div class="card-content" style="text-align: center">
+             
+                            <p class="card_content_header">
+                                <span class="card_content_header_last_update">
+                                    <i class="material-icons card_content_header_last_update_icons">
+                                        update
+                                    </i>  
+                                    {{ "Updated" | translate }}: {{ date | amTimeAgo }}
+                                </span>
+                            </p>
+     
+                            <div class="request_count" style="color: #ff9800">
+                              
+                                <span class="request_count_icons_numbers">  
+                                  {{ global_activeRequestsCount }}  
+                                </span>
+                                                 
+                            </div>
+    
+                            <span style="color: #ff9800" > 
+                                <span *ngIf="global_activeRequestsCount > 1 || global_activeRequestsCount == 0" > 
+                                    {{ "Requests" | translate }} 
+                                </span>
+                                <span *ngIf="global_activeRequestsCount == 1"> 
+                                    {{ "Request" | translate }} 
+                                </span>
+                            </span>
+    
+                        </div>
+                        <div class="card-footer request_count_footer">
+                            {{ "TotalActive" | translate }} 
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- ============ SERVED - OVER GLOBAL REQUESTS ============ -->
+                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                    <div class="card card-stats">
+                       
+                        <div class="card-header tiledesk_card_header">
+                            <i class="material-icons card-header_icon " style="color: #00bcd4;">
+                                visibility
+                            </i>
+                        </div>
+    
+                        <div class="card-content" style="text-align: center;">
+                           
+                            <p class="card_content_header">
+                                <span class="card_content_header_last_update">
+                                    <i class="material-icons card_content_header_last_update_icons">
+                                        update
+                                    </i>  
+                                    {{ "Updated" | translate }}: {{ date | amTimeAgo }}
+                                </span>
+                            </p>
+    
+                            <div class="request_count" style="color: #00bcd4">
+                               
+                                <span class="request_count_icons_numbers">  
+                                    {{ global_servedRequestsCount }} 
+                                </span>   
+    
+                            </div>
+    
+                            <span style="color: #00bcd4" > 
+                                <span *ngIf="global_servedRequestsCount > 1 || global_servedRequestsCount == 0"> 
+                                    {{ "Requests" | translate }} 
+                                </span>
+                                <span *ngIf="global_servedRequestsCount == 1"> 
+                                    {{ "Request" | translate }} 
+                                </span>
+                            </span>
+                        </div>
+    
+                        <div class="card-footer request_count_footer" >
+                            {{ "Served" | translate }}
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- ============ UNSERVED - OVER GLOBAL REQUESTS ============ -->
+                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                    <div class="card card-stats">
+    
+                        <div class="card-header tiledesk_card_header">
+                            <i class="material-icons card-header_icon " style="color: #f44336; ">
+                                visibility
+                            </i>
+                        </div>
+             
+                        <div class="card-content" style="text-align: center;">
+                            
+                            <p class="card_content_header">
+                                <span class="card_content_header_last_update">
+                                    <i class="material-icons card_content_header_last_update_icons">
+                                        update
+                                    </i>  
+                                    {{ "Updated" | translate }}: {{ date | amTimeAgo }}
+                                </span>
+                            </p>
+    
+                            <div class="request_count" style="color: #f44336" >
+                                        
+                                <span class="request_count_icons_numbers">    
+                                    {{ global_unservedRequestsCount }}    
+                                </span>    
+                            </div>
+                            <span style="color: #f44336" > 
+                                <span *ngIf="global_unservedRequestsCount > 1 || global_unservedRequestsCount == 0"> 
+                                    {{ "Requests" | translate }} 
+                                </span>
+                                <span *ngIf="global_unservedRequestsCount == 1"> 
+                                    {{ "Request" | translate }} 
+                                </span>
+                            </span>
+    
+                        </div>
+                        <div class="card-footer request_count_footer" >
+                            {{ "Unserved" | translate }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <!-- // END GLOBAL REQUESTS COUNT (SERVED UNSERVED ACTIVE) -->
+
+
+
+
 
         
         <div class="row">

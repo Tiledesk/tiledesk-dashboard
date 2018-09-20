@@ -152,10 +152,10 @@ export class AppComponent implements OnInit, AfterViewInit {
     //     });
     // }
 
-    getMyDepts() {
-
-        this.requestsService.getMyDeptsAndStartRequestsQuery()
-    }
+    // !!!! NO MORE USED
+    // getMyDepts() {
+    //     this.requestsService.getMyDeptsAndStartRequestsQuery()
+    // }
 
     hideElementsInAuthPage() {
         // GET THE HTML ELEMENT NAVBAR AND SIDEBAR THAT WILL BE HIDDEN IF IS DETECTED THE LOGIN PAGE
