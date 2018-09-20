@@ -7,7 +7,7 @@ import { Project } from '../models/project-model';
 import { Router } from '@angular/router';
 import { UsersService } from '../services/users.service';
 import { UsersLocalDbService } from '../services/users-local-db.service';
-import { MongodbDepartmentService } from '../services/mongodb-department.service';
+import { DepartmentService } from '../services/mongodb-department.service';
 import { RequestsService } from '../services/requests.service';
 import { FaqKbService } from '../services/faq-kb.service';
 import { BotLocalDbService } from '../services/bot-local-db.service';
@@ -44,7 +44,7 @@ export class HomeComponent implements OnInit {
     private router: Router,
     private usersService: UsersService,
     private usersLocalDbService: UsersLocalDbService,
-    private departmentService: MongodbDepartmentService,
+    private departmentService: DepartmentService,
     private requestsService: RequestsService,
     private faqKbService: FaqKbService,
     private botLocalDbService: BotLocalDbService

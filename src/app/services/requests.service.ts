@@ -22,7 +22,7 @@ import { currentUserUidIsInMembers } from '../utils/util';
 import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
 import { Department } from '../models/department-model';
-import { MongodbDepartmentService } from '../services/mongodb-department.service';
+import { DepartmentService } from '../services/mongodb-department.service';
 
 @Injectable()
 export class RequestsService {
@@ -64,7 +64,7 @@ export class RequestsService {
     http: Http,
     private afs: AngularFirestore,
     public auth: AuthService,
-    private departmentService: MongodbDepartmentService
+    private departmentService: DepartmentService
   ) {
 
     this.http = http;

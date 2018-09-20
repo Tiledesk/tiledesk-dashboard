@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { MongodbDepartmentService } from '../services/mongodb-department.service';
+import { DepartmentService } from '../services/mongodb-department.service';
 
 import { BotService } from '../services/bot.service'; // no more used
 import { FaqKbService } from '../services/faq-kb.service';
@@ -60,7 +60,7 @@ export class DepartmentEditAddComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private mongodbDepartmentService: MongodbDepartmentService,
+    private mongodbDepartmentService: DepartmentService,
     private botService: BotService,
     private faqKbService: FaqKbService,
     private auth: AuthService,

@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 
 import { RequestsService } from '../services/requests.service';
-import { MongodbDepartmentService } from '../services/mongodb-department.service';
+import { DepartmentService } from '../services/mongodb-department.service';
 import { isDevMode } from '@angular/core';
 import { UsersService } from '../services/users.service';
 import { UploadImageService } from '../services/upload-image.service';
@@ -47,7 +47,7 @@ export class ProjectsComponent implements OnInit {
     private auth: AuthService,
     private requestsService: RequestsService,
     private element: ElementRef,
-    private departmentService: MongodbDepartmentService,
+    private departmentService: DepartmentService,
     private usersService: UsersService,
     private uploadImageService: UploadImageService
   ) {

@@ -10,7 +10,7 @@ import { AuthService } from '../core/auth.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
-export class MongodbDepartmentService {
+export class DepartmentService {
 
   public myDepts_bs: BehaviorSubject<Department[]> = new BehaviorSubject<Department[]>([]);
 

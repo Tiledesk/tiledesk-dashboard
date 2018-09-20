@@ -7,7 +7,7 @@ import { UsersService } from '../services/users.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import * as Chartist from 'chartist';
-
+import { DepartmentService } from '../services/mongodb-department.service';
 @Component({
   selector: 'app-analytics',
   templateUrl: './analytics.component.html',
@@ -42,7 +42,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     private requestsService: RequestsService,
     private usersService: UsersService,
     private router: Router,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private departmentService: DepartmentService
   ) {
 
     console.log('!!! »»» HELLO ANALYTICS »»» ');
@@ -183,10 +184,11 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     this.getGlobalRequestsCountForAgent();
     this.getRequestsByDay();
     this.getlastMonthRequetsCount();
+    this.getDeptsByProjectId();
   }
   /* ----------==========   end ON INIT    ==========---------- */
-  getRequestsByDay() {
 
+  getRequestsByDay() {
     this.requestsService.requestsByDay().subscribe((requestsByDay: any) => {
       console.log('!!! ANALYTICS - REQUESTS BY DAY ', requestsByDay);
 
@@ -252,6 +254,27 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
         this.id_project = project._id
 
       }
+    });
+  }
+
+  /**
+  /* GETS ONLY THE DEPTs WITH THE CURRENT PROJECT ID
+  /* note: the project id is passed get and passed by mongodbDepartmentService */
+  getDeptsByProjectId() {
+    this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
+      console.log('!!! ANALYTICS - DEPTS ', departments);
+
+      if (departments) {
+        departments.forEach(dept => {
+
+          console.log('!!! ANALYTICS - DEPT ', dept);
+        });
+      }
+    }, error => {
+      this.showSpinner = false;
+      console.log('!!! ANALYTICS - DEPTS - ERROR', error);
+    }, () => {
+      console.log('!!! ANALYTICS - DEPTS - COMPLETE')
     });
   }
 
@@ -466,11 +489,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
         this.global_activeRequestsCount = this.global_unservedRequestsCount + this.global_servedRequestsCount
         console.log('!!! ANALYTICS - # OF GLOBAL ACTIVE REQUESTS:  ', this.global_activeRequestsCount);
-
       }
     });
-
-
   }
 
   getlastMonthRequetsCount() {

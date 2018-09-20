@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MongodbDepartmentService } from '../services/mongodb-department.service';
+import { DepartmentService } from '../services/mongodb-department.service';
 import { Department } from '../models/department-model';
 import { FaqKbService } from '../services/faq-kb.service';
 import { Router } from '@angular/router';
@@ -51,7 +51,7 @@ export class RoutingPageComponent implements OnInit {
   onlybot_disable_routing: boolean;
   
   constructor(
-    private mongodbDepartmentService: MongodbDepartmentService,
+    private mongodbDepartmentService: DepartmentService,
     private faqKbService: FaqKbService,
     private router: Router,
     private auth: AuthService,

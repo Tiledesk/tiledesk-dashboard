@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MongodbDepartmentService } from '../services/mongodb-department.service';
+import { DepartmentService } from '../services/mongodb-department.service';
 import { Department } from '../models/department-model';
 import { Router } from '@angular/router';
 
@@ -44,7 +44,7 @@ export class DepartmentsComponent implements OnInit {
   botName: string;
 
   constructor(
-    private mongodbDepartmentService: MongodbDepartmentService,
+    private mongodbDepartmentService: DepartmentService,
     private router: Router,
     private auth: AuthService,
     private groupsService: GroupService,
@@ -104,14 +104,12 @@ export class DepartmentsComponent implements OnInit {
           }
         });
       }
-    },
-      error => {
-        this.showSpinner = false;
-        console.log('DEPARTMENTS (FILTERED FOR PROJECT ID) - ERROR', error);
-      },
-      () => {
-        console.log('DEPARTMENTS (FILTERED FOR PROJECT ID) - COMPLETE')
-      });
+    }, error => {
+      this.showSpinner = false;
+      console.log('DEPARTMENTS (FILTERED FOR PROJECT ID) - ERROR', error);
+    }, () => {
+      console.log('DEPARTMENTS (FILTERED FOR PROJECT ID) - COMPLETE')
+    });
   }
 
   /**
@@ -129,23 +127,21 @@ export class DepartmentsComponent implements OnInit {
           }
         }
       }
-    },
-      error => {
-        console.log('-- > BOT GET BY ID - ERROR', error);
+    }, error => {
+      console.log('-- > BOT GET BY ID - ERROR', error);
 
-        const errorBody = JSON.parse(error._body)
-        console.log('BOT GET BY ID - ERROR BODY', errorBody);
-        if (errorBody.msg === 'Object not found.') {
-          console.log('BOT GET BY ID - ERROR BODY MSG', errorBody.msg);
-          console.log('BOT GET BY ID - ERROR url', error.url);
-          const IdOfBotNotFound = error.url.split('/').pop();
-          console.log('BOT GET BY ID - ERROR - ID OF BOT NOT FOUND ', IdOfBotNotFound);
+      const errorBody = JSON.parse(error._body)
+      console.log('BOT GET BY ID - ERROR BODY', errorBody);
+      if (errorBody.msg === 'Object not found.') {
+        console.log('BOT GET BY ID - ERROR BODY MSG', errorBody.msg);
+        console.log('BOT GET BY ID - ERROR url', error.url);
+        const IdOfBotNotFound = error.url.split('/').pop();
+        console.log('BOT GET BY ID - ERROR - ID OF BOT NOT FOUND ', IdOfBotNotFound);
 
-        }
-      },
-      () => {
-        console.log('-- > BOT GET BY ID - COMPLETE')
-      });
+      }
+    }, () => {
+      console.log('-- > BOT GET BY ID - COMPLETE')
+    });
   }
 
   /**
@@ -175,13 +171,11 @@ export class DepartmentsComponent implements OnInit {
           }
         }
       }
-    },
-      error => {
-        console.log('-- > GROUP GET BY ID - ERROR', error);
-      },
-      () => {
-        console.log('-- > GROUP GET BY ID - COMPLETE')
-      });
+    }, error => {
+      console.log('-- > GROUP GET BY ID - ERROR', error);
+    }, () => {
+      console.log('-- > GROUP GET BY ID - COMPLETE')
+    });
   }
 
   /**
