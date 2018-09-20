@@ -1,6 +1,6 @@
 // tslint:disable:max-line-length
 import { Component, OnInit, OnDestroy } from '@angular/core';
-
+import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../core/auth.service';
 import { RequestsService } from './../services/requests.service';
 import { UsersService } from '../services/users.service';
@@ -30,16 +30,31 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   subscriptionToRequestService_RequestForAgent: Subscription;
   subscriptionToRequestService_RequestsCount: Subscription;
   lastMonthrequestsCount: number;
+  monthNames: any;
   constructor(
     private auth: AuthService,
     private requestsService: RequestsService,
     private usersService: UsersService,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService
   ) {
 
     console.log('!!! »»» HELLO ANALYTICS »»» ');
     this.servedAndUnservedRequestCount();
     // this.getAllUsersOfCurrentProject();
+    this.getBrowserLangAndSwitchMonthName();
+  }
+
+  getBrowserLangAndSwitchMonthName() {
+    const browserLang = this.translate.getBrowserLang();
+    console.log('!!! ANALYTICS  - BROWSER LANG ', browserLang)
+    if (browserLang) {
+      if (browserLang === 'it') {
+        this.monthNames = { '1': 'Gen', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'Mag', '6': 'Giu', '7': 'Lug', '8': 'Ago', '9': 'Set', '10': 'Ott', '11': 'Nov', '12': 'Dic' }
+      } else {
+        this.monthNames = { '1': 'Jan', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'May', '6': 'Jun', '7': 'Jul', '8': 'Aug', '9': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dec' }
+      }
+    }
   }
 
   ngOnInit() {
@@ -158,17 +173,19 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     /* ----------==========   TILEDESK ANALYTICS   ==========---------- */
     this.getCurrentProject();
     // this.getCountOfRequestForAgent()
-    this.getAllUsersOfCurrentProject();
+    this.getAllUsersOfCurrentProjectAndAssignRequestsOccurrence();
     this.getRequestsByDay();
     this.getlastMonthRequetsCount();
   }
   /* ----------==========   end ON INIT    ==========---------- */
   getRequestsByDay() {
+
     this.requestsService.requestsByDay().subscribe((requestsByDay: any) => {
       console.log('!!! ANALYTICS - REQUESTS BY DAY ', requestsByDay);
 
       const requestsByDay_series_array = [];
       const requestsByDay_labels_array = []
+
       for (let j = 0; j < 7; j++) {
         if (requestsByDay[j]) {
           // console.log('!!! ANALYTICS - REQUESTS BY DAY - # cicle ', j)
@@ -179,7 +196,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
           const requestByDay_day = requestsByDay[j]['_id']['day']
           const requestByDay_month = requestsByDay[j]['_id']['month']
           // console.log('!!! ANALYTICS - REQUESTS BY DAY - DAY', requestByDay_day);
-          requestsByDay_labels_array.push(requestByDay_day + '/' + requestByDay_month)
+          requestsByDay_labels_array.push(requestByDay_day + ' ' + this.monthNames[requestByDay_month])
         }
       }
       console.log('!!! ANALYTICS - REQUESTS BY DAY - SERIES (ARRAY OF COUNT)', requestsByDay_series_array);
@@ -231,7 +248,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     });
   }
 
-  getAllUsersOfCurrentProject() {
+  getAllUsersOfCurrentProjectAndAssignRequestsOccurrence() {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
       console.log('!!! ANALYTICS - !!!!! PROJECT USERS ARRAY ', projectUsers)
       if (projectUsers) {
@@ -242,25 +259,23 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
           console.log('!!! ANALYTICS - PROJECT USERS RETURNED FROM THE CALLBACK', prjctuser)
 
+          const _user_id = prjctuser['id_user']['_id']
+          console.log('!!! ANALYTICS - USER ID ', _user_id)
           /**
             * ANDREA:
             * CREATES AN OBJECT WITH HAS FOR 'KEY' THE USER ID OF THE ITERATED 'PROJECT USERS' AND A NESTED OBJECT THAT HAS FOR KEY 'VAL' WITH AN INITIAL VALUE= 0 */
           // , 'user': prjctuser['id_user']
           // this.users_reqs_dict[prjctuser['id_user']['_id']] = { 'val': 0 }
 
-          const _user_id = prjctuser['id_user']['_id']
-
-          console.log('!!! ANALYTICS - USER ID ', _user_id)
-
           /**
-           * NK:
-           * CREATES AN ARRAY OF ALL THE USER ID OF THE ITERATED 'PROJECT USERS' */
+          * NK:
+          * CREATES AN ARRAY OF ALL THE USER ID OF THE ITERATED 'PROJECT USERS' */
           this.users_id_array.push(_user_id);
 
         })
 
         console.log('!!! ANALYTICS - !!!!! ARRAY OF USERS ID ', this.users_id_array)
-        console.log('!!! ANALYTICS - USERS DICTIONARY ', this.users_reqs_dict)
+        // console.log('!!! ANALYTICS - USERS DICTIONARY ', this.users_reqs_dict)
         // console.log('!!! ANALYTICS - USERS DICTIONARY - array  ', this.users_reqs_dict_array)
 
       }
@@ -300,7 +315,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
         if (flat_members_array) {
           for (let i = 0; i < this.users_id_array.length; i++) {
             console.log('!!! ANALYTICS - !!!!! USER_ID_ARRAY - LENGTH ', this.users_id_array.length);
-            this.getOccurrenceAndAssignToProjectUsers(flat_members_array, this.users_id_array[i])
+            this.getOccurrenceAndAssignToPrjctUsers(flat_members_array, this.users_id_array[i])
           }
         }
 
@@ -355,8 +370,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   }
 
 
-  getOccurrenceAndAssignToProjectUsers(array, value) {
-    console.log('!!! ANALYTICS - !!!!! CALLING GET OCCURRENCE AND ASSIGN TO PROJECT USERS');
+  getOccurrenceAndAssignToPrjctUsers(array, value) {
+    console.log('!!! ANALYTICS - !!!!! CALLING GET OCCURRENCE REQUESTS FOR AGENT AND ASSIGN TO PROJECT USERS');
     let count = 0;
     array.forEach((v) => (v === value && count++));
     console.log('!!! ANALYTICS - !!!!! #', count, ' REQUESTS ASSIGNED TO THE USER ', value);
@@ -418,7 +433,13 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   getlastMonthRequetsCount() {
     this.requestsService.lastMonthRequetsCount().subscribe((_lastMonthrequestsCount: any) => {
       console.log('!!! ANALYTICS - LAST MONTH REQUESTS COUNT - RESPONSE ', _lastMonthrequestsCount);
-      this.lastMonthrequestsCount = _lastMonthrequestsCount[0]['totalCount'];
+      if (_lastMonthrequestsCount !== 'undefined' && _lastMonthrequestsCount.length > 0) {
+        this.lastMonthrequestsCount = _lastMonthrequestsCount[0]['totalCount'];
+        console.log('!!! ANALYTICS - LAST MONTH REQUESTS COUNT - RESPONSE ', this.lastMonthrequestsCount);
+      } else {
+        console.log('!!! ANALYTICS - LAST MONTH REQUESTS COUNT - RESPONSE ', this.lastMonthrequestsCount);
+        this.lastMonthrequestsCount = 0
+      }
 
     }, (error) => {
       console.log('!!! ANALYTICS - LAST MONTH REQUESTS COUNT - ERROR ', error);
@@ -473,7 +494,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     seq = 0;
   };
 
-    // !!!!! COMMENTO DA QUI
+  // !!!!! COMMENTO DA QUI
   // startAnimationForBarChart(chart) {
   //   let seq2: any, delays2: any, durations2: any;
 
