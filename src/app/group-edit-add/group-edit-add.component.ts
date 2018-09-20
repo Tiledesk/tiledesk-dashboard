@@ -179,15 +179,19 @@ export class GroupEditAddComponent implements OnInit {
 
           for (const p of this.projectUsersList) {
             // console.log('vv', projectUser._id)
-            this.group_members.forEach(group_member => {
-              if (p.id_user._id === group_member) {
-                if (projectUser._id === p._id) {
-                  p.is_group_member = true;
-                  console.log('GROUP MEMBER ', group_member)
-                  console.log('IS MEMBER OF THE GROUP THE USER ', p.id_user._id, ' - ', p.is_group_member)
+            if (this.group_members) {
+
+              this.group_members.forEach(group_member => {
+                if (p.id_user._id === group_member) {
+                  if (projectUser._id === p._id) {
+                    p.is_group_member = true;
+                    console.log('GROUP MEMBER ', group_member)
+                    console.log('IS MEMBER OF THE GROUP THE USER ', p.id_user._id, ' - ', p.is_group_member)
+                  }
                 }
-              }
-            });
+              });
+
+            }
           }
         });
       }
