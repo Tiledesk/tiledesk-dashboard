@@ -44,6 +44,8 @@ import { AnalyticsComponent } from './analytics/analytics.component';
 
 import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.component';
 import { RequestsListHistoryComponent } from './requests-list-history/requests-list-history.component';
+import { RequestsListHistoryNewComponent } from './requests-list-history-new/requests-list-history-new.component';
+
 
 // AUTH PAGE
 import { SigninComponent } from './auth/signin/signin.component';
@@ -73,6 +75,7 @@ import { ResetPswComponent } from './reset-psw/reset-psw.component';
 // import { DashboardComponent} from './dashboard/dashboard.component';
 // Andrea
 import { ChatComponent } from './chat/chat.component';
+
 
 // import { UserProfileComponent } from './ui/user-profile/user-profile.component';
 
@@ -173,12 +176,15 @@ const routes: Routes = [
   { path: 'project/:projectid/department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
 
-  { path: 'project/:projectid/history', component: RequestsListHistoryComponent, canActivate: [AuthGuard] },
+  // HISTORY
+  // { path: 'project/:projectid/history', component: RequestsListHistoryComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/history', component: RequestsListHistoryNewComponent, canActivate: [AuthGuard] },
+
 
   // page RESOURCES (RENAMED WIDGET)   // path: 'project/:projectid/resources'
   { path: 'project/:projectid/widget', component: WidgetComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/widget/design', component: WidgetDesignComponent, canActivate: [AuthGuard] },
-  
+
   { path: 'project/:projectid/script', component: ScriptComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/channels', component: ChannelsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/social', component: SocialComponent, canActivate: [AuthGuard] },

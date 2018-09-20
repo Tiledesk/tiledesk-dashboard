@@ -299,7 +299,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       })
 
     }, error => {
-      this.showSpinner = false;
+      // this.showSpinner = false;
       console.log('!!! ALL REQUESTS X DEPT - GET DEPTS - ERROR: ', error);
     }, () => {
       console.log('!!! ALL REQUESTS X DEPT - GET DEPTS * COMPLETE *')
