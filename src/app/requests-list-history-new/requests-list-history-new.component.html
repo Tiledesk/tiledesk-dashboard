@@ -7,23 +7,77 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-
-          <form id="form" name="form" class="form-inline">
-              <div class="form-group">
-                <label for="startDate">Start Date</label>
-                <input id="startDate" name="startDate" type="text" class="form-control" />
-                &nbsp;
-                <label for="endDate">End Date</label>
-                <input id="endDate" name="endDate" type="text" class="form-control" />
-              </div>
-            </form>
+  
 
         <div class="card">
+            <!-- data-background-color="red" -->
+          <div class="card-header" style="background-color:#ffffff; padding: 25px;">
+            <!-- <h4 class="title" style="color: #566787">Search Panel</h4>
+            <p class="category">Here is a subtitle for this table</p> -->
 
-          <!-- <div class="card-header" data-background-color="red">
-            <h4 class="title">Visitatori</h4>
-            <p class="category">Here is a subtitle for this table</p>
-          </div> -->
+           
+        
+              <form #myForm="ngForm" novalidate>
+
+                  <div class="row" style="margin-bottom: 15px;">
+                      <label style="padding-top: 8px; padding-right: 15px; text-align: right; color: #566787" class="col-sm-2">
+                          Full Text 
+                      </label>
+                      <!-- border-right:none; border-radius: 4px 0px 0px 4px; width: 100%;-->
+                      <div class="col-sm-2">
+                          <input name="fullText" [(ngModel)]="fullText" class="" type="text"  style=" height: 34px;
+                          font-size: 14px; padding-left: 6px; border-radius: 4px; border: 1px solid #CCC;  padding-right:0px">
+                          
+                      </div>
+                      <!-- border-left:none;  border-radius: 0px 4px 4px 0px; -->
+                      <div class="col-sm-2">
+                          <button class="" (click)="search()" style="cursor:pointer;  border: 1px solid #4caf50 ;  height:34px; border-radius: 4px; background-color:#4caf50   ">Search</button>
+                      </div>
+                      
+                      <div class="col-sm-2" style="height: 34px;">
+                          <a (click)="toggle()" style="cursor:pointer; ">Advanced</a>
+                      </div>
+                  </div>
+
+                  <div *ngIf="show" @ngIfAnimation>
+                      <div @easeInOut>
+                  
+                      <div class="row" style="margin-bottom: 15px;">
+                      <label style="padding-top: 8px; padding-right: 15px; text-align: right; color: #566787" class="col-sm-2">
+                          Department 
+                      </label>
+                      <div class="col-sm-2">
+                          <input name="deptName" [(ngModel)]="deptName" class="" type="text"  style="height: 34px;
+                          font-size: 14px; padding-left: 6px; border-radius: 4px; border: 1px solid #CCC; padding-right:0px">
+                      </div>
+                      </div>
+
+                      <div class="row">
+                        <label style="padding-top: 8px; padding-right: 15px; text-align: right; color: #566787" class="col-sm-2">
+                            Date Range 
+                        </label>
+                        <div class="col-sm-2" >
+                            <my-date-picker name="mydate" [options]="myDatePickerOptions"
+                            [(ngModel)]="startDate" ></my-date-picker>
+                        </div>
+                        <div class="col-sm-2" style="padding-left: 15px;">
+                            <my-date-picker name="mydate" [options]="myDatePickerOptions"
+                            [(ngModel)]="endDate" ></my-date-picker>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-sm-10 col-md-offset-2" >
+                          <button [disabled]="!deptName && !startDate && !endDate" class="btn btn-success" (click)="search()" style="padding-top: 6px; padding-bottom: 6px;">
+                            Search
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </form>
+        
+            
+          </div>
 
             <loading-spinner *ngIf="showSpinner"></loading-spinner>
             <div  *ngIf="!showSpinner" class="card-content table-responsive">
@@ -135,10 +189,10 @@
  
                     <span (click)='goToRequestMsgs(request?.request_id)'>
                        <!-- pull-right -->
-                       <button class="btn btn-default">
+                       <button class="btn btn-default btn-visibility-custom">
                          <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                        </button>
-                     </span>
+                    </span>
                      
                   </td>
                    
