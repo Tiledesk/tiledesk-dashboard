@@ -108,7 +108,7 @@ const routes: Routes = [
   { path: 'project/:projectid/unauthorized', component: UnauthorizedComponent },
 
   // firestore user CRUD
-  // { path: 'users', component: UsersListComponent, canActivate: [AuthGuard]},
+  // { path: 'userstest', component: UsersListComponent, canActivate: [AuthGuard]},
   { path: 'contacts', component: ContactsComponent },
   { path: 'items', component: ItemsListComponent, canActivate: [AuthGuard] },
   { path: 'notes', component: NotesListComponent, canActivate: [AuthGuard] },
@@ -177,7 +177,7 @@ const routes: Routes = [
   { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
 
   // HISTORY
-  // { path: 'project/:projectid/history', component: RequestsListHistoryComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/historyrt', component: RequestsListHistoryComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/history', component: RequestsListHistoryNewComponent, canActivate: [AuthGuard] },
 
 

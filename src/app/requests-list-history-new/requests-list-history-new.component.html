@@ -1,3 +1,223 @@
-<p>
-  requests-list-history-new works!
-</p>
+
+ <p style="margin-top:10px; padding-left:30px" class="navbar-brand">
+   {{ "History" | translate }}
+ </p> 
+
+<div class="main-content" style="padding-top:0px">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+
+          <form id="form" name="form" class="form-inline">
+              <div class="form-group">
+                <label for="startDate">Start Date</label>
+                <input id="startDate" name="startDate" type="text" class="form-control" />
+                &nbsp;
+                <label for="endDate">End Date</label>
+                <input id="endDate" name="endDate" type="text" class="form-control" />
+              </div>
+            </form>
+
+        <div class="card">
+
+          <!-- <div class="card-header" data-background-color="red">
+            <h4 class="title">Visitatori</h4>
+            <p class="category">Here is a subtitle for this table</p>
+          </div> -->
+
+            <loading-spinner *ngIf="showSpinner"></loading-spinner>
+            <div  *ngIf="!showSpinner" class="card-content table-responsive">
+ 
+                
+     
+
+              <table class="table table-hover">
+                <thead class="text">
+                  <tr>
+               
+                    <th></th>
+ 
+                    <!-- ===== REQUEST ID ===== -->
+                    <!-- <th>
+                      <span style="color: #566787">
+                        <strong>
+                          Id
+                        </strong>
+                      </span>  
+                    </th> -->
+
+                    <!-- ===== DEPARTMENTS ===== -->
+                    <th>
+                      <span style="color: #566787">
+                        <strong>
+                          <strong>{{ 'VisitorsPage.Department' | translate }}</strong>
+                        </strong>
+                      </span>  
+                    </th>
+
+                    <!-- ===== REQUESTER ===== -->
+                    <th>
+                      <span style="color: #566787">
+                        <strong> 
+                          {{ 'HistoryPage.Requester' | translate }}
+                        </strong>
+                      </span>
+                    </th>
+
+                    <!-- ===== REQUESTER ID * FOR DEBUG * ===== -->
+                    <!-- <th>
+                      <span style="color: #566787">
+                        <strong> Requester Id </strong>
+                      </span>
+                    </th> -->
+
+                    <!-- ===== REQUEST FIRST TEXT ===== -->
+                    <th>
+                      <span style="color: #566787">
+                        <strong> 
+                          {{ 'HistoryPage.Message' | translate }}
+                        </strong>
+                      </span>
+                    </th>
+
+                    <!-- ===== SERVED BY ===== -->
+                    <th>
+                      <span style="color: #566787">
+                        <strong> 
+                          {{ 'HistoryPage.ServedBy' | translate }}
+                        </strong>
+                      </span>
+                    </th>
+                   
+                    <!-- ===== RATING ===== -->
+                    <th>
+                      <span style="color: #566787">
+                        <strong> 
+                          {{ 'HistoryPage.Rating' | translate }}
+                        </strong>
+                      </span>
+                    </th>
+ 
+                    <!-- ===== MEMBERS ===== -->
+                    <!-- <th>
+                      <span style="color: #566787">
+                        <strong> Membri </strong>
+                        </span>
+                    </th> -->
+
+                    <!-- ===== PUBLISHED ===== -->
+                    <th>
+                      <span style="color: #566787">
+                        <strong> 
+                        {{ 'HistoryPage.Published' | translate }}
+                        </strong>
+                      </span>
+                    </th>
+    
+                  </tr>
+                </thead>
+
+               <tbody>
+
+                <!-- ===== IF THERE ISN'T HISTORY REQUEST ===== -->
+                <tr *ngIf="requestList && requestList.length === 0"> 
+                  <td colspan="6" style="text-align: center; padding-top: 16px; cursor: pointer">
+
+                    <p style="font-size:1em; color:#999999; font-weight: 400">
+                      {{ 'HistoryPage.NoRequests' | translate }}
+                    </p>
+                  </td>
+                </tr> 
+ 
+                 <tr *ngFor="let request of requestList">
+                   
+                  <td style="text-align:center">
+ 
+                    <span (click)='goToRequestMsgs(request?.request_id)'>
+                       <!-- pull-right -->
+                       <button class="btn btn-default">
+                         <i style="font-size: 17px !important; " class="material-icons">visibility</i>
+                       </button>
+                     </span>
+                     
+                  </td>
+                   
+                  <!-- ===== REQUEST ID ===== -->
+                   <!-- <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
+                     <p style="font-size:0.8em;" >
+                       {{ request?.recipient }}
+                     </p>
+                  </td> -->
+
+                  <td> </td>
+
+                  <!-- ===== REQUESTER FULL NAME ===== -->
+                  <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
+                    <p style="font-size:0.9em">
+                      {{ request?.requester_fullname }}
+                    </p>
+                  </td>
+
+                  <!-- ===== REQUESTER ID * FOR DEBUG * ===== -->
+                  <!-- <td>
+                    <p style="font-size:0.8em">
+                      {{ request?.requester_id }}
+                    </p>
+                  </td> -->
+
+                  <!-- ===== REQUEST FIRST TEXT ===== -->
+                  <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
+                    <p style="font-size:0.9em;" [innerHTML]="getRequestText(request?.first_text)">
+                    </p>
+                  </td>
+ 
+                  <!-- ===== SERVED BY ===== -->
+                  <!-- <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" >
+                    <span *ngFor="let m of request?.members_array"  style="font-size:0.8em;">
+                      <span *ngIf="m !== request?.requester_id && m !== 'system' && m !== currentUserID"> 
+                        <p class="member" (click)="goToMemberProfile( m )" [innerHTML]="members_replace( m )" style="padding-top:1px; padding-bottom:1px; cursor: pointer;">  </p>
+                      </span> 
+                      <p *ngIf="m === currentUserID" style="padding-top:1px; padding-bottom:1px;"> 
+                        - <strong> 'ME' </strong>
+                      </p>
+                    </span>
+                  </td> -->
+                  <td></td>
+ 
+                  <!-- ===== RATING ===== -->
+                  <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" >
+                    <p *ngIf="request?.rating" style="font-size:0.8em;">
+                        {{ request?.rating }} / 5
+                    </p>
+                    <p *ngIf="!request?.rating" style="font-size:0.8em;">
+                        - / 5
+                    </p>
+                  </td>
+ 
+                  <!-- ===== LIST OF MEMBERS ===== -->
+                  <!-- <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
+                    <p style="font-size:0.8em; min-width: 220px;"  [innerHTML]="request?.members_as_string"></p>
+                  </td> -->
+
+                  <!-- ===== PUBLISHED ===== -->
+                  <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
+                    <p style="font-size:0.9em">
+                      <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
+                      <!-- {{ request?.request_date_fromnow }} -->
+                      <!-- {{ request?.created_on | date: 'd/M/y HH:mm:ss' }} -->
+                      {{ request?.created_on | amTimeAgo }}
+                    </p>
+                  </td>
+
+                </tr>
+              </tbody>
+            </table>
+          </div> <!-- ./ card-content table-responsive -->
+        </div> <!-- ./ card -->
+      </div> <!-- ./ col-md-12 -->
+    <div> <!-- ./ row -->
+  
+  </div> <!-- ./ container-fluid -->
+</div> <!-- ./ main-content -->
+
+  
