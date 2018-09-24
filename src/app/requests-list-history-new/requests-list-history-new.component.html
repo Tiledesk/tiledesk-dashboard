@@ -17,10 +17,10 @@
 
             <!-- NEW NK START -->
 
-              <div class="row">
+              <!-- <div class="row">
                 <div class="col-md-12">
                   <div class="input-group" id="adv-search">
-                    <!-- FULL TEXT -->   <!--  -->
+
                     <input [(ngModel)]="fullText" class="form-control" type="text" 
                     style="margin-top: -8px; padding-left: 12px;"
                     placeholder="{{ 'HistoryPage.ContainsTheWords' | translate }}" (focus)="focusOnFullText()"/>
@@ -29,7 +29,6 @@
                       <div class="btn-group" role="group">
                           <div class="dropdown dropdown-lg">
 
-                              <!-- ADVANCED OPTIONS -->
                               <button #advancedoptionbtn type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" (click)=advancedOptions()>
                                 <span class="caret"></span>
                               </button>
@@ -39,23 +38,12 @@
                                       <label  class="col-sm-12" style="text-align: left">
                                           {{ 'HistoryPage.FilterByDepartment' | translate }}
                                       </label>
-                                      <!-- class="form-control" -->
+  
                                       <div class="col-sm-12">
-                                        <input name="deptName" [(ngModel)]="deptName" 
-                                        style="
-                                        padding-left: 6px;
-                                        height: 34px; 
-                                        font-size: 14px; 
-                                        border-radius: 4px; 
-                                        border: 1px solid #CCC; width: 100%;"  
-                                        type="text" />
-                                        <!-- <select class="form-control">
-                                            <option value="0" selected>All Snippets</option>
-                                            <option value="1">Featured</option>
-                                            <option value="2">Most popular</option>
-                                            <option value="3">Top rated</option>
-                                            <option value="4">Most commented</option>
-                                        </select> -->
+                                                <ng-select name="dept" [(ngModel)]="selectedDeptId">
+                                            <ng-option *ngFor="let dept of departments" [value]="dept._id" >{{dept.name}}</ng-option>
+ 
+                                        </ng-select>
                                       </div>
                                     </div>
                                     <div class="form-group">
@@ -66,39 +54,29 @@
                                           <my-date-picker name="mydate" [options]="myDatePickerOptions"
                                           [(ngModel)]="startDate" ></my-date-picker>
                                       </div>
-                                      <!-- padding-left: 15px; -->
                                       <div class="col-sm-6" style="">
                                           <my-date-picker name="mydate" [options]="myDatePickerOptions"
                                           [(ngModel)]="endDate" ></my-date-picker>
                                       </div>
                                     </div>
-                                    <!-- <div class="form-group">
-                                      <label for="contain">Contains the words</label>
-                                      <input class="form-control" type="text" />
-                                    </div> -->
-                                    <button #onbottomsearchbtn [disabled]="!deptName && !startDate && !endDate && !fullText" type="submit" class="btn btn-info" (click)="search()">
+                                    <button #onbottomsearchbtn  type="submit" class="btn btn-info" (click)="search()">
                                       <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                                     </button>
                                   </form>
                               </div>
                           </div>
-
-                          <!-- SEARCH BUTTON NEAR THE CARET  -->
-                          <button #ontopsearchbtn [disabled]="!deptName && !startDate && !endDate && !fullText" type="button" class="btn btn-info" (click)="search()">
+                          <button #ontopsearchbtn  type="button" class="btn btn-info" (click)="search()">
                             <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                           </button>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
             <!-- </div> -->
             <!-- NEW NK END  -->
 
-           
-        
-              <!-- <form #myForm="ngForm" novalidate>
-                <div class="row" style="margin-bottom: 15px;">
+                    <!-- <div class="row" style="margin-bottom: 15px;">
                       <label style="padding-top: 8px; padding-right: 15px; text-align: right; color: #566787" class="col-sm-2">
                           Full Text 
                       </label>
@@ -118,22 +96,77 @@
                       <div class="col-sm-2" style="height: 34px;">
                           <a (click)="toggle()" style="cursor:pointer; ">Advanced</a>
                       </div>
-                  </div>
+                    </div> -->
+
+                    <!-- *********************** // THIS IS RIGHT  *********************** -->
+                <form #myForm="ngForm" novalidate class="advancedOptionForm" style="padding: 15px">
+                  <div class="row">
+                    <!-- <div style="width: 500px; margin: 0 auto"> -->
+                        <div class="input-group">
+                            <input name="fullText" type="text" [(ngModel)]="fullText" class="form-control" 
+                            placeholder="{{ 'HistoryPage.ContainsTheWords' | translate }}" style="margin-bottom: 20px; padding-bottom: 16px;">
+                            
+                            <span class="input-group-btn" style="padding-right:0px">
+                                <button #searchbtn class="btn btn-info" type="button" (click)="search()">
+                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                </button>
+                            </span>
+
+                            <span class="input-group-btn" style="padding-left:0px">
+                                <button class="btn btn-default" type="button" (click)="toggle()">
+                                    <span class="caret"></span>
+                                </button>
+                          </span>
+                        </div>
+                      <!-- </div> -->
+                    <!-- </div>  -->
 
                   <div *ngIf="show" @ngIfAnimation>
-                      <div @easeInOut>
-                  
-                      <div class="row" style="margin-bottom: 15px;">
-                      <label style="padding-top: 8px; padding-right: 15px; text-align: right; color: #566787" class="col-sm-2">
-                          Department 
-                      </label>
-                      <div class="col-sm-2">
-                          <input name="deptName" [(ngModel)]="deptName" class="" type="text"  style="height: 34px;
-                          font-size: 14px; padding-left: 6px; border-radius: 4px; border: 1px solid #CCC; padding-right:0px; width: 100%;">
-                      </div>
-                      </div>
+                    <div @easeInOut>
 
-                      <div class="row">
+
+                        <label  class="col-sm-12" style="text-align: left">
+                            {{ 'HistoryPage.FilterByDepartment' | translate }}
+                        </label>
+                        <!-- class="form-control" -->
+                        <div class="col-sm-12" style="margin-bottom: 20px;">
+                          <ng-select name="dept" [(ngModel)]="selectedDeptId">
+                              <ng-option *ngFor="let dept of departments" [value]="dept._id" >{{dept.name}}</ng-option>
+                              <!-- <ng-option [value]="'custom'">Custom</ng-option> -->
+                          </ng-select>
+                        </div>
+                      </div>
+                      <!-- <div class="form-group"> -->
+                        <label for="contain" class="col-sm-12" style="text-align: left">
+                            {{ 'HistoryPage.DateRange' | translate }}
+                        </label>
+                        <div class="col-sm-6" >
+                            <my-date-picker name="mydate" [options]="myDatePickerOptions"
+                            [(ngModel)]="startDate" ></my-date-picker>
+                        </div>
+                        <!-- padding-left: 15px; -->
+                        <div class="col-sm-6" style="">
+                            <my-date-picker name="mydate" [options]="myDatePickerOptions"
+                            [(ngModel)]="endDate" ></my-date-picker>
+                        </div>
+                      <!-- </div> -->
+  
+                      <button type="submit" class="btn btn-info" (click)="search()">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                      </button>
+
+                  
+                      <!-- <div class="row" style="margin-bottom: 15px;">
+                        <label style="padding-top: 8px; padding-right: 15px; text-align: right; color: #566787" class="col-sm-2">
+                            Department 
+                        </label>
+                        <div class="col-sm-2">
+                            <input name="deptName" [(ngModel)]="deptName" class="" type="text"  style="height: 34px;
+                            font-size: 14px; padding-left: 6px; border-radius: 4px; border: 1px solid #CCC; padding-right:0px; width: 100%;">
+                        </div>
+                      </div> -->
+
+                      <!-- <div class="row">
                         <label style="padding-top: 8px; padding-right: 15px; text-align: right; color: #566787" class="col-sm-2">
                             Date Range 
                         </label>
@@ -145,17 +178,17 @@
                             <my-date-picker name="mydate" [options]="myDatePickerOptions"
                             [(ngModel)]="endDate" ></my-date-picker>
                         </div>
-                      </div>
-                      <div class="row">
+                      </div> -->
+                      <!-- <div class="row">
                         <div class="col-sm-10 col-md-offset-2" >
                           <button [disabled]="!deptName && !startDate && !endDate" class="btn btn-success" (click)="search()" style="padding-top: 6px; padding-bottom: 6px;">
                             Search
                           </button>
                         </div>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
-              </form> -->
+              </form>
         
             
           </div>
@@ -254,7 +287,7 @@
 
                 <!-- ===== IF THERE ISN'T HISTORY REQUEST ===== -->
                 <tr *ngIf="requestList && requestList.length === 0"> 
-                  <td colspan="6" style="text-align: center; padding-top: 16px; cursor: pointer">
+                  <td colspan="7" style="text-align: center; padding-top: 16px; cursor: pointer">
 
                     <p style="font-size:1em; color:#999999; font-weight: 400">
                       {{ 'HistoryPage.NoRequests' | translate }}

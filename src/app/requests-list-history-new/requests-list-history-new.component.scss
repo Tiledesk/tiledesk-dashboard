@@ -80,6 +80,7 @@ input:-webkit-autofill {
     }
 }
 
+
 @media screen and (max-width: 767px) {
     .dropdown-menu-right {
         right: -71px;
@@ -88,8 +89,14 @@ input:-webkit-autofill {
 }
 
 
-.input-group .input-group-btn {
-    padding: 3px 12px !important;
-}
+// .input-group .input-group-btn {
+//     padding: 3px 12px !important;
+// }
 
+@media screen and (min-width: 768px) {
+    .advancedOptionForm {
+        width: 500px;
+        margin: 0 auto;
+    }
+}
 // END NEW NK

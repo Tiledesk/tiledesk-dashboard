@@ -4,7 +4,7 @@ import { Request } from '../models/request-model';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
-
+import { DepartmentService } from '../services/mongodb-department.service';
 import { trigger, state, style, animate, transition, query, animateChild } from '@angular/animations';
 
 @Component({
@@ -42,9 +42,9 @@ import { trigger, state, style, animate, transition, query, animateChild } from 
 export class RequestsListHistoryNewComponent implements OnInit {
 
   @ViewChild('advancedoptionbtn') private advancedoptionbtnRef: ElementRef;
-  @ViewChild('ontopsearchbtn') private ontopsearchbtnRef: ElementRef;
-  @ViewChild('onbottomsearchbtn') private onbottomsearchbtnRef: ElementRef;
-  
+  @ViewChild('searchbtn') private searchbtnRef: ElementRef;
+  // @ViewChild('searchbtn') private searchbtnRef: ElementRef;
+
 
   requestList: Request[];
   projectId: string;
@@ -57,26 +57,42 @@ export class RequestsListHistoryNewComponent implements OnInit {
   startDateValue: string;
   endDateValue: string;
   deptNameValue: string;
+  deptIdValue: string;
   fullTextValue: string;
 
   show = false;
   hasFocused = false;
+  departments: any;
+  selectedDeptId: string;
 
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
-    dateFormat: 'dd.mm.yyyy',
+    dateFormat: 'dd/mm/yyyy',
+    // dateFormat: 'yyyy, mm , dd',
   };
   constructor(
     private requestsService: RequestsService,
     private router: Router,
-    public auth: AuthService
+    public auth: AuthService,
+    private departmentService: DepartmentService
   ) { }
 
   ngOnInit() {
 
     this.getRequests();
     this.getCurrentProject();
+    this.getDepartments();
+  }
+  getDepartments() {
+    this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
+      console.log('!!! NEW REQUESTS HISTORY - GET DEPTS RESPONSE ', _departments);
+      this.departments = _departments
 
+    }, error => {
+      console.log('!!! NEW REQUESTS HISTORY - GET DEPTS - ERROR: ', error);
+    }, () => {
+      console.log('!!! NEW REQUESTS HISTORY - GET DEPTS * COMPLETE *')
+    });
   }
 
   toggle() {
@@ -100,35 +116,37 @@ export class RequestsListHistoryNewComponent implements OnInit {
   focusOnFullText() {
     console.log('!!! NEW REQUESTS HISTORY - FOCUS ON FULL TEXT');
     this.hasFocused = true;
+    // event.stopPropagation();​
   }
 
   search() {
-    this.ontopsearchbtnRef.nativeElement.blur();
-    this.onbottomsearchbtnRef.nativeElement.blur();
+    this.searchbtnRef.nativeElement.blur();
+
 
     if (this.fullText) {
-      // this.paramDeptName = 'deptname=' + this.deptName
+
       this.fullTextValue = this.fullText;
       console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR FULL TEXT ', this.fullTextValue);
     } else {
-      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR DEPT NAME ', this.fullText);
+      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR DEPT TEXT ', this.fullText);
       this.fullTextValue = ''
     }
 
-    if (this.deptName) {
-      // this.paramDeptName = 'deptname=' + this.deptName
-      this.deptNameValue = this.deptName;
-      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR DEPT NAME ', this.deptNameValue);
+    if (this.selectedDeptId) {
+
+      this.deptIdValue = this.selectedDeptId;
+      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR DEPT ID ', this.deptIdValue);
     } else {
-      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR DEPT NAME ', this.deptName);
-      this.deptNameValue = ''
+      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR DEPT ID ', this.selectedDeptId);
+      this.deptIdValue = ''
     }
 
     if (this.startDate) {
-      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR START DATE ', this.startDate['formatted']);
+      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR START DATE FORMATTED', this.startDate);
+      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR START DATE FORMATTED', this.startDate['formatted']);
 
       // this.paramStartDate = 'startdate=' + this.startDate['formatted'];
-      this.startDateValue = this.startDate['formatted']
+      this.startDateValue = this.startDate['jsdate']
       console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR START DATE ', this.startDateValue);
     } else {
       this.startDateValue = '';
@@ -136,8 +154,8 @@ export class RequestsListHistoryNewComponent implements OnInit {
     }
 
     if (this.endDate) {
-
-      this.endDateValue = this.endDate['formatted'];
+      // new Date(newDate).getTime())
+      this.endDateValue = this.endDate['jsdate'];
       console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR END DATE ', this.endDateValue);
     } else {
       this.endDateValue = '';
@@ -149,7 +167,7 @@ export class RequestsListHistoryNewComponent implements OnInit {
 
     // if (this.fullText !== undefined && this.deptName !== undefined && this.startDate !== undefined || this.endDate !== undefined) {
     // tslint:disable-next-line:max-line-length
-    this.queryString = 'full_text=' + this.fullTextValue + '&' + 'dept_name=' + this.deptNameValue + '&' + 'start_date=' + this.startDateValue + '&' + 'end_date=' + this.endDateValue
+    this.queryString = 'full_text=' + this.fullTextValue + '&' + 'dept_id=' + this.deptIdValue + '&' + 'start_date=' + this.startDateValue + '&' + 'end_date=' + this.endDateValue
     console.log('!!! NEW REQUESTS HISTORY - QUERY STRING ', this.queryString);
 
     this.getRequests()
