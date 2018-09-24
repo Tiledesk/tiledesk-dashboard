@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { RequestsService } from '../services/requests.service';
 import { Request } from '../models/request-model';
 import { Router } from '@angular/router';
@@ -41,6 +41,11 @@ import { trigger, state, style, animate, transition, query, animateChild } from 
 
 export class RequestsListHistoryNewComponent implements OnInit {
 
+  @ViewChild('advancedoptionbtn') private advancedoptionbtnRef: ElementRef;
+  @ViewChild('ontopsearchbtn') private ontopsearchbtnRef: ElementRef;
+  @ViewChild('onbottomsearchbtn') private onbottomsearchbtnRef: ElementRef;
+  
+
   requestList: Request[];
   projectId: string;
   showSpinner = true;
@@ -53,8 +58,10 @@ export class RequestsListHistoryNewComponent implements OnInit {
   endDateValue: string;
   deptNameValue: string;
   fullTextValue: string;
-  
+
   show = false;
+  hasFocused = false;
+
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
     dateFormat: 'dd.mm.yyyy',
@@ -74,6 +81,7 @@ export class RequestsListHistoryNewComponent implements OnInit {
 
   toggle() {
     this.show = !this.show;
+    console.log('!!! NEW REQUESTS HISTORY - TOGGLE DIV');
   }
 
   // onDateStartChanged(event: IMyDateModel) {
@@ -84,8 +92,20 @@ export class RequestsListHistoryNewComponent implements OnInit {
   //   // event properties are: event.date, event.jsdate, event.formatted and event.epoc
   //   console.log('!!! NEW REQUESTS HISTORY - END DATE ', event.formatted);
   // }
+  advancedOptions() {
+    console.log('!!! NEW REQUESTS HISTORY - HAS CLICKED ADAVANCED OPTION');
+    this.advancedoptionbtnRef.nativeElement.blur();
+  }
+
+  focusOnFullText() {
+    console.log('!!! NEW REQUESTS HISTORY - FOCUS ON FULL TEXT');
+    this.hasFocused = true;
+  }
 
   search() {
+    this.ontopsearchbtnRef.nativeElement.blur();
+    this.onbottomsearchbtnRef.nativeElement.blur();
+
     if (this.fullText) {
       // this.paramDeptName = 'deptname=' + this.deptName
       this.fullTextValue = this.fullText;
@@ -127,14 +147,14 @@ export class RequestsListHistoryNewComponent implements OnInit {
     // console.log('!!! NEW REQUESTS HISTORY - DEPT NAME ', this.deptame);
 
 
-    if (this.deptName !== undefined && this.startDate !== undefined || this.endDate !== undefined) {
-      // tslint:disable-next-line:max-line-length
-      this.queryString = 'dept_name=' + this.deptNameValue + '&' + 'start_date=' + this.startDateValue + '&' + 'end_date=' + this.endDateValue
-      console.log('!!! NEW REQUESTS HISTORY - QUERY STRING ', this.queryString);
+    // if (this.fullText !== undefined && this.deptName !== undefined && this.startDate !== undefined || this.endDate !== undefined) {
+    // tslint:disable-next-line:max-line-length
+    this.queryString = 'full_text=' + this.fullTextValue + '&' + 'dept_name=' + this.deptNameValue + '&' + 'start_date=' + this.startDateValue + '&' + 'end_date=' + this.endDateValue
+    console.log('!!! NEW REQUESTS HISTORY - QUERY STRING ', this.queryString);
 
-      this.getRequests()
+    this.getRequests()
 
-    }
+    // }
 
   }
 

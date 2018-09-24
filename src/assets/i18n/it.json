@@ -470,7 +470,10 @@
         "NoRequests": "Nessuna richiesta",
         "RequestId": "Id richiesta:",
         "RequesterId": "Id richiedente:",
-        "Close": "Chiudi"
+        "Close": "Chiudi",
+        "ContainsTheWords":"Contiene le parole",
+        "FilterByDepartment":"Filtra per dipartimento",
+        "DateRange": "Intervallo date"
     },
     "Resourcepage": {
         "CopyScript": "Copia Script",

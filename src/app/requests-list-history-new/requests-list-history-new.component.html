@@ -11,27 +11,108 @@
 
         <div class="card">
             <!-- data-background-color="red" -->
-          <div class="card-header" style="background-color:#ffffff; padding: 25px;">
+          <div class="card-header" style="background-color:#ffffff; padding: 8px;">
             <!-- <h4 class="title" style="color: #566787">Search Panel</h4>
             <p class="category">Here is a subtitle for this table</p> -->
 
+            <!-- NEW NK START -->
+
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="input-group" id="adv-search">
+                    <!-- FULL TEXT -->   <!--  -->
+                    <input [(ngModel)]="fullText" class="form-control" type="text" 
+                    style="margin-top: -8px; padding-left: 12px;"
+                    placeholder="{{ 'HistoryPage.ContainsTheWords' | translate }}" (focus)="focusOnFullText()"/>
+
+                    <div class="input-group-btn">
+                      <div class="btn-group" role="group">
+                          <div class="dropdown dropdown-lg">
+
+                              <!-- ADVANCED OPTIONS -->
+                              <button #advancedoptionbtn type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" (click)=advancedOptions()>
+                                <span class="caret"></span>
+                              </button>
+                              <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                  <form class="form-horizontal" role="form">
+                                    <div class="form-group">
+                                      <label  class="col-sm-12" style="text-align: left">
+                                          {{ 'HistoryPage.FilterByDepartment' | translate }}
+                                      </label>
+                                      <!-- class="form-control" -->
+                                      <div class="col-sm-12">
+                                        <input name="deptName" [(ngModel)]="deptName" 
+                                        style="
+                                        padding-left: 6px;
+                                        height: 34px; 
+                                        font-size: 14px; 
+                                        border-radius: 4px; 
+                                        border: 1px solid #CCC; width: 100%;"  
+                                        type="text" />
+                                        <!-- <select class="form-control">
+                                            <option value="0" selected>All Snippets</option>
+                                            <option value="1">Featured</option>
+                                            <option value="2">Most popular</option>
+                                            <option value="3">Top rated</option>
+                                            <option value="4">Most commented</option>
+                                        </select> -->
+                                      </div>
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="contain" class="col-sm-12" style="text-align: left">
+                                          {{ 'HistoryPage.DateRange' | translate }}
+                                      </label>
+                                      <div class="col-sm-6" >
+                                          <my-date-picker name="mydate" [options]="myDatePickerOptions"
+                                          [(ngModel)]="startDate" ></my-date-picker>
+                                      </div>
+                                      <!-- padding-left: 15px; -->
+                                      <div class="col-sm-6" style="">
+                                          <my-date-picker name="mydate" [options]="myDatePickerOptions"
+                                          [(ngModel)]="endDate" ></my-date-picker>
+                                      </div>
+                                    </div>
+                                    <!-- <div class="form-group">
+                                      <label for="contain">Contains the words</label>
+                                      <input class="form-control" type="text" />
+                                    </div> -->
+                                    <button #onbottomsearchbtn [disabled]="!deptName && !startDate && !endDate && !fullText" type="submit" class="btn btn-info" (click)="search()">
+                                      <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                    </button>
+                                  </form>
+                              </div>
+                          </div>
+
+                          <!-- SEARCH BUTTON NEAR THE CARET  -->
+                          <button #ontopsearchbtn [disabled]="!deptName && !startDate && !endDate && !fullText" type="button" class="btn btn-info" (click)="search()">
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                          </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <!-- </div> -->
+            <!-- NEW NK END  -->
+
            
         
-              <form #myForm="ngForm" novalidate>
-
-                  <div class="row" style="margin-bottom: 15px;">
+              <!-- <form #myForm="ngForm" novalidate>
+                <div class="row" style="margin-bottom: 15px;">
                       <label style="padding-top: 8px; padding-right: 15px; text-align: right; color: #566787" class="col-sm-2">
                           Full Text 
                       </label>
-                      <!-- border-right:none; border-radius: 4px 0px 0px 4px; width: 100%;-->
                       <div class="col-sm-2">
-                          <input name="fullText" [(ngModel)]="fullText" class="" type="text"  style=" height: 34px;
-                          font-size: 14px; padding-left: 6px; border-radius: 4px; border: 1px solid #CCC;  padding-right:0px">
-                          
+                          <input name="fullText" [(ngModel)]="fullText" class="" type="text"  
+                          style=" height: 34px;
+                          font-size: 14px; padding-left: 6px; border-radius: 4px; border: 1px solid #CCC;  padding-right:0px;
+                          border-right: none; border-radius: 4px 0px 0px 4px; width: 100%;">
+                       
                       </div>
-                      <!-- border-left:none;  border-radius: 0px 4px 4px 0px; -->
                       <div class="col-sm-2">
-                          <button class="" (click)="search()" style="cursor:pointer;  border: 1px solid #4caf50 ;  height:34px; border-radius: 4px; background-color:#4caf50   ">Search</button>
+                          <button class="" (click)="search()" 
+                          style="cursor:pointer;  border: 1px solid #4caf50 ;  height:34px; border-radius: 4px; background-color:#4caf50;
+                          border-left:none;  border-radius: 0px 4px 4px 0px; ">Search</button>
                       </div>
                       
                       <div class="col-sm-2" style="height: 34px;">
@@ -48,7 +129,7 @@
                       </label>
                       <div class="col-sm-2">
                           <input name="deptName" [(ngModel)]="deptName" class="" type="text"  style="height: 34px;
-                          font-size: 14px; padding-left: 6px; border-radius: 4px; border: 1px solid #CCC; padding-right:0px">
+                          font-size: 14px; padding-left: 6px; border-radius: 4px; border: 1px solid #CCC; padding-right:0px; width: 100%;">
                       </div>
                       </div>
 
@@ -74,7 +155,7 @@
                       </div>
                     </div>
                   </div>
-              </form>
+              </form> -->
         
             
           </div>
@@ -82,8 +163,6 @@
             <loading-spinner *ngIf="showSpinner"></loading-spinner>
             <div  *ngIf="!showSpinner" class="card-content table-responsive">
  
-                
-     
 
               <table class="table table-hover">
                 <thead class="text">
@@ -100,7 +179,7 @@
                       </span>  
                     </th> -->
 
-                    <!-- ===== DEPARTMENTS ===== -->
+                    <!-- ===== DEPARTMENT NAME ===== -->
                     <th>
                       <span style="color: #566787">
                         <strong>
@@ -203,7 +282,12 @@
                      </p>
                   </td> -->
 
-                  <td> </td>
+                  <!-- ===== DEPARTMENT NAME ===== -->
+                  <td>
+                      <p style="font-size:0.9em">
+                        {{ request?.departmentid?.name }}
+                      </p>
+                  </td>
 
                   <!-- ===== REQUESTER FULL NAME ===== -->
                   <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
