@@ -735,10 +735,10 @@ export class RequestsService {
       .map((response) => response.json());
   }
 
-  public getNodeJsRequests(querystring) {
+  public getNodeJsRequests(querystring, pagenumber) {
     // USED TO TEST (note: this service doen't work in localhost)
     // const url = 'https://api.tiledesk.com/v1/' + '5ba35f0b9acdd40015d350b6' + '/requests?' + querystring;
-    const url = this.BASE_URL + this.project._id + '/requests?' + querystring;
+    const url = this.BASE_URL + this.project._id + '/requests?' + querystring + '&page=' + pagenumber;
 
     console.log('!!! NEW REQUESTS HISTORY - REQUESTS SERVICE URL ', url);
 

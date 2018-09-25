@@ -65,6 +65,7 @@ export class RequestsListHistoryNewComponent implements OnInit {
   hasFocused = false;
   departments: any;
   selectedDeptId: string;
+  pageNumber = 0
 
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
@@ -94,6 +95,20 @@ export class RequestsListHistoryNewComponent implements OnInit {
     }, () => {
       console.log('!!! NEW REQUESTS HISTORY - GET DEPTS * COMPLETE *')
     });
+  }
+
+  /// PAGINATION 
+  decreasePageNumber() {
+    this.pageNumber -= 1;
+    
+    console.log('!!! NEW REQUESTS HISTORY - DECREASE PAGE NUMBER ', this.pageNumber);
+    this.getRequests()
+  }
+
+  increasePageNumber() {
+    this.pageNumber += 1;
+    console.log('!!! NEW REQUESTS HISTORY - INCREASE PAGE NUMBER ', this.pageNumber);
+    this.getRequests()
   }
 
   toggle() {
@@ -193,8 +208,9 @@ export class RequestsListHistoryNewComponent implements OnInit {
   }
 
   getRequests() {
-    this.requestsService.getNodeJsRequests(this.queryString).subscribe((requests: any) => {
-      console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS ', requests);
+    this.requestsService.getNodeJsRequests(this.queryString, this.pageNumber).subscribe((requests: any) => {
+      console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS ', requests['requests']);
+      console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT ', requests['count']);
       if (requests) {
 
 
@@ -202,7 +218,7 @@ export class RequestsListHistoryNewComponent implements OnInit {
         //   console.log('!!! NEW REQUESTS HISTORY REQUEST ', r)
         // })
 
-        this.requestList = requests;
+        this.requestList = requests['requests'];
       }
 
     }, error => {

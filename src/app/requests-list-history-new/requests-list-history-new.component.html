@@ -77,6 +77,28 @@
               <!-- NEW NK END  -->
 
                 <!-- *********************** // THIS IS THE RIGHT  *********************** -->
+                <div style="width: 100px; margin: 0 auto;" >
+                <div class="input-group">
+                    <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
+                        <button #searchbtn class="btn btn-info" type="button" (click)="decreasePageNumber()" style="padding: 6px 8px">
+                          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                        </button>
+                      </span>
+                        <span class="input-group-btn" style="padding-right:0px;">
+                          <button #searchbtn class="btn btn-info" type="button" (click)="search()" style="padding: 6px 8px">
+                            {{ pageNumber }}
+                          </button>
+                        </span>
+                      
+                      <span class="input-group-btn" style="padding-right:0px">
+                        <button #searchbtn class="btn btn-info" type="button" (click)="increasePageNumber()" style="padding: 6px 8px">
+                          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                        </button>
+                      </span>
+                </div>
+              </div>
+                
+
             <form #myForm="ngForm" novalidate class="advancedOptionForm">
               <div class="row">
   
