@@ -43,6 +43,7 @@ export class RequestsListHistoryNewComponent implements OnInit {
 
   @ViewChild('advancedoptionbtn') private advancedoptionbtnRef: ElementRef;
   @ViewChild('searchbtn') private searchbtnRef: ElementRef;
+  @ViewChild('searchbtnbottom') private searchbtnbottomRef?: ElementRef;
   // @ViewChild('searchbtn') private searchbtnRef: ElementRef;
 
 
@@ -54,8 +55,8 @@ export class RequestsListHistoryNewComponent implements OnInit {
   deptName: string;
   fullText: string;
   queryString: string;
-  startDateValue: string;
-  endDateValue: string;
+  startDateValue: any;
+  endDateValue: any;
   deptNameValue: string;
   deptIdValue: string;
   fullTextValue: string;
@@ -96,8 +97,9 @@ export class RequestsListHistoryNewComponent implements OnInit {
   }
 
   toggle() {
+    this.advancedoptionbtnRef.nativeElement.blur();
     this.show = !this.show;
-    console.log('!!! NEW REQUESTS HISTORY - TOGGLE DIV');
+    console.log('!!! NEW REQUESTS HISTORY - TOGGLE DIV ', this.show);
   }
 
   // onDateStartChanged(event: IMyDateModel) {
@@ -108,10 +110,10 @@ export class RequestsListHistoryNewComponent implements OnInit {
   //   // event properties are: event.date, event.jsdate, event.formatted and event.epoc
   //   console.log('!!! NEW REQUESTS HISTORY - END DATE ', event.formatted);
   // }
-  advancedOptions() {
-    console.log('!!! NEW REQUESTS HISTORY - HAS CLICKED ADAVANCED OPTION');
-    this.advancedoptionbtnRef.nativeElement.blur();
-  }
+  // advancedOptions() {
+  //   console.log('!!! NEW REQUESTS HISTORY - HAS CLICKED ADAVANCED OPTION');
+  //   this.advancedoptionbtnRef.nativeElement.blur();
+  // }
 
   focusOnFullText() {
     console.log('!!! NEW REQUESTS HISTORY - FOCUS ON FULL TEXT');
@@ -121,7 +123,7 @@ export class RequestsListHistoryNewComponent implements OnInit {
 
   search() {
     this.searchbtnRef.nativeElement.blur();
-
+    this.searchbtnbottomRef.nativeElement.blur();
 
     if (this.fullText) {
 
@@ -142,11 +144,18 @@ export class RequestsListHistoryNewComponent implements OnInit {
     }
 
     if (this.startDate) {
-      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR START DATE FORMATTED', this.startDate);
-      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR START DATE FORMATTED', this.startDate['formatted']);
+      console.log('!!! NEW REQUESTS HISTORY - START DATE ', this.startDate);
+      console.log('!!! NEW REQUESTS HISTORY - START DATE - FORMATTED ', this.startDate['formatted']);
+      console.log('!!! NEW REQUESTS HISTORY - START DATE - EPOC ', this.startDate['epoc']);
+      // console.log('!!! NEW REQUESTS HISTORY - START DATE - GETS TIME ', new Date((this.startDate['jsdate'].getTime())));
 
-      // this.paramStartDate = 'startdate=' + this.startDate['formatted'];
-      this.startDateValue = this.startDate['jsdate']
+
+      // this.startDateValue = this.startDate['epoc']
+      // this.startDateValue = this.startDate['epoc'] * 1000
+      this.startDateValue = this.startDate['formatted']
+
+      // console.log('!!! NEW REQUESTS HISTORY - START DATE - TIMESTAMP ', new Date(this.startDate['formatted']).getTime());
+      // this.startDateValue = this.startDate['jsdate'].getTime()
       console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR START DATE ', this.startDateValue);
     } else {
       this.startDateValue = '';
@@ -154,8 +163,15 @@ export class RequestsListHistoryNewComponent implements OnInit {
     }
 
     if (this.endDate) {
-      // new Date(newDate).getTime())
-      this.endDateValue = this.endDate['jsdate'];
+      console.log('!!! NEW REQUESTS HISTORY - END DATE ', this.endDate);
+      console.log('!!! NEW REQUESTS HISTORY - END DATE - FORMATTED ', this.endDate['formatted']);
+      console.log('!!! NEW REQUESTS HISTORY - END DATE - EPOC ', this.endDate['epoc']);
+
+      // this.endDateValue = this.endDate['epoc'];
+      // this.endDateValue = this.endDate['epoc'] * 1000;
+      this.endDateValue = this.endDate['formatted']
+
+      // this.endDateValue = this.endDate['jsdate'].getTime()
       console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR END DATE ', this.endDateValue);
     } else {
       this.endDateValue = '';

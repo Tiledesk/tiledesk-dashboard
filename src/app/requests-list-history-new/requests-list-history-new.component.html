@@ -73,217 +73,156 @@
                   </div>
                 </div>
               </div> -->
-            <!-- </div> -->
-            <!-- NEW NK END  -->
+              <!-- </div> -->
+              <!-- NEW NK END  -->
 
-                    <!-- <div class="row" style="margin-bottom: 15px;">
-                      <label style="padding-top: 8px; padding-right: 15px; text-align: right; color: #566787" class="col-sm-2">
-                          Full Text 
-                      </label>
-                      <div class="col-sm-2">
-                          <input name="fullText" [(ngModel)]="fullText" class="" type="text"  
-                          style=" height: 34px;
-                          font-size: 14px; padding-left: 6px; border-radius: 4px; border: 1px solid #CCC;  padding-right:0px;
-                          border-right: none; border-radius: 4px 0px 0px 4px; width: 100%;">
-                       
-                      </div>
-                      <div class="col-sm-2">
-                          <button class="" (click)="search()" 
-                          style="cursor:pointer;  border: 1px solid #4caf50 ;  height:34px; border-radius: 4px; background-color:#4caf50;
-                          border-left:none;  border-radius: 0px 4px 4px 0px; ">Search</button>
-                      </div>
-                      
-                      <div class="col-sm-2" style="height: 34px;">
-                          <a (click)="toggle()" style="cursor:pointer; ">Advanced</a>
-                      </div>
-                    </div> -->
-
-                    <!-- *********************** // THIS IS RIGHT  *********************** -->
-                <form #myForm="ngForm" novalidate class="advancedOptionForm" style="padding: 15px">
-                  <div class="row">
-                    <!-- <div style="width: 500px; margin: 0 auto"> -->
-                        <div class="input-group">
-                            <input name="fullText" type="text" [(ngModel)]="fullText" class="form-control" 
-                            placeholder="{{ 'HistoryPage.ContainsTheWords' | translate }}" style="margin-bottom: 20px; padding-bottom: 16px;">
-                            
-                            <span class="input-group-btn" style="padding-right:0px">
-                                <button #searchbtn class="btn btn-info" type="button" (click)="search()">
-                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                                </button>
-                            </span>
-
-                            <span class="input-group-btn" style="padding-left:0px">
-                                <button class="btn btn-default" type="button" (click)="toggle()">
-                                    <span class="caret"></span>
-                                </button>
-                          </span>
-                        </div>
-                      <!-- </div> -->
-                    <!-- </div>  -->
-
-                  <div *ngIf="show" @ngIfAnimation>
-                    <div @easeInOut>
-
-
-                        <label  class="col-sm-12" style="text-align: left">
-                            {{ 'HistoryPage.FilterByDepartment' | translate }}
-                        </label>
-                        <!-- class="form-control" -->
-                        <div class="col-sm-12" style="margin-bottom: 20px;">
-                          <ng-select name="dept" [(ngModel)]="selectedDeptId">
-                              <ng-option *ngFor="let dept of departments" [value]="dept._id" >{{dept.name}}</ng-option>
-                              <!-- <ng-option [value]="'custom'">Custom</ng-option> -->
-                          </ng-select>
-                        </div>
-                      </div>
-                      <!-- <div class="form-group"> -->
-                        <label for="contain" class="col-sm-12" style="text-align: left">
-                            {{ 'HistoryPage.DateRange' | translate }}
-                        </label>
-                        <div class="col-sm-6" >
-                            <my-date-picker name="mydate" [options]="myDatePickerOptions"
-                            [(ngModel)]="startDate" ></my-date-picker>
-                        </div>
-                        <!-- padding-left: 15px; -->
-                        <div class="col-sm-6" style="">
-                            <my-date-picker name="mydate" [options]="myDatePickerOptions"
-                            [(ngModel)]="endDate" ></my-date-picker>
-                        </div>
-                      <!-- </div> -->
+                <!-- *********************** // THIS IS THE RIGHT  *********************** -->
+            <form #myForm="ngForm" novalidate class="advancedOptionForm">
+              <div class="row">
   
-                      <button type="submit" class="btn btn-info" (click)="search()">
+                <div class="input-group">
+                  <input name="fullText" type="text" [(ngModel)]="fullText" class="form-control" 
+                    placeholder="{{ 'HistoryPage.ContainsTheWords' | translate }}" style="margin-bottom: 20px; padding-bottom: 16px; padding-left: 6px;">
+                            
+                    <span class="input-group-btn" style="padding-right:0px">
+                      <button #searchbtn class="btn btn-info" type="button" (click)="search()">
                         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                       </button>
+                    </span>
 
+                    <span class="input-group-btn" style="padding-left:0px; padding-right:0px">
+                      <button #advancedoptionbtn class="btn btn-default" type="button" (click)="toggle()">
+                        <span class="caret"></span>
+                      </button>
+                    </span>
+                </div>
+
+                <div *ngIf="show" @ngIfAnimation>
                   
-                      <!-- <div class="row" style="margin-bottom: 15px;">
-                        <label style="padding-top: 8px; padding-right: 15px; text-align: right; color: #566787" class="col-sm-2">
-                            Department 
-                        </label>
-                        <div class="col-sm-2">
-                            <input name="deptName" [(ngModel)]="deptName" class="" type="text"  style="height: 34px;
-                            font-size: 14px; padding-left: 6px; border-radius: 4px; border: 1px solid #CCC; padding-right:0px; width: 100%;">
-                        </div>
-                      </div> -->
+                  <div @easeInOut>
 
-                      <!-- <div class="row">
-                        <label style="padding-top: 8px; padding-right: 15px; text-align: right; color: #566787" class="col-sm-2">
-                            Date Range 
-                        </label>
-                        <div class="col-sm-2" >
-                            <my-date-picker name="mydate" [options]="myDatePickerOptions"
-                            [(ngModel)]="startDate" ></my-date-picker>
-                        </div>
-                        <div class="col-sm-2" style="padding-left: 15px;">
-                            <my-date-picker name="mydate" [options]="myDatePickerOptions"
-                            [(ngModel)]="endDate" ></my-date-picker>
-                        </div>
-                      </div> -->
-                      <!-- <div class="row">
-                        <div class="col-sm-10 col-md-offset-2" >
-                          <button [disabled]="!deptName && !startDate && !endDate" class="btn btn-success" (click)="search()" style="padding-top: 6px; padding-bottom: 6px;">
-                            Search
-                          </button>
-                        </div>
-                      </div> -->
+                    <label  class="col-sm-12" style="text-align: left; color: rgba(0, 0, 0, 0.54); ">
+                        {{ 'HistoryPage.FilterByDepartment' | translate }}
+                    </label>
+                    <div class="col-sm-12" style="margin-bottom: 20px;">
+                      <ng-select name="dept" [(ngModel)]="selectedDeptId">
+                        <ng-option *ngFor="let dept of departments" [value]="dept._id" >{{dept.name}}</ng-option>
+                      </ng-select>
                     </div>
+
+                    <label for="contain" class="col-sm-12" style="text-align: left; color: rgba(0, 0, 0, 0.54);">
+                        {{ 'HistoryPage.DateRange' | translate }}
+                    </label>
+                    <div class="col-sm-6" >
+                        <my-date-picker name="mydate" [options]="myDatePickerOptions" 
+                        [(ngModel)]="startDate" ></my-date-picker>
+                    </div>
+                    <div class="col-sm-6" style="">
+                        <my-date-picker name="mydate" [options]="myDatePickerOptions"
+                        [(ngModel)]="endDate" ></my-date-picker>
+                    </div>
+
+                    <button #searchbtnbottom type="submit" class="btn btn-info" (click)="search()">
+                      <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </button>
+
                   </div>
-              </form>
-        
-            
-          </div>
+                </div>
+              </div>
+            </form>
+          </div>  <!-- /.end card-header -->
 
-            <loading-spinner *ngIf="showSpinner"></loading-spinner>
-            <div  *ngIf="!showSpinner" class="card-content table-responsive">
+          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+          <div  *ngIf="!showSpinner" class="card-content table-responsive">
  
 
-              <table class="table table-hover">
-                <thead class="text">
-                  <tr>
+            <table class="table table-hover">
+              <thead class="text">
+                <tr>
                
-                    <th></th>
+                  <th></th>
  
-                    <!-- ===== REQUEST ID ===== -->
-                    <!-- <th>
-                      <span style="color: #566787">
-                        <strong>
-                          Id
-                        </strong>
-                      </span>  
-                    </th> -->
+                  <!-- ===== REQUEST ID ===== -->
+                  <!-- <th>
+                    <span style="color: #566787">
+                      <strong>
+                        Id
+                      </strong>
+                    </span>  
+                  </th> -->
 
-                    <!-- ===== DEPARTMENT NAME ===== -->
-                    <th>
-                      <span style="color: #566787">
-                        <strong>
-                          <strong>{{ 'VisitorsPage.Department' | translate }}</strong>
-                        </strong>
-                      </span>  
-                    </th>
+                  <!-- ===== DEPARTMENT NAME ===== -->
+                  <th>
+                    <span style="color: #566787">
+                      <strong>
+                        <strong>{{ 'VisitorsPage.Department' | translate }}</strong>
+                      </strong>
+                    </span>  
+                  </th>
 
-                    <!-- ===== REQUESTER ===== -->
-                    <th>
-                      <span style="color: #566787">
-                        <strong> 
-                          {{ 'HistoryPage.Requester' | translate }}
-                        </strong>
-                      </span>
-                    </th>
+                  <!-- ===== REQUESTER ===== -->
+                  <th>
+                    <span style="color: #566787">
+                      <strong> 
+                        {{ 'HistoryPage.Requester' | translate }}
+                      </strong>
+                    </span>
+                  </th>
 
-                    <!-- ===== REQUESTER ID * FOR DEBUG * ===== -->
-                    <!-- <th>
-                      <span style="color: #566787">
-                        <strong> Requester Id </strong>
-                      </span>
-                    </th> -->
+                  <!-- ===== REQUESTER ID * FOR DEBUG * ===== -->
+                  <!-- <th>
+                    <span style="color: #566787">
+                      <strong> Requester Id </strong>
+                    </span>
+                  </th> -->
 
-                    <!-- ===== REQUEST FIRST TEXT ===== -->
-                    <th>
-                      <span style="color: #566787">
-                        <strong> 
-                          {{ 'HistoryPage.Message' | translate }}
-                        </strong>
-                      </span>
-                    </th>
+                  <!-- ===== REQUEST FIRST TEXT ===== -->
+                  <th>
+                    <span style="color: #566787">
+                      <strong> 
+                        {{ 'HistoryPage.Message' | translate }}
+                      </strong>
+                    </span>
+                  </th>
 
-                    <!-- ===== SERVED BY ===== -->
-                    <th>
-                      <span style="color: #566787">
-                        <strong> 
-                          {{ 'HistoryPage.ServedBy' | translate }}
-                        </strong>
-                      </span>
-                    </th>
+                  <!-- ===== SERVED BY ===== -->
+                  <th>
+                    <span style="color: #566787">
+                      <strong> 
+                        {{ 'HistoryPage.ServedBy' | translate }}
+                      </strong>
+                    </span>
+                  </th>
                    
-                    <!-- ===== RATING ===== -->
-                    <th>
-                      <span style="color: #566787">
-                        <strong> 
-                          {{ 'HistoryPage.Rating' | translate }}
-                        </strong>
-                      </span>
-                    </th>
+                  <!-- ===== RATING ===== -->
+                  <th>
+                    <span style="color: #566787">
+                      <strong> 
+                        {{ 'HistoryPage.Rating' | translate }}
+                      </strong>
+                    </span>
+                  </th>
  
-                    <!-- ===== MEMBERS ===== -->
-                    <!-- <th>
-                      <span style="color: #566787">
-                        <strong> Membri </strong>
-                        </span>
-                    </th> -->
-
-                    <!-- ===== PUBLISHED ===== -->
-                    <th>
-                      <span style="color: #566787">
-                        <strong> 
-                        {{ 'HistoryPage.Published' | translate }}
-                        </strong>
+                  <!-- ===== MEMBERS ===== -->
+                  <!-- <th>
+                    <span style="color: #566787">
+                      <strong> Membri </strong>
                       </span>
-                    </th>
-    
-                  </tr>
-                </thead>
+                  </th> -->
 
-               <tbody>
+                  <!-- ===== PUBLISHED ===== -->
+                  <th>
+                    <span style="color: #566787">
+                      <strong> 
+                      {{ 'HistoryPage.Published' | translate }}
+                      </strong>
+                    </span>
+                  </th>
+    
+                </tr>
+              </thead>
+
+              <tbody>
 
                 <!-- ===== IF THERE ISN'T HISTORY REQUEST ===== -->
                 <tr *ngIf="requestList && requestList.length === 0"> 
@@ -376,7 +315,7 @@
                       <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
                       <!-- {{ request?.request_date_fromnow }} -->
                       <!-- {{ request?.created_on | date: 'd/M/y HH:mm:ss' }} -->
-                      {{ request?.created_on | amTimeAgo }}
+                      {{ request?.createdAt | amTimeAgo }} ({{ request?.createdAt | date: 'd/M/y HH:mm:ss' }}) 
                     </p>
                   </td>
 
