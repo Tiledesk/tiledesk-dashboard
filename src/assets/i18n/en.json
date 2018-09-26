@@ -473,7 +473,8 @@
         "Close": "Close",
         "ContainsTheWords":"Contains the words",
         "FilterByDepartment":"Filter by Department",
-        "DateRange": "Date Range"
+        "DateRange": "Date Range",
+        "ClearSearch":"Clear Search"
     },
     "Resourcepage": {
         "CopyScript": "Copy Script",

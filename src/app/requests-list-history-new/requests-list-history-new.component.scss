@@ -120,4 +120,36 @@ input:-webkit-autofill {
 ::-ms-input-placeholder { /* Microsoft Edge */
     font-size: 0.9em !important;
 }
+
+// THE 'X' INSIDE THE 'fullText' INPUT
+.buttonInside{
+    position:relative;
+    // margin-bottom:10px;
+  }
+
+// THE 'X' INSIDE THE 'fullText' INPUT
+.glyphicon-remove{
+    // .fulltext-remove-btn{
+    position:absolute;
+    right: 0px;
+    top: 8px;
+    padding:2px;
+    font-size: 0.9em;
+    color: #000;
+    z-index: 3;
+    cursor: pointer;
+
+}
+// .glyphicon-remove:hover {
+//     cursor: pointer;
+// }
+
+//   CUSTOMIZE FONT WEIGHT AND COLOR OF THE 'X' INSIDE THE SELECT OPTIONS 'FILTER BY DEPT' 
+// .ng-select .ng-select-container {
+
+//     color: #000 !important;
+//     font-weight: 1000 !important;
+// }
+
+
 // END NEW NK

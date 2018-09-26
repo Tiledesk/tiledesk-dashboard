@@ -76,36 +76,55 @@
               <!-- </div> -->
               <!-- NEW NK END  -->
 
-                <!-- *********************** // THIS IS THE RIGHT  *********************** -->
-                <div style="width: 100px; margin: 0 auto;" >
+            <!-- *********************** // THIS IS THE RIGHT  *********************** -->
+            
+            <!-- *********************** // PAGINATION // ***********************  -->
+            <div class="row">
+              <div class="col-md-12">
+            <div class="tiledesk-pagination" style="margin-top: 10px; margin-right: 3px;  float: right">
+              <div style="width: 120px;"  >
                 <div class="input-group">
-                    <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
-                        <button #searchbtn class="btn btn-info" type="button" (click)="decreasePageNumber()" style="padding: 6px 8px">
-                          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                        </button>
-                      </span>
-                        <span class="input-group-btn" style="padding-right:0px;">
-                          <button #searchbtn class="btn btn-info" type="button" (click)="search()" style="padding: 6px 8px">
-                            {{ pageNumber }}
-                          </button>
-                        </span>
-                      
-                      <span class="input-group-btn" style="padding-right:0px">
-                        <button #searchbtn class="btn btn-info" type="button" (click)="increasePageNumber()" style="padding: 6px 8px">
-                          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                        </button>
-                      </span>
+
+                  <!-- -------====== BTN DECREASE PAGE  ======------ -->
+                  <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
+                    <button [disabled]="pageNo + 1 === 1" class="btn btn-info" type="button" (click)="decreasePageNumber()" style="padding: 6px 8px">
+                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    </button>
+                  </span>
+
+                  <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
+                  <span class="input-group-btn" style="padding-right:0px;">
+                    <button #searchbtn class="btn btn-info" type="button" style="padding: 6px 8px">
+                      {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
+                    </button>
+                  </span>
+                  
+                  <!-- -------====== BTN INCREASE PAGE  ======------ -->
+                  <span class="input-group-btn" style="padding-right:0px">
+                    <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp" class="btn btn-info" type="button" (click)="increasePageNumber()" style="padding: 6px 8px">
+                      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    </button>
+                  </span>
+
                 </div>
+             
               </div>
+            </div>
+            </div>
+            </div>
                 
 
             <form #myForm="ngForm" novalidate class="advancedOptionForm">
               <div class="row">
   
                 <div class="input-group">
-                  <input name="fullText" type="text" [(ngModel)]="fullText" class="form-control" 
-                    placeholder="{{ 'HistoryPage.ContainsTheWords' | translate }}" style="margin-bottom: 20px; padding-bottom: 16px; padding-left: 6px;">
-                            
+
+                  <!-- -------====== INPUT 'FULL TEXT' ======------ -->
+                  <div class="buttonInside">
+                    <input name="fullText" type="text" [(ngModel)]="fullText" class="form-control" 
+                      placeholder="{{ 'HistoryPage.ContainsTheWords' | translate }}" style="margin-bottom: 20px; padding-bottom: 16px; padding-left: 6px;">
+                    <span  *ngIf="fullText?.length > 0" class="glyphicon glyphicon-remove" aria-hidden="true" (click)="clearFullText()" ></span>
+                  </div>
                     <span class="input-group-btn" style="padding-right:0px">
                       <button #searchbtn class="btn btn-info" type="button" (click)="search()">
                         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
@@ -148,10 +167,19 @@
                       <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                     </button>
 
+                    <button #clearsearchbtn type="submit" class="btn btn-white" (click)="clearSearch()">
+                      <!-- <span class="glyphicon glyphicon-remo" aria-hidden="true"></span> -->
+                      {{ 'HistoryPage.ClearSearch' | translate }}
+                      
+                    </button>
+
                   </div>
                 </div>
               </div>
             </form>
+
+
+
           </div>  <!-- /.end card-header -->
 
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
@@ -345,6 +373,40 @@
               </tbody>
             </table>
           </div> <!-- ./ card-content table-responsive -->
+
+          <div class="card-footer" style="text-align:right">
+            <div class="stats" >
+
+              <div style="width: 120px; margin: 0 auto; margin-top: 10px " >
+                <div class="input-group">
+
+                  <!-- -------====== BTN DECREASE PAGE  ======------ -->
+                  <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
+                    <button [disabled]="pageNo + 1 === 1" class="btn btn-info" type="button" (click)="decreasePageNumber()" style="padding: 6px 8px">
+                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    </button>
+                  </span>
+
+                  <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
+                  <span class="input-group-btn" style="padding-right:0px;">
+                    <button #searchbtn class="btn btn-info" type="button" style="padding: 6px 8px">
+                      {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
+                    </button>
+                  </span>
+                  
+                  <!-- -------====== BTN INCREASE PAGE  ======------ -->
+                  <span class="input-group-btn" style="padding-right:0px">
+                    <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp" class="btn btn-info" type="button" (click)="increasePageNumber()" style="padding: 6px 8px">
+                      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    </button>
+                  </span>
+
+                </div>
+              </div>
+              
+            </div>
+          </div>
+
         </div> <!-- ./ card -->
       </div> <!-- ./ col-md-12 -->
     <div> <!-- ./ row -->

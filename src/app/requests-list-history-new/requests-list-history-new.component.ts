@@ -44,7 +44,7 @@ export class RequestsListHistoryNewComponent implements OnInit {
   @ViewChild('advancedoptionbtn') private advancedoptionbtnRef: ElementRef;
   @ViewChild('searchbtn') private searchbtnRef: ElementRef;
   @ViewChild('searchbtnbottom') private searchbtnbottomRef?: ElementRef;
-  // @ViewChild('searchbtn') private searchbtnRef: ElementRef;
+  @ViewChild('#clearsearchbtn') private clearsearchbtnRef: ElementRef;
 
 
   requestList: Request[];
@@ -65,7 +65,8 @@ export class RequestsListHistoryNewComponent implements OnInit {
   hasFocused = false;
   departments: any;
   selectedDeptId: string;
-  pageNumber = 0
+  pageNo = 0
+  totalPagesNo_roundToUp: number;
 
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
@@ -97,17 +98,17 @@ export class RequestsListHistoryNewComponent implements OnInit {
     });
   }
 
-  /// PAGINATION 
+  /// PAGINATION
   decreasePageNumber() {
-    this.pageNumber -= 1;
-    
-    console.log('!!! NEW REQUESTS HISTORY - DECREASE PAGE NUMBER ', this.pageNumber);
+    this.pageNo -= 1;
+
+    console.log('!!! NEW REQUESTS HISTORY - DECREASE PAGE NUMBER ', this.pageNo);
     this.getRequests()
   }
 
   increasePageNumber() {
-    this.pageNumber += 1;
-    console.log('!!! NEW REQUESTS HISTORY - INCREASE PAGE NUMBER ', this.pageNumber);
+    this.pageNo += 1;
+    console.log('!!! NEW REQUESTS HISTORY - INCREASE PAGE NUMBER ', this.pageNo);
     this.getRequests()
   }
 
@@ -130,15 +131,52 @@ export class RequestsListHistoryNewComponent implements OnInit {
   //   this.advancedoptionbtnRef.nativeElement.blur();
   // }
 
-  focusOnFullText() {
-    console.log('!!! NEW REQUESTS HISTORY - FOCUS ON FULL TEXT');
-    this.hasFocused = true;
-    // event.stopPropagation();​
+  // focusOnFullText() {
+  //   console.log('!!! NEW REQUESTS HISTORY - FOCUS ON FULL TEXT');
+  //   this.hasFocused = true;
+  //   // event.stopPropagation();​
+  // }
+
+  clearFullText() {
+    this.fullText = '';
+    // tslint:disable-next-line:max-line-length
+    this.queryString = 'full_text=' + '&' + 'dept_id=' + this.deptIdValue + '&' + 'start_date=' + this.startDateValue + '&' + 'end_date=' + this.endDateValue
+    this.pageNo = 0
+    this.getRequests();
+
+  }
+
+  clearSearch() {
+    if (this.clearsearchbtnRef) {
+      this.clearsearchbtnRef.nativeElement.blur();
+    }
+
+    this.fullText = '';
+    this.selectedDeptId = '';
+    this.startDate = '';
+    this.endDate = '';
+    // this.fullTextValue = '';
+    // this.deptIdValue = '';
+    // this.startDateValue = '';
+    // this.endDateValue = '';
+    // tslint:disable-next-line:max-line-length
+    this.queryString = 'full_text=' + '&' + 'dept_id=' + '&' + 'start_date=' + '&' + 'end_date=';
+    this.pageNo = 0;
+    console.log('!!! NEW REQUESTS HISTORY - CLEAR SEARCH fullTextValue ', this.fullTextValue)
+    // if (this.fullTextValue === '') {
+
+    // }
+    setTimeout(() => {
+      this.getRequests();
+    }, 100);
   }
 
   search() {
+    this.pageNo = 0
     this.searchbtnRef.nativeElement.blur();
-    this.searchbtnbottomRef.nativeElement.blur();
+    if (this.searchbtnbottomRef) {
+      this.searchbtnbottomRef.nativeElement.blur();
+    }
 
     if (this.fullText) {
 
@@ -208,15 +246,21 @@ export class RequestsListHistoryNewComponent implements OnInit {
   }
 
   getRequests() {
-    this.requestsService.getNodeJsRequests(this.queryString, this.pageNumber).subscribe((requests: any) => {
+    this.requestsService.getNodeJsRequests(this.queryString, this.pageNo).subscribe((requests: any) => {
       console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS ', requests['requests']);
       console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT ', requests['count']);
       if (requests) {
 
 
-        // requests.forEach(r => {
-        //   console.log('!!! NEW REQUESTS HISTORY REQUEST ', r)
-        // })
+        const requestsCount = 21; // for test
+        // const requestsCount = requests['count'];
+        console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT TEST ', requestsCount);
+
+        const totalPagesNo = requestsCount / 5
+        console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES No', totalPagesNo);
+
+        this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
+        console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES No ROUND TO UP ', this.totalPagesNo_roundToUp);
 
         this.requestList = requests['requests'];
       }
