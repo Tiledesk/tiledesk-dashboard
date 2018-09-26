@@ -61,12 +61,13 @@ export class RequestsListHistoryNewComponent implements OnInit {
   deptIdValue: string;
   fullTextValue: string;
 
-  show = false;
+  showAdvancedSearchOption = false;
   hasFocused = false;
   departments: any;
   selectedDeptId: string;
   pageNo = 0
   totalPagesNo_roundToUp: number;
+  displaysFooterPagination: boolean;
 
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
@@ -114,8 +115,8 @@ export class RequestsListHistoryNewComponent implements OnInit {
 
   toggle() {
     this.advancedoptionbtnRef.nativeElement.blur();
-    this.show = !this.show;
-    console.log('!!! NEW REQUESTS HISTORY - TOGGLE DIV ', this.show);
+    this.showAdvancedSearchOption = !this.showAdvancedSearchOption;
+    console.log('!!! NEW REQUESTS HISTORY - TOGGLE DIV ', this.showAdvancedSearchOption);
   }
 
   // onDateStartChanged(event: IMyDateModel) {
@@ -139,6 +140,24 @@ export class RequestsListHistoryNewComponent implements OnInit {
 
   clearFullText() {
     this.fullText = '';
+
+    if (this.selectedDeptId) {
+      this.deptIdValue = this.selectedDeptId;
+    } else {
+      this.deptIdValue = ''
+    }
+
+    if (this.startDate) {
+      this.startDateValue = this.startDate['formatted']
+    } else {
+      this.startDateValue = ''
+    }
+
+    if (this.endDate) {
+      this.endDateValue = this.endDate['formatted']
+    } else {
+      this.endDateValue = ''
+    }
     // tslint:disable-next-line:max-line-length
     this.queryString = 'full_text=' + '&' + 'dept_id=' + this.deptIdValue + '&' + 'start_date=' + this.startDateValue + '&' + 'end_date=' + this.endDateValue
     this.pageNo = 0
@@ -147,9 +166,16 @@ export class RequestsListHistoryNewComponent implements OnInit {
   }
 
   clearSearch() {
-    if (this.clearsearchbtnRef) {
-      this.clearsearchbtnRef.nativeElement.blur();
-    }
+    // const _clearsearchbtn = <HTMLElement>document.querySelector('.btn-white');
+    // console.log('!!! NEW REQUESTS HISTORY - SEARCH BTN ', _clearsearchbtn);
+
+    // _clearsearchbtn.onmouseup(function () {
+    //    _clearsearchbtn.blur();
+    // })
+
+    // if (_clearsearchbtn) {
+    //   this.clearsearchbtnRef.nativeElement.blur();
+    // }
 
     this.fullText = '';
     this.selectedDeptId = '';
@@ -163,12 +189,9 @@ export class RequestsListHistoryNewComponent implements OnInit {
     this.queryString = 'full_text=' + '&' + 'dept_id=' + '&' + 'start_date=' + '&' + 'end_date=';
     this.pageNo = 0;
     console.log('!!! NEW REQUESTS HISTORY - CLEAR SEARCH fullTextValue ', this.fullTextValue)
-    // if (this.fullTextValue === '') {
 
-    // }
-    setTimeout(() => {
-      this.getRequests();
-    }, 100);
+    this.getRequests();
+
   }
 
   search() {
@@ -251,13 +274,24 @@ export class RequestsListHistoryNewComponent implements OnInit {
       console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT ', requests['count']);
       if (requests) {
 
+        // const requestsCount = 39; // for test
+        const requestsCount = requests['count'];
+        console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT ', requestsCount);
 
-        const requestsCount = 21; // for test
-        // const requestsCount = requests['count'];
-        console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT TEST ', requestsCount);
+        // DISPLAY / HIDE PAGINATION IN THE FOOTER
+        if (this.showAdvancedSearchOption === true && requestsCount >= 8) {
+          this.displaysFooterPagination = true;
+        } else if (this.showAdvancedSearchOption === false && requestsCount >= 16) {
+          this.displaysFooterPagination = true;
+        } else {
+          this.displaysFooterPagination = false;
+        }
 
-        const totalPagesNo = requestsCount / 5
-        console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES No', totalPagesNo);
+        const requestsPerPage = requests['perPage'];
+        console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES REQUESTS X PAGE', requestsPerPage);
+
+        const totalPagesNo = requestsCount / requestsPerPage;
+        console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES NUMBER', totalPagesNo);
 
         this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
         console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES No ROUND TO UP ', this.totalPagesNo_roundToUp);

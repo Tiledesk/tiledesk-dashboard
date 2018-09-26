@@ -12,107 +12,41 @@
         <div class="card">
             <!-- data-background-color="red" -->
           <div class="card-header" style="background-color:#ffffff; padding: 8px;">
-            <!-- <h4 class="title" style="color: #566787">Search Panel</h4>
-            <p class="category">Here is a subtitle for this table</p> -->
-
-            <!-- NEW NK START -->
-
-              <!-- <div class="row">
-                <div class="col-md-12">
-                  <div class="input-group" id="adv-search">
-
-                    <input [(ngModel)]="fullText" class="form-control" type="text" 
-                    style="margin-top: -8px; padding-left: 12px;"
-                    placeholder="{{ 'HistoryPage.ContainsTheWords' | translate }}" (focus)="focusOnFullText()"/>
-
-                    <div class="input-group-btn">
-                      <div class="btn-group" role="group">
-                          <div class="dropdown dropdown-lg">
-
-                              <button #advancedoptionbtn type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" (click)=advancedOptions()>
-                                <span class="caret"></span>
-                              </button>
-                              <div class="dropdown-menu dropdown-menu-right" role="menu">
-                                  <form class="form-horizontal" role="form">
-                                    <div class="form-group">
-                                      <label  class="col-sm-12" style="text-align: left">
-                                          {{ 'HistoryPage.FilterByDepartment' | translate }}
-                                      </label>
-  
-                                      <div class="col-sm-12">
-                                                <ng-select name="dept" [(ngModel)]="selectedDeptId">
-                                            <ng-option *ngFor="let dept of departments" [value]="dept._id" >{{dept.name}}</ng-option>
- 
-                                        </ng-select>
-                                      </div>
-                                    </div>
-                                    <div class="form-group">
-                                      <label for="contain" class="col-sm-12" style="text-align: left">
-                                          {{ 'HistoryPage.DateRange' | translate }}
-                                      </label>
-                                      <div class="col-sm-6" >
-                                          <my-date-picker name="mydate" [options]="myDatePickerOptions"
-                                          [(ngModel)]="startDate" ></my-date-picker>
-                                      </div>
-                                      <div class="col-sm-6" style="">
-                                          <my-date-picker name="mydate" [options]="myDatePickerOptions"
-                                          [(ngModel)]="endDate" ></my-date-picker>
-                                      </div>
-                                    </div>
-                                    <button #onbottomsearchbtn  type="submit" class="btn btn-info" (click)="search()">
-                                      <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                                    </button>
-                                  </form>
-                              </div>
-                          </div>
-                          <button #ontopsearchbtn  type="button" class="btn btn-info" (click)="search()">
-                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                          </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
-              <!-- </div> -->
-              <!-- NEW NK END  -->
-
-            <!-- *********************** // THIS IS THE RIGHT  *********************** -->
             
             <!-- *********************** // PAGINATION // ***********************  -->
             <div class="row">
               <div class="col-md-12">
-            <div class="tiledesk-pagination" style="margin-top: 10px; margin-right: 3px;  float: right">
-              <div style="width: 120px;"  >
-                <div class="input-group">
+                <div class="tiledesk-pagination" style="margin-top: 10px; margin-right: 3px;  float: right">
+                  <div style="width: 120px;"  >
+                    <div class="input-group">
 
-                  <!-- -------====== BTN DECREASE PAGE  ======------ -->
-                  <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
-                    <button [disabled]="pageNo + 1 === 1" class="btn btn-info" type="button" (click)="decreasePageNumber()" style="padding: 6px 8px">
-                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                    </button>
-                  </span>
+                      <!-- -------====== BTN DECREASE PAGE  ======------ -->
+                      <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
+                        <button [disabled]="pageNo + 1 === 1" class="btn btn-info" type="button" (click)="decreasePageNumber()" style="padding: 6px 8px">
+                          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                        </button>
+                      </span>
 
-                  <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
-                  <span class="input-group-btn" style="padding-right:0px;">
-                    <button #searchbtn class="btn btn-info" type="button" style="padding: 6px 8px">
-                      {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
-                    </button>
-                  </span>
-                  
-                  <!-- -------====== BTN INCREASE PAGE  ======------ -->
-                  <span class="input-group-btn" style="padding-right:0px">
-                    <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp" class="btn btn-info" type="button" (click)="increasePageNumber()" style="padding: 6px 8px">
-                      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                    </button>
-                  </span>
+                      <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
+                      <span class="input-group-btn" style="padding-right:0px;">
+                        <button #searchbtn class="btn btn-info" type="button" style="padding: 6px 8px">
+                          {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
+                        </button>
+                      </span>
+                      
+                      <!-- -------====== BTN INCREASE PAGE  ======------ -->
+                      <span class="input-group-btn" style="padding-right:0px">
+                        <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp" class="btn btn-info" type="button" (click)="increasePageNumber()" style="padding: 6px 8px">
+                          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                        </button>
+                      </span>
 
+                    </div>
+                
+                  </div>
                 </div>
-             
               </div>
             </div>
-            </div>
-            </div>
-                
 
             <form #myForm="ngForm" novalidate class="advancedOptionForm">
               <div class="row">
@@ -121,7 +55,7 @@
 
                   <!-- -------====== INPUT 'FULL TEXT' ======------ -->
                   <div class="buttonInside">
-                    <input name="fullText" type="text" [(ngModel)]="fullText" class="form-control" 
+                    <input name="fullText" type="text" [(ngModel)]="fullText" class="form-control" autocomplete="off"
                       placeholder="{{ 'HistoryPage.ContainsTheWords' | translate }}" style="margin-bottom: 20px; padding-bottom: 16px; padding-left: 6px;">
                     <span  *ngIf="fullText?.length > 0" class="glyphicon glyphicon-remove" aria-hidden="true" (click)="clearFullText()" ></span>
                   </div>
@@ -138,7 +72,7 @@
                     </span>
                 </div>
 
-                <div *ngIf="show" @ngIfAnimation>
+                <div *ngIf="showAdvancedSearchOption" @ngIfAnimation>
                   
                   <div @easeInOut>
 
@@ -178,14 +112,11 @@
               </div>
             </form>
 
-
-
           </div>  <!-- /.end card-header -->
 
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
           <div  *ngIf="!showSpinner" class="card-content table-responsive">
  
-
             <table class="table table-hover">
               <thead class="text">
                 <tr>
@@ -307,7 +238,7 @@
                   <!-- ===== DEPARTMENT NAME ===== -->
                   <td>
                       <p style="font-size:0.9em">
-                        {{ request?.departmentid?.name }}
+                        {{ request?.department?.name }}
                       </p>
                   </td>
 
@@ -374,8 +305,8 @@
             </table>
           </div> <!-- ./ card-content table-responsive -->
 
-          <div class="card-footer" style="text-align:right">
-            <div class="stats" >
+          <div *ngIf="displaysFooterPagination === true" class="card-footer" style="text-align:right">
+            <div class="stats">
 
               <div style="width: 120px; margin: 0 auto; margin-top: 10px " >
                 <div class="input-group">

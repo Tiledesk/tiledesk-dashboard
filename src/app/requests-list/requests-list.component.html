@@ -7,6 +7,85 @@
 
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
+    
+    <!-- ------====== CARDS COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED ======------ -->
+    <div class="left-half" style="width: 50%;">
+    <div class="row">
+
+      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+
+        <div class="panel"> 
+          <div class="panel-heading"> 
+            <div class="row"> 
+              <div class="col-xs-3"> 
+                <i class="fa fa-comments fa-5x"></i> 
+              </div> 
+                <div class="col-xs-9 text-right"> 
+                  <div class="huge" style=" font-size: 40px; line-height: 48px;">
+                      {{ requestListServed?.length +  requestListUnserved.length }}  
+                  </div> 
+                  <div class="ng-binding">
+                    {{ "TotalActive" | translate }} 
+                  </div> 
+              </div> 
+            </div> 
+          </div> 
+        </div> 
+
+      </div>
+
+      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+        <div class="panel" style="background-color: #00bcd4"> 
+          <div class="panel-heading"> 
+            <div class="row"> 
+              <div class="col-xs-3"> 
+                  <i class="material-icons" style="color: #fff; font-size: 45px; ">
+                      visibility
+                  </i>
+              </div> 
+                <div class="col-xs-9 text-right"> 
+                  <div class="huge" style=" font-size: 40px; line-height: 48px; color: #fff;">
+                    {{ requestListServed?.length }}  
+                  </div> 
+                  <div class="ng-binding" style="color: #fff;">
+                      {{ "Served" | translate }}
+                  </div> 
+              </div> 
+            </div> 
+          </div> 
+        </div> 
+  
+      </div>
+
+      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+        
+        <div class="panel" style="background-color: #f44336"> 
+          <div class="panel-heading"> 
+            <div class="row"> 
+              <div class="col-xs-3"> 
+                  <i class="material-icons" style="color: #fff; font-size: 45px; ">
+                      visibility
+                  </i>
+              </div> 
+                <div class="col-xs-9 text-right"> 
+                  <div class="huge" style=" font-size: 40px; line-height: 48px; color: #fff;">
+                    {{ requestListUnserved.length }}  
+                  </div> 
+                  <div class="ng-binding" style="color: #fff;">
+                      {{ "Unserved" | translate }}
+                  </div> 
+              </div> 
+            </div> 
+          </div> 
+        </div> 
+      </div>
+    </div>
+  </div>
+  <div class="right-half" style="width: 50%;">
+
+  </div>
+    <!-- ------====== / .end CARDS COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED ======------ -->
+
     <div class="row">
       <div class="col-md-12">
         <div class="card">

@@ -197,7 +197,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       const requestsByDay_series_array = [];
       const requestsByDay_labels_array = []
 
-      for (let j = 0; j < 7; j++) {
+      for (let j = 0; j < requestsByDay.length; j++) {
         if (requestsByDay[j]) {
           // console.log('!!! ANALYTICS - REQUESTS BY DAY - # cicle ', j)
           const requestByDay_count = requestsByDay[j]['count']
@@ -260,8 +260,10 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   }
 
   /**
-  /* GETS ONLY THE DEPTs WITH THE CURRENT PROJECT ID
-  /* note: the project id is passed get and passed by mongodbDepartmentService */
+   * ********************************************************************************************
+   * ========================== COUNT OF ** ALL ** REQUESTS X dDEPT =============================
+   * ******************************************************************************************** 
+   */
   getCountOf_AllRequestsForDept() {
     this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
       console.log('!!! ANALYTICS ALL REQUESTS X DEPT - GET DEPTS RESPONSE ', _departments);
