@@ -281,7 +281,11 @@ export class RequestsListHistoryNewComponent implements OnInit {
         // DISPLAY / HIDE PAGINATION IN THE FOOTER
         if (this.showAdvancedSearchOption === true && requestsCount >= 10) {
           this.displaysFooterPagination = true;
-        } else if (this.showAdvancedSearchOption === false && requestsCount >= 16) {
+          // tslint:disable-next-line:max-line-length
+          console.log('!!! NEW REQUESTS HISTORY - REQST COUNT ', requestsCount, 'ADVANCED OPTION IS OPEN ', this.showAdvancedSearchOption, 'DISPLAY FOOTER PAG ', this.displaysFooterPagination);
+        } else if (requestsCount >= 16) {
+          // tslint:disable-next-line:max-line-length
+          console.log('!!! NEW REQUESTS HISTORY - REQST COUNT ', requestsCount, 'DISPLAY FOOTER PAG ', this.displaysFooterPagination);
           this.displaysFooterPagination = true;
         } else {
           this.displaysFooterPagination = false;
