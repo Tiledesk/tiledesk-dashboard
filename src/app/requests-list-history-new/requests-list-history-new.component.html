@@ -17,7 +17,7 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="tiledesk-pagination" style="margin-top: 10px; margin-right: 3px;  float: right">
-                  <div style="width: 120px;"  >
+                  <div style="width: 120px;">
                     <div class="input-group">
 
                       <!-- -------====== BTN DECREASE PAGE  ======------ -->
@@ -76,27 +76,37 @@
                   
                   <div @easeInOut>
 
-                    <label  class="col-sm-12" style="text-align: left; color: rgba(0, 0, 0, 0.54); ">
-                        {{ 'HistoryPage.FilterByDepartment' | translate }}
-                    </label>
-                    <div class="col-sm-12" style="margin-bottom: 20px;">
-                      <ng-select name="dept" [(ngModel)]="selectedDeptId">
-                        <ng-option *ngFor="let dept of departments" [value]="dept._id" >{{dept.name}}</ng-option>
-                      </ng-select>
+          
+                    <div class="col-sm-6"> 
+
+                      <div class="section-select-dept">
+                        <label  class="col-sm-12" style="text-align: left; color: rgba(0, 0, 0, 0.54); ">
+                            {{ 'HistoryPage.FilterByDepartment' | translate }}
+                        </label>
+                        <div class="col-sm-12" style="margin-bottom: 20px;">
+                          <ng-select name="dept" [(ngModel)]="selectedDeptId">
+                            <ng-option *ngFor="let dept of departments" [value]="dept._id" >{{dept.name}}</ng-option>
+                          </ng-select>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="col-sm-6"> 
+                      <label for="contain" class="col-sm-12" style="text-align: left; color: rgba(0, 0, 0, 0.54);">
+                          {{ 'HistoryPage.DateRange' | translate }}
+                      </label>
+                      <div class="col-sm-6" >
+                          <my-date-picker name="mydate" [options]="myDatePickerOptions" 
+                          [(ngModel)]="startDate" ></my-date-picker>
+                      </div>
+                      <div class="col-sm-6" style="">
+                          <my-date-picker name="mydate" [options]="myDatePickerOptions"
+                          [(ngModel)]="endDate" ></my-date-picker>
+                      </div>
                     </div>
 
-                    <label for="contain" class="col-sm-12" style="text-align: left; color: rgba(0, 0, 0, 0.54);">
-                        {{ 'HistoryPage.DateRange' | translate }}
-                    </label>
-                    <div class="col-sm-6" >
-                        <my-date-picker name="mydate" [options]="myDatePickerOptions" 
-                        [(ngModel)]="startDate" ></my-date-picker>
-                    </div>
-                    <div class="col-sm-6" style="">
-                        <my-date-picker name="mydate" [options]="myDatePickerOptions"
-                        [(ngModel)]="endDate" ></my-date-picker>
-                    </div>
 
+                    <div class="col-sm-12"> 
                     <button #searchbtnbottom type="submit" class="btn btn-info" (click)="search()">
                       <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                     </button>
@@ -106,6 +116,8 @@
                       {{ 'HistoryPage.ClearSearch' | translate }}
                       
                     </button>
+
+                    </div>
 
                   </div>
                 </div>

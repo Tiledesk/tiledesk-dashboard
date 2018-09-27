@@ -279,7 +279,7 @@ export class RequestsListHistoryNewComponent implements OnInit {
         console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT ', requestsCount);
 
         // DISPLAY / HIDE PAGINATION IN THE FOOTER
-        if (this.showAdvancedSearchOption === true && requestsCount >= 8) {
+        if (this.showAdvancedSearchOption === true && requestsCount >= 10) {
           this.displaysFooterPagination = true;
         } else if (this.showAdvancedSearchOption === false && requestsCount >= 16) {
           this.displaysFooterPagination = true;
