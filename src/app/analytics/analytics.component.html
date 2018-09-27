@@ -4,102 +4,25 @@
 <div class="main-content" style="padding-top:0px">
 
     <div class="container-fluid">
-        <!-- <div class="row">
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="card card-stats" >
-                    <div class="card-header" data-background-color="orange">
-                        
-                        <i class="material-icons">message</i>
-                    </div>
-                    <div class="card-content">
-                        <p class="category">Numero Richieste</p>
-                        <h3 class="title">50
-                         
-                        </h3>
-                    </div>
-                    <div class="card-footer">
-                        <div class="stats">
-                           
-                            <i class="material-icons">date_range</i> Ultimo mese
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="card card-stats" >
-                    <div class="card-header" data-background-color="green">
-                        
-                        <i class="material-icons">chat</i>
-                    </div>
-                    <div class="card-content">
-                        <p class="category">Numero Chat servite da un agente</p>
-                        <h3 class="title">48/50</h3>
-                    </div>
-                    <div class="card-footer">
-                        <div class="stats">
-                            <i class="material-icons">date_range</i> Ultimo mese
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="card card-stats" >
-                    <div class="card-header" data-background-color="red">
-                        
-                        <i class="material-icons">timelapse</i>
-                    </div>
-                    <div class="card-content">
-                        <p class="category">Durata media della Chat</p>
-                        <h3 class="title">3m 30s</h3>
-                    </div>
-                    <div class="card-footer">
-                        <div class="stats">
-                            <i class="material-icons">update</i> Appena aggiornato
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="col-lg-3 col-md-6 col-sm-6">
-                <div class="card card-stats" >
-                    <div class="card-header" data-background-color="blue">
-                        
-                        <i class="material-icons">timer</i>
-                    </div>
-                    <div class="card-content">
-                        <p class="category">Attesa media</p>
-                        <h3 class="title">30s</h3>
-                    </div>
-                    <div class="card-footer">
-                        <div class="stats">
-                            <i class="material-icons">update</i> Appena aggiornato
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-        <!-- ./ row -->
-
-        <div class="row" style="text-align: center">
+        <!-- ============------- COUNT OF TOTAL ACTIVE, SERVED & UNSERVED REQUESTS ------============ -->
+        <!-- == (NOTE THE COUNT IS COMPUTED ONLY ON THE REQUEST IN WICH THERE IS THE CURRENT USER) == -->
+        <!-- <div class="row" style="text-align: center">
             <div class="col-md-12" >
                 <h4 class="section-title">
-                   Real-Time Monitoring
+                   Real-Time Monitoring (!!! NOTE: MOVED IN REQUESTS LISTS)
                 </h4>
             </div>
         </div>
         <div class="row">
-            <!-- ============ TOTAL ACTIVE REQUESTS ============ -->
             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <div class="card card-stats">
-                    
                     <div class="card-header tiledesk_card_header">
                         <i class="material-icons card-header_icon " style="color: #ff9800; ">
                             message
                         </i>
                     </div>
-
                     <div class="card-content" style="text-align: center">
-         
                         <p class="card_content_header">
                             <span class="card_content_header_last_update">
                                 <i class="material-icons card_content_header_last_update_icons">
@@ -108,20 +31,15 @@
                                 {{ "Updated" | translate }}: {{ date | amTimeAgo }}
                             </span>
                         </p>
- 
                         <div class="request_count" style="color: #ff9800">
-                          
                             <span class="request_count_icons_numbers">  
                               {{ activeRequestsCount }}  
                             </span>
-                                             
                         </div>
-
                         <span style="color: #ff9800" > 
                             <span *ngIf="activeRequestsCount > 1 || activeRequestsCount == 0" > {{ "Requests" | translate }} </span>
                             <span *ngIf="activeRequestsCount == 1"> {{ "Request" | translate }} </span>
                         </span>
-
                     </div>
                     <div class="card-footer request_count_footer">
                         {{ "TotalActive" | translate }} 
@@ -129,18 +47,14 @@
                 </div>
             </div>
 
-            <!-- ============ SERVED REQUESTS ============ -->
             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <div class="card card-stats">
-                   
                     <div class="card-header tiledesk_card_header">
                         <i class="material-icons card-header_icon " style="color: #00bcd4;">
                             visibility
                         </i>
                     </div>
-
                     <div class="card-content" style="text-align: center;">
-                       
                         <p class="card_content_header">
                             <span class="card_content_header_last_update">
                                 <i class="material-icons card_content_header_last_update_icons">
@@ -149,15 +63,11 @@
                                 {{ "Updated" | translate }}: {{ date | amTimeAgo }}
                             </span>
                         </p>
-
                         <div class="request_count" style="color: #00bcd4">
-                           
                             <span class="request_count_icons_numbers">  
                                 {{ servedRequestsCount }} 
                             </span>   
-
                         </div>
-
                         <span style="color: #00bcd4" > 
                             <span *ngIf="servedRequestsCount > 1 || servedRequestsCount == 0"> 
                                 {{ "Requests" | translate }} 
@@ -167,25 +77,20 @@
                             </span>
                         </span>
                     </div>
-
                     <div class="card-footer request_count_footer" >
                         {{ "Served" | translate }}
                     </div>
                 </div>
             </div>
 
-            <!-- ============ UNSERVED REQUESTS ============ -->
             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <div class="card card-stats">
-
                     <div class="card-header tiledesk_card_header">
                         <i class="material-icons card-header_icon " style="color: #f44336; ">
                             visibility
                         </i>
                     </div>
-         
                     <div class="card-content" style="text-align: center;">
-                        
                         <p class="card_content_header">
                             <span class="card_content_header_last_update">
                                 <i class="material-icons card_content_header_last_update_icons">
@@ -194,9 +99,7 @@
                                 {{ "Updated" | translate }}: {{ date | amTimeAgo }}
                             </span>
                         </p>
-
                         <div class="request_count" style="color: #f44336" >
-                                    
                             <span class="request_count_icons_numbers">    
                                 {{ unservedRequestsCount }}    
                             </span>    
@@ -207,21 +110,20 @@
                             </span>
                             <span *ngIf="unservedRequestsCount == 1"> {{ "Request" | translate }} </span>
                         </span>
-
                     </div>
                     <div class="card-footer request_count_footer" >
                         {{ "Unserved" | translate }}
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
          <!-- // END NEW ROW -->
 
         <!-- // START ALL THE REQUESTS COUNT (SERVED UNSERVED ACTIVE) -->
          <div class="row" style="text-align: center">
                 <div class="col-md-12" >
                     <h4 class="section-title">
-                       Real-Time Monitoring (global)
+                       Real-Time Monitoring
                     </h4>
                 </div>
             </div>

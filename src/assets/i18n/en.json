@@ -55,6 +55,7 @@
     "Updated": "Updated",
     "Request":"Request",
     "TotalActive":"Total active",
+    "Active":"Active",
     "Served":"Served",
     "Unserved":"Unserved",
     "RequestsForAgent":"Requests for agent",
