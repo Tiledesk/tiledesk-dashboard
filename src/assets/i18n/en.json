@@ -133,8 +133,10 @@
     },
     "HomePage": {
         "Widget": "To start configure your Widget !",
-        "WidgetSubtitle": "To get started embed and customize the chat widget on your site",
-        "VisitorsSubtitle": "See a list of all your web visitors and chat with them",
+        "WidgetSubtitle1": "To get started embed and customize",
+        "WidgetSubtitle2": "the chat widget on your site",
+        "VisitorsSubtitle1": "See the list of all your web visitors",
+        "VisitorsSubtitle2": "and chat with them",
         "ChatSubtitle": "See the chat history",
         "AnalyticsSubtitle": "Track the chats you have with customers",
         "HistorySubtitle": "See the closed chat",

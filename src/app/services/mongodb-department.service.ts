@@ -104,7 +104,6 @@ export class DepartmentService {
    */
   public getDeptsByProjectId(): Observable<Department[]> {
     const url = this.MONGODB_BASE_URL;
-    // url += '?id_project=' + id_project;
 
     console.log('DEPARTMENTS URL', url);
     const headers = new Headers();

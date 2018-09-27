@@ -261,7 +261,10 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   /**
    * ********************************************************************************************
-   * ========================== COUNT OF ** ALL ** REQUESTS X dDEPT =============================
+   * ========================== COUNT OF ** ALL ** REQUESTS X DEPT =============================
+   * 1) GET THE DEPTS OF THE PROJECT AND CREATED AN ARRAY WITH THE ID OF THE DEPARTMENTS
+   * 2) FROM  'ALL' THE REQUESTS (RETURNED  FROM THE SUBSCRIPTION) IS CREATED AN ARRAY WITH THE DEPARTMENT IDS  CONTAINED IN THE REQUESTS
+   * 3) FOR EACH ID CONTAINED IN THE ARRAY OF IDS OF THE DEPTS OF THE PROJECT IS CHECKED THE OCCURRENCE IN THE ARRAY OF THE DEPTS ID RETURNED FROM ALL THE REQUESTS
    * ******************************************************************************************** 
    */
   getCountOf_AllRequestsForDept() {
@@ -269,34 +272,35 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       console.log('!!! ANALYTICS ALL REQUESTS X DEPT - GET DEPTS RESPONSE ', _departments);
 
       this.departments  = _departments
-      const depts_names_array = [];
+      const project_depts_id_array = [];
       if (this.departments) {
         this.departments.forEach(dept => {
 
           // console.log('!!! ANALYTICS - DEPT ', dept);
-          console.log('!!! ANALYTICS ALL REQUESTS X DEPT - DEPT NAME: ', dept['name']);
-          depts_names_array.push(dept['name']);
+          console.log('!!! ANALYTICS ALL REQUESTS X DEPT - DEPT ID: ', dept['_id']);
+          // depts_names_array.push(dept['name']);
+          project_depts_id_array.push(dept['_id']);
         });
       }
-      console.log('!!! ANALYTICS ALL REQUESTS X DEPT - ARRAY OF DEPTS NAMES: ', depts_names_array);
+      console.log('!!! ANALYTICS ALL REQUESTS X DEPT - ARRAY OF DEPTS IDs: ', project_depts_id_array);
 
 
       this.subscription = this.requestsService.allRequestsList_bs.subscribe((global_requests) => {
         console.log('!!! ANALYTICS ALL REQUESTS X DEPT - !!!!! SUBSCRIPTION TO ALL-THE-REQUESTS-LIST-BS ', global_requests);
 
-        const depts_names_InAllRequests_array = []
+        const requests_depts_id_array = []
         if (global_requests) {
           global_requests.forEach(g_r => {
 
-            depts_names_InAllRequests_array.push(g_r.attributes.departmentName)
+            requests_depts_id_array.push(g_r.attributes.departmentId)
 
           });
         }
 
-        console.log('!!! ALL REQUESTS X DEPT - ARRAY OF DEPARTMENT NAME ', depts_names_InAllRequests_array)
+        console.log('!!! ALL REQUESTS X DEPT - ARRAY OF DEPARTMENTS ID ', requests_depts_id_array)
 
-        depts_names_array.forEach(dept_name => {
-          this.getDeptNameOccurrence(depts_names_InAllRequests_array, dept_name)
+        project_depts_id_array.forEach(dept_id => {
+          this.getDeptIdOccurrence(requests_depts_id_array, dept_id)
         });
       })
 
@@ -308,19 +312,24 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     });
   }
 
-  getDeptNameOccurrence(array, value) {
+  getDeptIdOccurrence(array, value) {
     // console.log('!!! ANALYTICS - ALL REQUESTS X DEPT - GET DEP OCCURRENCE FOR DEPTS ');
     let count = 0;
     array.forEach((v) => (v === value && count++));
     console.log('!!! ANALYTICS - ALL REQUESTS X DEPT - #', count, ' REQUESTS ASSIGNED TO DEPT ', value);
     for (const dept of this.departments) {
-      if (value === dept.name) {
+      if (value === dept._id) {
         dept.value = count
       }
     }
     // this.showSpinner = false;
     // console.log('!!! ANALYTICS - !!!!! SHOW SPINNER', this.showSpinner);
     return count;
+  }
+
+  goToEditAddPage_EDIT(dept_id: string) {
+    console.log('!!! ANALYTICS - ALL REQUESTS X DEPT - GO TO DEPT ID ', dept_id);
+    this.router.navigate(['project/' + this.id_project + '/department/edit', dept_id]);
   }
 
   /**

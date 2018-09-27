@@ -133,8 +133,10 @@
     },
     "HomePage": {
         "Widget": "Per iniziare configura il tuo Widget!",
-        "WidgetSubtitle": "Per iniziare incorpora e personalizza il chat widget sul tuo sito web",
-        "VisitorsSubtitle": "Visualizza l'elenco dei tuoi visitatori Web e chatta con loro",
+        "WidgetSubtitle1": "Per iniziare incorpora e personalizza",
+        "WidgetSubtitle2": "il chat widget sul tuo sito web",
+        "VisitorsSubtitle1": "Visualizza l'elenco di tutti i tuoi visitatori web",
+        "VisitorsSubtitle2": "e chatta con loro",
         "ChatSubtitle": "Visualizza la chat history",
         "AnalyticsSubtitle": "Tieni traccia delle chat che hai con i clienti",
         "HistorySubtitle": "Visualizza le chat chiuse",

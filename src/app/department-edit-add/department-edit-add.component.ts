@@ -13,6 +13,7 @@ import { AuthService } from '../core/auth.service';
 
 import { GroupService } from '../services/group.service';
 import { Group } from '../models/group-model';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-department-edit-add',
@@ -64,7 +65,8 @@ export class DepartmentEditAddComponent implements OnInit {
     private botService: BotService,
     private faqKbService: FaqKbService,
     private auth: AuthService,
-    private groupService: GroupService
+    private groupService: GroupService,
+    public location: Location
   ) { }
 
   ngOnInit() {
@@ -302,8 +304,12 @@ export class DepartmentEditAddComponent implements OnInit {
 
 
   // GO BACK TO DEPARTMENTS COMPONENT
-  goBackToDeptsList() {
-    this.router.navigate(['project/' + this.project._id + '/departments']);
+  // goBackToDeptsList() {
+  //   this.router.navigate(['project/' + this.project._id + '/departments']);
+  // }
+
+  goBack() {
+    this.location.back();
   }
 
   // WHEN THE USER EDITS A DEPTS CAN SELECT A BOT TO CORRELATE AT THE DEPARTMENT
