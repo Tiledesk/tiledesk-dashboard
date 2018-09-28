@@ -6,6 +6,7 @@ import { AuthService } from '../core/auth.service';
 import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
 import { DepartmentService } from '../services/mongodb-department.service';
 import { trigger, state, style, animate, transition, query, animateChild } from '@angular/animations';
+import { UsersLocalDbService } from '../services/users-local-db.service';
 
 @Component({
   selector: 'appdashboard-requests-list-history-new',
@@ -68,6 +69,8 @@ export class RequestsListHistoryNewComponent implements OnInit {
   pageNo = 0
   totalPagesNo_roundToUp: number;
   displaysFooterPagination: boolean;
+  currentUserID: string;
+  requestsCount: number;
 
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
@@ -78,15 +81,35 @@ export class RequestsListHistoryNewComponent implements OnInit {
     private requestsService: RequestsService,
     private router: Router,
     public auth: AuthService,
+    private usersLocalDbService: UsersLocalDbService,
+
     private departmentService: DepartmentService
   ) { }
 
   ngOnInit() {
 
+    this.getCurrentUser();
     this.getRequests();
     this.getCurrentProject();
     this.getDepartments();
+
   }
+
+  getCurrentUser () {
+    const user = this.auth.user_bs.value
+    // this.user = firebase.auth().currentUser;
+    console.log('!!! NEW REQUESTS HISTORY - LOGGED USER ', user);
+    if (user) {
+      // this.currentUserFireBaseUID = this.user.uid
+      this.currentUserID = user._id
+      console.log('!!! NEW REQUESTS HISTORY - USER UID ', this.currentUserID);
+      // this.getToken();
+    } else {
+      // console.log('No user is signed in');
+    }
+  }
+
+
   getDepartments() {
     this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
       console.log('!!! NEW REQUESTS HISTORY - GET DEPTS RESPONSE ', _departments);
@@ -117,6 +140,7 @@ export class RequestsListHistoryNewComponent implements OnInit {
     this.advancedoptionbtnRef.nativeElement.blur();
     this.showAdvancedSearchOption = !this.showAdvancedSearchOption;
     console.log('!!! NEW REQUESTS HISTORY - TOGGLE DIV ', this.showAdvancedSearchOption);
+    this.displayHideFooterPagination();
   }
 
   // onDateStartChanged(event: IMyDateModel) {
@@ -268,33 +292,36 @@ export class RequestsListHistoryNewComponent implements OnInit {
 
   }
 
+
+  displayHideFooterPagination() {
+        // DISPLAY / HIDE PAGINATION IN THE FOOTER
+        if ((this.showAdvancedSearchOption === true && this.requestsCount >= 10) || (this.requestsCount >= 16)) {
+          this.displaysFooterPagination = true;
+          // tslint:disable-next-line:max-line-length
+          console.log('!!! NEW REQUESTS HISTORY - REQST COUNT ', this.requestsCount, 'ADVANCED OPTION IS OPEN ', this.showAdvancedSearchOption, 'DISPLAY FOOTER PAG ', this.displaysFooterPagination);
+        } else {
+          this.displaysFooterPagination = false;
+          // tslint:disable-next-line:max-line-length
+          console.log('!!! NEW REQUESTS HISTORY - REQST COUNT ', this.requestsCount, 'ADVANCED OPTION IS OPEN ', this.showAdvancedSearchOption, 'DISPLAY FOOTER PAG ', this.displaysFooterPagination);
+        }
+  }
+
   getRequests() {
     this.requestsService.getNodeJsRequests(this.queryString, this.pageNo).subscribe((requests: any) => {
       console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS ', requests['requests']);
       console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT ', requests['count']);
       if (requests) {
 
-        // const requestsCount = 39; // for test
-        const requestsCount = requests['count'];
-        console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT ', requestsCount);
+        // this.requestsCount = 18; // for test
+        this.requestsCount = requests['count'];
+        console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT ', this.requestsCount);
 
-        // DISPLAY / HIDE PAGINATION IN THE FOOTER
-        if (this.showAdvancedSearchOption === true && requestsCount >= 10) {
-          this.displaysFooterPagination = true;
-          // tslint:disable-next-line:max-line-length
-          console.log('!!! NEW REQUESTS HISTORY - REQST COUNT ', requestsCount, 'ADVANCED OPTION IS OPEN ', this.showAdvancedSearchOption, 'DISPLAY FOOTER PAG ', this.displaysFooterPagination);
-        } else if (requestsCount >= 16) {
-          // tslint:disable-next-line:max-line-length
-          console.log('!!! NEW REQUESTS HISTORY - REQST COUNT ', requestsCount, 'DISPLAY FOOTER PAG ', this.displaysFooterPagination);
-          this.displaysFooterPagination = true;
-        } else {
-          this.displaysFooterPagination = false;
-        }
+        this.displayHideFooterPagination();
 
         const requestsPerPage = requests['perPage'];
         console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES REQUESTS X PAGE', requestsPerPage);
 
-        const totalPagesNo = requestsCount / requestsPerPage;
+        const totalPagesNo = this.requestsCount / requestsPerPage;
         console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES NUMBER', totalPagesNo);
 
         this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
@@ -310,6 +337,19 @@ export class RequestsListHistoryNewComponent implements OnInit {
       this.showSpinner = false;
       console.log('!!! NEW REQUESTS HISTORY  - GET REQUESTS * COMPLETE *')
     });
+  }
+
+  members_replace(member_id) {
+    // console.log('Members replace ', m)
+    // const user = JSON.parse((localStorage.getItem(member_id)));
+    const user = this.usersLocalDbService.getMemberFromStorage(member_id);
+    if (user) {
+      // console.log('user ', user)
+      const lastnameInizial = user['lastname'].charAt(0)
+      return member_id = '- ' + user['firstname'] + ' ' + lastnameInizial + '.'
+    } else {
+      return '- ' + member_id
+    }
   }
 
   getCurrentProject() {

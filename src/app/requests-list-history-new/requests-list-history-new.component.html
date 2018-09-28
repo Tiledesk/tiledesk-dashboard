@@ -275,16 +275,16 @@
                   </td>
  
                   <!-- ===== SERVED BY ===== -->
-                  <!-- <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" >
-                    <span *ngFor="let m of request?.members_array"  style="font-size:0.8em;">
-                      <span *ngIf="m !== request?.requester_id && m !== 'system' && m !== currentUserID"> 
-                        <p class="member" (click)="goToMemberProfile( m )" [innerHTML]="members_replace( m )" style="padding-top:1px; padding-bottom:1px; cursor: pointer;">  </p>
+                  <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" >
+                    <span *ngFor="let participant of request?.participants"  style="font-size:0.8em;">
+                      <span *ngIf="participant !== request?.requester_id && participant !== 'system' && participant !== currentUserID"> 
+                        <p class="member" (click)="goToMemberProfile( participant )" [innerHTML]="members_replace( participant )" style="padding-top:1px; padding-bottom:1px; cursor: pointer;">  </p>
                       </span> 
                       <p *ngIf="m === currentUserID" style="padding-top:1px; padding-bottom:1px;"> 
                         - <strong> 'ME' </strong>
                       </p>
                     </span>
-                  </td> -->
+                  </td>
                   <td></td>
  
                   <!-- ===== RATING ===== -->
@@ -308,7 +308,7 @@
                       <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
                       <!-- {{ request?.request_date_fromnow }} -->
                       <!-- {{ request?.created_on | date: 'd/M/y HH:mm:ss' }} -->
-                      {{ request?.createdAt | amTimeAgo }} ({{ request?.createdAt | date: 'd/M/y HH:mm:ss' }}) 
+                      {{ request?.createdAt | amTimeAgo }} ({{ request?.createdAt | date: 'd/M/y HH:mm' }}) 
                     </p>
                   </td>
 
