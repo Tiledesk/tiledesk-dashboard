@@ -7,6 +7,8 @@ import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
 import { DepartmentService } from '../services/mongodb-department.service';
 import { trigger, state, style, animate, transition, query, animateChild } from '@angular/animations';
 import { UsersLocalDbService } from '../services/users-local-db.service';
+import { BotLocalDbService } from '../services/bot-local-db.service';
+
 
 @Component({
   selector: 'appdashboard-requests-list-history-new',
@@ -82,7 +84,7 @@ export class RequestsListHistoryNewComponent implements OnInit {
     private router: Router,
     public auth: AuthService,
     private usersLocalDbService: UsersLocalDbService,
-
+    private botLocalDbService: BotLocalDbService,
     private departmentService: DepartmentService
   ) { }
 
@@ -95,7 +97,7 @@ export class RequestsListHistoryNewComponent implements OnInit {
 
   }
 
-  getCurrentUser () {
+  getCurrentUser() {
     const user = this.auth.user_bs.value
     // this.user = firebase.auth().currentUser;
     console.log('!!! NEW REQUESTS HISTORY - LOGGED USER ', user);
@@ -294,16 +296,16 @@ export class RequestsListHistoryNewComponent implements OnInit {
 
 
   displayHideFooterPagination() {
-        // DISPLAY / HIDE PAGINATION IN THE FOOTER
-        if ((this.showAdvancedSearchOption === true && this.requestsCount >= 10) || (this.requestsCount >= 16)) {
-          this.displaysFooterPagination = true;
-          // tslint:disable-next-line:max-line-length
-          console.log('!!! NEW REQUESTS HISTORY - REQST COUNT ', this.requestsCount, 'ADVANCED OPTION IS OPEN ', this.showAdvancedSearchOption, 'DISPLAY FOOTER PAG ', this.displaysFooterPagination);
-        } else {
-          this.displaysFooterPagination = false;
-          // tslint:disable-next-line:max-line-length
-          console.log('!!! NEW REQUESTS HISTORY - REQST COUNT ', this.requestsCount, 'ADVANCED OPTION IS OPEN ', this.showAdvancedSearchOption, 'DISPLAY FOOTER PAG ', this.displaysFooterPagination);
-        }
+    // DISPLAY / HIDE PAGINATION IN THE FOOTER
+    if ((this.showAdvancedSearchOption === true && this.requestsCount >= 10) || (this.requestsCount >= 16)) {
+      this.displaysFooterPagination = true;
+      // tslint:disable-next-line:max-line-length
+      console.log('!!! NEW REQUESTS HISTORY - REQST COUNT ', this.requestsCount, 'ADVANCED OPTION IS OPEN ', this.showAdvancedSearchOption, 'DISPLAY FOOTER PAG ', this.displaysFooterPagination);
+    } else {
+      this.displaysFooterPagination = false;
+      // tslint:disable-next-line:max-line-length
+      console.log('!!! NEW REQUESTS HISTORY - REQST COUNT ', this.requestsCount, 'ADVANCED OPTION IS OPEN ', this.showAdvancedSearchOption, 'DISPLAY FOOTER PAG ', this.displaysFooterPagination);
+    }
   }
 
   getRequests() {
@@ -340,15 +342,44 @@ export class RequestsListHistoryNewComponent implements OnInit {
   }
 
   members_replace(member_id) {
-    // console.log('Members replace ', m)
-    // const user = JSON.parse((localStorage.getItem(member_id)));
-    const user = this.usersLocalDbService.getMemberFromStorage(member_id);
-    if (user) {
-      // console.log('user ', user)
-      const lastnameInizial = user['lastname'].charAt(0)
-      return member_id = '- ' + user['firstname'] + ' ' + lastnameInizial + '.'
+    console.log('!!! NEW REQUESTS HISTORY  - SERVED BY ID ', member_id)
+    // console.log(' !!! NEW REQUESTS HISTORY underscore found in the participant id  ', member_id, member_id.includes('bot_'));
+
+    const participantIsBot = member_id.includes('bot_')
+
+    if (participantIsBot === true) {
+
+      const bot_id = member_id.slice(4);
+      console.log('!!! NEW REQUESTS HISTORY - THE PARTICIP', member_id, 'IS A BOT ', participantIsBot, ' - ID ', bot_id);
+
+      const bot = this.botLocalDbService.getBotFromStorage(bot_id);
+      if (bot) {
+        return member_id = '- ' + bot['name'] +  ' (bot)';
+      } else {
+        return '- ' + member_id
+      }
+
     } else {
-      return '- ' + member_id
+
+      const user = this.usersLocalDbService.getMemberFromStorage(member_id);
+      if (user) {
+        // console.log('user ', user)
+        const lastnameInizial = user['lastname'].charAt(0)
+        return member_id = '- ' + user['firstname'] + ' ' + lastnameInizial + '.'
+      } else {
+        return '- ' + member_id
+      }
+    }
+  }
+
+  goToMemberProfile(member_id: any) {
+    console.log('!!! NEW REQUESTS HISTORY has clicked GO To MEMBER ', member_id);
+    if (member_id.indexOf('bot_') !== -1) {
+      console.log('!!! NEW REQUESTS HISTORY IS A BOT !');
+
+      this.router.navigate(['project/' + this.projectId + '/botprofile/' + member_id]);
+    } else {
+      this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
     }
   }
 

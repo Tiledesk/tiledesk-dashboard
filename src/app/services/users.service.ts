@@ -17,6 +17,8 @@ import * as firebase from 'firebase/app';
 import { UsersLocalDbService } from '../services/users-local-db.service';
 import { Router } from '@angular/router';
 import { Project } from '../models/project-model';
+import { FaqKbService } from '../services/faq-kb.service';
+import { BotLocalDbService } from '../services/bot-local-db.service';
 
 interface NewUser {
   displayName: string;
@@ -71,7 +73,9 @@ export class UsersService {
     private afs: AngularFirestore,
     private auth: AuthService,
     private usersLocalDbService: UsersLocalDbService,
-    private router: Router
+    private router: Router,
+    private faqKbService: FaqKbService,
+    private botLocalDbService: BotLocalDbService
   ) {
     // this.usersCollection = this.afs.collection('users', (ref) => ref.orderBy('time', 'desc').limit(5));
     // this.searchUserCollection = this.afs.collection('users', (ref) => ref.where('displayName', '>=', 'B'));
@@ -404,6 +408,28 @@ export class UsersService {
     }, () => {
       console.log('!! USER SERVICE - PROJECT-USERS (FILTERED FOR PROJECT ID) - COMPLETE')
     });
+  }
+
+  // GET AND SAVE ALL BOTS OF CURRENT PROJECT IN LOCAL STORAGE
+  getBotsByProjectIdAndSaveInStorage() {
+    this.faqKbService.getFaqKbByProjectId().subscribe((bots: any) => {
+
+      if (bots && bots !== null) {
+
+        bots.forEach(bot => {
+          console.log('!! USER SERVICE - FAQs-KB (i.e. BOT) GET BY PROJECT ID', bot);
+          console.log('!! USER SERVICE - FAQs-KB ID (i.e. BOT) GET BY PROJECT ID', bot._id);
+          this.botLocalDbService.saveBotsInStorage(bot._id, bot);
+        });
+
+      }
+    }, (error) => {
+      console.log('!! USER SERVICE - GET FAQs-KB (i.e. BOT) - ERROR ', error);
+    }, () => {
+      console.log('!! USER SERVICE - GET FAQs-KB * COMPLETE');
+
+    });
+
   }
 
   // ======================  PUBLISH projectUser_id AND user_available ======================

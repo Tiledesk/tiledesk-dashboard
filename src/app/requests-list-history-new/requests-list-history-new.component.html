@@ -280,12 +280,12 @@
                       <span *ngIf="participant !== request?.requester_id && participant !== 'system' && participant !== currentUserID"> 
                         <p class="member" (click)="goToMemberProfile( participant )" [innerHTML]="members_replace( participant )" style="padding-top:1px; padding-bottom:1px; cursor: pointer;">  </p>
                       </span> 
-                      <p *ngIf="m === currentUserID" style="padding-top:1px; padding-bottom:1px;"> 
+                      <p *ngIf="participant === currentUserID" style="padding-top:1px; padding-bottom:1px;"> 
                         - <strong> 'ME' </strong>
                       </p>
                     </span>
                   </td>
-                  <td></td>
+                  
  
                   <!-- ===== RATING ===== -->
                   <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" >

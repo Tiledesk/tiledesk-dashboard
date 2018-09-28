@@ -25,6 +25,7 @@ import { Router } from '@angular/router';
 import { UsersLocalDbService } from '../services/users-local-db.service';
 import { environment } from '../../environments/environment';
 import { NotifyService } from '../core/notify.service';
+import { BotLocalDbService } from '../services/bot-local-db.service';
 
 @Component({
   selector: 'requests-list',
@@ -99,7 +100,8 @@ export class RequestsListComponent implements OnInit {
     public auth: AuthService,
     private router: Router,
     private usersLocalDbService: UsersLocalDbService,
-    private notify: NotifyService
+    private notify: NotifyService,
+    private botLocalDbService: BotLocalDbService
   ) {
 
     this.user = auth.user_bs.value
@@ -160,13 +162,30 @@ export class RequestsListComponent implements OnInit {
   members_replace(member_id) {
     // console.log('Members replace ', m)
     // const user = JSON.parse((localStorage.getItem(member_id)));
-    const user = this.usersLocalDbService.getMemberFromStorage(member_id);
-    if (user) {
-      // console.log('user ', user)
-      const lastnameInizial = user['lastname'].charAt(0)
-      return member_id = '- ' + user['firstname'] + ' ' + lastnameInizial + '.'
+    const memberIsBot = member_id.includes('bot_');
+
+    if (memberIsBot === true) {
+
+      const bot_id = member_id.slice(4);
+      // console.log('!!! NEW REQUESTS HISTORY - THE PARTICIP', member_id, 'IS A BOT ', memberIsBot, ' - ID ', bot_id);
+
+      const bot = this.botLocalDbService.getBotFromStorage(bot_id);
+      if (bot) {
+        return member_id = '- ' + bot['name'] + ' <em>(bot)</em>';
+      } else {
+        return '- ' + member_id
+      }
+
     } else {
-      return '- ' + member_id
+
+      const user = this.usersLocalDbService.getMemberFromStorage(member_id);
+      if (user) {
+        // console.log('user ', user)
+        const lastnameInizial = user['lastname'].charAt(0)
+        return member_id = '- ' + user['firstname'] + ' ' + lastnameInizial + '.'
+      } else {
+        return '- ' + member_id
+      }
     }
   }
 

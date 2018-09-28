@@ -6,7 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Project } from '../models/project-model';
 import { AuthService } from '../core/auth.service';
 import { TranslateService } from '@ngx-translate/core';
-
+import { BotLocalDbService } from '../services/bot-local-db.service';
 @Component({
   selector: 'faq-kb-edit-add',
   templateUrl: './faq-kb-edit-add.component.html',
@@ -44,7 +44,8 @@ export class FaqKbEditAddComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private auth: AuthService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private botLocalDbService: BotLocalDbService
   ) { }
 
   ngOnInit() {
@@ -121,6 +122,9 @@ export class FaqKbEditAddComponent implements OnInit {
         if (faqKb) {
           this.newBot_name = faqKb.name;
           this.newBot_Id = faqKb._id;
+
+          // SAVE THE BOT IN LOCAL STORAGE
+          this.botLocalDbService.saveBotsInStorage(this.newBot_Id , faqKb);
         }
         // this.bot_fullname = '';
 

@@ -11,7 +11,8 @@ import { UsersLocalDbService } from '../services/users-local-db.service';
 import { Location } from '@angular/common';
 import { NotifyService } from '../core/notify.service';
 
-import { PlatformLocation } from '@angular/common'
+import { PlatformLocation } from '@angular/common';
+import { BotLocalDbService } from '../services/bot-local-db.service';
 
 @Component({
   selector: 'app-requests-msgs',
@@ -69,7 +70,8 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     private usersLocalDbService: UsersLocalDbService,
     private _location: Location,
     private notify: NotifyService,
-    private platformLocation: PlatformLocation
+    private platformLocation: PlatformLocation,
+    private botLocalDbService: BotLocalDbService
   ) {
 
     this.platformLocation.onPopState(() => {
@@ -453,12 +455,28 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   members_replace(member_id) {
     // console.log('Members replace ', m)
     // const user = JSON.parse((localStorage.getItem(member_id)));
-    const user = this.usersLocalDbService.getMemberFromStorage(member_id);
-    if (user) {
-      // console.log('user ', user)
-      return member_id = user['firstname'] + ' ' + user['lastname']
+    const memberIsBot = member_id.includes('bot_');
+
+    if (memberIsBot === true) {
+
+      const bot_id = member_id.slice(4);
+      // console.log('!!! NEW REQUESTS HISTORY - THE PARTICIP', member_id, 'IS A BOT ', memberIsBot, ' - ID ', bot_id);
+
+      const bot = this.botLocalDbService.getBotFromStorage(bot_id);
+      if (bot) {
+        return member_id = bot['name'] + '<em>(bot)</em>';
+      } else {
+        return member_id
+      }
+
     } else {
-      return member_id
+      const user = this.usersLocalDbService.getMemberFromStorage(member_id);
+      if (user) {
+        // console.log('user ', user)
+        return member_id = user['firstname'] + ' ' + user['lastname']
+      } else {
+        return member_id
+      }
     }
   }
 

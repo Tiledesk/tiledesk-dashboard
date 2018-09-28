@@ -9,8 +9,7 @@ import { UsersService } from '../services/users.service';
 import { UsersLocalDbService } from '../services/users-local-db.service';
 import { DepartmentService } from '../services/mongodb-department.service';
 import { RequestsService } from '../services/requests.service';
-import { FaqKbService } from '../services/faq-kb.service';
-import { BotLocalDbService } from '../services/bot-local-db.service';
+
 
 
 @Component({
@@ -45,9 +44,8 @@ export class HomeComponent implements OnInit {
     private usersService: UsersService,
     private usersLocalDbService: UsersLocalDbService,
     private departmentService: DepartmentService,
-    private requestsService: RequestsService,
-    private faqKbService: FaqKbService,
-    private botLocalDbService: BotLocalDbService
+    private requestsService: RequestsService
+
   ) { }
 
   ngOnInit() {
@@ -73,7 +71,8 @@ export class HomeComponent implements OnInit {
     // IS USED TO DETERMINE IF THE USER IS AVAILABLE OR NOT AVAILABLE
     this.getProjectUser();
 
-    this.getFaqKbByProjectId();
+    // GET AND SAVE ALL BOTS OF CURRENT PROJECT IN LOCAL STORAGE
+    this.usersService.getBotsByProjectIdAndSaveInStorage();
 
     // TEST FUNCTION : GET ALL AVAILABLE PROJECT USER
     this.getAvailableProjectUsersByProjectId();
@@ -209,21 +208,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  getFaqKbByProjectId() {
-    this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-
-      if (faqKb) {
-        console.log('HOME - FAQs-KB (i.e. BOT) GET BY PROJECT ID', faqKb);
-        this.botLocalDbService.saveBotsInStorage(faqKb._id, faqKb);
-      }
-    }, (error) => {
-      console.log('HOME - GET FAQs-KB (i.e. BOT) - ERROR ', error);
-    }, () => {
-      console.log('HOME - GET FAQs-KB * COMPLETE');
-
-    });
-
-  }
+ 
 
   // !!!! NO MORE USED - MOVED IN USER SERVICE
   getAllUsersOfCurrentProject() {

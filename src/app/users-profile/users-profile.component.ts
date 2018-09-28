@@ -6,6 +6,7 @@ import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
 import { ActivatedRoute } from '@angular/router';
 import { UsersLocalDbService } from '../services/users-local-db.service';
+import { BotLocalDbService } from '../services/bot-local-db.service';
 import { FaqKbService } from '../services/faq-kb.service';
 import * as moment from 'moment';
 
@@ -40,7 +41,8 @@ export class UsersProfileComponent implements OnInit {
     private route: ActivatedRoute,
     private _location: Location,
     private usersLocalDbService: UsersLocalDbService,
-    private faqKbService: FaqKbService
+    private faqKbService: FaqKbService,
+    private botLocalDbService: BotLocalDbService
   ) { }
 
   ngOnInit() {
@@ -66,28 +68,49 @@ export class UsersProfileComponent implements OnInit {
   }
 
   getFaqKbDetails(id_faqKb: string) {
+    const stored_faqKb = this.botLocalDbService.getBotFromStorage(id_faqKb);
+    console.log('USERS PROFILE - STORED FAQKB ', stored_faqKb);
+    if (stored_faqKb) {
 
-    this.faqKbService.getMongDbFaqKbById(id_faqKb).subscribe((faqKb: any) => {
-      console.log('FAQ-KB GET BY ID', faqKb);
-      this.faqKb = faqKb;
+      this.faqKb = stored_faqKb;
+      this.faqKb_name = stored_faqKb.name;
+      console.log('USERS PROFILE - STORED FAQKB NAME', this.faqKb_name);
+      this.faqKb_id = stored_faqKb._id;
+      console.log('USERS PROFILE - STORED FAQKB ID', this.faqKb_id);
+      this.faqKb_remoteId = stored_faqKb.kbkey_remote;
+      console.log('USERS PROFILE - STORED FAQKB REMOTE ID', this.faqKb_remoteId);
+      this.faqKb_createdAt = moment(stored_faqKb.updatedAt).format('DD/MM/YYYY');
+      console.log('USERS PROFILE - STORED FAQKB CREATED AT', this.faqKb_createdAt);
+    } else {
 
-      if (this.faqKb) {
 
-        this.faqKb_name = faqKb.name;
-        this.faqKb_id = faqKb._id;
-        this.faqKb_remoteId = faqKb.kbkey_remote;
-        this.faqKb_createdAt =  moment(faqKb.updatedAt).format('DD/MM/YYYY');
+      this.faqKbService.getMongDbFaqKbById(id_faqKb).subscribe((faqKb: any) => {
+        console.log('FAQ-KB GET BY ID', faqKb);
+        this.faqKb = faqKb;
 
-      } else {
+        if (this.faqKb) {
 
-        console.log('FAQ-KB is UNDEFINED')
-      }
-    });
+          this.faqKb_name = faqKb.name;
+          this.faqKb_id = faqKb._id;
+          this.faqKb_remoteId = faqKb.kbkey_remote;
+          this.faqKb_createdAt = moment(faqKb.updatedAt).format('DD/MM/YYYY');
+
+          // SAVE THE BOT IN LOCAL STORAGE
+          // this.botLocalDbService.saveBotsInStorage(this.faqKb_id, this.faqKb);
+
+        // GET AND SAVE ALL BOTS OF CURRENT PROJECT IN LOCAL STORAGE
+        this.usersService.getBotsByProjectIdAndSaveInStorage();
+        } else {
+
+          console.log('FAQ-KB is UNDEFINED')
+        }
+      });
+    }
+
 
   }
 
   getMemberDetails() {
-
     // this.user = JSON.parse((localStorage.getItem(this.member_id)));
     this.user = this.usersLocalDbService.getMemberFromStorage(this.member_id);
 

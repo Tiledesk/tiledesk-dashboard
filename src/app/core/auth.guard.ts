@@ -223,6 +223,9 @@ export class AuthGuard implements CanActivate {
         // GET AND SAVE ALL USERS OF CURRENT PROJECT IN LOCAL STORAGE
         this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
 
+         // GET AND SAVE ALL BOTS OF CURRENT PROJECT IN LOCAL STORAGE
+        this.usersService.getBotsByProjectIdAndSaveInStorage();
+
       } else {
 
         console.log('!! »»»»» AUTH GUARD - PROJECT OBJCT FILTERED FOR PROJECT ID !! NOT FOUND ');
