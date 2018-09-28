@@ -464,7 +464,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
 
       const bot = this.botLocalDbService.getBotFromStorage(bot_id);
       if (bot) {
-        return member_id = bot['name'] + '<em>(bot)</em>';
+        return member_id = bot['name'] + ' <em>(bot)</em>';
       } else {
         return member_id
       }

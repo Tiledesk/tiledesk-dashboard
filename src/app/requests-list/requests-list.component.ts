@@ -171,7 +171,7 @@ export class RequestsListComponent implements OnInit {
 
       const bot = this.botLocalDbService.getBotFromStorage(bot_id);
       if (bot) {
-        return member_id = '- ' + bot['name'] + ' <em>(bot)</em>';
+        return member_id = '- ' + bot['name'] + ' (bot)';
       } else {
         return '- ' + member_id
       }
