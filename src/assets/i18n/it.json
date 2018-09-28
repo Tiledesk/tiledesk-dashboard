@@ -476,7 +476,8 @@
         "RequesterId": "Id richiedente:",
         "Close": "Chiudi",
         "ContainsTheWords":"Contiene le parole",
-        "FilterByDepartment":"Filtra per dipartimento",
+        "FilterByDepartment":"Dipartimento",
+        "Agent":"Agente",
         "DateRange": "Intervallo date",
         "ClearSearch":"Cancella ricerca"
     },

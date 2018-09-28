@@ -8,8 +8,8 @@ import { DepartmentService } from '../services/mongodb-department.service';
 import { trigger, state, style, animate, transition, query, animateChild } from '@angular/animations';
 import { UsersLocalDbService } from '../services/users-local-db.service';
 import { BotLocalDbService } from '../services/bot-local-db.service';
-
-
+import { UsersService } from '../services/users.service';
+import { FaqKbService } from '../services/faq-kb.service';
 @Component({
   selector: 'appdashboard-requests-list-history-new',
   templateUrl: './requests-list-history-new.component.html',
@@ -63,6 +63,8 @@ export class RequestsListHistoryNewComponent implements OnInit {
   deptNameValue: string;
   deptIdValue: string;
   fullTextValue: string;
+  selectedAgentValue: string;
+  emailValue: string;
 
   showAdvancedSearchOption = false;
   hasFocused = false;
@@ -73,6 +75,10 @@ export class RequestsListHistoryNewComponent implements OnInit {
   displaysFooterPagination: boolean;
   currentUserID: string;
   requestsCount: number;
+
+  user_and_bot_array = [];
+  selectedAgentId: string;
+  requester_email: string;
 
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
@@ -85,7 +91,9 @@ export class RequestsListHistoryNewComponent implements OnInit {
     public auth: AuthService,
     private usersLocalDbService: UsersLocalDbService,
     private botLocalDbService: BotLocalDbService,
-    private departmentService: DepartmentService
+    private departmentService: DepartmentService,
+    private usersService: UsersService,
+    private faqKbService: FaqKbService
   ) { }
 
   ngOnInit() {
@@ -94,7 +102,49 @@ export class RequestsListHistoryNewComponent implements OnInit {
     this.getRequests();
     this.getCurrentProject();
     this.getDepartments();
+    this.getAllProjectUsers();
 
+
+    // this.createBotsAndUsersArray();
+  }
+
+  getAllProjectUsers() {
+    // createBotsAndUsersArray() {
+    this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
+      console.log('!!! NEW REQUESTS HISTORY  - GET PROJECT-USERS ', projectUsers);
+
+      if (projectUsers) {
+        projectUsers.forEach(user => {
+          this.user_and_bot_array.push(user.id_user);
+        });
+
+        console.log('!!! NEW REQUESTS HISTORY  - !!!! USERS ARRAY ', this.user_and_bot_array);
+
+      }
+    }, (error) => {
+      console.log('!!! NEW REQUESTS HISTORY - GET PROJECT-USERS ', error);
+    }, () => {
+      console.log('!!! NEW REQUESTS HISTORY - GET PROJECT-USERS * COMPLETE *');
+      this.getAllBot();
+    });
+
+  }
+
+  getAllBot() {
+    this.faqKbService.getFaqKbByProjectId().subscribe((bots: any) => {
+      console.log('!!! NEW REQUESTS HISTORY  - GET  BOT ', bots);
+
+      if (bots) {
+        bots.forEach(bot => {
+          this.user_and_bot_array.push(bot);
+        });
+      }
+      console.log('!!! NEW REQUESTS HISTORY  - BOTS & USERS ARRAY ', this.user_and_bot_array);
+    }, (error) => {
+      console.log('!!! NEW REQUESTS HISTORY - GET  BOT ', error);
+    }, () => {
+      console.log('!!! NEW REQUESTS HISTORY - GET  BOT * COMPLETE *');
+    });
   }
 
   getCurrentUser() {
@@ -207,12 +257,14 @@ export class RequestsListHistoryNewComponent implements OnInit {
     this.selectedDeptId = '';
     this.startDate = '';
     this.endDate = '';
+    this.selectedAgentId = '';
+    this.requester_email = '';
     // this.fullTextValue = '';
     // this.deptIdValue = '';
     // this.startDateValue = '';
     // this.endDateValue = '';
     // tslint:disable-next-line:max-line-length
-    this.queryString = 'full_text=' + '&' + 'dept_id=' + '&' + 'start_date=' + '&' + 'end_date=';
+    this.queryString = 'full_text=' + '&' + 'dept_id=' + '&' + 'start_date=' + '&' + 'end_date=' + '&' + 'participant=' + '&' + 'requester_email=';
     this.pageNo = 0;
     console.log('!!! NEW REQUESTS HISTORY - CLEAR SEARCH fullTextValue ', this.fullTextValue)
 
@@ -280,12 +332,46 @@ export class RequestsListHistoryNewComponent implements OnInit {
       console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR END DATE ', this.endDate)
     }
 
+    // selectedAgentId: string;
+    // requester_email: string;
+
+    if (this.selectedAgentId) {
+
+      this.selectedAgentValue = this.selectedAgentId;
+      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR selectedAgentId ', this.selectedAgentValue);
+    } else {
+      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR selectedAgentId ', this.selectedAgentId);
+      this.selectedAgentValue = ''
+    }
+
+    if (this.selectedAgentId) {
+      this.selectedAgentValue = this.selectedAgentId;
+      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR selectedAgentId ', this.selectedAgentValue);
+    } else {
+      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR selectedAgentId ', this.selectedAgentId);
+      this.selectedAgentValue = ''
+    }
+
+    if (this.requester_email) {
+      this.emailValue = this.requester_email;
+      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR email ', this.emailValue);
+    } else {
+      console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR email ', this.requester_email);
+      this.emailValue = ''
+    }
     // console.log('!!! NEW REQUESTS HISTORY - DEPT NAME ', this.deptame);
 
 
     // if (this.fullText !== undefined && this.deptName !== undefined && this.startDate !== undefined || this.endDate !== undefined) {
     // tslint:disable-next-line:max-line-length
-    this.queryString = 'full_text=' + this.fullTextValue + '&' + 'dept_id=' + this.deptIdValue + '&' + 'start_date=' + this.startDateValue + '&' + 'end_date=' + this.endDateValue
+    this.queryString =
+      'full_text=' + this.fullTextValue + '&'
+      + 'dept_id=' + this.deptIdValue + '&'
+      + 'start_date=' + this.startDateValue + '&'
+      + 'end_date=' + this.endDateValue + '&'
+      + 'participant=' + this.selectedAgentValue + '&'
+      + 'requester_email=' + this.emailValue
+
     console.log('!!! NEW REQUESTS HISTORY - QUERY STRING ', this.queryString);
 
     this.getRequests()
@@ -320,6 +406,7 @@ export class RequestsListHistoryNewComponent implements OnInit {
 
         this.displayHideFooterPagination();
 
+
         const requestsPerPage = requests['perPage'];
         console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES REQUESTS X PAGE', requestsPerPage);
 
@@ -330,6 +417,48 @@ export class RequestsListHistoryNewComponent implements OnInit {
         console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES No ROUND TO UP ', this.totalPagesNo_roundToUp);
 
         this.requestList = requests['requests'];
+
+        // let flat_participants_array = [];
+        // const requesters_id_array = []
+        // this.requestList.forEach(request => {
+        //   flat_participants_array = flat_participants_array.concat(request.participants);
+        //   requesters_id_array.push(request.requester_id)
+        // });
+        // console.log('!!! NEW REQUESTS HISTORY - FLAT PARTICIPANTS ARRAY ', flat_participants_array);
+        // console.log('!!! NEW REQUESTS HISTORY - ARRAY OF REQUESTER ID ', requesters_id_array);
+
+        // REQUESTER ID ARRAY WITHOUT DUPLICATE
+        // const cleaned_requester_id_array = [];
+        // requesters_id_array.forEach(requester => {
+
+        //   if (cleaned_requester_id_array.indexOf(requester) < 0) {
+        //     cleaned_requester_id_array.push(requester)
+        //   }
+        // });
+        // console.log('!!! NEW REQUESTS HISTORY - ARRAY OF REQUESTER ID WITHOUT DUPLICATE', cleaned_requester_id_array);
+
+        // const participants_array = []
+        // flat_participants_array.forEach(participant => {
+        //   if (participants_array.indexOf(participant) < 0) {
+        // tslint:disable-next-line:max-line-length
+        //     // console.log('!!! NEW REQUESTS HISTORY - FLAT PARTICIPANTS ARRAY ! FILTERED INDEX OF', participants_array.indexOf(participant));
+        //     if (participant !== 'system') {
+        //       participants_array.push(participant)
+        //     }
+
+        //   }
+        // });
+        // console.log('!!! NEW REQUESTS HISTORY - FLAT PARTICIPANTS ARRAY ! CLEANED FROM DUPLICATE ', participants_array);
+
+        // participants_array.forEach(participant => {
+        //   if (participant.includes('bot_') === true) {
+
+        //     console.log('!!! NEW REQUESTS HISTORY - PARTICIPANTS ARRAY BOT ID ', participant);
+        //   } else {
+
+        //     console.log('!!! NEW REQUESTS HISTORY - PARTICIPANTS ARRAY USER ID ', participant);
+        //   }
+        // });
       }
 
     }, error => {
@@ -342,7 +471,7 @@ export class RequestsListHistoryNewComponent implements OnInit {
   }
 
   members_replace(member_id) {
-    console.log('!!! NEW REQUESTS HISTORY  - SERVED BY ID ', member_id)
+    // console.log('!!! NEW REQUESTS HISTORY  - SERVED BY ID ', member_id)
     // console.log(' !!! NEW REQUESTS HISTORY underscore found in the participant id  ', member_id, member_id.includes('bot_'));
 
     const participantIsBot = member_id.includes('bot_')
@@ -350,11 +479,11 @@ export class RequestsListHistoryNewComponent implements OnInit {
     if (participantIsBot === true) {
 
       const bot_id = member_id.slice(4);
-      console.log('!!! NEW REQUESTS HISTORY - THE PARTICIP', member_id, 'IS A BOT ', participantIsBot, ' - ID ', bot_id);
+      // console.log('!!! NEW REQUESTS HISTORY - THE PARTICIP', member_id, 'IS A BOT ', participantIsBot, ' - ID ', bot_id);
 
       const bot = this.botLocalDbService.getBotFromStorage(bot_id);
       if (bot) {
-        return member_id = '- ' + bot['name'] +  ' (bot)';
+        return member_id = '- ' + bot['name'] + ' (bot)';
       } else {
         return '- ' + member_id
       }

@@ -76,7 +76,7 @@
                   
                   <div @easeInOut>
 
-          
+                      <div class="row">
                     <div class="col-sm-6"> 
 
                       <div class="section-select-dept">
@@ -104,8 +104,40 @@
                           [(ngModel)]="endDate" ></my-date-picker>
                       </div>
                     </div>
+                    </div>
 
+                    <!-- // USERS & BOT FILTER -->
+                    <!-- <div class="row"> -->
+                        <div class="row"  style="margin-bottom: 20px;">
+                    <div class="col-sm-6"> 
 
+                        <div class="section-select-dept">
+                          <label  class="col-sm-12" style="text-align: left; color: rgba(0, 0, 0, 0.54); ">
+                              {{ 'HistoryPage.Agent' | translate }}
+                          </label>
+                          <!-- <div class="col-sm-12" style="margin-bottom: 20px;"> -->
+                            <ng-select name="agent" [(ngModel)]="selectedAgentId">
+                              <ng-option *ngFor="let agent of user_and_bot_array" [value]="agent._id" >
+                                {{ agent.name }}
+                                {{ agent.firstname }}
+                              </ng-option>
+                            </ng-select>
+                          <!-- </div> -->
+                        </div>
+  
+                     </div>
+
+                      <!-- // EMAIL SEARCH -->
+                      <div class="col-sm-6"> 
+                          <label  class="col-sm-12" style="text-align: left; color: rgba(0, 0, 0, 0.54); ">
+                              Email
+                          </label>
+                          <input name="requester_email" type="email" [(ngModel)]="requester_email" class="" autocomplete="off"
+                          placeholder="" style="height: 36px; width: 100%; border-radius: 4px; border-color: #ccc; border-width:1px; border-style:solid; padding-left: 6px;">
+                      </div>
+                    </div>
+
+                    <div class="row">
                     <div class="col-sm-12"> 
                     <button #searchbtnbottom type="submit" class="btn btn-info" (click)="search()">
                       <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
@@ -117,6 +149,7 @@
                       
                     </button>
 
+                    </div>
                     </div>
 
                   </div>
