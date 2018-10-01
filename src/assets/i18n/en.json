@@ -505,7 +505,10 @@
         "BottomRight": "bottom right",
         "BottomLeft": "bottom left",
         "AlignsTheWidgetToThe": "aligns the widget to the",
-        "OfTneWindow": "of the window"
+        "OfTneWindow": "of the window",
+        "ForMoreInformationSee":"For more information see",
+        "Here":"here",
+        "TheWebSDKguide":"the Web SDK guide"
     },
     "right": "bottom right",
     "left": "bottom left",
