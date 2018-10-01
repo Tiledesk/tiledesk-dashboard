@@ -49,112 +49,126 @@
             </div>
 
             <form #myForm="ngForm" novalidate class="advancedOptionForm">
+              
+              <!-- ------====== INPUT 'FULL TEXT' + CLEAR FULL-TEXT SEARCH BTN + BTNS SEARCH & OPEN ADVANCED OPTION  ======------ -->
               <div class="row">
-  
-                <div class="input-group">
+                <div class="col-sm-12"> 
+                  <div class="input-group">
 
-                  <!-- -------====== INPUT 'FULL TEXT' ======------ -->
-                  <div class="buttonInside">
-                    <input name="fullText" type="text" [(ngModel)]="fullText" class="form-control" autocomplete="off"
-                      placeholder="{{ 'HistoryPage.ContainsTheWords' | translate }}" style="margin-bottom: 20px; padding-bottom: 16px; padding-left: 6px;">
-                    <span  *ngIf="fullText?.length > 0" class="glyphicon glyphicon-remove" aria-hidden="true" (click)="clearFullText()" ></span>
-                  </div>
+                    <div class="buttonInside">
+                      <!-- INPUT 'FULL TEXT' -->
+                      <input name="fullText" type="text" [(ngModel)]="fullText" class="form-control" autocomplete="off"
+                        placeholder="{{ 'HistoryPage.ContainsTheWords' | translate }}" style="margin-bottom: 20px; padding-bottom: 16px; padding-left: 6px;">
+                      
+                      <!-- // CLEAR SEARCH FULL-TEXT BTN -->
+                      <span id="clear-fulltext-search"  *ngIf="fullText?.length > 0 && showAdvancedSearchOption === false" class="glyphicon glyphicon-remove tooltipx" aria-hidden="true" 
+                        (click)="clearFullText()">
+                        <span style="font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !important;" class="tooltiptext">{{ 'HistoryPage.ClearSearch' | translate }}</span> 
+                      </span>
+                    </div>
+
+                    <!-- // SEARCH FULL-TEXT BTN -->
                     <span class="input-group-btn" style="padding-right:0px">
-                      <button #searchbtn class="btn btn-info" type="button" (click)="search()">
+                      <button #searchbtn class="btn btn-info" type="submit" (click)="search()">
                         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                       </button>
                     </span>
 
+                    <!-- // OPEN ADVANCED OPTION BTN -->
                     <span class="input-group-btn" style="padding-left:0px; padding-right:0px">
                       <button #advancedoptionbtn class="btn btn-default" type="button" (click)="toggle()">
                         <span class="caret"></span>
                       </button>
                     </span>
+                  </div>
                 </div>
+              </div>
 
-                <div *ngIf="showAdvancedSearchOption" @ngIfAnimation>
-                  
-                  <div @easeInOut>
+              <div *ngIf="showAdvancedSearchOption" @ngIfAnimation>
+                <div @easeInOut>
 
-                      <div class="row">
+                  <!-- -------====== SELECT OPTIONS: DEPARTMENTS & DATE RANGE ======------ -->
+                  <div class="row">
+                    <!-- // SELECT OPTIONS: DEPARTMENTS -->
                     <div class="col-sm-6"> 
-
                       <div class="section-select-dept">
                         <label  class="col-sm-12" style="text-align: left; color: rgba(0, 0, 0, 0.54); ">
                             {{ 'HistoryPage.FilterByDepartment' | translate }}
                         </label>
                         <div class="col-sm-12" style="margin-bottom: 20px;">
-                          <ng-select name="dept" [(ngModel)]="selectedDeptId">
-                            <ng-option *ngFor="let dept of departments" [value]="dept._id" >{{dept.name}}</ng-option>
+                          <ng-select class="custom" name="dept" [(ngModel)]="selectedDeptId" [clearable]="false">
+                            <ng-option [value]="''">{{ 'HistoryPage.AllDepts' | translate }}</ng-option>
+                            <ng-option *ngFor="let dept of departments" [value]="dept._id">
+                              {{dept.name}}
+                            </ng-option>
                           </ng-select>
                         </div>
                       </div>
-
                     </div>
+
+                    <!-- // SELECT OPTIONS: DATE RANGE -->
                     <div class="col-sm-6"> 
                       <label for="contain" class="col-sm-12" style="text-align: left; color: rgba(0, 0, 0, 0.54);">
                           {{ 'HistoryPage.DateRange' | translate }}
                       </label>
                       <div class="col-sm-6" >
-                          <my-date-picker name="mydate" [options]="myDatePickerOptions" 
+                        <my-date-picker name="mydate" [options]="myDatePickerOptions" 
                           [(ngModel)]="startDate" ></my-date-picker>
                       </div>
                       <div class="col-sm-6" style="">
-                          <my-date-picker name="mydate" [options]="myDatePickerOptions"
+                        <my-date-picker name="mydate" [options]="myDatePickerOptions"
                           [(ngModel)]="endDate" ></my-date-picker>
                       </div>
                     </div>
-                    </div>
+                  </div>
 
-                    <!-- // USERS & BOT FILTER -->
-                    <!-- <div class="row"> -->
-                        <div class="row"  style="margin-bottom: 20px;">
+                  <!-- -------====== SELECT OPTIONS USERS/BOTS & SEARCH FOR EMAIL======------ -->
+                  <div class="row"  style="margin-bottom: 20px;">
+                    <!-- // SELECT OPTIONS USERS/BOTS -->
                     <div class="col-sm-6"> 
-
-                        <div class="section-select-dept">
-                          <label  class="col-sm-12" style="text-align: left; color: rgba(0, 0, 0, 0.54); ">
-                              {{ 'HistoryPage.Agent' | translate }}
-                          </label>
-                          <!-- <div class="col-sm-12" style="margin-bottom: 20px;"> -->
-                            <ng-select name="agent" [(ngModel)]="selectedAgentId">
-                              <ng-option *ngFor="let agent of user_and_bot_array" [value]="agent._id" >
-                                {{ agent.name }}
-                                {{ agent.firstname }}
-                              </ng-option>
-                            </ng-select>
-                          <!-- </div> -->
-                        </div>
-  
-                     </div>
-
-                      <!-- // EMAIL SEARCH -->
-                      <div class="col-sm-6"> 
-                          <label  class="col-sm-12" style="text-align: left; color: rgba(0, 0, 0, 0.54); ">
-                              Email
-                          </label>
-                          <input name="requester_email" type="email" [(ngModel)]="requester_email" class="" autocomplete="off"
-                          placeholder="" style="height: 36px; width: 100%; border-radius: 4px; border-color: #ccc; border-width:1px; border-style:solid; padding-left: 6px;">
+                      <div class="section-select-dept">
+                        <label  class="col-sm-12" style="text-align: left; color: rgba(0, 0, 0, 0.54); ">
+                          {{ 'HistoryPage.Agent' | translate }}
+                        </label>
+                          <ng-select name="agent" [(ngModel)]="selectedAgentId" [clearable]="false">
+                            <ng-option [value]="''">{{ 'HistoryPage.AllAgents' | translate }}</ng-option>
+                            <ng-option *ngFor="let agent of user_and_bot_array" [value]="agent._id" >
+                              <!-- // FOR THE BOTS -->
+                              {{ agent.name }}
+                              <!-- // FOR THE USERS -->
+                              {{ agent.lastname }} {{ agent.firstname }}
+                            </ng-option>
+                          </ng-select>
                       </div>
                     </div>
 
-                    <div class="row">
-                    <div class="col-sm-12"> 
-                    <button #searchbtnbottom type="submit" class="btn btn-info" (click)="search()">
-                      <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                    </button>
-
-                    <button #clearsearchbtn type="submit" class="btn btn-white" (click)="clearSearch()">
-                      <!-- <span class="glyphicon glyphicon-remo" aria-hidden="true"></span> -->
-                      {{ 'HistoryPage.ClearSearch' | translate }}
-                      
-                    </button>
-
+                    <!-- // SEARCH FOR EMAIL -->
+                    <div class="col-sm-6"> 
+                        <label  class="col-sm-12" style="text-align: left; color: rgba(0, 0, 0, 0.54); ">
+                            Email
+                        </label>
+                        <input name="requester_email" type="email" [(ngModel)]="requester_email" class="" autocomplete="off"
+                        placeholder="" style="height: 36px; width: 100%; border-radius: 4px; border-color: #ccc; border-width:1px; border-style:solid; padding-left: 6px;">
                     </div>
-                    </div>
-
                   </div>
+
+                  <!-- -------====== BTNS SEARCH  & CLEAR SEARCH======------ -->
+                  <div class="row">
+                    <div class="col-sm-12"> 
+                      <button #searchbtnbottom type="submit" class="btn btn-info" (click)="search()">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                      </button>
+
+                      <button type="submit" class="btn btn-white clearsearchbtn" (click)="clearSearch()">
+                        <!-- <span class="glyphicon glyphicon-remo" aria-hidden="true"></span> -->
+                        {{ 'HistoryPage.ClearSearch' | translate }}
+                      </button>
+                    </div>
+                  </div>
+
                 </div>
               </div>
+              
             </form>
 
           </div>  <!-- /.end card-header -->

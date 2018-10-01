@@ -477,7 +477,9 @@
         "Close": "Close",
         "ContainsTheWords": "Contains the words",
         "FilterByDepartment": "Department",
+        "AllDepts":"All departments",
         "Agent": "Agent",
+        "AllAgents":"All agents",
         "DateRange": "Date Range",
         "ClearSearch": "Clear Search"
     },

@@ -345,48 +345,48 @@
             <!-- /// end ======== --- TABLE "REQUESTS X AGENT" --- ======== /// -->
 
             <!-- /// start ======== --- TABLE "REQUESTS X DEPTS" --- ======== /// -->
-                <div class="col-md-4">
-                    <div class="card">
-                            <div class="card-header" data-background-color="" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
-                                <h4 class="c21-title" style="margin-bottom:2px; margin-top:2px;">
-                                    
-                                    {{ "RequestsForDept" | translate }}
-                           
-                                </h4>
-                             </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header" data-background-color="" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
+                        <h4 class="c21-title" style="margin-bottom:2px; margin-top:2px;">
+                            
+                            {{ "RequestsForDept" | translate }}
+                    
+                        </h4>
+                    </div>
+        
+                    <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
+                    <div class="card-content table-responsive" style="padding-top: 0px">
+                        <table class="table table-hover">
+
+                            <thead>
+                                <tr>
+                                    <!-- ------====== column DEPT NAME ======------ -->
+                                    <th> </th>
+
+                                        <!-- ------====== column # OF ASSIGNED REQUESTS  ======------ -->
+                                    <th> </th>
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                <tr  *ngFor="let dept of departments" >
             
-                            <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
-                            <div class="card-content table-responsive" style="padding-top: 0px">
-                                <table class="table table-hover">
-        
-                                    <thead>
-                                        <tr>
-                                            <!-- ------====== column DEPT NAME ======------ -->
-                                            <th> </th>
-        
-                                             <!-- ------====== column # OF ASSIGNED REQUESTS  ======------ -->
-                                            <th> </th>
-                                        </tr>
-                                    </thead>
-                                    
-                                    <tbody>
-                                        <tr  *ngFor="let dept of departments" >
-                   
-                                            <td *ngIf="dept.default === false" style="cursor:pointer" (click)="goToEditAddPage_EDIT(dept?._id)" >
-                                                {{ dept?.name }}
-                                            </td>
-                        
-                                            <td *ngIf="dept.default === false">
-                                                <span style="font-weight: 500">  
-                                                    {{ dept?.value }}
-                                                </span> 
-                                               <!-- <span style="color: #999999; font-size:0.9em"> request </span> -->
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                                    <td *ngIf="dept.default === false" style="cursor:pointer" (click)="goToEditAddPage_EDIT(dept?._id)" >
+                                        {{ dept?.name }}
+                                    </td>
+                
+                                    <td *ngIf="dept.default === false">
+                                        <span style="font-weight: 500">  
+                                            {{ dept?.value }}
+                                        </span> 
+                                        <!-- <span style="color: #999999; font-size:0.9em"> request </span> -->
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
 

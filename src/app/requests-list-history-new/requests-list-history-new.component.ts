@@ -47,7 +47,7 @@ export class RequestsListHistoryNewComponent implements OnInit {
   @ViewChild('advancedoptionbtn') private advancedoptionbtnRef: ElementRef;
   @ViewChild('searchbtn') private searchbtnRef: ElementRef;
   @ViewChild('searchbtnbottom') private searchbtnbottomRef?: ElementRef;
-  @ViewChild('#clearsearchbtn') private clearsearchbtnRef: ElementRef;
+
 
 
   requestList: Request[];
@@ -98,6 +98,10 @@ export class RequestsListHistoryNewComponent implements OnInit {
 
   ngOnInit() {
 
+    // selectedDeptId is assigned to empty so in the template will be selected the custom option ALL DEPARTMENTS
+    this.selectedDeptId = '';
+    // selectedAgentId is assigned to empty so in the template will be selected the custom option ALL AGENTS
+    this.selectedAgentId = '';
     this.getCurrentUser();
     this.getRequests();
     this.getCurrentProject();
@@ -234,25 +238,44 @@ export class RequestsListHistoryNewComponent implements OnInit {
     } else {
       this.endDateValue = ''
     }
+
+    if (this.selectedAgentId) {
+      this.selectedAgentValue = this.selectedAgentId;
+    } else {
+      this.selectedAgentValue = ''
+    }
+
+    if (this.requester_email) {
+      this.emailValue = this.requester_email;
+    } else {
+      this.emailValue = ''
+    }
     // tslint:disable-next-line:max-line-length
-    this.queryString = 'full_text=' + '&' + 'dept_id=' + this.deptIdValue + '&' + 'start_date=' + this.startDateValue + '&' + 'end_date=' + this.endDateValue
+
+    this.queryString =
+      'full_text='
+      + '&' +
+      'dept_id=' + this.deptIdValue
+      + '&' +
+      'start_date=' + this.startDateValue
+      + '&' +
+      'end_date=' + this.endDateValue
+      + '&' +
+      'participant=' + this.selectedAgentValue
+      + '&' +
+      'requester_email=' + this.emailValue
+
     this.pageNo = 0
     this.getRequests();
 
   }
 
   clearSearch() {
-    // const _clearsearchbtn = <HTMLElement>document.querySelector('.btn-white');
-    // console.log('!!! NEW REQUESTS HISTORY - SEARCH BTN ', _clearsearchbtn);
-
-    // _clearsearchbtn.onmouseup(function () {
-    //    _clearsearchbtn.blur();
-    // })
-
-    // if (_clearsearchbtn) {
-    //   this.clearsearchbtnRef.nativeElement.blur();
-    // }
-
+    // RESOLVE THE BUG: THE BUTTON CLEAR SERACH REMAIN FOCUSED AFTER PRESSED
+    const clearSearchBtn = <HTMLElement>document.querySelector('.clearsearchbtn');
+    console.log('APP COMP - MAIN PANEL ', clearSearchBtn)
+    clearSearchBtn.blur()
+ 
     this.fullText = '';
     this.selectedDeptId = '';
     this.startDate = '';

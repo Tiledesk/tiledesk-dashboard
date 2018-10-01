@@ -477,7 +477,9 @@
         "Close": "Chiudi",
         "ContainsTheWords":"Contiene le parole",
         "FilterByDepartment":"Dipartimento",
+        "AllDepts":"Tutti i dipartimenti",
         "Agent":"Agente",
+        "AllAgents":"Tutti gli agenti",
         "DateRange": "Intervallo date",
         "ClearSearch":"Cancella ricerca"
     },

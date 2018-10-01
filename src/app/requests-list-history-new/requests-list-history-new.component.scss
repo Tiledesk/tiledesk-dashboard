@@ -135,7 +135,8 @@
   }
 
 // THE 'X' INSIDE THE 'fullText' INPUT
-.glyphicon-remove{
+// .glyphicon-remove{
+#clear-fulltext-search{    
     // .fulltext-remove-btn{
     position:absolute;
     right: 0px;
@@ -145,8 +146,8 @@
     color: #000;
     z-index: 3;
     cursor: pointer;
-
 }
+
 // .glyphicon-remove:hover {
 //     cursor: pointer;
 // }
@@ -158,6 +159,8 @@
 //     font-weight: 1000 !important;
 // }
 
+
+
 // HOVER ON THE MEMBER LIST OF THE COLUMN SERVED BY
 p.member:hover {
     background-color: #58c1d6;
@@ -166,3 +169,40 @@ p.member:hover {
 }
 
 // END NEW NK
+
+
+// start TOOLTIP
+/* Tooltip container */
+.tooltipx {
+    position: relative;
+    display: inline-block;
+    // border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  }
+  
+  /* Tooltip text */
+  .tooltipx .tooltiptext {
+    visibility: hidden;
+    // width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 5px;
+    border-radius: 5px;
+    font-size: 12px !important;
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 1;
+    /* Position the tooltip text - TOP */
+    // width: 420px;
+    bottom: 100%;
+    left: 50%; 
+    margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+  }
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .tooltipx:hover .tooltiptext {
+    visibility: visible;
+  }
+  // /.end TOOLTIP 
+
+
