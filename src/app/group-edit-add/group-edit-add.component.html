@@ -280,7 +280,7 @@
                       <!-- <td *ngIf="projectUser?.is_group_member">                    </td> -->
                       
                       <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
-                          <img style="vertical-align: middle; width: 30px; height: 30px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
+                          <img style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
                           class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media" 
                           onerror="this.src='assets/img/no_image_user.png'"/>
 
