@@ -88,6 +88,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
 
     ngOnInit() {
+        this.getCurrentProject();
         // tslint:disable-next-line:no-debugger
         // debugger
         // this.listTitles = ROUTES.filter(listTitle => listTitle);
@@ -115,11 +116,10 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         // this.getUnservedRequestLenght();
         // this.getUnservedRequestLenght_bs();
 
-        this.getCurrentProject();
 
         this.getProjectUserId();
 
-        this.detectChatPage();
+        // this.detectChatPage();
 
         this.checkUserImageUploadIsComplete()
 
@@ -161,9 +161,10 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     }
 
     getCurrentProject() {
+        // this.project = this.auth.project_bs.value;
         this.auth.project_bs.subscribe((project) => {
             this.project = project
-            console.log('00 -> NAVBAR project from AUTH service subscription  ', this.project)
+            console.log('!!C-U 00 -> NAVBAR project from AUTH service subscription ', this.project);
         });
     }
 

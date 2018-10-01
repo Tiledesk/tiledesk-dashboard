@@ -249,6 +249,9 @@ export class ProjectsComponent implements OnInit {
       }, () => {
         console.log('CREATE PROJECT - POST REQUEST COMPLETE ');
 
+        // 'getProjectsAndSaveInStorage()' was called only on the onInit lifehook, now recalling also after the creation 
+        // of the new project resolve the bug  'the auth service not find the project in the storage'
+        this.getProjectsAndSaveInStorage();
         setTimeout(() => {
           this.SHOW_CIRCULAR_SPINNER = false
         }, 300);
