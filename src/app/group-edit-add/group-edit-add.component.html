@@ -209,6 +209,9 @@
                         </span>
                       </th> -->
     
+                      <!-- // USER AVATAR -->
+                      
+
                       <th>
                         <span style="color: #566787">
                           <strong>
@@ -234,13 +237,13 @@
                       </th>
       
                       <!-- FOR DEBUG: USER ID -->
-                      <th>
+                      <!-- <th>
                         <span style="color: #566787">
                           <strong>
                             {{ "GroupsAddEditPage.UserId" | translate }}
                           </strong>
                         </span>
-                      </th>
+                      </th> -->
     
                       <th>
                         <span style="color: #566787">
@@ -272,10 +275,21 @@
                       <!-- <td *ngIf="projectUser?.is_group_member">
                         {{ projectUser?._id }}
                       </td> -->
+
+                      <!-- // USER AVATAR -->
+                      <!-- <td *ngIf="projectUser?.is_group_member">                    </td> -->
                       
                       <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
-                        {{ projectUser?.id_user?.firstname }}
-                        <span style="text-transform: uppercase"> {{ projectUser?.id_user?.lastname }} </span>
+                          <img style="vertical-align: middle; width: 30px; height: 30px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
+                          class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media" 
+                          onerror="this.src='assets/img/no_image_user.png'"/>
+
+                        <span  class="tooltipx">  
+                          {{ projectUser?.id_user?.firstname }}
+                          <span style="text-transform: uppercase"> {{ projectUser?.id_user?.lastname }} </span>
+                          
+                          <span class="tooltiptext"> {{ "GroupsAddEditPage.UserId" | translate }}: {{ projectUser?.id_user?._id }} </span>
+                        </span> 
                       </td>
     
                       <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
@@ -287,9 +301,9 @@
                       </td>
   
                       <!-- FOR DEBUG: USER ID -->
-                      <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
+                      <!-- <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
                         {{ projectUser?.id_user?._id }}
-                      </td>
+                      </td> -->
     
                       <!-- ACTIONS ========== DELETE -->
                       <td *ngIf="projectUser?.is_group_member" class="td-actions text-right">

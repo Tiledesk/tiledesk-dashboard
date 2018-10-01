@@ -36,7 +36,7 @@
                       
                       <!-- -------====== BTN INCREASE PAGE  ======------ -->
                       <span class="input-group-btn" style="padding-right:0px">
-                        <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp" class="btn btn-info" type="button" (click)="increasePageNumber()" style="padding: 6px 8px">
+                        <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0" class="btn btn-info" type="button" (click)="increasePageNumber()" style="padding: 6px 8px">
                           <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                         </button>
                       </span>
@@ -136,7 +136,7 @@
                               <!-- // FOR THE BOTS -->
                               {{ agent.name }}
                               <!-- // FOR THE USERS -->
-                              {{ agent.lastname }} {{ agent.firstname }}
+                              {{ agent.firstname }} {{ agent.lastname }} 
                             </ng-option>
                           </ng-select>
                       </div>
@@ -386,7 +386,7 @@
                   
                   <!-- -------====== BTN INCREASE PAGE  ======------ -->
                   <span class="input-group-btn" style="padding-right:0px">
-                    <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp" class="btn btn-info" type="button" (click)="increasePageNumber()" style="padding: 6px 8px">
+                    <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0" class="btn btn-info" type="button" (click)="increasePageNumber()" style="padding: 6px 8px">
                       <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                     </button>
                   </span>

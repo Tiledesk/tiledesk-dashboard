@@ -126,7 +126,7 @@ export class GroupEditAddComponent implements OnInit {
       this.getGroupById();
     }
 
-    this.getAllUsersOfCurrentProject();
+    // this.getAllUsersOfCurrentProject();
   }
 
   /**
@@ -158,7 +158,7 @@ export class GroupEditAddComponent implements OnInit {
         this.has_completed_getGroupById = true;
         console.log('HAS COMPLETED getGroupById ', this.has_completed_getGroupById)
 
-
+        this.getAllUsersOfCurrentProject();
       });
   }
 

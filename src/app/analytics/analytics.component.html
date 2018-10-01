@@ -371,12 +371,13 @@
                             
                             <tbody>
                                 <tr  *ngFor="let dept of departments" >
-            
-                                    <td *ngIf="dept.default === false" style="cursor:pointer" (click)="goToEditAddPage_EDIT(dept?._id)" >
+                                    <!-- *ngIf="dept.default === false" -->
+                                    <td  style="cursor:pointer" (click)="goToEditAddPage_EDIT(dept?._id)" >
                                         {{ dept?.name }}
                                     </td>
                 
-                                    <td *ngIf="dept.default === false">
+                                    <!-- *ngIf="dept.default === false" -->
+                                    <td>
                                         <span style="font-weight: 500">  
                                             {{ dept?.value }}
                                         </span> 
