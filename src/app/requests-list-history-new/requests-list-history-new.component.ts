@@ -275,7 +275,7 @@ export class RequestsListHistoryNewComponent implements OnInit {
     const clearSearchBtn = <HTMLElement>document.querySelector('.clearsearchbtn');
     console.log('APP COMP - MAIN PANEL ', clearSearchBtn)
     clearSearchBtn.blur()
- 
+
     this.fullText = '';
     this.selectedDeptId = '';
     this.startDate = '';
