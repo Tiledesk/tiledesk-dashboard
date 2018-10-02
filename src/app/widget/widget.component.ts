@@ -35,9 +35,12 @@ export class WidgetComponent implements OnInit {
     { seconds: '30', value: 30 }
   ]
 
+  calloutTitle: string;
+  calloutMsg: string;
+
   alignmentOptions = [
     { alignTo: 'bottom right', value: 'right' },
-    { alignTo: 'bottom left', value: 'left'}
+    { alignTo: 'bottom left', value: 'left' }
   ]
   constructor(
     http: Http,
@@ -138,11 +141,18 @@ export class WidgetComponent implements OnInit {
     // http://testwidget.tiledesk.com/testsite/?projectid=5ad069b123c415001469574f&prechatform=false
     // + '&projectname=' + this.projectName
     // tslint:disable-next-line:max-line-length
-    const url = 'http://testwidget.tiledesk.com/testsite?projectid=' + this.projectId + '&prechatform=' + this.preChatForm  + '&callout_timer=' + this.calloutTimerSecondSelected + '&align=' + this.alignmentSelected;
+    const url = 'http://testwidget.tiledesk.com/testsite?projectid='
+      + this.projectId
+      + '&prechatform=' + this.preChatForm
+      + '&callout_timer=' + this.calloutTimerSecondSelected
+      + '&callout_title=' + this.calloutTitle
+      + '&callout_msg=' + this.calloutMsg
+      + '&align=' + this.alignmentSelected;
     window.open(url, '_blank');
   }
 
   goToWidgetDesign() {
-    this.router.navigate(['project/' + this.project._id  + '/widget/design']);
+    this.router.navigate(['project/' + this.project._id + '/widget/design']);
   }
+
 }
