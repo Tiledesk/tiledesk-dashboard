@@ -89,6 +89,7 @@
                                             {{ 'Resourcepage.MakeTheFirstStep' | translate }} 
                                         </div>
 
+                                        
                                         <!-- ======------ CALLOUT TIMER ------====== -->
                                         <div class="col-sm-8">                                 
                                             <div style="color: rgba(0, 0, 0, 0.54);; font-weight: 600; margin-top: 8px; font-size: 13px; margin-bottom: 4px;">
@@ -113,20 +114,32 @@
                                             </p>
                                         </div> 
                                         
-                                        <!-- ======------ CALLOUT TITLE ------====== -->
-                                        <div class="col-sm-8">
-                                            <div style="color: rgba(0, 0, 0, 0.54);; font-weight: 600; margin-top: 8px; font-size: 13px; margin-bottom: 4px;">
-                                                {{ 'Resourcepage.CalloutTitle' | translate }} 
+                                        <div *ngIf="calloutTimerSecondSelected !== -1">
+                                            <!-- ======------ CALLOUT TITLE ------====== -->
+                                            <div class="col-sm-8">
+                                                <div style="color: rgba(0, 0, 0, 0.54);; font-weight: 600; margin-top: 8px; font-size: 13px; margin-bottom: 4px;">
+                                                    {{ 'Resourcepage.CalloutTitle' | translate }} 
+                                                </div>
+                                                <input (keyup)="onKeyCalloutTitle()" [(ngModel)]="calloutTitle" type="text" class="" style="height: 36px; width: 100%; border-radius: 4px; border: 1px solid #ccc; padding-left: 6px;">
                                             </div>
-                                            <input [(ngModel)]="calloutTitle" type="text" class="" style="height: 36px; width: 100%; border-radius: 4px; border: 1px solid #ccc; padding-left: 6px;">
-                                        </div>
+                                            <div class="col-sm-11" style="margin-top: 5px">
+                                                <p style="font-weight:100;font-size:12px; margin-bottom:0px"> 
+                                                {{ 'Resourcepage.CustomizeTheCalloutTitle' | translate }}
+                                                </p>
+                                            </div>
 
-                                        <!-- ======------ CALLOUT MESSAGE ------====== -->
-                                        <div class="col-sm-8">
-                                            <div style="color: rgba(0, 0, 0, 0.54);; font-weight: 600; margin-top: 8px; font-size: 13px; margin-bottom: 4px;">
-                                                {{ 'Resourcepage.CalloutMsg' | translate }} 
+                                            <!-- ======------ CALLOUT MESSAGE ------====== -->
+                                            <div class="col-sm-8">
+                                                <div style="color: rgba(0, 0, 0, 0.54);; font-weight: 600; margin-top: 8px; font-size: 13px; margin-bottom: 4px;">
+                                                    {{ 'Resourcepage.CalloutMsg' | translate }} 
+                                                </div>
+                                                <input (keyup)="onKeyCalloutMsg()" [(ngModel)]="calloutMsg" type="text" class="" style="height: 36px; width: 100%; border-radius: 4px; border: 1px solid #ccc; padding-left: 6px;">
                                             </div>
-                                            <input [(ngModel)]="calloutMsg" type="text" class="" style="height: 36px; width: 100%; border-radius: 4px; border: 1px solid #ccc; padding-left: 6px;">
+                                            <div class="col-sm-11" style="margin-top: 5px">
+                                                <p style="font-weight:100;font-size:12px; margin-bottom:0px"> 
+                                                    {{ 'Resourcepage.CustomizeTheCalloutMsg' | translate }}
+                                                </p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -221,15 +234,15 @@
                                 </div> -->
                             
  <!-- projectname: &quot;{{projectName}}&quot;, -->
-<textarea  name="exampleClipboard" class="textarea" readonly rows="16" value="" type="text" style="font-size: 12px; line-height: 20px; padding:5px">
+<textarea *ngIf="calloutTimerSecondSelected !== -1" name="exampleClipboard" class="textarea" readonly rows="16" value="" type="text" style="font-size: 12px; line-height: 20px; padding:5px">
 &lt;script type=&quot;application/javascript&quot;&gt;
   window.tiledeskSettings = 
     {
       projectid: &quot;{{ projectId }}&quot;,
       preChatForm: {{preChatFormValue}},
       calloutTimer: {{ calloutTimerSecondSelected }},
-      calloutTitle: {{ calloutTitle }},
-      calloutMsg: {{ calloutMsg }},
+      calloutTitle: {{ _calloutTitle }},
+      calloutMsg: {{ _calloutMsg }},
       align: '{{ alignmentSelected }}'
     };
     (function(d, s, id) {
@@ -241,60 +254,45 @@
     }(document, &#39;script&#39;, &#39;tiledesk-jssdk&#39;));
 &lt;/script&gt;</textarea>
 
+<textarea *ngIf="calloutTimerSecondSelected === -1" name="exampleClipboard" class="textarea" readonly rows="16" value="" type="text" style="font-size: 12px; line-height: 20px; padding:5px">
+&lt;script type=&quot;application/javascript&quot;&gt;
+    window.tiledeskSettings = 
+    {
+        projectid: &quot;{{ projectId }}&quot;,
+        preChatForm: {{preChatFormValue}},
+        calloutTimer: {{ calloutTimerSecondSelected }},
+        align: '{{ alignmentSelected }}'
+    };
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id; //js.async=!0;
+        js.src = &quot;https://widget.tiledesk.com/tiledesk.js&quot;;
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, &#39;script&#39;, &#39;tiledesk-jssdk&#39;));
+&lt;/script&gt;</textarea>
+
 </div>
+
+    <div>
+        <button #testwidgetbtn style="margin-top:0px; margin-left: 15px;" (click)="testWidgetPage()" class="btn btn-success pull-right">{{ 'Resourcepage.TestThisCode' | translate }}</button>
+        <button style="margin-top:0px" (click)="copyToClipboard()" class="btn btn-white pull-right">{{ 'Resourcepage.CopyScript' | translate }}</button>
+   </div>
                         </div>
 
+               
                         </div> <!-- end row -->        
-<!-- // NEW WIDGET START -->
-<div class="col-sm-12" style="margin-top:10px">
+
+<!-- <div class="col-sm-12" style="margin-top:10px">
     <div style="padding-top: 5px; padding-bottom: 25px;">
             
-            <!-- &lt;app-root preChatForm tenant='' recipientId='' projectid='' userId='' userEmail='' userPassword='' userFullname=''&gt;&lt;/app-root&gt; -->
+           
 
             
             <div class="row">
                 <div class="col-sm-12">
 
                     
-                        <!-- *ngIf="!preChatForm"  -->
-                        <!-- *ngIf="!hasSelectedCalloutTimer" -->
-<!-- <textarea  name="exampleClipboard" class="textarea" readonly rows="17" value="" type="text" style="font-size: 12px; line-height: 18px;">
-&lt;script type=&quot;application/javascript&quot;&gt;
-    window.tiledeskSettings = 
-        {
-            projectid: &quot;{{ projectId }}&quot;,
-            projectname: &quot;{{projectName}}&quot;,
-            preChatForm: {{preChatFormValue}},
-            calloutTimer: {{ calloutTimerSecondSelected }},
-            align: '{{ alignmentSelected }}'
-        };
-    (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id; //js.async=!0;
-        js.src = &quot;https://widget.tiledesk.com/tiledesk.js&quot;;
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, &#39;script&#39;, &#39;tiledesk-jssdk&#39;));
-&lt;/script&gt;</textarea> -->
-
-<!-- <textarea  *ngIf="hasSelectedCalloutTimer" name="exampleClipboard" class="textarea" readonly rows="17" value="" type="text">
-&lt;script type=&quot;application/javascript&quot;&gt;
-    window.tiledeskSettings = 
-        {
-            projectid: &quot;{{ projectId }}&quot;,
-            projectname: &quot;{{projectName}}&quot;,
-            preChatForm: {{preChatFormValue}},
-            calloutTimer: {{ calloutTimerSecondSelected }}
-        };
-
-    (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id; //js.async=!0;
-        js.src = &quot;https://widget.tiledesk.com/tiledesk.js&quot;;
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, &#39;script&#39;, &#39;tiledesk-jssdk&#39;));
-&lt;/script&gt;</textarea> -->
                 </div>
             </div>
  
@@ -304,37 +302,10 @@
            </div>
         </div>
         
-    </div>
-<!-- // NEW WIDGET /END -->
+    </div> -->
 
-                            <!-- <div class="col-sm-12">
-                                <div style="padding-top: 5px; padding-bottom: 25px;">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-<textarea  *ngIf="!preChatForm" name="exampleClipboard" class="textarea" readonly rows="6" value="&lt;app-root projectid='{{ projectId }}' projectname='{{projectName}}'&gt;&lt;/app-root&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://widget.tiledesk.com/inline.bundle.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://widget.tiledesk.com/polyfills.bundle.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://widget.tiledesk.com/styles.bundle.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://widget.tiledesk.com/vendor.bundle.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://widget.tiledesk.com/main.bundle.js&quot;&gt;&lt;/script&gt;" type="text">
-</textarea>
-<textarea  *ngIf="preChatForm" name="exampleClipboard" class="textarea" readonly rows="6" value="&lt;app-root preChatForm projectid='{{ projectId }}' projectname='{{projectName}}'&gt;&lt;/app-root&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://widget.tiledesk.com/inline.bundle.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://widget.tiledesk.com/polyfills.bundle.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://widget.tiledesk.com/styles.bundle.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://widget.tiledesk.com/vendor.bundle.js&quot;&gt;&lt;/script&gt;
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://widget.tiledesk.com/main.bundle.js&quot;&gt;&lt;/script&gt;" type="text">
-</textarea>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <button style="margin-top:0px" (click)="copyToClipboard()" class="btn btn-white">{{ 'Resourcepage.CopyScript' | translate }}</button>
 
-                                        <button style="margin-top:0px" (click)="testWidgetPage()" class="btn btn-success">{{ 'Resourcepage.TestWidget' | translate }}</button>
-                                   </div>
-                                </div>
-                                
-                            </div> -->
+    
                         </div>
 
                         <!-- ANDROID SDK -->

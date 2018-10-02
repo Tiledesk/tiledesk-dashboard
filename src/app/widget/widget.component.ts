@@ -36,7 +36,9 @@ export class WidgetComponent implements OnInit {
   ]
 
   calloutTitle: string;
+  _calloutTitle: string;
   calloutMsg: string;
+  _calloutMsg: string;
 
   alignmentOptions = [
     { alignTo: 'bottom right', value: 'right' },
@@ -60,6 +62,27 @@ export class WidgetComponent implements OnInit {
       }
     });
 
+
+  }
+
+  // addslashes(calloutTitle) {
+  //   console.log(' +++ +++ CALL OUT TITLE ADD SLASHES ', calloutTitle);
+  //   return (calloutTitle + '').replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
+  // }
+
+  //   addslashes(s) {
+  //     return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+  // }
+
+  onKeyCalloutTitle() {
+    // console.log(' +++ +++ CALL OUT TITLE ', $event);
+    this._calloutTitle = this.calloutTitle.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
+    console.log(' +++ +++ CALL OUT TITLE ', this._calloutTitle);
+  }
+
+  onKeyCalloutMsg() {
+
+    this._calloutMsg = this.calloutMsg.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
   }
 
   setSelectedCalloutTimer() {
@@ -77,6 +100,11 @@ export class WidgetComponent implements OnInit {
     //   console.log('»»» CALLOUT TIMER', this.calloutTimerSecondSelected)
 
     // }
+
+    if (this.calloutTimerSecondSelected !== -1) {
+      this._calloutTitle = '';
+      this._calloutMsg = '';
+    }
   }
 
   setSelectedAlignment() {
@@ -136,17 +164,35 @@ export class WidgetComponent implements OnInit {
   //   });
   // }
 
+
+
   testWidgetPage() {
     this.elementRef.nativeElement.blur();
     // http://testwidget.tiledesk.com/testsite/?projectid=5ad069b123c415001469574f&prechatform=false
     // + '&projectname=' + this.projectName
     // tslint:disable-next-line:max-line-length
+
+    let calloutTitle = this._calloutTitle
+    console.log('CALL OUT TITLE ', calloutTitle);
+    if (!this._calloutTitle) {
+      calloutTitle = ''
+      console.log('CALL OUT MSG ', calloutTitle);
+    }
+
+    let calloutMsg = this._calloutMsg
+    console.log('CALL OUT MSG ', calloutMsg);
+    if (!this._calloutMsg) {
+      calloutMsg = ''
+      console.log('CALL OUT MSG ', calloutMsg);
+    }
+
+
     const url = 'http://testwidget.tiledesk.com/testsite?projectid='
       + this.projectId
       + '&prechatform=' + this.preChatForm
       + '&callout_timer=' + this.calloutTimerSecondSelected
-      + '&callout_title=' + this.calloutTitle
-      + '&callout_msg=' + this.calloutMsg
+      + '&callout_title=' + calloutTitle
+      + '&callout_msg=' + calloutMsg
       + '&align=' + this.alignmentSelected;
     window.open(url, '_blank');
   }
