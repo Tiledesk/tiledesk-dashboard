@@ -45,7 +45,7 @@ import { RequestsListComponent } from './requests-list/requests-list.component';
 
 // MONGO DB
 
-import { ContactsService } from './services/mongodb-contacts.service';
+import { ContactsService } from './services/contacts.service';
 import { ContactsComponent } from './contacts/contacts.component';
 import { DepartmentService } from './services/mongodb-department.service';
 import { DepartmentsComponent } from './departments/departments.component';

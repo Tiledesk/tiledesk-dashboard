@@ -1,6 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { ContactsService } from './mongodb-contacts.service';
+import { ContactsService } from './contacts.service';
 
 describe('ContactsService', () => {
   beforeEach(() => {

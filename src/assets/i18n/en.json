@@ -64,7 +64,10 @@
     "LastMonth": "Last month",
     "Contacts":"Contacts",
     "Contact":"Contact",
-    "LastContacted":"LastContacted",
+    "Created":"Created",
+    "NoContact":"No contact",
+    "SearchYourContacts":"Search your contacts",
+    "ClearSearch": "Clear Search",
     "UserProfile": {
         "Profile": "Profile",
         "UploadImage": "Upload image",

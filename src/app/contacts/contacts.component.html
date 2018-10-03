@@ -22,7 +22,8 @@
  
                        <!-- -------====== BTN DECREASE PAGE  ======------ -->
                        <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
-                         <button [disabled]="pageNo + 1 === 1" class="btn btn-info" type="button" (click)="decreasePageNumber()" style="padding: 6px 8px">
+                         <button [disabled]="pageNo + 1 === 1" class="btn btn-info" type="button" (click)="decreasePageNumber()" 
+                          style="padding: 6px 8px">
                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                          </button>
                        </span>
@@ -36,7 +37,8 @@
                        
                        <!-- -------====== BTN INCREASE PAGE  ======------ -->
                        <span class="input-group-btn" style="padding-right:0px">
-                         <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0" class="btn btn-info" type="button" (click)="increasePageNumber()" style="padding: 6px 8px">
+                         <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0" class="btn btn-info" type="button" 
+                          (click)="increasePageNumber()" style="padding: 6px 8px">
                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                          </button>
                        </span>
@@ -48,9 +50,9 @@
                </div>
              </div>
  
-             <form #myForm="ngForm" novalidate class="advancedOptionForm">
+             <form #myForm="ngForm" novalidate class="search-form">
                
-               <!-- ------====== INPUT 'FULL TEXT' + CLEAR FULL-TEXT SEARCH BTN + BTNS SEARCH & OPEN ADVANCED OPTION  ======------ -->
+               <!-- ------====== INPUT 'FULL TEXT' + CLEAR FULL-TEXT SEARCH BTN   ======------ -->
                <div class="row">
                  <div class="col-sm-12"> 
                    <div class="input-group">
@@ -58,13 +60,13 @@
                      <div class="buttonInside">
                        <!-- INPUT 'FULL TEXT' -->
                        <input name="fullText" type="text" [(ngModel)]="fullText" class="form-control" autocomplete="off"
-                         placeholder="{{ 'HistoryPage.ContainsTheWords' | translate }}" style="margin-bottom: 20px; padding-bottom: 16px; padding-left: 6px;">
+                         placeholder="{{ 'SearchYourContacts' | translate }}" style="margin-bottom: 20px; padding-bottom: 16px; padding-left: 6px;">
                        
                        <!-- // CLEAR SEARCH FULL-TEXT BTN -->
                        <span id="clear-fulltext-search"  *ngIf="fullText?.length > 0" class="glyphicon glyphicon-remove tooltipx" aria-hidden="true" 
                          (click)="clearFullText()">
                          <span style="font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !important;" class="tooltiptext">
-                          {{ 'HistoryPage.ClearSearch' | translate }}
+                          {{ 'ClearSearch' | translate }}
                         </span> 
                        </span>
                      </div>
@@ -91,20 +93,10 @@
              <table class="table table-hover">
                <thead class="text">
                  <tr>
-                
-                   <th></th>
-  
-                   <!-- ===== REQUEST ID ===== -->
-                   <!-- <th>
-                     <span style="color: #566787">
-                       <strong>
-                         Id
-                       </strong>
-                     </span>  
-                   </th> -->
  
-                   <!-- ===== DEPARTMENT NAME ===== -->
+                   <!-- ===== CONTACT NAME ===== -->
                    <th>
+                     
                      <span style="color: #566787">
                        <strong>
                          <strong>{{ 'Contact' | translate }}</strong>
@@ -112,61 +104,19 @@
                      </span>  
                    </th>
  
-                   <!-- ===== REQUESTER ===== -->
+                   <!-- ===== CONTACT EMAIL ===== -->
                    <th>
                      <span style="color: #566787">
-                       <strong> 
-                         Email
-                       </strong>
+                       <strong> Email </strong>
                      </span>
                    </th>
  
-                   <!-- ===== REQUESTER ID * FOR DEBUG * ===== -->
-                   <!-- <th>
-                     <span style="color: #566787">
-                       <strong> Requester Id </strong>
-                     </span>
-                   </th> -->
- 
-                   <!-- ===== REQUEST FIRST TEXT ===== -->
+   
+                   <!-- ===== CREATED ===== -->
                    <th>
                      <span style="color: #566787">
                        <strong> 
-                         {{ 'LastContacted' | translate }}
-                       </strong>
-                     </span>
-                   </th>
- 
-                   <!-- ===== SERVED BY ===== -->
-                   <th>
-                     <span style="color: #566787">
-                       <strong> 
-                         {{ 'HistoryPage.ServedBy' | translate }}
-                       </strong>
-                     </span>
-                   </th>
-                    
-                   <!-- ===== RATING ===== -->
-                   <th>
-                     <span style="color: #566787">
-                       <strong> 
-                         {{ 'HistoryPage.Rating' | translate }}
-                       </strong>
-                     </span>
-                   </th>
-  
-                   <!-- ===== MEMBERS ===== -->
-                   <!-- <th>
-                     <span style="color: #566787">
-                       <strong> Membri </strong>
-                       </span>
-                   </th> -->
- 
-                   <!-- ===== PUBLISHED ===== -->
-                   <th>
-                     <span style="color: #566787">
-                       <strong> 
-                       {{ 'HistoryPage.Published' | translate }}
+                       {{ 'Created' | translate }}
                        </strong>
                      </span>
                    </th>
@@ -177,99 +127,51 @@
                <tbody>
  
                  <!-- ===== IF THERE ISN'T HISTORY REQUEST ===== -->
-                 <tr *ngIf="requestList && requestList.length === 0"> 
-                   <td colspan="7" style="text-align: center; padding-top: 16px; cursor: pointer">
+                 <tr *ngIf="contacts && contacts?.length === 0"> 
+                   <td colspan="3" style="text-align: center; padding-top: 16px; cursor: pointer">
  
                      <p style="font-size:1em; color:#999999; font-weight: 400">
-                       {{ 'HistoryPage.NoRequests' | translate }}
+                       {{ 'NoContact' | translate }}
                      </p>
                    </td>
                  </tr> 
   
-                 <!-- *ngFor="let request of requestList" -->
-                  <tr>
+                 
+                  <tr *ngFor="let contact of contacts">
                     
-                   <td style="text-align:center">
   
-                     <span (click)='goToRequestMsgs(request?.request_id)'>
-                        <!-- pull-right -->
-                        <button class="btn btn-default btn-visibility-custom">
-                          <i style="font-size: 17px !important; " class="material-icons">visibility</i>
-                        </button>
-                     </span>
-                      
-                   </td>
-                    
-                   <!-- ===== REQUEST ID ===== -->
-                    <!-- <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
-                      <p style="font-size:0.8em;" >
-                        {{ request?.recipient }}
-                      </p>
-                   </td> -->
- 
-                   <!-- ===== DEPARTMENT NAME ===== -->
+                   <!-- ===== CONTACT NAME ===== -->
                    <td>
-                       <p style="font-size:0.9em">
-                         {{ request?.department?.name }}
-                       </p>
+                      <span [ngStyle]="{'background-color': contact?.avatar_fill_colour }" 
+                      style=" margin: 0 8px 0 0;
+                      border-radius: 50%;
+                      font-size: 13px;
+                      font-weight: 500;
+                      text-align: center;
+                      padding: 10px 11px;">
+                      <span style="padding-left: 2px; color: #ffffff"> {{ contact?.name_initial }} </span></span>
+                      <!-- style="font-size:0.9em"  -->
+                      <span style="font-size:0.9em">
+                         {{ contact?.fullname }}
+                       </span>
                    </td>
  
-                   <!-- ===== REQUESTER FULL NAME ===== -->
+                   <!-- ===== CONTACT EMAIL ===== -->
                    <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
+                      <!-- style="font-size:0.9em" -->
                      <p style="font-size:0.9em">
-                       {{ request?.requester_fullname }}
+                       {{ contact?.email }}
                      </p>
                    </td>
  
-                   <!-- ===== REQUESTER ID * FOR DEBUG * ===== -->
-                   <!-- <td>
-                     <p style="font-size:0.8em">
-                       {{ request?.requester_id }}
-                     </p>
-                   </td> -->
- 
-                   <!-- ===== REQUEST FIRST TEXT ===== -->
-                   <!-- [innerHTML]="getRequestText(request?.first_text)" -->
+                      <!-- ===== CREATED ===== -->
                    <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
-                     <p style="font-size:0.9em;" >
-                     </p>
-                   </td>
-  
-                   <!-- ===== SERVED BY ===== -->
-                   <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" >
-                     <span *ngFor="let participant of request?.participants"  style="font-size:0.8em;">
-                       <span *ngIf="participant !== request?.requester_id && participant !== 'system' && participant !== currentUserID"> 
-                         <p class="member" (click)="goToMemberProfile( participant )" [innerHTML]="members_replace( participant )" style="padding-top:1px; padding-bottom:1px; cursor: pointer;">  </p>
-                       </span> 
-                       <p *ngIf="participant === currentUserID" style="padding-top:1px; padding-bottom:1px;"> 
-                         - <strong> 'ME' </strong>
-                       </p>
-                     </span>
-                   </td>
-                   
-  
-                   <!-- ===== RATING ===== -->
-                   <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" >
-                     <p *ngIf="request?.rating" style="font-size:0.8em;">
-                         {{ request?.rating }} / 5
-                     </p>
-                     <p *ngIf="!request?.rating" style="font-size:0.8em;">
-                         - / 5
-                     </p>
-                   </td>
-  
-                   <!-- ===== LIST OF MEMBERS ===== -->
-                   <!-- <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
-                     <p style="font-size:0.8em; min-width: 220px;"  [innerHTML]="request?.members_as_string"></p>
-                   </td> -->
- 
-                   <!-- ===== PUBLISHED ===== -->
-                   <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
-                     <p style="font-size:0.9em">
+                      <!-- style="font-size:0.9em"  -->
+                    <p style="font-size:0.9em">
                        <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
                        <!-- {{ request?.request_date_fromnow }} -->
                        <!-- {{ request?.created_on | date: 'd/M/y HH:mm:ss' }} -->
-                       {{ request?.createdAt | amTimeAgo }} ({{ request?.createdAt | date: 'd/M/y HH:mm' }}) 
+                       {{ contact?.createdAt | amTimeAgo }} ({{ contact?.createdAt | date: 'd/M/y HH:mm' }}) 
                      </p>
                    </td>
  

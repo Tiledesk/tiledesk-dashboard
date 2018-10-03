@@ -2,13 +2,13 @@
 import { Component, OnInit } from '@angular/core';
 // import { HttpClient } from '@angular/common/http';
 // import { Http, Headers, RequestOptions} from '@angular/http';
-import { ContactsService } from '../services/mongodb-contacts.service';
+import { ContactsService } from '../services/contacts.service';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Contact } from '../models/contact-model';
 
 
 @Component({
-  selector: 'contacts',
+  selector: 'appdashboard-contacts',
   templateUrl: './contacts.component.html',
   styleUrls: ['./contacts.component.scss'],
 })
@@ -19,6 +19,8 @@ export class ContactsComponent implements OnInit {
   totalPagesNo_roundToUp: number;
   displaysFooterPagination: boolean;
   showSpinner = false;
+  fullTextValue: string;
+  queryString: string;
 
   contacts: Contact[];
 
@@ -65,16 +67,67 @@ export class ContactsComponent implements OnInit {
 
   search() {
     this.pageNo = 0
+    if (this.fullText) {
+
+      this.fullTextValue = this.fullText;
+      console.log('!!!! CONTACTS - SEARCH FOR FULL TEXT ', this.fullTextValue);
+    } else {
+      console.log('!!!! CONTACTS - SEARCH FOR DEPT TEXT ', this.fullText);
+      this.fullTextValue = ''
+    }
+
+    this.queryString = 'full_text=' + this.fullTextValue
   }
 
   /**
    * GET CONTACTS
    */
   getContacts() {
-    this.contactsService.getLeads().subscribe((contacts: any) => {
-      console.log('!!!! CONTACTS  - GET CONTACTS RESPONSE ', contacts);
-      // this.contacts = contacts;
+    this.contactsService.getLeads().subscribe((leads_object: any) => {
+      console.log('!!!! CONTACTS - GET LEADS RESPONSE ', leads_object);
+
+      this.contacts = leads_object['leads'];
+      console.log('!!!! CONTACTS - CONTACTS LIST ', this.contacts);
+
+      const contactsCount = leads_object['count'];
+      console.log('!!!! CONTACTS - CONTACTS COUNT ', contactsCount);
+
+      const contactsPerPage = leads_object['perPage'];
+      console.log('!!!! CONTACTS - N° OF CONTACTS X PAGE ', contactsCount);
+
+      const totalPagesNo = contactsCount / contactsPerPage;
+      console.log('!!!! CONTACTS - TOTAL PAGES NUMBER', totalPagesNo);
+
+      this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
+      console.log('!!!!! CONTACTS - TOTAL PAGES No ROUND TO UP ', this.totalPagesNo_roundToUp);
+
+      const colours = ['#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e', '#16a085', '#27ae60', '#2980b9', '#8e44ad', '#2c3e50', '#f1c40f', '#e67e22', '#e74c3c', '#95a5a6', '#f39c12', '#d35400', '#c0392b', '#bdc3c7', '#7f8c8d'];
+
+      this.contacts.forEach(contact => {
+        const id_contact = contact._id
+        const name = contact.fullname;
+        console.log('!!!!! CONTACTS - NAME OF THE CONTACT ', name);
+        const initial = name.charAt(0).toUpperCase();
+        console.log('!!!!! CONTACTS - INITIAL OF NAME OF THE CONTACT ', initial);
+
+        const charIndex = initial.charCodeAt(0) - 65
+        const colourIndex = charIndex % 19;
+        console.log('!!!!! CONTACTS - COLOUR INDEX ', colourIndex);
+
+        const fillColour = colours[colourIndex];
+        console.log('!!!!! CONTACTS - FILL COLOUR ', fillColour);
+
+        for (const c of this.contacts) {
+          if (c._id === id_contact ) {
+            c.avatar_fill_colour = fillColour;
+            c.name_initial = initial
+          }
+        }
+
+      });
+
     });
+
   }
 
   /**
