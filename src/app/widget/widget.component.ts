@@ -75,18 +75,21 @@ export class WidgetComponent implements OnInit {
   // }
 
   onKeyCalloutTitle() {
-    // console.log(' +++ +++ CALL OUT TITLE ', $event);
-    this._calloutTitle = this.calloutTitle.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
-    console.log(' +++ +++ CALL OUT TITLE ', this._calloutTitle);
+    if (this.calloutTitle) {
+      this._calloutTitle = this.calloutTitle.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
+      console.log('+++ +++ ON KEY-UP CALLOUT TITLE ', this._calloutTitle);
+    }
   }
 
   onKeyCalloutMsg() {
-
-    this._calloutMsg = this.calloutMsg.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
+    if (this.calloutMsg) {
+      this._calloutMsg = this.calloutMsg.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
+      console.log('+++ +++ ON KEY-UP CALLOUT MSG ', this._calloutMsg);
+    }
   }
 
   setSelectedCalloutTimer() {
-    console.log('»»» CALLOUT TIMER', this.calloutTimerSecondSelected)
+    console.log('»»» SET SELECTED CALLOUT TIMER - TIMER SELECTED', this.calloutTimerSecondSelected)
     // if (timer === 'immediately') {
     //   this.calloutTimerSecondSelected = 0;
     //   console.log('»»» CALLOUT TIMER', this.calloutTimerSecondSelected)
@@ -101,9 +104,14 @@ export class WidgetComponent implements OnInit {
 
     // }
 
-    if (this.calloutTimerSecondSelected !== -1) {
-      this._calloutTitle = '';
-      this._calloutMsg = '';
+    if (this.calloutTimerSecondSelected === -1) {
+
+      this._calloutTitle = ''; // callout title escaped
+      this.calloutTitle = '';
+      console.log('»»» SET SELECTED CALLOUT TIMER - CALLOUT TITLE ESCAPED', this._calloutTitle)
+      this._calloutMsg = ''; // callout msg escaped
+      this.calloutMsg = '';
+      console.log('»»» SET SELECTED CALLOUT TIMER - CALLOUT MSG ESCAPED ', this._calloutMsg)
     }
   }
 
@@ -173,17 +181,23 @@ export class WidgetComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
 
     let calloutTitle = this._calloutTitle
-    console.log('CALL OUT TITLE ', calloutTitle);
+    let paramCallout_title = '&callout_title='
+
+    console.log('CALL OUT TITLE PARAMETER ', paramCallout_title, 'CALL OUT TITLE VALUE  ', calloutTitle);
     if (!this._calloutTitle) {
-      calloutTitle = ''
-      console.log('CALL OUT MSG ', calloutTitle);
+      paramCallout_title = '';
+      calloutTitle = '';
+      console.log('CALL OUT TITLE PARAMETER ', paramCallout_title, 'CALL OUT TITLE VALUE  ', calloutTitle);
     }
 
-    let calloutMsg = this._calloutMsg
-    console.log('CALL OUT MSG ', calloutMsg);
+    let calloutMsg = this._calloutMsg;
+    let paramCallout_msg = '&callout_msg='
+
+    console.log('CALL OUT MSG PARAMETER ', paramCallout_msg, 'CALL OUT MSG VALUE  ', calloutMsg);
     if (!this._calloutMsg) {
+      paramCallout_msg = '';
       calloutMsg = ''
-      console.log('CALL OUT MSG ', calloutMsg);
+      console.log('CALL OUT MSG PARAMETER ', paramCallout_msg, 'CALL OUT MSG VALUE  ', calloutMsg);
     }
 
 
@@ -191,8 +205,8 @@ export class WidgetComponent implements OnInit {
       + this.projectId
       + '&prechatform=' + this.preChatForm
       + '&callout_timer=' + this.calloutTimerSecondSelected
-      + '&callout_title=' + calloutTitle
-      + '&callout_msg=' + calloutMsg
+      + paramCallout_title + calloutTitle
+      + paramCallout_msg + calloutMsg
       + '&align=' + this.alignmentSelected;
     window.open(url, '_blank');
   }
