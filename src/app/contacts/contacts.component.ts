@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 // import { HttpClient } from '@angular/common/http';
 // import { Http, Headers, RequestOptions} from '@angular/http';
-import { MongoDbContactsService } from '../services/mongodb-contacts.service';
+import { ContactsService } from '../services/mongodb-contacts.service';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Contact } from '../models/contact-model';
 
@@ -41,7 +41,7 @@ export class ContactsComponent implements OnInit {
 
   constructor(
     private http: Http,
-    private contactsService: MongoDbContactsService,
+    private contactsService: ContactsService,
   ) { }
 
   ngOnInit() {

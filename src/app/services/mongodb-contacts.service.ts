@@ -10,7 +10,7 @@ import { environment } from '../../environments/environment';
 import { AuthService } from '../core/auth.service';
 
 @Injectable()
-export class MongoDbContactsService {
+export class ContactsService {
 
   // Contact: Contact[];
   http: Http;
@@ -86,7 +86,7 @@ export class MongoDbContactsService {
       .get(url, { headers })
       .map((response) => response.json());
   }
-  
+
   /**
    * READ (GET)
    */

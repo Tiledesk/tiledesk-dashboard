@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { MongoDbContactsService } from './mongodb-contacts.service';
+import { ContactsService } from './mongodb-contacts.service';
 
 describe('ContactsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [MongoDbContactsService],
+      providers: [ContactsService],
     });
   });
 
-  it('should be created', inject([MongoDbContactsService], (service: MongoDbContactsService) => {
+  it('should be created', inject([ContactsService], (service: ContactsService) => {
     expect(service).toBeTruthy();
   }));
 });
