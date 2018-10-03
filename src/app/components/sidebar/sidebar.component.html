@@ -183,6 +183,14 @@
                 </a>
             </li>
 
+            <!-- CONTACTS (LEADS)  -->
+            <li *ngIf="project" routerLinkActive="active" >
+                <a class="customAncor" routerLink="project/{{ project._id }}/contacts">
+                    <i class="material-icons">contacts</i>
+                    <p class="onBlackBckgrnd">{{ 'Contacts' | translate }}</p>
+                </a>
+            </li>
+
             <!-- CHAT  -->
             <li *ngIf="project" routerLinkActive="active">
                 <!-- <a class="customAncor" routerLink="/chat"> -->

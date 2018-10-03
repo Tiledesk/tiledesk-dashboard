@@ -118,7 +118,7 @@ export class RequestsListHistoryNewComponent implements OnInit {
 
       if (projectUsers) {
         projectUsers.forEach(user => {
-          this.user_and_bot_array.push(user.id_user);
+          this.user_and_bot_array.push({ '_id': user.id_user._id, 'firstname': user.id_user.firstname, 'lastname': user.id_user.lastname });
         });
 
         console.log('!!! NEW REQUESTS HISTORY  - !!!! USERS ARRAY ', this.user_and_bot_array);
@@ -139,7 +139,7 @@ export class RequestsListHistoryNewComponent implements OnInit {
 
       if (bots) {
         bots.forEach(bot => {
-          this.user_and_bot_array.push(bot);
+          this.user_and_bot_array.push({ '_id': 'bot_' + bot._id, 'firstname': bot.name + ' (bot)' });
         });
       }
       console.log('!!! NEW REQUESTS HISTORY  - BOTS & USERS ARRAY ', this.user_and_bot_array);

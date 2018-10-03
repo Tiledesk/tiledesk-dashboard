@@ -137,9 +137,6 @@
                           <ng-select name="agent" [(ngModel)]="selectedAgentId" [clearable]="false">
                             <ng-option [value]="''">{{ 'HistoryPage.AllAgents' | translate }}</ng-option>
                             <ng-option *ngFor="let agent of user_and_bot_array" [value]="agent._id" >
-                              <!-- // FOR THE BOTS -->
-                              {{ agent.name }}
-                              <!-- // FOR THE USERS -->
                               {{ agent.firstname }} {{ agent.lastname }} 
                             </ng-option>
                           </ng-select>
