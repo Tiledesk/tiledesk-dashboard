@@ -7,31 +7,85 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 // import { MongodbConfService } from '../utils/mongodb-conf.service';
 import { environment } from '../../environments/environment';
+import { AuthService } from '../core/auth.service';
 
 @Injectable()
 export class MongoDbContactsService {
 
   // Contact: Contact[];
   http: Http;
+  projectId: string;
+  user: any;
+  TOKEN: any;
+  currentUserID: string;
 
-  // MONGODB_BASE_URL: any;
-  // TOKEN: any;
-
+  BASE_URL = environment.mongoDbConfig.BASE_URL;
   MONGODB_BASE_URL = environment.mongoDbConfig.CONTACTS_BASE_URL;
-  TOKEN =  environment.mongoDbConfig.TOKEN;
+
 
   constructor(
     http: Http,
-    // private mongodbConfService: MongodbConfService,
+    public auth: AuthService
+
   ) {
 
     this.http = http;
-
     // this.MONGODB_BASE_URL = mongodbConfService.MONGODB_CONTACTS_BASE_URL;
     // console.log('MONGODB_CONTACTS_BASE_URL ! ', mongodbConfService.MONGODB_CONTACTS_BASE_URL);
     // this.TOKEN = mongodbConfService.TOKEN;
+    this.getCurrentProject();
+
+    this.user = auth.user_bs.value
+    this.checkUser()
+
+    this.auth.user_bs.subscribe((user) => {
+
+      this.user = user;
+      this.checkUser()
+    });
   }
 
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+      console.log('!!!! CONTACTS SERVICE: SUBSCRIBE TO THE PROJECT PUBLISHED BY AUTH SERVICE ', project)
+
+      if (project) {
+        this.projectId = project._id
+      }
+    })
+  }
+
+
+  checkUser() {
+    if (this.user) {
+      this.TOKEN = this.user.token
+
+      this.currentUserID = this.user._id
+      console.log('!!!! CONTACTS SERVICE - USER UID  ', this.currentUserID);
+
+    } else {
+      console.log('No user is signed in');
+    }
+  }
+
+
+  // GET LEADS
+  public getLeads(): Observable<Contact[]> {
+    const url = this.BASE_URL + this.projectId + '/leads';
+    // use this to test
+    // const url = 'https://api.tiledesk.com/v1/5ba35f0b9acdd40015d350b6/leads'
+    console.log('!!!! CONTACTS SERVICE - GET CONTACTS URL', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    // use this to test
+    // headers.append('Authorization', 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiZW1haWwiOjEsImZpcnN0bmFtZSI6MSwibGFzdG5hbWUiOjEsInBhc3N3b3JkIjoxLCJlbWFpbHZlcmlmaWVkIjoxLCJpZCI6MX0sImdldHRlcnMiOnt9LCJfaWQiOiI1YWFhOTJmZjRjM2IxMTAwMTRiNDc4Y2IiLCJ3YXNQb3B1bGF0ZWQiOmZhbHNlLCJhY3RpdmVQYXRocyI6eyJwYXRocyI6eyJwYXNzd29yZCI6ImluaXQiLCJlbWFpbCI6ImluaXQiLCJsYXN0bmFtZSI6ImluaXQiLCJmaXJzdG5hbWUiOiJpbml0IiwiX2lkIjoiaW5pdCJ9LCJzdGF0ZXMiOnsiaWdub3JlIjp7fSwiZGVmYXVsdCI6e30sImluaXQiOnsibGFzdG5hbWUiOnRydWUsImZpcnN0bmFtZSI6dHJ1ZSwicGFzc3dvcmQiOnRydWUsImVtYWlsIjp0cnVlLCJfaWQiOnRydWV9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7fX0sInN0YXRlTmFtZXMiOlsicmVxdWlyZSIsIm1vZGlmeSIsImluaXQiLCJkZWZhdWx0IiwiaWdub3JlIl19LCJwYXRoc1RvU2NvcGVzIjp7fSwiZW1pdHRlciI6eyJkb21haW4iOm51bGwsIl9ldmVudHMiOnt9LCJfZXZlbnRzQ291bnQiOjAsIl9tYXhMaXN0ZW5lcnMiOjB9LCIkb3B0aW9ucyI6dHJ1ZX0sImlzTmV3IjpmYWxzZSwiX2RvYyI6eyJsYXN0bmFtZSI6IkxhbnppbG90dG8iLCJmaXJzdG5hbWUiOiJOaWNvbGEgNzQiLCJwYXNzd29yZCI6IiQyYSQxMCRwVWdocTVJclgxMzhTOXBEY1pkbG1lcnNjVTdVOXJiNlFKaVliMXlEckljOHJDMFh6c2hUcSIsImVtYWlsIjoibGFuemlsb3R0b25pY29sYTc0QGdtYWlsLmNvbSIsIl9pZCI6IjVhYWE5MmZmNGMzYjExMDAxNGI0NzhjYiJ9LCIkaW5pdCI6dHJ1ZSwiaWF0IjoxNTM4MTIzNTcyfQ.CYnxkLbg5XWk2JWAxQg1QNGDpNgNbZAzs5PEQpLCCnI');
+
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
   /**
    * READ (GET)
    */

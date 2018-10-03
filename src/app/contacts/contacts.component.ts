@@ -6,6 +6,7 @@ import { MongoDbContactsService } from '../services/mongodb-contacts.service';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Contact } from '../models/contact-model';
 
+
 @Component({
   selector: 'contacts',
   templateUrl: './contacts.component.html',
@@ -14,7 +15,10 @@ import { Contact } from '../models/contact-model';
 export class ContactsComponent implements OnInit {
 
   fullText: string;
-
+  pageNo = 0;
+  totalPagesNo_roundToUp: number;
+  displaysFooterPagination: boolean;
+  showSpinner = false;
 
   contacts: Contact[];
 
@@ -41,16 +45,35 @@ export class ContactsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // this.getContacts();
+    this.getContacts();
+  }
+
+
+
+  decreasePageNumber() {
+    this.pageNo -= 1;
+
+    console.log('!!!! CONTACTS - DECREASE PAGE NUMBER ', this.pageNo);
+    this.getContacts()
+  }
+
+  increasePageNumber() {
+    this.pageNo += 1;
+    console.log('!!!! CONTACTS  - INCREASE PAGE NUMBER ', this.pageNo);
+    this.getContacts()
+  }
+
+  search() {
+    this.pageNo = 0
   }
 
   /**
    * GET CONTACTS
    */
   getContacts() {
-    this.contactsService.getMongDbContacts().subscribe((contacts: any) => {
-      console.log('MONGO DB CONTACTS', contacts);
-      this.contacts = contacts;
+    this.contactsService.getLeads().subscribe((contacts: any) => {
+      console.log('!!!! CONTACTS  - GET CONTACTS RESPONSE ', contacts);
+      // this.contacts = contacts;
     });
   }
 
@@ -60,12 +83,12 @@ export class ContactsComponent implements OnInit {
   createContact() {
     console.log('MONGO DB FULL-NAME DIGIT BY USER ', this.fullName);
     this.contactsService.addMongoDbContacts(this.fullName).subscribe((contact) => {
-        console.log('POST DATA ', contact);
-        this.fullName = '';
-        // RE-RUN GET CONTACT TO UPDATE THE TABLE
-        // this.getContacts();
-        this.ngOnInit();
-      },
+      console.log('POST DATA ', contact);
+      this.fullName = '';
+      // RE-RUN GET CONTACT TO UPDATE THE TABLE
+      // this.getContacts();
+      this.ngOnInit();
+    },
       (error) => {
 
         console.log('POST REQUEST ERROR ', error);

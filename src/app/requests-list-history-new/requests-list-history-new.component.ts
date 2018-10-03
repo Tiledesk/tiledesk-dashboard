@@ -97,8 +97,6 @@ export class RequestsListHistoryNewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log('+ +++ ++ SEARCH BTN REF ', this.searchbtnRef)
-    console.log('+ +++ ++ SEARCH BTN BOTTOM REF ', this.searchbtnbottomRef)
     // selectedDeptId is assigned to empty so in the template will be selected the custom option ALL DEPARTMENTS
     this.selectedDeptId = '';
     // selectedAgentId is assigned to empty so in the template will be selected the custom option ALL AGENTS
