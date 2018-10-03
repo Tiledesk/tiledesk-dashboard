@@ -13,6 +13,9 @@ import { Contact } from '../models/contact-model';
 })
 export class ContactsComponent implements OnInit {
 
+  fullText: string;
+
+
   contacts: Contact[];
 
   fullName: string;
@@ -38,7 +41,7 @@ export class ContactsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.getContacts();
+    // this.getContacts();
   }
 
   /**

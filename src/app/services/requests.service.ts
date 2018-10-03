@@ -245,7 +245,7 @@ export class RequestsService {
     // RETURNS TRUE OR FALSE
     // || !r.hasAgent(this.currentUserID)
     if (r === null || r === undefined || !r.hasAgent(this.currentUserID)) {
-      console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID))
+      // console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID))
       return;
     }
     // console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID))

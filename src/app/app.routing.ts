@@ -109,7 +109,7 @@ const routes: Routes = [
 
   // firestore user CRUD
   // { path: 'userstest', component: UsersListComponent, canActivate: [AuthGuard]},
-  { path: 'contacts', component: ContactsComponent },
+ 
   { path: 'items', component: ItemsListComponent, canActivate: [AuthGuard] },
   { path: 'notes', component: NotesListComponent, canActivate: [AuthGuard] },
   { path: 'userprofile', component: UserProfileComponent },
@@ -202,6 +202,8 @@ const routes: Routes = [
   // RESET PASSORD (i.e. page forgot psw & reset psw )
   { path: 'forgotpsw', component: ResetPswComponent },
   { path: 'resetpassword/:resetpswrequestid', component: ResetPswComponent },
+
+  { path: 'project/:projectid/contacts', component: ContactsComponent },
 
   { path: 'dashboard', component: DashboardComponent },
 

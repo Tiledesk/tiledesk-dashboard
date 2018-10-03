@@ -62,6 +62,9 @@
     "RequestsForDept": "Requests for department",
     "NumberOfRequestsLast7Days": "Number of requests last 7 days",
     "LastMonth": "Last month",
+    "Contacts":"Contacts",
+    "Contact":"Contact",
+    "LastContacted":"LastContacted",
     "UserProfile": {
         "Profile": "Profile",
         "UploadImage": "Upload image",

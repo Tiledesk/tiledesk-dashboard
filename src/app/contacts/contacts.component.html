@@ -1,136 +1,321 @@
-<div class="content columns">
-  <main class="column is-10 is-offset-1">
 
-  <h1>Mongo DB Contacts</h1>
-  <hr>
-  <div class="field is-horizontal">
-    <div class="field-body">
-
-      <div class="field">
-        <p class="control is-expanded has-icons-left">
-          <input [(ngModel)]="fullName" placeholder="Full name" class="input">
-          <span class="icon is-small is-left">
-            <i class="fas fa-user fa"></i>
-          </span>
-        </p>
-      </div>
-    </div>
-  </div>
-  <button class="button is-success" (click)="createContact()" [disabled]="fullName?.length < 2 || fullName?.length > 50">
-    Add new contact
-  </button>
-
-  <!-- MOMGO DB CONTACT LIST -->
-  <table class="table is-narrow is-bordered" style="margin-top:25px">
-    <thead>
-      <tr>
-        <th style="">
-          Id
-        </th>
-        <th>
-          Full Name
-        </th>
-        <th>
-          Creation Date
-        </th>
-      </tr>
-    </thead>
-
-    <tbody>
-
-      <tr *ngFor="let contact of contacts">
-        <td>
-          {{ contact?._id }}
-        </td>
-        <td>
-          {{ contact?.fullname }}
-        </td>
-        <td>
-          {{ contact?.createdAt | date: 'd/M/y'}}
-        </td>
-        <td style="text-align: center!important">
-          <!-- <span class="button is-small is-danger" (click)='deleteUser(user?.id)'>Delete</span> -->
-          <span class="button is-small is-danger" (click)='openDeleteModal(contact?._id, contact?.fullname, hasClickedDeleteModal = true)'>
-            Delete
-          </span>
-        </td>
-        <td style="text-align: center!important">
-          <span class="button is-small is-warning" (click)='openUpdateModal(contact?._id, contact?.fullname, hasClickedUpdateModal = true)'>
-            Edit
-          </span>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-    <!-- <loading-spinner></loading-spinner> -->
-    <!-- MODAL -->
-  <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->
-  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            <!-- <strong></strong> -->
-            <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
-              <h4 class="modal-title">Update contact with id:
-                <code>{{id_toUpdate}}</code>
-              </h4>
-            </span>
-    
-            <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
-              <h4 class="modal-title">Delete contact with id:
-                <code>{{id_toDelete}}</code>
-              </h4>
-            </span>
-    
-          </div>
-    
-          <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
-            <div class="modal-body">
-              <p>{{fullName_toUpdate}}</p>
-              <div class="field is-horizontal">
-                <div class="field-body">
-    
-                  <div class="field">
-                    <p class="control is-expanded has-icons-left">
-                      <input [(ngModel)]="fullName_toUpdate" placeholder="Full name" class="input">
-                      <span class="icon is-small is-left">
-                        <i class="fas fa-user fa"></i>
-                      </span>
-                    </p>
-                  </div>
-      
-                </div>
-              </div>
-            </div>
-          </span>
-    
-          <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
-            <div class="modal-body">
-    
-            <p> Are you sure you want to delete the contact <strong>{{fullName_toDelete}}</strong> ?</p>
-            </div>
-          </span>
-    
-          <span *ngIf="DISPLAY_DATA_FOR_UPDATE_MODAL">
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" (click)="onCloseUpdateModalHandled()">Save</button>
-            </div>
-          </span>
-    
-          <span *ngIf="DISPLAY_DATA_FOR_DELETE_MODAL">
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" (click)="onCloseDeleteModalHandled()">Confirm</button>
-            </div>
-          </span>
-    
-        </div>
-        <!-- /.modal-content -->
-      </div>
-      <!-- /.modal-dialog -->
-    </div>
-  </main>
-</div>
+ <p style="margin-top:10px; padding-left:30px" class="navbar-brand">
+    {{ 'Contacts' | translate }}
+  </p> 
+ 
+ <div class="main-content" style="padding-top:0px">
+   <div class="container-fluid">
+     <div class="row">
+       <div class="col-md-12">
+         
+ 
+         <div class="card">
+             <!-- data-background-color="red" -->
+           <div class="card-header" style="background-color:#ffffff; padding: 8px;">
+             
+             <!-- *********************** // PAGINATION // ***********************  -->
+             <div class="row">
+               <div class="col-md-12">
+                 <div class="tiledesk-pagination" style="margin-top: 10px; margin-right: 3px;  float: right">
+                   <div style="width: 120px;">
+                     <div class="input-group">
+ 
+                       <!-- -------====== BTN DECREASE PAGE  ======------ -->
+                       <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
+                         <button [disabled]="pageNo + 1 === 1" class="btn btn-info" type="button" (click)="decreasePageNumber()" style="padding: 6px 8px">
+                           <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                         </button>
+                       </span>
+ 
+                       <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
+                       <span class="input-group-btn" style="padding-right:0px;">
+                         <button #searchbtn class="btn btn-info" type="button" style="padding: 6px 8px">
+                           {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
+                         </button>
+                       </span>
+                       
+                       <!-- -------====== BTN INCREASE PAGE  ======------ -->
+                       <span class="input-group-btn" style="padding-right:0px">
+                         <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0" class="btn btn-info" type="button" (click)="increasePageNumber()" style="padding: 6px 8px">
+                           <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                         </button>
+                       </span>
+ 
+                     </div>
+                 
+                   </div>
+                 </div>
+               </div>
+             </div>
+ 
+             <form #myForm="ngForm" novalidate class="advancedOptionForm">
+               
+               <!-- ------====== INPUT 'FULL TEXT' + CLEAR FULL-TEXT SEARCH BTN + BTNS SEARCH & OPEN ADVANCED OPTION  ======------ -->
+               <div class="row">
+                 <div class="col-sm-12"> 
+                   <div class="input-group">
+ 
+                     <div class="buttonInside">
+                       <!-- INPUT 'FULL TEXT' -->
+                       <input name="fullText" type="text" [(ngModel)]="fullText" class="form-control" autocomplete="off"
+                         placeholder="{{ 'HistoryPage.ContainsTheWords' | translate }}" style="margin-bottom: 20px; padding-bottom: 16px; padding-left: 6px;">
+                       
+                       <!-- // CLEAR SEARCH FULL-TEXT BTN -->
+                       <span id="clear-fulltext-search"  *ngIf="fullText?.length > 0" class="glyphicon glyphicon-remove tooltipx" aria-hidden="true" 
+                         (click)="clearFullText()">
+                         <span style="font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !important;" class="tooltiptext">
+                          {{ 'HistoryPage.ClearSearch' | translate }}
+                        </span> 
+                       </span>
+                     </div>
+ 
+                     <!-- // SEARCH FULL-TEXT BTN -->
+                     <span class="input-group-btn" style="padding-right:0px">
+                       <button #searchbtn class="btn btn-info" type="submit" (click)="search()">
+                         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                       </button>
+                     </span>
+ 
+                   </div>
+                 </div>
+               </div>
+ 
+              
+             </form>
+ 
+           </div>  <!-- /.end card-header -->
+ 
+           <loading-spinner *ngIf="showSpinner"></loading-spinner>
+           <div  *ngIf="!showSpinner" class="card-content table-responsive">
+  
+             <table class="table table-hover">
+               <thead class="text">
+                 <tr>
+                
+                   <th></th>
+  
+                   <!-- ===== REQUEST ID ===== -->
+                   <!-- <th>
+                     <span style="color: #566787">
+                       <strong>
+                         Id
+                       </strong>
+                     </span>  
+                   </th> -->
+ 
+                   <!-- ===== DEPARTMENT NAME ===== -->
+                   <th>
+                     <span style="color: #566787">
+                       <strong>
+                         <strong>{{ 'Contact' | translate }}</strong>
+                       </strong>
+                     </span>  
+                   </th>
+ 
+                   <!-- ===== REQUESTER ===== -->
+                   <th>
+                     <span style="color: #566787">
+                       <strong> 
+                         Email
+                       </strong>
+                     </span>
+                   </th>
+ 
+                   <!-- ===== REQUESTER ID * FOR DEBUG * ===== -->
+                   <!-- <th>
+                     <span style="color: #566787">
+                       <strong> Requester Id </strong>
+                     </span>
+                   </th> -->
+ 
+                   <!-- ===== REQUEST FIRST TEXT ===== -->
+                   <th>
+                     <span style="color: #566787">
+                       <strong> 
+                         {{ 'LastContacted' | translate }}
+                       </strong>
+                     </span>
+                   </th>
+ 
+                   <!-- ===== SERVED BY ===== -->
+                   <th>
+                     <span style="color: #566787">
+                       <strong> 
+                         {{ 'HistoryPage.ServedBy' | translate }}
+                       </strong>
+                     </span>
+                   </th>
+                    
+                   <!-- ===== RATING ===== -->
+                   <th>
+                     <span style="color: #566787">
+                       <strong> 
+                         {{ 'HistoryPage.Rating' | translate }}
+                       </strong>
+                     </span>
+                   </th>
+  
+                   <!-- ===== MEMBERS ===== -->
+                   <!-- <th>
+                     <span style="color: #566787">
+                       <strong> Membri </strong>
+                       </span>
+                   </th> -->
+ 
+                   <!-- ===== PUBLISHED ===== -->
+                   <th>
+                     <span style="color: #566787">
+                       <strong> 
+                       {{ 'HistoryPage.Published' | translate }}
+                       </strong>
+                     </span>
+                   </th>
+     
+                 </tr>
+               </thead>
+ 
+               <tbody>
+ 
+                 <!-- ===== IF THERE ISN'T HISTORY REQUEST ===== -->
+                 <tr *ngIf="requestList && requestList.length === 0"> 
+                   <td colspan="7" style="text-align: center; padding-top: 16px; cursor: pointer">
+ 
+                     <p style="font-size:1em; color:#999999; font-weight: 400">
+                       {{ 'HistoryPage.NoRequests' | translate }}
+                     </p>
+                   </td>
+                 </tr> 
+  
+                 <!-- *ngFor="let request of requestList" -->
+                  <tr>
+                    
+                   <td style="text-align:center">
+  
+                     <span (click)='goToRequestMsgs(request?.request_id)'>
+                        <!-- pull-right -->
+                        <button class="btn btn-default btn-visibility-custom">
+                          <i style="font-size: 17px !important; " class="material-icons">visibility</i>
+                        </button>
+                     </span>
+                      
+                   </td>
+                    
+                   <!-- ===== REQUEST ID ===== -->
+                    <!-- <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
+                      <p style="font-size:0.8em;" >
+                        {{ request?.recipient }}
+                      </p>
+                   </td> -->
+ 
+                   <!-- ===== DEPARTMENT NAME ===== -->
+                   <td>
+                       <p style="font-size:0.9em">
+                         {{ request?.department?.name }}
+                       </p>
+                   </td>
+ 
+                   <!-- ===== REQUESTER FULL NAME ===== -->
+                   <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
+                     <p style="font-size:0.9em">
+                       {{ request?.requester_fullname }}
+                     </p>
+                   </td>
+ 
+                   <!-- ===== REQUESTER ID * FOR DEBUG * ===== -->
+                   <!-- <td>
+                     <p style="font-size:0.8em">
+                       {{ request?.requester_id }}
+                     </p>
+                   </td> -->
+ 
+                   <!-- ===== REQUEST FIRST TEXT ===== -->
+                   <!-- [innerHTML]="getRequestText(request?.first_text)" -->
+                   <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
+                     <p style="font-size:0.9em;" >
+                     </p>
+                   </td>
+  
+                   <!-- ===== SERVED BY ===== -->
+                   <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" >
+                     <span *ngFor="let participant of request?.participants"  style="font-size:0.8em;">
+                       <span *ngIf="participant !== request?.requester_id && participant !== 'system' && participant !== currentUserID"> 
+                         <p class="member" (click)="goToMemberProfile( participant )" [innerHTML]="members_replace( participant )" style="padding-top:1px; padding-bottom:1px; cursor: pointer;">  </p>
+                       </span> 
+                       <p *ngIf="participant === currentUserID" style="padding-top:1px; padding-bottom:1px;"> 
+                         - <strong> 'ME' </strong>
+                       </p>
+                     </span>
+                   </td>
+                   
+  
+                   <!-- ===== RATING ===== -->
+                   <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" >
+                     <p *ngIf="request?.rating" style="font-size:0.8em;">
+                         {{ request?.rating }} / 5
+                     </p>
+                     <p *ngIf="!request?.rating" style="font-size:0.8em;">
+                         - / 5
+                     </p>
+                   </td>
+  
+                   <!-- ===== LIST OF MEMBERS ===== -->
+                   <!-- <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
+                     <p style="font-size:0.8em; min-width: 220px;"  [innerHTML]="request?.members_as_string"></p>
+                   </td> -->
+ 
+                   <!-- ===== PUBLISHED ===== -->
+                   <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
+                     <p style="font-size:0.9em">
+                       <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
+                       <!-- {{ request?.request_date_fromnow }} -->
+                       <!-- {{ request?.created_on | date: 'd/M/y HH:mm:ss' }} -->
+                       {{ request?.createdAt | amTimeAgo }} ({{ request?.createdAt | date: 'd/M/y HH:mm' }}) 
+                     </p>
+                   </td>
+ 
+                 </tr>
+               </tbody>
+             </table>
+           </div> <!-- ./ card-content table-responsive -->
+ 
+           <div *ngIf="displaysFooterPagination === true" class="card-footer" style="text-align:right">
+             <div class="stats">
+ 
+               <div style="width: 120px; margin: 0 auto; margin-top: 10px " >
+                 <div class="input-group">
+ 
+                   <!-- -------====== BTN DECREASE PAGE  ======------ -->
+                   <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
+                     <button [disabled]="pageNo + 1 === 1" class="btn btn-info" type="button" (click)="decreasePageNumber()" style="padding: 6px 8px">
+                       <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                     </button>
+                   </span>
+ 
+                   <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
+                   <span class="input-group-btn" style="padding-right:0px;">
+                     <button #searchbtn class="btn btn-info" type="button" style="padding: 6px 8px">
+                       {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
+                     </button>
+                   </span>
+                   
+                   <!-- -------====== BTN INCREASE PAGE  ======------ -->
+                   <span class="input-group-btn" style="padding-right:0px">
+                     <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0" class="btn btn-info" type="button" (click)="increasePageNumber()" style="padding: 6px 8px">
+                       <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                     </button>
+                   </span>
+ 
+                 </div>
+               </div>
+               
+             </div>
+           </div>
+ 
+         </div> <!-- ./ card -->
+       </div> <!-- ./ col-md-12 -->
+     <div> <!-- ./ row -->
+   
+   </div> <!-- ./ container-fluid -->
+ </div> <!-- ./ main-content -->
+ 
+   

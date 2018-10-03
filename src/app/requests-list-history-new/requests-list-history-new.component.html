@@ -7,7 +7,9 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-  
+        
+        <!-- ------------============ TO TEST CONTACTS ============------------ -->
+        <!-- <a style="cursor:pointer" (click)="goToContacts()">Contacts</a> -->
 
         <div class="card">
             <!-- data-background-color="red" -->
@@ -63,13 +65,15 @@
                       <!-- // CLEAR SEARCH FULL-TEXT BTN -->
                       <span id="clear-fulltext-search"  *ngIf="fullText?.length > 0 && showAdvancedSearchOption === false" class="glyphicon glyphicon-remove tooltipx" aria-hidden="true" 
                         (click)="clearFullText()">
-                        <span style="font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !important;" class="tooltiptext">{{ 'HistoryPage.ClearSearch' | translate }}</span> 
+                        <span style="font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !important;" class="tooltiptext">
+                          {{ 'HistoryPage.ClearSearch' | translate }}
+                        </span> 
                       </span>
                     </div>
 
                     <!-- // SEARCH FULL-TEXT BTN -->
                     <span class="input-group-btn" style="padding-right:0px">
-                      <button #searchbtn class="btn btn-info" type="submit" (click)="search()">
+                      <button #searchbtn class="btn btn-info searchTopBtn" type="submit" (click)="search()">
                         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                       </button>
                     </span>

@@ -97,7 +97,8 @@ export class RequestsListHistoryNewComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
+    console.log('+ +++ ++ SEARCH BTN REF ', this.searchbtnRef)
+    console.log('+ +++ ++ SEARCH BTN BOTTOM REF ', this.searchbtnbottomRef)
     // selectedDeptId is assigned to empty so in the template will be selected the custom option ALL DEPARTMENTS
     this.selectedDeptId = '';
     // selectedAgentId is assigned to empty so in the template will be selected the custom option ALL AGENTS
@@ -271,9 +272,9 @@ export class RequestsListHistoryNewComponent implements OnInit {
   }
 
   clearSearch() {
-    // RESOLVE THE BUG: THE BUTTON CLEAR SERACH REMAIN FOCUSED AFTER PRESSED
+    // RESOLVE THE BUG: THE BUTTON CLEAR-SEARCH REMAIN FOCUSED AFTER PRESSED
     const clearSearchBtn = <HTMLElement>document.querySelector('.clearsearchbtn');
-    console.log('APP COMP - MAIN PANEL ', clearSearchBtn)
+    console.log('!!! NEW REQUESTS HISTORY - CLEAR SEARCH BTN', clearSearchBtn)
     clearSearchBtn.blur()
 
     this.fullText = '';
@@ -297,7 +298,16 @@ export class RequestsListHistoryNewComponent implements OnInit {
 
   search() {
     this.pageNo = 0
-    this.searchbtnRef.nativeElement.blur();
+
+
+    // RESOLVE THE BUG: THE BUTTON CLEAR-SEARCH REMAIN FOCUSED AFTER PRESSED (doesn't works - use the below code)
+    // this.searchbtnRef.nativeElement.blur();
+
+    // RESOLVE THE BUG: THE BUTTON CLEAR-SEARCH REMAIN FOCUSED AFTER PRESSED
+    const searchTopBtn = <HTMLElement>document.querySelector('.searchTopBtn');
+    console.log('!!! NEW REQUESTS HISTORY - TOP SEARCH BTN ', searchTopBtn)
+    searchTopBtn.blur()
+
     if (this.searchbtnbottomRef) {
       this.searchbtnbottomRef.nativeElement.blur();
     }
@@ -396,6 +406,13 @@ export class RequestsListHistoryNewComponent implements OnInit {
       + 'requester_email=' + this.emailValue
 
     console.log('!!! NEW REQUESTS HISTORY - QUERY STRING ', this.queryString);
+
+    // REOPEN THE ADVANCED OPTION DIV IF IT IS CLOSED BUT ONE OF SEARCH FIELDS IN IT CONTAINED ARE VALORIZED
+    if (this.showAdvancedSearchOption === false) {
+      if (this.selectedDeptId || this.startDate || this.endDate || this.selectedAgentId || this.requester_email) {
+        this.showAdvancedSearchOption = true;
+      }
+    }
 
     this.getRequests()
 
@@ -557,6 +574,10 @@ export class RequestsListHistoryNewComponent implements OnInit {
 
   goToRequestMsgs(request_recipient: string) {
     this.router.navigate(['project/' + this.projectId + '/request/' + request_recipient + '/messages']);
+  }
+
+  goToContacts() {
+    this.router.navigate(['project/' + this.projectId + '/contacts']);
   }
 
 }

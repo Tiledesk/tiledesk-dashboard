@@ -62,6 +62,9 @@
     "RequestsForDept": "Richieste per dipartimento",
     "NumberOfRequestsLast7Days": "Numero di richieste ultimi 7 giorni",
     "LastMonth": "Ultimo mese",
+    "Contacts":"Contatti",
+    "Contact":"Contatto",
+    "LastContacted":"Ultimo contatto",
     "UserProfile": {
         "Profile": "Profilo",
         "UploadImage": "Carica immagine",

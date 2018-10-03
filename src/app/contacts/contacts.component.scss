@@ -3,94 +3,79 @@
     vertical-align: middle
 }
 
-/* MODAL START */
-.modal {
-    top: 25%
+
+@media screen and (min-width: 768px) {
+    .advancedOptionForm {
+        width: 500px;
+        margin: 0 auto;
+    }
+
 }
 
-.modal-content {
-    position: relative;
-    background-color: #fff;
-    -webkit-background-clip: padding-box;
-    background-clip: padding-box;
-    border: 1px solid #999;
-    border: 1px solid rgba(0,0,0,.2);
-    border-radius: 6px;
-    outline: 0;
-    -webkit-box-shadow: 0 3px 9px rgba(0,0,0,.5);
-    box-shadow: 0 3px 9px rgba(0,0,0,.5);
+@media screen and (max-width: 767px) { 
+    .advancedOptionForm {
+       padding-right: 25px;
+       padding-left: 25px;
+    }
 }
 
-.modal-header {
-    padding: 15px;
-    border-bottom: 1px solid #e5e5e5;
-}
+// THE 'X' INSIDE THE 'fullText' INPUT
+.buttonInside{
+    position:relative;
+    // margin-bottom:10px;
+  }
 
-.modal-title {
-    margin: 0;
-    line-height: 1.42857143;
-}
-
-button.close {
-    -webkit-appearance: none;
-    padding: 0;
+// THE 'X' INSIDE THE 'fullText' INPUT
+#clear-fulltext-search{    
+    // .fulltext-remove-btn{
+    position:absolute;
+    right: 0px;
+    top: 8px;
+    padding:2px;
+    font-size: 0.9em;
+    color: #999999;;
+    z-index: 3;
     cursor: pointer;
-    background: 0 0;
-    border: 0;
-}
-.close {
-    float: right;
-    font-size: 21px;
-    font-weight: 700;
-    line-height: 1;
-    color: #000;
-    text-shadow: 0 1px 0 #fff;
-    filter: alpha(opacity=20);
-    opacity: .2;
 }
 
-.modal-body {
+#clear-fulltext-search:hover {   
+    color: #f44336;
+}
+
+.card form [class*="col-"] {
+    padding: 0px;
+}
+
+// start TOOLTIP
+/* Tooltip container */
+.tooltipx {
     position: relative;
-    padding: 15px;
-}
-
-.modal-footer {
-    padding: 15px;
-    text-align: right;
-    border-top: 1px solid #e5e5e5;
-}
-.btn-default {
-    color: #333;
-    background-color: #fff;
-    border-color: #ccc;
-}
-
-.btn {
     display: inline-block;
-    padding: 6px 12px;
-    margin-bottom: 0;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.42857143;
+    // border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  }
+  
+  /* Tooltip text */
+  .tooltipx .tooltiptext {
+    visibility: hidden;
+    // width: 120px;
+    background-color: black;
+    color: #fff;
     text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    -ms-touch-action: manipulation;
-    touch-action: manipulation;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    background-image: none;
-    border: 1px solid transparent;
-    border-radius: 4px;
-}
-
-.btn-default {
-    color: #333;
-    background-color: #fff;
-    border-color: #ccc;
-}
-
-/* MODAL END */
+    padding: 5px 5px;
+    border-radius: 5px;
+    font-size: 12px !important;
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 1;
+    /* Position the tooltip text - TOP */
+    // width: 420px;
+    bottom: 100%;
+    left: 50%; 
+    margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+  }
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .tooltipx:hover .tooltiptext {
+    visibility: visible;
+  }
+  // /.end TOOLTIP 

@@ -143,11 +143,14 @@
     top: 8px;
     padding:2px;
     font-size: 0.9em;
-    color: #000;
+    color: #999999;
     z-index: 3;
     cursor: pointer;
 }
 
+#clear-fulltext-search:hover {   
+    color: #f44336;
+}
 // .glyphicon-remove:hover {
 //     cursor: pointer;
 // }
