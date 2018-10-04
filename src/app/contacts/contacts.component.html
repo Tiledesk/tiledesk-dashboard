@@ -73,7 +73,7 @@
  
                      <!-- // SEARCH FULL-TEXT BTN -->
                      <span class="input-group-btn" style="padding-right:0px">
-                       <button #searchbtn class="btn btn-info" type="submit" (click)="search()">
+                       <button class="btn btn-info searchbtn" type="submit" (click)="search()">
                          <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                        </button>
                      </span>
@@ -142,13 +142,7 @@
   
                    <!-- ===== CONTACT NAME ===== -->
                    <td>
-                      <span [ngStyle]="{'background-color': contact?.avatar_fill_colour }" 
-                      style=" margin: 0 8px 0 0;
-                      border-radius: 50%;
-                      font-size: 13px;
-                      font-weight: 500;
-                      text-align: center;
-                      padding: 10px 11px;">
+                      <span class="avatar" [ngStyle]="{'background-color': contact?.avatar_fill_colour }">
                       <span style="padding-left: 2px; color: #ffffff"> {{ contact?.name_initial }} </span></span>
                       <!-- style="font-size:0.9em"  -->
                       <span style="font-size:0.9em">
@@ -156,18 +150,18 @@
                        </span>
                    </td>
  
-                   <!-- ===== CONTACT EMAIL ===== -->
+                   <!-- ========== CONTACT EMAIL ========== -->
                    <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
                       <!-- style="font-size:0.9em" -->
-                     <p style="font-size:0.9em">
+                     <p style="font-size:0.9em; margin-bottom: 5px; margin-top: 5px">
                        {{ contact?.email }}
                      </p>
                    </td>
  
-                      <!-- ===== CREATED ===== -->
+                  <!-- ========== CREATED AT ========== -->
                    <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
                       <!-- style="font-size:0.9em"  -->
-                    <p style="font-size:0.9em">
+                    <p style="font-size:0.9em; margin-bottom: 5px; margin-top: 5px">
                        <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
                        <!-- {{ request?.request_date_fromnow }} -->
                        <!-- {{ request?.created_on | date: 'd/M/y HH:mm:ss' }} -->

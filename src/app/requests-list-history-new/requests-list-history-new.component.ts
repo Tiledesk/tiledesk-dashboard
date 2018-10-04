@@ -297,8 +297,7 @@ export class RequestsListHistoryNewComponent implements OnInit {
   search() {
     this.pageNo = 0
 
-
-    // RESOLVE THE BUG: THE BUTTON CLEAR-SEARCH REMAIN FOCUSED AFTER PRESSED (doesn't works - use the below code)
+    // RESOLVE THE BUG: THE BUTTON CLEAR-SEARCH REMAIN FOCUSED AFTER PRESSED (doesn't works - so is used the below code)
     // this.searchbtnRef.nativeElement.blur();
 
     // RESOLVE THE BUG: THE BUTTON CLEAR-SEARCH REMAIN FOCUSED AFTER PRESSED

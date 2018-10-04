@@ -14,11 +14,17 @@ import { Contact } from '../models/contact-model';
 })
 export class ContactsComponent implements OnInit {
 
+  public colours = [
+    '#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e', '#16a085',
+    '#27ae60', '#2980b9', '#8e44ad', '#2c3e50', '#f1c40f', '#e67e22',
+    '#e74c3c', '#95a5a6', '#f39c12', '#d35400', '#c0392b', '#bdc3c7', '#7f8c8d'
+  ];
+
   fullText: string;
   pageNo = 0;
   totalPagesNo_roundToUp: number;
   displaysFooterPagination: boolean;
-  showSpinner = false;
+  showSpinner = true;
   fullTextValue: string;
   queryString: string;
 
@@ -50,8 +56,6 @@ export class ContactsComponent implements OnInit {
     this.getContacts();
   }
 
-
-
   decreasePageNumber() {
     this.pageNo -= 1;
 
@@ -66,6 +70,12 @@ export class ContactsComponent implements OnInit {
   }
 
   search() {
+
+    // RESOLVE THE BUG: THE BUTTON SEARCH REMAIN FOCUSED AFTER PRESSED
+    const searchBtn = <HTMLElement>document.querySelector('.searchbtn');
+    console.log('!!! CONTACTS - SEARCH BTN ', searchBtn)
+    searchBtn.blur();
+
     this.pageNo = 0
     if (this.fullText) {
 
@@ -76,20 +86,35 @@ export class ContactsComponent implements OnInit {
       this.fullTextValue = ''
     }
 
-    this.queryString = 'full_text=' + this.fullTextValue
+    this.queryString = 'full_text=' + this.fullTextValue;
+    console.log('!!!! CONTACTS - SEARCH - QUERY STRING ', this.queryString);
+
+    this.getContacts();
+  }
+
+  clearFullText() {
+    this.pageNo = 0
+    this.fullText = '';
+
+    this.queryString = '';
+    console.log('!!!! CONTACTS - CLEAR SEARCH - QUERY STRING ', this.queryString);
+
+
+    this.getContacts();
   }
 
   /**
-   * GET CONTACTS
-   */
+   * GET CONTACTS  */
   getContacts() {
-    this.contactsService.getLeads().subscribe((leads_object: any) => {
+    this.contactsService.getLeads(this.queryString, this.pageNo).subscribe((leads_object: any) => {
       console.log('!!!! CONTACTS - GET LEADS RESPONSE ', leads_object);
 
       this.contacts = leads_object['leads'];
       console.log('!!!! CONTACTS - CONTACTS LIST ', this.contacts);
 
-      const contactsCount = leads_object['count'];
+      // to test pagination
+      const contactsCount = 25;
+      // const contactsCount = leads_object['count'];
       console.log('!!!! CONTACTS - CONTACTS COUNT ', contactsCount);
 
       const contactsPerPage = leads_object['perPage'];
@@ -101,33 +126,45 @@ export class ContactsComponent implements OnInit {
       this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
       console.log('!!!!! CONTACTS - TOTAL PAGES No ROUND TO UP ', this.totalPagesNo_roundToUp);
 
-      const colours = ['#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e', '#16a085', '#27ae60', '#2980b9', '#8e44ad', '#2c3e50', '#f1c40f', '#e67e22', '#e74c3c', '#95a5a6', '#f39c12', '#d35400', '#c0392b', '#bdc3c7', '#7f8c8d'];
 
-      this.contacts.forEach(contact => {
-        const id_contact = contact._id
-        const name = contact.fullname;
-        console.log('!!!!! CONTACTS - NAME OF THE CONTACT ', name);
-        const initial = name.charAt(0).toUpperCase();
-        console.log('!!!!! CONTACTS - INITIAL OF NAME OF THE CONTACT ', initial);
+      this.generateAvatarFromName(this.contacts);
 
-        const charIndex = initial.charCodeAt(0) - 65
-        const colourIndex = charIndex % 19;
-        console.log('!!!!! CONTACTS - COLOUR INDEX ', colourIndex);
 
-        const fillColour = colours[colourIndex];
-        console.log('!!!!! CONTACTS - FILL COLOUR ', fillColour);
+    }, (error) => {
 
-        for (const c of this.contacts) {
-          if (c._id === id_contact ) {
-            c.avatar_fill_colour = fillColour;
-            c.name_initial = initial
-          }
-        }
+      console.log('!!!! CONTACTS - GET LEADS - ERROR  ', error);
+      this.showSpinner = false;
+    }, () => {
+      console.log('!!!! CONTACTS - GET LEADS * COMPLETE *');
 
-      });
-
+      this.showSpinner = false;
     });
 
+  }
+
+  generateAvatarFromName(contacts_list) {
+    contacts_list.forEach(contact => {
+      const id_contact = contact._id
+      const name = contact.fullname;
+      // console.log('!!!!! CONTACTS - NAME OF THE CONTACT ', name);
+      const initial = name.charAt(0).toUpperCase();
+      // console.log('!!!!! CONTACTS - INITIAL OF NAME OF THE CONTACT ', initial);
+
+      const charIndex = initial.charCodeAt(0) - 65
+      const colourIndex = charIndex % 19;
+      // console.log('!!!!! CONTACTS - COLOUR INDEX ', colourIndex);
+
+      const fillColour = this.colours[colourIndex];
+      // console.log('!!!!! CONTACTS - FILL COLOUR ', fillColour);
+
+      for (const c of contacts_list) {
+        if (c._id === id_contact) {
+          c.avatar_fill_colour = fillColour;
+          c.name_initial = initial
+        }
+      }
+
+    });
   }
 
   /**
@@ -174,8 +211,7 @@ export class ContactsComponent implements OnInit {
   }
 
   /**
-   * DELETE CONTACT (WHEN THE 'CONFIRM' BUTTON IN MODAL IS CLICKED)
-   */
+   * DELETE CONTACT (WHEN THE 'CONFIRM' BUTTON IN MODAL IS CLICKED)  */
   onCloseDeleteModalHandled() {
     this.display = 'none';
 

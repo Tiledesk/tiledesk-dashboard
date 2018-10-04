@@ -738,7 +738,7 @@ export class RequestsService {
   public getNodeJsRequests(querystring, pagenumber) {
 
     let _querystring = '&' + querystring
-    if (querystring === undefined) {
+    if (querystring === undefined || !querystring) {
       _querystring = ''
     }
 
