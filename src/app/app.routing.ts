@@ -70,6 +70,7 @@ import { GroupEditAddComponent } from './group-edit-add/group-edit-add.component
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { HoursComponent } from './hours/hours.component';
 import { ResetPswComponent } from './reset-psw/reset-psw.component';
+import { ContactDetailsComponent } from './contact-details/contact-details.component';
 
 
 // import { DashboardComponent} from './dashboard/dashboard.component';
@@ -204,6 +205,7 @@ const routes: Routes = [
   { path: 'resetpassword/:resetpswrequestid', component: ResetPswComponent },
 
   { path: 'project/:projectid/contacts', component: ContactsComponent },
+  { path: 'project/:projectid/contact/:requesterid', component: ContactDetailsComponent },
 
   { path: 'dashboard', component: DashboardComponent },
 

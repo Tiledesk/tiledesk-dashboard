@@ -5,7 +5,8 @@ import { Component, OnInit } from '@angular/core';
 import { ContactsService } from '../services/contacts.service';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Contact } from '../models/contact-model';
-
+import { Router } from '@angular/router';
+import { AuthService } from '../core/auth.service';
 
 @Component({
   selector: 'appdashboard-contacts',
@@ -27,6 +28,7 @@ export class ContactsComponent implements OnInit {
   showSpinner = true;
   fullTextValue: string;
   queryString: string;
+  projectId: string;
 
   contacts: Contact[];
 
@@ -50,10 +52,23 @@ export class ContactsComponent implements OnInit {
   constructor(
     private http: Http,
     private contactsService: ContactsService,
+    private router: Router,
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
     this.getContacts();
+    this.getCurrentProject();
+  }
+
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+
+      if (project) {
+        this.projectId = project._id
+        // console.log('00 -> !!!! CONTACTS project ID from AUTH service subscription  ', this.projectId)
+      }
+    });
   }
 
   decreasePageNumber() {
@@ -112,9 +127,9 @@ export class ContactsComponent implements OnInit {
       this.contacts = leads_object['leads'];
       console.log('!!!! CONTACTS - CONTACTS LIST ', this.contacts);
 
-      // to test pagination
-      const contactsCount = 25;
-      // const contactsCount = leads_object['count'];
+      /* to test pagination */
+      // const contactsCount = 0;
+      const contactsCount = leads_object['count'];
       console.log('!!!! CONTACTS - CONTACTS COUNT ', contactsCount);
 
       const contactsPerPage = leads_object['perPage'];
@@ -167,9 +182,14 @@ export class ContactsComponent implements OnInit {
     });
   }
 
+  goToContactDetails(requester_id) {
+    this.router.navigate(['project/' + this.projectId + '/contact', requester_id]);
+  }
+
+
+  // -----------------=============== NOTE: THE CODE BELOW IS NOT USED ===============-----------------
   /**
-   * ADD CONTACT
-   */
+   * ADD CONTACT  */
   createContact() {
     console.log('MONGO DB FULL-NAME DIGIT BY USER ', this.fullName);
     this.contactsService.addMongoDbContacts(this.fullName).subscribe((contact) => {

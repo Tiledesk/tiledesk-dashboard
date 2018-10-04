@@ -90,128 +90,142 @@
            <loading-spinner *ngIf="showSpinner"></loading-spinner>
            <div  *ngIf="!showSpinner" class="card-content table-responsive">
   
-             <table class="table table-hover">
-               <thead class="text">
-                 <tr>
+            <table class="table table-hover">
+              <thead class="text">
+                <tr>
  
-                   <!-- ===== CONTACT NAME ===== -->
-                   <th>
+                  <!-- ===== CONTACT NAME ===== -->
+                  <th>
                      
-                     <span style="color: #566787">
-                       <strong>
-                         <strong>{{ 'Contact' | translate }}</strong>
-                       </strong>
-                     </span>  
-                   </th>
+                    <span style="color: #566787">
+                      <strong>
+                        <strong>{{ 'Contact' | translate }}</strong>
+                      </strong>
+                    </span>  
+                  </th>
  
-                   <!-- ===== CONTACT EMAIL ===== -->
-                   <th>
-                     <span style="color: #566787">
-                       <strong> Email </strong>
-                     </span>
-                   </th>
+                  <!-- ===== CONTACT EMAIL ===== -->
+                  <th>
+                    <span style="color: #566787">
+                      <strong> Email </strong>
+                    </span>
+                  </th>
  
    
-                   <!-- ===== CREATED ===== -->
-                   <th>
-                     <span style="color: #566787">
-                       <strong> 
-                       {{ 'Created' | translate }}
-                       </strong>
-                     </span>
-                   </th>
+                  <!-- ===== CREATED ===== -->
+                  <th>
+                    <span style="color: #566787">
+                      <strong> 
+                        {{ 'Created' | translate }}
+                      </strong>
+                    </span>
+                  </th>
+
+                  <th></th>
      
-                 </tr>
-               </thead>
+                </tr>
+              </thead>
+              <tbody>
  
-               <tbody>
+                <!-- ===== IF THERE ISN'T HISTORY REQUEST ===== -->
+                <tr *ngIf="contacts && contacts?.length === 0"> 
+                  <td colspan="3" style="text-align: center; padding-top: 16px; cursor: pointer">
  
-                 <!-- ===== IF THERE ISN'T HISTORY REQUEST ===== -->
-                 <tr *ngIf="contacts && contacts?.length === 0"> 
-                   <td colspan="3" style="text-align: center; padding-top: 16px; cursor: pointer">
- 
-                     <p style="font-size:1em; color:#999999; font-weight: 400">
-                       {{ 'NoContact' | translate }}
-                     </p>
-                   </td>
-                 </tr> 
-  
+                    <p style="font-size:1em; color:#999999; font-weight: 400">
+                      {{ 'NoContact' | translate }}
+                    </p>
+                  </td>
+                </tr> 
                  
-                  <tr *ngFor="let contact of contacts">
+                <tr *ngFor="let contact of contacts">
+   
+                  <!-- ===== CONTACT NAME ===== -->
+                  <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
+                    <span class="avatar" [ngStyle]="{'background-color': contact?.avatar_fill_colour }">
+                    <span style="padding-left: 2px; color: #ffffff"> {{ contact?.name_initial }} </span></span>
                     
-  
-                   <!-- ===== CONTACT NAME ===== -->
-                   <td>
-                      <span class="avatar" [ngStyle]="{'background-color': contact?.avatar_fill_colour }">
-                      <span style="padding-left: 2px; color: #ffffff"> {{ contact?.name_initial }} </span></span>
-                      <!-- style="font-size:0.9em"  -->
-                      <span style="font-size:0.9em">
-                         {{ contact?.fullname }}
-                       </span>
-                   </td>
+                    <span style="font-size:0.9em">
+                        {{ contact?.fullname }}
+                      </span>
+                  </td>
  
-                   <!-- ========== CONTACT EMAIL ========== -->
-                   <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
-                      <!-- style="font-size:0.9em" -->
-                     <p style="font-size:0.9em; margin-bottom: 5px; margin-top: 5px">
-                       {{ contact?.email }}
-                     </p>
-                   </td>
+                  <!-- ========== CONTACT EMAIL ========== -->
+                  <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
+                    
+                    <p style="font-size:0.9em; margin-bottom: 5px; margin-top: 5px">
+                      {{ contact?.email }}
+                    </p>
+                  </td>
  
                   <!-- ========== CREATED AT ========== -->
-                   <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
-                      <!-- style="font-size:0.9em"  -->
-                    <p style="font-size:0.9em; margin-bottom: 5px; margin-top: 5px">
-                       <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
-                       <!-- {{ request?.request_date_fromnow }} -->
-                       <!-- {{ request?.created_on | date: 'd/M/y HH:mm:ss' }} -->
-                       {{ contact?.createdAt | amTimeAgo }} ({{ contact?.createdAt | date: 'd/M/y HH:mm' }}) 
-                     </p>
-                   </td>
+                  <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
+                    
+                  <p style="font-size:0.9em; margin-bottom: 5px; margin-top: 5px">
+                      <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
+                      <!-- {{ request?.request_date_fromnow }} -->
+                      <!-- {{ request?.created_on | date: 'd/M/y HH:mm:ss' }} -->
+                      {{ contact?.createdAt | amTimeAgo }} ({{ contact?.createdAt | date: 'd/M/y HH:mm' }}) 
+                    </p>
+                  </td>
+
+                  <!-- ========== ICON VIEW CONTACT DETAILS ========== -->
+                  <!-- class="tooltipx" -->
+                  <td (click)='goToContactDetails(contact?._id)' style="text-align:left; padding-top: 15px" >
+
+                    <span style="cursor:pointer" class="tooltipx">
+
+                        <i style="font-size: 17px !important; color: #00bcd4" class="material-icons">visibility</i>
+                        <span class="tooltiptext">
+                            {{ 'ViewDetails' | translate }} 
+                            <!-- {{ contact?.email }} -->
+                        </span> 
+                    </span>
+                      
+                  </td>
  
-                 </tr>
-               </tbody>
-             </table>
-           </div> <!-- ./ card-content table-responsive -->
+                </tr>
+              </tbody>
+            </table>
+          </div> <!-- ./ card-content table-responsive -->
  
-           <div *ngIf="displaysFooterPagination === true" class="card-footer" style="text-align:right">
-             <div class="stats">
+          <div *ngIf="displaysFooterPagination === true" class="card-footer" style="text-align:right">
+            <div class="stats">
+
+              <div style="width: 120px; margin: 0 auto; margin-top: 10px " >
+                <div class="input-group">
+
+                  <!-- -------====== BTN DECREASE PAGE  ======------ -->
+                  <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
+                    <button [disabled]="pageNo + 1 === 1" class="btn btn-info" type="button" (click)="decreasePageNumber()" style="padding: 6px 8px">
+                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    </button>
+                  </span>
+
+                  <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
+                  <span class="input-group-btn" style="padding-right:0px;">
+                    <button #searchbtn class="btn btn-info" type="button" style="padding: 6px 8px">
+                      {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
+                    </button>
+                  </span>
+                  
+                  <!-- -------====== BTN INCREASE PAGE  ======------ -->
+                  <span class="input-group-btn" style="padding-right:0px">
+                    <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0" class="btn btn-info" type="button" (click)="increasePageNumber()" style="padding: 6px 8px">
+                      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    </button>
+                  </span>
+
+                </div>
+              </div>
+              
+            </div>
+          </div>
  
-               <div style="width: 120px; margin: 0 auto; margin-top: 10px " >
-                 <div class="input-group">
- 
-                   <!-- -------====== BTN DECREASE PAGE  ======------ -->
-                   <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
-                     <button [disabled]="pageNo + 1 === 1" class="btn btn-info" type="button" (click)="decreasePageNumber()" style="padding: 6px 8px">
-                       <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                     </button>
-                   </span>
- 
-                   <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
-                   <span class="input-group-btn" style="padding-right:0px;">
-                     <button #searchbtn class="btn btn-info" type="button" style="padding: 6px 8px">
-                       {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
-                     </button>
-                   </span>
-                   
-                   <!-- -------====== BTN INCREASE PAGE  ======------ -->
-                   <span class="input-group-btn" style="padding-right:0px">
-                     <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0" class="btn btn-info" type="button" (click)="increasePageNumber()" style="padding: 6px 8px">
-                       <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                     </button>
-                   </span>
- 
-                 </div>
-               </div>
-               
-             </div>
-           </div>
- 
-         </div> <!-- ./ card -->
-       </div> <!-- ./ col-md-12 -->
-     <div> <!-- ./ row -->
+        </div> <!-- ./ card -->
+      </div> <!-- ./ col-md-12 -->
+    <div> <!-- ./ row -->
    
-   </div> <!-- ./ container-fluid -->
- </div> <!-- ./ main-content -->
+  </div> <!-- ./ container-fluid -->
+</div> <!-- ./ main-content -->
  
    

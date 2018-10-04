@@ -111,6 +111,7 @@ import { WidgetDesignComponent } from './widget-design/widget-design.component';
 import { UploadImageService } from './services/upload-image.service';
 import { RequestsListHistoryNewComponent } from './requests-list-history-new/requests-list-history-new.component';
 import { MyDatePickerModule } from 'mydatepicker';
+import { ContactDetailsComponent } from './contact-details/contact-details.component';
 
 
 
@@ -171,6 +172,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ResetPswComponent,
     WidgetDesignComponent,
     RequestsListHistoryNewComponent,
+    ContactDetailsComponent,
   ],
   imports: [
     BrowserModule,
