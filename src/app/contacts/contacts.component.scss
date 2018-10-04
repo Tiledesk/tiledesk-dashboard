@@ -55,10 +55,10 @@
   }
   
   /* Tooltip text */
-  .tooltipx .tooltiptext {
+  .tooltipx .tooltiptext-custom {
     visibility: hidden;
     // width: 120px;
-    background-color: black;
+    
     color: #fff;
     text-align: center;
     padding: 5px 5px;
@@ -72,11 +72,22 @@
     bottom: 100%;
     left: 50%; 
     margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+    
+    max-width: 10em; // only for contacts component
+    overflow-wrap: break-word; // only for contacts component
+    // NEW
+    box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
+    z-index: 1000;
+    background-color: #394f5a;
+    
+
   }
   
   /* Show the tooltip text when you mouse over the tooltip container */
-  .tooltipx:hover .tooltiptext {
+  .tooltipx:hover .tooltiptext-custom {
     visibility: visible;
+    
+    
   }
   // /.end TOOLTIP 
 
@@ -90,7 +101,7 @@
  ::-ms-input-placeholder { /* Microsoft Edge */
      font-size: 0.9em !important;
  }
- 
+
 .avatar {
     margin: 0 8px 0 0;
     border-radius: 50%;

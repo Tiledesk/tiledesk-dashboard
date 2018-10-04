@@ -65,7 +65,7 @@
                        <!-- // CLEAR SEARCH FULL-TEXT BTN -->
                        <span id="clear-fulltext-search"  *ngIf="fullText?.length > 0" class="glyphicon glyphicon-remove tooltipx" aria-hidden="true" 
                          (click)="clearFullText()">
-                         <span style="font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !important;" class="tooltiptext">
+                         <span style="font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !important;" class="tooltiptext-custom">
                           {{ 'ClearSearch' | translate }}
                         </span> 
                        </span>
@@ -121,7 +121,14 @@
                     </span>
                   </th>
 
-                  <th></th>
+                  <!-- ========== ICON VIEW CONTACT DETAILS ========== -->
+                  <th>
+                    <span style="color: #566787">
+                      <strong> 
+                        Actions
+                      </strong>
+                    </span>
+                  </th>
      
                 </tr>
               </thead>
@@ -160,27 +167,22 @@
                   <!-- ========== CREATED AT ========== -->
                   <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
                     
-                  <p style="font-size:0.9em; margin-bottom: 5px; margin-top: 5px">
-                      <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
-                      <!-- {{ request?.request_date_fromnow }} -->
-                      <!-- {{ request?.created_on | date: 'd/M/y HH:mm:ss' }} -->
-                      {{ contact?.createdAt | amTimeAgo }} ({{ contact?.createdAt | date: 'd/M/y HH:mm' }}) 
+                    <p style="font-size:0.9em; margin-bottom: 5px; margin-top: 5px">
+    
+                      {{ contact?.createdAt | amTimeAgo }}
+                       <!-- ({{ contact?.createdAt | date: 'd/M/y HH:mm' }})  -->
+
                     </p>
                   </td>
 
                   <!-- ========== ICON VIEW CONTACT DETAILS ========== -->
-                  <!-- class="tooltipx" -->
                   <td (click)='goToContactDetails(contact?._id)' style="text-align:left; padding-top: 15px" >
-
                     <span style="cursor:pointer" class="tooltipx">
-
                         <i style="font-size: 17px !important; color: #00bcd4" class="material-icons">visibility</i>
-                        <span class="tooltiptext">
-                            {{ 'ViewDetails' | translate }} 
-                            <!-- {{ contact?.email }} -->
+                        <span class="tooltiptext-custom">
+                          {{ 'ViewDetails' | translate }} {{ contact?.email }}
                         </span> 
                     </span>
-                      
                   </td>
  
                 </tr>

@@ -8,6 +8,7 @@ import { Contact } from '../models/contact-model';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 
+
 @Component({
   selector: 'appdashboard-contacts',
   templateUrl: './contacts.component.html',
@@ -132,6 +133,8 @@ export class ContactsComponent implements OnInit {
       const contactsCount = leads_object['count'];
       console.log('!!!! CONTACTS - CONTACTS COUNT ', contactsCount);
 
+      this.displayHideFooterPagination(contactsCount);
+
       const contactsPerPage = leads_object['perPage'];
       console.log('!!!! CONTACTS - N° OF CONTACTS X PAGE ', contactsCount);
 
@@ -157,6 +160,19 @@ export class ContactsComponent implements OnInit {
 
   }
 
+  displayHideFooterPagination(contacts_count) {
+    // DISPLAY / HIDE PAGINATION IN THE FOOTER
+    if (contacts_count >= 16) {
+      this.displaysFooterPagination = true;
+      // tslint:disable-next-line:max-line-length
+      console.log('!!!! CONTACTS  ', contacts_count, 'DISPLAY FOOTER PAG ', this.displaysFooterPagination);
+    } else {
+      this.displaysFooterPagination = false;
+      // tslint:disable-next-line:max-line-length
+      console.log('!!!! CONTACTS  ', contacts_count, 'DISPLAY FOOTER PAG ', this.displaysFooterPagination);
+    }
+  }
+
   generateAvatarFromName(contacts_list) {
     contacts_list.forEach(contact => {
       const id_contact = contact._id
@@ -170,7 +186,7 @@ export class ContactsComponent implements OnInit {
       // console.log('!!!!! CONTACTS - COLOUR INDEX ', colourIndex);
 
       const fillColour = this.colours[colourIndex];
-      // console.log('!!!!! CONTACTS - FILL COLOUR ', fillColour);
+      console.log('!!!!! CONTACTS - NAME INITIAL ', initial, ' COLOUR INDEX ', colourIndex, 'FILL COLOUR ', fillColour);
 
       for (const c of contacts_list) {
         if (c._id === id_contact) {
@@ -186,6 +202,7 @@ export class ContactsComponent implements OnInit {
     this.router.navigate(['project/' + this.projectId + '/contact', requester_id]);
   }
 
+ 
 
   // -----------------=============== NOTE: THE CODE BELOW IS NOT USED ===============-----------------
   /**

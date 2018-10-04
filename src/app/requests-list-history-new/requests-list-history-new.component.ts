@@ -48,8 +48,6 @@ export class RequestsListHistoryNewComponent implements OnInit {
   @ViewChild('searchbtn') private searchbtnRef: ElementRef;
   @ViewChild('searchbtnbottom') private searchbtnbottomRef?: ElementRef;
 
-
-
   requestList: Request[];
   projectId: string;
   showSpinner = true;
@@ -432,7 +430,7 @@ export class RequestsListHistoryNewComponent implements OnInit {
   }
 
   getRequests() {
-    this.requestsService.getNodeJsRequests(this.queryString, this.pageNo).subscribe((requests: any) => {
+    this.requestsService.getNodeJsHistoryRequests(this.queryString, this.pageNo).subscribe((requests: any) => {
       console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS ', requests['requests']);
       console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT ', requests['count']);
       if (requests) {

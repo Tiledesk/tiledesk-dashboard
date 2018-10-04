@@ -69,6 +69,11 @@
     "SearchYourContacts":"Cerca i tuoi contatti",
     "ClearSearch": "Cancella ricerca",
     "ViewDetails":"Vedi dettagli",
+    "ContactDetails": "Dettagli contatto",
+    "Department":  "Dipartimento",
+    "Message":   "Messaggio",
+    "ServedBy":"Servita da",
+    "Rating": "Valutazione",
     "UserProfile": {
         "Profile": "Profilo",
         "UploadImage": "Carica immagine",
