@@ -571,8 +571,5 @@ export class RequestsListHistoryNewComponent implements OnInit {
     this.router.navigate(['project/' + this.projectId + '/request/' + request_recipient + '/messages']);
   }
 
-  goToContacts() {
-    this.router.navigate(['project/' + this.projectId + '/contacts']);
-  }
 
 }

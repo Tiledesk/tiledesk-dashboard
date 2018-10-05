@@ -136,7 +136,7 @@
  
                 <!-- ===== IF THERE ISN'T HISTORY REQUEST ===== -->
                 <tr *ngIf="contacts && contacts?.length === 0"> 
-                  <td colspan="3" style="text-align: center; padding-top: 16px; cursor: pointer">
+                  <td colspan="4" style="text-align: center; padding-top: 16px; cursor: pointer">
  
                     <p style="font-size:1em; color:#999999; font-weight: 400">
                       {{ 'NoContact' | translate }}
@@ -149,7 +149,7 @@
                   <!-- ===== CONTACT NAME ===== -->
                   <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
                     <span class="avatar" [ngStyle]="{'background-color': contact?.avatar_fill_colour }">
-                    <span style="padding-left: 2px; color: #ffffff"> {{ contact?.name_initial }} </span></span>
+                    <span style="color: #ffffff"> {{ contact?.name_initial }} </span></span>
                     
                     <span style="font-size:0.9em">
                         {{ contact?.fullname }}

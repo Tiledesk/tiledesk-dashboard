@@ -20,6 +20,11 @@ export class ContactDetailsComponent implements OnInit {
   requests_list: any;
   contact_details: any;
   projectId: string
+  displaysFooterPagination: boolean;
+  pageNo = 0;
+  totalPagesNo_roundToUp: number;
+  showSpinner = true;
+  currentUserID: string;
 
   constructor(
     public location: Location,
@@ -35,6 +40,7 @@ export class ContactDetailsComponent implements OnInit {
   ngOnInit() {
     this.getRequesterIdParam();
     this.getCurrentProject();
+    this.getCurrentUser();
   }
 
   getCurrentProject() {
@@ -49,6 +55,20 @@ export class ContactDetailsComponent implements OnInit {
     });
   }
 
+  getCurrentUser() {
+    const user = this.auth.user_bs.value
+    // this.user = firebase.auth().currentUser;
+    console.log('!!!!! CONTACTS DETAILS - LOGGED USER ', user);
+    if (user) {
+      // this.currentUserFireBaseUID = this.user.uid
+      this.currentUserID = user._id
+      console.log('!!!!! CONTACTS DETAILS- USER UID ', this.currentUserID);
+      // this.getToken();
+    } else {
+      // console.log('No user is signed in');
+    }
+  }
+
   getRequesterIdParam() {
     this.requester_id = this.route.snapshot.params['requesterid'];
     console.log('!!!!! CONTACTS DETAILS - REQUESTER ID ', this.requester_id);
@@ -60,23 +80,69 @@ export class ContactDetailsComponent implements OnInit {
     }
   }
 
+  decreasePageNumber() {
+    this.pageNo -= 1;
 
+    console.log('!!!!! CONTACTS DETAILS - DECREASE PAGE NUMBER ', this.pageNo);
+    this.getRequests()
+  }
+
+  increasePageNumber() {
+    this.pageNo += 1;
+    console.log('!!!!! CONTACTS DETAILS  - INCREASE PAGE NUMBER ', this.pageNo);
+    this.getRequests()
+  }
 
 
   getRequests() {
-    this.requestsService.getNodeJsRequestsByRequesterId(this.requester_id)
+    this.requestsService.getNodeJsRequestsByRequesterId(this.requester_id, this.pageNo)
       .subscribe((requests_object: any) => {
 
         if (requests_object) {
           console.log('!!!!! CONTACTS DETAILS - REQUESTS OBJECTS ', requests_object);
           this.requests_list = requests_object['requests'];
           console.log('!!!!! CONTACTS DETAILS - REQUESTS GOT BY REQUESTER ID ', this.requests_list);
+
+          this.requests_list = requests_object['requests'];
+
+
+          // to test pagination
+          // const requestsCount = 83;
+          const requestsCount = requests_object['count'];
+          console.log('!!!!! CONTACTS DETAILS - REQUESTS COUNT ', requestsCount);
+
+          this.displayHideFooterPagination(requestsCount);
+
+          const requestsPerPage = requests_object['perPage'];
+          console.log('!!!!! CONTACTS DETAILS - N° OF REQUESTS X PAGE ', requestsPerPage);
+
+          const totalPagesNo = requestsCount / requestsPerPage;
+          console.log('!!!!! CONTACTS DETAILS - TOTAL PAGES NUMBER', totalPagesNo);
+
+          this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
+          console.log('!!!!! CONTACTS DETAILS  - TOTAL PAGES NUMBER ROUND TO UP ', this.totalPagesNo_roundToUp);
+
         }
       }, (error) => {
+        this.showSpinner = false;
         console.log('!!!!! CONTACTS DETAILS - GET REQUEST BY REQUESTER ID - ERROR ', error);
       }, () => {
+        this.showSpinner = false;
         console.log('!!!!! CONTACTS DETAILS - GET REQUEST BY REQUESTER ID * COMPLETE *');
       });
+  }
+
+  displayHideFooterPagination(requests_count) {
+    // DISPLAY / HIDE PAGINATION IN THE FOOTER
+    if (requests_count >= 16) {
+      this.displaysFooterPagination = true;
+      // tslint:disable-next-line:max-line-length
+      console.log('!!!!! CONTACTS DETAILS ', requests_count, 'DISPLAY FOOTER PAG ', this.displaysFooterPagination);
+    } else {
+      this.displaysFooterPagination = false;
+      // tslint:disable-next-line:max-line-length
+      console.log('!!!!! CONTACTS DETAILS ', requests_count, 'DISPLAY FOOTER PAG ', this.displaysFooterPagination);
+    }
   }
 
   getContactById() {
@@ -135,14 +201,25 @@ export class ContactDetailsComponent implements OnInit {
 
   getRequestText(text: string): string {
     if (text) {
-      return text.length >= 30 ?
-        text.slice(0, 30) + '...' :
+      return text.length >= 45 ?
+        text.slice(0, 45) + '...' :
         text;
     }
   }
 
   goToRequestMsgs(request_recipient: string) {
     this.router.navigate(['project/' + this.projectId + '/request/' + request_recipient + '/messages']);
+  }
+
+  goToMemberProfile(member_id: any) {
+    console.log('!!!!! CONTACTS DETAILS has clicked GO To MEMBER ', member_id);
+    if (member_id.indexOf('bot_') !== -1) {
+      console.log('!!!!! CONTACTS DETAILS IS A BOT !');
+
+      this.router.navigate(['project/' + this.projectId + '/botprofile/' + member_id]);
+    } else {
+      this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
+    }
   }
 
 

@@ -74,6 +74,8 @@
     "Message":   "Messaggio",
     "ServedBy":"Servita da",
     "Rating": "Valutazione",
+    "SentThe": "inviato il",
+    "ToTheDepartment":"al dipartimento",
     "UserProfile": {
         "Profile": "Profilo",
         "UploadImage": "Carica immagine",

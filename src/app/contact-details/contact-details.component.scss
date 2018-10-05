@@ -2,9 +2,12 @@
     vertical-align: middle
 }
 
+// PADDING TOP & PADDING BOTTOM CUSTOMIZED FOR THE CONTACT DETAILS TABLE
 .table td {
-    padding-top: 3px;
-    padding-bottom: 3px;
+    // padding-top: 3px;
+    // padding-bottom: 3px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .table td p{
@@ -22,5 +25,12 @@
 
 .card form [class*="col-"] {
     padding: 0px;
+}
+
+// HOVER ON THE MEMBER LIST OF THE COLUMN SERVED BY
+p.member:hover {
+    background-color: #58c1d6;
+    color: #fff;
+    border-radius: 4px;
 }
 

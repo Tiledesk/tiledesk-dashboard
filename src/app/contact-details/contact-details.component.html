@@ -9,47 +9,23 @@
     <div class="row">
   
       <div class="col-md-8">
-        <div class="card" style="padding-top:25px; padding-bottom:25px">
+        <div class="card" style="">
           <div class="card-content">
 
 
             <loading-spinner *ngIf="showSpinner"></loading-spinner>
-            <div  *ngIf="!showSpinner" class="card-content table-responsive">
+            <div  *ngIf="!showSpinner" class="card-content table-responsive" style="padding-bottom:5px">
 
               <table class="table table-hover">
                 <thead class="text">
                   <tr>
-                  
+                    
+                    <!-- ===== VISIBILITY ICON ===== -->
                     <th></th>
 
       
-                    <!-- ===== DEPARTMENT NAME ===== -->
-                    <th>
-                      <span style="color: #566787">
-                        <strong>
-                          <strong>{{ 'Department' | translate }}</strong>
-                        </strong>
-                      </span>  
-                    </th>
-
-                    <!-- ===== REQUESTER ===== -->
-                    <!-- <th>
-                      <span style="color: #566787">
-                        <strong> 
-                          {{ 'HistoryPage.Requester' | translate }}
-                        </strong>
-                      </span>
-                    </th> -->
-
-                    <!-- ===== REQUESTER ID * FOR DEBUG * ===== -->
-                    <th>
-                      <span style="color: #566787">
-                        <strong> Requester Id </strong>
-                      </span>
-                    </th>
-
                     <!-- ===== REQUEST FIRST TEXT ===== -->
-                    <th>
+                    <th style="padding-top: 6px;">
                       <span style="color: #566787">
                         <strong> 
                           {{ 'Message' | translate }}
@@ -57,8 +33,27 @@
                       </span>
                     </th>
 
+                    <!-- ===== DEPARTMENT NAME ===== -->
+                    <!-- <th>
+                      <span style="color: #566787">
+                        <strong>
+                          <strong>{{ 'Department' | translate }}</strong>
+                        </strong>
+                      </span>  
+                    </th> -->
+
+         
+                    <!-- ===== REQUESTER ID * FOR DEBUG * ===== -->
+                    <!-- <th>
+                      <span style="color: #566787">
+                        <strong> Requester Id </strong>
+                      </span>
+                    </th> -->
+
+     
+
                     <!-- ===== SERVED BY ===== -->
-                    <th>
+                    <th style="padding-top: 6px;">
                       <span style="color: #566787">
                         <strong> 
                           {{ 'ServedBy' | translate }}
@@ -67,23 +62,23 @@
                     </th>
                   
                     <!-- ===== RATING ===== -->
-                    <th>
+                    <!-- <th>
                       <span style="color: #566787">
                         <strong> 
                           {{ 'Rating' | translate }}
                         </strong>
                       </span>
-                    </th>
+                    </th> -->
 
     
                     <!-- ===== PUBLISHED ===== -->
-                    <th>
+                    <!-- <th>
                       <span style="color: #566787">
                         <strong> 
                         {{ 'Created' | translate }}
                         </strong>
                       </span>
-                    </th>
+                    </th> -->
     
                   </tr>
                 </thead>
@@ -92,7 +87,7 @@
 
                   <!-- ===== IF THERE ISN'T HISTORY REQUEST ===== -->
                   <tr *ngIf="requests_list && requests_list.length === 0"> 
-                    <td colspan="7" style="text-align: center; padding-top: 16px; cursor: pointer">
+                    <td colspan="3" style="text-align: center; padding-top: 16px; cursor: pointer">
 
                       <p style="font-size:1em; color:#999999; font-weight: 400">
                         {{ 'HistoryPage.NoRequests' | translate }}
@@ -122,26 +117,35 @@
                     </td>
                   
 
+                    <!-- ===== REQUEST FIRST TEXT ===== -->
+                    <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
+                      <p style="font-size:14px; line-height:21px; font-weight: 500;" 
+                        [innerHTML]="getRequestText(request?.first_text)"> </p>
+
+                      <span style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px">
+                           {{ 'SentThe' | translate}} {{ request?.createdAt | date: 'dd/MM/yyyy' }} 
+                           <span *ngIf="request?.department"> {{ 'ToTheDepartment' | translate}} 
+                            <span style="text-transform: uppercase"> {{ request?.department?.name }} </span> 
+                          </span>
+                      </span>
+                    </td>
+                    
                     <!-- ===== DEPARTMENT NAME ===== -->
-                    <td>
+                    <!-- <td>
                       <p style="font-size:0.9em">
                         {{ request?.department?.name }}
                       </p>
-                    </td>
+                    </td> -->
 
 
                     <!-- ===== REQUESTER ID * FOR DEBUG * ===== -->
-                    <td>
+                    <!-- <td>
                       <p style="font-size:0.8em">
                         {{ request?.requester_id }}
                       </p>
-                    </td>
+                    </td> -->
 
-                    <!-- ===== REQUEST FIRST TEXT ===== -->
-                    <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
-                      <p style="font-size:0.9em;" [innerHTML]="getRequestText(request?.first_text)">
-                      </p>
-                    </td>
+  
 
                     <!-- ===== SERVED BY ===== -->
                     <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" >
@@ -157,30 +161,60 @@
                   
   
                     <!-- ===== RATING ===== -->
-                    <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" >
+                    <!-- <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" >
                       <p *ngIf="request?.rating" style="font-size:0.8em;">
                           {{ request?.rating }} / 5
                       </p>
                       <p *ngIf="!request?.rating" style="font-size:0.8em;">
                           - / 5
                       </p>
-                    </td>
+                    </td> -->
 
     
                     <!-- ===== PUBLISHED ===== -->
-                    <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
+                    <!-- <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
                       <p style="font-size:0.9em">
-                        <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
-                        <!-- {{ request?.request_date_fromnow }} -->
-                        <!-- {{ request?.created_on | date: 'd/M/y HH:mm:ss' }} -->
-                        {{ request?.createdAt | amTimeAgo }} ({{ request?.createdAt | date: 'd/M/y HH:mm' }}) 
+                        {{ request?.createdAt | amTimeAgo }} ({{ request?.createdAt | date: 'dd/MM/yyyy' }}) 
                       </p>
-                    </td>
+                    </td> -->
 
                   </tr>
                 </tbody>
               </table>
             </div> <!-- ./ card-content table-responsive -->
+
+            <div *ngIf="displaysFooterPagination === true" class="card-footer" style="text-align:right">
+              <div class="stats">
+  
+                <div style="width: 120px; margin: 0 auto; margin-top: 10px " >
+                  <div class="input-group">
+  
+                    <!-- -------====== BTN DECREASE PAGE  ======------ -->
+                    <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
+                      <button [disabled]="pageNo + 1 === 1" class="btn btn-info" type="button" (click)="decreasePageNumber()" style="padding: 6px 8px">
+                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                      </button>
+                    </span>
+  
+                    <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
+                    <span class="input-group-btn" style="padding-right:0px;">
+                      <button class="btn btn-info" type="button" style="padding: 6px 8px">
+                        {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
+                      </button>
+                    </span>
+                    
+                    <!-- -------====== BTN INCREASE PAGE  ======------ -->
+                    <span class="input-group-btn" style="padding-right:0px">
+                      <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0" class="btn btn-info" type="button" (click)="increasePageNumber()" style="padding: 6px 8px">
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                      </button>
+                    </span>
+  
+                  </div>
+                </div>
+                
+              </div>
+            </div>
 
 
           </div>
@@ -197,14 +231,14 @@
             </h4>
 
             <!-- ------====== ID ======------ -->
-            <p style="margin-bottom: 3px">
+            <!-- <p style="margin-bottom: 3px">
               <strong>
                 Id
               </strong>
             </p>
             <p style="color:#999999">
                 {{ contact_details?._id }}
-            </p>
+            </p> -->
 
             <!-- ------====== CREATED ======------ -->
             <p style="margin-bottom: 3px">

@@ -53,6 +53,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         translate.setDefaultLang('en');
 
         const browserLang = this.translate.getBrowserLang();
+       console.log('!!! ===== HELLO APP.COMP ===== BRS LANG ' , browserLang)
         if (browserLang) {
             if (browserLang === 'it') {
                 this.translate.use('it');

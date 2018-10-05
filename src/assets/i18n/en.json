@@ -74,6 +74,8 @@
     "Message": "Message",
     "ServedBy":"Served by",
     "Rating": "Rating",
+    "SentThe": "sent the",
+    "ToTheDepartment":"to the department",
     "UserProfile": {
         "Profile": "Profile",
         "UploadImage": "Upload image",
