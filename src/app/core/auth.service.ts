@@ -140,10 +140,10 @@ export class AuthService {
   checkStoredProjectAndPublish() {
     this.project_bs.subscribe((prjct) => {
 
-      console.log('!!C-U »»»»» AUTH SERV - PROJECT FROM SUBSCRIP', prjct);
+      console.log('!!C-U  - 1) »»»»» AUTH SERV - PROJECT FROM SUBSCRIP', prjct);
  
       if (prjct === null) {
-        console.log('!! »»»»» AUTH SERV - PROJECT IS NULL: ', prjct);
+        console.log('!!C-U »»»»» AUTH SERV - PROJECT IS NULL: ', prjct);
 
         /**
          * !!!! NO MORE - REPLACES 'router.events.subscribe' WITH 'location.path()'
@@ -169,6 +169,7 @@ export class AuthService {
            * */
           if (this.nav_project_id && this.nav_project_id !== 'email') {
 
+            console.log('!!C-U »»»»» QUI ENTRO ', this.nav_project_id);
             this.subscription.unsubscribe();
 
             const storedProjectJson = localStorage.getItem(this.nav_project_id);

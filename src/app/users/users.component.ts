@@ -7,7 +7,7 @@ import { NotifyService } from '../core/notify.service';
 
 
 @Component({
-  selector: 'users',
+  selector: 'appdashboard-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })

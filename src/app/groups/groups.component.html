@@ -100,7 +100,8 @@
                   </td> -->
 
                   <td (click)='goToEditAddPage_edit(group?._id)' style="cursor: pointer;">
-                    <span class="tooltipx">
+                      <!-- class="tooltipx" -->
+                    <span>
                       {{ group?.members.length }}  
 
                       <span *ngIf="group?.members.length === 0" style="padding-left: 8px">
@@ -111,7 +112,7 @@
                         </span>
                       </span>
 
-                      <span class="tooltiptext">{{ 'GroupsPage.GroupId' | translate }}: <br> {{ group?._id }} </span>
+                      <!-- <span class="tooltiptext">{{ 'GroupsPage.GroupId' | translate }}: <br> {{ group?._id }} </span> -->
                     </span>
                   </td>
                     

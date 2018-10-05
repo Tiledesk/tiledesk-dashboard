@@ -205,6 +205,10 @@
     bottom: 100%;
     left: 50%; 
     margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+
+    // NEW
+    box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
+    background-color: #394f5a;
   }
   
   /* Show the tooltip text when you mouse over the tooltip container */

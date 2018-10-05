@@ -134,6 +134,10 @@ button.close {
     left: 50%; 
     /* margin-left: -60px; */
     margin-left: -92px;
+
+    /* // NEW */
+    box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
+    background-color: #394f5a;
   }
   
   /* Show the tooltip text when you mouse over the tooltip container */
