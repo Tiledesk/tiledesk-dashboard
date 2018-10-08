@@ -33,6 +33,7 @@ export class UserEditAddComponent implements OnInit {
   INVITE_YOURSELF_ERROR: boolean;
   INVITE_OTHER_ERROR: boolean;
   INVITE_USER_ALREADY_MEMBER_ERROR: boolean;
+  INVITE_USER_NOT_FOUND: boolean;
 
   project_user_id: string;
   user_role: string;
@@ -49,7 +50,7 @@ export class UserEditAddComponent implements OnInit {
   ngOnInit() {
 
     this.auth.checkRoleForCurrentProject();
-    
+
     if (this.router.url.indexOf('/add') !== -1) {
 
       console.log('HAS CLICKED INVITES ');
@@ -159,23 +160,35 @@ export class UserEditAddComponent implements OnInit {
 
       const invite_errorbody = JSON.parse(error._body)
       console.log('INVITE USER  ERROR BODY ', invite_errorbody);
+
       if ((invite_errorbody['success'] === false) && (invite_errorbody['code'] === 4000)) {
         console.log('!!! Forbidden, you can not invite yourself')
 
         this.INVITE_YOURSELF_ERROR = true;
         this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
+        this.INVITE_USER_NOT_FOUND = false;
 
       } else if ((invite_errorbody['success'] === false) && (invite_errorbody['code'] === 4001)) {
         console.log('!!! Forbidden, user is already a member')
-
-        this.INVITE_USER_ALREADY_MEMBER_ERROR = true;
+        
         this.INVITE_YOURSELF_ERROR = false;
+        this.INVITE_USER_ALREADY_MEMBER_ERROR = true;
+        this.INVITE_USER_NOT_FOUND = false;
+
+      } else if ((invite_errorbody['success'] === false) && (error['status'] === 404)) {
+        console.log('!!! USER NOT FOUND ')
+        this.INVITE_YOURSELF_ERROR = false;
+        this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
+        this.INVITE_USER_NOT_FOUND = true;
+
 
       } else if (invite_errorbody['success'] === false) {
         
-        this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
         this.INVITE_YOURSELF_ERROR = false;
+        this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
+        this.INVITE_USER_NOT_FOUND = false;
         this.INVITE_OTHER_ERROR = true;
+
       }
     }, () => {
       console.log('INVITE USER  * COMPLETE *');
@@ -187,8 +200,9 @@ export class UserEditAddComponent implements OnInit {
   }
 
   onCloseModalHandled() {
-    console.log('CONTINUE PRESSED')
-    this.router.navigate(['project/' + this.id_project + '/users']);
+    console.log('CONTINUE PRESSED');
+    this.display = 'none';
+    // this.router.navigate(['project/' + this.id_project + '/users']);
   }
   onCloseModal() {
     this.display = 'none';

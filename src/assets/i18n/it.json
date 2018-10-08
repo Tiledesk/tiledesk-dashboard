@@ -218,6 +218,8 @@
         "NotAllowedAction": "Azione non consentita",
         "YouCanNotInviteYourself": "Non puoi invitare te stesso",
         "YouCanNotInviteAProjectMember": "Non puoi invitare un utente già membro del progetto",
+        "TheEmail": "L' email",
+        "wasNotFoundNoteThat": "non è stata trovata, si noti che solo gli utenti registrati possono essere invitati",
         "Error": "Errore",
         "AnErrorHasOccurred": "Si è verificato un errore"
     },
