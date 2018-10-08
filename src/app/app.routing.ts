@@ -204,9 +204,9 @@ const routes: Routes = [
   { path: 'forgotpsw', component: ResetPswComponent },
   { path: 'resetpassword/:resetpswrequestid', component: ResetPswComponent },
 
-  { path: 'project/:projectid/contacts', component: ContactsComponent },
-  { path: 'project/:projectid/contact/:requesterid', component: ContactDetailsComponent },
-
+  { path: 'project/:projectid/contacts', component: ContactsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/contact/:requesterid', component: ContactDetailsComponent, canActivate: [AuthGuard] },
+  
   { path: 'dashboard', component: DashboardComponent },
 
 

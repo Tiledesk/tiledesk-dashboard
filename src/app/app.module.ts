@@ -112,8 +112,6 @@ import { UploadImageService } from './services/upload-image.service';
 import { RequestsListHistoryNewComponent } from './requests-list-history-new/requests-list-history-new.component';
 import { MyDatePickerModule } from 'mydatepicker';
 import { ContactDetailsComponent } from './contact-details/contact-details.component';
-import { UsersModalComponent } from './users-modal/users-modal.component';
-
 
 
 
@@ -174,7 +172,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     WidgetDesignComponent,
     RequestsListHistoryNewComponent,
     ContactDetailsComponent,
-    UsersModalComponent,
   ],
   imports: [
     BrowserModule,

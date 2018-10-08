@@ -244,7 +244,7 @@ export class RequestsService {
     // THE CURRENT USER ID WITH THE 'USER ID' CONTAINED IN THE ARRAY 'AGENTS' (NESTED IN THE 'REQUEST' OBJECT)
     // RETURNS TRUE OR FALSE
     // || !r.hasAgent(this.currentUserID)
-    if (r === null || r === undefined) {
+    if (r === null || r === undefined || !r.hasAgent(this.currentUserID))  {
       // console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID))
       return;
     }
@@ -718,7 +718,7 @@ export class RequestsService {
       .map((response) => response.json());
   }
 
-  // https://api.tiledesk.com/v1/5ab0f32757066e0014bfd718/analytics/requests/count
+
   public lastMonthRequetsCount() {
     // USED TO TEST (note: this service doesn't work in localhost)
     //  const url = 'https://api.tiledesk.com/v1/' + '5ba35f0b9acdd40015d350b6' + '/analytics/requests/count';
@@ -736,12 +736,10 @@ export class RequestsService {
   }
 
   public getNodeJsHistoryRequests(querystring: string, pagenumber: number) {
-
     let _querystring = '&' + querystring
     if (querystring === undefined || !querystring) {
       _querystring = ''
     }
-
     /* *** USED TO TEST IN LOCALHOST (note: this service doen't work in localhost) *** */
     // const url = 'https://api.tiledesk.com/v1/' + '5ba35f0b9acdd40015d350b6' + '/requests?status=1000' + _querystring + '&page=' + pagenumber;
     /* *** USED IN PRODUCTION *** */
@@ -763,7 +761,6 @@ export class RequestsService {
 
 
   public getNodeJsRequestsByRequesterId(requesterid: string, pagenumber: number) {
-
     /* *** USED TO TEST IN LOCALHOST (note: this service doen't work in localhost) *** */
     // const url = 'https://api.tiledesk.com/v1/' + '5ba35f0b9acdd40015d350b6' + '/requests?requester_id=' + requesterid + '&page=' + pagenumber;
     /* *** USED IN PRODUCTION *** */

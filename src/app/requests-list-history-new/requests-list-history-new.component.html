@@ -142,13 +142,13 @@
                     </div>
 
                     <!-- // SEARCH FOR EMAIL -->
-                    <div class="col-sm-6"> 
+                    <!-- <div class="col-sm-6"> 
                         <label  class="col-sm-12" style="text-align: left; color: rgba(0, 0, 0, 0.54); ">
                             Email
                         </label>
                         <input name="requester_email" type="email" [(ngModel)]="requester_email" class="" autocomplete="off"
                         placeholder="" style="height: 36px; width: 100%; border-radius: 4px; border-color: #ccc; border-width:1px; border-style:solid; padding-left: 6px;">
-                    </div>
+                    </div> -->
                   </div>
 
                   <!-- -------====== BTNS SEARCH  & CLEAR SEARCH======------ -->
@@ -234,13 +234,13 @@
                   </th>
                    
                   <!-- ===== RATING ===== -->
-                  <th>
+                  <!-- <th>
                     <span style="color: #566787">
                       <strong> 
                         {{ 'HistoryPage.Rating' | translate }}
                       </strong>
                     </span>
-                  </th>
+                  </th> -->
  
                   <!-- ===== MEMBERS ===== -->
                   <!-- <th>
@@ -265,7 +265,7 @@
 
                 <!-- ===== IF THERE ISN'T HISTORY REQUEST ===== -->
                 <tr *ngIf="requestList && requestList.length === 0"> 
-                  <td colspan="7" style="text-align: center; padding-top: 16px; cursor: pointer">
+                  <td colspan="6" style="text-align: center; padding-top: 16px; cursor: pointer">
 
                     <p style="font-size:1em; color:#999999; font-weight: 400">
                       {{ 'HistoryPage.NoRequests' | translate }}
@@ -324,8 +324,13 @@
                   <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" >
                     <span *ngFor="let participant of request?.participants"  style="font-size:0.8em;">
                       <span *ngIf="participant !== request?.requester_id && participant !== 'system' && participant !== currentUserID"> 
-                        <p class="member" (click)="goToMemberProfile( participant )" [innerHTML]="members_replace( participant )" style="padding-top:1px; padding-bottom:1px; cursor: pointer;">  </p>
-                      </span> 
+                        
+                        <p class="member" (click)="goToMemberProfile( participant )" [innerHTML]="members_replace( participant )" style="padding-top:1px; padding-bottom:1px; cursor: pointer;">  
+                           
+                        </p>
+                        <!-- <span class="tooltiptext"> view</span> -->
+                      </span>
+                      
                       <p *ngIf="participant === currentUserID" style="padding-top:1px; padding-bottom:1px;"> 
                         - <strong> 'ME' </strong>
                       </p>
@@ -334,14 +339,14 @@
                   
  
                   <!-- ===== RATING ===== -->
-                  <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" >
+                  <!-- <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" >
                     <p *ngIf="request?.rating" style="font-size:0.8em;">
                         {{ request?.rating }} / 5
                     </p>
                     <p *ngIf="!request?.rating" style="font-size:0.8em;">
                         - / 5
                     </p>
-                  </td>
+                  </td> -->
  
                   <!-- ===== LIST OF MEMBERS ===== -->
                   <!-- <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">

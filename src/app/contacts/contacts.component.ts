@@ -58,6 +58,7 @@ export class ContactsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.auth.checkRoleForCurrentProject();
     this.getContacts();
     this.getCurrentProject();
   }

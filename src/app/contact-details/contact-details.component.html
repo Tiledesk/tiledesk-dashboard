@@ -53,13 +53,13 @@
      
 
                     <!-- ===== SERVED BY ===== -->
-                    <th style="padding-top: 6px;">
+                    <!-- <th style="padding-top: 6px;">
                       <span style="color: #566787">
                         <strong> 
                           {{ 'ServedBy' | translate }}
                         </strong>
                       </span>
-                    </th>
+                    </th> -->
                   
                     <!-- ===== RATING ===== -->
                     <!-- <th>
@@ -87,7 +87,7 @@
 
                   <!-- ===== IF THERE ISN'T HISTORY REQUEST ===== -->
                   <tr *ngIf="requests_list && requests_list.length === 0"> 
-                    <td colspan="3" style="text-align: center; padding-top: 16px; cursor: pointer">
+                    <td colspan="2" style="text-align: center; padding-top: 16px; cursor: pointer">
 
                       <p style="font-size:1em; color:#999999; font-weight: 400">
                         {{ 'HistoryPage.NoRequests' | translate }}
@@ -96,6 +96,8 @@
                   </tr> 
 
                   <tr *ngFor="let request of requests_list">
+
+                    
                     
                     <td style="text-align:center">
   
@@ -148,7 +150,7 @@
   
 
                     <!-- ===== SERVED BY ===== -->
-                    <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" >
+                    <!-- <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" >
                       <span *ngFor="let participant of request?.participants"  style="font-size:0.8em;">
                         <span *ngIf="participant !== request?.requester_id && participant !== 'system' && participant !== currentUserID"> 
                           <p class="member" (click)="goToMemberProfile( participant )" [innerHTML]="members_replace( participant )" style="padding-top:1px; padding-bottom:1px; cursor: pointer;">  </p>
@@ -157,7 +159,7 @@
                           - <strong> 'ME' </strong>
                         </p>
                       </span>
-                    </td>
+                    </td> -->
                   
   
                     <!-- ===== RATING ===== -->

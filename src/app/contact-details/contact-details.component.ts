@@ -38,6 +38,7 @@ export class ContactDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.auth.checkRoleForCurrentProject();
     this.getRequesterIdParam();
     this.getCurrentProject();
     this.getCurrentUser();
@@ -105,7 +106,7 @@ export class ContactDetailsComponent implements OnInit {
 
           this.requests_list = requests_object['requests'];
 
-
+     
           // to test pagination
           // const requestsCount = 83;
           const requestsCount = requests_object['count'];
@@ -201,8 +202,8 @@ export class ContactDetailsComponent implements OnInit {
 
   getRequestText(text: string): string {
     if (text) {
-      return text.length >= 45 ?
-        text.slice(0, 45) + '...' :
+      return text.length >= 95 ?
+        text.slice(0, 95) + '...' :
         text;
     }
   }

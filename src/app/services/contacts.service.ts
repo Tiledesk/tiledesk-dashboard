@@ -71,7 +71,6 @@ export class ContactsService {
 
   // GET LEADS
   public getLeads(querystring, pagenumber): Observable<Contact[]> {
-
     let _querystring = '&' + querystring
     if (querystring === undefined || !querystring) {
       _querystring = ''

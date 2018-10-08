@@ -13,20 +13,25 @@ import { NotifyService } from '../core/notify.service';
 
 import { PlatformLocation } from '@angular/common';
 import { BotLocalDbService } from '../services/bot-local-db.service';
+import { UsersService } from '../services/users.service';
 
 @Component({
-  selector: 'app-requests-msgs',
+  selector: 'appdashboard-requests-msgs',
   templateUrl: './requests-msgs.component.html',
   styleUrls: ['./requests-msgs.component.scss']
 })
 export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
+  @ViewChild('scrollMe') 
+  private myScrollContainer: ElementRef;
+
+ 
 
   CHAT_BASE_URL = environment.chat.CHAT_BASE_URL
 
   id_request: string;
   messagesList: Message[];
   showSpinner = true;
+  showSpinner_inModalUserList = true;
   id_project: string;
 
   IS_CURRENT_USER_JOINED: boolean;
@@ -62,6 +67,9 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   newInnerWidth: any;
   windowWidth: any;
 
+  displayUsersListModal = 'none'
+  projectUsersList: any;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -71,7 +79,8 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     private _location: Location,
     private notify: NotifyService,
     private platformLocation: PlatformLocation,
-    private botLocalDbService: BotLocalDbService
+    private botLocalDbService: BotLocalDbService,
+    private usersService: UsersService
   ) {
 
     this.platformLocation.onPopState(() => {
@@ -107,6 +116,51 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getRequestId();
     this.getCurrentProject();
     this.getLoggedUser();
+  }
+
+  openSelectUsersModal() {
+    this.getAllUsersOfCurrentProject();
+    this.displayUsersListModal = 'block'
+    console.log('REQUEST-MSGS - DISPLAY USERS LIST MODAL ', this.displayUsersListModal);
+  }
+
+  onCloseUsersListModal() {
+    this.displayUsersListModal = 'none'
+    console.log('USERS-MODAL-COMP - ON CLOSE USERS LIST MODAL ', this.displayUsersListModal);
+  }
+
+  getAllUsersOfCurrentProject() {
+    this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
+      console.log('REQUEST-MSGS - PROJECT USERS (FILTERED FOR PROJECT ID)', projectUsers);
+
+      this.projectUsersList = projectUsers;
+
+    },
+      error => {
+        this.showSpinner_inModalUserList = false;
+        console.log('REQUEST-MSGS - PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
+      },
+      () => {
+        this.showSpinner_inModalUserList = false;
+        console.log('REQUEST-MSGS - PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
+      });
+  }
+
+  selectUser(user_id) {
+    console.log('REQUEST-MSGS - SELECTED USER', user_id);
+  }
+
+  toggleCheckBox(event) {
+    if (event.target.checked) {
+      console.log('REQUEST-MSGS - TOGGLE CHECKBOX ', event.target.checked);
+      // this.preChatForm = true;
+      // this.preChatFormValue = 'true'
+      // console.log('INCLUDE PRE CHAT FORM ', this.preChatForm)
+    } else {
+      // this.preChatForm = false;
+      // this.preChatFormValue = 'false'
+      // console.log('INCLUDE PRE CHAT FORM ', this.preChatForm)
+    }
   }
 
   onInitWindowWidth(): any {
@@ -489,6 +543,10 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       this.router.navigate(['project/' + this.id_project + '/member/' + member_id]);
     }
+  }
+
+  openUserList() {
+    this.router.navigate(['project/' + this.id_project + '/userslist']);
   }
 
   ngOnDestroy() {
