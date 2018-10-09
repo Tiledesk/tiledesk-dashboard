@@ -58,6 +58,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   displayBtnScrollToBottom = 'none';
   displayArchiveRequestModal = 'none';
+  displayConfirmReassignmentModal = 'none';
   id_request_to_archive: string;
 
   SHOW_CIRCULAR_SPINNER = false;
@@ -70,6 +71,10 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   displayUsersListModal = 'none'
   projectUsersList: any;
 
+  userid_selected: string;
+  userfirstname_selected: string;
+  userlastname_selected: string;
+  useremail_selected: string;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -124,10 +129,12 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log('REQUEST-MSGS - DISPLAY USERS LIST MODAL ', this.displayUsersListModal);
   }
 
-  onCloseUsersListModal() {
+  closeSelectUsersModal() {
     this.displayUsersListModal = 'none'
     console.log('USERS-MODAL-COMP - ON CLOSE USERS LIST MODAL ', this.displayUsersListModal);
   }
+
+
 
   getAllUsersOfCurrentProject() {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
@@ -146,9 +153,35 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  selectUser(user_id) {
-    console.log('REQUEST-MSGS - SELECTED USER', user_id);
+  selectUser(user_id: string, user_firstname: string, user_lastname: string, user_email: string) {
+    console.log('REQUEST-MSGS - SELECTED USER ID ', user_id);
+    console.log('REQUEST-MSGS - SELECTED USER FIRSTNAME ', user_firstname);
+    console.log('REQUEST-MSGS - SELECTED USER LASTNAME ', user_lastname);
+    console.log('REQUEST-MSGS - SELECTED USER EMAIL ', user_email);
+    this.userid_selected = user_id;
+    this.userfirstname_selected = user_firstname;
+    this.userlastname_selected = user_lastname;
+    this.useremail_selected = user_email;
+
+    // const testDiv = <HTMLElement>document.querySelector('.swap_btn');
+    // console.log('REQUEST-MSGS - SELECTED USER ROW TOP OFFSET ', testDiv.offsetTop);
+    this.displayConfirmReassignmentModal = 'block'
   }
+
+  closeConfirmReassignmentModal () {
+    this.displayConfirmReassignmentModal = 'none'
+  }
+
+  reassignRequest(userid_selected) {
+    console.log('REQUEST-MSGS - REASSIGN REQUEST TO USER ID ', userid_selected);
+    this.displayConfirmReassignmentModal = 'none';
+    this.displayUsersListModal = 'none'
+
+    // =========== NOTIFY SUCCESS===========
+    this.notify.showNotification(`request assigned to ${this.userfirstname_selected}  ${this.userlastname_selected}`, 2, 'done');
+  }
+
+
 
   toggleCheckBox(event) {
     if (event.target.checked) {

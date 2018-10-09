@@ -451,7 +451,11 @@
         "Completed": "Completato",
         "RequestArchived": "Richiesta chiusa",
         "AnErrorHasOccurred": "Si è verificato un errore durante la chiusura della richiesta",
-        "Continue": "Continua"
+        "Continue": "Continua",
+        "Riassign":"Riassegna",
+        "RiassignRequestTo":"Riassegna richiesta a",
+        "RiassignRequest":"Riassegna richiesta",
+        "TheRequestWillBeRiassignedTo":"La richiesta sarà riassegnata a:"
     },
     "RequestMsgsPage": {
         "MessagesOfTheRequest": "Messagi della richiesta",
@@ -463,7 +467,7 @@
         "Error": "Errore",
         "Archive": "Archivia",
         "Close": "Chiudi",
-        "CloseTheRequest": "chiudi richiesta",
+        "CloseTheRequest": "Chiudi richiesta",
         "ForwardTheRequest": "inoltra richiesta",
         "RequestClosed": "Richiesta chiusa",
         "WasServedBy": "è stata servita da",

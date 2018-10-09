@@ -451,7 +451,11 @@
         "Completed": "Completed",
         "RequestArchived": "Request closed",
         "AnErrorHasOccurred": "An error has occurred closing the request",
-        "Continue": "Continue"
+        "Continue": "Continue",
+        "Riassign":"Riassign",
+        "RiassignRequestTo":"Riassigns request to",
+        "RiassignRequest":"Riassigns request",
+        "TheRequestWillBeRiassignedTo":"The request will be riassigned to:"
     },
     "RequestMsgsPage": {
         "MessagesOfTheRequest": "Messages of the request",
@@ -463,7 +467,7 @@
         "Error": "Error",
         "Archive": "Archive",
         "Close": "Close",
-        "CloseTheRequest": "close request",
+        "CloseTheRequest": "Close request",
         "ForwardTheRequest": "forward request",
         "RequestClosed": "Request closed",
         "WasServedBy": "was served by",

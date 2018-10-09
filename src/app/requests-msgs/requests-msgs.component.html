@@ -12,13 +12,13 @@
     <div *ngIf="!showSpinner" class="row is-flex">
 
       <div class="col-sm-7">
-        <div class="card" style="padding-top:0px; padding-bottom:0px; padding-left:25px; padding-right:25px" >
-            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; margin-top: 18px; margin-bottom: 0px; border-bottom: 1px solid #eeeeee; padding-bottom: 15px;">
+        <div class="card" style="padding-top:0px; padding-bottom:0px;" >
+            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; margin-top: 18px; margin-bottom: 0px; border-bottom: 1px solid #eeeeee; padding-bottom: 15px; padding-left:25px; padding-right:25px">
                 <!-- Request  -->
                 {{ "RequestMsgsPage.MessagesOfTheRequest" | translate }}
                 <code style="color: #566787; font-weight: 400" >{{cut_support_group_from_request_id(id_request)}} </code>
               </h4>
-          <div #scrollMe class="card-content" style="height: 500px; overflow-y: auto; padding: 0px" (scroll)="onScroll($event)">
+          <div #scrollMe class="card-content" style="height: 500px; overflow-y: auto; padding: 0px; padding-left:25px; padding-right:25px " (scroll)="onScroll($event)">
 
             <!-- OLD CHAT -->
             <!-- <div *ngFor="let message of messagesList" style="vertical-align:baseline">
@@ -101,99 +101,20 @@
 
           <div class="card-footer" style="text-align: center; margin-bottom: 0px;padding-top: 2px; margin:auto">
             <div class="stats" style="width: 100%;">
-                <!--target="_blank" href="{{ CHAT_BASE_URL }}?recipient={{id_request}}"   -->
-              <!-- OPEN THE CHAT -->
-              <!-- margin-left:92px -->
-              <div class="row" style="width: 100%">
+              
+              <!-- <div class="row" style="width: 100%">
                 <div class="col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-3">
-
                   <span *ngIf="HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === true || IS_CURRENT_USER_JOINED === true">
-                    <button (click)="openChatInNewWindow()" class="btn btn-info open_the_chat_btn" role="button" 
-                    style="padding:12px 16px !important;" [disabled]="request?.support_status == 1000"
-                    [ngClass]="{'disable_open_the_chat_btn' : request?.support_status == 1000}">   
-                      <!-- Entra // changed the translation FROM 'Enter' in 'Open the chat' -->
+                      <button (click)="openChatInNewWindow()" class="btn btn-info open_the_chat_btn" role="button" 
+                        style="padding:12px 16px !important;" [disabled]="request?.support_status == 1000"
+                        [ngClass]="{'disable_open_the_chat_btn' : request?.support_status == 1000}">   
                       <i class="material-icons" style="vertical-align: middle;  top:0px !important; padding-bottom: 2px;">open_in_new</i>
-                    <span style="vertical-align: middle"> {{ 'RequestMsgsPage.OpenTheChat' | translate }}</span>
+                      <span style="vertical-align: middle"> {{ 'RequestMsgsPage.OpenTheChat' | translate }}</span>
                     </button>
-                  </span>
+                  </span> -->
 
-                  <!-- ENTER -->
-                  <span *ngIf="JOIN_TO_GROUP_HAS_ERROR === false 
-                      && IS_CURRENT_USER_JOINED === false 
-                      && SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === false 
-                      && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false">
-                    <button class="btn btn-default" (click)="onJoinHandled()" 
-                      style="padding:12px 37px !important;" [disabled]="request?.support_status == 1000">
-                      <!-- Join // changed the translation to 'Join' in 'Enter' -->
-                    {{ 'RequestMsgsPage.Enter' | translate }}
-                    </button>
-                  </span>
-
-                  <!-- LOADING BTN -->
-                  <span *ngIf="SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === true 
-                      && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false  
-                      && JOIN_TO_GROUP_HAS_ERROR === false">
-                    <button class="btn btn-default" style="padding:12px 16px !important;" btn-block>
-                      <i class="fa fa-spinner fa-spin" style="margin-right: 5px;"></i> 
-                        <!-- Elaborazione -->
-                        {{ 'RequestMsgsPage.Loading' | translate }}
-                    </button>
-                  </span>
-
-                  <!-- IF THE CALLBALL JOIN-TO-GROUP HAS ERROR SHOWS THE BTN ERROR (DISABLED)  -->
-                  <span *ngIf="JOIN_TO_GROUP_HAS_ERROR === true">
-                    <button class="btn btn-danger" disabled style="padding:12px 16px !important;">
-                      <!-- Error -->
-                      {{ 'RequestMsgsPage.Error' | translate }}
-                    </button>
-                  </span>
-                </div>
-
-                <div class="col-sm-3 col-xs-3" style="text-align: right">
-                <!-- CLOSE REQUEST BTN -->
-                <!-- rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}" -->
-                  <button type="button" class="btn btn-danger close_request_btn tooltipx"
-                    (click)='openArchiveRequestModal(request?.recipient)' style="vertical-align: middle;margin-top: 12px; padding:8px" 
-                    [ngClass]="{'disable_archive_btn' : request?.support_status == 1000}" [disabled]="request?.support_status == 1000">
-                    <i class="material-icons" style="vertical-align: middle; top:0px !important; padding-bottom: 2px;">
-                      clear
-                    </i>
-                    <span class="tooltiptext">{{ 'RequestMsgsPage.CloseTheRequest' | translate }}</span>
-                    <!-- <span class="tooltipx"><span style="opacity: 0">x</span> <span class="tooltiptext">CLOSE REQUEST</span> </span> -->
-                    <!-- {{ 'RequestMsgsPage.Close' | translate }} -->
-                  </button>
-                </div>
-              </div> <!-- row -->
-
-
-              <!-- -------------------================== start new three btn ==================------------------- -->
-              <!-- <div class="row" style="width: 100%"> -->
-                
-                <!-- <div class="col-sm-12 col-md-4">
-                  <button type="button" class="btn btn-danger tooltipx"
-                    (click)='openArchiveRequestModal(request?.recipient)' style="vertical-align: middle;" 
-                    [disabled]="request?.support_status == 1000">
-                    <i class="material-icons" style="vertical-align: middle; top:0px !important; padding-bottom: 2px;">
-                      clear
-                    </i>
-                    {{ 'RequestMsgsPage.Close' | translate }}
-                    <span class="tooltiptext">{{ 'RequestMsgsPage.CloseTheRequest' | translate }}</span>
-                  </button>
-                </div> -->
-                
-                <!-- ------------============ BTN SWITCH: ENTER, LOADING, ERROR, OPEN THE CHAT ============------------ -->
-                <!-- <div class="col-sm-12 col-md-4">
-                  <span *ngIf="HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === true || IS_CURRENT_USER_JOINED === true">
-                    <button (click)="openChatInNewWindow()" class="btn btn-info open_the_chat_btn" role="button" 
-                    style="padding:12px 16px !important;" [disabled]="request?.support_status == 1000"
-                    [ngClass]="{'disable_open_the_chat_btn' : request?.support_status == 1000}">   
-                      
-                      <i class="material-icons" style="vertical-align: middle;  top:0px !important; padding-bottom: 2px;">open_in_new</i>
-                    <span style="vertical-align: middle"> {{ 'RequestMsgsPage.OpenTheChat' | translate }}</span>
-                    </button>
-                  </span>
-      
-                  <span *ngIf="JOIN_TO_GROUP_HAS_ERROR === false 
+                  <!-- ENTER   Join // changed the translation to 'Join' in 'Enter' -->
+                  <!-- <span *ngIf="JOIN_TO_GROUP_HAS_ERROR === false 
                       && IS_CURRENT_USER_JOINED === false 
                       && SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === false 
                       && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false">
@@ -201,43 +122,126 @@
                       style="padding:12px 37px !important;" [disabled]="request?.support_status == 1000">
                       {{ 'RequestMsgsPage.Enter' | translate }}
                     </button>
-                  </span>
+                  </span> -->
 
-                  <span *ngIf="SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === true 
+                  <!-- LOADING BTN -->
+                  <!-- <span *ngIf="SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === true 
                       && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false  
                       && JOIN_TO_GROUP_HAS_ERROR === false">
                     <button class="btn btn-default" style="padding:12px 16px !important;" btn-block>
                       <i class="fa fa-spinner fa-spin" style="margin-right: 5px;"></i> 
+
                         {{ 'RequestMsgsPage.Loading' | translate }}
                     </button>
-                  </span>
-      
-                  <span *ngIf="JOIN_TO_GROUP_HAS_ERROR === true">
+                  </span> -->
+
+                  <!-- IF THE CALLBALL JOIN-TO-GROUP HAS ERROR SHOWS THE BTN ERROR (DISABLED)  -->
+                  <!-- <span *ngIf="JOIN_TO_GROUP_HAS_ERROR === true">
                     <button class="btn btn-danger" disabled style="padding:12px 16px !important;">
                       {{ 'RequestMsgsPage.Error' | translate }}
                     </button>
                   </span>
                 </div> -->
 
-                <!-- <div class="col-sm-12 col-md-4">
-                    <button type="button" class="btn btn-default tooltipx"
-                      (click)='openSelectUsersModal()' style="vertical-align: middle;" 
-                      [disabled]="request?.support_status == 1000">
-                      forward
+                 <!-- CLOSE REQUEST BTN -->
+                <!-- <div class="col-sm-3 col-xs-3" style="text-align: right">
+                  <button type="button" class="btn btn-danger close_request_btn tooltipx"
+                    (click)='openArchiveRequestModal(request?.recipient)' style="vertical-align: middle;margin-top: 12px; padding:8px" 
+                    [ngClass]="{'disable_archive_btn' : request?.support_status == 1000}" [disabled]="request?.support_status == 1000">
                     <i class="material-icons" style="vertical-align: middle; top:0px !important; padding-bottom: 2px;">
-                        fast_forward
+                      clear
                     </i>
+                    <span class="tooltiptext">{{ 'RequestMsgsPage.CloseTheRequest' | translate }}</span>
+                  </button>
+                </div> -->
+              <!-- </div>  -->
+             
+
+
+              <!-- -------------------================== start new three btn ==================------------------- -->
+              <div class="row" style="width: 100%">
+                
+                <div class="col-xs-4 col-sm-4 col-md-4" style="padding-right:5px">
+                  <button type="button" class="btn btn-danger btn-block tooltipx"
+                    (click)='openArchiveRequestModal(request?.recipient)' style="vertical-align: middle;" 
+                    [disabled]="request?.support_status == 1000">
+                    <!-- <i class="material-icons" style="vertical-align: middle; top:0px !important; padding-bottom: 2px;">
+                      clear
+                    </i> -->
+                    {{ 'RequestMsgsPage.Close' | translate }}
+                    <span class="tooltiptext">{{ 'RequestMsgsPage.CloseTheRequest' | translate }}</span>
+                  </button>
+                </div>
+                
+                <!-- ------------============ BTN SWITCH: ENTER, LOADING, ERROR, OPEN THE CHAT ============------------ -->
+                <div class="col-xs-4 col-sm-4 col-md-4" style="padding-left:5px; padding-right:5px"> 
+                  <span *ngIf="HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === true || IS_CURRENT_USER_JOINED === true">
+                    <button (click)="openChatInNewWindow()" class="btn btn-info btn-block open_the_chat_btn" role="button" 
+                    style="padding-left: 0px; padding-right: 0px" [disabled]="request?.support_status == 1000"
+                    [ngClass]="{'disable_open_the_chat_btn' : request?.support_status == 1000}">   
+                      
+                      <!-- <i class="material-icons" style="vertical-align: middle;  top:0px !important; padding-bottom: 2px;">open_in_new</i> -->
+                    <span style="vertical-align: middle"> {{ 'RequestMsgsPage.OpenTheChat' | translate }}</span>
+                    </button>
+                  </span>
+      
+                  <span *ngIf="JOIN_TO_GROUP_HAS_ERROR === false 
+                      && IS_CURRENT_USER_JOINED === false 
+                      && SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === false 
+                      && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false">
+                    <button class="btn btn-default btn-block" (click)="onJoinHandled()" 
+                      style="" [disabled]="request?.support_status == 1000">
+                      {{ 'RequestMsgsPage.Enter' | translate }}
+                    </button>
+                  </span>
+
+                  <span *ngIf="SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === true 
+                      && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false  
+                      && JOIN_TO_GROUP_HAS_ERROR === false">
+                    <button class="btn btn-default btn-block" style="" btn-block>
+                      <i class="fa fa-spinner fa-spin" style="margin-right: 5px;"></i> 
+                        {{ 'RequestMsgsPage.Loading' | translate }}
+                    </button>
+                  </span>
+      
+                  <span *ngIf="JOIN_TO_GROUP_HAS_ERROR === true">
+                    <button class="btn btn-danger btn-block" disabled style="">
+                      {{ 'RequestMsgsPage.Error' | translate }}
+                    </button>
+                  </span>
+                </div>
+
+                <!-- -------------------============ BTN RIASSIGN REQUETS ============------------------- -->
+                <div class="col-xs-4 col-sm-4 col-md-4" style="padding-left:5px;">
+                    <button type="button" class="btn btn-warning btn-block tooltipx"
+                      (click)='openSelectUsersModal()' 
+                      style="vertical-align: middle; padding-left: 22px;padding-right: 22px;" 
+                      [disabled]="request?.support_status == 1000">
+                      {{ 'VisitorsPage.Riassign' | translate }}
+                    <!-- <i class="material-icons" style="vertical-align: middle; top:0px !important; padding-bottom: 2px;">
+                        swap_horiz
+                    </i> -->
                     
                     <span class="tooltiptext" style="text-transform:none">
-                      {{ 'RequestMsgsPage.ForwardTheRequest' | translate }}
+                      {{ 'VisitorsPage.RiassignRequest' | translate }}
                     </span>
                   </button>
                   
                 </div>
-              </div> -->
+              </div>
               <!-- ./end new three btn -->
              
             </div>
+
+            <!-- <div class="bottomwhitespace" class="centre">
+                <div class="btn-group">
+                  <button class="button">My first button</button>
+                  <button class="button">My second button</button>
+                  <button class="button">My third button</button>
+                </div>
+              </div> -->
+
+
           </div>
         </div>  
         <!-- ./ card   -->
@@ -467,46 +471,74 @@
   </div>
 </div>
 
-<!-- ------------============= USERS LIST MODAL =============------------ -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayUsersListModal}" style="background-color: rgba(90,90,90,0.5);">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        
-        <div class="modal-header">
-          <button type="button" class="close" aria-label="Close" (click)="onCloseUsersListModal()">
-            <span aria-hidden="true">&times;</span>
-          </button>
-  
-          <h4 class="modal-title">
-              {{ "Users" | translate }}
 
-          </h4>
+<!-- ------------============= USERS LIST MODAL - FULL WIDTH MODAL =============------------ -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayUsersListModal}" style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog modal-lg" role="document" style="width: 100%; height: 100%; margin:0; padding: 0; ">
+    <div class="modal-content" style="height: auto; min-height: 100%; border-radius: 0; border:none">
+      
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closeSelectUsersModal()">
+          <span aria-hidden="true" style="font-size:31px;">&times;</span>
+        </button>
+
+        <h4 class="modal-title">
+          <div class="title-wrapper" style="max-width: 936px; margin:auto">
+            {{ "Users" | translate }}
+          </div>
+        </h4>
+      </div>
+
+      <div class="modal-body" style="padding-right: 15px; padding-top:15px; padding-bottom:15px; max-width: 936px; margin:auto ">
+        
+        <!-- ------------============ image inside a text field ============------------ -->
+        <!-- <div class="row">
+          <div class="col-sm-12" style="padding-left: 0px;">
+            <h5 style="margin-bottom: 0px;">
+              Riassign the request to the user
+            </h5>
+          </div>
         </div>
-  
-        <div class="modal-body" style="padding-right: 15px; padding-top:15px; padding-bottom:15px">
+        <div class="row">
+          <div class="col-sm-8">
+            <div class="fake-input">
+              <input name="requester_email" type="email"  class="" autocomplete="off"
+              placeholder="" style="margin-top:8px; height: 45px; width: 100%; border-radius: 4px; border-color: #ccc; border-width:1px; border-style:solid; padding-left: 6px;">
+              <p style="font-size:14px; line-height:21px; font-weight: 500; margin-bottom: 0px;"> {{ userfirstname_selected }} {{ userlastname_selected }}</p>
+              <span style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px">
+                {{ useremail_selected }}
+              </span>
+              <img *ngIf="userid_selected" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{userid_selected}}%2Fphoto.jpg?alt=media" width=25 
+              onerror="this.src='assets/img/no_image_user.png'"/>
+            </div>
+          </div>
+
+          <div class="col-sm-4">
+            <button class="btn btn-info" (click)="reassignRequest(userid_selected)">
+              SWAP USER
+            </button>
+          </div>
+        </div> -->
+
         <div class="row">
           <div class="col-md-12">
             <div class="card">
-  
-            <loading-spinner *ngIf="showSpinner_inModalUserList"></loading-spinner>
-  
+
+              <loading-spinner *ngIf="showSpinner_inModalUserList"></loading-spinner>
+
               <div *ngIf="!showSpinner_inModalUserList" class="card-content table-responsive">
-  
+
                 <table class="table table-hover">
                   <thead>
                     <tr>
-        
-                      <th>
-
-                      </th>
-                      <th>
+                      <th colspan="2">
                         <span style="color: #566787">
                           <strong>
                             {{ "UsersPage.User" | translate }}
                           </strong>
                         </span>
                       </th>
-  
+
                       <th>
                         <span style="color: #566787">
                           <strong>
@@ -514,85 +546,142 @@
                           </strong>
                         </span>
                       </th>
-  
-                      <th>
+
+                      <!-- <th>
                         <span style="color: #566787">
                           <strong>
                             Email
                           </strong>
                         </span>
-                      </th>
+                      </th> -->
+
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
-  
+
                     <tr *ngFor="let projectUser of projectUsersList">
                       <!-- FOR DEBUG: ID OF THE PROJECT-USER  -->
                       <!-- <td>
                         {{ projectUser?._id }}
                       </td> -->
-                      <td>
-                        <!-- <label class="checkbox-container"  style="margin-left: 0px; margin-bottom: 6px; margin-top: 8px;">
-                            <input type="checkbox"  (click)="selectUser(project_user?.id_user?._id)" style="position: relative;"/>
-                            <span class="checkmark" style=""></span>
-                        </label> -->
 
-                          <label class="checkbox-container">
-                            <input type="checkbox" class="form-check-input" style="width: 16px;height: 16px;" value="{{projectUser?.id_user?._id}}" 
-                            (click)="selectUser(projectUser?.id_user?._id)">
-                            <span class="checkmark" style=""></span>
-                          </label>
+                      <td style="width: 25px;">
+                        <img style="vertical-align: middle; width: 42px; height: 42px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
+                        class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media" 
+                        onerror="this.src='assets/img/no_image_user.png'"/>
                       </td>
-  
+
                       <td>
-                          <img style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
-                          class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media" 
-                          onerror="this.src='assets/img/no_image_user.png'"/>
-                        <span class="tooltipx">
+                        <p style="font-size:14px; line-height:21px; font-weight: 500; margin-bottom: 0px;"> 
                           {{ projectUser?.id_user?.firstname }}
                           <span style="text-transform: uppercase"> 
                             {{ projectUser?.id_user?.lastname }} 
                           </span>
+                        </p>
+                        <span style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px">
+                            {{ projectUser?.id_user?.email }}
+                        </span>
+                      </td>
+
+                      <td >
+                        {{ projectUser?.role }}
+                      </td>
+
+                      <!-- <td>
+                        {{ projectUser?.id_user?.email }}
+                      </td> -->
+
+                      <td (click)= "selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
+                        <span class="tooltipx">
+                          <i class="material-icons " style="cursor: pointer">
+                            swap_horiz
+                          </i>
                           <span class="tooltiptext">
-                            {{"UsersPage.ViewProfileUser" | translate }} {{projectUser?.id_user?._id}}
+                            {{ "VisitorsPage.RiassignRequestTo" | translate }} {{ projectUser?.id_user?.email }}
                           </span>
-  
                         </span>
                       </td>
   
-                      <td >
-                        
-                          {{ projectUser?.role }}
-                
-                      </td>
-  
-                      <td >
-                       
-                          {{ projectUser?.id_user?.email }}
-              
-                      </td>
-  
-        
-          
-                      </tr>
+                    </tr>
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
         </div>
-  
+
       </div >  <!-- /. modal-body -->
-  
-        <div class="modal-footer" style="text-align: center;">
-          <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseUsersListModalHandler()" style="padding:12px 16px;">
-              {{ "VisitorsPage.Continue" | translate }}
-          </button>
+
+      <!-- <div class="modal-footer" style="text-align: center;">
+        <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseUsersListModalHandler()" style="padding:12px 16px;">
+            {{ "VisitorsPage.Continue" | translate }}
+        </button>
+      </div> -->
+
+    </div> <!-- /.modal-content -->
+  </div> <!-- /.modal-dialog -->
+</div>
+
+
+<!-- ============= CONFIRM REQUEST REASSIGNMENT MODAL ============= -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayConfirmReassignmentModal}" style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="padding-bottom:15px">
+        <button type="button" class="close" aria-label="Close" (click)="closeConfirmReassignmentModal()">
+          <span aria-hidden="true" style="">&times;</span>
+        </button>
+        <h4 class="modal-title" style="color: #00bcd4">
+          <i class="material-icons" style="vertical-align: middle">info</i>
+            <span style="vertical-align: middle; padding-left:8px">
+              {{ "VisitorsPage.RiassignRequest" | translate }}
+            </span>
+        </h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-sm-10">
+            <h4 style="color: #566787;padding-top: 0px;font-size: 1.1em;font-weight: 500;margin-top: 0px;margin-bottom: 0px;">
+              {{ "VisitorsPage.TheRequestWillBeRiassignedTo" | translate }} 
+            </h4>
+
+            <table class="table" style="margin-bottom: 0px;">
+              <tbody>
+                <tr>
+                  <td style=" border-top-width: 0px; width: 25px;">
+                    <img *ngIf="userid_selected" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{userid_selected}}%2Fphoto.jpg?alt=media" 
+                      width=35 onerror="this.src='assets/img/no_image_user.png'"/>
+                  </td>
+                  <td  style=" border-top-width: 0px;">
+                    <p style="font-size:14px; line-height:21px; font-weight: 500; margin-bottom: 0px;"> 
+                      {{ userfirstname_selected }} 
+                      <span style="text-transform: uppercase"> 
+                        {{ userlastname_selected }}
+                      </span>
+                    </p>
+                    <span style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px">
+                      {{ useremail_selected }}
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-  
-      </div> <!-- /.modal-content -->
-    </div> <!-- /.modal-dialog -->
+      </div>
+      <div class="modal-footer" style="margin-top: 0px;">
+        <button class="btn btn-white" (click)="closeConfirmReassignmentModal()" style="padding:12px 16px;">
+          {{ "VisitorsPage.Cancel" | translate }}
+        </button>
+        <button style="margin-top:0px" class="btn btn-info" (click)="reassignRequest(userid_selected)" style="padding:12px 16px;">
+          {{ "VisitorsPage.RiassignRequest" | translate }}
+        </button>
+      </div>
+    </div>
   </div>
+</div>
+
 
 <!-- ============= ARCHIVIVE REQUEST MODAL ============= -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayArchiveRequestModal}" style="background-color: rgba(90,90,90,0.5);">

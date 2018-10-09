@@ -430,6 +430,52 @@ button.close {
   width: 50%;
 }
 
+
+
+// You can use display: flex on a parent to align children items side-by-side. To specify that you want them centered, you can add justify-content: center;.
+
+.btn-group {
+    display: flex;
+    justify-content: center;
+}
+// This method replaces your need for floats, so I've removed them from the buttons themselves.
+
+div.centre {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0;
+  margin-bottom: 0;
+  align-content: center;
+  text-align: center;
+}
+
+div.bottomwhitespace {
+  padding-bottom: 100pt;
+  padding-top: 100pt;
+}
+
+.btn-group {
+   display: flex;
+   justify-content: center;
+}
+
+.btn-group .button {
+  background-color: #4CAF50;
+  /* Green */
+  margin-top: 35pt;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn-group .button:hover {
+  background-color: #3e8e41;
+}
+
   // start CHECKBOX
   /* Customize the label (the container) */
   .checkbox-container {
@@ -510,3 +556,41 @@ button.close {
 //     margin-bottom: 26px !important;
 //   }
   // end CHECKBOX
+
+// FIX TABLE VISUAL BUG: REMOVE THE ONE THAT SEEMS A LINE AFTER THE TABLE
+@media screen and (max-width: 767px) {
+  .table-responsive {
+      width: 100%;
+      margin-bottom: 0px; 
+  }
+}
+
+.fake-input { 
+  position: relative; 
+  // width:240px; 
+}
+.fake-input input { 
+  border:none; 
+  background:#fff; 
+  display:block; 
+  width: 100%; 
+  box-sizing: border-box 
+}
+
+.fake-input img { 
+  position: absolute; 
+  top: 9px; 
+  left: 5px 
+}
+
+.fake-input p { 
+  position: absolute; 
+  top: 5px; 
+  left: 40px 
+}
+
+.fake-input span { 
+  position: absolute; 
+  top: 25px; 
+  left: 40px 
+}
