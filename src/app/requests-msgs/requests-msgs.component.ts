@@ -81,7 +81,8 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   userlastname_selected: string;
   useremail_selected: string;
 
-  _isFirstRow = true;
+  isMobile: boolean;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -107,21 +108,28 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   onResize(event: any) {
 
     this.newInnerWidth = event.target.innerWidth;
-    console.log('REQUEST-MSGS - ON RESIZE -> WINDOW WITH ', this.newInnerWidth);
+    // console.log('REQUEST-MSGS - ON RESIZE -> WINDOW WITH ', this.newInnerWidth);
 
     this.newInnerHeight = event.target.innerHeight;
-    console.log('REQUEST-MSGS - ON RESIZE -> WINDOW HEIGHT ', this.newInnerHeight);
+    // console.log('REQUEST-MSGS - ON RESIZE -> WINDOW HEIGHT ', this.newInnerHeight);
 
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
     this.main_content_height = elemMainContent.clientHeight
-    console.log('REQUEST-MSGS - ON RESIZE -> MAIN CONTENT HEIGHT', this.main_content_height);
+    // console.log('REQUEST-MSGS - ON RESIZE -> MAIN CONTENT HEIGHT', this.main_content_height);
 
     // determine the height of the modal when the width of the window is <= of 991px when the window is resized
     // RESOLVE THE BUG: @media screen and (max-width: 992px) THE THE HEIGHT OF THE  MODAL 'USERS LIST' IS NOT 100%
     if (this.newInnerWidth <= 991) {
       this.users_list_modal_height = elemMainContent.clientHeight + 70 + 'px'
-      console.log('REQUEST-MSGS - *** MODAL HEIGHT ***', this.users_list_modal_height);
+      // console.log('REQUEST-MSGS - *** MODAL HEIGHT ***', this.users_list_modal_height);
     }
+
+    // remove the padding on small device
+    // if (this.newInnerWidth <= 768) {
+    //   elemMainContent.setAttribute('style', 'padding-right: 0px; padding-left: 0px');
+    // } else {
+    //   elemMainContent.setAttribute('style', 'padding-right: 15px; padding-left: 15px');
+    // }
   }
 
   // detect browser back button click
@@ -144,6 +152,19 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getRequestId();
     this.getCurrentProject();
     this.getLoggedUser();
+
+    this.detectMobile();
+  }
+
+  detectMobile() {
+    // this.isMobile = true;
+    this.isMobile = /Android|iPhone/i.test(window.navigator.userAgent);
+    console.log('REQUEST-MSGS - IS MOBILE ', this.isMobile);
+
+    if (this.isMobile) {
+      const elemMainContent = <HTMLElement>document.querySelector('.main-content');
+      elemMainContent.setAttribute('style', 'padding-right: 0px; padding-left: 0px; padding-top: 0px');
+    }
   }
 
   openSelectUsersModal() {
@@ -207,11 +228,14 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-  mouseOvered(event) {
-    // console.log('REQUEST-MSGS - MOUSE ON ROW ', event);
-    this._isFirstRow = false;
-    console.log('REQUEST-MSGS - MOUSE ON ROW ', this._isFirstRow );
-  }
+  // mouseOvered(event) {
+  //   // console.log('REQUEST-MSGS - MOUSE ON ROW ', event);
+  //   this._isFirstRow = false;
+  //   // console.log('REQUEST-MSGS - MOUSE ON ROW ', this._isFirstRow );
+  //   const firsrRow = <HTMLElement>document.querySelector('.tablerow')
+  //   console.log('REQUEST-MSGS - MOUSE ON ROW ', firsrRow );
+  //   firsrRow.setAttribute('style', 'background-color: #ffffff');
+  // }
 
   closeConfirmReassignmentModal() {
     this.displayConfirmReassignmentModal = 'none'

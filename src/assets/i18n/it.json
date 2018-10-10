@@ -453,7 +453,7 @@
         "AnErrorHasOccurred": "Si è verificato un errore durante la chiusura della richiesta",
         "Continue": "Continua",
         "Reassign":"Riassegna",
-        "SelectTheUserToWhom":"Seleziona un utente e riassegna la richiesta",
+        "SelectTheUserToWhom":"Assegna la richiesta a un altro utente",
         "ReassignRequestTo":"Riassegna richiesta a",
         "ReassignRequest":"Riassegna richiesta",
         "ReassignTo":"Riassegna a:",

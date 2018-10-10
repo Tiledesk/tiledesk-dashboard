@@ -453,10 +453,10 @@
         "AnErrorHasOccurred": "An error has occurred closing the request",
         "Continue": "Continue",
         "Reassign":"Reassign",
-        "SelectTheUserToWhom":"Select a user and reassign the request",
+        "SelectTheUserToWhom":"Assign the request to another user",
         "ReassignRequestTo":"Reassigns request to",
         "ReassignRequest":"Reassigns request",
-        "ReassignTo":"Reassigns to:",
+        "ReassignTo":"Assigns to:",
         "TheRequestWillBeReassignedTo":"The request will be reassigned to:"
     },
     "RequestMsgsPage": {
