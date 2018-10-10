@@ -80,6 +80,8 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   userfirstname_selected: string;
   userlastname_selected: string;
   useremail_selected: string;
+
+  _isFirstRow = true;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -97,6 +99,8 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
 
       console.log('PLATFORM LOCATION ON POP STATE')
     });
+
+    // console.log('REQUEST-MSGS - ON RESIZE -> WINDOW WITH ', this.newInnerWidth);
   }
 
   @HostListener('window:resize', ['$event'])
@@ -201,6 +205,12 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.displayConfirmReassignmentModal = 'block'
 
 
+  }
+
+  mouseOvered(event) {
+    // console.log('REQUEST-MSGS - MOUSE ON ROW ', event);
+    this._isFirstRow = false;
+    console.log('REQUEST-MSGS - MOUSE ON ROW ', this._isFirstRow );
   }
 
   closeConfirmReassignmentModal() {

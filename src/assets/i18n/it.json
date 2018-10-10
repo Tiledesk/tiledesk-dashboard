@@ -452,10 +452,12 @@
         "RequestArchived": "Richiesta chiusa",
         "AnErrorHasOccurred": "Si è verificato un errore durante la chiusura della richiesta",
         "Continue": "Continua",
-        "Riassign":"Riassegna",
-        "RiassignRequestTo":"Riassegna richiesta a",
-        "RiassignRequest":"Riassegna richiesta",
-        "TheRequestWillBeRiassignedTo":"La richiesta sarà riassegnata a:"
+        "Reassign":"Riassegna",
+        "SelectTheUserToWhom":"Seleziona un utente e riassegna la richiesta",
+        "ReassignRequestTo":"Riassegna richiesta a",
+        "ReassignRequest":"Riassegna richiesta",
+        "ReassignTo":"Riassegna a:",
+        "TheRequestWillBeReassignedTo":"La richiesta sarà riassegnata a:"
     },
     "RequestMsgsPage": {
         "MessagesOfTheRequest": "Messagi della richiesta",

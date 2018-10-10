@@ -452,10 +452,12 @@
         "RequestArchived": "Request closed",
         "AnErrorHasOccurred": "An error has occurred closing the request",
         "Continue": "Continue",
-        "Riassign":"Riassign",
-        "RiassignRequestTo":"Riassigns request to",
-        "RiassignRequest":"Riassigns request",
-        "TheRequestWillBeRiassignedTo":"The request will be riassigned to:"
+        "Reassign":"Reassign",
+        "SelectTheUserToWhom":"Select a user and reassign the request",
+        "ReassignRequestTo":"Reassigns request to",
+        "ReassignRequest":"Reassigns request",
+        "ReassignTo":"Reassigns to:",
+        "TheRequestWillBeReassignedTo":"The request will be reassigned to:"
     },
     "RequestMsgsPage": {
         "MessagesOfTheRequest": "Messages of the request",

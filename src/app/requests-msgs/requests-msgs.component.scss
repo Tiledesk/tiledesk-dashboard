@@ -528,6 +528,7 @@ button.close {
   }
 }
 
+// start IMAGE IN INPUT
 .fake-input { 
   position: relative; 
   // width:240px; 
@@ -556,4 +557,19 @@ button.close {
   position: absolute; 
   top: 25px; 
   left: 40px 
+}
+// end IMAGE IN INPUT
+
+// .assign-request {
+//   opacity: 0;
+// }
+// .assign-request:hover {
+//   opacity: 1;
+// }
+
+.RowHeaderCSS{
+  background-color: #666
+}
+.RowHeaderCSS:hover {
+  background-color: none
 }
