@@ -21,10 +21,10 @@ import { UsersService } from '../services/users.service';
   styleUrls: ['./requests-msgs.component.scss']
 })
 export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('scrollMe') 
+  @ViewChild('scrollMe')
   private myScrollContainer: ElementRef;
 
- 
+
 
   CHAT_BASE_URL = environment.chat.CHAT_BASE_URL
 
@@ -66,6 +66,11 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   ARCHIVE_REQUEST_ERROR = false;
 
   newInnerWidth: any;
+  newInnerHeight: any;
+
+  users_list_modal_height: any
+  main_content_height: any
+
   windowWidth: any;
 
   displayUsersListModal = 'none'
@@ -98,7 +103,21 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   onResize(event: any) {
 
     this.newInnerWidth = event.target.innerWidth;
-    console.log('ON RESIZE -> WINDOW WITH ', this.newInnerWidth);
+    console.log('REQUEST-MSGS - ON RESIZE -> WINDOW WITH ', this.newInnerWidth);
+
+    this.newInnerHeight = event.target.innerHeight;
+    console.log('REQUEST-MSGS - ON RESIZE -> WINDOW HEIGHT ', this.newInnerHeight);
+
+    const elemMainContent = <HTMLElement>document.querySelector('.main-content');
+    this.main_content_height = elemMainContent.clientHeight
+    console.log('REQUEST-MSGS - ON RESIZE -> MAIN CONTENT HEIGHT', this.main_content_height);
+
+    // determine the height of the modal when the width of the window is <= of 991px when the window is resized
+    // RESOLVE THE BUG: @media screen and (max-width: 992px) THE THE HEIGHT OF THE  MODAL 'USERS LIST' IS NOT 100%
+    if (this.newInnerWidth <= 991) {
+      this.users_list_modal_height = elemMainContent.clientHeight + 70 + 'px'
+      console.log('REQUEST-MSGS - *** MODAL HEIGHT ***', this.users_list_modal_height);
+    }
   }
 
   // detect browser back button click
@@ -127,6 +146,22 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getAllUsersOfCurrentProject();
     this.displayUsersListModal = 'block'
     console.log('REQUEST-MSGS - DISPLAY USERS LIST MODAL ', this.displayUsersListModal);
+    const actualHeight = window.innerHeight;
+    console.log('REQUEST-MSGS - ON OPEN USER LIST MODAL -> ACTUAL WINDOW HEIGHT  ', actualHeight);
+    const actualWidth = window.innerWidth;
+    console.log('REQUEST-MSGS - ON OPEN USER LIST MODAL -> ACTUAL WINDOW WIDTH  ', actualWidth);
+
+    const elemMainContent = <HTMLElement>document.querySelector('.main-content');
+    this.main_content_height = elemMainContent.clientHeight
+    console.log('REQUEST-MSGS - ON OPEN USER LIST MODAL -> ACTUAL MAIN CONTENT HEIGHT', elemMainContent.clientHeight);
+
+    // determine the height of the modal when the width of the window is <= of 991px when is opened the modal
+    // RESOLVE THE BUG: @media screen and (max-width: 992px) THE THE HEIGHT OF THE  MODAL 'USERS LIST' IS NOT 100%
+    if (actualWidth <= 991) {
+      this.users_list_modal_height = elemMainContent.clientHeight + 70 + 'px'
+      console.log('REQUEST-MSGS - *** MODAL HEIGHT ***', this.users_list_modal_height);
+    }
+
   }
 
   closeSelectUsersModal() {
@@ -142,15 +177,13 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
 
       this.projectUsersList = projectUsers;
 
-    },
-      error => {
-        this.showSpinner_inModalUserList = false;
-        console.log('REQUEST-MSGS - PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
-      },
-      () => {
-        this.showSpinner_inModalUserList = false;
-        console.log('REQUEST-MSGS - PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
-      });
+    }, error => {
+      this.showSpinner_inModalUserList = false;
+      console.log('REQUEST-MSGS - PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
+    }, () => {
+      this.showSpinner_inModalUserList = false;
+      console.log('REQUEST-MSGS - PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
+    });
   }
 
   selectUser(user_id: string, user_firstname: string, user_lastname: string, user_email: string) {
@@ -166,9 +199,11 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     // const testDiv = <HTMLElement>document.querySelector('.swap_btn');
     // console.log('REQUEST-MSGS - SELECTED USER ROW TOP OFFSET ', testDiv.offsetTop);
     this.displayConfirmReassignmentModal = 'block'
+
+
   }
 
-  closeConfirmReassignmentModal () {
+  closeConfirmReassignmentModal() {
     this.displayConfirmReassignmentModal = 'none'
   }
 
