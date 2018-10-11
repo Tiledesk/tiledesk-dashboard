@@ -461,8 +461,10 @@
     },
     "RequestMsgsPage": {
         "MessagesOfTheRequest": "Messagi della richiesta",
+        "Messages": "Messagi",
         "RequestAttributes": "Attributi richiesta",
         "Request": "Richiesta",
+        "RequestDetails": "Dettagli richiesta",
         "Enter": "Entra",
         "OpenTheChat": "Apri la chat",
         "Loading": "Elaborazione",

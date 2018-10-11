@@ -461,8 +461,10 @@
     },
     "RequestMsgsPage": {
         "MessagesOfTheRequest": "Messages of the request",
+        "Messages": "Messages",
         "RequestAttributes": "Request's Attributes",
         "Request": "Request",
+        "RequestDetails": "Request details",
         "Enter": "Enter",
         "OpenTheChat": "Open the chat",
         "Loading": "Loading",
