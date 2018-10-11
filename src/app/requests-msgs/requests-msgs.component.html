@@ -11,13 +11,65 @@
     <loading-spinner *ngIf="showSpinner"></loading-spinner>
     <div *ngIf="!showSpinner" class="row is-flex">
 
-      <div class="col-sm-7">
+      <div class="col-sm-7 chat-col">
         <div class="card chat-card" style="padding-top:0px; padding-bottom:0px;">
-            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-top: 18px; margin-bottom: 0px; border-bottom: 1px solid #eeeeee; padding-bottom: 15px; padding-left:25px; padding-right:25px">
-                <!-- Request  -->
-                {{ "RequestMsgsPage.Messages" | translate }}
-                <!-- <code style="color: #566787; font-weight: 400" >{{cut_support_group_from_request_id(id_request)}} </code> -->
-              </h4>
+          <div class="row" style="border-bottom: 1px solid #eeeeee; padding-left:25px; padding-right:25px">
+              <div class="col-sm-12">
+            <div>
+                <div style="float: left; width: 50%; ">
+                  <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-top: 18px; margin-bottom: 0px; padding-bottom: 15px;">
+                    {{ "RequestMsgsPage.Messages" | translate }}
+                    <!-- <code style="color: #566787; font-weight: 400" >{{cut_support_group_from_request_id(id_request)}} </code> -->
+                  </h4>
+                </div>
+                <div style="float: right; width: 50%; ">
+                    <div class="dropdown pull-right">
+                        <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
+                            Actions
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu ">
+                          <li><a href="#">Action</a></li>
+                          <li><a href="#">Another action</a></li>
+                          <li><a href="#">Something else here</a></li>
+                          <li class="divider"></li>
+                          <li><a href="#">Separated link</a></li>
+                          <li class="divider"></li>
+                          <li><a href="#">One more separated link</a></li>
+                        </ul>
+                      </div>
+                </div>
+            </div>
+            </div>
+            </div>
+            <!-- <div class="row" style="border-bottom: 1px solid #eeeeee; padding-left:25px; padding-right:25px"> 
+              <div class="col-sm-6">
+                <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-top: 18px; margin-bottom: 0px; padding-bottom: 15px;">
+                  {{ "RequestMsgsPage.Messages" | translate }}
+                  
+                </h4>
+              </div>
+              <div class="col-sm-6">
+                  <div class="dropdown pull-right">
+                      <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
+                          Actions
+                          <b class="caret"></b>
+                      </a>
+                      <ul class="dropdown-menu ">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">One more separated link</a></li>
+                      </ul>
+                    </div>
+              </div>
+            </div> -->
+   
+
+
           <div #scrollMe class="card-content" style="height: 500px; overflow-y: auto; padding: 0px; padding-left:25px; padding-right:25px " (scroll)="onScroll($event)">
 
             <!-- OLD CHAT -->
@@ -248,8 +300,8 @@
       <!-- ./ col-md-7 -->
 
       <!-- // SIDEBAR // -->
-      <div class="col-sm-5">
-        <div class="card" style="padding-top:5px; padding-bottom:5px;">
+      <div class="col-sm-5 right-col">
+        <div class="card right-card" style="padding-top:5px; padding-bottom:5px;">
 
           <div class="card-content" style="padding-top:5px;">
             
@@ -470,7 +522,7 @@
 <!-- ------------============= USERS LIST MODAL - FULL WIDTH MODAL =============------------ -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayUsersListModal , 'height': users_list_modal_height}" 
   style="background-color: rgba(90,90,90,0.5);">
-  <div class="modal-dialog modal-lg users-list-modal" role="document" style="width: 100%; height: 100%; margin:0; padding: 0; overflow-y: scroll">
+  <div class="modal-dialog modal-lg users-list-modal" role="document" style="width: 100%; height: 100%; margin:0; padding: 0;">
     <div class="modal-content" style="height: auto; min-height: 100%; border-radius: 0; border:none;">
       
       <div class="modal-header">

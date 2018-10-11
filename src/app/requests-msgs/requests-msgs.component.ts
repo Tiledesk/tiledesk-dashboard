@@ -161,10 +161,13 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isMobile = /Android|iPhone/i.test(window.navigator.userAgent);
     console.log('REQUEST-MSGS - IS MOBILE ', this.isMobile);
 
+    // CUSTOMIZE CARDS AND NAVBAR IF TILEDESK DASHBOARD IS RUNNED ON MOBILE
     if (this.isMobile) {
       const elemMainContent = <HTMLElement>document.querySelector('.main-content');
       elemMainContent.setAttribute('style', 'padding-right: 0px; padding-left: 0px; padding-top: 0px');
+      console.log('REQUEST-MSGS - MOBILE DETECTED - SET ATTIBUTE TO AMAIN CONTENT ', elemMainContent);
     }
+
   }
 
   openSelectUsersModal() {

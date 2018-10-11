@@ -588,15 +588,34 @@ button.close {
     }
 }
 
-
-/* CUSTOM MARGIN FOR THE CARD WITH THE CHAT ON Small Devices, Tablets */
+/** ================ SMALL DEVICES CUSTOMIZATIONS  (NOTE: IN THE .ts IS CUSTOMIZED THE .main-content )================ **/
+/* CUSTOM MARGIN AND PADDIG FOR THE CARDS AND THE ROWS THAT CONTAINS THEM WHEN ON Small Devices, Tablets */
 @media only screen and (max-width : 768px) {
   .chat-card {
     margin-top: 0px !important;
   }
+  .right-card {
+    margin-top: 0px !important;
+  }
+  .chat-col {
+    padding-right: 4px !important;
+    padding-left: 4px !important;
+  }
+
+  .right-col {
+    padding-right: 4px !important;
+    padding-left: 4px !important;
+  }
 }
 
-// USER LIST MODAL: re SCROLL WHEN SCREEN WIDTH IS > 991
+
+
+
+.users-list-modal {
+  overflow-y: scroll !important; 
+}
+
+// USER LIST MODAL: REMOVE THE SCROLL WHEN SCREEN WIDTH IS > 991
 @media (max-width: 992px) {
   .users-list-modal {
     overflow-y: hidden !important; 
