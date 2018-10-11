@@ -451,13 +451,17 @@
         "Completed": "Completato",
         "RequestArchived": "Richiesta chiusa",
         "AnErrorHasOccurred": "Si è verificato un errore durante la chiusura della richiesta",
+        "AnErrorHasOccurredLeavingTheChat": "Si è verificato un errore durante l'uscita dalla chat",
         "Continue": "Continua",
         "Reassign":"Riassegna",
         "SelectTheUserToWhom":"Assegna la richiesta a un altro utente",
         "ReassignRequestTo":"Riassegna richiesta a",
         "ReassignRequest":"Riassegna richiesta",
         "ReassignTo":"Riassegna a:",
-        "TheRequestWillBeReassignedTo":"La richiesta sarà riassegnata a:"
+        "TheRequestWillBeReassignedTo":"La richiesta sarà riassegnata a:",
+        "LeaveChat":"Abbandona chat",
+        "AreYouSureLeftTheChat":"Sei sicuro di voler abbandonare la chat?",
+        "ChatLeft":"Chat abbandonata"
     },
     "RequestMsgsPage": {
         "MessagesOfTheRequest": "Messagi della richiesta",
@@ -465,7 +469,7 @@
         "RequestAttributes": "Attributi richiesta",
         "Request": "Richiesta",
         "RequestDetails": "Dettagli richiesta",
-        "Enter": "Entra",
+        "Enter": "Partecipa alla chat",
         "OpenTheChat": "Apri la chat",
         "Loading": "Elaborazione",
         "Error": "Errore",

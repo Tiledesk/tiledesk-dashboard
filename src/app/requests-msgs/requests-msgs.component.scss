@@ -224,7 +224,8 @@
 
   #fixed-button {
     bottom: 85px;
-    right: 55px;
+    // right: 55px;
+    right: 25px;
     position: absolute;
     background-color: #eeeeee;
     padding-right: 6px;
@@ -264,21 +265,46 @@
 // DISABLE THE OPEN THE CHAT BTN
 .disable_open_the_chat_btn {
   background-color: #999999;
+  box-shadow:none !important;
 }
 
 .disable_open_the_chat_btn:hover {
   background-color: #999999;
 } 
 
-// !!! no more used (substitutes by close_request_btn )- 
-// ARCHIVE BTN - OUTLINE STYLE
-.archive_btn {
+// DISABLE DROPDOWN BTNS 'LEAVE THE CHAT' AND 'REASSIGN THE REQUEST' IF THE CURRENT USER IS NOT JOINED
+.disable-dropdown-menu-btn {
+  pointer-events:none;
+  opacity:0.6;
+  // cursor: not-allowed;
+}
+
+//  OUTLINE STYLE
+.outline_btn {
   background-color: #fff; 
-  border: 1px solid #00bcd4; 
+  border: 1px solid #00bcd4;  
+  
   color: #00bcd4;
   box-shadow: 0 2px 2px 0 rgba(0, 188, 212, 0), 0 3px 1px -2px rgba(0, 188, 212, 0.2), 0 1px 5px 0 rgba(0, 188, 212, 0.12);
-  padding: 11px 11px;
+  // padding: 11px 11px;
 }
+
+// NO BOX-SHADOW FOE THE OUTLINE BTN THAT HAS ALSO THE CLASS .btn-info
+.pull-right .btn-info {
+  box-shadow: none !important ;
+}
+
+
+.outline_btn:focus {
+  border: 1px solid #00bcd4 !important;  
+}
+// .outline_btn:active {
+//   box-shadow: none !important;
+// }
+// .archive_btn:hover {
+//   background-color: #00bcd4 !important; 
+// }
+
 // CLOSE BTN - OUTLINE STYLE
 .close_request_btn {
   background-color: #fff; 

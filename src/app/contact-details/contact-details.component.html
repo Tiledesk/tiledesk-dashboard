@@ -10,11 +10,8 @@
   
       <div class="col-md-8">
         <div class="card" style="">
-          <div class="card-content">
-
-
-            <loading-spinner *ngIf="showSpinner"></loading-spinner>
-            <div  *ngIf="!showSpinner" class="card-content table-responsive" style="padding-bottom:5px">
+          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+          <div  *ngIf="!showSpinner" class="card-content table-responsive" style="padding-bottom:5px">
 
               <table class="table table-hover">
                 <thead class="text">
@@ -28,7 +25,7 @@
                     <th style="padding-top: 6px;">
                       <span style="color: #566787">
                         <strong> 
-                          {{ 'Message' | translate }}
+                          {{ 'Requests' | translate }}
                         </strong>
                       </span>
                     </th>
@@ -96,14 +93,13 @@
                   </tr> 
 
                   <tr *ngFor="let request of requests_list">
-
-                    
-                    
+              
                     <td style="text-align:center">
   
                       <!-- // CLOSED REQUESTS -->
                       <span *ngIf="request?.status === 1000" (click)='goToRequestMsgs(request?.request_id)'>
                         <!-- pull-right -->
+
                         <button class="btn btn-default btn-visibility-custom">
                           <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                         </button>
@@ -219,7 +215,7 @@
             </div>
 
 
-          </div>
+          
         </div>
       </div>
       <!-- /. end col-md-8 -->

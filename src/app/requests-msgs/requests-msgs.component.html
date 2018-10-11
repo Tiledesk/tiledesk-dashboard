@@ -14,8 +14,8 @@
       <div class="col-sm-7 chat-col">
         <div class="card chat-card" style="padding-top:0px; padding-bottom:0px;">
           <div class="row" style="border-bottom: 1px solid #eeeeee; padding-left:25px; padding-right:25px">
-              <div class="col-sm-12">
-            <div>
+            <div class="col-sm-12">
+              <div class="two-div-wrapper">
                 <div style="float: left; width: 50%; ">
                   <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-top: 18px; margin-bottom: 0px; padding-bottom: 15px;">
                     {{ "RequestMsgsPage.Messages" | translate }}
@@ -23,55 +23,48 @@
                   </h4>
                 </div>
                 <div style="float: right; width: 50%; ">
-                    <div class="dropdown pull-right">
-                        <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
-                            Actions
-                            <b class="caret"></b>
-                        </a>
-                        <ul class="dropdown-menu ">
-                          <li><a href="#">Action</a></li>
-                          <li><a href="#">Another action</a></li>
-                          <li><a href="#">Something else here</a></li>
-                          <li class="divider"></li>
-                          <li><a href="#">Separated link</a></li>
-                          <li class="divider"></li>
-                          <li><a href="#">One more separated link</a></li>
-                        </ul>
-                      </div>
-                </div>
-            </div>
-            </div>
-            </div>
-            <!-- <div class="row" style="border-bottom: 1px solid #eeeeee; padding-left:25px; padding-right:25px"> 
-              <div class="col-sm-6">
-                <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-top: 18px; margin-bottom: 0px; padding-bottom: 15px;">
-                  {{ "RequestMsgsPage.Messages" | translate }}
-                  
-                </h4>
-              </div>
-              <div class="col-sm-6">
+
+                  <!-- -----------------============= ACTIONS DROPDOWN MENU =============----------------- -->
                   <div class="dropdown pull-right">
-                      <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
-                          Actions
-                          <b class="caret"></b>
-                      </a>
-                      <ul class="dropdown-menu ">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">One more separated link</a></li>
-                      </ul>
-                    </div>
+                    <a href="#" class="btn btn-info dropdown-toggle outline_btn" data-toggle="dropdown" style="padding:6px 15px; margin-top: 15px">
+                        {{ 'VisitorsPage.Actions' | translate }}
+                    <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li>
+                        <a (click)='openArchiveRequestModal(request?.recipient)' style="padding-left: 15px; padding-right: 15px;">
+                          <i class="material-icons" style="padding-right: 5px;">close</i>
+                          <span style="position: relative; top: 1px;"> 
+                          {{ 'RequestMsgsPage.CloseTheRequest' | translate }}  
+                        </span>
+                        </a>
+                      </li>
+                      <li class="divider"></li>
+                      <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false}"> 
+                        <a (click)='openSelectUsersModal()' style="padding-left: 15px; padding-right: 15px;">
+                            <i class="material-icons" style="padding-right: 5px;">swap_horiz</i>
+                            <span style="position: relative; top: 1px;">
+                                {{ 'VisitorsPage.ReassignRequest' | translate }}
+                            </span>
+                        </a>
+                      </li>
+                      <li class="divider"></li>
+                      <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false}">
+                          
+                        <a (click)='openleaveChatModal()' style="padding-left: 15px; padding-right: 15px;">
+                            <i class="material-icons" style="padding-right: 5px;">exit_to_app</i>
+                          <span style="position: relative; top: 1px;"> 
+                            {{ 'VisitorsPage.LeaveChat' | translate }}
+                          </span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
               </div>
-            </div> -->
-   
-
-
-          <div #scrollMe class="card-content" style="height: 500px; overflow-y: auto; padding: 0px; padding-left:25px; padding-right:25px " (scroll)="onScroll($event)">
-
+          </div>
+        </div>
+        <div #scrollMe class="card-content" style="height: 500px; overflow-y: auto; padding: 0px; padding-left:25px; padding-right:25px " (scroll)="onScroll($event)">
             <!-- OLD CHAT -->
             <!-- <div *ngFor="let message of messagesList" style="vertical-align:baseline">
               <div class="row">
@@ -103,145 +96,86 @@
               </div>
             </div> -->
 
-            <div class="chat-body" style="vertical-align:baseline">
-              <div style="padding-bottom: 3px;" class="answer left" *ngFor="let message of messagesList">
-                <div class="avatar" style="  width: 35px; height: 35px; position: absolute;">
-                  <!-- <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User name" style="display: block;border-radius: 20px; height: 100%; margin-top: 35px;"> -->
-                  <div style="display: block;border-radius: 20px; height: 100%; margin-top: 35px; background-color: #ebebeb">
-                    <span class="senderFullname" style="position: absolute; top:43px; margin-left:13px; color: #999999; text-transform: uppercase">
-                      {{ messageSenderInitialLetter( message.sender_fullname )}}
-                    </span>
-                  </div>
+          <div class="chat-body" style="vertical-align:baseline">
+            <div style="padding-bottom: 3px;" class="answer left" *ngFor="let message of messagesList">
+              <div class="avatar" style="  width: 35px; height: 35px; position: absolute;">
+                <!-- <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User name" style="display: block;border-radius: 20px; height: 100%; margin-top: 35px;"> -->
+                <div style="display: block;border-radius: 20px; height: 100%; margin-top: 35px; background-color: #ebebeb">
+                  <span class="senderFullname" style="position: absolute; top:43px; margin-left:13px; color: #999999; text-transform: uppercase">
+                    {{ messageSenderInitialLetter( message.sender_fullname )}}
+                  </span>
+                </div>
   
-                </div>
-                <div class="name">
-                  <strong>{{ message.sender_fullname }}</strong>
-                </div>
-                <div class="row">
+              </div>
+              <div class="name">
+                <strong>{{ message.sender_fullname }}</strong>
+              </div>
+              <div class="row">
   
                 <div class="col-xs-11 text" style=" margin-left: 6px; vertical-align: middle; padding-top: 5px;padding-bottom: 5px;">
-                  <!-- <div class="text"> -->
-                        <!-- <div  style=" background: #ebebeb; height: 100%; float: right"> -->
+                    <!-- <div class="text"> -->
+                          <!-- <div  style=" background: #ebebeb; height: 100%; float: right"> -->
                   <span class="messageTime" style=" float: right; padding-right: 0px; font-size: 11px; color:#aaa">
                     {{ message.timestamp | date: 'd/M/y HH:mm:ss'}}
                   </span>
-                  <!-- </div> -->
+                    <!-- </div> -->
                   <div class="col-xs-8 col-sm-8 col-lg-8" style=" padding-left: 5px; padding-top: 5px;">
                       <!-- min-width: 300px; -->
                     <div class="messageText" style="font-size: 13px; line-height: normal; ">
                       {{ message.text }}
                     </div>
                   </div>
-                  <!-- </div> -->
-
-
+                    <!-- </div> -->
                 </div>
-
-                
-                </div>
-                <!-- <div class="time">5 min ago</div> -->
               </div>
+                <!-- <div class="time">5 min ago</div> -->
             </div>
-           
-            <a id="fixed-button"  class="button" [ngStyle]="{'display':displayBtnScrollToBottom }" (click)="scrollToBottom()" >
-              <span class="icon is-small">
-                <i class="fa fa-chevron-down"></i>
-              </span>
-            </a>
-
           </div>
+           
+          <a id="fixed-button"  class="button" [ngStyle]="{'display':displayBtnScrollToBottom }" (click)="scrollToBottom()" >
+            <span class="icon is-small">
+              <i class="fa fa-chevron-down"></i>
+            </span>
+          </a>
 
-          <div class="card-footer" style="text-align: center; margin-bottom: 0px;padding-top: 2px; margin:auto">
-            <div class="stats" style="width: 100%;">
-              
-              <!-- <div class="row" style="width: 100%">
-                <div class="col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-3">
-                  <span *ngIf="HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === true || IS_CURRENT_USER_JOINED === true">
-                      <button (click)="openChatInNewWindow()" class="btn btn-info open_the_chat_btn" role="button" 
-                        style="padding:12px 16px !important;" [disabled]="request?.support_status == 1000"
-                        [ngClass]="{'disable_open_the_chat_btn' : request?.support_status == 1000}">   
-                      <i class="material-icons" style="vertical-align: middle;  top:0px !important; padding-bottom: 2px;">open_in_new</i>
-                      <span style="vertical-align: middle"> {{ 'RequestMsgsPage.OpenTheChat' | translate }}</span>
-                    </button>
-                  </span> -->
+        </div>
 
-                  <!-- ENTER   Join // changed the translation to 'Join' in 'Enter' -->
-                  <!-- <span *ngIf="JOIN_TO_GROUP_HAS_ERROR === false 
-                      && IS_CURRENT_USER_JOINED === false 
-                      && SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === false 
-                      && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false">
-                    <button class="btn btn-default" (click)="onJoinHandled()" 
-                      style="padding:12px 37px !important;" [disabled]="request?.support_status == 1000">
-                      {{ 'RequestMsgsPage.Enter' | translate }}
-                    </button>
-                  </span> -->
-
-                  <!-- LOADING BTN -->
-                  <!-- <span *ngIf="SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === true 
-                      && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false  
-                      && JOIN_TO_GROUP_HAS_ERROR === false">
-                    <button class="btn btn-default" style="padding:12px 16px !important;" btn-block>
-                      <i class="fa fa-spinner fa-spin" style="margin-right: 5px;"></i> 
-
-                        {{ 'RequestMsgsPage.Loading' | translate }}
-                    </button>
-                  </span> -->
-
-                  <!-- IF THE CALLBALL JOIN-TO-GROUP HAS ERROR SHOWS THE BTN ERROR (DISABLED)  -->
-                  <!-- <span *ngIf="JOIN_TO_GROUP_HAS_ERROR === true">
-                    <button class="btn btn-danger" disabled style="padding:12px 16px !important;">
-                      {{ 'RequestMsgsPage.Error' | translate }}
-                    </button>
-                  </span>
-                </div> -->
-
-                 <!-- CLOSE REQUEST BTN -->
-                <!-- <div class="col-sm-3 col-xs-3" style="text-align: right">
-                  <button type="button" class="btn btn-danger close_request_btn tooltipx"
-                    (click)='openArchiveRequestModal(request?.recipient)' style="vertical-align: middle;margin-top: 12px; padding:8px" 
-                    [ngClass]="{'disable_archive_btn' : request?.support_status == 1000}" [disabled]="request?.support_status == 1000">
-                    <i class="material-icons" style="vertical-align: middle; top:0px !important; padding-bottom: 2px;">
-                      clear
-                    </i>
-                    <span class="tooltiptext">{{ 'RequestMsgsPage.CloseTheRequest' | translate }}</span>
-                  </button>
-                </div> -->
-              <!-- </div>  -->
-             
-
-
-              <!-- -------------------================== start new three btn ==================------------------- -->
-              <div class="row" style="width: 100%">
+        <div class="card-footer" style="text-align: center; margin-bottom: 0px;padding-top: 2px; margin:auto">
+          <div class="stats" style="width: 100%;">
+ 
+            <!-- -------------------================== start new three btn ==================------------------- -->
+            <div class="row" style="width: 100%">
                 
-                <div class="col-xs-4 col-sm-4 col-md-4" style="padding-right:5px">
-                  <button type="button" class="btn btn-danger btn-block tooltipx"
-                    (click)='openArchiveRequestModal(request?.recipient)' style="vertical-align: middle; padding-left: 0px;padding-right: 0px;" 
-                    [disabled]="request?.support_status == 1000">
-                    <!-- <i class="material-icons" style="vertical-align: middle; top:0px !important; padding-bottom: 2px;">
-                      clear
-                    </i> -->
+              <!-- -------------------====== CLOSE CHAT - MOVED IN DROPDOWN ======------------------- -->
+              <!-- <div class="col-xs-4 col-sm-4 col-md-4" style="padding-right:5px">
+                <button type="button" class="btn btn-danger btn-block tooltipx"
+                  (click)='openArchiveRequestModal(request?.recipient)' style="vertical-align: middle; padding-left: 0px;padding-right: 0px;" 
+                  [disabled]="request?.support_status == 1000">
                     {{ 'RequestMsgsPage.Close' | translate }}
-                    <span class="tooltiptext">{{ 'RequestMsgsPage.CloseTheRequest' | translate }}</span>
-                  </button>
-                </div>
+                  <span class="tooltiptext">{{ 'RequestMsgsPage.CloseTheRequest' | translate }}</span>
+                </button>
+              </div> -->
                 
-                <!-- ------------============ BTN SWITCH: ENTER, LOADING, ERROR, OPEN THE CHAT ============------------ -->
-                <div class="col-xs-4 col-sm-4 col-md-4" style="padding-left:5px; padding-right:5px"> 
+              <!-- ------------============ BTNS SWITCH: OPEN THE CHAT, ENTER, LOADING, ERROR ============------------ -->
+              <!-- [disabled]="request?.support_status == 1000" -->
+              <div class="col-xs-12" style="padding-left:5px; padding-right:5px"> 
+                
+                <div class="centered-buttons" style="width: 100%; padding: 0px 35px;">
                   <span *ngIf="HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === true || IS_CURRENT_USER_JOINED === true">
                     <button (click)="openChatInNewWindow()" class="btn btn-info btn-block open_the_chat_btn" role="button" 
-                    style="padding-left: 0px; padding-right: 0px" [disabled]="request?.support_status == 1000"
+                    style="padding-left: 0px; padding-right: 0px" 
                     [ngClass]="{'disable_open_the_chat_btn' : request?.support_status == 1000}">   
                       
-                      <!-- <i class="material-icons" style="vertical-align: middle;  top:0px !important; padding-bottom: 2px;">open_in_new</i> -->
+                      <i class="material-icons" style="vertical-align: middle;  top:0px !important; padding-bottom: 2px;">open_in_new</i>
                     <span style="vertical-align: middle"> {{ 'RequestMsgsPage.OpenTheChat' | translate }}</span>
                     </button>
                   </span>
-      
+    
                   <span *ngIf="JOIN_TO_GROUP_HAS_ERROR === false 
                       && IS_CURRENT_USER_JOINED === false 
                       && SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === false 
                       && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false">
-                    <button class="btn btn-default btn-block" (click)="onJoinHandled()" 
+                    <button class="btn btn-info btn-block" (click)="onJoinHandled()" 
                       style="padding-left: 0px;padding-right: 0px;" [disabled]="request?.support_status == 1000">
                       {{ 'RequestMsgsPage.Enter' | translate }}
                     </button>
@@ -255,7 +189,7 @@
                         {{ 'RequestMsgsPage.Loading' | translate }}
                     </button>
                   </span>
-      
+    
                   <span *ngIf="JOIN_TO_GROUP_HAS_ERROR === true">
                     <button class="btn btn-danger btn-block" disabled style="padding-left: 0px;padding-right: 0px;">
                       {{ 'RequestMsgsPage.Error' | translate }}
@@ -263,41 +197,27 @@
                   </span>
                 </div>
 
-                <!-- -------------------============ BTN REASSIGN REQUETS ============------------------- -->
-                <div class="col-xs-4 col-sm-4 col-md-4" style="padding-left:5px;">
-                    <button type="button" class="btn btn-warning btn-block tooltipx"
+                <!--  -------------------====== BTN REASSIGN REQUETS - MOVED IN DROPDOWN ======----------------- -->
+                <!-- <div class="col-xs-4 col-sm-4 col-md-4" style="padding-left:5px;">
+                  <button type="button" class="btn btn-warning btn-block tooltipx"
                       (click)='openSelectUsersModal()' 
                       style="vertical-align: middle; padding-left: 0px;padding-right: 0px;" 
                       [disabled]="request?.support_status == 1000">
                       {{ 'VisitorsPage.Reassign' | translate }}
-                    <!-- <i class="material-icons" style="vertical-align: middle; top:0px !important; padding-bottom: 2px;">
-                        swap_horiz
-                    </i> -->
                     
                     <span class="tooltiptext" style="text-transform:none">
                       {{ 'VisitorsPage.ReassignRequest' | translate }}
                     </span>
                   </button>
-                  
-                </div>
-              </div> <!-- ./end new three btn -->
+                </div> -->
+              </div>
+            </div> <!-- ./end ROW -->
              
-            </div>
-
-            <!-- <div class="bottomwhitespace" class="centre">
-                <div class="btn-group">
-                  <button class="button">My first button</button>
-                  <button class="button">My second button</button>
-                  <button class="button">My third button</button>
-                </div>
-              </div> -->
-
-
           </div>
-        </div>  
-        <!-- ./ card   -->
-      </div>
-      <!-- ./ col-md-7 -->
+
+        </div>
+        </div>  <!-- ./ card   -->
+      </div> <!-- ./ col-md-7 -->
 
       <!-- // SIDEBAR // -->
       <div class="col-sm-5 right-col">
@@ -866,3 +786,112 @@
   </div>
   <!-- /.modal-dialog -->
 </div>
+
+<!-- ============= LEAVE CHAT MODAL ============= -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayLeaveChatModal}" style="background-color: rgba(90,90,90,0.5);">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <!-- background-color:#ff5252; -->
+        <div class="modal-header" style="padding-bottom:15px">
+          <button type="button" class="close" aria-label="Close" (click)="closeLeaveChatModal()">
+              <!-- color: #fff -->
+            <span aria-hidden="true" style="">&times;</span>
+          </button>
+          <h4 class="modal-title" style="color: #f44336">
+              <i class="material-icons" style="vertical-align: middle">info</i>
+              <span style="vertical-align: middle; padding-left:8px">
+                {{ "VisitorsPage.LeaveChat" | translate }}
+              </span>
+          </h4>
+        </div>
+        <div class="modal-body">
+            <p style="font-weight:400; text-align: left; margin-top: 10px; color: #566787">
+
+              {{ "VisitorsPage.AreYouSureLeftTheChat" | translate }} <br>
+             </p>
+  
+        </div>
+        <div class="modal-footer" style="margin-top: 0px;">
+          <button class="btn btn-white" (click)="closeLeaveChatModal()" style="padding:12px 16px;">
+            <!-- Annulla -->
+            {{ "VisitorsPage.Cancel" | translate }}
+          </button>
+          <button style="margin-top:0px" class="btn btn-danger" (click)="leaveChat()" style="padding:12px 16px;">
+            <!-- Archivia Richiesta -->
+            {{ "VisitorsPage.LeaveChat" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ INFO MODAL: LEAVING CHAT IN PROGRESS ============ -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayLeavingChatInfoModal}" style="background-color: rgba(90,90,90,0.5);">
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" (click)="closeLeavingChatInfoModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+  
+          <h4 class="modal-title">
+              {{ "VisitorsPage.LeaveChat" | translate }}
+ 
+          </h4>
+        </div>
+  
+        <div class="modal-body" style="padding-right: 15px; padding-top:15px; padding-bottom:15px">
+        
+          <span *ngIf="SHOW_CIRCULAR_SPINNER">
+            <div  class="loader" style="top:25%;">
+              <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+              </svg>
+  
+            </div>
+            <p style="margin-top: 60px; text-align: center; color: #566787; font-weight: 500">
+                {{ "VisitorsPage.Processing" | translate }}
+            </p>
+          </span>
+  
+          <span *ngIf="!SHOW_CIRCULAR_SPINNER && !LEAVE_CHAT_ERROR ">
+              
+            <div style="text-align: center">
+              <i class="material-icons" style="color:#70b665">done</i>
+              <p style="color:#70b665; font-weight: 500">
+                  {{ "VisitorsPage.Completed" | translate }}
+              </p> 
+  
+            </div>
+            <p style="margin-top:10px; text-align: center; color: #566787; font-weight: 500">
+                {{ "VisitorsPage.ChatLeft" | translate }}
+            </p>
+          </span>
+  
+          <!-- IF THERE IS AN ERROR -->
+          <span *ngIf="!SHOW_CIRCULAR_SPINNER && LEAVE_CHAT_ERROR">
+            
+            <div style="text-align: center ">
+              <i class="material-icons" style="color:#ff5252">report_problem</i>
+              <p style="color:#ff5252; font-weight: 500">
+                  {{ "VisitorsPage.Error" | translate }}
+              </p> 
+  
+            </div>
+            <p style="margin-top:10px; text-align: center; color: #566787; font-weight: 500">
+                {{ "VisitorsPage.AnErrorHasOccurredLeavingTheChat" | translate }}
+            </p>
+          </span>
+        </div>
+  
+        <div class="modal-footer" style="text-align: center;">
+          <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="closeLeavingChatInfoModal()" style="padding:12px 16px;">
+            {{ "VisitorsPage.Continue" | translate }}
+          </button>
+        </div>
+  
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>

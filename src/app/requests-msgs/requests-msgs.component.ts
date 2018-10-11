@@ -64,6 +64,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   SHOW_CIRCULAR_SPINNER = false;
   displayArchivingInfoModal = 'none';
   ARCHIVE_REQUEST_ERROR = false;
+  LEAVE_CHAT_ERROR = false;
 
   newInnerWidth: any;
   newInnerHeight: any;
@@ -74,6 +75,8 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   windowWidth: any;
 
   displayUsersListModal = 'none'
+  displayLeaveChatModal = 'none'
+  displayLeavingChatInfoModal = 'none'
   projectUsersList: any;
 
   userid_selected: string;
@@ -325,15 +328,13 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
         // if (data.length) {
         // this.scrollToBottom();
         // }
-      },
-        (err) => {
-          console.log('GET MESSAGES LIST ERROR ', err);
-          this.showSpinner = false;
-        },
-        () => {
-          console.log('GET MESSAGES LIST * COMPLETE *');
-          // this.showSpinner = false;
-        });
+      }, (err) => {
+        console.log('GET MESSAGES LIST ERROR ', err);
+        this.showSpinner = false;
+      }, () => {
+        console.log('GET MESSAGES LIST * COMPLETE *');
+        // this.showSpinner = false;
+      });
 
   }
 
@@ -489,7 +490,8 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.ARCHIVE_REQUEST_ERROR = false;
 
             // =========== NOTIFY SUCCESS===========
-            this.notify.showNotification(`request with id: ${this.id_request_to_archive} has been moved to History`, 2, 'done');
+            // with id: ${this.id_request_to_archive}
+            this.notify.showNotification(`the request has been moved to History`, 2, 'done');
           });
     });
   }
@@ -520,7 +522,6 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   // JOIN TO CHAT GROUP
   onJoinHandled() {
     this.getFirebaseToken(() => {
-
       console.log('JOIN PRESSED');
       this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = true;
       // this.requestsService.joinToGroup(this.currentUserFireBaseUID, this.requestRecipient)
@@ -528,20 +529,58 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
         .subscribe((data: any) => {
 
           console.log('JOIN TO CHAT GROUP ', data);
-        },
-          (err) => {
-            console.log('JOIN TO CHAT GROUP ERROR ', err);
-            this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
-            this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = false;
-            this.JOIN_TO_GROUP_HAS_ERROR = true;
-          },
-          () => {
-            console.log('JOIN TO CHAT GROUP COMPLETE');
+        }, (err) => {
+          console.log('JOIN TO CHAT GROUP ERROR ', err);
+          this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
+          this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = false;
+          this.JOIN_TO_GROUP_HAS_ERROR = true;
+        }, () => {
+          console.log('JOIN TO CHAT GROUP COMPLETE');
 
-            this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
-            this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = true;
-          });
+          this.notify.showNotification(`You are successfully added to the chat`, 2, 'done');
+          this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
+          this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = true;
+        });
     });
+  }
+
+  openleaveChatModal() {
+    this.displayLeaveChatModal = 'block'
+   }
+
+  leaveChat() {
+   this.displayLeaveChatModal = 'none'
+
+   this.displayLeavingChatInfoModal = 'block';
+   this.SHOW_CIRCULAR_SPINNER = true;
+  
+
+   this.getFirebaseToken(() => {
+      this.requestsService.leaveTheGroup(this.id_request, this.firebase_token, this.currentUserID)
+        .subscribe((data: any) => {
+
+          console.log('LEAVE THE GROUP - RESPONSE ', data);
+        }, (err) => {
+          console.log('LEAVE THE GROUP - ERROR ', err);
+          this.SHOW_CIRCULAR_SPINNER = false;
+          this.LEAVE_CHAT_ERROR = true;
+
+        }, () => {
+          this.notify.showNotification(`You have successfully left the chat`, 2, 'done');
+          console.log('LEAVE THE GROUP * COMPLETE');
+          this.SHOW_CIRCULAR_SPINNER = false;
+          this.LEAVE_CHAT_ERROR = false;
+
+        });
+    });
+  }
+
+  closeLeaveChatModal() {
+    this.displayLeaveChatModal = 'none'
+  }
+
+  closeLeavingChatInfoModal() {
+    this.displayLeavingChatInfoModal = 'none';
   }
 
   // <!--target="_blank" href="{{ CHAT_BASE_URL }}?recipient={{id_request}}"   -->
