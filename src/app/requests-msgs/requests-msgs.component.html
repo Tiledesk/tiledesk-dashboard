@@ -9,434 +9,563 @@
   <div class="container-fluid">
 
     <loading-spinner *ngIf="showSpinner"></loading-spinner>
-    <div *ngIf="!showSpinner" class="row is-flex">
+    <div *ngIf="!showSpinner">
+      <div class="row">
+        <div class="col-sm-7 chat-col">
+          <div class="card chat-card" style="padding-top:0px; padding-bottom:0px;">
+            <div class="row" style="border-bottom: 1px solid #eeeeee; padding-left:25px; padding-right:25px">
+              <div class="col-sm-12">
+                <div class="two-div-wrapper">
+                  <div style="float: left; width: 50%; ">
+                    <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-top: 18px; margin-bottom: 0px; padding-bottom: 15px;">
+                      {{ "RequestMsgsPage.Messages" | translate }}
+                      <!-- <code style="color: #566787; font-weight: 400" >{{cut_support_group_from_request_id(id_request)}} </code> -->
+                    </h4>
+                  </div>
+                  <div style="float: right; width: 50%; ">
 
-      <div class="col-sm-7 chat-col">
-        <div class="card chat-card" style="padding-top:0px; padding-bottom:0px;">
-          <div class="row" style="border-bottom: 1px solid #eeeeee; padding-left:25px; padding-right:25px">
-            <div class="col-sm-12">
-              <div class="two-div-wrapper">
-                <div style="float: left; width: 50%; ">
-                  <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-top: 18px; margin-bottom: 0px; padding-bottom: 15px;">
-                    {{ "RequestMsgsPage.Messages" | translate }}
-                    <!-- <code style="color: #566787; font-weight: 400" >{{cut_support_group_from_request_id(id_request)}} </code> -->
-                  </h4>
-                </div>
-                <div style="float: right; width: 50%; ">
-
-                  <!-- -----------------============= ACTIONS DROPDOWN MENU =============----------------- -->
-                  <div class="dropdown pull-right">
-                    <a href="#" class="btn btn-info dropdown-toggle outline_btn" data-toggle="dropdown" style="padding:6px 15px; margin-top: 15px">
-                        {{ 'VisitorsPage.Actions' | translate }}
-                    <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                      <li>
-                        <a (click)='openArchiveRequestModal(request?.recipient)' style="padding-left: 15px; padding-right: 15px;">
-                          <i class="material-icons" style="padding-right: 5px;">close</i>
-                          <span style="position: relative; top: 1px;"> 
-                          {{ 'RequestMsgsPage.CloseTheRequest' | translate }}  
-                        </span>
-                        </a>
-                      </li>
-                      <li class="divider"></li>
-                      <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false}"> 
-                        <a (click)='openSelectUsersModal()' style="padding-left: 15px; padding-right: 15px;">
-                            <i class="material-icons" style="padding-right: 5px;">swap_horiz</i>
-                            <span style="position: relative; top: 1px;">
-                                {{ 'VisitorsPage.ReassignRequest' | translate }}
-                            </span>
-                        </a>
-                      </li>
-                      <li class="divider"></li>
-                      <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false}">
-                          
-                        <a (click)='openleaveChatModal()' style="padding-left: 15px; padding-right: 15px;">
-                            <i class="material-icons" style="padding-right: 5px;">exit_to_app</i>
-                          <span style="position: relative; top: 1px;"> 
-                            {{ 'VisitorsPage.LeaveChat' | translate }}
+                    <!-- -----------------============= ACTIONS DROPDOWN MENU =============----------------- -->
+                    <div class="dropdown pull-right">
+                      <a href="#" class="btn btn-info dropdown-toggle outline_btn" data-toggle="dropdown" style="padding:6px 15px; margin-top: 15px">
+                          {{ 'VisitorsPage.Actions' | translate }}
+                      <b class="caret"></b>
+                      </a>
+                      <ul class="dropdown-menu">
+                        <li>
+                          <a (click)='openArchiveRequestModal(request?.recipient)' style="padding-left: 15px; padding-right: 15px;">
+                            <i class="material-icons" style="padding-right: 5px;">close</i>
+                            <span style="position: relative; top: 1px;"> 
+                            {{ 'RequestMsgsPage.CloseTheRequest' | translate }}  
                           </span>
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-          </div>
-        </div>
-        <div #scrollMe class="card-content" style="height: 500px; overflow-y: auto; padding: 0px; padding-left:25px; padding-right:25px " (scroll)="onScroll($event)">
-            <!-- OLD CHAT -->
-            <!-- <div *ngFor="let message of messagesList" style="vertical-align:baseline">
-              <div class="row">
-                <div class="col-sm-11" style="padding-left: 0px; ">
-                  <div class="msg_sender" style="padding-right: 0px">
-                    <p style="font-size: 0.8em; margin-bottom:0px">
-                      <strong> {{ message.sender_fullname }} </strong> 
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="talk-bubble tri-right left-top" style="margin-bottom: 12px; min-width: 450px;">
-                    <div class="talktext">
-                      <div class="col-xs-8">
-                        <p style="padding: 10px; margin-bottom: 0px; font-size: 13px; font-family: Tahoma, Verdana, Segoe, sans-serif;">
-                          {{ message.text }}
-                        </p>
-                      </div>
-                      <div class="col-xs-4">
-                        <span class="time-right" style="font-size: 11px; padding-right: 10px; padding-bottom: 5px; padding-top: 10px">
-                          {{ message.timestamp | date: 'd/M/y HH:mm:ss'}}
-                        </span>
-                      </div>
+                          </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false}"> 
+                          <a (click)='openSelectUsersModal()' style="padding-left: 15px; padding-right: 15px;">
+                              <i class="material-icons" style="padding-right: 5px;">swap_horiz</i>
+                              <span style="position: relative; top: 1px;">
+                                  {{ 'VisitorsPage.ReassignRequest' | translate }}
+                              </span>
+                          </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false}">
+                            
+                          <a (click)='openleaveChatModal()' style="padding-left: 15px; padding-right: 15px;">
+                              <i class="material-icons" style="padding-right: 5px;">exit_to_app</i>
+                            <span style="position: relative; top: 1px;"> 
+                              {{ 'VisitorsPage.LeaveChat' | translate }}
+                            </span>
+                          </a>
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div> -->
-
-          <div class="chat-body" style="vertical-align:baseline">
-            <div style="padding-bottom: 3px;" class="answer left" *ngFor="let message of messagesList">
-              <div class="avatar" style="  width: 35px; height: 35px; position: absolute;">
-                <!-- <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User name" style="display: block;border-radius: 20px; height: 100%; margin-top: 35px;"> -->
-                <div style="display: block;border-radius: 20px; height: 100%; margin-top: 35px; background-color: #ebebeb">
-                  <span class="senderFullname" style="position: absolute; top:43px; margin-left:13px; color: #999999; text-transform: uppercase">
-                    {{ messageSenderInitialLetter( message.sender_fullname )}}
-                  </span>
-                </div>
-  
-              </div>
-              <div class="name">
-                <strong>{{ message.sender_fullname }}</strong>
-              </div>
-              <div class="row">
-  
-                <div class="col-xs-11 text" style=" margin-left: 6px; vertical-align: middle; padding-top: 5px;padding-bottom: 5px;">
-                    <!-- <div class="text"> -->
-                          <!-- <div  style=" background: #ebebeb; height: 100%; float: right"> -->
-                  <span class="messageTime" style=" float: right; padding-right: 0px; font-size: 11px; color:#aaa">
-                    {{ message.timestamp | date: 'd/M/y HH:mm:ss'}}
-                  </span>
-                    <!-- </div> -->
-                  <div class="col-xs-8 col-sm-8 col-lg-8" style=" padding-left: 5px; padding-top: 5px;">
-                      <!-- min-width: 300px; -->
-                    <div class="messageText" style="font-size: 13px; line-height: normal; ">
-                      {{ message.text }}
-                    </div>
-                  </div>
-                    <!-- </div> -->
-                </div>
-              </div>
-                <!-- <div class="time">5 min ago</div> -->
             </div>
           </div>
-           
-          <a id="fixed-button"  class="button" [ngStyle]="{'display':displayBtnScrollToBottom }" (click)="scrollToBottom()" >
-            <span class="icon is-small">
-              <i class="fa fa-chevron-down"></i>
-            </span>
-          </a>
-
-        </div>
-
-        <div class="card-footer" style="text-align: center; margin-bottom: 0px;padding-top: 2px; margin:auto">
-          <div class="stats" style="width: 100%;">
- 
-            <!-- -------------------================== start new three btn ==================------------------- -->
-            <div class="row" style="width: 100%">
-                
-              <!-- -------------------====== CLOSE CHAT - MOVED IN DROPDOWN ======------------------- -->
-              <!-- <div class="col-xs-4 col-sm-4 col-md-4" style="padding-right:5px">
-                <button type="button" class="btn btn-danger btn-block tooltipx"
-                  (click)='openArchiveRequestModal(request?.recipient)' style="vertical-align: middle; padding-left: 0px;padding-right: 0px;" 
-                  [disabled]="request?.support_status == 1000">
-                    {{ 'RequestMsgsPage.Close' | translate }}
-                  <span class="tooltiptext">{{ 'RequestMsgsPage.CloseTheRequest' | translate }}</span>
-                </button>
-              </div> -->
-                
-              <!-- ------------============ BTNS SWITCH: OPEN THE CHAT, ENTER, LOADING, ERROR ============------------ -->
-              <!-- [disabled]="request?.support_status == 1000" -->
-              <div class="col-xs-12" style="padding-left:5px; padding-right:5px"> 
-                
-                <div class="centered-buttons" style="width: 100%; padding: 0px 35px;">
-                  <span *ngIf="HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === true || IS_CURRENT_USER_JOINED === true">
-                    <button (click)="openChatInNewWindow()" class="btn btn-info btn-block open_the_chat_btn" role="button" 
-                    style="padding-left: 0px; padding-right: 0px" 
-                    [ngClass]="{'disable_open_the_chat_btn' : request?.support_status == 1000}">   
-                      
-                      <i class="material-icons" style="vertical-align: middle;  top:0px !important; padding-bottom: 2px;">open_in_new</i>
-                    <span style="vertical-align: middle"> {{ 'RequestMsgsPage.OpenTheChat' | translate }}</span>
-                    </button>
-                  </span>
-    
-                  <span *ngIf="JOIN_TO_GROUP_HAS_ERROR === false 
-                      && IS_CURRENT_USER_JOINED === false 
-                      && SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === false 
-                      && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false">
-                    <button class="btn btn-info btn-block" (click)="onJoinHandled()" 
-                      style="padding-left: 0px;padding-right: 0px;" [disabled]="request?.support_status == 1000">
-                      {{ 'RequestMsgsPage.Enter' | translate }}
-                    </button>
-                  </span>
-
-                  <span *ngIf="SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === true 
-                      && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false  
-                      && JOIN_TO_GROUP_HAS_ERROR === false">
-                    <button class="btn btn-default btn-block" style="padding-left: 0px;padding-right: 0px;" btn-block>
-                      <i class="fa fa-spinner fa-spin" style="margin-right: 5px;"></i> 
-                        {{ 'RequestMsgsPage.Loading' | translate }}
-                    </button>
-                  </span>
-    
-                  <span *ngIf="JOIN_TO_GROUP_HAS_ERROR === true">
-                    <button class="btn btn-danger btn-block" disabled style="padding-left: 0px;padding-right: 0px;">
-                      {{ 'RequestMsgsPage.Error' | translate }}
-                    </button>
-                  </span>
+          <div #scrollMe class="card-content" style="height: 500px; overflow-y: auto; padding: 0px; padding-left:25px; padding-right:25px " (scroll)="onScroll($event)">
+              <!-- OLD CHAT -->
+              <!-- <div *ngFor="let message of messagesList" style="vertical-align:baseline">
+                <div class="row">
+                  <div class="col-sm-11" style="padding-left: 0px; ">
+                    <div class="msg_sender" style="padding-right: 0px">
+                      <p style="font-size: 0.8em; margin-bottom:0px">
+                        <strong> {{ message.sender_fullname }} </strong> 
+                      </p>
+                    </div>
+                  </div>
                 </div>
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="talk-bubble tri-right left-top" style="margin-bottom: 12px; min-width: 450px;">
+                      <div class="talktext">
+                        <div class="col-xs-8">
+                          <p style="padding: 10px; margin-bottom: 0px; font-size: 13px; font-family: Tahoma, Verdana, Segoe, sans-serif;">
+                            {{ message.text }}
+                          </p>
+                        </div>
+                        <div class="col-xs-4">
+                          <span class="time-right" style="font-size: 11px; padding-right: 10px; padding-bottom: 5px; padding-top: 10px">
+                            {{ message.timestamp | date: 'd/M/y HH:mm:ss'}}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
 
-                <!--  -------------------====== BTN REASSIGN REQUETS - MOVED IN DROPDOWN ======----------------- -->
-                <!-- <div class="col-xs-4 col-sm-4 col-md-4" style="padding-left:5px;">
-                  <button type="button" class="btn btn-warning btn-block tooltipx"
-                      (click)='openSelectUsersModal()' 
-                      style="vertical-align: middle; padding-left: 0px;padding-right: 0px;" 
-                      [disabled]="request?.support_status == 1000">
-                      {{ 'VisitorsPage.Reassign' | translate }}
-                    
-                    <span class="tooltiptext" style="text-transform:none">
-                      {{ 'VisitorsPage.ReassignRequest' | translate }}
+            <div class="chat-body" style="vertical-align:baseline">
+              <div style="padding-bottom: 3px;" class="answer left" *ngFor="let message of messagesList">
+                <div class="avatar" style="  width: 35px; height: 35px; position: absolute;">
+                  <!-- <img src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User name" style="display: block;border-radius: 20px; height: 100%; margin-top: 35px;"> -->
+                  <div style="display: block;border-radius: 20px; height: 100%; margin-top: 35px; background-color: #ebebeb">
+                    <span class="senderFullname" style="position: absolute; top:43px; margin-left:13px; color: #999999; text-transform: uppercase">
+                      {{ messageSenderInitialLetter( message.sender_fullname )}}
                     </span>
+                  </div>
+    
+                </div>
+                <div class="name">
+                  <strong>{{ message.sender_fullname }}</strong>
+                </div>
+                <div class="row">
+    
+                  <div class="col-xs-11 text" style=" margin-left: 6px; vertical-align: middle; padding-top: 5px;padding-bottom: 5px;">
+                      <!-- <div class="text"> -->
+                            <!-- <div  style=" background: #ebebeb; height: 100%; float: right"> -->
+                    <span class="messageTime" style=" float: right; padding-right: 0px; font-size: 11px; color:#aaa">
+                      {{ message.timestamp | date: 'd/M/y HH:mm:ss'}}
+                    </span>
+                      <!-- </div> -->
+                    <div class="col-xs-8 col-sm-8 col-lg-8" style=" padding-left: 5px; padding-top: 5px;">
+                        <!-- min-width: 300px; -->
+                      <div class="messageText" style="font-size: 13px; line-height: normal; ">
+                        {{ message.text }}
+                      </div>
+                    </div>
+                      <!-- </div> -->
+                  </div>
+                </div>
+                  <!-- <div class="time">5 min ago</div> -->
+              </div>
+            </div>
+            
+            <a id="fixed-button"  class="button" [ngStyle]="{'display':displayBtnScrollToBottom }" (click)="scrollToBottom()" >
+              <span class="icon is-small">
+                <i class="fa fa-chevron-down"></i>
+              </span>
+            </a>
+
+          </div>
+
+          <div class="card-footer" style="text-align: center; margin-bottom: 0px;padding-top: 2px; margin:auto">
+            <div class="stats" style="width: 100%;">
+  
+              <!-- -------------------================== start new three btn ==================------------------- -->
+              <div class="row" style="width: 100%">
+                  
+                <!-- -------------------====== CLOSE CHAT - MOVED IN DROPDOWN ======------------------- -->
+                <!-- <div class="col-xs-4 col-sm-4 col-md-4" style="padding-right:5px">
+                  <button type="button" class="btn btn-danger btn-block tooltipx"
+                    (click)='openArchiveRequestModal(request?.recipient)' style="vertical-align: middle; padding-left: 0px;padding-right: 0px;" 
+                    [disabled]="request?.support_status == 1000">
+                      {{ 'RequestMsgsPage.Close' | translate }}
+                    <span class="tooltiptext">{{ 'RequestMsgsPage.CloseTheRequest' | translate }}</span>
                   </button>
                 </div> -->
-              </div>
-            </div> <!-- ./end ROW -->
-             
+                  
+                <!-- ------------============ BTNS SWITCH: OPEN THE CHAT, ENTER, LOADING, ERROR ============------------ -->
+                <!-- [disabled]="request?.support_status == 1000" -->
+                <div class="col-xs-12" style="padding-left:5px; padding-right:5px"> 
+                  
+                  <div class="centered-buttons" style="width: 100%; padding: 0px 35px;">
+                    <span *ngIf="HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === true || IS_CURRENT_USER_JOINED === true">
+                      <button #openChatBtn (click)="openChatInNewWindow()" class="btn btn-info btn-block open_the_chat_btn" role="button" 
+                      style="padding-left: 0px; padding-right: 0px" 
+                      [ngClass]="{'disable_open_the_chat_btn' : request?.support_status == 1000}">   
+                        
+                        <i class="material-icons" style="vertical-align: middle;  top:0px !important; padding-bottom: 2px;">open_in_new</i>
+                      <span style="vertical-align: middle"> {{ 'RequestMsgsPage.OpenTheChat' | translate }}</span>
+                      </button>
+                    </span>
+      
+                    <span *ngIf="JOIN_TO_GROUP_HAS_ERROR === false 
+                        && IS_CURRENT_USER_JOINED === false 
+                        && SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === false 
+                        && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false">
+                      <button class="btn btn-info btn-block" (click)="onJoinHandled()" 
+                        style="padding-left: 0px;padding-right: 0px;" [disabled]="request?.support_status == 1000">
+                        {{ 'RequestMsgsPage.Enter' | translate }}
+                      </button>
+                    </span>
+
+                    <span *ngIf="SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === true 
+                        && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false  
+                        && JOIN_TO_GROUP_HAS_ERROR === false">
+                      <button class="btn btn-default btn-block" style="padding-left: 0px;padding-right: 0px;" btn-block>
+                        <i class="fa fa-spinner fa-spin" style="margin-right: 5px;"></i> 
+                          {{ 'RequestMsgsPage.Loading' | translate }}
+                      </button>
+                    </span>
+      
+                    <span *ngIf="JOIN_TO_GROUP_HAS_ERROR === true">
+                      <button class="btn btn-danger btn-block" disabled style="padding-left: 0px;padding-right: 0px;">
+                        {{ 'RequestMsgsPage.Error' | translate }}
+                      </button>
+                    </span>
+                  </div>
+
+                  <!--  -------------------====== BTN REASSIGN REQUETS - MOVED IN DROPDOWN ======----------------- -->
+                  <!-- <div class="col-xs-4 col-sm-4 col-md-4" style="padding-left:5px;">
+                    <button type="button" class="btn btn-warning btn-block tooltipx"
+                        (click)='openSelectUsersModal()' 
+                        style="vertical-align: middle; padding-left: 0px;padding-right: 0px;" 
+                        [disabled]="request?.support_status == 1000">
+                        {{ 'VisitorsPage.Reassign' | translate }}
+                      
+                      <span class="tooltiptext" style="text-transform:none">
+                        {{ 'VisitorsPage.ReassignRequest' | translate }}
+                      </span>
+                    </button>
+                  </div> -->
+                </div>
+              </div> <!-- ./end ROW -->
+              
+            </div>
+
           </div>
+          </div>  <!-- ./ card   -->
+        </div> <!-- ./ col-md-7 -->
 
-        </div>
-        </div>  <!-- ./ card   -->
-      </div> <!-- ./ col-md-7 -->
+        <!-- // SIDEBAR // -->
+        <div class="col-sm-5 right-col">
+          <div class="card right-card" style="padding-top:5px; padding-bottom:5px;">
 
-      <!-- // SIDEBAR // -->
-      <div class="col-sm-5 right-col">
-        <div class="card right-card" style="padding-top:5px; padding-bottom:5px;">
+            <div class="card-content" style="padding-top:5px;">
+              
+              <h4 class="card-title requestattibutestitle" style="text-transform: none; color: #566787; 
+                font-weight:400; margin-bottom: 8px; border-bottom: 1px solid #eeeeee; padding-bottom: 12px;">
+                <!-- Request  -->
+                <span class="requestattibutes">{{ "RequestMsgsPage.RequestAttributes" | translate }}</span>
 
-          <div class="card-content" style="padding-top:5px;">
-            
-            <h4 class="card-title requestattibutestitle" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 16px; border-bottom: 1px solid #eeeeee; padding-bottom: 15px;">
-              <!-- Request  -->
-              <span class="requestattibutes">{{ "RequestMsgsPage.RequestAttributes" | translate }}</span>
+                <!-- {{ request?.timestamp | amTimeAgo }} -->
+                <!-- <span class="requestattibutestime" style="font-size: 14px; color:#999999; float: right;">
+                    <i class="material-icons" style="vertical-align: middle">access_time</i>
+                    <span style="vertical-align: middle; font-weight: 500">
+                      {{ "RequestMsgsPage.Published" | translate }}: {{ request?.created_on | amTimeAgo }}
+                    </span>
+                </span> -->
+                
+              </h4>
 
-              <!-- {{ request?.timestamp | amTimeAgo }} -->
-              <span class="requestattibutestime" style="font-size: 14px; color:#999999; float: right;">
-                  <i class="material-icons" style="vertical-align: middle">access_time</i>
-                  <span style="vertical-align: middle; font-weight: 500">
-                    {{ "RequestMsgsPage.Published" | translate }}: {{ request?.created_on | amTimeAgo }}
+              <p style="margin-bottom: 5px"> 
+
+                <!-- IF IS AN CLOSED REQUEST -->
+                <span *ngIf="request?.support_status == 1000"> 
+                  <i style="font-size: 24px !important; vertical-align: middle; color: #999999" class="material-icons">visibility</i>
+                
+                  <span class="request-category" style="vertical-align: middle; color: #999999">
+                    <!-- <strong> -->
+                      <!-- Request closed  -->
+                      <!-- - {{ "RequestMsgsPage.WasServedBy" | translate }} -->
+                      {{ "RequestMsgsPage.RequestClosed" | translate }} 
+                    <!-- </strong> -->
                   </span>
-              </span>
-              
-            </h4>
-
-            <p style="margin-bottom: 10px"> 
-
-              <!-- IF IS AN CLOSED REQUEST -->
-              <span *ngIf="request?.support_status == 1000"> 
-                <i style="font-size: 24px !important; vertical-align: middle; color: #999999" class="material-icons">visibility</i>
-              
-                <span style="vertical-align: middle; color: #999999">
-                  <strong>
-                    <!-- Request closed  -->
-                    {{ "RequestMsgsPage.RequestClosed" | translate }} - {{ "RequestMsgsPage.WasServedBy" | translate }}
-                  </strong>
-                </span>
-              </span>
-
-              <!-- IF IS AN UNSERVED REQUEST -->
-                <span *ngIf="request?.support_status == 100"> 
-                <i style="font-size: 24px !important; vertical-align: middle; color: #f44336" class="material-icons">visibility</i>
-              
-                <span style="vertical-align: middle; color: #f44336">
-                  <strong>
-                    <!-- Request unserved  -->
-                    {{ "RequestMsgsPage.RequestUnserved" | translate }}
-                  </strong>
-                </span>
-              </span>
-
-              <!-- IF IS A SERVED REQUEST AND BETWEEN THE MEMBERS THERE IS THE CURRENT USER -->
-              <span *ngIf="request?.support_status == 200 && request?.currentUserIsJoined === true"> 
-                <i style="font-size: 24px !important; vertical-align: middle; color: #4CAF50" class="material-icons">visibility</i>
-              
-                <span style="vertical-align: middle; color: #4CAF50">
-                  <strong>
-                    <!-- Request served by:  -->
-                    {{ "RequestMsgsPage.RequestServedBy" | translate }}
-                  </strong>
                 </span>
 
-              </span>
-
-              <span *ngIf="request?.support_status == 200 && !request?.currentUserIsJoined"> 
-                <i style="font-size: 24px !important; vertical-align: middle; color: #00bcd4" class="material-icons">visibility</i>
-              
-                <span style="vertical-align: middle; color: #00bcd4;">
-                  <strong>
-                    <!-- Request served by:  -->
-                    {{ "RequestMsgsPage.RequestServedBy" | translate }}
-                  </strong>
-                </span>
-              </span>
-
-              <span *ngFor="let m of members_array"  style="">
-                <span *ngIf="m !== request?.requester_id && m !== 'system' && m !== currentUserID"> 
-                  <span class="tag_member" (click)="goToMemberProfile( m )" [innerHTML]="members_replace( m )" style="cursor: pointer;"> 
-                    
+                <!-- IF IS AN UNSERVED REQUEST -->
+                  <span *ngIf="request?.support_status == 100"> 
+                  <i style="font-size: 24px !important; vertical-align: middle; color: #f44336" class="material-icons">visibility</i>
+                
+                  <span class="request-category" style="vertical-align: middle; color: #f44336">
+                    <!-- <strong> -->
+                      <!-- Request unserved  -->
+                      {{ "RequestMsgsPage.RequestUnserved" | translate }}
+                    <!-- </strong> -->
                   </span>
-                </span> 
-                <span *ngIf="m === currentUserID" style=""> 
-                    <span class="tag_member_me"> ME </span>
                 </span>
-              </span>   
-            </p>
 
-            <!-- PUBLISHED (from now format) -->
-            <!-- <p style="margin-bottom: 3px; color:#566787; padding-top: 10px;"> 
-              <strong>
-                {{ "RequestMsgsPage.Published" | translate }}
-               </strong>
-            </p>
-            <p style="color:#999999; font-weight: 500">  
-              {{ request?.timestamp | amTimeAgo }}
-            </p> -->
+                <!-- IF IS A SERVED REQUEST AND BETWEEN THE MEMBERS THERE IS THE CURRENT USER -->
+                <span *ngIf="request?.support_status == 200 && request?.currentUserIsJoined === true"> 
+                  <i style="font-size: 24px !important; vertical-align: middle; color: #4CAF50" class="material-icons">visibility</i>
+                
+                  <span class="request-category" style="vertical-align: middle; color: #4CAF50">
+                    <!-- <strong> -->
+                      <!-- Request served by:  -->
+                      {{ "RequestMsgsPage.RequestServedBy" | translate }}
+                    <!-- </strong> -->
+                  </span>
 
-            <!-- ============ PUBLICATION DATE ============ -->
-            <p style="margin-bottom: 3px; color:#566787; padding-top: 10px;"> 
-              <strong>
-                {{ "RequestMsgsPage.Date" | translate }} 
-              </strong>
-            </p>
-            <p style="color:#999999; font-weight: 500">  
-              {{ request?.created_on | date: 'd/M/y HH:mm:ss' }}
-            </p>
-            
-            <!-- REQUEST ID -->
-            <p style="margin-bottom: 3px; color:#566787;"> 
-              <strong>
-                {{ "RequestMsgsPage.RequestId" | translate }}
+                </span>
+
+                <span *ngIf="request?.support_status == 200 && !request?.currentUserIsJoined"> 
+                  <i style="font-size: 24px !important; vertical-align: middle; color: #00bcd4" class="material-icons">visibility</i>
+                
+                  <span  class="request-category" style="vertical-align: middle; color: #00bcd4;">
+                    <!-- <strong> -->
+                      <!-- Request served by:  -->
+                      {{ "RequestMsgsPage.RequestServedBy" | translate }}
+                    <!-- </strong> -->
+                  </span>
+                </span>
+
+                <!-- <span *ngFor="let m of members_array"  style="">
+                  <span *ngIf="m !== request?.requester_id && m !== 'system' && m !== currentUserID"> 
+                    <div class="tag_member" (click)="goToMemberProfile( m )" [innerHTML]="members_replace( m )" style="cursor: pointer;">  </div>
+                  </span> 
+                  <span *ngIf="m === currentUserID" style=""> 
+                      <span class="tag_member_me"> ME </span>
+                  </span>
+                </span>    -->
+              </p>
+
+              <span class="row-body" style="">  
+                  <span style="color:#394f5a;"> id: </span>  {{ id_request }}
+              </span>
+
+              <div class="row" style="margin-top:5px"> 
+                <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4; border-top: 1px solid #e1eef4;">
+                  <p class="row-header" style=""> 
+                      <!-- <i class="material-icons" style="vertical-align: middle">access_time</i>  -->
+                    {{ "RequestMsgsPage.Published" | translate }}
+                  </p>
+        
+
+              <!-- PUBLISHED (from now format) -->
+              <!-- <p style="margin-bottom: 3px; color:#566787; padding-top: 10px;"> 
+                <strong>
+                  {{ "RequestMsgsPage.Published" | translate }}
                 </strong>
-            </p>
-            <p style="color:#999999; font-weight: 500">  
-                {{ id_request }}
-            </p>
- 
-            <!-- <p style="margin-bottom: 3px; color:#566787"> 
-              <strong>Request Id </strong>
-            </p>
-              <p style="color:#999999; font-weight: 500">    
-              {{ id_request }}
-            </p> -->
+              </p>
+              <p style="color:#999999; font-weight: 500">  
+                {{ request?.timestamp | amTimeAgo }}
+              </p> -->
 
-            <!-- ========== Requester  ========== -->
-            <p style="margin-bottom: 3px; color:#566787"> 
-              <strong>
-                 {{ "RequestMsgsPage.Requester" | translate }}
-              </strong>
-            </p>
-            <p style="color:#999999; font-weight: 500">  
-              {{ requester_fullname }} 
-            </p>
-
-            <p style="margin-bottom: 3px; color:#566787"> 
-              <strong>
-                <!-- Requester Id -->
-                {{ "RequestMsgsPage.RequesterId" | translate }}
-              </strong>
-            </p>
-            <p style="color:#999999; font-weight: 500">  
-              {{ requester_id }}
-            </p>
-
-            <p style="margin-bottom: 3px; color:#566787"> 
-              <strong>
-                <!-- Chat form: user name -->
-                {{ "RequestMsgsPage.ChatFormUserName" | translate }}
-              </strong>
-            </p>
-            <p style="color:#999999; font-weight: 500">  
-              {{ user_name }}
-            </p>
-
-            <p style="margin-bottom: 3px; color:#566787"> 
-              <strong>
-                <!-- Chat form: user email -->
-                {{ "RequestMsgsPage.ChatFormUserEmail" | translate }}
-              </strong>
-            </p>
-            <p style="color:#999999; font-weight: 500">  
+              <!-- ============ PUBLICATION DATE ============ -->
+              <!-- <p style="margin-bottom: 3px; color:#566787; padding-top: 10px;"> 
+                <strong>
+                  {{ "RequestMsgsPage.Date" | translate }} 
+                </strong>
+              </p> -->
               
-              <a *ngIf="user_email !== 'n.a.'" href="mailto:{{user_email}}">{{ user_email }}</a>
-              <a *ngIf="user_email === 'n.a.'" style="color:#999999;">{{ user_email }}</a>
-            </p>
+              <!-- color:#394f5a; font-weight: 400; font-size: 12px -->
+              <span class="row-body" >  
+                  
+                  {{ request?.created_on | amTimeAgo }} ({{ request?.created_on | date: 'd/M/y HH:mm:ss' }})
+              </span>
 
-            <!-- Department Name -->
-            <p style="margin-bottom: 3px; color:#566787"> 
-              <strong>
-                 {{ "RequestMsgsPage.DepartmentName" | translate }}
-              </strong>
-            </p>
-            <p style="color:#999999; font-weight: 500">  
-              {{ department_name }}
-            </p>
+            </div>
+          </div>
+                
+              <div class="row" style="margin-top:15px"> 
+                <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4; border-top: 1px solid #e1eef4;">
+                  <p class="row-header" style=""> 
+                      <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
+                    <span style="vertical-align: middle"> 
+                        {{ "RequestMsgsPage.Agents" | translate }} 
+                     </span>
+                  </p>
+  
 
-            <!-- RATING -->
-            <p style="margin-bottom: 3px; color:#566787"> 
-              <strong>
-                  {{ "RequestMsgsPage.Rating" | translate }}
-              </strong>
-            </p>
-            <p style="color:#999999; font-weight: 500">  
-              {{ rating }}
-            </p>
+              <div class="served_by">
 
-            <!-- RATING MESSAGE -->
-            <p style="margin-bottom: 3px; color:#566787"> 
-              <strong>
-                  {{ "RequestMsgsPage.RatingMessage" | translate }}
-              </strong>
-            </p>
-            <p style="color:#999999; font-weight: 500">  
-              {{ rating_message }}
-            </p>
+                <div *ngFor="let agent of agents_array" style="" class="row-body"> 
 
-            <!-- ========== Department Id ========== -->
-            <!-- <p style="margin-bottom: 3px; color:#566787"> 
-              <strong>
-                {{ "RequestMsgsPage.DepartmentId" | translate }}
-              </strong>
-            </p>
-            <p style="color:#999999; font-weight: 500">  
-              {{ department_id }}
-            </p> -->
+                  <span (click)="goToMemberProfile( agent?._id )" style="cursor:pointer">
+                    <img *ngIf="agent.isBot === false" style="vertical-align: middle; width: 22px; height: 22px; border-radius: 50%; border: 1px solid #eee; margin-right: 8px;" 
+                    class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media" 
+                    onerror="this.src='assets/img/no_image_user.png'"/>
 
-            <p style="margin-bottom: 3px; color:#566787"> 
-              <strong>
-                <!-- Source page -->
-                {{ "RequestMsgsPage.SourcePage" | translate }}
-              </strong>
-            </p>
-            <p style="color:#999999; word-wrap: break-word; font-weight: 500">  
+                    <img *ngIf="agent.isBot === true" style="vertical-align: middle; width: 22px; height: 22px; border-radius: 50%; border: 1px solid #eee; margin-right: 8px;" 
+                    class="user-img" src="assets/img/bot_image.png" 
+                    onerror="this.src='assets/img/no_image_user.png'"/>
+
+                    <span [ngClass]="{'current_user_is_agent' : agent?._id === currentUserID}" style="font-size:12px; font-weight: 400"> 
+                      {{agent?.firstname}} {{agent?.lastname}} 
+                    </span> 
+                  </span>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+
               
-              <a href="{{source_page}}" target="_blank">{{source_page}}</a>
-            </p>
 
+
+              
+              <!-- REQUEST ID -->
+              <!-- <p style="margin-bottom: 3px; color:#566787;"> 
+                <strong>
+                  {{ "RequestMsgsPage.RequestId" | translate }}
+                  </strong>
+              </p>
+              <p style="color:#999999; font-weight: 500">  
+                  {{ id_request }}
+              </p> -->
+  
+              <!-- ========== Requester  ========== -->
+              <!-- <p style="margin-bottom: 3px; color:#566787"> 
+                <strong>
+                  {{ "RequestMsgsPage.Requester" | translate }}
+                </strong>
+              </p> -->
+
+              <div class="row" style="margin-top:15px"> 
+                  <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4; border-top: 1px solid #e1eef4;">
+                    <p class="row-header" style=""> 
+                        <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
+                      <span style="vertical-align: middle"> 
+                          {{ "RequestMsgsPage.Requester" | translate }}
+                       </span>
+                    </p>
+                    <!-- style="color:#999999; font-weight: 500" -->
+              <p class="row-body" style="margin-bottom:0px; padding-bottom:0px">  
+               <span style="color:#394f5a;"> {{ "RequestMsgsPage.RequesterName" | translate }}: </span> 
+               {{ requester_fullname }} 
+              </p>
+               <p class="row-body" style="margin-bottom:0px; padding-bottom:0px"> 
+                  <!-- {{ "RequestMsgsPage.RequesterId" | translate }}: -->
+               <span style="color:#394f5a;"> id: </span> 
+               {{ requester_id }} 
+              </p>
+
+              <p class="row-body" style="margin-bottom:0px; padding-bottom:0px"> 
+                  <span style="color:#394f5a;"> {{ "RequestMsgsPage.ChatFormUserName" | translate }}: </span> 
+                  {{  user_name }}
+               </p>
+
+               <p class="row-body" style="margin-bottom:0px;"> 
+                  <span style="color:#394f5a;"> {{ "RequestMsgsPage.ChatFormUserEmail" | translate }}: </span> 
+                  <a *ngIf="user_email !== 'n.a.'" href="mailto:{{user_email}}">{{ user_email }}</a>
+                <a *ngIf="user_email === 'n.a.'" style="color:#999999;">{{ user_email }}</a>
+               </p>
+
+              </div>
+              </div>
+
+              <div class="row" style="margin-top:15px"> 
+                  <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4; border-top: 1px solid #e1eef4;">
+                    <p class="row-header" style=""> 
+                        <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
+                      <span style="vertical-align: middle"> 
+                          {{ "RequestMsgsPage.DepartmentName" | translate }}: <span style="color: #7695a5; " > {{ department_name }}</span>
+                       </span>
+                    </p>
+                    <!-- <span class="row-body">  
+                  
+                        {{ department_name }}
+                    </span> -->
+                </div>
+              </div>
+
+              <div class="row" style="margin-top:15px"> 
+                  <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4; border-top: 1px solid #e1eef4;">
+                    <p class="row-header" style=""> 
+                        <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
+                      <span style="vertical-align: middle"> 
+                          {{ "RequestMsgsPage.Rating" | translate }}: <span style="color: #7695a5; " > {{ rating }}</span>
+                       </span>
+                    </p>
+                    <!-- <p class="row-body"  style="margin-bottom:0px">  
+                        <span style="color:#394f5a;"> {{ "RequestMsgsPage.Rating" | translate }}: </span>
+                        {{ rating }}
+                    </p> -->
+
+                    <p class="row-body"  style="margin-bottom:0px">  
+                  
+                        <span style="color:#394f5a;">  {{ "RequestMsgsPage.RatingMessage" | translate }}: </span>
+                        {{ rating_message }}
+                    </p>
+                </div>
+              </div>
+
+              <div class="row" style="margin-top:15px"> 
+                  <div class="col-sm-12" style="border-top: 1px solid #e1eef4;">
+                    <p class="row-header" style=""> 
+                        <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
+                      <span style="vertical-align: middle"> 
+                          {{ "RequestMsgsPage.SourcePage" | translate }}
+                       </span>
+                    </p>
+                    <p class="row-body"  style="margin-bottom:0px; word-wrap: break-word;">  
+                  
+                        <a href="{{source_page}}" target="_blank">{{source_page}}</a>
+                    </p>
+
+                </div>
+              </div>
+
+
+              <!-- <p style="margin-bottom: 3px; color:#566787"> 
+                <strong>
+                  {{ "RequestMsgsPage.RequesterId" | translate }}
+                </strong>
+              </p>
+              <p style="color:#999999; font-weight: 500">  
+                {{ requester_id }}
+              </p> -->
+
+              <!-- <p style="margin-bottom: 3px; color:#566787"> 
+                <strong>
+                   {{ "RequestMsgsPage.ChatFormUserName" | translate }}
+                </strong>
+              </p>
+              <p style="color:#999999; font-weight: 500">  
+                {{ user_name }}
+              </p> -->
+
+              <!-- <p style="margin-bottom: 3px; color:#566787"> 
+                <strong>
+                  {{ "RequestMsgsPage.ChatFormUserEmail" | translate }}
+                </strong>
+              </p>
+              <p style="color:#999999; font-weight: 500">  
+                
+                <a *ngIf="user_email !== 'n.a.'" href="mailto:{{user_email}}">{{ user_email }}</a>
+                <a *ngIf="user_email === 'n.a.'" style="color:#999999;">{{ user_email }}</a>
+              </p> -->
+
+              <!-- Department Name -->
+              <!-- <p style="margin-bottom: 3px; color:#566787"> 
+                <strong>
+                  {{ "RequestMsgsPage.DepartmentName" | translate }}
+                </strong>
+              </p>
+              <p style="color:#999999; font-weight: 500">  
+                {{ department_name }}
+              </p> -->
+
+              <!-- RATING -->
+              <!-- <p style="margin-bottom: 3px; color:#566787"> 
+                <strong>
+                    {{ "RequestMsgsPage.Rating" | translate }}
+                </strong>
+              </p>
+              <p style="color:#999999; font-weight: 500">  
+                {{ rating }}
+              </p> -->
+
+              <!-- RATING MESSAGE -->
+              <!-- <p style="margin-bottom: 3px; color:#566787"> 
+                <strong>
+                    {{ "RequestMsgsPage.RatingMessage" | translate }}
+                </strong>
+              </p>
+              <p style="color:#999999; font-weight: 500">  
+                {{ rating_message }}
+              </p> -->
+
+              <!-- ========== Department Id ========== -->
+              <!-- <p style="margin-bottom: 3px; color:#566787"> 
+                <strong>
+                  {{ "RequestMsgsPage.DepartmentId" | translate }}
+                </strong>
+              </p>
+              <p style="color:#999999; font-weight: 500">  
+                {{ department_id }}
+              </p> -->
+
+              <!-- <p style="margin-bottom: 3px; color:#566787"> 
+                <strong>
+                   {{ "RequestMsgsPage.SourcePage" | translate }}
+                </strong>
+              </p>
+              <p style="color:#999999; word-wrap: break-word; font-weight: 500">  
+                
+                <a href="{{source_page}}" target="_blank">{{source_page}}</a>
+              </p> -->
+
+            </div>
           </div>
         </div>
-      </div>
+      </div> <!-- ./ row -->
     </div>
-    <!-- ./ row -->
-  </div>
+    
+  </div> <!-- ./ container fluid -->
 </div>
 
 <!-- ------------============= USERS LIST MODAL - FULL WIDTH MODAL =============------------ -->

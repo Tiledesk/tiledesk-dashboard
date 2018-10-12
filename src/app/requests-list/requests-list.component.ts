@@ -198,7 +198,7 @@ export class RequestsListComponent implements OnInit {
         // start NEW: GET MEMBERS
         for (const request of requests) {
           // console.log('request', request)
-          console.log('REQUEST TEXT ', request.first_text, ' , SUPP STATUS ', request.support_status)
+          // console.log('REQUEST TEXT ', request.first_text, ' , SUPP STATUS ', request.support_status)
           requests.forEach(r => {
             if (request.id === r.id) {
 

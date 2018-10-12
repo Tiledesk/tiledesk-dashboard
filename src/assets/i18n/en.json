@@ -480,19 +480,22 @@
         "RequestClosed": "Request closed",
         "WasServedBy": "was served by",
         "RequestUnserved": "Request unserved",
-        "RequestServedBy": "Request served by",
+        "RequestServedBy": "Request served",
         "RequestId": "Request Id",
         "Published": "Published",
         "Date": "Date",
         "Requester": "Requester",
+        "RequesterName": "Requester name",
         "RequesterId": "Requester Id",
         "ChatFormUserName": "User name",
         "ChatFormUserEmail": "Email",
-        "DepartmentName": "Department name",
+        "DepartmentName": "Department",
         "Rating": "Rating",
         "RatingMessage": "Rating message",
         "DepartmentId": "Department Id",
-        "SourcePage": "Source page"
+        "SourcePage": "Source page",
+        "Agents": "Agents"
+        
     },
     "HistoryPage": {
         "Requester": "Requester",

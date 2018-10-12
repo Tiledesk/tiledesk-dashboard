@@ -195,6 +195,7 @@ export class UserEditAddComponent implements OnInit {
       this.INVITE_YOURSELF_ERROR = false;
       this.INVITE_OTHER_ERROR = false;
       this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
+      this.INVITE_USER_NOT_FOUND = false;
     });
 
   }

@@ -1,3 +1,4 @@
+@import url(https://fonts.googleapis.com/css?family=Google+Sans);
 // MESSAGES IN MODAL 
 .msgcontainer  {
     border: 2px solid #dedede;
@@ -125,6 +126,10 @@
     font-weight: 600
 }
 
+.current_user_is_agent {
+  color: #4caf50;
+}
+
 /*****************CHAT BODY *******************/
 .chat-body h6 {
   font-size: 20px;
@@ -244,17 +249,17 @@
 
 // TITLE: REQUEST ATTRIBUTES
 // from 767px to 1330px 
-@media (min-width: 767px) and (max-width: 1205px){
-  .requestattibutestitle {
-    height: 69px;  
-  }
-  .requestattibutestime {
-    float: left !important;
-  }
-  .requestattibutes {
-    float: left !important;
-  }
-}
+// @media (min-width: 767px) and (max-width: 1205px){
+//   .requestattibutestitle {
+//     height: 69px;  
+//   }
+//   .requestattibutestime {
+//     float: left !important;
+//   }
+//   .requestattibutes {
+//     float: left !important;
+//   }
+// }
 
 @media (min-width: 940px) and (max-width: 991px){
   .requestattibutestitle {
@@ -281,11 +286,11 @@
 
 //  OUTLINE STYLE
 .outline_btn {
-  background-color: #fff; 
-  border: 1px solid #00bcd4;  
+  background-color: #fff !important; 
+  border: 1px solid #00bcd4 !important;  
   
-  color: #00bcd4;
-  box-shadow: 0 2px 2px 0 rgba(0, 188, 212, 0), 0 3px 1px -2px rgba(0, 188, 212, 0.2), 0 1px 5px 0 rgba(0, 188, 212, 0.12);
+  color: #00bcd4 !important;
+  box-shadow: 0 2px 2px 0 rgba(0, 188, 212, 0), 0 3px 1px -2px rgba(0, 188, 212, 0.2), 0 1px 5px 0 rgba(0, 188, 212, 0.12) !important;
   // padding: 11px 11px;
 }
 
@@ -690,3 +695,32 @@ and also iPads specifically.
 // 		white-space: nowrap;
 //   }
 // }
+
+.rightsidebar-user-img {
+  vertical-align: middle; 
+  width: 32px !important; 
+  height: 32px !important; 
+  border-radius: 50%; 
+  border: 1px solid #eee;
+  margin-right: 15px;
+}
+
+.request-category{
+  font-family: 'Google Sans', sans-serif !important;
+  font-weight: 500; 
+}
+
+.row-header {
+  font-family: 'Google Sans', sans-serif !important;
+  color: #394f5a; 
+  font-weight: 500; 
+  margin-bottom: 5px; 
+  margin-top: 5px;
+}
+
+.row-body {
+  color:#7695a5; 
+  font-weight: 500; 
+  font-size:12px;
+  padding-bottom: 5px
+}

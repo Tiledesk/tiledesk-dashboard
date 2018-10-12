@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, HostListener, OnDestroy } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, HostListener, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { Message } from '../models/message-model';
@@ -18,12 +18,15 @@ import { UsersService } from '../services/users.service';
 @Component({
   selector: 'appdashboard-requests-msgs',
   templateUrl: './requests-msgs.component.html',
-  styleUrls: ['./requests-msgs.component.scss']
+  styleUrls: ['./requests-msgs.component.scss'],
+  encapsulation: ViewEncapsulation.None, /* it allows to customize 'Powered By' */
 })
 export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('scrollMe')
   private myScrollContainer: ElementRef;
 
+  @ViewChild('openChatBtn') 
+  private openChatBtn: ElementRef;
 
 
   CHAT_BASE_URL = environment.chat.CHAT_BASE_URL
@@ -83,7 +86,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   userfirstname_selected: string;
   userlastname_selected: string;
   useremail_selected: string;
-
+  agents_array: any;
   isMobile: boolean;
 
   constructor(
@@ -360,6 +363,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
           this.members_array = Object.keys(request[0].members);
           console.log('MEMBERS ARRAY ', this.members_array)
 
+
           this.IS_CURRENT_USER_JOINED = request[0].currentUserIsJoined;
           console.log('* IS_CURRENT_USER_JOINED: ', this.IS_CURRENT_USER_JOINED);
 
@@ -368,6 +372,51 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
 
           this.requester_id = request[0].requester_id;
           console.log('* REQUESTER ID: ', this.requester_id);
+
+          this.agents_array = []; 
+          this.members_array.forEach(member_id => {
+            if (member_id !== this.requester_id && member_id !== 'system') {
+
+              const memberIsBot = member_id.includes('bot_');
+
+              if (memberIsBot === true) {
+
+                const bot_id = member_id.slice(4);
+                console.log('!!! NEW REQUESTS HISTORY - THE PARTICIP', member_id, 'IS A BOT ', memberIsBot, ' - ID ', bot_id);
+
+                const bot = this.botLocalDbService.getBotFromStorage(bot_id);
+                if (bot) {
+
+
+                  this.agents_array.push({ '_id': 'bot_' + bot['_id'], 'firstname': bot['name'], 'isBot': true })
+
+                } else {
+                  this.agents_array.push({ '_id': member_id, 'firstname': member_id, 'isBot': true })
+                }
+
+                // NON è UN BOT
+              } else {
+                console.log('--> THIS REQUEST - MEMBER ', member_id)
+
+                // l'utente è salvato nello storage
+                const user = this.usersLocalDbService.getMemberFromStorage(member_id);
+
+                if (user) {
+                  if (member_id === user['_id']) {
+                    // tslint:disable-next-line:max-line-length
+                    this.agents_array.push({ '_id': user['_id'], 'firstname': user['firstname'], 'lastname': user['lastname'], 'isBot': false })
+
+                    // this.request.push(user)
+                    // console.log('--> THIS REQUEST - USER ', user)
+                  }
+                } else {
+                  this.agents_array.push({ '_id': member_id, 'firstname': member_id, 'isBot': false })
+                }
+              }
+            }
+          });
+
+          console.log('--> --> THIS REQUEST - AGENT ARRAY ', this.agents_array)
 
           if (request[0].attributes) {
             if (request[0].attributes.userFullname) {
@@ -546,16 +595,16 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   openleaveChatModal() {
     this.displayLeaveChatModal = 'block'
-   }
+  }
 
   leaveChat() {
-   this.displayLeaveChatModal = 'none'
+    this.displayLeaveChatModal = 'none'
 
-   this.displayLeavingChatInfoModal = 'block';
-   this.SHOW_CIRCULAR_SPINNER = true;
-  
+    this.displayLeavingChatInfoModal = 'block';
+    this.SHOW_CIRCULAR_SPINNER = true;
 
-   this.getFirebaseToken(() => {
+
+    this.getFirebaseToken(() => {
       this.requestsService.leaveTheGroup(this.id_request, this.firebase_token, this.currentUserID)
         .subscribe((data: any) => {
 
@@ -585,6 +634,12 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // <!--target="_blank" href="{{ CHAT_BASE_URL }}?recipient={{id_request}}"   -->
   openChatInNewWindow() {
+    // RESOLVE THE BUG: THE BUTTON 'OPEN THE CHAT' REMAIN FOCUSED AFTER PRESSED
+    // const openChatBtn = <HTMLElement>document.querySelector('.open_the_chat_btn');
+    // console.log('!!! REQUESTS-MSGS - OPEN THE CHAT BTN ', openChatBtn)
+    // openChatBtn.blur();
+    this.openChatBtn.nativeElement.blur();
+
     const url = this.CHAT_BASE_URL + '?recipient=' + this.id_request
     window.open(url, '_blank');
   }
@@ -650,6 +705,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     // console.log('WINDOWS HISTORY ', window.history.replaceState);
   }
 
+
   members_replace(member_id) {
     // console.log('Members replace ', m)
     // const user = JSON.parse((localStorage.getItem(member_id)));
@@ -671,11 +727,26 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
       const user = this.usersLocalDbService.getMemberFromStorage(member_id);
       if (user) {
         // console.log('user ', user)
-        return member_id = user['firstname'] + ' ' + user['lastname']
+        // tslint:disable-next-line:max-line-length
+        const user_img = `<img class=\"rightsidebar-user-img\" src=\"https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F${user['_id']}%2Fphoto.jpg?alt=media\" onerror=\"this.src='assets/img/no_image_user.png'\"/>`
+
+
+        return member_id = user_img + user['firstname'] + ' ' + user['lastname']
       } else {
         return member_id
       }
     }
+  }
+
+  verifyImageURL(image_url, callBack) {
+    const img = new Image();
+    img.src = image_url;
+    img.onload = function () {
+      callBack(true);
+    };
+    img.onerror = function () {
+      callBack(false);
+    };
   }
 
   goToMemberProfile(member_id: any) {

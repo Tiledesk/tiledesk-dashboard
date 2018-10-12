@@ -134,7 +134,7 @@
               </thead>
               <tbody>
  
-                <!-- ===== IF THERE ISN'T HISTORY REQUEST ===== -->
+                <!-- ===== IF THERE ISN'T CONTACTS ===== -->
                 <tr *ngIf="contacts && contacts?.length === 0"> 
                   <td colspan="4" style="text-align: center; padding-top: 16px; cursor: pointer">
  
@@ -178,9 +178,10 @@
                   <!-- ========== ICON VIEW CONTACT DETAILS ========== -->
                   <td (click)='goToContactDetails(contact?._id)' style="text-align:left; padding-top: 15px" >
                     <span style="cursor:pointer" class="tooltipx">
-                        <i style="font-size: 17px !important; color: #00bcd4" class="material-icons">visibility</i>
+                        <i style="font-size: 17px !important; color: #00bcd4" class="material-icons">dvr</i>
                         <span class="tooltiptext-custom">
-                          {{ 'ViewDetails' | translate }} {{ contact?.email }}
+                          {{ 'ViewDetails' | translate }} 
+                          <!-- {{ contact?.email }} -->
                         </span> 
                     </span>
                   </td>
