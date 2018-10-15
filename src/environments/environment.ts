@@ -22,6 +22,7 @@ export const environment = {
         CHECK_PSW_RESET_KEY: 'http://localhost:3000/auth/checkpswresetkey/',
         UPDATE_USER_LASTNAME_FIRSTNAME: 'http://localhost:3000/users/updateuser/',
         CHANGE_PSW: 'http://localhost:3000/users/changepsw/',
+        RESEND_VERIFY_EMAIL: 'http://localhost:3000/users/resendverifyemail/',
 
         // DEPARTMENTS_BASE_URL: 'http://localhost:3000/app1/departments/', // URL BUILT directly IN DEPARTMENTS SERVICE
         // FAQKB_BASE_URL: 'http://localhost:3000/app1/faq_kb/', // URL BUILT directly IN FAQ-KB SERVICE

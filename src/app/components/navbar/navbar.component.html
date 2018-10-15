@@ -112,17 +112,15 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="material-icons">person</i>
 
-                                <span class="tooltipx"> 
-                                    <span  *ngIf="user?.emailverified == false" class="notification" style="font-weight: 200; font-size:12px; right:-1px; top:-24px">
-                                        !
-                                        <span class="tooltiptext">
-                                            {{"NavBar.PendingVerification" | translate }}
+                                    <span class="tooltipx"> 
+                                        <span  *ngIf="user?.emailverified == false" class="notification" style="font-weight: 200; font-size:12px; right:-1px; top:-24px">
+                                            !
+                                            <span class="tooltiptext">
+                                                {{"NavBar.PendingVerification" | translate }}
+                                            </span>
                                         </span>
-                                               
                                     </span>
-                                </span>
                              
-
                                 <p class="hidden-lg hidden-md">Profile</p>
                             </a>
                             <!-- | async as user; else elseBlock -->
@@ -200,27 +198,22 @@
 
         
     </div>
-<!-- ------------============= PENDING EMAIL VERIFICATION MSG =============------------ -->
 
-<div data-notify="container" class="alert alert-danger animated fadeInDown alert-danger-pending-email-verification" role="alert" data-notify-position="top-center" 
-    style="">
-    <!-- <button type="button" aria-hidden="true" class="close" data-notify="dismiss" style="position: absolute; right: 10px; top: 5px; z-index: 1033;">×</button> -->
-    <span data-notify="icon" class="notifications">
-           
-            <i class="fa fa-exclamation-circle" style="font-size: 20px;"></i>  
-            <span style="font-family: Google Sans, sans-serif;font-weight: 400; display: inline; position: relative;top: -2px; font-size: 14px; padding-left: 5px;">
-                {{"NavBar.PendingVerification" | translate }}
+    <!-- ------------============= PENDING EMAIL VERIFICATION MSG =============------------ -->
+    <span *ngIf="DETECTED_PROJECT_PAGE === false">
+        <div routerLink="project/{{ project?._id }}/user-profile" *ngIf="user?.emailverified == false" data-notify="container" class="alert alert-danger animated fadeInDown alert-pending-email-verification" role="alert" data-notify-position="top-center">
+            <!-- <button type="button" aria-hidden="true" class="close" data-notify="dismiss" style="position: absolute; right: 10px; top: 5px; z-index: 1033;">×</button> -->
+            <span data-notify="icon" class="notifications">
+                <i class="fa fa-exclamation-circle" style="font-size: 20px;"></i>  
+                <span style="font-family: Google Sans, sans-serif;font-weight: 400; display: inline; position: relative;top: -2px; font-size: 14px; padding-left: 5px;">
+                    {{"NavBar.PendingVerification" | translate }}
+                </span> 
             </span> 
-    </span> 
-    <span data-notify="title" style="max-width: 100%;">
-            {{"NavBar.SomeSystemAreDisabled" | translate }}
-    </span> 
-    <!-- <span data-notify="message">
-        <span style="font-weight: 400; font-family: Google Sans, sans-serif;">Pending email verification</span>
-    </span> -->
-</div>
-
-
+            <span data-notify="title" style="max-width: 100%;">
+                    {{"NavBar.SomeSystemAreDisabled" | translate }}
+            </span> 
+        </div>
+    </span>
 
 </div>
 

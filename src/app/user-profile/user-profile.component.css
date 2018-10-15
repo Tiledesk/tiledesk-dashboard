@@ -6,7 +6,7 @@ input[type=text] {
     margin-bottom: 10px;
     -webkit-appearance: none;
     background: #fff;
-    border: 1px solid #d9d9d9 !important;
+    border: 1px solid #d9d9d9;
     border-top: 1px solid #c0c0c0;
     /* border-radius: 2px; */
     padding: 0 8px;
@@ -137,4 +137,10 @@ button.close {
     overflow: hidden;
     position: absolute;
     z-index: -1;
+}
+
+.pending-email-verification {
+    
+    border: 1px solid #f44336 !important
+    
 }

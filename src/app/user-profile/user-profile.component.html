@@ -23,7 +23,7 @@
                             <!-- src="assets/img/no_image_user.png" -->
                             <!-- 2F5b7af638109dc06fedefe063 -->
                             <!-- userProfileImageExist: {{ userProfileImageExist }} - userImageHasBeenUploaded:{{ userImageHasBeenUploaded }} -->
-                            <div class="card-avatar" style="padding-bottom:15px;">
+                            <div class="card-avatar" style="padding-bottom:15px; min-height: 95px">
                                 <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
                                 class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{userId}}%2Fphoto.jpg?alt=media" />
                                
@@ -66,14 +66,9 @@
                           Email
                         </label>
                         <div class="col-sm-10">
-                            <input style="color:#808080" [(ngModel)]="user.email" class="" type="text" placeholder="Email" disabled>
-                            <span *ngIf="emailverified == false">
-                                <i class="material-icons" style="vertical-align: middle; color:#f44336;">report_problem</i>
-                                <span style="vertical-align: middle; color:#f44336;"> 
-                                {{ "UserProfile.PendingEmailVerification" | translate }}
-                                </span>
-                            </span>
-                        </div> 
+                            <input style="color:#808080" [(ngModel)]="user.email" class="" type="text" placeholder="Email" 
+                                [ngClass]="{'pending-email-verification' : emailverified === false }" disabled>
+                           </div> 
 
                         <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2">
                             <!-- ID Utente -->
@@ -92,9 +87,23 @@
                             </div> 
                         </div> -->
 
+                     
+                        <span *ngIf="emailverified == false">
+                            <label style="" class="col-sm-2"></label>
+                            <div class="col-sm-10" style="padding-top: 15px;">
+                                <i class="material-icons" style="vertical-align: middle; color:#f44336;">error_outline</i>
+                                <span style="vertical-align: middle; color:#f44336;"> 
+                                <!-- {{ "UserProfile.PendingEmailVerification" | translate }} -->
+                                Your account is pending email verification. <a (click)="resendVerificationEmail()"> Click here to re-send verification email </a>
+                                </span>       
+                            </div>
+                
+                        </span>
+
                         <!-- SPACER -->
                         <div class="col-sm-12 spacer" style="height:15px"></div>
 
+                 
                         <label style="" class="col-sm-2"></label>
                         <div class="col-sm-10 ">
                             <button class="btn btn-success" (click)="updateCurrentUserFirstnameLastname()" [disabled]="!HAS_EDIT_FIRSTNAME && !HAS_EDIT_LASTNAME"  >

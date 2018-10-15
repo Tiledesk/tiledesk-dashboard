@@ -64,6 +64,7 @@ export class UsersService {
   // http://localhost:3000/users/updateuser/'
   UPDATE_USER_URL = environment.mongoDbConfig.UPDATE_USER_LASTNAME_FIRSTNAME;
   CHANGE_PSW_URL = environment.mongoDbConfig.CHANGE_PSW;
+  RESEND_VERIFY_EMAIL = environment.mongoDbConfig.RESEND_VERIFY_EMAIL;
   currentUserId: string;
   project_id: string;
   project_name: string;
@@ -707,6 +708,22 @@ export class UsersService {
       .put(url, JSON.stringify(body), options)
       .map((res) => res.json());
 
+  }
+
+  public resendVerifyEmail() {
+    const url = this.RESEND_VERIFY_EMAIL;
+
+    console.log('RESEND VERIFY EMAIL URL ', url);
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    return this.http
+      .get(url, options)
+      .map((res) => res.json());
   }
 
 

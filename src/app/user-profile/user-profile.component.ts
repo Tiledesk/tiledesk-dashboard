@@ -100,7 +100,6 @@ export class UserProfileComponent implements OnInit {
       // tslint:disable-next-line:no-debugger
       // debugger
       if (user) {
-
         this.user = user;
 
         this.userFirstname = user.firstname;
@@ -109,7 +108,6 @@ export class UserProfileComponent implements OnInit {
 
         /// ===== CHECK USER PROFILE IMAGE ===== 
         // this.verifyUserProfileImageOnStorage(this.userId);
-
 
         this.firstnameCurrentValue = user.firstname;
         this.lastnameCurrentValue = user.lastname;
@@ -184,7 +182,6 @@ export class UserProfileComponent implements OnInit {
   }
 
   updateCurrentUserFirstnameLastname() {
-
     this.displayModalUpdatingUser = 'block';
     this.SHOW_CIRCULAR_SPINNER = true;
 
@@ -232,9 +229,20 @@ export class UserProfileComponent implements OnInit {
 
 
   upload(event) {
-
     const file = event.target.files[0]
-
     this.uploadImageService.uploadUserAvatar(file, this.userId)
+  }
+
+  resendVerificationEmail() {
+    this.usersService.resendVerifyEmail().subscribe((dataresponse) => {
+
+      console.log('RESEND VERIFY EMAIL - DATA RESPONSE ', dataresponse);
+    },
+      (error) => {
+        console.log('RESEND VERIFY EMAIL ', error);
+      },
+      () => {
+        console.log('RESEND VERIFY EMAIL * COMPLETE *');
+      });
   }
 }

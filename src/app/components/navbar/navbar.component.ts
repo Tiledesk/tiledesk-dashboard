@@ -56,6 +56,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     route: string;
 
     DETECTED_CHAT_PAGE = false;
+    DETECTED_PROJECT_PAGE = false;
     CHAT_BASE_URL = environment.chat.CHAT_BASE_URL
 
     displayLogoutModal = 'none';
@@ -120,6 +121,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         this.getProjectUserId();
 
         // this.detectChatPage();
+        this.detectProjectPage()
 
         this.checkUserImageUploadIsComplete()
 
@@ -130,16 +132,16 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
     checkUserImageExist() {
         this.usersService.userProfileImageExist.subscribe((image_exist) => {
-          console.log('USER-PROFILE - USER PROFILE EXIST ? ', image_exist);
-          this.userProfileImageExist = image_exist;
+            console.log('USER-PROFILE - USER PROFILE EXIST ? ', image_exist);
+            this.userProfileImageExist = image_exist;
         });
-      }
-      checkUserImageUploadIsComplete() {
+    }
+    checkUserImageUploadIsComplete() {
         this.uploadImageService.imageExist.subscribe((image_exist) => {
-          console.log('USER-PROFILE - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
-          this.userImageHasBeenUploaded = image_exist;
+            console.log('USER-PROFILE - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
+            this.userImageHasBeenUploaded = image_exist;
         });
-      }
+    }
 
     /* DETECT IF IS THE CHAT PAGE */
     detectChatPage() {
@@ -160,6 +162,24 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         });
     }
 
+    // USED TO ASSIGN THE CLASS is-project-page TO THE EMAIL VERIFICATION ALERT
+    detectProjectPage() {
+
+        this.router.events.subscribe((val) => {
+
+            if (this.location.path() !== '') {
+                this.route = this.location.path();
+                // console.log('»> »> »> NAVBAR ROUTE DETECTED »> ', this.route)
+                if (this.route === '/projects') {
+                    console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
+                    this.DETECTED_PROJECT_PAGE = true;
+                } else {
+                    this.DETECTED_PROJECT_PAGE = false;
+                }
+            }
+        });
+    }
+
     getCurrentProject() {
         // this.project = this.auth.project_bs.value;
         this.auth.project_bs.subscribe((project) => {
@@ -174,8 +194,6 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
             // tslint:disable-next-line:no-debugger
             // debugger
             this.user = user;
-            console.log('»»» »»» USER GET IN NAVBAR - EMAIL VERIFIED', this.user.emailverified )
-
         });
     }
 

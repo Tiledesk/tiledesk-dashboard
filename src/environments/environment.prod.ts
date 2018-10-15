@@ -48,7 +48,7 @@ export const environment = {
         CHECK_PSW_RESET_KEY: 'https://api.tiledesk.com/v1/auth/checkpswresetkey/',
         UPDATE_USER_LASTNAME_FIRSTNAME: 'https://api.tiledesk.com/v1/users/updateuser/',
         CHANGE_PSW: 'https://api.tiledesk.com/v1/users/changepsw/',
-
+        RESEND_VERIFY_EMAIL: 'https://api.tiledesk.com/v1/users/resendverifyemail/',
 
 
 
