@@ -195,13 +195,11 @@
                 </div>
             </div>
         </nav>
-
-        
     </div>
 
     <!-- ------------============= PENDING EMAIL VERIFICATION MSG =============------------ -->
     <span *ngIf="DETECTED_PROJECT_PAGE === false">
-        <div routerLink="project/{{ project?._id }}/user-profile" *ngIf="user?.emailverified == false" data-notify="container" class="alert alert-danger animated fadeInDown alert-pending-email-verification" role="alert" data-notify-position="top-center">
+        <div (click)="goToUserProfile()" *ngIf="user?.emailverified == false" data-notify="container" class="alert alert-danger animated fadeInDown alert-pending-email-verification" role="alert" data-notify-position="top-center">
             <!-- <button type="button" aria-hidden="true" class="close" data-notify="dismiss" style="position: absolute; right: 10px; top: 5px; z-index: 1033;">×</button> -->
             <span data-notify="icon" class="notifications">
                 <i class="fa fa-exclamation-circle" style="font-size: 20px;"></i>  

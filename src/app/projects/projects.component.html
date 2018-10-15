@@ -2,93 +2,111 @@
 <!-- <p style="margin-top:10px; padding-left:30px" class="navbar-brand">Progetti</p>  -->
 <div class="row">
   <div class="col-md-11 col-md-offset-1 col-sm-11 col-sm-offset-1 col-xs-9 col-xs-offset-3" style="right:25px;">
-  <nav class="navbar navbar-transparent navbar-absolute">
-    <div class="container-fluid">
-      <div class="navbar-header">
-          <button type="button" class="navbar-toggle" style="margin-top:-3px" data-toggle="collapse" (click)="sidebarToggle()">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-          </button>
-          <!-- <a class="navbar-brand" href="#">{{getTitle()}}</a> -->
-          <!-- <a class="navbar-brand" href="#">Testina</a> -->
-      </div>
-      <div class="collapse navbar-collapse">
-        <ul class="nav navbar-nav navbar-right">
+    <nav class="navbar navbar-transparent navbar-absolute">
+      <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" style="margin-top:-3px" data-toggle="collapse" (click)="sidebarToggle()">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <!-- <a class="navbar-brand" href="#">{{getTitle()}}</a> -->
+            <!-- <a class="navbar-brand" href="#">Testina</a> -->
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav navbar-right">
 
-          <!-- // ======= START - TEST - LOGOUT FROM FIREBASE ======= // -->
-          <li *ngIf="APP_IS_DEV_MODE == true" style="cursor:pointer">                 
-              <a (click)="testExpiredSessionFirebaseLogout()">
-                  <i class="material-icons">lock_open</i>
-                    FireBase Logout
+            <!-- // ======= START - TEST - LOGOUT FROM FIREBASE ======= // -->
+            <li *ngIf="APP_IS_DEV_MODE == true" style="cursor:pointer">                 
+                <a (click)="testExpiredSessionFirebaseLogout()">
+                    <i class="material-icons">lock_open</i>
+                      FireBase Logout
+                </a>
+            </li>
+            <!-- // ======= ./END - TEST - LOGOUT FROM FIREBASE ======= // -->
+
+            <li class="dropdown">
+            <!-- class="dropdown-toggle" -->
+            <!-- margin-top:56px; display:block; text-align:right; padding-top:15px;padding-bottom:15px; padding-right:28px; color: #555555;" -->
+              <a  data-toggle="dropdown" href="#" style="display:block !important; margin-top:0px; opacity:100 !important">
+              <i style="font-size:20px; display:block !important; float: right; color: #555555 !important; " class="material-icons">person</i>
+              <!-- <p class="hidden-lg hidden-md">Profile</p> -->
+
+              <span class="tooltipx"> 
+                  <span  *ngIf="user?.emailverified == false" class="notification" style="font-weight: 200; font-size:12px; right:11px; top:3px">
+                      !
+                      <span class="tooltiptext">
+                        {{"NavBar.PendingVerification" | translate }}
+                      </span>
+                            
+                  </span>
+              </span>
               </a>
-          </li>
-          <!-- // ======= ./END - TEST - LOGOUT FROM FIREBASE ======= // -->
+            <!-- float:right !important; right:0px!important; left:1px!important  -->
+              <ul class="dropdown-menu" style="">
 
-          <li class="dropdown">
-          <!-- class="dropdown-toggle" -->
-          <!-- margin-top:56px; display:block; text-align:right; padding-top:15px;padding-bottom:15px; padding-right:28px; color: #555555;" -->
-            <a  data-toggle="dropdown" href="#" style="display:block !important; margin-top:0px; opacity:100 !important">
-            <i style="font-size:20px; display:block !important; float: right; color: #555555 !important; " class="material-icons">person</i>
-            <!-- <p class="hidden-lg hidden-md">Profile</p> -->
+                <div class="card card-profile" style="box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0)" >
+                  <div class="card-avatar" style="max-width:80px; max-height:80px; background-color:#ffffff; border: 2px solid #ffffff">
+                    <a>
+                      <!-- <img class="img" src="assets/img/no_image_user.png" /> -->
 
-            <span class="tooltipx"> 
-                <span  *ngIf="user?.emailverified == false" class="notification" style="font-weight: 200; font-size:12px; right:11px; top:3px">
-                    !
-                    <span class="tooltiptext">
-                      {{"NavBar.PendingVerification" | translate }}
-                    </span>
-                           
-                </span>
-            </span>
-            </a>
-          <!-- float:right !important; right:0px!important; left:1px!important  -->
-            <ul class="dropdown-menu" style="">
+                      <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" 
+                      class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{user?._id}}%2Fphoto.jpg?alt=media" />
+                      
+                      <img *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true" 
+                      class="user-img" src="assets/img/no_image_user.png"/>
 
-              <div class="card card-profile" style="box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0)" >
-                <div class="card-avatar" style="max-width:80px; max-height:80px; background-color:#ffffff; border: 2px solid #ffffff">
-                  <a>
-                    <!-- <img class="img" src="assets/img/no_image_user.png" /> -->
+                    </a>
 
-                    <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" 
-                    class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{user?._id}}%2Fphoto.jpg?alt=media" />
-                    
-                    <img *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true" 
-                    class="user-img" src="assets/img/no_image_user.png"/>
-
-                  </a>
-
-                </div>
-                <div class="content">
-                  <button  class="btn btn-info" routerLink="/user-profile" style="padding-top:3.5px; padding-bottom:3.5px; padding-right:7.5px; padding-left:7.5px; letter-spacing: 2px;">
-                    <!-- <h6 class="category text-gray"> -->
-                      <!-- <a routerLink="/user-profile">  -->
-                       <span style="font-size:0.8em"> {{ 'ProjectsPage.UserProfile' | translate }} </span>
-                      <!-- </a> -->
-                    <!-- </h6> -->
+                  </div>
+                  <div class="content">
+                    <button  class="btn btn-info" routerLink="/user-profile" style="padding-top:3.5px; padding-bottom:3.5px; padding-right:7.5px; padding-left:7.5px; letter-spacing: 2px;">
+                      <!-- <h6 class="category text-gray"> -->
+                        <!-- <a routerLink="/user-profile">  -->
+                        <span style="font-size:0.8em"> {{ 'ProjectsPage.UserProfile' | translate }} </span>
+                        <!-- </a> -->
+                      <!-- </h6> -->
+                    </button>
+                    <h4 class="card-title" style="padding-right:16px; padding-left:16px; font-size:1em; color: #3C4858">
+                      <strong> 
+                        {{ user?.firstname }} {{ user?.lastname }} 
+                      </strong>
+                    </h4>
+                    <h4 class="card-title" style="padding-right:16px; padding-left:16px; font-size:1em; margin-bottom:30px">
+                      {{ user?.email }}
+                    </h4>
+                    <!-- <p class="card-content">{{ user.email }}</p> -->
+                  </div>
+                  <button style="padding-left:26px; padding-right:26px; font-size:0.9em" type="submit" class="btn btn-white" (click)="openLogoutModal()">
+                    Log out
                   </button>
-                  <h4 class="card-title" style="padding-right:16px; padding-left:16px; font-size:1em; color: #3C4858">
-                    <strong> 
-                      {{ user?.firstname }} {{ user?.lastname }} 
-                    </strong>
-                  </h4>
-                  <h4 class="card-title" style="padding-right:16px; padding-left:16px; font-size:1em; margin-bottom:30px">
-                    {{ user?.email }}
-                  </h4>
-                  <!-- <p class="card-content">{{ user.email }}</p> -->
                 </div>
-                <button style="padding-left:26px; padding-right:26px; font-size:0.9em" type="submit" class="btn btn-white" (click)="openLogoutModal()">
-                  Log out
-                </button>
-              </div>
-            </ul>
-          </li>
-        </ul>
+              </ul>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-  </nav>
-</div>
+    </nav>
+  </div>
+    
+    <!-- ------------============= PENDING EMAIL VERIFICATION MSG =============------------ -->
+    <!-- *ngIf="DETECTED_PROJECT_PAGE === true" -->
+    <span >
+        <div routerLink="/user-profile" *ngIf="user?.emailverified == false" data-notify="container" class="alert alert-danger animated fadeInDown alert-pending-email-prjct-page" role="alert" data-notify-position="top-center">
+            <!-- <button type="button" aria-hidden="true" class="close" data-notify="dismiss" style="position: absolute; right: 10px; top: 5px; z-index: 1033;">×</button> -->
+            <span data-notify="icon" class="notifications">
+                <i class="fa fa-exclamation-circle" style="font-size: 20px;"></i>  
+                <span style="font-family: Google Sans, sans-serif;font-weight: 400; display: inline; position: relative;top: -2px; font-size: 14px; padding-left: 5px;">
+                    {{"NavBar.PendingVerification" | translate }}
+                </span> 
+            </span> 
+            <span data-notify="title" style="max-width: 100%;">
+                    {{"NavBar.SomeSystemAreDisabled" | translate }}
+            </span> 
+        </div>
+    </span>
+
 </div>
 <!-- target="_blank" href="http://www.tiledesk.com" -->
 <a  style="margin-top:3px; padding-left:30px; cursor: pointer;" class="navbar-brand">

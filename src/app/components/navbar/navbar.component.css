@@ -146,7 +146,7 @@ button.close {
   }
   /* // end TOOLTIP */  
 
-
+/*  ============= PENDING EMAIL VERIFICATION MSG ============= */
 .alert-pending-email-verification {
     display: inline-block;
     margin: 0px auto;
@@ -154,7 +154,7 @@ button.close {
     transition: all 0.5s ease-in-out 0s;
     z-index: 1031;
     top: 10px;
-    left: 270px;
+    left: 245px;
     right: 0px;
     width: 450px;
     padding-top: 10px;
