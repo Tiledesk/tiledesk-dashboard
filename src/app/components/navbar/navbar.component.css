@@ -145,3 +145,43 @@ button.close {
     visibility: visible;
   }
   /* // end TOOLTIP */  
+
+
+.alert-danger-pending-email-verification {
+    display: inline-block;
+    margin: 0px auto;
+    position: fixed;
+    transition: all 0.5s ease-in-out 0s;
+    z-index: 1031;
+    top: 10px;
+    left: 270px;
+    right: 0px;
+    width: 450px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+@media (max-width: 991px){ 
+    .alert-danger-pending-email-verification {
+        right: 0px;
+        left: 0px;
+    }
+}
+
+@media (max-width: 768px){ 
+    .alert-danger-pending-email-verification {
+        width: 350px;
+    }
+}
+
+@media (max-width: 568px){ 
+    .alert-danger-pending-email-verification {
+        width: 300px;
+    }
+}
+
+@media (max-width: 468px){ 
+    .alert-danger-pending-email-verification {
+        width: 180px;
+    }
+}

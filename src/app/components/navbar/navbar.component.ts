@@ -174,8 +174,11 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
             // tslint:disable-next-line:no-debugger
             // debugger
             this.user = user;
+            console.log('»»» »»» USER GET IN NAVBAR - EMAIL VERIFIED', this.user.emailverified )
+
         });
     }
+
 
     goToProjects() {
         console.log('HAS CLICCKED GO TO PROJECT ')

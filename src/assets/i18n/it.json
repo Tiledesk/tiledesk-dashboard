@@ -111,7 +111,8 @@
         "ProjectSettings": "Impostazioni progetto",
         "UserProfile": "VEDI PROFILO",
         "RunChatInAStandAloneTab": "Esegui la chat in una scheda autonoma",
-        "PendingVerification": "Email non verificata"
+        "PendingVerification": "Email non verificata",
+        "SomeSystemAreDisabled":"alcune funzioni di sistema, come le notifiche via email, sono disabilitate"
     },
     "SideBar": {
         "ViewAllProjects": "Visualizza tutti i progetti",
