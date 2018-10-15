@@ -162,6 +162,10 @@ button.close {
     cursor: pointer;
 }
 
+.is-user-profile-page {
+    left: 25px;
+}
+
 @media (max-width: 991px){ 
     .alert-pending-email-verification {
         right: 0px;
