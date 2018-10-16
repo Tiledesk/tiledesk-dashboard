@@ -46,30 +46,22 @@
                             <div class="row" style=" margin-top: 15px;">
                             <div class="col-sm-5 col-xs-12">
                             
-                             <!-- ========================= INCLUDE PRECHAT FORM ========================= -->
-
+                            <!-- ========================= INCLUDE PRECHAT FORM ========================= -->
                             <h6 class="category text-gray" style="text-transform: none; padding-left:15px">
- 
                                 <div>
-         
                                     <label style="color: #566787;" class="form-check-label" for="exampleCheck1">
                                         {{ 'Resourcepage.IncludeThePreChatForm_1' | translate }} 
                                     </label>
-          
                                     <div class="row" style="border-left: #5bc0de 2px solid; margin-left: 0px;">
-
                                         <div class="col-sm-11" >
                                             {{ 'Resourcepage.RequiresVisitorsToCompleteForm' | translate }} 
                                          </div>
-
                                         <div class="col-sm-8">
                                             <label class="container" for="preChatForm" style="margin-left: 0px; margin-bottom: 6px; margin-top: 8px;">
                                                 <input type="checkbox" id="preChatForm"  (change)="toggleCheckBox($event)" style="position: relative;"/>
                                                 <span class="checkmark" style=""></span>
                                             </label>
                                         </div>
-                                        
-                     
                                     </div>
                                 </div>
                             </h6>   
@@ -77,14 +69,10 @@
                             <!-- ===========================  CALLOUT  =========================== -->
                             <h6 class="category text-gray" style="text-transform: none; padding-left:15px">        
                                 <div>    
-                     
                                     <label style="color: #566787; margin-top: 5px" class="form-check-label" for="exampleCheck1">
                                         Callout                  
                                     </label>
-
-                       
-                                        <div class="row" style="border-left: #5bc0de 2px solid; margin-left: 0px;">
-
+                                    <div class="row" style="border-left: #5bc0de 2px solid; margin-left: 0px;">
                                         <div class="col-sm-11">
                                             {{ 'Resourcepage.MakeTheFirstStep' | translate }} 
                                         </div>
@@ -147,13 +135,10 @@
                             
                             <!-- =========================== WIDGET ALIGNMENT =========================== -->
                             <h6 class="category text-gray" style="text-transform: none; padding-left:15px"> 
-
                                 <div>    
-       
                                     <label style="color: #566787; margin-top: 5px" class="form-check-label" for="exampleCheck1">
                                         {{ 'Resourcepage.WidgetAlignment' | translate }}
                                     </label>
-          
                                     <div class="row" style="border-left: #5bc0de 2px solid; margin-left: 0px;">
                                         <div class="col-sm-8">
                                             <ng-select #selectElemAlign [clearable]='false' [(ngModel)]="alignmentSelected" (change)="setSelectedAlignment()" style="min-width: 60px; background-color:#fff; color:#333333;" >
@@ -169,12 +154,10 @@
                                         </div>    
                                     </div>    
                                 </div>
-                                
                             </h6>
 
 
                             <!-- =========================== WEB SDK LINK =========================== -->
-
                             <h6 class="category text-gray" style="text-transform: none; padding-left:15px"> 
                                 <div>    
                                     <label style="color: #566787; margin-top: 5px" class="form-check-label" for="exampleCheck1">
@@ -194,7 +177,7 @@
 
 
                             <!-- =========================== WIDGET DESIGN =========================== -->
-                            <!-- <h6 class="category text-gray" style="text-transform: none; padding-left:15px"> 
+                            <h6 class="category text-gray" style="text-transform: none; padding-left:15px"> 
                                 <div>    
                                     <label style="color: #566787; margin-top: 5px" class="form-check-label" for="exampleCheck1">
                                         Widget design
@@ -207,7 +190,7 @@
                                         </div>    
                                     </div>    
                                 </div>
-                            </h6> -->
+                            </h6>
 
 
                             <!-- Copy the following script and insert it into your website's HTML source code between the <head> tags -->

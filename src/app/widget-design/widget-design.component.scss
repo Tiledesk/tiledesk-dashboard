@@ -1,0 +1,464 @@
+/* DEFAULT CSS */
+#chat21-container {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size-adjust: none;
+    font-size: 100%;
+    font-style: normal;
+    letter-spacing: normal;
+    font-stretch: normal;
+    font-variant: normal;
+    font-weight: normal;
+    font: normal normal 100% "Helvetica Neue",Helvetica,Arial,sans-serif;
+    text-align: left;
+    -moz-text-align-last: initial;
+    text-align-last: initial;
+    text-decoration: none;
+    -webkit-text-emphasis: none;
+    text-indent: 0;
+    text-justify: auto;
+    text-shadow: none;
+    text-transform: none;
+    -webkit-animation: none 0 ease 0 1 normal;
+    animation: none 0 ease 0 1 normal;
+    -webkit-animation-play-state: running;
+    animation-play-state: running;
+    -webkit-backface-visibility: visible;
+    backface-visibility: visible;
+    background: none 0 0 auto repeat scroll padding-box transparent;
+    background-color: transparent;
+    background-image: none;
+    border: 0 none transparent;
+    border-radius: 0;
+    bottom: auto;
+    -webkit-box-decoration-break: slice;
+    box-decoration-break: slice;
+    box-shadow: none;
+    box-sizing: content-box;
+    -webkit-break-after: auto;
+    -moz-break-after: auto;
+    break-after: auto;
+    -webkit-break-before: auto;
+    -moz-break-before: auto;
+    break-before: auto;
+    -webkit-column-break-inside: auto;
+    page-break-inside: auto;
+    break-inside: auto;
+    caption-side: top;
+    clear: none;
+    clip: auto;
+    color: inherit;
+    color-profile: auto;
+    -webkit-column-count: auto;
+    -moz-column-count: auto;
+    column-count: auto;
+    -webkit-column-fill: balance;
+    -moz-column-fill: balance;
+    column-fill: balance;
+    -webkit-column-gap: normal;
+    -moz-column-gap: normal;
+    column-gap: normal;
+    -webkit-column-rule: medium medium #1f1f1f;
+    -moz-column-rule: medium medium #1f1f1f;
+    column-rule: medium medium #1f1f1f;
+    -webkit-column-span: 1;
+    -moz-column-span: 1;
+    column-span: 1;
+    -webkit-column-width: auto;
+    -moz-column-width: auto;
+    column-width: auto;
+    -webkit-columns: auto auto;
+    -moz-columns: auto auto;
+    columns: auto auto;
+    content: normal;
+    counter-increment: none;
+    counter-reset: none;
+    cursor: auto;
+    direction: ltr;
+    display: inline;
+    empty-cells: show;
+    -webkit-hyphens: manual;
+    -moz-hyphens: manual;
+    -ms-hyphens: manual;
+    hyphens: manual;
+    image-orientation: auto;
+    image-rendering: auto;
+    left: auto;
+    line-height: initial;
+    list-style: disc outside none;
+    margin: 0;
+    max-height: none;
+    max-width: none;
+    min-height: 0;
+    min-width: 0;
+    nav-down: auto;
+    nav-index: auto;
+    nav-left: auto;
+    nav-right: auto;
+    nav-up: auto;
+    opacity: 1;
+    orphans: 2;
+    outline: invert none medium;
+    outline-offset: 0;
+    overflow: visible;
+    padding: 0;
+    page-break-after: auto;
+    page-break-before: auto;
+    page-break-inside: auto;
+    -webkit-perspective: none;
+    perspective: none;
+    -webkit-perspective-origin: 50% 50%;
+    perspective-origin: 50% 50%;
+    position: static;
+    quotes: none;
+    resize: none;
+    right: auto;
+    ruby-align: auto;
+    ruby-overhang: none;
+    ruby-position: before;
+    ruby-span: none;
+    size: auto;
+    table-layout: auto;
+    top: auto;
+    -webkit-transform: none;
+    -ms-transform: none;
+    transform: none;
+    -webkit-transform-origin: 50% 50% 0;
+    -ms-transform-origin: 50% 50% 0;
+    transform-origin: 50% 50% 0;
+    -webkit-transform-style: flat;
+    transform-style: flat;
+    transition: all 0 ease 0;
+    unicode-bidi: normal;
+    vertical-align: baseline;
+    white-space: normal;
+    widows: 2;
+    word-break: normal;
+    word-spacing: normal;
+    word-wrap: normal;
+    z-index: auto;
+    text-align: start;
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+#chat21-container #chat21-conversations {
+    -webkit-box-shadow: rgba(0,0,0,.18) 0 0 38px;
+    box-shadow: rgba(0,0,0,.18) 0 0 38px;
+    right: 20px;
+    display: block;
+}
+
+#chat21-container .chat21-sheet {
+    z-index: 999999001;
+    display: none;
+    position: fixed;
+    height: 80%;
+    width: 376px;
+    bottom: 90px;
+    overflow: hidden;
+    right: 20px;
+    overflow-y: auto;
+    background-color: #fff;
+}
+
+#chat21-conversations {
+    overflow-y: hidden!important;
+}
+
+#chat21-container .chat21-sheet-header {
+    z-index: 999999005;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 52px;
+}
+
+#chat21-container .chat21-sheet-header-title-container {
+    z-index: 999999003;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    text-align-last: center;
+    pointer-events: none;
+}
+
+
+#chat21-container .chat21-sheet-header-title {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: .2px;
+    display: inline-block;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 14px;
+}
+
+.chat21-header-button {
+    width: 30px;
+    height: 50px;
+    float: left;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    text-align: center;
+}
+
+
+.chat21-header-button.right {
+    float: right;
+}
+
+#chat21-container .chat21-sheet-content {
+    z-index: 999999004;
+    position: absolute;
+    top: 52px;
+    right: 0;
+    bottom: 70px;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    // background-image: url(https://user-images.githubusercontent.com/32448495/38979663-16c07520-43bb-11e8-8b83-186ac1df0745.jpg);
+}
+
+#chat21-contentScroll {
+    padding-top: 20px;
+}
+
+#chat21-footer {
+    z-index: 999999005;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    -webkit-box-shadow: 0 -1px 10px 1px rgba(191,191,191,.28);
+    box-shadow: 0 -1px 10px 1px rgba(191,191,191,.28);
+    background: #fff;
+}
+
+.visible-text-area {
+    display: block;
+    height: 100%;
+}
+
+
+
+.chat21-textarea-button {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    bottom: 40px;
+    // display: none;
+}
+
+#chat21-footer textarea {
+    padding: 10px 40px!important;
+    margin: 0!important;
+    line-height: normal!important;
+    border: none!important;
+    -webkit-box-shadow: none!important;
+    box-shadow: none!important;
+    min-height: 40px!important;
+    overflow: hidden;
+}
+
+#chat21-main-message-context {
+    overflow-x: hidden;
+    word-wrap: break-word;
+    resize: horizontal;
+    overflow-y: visible;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding: 10px;
+    color: #1a1a1a;
+    min-width: 100%;
+    outline: 0;
+    resize: none!important;
+    max-height: 180px;
+    font-size: 13px;
+    overflow: auto;
+}
+
+#chat21-button-send {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    background-image: url("/assets/img/f21ico-send.svg");
+    right: 8px;
+    padding: 0;
+    bottom: 38px;
+}
+
+#chat21-start-upload-doc {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 16px;
+    background-image: url("/assets/img/f21ico-attached.svg");
+    left: 8px;
+    padding: 0;
+    bottom: 33px;
+}
+
+#chat21-powered-by {
+    font-family: 'Google Sans',sans-serif!important;
+    text-align: center;
+    clear: both;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 22px;
+    padding: 0;
+    height: 25px;
+    width: 100%;
+}
+
+#chat21-conversations .base_sent {
+    -webkit-box-align: end;
+    -ms-flex-align: end;
+    align-items: flex-end;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    padding: 2px 10px 4px 40px;
+}
+
+#chat21-conversations .msg_container {
+    overflow: hidden;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+#chat21-conversations .msg_sent {
+    background-color: #62a8ea;
+    color: #fff;
+    margin-right: 0;
+    margin-left: 4px;
+    max-width: calc(100% - 30px);
+    min-width: 14px;
+}
+#chat21-conversations .messages {
+    border-radius: 14px;
+    padding: 6px;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+    box-shadow: 0 1px 2px rgba(0,0,0,.2);
+}
+
+#chat21-conversations .base_sent .status-message {
+    width: 16px;
+    height: 16px;
+    margin-left: 4px;
+}
+
+#chat21-conversations .base_sent .f21ico-done {
+    background-image: url("/assets/img/f21ico-done.svg");
+}
+
+#chat21-conversations .base_sent .icon {
+    width: 13px;
+    height: 13px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    overflow-x: hidden;
+}
+
+#chat21-conversations .time.sender {
+    text-align: right;
+    margin-right: 24px;
+}
+
+#chat21-conversations .time {
+    font-size: .7em;
+    color: #aaa;
+    margin-bottom: 10px;
+    margin-top: -2px;
+    text-align: left;
+    margin-left: 46px;
+}
+
+.message_sender_fullname {
+    margin-top: 10px;
+    font-size: .8em;
+    color: #666;
+    margin-left: 10px;
+}
+
+#chat21-conversations .base_receive {
+    padding: 4px 10px;
+}
+
+#chat21-conversations .msg_container {
+    overflow: hidden;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+#chat21-conversations .content-avatar {
+    position: relative;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    left: 0;
+    top: 0;
+    margin-right: 6px;
+}
+
+.profile_image {
+    position: relative;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #fff;
+    border: 1px solid #e2e2e2;
+}
+
+.profile_image img {
+    max-width: 100%;
+    min-width: 25px;
+    min-height: 25px;
+    -o-object-fit: cover;
+    object-fit: cover;
+}
+
+#chat21-conversations .messages p {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif!important;
+    font-size: 13px!important;
+    margin: 0;
+    padding: 0;
+    font-style: normal;
+    letter-spacing: normal;
+    font-stretch: normal;
+    font-variant: normal;
+    font-weight: 400;
+    overflow: hidden;
+}
+
+#chat21-launcher-button {
+    border-radius: 50%;
+    position: fixed;
+    z-index: 999999000;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+}
