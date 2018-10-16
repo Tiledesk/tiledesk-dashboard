@@ -93,7 +93,9 @@
         "AnErrorHasOccurred": "Si è verificato un errore durante l'aggiornamento del profilo",
         "Continue": "Continua",
         "ChangePsw": "Cambia password",
-        "PendingEmailVerification": "Email non verificata"
+        "PendingEmailVerification": "Email non verificata",
+        "YourAccountIsPending": "Il tuo account è in attesa di verifica via email.",
+        "ClickHereToResend":"Clicca qui per inviare nuovamente l'email di verifica"
     },
     "ChangePsw": {
         "ChangePsw": "Cambia password",

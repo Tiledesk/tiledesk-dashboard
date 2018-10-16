@@ -93,7 +93,9 @@
         "AnErrorHasOccurred": "An error has occurred updating your profile",
         "Continue": "Continue",
         "ChangePsw": "Change password",
-        "PendingEmailVerification": "Pending email verification"
+        "PendingEmailVerification": "Pending email verification",
+        "YourAccountIsPending": "Your account is pending email verification.",
+        "ClickHereToResend":"Click here to resend verification email"
     },
     "ChangePsw": {
         "ChangePsw": "Change password",

@@ -22,6 +22,7 @@ export class NotifyService {
 
   route: string;
   notify: any;
+  notifySendingVerifyEmail: any;
 
   constructor(
     private router: Router,
@@ -77,7 +78,7 @@ export class NotifyService {
     }, {
         type: type[color],
         // timer: 55000,
-        // delay: 100,
+        // delay: 0,
         placement: {
           from: 'top',
           align: 'right'
@@ -86,7 +87,7 @@ export class NotifyService {
           '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
           // '<span data-notify="title" style="max-width: 100%; font-size:1.1em; ">TileDesk</span> ' +
           // tslint:disable-next-line:max-line-length
-          '<span data-notify="icon" style="display: inline;"><i style="vertical-align: middle; padding-right: 15px;" class="material-icons">' + icon + '</i> </span> ' +
+          '<span data-notify="icon" style="display: inline;"><i style="vertical-align: middle; padding-right: 5px;" class="material-icons">' + icon + '</i> </span> ' +
           '<span data-notify="message" style="display: inline; vertical-align: middle ">' + message + '</span>' +
           '</div>'
       });
@@ -114,10 +115,23 @@ export class NotifyService {
           '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
           // '<span data-notify="title" style="max-width: 100%; font-size:1.1em; ">TileDesk</span> ' +
           // tslint:disable-next-line:max-line-length
-          '<span data-notify="icon" style="display: inline;"><i style="vertical-align: middle; padding-right: 10px; color: #5bc0de;" class="material-icons">' + icon + '</i> </span> ' +
+          '<span data-notify="icon" style="display: inline;"><i style="vertical-align: middle; padding-right: 5px; color: #5bc0de;" class="material-icons">' + icon + '</i> </span> ' +
           '<span data-notify="message" style="display: inline; vertical-align: middle ">' + message + '</span>' +
           '</div>'
       });
+  }
+
+  showResendingVerifyEmailNotification(user_email) {
+    this.notifySendingVerifyEmail = $.notify('Sending verification link ...', {
+      allow_dismiss: false,
+      showProgressbar: false,
+      // delay: 0
+    });
+    setTimeout(() => {
+      // tslint:disable-next-line:max-line-length
+      this.notifySendingVerifyEmail.update({ 'type': 'success', 'message': '<i class="material-icons" style="vertical-align: middle;"> done </i> <span style="vertical-align: middle; display: inline-block; padding-right:5px">Verification link has been sent to: </span>' + '<span style="padding-left:28px">' + user_email + '</span>'});
+    }, 2000);
+
   }
 
 

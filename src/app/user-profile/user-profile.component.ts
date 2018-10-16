@@ -21,6 +21,7 @@ export class UserProfileComponent implements OnInit {
   project: Project;
   userFirstname: string;
   userLastname: string;
+  userEmail: string;
   userId: string;
   displayModalUpdatingUser = 'none';
   SHOW_CIRCULAR_SPINNER = false;
@@ -34,6 +35,7 @@ export class UserProfileComponent implements OnInit {
   projectId: string;
   userProfileImageExist: boolean;
   userImageHasBeenUploaded: boolean;
+
   constructor(
     public auth: AuthService,
     private _location: Location,
@@ -105,6 +107,7 @@ export class UserProfileComponent implements OnInit {
         this.userFirstname = user.firstname;
         this.userLastname = user.lastname;
         this.userId = user._id;
+        this.userEmail = user.email;
 
         /// ===== CHECK USER PROFILE IMAGE ===== 
         // this.verifyUserProfileImageOnStorage(this.userId);
@@ -234,12 +237,24 @@ export class UserProfileComponent implements OnInit {
   }
 
   resendVerificationEmail() {
-    this.usersService.resendVerifyEmail().subscribe((dataresponse) => {
+    this.usersService.resendVerifyEmail().subscribe((res) => {
 
-      console.log('RESEND VERIFY EMAIL - DATA RESPONSE ', dataresponse);
+
+      console.log('RESEND VERIFY EMAIL - RESPONSE ', res);
+      const res_success = res['success'];
+      console.log('RESEND VERIFY EMAIL - RESPONSE SUCCESS ', res_success);
+      if (res_success === true) {
+        // =========== NOTIFY SUCCESS===========
+        this.notify.showResendingVerifyEmailNotification(this.userEmail);
+      }
     },
       (error) => {
-        console.log('RESEND VERIFY EMAIL ', error);
+        console.log('RESEND VERIFY EMAIL - ERROR ', error);
+        const error_body = JSON.parse(error._body);
+        console.log('RESEND VERIFY EMAIL - ERROR BODY', error_body);
+        if (error_body['success'] === false) {
+          this.notify.showNotification('An error has occurred sending verification link', 4, 'report_problem')
+        }
       },
       () => {
         console.log('RESEND VERIFY EMAIL * COMPLETE *');

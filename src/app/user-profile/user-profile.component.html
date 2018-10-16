@@ -94,7 +94,8 @@
                                 <i class="material-icons" style="vertical-align: middle; color:#f44336;">error_outline</i>
                                 <span style="vertical-align: middle; color:#f44336;"> 
                                 <!-- {{ "UserProfile.PendingEmailVerification" | translate }} -->
-                                Your account is pending email verification. <a (click)="resendVerificationEmail()"> Click here to re-send verification email </a>
+                                {{ "UserProfile.YourAccountIsPending" | translate }} 
+                                <a (click)="resendVerificationEmail()" style="cursor: pointer; color: #03a5e8">{{ "UserProfile.ClickHereToResend" | translate }}  </a>
                                 </span>       
                             </div>
                 
