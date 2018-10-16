@@ -72,11 +72,11 @@
                         *************  NOTIFICATION  ************
                         ***************************************** -->
                         <li *ngIf="project" class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <a routerLink="project/{{ project._id }}/requests" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="material-icons">notifications</i>
 
                                 <!-- SHOW THE BADGE OVER NOTIFICATION IF THE COUNT OF UNRESOLVED REQUESTS IN > 0 -->
-                                <span *ngIf="unservedRequestCount > 0" routerLink="project/{{ project._id }}/requests">
+                                <span *ngIf="unservedRequestCount > 0">
                                     <span class="notification">{{unservedRequestCount}}</span>
                                 </span>
 
