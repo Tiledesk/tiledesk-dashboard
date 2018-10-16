@@ -112,7 +112,7 @@ import { UploadImageService } from './services/upload-image.service';
 import { RequestsListHistoryNewComponent } from './requests-list-history-new/requests-list-history-new.component';
 import { MyDatePickerModule } from 'mydatepicker';
 import { ContactDetailsComponent } from './contact-details/contact-details.component';
-
+import { ColorPickerModule } from 'ngx-color-picker';
 
 
 // AoT requires an exported function for factories
@@ -193,6 +193,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AmazingTimePickerModule,
     NgSelectModule,
     MyDatePickerModule,
+    ColorPickerModule,
     TranslateModule.forRoot({
       loader: {
           provide: TranslateLoader,

@@ -1,3 +1,4 @@
+// ====== start WIDGET HTML CLONE ======
 /* DEFAULT CSS */
 #chat21-container {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
@@ -144,19 +145,21 @@
 #chat21-container #chat21-conversations {
     -webkit-box-shadow: rgba(0,0,0,.18) 0 0 38px;
     box-shadow: rgba(0,0,0,.18) 0 0 38px;
-    right: 20px;
+    // right: 20px;
     display: block;
 }
 
 #chat21-container .chat21-sheet {
     z-index: 999999001;
     display: none;
-    position: fixed;
-    height: 80%;
-    width: 376px;
-    bottom: 90px;
+    // position: fixed;
+    // height: 80%;
+    position: relative;
+    height: 450px;
+    // width: 376px;
+    // bottom: 90px;
     overflow: hidden;
-    right: 20px;
+    // right: 20px;
     overflow-y: auto;
     background-color: #fff;
 }
@@ -454,11 +457,34 @@
 
 #chat21-launcher-button {
     border-radius: 50%;
-    position: fixed;
+    // position: fixed;
     z-index: 999999000;
-    bottom: 20px;
-    right: 20px;
+    // bottom: 20px;
+    // right: 20px;
     width: 60px;
     height: 60px;
     cursor: pointer;
+    position: relative;
+    bottom: -16px;
+    right: -317px;
+}
+// ====== ./end WIDGET HTML CLONE ======
+
+input {
+    /* min-width: 307px !important; */
+   height: 36px;
+   font-size: 14px;
+//    width: 100%;
+   margin-bottom: 10px;
+   -webkit-appearance: none;
+//    background: #fff;
+   border: 1px solid #d9d9d9 !important;
+   border-top: 1px solid #c0c0c0;
+   /* border-radius: 2px; */
+   padding: 0 8px;
+   box-sizing: border-box;
+   -moz-box-sizing: border-box;
+   border-radius: 5px;
+//    background-color: #fff !important;
+   border: solid 1px #ddd;
 }

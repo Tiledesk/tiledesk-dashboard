@@ -5,227 +5,239 @@
 <div class="main-content" style="padding-top:0px">
 	<div class="container-fluid">
 
-	<div class="row">
+		<div class="row">
 			<div class="col-md-12">
 	
-					<div class="card" style="padding-top:25px; padding-bottom:25px">
-						<div class="card-content">
-								<div id="chat21-container"> 
 
-										<div class="ng-tns-c0-0" id="chat21-launcher-button" style="background-color: rgb(238, 116, 100);"> 
-   
-													<div style="width:100%; height:100%; padding:0px; margin: 0px;" class="ng-tns-c0-0 ng-trigger ng-trigger-enterCloseAnimation ng-star-inserted">
-														<svg class="ng-tns-c0-0" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg" style="fill: rgb(255, 255, 255);">
-																<defs class="ng-tns-c0-0">
-																		<style class="ng-tns-c0-0">.cls-2{fill:none;}</style>
-																</defs>
-																
-																<g class="ng-tns-c0-0" data-name="Livello 2" id="Livello_2">
-																		<g class="ng-tns-c0-0" id="gg">
-																				<path class="cls-1" d="M54.92,37.08l-2-2L45,43l-7.92-7.92-2,2L43,45l-7.92,7.92,2,2L45,47l7.92,7.92,2-2L47,45Z"></path>
-																				<path class="cls-2" d="M28,28H62V62H28Z"></path>
-																				<rect class="cls-2" height="90" width="90"></rect>
-																		</g>
-																</g>
-														</svg>
+				<div class="card" style="padding-top:25px; padding-bottom:25px">
+					<div class="card-content">
+
+						<div class="col-md-12">
+								Widget Style - Colors, Icon and Font
+						</div>
+
+						<div class="col-md-6"> 
+								<input [value]="color"
+								[style.background-color]="color"
+								[(colorPicker)]="color"
+								(colorPickerChange)="color=$event"/>
+								
+
+
+								<!-- <div class="color-scheme">
+									<div class="color-picker">
+										<div class="flex-column ColorPicker---3UavJ">
+											<div class="flex-column" style="padding-bottom: 0.5rem;">
+												<div class="color-input---3agO6 medium">
+													<div class="input-wrapper color-input">
+														<label>
+															<div class="dsg-Label--gray">Primary</div>
+															<div class="Input medium">
+																<div class="palette" style="background-color: rgb(243, 213, 182);">
+																</div>
+																<span class="color-input-hash medium">#</span>
+																<input label="Primary" class="color-input" value="f3d5b6">
+															</div>
+														</label>
+													</div>
 												</div>
+												<div class="color-input-description">
+													Used as a background color to highlight areas and buttons
+												</div>
+												<div class="color-input---3agO6 medium">
+													<div class="input-wrapper color-input">
+														<label><div class="dsg-Label--gray">Secondary</div>
+															<div class="Input medium">
+																<div class="palette" style="background-color: rgb(227, 13, 13);">
+																</div>
+																<span class="color-input-hash medium">#</span>
+																<input label="Secondary" class="color-input" value="e30d0d">
+															</div>
+														</label>
+													</div>
+												</div>
+												<div class="color-input-description">
+													Applied to button text and other elements in front of a primary color background
+												</div>
+												<div class="color-input---3agO6 medium">
+													<div class="input-wrapper color-input">
+														<label>
+															<div class="dsg-Label--gray">Hyperlink</div>
+															<div class="Input medium">
+																<div class="palette" style="background-color: rgb(1, 118, 255);">
+																</div>
+																<span class="color-input-hash medium">#</span>
+																<input label="Hyperlink" class="color-input" value="0176FF">
+															</div>
+														</label>
+													</div>
+												</div>
+												<div class="color-input---3agO6 medium">
+													<div class="input-wrapper color-input">
+														<label>
+															<div class="dsg-Label--gray">Chat Text Color</div>
+															<div class="Input medium">
+																<div class="palette" style="background-color: rgb(208, 48, 48);">
+																</div>
+																<span class="color-input-hash medium">#</span>
+																<input label="Chat Text Color" class="color-input" value="d03030">
+															</div>
+														</label>
+													</div>
+												</div>
+												<div class="color-input---3agO6 medium">
+													<div class="input-wrapper color-input">
+														<label>
+															<div class="dsg-Label--gray">Widget Background</div>
+															<div class="Input medium">
+																<div class="palette" style="background-color: rgb(118, 77, 77);">
+																</div>
+																<span class="color-input-hash medium">#</span>
+																<input label="Widget Background" class="color-input" value="764d4d">
+															</div>
+														</label>
+													</div>
+												</div>
+											</div>
+											<div class="color-gray-dark dsg-Regular applies-to-info">
+												These colors apply to Campaigns, Emails, Chat and Icons. See more
+												<a href="http://docs.drift.com/articles/customizing-your-colors/" target="_blank">details here</a>
+											</div>
 										</div>
+									</div>
+								</div> -->
+
+						</div>
+
+						<!-- ------====== ./end WIDGET HTML CLONE ======------  -->
+						<div class="col-md-6">
+							<div id="chat21-container"> 
+
 
 								<div class="chat21-window chat21-sheet" id="chat21-conversations">
-        
-        
-										<div class="chat21-sheet-header" style="background-color: rgb(238, 116, 100);">
-						
-												
-												
-												<div class="chat21-sheet-header-title-container">
-														<b class="chat21-sheet-header-title" style="color: rgb(255, 255, 255);">
-																<span class="ng-tns-c0-0">TileDesk</span>
-																<span class="ng-tns-c0-0" id="agent-available-status"></span>
-														</b>
-														<p class="chat21-header-writing"></p>
-												</div>
-						
-												
-						
-												
-												<a class="ng-tns-c0-0">
-														<div class="chat21-header-button right">
-																<svg class="ng-tns-c0-0" aria-labelledby="altIconTitle" height="24px" role="img" viewBox="0 0 24 24" width="100%" xmlns="http://www.w3.org/2000/svg" style="fill: rgb(255, 255, 255);">
-																		<path class="ng-tns-c0-0" d="M0 0h24v24H0V0z" fill="none"></path><path class="ng-tns-c0-0" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"></path>
-																		<title class="ng-tns-c0-0" id="altIconTitle"></title>
-																</svg>
-														</div>
-												</a>
-						
-												
-												<!---->
-												
-												<!---->
-						
-										</div>
-						
-										
-										<div class="chat21-sheet-content" id="chat21-sheet-content">
-												
-												<!----><div class="chat21-sheet-content-themable-section ng-tns-c0-0 themable-section-agent_not_available ng-star-inserted" style="background-color: rgb(238, 116, 100);">
-												</div>
-												
-												
-						
-												
-												<!-- <div class="chat21-agents-available chat21-agents-available-is-new-conversation ng-tns-c0-0 ng-star-inserted" style="border-top-color: rgb(255, 255, 255);">
-														<span class="ng-tns-c0-0" style="font-size:18px">🤔</span>  <span class="ng-tns-c0-0" style="position: relative; top: -2px">All operators are offline at the moment</span>
-												</div>
-	
-												<div class="chat21-header-modal-select chat21-header-modal-select-first-msg ng-tns-c0-0 first-msg-agent_not_available ng-star-inserted" style="border-top-color: rgb(255, 255, 255);">
-														<div class="ng-tns-c0-0">
-															<span class="ng-tns-c0-0 ng-star-inserted"> You can anyway describe your problem. It will be assigned to the support team who will answer you as soon as possible.</span> 
-														</div>
-														<div class="ng-tns-c0-0" style="display: none">
-														</div>
-												</div> -->
-						
-												<!---->
-						
-						
-												<div class="chat21-conversation-parts-container" style="height:100%; overflow-y: hidden;">
-														<div class="ng-tns-c0-0" id="scroll-me" style="height:100%; overflow-y:auto;">
-							
-																<div class="ng-tns-c0-0" id="chat21-contentScroll">
-                        
-																		<!----><div class="ng-tns-c0-0 ng-star-inserted">
-																				<!----><div class="msg_container base_sent ng-tns-c0-0 ng-star-inserted">
-																						<div class="messages msg_sent">
-																								
-																								<!---->
-																								<!----><div class="ng-tns-c0-0 ng-star-inserted">
-																										<!---->
-																												<p class="ng-tns-c0-0 ng-star-inserted">Tiledesk?</p>
-																										
-																										<!---->
-																										<!---->
-																								</div>
-																								
-																						</div>
-																						<div class="status-message">
-																								
-																								<!---->
-																								<!---->
-																								<!----><div class="icon f21ico-done ng-tns-c0-0 ng-star-inserted"></div>
-																								<!---->
-																						</div>
-																				</div>
-						
-						
-																				<!---->
-																				<!---->
-																				<div class="time sender">
-																						<time class="ng-tns-c0-0">16 minuti fa</time>
-																				</div>
-																		</div>
+									<div class="chat21-sheet-header" style="background-color: rgb(238, 116, 100);">
 
+										<div class="chat21-sheet-header-title-container">
+											<b class="chat21-sheet-header-title" style="color: rgb(255, 255, 255);">
+												<span>TileDesk</span>
+											</b>
+										</div>
+					
 
-																		<!-- <div class="ng-tns-c0-0 ng-star-inserted">
-																			<div class="message_sender_fullname ng-tns-c0-0 ng-star-inserted">Bot</div>
-																				<div class="msg_container base_receive ng-tns-c0-0 ng-star-inserted">
-																						<div class="content-avatar">
-																							<div class="profile_image">
-																								<img class="ng-tns-c0-0" src="https://user-images.githubusercontent.com/32448495/39111365-214552a0-46d5-11e8-9878-e5c804adfe6a.png"> 
-																							</div>
-																						</div>
-						
-																						<div class="messages msg_receive">
-																								<div class="ng-tns-c0-0 ng-star-inserted">
-																									<p class="ng-tns-c0-0 ng-star-inserted">We are putting you in touch with an operator..</p>
-																								</div>
-																						</div>
-																				</div>
-																				<div class="time">
-																					<time class="ng-tns-c0-0">16 minuti fa</time>
-																				</div>
-																		</div> -->
-																		
-																		<div class="ng-tns-c0-0 ng-star-inserted">
-																				<!---->
-						
-						
-																				<!----><div class="message_sender_fullname ng-tns-c0-0 ng-star-inserted">Nicola</div>
-																				<!----><div class="msg_container base_receive ng-tns-c0-0 ng-star-inserted">
-																						<div class="content-avatar">
-																								
-																								<div class="profile_image">
-																										<img class="ng-tns-c0-0" src="https://user-images.githubusercontent.com/32448495/39111365-214552a0-46d5-11e8-9878-e5c804adfe6a.png"> </div>
-																								
-																								
-																						</div>
-						
-																						<div class="messages msg_receive">
-																								
-																								
-																								
-																								<!---->
-						
-																								<!----><div class="ng-tns-c0-0 ng-star-inserted">
-																										<!---->
-																												<p class="ng-tns-c0-0 ng-star-inserted">yes, chat different!</p>
-																										
-																										<!---->
-																										<!---->
-																								</div>
-																								
-																						</div>
-																				</div>
-																				<div class="time">
-																						<time class="ng-tns-c0-0">14 minuti fa</time>
-																				</div>
-																		</div>
-																</div>
-																
-														</div>
-												</div>
-										</div>
-						
-										<div class="ng-tns-c0-0" id="chat21-footer">
-								
-												<!---->
-												<div class="ng-tns-c0-0">
-														<!---->
-														<div class="ng-tns-c0-0 visible-text-area">
-														<!----><textarea class="f21textarea ng-tns-c0-0 ng-untouched ng-pristine ng-valid ng-star-inserted" id="chat21-main-message-context" rows="1" ystyles="" placeholder="type your message.."></textarea>
-														</div>
-						
-														
-														<label class="chat21-textarea-button active" for="chat21-file" id="chat21-start-upload-doc"></label>
-														<div class="chat21-textarea-button" id="chat21-button-reset"></div>
-														
-														<div class="chat21-textarea-button active" id="chat21-button-send"></div>
-														<!-- <input class="inputfile" accept="image/x-png,image/gif,image/jpeg,application/pdf" id="chat21-file" name="chat21-file" style="display:none" type="file"> -->
-														
-														
-														<div class="name-image" id="chat21-file-selected">
-																<span class="ng-tns-c0-0"></span>
-														</div>
-												</div>
-						
-												<div class="ng-tns-c0-0" id="chat21-end-footer">
-														<div class="ng-tns-c0-0" id="chat21-powered-by"><a target="_blank" href="http://www.tiledesk.com/">Powered by <b>TileDesk</b></a></div>
-														
-												</div>
-										</div>
+										<a class="ng-tns-c0-0">
+											<div class="chat21-header-button right">
+												<svg class="ng-tns-c0-0" aria-labelledby="altIconTitle" height="24px" role="img" viewBox="0 0 24 24" width="100%" xmlns="http://www.w3.org/2000/svg" style="fill: rgb(255, 255, 255);">
+													<path class="ng-tns-c0-0" d="M0 0h24v24H0V0z" fill="none"></path>
+													<path class="ng-tns-c0-0" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"></path>
+													<title class="ng-tns-c0-0" id="altIconTitle"></title>
+												</svg>
+											</div>
+										</a>
+
+									</div>
+					
 									
+									<div class="chat21-sheet-content" id="chat21-sheet-content">
+										<!-- <div class="chat21-sheet-content-themable-section ng-tns-c0-0 themable-section-agent_not_available ng-star-inserted" style="background-color: rgb(238, 116, 100);"></div>  -->
+				
+										<div class="chat21-conversation-parts-container" style="height:100%; overflow-y: hidden;">
+											<div id="scroll-me" style="height:100%; overflow-y:auto;">
+					
+												<div id="chat21-contentScroll">
 										
-			
-						
+													<div>
+														<div class="msg_container base_sent ">
+															<div class="messages msg_sent">
+																<div>
+																	<p>Tiledesk?</p>
+																</div>
+																						
+															</div>
+															<div class="status-message">
+																<div class="icon f21ico-done"></div>
+																
+															</div>
+														</div>
+														<div class="time sender">
+															<time class="ng-tns-c0-0">16 minuti fa</time>
+														</div>
+													</div>
+																
+													<div class="ng-tns-c0-0 ng-star-inserted">
+														<div class="message_sender_fullname ng-tns-c0-0 ng-star-inserted">
+															Nicola
+														</div>
+														
+														<div class="msg_container base_receive">
+															<div class="content-avatar">
+																						
+																<div class="profile_image">
+																	<img class="ng-tns-c0-0" src="https://user-images.githubusercontent.com/32448495/39111365-214552a0-46d5-11e8-9878-e5c804adfe6a.png"> </div>
+																</div>
+				
+																<div class="messages msg_receive">
+																	<div class="ng-tns-c0-0 ng-star-inserted">
+																		<p class="ng-tns-c0-0 ng-star-inserted">Yes, chat different!</p>
+																	</div>
+																</div>
+														</div>
+														<div class="time">
+															<time class="ng-tns-c0-0">14 minuti fa</time>
+														</div>
+													</div>
+												</div>
+														
+											</div>
+										</div>
+									</div>
+					
+									<div id="chat21-footer">
+
+										<div>
+											<div class="ng-tns-c0-0 visible-text-area">
+												<textarea class="f21textarea ng-tns-c0-0 ng-untouched ng-pristine ng-valid ng-star-inserted" id="chat21-main-message-context" rows="1" ystyles="" placeholder="type your message.."></textarea>
+											</div>
+
+											<label class="chat21-textarea-button active" for="chat21-file" id="chat21-start-upload-doc"></label>
+										
+												<div class="chat21-textarea-button active" id="chat21-button-send"></div>
+
+												<div class="name-image" id="chat21-file-selected">
+													<span class="ng-tns-c0-0"></span>
+												</div>
+										</div>
+					
+										<div class="ng-tns-c0-0" id="chat21-end-footer">
+											<div class="ng-tns-c0-0" id="chat21-powered-by"><a target="_blank" href="http://www.tiledesk.com/">Powered by <b>TileDesk</b></a></div>
+										</div>
+									</div>
 								</div>
 
-							</div>
+									<div id="chat21-launcher-button" style="background-color: rgb(238, 116, 100);"> 
+										<div style="width:100%; height:100%; padding:0px; margin: 0px;">
+											<svg class="ng-tns-c0-0" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg" style="fill: rgb(255, 255, 255);">
+												<defs class="ng-tns-c0-0">
+														<style class="ng-tns-c0-0">.cls-2{fill:none;}</style>
+												</defs>
+													
+												<g class="ng-tns-c0-0" data-name="Livello 2" id="Livello_2">
+													<g class="ng-tns-c0-0" id="gg">
+														<path class="cls-1" d="M54.92,37.08l-2-2L45,43l-7.92-7.92-2,2L43,45l-7.92,7.92,2,2L45,47l7.92,7.92,2-2L47,45Z"></path>
+														<path class="cls-2" d="M28,28H62V62H28Z"></path>
+														<rect class="cls-2" height="90" width="90"></rect>
+													</g>
+												</g>
+											</svg>
+										</div>
+									</div>
+							</div> 
+							<!-- ------====== ./end WIDGET HTML CLONE ======------  -->
 
-							<!-- -- CHAT ENF--  -->
-						</div>
+						</div> <!-- ./end CARD CONTENT -->
 					</div>
-			</div>
-		</div>
+				</div> <!-- ./end CARD -->
+			</div> <!-- ./end COL-* -->
+		</div> <!-- ./end ROW -->
 
 	</div>
 </div>
