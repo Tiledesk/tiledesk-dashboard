@@ -76,6 +76,7 @@
     "Rating": "Rating",
     "SentThe": "sent the",
     "ToTheDepartment":"to the department",
+    "Cancel":"Cancel",
     "UserProfile": {
         "Profile": "Profile",
         "UploadImage": "Upload image",
@@ -114,7 +115,9 @@
         "UserProfile": "VIEW PROFILE",
         "RunChatInAStandAloneTab": "Run chat in a stand-alone tab",
         "PendingVerification": "Pending email verification",
-        "SomeSystemAreDisabled":"some system features, such as email notifications, are disabled"
+        "SomeSystemAreDisabled":"some system features, such as email notifications, are disabled",
+        "AreYouSureYouWantToLogOut":"Are you sure you want to log out?",
+        "NoteThatThisWillNotChangeYourAvailability":"Note that this will not change the status of your availability."   
     },
     "SideBar": {
         "ViewAllProjects": "View all projects",

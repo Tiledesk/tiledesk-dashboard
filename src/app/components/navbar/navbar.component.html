@@ -223,32 +223,28 @@
         <div class="modal-dialog " role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                    <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
     
-                <h4 class="modal-title">
-                    Tile Desk Log Out
-                    <!-- <code>{{id_toDelete}}</code> -->
-                </h4>
+                    <h4 class="modal-title">
+                        TileDesk Log Out
+                        <!-- <code>{{id_toDelete}}</code> -->
+                    </h4>
                 </div>
     
                 <div class="modal-body">
-
                     <p style="margin-top: 0px; text-align:center; color:#566787; font-size:16px; font-weight:400 ">
-                        Are you sure you want to log out?
+                        {{ "NavBar.AreYouSureYouWantToLogOut" | translate }}
                     </p>
                     <p style="margin-bottom:0px; text-align:center;">
-
-                        Note that this will not change the status of your availability.
+                        {{ "NavBar.NoteThatThisWillNotChangeYourAvailability" | translate }}
                     </p>
-
-
                 </div>
     
                 <div class="modal-footer" style="text-align: center;">
                     <button class="btn btn-white" (click)="onCloseLogoutModalHandled()" style="padding:12px 16px; font-size:12px ">
-                        Cancel
+                        {{ "Cancel" | translate}}
                     </button>    
                     <button class="btn btn-info" (click)="onLogoutModalHandled()" style="padding:12px 16px; font-size:12px ">
                         Log Out

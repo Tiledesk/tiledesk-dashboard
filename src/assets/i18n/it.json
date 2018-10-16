@@ -76,6 +76,7 @@
     "Rating": "Valutazione",
     "SentThe": "inviato il",
     "ToTheDepartment":"al dipartimento",
+    "Cancel":"Annulla",
     "UserProfile": {
         "Profile": "Profilo",
         "UploadImage": "Carica immagine",
@@ -114,7 +115,9 @@
         "UserProfile": "VEDI PROFILO",
         "RunChatInAStandAloneTab": "Esegui la chat in una scheda autonoma",
         "PendingVerification": "Email non verificata",
-        "SomeSystemAreDisabled":"alcune funzioni di sistema, come le notifiche via email, sono disabilitate"
+        "SomeSystemAreDisabled":"alcune funzioni di sistema, come le notifiche via email, sono disabilitate",
+        "AreYouSureYouWantToLogOut":"Sei sicuro di voler uscire?",
+        "NoteThatThisWillNotChangeYourAvailability":"Nota che questo non cambierà lo stato della tua disponibilità."
     },
     "SideBar": {
         "ViewAllProjects": "Visualizza tutti i progetti",
