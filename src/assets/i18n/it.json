@@ -77,6 +77,9 @@
     "SentThe": "inviato il",
     "ToTheDepartment":"al dipartimento",
     "Cancel":"Annulla",
+    "SessionExipired":"Sessione scaduta",
+    "YourSessionHasExipered":"La tua sessione è scaduta.",
+    "YouWillBeRedirectToLoginPage":"Verrai reindirizzato alla pagina di Login",
     "UserProfile": {
         "Profile": "Profilo",
         "UploadImage": "Carica immagine",
