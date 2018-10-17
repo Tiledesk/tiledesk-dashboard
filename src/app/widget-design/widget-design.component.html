@@ -16,11 +16,29 @@
 								Widget Style - Colors, Icon and Font
 						</div>
 
+
+						<div class="Input medium" style="position: relative;">
+							<div class="palette" style="background-color: rgb(188, 140, 91); height: 20px;
+							width: 20px;
+							border-radius: 3px;
+							margin: 0 10px;
+							border: 1px solid #eee;
+							cursor: pointer;"></div>
+							<span class="color-input-hash medium" style="margin-right: .2rem;
+							font-weight: 500;
+							font-size: 1rem;">#</span>
+							<input label="Primary" class="color-input" value="bc8c5b" style="font-size: .875rem;
+							font-weight: 400;
+							padding: 0 .75rem;">
+						</div>
+					
+						
 						<div class="col-md-6"> 
 								<input [value]="color"
 								[style.background-color]="color"
 								[(colorPicker)]="color"
-								(colorPickerChange)="color=$event"/>
+								[cpOutputFormat]="'hex'"
+								(colorPickerChange)="onChangeColor($event)"/>
 								
 
 
