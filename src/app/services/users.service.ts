@@ -230,6 +230,18 @@ export class UsersService {
     // return this.usersCollection.doc('PXmRJVrtzFAHsxjs7voD5R').set(user);
   }
 
+  /// ================================== GET USER BY ID ================================== ///
+  public getUsersById(user_id): Observable<User[]> {
+    const url = this.BASE_URL + 'users/' + user_id;
+
+    console.log('!! GET USERS BY ID - URL', url);
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
 
   /// ================================== ALL PROJECT-USER FROM MONGO DB ================================== ///
   /**

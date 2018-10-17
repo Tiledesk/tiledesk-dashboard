@@ -98,16 +98,14 @@ export class UsersProfileComponent implements OnInit {
           // SAVE THE BOT IN LOCAL STORAGE
           // this.botLocalDbService.saveBotsInStorage(this.faqKb_id, this.faqKb);
 
-        // GET AND SAVE ALL BOTS OF CURRENT PROJECT IN LOCAL STORAGE
-        this.usersService.getBotsByProjectIdAndSaveInStorage();
+          // GET AND SAVE ALL BOTS OF CURRENT PROJECT IN LOCAL STORAGE
+          this.usersService.getBotsByProjectIdAndSaveInStorage();
         } else {
 
           console.log('FAQ-KB is UNDEFINED')
         }
       });
     }
-
-
   }
 
   getMemberDetails() {
@@ -135,16 +133,35 @@ export class UsersProfileComponent implements OnInit {
 
   getAllUsersOfCurrentProject() {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
-      // console.log('HOME COMP - PROJECT-USERS (FILTERED FOR PROJECT ID)', projectUsers);
+      console.log('HOME COMP - PROJECT-USERS (FILTERED FOR PROJECT ID)', projectUsers);
+      const project_users_id_array = [];
 
       if (projectUsers) {
         projectUsers.forEach(projectUser => {
-          // console.log('USERS PROFILE - PROJECT-USERS - USER ', projectUser.id_user, projectUser.id_user._id)
+          console.log('USERS PROFILE - PROJECT-USERS - USER ', projectUser.id_user, projectUser.id_user._id)
 
           // localStorage.setItem(projectUser.id_user._id, JSON.stringify(projectUser.id_user));
           this.usersLocalDbService.saveMembersInStorage(projectUser.id_user._id, projectUser.id_user);
+
+          // TO RESOLVE THE BUG: WHEN A PROJECT USER IS REMOVED FROM THE MEMBERS OF A PROJECT HIS ID IS DISPALYED IN THE REQUESTS LIST
+          // BUT WHEN THE TILEDESK USER CLICK ON IT TO SEE THE PROFILE, IN THE USER PROFILE PAGE NOTHING IS DISPLAYED BECAUSE OF THE ID IS 
+          // NO MORE AMONG THE PROJECT USERS - SO IS CREATED AN ARRAY OF IDS OF PROJECT USERS AND THEN IS CHECKED IF THE ARRAY CONTAINS 
+          // THE ID OF THE MEMBER IF IT THERE IS NOT RUN A CALLBAK TO GET THE PROJECT USER BY ID
+          project_users_id_array.push(projectUser.id_user._id)
         });
+
       }
+      console.log('USERS PROFILES * ARRAY OF PROJECT-USERS-ID * ', project_users_id_array);
+
+      const isMemberAmongProjectuser = project_users_id_array.includes(this.member_id);
+      console.log('USERS PROFILES * MEMBER IS AMONG PROJECT-USERS * ', isMemberAmongProjectuser);
+
+      if (isMemberAmongProjectuser === false) {
+
+        this.getMemberByIdAndSaveInStorage();
+      }
+
+
       // localStorage.setItem('project', JSON.stringify(project));
       //   this.showSpinner = false;
       //   this.projectUsersList = projectUsers;
@@ -170,8 +187,30 @@ export class UsersProfileComponent implements OnInit {
           this.user_id = this.user._id;
           // console.log('USER ID ', this.user_id);
         }
+      });
+  }
 
+  getMemberByIdAndSaveInStorage() {
+    this.usersService.getUsersById(this.member_id)
+      .subscribe((user) => {
+        console.log('USERS PROFILES - USER GET BY ID ', user);
 
+        if (user) {
+          this.user = user;
+          this.user_firstname = user['firstname'];
+          console.log('USER FIRSTNAME ', this.user_firstname);
+          this.user_lastname = user['lastname'];
+          console.log('USER LASTNAME ', this.user_lastname);
+          this.user_email = 'unavailable';
+          console.log('USER EMAIL ', this.user_email);
+          this.user_id = user['_id'];
+
+          this.usersLocalDbService.saveMembersInStorage(user['_id'], user);
+        }
+      }, (error) => {
+        console.log('USERS PROFILES - USER GET BY ID - ERROR ', error);
+      }, () => {
+        console.log('USERS PROFILES - USER GET BY ID * COMPLETE *');
       });
   }
 
