@@ -575,8 +575,9 @@
     <div class="modal-content" style="height: auto; min-height: 100%; border-radius: 0; border:none;">
       
       <div class="modal-header">
-        <button type="button" class="close" aria-label="Close" (click)="closeSelectUsersModal()">
-          <span aria-hidden="true" style="font-size:31px;">&times;</span>
+          <!-- class="close" -->
+        <button type="button" style="border: none !important; float: right" aria-label="Close" (click)="closeSelectUsersModal()">
+          <span aria-hidden="true" style="font-size:31px; color: rgb(60, 72, 88) !important;">&times;</span>
         </button>
 
         <h4 class="modal-title">
@@ -660,6 +661,12 @@
                     </tr>
                   </thead>
                   <tbody>
+
+                      <!-- <tr *ngIf="requestListServed.length === 0 && requestListUnserved.length === 0"> 
+                          <td colspan="3" style="text-align: center; padding-top: 16px; cursor: pointer">
+                          
+                          </td>
+                        </tr> -->
                       <!--  -->
                       <!-- let isFirstRow=first" [ngClass]="{'RowHeaderCSS' : isFirstRow}" (mouseover)="mouseOvered($event) -->
                     <tr *ngFor="let projectUser of projectUsersList;" class="table-row">
@@ -668,13 +675,14 @@
                         {{ projectUser?._id }}
                       </td> -->
                       <!-- (mouseover)="mouseOvered=true" [class.btn-success]="mouseOvered" -->
-                      <td style="width: 25px; cursor:pointer" (click)= "selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
+
+                      <td *ngIf="projectUser?.id_user._id !== currentUserID" style="width: 25px; cursor:pointer" (click)= "selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
                         <img style="vertical-align: middle; width: 42px; height: 42px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
                         class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media" 
                         onerror="this.src='assets/img/no_image_user.png'"/>
                       </td>
 
-                      <td style="cursor:pointer" (click)= "selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
+                      <td *ngIf="projectUser?.id_user._id !== currentUserID" style="cursor:pointer" (click)= "selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
                         <p style="font-size:14px; line-height:21px; font-weight: 500; margin-bottom: 0px;"> 
                           {{ projectUser?.id_user?.firstname }}
                           <span style="text-transform: uppercase"> 
@@ -686,7 +694,7 @@
                         </span>
                       </td>
 
-                      <td style="cursor:pointer" (click)= "selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)" >
+                      <td *ngIf="projectUser?.id_user._id !== currentUserID" style="cursor:pointer" (click)= "selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)" >
                         {{ projectUser?.role }}
                       </td>
 
@@ -694,7 +702,7 @@
                         {{ projectUser?.id_user?.email }}
                       </td> -->
 
-                      <td *ngIf="!isMobile" style="cursor:pointer" (click)= "selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
+                      <td *ngIf="projectUser?.id_user._id !== currentUserID && !isMobile" style="cursor:pointer" (click)= "selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
                         <!-- <span class="tooltipx"> -->
                         <div class="assign-request">
                           <!-- <i class="material-icons" style="cursor: pointer">
@@ -703,13 +711,11 @@
                           <p style="color: #00bcd4 ;margin-bottom:0px; font-size:12px; font-weight: 500;">{{ 'VisitorsPage.ReassignTo' | translate}} </p>
                           <span style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px">{{ projectUser?.id_user?.email }} </span> 
                         </div>
-                          
-                        
+                       
                           <!-- <span class="tooltiptext">
                             {{ "VisitorsPage.ReassignRequestTo" | translate }} {{ projectUser?.id_user?.email }}
                           </span>
                         </span> -->
-
                      
                       </td>
   

@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, HostListener, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, AfterViewInit, HostListener, OnDestroy, ViewEncapsulation, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { Message } from '../models/message-model';
@@ -14,6 +14,7 @@ import { NotifyService } from '../core/notify.service';
 import { PlatformLocation } from '@angular/common';
 import { BotLocalDbService } from '../services/bot-local-db.service';
 import { UsersService } from '../services/users.service';
+import { DOCUMENT } from '@angular/platform-browser';
 
 @Component({
   selector: 'appdashboard-requests-msgs',
@@ -25,7 +26,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('scrollMe')
   private myScrollContainer: ElementRef;
 
-  @ViewChild('openChatBtn') 
+  @ViewChild('openChatBtn')
   private openChatBtn: ElementRef;
 
 
@@ -99,7 +100,8 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     private notify: NotifyService,
     private platformLocation: PlatformLocation,
     private botLocalDbService: BotLocalDbService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    @Inject(DOCUMENT) private document: Document
   ) {
 
     this.platformLocation.onPopState(() => {
@@ -234,8 +236,9 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     // console.log('REQUEST-MSGS - SELECTED USER ROW TOP OFFSET ', testDiv.offsetTop);
     this.displayConfirmReassignmentModal = 'block'
 
-
+     // this.document.body.scrollTop = 0;
   }
+
 
   // mouseOvered(event) {
   //   // console.log('REQUEST-MSGS - MOUSE ON ROW ', event);
@@ -255,9 +258,59 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.displayConfirmReassignmentModal = 'none';
     this.displayUsersListModal = 'none'
 
-    // =========== NOTIFY SUCCESS===========
-    this.notify.showNotification(`request assigned to ${this.userfirstname_selected}  ${this.userlastname_selected}`, 2, 'done');
+    this.joinAnotherAgentLeaveCurrentUser(userid_selected);
+
+
   }
+
+
+  /// new
+  joinAnotherAgentLeaveCurrentUser(userid_selected) {
+    this.getFirebaseToken(() => {
+
+      // this.requestsService.joinToGroup(this.currentUserFireBaseUID, this.requestRecipient)
+      this.requestsService.joinToGroup(this.id_request, this.firebase_token, userid_selected)
+        .subscribe((joinToGroupRes: any) => {
+
+          console.log('RIASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP ', joinToGroupRes);
+
+        }, (err) => {
+          console.log('RIASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP - ERROR ', err);
+
+          // =========== NOTIFY ERROR ===========
+          this.notify.showNotification('An error has occurred assigning the request', 4, 'report_problem')
+        }, () => {
+          console.log('RIASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP - COMPLETE');
+
+          // =========== NOTIFY SUCCESS===========
+          this.notify.showNotification(`request assigned to ${this.userfirstname_selected}  ${this.userlastname_selected}`, 2, 'done');
+
+          this.requestsService.leaveTheGroup(this.id_request, this.firebase_token, this.currentUserID)
+            .subscribe((leaveTheGroupRes: any) => {
+
+              console.log('RIASSIGN REQUEST - CURRENT USER LEAVE THE GROUP - RESPONSE ', leaveTheGroupRes);
+            }, (err) => {
+              console.log('RIASSIGN REQUEST - CURRENT USER LEAVE THE GROUP - ERROR ', err);
+
+              // =========== NOTIFY ERROR ===========
+              this.notify.showNotification('An error has occurred assigning the request', 4, 'report_problem')
+            }, () => {
+
+              console.log('RIASSIGN REQUEST - CURRENT USER LEAVE THE GROUP * COMPLETE');
+
+
+            });
+
+
+        });
+    });
+
+  }
+
+
+  // end new
+
+
 
 
 
@@ -373,7 +426,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
           this.requester_id = request[0].requester_id;
           console.log('* REQUESTER ID: ', this.requester_id);
 
-          this.agents_array = []; 
+          this.agents_array = [];
           this.members_array.forEach(member_id => {
             if (member_id !== this.requester_id && member_id !== 'system') {
 
