@@ -104,8 +104,8 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header" data-background-color="" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
-            <h4 class="title" style="margin-bottom:2px; font-size:1.1em; color: #566787">
+          <div class="card-header" data-background-color="" style="">
+            <h4 class="title customh4" style="margin-bottom:2px;">
               <!-- Richieste non servite -->
               {{ 'VisitorsPage.UnservedRequests' | translate }}
             </h4>
@@ -195,13 +195,14 @@
               <tbody>
 
                 <!-- IF THERE ISN'T REQUEST (SERVED OR UNSERVED) -->
-                <tr *ngIf="requestListServed.length === 0 && requestListUnserved.length === 0"> 
+                <!-- <tr *ngIf="requestListServed.length === 0 && requestListUnserved.length === 0">  -->
+                <tr *ngIf="SHOW_SIMULATE_REQUEST_BTN">   
                   <td colspan="6" style="text-align: center; padding-top: 16px; cursor: pointer" (click)="testWidgetPage()">
                     <!-- color: #ff5252   -->
-                    <p style="font-size:1em; color:#999999; font-weight: 400">
+                    <p style="font-size:1em; color:rgb(118,149,165); font-weight: 400">
                         <!-- Nessun Visitatore! Clicca qui per simulare un visitatore. -->
                         {{ 'VisitorsPage.NoVisitor' | translate }}
-                        <button class="btn btn-default" style="padding-left: 8px; padding-right: 8px;"> 
+                        <button class="btn btn-white" style="padding: 8px; color:rgb(118,149,165);"> 
                             {{ 'VisitorsPage.ClickHereToSimulate' | translate }}
                         </button>
                       </p>
@@ -367,8 +368,8 @@
 
         <!-- SERVED REQUESTS -->
         <div class="card">
-          <div class="card-header" data-background-color="" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
-            <h4 class="title" style="margin-bottom:2px; font-size:1.1em; color: #566787">
+          <div class="card-header" data-background-color="" style="">
+            <h4 class="title customh4" style="margin-bottom:2px;">
               <!-- Richieste servite  -->
               {{ 'VisitorsPage.ServedRequests' | translate }}
             
@@ -465,13 +466,14 @@
               <tbody>
               
                  <!-- IF THERE ISN'T REQUEST (SERVED OR UNSERVED) -->
-                <tr *ngIf="requestListServed.length === 0 && requestListUnserved.length === 0"> 
+                <!-- <tr *ngIf="requestListServed.length === 0 && requestListUnserved.length === 0"> -->
+                <tr *ngIf="SHOW_SIMULATE_REQUEST_BTN">    
                   <td colspan="7" style="text-align: center; padding-top: 16px; cursor: pointer" (click)="testWidgetPage()">
                     <!-- color: #ff5252   -->
-                    <p style="font-size:1em; color:#999999; font-weight: 400">
+                    <p style="font-size:1em; color:rgb(118,149,165); font-weight: 400">
                         <!-- Nessun Visitatore! Clicca qui per simulare un visitatore. -->
                         {{ 'VisitorsPage.NoVisitor' | translate }}
-                        <button class="btn btn-default" style="padding-left: 8px; padding-right: 8px;"> 
+                        <button class="btn btn-white" style="padding: 8px; color: rgb(118,149,165)"> 
                           {{ 'VisitorsPage.ClickHereToSimulate' | translate }}
                         </button>
                       </p>

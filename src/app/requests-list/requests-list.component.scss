@@ -1,4 +1,5 @@
-// @import url(https://fonts.googleapis.com/css?family=Google+Sans);
+@import url(https://fonts.googleapis.com/css?family=Google+Sans);
+ 
 /* TABLE CONTENT VERTICAL ALIGNMENT */
 .table td, .table th {
     vertical-align: middle
@@ -293,6 +294,20 @@ p.member:hover {
     color: #fff;
     border-radius: 4px;
     // font-size: 0.9em;
+}
+
+.customh4 {
+   font-family: 'Google Sans', sans-serif !important;
+   font-size:16px;
+   font-weight: 400;
+   color: #394f5a !important;
+}
+
+.card-header {
+    background-color: #fff !important; 
+    padding-top: 12px !important;
+    padding-bottom: 10px !important; 
+    box-shadow: 0 10px 0px -12px rgba(0, 0, 0, 0.42), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 5px 10px -5px rgba(0, 0, 0, 0.2) !important; 
 }
 
 // .requests-category {

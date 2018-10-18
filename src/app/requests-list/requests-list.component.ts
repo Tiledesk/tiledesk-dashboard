@@ -1,5 +1,5 @@
 // tslint:disable:max-line-length
-import { Component, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, NgZone } from '@angular/core';
 import { RequestsService } from '../services/requests.service';
 import { Request } from '../models/request-model';
 import { Message } from '../models/message-model';
@@ -27,6 +27,8 @@ import { environment } from '../../environments/environment';
 import { NotifyService } from '../core/notify.service';
 import { BotLocalDbService } from '../services/bot-local-db.service';
 
+
+
 @Component({
   selector: 'requests-list',
   templateUrl: './requests-list.component.html',
@@ -34,6 +36,7 @@ import { BotLocalDbService } from '../services/bot-local-db.service';
 })
 export class RequestsListComponent implements OnInit {
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
+  zone: NgZone;
 
   CHAT_BASE_URL = environment.chat.CHAT_BASE_URL
   // user: Observable<User | null>;
@@ -93,6 +96,7 @@ export class RequestsListComponent implements OnInit {
   SHOW_CIRCULAR_SPINNER = false;
   ARCHIVE_REQUEST_ERROR = false;
   id_request_to_archive: string;
+  SHOW_SIMULATE_REQUEST_BTN: boolean
 
   constructor(
     private requestsService: RequestsService,
@@ -103,6 +107,7 @@ export class RequestsListComponent implements OnInit {
     private notify: NotifyService,
     private botLocalDbService: BotLocalDbService
   ) {
+    this.zone = new NgZone({ enableLongStackTrace: false });
 
     this.user = auth.user_bs.value
     // this.user = firebase.auth().currentUser;
@@ -193,6 +198,18 @@ export class RequestsListComponent implements OnInit {
     this.requestsService.requestsList_bs.subscribe((requests) => {
       if (requests) {
 
+        // this.zone.run(() RESOLVE THE BUG: View Not Changing After Data Is Updated
+        // https://stackoverflow.com/questions/31706948/angular2-view-not-changing-after-data-is-updated?rq=1
+        this.zone.run(() => {
+
+          if (requests.length > 0) {
+            this.SHOW_SIMULATE_REQUEST_BTN = false;
+            console.log('REQUESTS-LIST COMP - SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
+          } else {
+            this.SHOW_SIMULATE_REQUEST_BTN = true;
+          }
+
+        })
         console.log('REQUESTS-LIST COMP - REQUESTS ', requests)
 
         // start NEW: GET MEMBERS
