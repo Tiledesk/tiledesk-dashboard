@@ -43,6 +43,8 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
   JOIN_TO_GROUP_HAS_ERROR = false;
 
+  IS_CURRENT_USER_AGENT: boolean;
+
   user: any;
   firebase_token: any;
   currentUserID: string;
@@ -162,6 +164,24 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getLoggedUser();
 
     this.detectMobile();
+    this.getProjectUserRole();
+  }
+
+  getProjectUserRole() {
+    this.usersService.project_user_role_bs.subscribe((user_role) => {
+      const current_user_role = user_role;
+      console.log('REQUESTS MSGS SUBSCRIBE PROJECT_USER_ROLE_BS ', current_user_role);
+      if (current_user_role) {
+        console.log('REQUESTS MSGS - PROJECT USER ROLE ', current_user_role);
+        if (current_user_role === 'agent') {
+          this.IS_CURRENT_USER_AGENT = true;
+          console.log('REQUESTS MSGS - PROJECT USER ROLE - IS CURRENT USER AGENT ', this.IS_CURRENT_USER_AGENT);
+        } else {
+          this.IS_CURRENT_USER_AGENT = false;
+          console.log('REQUESTS MSGS - PROJECT USER ROLE - IS CURRENT USER AGENT ', this.IS_CURRENT_USER_AGENT);
+        }
+      }
+    });
   }
 
   detectMobile() {
@@ -236,7 +256,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     // console.log('REQUEST-MSGS - SELECTED USER ROW TOP OFFSET ', testDiv.offsetTop);
     this.displayConfirmReassignmentModal = 'block'
 
-     // this.document.body.scrollTop = 0;
+    // this.document.body.scrollTop = 0;
   }
 
 
@@ -306,12 +326,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
   }
-
-
   // end new
-
-
-
 
 
   toggleCheckBox(event) {
@@ -345,9 +360,13 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
       if (this.user) {
         this.currentUserID = this.user._id
         console.log('USER UID GET IN REQUEST-MSGS COMPONENT', this.currentUserID);
+
+
       }
     });
   }
+
+
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
