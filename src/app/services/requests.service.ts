@@ -58,6 +58,7 @@ export class RequestsService {
 
   public requestsList_bs: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
   public allRequestsList_bs: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
+  _seeAllRequests = false
 
   project: Project;
   constructor(
@@ -237,6 +238,15 @@ export class RequestsService {
     });
   }
 
+  seeAllRequests(seeAll) {
+    console.log('!!! REQUESTS-SERVICE SEE ALL ', seeAll)
+    this._seeAllRequests = seeAll
+    this.getCurrentProject()
+    // if (this._seeAllRequests === true) {
+      
+    // }
+  }
+
   addOrUpdateRequestsList(r: Request) {
     // console.log('****** ADD OR UPDATE REQUEST LIST ******')
 
@@ -244,40 +254,48 @@ export class RequestsService {
     // THE CURRENT USER ID WITH THE 'USER ID' CONTAINED IN THE ARRAY 'AGENTS' (NESTED IN THE 'REQUEST' OBJECT)
     // RETURNS TRUE OR FALSE
     // || !r.hasAgent(this.currentUserID)
-    if (r === null || r === undefined)  {
+    if (r !== null && r !== undefined) {
       // console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID))
-      return;
-    }
-    // console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID))
-    for (let i = 0; i < this.requestList.length; i++) {
-      // IF THE ID OF THE REQUEST RETURNED FROM DOCUMENT CHANGE (i.e. r.recipient) IS ALREADY IN THE REQUEST LIST this.requestList[i].recipient
-      // THIS MEAN THAT THE TYPE OF DocumentChange RETURNED FROM THE QUERY IS MODIFIED OR REMOVED
-      if (r.recipient === this.requestList[i].recipient) {
 
-        // USE CASE: DocumentChange TYPE = MODIFIED
-        // - run an UPDATE: SUBSTITUTE THE EXISTING REQUEST WITH THE MODIFIED ONE ...
-        if (r.firebaseDocChangeType === 'modified') {
-          // console.log('2) »»»»» DOCUMENT CHANGE TYPE ', r.firebaseDocChangeType)
-          this.requestList[i] = r;
-          this.reorderRequests()
-          return;
-        } else {
-          // USE CASE REQUEST ARCHIVED - DocumentChange TYPE = REMOVED
-          // run a SPLICE to remove the request from the list
-          // console.log('2) »»»»» DOCUMENT CHANGE TYPE ', r.firebaseDocChangeType)
-          const index = this.requestList.indexOf(this.requestList[i]);
-          // console.log('INDEX OF THE REQUEST TO REMOVE ', index)
-          if (index > -1) {
-            this.requestList.splice(index, 1);
-          }
-          return;
-        }
+      // SE HAS AGENT è = TRUE IL CURRENT USER è UN AGENT
+      // SE HAS AGENT è = FALSE IL CURRENT USER NON è UN AGENT  IL WORK FLOW SI BLOCCA E PASSA AL CICLO SUCCESSIVO
+      if (!r.hasAgent(this.currentUserID) && this._seeAllRequests === false) {
+          console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID) , ' SHOW ALL REQUEST ', this._seeAllRequests)
+        return;
       }
-      // console.log('REQUEST RECIPIENT ', this.requestList[i].recipient)
+      console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID) , ' SHOW ALL REQUEST ', this._seeAllRequests)
+      // console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID))
+      for (let i = 0; i < this.requestList.length; i++) {
+        // IF THE ID OF THE REQUEST RETURNED FROM DOCUMENT CHANGE (i.e. r.recipient) IS ALREADY IN THE REQUEST LIST this.requestList[i].recipient
+        // THIS MEAN THAT THE TYPE OF DocumentChange RETURNED FROM THE QUERY IS MODIFIED OR REMOVED
+        if (r.recipient === this.requestList[i].recipient) {
+
+          // USE CASE: DocumentChange TYPE = MODIFIED
+          // - run an UPDATE: SUBSTITUTE THE EXISTING REQUEST WITH THE MODIFIED ONE ...
+          if (r.firebaseDocChangeType === 'modified') {
+            // console.log('2) »»»»» DOCUMENT CHANGE TYPE ', r.firebaseDocChangeType)
+            this.requestList[i] = r;
+            this.reorderRequests()
+            return;
+          } else {
+            // USE CASE REQUEST ARCHIVED - DocumentChange TYPE = REMOVED
+            // run a SPLICE to remove the request from the list
+            // console.log('2) »»»»» DOCUMENT CHANGE TYPE ', r.firebaseDocChangeType)
+            const index = this.requestList.indexOf(this.requestList[i]);
+            // console.log('INDEX OF THE REQUEST TO REMOVE ', index)
+            if (index > -1) {
+              this.requestList.splice(index, 1);
+            }
+            return;
+          }
+        }
+        // console.log('REQUEST RECIPIENT ', this.requestList[i].recipient)
+      }
+      // ... ELSE ADD THE REQUEST
+      this.requestList.push(r);
+      this.reorderRequests()
+
     }
-    // ... ELSE ADD THE REQUEST
-    this.requestList.push(r);
-    this.reorderRequests()
   }
 
 
@@ -379,10 +397,10 @@ export class RequestsService {
     //    !!! COMMENT THE LINE BELOW TO SEE THE ERROR MESSAGE IN CONSOLE !!!
     // db.settings({ timestampsInSnapshots: true });
 
-    // .where('departmentId', '==', '5b05319ffb1e724de404df57')
+    // .where('departmentId', '==', '5b05319ffb1e724de404df57')   this.project._id
     const query = db.collection('conversations')
       .where('support_status', '<', 1000)
-      .where('projectid', '==', this.project._id)
+      .where('projectid', '==', '5b44c82def5dca0014d777ac')
       .orderBy('support_status')
       .orderBy('created_on', 'desc');
     // const observer = Observable.create(query.onSnapshot.bind(query));
@@ -678,7 +696,7 @@ export class RequestsService {
       .map((res) => res.json());
   }
 
-  public leaveTheGroup(group_id: string, firebaseToken: any, currentUserUid: string){
+  public leaveTheGroup(group_id: string, firebaseToken: any, currentUserUid: string) {
     this.FIREBASE_ID_TOKEN = firebaseToken;
     this.currentUserID = currentUserUid;
 

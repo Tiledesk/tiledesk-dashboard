@@ -26,7 +26,7 @@ import { UsersLocalDbService } from '../services/users-local-db.service';
 import { environment } from '../../environments/environment';
 import { NotifyService } from '../core/notify.service';
 import { BotLocalDbService } from '../services/bot-local-db.service';
-
+import { DepartmentService } from '../services/mongodb-department.service';
 
 
 @Component({
@@ -98,6 +98,12 @@ export class RequestsListComponent implements OnInit {
   id_request_to_archive: string;
   SHOW_SIMULATE_REQUEST_BTN: boolean
 
+  project_depts_id_array = [];
+  departments: any;
+  requestsDepts_array = [];
+  requestsDeptsId_array = [];
+  requestsDepts_uniqueArray = [];
+  requestsDepts_uniqueArrayWithCount = [];
   constructor(
     private requestsService: RequestsService,
     private elRef: ElementRef,
@@ -105,7 +111,8 @@ export class RequestsListComponent implements OnInit {
     private router: Router,
     private usersLocalDbService: UsersLocalDbService,
     private notify: NotifyService,
-    private botLocalDbService: BotLocalDbService
+    private botLocalDbService: BotLocalDbService,
+    private departmentService: DepartmentService
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
 
@@ -150,6 +157,11 @@ export class RequestsListComponent implements OnInit {
     //     console.log('GET REQUEST COMPLETE')
     //   });
 
+    // this.getCountOfRequestsforDepts();
+  }
+  seeAllRequests(seeAll: boolean) {
+    console.log('REQUEST LIST - SEE ALL ', seeAll)
+    this.requestsService.seeAllRequests(seeAll)
   }
 
 
@@ -194,6 +206,7 @@ export class RequestsListComponent implements OnInit {
     }
   }
 
+
   getRequestListBS() {
     this.requestsService.requestsList_bs.subscribe((requests) => {
       if (requests) {
@@ -212,21 +225,65 @@ export class RequestsListComponent implements OnInit {
         })
         console.log('REQUESTS-LIST COMP - REQUESTS ', requests)
 
-        // start NEW: GET MEMBERS
+
+        // const department_array = [];
+
         for (const request of requests) {
           // console.log('request', request)
           // console.log('REQUEST TEXT ', request.first_text, ' , SUPP STATUS ', request.support_status)
+
           requests.forEach(r => {
             if (request.id === r.id) {
 
+              // GET MEMBERS
               r.members_array = Object.keys(r.members);
               // console.log('!!! REQUEST LIST MEMBERS ARRAY  ', r.members_array)
+
+              // CREATES AN ARRAY WITH ALL THE DEPTS RETURNED IN THE REQUESTS OBJCTS 
+              // (FROM THIS IS CREATED requestsDepts_uniqueArray)
+              this.requestsDepts_array.push({ '_id': r.attributes.departmentId, 'deptName': r.attributes.departmentName })
+              console.log('REQUESTS-LIST COMP - DEPTS ARRAY ', this.requestsDepts_array)
+
+              // CREATES AN ARRAY WITH * ONLY THE IDs * OF THE DEPTS RETURNED IN THE REQUESTS OBJCTS
+              // THIS IS USED TO GET THE OCCURRENCE IN IT OF THE ID OF THE ARRAY this.requestsDepts_array
+              this.requestsDeptsId_array.push(r.attributes.departmentId)
+
             }
           })
 
         }
-        // end NEW: GET MEMBERS
+        // const department_array_no_duplicate = [];
+        // this.arrayOf_department_in_the_request.forEach(dept => {
+        //   console.log('REQUESTS-LIST COMP - DEPTS ARRAY - NO DUPLICATE ID', dept._id)
+        //   if (department_array_no_duplicate.indexOf(dept._id) === -1) {
+        //     department_array_no_duplicate.push(dept._id, dept.deptName)
+        //   }
+        // });
+        // const dupeArray = [3,2,3,3,5,2];
+        // const uniqueArray = Array.from(new Set(dupeArray))
+        // console.log('REQUESTS-LIST COMP - >>> DEPTS ARRAY (NO DUPLICATE) : ' + uniqueArray);
+
+        this.requestsDepts_uniqueArray = this.removeDuplicates(this.requestsDepts_array, '_id');
+        // this.requestsDepts_uniqueArray = Array.from(new Set(this.requestsDepts_array))
+
+        console.log('REQUESTS-LIST COMP - DEPTS ARRAY (NO DUPLICATE) : ' + JSON.stringify(this.requestsDepts_uniqueArray));
+        // console.log('REQUESTS-LIST COMP - DEPTS ARRAY (NO DUPLICATE) : ' + this.requestsDepts_uniqueArray);
+
+        // uniqueArray.forEach(element => {
+        //   console.log('uniqueArray element : ', element);
+        // });
+
         console.log('REQUESTS-LIST COMP - REQUESTS LENGHT', requests.length)
+        console.log('REQUESTS-LIST COMP - DEPTS ARRAY ', this.requestsDepts_array)
+        console.log('REQUESTS-LIST COMP - ID DEPTS ARRAY ', this.requestsDeptsId_array)
+        // console.log('REQUESTS-LIST COMP - DEPTS ARRAY - NO DUPLICATE ', department_array_no_duplicate)
+
+
+        this.requestsDepts_uniqueArray.forEach(dept => {
+          this.getDeptIdOccurrence(this.requestsDeptsId_array, dept._id)
+        });
+
+
         /**
          * FOR THE UNSERVED REQUEST THE OLDEST IS THE MORE IMPORTANT SO IS DISPLAYED ON TOP OF THE
          * LIST
@@ -267,6 +324,70 @@ export class RequestsListComponent implements OnInit {
     }, error => {
       this.showSpinner = false
     });
+  }
+
+
+  removeDuplicates(originalArray, prop) {
+    const newArray = [];
+    const lookupObject = {};
+
+
+    // tslint:disable-next-line:forin
+    for (const i in originalArray) {
+      lookupObject[originalArray[i][prop]] = originalArray[i];
+    }
+
+    // tslint:disable-next-line:forin
+    for (const i in lookupObject) {
+      newArray.push(lookupObject[i]);
+    }
+    return newArray;
+  }
+  getDeptIdOccurrence(array, value) {
+    // console.log('!!! ANALYTICS - ALL REQUESTS X DEPT - GET DEP OCCURRENCE FOR DEPTS ');
+    const newUnicArray = []
+    let count = 0;
+    array.forEach((v) => (v === value && count++));
+    console.log('!!! REQUESTS LIST - DEPT - #', count, ' REQUESTS ASSIGNED TO DEPT ', value);
+    let i
+    for (i = 0; i < this.requestsDepts_uniqueArray.length; ++i) {
+      // console.log('REQUESTS-LIST COMP DEPTS  NEW UNIQUE ARRAY ID : ', this.requestsDepts_uniqueArray[i]['_id']);
+      // this.requestsDepts_uniqueArray.forEach(dept => {
+
+      // if (value === this.requestsDepts_uniqueArray[i]['_id']) {
+      //   newUnicArray.push({ '_id': this.requestsDepts_uniqueArray[i]['_id'], 'deptName': this.requestsDepts_uniqueArray[i]['deptName'], 'requestCount': count })
+      // }
+
+
+      for (const p of this.requestsDepts_uniqueArray) {
+        if (value === p._id) {
+          p.value = count
+        }
+      }
+
+      console.log('REQUESTS-LIST COMP - DEPTS ARRAY (NO DUPLICATE) 2 : ' + JSON.stringify(this.requestsDepts_uniqueArray));
+      //   const flags = {};
+      //   const newPlaces = [];
+      //   let index;
+      //   for (index = 0; index < this.requestsDepts_uniqueArray.length; ++index) {
+      //     if (!flags[entry.city]) {
+      //         flags[entry.city] = true;
+      //         newPlaces.push(entry);
+      //     }
+      // });
+    }
+
+    // this.requestsDepts_uniqueArrayWithCount = this.requestsDepts_uniqueArrayWithCount.concat(newUnicArray);
+    console.log('REQUESTS-LIST COMP DEPTS  NEW UNIQUE ARRAY : ', newUnicArray);
+    // console.log('REQUESTS-LIST COMP DEPTS  NEW UNIQUE ARRAY 2 : ', this.requestsDepts_uniqueArrayWithCount);
+
+    // for (const dept of this.uniqueArray) {
+    //   if (value === dept._id) {
+    //     dept.value = count
+    //   }
+    // }
+
+    return count;
   }
 
   // + '&prechatform=' + this.preChatForm
