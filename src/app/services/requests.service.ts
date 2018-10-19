@@ -397,10 +397,10 @@ export class RequestsService {
     //    !!! COMMENT THE LINE BELOW TO SEE THE ERROR MESSAGE IN CONSOLE !!!
     // db.settings({ timestampsInSnapshots: true });
 
-    // .where('departmentId', '==', '5b05319ffb1e724de404df57')   this.project._id
+    // .where('departmentId', '==', '5b05319ffb1e724de404df57')   '5b44c82def5dca0014d777ac'
     const query = db.collection('conversations')
       .where('support_status', '<', 1000)
-      .where('projectid', '==', '5b44c82def5dca0014d777ac')
+      .where('projectid', '==',  this.project._id)
       .orderBy('support_status')
       .orderBy('created_on', 'desc');
     // const observer = Observable.create(query.onSnapshot.bind(query));
