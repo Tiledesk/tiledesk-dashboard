@@ -80,6 +80,9 @@
     "SessionExipired":"Session Exipired",
     "YourSessionHasExipered":"Your session has exipered.",
     "YouWillBeRedirectToLoginPage":"You will be redirect to the Login page",
+    "RequestsForDepartment":"Requests for department",
+    "AllRequests":"All requests",
+    "MyRequests":"My requests",
     "UserProfile": {
         "Profile": "Profile",
         "UploadImage": "Upload image",

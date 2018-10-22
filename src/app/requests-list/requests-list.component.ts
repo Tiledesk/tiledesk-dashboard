@@ -27,7 +27,7 @@ import { environment } from '../../environments/environment';
 import { NotifyService } from '../core/notify.service';
 import { BotLocalDbService } from '../services/bot-local-db.service';
 import { DepartmentService } from '../services/mongodb-department.service';
-
+import { UsersService } from '../services/users.service';
 
 @Component({
   selector: 'requests-list',
@@ -100,10 +100,16 @@ export class RequestsListComponent implements OnInit {
 
   project_depts_id_array = [];
   departments: any;
-  requestsDepts_array = [];
-  requestsDeptsId_array = [];
-  requestsDepts_uniqueArray = [];
-  requestsDepts_uniqueArrayWithCount = [];
+  // requestsDepts_array = [];
+  // requestsDeptsId_array = [];
+  // requestsDepts_uniqueArray = [];
+  // requestsDepts_uniqueArrayWithCount = [];
+
+  depts_array_noduplicate = [];
+  seeImAgentRequestsSwitchBtn: boolean;
+
+  displayBtnLabelSeeAllRequets = false;
+
   constructor(
     private requestsService: RequestsService,
     private elRef: ElementRef,
@@ -112,7 +118,8 @@ export class RequestsListComponent implements OnInit {
     private usersLocalDbService: UsersLocalDbService,
     private notify: NotifyService,
     private botLocalDbService: BotLocalDbService,
-    private departmentService: DepartmentService
+    private departmentService: DepartmentService,
+    private usersService: UsersService
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
 
@@ -132,15 +139,8 @@ export class RequestsListComponent implements OnInit {
   ngOnInit() {
     // localStorage.getItem('show_settings_submenu'))
     // GET THE CURRENT PROJECT ID
-    this.auth.project_bs.subscribe((project) => {
-      this.project = project
-      console.log('00 -> REQUEST-LIST COMP project from AUTH service subscription  ', project)
-
-      if (project) {
-        this.projectId = project._id;
-        this.projectName = project.name;
-      }
-    });
+    this.getProjectUserRole();
+    this.getCurrentProject();
 
     console.log('REQUEST LIST ON INIT ')
 
@@ -159,9 +159,49 @@ export class RequestsListComponent implements OnInit {
 
     // this.getCountOfRequestsforDepts();
   }
-  seeAllRequests(seeAll: boolean) {
-    console.log('REQUEST LIST - SEE ALL ', seeAll)
-    this.requestsService.seeAllRequests(seeAll)
+
+  getProjectUserRole() {
+    this.usersService.project_user_role_bs.subscribe((user_role) => {
+
+      console.log('SEE REQUEST IM AGENT - in GET USER ROLE (REQUESTS COMP) ', user_role);
+      if (user_role) {
+
+        if (user_role === 'agent') {
+          this.seeImAgentRequestsSwitchBtn = false;
+        } else {
+          this.seeImAgentRequestsSwitchBtn = true;
+        }
+      }
+    });
+  }
+
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+      this.project = project
+      console.log('00 -> REQUEST-LIST COMP project from AUTH service subscription  ', project)
+
+      if (project) {
+        this.projectId = project._id;
+        this.projectName = project.name;
+      }
+    });
+  }
+
+  seeIamAgentRequests(seeIamAgentReq: boolean) {
+    console.log('SEE REQUEST IM AGENT (REQUEST LIST) ', seeIamAgentReq)
+    this.requestsService.seeOnlyRequestsHaveCurrentUserAsAgent(seeIamAgentReq);
+
+    // RESOLVE THE BUG: THE BUTTON SEE ALL REQUESTS / SEE MY REQUESTS REMAIN FOCUSED AFTER PRESSED
+    const switchAagentAadminRequestsBbtn = <HTMLElement>document.querySelector('.switch-agent-admin-requests-btn');
+    console.log('REQUESTS COMP switchAagentAadminRequestsBbtn ', switchAagentAadminRequestsBbtn)
+    switchAagentAadminRequestsBbtn.blur();
+
+    if (seeIamAgentReq === false) {
+      this.displayBtnLabelSeeAllRequets = false;
+    } else {
+      this.displayBtnLabelSeeAllRequets = true;
+    }
+
   }
 
 
@@ -206,11 +246,11 @@ export class RequestsListComponent implements OnInit {
     }
   }
 
-
   getRequestListBS() {
     this.requestsService.requestsList_bs.subscribe((requests) => {
       if (requests) {
 
+        this.getCountOfDeptsInRequests(requests)
         // this.zone.run(() RESOLVE THE BUG: View Not Changing After Data Is Updated
         // https://stackoverflow.com/questions/31706948/angular2-view-not-changing-after-data-is-updated?rq=1
         this.zone.run(() => {
@@ -225,9 +265,6 @@ export class RequestsListComponent implements OnInit {
         })
         console.log('REQUESTS-LIST COMP - REQUESTS ', requests)
 
-
-        // const department_array = [];
-
         for (const request of requests) {
           // console.log('request', request)
           // console.log('REQUEST TEXT ', request.first_text, ' , SUPP STATUS ', request.support_status)
@@ -239,55 +276,15 @@ export class RequestsListComponent implements OnInit {
               r.members_array = Object.keys(r.members);
               // console.log('!!! REQUEST LIST MEMBERS ARRAY  ', r.members_array)
 
-              // CREATES AN ARRAY WITH ALL THE DEPTS RETURNED IN THE REQUESTS OBJCTS 
-              // (FROM THIS IS CREATED requestsDepts_uniqueArray)
-              this.requestsDepts_array.push({ '_id': r.attributes.departmentId, 'deptName': r.attributes.departmentName })
-              console.log('REQUESTS-LIST COMP - DEPTS ARRAY ', this.requestsDepts_array)
-
-              // CREATES AN ARRAY WITH * ONLY THE IDs * OF THE DEPTS RETURNED IN THE REQUESTS OBJCTS
-              // THIS IS USED TO GET THE OCCURRENCE IN IT OF THE ID OF THE ARRAY this.requestsDepts_array
-              this.requestsDeptsId_array.push(r.attributes.departmentId)
-
             }
           })
-
         }
-        // const department_array_no_duplicate = [];
-        // this.arrayOf_department_in_the_request.forEach(dept => {
-        //   console.log('REQUESTS-LIST COMP - DEPTS ARRAY - NO DUPLICATE ID', dept._id)
-        //   if (department_array_no_duplicate.indexOf(dept._id) === -1) {
-        //     department_array_no_duplicate.push(dept._id, dept.deptName)
-        //   }
-        // });
-        // const dupeArray = [3,2,3,3,5,2];
-        // const uniqueArray = Array.from(new Set(dupeArray))
-        // console.log('REQUESTS-LIST COMP - >>> DEPTS ARRAY (NO DUPLICATE) : ' + uniqueArray);
-
-        this.requestsDepts_uniqueArray = this.removeDuplicates(this.requestsDepts_array, '_id');
-        // this.requestsDepts_uniqueArray = Array.from(new Set(this.requestsDepts_array))
-
-        console.log('REQUESTS-LIST COMP - DEPTS ARRAY (NO DUPLICATE) : ' + JSON.stringify(this.requestsDepts_uniqueArray));
-        // console.log('REQUESTS-LIST COMP - DEPTS ARRAY (NO DUPLICATE) : ' + this.requestsDepts_uniqueArray);
-
-        // uniqueArray.forEach(element => {
-        //   console.log('uniqueArray element : ', element);
-        // });
 
         console.log('REQUESTS-LIST COMP - REQUESTS LENGHT', requests.length)
-        console.log('REQUESTS-LIST COMP - DEPTS ARRAY ', this.requestsDepts_array)
-        console.log('REQUESTS-LIST COMP - ID DEPTS ARRAY ', this.requestsDeptsId_array)
-        // console.log('REQUESTS-LIST COMP - DEPTS ARRAY - NO DUPLICATE ', department_array_no_duplicate)
-
-
-        this.requestsDepts_uniqueArray.forEach(dept => {
-          this.getDeptIdOccurrence(this.requestsDeptsId_array, dept._id)
-        });
-
 
         /**
          * FOR THE UNSERVED REQUEST THE OLDEST IS THE MORE IMPORTANT SO IS DISPLAYED ON TOP OF THE
-         * LIST
-         */
+         * LIST  */
         this.requestListUnserved = requests
           .filter(r => {
             if (r.support_status === 100) {
@@ -326,11 +323,56 @@ export class RequestsListComponent implements OnInit {
     });
   }
 
+  getCountOfDeptsInRequests(requests_array) {
+    const depts_array = [];
+    const deptsIDs = [];
+    requests_array.forEach((request, index) => {
+      // console.log('REQUESTS-LIST COMP - REQUEST ', request, '#', index);
+
+      // CREATES AN ARRAY WITH ALL THE DEPTS RETURNED IN THE REQUESTS OBJCTS
+      // (FROM THIS IS CREATED requestsDepts_uniqueArray)
+      depts_array.push({ '_id': request.attributes.departmentId, 'deptName': request.attributes.departmentName })
+
+      // CREATES AN ARRAY WITH * ONLY THE IDs * OF THE DEPTS RETURNED IN THE REQUESTS OBJCTS
+      // THIS IS USED TO GET THE OCCURRENCE IN IT OF THE ID OF THE ARRAY this.requestsDepts_array
+      deptsIDs.push(request.attributes.departmentId)
+
+
+    });
+    console.log('REQUESTS-LIST COMP - DEPTS ARRAY NK', depts_array)
+    console.log('REQUESTS-LIST COMP - DEPTS ID ARRAY NK', deptsIDs)
+
+    // REMOVE DUPLICATE
+    this.depts_array_noduplicate = this.removeDuplicates(depts_array, '_id');
+    console.log('REQUESTS-LIST COMP - DEPTS ARRAY [no duplicate] NK', this.depts_array_noduplicate)
+
+    // GET OCCURRENCY OF THE DEPT ID IN THE ARRAY OF THE TOTAL DEPT ID
+    this.depts_array_noduplicate.forEach(dept => {
+      this.getDeptIdOccurrence(deptsIDs, dept._id)
+    });
+  }
+
+  getDeptIdOccurrence(array_of_all_depts_ids, dept_id) {
+    // console.log('!!! ANALYTICS - ALL REQUESTS X DEPT - GET DEP OCCURRENCE FOR DEPTS ');
+    const newUnicArray = []
+    let count = 0;
+    array_of_all_depts_ids.forEach((v) => (v === dept_id && count++));
+    console.log('!!! REQUESTS LIST - DEPT - #', count, ' REQUESTS ASSIGNED TO DEPT ', dept_id);
+    let i
+    for (i = 0; i < this.depts_array_noduplicate.length; ++i) {
+
+      for (const dept of this.depts_array_noduplicate) {
+        if (dept_id === dept._id) {
+          dept.requestsCount = count
+        }
+      }
+      console.log('REQUESTS-LIST COMP - DEPTS ARRAY [no duplicate] NK * 2 * : ' + JSON.stringify(this.depts_array_noduplicate));
+    }
+  }
 
   removeDuplicates(originalArray, prop) {
     const newArray = [];
     const lookupObject = {};
-
 
     // tslint:disable-next-line:forin
     for (const i in originalArray) {
@@ -342,52 +384,6 @@ export class RequestsListComponent implements OnInit {
       newArray.push(lookupObject[i]);
     }
     return newArray;
-  }
-  getDeptIdOccurrence(array, value) {
-    // console.log('!!! ANALYTICS - ALL REQUESTS X DEPT - GET DEP OCCURRENCE FOR DEPTS ');
-    const newUnicArray = []
-    let count = 0;
-    array.forEach((v) => (v === value && count++));
-    console.log('!!! REQUESTS LIST - DEPT - #', count, ' REQUESTS ASSIGNED TO DEPT ', value);
-    let i
-    for (i = 0; i < this.requestsDepts_uniqueArray.length; ++i) {
-      // console.log('REQUESTS-LIST COMP DEPTS  NEW UNIQUE ARRAY ID : ', this.requestsDepts_uniqueArray[i]['_id']);
-      // this.requestsDepts_uniqueArray.forEach(dept => {
-
-      // if (value === this.requestsDepts_uniqueArray[i]['_id']) {
-      //   newUnicArray.push({ '_id': this.requestsDepts_uniqueArray[i]['_id'], 'deptName': this.requestsDepts_uniqueArray[i]['deptName'], 'requestCount': count })
-      // }
-
-
-      for (const p of this.requestsDepts_uniqueArray) {
-        if (value === p._id) {
-          p.value = count
-        }
-      }
-
-      console.log('REQUESTS-LIST COMP - DEPTS ARRAY (NO DUPLICATE) 2 : ' + JSON.stringify(this.requestsDepts_uniqueArray));
-      //   const flags = {};
-      //   const newPlaces = [];
-      //   let index;
-      //   for (index = 0; index < this.requestsDepts_uniqueArray.length; ++index) {
-      //     if (!flags[entry.city]) {
-      //         flags[entry.city] = true;
-      //         newPlaces.push(entry);
-      //     }
-      // });
-    }
-
-    // this.requestsDepts_uniqueArrayWithCount = this.requestsDepts_uniqueArrayWithCount.concat(newUnicArray);
-    console.log('REQUESTS-LIST COMP DEPTS  NEW UNIQUE ARRAY : ', newUnicArray);
-    // console.log('REQUESTS-LIST COMP DEPTS  NEW UNIQUE ARRAY 2 : ', this.requestsDepts_uniqueArrayWithCount);
-
-    // for (const dept of this.uniqueArray) {
-    //   if (value === dept._id) {
-    //     dept.value = count
-    //   }
-    // }
-
-    return count;
   }
 
   // + '&prechatform=' + this.preChatForm

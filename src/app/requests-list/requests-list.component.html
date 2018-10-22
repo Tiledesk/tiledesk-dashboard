@@ -9,10 +9,12 @@
   <div class="container-fluid">
 
       
-    <!-- ------====== CARDS COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED ======------ -->
+    <!-- ------====== CARDS COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED  and requests for depts ======------ -->
  
     <div class="row">
-      <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6">
+
+      <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
       
         <!-- // TOTAL ACTIVE -->
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding-left: 5px !important; padding-right: 5px !important;">
@@ -91,21 +93,77 @@
           </div> 
   
         </div>
-
-
-               
       </div>         
-      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-6">
+ 
+      <!-- // REQUESTS FOR DEPARTMENTS -->
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" style="">
 
-        <h4 (click)="seeAllRequests(seeAll = !seeAll)" style="cursor:pointer"> SEE ALL REQUESTS </h4>
+        <div class="card" style="margin-top:0px">
+          <div class="row">
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+              <h4 class="customh4" style="padding-left:15px; margin-bottom: 0px; white-space: nowrap;"> 
+                <!-- Requests for department -->
+                {{ "RequestsForDepartment" | translate }}
+              </h4>
+            </div>
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+              <span *ngIf="seeImAgentRequestsSwitchBtn"> 
+                <button class="btn btn-info pull-right switch-agent-admin-requests-btn" (click)="seeIamAgentRequests(seeAll = !seeAll)">
+                    <span *ngIf="displayBtnLabelSeeAllRequets === true"> {{ "AllRequests" | translate }} </span>
+                    <span *ngIf="displayBtnLabelSeeAllRequets === false"> {{ "MyRequests" | translate }} </span>
+                </button>
+              </span>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="row">
+              <div *ngFor="let dept of depts_array_noduplicate" class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9" style="padding-left:0px; color:rgb(118,149,165); font-size: 13px; font-weight: 400; font-family: 'Google Sans', sans-serif !important;">
+                    {{dept?.deptName }}:
+                </div>
+
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="font-size: 13px;
+                  font-family: 'Google Sans', sans-serif !important;
+                  font-weight: 600;">
+                      {{dept?.requestsCount }}
+                </div>
+              </div>
+            </div>
+            <!-- <div class="row">
+              <div class="col-sm-12">
+                <div *ngFor="let dept of depts_array_noduplicate" class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="text-align: center; padding-left: 5px; padding-right: 5px">
+                  <div class="dept-request-count"style=" " >
+                    {{dept?.requestsCount }}
+                  </div>
+                    <p style="font-size: 13px;font-family: 'Google Sans', sans-serif !important;font-weight: 600;">
+                      {{dept?.deptName }}
+                    </p>
+                </div>
+              </div>
+            </div>   -->
+  
+            <!-- new as intercom  -->
+            <!-- <div class="row">
+              <div class="col-sm-12">
+            <div class="intercom-home-screen-start-conversation-card-content" style="">
+              <div class="intercom-admin-avatar-stack" style="">
+                <div class="intercom-admin-avatar-stack-avatar" *ngFor="let dept of depts_array_noduplicate"style="">
+                  <div class="intercom-avatar" style="" >
+                      {{dept?.requestsCount }}
+                    </div>
+                  </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+            <!-- new as intercom  -->
+          </div>
+        </div>
+
       </div>
-      <span *ngFor="let dept of requestsDepts_uniqueArray" >
-        <p>{{dept?.deptName }} {{dept?.value }} </p>
-       </span>
     </div>
-
-
-    <!-- ------====== / .end CARDS COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED ======------ -->
+     <!-- ------====== / .end CARDS COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED AND requests for depts ======------ -->
 
     <div class="row">
       <div class="col-md-12">

@@ -23,6 +23,8 @@ import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
 import { Department } from '../models/department-model';
 import { DepartmentService } from '../services/mongodb-department.service';
+import { UsersService } from '../services/users.service';
+import { error } from 'util';
 
 @Injectable()
 export class RequestsService {
@@ -58,16 +60,19 @@ export class RequestsService {
 
   public requestsList_bs: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
   public allRequestsList_bs: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
-  _seeAllRequests = false
+
+  _seeAllRequests = true
+  _seeOnlyRequestsHaveCurrentUserAsAgent = false
 
   project: Project;
   constructor(
     http: Http,
     private afs: AngularFirestore,
     public auth: AuthService,
-    private departmentService: DepartmentService
+    private departmentService: DepartmentService,
+    private usersService: UsersService
   ) {
-
+    console.log('SEE REQUEST IM AGENT (REQUESTS SERVICE - ON INIT) ', this._seeOnlyRequestsHaveCurrentUserAsAgent)
     this.http = http;
     console.log(' ============ HELLO REQUESTS SERVICE! ============ ');
 
@@ -81,6 +86,7 @@ export class RequestsService {
     // } else {
     //   console.log('No user is signed in');
     // }
+    this.getProjectUserRole();
 
     this.user = auth.user_bs.value
     this.checkUser()
@@ -96,6 +102,29 @@ export class RequestsService {
 
     // !! NO MORE USED
     // this.getMyDepts();
+  }
+
+  getProjectUserRole() {
+    this.usersService.project_user_role_bs.subscribe((user_role) => {
+      // this.USER_ROLE = user_role;
+      console.log('SEE REQUEST IM AGENT - in GET USER ROLE (REQUESTS SERVICE) ', user_role);
+      if (user_role) {
+
+        if (user_role === 'agent') {
+          this._seeOnlyRequestsHaveCurrentUserAsAgent = true;
+          console.log('SEE REQUEST IM AGENT - in GET USER ROLE (REQUESTS SERVICE) ', this._seeOnlyRequestsHaveCurrentUserAsAgent)
+        } else {
+          this._seeOnlyRequestsHaveCurrentUserAsAgent = false;
+        }
+      }
+ 
+    }, (err) => {
+      console.log('SEE REQUEST IM AGENT - GET USER ROLE - ERROR ', err);
+    }, () => {
+      console.log('SEE REQUEST IM AGENT - GET USER ROLE * COMPLETE *');
+    });
+
+
   }
 
   getCurrentProject() {
@@ -238,12 +267,12 @@ export class RequestsService {
     });
   }
 
-  seeAllRequests(seeAll) {
-    console.log('!!! REQUESTS-SERVICE SEE ALL ', seeAll)
-    this._seeAllRequests = seeAll
+  seeOnlyRequestsHaveCurrentUserAsAgent(seeIamAgentReq) {
+    console.log('SEE REQUEST IM AGENT (REQUESTS SERVICE) ', seeIamAgentReq)
+    this._seeOnlyRequestsHaveCurrentUserAsAgent = seeIamAgentReq
     this.getCurrentProject()
     // if (this._seeAllRequests === true) {
-      
+
     // }
   }
 
@@ -259,11 +288,11 @@ export class RequestsService {
 
       // SE HAS AGENT è = TRUE IL CURRENT USER è UN AGENT
       // SE HAS AGENT è = FALSE IL CURRENT USER NON è UN AGENT  IL WORK FLOW SI BLOCCA E PASSA AL CICLO SUCCESSIVO
-      if (!r.hasAgent(this.currentUserID) && this._seeAllRequests === false) {
-          console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID) , ' SHOW ALL REQUEST ', this._seeAllRequests)
+      if (!r.hasAgent(this.currentUserID) && this._seeOnlyRequestsHaveCurrentUserAsAgent === true) {
+        console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID), ' SHOW ONLY Im AGENT REQUEST ', this._seeOnlyRequestsHaveCurrentUserAsAgent)
         return;
       }
-      console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID) , ' SHOW ALL REQUEST ', this._seeAllRequests)
+      console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID), ' SHOW ONLY Im AGENT REQUEST ', this._seeOnlyRequestsHaveCurrentUserAsAgent)
       // console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID))
       for (let i = 0; i < this.requestList.length; i++) {
         // IF THE ID OF THE REQUEST RETURNED FROM DOCUMENT CHANGE (i.e. r.recipient) IS ALREADY IN THE REQUEST LIST this.requestList[i].recipient
@@ -397,10 +426,10 @@ export class RequestsService {
     //    !!! COMMENT THE LINE BELOW TO SEE THE ERROR MESSAGE IN CONSOLE !!!
     // db.settings({ timestampsInSnapshots: true });
 
-    // .where('departmentId', '==', '5b05319ffb1e724de404df57')   '5b44c82def5dca0014d777ac'
+    // .where('departmentId', '==', '5b05319ffb1e724de404df57')   '5b44c82def5dca0014d777ac'this.project._id
     const query = db.collection('conversations')
       .where('support_status', '<', 1000)
-      .where('projectid', '==',  this.project._id)
+      .where('projectid', '==', this.project._id)
       .orderBy('support_status')
       .orderBy('created_on', 'desc');
     // const observer = Observable.create(query.onSnapshot.bind(query));
