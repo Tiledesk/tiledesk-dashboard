@@ -422,3 +422,40 @@ span .switch-agent-admin-requests-btn {
     padding-right: 10px;
     border-radius: 15px;
 }
+
+.table-head-span {
+    color: #566787; font-weight: 700;  font-family: 'Google Sans', sans-serif !important; text-transform: uppercase; font-size: 13px;
+}
+
+.table-body-span {
+    font-family: 'Google Sans', sans-serif !important; color:rgb(118,149,165)
+}
+
+.all-agents-requests-btn {
+    background-color: #00bcd4; 
+    color: #fff; 
+    font-size: 11px; 
+    padding:2px 8px;
+    border-radius: 15px;
+    text-transform: uppercase
+}
+
+.all-agents-requests-btn:hover {
+    background-color: #fff; 
+    color: #00bcd4; 
+}
+
+.your-requests-btn {
+    background-color: #4caf50; 
+    color: #fff; 
+    font-size: 11px; 
+    padding:2px 8px;
+    border-radius: 15px;
+    text-transform: uppercase
+}
+
+.your-requests-btn:hover {
+    background-color: #fff; 
+    color: #4caf50; 
+
+}

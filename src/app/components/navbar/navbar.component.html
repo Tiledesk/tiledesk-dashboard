@@ -197,8 +197,8 @@
         </nav>
     </div>
 
-    <!-- ------------============= PENDING EMAIL VERIFICATION MSG =============------------ -->
-    <span *ngIf="DETECTED_PROJECT_PAGE === false">
+    <!-- ------------============= PENDING EMAIL VERIFICATION ALERT =============------------ -->
+    <span *ngIf="HIDE_PENDING_EMAIL_NOTIFICATION === false">
         <div (click)="goToUserProfile()" *ngIf="user?.emailverified == false" data-notify="container" 
         class="alert alert-danger animated fadeInDown alert-pending-email-verification" role="alert" data-notify-position="top-center" 
         [ngClass]="{'is-user-profile-page' : DETECTED_USER_PROFILE_PAGE === true }" >

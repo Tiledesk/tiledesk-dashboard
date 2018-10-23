@@ -31,10 +31,10 @@
                       <b class="caret"></b>
                       </a>
                       <ul class="dropdown-menu">
-                        <li>
+                        <li [ngClass]="{'disable-dropdown-menu-btn' : request?.support_status == 1000}">
                           <a (click)='openArchiveRequestModal(request?.recipient)' style="padding-left: 15px; padding-right: 15px;">
                             <i class="material-icons" style="padding-right: 5px;">close</i>
-                            <span style="position: relative; top: 1px;"> 
+                            <span style="position: relative; top: 1px; cursor:pointer"> 
                             {{ 'RequestMsgsPage.CloseTheRequest' | translate }}  
                           </span>
                           </a>
@@ -43,7 +43,7 @@
                         <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_AGENT === true}"> 
                           <a (click)='openSelectUsersModal()' style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">swap_horiz</i>
-                              <span style="position: relative; top: 1px;">
+                              <span style="position: relative; top: 1px; cursor:pointer">
                                   {{ 'VisitorsPage.ReassignRequest' | translate }}
                               </span>
                           </a>
@@ -53,7 +53,7 @@
                             
                           <a (click)='openleaveChatModal()' style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">exit_to_app</i>
-                            <span style="position: relative; top: 1px;"> 
+                            <span style="position: relative; top: 1px; cursor:pointer"> 
                               {{ 'VisitorsPage.LeaveChat' | translate }}
                             </span>
                           </a>

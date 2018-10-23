@@ -24,7 +24,7 @@ import { Project } from '../models/project-model';
 import { Department } from '../models/department-model';
 import { DepartmentService } from '../services/mongodb-department.service';
 import { UsersService } from '../services/users.service';
-import { error } from 'util';
+// import { error } from 'util';
 
 @Injectable()
 export class RequestsService {
@@ -246,7 +246,7 @@ export class RequestsService {
     console.log('****** START REQUEST QUERY ******')
     // GET ALL REQUESTS AND EVALUATING THE REQUEST'S ID ADD OR UPDATE
     this.getRequests().subscribe((requests: Request[]) => {
-      console.log('START REQUEST QUERY - REQUESTS ', requests)
+      // console.log('START REQUEST QUERY - REQUESTS ', requests)
       requests.forEach((r: Request) => {
 
 
@@ -263,7 +263,7 @@ export class RequestsService {
     }, error => {
       console.log('GET REQUEST - ERROR ', error)
     }, () => {
-      console.log('GET REQUEST * COMPLETE')
+      console.log('GET REQUEST * COMPLETE' )
     });
   }
 
@@ -286,13 +286,22 @@ export class RequestsService {
     if (r !== null && r !== undefined) {
       // console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID))
 
-      // SE HAS AGENT è = TRUE IL CURRENT USER è UN AGENT
+      /**
+       * IN THE CONSTRUCTOR IS GET THE USER ROLE:
+       * IF THE CURRENT USER HAS OWNER/ADMIN ROLE:
+       *    ARE DISPLAYED ALL THE REQUESTS
+       *    (THE FILTER hasAgent IS NOT VALUED i.e., IT IS NOT VALUED IF THE CURRENT USER IS AMONG THE AGENTS OF THE REQUEST)
+       *    MOREOVER IS DISPLAYED THE SWITCH BUTTON "SEE ALL REQUESTS / SEE ONLY MY REQUEST".
+       *    WHEN THE TILEDESK USER SWITCH THE BUTTON ON "SEE ONLY MY REQUESTS" THE REQUESTS ARE FILTERED FOR hasAgent
+       * IF THE CURRENT USER HAS AGENT ROLE: THE REQUESTS ARE FILTERED FOR hasAgent AND ARE NOT DISPLAYED THE SWITCH BUTTON
+       */
+      // SE hasAgent è = TRUE IL CURRENT USER è UN AGENT
       // SE HAS AGENT è = FALSE IL CURRENT USER NON è UN AGENT  IL WORK FLOW SI BLOCCA E PASSA AL CICLO SUCCESSIVO
       if (!r.hasAgent(this.currentUserID) && this._seeOnlyRequestsHaveCurrentUserAsAgent === true) {
-        console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID), ' SHOW ONLY Im AGENT REQUEST ', this._seeOnlyRequestsHaveCurrentUserAsAgent)
+        // console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID), ' SHOW ONLY Im AGENT REQUEST ', this._seeOnlyRequestsHaveCurrentUserAsAgent)
         return;
       }
-      console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID), ' SHOW ONLY Im AGENT REQUEST ', this._seeOnlyRequestsHaveCurrentUserAsAgent)
+      // console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID), ' SHOW ONLY Im AGENT REQUEST ', this._seeOnlyRequestsHaveCurrentUserAsAgent)
       // console.log('THE REQUEST AS ME AS AGENT ', r.hasAgent(this.currentUserID))
       for (let i = 0; i < this.requestList.length; i++) {
         // IF THE ID OF THE REQUEST RETURNED FROM DOCUMENT CHANGE (i.e. r.recipient) IS ALREADY IN THE REQUEST LIST this.requestList[i].recipient
@@ -426,7 +435,7 @@ export class RequestsService {
     //    !!! COMMENT THE LINE BELOW TO SEE THE ERROR MESSAGE IN CONSOLE !!!
     // db.settings({ timestampsInSnapshots: true });
 
-    // .where('departmentId', '==', '5b05319ffb1e724de404df57')   '5b44c82def5dca0014d777ac'this.project._id
+    // .where('departmentId', '==', '5b05319ffb1e724de404df57')   '5b44c82def5dca0014d777ac' this.project._id
     const query = db.collection('conversations')
       .where('support_status', '<', 1000)
       .where('projectid', '==', this.project._id)
@@ -469,7 +478,7 @@ export class RequestsService {
 
         });
         observer.next(requestListReturned);
-        console.log('requestListReturned', requestListReturned)
+        // console.log('requestListReturned', requestListReturned)
       });
     });
     return observable;
@@ -604,7 +613,7 @@ export class RequestsService {
       if (values) {
         this.unservedRequest = values;
         this.mySubject.next(this.unservedRequest);
-        console.log(' ++ UNSERVED REQUESTS PUBLISHED BY REQ. SERVICE ', this.unservedRequest)
+        // console.log(' ++ TOTAL OF UNSERVED REQUESTS PUBLISHED BY REQ. SERVICE ', this.unservedRequest)
       }
       return values.length;
     });

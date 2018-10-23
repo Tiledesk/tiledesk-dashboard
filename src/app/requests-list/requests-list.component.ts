@@ -108,7 +108,7 @@ export class RequestsListComponent implements OnInit {
   depts_array_noduplicate = [];
   seeImAgentRequestsSwitchBtn: boolean;
 
-  displayBtnLabelSeeAllRequets = false;
+  displayBtnLabelSeeYourRequets = false;
 
   constructor(
     private requestsService: RequestsService,
@@ -168,8 +168,10 @@ export class RequestsListComponent implements OnInit {
 
         if (user_role === 'agent') {
           this.seeImAgentRequestsSwitchBtn = false;
+          this.displayBtnLabelSeeYourRequets = true
         } else {
           this.seeImAgentRequestsSwitchBtn = true;
+          this.displayBtnLabelSeeYourRequets = false;
         }
       }
     });
@@ -188,18 +190,19 @@ export class RequestsListComponent implements OnInit {
   }
 
   seeIamAgentRequests(seeIamAgentReq: boolean) {
+    this.showSpinner = true;
     console.log('SEE REQUEST IM AGENT (REQUEST LIST) ', seeIamAgentReq)
     this.requestsService.seeOnlyRequestsHaveCurrentUserAsAgent(seeIamAgentReq);
 
     // RESOLVE THE BUG: THE BUTTON SEE ALL REQUESTS / SEE MY REQUESTS REMAIN FOCUSED AFTER PRESSED
-    const switchAagentAadminRequestsBbtn = <HTMLElement>document.querySelector('.switch-agent-admin-requests-btn');
-    console.log('REQUESTS COMP switchAagentAadminRequestsBbtn ', switchAagentAadminRequestsBbtn)
-    switchAagentAadminRequestsBbtn.blur();
+    // const switchAagentAadminRequestsBbtn = <HTMLElement>document.querySelector('.switch-agent-admin-requests-btn');
+    // console.log('REQUESTS COMP switchAagentAadminRequestsBbtn ', switchAagentAadminRequestsBbtn)
+    // switchAagentAadminRequestsBbtn.blur();
 
     if (seeIamAgentReq === false) {
-      this.displayBtnLabelSeeAllRequets = false;
+      this.displayBtnLabelSeeYourRequets = false;
     } else {
-      this.displayBtnLabelSeeAllRequets = true;
+      this.displayBtnLabelSeeYourRequets = true;
     }
 
   }
@@ -214,6 +217,9 @@ export class RequestsListComponent implements OnInit {
     } else {
       this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
     }
+  }
+  goToDept(deptid) {
+    this.router.navigate(['project/' + this.projectId + '/department/edit/' + deptid]);
   }
 
   members_replace(member_id) {
@@ -263,7 +269,7 @@ export class RequestsListComponent implements OnInit {
           }
 
         })
-        console.log('REQUESTS-LIST COMP - REQUESTS ', requests)
+        // console.log('REQUESTS-LIST COMP - REQUESTS ', requests)
 
         for (const request of requests) {
           // console.log('request', request)
@@ -339,8 +345,8 @@ export class RequestsListComponent implements OnInit {
 
 
     });
-    console.log('REQUESTS-LIST COMP - DEPTS ARRAY NK', depts_array)
-    console.log('REQUESTS-LIST COMP - DEPTS ID ARRAY NK', deptsIDs)
+    // console.log('REQUESTS-LIST COMP - DEPTS ARRAY NK', depts_array)
+    // console.log('REQUESTS-LIST COMP - DEPTS ID ARRAY NK', deptsIDs)
 
     // REMOVE DUPLICATE
     this.depts_array_noduplicate = this.removeDuplicates(depts_array, '_id');
@@ -366,7 +372,7 @@ export class RequestsListComponent implements OnInit {
           dept.requestsCount = count
         }
       }
-      console.log('REQUESTS-LIST COMP - DEPTS ARRAY [no duplicate] NK * 2 * : ' + JSON.stringify(this.depts_array_noduplicate));
+      // console.log('REQUESTS-LIST COMP - DEPTS ARRAY [no duplicate] NK * 2 * : ' + JSON.stringify(this.depts_array_noduplicate));
     }
   }
 

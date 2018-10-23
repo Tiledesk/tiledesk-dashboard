@@ -56,7 +56,11 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     route: string;
 
     DETECTED_CHAT_PAGE = false;
-    DETECTED_PROJECT_PAGE = false;
+    // DETECTED_PROJECT_PAGE = false;
+    // DETECTED_LOGIN_PAGE = false;
+    // DETECTED_SIGNUP_PAGE = false;
+    HIDE_PENDING_EMAIL_NOTIFICATION = true;
+
     DETECTED_USER_PROFILE_PAGE = false;
     CHAT_BASE_URL = environment.chat.CHAT_BASE_URL
 
@@ -122,7 +126,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         this.getProjectUserId();
 
         // this.detectChatPage();
-        this.detectProjectPageAndUserProfilePage()
+        this.hidePendingEmailNotification();
+        this.detectUserProfilePage();
 
         this.checkUserImageUploadIsComplete()
 
@@ -163,29 +168,64 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         });
     }
 
-    // USED TO ASSIGN THE CLASS is-project-page TO THE EMAIL VERIFICATION ALERT
-    detectProjectPageAndUserProfilePage() {
+    /**
+     * - WHEN IS DETECTED THE PROJECT PAGE OR THE LOGIN PAGE OR THE SIGNUP PAGE  THE "PENDING EMAIL VERIFICATION ALERT " IS NOT DISPLAYED
+     */
+    hidePendingEmailNotification() {
 
         this.router.events.subscribe((val) => {
 
             if (this.location.path() !== '') {
                 this.route = this.location.path();
-                // console.log('»> »> »> NAVBAR ROUTE DETECTED »> ', this.route)
-                if (this.route === '/projects') {
+                console.log('»> »> »> NAVBAR ROUTE DETECTED »> ', this.route)
+                if ((this.route === '/projects') || (this.route === '/login') || (this.route === '/signup')) {
                     console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
-                    this.DETECTED_PROJECT_PAGE = true;
+                    // this.DETECTED_PROJECT_PAGE = true;
+                    this.HIDE_PENDING_EMAIL_NOTIFICATION = true;
+                    console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route, 'HIDE PENDING_EMAIL_NOTIFICATION ', this.HIDE_PENDING_EMAIL_NOTIFICATION)
                 } else {
-                    this.DETECTED_PROJECT_PAGE = false;
+                    this.HIDE_PENDING_EMAIL_NOTIFICATION = false;
+                    console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route, 'HIDE PENDING_EMAIL_NOTIFICATION ', this.HIDE_PENDING_EMAIL_NOTIFICATION)
                 }
 
+                // if (this.route === '/login') {
+                //     console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
+                //     // this.DETECTED_LOGIN_PAGE = true;
+                //     this.HIDE_PENDING_EMAIL_NOTIFICATION = true;
+                // } else {
+                //     // this.DETECTED_LOGIN_PAGE = false;
+                //     this.HIDE_PENDING_EMAIL_NOTIFICATION = false;
+                // }
+
+                // if (this.route === '/signup') {
+                //     console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
+                //     // this.DETECTED_SIGNUP_PAGE = true;
+                //     this.HIDE_PENDING_EMAIL_NOTIFICATION = true;
+                // } else {
+                //     // this.DETECTED_SIGNUP_PAGE = false;
+                //     this.HIDE_PENDING_EMAIL_NOTIFICATION = false;
+                // }
+
+            }
+        });
+    }
+
+    /**
+     * WHEN IS DETECTED THE USER-PROFILE PAGE (NOTE: THE ROUTE '/user-profile' IS THAT IN WHICH THERE IS NOT THE SIDEBAR)
+     * TO THE "PENDING EMAIL VERIFICATION ALERT " IS ASIGNED THE CLASS is-user-profile-page THAT MODIFIED THE LEFT POSITION */
+    detectUserProfilePage() {
+        this.router.events.subscribe((val) => {
+
+            if (this.location.path() !== '') {
+                this.route = this.location.path();
                 if (this.route === '/user-profile') {
-                    console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
+
                     this.DETECTED_USER_PROFILE_PAGE = true;
+                    console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route, 'DETECTED_USER_PROFILE_PAGE ', this.DETECTED_USER_PROFILE_PAGE)
                 } else {
                     this.DETECTED_USER_PROFILE_PAGE = false;
+                    console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route, 'DETECTED_USER_PROFILE_PAGE ', this.DETECTED_USER_PROFILE_PAGE)
                 }
-
-
             }
         });
     }
@@ -270,7 +310,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
                         // this.lastRequest = requests[requests.length - 1];
                         // console.log('!!! »»» LAST UNSERVED REQUEST ', this.lastRequest)
-                        console.log('!!! »»» UNSERVED REQUEST IN BOOTSTRAP NOTIFY ', r)
+
+                        // console.log('!!! »»» UNSERVED REQUEST IN BOOTSTRAP NOTIFY ', r)
                         this.showNotification('<span style="font-weight: 400; font-family: Google Sans, sans-serif;">' + r.requester_fullname + '</span>' + '<em style="font-family: Google Sans, sans-serif;">' + r.first_text + '</em>');
 
                         this.shown_requests[r.id] = true;
