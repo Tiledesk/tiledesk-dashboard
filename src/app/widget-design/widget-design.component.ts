@@ -26,6 +26,7 @@ export class WidgetDesignComponent implements OnInit {
   }
 
   onChangeColor($event) {
+    this.color = $event
     console.log('+ WIDGET DESIGN COLOR PICKER CHANGE ', $event) 
   }
   goBack() {

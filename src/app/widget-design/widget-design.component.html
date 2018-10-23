@@ -17,21 +17,24 @@
 						</div>
 
 
-						<div class="Input medium" style="position: relative;">
-							<div class="palette" style="background-color: rgb(188, 140, 91); height: 20px;
+						<div class="" style="position: relative;">
+							<div class="palette" [style.background-color]="color" style="height: 20px;
 							width: 20px;
 							border-radius: 3px;
 							margin: 0 10px;
 							border: 1px solid #eee;
-							cursor: pointer;"></div>
-							<span class="color-input-hash medium" style="margin-right: .2rem;
+							cursor: pointer; position: relative; top: 29px;" [(colorPicker)]="color" [cpOutputFormat]="'hex'"
+								(colorPickerChange)="onChangeColor($event)"></div>
+							<!-- <span class="color-input-hash medium" style="margin-right: .2rem;
 							font-weight: 500;
-							font-size: 1rem;">#</span>
-							<input label="Primary" class="color-input" value="bc8c5b" style="font-size: .875rem;
+							font-size: 1rem;">#</span> -->
+							<input label="Primary" class="" [value]="color" 
+							style="
 							font-weight: 400;
-							padding: 0 .75rem;">
+							padding-left: 30px;">
 						</div>
-					
+
+										
 						
 						<div class="col-md-6"> 
 								<input [value]="color"
@@ -133,7 +136,7 @@
 							<div id="chat21-container"> 
 
 								<div class="chat21-window chat21-sheet" id="chat21-conversations">
-									<div class="chat21-sheet-header" style="background-color: rgb(238, 116, 100);">
+									<div class="chat21-sheet-header" [ngStyle]="{'background-color': color}">
 
 										<div class="chat21-sheet-header-title-container">
 											<b class="chat21-sheet-header-title" style="color: rgb(255, 255, 255);">
