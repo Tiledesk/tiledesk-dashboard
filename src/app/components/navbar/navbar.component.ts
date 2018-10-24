@@ -159,7 +159,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
                 this.route = this.location.path();
                 // console.log('»> »> »> NAVBAR ROUTE DETECTED »> ', this.route)
                 if (this.route === '/chat') {
-                    console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
+                    // console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
                     this.DETECTED_CHAT_PAGE = true;
                 } else {
                     this.DETECTED_CHAT_PAGE = false;
@@ -177,15 +177,15 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
             if (this.location.path() !== '') {
                 this.route = this.location.path();
-                console.log('»> »> »> NAVBAR ROUTE DETECTED »> ', this.route)
+                // console.log('»> »> »> NAVBAR ROUTE DETECTED »> ', this.route)
                 if ((this.route === '/projects') || (this.route === '/login') || (this.route === '/signup')) {
-                    console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
+                    // console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
                     // this.DETECTED_PROJECT_PAGE = true;
                     this.HIDE_PENDING_EMAIL_NOTIFICATION = true;
-                    console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route, 'HIDE PENDING_EMAIL_NOTIFICATION ', this.HIDE_PENDING_EMAIL_NOTIFICATION)
+                    // console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route, 'HIDE PENDING_EMAIL_NOTIFICATION ', this.HIDE_PENDING_EMAIL_NOTIFICATION)
                 } else {
                     this.HIDE_PENDING_EMAIL_NOTIFICATION = false;
-                    console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route, 'HIDE PENDING_EMAIL_NOTIFICATION ', this.HIDE_PENDING_EMAIL_NOTIFICATION)
+                    // console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route, 'HIDE PENDING_EMAIL_NOTIFICATION ', this.HIDE_PENDING_EMAIL_NOTIFICATION)
                 }
 
                 // if (this.route === '/login') {
@@ -221,10 +221,10 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
                 if (this.route === '/user-profile') {
 
                     this.DETECTED_USER_PROFILE_PAGE = true;
-                    console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route, 'DETECTED_USER_PROFILE_PAGE ', this.DETECTED_USER_PROFILE_PAGE)
+                    // console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route, 'DETECTED_USER_PROFILE_PAGE ', this.DETECTED_USER_PROFILE_PAGE)
                 } else {
                     this.DETECTED_USER_PROFILE_PAGE = false;
-                    console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route, 'DETECTED_USER_PROFILE_PAGE ', this.DETECTED_USER_PROFILE_PAGE)
+                    // console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route, 'DETECTED_USER_PROFILE_PAGE ', this.DETECTED_USER_PROFILE_PAGE)
                 }
             }
         });

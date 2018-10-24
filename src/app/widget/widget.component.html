@@ -226,6 +226,8 @@
       calloutTimer: {{ calloutTimerSecondSelected }},
       calloutTitle: {{ _calloutTitle }},
       calloutMsg: {{ _calloutMsg }},
+      themeColor: {{ primaryColor }}, 
+      themeForegroundColor: {{ secondaryColor }},
       align: '{{ alignmentSelected }}'
     };
     (function(d, s, id) {
@@ -244,6 +246,8 @@
         projectid: &quot;{{ projectId }}&quot;,
         preChatForm: {{preChatFormValue}},
         calloutTimer: {{ calloutTimerSecondSelected }},
+        themeColor: {{ primaryColor }}, 
+        themeForegroundColor: {{ secondaryColor }},
         align: '{{ alignmentSelected }}'
     };
     (function(d, s, id) {
@@ -258,8 +262,12 @@
 </div>
 
     <div>
-        <button #testwidgetbtn style="margin-top:0px; margin-left: 15px;" (click)="testWidgetPage()" class="btn btn-success pull-right">{{ 'Resourcepage.TestThisCode' | translate }}</button>
-        <button style="margin-top:0px" (click)="copyToClipboard()" class="btn btn-white pull-right">{{ 'Resourcepage.CopyScript' | translate }}</button>
+        <button #testwidgetbtn style="margin-top:0px; margin-left: 15px;" (click)="testWidgetPage()" class="btn btn-success pull-right">
+            {{ 'Resourcepage.TestThisCode' | translate }}
+        </button>
+        <button style="margin-top:0px" (click)="copyToClipboard()" class="btn btn-white pull-right">
+            {{ 'Resourcepage.CopyScript' | translate }}
+        </button>
    </div>
                         </div>
 

@@ -1,5 +1,6 @@
 <div class="navbar-brand" style="z-index: -1;margin-top:10px; padding-left:30px">
-    <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">keyboard_arrow_left</i>
+	<i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">keyboard_arrow_left</i>
+	Widget design
 </div>
 
 <div class="main-content" style="padding-top:0px">
@@ -23,12 +24,12 @@
 									Primary
 								</label>
 								<div class="primary-color-selection" style="position: relative;">
-				
+									<!-- [cpOutputFormat]="'hex'" -->
 									<div class="palette" 
 									[style.background-color]="primaryColor" 
 									(colorPickerChange)="onChangePrimaryColor($event)"
 									[(colorPicker)]="primaryColor" 
-									[cpOutputFormat]="'hex'"></div>
+									></div>
 
 									<input class="" [value]="primaryColor" style="font-weight: 400; padding-left: 30px;">
 								</div>
@@ -39,12 +40,12 @@
 									Secondary
 								</label>
 								<div class="primary-secondary-selection" style="position: relative;">
-				
+									<!-- [cpOutputFormat]="'hex'" -->
 									<div class="palette" 
 									[style.background-color]="secondaryColor" 
 									(colorPickerChange)="onChangeSecondaryColor($event)"
 									[(colorPicker)]="secondaryColor" 
-									[cpOutputFormat]="'hex'"></div>
+									></div>
 
 									<input class="" [value]="secondaryColor" style="font-weight: 400; padding-left: 30px;">
 								</div>

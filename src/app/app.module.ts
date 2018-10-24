@@ -113,6 +113,7 @@ import { RequestsListHistoryNewComponent } from './requests-list-history-new/req
 import { MyDatePickerModule } from 'mydatepicker';
 import { ContactDetailsComponent } from './contact-details/contact-details.component';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { WidgetService } from './services/widget.service';
 
 
 // AoT requires an exported function for factories
@@ -216,6 +217,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     BotLocalDbService,
     ResetPswService,
     UploadImageService,
+    WidgetService,
     {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [

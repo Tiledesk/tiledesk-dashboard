@@ -3,7 +3,7 @@ import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Router } from '@angular/router';
-
+import { WidgetService } from '../services/widget.service';
 @Component({
   selector: 'app-widget',
   templateUrl: './widget.component.html',
@@ -40,6 +40,14 @@ export class WidgetComponent implements OnInit {
   calloutMsg: string;
   _calloutMsg: string;
 
+  primaryColor: string;
+  secondaryColor: string;
+
+  themeColor: string;
+  // primaryColor = 'rgb(159, 70, 183)';
+  // secondaryColor = 'rgb(38, 171, 221)';
+
+
   alignmentOptions = [
     { alignTo: 'bottom right', value: 'right' },
     { alignTo: 'bottom left', value: 'left' }
@@ -47,22 +55,49 @@ export class WidgetComponent implements OnInit {
   constructor(
     http: Http,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private widgetService: WidgetService
   ) { this.http = http }
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
+
+    this.getCurrentProject();
+
+    this.subscribeToWidgetDesignPrimaryColor();
+    this.subscribeToWidgetDesignSecondaryColor();
+  }
+
+  getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project
-      console.log('00 -> RESOURCES COMP project from AUTH service subscription  ', project)
+      console.log('00 -> WIDGET COMP project from AUTH service subscription  ', project)
 
       if (project) {
         this.projectId = project._id;
         this.projectName = project.name;
       }
     });
+  }
 
+  subscribeToWidgetDesignPrimaryColor() {
+    this.widgetService.primaryColorBs.subscribe((primary_color: string) => {
+      console.log('WIDGET COMP - PRIMARY COLOR ', primary_color);
+      if (primary_color) {
+        this.primaryColor = primary_color
 
+        this.themeColor = 'themeColor: {{ primaryColor }}'
+      }
+    });
+  }
+
+  subscribeToWidgetDesignSecondaryColor() {
+    this.widgetService.secondaryColorBs.subscribe((secondary_color: string) => {
+      console.log('WIDGET COMP - SECONDARY COLOR ', secondary_color);
+      if (secondary_color) {
+        this.secondaryColor = secondary_color
+      }
+    });
   }
 
   // addslashes(calloutTitle) {
@@ -205,6 +240,8 @@ export class WidgetComponent implements OnInit {
       + this.projectId
       + '&prechatform=' + this.preChatForm
       + '&callout_timer=' + this.calloutTimerSecondSelected
+      + '&themecolor=' + this.primaryColor
+      + '&themeforegroundcolor=' + this.secondaryColor
       + paramCallout_title + calloutTitle
       + paramCallout_msg + calloutMsg
       + '&align=' + this.alignmentSelected;
