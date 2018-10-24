@@ -10,8 +10,8 @@ import { ColorPickerService, Cmyk } from 'ngx-color-picker';
 
 
 export class WidgetDesignComponent implements OnInit {
-  public color = '#2889e9';
-
+  public primaryColor = '#2889e9';
+  public secondaryColor = '#ffffff'
   constructor(
     public location: Location,
     private cpService: ColorPickerService
@@ -21,14 +21,17 @@ export class WidgetDesignComponent implements OnInit {
 
   }
 
-  colorPickerChange($event) {
-    console.log('WIDGET DESIGN COLOR PICKER CHANGE ', $event) 
+ 
+  onChangePrimaryColor($event) {
+    this.primaryColor = $event
+    console.log('+ WIDGET DESIGN - ON CHANGE PRIMARY COLOR ', $event);
   }
 
-  onChangeColor($event) {
-    this.color = $event
-    console.log('+ WIDGET DESIGN COLOR PICKER CHANGE ', $event) 
+  onChangeSecondaryColor($event) {
+    this.secondaryColor = $event
+    console.log('+ WIDGET DESIGN - ON CHANGE SECONDARY COLOR ', $event);
   }
+
   goBack() {
     this.location.back();
   }

@@ -16,32 +16,48 @@
 								Widget Style - Colors, Icon and Font
 						</div>
 
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="background-color:azure"> 
 
-						<div class="" style="position: relative;">
-							<div class="palette" [style.background-color]="color" style="height: 20px;
-							width: 20px;
-							border-radius: 3px;
-							margin: 0 10px;
-							border: 1px solid #eee;
-							cursor: pointer; position: relative; top: 29px;" [(colorPicker)]="color" [cpOutputFormat]="'hex'"
-								(colorPickerChange)="onChangeColor($event)"></div>
-							<!-- <span class="color-input-hash medium" style="margin-right: .2rem;
-							font-weight: 500;
-							font-size: 1rem;">#</span> -->
-							<input label="Primary" class="" [value]="color" 
-							style="
-							font-weight: 400;
-							padding-left: 30px;">
-						</div>
+							<div class="wrapper-primary-color-selection">
+								<label style="color: #566787; position: relative;	top: 18px;">
+									Primary
+								</label>
+								<div class="primary-color-selection" style="position: relative;">
+				
+									<div class="palette" 
+									[style.background-color]="primaryColor" 
+									(colorPickerChange)="onChangePrimaryColor($event)"
+									[(colorPicker)]="primaryColor" 
+									[cpOutputFormat]="'hex'"></div>
+
+									<input class="" [value]="primaryColor" style="font-weight: 400; padding-left: 30px;">
+								</div>
+							</div>
+
+							<div class="wrapper-secondary-color-selection">
+								<label style="color: #566787; position: relative;	top: 18px;">
+									Secondary
+								</label>
+								<div class="primary-secondary-selection" style="position: relative;">
+				
+									<div class="palette" 
+									[style.background-color]="secondaryColor" 
+									(colorPickerChange)="onChangeSecondaryColor($event)"
+									[(colorPicker)]="secondaryColor" 
+									[cpOutputFormat]="'hex'"></div>
+
+									<input class="" [value]="secondaryColor" style="font-weight: 400; padding-left: 30px;">
+								</div>
+							</div>
 
 										
 						
-						<div class="col-md-6"> 
-								<input [value]="color"
+						
+								<!-- <input [value]="color"
 								[style.background-color]="color"
 								[(colorPicker)]="color"
 								[cpOutputFormat]="'hex'"
-								(colorPickerChange)="onChangeColor($event)"/>
+								(colorPickerChange)="onChangeColor($event)"/> -->
 								
 
 
@@ -131,22 +147,24 @@
 						</div>
 
 						<!-- ------====== ./START WIDGET HTML CLONE ======------  -->
-						<div class="col-md-6">
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="background-color:bisque">
 
+							<div class="widget-container" style="max-width:376px">
 							<div id="chat21-container"> 
 
 								<div class="chat21-window chat21-sheet" id="chat21-conversations">
-									<div class="chat21-sheet-header" [ngStyle]="{'background-color': color}">
+									<div class="chat21-sheet-header" [ngStyle]="{'background-color': primaryColor}">
 
 										<div class="chat21-sheet-header-title-container">
-											<b class="chat21-sheet-header-title" style="color: rgb(255, 255, 255);">
+											<b class="chat21-sheet-header-title" [ngStyle]="{'color': secondaryColor}">
 												<span>TileDesk</span>
 											</b>
 										</div>
 
 										<a class="ng-tns-c0-0">
 											<div class="chat21-header-button right">
-												<svg class="ng-tns-c0-0" aria-labelledby="altIconTitle" height="24px" role="img" viewBox="0 0 24 24" width="100%" xmlns="http://www.w3.org/2000/svg" style="fill: rgb(255, 255, 255);">
+												<svg class="ng-tns-c0-0" aria-labelledby="altIconTitle" height="24px" role="img" viewBox="0 0 24 24" width="100%" xmlns="http://www.w3.org/2000/svg" 
+												[ngStyle]="{'fill': secondaryColor}">
 													<path class="ng-tns-c0-0" d="M0 0h24v24H0V0z" fill="none"></path>
 													<path class="ng-tns-c0-0" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"></path>
 													<title class="ng-tns-c0-0" id="altIconTitle"></title>
@@ -232,11 +250,11 @@
 									</div>
 								</div>
 
-									<div id="chat21-launcher-button" style="background-color: rgb(238, 116, 100);"> 
+									<div id="chat21-launcher-button" [ngStyle]="{'background-color': primaryColor}"> 
 										<div style="width:100%; height:100%; padding:0px; margin: 0px;">
-											<svg class="ng-tns-c0-0" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg" style="fill: rgb(255, 255, 255);">
+											<svg class="ng-tns-c0-0" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg" [ngStyle]="{'fill': secondaryColor}">
 												<defs class="ng-tns-c0-0">
-														<style class="ng-tns-c0-0">.cls-2{fill:none;}</style>
+													<style class="ng-tns-c0-0">.cls-2{fill:none;}</style>
 												</defs>
 													
 												<g class="ng-tns-c0-0" data-name="Livello 2" id="Livello_2">
@@ -250,6 +268,8 @@
 										</div>
 									</div>
 							</div> 
+
+							</div>
 							<!-- ------====== ./end WIDGET HTML CLONE ======------  -->
 
 						</div> <!-- ./end CARD CONTENT -->

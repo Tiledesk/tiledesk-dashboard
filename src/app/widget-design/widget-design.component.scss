@@ -83,7 +83,8 @@
     hyphens: manual;
     image-orientation: auto;
     image-rendering: auto;
-    left: auto;
+    // left: auto;
+    right: auto;
     line-height: initial;
     list-style: disc outside none;
     margin: 0;
@@ -151,7 +152,7 @@
 
 #chat21-container .chat21-sheet {
     z-index: 999999001;
-    display: none;
+    
     // position: fixed;
     // height: 80%;
     position: relative;
@@ -259,8 +260,6 @@
     display: block;
     height: 100%;
 }
-
-
 
 .chat21-textarea-button {
     width: 20px;
@@ -466,7 +465,8 @@
     cursor: pointer;
     position: relative;
     bottom: -16px;
-    right: -317px;
+    // right: -317px;
+    float: right;
 }
 // ====== ./end WIDGET HTML CLONE ======
 
@@ -474,7 +474,8 @@ input {
     /* min-width: 307px !important; */
    height: 36px;
    font-size: 14px;
-//    width: 100%;
+   width: 100%;
+   max-width: 200px;
    margin-bottom: 10px;
    -webkit-appearance: none;
 //    background: #fff;
@@ -487,5 +488,14 @@ input {
    border-radius: 5px;
 //    background-color: #fff !important;
    border: solid 1px #ddd;
+}
+
+.palette {
+    height: 20px;
+    width: 20px;
+    border-radius: 3px;
+    margin: 0 10px;
+    border: 1px solid #eee;
+    cursor: pointer; position: relative; top: 29px;
 }
 
