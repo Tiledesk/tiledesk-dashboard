@@ -111,7 +111,7 @@ export class NotifyService {
           align: 'center'
         },
         // tslint:disable-next-line:max-line-length
-        template: '<div data-notify="container" class="col-xs-12 col-sm-8 alert alert-{0}" style="text-align: center; background-color: #131313; color:#a9afbb" role="alert">' +
+        template: '<div data-notify="container" class="col-xs-12 col-sm-8 alert alert-{0} tiledeskalert" style="text-align: center; background-color: #131313; color:#a9afbb" role="alert">' +
           '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
           // '<span data-notify="title" style="max-width: 100%; font-size:1.1em; ">TileDesk</span> ' +
           // tslint:disable-next-line:max-line-length
@@ -129,7 +129,7 @@ export class NotifyService {
     });
     setTimeout(() => {
       // tslint:disable-next-line:max-line-length
-      this.notifySendingVerifyEmail.update({ 'type': 'success', 'message': '<i class="material-icons" style="vertical-align: middle;"> done </i> <span style="vertical-align: middle; display: inline-block; padding-right:5px">Verification link has been sent to: </span>' + '<span style="padding-left:28px">' + user_email + '</span>'});
+      this.notifySendingVerifyEmail.update({ 'type': 'success', 'message': '<i class="material-icons" style="vertical-align: middle;"> done </i> <span style="vertical-align: middle; display: inline-block; padding-right:5px">Verification link has been sent to: </span>' + '<span style="padding-left:28px">' + user_email + '</span>' });
     }, 2000);
 
   }

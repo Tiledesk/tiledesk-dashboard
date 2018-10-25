@@ -1,35 +1,65 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { NotifyService } from '../core/notify.service';
+
 @Injectable()
 export class WidgetService {
   
   public primaryColorBs: BehaviorSubject<string> = new BehaviorSubject<string>(null);
   public secondaryColorBs: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+  public calloutTimerBs: BehaviorSubject<number> = new BehaviorSubject<number>(null);
+  public calloutTitleBs: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+  public calloutMsgBs: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+  public includePrechatformBs: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
   constructor(
     private notify: NotifyService
   ) { }
 
 
-  publishOnChangePrimaryColor(primary_color: string) {
-
-    console.log('WIDGET SERVICE - PRIMARY COLOR ', primary_color);
+  /**
+   * WHEN IN WIDGET-DESIGN IS CHANGED THE PRIMARY COLOR,
+   * THE NEW COLOR VALUE IS PASSED IN THIS SERVICE THAT PUBLISH IT THROUGH primaryColorBs.
+   * THE WIDGET-COMP IS SUBSCRIBED TO primaryColorBs THAT USE IT TO SET THE PARAMETER "ThemeColor" AND "Themeforegroundcolor"
+   * IN THE 'WIDGET TEXTAREA' AND IN THE URL USED FOR TESTING THE CODE */
+  publishPrimaryColorSelected(primary_color: string) {
+    console.log('WIDGET SERVICE - ON CHANGE IN WIDGET DESIGN > PRIMARY COLOR  ', primary_color);
     setTimeout(() => {
       this.primaryColorBs.next(primary_color);
       // tslint:disable-next-line:max-line-length
-      this.notify.showNotification('The style of your Chat Widget has been updated!', 2, 'done');
+      // this.notify.showNotificationChangeProject('The style of your TileDesk Widget has been updated!', 2, 'done');
+      
     }, 1500);
   }
 
-  publishOnChangeSecondaryColor(secondary_color: string) {
-
-    console.log('WIDGET SERVICE - SECONDARY COLOR ', secondary_color);
+  publishSecondaryColorSelected(secondary_color: string) {
+    console.log('WIDGET SERVICE - ON CHANGE IN WIDGET DESIGN > SECONDARY COLOR ', secondary_color);
     setTimeout(() => {
       this.secondaryColorBs.next(secondary_color);
       // tslint:disable-next-line:max-line-length
-      this.notify.showNotification('The style of your Chat Widget has been updated!', 2, 'done');
+      this.notify.showNotification('The style of your TileDesk Widget has been updated!', 2, 'done');
     }, 1500);
   }
+
+  publishCalloutTimerSelected(timer_selected) {
+    console.log('WIDGET SERVICE - ON SELECT IN WIDGET COMP > CALLOUT TIMER ', timer_selected);
+    this.calloutTimerBs.next(timer_selected);
+  }
+
+  publishCalloutTitleTyped(callout_title) {
+    console.log('WIDGET SERVICE - ON KEYUP IN WIDGET COMP > CALLOUT TITLE', callout_title);
+    this.calloutTitleBs.next(callout_title)
+  }
+
+  publishCalloutMsgTyped(callout_msg) {
+    console.log('WIDGET SERVICE - ON KEYUP IN WIDGET COMP > CALLOUT MSG', callout_msg);
+    this.calloutMsgBs.next(callout_msg)
+  }
+
+  publishPrechatformSelected(prechatform_checked) {
+    console.log('WIDGET SERVICE - ON SELECTED IN WIDGET COMP > INCLUDE PRECHAT FORM ', prechatform_checked);
+    this.includePrechatformBs.next(prechatform_checked)
+  }
+
 
 }
