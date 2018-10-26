@@ -24,7 +24,7 @@ export class WidgetComponent implements OnInit {
   preChatFormValue = 'false';
   http: Http;
   calloutTimerSecondSelected = -1;
-  alignmentSelected = 'right'
+
   // preChatForm = 'preChatForm'
   calloutTimerOptions = [
     { seconds: 'disabled', value: -1 },
@@ -54,7 +54,7 @@ export class WidgetComponent implements OnInit {
   // primaryColor = 'rgb(159, 70, 183)';
   // secondaryColor = 'rgb(38, 171, 221)';
 
-
+  alignmentSelected = 'right'
   alignmentOptions = [
     { alignTo: 'bottom right', value: 'right' },
     { alignTo: 'bottom left', value: 'left' }
@@ -81,6 +81,7 @@ export class WidgetComponent implements OnInit {
     this.subscribeToTypedCalloutMsg();
     this.subscribeToCheckedPrechatform();
     this.subscribeToWidgetAlignment();
+    console.log('**** ON INIT ALIGNMENT SELECTED ', this.alignmentSelected)
   }
 
   getCurrentProject() {
@@ -98,11 +99,15 @@ export class WidgetComponent implements OnInit {
 
   subscribeToWidgetAlignment() {
     this.widgetService.widgetAlignmentBs
-    .subscribe((alignment) => {
-      console.log('WIDGET COMP - SUBSCRIBE TO WIDGET ALIGNMENT ', alignment);
-      this.alignmentSelected = alignment
-    });
+      .subscribe((alignment) => {
+        console.log('WIDGET COMP - SUBSCRIBE TO WIDGET ALIGNMENT ', alignment);
+
+        if (alignment) {
+          this.alignmentSelected = alignment
+        }
+      });
   }
+
 
   subscribeToCheckedPrechatform() {
     this.widgetService.includePrechatformBs
@@ -344,7 +349,10 @@ export class WidgetComponent implements OnInit {
 
   goToWidgetDesign() {
     this.router.navigate(['project/' + this.project._id + '/widget/design']);
+  }
 
+  goToWidgetSection() {
+    this.router.navigate(['project/' + this.project._id + '/widget/design'], {fragment: 'alignment'});
   }
 
 }

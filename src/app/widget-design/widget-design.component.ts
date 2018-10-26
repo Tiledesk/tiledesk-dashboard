@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { slideInOutAnimation } from './slide-in-out.animation';
 import { ColorPickerService, Cmyk } from 'ngx-color-picker';
 import { WidgetService } from '../services/widget.service';
-
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'appdashboard-widget-design',
   templateUrl: './widget-design.component.html',
@@ -11,21 +11,26 @@ import { WidgetService } from '../services/widget.service';
 })
 
 
-export class WidgetDesignComponent implements OnInit {
+export class WidgetDesignComponent implements OnInit, AfterViewInit {
   // '#2889e9'
   public primaryColor: string;
   public secondaryColor: string;
 
   hasSelectedLeftAlignment = false
   hasSelectedRightAlignment = true
-
+  private fragment: string;
   constructor(
     public location: Location,
     private cpService: ColorPickerService,
-    private widgetService: WidgetService
+    private widgetService: WidgetService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
+    this.route.fragment.subscribe(fragment => {
+      this.fragment = fragment;
+      console.log('+ WIDGET DESIGN - FRAGMENT ', this.fragment)
+    });
     this.primaryColor = 'rgb(40, 137, 233)';
     this.secondaryColor = 'rgb(255, 255, 255)';
 
@@ -35,6 +40,19 @@ export class WidgetDesignComponent implements OnInit {
 
     this.subscribeToWidgetAlignment();
 
+  }
+
+  ngAfterViewInit(): void {
+    try {
+      // name of the class of the html div = . + fragment
+      const test = <HTMLElement>document.querySelector('.' + this.fragment)
+      console.log('+ WIDGET DESIGN - QUERY SELECTOR TEST  ', test)
+      test.scrollIntoView();
+      // document.querySelector('#' + this.fragment).scrollIntoView();
+      // console.log( document.querySelector('#' + this.fragment).scrollIntoView())
+    } catch (e) {
+      console.log('+ WIDGET DESIGN - QUERY SELECTOR ERROR  ', e)
+     }
   }
 
   // WIDGET ALIGNMENT

@@ -523,6 +523,73 @@ input {
     border-width: 3px
 }
 
+// CALLOUT CLONE
+.eye-catcher-card {
+    position: relative;
+    z-index: 999999000;
+    // bottom: 95px;
+    // right: 20px;
+    cursor: pointer;
+    background-color: #fff;
+    border: 1px solid #dedfde;
+    -webkit-box-shadow: 0 2px 8px 0 rgba(35,47,53,.1);
+    box-shadow: 0 2px 8px 0 rgba(35,47,53,.1);
+    width: 270px;
+}
+
+.ec_left {
+    width: 70px;
+    padding-left: 20px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.eye-catcher_column {
+    float: left;
+}
+
+.chat21-card-emoticons {
+    font-size: 30px;
+}
+
+.ec_right {
+    width: calc(100% - 70px);
+    padding-top: 16px;
+}
+
+.eye-catcher-card-text-wrapper {
+    width: 200px;
+}
+
+.eye-catcher-card-title {
+    font-family: 'Google Sans',sans-serif;
+    font-size: 19px;
+    color: #44484a;
+    padding-left: 5px;
+    padding-right: 10px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    word-wrap: break-word;
+    margin-top: 0;
+    line-height: normal;
+}
+
+.eye-catcher-card-msg {
+    font-family: 'Google Sans',sans-serif;
+    color: #44484a;
+    padding-left: 5px;
+    padding-right: 10px;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+    font-weight: 500;
+    word-wrap: break-word;
+    font-size: 16px;
+    line-height: normal;
+}
+
 
 
 
