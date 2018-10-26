@@ -84,6 +84,13 @@
     "SwitchTo":"passa a",
     "AllAgentsRequests":"Richieste di tutti gli agenti",
     "YourRequests":"Le tue richieste",
+    "Primary":"Primario",
+    "PrimarySubtitle":"Utilizzato come colore di sfondo per evidenziare aree e pulsanti",
+    "Secondary":"Secondario",
+    "SecondarySubtitle":"Applicato al testo dei pulsanti e ad altri elementi davanti a uno sfondo di colore primario",
+    "MinutesAgo":"minuti fa",
+    "BottomRight":"In basso a destra",
+    "BottomLeft":"In basso a sinistra",
     "UserProfile": {
         "Profile": "Profilo",
         "UploadImage": "Carica immagine",

@@ -93,6 +93,33 @@ export class NotifyService {
       });
   }
 
+  showWidgetStyleUpdateNotification(message, notificationColor, icon) {
+    const type = ['', 'info', 'success', 'warning', 'danger'];
+    // const color = Math.floor((Math.random() * 4) + 1);
+    const color = notificationColor
+
+    this.notify = $.notify({
+      // icon: 'glyphicon glyphicon-warning-sign',
+      // message: message
+
+    }, {
+        type: type[color],
+        // timer: 1500,
+        delay: 200,
+        placement: {
+          from: 'top',
+          align: 'center'
+        },
+        template: '<div data-notify="container" class="col-xs-11 col-sm-8 alert alert-{0}" style="text-align: left;" role="alert">' +
+          '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+          // '<span data-notify="title" style="max-width: 100%; font-size:1.1em; ">TileDesk</span> ' +
+          // tslint:disable-next-line:max-line-length
+          '<span data-notify="icon" style="display: inline;"><i style="vertical-align: middle; padding-right: 5px;" class="material-icons">' + icon + '</i> </span> ' +
+          '<span data-notify="message" style="display: inline; vertical-align: middle ">' + message + '</span>' +
+          '</div>'
+      });
+  }
+
   showNotificationChangeProject(message, notificationColor, icon) {
     const type = ['', 'info', 'success', 'warning', 'danger'];
     // const color = Math.floor((Math.random() * 4) + 1);
@@ -111,7 +138,7 @@ export class NotifyService {
           align: 'center'
         },
         // tslint:disable-next-line:max-line-length
-        template: '<div data-notify="container" class="col-xs-12 col-sm-8 alert alert-{0} tiledeskalert" style="text-align: center; background-color: #131313; color:#a9afbb" role="alert">' +
+        template: '<div data-notify="container" class="col-xs-12 col-sm-8 alert alert-{0}" style="text-align: center; background-color: #131313; color:#a9afbb" role="alert">' +
           '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
           // '<span data-notify="title" style="max-width: 100%; font-size:1.1em; ">TileDesk</span> ' +
           // tslint:disable-next-line:max-line-length
@@ -131,7 +158,6 @@ export class NotifyService {
       // tslint:disable-next-line:max-line-length
       this.notifySendingVerifyEmail.update({ 'type': 'success', 'message': '<i class="material-icons" style="vertical-align: middle;"> done </i> <span style="vertical-align: middle; display: inline-block; padding-right:5px">Verification link has been sent to: </span>' + '<span style="padding-left:28px">' + user_email + '</span>' });
     }, 2000);
-
   }
 
 

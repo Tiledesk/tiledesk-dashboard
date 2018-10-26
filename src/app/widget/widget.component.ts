@@ -73,11 +73,14 @@ export class WidgetComponent implements OnInit {
     this.getCurrentProject();
 
     this.subscribeToSelectedPrimaryColor();
+
+
     this.subscribeToSelectedSecondaryColor();
     this.subscribeToSelectedCalloutTimer();
     this.subscribeToTypedCalloutTitle();
     this.subscribeToTypedCalloutMsg();
     this.subscribeToCheckedPrechatform();
+    this.subscribeToWidgetAlignment();
   }
 
   getCurrentProject() {
@@ -91,6 +94,14 @@ export class WidgetComponent implements OnInit {
           this.projectName = project.name;
         }
       });
+  }
+
+  subscribeToWidgetAlignment() {
+    this.widgetService.widgetAlignmentBs
+    .subscribe((alignment) => {
+      console.log('WIDGET COMP - SUBSCRIBE TO WIDGET ALIGNMENT ', alignment);
+      this.alignmentSelected = alignment
+    });
   }
 
   subscribeToCheckedPrechatform() {
@@ -165,17 +176,6 @@ export class WidgetComponent implements OnInit {
       .subscribe((primary_color: string) => {
         console.log('WIDGET COMP - SUBSCRIBE TO PRIMARY COLOR ', primary_color);
         if (primary_color) {
-          this.notify.showNotificationChangeProject('The style of your TileDesk Widget has been updated!', 2, 'done');
-          
-          const alert = <HTMLElement>document.querySelector('.tiledeskalert');
-          console.log('WIDGET COMP - ALERT ', alert);
-          if (alert !== null) {
-            setTimeout(() => {
-            alert.setAttribute('style', 'display:none !important;');
-          }, 200);
-          }
-
-
           this.primaryColor = primary_color
 
           // this.themeColor IS THE PROPERTY USED IN THE TEXTAREA 'script'

@@ -499,3 +499,30 @@ input {
     cursor: pointer; position: relative; top: 29px;
 }
 
+// WIDGET ALIGNMENT
+.widget-left-alignment-option {
+    cursor: pointer;
+    border: solid #b5d2e1;
+    border-width: 2px;
+
+}
+
+.widget-right-alignment-option {
+    cursor: pointer;
+    border: 2px solid #b5d2e1;
+    border-width: 2px
+}
+
+.left-alignment-selected {
+    border-color: #13CB6E;
+    border-width: 3px
+}
+
+.right-alignment-selected {
+    border-color: #13CB6E;
+    border-width: 3px
+}
+
+
+
+

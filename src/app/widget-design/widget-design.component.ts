@@ -16,7 +16,8 @@ export class WidgetDesignComponent implements OnInit {
   public primaryColor: string;
   public secondaryColor: string;
 
-
+  hasSelectedLeftAlignment = false
+  hasSelectedRightAlignment = true
 
   constructor(
     public location: Location,
@@ -31,8 +32,42 @@ export class WidgetDesignComponent implements OnInit {
     this.subscribeToSelectedPrimaryColor();
 
     this.subscribeToSelectedSecondaryColor();
+
+    this.subscribeToWidgetAlignment();
+
   }
 
+  // WIDGET ALIGNMENT
+  aligmentLeftSelected(left_selected: boolean) {
+    console.log('+ WIDGET DESIGN - LEFT ALIGNMENT SELECTED ', left_selected);
+    this.hasSelectedLeftAlignment = true;
+    this.hasSelectedRightAlignment = false;
+
+    this.widgetService.publishWidgetAligmentSelected('left');
+  }
+
+  aligmentRightSelected(right_selected: boolean) {
+    console.log('+ WIDGET DESIGN - RIGHT ALIGNMENT SELECTED ', right_selected);
+    this.hasSelectedLeftAlignment = false;
+    this.hasSelectedRightAlignment = true;
+    this.widgetService.publishWidgetAligmentSelected('right');
+  }
+
+  subscribeToWidgetAlignment() {
+    this.widgetService.widgetAlignmentBs
+      .subscribe((alignment) => {
+        console.log('WIDGET COMP - SUBSCRIBE TO WIDGET ALIGNMENT ', alignment);
+        if (alignment === 'right') {
+          this.hasSelectedLeftAlignment = false;
+          this.hasSelectedRightAlignment = true;
+
+        } else if (alignment === 'left') {
+          this.hasSelectedLeftAlignment = true;
+          this.hasSelectedRightAlignment = false;
+        }
+
+      });
+  }
 
   /**
    * IF THE USER SELECT A COLOR IN THE WIDGET DESIGN (THIS COMP) AND THEN GO BACK IN THE WIDGET PAGE AND THEN RETURN IN THE
@@ -55,17 +90,32 @@ export class WidgetDesignComponent implements OnInit {
   }
 
 
-  onChangePrimaryColor($event) {
+  /**
+   * REPLACED WITH onSelectPrimaryColor($event)  */
+  // onChangePrimaryColor($event) {
+  //   this.primaryColor = $event
+  //   console.log('+ WIDGET DESIGN - ON CHANGE PRIMARY COLOR ', $event);
+  //   this.widgetService.publishPrimaryColorSelected(this.primaryColor);
+  // }
+
+  onSelectPrimaryColor($event) {
     this.primaryColor = $event
     console.log('+ WIDGET DESIGN - ON CHANGE PRIMARY COLOR ', $event);
-
     this.widgetService.publishPrimaryColorSelected(this.primaryColor);
   }
 
-  onChangeSecondaryColor($event) {
-    this.secondaryColor = $event
-    console.log('+ WIDGET DESIGN - ON CHANGE SECONDARY COLOR ', $event);
 
+  /**
+   * REPLACED WITH onSelectSecondaryColor($event)  */
+  // onChangeSecondaryColor($event) {
+  //   this.secondaryColor = $event
+  //   console.log('+ WIDGET DESIGN - ON CHANGE SECONDARY COLOR ', $event);
+  //   this.widgetService.publishSecondaryColorSelected(this.secondaryColor);
+  // }
+
+  onSelectSecondaryColor($event) {
+    console.log('++++++ WIDGET DESIGN - ON SELECT SECONDARY COLOR ', $event);
+    this.secondaryColor = $event
     this.widgetService.publishSecondaryColorSelected(this.secondaryColor);
   }
 

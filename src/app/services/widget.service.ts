@@ -4,13 +4,14 @@ import { NotifyService } from '../core/notify.service';
 
 @Injectable()
 export class WidgetService {
-  
+
   public primaryColorBs: BehaviorSubject<string> = new BehaviorSubject<string>(null);
   public secondaryColorBs: BehaviorSubject<string> = new BehaviorSubject<string>(null);
   public calloutTimerBs: BehaviorSubject<number> = new BehaviorSubject<number>(null);
   public calloutTitleBs: BehaviorSubject<string> = new BehaviorSubject<string>(null);
   public calloutMsgBs: BehaviorSubject<string> = new BehaviorSubject<string>(null);
   public includePrechatformBs: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  public widgetAlignmentBs: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
   constructor(
     private notify: NotifyService
@@ -24,21 +25,28 @@ export class WidgetService {
    * IN THE 'WIDGET TEXTAREA' AND IN THE URL USED FOR TESTING THE CODE */
   publishPrimaryColorSelected(primary_color: string) {
     console.log('WIDGET SERVICE - ON CHANGE IN WIDGET DESIGN > PRIMARY COLOR  ', primary_color);
+    this.primaryColorBs.next(primary_color);
+    
     setTimeout(() => {
-      this.primaryColorBs.next(primary_color);
-      // tslint:disable-next-line:max-line-length
-      // this.notify.showNotificationChangeProject('The style of your TileDesk Widget has been updated!', 2, 'done');
-      
-    }, 1500);
+      this.notify.showWidgetStyleUpdateNotification('The style of your TileDesk Widget has been updated!', 2, 'done');
+    }, 1000);
+  }
+
+  publishWidgetAligmentSelected(alignment: string) {
+    console.log('WIDGET SERVICE - ON SELECT WIDGET ALIGNMENT ', alignment);
+    this.widgetAlignmentBs.next(alignment);
+
+    setTimeout(() => {
+      this.notify.showWidgetStyleUpdateNotification('The style of your TileDesk Widget has been updated!', 2, 'done');
+    }, 1000);
   }
 
   publishSecondaryColorSelected(secondary_color: string) {
     console.log('WIDGET SERVICE - ON CHANGE IN WIDGET DESIGN > SECONDARY COLOR ', secondary_color);
     setTimeout(() => {
       this.secondaryColorBs.next(secondary_color);
-      // tslint:disable-next-line:max-line-length
-      this.notify.showNotification('The style of your TileDesk Widget has been updated!', 2, 'done');
-    }, 1500);
+      this.notify.showWidgetStyleUpdateNotification('The style of your TileDesk Widget has been updated!', 2, 'done');
+    }, 1000);
   }
 
   publishCalloutTimerSelected(timer_selected) {

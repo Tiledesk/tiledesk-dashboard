@@ -84,6 +84,13 @@
     "SwitchTo":"switch to",
     "AllAgentsRequests":"All agents requests",
     "YourRequests":"Your requests",
+    "Primary":"Primary",
+    "PrimarySubtitle":"Used as a background color to highlight areas and buttons",
+    "Secondary":"Secondary",
+    "SecondarySubtitle":"Applied to the text of buttons and other elements in front of a primary color background",
+    "MinutesAgo":"minutes ago",
+    "BottomRight":"Bottom right",
+    "BottomLeft":"Bottom left",
     "UserProfile": {
         "Profile": "Profile",
         "UploadImage": "Upload image",
