@@ -98,6 +98,10 @@
     "Customize":"Customize",
     "View":"View",
     "AdvancedWidgetConfigurations":"Advanced widget configurations",
+    "HiWelcomeToTiledesk":"Hi, welcome to Tiledesk",
+    "HowCanWeHelp":"How can we help?",
+    "PreviousConversations":"Previous conversations",
+    "NewConversation":"New conversation",
     "UserProfile": {
         "Profile": "Profile",
         "UploadImage": "Upload image",

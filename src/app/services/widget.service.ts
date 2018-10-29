@@ -28,7 +28,7 @@ export class WidgetService {
     this.primaryColorBs.next(primary_color);
     
     setTimeout(() => {
-      this.notify.showWidgetStyleUpdateNotification('The style of your TileDesk Widget has been updated!', 2, 'done');
+      // this.notify.showWidgetStyleUpdateNotification('The style of your TileDesk Widget has been updated!', 2, 'done');
     }, 1000);
   }
 

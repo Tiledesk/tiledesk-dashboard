@@ -97,6 +97,7 @@
 										<!-- [cpOutputFormat]="'hex'" -->
 										<!-- (colorPickerChange)="onChangePrimaryColor($event)" -->
 										<div class="palette" 
+										(colorPickerChange)="onChangePrimaryColor($event)"
 										[style.background-color]="primaryColor" 
 										[cpOKButton]="true"
 										[cpOKButtonClass]= "'btn btn-primary btn-xs'"
@@ -141,22 +142,20 @@
 									(colorPickerChange)="onChangeColor($event)"/> -->
 		
 							</div>
-
-							<!-- ------====== ./START WIDGET HTML CLONE ======------  -->
+							<!-- background-color: aquamarine -->
+							
 							<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="">
 
-								<div class="widget-container" style="max-width:376px">
+								<!-- ------====== ./START WIDGET HTML CLONE ======------  -->
+								<!-- <div class="widget-container" style="max-width:376px">
 									<div id="chat21-container"> 
-
 										<div class="chat21-window chat21-sheet" id="chat21-conversations">
 											<div class="chat21-sheet-header" [ngStyle]="{'background-color': primaryColor}">
-
 												<div class="chat21-sheet-header-title-container">
 													<b class="chat21-sheet-header-title" [ngStyle]="{'color': secondaryColor}">
 														<span>TileDesk</span>
 													</b>
 												</div>
-
 												<a class="ng-tns-c0-0">
 													<div class="chat21-header-button right">
 														<svg class="ng-tns-c0-0" aria-labelledby="altIconTitle" height="24px" role="img" viewBox="0 0 24 24" width="100%" xmlns="http://www.w3.org/2000/svg" 
@@ -167,28 +166,21 @@
 														</svg>
 													</div>
 												</a>
-
 											</div>
 										
 											<div class="chat21-sheet-content" id="chat21-sheet-content">
-												<!-- <div class="chat21-sheet-content-themable-section ng-tns-c0-0 themable-section-agent_not_available ng-star-inserted" style="background-color: rgb(238, 116, 100);"></div>  -->
-						
 												<div class="chat21-conversation-parts-container" style="height:100%; overflow-y: hidden;">
 													<div id="scroll-me" style="height:100%; overflow-y:auto;">
-							
 														<div id="chat21-contentScroll">
-												
 															<div>
 																<div class="msg_container base_sent ">
 																	<div class="messages msg_sent">
 																		<div>
 																			<p>Tiledesk?</p>
 																		</div>
-																								
 																	</div>
 																	<div class="status-message">
 																		<div class="icon f21ico-done"></div>
-																		
 																	</div>
 																</div>
 																<div class="time sender">
@@ -197,19 +189,15 @@
 																	</time>
 																</div>
 															</div>
-																		
 															<div class="ng-tns-c0-0 ng-star-inserted">
 																<div class="message_sender_fullname ng-tns-c0-0 ng-star-inserted">
 																	Nicola
 																</div>
-																
 																<div class="msg_container base_receive">
 																	<div class="content-avatar">
-																								
 																		<div class="profile_image">
 																			<img class="ng-tns-c0-0" src="https://user-images.githubusercontent.com/32448495/39111365-214552a0-46d5-11e8-9878-e5c804adfe6a.png"> </div>
 																		</div>
-						
 																		<div class="messages msg_receive">
 																			<div class="ng-tns-c0-0 ng-star-inserted">
 																				<p class="ng-tns-c0-0 ng-star-inserted">Yes, chat different!</p>
@@ -223,40 +211,31 @@
 																</div>
 															</div>
 														</div>
-																
 													</div>
 												</div>
 											</div>
-							
 											<div id="chat21-footer">
-
 												<div>
 													<div class="ng-tns-c0-0 visible-text-area">
 														<textarea class="f21textarea ng-tns-c0-0 ng-untouched ng-pristine ng-valid ng-star-inserted" id="chat21-main-message-context" rows="1" ystyles="" placeholder="type your message.."></textarea>
 													</div>
-
 													<label class="chat21-textarea-button active" for="chat21-file" id="chat21-start-upload-doc"></label>
-												
 														<div class="chat21-textarea-button active" id="chat21-button-send"></div>
-
 														<div class="name-image" id="chat21-file-selected">
 															<span class="ng-tns-c0-0"></span>
 														</div>
 												</div>
-							
 												<div class="ng-tns-c0-0" id="chat21-end-footer">
 													<div class="ng-tns-c0-0" id="chat21-powered-by"><a target="_blank" href="http://www.tiledesk.com/">Powered by <b>TileDesk</b></a></div>
 												</div>
 											</div>
 										</div>
-
 											<div id="chat21-launcher-button" [ngStyle]="{'background-color': primaryColor}"> 
 												<div style="width:100%; height:100%; padding:0px; margin: 0px;">
 													<svg class="ng-tns-c0-0" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg" [ngStyle]="{'fill': secondaryColor}">
 														<defs class="ng-tns-c0-0">
 															<style class="ng-tns-c0-0">.cls-2{fill:none;}</style>
 														</defs>
-															
 														<g class="ng-tns-c0-0" data-name="Livello 2" id="Livello_2">
 															<g class="ng-tns-c0-0" id="gg">
 																<path class="cls-1" d="M54.92,37.08l-2-2L45,43l-7.92-7.92-2,2L43,45l-7.92,7.92,2,2L45,47l7.92,7.92,2-2L47,45Z"></path>
@@ -268,10 +247,236 @@
 												</div>
 											</div>
 									</div> 
+								</div>	 -->
+								<!-- ------====== ./end widget-container ======------  -->
+								<div class="widget-container" style="max-width:376px">
+								<div id="chat21-container"> 
+								<div class="chat21-window chat21-sheet ng-star-inserted" id="chat21-conversations" style="border-radius: 0px;">
+									<div class="modal-page active ng-star-inserted">
+										<div id="chat21-home-component">
+												<!-- [ngStyle]="{'background-color': primaryColor}" -->
+												<!-- background-image: linear-gradient(rgb(42, 106, 193), rgba(42, 106, 193, 0.498)) -->
+												
+											<div class="c21-header" style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);" [ngStyle]="{'background-image':primaryColorGradiend}">
+												<div class="c21-header-container">
+													<!-- <div class="c21-header-button close">
+														<div aria-hidden="true" aria-label="Close" class="c21-close-button" role="button" tabindex="-1">
+															<div class="c21-close-button-body">
+																<svg aria-labelledby="altIconTitle" height="20px" role="img" viewBox="0 0 24 24" width="20px" xmlns="http://www.w3.org/2000/svg" style="fill: rgb(255, 255, 255);">
+																		<path d="M0 0h24v24H0V0z" fill="none"></path>
+																		<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"></path>
+																</svg>
+															</div>
+														</div>
+													</div> -->
+													<div class="c21-header-content">
+														<div class="c21-logo">
+															<img style="width: 32px;" alt="logo" src="../assets/img/tiledesk_logo_white_small.png">
+														</div>
+														<div class="c21-text">
+															<div class="c21-text-wellcome" style="font-size: 30px;padding-top: 16px;" [ngStyle]="{'color': secondaryColor}">
+																{{'HiWelcomeToTiledesk' | translate}} 👋
+															</div>          
+															<div class="c21-text-intro" style="font-size: 16px;" [ngStyle]="{'color': secondaryColor}">
+																{{'HowCanWeHelp' | translate}}
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="c21-body">
+												<div class="c21-body-container">
+													<div class="c21-body-content">
+														<div class="c21-cards">
+																<!-- style="border-top: 2.4px solid rgba(42, 106, 193, 0.498);" -->
+															<div class="c21-card" [ngStyle]="{'border-top': primaryColorBorder }">
+																<div id="c21-app-list-conversations">
+																	<div class="c21-header">
+																		<div class="c21-title">
+																			{{ 'PreviousConversations' | translate}}
+																		</div>
+																		<div class="clear"></div>
+																	</div>
+																	<div class="c21-body">
+																		<div class="c21-item-conversation">
+																			<div class="c21-body-conv">
+																				<div class="c21-left-conv">
+																					<div class="c21-icon-avatar">
+																						<div class="c21-avatar-image" style="background-image: url(&quot;https://user-images.githubusercontent.com/32448495/39111365-214552a0-46d5-11e8-9878-e5c804adfe6a.png&quot;);"></div>
+																					</div>
+																				</div>
+																				<div class="c21-right-conv">
+																					<div class="c21-last-time">2 {{ 'MinutesAgo' | translate }} </div>
+																					<div class="truncate c21-name">Nicola</div>
+																					<div class="truncate c21-msg">tiledesk, chat different!</div>
+																				</div>
+																			</div>
+																			<div class="clear"></div>
+																		</div>
+																	</div>
+																	<div class="c21-footer"> 
+																			<!-- style="background-color: rgb(42, 106, 193); border-color: rgb(42, 106, 193); color: rgb(255, 255, 255);" -->
+																			<!-- style="fill: rgb(255, 255, 255);" -->
+																		<button class="c21-button-primary"  [ngStyle]="{'background-color': primaryColor, 'border-color': primaryColor, 'color': secondaryColor }">
+																				<span class="v-align-center">
+																					<svg height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+																						<path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"  [ngStyle]="{'fill': secondaryColor }"></path>
+																						<path d="M0 0h24v24H0z" fill="none"></path>
+																					</svg>
+																				</span>
+																				<span class="v-align-center c21-label-button">
+																					{{'NewConversation' | translate}}
+																				</span>  
+																				<div class="clear"></div>
+																		</button>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										<div class="c21-footer_nk">
+											<div id="c21-powered-by">
+												<a target="_blank" href="http://www.tiledesk.com/" 
+													style="color: #777;
+													font-size: 11px;
+													font-weight: 500;
+													line-height: 22px;">
+													Powered by <b>TileDesk</b>
+												</a>
+											</div>
+										</div>
+									</div>
+								</div> <!-- ./END modal-pag -->
 
-								</div>	<!-- ------====== ./end widget-container ======------  -->
 
-							</div> 
+								<!-- <div class="modal-page">
+									<div _ngcontent-c4="" id="chat21-selection-department">
+										<div _ngcontent-c4="" class="c21-header" style="background-color: rgb(42, 106, 193);">
+											<div _ngcontent-c4="" class="c21-header-container">
+												<div _ngcontent-c4="" class="c21-header-button">
+													<div _ngcontent-c4="" aria-hidden="true" aria-label="Close" class="c21-close-button c21-small" role="button" tabindex="-1">
+														<div _ngcontent-c4="" class="c21-close-button-body">
+															<svg _ngcontent-c4="" aria-labelledby="altIconTitle" height="20px" role="img" viewBox="0 0 24 24" width="20px" xmlns="http://www.w3.org/2000/svg" style="fill: rgb(255, 255, 255);">
+																<path _ngcontent-c4="" d="M0 0h24v24H0V0z" fill="none"></path>
+																<path _ngcontent-c4="" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"></path>
+															</svg>
+														</div>
+													</div>
+												</div>
+												<div _ngcontent-c4="" class="c21-header-content">
+													<div _ngcontent-c4="" class="c21-title" style="color: rgb(255, 255, 255);">
+													</div>
+												</div>
+											</div>
+										</div>
+										<div _ngcontent-c4="" class="c21-body">
+											<div _ngcontent-c4="" class="c21-body-container">
+												<div _ngcontent-c4="" class="c21-body-header">
+													<div _ngcontent-c4="" class="c21-message-field">Select a topic</div>
+												</div>
+												<div _ngcontent-c4="" class="c21-body-content">
+													<ul _ngcontent-c4="" class="chat21-content-modal-select">
+														<li _ngcontent-c4="" class="ng-star-inserted">
+															<span _ngcontent-c4="" class="chat21-badge" style="background-color: rgb(42, 106, 193); color: rgb(255, 255, 255);">1</span>
+															<span _ngcontent-c4="" class="">Cucina</span>
+														</li>
+														<li _ngcontent-c4="" class="ng-star-inserted">
+															<span _ngcontent-c4="" class="chat21-badge" style="background-color: rgb(42, 106, 193); color: rgb(255, 255, 255);">2</span>
+															<span _ngcontent-c4="" class="">Arredamento</span>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>     
+								</div> -->
+								
+								<!-- <div class="modal-page">
+									<div _ngcontent-c5="" id="chat21-prechat-form">
+										<div _ngcontent-c5="" class="c21-header" style="background-color: rgb(42, 106, 193);">
+											<div _ngcontent-c5="" class="c21-header-container">
+												<div _ngcontent-c5="" class="c21-header-button">
+													<div _ngcontent-c5="" aria-hidden="true" aria-label="Close" class="c21-close-button c21-small" role="button" tabindex="-1">
+														<div _ngcontent-c5="" class="c21-close-button-body">
+															<svg _ngcontent-c5="" aria-labelledby="altIconTitle" height="20px" role="img" viewBox="0 0 24 24" width="20px" xmlns="http://www.w3.org/2000/svg" style="fill: rgb(255, 255, 255);">
+																<path _ngcontent-c5="" d="M0 0h24v24H0V0z" fill="none"></path>
+																<path _ngcontent-c5="" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"></path>
+															</svg>
+														</div>
+													</div>
+												</div>
+												<div _ngcontent-c5="" class="c21-header-content">
+													<div _ngcontent-c5="" class="c21-title" style="color: rgb(255, 255, 255);">
+														<span _ngcontent-c5="">Select a topic</span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div _ngcontent-c5="" class="c21-body">
+											<div _ngcontent-c5="" class="c21-body-container">
+												<div _ngcontent-c5="" class="c21-body-header">
+													<div _ngcontent-c5="" class="c21-form-message-field">Complete the form to start a conversation with the next available agent.</div>
+												</div>
+												<div _ngcontent-c5="" class="c21-body-content">
+													<form _ngcontent-c5="" id="chat21-form-container" novalidate="" class="ng-untouched ng-pristine ng-invalid">
+														<div _ngcontent-c5="" class="c21-input-container">
+															<input _ngcontent-c5="" formcontrolname="name" id="form-field-name" type="text" placeholder="Name" class="ng-untouched ng-pristine ng-invalid">
+														</div>
+														<div _ngcontent-c5="" class="text-danger">
+															<small _ngcontent-c5="" hidden="">
+																Required field (minimum 5 characters).
+															</small>
+														</div>
+														<div _ngcontent-c5="" class="c21-input-container">
+															<input _ngcontent-c5="" formcontrolname="email" id="form-field-email" type="email" placeholder="Email" class="ng-untouched ng-pristine ng-invalid">
+														</div>
+														<div _ngcontent-c5="" class="text-danger">
+															<small _ngcontent-c5="" hidden="">
+																Enter a valid email address.
+															</small>
+														</div>
+													</form>
+													<button _ngcontent-c5="" class="c21-button-primary" disabled="" style="background-color: rgb(42, 106, 193); border-color: rgb(42, 106, 193); color: rgb(255, 255, 255);">
+														<span _ngcontent-c5="" class="v-align-center">
+															<svg _ngcontent-c5="" height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+																<path _ngcontent-c5="" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" style="fill: rgb(255, 255, 255);"></path>
+																<path _ngcontent-c5="" d="M0 0h24v24H0z" fill="none"></path>
+															</svg>
+														</span>
+														<span _ngcontent-c5="" class="v-align-center c21-label-button">
+															New conversation
+														</span>  
+														<div _ngcontent-c5="" class="clear"></div>
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div> -->
+								</div>
+							</div>
+							
+							<div id="chat21-launcher-button" [ngStyle]="{'background-color': primaryColor}"> 
+									<div style="width:100%; height:100%; padding:0px; margin: 0px;">
+										<svg class="ng-tns-c0-0" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg" [ngStyle]="{'fill': secondaryColor}">
+											<defs class="ng-tns-c0-0">
+												<style class="ng-tns-c0-0">.cls-2{fill:none;}</style>
+											</defs>
+											<g class="ng-tns-c0-0" data-name="Livello 2" id="Livello_2">
+												<g class="ng-tns-c0-0" id="gg">
+													<path class="cls-1" d="M54.92,37.08l-2-2L45,43l-7.92-7.92-2,2L43,45l-7.92,7.92,2,2L45,47l7.92,7.92,2-2L47,45Z"></path>
+													<path class="cls-2" d="M28,28H62V62H28Z"></path>
+													<rect class="cls-2" height="90" width="90"></rect>
+												</g>
+											</g>
+										</svg>
+									</div>
+								</div>
+							</div>
+
+							</div> <!-- ------====== ./end col* ======------  -->
 						</div> <!-- ------====== ./end row ======------  -->
 
 						<!-- ------====== start widget position ======------  -->

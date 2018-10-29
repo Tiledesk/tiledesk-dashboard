@@ -15,6 +15,9 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
   // '#2889e9'
   public primaryColor: string;
   public secondaryColor: string;
+  public primaryColorRgba: string;
+  public primaryColorGradiend: string;
+  public primaryColorBorder: string;
 
   hasSelectedLeftAlignment = false
   hasSelectedRightAlignment = true
@@ -33,6 +36,9 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
     });
     this.primaryColor = 'rgb(40, 137, 233)';
     this.secondaryColor = 'rgb(255, 255, 255)';
+    this.primaryColorRgba = 'rgba(40, 137, 233, 0.50)';
+    this.primaryColorGradiend = `linear-gradient(${this.primaryColor}, ${this.primaryColorRgba})`;
+    this.primaryColorBorder = `2.4px solid ${this.primaryColorRgba}`;
 
     this.subscribeToSelectedPrimaryColor();
 
@@ -52,7 +58,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
       // console.log( document.querySelector('#' + this.fragment).scrollIntoView())
     } catch (e) {
       console.log('+ WIDGET DESIGN - QUERY SELECTOR ERROR  ', e)
-     }
+    }
   }
 
   // WIDGET ALIGNMENT
@@ -110,18 +116,34 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
 
   /**
    * REPLACED WITH onSelectPrimaryColor($event)  */
-  // onChangePrimaryColor($event) {
-  //   this.primaryColor = $event
-  //   console.log('+ WIDGET DESIGN - ON CHANGE PRIMARY COLOR ', $event);
-  //   this.widgetService.publishPrimaryColorSelected(this.primaryColor);
-  // }
-
-  onSelectPrimaryColor($event) {
+  onChangePrimaryColor($event) {
     this.primaryColor = $event
-    console.log('+ WIDGET DESIGN - ON CHANGE PRIMARY COLOR ', $event);
+
+    this.getPrimaryColorRgbaAndGradient(this.primaryColor);
+
+    // console.log('+ WIDGET DESIGN - ON CHANGE PRIMARY COLOR ', $event);
     this.widgetService.publishPrimaryColorSelected(this.primaryColor);
   }
 
+
+
+  onSelectPrimaryColor($event) {
+    this.primaryColor = $event
+    console.log('+ WIDGET DESIGN - ON SELECT PRIMARY COLOR ', this.primaryColor);
+
+    this.getPrimaryColorRgbaAndGradient(this.primaryColor);
+
+    this.widgetService.publishPrimaryColorSelected(this.primaryColor);
+  }
+
+  getPrimaryColorRgbaAndGradient(primaryColor: string) {
+    const new_col = primaryColor.replace(/rgb/i, 'rgba');
+    this.primaryColorRgba = new_col.replace(/\)/i, ',0.50)');
+    console.log('+ WIDGET DESIGN - ON SELECT PRIMARY COLOR (RGBA) ', this.primaryColorRgba);
+
+    this.primaryColorGradiend = `linear-gradient(${this.primaryColor}, ${this.primaryColorRgba})`;
+    this.primaryColorBorder = `2.4px solid ${this.primaryColorRgba}`;
+  }
 
   /**
    * REPLACED WITH onSelectSecondaryColor($event)  */
