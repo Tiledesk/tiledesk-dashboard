@@ -68,7 +68,7 @@ export class ProjectEditAddComponent implements OnInit {
 
   getProjectId() {
     this.id_project = this.route.snapshot.params['projectid'];
-    console.log('PROJECT COMPONENT HAS PASSED id_bot ', this.id_project);
+    console.log('PROJECT COMPONENT HAS PASSED id_project ', this.id_project);
   }
 
   /**

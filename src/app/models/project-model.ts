@@ -7,6 +7,7 @@ export interface Project {
     operatingHours?: any
     createdBy?: string;
     id_project?: any;
+    widget?: any;
     role?: string;
     __v?: any;
 }

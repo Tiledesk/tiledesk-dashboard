@@ -726,6 +726,10 @@ div.clear {
     text-overflow: ellipsis;
     overflow: hidden;
 }
+.overflow-me{
+    overflow: hidden;
+    text-overflow: ellipsis;
+   }
 #c21-app-list-conversations .c21-footer {
     width: auto;
     margin: 0 24px;
@@ -803,7 +807,7 @@ div.clear {
 }
 .c21-header-container .c21-text .c21-text-wellcome {
     line-height: normal;
-    font-family: 'Google Sans',sans-serif!important;
+    // font-family: 'Google Sans',sans-serif!important;
 }
 
 // #chat21-home-component .c21-header-container .c21-logo img {
@@ -818,6 +822,10 @@ div.clear {
 //     padding-bottom: 16px;
 // }
 // ====== ./END WIDGET HOME HTML CLONE ======
+
+.active-button-save-welcome-msg {
+    color: #4caf50;
+}
 
 input {
     /* min-width: 307px !important; */

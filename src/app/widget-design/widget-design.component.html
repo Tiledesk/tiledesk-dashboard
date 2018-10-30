@@ -76,11 +76,11 @@
 		
 
 
-						<!-- --------------============ COLORS ============-------------- -->		
+						
 						<div class="row">
 							<div class="col-md-12">
 								<h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; font-family: Google Sans, sans-serif;">
-									Widget Colors 
+									Widget Appearance 
 								</h4>
 							</div>
 						</div>
@@ -89,6 +89,8 @@
 						<div class="row">
 							<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style=""> 
 
+
+								<!-- --------------============ PRIMARY COLOR ============-------------- -->		
 								<div class="wrapper-primary-color-selection">
 									<label style="color: #566787; position: relative;	top: 18px;">
 										{{ 'Primary' | translate}}
@@ -112,6 +114,7 @@
 									</span>
 								</div>
 
+								<!-- --------------============ SECONDARY COLOR ============-------------- -->	
 								<div class="wrapper-secondary-color-selection">
 									<label style="color: #566787; position: relative;	top: 18px;">
 										{{ 'Secondary' | translate}}
@@ -141,7 +144,73 @@
 									[cpOutputFormat]="'hex'"
 									(colorPickerChange)="onChangeColor($event)"/> -->
 		
-							</div>
+								<!-- --------------============ CUSTOM LOGO ============-------------- -->
+								<div class="wrapper-logo-link" style="margin-top: 18px">
+									<label style="color: #566787; display: block">
+										Logo
+									</label>
+		
+									<!-- [disabled]="" -->
+									<!-- (ngModelChange)="customLogoUrlChange($event)" -->
+									<input class=""  [(ngModel)]="customLogoUrl" style="font-weight: 400;"> 
+										<button class="btn btn-info" type="submit" (click)="changeLogo()" style="margin:0px; padding:10px 15px;">
+												Save
+										</button>
+									
+									<span style="color: rgb(118, 149, 165); display: block"> 
+										
+										Enter the URL of your logo
+									</span>
+								</div>
+
+								<!-- --------------============  WELCOME TITLE ============-------------- -->
+								<div class="wrapper-welcome-title" style="margin-top: 18px"> 
+									<label style="color: #566787; display: block">
+										Welcome title
+									</label>
+		
+									<!-- [disabled]="" -->
+									<!-- (ngModelChange)="customWelcomeTitleChange($event)" -->
+									<input class=""  [(ngModel)]="customWelcomeTitle" (ngModelChange)="customWelcomeTitleChange($event)" style="font-weight: 400;"> 
+										<button class="btn btn-info" type="submit" (click)="saveCustomWelcomeTitle()" style="margin:0px; padding:10px 15px;">
+												Save
+										</button>
+									
+									<span style="color: rgb(118, 149, 165); display: block"> 
+										
+											Customize the widget greeting
+									</span>
+
+								</div> 
+
+								<!-- --------------============  TEAM INTRO ============-------------- -->
+								<div class="wrapper-welcome-title" style="margin-top: 18px"> 
+									<label style="color: #566787; display: block">
+											Team intro
+									</label>
+		
+									<!-- [disabled]="" -->
+								
+
+									<input class="" (ngModelChange)="customWelcomeMsgChange($event)" [(ngModel)]="customWelcomeMsg"  style="font-weight: 400;"> 
+
+										<!-- <i class="material-icons" (click)="saveCustomWelcomeMsg()" style="vertical-align: middle; cursor: pointer" [ngClass]="{'active-button-save-welcome-msg' : HAS_CHANGED_WELCOME_MSG}" >
+											save
+										</i> -->
+										<button class="btn btn-info" type="submit" (click)="saveCustomWelcomeMsg()" style="margin:0px; padding:5px 5px;" [disabled]="HAS_CHANGED_WELCOME_MSG === false">
+														<i class="material-icons">
+															save
+														</i>										
+										</button>
+									
+									<span style="color: rgb(118, 149, 165); display: block"> 
+										
+											Introduce your team and say how you can help your customer.
+									</span>
+
+								</div> 
+
+							</div> <!-- /.end col-* -->
 							<!-- background-color: aquamarine -->
 							
 							<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="">
@@ -249,7 +318,7 @@
 									</div> 
 								</div>	 -->
 								<!-- ------====== ./end widget-container ======------  -->
-								<div class="widget-container" style="max-width:376px">
+								<div class="widget-container" style="max-width:375px">
 								<div id="chat21-container"> 
 								<div class="chat21-window chat21-sheet ng-star-inserted" id="chat21-conversations" style="border-radius: 0px;">
 									<div class="modal-page active ng-star-inserted">
@@ -271,14 +340,17 @@
 													</div> -->
 													<div class="c21-header-content">
 														<div class="c21-logo">
-															<img style="width: 32px;" alt="logo" src="../assets/img/tiledesk_logo_white_small.png">
+															<img *ngIf="!hasOwnLogo" style="height: 32px; width: auto;" alt="logo" src="../assets/img/tiledesk_logo_white_small.png">
+															<img *ngIf="hasOwnLogo" style="height: 32px; width: auto;" alt="myLogo" [src]="customLogoUrl">
 														</div>
 														<div class="c21-text">
 															<div class="c21-text-wellcome" style="font-size: 30px;padding-top: 16px;" [ngStyle]="{'color': secondaryColor}">
-																{{'HiWelcomeToTiledesk' | translate}} 👋
+																<span *ngIf="!customWelcomeTitle"> {{'HiWelcomeToTiledesk' | translate}} 👋 </span>
+																<span *ngIf="customWelcomeTitle"> {{ customWelcomeTitle }} </span>
 															</div>          
-															<div class="c21-text-intro" style="font-size: 16px;" [ngStyle]="{'color': secondaryColor}">
-																{{'HowCanWeHelp' | translate}}
+															<div class="c21-text-intro" style="font-size: 14px;" [ngStyle]="{'color': secondaryColor}">
+																<span *ngIf="!customWelcomeMsg"> {{'HowCanWeHelp' | translate}} </span>
+																<span *ngIf="customWelcomeMsg"> {{ customWelcomeMsg }} </span>
 															</div>
 														</div>
 													</div>

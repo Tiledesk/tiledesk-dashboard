@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { NotifyService } from '../core/notify.service';
+import { ProjectService } from '../services/project.service';
+
 
 @Injectable()
 export class WidgetService {
@@ -13,10 +15,32 @@ export class WidgetService {
   public includePrechatformBs: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public widgetAlignmentBs: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
-  constructor(
-    private notify: NotifyService
-  ) { }
+  public id_project: string;
+  public widgetSettingsObjct ;
 
+  constructor(
+    private notify: NotifyService,
+    private projectService: ProjectService,
+  
+  ) {  }
+ 
+
+  // saveCustomUrl(logo_url: string) {
+  //   console.log('WIDGET SERVICE - CUSTOM LOGO URL ', logo_url);
+  //   this.widgetSettingsObjct = {logo_url};
+  //   this.updateWidgetProject();
+  // }
+
+  updateWidgetProject(widgetSettingsObj: any) {
+    this.projectService.updateWidgetProject(widgetSettingsObj)
+      .subscribe((data) => {
+        console.log('WIDGET SERVICE - UPDATE PROJECT WIDGET - RESPONSE ', data);
+      }, (error) => {
+        console.log('WIDGET SERVICE - UPDATE PROJECT WIDGET - ERROR ', error);
+      }, () => {
+        console.log('WIDGET SERVICE - UPDATE PROJECT WIDGET * COMPLETE *');
+      });
+  }
 
   /**
    * WHEN IN WIDGET-DESIGN IS CHANGED THE PRIMARY COLOR,
@@ -26,7 +50,7 @@ export class WidgetService {
   publishPrimaryColorSelected(primary_color: string) {
     console.log('WIDGET SERVICE - ON CHANGE IN WIDGET DESIGN > PRIMARY COLOR  ', primary_color);
     this.primaryColorBs.next(primary_color);
-    
+
     setTimeout(() => {
       // this.notify.showWidgetStyleUpdateNotification('The style of your TileDesk Widget has been updated!', 2, 'done');
     }, 1000);

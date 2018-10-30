@@ -199,6 +199,28 @@ export class ProjectService {
 
   }
 
+  /// ================ UPDATE WIDGET PROJECT ====================== ///
+  public updateWidgetProject(widget_settings: any) {
+
+    let url = this.PROJECT_BASE_URL;
+    url += this.projectID;
+    console.log('UPDATE WIDGET PROJECT - URL ', url);
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = { 'widget': widget_settings};
+
+    console.log('UPDATE WIDGET PROJECT - BODY ', body);
+
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
   /// ================ UPDATE OPERATING HOURS ====================== ///
   public updateProjectOperatingHours(_activeOperatingHours: boolean, _operatingHours: any): Observable<Project[]> {
 
