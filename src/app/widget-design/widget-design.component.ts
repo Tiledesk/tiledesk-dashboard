@@ -27,12 +27,14 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
 
   public secondaryColor: string;
 
-  public customLogoUrl: string;
+  public logoUrl: string;
+
+
   public hasOwnLogo = false;
   public welcomeTitle: string;
   public defaultItWelcomeTitle = 'Ciao, benvenuto su tiledesk';
   public defaultEnWelcomeTitle = 'Hi, welcome to tiledesk';
-  public customWelcomeTitle: string;
+
 
   public customWelcomeMsg: string;
   public id_project: string;
@@ -53,7 +55,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
   HIDE_WELCOME_TITLE_SAVE_BTN = true;
 
   browserLang: string;
-
+  LOGO_IS_ON: boolean;
 
   constructor(
     public location: Location,
@@ -85,7 +87,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
 
     this.secondaryColor = 'rgb(255, 255, 255)';
 
-
+    // this.logoUrl = '../assets/img/tiledesk_logo_white_small.png'
     this.subscribeToSelectedPrimaryColor();
 
     this.subscribeToSelectedSecondaryColor();
@@ -120,10 +122,24 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
 
       if (project.widget) {
 
-        if (project.widget[0].logoChat) {
-          this.customLogoUrl = project.widget[0].logoChat;
-          console.log('»» WIDGET DESIGN - PRJCT-WIDGET - LOGO CHAT : ', this.customLogoUrl);
+        if (project.widget[0].logoChat && project.widget[0].logoChat !== 'nologo') {
+          this.logoUrl = project.widget[0].logoChat;
+
+          // case logoChat = 'userCompanyLogoUrl' > display the userCompanyLogoUrl
           this.hasOwnLogo = true;
+          this.LOGO_IS_ON = true;
+
+          // case logoChat = 'nologo' > no logo is displayed
+        } else if (project.widget[0].logoChat && project.widget[0].logoChat === 'nologo') {
+          this.LOGO_IS_ON = false;
+          this.logoUrl = 'No Logo';
+        } else {
+
+          // case logoChat = '' > display the tiledesk logo and in the input field display the text 'tiledesklogo'
+          this.LOGO_IS_ON = true
+          this.hasOwnLogo = false;
+          console.log('»» WIDGET DESIGN - PRJCT-WIDGET - LOGO CHAT : ', project.widget[0].logoChat);
+          this.logoUrl = 'tiledesklogo'
         }
 
         if (project.widget[0].themeColor) {
@@ -140,7 +156,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
 
         if (project.widget[0].wellcomeTitle) {
           this.welcomeTitle = project.widget[0].wellcomeTitle;
-          this.customWelcomeTitle = project.widget[0].wellcomeTitle;
+
           console.log('»» WIDGET DESIGN - WIDGET - WELCOME TITLE: ', this.welcomeTitle);
         } else {
           console.log('»» WIDGET DESIGN - WIDGET - WELCOME TITLE IS UNDEFINED > SET DEFAULT')
@@ -154,7 +170,6 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
           console.log('»» WIDGET DESIGN - WIDGET - WELCOME MSG IS UNDEFINED > SET DEFAULT');
           this.setDefaultWelcomeMsg();
         }
-
 
       }
     }, (error) => {
@@ -231,7 +246,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
     this.widgetObj =
       [
         {
-          'logoChat': this.customLogoUrl,
+          'logoChat': this.logoUrl,
           'themeColor': this.primaryColor,
           'themeForegroundColor': this.secondaryColor,
           'wellcomeTitle': this.welcomeTitle,
@@ -294,7 +309,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
     // ASSIGN TO WIDEGET OBJ
     this.widgetObj = [
       {
-        'logoChat': this.customLogoUrl,
+        'logoChat': this.logoUrl,
         'themeColor': this.primaryColor,
         'themeForegroundColor': this.secondaryColor,
         'wellcomeTitle': this.welcomeTitle,
@@ -333,13 +348,13 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
    * WHEN USER PRESS 'CHANGE LOGO' UPDATE THE OBJECT WIDGET
    */
   changeLogo() {
-    console.log('ON BLUR CHANGE LOGO - CUSTOM LOGO URL ', this.customLogoUrl);
-    if (this.customLogoUrl) {
+    console.log('ON BLUR CHANGE LOGO - CUSTOM LOGO URL ', this.logoUrl);
+    if (this.logoUrl && this.LOGO_IS_ON === true) {
 
       // ASSIGN TO WIDEGET OBJ
       this.widgetObj = [
         {
-          'logoChat': this.customLogoUrl,
+          'logoChat': this.logoUrl,
           'themeColor': this.primaryColor,
           'themeForegroundColor': this.secondaryColor,
           'wellcomeTitle': this.welcomeTitle,
@@ -352,10 +367,29 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
       this.widgetService.updateWidgetProject(this.widgetObj)
 
       this.hasOwnLogo = true;
-      console.log('HAS PRESSED CHANGE LOGO - HAS OWN LOGO ', this.hasOwnLogo);
-    } else {
-      this.hasOwnLogo = false;
+      console.log('ON BLUR CHANGE LOGO - HAS OWN LOGO ', this.hasOwnLogo);
 
+    } else if (this.logoUrl && this.LOGO_IS_ON === false) {
+      this.logoUrl = 'No Logo'
+      // ASSIGN TO WIDEGET OBJ
+      this.widgetObj = [
+        {
+          'logoChat': 'nologo',
+          'themeColor': this.primaryColor,
+          'themeForegroundColor': this.secondaryColor,
+          'wellcomeTitle': this.welcomeTitle,
+          'wellcomeMsg': this.customWelcomeMsg
+        }
+      ]
+      console.log('HAS PRESSED CHANGE LOGO - WIDGET OBJ ', this.widgetObj);
+
+      // UPDATE WIDGET PROJECT
+      this.widgetService.updateWidgetProject(this.widgetObj)
+
+    } else {
+      this.logoUrl = 'tiledesklogo'
+      this.hasOwnLogo = false;
+      console.log('ON BLUR CHANGE LOGO - HAS OWN LOGO ', this.hasOwnLogo);
       // ASSIGN TO WIDEGET OBJ
       this.widgetObj = [
         {
@@ -370,8 +404,44 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
     }
   }
 
-  customLogoUrlChange(event) {
+  logoUrlChange(event) {
     console.log('WIDGET DESIGN - CUSTOM LOGO URL CHANGE ', event)
+  }
+
+  onLogoOnOff($event) {
+    console.log('WIDGET DESIGN - LOGO ON/OFF ', $event.target.checked)
+    this.LOGO_IS_ON = false
+    if ($event.target.checked === false) {
+      this.logoUrl = 'No Logo'
+      this.widgetObj = [
+        {
+          'logoChat': 'nologo',
+          'themeColor': this.primaryColor,
+          'themeForegroundColor': this.secondaryColor,
+          'wellcomeTitle': this.welcomeTitle,
+          'wellcomeMsg': this.customWelcomeMsg
+        }
+      ]
+      this.widgetService.updateWidgetProject(this.widgetObj)
+    } else if ($event.target.checked === true) {
+
+      this.logoUrl = 'tiledesklogo'
+      this.LOGO_IS_ON = true;
+      console.log('»»» WIDGET DESIGN LOGO_IS_ON ', this.LOGO_IS_ON)
+      this.hasOwnLogo = false
+
+      this.widgetObj = [
+        {
+          'logoChat': '',
+          'themeColor': this.primaryColor,
+          'themeForegroundColor': this.secondaryColor,
+          'wellcomeTitle': this.welcomeTitle,
+          'wellcomeMsg': this.customWelcomeMsg
+        }
+      ]
+      this.widgetService.updateWidgetProject(this.widgetObj)
+
+    }
   }
 
   // ====================================================================================
@@ -430,7 +500,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
     // ASSIGN TO WIDEGET OBJ
     this.widgetObj = [
       {
-        'logoChat': this.customLogoUrl,
+        'logoChat': this.logoUrl,
         'themeColor': this.primaryColor,
         'themeForegroundColor': this.secondaryColor,
         'wellcomeTitle': this.welcomeTitle,
@@ -472,7 +542,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
     this.HAS_CHANGED_WELCOME_MSG = false;
     this.widgetObj = [
       {
-        'logoChat': this.customLogoUrl,
+        'logoChat': this.logoUrl,
         'themeColor': this.primaryColor,
         'themeForegroundColor': this.secondaryColor,
         'wellcomeTitle': this.welcomeTitle,

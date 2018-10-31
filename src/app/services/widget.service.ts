@@ -34,7 +34,7 @@ export class WidgetService {
   updateWidgetProject(widgetSettingsObj: any) {
     this.projectService.updateWidgetProject(widgetSettingsObj)
       .subscribe((data) => {
-        console.log('WIDGET SERVICE - UPDATE PROJECT WIDGET - RESPONSE ', data);
+        console.log('»» WIDGET SERVICE - UPDATE PROJECT WIDGET - RESPONSE ', data);
       }, (error) => {
         console.log('WIDGET SERVICE - UPDATE PROJECT WIDGET - ERROR ', error);
       }, () => {

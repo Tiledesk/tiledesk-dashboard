@@ -948,6 +948,114 @@ input {
     line-height: normal;
 }
 
+// start TOOLTIP
+/* Tooltip container */
+.tooltipx {
+    position: relative;
+    display: inline-block;
+    // border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  }
+  
+  /* Tooltip text */
+  .tooltipx .tooltiptext {
+    visibility: hidden;
+    // width: 120px;
+    background-color: black; 
+    // background-color: rgba(0,0,0,0.6);
+    color: #fff;
+    text-align: center;
+    padding: 5px 5px;
+    border-radius: 5px;
+    font-size: 12px !important;
+  
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 1;
+    /* Position the tooltip text - TOP */
+    bottom: 100%;
+    left: 50%; 
+    margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+
+    // NEW
+    box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
+    background-color: #394f5a;
+  }
+   /* Show the tooltip text when you mouse over the tooltip container */
+   .tooltipx:hover .tooltiptext {
+    visibility: visible;
+  }
+// end TOOLTIP
+
+// ******* START ON-OFF BTN
+.onoffswitch {
+    position: relative; 
+    width: 45px;
+    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+    display: none;
+}
+.onoffswitch-label {
+    display: block; 
+    overflow: hidden; 
+    cursor: pointer;
+    border: 1px solid #D9D9D9; 
+    border-radius: 20px;
+}
+.onoffswitch-inner {
+    display: block; 
+    width: 200%;
+    margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+    display: block; 
+    float: left; 
+    width: 50%; 
+    height: 16px; 
+    padding: 0; 
+    line-height: 16px;
+    font-size: 9px; 
+    color: white; 
+    font-family: Trebuchet, Arial, sans-serif; 
+    font-weight: bold;
+    box-sizing: border-box;
+}
+.onoffswitch-inner:before {
+    content: "ON";
+    padding-left: 5px;
+    background-color: #fff; 
+    color: #D9D9D9;
+}
+.onoffswitch-inner:after {
+    content: "OFF";
+    padding-right: 5px;
+    background-color: #fff; 
+    color: #f44336;
+    text-align: right;
+}
+.onoffswitch-switch {
+    display: block; 
+    width: 12px; 
+    margin: 3px;
+    background: #f44336;
+    position: absolute; 
+    top: 0; 
+    bottom: 0;
+    right: 25px;
+    // border: 1px solid #D9D9D9; 
+    border-radius: 20px;
+    transition: all 0.3s ease-in 0s; 
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px; 
+    background-color: #4CAF50; 
+}
+// END ON-OFF BTN
+
 
 
 
