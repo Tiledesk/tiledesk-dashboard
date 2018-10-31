@@ -6,7 +6,7 @@ import { WidgetService } from '../services/widget.service';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from '../services/project.service';
 import { AuthService } from '../core/auth.service';
-
+import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Rx';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
@@ -20,14 +20,20 @@ import { Subject } from 'rxjs/Subject';
 export class WidgetDesignComponent implements OnInit, AfterViewInit {
   // '#2889e9'
   public primaryColor: string;
-  public secondaryColor: string;
+  public primaryColorRgb: any
   public primaryColorRgba: string;
   public primaryColorGradiend: string;
   public primaryColorBorder: string;
 
+  public secondaryColor: string;
+
   public customLogoUrl: string;
   public hasOwnLogo = false;
+  public welcomeTitle: string;
+  public defaultItWelcomeTitle = 'Ciao, benvenuto su tiledesk';
+  public defaultEnWelcomeTitle = 'Hi, welcome to tiledesk';
   public customWelcomeTitle: string;
+
   public customWelcomeMsg: string;
   public id_project: string;
   public widgetObj: any;
@@ -36,7 +42,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
   hasSelectedRightAlignment = true
   private fragment: string;
 
-  // private subscription: Subscription;
+  private subscription: Subscription;
   ticks: any;
   start: number;
   stop: number;
@@ -44,23 +50,32 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
   HAS_CHANGED_WELCOME_TITLE = false;
   HAS_CHANGED_WELCOME_MSG = false;
 
+  HIDE_WELCOME_TITLE_SAVE_BTN = true;
+
+  browserLang: string;
+
+
   constructor(
     public location: Location,
     private cpService: ColorPickerService,
     private widgetService: WidgetService,
     private route: ActivatedRoute,
     private projectService: ProjectService,
-    private auth: AuthService
+    private auth: AuthService,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
 
     this.getCurrentProject();
+    this.getBrowserLangAndSwitchWelcomeTitleAndMsg();
 
     this.route.fragment.subscribe(fragment => {
       this.fragment = fragment;
       console.log('+ WIDGET DESIGN - FRAGMENT ', this.fragment)
     });
+
+
 
     // PRIMARY COLOR AND PROPERTIES CALCULATED FROM IT
     this.primaryColor = 'rgb(40, 137, 233)';
@@ -78,6 +93,12 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
     this.subscribeToWidgetAlignment();
 
   }
+
+  getBrowserLangAndSwitchWelcomeTitleAndMsg() {
+    this.browserLang = this.translate.getBrowserLang();
+    console.log('WIDGET DESIGN - BROWSER LANG ', this.browserLang)
+  }
+
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       if (project) {
@@ -88,7 +109,6 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
           this.getProjectById();
         }
       }
-
     });
   }
 
@@ -96,7 +116,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
     this.projectService.getProjectById(this.id_project).subscribe((project: any) => {
       // console.log('WIDGET DESIGN - GET PROJECT BY ID - PROJECT OBJECT: ', project);
 
-      console.log('WIDGET DESIGN - PRJCT-WIDGET (onInit): ', project.widget);
+      console.log('»» WIDGET DESIGN - PRJCT-WIDGET (onInit): ', project.widget);
 
       if (project.widget) {
 
@@ -108,24 +128,33 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
 
         if (project.widget[0].themeColor) {
           this.primaryColor = project.widget[0].themeColor;
-          console.log('»» WIDGET DESIGN - PRJCT-WIDGET - THEME COLOR : ', this.primaryColor);
-          this.generateRgbaGradientAndBorder(this.primaryColor);
+          this.primaryColorRgb = this.hexToRgb(this.primaryColor)
+          console.log('»» WIDGET DESIGN - WIDGET - THEME COLOR: ', this.primaryColor);
+          this.generateRgbaGradientAndBorder(this.primaryColorRgb);
         }
 
         if (project.widget[0].themeForegroundColor) {
           this.secondaryColor = project.widget[0].themeForegroundColor;
-          console.log('»» WIDGET DESIGN - PRJCT-WIDGET - THEME FOREGROUND COLOR : ', this.secondaryColor);
+          console.log('»» WIDGET DESIGN - WIDGET - THEME FOREGROUND COLOR: ', this.secondaryColor);
         }
 
         if (project.widget[0].wellcomeTitle) {
+          this.welcomeTitle = project.widget[0].wellcomeTitle;
           this.customWelcomeTitle = project.widget[0].wellcomeTitle;
-          console.log('»» WIDGET DESIGN - PRJCT-WIDGET - CUSTOM WELCOME TITLE : ', this.customWelcomeTitle);
+          console.log('»» WIDGET DESIGN - WIDGET - WELCOME TITLE: ', this.welcomeTitle);
+        } else {
+          console.log('»» WIDGET DESIGN - WIDGET - WELCOME TITLE IS UNDEFINED > SET DEFAULT')
+          this.setDefaultWelcomeTitle();
         }
 
         if (project.widget[0].wellcomeMsg) {
           this.customWelcomeMsg = project.widget[0].wellcomeMsg;
-          console.log('»» WIDGET DESIGN - PRJCT-WIDGET - CUSTOM WELCOME MSG : ', this.customWelcomeMsg);
+          console.log('»» WIDGET DESIGN - WIDGET - WELCOME MSG: ', this.customWelcomeMsg);
+        } else {
+          console.log('»» WIDGET DESIGN - WIDGET - WELCOME MSG IS UNDEFINED > SET DEFAULT');
+          this.setDefaultWelcomeMsg();
         }
+
 
       }
     }, (error) => {
@@ -164,32 +193,81 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
   onChangePrimaryColor($event) {
     this.primaryColor = $event
 
-    this.generateRgbaGradientAndBorder(this.primaryColor);
-
     // console.log('+ WIDGET DESIGN - ON CHANGE PRIMARY COLOR ', $event);
-    this.widgetService.publishPrimaryColorSelected(this.primaryColor);
+    // this.widgetService.publishPrimaryColorSelected(this.primaryColor);
+    this.primaryColorRgb = this.hexToRgb(this.primaryColor)
+    console.log('++++++ WIDGET DESIGN - ON CHANGE PRIMARY COLOR RGB ', this.primaryColorRgb);
+    this.generateRgbaGradientAndBorder(this.primaryColorRgb);
+
+  }
+
+  hexToRgb(hex) {
+    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+    const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthandRegex, function (m, r, g, b) {
+      return r + r + g + g + b + b;
+    });
+
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+
+    const resultR = parseInt(result[1], 16);
+    const resultG = parseInt(result[2], 16);
+    const resultB = parseInt(result[3], 16)
+
+    return result ? 'rgb' + '(' + resultR + ',' + resultG + ',' + resultB + ')' : null;
+
+    // return result ? {
+    //   r: parseInt(result[1], 16),
+    //   g: parseInt(result[2], 16),
+    //   b: parseInt(result[3], 16)
+    // } : null;
+  }
+
+  onClosePrimaryColorDialog(event) {
+    console.log('++++++ WIDGET DESIGN - ON CLOSE PRIMARY COLOR DIALOG ', event);
+    this.primaryColor = event
+
+    // ASSIGN TO WIDEGET OBJ
+    this.widgetObj =
+      [
+        {
+          'logoChat': this.customLogoUrl,
+          'themeColor': this.primaryColor,
+          'themeForegroundColor': this.secondaryColor,
+          'wellcomeTitle': this.welcomeTitle,
+          'wellcomeMsg': this.customWelcomeMsg
+        }
+      ]
+
+    // UPDATE WIDGET PROJECT
+    this.widgetService.updateWidgetProject(this.widgetObj)
   }
 
   /**
    * onSelectPrimaryColor WHEN USER PRESS 'OK' UPDATE THE OBJECT WIDGET
    * @param $event
    */
-  onSelectPrimaryColor($event) {
-    this.primaryColor = $event
-    console.log('+ WIDGET DESIGN - ON SELECT PRIMARY COLOR ', this.primaryColor);
+  // onSelectPrimaryColor($event) {
+  //   this.primaryColor = $event
+  //   console.log('+ WIDGET DESIGN - ON SELECT PRIMARY COLOR ', this.primaryColor);
+  //   // ASSIGN TO WIDEGET OBJ
+  //   this.widgetObj =
+  //     [
+  //       {
+  //         'logoChat': this.customLogoUrl,
+  //         'themeColor': this.primaryColor,
+  //         'themeForegroundColor': this.secondaryColor
+  //       }
+  //     ]
 
-    // ASSIGN TO WIDEGET OBJ
-    this.widgetObj = [{ 'logoChat': this.customLogoUrl, 'themeColor': this.primaryColor, 'themeForegroundColor': this.secondaryColor }]
-
-    // UPDATE WIDGET PROJECT
-    this.widgetService.updateWidgetProject(this.widgetObj)
-
-    this.generateRgbaGradientAndBorder(this.primaryColor);
-
-    this.widgetService.publishPrimaryColorSelected(this.primaryColor);
-  }
+  //   // UPDATE WIDGET PROJECT
+  //   this.widgetService.updateWidgetProject(this.widgetObj)
+  //   this.generateRgbaGradientAndBorder(this.primaryColor);
+  //   this.widgetService.publishPrimaryColorSelected(this.primaryColor);
+  // }
 
   generateRgbaGradientAndBorder(primaryColor: string) {
+    console.log('+ WIDGET DESIGN - ON SELECT PRIMARY COLOR (RGB) ', primaryColor);
     const new_col = primaryColor.replace(/rgb/i, 'rgba');
     this.primaryColorRgba = new_col.replace(/\)/i, ',0.50)');
     console.log('+ WIDGET DESIGN - ON SELECT PRIMARY COLOR (RGBA) ', this.primaryColorRgba);
@@ -209,9 +287,9 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
   //   this.widgetService.publishSecondaryColorSelected(this.secondaryColor);
   // }
 
-  onSelectSecondaryColor($event) {
-    console.log('++++++ WIDGET DESIGN - ON SELECT SECONDARY COLOR ', $event);
-    this.secondaryColor = $event
+  onCloseSecondaryColorDialog(event) {
+    console.log('++++++ WIDGET DESIGN - ON SELECT SECONDARY COLOR ', event);
+    this.secondaryColor = event
 
     // ASSIGN TO WIDEGET OBJ
     this.widgetObj = [
@@ -219,7 +297,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
         'logoChat': this.customLogoUrl,
         'themeColor': this.primaryColor,
         'themeForegroundColor': this.secondaryColor,
-        'wellcomeTitle': this.customWelcomeTitle,
+        'wellcomeTitle': this.welcomeTitle,
         'wellcomeMsg': this.customWelcomeMsg
       }
     ]
@@ -227,8 +305,26 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
     // UPDATE WIDGET PROJECT
     this.widgetService.updateWidgetProject(this.widgetObj)
 
-    this.widgetService.publishSecondaryColorSelected(this.secondaryColor);
   }
+
+  // onSelectSecondaryColor($event) {
+  //   console.log('++++++ WIDGET DESIGN - ON SELECT SECONDARY COLOR ', $event);
+  //   this.secondaryColor = $event
+  //   // ASSIGN TO WIDEGET OBJ
+  //   this.widgetObj = [
+  //     {
+  //       'logoChat': this.customLogoUrl,
+  //       'themeColor': this.primaryColor,
+  //       'themeForegroundColor': this.secondaryColor,
+  //       'wellcomeTitle': this.welcomeTitle,
+  //       'wellcomeMsg': this.customWelcomeMsg
+  //     }
+  //   ]
+  //   // UPDATE WIDGET PROJECT
+  //   this.widgetService.updateWidgetProject(this.widgetObj)
+
+  //   this.widgetService.publishSecondaryColorSelected(this.secondaryColor);
+  // }
 
   // ===========================================================================
   // ============== *** CUSTOM LOGO URL (alias for logoChat) ***  ==============
@@ -237,7 +333,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
    * WHEN USER PRESS 'CHANGE LOGO' UPDATE THE OBJECT WIDGET
    */
   changeLogo() {
-    console.log('HAS PRESSED CHANGE LOGO - CUSTOM LOGO URL ', this.customLogoUrl);
+    console.log('ON BLUR CHANGE LOGO - CUSTOM LOGO URL ', this.customLogoUrl);
     if (this.customLogoUrl) {
 
       // ASSIGN TO WIDEGET OBJ
@@ -246,7 +342,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
           'logoChat': this.customLogoUrl,
           'themeColor': this.primaryColor,
           'themeForegroundColor': this.secondaryColor,
-          'wellcomeTitle': this.customWelcomeTitle,
+          'wellcomeTitle': this.welcomeTitle,
           'wellcomeMsg': this.customWelcomeMsg
         }
       ]
@@ -259,6 +355,18 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
       console.log('HAS PRESSED CHANGE LOGO - HAS OWN LOGO ', this.hasOwnLogo);
     } else {
       this.hasOwnLogo = false;
+
+      // ASSIGN TO WIDEGET OBJ
+      this.widgetObj = [
+        {
+          'logoChat': '',
+          'themeColor': this.primaryColor,
+          'themeForegroundColor': this.secondaryColor,
+          'wellcomeTitle': this.welcomeTitle,
+          'wellcomeMsg': this.customWelcomeMsg
+        }
+      ]
+      this.widgetService.updateWidgetProject(this.widgetObj)
     }
   }
 
@@ -284,32 +392,48 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
   //   });
   // }
 
-  startTimer() {
-    this.start = 0;
-    this.stop = 2000;
-    this.ticks = Observable.timer(this.start, this.stop);
+  welcomeTitleChange(event) {
+    // this.HIDE_WELCOME_TITLE_SAVE_BTN = false;
+    // this.startTimer()
 
-    this.ticks.subscribe(val => {
-      console.log('**** **** ', val)
-    })
-  }
+    // hide the save btn if the text in the input field is equal to the default WelcomeTitle (eng or it) 
+    // is equal to the WelcomeTitle returned in the Project object || (event === this.customWelcomeTitle)
+    // if ((event === this.defaultItWelcomeTitle) || (event === this.defaultEnWelcomeTitle) ) {
+    //   this.HIDE_WELCOME_TITLE_SAVE_BTN = true;
+    //   console.log('WIDGET DESIGN - WELCOME TITLE HIDE SAVE BTN (modelChange) ', this.HIDE_WELCOME_TITLE_SAVE_BTN);
+    // } else {
+    //   this.HIDE_WELCOME_TITLE_SAVE_BTN = false;
+    //   console.log('WIDGET DESIGN - WELCOME TITLE HIDE SAVE BTN (modelChange) ', this.HIDE_WELCOME_TITLE_SAVE_BTN);
+    // }
 
+    console.log('WIDGET DESIGN - WELCOME TITLE (modelChange) CHANGE ', event);
+    // console.log('WIDGET DESIGN - WELCOME TITLE LENGHT (modelChange) ', event.length);
+    if (event.length === 0) {
+      console.log('WIDGET DESIGN - WELCOME TITLE LENGHT is (modelChange) ', event.length);
 
-  customWelcomeTitleChange(event) {
-    console.log('WIDGET DESIGN - WELCOME TITLE CHANGE ', event);
-
+      this.setDefaultWelcomeTitle();
+    }
     this.HAS_CHANGED_WELCOME_TITLE = true
   }
 
-  saveCustomWelcomeTitle() {
-    
+  setDefaultWelcomeTitle() {
+    if (this.browserLang) {
+      if (this.browserLang === 'it') {
+        this.welcomeTitle = 'Ciao, benvenuto su tiledesk';
+      } else {
+        this.welcomeTitle = 'Hi, welcome to Tiledesk';
+      }
+    }
+  }
+
+  saveWelcomeTitle() {
     // ASSIGN TO WIDEGET OBJ
     this.widgetObj = [
       {
         'logoChat': this.customLogoUrl,
         'themeColor': this.primaryColor,
         'themeForegroundColor': this.secondaryColor,
-        'wellcomeTitle': this.customWelcomeTitle,
+        'wellcomeTitle': this.welcomeTitle,
         'wellcomeMsg': this.customWelcomeMsg
       }
     ]
@@ -323,7 +447,25 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
   customWelcomeMsgChange(event) {
     console.log('WIDGET DESIGN - WELCOME MSG CHANGE ', event);
 
+
+
+    if (event.length === 0) {
+      console.log('WIDGET DESIGN - WELCOME MSG LENGHT is (modelChange) ', event.length);
+
+      this.setDefaultWelcomeMsg();
+    }
     this.HAS_CHANGED_WELCOME_MSG = true;
+  }
+
+  setDefaultWelcomeMsg() {
+    if (this.browserLang) {
+      if (this.browserLang === 'it') {
+        this.customWelcomeMsg = 'Come possiamo aiutare?'
+
+      } else {
+        this.customWelcomeMsg = 'How can we help?'
+      }
+    }
   }
 
   saveCustomWelcomeMsg() {
@@ -333,7 +475,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
         'logoChat': this.customLogoUrl,
         'themeColor': this.primaryColor,
         'themeForegroundColor': this.secondaryColor,
-        'wellcomeTitle': this.customWelcomeTitle,
+        'wellcomeTitle': this.welcomeTitle,
         'wellcomeMsg': this.customWelcomeMsg
       }
     ]

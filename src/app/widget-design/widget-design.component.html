@@ -98,13 +98,16 @@
 									<div class="primary-color-selection" style="position: relative;">
 										<!-- [cpOutputFormat]="'hex'" -->
 										<!-- (colorPickerChange)="onChangePrimaryColor($event)" -->
+										<!-- [cpOKButton]="true" -->
+										<!-- (colorPickerSelect)="onSelectPrimaryColor($event)" -->
+										<!-- [cpOKButtonClass]= "'btn btn-primary btn-xs'" -->
 										<div class="palette" 
-										(colorPickerChange)="onChangePrimaryColor($event)"
-										[style.background-color]="primaryColor" 
-										[cpOKButton]="true"
-										[cpOKButtonClass]= "'btn btn-primary btn-xs'"
-										(colorPickerSelect)="onSelectPrimaryColor($event)"
-										[(colorPicker)]="primaryColor"></div>
+											(colorPickerChange)="onChangePrimaryColor($event)"
+											[style.background-color]="primaryColor" 
+											[(colorPicker)]="primaryColor"
+											[cpAlphaChannel]="'disabled'"
+											(colorPickerClose)="onClosePrimaryColorDialog($event)">
+										</div>
 
 										<input class="" [value]="primaryColor" style="font-weight: 400; padding-left: 30px;">
 									</div>
@@ -122,12 +125,15 @@
 									<div class="primary-secondary-selection" style="position: relative;">
 										<!-- [cpOutputFormat]="'hex'" -->
 										<!-- (colorPickerChange)="onChangeSecondaryColor($event)" -->
+										<!-- [cpOKButton]="true" -->
+										<!-- [cpOKButtonClass]= "'btn btn-primary btn-xs'" -->
+										<!-- (colorPickerSelect)="onSelectSecondaryColor($event)" -->
 										<div class="palette" 
-										[style.background-color]="secondaryColor" 
-										[cpOKButton]="true"
-										[cpOKButtonClass]= "'btn btn-primary btn-xs'"
-										(colorPickerSelect)="onSelectSecondaryColor($event)"
-										[(colorPicker)]="secondaryColor"></div>
+											[style.background-color]="secondaryColor" 
+											[cpAlphaChannel]="'disabled'"
+											(colorPickerClose)="onCloseSecondaryColorDialog($event)"
+											[(colorPicker)]="secondaryColor">
+										</div>
 
 										<input class="" [value]="secondaryColor" style="font-weight: 400; padding-left: 30px;">
 									</div>
@@ -152,10 +158,10 @@
 		
 									<!-- [disabled]="" -->
 									<!-- (ngModelChange)="customLogoUrlChange($event)" -->
-									<input class=""  [(ngModel)]="customLogoUrl" style="font-weight: 400;"> 
-										<button class="btn btn-info" type="submit" (click)="changeLogo()" style="margin:0px; padding:10px 15px;">
+									<input (blur)="changeLogo()" class=""  [(ngModel)]="customLogoUrl" style="font-weight: 400;"> 
+										<!-- <button class="btn btn-info" type="submit" (click)="changeLogo()" style="margin:0px; padding:10px 15px;">
 												Save
-										</button>
+										</button> -->
 									
 									<span style="color: rgb(118, 149, 165); display: block"> 
 										
@@ -170,11 +176,13 @@
 									</label>
 		
 									<!-- [disabled]="" -->
-									<!-- (ngModelChange)="customWelcomeTitleChange($event)" -->
-									<input class=""  [(ngModel)]="customWelcomeTitle" (ngModelChange)="customWelcomeTitleChange($event)" style="font-weight: 400;"> 
-										<button class="btn btn-info" type="submit" (click)="saveCustomWelcomeTitle()" style="margin:0px; padding:10px 15px;">
+									<input (blur)="saveWelcomeTitle()" class=""  [(ngModel)]="welcomeTitle" (ngModelChange)="welcomeTitleChange($event)" style="font-weight: 400;"> 
+									
+									<!-- <span *ngIf="HIDE_WELCOME_TITLE_SAVE_BTN === false">
+										<button  class="btn btn-info" type="submit" (click)="saveWelcomeTitle()" style="margin:0px; padding:10px 15px;">
 												Save
 										</button>
+									</span>	 -->
 									
 									<span style="color: rgb(118, 149, 165); display: block"> 
 										
@@ -192,16 +200,14 @@
 									<!-- [disabled]="" -->
 								
 
-									<input class="" (ngModelChange)="customWelcomeMsgChange($event)" [(ngModel)]="customWelcomeMsg"  style="font-weight: 400;"> 
+									<input (blur)="saveCustomWelcomeMsg()" class="" (ngModelChange)="customWelcomeMsgChange($event)" 
+																	[(ngModel)]="customWelcomeMsg"  style="font-weight: 400;"> 
 
-										<!-- <i class="material-icons" (click)="saveCustomWelcomeMsg()" style="vertical-align: middle; cursor: pointer" [ngClass]="{'active-button-save-welcome-msg' : HAS_CHANGED_WELCOME_MSG}" >
-											save
-										</i> -->
-										<button class="btn btn-info" type="submit" (click)="saveCustomWelcomeMsg()" style="margin:0px; padding:5px 5px;" [disabled]="HAS_CHANGED_WELCOME_MSG === false">
-														<i class="material-icons">
-															save
-														</i>										
-										</button>
+										<!-- <button class="btn btn-info" type="submit" (click)="saveCustomWelcomeMsg()" style="margin:0px; padding:5px 5px;" [disabled]="HAS_CHANGED_WELCOME_MSG === false">
+											<i class="material-icons">
+												save
+											</i>										
+										</button> -->
 									
 									<span style="color: rgb(118, 149, 165); display: block"> 
 										
@@ -345,12 +351,14 @@
 														</div>
 														<div class="c21-text">
 															<div class="c21-text-wellcome" style="font-size: 30px;padding-top: 16px;" [ngStyle]="{'color': secondaryColor}">
-																<span *ngIf="!customWelcomeTitle"> {{'HiWelcomeToTiledesk' | translate}} 👋 </span>
-																<span *ngIf="customWelcomeTitle"> {{ customWelcomeTitle }} </span>
+																<!-- <span *ngIf="!welcomeTitle"> {{'HiWelcomeToTiledesk' | translate}} 👋 </span> -->
+																<!-- *ngIf="welcomeTitle" -->
+																<span> {{ welcomeTitle }} </span>
 															</div>          
 															<div class="c21-text-intro" style="font-size: 14px;" [ngStyle]="{'color': secondaryColor}">
-																<span *ngIf="!customWelcomeMsg"> {{'HowCanWeHelp' | translate}} </span>
-																<span *ngIf="customWelcomeMsg"> {{ customWelcomeMsg }} </span>
+																<!-- <span *ngIf="!customWelcomeMsg"> {{'HowCanWeHelp' | translate}} </span> -->
+																<!-- *ngIf="customWelcomeMsg" -->
+																<span> {{ customWelcomeMsg }} </span>
 															</div>
 														</div>
 													</div>
