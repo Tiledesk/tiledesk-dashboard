@@ -103,9 +103,9 @@ export class ProjectsComponent implements OnInit {
     this.auth.projectSelected(project)
     console.log('!!! GO TO HOME PROJECT ', project)
 
-   /* !!! NO MORE USED - NOW THE ALL PROJECTS ARE SETTED IN THE STORAGE IN getProjectsAndSaveInStorage()
-    * SET THE project_id IN THE LOCAL STORAGE
-    * WHEN THE PAGE IS RELOADED THE SIDEBAR GET THE PROJECT ID FROM THE LOCAL STORAGE */
+    /* !!! NO MORE USED - NOW THE ALL PROJECTS ARE SETTED IN THE STORAGE IN getProjectsAndSaveInStorage()
+     * SET THE project_id IN THE LOCAL STORAGE
+     * WHEN THE PAGE IS RELOADED THE SIDEBAR GET THE PROJECT ID FROM THE LOCAL STORAGE */
     // localStorage.setItem('project', JSON.stringify(project));
   }
 
@@ -144,12 +144,15 @@ export class ProjectsComponent implements OnInit {
         this.projects.forEach(project => {
           console.log('!!! SET PROJECT IN STORAGE')
 
-          const prjct: Project = {
-            _id: project.id_project._id,
-            name: project.id_project.name,
-            role: project.role
+          if (project.id_project) {
+            const prjct: Project = {
+              _id: project.id_project._id,
+              name: project.id_project.name,
+              role: project.role
+            }
+            localStorage.setItem(project.id_project._id, JSON.stringify(prjct));
+
           }
-          localStorage.setItem(project.id_project._id,  JSON.stringify(prjct));
         });
       }
 
@@ -234,9 +237,9 @@ export class ProjectsComponent implements OnInit {
 
         this.id_project = newproject._id
 
-       /* !!! NO MORE USED - NOW THE ALL PROJECTS ARE SETTED IN THE STORAGE IN getProjectsAndSaveInStorage()
-        * SET THE project_id IN THE LOCAL STORAGE
-        * WHEN THE PAGE IS RELOADED THE SIDEBAR GET THE PROJECT ID FROM THE LOCAL STORAGE */
+        /* !!! NO MORE USED - NOW THE ALL PROJECTS ARE SETTED IN THE STORAGE IN getProjectsAndSaveInStorage()
+         * SET THE project_id IN THE LOCAL STORAGE
+         * WHEN THE PAGE IS RELOADED THE SIDEBAR GET THE PROJECT ID FROM THE LOCAL STORAGE */
         // localStorage.setItem('project', JSON.stringify(newproject));
 
         // this.display = 'none';

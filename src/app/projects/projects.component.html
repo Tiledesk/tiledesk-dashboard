@@ -167,14 +167,14 @@
 
           <!-- CARDS FROM THE PROJECT 'FOR' -->
           <!-- style="max-width: 256px;" -->
-          <div class="card" (click)='goToHome(project?.id_project._id, project?.id_project.name)'>
+          <div class="card" (click)='goToHome(project?.id_project?._id, project?.id_project?.name)'>
             <div class="card-content"  style="height:160px">
               <h3 class="title" style="color: #566787; font-size:20px; margin-bottom: 0px;">
-                {{ project?.id_project.name }}
+                {{ project?.id_project?.name }}
               </h3>
 
               <p class="category" style="font-size:14px !important; color: rgba(0,0,0,0.38)">
-                {{ project?.id_project._id }}
+                {{ project?.id_project?._id }}
               </p>
               <h4 class="category" style="font-size:16px; margin-top: 16px;">
                 {{ project?.role }}
@@ -182,7 +182,7 @@
             </div>
             <div class="card-footer">
               <div class="stats">
-                <i class="material-icons">date_range</i> {{ project?.id_project.createdAt | date: 'd/M/y'}}
+                <i class="material-icons">date_range</i> {{ project?.id_project?.createdAt | date: 'd/M/y'}}
 
                 <!-- <button type="button" rel="tooltip" title="Modifica Progetto" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(project?._id)'> -->
                 <!-- <i class="material-icons">edit</i> -->

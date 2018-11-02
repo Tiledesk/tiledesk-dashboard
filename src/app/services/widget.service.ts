@@ -34,11 +34,11 @@ export class WidgetService {
   updateWidgetProject(widgetSettingsObj: any) {
     this.projectService.updateWidgetProject(widgetSettingsObj)
       .subscribe((data) => {
-        console.log('»» WIDGET SERVICE - UPDATE PROJECT WIDGET - RESPONSE ', data);
+        console.log('»» WIDGET SERVICE - UPDATE PROJECT WIDGET - RESPONSE ', data.widget);
       }, (error) => {
-        console.log('WIDGET SERVICE - UPDATE PROJECT WIDGET - ERROR ', error);
+        console.log('»» WIDGET SERVICE - UPDATE PROJECT WIDGET - ERROR ', error);
       }, () => {
-        console.log('WIDGET SERVICE - UPDATE PROJECT WIDGET * COMPLETE *');
+        console.log('»» WIDGET SERVICE - UPDATE PROJECT WIDGET * COMPLETE *');
       });
   }
 

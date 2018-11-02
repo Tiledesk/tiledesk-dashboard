@@ -32,13 +32,38 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
 
   public hasOwnLogo = false;
   public welcomeTitle: string;
-  public defaultItWelcomeTitle = 'Ciao, benvenuto su tiledesk';
-  public defaultEnWelcomeTitle = 'Hi, welcome to tiledesk';
+  // public defaultItWelcomeTitle = 'Ciao, benvenuto su tiledesk';
+  // public defaultEnWelcomeTitle = 'Hi, welcome to tiledesk';
 
 
-  public customWelcomeMsg: string;
+  public welcomeMsg: string;
+  niko: string;
   public id_project: string;
-  public widgetObj: any;
+
+  public widgetDefaultSettings =
+    {
+      'preChatForm': false,
+      'calloutTimer': -1,
+      'align': 'right',
+      'logoChat': 'tiledesklogo',
+      'themeColor': '#2a6ac1',
+      'themeForegroundColor': '#ffffff',
+      'en': {
+        'wellcomeTitle': 'Hi, welcome to tiledesk 👋 ',
+        'wellcomeMsg': 'How can we help?',
+        'calloutTitle': 'Need Help?',
+        'calloutMsg': 'Click here and start chatting with us!'
+      },
+      'it': {
+        'wellcomeTitle': 'Ciao, benvenuto su tiledesk 👋 ',
+        'wellcomeMsg': 'Come possiamo aiutare?',
+        'calloutTitle': 'Bisogno di aiuto?',
+        'calloutMsg': 'Clicca qui e inizia a chattare con noi!'
+      },
+    }
+
+
+  public widgetObj = {};
 
   hasSelectedLeftAlignment = false
   hasSelectedRightAlignment = true
@@ -49,13 +74,36 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
   start: number;
   stop: number;
 
-  HAS_CHANGED_WELCOME_TITLE = false;
-  HAS_CHANGED_WELCOME_MSG = false;
+  // HAS_CHANGED_WELCOME_TITLE = false;
+  // HAS_CHANGED_WELCOME_MSG = false;
 
   HIDE_WELCOME_TITLE_SAVE_BTN = true;
 
   browserLang: string;
   LOGO_IS_ON: boolean;
+
+  calloutTimerSecondSelected = -1;
+
+  // preChatForm = 'preChatForm'
+  calloutTimerOptions = [
+    { seconds: 'disabled', value: -1 },
+    { seconds: 'immediately', value: 0 },
+    { seconds: '5', value: 5 },
+    { seconds: '10', value: 10 },
+    { seconds: '15', value: 15 },
+    { seconds: '20', value: 20 },
+    { seconds: '25', value: 25 },
+    { seconds: '30', value: 30 }
+  ]
+
+  calloutTitle: string;
+  calloutTitleText: string;
+  // _calloutTitle: string;
+  escaped_calloutTitle: string;
+
+  calloutMsg: string;
+  calloutMsgText: string;
+  escaped_calloutMsg: string;
 
   constructor(
     public location: Location,
@@ -80,12 +128,14 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
 
 
     // PRIMARY COLOR AND PROPERTIES CALCULATED FROM IT
-    this.primaryColor = 'rgb(40, 137, 233)';
-    this.primaryColorRgba = 'rgba(40, 137, 233, 0.50)';
-    this.primaryColorGradiend = `linear-gradient(${this.primaryColor}, ${this.primaryColorRgba})`;
-    this.primaryColorBorder = `2.4px solid ${this.primaryColorRgba}`;
+    // this.primaryColor = 'rgb(40, 137, 233)';
+    // this.primaryColor = this.widgetDefaultSettings.themeColor
+    // console.log('»» WIDGET DESIGN - on init ' , this.primaryColor);
+    // this.primaryColorRgba = 'rgba(40, 137, 233, 0.50)';
+    // this.primaryColorGradiend = `linear-gradient(${this.primaryColor}, ${this.primaryColorRgba})`;
+    // this.primaryColorBorder = `2.4px solid ${this.primaryColorRgba}`;
 
-    this.secondaryColor = 'rgb(255, 255, 255)';
+    // this.secondaryColor = 'rgb(255, 255, 255)';
 
     // this.logoUrl = '../assets/img/tiledesk_logo_white_small.png'
     this.subscribeToSelectedPrimaryColor();
@@ -94,6 +144,64 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
 
     this.subscribeToWidgetAlignment();
 
+  }
+
+  setSelectedCalloutTimer() {
+    console.log('»»» SET SELECTED CALLOUT TIMER - TIMER SELECTED', this.calloutTimerSecondSelected)
+
+    // COMMENT AS FOR CALLOUT TITLE
+    this.widgetService.publishCalloutTimerSelected(this.calloutTimerSecondSelected)
+
+    if (this.calloutTimerSecondSelected === -1) {
+
+      this.escaped_calloutTitle = ''; // callout title escaped
+      this.calloutTitleText = ''; // clear the value in the input if the user disabled the callout
+      console.log('»»» SET SELECTED CALLOUT TIMER - CALLOUT TITLE ESCAPED', this.escaped_calloutTitle)
+      this.escaped_calloutMsg = ''; // callout msg escaped
+      this.calloutMsgText = '';  // clear the value in the input if the user disabled the callout
+      console.log('»»» SET SELECTED CALLOUT TIMER - CALLOUT MSG ESCAPED ', this.escaped_calloutMsg)
+      this.calloutTitle = '';
+      this.calloutMsg = ''
+    }
+  }
+
+  onKeyCalloutMsg() {
+    if (this.calloutMsgText) {
+      this.escaped_calloutMsg = this.calloutMsgText.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
+      console.log('+++ +++ ON KEY-UP CALLOUT MSG ', this.escaped_calloutMsg);
+      this.calloutMsg = `\n      calloutMsg: "${this.escaped_calloutMsg}",` // is used in the texarea 'script'
+
+      // COMMENT AS FOR CALLOUT TITLE
+      this.widgetService.publishCalloutMsgTyped(this.calloutMsgText);
+    } else {
+      this.escaped_calloutMsg = '';
+      this.calloutMsg = '';
+
+      // COMMENT AS FOR CALLOUT TITLE
+      this.widgetService.publishCalloutMsgTyped(this.calloutMsgText);
+    }
+  }
+
+  onKeyCalloutTitle() {
+    if (this.calloutTitleText) {
+      this.escaped_calloutTitle = this.calloutTitleText.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
+      console.log('+++ +++ ON KEY-UP CALLOUT TITLE TEXT  ', this.calloutTitleText);
+      console.log('+++ +++ ON KEY-UP ESCAPED CALLOUT TITLE ', this.escaped_calloutTitle);
+
+      /**
+       * THE calloutTitleText IS PASSED TO THE WIDGET SERVICE THAT PUBLISH the property calloutTitleBs
+       * THIS SAME COMP SUBSCRIBES TO THE WIDGET SERVICE (see subscribeToTypedCalloutTitle) TO AVOID THAT,
+       * WHEN THE USER GO TO THE WIDEGT DESIGN PAGE (or in another page) AND THEN RETURN IN THE
+       * WIDGET PAGE, THE VALUE OF THE CALLOUT TITLE BE EMPTY EVEN IF HE HAD PREVIOUSLY DIGITED IT */
+      this.widgetService.publishCalloutTitleTyped(this.calloutTitleText)
+
+      this.calloutTitle = `\n      calloutTitle: "${this.escaped_calloutTitle}",` // is used in the texarea 'script'
+    } else {
+      console.log('+++ +++ ON KEY-UP CALLOUT TITLE TEXT (else) ', this.calloutTitleText);
+      this.widgetService.publishCalloutTitleTyped(this.calloutTitleText)
+      this.escaped_calloutTitle = '';
+      this.calloutTitle = '';
+    }
   }
 
   getBrowserLangAndSwitchWelcomeTitleAndMsg() {
@@ -122,56 +230,147 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
 
       if (project.widget) {
 
-        if (project.widget[0].logoChat && project.widget[0].logoChat !== 'nologo') {
-          this.logoUrl = project.widget[0].logoChat;
+        this.widgetObj = project.widget;
 
-          // case logoChat = 'userCompanyLogoUrl' > display the userCompanyLogoUrl
+        /**
+         * ********************************  logoChat (WIDGET DEFINED) ****************************************
+         */
+        // case logoChat = 'userCompanyLogoUrl' > display the userCompanyLogoUrl
+        if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== 'tiledesklogo') {
+
+          this.logoUrl = project.widget.logoChat;
           this.hasOwnLogo = true;
           this.LOGO_IS_ON = true;
 
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) LOGO URL: ', project.widget.logoChat,
+            ' HAS HOWN LOGO ', this.hasOwnLogo,
+            ' LOGO IS ON', this.LOGO_IS_ON);
+
           // case logoChat = 'nologo' > no logo is displayed
-        } else if (project.widget[0].logoChat && project.widget[0].logoChat === 'nologo') {
-          this.LOGO_IS_ON = false;
+        } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'tiledesklogo') {
           this.logoUrl = 'No Logo';
-        } else {
+          this.hasOwnLogo = false;
+          this.LOGO_IS_ON = false;
+
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) LOGO URL: ', project.widget.logoChat,
+            ' HAS HOWN LOGO ', this.hasOwnLogo,
+            ' LOGO IS ON', this.LOGO_IS_ON);
 
           // case logoChat = '' > display the tiledesk logo and in the input field display the text 'tiledesklogo'
-          this.LOGO_IS_ON = true
-          this.hasOwnLogo = false;
-          console.log('»» WIDGET DESIGN - PRJCT-WIDGET - LOGO CHAT : ', project.widget[0].logoChat);
+        } else {
           this.logoUrl = 'tiledesklogo'
+          this.hasOwnLogo = false;
+          this.LOGO_IS_ON = true
+
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) LOGO URL: ', project.widget.logoChat,
+            ' HAS HOWN LOGO ', this.hasOwnLogo,
+            ' LOGO IS ON', this.LOGO_IS_ON);
         }
 
-        if (project.widget[0].themeColor) {
-          this.primaryColor = project.widget[0].themeColor;
+        /**
+         * ******************************** themeColor (WIDGET DEFINED) ****************************************
+         */
+        if (project.widget.themeColor) {
+
+          this.primaryColor = project.widget.themeColor;
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) THEME COLOR: ', this.primaryColor);
           this.primaryColorRgb = this.hexToRgb(this.primaryColor)
-          console.log('»» WIDGET DESIGN - WIDGET - THEME COLOR: ', this.primaryColor);
+          this.generateRgbaGradientAndBorder(this.primaryColorRgb);
+        } else {
+          // case themeColor IS undefined
+          this.primaryColor = this.widgetDefaultSettings.themeColor
+          // tslint:disable-next-line:max-line-length
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) THEME COLOR: ', project.widget.themeColor, 'IS UNDEFINED > SET DEFAULT ', this.primaryColor);
+
+          this.primaryColorRgb = this.hexToRgb(this.primaryColor)
           this.generateRgbaGradientAndBorder(this.primaryColorRgb);
         }
 
-        if (project.widget[0].themeForegroundColor) {
-          this.secondaryColor = project.widget[0].themeForegroundColor;
-          console.log('»» WIDGET DESIGN - WIDGET - THEME FOREGROUND COLOR: ', this.secondaryColor);
+        /**
+         * ******************************** themeForegroundColor (WIDGET DEFINED) ********************************
+         */
+        if (project.widget.themeForegroundColor) {
+          this.secondaryColor = project.widget.themeForegroundColor;
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) THEME-FOREGROUND COLOR: ', this.secondaryColor);
+        } else {
+
+          this.secondaryColor = this.widgetDefaultSettings.themeForegroundColor;
+          // tslint:disable-next-line:max-line-length
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) THEME-FOREGROUND COLOR: ', project.widget.themeForegroundColor, 'IS UNDEFINED > SET DEFAULT ', this.secondaryColor);
         }
 
-        if (project.widget[0].wellcomeTitle) {
-          this.welcomeTitle = project.widget[0].wellcomeTitle;
+        /**
+         * ******************************** wellcomeTitle (WIDGET DEFINED) ****************************************
+         */
+        if (project.widget.wellcomeTitle) {
+          this.welcomeTitle = project.widget.wellcomeTitle;
 
-          console.log('»» WIDGET DESIGN - WIDGET - WELCOME TITLE: ', this.welcomeTitle);
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) WELCOME TITLE: ', this.welcomeTitle);
         } else {
-          console.log('»» WIDGET DESIGN - WIDGET - WELCOME TITLE IS UNDEFINED > SET DEFAULT')
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) WELCOME TITLE: ', this.welcomeTitle, 'IS UNDEFINED > SET DEFAULT')
+
           this.setDefaultWelcomeTitle();
         }
 
-        if (project.widget[0].wellcomeMsg) {
-          this.customWelcomeMsg = project.widget[0].wellcomeMsg;
-          console.log('»» WIDGET DESIGN - WIDGET - WELCOME MSG: ', this.customWelcomeMsg);
+        /**
+         * ******************************** wellcomeMsg (WIDGET DEFINED) *******************************************
+         */
+        if (project.widget.wellcomeMsg) {
+          this.welcomeMsg = project.widget.wellcomeMsg;
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) WELCOME MSG: ', this.welcomeMsg);
         } else {
-          console.log('»» WIDGET DESIGN - WIDGET - WELCOME MSG IS UNDEFINED > SET DEFAULT');
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) WELCOME MSG: ', this.welcomeMsg, 'IS UNDEFINED > SET DEFAULT');
           this.setDefaultWelcomeMsg();
         }
 
+        /**
+         * ******************************** align (WIDGET DEFINED) **************************************************
+         */
+        if (project.widget.align && project.widget.align === 'left') {
+          this.hasSelectedLeftAlignment = true;
+          this.hasSelectedRightAlignment = false;
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) ALIGN: ', project.widget.align);
+        } else {
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) ALIGN: ', project.widget.align, 'IS UNDEFINED > SET DEFAULT');
+          this.hasSelectedLeftAlignment = false;
+          this.hasSelectedRightAlignment = true;
+        }
+
+      } else {
+        /**
+         * ******************************** logoChat (WIDGET UNDEFINED) **********************************************
+         */
+        this.logoUrl = 'tiledesklogo'
+        this.hasOwnLogo = false;
+        this.LOGO_IS_ON = true
+        // tslint:disable-next-line:max-line-length
+        console.log('»» WIDGET DESIGN - (onInit WIDGET UNDEFINED) > SET DEFAULT LOGOURL: ', this.logoUrl, 'HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON);
+        /**
+         * ******************************** themeColor (WIDGET UNDEFINED) ********************************************
+         */
+        this.primaryColor = this.widgetDefaultSettings.themeColor
+        console.log('»» WIDGET DESIGN - (onInit WIDGET UNDEFINED) > SET DEFAULT THEME COLOR: ', this.primaryColor);
+        this.primaryColorRgb = this.hexToRgb(this.primaryColor)
+        this.generateRgbaGradientAndBorder(this.primaryColorRgb);
+
+        /**
+         * ******************************** themeForegroundColor (WIDGET UNDEFINED) ***********************************
+         */
+        this.secondaryColor = this.widgetDefaultSettings.themeForegroundColor;
+        console.log('»» WIDGET DESIGN - (onInit WIDGET UNDEFINED) > SET DEFAULT THEME-FOREGROUND COLOR: ', this.secondaryColor);
+
+        /**
+         * ******************************** wellcomeTitle (WIDGET UNDEFINED) ******************************************
+         */
+        this.setDefaultWelcomeTitle();
+
+        /**
+         * ******************************** wellcomeMsg (WIDGET UNDEFINED) ********************************************
+         */
+        this.setDefaultWelcomeMsg();
       }
+
+
     }, (error) => {
       console.log('WIDGET DESIGN - GET PROJECT BY ID - ERROR ', error);
 
@@ -186,12 +385,12 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
     try {
       // name of the class of the html div = . + fragment
       const test = <HTMLElement>document.querySelector('.' + this.fragment)
-      console.log('+ WIDGET DESIGN - QUERY SELECTOR TEST  ', test)
+      // console.log('»» WIDGET DESIGN - QUERY SELECTOR TEST  ', test)
       test.scrollIntoView();
       // document.querySelector('#' + this.fragment).scrollIntoView();
       // console.log( document.querySelector('#' + this.fragment).scrollIntoView())
     } catch (e) {
-      console.log('+ WIDGET DESIGN - QUERY SELECTOR ERROR  ', e)
+      // console.log('»» WIDGET DESIGN - QUERY SELECTOR ERROR  ', e)
     }
   }
 
@@ -211,7 +410,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
     // console.log('+ WIDGET DESIGN - ON CHANGE PRIMARY COLOR ', $event);
     // this.widgetService.publishPrimaryColorSelected(this.primaryColor);
     this.primaryColorRgb = this.hexToRgb(this.primaryColor)
-    console.log('++++++ WIDGET DESIGN - ON CHANGE PRIMARY COLOR RGB ', this.primaryColorRgb);
+    console.log('»» WIDGET DESIGN - ON CHANGE PRIMARY COLOR - PRIMARY COLOR RGB ', this.primaryColorRgb);
     this.generateRgbaGradientAndBorder(this.primaryColorRgb);
 
   }
@@ -239,20 +438,24 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
   }
 
   onClosePrimaryColorDialog(event) {
-    console.log('++++++ WIDGET DESIGN - ON CLOSE PRIMARY COLOR DIALOG ', event);
+    console.log('»» WIDGET DESIGN - ON CLOSE PRIMARY COLOR DIALOG ', event);
     this.primaryColor = event
 
+    if (this.primaryColor !== this.widgetDefaultSettings.themeColor) {
+
+      this.widgetObj['themeColor'] = this.primaryColor
+    }
     // ASSIGN TO WIDEGET OBJ
-    this.widgetObj =
-      [
-        {
-          'logoChat': this.logoUrl,
-          'themeColor': this.primaryColor,
-          'themeForegroundColor': this.secondaryColor,
-          'wellcomeTitle': this.welcomeTitle,
-          'wellcomeMsg': this.customWelcomeMsg
-        }
-      ]
+    // this.widgetObj =
+    //   [
+    //     {
+    //       'logoChat': this.logoUrl,
+    //       'themeColor': this.primaryColor,
+    //       'themeForegroundColor': this.secondaryColor,
+    //       'wellcomeTitle': this.welcomeTitle,
+    //       'wellcomeMsg': this.welcomeMsg
+    //     }
+    //   ]
 
     // UPDATE WIDGET PROJECT
     this.widgetService.updateWidgetProject(this.widgetObj)
@@ -282,10 +485,10 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
   // }
 
   generateRgbaGradientAndBorder(primaryColor: string) {
-    console.log('+ WIDGET DESIGN - ON SELECT PRIMARY COLOR (RGB) ', primaryColor);
+    // console.log('»» WIDGET DESIGN - ON CLOSE PRIMARY COLOR DIALOG COLOR (RGB) ', primaryColor);
     const new_col = primaryColor.replace(/rgb/i, 'rgba');
     this.primaryColorRgba = new_col.replace(/\)/i, ',0.50)');
-    console.log('+ WIDGET DESIGN - ON SELECT PRIMARY COLOR (RGBA) ', this.primaryColorRgba);
+    // console.log('»» WIDGET DESIGN - PRIMARY COLOR RGBA ', this.primaryColorRgba);
 
     this.primaryColorGradiend = `linear-gradient(${this.primaryColor}, ${this.primaryColorRgba})`;
     this.primaryColorBorder = `2.4px solid ${this.primaryColorRgba}`;
@@ -303,20 +506,24 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
   // }
 
   onCloseSecondaryColorDialog(event) {
-    console.log('++++++ WIDGET DESIGN - ON SELECT SECONDARY COLOR ', event);
+    console.log('»» WIDGET DESIGN - ON CLOSE SECONDARY DIALOG ', event);
     this.secondaryColor = event
 
-    // ASSIGN TO WIDEGET OBJ
-    this.widgetObj = [
-      {
-        'logoChat': this.logoUrl,
-        'themeColor': this.primaryColor,
-        'themeForegroundColor': this.secondaryColor,
-        'wellcomeTitle': this.welcomeTitle,
-        'wellcomeMsg': this.customWelcomeMsg
-      }
-    ]
+    if (this.secondaryColor !== this.widgetDefaultSettings.themeForegroundColor) {
+      // *** ADD PROPERTY
+      this.widgetObj['themeForegroundColor'] = this.secondaryColor
+    }
 
+    // ASSIGN TO WIDEGET OBJ
+    // this.widgetObj = [
+    //   {
+    //     'logoChat': this.logoUrl,
+    //     'themeColor': this.primaryColor,
+    //     'themeForegroundColor': this.secondaryColor,
+    //     'wellcomeTitle': this.welcomeTitle,
+    //     'wellcomeMsg': this.welcomeMsg
+    //   }
+    // ]
     // UPDATE WIDGET PROJECT
     this.widgetService.updateWidgetProject(this.widgetObj)
 
@@ -342,234 +549,351 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
   // }
 
   // ===========================================================================
-  // ============== *** CUSTOM LOGO URL (alias for logoChat) ***  ==============
+  // ============== *** LOGO URL (alias for logoChat) ***  ==============
   // ===========================================================================
   /**
-   * WHEN USER PRESS 'CHANGE LOGO' UPDATE THE OBJECT WIDGET
-   */
-  changeLogo() {
-    console.log('ON BLUR CHANGE LOGO - CUSTOM LOGO URL ', this.logoUrl);
+   * ON BLUR UPDATE THE OBJECT WIDGET */
+  onBlurChangeLogo() {
+    console.log('»» WIDGET DESIGN - ON BLUR LOGO URL ', this.logoUrl);
+
+    // if is defined logoUrl and LOGO_IS_ON === true set the property logoChat = to logoUrl
     if (this.logoUrl && this.LOGO_IS_ON === true) {
 
+      this.hasOwnLogo = true;
+      console.log('»» WIDGET DESIGN - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON);
+
+      // *** ADD PROPERTY
+      this.widgetObj['logoChat'] = this.logoUrl
+
       // ASSIGN TO WIDEGET OBJ
-      this.widgetObj = [
-        {
-          'logoChat': this.logoUrl,
-          'themeColor': this.primaryColor,
-          'themeForegroundColor': this.secondaryColor,
-          'wellcomeTitle': this.welcomeTitle,
-          'wellcomeMsg': this.customWelcomeMsg
-        }
-      ]
-      console.log('HAS PRESSED CHANGE LOGO - WIDGET OBJ ', this.widgetObj);
+      // this.widgetObj = [
+      //   {
+      //     'logoChat': this.logoUrl,
+      //     'themeColor': this.primaryColor,
+      //     'themeForegroundColor': this.secondaryColor,
+      //     'wellcomeTitle': this.welcomeTitle,
+      //     'wellcomeMsg': this.welcomeMsg
+      //   }
+      // ]
+      // console.log('HAS PRESSED CHANGE LOGO - WIDGET OBJ ', this.widgetObj);
 
       // UPDATE WIDGET PROJECT
       this.widgetService.updateWidgetProject(this.widgetObj)
 
-      this.hasOwnLogo = true;
-      console.log('ON BLUR CHANGE LOGO - HAS OWN LOGO ', this.hasOwnLogo);
 
     } else if (this.logoUrl && this.LOGO_IS_ON === false) {
+
+      // if is defined logoUrl and LOGO_IS_ON === false set the property logoChat = to No Logo
+      // use case: the logo btn on/off is setted as off and the user enter an logo url
+
       this.logoUrl = 'No Logo'
+      console.log('»» WIDGET DESIGN - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON);
+
+      // *** ADD PROPERTY
+      this.widgetObj['logoChat'] = 'nologo';
+
       // ASSIGN TO WIDEGET OBJ
-      this.widgetObj = [
-        {
-          'logoChat': 'nologo',
-          'themeColor': this.primaryColor,
-          'themeForegroundColor': this.secondaryColor,
-          'wellcomeTitle': this.welcomeTitle,
-          'wellcomeMsg': this.customWelcomeMsg
-        }
-      ]
-      console.log('HAS PRESSED CHANGE LOGO - WIDGET OBJ ', this.widgetObj);
+      // this.widgetObj = [
+      //   {
+      //     'logoChat': 'nologo',
+      //     'themeColor': this.primaryColor,
+      //     'themeForegroundColor': this.secondaryColor,
+      //     'wellcomeTitle': this.welcomeTitle,
+      //     'wellcomeMsg': this.welcomeMsg
+      //   }
+      // ]
+      // console.log('HAS PRESSED CHANGE LOGO - WIDGET OBJ ', this.widgetObj);
 
       // UPDATE WIDGET PROJECT
       this.widgetService.updateWidgetProject(this.widgetObj)
 
     } else {
+      // if is not defined logoUrl remove the property logoChat
+
+      // *** REMOVE PROPERTY
+      delete this.widgetObj['logoChat'];
+
       this.logoUrl = 'tiledesklogo'
       this.hasOwnLogo = false;
-      console.log('ON BLUR CHANGE LOGO - HAS OWN LOGO ', this.hasOwnLogo);
+      console.log('»» WIDGET DESIGN - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON);
       // ASSIGN TO WIDEGET OBJ
-      this.widgetObj = [
-        {
-          'logoChat': '',
-          'themeColor': this.primaryColor,
-          'themeForegroundColor': this.secondaryColor,
-          'wellcomeTitle': this.welcomeTitle,
-          'wellcomeMsg': this.customWelcomeMsg
-        }
-      ]
+      // this.widgetObj = [
+      //   {
+      //     'logoChat': '',
+      //     'themeColor': this.primaryColor,
+      //     'themeForegroundColor': this.secondaryColor,
+      //     'wellcomeTitle': this.welcomeTitle,
+      //     'wellcomeMsg': this.welcomeMsg
+      //   }
+      // ]
       this.widgetService.updateWidgetProject(this.widgetObj)
     }
   }
 
-  logoUrlChange(event) {
-    console.log('WIDGET DESIGN - CUSTOM LOGO URL CHANGE ', event)
-  }
+  // logoUrlChange(event) {
+  //   console.log('WIDGET DESIGN - CUSTOM LOGO URL CHANGE ', event)
+  // }
 
+  // SWITCH BTN ON / OFF
   onLogoOnOff($event) {
-    console.log('WIDGET DESIGN - LOGO ON/OFF ', $event.target.checked)
+    console.log('»» WIDGET DESIGN  - LOGO ON/OFF ', $event.target.checked)
     this.LOGO_IS_ON = false
+
     if ($event.target.checked === false) {
       this.logoUrl = 'No Logo'
-      this.widgetObj = [
-        {
-          'logoChat': 'nologo',
-          'themeColor': this.primaryColor,
-          'themeForegroundColor': this.secondaryColor,
-          'wellcomeTitle': this.welcomeTitle,
-          'wellcomeMsg': this.customWelcomeMsg
-        }
-      ]
-      this.widgetService.updateWidgetProject(this.widgetObj)
+
+      // CASE SWITCH BTN = OFF
+      // *** ADD PROPERTY
+      this.widgetObj['logoChat'] = 'nologo';
+
+      // this.widgetObj = [
+      //   {
+      //     'logoChat': 'nologo',
+      //     'themeColor': this.primaryColor,
+      //     'themeForegroundColor': this.secondaryColor,
+      //     'wellcomeTitle': this.welcomeTitle,
+      //     'wellcomeMsg': this.welcomeMsg
+      //   }
+      // ]
+      this.widgetService.updateWidgetProject(this.widgetObj);
+
     } else if ($event.target.checked === true) {
 
       this.logoUrl = 'tiledesklogo'
       this.LOGO_IS_ON = true;
-      console.log('»»» WIDGET DESIGN LOGO_IS_ON ', this.LOGO_IS_ON)
+      console.log('»» WIDGET DESIGN LOGO_IS_ON ', this.LOGO_IS_ON)
       this.hasOwnLogo = false
 
-      this.widgetObj = [
-        {
-          'logoChat': '',
-          'themeColor': this.primaryColor,
-          'themeForegroundColor': this.secondaryColor,
-          'wellcomeTitle': this.welcomeTitle,
-          'wellcomeMsg': this.customWelcomeMsg
-        }
-      ]
+      // CASE SWITCH BTN = ON
+      // *** REMOVE PROPERTY
+      delete this.widgetObj['logoChat'];
+
+      console.log('»» WIDGET DESIGN - widgetObj', this.widgetObj)
+
+      // this.widgetObj = [
+      //   {
+      //     'logoChat': '',
+      //     'themeColor': this.primaryColor,
+      //     'themeForegroundColor': this.secondaryColor,
+      //     'wellcomeTitle': this.welcomeTitle,
+      //     'wellcomeMsg': this.welcomeMsg
+      //   }
+      // ]
       this.widgetService.updateWidgetProject(this.widgetObj)
 
     }
   }
 
   // ====================================================================================
-  // ============== *** CUSTOM WIDGET TITLE (alias for wellcomeTitle) ***  ==============
+  // ============== *** WIDGET TITLE (alias for wellcomeTitle) ***  ==============
   // ====================================================================================
-  // startTimer() {
-  //   let ticks = 0;
-  //   const timer = Observable.timer(1000, 1000);
-  //   this.subscription = timer.subscribe((t) => {
 
-  //     ticks = t
-  //     console.log('**** **** ', ticks)
-  //     if (ticks === 5) {
-  //       console.log('**** **** ', ticks, '= 5 ')
-  //       this.subscription.unsubscribe();
-  //     }
-
-  //   });
-  // }
-
+  // USED TO SET THE DEFAULT WELCOME TITLE IF THE IMPUT FIELD IS EMPTY
   welcomeTitleChange(event) {
     // this.HIDE_WELCOME_TITLE_SAVE_BTN = false;
-    // this.startTimer()
 
-    // hide the save btn if the text in the input field is equal to the default WelcomeTitle (eng or it) 
-    // is equal to the WelcomeTitle returned in the Project object || (event === this.customWelcomeTitle)
-    // if ((event === this.defaultItWelcomeTitle) || (event === this.defaultEnWelcomeTitle) ) {
-    //   this.HIDE_WELCOME_TITLE_SAVE_BTN = true;
-    //   console.log('WIDGET DESIGN - WELCOME TITLE HIDE SAVE BTN (modelChange) ', this.HIDE_WELCOME_TITLE_SAVE_BTN);
-    // } else {
-    //   this.HIDE_WELCOME_TITLE_SAVE_BTN = false;
-    //   console.log('WIDGET DESIGN - WELCOME TITLE HIDE SAVE BTN (modelChange) ', this.HIDE_WELCOME_TITLE_SAVE_BTN);
-    // }
-
-    console.log('WIDGET DESIGN - WELCOME TITLE (modelChange) CHANGE ', event);
+    // console.log('»» WIDGET DESIGN - WELCOME TITLE (modelChange) CHANGE ', event);
     // console.log('WIDGET DESIGN - WELCOME TITLE LENGHT (modelChange) ', event.length);
     if (event.length === 0) {
-      console.log('WIDGET DESIGN - WELCOME TITLE LENGHT is (modelChange) ', event.length);
+      console.log('»» WIDGET DESIGN - WELCOME TITLE LENGHT (modelChange) is ', event.length, ' SET DEFAULT WELCOME TITLE');
+
 
       this.setDefaultWelcomeTitle();
     }
-    this.HAS_CHANGED_WELCOME_TITLE = true
+    // this.HAS_CHANGED_WELCOME_TITLE = true
   }
 
   setDefaultWelcomeTitle() {
     if (this.browserLang) {
       if (this.browserLang === 'it') {
-        this.welcomeTitle = 'Ciao, benvenuto su tiledesk';
+
+        this.welcomeTitle = this.widgetDefaultSettings.it.wellcomeTitle;
+        console.log('»» WIDGET DESIGN - DEFAULT WELCOME TITLE ', this.welcomeTitle);
+
+        // *** REMOVE PROPERTY
+        delete this.widgetObj['wellcomeTitle'];
+        // UPDATE WIDGET PROJECT
+        this.widgetService.updateWidgetProject(this.widgetObj)
+
       } else {
-        this.welcomeTitle = 'Hi, welcome to Tiledesk';
+
+        this.welcomeTitle = this.widgetDefaultSettings.en.wellcomeTitle;
+        console.log('»» WIDGET DESIGN - DEFAULT WELCOME TITLE ', this.welcomeTitle);
+
+        // *** REMOVE PROPERTY
+        delete this.widgetObj['wellcomeTitle'];
+        // UPDATE WIDGET PROJECT
+        this.widgetService.updateWidgetProject(this.widgetObj)
       }
     }
   }
 
-  saveWelcomeTitle() {
-    // ASSIGN TO WIDEGET OBJ
-    this.widgetObj = [
-      {
-        'logoChat': this.logoUrl,
-        'themeColor': this.primaryColor,
-        'themeForegroundColor': this.secondaryColor,
-        'wellcomeTitle': this.welcomeTitle,
-        'wellcomeMsg': this.customWelcomeMsg
+  onBlurSaveWelcomeTitle() {
+    if (this.browserLang === 'it') {
+      if (this.welcomeTitle !== this.widgetDefaultSettings.it.wellcomeTitle) {
+
+        // *** ADD PROPERTY
+        this.widgetObj['wellcomeTitle'] = this.welcomeTitle;
+        // UPDATE WIDGET PROJECT
+        this.widgetService.updateWidgetProject(this.widgetObj)
       }
-    ]
-    // UPDATE WIDGET PROJECT
-    this.widgetService.updateWidgetProject(this.widgetObj)
+    }
+
+    if (this.browserLang === 'en') {
+      if (this.welcomeTitle !== this.widgetDefaultSettings.en.wellcomeTitle) {
+
+        // *** ADD PROPERTY
+        this.widgetObj['wellcomeTitle'] = this.welcomeTitle;
+        // UPDATE WIDGET PROJECT
+        this.widgetService.updateWidgetProject(this.widgetObj)
+      }
+    }
+
+    // ASSIGN TO WIDEGET OBJ
+    // this.widgetObj = [
+    //   {
+    //     'logoChat': this.logoUrl,
+    //     'themeColor': this.primaryColor,
+    //     'themeForegroundColor': this.secondaryColor,
+    //     'wellcomeTitle': this.welcomeTitle,
+    //     'wellcomeMsg': this.welcomeMsg
+    //   }
+    // ]
+
   }
 
   // ================================================================================
   // ============== *** CUSTOM WIDGET MSG (alias for wellcomeMsg) ***  ==============
   // ================================================================================
-  customWelcomeMsgChange(event) {
-    console.log('WIDGET DESIGN - WELCOME MSG CHANGE ', event);
 
-
+  // USED TO SET THE DEAFULT WELCOME TITLE IF THE IMPUT FIELD IS EMPTY
+  welcomeMsgChange(event) {
+    console.log('»» WIDGET DESIGN - WELCOME MSG CHANGE ', event);
 
     if (event.length === 0) {
-      console.log('WIDGET DESIGN - WELCOME MSG LENGHT is (modelChange) ', event.length);
+      console.log('»» WIDGET DESIGN - WELCOME MSG LENGHT (modelChange) is ', event.length, ' SET DEFAULT WELCOME MSG');
 
+      // this.welcomeMsg = 'ciao'
+      // this.niko = 'ciao'
+      // console.log('»» WIDGET DESIGN - DEFAULT WELCOME MSG  NIKO ', this.welcomeMsg  );
       this.setDefaultWelcomeMsg();
     }
-    this.HAS_CHANGED_WELCOME_MSG = true;
+    // this.HAS_CHANGED_WELCOME_MSG = true;
   }
 
   setDefaultWelcomeMsg() {
+    this.welcomeMsg = this.widgetDefaultSettings.it.wellcomeMsg
+    console.log('»» WIDGET DESIGN - DEFAULT WELCOME MSG ', this.welcomeMsg);
     if (this.browserLang) {
       if (this.browserLang === 'it') {
-        this.customWelcomeMsg = 'Come possiamo aiutare?'
+        // this.welcomeMsg = 'Come possiamo aiutare?'
+        this.welcomeMsg = this.widgetDefaultSettings.it.wellcomeMsg
+        console.log('»» WIDGET DESIGN - DEFAULT WELCOME MSG ', this.welcomeMsg);
+        // // *** REMOVE PROPERTY
+        delete this.widgetObj['wellcomeMsg'];
+        // // UPDATE WIDGET PROJECT
+        this.widgetService.updateWidgetProject(this.widgetObj)
 
       } else {
-        this.customWelcomeMsg = 'How can we help?'
+        console.log('»» WIDGET DESIGN - DEFAULT WELCOME MSG ', this.welcomeMsg);
+        // this.welcomeMsg = 'How can we help?'
+        this.welcomeMsg = this.widgetDefaultSettings.en.wellcomeMsg
+
+        // *** REMOVE PROPERTY
+        delete this.widgetObj['wellcomeMsg'];
+        // UPDATE WIDGET PROJECT
+        this.widgetService.updateWidgetProject(this.widgetObj)
       }
     }
   }
 
-  saveCustomWelcomeMsg() {
-    this.HAS_CHANGED_WELCOME_MSG = false;
-    this.widgetObj = [
-      {
-        'logoChat': this.logoUrl,
-        'themeColor': this.primaryColor,
-        'themeForegroundColor': this.secondaryColor,
-        'wellcomeTitle': this.welcomeTitle,
-        'wellcomeMsg': this.customWelcomeMsg
+  onBlurSaveWelcomeMsg() {
+    // console.log('»» WIDGET DESIGN - ON BLUR WELCOME MSG ', this.welcomeMsg);
+    if (this.browserLang === 'it') {
+      if (this.welcomeMsg !== this.widgetDefaultSettings.it.wellcomeMsg) {
+
+        // *** ADD PROPERTY
+        this.widgetObj['wellcomeMsg'] = this.welcomeMsg;
+        // UPDATE WIDGET PROJECT
+        this.widgetService.updateWidgetProject(this.widgetObj)
       }
-    ]
+    }
+
+    if (this.browserLang === 'en') {
+      if (this.welcomeMsg !== this.widgetDefaultSettings.en.wellcomeMsg) {
+
+        // *** ADD PROPERTY
+        this.widgetObj['wellcomeMsg'] = this.welcomeMsg;
+        // UPDATE WIDGET PROJECT
+        this.widgetService.updateWidgetProject(this.widgetObj)
+      }
+    }
+
+
+    // this.widgetObj = [
+    //   {
+    //     'logoChat': this.logoUrl,
+    //     'themeColor': this.primaryColor,
+    //     'themeForegroundColor': this.secondaryColor,
+    //     'wellcomeTitle': this.welcomeTitle,
+    //     'wellcomeMsg': this.welcomeMsg
+    //   }
+    // ]
+    // UPDATE WIDGET PROJECT
+    // this.widgetService.updateWidgetProject(this.widgetObj)
+  }
+
+
+
+  // =======================================================================================
+  // ============== *** WIDGET ALIGNMENT (alias for align) ***  ==============
+  // =======================================================================================
+
+  aligmentLeftSelected(left_selected: boolean) {
+    console.log('»» WIDGET DESIGN - LEFT ALIGNMENT SELECTED ', left_selected);
+    this.hasSelectedLeftAlignment = true;
+    this.hasSelectedRightAlignment = false;
+
+    // *** ADD PROPERTY
+    this.widgetObj['align'] = 'left'
+
+    // const alignValue = 'left'
+
+    // console.log('»» WIDGET DESIGN - LEFT ALIGNMENT SELECTED - ALIGN PROPERTY ', alignProperty);
+    // this.widgetService.publishWidgetAligmentSelected('left');
+    // this.widgetObj = [
+    //   {
+    //     'logoChat': this.logoUrl,
+    //     'themeColor': this.primaryColor,
+    //     'themeForegroundColor': this.secondaryColor,
+    //     'wellcomeTitle': this.welcomeTitle,
+    //     'wellcomeMsg': this.welcomeMsg,
+    //   }
+    // ]
     // UPDATE WIDGET PROJECT
     this.widgetService.updateWidgetProject(this.widgetObj)
   }
 
-
-
-
-  // WIDGET ALIGNMENT
-  aligmentLeftSelected(left_selected: boolean) {
-    console.log('+ WIDGET DESIGN - LEFT ALIGNMENT SELECTED ', left_selected);
-    this.hasSelectedLeftAlignment = true;
-    this.hasSelectedRightAlignment = false;
-
-    this.widgetService.publishWidgetAligmentSelected('left');
-  }
-
   aligmentRightSelected(right_selected: boolean) {
-    console.log('+ WIDGET DESIGN - RIGHT ALIGNMENT SELECTED ', right_selected);
+    console.log('»» WIDGET DESIGN - RIGHT ALIGNMENT SELECTED ', right_selected);
     this.hasSelectedLeftAlignment = false;
     this.hasSelectedRightAlignment = true;
-    this.widgetService.publishWidgetAligmentSelected('right');
+
+    // *** REMOVE PROPERTY
+    delete this.widgetObj['align'];
+    
+    // this.widgetService.publishWidgetAligmentSelected('right');
+    // this.widgetObj = [
+    //   {
+    //     'logoChat': this.logoUrl,
+    //     'themeColor': this.primaryColor,
+    //     'themeForegroundColor': this.secondaryColor,
+    //     'wellcomeTitle': this.welcomeTitle,
+    //     'wellcomeMsg': this.welcomeMsg,
+    //   }
+    // ]
+    // UPDATE WIDGET PROJECT
+    this.widgetService.updateWidgetProject(this.widgetObj)
   }
 
   subscribeToWidgetAlignment() {

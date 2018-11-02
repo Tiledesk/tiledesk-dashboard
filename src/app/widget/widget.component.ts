@@ -5,6 +5,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { Router } from '@angular/router';
 import { WidgetService } from '../services/widget.service';
 import { NotifyService } from '../core/notify.service';
+import { ProjectService } from '../services/project.service';
 
 @Component({
   selector: 'app-widget',
@@ -54,7 +55,8 @@ export class WidgetComponent implements OnInit {
   // primaryColor = 'rgb(159, 70, 183)';
   // secondaryColor = 'rgb(38, 171, 221)';
 
-  alignmentSelected = 'right'
+  // alignmentSelected = 'right'
+  alignmentSelected: string;
   alignmentOptions = [
     { alignTo: 'bottom right', value: 'right' },
     { alignTo: 'bottom left', value: 'left' }
@@ -64,7 +66,8 @@ export class WidgetComponent implements OnInit {
     private auth: AuthService,
     private router: Router,
     private widgetService: WidgetService,
-    private notify: NotifyService
+    private notify: NotifyService,
+    private projectService: ProjectService
   ) { this.http = http }
 
   ngOnInit() {
@@ -72,15 +75,13 @@ export class WidgetComponent implements OnInit {
 
     this.getCurrentProject();
 
-    this.subscribeToSelectedPrimaryColor();
-
-
-    this.subscribeToSelectedSecondaryColor();
-    this.subscribeToSelectedCalloutTimer();
-    this.subscribeToTypedCalloutTitle();
-    this.subscribeToTypedCalloutMsg();
-    this.subscribeToCheckedPrechatform();
-    this.subscribeToWidgetAlignment();
+    // this.subscribeToSelectedPrimaryColor();
+    // this.subscribeToSelectedSecondaryColor();
+    // this.subscribeToSelectedCalloutTimer();
+    // this.subscribeToTypedCalloutTitle();
+    // this.subscribeToTypedCalloutMsg();
+    // this.subscribeToCheckedPrechatform();
+    // this.subscribeToWidgetAlignment();
     console.log('**** ON INIT ALIGNMENT SELECTED ', this.alignmentSelected)
   }
 
@@ -93,9 +94,39 @@ export class WidgetComponent implements OnInit {
         if (project) {
           this.projectId = project._id;
           this.projectName = project.name;
+
+          if (this.projectId) {
+            this.getProjectById();
+          }
         }
       });
   }
+
+  getProjectById() {
+    this.projectService.getProjectById(this.projectId).subscribe((project: any) => {
+      // console.log('WIDGET DESIGN - GET PROJECT BY ID - PROJECT OBJECT: ', project);
+
+      console.log('»» WIDGET - PRJCT-WIDGET (onInit): ', project.widget);
+
+      if (project.widget) {
+
+        if (project.widget.align) {
+          this.alignmentSelected = `\n      align: "${project.widget.align}",`
+          console.log('»» WIDGET - PRJCT-WIDGET ALIGNMENT : ', this.alignmentSelected);
+        }
+
+        if (project.widget.themeColor) {
+          this.themeColor = `\n      themeColor: "${project.widget.themeColor}",`
+        }
+
+        if (project.widget.themeForegroundColor) {
+          this.themeForegroundColor = `\n      themeForegroundColor: "${project.widget.themeForegroundColor}",`
+        }
+      }
+
+    });
+  }
+
 
   subscribeToWidgetAlignment() {
     this.widgetService.widgetAlignmentBs
@@ -352,7 +383,7 @@ export class WidgetComponent implements OnInit {
   }
 
   goToWidgetSection() {
-    this.router.navigate(['project/' + this.project._id + '/widget/design'], {fragment: 'alignment'});
+    this.router.navigate(['project/' + this.project._id + '/widget/design'], { fragment: 'alignment' });
   }
 
 }
