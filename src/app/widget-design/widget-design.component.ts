@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, HostListener } from '@angular/core';
 import { Location } from '@angular/common';
 import { slideInOutAnimation } from './slide-in-out.animation';
 import { ColorPickerService, Cmyk } from 'ngx-color-picker';
@@ -123,6 +123,10 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
   onlineMsg: string;
   offlineMsg: string;
 
+  newInnerWidth: any;
+  initInnerWidth: any;
+  custom_breakpoint: boolean;
+
   constructor(
     public location: Location,
     private cpService: ColorPickerService,
@@ -135,6 +139,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
+    this.onInitframeHeight();
 
     this.getCurrentProject();
     this.getDeptsByProjectId();
@@ -167,7 +172,28 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
 
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.newInnerWidth = event.target.innerWidth;
+    console.log('»» WIDGET DESIGN - NEW INNER WIDTH ', this.newInnerWidth);
+    if (this.newInnerWidth <= 668) {
+      console.log('»» >>>> WIDGET DESIGN - NEW INNER WIDTH ', this.newInnerWidth);
+      this.custom_breakpoint = true;
+    } else {
+      this.custom_breakpoint = false;
+    }
+  }
 
+  onInitframeHeight(): any {
+    this.initInnerWidth = window.innerWidth;
+    console.log('»» WIDGET DESIGN - INIT WIDTH ', this.initInnerWidth);
+    if (this.newInnerWidth <= 668) {
+      console.log('»» >>>> WIDGET DESIGN - NEW INNER WIDTH ', this.newInnerWidth);
+      this.custom_breakpoint = true;
+    } else {
+      this.custom_breakpoint = false;
+    }
+  }
 
 
   getBrowserLang() {

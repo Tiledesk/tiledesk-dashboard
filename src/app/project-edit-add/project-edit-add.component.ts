@@ -22,7 +22,9 @@ export class ProjectEditAddComponent implements OnInit {
   projectName_toUpdate: string;
   id_project: string;
 
-  display = 'none'
+  display = 'none';
+  displayJwtSecretGeneratedModal = 'none';
+  sharedSecret: string;
 
   constructor(
     private projectService: ProjectService,
@@ -83,15 +85,13 @@ export class ProjectEditAddComponent implements OnInit {
       this.projectName_toUpdate = project.name;
       console.log('PROJECT NAME TO UPDATE: ', this.projectName_toUpdate);
 
-    },
-      (error) => {
-        console.log('GET PROJECT BY ID - ERROR ', error);
-        this.showSpinner = false;
-      },
-      () => {
-        console.log('GET PROJECT BY ID - COMPLETE ');
-        this.showSpinner = false;
-      });
+    }, (error) => {
+      console.log('GET PROJECT BY ID - ERROR ', error);
+      this.showSpinner = false;
+    }, () => {
+      console.log('GET PROJECT BY ID - COMPLETE ');
+      this.showSpinner = false;
+    });
   }
 
   /**
@@ -118,14 +118,14 @@ export class ProjectEditAddComponent implements OnInit {
 
         // }
       },
-      (error) => {
-        console.log('CREATE PROJECT - POST REQUEST ERROR ', error);
-      },
-      () => {
-        console.log('CREATE PROJECT - POST REQUEST COMPLETE ');
+        (error) => {
+          console.log('CREATE PROJECT - POST REQUEST ERROR ', error);
+        },
+        () => {
+          console.log('CREATE PROJECT - POST REQUEST COMPLETE ');
 
-        this.router.navigate(['/projects']);
-      });
+          this.router.navigate(['/projects']);
+        });
   }
 
   edit() {
@@ -135,15 +135,32 @@ export class ProjectEditAddComponent implements OnInit {
     this.projectService.updateMongoDbProject(this.id_project, this.projectName_toUpdate)
       .subscribe((data) => {
         console.log('PUT DATA ', data);
-      },
-      (error) => {
+      }, (error) => {
         console.log('PUT REQUEST ERROR ', error);
-      },
-      () => {
+      }, () => {
         console.log('PUT REQUEST * COMPLETE *');
         this.router.navigate(['/projects']);
       });
   }
+
+  generateSharedSecret() {
+    
+
+    this.projectService.generateSharedSecret()
+      .subscribe((res) => {
+        console.log('PRJCT-EDIT-ADD GENERATE SHARED SECRET - RESPONSE ', res);
+        this.sharedSecret = res.jwtSecret
+
+      }, (error) => {
+        console.log('PRJCT-EDIT-ADD GENERATE SHARED SECRET - ERROR ', error);
+      }, () => {
+        console.log('PRJCT-EDIT-ADD GENERATE SHARED SECRET  * COMPLETE *');
+
+        this.displayJwtSecretGeneratedModal = 'block'
+      });
+  }
+
+
 
   /**
    * MODAL DELETE PROJECT

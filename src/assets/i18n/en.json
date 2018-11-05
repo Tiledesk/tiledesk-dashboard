@@ -177,7 +177,9 @@
         "DeleteProject": "Delete Project",
         "TheProjectWillBeDeleted": "The project will be deleted",
         "ToDeleteTheProject": "To delete the project, enter the project ID",
-        "Calcel": "Cancel"
+        "Calcel": "Cancel",
+        "SharedSecretGenerated":"Shared Secret Generated",
+        "ThisIsYourSharedSecret":"This is your shared secret"
     },
     "HomePage": {
         "Widget": "To start configure your Widget !",

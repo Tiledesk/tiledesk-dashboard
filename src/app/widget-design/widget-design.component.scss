@@ -832,7 +832,7 @@ input {
    height: 36px;
    font-size: 14px;
    width: 100%;
-   max-width: 200px;
+//    max-width: 200px;
    margin-bottom: 10px;
    -webkit-appearance: none;
 //    background: #fff;
@@ -845,6 +845,10 @@ input {
    border-radius: 5px;
 //    background-color: #fff !important;
 //    border: solid 1px #ddd;
+}
+
+.custom-input {
+    max-width: 300px;
 }
 
 .palette {
@@ -1060,6 +1064,11 @@ input {
 .callout-disabled {
     color: #aaaaaa;
     cursor: not-allowed;
+}
+
+.breakpoint {
+
+    width: 100%;
 }
 
 
