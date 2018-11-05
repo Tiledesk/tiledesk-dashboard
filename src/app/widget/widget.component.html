@@ -10,18 +10,18 @@
 				 <div class="card-content" style="padding-top: 25px;">
 
 						<div class="row">
-							<div class="col-sm-12" style="margin-bottom: 25px">
+							<div class="col-sm-12" style="">
 
 								<h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; font-family: Google Sans, sans-serif;">
 									{{ 'Resourcepage.EmbedTheTileDeskChatWidget' | translate }}
 								</h4>
-								<h6 class="category text-gray" style="text-transform: none; padding-left:15px">
+								<h6 class="category text-gray" style="text-transform: none; padding-left:15px; color: rgb(118, 149, 165);">
 									{{ 'Resourcepage.ToChatWithYourVisitors...' | translate  }}
 								</h6>
-								<h6 class="category text-gray" style="text-transform: none; padding-left:15px; margin-top:0px">
+								<h6 class="category text-gray" style="text-transform: none; padding-left:15px; margin-top:0px;color: rgb(118, 149, 165);">
 										{{ 'Resourcepage.CopyTheFollowingScript...' | translate  }}<code><em>&lt;head&gt;</em></code> tags,
 								</h6>
-								<h6 class="category text-gray" style="text-transform: none; padding-left:15px; margin-top:0px">
+								<h6 class="category text-gray" style="text-transform: none; padding-left:15px; margin-top:0px; color: rgb(118, 149, 165);">
 										{{ 'Resourcepage.OrAddItWith...' | translate  }} <img style="width:20px" src="assets/img/google-tag-mgr-icon.png"/>
 										<span style="font-weight:500" >Google Tag Manager.</span> 
 										<a target="_blank" href="https://tiledesk.com/google-tag-manager-add-tiledesk-to-your-sites/">
@@ -32,7 +32,7 @@
 						</div>
 
 							<div class="row" style=" margin-top: 15px;">
-								<div class="col-sm-5 col-xs-12">
+								<!-- <div class="col-sm-5 col-xs-12"> -->
                             
 									<!-- ========================= INCLUDE PRECHAT FORM  MOVED TO BOTTOM ========================= -->
 									<!-- <h6 class="category text-gray" style="text-transform: none; padding-left:15px">
@@ -55,7 +55,7 @@
 									</h6>    -->
 
 									<!-- ===========================  CALLOUT  =========================== -->
-									<h6 class="category text-gray" style="text-transform: none; padding-left:15px">        
+									<!-- <h6 class="category text-gray" style="text-transform: none; padding-left:15px">        
 										<div>    
 											<label style="color: #566787; margin-top: 5px" class="form-check-label" for="exampleCheck1">
 												Callout                  
@@ -63,10 +63,10 @@
 											<div class="row" style="border-left: #5bc0de 2px solid; margin-left: 0px;">
 												<div class="col-sm-11">
 													{{ 'Resourcepage.MakeTheFirstStep' | translate }} 
-												</div>
+												</div> -->
 
 												<!-- ======------ CALLOUT TIMER ------====== -->
-												<div class="col-sm-8">                                 
+												<!-- <div class="col-sm-8">                                 
 													<div style="color: rgba(0, 0, 0, 0.54);; font-weight: 600; margin-top: 8px; font-size: 13px; margin-bottom: 4px;">
 														{{ 'Resourcepage.CalloutTimer' | translate }} 
 													</div>
@@ -87,10 +87,11 @@
 													<p *ngIf="calloutTimerSecondSelected !== -1 && calloutTimerSecondSelected !== 0;" style="font-weight:100;font-size:12px; margin-bottom:0px">
 														{{ 'Resourcepage.OpensTheChatAfter' | translate }} {{calloutTimerSecondSelected}} {{ 'Resourcepage.Seconds' | translate }} 
 													</p>
-												</div> 
+												</div>  -->
 												
-												<div *ngIf="calloutTimerSecondSelected !== -1">
-													<!-- ======------ CALLOUT TITLE ------====== -->
+												<!-- ======------ CALLOUT TITLE & CALLOUT MESSAGE ------====== -->
+												<!-- <div *ngIf="calloutTimerSecondSelected !== -1">
+													
 													<div class="col-sm-8">
 														<div style="color: rgba(0, 0, 0, 0.54);; font-weight: 600; margin-top: 8px; font-size: 13px; margin-bottom: 4px;">
 															{{ 'Resourcepage.CalloutTitle' | translate }} 
@@ -103,7 +104,6 @@
 														</p>
 													</div>
 
-													<!-- ======------ CALLOUT MESSAGE ------====== -->
 													<div class="col-sm-8">
 														<div style="color: rgba(0, 0, 0, 0.54);; font-weight: 600; margin-top: 8px; font-size: 13px; margin-bottom: 4px;">
 															{{ 'Resourcepage.CalloutMsg' | translate }} 
@@ -118,7 +118,7 @@
 												</div>
 											</div>
 										</div>
-									</h6>
+									</h6> -->
                             
 									<!-- =========================== WIDGET ALIGNMENT - MOVED BOTTOM =========================== -->
 									<!-- <h6 class="category text-gray" style="text-transform: none; padding-left:15px"> 
@@ -180,13 +180,14 @@
 										</div>
 									</h6> -->
       
-								</div> <!-- end col  --> 
+								<!-- </div>  -->
+								<!-- end col  --> 
 
                         <!-- PREVIEW DIV -->
                         <!-- style="background-repeat: no-repeat; background-image: url(assets/img/tiledesk-logo.svg); background-position: center; background-size: contain;" -->
-								<div class="col-sm-7 col-sm-offset-0 col-xs-10 col-xs-offset-1" >
-                           
-									<div style="padding-top: 15px; padding-bottom:0px; padding-left:0px">
+								<!-- <div class="col-sm-7 col-sm-offset-0 col-xs-10 col-xs-offset-1" > -->
+								<div class="col-sm-12" style="padding-left:25px; padding-right:25px; ">           
+									<div style="padding-bottom:0px; padding-left:0px">
 										<!-- <img *ngIf="preChatForm === false" [ngClass]="{'float_left_chat_img' : alignmentSelected === 'left'}"
 										style="width:50%; box-shadow: rgba(0,0,0,.18) 0 0 38px; float: right; margin-bottom: 0px; max-width:245px;" 
 										src="assets/img/tiledesk-chat-2.png"/>
@@ -207,9 +208,7 @@
 &lt;script type=&quot;application/javascript&quot;&gt;
   window.tiledeskSettings = 
     {
-      projectid: &quot;{{ projectId }}&quot;,
-      preChatForm: {{preChatFormValue}},
-      calloutTimer: {{ calloutTimerSecondSelected }},{{calloutTitle}}{{calloutMsg}}{{ themeColor }}{{themeForegroundColor}}{{ alignmentSelected }}
+      projectid: &quot;{{ projectId }}&quot;,{{preChatFormValue}}{{logoChatValue}}{{wellcomeTitleValue}}{{wellcomeMsgValue}}{{ calloutTimerSecondSelected }}{{calloutTitle}}{{calloutMsg}}{{ themeColor }}{{themeForegroundColor}}{{ alignmentSelected }}
     };
     (function(d, s, id) {
       var js, fjs = d.getElementsByTagName(s)[0];
@@ -262,7 +261,7 @@
 										</label>
 										<div class="row" style="border-left: #5bc0de 2px solid; margin-left: 0px;">
 											
-											<div class="col-sm-8" style="">  
+											<div class="col-sm-8" style="margin-top: 10px;">  
 												<span style="color: rgb(118, 149, 165)"> 
 													{{ 'Resourcepage.RequiresVisitorsToCompleteForm' | translate }} 
 												</span> 
@@ -280,21 +279,58 @@
 
 								</div>
 							</div>
+
+							<!-- =========================== WIDGET  APPEARENCE  =========================== -->
+							<div class="row">
+									<div class="col-sm-12" >
+										<div style="margin-left:15px;padding-bottom: 8px; border-bottom: 1px solid #e1eef4 ">    
+											<label style="color: #566787; margin-top:8px; margin-bottom:8px; font-size:16px; font-family: Google Sans, sans-serif;">
+												<!-- {{ 'WidgetColors' | translate }} -->
+												Widget Appearence
+											</label>
+											<div class="row" style="border-left: #5bc0de 2px solid; margin-left: 0px;">
+												
+												<div class="col-sm-8" style="">  
+													<span style="color: rgb(118, 149, 165)"> 
+														<!-- {{ 'CustomizeTheWidgetColors' | translate }} -->
+														Customize colors, logo, welcome message and alignment
+													</span> 
+												</div>
+												
+												<div class="col-sm-4" style="cursor: pointer;" (click)="goToWidgetDesign()">
+														<!-- #B5D2E1 -->
+										
+													<span style="color: #9c27b0;  vertical-align: middle; font-weight: 500" > 
+															{{ 'Customize' | translate }}
+													</span> 	
+													<i class="material-icons" style="vertical-align: middle; color: #9c27b0;">
+														keyboard_arrow_right
+													</i>
+												</div>
+											</div>    
+										</div>
+	
+									</div>
+								</div>
 						
 							<!-- =========================== WIDGET ALIGNMENT =========================== -->
 							<div class="row">
 								<div class="col-sm-12" >
 									<div style="margin-left:15px;padding-bottom: 8px; border-bottom: 1px solid #e1eef4 ">    
 										<label style="color: #566787; margin-top:8px; margin-bottom:8px; font-size:16px; font-family: Google Sans, sans-serif;">
-											{{ 'Resourcepage.WidgetAlignment' | translate }}
+											<!-- {{ 'Resourcepage.WidgetAlignment' | translate }} -->
+											Greetings
 										</label>
 										<div class="row" style="border-left: #5bc0de 2px solid; margin-left: 0px;">
 											
 											<div class="col-sm-8" style="">  
 												<span style="color: rgb(118, 149, 165)"> 
 													{{ 'WidgetAlignmentOnYourWebsite' | translate }}
-													<span style="font-weight:500; color: #00bcd4" *ngIf="alignmentSelected === 'right'"> {{ 'BottomRight' | translate}} </span>
-													<span style="font-weight:500; color: #00bcd4" *ngIf="alignmentSelected === 'left'"> {{ 'BottomLeft' | translate}} </span>
+													<span style="font-weight:500; color: #00bcd4" *ngIf="alignmentSelected === 'right'"> 
+														{{ 'BottomRight' | translate}} </span>
+													<span style="font-weight:500; color: #00bcd4" *ngIf="alignmentSelected === 'left'"> 
+														{{ 'BottomLeft' | translate}} 
+													</span>
 												</span> 
 											</div>
 											
@@ -314,36 +350,7 @@
 								</div>
 							</div>
 
-							<!-- =========================== WIDGET  COLORS  =========================== -->
-								<div class="row">
-									<div class="col-sm-12" >
-										<div style="margin-left:15px;padding-bottom: 8px; border-bottom: 1px solid #e1eef4 ">    
-											<label style="color: #566787; margin-top:8px; margin-bottom:8px; font-size:16px; font-family: Google Sans, sans-serif;">
-												{{ 'WidgetColors' | translate }}
-											</label>
-											<div class="row" style="border-left: #5bc0de 2px solid; margin-left: 0px;">
-												
-												<div class="col-sm-8" style="">  
-													<span style="color: rgb(118, 149, 165)"> 
-														{{ 'CustomizeTheWidgetColors' | translate }}
-													</span> 
-												</div>
-												
-												<div class="col-sm-4" style="cursor: pointer;" (click)="goToWidgetDesign()">
-														<!-- #B5D2E1 -->
-										
-													<span style="color: #9c27b0;  vertical-align: middle; font-weight: 500" > 
-															{{ 'Customize' | translate }}
-													</span> 	
-													<i class="material-icons" style="vertical-align: middle; color: #9c27b0;">
-														keyboard_arrow_right
-													</i>
-												</div>
-											</div>    
-										</div>
-	
-									</div>
-								</div>
+
 							
 								<!-- =========================== WEB SDK LINK =========================== -->
 								<div class="row">

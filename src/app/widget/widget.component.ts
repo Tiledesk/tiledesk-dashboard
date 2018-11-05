@@ -18,13 +18,18 @@ export class WidgetComponent implements OnInit {
   project: Project;
 
   projectId: string;
-  preChatForm = false;
+  // preChatForm = false;
+  preChatForm: boolean;
+  // preChatFormValue = 'false';
+  preChatFormValue: string;;
+
   projectName: string;
   calloutTimer: string;
   hasSelectedCalloutTimer = false;
-  preChatFormValue = 'false';
+  
   http: Http;
-  calloutTimerSecondSelected = -1;
+  // calloutTimerSecondSelected = -1;
+  calloutTimerSecondSelected: any;
 
   // preChatForm = 'preChatForm'
   calloutTimerOptions = [
@@ -61,6 +66,12 @@ export class WidgetComponent implements OnInit {
     { alignTo: 'bottom right', value: 'right' },
     { alignTo: 'bottom left', value: 'left' }
   ]
+
+  public widgetObj = {};
+
+  logoChatValue: string;
+  wellcomeTitleValue: string;
+  wellcomeMsgValue: string;
   constructor(
     http: Http,
     private auth: AuthService,
@@ -109,6 +120,47 @@ export class WidgetComponent implements OnInit {
       console.log('»» WIDGET - PRJCT-WIDGET (onInit): ', project.widget);
 
       if (project.widget) {
+
+        this.widgetObj = project.widget;
+
+        
+        if (project.widget.wellcomeTitle) {
+          this.wellcomeTitleValue = `\n      wellcomeTitle: "${project.widget.wellcomeTitle}",`
+          console.log('»» WIDGET - PRJCT-WIDGET WELCOME TITLE : ', this.wellcomeTitleValue);
+        }
+
+        if (project.widget.wellcomeMsg) {
+          this.wellcomeMsgValue = `\n      wellcomeTitle: "${project.widget.wellcomeMsg}",`
+          console.log('»» WIDGET - PRJCT-WIDGET WELCOME MSG : ', this.wellcomeMsgValue);
+        }
+
+        if (project.widget.logoChat) {
+          this.logoChatValue = `\n      logoChat: "${project.widget.logoChat}",`
+          console.log('»» WIDGET - PRJCT-WIDGET LOGO CHAT : ', this.calloutTimerSecondSelected);
+        }
+
+        if (project.widget.preChatForm) {
+          this.preChatFormValue = `\n      preChatForm: ${project.widget.preChatForm},`
+          console.log('»» WIDGET - PRJCT-WIDGET PRECHAT FORM : ', this.calloutTimerSecondSelected);
+          this.preChatForm = true;
+        } else {
+          this.preChatForm = false;
+        }
+
+        if (project.widget.calloutTimer) {
+          this.calloutTimerSecondSelected = `\n      calloutTimer: ${project.widget.calloutTimer},`
+          console.log('»» WIDGET - PRJCT-WIDGET CALLOUT TIMER : ', this.calloutTimerSecondSelected);
+        }
+
+        if (project.widget.calloutTitle) {
+          this.calloutTitle = `\n      calloutTitle: "${project.widget.calloutTitle}",`
+          console.log('»» WIDGET - PRJCT-WIDGET CALLOUT TITLE : ', this.calloutTitle);
+        }
+
+        if (project.widget.calloutMsg) {
+          this.calloutMsg = `\n      calloutMsg: "${project.widget.calloutMsg}",`
+          console.log('»» WIDGET - PRJCT-WIDGET CALLOUT MSG : ', this.calloutMsg);
+        }
 
         if (project.widget.align) {
           this.alignmentSelected = `\n      align: "${project.widget.align}",`
@@ -311,19 +363,30 @@ export class WidgetComponent implements OnInit {
   togglePrechatformCheckBox(event) {
     if (event.target.checked) {
       this.preChatForm = true;
-      this.preChatFormValue = 'true';
+      // this.preChatFormValue = 'true';
+
+      this.preChatFormValue = `\n      preChatForm: ${this.preChatForm},`
+      // *** ADD PROPERTY
+      this.widgetObj['preChatForm'] = this.preChatForm;
+      this.widgetService.updateWidgetProject(this.widgetObj)
 
       // COMMENT AS FOR CALLOUT TITLE
-      this.widgetService.publishPrechatformSelected(this.preChatForm)
+      // this.widgetService.publishPrechatformSelected(this.preChatForm)
 
-      console.log('INCLUDE PRE CHAT FORM ', this.preChatForm)
+      console.log('»» WIDGET - INCLUDE PRE CHAT FORM ', event.target.checked)
     } else {
       this.preChatForm = false;
-      this.preChatFormValue = 'false';
+      // *** REMOVE PROPERTY
+      delete this.widgetObj['preChatForm'];
+      this.widgetService.updateWidgetProject(this.widgetObj)
+      this.preChatFormValue = '';
+
+      // this.preChatForm = false;
+      // this.preChatFormValue = 'false';
 
       // COMMENT AS FOR CALLOUT TITLE
-      this.widgetService.publishPrechatformSelected(this.preChatForm)
-      console.log('INCLUDE PRE CHAT FORM ', this.preChatForm)
+      // this.widgetService.publishPrechatformSelected(this.preChatForm)
+      console.log('»» WIDGET - INCLUDE PRE CHAT FORM ', event.target.checked)
     }
   }
 

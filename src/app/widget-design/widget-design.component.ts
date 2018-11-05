@@ -82,7 +82,8 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
   browserLang: string;
   LOGO_IS_ON: boolean;
 
-  calloutTimerSecondSelected = -1;
+  // calloutTimerSecondSelected = -1;
+  calloutTimerSecondSelected: number;
 
   // preChatForm = 'preChatForm'
   calloutTimerOptions = [
@@ -104,6 +105,8 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
   calloutMsg: string;
   calloutMsgText: string;
   escaped_calloutMsg: string;
+
+  CALLOUT_IS_DISABLED: boolean;
 
   constructor(
     public location: Location,
@@ -146,63 +149,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
 
   }
 
-  setSelectedCalloutTimer() {
-    console.log('»»» SET SELECTED CALLOUT TIMER - TIMER SELECTED', this.calloutTimerSecondSelected)
 
-    // COMMENT AS FOR CALLOUT TITLE
-    this.widgetService.publishCalloutTimerSelected(this.calloutTimerSecondSelected)
-
-    if (this.calloutTimerSecondSelected === -1) {
-
-      this.escaped_calloutTitle = ''; // callout title escaped
-      this.calloutTitleText = ''; // clear the value in the input if the user disabled the callout
-      console.log('»»» SET SELECTED CALLOUT TIMER - CALLOUT TITLE ESCAPED', this.escaped_calloutTitle)
-      this.escaped_calloutMsg = ''; // callout msg escaped
-      this.calloutMsgText = '';  // clear the value in the input if the user disabled the callout
-      console.log('»»» SET SELECTED CALLOUT TIMER - CALLOUT MSG ESCAPED ', this.escaped_calloutMsg)
-      this.calloutTitle = '';
-      this.calloutMsg = ''
-    }
-  }
-
-  onKeyCalloutMsg() {
-    if (this.calloutMsgText) {
-      this.escaped_calloutMsg = this.calloutMsgText.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
-      console.log('+++ +++ ON KEY-UP CALLOUT MSG ', this.escaped_calloutMsg);
-      this.calloutMsg = `\n      calloutMsg: "${this.escaped_calloutMsg}",` // is used in the texarea 'script'
-
-      // COMMENT AS FOR CALLOUT TITLE
-      this.widgetService.publishCalloutMsgTyped(this.calloutMsgText);
-    } else {
-      this.escaped_calloutMsg = '';
-      this.calloutMsg = '';
-
-      // COMMENT AS FOR CALLOUT TITLE
-      this.widgetService.publishCalloutMsgTyped(this.calloutMsgText);
-    }
-  }
-
-  onKeyCalloutTitle() {
-    if (this.calloutTitleText) {
-      this.escaped_calloutTitle = this.calloutTitleText.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
-      console.log('+++ +++ ON KEY-UP CALLOUT TITLE TEXT  ', this.calloutTitleText);
-      console.log('+++ +++ ON KEY-UP ESCAPED CALLOUT TITLE ', this.escaped_calloutTitle);
-
-      /**
-       * THE calloutTitleText IS PASSED TO THE WIDGET SERVICE THAT PUBLISH the property calloutTitleBs
-       * THIS SAME COMP SUBSCRIBES TO THE WIDGET SERVICE (see subscribeToTypedCalloutTitle) TO AVOID THAT,
-       * WHEN THE USER GO TO THE WIDEGT DESIGN PAGE (or in another page) AND THEN RETURN IN THE
-       * WIDGET PAGE, THE VALUE OF THE CALLOUT TITLE BE EMPTY EVEN IF HE HAD PREVIOUSLY DIGITED IT */
-      this.widgetService.publishCalloutTitleTyped(this.calloutTitleText)
-
-      this.calloutTitle = `\n      calloutTitle: "${this.escaped_calloutTitle}",` // is used in the texarea 'script'
-    } else {
-      console.log('+++ +++ ON KEY-UP CALLOUT TITLE TEXT (else) ', this.calloutTitleText);
-      this.widgetService.publishCalloutTitleTyped(this.calloutTitleText)
-      this.escaped_calloutTitle = '';
-      this.calloutTitle = '';
-    }
-  }
 
   getBrowserLangAndSwitchWelcomeTitleAndMsg() {
     this.browserLang = this.translate.getBrowserLang();
@@ -231,6 +178,44 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
       if (project.widget) {
 
         this.widgetObj = project.widget;
+
+        /**
+         * ******************************** calloutTimer (WIDGET DEFINED) *******************************************
+         */
+        if (project.widget.calloutTimer) {
+          this.calloutTimerSecondSelected = project.widget.calloutTimer;
+          this.CALLOUT_IS_DISABLED = false;
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) CALLOUT TIMER: ', this.calloutTimerSecondSelected, 'IS DISABLED ', this.CALLOUT_IS_DISABLED);
+          
+        } else {
+          this.calloutTimerSecondSelected = -1;
+          this.CALLOUT_IS_DISABLED = true;
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) CALLOUT TIMER: ', this.calloutTimerSecondSelected, 'IS SET DEFAULT  - IS DISABLED ', this.CALLOUT_IS_DISABLED);
+        
+        }
+        
+        /**
+         * ******************************** calloutTitle (WIDGET DEFINED) *******************************************
+         */
+        if (project.widget.calloutTitle) {
+          this.calloutTitle = project.widget.calloutTitle;
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) CALLOUT TITLE: ', this.calloutTitle);
+        } else {
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) CALLOUT TITLE: ', this.calloutTitle, 'IS UNDEFINED > SET DEFAULT');
+          this.setDefaultcalloutTitle();
+        }
+
+        /**
+         * ******************************** calloutMsg (WIDGET DEFINED) *******************************************
+         */
+        if (project.widget.calloutMsg) {
+          this.calloutMsg = project.widget.calloutMsg;
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) CALLOUT MSG: ', this.calloutMsg);
+        } else {
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) CALLOUT MSG: ', this.calloutMsg, 'IS UNDEFINED > SET DEFAULT');
+          this.setDefaultcalloutMsg();
+        }
+
 
         /**
          * ********************************  logoChat (WIDGET DEFINED) ****************************************
@@ -337,6 +322,8 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
         }
 
       } else {
+
+
         /**
          * ******************************** logoChat (WIDGET UNDEFINED) **********************************************
          */
@@ -368,6 +355,21 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
          * ******************************** wellcomeMsg (WIDGET UNDEFINED) ********************************************
          */
         this.setDefaultWelcomeMsg();
+       
+        /**
+         * ******************************** calloutTimer (WIDGET UNDEFINED) ******************************************
+         */
+        this.calloutTimerSecondSelected = -1;
+        this.CALLOUT_IS_DISABLED = true;
+        /**
+         * ******************************** calloutTitle (WIDGET UNDEFINED) ******************************************
+         */
+        this.setDefaultcalloutTitle();
+
+         /**
+         * ******************************** wellcomeMsg (WIDGET UNDEFINED) ********************************************
+         */
+        this.setDefaultcalloutMsg();
       }
 
 
@@ -393,6 +395,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
       // console.log('»» WIDGET DESIGN - QUERY SELECTOR ERROR  ', e)
     }
   }
+
 
 
   // ===========================================================================
@@ -703,6 +706,8 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
     // this.HAS_CHANGED_WELCOME_TITLE = true
   }
 
+
+
   setDefaultWelcomeTitle() {
     if (this.browserLang) {
       if (this.browserLang === 'it') {
@@ -763,7 +768,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
   }
 
   // ================================================================================
-  // ============== *** CUSTOM WIDGET MSG (alias for wellcomeMsg) ***  ==============
+  // ============== *** WIDGET MSG (alias for wellcomeMsg) ***  ==============
   // ================================================================================
 
   // USED TO SET THE DEAFULT WELCOME TITLE IF THE IMPUT FIELD IS EMPTY
@@ -782,8 +787,8 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
   }
 
   setDefaultWelcomeMsg() {
-    this.welcomeMsg = this.widgetDefaultSettings.it.wellcomeMsg
-    console.log('»» WIDGET DESIGN - DEFAULT WELCOME MSG ', this.welcomeMsg);
+    // this.welcomeMsg = this.widgetDefaultSettings.it.wellcomeMsg
+    // console.log('»» WIDGET DESIGN - DEFAULT WELCOME MSG ', this.welcomeMsg);
     if (this.browserLang) {
       if (this.browserLang === 'it') {
         // this.welcomeMsg = 'Come possiamo aiutare?'
@@ -841,6 +846,211 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
     // ]
     // UPDATE WIDGET PROJECT
     // this.widgetService.updateWidgetProject(this.widgetObj)
+  }
+
+  // ===========================================================================
+  // ============== *** CALLOUT TIMER (calloutTimer) ***  ==============
+  // ===========================================================================
+  setSelectedCalloutTimer() {
+    console.log('»» WIDGET DESIGN CALLOUT TIMER - TIMER SELECTED', this.calloutTimerSecondSelected)
+
+    this.CALLOUT_IS_DISABLED = false;
+    // *** ADD PROPERTY
+    this.widgetObj['calloutTimer'] = this.calloutTimerSecondSelected;
+       // UPDATE WIDGET PROJECT
+       this.widgetService.updateWidgetProject(this.widgetObj)
+    // COMMENT AS FOR CALLOUT TITLE
+    // this.widgetService.publishCalloutTimerSelected(this.calloutTimerSecondSelected)
+
+    if (this.calloutTimerSecondSelected === -1) {
+      this.CALLOUT_IS_DISABLED = true;
+         // *** REMOVE PROPERTY
+         delete this.widgetObj['calloutTimer'];
+        //  delete this.widgetObj['calloutTitle'];
+        //  delete this.widgetObj['calloutMsg'];
+         // UPDATE WIDGET PROJECT
+         this.widgetService.updateWidgetProject(this.widgetObj)
+
+         this.setDefaultcalloutTitle();
+         this.setDefaultcalloutMsg();
+
+      // this.escaped_calloutTitle = ''; // callout title escaped
+      // this.calloutTitleText = ''; // clear the value in the input if the user disabled the callout
+      // console.log('»»» SET SELECTED CALLOUT TIMER - CALLOUT TITLE ESCAPED', this.escaped_calloutTitle)
+      // this.escaped_calloutMsg = ''; // callout msg escaped
+      // this.calloutMsgText = '';  // clear the value in the input if the user disabled the callout
+      // console.log('»»» SET SELECTED CALLOUT TIMER - CALLOUT MSG ESCAPED ', this.escaped_calloutMsg)
+      // this.calloutTitle = '';
+      // this.calloutMsg = ''
+    }
+  }
+
+
+
+  // ===========================================================================
+  // ============== *** CALLOUT TITLE ***  ==============
+  // ===========================================================================
+  // onKeyCalloutTitle() {
+  //   if (this.calloutTitleText) {
+  //     this.escaped_calloutTitle = this.calloutTitleText.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
+  //     console.log('+++ +++ ON KEY-UP CALLOUT TITLE TEXT  ', this.calloutTitleText);
+  //     console.log('+++ +++ ON KEY-UP ESCAPED CALLOUT TITLE ', this.escaped_calloutTitle);
+
+  //     /**
+  //      * THE calloutTitleText IS PASSED TO THE WIDGET SERVICE THAT PUBLISH the property calloutTitleBs
+  //      * THIS SAME COMP SUBSCRIBES TO THE WIDGET SERVICE (see subscribeToTypedCalloutTitle) TO AVOID THAT,
+  //      * WHEN THE USER GO TO THE WIDEGT DESIGN PAGE (or in another page) AND THEN RETURN IN THE
+  //      * WIDGET PAGE, THE VALUE OF THE CALLOUT TITLE BE EMPTY EVEN IF HE HAD PREVIOUSLY DIGITED IT */
+  //     this.widgetService.publishCalloutTitleTyped(this.calloutTitleText)
+
+  //     this.calloutTitle = `\n      calloutTitle: "${this.escaped_calloutTitle}",`
+  //      // is used in the texarea 'script'
+  //   } else {
+  //     console.log('+++ +++ ON KEY-UP CALLOUT TITLE TEXT (else) ', this.calloutTitleText);
+  //     this.widgetService.publishCalloutTitleTyped(this.calloutTitleText)
+  //     this.escaped_calloutTitle = '';
+  //     this.calloutTitle = '';
+  //   }
+  // }
+  onBlurSaveCalloutTitle() {
+    if (this.browserLang === 'it') {
+      if (this.calloutTitle !== this.widgetDefaultSettings.it.calloutTitle) {
+
+        // *** ADD PROPERTY
+        this.widgetObj['calloutTitle'] = this.calloutTitle;
+        // UPDATE WIDGET PROJECT
+        this.widgetService.updateWidgetProject(this.widgetObj)
+      }
+    }
+
+    if (this.browserLang === 'en') {
+      if (this.calloutTitle !== this.widgetDefaultSettings.en.calloutTitle) {
+
+        console.log('»» WIDGET DESIGN - >> CALLOUT TITLE ', this.calloutTitle);
+        // *** ADD PROPERTY
+        this.widgetObj['calloutTitle'] = this.calloutTitle;
+
+        // UPDATE WIDGET PROJECT
+        this.widgetService.updateWidgetProject(this.widgetObj)
+      }
+    }
+  }
+
+  calloutTitleChange(event) {
+    if (event.length === 0) {
+      console.log('»» WIDGET DESIGN - CALLOUT TITLE LENGHT (modelChange) is ', event.length, ' SET DEFAULT CALLOUT TITLE');
+
+      // this.welcomeMsg = 'ciao'
+      // this.niko = 'ciao'
+      // console.log('»» WIDGET DESIGN - DEFAULT WELCOME MSG  NIKO ', this.welcomeMsg  );
+      this.setDefaultcalloutTitle();
+    }
+
+  }
+
+  setDefaultcalloutTitle() {
+    if (this.browserLang) {
+      if (this.browserLang === 'it') {
+
+        this.calloutTitle = this.widgetDefaultSettings.it.calloutTitle;
+        console.log('»» WIDGET DESIGN - DEFAULT CALLOUT TITLE ', this.calloutTitle);
+
+        // *** REMOVE PROPERTY
+        delete this.widgetObj['calloutTitle'];
+        // UPDATE WIDGET PROJECT
+        this.widgetService.updateWidgetProject(this.widgetObj)
+
+      } else {
+
+        this.calloutTitle = this.widgetDefaultSettings.en.calloutTitle;
+        console.log('»» WIDGET DESIGN - DEFAULT WELCOME TITLE ', this.calloutTitle);
+
+        // *** REMOVE PROPERTY
+        delete this.widgetObj['calloutTitle'];
+        // UPDATE WIDGET PROJECT
+        this.widgetService.updateWidgetProject(this.widgetObj)
+      }
+    }
+  }
+
+  // ===========================================================================
+  // ============== *** CALLOUT MSG (calloutMsg) ***  ==============
+  // ===========================================================================
+  // onKeyCalloutMsg() {
+  //   if (this.calloutMsgText) {
+  //     this.escaped_calloutMsg = this.calloutMsgText.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
+  //     console.log('+++ +++ ON KEY-UP CALLOUT MSG ', this.escaped_calloutMsg);
+  //     this.calloutMsg = `\n      calloutMsg: "${this.escaped_calloutMsg}",` // is used in the texarea 'script'
+
+  //     // COMMENT AS FOR CALLOUT TITLE
+  //     this.widgetService.publishCalloutMsgTyped(this.calloutMsgText);
+  //   } else {
+  //     this.escaped_calloutMsg = '';
+  //     this.calloutMsg = '';
+
+  //     // COMMENT AS FOR CALLOUT TITLE
+  //     this.widgetService.publishCalloutMsgTyped(this.calloutMsgText);
+  //   }
+  // }
+  onBlurSaveCalloutMsg() {
+    if (this.browserLang === 'it') {
+      if (this.calloutMsg !== this.widgetDefaultSettings.it.calloutMsg) {
+
+        // *** ADD PROPERTY
+        this.widgetObj['calloutMsg'] = this.calloutMsg;
+        // UPDATE WIDGET PROJECT
+        this.widgetService.updateWidgetProject(this.widgetObj)
+      }
+    }
+
+    if (this.browserLang === 'en') {
+      if (this.calloutMsg !== this.widgetDefaultSettings.en.calloutMsg) {
+
+        console.log('»» WIDGET DESIGN - >> CALLOUT MSG ', this.calloutMsg);
+        // *** ADD PROPERTY
+        this.widgetObj['calloutMsg'] = this.calloutMsg;
+
+        // UPDATE WIDGET PROJECT
+        this.widgetService.updateWidgetProject(this.widgetObj)
+      }
+    }
+  }
+
+  calloutMsgChange(event) {
+    if (event.length === 0) {
+      console.log('»» WIDGET DESIGN - CALLOUT MSG LENGHT (modelChange) is ', event.length, ' SET DEFAULT CALLOUT MSG');
+
+      // this.welcomeMsg = 'ciao'
+      // this.niko = 'ciao'
+      // console.log('»» WIDGET DESIGN - DEFAULT WELCOME MSG  NIKO ', this.welcomeMsg  );
+      this.setDefaultcalloutMsg();
+    }
+
+  }
+
+  setDefaultcalloutMsg() {
+    if (this.browserLang) {
+      if (this.browserLang === 'it') {
+
+        this.calloutMsg = this.widgetDefaultSettings.it.calloutMsg;
+        console.log('»» WIDGET DESIGN - DEFAULT CALLOUT MSG ', this.calloutMsg);
+
+        // *** REMOVE PROPERTY
+        delete this.widgetObj['calloutMsg'];
+        // UPDATE WIDGET PROJECT
+        this.widgetService.updateWidgetProject(this.widgetObj)
+
+      } else {
+
+        this.calloutMsg = this.widgetDefaultSettings.en.calloutMsg;
+        console.log('»» WIDGET DESIGN - DEFAULT WELCOME MSG ', this.calloutMsg);
+
+        // *** REMOVE PROPERTY
+        delete this.widgetObj['calloutMsg'];
+        // UPDATE WIDGET PROJECT
+        this.widgetService.updateWidgetProject(this.widgetObj)
+      }
+    }
   }
 
 
