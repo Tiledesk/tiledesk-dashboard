@@ -280,6 +280,47 @@ export class DepartmentService {
 
   }
 
+
+  public updateDefaultDeptOnlineMsg(id: string, onlineMsg: string ) {
+    const url = this.MONGODB_BASE_URL + id;
+
+    console.log('UPDATE DEFAULT DEPARTMENT URL  ', url);
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = { 'online_msg': onlineMsg };
+
+    console.log('UPDATE DEFAULT DEPARTMENT BODY  ', body);
+    return this.http
+    .put(url, JSON.stringify(body), options)
+    .map((res) => res.json());
+
+  }
+
+  public updateDefaultDeptOfflineMsg(id: string, offlineMsg: string) {
+    const url = this.MONGODB_BASE_URL + id;
+
+    console.log('UPDATE DEFAULT DEPARTMENT URL  ', url);
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = { 'offline_msg': offlineMsg };
+
+    console.log('UPDATE DEFAULT DEPARTMENT BODY  ', body);
+    return this.http
+    .put(url, JSON.stringify(body), options)
+    .map((res) => res.json());
+
+  }
+
   /**
    * READ DETAIL (TEST CHAT 21 router.get('/:departmentid/operators')
    * @param id

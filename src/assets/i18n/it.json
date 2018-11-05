@@ -102,6 +102,7 @@
     "HowCanWeHelp":"Come possiamo aiutare?",
     "PreviousConversations":"Conversazioni precedenti",	
     "NewConversation":"Nuova conversazione",
+    "WidgetAppearance" : "Aspetto del widget",
     "UserProfile": {
         "Profile": "Profilo",
         "UploadImage": "Carica immagine",
@@ -170,6 +171,8 @@
         "ProjectSettings": "Impostazioni Progetto",
         "ProjectName": "Nome Progetto",
         "ProjectId": "Id Progetto",
+        "SendTranscriptByEmail":"Auto invia transcript via email",
+        "Generate":"Genera",
         "UpdateProject": "Aggiorna Progetto",
         "DeleteProject": "Elimina Progetto",
         "TheProjectWillBeDeleted": "Il progetto verrà eliminato",

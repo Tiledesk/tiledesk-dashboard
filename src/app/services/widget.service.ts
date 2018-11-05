@@ -42,6 +42,8 @@ export class WidgetService {
       });
   }
 
+ 
+
   /**
    * WHEN IN WIDGET-DESIGN IS CHANGED THE PRIMARY COLOR,
    * THE NEW COLOR VALUE IS PASSED IN THIS SERVICE THAT PUBLISH IT THROUGH primaryColorBs.

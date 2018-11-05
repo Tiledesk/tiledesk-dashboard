@@ -10,6 +10,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Rx';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
+import { Department } from '../models/department-model';
+import { DepartmentService } from '../services/mongodb-department.service';
+
 @Component({
   selector: 'appdashboard-widget-design',
   templateUrl: './widget-design.component.html',
@@ -40,6 +43,8 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
   niko: string;
   public id_project: string;
 
+  default_dept: Department[];
+
   public widgetDefaultSettings =
     {
       'preChatForm': false,
@@ -52,13 +57,19 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
         'wellcomeTitle': 'Hi, welcome to tiledesk 👋 ',
         'wellcomeMsg': 'How can we help?',
         'calloutTitle': 'Need Help?',
-        'calloutMsg': 'Click here and start chatting with us!'
+        'calloutMsg': 'Click here and start chatting with us!',
+        'online_msg': 'Describe shortly your problem, you will be contacted by an agent.',
+        // tslint:disable-next-line:max-line-length
+        'offline_msg': '🤔 All operators are offline at the moment. You can anyway describe your problem. It will be assigned to the support team who will answer you as soon as possible.'
       },
       'it': {
         'wellcomeTitle': 'Ciao, benvenuto su tiledesk 👋 ',
         'wellcomeMsg': 'Come possiamo aiutare?',
         'calloutTitle': 'Bisogno di aiuto?',
-        'calloutMsg': 'Clicca qui e inizia a chattare con noi!'
+        'calloutMsg': 'Clicca qui e inizia a chattare con noi!',
+        'online_msg': 'Descrivi sinteticamente il tuo problema, ti metteremo in contatto con un operatore specializzato.',
+        // tslint:disable-next-line:max-line-length
+        'offline_msg': '🤔 Tutti gli operatori sono offline al momento.Puoi comunque descrivere il tuo problema. Sarà assegnato al team di supporto che ti risponderà appena possibile.'
       },
     }
 
@@ -108,6 +119,10 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
 
   CALLOUT_IS_DISABLED: boolean;
 
+  defaultdept_id: string;
+  onlineMsg: string;
+  offlineMsg: string;
+
   constructor(
     public location: Location,
     private cpService: ColorPickerService,
@@ -115,13 +130,16 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private projectService: ProjectService,
     private auth: AuthService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private departmentService: DepartmentService
   ) { }
 
   ngOnInit() {
 
     this.getCurrentProject();
-    this.getBrowserLangAndSwitchWelcomeTitleAndMsg();
+    this.getDeptsByProjectId();
+
+    this.getBrowserLang();
 
     this.route.fragment.subscribe(fragment => {
       this.fragment = fragment;
@@ -151,7 +169,8 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
 
 
 
-  getBrowserLangAndSwitchWelcomeTitleAndMsg() {
+
+  getBrowserLang() {
     this.browserLang = this.translate.getBrowserLang();
     console.log('WIDGET DESIGN - BROWSER LANG ', this.browserLang)
   }
@@ -169,6 +188,201 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
     });
   }
 
+  /**
+   * ===============================================================================
+   * ================== GET DEFAULT DEPT ONLINE / OFFLINE MSG ======================
+   * ===============================================================================
+   */
+  getDeptsByProjectId() {
+    this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
+      // console.log('ROUTING PAGE - DEPTS (FILTERED FOR PROJECT ID)', departments);
+
+      if (departments) {
+        departments.forEach(dept => {
+
+          if (dept.default === true) {
+            console.log('»» WIDGET DESIGN - DEFAULT DEPT ', dept);
+
+            this.defaultdept_id = dept._id;
+            console.log('»» WIDGET DESIGN - DEFAULT DEPT id ', this.defaultdept_id);
+
+            // ONLINE MSG
+            if (dept.online_msg) {
+              this.onlineMsg = dept.online_msg
+            } else {
+
+              this.setDefaultOnlineMsg()
+            }
+
+            // OFFLINE MSG
+            if (dept.offline_msg) {
+              this.offlineMsg = dept.offline_msg
+            } else {
+
+              this.setDefaultOfflineMsg()
+            }
+          }
+        });
+      }
+    });
+  }
+
+  /**
+   * ===============================================================================
+   * ================================= ONLINE  MSG =================================
+   * ===============================================================================
+   */
+  onBlurSaveOnlineMsg() {
+    console.log('»» WIDGET DESIGN - CALLING ON-BLUR-SAVE-ONLINE-MSG');
+    if (this.browserLang === 'it') {
+      if (this.onlineMsg !== this.widgetDefaultSettings.it.online_msg) {
+
+        // *** ADD PROPERTY
+        this.widgetObj['online_msg'] = this.onlineMsg;
+        // UPDATE WIDGET PROJECT
+        this.updateOnlineMsg(this.onlineMsg)
+      }
+    }
+
+    if (this.browserLang === 'en') {
+      if (this.onlineMsg !== this.widgetDefaultSettings.en.online_msg) {
+
+        // *** ADD PROPERTY
+        // this.widgetObj['online_msg'] = this.onlineMsg;
+        // UPDATE WIDGET PROJECT
+        this.updateOnlineMsg(this.onlineMsg)
+      }
+    }
+
+  }
+
+  updateOnlineMsg(onlineMsg: string) {
+    this.departmentService.updateDefaultDeptOnlineMsg(this.defaultdept_id, onlineMsg)
+      .subscribe((data) => {
+        console.log('»» WIDGET DESIGN - UPDATE DEFAULT DEPT ONLINE MSG - RESPONSE ', data);
+      }, (error) => {
+        console.log('»» WIDGET DESIGN - UPDATE DEFAULT DEPT ONLINE MSG - ERROR ', error);
+      }, () => {
+        console.log('»» WIDGET DESIGN - UPDATE DEFAULT DEPT ONLINE MSG * COMPLETE *');
+      });
+  }
+
+  onChangeOnlineMsg(event) {
+
+    if (event.length === 0) {
+      console.log('»» WIDGET DESIGN - DEFAULT DEPT ONLINE MSG LENGHT (modelChange) is ', event.length, ' SET DEFAULT ONLINE MSG');
+      this.setDefaultOnlineMsg();
+    }
+  }
+
+  setDefaultOnlineMsg() {
+    if (this.browserLang) {
+      if (this.browserLang === 'it') {
+
+        this.onlineMsg = this.widgetDefaultSettings.it.online_msg;
+        console.log('»» WIDGET DESIGN - DEFAULT ONLINE MSG ', this.onlineMsg);
+
+        // *** REMOVE PROPERTY
+        // delete this.widgetObj['calloutTitle'];
+        // UPDATE WIDGET PROJECT
+        // this.widgetService.updateWidgetProject(this.widgetObj)
+        const onlineMsg = ''
+        this.updateOnlineMsg(onlineMsg)
+
+      } else {
+
+        this.onlineMsg = this.widgetDefaultSettings.en.online_msg;
+        console.log('»» WIDGET DESIGN - DEFAULT ONLINE MSG ', this.onlineMsg);
+
+        const onlineMsg = ''
+        this.updateOnlineMsg(onlineMsg)
+
+        // *** REMOVE PROPERTY
+        // delete this.widgetObj['calloutTitle'];
+        // UPDATE WIDGET PROJECT
+        // this.widgetService.updateWidgetProject(this.widgetObj)
+      }
+    }
+  }
+
+  /**
+   * ================================================================================
+   * ================================= OFFLINE  MSG =================================
+   * ================================================================================
+   */
+  onBlurSaveOfflineMsg() {
+    console.log('»» WIDGET DESIGN - CALLING ON-BLUR-SAVE-OFFLINE-MSG');
+    if (this.browserLang === 'it') {
+      if (this.offlineMsg !== this.widgetDefaultSettings.it.offline_msg) {
+
+        // *** ADD PROPERTY
+        // this.widgetObj['online_msg'] = this.onlineMsg;
+        // UPDATE WIDGET PROJECT
+        this.updateOfflineMsg(this.offlineMsg)
+      }
+    }
+
+    if (this.browserLang === 'en') {
+      if (this.offlineMsg !== this.widgetDefaultSettings.en.offline_msg) {
+
+        // *** ADD PROPERTY
+        // this.widgetObj['online_msg'] = this.onlineMsg;
+        // UPDATE WIDGET PROJECT
+        this.updateOfflineMsg(this.offlineMsg)
+      }
+    }
+
+  }
+
+  updateOfflineMsg(offlineMsg: string) {
+    this.departmentService.updateDefaultDeptOfflineMsg(this.defaultdept_id, offlineMsg)
+      .subscribe((data) => {
+        console.log('»» WIDGET DESIGN - UPDATE DEFAULT DEPT OFFLINE MSG - RESPONSE ', data);
+      }, (error) => {
+        console.log('»» WIDGET DESIGN - UPDATE DEFAULT DEPT OFFLINE MSG - ERROR ', error);
+      }, () => {
+        console.log('»» WIDGET DESIGN - UPDATE DEFAULT DEPT OFFLINE MSG * COMPLETE *');
+      });
+  }
+
+  onChangeOfflineMsg(event) {
+    if (event.length === 0) {
+      console.log('»» WIDGET DESIGN - DEFAULT DEPT OFFLINE MSG LENGHT (modelChange) is ', event.length, ' SET DEFAULT OFFLINE MSG');
+      this.setDefaultOfflineMsg();
+    }
+
+  }
+
+  setDefaultOfflineMsg() {
+    if (this.browserLang) {
+      if (this.browserLang === 'it') {
+
+        this.offlineMsg = this.widgetDefaultSettings.it.offline_msg;
+        console.log('»» WIDGET DESIGN - DEFAULT OFFLINE MSG ', this.offlineMsg);
+
+        // *** REMOVE PROPERTY
+        // delete this.widgetObj['calloutTitle'];
+        // UPDATE WIDGET PROJECT
+        // this.widgetService.updateWidgetProject(this.widgetObj)
+
+        const offlineMsg = '';
+        this.updateOfflineMsg(offlineMsg);
+      } else {
+
+        this.offlineMsg = this.widgetDefaultSettings.en.offline_msg;
+        console.log('»» WIDGET DESIGN - DEFAULT OFFLINE MSG ', this.offlineMsg);
+
+        const offlineMsg = '';
+        this.updateOfflineMsg(offlineMsg);
+        // *** REMOVE PROPERTY
+        // delete this.widgetObj['calloutTitle'];
+        // UPDATE WIDGET PROJECT
+        // this.widgetService.updateWidgetProject(this.widgetObj)
+      }
+    }
+  }
+
+
   getProjectById() {
     this.projectService.getProjectById(this.id_project).subscribe((project: any) => {
       // console.log('WIDGET DESIGN - GET PROJECT BY ID - PROJECT OBJECT: ', project);
@@ -185,15 +399,17 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
         if (project.widget.calloutTimer) {
           this.calloutTimerSecondSelected = project.widget.calloutTimer;
           this.CALLOUT_IS_DISABLED = false;
-          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) CALLOUT TIMER: ', this.calloutTimerSecondSelected, 'IS DISABLED ', this.CALLOUT_IS_DISABLED);
-          
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) CALLOUT TIMER: ', this.calloutTimerSecondSelected,
+            'IS DISABLED ', this.CALLOUT_IS_DISABLED);
+
         } else {
           this.calloutTimerSecondSelected = -1;
           this.CALLOUT_IS_DISABLED = true;
-          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) CALLOUT TIMER: ', this.calloutTimerSecondSelected, 'IS SET DEFAULT  - IS DISABLED ', this.CALLOUT_IS_DISABLED);
-        
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) CALLOUT TIMER: ', this.calloutTimerSecondSelected,
+            'IS SET DEFAULT  - IS DISABLED ', this.CALLOUT_IS_DISABLED);
+
         }
-        
+
         /**
          * ******************************** calloutTitle (WIDGET DEFINED) *******************************************
          */
@@ -355,7 +571,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
          * ******************************** wellcomeMsg (WIDGET UNDEFINED) ********************************************
          */
         this.setDefaultWelcomeMsg();
-       
+
         /**
          * ******************************** calloutTimer (WIDGET UNDEFINED) ******************************************
          */
@@ -366,9 +582,9 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
          */
         this.setDefaultcalloutTitle();
 
-         /**
-         * ******************************** wellcomeMsg (WIDGET UNDEFINED) ********************************************
-         */
+        /**
+        * ******************************** wellcomeMsg (WIDGET UNDEFINED) ********************************************
+        */
         this.setDefaultcalloutMsg();
       }
 
@@ -515,6 +731,13 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
     if (this.secondaryColor !== this.widgetDefaultSettings.themeForegroundColor) {
       // *** ADD PROPERTY
       this.widgetObj['themeForegroundColor'] = this.secondaryColor
+
+      this.widgetService.updateWidgetProject(this.widgetObj)
+    } else {
+      // *** REMOVE PROPERTY
+      delete this.widgetObj['themeForegroundColor'];
+      this.widgetService.updateWidgetProject(this.widgetObj)
+
     }
 
     // ASSIGN TO WIDEGET OBJ
@@ -528,7 +751,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
     //   }
     // ]
     // UPDATE WIDGET PROJECT
-    this.widgetService.updateWidgetProject(this.widgetObj)
+
 
   }
 
@@ -778,9 +1001,6 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
     if (event.length === 0) {
       console.log('»» WIDGET DESIGN - WELCOME MSG LENGHT (modelChange) is ', event.length, ' SET DEFAULT WELCOME MSG');
 
-      // this.welcomeMsg = 'ciao'
-      // this.niko = 'ciao'
-      // console.log('»» WIDGET DESIGN - DEFAULT WELCOME MSG  NIKO ', this.welcomeMsg  );
       this.setDefaultWelcomeMsg();
     }
     // this.HAS_CHANGED_WELCOME_MSG = true;
@@ -857,22 +1077,22 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
     this.CALLOUT_IS_DISABLED = false;
     // *** ADD PROPERTY
     this.widgetObj['calloutTimer'] = this.calloutTimerSecondSelected;
-       // UPDATE WIDGET PROJECT
-       this.widgetService.updateWidgetProject(this.widgetObj)
+    // UPDATE WIDGET PROJECT
+    this.widgetService.updateWidgetProject(this.widgetObj)
     // COMMENT AS FOR CALLOUT TITLE
     // this.widgetService.publishCalloutTimerSelected(this.calloutTimerSecondSelected)
 
     if (this.calloutTimerSecondSelected === -1) {
       this.CALLOUT_IS_DISABLED = true;
-         // *** REMOVE PROPERTY
-         delete this.widgetObj['calloutTimer'];
-        //  delete this.widgetObj['calloutTitle'];
-        //  delete this.widgetObj['calloutMsg'];
-         // UPDATE WIDGET PROJECT
-         this.widgetService.updateWidgetProject(this.widgetObj)
+      // *** REMOVE PROPERTY
+      delete this.widgetObj['calloutTimer'];
+      //  delete this.widgetObj['calloutTitle'];
+      //  delete this.widgetObj['calloutMsg'];
+      // UPDATE WIDGET PROJECT
+      this.widgetService.updateWidgetProject(this.widgetObj)
 
-         this.setDefaultcalloutTitle();
-         this.setDefaultcalloutMsg();
+      this.setDefaultcalloutTitle();
+      this.setDefaultcalloutMsg();
 
       // this.escaped_calloutTitle = ''; // callout title escaped
       // this.calloutTitleText = ''; // clear the value in the input if the user disabled the callout
@@ -1091,7 +1311,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
 
     // *** REMOVE PROPERTY
     delete this.widgetObj['align'];
-    
+
     // this.widgetService.publishWidgetAligmentSelected('right');
     // this.widgetObj = [
     //   {

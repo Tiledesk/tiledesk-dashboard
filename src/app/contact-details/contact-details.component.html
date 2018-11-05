@@ -101,14 +101,21 @@
                         <!-- pull-right -->
 
                         <button class="btn btn-default btn-visibility-custom">
-                          <i style="font-size: 17px !important; " class="material-icons">visibility</i>
+                          <i style="font-size: 17px !important;" class="material-icons">visibility</i>
                         </button>
                       </span>
 
                       <!-- // SERVED REQUESTS -->
                       <span *ngIf="request?.status === 200" (click)='goToRequestMsgs(request?.request_id)'>
                         <button class="btn btn-info btn-visibility-custom">
-                          <i style="font-size: 17px !important; " class="material-icons">visibility</i>
+                          <i style="font-size: 17px !important;" class="material-icons">visibility</i>
+                        </button>
+                      </span>
+
+                      <!-- // SERVED REQUESTS -->
+                      <span *ngIf="request?.status === 100" (click)='goToRequestMsgs(request?.request_id)'>
+                        <button class="btn btn-danger btn-visibility-custom">
+                          <i style="font-size: 17px !important;" class="material-icons">visibility</i>
                         </button>
                       </span>
                     
@@ -222,7 +229,7 @@
        
       <!-- ------------============ RIGHT SIDEBAR ============------------ -->
       <div class="col-md-4">
-        <div class="card" style="padding-top:8px; padding-bottom:25px">
+        <div class="card" style="padding-top:8px;">
           <div class="card-content" style="padding-top: 0px;">
             <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 16px;  border-bottom: 1px solid #ddd; padding-bottom: 15px; ">
               {{ "ContactDetails" | translate }}
@@ -269,6 +276,13 @@
             </p>
  
           </div>
+          <div class="card-footer">
+            <div class="stats" style="color:#f44336; cursor:pointer; text-align: center">
+              <i class="material-icons">delete_forever</i> Remove permanently
+            </div>
+          </div>
+
+
         </div>
       </div>
 

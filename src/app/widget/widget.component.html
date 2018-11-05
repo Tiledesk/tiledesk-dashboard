@@ -286,7 +286,8 @@
 										<div style="margin-left:15px;padding-bottom: 8px; border-bottom: 1px solid #e1eef4 ">    
 											<label style="color: #566787; margin-top:8px; margin-bottom:8px; font-size:16px; font-family: Google Sans, sans-serif;">
 												<!-- {{ 'WidgetColors' | translate }} -->
-												Widget Appearence
+												{{ 'WidgetAppearance' | translate }}
+												
 											</label>
 											<div class="row" style="border-left: #5bc0de 2px solid; margin-left: 0px;">
 												
@@ -325,20 +326,23 @@
 											
 											<div class="col-sm-8" style="">  
 												<span style="color: rgb(118, 149, 165)"> 
-													{{ 'WidgetAlignmentOnYourWebsite' | translate }}
-													<span style="font-weight:500; color: #00bcd4" *ngIf="alignmentSelected === 'right'"> 
-														{{ 'BottomRight' | translate}} </span>
+													<!-- {{ 'WidgetAlignmentOnYourWebsite' | translate }} -->
+													Customize how you greet your site visitors when they select a department.
+
+													<!-- <span style="font-weight:500; color: #00bcd4" *ngIf="alignmentSelected === 'right'"> 
+														{{ 'BottomRight' | translate}} 
+													</span>
 													<span style="font-weight:500; color: #00bcd4" *ngIf="alignmentSelected === 'left'"> 
 														{{ 'BottomLeft' | translate}} 
-													</span>
+													</span> -->
 												</span> 
 											</div>
-											
-											<div class="col-sm-4" style="cursor: pointer;" (click)="goToWidgetSection()">
+											<!-- (click)="goToWidgetSection()" -->
+											<div class="col-sm-4" style="cursor: pointer;" (click)="goToWidgetDesign()"> 
 													<!-- #B5D2E1 -->
 									
 												<span style="color: #9c27b0;  vertical-align: middle; font-weight: 500" > 
-													{{ 'Change' | translate }}
+													{{ 'Customize' | translate }}
 												</span> 	
 												<i class="material-icons" style="vertical-align: middle; color: #9c27b0;">
 													keyboard_arrow_right
