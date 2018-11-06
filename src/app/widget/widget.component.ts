@@ -26,7 +26,7 @@ export class WidgetComponent implements OnInit {
   projectName: string;
   calloutTimer: string;
   hasSelectedCalloutTimer = false;
-  
+
   http: Http;
   // calloutTimerSecondSelected = -1;
   calloutTimerSecondSelected: any;
@@ -123,7 +123,7 @@ export class WidgetComponent implements OnInit {
 
         this.widgetObj = project.widget;
 
-        
+
         if (project.widget.wellcomeTitle) {
           this.wellcomeTitleValue = `\n      wellcomeTitle: "${project.widget.wellcomeTitle}",`
           console.log('»» WIDGET - PRJCT-WIDGET WELCOME TITLE : ', this.wellcomeTitleValue);
