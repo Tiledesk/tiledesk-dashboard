@@ -31,6 +31,8 @@ export class ProjectEditAddComponent implements OnInit {
   DISABLE_UPDATE_BTN = true;
   project: Project;
 
+  AUTO_SEND_TRANSCRIPT_IS_ON: boolean;
+
   constructor(
     private projectService: ProjectService,
     private router: Router,
@@ -85,13 +87,23 @@ export class ProjectEditAddComponent implements OnInit {
    */
   getProjectById() {
     this.projectService.getProjectById(this.id_project).subscribe((project: any) => {
-      console.log('++ > GET PROJECT (DETAILS) BY ID - PROJECT OBJECT: ', project);
+      console.log('PRJCT-EDIT-ADD - GET PROJECT (DETAILS) BY ID - PROJECT OBJECT: ', project);
 
-      this.projectName_toUpdate = project.name;
-      console.log('PROJECT NAME TO UPDATE: ', this.projectName_toUpdate);
+      if (project) {
+        this.projectName_toUpdate = project.name;
+        console.log('PROJECT NAME TO UPDATE: ', this.projectName_toUpdate);
 
-      // used in onProjectNameChange to enable / disable the update btn
-      this.project_name = project.name;
+        // used in onProjectNameChange to enable / disable the 'update project name' btn
+        this.project_name = project.name;
+
+        if (project.settings.email.autoSendTranscriptToRequester) {
+          console.log('PRJCT-EDIT-ADD - ON INIT AUTO SEND TRANSCRIPT IS ', project.settings.email.autoSendTranscriptToRequester);
+          this.AUTO_SEND_TRANSCRIPT_IS_ON = true;
+        } else {
+          this.AUTO_SEND_TRANSCRIPT_IS_ON = false;
+        }
+
+      }
 
     }, (error) => {
       console.log('GET PROJECT BY ID - ERROR ', error);
@@ -196,6 +208,22 @@ export class ProjectEditAddComponent implements OnInit {
         console.log('UPDATE PROJECT - ERROR ', error);
       }, () => {
         console.log('UPDATE PROJECT * COMPLETE *');
+        // this.router.navigate(['/projects']);
+      });
+  }
+
+
+  autoSendTranscriptOnOff($event) {
+    console.log('»» PRJCT-EDIT-ADD - AUTO SEND TRANSCRIPT BY EMAIL ON ', $event.target.checked);
+
+    this.projectService.updateAutoSendTranscriptToRequester($event.target.checked)
+      .subscribe((prjct) => {
+        console.log('PRJCT-EDIT-ADD AUTO SEND TRANSCRIPT UPDATE PROJECT - RES ', prjct);
+
+      }, (error) => {
+        console.log('PRJCT-EDIT-ADD AUTO SEND TRANSCRIPT UPDATE PROJECT - ERROR ', error);
+      }, () => {
+        console.log('PRJCT-EDIT-ADD AUTO SEND TRANSCRIPT UPDATE PROJECT * COMPLETE *');
         // this.router.navigate(['/projects']);
       });
   }

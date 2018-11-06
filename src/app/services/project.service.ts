@@ -222,6 +222,31 @@ export class ProjectService {
       .map((res) => res.json());
   }
 
+  /// ================ UPDATE PROJECT SETTINGS > AUTO SEND TRANSCRIPT TO REQUESTER ====================== ///
+  public updateAutoSendTranscriptToRequester(autosend: boolean) {
+
+    let url = this.PROJECT_BASE_URL;
+    url += this.projectID;
+    console.log('UPDATE WIDGET PROJECT - URL ', url);
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    // const body = { 'settings': { 'email': { 'autoSendTranscriptToRequester': autosend } } };
+    // settings.email.autoSendTranscriptToRequester":true
+
+    const body = { 'settings.email.autoSendTranscriptToRequester': autosend }
+
+    console.log('UPDATE WIDGET PROJECT - BODY ', body);
+
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
   /// ================ GENERATE SHARED SECRET ====================== ///
   // https://api.tiledesk.com/v1/PROJECTID/keys/generate
   public generateSharedSecret() {
@@ -237,7 +262,7 @@ export class ProjectService {
     // const url = 'https://api.tiledesk.com/v1/5b55e806c93dde00143163dd/keys/generate'
 
     console.log('GENERATE SHARED SECRET URL ', url);
-    const body = {  };
+    const body = {};
     const options = new RequestOptions({ headers });
     return this.http
       .post(url, JSON.stringify(body), options)

@@ -8,6 +8,7 @@ export interface Project {
     createdBy?: string;
     id_project?: any;
     widget?: any;
+    settings?: any;
     role?: string;
     __v?: any;
 }

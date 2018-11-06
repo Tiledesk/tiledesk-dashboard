@@ -107,12 +107,21 @@ button.close {
     border-radius: 22px;
 }
 .onoffswitch-inner {
-    display: block; width: 200%; margin-left: -100%;
+    display: block; 
+    width: 200%; 
+    margin-left: -100%;
     transition: margin 0.3s ease-in 0s;
 }
 .onoffswitch-inner:before, .onoffswitch-inner:after {
-    display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
-    font-size: 14px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+    display: block; 
+    float: left; 
+    width: 50%; 
+    height: 30px; 
+    padding: 0; 
+    line-height: 30px;
+    font-size: 14px; 
+    color: white; 
+    font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
     box-sizing: border-box;
 }
 .onoffswitch-inner:before {
@@ -123,7 +132,8 @@ button.close {
 .onoffswitch-inner:after {
     content: "OFF";
     padding-right: 10px;
-    background-color: #EEEEEE; color: #F44336;
+    // background-color: #EEEEEE; 
+    color: #F44336;
     text-align: right;
 }
 .onoffswitch-switch {
@@ -146,3 +156,38 @@ button.close {
     background-color: #4CAF50; 
 }
 // ./end SWITCH BTN
+
+.card-section-title {
+    font-family: 'Google Sans', sans-serif !important;
+    // color: rgba(0, 0, 0, 0.87); 
+    color: rgb(118, 149, 165);
+    text-align: left; 
+    margin-bottom: 0px; 
+    margin-top: 10px; 
+    font-weight: 500; 
+    font-size: 16px; 
+    padding-left: 8px;
+}
+.card-section-subtitle {
+    padding-left: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    // color: rgba(0, 0, 0, 0.54); 
+    color: rgb(118, 149, 165);
+    margin-bottom: 16px;
+}
+
+.custom-label{
+    color: rgb(118, 149, 165); 
+    height: 36px; 
+    padding-top: 7px; 
+    padding-left: 16px; 
+    padding-right: 16px; 
+    text-align: right !important;
+}
+
+.section-divider {
+    padding:0px 25px;
+    margin-top: 10px
+
+}
