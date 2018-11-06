@@ -38,35 +38,31 @@
               <!-- /. CREATE_VIEW -->
     
               <span *ngIf="EDIT_VIEW">
-              
-    
+ 
                 <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
                 <div class="row"> 
                   <label style="color: rgb(118, 149, 165); height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-3 ">
                     {{ "ProjectEditPage.ProjectName" | translate }}
                   </label>
                   <div class="col-sm-9">
-                      <div class="input-group">
-                    <input [(ngModel)]="projectName_toUpdate" (ngModelChange)="onProjectNameChange($event)" class="input" type="text" placeholder="Nome Progetto" style="border-top-right-radius: 0px; border-bottom-right-radius: 0px">
-                    <span class="input-group-btn" style="padding-right: 0px;padding-left: 0px;">
+                    <div class="input-group">
+                      <input [(ngModel)]="projectName_toUpdate" (ngModelChange)="onProjectNameChange($event)" class="input" type="text" placeholder="Nome Progetto" style="border-top-right-radius: 0px; border-bottom-right-radius: 0px">
+                      <span class="input-group-btn" style="padding-right: 0px;padding-left: 0px;">
                         <button class="btn btn-success" (click)="edit()" [disabled]="DISABLE_UPDATE_BTN === true" style="padding-bottom: 9px; margin-bottom: 9px; padding-top: 10px; border-top-right-radius: 5px; border-bottom-right-radius: 5px">
-                    
-                            {{ "ProjectEditPage.Update" | translate }}
-                          </button>
-                    
-                    </span>
+                          {{ "ProjectEditPage.Update" | translate }}
+                        </button>
+                      </span>
                     </div>
                   </div>
                 </div>
 
                 <div class="row"> 
-                <label style="color: rgb(118, 149, 165); height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-3">
-                  <!-- Id Progetto -->
-                  {{ "ProjectEditPage.ProjectId" | translate }}
-                </label>
-                <div class="col-sm-9">
-                  <input style="color:#999999" [(ngModel)]="id_project" class="input" type="text" disabled>
-                </div>
+                  <label style="color: rgb(118, 149, 165); height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-3">
+                    {{ "ProjectEditPage.ProjectId" | translate }}
+                  </label>
+                  <div class="col-sm-9">
+                    <input style="color:#999999" [(ngModel)]="id_project" class="input" type="text" disabled>
+                  </div>
                 </div>
         
                 <!-- SPACER -->
@@ -82,23 +78,19 @@
                 </div> -->
 
                 <div class="row">
-                <label style="color: rgb(118, 149, 165); height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-3">
+                  <label style="color: rgb(118, 149, 165); height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-3">
                     {{ "ProjectEditPage.SendTranscriptByEmail" | translate }}
-                </label>
-                <!-- <div class="col-sm-5">
-                    Send transcript by email
-                </div> -->
-                <div class="col-sm-9">
-                  <!-- <input style="color:#999999" [(ngModel)]="id_project" class="input" type="text" disabled> -->
-                  <div class="onoffswitch">
+                  </label>
+                  <div class="col-sm-9">
+                    <div class="onoffswitch">
                       <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
                       <label class="onoffswitch-label" for="myonoffswitch">
                           <span class="onoffswitch-inner"></span>
                           <span class="onoffswitch-switch"></span>
                       </label>
+                    </div>
                   </div>
                 </div>
-              </div>
                 <!-- <div class="col-sm-12"></div> -->
                 <!-- <div class="row"> 
                   <div class="col-sm-12"> 
@@ -111,9 +103,9 @@
                   <label style="color: rgb(118, 149, 165);height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-3">
                     Shared Secret
                   </label>
-
                   <div class="col-sm-9">
-                    <button (click)="generateSharedSecret()" class="btn btn-danger btn-sm" style="margin-top:5px">
+                                           
+                    <button (click)="openConfirmJwtSecretCreationModal()" class="btn btn-danger btn-sm" style="margin-top:5px">
                       {{ "ProjectEditPage.Generate" | translate }}
                     </button>
                   </div>
@@ -137,7 +129,6 @@
             </div>
             <!-- ./ card-content -->
 
-      
               <div class="card-footer" style="text-align: center;">
                 <div class="stats">
                   <!-- <i class="material-icons">access_time</i> updated 4 minutes ago -->
@@ -151,21 +142,6 @@
             
           </div>
           <!-- ./ card -->
-  
-          <!-- MESSAGE 'YOU NEED TO SELECTE A FAQ-KB' AND LINK TO THE FAQ-KB LIST -->
-          <!-- <span *ngIf="CREATE_VIEW">
-            <div class="alert alert-info">
-              <div class="container-fluid">
-                <div class="alert-icon">
-                  <i class="material-icons">info_outline</i>
-                </div>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true"><i class="material-icons">clear</i></span>
-                </button>
-                <b>Info:</b> Seleziona una <strong>FAQ Knowledge Base</strong> esistente da associare a questo Bot o <a routerLink="/faqkb" style="text-decoration: underline;">visualizza la lista delle FAQ Knowledge Base</a> per creare/modificare.
-              </div>
-            </div>
-          </span> -->
   
         </div>
         <!-- ./ col-md-12 -->
@@ -185,106 +161,149 @@
           <!-- <h5 style="color:#aaaaaa; margin-top:25px; font-size:1em">ELIMINA PROGETTO</h5> -->
         </div>
       </div>
-
-      <!-- 
-      ***********************************  
-      *** DELETE PROJECT MODAL WINDOW ***
-      *********************************** -->
-      <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}" style="background-color: rgba(90,90,90,0.5);">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header" style="background-color:#ff5252; padding-bottom:24px">
-              <!-- <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
-                <span aria-hidden="true">&times;</span>
-              </button> -->
-              <h4 class="modal-title" style="color: #fff">
-                  <i class="material-icons" style="vertical-align: middle">report_problem</i>
-                  <span style="vertical-align: middle; padding-left:8px"> 
-                    <!-- Elimina progetto -->
-                    {{ "ProjectEditPage.DeleteProject" | translate }}
-                  </span>
-              </h4>
-              <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em ">
-                <!-- Il progetto verrà eliminato -->
-                {{ "ProjectEditPage.TheProjectWillBeDeleted" | translate }}
-              </h4>
-            </div>
-            <div class="modal-body">
-                <label style="font-weight:100; text-align: left; padding-bottom:12px" class="col-sm-10 ">
-                  <!-- Per eliminare il progetto, digita l'ID del progetto: -->
-                  {{ "ProjectEditPage.ToDeleteTheProject" | translate }}:
-                    <span style="color:#212121">
-                      <strong> {{ id_project }}</strong> 
-                    </span>
-                </label>
-                <div class="col-sm-10">
-                  <input [(ngModel)]="project_name" class="" type="text" placeholder="{{ 'ProjectEditPage.ProjectId' | translate }}">
-                </div>
-            </div>
-            <div class="modal-footer" style="margin-top: 75px;">
-              <button class="btn btn-white" (click)="onCloseModal()" style="padding:12px 16px;">
-                <!-- Chiudi -->
-                {{ "ProjectEditPage.Calcel" | translate }}
-              </button>
-              <button style="margin-top:0px" class="btn btn-danger" disabled (click)="createProject()">
-                <!-- Elimina Progetto -->
-                {{ "ProjectEditPage.DeleteProject" | translate }}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-  
+ 
     </div>
     <!-- ./ container-fluid -->
   
   </div> 
   <!-- ./ main-content -->
 
-  <!-- *************************************  
-  *** SHARED SECRET GENERATED MODAL INFO ***
-  ****************************************** -->
-  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayJwtSecretGeneratedModal}" style="background-color: rgba(90,90,90,0.5);">
-    <div class="modal-dialog" role="document">
+        
+<!-- ******************************  
+*** DELETE PROJECT MODAL WINDOW ***
+*********************************** -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}" style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color:#ff5252; padding-bottom:24px">
+        <!-- <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+          <span aria-hidden="true">&times;</span>
+        </button> -->
+        <h4 class="modal-title" style="color: #fff">
+            <i class="material-icons" style="vertical-align: middle">report_problem</i>
+            <span style="vertical-align: middle; padding-left:8px"> 
+              <!-- Elimina progetto -->
+              {{ "ProjectEditPage.DeleteProject" | translate }}
+            </span>
+        </h4>
+        <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em ">
+          <!-- Il progetto verrà eliminato -->
+          {{ "ProjectEditPage.TheProjectWillBeDeleted" | translate }}
+        </h4>
+      </div>
+      <div class="modal-body">
+          <label style="font-weight:100; text-align: left; padding-bottom:12px" class="col-sm-10 ">
+            <!-- Per eliminare il progetto, digita l'ID del progetto: -->
+            {{ "ProjectEditPage.ToDeleteTheProject" | translate }}:
+              <span style="color:#212121">
+                <strong> {{ id_project }}</strong> 
+              </span>
+          </label>
+          <div class="col-sm-10">
+            <input [(ngModel)]="project_name" class="" type="text" placeholder="{{ 'ProjectEditPage.ProjectId' | translate }}">
+          </div>
+      </div>
+      <div class="modal-footer" style="margin-top: 75px;">
+        <button class="btn btn-white" (click)="onCloseModal()" style="padding:12px 16px;">
+          <!-- Chiudi -->
+          {{ "ProjectEditPage.Calcel" | translate }}
+        </button>
+        <button style="margin-top:0px" class="btn btn-danger" disabled (click)="createProject()">
+          <!-- Elimina Progetto -->
+          {{ "ProjectEditPage.DeleteProject" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- *******************************************************  
+  *** CONFIRM THE CREATION OF THE SHARED SECRET MODAL INFO ***
+  ************************************************************ -->
+  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayConfirmJwtSecretCreationModal}" style="background-color: rgba(90,90,90,0.5);">
+    <div class="modal-dialog modal-sm" role="document">
       <div class="modal-content">
-        <div class="modal-header" style="background-color:#00bcd4; padding-bottom:24px">
-          <!-- <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+        <div class="modal-header" style="background-color:#f44336; padding-bottom:24px">
+          <button type="button" class="close" aria-label="Close" (click)="closeConfirmJwtSecretCreationModal()" style="color: #ffffff;">
             <span aria-hidden="true">&times;</span>
-          </button> -->
+          </button>
           <h4 class="modal-title" style="color: #fff">
-              <i class="material-icons" style="vertical-align: middle">info</i>
+              <i class="material-icons" style="vertical-align: middle">warning</i>
               <span style="vertical-align: middle; padding-left:8px"> 
                 
-                {{ "ProjectEditPage.SharedSecretGenerated" | translate }}
+                {{ "ProjectEditPage.GenerateSharedSecret" | translate }}
               </span>
           </h4>
-          <!-- <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em ">
-             {{ "ProjectEditPage.TheProjectWillBeDeleted" | translate }}
-          </h4> -->
+   
         </div>
         <div class="modal-body">
-            <label style="font-weight:100; text-align: left; padding-bottom:12px" class="col-sm-10 ">
-              <!-- Per eliminare il progetto, digita l'ID del progetto: -->
-              {{ "ProjectEditPage.ThisIsYourSharedSecret" | translate }}:
-                <!-- <span style="color:#212121">
-                  <strong> {{ id_project }}</strong> 
-                </span> -->
+            <label style="text-align: left; padding-bottom:12px; color: #f44336" class="col-sm-12 ">
+              {{ "ProjectEditPage.NoteThatWillBeSubscribed" | translate }}!
             </label>
-            <div class="col-sm-10">
-              <input [(ngModel)]="project_name" class="" type="text" placeholder="{{ 'ProjectEditPage.ProjectId' | translate }}">
-            </div>
+   
         </div>
-        <div class="modal-footer" style="margin-top: 75px;">
-          <button class="btn btn-white" (click)="onCloseModal()" style="padding:12px 16px;">
-            <!-- Chiudi -->
-            {{ "ProjectEditPage.Calcel" | translate }}
+        <div class="modal-footer" style="margin-top: 75px; text-align: center">
+          <button class="btn btn-white" (click)="closeConfirmJwtSecretCreationModal()" style="padding:12px 16px;">
+              {{ "ProjectEditPage.Calcel" | translate }}
           </button>
-          <button style="margin-top:0px" class="btn btn-danger" disabled (click)="createProject()">
-            <!-- Elimina Progetto -->
-            {{ "ProjectEditPage.DeleteProject" | translate }}
+          <button style="margin-top:0px" class="btn btn-danger" (click)="generateSharedSecret()">
+  
+            {{ "ProjectEditPage.Generate" | translate }}
           </button>
         </div>
       </div>
     </div>
   </div>
-  
+
+<!-- *************************************  
+*** SHARED SECRET GENERATED MODAL INFO ***
+****************************************** -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayJwtSecretGeneratedModal}" style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color:#00bcd4; padding-bottom:24px">
+        <button type="button" class="close" aria-label="Close" (click)="closeJwtSecretGeneratedModal()" style="color: #ffffff;">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" style="color: #fff">
+            <i class="material-icons" style="vertical-align: middle">info</i>
+            <span style="vertical-align: middle; padding-left:8px"> 
+              
+              {{ "ProjectEditPage.SharedSecretGenerated" | translate }}
+            </span>
+        </h4>
+        <!-- <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em ">
+            {{ "ProjectEditPage.TheProjectWillBeDeleted" | translate }}
+        </h4> -->
+      </div>
+      <div class="modal-body">
+          <label style="color: rgb(118, 149, 165); font-weight:100; text-align: left;" class="col-sm-10 ">
+            {{ "ProjectEditPage.ThisIsYourSharedSecret" | translate }}:
+          </label>
+          <div class="col-sm-10">
+            <div class="input-group">
+              <input id="sharedSecretInput" readonly [(ngModel)]="sharedSecret" class="" type="text" style="border-top-right-radius: 0px; border-bottom-right-radius: 0px">
+              <span class="input-group-btn" style="padding-right: 0px;padding-left: 0px;">
+                <button class="btn btn-info" (click)="copySharedSecret()" style="padding-bottom: 9px; margin-bottom: 9px; padding-top: 10px; border-top-right-radius: 5px; border-bottom-right-radius: 5px">
+                  {{ "ProjectEditPage.Copy" | translate }}
+                </button>
+              </span>
+            </div>  
+          </div>
+          <label style="color:#f44336; text-align: left; margin-top: 5px;" class="col-sm-10 ">
+            {{ "ProjectEditPage.NoteThatWillBeDisplayedOnce" | translate }}.
+          </label>
+      </div>
+      <div class="modal-footer" style="margin-top: 75px; text-align: center">
+        <button class="btn btn-white" (click)="closeJwtSecretGeneratedModal()" style="padding:12px 16px;">
+          Ok
+        </button>
+        <!-- <button style="margin-top:0px" class="btn btn-danger" disabled (click)="createProject()">
+
+          {{ "ProjectEditPage.DeleteProject" | translate }}
+        </button> -->
+      </div>
+    </div>
+  </div>
+</div>
+

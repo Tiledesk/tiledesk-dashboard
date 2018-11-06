@@ -25,6 +25,7 @@ export class ProjectEditAddComponent implements OnInit {
 
   display = 'none';
   displayJwtSecretGeneratedModal = 'none';
+  displayConfirmJwtSecretCreationModal = 'none';
   sharedSecret: string;
 
   DISABLE_UPDATE_BTN = true;
@@ -191,7 +192,6 @@ export class ProjectEditAddComponent implements OnInit {
           }
         }
 
-
       }, (error) => {
         console.log('UPDATE PROJECT - ERROR ', error);
       }, () => {
@@ -200,8 +200,16 @@ export class ProjectEditAddComponent implements OnInit {
       });
   }
 
-  generateSharedSecret() {
+  openConfirmJwtSecretCreationModal() {
+    this.displayConfirmJwtSecretCreationModal = 'block';
+  }
 
+  closeConfirmJwtSecretCreationModal() {
+    this.displayConfirmJwtSecretCreationModal = 'none';
+  }
+
+  generateSharedSecret() {
+    this.displayConfirmJwtSecretCreationModal = 'none';
     this.projectService.generateSharedSecret()
       .subscribe((res) => {
         console.log('PRJCT-EDIT-ADD GENERATE SHARED SECRET - RESPONSE ', res);
@@ -216,6 +224,15 @@ export class ProjectEditAddComponent implements OnInit {
       });
   }
 
+  closeJwtSecretGeneratedModal() {
+    this.displayJwtSecretGeneratedModal = 'none'
+  }
+
+  copySharedSecret() {
+    const copyText = document.getElementById('sharedSecretInput') as HTMLInputElement;
+    copyText.select();
+    document.execCommand('copy');
+  }
 
 
   /**
