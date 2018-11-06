@@ -143,7 +143,6 @@ export class ProjectsComponent implements OnInit {
         // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
         this.projects.forEach(project => {
           console.log('!!! SET PROJECT IN STORAGE')
-
           if (project.id_project) {
             const prjct: Project = {
               _id: project.id_project._id,
@@ -151,17 +150,14 @@ export class ProjectsComponent implements OnInit {
               role: project.role
             }
             localStorage.setItem(project.id_project._id, JSON.stringify(prjct));
-
           }
         });
       }
-
     }, error => {
       this.showSpinner = false;
       console.log('GET PROJECTS - ERROR ', error)
     }, () => {
       console.log('GET PROJECTS - COMPLETE')
-
     });
   }
 

@@ -38,19 +38,29 @@
               <!-- /. CREATE_VIEW -->
     
               <span *ngIf="EDIT_VIEW">
+              
     
                 <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
                 <div class="row"> 
-                  <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-3 ">
+                  <label style="color: rgb(118, 149, 165); height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-3 ">
                     {{ "ProjectEditPage.ProjectName" | translate }}
                   </label>
                   <div class="col-sm-9">
-                    <input [(ngModel)]="projectName_toUpdate" class="input" type="text" placeholder="Nome Progetto">
+                      <div class="input-group">
+                    <input [(ngModel)]="projectName_toUpdate" (ngModelChange)="onProjectNameChange($event)" class="input" type="text" placeholder="Nome Progetto" style="border-top-right-radius: 0px; border-bottom-right-radius: 0px">
+                    <span class="input-group-btn" style="padding-right: 0px;padding-left: 0px;">
+                        <button class="btn btn-success" (click)="edit()" [disabled]="DISABLE_UPDATE_BTN === true" style="padding-bottom: 9px; margin-bottom: 9px; padding-top: 10px; border-top-right-radius: 5px; border-bottom-right-radius: 5px">
+                    
+                            {{ "ProjectEditPage.Update" | translate }}
+                          </button>
+                    
+                    </span>
+                    </div>
                   </div>
                 </div>
 
                 <div class="row"> 
-                <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-3">
+                <label style="color: rgb(118, 149, 165); height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-3">
                   <!-- Id Progetto -->
                   {{ "ProjectEditPage.ProjectId" | translate }}
                 </label>
@@ -72,7 +82,7 @@
                 </div> -->
 
                 <div class="row">
-                <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-3">
+                <label style="color: rgb(118, 149, 165); height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-3">
                     {{ "ProjectEditPage.SendTranscriptByEmail" | translate }}
                 </label>
                 <!-- <div class="col-sm-5">
@@ -98,7 +108,7 @@
                   </div>
                 </div> -->
                 <div class="row">
-                  <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-3">
+                  <label style="color: rgb(118, 149, 165);height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-3">
                     Shared Secret
                   </label>
 

@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 // USED FOR go back last page
 import { Location } from '@angular/common';
 import { AuthService } from '../core/auth.service';
+import { Project } from '../models/project-model';
 
 @Component({
   selector: 'app-project-edit-add',
@@ -25,6 +26,9 @@ export class ProjectEditAddComponent implements OnInit {
   display = 'none';
   displayJwtSecretGeneratedModal = 'none';
   sharedSecret: string;
+
+  DISABLE_UPDATE_BTN = true;
+  project: Project;
 
   constructor(
     private projectService: ProjectService,
@@ -85,6 +89,9 @@ export class ProjectEditAddComponent implements OnInit {
       this.projectName_toUpdate = project.name;
       console.log('PROJECT NAME TO UPDATE: ', this.projectName_toUpdate);
 
+      // used in onProjectNameChange to enable / disable the update btn
+      this.project_name = project.name;
+
     }, (error) => {
       console.log('GET PROJECT BY ID - ERROR ', error);
       this.showSpinner = false;
@@ -95,37 +102,45 @@ export class ProjectEditAddComponent implements OnInit {
   }
 
   /**
-   * ADD PROJECT (CREATE VIEW)
-   */
-  createProject() {
-    console.log('CREATE PROJECT - PROJECT-NAME DIGIT BY USER ', this.project_name);
+   * ADD PROJECT (CREATE VIEW)  */
+  // createProject() {
+  //   console.log('CREATE PROJECT - PROJECT-NAME DIGIT BY USER ', this.project_name);
 
-    this.projectService.addMongoDbProject(this.project_name)
-      .subscribe((project) => {
-        console.log('POST DATA PROJECT', project);
+  //   this.projectService.addMongoDbProject(this.project_name)
+  //     .subscribe((project) => {
+  //       console.log('POST DATA PROJECT', project);
 
-        // if (project) {
+  //       // if (project) {
+  //       //   this.projectService.createUserProject(project._id)
+  //       //   .subscribe((project_user) => {
 
-        //   this.projectService.createUserProject(project._id)
-        //   .subscribe((project_user) => {
+  //       //     console.log('POST DATA PROJECT-USER ', project_user);
+  //       //   },
+  //       //   (error) => {
+  //       //     console.log('CREATE PROJECT-USER - POST REQUEST ERROR ', error);
+  //       //   },
+  //       // );
+  //       // }
+  //     }, (error) => {
+  //       console.log('CREATE PROJECT - POST REQUEST ERROR ', error);
+  //     }, () => {
+  //       console.log('CREATE PROJECT - POST REQUEST COMPLETE ');
 
-        //     console.log('POST DATA PROJECT-USER ', project_user);
-        //   },
-        //   (error) => {
-        //     console.log('CREATE PROJECT-USER - POST REQUEST ERROR ', error);
-        //   },
-        // );
+  //       this.router.navigate(['/projects']);
+  //     });
+  // }
 
-        // }
-      },
-        (error) => {
-          console.log('CREATE PROJECT - POST REQUEST ERROR ', error);
-        },
-        () => {
-          console.log('CREATE PROJECT - POST REQUEST COMPLETE ');
+  onProjectNameChange(event) {
 
-          this.router.navigate(['/projects']);
-        });
+    console.log('ON PROJECT NAME CHANGE ', event);
+    console.log('ON PROJECT NAME TO UPDATE ', this.project_name);
+
+    if (event === this.project_name) {
+      this.DISABLE_UPDATE_BTN = true;
+
+    } else {
+      this.DISABLE_UPDATE_BTN = false;
+    }
   }
 
   edit() {
@@ -133,18 +148,59 @@ export class ProjectEditAddComponent implements OnInit {
     console.log('PROJECT NAME WHEN EDIT IS PRESSED ', this.projectName_toUpdate);
 
     this.projectService.updateMongoDbProject(this.id_project, this.projectName_toUpdate)
-      .subscribe((data) => {
-        console.log('PUT DATA ', data);
+      .subscribe((prjct) => {
+        console.log('UPDATE PROJECT - RESPONSE ', prjct);
+
+        if (prjct) {
+          if (prjct.name === this.projectName_toUpdate) {
+            this.DISABLE_UPDATE_BTN = true;
+          }
+
+          // WHEN THE USER UPDATE THE PROJECT ITS ID and NAME IS SEND IN THE AUTH SERVICE THAT RE-PUBLISHES IT
+          const project: Project = {
+            _id: this.id_project,
+            name: prjct.name,
+          }
+          this.auth.projectSelected(project)
+
+          const storedProjectJson = localStorage.getItem(this.id_project);
+          console.log('PRJCT-EDIT-ADD - STORED PROJECT JSON ', storedProjectJson);
+
+          if (storedProjectJson) {
+            const projectObject = JSON.parse(storedProjectJson);
+            console.log('PRJCT-EDIT-ADD - STORED PROJECT OBJ ', projectObject);
+            const storedUserRole = projectObject['role'];
+            console.log('PRJCT-EDIT-ADD - STORED PROJECT OBJ - USER ROLE ', storedUserRole);
+            const storedProjectName = projectObject['name'];
+            console.log('PRJCT-EDIT-ADD - STORED PROJECT OBJ - PRJ NAME ', storedProjectName);
+            const storedProjectId = projectObject['_id'];
+            console.log('PRJCT-EDIT-ADD - STORED PROJECT OBJ - PRJ ID ', storedProjectId);
+
+            if (storedProjectName !== prjct.name) {
+
+              const updatedProjectForStorage: Project = {
+                _id: storedProjectId,
+                name: prjct.name,
+                role: storedUserRole
+              }
+
+              // RE-SET THE PROJECT IN THE STORAGE WITH THE UPDATED NAME
+              localStorage.setItem(storedProjectId, JSON.stringify(updatedProjectForStorage));
+
+            }
+          }
+        }
+
+
       }, (error) => {
-        console.log('PUT REQUEST ERROR ', error);
+        console.log('UPDATE PROJECT - ERROR ', error);
       }, () => {
-        console.log('PUT REQUEST * COMPLETE *');
-        this.router.navigate(['/projects']);
+        console.log('UPDATE PROJECT * COMPLETE *');
+        // this.router.navigate(['/projects']);
       });
   }
 
   generateSharedSecret() {
-    
 
     this.projectService.generateSharedSecret()
       .subscribe((res) => {

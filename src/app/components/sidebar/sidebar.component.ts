@@ -265,14 +265,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             console.log('00 -> SIDEBAR project from AUTH service subscription  ', this.project)
 
             if (this.project) {
-
                 this.projectId = this.project._id
 
                 // IS USED TO GET THE PROJECT-USER AND DETERMINE IF THE USER IS AVAILAVLE / UNAVAILABLE
                 // WHEN THE PAGE IS REFRESHED
                 this.getProjectUser();
-
-
             }
         });
     }
@@ -287,7 +284,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             if (user) {
                 this.currentUserId = user._id;
                 console.log('Current USER ID ', this.currentUserId)
-
             }
         });
     }
@@ -453,7 +449,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.logout();
         this.displayLogoutModal = 'none';
     }
-
 
     logout() {
         this.auth.showExpiredSessionPopup(false);

@@ -174,6 +174,7 @@
         "SendTranscriptByEmail":"Auto invia transcript via email",
         "Generate":"Genera",
         "UpdateProject": "Aggiorna Progetto",
+        "Update": "Aggiorna",
         "DeleteProject": "Elimina Progetto",
         "TheProjectWillBeDeleted": "Il progetto verrà eliminato",
         "ToDeleteTheProject": "Per eliminare il progetto, digita l'ID del progetto",
