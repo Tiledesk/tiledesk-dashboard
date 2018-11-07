@@ -121,20 +121,6 @@
   <!-- margin-right:100px; margin-left:100px; -->
   <!-- <div style="background-color: #fff; height: 400px; z-index: 3; position:relative; background-repeat: no-repeat; background-image: url(assets/img/tiledesk-header.png); background-attachment: scroll; background-position: top right; "></div> -->
   <div class="container-fluid" style="max-width: 960px;">
-  
-    <!-- <div class="create" style="text-align: right!important; padding-top:25px; padding-bottom:0px">
-      <button class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="goToEditAddPage_CREATE()">
-        <span class="icon" style="padding-right:8px">
-          <i class="material-icons">add_circle</i>
-        </span>
-        Aggiungi Progetto
-      </button>
-    </div> -->
- 
-
-
-    <!-- MOMGO DB PROJECTS LIST -->
-    <!-- NEW -->
     <div class="row">
       <h3 class="prjct-page-title" style="" >
         {{ 'ProjectsPage.Welcome' | translate }} in tiledesk. 
@@ -195,240 +181,133 @@
 
     </div>
     <!-- /. row -->
+  </div>
+</div>
 
-    <!-- MODAL CREATE A NEW PROJECT -->
-    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayCreateModal}" style="background-color: rgba(90,90,90,0.5);">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            <h4 class="modal-title">
-              <!-- Aggiungi un progetto -->
-              {{ 'ProjectsPage.ModalAddAProject' | translate }} 
-            </h4>
-          </div>
-          <div class="modal-body">
-              <!-- height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right; -->
-              <label style="font-weight:400; color: #566787" class="col-sm-12 ">
-                {{ 'ProjectsPage.ModalAddAProjectLabel' | translate }}
-              </label>
-              <div class="col-sm-10">
-                <input [(ngModel)]="project_name" type="text" placeholder="{{ 'ProjectsPage.ModalPlaceHolder' | translate }}" style="margin-bottom: 5px;">
-                <span *ngIf="project_name?.length > 0 && project_name?.length < 4" style="padding-left: 5px; font-size: 0.9em; color:#da491c">
-                  {{ 'ProjectsPage.ModalMustBeAtLeast' | translate }}
-                </span>
-              </div>
-          </div>
-          <div class="modal-footer" style="margin-top: 75px;">
-            <button [disabled]="project_name?.length < 4" class="btn btn-info" (click)="createProject()">
-              {{ 'ProjectsPage.ModalCreateProjectBtn' | translate }} 
-            </button>
-          </div>
+<!-- ------------ ============== MODAL CREATE A NEW PROJECT ============== ------------ -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayCreateModal}" style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">
+          <!-- Aggiungi un progetto -->
+          {{ 'ProjectsPage.ModalAddAProject' | translate }} 
+        </h4>
+      </div>
+      <div class="modal-body">
+        <!-- height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right; -->
+        <label style="font-weight:400; color: #566787" class="col-sm-12 ">
+          {{ 'ProjectsPage.ModalAddAProjectLabel' | translate }}
+        </label>
+        <div class="col-sm-10">
+          <input [(ngModel)]="project_name" type="text" placeholder="{{ 'ProjectsPage.ModalPlaceHolder' | translate }}" style="margin-bottom: 5px;">
+          <span *ngIf="project_name?.length > 0 && project_name?.length < 4" style="padding-left: 5px; font-size: 0.9em; color:#da491c">
+            {{ 'ProjectsPage.ModalMustBeAtLeast' | translate }}
+          </span>
         </div>
       </div>
-    </div>
-
-    <!-- MODAL - INFO WINDOWS -->
-    <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->  
-
-    <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayInfoModal}" style="background-color: rgba(90,90,90,0.5);">
-      <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
-              <span aria-hidden="true">&times;</span>
-            </button>
-
-            <h4 class="modal-title">
-              {{ "ProjectsPage.modalCreateProject" | translate }}
-              <!-- <code>{{id_toDelete}}</code> -->
-            </h4>
-          </div>
-
-          <div class="modal-body">
-          
-            <span *ngIf="SHOW_CIRCULAR_SPINNER">
-              <div  class="loader" style="top:25%">
-                <svg class="circular" viewBox="25 25 50 50">
-                  <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10"/>
-                </svg>
-
-              </div>
-              <p style="margin-top: 50px; text-align: center;">
-                  {{ "ProjectsPage.Processing" | translate }}
-              </p>
-            </span>
-
-            <span *ngIf="!SHOW_CIRCULAR_SPINNER">
-              <div  class="loader" style="top:5%">
-                <i class="material-icons" style="color:#70b665">done</i>
-                <span style="color:#70b665">
-                    {{ "ProjectsPage.Completed" | translate }}
-                </span> 
-
-              </div>
-              <p style="margin-top: 50px; text-align: center;">
-                  {{ "ProjectsPage.YourNewProjectIsReady" | translate }}
-              </p>
-            </span>
-          </div>
-
-          <div class="modal-footer" style="text-align: center;">
-            <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseInfoModalHandled()">
-                {{ "ProjectsPage.Continue" | translate }}
-            </button>
-          </div>
-
-        </div>
-        <!-- /.modal-content -->
+      <div class="modal-footer" style="margin-top: 75px;">
+        <button [disabled]="project_name?.length < 4" class="btn btn-info" (click)="createProject()">
+          {{ 'ProjectsPage.ModalCreateProjectBtn' | translate }} 
+        </button>
       </div>
-      <!-- /.modal-dialog -->
-    </div>
-
-            <!-- MODAL - LOGOUT WINDOWS -->
-        <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->  
-        <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayLogoutModal}" style="background-color: rgba(90,90,90,0.5);">
-            <div class="modal-dialog " role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-        
-                    <h4 class="modal-title">
-                        Tile Desk Log Out
-                        <!-- <code>{{id_toDelete}}</code> -->
-                    </h4>
-                    </div>
-        
-                    <div class="modal-body">
-    
-                        <p style="margin-top: 0px; text-align:center; color:#566787; font-size:16px; font-weight:400 ">
-                            Are you sure you want to log out?
-                        </p>
-                        <p style="margin-bottom:0px; text-align:center;">
-    
-                            Note that this will not change the status of your availability.
-                        </p>
-    
-    
-                    </div>
-        
-                    <div class="modal-footer" style="text-align: center;">
-                        <button class="btn btn-white" (click)="onCloseLogoutModalHandled()" style="padding:12px 16px; font-size:12px ">
-                            Cancel
-                        </button>    
-                        <button class="btn btn-info" (click)="onLogoutModalHandled()" style="padding:12px 16px; font-size:12px ">
-                            Log Out
-                        </button>
-                    </div>
-    
-                </div>
-                <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-        </div>
-
-    
-    <!-- // END NEW -->
-
-    <div class="row">
-      <!-- <div class="col-md-12"> -->
-        <!-- <div class="card"> -->
-          <!-- <div class="card-content table-responsive"> -->
-            <!-- <table class="table">
-              <thead>
-                <tr>
-                  <th>
-                    <span style="color: #566787">
-                      
-                      <strong>Nome Progetto</strong>
-                    </span>
-                  </th>
-                  <th style="">
-                    <span style="color: #566787">
-                      <strong>Id</strong>
-                    </span>
-                  </th>
-
-                  <th>
-                    <span style="color: #566787">
-                      
-                      <strong> Data creazione</strong>
-                    </span>
-                  </th>
-                  <th colspan="2">
-                    <span style="color: #566787">
-  
-                      <strong> Ruolo </strong> 
-                    </span>
-                  </th>
-                </tr>
-              </thead>
-          
-              <tbody>
-          
-                <tr *ngFor="let project of projects">
-                  <td (click)='goToHome(project?.id_project._id, project?.id_project.name)'>
-                    {{ project?.id_project.name }}
-                  </td>
-
-                  <td style="width: 280px !important">
-                    
-                    {{ project?.id_project._id }}
-                  </td>
-
-                  <td>
-                    
-                    {{ project?.id_project.createdAt | date: 'd/M/y'}}
-                  </td> -->
-          
-                  <!-- ACTION - TO MOVE IN PROJECT SETTINGS -->
-                  <!-- <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" title="Modifica Progetto" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(project?._id)'>
-                      <i class="material-icons">edit</i>
-                    </button>
-                    <button type="button" rel="tooltip" title="Elimina Progetto" class="btn btn-danger btn-simple btn-xs" (click)='openDeleteModal(project?._id, project?.name)'>
-                      <i class="material-icons">close</i>
-                    </button>
-                  </td> -->
-
-                  <!-- <td>
-                    {{ project?.role }}
-                  </td>
-          
-                </tr>
-              </tbody>
-            </table> -->
-          
-            <!-- MODAL -->
-            <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->
-            <!-- <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title">
-                      Elimina il Progetto con id:<code>{{id_toDelete}}</code>
-                    </h4>
-                  </div>
-                  <div class="modal-body">
-                    <p> Sei sicuro di voler eliminare il Progetto <strong>{{projectName_toDelete}}</strong> ?</p>
-                  </div>
-                  <div class="modal-footer">
-                    <button class="btn btn-danger" (click)="onCloseDeleteModalHandled()">Conferma</button>
-                  </div>
-                </div>
-              </div>
-            </div> -->
-  
-          <!-- </div> -->
-        <!-- </div> -->
-      <!-- </div> -->
     </div>
   </div>
+</div>
+
+<!-- MODAL - CREATE A NEW PROJECT INFO WINDOWS -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayInfoModal}" style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title">
+          {{ "ProjectsPage.modalCreateProject" | translate }}
+          <!-- <code>{{id_toDelete}}</code> -->
+        </h4>
+      </div>
+
+      <div class="modal-body">
+      
+        <span *ngIf="SHOW_CIRCULAR_SPINNER">
+          <div  class="loader" style="top:25%">
+            <svg class="circular" viewBox="25 25 50 50">
+              <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+            </svg>
+
+          </div>
+          <p style="margin-top: 50px; text-align: center;">
+              {{ "ProjectsPage.Processing" | translate }}
+          </p>
+        </span>
+
+        <span *ngIf="!SHOW_CIRCULAR_SPINNER">
+          <div  class="loader" style="top:5%">
+            <i class="material-icons" style="color:#70b665">done</i>
+            <span style="color:#70b665">
+                {{ "ProjectsPage.Completed" | translate }}
+            </span> 
+
+          </div>
+          <p style="margin-top: 50px; text-align: center;">
+              {{ "ProjectsPage.YourNewProjectIsReady" | translate }}
+          </p>
+        </span>
+      </div>
+
+      <div class="modal-footer" style="text-align: center;">
+        <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseInfoModalHandled()">
+            {{ "ProjectsPage.Continue" | translate }}
+        </button>
+      </div>
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- MODAL - LOGOUT WINDOWS -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayLogoutModal}" style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog " role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title">
+          tiledesk Log Out
+        </h4>
+      </div>
+
+      <div class="modal-body">
+        <p style="margin-top: 0px; text-align:center; color:#566787; font-size:16px; font-weight:400 ">
+          <!-- Are you sure you want to log out? -->
+          {{ "NavBar.AreYouSureYouWantToLogOut" | translate }}
+        </p>
+        <p style="margin-bottom:0px; text-align:center;">
+          <!-- Note that this will not change the status of your availability. -->
+          {{ "NavBar.NoteThatThisWillNotChangeYourAvailability" | translate }}
+        </p>
+      </div>
+
+      <div class="modal-footer" style="text-align: center;">
+        <button class="btn btn-white" (click)="onCloseLogoutModalHandled()" style="padding:12px 16px; font-size:12px ">
+          {{ "Cancel" | translate}}
+        </button>    
+        <button class="btn btn-info" (click)="onLogoutModalHandled()" style="padding:12px 16px; font-size:12px ">
+          Log Out
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
 </div>
