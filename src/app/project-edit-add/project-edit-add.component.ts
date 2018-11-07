@@ -91,25 +91,35 @@ export class ProjectEditAddComponent implements OnInit {
 
       if (project) {
         this.projectName_toUpdate = project.name;
-        console.log('PROJECT NAME TO UPDATE: ', this.projectName_toUpdate);
+        console.log('PRJCT-EDIT-ADD - PROJECT NAME TO UPDATE: ', this.projectName_toUpdate);
 
         // used in onProjectNameChange to enable / disable the 'update project name' btn
         this.project_name = project.name;
 
-        if (project.settings.email.autoSendTranscriptToRequester) {
-          console.log('PRJCT-EDIT-ADD - ON INIT AUTO SEND TRANSCRIPT IS ', project.settings.email.autoSendTranscriptToRequester);
-          this.AUTO_SEND_TRANSCRIPT_IS_ON = true;
-        } else {
-          this.AUTO_SEND_TRANSCRIPT_IS_ON = false;
-        }
+        if (project.settings) {
 
+          if (project.settings.email.autoSendTranscriptToRequester === true) {
+            console.log('PRJCT-EDIT-ADD - ON INIT AUTO SEND TRANSCRIPT IS ', project.settings.email.autoSendTranscriptToRequester);
+
+            this.AUTO_SEND_TRANSCRIPT_IS_ON = true;
+            console.log('PRJCT-EDIT-ADD - ON INIT AUTO SEND TRANSCRIPT IS ON ', this.AUTO_SEND_TRANSCRIPT_IS_ON);
+
+          } else {
+            this.AUTO_SEND_TRANSCRIPT_IS_ON = false;
+            console.log('PRJCT-EDIT-ADD - ON INIT AUTO SEND TRANSCRIPT IS ON ', this.AUTO_SEND_TRANSCRIPT_IS_ON);
+          }
+        } else {
+
+          this.AUTO_SEND_TRANSCRIPT_IS_ON = false;
+          console.log('PRJCT-EDIT-ADD - ON INIT AUTO SEND TRANSCRIPT IS ON ', this.AUTO_SEND_TRANSCRIPT_IS_ON);
+        }
       }
 
     }, (error) => {
-      console.log('GET PROJECT BY ID - ERROR ', error);
+      console.log('PRJCT-EDIT-ADD - GET PROJECT BY ID - ERROR ', error);
       this.showSpinner = false;
     }, () => {
-      console.log('GET PROJECT BY ID - COMPLETE ');
+      console.log('PRJCT-EDIT-ADD - GET PROJECT BY ID - COMPLETE ');
       this.showSpinner = false;
     });
   }
