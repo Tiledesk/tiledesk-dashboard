@@ -146,7 +146,7 @@ export class WidgetComponent implements OnInit {
 
         if (project.widget.wellcomeMsg) {
           // tslint:disable-next-line:max-line-length
-          this.wellcomeMsgValue = `\n      wellcomeTitle: "${project.widget.wellcomeMsg.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0')}",`
+          this.wellcomeMsgValue = `\n      wellcomeMsg: "${project.widget.wellcomeMsg.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0')}",`
           console.log('»» WIDGET - PRJCT-WIDGET WELCOME MSG : ', this.wellcomeMsgValue);
         }
 

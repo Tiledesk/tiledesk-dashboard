@@ -593,6 +593,7 @@
         "CalloutMsg": "Message",
         "CustomizeTheCalloutMsg": "Customize the Callout message",
         "WidgetAlignment": "Widget Alignment",
+        "WidgetMargin": "Widget Margin",
         "BottomRight": "bottom right",
         "BottomLeft": "bottom left",
         "AlignsTheWidgetToThe": "aligns the widget to the",
