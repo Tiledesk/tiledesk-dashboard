@@ -332,6 +332,9 @@ export class RequestsListComponent implements OnInit {
   getCountOfDeptsInRequests(requests_array) {
     const depts_array = [];
     const deptsIDs = [];
+
+    const deptsNames = [];
+
     requests_array.forEach((request, index) => {
       // console.log('REQUESTS-LIST COMP - REQUEST ', request, '#', index);
 
@@ -341,21 +344,65 @@ export class RequestsListComponent implements OnInit {
 
       // CREATES AN ARRAY WITH * ONLY THE IDs * OF THE DEPTS RETURNED IN THE REQUESTS OBJCTS
       // THIS IS USED TO GET THE OCCURRENCE IN IT OF THE ID OF THE ARRAY this.requestsDepts_array
-      deptsIDs.push(request.attributes.departmentId)
 
+      /**
+       * USING DEPT ID  */
+      deptsIDs.push(request.attributes.departmentId)
+      /**
+       * USING DEPT NAME  */
+      // deptsNames.push(request.attributes.departmentName)
 
     });
-    // console.log('REQUESTS-LIST COMP - DEPTS ARRAY NK', depts_array)
-    // console.log('REQUESTS-LIST COMP - DEPTS ID ARRAY NK', deptsIDs)
+    console.log('REQUESTS-LIST COMP - DEPTS ARRAY NK', depts_array);
+    console.log('REQUESTS-LIST COMP - DEPTS ID ARRAY NK', deptsIDs);
+    console.log('REQUESTS-LIST COMP - DEPTS NAME ARRAY NK', deptsNames)
 
-    // REMOVE DUPLICATE
+    /**
+     * *********************************************************************
+     * ************************* REMOVE DUPLICATE **************************
+     * ********************************************************************* */
+
+    /**
+     * USING DEPT ID  */
     this.depts_array_noduplicate = this.removeDuplicates(depts_array, '_id');
+
+    /**
+     * USING DEPT NAME  */
+    //  this.depts_array_noduplicate = this.removeDuplicates(depts_array, 'deptName');
+
+
+
     console.log('REQUESTS-LIST COMP - DEPTS ARRAY [no duplicate] NK', this.depts_array_noduplicate)
 
     // GET OCCURRENCY OF THE DEPT ID IN THE ARRAY OF THE TOTAL DEPT ID
     this.depts_array_noduplicate.forEach(dept => {
+
+      /**
+       * USING DEPT ID  */
       this.getDeptIdOccurrence(deptsIDs, dept._id)
+
+      /**
+       * USING DEPT NAME  */
+      // this.getDeptNameOccurrence(deptsNames, dept.deptName)
     });
+  }
+
+  getDeptNameOccurrence(array_of_all_depts_name, dept_name) {
+    // console.log('!!! ANALYTICS - ALL REQUESTS X DEPT - GET DEP OCCURRENCE FOR DEPTS ');
+    const newUnicArray = []
+    let count = 0;
+    array_of_all_depts_name.forEach((v) => (v === dept_name && count++));
+    console.log('!!! REQUESTS LIST - DEPT - #', count, ' REQUESTS ASSIGNED TO DEPT ', dept_name);
+    let i
+    for (i = 0; i < this.depts_array_noduplicate.length; ++i) {
+
+      for (const dept of this.depts_array_noduplicate) {
+        if (dept_name === dept.deptName) {
+          dept.requestsCount = count
+        }
+      }
+      // console.log('REQUESTS-LIST COMP - DEPTS ARRAY [no duplicate] NK * 2 * : ' + JSON.stringify(this.depts_array_noduplicate));
+    }
   }
 
   getDeptIdOccurrence(array_of_all_depts_ids, dept_id) {
