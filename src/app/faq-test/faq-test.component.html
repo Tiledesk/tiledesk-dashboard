@@ -10,26 +10,28 @@
       <div class="col-md-12">
         <div class="card custom_card" style="padding-top:25px; padding-bottom:25px; margin-bottom:0px">
           <div class="card-content">
+            <form>
+              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
+                <!-- Domanda -->
+                {{ "FaqTestPage.Question" | translate }}
+              </label>
+              <div class="col-sm-10">
+                <input [(ngModel)]="questionToTest" class="input" type="text" placeholder='{{ "FaqTestPage.EnterTheQuestion" | translate }}'  name="testquestion">
+              </div>
 
-            <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
-              <!-- Domanda -->
-              {{ "FaqTestPage.Question" | translate }}
-            </label>
-            <div class="col-sm-10">
-              <input [(ngModel)]="questionToTest" class="input" type="text" placeholder='{{ "FaqTestPage.EnterTheQuestion" | translate }}'>
-            </div>
+              <!-- SPACER -->
+              <div class="col-sm-12 spacer_div" style="height:15px"></div>
 
-             <!-- SPACER -->
-             <div class="col-sm-12 spacer_div" style="height:15px"></div>
+              <label class="col-sm-2"></label>
 
-             <label class="col-sm-2"></label>
+              <div class="col-sm-10"> 
+                <button #runtestbtn type="submit" class="btn btn-success" (click)="searchRemoteFaq()">
+                  <!-- Esegui Test -->
+                  {{ "FaqTestPage.RunTest" | translate }}
+                </button>
+              </div>
 
-             <div class="col-sm-10"> 
-               <button #runtestbtn class="btn btn-success"  (click)="searchRemoteFaq()">
-                 <!-- Esegui Test -->
-                 {{ "FaqTestPage.RunTest" | translate }}
-               </button>
-             </div>
+            </form>
            </div>
         </div>
       </div>
