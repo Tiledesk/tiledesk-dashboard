@@ -37,7 +37,7 @@
             <div class="col-sm-10"> 
 
               <button #editbotbtn class="btn btn-success" (click)="editBotName()" >
-                  {{ "BotsAddEditPage.UpdateBotName" | translate }}
+                {{ "BotsAddEditPage.UpdateBotName" | translate }}
               </button>
             </div>
 
@@ -222,6 +222,16 @@
                   </span>
                 </th>
 
+                <th>
+                  <!-- TOPIC -->
+                  <span style="color: #566787">
+                    <strong>
+                      {{ 'FaqPage.Topic' | translate }}
+                    </strong>
+                  </span>
+                </th>
+
+
 
                 <!-- 
                 *******************  
@@ -262,7 +272,7 @@
         
               <!-- IF THERE ISN'T FAQ -->
               <tr *ngIf="faq?.length === 0"> 
-                <td colspan="3" style="text-align: center; padding-top: 16px;">
+                <td colspan="4" style="text-align: center; padding-top: 16px;">
                   <!-- color: #ff5252   -->
                   <p style="font-size:1em; color:#999999; font-weight: 400">
                     <!-- NO FAQ   -->
@@ -280,11 +290,17 @@
                 </td>
 
                 <td style="white-space: normal !important; word-wrap: break-word;">
-                    <span class="tooltipx">
-                      {{ faq?.answer }}
-                      <span class="tooltiptext">{{ 'FaqPage.FaqId' | translate }}: <br> {{ faq?._id }} </span>
-                    </span>
-                   
+                  <span class="tooltipx">
+                    {{ faq?.answer }}
+                    <span class="tooltiptext">{{ 'FaqPage.FaqId' | translate }}: <br> {{ faq?._id }} </span>
+                  </span>
+                </td>
+
+                <td>
+                  <span class="tooltipx">
+                    {{ faq?.topic }}
+                    <span class="tooltiptext">{{ 'FaqPage.FaqId' | translate }}: <br> {{ faq?._id }} </span>
+                  </span>
                 </td>
 
                 <!-- style="width: 280px !important" -->
