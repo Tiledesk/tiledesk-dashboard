@@ -55,7 +55,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
       'themeForegroundColor': '#ffffff',
       'en': {
         'wellcomeTitle': 'Hi, welcome to tiledesk 👋 ',
-        'wellcomeMsg': 'How can we help?',
+        'wellcomeMsg': 'How can we help you?',
         'calloutTitle': 'Need Help?',
         'calloutMsg': 'Click here and start chatting with us!',
         'online_msg': 'Describe shortly your problem, you will be contacted by an agent.',
@@ -64,7 +64,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
       },
       'it': {
         'wellcomeTitle': 'Ciao, benvenuto su tiledesk 👋 ',
-        'wellcomeMsg': 'Come possiamo aiutare?',
+        'wellcomeMsg': 'Come possiamo aiutarti?',
         'calloutTitle': 'Bisogno di aiuto?',
         'calloutMsg': 'Clicca qui e inizia a chattare con noi!',
         'online_msg': 'Descrivi sinteticamente il tuo problema, ti metteremo in contatto con un operatore specializzato.',
@@ -97,9 +97,9 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
   calloutTimerSecondSelected: number;
 
   // preChatForm = 'preChatForm'
+  // { seconds: 'immediately', value: 0 },
   calloutTimerOptions = [
     { seconds: 'disabled', value: -1 },
-    { seconds: 'immediately', value: 0 },
     { seconds: '5', value: 5 },
     { seconds: '10', value: 10 },
     { seconds: '15', value: 15 },
@@ -689,6 +689,11 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
     if (this.primaryColor !== this.widgetDefaultSettings.themeColor) {
 
       this.widgetObj['themeColor'] = this.primaryColor
+    } else {
+
+      // *** REMOVE PROPERTY
+      delete this.widgetObj['themeColor'];
+      this.widgetService.updateWidgetProject(this.widgetObj)
     }
     // ASSIGN TO WIDEGET OBJ
     // this.widgetObj =

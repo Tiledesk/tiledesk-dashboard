@@ -1,7 +1,6 @@
 {
-  "name": "tiledesk",
-  "version": "0.0.0",
-  "license": "MIT",
+  "name": "@tiledesk/tiledesk-dashboard",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --aot",
@@ -11,7 +10,14 @@
     "e2e": "ng e2e",
     "pwa": "ng build --prod && sw-precache --root=dist --config=precache-config.js"
   },
-  "private": true,
+  "author": "Nicola Lanzilotto - Frontiere21 SRL",
+  "license": "AGPL-3.0",
+  "homepage": "https://www.tiledesk.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Tiledesk/tiledesk-dashboard"
+  },
+  "private": false,
   "dependencies": {
     "@angular/animations": "^5.0.2",
     "@angular/common": "^5.0.2",
