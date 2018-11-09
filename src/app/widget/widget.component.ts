@@ -22,7 +22,7 @@ export class WidgetComponent implements OnInit {
   // preChatForm = false;
   preChatForm: boolean;
   // preChatFormValue = 'false';
-  preChatFormValue: string;;
+  preChatFormValue: string;
 
   projectName: string;
   calloutTimer: string;
@@ -80,6 +80,10 @@ export class WidgetComponent implements OnInit {
   browserLang: string;
 
   callOutMsgValue: string;
+
+  paramWellcomeTitle: string;
+  paramWellcomeMsg: string;
+  paramLogoChat: string;
 
   constructor(
     http: Http,
@@ -140,19 +144,32 @@ export class WidgetComponent implements OnInit {
 
         if (project.widget.wellcomeTitle) {
           // tslint:disable-next-line:max-line-length
-          this.wellcomeTitleValue = `\n      wellcomeTitle: "${project.widget.wellcomeTitle.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0')}",`
+          const escapedWellcomeTitle = project.widget.wellcomeTitle.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0')
+          this.wellcomeTitleValue = `\n      wellcomeTitle: "${escapedWellcomeTitle}",`
           console.log('»» WIDGET - PRJCT-WIDGET WELCOME TITLE : ', this.wellcomeTitleValue);
+
+          // used for TEST WIDGET
+          this.paramWellcomeTitle = '&wellcomeTitle=' + escapedWellcomeTitle
+        } else {
+          this.paramWellcomeTitle = '';
         }
 
         if (project.widget.wellcomeMsg) {
           // tslint:disable-next-line:max-line-length
-          this.wellcomeMsgValue = `\n      wellcomeMsg: "${project.widget.wellcomeMsg.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0')}",`
+          const escapedWellcomeMsgValue = project.widget.wellcomeMsg.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0')
+          this.wellcomeMsgValue = `\n      wellcomeMsg: "${escapedWellcomeMsgValue}",`
           console.log('»» WIDGET - PRJCT-WIDGET WELCOME MSG : ', this.wellcomeMsgValue);
+          this.paramWellcomeMsg = '&wellcomeMsg=' + escapedWellcomeMsgValue
+        } else {
+          this.paramWellcomeMsg = ''
         }
 
         if (project.widget.logoChat) {
           this.logoChatValue = `\n      logoChat: "${project.widget.logoChat}",`
           console.log('»» WIDGET - PRJCT-WIDGET LOGO CHAT : ', this.logoChatValue);
+          this.paramLogoChat = '&logoChat=' + project.widget.logoChat
+        } else {
+          this.paramLogoChat = ''
         }
 
         if (project.widget.preChatForm) {
@@ -520,17 +537,31 @@ export class WidgetComponent implements OnInit {
       paramThemeforegroundcolor = ''
     }
 
+    let paramPreChatForm = '&prechatform=' + this.preChatForm
+    if (!this.preChatForm) {
+      paramPreChatForm = '&prechatform=false'
+    }
+
+    let paramAlign = '&align=' + this.alignmentValue;
+    if (!this.alignmentValue) {
+      paramAlign = '&align=right'
+    }
+
+
     // '&themecolor=' + this.primaryColor
     // '&themeforegroundcolor=' + this.secondaryColor
     const url = 'http://testwidget.tiledesk.com/testsite?projectid='
       + this.projectId
-      + '&prechatform=' + this.preChatForm
+      + paramPreChatForm
       + this.paramCalloutTimer
       + paramThemeColor
       + paramThemeforegroundcolor
       + paramCallout_title + calloutTitle
       + paramCallout_msg + calloutMsg
-      + '&align=' + this.alignmentValue;
+      + paramAlign
+      + this.paramWellcomeTitle
+      + this.paramWellcomeMsg
+      + this.paramLogoChat
     window.open(url, '_blank');
   }
 
