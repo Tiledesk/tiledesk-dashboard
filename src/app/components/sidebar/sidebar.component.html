@@ -1,26 +1,47 @@
-<div *ngIf="project" class="logo" style="background-color: #191919; padding-bottom: 10px; ">
-  
+<div *ngIf="project" class="logo" style="background-color:#1e2129!important; padding-bottom: 5px;">
   <a routerLink="project/{{ project._id }}/home" class="simple-text" style="text-transform: none; padding-left: 40px;">
     <div class="logo-img">
-      <img style="width:50%; padding-top: 5px;" src="assets/img/tiledesk-logo_white.svg"/>
+        <!-- padding-top: 5px; -->
+      <img style="width:50%; top:20px" src="assets/img/tiledesk-logo_white.svg"/>
     </div>
   </a>
 
 
 </div>
 <!-- background-color: #191919 -->
-<div class="sidebar-wrapper" style="background-color: #2d323e!important;">
+<div class="sidebar-wrapper" style="background-color: #2d323e!important;" (scroll)="onScroll($event)">
         
       <!-- // NK start NEW: AVATAR ON THE SIDEBAR  -->
-      <div class="user fuse-navy-900" fxlayout="column" style="flex-direction: column; box-sizing: border-box; display: flex;">
-            <div class="h3 username" style="font-size: 16px;font-weight: 400;margin-top: 10px;">Charlie Adams</div>
-            <div class="h5 email hint-text mt-8" style="color: rgba(255,255,255,.5)!important;font-size: 13px;margin-top: 8px!important;font-weight: 400;">
-                adams.charlie@mail.com
+      <div class="user tiledesk-nav-user" fxlayout="column" style="flex-direction: column; box-sizing: border-box; display: flex;">
+        <div *ngIf="user" class="h3 username" style="font-size: 16px;font-weight: 400;margin-top: 15px; margin-bottom: 5px;">
+          
+          {{ user.firstname }} {{ user.lastname }}
+        </div>
+        <div *ngIf="user" class="h5 email hint-text mt-8" style="color: rgba(255,255,255,.5)!important;font-size: 13px;margin-top: 5px!important;font-weight: 400;">
+            
+          {{ user.email }}
+        </div>
+        <div class="avatar-container tiledesk-nav-avatar">
+            <!-- <img class="avatar" src="https://static.intercomassets.com/avatars/383251/square_128/dorinew-1493275883.png?1493275883"> -->
+
+          <img class="avatar" *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" 
+              src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{user?._id}}%2Fphoto.jpg?alt=media" />
+            
+          <img class="avatar" *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true" 
+              src="assets/img/no_image_user.png"/>
+            
+            <div (click)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)" class="status-icon online" [ngClass]="{'is-user-online' : IS_AVAILABLE === true, 'is-user-offline' : IS_AVAILABLE === false }">
+              <span style="position:relative; top: -5px;left: 14px; cursor:pointer">  
+                <span style="
+                color: rgba(255,255,255,.5)!important; 
+                font-size: 12px;" *ngIf="IS_AVAILABLE"> {{ 'Available' | translate }} </span> 
+                <span style="
+                color: rgba(255,255,255,.5)!important;
+                font-size: 12px;" *ngIf="!IS_AVAILABLE"> {{ 'Unavailable' | translate }} </span>
+              
+              </span>
             </div>
-            <div class="avatar-container fuse-navy-700">
-                <img class="avatar" src="https://static.intercomassets.com/avatars/383251/square_128/dorinew-1493275883.png?1493275883">
-                <div class="status-icon online"></div>
-            </div>
+        </div>
         </div>
       <!-- // NK ./end NEW: AVATAR ON THE SIDEBAR  -->
 
@@ -103,10 +124,10 @@
   </ul>
 
     <div class="nav-container">
-      <ul class="nav">
+      <ul class="nav" [ngClass]="{'is-desktop-menu' : IS_MOBILE_MENU === false, 'is-mobile-menu' : IS_MOBILE_MENU === true  }">
             
         <!-- SELECT AVAILABLE / UNAVAILABLE -->
-        <li *ngIf="project" style="margin-left: 10px;">
+        <!-- <li *ngIf="project" style="margin-left: 10px;">
           <a *ngIf="IS_AVAILABLE" 
             style="background-color: rgba(255,255,255,0.2);                  
               border-radius: 10px;
@@ -147,7 +168,7 @@
               </span>
             </p>
           </a>
-        </li>
+        </li> -->
 
         <!-- !!!! NO MORE USED HOME - VISITORS (alias REQUESTS) - CHAT -->
         <!-- <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}}">
@@ -161,7 +182,7 @@
         <!-- WITHOUT THE CONDITION *ngIf="projectid" THE MENU ITEM 'HOME' IT IS NOT RENDERED AS ACTIVE -->
         <li *ngIf="project" routerLinkActive="active">
           <a #homebtn class="customAncor" routerLink="project/{{ project._id }}/home">
-            <i class="material-icons">dashboard</i>
+            <i class="material-icons sidebar-icons">dashboard</i>
             <p class="onBlackBckgrnd">Home</p>
           </a>
         </li>
@@ -169,7 +190,7 @@
         <!-- REQUESTS (VISITORS)  -->
         <li *ngIf="project" routerLinkActive="active" >
           <a class="customAncor" routerLink="project/{{ project._id }}/requests">
-            <i class="material-icons">group</i>
+            <i class="material-icons sidebar-icons">group</i>
             <p class="onBlackBckgrnd">{{ 'Requests' | translate }}</p>
           </a>
         </li>
@@ -177,7 +198,7 @@
         <!-- CONTACTS (LEADS)  -->
         <li *ngIf="project" routerLinkActive="active" >
           <a class="customAncor" routerLink="project/{{ project._id }}/contacts">
-            <i class="material-icons">contacts</i>
+            <i class="material-icons sidebar-icons">contacts</i>
             <p class="onBlackBckgrnd">{{ 'Contacts' | translate }}</p>
           </a>
         </li>
@@ -186,7 +207,7 @@
         <li *ngIf="project" routerLinkActive="active">
           <!-- <a class="customAncor" routerLink="/chat"> -->
           <a #openchatbtn class="customAncor" target="_blank" href="{{ CHAT_BASE_URL }}" (click)="removeChatBtnFocus()">     
-            <i class="material-icons">chat</i>
+            <i class="material-icons sidebar-icons">chat</i>
             <p class="onBlackBckgrnd">Chat</p>
           </a>
         </li>
@@ -202,7 +223,7 @@
         <!-- ANALYTICS -->
         <li *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="active" >
           <a class="customAncor" routerLink="project/{{ project._id }}/analytics">
-            <i class="material-icons">trending_up</i>
+            <i class="material-icons sidebar-icons">trending_up</i>
             <p class="onBlackBckgrnd">Analytics</p>
           </a>
         </li>
@@ -210,7 +231,7 @@
         <!-- REQUESTS HISTORY -->
         <li *ngIf="project" routerLinkActive="active" >
           <a class="customAncor" routerLink="project/{{ project._id }}/history">
-            <i class="material-icons">history</i>
+            <i class="material-icons sidebar-icons">history</i>
             <p class="onBlackBckgrnd">{{ 'History' | translate }}</p>
           </a>
         </li>
@@ -219,7 +240,7 @@
         <li *ngIf="project && USER_ROLE !== 'agent'" (click)="has_clicked_settings(SHOW_SETTINGS_SUBMENU = !SHOW_SETTINGS_SUBMENU)" style="cursor:pointer">
           <!-- routerLink="/settings" -->
           <a class="customAncor">
-            <i class="material-icons">settings</i>
+            <i class="material-icons sidebar-icons">settings</i>
             <p class="onBlackBckgrnd">
                 {{ 'Settings' | translate }} 
                 <b class="caret" style="position: absolute;right: 18px; margin-top: 13px" [ngStyle]="{'transform': trasform}"></b>
@@ -240,88 +261,118 @@
         </li> -->
         
         <!-- ROUTING -->
-        <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active">
+        <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
           <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/routing">
-              <span class="sidebar-mini">
+            <p class="onBlackBckgrnd">
+              <span class="sidebar-mini">R </span>   Routing 
+            </p>
+
+            <!-- <span class="sidebar-mini">
               R 
             </span>
-              
             <span class="sidebar-normal">
               Routing 
-            </span> 
+            </span>  -->
           </a>
         </li>
 
         <!-- USERS (ALIAS MEMBERS) -->
-        <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active">
+        <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
           <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/users">
-            <span class="sidebar-mini">
+            
+            <p class="onBlackBckgrnd">
+              <span class="sidebar-mini">U </span> {{ 'Users' | translate }}  
+            </p>
+
+            <!-- <span class="sidebar-mini">
               U 
             </span>
-            
             <span class="sidebar-normal">
               {{ 'Users' | translate }} 
-            </span> 
+            </span>  -->
           </a>
         </li>
 
         <!-- GROUPS -->
-        <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active">
+        <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
           <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/groups">
-            <span class="sidebar-mini">
+            <p class="onBlackBckgrnd">
+              <span class="sidebar-mini">G </span> {{ 'Groups' | translate }} 
+            </p>
+
+            <!-- <span class="sidebar-mini">
               G 
             </span>
-            
             <span class="sidebar-normal">
               {{ 'Groups' | translate }} 
-            </span> 
+            </span>  -->
             
           </a>
         </li>
 
           <!-- FAQ (alias FAQKB) HAS BEEN RENAMED IN BOT (BOT - see above - IS CURRENTLY COMMENTED) -->
-          <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active">
+          <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
             <!-- routerLink="project/{{ project._id }}/faqkb" -->
             <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/bots">
-              <span class="sidebar-mini">
+             
+              <p class="onBlackBckgrnd">
+                <span class="sidebar-mini">B </span> Bots 
+              </p>
+              
+              <!-- <span class="sidebar-mini">
                 B 
               </span>
               <span class="sidebar-normal">
                 Bots
-              </span> 
+              </span>  -->
               </a>
           </li>
   
-          <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active">
+          <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
             <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/departments">
-              <span class="sidebar-mini">
+              
+              <p class="onBlackBckgrnd">
+                <span class="sidebar-mini">D </span>{{ 'Departments' | translate }}
+              </p>
+              
+              <!-- <span class="sidebar-mini">
                 D
               </span>
               <span class="sidebar-normal">
                 {{ 'Departments' | translate }}
-              </span> 
+              </span>  -->
             </a>
           </li>
 
-          <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active">
+          <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
             <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/widget">
-              <span class="sidebar-mini">
+              
+              <p class="onBlackBckgrnd">
+                <span class="sidebar-mini">W </span>Widget
+              </p>
+
+              <!-- <span class="sidebar-mini">
                 W
               </span>
               <span class="sidebar-normal"> 
                 Widget 
-              </span> 
+              </span>  -->
             </a>
           </li>
 
-          <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active">
+          <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
             <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/hours">
-              <span class="sidebar-mini">
+              
+              <p class="onBlackBckgrnd">
+                <span class="sidebar-mini">O </span>{{ 'Hours' | translate }}
+              </p>
+              
+              <!-- <span class="sidebar-mini">
                 O
               </span>
               <span class="sidebar-normal"> 
                 {{ 'Hours' | translate }}
-              </span> 
+              </span>  -->
             </a>
           </li>
 

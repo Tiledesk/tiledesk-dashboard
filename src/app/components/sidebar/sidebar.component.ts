@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, NgModule, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgModule, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { RequestsService } from '../../services/requests.service';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
@@ -13,6 +13,7 @@ import { Project } from '../../models/project-model';
 import { UsersLocalDbService } from '../../services/users-local-db.service';
 import { NotifyService } from '../../core/notify.service';
 import { environment } from '../../../environments/environment';
+import { UploadImageService } from '../../services/upload-image.service';
 
 declare const $: any;
 declare interface RouteInfo {
@@ -93,6 +94,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     CHAT_BASE_URL = environment.chat.CHAT_BASE_URL
 
+    userProfileImageExist: boolean;
+    userImageHasBeenUploaded: boolean;
+
+    IS_MOBILE_MENU: boolean;
+    scrollpos: number;
+    elSidebarWrapper: any;
+
     constructor(
         private requestsService: RequestsService,
         private router: Router,
@@ -102,7 +110,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         private auth: AuthService,
         private usersService: UsersService,
         private usersLocalDbService: UsersLocalDbService,
-        private notify: NotifyService
+        private notify: NotifyService,
+        private uploadImageService: UploadImageService
     ) {
 
         console.log('!!!!! HELLO SIDEBAR')
@@ -156,6 +165,24 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.getProjectUserRole();
 
         this.hasChangedAvailabilityStatusInUsersComp();
+
+        this.checkUserImageUploadIsComplete();
+        // used when the page is refreshed
+        this.checkUserImageExist();
+    }
+
+
+    checkUserImageExist() {
+        this.usersService.userProfileImageExist.subscribe((image_exist) => {
+            console.log('SIDEBAR - USER PROFILE EXIST ? ', image_exist);
+            this.userProfileImageExist = image_exist;
+        });
+    }
+    checkUserImageUploadIsComplete() {
+        this.uploadImageService.imageExist.subscribe((image_exist) => {
+            console.log('SIDEBAR - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
+            this.userImageHasBeenUploaded = image_exist;
+        });
     }
 
     getProjectUserRole() {
@@ -356,10 +383,42 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
     isMobileMenu() {
         if ($(window).width() > 991) {
+            this.IS_MOBILE_MENU = false
+
+            // console.log('SIDEBAR - IS MOBILE MENU ', this.IS_MOBILE_MENU);
+
             return false;
         }
+        this.IS_MOBILE_MENU = true
+
+        // console.log('SIDEBAR - IS MOBILE MENU ', this.IS_MOBILE_MENU);
+
         return true;
     };
+
+    @HostListener('window:resize', ['$event'])
+    onResize(event: any) {
+        // console.log('SIDEBAR - WINDOW WIDTH ON RESIZE', event.target.innerWidth);
+        if (event.target.innerWidth > 991) {
+            this.IS_MOBILE_MENU = false
+
+        } else {
+            this.IS_MOBILE_MENU = true
+        }
+
+    }
+
+    onScroll(event: any): void {
+        console.log('RICHIAMO ON SCROLL ');
+        this.elSidebarWrapper = <HTMLElement>document.querySelector('.sidebar-wrapper');
+        this.scrollpos = this.elSidebarWrapper.scrollTop
+        console.log('SIDEBAR SCROLL POSITION',  this.scrollpos)
+    }
+    stopScroll() {
+        // const el = <HTMLElement>document.querySelector('.sidebar-wrapper');
+        console.log('SIDEBAR SCROLL TO',  this.scrollpos)
+        this.elSidebarWrapper.scrollTop = this.scrollpos;
+    }
 
     goToProjects() {
         console.log('SIDEBAR IS MOBILE -  HAS CLICCKED GO TO PROJECT  ')

@@ -12,16 +12,18 @@ li.active a span.sidebar-mini  {
     float: left;
     display: inherit;
     color: #a9afbb;
-    font-size:1.2em
+    /* font-size:1.2em */
 }
 
 /* START - USED WITH SIDWBAR WITH BLACK BACKGROUND */
 .onBlackBckgrnd {
-    color: rgba(255,255,255,0.6)
+    color: rgba(255,255,255,0.6);
+    font-family: 'Google Sans', sans-serif !important;
 }
 
 li.active a p.onBlackBckgrnd {
-    color: #ffffff !important
+    color: #ffffff !important;
+    
 }
 
 span.sidebar-normal {
@@ -57,7 +59,12 @@ li.active a span.sidebar-mini  {
 
 /* CUSTOM MARGIN BETWEEN THE MENU ITEM*/
 .nav li > a.customAncor  {
-    margin: 5px 15px !important;
+    /* margin: 5px 15px !important; */
+
+    margin-top: 5px !important;
+    margin-right: 15px !important;
+    margin-bottom: 5px !important;
+    margin-left:0px !important;
 }
 
 /* MODAL START */
@@ -129,6 +136,10 @@ button.close {
 
 /* MODAL END */
 
+.sidebar-icons {
+    font-size: 20px !important;
+}
+
 .avatar-container {
     text-align: center;
     /* position: absolute;
@@ -140,7 +151,7 @@ button.close {
     left: 50%; */
 }
 /* // NK start NEW: AVATAR ON THE SIDEBAR  */
-.fuse-navy-900 {
+.tiledesk-nav-user{
     background-color: #1e2129!important;
     color: #fff!important;
 }
@@ -151,14 +162,22 @@ button.close {
     align-items: center;
     justify-content: flex-start;
     width: 100%;
-    height: 136px;
+    /* height: 136px;
     min-height: 136px;
-    max-height: 136px;
-    padding: 8px 0 64px;
+    max-height: 136px; */
+    height: 130px;
+    min-height: 130px;
+    max-height: 130px;
+    /* padding: 8px 0 64px; */
+}
+
+.username {
+    font-family: 'Google Sans', sans-serif !important;
 }
 .avatar-container{
     position: absolute;
-    top: 92px;
+    /* top: 92px; */
+    top: 80px;
     border-radius: 50%;
     padding: 8px;
     -webkit-transform: translateX(-50%);
@@ -166,7 +185,7 @@ button.close {
     left: 50%;
 }
 
-.fuse-navy-700 {
+.tiledesk-nav-avatar {
     background-color: #2d323e!important;
     color: #fff!important;
 }
@@ -178,17 +197,64 @@ button.close {
     border-radius: 50%;
 }
 .status-icon {
-position: absolute;
-width: 12px;
-height: 12px;
-bottom: 10px;
-left: 44px;
-border: 2px solid;
-border-radius: 50%;
-background-color: #4caf50;
-
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    bottom: 8px;
+    left: 61px;
+    border: 2px solid #2d323e;
+    border-radius: 50%;
+    background-color: #4caf50;
 }
 
+.is-user-online {
+    background-color: #4caf50;
+}
+.is-user-offline {
+    background-color: #f44336;
+}
+
+.is-desktop-menu {
+    margin-top: 30px;
+}
+.is-mobile-menu {
+    margin-top: 0px;
+}
+
+/* OVERWRITE THE DEFAULT STYLE */
+.nav-mobile-menu {
+    margin-top: 25px!important;
+}
+/* // NK end NEW: AVATAR ON THE SIDEBAR  */
+
+
+
+/* NK start CUSTOM SCROLL BAR */
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888; 
+    /* border-radius: 6px; */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+    /* width: 10px !important; */
+}
+/* NK end CUSTOM SCROLL BAR */
+
+
+/* SIDEBAR NAV ITEMS  */
 .active  {
     height: 40px;
     padding: 0 12px 0 24px;
@@ -204,7 +270,10 @@ background-color: #4caf50;
     -webkit-box-shadow: none !important;
 }
 .nav > li > a {
+    padding: 5px 15px !important;
 
-    padding: 5px 15px !important;;
+    border-radius: 0 20px 20px 0;
+    margin-right: 16px;
+    padding: 0 12px 0 24px;
 }
-/* // NK end NEW: AVATAR ON THE SIDEBAR  */
+/* SIDEBAR NAV ITEMS  */
