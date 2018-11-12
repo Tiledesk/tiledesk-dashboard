@@ -139,3 +139,72 @@ button.close {
     transform: translateX(-50%);
     left: 50%; */
 }
+/* // NK start NEW: AVATAR ON THE SIDEBAR  */
+.fuse-navy-900 {
+    background-color: #1e2129!important;
+    color: #fff!important;
+}
+
+.user {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: 136px;
+    min-height: 136px;
+    max-height: 136px;
+    padding: 8px 0 64px;
+}
+.avatar-container{
+    position: absolute;
+    top: 92px;
+    border-radius: 50%;
+    padding: 8px;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    left: 50%;
+}
+
+.fuse-navy-700 {
+    background-color: #2d323e!important;
+    color: #fff!important;
+}
+
+.avatar-container .avatar {
+    width: 72px;
+    height: 72px;
+    margin: 0;
+    border-radius: 50%;
+}
+.status-icon {
+position: absolute;
+width: 12px;
+height: 12px;
+bottom: 10px;
+left: 44px;
+border: 2px solid;
+border-radius: 50%;
+background-color: #4caf50;
+
+}
+
+.active  {
+    height: 40px;
+    padding: 0 12px 0 24px;
+    border-radius: 0 20px 20px 0;
+    margin-right: 16px;
+    background-color: #039be5!important;
+    color: #fff!important;
+}
+
+.active a {
+    background-color: transparent!important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+}
+.nav > li > a {
+
+    padding: 5px 15px !important;;
+}
+/* // NK end NEW: AVATAR ON THE SIDEBAR  */
