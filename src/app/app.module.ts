@@ -114,6 +114,7 @@ import { MyDatePickerModule } from 'mydatepicker';
 import { ContactDetailsComponent } from './contact-details/contact-details.component';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { WidgetService } from './services/widget.service';
+import { ContactEditComponent } from './contact-edit/contact-edit.component';
 
 
 // AoT requires an exported function for factories
@@ -173,6 +174,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     WidgetDesignComponent,
     RequestsListHistoryNewComponent,
     ContactDetailsComponent,
+    ContactEditComponent,
   ],
   imports: [
     BrowserModule,

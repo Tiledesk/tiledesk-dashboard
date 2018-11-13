@@ -1,0 +1,108 @@
+<div class="navbar-brand" style="z-index: -1;margin-top:10px; padding-left:30px">
+    <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">keyboard_arrow_left</i>
+    {{ "EditContact" | translate }}
+</div>
+
+<div class="main-content" style="padding-top: 0px">
+  <div class="container-fluid">
+
+    <div class="row">
+  
+      <div class="col-md-12">
+        <div class="card" style="padding-top: 25px;">
+          <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
+          <!-- *ngIf="!showSpinner" -->
+          <div  class="card-content">
+            <form>
+
+              <div class="row"> 
+                <label class="col-sm-2  custom-label">
+                  {{ "Name" | translate }}
+                </label>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                  <input name="fullname" [(ngModel)]="lead_fullname" (ngModelChange)="fullnameChange($event)" class="input" type="text">
+                </div>
+              </div>
+
+
+              <div class="row"> 
+                <label  class="col-sm-2 custom-label">
+                  Email
+                </label>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                  <input name="email"  [(ngModel)]="lead_email" (ngModelChange)="emailChange($event)" class="input" type="text"
+                   [ngClass]="{'invalid-email' : !EMAIL_IS_VALID}">
+
+                  <span *ngIf="!EMAIL_IS_VALID" style="color: #f44336">
+                      {{ "EnterValidEmail" | translate }}
+                  </span>
+                </div>
+              </div>
+    
+                <!-- SPACER -->
+                <!-- <div class="col-sm-12 spacer_div" style="height:15px"></div> -->
+    
+              <div class="row"> 
+                <label class="col-sm-2"></label>
+                <div class="col-sm-10"> 
+    
+                  <button type="submit" #editleadbtn class="btn btn-success" (click)="editContact()" 
+                    [disabled]="!HAS_EDIT_FULLNAME && !HAS_EDIT_EMAIL || !EMAIL_IS_VALID">
+                    {{ "EditContact" | translate }}
+                  </button>
+                </div>
+              </div>
+
+            </form>
+
+     
+          </div> <!-- ./ card-content-->
+
+              
+        </div>
+      </div>
+      <!-- /. end col-md-8 -->
+       
+      <!-- ------------============ RIGHT SIDEBAR ============------------ -->
+      <!-- <div class="col-md-4">
+        <div class="card" style="padding-top:8px;">
+          <div class="card-content" style="padding-top: 0px;">
+            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 16px;  border-bottom: 1px solid #ddd; padding-bottom: 15px; ">
+              {{ "ContactDetails" | translate }}
+            </h4>
+
+            <p style="margin-bottom: 3px">
+              <strong>
+                {{ "Created" | translate }}
+              </strong>
+            </p>
+            <p style="color:#999999">
+              {{ contact_details?.createdAt | date: 'd/M/y HH:mm' }}
+            </p>
+
+            <p style="margin-bottom: 3px">
+              <strong>
+                {{ "Name" | translate }}
+              </strong>
+            </p>
+            <p style="color:#999999">
+              {{ contact_details?.fullname }}
+            </p>
+
+            <p style="margin-bottom: 3px">
+              <strong>
+                Email
+              </strong>
+            </p>
+            <p style="color:#999999">
+              {{ contact_details?.email }}
+            </p>
+ 
+          </div>
+        </div>
+      </div> -->
+
+    </div>
+
+  </div>
+</div>

@@ -7,7 +7,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { Contact } from '../models/contact-model';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
-
+import { NotifyService } from '../core/notify.service';
 
 @Component({
   selector: 'appdashboard-contacts',
@@ -40,7 +40,7 @@ export class ContactsComponent implements OnInit {
   DISPLAY_DATA_FOR_UPDATE_MODAL = false;
   DISPLAY_DATA_FOR_DELETE_MODAL = false;
   // set to none the property display of the modal
-  display = 'none';
+  displayDeleteModal = 'none';
 
   // DATA DISPLAYED IN THE 'DELETE' MODAL
   id_toDelete: string;
@@ -54,7 +54,8 @@ export class ContactsComponent implements OnInit {
     private http: Http,
     private contactsService: ContactsService,
     private router: Router,
-    private auth: AuthService
+    private auth: AuthService,
+    private notify: NotifyService
   ) { }
 
   ngOnInit() {
@@ -203,123 +204,82 @@ export class ContactsComponent implements OnInit {
     this.router.navigate(['project/' + this.projectId + '/contact', requester_id]);
   }
 
- 
 
-  // -----------------=============== NOTE: THE CODE BELOW IS NOT USED ===============-----------------
-  /**
-   * ADD CONTACT  */
-  createContact() {
-    console.log('MONGO DB FULL-NAME DIGIT BY USER ', this.fullName);
-    this.contactsService.addMongoDbContacts(this.fullName).subscribe((contact) => {
-      console.log('POST DATA ', contact);
-      this.fullName = '';
-      // RE-RUN GET CONTACT TO UPDATE THE TABLE
-      // this.getContacts();
-      this.ngOnInit();
-    },
-      (error) => {
-
-        console.log('POST REQUEST ERROR ', error);
-
-      },
-      () => {
-        console.log('POST REQUEST * COMPLETE *');
-      });
-
+  goToEditContact(requester_id) {
+    this.router.navigate(['project/' + this.projectId + '/contact/edit', requester_id]);
   }
 
   /**
-   * MODAL DELETE CONTACT
-   * @param id
-   * @param fullName
-   * @param hasClickedDeleteModal
-   */
-  openDeleteModal(id: string, fullName: string, hasClickedDeleteModal: boolean) {
-    console.log('HAS CLICKED OPEN DELETE MODAL TO CONFIRM BEFORE TO DELETE ', hasClickedDeleteModal);
-    console.log('ON MODAL DELETE OPEN -> USER ID ', id);
-    this.DISPLAY_DATA_FOR_DELETE_MODAL = hasClickedDeleteModal;
-    this.DISPLAY_DATA_FOR_UPDATE_MODAL = false;
+ * MODAL DELETE CONTACT
+ * @param id
+ * @param fullName
+ * @param hasClickedDeleteModal
+ */
+  openDeleteContactModal(id: string, fullName: string) {
+    console.log('!!!!! CONTACTS - ON MODAL DELETE OPEN -> USER ID ', id);
 
-    if (hasClickedDeleteModal) {
-      this.display = 'block';
-    }
+    this.displayDeleteModal = 'block';
 
     this.id_toDelete = id;
     this.fullName_toDelete = fullName;
   }
 
+  // CLOSE MODAL WITHOUT SAVE THE UPDATES OR WITHOUT CONFIRM THE DELETION
+  onCloseDeleteModal() {
+    this.displayDeleteModal = 'none';
+  }
+
   /**
    * DELETE CONTACT (WHEN THE 'CONFIRM' BUTTON IN MODAL IS CLICKED)  */
-  onCloseDeleteModalHandled() {
-    this.display = 'none';
+  deleteContact() {
+    this.displayDeleteModal = 'none';
 
-    this.contactsService.deleteMongoDbContact(this.id_toDelete).subscribe((contact: any) => {
-      console.log('DELETE CONTACT ', contact);
+    this.contactsService.deleteLead(this.id_toDelete)
+      .subscribe((lead: any) => {
+        console.log('!!!!! CONTACTS - DELETE CONTACT RES ', lead);
 
-      // RE-RUN GET CONTACT TO UPDATE THE TABLE
-      // this.getContacts();
-      this.ngOnInit();
-    },
-      (error) => {
-        console.log('DELETE REQUEST ERROR ', error);
-      },
-      () => {
-        console.log('DELETE REQUEST * COMPLETE *');
+        // RE-RUN GET CONTACT TO UPDATE THE TABLE
+
+        this.ngOnInit();
+      }, (error) => {
+        console.log('!!!!! CONTACTS - DELETE REQUEST - ERROR ', error);
+         // =========== NOTIFY ERROR ===========
+         this.notify.showNotification('An error occurred while deleting contact', 4, 'report_problem')
+      }, () => {
+        console.log('!!!!! CONTACTS - DELETE REQUEST * COMPLETE *');
+         // =========== NOTIFY SUCCESS===========
+         this.notify.showNotification('Contact successfully deleted', 2, 'done');
       });
 
   }
 
+  // -----------------=============== NOTE: THE CODE BELOW IS NOT USED ===============-----------------
   /**
-   * MODAL UPDATE CONTACT
-   * @param id
-   * @param fullName
-   * @param hasClickedUpdateModal
-   */
-  openUpdateModal(id: string, fullName: string, hasClickedUpdateModal: boolean) {
-    // display the modal windows (change the display value in the view)
-    console.log('HAS CLICKED OPEN MODAL TO UPDATE USER DATA ', hasClickedUpdateModal);
-    this.DISPLAY_DATA_FOR_UPDATE_MODAL = hasClickedUpdateModal;
-    this.DISPLAY_DATA_FOR_DELETE_MODAL = false;
+   * ADD CONTACT  */
+  // createContact() {
+  //   console.log('MONGO DB FULL-NAME DIGIT BY USER ', this.fullName);
+  //   this.contactsService.addMongoDbContacts(this.fullName).subscribe((contact) => {
+  //     console.log('POST DATA ', contact);
+  //     this.fullName = '';
+  //     // RE-RUN GET CONTACT TO UPDATE THE TABLE
+  //     // this.getContacts();
+  //     this.ngOnInit();
+  //   }, (error) => {
 
-    if (hasClickedUpdateModal) {
-      this.display = 'block';
-    }
+  //     console.log('POST REQUEST ERROR ', error);
 
-    console.log('ON MODAL OPEN -> CONTACT ID ', id);
-    console.log('ON MODAL OPEN -> CONTACT FULL-NAME TO UPDATE', fullName);
+  //   }, () => {
+  //     console.log('POST REQUEST * COMPLETE *');
+  //   });
 
-    this.id_toUpdate = id;
-    this.fullName_toUpdate = fullName;
-  }
+  // }
 
-  /**
-   * UPDATE CONTACT (WHEN THE 'SAVE' BUTTON IN MODAL IS CLICKED)
-   */
-  onCloseUpdateModalHandled() {
-    // HIDE THE MODAL
-    this.display = 'none';
 
-    console.log('ON MODAL UPDATE CLOSE -> CONTACT ID ', this.id_toUpdate);
-    console.log('ON MODAL UPDATE CLOSE -> CONTACT FULL-NAME UPDATED ', this.fullName_toUpdate);
-    this.contactsService.updateMongoDbContact(this.id_toUpdate, this.fullName_toUpdate).subscribe((contact) => {
-      console.log('PUT DATA (UPDATED CONTACT) ', contact);
 
-      // RE-RUN GET CONTACT TO UPDATE THE TABLE
-      // this.getContacts();
-      this.ngOnInit();
-    },
-      (error) => {
 
-        console.log('PUT REQUEST ERROR ', error);
 
-      },
-      () => {
-        console.log('PUT REQUEST * COMPLETE *');
-      });
-  }
 
-  // CLOSE MODAL WITHOUT SAVE THE UPDATES OR WITHOUT CONFIRM THE DELETION
-  onCloseModal() {
-    this.display = 'none';
-  }
+
+
+
 }
