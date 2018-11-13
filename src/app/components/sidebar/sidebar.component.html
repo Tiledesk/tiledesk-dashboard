@@ -58,10 +58,10 @@
 
   <ul class="nav nav-mobile-menu" *ngIf="isMobileMenu()">
     <li  *ngIf="project">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown" (click)="has_cliked_hidden_project(SHOW_PRJCT_SUB = !SHOW_PRJCT_SUB)" style="cursor:pointer">
-        <i class="material-icons">apps</i>
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" (click)="has_cliked_hidden_project(SHOW_PRJCT_SUB = !SHOW_PRJCT_SUB)" style="cursor:pointer; border-radius:0px">
+        <i class="material-icons sidebar-icons">apps</i>
         <p class="hidden-lg hidden-md">{{ project?.name }} 
-          <b style="position: absolute; top: 23px; right: 15px;" class="caret" [ngStyle]="{'transform': trasform_projectname_caret}"></b>
+          <b style="position: absolute; top: 20px; right: 15px;" class="caret" [ngStyle]="{'transform': trasform_projectname_caret}"></b>
         </p>
       </a>
       <ul *ngIf="project" class="dropdown-menu">
@@ -87,13 +87,13 @@
         </a>
     </li> -->
     <li>
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown" (click)="has_cliked_hidden_profile(SHOW_PROFILE_SUB = !SHOW_PROFILE_SUB)">
-          <i class="material-icons">person</i>
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" (click)="has_cliked_hidden_profile(SHOW_PROFILE_SUB = !SHOW_PROFILE_SUB)" style="border-radius:0px">
+          <i class="material-icons sidebar-icons">person</i>
           <!-- Profile -->
           <p class="hidden-lg hidden-md">
               <!-- Profilo -->
               {{ user?.firstname }} {{ user?.lastname }}
-              <b style="position: absolute; top: 23px; right: 15px;" class="caret" [ngStyle]="{'transform': transform_user_profile_caret}"></b>
+              <b style="position: absolute; top: 20px; right: 15px;" class="caret" [ngStyle]="{'transform': transform_user_profile_caret}"></b>
           </p>
       </a>
       <ul *ngIf="user" class="dropdown-menu">
