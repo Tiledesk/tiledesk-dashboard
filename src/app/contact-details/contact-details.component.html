@@ -233,6 +233,15 @@
           <div class="card-content" style="padding-top: 0px;">
             <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 16px;  border-bottom: 1px solid #ddd; padding-bottom: 15px; ">
               {{ "ContactDetails" | translate }}
+
+              <span class="tooltipx" style="vertical-align: middle; cursor: pointer" (click)='goToEditContact(contact_details?._id)'>
+                <i class="material-icons" style="font-size: 18px">
+                  edit
+                </i>
+                <span class="tooltiptext-custom" style="text-transform:none">
+                  {{ 'EditContact' | translate }} 
+                </span> 
+              </span>
             </h4>
 
             <!-- ------====== ID ======------ -->
@@ -245,35 +254,37 @@
                 {{ contact_details?._id }}
             </p> -->
 
-            <!-- ------====== CREATED ======------ -->
-            <p style="margin-bottom: 3px">
-              <strong>
-                {{ "Created" | translate }}
-              </strong>
-            </p>
-            <p style="color:#999999">
-              {{ contact_details?.createdAt | date: 'd/M/y HH:mm' }}
-            </p>
-
             <!-- ------====== NAME======------ -->
-            <p style="margin-bottom: 3px">
+            <p class="title-attribute" style="margin-bottom: 3px">
               <strong>
                 {{ "Name" | translate }}
               </strong>
             </p>
-            <p style="color:#999999">
+            <p class="attribute">
               {{ contact_details?.fullname }}
             </p>
 
             <!-- ------====== EMAIL ======------ -->
-            <p style="margin-bottom: 3px">
+            <p class="title-attribute" style="margin-bottom: 3px">
               <strong>
                 Email
               </strong>
             </p>
-            <p style="color:#999999">
+            <p class="attribute">
               {{ contact_details?.email }}
             </p>
+
+            <!-- ------====== CREATED ======------ -->
+            <p class="title-attribute" style="margin-bottom: 3px">
+              <strong>
+                {{ "Created" | translate }}
+              </strong>
+            </p>
+            <p class="attribute">
+              {{ contact_details?.createdAt | date: 'd/M/y HH:mm' }}
+            </p>
+
+
  
           </div>
           <!-- <div class="card-footer">

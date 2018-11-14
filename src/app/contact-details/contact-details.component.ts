@@ -212,6 +212,10 @@ export class ContactDetailsComponent implements OnInit {
     this.router.navigate(['project/' + this.projectId + '/request/' + request_recipient + '/messages']);
   }
 
+  goToEditContact(requester_id) {
+    this.router.navigate(['project/' + this.projectId + '/contact/edit', requester_id]);
+  }
+
   goToMemberProfile(member_id: any) {
     console.log('!!!!! CONTACTS DETAILS has clicked GO To MEMBER ', member_id);
     if (member_id.indexOf('bot_') !== -1) {
