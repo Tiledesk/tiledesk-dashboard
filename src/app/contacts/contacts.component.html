@@ -147,7 +147,8 @@
                 <tr *ngFor="let contact of contacts">
    
                   <!-- ===== CONTACT NAME ===== -->
-                  <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
+                  <!-- (click)='goToContactDetails(contact?._id)' style="cursor:pointer" -->
+                  <td>
                     <span class="avatar" [ngStyle]="{'background-color': contact?.avatar_fill_colour }">
                     <span style="color: #ffffff"> {{ contact?.name_initial }} </span></span>
                     
@@ -157,7 +158,7 @@
                   </td>
  
                   <!-- ========== CONTACT EMAIL ========== -->
-                  <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
+                  <td>
                     
                     <p style="font-size:0.9em; margin-bottom: 5px; margin-top: 5px">
                       {{ contact?.email }}
@@ -165,7 +166,7 @@
                   </td>
  
                   <!-- ========== CREATED AT ========== -->
-                  <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
+                  <td>
                     
                     <p style="font-size:0.9em; margin-bottom: 5px; margin-top: 5px">
     
@@ -178,7 +179,7 @@
                   <!-- ========== ICONS EDIT CONTACT - VIEW CONTACT REQUESTS - REMOVE CONTACT ========== -->
                   <!-- <td (click)='goToContactDetails(contact?._id)' style="text-align:left; padding-top: 15px; padding-left: 22px;" > -->
 
-                    <td class="td-actions text-right" style="margin-top: 5px; padding-left: 0px;">
+                    <td class="td-actions text-right" style="padding-left: 0px;padding-top: 17px;">
                       <button type="button" class="btn btn-primary btn-simple btn-xs tooltipx" (click)='goToEditContact(contact?._id)'>
                         <i class="material-icons">edit</i>
                         <span class="tooltiptext-custom" style="text-transform:none">
@@ -186,7 +187,7 @@
                         </span> 
                       </button>
 
-                      <button type="button" class="btn btn-info btn-simple btn-xs tooltipx" (click)='goToContactDetails(contact?._id)'>
+                      <button style="margin-left: 8px;margin-right: 8px;" type="button" class="btn btn-info btn-simple btn-xs tooltipx" (click)='goToContactDetails(contact?._id)'>
                         <i class="material-icons">chat</i>
                         <span class="tooltiptext-custom" style="text-transform:none">
                           {{ 'ViewContactRequests' | translate }} 
