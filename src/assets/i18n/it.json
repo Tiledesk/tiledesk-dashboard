@@ -280,7 +280,8 @@
         "TheEmail": "L' email",
         "wasNotFoundNoteThat": "non è stata trovata, si noti che solo gli utenti registrati possono essere invitati",
         "Error": "Errore",
-        "AnErrorHasOccurred": "Si è verificato un errore"
+        "AnErrorHasOccurred": "Si è verificato un errore",
+        "EmailAddress": "Indirizzo email"
     },
     "GroupsPage": {
         "Groups": "Gruppi",

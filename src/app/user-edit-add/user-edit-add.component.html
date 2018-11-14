@@ -20,20 +20,27 @@
         <div class="col-md-8">
           <div class="card" style="padding-top:25px; padding-bottom:25px">
             <div class="card-content">
-
-              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
-                {{ "UserEditAddPage.UserEmail" | translate }}
+              <!-- style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" -->
+              <label class="col-sm-2 custom-label">
+                <!-- {{ "UserEditAddPage.UserEmail" | translate }} -->
+                Email
               </label>
               <div class="col-sm-10">
-                <input [(ngModel)]="user_email" class="" type="text" placeholder='{{ "UserEditAddPage.UserEmail" | translate }}'>
+                <input [(ngModel)]="user_email" (ngModelChange)="emailChange($event)" class="" type="text" 
+                  placeholder='{{ "UserEditAddPage.EmailAddress" | translate }}' [ngClass]="{'invalid-email' : !EMAIL_IS_VALID}">
+
+                  <span *ngIf="!EMAIL_IS_VALID" style="color: #f44336">
+                    {{ "EnterValidEmail" | translate }}
+                  </span>
               </div>
 
               <div class="col-sm-12" style="height:10px"></div>
 
-              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
+              <!-- style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" -->
+              <label class="col-sm-2 custom-label">
                 {{ "UserEditAddPage.Role" | translate }}
               </label>
-              <div class="col-sm-10" style="">
+              <div class="col-sm-10">
                 <select #selectElem (change)="setSelected(selectElem.value)" class="" >
                   <option class="not_selected" value="ROLE_NOT_SELECTED" [selected]="selected == true">
                     {{ "UserEditAddPage.SelectRole" | translate }}
@@ -49,7 +56,7 @@
               <label style="" class="col-sm-2"></label>
               <div class="col-sm-10">
                 <!-- [disabled]="bot_fullname?.length < 2 || FAQKB_NOT_SELECTED === true" -->
-                <button class="btn btn-success" [disabled]="user_email?.length < 2 || ROLE_NOT_SELECTED === true" (click)="invite()">
+                <button class="btn btn-success" [disabled]="ROLE_NOT_SELECTED === true || !EMAIL_IS_VALID" (click)="invite()">
                   {{ "UserEditAddPage.Invites" | translate }}
                 </button>
               </div>
@@ -66,16 +73,19 @@
           <div class="card" style="padding-top:25px; padding-bottom:25px">
             <div class="card-content">
 
-              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
-                {{ "UserEditAddPage.UserEmail" | translate }}
+              <!-- style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" -->
+              <label  class="col-sm-2 custom-label">
+                <!-- {{ "UserEditAddPage.UserEmail" | translate }} -->
+                Email
               </label>
               <div class="col-sm-10">
-                <input style="color:#999999" [(ngModel)]="user_email" class="" type="text" placeholder='{{ "UserEditAddPage.UserEmail" | translate }}' disabled>
+                <input style="color:#999999" [(ngModel)]="user_email" class="" type="text" placeholder='{{ "UserEditAddPage.EmailAddress" | translate }}' disabled>
               </div>
 
               <div class="col-sm-12" style="height:10px"></div>
 
-              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
+              <!-- style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" -->
+              <label class="col-sm-2 custom-label">
                 {{ "UserEditAddPage.Role" | translate }}
               </label>
               <div *ngIf="user_role" class="col-sm-10" style="">

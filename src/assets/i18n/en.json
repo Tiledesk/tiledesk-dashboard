@@ -280,7 +280,8 @@
         "TheEmail": "The email",
         "wasNotFoundNoteThat": "was not found, note that only registered users can be invited",
         "Error": "Error",
-        "AnErrorHasOccurred": "An error has occurred"
+        "AnErrorHasOccurred": "An error has occurred",
+        "EmailAddress": "Email address"
     },
     "GroupsPage": {
         "Groups": "Groups",

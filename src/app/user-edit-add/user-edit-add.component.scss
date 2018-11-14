@@ -128,3 +128,17 @@ select {
     }
 
 /* MODAL END */
+
+input[type=text].invalid-email {
+    border: 1px solid #f44336 !important;
+}
+
+.custom-label{
+    color: rgb(118, 149, 165); 
+    height: 36px; 
+    padding-top: 7px !important; 
+    padding-left: 16px !important; 
+    padding-right: 16px !important; 
+    text-align: right !important;
+}
+

@@ -37,7 +37,7 @@ export class UserEditAddComponent implements OnInit {
 
   project_user_id: string;
   user_role: string;
-
+  EMAIL_IS_VALID = true;
 
   constructor(
     private router: Router,
@@ -136,10 +136,27 @@ export class UserEditAddComponent implements OnInit {
 
     if (role !== 'ROLE_NOT_SELECTED') {
       this.ROLE_NOT_SELECTED = false;
+    } else {
+      this.ROLE_NOT_SELECTED = true;
     }
   }
 
+  emailChange(event) {
+    console.log('!!!!! INVITE THE USER - EDITING EMAIL ', event);
+
+    this.EMAIL_IS_VALID = this.validateEmail(event)
+    console.log('!!!!! INVITE THE USER - EMAIL IS VALID ', this.EMAIL_IS_VALID);
+  }
+
+  validateEmail(email) {
+    // tslint:disable-next-line:max-line-length
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    return re.test(String(email).toLowerCase());
+  }
+
   invite() {
+
     // show the modal windows
     this.display = 'block';
 
@@ -170,7 +187,7 @@ export class UserEditAddComponent implements OnInit {
 
       } else if ((invite_errorbody['success'] === false) && (invite_errorbody['code'] === 4001)) {
         console.log('!!! Forbidden, user is already a member')
-        
+
         this.INVITE_YOURSELF_ERROR = false;
         this.INVITE_USER_ALREADY_MEMBER_ERROR = true;
         this.INVITE_USER_NOT_FOUND = false;
@@ -181,9 +198,8 @@ export class UserEditAddComponent implements OnInit {
         this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
         this.INVITE_USER_NOT_FOUND = true;
 
-
       } else if (invite_errorbody['success'] === false) {
-        
+
         this.INVITE_YOURSELF_ERROR = false;
         this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
         this.INVITE_USER_NOT_FOUND = false;
@@ -196,6 +212,9 @@ export class UserEditAddComponent implements OnInit {
       this.INVITE_OTHER_ERROR = false;
       this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
       this.INVITE_USER_NOT_FOUND = false;
+
+      // WHEN AN USER CLICK ON INVITE DISABLE THE BTN INVITE
+      this.ROLE_NOT_SELECTED = true;
     });
 
   }
