@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 
 import { User } from '../models/user-model';
+import { PendingInvitation } from '../models/pending-invitation-model';
 import { ProjectUser } from '../models/project-user';
 
 import { Observable } from 'rxjs/Observable';
@@ -42,6 +43,7 @@ export class UsersService {
   MONGODB_BASE_URL: any;
   INVITE_USER_URL: any;
   PROJECT_USER_DTLS_URL: any;
+  PENDING_INVITATION_URL: string;
 
   // GET_PROJECT_USER_URL: any;
   TOKEN: string
@@ -111,6 +113,8 @@ export class UsersService {
         console.log('-- -- >>>> 00 -> USERS SERVICE project ID from AUTH service subscription  ', this.project._id)
         this.MONGODB_BASE_URL = this.BASE_URL + this.project._id + '/project_users/'
         this.INVITE_USER_URL = this.BASE_URL + this.project._id + '/project_users/invite'
+
+        this.PENDING_INVITATION_URL = this.BASE_URL + this.project._id + '/pendinginvitations',
 
         // MAYBE NOT USED anymore
         this.PROJECT_USER_DTLS_URL = this.BASE_URL + this.project._id + '/member/'
@@ -304,6 +308,20 @@ export class UsersService {
       .post(url, JSON.stringify(body), options)
       .map((res) => res.json());
 
+  }
+
+   /// ================================== PENDING USERS ================================== ///
+   public getPendingUsers(): Observable<PendingInvitation[]> {
+    const url = this.PENDING_INVITATION_URL;
+
+    console.log('GET PENDING USERS ', url);
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    // console.log('TOKEN TO COPY ', this.TOKEN)
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
   }
 
   /// ============================= GET PROJECT-USER BY CURRENT-PROJECT-ID AND CURRENT-USER-ID ============================= ///
