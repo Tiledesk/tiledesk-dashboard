@@ -48,7 +48,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 
         // private faqKbService: FaqKbService,
     ) {
-
+        localStorage.removeItem('firebase:previous_websocket_failure');
+        
         console.log('!!! =========== HELLO APP.COMP (constructor) ===========')
         translate.setDefaultLang('en');
 
