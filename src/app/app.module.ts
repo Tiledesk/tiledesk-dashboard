@@ -115,6 +115,7 @@ import { ContactDetailsComponent } from './contact-details/contact-details.compo
 import { ColorPickerModule } from 'ngx-color-picker';
 import { WidgetService } from './services/widget.service';
 import { ContactEditComponent } from './contact-edit/contact-edit.component';
+import { UsersPendingComponent } from './users-pending/users-pending.component';
 
 
 // AoT requires an exported function for factories
@@ -175,6 +176,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     RequestsListHistoryNewComponent,
     ContactDetailsComponent,
     ContactEditComponent,
+    UsersPendingComponent,
   ],
   imports: [
     BrowserModule,
