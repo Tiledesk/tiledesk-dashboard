@@ -609,11 +609,11 @@ export class RequestsService {
     return this.requestsCollection.valueChanges().map((values) => {
 
       console.log('Request Service VALUeS LENGHT ', values.length)
-      // console.log('Request Service VALUeS', values)
+      console.log('Request Service VALUeS', values)
       if (values) {
         this.unservedRequest = values;
         this.mySubject.next(this.unservedRequest);
-        // console.log(' ++ TOTAL OF UNSERVED REQUESTS PUBLISHED BY REQ. SERVICE ', this.unservedRequest)
+        console.log(' ++ TOTAL OF UNSERVED REQUESTS PUBLISHED BY REQ. SERVICE ', this.unservedRequest)
       }
       return values.length;
     });
