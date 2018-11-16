@@ -6,5 +6,6 @@ export interface PendingInvitation {
     role: string;
     id_project: string;
     createdBy: string;
+    length: any;
     __v: any;
 }
