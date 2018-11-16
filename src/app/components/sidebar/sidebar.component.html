@@ -281,7 +281,7 @@
           <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/users">
             
             <p class="onBlackBckgrnd">
-              <span class="sidebar-mini">U </span> {{ 'Users' | translate }}  
+              <span class="sidebar-mini">UG </span> {{ 'UsersAndGroups' | translate }}  
             </p>
 
             <!-- <span class="sidebar-mini">
@@ -294,21 +294,13 @@
         </li>
 
         <!-- GROUPS -->
-        <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
+        <!-- <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
           <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/groups">
             <p class="onBlackBckgrnd">
               <span class="sidebar-mini">G </span> {{ 'Groups' | translate }} 
             </p>
-
-            <!-- <span class="sidebar-mini">
-              G 
-            </span>
-            <span class="sidebar-normal">
-              {{ 'Groups' | translate }} 
-            </span>  -->
-            
           </a>
-        </li>
+        </li> -->
 
           <!-- FAQ (alias FAQKB) HAS BEEN RENAMED IN BOT (BOT - see above - IS CURRENTLY COMMENTED) -->
           <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
