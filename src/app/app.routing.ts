@@ -72,6 +72,7 @@ import { HoursComponent } from './hours/hours.component';
 import { ResetPswComponent } from './reset-psw/reset-psw.component';
 import { ContactDetailsComponent } from './contact-details/contact-details.component';
 import { ContactEditComponent } from './contact-edit/contact-edit.component';
+import { UsersPendingComponent } from './users-pending/users-pending.component';
 
 
 // import { DashboardComponent} from './dashboard/dashboard.component';
@@ -128,6 +129,9 @@ const routes: Routes = [
   { path: 'project/:projectid/users', component: UsersComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/user/add', component: UserEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/user/edit/:projectuserid', component: UserEditAddComponent, canActivate: [AuthGuard] },
+
+  // ARE THE USERS THAT HAVE BEEN INVITED BUT THAT ARE NOT YET REGISTERED IN TILEDESK
+  { path: 'project/:projectid/users/pending', component: UsersPendingComponent, canActivate: [AuthGuard] },
 
   // GROUPS
   { path: 'project/:projectid/groups', component: GroupsComponent, canActivate: [AuthGuard] },
