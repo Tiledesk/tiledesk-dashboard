@@ -117,7 +117,7 @@ import { WidgetService } from './services/widget.service';
 import { ContactEditComponent } from './contact-edit/contact-edit.component';
 import { UsersPendingComponent } from './users-pending/users-pending.component';
 
-
+console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
