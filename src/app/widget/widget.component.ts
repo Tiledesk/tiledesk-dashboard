@@ -220,6 +220,11 @@ export class WidgetComponent implements OnInit {
           // used for TEST WIDGET
           this.secondaryColor = this.hexToRgb(project.widget.themeForegroundColor);
         }
+      } else {
+        // used for TEST WIDGET
+        this.paramWellcomeTitle = '';
+        this.paramWellcomeMsg = '';
+        this.paramLogoChat = '';
       }
 
     });
