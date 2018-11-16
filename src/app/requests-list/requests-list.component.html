@@ -698,7 +698,13 @@
                   <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
                     <!-- <p style="font-size:0.9em">{{ request.sender_fullname }}</p> -->
                     <p style="font-size:0.9em">
-                      {{ request.requester_fullname }}
+                      {{ request.requester_fullname }} 
+                      <!-- <span *ngIf="request?.first_message?.senderAuthInfo?.authVar?.token?.firebase?.sign_in_provider">  -->
+                        <!-- <i class="material-icons" style="color:#4985FF">
+                          check_circle
+                        </i> -->
+                      <!-- </span> -->
+                      
                     </p>
                     <!-- <p style="font-size:0.8em">
                       {{ request?.requester_id }}
