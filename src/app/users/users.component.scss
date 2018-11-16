@@ -260,3 +260,50 @@ only screen and (max-width: 760px),
     }
 }
 /* END NEW FOR TABLE */
+
+.users-groups-tab {
+    color: #fff;
+    font-family: 'Google Sans', sans-serif !important;
+    font-size: 14px;
+    line-height: 24px;
+    font-weight: 500;
+    padding-bottom: 8px;
+    padding-top: 5px;
+    cursor:pointer;
+}
+
+
+.card-header-custom {
+    // display:none;
+    box-shadow:none;
+    -webkit-box-shadow:none;
+    margin:0px;
+    border-radius: 3px 3px 0px 0px;
+    background-color: #f2f6f8;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.btn-info-custom {
+    margin:0px; 
+    background-color: #039be5; 
+    padding: 8px 16px; 
+    text-transform: none;
+    text-transform: none;
+    font-size: 14px;
+    font-weight: 500;
+    
+    box-shadow: 0 2px 2px 0 rgba(3, 155, 229, 0.14), 0 3px 1px -2px rgba(3, 155, 229, 0.2), 0 1px 5px 0 rgba(3, 155, 229, 0.12) !important;
+}
+
+.btn-info-custom:hover { 
+    background-color: #039be5 !important; 
+    box-shadow: 0 14px 26px -12px rgba(3, 155, 229, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(3, 155, 229, 0.2) !important;
+}
+
+.nav-pills.nav-pills-info.custom > li.active > a, .nav-pills.nav-pills-info.custom > li.active > a:focus, .nav-pills.nav-pills-info.custom > li.active > a:hover {
+    // background-color: #00bcd4; 
+    background-color: #039be5!important;
+    -webkit-box-shadow: 0 12px 20px -10px rgba(3, 115, 229, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(3, 115, 229, 0.2)!important;
+    box-shadow: 0 12px 20px -10px rgba(3, 115, 229, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(3, 115, 229, 0.2)!important;
+}

@@ -28,6 +28,7 @@ export class UsersComponent implements OnInit {
   CURRENT_USER_ID: string;
 
   IS_AVAILABLE: boolean;
+  countOfPendingInvites: number;
 
   constructor(
     private usersService: UsersService,
@@ -46,6 +47,7 @@ export class UsersComponent implements OnInit {
     this.getLoggedUser();
 
     this.hasChangedAvailabilityStatusInSidebar();
+    this.getPendingInvitation();
   }
 
   getLoggedUser() {
@@ -84,6 +86,14 @@ export class UsersComponent implements OnInit {
     this.router.navigate(['project/' + this.id_project + '/user/edit/' + projectUser_id]);
   }
 
+  goToGroups() {
+    this.router.navigate(['project/' + this.id_project + '/groups']);
+  }
+
+  goToPendingInvitation() {
+    this.router.navigate(['project/' + this.id_project + '/users/pending']);
+  }
+
   getAllUsersOfCurrentProject() {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
       console.log('PROJECT USERS (FILTERED FOR PROJECT ID)', projectUsers);
@@ -91,14 +101,13 @@ export class UsersComponent implements OnInit {
       this.showSpinner = false;
       this.projectUsersList = projectUsers;
 
-    },
-      error => {
-        this.showSpinner = false;
-        console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
-      },
-      () => {
-        console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
-      });
+    }, error => {
+      this.showSpinner = false;
+
+      console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
+    }, () => {
+      console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
+    });
   }
 
   openDeleteModal(projectUser_id: string, userID: string, userFirstname: string, userLastname: string) {
@@ -160,13 +169,11 @@ export class UsersComponent implements OnInit {
       // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
       this.usersService.availability_switch_clicked(true)
 
-    },
-      (error) => {
+    },      (error) => {
         console.log('PROJECT-USER UPDATED ERR  ', error);
         // =========== NOTIFY ERROR ===========
         this.notify.showNotification('An error occurred while updating status', 4, 'report_problem')
-      },
-      () => {
+      },      () => {
         console.log('PROJECT-USER UPDATED  * COMPLETE *');
         // =========== NOTIFY SUCCESS===========
         this.notify.showNotification('status successfully updated', 2, 'done');
@@ -183,6 +190,25 @@ export class UsersComponent implements OnInit {
       console.log('USER COMP SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE SIDEBAR', has_changed_availability)
       this.getAllUsersOfCurrentProject();
     })
+  }
+
+  getPendingInvitation() {
+    this.usersService.getPendingUsers()
+      .subscribe((pendingInvitation: any) => {
+        console.log('USER COMP - GET PENDING INVITATION ', pendingInvitation);
+
+        if (pendingInvitation) {
+          this.countOfPendingInvites = pendingInvitation.length
+          console.log('USER COMP - # OF PENDING INVITATION ', this.countOfPendingInvites);
+        }
+
+      }, error => {
+
+        console.log('USER COMP - GET PENDING INVITATION - ERROR', error);
+      }, () => {
+        console.log('USER COMP - GET PENDING INVITATION - COMPLETE');
+      });
+
   }
 
 }

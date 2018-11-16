@@ -1,26 +1,76 @@
-<p style="margin-top:10px; padding-left:30px" class="navbar-brand">{{ "Users" | translate }}</p>
-<div class="main-content" style="padding-top:0px">
+<p style="margin-top:10px; padding-left:30px" class="navbar-brand">
+  {{ "UsersAndGroups" | translate }}
+</p>
+
+<div class="main-content" style="padding-top:0px;">
   <div class="container-fluid">
+      <ul class="nav nav-pills nav-pills-info custom">
+        <li class="active">
+          <a href="#pill1" data-toggle="tab">
+            {{ "Users" | translate }}
+          </a>
+        </li>
+        <li>
+          <a href="#pill2" data-toggle="tab" (click)="goToGroups()">
+            {{ "Groups" | translate }}
+          </a>
+        </li>
+      </ul>
 
-    <div class="create" style="text-align: left; padding-top:5px; padding-bottom:0px">
+    
+    <!-- <div class="row">
+      <div class="col-md-3" style="padding-left:0px">
+        <div class="nav-items" style="margin-top:100px; position: relative;left: -15px;">
+          <div class="nav-item">
+            <div class="nav-link" style="
+              background-color: #039be5!important;
+              color: #fff!important;  
+              height: 40px;
+              padding: 0 12px 0 24px;
+              border-radius: 0 20px 20px 0;
+              margin-right: 16px;
+              position: relative;
+              overflow: hidden;
+              cursor: pointer;">
+              <span style="padding-top: 9px; display: inline-block;"> Utenti</span> 
+            </div>
+          </div>
+          <div class="nav-item">
+            <div class="nav-link" style="
+              height: 40px;
+              padding: 0 12px 0 24px;
+              border-radius: 0 20px 20px 0;
+              margin-right: 16px;
+              position: relative;
+              overflow: hidden;
+              cursor: pointer;">
+              <span style="padding-top: 9px; display: inline-block;"> Gruppi</span> 
+            </div>
 
-      <!-- the invite button is displayed for non-agent roles -->
-      <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="goToAddUser()">
-        <span class="icon" style="padding-right:8px">
-          <i class="material-icons">person_add</i>
-        </span>
-        {{ "UsersPage.Invites" | translate }}
-      </button>
-
-    </div>
+          </div>
+        </div>
+      </div> -->
 
     <div class="row">
       <div class="col-md-12">
-        <div class="card">
+        <div class="card" style="min-height: 195px">
 
-          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+          
+          <!-- table-responsive -->
 
-          <div *ngIf="!showSpinner" class="card-content table-responsive">
+          <div class="card-header card-header-custom" data-background-color="" style="">
+            <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-info btn-info-custom" style="" (click)="goToAddUser()">
+              {{ "UsersPage.Invites" | translate }}
+            </button>
+
+              <div class="pull-right" style="padding: 8px 16px;color: #039be5;font-weight: 500; cursor: pointer" (click)="goToPendingInvitation()"> 
+                {{ "UsersPage.PendingInvitation" | translate }} ({{ countOfPendingInvites }})
+              </div>
+          </div>
+
+          <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
+          <!-- *ngIf="!showSpinners" -->
+          <div  class="card-content">
 
             <table class="table table-hover">
               <thead>
@@ -42,6 +92,8 @@
                     </span>
                   </th>
 
+                  <th> </th>
+
                   <th>
                     <span style="color: #566787">
                       <strong>
@@ -50,13 +102,13 @@
                     </span>
                   </th>
 
-                  <th>
+                  <!-- <th>
                     <span style="color: #566787">
                       <strong>
                         Email
                       </strong>
                     </span>
-                  </th>
+                  </th> -->
 
                   <!-- OLD: AVAILABLE / UNAVAILABLE INDICATOR -->
                   <!-- <th>
@@ -106,20 +158,28 @@
                     {{ projectUser?._id }}
                   </td> -->
 
-                  <td (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
-                      <img style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
+                  <td (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer; width:1%;white-space:nowrap; text-align: center">
+                      <img style="vertical-align: middle; width: 35px; height: 35px; border-radius: 50%; border: 1px solid #eee;" 
                       class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media" 
                       onerror="this.src='assets/img/no_image_user.png'"/>
+            
+                  </td>
+
+                  <td> 
+
                     <span class="tooltipx">
-                      {{ projectUser?.id_user?.firstname }}
-                      <span style="text-transform: uppercase"> 
-                        {{ projectUser?.id_user?.lastname }} 
-                      </span>
+                      <span style="font-weight:400 "> {{ projectUser?.id_user?.firstname }} </span>
+                      <span style="text-transform: uppercase; font-weight:400 "> {{ projectUser?.id_user?.lastname }}  </span>
+
                       <span class="tooltiptext">
                         {{"UsersPage.ViewProfileUser" | translate }} {{projectUser?.id_user?._id}}
                       </span>
-
+                        
+                      <span style="display: block; color:#7695a5; font-size: 12px; font-weight: 400">
+                        {{ projectUser?.id_user?.email }} 
+                      </span>
                     </span>
+                        
                   </td>
 
                   <td (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
@@ -131,14 +191,14 @@
                     </span>
                   </td>
 
-                  <td (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
+                  <!-- <td (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
                     <span class="tooltipx">
                       {{ projectUser?.id_user?.email }}
                       <span class="tooltiptext">
                         {{"UsersPage.ViewProfileUser" | translate }} {{projectUser?.id_user?._id}}
                       </span>
                     </span>
-                  </td>
+                  </td> -->
 
                   <!-- OLD: AVAILABLE / UNAVAILABLE INDICATOR -->
                   <!-- <td (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
@@ -182,6 +242,8 @@
         </div>
       </div>
     </div>
+
+
   </div>
 </div>
 
