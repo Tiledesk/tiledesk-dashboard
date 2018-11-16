@@ -438,7 +438,7 @@ export class RequestsService {
     // .where('departmentId', '==', '5b05319ffb1e724de404df57')   '5b44c82def5dca0014d777ac' this.project._id
     const query = db.collection('conversations')
       .where('support_status', '<', 1000)
-      .where('projectid', '==', this.project._id)
+      .where('projectid', '==', '5b3dc8c36fa79400141c4a08')
       .orderBy('support_status')
       .orderBy('created_on', 'desc');
     // const observer = Observable.create(query.onSnapshot.bind(query));
@@ -468,6 +468,7 @@ export class RequestsService {
           r.requester_fullname = data.requester_fullname
           r.requester_id = data.requester_id
           r.agents = data.agents
+          r.first_message = data.first_message
           r.attributes = data.attributes
           r.rating = data.rating
           r.rating_message = data.rating_message

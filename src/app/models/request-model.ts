@@ -22,6 +22,7 @@ export interface Request {
   served_by?: any;
   notification_already_shown?: boolean;
   agents?: any;
+  first_message?: any;
   attributes?: any;
   showRequest?: boolean;
   firebaseDocChangeType?: string;
