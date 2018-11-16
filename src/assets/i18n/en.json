@@ -3,6 +3,7 @@
     "Intro": "Hello I am Arthur, I am 42 years old.",
     "Change dashboard Language": "Change dashboard Language (in this position to test the translations)",
     "Howdy": "Howdy",
+    "UsersAndGroups": "Users & Groups",
     "Users": "Users",
     "Groups": "Groups",
     "Name": "Name",
@@ -234,7 +235,7 @@
         "RoutingRulesSuccessfullyUpdated": "Routing rules successfully updated"
     },
     "UsersPage": {
-        "Invites": "Invites",
+        "Invites": "Invite user",
         "User": "User",
         "Firstname": "Firstname",
         "Lastname": "Lastname",
@@ -253,7 +254,12 @@
         "Confirm": "Confirm",
         "Cancel": "Cancel",
         "TheUserHasBeenInvited": "The user has been invited.",
-        "Continue": "Continue"
+        "Continue": "Continue",
+        "PendingInvitation":"Pending Invitations",
+        "DateOfSending":"Date of sending the invitation",
+        "InvitedToBecome":"Invited to become",
+        "NoPendingInvitation":"No pending invitation",
+        "TheInvitedUsersWillBecomeMembers": "The invited users need to be registered on tiledesk in order to become members of the project"
     },
     "UserEditAddPage": {
         "AddUserToThe": "Add User to the",

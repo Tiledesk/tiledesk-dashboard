@@ -3,6 +3,7 @@
     "Intro": "Ciao sono Arturo",
     "Change dashboard Language": "Cambia lingua dashboard (in questa posizione per testare le traduzioni)",
     "Howdy": "Salve",
+    "UsersAndGroups": "Utenti e Gruppi",
     "Users": "Utenti",
     "Groups": "Gruppi",
     "Name": "Nome",
@@ -234,7 +235,7 @@
         "RoutingRulesSuccessfullyUpdated": "Regole di routing aggiornate con successo"
     },
     "UsersPage": {
-        "Invites": "Invita",
+        "Invites": "Invita utente",
         "User": "Utente",
         "Firstname": "Nome",
         "Lastname": "Cognome",
@@ -253,7 +254,12 @@
         "Confirm": "Conferma",
         "Cancel": "Annulla",
         "TheUserHasBeenInvited": "L'utente è stato invitato.",
-        "Continue": "Continua"
+        "Continue": "Continua",
+        "PendingInvitation":"Inviti in sospeso",
+        "DateOfSending":"Data di invio dell'invito",
+        "InvitedToBecome":"Invitato a diventare",
+        "NoPendingInvitation":"Nessun invito in sospeso",
+        "TheInvitedUsersWillBecomeMembers": "Gli utenti invitati devono essere registrati su tiledesk per diventare membri del progetto"
     },
     "UserEditAddPage": {
         "AddUserToThe": "Aggiungi Utente al progetto ",
