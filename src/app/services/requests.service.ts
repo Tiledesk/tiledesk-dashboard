@@ -591,6 +591,7 @@ export class RequestsService {
           attributes: data.attributes,
           currentUserIsJoined: currentUserUidIsInMembers(data.members, this.currentUserID),
           requester_fullname: data.requester_fullname,
+          first_message: data.first_message,
           requester_id: data.requester_id,
           created_on: data.created_on,
           rating: data.rating,
