@@ -10,6 +10,9 @@ export interface Request {
   support_status?: number;
   members?: any;
   requester_fullname?: string;
+  requester_fullname_initial?: string;
+  requester_fullname_fillColour?: string;
+  requester_is_verified?: boolean;
   requester_id?: string;
   projectid?: string;
 
