@@ -86,3 +86,19 @@ p.member:hover {
     visibility: visible;
   }
   // /.end TOOLTIP 
+
+  .contact-avatar {
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 400;
+    text-align: center;
+    width: 40px;
+    padding: 10px 11px;
+    display: inline-block;
+  }
+
+  .contact-verified {
+    position: relative;
+    left: -15px;
+  }
+

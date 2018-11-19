@@ -16,6 +16,12 @@ import { AuthService } from '../core/auth.service';
 })
 export class ContactDetailsComponent implements OnInit {
 
+  public colours = [
+    '#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e', '#16a085',
+    '#27ae60', '#2980b9', '#8e44ad', '#2c3e50', '#f1c40f', '#e67e22',
+    '#e74c3c', '#95a5a6', '#f39c12', '#d35400', '#c0392b', '#bdc3c7', '#7f8c8d'
+  ];
+
   requester_id: string
   requests_list: any;
   contact_details: any;
@@ -25,7 +31,9 @@ export class ContactDetailsComponent implements OnInit {
   totalPagesNo_roundToUp: number;
   showSpinner = true;
   currentUserID: string;
-
+  CONTACT_IS_VERIFIED = false;
+  contact_fullname_initial: string;
+  fillColour: string;
   constructor(
     public location: Location,
     private route: ActivatedRoute,
@@ -106,7 +114,7 @@ export class ContactDetailsComponent implements OnInit {
 
           this.requests_list = requests_object['requests'];
 
-     
+
           // to test pagination
           // const requestsCount = 83;
           const requestsCount = requests_object['count'];
@@ -153,6 +161,37 @@ export class ContactDetailsComponent implements OnInit {
         if (lead) {
           console.log('!!!!! CONTACTS DETAILS - GET LEAD BY REQUESTER ID ', lead);
           this.contact_details = lead;
+
+          if (this.contact_details.fullname) {
+            this.contact_fullname_initial = this.contact_details.fullname.charAt(0).toUpperCase();
+
+            console.log('!!!!! CONTACTS DETAILS - CONTACT INITIAL: ', this.contact_fullname_initial);
+            const charIndex = this.contact_fullname_initial.charCodeAt(0) - 65
+            const colourIndex = charIndex % 19;
+            console.log('!!!!! CONTACTS DETAILS - CONTACT colourIndex: ', colourIndex);
+
+            this.fillColour = this.colours[colourIndex];
+            console.log('!!!!! CONTACTS DETAILS - CONTACT illColour: ', this.fillColour);
+
+          } else {
+
+            this.contact_fullname_initial = 'n.d.';
+            this.fillColour = '#eeeeee';
+          }
+
+          if (this.contact_details.attributes
+            && this.contact_details.attributes.senderAuthInfo
+            && this.contact_details.attributes.senderAuthInfo.authVar
+            && this.contact_details.attributes.senderAuthInfo.authVar.token
+            && this.contact_details.attributes.senderAuthInfo.authVar.token.firebase
+            && this.contact_details.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider) {
+
+            if (this.contact_details.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider === 'custom') {
+              this.CONTACT_IS_VERIFIED = true;
+            } else {
+              this.CONTACT_IS_VERIFIED = false;
+            }
+          }
         }
 
       }, (error) => {
