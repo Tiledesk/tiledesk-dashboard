@@ -23,6 +23,13 @@ import { DOCUMENT } from '@angular/platform-browser';
   encapsulation: ViewEncapsulation.None, /* it allows to customize 'Powered By' */
 })
 export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  public colours = [
+    '#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e', '#16a085',
+    '#27ae60', '#2980b9', '#8e44ad', '#2c3e50', '#f1c40f', '#e67e22',
+    '#e74c3c', '#95a5a6', '#f39c12', '#d35400', '#c0392b', '#bdc3c7', '#7f8c8d'
+  ];
+
   @ViewChild('scrollMe')
   private myScrollContainer: ElementRef;
 
@@ -91,6 +98,9 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   useremail_selected: string;
   agents_array: any;
   isMobile: boolean;
+  requester_fullname_initial: string;
+  fillColour: string;
+  REQUESTER_IS_VERIFIED = false;
 
   constructor(
     private router: Router,
@@ -439,8 +449,44 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
           this.IS_CURRENT_USER_JOINED = request[0].currentUserIsJoined;
           console.log('* IS_CURRENT_USER_JOINED: ', this.IS_CURRENT_USER_JOINED);
 
-          this.requester_fullname = request[0].requester_fullname;
-          console.log('* REQUESTER FULLNAME: ', this.requester_fullname);
+          /**
+           * REQUESTER FULLNAME
+           */
+          if (request[0].requester_fullname) {
+            this.requester_fullname = request[0].requester_fullname;
+            console.log('* REQUESTER FULLNAME: ', this.requester_fullname);
+
+            this.requester_fullname_initial = this.requester_fullname.charAt(0).toUpperCase();
+
+            console.log('REQUESTER FULL NAME - INITIAL: ', this.requester_fullname_initial);
+            const charIndex = this.requester_fullname_initial.charCodeAt(0) - 65
+            const colourIndex = charIndex % 19;
+            console.log('REQUESTER FULL NAME - colourIndex: ', colourIndex);
+
+            this.fillColour = this.colours[colourIndex];
+            console.log('REQUESTER FULL NAME - fillColour: ', this.fillColour);
+
+          } else {
+
+            this.requester_fullname_initial = 'n.d.';
+            this.fillColour = '#eeeeee';
+          }
+
+          if (request[0].first_message
+            && request[0].first_message.senderAuthInfo
+            && request[0].first_message.senderAuthInfo.authVar
+            && request[0].first_message.senderAuthInfo.authVar.token
+            && request[0].first_message.senderAuthInfo.authVar.token.firebase
+            && request[0].first_message.senderAuthInfo.authVar.token.firebase.sign_in_provider) {
+
+            if (request[0].first_message.senderAuthInfo.authVar.token.firebase.sign_in_provider === 'custom') {
+              this.REQUESTER_IS_VERIFIED = true;
+            } else {
+              this.REQUESTER_IS_VERIFIED = false;
+            }
+          }
+
+
 
           this.requester_id = request[0].requester_id;
           console.log('* REQUESTER ID: ', this.requester_id);
