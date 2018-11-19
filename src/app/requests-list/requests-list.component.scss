@@ -457,5 +457,64 @@ span .switch-agent-admin-requests-btn {
 .your-requests-btn:hover {
     background-color: #fff; 
     color: #4caf50; 
-
 }
+
+.requester-avatar {
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 400;
+    text-align: center;
+    // padding: 4px 7px;
+    padding-top:4px;
+    padding-bottom: 3px;
+    display: inline-block;
+    width: 25px;
+}
+
+.requester_fullname-undefined {
+    padding: 4px 4px;
+}
+
+.requester-verified {
+    position: relative; 
+    left: -13px;
+}
+
+// start TOOLTIP
+/* Tooltip container */
+.tooltipx {
+    position: relative;
+    display: inline-block;
+    // border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  }
+  
+  /* Tooltip text */
+  .tooltipx .tooltiptext {
+    visibility: hidden;
+    // width: 120px;
+    // background-color: black; 
+    // background-color: rgba(0,0,0,0.6);
+    color: #fff;
+    text-align: center;
+    padding: 5px 5px;
+    border-radius: 5px;
+    font-size: 12px !important;
+  
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 1;
+    /* Position the tooltip text - TOP */
+    bottom: 100%;
+    left: 50%; 
+    margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+
+    // NEW
+    box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
+    background-color: #394f5a;
+  }
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .tooltipx:hover .tooltiptext {
+    visibility: visible;
+  }
+  // end TOOLTIP

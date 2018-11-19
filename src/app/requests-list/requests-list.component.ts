@@ -35,6 +35,14 @@ import { UsersService } from '../services/users.service';
   styleUrls: ['./requests-list.component.scss'],
 })
 export class RequestsListComponent implements OnInit {
+
+  public colours = [
+    '#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e', '#16a085',
+    '#27ae60', '#2980b9', '#8e44ad', '#2c3e50', '#f1c40f', '#e67e22',
+    '#e74c3c', '#95a5a6', '#f39c12', '#d35400', '#c0392b', '#bdc3c7', '#7f8c8d'
+  ];
+
+
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
   zone: NgZone;
 
@@ -109,7 +117,8 @@ export class RequestsListComponent implements OnInit {
   seeImAgentRequestsSwitchBtn: boolean;
 
   displayBtnLabelSeeYourRequets = false;
-
+  REQUESTER_IS_VERIFIED = false;
+ 
   constructor(
     private requestsService: RequestsService,
     private elRef: ElementRef,
@@ -272,7 +281,51 @@ export class RequestsListComponent implements OnInit {
         // console.log('REQUESTS-LIST COMP - REQUESTS ', requests)
 
         for (const request of requests) {
-          // console.log('request', request)
+          // console.log('request', request);
+          // console.log('REQUESTER FULL NAME: ', request.requester_fullname);
+
+          let initial = ''
+          let fillColour = ''
+          if (request.requester_fullname) {
+            // AVATAR WITH REQUESTER FULL NAME INITIAL AND RANDOM BACKGROUND
+            initial = request.requester_fullname.charAt(0).toUpperCase();
+           
+            // console.log('REQUESTER FULL NAME - INITIAL: ', initial);
+            const charIndex = initial.charCodeAt(0) - 65
+            const colourIndex = charIndex % 19;
+            // console.log('REQUESTER FULL NAME - colourIndex: ', colourIndex);
+
+            fillColour = this.colours[colourIndex];
+
+          } else {
+           
+            initial = 'n.d.';
+            fillColour = '#eeeeee';
+          }
+          if (request.first_message
+            && request.first_message.senderAuthInfo
+            && request.first_message.senderAuthInfo.authVar
+            && request.first_message.senderAuthInfo.authVar.token
+            && request.first_message.senderAuthInfo.authVar.token.firebase
+            && request.first_message.senderAuthInfo.authVar.token.firebase.sign_in_provider) {
+            // if (request.first_message.senderAuthInfo) {
+            // if (request.first_message.senderAuthInfo.authVar) {
+            // if (request.first_message.senderAuthInfo.authVar.token) {
+            // if (request.first_message.senderAuthInfo.authVar.token.firebase) {
+            // if (request.first_message.senderAuthInfo.authVar.token.firebase.sign_in_provider) {
+
+            if (request.first_message.senderAuthInfo.authVar.token.firebase.sign_in_provider === 'custom') {
+              this.REQUESTER_IS_VERIFIED = true;
+            } else {
+              this.REQUESTER_IS_VERIFIED = false;
+            }
+            // }
+            // }
+            // }
+            // }
+            // }
+          }
+
           // console.log('REQUEST TEXT ', request.first_text, ' , SUPP STATUS ', request.support_status)
 
           requests.forEach(r => {
@@ -280,6 +333,9 @@ export class RequestsListComponent implements OnInit {
 
               // GET MEMBERS
               r.members_array = Object.keys(r.members);
+              r.requester_fullname_initial = initial
+              r.requester_fullname_fillColour = fillColour
+              r.requester_is_verified = this.REQUESTER_IS_VERIFIED
               // console.log('!!! REQUEST LIST MEMBERS ARRAY  ', r.members_array)
 
             }

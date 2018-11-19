@@ -267,27 +267,36 @@
                         <strong>Id</strong>
                       </span>  
                     </th> -->
+
+                    <!-- ------ ====== MESSAGE ====== ------ -->
+                    <th>
+                      <span style="color: #566787">
+                        <strong>
+
+                          {{ 'VisitorsPage.Message' | translate }}
+                        </strong>
+                      </span>
+                    </th>
+             
+                    <!-- ------ ====== REQUESTER ====== ------ -->
+                    <th>
+                      <span style="color: #566787">
+                        <strong> 
+ 
+                          {{ 'VisitorsPage.Requester' | translate }}
+                        </strong>
+                      </span>
+                    </th>
+
+                    <!-- ------ ====== DEPARTMENT ====== ------ -->
                     <th>
                       <span style="color: #566787">
                         <strong>{{ 'VisitorsPage.Department' | translate }}</strong>
                       </span>  
                     </th>
-                    <th>
-                      <span style="color: #566787">
-                        <strong> 
-                          <!-- Richiedente  -->
-                          {{ 'VisitorsPage.Requester' | translate }}
-                        </strong>
-                      </span>
-                    </th>
-                    <th>
-                      <span style="color: #566787">
-                        <strong>
-                          <!-- Messagio  -->
-                          {{ 'VisitorsPage.Message' | translate }}
-                        </strong>
-                      </span>
-                    </th>
+
+
+      
                     <!-- REQUESTER ID * FOR DEBUG -->
                     <!-- <th>
                       <span style="color: #566787">
@@ -309,18 +318,18 @@
                         <strong> Membri </strong>
                       </span>
                     </th> -->
+
+                    <!-- ------ ====== CREATED ON ====== ------ -->
                     <th>
                       <span style="color: #566787">
-                        <!-- <strong> Data creazione </strong> -->
                         <strong> 
-                          <!-- Pubblicata  -->
                           {{ 'VisitorsPage.Published' | translate }}
                         </strong>
                       </span>
                     </th>
                     <!-- <th>TEST</th> -->
 
-                    <!-- ARCHIVE Action -->
+                    <!-- ------ ====== ARCHIVE ACTION ====== ------ -->
                     <th>
                       <strong>
                         <span style="color: #566787">
@@ -331,10 +340,9 @@
                 </tr>
               </thead>
 
-              <!-- UNSERVED FOR -->
               <tbody>
 
-                <!-- IF THERE ISN'T REQUEST (SERVED OR UNSERVED) -->
+                <!-- ------ ====== IF THERE ISN'T REQUEST (SERVED OR UNSERVED) ====== ------ -->
                 <!-- <tr *ngIf="requestListServed.length === 0 && requestListUnserved.length === 0">  -->
                 <tr *ngIf="SHOW_SIMULATE_REQUEST_BTN">   
                   <td colspan="6" style="text-align: center; padding-top: 16px; cursor: pointer" (click)="testWidgetPage()">
@@ -350,6 +358,11 @@
                 </tr>
 
                 <!-- | sortByDes : 'created_on' -->
+
+                <!-- ****************************************
+                  ------ ====== UNSERVED FOR ====== ------
+                ********************************************* -->
+
                 <tr *ngFor="let request of requestListUnserved">
                   <!-- FOR DEBUG: SHOW 'J' IF THE CURRENT USER UID IS BETWEEN 
                   THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
@@ -358,6 +371,8 @@
                       J
                     </span>
                   </td> -->
+
+                  <!-- ------ ====== VISIBILITY ICON ====== ------ -->
                   <td style="text-align:center">
                     <!-- <span *ngIf="request?.membersCount == 0"> 
                       <i style="color:red;" class="material-icons">priority_high</i>
@@ -366,7 +381,7 @@
                     <!-- IF THE REQUEST SUPPORT STATUS IS 0 (??? REQUEST) -->
                     <span *ngIf="request?.support_status == 0"> 
                       <span class="" (click)='goToRequestMsgs(request?.recipient)'>
-                        <button class="btn btn-default" style=""> 
+                        <button class="btn btn-default"> 
                           <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                         </button>
                       </span>
@@ -376,7 +391,7 @@
                     <span *ngIf="request?.support_status == 100"> 
                       <span class="" (click)='goToRequestMsgs(request?.recipient)'>
                           <!-- padding:4px 6px; -->
-                        <button class="btn btn-danger" style=""> 
+                        <button class="btn btn-danger"> 
                           <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                         </button>
                       </span>
@@ -386,7 +401,7 @@
                     THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
                     <span *ngIf="request?.support_status == 200 && request?.currentUserIsJoined === true"> 
                       <span class="" (click)='goToRequestMsgs(request?.recipient)'>
-                        <button class="btn btn-success" style="" rel="tooltip" title=""> 
+                        <button class="btn btn-success"> 
                           <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                         </button>
                       </span>
@@ -396,8 +411,8 @@
                     THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has not joined to the request) -->
                     <span *ngIf="request?.support_status == 200 && !request?.currentUserIsJoined"> 
                       <span class="" (click)='goToRequestMsgs(request?.recipient)'>
-                        <button class="btn btn-info" style="" rel="tooltip" title=""> 
-                          <i style="font-size: 17px !important; " class="material-icons">visibility</i>
+                        <button class="btn btn-info"> 
+                          <i style="font-size: 17px !important;" class="material-icons">visibility</i>
                         </button>
                       </span>
                     </span>
@@ -410,6 +425,59 @@
                     </p>
                   </td> -->
 
+                  
+                  <!-- ------ ====== MESSAGE ====== ------ -->
+                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
+                      <!-- max-width: 400px -->
+                    <p style="font-size:0.9em;" [innerHTML]="getRequestText(request?.first_text)">
+                      <!-- {{ request?.text }} -->
+                      <!-- {{ request?.first_text }} -->
+                    </p>
+                  </td>
+
+    
+                  <!-- ------ ====== REQUESTER ====== ------ -->
+                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" rel="tooltip" title="requester id:{{ request?.requester_id }}">
+                    <!-- <p style="font-size:0.9em">{{ request.sender_fullname }}</p> -->
+
+                    <!-- REQUESTER VERIFIED ICON -->
+                    <span class="requester-avatar-wrapper"> 
+                      <span class="requester-avatar" [ngStyle]="{'background-color': request?.requester_fullname_fillColour }" [ngClass]="{'requester_fullname-undefined' : !request?.requester_fullname}">
+                        <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
+                      </span>
+                      <span *ngIf="request?.requester_is_verified === true" class="tooltipx"> 
+                        <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                            viewBox="0 0 26.6 26.6" width="18" height="18" style="position: relative;left: -11px;top: 12px;" xml:space="preserve">
+                            <style type="text/css">
+                              .st0{fill:none;}
+                              .st1{fill:#FFFFFF;}
+                              .st2{fill:#18BDF7;}
+                            </style>
+                            <path class="st0" d="M1.3,1.3h24v24h-24V1.3z"/>
+                            <path class="st1" d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z"/>
+                            <path class="st2" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
+                              l6.6-6.6l1.4,1.4L11.3,18.3z"/>
+                          </svg>
+
+                          <span class="tooltiptext"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
+                        <!-- </span> -->
+                      </span>
+                    </span>
+          
+
+                    <span style="font-size:0.9em; font-weight: 400;" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
+                      {{ request.requester_fullname }}
+                    </span>
+
+                    <span *ngIf="!request?.requester_fullname" style="font-size:0.9em; font-weight: 400;" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
+                      n.d.
+                    </span>
+                    <!-- <p style="font-size:0.8em">
+                        {{ request?.requester_id }}
+                    </p> -->
+                  </td>
+
+                  <!-- ------ ====== DEPARTMENT ====== ------ -->
                   <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" rel="tooltip" title="department id:{{ request?.attributes?.departmentId }}">
                     <p *ngIf="request?.attributes?.departmentName" style="font-size:0.9em;">
                       {{ request?.attributes?.departmentName }}
@@ -419,23 +487,7 @@
                       n.d.
                     </p>
                   </td>
-
-                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" rel="tooltip" title="requester id:{{ request?.requester_id }}">
-                    <!-- <p style="font-size:0.9em">{{ request.sender_fullname }}</p> -->
-                    <p style="font-size:0.9em">
-                      {{ request.requester_fullname }}
-                    </p>
-                    <!-- <p style="font-size:0.8em">
-                        {{ request?.requester_id }}
-                    </p> -->
-                  </td>
-                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
-                      <!-- max-width: 400px -->
-                    <p style="font-size:0.9em;" [innerHTML]="getRequestText(request?.first_text)">
-                      <!-- {{ request?.text }} -->
-                      <!-- {{ request?.first_text }} -->
-                    </p>
-                  </td>
+    
                   <!-- REQUESTER ID * FOR DEBUG-->
                   <!-- <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
                     <p style="font-size:0.9em">
@@ -463,6 +515,7 @@
                     <p style="font-size:0.8em; min-width: 220px;"  [innerHTML]="request?.members_as_string"></p>
                   </td> -->
                   
+                  <!-- ------ ====== CRETED ON ====== ------ -->
                   <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
                     <p style="font-size:0.9em">
                       <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
@@ -488,8 +541,8 @@
                       </button>
                     </span>
                   </td> -->
-
-                  <!-- ARCHIVE Action -->
+                  
+                  <!-- ------ ====== ARCHIVE Action ====== ------ -->
                   <!-- class="td-actions text-right" -->
                   <td>                 
                     <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}" class="btn btn-danger btn-simple btn-xs"
@@ -507,7 +560,10 @@
         </div> <!-- ./ card -->
         <!-- / .END UNSERVED REQUESTS  -->
 
-        <!-- SERVED REQUESTS -->
+
+        <!-- **********************************************
+          ------ ====== SERVED REQUESTS ====== ------ 
+        *********************************************** -->
         <div class="card">
           <div class="card-header" data-background-color="" style="">
             <h4 class="title customh4" style="margin-bottom:2px;">
@@ -535,20 +591,7 @@
                     </span>  
                   </th> -->
 
-                  <th>
-                    <span style="color: #566787">
-                      <strong>{{ 'VisitorsPage.Department' | translate }}</strong>
-                    </span>  
-                  </th>
-
-                  <th>
-                    <span style="color: #566787">
-                      <strong> 
-                        <!-- Richiedente  -->
-                        {{ 'VisitorsPage.Requester' | translate }}
-                      </strong>
-                    </span>
-                  </th>
+                  <!-- ------ ====== MESSAGE ====== ------ -->
                   <th>
                     <span style="color: #566787">
                         <!-- Message -->
@@ -559,6 +602,23 @@
                     </span>
                   </th>
                   
+                  <!-- ------ ====== REQUESTER ====== ------ -->
+                  <th>
+                    <span style="color: #566787">
+                      <strong> 
+                        <!-- Richiedente  -->
+                        {{ 'VisitorsPage.Requester' | translate }}
+                      </strong>
+                    </span>
+                  </th>
+      
+                  <!-- ------ ====== DEPARTMENT ====== ------ -->
+                  <th>
+                    <span style="color: #566787">
+                      <strong>{{ 'VisitorsPage.Department' | translate }}</strong>
+                    </span>  
+                  </th>
+                  
                   <!-- REQUESTER ID * FOR DEBUG -->
                   <!-- <th>
                     <span style="color: #566787">
@@ -566,6 +626,7 @@
                     </span>
                   </th> -->
 
+                  <!-- ------ ====== SERVED BY ====== ------ -->
                   <th>
                     <span style="color: #566787">
                       <!-- <strong> Served by </strong> -->
@@ -581,6 +642,8 @@
                       <strong> Membri </strong>
                     </span>
                   </th> -->
+
+                  <!-- ------ ====== CREATED ON ====== ------ -->
                   <th>
                     <span style="color: #566787">
                       <!-- <strong> Data creazione </strong> -->
@@ -593,7 +656,7 @@
                   
                   <!-- <th>TEST</th> -->
 
-                  <!-- ARCHIVE Action -->
+                  <!-- ------ ====== ARCHIVE Action  ====== ------ -->
                   <th>
                     <span style="color: #566787">
                       <strong> 
@@ -621,6 +684,9 @@
                   </td>
                 </tr>
 
+              <!-- ****************************************
+                  ------ ====== SERVED FOR ====== ------
+                ********************************************* -->
                 <tr *ngFor="let request of requestListServed">
                             
                   <!-- FOR DEBUG: SHOW 'J' IF THE CURRENT USER UID IS BETWEEN 
@@ -630,7 +696,8 @@
                       J
                     </span>
                   </td> -->
-                  
+
+                  <!-- ------ ====== VISIBILITY ICONS ====== ------ -->
                   <td style="text-align:center">
                     <!-- IF THE REQUEST SUPPORT STATUS IS 0 (??? REQUEST) -->
                     <span *ngIf="request?.support_status == 0"> 
@@ -682,35 +749,8 @@
                     </p>
                   </td> -->
 
-                  <!-- openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id) -->
-                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
-                    <p *ngIf="request?.attributes?.departmentName" style="font-size:0.9em">
-                      {{ request?.attributes?.departmentName }}
-                    </p>
-                    <p *ngIf="!request?.attributes?.departmentName" style="font-size:0.9em">
-                        <!-- {{ 'VisitorsPage.Default' | translate }} -->
-                        n.d.
-                    </p>
-                  </td>
-
-                  
-                  <!-- openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id) -->
-                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
-                    <!-- <p style="font-size:0.9em">{{ request.sender_fullname }}</p> -->
-                    <p style="font-size:0.9em">
-                      {{ request.requester_fullname }} 
-                      <!-- <span *ngIf="request?.first_message?.senderAuthInfo?.authVar?.token?.firebase?.sign_in_provider">  -->
-                        <!-- <i class="material-icons" style="color:#4985FF">
-                          check_circle
-                        </i> -->
-                      <!-- </span> -->
-                      
-                    </p>
-                    <!-- <p style="font-size:0.8em">
-                      {{ request?.requester_id }}
-                    </p> -->
-                  </td>
-                  
+    
+                  <!-- ------ ====== MESSAGE  ====== ------ -->
                   <!-- openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id) -->
                   <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
                       <!-- max-width: 400px -->
@@ -719,6 +759,62 @@
                       <!-- {{ request?.first_text }} -->
                     </p>
                   </td>
+
+                  
+                  <!-- ------ ====== REQUESTER ====== ------ -->
+                  <!-- openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id) -->
+                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
+                    <!-- <p style="font-size:0.9em">{{ request.sender_fullname }}</p> -->
+                    
+                    <!-- REQUESTER VERIFIED ICON -->
+                    <span class="requester-avatar-wrapper"> 
+                        <span class="requester-avatar" [ngStyle]="{'background-color': request?.requester_fullname_fillColour }" [ngClass]="{'requester_fullname-undefined' : !request?.requester_fullname}">
+                          <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
+                        </span>
+                        <span *ngIf="request?.requester_is_verified === true" class="tooltipx"> 
+                          <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                              viewBox="0 0 26.6 26.6" width="18" height="18" style="position: relative;left: -11px;top: 12px;" xml:space="preserve">
+                              <style type="text/css">
+                                .st0{fill:none;}
+                                .st1{fill:#FFFFFF;}
+                                .st2{fill:#18BDF7;}
+                              </style>
+                              <path class="st0" d="M1.3,1.3h24v24h-24V1.3z"/>
+                              <path class="st1" d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z"/>
+                              <path class="st2" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
+                                l6.6-6.6l1.4,1.4L11.3,18.3z"/>
+                            </svg>
+  
+                            <span class="tooltiptext"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
+                          <!-- </span> -->
+                        </span>
+                      </span>
+                    
+                    
+                    <span style="font-size:0.9em; font-weight: 400;" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
+                      {{ request?.requester_fullname }} 
+                    </span>
+
+                    <span *ngIf="!request?.requester_fullname" style="font-size:0.9em; font-weight: 400;" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
+                       n.d.
+                    </span>
+                    <!-- <p style="font-size:0.8em">
+                      {{ request?.requester_id }}
+                    </p> -->
+                  </td>
+                  
+                  <!-- ------ ====== DEPARTMENT  ====== ------ -->
+                  <!-- openViewMsgsModal(request?.recipient, request?.currentUserIsJoined, request?.requester_id) -->
+                  <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
+                    <p *ngIf="request?.attributes?.departmentName" style="font-size:0.9em">
+                      {{ request?.attributes?.departmentName }}
+                    </p>
+                    <p *ngIf="!request?.attributes?.departmentName" style="font-size:0.9em">
+                      <!-- {{ 'VisitorsPage.Default' | translate }} -->
+                      n.d.
+                    </p>
+                  </td>
+
                   <!-- REQUESTER ID * FOR DEBUG-->
                     <!-- <td (click)='openViewMsgsModal(request?.recipient)' style="cursor:pointer">
                       <p style="font-size:0.9em">
@@ -726,7 +822,7 @@
                       </p>
                     </td> -->
 
-                  <!-- SERVED BY -->
+                  <!-- ------ ====== SERVED BY ====== ------ -->
                   <td>
                     <!-- [innerHTML]="request?.members_as_string" -->
                     <span *ngFor="let m of request?.members_array"  style="font-size:0.8em;">
@@ -745,6 +841,7 @@
                     <p style="font-size:0.8em; min-width: 220px;"  [innerHTML]="request?.members_as_string"></p>
                   </td> -->
                   
+                  <!-- ------ ====== CREATED ON ====== ------ -->
                   <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
                     <p style="font-size:0.9em">
                       <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
@@ -768,8 +865,8 @@
                     </span>
                   </td> -->
 
-                  <!-- ARCHIVE Action -->
                   <!-- class="td-actions text-right" -->
+                  <!-- ------ ====== ARCHIVE Action ====== ------ -->
                   <td>                 
                     <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}" class="btn btn-danger btn-simple btn-xs"
                       (click)='openDeleteRequestModal(request?.recipient)'>
