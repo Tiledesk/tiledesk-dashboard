@@ -49,6 +49,7 @@ export class ContactsComponent implements OnInit {
   // DATA DISPLAYED IN THE 'UPDATE' MODAL
   id_toUpdate: string;
   fullName_toUpdate: string;
+  CONTACT_IS_VERIFIED = false;
 
   constructor(
     private http: Http,
@@ -190,10 +191,26 @@ export class ContactsComponent implements OnInit {
       const fillColour = this.colours[colourIndex];
       console.log('!!!!! CONTACTS - NAME INITIAL ', initial, ' COLOUR INDEX ', colourIndex, 'FILL COLOUR ', fillColour);
 
+
+      if (contact.attributes
+        && contact.attributes.senderAuthInfo
+        && contact.attributes.senderAuthInfo.authVar
+        && contact.attributes.senderAuthInfo.authVar.token
+        && contact.attributes.senderAuthInfo.authVar.token.firebase
+        && contact.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider) {
+   
+        if (contact.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider === 'custom') {
+          this.CONTACT_IS_VERIFIED = true;
+        } else {
+          this.CONTACT_IS_VERIFIED = false;
+        }
+      }
+
       for (const c of contacts_list) {
         if (c._id === id_contact) {
           c.avatar_fill_colour = fillColour;
           c.name_initial = initial
+          c.contact_is_verified = this.CONTACT_IS_VERIFIED
         }
       }
 
