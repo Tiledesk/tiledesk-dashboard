@@ -528,7 +528,8 @@
         "TheRequestWillBeReassignedTo":"The request will be reassigned to:",
         "LeaveChat":"Leave chat",
         "AreYouSureLeftTheChat":"Are you sure you want to left the chat?",
-        "ChatLeft":"Chat left"
+        "ChatLeft":"Chat left",
+        "AuthenticatedUser":"Authenticated User"
     },
     "RequestMsgsPage": {
         "MessagesOfTheRequest": "Messages of the request",

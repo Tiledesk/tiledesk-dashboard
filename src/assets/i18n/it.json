@@ -528,7 +528,8 @@
         "TheRequestWillBeReassignedTo": "La richiesta sarà riassegnata a:",
         "LeaveChat": "Abbandona chat",
         "AreYouSureLeftTheChat": "Sei sicuro di voler abbandonare la chat?",
-        "ChatLeft": "Chat abbandonata"
+        "ChatLeft": "Chat abbandonata",
+        "AuthenticatedUser":"Utente autenticato"
     },
     "RequestMsgsPage": {
         "MessagesOfTheRequest": "Messagi della richiesta",
