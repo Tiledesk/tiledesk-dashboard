@@ -189,7 +189,7 @@ export class ContactsComponent implements OnInit {
       // console.log('!!!!! CONTACTS - COLOUR INDEX ', colourIndex);
 
       const fillColour = this.colours[colourIndex];
-      console.log('!!!!! CONTACTS - NAME INITIAL ', initial, ' COLOUR INDEX ', colourIndex, 'FILL COLOUR ', fillColour);
+      // console.log('!!!!! CONTACTS - NAME INITIAL ', initial, ' COLOUR INDEX ', colourIndex, 'FILL COLOUR ', fillColour);
 
 
       if (contact.attributes
@@ -198,16 +198,24 @@ export class ContactsComponent implements OnInit {
         && contact.attributes.senderAuthInfo.authVar.token
         && contact.attributes.senderAuthInfo.authVar.token.firebase
         && contact.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider) {
-   
+
         if (contact.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider === 'custom') {
           this.CONTACT_IS_VERIFIED = true;
+          console.log('!!!! CONTACTS  - CONTACT_IS_VERIFIED ', this.CONTACT_IS_VERIFIED, 'for id_contact ', id_contact)
         } else {
           this.CONTACT_IS_VERIFIED = false;
+          console.log('!!!! CONTACTS  - CONTACT_IS_VERIFIED ', this.CONTACT_IS_VERIFIED, 'for id_contact ', id_contact)
         }
+      } else {
+        this.CONTACT_IS_VERIFIED = false;
+        console.log('!!!! CONTACTS  - CONTACT_IS_VERIFIED ', this.CONTACT_IS_VERIFIED, 'for id_contact ', id_contact)
+
       }
 
       for (const c of contacts_list) {
+
         if (c._id === id_contact) {
+          console.log('!!!! CONTACTS  - c._id ', c._id, 'id_contact ', id_contact)
           c.avatar_fill_colour = fillColour;
           c.name_initial = initial
           c.contact_is_verified = this.CONTACT_IS_VERIFIED
@@ -260,12 +268,12 @@ export class ContactsComponent implements OnInit {
         this.ngOnInit();
       }, (error) => {
         console.log('!!!!! CONTACTS - DELETE REQUEST - ERROR ', error);
-         // =========== NOTIFY ERROR ===========
-         this.notify.showNotification('An error occurred while deleting contact', 4, 'report_problem')
+        // =========== NOTIFY ERROR ===========
+        this.notify.showNotification('An error occurred while deleting contact', 4, 'report_problem')
       }, () => {
         console.log('!!!!! CONTACTS - DELETE REQUEST * COMPLETE *');
-         // =========== NOTIFY SUCCESS===========
-         this.notify.showNotification('Contact successfully deleted', 2, 'done');
+        // =========== NOTIFY SUCCESS===========
+        this.notify.showNotification('Contact successfully deleted', 2, 'done');
       });
 
   }

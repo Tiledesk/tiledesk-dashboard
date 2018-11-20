@@ -191,6 +191,8 @@ export class ContactDetailsComponent implements OnInit {
             } else {
               this.CONTACT_IS_VERIFIED = false;
             }
+          } else {
+            this.CONTACT_IS_VERIFIED = false;
           }
         }
 
