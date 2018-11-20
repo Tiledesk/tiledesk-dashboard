@@ -180,7 +180,7 @@
                           {{ dept?.deptName }} 
                         </span>
                         <span style="font-size:13px" class="table-body-span" *ngIf="dept?.deptName === undefined">
-                          n.d.
+                          n.a.
                         </span>
                       </td>
                       <td>
@@ -470,7 +470,7 @@
                     </span>
 
                     <span *ngIf="!request?.requester_fullname" style="font-size:0.9em; font-weight: 400;" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
-                      n.d.
+                      n.a.
                     </span>
                     <!-- <p style="font-size:0.8em">
                         {{ request?.requester_id }}
@@ -484,7 +484,7 @@
                     </p>
                     <p *ngIf="!request?.attributes?.departmentName" style="font-size:0.9em;">
                       <!-- {{ 'VisitorsPage.Default' | translate }} -->
-                      n.d.
+                      n.a.
                     </p>
                   </td>
     
@@ -796,7 +796,7 @@
                     </span>
 
                     <span *ngIf="!request?.requester_fullname" style="font-size:0.9em; font-weight: 400;" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
-                       n.d.
+                       n.a.
                     </span>
                     <!-- <p style="font-size:0.8em">
                       {{ request?.requester_id }}
@@ -811,7 +811,7 @@
                     </p>
                     <p *ngIf="!request?.attributes?.departmentName" style="font-size:0.9em">
                       <!-- {{ 'VisitorsPage.Default' | translate }} -->
-                      n.d.
+                      n.a.
                     </p>
                   </td>
 
