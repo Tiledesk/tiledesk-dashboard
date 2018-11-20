@@ -101,7 +101,8 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   requester_fullname_initial: string;
   fillColour: string;
   REQUESTER_IS_VERIFIED = false;
-
+  cleaned_members_array: any;
+  actionInModal: string;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -208,7 +209,9 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   }
 
-  openSelectUsersModal() {
+  openSelectUsersModal(actionSelected) {
+    this.actionInModal = actionSelected
+    console.log('REQUEST-MSGS - ACTION IN MODAL ', this.actionInModal);
     this.getAllUsersOfCurrentProject();
     this.displayUsersListModal = 'block'
     console.log('REQUEST-MSGS - DISPLAY USERS LIST MODAL ', this.displayUsersListModal);
@@ -288,55 +291,16 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.displayConfirmReassignmentModal = 'none';
     this.displayUsersListModal = 'none'
 
-    this.joinAnotherAgentLeaveCurrentUser(userid_selected);
-
-
-  }
-
-
-  /// new
-  joinAnotherAgentLeaveCurrentUser(userid_selected) {
-    this.getFirebaseToken(() => {
-
-      // this.requestsService.joinToGroup(this.currentUserFireBaseUID, this.requestRecipient)
-      this.requestsService.joinToGroup(this.id_request, this.firebase_token, userid_selected)
-        .subscribe((joinToGroupRes: any) => {
-
-          console.log('RIASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP ', joinToGroupRes);
-
-        }, (err) => {
-          console.log('RIASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP - ERROR ', err);
-
-          // =========== NOTIFY ERROR ===========
-          this.notify.showNotification('An error has occurred assigning the request', 4, 'report_problem')
-        }, () => {
-          console.log('RIASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP - COMPLETE');
-
-          // =========== NOTIFY SUCCESS===========
-          this.notify.showNotification(`request assigned to ${this.userfirstname_selected}  ${this.userlastname_selected}`, 2, 'done');
-
-          this.requestsService.leaveTheGroup(this.id_request, this.firebase_token, this.currentUserID)
-            .subscribe((leaveTheGroupRes: any) => {
-
-              console.log('RIASSIGN REQUEST - CURRENT USER LEAVE THE GROUP - RESPONSE ', leaveTheGroupRes);
-            }, (err) => {
-              console.log('RIASSIGN REQUEST - CURRENT USER LEAVE THE GROUP - ERROR ', err);
-
-              // =========== NOTIFY ERROR ===========
-              this.notify.showNotification('An error has occurred assigning the request', 4, 'report_problem')
-            }, () => {
-
-              console.log('RIASSIGN REQUEST - CURRENT USER LEAVE THE GROUP * COMPLETE');
-
-
-            });
-
-
-        });
-    });
+    this.joinAnotherAgentLeaveCurrentAgents(userid_selected);
 
   }
-  // end new
+
+  assignRequest(userid_selected) {
+    console.log('REQUEST-MSGS - ASSIGN REQUEST TO USER ID ', userid_selected);
+    this.displayConfirmReassignmentModal = 'none';
+    this.displayUsersListModal = 'none'
+    this.joinAnotherAgent(userid_selected);
+  }
 
 
   toggleCheckBox(event) {
@@ -440,10 +404,11 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
 
         if (request) {
           this.request = request[0];
-          console.log('--> THIS REQUEST ', this.request);
+          console.log('»»» REQUEST DETAILS - THIS REQUEST ', this.request);
 
           this.members_array = Object.keys(request[0].members);
-          console.log('MEMBERS ARRAY ', this.members_array)
+          console.log('»»» REQUEST DETAILS - MEMBERS ARRAY ', this.members_array)
+
 
 
           this.IS_CURRENT_USER_JOINED = request[0].currentUserIsJoined;
@@ -493,9 +458,32 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
           this.requester_id = request[0].requester_id;
           console.log('* REQUESTER ID: ', this.requester_id);
 
+
+          // this.cleaned_members_array = [];
+          // this.members_array.forEach(member_id => {
+          //   if (member_id !== this.requester_id && member_id !== 'system') {
+
+          //     this.cleaned_members_array.push(member_id)
+          //   }
+          // });
+
+          console.log('»»» REQUEST DETAILS - CLEANED MEMBERS ARRAY ', this.cleaned_members_array);
+
+
           this.agents_array = [];
+          this.cleaned_members_array = [];
           this.members_array.forEach(member_id => {
             if (member_id !== this.requester_id && member_id !== 'system') {
+
+
+              /**
+               * cleaned_members_array USED IN reassignRequest:
+               * WHEN IS RIASSIGNED A REQUEST IS RUNNED:
+               * ** joinToGroup: WITH WHOM THE userid_selected IS JOINED TO THE GROUP
+               * ** leaveTheGroup: WITH WHOM LEAVE THE GROUP THE MEMBER ID CONTAINED IN cleaned_members_array
+               *    note: before of this in leaveTheGroup was used the currentUserID  */
+              this.cleaned_members_array.push(member_id);
+              console.log('»»» REQUEST DETAILS - CLEANED MEMBERS ARRAY ', this.cleaned_members_array);
 
               const memberIsBot = member_id.includes('bot_');
 
@@ -611,6 +599,88 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
   }
+
+
+  /// new
+  joinAnotherAgentLeaveCurrentAgents(userid_selected) {
+    this.getFirebaseToken(() => {
+
+      // this.requestsService.joinToGroup(this.currentUserFireBaseUID, this.requestRecipient)
+      this.requestsService.joinToGroup(this.id_request, this.firebase_token, userid_selected)
+        .subscribe((joinToGroupRes: any) => {
+
+          console.log('RIASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP ', joinToGroupRes);
+
+        }, (err) => {
+          console.log('RIASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP - ERROR ', err);
+
+          // =========== NOTIFY ERROR ===========
+          this.notify.showNotification('An error has occurred assigning the request', 4, 'report_problem')
+        }, () => {
+          console.log('RIASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP - COMPLETE');
+
+          // =========== NOTIFY SUCCESS===========
+          this.notify.showNotification(`request reassigned to ${this.userfirstname_selected}  ${this.userlastname_selected}`, 2, 'done');
+
+          this.cleaned_members_array.forEach(memberId => {
+            // const memberId =  this.cleaned_members_array[0]['_id']
+
+            // this.requestsService.leaveTheGroup(this.id_request, this.firebase_token, this.currentUserID)
+
+            if (memberId !== userid_selected) {
+              console.log('RIASSIGN REQUEST - USER ID OF THE USER THAT LEAVE THE GROUP ', memberId)
+              this.requestsService.leaveTheGroup(this.id_request, this.firebase_token, memberId)
+                .subscribe((leaveTheGroupRes: any) => {
+
+                  console.log('RIASSIGN REQUEST - LEAVE THE GROUP - RESPONSE ', leaveTheGroupRes);
+                }, (err) => {
+                  console.log('RIASSIGN REQUEST - LEAVE THE GROUP - ERROR ', err);
+
+                  // =========== NOTIFY ERROR ===========
+                  this.notify.showNotification('An error has occurred reassigning the request', 4, 'report_problem')
+                }, () => {
+
+                  console.log('RIASSIGN REQUEST - LEAVE THE GROUP * COMPLETE');
+
+                });
+
+            }
+          });
+        });
+    });
+
+  }
+
+
+  // end new
+
+  /// new
+  joinAnotherAgent(userid_selected) {
+    console.log('ASSIGN REQUEST - USER ID SELECTED ', userid_selected);
+    this.getFirebaseToken(() => {
+
+      // this.requestsService.joinToGroup(this.currentUserFireBaseUID, this.requestRecipient)
+      this.requestsService.joinToGroup(this.id_request, this.firebase_token, userid_selected)
+        .subscribe((joinToGroupRes: any) => {
+
+          console.log('ASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP ', joinToGroupRes);
+
+        }, (err) => {
+          console.log('ASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP - ERROR ', err);
+
+          // =========== NOTIFY ERROR ===========
+          this.notify.showNotification('An error has occurred assigning the request', 4, 'report_problem')
+        }, () => {
+          console.log('ASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP - COMPLETE');
+
+          // =========== NOTIFY SUCCESS===========
+          this.notify.showNotification(`request assigned to ${this.userfirstname_selected}  ${this.userlastname_selected}`, 2, 'done');
+
+        });
+    });
+
+  }
+
 
   // ARCHIVE REQUEST - OPEN THE POPUP
   openArchiveRequestModal(request_recipient: string) {
