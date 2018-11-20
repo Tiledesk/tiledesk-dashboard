@@ -175,7 +175,7 @@ export class ContactDetailsComponent implements OnInit {
 
           } else {
 
-            this.contact_fullname_initial = 'n.d.';
+            this.contact_fullname_initial = 'n.a.';
             this.fillColour = '#eeeeee';
           }
 
