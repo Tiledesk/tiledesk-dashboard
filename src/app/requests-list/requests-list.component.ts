@@ -298,32 +298,25 @@ export class RequestsListComponent implements OnInit {
             fillColour = this.colours[colourIndex];
 
           } else {
-
             initial = 'n.a.';
             fillColour = '#eeeeee';
           }
+
           if (request.first_message
             && request.first_message.senderAuthInfo
             && request.first_message.senderAuthInfo.authVar
             && request.first_message.senderAuthInfo.authVar.token
             && request.first_message.senderAuthInfo.authVar.token.firebase
             && request.first_message.senderAuthInfo.authVar.token.firebase.sign_in_provider) {
-            // if (request.first_message.senderAuthInfo) {
-            // if (request.first_message.senderAuthInfo.authVar) {
-            // if (request.first_message.senderAuthInfo.authVar.token) {
-            // if (request.first_message.senderAuthInfo.authVar.token.firebase) {
-            // if (request.first_message.senderAuthInfo.authVar.token.firebase.sign_in_provider) {
 
             if (request.first_message.senderAuthInfo.authVar.token.firebase.sign_in_provider === 'custom') {
               this.REQUESTER_IS_VERIFIED = true;
             } else {
               this.REQUESTER_IS_VERIFIED = false;
             }
-            // }
-            // }
-            // }
-            // }
-            // }
+
+          } else {
+            this.REQUESTER_IS_VERIFIED = false;
           }
 
           // console.log('REQUEST TEXT ', request.first_text, ' , SUPP STATUS ', request.support_status)

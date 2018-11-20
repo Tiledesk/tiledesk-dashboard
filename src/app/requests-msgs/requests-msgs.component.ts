@@ -484,6 +484,8 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
             } else {
               this.REQUESTER_IS_VERIFIED = false;
             }
+          } else {
+            this.REQUESTER_IS_VERIFIED = false;
           }
 
 
