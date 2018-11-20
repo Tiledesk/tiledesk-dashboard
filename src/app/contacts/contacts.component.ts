@@ -178,48 +178,60 @@ export class ContactsComponent implements OnInit {
 
   generateAvatarFromName(contacts_list) {
     contacts_list.forEach(contact => {
-      const id_contact = contact._id
-      const name = contact.fullname;
-      // console.log('!!!!! CONTACTS - NAME OF THE CONTACT ', name);
-      const initial = name.charAt(0).toUpperCase();
-      // console.log('!!!!! CONTACTS - INITIAL OF NAME OF THE CONTACT ', initial);
 
-      const charIndex = initial.charCodeAt(0) - 65
-      const colourIndex = charIndex % 19;
-      // console.log('!!!!! CONTACTS - COLOUR INDEX ', colourIndex);
+      if (contact) {
+        const id_contact = contact._id
 
-      const fillColour = this.colours[colourIndex];
-      // console.log('!!!!! CONTACTS - NAME INITIAL ', initial, ' COLOUR INDEX ', colourIndex, 'FILL COLOUR ', fillColour);
+        let initial = '';
+        let fillColour = ''
+        if (contact.fullname) {
+          const name = contact.fullname;
+          // console.log('!!!!! CONTACTS - NAME OF THE CONTACT ', name);
+          initial = name.charAt(0).toUpperCase();
+          // console.log('!!!!! CONTACTS - INITIAL OF NAME OF THE CONTACT ', initial);
 
+          const charIndex = initial.charCodeAt(0) - 65
+          const colourIndex = charIndex % 19;
+          // console.log('!!!!! CONTACTS - COLOUR INDEX ', colourIndex);
 
-      if (contact.attributes
-        && contact.attributes.senderAuthInfo
-        && contact.attributes.senderAuthInfo.authVar
-        && contact.attributes.senderAuthInfo.authVar.token
-        && contact.attributes.senderAuthInfo.authVar.token.firebase
-        && contact.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider) {
+          fillColour = this.colours[colourIndex];
+          // console.log('!!!!! CONTACTS - NAME INITIAL ', initial, ' COLOUR INDEX ', colourIndex, 'FILL COLOUR ', fillColour);
+        } else {
 
-        if (contact.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider === 'custom') {
-          this.CONTACT_IS_VERIFIED = true;
-          console.log('!!!! CONTACTS  - CONTACT_IS_VERIFIED ', this.CONTACT_IS_VERIFIED, 'for id_contact ', id_contact)
+          initial = 'n.a.';
+          fillColour = '#eeeeee';
+        }
+
+        if (contact.attributes
+          && contact.attributes.senderAuthInfo
+          && contact.attributes.senderAuthInfo.authVar
+          && contact.attributes.senderAuthInfo.authVar.token
+          && contact.attributes.senderAuthInfo.authVar.token.firebase
+          && contact.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider) {
+
+          if (contact.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider === 'custom') {
+            this.CONTACT_IS_VERIFIED = true;
+            // console.log('!!!! CONTACTS  - CONTACT_IS_VERIFIED ', this.CONTACT_IS_VERIFIED, 'for id_contact ', id_contact)
+          } else {
+            this.CONTACT_IS_VERIFIED = false;
+            // console.log('!!!! CONTACTS  - CONTACT_IS_VERIFIED ', this.CONTACT_IS_VERIFIED, 'for id_contact ', id_contact)
+          }
         } else {
           this.CONTACT_IS_VERIFIED = false;
-          console.log('!!!! CONTACTS  - CONTACT_IS_VERIFIED ', this.CONTACT_IS_VERIFIED, 'for id_contact ', id_contact)
+          // console.log('!!!! CONTACTS  - CONTACT_IS_VERIFIED ', this.CONTACT_IS_VERIFIED, 'for id_contact ', id_contact)
+
         }
-      } else {
-        this.CONTACT_IS_VERIFIED = false;
-        console.log('!!!! CONTACTS  - CONTACT_IS_VERIFIED ', this.CONTACT_IS_VERIFIED, 'for id_contact ', id_contact)
 
-      }
+        for (const c of contacts_list) {
 
-      for (const c of contacts_list) {
-
-        if (c._id === id_contact) {
-          console.log('!!!! CONTACTS  - c._id ', c._id, 'id_contact ', id_contact)
-          c.avatar_fill_colour = fillColour;
-          c.name_initial = initial
-          c.contact_is_verified = this.CONTACT_IS_VERIFIED
+          if (c._id === id_contact) {
+            // console.log('!!!! CONTACTS  - c._id ', c._id, 'id_contact ', id_contact)
+            c.avatar_fill_colour = fillColour;
+            c.name_initial = initial
+            c.contact_is_verified = this.CONTACT_IS_VERIFIED
+          }
         }
+
       }
 
     });
