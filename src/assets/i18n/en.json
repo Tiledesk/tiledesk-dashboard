@@ -562,8 +562,8 @@
         "RatingMessage": "Rating message",
         "DepartmentId": "Department Id",
         "SourcePage": "Source page",
-        "Agents": "Agents"
-        
+        "Agents": "Agents",
+        "NoAgent": "No agent"
     },
     "HistoryPage": {
         "Requester": "Requester",
