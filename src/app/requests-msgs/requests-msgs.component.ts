@@ -468,7 +468,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
 
           } else {
 
-            this.requester_fullname_initial = 'n.d.';
+            this.requester_fullname_initial = 'n.a.';
             this.fillColour = '#eeeeee';
           }
 
