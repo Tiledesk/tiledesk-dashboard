@@ -118,7 +118,7 @@ export class RequestsListComponent implements OnInit {
 
   displayBtnLabelSeeYourRequets = false;
   REQUESTER_IS_VERIFIED = false;
- 
+
   constructor(
     private requestsService: RequestsService,
     private elRef: ElementRef,
@@ -289,7 +289,7 @@ export class RequestsListComponent implements OnInit {
           if (request.requester_fullname) {
             // AVATAR WITH REQUESTER FULL NAME INITIAL AND RANDOM BACKGROUND
             initial = request.requester_fullname.charAt(0).toUpperCase();
-           
+
             // console.log('REQUESTER FULL NAME - INITIAL: ', initial);
             const charIndex = initial.charCodeAt(0) - 65
             const colourIndex = charIndex % 19;
@@ -298,8 +298,8 @@ export class RequestsListComponent implements OnInit {
             fillColour = this.colours[colourIndex];
 
           } else {
-           
-            initial = 'n.d.';
+
+            initial = 'n.a.';
             fillColour = '#eeeeee';
           }
           if (request.first_message
