@@ -7,6 +7,7 @@ import 'rxjs/add/operator/map';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../core/auth.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable()
 export class ProjectService {
@@ -26,7 +27,8 @@ export class ProjectService {
 
   constructor(
     http: Http,
-    public auth: AuthService
+    public auth: AuthService,
+    public http_client: HttpClient,
   ) {
     console.log('HELLO PROJECT SERVICE !!!!')
 
@@ -74,18 +76,29 @@ export class ProjectService {
     }
   }
 
-  /**
-   * READ (GET ALL) */
+  /** ********************************************** HTTP VERSION *********************************************** */
+
+  /* READ (GET ALL PROJECTS) */
+  // public getProjects(): Observable<Project[]> {
+  //   const url = this.PROJECT_BASE_URL;
+  //   console.log('MONGO DB PROJECTS URL', url);
+
+  //   const headers = new Headers();
+  //   headers.append('Content-Type', 'application/json');
+  //   headers.append('Authorization', this.TOKEN);
+  //   return this.http
+  //     .get(url, { headers })
+  //     .map((response) => response.json());
+  // }
+
+  /** ******************************************** HTTP CLIENT VERSION ******************************************** */
+  /* READ (GET ALL PROJECTS) */
   public getProjects(): Observable<Project[]> {
     const url = this.PROJECT_BASE_URL;
     console.log('MONGO DB PROJECTS URL', url);
-
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' }).set('Authorization', this.TOKEN)
+    return this.http_client
+      .get<Project[]>(url, { headers })
   }
 
   /**
