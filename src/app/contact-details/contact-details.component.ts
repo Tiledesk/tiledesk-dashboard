@@ -209,8 +209,6 @@ export class ContactDetailsComponent implements OnInit {
 
           if (this.contact_details.attributes) {
 
-            
-
             if (this.contact_details.attributes.client) {
               console.log('!!!!! CONTACTS DETAILS - ATTRIBUTES > CLIENT: ', this.contact_details.attributes.client);
               const stripHere = 30;
