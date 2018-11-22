@@ -34,6 +34,17 @@ export class ContactDetailsComponent implements OnInit {
   CONTACT_IS_VERIFIED = false;
   contact_fullname_initial: string;
   fillColour: string;
+
+  clientStringCutted: string;
+  showAllClientString = false;
+
+  senderAuthInfoString: string;
+  senderAuthInfoStringCutted: string;
+  showAllsenderAuthInfoString = false;
+  showAllSourcePageString = false;
+  sourcePage: string;
+  sourcePageCutted: string;
+
   constructor(
     public location: Location,
     private route: ActivatedRoute,
@@ -171,7 +182,7 @@ export class ContactDetailsComponent implements OnInit {
             console.log('!!!!! CONTACTS DETAILS - CONTACT colourIndex: ', colourIndex);
 
             this.fillColour = this.colours[colourIndex];
-            console.log('!!!!! CONTACTS DETAILS - CONTACT illColour: ', this.fillColour);
+            console.log('!!!!! CONTACTS DETAILS - CONTACT fillColour: ', this.fillColour);
 
           } else {
 
@@ -194,6 +205,42 @@ export class ContactDetailsComponent implements OnInit {
           } else {
             this.CONTACT_IS_VERIFIED = false;
           }
+
+
+          if (this.contact_details.attributes) {
+
+            
+
+            if (this.contact_details.attributes.client) {
+              console.log('!!!!! CONTACTS DETAILS - ATTRIBUTES > CLIENT: ', this.contact_details.attributes.client);
+              const stripHere = 30;
+              this.clientStringCutted = this.contact_details.attributes.client.substring(0, stripHere) + '...';
+              console.log('!!!!! CONTACTS DETAILS - ATTRIBUTES > CLIENT cutted: ', this.clientStringCutted);
+            }
+
+            if (this.contact_details.attributes.senderAuthInfo) {
+              console.log('!!!!! CONTACTS DETAILS - ATTRIB. > SENDER AUTH INFO: ', this.contact_details.attributes.senderAuthInfo);
+              const _senderAuthInfoString = JSON.stringify(this.contact_details.attributes.senderAuthInfo)
+
+              // add a space after each comma
+              this.senderAuthInfoString = _senderAuthInfoString.split(',').join(', ')
+              console.log('!!!!! CONTACTS DETAILS - ATTRIB. > SENDER AUTH INFO (STRING): ', this.senderAuthInfoString);
+
+              const stripHere = 20;
+              this.senderAuthInfoStringCutted = this.senderAuthInfoString.substring(0, stripHere) + '...';
+              // const stripHere = 30;
+              // this.clientStringCutted = this.contact_details.attributes.client.substring(0, stripHere)  + '...';
+              // console.log('!!!!! CONTACTS DETAILS - ATTRIBUTES > CLIENT cutted: ', this.clientStringCutted);
+            }
+
+            if (this.contact_details.attributes.sourcePage) {
+              this.sourcePage = this.contact_details.attributes.sourcePage;
+
+              const stripHere = 20;
+              console.log('!!!!! CONTACTS DETAILS - ATTRIB. > SOURCR PAGE: ', this.sourcePage);
+              this.sourcePageCutted = this.contact_details.attributes.sourcePage.substring(0, stripHere) + '...';
+            }
+          }
         }
 
       }, (error) => {
@@ -204,6 +251,20 @@ export class ContactDetailsComponent implements OnInit {
         console.log('!!!!! CONTACTS DETAILS - GET LEAD BY REQUESTER ID * COMPLETE *');
       });
 
+  }
+
+  toggleShowAllClientString() {
+    this.showAllClientString = !this.showAllClientString;
+    console.log('SHOW ALL TEXT OF THE ATTRIBUTES > CLIENT ', this.showAllClientString)
+  }
+  toggleShowAllsenderAuthInfoString() {
+    this.showAllsenderAuthInfoString = !this.showAllsenderAuthInfoString;
+    console.log('SHOW ALL TEXT OF THE ATTRIBUTES > SENDER AUTH INFO ', this.showAllsenderAuthInfoString);
+  }
+
+  toggleShowAllSourcePageString() {
+    this.showAllSourcePageString = !this.showAllSourcePageString;
+    console.log('SHOW ALL TEXT OF THE ATTRIBUTES > SOURCR PAGE ', this.showAllSourcePageString);
   }
 
   goBack() {

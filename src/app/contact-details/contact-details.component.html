@@ -231,7 +231,13 @@
       <div class="col-md-4">
         <div class="card" style="padding-top:8px;">
           <div class="card-content" style="padding-top: 0px;">
-            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 16px;  border-bottom: 1px solid #ddd; padding-bottom: 15px; ">
+            <h4 class="card-title" style="text-transform: none; 
+                                          color: #566787; 
+                                          font-weight:400; 
+                                          /* margin-bottom: 16px;   */
+                                          border-bottom: 1px solid #e1eef4; 
+                                          padding-bottom: 8px; 
+                                          margin-top: 0px;">
               {{ "ContactDetails" | translate }}
 
               <span class="tooltipx" style="vertical-align: middle; cursor: pointer" (click)='goToEditContact(contact_details?._id)'>
@@ -285,7 +291,12 @@
                     
                     </span>
                   </span>
-              <span [ngClass]="{'contact-verified' : CONTACT_IS_VERIFIED === true}"> {{ contact_details?.fullname }} </span>
+              <span [ngClass]="{'contact-verified' : CONTACT_IS_VERIFIED === true}"> 
+                {{ contact_details?.fullname }}
+               </span>
+              <span *ngIf="!contact_details?.fullname" [ngClass]="{'contact-verified' : CONTACT_IS_VERIFIED === true}"> 
+                n.a.
+              </span>
             </p>
 
             <!-- ------====== EMAIL ======------ -->
@@ -295,8 +306,14 @@
               </strong>
             </p>
             <p class="attribute">
-              {{ contact_details?.email }}
+              <span *ngIf="contact_details?.email"> 
+                {{ contact_details?.email }} 
+              </span>
+              <span *ngIf="!contact_details?.email"> 
+                n.a.
+              </span>
             </p>
+
 
             <!-- ------====== CREATED ======------ -->
             <p class="title-attribute" style="margin-bottom: 3px">
@@ -308,6 +325,150 @@
               {{ contact_details?.createdAt | date: 'd/M/y HH:mm' }}
             </p>
 
+            <!-- ------====== ATTIBUTES ======------ -->
+            <!-- style="margin-bottom: 8px; color: #566787; border-top: 1px solid #e1eef4; padding-top: 8px; font-weight: 400; font-size: 18px" -->
+            <p class="title-attribute" style="margin-bottom: 3px;">
+                {{ "Attributes" | translate }}
+            </p>
+
+            <!-- ------====== CLIENT ======------ -->
+            <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
+              <strong>
+                Client:
+              </strong>
+      
+                <span *ngIf="!showAllClientString" class="attribute" style="white-space: nowrap">
+                  {{ clientStringCutted }}
+                <span> 
+                  <i class="material-icons" style="cursor: pointer; color: #039be5; font-size:18px; position:relative; top:5px" 
+                    (click)="toggleShowAllClientString()">
+                    keyboard_arrow_down
+                  </i>   
+                </span>
+              </span>
+
+              <span *ngIf="showAllClientString" class="attribute" style="">
+                {{ contact_details?.attributes?.client }}
+                <span> 
+                  <i class="material-icons" style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:5px" 
+                    (click)="toggleShowAllClientString()">
+                    keyboard_arrow_up
+                  </i>   
+                </span>
+              </span>
+          
+            </p>
+
+            <!-- ------====== DEPARTMENT NAME ======------ -->
+            <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
+              <strong>
+                {{ "Department" | translate }}:
+              </strong>
+            
+              <span class="attribute" style="cursor: pointer" (click)="toggleShowAllClientString()">
+                {{ contact_details?.attributes?.departmentName }}
+              </span>    
+            </p>
+
+            <!-- ------====== DEPARTMENT ID ======------ -->
+            <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
+              <strong>
+                {{ "DepartmentId" | translate }}:
+              </strong>
+
+              <span class="attribute">
+                {{ contact_details?.attributes?.departmentId }}
+              </span>
+            </p>
+
+            <!-- ------====== PROJECT ID ======------ -->
+            <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
+              <strong>
+                {{ "ProjectId" | translate }}:
+              </strong>
+
+              <span class="attribute">
+                {{ contact_details?.attributes?.projectId }}
+              </span>
+            </p>
+
+            <!-- ------====== SENDER AUTH INFO ======------ -->
+            <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
+              <strong>
+                Sender Auth Info:
+              </strong>
+            
+              <span *ngIf="!showAllsenderAuthInfoString" class="attribute" style="white-space: nowrap">
+                  {{ senderAuthInfoStringCutted }}
+
+                <span> 
+                  <i class="material-icons" style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:5px" 
+                    (click)="toggleShowAllsenderAuthInfoString()">
+                    keyboard_arrow_down
+                  </i>   
+                </span>
+              </span>
+              <span *ngIf="showAllsenderAuthInfoString" class="attribute">
+                 {{ senderAuthInfoString }} 
+
+                <span> 
+                  <i class="material-icons" style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:5px" 
+                    (click)="toggleShowAllsenderAuthInfoString()">
+                    keyboard_arrow_up
+                  </i>   
+                </span>
+              </span>
+            </p>
+
+            <!-- ------====== SOURCE PAGE  ======------ -->
+            <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
+              <strong>
+                  {{ "RequestMsgsPage.SourcePage" | translate }}:
+              </strong>
+            
+              <span *ngIf="!showAllSourcePageString" class="attribute" style="white-space: nowrap">
+                 {{ sourcePageCutted }}
+
+                <span> 
+                  <i class="material-icons" style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:5px" 
+                    (click)="toggleShowAllSourcePageString()">
+                    keyboard_arrow_down
+                  </i>   
+                </span>
+              </span>
+
+              <span *ngIf="showAllSourcePageString" class="attribute">
+                <a href="{{sourcePage}}" target="_blank">{{sourcePage}}</a>
+                <span> 
+                  <i class="material-icons" style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:5px" 
+                    (click)="toggleShowAllSourcePageString()">
+                    keyboard_arrow_up
+                  </i>   
+                </span>
+              </span>
+            </p>
+
+            <!-- ------====== USER EMAIL ======------ -->
+            <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
+              <strong>
+                {{ "UserEmail" | translate }}:
+              </strong>
+
+              <span class="attribute">
+                {{ contact_details?.attributes?.userEmail }}
+              </span>
+            </p>
+
+            <!-- ------====== USER FULLNAME ======------ -->
+            <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
+              <strong>
+                {{ "UserFullName" | translate }}:
+              </strong>
+
+              <span class="attribute">
+                {{ contact_details?.attributes?.userFullname }}
+              </span>
+            </p>
 
  
           </div>
