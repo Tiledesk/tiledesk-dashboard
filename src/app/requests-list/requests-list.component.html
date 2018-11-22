@@ -2,15 +2,30 @@
 <!-- MOMGO DB REQUEST (ALIAS VISITORS) LIST -->
 <p style="margin-top:10px; padding-left:30px" class="navbar-brand">
   <!-- Visitatori -->
-  {{ 'SupportRequests' | translate }}
+  {{ 'SupportRequests' | translate }} 
 </p> 
 
-<div class="main-content" style="padding-top:0px">
+
+  <ul id="pill-horizontal" *ngIf="user_role !== 'agent'" class="nav nav-pills nav-pills-info custom" 
+    style="position:relative; z-index:1050; margin-top: 14px; max-width: 528px;">
+    <li class="active" (click)="seeIamAgentRequests(seeAll = !seeAll)">
+      <a href="#pill1" data-toggle="tab">
+        {{ "AllAgentsRequests" | translate }} 
+      </a>
+      </li>
+    <li (click)="seeIamAgentRequests(seeAll = !seeAll)">
+      <a href="#pill2" data-toggle="tab">
+        {{ "YourRequests" | translate }}
+      </a>
+    </li>
+  </ul>
+
+
+<div class="main-content" style="padding-top:0px; margin-top: 25px;">
   <div class="container-fluid">
 
       
     <!-- ------====== CARDS COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED  and requests for depts ======------ -->
- 
     <div class="row">
 
       <div class="row">
@@ -102,14 +117,12 @@
           <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
               <h4 class="customh4" style="padding-left:15px; margin-bottom: 0px; white-space: nowrap;"> 
-              
-                <!-- {{ "RequestsForDepartment" | translate }} -->
-                <span style="color: #4caf50" *ngIf="displayBtnLabelSeeYourRequets === true"> 
-                  <!-- Your requests  -->
+                  
+                  {{ "RequestsForDept" | translate }} 
+                <!-- <span style="color: #4caf50" *ngIf="displayBtnLabelSeeYourRequets === true"> 
                   {{ "YourRequests" | translate }} 
                 </span>
                 <span style="color: #00bcd4" *ngIf="displayBtnLabelSeeYourRequets === false"> 
-                  <!-- All Agents requests   -->
                   {{ "AllAgentsRequests" | translate }} 
                 </span>
                   
@@ -117,18 +130,15 @@
                   <span style="font-size:14px; margin-left: 8px">
                     {{ "SwitchTo" | translate }} 
                   </span> 
-
                   <span (click)="seeIamAgentRequests(seeAll = !seeAll)" style="cursor: pointer">
                     <span class="all-agents-requests-btn" *ngIf="displayBtnLabelSeeYourRequets === true" style=""> 
                       {{ "AllAgentsRequests" | translate }} 
-                      <!-- All agent Request -->
                     </span>
                     <span class="your-requests-btn" *ngIf="displayBtnLabelSeeYourRequets === false" style=""> 
-                      <!-- Your requests -->
                       {{ "YourRequests" | translate }} 
                     </span>
                   </span>
-                </span>
+                </span> -->
               </h4>
             </div>
 
@@ -151,7 +161,7 @@
               </span>
             </div> -->
           </div>
-          <div class="card-content">
+          <div class="card-content" style="padding-top:5px">
             <div class="row">
               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <table class="table table-hover">
