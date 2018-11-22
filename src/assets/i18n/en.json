@@ -73,6 +73,8 @@
     "ViewContactRequests": "View requests",
     "ContactDetails": "Contact details",
     "Department": "Department",
+    "DepartmentId": "Department id",
+    "ProjectId": "Project id",
     "Message": "Message",
     "ServedBy":"Served by",
     "Rating": "Rating",
@@ -117,6 +119,9 @@
     "AreYouSure":"Are you sure",
     "YouAreAboutToDeleteTheContact":"You are about to delete the contact",
     "DeleteContact":"Delete Contact",
+    "Attributes": "Attributes",
+    "UserEmail": "User email",
+    "UserFullName": "User fullname",
     "UserProfile": {
         "Profile": "Profile",
         "UploadImage": "Upload image",

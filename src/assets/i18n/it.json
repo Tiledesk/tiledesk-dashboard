@@ -73,6 +73,8 @@
     "ViewContactRequests": "Vedi richieste",
     "ContactDetails": "Dettagli contatto",
     "Department": "Dipartimento",
+    "DepartmentId": "Id dipartimento",
+    "ProjectId": "Id progetto",
     "Message": "Messaggio",
     "ServedBy": "Servita da",
     "Rating": "Valutazione",
@@ -117,6 +119,9 @@
     "AreYouSure":"Sei sicuro",
     "YouAreAboutToDeleteTheContact":"Stai per eliminare il contatto",
     "DeleteContact":"Elimina Contatto",
+    "Attributes": "Attributi",
+    "UserEmail": "Email utente",
+    "UserFullName": "Fullname utente",
     "UserProfile": {
         "Profile": "Profilo",
         "UploadImage": "Carica immagine",
