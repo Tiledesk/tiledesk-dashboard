@@ -219,7 +219,6 @@ export class ContactsComponent implements OnInit {
         } else {
           this.CONTACT_IS_VERIFIED = false;
           // console.log('!!!! CONTACTS  - CONTACT_IS_VERIFIED ', this.CONTACT_IS_VERIFIED, 'for id_contact ', id_contact)
-
         }
 
         for (const c of contacts_list) {

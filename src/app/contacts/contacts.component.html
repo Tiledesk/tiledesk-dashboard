@@ -147,12 +147,9 @@
                 <tr *ngFor="let contact of contacts">
    
                   <!-- ===== CONTACT NAME ===== -->
-                  <!-- (click)='goToContactDetails(contact?._id)' style="cursor:pointer" -->
-                  <td>
-                    <!-- <span *ngIf="!fullname" class="avatar" style="background-color: rgb(238, 238, 238)">
-                      <span style="color: #ffffff"> n.a. </span>
-                    </span> -->
-                    
+                  
+                  <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
+                        
                     <span class="avatar" [ngStyle]="{'background-color': contact?.avatar_fill_colour }">
                       <span style="color: #ffffff"> {{ contact?.name_initial }} </span>
                     </span>
@@ -172,7 +169,6 @@
 
                       <span class="tooltiptext-custom"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
                     </span>
-
                     
                       <span style="font-size:0.9em; font-weight:400" [ngClass]="{'contact-verified' : contact?.contact_is_verified === true}">
                         {{ contact?.fullname }}
@@ -185,7 +181,7 @@
                   </td>
  
                   <!-- ========== CONTACT EMAIL ========== -->
-                  <td>
+                  <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
                     
                     <p style="font-size:0.9em; margin-bottom: 5px; margin-top: 5px">
                       {{ contact?.email }}
@@ -197,7 +193,7 @@
                   </td>
  
                   <!-- ========== CREATED AT ========== -->
-                  <td>
+                  <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
                     
                     <p style="font-size:0.9em; margin-bottom: 5px; margin-top: 5px">
     
@@ -211,17 +207,18 @@
                   <!-- <td (click)='goToContactDetails(contact?._id)' style="text-align:left; padding-top: 15px; padding-left: 22px;" > -->
 
                     <td class="td-actions text-right" style="padding-left: 0px;padding-top: 17px;">
-                      <button type="button" class="btn btn-primary btn-simple btn-xs tooltipx" (click)='goToEditContact(contact?._id)'>
-                        <i class="material-icons">edit</i>
-                        <span class="tooltiptext-custom" style="text-transform:none">
-                          {{ 'EditContact' | translate }} 
-                        </span> 
-                      </button>
 
                       <button style="margin-left: 8px;margin-right: 8px;" type="button" class="btn btn-info btn-simple btn-xs tooltipx" (click)='goToContactDetails(contact?._id)'>
                         <i class="material-icons">chat</i>
                         <span class="tooltiptext-custom" style="text-transform:none">
                           {{ 'ViewContactRequests' | translate }} 
+                        </span> 
+                      </button>
+
+                      <button type="button" class="btn btn-primary btn-simple btn-xs tooltipx" (click)='goToEditContact(contact?._id)'>
+                        <i class="material-icons">edit</i>
+                        <span class="tooltiptext-custom" style="text-transform:none">
+                          {{ 'EditContact' | translate }} 
                         </span> 
                       </button>
 
