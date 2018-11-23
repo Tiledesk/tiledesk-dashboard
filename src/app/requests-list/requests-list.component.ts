@@ -118,6 +118,7 @@ export class RequestsListComponent implements OnInit {
 
   displayBtnLabelSeeYourRequets = false;
   REQUESTER_IS_VERIFIED = false;
+  ROLE_IS_AGENT: boolean;
 
   constructor(
     private requestsService: RequestsService,
@@ -176,9 +177,11 @@ export class RequestsListComponent implements OnInit {
       if (user_role) {
 
         if (user_role === 'agent') {
+          this.ROLE_IS_AGENT = true
           this.seeImAgentRequestsSwitchBtn = false;
           this.displayBtnLabelSeeYourRequets = true
         } else {
+          this.ROLE_IS_AGENT = false
           this.seeImAgentRequestsSwitchBtn = true;
           this.displayBtnLabelSeeYourRequets = false;
         }
