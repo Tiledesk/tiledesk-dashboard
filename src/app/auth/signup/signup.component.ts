@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angula
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
 import * as firebase from 'firebase/app';
+import { TranslateService } from '@ngx-translate/core';
 
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
 type FormErrors = { [u in UserFields]: string };
@@ -18,6 +19,8 @@ export class SignupComponent implements OnInit, AfterViewInit {
   showSpinnerInLoginBtn = false;
   public signin_errormsg = '';
   display = 'none';
+
+  currentLang: string;
 
   userForm: FormGroup;
   // newUser = false; // to toggle login or signup form
@@ -54,12 +57,26 @@ export class SignupComponent implements OnInit, AfterViewInit {
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
     this.buildForm();
 
+    this.getBrowserLang();
   }
+
+  getBrowserLang() {
+    const browserLang = this.translate.getBrowserLang();
+    if (browserLang) {
+      if (browserLang === 'it') {
+        this.currentLang = 'it'
+      } else {
+        this.currentLang = 'en'
+      }
+    }
+  }
+
 
   ngAfterViewInit() {
 
@@ -68,14 +85,14 @@ export class SignupComponent implements OnInit, AfterViewInit {
     const style = window.getComputedStyle(elemPswInput);
     console.log('ELEMENT INPUT PSW STYLE', style)
 
-   /**
-    * THE HTML ELEMENT FOR INSERTING THE PASSWORD IS OF TEXT TYPE (instead of PASSWORD TYPE) TO AVOID THE CHROME SELF-COMPLETION
-    * (e.g., "USE PASSWORD FOR"").
-    * TO AVOID THAT THE TEXT INSERTED IN THE PASSWORD FIELD IS DISPLAYED AT ELEMEMT HAS BEEN SETTED THE STYLE
-    * 'webkitTextSecurity' THAT HIDES THE USER INPUT.
-    * HOWEVER THE STYLE 'webkitTextSecurity' IS NOT COMPATIPLE ON ALL THE BROWSER,
-    * FOR WHETHER IF THE webkitTextSecurity STYLE THERE IS NOT, IS ADDED THE ATTRIBUTE PASSWORD TO THE FIELD
-    */
+    /**
+     * THE HTML ELEMENT FOR INSERTING THE PASSWORD IS OF TEXT TYPE (instead of PASSWORD TYPE) TO AVOID THE CHROME SELF-COMPLETION
+     * (e.g., "USE PASSWORD FOR"").
+     * TO AVOID THAT THE TEXT INSERTED IN THE PASSWORD FIELD IS DISPLAYED AT ELEMEMT HAS BEEN SETTED THE STYLE
+     * 'webkitTextSecurity' THAT HIDES THE USER INPUT.
+     * HOWEVER THE STYLE 'webkitTextSecurity' IS NOT COMPATIPLE ON ALL THE BROWSER,
+     * FOR WHETHER IF THE webkitTextSecurity STYLE THERE IS NOT, IS ADDED THE ATTRIBUTE PASSWORD TO THE FIELD
+     */
     if (style['-webkitTextSecurity']) {
       console.log('ELEMENT INPUT PSW HAS STYLE webkitTextSecurity: YES')
     } else {
@@ -106,27 +123,37 @@ export class SignupComponent implements OnInit, AfterViewInit {
           this.autoSignin();
 
         } else {
-          console.log('SIGNUP ERROR MSG', signupResponse['msg']);
+          console.log('SIGNUP ERROR CODE', signupResponse['code']);
 
-          this.signin_errormsg = signupResponse['msg'];
+          this.showSpinnerInLoginBtn = false;
           this.display = 'block';
 
-          this.showSpinnerInLoginBtn = false;
-        }
-      },
-        (error) => {
-          console.log('CREATE NEW USER - POST REQUEST ERROR ', error);
+          if (signupResponse['code'] === 11000) {
 
-          this.showSpinnerInLoginBtn = false;
-        },
-        () => {
-          console.log('CREATE NEW USER  - POST REQUEST COMPLETE ');
-        });
+            if (this.currentLang === 'it') {
+
+              this.signin_errormsg = `Un account con l'email ${this.userForm.value['email']} esiste già`;
+
+            } else if (this.currentLang === 'en') {
+              this.signin_errormsg = `An account with the email ${this.userForm.value['email']} already exist`;
+            }
+
+          } else {
+
+            this.signin_errormsg = signupResponse['errmsg'];
+          }
+        }
+      }, (error) => {
+        console.log('CREATE NEW USER - POST REQUEST ERROR ', error);
+
+        this.showSpinnerInLoginBtn = false;
+      }, () => {
+        console.log('CREATE NEW USER  - POST REQUEST COMPLETE ');
+      });
   }
 
 
   autoSignin() {
-
     // this.auth.emailLogin(
     const self = this;
     // this.auth.signin(this.userForm.value['email'], this.userForm.value['password'])
