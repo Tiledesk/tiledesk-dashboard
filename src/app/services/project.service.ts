@@ -77,29 +77,28 @@ export class ProjectService {
   }
 
   /** ********************************************** HTTP VERSION *********************************************** */
-
-  /* READ (GET ALL PROJECTS) */
-  // public getProjects(): Observable<Project[]> {
-  //   const url = this.PROJECT_BASE_URL;
-  //   console.log('MONGO DB PROJECTS URL', url);
-
-  //   const headers = new Headers();
-  //   headers.append('Content-Type', 'application/json');
-  //   headers.append('Authorization', this.TOKEN);
-  //   return this.http
-  //     .get(url, { headers })
-  //     .map((response) => response.json());
-  // }
-
-  /** ******************************************** HTTP CLIENT VERSION ******************************************** */
   /* READ (GET ALL PROJECTS) */
   public getProjects(): Observable<Project[]> {
     const url = this.PROJECT_BASE_URL;
     console.log('MONGO DB PROJECTS URL', url);
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' }).set('Authorization', this.TOKEN)
-    return this.http_client
-      .get<Project[]>(url, { headers })
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
   }
+
+  /** ******************************************** HTTP CLIENT VERSION ******************************************** */
+  /* READ (GET ALL PROJECTS) */
+  // public getProjects(): Observable<Project[]> {
+  //   const url = this.PROJECT_BASE_URL;
+  //   console.log('MONGO DB PROJECTS URL', url);
+  //   const headers = new HttpHeaders({ 'Content-Type': 'application/json' }).set('Authorization', this.TOKEN)
+  //   return this.http_client
+  //     .get<Project[]>(url, { headers })
+  // }
 
   /**
    * DELETE (DELETE)
