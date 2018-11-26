@@ -394,8 +394,8 @@
 
                     <!-- IF THE REQUEST SUPPORT STATUS IS 0 (??? REQUEST) -->
                     <span *ngIf="request?.support_status == 0"> 
-                      <span class="" (click)='goToRequestMsgs(request?.recipient)'>
-                        <button class="btn btn-default"> 
+                      <span (click)='goToRequestMsgs(request?.recipient)'>
+                        <button class="btn btn-default" rel="tooltip" title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.recipient}}"> 
                           <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                         </button>
                       </span>
@@ -403,9 +403,9 @@
                     
                     <!-- IF THE REQUEST SUPPORT STATUS IS 100 (UNSERVED REQUEST) -->
                     <span *ngIf="request?.support_status == 100"> 
-                      <span class="" (click)='goToRequestMsgs(request?.recipient)'>
+                      <span (click)='goToRequestMsgs(request?.recipient)'>
                           <!-- padding:4px 6px; -->
-                        <button class="btn btn-danger"> 
+                        <button class="btn btn-danger" rel="tooltip" title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.recipient}}"> 
                           <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                         </button>
                       </span>
@@ -414,8 +414,8 @@
                     <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) AND THE CURRENT USER UID IS BETWEEN 
                     THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
                     <span *ngIf="request?.support_status == 200 && request?.currentUserIsJoined === true"> 
-                      <span class="" (click)='goToRequestMsgs(request?.recipient)'>
-                        <button class="btn btn-success"> 
+                      <span (click)='goToRequestMsgs(request?.recipient)'>
+                        <button class="btn btn-success" rel="tooltip" title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.recipient}}"> 
                           <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                         </button>
                       </span>
@@ -424,8 +424,8 @@
                     <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) BUT THE CURRENT USER UID IS NOT BETWEEN 
                     THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has not joined to the request) -->
                     <span *ngIf="request?.support_status == 200 && !request?.currentUserIsJoined"> 
-                      <span class="" (click)='goToRequestMsgs(request?.recipient)'>
-                        <button class="btn btn-info"> 
+                      <span (click)='goToRequestMsgs(request?.recipient)'>
+                        <button class="btn btn-info" rel="tooltip" title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.recipient}}"> 
                           <i style="font-size: 17px !important;" class="material-icons">visibility</i>
                         </button>
                       </span>
@@ -716,7 +716,7 @@
                     <!-- IF THE REQUEST SUPPORT STATUS IS 0 (??? REQUEST) -->
                     <span *ngIf="request?.support_status == 0"> 
                       <span class="" (click)='goToRequestMsgs(request?.recipient)'>
-                        <button class="btn btn-default" style=""> 
+                        <button class="btn btn-default" rel="tooltip" title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.recipient}}"> 
                             <i style="font-size: 17px !important; " class="material-icons">visibility</i>
                         </button>
                       </span>
@@ -724,9 +724,9 @@
                 
                     <!-- IF THE REQUEST SUPPORT STATUS IS 100 (UNSERVED REQUEST) -->
                     <span *ngIf="request?.support_status == 100"> 
-                      <span class="" (click)='goToRequestMsgs(request?.recipient)'>
-                        <button class="btn btn-danger" style=""> 
-                            <i style="font-size: 17px !important; " class="material-icons">visibility</i>
+                      <span (click)='goToRequestMsgs(request?.recipient)'>
+                        <button class="btn btn-danger" rel="tooltip" title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.recipient}}"> 
+                            <i style="font-size: 17px !important;" class="material-icons">visibility</i>
                         </button>
                       </span>
                     </span>
@@ -734,10 +734,10 @@
                     <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) AND THE CURRENT USER UID IS BETWEEN 
                     THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
                     <span *ngIf="request?.support_status == 200 && request?.currentUserIsJoined === true"> 
-                      <span class="" (click)='goToRequestMsgs(request?.recipient)'>
+                      <span (click)='goToRequestMsgs(request?.recipient)'>
                           <!-- padding:4px 6px; -->
-                        <button class="btn btn-success" style="" rel="tooltip" title=""> 
-                            <i style="font-size: 17px !important; " class="material-icons">visibility</i>
+                        <button class="btn btn-success" rel="tooltip" title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.recipient}}"> 
+                            <i style="font-size: 17px !important;" class="material-icons">visibility</i>
                         </button>
                       </span>
                     </span>
@@ -745,9 +745,9 @@
                     <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) BUT THE CURRENT USER UID IS NOT BETWEEN 
                     THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has not joined to the request) -->
                     <span *ngIf="request?.support_status == 200 && !request?.currentUserIsJoined"> 
-                      <span class="" (click)='goToRequestMsgs(request?.recipient)'>
-                        <button class="btn btn-info" style="" rel="tooltip" title=""> 
-                          <i style="font-size: 17px !important; " class="material-icons">visibility</i>
+                      <span (click)='goToRequestMsgs(request?.recipient)'>
+                        <button class="btn btn-info" rel="tooltip" title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.recipient}}"> 
+                          <i style="font-size: 17px !important;" class="material-icons">visibility</i>
                         </button>
                       </span>
                     </span>
