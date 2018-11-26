@@ -252,28 +252,28 @@ export class WidgetComponent implements OnInit {
     // } : null;
   }
 
-  subscribeToWidgetAlignment() {
-    this.widgetService.widgetAlignmentBs
-      .subscribe((alignment) => {
-        console.log('WIDGET COMP - SUBSCRIBE TO WIDGET ALIGNMENT ', alignment);
+  // subscribeToWidgetAlignment() {
+  //   this.widgetService.widgetAlignmentBs
+  //     .subscribe((alignment) => {
+  //       console.log('WIDGET COMP - SUBSCRIBE TO WIDGET ALIGNMENT ', alignment);
 
-        if (alignment) {
-          this.alignmentSelected = alignment
-        }
-      });
-  }
+  //       if (alignment) {
+  //         this.alignmentSelected = alignment
+  //       }
+  //     });
+  // }
 
 
-  subscribeToCheckedPrechatform() {
-    this.widgetService.includePrechatformBs
-      .subscribe((prechatform_checked: boolean) => {
-        console.log('WIDGET COMP - SUBSCRIBE TO INCLUDE PRECHAT FORM ', prechatform_checked);
-        if (prechatform_checked) {
-          this.preChatForm = prechatform_checked;
-          this.preChatFormValue = `${prechatform_checked}`;
-        }
-      });
-  }
+  // subscribeToCheckedPrechatform() {
+  //   this.widgetService.includePrechatformBs
+  //     .subscribe((prechatform_checked: boolean) => {
+  //       console.log('WIDGET COMP - SUBSCRIBE TO INCLUDE PRECHAT FORM ', prechatform_checked);
+  //       if (prechatform_checked) {
+  //         this.preChatForm = prechatform_checked;
+  //         this.preChatFormValue = `${prechatform_checked}`;
+  //       }
+  //     });
+  // }
 
   /**
    * TO AVOID THE CALLOUT TIMER EMPTY WHEN THE USER, AFTER HAVING SELECTED THE CALLOUT TIMER,
@@ -311,25 +311,25 @@ export class WidgetComponent implements OnInit {
   //     });
   // }
 
-  subscribeToTypedCalloutMsg() {
-    this.widgetService.calloutMsgBs
-      .subscribe((msg_typed: string) => {
-        console.log('WIDGET COMP - SUBSCRIBE TO CALLOUT MSG ', msg_typed);
+  // subscribeToTypedCalloutMsg() {
+  //   this.widgetService.calloutMsgBs
+  //     .subscribe((msg_typed: string) => {
+  //       console.log('WIDGET COMP - SUBSCRIBE TO CALLOUT MSG ', msg_typed);
 
-        if (msg_typed) {
-          this.calloutMsgText = msg_typed;
+  //       if (msg_typed) {
+  //         this.calloutMsgText = msg_typed;
 
-          this.escaped_calloutMsg = this.calloutMsgText.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
-          console.log('+++ +++ ON KEY-UP CALLOUT MSG ', this.escaped_calloutMsg);
-          this.calloutMsg = `\n      calloutMsg: "${this.escaped_calloutMsg}",` // is used in the texarea 'script'
-        } else {
+  //         this.escaped_calloutMsg = this.calloutMsgText.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
+  //         console.log('+++ +++ ON KEY-UP CALLOUT MSG ', this.escaped_calloutMsg);
+  //         this.calloutMsg = `\n      calloutMsg: "${this.escaped_calloutMsg}",` // is used in the texarea 'script'
+  //       } else {
 
-          this.escaped_calloutMsg = '';
-          this.calloutMsg = '';
-        }
+  //         this.escaped_calloutMsg = '';
+  //         this.calloutMsg = '';
+  //       }
 
-      });
-  }
+  //     });
+  // }
 
   // subscribeToSelectedPrimaryColor() {
   //   this.widgetService.primaryColorBs
@@ -379,41 +379,41 @@ export class WidgetComponent implements OnInit {
   //   }
   // }
 
-  onKeyCalloutMsg() {
-    if (this.calloutMsgText) {
-      this.escaped_calloutMsg = this.calloutMsgText.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
-      console.log('+++ +++ ON KEY-UP CALLOUT MSG ', this.escaped_calloutMsg);
-      this.calloutMsg = `\n      calloutMsg: "${this.escaped_calloutMsg}",` // is used in the texarea 'script'
+  // onKeyCalloutMsg() {
+  //   if (this.calloutMsgText) {
+  //     this.escaped_calloutMsg = this.calloutMsgText.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
+  //     console.log('+++ +++ ON KEY-UP CALLOUT MSG ', this.escaped_calloutMsg);
+  //     this.calloutMsg = `\n      calloutMsg: "${this.escaped_calloutMsg}",` // is used in the texarea 'script'
 
-      // COMMENT AS FOR CALLOUT TITLE
-      this.widgetService.publishCalloutMsgTyped(this.calloutMsgText);
-    } else {
-      this.escaped_calloutMsg = '';
-      this.calloutMsg = '';
+  //     // COMMENT AS FOR CALLOUT TITLE
+  //     this.widgetService.publishCalloutMsgTyped(this.calloutMsgText);
+  //   } else {
+  //     this.escaped_calloutMsg = '';
+  //     this.calloutMsg = '';
 
-      // COMMENT AS FOR CALLOUT TITLE
-      this.widgetService.publishCalloutMsgTyped(this.calloutMsgText);
-    }
-  }
+  //     // COMMENT AS FOR CALLOUT TITLE
+  //     this.widgetService.publishCalloutMsgTyped(this.calloutMsgText);
+  //   }
+  // }
 
-  setSelectedCalloutTimer() {
-    console.log('»»» SET SELECTED CALLOUT TIMER - TIMER SELECTED', this.calloutTimerSecondSelected)
+  // setSelectedCalloutTimer() {
+  //   console.log('»»» SET SELECTED CALLOUT TIMER - TIMER SELECTED', this.calloutTimerSecondSelected)
 
-    // COMMENT AS FOR CALLOUT TITLE
-    this.widgetService.publishCalloutTimerSelected(this.calloutTimerSecondSelected)
+  //   // COMMENT AS FOR CALLOUT TITLE
+  //   this.widgetService.publishCalloutTimerSelected(this.calloutTimerSecondSelected)
 
-    if (this.calloutTimerSecondSelected === -1) {
+  //   if (this.calloutTimerSecondSelected === -1) {
 
-      this.escaped_calloutTitle = ''; // callout title escaped
-      this.calloutTitleText = ''; // clear the value in the input if the user disabled the callout
-      console.log('»»» SET SELECTED CALLOUT TIMER - CALLOUT TITLE ESCAPED', this.escaped_calloutTitle)
-      this.escaped_calloutMsg = ''; // callout msg escaped
-      this.calloutMsgText = '';  // clear the value in the input if the user disabled the callout
-      console.log('»»» SET SELECTED CALLOUT TIMER - CALLOUT MSG ESCAPED ', this.escaped_calloutMsg)
-      this.calloutTitle = '';
-      this.calloutMsg = ''
-    }
-  }
+  //     this.escaped_calloutTitle = ''; // callout title escaped
+  //     this.calloutTitleText = ''; // clear the value in the input if the user disabled the callout
+  //     console.log('»»» SET SELECTED CALLOUT TIMER - CALLOUT TITLE ESCAPED', this.escaped_calloutTitle)
+  //     this.escaped_calloutMsg = ''; // callout msg escaped
+  //     this.calloutMsgText = '';  // clear the value in the input if the user disabled the callout
+  //     console.log('»»» SET SELECTED CALLOUT TIMER - CALLOUT MSG ESCAPED ', this.escaped_calloutMsg)
+  //     this.calloutTitle = '';
+  //     this.calloutMsg = ''
+  //   }
+  // }
 
   setSelectedAlignment() {
     console.log('»»» ALIGNMENT SELECTED ', this.alignmentSelected)
