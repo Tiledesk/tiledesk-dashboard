@@ -464,7 +464,7 @@ export class RequestsService {
           r.support_status = data.support_status
           r.members = data.members
           r.members_as_string = members_as_html(data.members, data.requester_id, this.currentUserID)
-          r.currentUserIsJoined = currentUserUidIsInMembers(data.members, this.currentUserID)
+          r.currentUserIsJoined = currentUserUidIsInMembers(data.members, this.currentUserID, data.recipient)
           r.requester_fullname = data.requester_fullname
           r.requester_id = data.requester_id
           r.agents = data.agents
@@ -589,7 +589,7 @@ export class RequestsService {
           support_status: data.support_status,
           members: data.members,
           attributes: data.attributes,
-          currentUserIsJoined: currentUserUidIsInMembers(data.members, this.currentUserID),
+          currentUserIsJoined: currentUserUidIsInMembers(data.members, this.currentUserID, data.recipient),
           requester_fullname: data.requester_fullname,
           first_message: data.first_message,
           requester_id: data.requester_id,
@@ -701,9 +701,9 @@ export class RequestsService {
   }
 
   // public joinToGroup(member_id: string, group_id: string) {
-  public joinToGroup(group_id: string, firebaseToken: any, currentUserUid: string) {
+  public joinToGroup(group_id: string, firebaseToken: any, userUid: string) {
     this.FIREBASE_ID_TOKEN = firebaseToken;
-    this.currentUserID = currentUserUid;
+    // this.currentUserID = currentUserUid;
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -722,7 +722,7 @@ export class RequestsService {
     // IF THE MEMBER ID VALUE IS PASSED FROM REQUEST LIST COMPONENT
     // const body = { 'member_id': `${member_id}` };
 
-    const body = { 'member_id': this.currentUserID };
+    const body = { 'member_id': userUid };
     console.log('JOIN TO GROUP POST REQUEST BODY ', body);
 
     // TEST WITH HARDCODED VALUES
@@ -736,9 +736,9 @@ export class RequestsService {
       .map((res) => res.json());
   }
 
-  public leaveTheGroup(group_id: string, firebaseToken: any, currentUserUid: string) {
+  public leaveTheGroup(group_id: string, firebaseToken: any, userUid: string) {
     this.FIREBASE_ID_TOKEN = firebaseToken;
-    this.currentUserID = currentUserUid;
+    // this.currentUserID = currentUserUid;
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -747,7 +747,7 @@ export class RequestsService {
     const options = new RequestOptions({ headers });
     console.log('LEAVE THE GROUP OPTIONS  ', options)
 
-    const url = this.CHAT21_CLOUD_FUNCTIONS_BASE_URL + `${group_id}` + '/members/' + this.currentUserID;
+    const url = this.CHAT21_CLOUD_FUNCTIONS_BASE_URL + `${group_id}` + '/members/' + userUid;
     console.log('LEAVE THE GROUP URL ', url)
 
     return this.http
