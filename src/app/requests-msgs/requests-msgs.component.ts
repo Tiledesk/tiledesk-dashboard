@@ -103,6 +103,9 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   REQUESTER_IS_VERIFIED = false;
   cleaned_members_array: any;
   actionInModal: string;
+
+  REQUESTER_IS_ONLINE = false;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -458,6 +461,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
           this.requester_id = request[0].requester_id;
           console.log('* REQUESTER ID: ', this.requester_id);
 
+          this.getRequesterAvailabilityStatus(this.requester_id);
 
           // this.cleaned_members_array = [];
           // this.members_array.forEach(member_id => {
@@ -600,8 +604,47 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
+  getRequesterAvailabilityStatus(requester_id: string) {
 
-  /// new
+    // https://chat-v2-dev.firebaseio.com/apps/tilechat/presence/LmBT2IKjMzeZ3wqyU8up8KIRB6J3
+    // let myConnectionsRefURL = this.urlNodeFirebase+"/presence/"+userid+"/connections";
+    // const firebaseRealtimeDbUrl = `https://chat-v2-dev%2Efirebaseio%2Ecom/apps/tilechat/presence/` + requester_id + `/connections`
+    const firebaseRealtimeDbUrl = `/apps/tilechat/presence/LmBT2IKjMzeZ3wqyU8up8KIRB6J3/connections`
+
+    const connectionsRef = firebase.database().ref().child(firebaseRealtimeDbUrl);
+
+    console.log('»»» REQUEST DETAILS - CALLING REQUESTER AVAILABILITY VALUE ');
+
+    connectionsRef.on('value', (child) => {
+      if (child.val()) {
+        this.REQUESTER_IS_ONLINE = true;
+        console.log('»»» REQUEST DETAILS - REQUESTER is ONLINE ', this.REQUESTER_IS_ONLINE);
+      } else {
+        this.REQUESTER_IS_ONLINE = false;
+
+        console.log('»»» REQUEST DETAILS - REQUESTER is ONLINE ', this.REQUESTER_IS_ONLINE);
+      }
+
+    })
+    // userIsOnline(userid){
+    //   //this.lastOnlineForUser(userid);
+    //   const that = this;
+    //   let myConnectionsRefURL = this.urlNodeFirebase+"/presence/"+userid+"/connections";
+    //   const connectionsRef = firebase.database().ref().child(myConnectionsRefURL);
+    //   connectionsRef.on("value", (child) => {
+    //     if(child.val()){
+    //       that.events.publish('statusUser:online-'+userid, userid, true);
+    //     }
+    //     else {
+    //       that.events.publish('statusUser:online-'+userid, userid, false);
+    //       //that.events.publish('statusUser:offline-'+userid, userid,'offline');
+    //     }
+    //   })
+    // }
+  }
+
+
+  /// new RIASSIGN REQUEST
   joinAnotherAgentLeaveCurrentAgents(userid_selected) {
     this.getFirebaseToken(() => {
 
