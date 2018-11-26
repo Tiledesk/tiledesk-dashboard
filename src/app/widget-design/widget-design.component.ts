@@ -164,11 +164,11 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
     // this.secondaryColor = 'rgb(255, 255, 255)';
 
     // this.logoUrl = '../assets/img/tiledesk_logo_white_small.png'
-    this.subscribeToSelectedPrimaryColor();
+    // this.subscribeToSelectedPrimaryColor();
 
-    this.subscribeToSelectedSecondaryColor();
+    // this.subscribeToSelectedSecondaryColor();
 
-    this.subscribeToWidgetAlignment();
+    // this.subscribeToWidgetAlignment();
 
   }
 
@@ -565,6 +565,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
 
       } else {
 
+        this.widgetObj = ''
 
         /**
          * ******************************** logoChat (WIDGET UNDEFINED) **********************************************
@@ -1357,41 +1358,41 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
     this.widgetService.updateWidgetProject(this.widgetObj)
   }
 
-  subscribeToWidgetAlignment() {
-    this.widgetService.widgetAlignmentBs
-      .subscribe((alignment) => {
-        console.log('WIDGET COMP - SUBSCRIBE TO WIDGET ALIGNMENT ', alignment);
-        if (alignment === 'right') {
-          this.hasSelectedLeftAlignment = false;
-          this.hasSelectedRightAlignment = true;
+  // subscribeToWidgetAlignment() {
+  //   this.widgetService.widgetAlignmentBs
+  //     .subscribe((alignment) => {
+  //       console.log('WIDGET COMP - SUBSCRIBE TO WIDGET ALIGNMENT ', alignment);
+  //       if (alignment === 'right') {
+  //         this.hasSelectedLeftAlignment = false;
+  //         this.hasSelectedRightAlignment = true;
 
-        } else if (alignment === 'left') {
-          this.hasSelectedLeftAlignment = true;
-          this.hasSelectedRightAlignment = false;
-        }
+  //       } else if (alignment === 'left') {
+  //         this.hasSelectedLeftAlignment = true;
+  //         this.hasSelectedRightAlignment = false;
+  //       }
 
-      });
-  }
+  //     });
+  // }
 
   /**
    * IF THE USER SELECT A COLOR IN THE WIDGET DESIGN (THIS COMP) AND THEN GO BACK IN THE WIDGET PAGE AND THEN RETURN IN THE
    * THE WIDGET DESIGN PAGE (THIS COMP), THE WIDGET DESIGN PAGE IS RE-INITIALIZATED SO THE PRIMARY AND THE SECONDARY COLORS
    * ARE NOT THOSE PREVIOUS SELECTED BUT ARE THE DEFAULT COLORS SETTED IN THE ONINIT LIFEHOOK.
    * TO AVOID THIS ALSO THE WIDGET DESIGN PAGE (THIS COMP) IS SUBSCRIBED TO THE PRIMARY AND THE SECONDARY COLOR SELECTED IN ITSELF */
-  subscribeToSelectedPrimaryColor() {
-    this.widgetService.primaryColorBs.subscribe((primary_color: string) => {
-      if (primary_color) {
-        this.primaryColor = primary_color
-      }
-    })
-  }
-  subscribeToSelectedSecondaryColor() {
-    this.widgetService.secondaryColorBs.subscribe((secondary_color: string) => {
-      if (secondary_color) {
-        this.secondaryColor = secondary_color
-      }
-    })
-  }
+  // subscribeToSelectedPrimaryColor() {
+  //   this.widgetService.primaryColorBs.subscribe((primary_color: string) => {
+  //     if (primary_color) {
+  //       this.primaryColor = primary_color
+  //     }
+  //   })
+  // }
+  // subscribeToSelectedSecondaryColor() {
+  //   this.widgetService.secondaryColorBs.subscribe((secondary_color: string) => {
+  //     if (secondary_color) {
+  //       this.secondaryColor = secondary_color
+  //     }
+  //   })
+  // }
 
 
 
