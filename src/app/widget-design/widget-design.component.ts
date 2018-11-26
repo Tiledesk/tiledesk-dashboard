@@ -565,7 +565,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
 
       } else {
 
-        this.widgetObj = ''
+        this.widgetObj = {}
 
         /**
          * ******************************** logoChat (WIDGET UNDEFINED) **********************************************
