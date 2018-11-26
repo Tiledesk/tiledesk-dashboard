@@ -539,7 +539,8 @@
         "LeaveChat": "Abbandona chat",
         "AreYouSureLeftTheChat": "Sei sicuro di voler abbandonare la chat?",
         "ChatLeft": "Chat abbandonata",
-        "AuthenticatedUser":"Utente autenticato"
+        "AuthenticatedUser":"Utente autenticato",
+        "ViewRequestDetails":"visualizza i dettagli della richiesta"
     },
     "RequestMsgsPage": {
         "MessagesOfTheRequest": "Messagi della richiesta",
