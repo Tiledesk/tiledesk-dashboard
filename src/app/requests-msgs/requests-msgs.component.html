@@ -367,11 +367,11 @@
                 <div *ngFor="let agent of agents_array" class="row-body"> 
 
                   <span (click)="goToMemberProfile( agent?._id )" style="cursor:pointer">
-                    <img *ngIf="agent.isBot === false" style="vertical-align: middle; width: 23px; height: 23px; border-radius: 50%; border: 1px solid #eee; margin-right: 8px;" 
+                    <img *ngIf="agent.isBot === false" style="vertical-align: middle; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee; margin-right: 8px;" 
                     class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media" 
                     onerror="this.src='assets/img/no_image_user.png'"/>
 
-                    <img *ngIf="agent.isBot === true" style="vertical-align: middle; width: 23px; height: 23px; border-radius: 50%; border: 1px solid #eee; margin-right: 8px;" 
+                    <img *ngIf="agent.isBot === true" style="vertical-align: middle; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee; margin-right: 8px;" 
                     class="user-img" src="assets/img/bot_image.png" 
                     onerror="this.src='assets/img/no_image_user.png'"/>
 
@@ -421,7 +421,7 @@
                       </span>
                       <span *ngIf="REQUESTER_IS_VERIFIED === true" class="tooltipx"> 
                         <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                            viewBox="0 0 26.6 26.6" width="18" height="18" style="position: relative;left: -11px;top: 12px;" xml:space="preserve">
+                            viewBox="0 0 26.6 26.6" width="18" height="18" style="position: relative;left: -35px;top: -1px;" xml:space="preserve">
                             <style type="text/css">
                               .st0{fill:none;}
                               .st1{fill:#FFFFFF;}
@@ -436,13 +436,16 @@
                         <span class="tooltiptext"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
                       
                       </span>
+                      <div class="requester-status-icon" [ngClass]="{'requester_is_online' : REQUESTER_IS_ONLINE}"></div>
+                 
+
                     </span>
 
                     <!-- <span style="color:#394f5a;"> {{ "RequestMsgsPage.RequesterName" | translate }}: </span>  -->
                     <span [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}" style="margin-left: 8px;"> 
                       {{ requester_fullname }} 
                     </span>
-                    <span *ngIf="!requester_fullname" style="position: relative;left: -13px;">
+                    <span *ngIf="!requester_fullname" style="position: relative;left: -15px;">
                       n.a.
                     </span>
                   </p>
@@ -450,13 +453,13 @@
 
                   <p class="row-body" style="margin-bottom:0px; padding-bottom:0px"> 
                     <span style="color:#394f5a;"> {{ "RequestMsgsPage.ChatFormUserName" | translate }}: </span> 
-                    {{  user_name }}
+                    {{ user_name }}
                   </p>
 
                   <p class="row-body" style="margin-bottom:0px;padding-bottom:0px"> 
                     <span style="color:#394f5a;"> {{ "RequestMsgsPage.ChatFormUserEmail" | translate }}: </span> 
                     <a *ngIf="user_email !== 'n.a.'" href="mailto:{{user_email}}">{{ user_email }}</a>
-                    <a *ngIf="user_email === 'n.a.'" style="color:#999999;">{{ user_email }}</a>
+                    <a *ngIf="user_email === 'n.a.'" style="color:#7695a5;">{{ user_email }}</a>
                   </p>
 
                   <p class="row-body" style="margin-bottom:0px; padding-bottom:0px"> 
@@ -473,7 +476,7 @@
                     <p class="row-header" style=""> 
                         <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
                       <span style="vertical-align: middle"> 
-                          {{ "RequestMsgsPage.DepartmentName" | translate }}: <span style="color: #7695a5; " > {{ department_name }}</span>
+                          {{ "RequestMsgsPage.DepartmentName" | translate }}: <span style="color: #7695a5;"> {{ department_name }}</span>
                        </span>
                     </p>
                     <!-- <span class="row-body">  
@@ -488,7 +491,7 @@
                     <p class="row-header" style=""> 
                         <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
                       <span style="vertical-align: middle"> 
-                          {{ "RequestMsgsPage.Rating" | translate }}: <span style="color: #7695a5; " > {{ rating }}</span>
+                          {{ "RequestMsgsPage.Rating" | translate }}: <span style="color: #7695a5;"> {{ rating }}</span>
                        </span>
                     </p>
                     <!-- <p class="row-body"  style="margin-bottom:0px">  
@@ -514,7 +517,7 @@
                     </p>
                     <p class="row-body"  style="margin-bottom:0px; word-wrap: break-word;">  
                   
-                        <a href="{{source_page}}" target="_blank">{{source_page}}</a>
+                      <a href="{{source_page}}" target="_blank">{{source_page}}</a>
                     </p>
 
                 </div>

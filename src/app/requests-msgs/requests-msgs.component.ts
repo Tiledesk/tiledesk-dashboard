@@ -606,10 +606,10 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getRequesterAvailabilityStatus(requester_id: string) {
 
-    // https://chat-v2-dev.firebaseio.com/apps/tilechat/presence/LmBT2IKjMzeZ3wqyU8up8KIRB6J3
-    // let myConnectionsRefURL = this.urlNodeFirebase+"/presence/"+userid+"/connections";
-    // const firebaseRealtimeDbUrl = `https://chat-v2-dev%2Efirebaseio%2Ecom/apps/tilechat/presence/` + requester_id + `/connections`
-    const firebaseRealtimeDbUrl = `/apps/tilechat/presence/LmBT2IKjMzeZ3wqyU8up8KIRB6J3/connections`
+    // const firebaseRealtimeDbUrl = `/apps/tilechat/presence/LmBT2IKjMzeZ3wqyU8up8KIRB6J3/connections`
+
+    const firebaseRealtimeDbUrl = `/apps/tilechat/presence/` + requester_id + `/connections`
+
 
     const connectionsRef = firebase.database().ref().child(firebaseRealtimeDbUrl);
 
