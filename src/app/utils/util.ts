@@ -32,7 +32,7 @@ export function members_as_html(members: object, requester_id: string, currentUs
 }
 
 
-export function currentUserUidIsInMembers(members: object, currentUserFireBaseUID: string): boolean {
+export function currentUserUidIsInMembers(members: object, currentUserFireBaseUID: string, request_id: string): boolean {
     // console.log('- MEMBERS ', members)
     // console.log('- CURRENT_USER_JOINED ', currentUserFireBaseUID)
 
@@ -43,11 +43,13 @@ export function currentUserUidIsInMembers(members: object, currentUserFireBaseUI
     Object.keys(members).forEach(m => {
 
         if (m === currentUserFireBaseUID) {
-            // console.log('- MEMBERS ', members)
-            // console.log('- CURRENT_USER_JOINED ', currentUserFireBaseUID);
+            // console.log('»»»»»»» UTILS MEMBERS ', members)
+            // console.log('»»»»»»» CURRENT_USER_JOINED ', currentUserFireBaseUID);
             currentUserIsJoined = true;
+        // console.log('»»»»»»» CURRENT USER ', currentUserFireBaseUID, 'is JOINED ?', currentUserIsJoined, 'to the request ', request_id);
             return
         }
     });
+    // console.log('»»»»»»» CURRENT USER ', currentUserFireBaseUID, ' is JOINED ?', currentUserIsJoined, 'to the request ', request_id);
     return currentUserIsJoined;
 }
