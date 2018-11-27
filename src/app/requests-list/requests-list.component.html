@@ -454,14 +454,14 @@
                   <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" rel="tooltip" title="requester id:{{ request?.requester_id }}">
                     <!-- <p style="font-size:0.9em">{{ request.sender_fullname }}</p> -->
 
-                    <!-- REQUESTER VERIFIED ICON -->
+                    <!-- REQUESTER VERIFIED ICON (UNSERVED REQUEST SECTION)-->
                     <span class="requester-avatar-wrapper"> 
                       <span class="requester-avatar" [ngStyle]="{'background-color': request?.requester_fullname_fillColour }" [ngClass]="{'requester_fullname-undefined' : !request?.requester_fullname}">
                         <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
                       </span>
                       <span *ngIf="request?.requester_is_verified === true" class="tooltipx"> 
                         <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                            viewBox="0 0 26.6 26.6" width="18" height="18" style="position: relative;left: -11px;top: 12px;" xml:space="preserve">
+                            viewBox="0 0 26.6 26.6" width="18" height="18" style="position: relative;left: -35px;top: -1px;" xml:space="preserve">
                             <style type="text/css">
                               .st0{fill:none;}
                               .st1{fill:#FFFFFF;}
@@ -780,14 +780,14 @@
                   <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
                     <!-- <p style="font-size:0.9em">{{ request.sender_fullname }}</p> -->
                     
-                    <!-- REQUESTER VERIFIED ICON -->
+                    <!-- REQUESTER VERIFIED ICON (SERVED REQUEST SECTION) -->
                     <span class="requester-avatar-wrapper"> 
                         <span class="requester-avatar" [ngStyle]="{'background-color': request?.requester_fullname_fillColour }" [ngClass]="{'requester_fullname-undefined' : !request?.requester_fullname}">
                           <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
                         </span>
                         <span *ngIf="request?.requester_is_verified === true" class="tooltipx"> 
                           <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                              viewBox="0 0 26.6 26.6" width="18" height="18" style="position: relative;left: -11px;top: 12px;" xml:space="preserve">
+                              viewBox="0 0 26.6 26.6" width="18" height="18" style="position: relative;left: -35px;top: -1px;" xml:space="preserve">
                               <style type="text/css">
                                 .st0{fill:none;}
                                 .st1{fill:#FFFFFF;}
