@@ -470,10 +470,11 @@ span .switch-agent-admin-requests-btn {
     font-weight: 400;
     text-align: center;
     // padding: 4px 7px;
-    padding-top:4px;
+    padding-top:5px;
     padding-bottom: 3px;
     display: inline-block;
     width: 25px;
+    height:25px;
 }
 
 .requester_fullname-undefined {
@@ -482,7 +483,7 @@ span .switch-agent-admin-requests-btn {
 
 .requester-verified {
     position: relative; 
-    left: -13px;
+    left: -20px;
 }
 
 // start TOOLTIP
