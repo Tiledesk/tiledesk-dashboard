@@ -405,9 +405,9 @@ export class RequestsListComponent implements OnInit {
       // deptsNames.push(request.attributes.departmentName)
 
     });
-    console.log('REQUESTS-LIST COMP - DEPTS ARRAY NK', depts_array);
-    console.log('REQUESTS-LIST COMP - DEPTS ID ARRAY NK', deptsIDs);
-    console.log('REQUESTS-LIST COMP - DEPTS NAME ARRAY NK', deptsNames)
+    // console.log('REQUESTS-LIST COMP - DEPTS ARRAY NK', depts_array);
+    // console.log('REQUESTS-LIST COMP - DEPTS ID ARRAY NK', deptsIDs);
+    // console.log('REQUESTS-LIST COMP - DEPTS NAME ARRAY NK', deptsNames)
 
     /**
      * *********************************************************************
