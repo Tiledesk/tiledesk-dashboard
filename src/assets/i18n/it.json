@@ -123,6 +123,7 @@
     "UserEmail": "Email utente",
     "UserFullName": "Fullname utente",
     "ExportToCSV":"Esporta in CSV",
+    "Actions":"Azioni",
     "UserProfile": {
         "Profile": "Profilo",
         "UploadImage": "Carica immagine",
