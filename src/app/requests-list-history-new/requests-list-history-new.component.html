@@ -94,7 +94,8 @@
                     <!-- // SELECT OPTIONS: DEPARTMENTS -->
                     <div class="col-sm-6"> 
                       <div class="section-select-dept">
-                        <label  class="col-sm-12" style="text-align: left; color: rgba(0, 0, 0, 0.54); ">
+                          <!-- color: rgba(0, 0, 0, 0.54); -->
+                        <label  class="col-sm-12" style="text-align: left; color:#7695a5;">
                             {{ 'HistoryPage.FilterByDepartment' | translate }}
                         </label>
                         <div class="col-sm-12" style="margin-bottom: 20px;">
@@ -110,7 +111,7 @@
 
                     <!-- // SELECT OPTIONS: DATE RANGE -->
                     <div class="col-sm-6"> 
-                      <label for="contain" class="col-sm-12" style="text-align: left; color: rgba(0, 0, 0, 0.54);">
+                      <label for="contain" class="col-sm-12" style="text-align: left; color:#7695a5;">
                           {{ 'HistoryPage.DateRange' | translate }}
                       </label>
                       <div class="col-sm-6" >
@@ -129,7 +130,7 @@
                     <!-- // SELECT OPTIONS USERS/BOTS -->
                     <div class="col-sm-6"> 
                       <div class="section-select-dept">
-                        <label  class="col-sm-12" style="text-align: left; color: rgba(0, 0, 0, 0.54); ">
+                        <label  class="col-sm-12" style="text-align: left; color: #7695a5 !important;">
                           {{ 'HistoryPage.Agent' | translate }}
                         </label>
                           <ng-select name="agent" [(ngModel)]="selectedAgentId" [clearable]="false">
@@ -161,6 +162,11 @@
                       <button type="submit" class="btn btn-white clearsearchbtn" (click)="clearSearch()">
                         <!-- <span class="glyphicon glyphicon-remo" aria-hidden="true"></span> -->
                         {{ 'HistoryPage.ClearSearch' | translate }}
+                      </button>
+
+                      <button class="btn btn-white pull-right export-to-csv-btn" (click)="exportRequestsToCSV()">
+                        <!-- <span style="color: #394f5a">  </span> -->
+                          {{ 'ExportToCSV' | translate }}
                       </button>
                     </div>
                   </div>

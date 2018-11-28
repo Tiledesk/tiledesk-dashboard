@@ -430,6 +430,46 @@ export class RequestsListHistoryNewComponent implements OnInit {
     }
   }
 
+  exportRequestsToCSV() {
+    const exportToCsvBtn = <HTMLElement>document.querySelector('.export-to-csv-btn');
+    console.log('!!! NEW REQUESTS HISTORY - EXPORT TO CSV BTN', exportToCsvBtn)
+    exportToCsvBtn.blur()
+
+    this.requestsService.downloadNodeJsHistoryRequestsAsCsv(this.queryString, 0).subscribe((requests: any) => {
+
+      if (requests) {
+        console.log('!!! NEW REQUESTS HISTORY - DOWNLOAD REQUESTS AS CSV - RES ', requests);
+
+        // const reqNoLineBreaks = requests.replace(/(\r\n\t|\n|\r\t)/gm, ' ');
+        // console.log('!!! DOWNLOAD REQUESTS AS CSV - REQUESTS NO NEW LINE ', reqNoLineBreaks);
+        this.downloadFile(requests)
+      }
+    }, error => {
+      this.showSpinner = false;
+      console.log('!!! NEW REQUESTS HISTORY - DOWNLOAD REQUESTS AS CSV - ERROR: ', error);
+    }, () => {
+      this.showSpinner = false;
+      console.log('!!! NEW REQUESTS HISTORY - DOWNLOAD REQUESTS AS CSV * COMPLETE *')
+    });
+  }
+
+  downloadFile(data) {
+    const blob = new Blob(['\ufeff' + data], { type: 'text/csv;charset=utf-8;' });
+    const dwldLink = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    const isSafariBrowser = navigator.userAgent.indexOf('Safari') !== -1 && navigator.userAgent.indexOf('Chrome') === -1;
+    if (isSafariBrowser) {  // if Safari open in new window to save file with random filename.
+      dwldLink.setAttribute('target', '_blank');
+    }
+    dwldLink.setAttribute('href', url);
+    dwldLink.setAttribute('download', 'requests.csv');
+    dwldLink.style.visibility = 'hidden';
+    document.body.appendChild(dwldLink);
+    dwldLink.click();
+    document.body.removeChild(dwldLink);
+  }
+
+
   getRequests() {
     this.requestsService.getNodeJsHistoryRequests(this.queryString, this.pageNo).subscribe((requests: any) => {
       console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS ', requests['requests']);
