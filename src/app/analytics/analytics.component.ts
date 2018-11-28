@@ -337,7 +337,7 @@ getCountOf_AllRequestsForDept() {
 
 
     this.subscription = this.requestsService.allRequestsList_bs.subscribe((global_requests) => {
-      console.log('!!! ANALYTICS ALL REQUESTS X DEPT - !!!!! SUBSCRIPTION TO ALL-THE-REQUESTS-LIST-BS ', global_requests);
+      // console.log('!!! ANALYTICS ALL REQUESTS X DEPT - !!!!! SUBSCRIPTION TO ALL-THE-REQUESTS-LIST-BS ', global_requests);
 
       const requests_depts_id_array = []
       if (global_requests) {
@@ -348,7 +348,7 @@ getCountOf_AllRequestsForDept() {
         });
       }
 
-      console.log('!!! ALL REQUESTS X DEPT - ARRAY OF DEPARTMENTS ID ', requests_depts_id_array)
+      // console.log('!!! ALL REQUESTS X DEPT - ARRAY OF DEPARTMENTS ID ', requests_depts_id_array)
 
       project_depts_id_array.forEach(dept_id => {
         this.getDeptIdOccurrence(requests_depts_id_array, dept_id)
