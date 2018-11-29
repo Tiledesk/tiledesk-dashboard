@@ -445,10 +445,10 @@ export class RequestsListHistoryNewComponent implements OnInit {
         this.downloadFile(requests)
       }
     }, error => {
-      this.showSpinner = false;
+      
       console.log('!!! NEW REQUESTS HISTORY - DOWNLOAD REQUESTS AS CSV - ERROR: ', error);
     }, () => {
-      this.showSpinner = false;
+
       console.log('!!! NEW REQUESTS HISTORY - DOWNLOAD REQUESTS AS CSV * COMPLETE *')
     });
   }
