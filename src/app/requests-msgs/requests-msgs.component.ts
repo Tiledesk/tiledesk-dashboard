@@ -106,6 +106,9 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   REQUESTER_IS_ONLINE = false;
 
+  contact_id: string;
+
+  NODEJS_REQUEST_CNTCT_FOUND: boolean;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -172,7 +175,6 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     //   history.go(1);
     // };
 
-
     this.getRequestId();
     this.getCurrentProject();
     this.getLoggedUser();
@@ -180,6 +182,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.detectMobile();
     this.getProjectUserRole();
   }
+
 
   getProjectUserRole() {
     this.usersService.project_user_role_bs.subscribe((user_role) => {
@@ -240,7 +243,6 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.displayUsersListModal = 'none'
     console.log('USERS-MODAL-COMP - ON CLOSE USERS LIST MODAL ', this.displayUsersListModal);
   }
-
 
 
   getAllUsersOfCurrentProject() {
@@ -329,6 +331,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit() {
 
   }
+
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
       console.log('USER GET IN REQUEST-MSGS COMP ', user)
@@ -338,12 +341,9 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.currentUserID = this.user._id
         console.log('USER UID GET IN REQUEST-MSGS COMPONENT', this.currentUserID);
 
-
       }
     });
   }
-
-
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
@@ -361,7 +361,40 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.id_request) {
       this.getMessagesList();
       this.getRequestByRecipient();
+      this.getContactIdFromNodejsRequest();
     }
+  }
+
+  getContactIdFromNodejsRequest() {
+    this.requestsService.getNodeJsRequestByFirebaseRequestId(this.id_request, 0).subscribe((nodejsRequest) => {
+
+      console.log('»»» REQUESTS-MSGS.COMP: NODEJS REQUEST ', nodejsRequest);
+
+      if (nodejsRequest) {
+        if (nodejsRequest['requests'] && nodejsRequest['requests'].length > 0) {
+
+          if (nodejsRequest['requests'][0]['requester_id']) {
+
+            this.contact_id = nodejsRequest['requests'][0]['requester_id']
+            console.log('»»» REQUESTS-MSGS.COMP: NODEJS REQUEST > CONTACT ID ', this.contact_id);
+            this.NODEJS_REQUEST_CNTCT_FOUND = true;
+            console.log('»»» REQUESTS-MSGS.COMP: NODEJS REQUEST FOUND ? ', this.NODEJS_REQUEST_CNTCT_FOUND);
+
+          } else {
+
+            this.NODEJS_REQUEST_CNTCT_FOUND = false;
+            console.log('»»» REQUESTS-MSGS.COMP: NODEJS REQUEST >  FOUND ? ', this.NODEJS_REQUEST_CNTCT_FOUND);
+          }
+
+        }
+      }
+    })
+  }
+
+  goToContactDetails() {
+
+    this.router.navigate(['project/' + this.id_project + '/contact', this.contact_id]);
+
   }
 
   /**
@@ -406,13 +439,12 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
         // console.log('--> REQUEST ', request);
 
         if (request) {
+
           this.request = request[0];
           console.log('»»» REQUEST DETAILS - THIS REQUEST ', this.request);
 
           this.members_array = Object.keys(request[0].members);
           console.log('»»» REQUEST DETAILS - MEMBERS ARRAY ', this.members_array)
-
-
 
           this.IS_CURRENT_USER_JOINED = request[0].currentUserIsJoined;
           console.log('* IS_CURRENT_USER_JOINED: ', this.IS_CURRENT_USER_JOINED);
@@ -605,11 +637,9 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getRequesterAvailabilityStatus(requester_id: string) {
-
     // const firebaseRealtimeDbUrl = `/apps/tilechat/presence/LmBT2IKjMzeZ3wqyU8up8KIRB6J3/connections`
 
     const firebaseRealtimeDbUrl = `/apps/tilechat/presence/` + requester_id + `/connections`
-
 
     const connectionsRef = firebase.database().ref().child(firebaseRealtimeDbUrl);
 
@@ -937,7 +967,6 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     // window.history.replaceState('HOME', 'http://localhost:4200/#/projects')
     // console.log('WINDOWS HISTORY ', window.history.replaceState);
   }
-
 
   members_replace(member_id) {
     // console.log('Members replace ', m)

@@ -751,10 +751,10 @@ and also iPads specifically.
 
 .requester-status-icon {
   position: absolute;
-  width: 12px;
-  height: 12px;
-  top: 54px;
-  left: 40px;
+  width: 14px;
+  height: 14px;
+  top: 52px;
+  left: 38px;
   border: 2px solid #FFFFFF;
   border-radius: 50%;
   background-color: #f44336;
@@ -802,3 +802,16 @@ and also iPads specifically.
 }
 // end TOOLTIP
 
+.btn-info-custom {
+  margin:0px; background-color: #039be5; padding: 8px 16px; text-transform: none;
+  text-transform: none;
+  font-size: 14px;
+  font-weight: 500;
+  // display: none;
+  box-shadow: 0 2px 2px 0 rgba(3, 155, 229, 0.14), 0 3px 1px -2px rgba(3, 155, 229, 0.2), 0 1px 5px 0 rgba(3, 155, 229, 0.12) !important;
+}
+
+.btn-info-custom:hover { 
+  background-color: #039be5 !important; 
+  box-shadow: 0 14px 26px -12px rgba(3, 155, 229, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(3, 155, 229, 0.2) !important;
+}
