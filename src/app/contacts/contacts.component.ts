@@ -50,7 +50,10 @@ export class ContactsComponent implements OnInit {
   id_toUpdate: string;
   fullName_toUpdate: string;
   CONTACT_IS_VERIFIED = false;
+  showAdvancedSearchOption = false;
 
+  selectedContactEmail: string;
+  selectedContactEmailValue: string;
   constructor(
     private http: Http,
     private contactsService: ContactsService,
@@ -60,6 +63,7 @@ export class ContactsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+ 
     // this.auth.checkRoleForCurrentProject();
     this.getContacts();
     this.getCurrentProject();
@@ -101,11 +105,19 @@ export class ContactsComponent implements OnInit {
       this.fullTextValue = this.fullText;
       console.log('!!!! CONTACTS - SEARCH FOR FULL TEXT ', this.fullTextValue);
     } else {
-      console.log('!!!! CONTACTS - SEARCH FOR DEPT TEXT ', this.fullText);
+      console.log('!!!! CONTACTS - SEARCH FOR FULL TEXT ', this.fullText);
       this.fullTextValue = ''
     }
 
-    this.queryString = 'full_text=' + this.fullTextValue;
+    if (this.selectedContactEmail) {
+      this.selectedContactEmailValue = this.selectedContactEmail;
+      console.log('!!!! CONTACTS  - SEARCH FOR selectedContactEmail ', this.selectedContactEmailValue);
+    } else {
+      console.log('!!!! CONTACTS  - SEARCH FOR selectedContactEmail ', this.selectedContactEmailValue);
+      this.selectedContactEmailValue = ''
+    }
+
+    this.queryString = 'full_text=' + this.fullTextValue + '&email=' + this.selectedContactEmailValue;
     console.log('!!!! CONTACTS - SEARCH - QUERY STRING ', this.queryString);
 
     this.getContacts();
@@ -114,11 +126,25 @@ export class ContactsComponent implements OnInit {
   clearFullText() {
     this.pageNo = 0
     this.fullText = '';
+    // this.selectedContactEmail = '';
 
     this.queryString = '';
     console.log('!!!! CONTACTS - CLEAR SEARCH - QUERY STRING ', this.queryString);
 
+    this.getContacts();
+  }
 
+  clearSearch() {
+
+    // RESOLVE THE BUG: THE BUTTON CLEAR-SEARCH REMAIN FOCUSED AFTER PRESSED
+    const clearSearchBtn = <HTMLElement>document.querySelector('.clearsearchbtn');
+    console.log('!!!! CONTACTS - CLEAR SEARCH BTN', clearSearchBtn)
+    clearSearchBtn.blur()
+
+    this.pageNo = 0
+    this.fullText = '';
+    this.selectedContactEmail = '';
+    this.queryString = '';
     this.getContacts();
   }
 
@@ -160,8 +186,53 @@ export class ContactsComponent implements OnInit {
 
       this.showSpinner = false;
     });
-
   }
+
+
+  exportContactsToCsv() {
+    const exportToCsvBtn = <HTMLElement>document.querySelector('.export-to-csv-btn');
+    console.log('!!! NEW REQUESTS HISTORY - EXPORT TO CSV BTN', exportToCsvBtn)
+    exportToCsvBtn.blur()
+    
+    this.contactsService.exportLeadToCsv(this.queryString, 0).subscribe((leads_object: any) => {
+      // console.log('!!!! CONTACTS - EXPORT CONTACT TO CSV RESPONSE ', leads_object);
+
+
+      // console.log('!!!! CONTACTS - CONTACTS LIST ', this.contacts);
+
+      if (leads_object) {
+        console.log('!!!! CONTACTS - - EXPORT CONTACT TO CSV RESPONSE', leads_object);
+        this.downloadFile(leads_object);
+      }
+
+    }, (error) => {
+
+      console.log('!!!! CONTACTS - EXPORT CONTACT TO CSV - ERROR  ', error);
+
+    }, () => {
+      console.log('!!!! CONTACTS - EXPORT CONTACT TO CSV * COMPLETE *');
+
+    });
+  }
+
+  downloadFile(data) {
+    const blob = new Blob(['\ufeff' + data], { type: 'text/csv;charset=utf-8;' });
+    const dwldLink = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    const isSafariBrowser = navigator.userAgent.indexOf('Safari') !== -1 && navigator.userAgent.indexOf('Chrome') === -1;
+    if (isSafariBrowser) {  // if Safari open in new window to save file with random filename.
+      dwldLink.setAttribute('target', '_blank');
+    }
+    dwldLink.setAttribute('href', url);
+    dwldLink.setAttribute('download', 'contacts.csv');
+    dwldLink.style.visibility = 'hidden';
+    document.body.appendChild(dwldLink);
+    dwldLink.click();
+    document.body.removeChild(dwldLink);
+  }
+
+
+
 
   displayHideFooterPagination(contacts_count) {
     // DISPLAY / HIDE PAGINATION IN THE FOOTER
@@ -230,9 +301,7 @@ export class ContactsComponent implements OnInit {
             c.contact_is_verified = this.CONTACT_IS_VERIFIED
           }
         }
-
       }
-
     });
   }
 
@@ -288,6 +357,12 @@ export class ContactsComponent implements OnInit {
       });
 
   }
+
+  toggleAdvancedOption() {
+    this.showAdvancedSearchOption = !this.showAdvancedSearchOption;
+  }
+
+
 
   // -----------------=============== NOTE: THE CODE BELOW IS NOT USED ===============-----------------
   /**
