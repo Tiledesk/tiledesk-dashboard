@@ -91,6 +91,32 @@ export class ContactsService {
       .map((response) => response.json());
   }
 
+  // GET LEADS
+  public exportLeadToCsv(querystring, pagenumber) {
+    let _querystring = '&' + querystring
+    if (querystring === undefined || !querystring) {
+      _querystring = ''
+    }
+    const url = this.BASE_URL + this.projectId + '/leads/csv?page=' + pagenumber + _querystring;
+    // use this to test
+    // 5bcf51dbc375420015542b5f is the id og the project (in production ) progetto test 23 ott of the user lanzilottonicola74@gmail.com
+    // const url = 'https://api.tiledesk.com/v1/5bcf51dbc375420015542b5f/leads?page=' + pagenumber + _querystring;
+    console.log('!!!! CONTACTS SERVICE - GET CONTACTS URL', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/csv');
+    headers.append('Authorization', this.TOKEN);
+
+    /****** use this to test *******/
+    // headers.append('Authorization', 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiZW1haWwiOjEsImZpcnN0bmFtZSI6MSwibGFzdG5hbWUiOjEsInBhc3N3b3JkIjoxLCJlbWFpbHZlcmlmaWVkIjoxLCJpZCI6MX0sImdldHRlcnMiOnt9LCJfaWQiOiI1YWFhOTJmZjRjM2IxMTAwMTRiNDc4Y2IiLCJ3YXNQb3B1bGF0ZWQiOmZhbHNlLCJhY3RpdmVQYXRocyI6eyJwYXRocyI6eyJwYXNzd29yZCI6ImluaXQiLCJlbWFpbCI6ImluaXQiLCJlbWFpbHZlcmlmaWVkIjoiaW5pdCIsImxhc3RuYW1lIjoiaW5pdCIsImZpcnN0bmFtZSI6ImluaXQiLCJfaWQiOiJpbml0In0sInN0YXRlcyI6eyJpZ25vcmUiOnt9LCJkZWZhdWx0Ijp7fSwiaW5pdCI6eyJlbWFpbHZlcmlmaWVkIjp0cnVlLCJsYXN0bmFtZSI6dHJ1ZSwiZmlyc3RuYW1lIjp0cnVlLCJwYXNzd29yZCI6dHJ1ZSwiZW1haWwiOnRydWUsIl9pZCI6dHJ1ZX0sIm1vZGlmeSI6e30sInJlcXVpcmUiOnt9fSwic3RhdGVOYW1lcyI6WyJyZXF1aXJlIiwibW9kaWZ5IiwiaW5pdCIsImRlZmF1bHQiLCJpZ25vcmUiXX0sInBhdGhzVG9TY29wZXMiOnt9LCJlbWl0dGVyIjp7ImRvbWFpbiI6bnVsbCwiX2V2ZW50cyI6e30sIl9ldmVudHNDb3VudCI6MCwiX21heExpc3RlbmVycyI6MH0sIiRvcHRpb25zIjp0cnVlfSwiaXNOZXciOmZhbHNlLCJfZG9jIjp7ImVtYWlsdmVyaWZpZWQiOnRydWUsImxhc3RuYW1lIjoiTGFuemlsb3R0byIsImZpcnN0bmFtZSI6Ik5pY29sYTc0IiwicGFzc3dvcmQiOiIkMmEkMTAkcFVnaHE1SXJYMTM4UzlwRGNaZGxtZXJzY1U3VTlyYjZRSmlZYjF5RHJJYzhyQzBYenNoVHEiLCJlbWFpbCI6ImxhbnppbG90dG9uaWNvbGE3NEBnbWFpbC5jb20iLCJfaWQiOiI1YWFhOTJmZjRjM2IxMTAwMTRiNDc4Y2IifSwiJGluaXQiOnRydWUsImlhdCI6MTU0MDMxMzUzN30.LLjXOB21KFL1DFXCrulh5HmzMS40LETqyLrJlwtwYvQ');
+
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.text());
+  }
+
+
+
   // GET LEAD BY ID
   public getLeadById(id: string): Observable<Contact[]> {
     const url = this.BASE_URL + this.projectId + '/leads/' + id;
@@ -150,10 +176,10 @@ export class ContactsService {
       .map((res) => res.json());
   }
 
- /**
-  * DELETE (DELETE)
-  * @param id
-  */
+  /**
+   * DELETE (DELETE)
+   * @param id
+   */
   public deleteLead(id: string) {
 
     const url = this.BASE_URL + this.projectId + '/leads/' + id;
