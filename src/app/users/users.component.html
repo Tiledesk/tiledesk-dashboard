@@ -184,7 +184,7 @@
 
                   <td (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
                     <span class="tooltipx">
-                      {{ projectUser?.role }}
+                      {{ projectUser?.role | translate}}
                       <span class="tooltiptext">
                         {{"UsersPage.ViewProfileUser" | translate }} {{projectUser?.id_user?._id}}
                       </span>

@@ -124,6 +124,9 @@
     "UserFullName": "User fullname",
     "ExportToCSV": "Export to CSV",
     "Actions": "Actions",
+    "owner": "Owner",
+    "admin": "Administrator",
+    "agent":"Agent",
     "UserProfile": {
         "Profile": "Profile",
         "UploadImage": "Upload image",
@@ -278,7 +281,7 @@
         "Invites": "Invite",
         "Update": "Update",
         "UserRoles": "User Roles",
-        "Admin": "Admin",
+        "Admin": "Administrator",
         "AnAdministratorHas": "An Administrator has full power over the app and can do everything related to TileDesk administration. Administrators can create more Administrators, invite new users, remove users, change user roles, monitor all requests, serve Visitors.",
         "Agent": "Agent",
         "AnAgentCan": "An Agent can use this control panel to monitor help requests and chat with Visitors.",

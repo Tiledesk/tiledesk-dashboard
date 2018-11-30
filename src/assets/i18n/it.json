@@ -124,6 +124,9 @@
     "UserFullName": "Fullname utente",
     "ExportToCSV":"Esporta in CSV",
     "Actions":"Azioni",
+    "owner": "Proprietario",
+    "admin": "Amministratore",
+    "agent":"Agente",
     "UserProfile": {
         "Profile": "Profilo",
         "UploadImage": "Carica immagine",
