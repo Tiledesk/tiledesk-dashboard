@@ -173,3 +173,19 @@ only screen and (max-width: 760px),
 .hideScoreHidden {
     margin-bottom: 0px !important;
 }
+
+.faq-table-title {
+    font-family: "Google Sans",sans-serif!important;
+    color: #394f5a;
+    font-weight: 500;
+    font-size:16px;
+}
+// height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;
+.custom-label {
+    color: #7695a5;
+    height: 36px !important;
+    padding-top: 7px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    text-align: right!important;
+}

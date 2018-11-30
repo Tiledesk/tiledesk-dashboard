@@ -88,7 +88,7 @@
                 <!-- <div class="row"> -->
                   <!-- <div class="col-md-12"> -->
 
-                     <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 groupName">
+                     <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;color:#7695a5" class="col-sm-2 groupName">
                       {{ "GroupsAddEditPage.GroupName" | translate }}
                     </label>
                     <div class="col-sm-10">
@@ -126,21 +126,21 @@
                   {{ "GroupsAddEditPage.GroupAttributes" | translate }}
                 </h4>
   
-                <p style="margin-bottom: 3px; padding-top: 5px;"> 
-                  <strong>
+                <p class="title-attribute" style="margin-bottom: 3px; padding-top: 5px;"> 
+                  <!-- <strong> -->
                     {{ "GroupsAddEditPage.GroupID" | translate }}
-                  </strong>
+                  <!-- </strong> -->
                 </p>
-                <p style="color:#999999; font-weight: 500">  
+                <p class="attribute">  
                     {{ id_group }}
                 </p>
 
-                <p style="margin-bottom: 3px; padding-top: 0px;"> 
-                  <strong>
+                <p class="title-attribute" style="margin-bottom: 3px; padding-top: 0px;"> 
+                  <!-- <strong> -->
                     {{ "GroupsPage.CreationDate" | translate }}
-                  </strong>
+                  <!-- </strong> -->
                 </p>
-                <p style="color:#999999; font-weight: 500; margin-bottom: 9px">  
+                <p class="attribute" style="margin-bottom: 9px">  
                     {{ groupCreatedAt | date: 'd/M/y'}}
                 </p>
               </div>
@@ -185,7 +185,7 @@
                     style="padding:4px;  margin-top: 0px; margin-bottom: 0px; margin-left: 15px; border-radius: 50px;" 
                     (click)="open_users_list_modal()">
                   <span class="icon" style="padding-right:0px">
-                    <i class="material-icons">add</i>
+                    <i class="material-icons" style="font-size:18px; top:0px">add</i>
                   </span>
                   <span class="tooltiptext"> {{ 'GroupsAddEditPage.AddMembers' | translate }} </span>
                 </button>

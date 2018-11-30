@@ -93,7 +93,6 @@ export class ContactsComponent implements OnInit {
   }
 
   search() {
-
     // RESOLVE THE BUG: THE BUTTON SEARCH REMAIN FOCUSED AFTER PRESSED
     const searchBtn = <HTMLElement>document.querySelector('.searchbtn');
     console.log('!!! CONTACTS - SEARCH BTN ', searchBtn)
