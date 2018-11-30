@@ -23,7 +23,7 @@
             <!-- style="margin-top: 16px" -->
           <div class="card-content">
             
-            <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
+            <label class="col-sm-2 custom-label">
               {{ "BotsAddEditPage.BotName" | translate }}
             </label>
             <div class="col-sm-10">
@@ -33,7 +33,7 @@
             <!-- SPACER -->
             <div class="col-sm-12 spacer_div" style="height:15px"></div>
 
-            <label style="" class="col-sm-2"></label>
+            <label class="col-sm-2"></label>
             <div class="col-sm-10"> 
 
               <button #editbotbtn class="btn btn-success" (click)="editBotName()" >
@@ -58,12 +58,12 @@
               {{ "BotsAddEditPage.BotAttributes" | translate }}
             </h4>
 
-            <p style="margin-bottom: 3px; padding-top: 5px;"> 
-              <strong>
+            <p class="title-attribute" style="margin-bottom: 3px; padding-top: 5px;"> 
+              <!-- <strong> -->
                 {{ "BotsAddEditPage.BotID" | translate }}
-              </strong>
+              <!-- </strong> -->
             </p>
-            <p style="color:#999999; font-weight: 500;">  
+            <p class="attribute" >  
               {{ faqKb_id }}
             </p>
 
@@ -76,13 +76,13 @@
               {{ faq_kb_remoteKey }}
             </p> -->
 
-            <p style="margin-bottom: 3px; padding-top: 0px;"> 
-              <strong>
+            <p class="title-attribute" style="margin-bottom: 3px; padding-top: 0px;"> 
+              <!-- <strong> -->
                 {{ "BotsAddEditPage.CreationDate" | translate }}
-              </strong>
+              <!-- </strong> -->
             </p>
-            <p style="color:#999999; font-weight: 500; margin-bottom: 9px">  
-                {{ faqKb_created_at | date: 'd/M/y'}}
+            <p class="attribute" style="margin-bottom: 9px">  
+              {{ faqKb_created_at | date: 'd/M/y'}}
             </p>
           </div>
         </div>
@@ -138,7 +138,7 @@
         <div class="card">
 
           <div class="card-header" data-background-color="" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
-            <h4 class="title" style="margin-bottom:2px; font-size:1.1em; color: #566787">
+            <h4 class="faq-table-title" style="margin-bottom:2px;">
                 FAQs <span style="font-weight: 500">({{ faq_lenght }})</span> 
 
               <!-- // ADD FAQ - CIRCLE BTN -->
@@ -159,15 +159,15 @@
                 (click)="goToEditAddPage_CREATE()">
                   <!-- is-small -->
                 <span class="icon" style="padding-right:0px">
-                  <i class="material-icons">add</i>
+                  <i class="material-icons" style="font-size:18px; top:0px">add</i>
                 </span>
                 <!-- Aggiungi FAQ -->
-                <span class="tooltiptext"> {{ 'FaqPage.AddFaq' | translate }} </span>
+                <span class="tooltiptext" style="text-transform:none"> {{ 'FaqPage.AddFaq' | translate }} </span>
               </button>
 
               <!-- 
               *********************************  
-              BUTTON ADD FAQ FROM CSV FILE
+              BUTTON ADD FAQs FROM CSV FILE
               *********************************
               -->
               <button class="btn btn-info tooltipx" 
@@ -175,10 +175,26 @@
                 (click)="openImportModal()">
                 
                 <span class="icon" style="padding-right:0px;">
-                  <i class="material-icons">file_upload</i>
+                  <i class="material-icons" style="font-size:18px; top:0px">file_upload</i>
                 </span>
                 <!-- CARICA FAQs DA CSV  -->
-                <span class="tooltiptext">{{ 'FaqPage.UploadFaqsFromCsv' | translate }}</span>
+                <span class="tooltiptext" style="text-transform:none">{{ 'FaqPage.UploadFaqsFromCsv' | translate }}</span>
+              </button>
+
+              <!-- 
+              *********************************  
+              BUTTON EXPORT FAQs TO CSV 
+              *********************************
+              -->
+              <button class="btn btn-info tooltipx" 
+                style="padding:4px; text-transform:none; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;" 
+                (click)="exportFaqsToCsv()">
+                
+                <span class="icon" style="padding-right:0px;">
+                  <i class="material-icons" style="font-size:18px; top:0px">save_alt</i>
+                </span>
+                <!-- CARICA FAQs DA CSV  -->
+                <span class="tooltiptext" style="text-transform:none">{{ 'FaqPage.ExportFaqsToCsv' | translate }}</span>
               </button>
 
               <!-- 
@@ -190,10 +206,10 @@
                 style="padding:4px; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;" 
                 (click)="goToTestFaqPage()">
                 <span class="icon" style="padding-right:0px; text-transform:none">
-                  <i class="material-icons">play_arrow</i>
+                  <i class="material-icons" style="font-size:18px; top:0px">play_arrow</i>
                 </span>
                 <!-- INTERROGA BOT -->
-                <span class="tooltiptext">{{ 'FaqPage.BotQuery' | translate }}</span>
+                <span class="tooltiptext" style="text-transform:none">{{ 'FaqPage.BotQuery' | translate }}</span>
               </button>
 
             </h4>

@@ -13,6 +13,7 @@ export class MongodbFaqService {
   // MONGODB_BASE_URL = environment.mongoDbConfig.FAQ_BASE_URL;
   BASE_URL = environment.mongoDbConfig.BASE_URL;
   MONGODB_BASE_URL: any;
+  EXPORT_FAQ_TO_CSV_URL: string;
   // TOKEN = environment.mongoDbConfig.TOKEN;
   TOKEN: string
   user: any;
@@ -47,6 +48,7 @@ export class MongodbFaqService {
       if (this.project) {
         console.log('00 -> FAQ SERVICE project ID from AUTH service subscription  ', this.project._id)
         this.MONGODB_BASE_URL = this.BASE_URL + this.project._id + '/faq/'
+        this.EXPORT_FAQ_TO_CSV_URL = this.BASE_URL + this.project._id + '/faq/csv'
       }
     });
   }
@@ -116,6 +118,22 @@ export class MongodbFaqService {
   }
 
   /**
+   * EXPORT FAQS TO CSV
+   */
+  public exsportFaqsToCsv(id_faq_kb: string) {
+    // let url = 'http://localhost:3000/app1/faq/?id_faq_kb=5a81598721333b920c3e5949';
+    const url = this.EXPORT_FAQ_TO_CSV_URL + '?id_faq_kb=' + id_faq_kb;
+    console.log('MONGO DB GET BY ID FAQ URL', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/csv');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.text());
+  }
+
+  /**
    * CREATE (POST)
    * @param question
    */
@@ -148,13 +166,13 @@ export class MongodbFaqService {
     const url = this.MONGODB_BASE_URL + 'uploadcsv';
     const options = new RequestOptions({ headers: headers });
     return this.http
-    .post(url, formData, options)
+      .post(url, formData, options)
       .map(res => res.json())
-      // .subscribe(data => {
-      //   console.log('UPLOAD FILE CSV success ', data)
-      // },
-      //   error => console.log(error)
-      // )
+    // .subscribe(data => {
+    //   console.log('UPLOAD FILE CSV success ', data)
+    // },
+    //   error => console.log(error)
+    // )
 
   }
 

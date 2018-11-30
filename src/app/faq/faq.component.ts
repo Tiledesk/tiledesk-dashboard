@@ -81,14 +81,14 @@ export class FaqComponent implements OnInit {
     this.getCurrentProject();
   }
 
- /**
-  * ****** CLEAR SEARCHED QUESTION FROM LOCAL STORAGE ******
-  * IN THE FAQ-TEST COMP, WHEN THE USER SEARCH FOR A QUESTION TO TEST
-  * THE QUESTION IS SAVED IN THE STORAGE SO, IN THE EVENT THAT CLICK ON THE FAQ
-  * TO EDIT IT, WHEN CLICK ON THE BACK BUTTON IN THE FAQ EDIT PAGE AND RETURN IN THE FAQ TEST PAGE, THE
-  * TEST PAGE DISPLAY THE PREVIOUS RESULT OF RESEARCH.
-  * WHEN THE USER RETURN IN THE EDIT BOT PAGE (THIS COMPONENT) THE RESEARCHED QUESTION IS RESETTED */
-   clearSearchedQuestionStored() {
+  /**
+   * ****** CLEAR SEARCHED QUESTION FROM LOCAL STORAGE ******
+   * IN THE FAQ-TEST COMP, WHEN THE USER SEARCH FOR A QUESTION TO TEST
+   * THE QUESTION IS SAVED IN THE STORAGE SO, IN THE EVENT THAT CLICK ON THE FAQ
+   * TO EDIT IT, WHEN CLICK ON THE BACK BUTTON IN THE FAQ EDIT PAGE AND RETURN IN THE FAQ TEST PAGE, THE
+   * TEST PAGE DISPLAY THE PREVIOUS RESULT OF RESEARCH.
+   * WHEN THE USER RETURN IN THE EDIT BOT PAGE (THIS COMPONENT) THE RESEARCHED QUESTION IS RESETTED */
+  clearSearchedQuestionStored() {
     // localStorage.setItem('searchedQuestion', '');
     localStorage.removeItem('searchedQuestion')
   }
@@ -201,12 +201,12 @@ export class FaqComponent implements OnInit {
    * GET ALL FAQ
    * !! NO MORE USED: NOW GET ONLY THE FAQ WITH THE FAQ-KB ID (getFaqByFaqKbId()) OF THE FAQ KB SELECTED IN FAQ-KB COMP
    */
-  getFaq() {
-    this.mongodbFaqService.getMongDbFaq().subscribe((faq: any) => {
-      console.log('MONGO DB FAQ', faq);
-      this.faq = faq;
-    });
-  }
+  // getFaq() {
+  //   this.mongodbFaqService.getMongDbFaq().subscribe((faq: any) => {
+  //     console.log('MONGO DB FAQ', faq);
+  //     this.faq = faq;
+  //   });
+  // }
 
   /**
    * GET ONLY THE FAQ WITH THE FAQ-KB ID PASSED FROM FAQ-KB COMPONENT
@@ -226,6 +226,40 @@ export class FaqComponent implements OnInit {
       console.log('>> FAQs GOT BY FAQ-KB ID - COMPLETE');
     });
   }
+
+  exportFaqsToCsv() {
+
+    this.mongodbFaqService.exsportFaqsToCsv(this.id_faq_kb).subscribe((faq: any) => {
+      console.log('FAQ COMP - EXPORT FAQ TO CSV - FAQS', faq)
+
+      if (faq) {
+        this.downloadFile(faq);
+      }
+    }, (error) => {
+      console.log('FAQ COMP - EXPORT FAQ TO CSV - ERROR', error);
+
+    }, () => {
+      console.log('FAQ COMP - EXPORT FAQ TO CSV - COMPLETE');
+    });
+  }
+
+  downloadFile(data) {
+    const blob = new Blob(['\ufeff' + data], { type: 'text/csv;charset=utf-8;' });
+    const dwldLink = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    const isSafariBrowser = navigator.userAgent.indexOf('Safari') !== -1 && navigator.userAgent.indexOf('Chrome') === -1;
+    if (isSafariBrowser) {  // if Safari open in new window to save file with random filename.
+      dwldLink.setAttribute('target', '_blank');
+    }
+    dwldLink.setAttribute('href', url);
+    dwldLink.setAttribute('download', 'faqs.csv');
+    dwldLink.style.visibility = 'hidden';
+    document.body.appendChild(dwldLink);
+    dwldLink.click();
+    document.body.removeChild(dwldLink);
+  }
+
+
 
   /**
    * ADD FAQ
@@ -295,18 +329,16 @@ export class FaqComponent implements OnInit {
       //   previousScrollTop = $window.scrollTop();
 
       // });
-    },
-      (error) => {
+    }, (error) => {
 
-        console.log('DELETE FAQ ERROR ', error);
-        // =========== NOTIFY ERROR ===========
-        this.notify.showNotification('An error occurred while deleting the FAQ', 4, 'report_problem');
-      },
-      () => {
-        console.log('DELETE FAQ * COMPLETE *');
-        // =========== NOTIFY SUCCESS===========
-        this.notify.showNotification('FAQ successfully deleted', 2, 'done');
-      });
+      console.log('DELETE FAQ ERROR ', error);
+      // =========== NOTIFY ERROR ===========
+      this.notify.showNotification('An error occurred while deleting the FAQ', 4, 'report_problem');
+    }, () => {
+      console.log('DELETE FAQ * COMPLETE *');
+      // =========== NOTIFY SUCCESS===========
+      this.notify.showNotification('FAQ successfully deleted', 2, 'done');
+    });
 
   }
 
@@ -355,15 +387,13 @@ export class FaqComponent implements OnInit {
       // RE-RUN GET CONTACT TO UPDATE THE TABLE
       // this.getDepartments();
       this.ngOnInit();
-    },
-      (error) => {
+    }, (error) => {
 
-        console.log('PUT REQUEST ERROR ', error);
+      console.log('PUT REQUEST ERROR ', error);
 
-      },
-      () => {
-        console.log('PUT REQUEST * COMPLETE *');
-      });
+    }, () => {
+      console.log('PUT REQUEST * COMPLETE *');
+    });
 
   }
 
@@ -427,17 +457,15 @@ export class FaqComponent implements OnInit {
             this.parse_done = false;
             this.parse_err = true;
           }
-        },
-          (error) => {
-            console.log('UPLOAD CSV - ERROR ', error);
-            this.SHOW_CIRCULAR_SPINNER = false;
-          },
-          () => {
-            console.log('UPLOAD CSV * COMPLETE *');
-            setTimeout(() => {
-              this.SHOW_CIRCULAR_SPINNER = false
-            }, 300);
-          });
+        }, (error) => {
+          console.log('UPLOAD CSV - ERROR ', error);
+          this.SHOW_CIRCULAR_SPINNER = false;
+        }, () => {
+          console.log('UPLOAD CSV * COMPLETE *');
+          setTimeout(() => {
+            this.SHOW_CIRCULAR_SPINNER = false
+          }, 300);
+        });
 
     }
   }
