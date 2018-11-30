@@ -883,7 +883,8 @@ export class RequestsService {
     /* *** USED TO TEST IN LOCALHOST (note: this service doen't work in localhost) *** */
     // const url = 'https://api.tiledesk.com/v1/' + '5ba35f0b9acdd40015d350b6' + '/requests?requester_id=' + requesterid + '&page=' + pagenumber;
     /* *** USED IN PRODUCTION *** */
-    const url = this.BASE_URL + this.project._id + '/requests?request_id=' + requestid;
+    // const url = this.BASE_URL + this.project._id + '/requests?request_id=' + requestid;
+    const url = this.BASE_URL + this.project._id + '/requests/' + requestid;
 
     console.log('!!!! CONTACT DETAILS - GET NODEJS REQUEST BYSERVICE URL ', url);
 

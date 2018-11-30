@@ -368,27 +368,34 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   getContactIdFromNodejsRequest() {
     this.requestsService.getNodeJsRequestByFirebaseRequestId(this.id_request, 0).subscribe((nodejsRequest) => {
 
-      console.log('»»» REQUESTS-MSGS.COMP: NODEJS REQUEST ', nodejsRequest);
+      console.log('»»» REQUESTS-MSGS.COMP: GET NODEJS REQUEST BY FireBase REQ ID ', nodejsRequest);
 
       if (nodejsRequest) {
-        if (nodejsRequest['requests'] && nodejsRequest['requests'].length > 0) {
+        // if (nodejsRequest['requests'] && nodejsRequest['requests'].length > 0) {
 
-          if (nodejsRequest['requests'][0]['requester_id']) {
+        // if (nodejsRequest['requests'][0]['requester_id']) {
+        if (nodejsRequest['requester_id']) {
 
-            this.contact_id = nodejsRequest['requests'][0]['requester_id']
-            console.log('»»» REQUESTS-MSGS.COMP: NODEJS REQUEST > CONTACT ID ', this.contact_id);
-            this.NODEJS_REQUEST_CNTCT_FOUND = true;
-            console.log('»»» REQUESTS-MSGS.COMP: NODEJS REQUEST FOUND ? ', this.NODEJS_REQUEST_CNTCT_FOUND);
+          // this.contact_id = nodejsRequest['requests'][0]['requester_id']
+          this.contact_id = nodejsRequest['requester_id']
+          console.log('»»» REQUESTS-MSGS.COMP: NODEJS REQUEST > CONTACT ID ', this.contact_id);
+          this.NODEJS_REQUEST_CNTCT_FOUND = true;
+          console.log('»»» REQUESTS-MSGS.COMP: NODEJS REQUEST FOUND ? ', this.NODEJS_REQUEST_CNTCT_FOUND);
 
-          } else {
+        } else {
 
-            this.NODEJS_REQUEST_CNTCT_FOUND = false;
-            console.log('»»» REQUESTS-MSGS.COMP: NODEJS REQUEST >  FOUND ? ', this.NODEJS_REQUEST_CNTCT_FOUND);
-          }
-
+          this.NODEJS_REQUEST_CNTCT_FOUND = false;
+          console.log('»»» REQUESTS-MSGS.COMP: NODEJS REQUEST >  FOUND ? ', this.NODEJS_REQUEST_CNTCT_FOUND);
         }
+
+        // }
       }
-    })
+    }, (err) => {
+      console.log('»»» REQUESTS-MSGS.COMP: GET NODEJS REQUEST BY FireBase REQ ID ', err);
+      this.showSpinner = false;
+    }, () => {
+      console.log('»»» REQUESTS-MSGS.COMP: GET NODEJS REQUEST BY FireBase REQ ID * COMPLETE *');
+    });
   }
 
   goToContactDetails() {
