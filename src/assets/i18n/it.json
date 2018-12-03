@@ -464,6 +464,10 @@
     "DepartmentsPage": {
         "AddDepartment": "Aggiungi Dipartimento",
         "CreationDate": "Data creazione",
+        "CreatedThe": "creato il",
+        "Status":"Stato",
+        "Visible":"Visibile",
+        "Hidden":"Nascosto",
         "Actions": "Azioni",
         "NoDept": "Nessun Dipartimento",
         "ActivatedBot": "attivato:",
