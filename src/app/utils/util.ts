@@ -46,10 +46,36 @@ export function currentUserUidIsInMembers(members: object, currentUserFireBaseUI
             // console.log('»»»»»»» UTILS MEMBERS ', members)
             // console.log('»»»»»»» CURRENT_USER_JOINED ', currentUserFireBaseUID);
             currentUserIsJoined = true;
-        // console.log('»»»»»»» CURRENT USER ', currentUserFireBaseUID, 'is JOINED ?', currentUserIsJoined, 'to the request ', request_id);
+         // console.log('»»»»»»» CURRENT USER ', currentUserFireBaseUID, 'is JOINED ?', currentUserIsJoined, 'to the request ', request_id);
             return
         }
     });
     // console.log('»»»»»»» CURRENT USER ', currentUserFireBaseUID, ' is JOINED ?', currentUserIsJoined, 'to the request ', request_id);
     return currentUserIsJoined;
+}
+
+export function avatarPlaceholder(requester_fullname) {
+    let initials = '';
+    if (requester_fullname) {
+        const arrayName = requester_fullname.split(' ');
+        arrayName.forEach(member => {
+            if (member.trim().length > 1 && initials.length < 3) {
+                initials += member.substring(0, 1).toUpperCase();
+            }
+        });
+    }
+    console.log('»»»»»»» UTILS avatarPlaceholder------------->', requester_fullname, initials);
+    return initials;
+}
+
+export function getColorBck(requester_fullname) {
+    const arrayBckColor = ['#fba76f', '#80d066', '#73cdd0', '#ecd074', '#6fb1e4', '#f98bae'];
+    let num = 0;
+    if (requester_fullname) {
+        const code = requester_fullname.charCodeAt(0);
+        num = Math.round(code % arrayBckColor.length);
+        console.log('************** code', requester_fullname.length, code, arrayBckColor.length, num);
+    }
+    console.log('»»»»»»» UTILS getColorBck ------------->', requester_fullname, arrayBckColor[num]);
+    return arrayBckColor[num];
 }
