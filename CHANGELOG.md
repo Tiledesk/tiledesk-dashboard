@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 0.9.50
+- Avatars of the contacts : adequate colors and initials to those of the widget
+- Users list: translated the roles
+
 ### 0.9.49
 - Adds "Export faqs to CSV"
 - Adds "Export contacts to CSV"
