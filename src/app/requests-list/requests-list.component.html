@@ -461,7 +461,7 @@
                       </span>
                       <span *ngIf="request?.requester_is_verified === true" class="tooltipx"> 
                         <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                            viewBox="0 0 26.6 26.6" width="18" height="18" style="position: relative;left: -35px;top: -1px;" xml:space="preserve">
+                            viewBox="0 0 26.6 26.6" width="17" height="17" style="position: relative;left: -40px;top: -3px;" xml:space="preserve">
                             <style type="text/css">
                               .st0{fill:none;}
                               .st1{fill:#FFFFFF;}
@@ -474,12 +474,12 @@
                           </svg>
 
                           <span class="tooltiptext"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
-                        <!-- </span> -->
+  
                       </span>
                     </span>
           
 
-                    <span style="font-size:0.9em; font-weight: 400;" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
+                    <span style="font-size:0.9em; font-weight: 400; white-space: nowrap;" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
                       {{ request.requester_fullname }}
                     </span>
 
@@ -787,7 +787,7 @@
                         </span>
                         <span *ngIf="request?.requester_is_verified === true" class="tooltipx"> 
                           <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                              viewBox="0 0 26.6 26.6" width="18" height="18" style="position: relative;left: -35px;top: -1px;" xml:space="preserve">
+                              viewBox="0 0 26.6 26.6" width="17" height="17" style="position: relative;left: -40px;top: -3px;" xml:space="preserve">
                               <style type="text/css">
                                 .st0{fill:none;}
                                 .st1{fill:#FFFFFF;}
@@ -800,12 +800,12 @@
                             </svg>
   
                             <span class="tooltiptext"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
-                          <!-- </span> -->
+
                         </span>
                       </span>
                     
                     
-                    <span style="font-size:0.9em; font-weight: 400;" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
+                    <span style="font-size:0.9em; font-weight: 400; white-space: nowrap;" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
                       {{ request?.requester_fullname }} 
                     </span>
 

@@ -29,8 +29,10 @@ import { BotLocalDbService } from '../services/bot-local-db.service';
 import { DepartmentService } from '../services/mongodb-department.service';
 import { UsersService } from '../services/users.service';
 
+import { avatarPlaceholder, getColorBck } from '../utils/util';
+
 @Component({
-  selector: 'requests-list',
+  selector: 'appdashboard-requests-list',
   templateUrl: './requests-list.component.html',
   styleUrls: ['./requests-list.component.scss'],
 })
@@ -287,22 +289,31 @@ export class RequestsListComponent implements OnInit {
           // console.log('request', request);
           // console.log('REQUESTER FULL NAME: ', request.requester_fullname);
 
-          let initial = ''
-          let fillColour = ''
+
+
+          // let initial = '';
+          // let fillColour = '';
+
+          let newInitials = '';
+          let newFillColour = '';
           if (request.requester_fullname) {
+
+            // NEW - FULL NAME INITIAL AS DISPLAYED IN THE WIDGET
+            newInitials = avatarPlaceholder(request.requester_fullname);
+            newFillColour = getColorBck(request.requester_fullname)
+
+
             // AVATAR WITH REQUESTER FULL NAME INITIAL AND RANDOM BACKGROUND
-            initial = request.requester_fullname.charAt(0).toUpperCase();
-
-            // console.log('REQUESTER FULL NAME - INITIAL: ', initial);
-            const charIndex = initial.charCodeAt(0) - 65
-            const colourIndex = charIndex % 19;
-            // console.log('REQUESTER FULL NAME - colourIndex: ', colourIndex);
-
-            fillColour = this.colours[colourIndex];
+            // initial = request.requester_fullname.charAt(0).toUpperCase();
+            // const charIndex = initial.charCodeAt(0) - 65
+            // const colourIndex = charIndex % 19;
+            // fillColour = this.colours[colourIndex];
 
           } else {
-            initial = 'n.a.';
-            fillColour = '#eeeeee';
+            // initial = 'n.a.';
+            // fillColour = '#eeeeee';
+            newInitials = 'n.a.';
+            newFillColour = '#eeeeee';
           }
 
           if (request.first_message
@@ -329,8 +340,11 @@ export class RequestsListComponent implements OnInit {
 
               // GET MEMBERS
               r.members_array = Object.keys(r.members);
-              r.requester_fullname_initial = initial
-              r.requester_fullname_fillColour = fillColour
+              // r.requester_fullname_initial = initial
+              // r.requester_fullname_fillColour = fillColour
+              r.requester_fullname_initial = newInitials
+              r.requester_fullname_fillColour = newFillColour
+
               r.requester_is_verified = this.REQUESTER_IS_VERIFIED
               // console.log('!!! REQUEST LIST MEMBERS ARRAY  ', r.members_array)
 
