@@ -64,7 +64,7 @@ export function avatarPlaceholder(requester_fullname) {
             }
         });
     }
-    console.log('»»»»»»» UTILS avatarPlaceholder------------->', requester_fullname, initials);
+    // console.log('»»»»»»» UTILS avatarPlaceholder------------->', requester_fullname, initials);
     return initials;
 }
 
@@ -74,8 +74,8 @@ export function getColorBck(requester_fullname) {
     if (requester_fullname) {
         const code = requester_fullname.charCodeAt(0);
         num = Math.round(code % arrayBckColor.length);
-        console.log('************** code', requester_fullname.length, code, arrayBckColor.length, num);
+        // console.log('************** code', requester_fullname.length, code, arrayBckColor.length, num);
     }
-    console.log('»»»»»»» UTILS getColorBck ------------->', requester_fullname, arrayBckColor[num]);
+    // console.log('»»»»»»» UTILS getColorBck ------------->', requester_fullname, arrayBckColor[num]);
     return arrayBckColor[num];
 }
