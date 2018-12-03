@@ -42,6 +42,7 @@ export class DepartmentsComponent implements OnInit {
   id_group: string;
   groupIsTrashed: string;
   botName: string;
+  deptStatus: number;
 
   constructor(
     private mongodbDepartmentService: DepartmentService,
@@ -110,6 +111,33 @@ export class DepartmentsComponent implements OnInit {
     }, () => {
       console.log('DEPARTMENTS (FILTERED FOR PROJECT ID) - COMPLETE')
     });
+  }
+
+  updateDeptStatus($event, dept_id) {
+    const checkModel = $event.target.checked;
+    console.log('»»» »»» DEPTS PAGE - ON CHANGE DEPT STATUS - DEPT ID ', dept_id, 'CHECHED ', checkModel)
+
+    // let deptStatus = null;
+
+    if (checkModel === true) {
+      this.deptStatus = 1
+    } else if (checkModel === false) {
+      this.deptStatus = 0
+    }
+
+    this.mongodbDepartmentService.updateDeptStatus(dept_id, this.deptStatus)
+      .subscribe((department: any) => {
+        console.log('»»» »»» DEPTS PAGE - UPDATE DEPT STATUS - UPDATED DEPT ', department)
+
+      }, error => {
+
+        console.log('»»» »»» DEPTS PAGE - UPDATE DEPT STATUS - ERROR', error);
+      }, () => {
+        console.log('»»» »»» DEPTS PAGE - UPDATE DEPT STATUS - COMPLETE')
+      });
+
+
+
   }
 
   /**

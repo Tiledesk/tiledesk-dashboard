@@ -59,7 +59,7 @@ export class DepartmentService {
       // debugger
       if (this.project) {
         console.log('00 -> DEPT SERVICE project ID from AUTH service subscription  ', this.project._id);
-        this.MONGODB_BASE_URL = this.BASE_URL + this.project._id + '/departments/'
+        this.MONGODB_BASE_URL = this.BASE_URL + this.project._id + '/departments'
 
         // FOR TEST - CAUSES ERROR WITH A NO VALID PROJECT ID
         // this.MONGODB_BASE_URL = this.BASE_URL + '5b3fa93a6f0537d8b01968fX' + '/departments/'
@@ -278,6 +278,28 @@ export class DepartmentService {
     //   console.log('PUT REQUEST * COMPLETE *');
     // });
 
+  }
+
+  /**
+   * UPDATE DEPARTMENT STATUS
+   * @param dept_id
+   * @param status
+   */
+  public updateDeptStatus(dept_id: string, status: number) {
+    const url = this.MONGODB_BASE_URL + dept_id;
+    console.log('UPDATE DEPT STATUS - URL ', url);
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = { 'status': status};
+    console.log('UPDATE DEPT STATUS - REQUEST BODY ', body);
+
+    return this.http
+    .put(url, JSON.stringify(body), options)
+    .map((res) => res.json());
   }
 
 
