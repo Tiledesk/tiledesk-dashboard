@@ -130,17 +130,19 @@ input:-webkit-autofill:active  {
  }
 
 .avatar {
-    margin: 0 8px 0 0;
+    // margin: 0 8px 0 0;
     border-radius: 50%;
     font-size: 13px;
     font-weight: 500;
     text-align: center;
-    padding: 10px 11px;
+    // padding: 10px 11px;
+    padding-top: 12px;
     display: inline-block;
     width: 40px;
+    height: 40px;
 }
 
 .contact-verified {
     position: relative; 
-    left: -18px;
+    left: -20px;
 }

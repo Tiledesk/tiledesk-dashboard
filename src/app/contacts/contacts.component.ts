@@ -8,6 +8,7 @@ import { Contact } from '../models/contact-model';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { NotifyService } from '../core/notify.service';
+import { avatarPlaceholder, getColorBck } from '../utils/util';
 
 @Component({
   selector: 'appdashboard-contacts',
@@ -63,7 +64,7 @@ export class ContactsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
- 
+
     // this.auth.checkRoleForCurrentProject();
     this.getContacts();
     this.getCurrentProject();
@@ -192,7 +193,7 @@ export class ContactsComponent implements OnInit {
     const exportToCsvBtn = <HTMLElement>document.querySelector('.export-to-csv-btn');
     console.log('!!! NEW REQUESTS HISTORY - EXPORT TO CSV BTN', exportToCsvBtn)
     exportToCsvBtn.blur()
-    
+
     this.contactsService.exportLeadToCsv(this.queryString, 0).subscribe((leads_object: any) => {
       // console.log('!!!! CONTACTS - EXPORT CONTACT TO CSV RESPONSE ', leads_object);
 
@@ -252,24 +253,35 @@ export class ContactsComponent implements OnInit {
       if (contact) {
         const id_contact = contact._id
 
-        let initial = '';
-        let fillColour = ''
+        // let initial = '';
+        // let fillColour = '';
+
+        let newInitials = '';
+        let newFillColour = '';
         if (contact.fullname) {
           const name = contact.fullname;
           // console.log('!!!!! CONTACTS - NAME OF THE CONTACT ', name);
-          initial = name.charAt(0).toUpperCase();
-          // console.log('!!!!! CONTACTS - INITIAL OF NAME OF THE CONTACT ', initial);
 
-          const charIndex = initial.charCodeAt(0) - 65
-          const colourIndex = charIndex % 19;
-          // console.log('!!!!! CONTACTS - COLOUR INDEX ', colourIndex);
+          // initial = name.charAt(0).toUpperCase();
+          // // console.log('!!!!! CONTACTS - INITIAL OF NAME OF THE CONTACT ', initial);
+          // const charIndex = initial.charCodeAt(0) - 65
+          // const colourIndex = charIndex % 19;
+          // // console.log('!!!!! CONTACTS - COLOUR INDEX ', colourIndex);
+          // fillColour = this.colours[colourIndex];
+          // // console.log('!!!!! CONTACTS - NAME INITIAL ', initial, ' COLOUR INDEX ', colourIndex, 'FILL COLOUR ', fillColour);
 
-          fillColour = this.colours[colourIndex];
-          // console.log('!!!!! CONTACTS - NAME INITIAL ', initial, ' COLOUR INDEX ', colourIndex, 'FILL COLOUR ', fillColour);
+          // NEW - FULL NAME INITIAL AS DISPLAYED IN THE WIDGET
+          newInitials = avatarPlaceholder(name);
+          newFillColour = getColorBck(name)
+
+
         } else {
 
-          initial = 'n.a.';
-          fillColour = '#eeeeee';
+          // initial = 'n.a.';
+          // fillColour = '#eeeeee';
+          newInitials = 'n.a.';
+          newFillColour = '#eeeeee';
+
         }
 
         if (contact.attributes
@@ -295,8 +307,8 @@ export class ContactsComponent implements OnInit {
 
           if (c._id === id_contact) {
             // console.log('!!!! CONTACTS  - c._id ', c._id, 'id_contact ', id_contact)
-            c.avatar_fill_colour = fillColour;
-            c.name_initial = initial
+            c.avatar_fill_colour = newFillColour;
+            c.name_initial = newInitials
             c.contact_is_verified = this.CONTACT_IS_VERIFIED
           }
         }
