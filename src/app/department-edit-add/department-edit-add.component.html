@@ -24,7 +24,7 @@
     
               <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
               <!-- padding-left: 16px; -->
-              <label style="height: 36px; padding-top: 8px; padding-right: 16px; text-align: right; margin-bottom: 0px;" class="col-sm-3 deptname">
+              <label class="col-sm-3 deptname custom-label">
                 {{ "DeptsAddEditPage.DeptName" | translate}}
               </label>
               <div class="col-sm-9">
@@ -51,7 +51,7 @@
                           <input style="width: 14px; height: 14px;" type="checkbox" class="form-check-input" id="exampleCheck1" 
                             (click)="has_clicked_bot(has_selected_bot = !has_selected_bot)" 
                             [checked]="has_selected_bot">
-                          <label style="padding-left: 8px; padding-top: 1px;" class="form-check-label" for="exampleCheck1">
+                          <label style="padding-left: 8px; padding-top: 1px;" class="form-check-label title-attribute" for="exampleCheck1">
                             <!-- Activate BOT -->
                             {{ "DeptsAddEditPage.ActivateBOT" | translate  }}
                           </label>
@@ -89,7 +89,7 @@
                             [disabled]="!has_selected_bot"
                             (click)="has_clicked_only_bot(has_selected_only_bot = !has_selected_only_bot)" 
                             [checked]="has_selected_only_bot">
-                          <label style="padding-left: 8px; padding-top: 1px;" class="form-check-label" for="exampleCheck2">
+                          <label style="padding-left: 8px; padding-top: 1px;" class="form-check-label title-attribute" for="exampleCheck2">
                             <!-- Bot only -->
                             {{ "DeptsAddEditPage.BotOnly" | translate  }}
                           </label>
@@ -118,7 +118,7 @@
                           (click)="has_clicked_assigned(show_group_option_form = 'true', show_option_form = 'false', routing = 'assigned')"
                           [disabled]="onlybot_disable_routing">
 
-                          <label class="form-check-label" for="exampleRadios3" style="padding-left: 5px;">
+                          <label class="form-check-label title-attribute" for="exampleRadios3" style="padding-left: 5px;" [ngClass]="{'disabled-label' : onlybot_disable_routing}">
                             Assigned
                           </label>
                         </div>
@@ -165,7 +165,7 @@
                           (click)="has_clicked_pooled(show_group_option_form = 'true', show_option_form = 'false', routing = 'pooled')"
                           [disabled]="onlybot_disable_routing">
 
-                          <label class="form-check-label" for="exampleRadios2" style="padding-left: 5px;">
+                          <label class="form-check-label title-attribute" for="exampleRadios2" style="padding-left: 5px;" [ngClass]="{'disabled-label' : onlybot_disable_routing}">
                             Pooled
                           </label>
                         </div>
@@ -266,7 +266,7 @@
             <span *ngIf="EDIT_VIEW">
   
               <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
-              <label style="height: 36px; padding-top: 8px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-3 deptname">
+              <label class="col-sm-3 deptname custom-label">
                 {{ "DeptsAddEditPage.DeptName" | translate}}
               </label>
               <div class="col-sm-9">
@@ -293,7 +293,7 @@
                           <input style="width: 14px; height: 14px;" type="checkbox" class="form-check-input" id="exampleCheck1" 
                             (click)="has_clicked_bot(has_selected_bot = !has_selected_bot)" 
                             [checked]="has_selected_bot">
-                          <label style="padding-left: 8px; padding-top: 1px;" class="form-check-label" for="exampleCheck1">
+                          <label style="padding-left: 8px; padding-top: 1px;" class="form-check-label title-attribute" for="exampleCheck1">
                             <!-- Activate Bot -->
                             {{ "DeptsAddEditPage.ActivateBOT" | translate  }}
                           </label>
@@ -331,7 +331,7 @@
                             [disabled]="!has_selected_bot"
                             (click)="has_clicked_only_bot(has_selected_only_bot = !has_selected_only_bot)" 
                             [checked]="has_selected_only_bot">
-                          <label style="padding-left: 8px; padding-top: 1px;" class="form-check-label" for="exampleCheck2">
+                          <label style="padding-left: 8px; padding-top: 1px;" class="form-check-label title-attribute" for="exampleCheck2">
                             <!-- Bot only -->
                             {{ "DeptsAddEditPage.BotOnly" | translate  }}
                           </label>
@@ -360,7 +360,7 @@
                           (click)="has_clicked_assigned(show_group_option_form = 'true', show_option_form = 'false', routing = 'assigned')" 
                           [checked]="dept_routing === 'assigned'"
                           [disabled]="onlybot_disable_routing">
-                          <label class="form-check-label" for="exampleRadios3" style="padding-left: 5px;">
+                          <label class="form-check-label title-attribute" for="exampleRadios3" style="padding-left: 5px;" [ngClass]="{'disabled-label' : onlybot_disable_routing}">
                             Assigned
                           </label>
                         </div>
@@ -408,7 +408,7 @@
                           [checked]="dept_routing === 'pooled'"
                           [disabled]="onlybot_disable_routing">
 
-                          <label class="form-check-label" for="exampleRadios2" style="padding-left: 5px;">
+                          <label class="form-check-label title-attribute" for="exampleRadios2" style="padding-left: 5px;" [ngClass]="{'disabled-label' : onlybot_disable_routing}">
                             Pooled
                           </label>
                         </div>
@@ -517,26 +517,38 @@
       <!-- RIGHT SIDEBAR -->
       <div class="col-md-4">
         <div class="card">
-          <div class="card-content" style="padding-top: 25px; ">
+          <div class="card-content" style="padding-top: 25px;">
             <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
               <!-- Quick tips -->
               {{ "DeptsAddEditPage.QuickTips" | translate }}
             </h4>
 
-            <p style="margin-bottom: 3px"> <strong>Assigned </strong></p>
-            <p style="color:#999999">
+            <p class="title-attribute" style="margin-bottom: 3px"> 
+              <!-- <strong> -->
+                Assigned 
+              <!-- </strong> -->
+            </p>
+            <p class="attribute">
               <!-- Assigned chats help maintain an even workload distribution, especially for larger teams. -->
               {{ "QuickTipsAssigned" | translate }}
             </p>
 
-            <p style="margin-bottom: 3px"> <strong>Pooled </strong></p>
-            <p style="color:#999999">
+            <p class="title-attribute" style="margin-bottom: 3px"> 
+              <strong>
+                Pooled 
+              </strong>
+            </p>
+            <p class="attribute">
               <!-- Pooled chats give agents more autonomy, allowing them to work at their own pace. Set a chat limit to control quality by preventing agents from taking on too many chats at once. -->
               {{ "QuickTipsPooled" | translate }}
             </p>
 
-            <p style="margin-bottom: 3px"> <strong>Bot </strong></p>
-            <p style="color:#999999">  
+            <p class="title-attribute" style="margin-bottom: 3px"> 
+              <strong>
+                Bot 
+              </strong>
+            </p>
+            <p class="attribute">  
               <!-- Select a bot that responds automatically. -->
               {{ "QuickTipsBot" | translate }}
             </p>
