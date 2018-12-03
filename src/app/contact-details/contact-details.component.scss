@@ -89,17 +89,18 @@ p.member:hover {
 
   .contact-avatar {
     border-radius: 50%;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 400;
     text-align: center;
     width: 40px;
     height: 40px;
-    padding: 10px 11px;
+    // padding: 10px 11px;
+    padding-top: 10px;
     display: inline-block;
   }
 
   .contact-verified {
     position: relative;
-    left: -15px;
+    left: -20px;
   }
 

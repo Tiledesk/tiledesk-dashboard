@@ -8,7 +8,7 @@ import { BotLocalDbService } from '../services/bot-local-db.service';
 import { UsersLocalDbService } from '../services/users-local-db.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
-
+import { avatarPlaceholder, getColorBck } from '../utils/util';
 @Component({
   selector: 'appdashboard-contact-details',
   templateUrl: './contact-details.component.html',
@@ -174,16 +174,17 @@ export class ContactDetailsComponent implements OnInit {
           this.contact_details = lead;
 
           if (this.contact_details.fullname) {
-            this.contact_fullname_initial = this.contact_details.fullname.charAt(0).toUpperCase();
 
-            console.log('!!!!! CONTACTS DETAILS - CONTACT INITIAL: ', this.contact_fullname_initial);
-            const charIndex = this.contact_fullname_initial.charCodeAt(0) - 65
-            const colourIndex = charIndex % 19;
-            console.log('!!!!! CONTACTS DETAILS - CONTACT colourIndex: ', colourIndex);
+            // this.contact_fullname_initial = this.contact_details.fullname.charAt(0).toUpperCase();
+            // console.log('!!!!! CONTACTS DETAILS - CONTACT INITIAL: ', this.contact_fullname_initial);
+            // const charIndex = this.contact_fullname_initial.charCodeAt(0) - 65
+            // const colourIndex = charIndex % 19;
+            // console.log('!!!!! CONTACTS DETAILS - CONTACT colourIndex: ', colourIndex);
+            // this.fillColour = this.colours[colourIndex];
+            // console.log('!!!!! CONTACTS DETAILS - CONTACT fillColour: ', this.fillColour);
 
-            this.fillColour = this.colours[colourIndex];
-            console.log('!!!!! CONTACTS DETAILS - CONTACT fillColour: ', this.fillColour);
-
+            this.contact_fullname_initial = avatarPlaceholder(this.contact_details.fullname);
+            this.fillColour = getColorBck(this.contact_details.fullname);
           } else {
 
             this.contact_fullname_initial = 'n.a.';
