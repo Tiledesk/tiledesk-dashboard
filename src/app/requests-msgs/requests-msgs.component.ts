@@ -15,6 +15,7 @@ import { PlatformLocation } from '@angular/common';
 import { BotLocalDbService } from '../services/bot-local-db.service';
 import { UsersService } from '../services/users.service';
 import { DOCUMENT } from '@angular/platform-browser';
+import { avatarPlaceholder, getColorBck } from '../utils/util';
 
 @Component({
   selector: 'appdashboard-requests-msgs',
@@ -463,15 +464,16 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.requester_fullname = request[0].requester_fullname;
             console.log('* REQUESTER FULLNAME: ', this.requester_fullname);
 
-            this.requester_fullname_initial = this.requester_fullname.charAt(0).toUpperCase();
+            // this.requester_fullname_initial = this.requester_fullname.charAt(0).toUpperCase();
+            // console.log('REQUESTER FULL NAME - INITIAL: ', this.requester_fullname_initial);
+            // const charIndex = this.requester_fullname_initial.charCodeAt(0) - 65
+            // const colourIndex = charIndex % 19;
+            // console.log('REQUESTER FULL NAME - colourIndex: ', colourIndex);
+            // this.fillColour = this.colours[colourIndex];
+            // console.log('REQUESTER FULL NAME - fillColour: ', this.fillColour);
 
-            console.log('REQUESTER FULL NAME - INITIAL: ', this.requester_fullname_initial);
-            const charIndex = this.requester_fullname_initial.charCodeAt(0) - 65
-            const colourIndex = charIndex % 19;
-            console.log('REQUESTER FULL NAME - colourIndex: ', colourIndex);
-
-            this.fillColour = this.colours[colourIndex];
-            console.log('REQUESTER FULL NAME - fillColour: ', this.fillColour);
+            this.requester_fullname_initial = avatarPlaceholder(this.requester_fullname);
+            this.fillColour = getColorBck(this.requester_fullname);
 
           } else {
 
