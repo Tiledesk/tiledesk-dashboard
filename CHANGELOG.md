@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 1.0.0
+- Adds a tooltip to column "visibility" of the departments list  
+
 ### 0.9.51
 - Adds the ability of set a department as hidden so that it is not displayed in the list of widget's available departments
 
