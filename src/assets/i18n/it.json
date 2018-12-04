@@ -483,7 +483,8 @@
         "Cancel": "Annulla",
         "Confirm": "Conferma",
         "tooltipDeleteDept": "Elimina Dipartimento",
-        "tooltipEditDept": "Modifica Dipartimento"
+        "tooltipEditDept": "Modifica Dipartimento",
+        "VisibleColumnTooltip": "Solo i dipartimenti selezionati verranno visualizzati nell'elenco dei dipartimenti del widget"
     },
     "DeptsAddEditPage": {
         "AddDept": "Aggiungi Dipartimento",

@@ -483,7 +483,8 @@
         "Cancel": "Cancel",
         "Confirm": "Confirm",
         "tooltipDeleteDept": "Delete Department",
-        "tooltipEditDept": "Edit Department"
+        "tooltipEditDept": "Edit Department",
+        "VisibleColumnTooltip": "Only selected departments will be displayed in the list of widget's departments"
     },
     "DeptsAddEditPage": {
         "AddDept": "Add Department",
