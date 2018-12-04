@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 0.9.51
+- Adds the ability of set a department as hidden so that it is not displayed in the list of widget's available departments
+
 ### 0.9.50
 - Avatars of the contacts : adequate colors and initials to those of the widget
 - Users list: translated the roles
