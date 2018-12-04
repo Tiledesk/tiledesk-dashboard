@@ -59,7 +59,7 @@ export class DepartmentService {
       // debugger
       if (this.project) {
         console.log('00 -> DEPT SERVICE project ID from AUTH service subscription  ', this.project._id);
-        this.MONGODB_BASE_URL = this.BASE_URL + this.project._id + '/departments'
+        this.MONGODB_BASE_URL = this.BASE_URL + this.project._id + '/departments/'
 
         // FOR TEST - CAUSES ERROR WITH A NO VALID PROJECT ID
         // this.MONGODB_BASE_URL = this.BASE_URL + '5b3fa93a6f0537d8b01968fX' + '/departments/'
@@ -99,11 +99,12 @@ export class DepartmentService {
   }
 
   /**
-   * READ (GET ALL DEPTS WITH THE CURRENT PROJECT ID)
+   * GET ALL DEPTS WITH THE CURRENT PROJECT ID AND WITHOUT FILTER FOR STATUS
+   * NOTE: THE CALLBACK TO GET THE DEPTS FILTERED FOR STATUS IS RUNNED BY THE WIDGET
    * NOTE: chat21-api-node.js READ THE CURRENT PROJECT ID FROM THE URL SO IT SO NO LONGER NECESSARY TO PASS THE PROJECT ID AS PARAMETER
    */
   public getDeptsByProjectId(): Observable<Department[]> {
-    const url = this.MONGODB_BASE_URL;
+    const url = this.MONGODB_BASE_URL + 'allstatus';
     // const url = 'https://api.tiledesk.com/v1/5b44c82def5dca0014d777ac/departments/'
     console.log('DEPARTMENTS URL', url);
     const headers = new Headers();
