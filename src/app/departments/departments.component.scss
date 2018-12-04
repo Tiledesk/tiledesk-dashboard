@@ -148,3 +148,41 @@
     visibility: visible;
   }
   // end TOOLTIP
+
+// CUSTOM TOOLTIP FOR THE COLUMN VISIBLE
+.tooltip_custom {
+    cursor:pointer;
+    position: relative;
+    display: inline-block;
+    // border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  }
+  
+  /* Tooltip text */
+  .tooltip_custom  .tooltiptext_custom {
+    visibility: hidden;
+    width: 150px;
+    // background-color: rgba(0,0,0,0.6);
+    color: #fff;
+    text-align: center;
+    padding: 5px 5px;
+    border-radius: 5px;
+    font-size: 12px !important;
+  
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 1050;;
+    /* Position the tooltip text - TOP */
+    // bottom: 100%;
+    // left: 50%; 
+    margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+
+    // NEW
+    box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
+    background-color: #394f5a;
+  }
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .tooltip_custom:hover .tooltiptext_custom {
+    visibility: visible;
+  }
+
