@@ -112,7 +112,7 @@
                 <tr *ngFor="let dept of departments">
                   <td *ngIf="dept?.default !== true">
                     <span class="tooltipx">
-                        <span style="font-weight: 500;"> 
+                        <span style="font-weight: 400;"> 
                           {{ dept?.name }} 
                         </span>
                         <span style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px; display: block;">
@@ -142,10 +142,12 @@
                   <td *ngIf="dept?.default !== true" style="">
                       <!-- {{ dept?.id_bot }}  -->
                     <span *ngIf="dept?.id_bot"> 
-                      <span style="color: #aaaaaa">{{ 'DepartmentsPage.ActivatedBot' | translate }} </span> 
+                      <span style="color: #7695a5; font-size: 12px; font-weight:400">
+                        {{ 'DepartmentsPage.ActivatedBot' | translate }} 
+                      </span> 
 
                       <!-- use case: NO ERROR to get the bot -->
-                      {{ dept?.hasDeptName }}<span *ngIf="dept.bot_only == true" style="font-size: 12px; color: #31708f; font-weight: 500"> {{ 'DepartmentsPage.OnlyBot' | translate }} </span> 
+                      {{ dept?.hasDeptName }}<span *ngIf="dept.bot_only == true" style="font-size: 12px; color: #7695a5; font-weight: 400"> {{ 'DepartmentsPage.OnlyBot' | translate }} </span> 
 
                       <!-- use case: ERROR to get the bot: for example the bot has been deleted (while the bot id is yet in the dept object) 
                       so getBotById return an error  -->
@@ -155,7 +157,9 @@
                       </span>  -->
                     </span>
 
-                    <span *ngIf="!dept?.id_bot" style="color: #aaaaaa">{{ 'DepartmentsPage.NoBotActivated' | translate }} </span>
+                    <span *ngIf="!dept?.id_bot" style="color: #7695a5; font-size: 12px; font-weight:400">
+                      {{ 'DepartmentsPage.NoBotActivated' | translate }} 
+                    </span>
                   </td>
 
                   <td *ngIf="dept?.default !== true" style="text-transform: capitalize;">
@@ -170,7 +174,9 @@
                     <!-- USE CASE 1: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NOT NULL AND NOT UNDEFINED + THE GROUP NOT HAS TRASHED VALUE -->
                     <!-- dept?.routing !== 'fixed' &&  -->
                     <span *ngIf="dept?.hasGroupName && !dept?.groupHasBeenTrashed"> 
-                      <span style="color: #aaaaaa"> {{ 'DepartmentsPage.Group' | translate }}</span> {{ dept?.hasGroupName }}  
+                      <span style="color: #7695a5; font-size: 12px; font-weight:400"> 
+                        {{ 'DepartmentsPage.Group' | translate }}
+                      </span> <span style="font-weight:400"> {{ dept?.hasGroupName }} </span>  
                     </span>
 
                     <!-- USE CASE 2: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NOT NULL AND NOT UNDEFINED + THE GROUP HAS TRASHED VALUE = TRUE -->
@@ -185,7 +191,7 @@
                     <!-- USE CASE 3: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NULL OR NOT UNDEFINED -->
                     <!-- dept?.routing !== 'fixed' &&  -->
                     <span *ngIf="!dept?.hasGroupName"> 
-                        {{ 'DepartmentsPage.AllUsers' | translate }}
+                       {{ 'DepartmentsPage.AllUsers' | translate }} 
                     </span>
 
                     
