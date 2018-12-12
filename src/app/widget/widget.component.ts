@@ -555,8 +555,8 @@ export class WidgetComponent implements OnInit {
 
     // '&themecolor=' + this.primaryColor
     // '&themeforegroundcolor=' + this.secondaryColor
-    // http://testwidget.tiledesk.com/testsitedev?projectid='
-    const url = 'http://testwidget.tiledesk.com/testsite?projectid='
+    // http://testwidget.tiledesk.com/testsite?projectid='
+    const url = 'http://testwidget.tiledesk.com/testsitenw?projectid='
       + this.projectId
       + paramPreChatForm
       + this.paramCalloutTimer

@@ -127,6 +127,8 @@
     "owner": "Proprietario",
     "admin": "Amministratore",
     "agent":"Agente",
+    "GreetingsAndCallout": "Greetings e Callout",
+    "CustomizeHowYouGreet":"Personalizza i messaggi per interagire con i visitatori del tuo sito web incoraggiandoli a iniziare una chat con te",
     "UserProfile": {
         "Profile": "Profilo",
         "UploadImage": "Carica immagine",

@@ -214,7 +214,7 @@
       var js, fjs = d.getElementsByTagName(s)[0];
       if (d.getElementById(id)) return;
       js = d.createElement(s); js.id = id; //js.async=!0;
-      js.src = &quot;https://widget.tiledesk.com/tiledesk.js&quot;;
+      js.src = &quot;https://widget.tiledesk.com/v2/tiledesk.js&quot;;
       fjs.parentNode.insertBefore(js, fjs);
     }(document, &#39;script&#39;, &#39;tiledesk-jssdk&#39;));
 &lt;/script&gt;</textarea>
@@ -290,54 +290,25 @@
 								</div>
 							</div>
 
-							<!-- =========================== WIDGET  APPEARENCE  =========================== -->
-							<div class="row">
-									<div class="col-sm-12" >
-										<div style="margin-left:15px;padding-bottom: 8px; border-bottom: 1px solid #e1eef4; max-width: 850px; ">    
-											<label style="color: #566787; margin-top:8px; margin-bottom:8px; font-size:16px; font-family: Google Sans, sans-serif;">
-												<!-- {{ 'WidgetColors' | translate }} -->
-												{{ 'WidgetAppearance' | translate }}
-												
-											</label>
-											<div class="row" style="border-left: #5bc0de 2px solid; margin-left: 0px;">
-												
-												<div class="col-sm-8" style="">  
-													<span style="color: rgb(118, 149, 165)"> 
-														{{ 'CustomizeTheWidgetColors' | translate }}
-														<!-- Customize colors, logo, welcome message and alignment -->
-													</span> 
-												</div>
-												
-												<div class="col-sm-4" style="cursor: pointer;  text-align: right" (click)="goToWidgetDesign()">
-														<!-- #B5D2E1 -->
-										
-													<span style="color: #9c27b0;  vertical-align: middle; font-weight: 500" > 
-															{{ 'Customize' | translate }}
-													</span> 	
-													<i class="material-icons" style="vertical-align: middle; color: #9c27b0;">
-														keyboard_arrow_right
-													</i>
-												</div>
-											</div>    
-										</div>
-	
-									</div>
-								</div>
+							
 						
-							<!-- =========================== WIDGET ALIGNMENT =========================== -->
+							<!-- =========================== WIDGET GREETING & CALLOUT =========================== -->
 							<div class="row">
 								<div class="col-sm-12" >
 									<div style="margin-left:15px;padding-bottom: 8px; border-bottom: 1px solid #e1eef4; max-width: 850px; ">    
 										<label style="color: #566787; margin-top:8px; margin-bottom:8px; font-size:16px; font-family: Google Sans, sans-serif;">
 											<!-- {{ 'Resourcepage.WidgetAlignment' | translate }} -->
 											<!-- Greetings -->
-											Callout
+											{{ 'GreetingsAndCallout' | translate }}
+											
 										</label>
 										<div class="row" style="border-left: #5bc0de 2px solid; margin-left: 0px;">
 											
 											<div class="col-sm-8" style="">  
 												<span style="color: rgb(118, 149, 165)"> 
-														{{ 'Resourcepage.MakeTheFirstStep' | translate }}
+														<!-- {{ 'Resourcepage.MakeTheFirstStep' | translate }} -->
+														{{ 'CustomizeHowYouGreet' | translate }}
+														
 													<!-- Customize how you greet your site visitors when they select a department. -->
 
 													<!-- <span style="font-weight:500; color: #00bcd4" *ngIf="alignmentSelected === 'right'"> 
@@ -354,6 +325,40 @@
 									
 												<span style="color: #9c27b0;  vertical-align: middle; font-weight: 500" > 
 													{{ 'Customize' | translate }}
+												</span> 	
+												<i class="material-icons" style="vertical-align: middle; color: #9c27b0;">
+													keyboard_arrow_right
+												</i>
+											</div>
+										</div>    
+									</div>
+
+								</div>
+							</div>
+
+							<!-- =========================== WIDGET  APPEARENCE  =========================== -->
+							<div class="row">
+								<div class="col-sm-12" >
+									<div style="margin-left:15px;padding-bottom: 8px; border-bottom: 1px solid #e1eef4; max-width: 850px; ">    
+										<label style="color: #566787; margin-top:8px; margin-bottom:8px; font-size:16px; font-family: Google Sans, sans-serif;">
+											<!-- {{ 'WidgetColors' | translate }} -->
+											{{ 'WidgetAppearance' | translate }}
+											
+										</label>
+										<div class="row" style="border-left: #5bc0de 2px solid; margin-left: 0px;">
+											
+											<div class="col-sm-8" style="">  
+												<span style="color: rgb(118, 149, 165)"> 
+													{{ 'CustomizeTheWidgetColors' | translate }}
+													<!-- Customize colors, logo, welcome message and alignment -->
+												</span> 
+											</div>
+											
+											<div class="col-sm-4" style="cursor: pointer;  text-align: right" (click)="goToWidgetDesign()">
+													<!-- #B5D2E1 -->
+									
+												<span style="color: #9c27b0;  vertical-align: middle; font-weight: 500" > 
+														{{ 'Customize' | translate }}
 												</span> 	
 												<i class="material-icons" style="vertical-align: middle; color: #9c27b0;">
 													keyboard_arrow_right

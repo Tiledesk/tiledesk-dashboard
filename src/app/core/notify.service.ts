@@ -24,6 +24,8 @@ export class NotifyService {
   notify: any;
   notifySendingVerifyEmail: any;
 
+  notifyArchivingRequest: any;
+
   constructor(
     private router: Router,
     public location: Location,
@@ -163,6 +165,19 @@ export class NotifyService {
       this.notifySendingVerifyEmail.update({ 'type': 'success', 'message': '<i class="material-icons" style="vertical-align: middle;"> done </i> <span style="vertical-align: middle; display: inline-block; padding-right:5px">Verification link has been sent to: </span>' + '<span style="padding-left:28px">' + user_email + '</span>' });
     }, 2000);
   }
+
+  showArchivingRequestNotification() {
+    this.notifyArchivingRequest = $.notify('Archiving the request ...', {
+      allow_dismiss: false,
+      showProgressbar: false,
+    });
+
+  }
+  showRequestIsArchivedNotification(request_id) {
+// tslint:disable-next-line:max-line-length
+    this.notifyArchivingRequest.update({ 'type': 'success', 'message': '<i class="material-icons" style="vertical-align: middle;"> done </i> <span style="vertical-align: middle; display: inline-block; padding-right:5px">request with id: ' + request_id + ' has been moved to History </span>' + '<span style="padding-left:28px">' + '</span>' })
+  }
+
 
 
 }

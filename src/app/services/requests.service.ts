@@ -117,7 +117,7 @@ export class RequestsService {
           this._seeOnlyRequestsHaveCurrentUserAsAgent = false;
         }
       }
- 
+
     }, (err) => {
       console.log('SEE REQUEST IM AGENT - GET USER ROLE - ERROR ', err);
     }, () => {
@@ -263,7 +263,7 @@ export class RequestsService {
     }, error => {
       console.log('GET REQUEST - ERROR ', error)
     }, () => {
-      console.log('GET REQUEST * COMPLETE' )
+      console.log('GET REQUEST * COMPLETE')
     });
   }
 
@@ -830,7 +830,7 @@ export class RequestsService {
     return this.http
       .get(url, { headers })
       .map((response) => response.text());
-      // .map((response) => JSON.stringify(response.text()));
+    // .map((response) => JSON.stringify(response.text()));
   }
 
 

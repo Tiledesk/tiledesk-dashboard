@@ -509,7 +509,7 @@ export class RequestsListComponent implements OnInit {
   testWidgetPage() {
     // const url = 'http://support.tiledesk.com/testsite/?projectid=' + this.projectId;
     // + '&projectname=' + this.projectName
-    const url = 'http://testwidget.tiledesk.com/testsite?projectid=' + this.projectId + '&prechatform=' + false + '&callout_timer=' + false;
+    const url = 'http://testwidget.tiledesk.com/testsitenw?projectid=' + this.projectId + '&prechatform=' + false + '&callout_timer=' + false + '&align=right';
     window.open(url, '_blank');
   }
 
@@ -522,12 +522,15 @@ export class RequestsListComponent implements OnInit {
   }
 
   archiveTheRequestHandler() {
+    
+    this.notify.showArchivingRequestNotification();
     console.log('HAS CLICKED ARCHIVE REQUEST ');
 
     this.displayArchiveRequestModal = 'none';
 
     this.SHOW_CIRCULAR_SPINNER = true;
-    this.displayArchivingInfoModal = 'block'
+
+    // this.displayArchivingInfoModal = 'block'
 
     this.getFirebaseToken(() => {
 
@@ -551,7 +554,8 @@ export class RequestsListComponent implements OnInit {
             this.ARCHIVE_REQUEST_ERROR = false;
 
             // =========== NOTIFY SUCCESS===========
-            this.notify.showNotification(`request with id: ${this.id_request_to_archive} has been moved to History`, 2, 'done');
+            // this.notify.showNotification(`request with id: ${this.id_request_to_archive} has been moved to History`, 2, 'done');
+            this.notify.showRequestIsArchivedNotification(this.id_request_to_archive);
           });
     });
   }

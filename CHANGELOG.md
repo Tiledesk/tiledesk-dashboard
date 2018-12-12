@@ -1,6 +1,12 @@
 
 # tiledesk-dashboard
 
+### 1.0.1
+- Adds widget appearance preview
+- Adds the ability to change the widget logo
+- Adds the ability to customize the widget welcome messages
+- Adds the ability to customize the online / offline messages
+
 ### 1.0.0
 - Adds a tooltip to the column "visibility" of the departments list 
 
