@@ -196,13 +196,13 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   getRequestsByDay() {
     this.requestsService.requestsByDay().subscribe((requestsByDay: any) => {
-      console.log('!!! ANALYTICS - REQUESTS BY DAY ', requestsByDay);
+      console.log('»» !!! ANALYTICS - REQUESTS BY DAY ', requestsByDay);
 
       // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
       const last7days_initarray = []
       for (let i = 0; i <= 6; i++) {
         // console.log('!!! ANALYTICS - LOOP INDEX', i);
-        last7days_initarray.push({ 'count': 0, day: moment().subtract(i, 'd').format('D-MM-YYYY') })
+        last7days_initarray.push({ 'count': 0, day: moment().subtract(i, 'd').format('D-M-YYYY') })
       }
 
       last7days_initarray.sort(function compare(a, b) {
@@ -216,7 +216,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
       })
   
-  console.log('!!! ANALYTICS - REQUESTS BY DAY - MOMENT LAST SEVEN DATE', last7days_initarray);
+  console.log('»» !!! ANALYTICS - REQUESTS BY DAY - MOMENT LAST SEVEN DATE (init array)', last7days_initarray);
 
     const requestsByDay_series_array = [];
     const requestsByDay_labels_array = []
@@ -236,7 +236,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
       }
 
     }
-    console.log('!!! ANALYTICS - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
+    console.log('»» !!! ANALYTICS - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
 
 
     /**
@@ -245,27 +245,28 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     // will return the element i.e. object from requestsByDay_formatted_array if the day is found in the requestsByDay_formatted_array.
     // If not, then the same element in last7days i.e. obj is returned.
     const requestByDays_final_array = last7days_initarray.map(obj => requestsByDay_array.find(o => o.day === obj.day) || obj);
-    console.log('!!! ANALYTICS - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
+    console.log('»» !!! ANALYTICS - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
 
     const _requestsByDay_series_array = [];
     const _requestsByDay_labels_array = [];
 
     requestByDays_final_array.forEach(requestByDay => {
+      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
       _requestsByDay_series_array.push(requestByDay.count)
       
       const splitted_date = requestByDay.day.split('-');
-      console.log('!!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
+      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
       _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
     });
 
     
-    console.log('!!! ANALYTICS - REQUESTS BY DAY - SERIES (ARRAY OF COUNT - to use for debug)', requestsByDay_series_array);
-    console.log('!!! ANALYTICS - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDay_series_array);
-    console.log('!!! ANALYTICS - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
-    console.log('!!! ANALYTICS - REQUESTS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', _requestsByDay_labels_array);
+    console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (ARRAY OF COUNT - to use for debug)', requestsByDay_series_array);
+    console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDay_series_array);
+    console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
+    console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', _requestsByDay_labels_array);
 
     const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
-    console.log('!!! ANALYTICS - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
+    console.log('»» !!! ANALYTICS - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
 
     const dataRequestsByDayChart: any = {
 
@@ -290,9 +291,9 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     this.startAnimationForLineChart(requestsByDayChart);
 
   }, (error) => {
-    console.log('!!! ANALYTICS - REQUESTS BY DAY - ERROR ', error);
+    console.log('»» !!! ANALYTICS - REQUESTS BY DAY - ERROR ', error);
   }, () => {
-    console.log('!!! ANALYTICS - REQUESTS BY DAY * COMPLETE *');
+    console.log('»» !!! ANALYTICS - REQUESTS BY DAY * COMPLETE *');
   });
   }
 
@@ -316,7 +317,7 @@ getCurrentProject() {
  * 1) GET THE DEPTS OF THE PROJECT AND CREATED AN ARRAY WITH THE ID OF THE DEPARTMENTS
  * 2) FROM  'ALL' THE REQUESTS (RETURNED  FROM THE SUBSCRIPTION) IS CREATED AN ARRAY WITH THE DEPARTMENT IDS  CONTAINED IN THE REQUESTS
  * 3) FOR EACH ID CONTAINED IN THE ARRAY OF IDS OF THE DEPTS OF THE PROJECT IS CHECKED THE OCCURRENCE IN THE ARRAY OF THE DEPTS ID RETURNED FROM ALL THE REQUESTS
- * ******************************************************************************************** 
+ * ********************************************************************************************
  */
 getCountOf_AllRequestsForDept() {
   this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {

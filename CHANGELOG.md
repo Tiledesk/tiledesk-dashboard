@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 1.0.2
+- Analytics, count of last 7 days requests: fixed the bug "month label and count of requests are undefined if the month is represented with one digit"
+
 ### 1.0.1
 - Adds widget appearance preview
 - Adds the ability to change the widget logo
