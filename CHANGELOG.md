@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 1.0.4
+- Sorts the dates in ascending order in the graph "Number of requests last 7 days" 
+
 ### 1.0.3
 - Adds to the user with role Agent the ability to reassign a request
 - Adds to the user with role Agent the ability to add an agent to serve a request
