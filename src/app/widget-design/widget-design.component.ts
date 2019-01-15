@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, HostListener } from '@angular/core';
+import { Component, OnInit, AfterViewInit, HostListener, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
 import { slideInOutAnimation } from './slide-in-out.animation';
 import { ColorPickerService, Cmyk } from 'ngx-color-picker';
@@ -20,7 +20,7 @@ import { DepartmentService } from '../services/mongodb-department.service';
 })
 
 
-export class WidgetDesignComponent implements OnInit, AfterViewInit {
+export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
   // '#2889e9'
   public primaryColor: string;
   public primaryColorRgb: any
@@ -126,6 +126,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
   newInnerWidth: any;
   initInnerWidth: any;
   custom_breakpoint: boolean;
+  sub: Subscription;
 
   constructor(
     public location: Location,
@@ -151,8 +152,6 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
       console.log('+ WIDGET DESIGN - FRAGMENT ', this.fragment)
     });
 
-
-
     // PRIMARY COLOR AND PROPERTIES CALCULATED FROM IT
     // this.primaryColor = 'rgb(40, 137, 233)';
     // this.primaryColor = this.widgetDefaultSettings.themeColor
@@ -170,6 +169,10 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
 
     // this.subscribeToWidgetAlignment();
 
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -202,7 +205,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
   }
 
   getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
+    this.sub = this.auth.project_bs.subscribe((project) => {
       if (project) {
         this.id_project = project._id
         console.log('WIDGET DESIGN - SUBSCRIBE TO CURRENT - PRJCT-ID ', this.id_project)
@@ -420,7 +423,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
         this.widgetObj = project.widget;
 
         /**
-         * ******************************** calloutTimer (WIDGET DEFINED) *******************************************
+         * ******************************** calloutTimer (WIDGET DEFINED) ***********************************
          */
         if (project.widget.calloutTimer) {
           this.calloutTimerSecondSelected = project.widget.calloutTimer;
@@ -437,7 +440,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
         }
 
         /**
-         * ******************************** calloutTitle (WIDGET DEFINED) *******************************************
+         * ******************************** calloutTitle (WIDGET DEFINED) ************************************
          */
         if (project.widget.calloutTitle) {
           this.calloutTitle = project.widget.calloutTitle;
@@ -448,7 +451,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit {
         }
 
         /**
-         * ******************************** calloutMsg (WIDGET DEFINED) *******************************************
+         * ******************************** calloutMsg (WIDGET DEFINED) ***************************************
          */
         if (project.widget.calloutMsg) {
           this.calloutMsg = project.widget.calloutMsg;

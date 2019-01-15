@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { NotifyService } from '../core/notify.service';
 import { avatarPlaceholder, getColorBck } from '../utils/util';
-
+import { UsersService } from '../services/users.service';
 @Component({
   selector: 'appdashboard-contacts',
   templateUrl: './contacts.component.html',
@@ -55,12 +55,14 @@ export class ContactsComponent implements OnInit {
 
   selectedContactEmail: string;
   selectedContactEmailValue: string;
+  IS_CURRENT_USER_AGENT: boolean;
   constructor(
     private http: Http,
     private contactsService: ContactsService,
     private router: Router,
     private auth: AuthService,
-    private notify: NotifyService
+    private notify: NotifyService,
+    private usersService: UsersService
   ) { }
 
   ngOnInit() {
@@ -68,6 +70,7 @@ export class ContactsComponent implements OnInit {
     // this.auth.checkRoleForCurrentProject();
     this.getContacts();
     this.getCurrentProject();
+    this.getProjectUserRole();
   }
 
   getCurrentProject() {
@@ -76,6 +79,22 @@ export class ContactsComponent implements OnInit {
       if (project) {
         this.projectId = project._id
         // console.log('00 -> !!!! CONTACTS project ID from AUTH service subscription  ', this.projectId)
+      }
+    });
+  }
+  getProjectUserRole() {
+    this.usersService.project_user_role_bs.subscribe((user_role) => {
+      const current_user_role = user_role;
+      console.log('CONTACTS COMP - SUBSCRIBE PROJECT_USER_ROLE_BS ', current_user_role);
+      if (current_user_role) {
+        console.log('CONTACTS COMP - PROJECT USER ROLE ', current_user_role);
+        if (current_user_role === 'agent') {
+          this.IS_CURRENT_USER_AGENT = true;
+          console.log('CONTACTS COMP - PROJECT USER ROLE - IS CURRENT USER AGENT ', this.IS_CURRENT_USER_AGENT);
+        } else {
+          this.IS_CURRENT_USER_AGENT = false;
+          console.log('CONTACTS COMP - PROJECT USER ROLE - IS CURRENT USER AGENT ', this.IS_CURRENT_USER_AGENT);
+        }
       }
     });
   }

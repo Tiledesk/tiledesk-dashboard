@@ -262,7 +262,7 @@
                         </span> 
                       </button>
 
-                      <button type="button" class="btn btn-danger btn-simple btn-xs tooltipx" (click)='openDeleteContactModal(contact?._id, contact?.fullname)'>
+                      <button type="button" class="btn btn-danger btn-simple btn-xs tooltipx" [disabled]="IS_CURRENT_USER_AGENT === true" (click)='openDeleteContactModal(contact?._id, contact?.fullname)'>
                         <i class="material-icons">close</i>
                         <span class="tooltiptext-custom" style="text-transform:none">
                           {{ 'DeleteContact' | translate }} 

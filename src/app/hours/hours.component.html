@@ -225,14 +225,14 @@
                             <!-- placeholder button - is dispalyed when the day is closed and when operating hours are not active -->
                             <button *ngIf="d?.isOpen === false || !isActiveOperatingHours" type="button" rel="tooltip" title="remove second interval" class="btn btn-default btn-simple btn-xs  btn-circle close_pm disabled"
                               style="padding-left: 1px;padding-top: 1px; padding-right: 4px">
-                              <i class="material-icons"  style="font-size: 12px; font-weight: 600; padding-bottom: 2px">
+                              <i class="material-icons"  style="font-size: 12px; font-weight: 600; padding-bottom: 3px">
                                 clear
                               </i>
                             </button>
 
                             <button *ngIf="d?.isOpenPm === true && d?.isOpen === true && isActiveOperatingHours" type="button" rel="tooltip" title="remove second interval" class="btn btn-danger btn-simple btn-xs  btn-circle close_pm"
                               (click)="close_Pm(d?._id)" style="padding-left: 1px;padding-top: 1px; padding-right: 4px">
-                              <i class="material-icons"  style="font-size: 12px; font-weight: 600; padding-bottom: 2px">
+                              <i class="material-icons"  style="font-size: 12px; font-weight: 600; padding-bottom: 3px">
                                 clear
                               </i>
                             </button>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
 import { Http, Headers, RequestOptions } from '@angular/http';
@@ -7,13 +7,13 @@ import { WidgetService } from '../services/widget.service';
 import { NotifyService } from '../core/notify.service';
 import { ProjectService } from '../services/project.service';
 import { TranslateService } from '@ngx-translate/core';
-
+import { Subscription } from 'rxjs/Subscription';
 @Component({
   selector: 'app-widget',
   templateUrl: './widget.component.html',
   styleUrls: ['./widget.component.scss']
 })
-export class WidgetComponent implements OnInit {
+export class WidgetComponent implements OnInit, OnDestroy {
   @ViewChild('testwidgetbtn') private elementRef: ElementRef;
 
   project: Project;
@@ -84,7 +84,8 @@ export class WidgetComponent implements OnInit {
   paramWellcomeTitle: string;
   paramWellcomeMsg: string;
   paramLogoChat: string;
-
+  sub: Subscription;
+  
   constructor(
     http: Http,
     private auth: AuthService,
@@ -110,12 +111,16 @@ export class WidgetComponent implements OnInit {
     console.log('**** ON INIT ALIGNMENT SELECTED ', this.alignmentSelected)
   }
 
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+  }
+
   getBrowserLang() {
     this.browserLang = this.translate.getBrowserLang();
     console.log('WIDGET DESIGN - BROWSER LANG ', this.browserLang)
   }
   getCurrentProject() {
-    this.auth.project_bs
+    this.sub = this.auth.project_bs
       .subscribe((project) => {
         this.project = project
         console.log('00 -> WIDGET COMP project from AUTH service subscription  ', project)
@@ -132,7 +137,7 @@ export class WidgetComponent implements OnInit {
   }
 
   getProjectById() {
-    this.projectService.getProjectById(this.projectId).subscribe((project: any) => {
+   this.projectService.getProjectById(this.projectId).subscribe((project: any) => {
       // console.log('WIDGET DESIGN - GET PROJECT BY ID - PROJECT OBJECT: ', project);
 
       console.log('»» WIDGET - PRJCT-WIDGET (onInit): ', project.widget);
@@ -462,9 +467,6 @@ export class WidgetComponent implements OnInit {
     }
   }
 
-
-
-
   testWidgetPage() {
     this.elementRef.nativeElement.blur();
     // http://testwidget.tiledesk.com/testsite/?projectid=5ad069b123c415001469574f&prechatform=false
@@ -579,5 +581,7 @@ export class WidgetComponent implements OnInit {
   goToWidgetSection() {
     this.router.navigate(['project/' + this.project._id + '/widget/design'], { fragment: 'alignment' });
   }
+
+
 
 }

@@ -1,6 +1,11 @@
 
 # tiledesk-dashboard
 
+### 1.0.3
+- Adds to the user with role Agent the ability to reassign a request
+- Adds to the user with role Agent the ability to add an agent to serve a request
+- Removes to the user with role Agent the ability to delete a contact
+
 ### 1.0.2
 - Analytics, count of last 7 days requests: fixed the bug "month label and count of requests are undefined if the month is represented with one digit"
 

@@ -132,8 +132,53 @@ export class HomeComponent implements OnInit {
   }
 
   openChat() {
-    const url = this.CHAT_BASE_URL
+    const url = this.CHAT_BASE_URL;
     window.open(url, '_blank');
+
+    // this.openWindow('tiledesk_chat', url)
+    // this.focusWin('tiledesk_chat')
+  }
+
+  openWindow(winName: any, winURL: any) {
+    const myWindows = new Array();
+    if (myWindows[winName] && !myWindows[winName].closed) {
+      alert('window already exists');
+    } else {
+      myWindows[winName] = window.open(winURL, winName);
+    }
+  }
+
+  focusWin(winName: any) {
+    const myWindows = new Array();
+    if (myWindows[winName] && !myWindows[winName].closed) {
+      myWindows[winName].focus();
+    } else {
+      alert('cannot focus closed or nonexistant window');
+    }
+  }
+
+  // loads an URL into the popup without reloading it
+  openChatWindow(chatUrl: any, chatWindowName: any) {
+    // open the window with blank url
+    const chatwin = window.open('', chatWindowName);
+    try {
+      // if we just opened the window
+      // console.log('1) mywin ', chatwin)
+      // console.log('1) mywin.document ', chatwin.document)
+      if (chatwin.closed || (!chatwin.document.URL) || (chatwin.document.URL.indexOf('about') === 0)) {
+        // console.log('2) mywin ', chatwin)
+        // console.log('2) mywin.document ', chatwin.document)
+        chatwin.location.href = chatUrl;
+      } else {
+        // console.log('3) mywin ', chatwin)
+        // console.log('3) mywin.document ', chatwin.document)
+        chatwin.focus();
+      }
+    } catch (err) {
+      console.log('err ', err)
+    }
+    // return the window
+    return chatwin;
   }
 
   // NO MORE USED
@@ -208,7 +253,7 @@ export class HomeComponent implements OnInit {
     });
   }
 
- 
+
 
   // !!!! NO MORE USED - MOVED IN USER SERVICE
   getAllUsersOfCurrentProject() {

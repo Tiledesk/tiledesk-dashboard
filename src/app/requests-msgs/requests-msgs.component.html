@@ -40,7 +40,8 @@
                           </a>
                         </li>
                         <li class="divider"></li>
-                        <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_AGENT === true}"> 
+                        <!-- [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_AGENT === true}" -->
+                        <li> 
                           <a (click)='openSelectUsersModal(action = "reassign")' style="padding-left: 15px; padding-right: 15px;">
                             <i class="material-icons" style="padding-right: 5px;">swap_horiz</i>
                             <span style="position: relative; top: 1px; cursor:pointer">
@@ -48,8 +49,8 @@
                             </span>
                           </a>
                         </li>
-
-                        <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_AGENT === true}"> 
+                        <!-- [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_AGENT === true}" -->
+                        <li> 
                           <a (click)='openSelectUsersModal(action = "invite")' style="padding-left: 15px; padding-right: 15px;">
                             <i class="material-icons" style="padding-right: 5px;">person_add</i>
                             <span style="position: relative; top: 1px; cursor:pointer">
