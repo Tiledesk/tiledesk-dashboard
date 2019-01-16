@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 1.0.5
+- Fixes some translations
+
 ### 1.0.4
 - Sorts the dates in ascending order in the graph "Number of requests last 7 days" 
 
