@@ -402,22 +402,26 @@ export class RequestsListComponent implements OnInit {
     const deptsNames = [];
 
     requests_array.forEach((request, index) => {
-      // console.log('REQUESTS-LIST COMP - REQUEST ', request, '#', index);
+      if (request && request.attributes) {
+        console.log('REQUESTS-LIST COMP - REQUEST ', request, '#', index);
 
-      // CREATES AN ARRAY WITH ALL THE DEPTS RETURNED IN THE REQUESTS OBJCTS
-      // (FROM THIS IS CREATED requestsDepts_uniqueArray)
-      depts_array.push({ '_id': request.attributes.departmentId, 'deptName': request.attributes.departmentName })
+        // CREATES AN ARRAY WITH ALL THE DEPTS RETURNED IN THE REQUESTS OBJCTS
+        // (FROM THIS IS CREATED requestsDepts_uniqueArray)
+        depts_array.push({ '_id': request.attributes.departmentId, 'deptName': request.attributes.departmentName })
 
-      // CREATES AN ARRAY WITH * ONLY THE IDs * OF THE DEPTS RETURNED IN THE REQUESTS OBJCTS
-      // THIS IS USED TO GET THE OCCURRENCE IN IT OF THE ID OF THE ARRAY this.requestsDepts_array
+        // CREATES AN ARRAY WITH * ONLY THE IDs * OF THE DEPTS RETURNED IN THE REQUESTS OBJCTS
+        // THIS IS USED TO GET THE OCCURRENCE IN IT OF THE ID OF THE ARRAY this.requestsDepts_array
 
-      /**
-       * USING DEPT ID  */
-      deptsIDs.push(request.attributes.departmentId)
-      /**
-       * USING DEPT NAME  */
-      // deptsNames.push(request.attributes.departmentName)
+        /**
+         * USING DEPT ID  */
+        deptsIDs.push(request.attributes.departmentId)
+        /**
+         * USING DEPT NAME  */
+        // deptsNames.push(request.attributes.departmentName)
+      } else {
+        console.log('REQUESTS-LIST COMP - REQUEST (else)', request, '#', index);
 
+      }
     });
     // console.log('REQUESTS-LIST COMP - DEPTS ARRAY NK', depts_array);
     // console.log('REQUESTS-LIST COMP - DEPTS ID ARRAY NK', deptsIDs);
@@ -426,7 +430,8 @@ export class RequestsListComponent implements OnInit {
     /**
      * *********************************************************************
      * ************************* REMOVE DUPLICATE **************************
-     * ********************************************************************* */
+     * *********************************************************************
+     * */
 
     /**
      * USING DEPT ID  */
@@ -522,7 +527,7 @@ export class RequestsListComponent implements OnInit {
   }
 
   archiveTheRequestHandler() {
-    
+
     this.notify.showArchivingRequestNotification();
     console.log('HAS CLICKED ARCHIVE REQUEST ');
 
