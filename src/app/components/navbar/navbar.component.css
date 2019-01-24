@@ -156,14 +156,19 @@ button.close {
     top: 10px;
     left: 245px;
     right: 0px;
-    width: 450px;
+    width: 275px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 5px;
+    padding-right: 3px;
+    /* width: 450px;
     padding-top: 10px;
-    padding-bottom: 10px;
+    padding-bottom: 10px; */
     cursor: pointer;
 }
 
 .is-user-profile-page {
-    left: 25px;
+    left: 25px !important;
 }
 
 @media (max-width: 991px){ 
@@ -185,8 +190,58 @@ button.close {
     }
 }
 
-@media (max-width: 468px){ 
+/* @media (max-width: 468px){ 
     .alert-pending-email-verification {
         width: 180px;
     }
+} */
+
+
+.alert-open-chat {
+    display: inline-block;
+    margin: 0px auto;
+    position: fixed;
+    transition: all 0.5s ease-in-out 0s;
+    z-index: 1031;
+    top: 10px;
+    left: 245px;
+    right: 0px;
+    width: 275px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 5px;
+    padding-right: 3px;
+    /* width: 450px;
+    padding-top: 10px;
+    padding-bottom: 10px; */
+    cursor: pointer;
+}
+
+@media (max-width: 991px){ 
+    .alert-open-chat {
+        right: 0px;
+        left: 0px;
+    }
+}
+
+@media (max-width: 768px){ 
+    .alert-open-chat {
+        width: 350px;
+    }
+}
+
+@media (max-width: 568px){ 
+    .alert-open-chat {
+        width: 300px;
+    }
+}
+
+/* @media (max-width: 468px){ 
+    .alert-open-chat {
+        width: 180px;
+    }
+} */
+
+.alert-open-chat-when-is-open-email-alert {
+    top: 42px !important;
 }

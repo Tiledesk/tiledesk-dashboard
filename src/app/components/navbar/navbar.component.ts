@@ -21,6 +21,7 @@ import { UsersService } from '../../services/users.service';
 import { environment } from '../../../environments/environment';
 import { isDevMode } from '@angular/core';
 import { UploadImageService } from '../../services/upload-image.service';
+import { NotifyService } from '../../core/notify.service';
 
 @Component({
     selector: 'app-navbar',
@@ -70,6 +71,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
     userProfileImageExist: boolean;
     userImageHasBeenUploaded: boolean;
+
+    HAS_OPENED_THE_CHAT: boolean;
     constructor(
         location: Location,
         private element: ElementRef,
@@ -81,7 +84,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         // FOR TEST
         private afs: AngularFirestore,
         private usersService: UsersService,
-        private uploadImageService: UploadImageService
+        private uploadImageService: UploadImageService,
+        private notifyService: NotifyService
     ) {
         this.location = location;
         this.sidebarVisible = false;
@@ -94,6 +98,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
 
     ngOnInit() {
+       
+        
         this.getCurrentProject();
         // tslint:disable-next-line:no-debugger
         // debugger
@@ -129,22 +135,38 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         this.hidePendingEmailNotification();
         this.detectUserProfilePage();
 
-        this.checkUserImageUploadIsComplete()
+        this.checkUserImageUploadIsComplete();
 
         // used when the page is refreshed
-        this.checkUserImageExist()
+        this.checkUserImageExist();
+        
+        this.getFromLocalStorageHasOpenedTheChat();
+        this.getFromNotifyServiceHasOpenedChat();
+      
 
     } // OnInit
 
+    // bs_hasClickedChat IS PUBLISHED WHEN THE USER CLICK THE CHAT BTN FROM SIDEBAR OR HOME
+    getFromNotifyServiceHasOpenedChat() {
+        this.notifyService.bs_hasClickedChat.subscribe((hasClickedChat) => {
+            console.log('NAVBAR - HAS CLICKED CHAT ? ', hasClickedChat);
+
+            if (hasClickedChat === true) {
+                this.HAS_OPENED_THE_CHAT = true
+            }
+        })
+    }
+
+
     checkUserImageExist() {
         this.usersService.userProfileImageExist.subscribe((image_exist) => {
-            console.log('USER-PROFILE - USER PROFILE EXIST ? ', image_exist);
+            console.log('NAVBAR - USER PROFILE EXIST ? ', image_exist);
             this.userProfileImageExist = image_exist;
         });
     }
     checkUserImageUploadIsComplete() {
         this.uploadImageService.imageExist.subscribe((image_exist) => {
-            console.log('USER-PROFILE - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
+            console.log('NAVBAR - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
             this.userImageHasBeenUploaded = image_exist;
         });
     }
@@ -685,6 +707,23 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     testExpiredSessionFirebaseLogout() {
         this.auth.testExpiredSessionFirebaseLogout(true)
     }
+    openChat() {
+        localStorage.setItem('chatOpened', 'true');
+        const url = this.CHAT_BASE_URL;
+        window.open(url, '_blank');
+        this.getFromLocalStorageHasOpenedTheChat();
+    }
 
+    getFromLocalStorageHasOpenedTheChat() {
 
+        const storedChatOpenedValue = localStorage.getItem('chatOpened');
+        console.log('+ + + STORED CHAT OPENED VALUE ', storedChatOpenedValue);
+        if (storedChatOpenedValue && storedChatOpenedValue === 'true') {
+            this.HAS_OPENED_THE_CHAT = true;
+            console.log('+ + + HAS OPENED THE CHAT ', this.HAS_OPENED_THE_CHAT);
+        } else {
+            this.HAS_OPENED_THE_CHAT = false;
+            console.log('+ + + HAS OPENED THE CHAT ', this.HAS_OPENED_THE_CHAT);
+        }
+    }
 }

@@ -218,7 +218,7 @@ export class ProjectsComponent implements OnInit {
 
     this.projectService.addMongoDbProject(this.project_name)
       .subscribe((project) => {
-        console.log('POST DATA PROJECT', project);
+        console.log('POST DATA PROJECT RESPONSE ', project);
 
         // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
         // THE SIDEBAR SIGNS UP FOR ITS PUBLICATION

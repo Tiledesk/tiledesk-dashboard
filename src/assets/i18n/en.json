@@ -167,9 +167,14 @@
         "UserProfile": "VIEW PROFILE",
         "RunChatInAStandAloneTab": "Run chat in a stand-alone tab",
         "PendingVerification": "Pending email verification",
+        "WhenPendingEmailVerification": "When pending email verification, some system features, such as email notifications, are disabled",
         "SomeSystemAreDisabled": "some system features, such as email notifications, are disabled",
         "AreYouSureYouWantToLogOut": "Are you sure you want to log out?",
-        "NoteThatThisWillNotChangeYourAvailability": "Note that this will not change the status of your availability."
+        "NoteThatThisWillNotChangeYourAvailability": "Note that this will not change the status of your availability.",
+        "OpenTheChat":"Open the chat to activate notifications!",
+        "ToManageTheMessages":"to manage the messages and activate the push notifications",
+        "OpenTheChatToActivateNotifications":"Open the chat to manage the messages and activate the push notifications",
+        "ClickHere":"Click here"
     },
     "SideBar": {
         "ViewAllProjects": "View all projects",

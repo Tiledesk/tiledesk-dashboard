@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 1.0.6
+- Displays an alert to encourage the user to open the chat
+
 ### 1.0.5
 - Fixes some translations
 

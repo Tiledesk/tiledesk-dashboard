@@ -100,7 +100,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     IS_MOBILE_MENU: boolean;
     scrollpos: number;
     elSidebarWrapper: any;
-
+   
+    
     constructor(
         private requestsService: RequestsService,
         private router: Router,
@@ -112,11 +113,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         private usersLocalDbService: UsersLocalDbService,
         private notify: NotifyService,
         private uploadImageService: UploadImageService
-    ) {
-
-        console.log('!!!!! HELLO SIDEBAR')
-
-    }
+    ) {  console.log('!!!!! HELLO SIDEBAR') }
 
 
     ngOnInit() {
@@ -519,13 +516,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     // RESOLVE THE BUG 'chat button remains focused after clicking'
+    // SET IN THE STORAGE THAT THE CHAT HAS BEEN OPENED
     removeChatBtnFocus() {
+        
+        this.notify.publishHasClickedChat(true);
+
+        localStorage.setItem('chatOpened', 'true');
         this.elementRef.nativeElement.blur();
     }
 
     // SE IMPLEMENTATO NELL 'AFTER VIEW INIT' RITORNA ERRORE:
     // Cannot read property 'nativeElement' of undefined
-    // PER ORA LO COMMENTO NELL 'AFTER VIEW INIT' 
+    // PER ORA LO COMMENTO NELL 'AFTER VIEW INIT'
     checkForUnathorizedRoute() {
         this.router.events.subscribe((val) => {
             if (this.location.path() !== '') {

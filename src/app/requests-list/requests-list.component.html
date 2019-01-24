@@ -7,9 +7,9 @@
       {{ 'SupportRequests' | translate }} 
     </p> 
 
-
+    <!-- z-index:1050 -->
     <ul id="pill-horizontal" *ngIf="ROLE_IS_AGENT === false" class="nav nav-pills nav-pills-info custom" 
-      style="position:relative; z-index:1050; margin-top: 14px; max-width: 528px;">
+      style="position:relative; z-index:1030; margin-top: 14px; max-width: 528px;">
       <li class="active" (click)="seeIamAgentRequests(seeAll = !seeAll)">
         <a href="#pill1" data-toggle="tab">
           {{ "AllAgentsRequests" | translate }} 

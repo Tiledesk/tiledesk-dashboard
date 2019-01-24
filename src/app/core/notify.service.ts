@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 declare var $: any;
 /// Notify users about errors and other helpful stuff
@@ -25,6 +26,11 @@ export class NotifyService {
   notifySendingVerifyEmail: any;
 
   notifyArchivingRequest: any;
+
+  displayCheckLIstModal: string;
+
+  public hasOpenChecklistModal: Subject<boolean> = new BehaviorSubject<boolean>(null);
+  public bs_hasClickedChat: Subject<boolean> = new BehaviorSubject<boolean>(null);
 
   constructor(
     private router: Router,
@@ -65,6 +71,20 @@ export class NotifyService {
 
   onOkExpiredSessionModal() {
     this.displayExpiredSessionModal = 'none'
+  }
+
+  showCheckListModal(_displayCecklistModal: boolean) {
+    console.log('NotifyService - displayCecklistModal ', _displayCecklistModal)
+    if (_displayCecklistModal === true) {
+      this.displayCheckLIstModal = 'block'
+      this.hasOpenChecklistModal.next(true);
+    }
+  }
+
+  // is CALLED FROM SIDEBAR AND HOME WHEN THE USER CLICK ON THE CHAT BTN
+  publishHasClickedChat(hasClickedChat: boolean) {
+    console.log('NotifyService  - hasClickedChat ', hasClickedChat);
+    this.bs_hasClickedChat.next(true);
   }
 
   // showNotification(from, align) {
@@ -174,7 +194,7 @@ export class NotifyService {
 
   }
   showRequestIsArchivedNotification(request_id) {
-// tslint:disable-next-line:max-line-length
+    // tslint:disable-next-line:max-line-length
     this.notifyArchivingRequest.update({ 'type': 'success', 'message': '<i class="material-icons" style="vertical-align: middle;"> done </i> <span style="vertical-align: middle; display: inline-block; padding-right:5px">request with id: ' + request_id + ' has been moved to History </span>' + '<span style="padding-left:28px">' + '</span>' })
   }
 

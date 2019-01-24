@@ -167,9 +167,14 @@
         "UserProfile": "VEDI PROFILO",
         "RunChatInAStandAloneTab": "Esegui la chat in una scheda autonoma",
         "PendingVerification": "Email non verificata",
+        "WhenPendingEmailVerification": "Se l'email non è verificata, alcune funzioni di sistema, come le notifiche via email, sono disabilitate",
         "SomeSystemAreDisabled": "alcune funzioni di sistema, come le notifiche via email, sono disabilitate",
         "AreYouSureYouWantToLogOut": "Sei sicuro di voler uscire?",
-        "NoteThatThisWillNotChangeYourAvailability": "Nota che questo non cambierà lo stato della tua disponibilità."
+        "NoteThatThisWillNotChangeYourAvailability": "Nota che questo non cambierà lo stato della tua disponibilità.",
+        "OpenTheChat":"Apri la chat per attivare le notifiche!",
+        "ToManageTheMessages":"per gestire i messaggi e attivare le notifiche push.",
+        "OpenTheChatToActivateNotifications":"Apri la chat per gestire i messaggi e attivare le notifiche push",
+        "ClickHere":"Clicca qui"
     },
     "SideBar": {
         "ViewAllProjects": "Visualizza tutti i progetti",
