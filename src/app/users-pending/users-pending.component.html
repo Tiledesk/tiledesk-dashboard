@@ -34,6 +34,8 @@
                         </span>
                       </th>
 
+                      <th></th>
+
                     </tr>
                 </thead>
 
@@ -74,6 +76,13 @@
                         {{ invites?.role }}
                       </span>
                         
+                    </td>
+
+                    <td>
+                      <span style="cursor: pointer; font-weight:400;color:#039be5" (click)="resendInvite(invites?._id)">
+                        {{ "UsersPage.ResendInvite" | translate }} 
+                      </span>
+                      
                     </td>
                   </tr>
 

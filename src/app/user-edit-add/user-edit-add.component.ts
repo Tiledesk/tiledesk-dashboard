@@ -39,6 +39,7 @@ export class UserEditAddComponent implements OnInit {
   user_role: string;
   EMAIL_IS_VALID = true;
 
+  selectedRole: string;
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -48,6 +49,8 @@ export class UserEditAddComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log('on init Selected Role ', this.role);
+    this.selectedRole = 'ROLE_NOT_SELECTED';
 
     this.auth.checkRoleForCurrentProject();
 
@@ -132,7 +135,7 @@ export class UserEditAddComponent implements OnInit {
 
   setSelected(role) {
     this.role = role;
-    console.log('Selected ROLE ', this.role)
+    console.log('setSelected Selected ROLE ', this.role)
 
     if (role !== 'ROLE_NOT_SELECTED') {
       this.ROLE_NOT_SELECTED = false;
@@ -140,6 +143,10 @@ export class UserEditAddComponent implements OnInit {
       this.ROLE_NOT_SELECTED = true;
     }
   }
+  // setSelectedRole() {
+  //   console.log('setSelected Selected ROLE ', this.selectedRole)
+  // }
+    
 
   emailChange(event) {
     console.log('!!!!! INVITE THE USER - EDITING EMAIL ', event);
@@ -156,7 +163,6 @@ export class UserEditAddComponent implements OnInit {
   }
 
   invite() {
-
     // show the modal windows
     this.display = 'block';
 
@@ -214,16 +220,22 @@ export class UserEditAddComponent implements OnInit {
       this.INVITE_USER_NOT_FOUND = false;
 
       // WHEN AN USER CLICK ON INVITE DISABLE THE BTN INVITE
-      this.ROLE_NOT_SELECTED = true;
+      // this.ROLE_NOT_SELECTED = true;
     });
 
   }
 
   onCloseModalHandled() {
-    console.log('CONTINUE PRESSED');
+    console.log('CONTINUE PRESSED ');
+    console.log('CONTINUE PRESSED Selected ROLE ', this.role);
+    // this.role = 'ROLE_NOT_SELECTED';
+    this.selectedRole = 'ROLE_NOT_SELECTED';
+    this.user_email = '';
     this.display = 'none';
+
     // this.router.navigate(['project/' + this.id_project + '/users']);
   }
+
   onCloseModal() {
     this.display = 'none';
   }

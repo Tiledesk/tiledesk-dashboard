@@ -324,6 +324,24 @@ export class UsersService {
       .map((response) => response.json());
   }
 
+ /// ================================== RESEND EMAIL TO PENDING USERS ================================== ///
+ public getPendingUsersByIdAndResendEmail(pendingInvitationId): Observable<PendingInvitation[]> {
+  const url = this.PENDING_INVITATION_URL + '/resendinvite/' + pendingInvitationId;
+
+  console.log('GET PENDING USERS ', url);
+  const headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  headers.append('Authorization', this.TOKEN);
+  // console.log('TOKEN TO COPY ', this.TOKEN)
+  return this.http
+    .get(url, { headers })
+    .map((response) => response.json());
+}
+
+
+
+
+
   /// ============================= GET PROJECT-USER BY CURRENT-PROJECT-ID AND CURRENT-USER-ID ============================= ///
   public getProjectUsersByProjectIdAndUserId(user_id: string, project_id: string): Observable<ProjectUser[]> {
     const url = this.MONGODB_BASE_URL + user_id + '/' + project_id;
