@@ -147,6 +147,10 @@
     "UpdateFaqErrorNoticationMsg":"An error occurred while updating the FAQ",
     "TrashBotSuccessNoticationMsg":"Bot successfully deleted",
     "TrashBotErrorNoticationMsg":"An error occurred while deleting the bot",
+    "ArchivingRequestErrorNoticationMsg":"An error has occurred archiving the request",
+    "ArchivingRequestNoticationMsg":"Archiving the request ...",
+    "RequestHasBeenArchivedNoticationMsg_part1":"Request with id: ",
+    "RequestHasBeenArchivedNoticationMsg_part2":" has been moved to History",
     "UserProfile": {
         "Profile": "Profile",
         "UploadImage": "Upload image",
@@ -637,7 +641,7 @@
         "CopyScript": "Copy Script",
         "TestThisCode": "Test this code !",
         "TestTheWidget": "Test the widget !",
-        "EmbedTheTileDeskChatWidget": "Embed the Tile Desk chat widget",
+        "EmbedTheTileDeskChatWidget": "Embed the tiledesk chat widget",
         "ToChatWithYourVisitors...": "To chat with your visitors please embed the widget into your web site.",
         "CopyTheFollowingScript...": "Copy the following script and insert it into your website's HTML source between the ",
         "OrAddItWith...": "or add it with",
@@ -677,7 +681,7 @@
     "ChannelsPage": {
         "ConnectWithFacebook": "Connect with Facebook",
         "ConnectWithTwitter": "Connect with Twitter",
-        "EmailIntegration_1": "Email integration in Tile Desk Support works out of the box. Emails sent to your support address: ",
+        "EmailIntegration_1": "Email integration in tiledesk Support works out of the box. Emails sent to your support address: ",
         "EmailIntegration_2": "automatically become requests."
     },
     "VerifyEmailPage": {

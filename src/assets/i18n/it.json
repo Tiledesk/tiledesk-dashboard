@@ -147,6 +147,10 @@
     "UpdateFaqErrorNoticationMsg":"Si è verificato un errore durante l'aggiornamento delle FAQ",
     "TrashBotSuccessNoticationMsg":"Bot cancellato con successo",
     "TrashBotErrorNoticationMsg":"Si è verificato un errore durante l'eliminazione del bot",
+    "ArchivingRequestErrorNoticationMsg":"Si è verificato un errore durante l'archiviazione della richiesta",
+    "ArchivingRequestNoticationMsg":"Archiviazione della richiesta ...",
+    "RequestHasBeenArchivedNoticationMsg_part1":"La richiesta con id: ",
+    "RequestHasBeenArchivedNoticationMsg_part2":" è stata spostato in Cronologia",
     "UserProfile": {
         "Profile": "Profilo",
         "UploadImage": "Carica immagine",
@@ -637,7 +641,7 @@
         "CopyScript": "Copia Script",
         "TestThisCode": "Testa questo codice !",
         "TestTheWidget": "Testa il widget !",
-        "EmbedTheTileDeskChatWidget": "Incorpora il chat widget Tile Desk",
+        "EmbedTheTileDeskChatWidget": "Incorpora il chat widget tiledesk",
         "ToChatWithYourVisitors...": "Per chattare con i tuoi visitatori incorpora il widget nel tuo sito.",
         "CopyTheFollowingScript...": "Copia il seguente script e inseriscilo nel sorgente HTML tra le ",
         "OrAddItWith...": "o aggiungilo con",
@@ -676,7 +680,7 @@
     "ChannelsPage": {
         "ConnectWithFacebook": "Connettiti con Facebook",
         "ConnectWithTwitter": "Connettiti con Twitter",
-        "EmailIntegration_1": "Integrazione nativa dell' email nel Supporto Tile Desk. Le email inviate al tuo indirizzo di supporto: ",
+        "EmailIntegration_1": "Integrazione nativa dell' email nel Supporto tiledesk. Le email inviate al tuo indirizzo di supporto: ",
         "EmailIntegration_2": "diventano automaticamente richieste."
     },
     "VerifyEmailPage": {

@@ -30,6 +30,7 @@ import { DepartmentService } from '../services/mongodb-department.service';
 import { UsersService } from '../services/users.service';
 
 import { avatarPlaceholder, getColorBck } from '../utils/util';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'appdashboard-requests-list',
@@ -122,6 +123,10 @@ export class RequestsListComponent implements OnInit {
   REQUESTER_IS_VERIFIED = false;
   ROLE_IS_AGENT: boolean;
 
+  archivingRequestErrorNoticationMsg: string;
+  archivingRequestNoticationMsg: string;
+  requestHasBeenArchivedNoticationMsg_part1: string;
+  requestHasBeenArchivedNoticationMsg_part2: string;
   constructor(
     private requestsService: RequestsService,
     private elRef: ElementRef,
@@ -131,7 +136,8 @@ export class RequestsListComponent implements OnInit {
     private notify: NotifyService,
     private botLocalDbService: BotLocalDbService,
     private departmentService: DepartmentService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private translate: TranslateService
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
 
@@ -149,6 +155,11 @@ export class RequestsListComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.translateArchivingRequestErrorMsg();
+    this.translateArchivingRequestMsg();
+    this.translateRequestHasBeenArchivedNoticationMsg_part1();
+    this.translateRequestHasBeenArchivedNoticationMsg_part2();
     // localStorage.getItem('show_settings_submenu'))
     // GET THE CURRENT PROJECT ID
     this.getProjectUserRole();
@@ -170,6 +181,45 @@ export class RequestsListComponent implements OnInit {
     //   });
 
     // this.getCountOfRequestsforDepts();
+  }
+
+  // TRANSLATION
+  translateArchivingRequestErrorMsg() {
+    this.translate.get('ArchivingRequestErrorNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.archivingRequestErrorNoticationMsg = text;
+        console.log('+ + + ArchivingRequestErrorNoticationMsg', text)
+      });
+  }
+  // TRANSLATION
+  translateArchivingRequestMsg() {
+    this.translate.get('ArchivingRequestNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.archivingRequestNoticationMsg = text;
+        console.log('+ + + ArchivingRequestNoticationMsg', text)
+      });
+  }
+
+  // TRANSLATION
+  translateRequestHasBeenArchivedNoticationMsg_part1() {
+    this.translate.get('RequestHasBeenArchivedNoticationMsg_part1')
+      .subscribe((text: string) => {
+
+        this.requestHasBeenArchivedNoticationMsg_part1 = text;
+        console.log('+ + + RequestHasBeenArchivedNoticationMsg_part1', text)
+      });
+  }
+
+  // TRANSLATION
+  translateRequestHasBeenArchivedNoticationMsg_part2() {
+    this.translate.get('RequestHasBeenArchivedNoticationMsg_part2')
+      .subscribe((text: string) => {
+
+        this.requestHasBeenArchivedNoticationMsg_part2 = text;
+        console.log('+ + + RequestHasBeenArchivedNoticationMsg_part2', text)
+      });
   }
 
   getProjectUserRole() {
@@ -528,7 +578,7 @@ export class RequestsListComponent implements OnInit {
 
   archiveTheRequestHandler() {
 
-    this.notify.showArchivingRequestNotification();
+    this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
     console.log('HAS CLICKED ARCHIVE REQUEST ');
 
     this.displayArchiveRequestModal = 'none';
@@ -543,25 +593,24 @@ export class RequestsListComponent implements OnInit {
         .subscribe((data: any) => {
 
           console.log('CLOSE SUPPORT GROUP - DATA ', data);
-        },
-          (err) => {
-            console.log('CLOSE SUPPORT GROUP - ERROR ', err);
-            this.SHOW_CIRCULAR_SPINNER = false;
-            this.ARCHIVE_REQUEST_ERROR = true;
-            // =========== NOTIFY ERROR ===========
-            // tslint:disable-next-line:quotemark
-            this.notify.showNotification("An error has occurred archiving the request", 4, 'report_problem')
-          },
-          () => {
-            // this.ngOnInit();
-            console.log('CLOSE SUPPORT GROUP - COMPLETE');
-            this.SHOW_CIRCULAR_SPINNER = false;
-            this.ARCHIVE_REQUEST_ERROR = false;
+        }, (err) => {
+          console.log('CLOSE SUPPORT GROUP - ERROR ', err);
+          this.SHOW_CIRCULAR_SPINNER = false;
+          this.ARCHIVE_REQUEST_ERROR = true;
+          // =========== NOTIFY ERROR ===========
 
-            // =========== NOTIFY SUCCESS===========
-            // this.notify.showNotification(`request with id: ${this.id_request_to_archive} has been moved to History`, 2, 'done');
-            this.notify.showRequestIsArchivedNotification(this.id_request_to_archive);
-          });
+          // this.notify.showNotification('An error has occurred archiving the request', 4, 'report_problem');
+          this.notify.showNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
+        }, () => {
+          // this.ngOnInit();
+          console.log('CLOSE SUPPORT GROUP - COMPLETE');
+          this.SHOW_CIRCULAR_SPINNER = false;
+          this.ARCHIVE_REQUEST_ERROR = false;
+
+          // =========== NOTIFY SUCCESS===========
+          // this.notify.showNotification(`request with id: ${this.id_request_to_archive} has been moved to History`, 2, 'done');
+          this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1, this.id_request_to_archive, this.requestHasBeenArchivedNoticationMsg_part2);
+        });
     });
   }
 

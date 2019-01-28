@@ -81,11 +81,19 @@ export class NotifyService {
     }
   }
 
+  onCloseCheckLIstModal() {
+    this.displayCheckLIstModal = 'none'
+  }
+
+
+
   // is CALLED FROM SIDEBAR AND HOME WHEN THE USER CLICK ON THE CHAT BTN
   publishHasClickedChat(hasClickedChat: boolean) {
     console.log('NotifyService  - hasClickedChat ', hasClickedChat);
     this.bs_hasClickedChat.next(true);
   }
+
+ 
 
   // showNotification(from, align) {
   showNotification(message, notificationColor, icon) {
@@ -186,16 +194,16 @@ export class NotifyService {
     }, 2000);
   }
 
-  showArchivingRequestNotification() {
-    this.notifyArchivingRequest = $.notify('Archiving the request ...', {
+  showArchivingRequestNotification(msg) {
+    this.notifyArchivingRequest = $.notify(msg, {
       allow_dismiss: false,
       showProgressbar: false,
     });
 
   }
-  showRequestIsArchivedNotification(request_id) {
+  showRequestIsArchivedNotification(msg_part1, request_id, msg_part2) {
     // tslint:disable-next-line:max-line-length
-    this.notifyArchivingRequest.update({ 'type': 'success', 'message': '<i class="material-icons" style="vertical-align: middle;"> done </i> <span style="vertical-align: middle; display: inline-block; padding-right:5px">request with id: ' + request_id + ' has been moved to History </span>' + '<span style="padding-left:28px">' + '</span>' })
+    this.notifyArchivingRequest.update({ 'type': 'success', 'message': '<i class="material-icons" style="vertical-align: middle;"> done </i> <span style="vertical-align: middle; display: inline-block; padding-right:5px">' + msg_part1 + request_id + msg_part2 + '</span> <span style="padding-left:28px">' + '</span>' })
   }
 
 
