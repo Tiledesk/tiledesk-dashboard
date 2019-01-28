@@ -10,6 +10,8 @@ import { AuthService } from '../core/auth.service';
 import { NotifyService } from '../core/notify.service';
 import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { UsersService } from '../services/users.service';
+import { TranslateService } from '@ngx-translate/core';
+
 @Component({
   selector: 'appdashboard-contacts',
   templateUrl: './contacts.component.html',
@@ -56,21 +58,48 @@ export class ContactsComponent implements OnInit {
   selectedContactEmail: string;
   selectedContactEmailValue: string;
   IS_CURRENT_USER_AGENT: boolean;
+
+  deleteLeadSuccessNoticationMsg: string;
+  deleteLeadErrorNoticationMsg: string;
+
   constructor(
     private http: Http,
     private contactsService: ContactsService,
     private router: Router,
     private auth: AuthService,
     private notify: NotifyService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
-
+    this.translateDeleteLeadSuccessMsg();
+    this.translateDeleteLeadErrorMsg();
     // this.auth.checkRoleForCurrentProject();
     this.getContacts();
     this.getCurrentProject();
     this.getProjectUserRole();
+  }
+
+  // TRANSLATION
+  translateDeleteLeadSuccessMsg() {
+    this.translate.get('DeleteLeadSuccessNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.deleteLeadSuccessNoticationMsg = text;
+        console.log('+ + + DeleteLeadSuccessNoticationMsg', text)
+      });
+  }
+
+  // TRANSLATION
+  translateDeleteLeadErrorMsg() {
+    this.translate.get('DeleteLeadErrorNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.deleteLeadErrorNoticationMsg = text;
+        console.log('+ + + DeleteLeadErrorNoticationMsg', text)
+      });
+
   }
 
   getCurrentProject() {
@@ -379,11 +408,13 @@ export class ContactsComponent implements OnInit {
       }, (error) => {
         console.log('!!!!! CONTACTS - DELETE REQUEST - ERROR ', error);
         // =========== NOTIFY ERROR ===========
-        this.notify.showNotification('An error occurred while deleting contact', 4, 'report_problem')
+        // this.notify.showNotification('An error occurred while deleting contact', 4, 'report_problem');
+        this.notify.showNotification(this.deleteLeadErrorNoticationMsg, 4, 'report_problem');
       }, () => {
         console.log('!!!!! CONTACTS - DELETE REQUEST * COMPLETE *');
         // =========== NOTIFY SUCCESS===========
-        this.notify.showNotification('Contact successfully deleted', 2, 'done');
+        // this.notify.showNotification('Contact successfully deleted', 2, 'done');
+        this.notify.showNotification(this.deleteLeadSuccessNoticationMsg, 2, 'done');
       });
 
   }
