@@ -8,7 +8,7 @@ import { Project } from '../models/project-model';
 import { AuthService } from '../core/auth.service';
 import { Location } from '@angular/common';
 import { NotifyService } from '../core/notify.service';
-
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'faq-kb',
@@ -42,22 +42,46 @@ export class FaqKbComponent implements OnInit {
   ID_BOT_TYPED_MATCHES_THE_BOT_ID: boolean;
   bot_name_to_delete: string;
 
+  trashBotSuccessNoticationMsg: string;
+  trashBotErrorNoticationMsg: string;
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
     private mongodbFaqService: MongodbFaqService,
     private auth: AuthService,
     private _location: Location,
-    private notify: NotifyService
+    private notify: NotifyService,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
+    this.translateTrashBotSuccessMsg();
+    this.translateTrashBotErrorMsg();
+
     this.getCurrentProject();
 
     // this.getFaqKb();
     this.getFaqKbByProjectId();
 
+  }
+
+  translateTrashBotSuccessMsg() {
+    this.translate.get('TrashBotSuccessNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.trashBotSuccessNoticationMsg = text;
+        console.log('+ + + TrashBotSuccessNoticationMsg', text)
+      });
+  }
+
+  translateTrashBotErrorMsg() {
+    this.translate.get('TrashBotErrorNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.trashBotErrorNoticationMsg = text;
+        console.log('+ + + TrashBotErrorNoticationMsg', text)
+      });
   }
 
   getCurrentProject() {
@@ -255,17 +279,21 @@ export class FaqKbComponent implements OnInit {
 
   trashTheBot() {
     this.showSpinner = true;
-
     this.faqKbService.updateFaqKbAsTrashed(this.id_toDelete, true).subscribe((updatedFaqKb: any) => {
       console.log('TRASH THE BOT - UPDATED FAQ-KB ', updatedFaqKb);
     }, (error) => {
       // =========== NOTIFY ERROR ===========
-      this.notify.showNotification('An error occurred while deleting the bot', 4, 'report_problem');
+      // this.notify.showNotification('An error occurred while deleting the bot', 4, 'report_problem');
+      this.notify.showNotification(this.trashBotErrorNoticationMsg, 4, 'report_problem');
+
       console.log('TRASH THE BOT - ERROR ', error);
+      this.showSpinner = false;
+      this.displayDeleteBotModal = 'none'
     }, () => {
       console.log('TRASH THE BOT - COMPLETE');
       // =========== NOTIFY SUCCESS===========
-      this.notify.showNotification('bot successfully deleted', 2, 'done');
+      // this.notify.showNotification('bot successfully deleted', 2, 'done');
+      this.notify.showNotification(this.trashBotSuccessNoticationMsg, 2, 'done');
 
       this.getFaqKbByProjectId();
 
@@ -273,10 +301,7 @@ export class FaqKbComponent implements OnInit {
       setTimeout(() => {
         this.showSpinner = false;
       }, 100);
-
-
     });
-
   }
 
   /**
