@@ -3,6 +3,7 @@ import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { ContactsService } from '../services/contacts.service';
 import { NotifyService } from '../core/notify.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'appdashboard-contact-edit',
@@ -22,17 +23,44 @@ export class ContactEditComponent implements OnInit {
   HAS_EDIT_FULLNAME = false;
   HAS_EDIT_EMAIL = false;
 
+  editContactSuccessNoticationMsg: string;
+  editContactErrorNoticationMsg: string;
+
   constructor(
     public location: Location,
     private route: ActivatedRoute,
     private contactsService: ContactsService,
-    private notify: NotifyService
+    private notify: NotifyService,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
+    this.translateEditContactSuccessMsg();
+    this.translateEditContactErrorMsg();
 
     this.getRequesterIdParam();
   }
+ // TRANSLATION
+  translateEditContactSuccessMsg() {
+    this.translate.get('EditContactSuccessNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.editContactSuccessNoticationMsg = text;
+        console.log('+ + + EditContactSuccessNoticationMsg', text)
+      });
+  }
+ // TRANSLATION
+  translateEditContactErrorMsg() {
+    this.translate.get('EditContactErrorNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.editContactErrorNoticationMsg = text;
+        console.log('+ + + EditContactErrorNoticationMsg', text)
+      });
+  }
+
+
+
 
   getRequesterIdParam() {
     this.lead_id = this.route.snapshot.params['requesterid'];
@@ -54,12 +82,9 @@ export class ContactEditComponent implements OnInit {
           this.lead_fullnameCurrentValue = lead.fullname;
           this.lead_emailCurrentValue = lead.email;
         }
-
-
       }, (error) => {
 
         console.log('!!!!! EDIT CONTACT  - GET LEAD BY REQUESTER ID - ERROR ', error);
-
       }, () => {
         console.log('!!!!! EDIT CONTACT  - GET LEAD BY REQUESTER ID * COMPLETE *');
       });
@@ -80,14 +105,15 @@ export class ContactEditComponent implements OnInit {
 
         console.log('!!!!! EDIT CONTACT - UPDATE CONTACT - ERROR ', error);
         // =========== NOTIFY ERROR ===========
-        this.notify.showNotification('An error occurred while updating contact', 4, 'report_problem')
+        // this.notify.showNotification('An error occurred while updating contact', 4, 'report_problem');
+        this.notify.showNotification(this.editContactErrorNoticationMsg, 4, 'report_problem')
 
       }, () => {
         console.log('!!!!! EDIT CONTACT - UPDATE CONTACT * COMPLETE *');
 
         // =========== NOTIFY SUCCESS===========
-        this.notify.showNotification('Contact successfully updated', 2, 'done');
-
+        // this.notify.showNotification('Contact successfully updated', 2, 'done');
+        this.notify.showNotification(this.editContactSuccessNoticationMsg, 2, 'done');
 
       });
   }
