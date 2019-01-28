@@ -14,6 +14,7 @@ import { UsersLocalDbService } from '../../services/users-local-db.service';
 import { NotifyService } from '../../core/notify.service';
 import { environment } from '../../../environments/environment';
 import { UploadImageService } from '../../services/upload-image.service';
+import { TranslateService } from '@ngx-translate/core';
 
 declare const $: any;
 declare interface RouteInfo {
@@ -100,8 +101,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     IS_MOBILE_MENU: boolean;
     scrollpos: number;
     elSidebarWrapper: any;
-   
-    
+    changeAvailabilitySuccessNoticationMsg: string;
+    changeAvailabilityErrorNoticationMsg: string;
     constructor(
         private requestsService: RequestsService,
         private router: Router,
@@ -112,11 +113,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         private usersService: UsersService,
         private usersLocalDbService: UsersLocalDbService,
         private notify: NotifyService,
-        private uploadImageService: UploadImageService
-    ) {  console.log('!!!!! HELLO SIDEBAR') }
+        private uploadImageService: UploadImageService,
+        private translate: TranslateService
+    ) { console.log('!!!!! HELLO SIDEBAR') }
 
 
     ngOnInit() {
+        this.translateChangeAvailabilitySuccessMsg();
+        this.translateChangeAvailabilityErrorMsg();
 
         // !!!! NO MORE USED
         // this.ROUTES = [
@@ -166,6 +170,25 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.checkUserImageUploadIsComplete();
         // used when the page is refreshed
         this.checkUserImageExist();
+    }
+
+    translateChangeAvailabilitySuccessMsg() {
+        this.translate.get('ChangeAvailabilitySuccessNoticationMsg')
+            .subscribe((text: string) => {
+
+                this.changeAvailabilitySuccessNoticationMsg = text;
+                console.log('+ + + change Availability Success Notication Msg', text)
+            });
+    }
+
+    translateChangeAvailabilityErrorMsg() {
+        this.translate.get('ChangeAvailabilityErrorNoticationMsg')
+            .subscribe((text: string) => {
+
+                this.changeAvailabilityErrorNoticationMsg = text;
+                console.log('+ + + change Availability Error Notication Msg', text)
+            });
+
     }
 
 
@@ -240,13 +263,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         }, (error) => {
             console.log('PROJECT-USER UPDATED ERR  ', error);
             // =========== NOTIFY ERROR ===========
-            // tslint:disable-next-line:quotemark
-            this.notify.showNotification("An error occurred while updating status", 4, 'report_problem')
+            // this.notify.showNotification('An error occurred while updating status', 4, 'report_problem');
+            this.notify.showNotification(this.changeAvailabilityErrorNoticationMsg, 4, 'report_problem');
+
         }, () => {
             console.log('PROJECT-USER UPDATED  * COMPLETE *');
 
             // =========== NOTIFY SUCCESS===========
-            this.notify.showNotification('status successfully updated', 2, 'done');
+            // this.notify.showNotification('status successfully updated', 2, 'done');
+            this.notify.showNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done');
+
+
             // this.getUserAvailability()
         });
     }
@@ -518,7 +545,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // RESOLVE THE BUG 'chat button remains focused after clicking'
     // SET IN THE STORAGE THAT THE CHAT HAS BEEN OPENED
     removeChatBtnFocus() {
-        
+
         this.notify.publishHasClickedChat(true);
 
         localStorage.setItem('chatOpened', 'true');
