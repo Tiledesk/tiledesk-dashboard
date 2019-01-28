@@ -101,6 +101,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     IS_MOBILE_MENU: boolean;
     scrollpos: number;
     elSidebarWrapper: any;
+
     changeAvailabilitySuccessNoticationMsg: string;
     changeAvailabilityErrorNoticationMsg: string;
     constructor(
@@ -188,7 +189,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 this.changeAvailabilityErrorNoticationMsg = text;
                 console.log('+ + + change Availability Error Notication Msg', text)
             });
-
     }
 
 

@@ -4,7 +4,7 @@ import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
 import { UsersService } from '../services/users.service';
 import { NotifyService } from '../core/notify.service';
-
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'appdashboard-users',
@@ -30,15 +30,28 @@ export class UsersComponent implements OnInit {
   IS_AVAILABLE: boolean;
   countOfPendingInvites: number;
 
+  changeAvailabilitySuccessNoticationMsg: string;
+  changeAvailabilityErrorNoticationMsg: string;
+
+  deleteProjectUserSuccessNoticationMsg: string;
+  deleteProjectUserErrorNoticationMsg: string;
+
   constructor(
     private usersService: UsersService,
     private router: Router,
     private auth: AuthService,
-    private notify: NotifyService
+    private notify: NotifyService,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
     console.log('=========== USERS COMP ============')
+    this.translateChangeAvailabilitySuccessMsg();
+    this.translateChangeAvailabilityErrorMsg();
+
+    this.translateRemoveProjectUserSuccessMsg();
+    this.translateRemoveProjectUserErrorMsg();
+
     this.auth.checkRoleForCurrentProject();
 
     this.getAllUsersOfCurrentProject();
@@ -48,6 +61,46 @@ export class UsersComponent implements OnInit {
 
     this.hasChangedAvailabilityStatusInSidebar();
     this.getPendingInvitation();
+  }
+
+  // TRANSLATION
+  translateChangeAvailabilitySuccessMsg() {
+    this.translate.get('ChangeAvailabilitySuccessNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.changeAvailabilitySuccessNoticationMsg = text;
+        console.log('+ + + change Availability Success Notication Msg', text)
+      });
+  }
+
+  // TRANSLATION
+  translateChangeAvailabilityErrorMsg() {
+    this.translate.get('ChangeAvailabilityErrorNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.changeAvailabilityErrorNoticationMsg = text;
+        console.log('+ + + change Availability Error Notication Msg', text)
+      });
+  }
+
+  // TRANSLATION
+  translateRemoveProjectUserSuccessMsg() {
+    this.translate.get('RemoveProjectUserSuccessNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.deleteProjectUserSuccessNoticationMsg = text;
+        console.log('+ + + RemoveProjectUserSuccessNoticationMsg ', text)
+      });
+  }
+
+  // TRANSLATION
+  translateRemoveProjectUserErrorMsg() {
+    this.translate.get('RemoveProjectUserErrorNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.deleteProjectUserErrorNoticationMsg = text;
+        console.log('+ + + RemoveProjectUserErrorNoticationMsg ', text)
+      });
   }
 
   getLoggedUser() {
@@ -132,12 +185,13 @@ export class UsersComponent implements OnInit {
       this.showSpinner = false;
       console.log('DELETE PROJECT USERS - ERROR ', error);
       // =========== NOTIFY ERROR ===========
-      this.notify.showNotification('An error occurred while removing the member', 4, 'report_problem');
+      // this.notify.showNotification('An error occurred while removing the member', 4, 'report_problem');
+      this.notify.showNotification(this.deleteProjectUserErrorNoticationMsg, 4, 'report_problem');
     },
       () => {
         console.log('DELETE PROJECT USERS * COMPLETE *');
         // =========== NOTIFY SUCCESS ===========
-        this.notify.showNotification('Member successfully removed', 2, 'done');
+        this.notify.showNotification(this.deleteProjectUserSuccessNoticationMsg, 2, 'done');
       });
   }
 
@@ -169,18 +223,20 @@ export class UsersComponent implements OnInit {
       // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
       this.usersService.availability_switch_clicked(true)
 
-    },      (error) => {
-        console.log('PROJECT-USER UPDATED ERR  ', error);
-        // =========== NOTIFY ERROR ===========
-        this.notify.showNotification('An error occurred while updating status', 4, 'report_problem')
-      },      () => {
-        console.log('PROJECT-USER UPDATED  * COMPLETE *');
-        // =========== NOTIFY SUCCESS===========
-        this.notify.showNotification('status successfully updated', 2, 'done');
+    }, (error) => {
+      console.log('PROJECT-USER UPDATED ERR  ', error);
+      // =========== NOTIFY ERROR ============
+      // this.notify.showNotification('An error occurred while updating status', 4, 'report_problem');
+      this.notify.showNotification(this.changeAvailabilityErrorNoticationMsg, 4, 'report_problem');
+    }, () => {
+      console.log('PROJECT-USER UPDATED  * COMPLETE *');
+      // =========== NOTIFY SUCCESS ==========
+      // this.notify.showNotification('status successfully updated', 2, 'done');
+      this.notify.showNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done');
 
-        // RE-RUNS getAllUsersOfCurrentProject TO UPDATE THE TABLE
-        this.getAllUsersOfCurrentProject();
-      });
+      // RE-RUNS getAllUsersOfCurrentProject TO UPDATE THE TABLE
+      this.getAllUsersOfCurrentProject();
+    });
   }
 
   // IF THE AVAILABILITY STATUS IS CHANGED BY THE SIDEBAR AVAILABILITY / UNAVAILABILITY BUTTON
