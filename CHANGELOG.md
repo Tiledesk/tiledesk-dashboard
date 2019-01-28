@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 1.0.8
+- Adds translations for the Notification Messages related to user actions
+
 ### 1.0.7
 - Adds the ability to resend the invitation email
 
