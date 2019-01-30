@@ -151,6 +151,11 @@
     "ArchivingRequestNoticationMsg":"Archiving the request ...",
     "RequestHasBeenArchivedNoticationMsg_part1":"Request with id: ",
     "RequestHasBeenArchivedNoticationMsg_part2":" has been moved to History",
+    "UpdateGroupSuccessNoticationMsg":"Group successfully updated",
+    "UpdateGroupErrorNoticationMsg":"An error occurred while updating the group",
+    "RemoveGroupMemberSuccessNoticationMsg":"Member successfully removed",
+    "RemoveGroupMemberErrorNoticationMsg":"An error occurred while removing the member",
+    "UpdateWidgetProjectSuccessNoticationMsg":"Your changes has been saved",
     "UserProfile": {
         "Profile": "Profile",
         "UploadImage": "Upload image",
