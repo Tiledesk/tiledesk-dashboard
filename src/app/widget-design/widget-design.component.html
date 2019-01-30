@@ -10,7 +10,10 @@
 			<div class="col-md-12">
 
 				<div class="card" style="padding-top:25px; padding-bottom:25px">
-					<div class="card-content">
+					
+					<loading-spinner *ngIf="showSpinner"></loading-spinner>
+					
+					<div class="card-content" *ngIf="!showSpinner">
 
 					<!-- --------------============ ONLINE OFFLINE MSG ============-------------- -->
 					<div class="row">
@@ -64,7 +67,7 @@
 						</div>
 
 						<div class="row">
-							<div class="col-lg-8">
+							<div class="col-lg-12">
 								<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" [ngClass]="{'breakpoint' : custom_breakpoint === true}">
 										
 									<div style="color: #566787; font-weight: 400; margin-top: 8px; margin-bottom: 4px;">
@@ -118,8 +121,8 @@
 								<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"  [ngClass]="{'breakpoint' : custom_breakpoint === true}" >
 		
 									<!-- START CALLOUT CLONE -->
-									<div class="callout-container" style="max-width:300px; float: right;">
-										<div class="eye-catcher-card ng-tns-c0-0 ng-star-inserted" style="display: block;">
+									<div class="callout-container" style="max-width:300px; float: left;">
+										<div class="eye-catcher-card" style="display: block; z-index: 1029;">
 											<div class="ng-tns-c0-0">
 												<div class="eye-catcher-card-close-btn-wrapper" style="display: block;">
 													<div class="eye-catcher-card-close-btn" style="display: none;">
@@ -153,7 +156,7 @@
 										<!-- ./END CALLOUT CLONE -->
 
 										<!-- start LAUNCHER BTN -->
-										<div id="chat21-launcher-button" [ngStyle]="{'background-color': primaryColor}"> 
+										<div id="chat21-launcher-button" style="z-index:1029" [ngStyle]="{'background-color': primaryColor}"> 
 											<div style="width:100%; height:100%; padding:0px; margin: 0px;">
 												<!-- <svg class="ng-tns-c0-0" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg" [ngStyle]="{'fill': secondaryColor}">
 													<defs class="ng-tns-c0-0">
@@ -310,13 +313,11 @@
 							
 								<!-- background-color: aquamarine -->							
 								<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-
 									<!-- ------====== ./START WIDGET HTML CLONE ======------  -->
-
-								
+							
 									<div class="widget-container" style="max-width:375px">
 										<div id="chat21-container"> 
-											<div class="chat21-window chat21-sheet" id="chat21-conversations" style="border-radius: 0px;">
+											<div class="chat21-window chat21-sheet" id="chat21-conversations" style="border-radius: 0px; z-index:1029">
 												<div class="modal-page active">
 													<div id="chat21-home-component">
 													
@@ -333,11 +334,12 @@
 																	</div>
 															
 																	<div class="c21-text">
-																		<div class="c21-text-wellcome" style="font-size: 30px;padding-top: 16px;" [ngStyle]="{'color': secondaryColor}">
+																			<!-- padding-top: 16px; -->
+																		<div class="c21-text-wellcome" style="font-size: 30px;" [ngStyle]="{'color': secondaryColor}">
 																
 																			<span> {{ welcomeTitle }} </span>
 																		</div>          
-																		<div class="c21-text-intro" style="font-size: 14px;" [ngStyle]="{'color': secondaryColor}">
+																		<div class="c21-text-intro" style="font-size: 14px; font-weight: 400" [ngStyle]="{'color': secondaryColor}">
 																			
 																			<span> {{ welcomeMsg }} </span>
 																		</div>
@@ -347,7 +349,7 @@
 														</div>
 														<div class="c21-body">
 															<div class="c21-body-container">
-																<div class="c21-body-content">
+																<div class="c21-body-content" style="padding-top:0px; margin-top:0px">
 																	<div class="c21-cards">
 																
 																		<div class="c21-card" [ngStyle]="{'border-top': primaryColorBorder }">
@@ -362,7 +364,7 @@
 																					<div class="c21-item-conversation">
 																						<div class="c21-body-conv">
 																							<div class="c21-left-conv">
-																								<div class="c21-icon-avatar">
+																								<div class="c21-icon-avatar" style="height: 48px;width: 48px;">
 																									<div class="c21-avatar-image" style="background-image: url(&quot;https://user-images.githubusercontent.com/32448495/39111365-214552a0-46d5-11e8-9878-e5c804adfe6a.png&quot;);"></div>
 																								</div>
 																							</div>
@@ -377,14 +379,14 @@
 																				</div>
 																				<div class="c21-footer"> 
 																						
-																					<button class="c21-button-primary"  [ngStyle]="{'background-color': primaryColor, 'border-color': primaryColor, 'color': secondaryColor }">
+																					<button class="c21-button-primary" style="margin: 16px 0 !important;" [ngStyle]="{'background-color': primaryColor, 'border-color': primaryColor, 'color': secondaryColor }">
 																							<span class="v-align-center">
 																								<svg height="18" viewBox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
 																									<path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"  [ngStyle]="{'fill': secondaryColor }"></path>
 																									<path d="M0 0h24v24H0z" fill="none"></path>
 																								</svg>
 																							</span>
-																							<span class="v-align-center c21-label-button">
+																							<span class="v-align-center c21-label-button" style="font-size: 13px;	margin-left: 8px;font-weight: 500;">
 																								{{'NewConversation' | translate}}
 																							</span>  
 																							<div class="clear"></div>
@@ -396,7 +398,7 @@
 																</div>
 															</div>
 														</div>
-														<div class="c21-footer_nk">
+														<div class="c21-footer_nk" style="bottom: 20px;">
 															<div id="c21-powered-by">
 																<a target="_blank" href="http://www.tiledesk.com/" 
 																	style="color: #777;
@@ -413,7 +415,7 @@
 											</div>
 										</div>
 								
-										<div id="chat21-launcher-button" [ngStyle]="{'background-color': primaryColor}"> 
+										<div id="chat21-launcher-button" style="z-index:1029" [ngStyle]="{'background-color': primaryColor}"> 
 											<div style="width:100%; height:100%; padding:0px; margin: 0px;">
 												<svg class="ng-tns-c0-0" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg" [ngStyle]="{'fill': secondaryColor}">
 													<defs class="ng-tns-c0-0">

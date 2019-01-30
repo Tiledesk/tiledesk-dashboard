@@ -128,6 +128,8 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
   custom_breakpoint: boolean;
   sub: Subscription;
 
+  showSpinner = true;
+
   constructor(
     public location: Location,
     private cpService: ColorPickerService,
@@ -447,7 +449,9 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
           console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) CALLOUT TITLE: ', this.calloutTitle);
         } else {
           console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) CALLOUT TITLE: ', this.calloutTitle, 'IS UNDEFINED > SET DEFAULT');
-          this.setDefaultcalloutTitle();
+
+          // this.setDefaultcalloutTitle();
+          this.onInitSetDefaultcalloutTitle();
         }
 
         /**
@@ -458,9 +462,10 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
           console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) CALLOUT MSG: ', this.calloutMsg);
         } else {
           console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) CALLOUT MSG: ', this.calloutMsg, 'IS UNDEFINED > SET DEFAULT');
-          this.setDefaultcalloutMsg();
-        }
 
+          // this.setDefaultcalloutMsg();
+          this.onInitSetDefaultcalloutMsg();
+        }
 
         /**
          * ********************************  logoChat (WIDGET DEFINED) ****************************************
@@ -523,7 +528,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
           this.secondaryColor = project.widget.themeForegroundColor;
           console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) THEME-FOREGROUND COLOR: ', this.secondaryColor);
         } else {
-
+          // case themeForegroundColor IS undefined
           this.secondaryColor = this.widgetDefaultSettings.themeForegroundColor;
           // tslint:disable-next-line:max-line-length
           console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) THEME-FOREGROUND COLOR: ', project.widget.themeForegroundColor, 'IS UNDEFINED > SET DEFAULT ', this.secondaryColor);
@@ -539,7 +544,8 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
           console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) WELCOME TITLE: ', this.welcomeTitle, 'IS UNDEFINED > SET DEFAULT')
 
-          this.setDefaultWelcomeTitle();
+          // this.setDefaultWelcomeTitle();
+          this.onInitSetDefaultWelcomeTitle();
         }
 
         /**
@@ -550,7 +556,9 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
           console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) WELCOME MSG: ', this.welcomeMsg);
         } else {
           console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) WELCOME MSG: ', this.welcomeMsg, 'IS UNDEFINED > SET DEFAULT');
-          this.setDefaultWelcomeMsg();
+
+          // this.setDefaultWelcomeMsg();
+          this.onInitSetDefaultWelcomeMsg();
         }
 
         /**
@@ -595,12 +603,14 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
         /**
          * ******************************** wellcomeTitle (WIDGET UNDEFINED) ******************************************
          */
-        this.setDefaultWelcomeTitle();
+        // this.setDefaultWelcomeTitle();
+        this.onInitSetDefaultWelcomeTitle();
 
         /**
          * ******************************** wellcomeMsg (WIDGET UNDEFINED) ********************************************
          */
-        this.setDefaultWelcomeMsg();
+        // this.setDefaultWelcomeMsg();
+        this.onInitSetDefaultWelcomeMsg();
 
         /**
          * ******************************** calloutTimer (WIDGET UNDEFINED) ******************************************
@@ -610,20 +620,24 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
         /**
          * ******************************** calloutTitle (WIDGET UNDEFINED) ******************************************
          */
-        this.setDefaultcalloutTitle();
+        // this.setDefaultcalloutTitle();
+        this.onInitSetDefaultcalloutTitle();
 
         /**
         * ******************************** wellcomeMsg (WIDGET UNDEFINED) ********************************************
         */
-        this.setDefaultcalloutMsg();
+        // this.setDefaultcalloutMsg();
+        this.onInitSetDefaultcalloutMsg();
       }
 
 
     }, (error) => {
       console.log('WIDGET DESIGN - GET PROJECT BY ID - ERROR ', error);
-
+      this.showSpinner = false;
     }, () => {
       console.log('WIDGET DESIGN - GET PROJECT BY ID - COMPLETE ');
+
+      this.showSpinner = false;
     });
   }
 
@@ -991,6 +1005,22 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  onInitSetDefaultWelcomeTitle() {
+    if (this.browserLang) {
+      if (this.browserLang === 'it') {
+
+        this.welcomeTitle = this.widgetDefaultSettings.it.wellcomeTitle;
+        console.log('»» WIDGET DESIGN - SET DEFAULT WELCOME TITLE (onInit) ', this.welcomeTitle);
+
+      } else {
+
+        this.welcomeTitle = this.widgetDefaultSettings.en.wellcomeTitle;
+        console.log('»» WIDGET DESIGN - SET DEFAULT WELCOME TITLE (onInit) ', this.welcomeTitle);
+
+      }
+    }
+  }
+
   onBlurSaveWelcomeTitle() {
     if (this.browserLang === 'it') {
       if (this.welcomeTitle !== this.widgetDefaultSettings.it.wellcomeTitle) {
@@ -1067,6 +1097,22 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  onInitSetDefaultWelcomeMsg() {
+    if (this.browserLang) {
+      if (this.browserLang === 'it') {
+        // this.welcomeMsg = 'Come possiamo aiutare?'
+        this.welcomeMsg = this.widgetDefaultSettings.it.wellcomeMsg
+        console.log('»» WIDGET DESIGN - SET DEFAULT WELCOME MSG (onInit) ', this.welcomeMsg);
+
+      } else {
+        console.log('»» WIDGET DESIGN - SET DEFAULT WELCOME MSG (onInit) ', this.welcomeMsg);
+        // this.welcomeMsg = 'How can we help?'
+        this.welcomeMsg = this.widgetDefaultSettings.en.wellcomeMsg
+
+      }
+    }
+  }
+
   onBlurSaveWelcomeMsg() {
     // console.log('»» WIDGET DESIGN - ON BLUR WELCOME MSG ', this.welcomeMsg);
     if (this.browserLang === 'it') {
@@ -1119,15 +1165,22 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (this.calloutTimerSecondSelected === -1) {
       this.CALLOUT_IS_DISABLED = true;
-      // *** REMOVE PROPERTY
+      // *** REMOVE PROPERTIES
+
+
       delete this.widgetObj['calloutTimer'];
+      delete this.widgetObj['calloutTitle'];
+      delete this.widgetObj['calloutMsg'];
       //  delete this.widgetObj['calloutTitle'];
       //  delete this.widgetObj['calloutMsg'];
       // UPDATE WIDGET PROJECT
       this.widgetService.updateWidgetProject(this.widgetObj)
 
-      this.setDefaultcalloutTitle();
-      this.setDefaultcalloutMsg();
+      // this.setDefaultcalloutTitle();
+      // this.setDefaultcalloutMsg();
+
+      this.onInitSetDefaultcalloutTitle();
+      this.onInitSetDefaultcalloutMsg();
 
       // this.escaped_calloutTitle = ''; // callout title escaped
       // this.calloutTitleText = ''; // clear the value in the input if the user disabled the callout
@@ -1218,12 +1271,28 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
       } else {
 
         this.calloutTitle = this.widgetDefaultSettings.en.calloutTitle;
-        console.log('»» WIDGET DESIGN - DEFAULT WELCOME TITLE ', this.calloutTitle);
+        console.log('»» WIDGET DESIGN - DEFAULT CALLOUT TITLE ', this.calloutTitle);
 
         // *** REMOVE PROPERTY
         delete this.widgetObj['calloutTitle'];
         // UPDATE WIDGET PROJECT
         this.widgetService.updateWidgetProject(this.widgetObj)
+      }
+    }
+  }
+
+
+  onInitSetDefaultcalloutTitle() {
+    if (this.browserLang) {
+      if (this.browserLang === 'it') {
+
+        this.calloutTitle = this.widgetDefaultSettings.it.calloutTitle;
+        console.log('»» WIDGET DESIGN - SET DEFAULT CALLOUT TITLE (onInit) ', this.calloutTitle);
+
+      } else {
+
+        this.calloutTitle = this.widgetDefaultSettings.en.calloutTitle;
+        console.log('»» WIDGET DESIGN - SET DEFAULT CALLOUT TITLE (onInit) ', this.calloutTitle);
       }
     }
   }
@@ -1298,7 +1367,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
       } else {
 
         this.calloutMsg = this.widgetDefaultSettings.en.calloutMsg;
-        console.log('»» WIDGET DESIGN - DEFAULT WELCOME MSG ', this.calloutMsg);
+        console.log('»» WIDGET DESIGN - DEFAULT CALLOUT MSG ', this.calloutMsg);
 
         // *** REMOVE PROPERTY
         delete this.widgetObj['calloutMsg'];
@@ -1306,6 +1375,23 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
         this.widgetService.updateWidgetProject(this.widgetObj)
       }
     }
+  }
+
+  onInitSetDefaultcalloutMsg() {
+    if (this.browserLang) {
+      if (this.browserLang === 'it') {
+
+        this.calloutMsg = this.widgetDefaultSettings.it.calloutMsg;
+        console.log('»» WIDGET DESIGN - SET DEFAULT CALLOUT MSG (onInit) ', this.calloutMsg);
+
+      } else {
+
+        this.calloutMsg = this.widgetDefaultSettings.en.calloutMsg;
+        console.log('»» WIDGET DESIGN - SET DEFAULT CALLOUT MSG (onInit) ', this.calloutMsg);
+
+      }
+    }
+
   }
 
 

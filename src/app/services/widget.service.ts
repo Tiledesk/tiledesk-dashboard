@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { NotifyService } from '../core/notify.service';
 import { ProjectService } from '../services/project.service';
-
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
-export class WidgetService {
+export class WidgetService implements OnInit {
 
   // public primaryColorBs: BehaviorSubject<string> = new BehaviorSubject<string>(null);
   // public secondaryColorBs: BehaviorSubject<string> = new BehaviorSubject<string>(null);
@@ -16,14 +16,21 @@ export class WidgetService {
   // public widgetAlignmentBs: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
   public id_project: string;
-  public widgetSettingsObjct ;
+  public widgetSettingsObjct;
+  updateWidgetSuccessNoticationMsg: string;
 
   constructor(
     private notify: NotifyService,
     private projectService: ProjectService,
-  
-  ) {  }
- 
+    private translate: TranslateService
+  ) { console.log('»» WIDGET SERVICE HELLO WIDGET SERVICE !') }
+
+  ngOnInit() {
+
+  }
+
+
+
 
   // saveCustomUrl(logo_url: string) {
   //   console.log('WIDGET SERVICE - CUSTOM LOGO URL ', logo_url);
@@ -36,6 +43,11 @@ export class WidgetService {
       .subscribe((data) => {
         console.log('»» WIDGET SERVICE - UPDATE PROJECT WIDGET - RESPONSE data', data);
         console.log('»» WIDGET SERVICE - UPDATE PROJECT WIDGET - RESPONSE data.widget', data.widget);
+
+        this.translateAndShowUpdateWidgetNotification();
+
+
+
       }, (error) => {
         console.log('»» WIDGET SERVICE - UPDATE PROJECT WIDGET - ERROR ', error);
       }, () => {
@@ -43,7 +55,25 @@ export class WidgetService {
       });
   }
 
- 
+  // translateAndShowUpdateWidgetNotification() {
+  //   this.translateUpdateWidgetProjectSuccessNoticationMsg();
+  // }
+
+  translateAndShowUpdateWidgetNotification() {
+    this.translate.get('UpdateWidgetProjectSuccessNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.updateWidgetSuccessNoticationMsg = text;
+        // console.log('»» WIDGET SERVICE - Update Widget Project Success NoticationMsg', text)
+      }, (error) => {
+
+        console.log('»» WIDGET SERVICE -  Update Widget Project Success NoticationMsg - ERROR ', error);
+      }, () => {
+
+        this.notify.showWidgetStyleUpdateNotification(this.updateWidgetSuccessNoticationMsg, 2, 'done');
+        // console.log('»» WIDGET SERVICE -  Update Widget Project Success NoticationMsg * COMPLETE *');
+      });
+  }
 
   /**
    * WHEN IN WIDGET-DESIGN IS CHANGED THE PRIMARY COLOR,

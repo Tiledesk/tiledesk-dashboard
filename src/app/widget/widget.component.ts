@@ -85,7 +85,8 @@ export class WidgetComponent implements OnInit, OnDestroy {
   paramWellcomeMsg: string;
   paramLogoChat: string;
   sub: Subscription;
-  
+  showSpinner = true;
+
   constructor(
     http: Http,
     private auth: AuthService,
@@ -137,7 +138,7 @@ export class WidgetComponent implements OnInit, OnDestroy {
   }
 
   getProjectById() {
-   this.projectService.getProjectById(this.projectId).subscribe((project: any) => {
+    this.projectService.getProjectById(this.projectId).subscribe((project: any) => {
       // console.log('WIDGET DESIGN - GET PROJECT BY ID - PROJECT OBJECT: ', project);
 
       console.log('»» WIDGET - PRJCT-WIDGET (onInit): ', project.widget);
@@ -145,7 +146,6 @@ export class WidgetComponent implements OnInit, OnDestroy {
       if (project.widget) {
 
         this.widgetObj = project.widget;
-
 
         if (project.widget.wellcomeTitle) {
           // tslint:disable-next-line:max-line-length
@@ -232,6 +232,12 @@ export class WidgetComponent implements OnInit, OnDestroy {
         this.paramLogoChat = '';
       }
 
+    }, (error) => {
+      this.showSpinner = false;
+      console.log('»» WIDGET - PRJCT-WIDGET - ERROR ', error);
+    }, () => {
+      this.showSpinner = false;
+      console.log('»» WIDGET - PRJCT-WIDGET * COMPLETE *');
     });
   }
 
@@ -570,6 +576,7 @@ export class WidgetComponent implements OnInit, OnDestroy {
       + this.paramWellcomeTitle
       + this.paramWellcomeMsg
       + this.paramLogoChat
+    console.log('»» WIDGET - TEST WIDGET URL ', url);
     window.open(url, '_blank');
   }
 

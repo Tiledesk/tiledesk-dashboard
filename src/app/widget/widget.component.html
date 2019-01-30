@@ -7,29 +7,32 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="card">
-				 <div class="card-content" style="padding-top: 25px;">
 
-						<div class="row">
-							<div class="col-sm-12" style="">
+				<loading-spinner *ngIf="showSpinner"></loading-spinner>
+				
+				<div class="card-content" *ngIf="!showSpinner" style="padding-top: 25px;">
 
-								<h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; font-family: Google Sans, sans-serif;">
-									{{ 'Resourcepage.EmbedTheTileDeskChatWidget' | translate }}
-								</h4>
-								<h6 class="category text-gray" style="text-transform: none; padding-left:15px; color: rgb(118, 149, 165);">
-									{{ 'Resourcepage.ToChatWithYourVisitors...' | translate  }}
-								</h6>
-								<h6 class="category text-gray" style="text-transform: none; padding-left:15px; margin-top:0px;color: rgb(118, 149, 165);">
-										{{ 'Resourcepage.CopyTheFollowingScript...' | translate  }}<code><em>&lt;head&gt;</em></code> tags,
-								</h6>
-								<h6 class="category text-gray" style="text-transform: none; padding-left:15px; margin-top:0px; color: rgb(118, 149, 165);">
-										{{ 'Resourcepage.OrAddItWith...' | translate  }} <img style="width:20px" src="assets/img/google-tag-mgr-icon.png"/>
-										<span style="font-weight:500" >Google Tag Manager.</span> 
-										<a target="_blank" href="https://tiledesk.com/google-tag-manager-add-tiledesk-to-your-sites/">
-											<span style="color: #03a5e8">{{ 'Resourcepage.HereHow' | translate  }}</span> 
-										</a>  
-								</h6>
-							</div>
+					<div class="row">
+						<div class="col-sm-12" style="">
+
+							<h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; font-family: Google Sans, sans-serif;">
+								{{ 'Resourcepage.EmbedTheTileDeskChatWidget' | translate }}
+							</h4>
+							<h6 class="category text-gray" style="text-transform: none; padding-left:15px; color: rgb(118, 149, 165);">
+								{{ 'Resourcepage.ToChatWithYourVisitors...' | translate  }}
+							</h6>
+							<h6 class="category text-gray" style="text-transform: none; padding-left:15px; margin-top:0px;color: rgb(118, 149, 165);">
+									{{ 'Resourcepage.CopyTheFollowingScript...' | translate  }}<code><em>&lt;head&gt;</em></code> tags,
+							</h6>
+							<h6 class="category text-gray" style="text-transform: none; padding-left:15px; margin-top:0px; color: rgb(118, 149, 165);">
+									{{ 'Resourcepage.OrAddItWith...' | translate  }} <img style="width:20px" src="assets/img/google-tag-mgr-icon.png"/>
+									<span style="font-weight:500" >Google Tag Manager.</span> 
+									<a target="_blank" href="https://tiledesk.com/google-tag-manager-add-tiledesk-to-your-sites/">
+										<span style="color: #03a5e8">{{ 'Resourcepage.HereHow' | translate  }}</span> 
+									</a>  
+							</h6>
 						</div>
+					</div>
 
 							<div class="row" style=" margin-top: 15px;">
 								<!-- <div class="col-sm-5 col-xs-12"> -->
