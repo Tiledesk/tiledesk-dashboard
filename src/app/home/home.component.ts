@@ -9,7 +9,7 @@ import { UsersService } from '../services/users.service';
 import { UsersLocalDbService } from '../services/users-local-db.service';
 import { DepartmentService } from '../services/mongodb-department.service';
 import { RequestsService } from '../services/requests.service';
-
+import { NotifyService } from '../core/notify.service';
 
 
 @Component({
@@ -18,8 +18,6 @@ import { RequestsService } from '../services/requests.service';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-
-
 
   firebaseProjectId: any;
   LOCAL_STORAGE_CURRENT_USER: any;
@@ -44,8 +42,8 @@ export class HomeComponent implements OnInit {
     private usersService: UsersService,
     private usersLocalDbService: UsersLocalDbService,
     private departmentService: DepartmentService,
-    private requestsService: RequestsService
-
+    private requestsService: RequestsService,
+    private notify: NotifyService
   ) { }
 
   ngOnInit() {
@@ -132,8 +130,11 @@ export class HomeComponent implements OnInit {
   }
 
   openChat() {
+    localStorage.setItem('chatOpened', 'true');
     const url = this.CHAT_BASE_URL;
     window.open(url, '_blank');
+
+    this.notify.publishHasClickedChat(true);
 
     // this.openWindow('tiledesk_chat', url)
     // this.focusWin('tiledesk_chat')
@@ -293,6 +294,11 @@ export class HomeComponent implements OnInit {
       this.IS_SUPER_USER = true;
 
     }
+  }
+
+  displayCheckListModal() {
+    this.notify.showCheckListModal(true);
+    
   }
 
 
