@@ -22,6 +22,7 @@ import { environment } from '../../../environments/environment';
 import { isDevMode } from '@angular/core';
 import { UploadImageService } from '../../services/upload-image.service';
 import { NotifyService } from '../../core/notify.service';
+import * as moment from 'moment';
 
 @Component({
     selector: 'app-navbar',
@@ -98,8 +99,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
 
     ngOnInit() {
-       
-        
+
+
         this.getCurrentProject();
         // tslint:disable-next-line:no-debugger
         // debugger
@@ -139,10 +140,10 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
         // used when the page is refreshed
         this.checkUserImageExist();
-        
+
         this.getFromLocalStorageHasOpenedTheChat();
         this.getFromNotifyServiceHasOpenedChat();
-      
+
 
     } // OnInit
 
@@ -328,16 +329,33 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
             if (requests) {
 
                 requests.forEach(r => {
+
+
                     if (r.support_status === 100 && !this.shown_requests[r.id] && this.user !== null) {
 
-                        // this.lastRequest = requests[requests.length - 1];
-                        // console.log('!!! »»» LAST UNSERVED REQUEST ', this.lastRequest)
+                        const requestCreationDate = moment(r.created_on);
+                        // console.log('notifyLastUnservedRequest REQUEST', r.id, ' CREATED ON ', requestCreationDate);
+                        // const today = new Date();
+                        const currentTime = moment();
+                        // console.log('notifyLastUnservedRequest REQUEST TODAY ', currentTime);
 
-                        // console.log('!!! »»» UNSERVED REQUEST IN BOOTSTRAP NOTIFY ', r)
-                        this.showNotification('<span style="font-weight: 400; font-family: Google Sans, sans-serif;">' + r.requester_fullname + '</span>' + '<em style="font-family: Google Sans, sans-serif;">' + r.first_text + '</em>');
+                        const dateDiff = currentTime.diff(requestCreationDate, 'h');
+                        console.log('»» WIDGET notifyLastUnservedRequest DATE DIFF ', dateDiff);
 
-                        this.shown_requests[r.id] = true;
-                        // r.notification_already_shown = true;
+                        /**
+                         * *** NEW 29JAN19: the unserved requests notifications are not displayed if it is older than one day ***
+                         */
+                        if (dateDiff < 24) {
+
+                            // this.lastRequest = requests[requests.length - 1];
+                            // console.log('!!! »»» LAST UNSERVED REQUEST ', this.lastRequest)
+
+                            // console.log('!!! »»» UNSERVED REQUEST IN BOOTSTRAP NOTIFY ', r)
+                            this.showNotification('<span style="font-weight: 400; font-family: Google Sans, sans-serif;">' + r.requester_fullname + '</span>' + '<em style="font-family: Google Sans, sans-serif;">' + r.first_text + '</em>');
+
+                            this.shown_requests[r.id] = true;
+                            // r.notification_already_shown = true;
+                        }
                     }
                 });
                 // this.unservedRequestCount = count;
@@ -345,207 +363,6 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         });
     }
 
-    // !!! NO MORE USED
-    getUnservedRequestLenght() {
-        // GET COUNT OF UNSERVED REQUESTS
-        this.requestsService.getCountUnservedRequest().subscribe((count: number) => {
-            this.unservedRequestCount = count;
-            console.log(' ++ +++ (navbar) COUNT OF UNSERVED REQUEST ', this.unservedRequestCount);
-
-        });
-    }
-
-    // !!! NO MORE USED
-    getUnservedRequestLenght_bs() {
-        // SUBSCRIBE TO UNSERVED REQUESTS PUBLISHED BY REQUEST SERVICE
-        this.requestsService.mySubject.subscribe(
-            (values) => {
-                // console.log('xxxxx xxxxx', values)
-                if (values) {
-                    this.unservedRequestCount = values.length
-                    // console.log('NAVBAR SUBSCRIBE TO REQUEST SERVICE PUBLISHED REQUESTS ', values)
-                    // console.log('NAVBAR SUBSCRIBE TO REQUEST PUBLISHED COUNT OF UNSERVED REQUEST ', this.unservedRequestCount);
-                    // let i: any;
-                    // for (i = 0; i < values.length; i++) {
-                    //     this.valueText = values[i].text
-                    //     console.log('REQUEST TEXT: ', this.valueText )
-                    // }
-
-                    // GET THE LAST REQUEST (note: lastRequest.text replaced with lastRequest.first_text)
-                    // this.lastRequest = values[values.length - 1];
-                    // console.log('NAVBAR - LAST REQUEST: ', this.lastRequest)
-                    // console.log('NAVBAR - LAST REQUEST (FIRST) TEXT: ', this.lastRequest.first_text)
-                    // console.log('NAVBAR - LAST REQUEST RECIPIENT (ID): ', this.lastRequest.recipient)
-                    // console.log('NAVBAR - LAST REQUEST SUPPORT STATUS: ', this.lastRequest.support_status)
-
-                    // console.log('NAVBAR - MEMBERS IN LAST REQUEST ', this.lastRequest.members)
-
-                    // this.user = firebase.auth().currentUser;
-                    // console.log('NAVBAR COMPONENT: LOGGED USER ', this.user);
-                    // if (this.user) {
-                    //     this.currentUserFireBaseUID = this.user.uid
-                    //     console.log(' -- > FIREBASE SIGNED-IN USER UID GET IN NAVBAR COMPONENT', this.currentUserFireBaseUID);
-                    // }
-                    // IF THE CURRENT USER UID IS ALREADY MEMBER OF THE CONVERSATION DOES NOT SHOW THE NOTIFICATION
-                    // this avoid a new display of the notification related to the unserved request when the user joins to
-                    // the same request
-                    // this.requestsService.getSnapshotConversationByRecipient(this.lastRequest.recipient)
-                    //     .subscribe((request) => {
-                    //         console.log('NAVBAR - LAST REQUEST ', request)
-                    //         this.membersObjectInRequestArray = request[0].members;
-                    //         console.log('NAVBAR - MEMBERS IN LAST REQUEST ', this.membersObjectInRequestArray)
-
-                    //         const uidKeysInMemberObject = Object.keys(this.membersObjectInRequestArray)
-                    //         console.log('UID KEYS CONTAINED IN MEMBER OBJECT ', Object.keys(this.membersObjectInRequestArray))
-
-                    //         const lengthOfUidKeysInMemberObject = uidKeysInMemberObject.length;
-                    //         console.log('LENGHT OF UID KEY CONTAINED IN MEMBER OBJECT ', lengthOfUidKeysInMemberObject)
-
-                    //         let i: number;
-                    //         for (i = 0; i < lengthOfUidKeysInMemberObject; i++) {
-                    //             const uidKey = uidKeysInMemberObject[i];
-
-                    //             if (uidKey === this.currentUserFireBaseUID) {
-                    //                 console.log('CURRENT USER IS BETWEEN THE MEMBERS')
-                    //                 this.CURRENT_USER_UID_IS_BETWEEN_MEMBERS = true;
-                    //             } else {
-                    //                 this.CURRENT_USER_UID_IS_BETWEEN_MEMBERS = false;
-                    //             }
-                    //         }
-
-                    //     });
-
-                    // this.requestsService.getSnapshotConversationByRecipient(this.lastRequest.recipient)
-                    //     .subscribe((request) => {
-
-                    //     });
-                    // if (this.CURRENT_USER_UID_IS_BETWEEN_MEMBERS === false) {
-                    // if (this.lastRequest) {
-
-                    // if (this.lastRequest.recipient !== this.SHOW_NOTIFICATION_FOR_REQUEST_RECIPIENT) {
-                    // this.SHOW_NOTIFICATION_FOR_REQUEST_RECIPIENT = this.lastRequest.recipient;
-                    // console.log('SHOW_NOTIFICATION_FOR_REQUEST WITH RECIPIENT ', this.SHOW_NOTIFICATION_FOR_REQUEST_RECIPIENT);
-
-                    // if (this.SHOW_NOTIFICATION_FOR_REQUEST_RECIPIENT === true) {
-
-
-                    // GET CURRENT USER FROM LOCAL STORAGE
-                    // const userKey = Object.keys(window.localStorage)
-                    //     .filter(it => it.startsWith('firebase:authUser'))[0];
-                    // this.LOCAL_STORAGE_CURRENT_USER = userKey ? JSON.parse(localStorage.getItem(userKey)) : undefined;
-                    // console.log('NAVBAR - USER GET FROM LOCAL STORAGE ', this.LOCAL_STORAGE_CURRENT_USER)
-
-                    // GET LAST REQUEST RECIPIENT FROM LOCAL STORAGE
-                    // this.LOCAL_STORAGE_LAST_REQUEST_RECIPIENT = localStorage.getItem(this.lastRequest.recipient)
-                    // console.log(' --  LOCAL STORAGE GET LAST REQUEST ID ',  this.LOCAL_STORAGE_LAST_REQUEST_RECIPIENT)
-
-                    /**
-                     * ====== DISPLAY THE LAST REQUEST IN A NOTIFICATION ======
-                     * WHENEVER A NOTIFICATION IS DISPLAYED ITS REQUEST-RECIPIENT IS SAVED IN THE LOCAL STORAGE
-                     * WHEN IS GET ANOTHER LAST REQUEST THIS IS DISPLAYED IN A NOTIFICATION IF:
-                     * - ITS REQUEST-RECIPIENT IS NOT PRESENT IN THE LOCAL STORAGE
-                     *   (this so that the last request is only displayed once in the notification)
-                     * - THE CURRENT USER IS PRESENT IN THE LOCAL STORAGE
-                     *   (this so that the last request is only displayed if there is a user logged)
-                     */
-
-                    // if ((this.LOCAL_STORAGE_LAST_REQUEST_RECIPIENT === null) && (this.LOCAL_STORAGE_CURRENT_USER !== undefined) && (this.lastRequest.support_status === 100)) {
-                    //     this.showNotification(this.lastRequest.recipient)
-                    //     this.audio = new Audio();
-                    //     this.audio.src = 'assets/Carme.mp3';
-                    //     this.audio.load();
-                    //     this.audio.play();
-                    // }
-
-                }
-
-            }
-        ); // mySubject.subscribe
-    }
-
-    /** // !!! NO MORE USED
-     * ====== DISPLAY THE LAST REQUEST IN A NOTIFICATION ======
-     * WHEN IS GET ANOTHER LAST REQUEST THIS IS DISPLAYED IN A NOTIFICATION IF:
-     * - THE USER IS SIGNED IN
-     *   (this so that the last request is only displayed if there is a user logged)
-     *   note: to get the boolean value of this.USER_IS_SIGNED_IN the navbar subscribe to IS_LOGGED_IN published by authguard)
-     */
-    getLastRequest() {
-        this.requestsService.getSnapshotLastConversation().subscribe((last_request) => {
-            console.log('NAVBAR - SUBSCRIPTION TO REQUEST WITH SUPPORT-STATUS == 100 ', last_request);
-
-
-            this.lastRequest = last_request[last_request.length - 1];
-            // this.lastRequest = last_request;
-            console.log('NAVBAR <-> LAST UNSERVED REQUEST ', this.lastRequest);
-            // && (this.USER_IS_SIGNED_IN === true)
-            if ((this.lastRequest) && (this.USER_IS_SIGNED_IN === true)) {
-                // MOVED IN REQUEST DETAIL
-                // this.showNotification(this.lastRequest.recipient)
-
-                // this.audio = new Audio();
-                // this.audio.src = 'assets/Carme.mp3';
-                // this.audio.load();
-                // this.audio.play();
-
-
-                // GET LAST REQUEST DETAIL
-                this.afs.collection('conversations')
-                    .doc(this.lastRequest.recipient)
-                    .ref
-                    .get().then((doc: any) => {
-                        if (doc.exists) {
-                            console.log('LAST REQUEST DETAIL - Document data:', doc.data());
-                            // console.log('LAST REQUEST DETAIL PREVIOUS- Document data:', doc.data.previous.data() );
-                            const support_status = doc.data().support_status
-                            const id = doc.data().recipient
-                            const timestamp = doc.data().timestamp
-                            console.log('LAST REQUEST DETAIL S-Status - Document data:', support_status, ' ID ', id, ' TIMEST ', timestamp);
-
-                            if (support_status === 100) {
-
-                                this.showNotification(this.lastRequest.recipient)
-                                console.log('LAST REQUEST LENGHT ', this.lastRequest.length)
-                                // for (const r of this.lastRequest) {
-                                //     if (r.recipient === doc.data().recipient) {
-                                //         r.notification = true;
-                                //     }
-                                // }
-
-                            }
-                        } else {
-                            console.log('No such document!');
-                        }
-                    }).catch((error: any) => {
-                        console.log('Error getting document:', error);
-                    });
-
-                // GET PREVIOUS VALUE ON-UPDATE
-                // this.afs.doc(`conversations/${this.lastRequest.recipient}`)
-                //     .update(event => {
-                //         const newValue = event.data;
-                //         console.log('NEW VALUE ', newValue)
-
-                //         const previousValue = event.data.previous;
-                //         console.log('PREVIOUS VALUE ', newValue)
-                //     });
-
-
-
-                // .document('users/{userId}')
-                // .onUpdate(event => {
-                //   // Get an object representing the document
-                //   // e.g. {'name': 'Marie', 'age': 66}
-                //   var newValue = event.data.data();
-
-                //   // ...or the previous value before this update
-                //   var previousValue = event.data.previous.data();
-
-                //   // access a particular field as you would any JS property
-                //   var name = newValue.name;
-            }
-        });
-    }
 
     showNotification(text: string) {
         console.log('show notification')
