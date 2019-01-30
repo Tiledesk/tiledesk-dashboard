@@ -42,16 +42,38 @@ export class Request implements Request {
     let found = false
     if (this.agents !== undefined) {
       // console.log('MODEL REQUEST - AGENT ', this.agents)
+      // console.log('MODEL REQUEST - MEMBER 1)', this.members)
 
       this.agents.forEach(agent => {
 
-        // console.log('AGENT - ID USER ', agent.id_user)
         if (current_user_id === agent.id_user) {
+          console.log('AGENT - ID USER MATCH', agent.id_user)
           found = true
         }
       });
 
     }
+
+   /**
+    * *** NEW 29JAN19: runs a check of the current user' id between the members' ids ***
+    * and set found = true if it is found
+    * this resolve the bug: a request is assigned to an Agent of the group A then is riassigned to one of the group B
+    * the Agent of the Group B doesn't see the request because of that the initial Agent's array is not modified
+    */
+    if (this.members !== undefined) {
+      const _members = Object.keys(this.members);
+      // console.log('MODEL REQUEST - MEMBER 2)', _members)
+
+      _members.forEach(member => {
+
+        if (current_user_id === member) {
+          console.log('MEMBER - ID MATCH ', member)
+          found = true
+        }
+      });
+
+    }
+    // console.log('MODEL REQUEST FOUND AGENT ', found);
     return found;
   }
 
