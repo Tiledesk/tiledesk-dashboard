@@ -463,7 +463,7 @@ export class RequestsService {
           r.membersCount = data.membersCount
           r.support_status = data.support_status
           r.members = data.members
-          r.members_as_string = members_as_html(data.members, data.requester_id, this.currentUserID)
+          // r.members_as_string = members_as_html(data.members, data.requester_id, this.currentUserID)
           r.currentUserIsJoined = currentUserUidIsInMembers(data.members, this.currentUserID, data.recipient)
           r.requester_fullname = data.requester_fullname
           r.requester_id = data.requester_id
