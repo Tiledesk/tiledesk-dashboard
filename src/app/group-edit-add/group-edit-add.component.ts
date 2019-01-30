@@ -52,6 +52,11 @@ export class GroupEditAddComponent implements OnInit {
   windowActualHeight: any
   newInnerHeight: any
 
+  updateGroupSuccessNoticationMsg: string;
+  updateGroupErrorNoticationMsg: string;
+  removeGroupMemberSuccessNoticationMsg: string;
+  removeGroupMemberErrorNoticationMsg: string;
+
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -65,6 +70,11 @@ export class GroupEditAddComponent implements OnInit {
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
+
+    this.translateUpdateGroupSuccessNoticationMsg();
+    this.translateUpdateGroupErrorNoticationMsg();
+    this.translateRemoveGroupMemberSuccessNoticationMsg();
+    this.translateRemoveGroupMemberErrorNoticationMsg();
     this.onInitUsersListModalHeight();
     this.detectBrowserLang();
     this.detectsCreateEditInTheUrl();
@@ -72,12 +82,51 @@ export class GroupEditAddComponent implements OnInit {
     this.getCurrentProject();
   }
 
-  onInitUsersListModalHeight() {
+  // TRANSLATION
+  translateUpdateGroupSuccessNoticationMsg() {
+    this.translate.get('UpdateGroupSuccessNoticationMsg')
+      .subscribe((text: string) => {
 
+        this.updateGroupSuccessNoticationMsg = text;
+        console.log('+ + + Update Group Success Notication Msg', text)
+      });
+  }
+  // TRANSLATION
+  translateUpdateGroupErrorNoticationMsg() {
+    this.translate.get('UpdateGroupErrorNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.updateGroupErrorNoticationMsg = text;
+        console.log('+ + + Update Group Error Notication Msg', text)
+      });
+  }
+
+  // TRANSLATION
+  translateRemoveGroupMemberSuccessNoticationMsg() {
+    this.translate.get('RemoveGroupMemberSuccessNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.removeGroupMemberSuccessNoticationMsg = text;
+        console.log('+ + + Remove Group Success Notication Msg', text)
+      });
+  }
+
+   // TRANSLATION
+   translateRemoveGroupMemberErrorNoticationMsg() {
+    this.translate.get('RemoveGroupMemberErrorNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.removeGroupMemberErrorNoticationMsg = text;
+        console.log('+ + + Remove Group Error Notication Msg', text)
+      });
+  }
+
+
+  onInitUsersListModalHeight() {
     this.windowActualHeight = window.innerHeight;
     console.log('»»» GROUP EDIT ADD - ACTUAL HEIGHT ', this.windowActualHeight);
 
-    this.users_list_modal_height = this.windowActualHeight - 400
+    this.users_list_modal_height = this.windowActualHeight - 350
     console.log('»»» GROUP EDIT ADD - ON INIT USER LIST MODAL HEIGHT ', this.users_list_modal_height);
 
     return { 'height': this.users_list_modal_height += 'px' };
@@ -88,7 +137,7 @@ export class GroupEditAddComponent implements OnInit {
   onResize(event: any) {
     // this.newInnerWidth = event.target.innerWidth;
     this.newInnerHeight = event.target.innerHeight;
-    this.users_list_modal_height = this.newInnerHeight - 400
+    this.users_list_modal_height = this.newInnerHeight - 350
 
     console.log('»»» GROUP EDIT ADD - NEW INNER HEIGHT ', this.newInnerHeight);
     console.log('»»» GROUP EDIT ADD - ON RESIZE USER LIST MODAL HEIGHT ', this.users_list_modal_height);
@@ -298,23 +347,23 @@ export class GroupEditAddComponent implements OnInit {
     this.groupsService.updateGroupName(this.id_group, this.groupNameToUpdate).subscribe((group) => {
 
       console.log('UPDATED GROUP WITH UPDATED NAME', group);
-    },
-      (error) => {
-        console.log('UPDATED GROUP WITH UPDATED NAME - ERROR ', error);
-        // =========== NOTIFY ERROR ===========
-        this.notify.showNotification('An error occurred while updating the group', 4, 'report_problem');
-      },
-      () => {
-        console.log('UPDATED GROUP WITH UPDATED NAME * COMPLETE *');
+    }, (error) => {
+      console.log('UPDATED GROUP WITH UPDATED NAME - ERROR ', error);
+      // =========== NOTIFY ERROR ===========
+      // this.notify.showNotification('An error occurred while updating the group', 4, 'report_problem');
+      this.notify.showNotification(this.updateGroupErrorNoticationMsg, 4, 'report_problem');
+    }, () => {
+      console.log('UPDATED GROUP WITH UPDATED NAME * COMPLETE *');
 
-        // this.router.navigate(['project/' + this.project_id + '/groups']);
+      // this.router.navigate(['project/' + this.project_id + '/groups']);
 
-        // =========== NOTIFY SUCCESS===========
-        this.notify.showNotification('group successfully updated', 2, 'done');
+      // =========== NOTIFY SUCCESS===========
+      // this.notify.showNotification('group successfully updated', 2, 'done');
+      this.notify.showNotification(this.updateGroupSuccessNoticationMsg, 2, 'done');
 
-        // UPDATE THE GROUP LIST
-        // this.ngOnInit()
-      });
+      // UPDATE THE GROUP LIST
+      // this.ngOnInit()
+    });
 
   }
 
@@ -397,8 +446,8 @@ export class GroupEditAddComponent implements OnInit {
         this.ADD_MEMBER_TO_GROUP_ERROR = false;
 
         // =========== NOTIFY SUCCESS===========
-        this.notify.showNotification('group successfully updated', 2, 'done');
-
+        // this.notify.showNotification('group successfully updated', 2, 'done');
+        this.notify.showNotification(this.updateGroupSuccessNoticationMsg, 2, 'done');
 
         // UPDATE THE GROUP LIST
         this.ngOnInit()
@@ -439,13 +488,15 @@ export class GroupEditAddComponent implements OnInit {
       }, (error) => {
         console.log('UPDATED GROUP WITH THE USER SELECTED - ERROR ', error);
         // =========== NOTIFY ERROR ===========
-        this.notify.showNotification('An error occurred while removing the member', 4, 'report_problem');
+        // this.notify.showNotification('An error occurred while removing the member', 4, 'report_problem');
+        this.notify.showNotification(this.removeGroupMemberErrorNoticationMsg, 4, 'report_problem');
 
       }, () => {
         console.log('UPDATED GROUP WITH THE USER SELECTED* COMPLETE *');
 
         // =========== NOTIFY SUCCESS===========
-        this.notify.showNotification('member successfully removed', 2, 'done');
+        // this.notify.showNotification('member successfully removed', 2, 'done');
+        this.notify.showNotification(this.removeGroupMemberSuccessNoticationMsg, 2, 'done');
 
         // UPDATE THE GROUP LIST
         this.ngOnInit()

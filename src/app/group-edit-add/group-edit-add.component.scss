@@ -110,6 +110,7 @@ button.close {
 /* TABLE LIST OF USERS - IN THE MODAL WINDOWS */
 .thead_table-fixed, .tbody_table-fixed, .tr_table-fixed, .td_table-fixed, .th_table-fixed {
     display: block;
+  
 }
 
 .thead_table-fixed, .th_table-fixed {
@@ -133,6 +134,22 @@ button.close {
     display: block;
     visibility: hidden;
 }
+
+.td_table-fixed {
+    border:0px !important;
+    font-weight: 400;
+}
+
+.th_table-fixed {
+    border:0px !important
+}
+
+.tr_table-fixed { 
+    border-top: 0px !important;
+    border-bottom: 1px solid #ddd;
+}
+
+/* end TABLE LIST OF USERS - IN THE MODAL WINDOWS */
 
 // button add members hover
 .addMember:hover {
