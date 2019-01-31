@@ -270,36 +270,31 @@ export class ContactDetailsComponent implements OnInit {
     this.location.back();
   }
 
-  members_replace(member_id) {
-    // console.log('!!! NEW REQUESTS HISTORY  - SERVED BY ID ', member_id)
-    // console.log(' !!! NEW REQUESTS HISTORY underscore found in the participant id  ', member_id, member_id.includes('bot_'));
+  // members_replace(member_id) {
+  //   const participantIsBot = member_id.includes('bot_')
 
-    const participantIsBot = member_id.includes('bot_')
+  //   if (participantIsBot === true) {
 
-    if (participantIsBot === true) {
+  //     const bot_id = member_id.slice(4);
+  //         const bot = this.botLocalDbService.getBotFromStorage(bot_id);
+  //     if (bot) {
+  //       return member_id = '- ' + bot['name'] + ' (bot)';
+  //     } else {
+  //       return '- ' + member_id
+  //     }
 
-      const bot_id = member_id.slice(4);
-      // console.log('!!! NEW REQUESTS HISTORY - THE PARTICIP', member_id, 'IS A BOT ', participantIsBot, ' - ID ', bot_id);
+  //   } else {
 
-      const bot = this.botLocalDbService.getBotFromStorage(bot_id);
-      if (bot) {
-        return member_id = '- ' + bot['name'] + ' (bot)';
-      } else {
-        return '- ' + member_id
-      }
-
-    } else {
-
-      const user = this.usersLocalDbService.getMemberFromStorage(member_id);
-      if (user) {
-        // console.log('user ', user)
-        const lastnameInizial = user['lastname'].charAt(0)
-        return member_id = '- ' + user['firstname'] + ' ' + lastnameInizial + '.'
-      } else {
-        return '- ' + member_id
-      }
-    }
-  }
+  //     const user = this.usersLocalDbService.getMemberFromStorage(member_id);
+  //     if (user) {
+  //       // console.log('user ', user)
+  //       const lastnameInizial = user['lastname'].charAt(0)
+  //       return member_id = '- ' + user['firstname'] + ' ' + lastnameInizial + '.'
+  //     } else {
+  //       return '- ' + member_id
+  //     }
+  //   }
+  // }
 
   getRequestText(text: string): string {
     if (text) {
