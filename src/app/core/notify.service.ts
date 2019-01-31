@@ -135,21 +135,22 @@ export class NotifyService {
     }, {
         type: type[color],
         // timer: 1500,
-        delay: 200,
+        delay: 1500,
         placement: {
           from: 'top',
-          align: 'center'
+          align: 'right'
         },
         // animate: {
         //   enter: 'animated zoomIn',
         //   exit: 'animated zoomOut'
         // },
-        template: '<div data-notify="container" class="col-xs-11 col-sm-8 alert alert-{0}" style="text-align: left;" role="alert">' +
+        // tslint:disable-next-line:max-line-length
+        template: '<div data-notify="container" class="col-xs-11 col-sm-3  alert alert-{0}" style="text-align: left; padding-top: 8px;padding-bottom: 8px;" role="alert">' +
           '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
           // '<span data-notify="title" style="max-width: 100%; font-size:1.1em; ">TileDesk</span> ' +
           // tslint:disable-next-line:max-line-length
-          '<span data-notify="icon" style="display: inline;"><i style="vertical-align: middle; padding-right: 5px;" class="material-icons">' + icon + '</i> </span> ' +
-          '<span data-notify="message" style="display: inline; vertical-align: middle ">' + message + '</span>' +
+          '<span data-notify="icon" style="display: inline;"><i style="vertical-align: middle; padding: 3px;background-color: #449d48; border-radius: 50%; font-size:16px " class="material-icons">' + icon + '</i> </span> ' +
+          '<span data-notify="message" style="display: inline; vertical-align: middle; padding-left:8px">' + message + '</span>' +
           '</div>'
       });
   }
