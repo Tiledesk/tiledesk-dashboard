@@ -60,6 +60,9 @@
 
           <div class="card-header card-header-custom" data-background-color="" style="">
             <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-info" style="padding: 8px 16px;margin:0px;" (click)="goToAddUser()">
+                <span class="icon" style="padding-right:8px">
+                  <i class="material-icons">add_circle</i>
+                </span>
               {{ "UsersPage.Invites" | translate }}
             </button>
 
