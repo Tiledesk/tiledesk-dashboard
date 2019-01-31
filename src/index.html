@@ -16,7 +16,7 @@
     <link rel="icon" type="image/png" href="https://tiledesk.com/wp-content/uploads/2018/07/tiledesk-favicon.png" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
-    <title>Tiledesk Support Dashboard</title>
+    <title>tiledesk Support Dashboard</title>
 
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
     <meta name="viewport" content="width=device-width" />
@@ -53,6 +53,23 @@
         fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'tiledesk-jssdk'));
     </script> -->
+
+    <script type="application/javascript">
+      window.tiledeskSettings = 
+        {
+          projectid: "5ad5bd52c975820014ba900a",
+        };
+        (function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id; //js.async=!0;
+          js.src = "https://widget.tiledesk.com/v2/tiledesk.js";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'tiledesk-jssdk'));
+    </script>
+
+
+
     <!-- ./end TILEDESK WIDGET -->
 
     <!-- <tiledeskwidget-root projectid="5ad5bd52c975820014ba900a"></tiledeskwidget-root>
