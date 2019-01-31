@@ -142,6 +142,7 @@ button.close {
 
 .avatar-container {
     text-align: center;
+    cursor: pointer;
     /* position: absolute;
     top: 92px;
     border-radius: 50%;
@@ -151,6 +152,16 @@ button.close {
     left: 50%; */
 }
 /* // NK start NEW: AVATAR ON THE SIDEBAR  */
+.hover-effect {
+    opacity: 0.5 !important;
+}
+
+.is-over-camera:hover {
+    opacity: 0.5 !important;
+    cursor: pointer;
+}
+
+
 .tiledesk-nav-user{
     background-color: #1e2129!important;
     color: #fff!important;
@@ -257,7 +268,7 @@ button.close {
 /* SIDEBAR NAV ITEMS  */
 .active  {
     height: 40px;
-    padding: 0 12px 0 24px;
+    /* padding: 0 12px 0 24px; */
     border-radius: 0 20px 20px 0;
     margin-right: 16px;
     background-color: #039be5!important;

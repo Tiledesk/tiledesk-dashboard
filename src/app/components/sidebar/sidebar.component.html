@@ -21,7 +21,10 @@
             
           {{ user.email }}
         </div>
-        <div class="avatar-container tiledesk-nav-avatar">
+        <div *ngIf="project" class="avatar-container tiledesk-nav-avatar" 
+          (mouseover)="mouseOver(true)" 
+          (mouseout)="mouseOver(false)" 
+          routerLink="project/{{ project._id }}/user-profile">
             <!-- <img class="avatar" src="https://static.intercomassets.com/avatars/383251/square_128/dorinew-1493275883.png?1493275883"> -->
 
           <img class="avatar" *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" 
@@ -29,6 +32,10 @@
             
           <img class="avatar" *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true" 
               src="assets/img/no_image_user.png"/>
+
+             
+        
+            
             
             <div (click)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)" class="status-icon online" [ngClass]="{'is-user-online' : IS_AVAILABLE === true, 'is-user-offline' : IS_AVAILABLE === false }">
               <span style="position:relative; top: -5px;left: 14px; cursor:pointer">  
@@ -41,8 +48,15 @@
               
               </span>
             </div>
+
         </div>
-        </div>
+        <!-- CAMERA ICONS OVER THE AVATAR -->
+        <i *ngIf="project" routerLink="project/{{ project._id }}/user-profile" class="material-icons is-over-camera" [ngClass]="{'hover-effect' : isOverAvar}"  style="z-index: 5; opacity:0 ; position: relative; top: 34px;"> camera_alt </i>
+      </div>
+
+            <!-- <div class="middle"> -->
+               
+            <!-- </div> -->
       <!-- // NK ./end NEW: AVATAR ON THE SIDEBAR  -->
 
     <!-- SEARCH MOBILE MENU -->
@@ -370,6 +384,17 @@
               </span>  -->
             </a>
           </li>
+
+          <li *ngIf="SHOW_SETTINGS_SUBMENU" routerLinkActive="active" style="margin-bottom:24px" (click)="stopScroll()">
+            <a *ngIf="project"  class="customAncor" routerLink="project/{{ project._id }}/edit">
+              <i class="material-icons sidebar-icons">settings</i>
+              <p class="onBlackBckgrnd">
+                {{ 'NavBar.ProjectSettings' | translate }}
+              </p>
+            </a>
+          </li>
+
+          <!-- <li *ngIf="SHOW_SETTINGS_SUBMENU"></li> -->
 
           <!-- // SCRIPT -->
           <!-- <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active">

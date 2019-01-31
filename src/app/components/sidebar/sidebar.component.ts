@@ -104,6 +104,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     changeAvailabilitySuccessNoticationMsg: string;
     changeAvailabilityErrorNoticationMsg: string;
+
+    isOverAvar = false;
     constructor(
         private requestsService: RequestsService,
         private router: Router,
@@ -433,7 +435,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     onScroll(event: any): void {
-        console.log('RICHIAMO ON SCROLL ');
+        console.log('SIDEBAR RICHIAMO ON SCROLL ');
         this.elSidebarWrapper = <HTMLElement>document.querySelector('.sidebar-wrapper');
         this.scrollpos = this.elSidebarWrapper.scrollTop
         console.log('SIDEBAR SCROLL POSITION', this.scrollpos)
@@ -568,6 +570,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 }
             }
         })
+    }
+
+    mouseOver(_isOverAvar: boolean) {
+        this.isOverAvar = _isOverAvar
+        // console.log('Mouse Over Avatar Container ', _isOverAvar)
     }
 
 }
