@@ -316,6 +316,45 @@ export class RequestsListComponent implements OnInit {
     }
   }
 
+  // members_replace2(memberArray, requesterId) {
+  //   console.log('OLA!  MEMBERS ARRAY Members replace ', memberArray, requesterId)
+  //   let user = []
+  //   memberArray.forEach(member_id => {
+  //     if (member_id !== requesterId && member_id !== 'system') {
+  //       console.log('OLA!  MEMBER ', member_id);
+
+  //       user = JSON.parse((localStorage.getItem(member_id)));
+
+  //       const memberIsBot = member_id.includes('bot_');
+
+  //       if (memberIsBot === true) {
+
+  //         const bot_id = member_id.slice(4);
+  //         // console.log('!!! NEW REQUESTS HISTORY - THE PARTICIP', member_id, 'IS A BOT ', memberIsBot, ' - ID ', bot_id);
+
+  //         const bot = this.botLocalDbService.getBotFromStorage(bot_id);
+  //         if (bot) {
+  //           return member_id = '- ' + bot['name'] + ' (bot)';
+  //         } else {
+  //           return '- ' + member_id
+  //         }
+
+  //       } else {
+
+  //         user = this.usersLocalDbService.getMemberFromStorage(member_id);
+  //         if (user) {
+  //           // console.log('user ', user)
+  //           const lastnameInizial = user['lastname'].charAt(0)
+  //           return member_id = '- ' + user['firstname'] + ' ' + lastnameInizial + '.'
+  //         } else {
+  //           return '- ' + member_id
+  //         }
+  //       }
+  //     }
+
+  //   });
+  // }
+
   getRequestListBS() {
     this.requestsService.requestsList_bs.subscribe((requests) => {
       if (requests) {
@@ -390,6 +429,9 @@ export class RequestsListComponent implements OnInit {
 
               // GET MEMBERS
               r.members_array = Object.keys(r.members);
+              // console.log('OLA!  MEMBERS ARRAY ', r.members_array);
+              //  this.members_replace2(r.members_array, r.requester_id); // to implement to replace the [innerHTML]="members_replace( m )"
+
               // r.requester_fullname_initial = initial
               // r.requester_fullname_fillColour = fillColour
               r.requester_fullname_initial = newInitials
@@ -621,83 +663,6 @@ export class RequestsListComponent implements OnInit {
     this.displayArchivingInfoModal = 'none'
   }
 
-
-  // addOrUpdateRequestsList(r: Request) {
-  //   console.log('ID REQUEST  ', r.recipient)
-
-  //   for (let i = 0; i < this.requestList.length; i++) {
-  //     if (r.recipient === this.requestList[i].recipient) {
-  //       this.requestList[i] = r;
-  //       return;
-  //     }
-  //     console.log('REQUEST RECIPIENT ', this.requestList[i].recipient)
-  //   }
-
-  //   this.requestList.push(r);
-
-  //   this.requestList.sort(function compare(a: Request, b: Request) {
-  //     if (a.timestamp > b.timestamp) {
-  //       return -1;
-  //     }
-  //     if (a.timestamp < b.timestamp) {
-  //       return 1;
-  //     }
-  //     return 0;
-  //   });
-
-  // for (let i = 0; i < this.requestList.length; i++) {
-
-  // if (this.ID_request !== this.requestList[0].recipient) {
-
-  //   this.requestList.push(r);
-  //   console.log('REQUESTS LIST: ++  ', this.requestList[0].recipient)
-
-  // } else {
-
-  //   console.log('this item is to update ')
-  // }
-
-
-  // this.requestList.forEach(checkedRequest => {
-  //   if (checkedRequest.recipient === r.recipient) {
-  //     console.log('THIS REQUEST ALREADY EXIST ')
-  //   } else {
-
-  //     console.log('! THIS IS A NEW REQUEST ', checkedRequest.recipient)
-  //   }
-  // });
-
-  // itero l'array this.requestList
-  // cerco r per id (recipient)
-  // se trovo un elemento corrispondente lo sostituisco con r
-  // else this.requestList.push(r)
-  // }
-  // funzionedapassare(r: Request) {
-  //   console.log('full_name: ', r.recipient_fullname);
-  //   this.requestList.push(r);
-  // }
-
-  // ngAfterViewInit() {
-  //   // this.elRef.nativeElement.querySelector('.modal');
-  //   console.log('MM ', this.elRef.nativeElement.querySelector('.modal').animate({ scrollTop: 0 }, 'slow') );
-  // }
-
-  // FIRESTORE
-  // getTest() {
-  //   console.log('GET TEST  ')
-  //   const db = firebase.firestore();
-  //   db.collection('conversations')
-  //     .onSnapshot(function (snapshot) {
-  //       snapshot.docChanges.forEach(function (change) {
-  //         // if (change.type === 'added') {
-  //         // this.requestList = data;
-  //         console.log(' +++ ++++ DATA: ', change.doc.data());
-  //         // }
-  //       });
-  //     });
-  // }
-  //
-
   replace_recipient(request_recipient: string) {
     if (request_recipient) {
       return request_recipient.replace('support-group-', '');
@@ -720,306 +685,12 @@ export class RequestsListComponent implements OnInit {
         text;
     }
   }
-  /**
-   * REQUESTS (on FIRESTORE the COLLECTION is 'CONVERSATIONS')
-   */
-  // getRequestList() {
-  //   // SUBSCIPTION TO snapshotChanges Conversations '<', 1000
-  //   this.requestsService.getSnapshotConversations().subscribe((data) => {
-  //     this.requestList = data;
-  //     console.log('REQUESTS-LIST.COMP: SUBSCRIPTION TO REQUESTS ', data);
 
-  //     let i: any;
-  //     for (i = 0; i < this.requestList.length; i++) {
-  //       // console.log('REQUEST TIMESTAMP ', this.requestList[i].timestamp)
-
-  //       // REQUESTER ID IS USED TO OBTAIN 'SERVED BY'
-  //       // ('SERVED BY' IS EQUAL TO 'MEMBERS' TO WHICH IS SUBSTRACTED 'REQUESTER ID' AND 'SYSTEM' )
-  //       this.requester_id = this.requestList[i].requester_id
-  //       // console.log('REQUESTER ID ', this.requester_id)
-
-  //       /**
-  //        * CALCULATE THE DATE AS FROM-NOW FORMAT
-  //        * AND SET THIS IN THE REQUEST'S JSON KEY request.request_date_fromnow
-  //        */
-  //       const timestampMs = this.requestList[i].timestamp / 1000
-  //       this.request_fromNow_date = moment.unix(timestampMs).fromNow();
-  //       // console.log('REQUEST FROM NOW DATE ', this.request_fromNow_date)
-  //       this.id_request = this.requestList[i].recipient;
-
-  //       // set date from-now in request object
-  //       for (const request of this.requestList) {
-  //         if (this.id_request === request.recipient) {
-  //           request.request_date_fromnow = this.request_fromNow_date;
-
-  //         }
-
-  //       }
-
-  //       /**
-  //        * CREATE A STRING OF ALL MEMBERS OF THE REQUEST AND
-  //        * SET THIS IN THE REQUEST'S JSON KEY request.members_as_string
-  //        * THEN, IF BETWEEN THE UID KEY THERE IS THE CURRENT USER UID, REPALCE IT WITH 'ME' or 'IO'
-  //        */
-  //       this.membersObjectInRequestArray = this.requestList[i].members;
-  //       // console.log('OBJECT MEMBERS IN REQUESTS (GET REQUETS LIST) ', this.membersObjectInRequestArray);
-  //       if (this.membersObjectInRequestArray !== undefined) {
-  //         const uidKeysInMemberObject = Object.keys(this.membersObjectInRequestArray)
-  //         // console.log('KEYS OF MEMBER OBJECT (GET REQUETS LIST)', Object.keys(this.membersObjectInRequestArray))
-
-  //         const lengthOfUidKeysInMemberObject = uidKeysInMemberObject.length;
-  //         // console.log('KEYS LENGHT OF MEMBER OBJECT (GET REQUETS LIST)', lengthOfUidKeysInMemberObject)
-
-  //         let w: number;
-  //         this.members_as_string = '';
-  //         this.served_by = '';
-  //         for (w = 0; w < lengthOfUidKeysInMemberObject; w++) {
-
-  //           const uidMenbersKey = uidKeysInMemberObject[w];
-  //           // console.log('UID KEY ', uidMenbersKey)
-
-  //           // ** CREATE A STRING OF ALL MEMBERS OF THE REQUEST AND SET THIS IN THE REQUEST'S JSON
-  //           // USED TO SHOW THE LIST OF MEMBERS (LESS 'REQUESTER ID' AND 'SYSTEM') IN THE COLUMN MEMBERS OF THE TABLE
-  //           if ((uidMenbersKey !== 'system') && ((uidMenbersKey !== this.requester_id))) {
-  //             for (const request of this.requestList) {
-  //               if (this.id_request === request.recipient) {
-
-  //                 // FORMAT IN BOLD STYLE THE MEMBERS KEY (IN THE MEMBER LIST) THAT IS EQUAL TO THE REQUESTER ID
-  //                 // ONLY FOR DEBUG -- note: if decomment this ** REMEMBER TO COMMENT ABOVE (uidMenbersKey !== this.requester_id)
-  //                 // if (uidMenbersKey === this.requester_id) {
-  //                 //   this.openTagstrong = '<strong>'
-  //                 //   this.closeTagstrong = '</strong>'
-  //                 // } else {
-  //                 //   this.openTagstrong = ''
-  //                 //   this.closeTagstrong = ''
-  //                 // }
-  //                 // this.members_as_string += '- ' + this.openTagstrong + uidMenbersKey + this.closeTagstrong + '<br>';
-
-  //                 this.members_as_string += '- ' + uidMenbersKey + ' <br>';
-  //                 const members_as_string_replaceCurrentUserUid = this.members_as_string.replace(this.currentUserFireBaseUID, '<strong>IO</strong>');
-  //                 // console.log('MEMBERS AS STRING REPLACE CURRENT USER UID WITH ME ', members_as_stringReplace);
-
-  //                 // SET MEMBERS AS STRING IN THE REQUEST'S JSON
-  //                 request.members_as_string = members_as_string_replaceCurrentUserUid;
-  //                 // request.members_as_string = this.members_as_string;
-
-  //                 // console.log('MEMBERS AS STRING ', request.members_as_string);
-  //               }
-  //             }
-  //           }
-
-
-  //           // SERVED BY (AS FOR ALL MEMBERS) IF BETWEEN THE UID KEY THERE IS THE CURRENT USER UID, REPALCE IT WITH 'MYSELF' or 'ME'
-  //           if ((uidMenbersKey !== this.requester_id) && (uidMenbersKey !== 'system')) {
-  //             for (const request of this.requestList) {
-  //               if (this.id_request === request.recipient) {
-  //                 this.served_by += '- ' + uidMenbersKey + ' <br>'
-
-  //                 const served_by_replaceCurrentUserUid = this.served_by.replace(this.currentUserFireBaseUID, '<strong>ME</strong>');
-  //                 // SET SERVED BY IN THE REQUEST'S JSON
-  //                 request.served_by = served_by_replaceCurrentUserUid
-  //                 // request.served_by = this.served_by
-  //                 // console.log('SERVED BY ', request.served_by);
-
-  //               }
-  //             }
-  //           }
-
-  //           /**
-  //            * CHECK IF THE CURRENT USER IS ALREADY JOINED TO CONVERSATION
-  //            * (IF THE CURRENT USER UID IS BETWEEN THE UID KEY OF THE OBJECT MEMBER (CONTAINED IN THE REQUEST ARRAY)
-  //            * IT MEANS THAT THE CURRENT USER IS ALREADY JOINED TO CONVERSATION SO SET TRUE TO THE REQUEST'S JSON KEY request.currentUserIsJoined)
-  //            *
-  //            * IF uidMenbersKey === this.currentUserFireBaseUID THE CURRENT USER IS ALREADY JOINED TO THE CONVERSATION
-  //            */
-  //           if (uidMenbersKey === this.currentUserFireBaseUID) {
-
-  //             // console.log('THE MEMBER UID: ', uidMenbersKey, ' IS = TO CUR.USER UID')
-  //             // SET IN THE REQUEST ARRAY currentUserIsJoined = true
-  //             for (const request of this.requestList) {
-  //               if (request.recipient === this.id_request) {
-  //                 request.currentUserIsJoined = true;
-  //               }
-  //             }
-
-  //             // break;
-  //           }
-  //         }
-  //       }
-  //     }
-
-  //     this.showSpinner = false;
-
-  //   },
-  //     (err) => {
-  //       console.log('GET REQUEST LIST ERROR ', err);
-  //     },
-  //     () => {
-  //       console.log('GET REQUEST LIST * COMPLETE *');
-  //       // this.showSpinner = false;
-  //     });
-
-  // }
 
   goToRequestMsgs(request_recipient: string) {
-
     this.router.navigate(['project/' + this.projectId + '/request/' + request_recipient + '/messages']);
-
   }
 
-
-
-  //   ====== THE USER OPEN THE MODAL WINDOW ======
-  // * ON CLICK THE VIEW PASS THE VALUE OF 'RECIPIENT' THAT ASSIGN TO THE LOCAL VARIABLE this.requestRecipient
-  // * GET THE MESSAGE LIST BY this.requestRecipient
-  // *  (!!! GET THE REQUEST DETAILS is NO MORE USED AS PERFORM THIS VERIFICATION ABOVE
-  //    - see CHECK IF THE CURRENT USER IS ALREADY JOINED TO CONVERSATION and
-  //    - see the comment "NO MORE USED THE REASON" in requests-lists.component.html)
-  // * GET THE REQUEST DETAILS (GET THE CONVESATION BY RECIPIENT using this.getRequestByRecipient()) - IS USED FOR:
-  //   IF THE VALUE OF THE UID OF CURRENT USER IS FOUND BETWEEN THE UID KEY IN MEMBERS (is contained in the request object)
-  //   IN THE MODAL WITH THE MSGS LIST THE 'ENTER BTN' (AND NOT THE 'JOIN BTN') WILL BE DISPLAYED
-  openViewMsgsModal(recipient: string, currentUserIsJoined: boolean, requester_id: string) {
-
-    // NEW LOGIC
-    this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = false;
-    this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
-    this.requester_id = requester_id;
-
-    // NEW LOGIC
-    this.IS_CURRENT_USER_JOINED = currentUserIsJoined
-    console.log('WHEN OPEN THE MODAL - CURRENt USER IS JOINED ', this.IS_CURRENT_USER_JOINED)
-    console.log('WHEN OPEN THE MODAL - REQUESTER ID ', requester_id)
-    console.log('WHEN OPEN THE MODAL - SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING ', this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING)
-
-    this.JOIN_TO_GROUP_HAS_ERROR = false;
-
-    // NO MORE USED (see comment "NO MORE USED THE REASON" in requests-lists.component.html  )
-    // this.SEARCH_FOR_SAME_UID_FINISHED = false;
-
-    this.display = 'block';
-    console.log(' ++ ++ request recipient ', recipient);
-
-    this.requestRecipient = recipient;
-
-    // (!!! NO MORE USED)
-    // this.getRequestByRecipient()
-
-    this.getMessagesList();
-
-    // .animate({ scrollTop: 0, duration: 100 })
-    this.msgLenght();
-    // SCROOL TO BOTTOM THE MESSAGES LIST WHEN THE MODAL IS OPEN
-    setTimeout(() => {
-      this.scrollToBottom();
-    }, 1000);
-
-    /**
-     *  *** SCROLL TOP - SCROLL HEIGHT - VISIBLE CONTENT HEIGHT ***
-     * scrollTop - sets or return the vertical scrollbar position
-     * scrollHeight - read-only property is a measurement of the height of an element content, including content not visible due to overflow
-     * height of visible content is set to 250px in the view
-     */
-    // SET IN A VARIABLE THE INITIAL SCROLL POSITION (FORCED TO BOTTOM OF THE VISIBLE CONTENT AREA WITH THE PREVIOUS scrollToBottom())
-    // WHEN THE USER MOVE UPWARDS THE SCROLLBAR THE SCROLL POSITION VALUE DECREASES UP TO 0
-    setTimeout(() => {
-      this.initialScrollPosition = this.myScrollContainer.nativeElement.scrollTop;
-      console.log('SCROLL POSITION WHEN MODAL IS OPEN (INITIAL SCROLL POSITION) ', this.initialScrollPosition);
-      // console.log(' SCROLL HEIGHT ', this.myScrollContainer.nativeElement.scrollHeight);
-      // console.log(' SCROLL TOP (ALIAS SCROLL POSITION) )', this.myScrollContainer.nativeElement.scrollTop);
-      // this.initScrollPositionHalf = this.myScrollContainer.nativeElement.scrollTop / 2;
-      // console.log('SCROLL POSITION / 2 WHEN MODAL IS OPEN ', this.initScrollPositionHalf);
-      // this.initScrollPositionPlusTwoScroll = this.myScrollContainer.nativeElement.scrollTop + 320;
-      // console.log('SCROLL POSITION / 2 WHEN MODAL IS OPEN ', this.initScrollPositionHalf);
-
-    }, 300);
-
-  }
-
-  /**
-   * MESSAGES (on FIRESTORE the COLLECTION is 'MESSAGES')
-   */
-  getMessagesList() {
-    // SUBSCIPTION TO snapshotChanges
-    this.requestsService.getSnapshotMsg(this.requestRecipient)
-      // .finally(() => {
-      //   console.log('- -- -- FINISH TO GET MESSAGE !!');
-      // })
-      .subscribe((data) => {
-        this.messagesList = data;
-        console.log('REQUESTS-LIST.COMP: SUBSCRIPTION TO getSnapshot MSG ', data);
-        // this.showSpinner = false;
-        // console.log('TIMESTAMP ', this.messagesList);
-        // if (data.length) {
-        // this.scrollToBottom();
-        // }
-      },
-        (err) => {
-          console.log('GET MESSAGE LIST ERROR ', err);
-        },
-        () => {
-          console.log('GET MESSAGE LIST * COMPLETE *');
-          // this.showSpinner = false;
-        });
-
-  }
-
-  /* (!!! GET THE REQUEST DETAILS is NO MORE USED AS PERFORM THIS VERIFICATION ABOVE
-      - see CHECK IF THE CURRENT USER IS ALREADY JOINED TO CONVERSATION) */
-  // GET REQUEST DETAIL (IS THE REQUEST CORRESPONDING TO THE ROW OF REQUESTS LIST ON WHICH THE USER CLICK)
-  // THEN IN THE ARRAY RETURNED GET THE 'UID KEYS' CONTAINED IN THE OBJECT MEMBERS
-  // THEN COMPARE ANY 'UID KEY' WITH THE CURRENT USER UID
-  // IF THE 'UID KEY' IS = TO 'CURRENT USER ID' SHOWS THE BUTTON ENTER AND NOT THE BUTTON JOIN WHEN THE MODAL IS OPENED
-  getRequestByRecipient() {
-    this.requestsService.getSnapshotConversationByRecipient(this.requestRecipient)
-      .subscribe((request) => {
-
-        console.log('REQUEST (ALIAS CONVERSATION) GET BY RECIPIENT ', request);
-
-        this.membersObjectInRequestArray = request[0].members;
-        console.log('OBJECT MEMBERS IN THIS REQUEST ', this.membersObjectInRequestArray);
-
-        const uidKeysInMemberObject = Object.keys(this.membersObjectInRequestArray)
-        console.log('UID KEYS CONTAINED IN MEMBER OBJECT ', Object.keys(this.membersObjectInRequestArray))
-
-        const lengthOfUidKeysInMemberObject = uidKeysInMemberObject.length;
-        console.log('LENGHT OF UID KEY CONTAINED IN MEMBER OBJECT ', lengthOfUidKeysInMemberObject)
-
-        let i: number;
-        for (i = 0; i < lengthOfUidKeysInMemberObject; i++) {
-          const uidKey = uidKeysInMemberObject[i];
-          // console.log('UID KEY ', uidKey)
-          if (uidKey === this.currentUserID) {
-
-            // console.log('THE CURRENT USER IS ALREADY JOINED TO THIS CONVERSATION - SHOW BTN ENTER')
-            console.log('THE MEMBER UID: ', uidKey, '  IS === TO CURRENT USER UID - SHOW BTN ENTER')
-            this.CURRENT_USER_IS_ALREADY_MEMBER = true;
-            this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = false
-
-            this.SEARCH_FOR_SAME_UID_FINISHED = true;
-            break;
-
-
-          } else {
-            // console.log('THE CURRENT USER !IS NOT JOINED TO THIS CONVERSATION - SHOW BTN JOIN')
-            console.log('THE MEMBER UID: ', uidKey, '  IS !== TO CURRENT USER UID - SHOW BTN JOIN')
-            this.CURRENT_USER_IS_ALREADY_MEMBER = false;
-            this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = false
-            console.log('CYCLE NUMBER ', i)
-            if (i + 1 === lengthOfUidKeysInMemberObject) {
-              console.log('END OF LOOP')
-              this.SEARCH_FOR_SAME_UID_FINISHED = true;
-            }
-          }
-        }
-      },
-        (err) => {
-          this.SEARCH_FOR_SAME_UID_FINISHED = true;
-          console.log('REQUEST (ALIAS CONVERSATION) GET BY RECIPIENT ERROR ', err);
-        },
-        () => {
-          console.log('REQUEST (ALIAS CONVERSATION) GET BY RECIPIENT COMPLETE');
-        });
-  }
 
   // USED TO JOIN TO CHAT GROUP (SEE onJoinHandled())
   getFirebaseToken(callback) {
