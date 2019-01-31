@@ -429,6 +429,10 @@ button.close {
 .open_close_switch_disabled {
   cursor: not-allowed
 }
+
+.day_label_disabled {
+  color: #ddd !important
+}
 // /.end DISABLED STYLE (APPLIED WHEN OPERATING HOURS IS NOT ACTIVE)
 
 .row.vdivide [class*='col-']:not(:last-child):after {

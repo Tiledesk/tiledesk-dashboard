@@ -68,9 +68,10 @@
               </div>
           </div>
 
-          <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
-          <!-- *ngIf="!showSpinners" -->
-          <div  class="card-content">
+          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+         
+        
+          <div *ngIf="!showSpinner" class="card-content">
 
             <table class="table table-hover">
               <thead>

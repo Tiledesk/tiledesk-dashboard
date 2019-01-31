@@ -67,7 +67,7 @@ export class GroupsComponent implements OnInit {
 
       this.groupsList = groups;
       // this.faqkbList = faqKb;
-      this.showSpinner = false;
+
     },
       (error) => {
 
@@ -76,6 +76,7 @@ export class GroupsComponent implements OnInit {
         this.showSpinner = false;
       },
       () => {
+        this.showSpinner = false;
         console.log('GET GROUPS * COMPLETE');
 
       });
@@ -146,7 +147,7 @@ export class GroupsComponent implements OnInit {
   //   });
   // }
 
-   /*  !!! NO MORE USED - MOVED IN group-edit-add.comp */
+  /*  !!! NO MORE USED - MOVED IN group-edit-add.comp */
   // onCloseModal() {
   //   this.display_users_list_modal = 'none';
   // }

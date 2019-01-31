@@ -11,17 +11,22 @@
       <div class="col-md-12">
 
         <div class="card" style="padding-bottom: 25px;">
-          <div class="card-content" style="padding-top: 25px;">
+          
+          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+          
+          <div class="card-content" *ngIf="!showSpinner" style="padding-top: 25px;">
 
             <div class="row" >
               <div class="col-md-12">
-                <div class="oaerror info">
-                  <p style="color: #566787; font-weight:500; font-size: 14px; ">
+                 
+                <div class="oaerror info" style="margin-bottom: 16px;">
+                  <!-- color: #566787; font-weight:500; font-size: 14px; -->
+                  <p style=" font-size: 16px; font-family: 'Google Sans', sans-serif !important; color: #394f5a;">
                     {{ "HoursPage.ActivateTimetables" | translate }} 
                   </p>
               
                   <!-- [ngClass]="{'chekboxCustomHeight' : isActiveOperatingHours == false }" -->
-                  <label class="container" for="hoursActive" style="margin-left: 0px; margin-bottom: 6px;">
+                  <label class="container" for="hoursActive" style="margin-left: 0px; margin-bottom: 6px; color:#7695a5; font-weight:300">
                     {{ "HoursPage.OpeningHoursActivated" | translate }} 
                     <!-- <span *ngIf="isActiveOperatingHours === true "> {{ "HoursPage.OpeningHoursActivated" | translate }} </span>
                     <span *ngIf="isActiveOperatingHours === false"> {{ "HoursPage.OpeningHoursDeactivated" | translate }} </span> -->
@@ -38,9 +43,15 @@
                 <div class="oaerror info" [ngClass]="{'oaerror_info_disabled' : !isActiveOperatingHours}" >
                   <div class="row">  
 
+                    <div class="col-sm-12">
+                      <p style=" font-size: 16px; font-family: 'Google Sans', sans-serif !important; color: #394f5a;" [ngClass]="{'day_label_disabled' : !isActiveOperatingHours}">
+                        Time zone
+                      </p>
+                    </div>
+
                     <!-- /* THE PROJECT TIME ZONE IS SETTED TO */ -->
-                    <div class="col-sm-6 custom_col" style=""> 
-                      <p style="color: #566787; font-weight:500; font-size: 14px; margin-bottom: 8px">
+                    <div class="col-sm-6 custom_col"> 
+                      <p style="color: #7695a5; font-size: 14px; margin-bottom: 8px" [ngClass]="{'day_label_disabled' : !isActiveOperatingHours}">
                         <!-- The project timezone is setted to: -->
                         {{ "HoursPage.TheProject" | translate }} time zone {{ "HoursPage.IsSettedTo" | translate }}          
                       </p>
@@ -57,8 +68,8 @@
 
                      <!-- /* YOU ARE CURRENTLY AT */ -->
                     <div class="col-sm-6">    
-                      <p style="color: #566787; font-weight:500; font-size: 14px; margin-bottom: 6px">
-                        {{ "HoursPage.YouAreCurrentlyAt" | translate }} <span style="font-weight:600;"> (UTC {{ timezoneUTCOffsetForTooltip}}) {{timezoneNameForTooltip}} </span>
+                      <p style="color: #7695a5; font-size: 14px; margin-bottom: 6px" [ngClass]="{'day_label_disabled' : !isActiveOperatingHours}">
+                        {{ "HoursPage.YouAreCurrentlyAt" | translate }} <span style="font-weight:400;"> (UTC {{ timezoneUTCOffsetForTooltip}}) {{timezoneNameForTooltip}} </span>
                       </p>  
                       <button class="btn btn-default" [disabled]="timeZoneSelectedIsUnlikeCurrentTimezone === false || !isActiveOperatingHours" (click)="setProjectToYourTimezone()" style="padding-top: 9px; padding-bottom: 9px; padding-right: 15px; padding-left: 15px; margin-top: 2px;">
                         <span class="tooltipx">{{ "HoursPage.SetProjectToYourTimeZone" | translate }}
@@ -82,15 +93,15 @@
                       <thead>
                         <tr>
                           <th>
-                            <span style="color: #566787">
-                              <strong>
+                            <span style="color: #394f5a; font-family: 'Google Sans', sans-serif !important;" [ngClass]="{'day_label_disabled' : !isActiveOperatingHours}">
+                              <!-- <strong> -->
                                 {{ "HoursPage.Day" | translate }} 
-                              </strong>
+                              <!-- </strong> -->
                             </span>
                           </th>
                           
                           <th colspan="2">
-                            <span style="color: #566787">
+                            <span style="color: #394f5a; font-family: 'Google Sans', sans-serif !important;" [ngClass]="{'day_label_disabled' : !isActiveOperatingHours}">
                               <strong>
                                 {{ "HoursPage.Status" | translate }} 
                               </strong>
@@ -107,7 +118,8 @@
                           </th> -->
                           
                           <th style="padding-left: 25px;">
-                            <span style="color: #566787">
+                            <!--  color: #566787  -->
+                            <span style="color: #394f5a; font-family: 'Google Sans', sans-serif !important;" [ngClass]="{'day_label_disabled' : !isActiveOperatingHours}">
                               <strong>
                                 {{ "HoursPage.Morning" | translate }} 
                               </strong>
@@ -117,7 +129,7 @@
                           <th></th>
 
                           <th style="padding-left: 25px;">
-                            <span style="color: #566787">
+                            <span style="color: #394f5a; font-family: 'Google Sans', sans-serif !important;" [ngClass]="{'day_label_disabled' : !isActiveOperatingHours}">
                               <strong>
                                 {{ "HoursPage.Afternoon" | translate }} 
                               </strong>
@@ -131,7 +143,7 @@
                         <tr *ngFor="let d of days">
                           
                           <td>
-                            <span style="color: #566787; font-weight: 500">
+                            <span style="color: #7695a5; font-weight: 300" [ngClass]="{'day_label_disabled' : !isActiveOperatingHours}">
                               {{ d.weekday | translate}}
                             </span> 
                           </td>
@@ -172,7 +184,7 @@
                             <!-- =================================== AM START HOUR ========================================== -->
                             <!-- AM START HOUR - ONLY THE LABEL-BTN 'FROM' -->
                             <button [disabled]="d.isOpen != true || !isActiveOperatingHours"  [ngClass]="{'disabled' : d.isOpen != true || !isActiveOperatingHours}" type="button" rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-xs"
-                              (click)='openAmStart(d?._id)' style="padding-right: 4px; color: #566787">
+                              (click)='openAmStart(d?._id)' style="padding-right: 4px; color: #7695a5">
                               <span class="edithours_btnlabel">
                                 {{ "HoursPage.From" | translate }} 
                               </span> 
@@ -198,7 +210,7 @@
                             <!-- =================================== AM END HOUR ========================================== -->
                             <!-- AM END HOUR - ONLY THE LABEL-BTN 'TO' -->
                             <button [disabled]="d.isOpen != true || !isActiveOperatingHours"  [ngClass]="{'disabled' : d.isOpen != true || !isActiveOperatingHours}" type="button" rel="tooltip" title="edit hour" class="btn btn-primary btn-simple btn-xs"
-                              (click)='openAmEnd(d?._id)' style="padding-right: 4px; color: #566787">
+                              (click)='openAmEnd(d?._id)' style="padding-right: 4px; color: #7695a5">
                               <span class="edithours_btnlabelTo" [ngClass]="{'it_custom' : browser_lang == 'it'}">
                                 {{ "HoursPage.To" | translate }} 
                               </span>

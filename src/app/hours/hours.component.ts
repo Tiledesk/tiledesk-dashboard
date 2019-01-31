@@ -136,6 +136,7 @@ export class HoursComponent implements OnInit, OnDestroy {
   TIMEZONE_NAME_IS_NULL = false;
   timeZoneSelectedIsUnlikeCurrentTimezone: boolean;
 
+  showSpinner = true;
   // hasSaved: boolean
 
   constructor(
@@ -415,11 +416,11 @@ export class HoursComponent implements OnInit, OnDestroy {
             this.timeZoneSelectedIsUnlikeCurrentTimezone = false
           }
         }
-      },
-      error => {
+      }, error => {
+        this.showSpinner = false;
         console.log('HOURS COMP - PROJECT BY ID - ERROR ', error);
-      },
-      () => {
+      }, () => {
+        this.showSpinner = false;
         console.log('HOURS COMP - PROJECT BY ID - COMPLETE ');
       }
     );

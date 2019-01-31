@@ -36,6 +36,7 @@ export class UsersComponent implements OnInit {
   deleteProjectUserSuccessNoticationMsg: string;
   deleteProjectUserErrorNoticationMsg: string;
 
+  
   constructor(
     private usersService: UsersService,
     private router: Router,
@@ -151,7 +152,6 @@ export class UsersComponent implements OnInit {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
       console.log('PROJECT USERS (FILTERED FOR PROJECT ID)', projectUsers);
 
-      this.showSpinner = false;
       this.projectUsersList = projectUsers;
 
     }, error => {
@@ -159,6 +159,7 @@ export class UsersComponent implements OnInit {
 
       console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
     }, () => {
+      this.showSpinner = false;
       console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
     });
   }
