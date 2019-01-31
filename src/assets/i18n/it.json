@@ -155,7 +155,8 @@
     "UpdateGroupErrorNoticationMsg":"Si è verificato un errore durante l'aggiornamento del gruppo",
     "RemoveGroupMemberSuccessNoticationMsg":"Membro rimosso con successo",
     "RemoveGroupMemberErrorNoticationMsg":"Si è verificato un errore durante la rimozione del membro",
-    "UpdateWidgetProjectSuccessNoticationMsg":"Le tue modifiche sono state salvate",
+    "UpdateWidgetProjectSuccessNoticationMsg":"Stile del chat widget aggiornato",
+    "UpdateDeptGreetingsSuccessNoticationMsg":"Le tue modifiche sono state salvate",
     "UserProfile": {
         "Profile": "Profilo",
         "UploadImage": "Carica immagine",

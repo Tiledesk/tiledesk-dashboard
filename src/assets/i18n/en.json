@@ -155,7 +155,8 @@
     "UpdateGroupErrorNoticationMsg":"An error occurred while updating the group",
     "RemoveGroupMemberSuccessNoticationMsg":"Member successfully removed",
     "RemoveGroupMemberErrorNoticationMsg":"An error occurred while removing the member",
-    "UpdateWidgetProjectSuccessNoticationMsg":"Your changes has been saved",
+    "UpdateWidgetProjectSuccessNoticationMsg":"Chat widget style updated",
+    "UpdateDeptGreetingsSuccessNoticationMsg":"Your changes has been saved",
     "UserProfile": {
         "Profile": "Profile",
         "UploadImage": "Upload image",

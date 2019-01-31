@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { Department } from '../models/department-model';
 import { DepartmentService } from '../services/mongodb-department.service';
-
+import { NotifyService } from '../core/notify.service';
 @Component({
   selector: 'appdashboard-widget-design',
   templateUrl: './widget-design.component.html',
@@ -63,13 +63,13 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
         'offline_msg': '🤔 All operators are offline at the moment. You can anyway describe your problem. It will be assigned to the support team who will answer you as soon as possible.'
       },
       'it': {
-        'wellcomeTitle': 'Ciao, benvenuto su tiledesk 👋 ',
+        'wellcomeTitle': 'Ciao, benvenuto su tiledesk 👋',
         'wellcomeMsg': 'Come possiamo aiutarti?',
         'calloutTitle': 'Bisogno di aiuto?',
         'calloutMsg': 'Clicca qui e inizia a chattare con noi!',
         'online_msg': 'Descrivi sinteticamente il tuo problema, ti metteremo in contatto con un operatore specializzato.',
         // tslint:disable-next-line:max-line-length
-        'offline_msg': '🤔 Tutti gli operatori sono offline al momento.Puoi comunque descrivere il tuo problema. Sarà assegnato al team di supporto che ti risponderà appena possibile.'
+        'offline_msg': '🤔 Tutti gli operatori sono offline al momento. Puoi comunque descrivere il tuo problema. Sarà assegnato al team di supporto che ti risponderà appena possibile.'
       },
     }
 
@@ -129,8 +129,10 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
   sub: Subscription;
 
   showSpinner = true;
-
+  updateWidgetSuccessNoticationMsg: string;
+  updateDeptGreetingsSuccessNoticationMsg: string;
   constructor(
+    private notify: NotifyService,
     public location: Location,
     private cpService: ColorPickerService,
     private widgetService: WidgetService,
@@ -170,7 +172,20 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.subscribeToSelectedSecondaryColor();
 
     // this.subscribeToWidgetAlignment();
+    this.translateDeptGreetingsSuccessNoticationMsg();
+  }
 
+  translateDeptGreetingsSuccessNoticationMsg() {
+    this.translate.get('UpdateDeptGreetingsSuccessNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.updateDeptGreetingsSuccessNoticationMsg = text;
+        // console.log('»» WIDGET SERVICE - Update Widget Project Success NoticationMsg', text)
+      }, (error) => {
+        console.log('»» WIDGET SERVICE -  Update Widget Project Success NoticationMsg - ERROR ', error);
+      }, () => {
+        // console.log('»» WIDGET SERVICE -  Update Widget Project Success NoticationMsg * COMPLETE *');
+      });
   }
 
   ngOnDestroy() {
@@ -294,15 +309,39 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
       }, (error) => {
         console.log('»» WIDGET DESIGN - UPDATE DEFAULT DEPT ONLINE MSG - ERROR ', error);
       }, () => {
+
+        this.notify.showWidgetStyleUpdateNotification(this.updateDeptGreetingsSuccessNoticationMsg, 2, 'done');
         console.log('»» WIDGET DESIGN - UPDATE DEFAULT DEPT ONLINE MSG * COMPLETE *');
       });
   }
 
   onChangeOnlineMsg(event) {
+    console.log('»» WIDGET DESIGN - ONLINE-MSG EVENT ', event);
+    if (event.length === 0 || event === this.widgetDefaultSettings.it.online_msg || event === this.widgetDefaultSettings.en.online_msg) {
+      console.log('»» WIDGET DESIGN - ONLINE-MSG LENGHT (modelChange) is ', event.length, ' SET DEFAULT ONLINE MSG');
 
-    if (event.length === 0) {
-      console.log('»» WIDGET DESIGN - DEFAULT DEPT ONLINE MSG LENGHT (modelChange) is ', event.length, ' SET DEFAULT ONLINE MSG');
-      this.setDefaultOnlineMsg();
+      this.setDefaultAndUpdateOnlineMsg();
+    }
+  }
+
+  setDefaultAndUpdateOnlineMsg() {
+    if (this.browserLang) {
+      if (this.browserLang === 'it') {
+
+        this.onlineMsg = this.widgetDefaultSettings.it.online_msg;
+        console.log('»» WIDGET DESIGN - SET DEFAULT ONLINE-MSG AND UPDATE WITH onlineMsg = " " ', this.onlineMsg);
+
+        const onlineMsg = ''
+        this.updateOnlineMsg(onlineMsg)
+
+      } else {
+
+        this.onlineMsg = this.widgetDefaultSettings.en.online_msg;
+        console.log('»» WIDGET DESIGN - SET DEFAULT ONLINE-MSG AND UPDATE WITH onlineMsg = " " ', this.onlineMsg);
+
+        const onlineMsg = ''
+        this.updateOnlineMsg(onlineMsg)
+      }
     }
   }
 
@@ -313,25 +352,16 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
         this.onlineMsg = this.widgetDefaultSettings.it.online_msg;
         console.log('»» WIDGET DESIGN - DEFAULT ONLINE MSG ', this.onlineMsg);
 
-        // *** REMOVE PROPERTY
-        // delete this.widgetObj['calloutTitle'];
-        // UPDATE WIDGET PROJECT
-        // this.widgetService.updateWidgetProject(this.widgetObj)
-        const onlineMsg = ''
-        this.updateOnlineMsg(onlineMsg)
+        // const onlineMsg = ''
+        // this.updateOnlineMsg(onlineMsg)
 
       } else {
 
         this.onlineMsg = this.widgetDefaultSettings.en.online_msg;
         console.log('»» WIDGET DESIGN - DEFAULT ONLINE MSG ', this.onlineMsg);
 
-        const onlineMsg = ''
-        this.updateOnlineMsg(onlineMsg)
-
-        // *** REMOVE PROPERTY
-        // delete this.widgetObj['calloutTitle'];
-        // UPDATE WIDGET PROJECT
-        // this.widgetService.updateWidgetProject(this.widgetObj)
+        // const onlineMsg = ''
+        // this.updateOnlineMsg(onlineMsg)
       }
     }
   }
@@ -346,9 +376,6 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.browserLang === 'it') {
       if (this.offlineMsg !== this.widgetDefaultSettings.it.offline_msg) {
 
-        // *** ADD PROPERTY
-        // this.widgetObj['online_msg'] = this.onlineMsg;
-        // UPDATE WIDGET PROJECT
         this.updateOfflineMsg(this.offlineMsg)
       }
     }
@@ -356,13 +383,9 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.browserLang === 'en') {
       if (this.offlineMsg !== this.widgetDefaultSettings.en.offline_msg) {
 
-        // *** ADD PROPERTY
-        // this.widgetObj['online_msg'] = this.onlineMsg;
-        // UPDATE WIDGET PROJECT
         this.updateOfflineMsg(this.offlineMsg)
       }
     }
-
   }
 
   updateOfflineMsg(offlineMsg: string) {
@@ -372,14 +395,37 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
       }, (error) => {
         console.log('»» WIDGET DESIGN - UPDATE DEFAULT DEPT OFFLINE MSG - ERROR ', error);
       }, () => {
+
+        this.notify.showWidgetStyleUpdateNotification(this.updateDeptGreetingsSuccessNoticationMsg, 2, 'done');
         console.log('»» WIDGET DESIGN - UPDATE DEFAULT DEPT OFFLINE MSG * COMPLETE *');
       });
   }
 
   onChangeOfflineMsg(event) {
-    if (event.length === 0) {
+    console.log('»» WIDGET DESIGN - DEFAULT DEPT OFFLINE MSG EVENT (modelChange) ', event);
+    console.log('»» WIDGET DESIGN - DEFAULT DEPT OFFLINE MSG LENGHT (modelChange) is ', event.length, ' SET DEFAULT OFFLINE MSG');
+    if (event.length === 0 || event === this.widgetDefaultSettings.it.offline_msg || event === this.widgetDefaultSettings.en.offline_msg) {
       console.log('»» WIDGET DESIGN - DEFAULT DEPT OFFLINE MSG LENGHT (modelChange) is ', event.length, ' SET DEFAULT OFFLINE MSG');
-      this.setDefaultOfflineMsg();
+      this.setDefaultAndUpdateOfflineMsg();
+    }
+  }
+
+  setDefaultAndUpdateOfflineMsg() {
+    if (this.browserLang) {
+      if (this.browserLang === 'it') {
+
+        this.offlineMsg = this.widgetDefaultSettings.it.offline_msg;
+        console.log('»» WIDGET DESIGN - SET DEFAULT OFFLINE-MSG AND UPDATE WITH offlineMsg = " " ', this.offlineMsg);
+
+        const offlineMsg = '';
+        this.updateOfflineMsg(offlineMsg);
+      } else {
+        this.offlineMsg = this.widgetDefaultSettings.en.offline_msg;
+        console.log('»» WIDGET DESIGN - SET DEFAULT OFFLINE-MSG AND UPDATE WITH offlineMsg = " " ', this.offlineMsg);
+
+        const offlineMsg = '';
+        this.updateOfflineMsg(offlineMsg);
+      }
     }
 
   }
@@ -391,24 +437,14 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
         this.offlineMsg = this.widgetDefaultSettings.it.offline_msg;
         console.log('»» WIDGET DESIGN - DEFAULT OFFLINE MSG ', this.offlineMsg);
 
-        // *** REMOVE PROPERTY
-        // delete this.widgetObj['calloutTitle'];
-        // UPDATE WIDGET PROJECT
-        // this.widgetService.updateWidgetProject(this.widgetObj)
-
-        const offlineMsg = '';
-        this.updateOfflineMsg(offlineMsg);
+        // const offlineMsg = '';
+        // this.updateOfflineMsg(offlineMsg);
       } else {
-
         this.offlineMsg = this.widgetDefaultSettings.en.offline_msg;
         console.log('»» WIDGET DESIGN - DEFAULT OFFLINE MSG ', this.offlineMsg);
 
-        const offlineMsg = '';
-        this.updateOfflineMsg(offlineMsg);
-        // *** REMOVE PROPERTY
-        // delete this.widgetObj['calloutTitle'];
-        // UPDATE WIDGET PROJECT
-        // this.widgetService.updateWidgetProject(this.widgetObj)
+        // const offlineMsg = '';
+        // this.updateOfflineMsg(offlineMsg);
       }
     }
   }
@@ -425,52 +461,62 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
         this.widgetObj = project.widget;
 
         /**
-         * ******************************** calloutTimer (WIDGET DEFINED) ***********************************
+         * *** calloutTimer (WIDGET AND CALLOUT-TIMER DEFINED) ***
          */
         if (project.widget.calloutTimer) {
           this.calloutTimerSecondSelected = project.widget.calloutTimer;
           this.CALLOUT_IS_DISABLED = false;
-          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) CALLOUT TIMER: ', this.calloutTimerSecondSelected,
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) CALLOUT-TIMER: ', this.calloutTimerSecondSelected,
             'IS DISABLED ', this.CALLOUT_IS_DISABLED);
 
         } else {
+          /**
+           * *** calloutTimer (WIDGET DEFINED BUT NOT CALLOUT-TIMER - SET DEFAULT) ***
+           */
+          console.log('»» WIDGET DESIGN - onInit WIDGET DEFINED BUT CALLOUT-TIMER IS: ', this.calloutTimerSecondSelected,
+            ' > SET DEFAULT ')
           this.calloutTimerSecondSelected = -1;
           this.CALLOUT_IS_DISABLED = true;
-          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) CALLOUT TIMER: ', this.calloutTimerSecondSelected,
-            'IS SET DEFAULT  - IS DISABLED ', this.CALLOUT_IS_DISABLED);
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) CALLOUT-TIMER: ', this.calloutTimerSecondSelected,
+            ' - IS DISABLED ', this.CALLOUT_IS_DISABLED);
 
         }
 
         /**
-         * ******************************** calloutTitle (WIDGET DEFINED) ************************************
+         * *** calloutTitle (WIDGET AND CALLOUT-TITLE DEFINED) ***
          */
         if (project.widget.calloutTitle) {
           this.calloutTitle = project.widget.calloutTitle;
           console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) CALLOUT TITLE: ', this.calloutTitle);
+
         } else {
+          /**
+           * *** calloutTitle (WIDGET DEFINED BUT NOT CALLOUT-TITLE - SET DEFAULT) ***
+           */
           console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) CALLOUT TITLE: ', this.calloutTitle, 'IS UNDEFINED > SET DEFAULT');
 
-          // this.setDefaultcalloutTitle();
-          this.onInitSetDefaultcalloutTitle();
+          this.setDefaultcalloutTitle();
         }
 
         /**
-         * ******************************** calloutMsg (WIDGET DEFINED) ***************************************
+         * *** calloutMsg (WIDGET AND CALLOUT-MSG DEFINED) ***
          */
         if (project.widget.calloutMsg) {
           this.calloutMsg = project.widget.calloutMsg;
           console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) CALLOUT MSG: ', this.calloutMsg);
         } else {
+          /**
+           * *** calloutMsg (WIDGET DEFINED BUT NOT CALLOUT-MSG - SET DEFAULT) ***
+           */
           console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) CALLOUT MSG: ', this.calloutMsg, 'IS UNDEFINED > SET DEFAULT');
 
-          // this.setDefaultcalloutMsg();
-          this.onInitSetDefaultcalloutMsg();
+          this.setDefaultcalloutMsg();
         }
 
         /**
-         * ********************************  logoChat (WIDGET DEFINED) ****************************************
+         * case logoChat = 'userCompanyLogoUrl' > display the userCompanyLogoUrl
+         * *** logoChat (WIDGET AND LOGOCHAT DEFINED - USER HAS SETTED HIS LOGO) ***
          */
-        // case logoChat = 'userCompanyLogoUrl' > display the userCompanyLogoUrl
         if (project.widget.logoChat && project.widget.logoChat !== 'nologo' && project.widget.logoChat !== 'tiledesklogo') {
 
           this.logoUrl = project.widget.logoChat;
@@ -481,7 +527,10 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
             ' HAS HOWN LOGO ', this.hasOwnLogo,
             ' LOGO IS ON', this.LOGO_IS_ON);
 
-          // case logoChat = 'nologo' > no logo is displayed
+          /**
+           * case logoChat = 'nologo' > no logo is displayed
+           * *** logoChat (WIDGET AND LOGOCHAT DEFINED - USER HAS SELECTED 'NO LOGO') ***
+           */
         } else if (project.widget.logoChat && project.widget.logoChat === 'nologo' && project.widget.logoChat !== 'tiledesklogo') {
           this.logoUrl = 'No Logo';
           this.hasOwnLogo = false;
@@ -491,7 +540,11 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
             ' HAS HOWN LOGO ', this.hasOwnLogo,
             ' LOGO IS ON', this.LOGO_IS_ON);
 
-          // case logoChat = '' > display the tiledesk logo and in the input field display the text 'tiledesklogo'
+
+          /**
+           * case logoChat = '' > display the tiledesk logo and in the input field display the text 'tiledesklogo'
+           * *** logoChat (WIDGET DEFINED BUT NOT LOGOCHAT - SET DEFAULT) ***
+           */
         } else {
           this.logoUrl = 'tiledesklogo'
           this.hasOwnLogo = false;
@@ -503,7 +556,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         /**
-         * ******************************** themeColor (WIDGET DEFINED) ****************************************
+         * *** themeColor (WIDGET AND THEME-COLOR DEFINED) ***
          */
         if (project.widget.themeColor) {
 
@@ -512,63 +565,79 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
           this.primaryColorRgb = this.hexToRgb(this.primaryColor)
           this.generateRgbaGradientAndBorder(this.primaryColorRgb);
         } else {
-          // case themeColor IS undefined
+
+          /**
+           * case themeColor IS undefined
+           * *** themeColor (WIDGET DEFINED BUT NOT THEME-COLOR - SET DEFAULT) ***
+           */
           this.primaryColor = this.widgetDefaultSettings.themeColor
-          // tslint:disable-next-line:max-line-length
-          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) THEME COLOR: ', project.widget.themeColor, 'IS UNDEFINED > SET DEFAULT ', this.primaryColor);
+
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) THEME COLOR: ', project.widget.themeColor,
+            ' IS UNDEFINED > SET DEFAULT ', this.primaryColor);
 
           this.primaryColorRgb = this.hexToRgb(this.primaryColor)
           this.generateRgbaGradientAndBorder(this.primaryColorRgb);
         }
 
         /**
-         * ******************************** themeForegroundColor (WIDGET DEFINED) ********************************
+         * *** themeForegroundColor (WIDGET AND THEME-FOREGROUND-COLOR DEFINED) ***
          */
         if (project.widget.themeForegroundColor) {
           this.secondaryColor = project.widget.themeForegroundColor;
           console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) THEME-FOREGROUND COLOR: ', this.secondaryColor);
         } else {
-          // case themeForegroundColor IS undefined
+          /**
+           * case themeForegroundColor IS undefined
+           * *** themeForegroundColor (WIDGET DEFINED BUT NOT THEME-FOREGROUND-COLOR ) ***
+           */
           this.secondaryColor = this.widgetDefaultSettings.themeForegroundColor;
-          // tslint:disable-next-line:max-line-length
-          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) THEME-FOREGROUND COLOR: ', project.widget.themeForegroundColor, 'IS UNDEFINED > SET DEFAULT ', this.secondaryColor);
+
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) THEME-FOREGROUND COLOR: ', project.widget.themeForegroundColor,
+            ' IS UNDEFINED > SET DEFAULT ', this.secondaryColor);
         }
 
         /**
-         * ******************************** wellcomeTitle (WIDGET DEFINED) ****************************************
+         * *** wellcomeTitle (WIDGET AND WELCOME-TITLE DEFINED) ***
          */
         if (project.widget.wellcomeTitle) {
           this.welcomeTitle = project.widget.wellcomeTitle;
 
-          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) WELCOME TITLE: ', this.welcomeTitle);
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) WELCOME-TITLE: ', this.welcomeTitle);
         } else {
-          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) WELCOME TITLE: ', this.welcomeTitle, 'IS UNDEFINED > SET DEFAULT')
+          /**
+           * *** wellcomeTitle (WIDGET DEFINED BUT NOT WELCOME-TITLE - SET DEFAULT) ***
+           */
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) WELCOME-TITLE: ', this.welcomeTitle, ' IS UNDEFINED > SET DEFAULT')
 
-          // this.setDefaultWelcomeTitle();
-          this.onInitSetDefaultWelcomeTitle();
+          this.setDefaultWelcomeTitle();
         }
 
         /**
-         * ******************************** wellcomeMsg (WIDGET DEFINED) *******************************************
+         * *** wellcomeMsg (WIDGET AND WELCOME-MSG DEFINED) ***
          */
         if (project.widget.wellcomeMsg) {
           this.welcomeMsg = project.widget.wellcomeMsg;
-          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) WELCOME MSG: ', this.welcomeMsg);
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) WELCOME-MSG: ', this.welcomeMsg);
+          /**
+           * *** wellcomeMsg (WIDGET DEFINED BUT NOT WELCOME-MSG - SET DEFAULT) ***
+           */
         } else {
-          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) WELCOME MSG: ', this.welcomeMsg, 'IS UNDEFINED > SET DEFAULT');
+          console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) WELCOME-MSG: ', this.welcomeMsg, ' IS UNDEFINED > SET DEFAULT');
 
-          // this.setDefaultWelcomeMsg();
-          this.onInitSetDefaultWelcomeMsg();
+          this.setDefaultWelcomeMsg();
         }
 
         /**
-         * ******************************** align (WIDGET DEFINED) **************************************************
+         * *** align (WIDGET AND ALIGN DEFINED) ***
          */
         if (project.widget.align && project.widget.align === 'left') {
           this.hasSelectedLeftAlignment = true;
           this.hasSelectedRightAlignment = false;
           console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) ALIGN: ', project.widget.align);
         } else {
+          /**
+           * *** align (WIDGET DEFINED BUT NOT ALIGN ) ***
+           */
           console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) ALIGN: ', project.widget.align, 'IS UNDEFINED > SET DEFAULT');
           this.hasSelectedLeftAlignment = false;
           this.hasSelectedRightAlignment = true;
@@ -579,7 +648,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
         this.widgetObj = {}
 
         /**
-         * ******************************** logoChat (WIDGET UNDEFINED) **********************************************
+         * *** logoChat (WIDGET UNDEFINED) ***
          */
         this.logoUrl = 'tiledesklogo'
         this.hasOwnLogo = false;
@@ -587,7 +656,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
         // tslint:disable-next-line:max-line-length
         console.log('»» WIDGET DESIGN - (onInit WIDGET UNDEFINED) > SET DEFAULT LOGOURL: ', this.logoUrl, 'HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON);
         /**
-         * ******************************** themeColor (WIDGET UNDEFINED) ********************************************
+         * *** themeColor (WIDGET UNDEFINED) ***
          */
         this.primaryColor = this.widgetDefaultSettings.themeColor
         console.log('»» WIDGET DESIGN - (onInit WIDGET UNDEFINED) > SET DEFAULT THEME COLOR: ', this.primaryColor);
@@ -595,41 +664,37 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
         this.generateRgbaGradientAndBorder(this.primaryColorRgb);
 
         /**
-         * ******************************** themeForegroundColor (WIDGET UNDEFINED) ***********************************
+         * *** themeForegroundColor (WIDGET UNDEFINED) ***
          */
         this.secondaryColor = this.widgetDefaultSettings.themeForegroundColor;
         console.log('»» WIDGET DESIGN - (onInit WIDGET UNDEFINED) > SET DEFAULT THEME-FOREGROUND COLOR: ', this.secondaryColor);
 
         /**
-         * ******************************** wellcomeTitle (WIDGET UNDEFINED) ******************************************
+         * *** wellcomeTitle (WIDGET UNDEFINED) ***
          */
-        // this.setDefaultWelcomeTitle();
-        this.onInitSetDefaultWelcomeTitle();
+        this.setDefaultWelcomeTitle();
 
         /**
-         * ******************************** wellcomeMsg (WIDGET UNDEFINED) ********************************************
+         * *** wellcomeMsg (WIDGET UNDEFINED) ***
          */
-        // this.setDefaultWelcomeMsg();
-        this.onInitSetDefaultWelcomeMsg();
+        this.setDefaultWelcomeMsg();
 
         /**
-         * ******************************** calloutTimer (WIDGET UNDEFINED) ******************************************
+         * *** calloutTimer (WIDGET UNDEFINED) ***
          */
         this.calloutTimerSecondSelected = -1;
         this.CALLOUT_IS_DISABLED = true;
+
         /**
-         * ******************************** calloutTitle (WIDGET UNDEFINED) ******************************************
+         * *** calloutTitle (WIDGET UNDEFINED) ***
          */
-        // this.setDefaultcalloutTitle();
-        this.onInitSetDefaultcalloutTitle();
+        this.setDefaultcalloutTitle();
 
         /**
-        * ******************************** wellcomeMsg (WIDGET UNDEFINED) ********************************************
-        */
-        // this.setDefaultcalloutMsg();
-        this.onInitSetDefaultcalloutMsg();
+         * *** wellcomeMsg (WIDGET UNDEFINED) ***
+         */
+        this.setDefaultcalloutMsg();
       }
-
 
     }, (error) => {
       console.log('WIDGET DESIGN - GET PROJECT BY ID - ERROR ', error);
@@ -969,18 +1034,19 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // console.log('»» WIDGET DESIGN - WELCOME TITLE (modelChange) CHANGE ', event);
     // console.log('WIDGET DESIGN - WELCOME TITLE LENGHT (modelChange) ', event.length);
-    if (event.length === 0) {
+    // tslint:disable-next-line:max-line-length
+    if (event.length === 0 || event === this.widgetDefaultSettings.it.wellcomeTitle || event === this.widgetDefaultSettings.en.wellcomeTitle) {
       console.log('»» WIDGET DESIGN - WELCOME TITLE LENGHT (modelChange) is ', event.length, ' SET DEFAULT WELCOME TITLE');
 
 
-      this.setDefaultWelcomeTitle();
+      this.setDefaultAndRemovePropertyWelcomeTitle();
     }
     // this.HAS_CHANGED_WELCOME_TITLE = true
   }
 
 
 
-  setDefaultWelcomeTitle() {
+  setDefaultAndRemovePropertyWelcomeTitle() {
     if (this.browserLang) {
       if (this.browserLang === 'it') {
 
@@ -1005,7 +1071,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  onInitSetDefaultWelcomeTitle() {
+  setDefaultWelcomeTitle() {
     if (this.browserLang) {
       if (this.browserLang === 'it') {
 
@@ -1063,15 +1129,15 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
   welcomeMsgChange(event) {
     console.log('»» WIDGET DESIGN - WELCOME MSG CHANGE ', event);
 
-    if (event.length === 0) {
+    if (event.length === 0 || event === this.widgetDefaultSettings.it.wellcomeMsg || event === this.widgetDefaultSettings.en.wellcomeMsg) {
       console.log('»» WIDGET DESIGN - WELCOME MSG LENGHT (modelChange) is ', event.length, ' SET DEFAULT WELCOME MSG');
 
-      this.setDefaultWelcomeMsg();
+      this.setDefaultAndDeletePropertyWelcomeMsg();
     }
     // this.HAS_CHANGED_WELCOME_MSG = true;
   }
 
-  setDefaultWelcomeMsg() {
+  setDefaultAndDeletePropertyWelcomeMsg() {
     // this.welcomeMsg = this.widgetDefaultSettings.it.wellcomeMsg
     // console.log('»» WIDGET DESIGN - DEFAULT WELCOME MSG ', this.welcomeMsg);
     if (this.browserLang) {
@@ -1097,7 +1163,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  onInitSetDefaultWelcomeMsg() {
+  setDefaultWelcomeMsg() {
     if (this.browserLang) {
       if (this.browserLang === 'it') {
         // this.welcomeMsg = 'Come possiamo aiutare?'
@@ -1153,17 +1219,19 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
   // ============== *** CALLOUT TIMER (calloutTimer) ***  ==============
   // ===========================================================================
   setSelectedCalloutTimer() {
-    console.log('»» WIDGET DESIGN CALLOUT TIMER - TIMER SELECTED', this.calloutTimerSecondSelected)
 
-    this.CALLOUT_IS_DISABLED = false;
-    // *** ADD PROPERTY
-    this.widgetObj['calloutTimer'] = this.calloutTimerSecondSelected;
-    // UPDATE WIDGET PROJECT
-    this.widgetService.updateWidgetProject(this.widgetObj)
-    // COMMENT AS FOR CALLOUT TITLE
-    // this.widgetService.publishCalloutTimerSelected(this.calloutTimerSecondSelected)
+    if (this.calloutTimerSecondSelected !== -1) {
+      console.log('»» WIDGET DESIGN CALLOUT TIMER - TIMER SELECTED', this.calloutTimerSecondSelected);
+      this.CALLOUT_IS_DISABLED = false;
+      // *** ADD PROPERTY
+      this.widgetObj['calloutTimer'] = this.calloutTimerSecondSelected;
+      // UPDATE WIDGET PROJECT
+      this.widgetService.updateWidgetProject(this.widgetObj)
+      // COMMENT AS FOR CALLOUT TITLE
+      // this.widgetService.publishCalloutTimerSelected(this.calloutTimerSecondSelected)
 
-    if (this.calloutTimerSecondSelected === -1) {
+    } else if (this.calloutTimerSecondSelected === -1) {
+      console.log('»» WIDGET DESIGN CALLOUT TIMER - TIMER SELECTED', this.calloutTimerSecondSelected);
       this.CALLOUT_IS_DISABLED = true;
       // *** REMOVE PROPERTIES
 
@@ -1179,8 +1247,8 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
       // this.setDefaultcalloutTitle();
       // this.setDefaultcalloutMsg();
 
-      this.onInitSetDefaultcalloutTitle();
-      this.onInitSetDefaultcalloutMsg();
+      this.setDefaultcalloutTitle();
+      this.setDefaultcalloutMsg();
 
       // this.escaped_calloutTitle = ''; // callout title escaped
       // this.calloutTitleText = ''; // clear the value in the input if the user disabled the callout
@@ -1245,18 +1313,19 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   calloutTitleChange(event) {
-    if (event.length === 0) {
+    // tslint:disable-next-line:max-line-length
+    if (event.length === 0 || event === this.widgetDefaultSettings.it.calloutTitle || event === this.widgetDefaultSettings.en.calloutTitle) {
       console.log('»» WIDGET DESIGN - CALLOUT TITLE LENGHT (modelChange) is ', event.length, ' SET DEFAULT CALLOUT TITLE');
 
       // this.welcomeMsg = 'ciao'
       // this.niko = 'ciao'
       // console.log('»» WIDGET DESIGN - DEFAULT WELCOME MSG  NIKO ', this.welcomeMsg  );
-      this.setDefaultcalloutTitle();
+      this.setDefaultAndDeletePropertyCalloutTitle();
     }
 
   }
 
-  setDefaultcalloutTitle() {
+  setDefaultAndDeletePropertyCalloutTitle() {
     if (this.browserLang) {
       if (this.browserLang === 'it') {
 
@@ -1282,7 +1351,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
-  onInitSetDefaultcalloutTitle() {
+  setDefaultcalloutTitle() {
     if (this.browserLang) {
       if (this.browserLang === 'it') {
 
@@ -1341,18 +1410,18 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   calloutMsgChange(event) {
-    if (event.length === 0) {
+    if (event.length === 0 || event === this.widgetDefaultSettings.it.calloutMsg || event === this.widgetDefaultSettings.en.calloutMsg) {
       console.log('»» WIDGET DESIGN - CALLOUT MSG LENGHT (modelChange) is ', event.length, ' SET DEFAULT CALLOUT MSG');
 
       // this.welcomeMsg = 'ciao'
       // this.niko = 'ciao'
       // console.log('»» WIDGET DESIGN - DEFAULT WELCOME MSG  NIKO ', this.welcomeMsg  );
-      this.setDefaultcalloutMsg();
+      this.setDefaultAndRemovePropertyCalloutMsg();
     }
 
   }
 
-  setDefaultcalloutMsg() {
+  setDefaultAndRemovePropertyCalloutMsg() {
     if (this.browserLang) {
       if (this.browserLang === 'it') {
 
@@ -1377,7 +1446,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  onInitSetDefaultcalloutMsg() {
+  setDefaultcalloutMsg() {
     if (this.browserLang) {
       if (this.browserLang === 'it') {
 
