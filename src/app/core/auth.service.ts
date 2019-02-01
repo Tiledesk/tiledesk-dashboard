@@ -141,7 +141,7 @@ export class AuthService {
     this.project_bs.subscribe((prjct) => {
 
       console.log('!!C-U  - 1) »»»»» AUTH SERV - PROJECT FROM SUBSCRIP', prjct);
- 
+
       if (prjct === null) {
         console.log('!!C-U »»»»» AUTH SERV - PROJECT IS NULL: ', prjct);
 
@@ -150,77 +150,80 @@ export class AuthService {
          * BECAUSE OF 'events.subscribe' THAT IS ACTIVATED FOR THE FIRST
          * TIME WHEN THE PROJECT IS NULL AND THEN IS ALWAYS CALLED EVEN IF THE  PROJECT IS DEFINED */
         this.subscription = this.router.events.subscribe((e) => {
-        if (e instanceof NavigationEnd) {
-        // if (this.location.path() !== '') {
-          // const current_url = this.location.path()
-          const current_url = e.url
-          console.log('!!C-U »»»»» AUTH SERV - CURRENT URL ', current_url);
+          if (e instanceof NavigationEnd) {
+            // if (this.location.path() !== '') {
+            // const current_url = this.location.path()
+            const current_url = e.url
+            console.log('!!C-U »»»»» AUTH SERV - CURRENT URL ', current_url);
 
-          const url_segments = current_url.split('/');
-          console.log('!!C-U »»»»» AUTH SERV - CURRENT URL SEGMENTS ', url_segments);
+            const url_segments = current_url.split('/');
+            console.log('!!C-U »»»»» AUTH SERV - CURRENT URL SEGMENTS ', url_segments);
 
 
-          this.nav_project_id = url_segments[2];
-          console.log('!! »»»»» AUTH SERV - CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id);
+            this.nav_project_id = url_segments[2];
+            console.log('!! »»»»» AUTH SERV - CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id);
+            console.log('!! »»»»» AUTH SERV - CURRENT URL SEGMENTS > SEGMENT 1: ', url_segments[1]);
 
-          /*
-           * (note: the NAVIGATION PROJECT ID returned from CURRENT URL SEGMENTS is = to 'email'
-           * if the user navigate to the e-mail verification page)
-           * */
-          if (this.nav_project_id && this.nav_project_id !== 'email') {
+            /*
+             * (note: the NAVIGATION PROJECT ID returned from CURRENT URL SEGMENTS is = to 'email'
+             * if the user navigate to the e-mail verification page)
+             * the url_segments[1] is = to 'user' instead of 'project' when the user not yet has select a project
+             * (i.e. from the project list page) and go to user profile > change password
+             * */
+            if (this.nav_project_id && this.nav_project_id !== 'email' && url_segments[1] !== 'user') {
 
-            console.log('!!C-U »»»»» QUI ENTRO ', this.nav_project_id);
-            this.subscription.unsubscribe();
+              console.log('!!C-U »»»»» QUI ENTRO ', this.nav_project_id);
+              this.subscription.unsubscribe();
 
-            const storedProjectJson = localStorage.getItem(this.nav_project_id);
-            console.log('!! »»»»» AUTH SERV - JSON OF STORED PROJECT: ', storedProjectJson);
+              const storedProjectJson = localStorage.getItem(this.nav_project_id);
+              console.log('!! »»»»» AUTH SERV - JSON OF STORED PROJECT: ', storedProjectJson);
 
-            // RUN THE BELOW ONLY IF EXIST THE PROJECT JSON SAVED IN THE STORAGE
-            if (storedProjectJson) {
+              // RUN THE BELOW ONLY IF EXIST THE PROJECT JSON SAVED IN THE STORAGE
+              if (storedProjectJson) {
 
-              const storedProjectObject = JSON.parse(storedProjectJson);
-              console.log('!! »»»»» AUTH SERV - OBJECT OF STORED PROJECT', storedProjectObject);
+                const storedProjectObject = JSON.parse(storedProjectJson);
+                console.log('!! »»»»» AUTH SERV - OBJECT OF STORED PROJECT', storedProjectObject);
 
-              const project_name = storedProjectObject['name'];
+                const project_name = storedProjectObject['name'];
 
-              console.log('!! »»»»» AUTH SERV - PROJECT NAME GET FROM STORAGE: ', project_name);
+                console.log('!! »»»»» AUTH SERV - PROJECT NAME GET FROM STORAGE: ', project_name);
 
-              const project: Project = {
-                _id: this.nav_project_id,
-                name: project_name,
+                const project: Project = {
+                  _id: this.nav_project_id,
+                  name: project_name,
+                }
+                console.log('!!C-U »»»»» AUTH SERV - 1) PROJECT THAT IS PUBLISHED: ', project);
+                // SE NN C'è IL PROJECT NAME COMUNQUE PUBBLICO PERCHè CON L'ID DEL PROGETTO VENGONO EFFETTUATE DIVERSE CALLBACK
+
+                /**** ******* ******* ***** *** ** ***/
+                this.project_bs.next(project);
+
+                // NOTA: AUTH GUARD ESEGUE UN CHECK DEL PROGETTO SALVATO NEL LOCAL STORAGE E SE IL PROJECT NAME è NULL DOPO AVER 'GET' IL
+                // PROGETTO PER nav_project_id SET THE ID and the NAME OF THE PROJECT IN THE LOCAL STORAGE and
+                // SENT THEM TO THE AUTH SERVICE THAT PUBLISHES
+                // if (project_name === null) {
+                //   console.log('!! »»»»» AUTH SERV - PROJECT NAME IS NULL')
+                // }
+              } else {
+                // USE-CASE: FOR THE ID (GOT FROM URL) OF THE CURRENT PROJECT THERE IS NO THE JSON SAVED IN THE STORAGE:
+                // IT IS THE CASE IN WHICH THE USER ACCESS TO A NEW PROJECT IN THE DASHBOARD BY LINKS
+                // WITHOUT BEING PASSED FROM THE PROJECT LIST.
+                // IF THE STORED JSON OF THE PROJECT IS NULL  IS THE AUTH-GUARD THAT RUNS A REMOTE CALLBACK TO OBTAIN THE
+                // PROJECT BY ID AND THAT THEN PUBLISH IT AND SAVE IT (THE REMOTE CALLBACK IS PERFORMED IN AUTH-GUARD BECAUSE
+                // IS NOT POSSIBLE TO DO IT IN THIS SERVICE (BECAUSE OF THE CIRCULAR DEPEDENCY WARNING)  )
+                console.log('!! »»» AUTH SERV - FOR THE PRJCT ID ', this.nav_project_id, ' THERE IS NOT STORED PRJCT-JSON - SEE AUTH GUARD')
+                // this.projectService.getProjectById(this.nav_project_id).subscribe((prjct: any) => {
+
+                // public anyway to immediately make the project id available to subscribers
+                // the project name will be published by the auth.guard
+                const project: Project = {
+                  _id: this.nav_project_id,
+                }
+                console.log('!! »»»»» AUTH SERV - 2) PROJECT THAT IS PUBLISHED: ', project);
+                this.project_bs.next(project);
               }
-              console.log('!!C-U »»»»» AUTH SERV - 1) PROJECT THAT IS PUBLISHED: ', project);
-              // SE NN C'è IL PROJECT NAME COMUNQUE PUBBLICO PERCHè CON L'ID DEL PROGETTO VENGONO EFFETTUATE DIVERSE CALLBACK
-
-              /**** ******* ******* ***** *** ** ***/
-              this.project_bs.next(project);
-
-              // NOTA: AUTH GUARD ESEGUE UN CHECK DEL PROGETTO SALVATO NEL LOCAL STORAGE E SE IL PROJECT NAME è NULL DOPO AVER 'GET' IL
-              // PROGETTO PER nav_project_id SET THE ID and the NAME OF THE PROJECT IN THE LOCAL STORAGE and
-              // SENT THEM TO THE AUTH SERVICE THAT PUBLISHES
-              // if (project_name === null) {
-              //   console.log('!! »»»»» AUTH SERV - PROJECT NAME IS NULL')
-              // }
-            } else {
-              // USE-CASE: FOR THE ID (GOT FROM URL) OF THE CURRENT PROJECT THERE IS NO THE JSON SAVED IN THE STORAGE:
-              // IT IS THE CASE IN WHICH THE USER ACCESS TO A NEW PROJECT IN THE DASHBOARD BY LINKS
-              // WITHOUT BEING PASSED FROM THE PROJECT LIST.
-              // IF THE STORED JSON OF THE PROJECT IS NULL  IS THE AUTH-GUARD THAT RUNS A REMOTE CALLBACK TO OBTAIN THE
-              // PROJECT BY ID AND THAT THEN PUBLISH IT AND SAVE IT (THE REMOTE CALLBACK IS PERFORMED IN AUTH-GUARD BECAUSE
-              // IS NOT POSSIBLE TO DO IT IN THIS SERVICE (BECAUSE OF THE CIRCULAR DEPEDENCY WARNING)  )
-              console.log('!! »»» AUTH SERV - FOR THE PRJCT ID ', this.nav_project_id, ' THERE IS NOT STORED PRJCT-JSON - SEE AUTH GUARD')
-              // this.projectService.getProjectById(this.nav_project_id).subscribe((prjct: any) => {
-
-              // public anyway to immediately make the project id available to subscribers
-              // the project name will be published by the auth.guard
-              const project: Project = {
-                _id: this.nav_project_id,
-              }
-              console.log('!! »»»»» AUTH SERV - 2) PROJECT THAT IS PUBLISHED: ', project);
-              this.project_bs.next(project);
             }
           }
-        }
         }); // this.router.events.subscribe((e)
       }
     });
@@ -280,6 +283,20 @@ export class AuthService {
     console.log('AUTH SERVICE - CHECK CREDENTIAL - STORED USER  ', storedUser)
     // console.log('USER BS VALUE', this.user_bs.value)
     if (storedUser !== null) {
+
+      /**
+       * *** WIDGET - pass data to the widget function setTiledeskWidgetUser in index.html ***
+       */
+      // const _storedUser = JSON.parse(storedUser);
+      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - storedUser', _storedUser)
+      // const userFullname = _storedUser['firstname'] + ' ' + _storedUser['lastname'];
+      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userFullname', userFullname);
+      // const userEmail = _storedUser['email']
+      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userEmail', userEmail);
+      // const userId = _storedUser['_id']
+      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userId', userId);
+      // window['setTiledeskWidgetUser'](userFullname, userEmail, userId)
+
 
       this.user_bs.next(JSON.parse(storedUser));
       // this.router.navigate(['/home']);
@@ -393,7 +410,7 @@ export class AuthService {
 
                   /* CHAT21-CLOUD-FUNCTIONS - CREATE CONTACT */
                   this.cloudFunctionsCreateContact(user.firstname, user.lastname, user.email);
-                  callback(null);
+                  callback(null, user);
                 })
                 .catch(function (error) {
                   // return error;
