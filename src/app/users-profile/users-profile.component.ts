@@ -179,11 +179,11 @@ export class UsersProfileComponent implements OnInit {
         if (this.user) {
           console.log('2. USER ', this.user);
           this.user_firstname = this.user.firstname;
-          // console.log('USER FIRSTNAME ', this.user_firstname);
+          console.log('USER FIRSTNAME ', this.user_firstname);
           this.user_lastname = this.user.lastname;
-          // console.log('USER LASTNAME ', this.user_lastname);
+          console.log('USER LASTNAME ', this.user_lastname);
           this.user_email = this.user.email;
-          // console.log('USER EMAIL ', this.user_email);
+          console.log('USER EMAIL ', this.user_email);
           this.user_id = this.user._id;
           // console.log('USER ID ', this.user_id);
         }
