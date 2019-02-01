@@ -152,12 +152,12 @@ button.close {
     left: 50%; */
 }
 /* // NK start NEW: AVATAR ON THE SIDEBAR  */
-.hover-effect {
+/* .hover-effect {
     opacity: 0.5 !important;
-}
+} */
 
 .is-over-camera:hover {
-    opacity: 0.5 !important;
+    opacity: 1 !important;
     cursor: pointer;
 }
 

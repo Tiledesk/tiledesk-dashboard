@@ -21,10 +21,10 @@
             
           {{ user.email }}
         </div>
-        <div *ngIf="project" class="avatar-container tiledesk-nav-avatar" 
-          (mouseover)="mouseOver(true)" 
-          (mouseout)="mouseOver(false)" 
-          routerLink="project/{{ project._id }}/user-profile">
+        <!-- routerLink="project/{{ project._id }}/user-profile" -->
+        <!-- (mouseover)="mouseOver(true)" 
+        (mouseout)="mouseOver(false)" -->
+        <div *ngIf="project" class="avatar-container tiledesk-nav-avatar">
             <!-- <img class="avatar" src="https://static.intercomassets.com/avatars/383251/square_128/dorinew-1493275883.png?1493275883"> -->
 
           <img class="avatar" *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" 
@@ -51,7 +51,9 @@
 
         </div>
         <!-- CAMERA ICONS OVER THE AVATAR -->
-        <i *ngIf="project" routerLink="project/{{ project._id }}/user-profile" class="material-icons is-over-camera" [ngClass]="{'hover-effect' : isOverAvar}"  style="z-index: 5; opacity:0 ; position: relative; top: 34px;"> camera_alt </i>
+        <!--  [ngClass]="{'hover-effect' : isOverAvar}"  -->
+        <i *ngIf="project" routerLink="project/{{ project._id }}/user-profile" class="material-icons is-over-camera" 
+          style="z-index: 5; position: relative; top: 15px; background-color: rgba(45,50,62,0.7); padding: 15px;border-radius: 50%; opacity:0;"> camera_alt </i>
       </div>
 
             <!-- <div class="middle"> -->
@@ -387,10 +389,14 @@
 
           <li *ngIf="SHOW_SETTINGS_SUBMENU" routerLinkActive="active" style="margin-bottom:24px" (click)="stopScroll()">
             <a *ngIf="project"  class="customAncor" routerLink="project/{{ project._id }}/edit">
-              <i class="material-icons sidebar-icons">settings</i>
+            <p class="onBlackBckgrnd">
+              <span class="sidebar-mini">{{ 'PS' | translate }} </span> {{ 'NavBar.ProjectSettings' | translate }}
+            </p>  
+              
+              <!-- <i class="material-icons sidebar-icons">settings</i>
               <p class="onBlackBckgrnd">
                 {{ 'NavBar.ProjectSettings' | translate }}
-              </p>
+              </p> -->
             </a>
           </li>
 
