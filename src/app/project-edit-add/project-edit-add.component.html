@@ -15,7 +15,9 @@
       <div class="row">
         <div class="col-md-12">
           <div class="card">
-            <div class="card-content">
+            <loading-spinner *ngIf="showSpinner"></loading-spinner>
+            
+            <div *ngIf="!showSpinner" class="card-content">
     
               <!-- <span *ngIf="CREATE_VIEW">
                 <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
@@ -39,7 +41,7 @@
     
               <span *ngIf="EDIT_VIEW">
  
-                <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
+                
                 <!-- SECTION YOUR PROJECT -->
                 <div class="row">
                   <div class="col-sm-12">
