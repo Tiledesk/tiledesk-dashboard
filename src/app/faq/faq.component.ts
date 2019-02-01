@@ -9,6 +9,8 @@ import { AuthService } from '../core/auth.service';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { FaqKbService } from '../services/faq-kb.service';
 import { NotifyService } from '../core/notify.service';
+
+// import $ = require('jquery');
 // declare const $: any;
 @Component({
   selector: 'faq',
@@ -52,7 +54,7 @@ export class FaqComponent implements OnInit {
   faqKb_id: string;
   faqKb_created_at: any;
   faq_lenght: number;
-
+  showSpinner = true;
   constructor(
     private mongodbFaqService: MongodbFaqService,
     private router: Router,
@@ -220,9 +222,11 @@ export class FaqComponent implements OnInit {
         this.faq_lenght = faq.length
       }
     }, (error) => {
+      this.showSpinner = false;
       console.log('>> FAQs GOT BY FAQ-KB ID - ERROR', error);
 
     }, () => {
+      this.showSpinner = false;
       console.log('>> FAQs GOT BY FAQ-KB ID - COMPLETE');
     });
   }
@@ -243,13 +247,42 @@ export class FaqComponent implements OnInit {
     });
   }
 
+  //   var link = document.createElement("a");
+  // link.id = "csvDwnLink";
+
+  // document.body.appendChild(link);
+  // window.URL = window.URL || window.webkitURL;
+  // var csv = "\ufeff" + CSV,
+  //     csvData = 'data:attachment/csv;charset=utf-8,' + encodeURIComponent(csv),
+  //     filename = 'filename.csv';
+  // $("#csvDwnLink").attr({'download': filename, 'href': csvData});
+  // $('#csvDwnLink')[0].click();
+  // document.body.removeChild(link);
+
   downloadFile(data) {
     const blob = new Blob(['\ufeff' + data], { type: 'text/csv;charset=utf-8;' });
     const dwldLink = document.createElement('a');
     const url = URL.createObjectURL(blob);
     const isSafariBrowser = navigator.userAgent.indexOf('Safari') !== -1 && navigator.userAgent.indexOf('Chrome') === -1;
+    console.log('isSafariBrowser ', isSafariBrowser)
     if (isSafariBrowser) {  // if Safari open in new window to save file with random filename.
       dwldLink.setAttribute('target', '_blank');
+
+      /**
+       * *** FOR SAFARI TO UNCOMMENT AND TEST ***
+       */
+      // https://stackoverflow.com/questions/29799696/saving-csv-file-using-blob-in-safari/46641236
+      // const link = document.createElement('a');
+      // link.id = 'csvDwnLink';
+
+      // document.body.appendChild(link);
+      // window.URL = window.URL;
+      // const csv = '\ufeff' + data,
+      //   csvData = 'data:attachment/csv;charset=utf-8,' + encodeURIComponent(csv),
+      //   filename = 'filename.csv';
+      // $('#csvDwnLink').attr({ 'download': filename, 'href': csvData });
+      // $('#csvDwnLink')[0].click();
+      // document.body.removeChild(link);
     }
     dwldLink.setAttribute('href', url);
     dwldLink.setAttribute('download', 'faqs.csv');
