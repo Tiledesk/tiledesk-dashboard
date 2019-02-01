@@ -13,11 +13,32 @@
                         <h4 class="title">Edit Profile</h4>
                         <p class="category">Complete your profile</p>
                     </div> -->
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ul class="nav nav-pills nav-pills-info custom" style="padding-left: 15px;padding-right: 15px;margin-bottom: 15px;">
+                            <li class="active">
+                                <a data-toggle="tab">
+                                    {{ "UserProfile.Profile" | translate }}
+                                </a>
+                            </li>
+                            <li>
+                                <a data-toggle="tab" (click)="goToChangePsw()" style="cursor: pointer">
+                                    {{ "UserProfile.ChangePsw" | translate }}
+                                </a>
+                            </li>
+                            
+                            </ul>
+                        </div>
+                    </div>
+
                     <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
-                    <div *ngIf="!showSpinner" class="card-content" >
-                        <label style="height: 36px; padding-top: 20px; padding-left: 16px; padding-right: 16px; text-align: right; margin-top:12px" class="col-sm-2 avatar_label">
-                            Avatar
+                    <div *ngIf="!showSpinner" class="card-content" style="border-top:1px solid #eee">
+             
+
+                        <label style="height: 36px; padding-top: 20px; padding-left: 16px; padding-right: 16px; text-align: right; margin-top:12px; color: #7695a5 " class="col-sm-2 avatar_label">
+                           Avatar
                         </label>
                         <div class="col-sm-10">
                             <!-- src="assets/img/no_image_user.png" -->
@@ -34,7 +55,7 @@
                                 onerror="this.onerror=null; this.src='assets/img/no_image_user.png';"/> -->
                                 
                                 <input  class="inputfile" name="file" id="file"  type="file" (change)="upload($event)" accept=".jpg" />
-                                <label class="btn btn-white" for="file" style="padding-left:15px; padding-right:15px; text-transform: none">
+                                <label class="btn btn-white" for="file" style="padding-left:15px; padding-right:15px; text-transform: none; color: #7695a5">
                                         {{ "UserProfile.UploadImage" | translate }}
                                 </label>
 
@@ -46,7 +67,7 @@
                             </div> 
                         </div>
                             
-                        <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
+                        <label class="col-sm-2 custom-label">
                             <!-- Nome -->
                             {{ "UserProfile.Name" | translate }}
                         </label>
@@ -54,7 +75,7 @@
                             <input (input)="onEditFirstname($event.target.value)" [(ngModel)]="userFirstname" class="" type="text" placeholder='{{ "UserProfile.Name" | translate }}'>
                         </div>
 
-                        <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
+                        <label class="col-sm-2 custom-label">
                             <!-- Cognome -->
                             {{ "UserProfile.Lastname" | translate }}
                         </label>
@@ -70,7 +91,7 @@
                                 [ngClass]="{'pending-email-verification' : emailverified === false }" disabled>
                            </div> 
 
-                        <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2">
+                        <label class="col-sm-2 custom-label">
                             <!-- ID Utente -->
                             {{ "UserProfile.UserId" | translate }}
                         </label>
@@ -89,7 +110,7 @@
 
                      
                         <span *ngIf="emailverified == false">
-                            <label style="" class="col-sm-2"></label>
+                            <label class="col-sm-2"></label>
                             <div class="col-sm-10" style="padding-top: 15px;">
                                 <i class="material-icons" style="vertical-align: middle; color:#f44336;">error_outline</i>
                                 <span style="vertical-align: middle; color:#f44336;"> 
@@ -112,10 +133,9 @@
                                 {{ "UserProfile.UpdateProfile" | translate }}
                             </button>
 
-                            <button class="btn btn-success" (click)="goToChangePsw()" >
-                                <!-- Change Password-->
+                            <!-- <button class="btn btn-success" (click)="goToChangePsw()" >
                                 {{ "UserProfile.ChangePsw" | translate }}
-                            </button>
+                            </button> -->
                         </div>
 
                         <!-- <form>

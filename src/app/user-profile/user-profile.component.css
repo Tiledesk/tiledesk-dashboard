@@ -143,3 +143,22 @@ button.close {
     border: 1px solid #f44336 !important;
     color: #f44336 !important;
 }
+
+.nav-pills.nav-pills-info.custom > li.active > a, .nav-pills.nav-pills-info.custom > li.active > a:focus, .nav-pills.nav-pills-info.custom > li.active > a:hover {
+     /* background-color: #00bcd4;  */
+    background-color: #039be5!important;
+    -webkit-box-shadow: 0 12px 20px -10px rgba(3, 115, 229, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(3, 115, 229, 0.2)!important;
+    box-shadow: 0 12px 20px -10px rgba(3, 115, 229, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(3, 115, 229, 0.2)!important;
+}
+/* height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right; */
+/* height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right; */
+/* height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right; */
+/* height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right; */
+.custom-label {
+    color: #7695a5;
+    height: 36px !important;
+    padding-top: 7px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    text-align: right!important;
+}

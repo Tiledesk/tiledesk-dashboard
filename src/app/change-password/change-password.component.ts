@@ -56,6 +56,10 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
     const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
     console.log('USER PROFILE  elemAppSidebar ', elemAppSidebar)
     elemAppSidebar.setAttribute('style', 'display:none;');
+
+    const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+    console.log('USER PROFILE  elemMainPanel ', elemMainPanel)
+    elemMainPanel.setAttribute('style', 'width:100% !important; overflow-x: hidden !important;');
   }
 
 
@@ -161,4 +165,16 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
   closeModalChangingPsw() {
     this.displayModalChangingPsw = 'none';
   }
+
+
+    // hides the sidebar if the user views his profile but has not yet selected a project
+    selectSidebar() {
+      const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
+      console.log('USER PROFILE  elemAppSidebar ', elemAppSidebar)
+      elemAppSidebar.setAttribute('style', 'display:none;');
+  
+      const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+      console.log('USER PROFILE  elemMainPanel ', elemMainPanel)
+      elemMainPanel.setAttribute('style', 'width:100% !important; overflow-x: hidden !important;');
+    }
 }
