@@ -113,7 +113,7 @@ export class SigninComponent implements OnInit {
     const self = this;
     // this.auth.signin(this.userForm.value['email'], this.userForm.value['password'])
     //   .subscribe((error) => {
-    this.auth.signin(this.userForm.value['email'], this.userForm.value['password'], function (error) {
+    this.auth.signin(this.userForm.value['email'], this.userForm.value['password'], function (error, user) {
 
       // this.auth.user = signinResponse.user;
       // this.auth.user.token = signinResponse.token
@@ -121,6 +121,15 @@ export class SigninComponent implements OnInit {
       // tslint:disable-next-line:no-debugger
       // debugger
       if (!error) {
+
+        /**
+         * *** WIDGET - pass data to the widget function setTiledeskWidgetUser in index.html ***
+         */
+        // console.log('SetTiledeskWidgetUserSignin (Signin) - userFullname', user.firstname + user.lastname)
+        // console.log('SetTiledeskWidgetUserSignin (Signin) - userEmail', user.email);
+        // console.log('SetTiledeskWidgetUserSignin (Signin) - userId', user._id);
+        // window['setTiledeskWidgetUser'](user.firstname + user.lastname, user.email, user._id);
+
 
         self.router.navigate(['/projects']);
 
@@ -150,6 +159,9 @@ export class SigninComponent implements OnInit {
     });
 
   }
+
+
+
 
   // signin() {
   //   this.showSpinnerInLoginBtn = true
