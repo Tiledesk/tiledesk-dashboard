@@ -1,6 +1,15 @@
 
 # tiledesk-dashboard
 
+### 1.0.9
+- Bug fixed: requests assigned to a department and then reassigned to an agent of another department are not listed among the new agent's requests
+- Edits: the unserved requests notifications are not displayed if it are older than one day
+- Adds the display of notifications when the user change the widget appearance or the department online / offline messages
+- Adds to the sidebar's avatar a link to the user' profile
+- Adds to the sidebar the menu item 'Project Settings'
+- Adds tabs to switch from the user-profile page to the change password page 
+- Other minor improvements
+
 ### 1.0.8
 - Adds translations for the Notification Messages related to user actions
 
