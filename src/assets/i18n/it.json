@@ -158,6 +158,9 @@
     "RemoveGroupMemberErrorNoticationMsg":"Si è verificato un errore durante la rimozione del membro",
     "UpdateWidgetProjectSuccessNoticationMsg":"Stile del chat widget aggiornato",
     "UpdateDeptGreetingsSuccessNoticationMsg":"Le tue modifiche sono state salvate",
+    "Login":"Accedi",
+    "SignInToTiledesk":"Accedi a tiledesk",
+    "LetSetUpYourTiledeskChat":"Configura la tua chat tiledesk",
     "UserProfile": {
         "Profile": "Profilo",
         "UploadImage": "Carica immagine",

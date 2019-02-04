@@ -158,6 +158,9 @@
     "RemoveGroupMemberErrorNoticationMsg":"An error occurred while removing the member",
     "UpdateWidgetProjectSuccessNoticationMsg":"Chat widget style updated",
     "UpdateDeptGreetingsSuccessNoticationMsg":"Your changes has been saved",
+    "Login":"Login",
+    "SignInToTiledesk":"Sign in to tiledesk",
+    "LetSetUpYourTiledeskChat":"Let's set up your tiledesk chat",
     "UserProfile": {
         "Profile": "Profile",
         "UploadImage": "Upload image",
