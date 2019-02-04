@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 1.0.10
+- Adds the titles on the login page and on the signup page
+
 ### 1.0.9
 - Bug fixed: requests assigned to a department and then reassigned to an agent of another department are not listed among the new agent's requests
 - Edits: the unserved requests notifications are not displayed if it are older than one day
