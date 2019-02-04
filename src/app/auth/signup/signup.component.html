@@ -6,7 +6,7 @@
         <div style="text-align: center; cursor: pointer; margin-top: -70px;"> 
             <!-- max-width: 100%; -->
           <a href="http://www.tiledesk.com" target="_blank">
-            <img src="assets/img/tiledesk-logo.svg" class="img-fluid" style="max-width: 200px; height: auto; padding-top:25px"/>
+            <img src="assets/img/tiledesk-logo.svg" class="img-fluid" style="max-width: 150px; height: auto; padding-top:25px"/>
           </a>
         </div>
 
@@ -23,7 +23,13 @@
           </div>
         </div>
 
-        <div class="login-container">
+        <div class="signup-title" style="text-align:center"> 
+          <h2 style="font-family: 'Google Sans', sans-serif !important; ">
+            {{ "LetSetUpYourTiledeskChat" | translate}}
+          </h2>
+        </div>
+
+        <div class="login-container" style="padding-top: 15px;">
 
           <form [formGroup]="userForm" (ngSubmit)="signup()" autocomplete="off">
   
