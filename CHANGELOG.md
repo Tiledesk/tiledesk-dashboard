@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 1.0.11
+- Replaces the comma with the semicolon as column delimiter of the exported faq.csv file
+- Adds in the pop-up window 'Upload CSV' the ability to download the example.csv file 
+
 ### 1.0.10
 - Adds the titles on the login page and on the signup page
 
