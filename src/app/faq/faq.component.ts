@@ -43,7 +43,7 @@ export class FaqComponent implements OnInit {
   displayInfoModal = 'none';
   SHOW_CIRCULAR_SPINNER = false;
   displayImportModal = 'none';
-  csvColumnsDelimiter = ','
+  csvColumnsDelimiter = ';'
   parse_done: boolean;
   parse_err: boolean;
 
@@ -237,7 +237,7 @@ export class FaqComponent implements OnInit {
       console.log('FAQ COMP - EXPORT FAQ TO CSV - FAQS', faq)
 
       if (faq) {
-        this.downloadFile(faq);
+        this.downloadFile(faq, 'faqs.csv');
       }
     }, (error) => {
       console.log('FAQ COMP - EXPORT FAQ TO CSV - ERROR', error);
@@ -259,7 +259,7 @@ export class FaqComponent implements OnInit {
   // $('#csvDwnLink')[0].click();
   // document.body.removeChild(link);
 
-  downloadFile(data) {
+  downloadFile(data, filename) {
     const blob = new Blob(['\ufeff' + data], { type: 'text/csv;charset=utf-8;' });
     const dwldLink = document.createElement('a');
     const url = URL.createObjectURL(blob);
@@ -285,11 +285,16 @@ export class FaqComponent implements OnInit {
       // document.body.removeChild(link);
     }
     dwldLink.setAttribute('href', url);
-    dwldLink.setAttribute('download', 'faqs.csv');
+    dwldLink.setAttribute('download', filename);
     dwldLink.style.visibility = 'hidden';
     document.body.appendChild(dwldLink);
     dwldLink.click();
     document.body.removeChild(dwldLink);
+  }
+
+  downloadExampleCsv() {
+    const examplecsv = 'Question 1; Answer 1'
+    this.downloadFile(examplecsv, 'example.csv');
   }
 
 

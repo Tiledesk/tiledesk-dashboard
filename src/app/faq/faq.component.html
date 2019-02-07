@@ -439,10 +439,12 @@
       <div class="modal-body">
       
         <div class="row" style="margin-right: 0px; margin-bottom:8px">
-            <div class="col-md-4 col-md-offset-4" style="text-align:center; border: 1px solid #eeeeee;background-color: antiquewhite">
-              <p style="margin:5px">myexample.csv</p>
+            <div class="col-xs-6 col-xs-offset-3" style="text-align:center; border: 1px solid #eeeeee;background-color: antiquewhite">
+              <p (click)="downloadExampleCsv()" style="margin:5px; cursor:pointer"> <i class="material-icons" style="font-size:18px; top: 4px; position: relative;">save_alt</i>
+                {{ 'download' | translate }} <span style="font-weight:400"> {{ 'examplecsv' | translate }}  </span> 
+              </p>  
             </div>
-          <div class="col-md-4 col-md-offset-4" style="text-align:center; border-left: 1px solid #eeeeee; border-right: 1px solid #eeeeee">
+          <div class="col-xs-6 col-xs-offset-3" style="text-align:center; border-left: 1px solid #eeeeee; border-right: 1px solid #eeeeee">
             <p style="margin:5px">
               <span>
                 <em>
@@ -467,11 +469,11 @@
         </div>
         <div class="row" style="margin-right: 0px;">
             <div class="col-sm-12">
-                <label style="height: 36px; padding-top:10px; padding-left:16px; padding-right:16px; text-align:right;" class="col-sm-6 ">
+                <label style="height: 36px; padding-top:10px; padding-left:16px; padding-right:16px; text-align:right; color: #7695a5;" class="col-xs-6 col-sm-6 ">
                   <!-- Columns separated with: -->
                   {{ 'FaqPage.ColumnsSeparatedWith' | translate }}
                 </label>
-                <div class="col-sm-6" style="text-align:start">
+                <div class="col-xs-6 col-sm-6" style="text-align:start">
                   <input style="padding-left:5px; margin-top:7px; width:55px" [(ngModel)]="csvColumnsDelimiter" (keyup)="countDelimiterDigit($event)">
                 </div>
                 
