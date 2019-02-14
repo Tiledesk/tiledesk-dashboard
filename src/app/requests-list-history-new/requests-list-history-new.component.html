@@ -309,7 +309,8 @@
                   <!-- ===== REQUESTER FULL NAME ===== -->
                   <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
                     <p style="font-size:0.9em">
-                      {{ request?.requester_fullname }}
+                      <!-- {{ request?.requester_fullname }} -->
+                      {{ request?.lead?.fullname }}
                     </p>
                   </td>
 
