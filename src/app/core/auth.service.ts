@@ -696,13 +696,16 @@ export class AuthService {
     localStorage.removeItem('project');
     localStorage.removeItem('role')
 
+    const that = this;
     firebase.auth().signOut()
       .then(function () {
         console.log('Signed Out');
+        that.router.navigate(['/login']);
       }, function (error) {
         console.error('Sign Out Error', error);
+        that.router.navigate(['/login']);
       });
-    this.router.navigate(['/login']);
+    // this.router.navigate(['/login']);
   }
 
   // If error, console log and notify user
