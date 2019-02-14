@@ -10,6 +10,7 @@ import * as Chartist from 'chartist';
 import { DepartmentService } from '../services/mongodb-department.service';
 import * as moment from 'moment';
 
+
 @Component({
   selector: 'appdashboard-analytics',
   templateUrl: './analytics.component.html',
@@ -41,6 +42,11 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   lastMonthrequestsCount: number;
   monthNames: any;
   departments: any;
+  waitingTime: any;
+  translatedHoursString: string;
+  translatedMinutesString: string;
+  translatedSecondsString: string;
+
   constructor(
     private auth: AuthService,
     private requestsService: RequestsService,
@@ -69,6 +75,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
+
 
     /* ----------==========    NUMBER OF REQUEST for DEPARTMENT ** PIE CHART ** ==========---------- */
 
@@ -190,8 +197,101 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     this.getlastMonthRequetsCount();
     this.getCountOf_AllRequestsForDept();
 
+    /** NOT YET USED */
+    // this.daysHoursRequestsDistribution()
+
+     /** NOT YET USED */
+    // this.translateHours();
+    // this.translateMinutes();
+    // this.translateSeconds();
+    // this.getWaitingTimeAverage();
 
   }
+
+  translateHours() {
+    this.translate.get('hours')
+      .subscribe((text: string) => {
+
+        this.translatedHoursString = text;
+        console.log('»» !!! ANALYTICS - AVERAGE WAIT - translatedHoursString ', text)
+      });
+  };
+
+  translateMinutes() {
+    this.translate.get('minutes')
+      .subscribe((text: string) => {
+
+        this.translatedMinutesString = text;
+        console.log('»» !!! ANALYTICS - AVERAGE WAIT - translatedMinutesString ', text)
+      });
+  };
+
+  translateSeconds() {
+    this.translate.get('seconds')
+      .subscribe((text: string) => {
+
+        this.translatedSecondsString = text;
+        console.log('»» !!! ANALYTICS - AVERAGE WAIT - translatedSecondsString ', text)
+      });
+  };
+
+  // getWaitingTimeAverage() {
+  //   this.requestsService.averageWait().subscribe((waitTime: any) => {
+  //     console.log('»» !!! ANALYTICS - AVERAGE WAIT ', waitTime);
+  //     if (waitTime.length > 0 ) {
+  //     }
+  //     const waitingTimeMs = waitTime[0].waiting_time_avg;
+  //     console.log('»» !!! ANALYTICS - AVERAGE WAIT - waitingTime', waitingTimeMs);
+
+  //     // const test = this.msToTime(this.waitingTime)
+  //     // console.log('»» !!! ANALYTICS - AVERAGE WAIT - test', test);
+  //     const mm = moment.duration(waitingTimeMs);
+  //     let mmHours = ''
+  //     if (mm.hours() > 0) {
+  //       mmHours = mm.hours() + this.translatedHoursString
+  //     }
+  //     this.waitingTime = mmHours + mm.minutes() + this.translatedMinutesString + mm.seconds() + this.translatedSecondsString
+  //     // this.waitingTime = mm.hours() + this.translatedHoursString + mm.minutes() + this.translatedMinutesString + mm.seconds() + this.translatedSecondsString
+
+  //     console.log('»» !!! ANALYTICS - AVERAGE WAIT - test moment ', this.waitingTime);
+  //     // console.log('»» !!! ANALYTICS - AVERAGE WAIT - test moment ', mm.hours() + ':' + mm.minutes() + ':' + mm.seconds());
+  //   }, (error) => {
+  //     console.log('»» !!! ANALYTICS - AVERAGE WAIT - ERROR ', error);
+  //   }, () => {
+  //     console.log('»» !!! ANALYTICS - AVERAGE WAIT * COMPLETE *');
+  //   });
+  // }
+
+  // msToTime(ms) {
+  //   var seconds = (ms / 1000);
+  //   var minutes = parseInt(seconds / 60, 10);
+  //   seconds = seconds % 60;
+  //   var hours = parseInt(minutes / 60, 10);
+  //   minutes = minutes % 60;
+
+  //   return hours + ':' + minutes + ':' + seconds;
+  // }
+
+  // msToTime(duration) {
+  //   const milliseconds = parseInt((duration % 1000) / 100);
+  //   const seconds = parseInt((duration / 1000) % 60);
+  //   const minutes = parseInt((duration / (1000 * 60)) % 60)
+  //   const hours = parseInt((duration / (1000 * 60 * 60)) % 24);
+
+  //   hours = (hours < 10) ? '0' + hours : hours;
+  //   minutes = (minutes < 10) ? '0' + minutes : minutes;
+  //   seconds = (seconds < 10) ? '0' + seconds : seconds;
+
+  //   return hours + ':' + minutes + ':' + seconds + '.' + milliseconds;
+  // }
+
+  daysHoursRequestsDistribution() {
+    this.requestsService.daysHoursRequestsDistribution().subscribe((requestsDistribution: any) => {
+
+      console.log('»» !!! ANALYTICS - REQUESTS DISTRIBUTION ', requestsDistribution);
+    })
+  }
+
   /* ----------==========   end ON INIT    ==========---------- */
 
   getRequestsByDay() {
