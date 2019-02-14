@@ -35,6 +35,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     private toggleButton: any;
     private sidebarVisible: boolean;
     unservedRequestCount: number;
+    currentUserRequestCount: number;
 
     value: number
     valueText: string;
@@ -52,6 +53,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
     notify: any;
     private shown_requests = {};
+    private shown_my_requests = {};
+
 
     project: Project;
     projectUser_id: string;
@@ -99,8 +102,6 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
 
     ngOnInit() {
-
-
         this.getCurrentProject();
         // tslint:disable-next-line:no-debugger
         // debugger
@@ -117,6 +118,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
 
         this.updateUnservedRequestCount();
+        this.updateCurrentUserRequestCount();
 
         this.notifyLastUnservedRequest();
 
@@ -304,6 +306,27 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         });
     }
 
+    updateCurrentUserRequestCount() {
+        this.requestsService.requestsList_bs.subscribe((requests) => {
+            if (requests) {
+                let count = 0;
+                requests.forEach(r => {
+
+                    const membersArray = Object.keys(r.members);
+                    // console.log('»» WIDGET notifyLastUnservedRequest REQUEST currentUserRequestCount membersArray ', membersArray);
+                    const currentUserIsInMembers = membersArray.includes(this.user._id);
+                    // console.log('»» WIDGET notifyLastUnservedRequest REQUEST currentUserRequestCount currentUserIsInMembers ', currentUserIsInMembers);
+                    if (currentUserIsInMembers === true) {
+                        count = count + 1;
+                    }
+                });
+                this.currentUserRequestCount = count;
+                console.log('»» WIDGET notifyLastUnservedRequest REQUEST currentUserRequestCount ', this.currentUserRequestCount); 
+            }
+        });
+
+    }
+
     // IS USED FOR: A REQUEST CHANGE STATE
     // FROM -> 100 (THE R. RECIPIENT IS ADDED AND SET TO TRUE IN  shown_requests )
     // TO -> 200 (THE R. RECIPIENT IS SET TO FALSE IN  shown_requests )
@@ -321,6 +344,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         });
     }
 
+    /*** from 14 feb are displayed also the request assigned to the current user */
     // NOTE: ARE DISPLAYED IN THE NOTIFICATION ONLY THE UNSERVED REQUEST (support_status = 100)
     // THAT ARE NOT FOUND (OR HAVE THE VALUE FALSE) IN THE LOCAL DICTIONARY shown_requests
     // FURTHERMORE THE NOTICATIONS WILL NOT BE DISPLAYED IF THE USER OBJECT IS NULL (i.e THERE ISN'T USER LOGGED IN)
@@ -330,6 +354,17 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
                 requests.forEach(r => {
 
+                    // console.log('»» WIDGET notifyLastUnservedRequest REQUEST shown_requests ', this.shown_requests);
+                    // console.log('»» WIDGET notifyLastUnservedRequest REQUEST shown_my_requests ', this.shown_my_requests);
+                    // console.log('»» WIDGET notifyLastUnservedRequest REQUEST r ', r);
+
+                    // console.log('»» WIDGET notifyLastUnservedRequest REQUEST this.user ID  ', this.user._id);
+
+                    const membersArray = Object.keys(r.members);
+                    // console.log('»» WIDGET notifyLastUnservedRequest REQUEST membersArray ', membersArray);
+
+                    const currentUserIsInMembers = membersArray.includes(this.user._id);
+                    // console.log('»» WIDGET notifyLastUnservedRequest REQUEST currentUserIsInMembers ', currentUserIsInMembers);
 
                     if (r.support_status === 100 && !this.shown_requests[r.id] && this.user !== null) {
 
@@ -340,7 +375,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
                         // console.log('notifyLastUnservedRequest REQUEST TODAY ', currentTime);
 
                         const dateDiff = currentTime.diff(requestCreationDate, 'h');
-                        console.log('»» WIDGET notifyLastUnservedRequest DATE DIFF ', dateDiff);
+                        // console.log('»» WIDGET notifyLastUnservedRequest DATE DIFF ', dateDiff);
 
                         /**
                          * *** NEW 29JAN19: the unserved requests notifications are not displayed if it is older than one day ***
@@ -351,12 +386,33 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
                             // console.log('!!! »»» LAST UNSERVED REQUEST ', this.lastRequest)
 
                             // console.log('!!! »»» UNSERVED REQUEST IN BOOTSTRAP NOTIFY ', r)
-                            this.showNotification('<span style="font-weight: 400; font-family: Google Sans, sans-serif;">' + r.requester_fullname + '</span>' + '<em style="font-family: Google Sans, sans-serif;">' + r.first_text + '</em>');
+                            this.showNotification('<span style="font-weight: 400; font-family: Google Sans, sans-serif;color:#2d323e!important">'
+                            + r.requester_fullname + 
+                            '</span>' + '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text + '</em>', 3, 'border-left-color: rgb(255, 179, 40)');
 
                             this.shown_requests[r.id] = true;
+                            // console.log('»» WIDGET notifyLastUnservedRequest shown_requests ', this.shown_requests[r.id])
                             // r.notification_already_shown = true;
                         }
                     }
+
+                    if (this.user !== null && !this.shown_my_requests[r.id] && currentUserIsInMembers === true) {
+
+                        const requestCreationDate = moment(r.created_on);
+                        const currentTime = moment();
+
+                        const dateDiff = currentTime.diff(requestCreationDate, 'h');
+                        // console.log('»» WIDGET notifyLastUnservedRequest currentUserIsInMembers DATE DIFF ', dateDiff);
+
+                        if (dateDiff < 24) {
+                            this.showNotification('<span style="font-weight: 400; font-family: Google Sans, sans-serif; color:#2d323e!important">'
+                            + r.requester_fullname +
+                            '</span>' + '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text + '</em>', 4, 'border-left-color: rgb(244, 67, 54)');
+
+                            this.shown_my_requests[r.id] = true;
+                        }
+                    }
+
                 });
                 // this.unservedRequestCount = count;
             }
@@ -364,13 +420,14 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     }
 
 
-    showNotification(text: string) {
+    showNotification(text: string, notificationColor: number, borderColor: string) {
         console.log('show notification')
         const type = ['', 'info', 'success', 'warning', 'danger'];
 
         // const color = Math.floor((Math.random() * 4) + 1);
         // the tree corresponds to the orange
-        const color = 3
+        const color = notificationColor
+        
         // console.log('COLOR ', color)
         // const color = '#ffffff';
 
@@ -384,9 +441,16 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
             // url: '<a routerLink="/requests">',
             // url: this.router.navigate(['/requests']),
             // target: '_self'
+            // border-left-color: rgb(255, 179, 40);
+
+         
         }, {
                 type: type[color],
                 timer: 2000,
+                template: `<div data-notify="container" style="padding:10px!important;background-color: rgb(255, 255, 238);box-shadow: 0px 0px 5px rgba(51, 51, 51, 0.3); border-left: 15px solid;  ${borderColor}" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">` +
+                             '<span data-notify="title">{1}</span>' +
+                             '<span data-notify="message">{2}</span>' +
+                        '</div>'
                 // placement: {
                 //     from: from,
                 //     align: align
