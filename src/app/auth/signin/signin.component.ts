@@ -128,7 +128,7 @@ export class SigninComponent implements OnInit {
         // console.log('SetTiledeskWidgetUserSignin (Signin) - userFullname', user.firstname + user.lastname)
         // console.log('SetTiledeskWidgetUserSignin (Signin) - userEmail', user.email);
         // console.log('SetTiledeskWidgetUserSignin (Signin) - userId', user._id);
-        // window['setTiledeskWidgetUser'](user.firstname + user.lastname, user.email, user._id);
+        // window['setTiledeskWidgetUser'](user.firstname + ' ' + user.lastname, user.email, user._id);
 
 
         self.router.navigate(['/projects']);
