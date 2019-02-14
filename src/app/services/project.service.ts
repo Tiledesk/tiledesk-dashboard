@@ -234,6 +234,29 @@ export class ProjectService {
       .map((res) => res.json());
   }
 
+ /// ================ UPDATE GETTING STARTED ====================== ///
+ public updateGettingStartedProject(getting_started: any) {
+
+  let url = this.PROJECT_BASE_URL;
+  url += this.projectID;
+  console.log('UPDATE GETTING-STARTED - URL ', url);
+
+  const headers = new Headers();
+  headers.append('Accept', 'application/json');
+  headers.append('Content-type', 'application/json');
+  headers.append('Authorization', this.TOKEN);
+  const options = new RequestOptions({ headers });
+
+  const body = { 'gettingStarted': getting_started };
+
+  console.log('UPDATE GETTING-STARTED - BODY ', body);
+
+  return this.http
+    .put(url, JSON.stringify(body), options)
+    .map((res) => res.json());
+}
+
+
   /// ================ UPDATE PROJECT SETTINGS > AUTO SEND TRANSCRIPT TO REQUESTER ====================== ///
   public updateAutoSendTranscriptToRequester(autosend: boolean) {
 

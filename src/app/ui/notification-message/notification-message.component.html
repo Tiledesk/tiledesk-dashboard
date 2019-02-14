@@ -54,11 +54,12 @@
       <!-- *ngIf="notify.displayExpiredSessionModal" -->
       <!-- CHECLIST MODAL -->
       <div  class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':notify.displayCheckLIstModal}" style="background-color: rgba(90,90,90,0.5);">
-        <div class="modal-dialog modal-lg" role="document">
+            <!-- modal-lg -->
+        <div class="modal-dialog" role="document">
                 <!-- background-repeat: no-repeat; background-image: url(assets/img/tildesk-mobile-device.jpg); background-attachment: scroll; background-position: top right; background-size: 290px 450px;" -->
             <div class="modal-content" style="padding-bottom: 24px;" style="padding-top:0px;">
                     <!-- border-bottom: 1px solid #e5e5e5; -->
-                <div class="modal-header" style=" padding:15px">
+                <div class="modal-header" style=" padding-top:15px; padding-right:15px; padding-left:15px; padding-bottom:0px">
                   <button type="button" class="close" aria-label="Close" (click)="notify.onCloseCheckLIstModal()">
                         <span aria-hidden="true">
                             <!-- &times; -->
@@ -68,12 +69,9 @@
                             </svg>
                         </span>
                   </button>
-      
-               
                 </div>
     
                 <div class="modal-body" style="padding-top: 0;">
-
                     <div class="row">
                         <!-- style="background-image: url('https://tiledesk.com/wp-content/uploads/2018/09/ai-powered-live-chat-tiledesk-hero-image.jpg'); background-size: cover; background-size: 300px 100px;background-repeat: no-repeat;"> -->
                         <div class="col-sm-6" >
@@ -94,17 +92,21 @@
                             <!-- <img src='assets/img/tildesk-mobile-device.jpg'>     -->
                         </div>
                     </div>
-
-                    <div class="row">
+                    <loading-spinner *ngIf="showSpinnerInModal"></loading-spinner>
+                    <div *ngIf="!showSpinnerInModal" class="row">
                         <div class="col-sm-12" *ngFor="let option of gettingStartedChecklist" > 
                             <div class="checkbox">
                                 <label>
                                     <!-- name="optionsCheckboxes" -->
-                                    <input type="checkbox" [name]="option?.task" (change)="isAnswerProvided($event, check)">
-                                    <span style="display:inline-block; color: rgb(10, 91, 255);font-size:16px; line-height: 1.5;"> {{ option?.task | translate }} 
-                                        <i class="material-icons" style="font-size:14px; position: relative;top: 2px;" >arrow_forward_ios</i> 
+                                    <input type="checkbox" [name]="option?.task" (change)="hasClickedChecklist($event)" 
+                                        [checked]="option?.done" [disabled]="option?.done">
+                                    <span style="display:inline-block; color: rgb(10, 91, 255);font-size:16px; line-height: 1.9; font-weight: 400"
+                                        [ngClass]="{'option-task-disabled' : option?.done === true}">
+                                            {{ option?.task | translate }} 
+                                            <i class="material-icons" style="font-size:14px; position: relative;top: 2px;">arrow_forward_ios</i> 
                                     </span>
-                                    <span style="display:inline-block; color:#7695a5; margin-left: 28px">
+                                    <span style="display:inline-block; color:#394f5a; margin-left: 28px; font-weight: 400; font-size: 13px;"
+                                        [ngClass]="{'option-desc-disabled' : option?.done === true}">
                                         {{ option?.taskDesc | translate}} 
                                     </span>
                                     
