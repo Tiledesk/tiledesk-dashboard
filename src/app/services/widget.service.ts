@@ -25,12 +25,7 @@ export class WidgetService implements OnInit {
     private translate: TranslateService
   ) { console.log('»» WIDGET SERVICE HELLO WIDGET SERVICE !') }
 
-  ngOnInit() {
-
-  }
-
-
-
+  ngOnInit() {  }
 
   // saveCustomUrl(logo_url: string) {
   //   console.log('WIDGET SERVICE - CUSTOM LOGO URL ', logo_url);
@@ -41,12 +36,10 @@ export class WidgetService implements OnInit {
   updateWidgetProject(widgetSettingsObj: any) {
     this.projectService.updateWidgetProject(widgetSettingsObj)
       .subscribe((data) => {
-        console.log('»» WIDGET SERVICE - UPDATE PROJECT WIDGET - RESPONSE data', data);
+        // console.log('»» WIDGET SERVICE - UPDATE PROJECT WIDGET - RESPONSE data', data);
         console.log('»» WIDGET SERVICE - UPDATE PROJECT WIDGET - RESPONSE data.widget', data.widget);
 
         this.translateAndShowUpdateWidgetNotification();
-
-
 
       }, (error) => {
         console.log('»» WIDGET SERVICE - UPDATE PROJECT WIDGET - ERROR ', error);
