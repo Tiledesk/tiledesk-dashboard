@@ -1,6 +1,11 @@
 
 # tiledesk-dashboard
 
+### 1.0.12
+- Adds the notifications for the requests assigned to the logged agent
+- Adds in the footer the the ability to send an email to info@tiledesk.com
+- Adds in history the requester name
+
 ### 1.0.11
 - Replaces the comma with the semicolon as column delimiter of the exported faq.csv file
 - Adds in the pop-up window 'Upload CSV' the ability to download the example.csv file 
