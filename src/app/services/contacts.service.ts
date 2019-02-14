@@ -20,8 +20,6 @@ export class ContactsService {
   currentUserID: string;
 
   BASE_URL = environment.mongoDbConfig.BASE_URL;
-  MONGODB_BASE_URL = environment.mongoDbConfig.CONTACTS_BASE_URL;
-
 
   constructor(
     http: Http,
@@ -30,9 +28,6 @@ export class ContactsService {
   ) {
 
     this.http = http;
-    // this.MONGODB_BASE_URL = mongodbConfService.MONGODB_CONTACTS_BASE_URL;
-    // console.log('MONGODB_CONTACTS_BASE_URL ! ', mongodbConfService.MONGODB_CONTACTS_BASE_URL);
-    // this.TOKEN = mongodbConfService.TOKEN;
     this.getCurrentProject();
 
     this.user = auth.user_bs.value
