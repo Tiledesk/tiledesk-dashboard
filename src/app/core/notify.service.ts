@@ -87,7 +87,7 @@ export class NotifyService {
 
 
 
-  // is CALLED FROM SIDEBAR AND HOME WHEN THE USER CLICK ON THE CHAT BTN
+  // is CALLED FROM SIDEBAR, IN THE CHECLIST MODAL (NOTIFICATION-MESSAGE) AND HOME WHEN THE USER CLICK ON THE CHAT BTN
   publishHasClickedChat(hasClickedChat: boolean) {
     console.log('NotifyService  - hasClickedChat ', hasClickedChat);
     this.bs_hasClickedChat.next(true);
