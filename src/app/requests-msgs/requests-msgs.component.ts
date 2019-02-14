@@ -977,37 +977,39 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     // console.log('WINDOWS HISTORY ', window.history.replaceState);
   }
 
-  members_replace(member_id) {
-    // console.log('Members replace ', m)
-    // const user = JSON.parse((localStorage.getItem(member_id)));
-    const memberIsBot = member_id.includes('bot_');
+  /**
+   * 
+   * @param image_url
+   * @param callBack
+   * *** METHOD REPLACED BY agents_array IN getRequestByRecipient ***
+   */
+  // members_replace(member_id) {
+  //   // console.log('Members replace ', m)
+  //   // const user = JSON.parse((localStorage.getItem(member_id)));
+  //   const memberIsBot = member_id.includes('bot_');
+  //   if (memberIsBot === true) {
+  //     const bot_id = member_id.slice(4);
+  //     // console.log('!!! NEW REQUESTS HISTORY - THE PARTICIP', member_id, 'IS A BOT ', memberIsBot, ' - ID ', bot_id);
+  //     const bot = this.botLocalDbService.getBotFromStorage(bot_id);
+  //     if (bot) {
+  //       return member_id = bot['name'] + ' <em>(bot)</em>';
+  //     } else {
+  //       return member_id
+  //     }
 
-    if (memberIsBot === true) {
+  //   } else {
+  //     const user = this.usersLocalDbService.getMemberFromStorage(member_id);
+  //     if (user) {
+  //       // console.log('user ', user)
+         // tslint:disable-next-line:max-line-length
+  //       const user_img = `<img class=\"rightsidebar-user-img\" src=\"https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F${user['_id']}%2Fphoto.jpg?alt=media\" onerror=\"this.src='assets/img/no_image_user.png'\"/>`
 
-      const bot_id = member_id.slice(4);
-      // console.log('!!! NEW REQUESTS HISTORY - THE PARTICIP', member_id, 'IS A BOT ', memberIsBot, ' - ID ', bot_id);
-
-      const bot = this.botLocalDbService.getBotFromStorage(bot_id);
-      if (bot) {
-        return member_id = bot['name'] + ' <em>(bot)</em>';
-      } else {
-        return member_id
-      }
-
-    } else {
-      const user = this.usersLocalDbService.getMemberFromStorage(member_id);
-      if (user) {
-        // console.log('user ', user)
-        // tslint:disable-next-line:max-line-length
-        const user_img = `<img class=\"rightsidebar-user-img\" src=\"https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F${user['_id']}%2Fphoto.jpg?alt=media\" onerror=\"this.src='assets/img/no_image_user.png'\"/>`
-
-
-        return member_id = user_img + user['firstname'] + ' ' + user['lastname']
-      } else {
-        return member_id
-      }
-    }
-  }
+  //       return member_id = user_img + user['firstname'] + ' ' + user['lastname']
+  //     } else {
+  //       return member_id
+  //     }
+  //   }
+  // }
 
   verifyImageURL(image_url, callBack) {
     const img = new Image();
