@@ -147,7 +147,7 @@ export class RequestsListHistoryComponent implements OnInit {
     // SUBSCIPTION TO snapshotChanges History Of Conversations ('>=', 1000)
     this.requestsService.getSnapshotHistoryOfConversations().subscribe((data) => {
       this.requestList = data;
-      console.log('REQUESTS-LIST.COMP: SUBSCRIPTION TO REQUESTS HISTORY', data);
+      // console.log('REQUESTS-LIST.COMP: SUBSCRIPTION TO REQUESTS HISTORY', data);
 
       let i: any;
       for (i = 0; i < this.requestList.length; i++) {
