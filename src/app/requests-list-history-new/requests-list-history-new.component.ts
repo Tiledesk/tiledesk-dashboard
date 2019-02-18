@@ -10,6 +10,7 @@ import { UsersLocalDbService } from '../services/users-local-db.service';
 import { BotLocalDbService } from '../services/bot-local-db.service';
 import { UsersService } from '../services/users.service';
 import { FaqKbService } from '../services/faq-kb.service';
+import { avatarPlaceholder, getColorBck } from '../utils/util';
 @Component({
   selector: 'appdashboard-requests-list-history-new',
   templateUrl: './requests-list-history-new.component.html',
@@ -77,6 +78,7 @@ export class RequestsListHistoryNewComponent implements OnInit {
   user_and_bot_array = [];
   selectedAgentId: string;
   requester_email: string;
+  REQUESTER_IS_VERIFIED = false;
 
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
@@ -445,7 +447,7 @@ export class RequestsListHistoryNewComponent implements OnInit {
         this.downloadFile(requests)
       }
     }, error => {
-      
+
       console.log('!!! NEW REQUESTS HISTORY - DOWNLOAD REQUESTS AS CSV - ERROR: ', error);
     }, () => {
 
@@ -493,6 +495,57 @@ export class RequestsListHistoryNewComponent implements OnInit {
         console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES No ROUND TO UP ', this.totalPagesNo_roundToUp);
 
         this.requestList = requests['requests'];
+
+        for (const request of this.requestList) {
+
+          if (request) {
+            // console.log('!!! NEW REQUESTS HISTORY - request ', request);
+
+            let newInitials = '';
+            let newFillColour = '';
+
+            if (request.lead && request.lead.fullname) {
+              newInitials = avatarPlaceholder(request.lead.fullname);
+              newFillColour = getColorBck(request.lead.fullname)
+            } else {
+
+              newInitials = 'n.a.';
+              newFillColour = '#eeeeee';
+            }
+
+            request.requester_fullname_initial = newInitials;
+            request.requester_fullname_fillColour = newFillColour;
+            // .authVar.token.firebase.sign_in_provider
+            // console.log('---- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo);
+            if (request.lead
+              && request.lead.attributes
+              && request.lead.attributes.senderAuthInfo
+              && request.lead.attributes.senderAuthInfo.authVar
+              && request.lead.attributes.senderAuthInfo.authVar.token
+              && request.lead.attributes.senderAuthInfo.authVar.token.firebase
+              && request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider
+
+            ) {
+              
+              if (request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider === 'custom') {
+
+                // console.log('- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider);
+                this.REQUESTER_IS_VERIFIED = true;
+              } else {
+                // console.log('- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider);
+                this.REQUESTER_IS_VERIFIED = false;
+              }
+
+            } else {
+              this.REQUESTER_IS_VERIFIED = false;
+            }
+
+            request.requester_is_verified = this.REQUESTER_IS_VERIFIED
+
+
+          }
+
+        }
 
         // let flat_participants_array = [];
         // const requesters_id_array = []

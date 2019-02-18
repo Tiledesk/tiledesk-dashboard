@@ -195,15 +195,16 @@
                       </strong>
                     </span>  
                   </th> -->
-
-                  <!-- ===== DEPARTMENT NAME ===== -->
+                  <!-- ===== REQUEST FIRST TEXT ===== -->
                   <th>
                     <span style="color: #566787">
-                      <strong>
-                        <strong>{{ 'VisitorsPage.Department' | translate }}</strong>
+                      <strong> 
+                        {{ 'HistoryPage.Message' | translate }}
                       </strong>
-                    </span>  
+                    </span>
                   </th>
+
+               
 
                   <!-- ===== REQUESTER ===== -->
                   <th>
@@ -221,14 +222,14 @@
                     </span>
                   </th> -->
 
-                  <!-- ===== REQUEST FIRST TEXT ===== -->
-                  <th>
-                    <span style="color: #566787">
-                      <strong> 
-                        {{ 'HistoryPage.Message' | translate }}
-                      </strong>
-                    </span>
-                  </th>
+                     <!-- ===== DEPARTMENT NAME ===== -->
+                     <th>
+                        <span style="color: #566787">
+                          <strong>
+                            <strong>{{ 'VisitorsPage.Department' | translate }}</strong>
+                          </strong>
+                        </span>  
+                      </th>
 
                   <!-- ===== SERVED BY ===== -->
                   <th>
@@ -299,19 +300,47 @@
                      </p>
                   </td> -->
 
-                  <!-- ===== DEPARTMENT NAME ===== -->
-                  <td>
-                      <p style="font-size:0.9em">
-                        {{ request?.department?.name }}
-                      </p>
+                <!-- ===== REQUEST FIRST TEXT ===== -->
+                  <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
+                    <p style="font-size:0.9em;" [innerHTML]="getRequestText(request?.first_text)">
+                    </p>
                   </td>
+
+           
 
                   <!-- ===== REQUESTER FULL NAME ===== -->
                   <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
-                    <p style="font-size:0.9em">
+
+                    <span class="requester-avatar-wrapper"> 
+                      <span class="requester-avatar" [ngStyle]="{'background-color': request?.requester_fullname_fillColour }" [ngClass]="{'requester_fullname_undefined' : !request?.lead?.fullname}">
+                        <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
+                      </span>
+                      <span *ngIf="request?.requester_is_verified === true" class="tooltipx"> 
+                          <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                              viewBox="0 0 26.6 26.6" width="17" height="17" style="position: relative;left: -40px;top: -3px;" xml:space="preserve">
+                              <style type="text/css">
+                                .st0{fill:none;}
+                                .st1{fill:#FFFFFF;}
+                                .st2{fill:#18BDF7;}
+                              </style>
+                              <path class="st0" d="M1.3,1.3h24v24h-24V1.3z"/>
+                              <path class="st1" d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z"/>
+                              <path class="st2" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
+                                l6.6-6.6l1.4,1.4L11.3,18.3z"/>
+                            </svg>
+  
+                          <span class="tooltiptext"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
+
+                        </span>
+
+                    </span>
+                    <span style="font-size:0.9em; font-weight: 400; white-space: nowrap;" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
                       <!-- {{ request?.requester_fullname }} -->
                       {{ request?.lead?.fullname }}
-                    </p>
+                    </span>
+                    <span *ngIf="!request?.lead?.fullname" style="font-size:0.9em; font-weight: 400;" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
+                        n.a.
+                     </span>
                   </td>
 
                   <!-- ===== REQUESTER ID * FOR DEBUG * ===== -->
@@ -321,9 +350,11 @@
                     </p>
                   </td> -->
 
-                  <!-- ===== REQUEST FIRST TEXT ===== -->
-                  <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
-                    <p style="font-size:0.9em;" [innerHTML]="getRequestText(request?.first_text)">
+            
+                  <!-- ===== DEPARTMENT NAME ===== -->
+                  <td>
+                    <p style="font-size:0.9em">
+                      {{ request?.department?.name }}
                     </p>
                   </td>
  
@@ -366,7 +397,7 @@
                       <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
                       <!-- {{ request?.request_date_fromnow }} -->
                       <!-- {{ request?.created_on | date: 'd/M/y HH:mm:ss' }} -->
-                      {{ request?.createdAt | amTimeAgo }} ({{ request?.createdAt | date: 'd/M/y HH:mm' }}) 
+                      <span> {{ request?.createdAt | amTimeAgo }} </span> <br> <span style="font-size: 11px;font-weight: 400;" >({{ request?.createdAt | date: 'd/M/y HH:mm' }}) </span> 
                     </p>
                   </td>
 

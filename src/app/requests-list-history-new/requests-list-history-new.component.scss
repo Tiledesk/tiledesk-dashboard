@@ -209,4 +209,29 @@ p.member:hover {
   }
   // /.end TOOLTIP 
 
+.requester-avatar {
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 400;
+    text-align: center;
+    // padding-top:5px;
+    padding-top:7px;
+    padding-bottom: 3px;
+    display: inline-block;
+    width: 29px;
+    height:29px;
+}
+
+.requester_fullname_undefined {
+    padding-top: 6px;
+    padding-left: 6px;
+    padding-right: 4px;
+    padding-bottom: 4px; 
+}
+
+.requester-verified {
+    position: relative; 
+    left: -20px;
+}
+
 
