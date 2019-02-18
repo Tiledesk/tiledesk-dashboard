@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 1.0.14
+- Adds the requester avatar in the history page
+- Adds the available / unavailable agent status in the pop-up windows "reassign request" and "add agent"
+
 ### 1.0.12
 - Adds the notifications for the requests assigned to the logged agent
 - Adds in the footer the the ability to send an email to info@tiledesk.com
