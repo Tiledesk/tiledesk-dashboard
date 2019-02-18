@@ -744,7 +744,7 @@
                     
                     <!-- REQUESTER VERIFIED ICON (SERVED REQUEST SECTION) -->
                     <span class="requester-avatar-wrapper"> 
-                        <span class="requester-avatar" [ngStyle]="{'background-color': request?.requester_fullname_fillColour }" [ngClass]="{'requester_fullname-undefined' : !request?.requester_fullname}">
+                      <span class="requester-avatar" [ngStyle]="{'background-color': request?.requester_fullname_fillColour }" [ngClass]="{'requester_fullname-undefined' : !request?.requester_fullname}">
                           <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
                         </span>
                         <span *ngIf="request?.requester_is_verified === true" class="tooltipx"> 
@@ -761,10 +761,10 @@
                                 l6.6-6.6l1.4,1.4L11.3,18.3z"/>
                             </svg>
   
-                            <span class="tooltiptext"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
+                          <span class="tooltiptext"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
 
                         </span>
-                      </span>
+                    </span>
                     
                     
                     <span style="font-size:0.9em; font-weight: 400; white-space: nowrap;" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
