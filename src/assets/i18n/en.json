@@ -625,6 +625,7 @@
         "RequestServedBy": "Request served",
         "RequestId": "Request Id",
         "Published": "Published",
+        "Created": "Created",
         "Date": "Date",
         "Requester": "Requester",
         "RequesterName": "Requester name",

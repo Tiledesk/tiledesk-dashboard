@@ -624,6 +624,7 @@
         "RequestServedBy": "Richiesta servita",
         "RequestId": "Id richiesta",
         "Published": "Pubblicata",
+        "Created": "Creata",
         "Date": "Data",
         "Requester": "Richiedente",
         "RequesterName": "Nome richiedente",
