@@ -57,8 +57,8 @@
   
             <label for="email">Email <span style="color:#ff5252">*</span></label>
             <!-- id="email" -->
-            <input autocomplete="off" type="email"  class="input"
-                  formControlName="email" required >
+            <input type="email" class="input" formControlName="email" 
+              required autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
   
             <div *ngIf="formErrors.email" class="is-danger" translate>
               {{ formErrors.email }}
