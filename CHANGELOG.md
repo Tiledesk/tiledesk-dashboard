@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 1.0.15
+- Disable autocapitalize of the email inputs
+
 ### 1.0.14
 - Adds the requester avatar in the history page
 - Adds the available / unavailable agent status in the pop-up windows "reassign request" and "add agent"
