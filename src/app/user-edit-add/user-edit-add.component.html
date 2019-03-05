@@ -26,7 +26,8 @@
                 Email
               </label>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                <input [(ngModel)]="user_email" (ngModelChange)="emailChange($event)" class="" type="text" 
+                <input [(ngModel)]="user_email" (ngModelChange)="emailChange($event)" class="" type="email" 
+                  autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
                   placeholder='{{ "UserEditAddPage.EmailAddress" | translate }}' [ngClass]="{'invalid-email' : !EMAIL_IS_VALID}">
 
                   <span *ngIf="!EMAIL_IS_VALID" style="color: #f44336">
@@ -54,7 +55,7 @@
               <!-- SPACER -->
               <div class="col-sm-12" style="height:15px"></div>
 
-              <label style="" class="col-sm-2"></label>
+              <label class="col-sm-2"></label>
               <div class="col-sm-10">
                 <!-- [disabled]="bot_fullname?.length < 2 || FAQKB_NOT_SELECTED === true" -->
                 <!-- email length {{ user_email?.length }}  -->
@@ -83,7 +84,8 @@
                 </label>
                 <!-- class="col-sm-10" -->
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                  <input style="color:#999999" [(ngModel)]="user_email" class="" type="text" placeholder='{{ "UserEditAddPage.EmailAddress" | translate }}' disabled>
+                  <input style="color:#999999" [(ngModel)]="user_email" 
+                    type="text" placeholder='{{ "UserEditAddPage.EmailAddress" | translate }}' disabled>
                 </div>
               </div>
 
