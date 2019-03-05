@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 
-import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { NotifyService } from './notify.service';
@@ -22,6 +21,9 @@ import { UsersLocalDbService } from '../services/users-local-db.service';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
 
+import * as firebase from 'firebase/app';
+import '@firebase/messaging';
+import { isDevMode } from '@angular/core';
 // import { RequestsService } from '../services/requests.service';
 // interface CUser {
 //   uid: string;
@@ -61,6 +63,7 @@ export class AuthService {
   token: string;
 
   displayName?: string;
+  FCMcurrentToken: string;
 
   // user: Observable<User | null>;
 
@@ -75,6 +78,9 @@ export class AuthService {
   _user_role: string;
   nav_project_id: string;
   subscription: Subscription;
+  userId: string;
+  APP_IS_DEV_MODE: boolean;
+
   constructor(
     http: Http,
     private afAuth: AngularFireAuth,
@@ -86,8 +92,9 @@ export class AuthService {
     public location: Location
   ) {
     this.http = http;
-    console.log('!!! ====== AUTH SERVICE !!! ====== ')
 
+    this.APP_IS_DEV_MODE = isDevMode();
+    console.log('!!! ====== AUTH SERVICE !!! ====== isDevMode ', this.APP_IS_DEV_MODE)
     // this.user = this.afAuth.authState
     //   .switchMap((user) => {
     //     if (user) {
@@ -368,6 +375,12 @@ export class AuthService {
         console.log('SIGNIN RES: ', res.json())
         const jsonRes = res.json()
         const user: User = jsonRes.user
+
+        if (user) {
+          // used in signOut > removeInstanceId
+          this.userId = user._id
+        }
+
         // ASSIGN THE RETURNED TOKEN TO THE USER OBJECT
         user.token = jsonRes.token
 
@@ -378,6 +391,7 @@ export class AuthService {
         localStorage.setItem('user', JSON.stringify(user));
         console.log('++ USER ', user)
 
+
         ///////////////////
         console.log('1. POST DATA ', jsonRes);
         if (jsonRes['success'] === true) {
@@ -386,6 +400,8 @@ export class AuthService {
 
             console.log('2. FIREBASE SIGNIN RESPO ', token)
             if (token) {
+
+
 
               // Firebase Sign in using custom token
               firebase.auth().signInWithCustomToken(token)
@@ -407,6 +423,11 @@ export class AuthService {
                   //     userProvidedPassword
                   // );
 
+                  if (!this.APP_IS_DEV_MODE) {
+                    // this.requestPermissionGetFCMTokenAndRegisterInstanceId(user._id)
+                    this.getPermission();
+                  }
+
 
                   /* CHAT21-CLOUD-FUNCTIONS - CREATE CONTACT */
                   this.cloudFunctionsCreateContact(user.firstname, user.lastname, user.email);
@@ -422,21 +443,102 @@ export class AuthService {
                   // console.log('FIREBASE CUSTOM AUTH ERROR MSG ', errorMessage)
                 });
             } else {
-
               callback({ code: '4569', message: 'Error token not generated' });
             }
             // tslint:disable-next-line:no-debugger
             // debugger
           })
         } else {
-
           callback({ code: jsonRes.code, message: jsonRes.message });
         }
-        /////////////
+
       }).catch(function (error) {
         console.log('TO PROMISE ERROR ', error);
         callback(error);
       })
+  }
+
+
+  getPermission() {
+    const messaging = firebase.messaging();
+    messaging.requestPermission()
+      .then(() => {
+        console.log('>>>> getPermission Notification permission granted.');
+        return messaging.getToken()
+      })
+      .then(FCMtoken => {
+        console.log('>>>> getPermission FCMtoken', FCMtoken)
+        // Save FCM Token in Firebase
+        this.FCMcurrentToken = FCMtoken;
+        this.updateToken(FCMtoken)
+      })
+      .catch((err) => {
+        console.log('>>>> getPermission Unable to get permission to notify.', err);
+      });
+  }
+
+  // requestPermissionGetFCMTokenAndRegisterInstanceId(userId) {
+  //   const messaging = firebase.messaging();
+  //   const that = this;
+  //   messaging.requestPermission()
+  //     .then(function () {
+  //       console.log('Notification permission granted.');
+  //       // TODO(developer): Retrieve a Instance ID token for use with FCM.
+  //       // ...
+  //       that.getFCMregistrationToken(userId)
+  //     })
+  //     .catch(function (err) {
+  //       console.log('Unable to get permission to notify. ', err);
+  //     });
+  // }
+
+  // getFCMregistrationToken(userId) {
+  //   const that = this;
+  //   console.log('>>>>  messaging.getToken - Notification permission granted.');
+
+  //   // /* forceRefresh */ true
+  //   const messaging = firebase.messaging();
+  //   messaging.getToken().then(function (FCMcurrentToken) {
+  //     if (FCMcurrentToken) {
+  //       console.log('>>>>  messaging.getToken - FCM registration token ', FCMcurrentToken);
+
+  //       that.FCMcurrentToken = FCMcurrentToken;
+
+  //       that.registerInstanceId(FCMcurrentToken);
+
+  //     } else {
+  //       // Show permission request.
+  //       console.log('>>>>  messaging.getToken - No Instance ID token available. Request permission to generate one.');
+  //     }
+  //   }).catch(function (err) {
+  //     console.log('>>>>  messaging.getToken - An error occurred while retrieving token. ', err);
+  //   });
+  // }
+
+  updateToken(FCMcurrentToken) {
+    console.log('>>>> updateToken ', FCMcurrentToken);
+    // this.afAuth.authState.take(1).subscribe(user => {
+    if (!this.userId || !FCMcurrentToken) {
+      return
+    };
+    console.log('aggiorno token nel db');
+    const connection = FCMcurrentToken;
+    const updates = {};
+    const urlNodeFirebase = '/apps/tilechat'
+    const connectionsRefinstancesId = urlNodeFirebase + '/users/' + this.userId + '/instances/';
+
+
+    // this.connectionsRefinstancesId = this.urlNodeFirebase + "/users/" + userUid + "/instances/";
+    const device_model = {
+      device_model: navigator.userAgent,
+      language: navigator.language,
+      platform: 'tiledesk-dashboard'
+    }
+    // platform_version: '1.0.15'
+    updates[connectionsRefinstancesId + connection] = device_model;
+
+    console.log('Aggiorno token ------------>', updates);
+    firebase.database().ref().update(updates)
   }
 
   // CREATE CONTACT ON FIREBASE Realtime Database
@@ -444,7 +546,7 @@ export class AuthService {
     const self = this;
     firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
       .then(function (token) {
-
+        console.log('cloudFunctionsCreateContact idToken.', token);
         // console.log('idToken.', idToken);
         const headers = new Headers();
         headers.append('Accept', 'application/json');
@@ -466,7 +568,6 @@ export class AuthService {
         // Handle error
         console.log('idToken.', error);
       });
-
   }
 
   // NODE.JS FIREBASE SIGNIN (USED TO GET THE TOKEN THEN USED FOR Firebase Signin using custom token)
@@ -502,11 +603,8 @@ export class AuthService {
     const options = new RequestOptions({ headers });
 
     const url = this.VERIFY_EMAIL_BASE_URL + user_id;
-
     console.log('VERIFY EMAIL URL ', url)
-
     const body = { 'emailverified': true };
-
     return this.http
       // .get(url, { headers })
       .put(url, JSON.stringify(body), options)
@@ -686,15 +784,18 @@ export class AuthService {
   }
 
   signOut() {
+    if (!this.APP_IS_DEV_MODE) {
+      this.removeInstanceId();
+    }
     // !!! NO MORE USED
     // this.afAuth.auth.signOut()
-
     this.user_bs.next(null);
     this.project_bs.next(null);
 
     localStorage.removeItem('user');
     localStorage.removeItem('project');
     localStorage.removeItem('role')
+
 
     const that = this;
     firebase.auth().signOut()
@@ -706,6 +807,20 @@ export class AuthService {
         that.router.navigate(['/login']);
       });
     // this.router.navigate(['/login']);
+  }
+
+  removeInstanceId() {
+    console.log('rimuovo FCMcurrentToken nel db', this.FCMcurrentToken);
+    // this.connectionsRefinstancesId = this.urlNodeFirebase+"/users/"+userUid+"/instances/";
+    const urlNodeFirebase = '/apps/tilechat'
+    const connectionsRefinstancesId = urlNodeFirebase + '/users/' + this.userId + '/instances/';
+
+    let connectionsRefURL = '';
+    if (connectionsRefinstancesId) {
+      connectionsRefURL = connectionsRefinstancesId + '/' + this.FCMcurrentToken;
+      const connectionsRef = firebase.database().ref().child(connectionsRefURL);
+      connectionsRef.remove();
+    }
   }
 
   // If error, console log and notify user
@@ -721,11 +836,6 @@ export class AuthService {
   //   this._user_role = projectUser_role;
   //   console.log('AUTH SERV - USER ROLE ', this._user_role)
   // }
-
-
-
-
-
 
   // Sets user data to firestore after succesful login - !!! NO MORE USED
   // private updateUserData(user: User) {
