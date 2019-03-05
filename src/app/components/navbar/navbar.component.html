@@ -169,25 +169,19 @@
   </span>
 
   <!-- ------------============= PENDING OPEN CHAT ALERT =============------------ -->
-    <!-- *ngIf="user?.emailverified == false" -->
-    <span *ngIf="HIDE_PENDING_EMAIL_NOTIFICATION === false">
+    
+    <!-- <span *ngIf="HIDE_PENDING_EMAIL_NOTIFICATION === false">
       <div (click)="openChat()" *ngIf="HAS_OPENED_THE_CHAT === false" data-notify="container" 
         class="alert alert-danger animated fadeInDown alert-open-chat" role="alert" data-notify-position="top-center" 
         [ngClass]="{'alert-open-chat-when-is-open-email-alert' : user?.emailverified == false, 'is-user-profile-page' : DETECTED_USER_PROFILE_PAGE === true  }" >
-        <!-- <button type="button" aria-hidden="true" class="close" data-notify="dismiss" style="position: absolute; right: 10px; top: 5px; z-index: 1033;">×</button> -->
         <span data-notify="icon" class="notifications" style="max-width: 100%;">
           <img style="width: 12px;position: relative;top: -1px;" src="assets/img/chatlogowhite.png"/>
-          <!-- <i class="fa fa-exclamation-circle" style="font-size: 20px;"></i>   -->
           <span style="font-family: Google Sans, sans-serif;font-weight: 400; display: inline; position: relative;top: -1px; font-size: 11px; padding-left: 4px;">
-             
             {{"NavBar.OpenTheChat" | translate }} <span style="display: inline-block; text-decoration: underline;">  {{ "NavBar.ClickHere" | translate }} </span>
           </span> 
         </span> 
-        <!-- <span data-notify="title" style="max-width: 100%;">
-          {{"NavBar.ToManageTheMessages" | translate }}
-        </span>  -->
       </div>
-    </span>
+    </span> -->
 
 
 </div>
