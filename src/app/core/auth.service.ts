@@ -527,7 +527,6 @@ export class AuthService {
     const urlNodeFirebase = '/apps/tilechat'
     const connectionsRefinstancesId = urlNodeFirebase + '/users/' + this.userId + '/instances/';
 
-
     // this.connectionsRefinstancesId = this.urlNodeFirebase + "/users/" + userUid + "/instances/";
     const device_model = {
       device_model: navigator.userAgent,
@@ -537,7 +536,7 @@ export class AuthService {
     // platform_version: '1.0.15'
     updates[connectionsRefinstancesId + connection] = device_model;
 
-    console.log('Aggiorno token ------------>', updates);
+    console.log('Firebase Cloud Messaging  - Aggiorno token ------------>', updates);
     firebase.database().ref().update(updates)
   }
 
@@ -685,8 +684,6 @@ export class AuthService {
       });
   }
 
-
-
   //// Email/Password Auth //// NO MORE USED see ABOVE mDbEmailSignUp
   emailSignUp(email: string, password: string, displayName: string) {
     console.log('x USER display name ', displayName);
@@ -785,17 +782,66 @@ export class AuthService {
 
   signOut() {
     if (!this.APP_IS_DEV_MODE) {
-      this.removeInstanceId();
+
+      if (this.FCMcurrentToken !== undefined && this.userId !== undefined) {
+
+        this.removeInstanceIdAndFireabseSignout();
+
+      } else {
+        // use case: the user refresh the page
+        const messaging = firebase.messaging();
+        messaging.getToken()
+          .then(FCMtoken => {
+            this.FCMcurrentToken = FCMtoken;
+            const storedUser = localStorage.getItem('user');
+            const storedUserObj = JSON.parse(storedUser);
+            console.log('signOut - storedUserObj ', storedUserObj);
+            this.userId = storedUserObj._id;
+
+            this.removeInstanceIdAndFireabseSignout();
+          })
+      }
     }
     // !!! NO MORE USED
     // this.afAuth.auth.signOut()
+
+    // this.router.navigate(['/login']);
+    // this.firebaseSignout();
+  }
+
+  removeInstanceIdAndFireabseSignout() {
+    console.log('removeInstanceId - FCM Token: ', this.FCMcurrentToken);
+    console.log('removeInstanceId - USER ID: ', this.userId);
+    // this.connectionsRefinstancesId = this.urlNodeFirebase+"/users/"+userUid+"/instances/";
+    const urlNodeFirebase = '/apps/tilechat'
+    const connectionsRefinstancesId = urlNodeFirebase + '/users/' + this.userId + '/instances/';
+
+    let connectionsRefURL = '';
+    if (connectionsRefinstancesId) {
+      connectionsRefURL = connectionsRefinstancesId + '/' + this.FCMcurrentToken;
+      const connectionsRef = firebase.database().ref().child(connectionsRefURL);
+      const that = this;
+      connectionsRef.remove()
+        .then(function () {
+
+          that.firebaseSignout();
+
+        }).catch((err) => {
+          console.log('removeInstanceId - err: ', err);
+
+          that.firebaseSignout();
+
+        });
+    }
+  }
+
+  firebaseSignout() {
     this.user_bs.next(null);
     this.project_bs.next(null);
 
     localStorage.removeItem('user');
     localStorage.removeItem('project');
     localStorage.removeItem('role')
-
 
     const that = this;
     firebase.auth().signOut()
@@ -806,21 +852,6 @@ export class AuthService {
         console.error('Sign Out Error', error);
         that.router.navigate(['/login']);
       });
-    // this.router.navigate(['/login']);
-  }
-
-  removeInstanceId() {
-    console.log('rimuovo FCMcurrentToken nel db', this.FCMcurrentToken);
-    // this.connectionsRefinstancesId = this.urlNodeFirebase+"/users/"+userUid+"/instances/";
-    const urlNodeFirebase = '/apps/tilechat'
-    const connectionsRefinstancesId = urlNodeFirebase + '/users/' + this.userId + '/instances/';
-
-    let connectionsRefURL = '';
-    if (connectionsRefinstancesId) {
-      connectionsRefURL = connectionsRefinstancesId + '/' + this.FCMcurrentToken;
-      const connectionsRef = firebase.database().ref().child(connectionsRefURL);
-      connectionsRef.remove();
-    }
   }
 
   // If error, console log and notify user
