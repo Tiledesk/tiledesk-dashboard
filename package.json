@@ -1,6 +1,6 @@
 {
   "name": "@tiledesk/tiledesk-dashboard",
-  "version": "1.0.16",
+  "version": "1.0.18",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --aot",
@@ -32,6 +32,7 @@
     "@ng-select/ng-select": "^1.4.1",
     "@ngx-translate/core": "^9.1.1",
     "@ngx-translate/http-loader": "^2.0.1",
+    "@types/node": "^11.11.3",
     "amazing-time-picker": "^1.5.3",
     "angular2-moment": "^1.8.0",
     "arrive": "2.4.1",
