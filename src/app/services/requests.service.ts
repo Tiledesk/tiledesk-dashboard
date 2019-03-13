@@ -1,22 +1,14 @@
 // tslint:disable:max-line-length
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 
 import { Request } from '../models/request-model';
 import { Message } from '../models/message-model';
 
 import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators';
 
 import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
-import { environment } from '../../environments/environment';
-
-import * as firebase from 'firebase/app';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Query } from '@angular/core/src/metadata/di';
-import { QuerySnapshot, DocumentChange, DocumentSnapshot } from '@firebase/firestore-types';
-import { observeOn } from 'rxjs/operators/observeOn';
 import { members_as_html } from '../utils/util';
 import { currentUserUidIsInMembers } from '../utils/util';
 import { AuthService } from '../core/auth.service';
@@ -24,15 +16,18 @@ import { Project } from '../models/project-model';
 import { Department } from '../models/department-model';
 import { DepartmentService } from '../services/mongodb-department.service';
 import { UsersService } from '../services/users.service';
-// import { error } from 'util';
+import { environment } from '../../environments/environment';
+
+import * as firebase from 'firebase';
+import 'firebase/firestore';
+// import { QuerySnapshot, DocumentChange, DocumentSnapshot } from '@firebase/firestore-types';
 
 @Injectable()
 export class RequestsService {
 
-  requestsCollection: AngularFirestoreCollection<Request>;
-  userDocument: AngularFirestoreDocument<Node>;
-
-  messageCollection: AngularFirestoreCollection<Message>;
+  // requestsCollection: AngularFirestoreCollection<Request>;
+  // userDocument: AngularFirestoreDocument<Node>;
+  // messageCollection: AngularFirestoreCollection<Message>;
 
   http: Http;
   CHAT21_CLOUD_FUNCTIONS_BASE_URL = environment.cloudFunctions.cloud_functions_base_url;
@@ -66,12 +61,14 @@ export class RequestsService {
 
   project: Project;
   constructor(
+
     http: Http,
-    private afs: AngularFirestore,
+    // private afs: AngularFirestore,
     public auth: AuthService,
     private departmentService: DepartmentService,
     private usersService: UsersService
   ) {
+
     console.log('SEE REQUEST IM AGENT (REQUESTS SERVICE - ON INIT) ', this._seeOnlyRequestsHaveCurrentUserAsAgent)
     this.http = http;
     console.log(' ============ HELLO REQUESTS SERVICE! ============ ');
@@ -97,9 +94,7 @@ export class RequestsService {
       this.checkUser()
     });
 
-
     this.getCurrentProject();
-
     // !! NO MORE USED
     // this.getMyDepts();
   }
@@ -139,13 +134,13 @@ export class RequestsService {
 
         if (this.unsubscribe) {
           this.unsubscribe();
+          console.log('!!! REQUEST SERVICE: unsubscribe ', this.unsubscribe)
           this.resetRequestsList();
         }
         this.project = project;
 
         this.startRequestsQuery();
-        // this.getMyDepts();
-        // this.getMyDeptsAndStartRequestsQuery();
+
       } else {
         if (this.unsubscribe) {
           this.unsubscribe();
@@ -170,77 +165,6 @@ export class RequestsService {
     }
   }
 
-  // getToken() {
-  //   const that = this;
-  //   console.log('Notification permission granted.');
-  //   firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
-  //     .then(function (idToken) {
-  //       that.FIREBASE_ID_TOKEN = idToken;
-  //       console.log('idToken.', idToken);
-  //     }).catch(function (error) {
-  //       // Handle error
-  //       console.log('idToken.', error);
-  //     });
-  // }
-
-  //  TSTS
-  // .where('state', '==', 'CA')
-  // : Observable<Request[]> {
-
-
-  // getConversationsSnapshot(): Observable<QuerySnapshot> {
-  //   console.log('GET TEST  ')
-  //   // tslint:disable-next-line:no-debugger
-  //   // debugger
-  //   const db = firebase.firestore();
-  //   const query = db.collection('conversations').where('support_status', '<', 1000).orderBy('support_status').orderBy('timestamp', 'desc');
-  //   return Observable.create(query.onSnapshot.bind(query));
-  //   // .onSnapshot.bind {
-  //   // return observable
-
-
-  //   // snapshot.docChanges.forEach(function (change) {
-  //   //   // if (change.type === 'added') {
-  //   //   console.log(' +++ ++++ New city: ', change.doc.data());
-  //   //   // }
-  //   // });
-
-  // }
-
-  // !!!! NO MORE USED ---- GET MY_DEPTS
-  public getMyDepts(): Observable<Department[]> {
-
-    const url = this.MY_DEPTS_BASE_URL;
-    // url += '?id_project=' + id_project;
-    // this.BASE_URL + this.project._id + '/departments/mydepartments'
-
-    console.log('MY DEPTS URL', url);
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
-  }
-
-  // !!!! NO MORE USED
-  // getMyDeptsAndStartRequestsQuery() {
-  //   console.log('----> CHECK MY MY DEPT - RUN GET MY DEPTS AND START REQUESTS QUERY')
-  //   this.getMyDepts().subscribe((depts: any) => {
-  //     console.log('----> CHECK MY MY DEPT - RUN GET MY DEPTS AND START REQUESTS QUERY - >> MY DEPTS << ', depts);
-  //     // PUBBLISH MY DEPTS
-  //     // this.myDepts_bs.next(depts);
-  //     this.myDepts = depts
-  //     if (this.myDepts) {
-
-  //       // this.startRequestsQuery();
-  //     }
-  //   }, (error) => {
-  //     console.log('REQUESTS SERV - MY DEPTS ', error);
-  //   }, () => {
-  //     console.log('REQUESTS SERV - MY DEPTS * COMPLETE *');
-  //   });
-  // }
 
   startRequestsQuery() {
     console.log('****** START REQUEST QUERY ******')
@@ -336,8 +260,6 @@ export class RequestsService {
     }
   }
 
-
-
   addOrUpdate_AllRequestsList(r: Request) {
     console.log('****** ADD OR UPDATE * ALL * REQUEST LIST ******')
 
@@ -403,7 +325,6 @@ export class RequestsService {
     });
   }
 
-
   resetRequestsList() {
     this.requestList = []
     this.allRequestList = []
@@ -413,24 +334,9 @@ export class RequestsService {
     this.allRequestsList_bs.next(this.allRequestList);
   }
 
-  /*
-   * THE CURRENT USER DISPLAY ONLY THE REQUESTS OF THE DEPTS WITH id_group:
-   * null, undefined, or which corresponds to a group of which he is a member
-   * to solve this is made a subscription to MY DEPTS published by the DEPTS serv
-   */
-  // getMyDepts() {
-  //   this.departmentService.myDepts_bs.subscribe((myDepts) => {
-
-  //     this.myDepts = myDepts
-  //     console.log('REQUESTS SERV - MY DEPTS (subscribes) ', this.myDepts)
-
-  //    });
-  // }
-
-
   getRequests(): Observable<Request[]> {
+    console.log('getRequests ', typeof firebase.firestore)
     const db = firebase.firestore();
-
     // RESOLVE THE ISSUE: The behavior for Date objects stored in Firestore is going to change AND YOUR APP MAY BREAK.
     //    !!! COMMENT THE LINE BELOW TO SEE THE ERROR MESSAGE IN CONSOLE !!!
     // db.settings({ timestampsInSnapshots: true });
@@ -445,7 +351,7 @@ export class RequestsService {
     const observable = new Observable<Request[]>(observer => {
       this.unsubscribe = query.onSnapshot(snapshot => {
         // console.log('REQUEST SNAPSHOT ', snapshot)
-        const requestListReturned: Request[] = snapshot.docChanges.map((c: DocumentChange) => {
+        const requestListReturned: Request[] = snapshot.docChanges().map((c: any) => {
           // console.log(' »»» »»» »»» »»» »»» »»» REQUEST SERVICE - DOCUMENT CHANGE - TYPE: ', c.type);
           // console.log(' »»» »»» DOCUMENT CHANGE - DOC DATA ', c.doc.data())
           // const requestListReturned: Request[] = snapshot.docs.map((c: DocumentSnapshot) => {
@@ -459,7 +365,7 @@ export class RequestsService {
           r.text = data.text
           r.first_text = data.first_text
           r.timestamp = data.timestamp
-          r.created_on = data.created_on
+          r.created_on = data.created_on.toDate()
           r.membersCount = data.membersCount
           r.support_status = data.support_status
           r.members = data.members
@@ -474,7 +380,6 @@ export class RequestsService {
           r.rating_message = data.rating_message
           r.firebaseDocChangeType = c.type
           // r.hasAgent(this.currentUserID)
-
           return r;
 
         });
@@ -486,219 +391,82 @@ export class RequestsService {
   }
 
 
+  getRequestsById(recipient: string): Observable<Request[]> {
+    console.log('getRequestsById ', typeof firebase.firestore)
+    const db = firebase.firestore();
+    const query = db.collection('conversations')
+      .where('recipient', '==', `${recipient}`)
+    const observable = new Observable<Request[]>(observer => {
+      this.unsubscribe = query.onSnapshot(snapshot => {
+        // console.log('REQUEST SNAPSHOT ', snapshot)
+        const requestReturned: Request[] = snapshot.docChanges().map((c: any) => {
+          // console.log(' »»» »»» »»» »»» »»» »»» REQUEST SERVICE - DOCUMENT CHANGE - TYPE: ', c.type);
+          // console.log(' »»» »»» DOCUMENT CHANGE - DOC DATA ', c.doc.data())
+          // const requestListReturned: Request[] = snapshot.docs.map((c: DocumentSnapshot) => {
+          const r: Request = new Request();
+          const data = c.doc.data()
+          // const data = c.data()
+          r.id = data.recipient;
+          r.recipient = data.recipient;
+          r.recipient_fullname = data.recipient_fullname;
+          r.sender_fullname = data.sender_fullname
+          r.text = data.text
+          r.first_text = data.first_text
+          r.timestamp = data.timestamp
+          r.created_on = data.created_on.toDate()
+          r.membersCount = data.membersCount
+          r.support_status = data.support_status
+          r.members = data.members
+          // r.members_as_string = members_as_html(data.members, data.requester_id, this.currentUserID)
+          r.currentUserIsJoined = currentUserUidIsInMembers(data.members, this.currentUserID, data.recipient)
+          r.requester_fullname = data.requester_fullname
+          r.requester_id = data.requester_id
+          r.agents = data.agents
+          r.first_message = data.first_message
+          r.attributes = data.attributes
+          r.rating = data.rating
+          r.rating_message = data.rating_message
+          r.firebaseDocChangeType = c.type
+          // r.hasAgent(this.currentUserID)
+          return r;
 
-  /**
-   * CONVERSATION (ALIAS REQUESTS - IN THE VIEW IS VISITORS)return an observable of ALL FIRESTORE  'conversation' * WITH * ID
-   */
-  getSnapshotConversations(): Observable<Request[]> {
-
-    // ['added', 'modified', 'removed']
-
-    this.requestsCollection = this.afs.collection('conversations',
-      (ref) => ref.where('support_status', '<', 1000).orderBy('support_status').orderBy('timestamp', 'desc'));
-    // .orderBy('support_status', 'desc').orderBy('timestamp', 'desc')
-
-    return this.requestsCollection.snapshotChanges().map((actions) => {
-      // return this.requestsCollection.stateChanges().map((actions) => {
-      return actions.map((a) => {
-        const data = a.payload.doc.data() as Request;
-        return {
-          id: a.payload.doc.id,
-          recipient: data.recipient,
-          recipient_fullname: data.recipient_fullname,
-          sender_fullname: data.sender_fullname,
-          text: data.text,
-          first_text: data.first_text,
-          timestamp: data.timestamp,
-          membersCount: data.membersCount,
-          support_status: data.support_status,
-          members: data.members,
-          requester_fullname: data.requester_fullname,
-          requester_id: data.requester_id
-        };
+        });
+        observer.next(requestReturned);
+        // console.log('requestListReturned', requestListReturned)
       });
     });
+    return observable;
   }
 
-  /**
-   * HISTORY OF CONVERSATION (ALIAS REQUESTS - IN THE VIEW IS VISITORS)return an observable of ALL FIRESTORE  'conversation' * WITH * ID
-   */
-  getSnapshotHistoryOfConversations(): Observable<Request[]> {
-    // ['added', 'modified', 'removed']
 
-    this.requestsCollection = this.afs.collection('conversations',
-      (ref) => ref
-        .where('support_status', '>=', 1000)
-        .where('projectid', '==', this.project._id)
-        .orderBy('support_status')
-        .orderBy('created_on', 'desc'));
-    // .orderBy('support_status', 'desc').orderBy('timestamp', 'desc')
+  getMsgsByRequestId(recipient: string): Observable<Message[]> {
+    console.log('getMsgsByRequestId ', typeof firebase.firestore)
+    const db = firebase.firestore();
+    const query = db.collection('messages')
+      .where('recipient', '==', `${recipient}`).orderBy('timestamp', 'asc')
+    const observable = new Observable<Message[]>(observer => {
+      this.unsubscribe = query.onSnapshot(snapshot => {
+        // console.log('*MSGS - REQUESTS-SERV getMessagesList SNAPSHOT ', snapshot);
 
-    return this.requestsCollection.snapshotChanges().map((actions) => {
-      return actions.map((a) => {
-        const data = a.payload.doc.data() as Request;
-        return {
-          id: a.payload.doc.id,
-          recipient: data.recipient,
-          recipient_fullname: data.recipient_fullname,
-          sender_fullname: data.sender_fullname,
-          text: data.text, timestamp: data.timestamp,
-          first_text: data.first_text,
-          membersCount: data.membersCount,
-          support_status: data.support_status,
-          members: data.members,
-          requester_fullname: data.requester_fullname,
-          requester_id: data.requester_id,
-          projectid: data.projectid,
-          created_on: data.created_on,
-          rating: data.rating,
-          rating_message: data.rating_message
-        };
+        const msgReturned: Message[] = snapshot.docs.map((c: any) => {
+          const m: Message = new Message();
+          const data = c.data();
+          m.id = data.recipient;
+          m.recipient = data.recipient;
+          m.recipient_fullname = data.recipient_fullname;
+          m.sender_fullname = data.sender_fullname;
+          m.text = data.text;
+          m.timestamp = data.timestamp;
+
+          return m;
+        });
+        observer.next(msgReturned);
+        // console.log('*MSGS - REQUESTS-SERV getMessagesList msgReturned', msgReturned)
       });
     });
+    return observable;
   }
 
-  // searchUsers(searchParams: any) {
-  //   this.searchUserCollection = this.afs.collection('users',
-  //     (ref) => ref.where('displayName', '>=', `${searchParams}`));
-  //   return this.searchUserCollection.snapshotChanges().map((actions) => {
-  //     return actions.map((a) => {
-  //       const data = a.payload.doc.data() as User;
-  //       return { id: a.payload.doc.id, displayName: data.displayName, email: data.email, time: data.time };
-  //     });
-  //   });
-  // }
-
-  getSnapshotConversationByRecipient(recipient: string): Observable<Request[]> {
-    // ['added', 'modified', 'removed']
-
-    this.requestsCollection = this.afs.collection('conversations',
-      (ref) => ref.where('recipient', '==', `${recipient}`));
-
-    return this.requestsCollection.snapshotChanges().map((actions) => {
-      return actions.map((a) => {
-        const data = a.payload.doc.data() as Request;
-        return {
-          id: a.payload.doc.id,
-          recipient: data.recipient,
-          recipient_fullname: data.recipient_fullname,
-          sender_fullname: data.sender_fullname,
-          text: data.text,
-          timestamp: data.timestamp,
-          membersCount: data.membersCount,
-          support_status: data.support_status,
-          members: data.members,
-          attributes: data.attributes,
-          currentUserIsJoined: currentUserUidIsInMembers(data.members, this.currentUserID, data.recipient),
-          requester_fullname: data.requester_fullname,
-          first_message: data.first_message,
-          requester_id: data.requester_id,
-          created_on: data.created_on,
-          rating: data.rating,
-          rating_message: data.rating_message
-        };
-      });
-    });
-  }
-
-  // GET THE COUNT OF UNSERVED REQUEST TO SHOW IN THE NAVBAR NOTIFICATIONS
-  getCountUnservedRequest(): Observable<number> {
-    // ['added', 'modified', 'removed']
-    // <=
-    this.requestsCollection = this.afs.collection('conversations',
-      (ref) => ref.where('support_status', '==', 100));
-
-    return this.requestsCollection.valueChanges().map((values) => {
-
-      console.log('Request Service VALUeS LENGHT ', values.length)
-      console.log('Request Service VALUeS', values)
-      if (values) {
-        this.unservedRequest = values;
-        this.mySubject.next(this.unservedRequest);
-        console.log(' ++ TOTAL OF UNSERVED REQUESTS PUBLISHED BY REQ. SERVICE ', this.unservedRequest)
-      }
-      return values.length;
-    });
-  }
-
-  /**
-   * LAST CONVERSATION (ALIAS LAST REQUESTS - IN THE VIEW IS VISITORS)
-   * USED TO SHOW THE LAST REQUEST (ONLY IF HAS SUPPORT-STATUS = 100) IN THE NOTIFICATION
-   */
-  getSnapshotLastConversation(): Observable<Request[]> {
-    // ['added', 'modified', 'removed']
-
-    this.requestsCollection = this.afs.collection('conversations',
-      (ref) => ref.where('support_status', '==', 100));
-    // .orderBy('support_status', 'desc').orderBy('timestamp', 'desc')
-
-    return this.requestsCollection.snapshotChanges().map((actions) => {
-      return actions.map((a) => {
-        const data = a.payload.doc.data() as Request;
-        return {
-          id: a.payload.doc.id,
-          recipient: data.recipient,
-          text: data.text,
-          first_text: data.first_text,
-          timestamp: data.timestamp,
-          support_status: data.support_status,
-          members: data.members,
-        };
-      });
-    });
-  }
-
-
-  // getIfStatusChange(): Observable<Request[]> {
-  //   // ['added', 'modified', 'removed']
-  //   this.requestsCollection = this.afs.collection('conversations',
-  //     (ref) => ref.where('support_status', '==', 100)
-  //   );
-  //   // .orderBy('support_status', 'desc').orderBy('timestamp', 'desc')
-
-  //   return this.requestsCollection.stateChanges(function (snapshot) {
-  //     snapshot.docChanges.forEach(function (change) {
-  //       if (change.type === 'added') {
-  //         console.log('Status Changed: ', change.doc.data());
-  //       }
-  //     });
-  //   });
-  // }
-
-
-
-  // getSnapshotLastConversationX(): Observable<Request[]> {
-  //   db.collection("cities").where("state", "==", "CA")
-  //     .onSnapshot(function (snapshot) {
-  //       snapshot.docChanges.forEach(function (change) {
-  //         if (change.type === "added") {
-  //           console.log("New city: ", change.doc.data());
-  //         }
-  //         if (change.type === "modified") {
-  //           console.log("Modified city: ", change.doc.data());
-  //         }
-  //         if (change.type === "removed") {
-  //           console.log("Removed city: ", change.doc.data());
-  //         }
-  //       });
-  //     });
-  // }
-
-  /**
-   * MESSAGES return an observable of ALL FIRESTORE  'message' * WITH * ID
-   */
-  getSnapshotMsg(recipient: string): Observable<Message[]> {
-    // ['added', 'modified', 'removed']
-    // .orderBy('timestamp', 'desc')
-    this.messageCollection = this.afs.collection('messages',
-      (ref) => ref.where('recipient', '==', `${recipient}`).orderBy('timestamp', 'asc'));
-    return this.messageCollection.snapshotChanges().map((actions) => {
-      return actions.map((a) => {
-        const data = a.payload.doc.data() as Message;
-        return { id: a.payload.doc.id, recipient: data.recipient, recipient_fullname: data.recipient_fullname, sender_fullname: data.sender_fullname, text: data.text, timestamp: data.timestamp };
-      });
-    });
-  }
 
   // public joinToGroup(member_id: string, group_id: string) {
   public joinToGroup(group_id: string, firebaseToken: any, userUid: string) {
@@ -799,7 +567,7 @@ export class RequestsService {
   // Waiting Time Average
   public averageWait() {
 
-      // USED TO TEST (note: this service doesn't work in localhost)
+    // USED TO TEST (note: this service doesn't work in localhost)
     // const url = 'https://api.tiledesk.com/v1/' + '5ad5bd52c975820014ba900a' + '/analytics/requests/waiting';
 
     const url = this.BASE_URL + this.project._id + '/analytics/requests/waiting';
@@ -876,7 +644,7 @@ export class RequestsService {
       _querystring = ''
     }
     /* *** USED TO TEST IN LOCALHOST (note: this service doen't work in localhost) *** */
-    // const url = 'https://api.tiledesk.com/v1/' + '5ba35f0b9acdd40015d350b6' + '/requests?status=1000' + _querystring + '&page=' + pagenumber;
+    // const url = 'https://api.tiledesk.com/v1/' + '5ad5bd52c975820014ba900a' + '/requests?status=1000' + _querystring + '&page=' + pagenumber;
     /* *** USED IN PRODUCTION *** */
     const url = this.BASE_URL + this.project._id + '/requests?status=1000' + _querystring + '&page=' + pagenumber;
 
@@ -885,7 +653,7 @@ export class RequestsService {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     /* *** USED TO TEST IN LOCALHOST (note: this service doesn't work in localhost) *** */
-    // headers.append('Authorization', 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiZW1haWwiOjEsImZpcnN0bmFtZSI6MSwibGFzdG5hbWUiOjEsInBhc3N3b3JkIjoxLCJlbWFpbHZlcmlmaWVkIjoxLCJpZCI6MX0sImdldHRlcnMiOnt9LCJfaWQiOiI1YWFhOTJmZjRjM2IxMTAwMTRiNDc4Y2IiLCJ3YXNQb3B1bGF0ZWQiOmZhbHNlLCJhY3RpdmVQYXRocyI6eyJwYXRocyI6eyJwYXNzd29yZCI6ImluaXQiLCJlbWFpbCI6ImluaXQiLCJsYXN0bmFtZSI6ImluaXQiLCJmaXJzdG5hbWUiOiJpbml0IiwiX2lkIjoiaW5pdCJ9LCJzdGF0ZXMiOnsiaWdub3JlIjp7fSwiZGVmYXVsdCI6e30sImluaXQiOnsibGFzdG5hbWUiOnRydWUsImZpcnN0bmFtZSI6dHJ1ZSwicGFzc3dvcmQiOnRydWUsImVtYWlsIjp0cnVlLCJfaWQiOnRydWV9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7fX0sInN0YXRlTmFtZXMiOlsicmVxdWlyZSIsIm1vZGlmeSIsImluaXQiLCJkZWZhdWx0IiwiaWdub3JlIl19LCJwYXRoc1RvU2NvcGVzIjp7fSwiZW1pdHRlciI6eyJkb21haW4iOm51bGwsIl9ldmVudHMiOnt9LCJfZXZlbnRzQ291bnQiOjAsIl9tYXhMaXN0ZW5lcnMiOjB9LCIkb3B0aW9ucyI6dHJ1ZX0sImlzTmV3IjpmYWxzZSwiX2RvYyI6eyJsYXN0bmFtZSI6IkxhbnppbG90dG8iLCJmaXJzdG5hbWUiOiJOaWNvbGEgNzQiLCJwYXNzd29yZCI6IiQyYSQxMCRwVWdocTVJclgxMzhTOXBEY1pkbG1lcnNjVTdVOXJiNlFKaVliMXlEckljOHJDMFh6c2hUcSIsImVtYWlsIjoibGFuemlsb3R0b25pY29sYTc0QGdtYWlsLmNvbSIsIl9pZCI6IjVhYWE5MmZmNGMzYjExMDAxNGI0NzhjYiJ9LCIkaW5pdCI6dHJ1ZSwiaWF0IjoxNTM4MTIzNTcyfQ.CYnxkLbg5XWk2JWAxQg1QNGDpNgNbZAzs5PEQpLCCnI');
+    // headers.append('Authorization', 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiZW1haWwiOjEsImZpcnN0bmFtZSI6MSwibGFzdG5hbWUiOjEsInBhc3N3b3JkIjoxLCJlbWFpbHZlcmlmaWVkIjoxLCJpZCI6MX0sImdldHRlcnMiOnt9LCJfaWQiOiI1YWM3NTIxNzg3ZjZiNTAwMTRlMGI1OTIiLCJ3YXNQb3B1bGF0ZWQiOmZhbHNlLCJhY3RpdmVQYXRocyI6eyJwYXRocyI6eyJwYXNzd29yZCI6ImluaXQiLCJlbWFpbCI6ImluaXQiLCJlbWFpbHZlcmlmaWVkIjoiaW5pdCIsImxhc3RuYW1lIjoiaW5pdCIsImZpcnN0bmFtZSI6ImluaXQiLCJfaWQiOiJpbml0In0sInN0YXRlcyI6eyJpZ25vcmUiOnt9LCJkZWZhdWx0Ijp7fSwiaW5pdCI6eyJlbWFpbHZlcmlmaWVkIjp0cnVlLCJsYXN0bmFtZSI6dHJ1ZSwiZmlyc3RuYW1lIjp0cnVlLCJwYXNzd29yZCI6dHJ1ZSwiZW1haWwiOnRydWUsIl9pZCI6dHJ1ZX0sIm1vZGlmeSI6e30sInJlcXVpcmUiOnt9fSwic3RhdGVOYW1lcyI6WyJyZXF1aXJlIiwibW9kaWZ5IiwiaW5pdCIsImRlZmF1bHQiLCJpZ25vcmUiXX0sInBhdGhzVG9TY29wZXMiOnt9LCJlbWl0dGVyIjp7ImRvbWFpbiI6bnVsbCwiX2V2ZW50cyI6e30sIl9ldmVudHNDb3VudCI6MCwiX21heExpc3RlbmVycyI6MH0sIiRvcHRpb25zIjp0cnVlfSwiaXNOZXciOmZhbHNlLCJfZG9jIjp7ImVtYWlsdmVyaWZpZWQiOnRydWUsImxhc3RuYW1lIjoiTGFuemlsb3R0byIsImZpcnN0bmFtZSI6Ik5pY29sYSIsInBhc3N3b3JkIjoiJDJhJDEwJDEzZlROSnA3OUx5RVYvdzh6NXRrbmVrc3pYRUtuaWFxZm83TnR2aTZpSHdaQ2ZLRUZKd1kuIiwiZW1haWwiOiJuaWNvbGEubGFuemlsb3R0b0Bmcm9udGllcmUyMS5pdCIsIl9pZCI6IjVhYzc1MjE3ODdmNmI1MDAxNGUwYjU5MiJ9LCIkaW5pdCI6dHJ1ZSwiaWF0IjoxNTUwMDc3Mzg5fQ.temvv0C-EsHNbjgj7p5ZmF_CmjykLaZn8fNhI-_tV0M');
     /* *** USED IN PRODUCTION *** */
     headers.append('Authorization', this.TOKEN);
 

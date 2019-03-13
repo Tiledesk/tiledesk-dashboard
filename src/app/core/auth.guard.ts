@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 // tslint:disable-next-line:max-line-length
 import { CanActivate, Router, NavigationEnd, CanDeactivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
-import { AngularFireAuth } from 'angularfire2/auth';
 import { AuthService } from './auth.service';
 import { NotifyService } from './notify.service';
 
@@ -11,7 +10,7 @@ import { Observable } from 'rxjs/Observable';
 import { map, take, tap } from 'rxjs/operators';
 
 import * as firebase from 'firebase/app';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 import { Location } from '@angular/common';
 import { ProjectService } from '../services/project.service';
 import { Project } from '../models/project-model';
@@ -25,7 +24,6 @@ import 'rxjs/add/operator/pairwise';
 @Injectable()
 export class AuthGuard implements CanActivate {
 
-  // public IS_LOGGED_IN: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   route: string;
   user: any;
   is_verify_email_page: boolean;

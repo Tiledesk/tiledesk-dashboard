@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 
-import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
+// import { AngularFireAuth } from 'angularfire2/auth';
+
 import { NotifyService } from './notify.service';
 
 import { Observable } from 'rxjs/Observable';
@@ -21,9 +21,8 @@ import { UsersLocalDbService } from '../services/users-local-db.service';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
 
-import * as firebase from 'firebase/app';
-import '@firebase/messaging';
 import { isDevMode } from '@angular/core';
+declare var require: any;
 // import { RequestsService } from '../services/requests.service';
 // interface CUser {
 //   uid: string;
@@ -47,6 +46,12 @@ const superusers = [
 ];
 // .end SUPER USER
 
+import * as firebase from 'firebase';
+import 'firebase/messaging';
+import 'firebase/database'
+// import firebase from '@firebase/app';
+// import '@firebase/messaging';
+// import '@firebase/database';
 
 @Injectable()
 export class AuthService {
@@ -56,6 +61,9 @@ export class AuthService {
   FIREBASE_SIGNIN_BASE_URL = environment.mongoDbConfig.FIREBASE_SIGNIN_BASE_URL;
   VERIFY_EMAIL_BASE_URL = environment.mongoDbConfig.VERIFY_EMAIL_BASE_URL;
   CLOUDFUNCTION_CREATE_CONTACT_URL = environment.cloudFunctions.cloud_func_create_contact_url;
+  
+  public version: string = require('../../../package.json').version;
+
   // MONGODB_PEOPLE_BASE_URL = environment.mongoDbConfig.MONGODB_PEOPLE_BASE_URL;
 
   // TOKEN = environment.mongoDbConfig.TOKEN;
@@ -66,8 +74,6 @@ export class AuthService {
   FCMcurrentToken: string;
 
   // user: Observable<User | null>;
-
-
   // user: User
   public user_bs: BehaviorSubject<User> = new BehaviorSubject<User>(null);
 
@@ -83,8 +89,7 @@ export class AuthService {
 
   constructor(
     http: Http,
-    private afAuth: AngularFireAuth,
-    private afs: AngularFirestore,
+    // private afAuth: AngularFireAuth,
     private router: Router,
     private notify: NotifyService,
     private usersLocalDbService: UsersLocalDbService,
@@ -92,6 +97,7 @@ export class AuthService {
     public location: Location
   ) {
     this.http = http;
+    console.log('version (AuthService)  ', this.version);
 
     this.APP_IS_DEV_MODE = isDevMode();
     console.log('!!! ====== AUTH SERVICE !!! ====== isDevMode ', this.APP_IS_DEV_MODE)
@@ -401,8 +407,6 @@ export class AuthService {
             console.log('2. FIREBASE SIGNIN RESPO ', token)
             if (token) {
 
-
-
               // Firebase Sign in using custom token
               firebase.auth().signInWithCustomToken(token)
                 .then(firebase_user => {
@@ -424,7 +428,6 @@ export class AuthService {
                   // );
 
                   if (!this.APP_IS_DEV_MODE) {
-                    // this.requestPermissionGetFCMTokenAndRegisterInstanceId(user._id)
                     this.getPermission();
                   }
 
@@ -531,9 +534,10 @@ export class AuthService {
     const device_model = {
       device_model: navigator.userAgent,
       language: navigator.language,
-      platform: 'tiledesk-dashboard'
+      platform: 'web/dashboard',
+      platform_version: this.version
     }
-    // platform_version: '1.0.15'
+   
     updates[connectionsRefinstancesId + connection] = device_model;
 
     console.log('Firebase Cloud Messaging  - Aggiorno token ------------>', updates);
@@ -638,100 +642,7 @@ export class AuthService {
     return false;
   }
 
-  ////// OAuth Methods /////
 
-  googleLogin() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    return this.oAuthLogin(provider);
-  }
-
-  githubLogin() {
-    const provider = new firebase.auth.GithubAuthProvider();
-    return this.oAuthLogin(provider);
-  }
-
-  facebookLogin() {
-    const provider = new firebase.auth.FacebookAuthProvider();
-    return this.oAuthLogin(provider);
-  }
-
-  twitterLogin() {
-    const provider = new firebase.auth.TwitterAuthProvider();
-    return this.oAuthLogin(provider);
-  }
-
-  private oAuthLogin(provider: firebase.auth.AuthProvider) {
-    return this.afAuth.auth.signInWithPopup(provider)
-      .then((credential) => {
-        this.notify.update('Welcome to Chat21 dashboard!!!', 'success');
-        // return this.updateUserData(credential.user); // !!! NO MORE USED
-      })
-      .catch((error) => this.handleError(error));
-  }
-
-  //// Anonymous Auth ////
-
-  anonymousLogin() {
-    return this.afAuth.auth.signInAnonymously()
-      .then((user) => {
-        this.notify.update('Welcome to Firestarter!!!', 'success');
-        // return this.updateUserData(user); // if using firestore !!! NO MORE USED
-      })
-      .catch((error) => {
-        console.error(error.code);
-        console.error(error.message);
-        this.handleError(error);
-      });
-  }
-
-  //// Email/Password Auth //// NO MORE USED see ABOVE mDbEmailSignUp
-  emailSignUp(email: string, password: string, displayName: string) {
-    console.log('x USER display name ', displayName);
-    return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
-      .then((user) => {
-        console.log('x USER ', user);
-        console.log('x USER email ', user.email);
-        console.log('x USER psw ', user.password);
-        // user.displayName = displayName;
-        // user.updateProfile({ 'displayName': displayName });
-        this.displayName = displayName;
-        this.notify.update('Welcome to Chat21 dashboard!!!', 'success');
-        this.router.navigate(['/']);
-        // return this.updateUserData(user); // if using firestore !!! NO MORE USED
-      })
-      .catch((error) => this.handleError(error));
-  }
-  // emailSignUpWithDisplayName(email: string, password: string, displayName: string) {
-  //     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
-  //      .then((user) => {
-  //         // Add a display name to the user.
-  //      user.updateProfile({ 'displayName': displayName }).then(() => {
-  //       // Update successful
-  //         this.authState = user
-  //       });
-  //         this.updateUserData()
-  //       })
-  //       .catch(error =>{
-  //         console.log(error);
-  //         // THrow the exception which results when user signsup
-  //          throw(error);
-  //         });
-  //   }
-
-  emailLogin(email: string, password: string) {
-    return this.afAuth.auth.signInWithEmailAndPassword(email, password)
-      .then((user) => {
-        console.log('LOGGED USER ', user);
-        this.notify.update('Welcome to Chat21 dashboard!!!', 'success');
-        this.router.navigate(['/']);
-        // return this.updateUserDataLogin(user); // if using firestore !!! NO MORE USED
-      })
-      .catch((error) => {
-        this.handleError(error);
-        console.log('xx ', error);
-      });
-
-  }
 
   // Sends email allowing user to reset password
   resetPassword(email: string) {
@@ -801,6 +712,9 @@ export class AuthService {
             this.removeInstanceIdAndFireabseSignout();
           })
       }
+    } else {
+
+      this.firebaseSignout();
     }
     // !!! NO MORE USED
     // this.afAuth.auth.signOut()
@@ -860,40 +774,4 @@ export class AuthService {
     this.notify.update(error.message, 'error');
   }
 
-
-  // NOTE: THE projectUser_role IS PASSED FROM HOME.COMPONENT
-  // public user_role(projectUser_role: string) {
-
-  //   this._user_role = projectUser_role;
-  //   console.log('AUTH SERV - USER ROLE ', this._user_role)
-  // }
-
-  // Sets user data to firestore after succesful login - !!! NO MORE USED
-  // private updateUserData(user: User) {
-
-  //   const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
-
-  //   const data: User = {
-  //     uid: user.uid,
-  //     email: user.email || null,
-  //     displayName: this.displayName || 'nameless user',
-  //     photoURL: user.photoURL || 'https://goo.gl/Fz9nrQ',
-  //     time: new Date().getTime(),
-  //   };
-  //   return userRef.set(data);
-  // }
-
-  // Sets user data to firestore after succesful login - !!! NO MORE USED
-  // private updateUserDataLogin(user: User) {
-
-  //   const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
-
-  //   const data: User = {
-  //     uid: user.uid,
-  //     email: user.email || null,
-  //     photoURL: user.photoURL || 'https://goo.gl/Fz9nrQ',
-  //     time: new Date().getTime(),
-  //   };
-  //   return userRef.set(data);
-  // }
 }

@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 import * as firebase from 'firebase/app';
 import 'firebase/storage';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 @Injectable()
 export class UploadImageService {
 

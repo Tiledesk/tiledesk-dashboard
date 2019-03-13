@@ -3,7 +3,6 @@ import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angula
 
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
-import * as firebase from 'firebase/app';
 import { TranslateService } from '@ngx-translate/core';
 
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
@@ -77,9 +76,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
     }
   }
 
-
   ngAfterViewInit() {
-
     const elemPswInput = <HTMLInputElement>document.getElementById('password');
     console.log('ELEMENT INPUT PSW ', elemPswInput)
     const style = window.getComputedStyle(elemPswInput);
@@ -182,79 +179,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
       // tslint:disable-next-line:no-debugger
       // debugger
     });
-
-
   }
-
-  // autoSignin() {
-
-  //   const self = this;
-  //   this.auth.signin(this.userForm.value['email'], this.userForm.value['password'])
-  //     .subscribe((signinResponse) => {
-  //       console.log('1. POST DATA ', signinResponse);
-  //       // this.auth.user = signinResponse.user;
-  //       // this.auth.user.token = signinResponse.token
-  //       // console.log('SIGNIN TOKEN ', this.auth.user.token)
-
-  //       if (signinResponse['success'] === true) {
-
-  //         self.auth.firebaseSignin(self.userForm.value['email'], self.userForm.value['password']).subscribe(token => {
-
-  //           console.log('2. FIREBASE SIGNIN RESPO ', token)
-  //           if (token) {
-
-  //             // Firebase Sign in using custom token
-  //             firebase.auth().signInWithCustomToken(token)
-  //               .then(data => {
-  //                 console.log('3. FIREBASE CUSTOM AUTH DATA ', data)
-
-  //                 // this.router.navigate(['/home']);
-  //                 this.router.navigate(['/projects']);
-
-  //               })
-  //               .catch(function (error) {
-  //                 // Handle Errors here.
-  //                 const errorCode = error.code;
-  //                 console.log('FIREBASE CUSTOM AUTH ERROR CODE ', errorCode)
-  //                 const errorMessage = error.message;
-  //                 console.log('FIREBASE CUSTOM AUTH ERROR MSG ', errorMessage)
-  //               });
-  //           }
-
-  //         },
-  //           (error) => {
-  //             if (error) {
-  //               this.showSpinnerInLoginBtn = false;
-
-  //               const signin_errorbody = JSON.parse(error._body)
-  //               this.signin_errormsg = signin_errorbody['msg']
-  //               this.display = 'block';
-  //               // console.log('SIGNIN USER - POST REQUEST ERROR ', error);
-  //               // console.log('SIGNIN USER - POST REQUEST BODY ERROR ', signin_errorbody);
-  //               console.log('SIGNIN USER - POST REQUEST MSG ERROR ', this.signin_errormsg);
-  //             }
-  //           });
-  //       }
-  //     },
-  //       (error) => {
-  //         if (error) {
-  //           this.showSpinnerInLoginBtn = false;
-
-  //           const signin_errorbody = JSON.parse(error._body)
-  //           this.signin_errormsg = signin_errorbody['msg']
-  //           this.display = 'block';
-  //           // console.log('SIGNIN USER - POST REQUEST ERROR ', error);
-  //           // console.log('SIGNIN USER - POST REQUEST BODY ERROR ', signin_errorbody);
-
-  //           console.log('SIGNIN USER - POST REQUEST MSG ERROR ', this.signin_errormsg);
-  //         }
-  //       },
-  //       () => {
-  //         console.log('SIGNIN USER  - POST REQUEST COMPLETE ');
-  //       });
-  // }
-
-
 
 
   buildForm() {

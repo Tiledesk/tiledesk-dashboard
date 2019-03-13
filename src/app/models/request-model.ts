@@ -32,6 +32,7 @@ export interface Request {
   rating?: any;
   rating_message?: string;
   participants?: any;
+  lead?: any;
   hasAgent?(user_id: string): boolean;
 }
 
@@ -47,29 +48,32 @@ export class Request implements Request {
       this.agents.forEach(agent => {
 
         if (current_user_id === agent.id_user) {
-          console.log('AGENT - ID USER MATCH', agent.id_user)
+          // console.log('AGENT - ID USER MATCH', agent.id_user)
           found = true
         }
       });
 
     }
 
-   /**
-    * *** NEW 29JAN19: runs a check of the current user' id between the members' ids ***
-    * and set found = true if it is found
-    * this resolve the bug: a request is assigned to an Agent of the group A then is riassigned to one of the group B
-    * the Agent of the Group B doesn't see the request because of that the initial Agent's array is not modified
-    */
+    /**
+     * *** NEW 29JAN19: runs a check of the current user' id between the members' ids ***
+     * and set found = true if it is found
+     * this resolve the bug: a request is assigned to an Agent of the group A then is riassigned to one of the group B
+     * the Agent of the Group B doesn't see the request because of that the initial Agent's array is not modified
+     */
     if (this.members !== undefined) {
       const _members = Object.keys(this.members);
       // console.log('MODEL REQUEST - MEMBER 2)', _members)
+      // console.log('MODEL REQUEST - requester_id)', this.requester_id)
 
       _members.forEach(member => {
 
-        if (current_user_id === member) {
-          console.log('MEMBER - ID MATCH ', member)
-          found = true
-        }
+        // if (member !== 'system' && member !== this.requester_id) {
+          if (current_user_id === member) {
+            // console.log('MEMBER - ID MATCH ', member)
+            found = true
+          }
+        // }
       });
 
     }

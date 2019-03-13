@@ -42,7 +42,6 @@
                       </span>
 
                     </div>
-                
                   </div>
                 </div>
               </div>
@@ -85,6 +84,14 @@
                   </div>
                 </div>
               </div>
+
+              <!-- new -->
+              <!-- <div class="row">
+                <div class="col-sm-12">
+                   Totale richieste {{ requestsCount }}
+                </div>
+              </div> -->
+              <!-- new -->
 
               <div *ngIf="showAdvancedSearchOption" @ngIfAnimation>
                 <div @easeInOut>
@@ -284,11 +291,17 @@
                    
                   <td style="text-align:center">
  
-                    <span (click)='goToRequestMsgs(request?.request_id)'>
-                       <!-- pull-right -->
-                       <button class="btn btn-default btn-visibility-custom">
+                    <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
+                      
+                       <!-- <button class="btn btn-default btn-visibility-custom">
                          <i style="font-size: 17px !important; " class="material-icons">visibility</i>
-                       </button>
+                       </button> -->
+                      <svg class="chat-icon" style="width: 22px; position: relative; top: 5px;" viewBox="0 0 16 16">
+                        <path d="M2.07 15.597c-.115-.253-.085-.556.075-.777.01-.016.958-1.33 1.146-2.707C1.63 11.207 0 9.29 0 6.88 0 3.088 3.59 0 8 0s8 3.087 8 6.88c0 3.826-3.59 6.938-8 6.938h-.957C5.74 15.888 2.815 15.996 2.683 16c-.268 0-.5-.156-.612-.403zM1.334 6.88c0 1.865 1.46 3.476 2.904 4.103.253.11.42.378.42.676 0 .964-.316 1.908-.654 2.643.77-.23 1.66-.678 2.07-1.546.116-.24.344-.393.594-.393H8c3.676 0 6.667-2.46 6.667-5.483 0-2.99-2.99-5.425-6.667-5.425-3.676 0-6.667 2.434-6.667 5.426z" 
+                          fill="#999999" fill-rule="evenodd">
+                        </path>
+                      </svg> 
+
                     </span>
                      
                   </td>

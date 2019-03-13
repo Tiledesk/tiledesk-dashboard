@@ -130,7 +130,7 @@ export class HomeComponent implements OnInit {
   }
 
   openChat() {
-    localStorage.setItem('chatOpened', 'true');
+    // localStorage.setItem('chatOpened', 'true');
     const url = this.CHAT_BASE_URL;
     window.open(url, '_blank');
 

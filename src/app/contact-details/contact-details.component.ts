@@ -77,13 +77,13 @@ export class ContactDetailsComponent implements OnInit {
 
   getCurrentUser() {
     const user = this.auth.user_bs.value
-    // this.user = firebase.auth().currentUser;
+
     console.log('!!!!! CONTACTS DETAILS - LOGGED USER ', user);
     if (user) {
-      // this.currentUserFireBaseUID = this.user.uid
+
       this.currentUserID = user._id
       console.log('!!!!! CONTACTS DETAILS- USER UID ', this.currentUserID);
-      // this.getToken();
+
     } else {
       // console.log('No user is signed in');
     }

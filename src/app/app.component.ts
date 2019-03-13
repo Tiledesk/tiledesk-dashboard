@@ -10,13 +10,14 @@ import { AuthService } from './core/auth.service';
 import { TranslateService } from '@ngx-translate/core';
 
 import { RequestsService } from './services/requests.service';
-import * as firebase from 'firebase/app';
 
 import { NotifyService } from './core/notify.service';
-
-// import { FaqKbService } from './services/faq-kb.service';
-
 declare const $: any;
+
+import { environment } from '../environments/environment';
+export const firebaseConfig = environment.firebaseConfig;
+import * as firebase from 'firebase';
+import 'firebase/auth';
 
 @Component({
     selector: 'appdashboard-root',
@@ -48,13 +49,21 @@ export class AppComponent implements OnInit, AfterViewInit {
 
         // private faqKbService: FaqKbService,
     ) {
+
+        /**
+         * *** ---------------------- ***
+         * *** FIREBASE initializeApp ***
+         * *** ---------------------- ***
+         */
+        firebase.initializeApp(firebaseConfig);
+
         localStorage.removeItem('firebase:previous_websocket_failure');
-        
+
         console.log('!!! =========== HELLO APP.COMP (constructor) ===========')
         translate.setDefaultLang('en');
 
         const browserLang = this.translate.getBrowserLang();
-       console.log('!!! ===== HELLO APP.COMP ===== BRS LANG ' , browserLang)
+        console.log('!!! ===== HELLO APP.COMP ===== BRS LANG ', browserLang)
         if (browserLang) {
             if (browserLang === 'it') {
                 this.translate.use('it');
@@ -62,7 +71,6 @@ export class AppComponent implements OnInit, AfterViewInit {
                 this.translate.use('en');
             }
         }
-
         // this.unservedRequestCount = 0
 
     }
@@ -74,6 +82,9 @@ export class AppComponent implements OnInit, AfterViewInit {
     ngOnInit() {
         console.log(' ====== >>> HELLO APP.COMP (ngOnInit) <<< ====== ')
         console.log('!! FIREBASE  ', firebase);
+
+        this.resetRequestsIfUserIsSignedOut();
+
         // NEW (SEE ALSO )
         const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
         // console.log('APP COMP - MAIN PANEL ', _elemMainPanel)
@@ -90,14 +101,16 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.router.events.subscribe((event: any) => {
             this.navbar.sidebarClose();
             if (event instanceof NavigationStart) {
-                if (event.url !== this.lastPoppedUrl)
+                if (event.url !== this.lastPoppedUrl) {
                     this.yScrollStack.push(window.scrollY);
+                }
             } else if (event instanceof NavigationEnd) {
                 if (event.url === this.lastPoppedUrl) {
                     this.lastPoppedUrl = undefined;
                     window.scrollTo(0, this.yScrollStack.pop());
-                } else
+                } else {
                     window.scrollTo(0, 0);
+                }
             }
         });
 
@@ -112,20 +125,21 @@ export class AppComponent implements OnInit, AfterViewInit {
             let ps = new PerfectScrollbar(elemMainPanel);
             ps = new PerfectScrollbar(elemSidebar);
         }
+    }
 
-        // GET ALL REQUESTS (AFTER THE CHECK 'IF THE USER IS SIGNED IN')
+    resetRequestsIfUserIsSignedOut() {
         const self = this
+        console.log('resetRequestsIfUserIsSignedOut ', typeof firebase.auth)
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
-                console.log('// User is signed in. ', user)
+                console.log('resetRequestsIfUserIsSignedOut - User is signed in. ', user)
                 this.userIsSignedIn = true
 
-                // self.requestsService.startRequestsQuery()
             } else {
-                console.log('// // No user is signed in. ', user)
+                console.log('resetRequestsIfUserIsSignedOut - No user is signed in. ', user)
 
                 this.userIsSignedIn = false
-                console.log('// // User is signed in. ', this.userIsSignedIn)
+                console.log('resetRequestsIfUserIsSignedOut - User is signed in. ', this.userIsSignedIn)
 
                 // USED TO DETERMINE WHEN VISUALIZING THE POPUP WINDOW 'SESSION EXPIRED'
                 self.auth.userIsSignedIn(this.userIsSignedIn);
@@ -139,25 +153,8 @@ export class AppComponent implements OnInit, AfterViewInit {
                 }
             }
         });
-        // this.requestsService.startRequestsQuery()
-        // this.getCurrentProject();
     }
 
-    // getCurrentProject() {
-    //     this.auth.project_bs.subscribe((project) => {
-    //         //   this.project = project
-    //         console.log(' ====== >>> APP COMP PROJECT <<< ====== ', project)
-    //         if (project !== null) {
-
-    //             this.getMyDepts();
-    //         }
-    //     });
-    // }
-
-    // !!!! NO MORE USED
-    // getMyDepts() {
-    //     this.requestsService.getMyDeptsAndStartRequestsQuery()
-    // }
 
     hideElementsInAuthPage() {
         // GET THE HTML ELEMENT NAVBAR AND SIDEBAR THAT WILL BE HIDDEN IF IS DETECTED THE LOGIN PAGE
@@ -193,24 +190,18 @@ export class AppComponent implements OnInit, AfterViewInit {
                     elemAppSidebar.setAttribute('style', 'display:block;');
                     elemNavbar.setAttribute('style', 'display:block;');
                     elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;');
-
                 }
             } else {
                 // console.log('»> * ', this.route)
             }
         });
-
-
     }
 
     ngAfterViewInit() {
         this.runOnRouteChange();
 
-
-
         const elemFooter = <HTMLElement>document.querySelector('footer');
         // console.log('xxxx xxxx APP FOOTER ', elemFooter)
-
 
         /* HIDE FOOTER IF IS LOGIN PAGE - SIGNUP PAGE */
         this.router.events.subscribe((val) => {

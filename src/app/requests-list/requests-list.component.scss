@@ -287,6 +287,13 @@ button.close {
     position: absolute;
 }
 
+.member {
+    font-weight: 400;
+}
+.current-user-member {
+    font-weight: 400;
+    color: #4caf50;
+}
 // HOVER ON THE MEMBER LIST OF THE COLUMN SERVED BY
 p.member:hover {
     background-color: #58c1d6;
@@ -469,12 +476,12 @@ span .switch-agent-admin-requests-btn {
     font-size: 12px;
     font-weight: 400;
     text-align: center;
-    // padding-top:5px;
-    padding-top:7px;
+    padding-top:5px;
+    // padding-top:7px;
     padding-bottom: 3px;
     display: inline-block;
-    width: 29px;
-    height:29px;
+    width: 25px;
+    height:25px;
 }
 
 .requester_fullname-undefined {
@@ -531,6 +538,54 @@ span .switch-agent-admin-requests-btn {
     -webkit-box-shadow: 0 12px 20px -10px rgba(3, 115, 229, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(3, 115, 229, 0.2)!important;
     box-shadow: 0 12px 20px -10px rgba(3, 115, 229, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(3, 115, 229, 0.2)!important;
 }
+
+/// PULSE (start)
+.pulse {
+    // margin:100px;
+    display: block;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    // background: #cca92c;
+    cursor: pointer;
+    box-shadow: 0 0 0 rgba(204,169,44, 0.4);
+    animation: pulse 2s infinite;
+  }
+  .pulse:hover {
+    animation: none;
+  }
+  
+  @-webkit-keyframes pulse {
+    0% {
+      -webkit-box-shadow: 0 0 0 0 rgba(204,169,44, 0.4);
+    }
+    70% {
+        -webkit-box-shadow: 0 0 0 10px rgba(204,169,44, 0);
+    }
+    100% {
+        -webkit-box-shadow: 0 0 0 0 rgba(204,169,44, 0);
+    }
+  }
+  @keyframes pulse {
+    0% {
+      -moz-box-shadow: 0 0 0 0 rgba(204,169,44, 0.4);
+      box-shadow: 0 0 0 0 rgba(204,169,44, 0.4);
+    }
+    70% {
+        -moz-box-shadow: 0 0 0 10px rgba(204,169,44, 0);
+        box-shadow: 0 0 0 10px rgba(204,169,44, 0);
+    }
+    100% {
+        -moz-box-shadow: 0 0 0 0 rgba(204,169,44, 0);
+        box-shadow: 0 0 0 0 rgba(204,169,44, 0);
+    }
+  }
+  /// PULSE (end)
+
+  .huge {
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+  }
 
 // // // from 992 to 1020px 
 // @media (max-width: 589px){

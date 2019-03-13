@@ -133,23 +133,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // ]
         // this.menuItems = this.ROUTES.filter(menuItem => menuItem);
 
-        // GET COUNT OF UNSERVED REQUESTS
-        this.requestsService.getCountUnservedRequest().subscribe((count: number) => {
-            this.unservedRequestCount = count;
-            // console.log(' ++ +++ (sidebar) COUNT OF UNSERVED REQUEST ', this.unservedRequestCount);
-
-        });
-
-        // SUBSCRIBE TO UNSERVED REQUESTS PUBLISHED BY REQUEST SERVICE
-        this.requestsService.mySubject.subscribe((values) => {
-            // console.log('xxxxx xxxxx', values)
-            if (values) {
-                this.unservedRequestCount = values.length
-                // console.log('SIDEBAR SUBSCRIBE TO REQUEST SERVICE PUBLISHED REQUESTS ', values)
-                // console.log('SIDEBAR SUBSCRIBE TO REQUEST PUBLISHED COUNT OF UNSERVED REQUEST ', this.unservedRequestCount);
-            }
-        });
-
+   
         // WHEN THE PAGE IS REFRESHED GETS FROM LOCAL STORAGE IF THE SETTINGS SUBMENU WAS OPENED OR CLOSED
         // this.SETTINGS_SUBMENU_WAS_OPEN = localStorage.getItem('show_settings_submenu')
         // console.log('LOCAL STORAGE VALU OF KEY show_settings_submenu', localStorage.getItem('show_settings_submenu'))
@@ -550,7 +534,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
         this.notify.publishHasClickedChat(true);
 
-        localStorage.setItem('chatOpened', 'true');
+        // localStorage.setItem('chatOpened', 'true');
         this.elementRef.nativeElement.blur();
     }
 

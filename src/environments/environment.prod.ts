@@ -8,7 +8,7 @@ export const environment = {
         projectId: 'chat-v2-dev',
         storageBucket: 'chat-v2-dev.appspot.com',
         messagingSenderId: '77360455507',
-        timestampsInSnapshots: true,
+        // timestampsInSnapshots: true,
     },
     mongoDbConfig: {
         // BASE_URL: 'http://api.chat21.org/',

@@ -16,14 +16,11 @@ import { AuthGuard } from './core/auth.guard';
 import { AdminGuard } from './core/admin.guard';
 import { CoreModule } from './core/core.module';
 
-import { UserLoginComponent } from './ui/user-login/user-login.component';
-import { ItemsListComponent } from './items/items-list/items-list.component';
+
 import { ReadmePageComponent } from './ui/readme-page/readme-page.component';
-import { NotesListComponent } from './notes/notes-list/notes-list.component';
 import { HomeComponent } from './home/home.component';
 
 // NK
-import { UsersListComponent } from './users-list/users-list.component';
 import { ContactsComponent } from './contacts/contacts.component';
 import { RequestsListComponent } from './requests-list/requests-list.component';
 import { DepartmentsComponent } from './departments/departments.component';
@@ -43,7 +40,7 @@ import { BotEditAddComponent } from './bot-edit-add/bot-edit-add.component';
 import { AnalyticsComponent } from './analytics/analytics.component';
 
 import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.component';
-import { RequestsListHistoryComponent } from './requests-list-history/requests-list-history.component';
+// import { RequestsListHistoryComponent } from './requests-list-history/requests-list-history.component';
 import { RequestsListHistoryNewComponent } from './requests-list-history-new/requests-list-history-new.component';
 
 
@@ -103,18 +100,14 @@ const routes: Routes = [
 
   // { path: 'home', component: HomeComponent, canActivate: [AuthGuard]}, // , canDeactivate: [AuthGuard]
   { path: 'project/:projectid/home', component: HomeComponent, canActivate: [AuthGuard] },
-  // { path: 'login', component: UserLoginComponent },
+
   { path: 'login', component: SigninComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'verify/email/:user_id', component: VerifyEmailComponent },
   
   { path: 'project/:projectid/unauthorized', component: UnauthorizedComponent },
 
-  // firestore user CRUD
-  // { path: 'userstest', component: UsersListComponent, canActivate: [AuthGuard]},
- 
-  { path: 'items', component: ItemsListComponent, canActivate: [AuthGuard] },
-  { path: 'notes', component: NotesListComponent, canActivate: [AuthGuard] },
+   
   { path: 'userprofile', component: UserProfileComponent },
   // , canActivate: [AuthGuard]
   { path: 'project/:projectid/requests', component: RequestsListComponent, canActivate: [AuthGuard] },
@@ -183,7 +176,7 @@ const routes: Routes = [
   { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
 
   // HISTORY
-  { path: 'project/:projectid/historyrt', component: RequestsListHistoryComponent, canActivate: [AuthGuard] },
+  // { path: 'project/:projectid/historyrt', component: RequestsListHistoryComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/history', component: RequestsListHistoryNewComponent, canActivate: [AuthGuard] },
 
 
@@ -216,8 +209,6 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
 
 
-  // uploads are lazy loaded
-  { path: 'uploads', loadChildren: './uploads/shared/upload.module#UploadModule', canActivate: [AuthGuard] },
 
 ];
 

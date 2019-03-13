@@ -170,7 +170,7 @@
     "hours":" hours, ",
     "minutes":" minutes, ",
     "seconds":" seconds",
-    "":"",
+    "ViewProfile":"View profile",
     "UserProfile": {
         "Profile": "Profile",
         "UploadImage": "Upload image",

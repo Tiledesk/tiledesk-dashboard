@@ -316,7 +316,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onChangeOnlineMsg(event) {
-    console.log('»» WIDGET DESIGN - ONLINE-MSG EVENT ', event);
+    // console.log('»» WIDGET DESIGN - ONLINE-MSG EVENT ', event);
     if (event.length === 0 || event === this.widgetDefaultSettings.it.online_msg || event === this.widgetDefaultSettings.en.online_msg) {
       console.log('»» WIDGET DESIGN - ONLINE-MSG LENGHT (modelChange) is ', event.length, ' SET DEFAULT ONLINE MSG');
 

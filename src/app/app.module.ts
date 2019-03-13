@@ -18,28 +18,21 @@ import { MapsComponent } from './maps/maps.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { UpgradeComponent } from './upgrade/upgrade.component';
 
-// Feature Modules
-import { ItemModule } from './items/shared/item.module';
-import { UploadModule } from './uploads/shared/upload.module';
 import { UiModule } from './ui/shared/ui.module';
-import { NotesModule } from './notes/notes.module';
+
 ///// Start FireStarter
 // Core
 import { CoreModule } from './core/core.module';
 
 // Shared/Widget
 import { SharedModule } from './shared/shared.module';
-import { environment } from '../environments/environment';
-import { AngularFireModule } from 'angularfire2';
-export const firebaseConfig = environment.firebaseConfig;
-import { AngularFirestoreModule } from 'angularfire2/firestore';
 
 import { HomeComponent } from './home/home.component';
 import { ChatComponent } from './chat/chat.component';
 
 // FIRESTORE
 import { UsersService } from './services/users.service';
-import { UsersListComponent } from './users-list/users-list.component';
+
 import { RequestsService } from './services/requests.service';
 import { RequestsListComponent } from './requests-list/requests-list.component';
 
@@ -71,7 +64,7 @@ import { DepartmentEditAddComponent } from './department-edit-add/department-edi
 import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.component';
 
 import { ProjectService } from './services/project.service';
-import { RequestsListHistoryComponent } from './requests-list-history/requests-list-history.component';
+// import { RequestsListHistoryComponent } from './requests-list-history/requests-list-history.component';
 import { MomentModule } from 'angular2-moment';
 import { SigninComponent } from './auth/signin/signin.component';
 import { SignupComponent } from './auth/signup/signup.component';
@@ -117,6 +110,7 @@ import { WidgetService } from './services/widget.service';
 import { ContactEditComponent } from './contact-edit/contact-edit.component';
 import { UsersPendingComponent } from './users-pending/users-pending.component';
 
+
 console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -134,7 +128,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     NotificationsComponent,
     UpgradeComponent,
     HomeComponent,
-    UsersListComponent,
     ContactsComponent,
     RequestsListComponent,
     ChatComponent,
@@ -150,7 +143,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AnalyticsComponent,
     DepartmentEditAddComponent,
     ProjectEditAddComponent,
-    RequestsListHistoryComponent,
+    // RequestsListHistoryComponent,
     SigninComponent,
     SignupComponent,
     UnauthorizedComponent,
@@ -185,13 +178,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppRoutingModule,
     CoreModule,
     SharedModule,
-    ItemModule,
     UiModule,
-    NotesModule,
     HttpModule,
     ComponentsModule,
     RouterModule,
-    AngularFireModule.initializeApp(firebaseConfig),
+    // AngularFireModule.initializeApp(firebaseConfig),
     HttpModule,
     HttpClientModule,
     MomentModule,
@@ -201,11 +192,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     ColorPickerModule,
     TranslateModule.forRoot({
       loader: {
-          provide: TranslateLoader,
-          useFactory: HttpLoaderFactory,
-          deps: [HttpClient],
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient],
       },
-  }),
+    }),
   ],
   providers: [
     UsersService,
@@ -222,10 +213,14 @@ export function HttpLoaderFactory(http: HttpClient) {
     ResetPswService,
     UploadImageService,
     WidgetService,
-    {provide: LocationStrategy, useClass: HashLocationStrategy}
+    { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [
     AppComponent
   ]
 })
-export class AppModule { }
+export class AppModule {
+  // constructor() {
+  //   firebase.initializeApp(firebaseConfig);
+  // }
+}

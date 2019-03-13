@@ -5,7 +5,7 @@ import { Message } from '../models/message-model';
 import { RequestsService } from '../services/requests.service';
 import { AuthService } from '../core/auth.service';
 import { environment } from '../../environments/environment';
-import * as firebase from 'firebase/app';
+
 import { UsersLocalDbService } from '../services/users-local-db.service';
 // USED FOR go back last page
 import { Location } from '@angular/common';
@@ -16,6 +16,9 @@ import { BotLocalDbService } from '../services/bot-local-db.service';
 import { UsersService } from '../services/users.service';
 import { DOCUMENT } from '@angular/platform-browser';
 import { avatarPlaceholder, getColorBck } from '../utils/util';
+
+import * as firebase from 'firebase';
+import 'firebase/database';
 
 @Component({
   selector: 'appdashboard-requests-msgs',
@@ -36,7 +39,6 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('openChatBtn')
   private openChatBtn: ElementRef;
-
 
   CHAT_BASE_URL = environment.chat.CHAT_BASE_URL
 
@@ -410,10 +412,11 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   getMessagesList() {
     // SUBSCIPTION TO snapshotChanges
-    this.requestsService.getSnapshotMsg(this.id_request)
+    // this.requestsService.getSnapshotMsg(this.id_request)
+    this.requestsService.getMsgsByRequestId(this.id_request)
       .subscribe((data) => {
         this.messagesList = data;
-        console.log('REQUESTS-MSGS.COMP: SUBSCRIPTION TO getSnapshot MSG ', data);
+        console.log('*MSGS - REQUESTS-MSGS.COMP getMessagesList RES', data);
         this.showSpinner = false;
 
         this.scrollCardContetToBottom();
@@ -422,10 +425,10 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
         // this.scrollToBottom();
         // }
       }, (err) => {
-        console.log('GET MESSAGES LIST ERROR ', err);
+        console.log('*MSGS - REQUESTS-MSGS.COMP getMessagesList ERROR ', err);
         this.showSpinner = false;
       }, () => {
-        console.log('GET MESSAGES LIST * COMPLETE *');
+        console.log('*MSGS - REQUESTS-MSGS.COMP getMessagesList * COMPLETE *');
         // this.showSpinner = false;
       });
 
@@ -442,7 +445,8 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   // GET DETAIL OF THE REQUEST - USED FOR:
   // GET IF THE USER IS JOINED OR NOT JOINED
   getRequestByRecipient() {
-    this.requestsService.getSnapshotConversationByRecipient(this.id_request)
+    // this.requestsService.getSnapshotConversationByRecipient(this.id_request)
+    this.requestsService.getRequestsById(this.id_request)
       .subscribe((request) => {
         // console.log('--> REQUEST ', request);
 
@@ -497,8 +501,6 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.REQUESTER_IS_VERIFIED = false;
           }
 
-
-
           this.requester_id = request[0].requester_id;
           console.log('* REQUESTER ID: ', this.requester_id);
 
@@ -520,7 +522,6 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
           this.members_array.forEach(member_id => {
             if (member_id !== this.requester_id && member_id !== 'system') {
 
-
               /**
                * cleaned_members_array USED IN reassignRequest:
                * WHEN IS RIASSIGNED A REQUEST IS RUNNED:
@@ -539,7 +540,6 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 const bot = this.botLocalDbService.getBotFromStorage(bot_id);
                 if (bot) {
-
 
                   this.agents_array.push({ '_id': 'bot_' + bot['_id'], 'firstname': bot['name'], 'isBot': true })
 
@@ -904,6 +904,12 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.displayLeavingChatInfoModal = 'none';
   }
 
+  openTranscript() {
+    const url = 'https://api.tiledesk.com/v1/public/requests/'  + this.id_request + '/messages.html';
+    console.log('openTranscript url ', url);
+    window.open(url, '_blank');
+  }
+
   // <!--target="_blank" href="{{ CHAT_BASE_URL }}?recipient={{id_request}}"   -->
   openChatInNewWindow() {
     // RESOLVE THE BUG: THE BUTTON 'OPEN THE CHAT' REMAIN FOCUSED AFTER PRESSED
@@ -915,6 +921,8 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     const url = this.CHAT_BASE_URL + '?recipient=' + this.id_request
     window.open(url, '_blank');
   }
+
+
 
   scrollCardContetToBottom() {
     setTimeout(() => {

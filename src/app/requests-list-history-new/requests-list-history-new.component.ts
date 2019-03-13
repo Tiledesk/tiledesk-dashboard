@@ -153,7 +153,7 @@ export class RequestsListHistoryNewComponent implements OnInit {
 
   getCurrentUser() {
     const user = this.auth.user_bs.value
-    // this.user = firebase.auth().currentUser;
+
     console.log('!!! NEW REQUESTS HISTORY - LOGGED USER ', user);
     if (user) {
       // this.currentUserFireBaseUID = this.user.uid
@@ -484,7 +484,6 @@ export class RequestsListHistoryNewComponent implements OnInit {
 
         this.displayHideFooterPagination();
 
-
         const requestsPerPage = requests['perPage'];
         console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES REQUESTS X PAGE', requestsPerPage);
 
@@ -493,6 +492,12 @@ export class RequestsListHistoryNewComponent implements OnInit {
 
         this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
         console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES No ROUND TO UP ', this.totalPagesNo_roundToUp);
+
+        // const firstIndex = requestsPerPage * this.pageNo;
+        // console.log('!!! NEW REQUESTS HISTORY - firstIndex ', firstIndex);
+
+        // const lastIndex = requestsPerPage * (this.pageNo + 1) - 1
+        // console.log('!!! NEW REQUESTS HISTORY - lastIndex ', lastIndex);
 
         this.requestList = requests['requests'];
 
@@ -524,9 +529,7 @@ export class RequestsListHistoryNewComponent implements OnInit {
               && request.lead.attributes.senderAuthInfo.authVar.token
               && request.lead.attributes.senderAuthInfo.authVar.token.firebase
               && request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider
-
             ) {
-              
               if (request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider === 'custom') {
 
                 // console.log('- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider);

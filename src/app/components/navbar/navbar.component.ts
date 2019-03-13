@@ -1,5 +1,5 @@
 // tslint:disable:max-line-length
-import { Component, OnInit, ElementRef, AfterContentChecked, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, ElementRef, AfterContentChecked, AfterViewInit, AfterViewChecked } from '@angular/core';
 // import { ROUTES } from '../sidebar/sidebar.component';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { AuthService } from '../../core/auth.service';
@@ -8,13 +8,7 @@ import { RequestsService } from '../../services/requests.service';
 import { AuthGuard } from '../../core/auth.guard';
 import { Router } from '@angular/router';
 
-// FOR TEST
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
-import { Request } from '../../models/request-model';
-
 declare var $: any;
-import * as firebase from 'firebase/app';
-import { forEach } from '@angular/router/src/utils/collection';
 
 import { Project } from '../../models/project-model';
 import { UsersService } from '../../services/users.service';
@@ -29,7 +23,7 @@ import * as moment from 'moment';
     templateUrl: './navbar.component.html',
     styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewChecked {
+export class NavbarComponent implements OnInit, AfterViewInit, AfterContentChecked, AfterViewChecked {
     private listTitles: any[];
     location: Location;
     private toggleButton: any;
@@ -85,8 +79,6 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         private translate: TranslateService,
         private requestsService: RequestsService,
         private router: Router,
-        // FOR TEST
-        private afs: AngularFirestore,
         private usersService: UsersService,
         private uploadImageService: UploadImageService,
         private notifyService: NotifyService
@@ -106,8 +98,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         // tslint:disable-next-line:no-debugger
         // debugger
         // this.listTitles = ROUTES.filter(listTitle => listTitle);
-        const navbar: HTMLElement = this.element.nativeElement;
-        this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
+
 
         // SUBSCRIBE TO IS LOGGED IN PUBLISHED BY AUTH GUARD
         // this.authguard.IS_LOGGED_IN.subscribe((islogged: boolean) => {
@@ -148,6 +139,12 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
 
     } // OnInit
+
+    ngAfterViewInit() {
+        const navbar: HTMLElement = this.element.nativeElement;
+        this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
+        console.log('NAVBAR toggleButton ', this.toggleButton)
+    }
 
     // bs_hasClickedChat IS PUBLISHED WHEN THE USER CLICK THE CHAT BTN FROM SIDEBAR OR HOME
     getFromNotifyServiceHasOpenedChat() {
@@ -321,7 +318,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
                     }
                 });
                 this.currentUserRequestCount = count;
-                console.log('»» WIDGET notifyLastUnservedRequest REQUEST currentUserRequestCount ', this.currentUserRequestCount); 
+                console.log('»» WIDGET notifyLastUnservedRequest REQUEST currentUserRequestCount ', this.currentUserRequestCount);
             }
         });
 
@@ -387,8 +384,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
                             // console.log('!!! »»» UNSERVED REQUEST IN BOOTSTRAP NOTIFY ', r)
                             this.showNotification('<span style="font-weight: 400; font-family: Google Sans, sans-serif;color:#2d323e!important">'
-                            + r.requester_fullname + 
-                            '</span>' + '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text + '</em>', 3, 'border-left-color: rgb(255, 179, 40)');
+                                + r.requester_fullname +
+                                '</span>' + '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text + '</em>', 3, 'border-left-color: rgb(255, 179, 40)');
 
                             this.shown_requests[r.id] = true;
                             // console.log('»» WIDGET notifyLastUnservedRequest shown_requests ', this.shown_requests[r.id])
@@ -406,8 +403,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
 
                         if (dateDiff < 24) {
                             this.showNotification('<span style="font-weight: 400; font-family: Google Sans, sans-serif; color:#2d323e!important">'
-                            + r.requester_fullname +
-                            '</span>' + '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text + '</em>', 4, 'border-left-color: rgb(244, 67, 54)');
+                                + r.requester_fullname +
+                                '</span>' + '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text + '</em>', 4, 'border-left-color: rgb(244, 67, 54)');
 
                             this.shown_my_requests[r.id] = true;
                         }
@@ -427,7 +424,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         // const color = Math.floor((Math.random() * 4) + 1);
         // the tree corresponds to the orange
         const color = notificationColor
-        
+
         // console.log('COLOR ', color)
         // const color = '#ffffff';
 
@@ -443,14 +440,13 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
             // target: '_self'
             // border-left-color: rgb(255, 179, 40);
 
-         
         }, {
                 type: type[color],
                 timer: 2000,
                 template: `<div data-notify="container" style="padding:10px!important;background-color: rgb(255, 255, 238);box-shadow: 0px 0px 5px rgba(51, 51, 51, 0.3); border-left: 15px solid;  ${borderColor}" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">` +
-                             '<span data-notify="title">{1}</span>' +
-                             '<span data-notify="message">{2}</span>' +
-                        '</div>'
+                    '<span data-notify="title">{1}</span>' +
+                    '<span data-notify="message">{2}</span>' +
+                    '</div>'
                 // placement: {
                 //     from: from,
                 //     align: align
@@ -476,8 +472,6 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         this.audio.load();
         this.audio.play();
 
-
-
     }
 
     ngAfterContentChecked() {
@@ -489,21 +483,26 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
     }
 
     sidebarOpen() {
-        const toggleButton = this.toggleButton;
-        const body = document.getElementsByTagName('body')[0];
-        setTimeout(function () {
-            toggleButton.classList.add('toggled');
-        }, 500);
-        body.classList.add('nav-open');
+        if (this.toggleButton) {
+            const toggleButton = this.toggleButton;
+            const body = document.getElementsByTagName('body')[0];
+            setTimeout(function () {
+                toggleButton.classList.add('toggled');
+            }, 500);
+            body.classList.add('nav-open');
 
-        this.sidebarVisible = true;
+            this.sidebarVisible = true;
+        }
     };
     sidebarClose() {
         const body = document.getElementsByTagName('body')[0];
-        this.toggleButton.classList.remove('toggled');
+        if (this.toggleButton) {
+            this.toggleButton.classList.remove('toggled');
+        }
         this.sidebarVisible = false;
         body.classList.remove('nav-open');
     };
+
     sidebarToggle() {
         // const toggleButton = this.toggleButton;
         // const body = document.getElementsByTagName('body')[0];
@@ -589,14 +588,13 @@ export class NavbarComponent implements OnInit, AfterContentChecked, AfterViewCh
         this.auth.testExpiredSessionFirebaseLogout(true)
     }
     openChat() {
-        localStorage.setItem('chatOpened', 'true');
+        // localStorage.setItem('chatOpened', 'true');
         const url = this.CHAT_BASE_URL;
         window.open(url, '_blank');
-        this.getFromLocalStorageHasOpenedTheChat();
+        // this.getFromLocalStorageHasOpenedTheChat();
     }
 
     getFromLocalStorageHasOpenedTheChat() {
-
         const storedChatOpenedValue = localStorage.getItem('chatOpened');
         console.log('+ + + STORED CHAT OPENED VALUE ', storedChatOpenedValue);
         if (storedChatOpenedValue && storedChatOpenedValue === 'true') {

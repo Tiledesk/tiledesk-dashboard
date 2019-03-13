@@ -3,22 +3,9 @@ import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, NgZone } from 
 import { RequestsService } from '../services/requests.service';
 import { Request } from '../models/request-model';
 import { Message } from '../models/message-model';
-// import { error } from 'util';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/takeWhile';
-
-import 'rxjs/add/operator/finally';
-
-import * as firebase from 'firebase/app';
-// import { Response } from '@angular/http/src/static_response';
-import { Headers } from '@angular/http/src/headers';
-import { Response } from '@angular/http';
-
 import * as moment from 'moment';
 import 'moment/locale/it.js';
-import { forEach } from '@angular/router/src/utils/collection';
-import { DocumentChange } from '@firebase/firestore-types';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
 import { Router } from '@angular/router';
@@ -31,6 +18,8 @@ import { UsersService } from '../services/users.service';
 
 import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { TranslateService } from '@ngx-translate/core';
+
+import * as firebase from 'firebase/app';
 
 @Component({
   selector: 'appdashboard-requests-list',
@@ -142,7 +131,7 @@ export class RequestsListComponent implements OnInit {
     this.zone = new NgZone({ enableLongStackTrace: false });
 
     this.user = auth.user_bs.value
-    // this.user = firebase.auth().currentUser;
+
     console.log('LOGGED USER ', this.user);
     if (this.user) {
       // this.currentUserFireBaseUID = this.user.uid
@@ -298,9 +287,11 @@ export class RequestsListComponent implements OnInit {
 
       const bot = this.botLocalDbService.getBotFromStorage(bot_id);
       if (bot) {
-        return member_id = '- ' + bot['name'] + ' (bot)';
+        // '- ' +
+        return member_id = bot['name'] + ' (bot)';
       } else {
-        return '- ' + member_id
+        // '- ' +
+        return member_id
       }
 
     } else {
@@ -309,9 +300,11 @@ export class RequestsListComponent implements OnInit {
       if (user) {
         // console.log('user ', user)
         const lastnameInizial = user['lastname'].charAt(0)
-        return member_id = '- ' + user['firstname'] + ' ' + lastnameInizial + '.'
+        // '- ' +
+        return member_id = user['firstname'] + ' ' + lastnameInizial + '.'
       } else {
-        return '- ' + member_id
+        // '- ' +
+        return member_id
       }
     }
   }
@@ -444,7 +437,7 @@ export class RequestsListComponent implements OnInit {
           })
         }
 
-        console.log('REQUESTS-LIST COMP - REQUESTS LENGHT', requests.length)
+        // console.log('REQUESTS-LIST COMP - REQUESTS LENGHT', requests.length)
 
         /**
          * FOR THE UNSERVED REQUEST THE OLDEST IS THE MORE IMPORTANT SO IS DISPLAYED ON TOP OF THE
@@ -495,7 +488,7 @@ export class RequestsListComponent implements OnInit {
 
     requests_array.forEach((request, index) => {
       if (request && request.attributes) {
-        console.log('REQUESTS-LIST COMP - REQUEST ', request, '#', index);
+        // console.log('REQUESTS-LIST COMP - REQUEST ', request, '#', index);
 
         // CREATES AN ARRAY WITH ALL THE DEPTS RETURNED IN THE REQUESTS OBJCTS
         // (FROM THIS IS CREATED requestsDepts_uniqueArray)
@@ -511,7 +504,7 @@ export class RequestsListComponent implements OnInit {
          * USING DEPT NAME  */
         // deptsNames.push(request.attributes.departmentName)
       } else {
-        console.log('REQUESTS-LIST COMP - REQUEST (else)', request, '#', index);
+        // console.log('REQUESTS-LIST COMP - REQUEST (else)', request, '#', index);
 
       }
     });
@@ -619,7 +612,6 @@ export class RequestsListComponent implements OnInit {
   }
 
   archiveTheRequestHandler() {
-
     this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
     console.log('HAS CLICKED ARCHIVE REQUEST ');
 
@@ -692,7 +684,9 @@ export class RequestsListComponent implements OnInit {
   }
 
 
-  // USED TO JOIN TO CHAT GROUP (SEE onJoinHandled())
+  // USED:
+  // TO JOIN TO CHAT GROUP (SEE onJoinHandled())
+  // TO  CLOSE THE SUPPORT GROUP (SEE archiveTheRequestHandler())
   getFirebaseToken(callback) {
     const that = this;
     // console.log('Notification permission granted.');
@@ -794,15 +788,13 @@ export class RequestsListComponent implements OnInit {
   //   }
   // }
 
-  msgLenght() {
-    this.requestsService.getSnapshotMsg(this.requestRecipient)
-      .subscribe((data) => {
-        this.initialMsgsArrayLength = data.length;
-        console.log('WHEN OPEN MODAL MSGS ARRAY LENGHT (FIXED) ', this.initialMsgsArrayLength);
-
-      });
-
-  }
+  // msgLenght() {
+  //   this.requestsService.getSnapshotMsg(this.requestRecipient)
+  //     .subscribe((data) => {
+  //       this.initialMsgsArrayLength = data.length;
+  //       console.log('WHEN OPEN MODAL MSGS ARRAY LENGHT (FIXED) ', this.x);
+  //     });
+  // }
 
   /// - DARIO
   //   scrollToBottom() {
