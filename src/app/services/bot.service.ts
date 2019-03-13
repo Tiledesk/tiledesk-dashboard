@@ -11,7 +11,8 @@ import { AuthService } from '../core/auth.service';
 export class BotService {
 
   http: Http;
-  MONGODB_BASE_URL = environment.mongoDbConfig.BOTS_BASE_URL;
+  // MONGODB_BASE_URL = environment.mongoDbConfig.BOTS_BASE_URL;
+  MONGODB_BASE_URL: any;
   // TOKEN = environment.mongoDbConfig.TOKEN;
   TOKEN: string
   user: any;
