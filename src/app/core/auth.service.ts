@@ -22,16 +22,8 @@ import { Location } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
 
 import { isDevMode } from '@angular/core';
-declare var require: any;
-// import { RequestsService } from '../services/requests.service';
-// interface CUser {
-//   uid: string;
-//   email?: string | null;
-//   displayName?: string;
-//   firstname?: string;
-//   lastname?: string;
-//   token?: string;
-// }
+// declare var require: any;
+
 
 // start SUPER USER
 export class SuperUser {
@@ -61,12 +53,10 @@ export class AuthService {
   FIREBASE_SIGNIN_BASE_URL = environment.mongoDbConfig.FIREBASE_SIGNIN_BASE_URL;
   VERIFY_EMAIL_BASE_URL = environment.mongoDbConfig.VERIFY_EMAIL_BASE_URL;
   CLOUDFUNCTION_CREATE_CONTACT_URL = environment.cloudFunctions.cloud_func_create_contact_url;
-  
-  public version: string = require('../../../package.json').version;
 
-  // MONGODB_PEOPLE_BASE_URL = environment.mongoDbConfig.MONGODB_PEOPLE_BASE_URL;
+  // public version: string = require('../../../package.json').version;
+  public version: string = environment.VERSION;
 
-  // TOKEN = environment.mongoDbConfig.TOKEN;
 
   token: string;
 
@@ -537,7 +527,7 @@ export class AuthService {
       platform: 'web/dashboard',
       platform_version: this.version
     }
-   
+
     updates[connectionsRefinstancesId + connection] = device_model;
 
     console.log('Firebase Cloud Messaging  - Aggiorno token ------------>', updates);

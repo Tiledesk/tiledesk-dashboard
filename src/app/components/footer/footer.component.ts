@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
-declare var require: any;
+// declare var require: any;
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
@@ -8,7 +8,8 @@ declare var require: any;
 })
 export class FooterComponent implements OnInit {
   test: Date = new Date();
-  public version: string = require( '../../../../package.json').version;
+  // public version: string = require( '../../../../package.json').version;
+  public version: string = environment.VERSION;
 
   constructor() { }
 
