@@ -1,8 +1,13 @@
 
 # tiledesk-dashboard
 
+### 1.0.16
+- Remove 'AngularFire2' dependencies and update 'Firebase'
+- Adds the ability to allow to receive Web Push Notifications for the requests in which the current user is an agent
+- Adds the avatar of the agents in the column 'Served By' of the support requests list
+
 ### 1.0.15
-- Disable autocapitalize of the email inputs
+- Disable autocapitalize of the the inputs of type email
 
 ### 1.0.14
 - Adds the requester avatar in the history page
