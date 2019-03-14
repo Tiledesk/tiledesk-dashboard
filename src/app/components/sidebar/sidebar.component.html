@@ -25,7 +25,6 @@
         <!-- (mouseover)="mouseOver(true)" 
         (mouseout)="mouseOver(false)" -->
         <div *ngIf="project" class="avatar-container tiledesk-nav-avatar">
-            <!-- <img class="avatar" src="https://static.intercomassets.com/avatars/383251/square_128/dorinew-1493275883.png?1493275883"> -->
 
           <img class="avatar" *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" 
               src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{user?._id}}%2Fphoto.jpg?alt=media" />
@@ -33,10 +32,6 @@
           <img class="avatar" *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true" 
               src="assets/img/no_image_user.png"/>
 
-             
-        
-            
-            
             <div (click)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)" class="status-icon online" [ngClass]="{'is-user-online' : IS_AVAILABLE === true, 'is-user-offline' : IS_AVAILABLE === false }">
               <span style="position:relative; top: -5px;left: 14px; cursor:pointer">  
                 <span style="

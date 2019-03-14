@@ -308,7 +308,6 @@ p.member:hover {
    font-size:16px;
    font-weight: 400;
 //    color: #394f5a !important;
-   
     color: rgba(0, 0, 0, 0.54)!important;
 }
 
@@ -341,59 +340,6 @@ p.member:hover {
 //         padding-right: 5px !important;
 //     }
 // }
-
-.intercom-home-screen-start-conversation-card-content {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    margin-top: -10px;
-}
-
-.intercom-admin-avatar-stack{
-    margin-right: 6px;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-    -ms-flex-flow: row nowrap;
-    flex-flow: row nowrap;
-    -webkit-box-pack: start;
-    -ms-flex-pack: start;
-    justify-content: flex-start;
-}
-
-.intercom-admin-avatar-stack-avatar {
-    padding: 0; display: inline-block; -webkit-box-flex: 1;-ms-flex: 1 1 56px; flex: 1 1 56px;margin-left: -2px;
-
-}
-
-.intercom-avatar {
-
-    border: 2px solid #fff; width: 52px; height: 52px;line-height: 52px;font-size: 26px;margin: 0 auto;border-radius: 50%;display: inline-block;    vertical-align: middle;
-    text-transform: uppercase;
-    background-color: #043db0;
-    color: #fff;
-    text-align: center;
-    display: -webkit-inline-box;
-    display: -ms-inline-flexbox;
-    display: inline-flex;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-}
-
-.intercom-avatar img {
-    width: 52px; height: 52px; border-radius: 50%;
-}
 
 // no more used
 .dept-request-count {
@@ -589,14 +535,20 @@ span .switch-agent-admin-requests-btn {
 
 .column-th-span {
     font-size: 14px;
-    font-weight: 400;
+    font-weight: 500;
     color: #353f45;
+    // color: #566787;
 }
 .card-header-custom {
     box-shadow: none!important;
     margin-left: 0px; 
     margin-right: 0px; 
     border-bottom: 1px solid #eff3f5
+}
+
+.column-td {
+    font-size:0.9em;
+    font-weight: 400;
 }
 
 

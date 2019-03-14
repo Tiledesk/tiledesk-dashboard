@@ -255,23 +255,8 @@
                 </div>
               </div>
             </div>   -->
-  
-            <!-- new as intercom  -->
-            <!-- <div class="row">
-              <div class="col-sm-12">
-            <div class="intercom-home-screen-start-conversation-card-content" style="">
-              <div class="intercom-admin-avatar-stack" style="">
-                <div class="intercom-admin-avatar-stack-avatar" *ngFor="let dept of depts_array_noduplicate"style="">
-                  <div class="intercom-avatar" style="" >
-                      {{dept?.requestsCount }}
-                    </div>
-                  </div>
-                  </div>
-                </div>
-              </div>
-            </div> -->
-            <!-- new as intercom  -->
-          </div>
+ 
+           </div>
         </div>
 
       </div>
@@ -438,7 +423,7 @@
                   <!-- ------ ====== MESSAGE ====== ------ -->
                   <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
                       <!-- max-width: 400px -->
-                    <p style="font-size:0.9em;" [innerHTML]="getRequestText(request?.first_text)">
+                    <p class="column-td" [innerHTML]="getRequestText(request?.first_text)">
                       <!-- {{ request?.text }} -->
                       <!-- {{ request?.first_text }} -->
                     </p>
@@ -472,11 +457,11 @@
                       </span>
                     </span>
           
-                    <span style="font-size:0.9em; font-weight: 400; white-space: nowrap;" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
+                    <span class="column-td" style="white-space: nowrap;" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
                       {{ request.requester_fullname }}
                     </span>
 
-                    <span *ngIf="!request?.requester_fullname" style="font-size:0.9em; font-weight: 400;" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
+                    <span *ngIf="!request?.requester_fullname" class="column-td" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
                       n.a.
                     </span>
                     <!-- <p style="font-size:0.8em">
@@ -486,10 +471,10 @@
 
                   <!-- ------ ====== DEPARTMENT ====== ------ -->
                   <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" rel="tooltip" title="department id:{{ request?.attributes?.departmentId }}">
-                    <p *ngIf="request?.attributes?.departmentName" style="font-size:0.9em;">
+                    <p *ngIf="request?.attributes?.departmentName" class="column-td">
                       {{ request?.attributes?.departmentName }}
                     </p>
-                    <p *ngIf="!request?.attributes?.departmentName" style="font-size:0.9em;">
+                    <p *ngIf="!request?.attributes?.departmentName" class="column-td">
                       <!-- {{ 'VisitorsPage.Default' | translate }} -->
                       n.a.
                     </p>
@@ -498,7 +483,7 @@
                   
                   <!-- ------ ====== CREATED ON ====== ------ -->
                   <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
-                    <p style="font-size:0.9em">
+                    <p class="column-td">
                       <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
                       <!-- {{ request?.request_date_fromnow }} -->
                       <!-- {{ getTimestampAsMoment(request?.timestamp) }} -->
@@ -563,17 +548,14 @@
                     <span class="column-th-span">
                         <!-- Messagio -->
                         {{ 'VisitorsPage.Message' | translate }}
-
                     </span>
                   </th>
                   
                   <!-- ------ ====== REQUESTER ====== ------ -->
                   <th>
                     <span class="column-th-span">
-
-                        <!-- Richiedente  -->
-                        {{ 'VisitorsPage.Requester' | translate }}
-
+                      <!-- Richiedente  -->
+                      {{ 'VisitorsPage.Requester' | translate }}
                     </span>
                   </th>
       
@@ -595,12 +577,9 @@
 
                   <!-- ------ ====== SERVED BY ====== ------ -->
                   <th>
-                    <span class="column-th-span">
-                      <!-- <strong> Served by </strong> -->
-  
+                    <span class="column-th-span">                  
                         <!-- Servita da -->
                         {{ 'VisitorsPage.ServedBy' | translate }}
- 
                     </span>
                   </th>
       
@@ -613,11 +592,7 @@
                   <!-- ------ ====== CREATED ON ====== ------ -->
                   <th>
                     <span class="column-th-span">
-                      <!-- <strong> Data creazione </strong> -->
- 
-                        <!-- Pubblicata  -->
-                        {{ 'VisitorsPage.Published' | translate }}
- 
+                      {{ 'VisitorsPage.Published' | translate }}
                     </span>
                   </th>
                   
@@ -626,7 +601,7 @@
                   <!-- ------ ====== ARCHIVE Action  ====== ------ -->
                   <th>
                     <span class="column-th-span">
-                        {{ 'VisitorsPage.Actions' | translate }}       
+                      {{ 'VisitorsPage.Actions' | translate }}       
                     </span>
                   </th>
 
@@ -735,7 +710,7 @@
                   <!-- ------ ====== MESSAGE  ====== ------ -->
                   <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
                       <!-- max-width: 400px -->
-                    <p style="font-size:0.9em;" [innerHTML]="getRequestText(request?.first_text)">
+                    <p class="column-td" [innerHTML]="getRequestText(request?.first_text)">
                       <!-- {{ request?.text }} -->
                       <!-- {{ request?.first_text }} -->
                     </p>
@@ -770,11 +745,11 @@
                         </span>
                     </span>
                     
-                    <span style="font-size:0.9em; font-weight: 400; white-space: nowrap;" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
+                    <span class="column-td" style="white-space: nowrap;" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
                       {{ request?.requester_fullname }} 
                     </span>
 
-                    <span *ngIf="!request?.requester_fullname" style="font-size:0.9em; font-weight: 400;" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
+                    <span *ngIf="!request?.requester_fullname" class="column-td" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
                        n.a.
                     </span>
                     <!-- <p style="font-size:0.8em">
@@ -784,10 +759,10 @@
                   
                   <!-- ------ ====== DEPARTMENT  ====== ------ --> 
                   <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
-                    <p *ngIf="request?.attributes?.departmentName" style="font-size:0.9em">
+                    <p *ngIf="request?.attributes?.departmentName" class="column-td">
                       {{ request?.attributes?.departmentName }}
                     </p>
-                    <p *ngIf="!request?.attributes?.departmentName" style="font-size:0.9em">
+                    <p *ngIf="!request?.attributes?.departmentName" class="column-td">
                       <!-- {{ 'VisitorsPage.Default' | translate }} -->
                       n.a.
                     </p>
@@ -839,7 +814,7 @@
                          
                   <!-- ------ ====== CREATED ON ====== ------ -->
                   <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
-                    <p style="font-size:0.9em">
+                    <p class="column-td">
                       <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
                       <!-- {{ request?.request_date_fromnow }} -->
                       <!-- {{ getTimestampAsMoment(request?.timestamp) }} -->

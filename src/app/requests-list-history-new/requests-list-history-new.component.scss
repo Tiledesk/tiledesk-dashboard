@@ -1,3 +1,23 @@
+input[type=text] {
+    // min-width: 307px !important;
+    height: 36px;
+    font-size: 14px;
+    width: 100%;
+    margin-bottom: 10px;
+    -webkit-appearance: none;
+    background: #fff;
+    border: 1px solid #d9d9d9 !important;
+    // border-top: 1px solid #c0c0c0;
+    /* border-radius: 2px; */
+    padding: 0 8px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border-radius: 5px !important;
+    background-color: #fff !important;
+    background-image: none !important;
+    // border: solid 1px #ddd;
+}
+
 .table td, .table th {
     vertical-align: middle
 }
@@ -147,6 +167,12 @@
 
 #clear-fulltext-search:hover {   
     color: #f44336;
+}
+
+.searchTopBtn {
+    padding-top: 9px;
+    padding-bottom: 9px;
+    margin-bottom: 0px;
 }
 // .glyphicon-remove:hover {
 //     cursor: pointer;
