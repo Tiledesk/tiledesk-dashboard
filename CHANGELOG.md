@@ -1,6 +1,12 @@
 
 # tiledesk-dashboard
 
+### 1.0.19
+- Outsources the url of the widget; updates the names of the 'base-urls' in the 'environments' files
+
+### 1.0.18
+- Minor improvements
+
 ### 1.0.16
 - Remove 'AngularFire2' dependencies and update 'Firebase'
 - Adds the ability to allow to receive Web Push Notifications for the requests in which the current user is an agent

@@ -73,7 +73,7 @@ export const environment = {
 And finally `ng serve`
 
 # Build 
-Run `ng build --prod --base-href /dashboard/`
+Run `ng build --prod --base-href ./`
 
 # Deploy on AWS CloudFront and AWS S3
 
