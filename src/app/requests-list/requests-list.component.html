@@ -281,7 +281,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header" style="box-shadow: none!important; margin-left: 0px; margin-right: 0px; border-bottom: 1px solid #eff3f5">
+          <div class="card-header card-header-custom">
             <h4 class="title customh4" style="margin-bottom:2px;">
               <!-- Richieste non servite -->
               {{ 'VisitorsPage.UnservedRequests' | translate }}
@@ -307,32 +307,23 @@
 
                     <!-- ------ ====== MESSAGE ====== ------ -->
                     <th>
-                        <!-- style="color: #566787; text-transform: uppercase" -->
                       <span class="column-th-span" >
-                        <!-- <strong> -->
-
-                          {{ 'VisitorsPage.Message' | translate }}
-                        <!-- </strong> -->
-                      </span>
+                        {{ 'VisitorsPage.Message' | translate }}
+                       </span>
                     </th>
              
                     <!-- ------ ====== REQUESTER ====== ------ -->
                     <th>
                         <!-- style="color: #566787; text-transform: uppercase" -->
                       <span class="column-th-span">
-                        <!-- <strong>  -->
- 
-                          {{ 'VisitorsPage.Requester' | translate }}
-                        <!-- </strong> -->
+                        {{ 'VisitorsPage.Requester' | translate }}
                       </span>
                     </th>
 
                     <!-- ------ ====== DEPARTMENT ====== ------ -->
                     <th>
                       <span class="column-th-span">
-                        <!-- <strong> -->
-                          {{ 'VisitorsPage.Department' | translate }}
-                        <!-- </strong> -->
+                        {{ 'VisitorsPage.Department' | translate }}
                       </span>  
                     </th>
 
@@ -374,7 +365,6 @@
                     </th>
                 </tr>
               </thead>
-
               <tbody>
 
                 <!-- ------ ====== IF THERE ISN'T REQUEST (SERVED OR UNSERVED) ====== ------ -->
@@ -465,7 +455,7 @@
                       </span>
                       <span *ngIf="request?.requester_is_verified === true" class="tooltipx"> 
                         <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                            viewBox="0 0 26.6 26.6" width="17" height="17" style="position: relative;left: -40px;top: -3px;" xml:space="preserve">
+                            viewBox="0 0 26.6 26.6" width="17" height="17" style="position: relative;left: -35px;top: -3px;" xml:space="preserve">
                             <style type="text/css">
                               .st0{fill:none;}
                               .st1{fill:#FFFFFF;}
@@ -520,7 +510,6 @@
                     </p>
                   </td>
 
-                      
                   <!-- ------ ====== ARCHIVE Action ====== ------ -->
                   <!-- class="td-actions text-right" -->
                   <td>                 
@@ -543,7 +532,7 @@
           ------ ====== SERVED REQUESTS ====== ------ 
         *********************************************** -->
         <div class="card">
-          <div class="card-header" data-background-color="" style="">
+          <div class="card-header card-header-custom">
             <h4 class="title customh4" style="margin-bottom:2px;">
               <!-- Richieste servite  -->
               {{ 'VisitorsPage.ServedRequests' | translate }}
@@ -554,7 +543,7 @@
           
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
-          <div  *ngIf="!showSpinner" class="card-content table-responsive">
+          <div  *ngIf="!showSpinner" class="card-content table-responsive" style="padding-top: 0px;">
             <!-- style="overflow-x:auto;" -->
             <table class="table table-hover">
               <thead class="text">
@@ -571,29 +560,29 @@
 
                   <!-- ------ ====== MESSAGE ====== ------ -->
                   <th>
-                    <span style="color: #566787">
-                        <!-- Message -->
-                      <strong> 
+                    <span class="column-th-span">
                         <!-- Messagio -->
                         {{ 'VisitorsPage.Message' | translate }}
-                      </strong>
+
                     </span>
                   </th>
                   
                   <!-- ------ ====== REQUESTER ====== ------ -->
                   <th>
-                    <span style="color: #566787">
-                      <strong> 
+                    <span class="column-th-span">
+
                         <!-- Richiedente  -->
                         {{ 'VisitorsPage.Requester' | translate }}
-                      </strong>
+
                     </span>
                   </th>
       
                   <!-- ------ ====== DEPARTMENT ====== ------ -->
                   <th>
-                    <span style="color: #566787">
-                      <strong>{{ 'VisitorsPage.Department' | translate }}</strong>
+                    <span class="column-th-span">
+ 
+                        {{ 'VisitorsPage.Department' | translate }}
+
                     </span>  
                   </th>
                   
@@ -606,12 +595,12 @@
 
                   <!-- ------ ====== SERVED BY ====== ------ -->
                   <th>
-                    <span style="color: #566787">
+                    <span class="column-th-span">
                       <!-- <strong> Served by </strong> -->
-                      <strong> 
+  
                         <!-- Servita da -->
                         {{ 'VisitorsPage.ServedBy' | translate }}
-                      </strong>
+ 
                     </span>
                   </th>
       
@@ -623,12 +612,12 @@
 
                   <!-- ------ ====== CREATED ON ====== ------ -->
                   <th>
-                    <span style="color: #566787">
+                    <span class="column-th-span">
                       <!-- <strong> Data creazione </strong> -->
-                      <strong> 
+ 
                         <!-- Pubblicata  -->
                         {{ 'VisitorsPage.Published' | translate }}
-                      </strong>
+ 
                     </span>
                   </th>
                   
@@ -636,10 +625,8 @@
 
                   <!-- ------ ====== ARCHIVE Action  ====== ------ -->
                   <th>
-                    <span style="color: #566787">
-                      <strong> 
-                        {{ 'VisitorsPage.Actions' | translate }}
-                      </strong>         
+                    <span class="column-th-span">
+                        {{ 'VisitorsPage.Actions' | translate }}       
                     </span>
                   </th>
 
@@ -688,7 +675,6 @@
                             fill="#999999" fill-rule="evenodd">
                           </path>
                         </svg> 
-
                       </span>
                     </span>
    
@@ -767,7 +753,7 @@
                         </span>
                         <span *ngIf="request?.requester_is_verified === true" class="tooltipx"> 
                           <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                              viewBox="0 0 26.6 26.6" width="17" height="17" style="position: relative;left: -40px;top: -3px;" xml:space="preserve">
+                              viewBox="0 0 26.6 26.6" width="17" height="17" style="position: relative;left: -35px;top: -3px;" xml:space="preserve">
                               <style type="text/css">
                                 .st0{fill:none;}
                                 .st1{fill:#FFFFFF;}

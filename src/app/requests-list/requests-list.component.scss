@@ -591,7 +591,12 @@ span .switch-agent-admin-requests-btn {
     font-size: 14px;
     font-weight: 400;
     color: #353f45;
-    // text-transform: uppercase;
+}
+.card-header-custom {
+    box-shadow: none!important;
+    margin-left: 0px; 
+    margin-right: 0px; 
+    border-bottom: 1px solid #eff3f5
 }
 
 
