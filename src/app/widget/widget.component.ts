@@ -8,14 +8,16 @@ import { NotifyService } from '../core/notify.service';
 import { ProjectService } from '../services/project.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
+import { environment } from '../../environments/environment';
 @Component({
-  selector: 'app-widget',
+  selector: 'appdashboard-widget',
   templateUrl: './widget.component.html',
   styleUrls: ['./widget.component.scss']
 })
 export class WidgetComponent implements OnInit, OnDestroy {
   @ViewChild('testwidgetbtn') private elementRef: ElementRef;
 
+  WIDGET_URL = environment.widgetUrl;
   project: Project;
 
   projectId: string;

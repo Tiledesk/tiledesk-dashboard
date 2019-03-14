@@ -10,15 +10,15 @@
 # echo $NEW_VER > current_version.txt
 # echo new version deployed on s3://tiledesk-dashboard/dashboard/dev/0/$NEW_VER/
 # echo available on https://s3.eu-west-1.amazonaws.com/tiledesk-dashboard/dashboard/dev/0/$NEW_VER/index.html
-
+npm version prerelease --preid=beta
 version=`node -e 'console.log(require("./package.json").version)'`
 echo "version $version"
 
 if [ "$version" != "" ]; then
     git tag -a "v$version" -m "`git log -1 --format=%s`"
     echo "Created a new tag, v$version"
-    # git push --tags
-    # npm publish
+    git push --tags
+    npm publish
 fi
 
 ng build --prod --base-href ./

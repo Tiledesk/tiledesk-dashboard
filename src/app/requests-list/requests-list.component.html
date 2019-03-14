@@ -281,7 +281,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="card-header" data-background-color="" style="">
+          <div class="card-header" style="box-shadow: none!important; margin-left: 0px; margin-right: 0px; border-bottom: 1px solid #eff3f5">
             <h4 class="title customh4" style="margin-bottom:2px;">
               <!-- Richieste non servite -->
               {{ 'VisitorsPage.UnservedRequests' | translate }}
@@ -291,7 +291,7 @@
 
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
-          <div  *ngIf="!showSpinner" class="card-content table-responsive">
+          <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-top: 0px;">
             <!-- style="overflow-x:auto;" -->
             <table class="table table-hover">
               <thead class="text">
@@ -307,28 +307,32 @@
 
                     <!-- ------ ====== MESSAGE ====== ------ -->
                     <th>
-                      <span style="color: #566787">
-                        <strong>
+                        <!-- style="color: #566787; text-transform: uppercase" -->
+                      <span class="column-th-span" >
+                        <!-- <strong> -->
 
                           {{ 'VisitorsPage.Message' | translate }}
-                        </strong>
+                        <!-- </strong> -->
                       </span>
                     </th>
              
                     <!-- ------ ====== REQUESTER ====== ------ -->
                     <th>
-                      <span style="color: #566787">
-                        <strong> 
+                        <!-- style="color: #566787; text-transform: uppercase" -->
+                      <span class="column-th-span">
+                        <!-- <strong>  -->
  
                           {{ 'VisitorsPage.Requester' | translate }}
-                        </strong>
+                        <!-- </strong> -->
                       </span>
                     </th>
 
                     <!-- ------ ====== DEPARTMENT ====== ------ -->
                     <th>
-                      <span style="color: #566787">
-                        <strong>{{ 'VisitorsPage.Department' | translate }}</strong>
+                      <span class="column-th-span">
+                        <!-- <strong> -->
+                          {{ 'VisitorsPage.Department' | translate }}
+                        <!-- </strong> -->
                       </span>  
                     </th>
 
@@ -356,21 +360,17 @@
 
                     <!-- ------ ====== CREATED ON ====== ------ -->
                     <th>
-                      <span style="color: #566787">
-                        <strong> 
-                          {{ 'VisitorsPage.Published' | translate }}
-                        </strong>
+                      <span class="column-th-span">
+                        {{ 'VisitorsPage.Published' | translate }}
                       </span>
                     </th>
                     <!-- <th>TEST</th> -->
 
                     <!-- ------ ====== ARCHIVE ACTION ====== ------ -->
                     <th>
-                      <strong>
-                        <span style="color: #566787">
-                          {{ 'VisitorsPage.Actions' | translate }}
-                        </span>
-                      </strong>
+                      <span class="column-th-span">
+                        {{ 'VisitorsPage.Actions' | translate }}
+                      </span>
                     </th>
                 </tr>
               </thead>
@@ -397,7 +397,6 @@
                 <!-- ****************************************
                   ------ ====== UNSERVED FOR ====== ------
                 ********************************************* -->
-
                 <tr *ngFor="let request of requestListUnserved">
                   <!-- FOR DEBUG: SHOW 'J' IF THE CURRENT USER UID IS BETWEEN 
                   THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
@@ -412,9 +411,7 @@
                     <!-- <span *ngIf="request?.membersCount == 0"> 
                       <i style="color:red;" class="material-icons">priority_high</i>
                     </span> -->
-
-            
-                    
+                              
                     <!-- IF THE REQUEST SUPPORT STATUS IS 100 (UNSERVED REQUEST) -->
                     <span *ngIf="request?.support_status == 100"> 
                       <span (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
@@ -448,7 +445,6 @@
                     </p>
                   </td> -->
 
-                  
                   <!-- ------ ====== MESSAGE ====== ------ -->
                   <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
                       <!-- max-width: 400px -->
@@ -458,7 +454,6 @@
                     </p>
                   </td>
 
-    
                   <!-- ------ ====== REQUESTER ====== ------ -->
                   <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer" rel="tooltip" title="requester id:{{ request?.requester_id }}">
                     <!-- <p style="font-size:0.9em">{{ request.sender_fullname }}</p> -->
@@ -487,7 +482,6 @@
                       </span>
                     </span>
           
-
                     <span style="font-size:0.9em; font-weight: 400; white-space: nowrap;" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
                       {{ request.requester_fullname }}
                     </span>
