@@ -307,3 +307,71 @@ only screen and (max-width: 760px),
     -webkit-box-shadow: 0 12px 20px -10px rgba(3, 115, 229, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(3, 115, 229, 0.2)!important;
     box-shadow: 0 12px 20px -10px rgba(3, 115, 229, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(3, 115, 229, 0.2)!important;
 }
+
+
+
+//Colors
+// $background: #fefefe;
+// $text: #4b507a;
+
+// $cyan: #60daaa;
+// $yellow: #fbca67;
+// $orange: #ff8a30;
+// $red: #f45e61;
+// $blue: #0eb7da;
+
+$f21blue: #039be5;
+// Basic styles
+.btn-with-border-effect {
+  background: none;
+  border: 0;
+  box-sizing: border-box;
+  // margin: 1em;
+  // padding: 1em 2em;
+  padding-bottom: 37px;
+  font-size: 18px;
+  font-weight: 300;
+
+  // Required, since we're setting absolute on pseudo-elements
+  position: relative;
+  vertical-align: middle;
+
+  &::before,
+  &::after {
+    box-sizing: inherit;
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.center {
+  &:hover {
+    color: $f21blue;
+  }
+
+  // Set up base styles, we're going to scale instead of animating width/height
+  &::before,
+  &::after {
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    transform-origin: center; // Ensure scaling is done from the center (expands outwards)
+  }
+
+  // scale3d(<scale-horizontal>, <scale-vertical>, <scale-depth>);
+  &::before {
+    // border-top: 2px solid $purple;
+    border-bottom: 3px solid $f21blue;
+    transform: scale3d(0,1,1); // Shrink only width
+  }
+
+   &:hover::before,
+  &:hover::after {
+    transform: scale3d(1,1,1); // Show full-size
+    transition: transform 0.5s;
+  }
+}
+
