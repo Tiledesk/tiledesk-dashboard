@@ -1,5 +1,5 @@
 
- <p style="margin-top:10px; padding-left:30px" class="navbar-brand">
+ <p style="z-index: 1050;position: relative;margin-top:10px; padding-left:30px" class="navbar-brand">
    {{ "History" | translate }}
  </p> 
 
@@ -9,7 +9,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card" style="margin-bottom: 0px;">
-          <div class="card-content">
+          <div class="card-content" style="padding-top: 0px;padding-bottom: 0px;">
               <!-- <div class="card-header" style="background-color:#ffffff; padding: 8px;"> -->
             
                   <!-- *********************** // PAGINATION // ***********************  -->
@@ -56,11 +56,12 @@
                           <div class="buttonInside">
                             <!-- INPUT 'FULL TEXT' -->   <!-- padding-bottom: 16px; padding-left: 6px; -->
                             <input name="fullText" type="text" [(ngModel)]="fullText" class="form-control" autocomplete="off"
-                              placeholder="{{ 'HistoryPage.ContainsTheWords' | translate }}" style="margin-bottom: 20px;">
+                              style="margin-bottom: 20px;border-bottom-right-radius: 0px !important;border-top-right-radius: 0px !important;" 
+                              placeholder="{{ 'HistoryPage.ContainsTheWords' | translate }}">
                             
                             <!-- // CLEAR SEARCH FULL-TEXT BTN -->
-                            <span id="clear-fulltext-search"  *ngIf="fullText?.length > 0 && showAdvancedSearchOption === false" class="glyphicon glyphicon-remove tooltipx" aria-hidden="true" 
-                              (click)="clearFullText()">
+                            <span id="clear-fulltext-search"  *ngIf="fullText?.length > 0 && showAdvancedSearchOption === false" 
+                              class="glyphicon glyphicon-remove tooltipx" aria-hidden="true" (click)="clearFullText()">
                               <span style="font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !important;" class="tooltiptext">
                                 {{ 'HistoryPage.ClearSearch' | translate }}
                               </span> 
@@ -68,15 +69,17 @@
                           </div>
       
                           <!-- // SEARCH FULL-TEXT BTN -->
-                          <span class="input-group-btn" style="padding-right:0px">
-                            <button #searchbtn class="btn btn-info searchTopBtn" type="submit" (click)="search()">
+                          <span class="input-group-btn" style="padding-right:0px; padding-left:0px">
+                            <button #searchbtn class="btn btn-info searchTopBtn" type="submit" (click)="search()"
+                              style="border-radius: 0px !important;">
                               <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                             </button>
                           </span>
       
                           <!-- // OPEN ADVANCED OPTION BTN -->
                           <span class="input-group-btn" style="padding-left:0px; padding-right:0px">
-                            <button #advancedoptionbtn class="btn btn-default" type="button" (click)="toggle()">
+                            <button #advancedoptionbtn class="btn btn-default" type="button" (click)="toggle()"
+                              style="padding:9px 30px; margin-bottom: 0px">
                               <span class="caret"></span>
                             </button>
                           </span>
@@ -91,9 +94,10 @@
                       </div>
                     </div> -->
                     <!-- new -->
-      
-                    <div *ngIf="showAdvancedSearchOption" @ngIfAnimation>
-                      <div @easeInOut>
+                    <!-- @ngIfAnimation -->
+                    <div *ngIf="showAdvancedSearchOption">
+                      <!-- @easeInOut -->
+                      <div>
       
                         <!-- -------====== SELECT OPTIONS: DEPARTMENTS & DATE RANGE ======------ -->
                         <div class="row">
@@ -124,7 +128,7 @@
                               <my-date-picker name="mydate" [options]="myDatePickerOptions" 
                                 [(ngModel)]="startDate" ></my-date-picker>
                             </div>
-                            <div class="col-sm-6" style="">
+                            <div class="col-sm-6">
                               <my-date-picker name="mydate" [options]="myDatePickerOptions"
                                 [(ngModel)]="endDate" ></my-date-picker>
                             </div>
@@ -161,16 +165,19 @@
                         <!-- -------====== BTNS SEARCH  & CLEAR SEARCH======------ -->
                         <div class="row">
                           <div class="col-sm-12"> 
-                            <button #searchbtnbottom type="submit" class="btn btn-info" (click)="search()">
+                            <button #searchbtnbottom type="submit" class="btn btn-info" (click)="search()"
+                              style="padding:9px 30px;">
                               <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                             </button>
       
-                            <button type="submit" class="btn btn-white clearsearchbtn" (click)="clearSearch()">
+                            <button type="submit" class="btn btn-white clearsearchbtn" (click)="clearSearch()"
+                              style="padding:9px 30px;color:#7695a5">
                               <!-- <span class="glyphicon glyphicon-remo" aria-hidden="true"></span> -->
                               {{ 'HistoryPage.ClearSearch' | translate }}
                             </button>
       
-                            <button class="btn btn-white pull-right export-to-csv-btn" (click)="exportRequestsToCSV()">
+                            <button class="btn btn-white pull-right export-to-csv-btn" (click)="exportRequestsToCSV()"
+                              style="padding:9px 30px;color:#7695a5">
                               <!-- <span style="color: #394f5a">  </span> -->
                                 {{ 'ExportToCSV' | translate }}
                             </button>
@@ -212,21 +219,15 @@
                   </th> -->
                   <!-- ===== REQUEST FIRST TEXT ===== -->
                   <th>
-                    <span style="color: #566787">
-                      <strong> 
-                        {{ 'HistoryPage.Message' | translate }}
-                      </strong>
+                    <span class="column-th-span">
+                      {{ 'HistoryPage.Message' | translate }}
                     </span>
                   </th>
-
-               
-
+              
                   <!-- ===== REQUESTER ===== -->
                   <th>
-                    <span style="color: #566787">
-                      <strong> 
-                        {{ 'HistoryPage.Requester' | translate }}
-                      </strong>
+                    <span class="column-th-span">
+                      {{ 'HistoryPage.Requester' | translate }}
                     </span>
                   </th>
 
@@ -237,21 +238,17 @@
                     </span>
                   </th> -->
 
-                     <!-- ===== DEPARTMENT NAME ===== -->
-                     <th>
-                        <span style="color: #566787">
-                          <strong>
-                            <strong>{{ 'VisitorsPage.Department' | translate }}</strong>
-                          </strong>
-                        </span>  
-                      </th>
+                  <!-- ===== DEPARTMENT NAME ===== -->
+                  <th>
+                    <span class="column-th-span">
+                      {{ 'VisitorsPage.Department' | translate }}
+                    </span>  
+                  </th>
 
                   <!-- ===== SERVED BY ===== -->
                   <th>
-                    <span style="color: #566787">
-                      <strong> 
-                        {{ 'HistoryPage.ServedBy' | translate }}
-                      </strong>
+                    <span class="column-th-span">
+                      {{ 'HistoryPage.ServedBy' | translate }}
                     </span>
                   </th>
                    
@@ -273,16 +270,13 @@
 
                   <!-- ===== PUBLISHED ===== -->
                   <th>
-                    <span style="color: #566787">
-                      <strong> 
+                    <span class="column-th-span">
                       {{ 'HistoryPage.Published' | translate }}
-                      </strong>
                     </span>
                   </th>
     
                 </tr>
               </thead>
-
               <tbody>
 
                 <!-- ===== IF THERE ISN'T HISTORY REQUEST ===== -->
@@ -323,11 +317,9 @@
 
                 <!-- ===== REQUEST FIRST TEXT ===== -->
                   <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
-                    <p style="font-size:0.9em;" [innerHTML]="getRequestText(request?.first_text)">
+                    <p class="column-td" [innerHTML]="getRequestText(request?.first_text)">
                     </p>
                   </td>
-
-           
 
                   <!-- ===== REQUESTER FULL NAME ===== -->
                   <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip" title="{{ request?.requester_id }}">
@@ -338,7 +330,7 @@
                       </span>
                       <span *ngIf="request?.requester_is_verified === true" class="tooltipx"> 
                           <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                              viewBox="0 0 26.6 26.6" width="17" height="17" style="position: relative;left: -40px;top: -3px;" xml:space="preserve">
+                              viewBox="0 0 26.6 26.6" width="17" height="17" style="position: relative;left: -36px;top: -3px;" xml:space="preserve">
                               <style type="text/css">
                                 .st0{fill:none;}
                                 .st1{fill:#FFFFFF;}
@@ -355,11 +347,11 @@
                         </span>
 
                     </span>
-                    <span style="font-size:0.9em; font-weight: 400; white-space: nowrap;" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
+                    <span class="column-td" style="white-space: nowrap;" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
                       <!-- {{ request?.requester_fullname }} -->
                       {{ request?.lead?.fullname }}
                     </span>
-                    <span *ngIf="!request?.lead?.fullname" style="font-size:0.9em; font-weight: 400;" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
+                    <span *ngIf="!request?.lead?.fullname" class="column-td" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
                         n.a.
                      </span>
                   </td>
@@ -374,26 +366,60 @@
             
                   <!-- ===== DEPARTMENT NAME ===== -->
                   <td>
-                    <p style="font-size:0.9em">
+                    <p class="column-td">
                       {{ request?.department?.name }}
                     </p>
                   </td>
  
                   <!-- ===== SERVED BY ===== -->
-                  <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" >
+                  <!-- <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" >
                     <span *ngFor="let participant of request?.participants"  style="font-size:0.8em;">
                       <span *ngIf="participant !== request?.requester_id && participant !== 'system' && participant !== currentUserID"> 
                         
-                        <p class="member" (click)="goToMemberProfile( participant )" [innerHTML]="members_replace( participant )" style="padding-top:1px; padding-bottom:1px; cursor: pointer;">  
-                           
+                        <p class="member" (click)="goToMemberProfile( participant )" 
+                          [innerHTML]="members_replace( participant )" 
+                          style="padding-top:1px; padding-bottom:1px; cursor: pointer;">  
                         </p>
-                        <!-- <span class="tooltiptext"> view</span> -->
                       </span>
-                      
                       <p *ngIf="participant === currentUserID" style="padding-top:1px; padding-bottom:1px;"> 
                         - <strong> 'ME' </strong>
                       </p>
                     </span>
+                  </td> -->
+
+                  <!-- ===== NEW SERVED BY ===== -->
+                  <td>
+                    <div *ngFor="let participant of request?.participants"  style="font-size:0.8em;">
+                      <span *ngIf="participant !== request?.requester_id && participant !== 'system' && participant !== currentUserID" class="tooltipx"> 
+                        <span (click)="goToMemberProfile( participant )" style="cursor:pointer; display: block">
+                  
+                          <!-- IF IS A BOT -->
+                          <img *ngIf="participant.indexOf('bot_') !== -1" style="vertical-align: middle; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee; margin-top: 1px; margin-bottom: 1px" 
+                          class="user-img" src="assets/img/bot_image.png" 
+                          onerror="this.src='assets/img/no_image_user.png'"/>
+
+                          <!-- IF IS A HUMAN -->
+                          <img *ngIf="participant.indexOf('bot_') === -1" style="vertical-align: middle; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee; margin-top: 1px; margin-bottom: 1px" 
+                          class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media" 
+                          onerror="this.src='assets/img/no_image_user.png'"/>
+
+                          <span class="member" [innerHTML]="members_replace( participant )"></span>
+
+                        </span>
+
+                        <span class="tooltiptext"> {{ "ViewProfile" | translate }} </span>
+                      </span>
+
+
+                      <span *ngIf="participant === currentUserID"> 
+                         <!-- IF IS THE LOGGED USER -->
+                         <img style="vertical-align: middle; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee;margin-top: 1px; margin-bottom: 1px" 
+                         class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media" 
+                         onerror="this.src='assets/img/no_image_user.png'"/>
+                         <span class="current-user-member" [innerHTML]="members_replace(participant)"></span>
+                      </span>
+
+                    </div>
                   </td>
                   
  
@@ -414,11 +440,14 @@
 
                   <!-- ===== PUBLISHED ===== -->
                   <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
-                    <p style="font-size:0.9em">
+                    <p class="column-td">
                       <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
                       <!-- {{ request?.request_date_fromnow }} -->
                       <!-- {{ request?.created_on | date: 'd/M/y HH:mm:ss' }} -->
-                      <span> {{ request?.createdAt | amTimeAgo }} </span> <br> <span style="font-size: 11px;font-weight: 400;" >({{ request?.createdAt | date: 'd/M/y HH:mm' }}) </span> 
+                      <span> {{ request?.createdAt | amTimeAgo }} </span> <br>
+                      <span style="font-size: 11px;color: #7695a5;">
+                        ({{ request?.createdAt | date: 'd/M/y HH:mm' }}) 
+                      </span> 
                     </p>
                   </td>
 

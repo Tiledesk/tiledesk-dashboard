@@ -156,8 +156,8 @@ input[type=text] {
 #clear-fulltext-search{    
     // .fulltext-remove-btn{
     position:absolute;
-    right: 0px;
-    top: 8px;
+    right: 5px;
+    top: 10px;
     padding:2px;
     font-size: 0.9em;
     color: #999999;
@@ -174,9 +174,7 @@ input[type=text] {
     padding-bottom: 9px;
     margin-bottom: 0px;
 }
-// .glyphicon-remove:hover {
-//     cursor: pointer;
-// }
+
 
 //   CUSTOMIZE FONT WEIGHT AND COLOR OF THE 'X' INSIDE THE SELECT OPTIONS 'FILTER BY DEPT' 
 // .ng-select .ng-select-container {
@@ -244,13 +242,13 @@ p.member:hover {
     padding-top:7px;
     padding-bottom: 3px;
     display: inline-block;
-    width: 29px;
-    height:29px;
+    width: 25px;
+    height:25px;
 }
 
 .requester_fullname_undefined {
-    padding-top: 6px;
-    padding-left: 6px;
+    padding-top: 4px;
+    padding-left: 4px;
     padding-right: 4px;
     padding-bottom: 4px; 
 }
@@ -258,6 +256,26 @@ p.member:hover {
 .requester-verified {
     position: relative; 
     left: -20px;
+}
+
+.column-th-span {
+    font-size: 14px;
+    font-weight: 500;
+    color: #353f45;
+    // color: #566787;
+}
+
+.column-td {
+    font-size:0.9em;
+    font-weight: 400;
+}
+
+.member {
+    font-weight: 400;
+}
+.current-user-member {
+    font-weight: 400;
+    color: #4caf50;
 }
 
 

@@ -615,9 +615,11 @@ export class RequestsListHistoryNewComponent implements OnInit {
 
       const bot = this.botLocalDbService.getBotFromStorage(bot_id);
       if (bot) {
-        return member_id = '- ' + bot['name'] + ' (bot)';
+        // '- ' +
+        return member_id = bot['name'] + ' (bot)';
       } else {
-        return '- ' + member_id
+        // '- ' +
+        return member_id
       }
 
     } else {
@@ -625,10 +627,12 @@ export class RequestsListHistoryNewComponent implements OnInit {
       const user = this.usersLocalDbService.getMemberFromStorage(member_id);
       if (user) {
         // console.log('user ', user)
-        const lastnameInizial = user['lastname'].charAt(0)
-        return member_id = '- ' + user['firstname'] + ' ' + lastnameInizial + '.'
+        const lastnameInizial = user['lastname'].charAt(0);
+        // '- ' +
+        return member_id = user['firstname'] + ' ' + lastnameInizial + '.'
       } else {
-        return '- ' + member_id
+        // '- ' +
+        return member_id
       }
     }
   }
