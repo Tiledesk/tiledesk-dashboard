@@ -324,8 +324,12 @@
 .navbar-absolute{
     position: absolute;
     width: 100%;
-    padding-top: 10px;
+    // padding-top: 10px;
+    padding-top: 5px; // nk modified
     z-index: 1029;
+    box-shadow: 0 2px 2px rgba(0,0,60,0.08); // nk added
+    padding-bottom: 5px; // nk added
+    
 }
 @media (max-width: 991px) {
     .nav-container{
