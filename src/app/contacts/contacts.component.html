@@ -1,131 +1,142 @@
 
- <p style="margin-top:10px; padding-left:30px" class="navbar-brand">
+ <p style="z-index: 1050;position: relative; margin-top:10px; padding-left:30px" class="navbar-brand">
     {{ 'Contacts' | translate }}
   </p> 
  
  <div class="main-content" style="padding-top:0px">
    <div class="container-fluid">
+
+      <div class="row">
+          <div class="col-md-12">
+            <div class="card search-card" style="margin-bottom: 0px;">
+              <div class="card-content" style="padding-top: 0px;padding-bottom: 0px;">
+                  <!-- <div class="card-header" style="background-color:#ffffff; padding: 8px;"> -->
+             
+                      <!-- *********************** // PAGINATION // ***********************  -->
+                      <!-- <div class="row">
+                        <div class="col-md-12">
+                          <div class="tiledesk-pagination" style="margin-top: 10px; margin-right: 3px;  float: right">
+                            <div style="width: 120px;">
+                              <div class="input-group"> -->
+          
+                                <!-- -------====== BTN DECREASE PAGE  ======------ -->
+                                <!-- <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
+                                  <button [disabled]="pageNo + 1 === 1" class="btn btn-info" type="button" (click)="decreasePageNumber()" 
+                                   style="padding: 6px 8px">
+                                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                  </button>
+                                </span> -->
+          
+                                <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
+                                <!-- <span class="input-group-btn" style="padding-right:0px;">
+                                  <button #searchbtn class="btn btn-info" type="button" style="padding: 6px 8px">
+                                    {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
+                                  </button>
+                                </span> -->
+                                
+                                <!-- -------====== BTN INCREASE PAGE  ======------ -->
+                                <!-- <span class="input-group-btn" style="padding-right:0px">
+                                  <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0" class="btn btn-info" type="button" 
+                                   (click)="increasePageNumber()" style="padding: 6px 8px">
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                  </button>
+                                </span>
+          
+                              </div>
+                          
+                            </div>
+                          </div>
+                        </div>
+                      </div> -->
+          
+                      <form #myForm="ngForm" novalidate class="search-form">
+                        
+                        <!-- ------====== INPUT 'FULL TEXT' + CLEAR FULL-TEXT SEARCH BTN   ======------ -->
+                        <div class="row">
+                          <div class="col-sm-8"> 
+                            <!-- <div class="input-group"> -->
+          
+                              <div class="buttonInside">
+                                <!-- INPUT 'FULL TEXT' -->
+                                
+                                <input name="fullText" type="text" [(ngModel)]="fullText" class="form-control full-text-search" autocomplete="off"
+                                  placeholder="{{ 'SearchYourContacts' | translate }}" style="padding-left: 8px;">
+                                      
+                                <!-- // CLEAR SEARCH FULL-TEXT BTN -->
+                                <span id="clear-fulltext-search"  *ngIf="fullText?.length > 0" class="glyphicon glyphicon-remove tooltipx" aria-hidden="true" 
+                                  (click)="clearFullText()">
+                                  <span style="font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !important;" class="tooltiptext-custom">
+                                   {{ 'ClearSearch' | translate }}
+                                 </span> 
+                                </span>
+                              </div>
+          
+                              <!-- // SEARCH FULL-TEXT BTN -->
+                             <!-- <span class="input-group-btn" style="padding-right:0px">
+                               <button class="btn btn-info searchbtn" type="submit" (click)="search()" style="border-top-right-radius: 0px;border-bottom-right-radius: 0px;">
+                                 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                               </button>
+                             </span>
+          
+                             <span class="input-group-btn" style="padding-left:0px; padding-right:0px">
+                               <button #advancedoptionbtn class="btn btn-default" type="button" (click)="toggleAdvancedOption()">
+                                 <span class="caret"></span>
+                               </button>
+                             </span> -->
+                            <!-- </div> -->
+                          </div>
+                        <!-- </div> -->
+         
+                        <!-- <div *ngIf="showAdvancedSearchOption"> -->
+         
+                         <!-- <div class="row" style="margin-bottom: 20px;"> -->
+                           <div class="col-sm-4">
+                             <!-- <label  class="col-sm-12" style="text-align: left; color: #7695a5 !important;">
+                               Email
+                             </label>
+                 -->
+                             <input style="margin-top:2px" name="contactEmail" [(ngModel)]="selectedContactEmail" class="form-control" type="email"
+                                placeholder="{{ 'SearchByEmail' | translate }}">
+         
+                           </div>
+         
+                         </div>
+         
+                           <!-- -------====== BTNS SEARCH  & CLEAR SEARCH======------ -->
+                           <div class="row">
+                             <div class="col-sm-12"> 
+                               <button style="padding: 9px 30px;" type="submit" class="btn btn-info searchbtn" (click)="search()">
+                                 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                               </button>
+         
+                               <button style="padding: 9px 30px; color: #7695a5" type="submit" class="btn btn-white clearsearchbtn" (click)="clearSearch()">
+                                 <!-- <span class="glyphicon glyphicon-remo" aria-hidden="true"></span> -->
+                                 {{ 'HistoryPage.ClearSearch' | translate }}
+                               </button>
+         
+                               <button style="padding: 9px 30px; color: #7695a5" class="btn btn-white pull-right export-to-csv-btn" (click)="exportContactsToCsv()">
+                                 <!-- <span style="color: #394f5a">  </span> -->
+                                   {{ 'ExportToCSV' | translate }}
+                               </button>
+                             </div>
+                           </div>
+         
+                         <!-- </div> -->
+          
+                       
+                      </form>
+          
+                    <!-- </div>   --> <!-- /.end card-header -->
+              </div>
+            </div>
+          </div>   
+        </div> 
+
      <div class="row">
        <div class="col-md-12">
          
  
-         <div class="card">
-             <!-- data-background-color="red" -->
-           <div class="card-header" style="background-color:#ffffff; padding: 8px;">
-             
-             <!-- *********************** // PAGINATION // ***********************  -->
-             <div class="row">
-               <div class="col-md-12">
-                 <div class="tiledesk-pagination" style="margin-top: 10px; margin-right: 3px;  float: right">
-                   <div style="width: 120px;">
-                     <div class="input-group">
- 
-                       <!-- -------====== BTN DECREASE PAGE  ======------ -->
-                       <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
-                         <button [disabled]="pageNo + 1 === 1" class="btn btn-info" type="button" (click)="decreasePageNumber()" 
-                          style="padding: 6px 8px">
-                           <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                         </button>
-                       </span>
- 
-                       <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
-                       <span class="input-group-btn" style="padding-right:0px;">
-                         <button #searchbtn class="btn btn-info" type="button" style="padding: 6px 8px">
-                           {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
-                         </button>
-                       </span>
-                       
-                       <!-- -------====== BTN INCREASE PAGE  ======------ -->
-                       <span class="input-group-btn" style="padding-right:0px">
-                         <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0" class="btn btn-info" type="button" 
-                          (click)="increasePageNumber()" style="padding: 6px 8px">
-                           <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                         </button>
-                       </span>
- 
-                     </div>
-                 
-                   </div>
-                 </div>
-               </div>
-             </div>
- 
-             <form #myForm="ngForm" novalidate class="search-form">
-               
-               <!-- ------====== INPUT 'FULL TEXT' + CLEAR FULL-TEXT SEARCH BTN   ======------ -->
-               <div class="row">
-                 <div class="col-sm-12"> 
-                   <!-- <div class="input-group"> -->
- 
-                     <div class="buttonInside">
-                       <!-- INPUT 'FULL TEXT' -->
-                       <input name="fullText" type="text" [(ngModel)]="fullText" class="form-control" autocomplete="off"
-                         placeholder="{{ 'SearchYourContacts' | translate }}" style="margin-bottom: 20px; padding-bottom: 16px; padding-left: 6px;">
-                       
-                       <!-- // CLEAR SEARCH FULL-TEXT BTN -->
-                       <span id="clear-fulltext-search"  *ngIf="fullText?.length > 0" class="glyphicon glyphicon-remove tooltipx" aria-hidden="true" 
-                         (click)="clearFullText()">
-                         <span style="font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !important;" class="tooltiptext-custom">
-                          {{ 'ClearSearch' | translate }}
-                        </span> 
-                       </span>
-                     </div>
- 
-                     <!-- // SEARCH FULL-TEXT BTN -->
-                    <!-- <span class="input-group-btn" style="padding-right:0px">
-                      <button class="btn btn-info searchbtn" type="submit" (click)="search()" style="border-top-right-radius: 0px;border-bottom-right-radius: 0px;">
-                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                      </button>
-                    </span>
- 
-                    <span class="input-group-btn" style="padding-left:0px; padding-right:0px">
-                      <button #advancedoptionbtn class="btn btn-default" type="button" (click)="toggleAdvancedOption()">
-                        <span class="caret"></span>
-                      </button>
-                    </span> -->
-                   <!-- </div> -->
-                 </div>
-               </div>
-
-               <!-- <div *ngIf="showAdvancedSearchOption"> -->
-
-                <div class="row" style="margin-bottom: 20px;">
-                  <div class="col-sm-6">
-                    <label  class="col-sm-12" style="text-align: left; color: #7695a5 !important;">
-                      Email
-                    </label>
-       
-                    <input name="contactEmail" [(ngModel)]="selectedContactEmail" class="input" type="email">
-
-                  </div>
-
-                </div>
-
-                  <!-- -------====== BTNS SEARCH  & CLEAR SEARCH======------ -->
-                  <div class="row">
-                    <div class="col-sm-12"> 
-                      <button type="submit" class="btn btn-info searchbtn" (click)="search()">
-                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                      </button>
-
-                      <button type="submit" class="btn btn-white clearsearchbtn" (click)="clearSearch()">
-                        <!-- <span class="glyphicon glyphicon-remo" aria-hidden="true"></span> -->
-                        {{ 'HistoryPage.ClearSearch' | translate }}
-                      </button>
-
-                      <button class="btn btn-white pull-right export-to-csv-btn" (click)="exportContactsToCsv()">
-                        <!-- <span style="color: #394f5a">  </span> -->
-                          {{ 'ExportToCSV' | translate }}
-                      </button>
-                    </div>
-                  </div>
-
-                <!-- </div> -->
- 
-              
-             </form>
- 
-           </div>  <!-- /.end card-header -->
+         <div class="card" style="margin-top:0px">
  
            <loading-spinner *ngIf="showSpinner"></loading-spinner>
            <div  *ngIf="!showSpinner" class="card-content table-responsive">
