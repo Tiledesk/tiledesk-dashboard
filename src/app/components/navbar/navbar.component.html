@@ -1,7 +1,8 @@
 <!-- ROW AND CUSTOM COL RESOLVE THE ISSUE: THE NAVIGATION TO PREVIOUS PAGE IS IMPOSSIBLE BECAUSE THE NAVBAR IS OVER THE NAVBAR BRAND IN WHICH THERE IS THE BACK BUTTON -->
-<div class="row">
-  <div class="col-md-11 col-md-offset-1 col-sm-11 col-sm-offset-1 col-xs-9 col-xs-offset-3" style="right:25px">
-    <nav class="navbar navbar-transparent navbar-absolute">
+<!-- <div class="row"> -->
+  <!-- <div class="col-md-11 col-md-offset-1 col-sm-11 col-sm-offset-1 col-xs-9 col-xs-offset-3" style="right:25px"> -->
+    <!-- navbar-transparent -->
+    <nav class="navbar navbar-absolute">
       <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" style="margin-top:3px" data-toggle="collapse" (click)="sidebarToggle()">
@@ -137,7 +138,7 @@
         </div>
       </div>
     </nav>
-  </div>
+  <!-- </div> -->
 
   <!-- ------------============= PENDING EMAIL VERIFICATION ALERT =============------------ -->
   <span *ngIf="HIDE_PENDING_EMAIL_NOTIFICATION === false">
@@ -184,7 +185,7 @@
     </span> -->
 
 
-</div>
+<!-- </div> -->
 
 <!-- MODAL - LOGOUT WINDOWS -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayLogoutModal}" style="background-color: rgba(90,90,90,0.5);">
