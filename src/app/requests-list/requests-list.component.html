@@ -2,13 +2,27 @@
 <!-- MOMGO DB REQUEST (ALIAS VISITORS) LIST -->
 <div class="row">
   <div class="col-md-12">
-    <p style="margin-top:10px; padding-left:30px" class="navbar-brand">
-      <!-- Visitatori -->
-      {{ 'SupportRequests' | translate }} 
-    </p> 
+    <button (click)="seeIamAgentRequests(seeAll = !seeAll)" *ngIf="ROLE_IS_AGENT === false" 
+        style="z-index: 1050;position: relative;margin-top:10px; padding-right:30px;padding-left:30px" 
+        class="navbar-brand btn-with-border-effect border-from-center"  
+        [ngClass]="{'tab-active' : displayBtnLabelSeeYourRequets === false }"
+        [disabled]="displayBtnLabelSeeYourRequets === false">
+    
+      <!-- {{ 'SupportRequests' | translate }}  -->
+      {{ "AllAgentsRequests" | translate }} 
+    </button> 
+    <!--  -->
+    <button (click)="seeIamAgentRequests(seeAll = !seeAll)" 
+      style="z-index: 1050;position: relative;margin-top:10px; padding-right:30px; padding-left:30px" 
+      class="navbar-brand btn-with-border-effect border-from-center"
+      [ngClass]="{'tab-active' : displayBtnLabelSeeYourRequets === true }" 
+      [disabled]="displayBtnLabelSeeYourRequets === true">
+  
+        {{ "YourRequests" | translate }}
+    </button> 
 
     <!-- z-index:1050 -->
-    <ul id="pill-horizontal" *ngIf="ROLE_IS_AGENT === false" class="nav nav-pills nav-pills-info custom" 
+    <!-- <ul id="pill-horizontal" *ngIf="ROLE_IS_AGENT === false" class="nav nav-pills nav-pills-info custom" 
       style="position:relative; z-index:1030; margin-top: 14px; max-width: 528px;">
       <li class="active" (click)="seeIamAgentRequests(seeAll = !seeAll)">
         <a href="#pill1" data-toggle="tab">
@@ -20,7 +34,7 @@
           {{ "YourRequests" | translate }}
         </a>
       </li>
-    </ul>
+    </ul> -->
   </div>
 </div>
 
@@ -74,7 +88,7 @@
                   </i> -->
 
                   <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                      viewBox="0 0 16 18" style="width: 32px; position: relative; top: 5px;" xml:space="preserve">
+                      viewBox="0 0 16 18" style="width: 32px; position: relative; top: 3px;" xml:space="preserve">
                     <style type="text/css">
                       .chat-icon-unserved-request{fill:#f44336;}
                     </style>
@@ -195,7 +209,7 @@
                   <thead style="background-color: rgba(242, 246, 248, 1);">
                     <tr>
                       <th style="padding-top: 4px;">
-                        <span class="table-head-span" style="">
+                        <span class="table-head-span">
                           <!-- Department  -->
                           {{ "Department" | translate }} 
                         </span>
@@ -292,7 +306,7 @@
 
                     <!-- ------ ====== MESSAGE ====== ------ -->
                     <th>
-                      <span class="column-th-span" >
+                      <span class="column-th-span">
                         {{ 'VisitorsPage.Message' | translate }}
                        </span>
                     </th>
@@ -440,7 +454,7 @@
                       </span>
                       <span *ngIf="request?.requester_is_verified === true" class="tooltipx"> 
                         <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                            viewBox="0 0 26.6 26.6" width="17" height="17" style="position: relative;left: -35px;top: -3px;" xml:space="preserve">
+                            viewBox="0 0 26.6 26.6" width="17" height="17" style="position: relative;left: -36px;top: -3px;" xml:space="preserve">
                             <style type="text/css">
                               .st0{fill:none;}
                               .st1{fill:#FFFFFF;}
@@ -480,7 +494,6 @@
                     </p>
                   </td>
     
-                  
                   <!-- ------ ====== CREATED ON ====== ------ -->
                   <td (click)='goToRequestMsgs(request?.recipient)' style="cursor:pointer">
                     <p class="column-td">
@@ -546,8 +559,8 @@
                   <!-- ------ ====== MESSAGE ====== ------ -->
                   <th>
                     <span class="column-th-span">
-                        <!-- Messagio -->
-                        {{ 'VisitorsPage.Message' | translate }}
+                      <!-- Messagio -->
+                      {{ 'VisitorsPage.Message' | translate }}
                     </span>
                   </th>
                   
@@ -562,9 +575,7 @@
                   <!-- ------ ====== DEPARTMENT ====== ------ -->
                   <th>
                     <span class="column-th-span">
- 
-                        {{ 'VisitorsPage.Department' | translate }}
-
+                      {{ 'VisitorsPage.Department' | translate }}
                     </span>  
                   </th>
                   
@@ -578,8 +589,8 @@
                   <!-- ------ ====== SERVED BY ====== ------ -->
                   <th>
                     <span class="column-th-span">                  
-                        <!-- Servita da -->
-                        {{ 'VisitorsPage.ServedBy' | translate }}
+                      <!-- Servita da -->
+                      {{ 'VisitorsPage.ServedBy' | translate }}
                     </span>
                   </th>
       
@@ -728,7 +739,7 @@
                         </span>
                         <span *ngIf="request?.requester_is_verified === true" class="tooltipx"> 
                           <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                              viewBox="0 0 26.6 26.6" width="17" height="17" style="position: relative;left: -35px;top: -3px;" xml:space="preserve">
+                              viewBox="0 0 26.6 26.6" width="17" height="17" style="position: relative;left: -36px;top: -3px;" xml:space="preserve">
                               <style type="text/css">
                                 .st0{fill:none;}
                                 .st1{fill:#FFFFFF;}
