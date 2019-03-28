@@ -585,7 +585,8 @@ $f21blue: #039be5;
     // Set up base styles, we're going to scale instead of animating width/height
     &::before,
     &::after {
-      top: 3px;
+    //   top: 3px;
+      top: 0px;
       left: 0;
       height: 100%;
       width: 100%;
@@ -609,7 +610,8 @@ $f21blue: #039be5;
   .tab-active {
     color: #039be5; 
     border-bottom: 3px solid #039be5;
-    margin-top:13px !important;
+    // margin-top:6px !important;
+    // padding-bottom: 11px !important;
   }
 
 
