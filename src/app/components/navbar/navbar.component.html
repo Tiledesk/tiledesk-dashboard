@@ -205,8 +205,10 @@
         <p style="margin-top: 0px; text-align:center; color:#566787; font-size:16px; font-weight:400 ">
           {{ "NavBar.AreYouSureYouWantToLogOut" | translate }}
         </p>
-        <p style="margin-bottom:0px; text-align:center;">
-          {{ "NavBar.NoteThatThisWillNotChangeYourAvailability" | translate }}
+        <p *ngIf="IS_AVAILABLE === true" style="margin-bottom:0px; text-align:center;">
+          <!-- {{ "NavBar.NoteThatThisWillNotChangeYourAvailability" | translate }} -->
+          <i class="material-icons" style="display: block; color:#f44336">warning</i>
+          <span style="color:#f44336"> {{ "NavBar.AttentionIfYouDoNotWantToReceiveRequests" | translate }} </span> 
         </p>
       </div>
 

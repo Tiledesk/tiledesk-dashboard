@@ -71,6 +71,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     userImageHasBeenUploaded: boolean;
 
     HAS_OPENED_THE_CHAT: boolean;
+    IS_AVAILABLE: boolean;
     constructor(
         location: Location,
         private element: ElementRef,
@@ -137,8 +138,35 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         this.getFromLocalStorageHasOpenedTheChat();
         this.getFromNotifyServiceHasOpenedChat();
 
-
+        this.getUserAvailability();
+        this.hasChangedAvailabilityStatusInSidebar();
+        this.hasChangedAvailabilityStatusInUsersComp();
+        // this.subscribeToLogoutPressedinSidebarNavMobile();
+        
     } // OnInit
+
+    getUserAvailability() {
+        this.usersService.user_is_available_bs.subscribe((user_available) => {
+            this.IS_AVAILABLE = user_available;
+            console.log('!!! NAVABAR - USER IS AVAILABLE ', this.IS_AVAILABLE);
+        });
+    }
+
+    hasChangedAvailabilityStatusInSidebar() {
+        this.usersService.has_changed_availability_in_sidebar.subscribe((has_changed_availability) => {
+            console.log('!!! NAVABAR SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE SIDEBAR', has_changed_availability)
+            //   this.getAllUsersOfCurrentProject();
+        })
+    }
+
+    hasChangedAvailabilityStatusInUsersComp() {
+        this.usersService.has_changed_availability_in_users.subscribe((has_changed_availability) => {
+            console.log('!!! NAVABAR SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE USERS COMP', has_changed_availability)
+            if (this.project) {
+                // this.getProjectUser()
+            }
+        })
+    }
 
     ngAfterViewInit() {
         const navbar: HTMLElement = this.element.nativeElement;
@@ -495,6 +523,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         }
     };
     sidebarClose() {
+        console.log('sidebarClose clicked')
         const body = document.getElementsByTagName('body')[0];
         if (this.toggleButton) {
             this.toggleButton.classList.remove('toggled');
@@ -504,6 +533,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     };
 
     sidebarToggle() {
+        console.log('sidebarToggle clicked')
         // const toggleButton = this.toggleButton;
         // const body = document.getElementsByTagName('body')[0];
         if (this.sidebarVisible === false) {
@@ -527,8 +557,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         }
         return 'Dashboard';
     }
-
-
 
     getProjectUserId() {
         this.usersService.project_user_id_bs.subscribe((projectUser_id) => {
@@ -559,6 +587,19 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     //     }
     // }
 
+    // subscribeToLogoutPressedinSidebarNavMobile() {
+    //     this.usersService.has_clicked_logoutfrom_mobile_sidebar.subscribe((has_clicked_logout: boolean) => {
+    //         console.log('NAV-BAR - HAS CLICKED LOGOUT IN THE SIDEBAR ', has_clicked_logout);
+    //         console.log('NAV-BAR -  SIDEBAR is VISIBILE', this.sidebarVisible);
+    //         console.log('NAV-BAR -  USER IS AVAILABLE ', this.IS_AVAILABLE);
+
+    //         if (has_clicked_logout === true) {
+    //             this.sidebarClose();
+    //             this.openLogoutModal();
+    //         }
+
+    //     })
+    // };
 
 
     openLogoutModal() {
