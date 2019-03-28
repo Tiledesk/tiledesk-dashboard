@@ -183,7 +183,7 @@ select option:first-child{
 
   .disabled {
     border-left-color: #999;
-    background-color: rgba(192, 192, 192, 0.1);
+    // background-color: rgba(192, 192, 192, 0.1);
   }
   
   .success strong {
@@ -200,4 +200,14 @@ select option:first-child{
 .attribute {
     color: #7695a5;
     // font-weight: 400;
+}
+
+.title-attribute {
+  font-family: "Google Sans",sans-serif!important;
+  color: #394f5a;
+  font-weight: 500;
+}
+
+.disabled-label {
+  color:#aaa !important;
 }
