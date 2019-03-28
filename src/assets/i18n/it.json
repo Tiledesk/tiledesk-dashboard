@@ -172,6 +172,15 @@
     "minutes":" minuti, ",
     "seconds":" secondi",
     "ViewProfile":"Vedi profilo",
+    "GettingStartedWith": "Inizia con",
+    "HereIsAListOfPagesAndLinks":"Ecco un elenco di pagine e link che consigliamo vivamente di visitare prima di iniziare",
+    "OpenTheChatToHandleTheIncomingRequests": "Apri la chat per gestire le richieste in arrivo",
+    "GetTheMobileApp": "Ottieni le app mobile",
+    "KeepSupportGoingWhenAgentsAreOnTheMove": "Offri supporto ai clienti in qualsiasi momento",
+    "GettingStartedForAdmin":"Guida per amministratori",
+    "GettingStartedForAgents":"Guida per agenti",
+    "DeveloperDocs":"Documentazione sviluppatori",
+    "InstallWithGoogleTagManager": "Installa con Google Tag Manager",
     "UserProfile": {
         "Profile": "Profilo",
         "UploadImage": "Carica immagine",
@@ -214,10 +223,16 @@
         "SomeSystemAreDisabled": "alcune funzioni di sistema, come le notifiche via email, sono disabilitate",
         "AreYouSureYouWantToLogOut": "Sei sicuro di voler uscire?",
         "NoteThatThisWillNotChangeYourAvailability": "Nota che questo non cambierà lo stato della tua disponibilità.",
+        "AttentionIfYouDoNotWantToReceiveRequests":"Attenzione, se non vuoi ricevere richieste cambia il tuo stato in non disponibile prima di uscire",
+        "AttentionYouAreAvailable":"Attenzione, sei disponibile in",
+        "Projects": "progetti",
+        "Project": "progetto",
+        "IfYouDoNotWantToReceiveRequests":"se non vuoi ricevere richieste cambia il tuo stato in non disponibile prima di uscire",
         "OpenTheChat":"Apri la chat per attivare le notifiche!",
         "ToManageTheMessages":"per gestire i messaggi e attivare le notifiche push.",
         "OpenTheChatToActivateNotifications":"Apri la chat per gestire i messaggi e attivare le notifiche push",
-        "ClickHere":"Clicca qui"
+        "ClickHere":"Clicca qui",
+        "LogOut":"Esci"
     },
     "SideBar": {
         "ViewAllProjects": "Visualizza tutti i progetti",
@@ -267,7 +282,7 @@
     },
     "HomePage": {
         "Widget": "Per iniziare configura il tuo Widget!",
-        "WidgetSubtitle1": "Per iniziare incorpora e personalizza",
+        "WidgetSubtitle1": "Personalizza e incorpora ",
         "WidgetSubtitle2": "il chat widget sul tuo sito web",
         "VisitorsSubtitle1": "Visualizza l'elenco di tutti i tuoi visitatori web",
         "VisitorsSubtitle2": "e chatta con loro",
@@ -304,7 +319,7 @@
         "Available": "Disponibile",
         "Actions": "Azioni",
         "ViewProfileUser": "vedi profilo utente",
-        "tootipEditUser": "Modifica ruolo membro",
+        "tootipEditUser": "Modifica ruolo",
         "tootipDeleteUser": "Rimuovi Membro",
         "modalDeleteUser": "Rimuovi Membro",
         "TheMemberWithId": "Il membro con Id",
@@ -604,7 +619,8 @@
         "AreYouSureLeftTheChat": "Sei sicuro di voler abbandonare la chat?",
         "ChatLeft": "Chat abbandonata",
         "AuthenticatedUser": "Utente autenticato",
-        "ViewRequestDetails": "visualizza i dettagli della richiesta"
+        "ViewRequestDetails": "visualizza i dettagli della richiesta",
+        "Open": "Apri"
     },
     "RequestMsgsPage": {
         "MessagesOfTheRequest": "Messaggi della richiesta",
