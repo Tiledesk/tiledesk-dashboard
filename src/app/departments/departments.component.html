@@ -119,7 +119,7 @@
                 <tr *ngFor="let dept of departments">
                   <td *ngIf="dept?.default !== true">
                     <span class="tooltipx">
-                        <span style="font-weight: 400;"> 
+                        <span style="font-weight: 400;font-size:13px"> 
                           {{ dept?.name }} 
                         </span>
                         <span style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px; display: block;">
@@ -155,7 +155,10 @@
                       </span> 
 
                       <!-- use case: NO ERROR to get the bot -->
-                      {{ dept?.hasDeptName }}<span *ngIf="dept.bot_only == true" style="font-size: 12px; color: #7695a5; font-weight: 400"> {{ 'DepartmentsPage.OnlyBot' | translate }} </span> 
+                      <span style="font-size:13px; font-weight:400"> {{ dept?.hasDeptName }}</span>
+                      <span *ngIf="dept.bot_only == true" style="font-size: 12px; color: #7695a5; font-weight: 400"> 
+                        {{ 'DepartmentsPage.OnlyBot' | translate }}
+                       </span> 
 
                       <!-- use case: ERROR to get the bot: for example the bot has been deleted (while the bot id is yet in the dept object) 
                       so getBotById return an error  -->
@@ -172,7 +175,7 @@
 
                   <td *ngIf="dept?.default !== true" style="text-transform: capitalize;">
                       <!-- *ngIf="dept?.routing !== 'fixed'" -->
-                    <span style="font-weight:400"> {{ dept?.routing }}</span>
+                    <span style="font-weight:400;font-size:13px"> {{ dept?.routing }}</span>
                     <!-- <span *ngIf="dept?.routing === 'fixed'"> Bot </span> -->
                   </td>
 
@@ -191,7 +194,7 @@
                     <!-- dept?.routing !== 'fixed' &&  -->
                     <span *ngIf="dept?.hasGroupName && dept?.groupHasBeenTrashed === true"> 
                       <span style="color: #aaaaaa; vertical-align: middle; "> {{ 'DepartmentsPage.Group' | translate }} </span> 
-                      <span style="vertical-align: middle;">{{ dept?.hasGroupName }} </span>
+                      <span style="vertical-align: middle;font-size:13px">{{ dept?.hasGroupName }} </span>
                       <i class="material-icons" style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i> 
                       <span style="color: #ff5252; vertical-align: middle; font-size:12px;">{{ 'DepartmentsPage.TheGroupHasBeenTrashed' | translate }} </span> 
                     </span>

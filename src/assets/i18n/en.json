@@ -173,7 +173,7 @@
     "seconds": " seconds",
     "ViewProfile": "View profile",
     "GettingStartedWith": "Getting started with",
-    "HereIsAListOfPagesAndLinks": "Here’s a list of pages and links we highly recommend going over before you start having conversations",
+    "HereIsAListOfPagesAndLinks": "Here’s a list of pages we highly recommend going over before you start having conversations",
     "OpenTheChatToHandleTheIncomingRequests": "Open the Chat to handle the incoming requests",
     "GetTheMobileApp": "Get the Mobile App",
     "KeepSupportGoingWhenAgentsAreOnTheMove": "Keep support going when agents are on the move",
@@ -426,7 +426,7 @@
     },
     "BotsPage": {
         "AddBot": "Add Bot",
-        "Name": "Bot name",
+        "Name": "Bot Name",
         "RemoteId": "Remote Id",
         "CreationDate": "Creation date",
         "Actions": "Actions",

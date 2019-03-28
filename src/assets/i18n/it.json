@@ -173,7 +173,7 @@
     "seconds":" secondi",
     "ViewProfile":"Vedi profilo",
     "GettingStartedWith": "Inizia con",
-    "HereIsAListOfPagesAndLinks":"Ecco un elenco di pagine e link che consigliamo vivamente di visitare prima di iniziare",
+    "HereIsAListOfPagesAndLinks":"Ecco un elenco di pagine che consigliamo vivamente di visitare prima di iniziare",
     "OpenTheChatToHandleTheIncomingRequests": "Apri la chat per gestire le richieste in arrivo",
     "GetTheMobileApp": "Ottieni le app mobile",
     "KeepSupportGoingWhenAgentsAreOnTheMove": "Offri supporto ai clienti in qualsiasi momento",
@@ -426,7 +426,7 @@
     },
     "BotsPage": {
         "AddBot": "Aggiungi Bot",
-        "Name": "Nome bot",
+        "Name": "Nome Bot",
         "RemoteId": "Id remoto",
         "CreationDate": "Data creazione",
         "Actions": "Azioni",

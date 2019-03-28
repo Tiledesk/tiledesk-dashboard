@@ -106,7 +106,7 @@
 
                     <td (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)' style="cursor: pointer;">
                       <span class="tooltipx">
-                        <span style="font-weight:400">  {{ faqkb?.name }}</span>
+                        <span style="font-weight:400; font-size:13px">  {{ faqkb?.name }}</span>
 
                         <span class="tooltiptext">{{ 'BotsPage.BotId' | translate }}: <br> {{ faqkb?._id  }} </span>
                       </span>  
@@ -114,7 +114,7 @@
 
                     <td (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)' style="cursor: pointer;">
                       <!-- class="tooltipx" -->
-                      <span style="font-weight:400">
+                      <span style="font-weight:400; font-size:13px">
                         <span *ngIf="!faqkb?.has_faq">
                           0
                           <i class="material-icons" style="vertical-align: middle; color:#ec971f; font-size: 12px; padding-left: 8px">
