@@ -127,7 +127,8 @@ button.close {
 .onoffswitch-inner:before {
     content: "ON";
     padding-left: 10px;
-    background-color: #EEEEEE; color: #4CAF50;
+    // background-color: #EEEEEE; 
+    color: #4CAF50;
 }
 .onoffswitch-inner:after {
     content: "OFF";
@@ -160,7 +161,8 @@ button.close {
 .card-section-title {
     font-family: 'Google Sans', sans-serif !important;
     // color: rgba(0, 0, 0, 0.87); 
-    color: rgb(118, 149, 165);
+    // color: rgb(118, 149, 165);
+    color: rgba(0, 0, 0, 0.54) !important;
     text-align: left; 
     margin-bottom: 0px; 
     margin-top: 10px; 
@@ -186,8 +188,14 @@ button.close {
     text-align: right !important;
 }
 
+@media (max-width: 768px) {
+    .custom-label {
+        height: 0px !important;
+    }
+}
+
 .section-divider {
     padding:0px 25px;
     margin-top: 10px
-
 }
+
