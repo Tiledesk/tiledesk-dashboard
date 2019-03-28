@@ -180,3 +180,23 @@ input[type=text] {
     visibility: visible;
   }
   // end TOOLTIP
+
+.card-header-custom-bkgrnd {
+    // display:none;
+    box-shadow:none;
+    -webkit-box-shadow:none;
+    margin:0px;
+    border-radius: 3px 3px 0px 0px;
+    // background-color: #f2f6f8;
+    background-color: #ffffff;
+    border-bottom: 1px solid #eff3f5;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.column-th-span {
+    font-size: 14px;
+    font-weight: 500;
+    color: #353f45;
+    // color: #566787;
+}

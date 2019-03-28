@@ -1,25 +1,30 @@
-  <p style="z-index: 1050;position: relative;margin-top:10px; padding-left:30px" class="navbar-brand">Bot</p>   
+<p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px" class="navbar-brand">Bot</p>   
   <div class="main-content" style="padding-top:0px">
     <div class="container-fluid">
-      <!-- text-align: right!important;-->
-      <div class="create" style="padding-top:5px; padding-bottom:0px">
+
+      <!-- <div class="create" style="padding-top:5px; padding-bottom:0px">
         <button class="btn btn-info" style="padding-left:8px; padding-right: 16px; margin-bottom: 0px;" 
         (click)="goToEditAddPage_CREATE()">
-            <!-- is-small -->
           <span class="icon" style="padding-right:8px">
-            <!-- <i class="fa fa-plus-circle"></i> -->
             <i class="material-icons">add_circle</i>
           </span>
-          <!-- Aggiungi FAQ Knowledge Base -->
-          <!-- Aggiungi Bot -->
-          {{ "BotsPage.AddBot" | translate }} 
+        {{ "BotsPage.AddBot" | translate }} 
         </button>
-      </div>
+      </div> -->
   
       <!-- MOMGO DB FAQ Knowledge Base LIST -->
       <div class="row">
         <div class="col-md-8">
           <div class="card">
+            <div class="card-header card-header-custom-bkgrnd">
+              <button class="btn btn-info" style="padding: 8px 16px; margin: 0px;" 
+              (click)="goToEditAddPage_CREATE()">
+                <span class="icon" style="padding-right:8px">
+                  <i class="material-icons">add_circle</i>
+                </span>
+                {{ "BotsPage.AddBot" | translate }} 
+              </button>
+            </div>
 
             <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
@@ -28,19 +33,15 @@
                 <thead>
                   <tr>
                     <th>
-                      <span style="color: #566787">
-                          <!-- Name -->
-                        <strong>
-                          {{ "BotsPage.Name" | translate }} 
-                        </strong>
+                      <span class="column-th-span">
+                        <!-- Name -->
+                        {{ "BotsPage.Name" | translate }} 
                       </span>
                     </th>
 
                     <th>
-                      <span style="color: #566787">
-                        <strong>
-                          # FAQs
-                        </strong>
+                      <span class="column-th-span">
+                        # FAQs
                       </span>
                     </th>
 
@@ -73,11 +74,9 @@
                     </th> -->
 
                     <th>
-                      <span style="color: #566787">
-                          <!-- Actions -->
-                        <strong>
-                          {{ "BotsPage.Actions" | translate }}
-                        </strong>
+                      <span class="column-th-span">
+                        <!-- Actions -->
+                        {{ "BotsPage.Actions" | translate }}
                       </span>
                     </th>
 
@@ -93,12 +92,11 @@
                 </thead>
             
                 <tbody>
-
                   <!-- IF THERE ISN'T BOT -->
                   <tr *ngIf="faqkbList && faqkbList?.length === 0"> 
                     <td colspan="3" style="text-align: center; padding-top: 16px;">
                       <!-- color: #ff5252   -->
-                      <p style="font-size:1em; margin-bottom: 0px; color:#999999; font-weight: 400">
+                      <p style="font-size:1em; margin-bottom: 0px; color:#7695a5; font-weight: 400">
                         {{ 'BotsPage.NoBot' | translate }}
                       </p>
                     </td>
@@ -108,7 +106,7 @@
 
                     <td (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)' style="cursor: pointer;">
                       <span class="tooltipx">
-                        {{ faqkb?.name }}
+                        <span style="font-weight:400">  {{ faqkb?.name }}</span>
 
                         <span class="tooltiptext">{{ 'BotsPage.BotId' | translate }}: <br> {{ faqkb?._id  }} </span>
                       </span>  
@@ -116,7 +114,7 @@
 
                     <td (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)' style="cursor: pointer;">
                       <!-- class="tooltipx" -->
-                      <span >
+                      <span style="font-weight:400">
                         <span *ngIf="!faqkb?.has_faq">
                           0
                           <i class="material-icons" style="vertical-align: middle; color:#ec971f; font-size: 12px; padding-left: 8px">
