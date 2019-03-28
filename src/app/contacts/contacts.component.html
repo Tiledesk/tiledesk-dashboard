@@ -1,5 +1,5 @@
 
- <p style="z-index: 1050;position: relative; margin-top:10px; padding-left:30px" class="navbar-brand">
+ <p style="z-index: 1050;position: relative; margin-top:6px; padding-left:30px" class="navbar-brand">
     {{ 'Contacts' | translate }}
   </p> 
  
@@ -93,10 +93,9 @@
                            <div class="col-sm-4">
                              <!-- <label  class="col-sm-12" style="text-align: left; color: #7695a5 !important;">
                                Email
-                             </label>
-                 -->
+                             </label> -->
                              <input style="margin-top:2px" name="contactEmail" [(ngModel)]="selectedContactEmail" class="form-control" type="email"
-                                placeholder="{{ 'SearchByEmail' | translate }}">
+                                style="background-image: none !important" placeholder="{{ 'SearchByEmail' | translate }}">
          
                            </div>
          
@@ -147,37 +146,30 @@
  
                   <!-- ===== CONTACT NAME ===== -->
                   <th>
-                     
-                    <span style="color: #566787">
-                      <strong>
-                        <strong>{{ 'Contact' | translate }}</strong>
-                      </strong>
+                    <span class="column-th-span">
+                      {{ 'Contact' | translate }}
                     </span>  
                   </th>
  
                   <!-- ===== CONTACT EMAIL ===== -->
                   <th>
-                    <span style="color: #566787">
-                      <strong> Email </strong>
+                    <span class="column-th-span">
+                      Email 
                     </span>
                   </th>
  
    
                   <!-- ===== CREATED ===== -->
                   <th>
-                    <span style="color: #566787">
-                      <strong> 
-                        {{ 'Created' | translate }}
-                      </strong>
+                    <span class="column-th-span">
+                      {{ 'Created' | translate }}
                     </span>
                   </th>
 
                   <!-- ========== ICON VIEW CONTACT DETAILS ========== -->
                   <th>
-                    <span style="color: #566787">
-                      <strong> 
-                        {{ 'Actions' | translate }}
-                      </strong>
+                    <span class="column-th-span">
+                      {{ 'Actions' | translate }}
                     </span>
                   </th>
      
@@ -189,7 +181,7 @@
                 <tr *ngIf="contacts && contacts?.length === 0"> 
                   <td colspan="4" style="text-align: center; padding-top: 16px; cursor: pointer">
  
-                    <p style="font-size:1em; color:#999999; font-weight: 400">
+                    <p style="font-size:1em; color:#7695a5; font-weight: 400">
                       {{ 'NoContact' | translate }}
                     </p>
                   </td>
@@ -198,7 +190,6 @@
                 <tr *ngFor="let contact of contacts">
    
                   <!-- ===== CONTACT NAME ===== -->
-                  
                   <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
                         
                     <span class="avatar" [ngStyle]="{'background-color': contact?.avatar_fill_colour }">
@@ -221,11 +212,11 @@
                       <span class="tooltiptext-custom"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
                     </span>
                     
-                      <span style="font-size:0.9em; font-weight:400" [ngClass]="{'contact-verified' : contact?.contact_is_verified === true}">
+                      <span class="column-td" [ngClass]="{'contact-verified' : contact?.contact_is_verified === true}">
                         {{ contact?.fullname }}
                       </span>
 
-                      <span *ngIf="!contact?.fullname" style="font-size:0.9em; font-weight:400" [ngClass]="{'contact-verified' : contact?.contact_is_verified === true}">
+                      <span *ngIf="!contact?.fullname" class="column-td" [ngClass]="{'contact-verified' : contact?.contact_is_verified === true}">
                         n.a
                       </span>
 
@@ -234,11 +225,11 @@
                   <!-- ========== CONTACT EMAIL ========== -->
                   <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
                     
-                    <p style="font-size:0.9em; margin-bottom: 5px; margin-top: 5px">
+                    <p class="column-td" style="margin-bottom: 5px; margin-top: 5px">
                       {{ contact?.email }}
                     </p>
 
-                    <p *ngIf="!contact?.email" style="font-size:0.9em; margin-bottom: 5px; margin-top: 5px">
+                    <p class="column-td" *ngIf="!contact?.email" style="margin-bottom: 5px; margin-top: 5px">
                       n.a.
                     </p>
                   </td>
@@ -246,7 +237,7 @@
                   <!-- ========== CREATED AT ========== -->
                   <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
                     
-                    <p style="font-size:0.9em; margin-bottom: 5px; margin-top: 5px">
+                    <p class="column-td" style="margin-bottom: 5px; margin-top: 5px">
     
                       {{ contact?.createdAt | amTimeAgo }}
                        <!-- ({{ contact?.createdAt | date: 'd/M/y HH:mm' }})  -->
