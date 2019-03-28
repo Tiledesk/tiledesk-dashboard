@@ -202,13 +202,15 @@ only screen and (max-width: 760px),
 }
 /* END NEW FOR TABLE */
 
-.card-header-custom {
+.card-header-custom-bkgrnd {
     // display:none;
     box-shadow:none;
     -webkit-box-shadow:none;
     margin:0px;
     border-radius: 3px 3px 0px 0px;
-    background-color: #f2f6f8;
+    // background-color: #f2f6f8;
+    background-color: #ffffff;
+    border-bottom: 1px solid #eff3f5;
     padding-top: 12px;
     padding-bottom: 12px;
 }
@@ -242,7 +244,7 @@ $f21blue: #039be5;
   box-sizing: border-box;
   // margin: 1em;
   // padding: 1em 2em;
-  padding-bottom: 37px;
+  padding-bottom: 42px;
   font-size: 18px;
   font-weight: 300;
 
@@ -287,4 +289,11 @@ $f21blue: #039be5;
     transform: scale3d(1,1,1); // Show full-size
     transition: transform 0.5s;
   }
+}
+
+.column-th-span {
+    font-size: 14px;
+    font-weight: 500;
+    color: #353f45;
+    // color: #566787;
 }

@@ -1,10 +1,10 @@
-<button (click)="goToUsers()" style="z-index: 1050;position: relative;margin-top:10px; padding-left:30px; padding-right: 30px;"
+<button (click)="goToUsers()" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px; padding-right: 30px;"
   class="navbar-brand btn-with-border-effect center">
   <!-- {{ "GroupsPage.Groups" | translate }}  -->
   {{ "Users" | translate }}
 </button>  
 
-<p style="z-index: 1050;position: relative;margin-top:10px; padding-left:30px;color: #039be5; padding-right: 30px; border-bottom: 3px solid #039be5; padding-bottom: 34px;" 
+<p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px;color: #039be5; padding-right: 30px; border-bottom: 3px solid #039be5; padding-bottom: 39px;" 
 class="navbar-brand">
     <!-- {{ "GroupsPage.Groups" | translate }}  -->
     {{ "Groups" | translate }}
@@ -40,7 +40,7 @@ class="navbar-brand">
       <div class="col-md-8">
         <div class="card" style="min-height: 195px">
 
-          <div class="card-header card-header-custom" data-background-color="" style="">
+          <div class="card-header card-header-custom-bkgrnd">
             <button class="btn btn-info" style="padding: 8px 16px;margin:0px;" (click)="goToEditAddPage_create()">
               <span class="icon" style="padding-right:8px">
                 <i class="material-icons">add_circle</i>
@@ -53,16 +53,14 @@ class="navbar-brand">
 
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
           
-          <div *ngIf="!showSpinner" class="card-content table-responsive">
+          <div *ngIf="!showSpinner" class="card-content table-responsive" style="">
             <table class="table table-hover">
               <thead>
                 <tr>
                   <th>
-                    <span style="color: #566787">
+                    <span class="column-th-span">
                       <!-- Name -->
-                      <strong>
-                        {{ "GroupsPage.Name" | translate }} 
-                      </strong>
+                      {{ "GroupsPage.Name" | translate }} 
                     </span>
                   </th>
 
@@ -82,22 +80,17 @@ class="navbar-brand">
                   </th> -->
                   
                   <th>
-                    <span style="color: #566787">
-                      <strong> 
+                    <span class="column-th-span">
                        # {{ "GroupsPage.Members" | translate }}
-                      </strong>
                     </span>  
                   </th>
 
                   <th>
-                    <span style="color: #566787">
+                    <span class="column-th-span">
                       <!-- Actions -->
-                      <strong>
-                        {{ "GroupsPage.Actions" | translate }}
-                      </strong>
+                      {{ "GroupsPage.Actions" | translate }}
                     </span>
                   </th>
-
                 </tr>
               </thead>
             
@@ -107,7 +100,7 @@ class="navbar-brand">
                 <tr *ngIf="groupsList && groupsList.length === 0" > 
                   <td colspan="5" style="text-align: center; padding-top: 16px;">
                     <!-- color: #ff5252   -->
-                    <p style="font-size:1em; margin-bottom: 0px; color:#999999; font-weight: 400">
+                    <p style="font-size:1em; margin-bottom: 0px; color:#7695a5; font-weight: 400">
                       {{ 'GroupsPage.NoGroups' | translate }}
                     </p>
                   </td>
@@ -118,7 +111,7 @@ class="navbar-brand">
                     <!-- rel="tooltip" title="{{ group?._id }}" -->
                   <td (click)='goToEditAddPage_edit(group?._id)' style="cursor: pointer;">
                     <span class="tooltipx">
-                      {{ group?.name }}
+                      <span style="font-weight:400">  {{ group?.name }}</span>
                       <span class="tooltiptext">
                         {{ 'GroupsPage.GroupId' | translate }}: <br> {{ group?._id }} 
                       </span>
@@ -135,8 +128,8 @@ class="navbar-brand">
 
                   <td (click)='goToEditAddPage_edit(group?._id)' style="cursor: pointer;">
                       <!-- class="tooltipx" -->
-                    <span>
-                      {{ group?.members.length }}  
+                    <span style="font-weight:400">
+                      {{ group?.members.length }} 
 
                       <span *ngIf="group?.members.length === 0" style="padding-left: 8px">
                         <i class="material-icons" style="vertical-align: middle; color:#ec971f; font-size: 12px">report_problem</i>
