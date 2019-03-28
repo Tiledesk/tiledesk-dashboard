@@ -36,6 +36,10 @@ export class UsersService {
   public has_changed_availability_in_sidebar: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public has_changed_availability_in_users: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public userProfileImageExist: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  // public has_clicked_logoutfrom_mobile_sidebar: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  // public has_clicked_logoutfrom_mobile_sidebar_project_undefined: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  
+  
 
   http: Http;
   BASE_URL = environment.mongoDbConfig.BASE_URL;
@@ -115,8 +119,8 @@ export class UsersService {
 
         this.PENDING_INVITATION_URL = this.BASE_URL + this.project._id + '/pendinginvitations',
 
-        // MAYBE NOT USED anymore
-        this.PROJECT_USER_DTLS_URL = this.BASE_URL + this.project._id + '/member/'
+          // MAYBE NOT USED anymore
+          this.PROJECT_USER_DTLS_URL = this.BASE_URL + this.project._id + '/member/'
 
         this.AVAILABLE_USERS_URL = this.PROJECT_BASE_URL + this.project._id + '/users/availables'
         this.NEW_AVAILABLE_USERS_URL = this.PROJECT_BASE_URL + this.project._id + '/users/availables'
@@ -309,8 +313,8 @@ export class UsersService {
 
   }
 
-   /// ================================== PENDING USERS ================================== ///
-   public getPendingUsers(): Observable<PendingInvitation[]> {
+  /// ================================== PENDING USERS ================================== ///
+  public getPendingUsers(): Observable<PendingInvitation[]> {
     const url = this.PENDING_INVITATION_URL;
 
     console.log('GET PENDING USERS ', url);
@@ -323,19 +327,19 @@ export class UsersService {
       .map((response) => response.json());
   }
 
- /// ================================== RESEND EMAIL TO PENDING USERS ================================== ///
- public getPendingUsersByIdAndResendEmail(pendingInvitationId): Observable<PendingInvitation[]> {
-  const url = this.PENDING_INVITATION_URL + '/resendinvite/' + pendingInvitationId;
+  /// ================================== RESEND EMAIL TO PENDING USERS ================================== ///
+  public getPendingUsersByIdAndResendEmail(pendingInvitationId): Observable<PendingInvitation[]> {
+    const url = this.PENDING_INVITATION_URL + '/resendinvite/' + pendingInvitationId;
 
-  console.log('GET PENDING USERS ', url);
-  const headers = new Headers();
-  headers.append('Content-Type', 'application/json');
-  headers.append('Authorization', this.TOKEN);
-  // console.log('TOKEN TO COPY ', this.TOKEN)
-  return this.http
-    .get(url, { headers })
-    .map((response) => response.json());
-}
+    console.log('GET PENDING USERS ', url);
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    // console.log('TOKEN TO COPY ', this.TOKEN)
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
 
 
 
@@ -541,6 +545,21 @@ export class UsersService {
     }
 
   }
+
+
+  // ====================== (WHEN PROJEC IS DEFINED) IS PASSED FROM THE SIDEBAR COMP  > nav-mobile-menu WHEN IS CLICKED THE LOGOUT BTN IN IT
+  // THE NAVBAR SUBISCIBE THE EVENT SO WILL BE OPEN THE LOGOUT MODAL THAT IS IN THE NAVBAR COMPONENT AND NO MORE THE LOG
+  // LOGOUT MODAL IN THE SIDEBAR COMP ======================
+  // public logout_btn_clicked_from_mobile_sidebar(clicked: boolean) {
+  //   this.has_clicked_logoutfrom_mobile_sidebar.next(clicked)
+  //   console.log('USER-SERVICE: - HAS CLICKED LOGOUT IN THE SIDEBAR (prjct defined) ')
+  // }
+
+  // public logout_btn_clicked_from_mobile_sidebar_project_undefined(clicked: boolean) {
+  //   this.has_clicked_logoutfrom_mobile_sidebar_project_undefined.next(clicked)
+  //   console.log('USER-SERVICE: - HAS CLICKED LOGOUT IN THE SIDEBAR (prjct undefined)')
+  // }
+  
 
   /* used by admin.guard (for the moment not used) */
   // checkRole() {
