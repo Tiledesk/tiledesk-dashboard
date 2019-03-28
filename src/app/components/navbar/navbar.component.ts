@@ -523,7 +523,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         }
     };
     sidebarClose() {
-        console.log('sidebarClose clicked')
+        // console.log('sidebarClose clicked')
         const body = document.getElementsByTagName('body')[0];
         if (this.toggleButton) {
             this.toggleButton.classList.remove('toggled');
