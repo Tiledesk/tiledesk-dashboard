@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, ElementRef, HostListener, OnDestroy } from '@angular/core';
 import { ProjectService } from '../services/project.service';
 import { Project } from '../models/project-model';
 import { Router } from '@angular/router';
@@ -9,13 +9,13 @@ import { DepartmentService } from '../services/mongodb-department.service';
 import { isDevMode } from '@angular/core';
 import { UsersService } from '../services/users.service';
 import { UploadImageService } from '../services/upload-image.service';
-
+import { Subscription } from 'rxjs/Subscription';
 @Component({
   selector: 'projects',
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.scss']
 })
-export class ProjectsComponent implements OnInit {
+export class ProjectsComponent implements OnInit, OnDestroy {
 
   projects: Project[];
 
@@ -41,6 +41,8 @@ export class ProjectsComponent implements OnInit {
   APP_IS_DEV_MODE: boolean;
   userProfileImageExist: boolean;
   userImageHasBeenUploaded: boolean;
+  myAvailabilityCount: number;
+  subscription: Subscription;
   constructor(
     private projectService: ProjectService,
     private router: Router,
@@ -62,10 +64,12 @@ export class ProjectsComponent implements OnInit {
     this.getProjectsAndSaveInStorage();
     this.getLoggedUser();
 
-    this.checkUserImageUploadIsComplete()
+    this.checkUserImageUploadIsComplete();
 
     // used when the page is refreshed
-    this.checkUserImageExist()
+    this.checkUserImageExist();
+
+    // this.subscribeToLogoutPressedinSidebarNavMobilePrjctUndefined();
   }
 
   checkUserImageExist() {
@@ -141,6 +145,7 @@ export class ProjectsComponent implements OnInit {
         // SET THE IDs and the NAMES OF THE PROJECT IN THE LOCAL STORAGE.
         // WHEN IS REFRESHED A PAGE THE AUTSERVICE USE THE NAVIGATION PROJECT ID TO GET FROM STORAGE THE NAME OF THE PROJECT
         // AND THEN PUBLISH PROJECT ID AND PROJECT NAME
+        let countOfcurrentUserAvailabilityInProjects = 0
         this.projects.forEach(project => {
           console.log('!!! SET PROJECT IN STORAGE')
           if (project.id_project) {
@@ -149,9 +154,19 @@ export class ProjectsComponent implements OnInit {
               name: project.id_project.name,
               role: project.role
             }
+
+            /***  ADDED TO KNOW IF THE CURRENT USER IS AVAILABLE IN SOME PROJECT
+             *    ID USED TO DISPLAY OR NOT THE MSG 'Attention, if you don't want to receive requests...' IN THE LOGOUT MODAL  ***/
+            if (project.user_available === true) {
+              countOfcurrentUserAvailabilityInProjects = countOfcurrentUserAvailabilityInProjects + 1;
+            }
+
             localStorage.setItem(project.id_project._id, JSON.stringify(prjct));
           }
         });
+        this.myAvailabilityCount = countOfcurrentUserAvailabilityInProjects;
+        this.projectService.countOfMyAvailability(this.myAvailabilityCount);
+        console.log('!!! GET PROJECTS - I AM AVAILABLE IN # ', this.myAvailabilityCount, 'PROJECTS');
       }
     }, error => {
       this.showSpinner = false;
@@ -306,6 +321,25 @@ export class ProjectsComponent implements OnInit {
     }
   };
 
+
+  // subscribeToLogoutPressedinSidebarNavMobilePrjctUndefined() {
+  //  this.usersService.has_clicked_logoutfrom_mobile_sidebar_project_undefined
+  //     .subscribe((has_clicked_logout: boolean) => {
+  //       console.log('NAV-BAR - HAS CLICKED LOGOUT IN THE SIDEBAR ', has_clicked_logout);
+  //       console.log('NAV-BAR -  SIDEBAR is VISIBILE', this.sidebarVisible);
+
+  //       if (has_clicked_logout === true) {
+  //         this.sidebarClose();
+  //         this.openLogoutModal();
+  //         this.usersService.logout_btn_clicked_from_mobile_sidebar_project_undefined(false)
+  //       }
+  //     })
+  // };
+
+  ngOnDestroy() {
+    // console.log('NAV-BAR  - unsubscribe ');
+    // this.subscription.unsubscribe();
+  }
 
   openLogoutModal() {
     this.displayLogoutModal = 'block';

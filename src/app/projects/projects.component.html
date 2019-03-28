@@ -1,5 +1,3 @@
-<!-- NEW FOR THIS TEMPLATE -->
-<!-- <p style="margin-top:10px; padding-left:30px" class="navbar-brand">Progetti</p>  -->
 <div class="row">
   <div class="col-md-11 col-md-offset-1 col-sm-11 col-sm-offset-1 col-xs-9 col-xs-offset-3" style="right:25px;">
     <nav class="navbar navbar-transparent navbar-absolute">
@@ -39,12 +37,11 @@
                       <span class="tooltiptext">
                         {{"NavBar.PendingVerification" | translate }}
                       </span>
-                            
                   </span>
               </span>
               </a>
             <!-- float:right !important; right:0px!important; left:1px!important  -->
-              <ul class="dropdown-menu" style="">
+              <ul class="dropdown-menu">
 
                 <div class="card card-profile" style="box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0)" >
                   <div class="card-avatar" style="max-width:80px; max-height:80px; background-color:#ffffff; border: 2px solid #ffffff">
@@ -95,7 +92,7 @@
     <span >
         <div routerLink="/user-profile" *ngIf="user?.emailverified == false" data-notify="container" class="alert alert-danger animated fadeInDown alert-pending-email-prjct-page" role="alert" data-notify-position="top-center">
             <!-- <button type="button" aria-hidden="true" class="close" data-notify="dismiss" style="position: absolute; right: 10px; top: 5px; z-index: 1033;">×</button> -->
-            <span data-notify="icon" class="notifications"  >
+            <span data-notify="icon" class="notifications">
                 <i class="fa fa-exclamation-circle" style="font-size: 13px;position: relative;top: -1px;"></i>  
                 <span style="font-family: Google Sans, sans-serif;font-weight: 400; display: inline; position: relative;top: -2px; font-size: 11px; padding-left: 5px;">
                     {{"NavBar.PendingVerification" | translate }}
@@ -119,6 +116,7 @@
 </div>
 <!-- target="_blank" href="http://www.tiledesk.com" -->
 <a  style="margin-top:3px; padding-left:30px; cursor: pointer;" class="navbar-brand">
+    <!--  assets/img/tiledesk-logo_white.svg -->
   <img style="width:100px" src="assets/img/tiledesk-logo.png"/>
   <!-- TEST EMAIL VERIFY -->
   <!-- <span (click)="testVerifyEmail()">VERIFY EMAIL</span> -->
@@ -126,29 +124,57 @@
 
 
 <!-- http://www.frontiere21.com/wp-content/uploads/2016/08/chat21-frontiere21-head-.png -->
-<div class="main-content" style="padding-top:0px; background-repeat: no-repeat; background-image: url(assets/img/tiledesk-header.png); background-attachment: scroll; background-position: top right;">
+<!-- style="padding-top:0px; background-repeat: no-repeat; background-image: url(assets/img/tiledesk-header.png); background-attachment: scroll; background-position: top right;" -->
+<!-- height: 374px; -->
+<!-- style="
+margin-top: 0px; 
+padding:0px; 
+background-repeat: no-repeat; 
+background-image: url(assets/img/frontiere21-hero-bckgrnd-full.png); background-attachment: scroll; background-position: top center;
+background-size:     contain; " -->
+<div class="main-content" >
+
+    <!-- frontiere21-hero-bckgrnd-full -->
+    <!-- text-white bg-primary -->
+<div class="pt-5 py-5" style="margin-right: -15px; height: 390px; background-color: #ffffff;
+  margin-top: -102px;margin-left: -15px;background-image: url(assets/img/frontiere21-hero.png);background-position:center bottom;background-repeat:no-repeat;background-size:cover;">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-12 text-center align-self-center my-5">
+        <h1 class="display-1 head-title" style="font-family: 'Google Sans', sans-serif !important;margin-top: 95px;color: #f0806f">{{ 'ProjectsPage.Welcome' | translate }} in tiledesk. </h1>
+        <p class="lead" style="color: #f0806f"> {{ 'ProjectsPage.BuildYourCustomer_1' | translate }} <br> {{ 'ProjectsPage.BuildYourCustomer_2' | translate }}</p>
+      </div>
+    </div>
+  </div>
+</div>
   <!-- margin-right:100px; margin-left:100px; -->
   <!-- <div style="background-color: #fff; height: 400px; z-index: 3; position:relative; background-repeat: no-repeat; background-image: url(assets/img/tiledesk-header.png); background-attachment: scroll; background-position: top right; "></div> -->
+ 
   <div class="container-fluid" style="max-width: 960px;">
-    <div class="row">
-      <h3 class="prjct-page-title" style="" >
-        {{ 'ProjectsPage.Welcome' | translate }} in tiledesk. 
-      </h3>
-      <h4  class="prjct-page-subtitle" style="" > 
-        {{ 'ProjectsPage.BuildYourCustomer_1' | translate }} <br> {{ 'ProjectsPage.BuildYourCustomer_2' | translate }} 
-      </h4>
-    </div>
+    <!-- <div class="row">
+      <div class="project-page-title">
+        <h3 class="prjct-page-title" style="font-family: 'Google Sans', sans-serif !important; font-size: 45px; color: #ffffff" >
+          {{ 'ProjectsPage.Welcome' | translate }} in tiledesk. 
+        </h3>
+        <h4  class="prjct-page-subtitle" style="color: #ffffff; font-weight: 400" > 
+          {{ 'ProjectsPage.BuildYourCustomer_1' | translate }} <br> {{ 'ProjectsPage.BuildYourCustomer_2' | translate }} 
+        </h4>
+      </div>
+    </div> -->
+
+    <div class="projects-cards" style="position: relative;top: -57px;">
     <div class="row">
       <div class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer">
 
         <!-- CARD ADD PROJECT -->
         <!-- style="max-width: 256px;" -->
-        <div class="card" (click)='openCreateModal()' >
+        <div class="card" (click)='openCreateModal()' style="border-radius:10px">
           <div class="card-content" style="height:204px">
-            <h3 class="title" style="color: #55b9d1; text-align: center; padding-top:25px">
+              <!-- #55b9d1 -->
+            <h3 class="title" style="color: #f0806f; text-align: center; padding-top:25px">
               <i class="material-icons" style="font-size:48px">add</i>
             </h3>
-            <h4 class="card-title" style="color: #55b9d1; text-align: center; margin-bottom: 15px;">
+            <h4 class="card-title" style="color: #f0806f; text-align: center; margin-bottom: 15px; font-family: 'Google Sans',sans-serif!important">
                 {{ 'ProjectsPage.AddProject' | translate }}
             </h4>
           </div>
@@ -162,22 +188,22 @@
 
           <!-- CARDS FROM THE PROJECT 'FOR' -->
           <!-- style="max-width: 256px;" -->
-          <div class="card" (click)='goToHome(project?.id_project?._id, project?.id_project?.name)'>
+          <div class="card" (click)='goToHome(project?.id_project?._id, project?.id_project?.name)' style="border-radius:10px">
             <div class="card-content"  style="height:160px">
-              <h3 class="title" style="color: #566787; font-size:20px; margin-bottom: 0px;">
+              <h3 class="title" style="color: #566787; font-size:20px; margin-bottom: 0px;font-family: 'Google Sans',sans-serif!important">
                 {{ project?.id_project?.name }}
               </h3>
 
-              <p class="category" style="font-size:14px !important; color: rgba(0,0,0,0.38)">
+              <p class="category" style="font-size:14px !important; color:#7695a5">
                 {{ project?.id_project?._id }}
               </p>
-              <h4 class="category" style="font-size:16px; margin-top: 16px;">
+              <h4 class="category" style="font-size:16px; margin-top: 16px;font-family: 'Google Sans',sans-serif!important; color: #7695a5">
                 {{ project?.role }}
               </h4>
             </div>
             <div class="card-footer">
-              <div class="stats">
-                <i class="material-icons">date_range</i> {{ project?.id_project?.createdAt | date: 'd/M/y'}}
+              <div class="stats" style="color:#7695a5">
+                <i class="material-icons">date_range</i> {{ project?.id_project?.createdAt | date: 'dd/MM/yyyy'}}
 
                 <!-- <button type="button" rel="tooltip" title="Modifica Progetto" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(project?._id)'> -->
                 <!-- <i class="material-icons">edit</i> -->
@@ -189,8 +215,10 @@
       </span>
 
     </div>
+    </div>
     <!-- /. row -->
-  </div>
+    </div>
+  
 </div>
 
 <!-- ------------ ============== MODAL CREATE A NEW PROJECT ============== ------------ -->
@@ -292,7 +320,8 @@
         </button>
 
         <h4 class="modal-title">
-          tiledesk Log Out
+            <!-- <img src="assets/img/tiledesk-solo-logo.png" width="21px"> -->
+             tiledesk Log Out 
         </h4>
       </div>
 
@@ -301,10 +330,16 @@
           <!-- Are you sure you want to log out? -->
           {{ "NavBar.AreYouSureYouWantToLogOut" | translate }}
         </p>
-        <p style="margin-bottom:0px; text-align:center;">
-          <!-- Note that this will not change the status of your availability. -->
-          {{ "NavBar.NoteThatThisWillNotChangeYourAvailability" | translate }}
+        <p *ngIf="myAvailabilityCount > 0" style="margin-bottom:0px; text-align:center;max-width: 500px; margin: auto;">
+          <i class="material-icons" style="display: block; color:#f44336">warning</i>
+          <span style="color:#f44336"> {{ "NavBar.AttentionYouAreAvailable" | translate }}
+             {{myAvailabilityCount}}  
+             <span *ngIf="myAvailabilityCount === 1">{{ "NavBar.Project" | translate }}.</span>
+             <span *ngIf="myAvailabilityCount > 1">{{ "NavBar.Projects" | translate }}.</span>
+             {{ "NavBar.IfYouDoNotWantToReceiveRequests" | translate }}
+            </span>
         </p>
+  
       </div>
 
       <div class="modal-footer" style="text-align: center;">
