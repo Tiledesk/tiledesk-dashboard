@@ -10,5 +10,6 @@ export interface Project {
     widget?: any;
     settings?: any;
     role?: string;
+    user_available?: boolean;
     __v?: any;
 }
