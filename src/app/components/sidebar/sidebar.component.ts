@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
-// import { ProjectService } from '../../services/project.service';
+import { ProjectService } from '../../services/project.service';
 import { AuthService } from '../../core/auth.service';
 import { UsersService } from '../../services/users.service';
 import { Project } from '../../models/project-model';
@@ -106,12 +106,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     changeAvailabilityErrorNoticationMsg: string;
 
     isOverAvar = false;
+
+    availabilityCount: number;
     constructor(
         private requestsService: RequestsService,
         private router: Router,
         public location: Location,
         private route: ActivatedRoute,
-        // private projectService: ProjectService,
+        private projectService: ProjectService,
         private auth: AuthService,
         private usersService: UsersService,
         private usersLocalDbService: UsersLocalDbService,
@@ -133,7 +135,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // ]
         // this.menuItems = this.ROUTES.filter(menuItem => menuItem);
 
-   
+
         // WHEN THE PAGE IS REFRESHED GETS FROM LOCAL STORAGE IF THE SETTINGS SUBMENU WAS OPENED OR CLOSED
         // this.SETTINGS_SUBMENU_WAS_OPEN = localStorage.getItem('show_settings_submenu')
         // console.log('LOCAL STORAGE VALU OF KEY show_settings_submenu', localStorage.getItem('show_settings_submenu'))
@@ -157,6 +159,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.checkUserImageUploadIsComplete();
         // used when the page is refreshed
         this.checkUserImageExist();
+
+        this.subscribeToMyAvailibilityCount();
+    }
+
+
+    subscribeToMyAvailibilityCount() {
+        this.projectService.myAvailabilityCount
+            .subscribe((num: number) => {
+                console.log('SIDEBAR subscribeToMyAvailibilityCount ', num)
+                this.availabilityCount = num;
+            })
     }
 
     translateChangeAvailabilitySuccessMsg() {
@@ -240,6 +253,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         console.log('SB - CHANGE STATUS - USER IS AVAILABLE ? ', IS_AVAILABLE);
         console.log('SB - CHANGE STATUS - PROJECT USER ID: ', this.projectUser_id);
 
+
         this.usersService.updateProjectUser(this.projectUser_id, IS_AVAILABLE).subscribe((projectUser: any) => {
             console.log('PROJECT-USER UPDATED ', projectUser)
 
@@ -261,6 +275,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
             // this.getUserAvailability()
+            this.getProjectUser();
         });
     }
 
@@ -506,7 +521,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // }
 
     openLogoutModal() {
+        console.log('SIDEBAR - calling openLogoutModal - PROJRCT ID ', this.projectId);
         this.displayLogoutModal = 'block';
+
+        // if (this.projectId !== undefined) {
+        //     this.usersService.logout_btn_clicked_from_mobile_sidebar(true);
+        // } else {
+        //     this.usersService.logout_btn_clicked_from_mobile_sidebar_project_undefined(true);
+        // }
     }
 
     onCloseModal() {

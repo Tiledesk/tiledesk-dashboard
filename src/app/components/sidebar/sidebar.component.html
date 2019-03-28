@@ -456,10 +456,19 @@
           <!-- Are you sure you want to log out? -->
           {{ "NavBar.AreYouSureYouWantToLogOut" | translate }}
         </p>
-        <p style="margin-bottom:0px; text-align:center;">
-          <!-- Note that this will not change the status of your availability. -->
-          {{ "NavBar.NoteThatThisWillNotChangeYourAvailability" | translate }}
+        <p  *ngIf="project &&  IS_AVAILABLE === true" style="margin-bottom:0px; text-align:center;">
+             <i class="material-icons" style="display: block; color:#f44336">warning</i>
+          <span *ngIf="project" style="color:#f44336"> {{ "NavBar.AttentionIfYouDoNotWantToReceiveRequests" | translate }} </span> 
         </p>
+
+        <p  *ngIf="!project &&  availabilityCount > 0" style="margin-bottom:0px; text-align:center;">
+            <span style="color:#f44336"> {{ "NavBar.AttentionYouAreAvailable" | translate }}
+                {{availabilityCount}}  
+                <span *ngIf="availabilityCount === 1">{{ "NavBar.Project" | translate }}.</span>
+                <span *ngIf="availabilityCount > 1">{{ "NavBar.Projects" | translate }}.</span>
+                {{ "NavBar.IfYouDoNotWantToReceiveRequests" | translate }}
+               </span>
+          </p>
       </div>
 
       <div class="modal-footer" style="text-align: center;">
