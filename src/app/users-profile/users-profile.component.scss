@@ -49,3 +49,9 @@ select {
     padding-right: 16px !important;
     text-align: right!important;
 }
+
+@media (max-width: 768px) {
+    .custom-label {
+        height: 0px !important;
+    }
+}
