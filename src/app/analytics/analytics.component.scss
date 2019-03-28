@@ -50,13 +50,6 @@
     left: -52px;
 }
 
-
-
-.request_count_icons_numbers {
-    // position: relative;
-    // left: -31px;
-
-}
 .request_count_footer {
     font-family: 'Google Sans', sans-serif !important;
     font-size: 16px;
@@ -69,8 +62,15 @@
     font-family: 'Google Sans', sans-serif !important;
     font-size: 16px;
     color:rgba(0,0,0,.54); 
-
 }
+
+.card-header-custom {
+    box-shadow: none!important;
+    margin-left: 0px; 
+    margin-right: 0px; 
+    border-bottom: 1px solid #eff3f5
+}
+
 
 
 
