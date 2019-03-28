@@ -25,6 +25,8 @@ export class ProjectService {
   currentUserID: string;
   projectID: string;
 
+  public myAvailabilityCount: BehaviorSubject<number> = new BehaviorSubject<number>(null);
+
   constructor(
     http: Http,
     public auth: AuthService,
@@ -44,6 +46,12 @@ export class ProjectService {
 
     this.getCurrentProject();
 
+  }
+
+  countOfMyAvailability(numOfMyAvailability: number) {
+
+    console.log('============ PROJECT SERVICE - countOfMyAvailability ', numOfMyAvailability);
+    this.myAvailabilityCount.next(numOfMyAvailability);
   }
 
   getCurrentProject() {
