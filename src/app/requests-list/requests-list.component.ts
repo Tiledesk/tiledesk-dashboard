@@ -116,6 +116,7 @@ export class RequestsListComponent implements OnInit {
   archivingRequestNoticationMsg: string;
   requestHasBeenArchivedNoticationMsg_part1: string;
   requestHasBeenArchivedNoticationMsg_part2: string;
+  seeAll: boolean;
   constructor(
     private requestsService: RequestsService,
     private elRef: ElementRef,
