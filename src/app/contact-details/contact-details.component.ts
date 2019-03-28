@@ -65,12 +65,9 @@ export class ContactDetailsComponent implements OnInit {
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
-
-      console.log('00 -> NEW REQUEST-LIST HISTORY - PRJCT FROM SUBSCRIPTION TO AUTH SERV  ', project)
-
+      console.log('00 -> CONTACT DETAILS - PRJCT FROM SUBSCRIPTION TO AUTH SERV  ', project)
       if (project) {
         this.projectId = project._id;
-
       }
     });
   }
@@ -124,6 +121,20 @@ export class ContactDetailsComponent implements OnInit {
           console.log('!!!!! CONTACTS DETAILS - REQUESTS GOT BY REQUESTER ID ', this.requests_list);
 
           this.requests_list = requests_object['requests'];
+
+
+          this.requests_list.forEach(request => {
+            request.currentUserIsJoined = false;
+            console.log(' REQUEST ', request)
+            request.participants.forEach(p => {
+              console.log(' Participant ', p);
+              if (p === this.currentUserID) {
+                request.currentUserIsJoined = true;
+                return
+              }
+            })
+            // Object.keys(participants).forEach(m => {
+          });
 
 
           // to test pagination
