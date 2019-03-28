@@ -1,5 +1,5 @@
 <!-- NEW FOR THIS TEMPLATE -->
-<div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:10px; padding-left:30px">
+<div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
     <!-- goBackToDeptsList() -->
     <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">keyboard_arrow_left</i>
     <span *ngIf="CREATE_VIEW">
@@ -17,21 +17,24 @@
 
     <div class="row">
       <div class="col-md-8">
-        <div class="card" style="padding-top:25px; padding-bottom:25px">
+        <div class="card card-padding" style="padding-top:12px; padding-bottom:12px">
           <div class="card-content">
   
             <span *ngIf="CREATE_VIEW">
     
               <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
               <!-- padding-left: 16px; -->
-              <label class="col-sm-3 deptname custom-label">
-                {{ "DeptsAddEditPage.DeptName" | translate}}
-              </label>
-              <div class="col-sm-9">
-                <input [(ngModel)]="dept_name" class="" type="text" placeholder='{{ "DeptsAddEditPage.DeptName" | translate}}' style="margin-top: 2px">
+              <div class="row"> 
+                <label class="col-xs-12 col-sm-2 col-md-12 col-lg-2 custom-label-for-dept">
+                  {{ "DeptsAddEditPage.DeptName" | translate}}
+                </label>
+                <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+                  <input [(ngModel)]="dept_name" class="" type="text" placeholder='{{ "DeptsAddEditPage.DeptName" | translate}}' style="margin-top: 2px">
+                </div>
               </div>
 
               <!-- col-sm-10 col-sm-offset-2 -->
+              <div class="row">
               <div class="col-sm-12" style="padding-top:15px">
                 
                 <!-- ============= NEW LOGIC - BOT AS CHECKBOX (CREATE VIEW) ============= -->
@@ -45,21 +48,25 @@
                       </p>
                     </div>
                      
-                    <div class="col-sm-12" style="margin-top: 8px"> 
-                      <div class="col-sm-2 col-md-3" style="height: 38px;">
-                        <div class="form-check" style="padding-top:4px; padding-bottom:4px;">
-                          <input style="width: 14px; height: 14px;" type="checkbox" class="form-check-input" id="exampleCheck1" 
-                            (click)="has_clicked_bot(has_selected_bot = !has_selected_bot)" 
-                            [checked]="has_selected_bot">
-                          <label style="padding-left: 8px; padding-top: 1px;" class="form-check-label title-attribute" for="exampleCheck1">
-                            <!-- Activate BOT -->
+                    <div class="row" style="margin-top: 8px"> 
+                      <div class="col-xs-12">
+                      <!-- col-sm-2 col-md-3 -->
+                      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="height: 38px;">
+                        <div class="checkbox" style="margin-top:0px">
+                          <label class="title-attribute">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1" 
+                              (click)="has_clicked_bot(has_selected_bot = !has_selected_bot)" 
+                              [checked]="has_selected_bot">
+                              <!-- <label style="padding-left: 8px; padding-top: 1px;" class="form-check-label title-attribute" for="exampleCheck1"> -->
+                              <!-- Activate BOT -->
                             {{ "DeptsAddEditPage.ActivateBOT" | translate  }}
                           </label>
                         </div>
                       </div>
     
                       <span *ngIf="has_selected_bot === true">
-                        <div class="col-sm-10 col-md-9" style="padding-top: 2px;">
+                        <!-- col-sm-10 col-md-9 -->
+                        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding-top: 2px;">
                           <select #selectElem (change)="setSelectedBot(selectElem.value)"  >
     
                             <option class="not_selected" value="BOT_NOT_SELECTED" [selected]="BOT_NOT_SELECTED">
@@ -78,18 +85,19 @@
                         </div>
                       </span>
 
+                      </div>
                     </div>
 
                     <!-- // ONLY BOT -->
-                    <div class="col-sm-12" style="margin-top: 8px"> 
-                      <div class="col-sm-2 col-md-3" style="height: 38px;">
-                        <div class="form-check" style="padding-top:8px; padding-bottom:4px;">
-                            <!-- (click)="" [checked]="" -->
-                          <input style="width: 14px; height: 14px;" type="checkbox" class="form-check-input" id="exampleCheck2" 
-                            [disabled]="!has_selected_bot"
-                            (click)="has_clicked_only_bot(has_selected_only_bot = !has_selected_only_bot)" 
-                            [checked]="has_selected_only_bot">
-                          <label style="padding-left: 8px; padding-top: 1px;" class="form-check-label title-attribute" for="exampleCheck2">
+                    <div class="row" style="margin-top: 8px"> 
+                      <div class="col-xs-12" style="height: 38px;">
+                        <div class="checkbox" style="margin-left:15px; margin-top:0px">
+                          <label [ngClass]="{'title-attribute' : has_selected_bot}">
+                            <input type="checkbox" class="form-check-input" id="exampleCheck2" 
+                              [disabled]="!has_selected_bot"
+                              (click)="has_clicked_only_bot(has_selected_only_bot = !has_selected_only_bot)" 
+                              [checked]="has_selected_only_bot">
+                          <!-- <label style="padding-left: 8px; padding-top: 1px;" class="form-check-label title-attribute" for="exampleCheck2"> -->
                             <!-- Bot only -->
                             {{ "DeptsAddEditPage.BotOnly" | translate  }}
                           </label>
@@ -103,7 +111,6 @@
                 <!--     ASSIGNED (CREATE VIEW)     -->
                 <div class="oaerror info" style="margin-top:8px" [ngClass]="{'disabled' : onlybot_disable_routing}">
                   <div class="row">
-
                     <div class="col-sm-12"> 
                       <!-- <strong>Info!</strong>  -->
                       <p style="color: #566787; font-weight:500; font-size: 16px">
@@ -111,14 +118,17 @@
                         {{ "DeptsAddEditPage.SetRoutingRules" | translate  }}
                       </p>
                     </div>
-                    <div class="col-sm-12" style="margin-top: 8px"> 
-                      <div class="col-sm-2 col-md-3" style="height: 36px;">
-                        <div class="form-check" style="padding-top: 4px;">
-                          <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3" checked
-                          (click)="has_clicked_assigned(show_group_option_form = 'true', show_option_form = 'false', routing = 'assigned')"
-                          [disabled]="onlybot_disable_routing">
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12" style="margin-top: 8px; padding-left: 1px;"> 
+                      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="height: 36px;">
+                        <div class="radio" style="margin-top: 0px; position: relative; right:10px">
+                          <label class="title-attribute" [ngClass]="{'disabled-label' : onlybot_disable_routing}">
+                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3" checked
+                              (click)="has_clicked_assigned(show_group_option_form = 'true', show_option_form = 'false', routing = 'assigned')"
+                              [disabled]="onlybot_disable_routing">
 
-                          <label class="form-check-label title-attribute" for="exampleRadios3" style="padding-left: 5px;" [ngClass]="{'disabled-label' : onlybot_disable_routing}">
+                            <!-- <label class="form-check-label title-attribute" for="exampleRadios3" style="padding-left: 5px;" [ngClass]="{'disabled-label' : onlybot_disable_routing}"> -->
                             Assigned
                           </label>
                         </div>
@@ -127,7 +137,7 @@
                       <!-- // NEW - START SELECT GROUP FOR ROUTING ASSIGNED -->
                       <span *ngIf="dept_routing === 'assigned'">
                         <span *ngIf="SHOW_GROUP_OPTION_FORM !== 'false'"> 
-                          <div class="col-sm-10 col-md-9">
+                          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                             <select #selectElem (change)="setSelectedGroup(selectElem.value)" style="min-width: 150px;"
                               [ngClass]="{'errorGroup' : GROUP_ID_NOT_EXIST, 'selectCustomDisabled' : onlybot_disable_routing}"
                               [disabled]="onlybot_disable_routing">
@@ -143,7 +153,6 @@
                                 <!-- All users -->
                                 {{ "DeptsAddEditPage.AllUsers" | translate  }}                          
                               </option>
-                        
             
                               <option  *ngFor="let group of groupsList" [value]="group?._id" [selected]="selectedGroupId === group?._id">
                                 {{group?.name}}
@@ -153,19 +162,21 @@
                         </span>
                       </span> 
                     </div>
-                  </div>
+                    </div>
+                  <!-- </div> -->
                   <!-- // END - SELECT GROUP -->
 
                   <!--     POOLED (CREATE VIEW)     -->
                   <div class="row">
-                    <div class="col-sm-12" style="margin-top: 8px">
-                      <div class="col-sm-2 col-md-3" style="height: 36px;">
-                        <div class="form-check" style="padding-top:4px;">
+                    <div class="col-sm-12" style="margin-top: 8px; padding-left: 0px;">
+                      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="height: 36px;">
+                        <div class="radio" style="margin-top: 0px; position: relative; right:10px">
+                          <label class="title-attribute" [ngClass]="{'disabled-label' : onlybot_disable_routing}">
                           <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" 
                           (click)="has_clicked_pooled(show_group_option_form = 'true', show_option_form = 'false', routing = 'pooled')"
                           [disabled]="onlybot_disable_routing">
 
-                          <label class="form-check-label title-attribute" for="exampleRadios2" style="padding-left: 5px;" [ngClass]="{'disabled-label' : onlybot_disable_routing}">
+                          <!-- <label class="form-check-label title-attribute" for="exampleRadios2" style="padding-left: 5px;" [ngClass]="{'disabled-label' : onlybot_disable_routing}"> -->
                             Pooled
                           </label>
                         </div>
@@ -174,7 +185,7 @@
                       <!-- // NEW - START SELECT GROUP FOR ROUTING POOLED -->
                       <span *ngIf="dept_routing === 'pooled'">
                         <span *ngIf="SHOW_GROUP_OPTION_FORM !== 'false'"> 
-                          <div class="col-sm-10 col-md-9">
+                          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                             <select #selectElem (change)="setSelectedGroup(selectElem.value)" style="min-width: 150px;" 
                             [ngClass]="{'errorGroup' : GROUP_ID_NOT_EXIST, 'selectCustomDisabled' : onlybot_disable_routing}">
                               
@@ -231,8 +242,11 @@
 
               </div>
               <!-- ./ col-sm-10 col-sm-offset-2 -->
+            </div>
                 
+
               <!-- SPACER -->
+              <div class="row">
               <div class="col-sm-12" style="height:15px"></div>
 
               <!-- ======================== CREATE VIEW BUTTONS ======================== -->
@@ -258,6 +272,7 @@
                   </button>
                 </span>
               </div>
+            </div>
 
             </span>
             <!-- ./ end CREATE VIEW -->
@@ -266,14 +281,18 @@
             <span *ngIf="EDIT_VIEW">
   
               <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
-              <label class="col-sm-3 deptname custom-label">
-                {{ "DeptsAddEditPage.DeptName" | translate}}
-              </label>
-              <div class="col-sm-9">
-                <input [(ngModel)]="deptName_toUpdate" class="input" type="text" style="margin-top: 2px">
+              <div class="row">
+                  <!-- deptname -->
+                <label class="col-xs-12 col-sm-2 col-md-12 col-lg-2  custom-label-for-dept">
+                  {{ "DeptsAddEditPage.DeptName" | translate}}
+                </label>
+                <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+                  <input [(ngModel)]="deptName_toUpdate" class="input" type="text" style="margin-top: 2px">
+                </div>
               </div>
               <!-- col-sm-10 col-sm-offset-2 -->
               <!-- padding-left:30px; -->
+              <div class="row">
               <div class="col-sm-12" style="padding-top:15px">
 
                 <!-- ============= NEW LOGIC - BOT AS CHECKBOX (EDIT VIEW) ============= -->
@@ -287,13 +306,15 @@
                       </p>
                     </div>
                       
-                    <div class="col-sm-12" style="margin-top: 8px"> 
-                      <div class="col-sm-2 col-md-3" style="height: 38px;">
-                        <div class="form-check" style="padding-top:4px; padding-bottom:4px;">
-                          <input style="width: 14px; height: 14px;" type="checkbox" class="form-check-input" id="exampleCheck1" 
+                    <div class="row" > 
+                      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="height: 38px;">
+                        
+                        <div class="checkbox" style="margin-top:0px; padding-left:15px">
+                          <label class="form-check-label title-attribute">
+                          <input style="" type="checkbox" class="form-check-input" id="exampleCheck1" 
                             (click)="has_clicked_bot(has_selected_bot = !has_selected_bot)" 
                             [checked]="has_selected_bot">
-                          <label style="padding-left: 8px; padding-top: 1px;" class="form-check-label title-attribute" for="exampleCheck1">
+                          <!-- <label style="padding-left: 8px; padding-top: 1px;" class="form-check-label title-attribute" for="exampleCheck1"> -->
                             <!-- Activate Bot -->
                             {{ "DeptsAddEditPage.ActivateBOT" | translate  }}
                           </label>
@@ -301,8 +322,8 @@
                       </div>
     
                       <span *ngIf="has_selected_bot === true">
-                        <div class="col-sm-10 col-md-9" style="padding-top: 2px;">
-                          <select #selectElem (change)="setSelectedBot(selectElem.value)"  >
+                        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding-top: 2px;">
+                          <select #selectElem (change)="setSelectedBot(selectElem.value)">
     
                             <option class="not_selected" value="BOT_NOT_SELECTED" [selected]="BOT_NOT_SELECTED">
                               {{ "DeptsAddEditPage.SelectABot" | translate }}
@@ -323,15 +344,16 @@
                     </div>
 
                     <!-- // ONLY BOT -->
-                    <div class="col-sm-12" style="margin-top: 8px"> 
-                      <div class="col-sm-2 col-md-3" style="height: 38px;">
-                        <div class="form-check" style="padding-top:8px; padding-bottom:4px;">
-                            <!-- (click)="" [checked]="" -->
-                          <input style="width: 14px; height: 14px;" type="checkbox" class="form-check-input" id="exampleCheck2" 
+                    <div class="row"> 
+                      <div class="col-sm-12" style="height: 38px;">
+
+                        <div class="checkbox" style="padding-left:15px">
+                          <label [ngClass]="{'title-attribute' : has_selected_bot}">
+                          <input type="checkbox" class="form-check-input" id="exampleCheck2" 
                             [disabled]="!has_selected_bot"
                             (click)="has_clicked_only_bot(has_selected_only_bot = !has_selected_only_bot)" 
                             [checked]="has_selected_only_bot">
-                          <label style="padding-left: 8px; padding-top: 1px;" class="form-check-label title-attribute" for="exampleCheck2">
+                          <!-- <label style="padding-left: 8px; padding-top: 1px;" class="form-check-label title-attribute" for="exampleCheck2"> -->
                             <!-- Bot only -->
                             {{ "DeptsAddEditPage.BotOnly" | translate  }}
                           </label>
@@ -352,15 +374,19 @@
                         {{ "DeptsAddEditPage.SetRoutingRules" | translate  }}
                       </p>
                     </div>
+                  </div>
 
-                    <div class="col-sm-12" style="margin-top: 8px"> 
-                      <div class="col-sm-2 col-md-3" style="height: 36px;">
-                        <div class="form-check" style="padding-top: 4px;">
+                    <div class="row" style=""> 
+                      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding-left:7px;">
+
+                       
+                        <div class="radio" style="margin-top:0px">
+                          <label class="title-attribute" [ngClass]="{'disabled-label' : onlybot_disable_routing}">
                           <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3"
                           (click)="has_clicked_assigned(show_group_option_form = 'true', show_option_form = 'false', routing = 'assigned')" 
                           [checked]="dept_routing === 'assigned'"
                           [disabled]="onlybot_disable_routing">
-                          <label class="form-check-label title-attribute" for="exampleRadios3" style="padding-left: 5px;" [ngClass]="{'disabled-label' : onlybot_disable_routing}">
+                          <!-- <label class="form-check-label title-attribute" for="exampleRadios3" style="padding-left: 5px;" [ngClass]="{'disabled-label' : onlybot_disable_routing}"> -->
                             Assigned
                           </label>
                         </div>
@@ -369,7 +395,7 @@
                       <!-- // NEW - START SELECT GROUP FOR ROUTING ASSIGNED -->
                       <span *ngIf="dept_routing === 'assigned'">
                         <span *ngIf="SHOW_GROUP_OPTION_FORM !== 'false'"> 
-                          <div class="col-sm-10 col-md-9">
+                          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding-left:10px">
                             <select #selectElem (change)="setSelectedGroup(selectElem.value)" style="min-width: 150px;" 
                             [ngClass]="{'errorGroup' : GROUP_ID_NOT_EXIST, 'selectCustomDisabled' : onlybot_disable_routing}"
                             [disabled]="onlybot_disable_routing">
@@ -396,19 +422,21 @@
                         </span>
                       </span> 
                     </div>
-                  </div>
+                  <!-- </div> -->
                   
                   <!--     POOLED (EDIT_VIEW)      -->
                   <div class="row">
-                    <div class="col-sm-12" style="margin-top: 8px">
-                      <div class="col-sm-2 col-md-3" style="height: 36px;">
-                        <div class="form-check" style="padding-top:4px;">
+                    <!-- <div class="col-sm-12" style=""> -->
+                      <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="padding-left:7px">
+
+                        <div class="radio" style="padding-top:4px;">
+                          <label class="title-attribute" [ngClass]="{'disabled-label' : onlybot_disable_routing}">
                           <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2" 
                           (click)="has_clicked_pooled(show_group_option_form = 'true', show_option_form = 'false', routing = 'pooled')" 
                           [checked]="dept_routing === 'pooled'"
                           [disabled]="onlybot_disable_routing">
 
-                          <label class="form-check-label title-attribute" for="exampleRadios2" style="padding-left: 5px;" [ngClass]="{'disabled-label' : onlybot_disable_routing}">
+                          <!-- <label class="form-check-label title-attribute" for="exampleRadios2" style="padding-left: 5px;" [ngClass]="{'disabled-label' : onlybot_disable_routing}"> -->
                             Pooled
                           </label>
                         </div>
@@ -417,8 +445,8 @@
                       <!-- // NEW - START SELECT GROUP FOR ROUTING POOLED -->
                       <span *ngIf="dept_routing === 'pooled'">
                         <span *ngIf="SHOW_GROUP_OPTION_FORM !== 'false'"> 
-                          <div class="col-sm-10 col-md-9">
-                            <select #selectElem (change)="setSelectedGroup(selectElem.value)" style="min-width: 150px;" 
+                          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="padding-left:10px">
+                            <select #selectElem (change)="setSelectedGroup(selectElem.value)" style="min-width: 150px; margin-top:10px" 
                             [ngClass]="{'errorGroup' : GROUP_ID_NOT_EXIST, 'selectCustomDisabled' : onlybot_disable_routing}">
                               
                               <!-- // IF THE GROUP ASSIGNED TO THE DEFAULT DEPT HAS BEEN DELETED, IT IS DISPLAYED: 'THE GROUP DOES NOT EXIST' -->
@@ -441,7 +469,7 @@
                           </div>
                         </span>
                       </span> 
-                    </div>  
+                    <!-- </div>   -->
                   </div>
                   <!-- ./row -->
                 </div>
@@ -478,6 +506,7 @@
                 
               </div>
               <!-- ./col-sm-12 -->
+            </div>
   
               <!-- SPACER -->
               <div class="col-sm-12" style="height:15px"></div>
