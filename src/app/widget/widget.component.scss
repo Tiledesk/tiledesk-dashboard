@@ -141,7 +141,8 @@ textarea {
 .onoffswitch-inner:before {
   content: "ON";
   padding-left: 10px;
-  background-color: #EEEEEE; color: #4CAF50;
+  // background-color: #EEEEEE; 
+  color: #4CAF50;
 }
 .onoffswitch-inner:after {
   content: "OFF";
