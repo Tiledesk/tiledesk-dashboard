@@ -1,6 +1,11 @@
 
 # tiledesk-dashboard
 
+### 1.0.20
+- Adds the avatar of the agents in the column 'Served By' of the history table
+- Adds graphic improvements
+- Fixes minor bugs
+
 ### 1.0.19
 - Outsources the url of the widget; updates the names of the 'base-urls' in the 'environments' files
 
