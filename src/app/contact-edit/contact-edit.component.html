@@ -1,4 +1,4 @@
-<div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:10px; padding-left:30px">
+<div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
     <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">keyboard_arrow_left</i>
     {{ "EditContact" | translate }}
 </div>
@@ -10,9 +10,9 @@
   
       <div class="col-md-12">
         <div class="card" style="padding-top: 25px;">
-          <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
-          <!-- *ngIf="!showSpinner" -->
-          <div  class="card-content">
+          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+          <!--  -->
+          <div *ngIf="!showSpinner" class="card-content">
             <form>
 
               <div class="row"> 

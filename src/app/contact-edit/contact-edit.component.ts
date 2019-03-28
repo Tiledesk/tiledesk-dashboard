@@ -25,7 +25,7 @@ export class ContactEditComponent implements OnInit {
 
   editContactSuccessNoticationMsg: string;
   editContactErrorNoticationMsg: string;
-
+  showSpinner = false;
   constructor(
     public location: Location,
     private route: ActivatedRoute,
@@ -72,6 +72,7 @@ export class ContactEditComponent implements OnInit {
   }
 
   getContactById() {
+    this.showSpinner = true;
     this.contactsService.getLeadById(this.lead_id)
       .subscribe((lead: any) => {
 
@@ -83,9 +84,11 @@ export class ContactEditComponent implements OnInit {
           this.lead_emailCurrentValue = lead.email;
         }
       }, (error) => {
+        this.showSpinner = false;
 
         console.log('!!!!! EDIT CONTACT  - GET LEAD BY REQUESTER ID - ERROR ', error);
       }, () => {
+        this.showSpinner = false;
         console.log('!!!!! EDIT CONTACT  - GET LEAD BY REQUESTER ID * COMPLETE *');
       });
 
