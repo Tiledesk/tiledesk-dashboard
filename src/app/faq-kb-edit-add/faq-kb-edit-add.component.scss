@@ -101,3 +101,19 @@ button.close {
     padding-left: 4px !important;  
     padding-right: 26px !important;
 }
+
+
+.custom-label {
+    color: #7695a5;
+    height: 36px !important;
+    padding-top: 7px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    text-align: right!important;
+}
+
+@media (max-width: 768px) {
+    .custom-label {
+        height: 0px !important;
+    }
+}
