@@ -23,9 +23,7 @@ select {
     border-radius: 0px; 
     border-color: #d9d9d9; 
 }
-.card form [class*="col-"] {
-    padding: 0px;
-}
+
 
 
 // @media (max-width: 768px) { /* use the max to specify at each container level */
@@ -188,4 +186,38 @@ only screen and (max-width: 760px),
     padding-left: 16px !important;
     padding-right: 16px !important;
     text-align: right!important;
+}
+
+@media (max-width: 768px) {
+    .custom-label {
+        height: 0px !important;
+        padding-left:0px !important;
+    }
+    // .card form [class*="col-"] {
+    //     padding: 15px !important;
+    // }
+}
+
+.card-header-custom-bkgrnd {
+    // display:none;
+    box-shadow:none;
+    -webkit-box-shadow:none;
+    margin:0px;
+    border-radius: 3px 3px 0px 0px;
+    // background-color: #f2f6f8;
+    background-color: #ffffff;
+    border-bottom: 1px solid #eff3f5;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.column-th-span {
+    font-size: 14px;
+    font-weight: 500;
+    color: #353f45;
+    // color: #566787;
+}
+
+.card form [class*="col-"] {
+    padding: 0px;
 }
