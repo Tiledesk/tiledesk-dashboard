@@ -1,4 +1,4 @@
-<div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:10px; padding-left:30px">
+<div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
     <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">keyboard_arrow_left</i>
     
     {{ "UsersPage.PendingInvitation" | translate }}
@@ -17,20 +17,16 @@
                   <thead>
                     <tr>
                       <th> 
-                        <span style="color: #566787">
-                          <strong>
-                            {{ "UsersPage.User" | translate }}
-                          </strong>
+                        <span class="column-th-span">
+                          {{ "UsersPage.User" | translate }}
                         </span>
                       </th>
 
                       <th> </th>
 
                       <th>
-                        <span style="color: #566787">
-                          <strong>
-                            {{ "UsersPage.Role" | translate }}
-                          </strong>
+                        <span class="column-th-span">
+                          {{ "UsersPage.Role" | translate }}
                         </span>
                       </th>
 
@@ -43,15 +39,12 @@
                 
                 <tr *ngIf="pending_invites?.length === 0">
                   <td colspan="3" style="text-align:center; font-weight: 400; color: #7695a5;">
-
                     {{ "UsersPage.NoPendingInvitation" | translate }}
-
                   </td>
 
                 </tr>
 
                   <tr *ngFor="let invites of pending_invites"> 
-
                     <td style="width:1%; white-space:nowrap; text-align: center;">
                       <i class="material-icons" style="color: rgba(0,0,0,0.54)">
                         query_builder
