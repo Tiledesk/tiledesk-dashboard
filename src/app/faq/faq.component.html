@@ -1,5 +1,5 @@
 
-<div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:10px; padding-left:30px">
+<div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
   <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" rel="tooltip" title="" 
   (click)="goBackToFaqKbList()">keyboard_arrow_left</i>
     <!-- FAQs of BOT:  -->
@@ -11,7 +11,6 @@
 </div> 
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
-  
     <!-- 
     *****************************************************************************************
     NEW - BOT PAGE AS GROUP PAGE - EDIT THE NAME OF THE BOT (BEFORE IN THE faq-kb-edit.comp)
@@ -24,9 +23,9 @@
           <div class="card-content">
             
             <label class="col-sm-2 custom-label">
-              {{ "BotsAddEditPage.BotName" | translate }}
+             {{ "BotsAddEditPage.BotName" | translate }}
             </label>
-            <div class="col-sm-10">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
               <input [(ngModel)]="faqKb_name" class="input" type="text">
             </div>
 
@@ -137,7 +136,7 @@
       <div class="col-md-12">
         <div class="card">
 
-          <div class="card-header" data-background-color="" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
+          <div class="card-header card-header-custom-bkgrnd">
             <h4 class="faq-table-title" style="margin-bottom:2px;">
                 FAQs <span style="font-weight: 500">({{ faq_lenght }})</span> 
 
@@ -218,43 +217,32 @@
 
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
-          <div *ngIf="!showSpinner" class="card-content table-responsive">
+          <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-top:0px">
           <table class="table table-hover">
             <thead>
               <tr>
 
                 <th>
                   <!-- Question -->
-                  <span style="color: #566787">
-                    <strong>
-                      {{ 'FaqPage.Question' | translate }}
-                    </strong>
+                  <span class="column-th-span">
+                    {{ 'FaqPage.Question' | translate }}
                   </span>
                 </th>
                 <th>
                   <!-- Answer -->
-                  <span style="color: #566787">
-                    <strong>
-                      {{ 'FaqPage.Answer' | translate }}
-                    </strong>
+                  <span class="column-th-span">
+                    {{ 'FaqPage.Answer' | translate }}
                   </span>
                 </th>
 
                 <th>
                   <!-- TOPIC -->
-                  <span style="color: #566787">
-                    <strong>
-                      {{ 'FaqPage.Topic' | translate }}
-                    </strong>
+                  <span class="column-th-span">
+                    {{ 'FaqPage.Topic' | translate }}
                   </span>
                 </th>
-
-
-
-                <!-- 
-                *******************  
-                ID
-                ******************* -->
+                
+                <!-- ******************* ID ******************* -->
                 <!-- <th style="width: 280px !important">
                   <span style="color: #566787">
                     <strong>
@@ -277,10 +265,8 @@
 
                 <th>
                   <!-- Actions -->
-                  <span style="color: #566787">
-                    <strong>
-                      {{ 'FaqPage.Actions' | translate }}
-                    </strong>
+                  <span class="column-th-span">
+                    {{ 'FaqPage.Actions' | translate }}
                   </span>
                 </th>
               </tr>
