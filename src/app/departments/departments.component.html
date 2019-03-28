@@ -1,25 +1,33 @@
-<p style="z-index: 1050;position: relative;margin-top:10px; padding-left:30px" class="navbar-brand">
+<p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px" class="navbar-brand">
   {{ "Departments" | translate }}
 </p> 
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
 
       <!-- text-align: right!important; -->
-    <div class="create" style="padding-top:5px; padding-bottom:0px">
+    <!-- <div class="create" style="padding-top:5px; padding-bottom:0px">
       <button class="btn btn-info" style="padding-left:8px; padding-right: 16px; margin-bottom: 0px;" (click)="goToEditAddPage_CREATE()">
-          <!-- is-small -->
         <span class="icon" style="padding-right:8px">
           <i class="material-icons">add_circle</i>
         </span>
-        <!-- Aggiungi Dipartimento -->
-        {{ "DepartmentsPage.AddDepartment" | translate }}
+         {{ "DepartmentsPage.AddDepartment" | translate }}
       </button>
-    </div>
+    </div> -->
  
     <!-- MOMGO DB DEPARTMENTS LIST -->
     <div class="row">
       <div class="col-md-12">
         <div class="card">
+
+          <div class="card-header card-header-custom-bkgrnd">
+            <button class="btn btn-info" style="padding: 8px 16px;margin:0px;" (click)="goToEditAddPage_CREATE()">
+              <span class="icon" style="padding-right:8px">
+                <i class="material-icons">add_circle</i>
+              </span>
+                {{ "DepartmentsPage.AddDepartment" | translate }}
+            </button>
+
+          </div>
 
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
@@ -30,20 +38,16 @@
                 <tr>
 
                   <th>
-                    <span style="color: #566787">
+                    <span class="column-th-span">
                       <!-- Dept Name -->
-                      <strong>
                         {{ "Name" | translate }}
-                      </strong>
                     </span>
                   </th>
 
                   <th style="white-space: nowrap;">
-                    <span style="color: #566787">
+                    <span class="column-th-span">
                       <!-- Dept Name -->
-                      <strong>
                         {{ "DepartmentsPage.Visible" | translate }} 
-                      </strong>
                       <span class="tooltip_custom">
                           <!-- class="tooltip-question-mark" -->
                           <span> 
@@ -65,26 +69,20 @@
                   </th> -->
 
                   <th>
-                    <span style="color: #566787"> 
-                      <strong>
-                        Bot
-                      </strong>
+                    <span class="column-th-span"> 
+                      Bot
                     </span>
                   </th>
 
                   <th>
-                    <span style="color: #566787"> 
-                      <strong>
-                        Routing
-                      </strong>
+                    <span class="column-th-span"> 
+                      Routing
                     </span>
                   </th>
 
                   <th>
-                    <span style="color: #566787"> 
-                      <strong>
-                        Operators
-                      </strong>
+                    <span class="column-th-span"> 
+                      Operators
                     </span>
                   </th>
 
@@ -98,10 +96,8 @@
                   </th> -->
 
                   <th>
-                    <span style="color: #566787">
-                      <strong>
-                        {{ "DepartmentsPage.Actions" | translate }}
-                      </strong>  
+                    <span class="column-th-span">
+                      {{ "DepartmentsPage.Actions" | translate }}
                     </span>
                   </th>
                 </tr>
@@ -113,7 +109,7 @@
                 <tr *ngIf="departments?.length === 1"> 
                   <td colspan="7" style="text-align: center; padding-top: 16px;">
                     <!-- color: #ff5252   -->
-                    <p style="font-size:1em; color:#999999; font-weight: 400">
+                    <p style="font-size:1em; color:#7695a5; font-weight: 400">
                       <!-- Nessun Visitatore! Clicca qui per simulare un visitatore. -->
                       {{ 'DepartmentsPage.NoDept' | translate }}
                     </p>
@@ -151,7 +147,7 @@
                   </td> -->
 
                   <!-- // BOT -->
-                  <td *ngIf="dept?.default !== true" style="">
+                  <td *ngIf="dept?.default !== true">
                       <!-- {{ dept?.id_bot }}  -->
                     <span *ngIf="dept?.id_bot"> 
                       <span style="color: #7695a5; font-size: 12px; font-weight:400">
@@ -176,12 +172,12 @@
 
                   <td *ngIf="dept?.default !== true" style="text-transform: capitalize;">
                       <!-- *ngIf="dept?.routing !== 'fixed'" -->
-                    <span > {{ dept?.routing }}</span>
+                    <span style="font-weight:400"> {{ dept?.routing }}</span>
                     <!-- <span *ngIf="dept?.routing === 'fixed'"> Bot </span> -->
                   </td>
 
                   <!-- // OPERATORS -->
-                  <td *ngIf="dept?.default !== true" style="">
+                  <td *ngIf="dept?.default !== true" style="font-weight:400">
   
                     <!-- USE CASE 1: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NOT NULL AND NOT UNDEFINED + THE GROUP NOT HAS TRASHED VALUE -->
                     <!-- dept?.routing !== 'fixed' &&  -->
@@ -226,7 +222,7 @@
                   </td> -->
 
                   <!-- NEW EDIT ADD -->
-                  <td *ngIf="dept?.default !== true" class="td-actions text-right">
+                  <td *ngIf="dept?.default !== true" class="td-actions text-right" style="padding-bottom: 6px;padding-top: 18px;">
                     <button type="button" rel="tooltip" title="{{ 'DepartmentsPage.tooltipEditDept' | translate }}" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(dept?._id, dept?.name)'>
                       <i class="material-icons">edit</i>
                     </button>
