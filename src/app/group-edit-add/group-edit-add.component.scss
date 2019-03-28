@@ -29,7 +29,13 @@ select {
 
 // label 'GROUP NAME' custom height for small device
 @media (max-width: 768px) {
-    .groupName {
+    .custom-label {
+        height: 0px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .custom-label {
         height: 0px !important;
     }
 }
@@ -234,4 +240,39 @@ button.close {
 .attribute {
     color: #7695a5;
     font-weight: 500;
+}
+
+.custom-label{
+    color: rgb(118, 149, 165); 
+    height: 36px; 
+    padding-top: 7px !important; 
+    padding-left: 16px !important; 
+    padding-right: 16px !important; 
+    text-align: right !important;
+}
+
+.card-header-custom-bkgrnd {
+    // display:none;
+    box-shadow:none;
+    -webkit-box-shadow:none;
+    margin:0px;
+    border-radius: 3px 3px 0px 0px;
+    // background-color: #f2f6f8;
+    background-color: #ffffff;
+    border-bottom: 1px solid #eff3f5;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+.card-header-custom {
+    box-shadow: none!important;
+    margin-left: 0px; 
+    margin-right: 0px; 
+    border-bottom: 1px solid #eff3f5
+}
+
+.column-th-span {
+    font-size: 14px;
+    font-weight: 500;
+    color: #353f45;
+    // color: #566787;
 }

@@ -88,7 +88,7 @@ export class GroupEditAddComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.updateGroupSuccessNoticationMsg = text;
-        console.log('+ + + Update Group Success Notication Msg', text)
+        // console.log('+ + + Update Group Success Notication Msg', text)
       });
   }
   // TRANSLATION
@@ -97,7 +97,7 @@ export class GroupEditAddComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.updateGroupErrorNoticationMsg = text;
-        console.log('+ + + Update Group Error Notication Msg', text)
+        // console.log('+ + + Update Group Error Notication Msg', text)
       });
   }
 
@@ -107,7 +107,7 @@ export class GroupEditAddComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.removeGroupMemberSuccessNoticationMsg = text;
-        console.log('+ + + Remove Group Success Notication Msg', text)
+        // console.log('+ + + Remove Group Success Notication Msg', text)
       });
   }
 
@@ -117,7 +117,7 @@ export class GroupEditAddComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.removeGroupMemberErrorNoticationMsg = text;
-        console.log('+ + + Remove Group Error Notication Msg', text)
+        // console.log('+ + + Remove Group Error Notication Msg', text)
       });
   }
 
