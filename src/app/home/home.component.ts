@@ -10,7 +10,7 @@ import { UsersLocalDbService } from '../services/users-local-db.service';
 import { DepartmentService } from '../services/mongodb-department.service';
 import { RequestsService } from '../services/requests.service';
 import { NotifyService } from '../core/notify.service';
-
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'home',
@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit {
   USER_ROLE: string;
 
   CHAT_BASE_URL = environment.chat.CHAT_BASE_URL
-
+  browserLang: string;
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -43,11 +43,13 @@ export class HomeComponent implements OnInit {
     private usersLocalDbService: UsersLocalDbService,
     private departmentService: DepartmentService,
     private requestsService: RequestsService,
-    private notify: NotifyService
+    private notify: NotifyService,
+    private translate: TranslateService,
   ) { }
 
   ngOnInit() {
     console.log('!!! Hello HomeComponent! ');
+    this.getBrowserLanguage();
     // console.log(environment.firebaseConfig.projectId);
     // this.firebaseProjectId = environment.firebaseConfig.projectId;
 
@@ -77,6 +79,11 @@ export class HomeComponent implements OnInit {
 
     this.getUserRole();
 
+  }
+
+  getBrowserLanguage() {
+    this.browserLang = this.translate.getBrowserLang();
+    console.log('!!! ===== HELLO HOME COMP ===== BRS LANG ', this.browserLang)
   }
 
   // RISOLVE lo USE-CASE: L'UTENTE è NELLA HOME DEL PROGETTO A (DI CUI è OWNER)
@@ -181,6 +188,50 @@ export class HomeComponent implements OnInit {
     // return the window
     return chatwin;
   }
+
+  goToTiledeskMobileAppPage() {
+    const url = 'https://www.tiledesk.com/it/mobile-live-chat-android-iphone-app/';
+    window.open(url, '_blank');
+  }
+
+  goToAdminDocs() {
+    let url = ''
+    if (this.browserLang === 'it') {
+      url = 'https://www.tiledesk.com/it/guida-introduttiva/guida-introduttiva-per-amministratori/';
+    } else {
+      url = 'https://www.tiledesk.com/getting-started/getting-started-for-admins/';
+    }
+    window.open(url, '_blank');
+  }
+
+
+  goToAgentDocs() {
+    let url = ''
+    if (this.browserLang === 'it') {
+      url = 'https://www.tiledesk.com/it/guida-introduttiva/guida-introduttiva-per-agenti/';
+    } else {
+      url = 'https://www.tiledesk.com/getting-started/getting-started-for-agents/';
+    }
+    window.open(url, '_blank');
+  }
+
+  goToDeveloperDocs() {
+    const url = ' https://docs.tiledesk.com/';
+    window.open(url, '_blank');
+  }
+
+
+  goToInstallWithTagManagerDocs() {
+    let url = ''
+    if (this.browserLang === 'it') {
+      url = 'https://www.tiledesk.com/it/google-tag-manager-aggiungi-tiledesk-ai-tuoi-siti/';
+    } else {
+      url = 'https://www.tiledesk.com/google-tag-manager-add-tiledesk-to-your-sites/';
+    }
+    window.open(url, '_blank');
+
+  }
+
 
   // NO MORE USED
   goToHistory() {
@@ -298,7 +349,7 @@ export class HomeComponent implements OnInit {
 
   displayCheckListModal() {
     this.notify.showCheckListModal(true);
-    
+
   }
 
 
