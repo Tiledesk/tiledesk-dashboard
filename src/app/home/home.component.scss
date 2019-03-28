@@ -323,21 +323,21 @@
 	border: 1px solid #c51162;
 	box-shadow: 0 4px 12px 0 rgba(197,17,98,0.6);
 	background-color: #c51162;
-	background-image: url("/assets/img/round-code-24px.svg");
+	background-image: url(assets/img/round-code-24px.svg);
 }
 
 .homeBanner__chat__item:before { 
 	border: 1px solid #00bfa5;
 	box-shadow: 0 4px 12px 0 rgba(0,191,165,0.6);
 	background-color: #00bfa5;
-	background-image: url("/assets/img/round-chat-24px.svg");
+	background-image: url(assets/img/round-chat-24px.svg);
 }
 
 .homeBanner__mobileApp__item:before { 
 	border: 1px solid #337ab7;
 	box-shadow: 0 4px 12px 0 rgba(51,122,183,0.6);
 	background-color: #337ab7;
-	background-image: url("/assets/img/round-stay_primary_portrait-24px.svg");
+	background-image: url(assets/img/round-stay_primary_portrait-24px.svg);
 }
 
 
@@ -389,7 +389,7 @@
 
 .background-admin
 {
-	background-image: url("/assets/img/open-book-icon-white-admin.svg"), linear-gradient(240deg, rgba(150, 50, 50, 0.6), rgba(0, 0, 200, 0.8) );
+	background-image: url(assets/img/open-book-icon-white-admin.svg), linear-gradient(240deg, rgba(150, 50, 50, 0.6), rgba(0, 0, 200, 0.8) );
 	background-size: contain;
     background-repeat: no-repeat;
 	background-position: center;
@@ -398,7 +398,7 @@
 
 .background-agent
 {
-	background-image: url("/assets/img/open-book-icon-white-agent.svg"), linear-gradient(240deg, rgba(169, 182, 39, 0.6), rgba(128, 173, 56, 0.8) );
+	background-image: url(assets/img/open-book-icon-white-agent.svg), linear-gradient(240deg, rgba(169, 182, 39, 0.6), rgba(128, 173, 56, 0.8) );
 	background-size: contain;
     background-repeat: no-repeat;
 	background-position: center;
@@ -406,7 +406,7 @@
 
 .background-developer
 {
-	background-image: url("/assets/img/open-book-icon-white-developer.svg"), linear-gradient(240deg, rgba(237, 97, 4, 0.6), rgba(215, 66, 18, 0.8) );
+	background-image: url(assets/img/open-book-icon-white-developer.svg), linear-gradient(240deg, rgba(237, 97, 4, 0.6), rgba(215, 66, 18, 0.8) );
 	background-size: contain;
     background-repeat: no-repeat;
 	background-position: center;
@@ -414,7 +414,7 @@
 
 .background-google-tag-manager
 {
-	background-image: url("/assets/img/google-tag-mgr-icon.png"), linear-gradient(240deg, rgba(77, 85, 183, 0.6), rgba(30, 178, 220, 0.8) );
+	background-image: url(assets/img/google-tag-mgr-icon.png), linear-gradient(240deg, rgba(77, 85, 183, 0.6), rgba(30, 178, 220, 0.8) );
 	background-size: contain;
     background-repeat: no-repeat;
 	background-position: center;
