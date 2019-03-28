@@ -277,18 +277,20 @@
                           onerror="this.src='assets/img/no_image_user.png'"/>
 
                         <span  class="tooltipx">  
-                          {{ projectUser?.id_user?.firstname }}
-                          <span style="text-transform: uppercase"> {{ projectUser?.id_user?.lastname }} </span>
+                          <span style="font-size:13px">  {{ projectUser?.id_user?.firstname }} </span>
+                          <span style="text-transform: uppercase; font-size:13px"> {{ projectUser?.id_user?.lastname }} </span>
                           
                           <span class="tooltiptext"> {{ "GroupsAddEditPage.UserId" | translate }}: {{ projectUser?.id_user?._id }} </span>
                         </span> 
                       </td>
     
-                      <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
+                      <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?.id_user?._id)" 
+                        style="cursor:pointer;font-size:13px">
                         {{ projectUser?.role | translate }}
                       </td>
     
-                      <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
+                      <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?.id_user?._id)" 
+                        style="cursor:pointer; font-size:13px">
                         {{ projectUser?.id_user?.email }}
                       </td>
   
@@ -393,12 +395,13 @@
                             <img style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
                             class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{project_user?.id_user?._id}}%2Fphoto.jpg?alt=media" 
                             onerror="this.src='assets/img/no_image_user.png'"/>
-                          {{ project_user?.id_user?.firstname }} <span style="text-transform: uppercase"> {{project_user?.id_user?.lastname}}</span>
+                          <span style="font-size:13px"> {{ project_user?.id_user?.firstname }} </span> 
+                          <span style="text-transform: uppercase; font-size:13px"> {{project_user?.id_user?.lastname}}</span>
                         </td>
-                        <td style="padding-left:10px; max-width: 150px;">
+                        <td style="padding-left:10px; max-width: 150px; font-size:13px">
                           {{ project_user?.role | translate }} 
                         </td>
-                        <td style="padding-left:10px;">
+                        <td style="padding-left:10px;font-size:13px">
                           {{project_user?.id_user?.email}}
                         </td>
                       </tr>

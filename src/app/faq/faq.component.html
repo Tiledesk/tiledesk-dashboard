@@ -278,7 +278,7 @@
               <tr *ngIf="faq?.length === 0"> 
                 <td colspan="4" style="text-align: center; padding-top: 16px;">
                   <!-- color: #ff5252   -->
-                  <p style="font-size:1em; color:#999999; font-weight: 400">
+                  <p style="font-size:1em; color:#7695a5; font-weight: 400">
                     <!-- NO FAQ   -->
                     {{ 'FaqPage.NoFAQ' | translate }}
                   </p>
@@ -286,14 +286,14 @@
               </tr>
 
               <tr *ngFor="let faq of faq">
-                <td style="white-space: normal !important; word-wrap: break-word;">
+                <td style="white-space: normal !important; word-wrap: break-word;font-size:13px; font-weight:400">
                   <span class="tooltipx">
                     {{ faq?.question }}
                     <span class="tooltiptext">{{ 'FaqPage.FaqId' | translate }}: <br> {{ faq?._id }} </span>
                   </span>
                 </td>
 
-                <td style="white-space: normal !important; word-wrap: break-word;">
+                <td style="white-space: normal !important; word-wrap: break-word;font-size:13px; font-weight:400">
                   <span class="tooltipx">
                     {{ faq?.answer }}
                     <span class="tooltiptext">{{ 'FaqPage.FaqId' | translate }}: <br> {{ faq?._id }} </span>
@@ -301,7 +301,7 @@
                 </td>
 
                 <td>
-                  <span class="tooltipx">
+                  <span class="tooltipx" style="font-size:13px; font-weight:400">
                     {{ faq?.topic }}
                     <span class="tooltiptext">{{ 'FaqPage.FaqId' | translate }}: <br> {{ faq?._id }} </span>
                   </span>

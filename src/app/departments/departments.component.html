@@ -187,21 +187,21 @@
                     <span *ngIf="dept?.hasGroupName && !dept?.groupHasBeenTrashed"> 
                       <span style="color: #7695a5; font-size: 12px; font-weight:400"> 
                         {{ 'DepartmentsPage.Group' | translate }}
-                      </span> <span style="font-weight:400"> {{ dept?.hasGroupName }} </span>  
+                      </span> <span style="font-weight:400;font-size:13px"> {{ dept?.hasGroupName }} </span>  
                     </span>
 
                     <!-- USE CASE 2: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NOT NULL AND NOT UNDEFINED + THE GROUP HAS TRASHED VALUE = TRUE -->
                     <!-- dept?.routing !== 'fixed' &&  -->
                     <span *ngIf="dept?.hasGroupName && dept?.groupHasBeenTrashed === true"> 
                       <span style="color: #aaaaaa; vertical-align: middle; "> {{ 'DepartmentsPage.Group' | translate }} </span> 
-                      <span style="vertical-align: middle;font-size:13px">{{ dept?.hasGroupName }} </span>
+                      <span style="vertical-align: middle;font-size:13px"> {{ dept?.hasGroupName }} </span>
                       <i class="material-icons" style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i> 
                       <span style="color: #ff5252; vertical-align: middle; font-size:12px;">{{ 'DepartmentsPage.TheGroupHasBeenTrashed' | translate }} </span> 
                     </span>
 
                     <!-- USE CASE 3: ROUTING ASSIGNED or POOLED + THE DEPT HAS A GROUP ID NULL OR NOT UNDEFINED -->
                     <!-- dept?.routing !== 'fixed' &&  -->
-                    <span *ngIf="!dept?.hasGroupName"> 
+                    <span *ngIf="!dept?.hasGroupName" style="font-size:13px"> 
                        {{ 'DepartmentsPage.AllUsers' | translate }} 
                     </span>
 
