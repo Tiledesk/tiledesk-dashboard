@@ -108,18 +108,20 @@
                     </span>
                   </td> -->
 
-                  <td (click)="getFaqKbIdAndGoToEditFaqPage(hit?.document.id)" style="cursor: pointer; white-space: normal !important; word-wrap: break-word;">
+                  <td (click)="getFaqKbIdAndGoToEditFaqPage(hit?.document.id)" 
+                    style="cursor: pointer; white-space: normal !important; word-wrap: break-word;vertical-align: text-top;">
                     <span class="tooltipx">
-                      {{ hit?.document.question }}
+                      <span style="font-size:13px; font-weight:400"> {{ hit?.document.question }} </span>
                       <span class="tooltiptext"> {{ "FaqEditAddPage.FaqID" | translate }}: <br> {{ hit?.document.id }} </span>
                     </span>
                    
                   </td>
 
-                  <td class="td_answer" (click)="getFaqKbIdAndGoToEditFaqPage(hit?.document.id)" style="cursor: pointer; white-space: normal !important; word-wrap: break-word;">
+                  <td class="td_answer" (click)="getFaqKbIdAndGoToEditFaqPage(hit?.document.id)" 
+                    style="cursor: pointer; white-space: normal !important; word-wrap: break-word;">
                       <!-- margin-bottom: 15px -->
                     <span class="tooltipx" style="margin-bottom: 15px" [ngClass]="{ 'hideScoreHidden': hideScore}">
-                      {{ hit?.document.answer }}
+                      <span style="font-size:13px; font-weight:400">{{ hit?.document.answer }} </span>
                       <span class="tooltiptext"> {{ "FaqEditAddPage.FaqID" | translate }}: <br> {{ hit?.document.id }} </span>
                     </span>  
                     <br>
