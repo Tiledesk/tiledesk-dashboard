@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 // import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 
 import { User } from '../models/user-model';
+import { Activity } from '../models/activity-model';
+
 import { PendingInvitation } from '../models/pending-invitation-model';
 import { ProjectUser } from '../models/project-user';
 
@@ -21,6 +23,7 @@ import { Project } from '../models/project-model';
 import { FaqKbService } from '../services/faq-kb.service';
 import { BotLocalDbService } from '../services/bot-local-db.service';
 
+
 interface NewUser {
   displayName: string;
   email: string;
@@ -38,8 +41,6 @@ export class UsersService {
   public userProfileImageExist: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   // public has_clicked_logoutfrom_mobile_sidebar: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   // public has_clicked_logoutfrom_mobile_sidebar_project_undefined: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  
-  
 
   http: Http;
   BASE_URL = environment.mongoDbConfig.BASE_URL;
@@ -64,6 +65,7 @@ export class UsersService {
   PROJECT_BASE_URL = environment.mongoDbConfig.PROJECTS_BASE_URL;
   AVAILABLE_USERS_URL: any;
   NEW_AVAILABLE_USERS_URL: any;
+  USERS_ACTIVITIES_URL: any;
 
 
   // http://localhost:3000/users/updateuser/'
@@ -113,17 +115,20 @@ export class UsersService {
       if (this.project) {
         this.project_id = this.project._id;
         this.project_name = this.project.name;
-        console.log('-- -- >>>> 00 -> USERS SERVICE project ID from AUTH service subscription  ', this.project._id)
-        this.MONGODB_BASE_URL = this.BASE_URL + this.project._id + '/project_users/'
-        this.INVITE_USER_URL = this.BASE_URL + this.project._id + '/project_users/invite'
+        console.log('-- -- >>>> 00 -> USERS SERVICE project ID from AUTH service subscription  ', this.project._id);
+        this.MONGODB_BASE_URL = this.BASE_URL + this.project._id + '/project_users/';
+        this.INVITE_USER_URL = this.BASE_URL + this.project._id + '/project_users/invite';
 
-        this.PENDING_INVITATION_URL = this.BASE_URL + this.project._id + '/pendinginvitations',
+        this.PENDING_INVITATION_URL = this.BASE_URL + this.project._id + '/pendinginvitations';
 
-          // MAYBE NOT USED anymore
-          this.PROJECT_USER_DTLS_URL = this.BASE_URL + this.project._id + '/member/'
+        // MAYBE NOT USED anymore
+        this.PROJECT_USER_DTLS_URL = this.BASE_URL + this.project._id + '/member/';
 
-        this.AVAILABLE_USERS_URL = this.PROJECT_BASE_URL + this.project._id + '/users/availables'
-        this.NEW_AVAILABLE_USERS_URL = this.PROJECT_BASE_URL + this.project._id + '/users/availables'
+        this.AVAILABLE_USERS_URL = this.PROJECT_BASE_URL + this.project._id + '/users/availables';
+        this.NEW_AVAILABLE_USERS_URL = this.PROJECT_BASE_URL + this.project._id + '/users/availables';
+
+        this.USERS_ACTIVITIES_URL = this.BASE_URL + this.project._id + '/activities';
+
         // PROJECT-USER BY PROJECT ID AND CURRENT USER ID
         // this.PROJECT_USER_URL = this.BASE_URL + this.project._id + '/project_users/'
       }
@@ -171,6 +176,28 @@ export class UsersService {
       callBack(false);
     };
   }
+
+  // curl -v -X GET -u andrea.leo@frontiere21.it:258456 
+  // https://api.tiledesk.com/v1/5ad5bd52c975820014ba900a/activities
+  // https://api.tiledesk.com/v1/
+
+  /// ================================== GET USER ACTIVITIES ================================== ///
+  public getUsersActivities(): Observable<Activity[]> {
+
+    // const url = this.USERS_ACTIVITIES_URL;
+
+    // *** TEST URL  ***
+    const url = 'https://api.tiledesk.com/v1/' + this.project_id + '/activities';
+
+    console.log('!! USERS ACTIVITIES URL ', url);
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
 
   /**
    * return an observable of ALL FIRESTORE 'users' * WITH * ID
@@ -559,7 +586,7 @@ export class UsersService {
   //   this.has_clicked_logoutfrom_mobile_sidebar_project_undefined.next(clicked)
   //   console.log('USER-SERVICE: - HAS CLICKED LOGOUT IN THE SIDEBAR (prjct undefined)')
   // }
-  
+
 
   /* used by admin.guard (for the moment not used) */
   // checkRole() {
