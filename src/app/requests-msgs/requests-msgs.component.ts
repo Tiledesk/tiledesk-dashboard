@@ -16,6 +16,7 @@ import { BotLocalDbService } from '../services/bot-local-db.service';
 import { UsersService } from '../services/users.service';
 import { DOCUMENT } from '@angular/platform-browser';
 import { avatarPlaceholder, getColorBck } from '../utils/util';
+import { Subscription } from 'rxjs/Subscription';
 
 import * as firebase from 'firebase';
 import 'firebase/database';
@@ -112,6 +113,9 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   contact_id: string;
 
   NODEJS_REQUEST_CNTCT_FOUND: boolean;
+  subscription: Subscription
+
+  locationSubscription: any;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -172,6 +176,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.listenUrl();
     // prevent browser back button navigation
     // history.pushState(null, null, location.href);
     // window.onpopstate = function (event) {
@@ -186,6 +191,39 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getProjectUserRole();
   }
 
+  listenUrl() {
+
+    // this.subscription = this.router.events.subscribe(() => {
+
+    //   const location_path = this._location.path();
+    //   console.log('»»» REQUEST DETAILS location (**** location path ****)', location_path);
+
+
+    this.locationSubscription = this._location.subscribe((val: any) => {
+      // console.log('»»»»» _location ', val)
+      if (val.type === 'hashchange') {
+        console.log('»»» REQUEST DETAILS location (**** hashchange ****)', val);
+        // this.router.navigate(['project/' + this.id_project + '/request/support-group-Lb7rV7Lqt6ZN_MDrCR4/messages'])
+
+        // this.redirectTo(val.url)
+        // window.location.reload();
+        const urlSplitted = JSON.stringify(val).split('/');
+        console.log('»»» REQUEST DETAILS urlSplitted', urlSplitted)
+        // const requestId =  urlSplitted[4];
+        // console.log('»»»»» _location (only hashchange) requestId', requestId)
+
+        setTimeout(() => {
+          if (urlSplitted[3] === 'request') {
+            this.showSpinner = true;
+            this.getRequestId();
+          }
+        }, 100);
+        // this.ngOnInit();
+      }
+    });
+
+    // });
+  }
 
   getProjectUserRole() {
     this.usersService.project_user_role_bs.subscribe((user_role) => {
@@ -359,7 +397,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getRequestId() {
     this.id_request = this.route.snapshot.params['requestid'];
-    console.log('REQUESTS-LIST COMP HAS PASSED REQUEST-ID ', this.id_request);
+    console.log('»»» REQUEST DETAILS - GET REQUEST-ID ', this.id_request);
 
     if (this.id_request) {
       this.getMessagesList();
@@ -725,12 +763,10 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
                   console.log('RIASSIGN REQUEST - LEAVE THE GROUP * COMPLETE');
 
                 });
-
             }
           });
         });
     });
-
   }
 
 
@@ -905,7 +941,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   openTranscript() {
-    const url = 'https://api.tiledesk.com/v1/public/requests/'  + this.id_request + '/messages.html';
+    const url = 'https://api.tiledesk.com/v1/public/requests/' + this.id_request + '/messages.html';
     console.log('openTranscript url ', url);
     window.open(url, '_blank');
   }
@@ -1009,7 +1045,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   //     const user = this.usersLocalDbService.getMemberFromStorage(member_id);
   //     if (user) {
   //       // console.log('user ', user)
-         // tslint:disable-next-line:max-line-length
+  // tslint:disable-next-line:max-line-length
   //       const user_img = `<img class=\"rightsidebar-user-img\" src=\"https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F${user['_id']}%2Fphoto.jpg?alt=media\" onerror=\"this.src='assets/img/no_image_user.png'\"/>`
 
   //       return member_id = user_img + user['firstname'] + ' ' + user['lastname']
@@ -1046,6 +1082,8 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('»»» REQUEST MSG COMP >>>>> ON DESTROY <<<<< ')
+    console.log('»»» REQUEST MSG COMP >>>>> ON DESTROY <<<<< ');
+    this.locationSubscription.unsubscribe();
+    // this.subscription.unsubscribe();
   }
 }

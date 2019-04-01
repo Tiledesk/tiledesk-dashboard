@@ -72,6 +72,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     HAS_OPENED_THE_CHAT: boolean;
     IS_AVAILABLE: boolean;
+    projectId: string;
     constructor(
         location: Location,
         private element: ElementRef,
@@ -142,7 +143,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         this.hasChangedAvailabilityStatusInSidebar();
         this.hasChangedAvailabilityStatusInUsersComp();
         // this.subscribeToLogoutPressedinSidebarNavMobile();
-        
+
     } // OnInit
 
     getUserAvailability() {
@@ -283,8 +284,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     getCurrentProject() {
         // this.project = this.auth.project_bs.value;
         this.auth.project_bs.subscribe((project) => {
-            this.project = project
-            console.log('!!C-U 00 -> NAVBAR project from AUTH service subscription ', this.project);
+            if (project) {
+                this.project = project
+                console.log('!!C-U 00 -> NAVBAR project from AUTH service subscription ', this.project);
+                this.projectId = project._id;
+            }
         });
     }
 
@@ -411,9 +415,15 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                             // console.log('!!! »»» LAST UNSERVED REQUEST ', this.lastRequest)
 
                             // console.log('!!! »»» UNSERVED REQUEST IN BOOTSTRAP NOTIFY ', r)
-                            this.showNotification('<span style="font-weight: 400; font-family: Google Sans, sans-serif;color:#2d323e!important">'
-                                + r.requester_fullname +
-                                '</span>' + '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text + '</em>', 3, 'border-left-color: rgb(255, 179, 40)');
+                            const url = '#/project/' + this.projectId + '/request/' + r.id + '/messages'
+                            this.showNotification(
+                                '<span style="font-weight: 400; font-family: Google Sans, sans-serif;color:#2d323e!important">' + r.requester_fullname + '</span>' +
+                                '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text +
+                                '</em>' + `<a href="${url}" target="_self" data-notify="url" style="height: 100%; left: 0px; position: absolute; top: 0px; width: 100%; z-index: 1032;"></a>`,
+                                3,
+                                'border-left-color: rgb(237, 69, 55)',
+                                'new-chat-icon-unserved.png'
+                            );
 
                             this.shown_requests[r.id] = true;
                             // console.log('»» WIDGET notifyLastUnservedRequest shown_requests ', this.shown_requests[r.id])
@@ -430,9 +440,15 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                         // console.log('»» WIDGET notifyLastUnservedRequest currentUserIsInMembers DATE DIFF ', dateDiff);
 
                         if (dateDiff < 24) {
-                            this.showNotification('<span style="font-weight: 400; font-family: Google Sans, sans-serif; color:#2d323e!important">'
-                                + r.requester_fullname +
-                                '</span>' + '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text + '</em>', 4, 'border-left-color: rgb(244, 67, 54)');
+                            const url = '#/project/' + this.projectId + '/request/' + r.id + '/messages'
+                            this.showNotification(
+                                '<span style="font-weight: 400; font-family: Google Sans, sans-serif; color:#2d323e!important">' + r.requester_fullname + '</span>' +
+                                '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text +
+                                '</em>' + `<a href="${url}" target="_self" data-notify="url" style="height: 100%; left: 0px; position: absolute; top: 0px; width: 100%; z-index: 1032;"></a>`,
+                                4,
+                                'border-left-color: rgb(77, 175, 79)',
+                                'new-chat-icon-served-by-me.png'
+                            );
 
                             this.shown_my_requests[r.id] = true;
                         }
@@ -445,7 +461,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     }
 
 
-    showNotification(text: string, notificationColor: number, borderColor: string) {
+    showNotification(text: string, notificationColor: number, borderColor: string, chatIcon: string) {
         console.log('show notification')
         const type = ['', 'info', 'success', 'warning', 'danger'];
 
@@ -471,10 +487,20 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         }, {
                 type: type[color],
                 timer: 2000,
-                template: `<div data-notify="container" style="padding:10px!important;background-color: rgb(255, 255, 238);box-shadow: 0px 0px 5px rgba(51, 51, 51, 0.3); border-left: 15px solid;  ${borderColor}" class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">` +
-                    '<span data-notify="title">{1}</span>' +
-                    '<span data-notify="message">{2}</span>' +
-                    '</div>'
+                template:
+                `<div data-notify="container" style="padding:10px!important;background-color:rgb(255, 255, 238);box-shadow:0px 0px 5px rgba(51, 51, 51, 0.3);cursor:pointer;border-left:15px solid;${borderColor}"
+                    class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">` +
+                    '<button type="button" aria-hidden="true" class="close custom-hover" data-notify="dismiss" style="background-color:beige; padding-right:4px;padding-left:4px;border-radius:50%;">×</button>' +
+                    '<div class="row">' +
+                        '<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">' +
+                            '<span data-notify="icon" class="notify-icon"> ' + `<img style="width:30px!important"src="assets/img/${chatIcon}" alt="Notify Icon"></span>` +
+                        '</div>' +
+                        '<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">' +
+                            '<span data-notify="title">{1}</span>' +
+                            '<span data-notify="message">{2}</span>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>'
                 // placement: {
                 //     from: from,
                 //     align: align

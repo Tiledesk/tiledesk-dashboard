@@ -245,3 +245,7 @@ button.close {
 .alert-open-chat-when-is-open-email-alert {
     top: 42px !important;
 }
+
+button.close.custom-hover:hover {
+    color: #7695a5 !important;
+}
