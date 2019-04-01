@@ -41,35 +41,58 @@
 
 <body>
   <!-- start TILEDESK WIDGET -->
-  <!-- <script type="application/javascript">
-      window.tiledeskSettings =
-        {
-          projectid: "5ad5bd52c975820014ba900a", // tiledesk
-          autoStart: false,
-        };
-      (function (d, s, id) {
+ 
+    <!-- <script type="application/javascript">
+              
+      // Handler for .ready() called.
+      window.tiledeskSettings = 
+      {
+          projectid: "5ad5bd52c975820014ba900a",
+          development: true, // da verificare in tiledesk.js
+          calloutTimer: 5,
+          // userFullname: "Dario",
+          // userEmail: "czone555@gmail.com",
+           wellcomeTitle: "Benvenuti su questa chat",
+           wellcomeMsg: "Come possiamo aiutarti? ahhhhhhhh",
+           logoChat: "http://serataromanticaroma.it/wp-content/uploads/2018/09/Logo-bianco-04.png",
+  
+      };
+
+      (function(d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id; js.async=!0;
-        js.src = "https://s3.eu-west-1.amazonaws.com/tiledesk-widget/dev/1/028/tiledesk.js";
+        js = d.createElement(s); 
+        js.id = id; //js.async=!0;
+        js.src = "./launch.js"; //https://s3.eu-west-1.amazonaws.com/tiledesk-widget/dev/2.0.4-beta.1/
         fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'tiledesk-jssdk'));
+      
+      window.tileDeskAsyncInit = function() {
+          console.log("testi.html tileDeskAsyncInit")
+        window.tiledesk.on('loadParams', function(event_data) {
+            console.log("testi.html loadParams");
+            alert("1");
+        });
+      };
     </script> -->
 
-  <!-- <script type="application/javascript">
+
+
+  <script type="application/javascript">
     window.tiledeskSettings =
       {
         projectid: "5ad5bd52c975820014ba900a",
         filterByRequester: true,
         isLogEnabled: true
       };
-    (function (d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id; //js.async=!0;
-      js.src = "https://widget.tiledesk.com/v2/tiledesk.js";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'tiledesk-jssdk'));
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); 
+        js.id = id; //js.async=!0;
+        js.src = "./launch.js"; //https://s3.eu-west-1.amazonaws.com/tiledesk-widget/dev/2.0.4-beta.1/
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'tiledesk-jssdk'));
     /** 
      * setTiledeskWidgetUser IS CALLED BY (TO UNCOMMENT)
      * - SIGNIN COMPONENT 
@@ -82,7 +105,7 @@
       if (window && window.tiledesk) {
         
         /* --- COMMENTO QUESTO X TESTARE ACCESSO ALLE PROPRIETà userFullname E userEmail COME senderId --- */
-         window.tiledeskSettings.userFullname = name;
+        window.tiledeskSettings.userFullname = name;
         window.tiledeskSettings.userEmail = email;
         // console.log('SetTiledeskWidgetUserSignin (index.html) - userFullname ', window.tiledeskSettings.userFullname);
         // console.log('SetTiledeskWidgetUserSignin (index.html) - userEmail ', window.tiledeskSettings.userEmail);
@@ -123,7 +146,7 @@
         }
       }
     }
-  </script> -->
+  </script>
   <!-- ./end TILEDESK WIDGET -->
 
   <!-- <tiledeskwidget-root projectid="5ad5bd52c975820014ba900a"></tiledeskwidget-root>
