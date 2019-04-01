@@ -1,0 +1,85 @@
+<p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px" class="navbar-brand">
+  {{ "Activities" | translate }}
+</p>   
+<div class="main-content" style="padding-top:0px">
+  <div class="container-fluid">
+
+      <div class="row">
+
+          <div class="col-md-12">
+              <div class="card">
+                  <loading-spinner *ngIf="showSpinner"></loading-spinner>
+                  <!-- *ngIf="!showSpinner"  -->
+                  <div class="card-content table-responsive">
+                      <table class="table table-hover">
+                          <thead>
+                            <tr>
+                              <th>
+                                <span class="column-th-span">
+                                    Testo
+                                </span>
+
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                              <tr *ngFor="let activity of usersActivities">
+                                <td>
+
+                                  {{ activity?.updatedAt | date: 'dd/MM/yyyy HH:mm:ss' }}
+
+                                  <!-- <span *ngIf="activity.actor === currentUserId">
+                                    hai
+                                  </span> -->
+
+                                  <!-- <span *ngIf="activity.actor !== currentUserId">
+                                      xxx ha
+                                  </span> -->
+
+                                  {{ activity?.actorfullname }}
+ 
+                                  <span *ngIf="activity.targetOfActionIsYourself"> 
+
+                                     cambiato il tuo stato in 
+
+                                      {{ activity?.actionObj?.user_available }}
+                                      <!-- <span *ngIf="actionObj?.user_available">
+                                          disponibile
+                                      </span>
+                                      <span *ngIf="!actionObj?.user_available">
+                                          non disponibile
+                                      </span> -->
+                                  </span>
+
+                                  <span *ngIf="!activity.targetOfActionIsYourself"> 
+
+                                      cambiato lo stato a xxx in 
+
+                                      {{ activity?.actionObj?.user_available }}
+                                      
+                                      <!-- <span *ngIf="actionObj?.user_available">
+                                        disponibile
+                                      </span>
+                                      <span *ngIf="!actionObj?.user_available">
+                                        non disponibile
+                                      </span> -->
+
+
+                                  </span>
+                                </td>
+
+                              </tr>
+
+                          </tbody>
+
+                      </table>
+
+
+                  </div>
+
+                </div>
+
+          </div>
+      </div>
+  </div>
+</div>

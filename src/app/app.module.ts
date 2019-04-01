@@ -109,6 +109,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
 import { WidgetService } from './services/widget.service';
 import { ContactEditComponent } from './contact-edit/contact-edit.component';
 import { UsersPendingComponent } from './users-pending/users-pending.component';
+import { ActivitiesComponent } from './activities/activities.component';
 
 
 console.log('************** APPMODULE ******************');
@@ -170,6 +171,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ContactDetailsComponent,
     ContactEditComponent,
     UsersPendingComponent,
+    ActivitiesComponent,
   ],
   imports: [
     BrowserModule,
