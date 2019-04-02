@@ -280,10 +280,10 @@
               <tbody>
 
                 <!-- ===== IF THERE ISN'T HISTORY REQUEST ===== -->
-                <tr *ngIf="requestList && requestList.length === 0"> 
+                <tr *ngIf="requestList && requestList?.length === 0"> 
                   <td colspan="6" style="text-align: center; padding-top: 16px; cursor: pointer">
 
-                    <p style="font-size:1em; color:#999999; font-weight: 400">
+                    <p style="font-size:1em; color:#7695a5; font-weight: 400">
                       {{ 'HistoryPage.NoRequests' | translate }}
                     </p>
                   </td>
