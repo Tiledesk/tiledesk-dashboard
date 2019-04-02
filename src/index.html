@@ -90,7 +90,7 @@
         if (d.getElementById(id)) return;
         js = d.createElement(s); 
         js.id = id; //js.async=!0;
-        js.src = "./launch.js"; //https://s3.eu-west-1.amazonaws.com/tiledesk-widget/dev/2.0.4-beta.1/
+        js.src = "https://s3.eu-west-1.amazonaws.com/tiledesk-widget/dev/2.0.4-beta.1/launch.js"; //https://s3.eu-west-1.amazonaws.com/tiledesk-widget/dev/2.0.4-beta.1/
         fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'tiledesk-jssdk'));
     /** 
@@ -119,6 +119,7 @@
 
         window.tiledesk.angularcomponent.component.g.senderId = userId;
         console.log('SetTiledeskWidgetUserSignin (index.html) - userId ', window.tiledesk.angularcomponent.component.g.senderId);
+        console.log('SetTiledeskWidgetUserSignin (index.html) - window.tiledesk ', window.tiledesk);
       } else {
         // usecase: the parameters name, email and userId 
         // are passed from the auth service when the page is refreshed
