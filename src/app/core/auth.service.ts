@@ -298,6 +298,7 @@ export class AuthService {
       console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userEmail', userEmail);
       const userId = _storedUser['_id']
       console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userId', userId);
+      console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - window', window);
       window['setTiledeskWidgetUser'](userFullname, userEmail, userId)
 
 
