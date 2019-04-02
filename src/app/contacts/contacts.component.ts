@@ -87,7 +87,7 @@ export class ContactsComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.deleteLeadSuccessNoticationMsg = text;
-        console.log('+ + + DeleteLeadSuccessNoticationMsg', text)
+        // console.log('+ + + DeleteLeadSuccessNoticationMsg', text)
       });
   }
 
@@ -97,7 +97,7 @@ export class ContactsComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.deleteLeadErrorNoticationMsg = text;
-        console.log('+ + + DeleteLeadErrorNoticationMsg', text)
+        // console.log('+ + + DeleteLeadErrorNoticationMsg', text)
       });
 
   }

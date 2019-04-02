@@ -9,6 +9,9 @@ import { UsersLocalDbService } from '../services/users-local-db.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { avatarPlaceholder, getColorBck } from '../utils/util';
+import { NotifyService } from '../core/notify.service';
+import { TranslateService } from '@ngx-translate/core';
+
 @Component({
   selector: 'appdashboard-contact-details',
   templateUrl: './contact-details.component.html',
@@ -44,6 +47,12 @@ export class ContactDetailsComponent implements OnInit {
   showAllSourcePageString = false;
   sourcePage: string;
   sourcePageCutted: string;
+  displayDeleteModal = 'none';
+  id_toDelete: string;
+  fullName_toDelete: string;
+
+  deleteLeadSuccessNoticationMsg: string;
+  deleteLeadErrorNoticationMsg: string;
 
   constructor(
     public location: Location,
@@ -53,14 +62,39 @@ export class ContactDetailsComponent implements OnInit {
     private botLocalDbService: BotLocalDbService,
     private router: Router,
     public auth: AuthService,
-    private contactsService: ContactsService
+    private contactsService: ContactsService,
+    private notify: NotifyService,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
+    this.translateDeleteLeadSuccessMsg();
+    this.translateDeleteLeadErrorMsg();
     // this.auth.checkRoleForCurrentProject();
     this.getRequesterIdParam();
     this.getCurrentProject();
     this.getCurrentUser();
+  }
+
+   // TRANSLATION
+   translateDeleteLeadSuccessMsg() {
+    this.translate.get('DeleteLeadSuccessNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.deleteLeadSuccessNoticationMsg = text;
+        // console.log('+ + + DeleteLeadSuccessNoticationMsg', text)
+      });
+  }
+
+  // TRANSLATION
+  translateDeleteLeadErrorMsg() {
+    this.translate.get('DeleteLeadErrorNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.deleteLeadErrorNoticationMsg = text;
+        // console.log('+ + + DeleteLeadErrorNoticationMsg', text)
+      });
+
   }
 
   getCurrentProject() {
@@ -256,6 +290,8 @@ export class ContactDetailsComponent implements OnInit {
       }, (error) => {
 
         console.log('!!!!! CONTACTS DETAILS - GET LEAD BY REQUESTER ID - ERROR ', error);
+        this.fillColour = '#eeeeee';
+        this.contact_fullname_initial = 'n.a.';
 
       }, () => {
         console.log('!!!!! CONTACTS DETAILS - GET LEAD BY REQUESTER ID * COMPLETE *');
@@ -333,6 +369,49 @@ export class ContactDetailsComponent implements OnInit {
       this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
     }
   }
+
+
+  openDeleteContactModal(id: string, fullName: string) {
+    console.log('!!!!! CONTACTS DETAILS - ON OPEN DELETE  MODAL -> CONTACT ID ', id);
+    console.log('!!!!! CONTACTS DETAILS - ON OPEN DELETE  MODAL -> FULL NAME ID ', fullName);
+
+    this.displayDeleteModal = 'block';
+
+    this.id_toDelete = id;
+    this.fullName_toDelete = fullName;
+  }
+
+  onCloseDeleteModal() {
+    this.displayDeleteModal = 'none';
+  }
+
+  deleteContact() {
+    this.displayDeleteModal = 'none';
+
+    this.contactsService.deleteLead(this.id_toDelete)
+      .subscribe((lead: any) => {
+        console.log('!!!!! CONTACTS - DELETE CONTACT RES ', lead);
+
+        // GO TO CONTACT LIST
+        this.goToContactDetails()
+      }, (error) => {
+        console.log('!!!!! CONTACTS - DELETE REQUEST - ERROR ', error);
+        // =========== NOTIFY ERROR ===========
+        // this.notify.showNotification('An error occurred while deleting contact', 4, 'report_problem');
+        this.notify.showNotification(this.deleteLeadErrorNoticationMsg, 4, 'report_problem');
+      }, () => {
+        console.log('!!!!! CONTACTS - DELETE REQUEST * COMPLETE *');
+        // =========== NOTIFY SUCCESS===========
+        // this.notify.showNotification('Contact successfully deleted', 2, 'done');
+        this.notify.showNotification(this.deleteLeadSuccessNoticationMsg, 2, 'done');
+      });
+
+  }
+
+  goToContactDetails() {
+    this.router.navigate(['project/' + this.projectId + '/contacts']);
+  }
+
 
 
 }
