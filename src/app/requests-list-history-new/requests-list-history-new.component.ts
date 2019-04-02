@@ -51,7 +51,7 @@ export class RequestsListHistoryNewComponent implements OnInit {
 
   requestList: Request[];
   projectId: string;
-  showSpinner = true;
+  showSpinner: boolean;
   startDate: any;
   endDate: any;
   deptName: string;
@@ -473,6 +473,7 @@ export class RequestsListHistoryNewComponent implements OnInit {
 
 
   getRequests() {
+    this.showSpinner = true;
     this.requestsService.getNodeJsHistoryRequests(this.queryString, this.pageNo).subscribe((requests: any) => {
       console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS ', requests['requests']);
       console.log('!!! NEW REQUESTS HISTORY - GET REQUESTS COUNT ', requests['count']);
