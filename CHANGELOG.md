@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 1.0.21
+- Adds the ability to view the request details by clicking on the in app notifications
+
 ### 1.0.20
 - Adds the avatar of the agents in the column 'Served By' of the history table
 - Adds graphic improvements
