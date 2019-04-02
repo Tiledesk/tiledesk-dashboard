@@ -233,6 +233,7 @@
         "ToManageTheMessages":"per gestire i messaggi e attivare le notifiche push.",
         "OpenTheChatToActivateNotifications":"Apri la chat per gestire i messaggi e attivare le notifiche push",
         "ClickHere":"Clicca qui",
+        "TiledeskLogOut":"Esci da tiledesk",
         "LogOut":"Esci"
     },
     "SideBar": {

@@ -58,7 +58,8 @@
 
                   </div>
                   <div class="content">
-                    <button  class="btn btn-info" routerLink="/user-profile" style="padding-top:3.5px; padding-bottom:3.5px; padding-right:7.5px; padding-left:7.5px; letter-spacing: 2px;">
+                    <button  class="btn btn-info" routerLink="/user-profile" 
+                      style="padding-top:3.5px; padding-bottom:3.5px; letter-spacing: 2px;border-radius: 30px;padding-left: 16px;padding-right: 16px;">
                       <!-- <h6 class="category text-gray"> -->
                         <!-- <a routerLink="/user-profile">  -->
                         <span style="font-size:0.8em"> {{ 'ProjectsPage.UserProfile' | translate }} </span>
@@ -75,8 +76,9 @@
                     </h4>
                     <!-- <p class="card-content">{{ user.email }}</p> -->
                   </div>
-                  <button style="padding-left:26px; padding-right:26px; font-size:0.9em" type="submit" class="btn btn-white" (click)="openLogoutModal()">
-                    Log out
+                  <button style="padding-left:26px; padding-right:26px; font-size:0.9em;color: #7695a5" type="submit" class="btn btn-white" (click)="openLogoutModal()">
+                    <!-- Log out -->
+                    {{ 'NavBar.LogOut' | translate }}
                   </button>
                 </div>
               </ul>
@@ -321,7 +323,8 @@ background-size:     contain; " -->
 
         <h4 class="modal-title">
             <!-- <img src="assets/img/tiledesk-solo-logo.png" width="21px"> -->
-             tiledesk Log Out 
+             <!-- tiledesk Log Out  -->
+             {{ 'NavBar.TiledeskLogOut' | translate }}
         </h4>
       </div>
 
@@ -347,7 +350,8 @@ background-size:     contain; " -->
           {{ "Cancel" | translate}}
         </button>    
         <button class="btn btn-info" (click)="onLogoutModalHandled()" style="padding:12px 16px; font-size:12px ">
-          Log Out
+          <!-- Log Out -->
+          {{ 'NavBar.LogOut' | translate }}
         </button>
       </div>
     </div>

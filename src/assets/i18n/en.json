@@ -233,6 +233,7 @@
         "ToManageTheMessages": "to manage the messages and activate the push notifications",
         "OpenTheChatToActivateNotifications": "Open the chat to manage the messages and activate the push notifications",
         "ClickHere": "Click here",
+        "TiledeskLogOut":"tiledesk Log Out",
         "LogOut":"Log Out"
     },
     "SideBar": {
