@@ -71,7 +71,7 @@ import { ContactDetailsComponent } from './contact-details/contact-details.compo
 import { ContactEditComponent } from './contact-edit/contact-edit.component';
 import { UsersPendingComponent } from './users-pending/users-pending.component';
 import { ActivitiesComponent } from './activities/activities.component';
-
+import { PricingComponent } from './pricing/pricing.component';
 // import { DashboardComponent} from './dashboard/dashboard.component';
 // Andrea
 import { ChatComponent } from './chat/chat.component';
@@ -207,6 +207,7 @@ const routes: Routes = [
   { path: 'project/:projectid/contact/:requesterid', component: ContactDetailsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/contact/edit/:requesterid', component: ContactEditComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/activities', component: ActivitiesComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/pricing', component: PricingComponent, canActivate: [AuthGuard] },
 
   { path: 'dashboard', component: DashboardComponent },
 

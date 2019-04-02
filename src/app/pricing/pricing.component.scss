@@ -1,0 +1,44 @@
+// .container {
+//     width: 70%;
+//     margin: 0 auto;
+//     background: white;
+//     min-height: calc(100vh - 100px);
+// }
+
+.minus {
+    font-size: 50px;
+    display: inline-block;
+    height: 58px;
+    width: 58px;
+    line-height: 46px;
+    color: #d3d7e0;
+    border: solid 4px #d3d7e0;
+    border-radius: 50%;
+    float: left;
+    text-align: center;
+}
+
+.plus {
+    font-size: 50px;
+    display: inline-block;
+    height: 58px;
+    width: 58px;
+    line-height: 46px;
+    color: #d3d7e0;
+    border: solid 4px #d3d7e0;
+    border-radius: 50%;
+    float: right;
+    text-align: center;
+}
+
+.quantity-counter input {
+    border: none;
+    color: #5292e9;
+    font-size: 52px;
+    font-weight: 700;
+    width: 180px;
+    text-align: center;
+    margin-top: -7px;
+    margin-bottom: 10px;
+    height: 68px;
+}

@@ -352,8 +352,11 @@ export class HomeComponent implements OnInit {
   }
 
   goToUserActivitiesLog() {
-
     this.router.navigate(['project/' + this.projectId + '/activities']);
+  }
+
+  goToPricing() {
+    this.router.navigate(['project/' + this.projectId + '/pricing']);
   }
 
 

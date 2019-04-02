@@ -110,6 +110,7 @@ import { WidgetService } from './services/widget.service';
 import { ContactEditComponent } from './contact-edit/contact-edit.component';
 import { UsersPendingComponent } from './users-pending/users-pending.component';
 import { ActivitiesComponent } from './activities/activities.component';
+import { PricingComponent } from './pricing/pricing.component';
 
 
 console.log('************** APPMODULE ******************');
@@ -172,6 +173,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ContactEditComponent,
     UsersPendingComponent,
     ActivitiesComponent,
+    PricingComponent,
   ],
   imports: [
     BrowserModule,

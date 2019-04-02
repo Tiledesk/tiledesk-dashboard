@@ -247,7 +247,11 @@ export class GroupEditAddComponent implements OnInit {
             }
           }
 
-          // new count of is_group_member 
+          /**
+           * *** new: count of is_group_member ***
+           * resolve the bug: if is deleted a project-user the array of members of the group are not updated
+           * so the count of the members done on the lenght of the array not corresponding to the real number of members
+           */
           if (projectUser.is_group_member === true) {
             this.count = this.count + 1;
             console.log('GROUPS-EDITADD GROUP MEMBER count ', this.count)
