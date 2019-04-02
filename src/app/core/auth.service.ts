@@ -290,16 +290,16 @@ export class AuthService {
       /**
        * *** WIDGET - pass data to the widget function setTiledeskWidgetUser in index.html ***
        */
-      const _storedUser = JSON.parse(storedUser);
-      console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - storedUser', _storedUser)
-      const userFullname = _storedUser['firstname'] + ' ' + _storedUser['lastname'];
-      console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userFullname', userFullname);
-      const userEmail = _storedUser['email']
-      console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userEmail', userEmail);
-      const userId = _storedUser['_id']
-      console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userId', userId);
-      console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - window', window);
-      window['setTiledeskWidgetUser'](userFullname, userEmail, userId)
+      // const _storedUser = JSON.parse(storedUser);
+      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - storedUser', _storedUser)
+      // const userFullname = _storedUser['firstname'] + ' ' + _storedUser['lastname'];
+      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userFullname', userFullname);
+      // const userEmail = _storedUser['email']
+      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userEmail', userEmail);
+      // const userId = _storedUser['_id']
+      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userId', userId);
+      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - window', window);
+      // window['setTiledeskWidgetUser'](userFullname, userEmail, userId)
 
 
       this.user_bs.next(JSON.parse(storedUser));
