@@ -57,6 +57,8 @@ export class GroupEditAddComponent implements OnInit {
   removeGroupMemberSuccessNoticationMsg: string;
   removeGroupMemberErrorNoticationMsg: string;
 
+  count: number;
+
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -111,8 +113,8 @@ export class GroupEditAddComponent implements OnInit {
       });
   }
 
-   // TRANSLATION
-   translateRemoveGroupMemberErrorNoticationMsg() {
+  // TRANSLATION
+  translateRemoveGroupMemberErrorNoticationMsg() {
     this.translate.get('RemoveGroupMemberErrorNoticationMsg')
       .subscribe((text: string) => {
 
@@ -216,7 +218,7 @@ export class GroupEditAddComponent implements OnInit {
   // in the array 'this.group_members' the user_project property 'is_group_member' is set to true
   getAllUsersOfCurrentProject() {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
-      console.log('GROUPS-COMP - PROJECT-USERS (FILTERED FOR PROJECT ID)', projectUsers);
+      console.log('GROUPS-EDITADD - PROJECT-USERS (FILTERED FOR PROJECT ID)', projectUsers);
 
       this.showSpinner = false;
       this.showSpinnerInModal = false;
@@ -224,6 +226,7 @@ export class GroupEditAddComponent implements OnInit {
 
       if (this.projectUsersList) {
         // CHECK IF THE USER-ID IS BETWEEN THE MEMBER OF THE GROUP
+        this.count = 0;
         this.projectUsersList.forEach(projectUser => {
 
           for (const p of this.projectUsersList) {
@@ -231,25 +234,32 @@ export class GroupEditAddComponent implements OnInit {
             if (this.group_members) {
 
               this.group_members.forEach(group_member => {
+
                 if (p.id_user._id === group_member) {
                   if (projectUser._id === p._id) {
                     p.is_group_member = true;
-                    console.log('GROUP MEMBER ', group_member)
-                    console.log('IS MEMBER OF THE GROUP THE USER ', p.id_user._id, ' - ', p.is_group_member)
+
+                    console.log('GROUPS-EDITADD GROUP MEMBER ', group_member)
+                    console.log('GROUPS-EDITADD IS MEMBER OF THE GROUP THE USER ', p.id_user._id, ' - ', p.is_group_member);
                   }
                 }
               });
-
             }
+          }
+
+          // new count of is_group_member 
+          if (projectUser.is_group_member === true) {
+            this.count = this.count + 1;
+            console.log('GROUPS-EDITADD GROUP MEMBER count ', this.count)
           }
         });
       }
     }, error => {
       this.showSpinner = false;
       this.showSpinnerInModal = false;
-      console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
+      console.log('GROUPS-EDITADD PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
     }, () => {
-      console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
+      console.log('GROUPS-EDITADD PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
     });
   }
 
@@ -259,7 +269,7 @@ export class GroupEditAddComponent implements OnInit {
 
       if (project) {
         this.project_id = project._id
-        console.log('00 -> GROUP-EDIT-ADD-COMP project ID from AUTH service subscription ', this.project_id)
+        console.log('00 ->GROUPS-EDITADD - project ID from AUTH service subscription ', this.project_id)
       }
 
     });
@@ -271,12 +281,12 @@ export class GroupEditAddComponent implements OnInit {
     this.SHOW_CIRCULAR_SPINNER = true;
     this.CREATE_GROUP_ERROR = false;
 
-    console.log('HAS CLICKED CREATE NEW GROUP');
-    console.log('Create GROUP - NAME ', this.groupName);
+    console.log('GROUPS-EDITADD - HAS CLICKED CREATE NEW GROUP');
+    console.log('GROUPS-EDITADD - Create GROUP - NAME ', this.groupName);
 
     this.groupsService.createGroup(this.groupName)
       .subscribe((group) => {
-        console.log('CREATE GROUP - POST DATA ', group);
+        console.log('GROUPS-EDITADD - CREATE GROUP - POST DATA ', group);
 
         if (group) {
           this.group_name = group.name;
@@ -288,7 +298,7 @@ export class GroupEditAddComponent implements OnInit {
         // this.ngOnInit();
       },
         (error) => {
-          console.log('CREATE GROUP - POST REQUEST ERROR ', error);
+          console.log('GROUPS-EDITADD - CREATE GROUP - POST REQUEST ERROR ', error);
           setTimeout(() => {
             this.SHOW_CIRCULAR_SPINNER = false
             this.CREATE_GROUP_ERROR = true;
@@ -299,7 +309,7 @@ export class GroupEditAddComponent implements OnInit {
           this.goToEditGroup = false;
         },
         () => {
-          console.log('CREATE GROUP - POST REQUEST * COMPLETE *');
+          console.log('GROUPS-EDITADD - CREATE GROUP - POST REQUEST * COMPLETE *');
 
           // this.faqKbService.createFaqKbKey()
           // .subscribe((faqKbKey) => {
@@ -321,7 +331,7 @@ export class GroupEditAddComponent implements OnInit {
   // WHEN THE USER CLICK ON "CONTINUE" WILL BE ADDRESSED: TO THE VIEW OF "EDIT GROUP" or,
   // IF THE USER SELECT THE SECOND OPTION, TO THE LIST OF GROUPS
   actionAfterGroupCreation(goToEditGroup) {
-    console.log('OPEN MODAL TO ADD MEMBERS ', goToEditGroup)
+    console.log('GROUPS-EDITADD - OPEN MODAL TO ADD MEMBERS ', goToEditGroup)
     this.goToEditGroup = goToEditGroup
   }
 
@@ -409,8 +419,8 @@ export class GroupEditAddComponent implements OnInit {
       this.users_selected.push(obj);
     }
 
-    console.log('ARRAY OF SELECTED USERS ', this.users_selected);
-    console.log('ARRAY OF SELECTED USERS lenght ', this.users_selected.length);
+    console.log('GROUPS-EDITADD - ARRAY OF SELECTED USERS ', this.users_selected);
+    console.log('GROUPS-EDITADD - ARRAY OF SELECTED USERS lenght ', this.users_selected.length);
 
     // DISABLE THE ADD BUTTON
     // if (this.users_selected.length < 1) {
@@ -430,18 +440,18 @@ export class GroupEditAddComponent implements OnInit {
 
     this.groupsService.updateGroup(this.id_group, this.users_selected).subscribe((group) => {
 
-      console.log('UPDATED GROUP WITH THE USER SELECTED', group);
+      console.log('GROUPS-EDITADD - UPDATED GROUP WITH THE USER SELECTED', group);
 
       this.COUNT_OF_MEMBERS_ADDED = group.members.length;
-      console.log('# OF MEMBERS ADDED ', group.members.length);
+      console.log('GROUPS-EDITADD - # OF MEMBERS ADDED ', group.members.length);
     },
       (error) => {
-        console.log('UPDATED GROUP WITH THE USER SELECTED - ERROR ', error);
+        console.log('GROUPS-EDITADD - UPDATED GROUP WITH THE USER SELECTED - ERROR ', error);
         this.SHOW_CIRCULAR_SPINNER = false;
         this.ADD_MEMBER_TO_GROUP_ERROR = true;
       },
       () => {
-        console.log('UPDATED GROUP WITH THE USER SELECTED * COMPLETE *');
+        console.log('GROUPS-EDITADD - UPDATED GROUP WITH THE USER SELECTED * COMPLETE *');
         this.SHOW_CIRCULAR_SPINNER = false;
         this.ADD_MEMBER_TO_GROUP_ERROR = false;
 
@@ -463,7 +473,7 @@ export class GroupEditAddComponent implements OnInit {
   openDeleteModal(id_user, user_email) {
 
     this.displayDeleteModal = 'block';
-    console.log('OPEN DELETE MODAL - ID USER: ', id_user, ' USER EMAIL ', user_email);
+    console.log('GROUPS-EDITADD - OPEN DELETE MODAL - ID USER: ', id_user, ' USER EMAIL ', user_email);
     this.id_user_to_delete = id_user;
   }
 
@@ -473,26 +483,26 @@ export class GroupEditAddComponent implements OnInit {
 
   deleteMemberFromTheGroup() {
     this.displayDeleteModal = 'none';
-    console.log('DELETE MEMBER ', this.id_user_to_delete, ' FROM THE GROUP ', this.group_members);
+    console.log('GROUPS-EDITADD - DELETE MEMBER ', this.id_user_to_delete, ' FROM THE GROUP ', this.group_members);
 
     const index = this.group_members.indexOf(this.id_user_to_delete);
-    console.log('INDEX OF THE MEMBER ', index);
+    console.log('GROUPS-EDITADD - INDEX OF THE MEMBER ', index);
     if (index > -1) {
       this.group_members.splice(index, 1);
-      console.log('GROUP AFTER MEMBER DELETED ', this.group_members);
+      console.log('GROUPS-EDITADD - GROUP AFTER MEMBER DELETED ', this.group_members);
 
       this.groupsService.updateGroup(this.id_group, this.group_members).subscribe((group) => {
 
-        console.log('UPDATED GROUP WITH THE USER SELECTED', group);
+        console.log('GROUPS-EDITADD - UPDATED GROUP WITH THE USER SELECTED', group);
 
       }, (error) => {
-        console.log('UPDATED GROUP WITH THE USER SELECTED - ERROR ', error);
+        console.log('GROUPS-EDITADD - UPDATED GROUP WITH THE USER SELECTED - ERROR ', error);
         // =========== NOTIFY ERROR ===========
         // this.notify.showNotification('An error occurred while removing the member', 4, 'report_problem');
         this.notify.showNotification(this.removeGroupMemberErrorNoticationMsg, 4, 'report_problem');
 
       }, () => {
-        console.log('UPDATED GROUP WITH THE USER SELECTED* COMPLETE *');
+        console.log('GROUPS-EDITADD - UPDATED GROUP WITH THE USER SELECTED* COMPLETE *');
 
         // =========== NOTIFY SUCCESS===========
         // this.notify.showNotification('member successfully removed', 2, 'done');

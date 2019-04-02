@@ -174,8 +174,13 @@
                 <h4 class="title" style="margin-bottom:2px; font-size:1.1em; color: #566787; font-family: 'Google Sans',sans-serif!important">
 
                   <span style="top: 2px;position: relative;"> {{ "GroupsAddEditPage.Members" | translate }} 
-                    <span style="font-weight: 500">({{ group_members?.length }})</span> 
-                  </span>
+                    <span style="font-weight: 500">
+                      <!-- old (bugged) ({{ group_members?.length }})  -->
+                    ({{ count }})
+       
+                    </span>
+                  </span> 
+                
                     
                   <!-- <button type="button" rel="tooltip" title="{{ 'GroupsAddEditPage.AddMembers' | translate }}" class="btn btn-success btn-simple btn-xs addMember" style="padding: 2px" 
                     (click)='open_users_list_modal()'>
@@ -471,7 +476,7 @@
                     {{ "GroupsAddEditPage.Completed" | translate }}
                 </p> 
 
-                <p style="margin-top: 0px; text-align: center; font-weight: 500">
+                <p style="margin-top: 0px; text-align: center; font-weight: 500;">
                   <span *ngIf="COUNT_OF_MEMBERS_ADDED == 1;else greater_than_one_content"> 
                     <!-- Member added to the group -->
                     {{ "GroupsAddEditPage.MemberAddedtoGroup" | translate }}
@@ -580,7 +585,7 @@
 
                   <input class="form-check-input" type="radio" name="mode" [checked]="true" 
                   (change)="actionAfterGroupCreation(goToEditGroup = true)">
-                    <span style="margin-left: 8px; color:rgba(90,90,90,0.54); font-weight: 500;">
+                    <span style="margin-left: 8px; color:#7695a5; font-weight: 500;">
                       <!-- Add now members to the group -->
                       {{ "GroupsAddEditPage.AddNow" | translate }} 
                     </span>
@@ -594,7 +599,7 @@
 
                   <input class="form-check-input" type="radio" name="mode" [value]="false" 
                   (change)="actionAfterGroupCreation(goToEditGroup = false)">
-                    <span style="margin-left: 8px; color:rgba(90,90,90,0.54); font-weight: 500"> 
+                    <span style="margin-left: 8px; color:#7695a5; font-weight: 500"> 
                       <!-- Return to the group list (add later) -->
                       {{ "GroupsAddEditPage.AddLater" | translate }} 
                     </span>
