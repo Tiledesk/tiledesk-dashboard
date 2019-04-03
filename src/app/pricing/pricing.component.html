@@ -1,71 +1,168 @@
 
-<div class="main-content" style="padding-top:0px; background-repeat: no-repeat; 
-background-image: url(''); background-attachment: scroll; background-position: bottom right;
-background-color: #ffffff">
+<div class="main-content" style="padding-top:0px; background-color: #ffffff; background-repeat: no-repeat; 
+    background-attachment: scroll; background-position: bottom right;
+   min-height: calc(100% - 53px);margin-top: 0px; padding: 0px">
 
+<div style="min-height: calc(100vh - 53px);     
+background-image: url(), linear-gradient(to bottom, #6b72cb 0%, #6b72cb 100%),linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
+background-size: 475px 449px, 188px 100%, 179px 100%;
+background-position: right -12px bottom,right,calc(100% - 179px);    background-repeat: no-repeat;">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="close-pricing-page">
+        <i class="material-icons close-btn" (click)="goBack()">
+          clear
+        </i>
+      </div>
+    </div>
+  </div>
 
-    <div class="container" style="">
+  <div class="container">
 
-      <!-- <div class="row"> -->
-          <!-- <div class="jumbotron"> -->
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Expand Your Account</h1>
+        <p>and bring your <strong>customer communication</strong> to a whole <strong>new level.</strong></p>
+      </div>
+    </div>
 
+    <div class="row">
 
-       
-          <h1>Expand Your Account</h1>
-          <p>and bring your <strong>customer communication</strong> to a whole <strong>new level.</strong></p>
-       
-
-          <div class="row">
-
-            <div class="col-md-7"> 
-                <div class="btn-group btn-group-lg">
-                  <a class="btn btn-primary communicator active" href="" aria-current="page">
-                    Pro*
-                    <!-- <span class="badge">1</span> -->
-                </a>
-                  <a class="btn btn-default automation" href="">
-                    Enterprise
-                    <!-- <span class="badge">100</span> -->
-                  </a>
-                </div>
-
-            </div>
-
-            <div class="col-md-5"> 
-              <div class="card">
+      <!-- /// PRO -->
+      <div class="col-md-6"> 
+        <div class="btn-group btn-group-lg">
+          <a class="btn btn-primary" style="width: 152px;">
+            Pro*
             
-                <div class="card-content">
+          </a>
+          <a class="btn btn-default">
+            Enterprise
+           
+          </a>
+        </div>
 
-                    <div class="quantity-counter">
+        <!-- <div class="row">
+          <div class="col-md-12">
+              <img class="pricing__use-case-squiggle u__hidden-md-min" src="https://marketing.intercomassets.com/assets/pricing/use-cases/squiggle-739aa764d68d44b1f5025ea2e1d93145f701abe535b64b9182e6b37bdc4e7c33.png" alt="Squiggle">
+          </div> 
 
-                      <div class="row">
+        </div> -->
 
-                        <div class="col-md-4"> 
-                            <a href="#remove" class="minus">-</a>
-                        </div>
 
-                        <div class="col-md-4" style="text-align:center"> 
-                            <!-- <input type="text" readonly="" value="1"> -->
+      </div>
 
-                            {{ 1}}
-                          </div>
+     
+      <div class="col-md-6"> 
+        <div class="card" style="box-shadow: 0 14px 30px 0 rgba(60,72,91,0.22); border-radius:10px ">
 
-                          <div class="col-md-4"> 
-                              <a href="#add" class="plus">+</a>
-                            </div>
-                      </div>
+          <div class="card-header plan-pro" style="margin:0px; box-shadow:none; border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;">
+            <h3 style="margin-top:5px;margin-bottom:5px;">  Pro* </h3> 
 
-                      <input type="text" readonly="" value="1">
-                      <a href="#remove" class="minus">-</a>
-                      <a href="#add" class="plus">+</a>
-                      <div class="quantity-status" style="">The price for 3 operators is always $15/mo ($10/mo for every next operator)
-                      </div>
-                    </div>
-                  
+            <label class="price" style="line-height:15px">
+                <span class="price-text">
+                  <span style="position: relative;top: -16px;"> € </span>  
+                  <span class="price" style="font-size:40px; font-weight: 400;">8</span>
+                  <span class="price-agent" style="display: block;">per agent per month</span>
+                </span>
+              </label>
+          </div>
+          <div class="card-content">
+              <div class="row">
+              <div class="col-md-12"> 
+                <div class="quantity-box-title"> 
+                  <h2 style="margin-top:10px"> Operators </h2>
                 </div>
-      
               </div>
             </div>
+
+            <div class="row">
+              <div class="col-xs-4 col-sm-4 col-md-4"> 
+                <a>
+                  <button class="btn-only-icon" (click)="decreaseOperatorNumber()" style="float: right">
+                    <i class="material-icons btn-icon btn-icon-not-active" style="">
+                      remove
+                    </i>
+                  </button>
+                </a>
+              </div>
+
+              <div class="col-xs-4 col-sm-4 col-md-4"> 
+                <div class="quantity"style="text-align:center">
+                  {{ operatorNo }}
+                </div>
+              </div>
+
+              <div class="col-xs-4 col-sm-4 col-md-4"> 
+                <a>
+                  <button class="btn-only-icon"(click)="increaseOperatorNumber()">
+                    <i class="material-icons btn-icon" style="">
+                      add
+                    </i>
+                  </button>
+                </a>
+              </div>
+            </div>
+
+            <div class="row">
+
+              <div class="col-sm-12">
+
+                <div class="total-price">
+
+
+                 <span style="font-size: 30px;position: relative;top: -17px;left:18px">€</span> 
+                 <span style="position: relative;left: 8px;font-weight: 700;">
+                 {{ proPlanNoOperatorPerPrice }}
+                 
+                </span>
+                <span style="font-size: 18px;position:relative;top: -4px;">per month</span>
+
+                
+
+                </div>
+
+
+              </div>
+
+            </div>
+
+
+            <div class="row">
+
+
+              <div class="col-sm-12">
+
+                <div class="period-options" style="text-align:center; margin-top:25px"> 
+                  <div class="radio">
+                      <label>
+                        <input type="radio" name="optionsRadios">
+                        per month
+                      </label>
+
+                      <label>
+                          <input type="radio" name="optionsRadios">
+                          per year
+                        </label>
+                    </div>
+                  </div>
+              </div>
+
+            </div>
+            <!-- <div class="quantity-status" style="">
+              <span class="currency-symbol" style="position: relative;
+              top: -12px;
+              font-size: 20px;">€</span>
+              <span class="price" style="font-size:40px">8</span>
+              <span class="price-agent">per agent per month</span>
+            </div> -->
+
+      
+
+
           </div>
-      <!-- </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </div>

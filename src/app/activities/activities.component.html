@@ -24,7 +24,7 @@
                           </thead>
                           <tbody>
                               <tr *ngFor="let activity of usersActivities">
-                                <td>
+                                <td *ngIf="activity?.actor?.name">
 
                                   {{ activity?.updatedAt | date: 'dd/MM/yyyy HH:mm:ss' }}
 
@@ -36,20 +36,30 @@
                                       xxx ha
                                   </span> -->
 
-                                  {{ activity?.actorfullname }}
+                                  {{ activity?.actor?.name }}
  
-                                  <span *ngIf="activity.targetOfActionIsYourself"> 
+                                                 
 
-                                     cambiato il tuo stato in 
+                                    <!-- TIPE OF ACTION: UPDATING PROJECT-USER AVAILABILITY STATUS -->
+                                    <span *ngIf="activity.verb.PROJECT_USER_UPDATE"> 
+
+                                      USE CASE 1: THE ACTION IS ACTOR 
+                                    <span *ngIf="activity.targetOfActionIsYourself"> 
+
+                                     cambiato il suo stato in 
 
                                       {{ activity?.actionObj?.user_available }}
+
+                                    </span>
+
+                                    </span>
                                       <!-- <span *ngIf="actionObj?.user_available">
                                           disponibile
                                       </span>
                                       <span *ngIf="!actionObj?.user_available">
                                           non disponibile
                                       </span> -->
-                                  </span>
+                                  
 
                                   <span *ngIf="!activity.targetOfActionIsYourself"> 
 

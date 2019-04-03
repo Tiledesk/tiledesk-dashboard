@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'appdashboard-pricing',
@@ -6,10 +7,31 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./pricing.component.scss']
 })
 export class PricingComponent implements OnInit {
-
-  constructor() { }
+  operatorNo = 1
+  proPlanNoOperatorPerPrice: number
+  constructor(
+    public location: Location,
+  ) { }
 
   ngOnInit() {
+
+    this.proPlanNoOperatorPerPrice =  this.operatorNo * 8
+  }
+
+  decreaseOperatorNumber() {
+    this.operatorNo -= 1;
+
+    this.proPlanNoOperatorPerPrice =  this.operatorNo * 8
+  }
+
+  increaseOperatorNumber() {
+    this.operatorNo += 1;
+
+    this.proPlanNoOperatorPerPrice =  this.operatorNo * 8
+  }
+
+  goBack() {
+    this.location.back();
   }
 
 }

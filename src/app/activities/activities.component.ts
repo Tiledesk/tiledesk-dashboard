@@ -74,7 +74,7 @@ export class ActivitiesComponent implements OnInit {
   getActivities() {
     this.usersService.getUsersActivities()
       .subscribe((res: any) => {
-        // console.log('getActivities - RESPONSE ', res );
+        console.log('ActivitiesComponent - getActivities - **** RESPONSE **** ', res);
         if (res) {
           const perPage = res.perPage;
           const count = res.count;
@@ -86,39 +86,49 @@ export class ActivitiesComponent implements OnInit {
             this.usersActivities.forEach((activity: any) => {
               console.log('ActivitiesComponent - getActivities RESPONSE - activity ', activity);
 
-              const userId = activity.actor;
+              if (activity && activity.actor && activity.actor.id && activity.target && activity.target.object) {
 
 
-              // console.log('ActivitiesComponent - getActivities RESPONSE - userId ', userId);
-
-              const targetSplitted = activity.target.split('/');
-              // console.log('ActivitiesComponent - getActivities RESPONSE - targetSplitted ', targetSplitted);
-
-              const target_ProjectUserId = targetSplitted[3];
-              // tslint:disable-next-line:max-line-length
-              console.log('ActivitiesComponent - getActivities RESPONSE - target_ProjectUserId ', target_ProjectUserId,
-                ' currentUserProjectUserId ', this.projectUserIdOfcurrentUser);
-              if (this.projectUserIdOfcurrentUser === target_ProjectUserId) {
-
-                activity.targetOfActionIsYourself = true;
-              } else {
-
-                activity.targetOfActionIsYourself = false;
+                if (activity.actor.id === activity.target.object.id_user) {
+                  activity.targetOfActionIsYourself = true;
+                } else {
+                  activity.targetOfActionIsYourself = false;
+                }
               }
 
 
-              this.usersService.getUsersById(userId).subscribe((user: any) => {
 
-                console.log('ActivitiesComponent - getUsersById - RES ', user);
-                if (user) {
-                  activity.actorfullname = user.firstname + ' ' + user.lastname
-                }
+              // const userId = activity.actor;
+              // console.log('ActivitiesComponent - getActivities RESPONSE - userId ', userId);
 
-              }, (error) => {
-                console.log('ActivitiesComponent - getUsersById - ERROR ', error);
-              }, () => {
-                console.log('ActivitiesComponent - getUsersById * COMPLETE *');
-              });
+              // const targetSplitted = activity.target.split('/');
+              // console.log('ActivitiesComponent - getActivities RESPONSE - targetSplitted ', targetSplitted);
+
+              // const target_ProjectUserId = targetSplitted[3];
+              // // tslint:disable-next-line:max-line-length
+              // console.log('ActivitiesComponent - getActivities RESPONSE - target_ProjectUserId ', target_ProjectUserId,
+              //   ' currentUserProjectUserId ', this.projectUserIdOfcurrentUser);
+              // if (this.projectUserIdOfcurrentUser === target_ProjectUserId) {
+
+              //   activity.targetOfActionIsYourself = true;
+              // } else {
+
+              //   activity.targetOfActionIsYourself = false;
+              // }
+
+
+              // this.usersService.getUsersById(userId).subscribe((user: any) => {
+
+              //   console.log('ActivitiesComponent - getUsersById - RES ', user);
+              //   if (user) {
+              //     activity.actorfullname = user.firstname + ' ' + user.lastname
+              //   }
+
+              // }, (error) => {
+              //   console.log('ActivitiesComponent - getUsersById - ERROR ', error);
+              // }, () => {
+              //   console.log('ActivitiesComponent - getUsersById * COMPLETE *');
+              // });
 
             });
           }
