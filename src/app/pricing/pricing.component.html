@@ -1,13 +1,15 @@
 
-<div class="main-content" style="padding-top:0px; background-color: #ffffff; background-repeat: no-repeat; 
-    background-attachment: scroll; background-position: bottom right;
-   min-height: calc(100% - 53px);margin-top: 0px; padding: 0px">
+ <!-- background-repeat: no-repeat;  -->
+ <!-- background-attachment: scroll; background-position: bottom right; -->
+
+<div class="main-content" style="padding-top:0px; background-color: #ffffff;
+    min-height: calc(100% - 53px);margin-top: 0px; padding: 0px">
 
 <!-- background-image: url(), linear-gradient(to bottom, #3EA9F5 0%, #3EA9F5 100%),linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
 background-size: 475px 449px, 188px 100%, 179px 100%;
 background-position: right -12px bottom,right,calc(100% - 179px);    background-repeat: no-repeat; -->
 
-<div style="min-height: calc(100vh - 53px);"
+<div style="min-height: calc(100vh - 53px);" class="plan-bckgrnd"
 [ngClass]="{'pro-plan-bckgrnd' : selectedPlanName === 'pro', 'enterprise-plan-bckgrnd' : selectedPlanName === 'enterprise'}">
   <div class="row">
     <div class="col-md-12">
@@ -20,27 +22,42 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
   </div>
 
   <div class="container">
-
     <div class="row">
       <div class="col-md-12">
-        <h1>Expand Your Account</h1>
-        <p>and bring your <strong>customer communication</strong> to a whole <strong>new level.</strong></p>
+        <h1 style="margin-top:10px; font-family: Google Sans">Upgrade Your Account 
+          <!-- to
+          <span *ngIf="selectedPlanName === 'pro'">Pro</span> 
+          <span *ngIf="selectedPlanName === 'enterprise'">Enterprise</span>
+          Plan -->
+        </h1>
+        <!-- <p>and bring your <strong>customer communication</strong> to a whole <strong>new level.</strong></p> -->
       </div>
+      <!-- <div class="col-md-4">
+        <span class="highlight">  Try our PRO plan free for 30 days.</span> 
+      </div> -->
     </div>
 
     <div class="row">
 
       <!-- /// PRO -->
       <div class="col-md-6"> 
-        <div class="btn-group btn-group-lg">
-          <a class="btn btn-info pro-plan-btn" (click)="selectedPlan('pro')" style="width: 152px;">
-            Pro*
+
+        <div style="margin-top:30px">
+          <div class="btn-group btn-group-lg">
+            <a class="btn" 
+            [ngClass]="{'pro-plan-btn' : selectedPlanName === 'pro', 'default-btn' : selectedPlanName === 'enterprise'}"
+            (click)="selectedPlan('pro')" style="width: 152px;">
+              Pro*
+              
+            </a>
+            <a class="btn" 
+              [ngClass]="{'enterprise-plan-btn' : selectedPlanName === 'enterprise', 'default-btn' : selectedPlanName === 'pro'}"
+              (click)="selectedPlan('enterprise')">
+              Enterprise
             
-          </a>
-          <a class="btn btn-primary" (click)="selectedPlan('enterprise')">
-            Enterprise
-           
-          </a>
+            </a>
+          </div>
+
         </div>
 
         <div class="row">
@@ -48,12 +65,12 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
               <!-- <img class="pricing__use-case-squiggle u__hidden-md-min" src="https://marketing.intercomassets.com/assets/pricing/use-cases/squiggle-739aa764d68d44b1f5025ea2e1d93145f701abe535b64b9182e6b37bdc4e7c33.png" alt="Squiggle"> -->
              <div style="margin-bottom:15px">
                 <h3 *ngIf="selectedPlanName === 'pro'" style="color: #3EA9F5;line-height: 1.3em;"> 
-                  <span style="font-weight:700"> Pro includes </span>
+                  <span style="font-weight:500"> Pro includes </span>
                   <span style="display:block">everything in Free, and:</span> 
                 </h3>
 
                 <h3 *ngIf="selectedPlanName === 'enterprise'" style="color: #9c27b0;line-height: 1.3em;"> 
-                  <span style="font-weight:700"> Enterprise includes </span>
+                  <span style="font-weight:500"> Enterprise includes </span>
                   <span style="display:block">everything in Pro, and:</span> 
                 </h3>
               </div>
@@ -86,6 +103,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 
      
       <div class="col-md-6"> 
+         
         <div class="card" style="box-shadow: 0 14px 30px 0 rgba(60,72,91,0.22); border-radius:10px ">
 
           <div class="card-header" 
@@ -190,6 +208,11 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
                         </label>
                     </div>
                   </div>
+
+                  <!-- <div *ngIf="selectedPlanName === 'pro'">
+                      <p  class="highlight">  Try our PRO plan</p> 
+                      <p  class="highlight">  free for 30 days!</p> 
+                  </div> -->
               </div>
 
             </div>
