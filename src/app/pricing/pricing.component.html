@@ -3,10 +3,12 @@
     background-attachment: scroll; background-position: bottom right;
    min-height: calc(100% - 53px);margin-top: 0px; padding: 0px">
 
-<div style="min-height: calc(100vh - 53px);     
-background-image: url(), linear-gradient(to bottom, #6b72cb 0%, #6b72cb 100%),linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
+<!-- background-image: url(), linear-gradient(to bottom, #3EA9F5 0%, #3EA9F5 100%),linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
 background-size: 475px 449px, 188px 100%, 179px 100%;
-background-position: right -12px bottom,right,calc(100% - 179px);    background-repeat: no-repeat;">
+background-position: right -12px bottom,right,calc(100% - 179px);    background-repeat: no-repeat; -->
+
+<div style="min-height: calc(100vh - 53px);"
+[ngClass]="{'pro-plan-bckgrnd' : selectedPlanName === 'pro', 'enterprise-plan-bckgrnd' : selectedPlanName === 'enterprise'}">
   <div class="row">
     <div class="col-md-12">
       <div class="close-pricing-page">
@@ -31,37 +33,82 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
       <!-- /// PRO -->
       <div class="col-md-6"> 
         <div class="btn-group btn-group-lg">
-          <a class="btn btn-primary" style="width: 152px;">
+          <a class="btn btn-info pro-plan-btn" (click)="selectedPlan('pro')" style="width: 152px;">
             Pro*
             
           </a>
-          <a class="btn btn-default">
+          <a class="btn btn-primary" (click)="selectedPlan('enterprise')">
             Enterprise
            
           </a>
         </div>
 
-        <!-- <div class="row">
+        <div class="row">
           <div class="col-md-12">
-              <img class="pricing__use-case-squiggle u__hidden-md-min" src="https://marketing.intercomassets.com/assets/pricing/use-cases/squiggle-739aa764d68d44b1f5025ea2e1d93145f701abe535b64b9182e6b37bdc4e7c33.png" alt="Squiggle">
+              <!-- <img class="pricing__use-case-squiggle u__hidden-md-min" src="https://marketing.intercomassets.com/assets/pricing/use-cases/squiggle-739aa764d68d44b1f5025ea2e1d93145f701abe535b64b9182e6b37bdc4e7c33.png" alt="Squiggle"> -->
+             <div style="margin-bottom:15px">
+                <h3 *ngIf="selectedPlanName === 'pro'" style="color: #3EA9F5;line-height: 1.3em;"> 
+                  <span style="font-weight:700"> Pro includes </span>
+                  <span style="display:block">everything in Free, and:</span> 
+                </h3>
+
+                <h3 *ngIf="selectedPlanName === 'enterprise'" style="color: #9c27b0;line-height: 1.3em;"> 
+                  <span style="font-weight:700"> Enterprise includes </span>
+                  <span style="display:block">everything in Pro, and:</span> 
+                </h3>
+              </div>
           </div> 
+        </div>
 
-        </div> -->
+        <div class="row">
+          <div class="col-md-12">
+               <ul *ngIf="selectedPlanName === 'pro'" class="pro-plan-ul" >
+                <li>Operating hours</li> 
+                <li>Unlimited departments</li> 
+                <li>Agents groups</li>
+                <li>Analytics + Realtime monitor</li>
+                <li>Unlimited chat history</li>
+                <li>Data export</li>
+                <li>Post-chat surverys</li>
+              </ul>
 
+              <ul *ngIf="selectedPlanName === 'enterprise'" class="enterprise-plan-ul">
+                <li>Widget unbranding</li> 
+                <li>Dedicated account manager</li> 
+                <li>Onboarding + Training</li>
+                <li>Software engineer support</li>
+                <li>Advanced Analytics</li>
+              </ul>
 
+          </div>
+        </div>
       </div>
 
      
       <div class="col-md-6"> 
         <div class="card" style="box-shadow: 0 14px 30px 0 rgba(60,72,91,0.22); border-radius:10px ">
 
-          <div class="card-header plan-pro" style="margin:0px; box-shadow:none; border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;">
-            <h3 style="margin-top:5px;margin-bottom:5px;">  Pro* </h3> 
+          <div class="card-header" 
+          [ngClass]="{'pro-plan-card-bckgrnd' : selectedPlanName === 'pro', 'enterprise-plan-card-bckgrnd' : selectedPlanName === 'enterprise'}"
+          style="margin:0px; box-shadow:none; border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;">
+            <h3 style="margin-top:5px;margin-bottom:5px;"> 
+              <span *ngIf="selectedPlanName === 'pro'">  Pro*  </span>
+              <span *ngIf="selectedPlanName === 'enterprise'">  Enterprise  </span>
+            </h3> 
 
             <label class="price" style="line-height:15px">
                 <span class="price-text">
                   <span style="position: relative;top: -16px;"> € </span>  
-                  <span class="price" style="font-size:40px; font-weight: 400;">8</span>
+                  <span class="price" style="font-size:40px; font-weight: 400;">
+                    
+                    <span *ngIf="selectedPlanName === 'pro'">  
+                      {{proPlanPerAgentPrice}} 
+                    </span>
+                    <span *ngIf="selectedPlanName === 'enterprise'">  
+                      {{enterprisePlanPerAgentPrice}}  
+                    </span>
+                  
+                  </span>
                   <span class="price-agent" style="display: block;">per agent per month</span>
                 </span>
               </label>
@@ -78,8 +125,9 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
             <div class="row">
               <div class="col-xs-4 col-sm-4 col-md-4"> 
                 <a>
-                  <button class="btn-only-icon" (click)="decreaseOperatorNumber()" style="float: right">
-                    <i class="material-icons btn-icon btn-icon-not-active" style="">
+                  <button class="btn-only-icon" (click)="decreaseOperatorNumber()" style="float: right"
+                    [ngClass]="{'pro-plan-btn-only-icon' : selectedPlanName === 'pro', 'enterprise-plan-btn-only-icon' : selectedPlanName === 'enterprise'}">
+                    <i class="material-icons btn-icon">
                       remove
                     </i>
                   </button>
@@ -87,15 +135,17 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
               </div>
 
               <div class="col-xs-4 col-sm-4 col-md-4"> 
-                <div class="quantity"style="text-align:center">
+                <div class="quantity" style="text-align:center"
+                  [ngClass]="{'pro-plan-quantity' : selectedPlanName === 'pro', 'enterprise-plan-quantity' : selectedPlanName === 'enterprise'}">
                   {{ operatorNo }}
                 </div>
               </div>
 
               <div class="col-xs-4 col-sm-4 col-md-4"> 
                 <a>
-                  <button class="btn-only-icon"(click)="increaseOperatorNumber()">
-                    <i class="material-icons btn-icon" style="">
+                  <button class="btn-only-icon"(click)="increaseOperatorNumber()"
+                  [ngClass]="{'pro-plan-btn-only-icon' : selectedPlanName === 'pro', 'enterprise-plan-btn-only-icon' : selectedPlanName === 'enterprise'}">
+                    <i class="material-icons btn-icon">
                       add
                     </i>
                   </button>
@@ -112,23 +162,18 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 
                  <span style="font-size: 30px;position: relative;top: -17px;left:18px">€</span> 
                  <span style="position: relative;left: 8px;font-weight: 700;">
-                 {{ proPlanNoOperatorPerPrice }}
+                 {{ numberOfAgentPerPrice }}
                  
                 </span>
                 <span style="font-size: 18px;position:relative;top: -4px;">per month</span>
-
-                
-
+              
                 </div>
 
-
               </div>
-
             </div>
 
 
             <div class="row">
-
 
               <div class="col-sm-12">
 
@@ -159,10 +204,25 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
       
 
 
+          </div>  <!-- ./ card-content -->
+        </div> <!-- ./ card -->
+      </div>
+    </div> <!-- ./ row -->
+
+    <div class="row">
+        <div class="col-sm-12">
+
+          <div style="text-align: center; margin-top: 15px;"> 
+            <button type="button" class="btn outline-btn btn-lg" 
+              [ngClass]="{'pro-plan-outline-btn' : selectedPlanName === 'pro', 'enterprise-plan-outline-btn' : selectedPlanName === 'enterprise'}">
+            
+            <span *ngIf="selectedPlanName === 'pro'"> Get Pro Plan  </span> 
+            <span *ngIf="selectedPlanName === 'enterprise'"> Get Enterprise Plan  </span> 
+            </button>
           </div>
         </div>
-      </div>
     </div>
+
   </div>
 </div>
 </div>
