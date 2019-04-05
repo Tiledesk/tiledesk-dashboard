@@ -4,7 +4,8 @@
 ### 1.0.21
 - Adds the ability to view the request details by clicking on the in app notifications
 - Adds the button "delete contact" in the contact details page
-- Groups: fixes the count of members of groups 
+- Groups: fixes the count of members of groups
+- Project settings: adds a link to 'Widget Authentication' 
 
 ### 1.0.20
 - Adds the avatar of the agents in the column 'Served By' of the history table
