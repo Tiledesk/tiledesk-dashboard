@@ -475,7 +475,8 @@
 
                   <!-- -------====== BTN DECREASE PAGE  ======------ -->
                   <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
-                    <button [disabled]="pageNo + 1 === 1" class="btn btn-info" type="button" (click)="decreasePageNumber()" style="padding: 6px 8px">
+                    <button [disabled]="pageNo + 1 === 1" class="btn btn-info" type="button" 
+                      (click)="decreasePageNumber()" style="padding: 6px 8px">
                       <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                     </button>
                   </span>
@@ -489,7 +490,8 @@
                   
                   <!-- -------====== BTN INCREASE PAGE  ======------ -->
                   <span class="input-group-btn" style="padding-right:0px">
-                    <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0" class="btn btn-info" type="button" (click)="increasePageNumber()" style="padding: 6px 8px">
+                    <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0" class="btn btn-info" type="button" 
+                      (click)="increasePageNumber()" style="padding: 6px 8px">
                       <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                     </button>
                   </span>

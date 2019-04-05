@@ -154,6 +154,7 @@ $color-enterprise-plan: #9c27b0;
     border-top-left-radius:10px	
 }
 
+// https://codepen.io/jboeijenga/pen/PwaNxb
 label.price{
     // font-weight:600;
     right:-3px;
@@ -191,7 +192,8 @@ label.price{
       width: 120px;
       left: -35px;
       height: 4px;
-      box-shadow:(0 5px 14px rgba(0, 0, 0, 0.4));
+      -webkit-box-shadow: 0 5px 14px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 5px 14px rgba(0, 0, 0, 0.4);
       z-index: -1;
     //   @include transform(skew(-5deg) rotate(-5deg));
     }
@@ -276,7 +278,7 @@ li:before {
     line-height: 1.33em;
     
     font-weight: 500;
-    font-size: 20px;
+    font-size: 32px;
 }
 
 .pro-plan-outline-btn {
@@ -288,15 +290,16 @@ li:before {
     color: $color-enterprise-plan;
     border: 2px solid $color-enterprise-plan;
 }
-@import url('https://fonts.googleapis.com/css?family=Kalam');
-.highlight {
-    font-family: 'Kalam', cursive;
-    font-size: 18px;
-    line-height: 27px;
-    color: #18212c;
-    white-space: pre;
-    background-color: #ffff7f;
-}
+
+// @import url('https://fonts.googleapis.com/css?family=Kalam');
+// .highlight {
+//     font-family: 'Kalam', cursive;
+//     font-size: 18px;
+//     line-height: 27px;
+//     color: #18212c;
+//     white-space: pre;
+//     background-color: #ffff7f;
+// }
 
 // linear-gradient(240deg, rgba(66, 48, 174, 0.6), rgba(107, 114, 203, 1) );
 
