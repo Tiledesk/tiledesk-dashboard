@@ -287,6 +287,11 @@ export class ProjectEditAddComponent implements OnInit {
     this.display = 'none';
   }
 
+  goToWidgetAuthenticationDocs() {
+    const url = 'https://docs.tiledesk.com/widget/auth'
+    window.open(url, '_blank');
+  }
+
 
 
 }

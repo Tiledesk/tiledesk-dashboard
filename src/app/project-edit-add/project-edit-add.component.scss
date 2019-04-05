@@ -162,7 +162,7 @@ button.close {
     font-family: 'Google Sans', sans-serif !important;
     // color: rgba(0, 0, 0, 0.87); 
     // color: rgb(118, 149, 165);
-    color: rgba(0, 0, 0, 0.54) !important;
+    // color: rgba(0, 0, 0, 0.54) !important;
     text-align: left; 
     margin-bottom: 0px; 
     margin-top: 10px; 
@@ -173,9 +173,9 @@ button.close {
 .card-section-subtitle {
     padding-left: 8px;
     font-size: 13px;
-    font-weight: 300;
+    font-weight: 400;
     // color: rgba(0, 0, 0, 0.54); 
-    color: rgb(118, 149, 165);
+    color: #7695a5;
     margin-bottom: 16px;
 }
 
@@ -192,6 +192,17 @@ button.close {
     .custom-label {
         height: 0px !important;
     }
+
+    .link-to-widget-auth {
+        text-align: center;
+    }
+}
+
+.link-to-widget-auth {
+    margin-top:25px;
+    margin-bottom:25px; 
+    color:#03a5e8;
+    cursor:pointer;
 }
 
 .section-divider {
