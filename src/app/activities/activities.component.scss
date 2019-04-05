@@ -4,3 +4,36 @@
     color: #353f45;
     // color: #566787;
   }
+
+// .icon-user-plus:before {
+//   content: "\f234"; /* FontAwesome Unicode */
+//   font-family: FontAwesome;
+//   display: inline-block;
+//   font-size: 24px;
+//   color: #596981;
+// }
+
+// .icon-user-minus:before {
+//   content: "\f234"; /* FontAwesome Unicode */
+//   font-family: FontAwesome;
+//   display: inline-block;
+//   font-size: 24px;
+//   color: #596981;
+// }
+
+.fontawesome-icon {
+  width: 32px;
+}
+
+.column-th-span {
+  font-size: 14px;
+  font-weight: 500;
+  color: #353f45;
+  // color: #566787;
+}
+
+.link-to-user-profile {
+  color: #03a5e8;
+  text-decoration: underline;
+  cursor: pointer;
+}

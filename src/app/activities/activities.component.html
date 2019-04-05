@@ -8,77 +8,141 @@
 
           <div class="col-md-12">
               <div class="card">
-                  <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
-                  <!-- *ngIf="!showSpinner"  -->
-                  <div class="card-content table-responsive">
+                  <loading-spinner *ngIf="showSpinner"></loading-spinner>
+                  <!--  -->
+                  <div *ngIf="!showSpinner"  class="card-content table-responsive">
                       <table class="table table-hover">
                           <thead>
                             <tr>
+                              <th></th>
                               <th>
                                 <span class="column-th-span">
-                                    Testo
+                                  <!-- Ultime attività -->
+                                  {{ 'LatestActivities' | translate}}
+
                                 </span>
 
                               </th>
                             </tr>
                           </thead>
                           <tbody>
-                              <tr *ngFor="let activity of usersActivities">
-                                <td *ngIf="activity?.actor?.name">
-
-                                  {{ activity?.updatedAt | date: 'dd/MM/yyyy HH:mm:ss' }}
-
-                                  <!-- <span *ngIf="activity.actor === currentUserId">
-                                    hai
-                                  </span> -->
-
-                                  <!-- <span *ngIf="activity.actor !== currentUserId">
-                                      xxx ha
-                                  </span> -->
-
-                                  {{ activity?.actor?.name }}
- 
-                                                 
-
-                                    <!-- TIPE OF ACTION: UPDATING PROJECT-USER AVAILABILITY STATUS -->
-                                    <span *ngIf="activity.verb.PROJECT_USER_UPDATE"> 
-
-                                      USE CASE 1: THE ACTION IS ACTOR 
-                                    <span *ngIf="activity.targetOfActionIsYourself"> 
-
-                                     cambiato il suo stato in 
-
-                                      {{ activity?.actionObj?.user_available }}
-
-                                    </span>
-
-                                    </span>
-                                      <!-- <span *ngIf="actionObj?.user_available">
-                                          disponibile
-                                      </span>
-                                      <span *ngIf="!actionObj?.user_available">
-                                          non disponibile
-                                      </span> -->
-                                  
-
-                                  <span *ngIf="!activity.targetOfActionIsYourself"> 
-
-                                      cambiato lo stato a xxx in 
-
-                                      {{ activity?.actionObj?.user_available }}
-                                      
-                                      <!-- <span *ngIf="actionObj?.user_available">
-                                        disponibile
-                                      </span>
-                                      <span *ngIf="!actionObj?.user_available">
-                                        non disponibile
-                                      </span> -->
-
-
+                            <tr *ngFor="let activity of usersActivities">
+                              <td> 
+                                  <span *ngIf="activity?.verb === 'PROJECT_USER_INVITE'"> 
+                                      <!-- <span class="icon-user-plus"> </span> -->
+                                      <img class="fontawesome-icon" src="assets/img/user-plus-solid.svg" alt="user-plus"/> 
                                   </span>
-                                </td>
 
-                              </tr>
+                                  <span *ngIf="activity?.verb === 'PROJECT_USER_DELETE'"> 
+                                    <img class="fontawesome-icon" src="assets/img/user-minus-solid.svg" alt="user-plus"/> 
+                                  </span>
+
+                                  <span *ngIf="activity?.verb === 'PROJECT_USER_UPDATE'"> 
+                                    <img class="fontawesome-icon" src="assets/img/user-edit-solid.svg" alt="user-plus"/> 
+                                  </span>
+                              </td>
+
+                              <td *ngIf="activity?.actor?.name">
+                                
+                              
+                                <p style="margin-bottom:0px; font-weight:500; font-size:13px ">
+                                  
+                                  <span *ngIf="activity?.actor?.id !== currentUserId"> 
+                                    <span class="link-to-user-profile" (click)="goToMemberProfile(activity?.actor?.id)">
+                                      {{ activity?.actor?.name }}
+                                    </span>
+                                  </span>
+
+                                  <span *ngIf="activity?.actor?.id === currentUserId"> 
+                                    {{ activity?.actor?.name }}
+                                  </span>
+                                  
+                          <!-- *** ACTION TYPE:
+                                  //////////////////////////////////////////////////////////////////////
+                                  ////////////// PROJECT-USER UPDATE (AVAILABILITY STATUS) /////////////
+                                  ////////////////////////////////////////////////////////////////////// -->
+                                  <span *ngIf="activity?.verb === 'PROJECT_USER_UPDATE'"> 
+                                    <!-- ha cambiato -->
+                                    {{ 'HasChanged' | translate}}
+                                  
+                                    <!-- USE CASE 1: THE TARGET OF THE ACTION IS THE CURRENT USER (YOURSELF)  -->
+                                    <span *ngIf="activity?.targetOfActionIsYourself"> 
+                                       <!-- il suo stato -->
+                                       {{ 'HisStatus' | translate}}
+                                       
+                                    </span>  
+                                    <!-- USE CASE 2: THE TARGET OF THE ACTION IS ANOTHER USER (NOT YOURSELF)  -->
+                                    <span *ngIf="!activity.targetOfActionIsYourself"> 
+                                      <!-- lo stato di -->
+                                      {{ 'TheAvailabilityStatusOf' | translate}} 
+                                      
+                                      <span class="link-to-user-profile" (click)="goToMemberProfile(activity?.target?.object?.id_user?._id)">  
+                                        {{ activity?.target?.object?.id_user?.firstname}} {{ activity?.target?.object?.id_user?.lastname}}
+                                      </span>   
+                                    </span>
+                                      
+                                    in
+                                    <span *ngIf="activity?.actionObj?.user_available === false">
+                                      <!-- non disponibile -->
+                                      {{ 'Unavailable' | translate}} 
+                                    </span>
+
+                                    <span *ngIf="activity?.actionObj?.user_available === true">
+                                      <!-- disponibile -->
+                                      {{ 'Available' | translate}} 
+                                      
+                                    </span>
+                                  </span>
+
+
+                          <!-- *** ACTION TYPE:
+                                  /////////////////////////////////////////////////////////////////////
+                                  ///////////////////////// PROJECT-USER DELETE ///////////////////////
+                                  ///////////////////////////////////////////////////////////////////// -->
+                                  <span *ngIf="activity?.verb === 'PROJECT_USER_DELETE'"> 
+
+                                    <!-- ha rimosso  -->
+                                    {{ 'HasRemoved' | translate}} 
+                                    {{ activity?.target?.object?.id_user?.firstname}} {{ activity?.target?.object?.id_user?.lastname}}
+                                    <!-- dal progetto -->
+                                    {{ 'FromTheProject' | translate}} 
+                                  </span>
+
+                          <!-- *** ACTION TYPE:
+                                  /////////////////////////////////////////////////////////////////////
+                                  ///////////////////////// PROJECT-USER INVITE ///////////////////////
+                                  ///////////////////////////////////////////////////////////////////// -->
+                                  <span *ngIf="activity?.verb === 'PROJECT_USER_INVITE'"> 
+
+                                      <!-- ha invitato -->
+                                      {{ 'HasInvited' | translate}} 
+                                      <span class="link-to-user-profile" (click)="goToMemberProfile(activity?.target?.object?.id_user?._id)">  
+                                          {{ activity?.target?.object?.id_user?.firstname }} {{ activity?.target?.object?.id_user?.lastname }}
+                                      </span>
+                                      ({{ activity?.actionObj?.email }}) 
+
+                                      <!-- ad assumere il ruolo di   -->
+                                      {{ 'ToTakeOnTheRoleOf' | translate}} 
+                                      
+                                      {{ activity?.actionObj?.role | translate }}
+
+                                    <span *ngIf="activity?.target?.type === 'pendinginvitation'">
+                                      <em> ( {{ 'PendingInvitation' | translate}}   )</em>
+                                    </span>
+                                
+                                  </span>
+   
+                                </p>
+
+     
+
+                                <!-- ////////// DATE ///////// -->
+                                <span style="color:#7695a5; font-weight:400;line-height:18px; font-size:13px"> 
+                                  <!-- {{ activity?.updatedAt | date: 'E/MM/yyyy HH:mm:ss' }}  -->
+                                  <span style="text-transform:capitalize"> {{ activity?.date }} </span> 
+                                </span>
+                              </td>
+                            </tr>
 
                           </tbody>
 
@@ -86,6 +150,39 @@
 
 
                   </div>
+                    <!-- *ngIf="displaysFooterPagination === true" -->
+                    <div  class="card-footer" style="text-align:right">
+                      <div class="stats">
+          
+                        <div style="width: 120px; margin: 0 auto; margin-top: 10px " >
+                          <div class="input-group">
+          
+                            <!-- -------====== BTN DECREASE PAGE  ======------ -->
+                            <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
+                              <button [disabled]="pageNo + 1 === 1" class="btn btn-info" type="button" (click)="decreasePageNumber()" style="padding: 6px 8px">
+                                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                              </button>
+                            </span>
+          
+                            <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
+                            <span class="input-group-btn" style="padding-right:0px;">
+                              <button class="btn btn-info" type="button" style="padding: 6px 8px">
+                                {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
+                              </button>
+                            </span>
+                            
+                            <!-- -------====== BTN INCREASE PAGE  ======------ -->
+                            <span class="input-group-btn" style="padding-right:0px">
+                              <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0" class="btn btn-info" type="button" (click)="increasePageNumber()" style="padding: 6px 8px">
+                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                              </button>
+                            </span>
+          
+                          </div>
+                        </div>
+                        
+                      </div>
+                    </div>
 
                 </div>
 

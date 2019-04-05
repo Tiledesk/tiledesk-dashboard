@@ -182,12 +182,12 @@ export class UsersService {
   // https://api.tiledesk.com/v1/
 
   /// ================================== GET USER ACTIVITIES ================================== ///
-  public getUsersActivities(): Observable<Activity[]> {
+  public getUsersActivities(pagenumber: number): Observable<Activity[]> {
 
-    // const url = this.USERS_ACTIVITIES_URL;
+    const url = this.USERS_ACTIVITIES_URL + '?page=' + pagenumber;
 
     // *** TEST URL  ***
-    const url = 'https://api.tiledesk.com/v1/' + this.project_id + '/activities';
+    // const url = 'https://api.tiledesk.com/v1/' + this.project_id + '/activities?page=' + pagenumber;
 
     console.log('!! USERS ACTIVITIES URL ', url);
     const headers = new Headers();

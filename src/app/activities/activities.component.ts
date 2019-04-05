@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../services/users.service';
 import { AuthService } from '../core/auth.service';
-
+import { TranslateService } from '@ngx-translate/core';
+import { Router } from '@angular/router';
+import * as moment from 'moment';
+import 'moment/locale/it.js';
+import 'moment/locale/en-gb.js';
 @Component({
   selector: 'appdashboard-activities',
   templateUrl: './activities.component.html',
@@ -12,18 +16,31 @@ export class ActivitiesComponent implements OnInit {
   projectUserIdOfcurrentUser: string;
   currentUserId: string;
   usersActivities: any;
+  browser_lang: string;
+  showSpinner = true;
+  pageNo = 0
+  totalPagesNo_roundToUp: number;
+
   constructor(
     private usersService: UsersService,
     public auth: AuthService,
+    private translate: TranslateService,
+    private router: Router
   ) { }
 
   ngOnInit() {
+    this.getBrowserLanguage();
     this.getCurrentProject();
-    this.getLoggedUserAndHisProjectUserId();
+    // this.getLoggedUserAndHisProjectUserId();
+    this.getActivities();
+    this.getCurrentUser();
 
     // this.getProjectUsers();
   }
-
+  getBrowserLanguage() {
+    this.browser_lang = this.translate.getBrowserLang();
+    console.log('ActivitiesComponent - browser_lang ', this.browser_lang)
+  }
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
@@ -34,45 +51,56 @@ export class ActivitiesComponent implements OnInit {
     });
   }
 
-  getLoggedUserAndHisProjectUserId() {
+  getCurrentUser() {
     this.auth.user_bs.subscribe((user) => {
       console.log('ActivitiesComponent - LoggedUser ', user);
 
       if (user && user._id) {
         this.currentUserId = user._id;
-        this.usersService.getProjectUsersByProjectIdAndUserId(user._id, this.projectId)
-          .subscribe((project_user: any) => {
-
-            console.log('ActivitiesComponent - Logged ProjectUser ', project_user);
-            if (project_user) {
-              this.projectUserIdOfcurrentUser = project_user[0]._id;
-              console.log('ActivitiesComponent - Logged ProjectUser ID', this.projectUserIdOfcurrentUser);
-
-              this.getActivities();
-            }
-          });
-
       }
+
     });
   }
 
+  // getLoggedUserAndHisProjectUserId() {
+  //   this.auth.user_bs.subscribe((user) => {
+  //     console.log('ActivitiesComponent - LoggedUser ', user);
 
-  getProjectUsers() {
-    this.usersService.getProjectUsersByProjectId().subscribe((project_users: any) => {
+  //     if (user && user._id) {
+  //       this.currentUserId = user._id;
+  //       this.usersService.getProjectUsersByProjectIdAndUserId(user._id, this.projectId)
+  //         .subscribe((project_user: any) => {
 
-      console.log('ActivitiesComponent - getProjectUsers - RES ', project_users);
+  //           console.log('ActivitiesComponent - Logged ProjectUser ', project_user);
+  //           if (project_user) {
+  //             this.projectUserIdOfcurrentUser = project_user[0]._id;
+  //             console.log('ActivitiesComponent - Logged ProjectUser ID', this.projectUserIdOfcurrentUser);
 
-    }, (error) => {
-      console.log('ActivitiesComponent - getProjectUsers - ERROR ', error);
-    }, () => {
-      console.log('ActivitiesComponent - getProjectUsers * COMPLETE *');
-    });
+  //             this.getActivities();
+  //           }
+  //         });
 
-  }
+  //     }
+  //   });
+  // }
+
+
+  // getProjectUsers() {
+  //   this.usersService.getProjectUsersByProjectId().subscribe((project_users: any) => {
+
+  //     console.log('ActivitiesComponent - getProjectUsers - RES ', project_users);
+
+  //   }, (error) => {
+  //     console.log('ActivitiesComponent - getProjectUsers - ERROR ', error);
+  //   }, () => {
+  //     console.log('ActivitiesComponent - getProjectUsers * COMPLETE *');
+  //   });
+
+  // }
 
 
   getActivities() {
-    this.usersService.getUsersActivities()
+    this.usersService.getUsersActivities(this.pageNo)
       .subscribe((res: any) => {
         console.log('ActivitiesComponent - getActivities - **** RESPONSE **** ', res);
         if (res) {
@@ -81,64 +109,78 @@ export class ActivitiesComponent implements OnInit {
           console.log('ActivitiesComponent - getActivities RESPONSE - per Page ', perPage);
           console.log('ActivitiesComponent - getActivities RESPONSE - count ', count);
 
+
+
+          const totalPagesNo = count / perPage;
+          console.log('ActivitiesComponent - TOTAL PAGES NUMBER', totalPagesNo);
+
+          this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
+          console.log('ActivitiesComponent - TOTAL PAGES No ROUND TO UP ', this.totalPagesNo_roundToUp);
+
           if (res.activities) {
             this.usersActivities = res.activities;
             this.usersActivities.forEach((activity: any) => {
               console.log('ActivitiesComponent - getActivities RESPONSE - activity ', activity);
 
-              if (activity && activity.actor && activity.actor.id && activity.target && activity.target.object) {
+              if (activity && activity.verb && activity.verb === 'PROJECT_USER_UPDATE') {
+                if (activity.actor &&
+                  activity.actor.id &&
+                  activity.target &&
+                  activity.target.object &&
+                  activity.target.object.id_user &&
+                  activity.target.object.id_user._id) {
 
 
-                if (activity.actor.id === activity.target.object.id_user) {
-                  activity.targetOfActionIsYourself = true;
-                } else {
-                  activity.targetOfActionIsYourself = false;
+                  if (activity.actor.id === activity.target.object.id_user._id) {
+                    activity.targetOfActionIsYourself = true;
+                  } else {
+                    activity.targetOfActionIsYourself = false;
+                  }
                 }
               }
 
-
-
-              // const userId = activity.actor;
-              // console.log('ActivitiesComponent - getActivities RESPONSE - userId ', userId);
-
-              // const targetSplitted = activity.target.split('/');
-              // console.log('ActivitiesComponent - getActivities RESPONSE - targetSplitted ', targetSplitted);
-
-              // const target_ProjectUserId = targetSplitted[3];
-              // // tslint:disable-next-line:max-line-length
-              // console.log('ActivitiesComponent - getActivities RESPONSE - target_ProjectUserId ', target_ProjectUserId,
-              //   ' currentUserProjectUserId ', this.projectUserIdOfcurrentUser);
-              // if (this.projectUserIdOfcurrentUser === target_ProjectUserId) {
-
-              //   activity.targetOfActionIsYourself = true;
-              // } else {
-
-              //   activity.targetOfActionIsYourself = false;
-              // }
-
-
-              // this.usersService.getUsersById(userId).subscribe((user: any) => {
-
-              //   console.log('ActivitiesComponent - getUsersById - RES ', user);
-              //   if (user) {
-              //     activity.actorfullname = user.firstname + ' ' + user.lastname
-              //   }
-
-              // }, (error) => {
-              //   console.log('ActivitiesComponent - getUsersById - ERROR ', error);
-              // }, () => {
-              //   console.log('ActivitiesComponent - getUsersById * COMPLETE *');
-              // });
-
+              // moment.locale('en-gb')
+              if (this.browser_lang === 'it') {
+                moment.locale('it')
+                const date = moment(activity.updatedAt).format('dddd, DD MMM YYYY - HH:mm:ss');
+                console.log('ActivitiesComponent - getActivities - updatedAt date', date);
+                activity.date = date;
+              } else {
+                const date = moment(activity.updatedAt).format('dddd, MMM DD, YYYY - HH:mm:ss');
+                console.log('ActivitiesComponent - getActivities - updatedAt date', date);
+                activity.date = date;
+              }
             });
           }
         }
 
       }, (error) => {
+        this.showSpinner = false;
         console.log('ActivitiesComponent - getActivities - ERROR ', error);
       }, () => {
         console.log('ActivitiesComponent - getActivities * COMPLETE *');
+        this.showSpinner = false;
       });
+  }
+
+  /// PAGINATION
+  decreasePageNumber() {
+    this.pageNo -= 1;
+
+    console.log('ActivitiesComponent - DECREASE PAGE NUMBER ', this.pageNo);
+    this.getActivities();
+  }
+
+  increasePageNumber() {
+    this.pageNo += 1;
+
+    console.log('ActivitiesComponent - INCREASE PAGE NUMBER ', this.pageNo);
+    this.getActivities();
+  }
+
+  goToMemberProfile(member_id: any) {
+    console.log('has clicked GO To MEMBER ', member_id);
+    this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
   }
 
 }
