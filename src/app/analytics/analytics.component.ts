@@ -200,7 +200,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     /** NOT YET USED */
     // this.daysHoursRequestsDistribution()
 
-     /** NOT YET USED */
+    /** NOT YET USED */
     // this.translateHours();
     // this.translateMinutes();
     // this.translateSeconds();
@@ -448,7 +448,9 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
         if (global_requests) {
           global_requests.forEach(g_r => {
 
-            requests_depts_id_array.push(g_r.attributes.departmentId)
+            if (g_r.attributes) {
+              requests_depts_id_array.push(g_r.attributes.departmentId)
+            }
 
           });
         }

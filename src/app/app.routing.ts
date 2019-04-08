@@ -75,6 +75,8 @@ import { PricingComponent } from './pricing/pricing.component';
 // import { DashboardComponent} from './dashboard/dashboard.component';
 // Andrea
 import { ChatComponent } from './chat/chat.component';
+import { AnalyticsStaticComponent } from './static-pages/analytics-static/analytics-static.component';
+
 
 
 
@@ -208,6 +210,8 @@ const routes: Routes = [
   { path: 'project/:projectid/contact/edit/:requesterid', component: ContactEditComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/activities', component: ActivitiesComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/pricing', component: PricingComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/analytics-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] },
+  
 
   { path: 'dashboard', component: DashboardComponent },
 
