@@ -131,14 +131,14 @@ export class FaqKbService {
    * CREATE (POST)
    * @param fullName
    */
-  public addMongoDbFaqKb(name: string, urlfaqkb: string) {
+  public addMongoDbFaqKb(name: string, urlfaqkb: string, is_external_bot: boolean) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'name': name, 'url': urlfaqkb, 'id_project': this.project._id };
+    const body = { 'name': name, 'url': urlfaqkb, 'id_project': this.project._id, 'external': is_external_bot };
 
     console.log('POST REQUEST BODY ', body);
 
@@ -207,7 +207,7 @@ export class FaqKbService {
    * @param id
    * @param fullName
    */
-  public updateMongoDbFaqKb(id: string, name: string, urlfaqkb: string) {
+  public updateMongoDbFaqKb(id: string, name: string, urlfaqkb: string, isExternalBot: boolean) {
 
     let url = this.MONGODB_BASE_URL;
     url = url += `${id}`;
@@ -219,7 +219,7 @@ export class FaqKbService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'name': `${name}`, 'url': `${urlfaqkb}` };
+    const body = { 'name': name, 'url': urlfaqkb, 'external': isExternalBot };
 
     console.log('PUT REQUEST BODY ', body);
 
@@ -229,11 +229,11 @@ export class FaqKbService {
 
   }
 
-   /**
-   * UPDATE (PUT) the BOT WITH trashed = true WHEN THE USER CLICKED THE BTN 'DELETE BOT' 
-   * @param id
-   * @param fullName
-   */
+  /**
+  * UPDATE (PUT) the BOT WITH trashed = true WHEN THE USER CLICKED THE BTN 'DELETE BOT' 
+  * @param id
+  * @param fullName
+  */
   public updateFaqKbAsTrashed(id: string, _trashed: boolean) {
 
     let url = this.MONGODB_BASE_URL;

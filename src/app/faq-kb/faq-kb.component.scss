@@ -200,3 +200,21 @@ input[type=text] {
     color: #353f45;
     // color: #566787;
 }
+
+input[type="checkbox"]:disabled {
+    background-color: #f9f9f9 !important;
+    opacity: 0.5!important;
+    // cursor: not-allowed;
+}
+
+.truncate {
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.url-top-position {
+    position: relative;
+    top: -5px;
+}

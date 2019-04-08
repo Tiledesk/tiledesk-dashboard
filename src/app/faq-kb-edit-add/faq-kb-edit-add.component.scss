@@ -17,6 +17,28 @@ input[type=text] {
     border: solid 1px #ddd;
 }
 
+textarea[type=text] {
+    // min-width: 307px !important;
+    height: 36px;
+    font-size: 14px;
+    width: 100%;
+    margin-bottom: 10px;
+    -webkit-appearance: none;
+    background: #fff;
+    border: 1px solid #d9d9d9 !important;
+    border-top: 1px solid #c0c0c0;
+    /* border-radius: 2px; */
+    padding-right: 8px;
+    padding-top: 5px;
+    padding-left: 8px;
+
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border-radius: 5px;
+    background-color: #fff !important;
+    border: solid 1px #ddd;
+}
+
 select {
     height:36px;  
     background: #fff; 
@@ -116,4 +138,26 @@ button.close {
     .custom-label {
         height: 0px !important;
     }
+}
+
+.checkbox-label {
+    font-family: "Google Sans", sans-serif !important;
+    color: #394f5a;
+    font-weight: 500;
+}
+
+input[type="text"]:disabled {
+    background-color: #f9f9f9 !important;
+    // cursor: not-allowed;
+}
+
+textarea[type="text"]:disabled {
+    background-color: #f9f9f9 !important;
+    // cursor: not-allowed;
+}
+
+input[type="text"]:disabled::placeholder { 
+    color: #f9f9f9; 
+    // font-size: 1.2em; 
+    // font-style: italic; 
 }

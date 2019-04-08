@@ -22,22 +22,53 @@
             <!-- style="margin-top: 16px" -->
           <div class="card-content">
             
-            <label class="col-sm-2 custom-label">
-             {{ "BotsAddEditPage.BotName" | translate }}
-            </label>
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-              <input [(ngModel)]="faqKb_name" class="input" type="text">
+            <div class="row"> 
+              <label class="col-sm-2 custom-label">
+              {{ "BotsAddEditPage.BotName" | translate }}
+              </label>
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <input [(ngModel)]="faqKb_name" class="input" type="text">
+              </div>
+            </div>
+
+            <div class="row"> 
+              <label class="col-sm-2"></label>
+              <div class="col-sm-10"> 
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" name="externalBot" (click)="hasClickedExternalBot(is_external_bot = !is_external_bot)" 
+                      [checked]="is_external_bot">
+                    <span class="checkbox-label">
+                        {{ "BotsPage.ExternalBot" | translate }} 
+                    </span> 
+                  </label>
+                </div>
+              </div>
             </div>
 
             <!-- SPACER -->
-            <div class="col-sm-12 spacer_div" style="height:15px"></div>
+            <div class="col-sm-12" style="height:10px"></div>
+      
+            <div class="row"> 
+              <label class="col-sm-2 custom-label">Url</label>
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <textarea [(ngModel)]="faqKbUrlToUpdate" class="input" type="text" placeholder="{{ 'BotsPage.EnterExternalBotUrl' | translate }}"
+                  [disabled]="!is_external_bot">
+                </textarea>
+              </div>
+            </div>
 
-            <label class="col-sm-2"></label>
-            <div class="col-sm-10"> 
+            <!-- SPACER -->
+            <!-- <div class="col-sm-12 spacer_div" style="height:15px"></div> -->
 
-              <button #editbotbtn class="btn btn-success" (click)="editBotName()" >
-                {{ "BotsAddEditPage.UpdateBotName" | translate }}
-              </button>
+            <div class="row"> 
+              <label class="col-sm-2"></label>
+              <div class="col-sm-10"> 
+
+                <button #editbotbtn class="btn btn-success" (click)="editBotName()" [disabled]="faqKb_name?.length < 2">
+                  {{ "BotsAddEditPage.UpdateBotName" | translate }}
+                </button>
+              </div>
             </div>
 
           </div> <!-- ./ card-content -->
@@ -132,7 +163,7 @@
 
         
   <!-- MOMGO DB FAQ LIST -->
-  <div class="row">
+  <div class="row" *ngIf="!is_external_bot">
       <div class="col-md-12">
         <div class="card">
 

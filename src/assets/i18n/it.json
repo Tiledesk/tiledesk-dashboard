@@ -467,7 +467,10 @@
         "Error": "Errore",
         "AnErrorHasOccurred": "Si è verificato un errore",
         "Continue": "Continua",
-        "BotQuickTipsText": "Quando un cliente entra in chat tramite TileDesk, potresti non essere sempre in grado di rispondere. Fortunatamente, puoi configurare un Bot per aiutarti e poi attivarlo in un Dipartimento"
+        "BotQuickTipsText": "Quando un cliente entra in chat tramite TileDesk, potresti non essere sempre in grado di rispondere. Fortunatamente, puoi configurare un Bot per aiutarti e poi attivarlo in un Dipartimento",
+        "ExternalBot":"Bot esterno",
+        "NoUrlProvided":"Nessun URL fornito",
+        "EnterExternalBotUrl":"enter external Bot Url"
     },
     "BotsAddEditPage": {
         "AddBot": "Aggiungi Bot",
@@ -475,7 +478,7 @@
         "BotName": "Nome",
         "CreateBot": "Crea Bot",
         "UpdateBot": "Aggiorna Bot",
-        "UpdateBotName": "Aggiorna nome Bot",
+        "UpdateBotName": "Aggiorna Bot",
         "BotAttributes": "Attributi bot",
         "BotID": "Id bot",
         "CreationDate": "Data creazione",

@@ -44,6 +44,11 @@ export class FaqKbComponent implements OnInit {
 
   trashBotSuccessNoticationMsg: string;
   trashBotErrorNoticationMsg: string;
+  is_external_bot: boolean;
+  text_is_truncated = true;
+  rowIndexSelected: number;
+
+
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -103,7 +108,6 @@ export class FaqKbComponent implements OnInit {
       this.faqkbList = faqKb;
 
       if (this.faqkbList) {
-
         if (this.faqkbList.length === 0) {
           this.showSpinner = false;
         }
@@ -125,6 +129,22 @@ export class FaqKbComponent implements OnInit {
 
   }
 
+  goToBotExternalUrl(botExternalUrl) {
+    console.log('botExternalUrl ', botExternalUrl);
+    window.open(botExternalUrl, '_blank');
+  }
+
+  disableTruncateText (i: number) {
+    this.text_is_truncated = false;
+    // console.log('toggleShowUrl ', this.truncate_text);
+    this.rowIndexSelected = i;
+    console.log('toggleShowUrl index ', i );
+  }
+
+  enableTruncateText() {
+    this.text_is_truncated = true;
+    this.rowIndexSelected = undefined;
+  }
 
   /**
    * !!! NO MORE USED: NOW THE FAQ-KB ARE GET BY FILTERING FOR THE ID OF THE CURRENT PROJECT (see above)

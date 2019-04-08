@@ -467,7 +467,10 @@
         "Error": "Error",
         "AnErrorHasOccurred": "An error has occurred",
         "Continue": "Continue",
-        "BotQuickTipsText": "When a customer chats in through TileDesk, you may not always be around to respond. Luckily, you can configure a Bot to help you and then activates it in a Department"
+        "BotQuickTipsText": "When a customer chats in through TileDesk, you may not always be around to respond. Luckily, you can configure a Bot to help you and then activates it in a Department",
+        "ExternalBot":"External Bot",
+        "NoUrlProvided":"No url provided",
+        "EnterExternalBotUrl":"enter external Bot Url"
     },
     "BotsAddEditPage": {
         "AddBot": "Add Bot",
@@ -475,7 +478,7 @@
         "BotName": "Name",
         "CreateBot": "Create Bot",
         "UpdateBot": "Update Bot",
-        "UpdateBotName": "Update Bot Name",
+        "UpdateBotName": "Update Bot",
         "BotAttributes": "Bot attributes",
         "BotID": "Bot Id",
         "CreationDate": "Creation date",

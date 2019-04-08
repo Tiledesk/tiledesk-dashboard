@@ -14,7 +14,7 @@
   
       <!-- MOMGO DB FAQ Knowledge Base LIST -->
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-9 col-lg-8">
           <div class="card">
             <div class="card-header card-header-custom-bkgrnd">
               <button class="btn btn-info" style="padding: 8px 16px; margin: 0px;" 
@@ -33,15 +33,16 @@
                 <thead>
                   <tr>
                     <th>
+                      <!-- Name -->
                       <span class="column-th-span">
-                        <!-- Name -->
                         {{ "BotsPage.Name" | translate }} 
                       </span>
+       
                     </th>
 
                     <th>
                       <span class="column-th-span">
-                        # FAQs
+                          {{ "BotsPage.ExternalBot" | translate }} 
                       </span>
                     </th>
 
@@ -102,36 +103,105 @@
                     </td>
                   </tr>
             
-                  <tr *ngFor="let faqkb of faqkbList">
-
-                    <td (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)' style="cursor: pointer;">
+                  <tr *ngFor="let faqkb of faqkbList; let i = index">
+                      <!--  -->
+                    <td style="cursor: pointer;">
                       <span class="tooltipx">
-                        <span style="font-weight:400; font-size:13px">  {{ faqkb?.name }}</span>
+                        <span style="font-weight:400; font-size:13px" (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)'>  {{ faqkb?.name }}</span>
 
-                        <span class="tooltiptext">{{ 'BotsPage.BotId' | translate }}: <br> {{ faqkb?._id  }} </span>
+                        <span class="tooltiptext">
+                          {{ 'BotsPage.BotId' | translate }}: <br> {{ faqkb?._id  }} 
+                        </span>
                       </span>  
-                    </td>
 
-                    <td (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)' style="cursor: pointer;">
-                      <!-- class="tooltipx" -->
-                      <span style="font-weight:400; font-size:13px">
+                     
+                      <span *ngIf="!faqkb?.external" style="font-weight:400; font-size:12px; display:block; color:#7695a5">
+                          # FAQs:
                         <span *ngIf="!faqkb?.has_faq">
                           0
-                          <i class="material-icons" style="vertical-align: middle; color:#ec971f; font-size: 12px; padding-left: 8px">
-                            report_problem
-                          </i>
-                          <span style="vertical-align: middle; color:#ec971f; font-size: 12px"> 
-                            <!-- pending add members -->
-                            {{ 'BotsPage.PendingAddFaqs' | translate }}
+                          <span style="position: relative; top: -2px;" class="tooltipx">
+                            <i class="material-icons" style="vertical-align: middle; color:#ec971f; font-size: 12px; padding-left: 8px">
+                              report_problem
+                            </i>
+                            <span class="tooltiptext">
+                              <!-- color:#ec971f;  -->
+                              <span style="vertical-align: middle;font-size: 12px;"> 
+                                {{ 'BotsPage.PendingAddFaqs' | translate }}
+                              </span>
+                            </span>
                           </span>
+
                         </span>
 
                         <span *ngIf="faqkb?.has_faq">
                           {{ faqkb?.faqs_number }}
                         </span>
-
-                        <!-- <span class="tooltiptext">{{ 'BotsPage.BotId' | translate }}: <br> {{ faqkb?._id  }} </span> -->
                       </span>
+
+                      <span *ngIf="faqkb?.external" style="font-weight:400; font-size:12px; display:block; color:#7695a5">
+
+                        <!-- <div style="display: flex;
+                        flex-wrap: wrap;"> 
+                        <div style="	flex-grow: 1;
+                        width: 10%;background: #23a;">
+
+                        </div>
+                        <div style="	flex-grow: 1;
+                        width: 80%; background: #49b;">
+
+                        </div>
+                        <div style="	flex-grow: 1;
+                        width: 10%;background: #23a;">
+
+                        </div>
+                      </div> -->
+
+                      
+                        <span [ngClass]="{'url-top-position' : faqkb?.url }"> Url: </span> 
+                        <span *ngIf="faqkb?.url"  [ngClass]="{'truncate' : i !== rowIndexSelected }" 
+                          style="max-width: 250px;color: #03a5e8; cursor:pointer;display:inline-block; word-break: break-all;"
+                          (click)="$event.stopPropagation(); goToBotExternalUrl(faqkb?.url)">
+                          {{ faqkb?.url}} 
+                        </span>
+                        <span *ngIf="faqkb?.url?.length > 43"> 
+                          <i *ngIf="i !== rowIndexSelected" class="material-icons" style="cursor: pointer; color: #039be5; font-size:18px;" 
+                            (click)="$event.stopPropagation(); disableTruncateText(i)">
+                            keyboard_arrow_down
+                          </i>   
+                          <i *ngIf="i === rowIndexSelected" class="material-icons" style="cursor: pointer; color: #039be5; font-size:18px;" 
+                            (click)="$event.stopPropagation(); enableTruncateText()">
+                            keyboard_arrow_up
+                          </i>   
+                        </span>
+
+                        <span *ngIf="!faqkb?.url">
+                          n.d.
+
+                          <span style="position: relative; top: -2px;" class="tooltipx">
+                              <i class="material-icons" style="vertical-align: middle; color:#ec971f; font-size: 12px; padding-left: 8px">
+                                report_problem
+                              </i>
+                              <span class="tooltiptext">
+                                <!-- color:#ec971f;  -->
+                                <span style="vertical-align: middle;font-size: 12px;"> 
+                                  {{ "BotsPage.NoUrlProvided" | translate }} 
+                                </span>
+                              </span>
+                            </span>
+                        </span>
+                      </span>
+                    </td>
+
+                    <!-- (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)' -->
+                    <td style="cursor: pointer;">
+                      
+                        <div class="checkbox">
+                          <label>
+                            <input style="opacity: 0.5!important;" type="checkbox" name="optionsCheckboxes" [checked]="faqkb?.external" disabled>
+                          </label>
+                        </div>
+                        <div class="overlay"></div>
+                      
                     </td>
 
                     <!-- <td>
@@ -225,7 +295,7 @@
         <!-- /. end col-md-8 -->
 
         <!-- // RIGHT SIDEBAR -->
-        <div class="col-md-4">
+        <div class="col-md-3 col-lg-4">
           <div class="card">
             <div class="card-content">
               <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">

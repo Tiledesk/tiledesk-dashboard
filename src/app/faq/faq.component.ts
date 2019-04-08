@@ -55,6 +55,7 @@ export class FaqComponent implements OnInit {
   faqKb_created_at: any;
   faq_lenght: number;
   showSpinner = true;
+  is_external_bot: boolean;
   constructor(
     private mongodbFaqService: MongodbFaqService,
     private router: Router,
@@ -139,6 +140,13 @@ export class FaqComponent implements OnInit {
 
       this.faqKb_created_at = faqkb.createdAt;
       console.log('GET FAQ-KB (DETAILS) BY ID - CREATED AT ', this.faqKb_created_at);
+
+      this.is_external_bot = faqkb.external;
+      console.log('GET FAQ-KB (DETAILS) BY ID - BOT IS EXTERNAL ', this.is_external_bot);
+
+      this.faqKbUrlToUpdate = faqkb.url;
+      console.log('GET FAQ-KB (DETAILS) BY ID - BOT URL ', this.faqKbUrlToUpdate);
+
     },
       (error) => {
         console.log('GET FAQ-KB BY ID (SUBSTITUTE BOT) - ERROR ', error);
@@ -151,6 +159,11 @@ export class FaqComponent implements OnInit {
 
   }
 
+  hasClickedExternalBot(externalBotselected: boolean) {
+    this.is_external_bot = externalBotselected;
+    console.log('hasClickedExternalBot - externalBotselected: ', this.is_external_bot);
+  }
+
   /**
    * *** EDIT BOT ***
    * HAS BEEN MOVED in this COMPONENT FROM faq-kb-edit-add.component  */
@@ -160,19 +173,20 @@ export class FaqComponent implements OnInit {
     this.elementRef.nativeElement.blur();
 
     console.log('FAQ KB NAME TO UPDATE ', this.faqKb_name);
-    this.faqKbService.updateMongoDbFaqKb(this.id_faq_kb, this.faqKb_name, this.faqKbUrlToUpdate).subscribe((faqKb) => {
-      console.log('EDIT BOT - FAQ KB UPDATED ', faqKb);
-    },
-      (error) => {
-        console.log('EDIT BOT -  ERROR ', error);
-        // =========== NOTIFY ERROR ===========
-        this.notify.showNotification('An error occurred while updating the bot', 4, 'report_problem');
+    this.faqKbService.updateMongoDbFaqKb(this.id_faq_kb, this.faqKb_name, this.faqKbUrlToUpdate, this.is_external_bot)
+      .subscribe((faqKb) => {
+        console.log('EDIT BOT - FAQ KB UPDATED ', faqKb);
       },
-      () => {
-        console.log('EDIT BOT - * COMPLETE *');
-        // =========== NOTIFY SUCCESS===========
-        this.notify.showNotification('bot successfully updated', 2, 'done');
-      });
+        (error) => {
+          console.log('EDIT BOT -  ERROR ', error);
+          // =========== NOTIFY ERROR ===========
+          this.notify.showNotification('An error occurred while updating the bot', 4, 'report_problem');
+        },
+        () => {
+          console.log('EDIT BOT - * COMPLETE *');
+          // =========== NOTIFY SUCCESS===========
+          this.notify.showNotification('bot successfully updated', 2, 'done');
+        });
   }
 
   goToTestFaqPage() {

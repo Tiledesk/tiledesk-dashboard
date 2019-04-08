@@ -35,9 +35,11 @@ export class FaqKbEditAddComponent implements OnInit {
 
   newBot_name: string;
   newBot_Id: string;
+  newBot_External: boolean;
   browser_lang: string;
 
   CREATE_BOT_ERROR: boolean;
+  is_external_bot = false;
 
   constructor(
     private faqKbService: FaqKbService,
@@ -104,6 +106,10 @@ export class FaqKbEditAddComponent implements OnInit {
     });
   }
 
+  hasClickedExternalBot(externalBotselected: boolean) {
+    this.is_external_bot = externalBotselected;
+    console.log('hasClickedExternalBot - externalBotselected: ', this.is_external_bot);
+  }
 
   // CREATE (mongoDB)
   create() {
@@ -115,16 +121,17 @@ export class FaqKbEditAddComponent implements OnInit {
     console.log('Create Faq Kb - NAME ', this.faqKbName);
     console.log('Create Faq Kb - URL ', this.faqKbUrl);
     console.log('Create Faq Kb - PROJ ID ', this.project._id);
-    this.faqKbService.addMongoDbFaqKb(this.faqKbName, this.faqKbUrl)
+    this.faqKbService.addMongoDbFaqKb(this.faqKbName, this.faqKbUrl, this.is_external_bot)
       .subscribe((faqKb) => {
         console.log('CREATE FAQKB - POST DATA ', faqKb);
 
         if (faqKb) {
           this.newBot_name = faqKb.name;
           this.newBot_Id = faqKb._id;
+          this.newBot_External = faqKb.external;
 
           // SAVE THE BOT IN LOCAL STORAGE
-          this.botLocalDbService.saveBotsInStorage(this.newBot_Id , faqKb);
+          this.botLocalDbService.saveBotsInStorage(this.newBot_Id, faqKb);
         }
         // this.bot_fullname = '';
 
@@ -171,8 +178,12 @@ export class FaqKbEditAddComponent implements OnInit {
 
   onCloseInfoModalHandled() {
     // this.router.navigate(['project/' + this.project._id + '/faqkb']);
-    if (this.goToEditBot === true) {
-      this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id]);
+    if (this.newBot_External === false) {
+      if (this.goToEditBot === true) {
+        this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id]);
+      } else {
+        this.router.navigate(['project/' + this.project._id + '/bots']);
+      }
     } else {
       this.router.navigate(['project/' + this.project._id + '/bots']);
     }
@@ -183,28 +194,28 @@ export class FaqKbEditAddComponent implements OnInit {
   }
 
   // !!! NO MORE USED IN THIS COMPONENT - MOVED IN faq.component.html
-  edit() {
-    console.log('FAQ KB NAME TO UPDATE ', this.faqKbNameToUpdate);
-    console.log('FAQ KB URL TO UPDATE ', this.faqKbUrlToUpdate);
+  // edit() {
+  //   console.log('FAQ KB NAME TO UPDATE ', this.faqKbNameToUpdate);
+  //   console.log('FAQ KB URL TO UPDATE ', this.faqKbUrlToUpdate);
 
-    this.faqKbService.updateMongoDbFaqKb(this.id_faq_kb, this.faqKbNameToUpdate, this.faqKbUrlToUpdate).subscribe((data) => {
-      console.log('PUT DATA ', data);
+  //   this.faqKbService.updateMongoDbFaqKb(this.id_faq_kb, this.faqKbNameToUpdate, this.faqKbUrlToUpdate).subscribe((data) => {
+  //     console.log('PUT DATA ', data);
 
-      // RE-RUN GET CONTACT TO UPDATE THE TABLE
-      // this.getDepartments();
-      this.ngOnInit();
-    },
-      (error) => {
+  //     // RE-RUN GET CONTACT TO UPDATE THE TABLE
+  //     // this.getDepartments();
+  //     this.ngOnInit();
+  //   },
+  //     (error) => {
 
-        console.log('PUT REQUEST ERROR ', error);
+  //       console.log('PUT REQUEST ERROR ', error);
 
-      },
-      () => {
-        console.log('PUT REQUEST * COMPLETE *');
+  //     },
+  //     () => {
+  //       console.log('PUT REQUEST * COMPLETE *');
 
-        this.router.navigate(['project/' + this.project._id + '/faqkb']);
-      });
-  }
+  //       this.router.navigate(['project/' + this.project._id + '/faqkb']);
+  //     });
+  // }
 
   goBackToFaqKbList() {
     // this.router.navigate(['project/' + this.project._id + '/faqkb']);
