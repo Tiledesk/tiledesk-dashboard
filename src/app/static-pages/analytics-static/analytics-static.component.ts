@@ -16,19 +16,20 @@ export class AnalyticsStaticComponent implements OnInit {
   lastMonthrequestsCount: number;
   monthNames: any;
   chartLabelsArray: any;
+  displayUpgradePlanModal = 'block';
+
   constructor(
     private translate: TranslateService,
   ) { }
 
   ngOnInit() {
     this.date = new Date();
-    this.global_activeRequestsCount = 44
-    this.global_servedRequestsCount = 31
-    this.global_unservedRequestsCount = 13
-    this.lastMonthrequestsCount = 84
+    this.global_activeRequestsCount = 38
+    this.global_servedRequestsCount = 24
+    this.global_unservedRequestsCount = 14
+    this.lastMonthrequestsCount = 86
 
     this.getBrowserLangAndSwitchMonthName();
-    
 
     this.generateChartLabels()
     this.buildChart()
@@ -36,7 +37,6 @@ export class AnalyticsStaticComponent implements OnInit {
   }
 
   getBrowserLangAndSwitchMonthName() {
-
     const browserLang = this.translate.getBrowserLang();
     console.log('!!! ANALYTICS  - BROWSER LANG ', browserLang)
     if (browserLang) {
@@ -67,7 +67,7 @@ export class AnalyticsStaticComponent implements OnInit {
   buildChart() {
     const dataRequestsByDayChart: any = {
       // `${id}`
-      labels: this.chartLabelsArray,
+      labels: this.chartLabelsArray.reverse(),
       series: [
         [17, 2, 1, 3, 1, 0, 6]
       ]
@@ -122,5 +122,9 @@ export class AnalyticsStaticComponent implements OnInit {
 
     seq = 0;
   };
+
+  closeUpgradePlanModal() {
+    this.displayUpgradePlanModal = 'none'
+  }
 
 }
