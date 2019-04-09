@@ -144,8 +144,12 @@ export class FaqComponent implements OnInit {
       this.is_external_bot = faqkb.external;
       console.log('GET FAQ-KB (DETAILS) BY ID - BOT IS EXTERNAL ', this.is_external_bot);
 
-      this.faqKbUrlToUpdate = faqkb.url;
-      console.log('GET FAQ-KB (DETAILS) BY ID - BOT URL ', this.faqKbUrlToUpdate);
+      if (faqkb.url !== 'undefined') {
+        this.faqKbUrlToUpdate = faqkb.url;
+        console.log('GET FAQ-KB (DETAILS) BY ID - BOT URL ', this.faqKbUrlToUpdate);
+      } else {
+        console.log('GET FAQ-KB (DETAILS) BY ID - BOT URL is undefined ', faqkb.url);
+      }
 
     },
       (error) => {

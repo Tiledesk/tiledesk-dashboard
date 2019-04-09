@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { UsersService } from '../services/users.service';
 import { AuthService } from '../core/auth.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
+import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
 import 'moment/locale/it.js';
 import 'moment/locale/en-gb.js';
 @Component({
@@ -11,7 +12,11 @@ import 'moment/locale/en-gb.js';
   templateUrl: './activities.component.html',
   styleUrls: ['./activities.component.scss']
 })
+
 export class ActivitiesComponent implements OnInit {
+  @ViewChild('searchbtn') private searchbtnRef: ElementRef;
+  @ViewChild('clearsearchbtn') private clearsearchbtnRef: ElementRef;
+
   projectId: string;
   projectUserIdOfcurrentUser: string;
   currentUserId: string;
@@ -21,6 +26,24 @@ export class ActivitiesComponent implements OnInit {
   pageNo = 0
   totalPagesNo_roundToUp: number;
 
+  queryString: string;
+  startDate: any;
+  startDateValue: any;
+
+  endDate: any;
+  endDateValue: any;
+
+  selectedAgentId: string;
+  selectedAgentValue: string;
+
+  agentsList = [];
+
+  public myDatePickerOptions: IMyDpOptions = {
+    // other options...
+    dateFormat: 'dd/mm/yyyy',
+    // dateFormat: 'yyyy, mm , dd',
+  };
+
   constructor(
     private usersService: UsersService,
     public auth: AuthService,
@@ -29,14 +52,46 @@ export class ActivitiesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.selectedAgentId = '';
     this.getBrowserLanguage();
     this.getCurrentProject();
     // this.getLoggedUserAndHisProjectUserId();
     this.getActivities();
     this.getCurrentUser();
+    this.getAllProjectUsers();
 
     // this.getProjectUsers();
   }
+
+
+  getAllProjectUsers() {
+    // createBotsAndUsersArray() {
+    this.usersService.getProjectUsersByProjectId()
+      .subscribe((projectUsers: any) => {
+        console.log('ActivitiesComponent - GET PROJECT-USERS ', projectUsers);
+
+        if (projectUsers) {
+
+
+          projectUsers.forEach(user => {
+            console.log('ActivitiesComponent - PROJECT-USER ', user);
+            // tslint:disable-next-line:max-line-length
+            this.agentsList.push({ '_id': user.id_user._id, 'firstname': user.id_user.firstname, 'lastname': user.id_user.lastname });
+          });
+
+          // console.log('!!! NEW REQUESTS HISTORY  - !!!! USERS ARRAY ', this.user_and_bot_array);
+
+        }
+      }, (error) => {
+        console.log('ActivitiesComponent - GET PROJECT-USERS ', error);
+      }, () => {
+        console.log('ActivitiesComponent - GET PROJECT-USERS * COMPLETE *');
+
+      });
+
+  }
+
+
   getBrowserLanguage() {
     this.browser_lang = this.translate.getBrowserLang();
     console.log('ActivitiesComponent - browser_lang ', this.browser_lang)
@@ -98,9 +153,69 @@ export class ActivitiesComponent implements OnInit {
 
   // }
 
+  search() {
+    // RESOLVE THE BUG: THE BUTTON SEARCH REMAIN FOCUSED AFTER PRESSED
+    this.searchbtnRef.nativeElement.blur();
+
+    this.pageNo = 0
+    if (this.startDate) {
+      console.log('ActivitiesComponent - search START DATE ', this.startDate);
+      console.log('ActivitiesComponent - search START DATE - FORMATTED ', this.startDate['formatted']);
+
+      this.startDateValue = this.startDate['formatted']
+    } else {
+      this.startDateValue = '';
+      console.log('ActivitiesComponent - search START DATE ', this.startDate);
+    }
+
+    if (this.endDate) {
+      console.log('ActivitiesComponent - END DATE ', this.endDate);
+      console.log('ActivitiesComponentY - END DATE - FORMATTED ', this.endDate['formatted']);
+
+
+      this.endDateValue = this.endDate['formatted']
+
+      console.log('ActivitiesComponent - SEARCH FOR END DATE ', this.endDateValue);
+    } else {
+      this.endDateValue = '';
+      console.log('ActivitiesComponent - SEARCH FOR END DATE ', this.endDate)
+    }
+
+    if (this.selectedAgentId) {
+
+      this.selectedAgentValue = this.selectedAgentId;
+      console.log('ActivitiesComponent - SEARCH FOR selectedAgentId ', this.selectedAgentValue);
+    } else {
+      console.log('ActivitiesComponent - SEARCH FOR selectedAgentId ', this.selectedAgentId);
+      this.selectedAgentValue = ''
+    }
+
+
+    this.queryString =
+      'start_date=' + this.startDateValue + '&' +
+      'end_date=' + this.endDateValue + '&' +
+      'agent=' + this.selectedAgentValue
+
+
+    this.getActivities();
+  }
+
+  clearSearch() {
+
+    // RESOLVE THE BUG: THE BUTTON CLEAR SEARCH REMAIN FOCUSED AFTER PRESSED
+    this.clearsearchbtnRef.nativeElement.blur();
+
+    this.pageNo = 0;
+
+    this.startDate = '';
+    this.endDate = '';
+    this.queryString = 'start_date=' + '&' + 'end_date=' + '&' + 'agent=';
+    this.getActivities();
+  }
+
 
   getActivities() {
-    this.usersService.getUsersActivities(this.pageNo)
+    this.usersService.getUsersActivities(this.queryString, this.pageNo)
       .subscribe((res: any) => {
         console.log('ActivitiesComponent - getActivities - **** RESPONSE **** ', res);
         if (res) {

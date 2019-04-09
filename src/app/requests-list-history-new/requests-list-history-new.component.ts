@@ -301,7 +301,7 @@ export class RequestsListHistoryNewComponent implements OnInit {
     // RESOLVE THE BUG: THE BUTTON CLEAR-SEARCH REMAIN FOCUSED AFTER PRESSED (doesn't works - so is used the below code)
     // this.searchbtnRef.nativeElement.blur();
 
-    // RESOLVE THE BUG: THE BUTTON CLEAR-SEARCH REMAIN FOCUSED AFTER PRESSED
+    // RESOLVE THE BUG: THE BUTTON SEARCH REMAIN FOCUSED AFTER PRESSED
     const searchTopBtn = <HTMLElement>document.querySelector('.searchTopBtn');
     console.log('!!! NEW REQUESTS HISTORY - TOP SEARCH BTN ', searchTopBtn)
     searchTopBtn.blur()

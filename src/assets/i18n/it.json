@@ -182,7 +182,8 @@
     "DeveloperDocs":"Documentazione sviluppatori",
     "InstallWithGoogleTagManager": "Installa con Google Tag Manager",
     "Activities": "Attività",
-    "LatestActivities":"Latest Activities",
+    "NoActivities": "Nessuna Attività",
+    "LatestActivities":"Ultime attività",
     "HasChanged":"ha cambiato",
     "HisStatus":"il suo stato",
     "TheAvailabilityStatusOf":"lo stato di disponibilità di",
@@ -470,7 +471,7 @@
         "BotQuickTipsText": "Quando un cliente entra in chat tramite TileDesk, potresti non essere sempre in grado di rispondere. Fortunatamente, puoi configurare un Bot per aiutarti e poi attivarlo in un Dipartimento",
         "ExternalBot":"Bot esterno",
         "NoUrlProvided":"Nessun URL fornito",
-        "EnterExternalBotUrl":"enter external Bot Url"
+        "EnterExternalBotUrl":"inserire l'URL del Bot esterno"
     },
     "BotsAddEditPage": {
         "AddBot": "Aggiungi Bot",

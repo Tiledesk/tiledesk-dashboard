@@ -4,13 +4,92 @@
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
 
-      <div class="row">
 
+      <div class="row">
           <div class="col-md-12">
-              <div class="card">
+            <div class="card" style="margin-bottom: 0px;">
+                <!-- padding-top: 0px;padding-bottom: 0px; -->
+              <div class="card-content" style="">
+
+
+                <div class="row">
+                      <div class="col-sm-4" style="padding-left:0px;padding-right:0px;"> 
+                        <label for="contain" class="col-sm-12" style="text-align: left; color:#7695a5;">
+                            {{ 'HistoryPage.DateRange' | translate }}
+                        </label>
+                        <div class="col-sm-6" style="padding-right:0px;">
+                          <my-date-picker name="mydate" [options]="myDatePickerOptions" 
+                            [(ngModel)]="startDate" ></my-date-picker>
+                        </div>
+                        <div class="col-sm-6" style="padding-left:0px;">
+                          <my-date-picker name="mydate" [options]="myDatePickerOptions"
+                            [(ngModel)]="endDate" ></my-date-picker>
+                        </div>
+                      </div>
+                      <div class="col-sm-4">
+
+                      <label  class="col-sm-12" style="text-align: left; color: #7695a5 !important;">
+                        {{ 'HistoryPage.Agent' | translate }}
+                      </label>
+                      <ng-select name="agent" [(ngModel)]="selectedAgentId" [clearable]="false">
+                        <ng-option [value]="''">{{ 'HistoryPage.AllAgents' | translate }}</ng-option>
+                        <ng-option *ngFor="let agent of agentsList" [value]="agent._id" >
+                          {{ agent.firstname }} {{ agent.lastname }} 
+                        </ng-option>
+                      </ng-select>
+
+                      </div>
+
+                      <div class="col-sm-4">
+
+                          <label  class="col-sm-12" style="text-align: left; color: #7695a5 !important;">
+                          Activity
+                          </label>
+                          <ng-select name="agent" [(ngModel)]="selectedAgentId" [clearable]="false">
+                            <ng-option [value]="''">{{ 'HistoryPage.AllAgents' | translate }}</ng-option>
+                            <ng-option *ngFor="let agent of agentsList" [value]="agent._id" >
+                              {{ agent.firstname }} {{ agent.lastname }} 
+                            </ng-option>
+                          </ng-select>
+    
+                          </div>
+
+                </div>
+
+
+                <!-- -------====== BTNS SEARCH  & CLEAR SEARCH & EXPORT TO CSV ======------ -->
+                <div class="row">
+                  <div class="col-sm-12"> 
+                    <button #searchbtn type="submit" class="btn btn-info" (click)="search()"
+                      style="padding:9px 30px;">
+                      <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                    </button>
+
+                    <button #clearsearchbtn type="submit" class="btn btn-white clearsearchbtn" (click)="clearSearch()"
+                      style="padding:9px 30px;color:#7695a5">
+                      <!-- <span class="glyphicon glyphicon-remo" aria-hidden="true"></span> -->
+                      {{ 'HistoryPage.ClearSearch' | translate }}
+                    </button>
+
+                    <button class="btn btn-white pull-right export-to-csv-btn" (click)="exportRequestsToCSV()"
+                      style="padding:9px 30px;color:#7695a5">
+                      <!-- <span style="color: #394f5a">  </span> -->
+                        {{ 'ExportToCSV' | translate }}
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+      </div>
+
+    <div class="row">
+          <div class="col-md-12">
+              <div class="card" style="margin-top: 0px;">
                   <loading-spinner *ngIf="showSpinner"></loading-spinner>
                   <!--  -->
-                  <div *ngIf="!showSpinner"  class="card-content table-responsive">
+                  <div *ngIf="!showSpinner"  class="card-content table-responsive" style="padding-bottom:0px">
                       <table class="table table-hover">
                           <thead>
                             <tr>
@@ -26,8 +105,19 @@
                             </tr>
                           </thead>
                           <tbody>
+
+                                <!-- ===== IF THERE ISN'T ACTIVITIES ===== -->
+                            <tr *ngIf="usersActivities && usersActivities?.length === 0"> 
+                              <td colspan="6" style="text-align: center; padding-top: 16px; cursor: pointer">
+            
+                                <p style="font-size:1em; color:#7695a5; font-weight: 400">
+                                    {{ 'NoActivities' | translate }}
+                                </p>
+                              </td>
+                            </tr> 
+
                             <tr *ngFor="let activity of usersActivities">
-                              <td> 
+                              <td style="width:1%; white-space:nowrap"> 
                                   <span *ngIf="activity?.verb === 'PROJECT_USER_INVITE'"> 
                                       <!-- <span class="icon-user-plus"> </span> -->
                                       <img class="fontawesome-icon" src="assets/img/user-plus-solid.svg" alt="user-plus"/> 
@@ -119,7 +209,16 @@
                                       <span class="link-to-user-profile" (click)="goToMemberProfile(activity?.target?.object?.id_user?._id)">  
                                           {{ activity?.target?.object?.id_user?.firstname }} {{ activity?.target?.object?.id_user?.lastname }}
                                       </span>
-                                      ({{ activity?.actionObj?.email }}) 
+
+                                      <!-- email with round brackets if it not is a pendinginvitation -->
+                                      <span *ngIf="activity?.target?.type !== 'pendinginvitation'">
+                                        ({{ activity?.actionObj?.email }})
+                                      </span> 
+
+                                      <!-- email without round brackets if it is a pendinginvitation -->
+                                      <span *ngIf="activity?.target?.type === 'pendinginvitation'">
+                                        <em> {{ activity?.actionObj?.email }}</em>
+                                      </span>
 
                                       <!-- ad assumere il ruolo di   -->
                                       {{ 'ToTakeOnTheRoleOf' | translate}} 
