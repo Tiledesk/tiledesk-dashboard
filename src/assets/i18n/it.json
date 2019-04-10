@@ -182,6 +182,7 @@
     "DeveloperDocs":"Documentazione sviluppatori",
     "InstallWithGoogleTagManager": "Installa con Google Tag Manager",
     "Activities": "Attività",
+    "Activity": "Attività",
     "NoActivities": "Nessuna Attività",
     "LatestActivities":"Ultime attività",
     "HasChanged":"ha cambiato",
@@ -193,6 +194,13 @@
     "ToTakeOnTheRoleOf":"ad assumere il ruolo di",
     "PendingInvitation":"invito in sospeso",
     "HereTheDocumentationAboutTheVisitorsAuthentication":"Qui la documentazione sull'autenticazione dei visitatori",
+    "SortByDate":"ordina per data",
+    "SelectActivities":"Seleziona attività",
+    "ActivitiesOptions": {
+        "AgentAvailabilityChange":"Cambio disponibilità agente",
+        "AgentDeletion":"Cancellazione agente",
+        "AgentInvitation": "Invito agente"
+    },
     "UserProfile": {
         "Profile": "Profilo",
         "UploadImage": "Carica immagine",

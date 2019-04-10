@@ -68,3 +68,13 @@
   opacity: 0.5;
 }
 
+@media (max-width: 768px){ 
+  .filter-card {
+    margin-bottom: 8px !important;
+  }
+  .activity-label {
+    margin-top: 5px !important;
+  }
+
+}
+

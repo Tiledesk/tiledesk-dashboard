@@ -203,6 +203,26 @@ export class UsersService {
       .map((response) => response.json());
   }
 
+  public downloadActivitiesAsCsv(querystring: string, pagenumber: number) {
+
+    let _querystring = '&' + querystring
+    if (querystring === undefined || !querystring) {
+      _querystring = ''
+    }
+
+    const url = this.USERS_ACTIVITIES_URL + '/csv' + '?page=' + pagenumber + _querystring;
+
+    console.log('!! USERS ACTIVITIES URL ', url);
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/csv');
+    headers.append('Authorization', this.TOKEN);
+
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.text());
+
+  }
+
 
   /**
    * return an observable of ALL FIRESTORE 'users' * WITH * ID

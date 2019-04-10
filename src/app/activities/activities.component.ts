@@ -16,6 +16,8 @@ import 'moment/locale/en-gb.js';
 export class ActivitiesComponent implements OnInit {
   @ViewChild('searchbtn') private searchbtnRef: ElementRef;
   @ViewChild('clearsearchbtn') private clearsearchbtnRef: ElementRef;
+  @ViewChild('exportcsvbtn') private exportcsvbtnRef: ElementRef;
+
 
   projectId: string;
   projectUserIdOfcurrentUser: string;
@@ -37,7 +39,7 @@ export class ActivitiesComponent implements OnInit {
   selectedAgentValue: string;
 
   agentsList = [];
-  direction: number;
+  direction = -1;
 
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
@@ -45,14 +47,15 @@ export class ActivitiesComponent implements OnInit {
     // dateFormat: 'yyyy, mm , dd',
   };
 
-  activities = [
-    { id: 'PROJECT_USER_UPDATE', name: 'Agent availability change' },
-    { id: 'PROJECT_USER_DELETE', name: 'Agent deletion' },
-    { id: 'PROJECT_USER_INVITE', name: 'Agent invite creation' },
-  ];
-
   selectedActivities: any;
   arrayOfSelectedActivity: any;
+
+  hasAscDirection = false;
+
+  activities: any;
+  agentAvailabilityChange: string;
+  agentDeletion: string;
+  agentInvitation: string;
 
   constructor(
     private usersService: UsersService,
@@ -69,10 +72,35 @@ export class ActivitiesComponent implements OnInit {
     this.getActivities();
     this.getCurrentUser();
     this.getAllProjectUsers();
-
+    this.buildActivitiesOptions()
     // this.getProjectUsers();
   }
 
+  buildActivitiesOptions() {
+    this.translate.get('ActivitiesOptions')
+      .subscribe((text: any) => {
+
+        this.agentAvailabilityChange = text.AgentAvailabilityChange;
+        this.agentDeletion = text.AgentDeletion;
+        this.agentInvitation = text.AgentInvitation;
+
+        console.log('translateActivities AgentAvailabilityChange ', text.AgentAvailabilityChange)
+        console.log('translateActivities AgentDeletion ', text.AgentDeletion)
+        console.log('translateActivities AgentDeletion ', text.AgentInvitation)
+      }, (error) => {
+        console.log('ActivitiesComponent - GET PROJECT-USERS ', error);
+      }, () => {
+        console.log('ActivitiesComponent - GET PROJECT-USERS * COMPLETE *');
+
+        this.activities = [
+          { id: 'PROJECT_USER_UPDATE', name: this.agentAvailabilityChange },
+          { id: 'PROJECT_USER_DELETE', name: this.agentDeletion },
+          { id: 'PROJECT_USER_INVITE', name: this.agentInvitation },
+        ];
+      });
+
+
+  }
 
   getAllProjectUsers() {
     // createBotsAndUsersArray() {
@@ -81,8 +109,6 @@ export class ActivitiesComponent implements OnInit {
         console.log('ActivitiesComponent - GET PROJECT-USERS ', projectUsers);
 
         if (projectUsers) {
-
-
           projectUsers.forEach(user => {
             console.log('ActivitiesComponent - PROJECT-USER ', user);
             // tslint:disable-next-line:max-line-length
@@ -123,168 +149,15 @@ export class ActivitiesComponent implements OnInit {
       if (user && user._id) {
         this.currentUserId = user._id;
       }
-
     });
   }
-
-  // getLoggedUserAndHisProjectUserId() {
-  //   this.auth.user_bs.subscribe((user) => {
-  //     console.log('ActivitiesComponent - LoggedUser ', user);
-
-  //     if (user && user._id) {
-  //       this.currentUserId = user._id;
-  //       this.usersService.getProjectUsersByProjectIdAndUserId(user._id, this.projectId)
-  //         .subscribe((project_user: any) => {
-
-  //           console.log('ActivitiesComponent - Logged ProjectUser ', project_user);
-  //           if (project_user) {
-  //             this.projectUserIdOfcurrentUser = project_user[0]._id;
-  //             console.log('ActivitiesComponent - Logged ProjectUser ID', this.projectUserIdOfcurrentUser);
-
-  //             this.getActivities();
-  //           }
-  //         });
-
-  //     }
-  //   });
-  // }
-
-
-  // getProjectUsers() {
-  //   this.usersService.getProjectUsersByProjectId().subscribe((project_users: any) => {
-
-  //     console.log('ActivitiesComponent - getProjectUsers - RES ', project_users);
-
-  //   }, (error) => {
-  //     console.log('ActivitiesComponent - getProjectUsers - ERROR ', error);
-  //   }, () => {
-  //     console.log('ActivitiesComponent - getProjectUsers * COMPLETE *');
-  //   });
-
-  // }
 
   search() {
     // RESOLVE THE BUG: THE BUTTON SEARCH REMAIN FOCUSED AFTER PRESSED
     this.searchbtnRef.nativeElement.blur();
-
-
-
-
     this.pageNo = 0
-    if (this.startDate) {
-      console.log('ActivitiesComponent - search START DATE ', this.startDate);
-      console.log('ActivitiesComponent - search START DATE - FORMATTED ', this.startDate['formatted']);
 
-      this.startDateValue = this.startDate['formatted']
-    } else {
-      this.startDateValue = '';
-      console.log('ActivitiesComponent - search START DATE ', this.startDate);
-    }
-
-    if (this.endDate) {
-      console.log('ActivitiesComponent - END DATE ', this.endDate);
-      console.log('ActivitiesComponentY - END DATE - FORMATTED ', this.endDate['formatted']);
-
-
-      this.endDateValue = this.endDate['formatted']
-
-      console.log('ActivitiesComponent - SEARCH FOR END DATE ', this.endDateValue);
-    } else {
-      this.endDateValue = '';
-      console.log('ActivitiesComponent - SEARCH FOR END DATE ', this.endDate)
-    }
-
-    if (this.selectedAgentId) {
-
-      this.selectedAgentValue = this.selectedAgentId;
-      console.log('ActivitiesComponent - SEARCH FOR selectedAgentId ', this.selectedAgentValue);
-    } else {
-      console.log('ActivitiesComponent - SEARCH FOR selectedAgentId ', this.selectedAgentId);
-      this.selectedAgentValue = '';
-    }
-
-    if (this.selectedActivities) {
-      console.log('ActivitiesComponent - search ***** selectedActivities *****', this.selectedActivities);
-      this.arrayOfSelectedActivity = this.selectedActivities;
-      console.log('ActivitiesComponent - search ***** arrayOfSelectedActivity *****', this.arrayOfSelectedActivity);
-    } else {
-      this.arrayOfSelectedActivity = '';
-    }
-
-    this.queryString =
-      'start_date=' + this.startDateValue + '&' +
-      'end_date=' + this.endDateValue + '&' +
-      'agent_id=' + this.selectedAgentValue + '&' +
-      'activities=' + this.arrayOfSelectedActivity
-
-
-    this.getActivities();
-  }
-
-  clearSearch() {
-
-    // RESOLVE THE BUG: THE BUTTON CLEAR SEARCH REMAIN FOCUSED AFTER PRESSED
-    this.clearsearchbtnRef.nativeElement.blur();
-
-    this.pageNo = 0;
-
-    this.startDate = '';
-    this.endDate = '';
-    this.selectedActivities = '';
-    this.selectedAgentId = '';
-    this.queryString = 'start_date=' + '&' + 'end_date=' + '&' + 'agent_id=' + '&' + 'activities=';
-    this.getActivities();
-  }
-
-
-  sortDirection(isAscDirection: boolean) {
-
-    if (this.startDate) {
-      console.log('ActivitiesComponent - search START DATE ', this.startDate);
-      console.log('ActivitiesComponent - search START DATE - FORMATTED ', this.startDate['formatted']);
-
-      this.startDateValue = this.startDate['formatted']
-    } else {
-      this.startDateValue = '';
-      console.log('ActivitiesComponent - search START DATE ', this.startDate);
-    }
-
-    if (this.endDate) {
-      console.log('ActivitiesComponent - END DATE ', this.endDate);
-      console.log('ActivitiesComponentY - END DATE - FORMATTED ', this.endDate['formatted']);
-
-
-      this.endDateValue = this.endDate['formatted']
-
-      console.log('ActivitiesComponent - SEARCH FOR END DATE ', this.endDateValue);
-    } else {
-      this.endDateValue = '';
-      console.log('ActivitiesComponent - SEARCH FOR END DATE ', this.endDate)
-    }
-
-    if (this.selectedAgentId) {
-
-      this.selectedAgentValue = this.selectedAgentId;
-      console.log('ActivitiesComponent - SEARCH FOR selectedAgentId ', this.selectedAgentValue);
-    } else {
-      console.log('ActivitiesComponent - SEARCH FOR selectedAgentId ', this.selectedAgentId);
-      this.selectedAgentValue = '';
-    }
-
-    if (this.selectedActivities) {
-      console.log('ActivitiesComponent - search ***** selectedActivities *****', this.selectedActivities);
-      this.arrayOfSelectedActivity = this.selectedActivities;
-      console.log('ActivitiesComponent - search ***** arrayOfSelectedActivity *****', this.arrayOfSelectedActivity);
-    } else {
-      this.arrayOfSelectedActivity = '';
-    }
-
-    console.log('ActivitiesComponent - isAscDirection ', isAscDirection);
-    if (isAscDirection === true) {
-      this.direction = 1
-    } else {
-      this.direction = -1
-    }
+    this.getQueryStringValues();
 
     this.queryString =
       'start_date=' + this.startDateValue + '&' +
@@ -294,7 +167,132 @@ export class ActivitiesComponent implements OnInit {
       'direction=' + this.direction
 
 
-      this.getActivities();
+    this.getActivities();
+  }
+
+  clearSearch() {
+    // RESOLVE THE BUG: THE BUTTON CLEAR SEARCH REMAIN FOCUSED AFTER PRESSED
+    this.clearsearchbtnRef.nativeElement.blur();
+
+    this.pageNo = 0;
+
+    this.startDate = '';
+    this.endDate = '';
+    this.selectedActivities = '';
+    this.selectedAgentId = '';
+
+    this.queryString =
+      'start_date=' + '&' +
+      'end_date=' + '&' +
+      'agent_id=' + '&' +
+      'activities=';
+
+    this.getActivities();
+  }
+
+
+  sortDirection(_hasAscDirection: boolean) {
+    this.hasAscDirection = _hasAscDirection;
+
+    this.getQueryStringValues();
+
+    this.queryString =
+      'start_date=' + this.startDateValue + '&' +
+      'end_date=' + this.endDateValue + '&' +
+      'agent_id=' + this.selectedAgentValue + '&' +
+      'activities=' + this.arrayOfSelectedActivity + '&' +
+      'direction=' + this.direction
+
+
+    this.getActivities();
+  }
+
+
+  exportActivitiesAsCSV() {
+    // RESOLVE THE BUG: THE BUTTON REMAIN FOCUSED AFTER PRESSED
+    this.exportcsvbtnRef.nativeElement.blur();
+
+    this.usersService.downloadActivitiesAsCsv(this.queryString, 0)
+      .subscribe((res: any) => {
+        console.log('ActivitiesComponent - downloadActivitiesAsCsv - res ', res);
+
+        if (res) {
+          this.downloadFile(res)
+        }
+
+      }, (error) => {
+
+        console.log('ActivitiesComponent - downloadActivitiesAsCsv - ERROR ', error);
+      }, () => {
+        console.log('ActivitiesComponent - downloadActivitiesAsCsv * COMPLETE *');
+
+      });
+  }
+
+  downloadFile(data) {
+    const blob = new Blob(['\ufeff' + data], { type: 'text/csv;charset=utf-8;' });
+    const dwldLink = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    const isSafariBrowser = navigator.userAgent.indexOf('Safari') !== -1 && navigator.userAgent.indexOf('Chrome') === -1;
+    if (isSafariBrowser) {  // if Safari open in new window to save file with random filename.
+      dwldLink.setAttribute('target', '_blank');
+    }
+    dwldLink.setAttribute('href', url);
+    dwldLink.setAttribute('download', 'activities.csv');
+    dwldLink.style.visibility = 'hidden';
+    document.body.appendChild(dwldLink);
+    dwldLink.click();
+    document.body.removeChild(dwldLink);
+  }
+
+  getQueryStringValues() {
+    if (this.startDate) {
+      console.log('ActivitiesComponent - search START DATE ', this.startDate);
+      console.log('ActivitiesComponent - search START DATE - FORMATTED ', this.startDate['formatted']);
+
+      this.startDateValue = this.startDate['formatted']
+    } else {
+      this.startDateValue = '';
+      console.log('ActivitiesComponent - search START DATE ', this.startDate);
+    }
+
+    if (this.endDate) {
+      console.log('ActivitiesComponent - END DATE ', this.endDate);
+      console.log('ActivitiesComponentY - END DATE - FORMATTED ', this.endDate['formatted']);
+
+
+      this.endDateValue = this.endDate['formatted']
+
+      console.log('ActivitiesComponent - SEARCH FOR END DATE ', this.endDateValue);
+    } else {
+      this.endDateValue = '';
+      console.log('ActivitiesComponent - SEARCH FOR END DATE ', this.endDate)
+    }
+
+    if (this.selectedAgentId) {
+
+      this.selectedAgentValue = this.selectedAgentId;
+      console.log('ActivitiesComponent - SEARCH FOR selectedAgentId ', this.selectedAgentValue);
+    } else {
+      console.log('ActivitiesComponent - SEARCH FOR selectedAgentId ', this.selectedAgentId);
+      this.selectedAgentValue = '';
+    }
+
+    if (this.selectedActivities) {
+      console.log('ActivitiesComponent - search ***** selectedActivities *****', this.selectedActivities);
+      this.arrayOfSelectedActivity = this.selectedActivities;
+      console.log('ActivitiesComponent - search ***** arrayOfSelectedActivity *****', this.arrayOfSelectedActivity);
+    } else {
+      this.arrayOfSelectedActivity = '';
+    }
+
+    console.log('ActivitiesComponent - hasAscDirection ', this.hasAscDirection);
+    if (this.hasAscDirection === true) {
+      this.direction = 1
+    } else {
+      this.direction = -1
+    }
+
   }
 
 
