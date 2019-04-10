@@ -45,11 +45,18 @@
                           <label  class="col-sm-12" style="text-align: left; color: #7695a5 !important;">
                           Activity
                           </label>
-                          <ng-select name="agent" [(ngModel)]="selectedAgentId" [clearable]="false">
-                            <ng-option [value]="''">{{ 'HistoryPage.AllAgents' | translate }}</ng-option>
+                          <ng-select [(ngModel)]="selectedActivities" 
+                            [clearable]="false" 
+                            [multiple]="true" 
+                            [items]="activities"
+                            bindLabel="name"
+                            bindValue="id"
+                            [multiple]="true"
+                            placeholder="Select activities">
+                            <!-- <ng-option [value]="''">{{ 'HistoryPage.AllAgents' | translate }}</ng-option>
                             <ng-option *ngFor="let agent of agentsList" [value]="agent._id" >
                               {{ agent.firstname }} {{ agent.lastname }} 
-                            </ng-option>
+                            </ng-option> -->
                           </ng-select>
     
                           </div>
@@ -101,6 +108,16 @@
 
                                 </span>
 
+                                <span style="float: right; cursor: pointer" (click)="sortDirection(acs = !acs)"> 
+                                  <span>
+                                    ordered by Date
+
+                                  </span>
+                                  <span class="sorting"
+                                    [ngClass]="{'sorting_desc' : direction === 1, 'sorting_asc': direction === -1}"></span>
+
+                              </span>
+
                               </th>
                             </tr>
                           </thead>
@@ -136,14 +153,18 @@
                                 
                               
                                 <p style="margin-bottom:0px; font-weight:500; font-size:13px ">
-                                  
+                                   
                                   <span *ngIf="activity?.actor?.id !== currentUserId"> 
-                                    <span class="link-to-user-profile" (click)="goToMemberProfile(activity?.actor?.id)">
-                                      {{ activity?.actor?.name }}
+                                      <!-- A {{selectedAgentId}} b {{activity?.actor?.id}} -->
+                                    <span class="link-to-user-profile" (click)="goToMemberProfile(activity?.actor?.id)"
+                                      [ngClass]="{'highlight' : activity?.actor?.id === selectedAgentId}">
+                                      {{ activity?.actor?.name }} 
                                     </span>
                                   </span>
 
-                                  <span *ngIf="activity?.actor?.id === currentUserId"> 
+                                  <span *ngIf="activity?.actor?.id === currentUserId"
+                                    [ngClass]="{'highlight' : activity?.actor?.id === selectedAgentId}"> 
+                                      <!-- A {{selectedAgentId}} b {{activity?.actor?.id}} -->
                                     {{ activity?.actor?.name }}
                                   </span>
                                   
@@ -166,7 +187,8 @@
                                       <!-- lo stato di -->
                                       {{ 'TheAvailabilityStatusOf' | translate}} 
                                       
-                                      <span class="link-to-user-profile" (click)="goToMemberProfile(activity?.target?.object?.id_user?._id)">  
+                                      <span class="link-to-user-profile" (click)="goToMemberProfile(activity?.target?.object?.id_user?._id)"
+                                        [ngClass]="{'highlight' : activity?.target?.object?.id_user?._id === selectedAgentId}">  
                                         {{ activity?.target?.object?.id_user?.firstname}} {{ activity?.target?.object?.id_user?.lastname}}
                                       </span>   
                                     </span>
@@ -193,7 +215,9 @@
 
                                     <!-- ha rimosso  -->
                                     {{ 'HasRemoved' | translate}} 
-                                    {{ activity?.target?.object?.id_user?.firstname}} {{ activity?.target?.object?.id_user?.lastname}}
+                                    <span [ngClass]="{'highlight' : activity?.target?.object?.id_user?._id === selectedAgentId}">
+                                      {{ activity?.target?.object?.id_user?.firstname}} {{ activity?.target?.object?.id_user?.lastname}}
+                                    </span>
                                     <!-- dal progetto -->
                                     {{ 'FromTheProject' | translate}} 
                                   </span>
@@ -206,7 +230,8 @@
 
                                       <!-- ha invitato -->
                                       {{ 'HasInvited' | translate}} 
-                                      <span class="link-to-user-profile" (click)="goToMemberProfile(activity?.target?.object?.id_user?._id)">  
+                                      <span class="link-to-user-profile" (click)="goToMemberProfile(activity?.target?.object?.id_user?._id)"
+                                        [ngClass]="{'highlight' : activity?.target?.object?.id_user?._id === selectedAgentId}">  
                                           {{ activity?.target?.object?.id_user?.firstname }} {{ activity?.target?.object?.id_user?.lastname }}
                                       </span>
 

@@ -37,12 +37,22 @@ export class ActivitiesComponent implements OnInit {
   selectedAgentValue: string;
 
   agentsList = [];
+  direction: number;
 
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
     dateFormat: 'dd/mm/yyyy',
     // dateFormat: 'yyyy, mm , dd',
   };
+
+  activities = [
+    { id: 'PROJECT_USER_UPDATE', name: 'Agent availability change' },
+    { id: 'PROJECT_USER_DELETE', name: 'Agent deletion' },
+    { id: 'PROJECT_USER_INVITE', name: 'Agent invite creation' },
+  ];
+
+  selectedActivities: any;
+  arrayOfSelectedActivity: any;
 
   constructor(
     private usersService: UsersService,
@@ -157,6 +167,9 @@ export class ActivitiesComponent implements OnInit {
     // RESOLVE THE BUG: THE BUTTON SEARCH REMAIN FOCUSED AFTER PRESSED
     this.searchbtnRef.nativeElement.blur();
 
+
+
+
     this.pageNo = 0
     if (this.startDate) {
       console.log('ActivitiesComponent - search START DATE ', this.startDate);
@@ -187,14 +200,22 @@ export class ActivitiesComponent implements OnInit {
       console.log('ActivitiesComponent - SEARCH FOR selectedAgentId ', this.selectedAgentValue);
     } else {
       console.log('ActivitiesComponent - SEARCH FOR selectedAgentId ', this.selectedAgentId);
-      this.selectedAgentValue = ''
+      this.selectedAgentValue = '';
     }
 
+    if (this.selectedActivities) {
+      console.log('ActivitiesComponent - search ***** selectedActivities *****', this.selectedActivities);
+      this.arrayOfSelectedActivity = this.selectedActivities;
+      console.log('ActivitiesComponent - search ***** arrayOfSelectedActivity *****', this.arrayOfSelectedActivity);
+    } else {
+      this.arrayOfSelectedActivity = '';
+    }
 
     this.queryString =
       'start_date=' + this.startDateValue + '&' +
       'end_date=' + this.endDateValue + '&' +
-      'agent=' + this.selectedAgentValue
+      'agent_id=' + this.selectedAgentValue + '&' +
+      'activities=' + this.arrayOfSelectedActivity
 
 
     this.getActivities();
@@ -209,8 +230,71 @@ export class ActivitiesComponent implements OnInit {
 
     this.startDate = '';
     this.endDate = '';
-    this.queryString = 'start_date=' + '&' + 'end_date=' + '&' + 'agent=';
+    this.selectedActivities = '';
+    this.selectedAgentId = '';
+    this.queryString = 'start_date=' + '&' + 'end_date=' + '&' + 'agent_id=' + '&' + 'activities=';
     this.getActivities();
+  }
+
+
+  sortDirection(isAscDirection: boolean) {
+
+    if (this.startDate) {
+      console.log('ActivitiesComponent - search START DATE ', this.startDate);
+      console.log('ActivitiesComponent - search START DATE - FORMATTED ', this.startDate['formatted']);
+
+      this.startDateValue = this.startDate['formatted']
+    } else {
+      this.startDateValue = '';
+      console.log('ActivitiesComponent - search START DATE ', this.startDate);
+    }
+
+    if (this.endDate) {
+      console.log('ActivitiesComponent - END DATE ', this.endDate);
+      console.log('ActivitiesComponentY - END DATE - FORMATTED ', this.endDate['formatted']);
+
+
+      this.endDateValue = this.endDate['formatted']
+
+      console.log('ActivitiesComponent - SEARCH FOR END DATE ', this.endDateValue);
+    } else {
+      this.endDateValue = '';
+      console.log('ActivitiesComponent - SEARCH FOR END DATE ', this.endDate)
+    }
+
+    if (this.selectedAgentId) {
+
+      this.selectedAgentValue = this.selectedAgentId;
+      console.log('ActivitiesComponent - SEARCH FOR selectedAgentId ', this.selectedAgentValue);
+    } else {
+      console.log('ActivitiesComponent - SEARCH FOR selectedAgentId ', this.selectedAgentId);
+      this.selectedAgentValue = '';
+    }
+
+    if (this.selectedActivities) {
+      console.log('ActivitiesComponent - search ***** selectedActivities *****', this.selectedActivities);
+      this.arrayOfSelectedActivity = this.selectedActivities;
+      console.log('ActivitiesComponent - search ***** arrayOfSelectedActivity *****', this.arrayOfSelectedActivity);
+    } else {
+      this.arrayOfSelectedActivity = '';
+    }
+
+    console.log('ActivitiesComponent - isAscDirection ', isAscDirection);
+    if (isAscDirection === true) {
+      this.direction = 1
+    } else {
+      this.direction = -1
+    }
+
+    this.queryString =
+      'start_date=' + this.startDateValue + '&' +
+      'end_date=' + this.endDateValue + '&' +
+      'agent_id=' + this.selectedAgentValue + '&' +
+      'activities=' + this.arrayOfSelectedActivity + '&' +
+      'direction=' + this.direction
+
+
+      this.getActivities();
   }
 
 

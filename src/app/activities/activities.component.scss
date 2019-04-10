@@ -37,3 +37,34 @@
   text-decoration: underline;
   cursor: pointer;
 }
+
+.highlight {
+  background-color:#FFFF00;
+}
+
+
+// up arrow in sort button
+.sorting:before {
+  content: "\f0de"; /* FontAwesome Unicode */
+  font-family: FontAwesome;
+  display: inline-block;
+  font-weight: 900;
+  position: relative;
+  right: -8px;
+}
+
+.sorting_asc:before  {
+  opacity: 0.5;
+}
+
+.sorting:after {
+  content: "\f0dd"; /* FontAwesome Unicode */
+  font-family: FontAwesome;
+  display: inline-block;
+  font-weight: 900;
+}
+
+.sorting_desc:after {
+  opacity: 0.5;
+}
+
