@@ -110,7 +110,16 @@ export class AuthService {
     this.checkStoredProjectAndPublish();
 
     // this.getParamsProjectId();
+// const messaging = firebase.messaging();
+    if (firebase.messaging.isSupported()) {
+      console.log('firebase messaging isSupported')
+
+    } else {
+      console.log('firebase messaging is NOT Supported')
+    }
   }
+
+
 
   // USED ONLY FOR A TEST
   getParamsProjectId() {
@@ -455,6 +464,7 @@ export class AuthService {
 
   getPermission() {
     const messaging = firebase.messaging();
+    if (firebase.messaging.isSupported()) {}
     messaging.requestPermission()
       .then(() => {
         console.log('>>>> getPermission Notification permission granted.');
@@ -685,11 +695,14 @@ export class AuthService {
   signOut() {
     if (!this.APP_IS_DEV_MODE) {
 
+      console.log('this.FCMcurrentToken ', this.FCMcurrentToken);
+      console.log('here 1 ');
       if (this.FCMcurrentToken !== undefined && this.userId !== undefined) {
-
+        console.log('here 2 ');
         this.removeInstanceIdAndFireabseSignout();
 
       } else {
+        console.log('here 3 ');
         // use case: the user refresh the page
         const messaging = firebase.messaging();
         messaging.getToken()
@@ -715,6 +728,7 @@ export class AuthService {
   }
 
   removeInstanceIdAndFireabseSignout() {
+    console.log('here 4') 
     console.log('removeInstanceId - FCM Token: ', this.FCMcurrentToken);
     console.log('removeInstanceId - USER ID: ', this.userId);
     // this.connectionsRefinstancesId = this.urlNodeFirebase+"/users/"+userUid+"/instances/";
