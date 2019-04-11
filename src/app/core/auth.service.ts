@@ -703,10 +703,12 @@ export class AuthService {
 
       } else {
         console.log('here 3 ');
-        // use case: the user refresh the page
+        // use case: FCMcurrentToken is undefined 
+        // (e.g. the user refresh the page or not is FCMcurrentToken created at the login)
         const messaging = firebase.messaging();
         messaging.getToken()
           .then(FCMtoken => {
+            console.log('>>>> getPermission FCMtoken', FCMtoken)
             this.FCMcurrentToken = FCMtoken;
             const storedUser = localStorage.getItem('user');
             const storedUserObj = JSON.parse(storedUser);
@@ -714,7 +716,12 @@ export class AuthService {
             this.userId = storedUserObj._id;
 
             this.removeInstanceIdAndFireabseSignout();
-          })
+          }).catch((err) => {
+            console.log('err: ', err);
+  
+            this.firebaseSignout();
+  
+          });
       }
     } else {
 
