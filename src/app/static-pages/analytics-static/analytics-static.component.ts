@@ -16,7 +16,7 @@ export class AnalyticsStaticComponent implements OnInit {
   lastMonthrequestsCount: number;
   monthNames: any;
   chartLabelsArray: any;
-  // displayUpgradePlanModal = 'block';
+  displayUpgradePlanModal: any;
 
   constructor(
     private translate: TranslateService,
