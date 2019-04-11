@@ -42,12 +42,12 @@
                 {{ "UserEditAddPage.Role" | translate }}
               </label>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                <select #selectElem (change)="setSelected(selectElem.value)" [(ngModel)]="selectedRole" class="" style="width: 100%;">
+                <select #selectElem (change)="setSelected(selectElem.value)" [(ngModel)]="selectedRole" class="" style="width: 100%;border-radius: 5px;">
                   <option class="not_selected" value="ROLE_NOT_SELECTED" [selected]="selected == true">
                     {{ "UserEditAddPage.SelectRole" | translate }}
                   </option>              
-                  <option value="admin">admin </option>
-                  <option value="agent">agent </option>
+                  <option value="admin">{{ 'admin' | translate }}</option>
+                  <option value="agent">{{ 'agent' | translate }} </option>
                 </select>
 
               </div>
