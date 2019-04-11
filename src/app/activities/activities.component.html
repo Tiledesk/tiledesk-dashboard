@@ -178,8 +178,16 @@
                                     </span>  
                                     <!-- USE CASE 2: THE TARGET OF THE ACTION IS ANOTHER USER (NOT YOURSELF)  -->
                                     <span *ngIf="!activity.targetOfActionIsYourself"> 
-                                      <!-- lo stato di -->
-                                      {{ 'TheAvailabilityStatusOf' | translate}} 
+
+                                      <!-- USE CASE 2A: THE ACTION IS THE CHANGE OF THE AVAILABILITY STATUS -->
+                                      <span *ngIf="activity?.actionObj?.user_available === false || activity?.actionObj?.user_available === true">
+                                        {{ 'TheAvailabilityStatusOf' | translate}} 
+                                      </span>
+
+                                      <!-- USE CASE 2b: THE ACTION IS THE CHANGE OF THE ROLE -->
+                                      <span *ngIf="activity?.actionObj?.role">
+                                        {{ 'TheRoleOf' | translate}} 
+                                      </span>
                                       
                                       <span class="link-to-user-profile" (click)="goToMemberProfile(activity?.target?.object?.id_user?._id)"
                                         [ngClass]="{'highlight' : activity?.target?.object?.id_user?._id === selectedAgentId}">  
@@ -188,6 +196,7 @@
                                     </span>
                                       
                                     in
+                                    
                                     <span *ngIf="activity?.actionObj?.user_available === false">
                                       <!-- non disponibile -->
                                       {{ 'Unavailable' | translate}} 
@@ -196,8 +205,16 @@
                                     <span *ngIf="activity?.actionObj?.user_available === true">
                                       <!-- disponibile -->
                                       {{ 'Available' | translate}} 
-                                      
                                     </span>
+
+                                    <span *ngIf="activity?.actionObj?.role === 'admin'">
+                                      {{ 'admin' | translate}} 
+                                    </span>
+
+                                    <span *ngIf="activity?.actionObj?.role === 'agent'">
+                                      {{ 'agent' | translate}} 
+                                    </span>
+
                                   </span>
 
 

@@ -24,7 +24,8 @@ export class ActivitiesComponent implements OnInit {
   currentUserId: string;
   usersActivities: any;
   browser_lang: string;
-  showSpinner = true;
+  // showSpinner = true;
+  showSpinner: boolean;
   pageNo = 0
   totalPagesNo_roundToUp: number;
 
@@ -53,7 +54,7 @@ export class ActivitiesComponent implements OnInit {
   hasAscDirection = false;
 
   activities: any;
-  agentAvailabilityChange: string;
+  agentAvailabilityOrRoleChange: string;
   agentDeletion: string;
   agentInvitation: string;
 
@@ -72,7 +73,7 @@ export class ActivitiesComponent implements OnInit {
     this.getActivities();
     this.getCurrentUser();
     this.getAllProjectUsers();
-    this.buildActivitiesOptions()
+    this.buildActivitiesOptions();
     // this.getProjectUsers();
   }
 
@@ -80,11 +81,11 @@ export class ActivitiesComponent implements OnInit {
     this.translate.get('ActivitiesOptions')
       .subscribe((text: any) => {
 
-        this.agentAvailabilityChange = text.AgentAvailabilityChange;
+        this.agentAvailabilityOrRoleChange = text.AgentAvailabilityOrRoleChange;
         this.agentDeletion = text.AgentDeletion;
         this.agentInvitation = text.AgentInvitation;
 
-        console.log('translateActivities AgentAvailabilityChange ', text.AgentAvailabilityChange)
+        console.log('translateActivities AgentAvailabilityOrRoleChange ', text.AgentAvailabilityOrRoleChange)
         console.log('translateActivities AgentDeletion ', text.AgentDeletion)
         console.log('translateActivities AgentDeletion ', text.AgentInvitation)
       }, (error) => {
@@ -93,7 +94,7 @@ export class ActivitiesComponent implements OnInit {
         console.log('ActivitiesComponent - GET PROJECT-USERS * COMPLETE *');
 
         this.activities = [
-          { id: 'PROJECT_USER_UPDATE', name: this.agentAvailabilityChange },
+          { id: 'PROJECT_USER_UPDATE', name: this.agentAvailabilityOrRoleChange },
           { id: 'PROJECT_USER_DELETE', name: this.agentDeletion },
           { id: 'PROJECT_USER_INVITE', name: this.agentInvitation },
         ];
@@ -185,7 +186,8 @@ export class ActivitiesComponent implements OnInit {
       'start_date=' + '&' +
       'end_date=' + '&' +
       'agent_id=' + '&' +
-      'activities=';
+      'activities=' + '&' +
+      'direction=' + this.direction;
 
     this.getActivities();
   }
@@ -297,6 +299,7 @@ export class ActivitiesComponent implements OnInit {
 
 
   getActivities() {
+    this.showSpinner = true;
     this.usersService.getUsersActivities(this.queryString, this.pageNo)
       .subscribe((res: any) => {
         console.log('ActivitiesComponent - getActivities - **** RESPONSE **** ', res);

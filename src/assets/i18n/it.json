@@ -188,6 +188,7 @@
     "HasChanged":"ha cambiato",
     "HisStatus":"il suo stato",
     "TheAvailabilityStatusOf":"lo stato di disponibilità di",
+    "TheRoleOf":"il ruolo di",
     "HasRemoved":"ha rimosso",
     "FromTheProject":"dal progetto",
     "HasInvited":"ha invitato",
@@ -197,7 +198,7 @@
     "SortByDate":"ordina per data",
     "SelectActivities":"Seleziona attività",
     "ActivitiesOptions": {
-        "AgentAvailabilityChange":"Cambio disponibilità agente",
+        "AgentAvailabilityOrRoleChange":"Modifica disponibilità o ruolo agente",
         "AgentDeletion":"Cancellazione agente",
         "AgentInvitation": "Invito agente"
     },

@@ -188,6 +188,7 @@
     "HasChanged": "has changed",
     "HisStatus": "his status",
     "TheAvailabilityStatusOf": "the availability status of",
+    "TheRoleOf":"the role of",
     "HasRemoved": "has removed",
     "FromTheProject": "from the project",
     "HasInvited": "has invited",
@@ -197,7 +198,7 @@
     "SortByDate": "sort by date",
     "SelectActivities": "Select activities",
     "ActivitiesOptions": {
-        "AgentAvailabilityChange": "Agent availability change",
+        "AgentAvailabilityOrRoleChange": "Change agent availability or role",
         "AgentDeletion": "Agent deletion",
         "AgentInvitation": "Agent invitation"
     },
