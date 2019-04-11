@@ -1,5 +1,5 @@
 // tslint:disable:max-line-length
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../core/auth.service';
 import { RequestsService } from './../services/requests.service';
@@ -14,7 +14,8 @@ import * as moment from 'moment';
 @Component({
   selector: 'appdashboard-analytics',
   templateUrl: './analytics.component.html',
-  styleUrls: ['./analytics.component.scss']
+  styleUrls: ['./analytics.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AnalyticsComponent implements OnInit, OnDestroy {
   activeRequestsCount: number;
@@ -388,6 +389,12 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
         high: higherCount + 2, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
         // scaleMinSpace: 6,
         chartPadding: { top: 0, right: 0, bottom: 0, left: 0 },
+        // fullWidth: false,
+        axisY: {
+          onlyInteger: true,
+          offset: 20
+        },
+        height: '240px'
       }
 
       const requestsByDayChart = new Chartist.Line('#requestsByDayChart', dataRequestsByDayChart, optionsRequestsByDayChart);
