@@ -76,7 +76,8 @@ export class AuthService {
   subscription: Subscription;
   userId: string;
   APP_IS_DEV_MODE: boolean;
-
+  // FCM: Firebase Cloud Massaging
+  FCM_Supported: boolean;
   constructor(
     http: Http,
     // private afAuth: AngularFireAuth,
@@ -110,12 +111,21 @@ export class AuthService {
     this.checkStoredProjectAndPublish();
 
     // this.getParamsProjectId();
-// const messaging = firebase.messaging();
-    if (firebase.messaging.isSupported()) {
-      console.log('firebase messaging isSupported')
+    // const messaging = firebase.messaging();
 
+    this.checkIfFCMIsSupported();
+
+  }
+
+  checkIfFCMIsSupported() {
+    if (firebase.messaging.isSupported()) {
+      // Supported
+      this.FCM_Supported = true;
+      console.log('*** >>>> firebase messaging isSupported: ', this.FCM_Supported)
     } else {
-      console.log('firebase messaging is NOT Supported')
+      // NOT Supported
+      this.FCM_Supported = false;
+      console.log('*** >>>> firebase messaging is NOT Supported: ', this.FCM_Supported)
     }
   }
 
@@ -427,7 +437,7 @@ export class AuthService {
                   //     userProvidedPassword
                   // );
 
-                  if (!this.APP_IS_DEV_MODE) {
+                  if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
                     this.getPermission();
                   }
 
@@ -464,7 +474,7 @@ export class AuthService {
 
   getPermission() {
     const messaging = firebase.messaging();
-    if (firebase.messaging.isSupported()) {}
+    if (firebase.messaging.isSupported()) { }
     messaging.requestPermission()
       .then(() => {
         console.log('>>>> getPermission Notification permission granted.');
@@ -718,9 +728,9 @@ export class AuthService {
             this.removeInstanceIdAndFireabseSignout();
           }).catch((err) => {
             console.log('err: ', err);
-  
+
             this.firebaseSignout();
-  
+
           });
       }
     } else {
@@ -735,7 +745,7 @@ export class AuthService {
   }
 
   removeInstanceIdAndFireabseSignout() {
-    console.log('here 4') 
+    console.log('here 4')
     console.log('removeInstanceId - FCM Token: ', this.FCMcurrentToken);
     console.log('removeInstanceId - USER ID: ', this.userId);
     // this.connectionsRefinstancesId = this.urlNodeFirebase+"/users/"+userUid+"/instances/";
