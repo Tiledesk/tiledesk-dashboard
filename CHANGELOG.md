@@ -7,6 +7,7 @@
 - Groups: fixes the count of members of groups
 - Project settings: adds a link to 'Widget Authentication'
 - Bots: adds the ability to manage external bot
+- Fixes the inability to log out if the Firebase Cloud Messaging token is undefined
 
 ### 1.0.20
 - Adds the avatar of the agents in the column 'Served By' of the history table
