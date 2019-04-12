@@ -1,12 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import * as Chartist from 'chartist';
 import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
-
+import { AuthService, SuperUser } from '../../core/auth.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'appdashboard-analytics-static',
   templateUrl: './analytics-static.component.html',
-  styleUrls: ['./analytics-static.component.scss']
+  styleUrls: ['./analytics-static.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AnalyticsStaticComponent implements OnInit {
   date: Date;
@@ -17,9 +19,14 @@ export class AnalyticsStaticComponent implements OnInit {
   monthNames: any;
   chartLabelsArray: any;
   displayUpgradePlanModal: any;
-
+  IMAGES: any;
+  
+  projectId: string;
   constructor(
     private translate: TranslateService,
+    public auth: AuthService,
+    private router: Router
+    
   ) { }
 
   ngOnInit() {
@@ -34,6 +41,24 @@ export class AnalyticsStaticComponent implements OnInit {
     this.generateChartLabels()
     this.buildChart()
 
+    this.IMAGES = [
+      { 'title': 'We are covered 1', 'url': 'assets/img/no_image_user.png' },
+      { 'title': 'We are covered 2', 'url': 'assets/img/no_image_user.png' },
+      { 'title': 'We are covered 3', 'url': 'assets/img/no_image_user.png' },
+      { 'title': 'We are covered 4', 'url': 'assets/img/no_image_user.png' },
+      { 'title': 'We are covered 5', 'url': 'assets/img/no_image_user.png' },
+    ];
+
+  }
+
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+
+
+      if (project) {
+        this.projectId = project._id
+      }
+    });
   }
 
   getBrowserLangAndSwitchMonthName() {
@@ -69,7 +94,7 @@ export class AnalyticsStaticComponent implements OnInit {
       // `${id}`
       labels: this.chartLabelsArray.reverse(),
       series: [
-        [17, 2, 1, 3, 1, 0, 6]
+        [96, 85, 88, 95, 91, 87, 101]
       ]
     };
 
@@ -78,10 +103,15 @@ export class AnalyticsStaticComponent implements OnInit {
       lineSmooth: Chartist.Interpolation.cardinal({
         tension: 0
       }),
-      low: 0,
-      high: 17 + 2, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+      low: 83,
+      high: 100 + 2, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
       // scaleMinSpace: 6,
-      chartPadding: { top: 0, right: 0, bottom: 0, left: 0 },
+      chartPadding: { top: 0, right: 15, bottom: 0, left: 15 },
+      axisY: {
+        // onlyInteger: true,
+        offset: 20
+      },
+      height: '240px'
     }
 
     const requestsByDayChart = new Chartist.Line('#requestsByDayChart', dataRequestsByDayChart, optionsRequestsByDayChart);
@@ -125,6 +155,10 @@ export class AnalyticsStaticComponent implements OnInit {
 
   closeUpgradePlanModal() {
     // this.displayUpgradePlanModal = 'none'
+  }
+
+  goToPricing() {
+    this.router.navigate(['project/' + this.projectId + '/pricing']);
   }
 
 }

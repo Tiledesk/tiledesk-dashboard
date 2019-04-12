@@ -129,6 +129,98 @@
     100%  { left:-5%; }
 }
 
+.center-div {
+    position: absolute;
+    margin: auto;
+    // top: 0;
+    right: 0;
+    // bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 330px;
+    background-color: #ccc;
+    border-radius: 3px;
+  }
 
 
+ 
+//   ----------------------
+  .section {
+    position: relative;
+    
+  }
+  
+  .section img {
+      position: absolute;
+  }
+  
+  .top {
+      animation-name: fade;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+      animation-duration: 8s;
+      animation-direction: alternate;
+  }
+  
+  @keyframes fade {
+      0% {
+          opacity: 1;
+          
+      }
+      25% {
+          opacity: 1;
+      }
+      75% {
+          opacity: 0;
+      }
+      100% {
+          opacity: 0;
+      }
+  }
 
+//   .bottom {
+//     animation: hidefromleft 5s;
+// }
+
+// @keyframes hidefromleft {
+//     0% {right: 0; display: none; opacity: 1;}
+//     50% {right: -300px; opacity: 0}
+//     100% {opacity: 1; display: block;}
+// }
+
+.ct-label {
+    // font-size: 15px !important;
+    // color: rgb(33, 89, 104) !important;
+    color: #1e88e5 !important;
+    font-weight:400;
+    // color: rgba(255, 255, 255, 1) !important;
+}
+
+.ct-line { 
+    stroke: rgba(30, 136, 229, 0.7) !important;
+   
+}
+.ct-series-a .ct-point {
+    stroke: rgba(30, 136, 229, 0.8) !important;
+}
+
+.ct-grid {
+    stroke: rgba(30, 136, 229, 0.5) !important;
+}
+
+
+.outline-btn-analytics {
+    background-color: transparent;
+    color: #1e88e5;
+    border-radius: 40px;
+    padding: 18px 36px;
+    line-height: 1.33em;
+    border: 2px solid #1e88e5;
+    font-weight: 500;
+    font-size: 32px;
+}
+
+.outline-btn-analytics:hover {
+    color: #fff;
+    background-color:  #1e88e5;
+} 
