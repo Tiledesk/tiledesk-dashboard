@@ -630,6 +630,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     openLogoutModal() {
         this.displayLogoutModal = 'block';
+        this.auth.hasOpenedLogoutModal(true);
     }
 
     onCloseModal() {

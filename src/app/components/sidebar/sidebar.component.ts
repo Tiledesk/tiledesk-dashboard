@@ -523,6 +523,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     openLogoutModal() {
         console.log('SIDEBAR - calling openLogoutModal - PROJRCT ID ', this.projectId);
         this.displayLogoutModal = 'block';
+        this.auth.hasOpenedLogoutModal(true);
 
         // if (this.projectId !== undefined) {
         //     this.usersService.logout_btn_clicked_from_mobile_sidebar(true);

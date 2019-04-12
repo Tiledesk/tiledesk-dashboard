@@ -343,6 +343,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   openLogoutModal() {
     this.displayLogoutModal = 'block';
+    this.auth.hasOpenedLogoutModal(true);
   }
 
   onCloseLogoutModalHandled() {

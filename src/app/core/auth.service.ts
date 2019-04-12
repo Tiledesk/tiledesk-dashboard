@@ -115,17 +115,19 @@ export class AuthService {
 
     this.checkIfFCMIsSupported();
 
+    this.checkIfExpiredSessionModalIsOpened();
+
   }
 
   checkIfFCMIsSupported() {
     if (firebase.messaging.isSupported()) {
       // Supported
       this.FCM_Supported = true;
-      console.log('*** >>>> firebase messaging isSupported: ', this.FCM_Supported)
+      console.log('*** >>>> FCM is Supported: ', this.FCM_Supported);
     } else {
       // NOT Supported
       this.FCM_Supported = false;
-      console.log('*** >>>> firebase messaging is NOT Supported: ', this.FCM_Supported)
+      console.log('*** >>>> FCM is Supported: ', this.FCM_Supported);
     }
   }
 
@@ -702,8 +704,34 @@ export class AuthService {
 
   }
 
+
+  // if()this.FCM_Supported
+  // this.checkIfFCMIsSupported()
+  hasOpenedLogoutModal(isOpenedlogoutModal: boolean) {
+    console.log('hasOpenedLogoutModal ', isOpenedlogoutModal, '*** >>>> FCM is Supported: ', this.FCM_Supported);
+    if (isOpenedlogoutModal) {
+      if (this.FCM_Supported === undefined) {
+        this.checkIfFCMIsSupported()
+      }
+    }
+  }
+
+  //  const isOpenedExpiredSessionModal = this.notify.isOpenedExpiredSessionModal();
+  //  console.log('isOpenedExpiredSessionModal ', isOpenedExpiredSessionModal, '*** >>>> FCM is Supported: ', this.FCM_Supported);
+
+  checkIfExpiredSessionModalIsOpened() {
+    this.notify.isOpenedExpiredSessionModal.subscribe((isOpenedExpiredSession: boolean) => {
+      console.log('isOpenedExpiredSession ', isOpenedExpiredSession, '*** >>>> FCM is Supported: ', this.FCM_Supported);
+      if (isOpenedExpiredSession) {
+        if (this.FCM_Supported === undefined) {
+          this.checkIfFCMIsSupported()
+        }
+      }
+    })
+  }
+
   signOut() {
-    if (!this.APP_IS_DEV_MODE) {
+    if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
 
       console.log('this.FCMcurrentToken ', this.FCMcurrentToken);
       console.log('here 1 ');
@@ -713,7 +741,7 @@ export class AuthService {
 
       } else {
         console.log('here 3 ');
-        // use case: FCMcurrentToken is undefined 
+        // use case: FCMcurrentToken is undefined
         // (e.g. the user refresh the page or not is FCMcurrentToken created at the login)
         const messaging = firebase.messaging();
         messaging.getToken()

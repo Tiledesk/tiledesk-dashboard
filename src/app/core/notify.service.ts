@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
+
 declare var $: any;
 /// Notify users about errors and other helpful stuff
 export interface Msg {
@@ -31,10 +32,12 @@ export class NotifyService {
 
   public hasOpenChecklistModal: Subject<boolean> = new BehaviorSubject<boolean>(null);
   public bs_hasClickedChat: Subject<boolean> = new BehaviorSubject<boolean>(null);
+  public isOpenedExpiredSessionModal: Subject<boolean> = new BehaviorSubject<boolean>(null);
+  
 
   constructor(
     private router: Router,
-    public location: Location,
+    public location: Location
   ) {
 
     // this.router.events.subscribe((val) => {
@@ -62,6 +65,8 @@ export class NotifyService {
   showExiperdSessionPopup(user_is_signed_in: boolean) {
     if (user_is_signed_in === false) {
       this.displayExpiredSessionModal = 'block'
+
+      this.isOpenedExpiredSessionModal.next(true);
     }
   }
 
@@ -93,7 +98,7 @@ export class NotifyService {
     this.bs_hasClickedChat.next(true);
   }
 
- 
+
 
   // showNotification(from, align) {
   showNotification(message, notificationColor, icon) {
