@@ -197,6 +197,8 @@
     "HereTheDocumentationAboutTheVisitorsAuthentication":"Qui la documentazione sull'autenticazione dei visitatori",
     "SortByDate":"ordina per data",
     "SelectActivities":"Seleziona attività",
+    "AllActivities": "Tutte le attività",
+    "UpgradeNow":"Aggiorna ora",
     "ActivitiesOptions": {
         "AgentAvailabilityOrRoleChange":"Modifica disponibilità o ruolo agente",
         "AgentDeletion":"Cancellazione agente",
@@ -221,7 +223,8 @@
         "ChangePsw": "Cambia password",
         "PendingEmailVerification": "Email non verificata",
         "YourAccountIsPending": "Il tuo account è in attesa di verifica via email.",
-        "ClickHereToResend": "Clicca qui per inviare nuovamente l'email di verifica"
+        "ClickHereToResend": "Clicca qui per inviare nuovamente l'email di verifica",
+        "BotHasBeenRemoved":"questo Bot è stato rimosso"
     },
     "ChangePsw": {
         "ChangePsw": "Cambia password",

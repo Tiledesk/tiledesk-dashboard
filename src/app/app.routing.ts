@@ -76,7 +76,7 @@ import { PricingComponent } from './pricing/pricing.component';
 // Andrea
 import { ChatComponent } from './chat/chat.component';
 import { AnalyticsStaticComponent } from './static-pages/analytics-static/analytics-static.component';
-
+import { ActivitiesStaticComponent } from './static-pages/activities-static/activities-static.component';
 
 
 
@@ -211,6 +211,7 @@ const routes: Routes = [
   { path: 'project/:projectid/activities', component: ActivitiesComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/pricing', component: PricingComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/analytics-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/activities-demo', component: ActivitiesStaticComponent, canActivate: [AuthGuard] },
   
 
   { path: 'dashboard', component: DashboardComponent },

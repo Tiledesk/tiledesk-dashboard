@@ -197,6 +197,8 @@
     "HereTheDocumentationAboutTheVisitorsAuthentication": "Here the documentation about the visitors authentication",
     "SortByDate": "sort by date",
     "SelectActivities": "Select activities",
+    "AllActivities": "All activities",
+    "UpgradeNow":"Upgrade now",
     "ActivitiesOptions": {
         "AgentAvailabilityOrRoleChange": "Change agent availability or role",
         "AgentDeletion": "Agent deletion",
@@ -221,7 +223,8 @@
         "ChangePsw": "Change password",
         "PendingEmailVerification": "Pending email verification",
         "YourAccountIsPending": "Your account is pending email verification.",
-        "ClickHereToResend": "Click here to resend verification email"
+        "ClickHereToResend": "Click here to resend verification email",
+        "BotHasBeenRemoved":"this Bot has been removed"
     },
     "ChangePsw": {
         "ChangePsw": "Change password",

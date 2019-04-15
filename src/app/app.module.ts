@@ -112,6 +112,7 @@ import { UsersPendingComponent } from './users-pending/users-pending.component';
 import { ActivitiesComponent } from './activities/activities.component';
 import { PricingComponent } from './pricing/pricing.component';
 import { AnalyticsStaticComponent } from './static-pages/analytics-static/analytics-static.component';
+import { ActivitiesStaticComponent } from './static-pages/activities-static/activities-static.component';
 
 
 console.log('************** APPMODULE ******************');
@@ -176,6 +177,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ActivitiesComponent,
     PricingComponent,
     AnalyticsStaticComponent,
+    ActivitiesStaticComponent,
   ],
   imports: [
     BrowserModule,

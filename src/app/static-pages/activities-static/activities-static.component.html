@@ -1,0 +1,359 @@
+<p style="margin-top:6px; padding-left:30px;position: relative;z-index: 1050;" class="navbar-brand">
+    {{ "Activities" | translate }}
+</p>
+
+  <div class="main-content" style="padding-top:0px; background-color: #ffffff;">
+    <div class="container-fluid">
+
+          <!-- <div class="row">
+            <div class="col-md-12">
+              <h2 style="margin-top:10px; font-family: Google Sans; text-align:center; color: #1e88e5" >
+                Available with the PRO plan 
+              </h2>
+            </div>
+          </div> -->
+
+        <div class="row">
+        
+          <div class="col-md-6"> 
+            <div class="left-div-padding">
+            <div class="row"> 
+              <div class="col-sm-12"> 
+                <h2 style="margin-top:10px; font-family: Google Sans; text-align:center; color: #1e88e5" >
+                  Available with the PRO plan 
+                </h2>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <h3 style="font-family: Google Sans; text-align:center"> 
+                  Upgrade Your Account to track what Agents are doing!
+                </h3>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-12">
+                <div style="text-align: center;"> 
+                    <button type="button" class="btn outline-btn-analytics btn-lg" style="padding:11px 22px" (click)="goToPricing()">
+                
+                    <span> {{ 'UpgradeNow' | translate }}  </span> 
+                
+                </button>
+                </div>
+              </div>
+            </div>  
+
+            </div>
+          </div>
+          
+          <div class="col-md-6"> 
+            <div style="max-width:780px;margin:auto">
+              <div class="card" style="box-shadow: 0 14px 30px 0 rgba(60,72,91,0.22); border-radius:10px;">
+                <div class="card-content">
+
+                    <div class="row">
+                        <div  class="col-md-12">
+                          <!-- <div class="card filter-card" style="margin-bottom: 0px;">
+                            
+                            <div class="card-content">
+                   -->
+                              <div class="row">
+                                <div class="col-sm-4" style="padding-left:0px;padding-right:0px;"> 
+                                  
+                                    <label  class="col-xs-12 col-sm-12" style="text-align: left; color:#7695a5; padding-right:0px">
+                                      {{ 'HistoryPage.DateRange' | translate }}
+                                    </label>
+                                    
+                                      <div class="row">
+                                        <div  class="col-xs-12 col-sm-12">
+                                          <div class="col-xs-6 col-sm-6" style="padding-right:2px;">
+                                              <my-date-picker name="mydate" [options]="myDatePickerOptions" [disabled]="true">
+                                            </my-date-picker>
+                                          </div>
+                                          <div class="col-xs-6 col-sm-6" style="padding-left:2px;">
+                                            <my-date-picker name="mydate" [options]="myDatePickerOptions" [disabled]="true">
+                                            </my-date-picker>
+                                          </div>
+                                          </div>
+                                      
+                                        </div>
+
+                                </div>
+                  
+                                <div class="col-sm-4">
+                                  <label class="col-xs-12 col-sm-12" style="text-align: left; color: #7695a5 !important;padding-left:2px">
+                                    {{ 'HistoryPage.Agent' | translate }}
+                                  </label>
+                                    
+                                  <ng-select placeholder="{{ 'HistoryPage.AllAgents' | translate }}">
+                                      <ng-option disabled> Allan Mary</ng-option>
+                                      <ng-option disabled> Barker Adrian</ng-option>
+                                      <ng-option disabled> Bradley Susan</ng-option>
+                                      <ng-option disabled> Jones Tim</ng-option>
+                                  </ng-select>
+                                </div>
+                  
+                                <div class="col-sm-4">
+                                  <label _ngcontent-c8="" class="col-xs-12 col-sm-12 activity-label" style="text-align: left; color: #7695a5 !important;padding-left:2px">
+                                    {{ 'Activity' | translate }}
+                                  </label>
+
+                                  <ng-select  placeholder="{{ 'AllActivities' | translate }}">
+                                      <ng-option disabled *ngFor="let activity of activities">
+                                          {{ activity.name }}
+                                      </ng-option>
+                                  </ng-select>
+
+                                </div>
+                              </div>
+                  
+                              
+                              <div style="margin-top:15px">
+                                <div class="row">
+                                  <div class="col-sm-12"> 
+                                    <button class="btn btn-info" style="padding:9px 30px;" type="submit">
+                                      <span aria-hidden="true" class="glyphicon glyphicon-search"></span>
+                                    </button>
+                  
+                                    <button class="btn btn-white clearsearchbtn" style="padding:9px 30px;color:#7695a5" type="submit">
+                                      <span class="clear-search-text">
+                                        {{ 'HistoryPage.ClearSearch' | translate }}
+                                      </span> 
+                                      <span class="clear-search-icon"> 
+                                        <i class="material-icons">
+                                          close
+                                        </i>
+                                      </span> 
+                                    </button>
+                  
+                                    <button class="btn btn-white pull-right export-to-csv-btn" style="padding:9px 30px;color:#7695a5">
+                                      <span class="clear-search-text">
+                                        {{ 'ExportToCSV' | translate }}
+                                      </span>
+                                      <span class="clear-search-icon"> 
+                                        <i class="material-icons">
+                                          save_alt
+                                        </i>
+                                      </span> 
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                  
+                            <!-- </div>
+                          </div> -->
+                        </div>
+                      </div>
+
+
+
+                      <div class="row">
+                          <div class="col-md-12" style="margin-top:16px">
+                            <!-- <div class="card" style="margin-top: 0px;">
+                    
+                              <div class="card-content table-responsive" style="padding-bottom:0px"> -->
+                                <table class="table table-hover">
+                                  <thead>
+                                    <tr>
+                                      <th></th>
+                                      <th valign="middle">
+                                        <span class="column-th-span">
+                                          
+                                          {{ 'LatestActivities' | translate}}
+                                        </span>
+                    
+                                        <span style="float: right; cursor: pointer"> 
+                                          <span style="color:#7695a5; font-weight:400">
+                                            {{ 'SortByDate' | translate}}
+                                          </span>
+                                          <span class="sorting sorting_asc"></span>
+                                        </span>
+                    
+                                      </th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                
+                                    <tr>
+                                      <td style="width:1%; white-space:nowrap"> 
+                                        <span> 
+                                          <img alt="user-plus" class="fontawesome-icon" src="assets/img/user-edit-solid.svg"> 
+                                        </span>
+                                      </td>
+                                        <td>
+                                        <p style="margin-bottom:0px; font-weight:500; font-size:13px ">
+                                          <span> 
+                                              Mary Allan  {{ 'HasChanged' | translate}} {{ 'TheRoleOf' | translate}} 
+                                          </span>
+                    
+                                          <span class="link-to-user-profile">  
+                                              Peter Davies
+                                          </span>
+
+                                          <span>
+                                              in {{ 'admin' | translate }}
+                                          </span>
+                                          
+                                        </p>
+                                        <span style="color:#7695a5; font-weight:400;line-height:18px; font-size:13px"> 
+                                          
+                                          <span style="text-transform:capitalize"> Friday, Apr 26, 2019 - 09:58:27 </span> 
+                                        </span>
+                                      </td>
+                                    </tr>
+
+                
+                                    <tr>
+                                      <td style="width:1%; white-space:nowrap"> 
+                                        <span> 
+                                          <img alt="user-plus" class="fontawesome-icon" src="assets/img/user-plus-solid.svg"> 
+                                        </span>
+                                      </td>
+                                      <td>
+                                        <p style="margin-bottom:0px; font-weight:500; font-size:13px ">
+  
+                                          <span> 
+                                              Mary Allan  {{ 'HasInvited' | translate}} 
+                                          </span>
+                                          <em> jones@companyname.com</em>
+                                          {{ 'ToTakeOnTheRoleOf' | translate}}  {{ 'admin' | translate }}
+                                          <em> ({{ 'PendingInvitation' | translate}})</em>
+                                        </p>
+                                        <span style="color:#7695a5; font-weight:400;line-height:18px; font-size:13px"> 
+                                          <span style="text-transform:capitalize"> Thursday, Apr 25, 2019 - 18:36:46 </span> 
+                                        </span>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <td style="width:1%; white-space:nowrap"> 
+            
+                                        <span> 
+                                          <img alt="user-plus" class="fontawesome-icon" src="assets/img/user-minus-solid.svg"> 
+                                        </span>
+                                      </td>
+                                      <td>
+                                        <p style="margin-bottom:0px; font-weight:500; font-size:13px ">
+                                          Mary Allan {{ 'HasRemoved' | translate}}  Barker Adrian {{ 'FromTheProject' | translate}} 
+                                        </p>
+                                        <span style="color:#7695a5; font-weight:400;line-height:18px; font-size:13px"> 
+                                          <span style="text-transform:capitalize"> Thursday, Apr 25, 2019 - 17:09:25 </span> 
+                                        </span>
+                                      </td>
+                                    </tr>
+                                    
+                                    <tr>
+                                      <td style="width:1%; white-space:nowrap"> 
+                                        <span> 
+                                          <img alt="user-plus" class="fontawesome-icon" src="assets/img/user-plus-solid.svg"> 
+                                        </span>
+                                      </td>
+                                      <td>
+                                        <p style="margin-bottom:0px; font-weight:500; font-size:13px ">
+                                          <span  class="link-to-user-profile">  
+                                            Bradley Susan 
+                                          </span>
+                                          {{ 'HasInvited' | translate}} 
+                                                          
+                                            <span  class="link-to-user-profile">  
+                                                Adrian Barker
+                                            </span>
+                                              (barker@companyname.com) {{ 'ToTakeOnTheRoleOf' | translate}}  {{ 'agent' | translate }}
+                                        </p>
+                    
+                                        
+                                        <span _ngcontent-c13="" style="color:#7695a5; font-weight:400;line-height:18px; font-size:13px"> 
+                                          
+                                          <span _ngcontent-c13="" style="text-transform:capitalize"> Thursday, Apr 25, 2019 - 16:52:24 </span> 
+                                        </span>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:1%; white-space:nowrap"> 
+                                          <span> 
+                                            <img _ngcontent-c13="" alt="user-plus" class="fontawesome-icon" src="assets/img/user-plus-solid.svg"> 
+                                          </span>
+                                        </td>
+                
+                                        <td>
+                                          <p style="margin-bottom:0px; font-weight:500; font-size:13px ">
+                                            <span> 
+                                              Mary Allan {{ 'HasInvited' | translate}} 
+                                            </span>
+                        
+                                            <span class="link-to-user-profile">  
+                                                Bradley Susan
+                                            </span>
+                                              (bradley@companyname.com) {{ 'ToTakeOnTheRoleOf' | translate}}  {{ 'admin' | translate }}
+                                          </p>
+                                          <span style="color:#7695a5; font-weight:400;line-height:18px; font-size:13px"> 
+                                            <span style="text-transform:capitalize"> Thursday, Apr 25, 2019 - 11:27:19 </span> 
+                                          </span>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td style="width:1%; white-space:nowrap"> 
+        
+                                        <span> 
+                                          <img alt="user-plus" class="fontawesome-icon" src="assets/img/user-edit-solid.svg"> 
+                                        </span>
+                                      </td>
+      
+                                      <td>
+                                        <p  style="margin-bottom:0px; font-weight:500; font-size:13px ">
+                                          Mary Allan {{ 'HasChanged' | translate}} {{ 'TheAvailabilityStatusOf' | translate}}  
+
+                                              <span class="link-to-user-profile">  
+                                                  Peter Davies
+                                              </span>   
+                                            
+                                             in {{ 'Unavailable' | translate}} 
+                            
+                                        </p>
+                                        <span _ngcontent-c13="" style="color:#7695a5; font-weight:400;line-height:18px; font-size:13px"> 
+                                          
+                                          <span _ngcontent-c13="" style="text-transform:capitalize"> Thursday, Apr 25, 2019 - 09:23:15 </span> 
+                                        </span>
+                                      </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="width:1%; white-space:nowrap"> 
+        
+                                        <span> 
+                                          <img alt="user-plus" class="fontawesome-icon" src="assets/img/user-edit-solid.svg"> 
+                                        </span>
+                                      </td>
+      
+                                      <td>
+                                        <p  style="margin-bottom:0px; font-weight:500; font-size:13px ">
+                                          Mary Allan {{ 'HasChanged' | translate}} {{ 'HisStatus' | translate}} in {{ 'Available' | translate}} 
+                            
+                                        </p>
+                                        <span style="color:#7695a5; font-weight:400;line-height:18px; font-size:13px"> 
+                                          
+                                          <span style="text-transform:capitalize"> Thursday, Apr 25, 2019 - 09:15:15 </span> 
+                                        </span>
+                                      </td>
+                                    </tr>
+
+                                  </tbody>
+                                </table>
+                              <!-- </div>
+                            </div> -->
+                    
+                          </div>
+                        </div>
+
+
+                </div>
+              </div>
+
+          </div>
+        </div>
+             
+      </div>
+    </div>
+             
+  </div>
