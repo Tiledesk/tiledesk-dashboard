@@ -33,6 +33,7 @@ export class UsersProfileComponent implements OnInit {
   faqKb_remoteId: string;
   faqKb_name: string;
   faqKb_createdAt: string;
+  faqKb_trashed: boolean;
 
   constructor(
     private usersService: UsersService,
@@ -94,6 +95,8 @@ export class UsersProfileComponent implements OnInit {
           this.faqKb_id = faqKb._id;
           this.faqKb_remoteId = faqKb.kbkey_remote;
           this.faqKb_createdAt = moment(faqKb.updatedAt).format('DD/MM/YYYY');
+          this.faqKb_trashed = faqKb.trashed;
+
 
           // SAVE THE BOT IN LOCAL STORAGE
           // this.botLocalDbService.saveBotsInStorage(this.faqKb_id, this.faqKb);
