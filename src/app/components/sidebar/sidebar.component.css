@@ -289,4 +289,11 @@ button.close {
 }
 /* SIDEBAR NAV ITEMS  */
 
+.sidebar-footer {
+    position: relative;
+    z-index: 1050;
+    background-color: #1e2129!important;
+    bottom: 21px;
+}
+
 
