@@ -140,6 +140,11 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['project/' + this.projectId + '/analytics-demo']);
   }
 
+  goToActivitiesStaticPage() {
+    this.router.navigate(['project/' + this.projectId + '/activities-demo']);
+  }
+
+
   openChat() {
     // localStorage.setItem('chatOpened', 'true');
     const url = this.CHAT_BASE_URL;

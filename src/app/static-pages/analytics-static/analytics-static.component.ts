@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import * as Chartist from 'chartist';
 import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
-import { AuthService, SuperUser } from '../../core/auth.service';
+import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
 @Component({
   selector: 'appdashboard-analytics-static',
@@ -49,11 +49,12 @@ export class AnalyticsStaticComponent implements OnInit {
       { 'title': 'We are covered 5', 'url': 'assets/img/no_image_user.png' },
     ];
 
+    this.getCurrentProject();
   }
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
-
+      console.log('!!! ANALYTICS STATIC - project ', project)
 
       if (project) {
         this.projectId = project._id
@@ -63,7 +64,7 @@ export class AnalyticsStaticComponent implements OnInit {
 
   getBrowserLangAndSwitchMonthName() {
     const browserLang = this.translate.getBrowserLang();
-    console.log('!!! ANALYTICS  - BROWSER LANG ', browserLang)
+    console.log('!!! ANALYTICS STATIC - BROWSER LANG ', browserLang)
     if (browserLang) {
       if (browserLang === 'it') {
         // tslint:disable-next-line:max-line-length
@@ -158,6 +159,7 @@ export class AnalyticsStaticComponent implements OnInit {
   }
 
   goToPricing() {
+    console.log('goToPricing projectId ', this.projectId);
     this.router.navigate(['project/' + this.projectId + '/pricing']);
   }
 

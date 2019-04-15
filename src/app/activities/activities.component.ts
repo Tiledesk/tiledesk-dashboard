@@ -89,9 +89,9 @@ export class ActivitiesComponent implements OnInit {
         console.log('translateActivities AgentDeletion ', text.AgentDeletion)
         console.log('translateActivities AgentDeletion ', text.AgentInvitation)
       }, (error) => {
-        console.log('ActivitiesComponent - GET PROJECT-USERS ', error);
+        console.log('ActivitiesComponent - GET translations error ', error);
       }, () => {
-        console.log('ActivitiesComponent - GET PROJECT-USERS * COMPLETE *');
+        console.log('ActivitiesComponent - GET translations * COMPLETE *');
 
         this.activities = [
           { id: 'PROJECT_USER_UPDATE', name: this.agentAvailabilityOrRoleChange },
@@ -99,8 +99,6 @@ export class ActivitiesComponent implements OnInit {
           { id: 'PROJECT_USER_INVITE', name: this.agentInvitation },
         ];
       });
-
-
   }
 
   getAllProjectUsers() {
