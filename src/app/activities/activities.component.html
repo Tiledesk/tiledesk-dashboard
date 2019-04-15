@@ -56,11 +56,13 @@
                   bindLabel="name"
                   bindValue="id"
                   [multiple]="true"
-                  placeholder="{{ 'SelectActivities' | translate }}">
+                  [closeOnSelect]="false"
+                  placeholder="{{ 'AllActivities' | translate }}">
                   <!-- <ng-option [value]="''">{{ 'HistoryPage.AllAgents' | translate }}</ng-option>
                   <ng-option *ngFor="let agent of agentsList" [value]="agent._id" >
                   {{ agent.firstname }} {{ agent.lastname }} 
                   </ng-option> -->
+         
                 </ng-select>
               </div>
             </div>
@@ -254,7 +256,7 @@
                           {{ activity?.actionObj?.role | translate }}
 
                         <span *ngIf="activity?.target?.type === 'pendinginvitation'">
-                          <em> ( {{ 'PendingInvitation' | translate}}   )</em>
+                          <em> ({{ 'PendingInvitation' | translate}})</em>
                         </span>
                       </span>
                     </p>
