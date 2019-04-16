@@ -199,6 +199,7 @@
     "SelectActivities":"Seleziona attività",
     "AllActivities": "Tutte le attività",
     "UpgradeNow":"Aggiorna ora",
+    "Plan":"Piano",
     "ActivitiesOptions": {
         "AgentAvailabilityOrRoleChange":"Modifica disponibilità o ruolo agente",
         "AgentDeletion":"Cancellazione agente",

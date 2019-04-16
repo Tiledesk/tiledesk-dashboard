@@ -199,6 +199,7 @@
     "SelectActivities": "Select activities",
     "AllActivities": "All activities",
     "UpgradeNow":"Upgrade now",
+    "Plan":"Plan",
     "ActivitiesOptions": {
         "AgentAvailabilityOrRoleChange": "Change agent availability or role",
         "AgentDeletion": "Agent deletion",
