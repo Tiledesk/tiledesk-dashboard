@@ -194,23 +194,23 @@
                             {{ activity?.target?.object?.id_user?.firstname}} {{ activity?.target?.object?.id_user?.lastname}}
                           </span>   
                         </span>
-                          in
+                          {{ 'Into' | translate }}
                         <span *ngIf="activity?.actionObj?.user_available === false">
                           <!-- non disponibile -->
-                          {{ 'Unavailable' | translate}} 
+                          {{ 'Unavailable' | translate }} 
                         </span>
 
                         <span *ngIf="activity?.actionObj?.user_available === true">
                           <!-- disponibile -->
-                          {{ 'Available' | translate}} 
+                          {{ 'Available' | translate }} 
                         </span>
 
                         <span *ngIf="activity?.actionObj?.role === 'admin'">
-                          {{ 'admin' | translate}} 
+                          {{ 'admin' | translate }} 
                         </span>
 
                         <span *ngIf="activity?.actionObj?.role === 'agent'">
-                          {{ 'agent' | translate}} 
+                          {{ 'agent' | translate }} 
                         </span>
                       </span>
 
