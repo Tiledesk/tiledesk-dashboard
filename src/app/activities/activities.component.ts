@@ -212,7 +212,7 @@ export class ActivitiesComponent implements OnInit {
     // RESOLVE THE BUG: THE BUTTON REMAIN FOCUSED AFTER PRESSED
     this.exportcsvbtnRef.nativeElement.blur();
 
-    this.usersService.downloadActivitiesAsCsv(this.queryString, 0)
+    this.usersService.downloadActivitiesAsCsv(this.queryString, 0, this.browser_lang)
       .subscribe((res: any) => {
         console.log('ActivitiesComponent - downloadActivitiesAsCsv - res ', res);
 
