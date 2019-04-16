@@ -240,6 +240,15 @@
             <p class="onBlackBckgrnd">Analytics</p>
           </a>
         </li>
+
+        <!-- ANALYTICS -->
+        <li *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="active" >
+          <a class="customAncor" routerLink="project/{{ project._id }}/activities">
+            <i class="material-icons sidebar-icons">view_list</i>
+            <span class="badge">New </span>
+            <p class="onBlackBckgrnd">{{ 'Activities' | translate }}</p>
+          </a>
+        </li>
             
         <!-- REQUESTS HISTORY -->
         <li *ngIf="project" routerLinkActive="active" >
@@ -437,9 +446,10 @@
 
   
 </div>
-<div class="sidebar-footer">
+<!-- ////// SIDEBAR FOOTER -->
+<!-- <div class="sidebar-footer">
  {{ 'Plan' | translate }} 
-</div>
+</div> -->
 
 
 
