@@ -203,14 +203,14 @@ export class UsersService {
       .map((response) => response.json());
   }
 
-  public downloadActivitiesAsCsv(querystring: string, pagenumber: number) {
+  public downloadActivitiesAsCsv(querystring: string, pagenumber: number, language: string) {
 
     let _querystring = '&' + querystring
     if (querystring === undefined || !querystring) {
       _querystring = ''
     }
 
-    const url = this.USERS_ACTIVITIES_URL + '/csv' + '?page=' + pagenumber + _querystring;
+    const url = this.USERS_ACTIVITIES_URL + '/csv' + '?page=' + pagenumber + _querystring + '&lang=' + language;
 
     console.log('!! USERS ACTIVITIES URL ', url);
     const headers = new Headers();
