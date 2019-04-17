@@ -128,7 +128,11 @@
                       {{ "ProjectEditPage.VisitorAuthentication" | translate }}
                     </p>
                     <p class="card-section-subtitle">
-                      {{ "ProjectEditPage.EnableVisitorAuthentication" | translate }}
+                      {{ "ProjectEditPage.EnableVisitorAuthentication" | translate }}.
+
+                      <span class="link-to-widget-auth" (click)="goToWidgetAuthenticationDocs()"> 
+                        {{ 'Resourcepage.HereHow' | translate }} 
+                      </span>
                     </p>
                   </div>
                 </div>
@@ -146,17 +150,14 @@
                   </div>
                 </div>
 
-                <div class="row">
+                <!-- <div class="row">
                   <label class="col-sm-2"></label>
                   <div class="col-xs-12 col-sm-10">
-                    
                     <div class="link-to-widget-auth" (click)="goToWidgetAuthenticationDocs()">
                       {{ "HereTheDocumentationAboutTheVisitorsAuthentication" | translate }}
                     </div>
                   </div>
-                  
-
-                </div>
+                </div> -->
 
               </span>   <!-- /. EDIT_VIEW -->
     

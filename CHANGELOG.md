@@ -8,6 +8,7 @@
 - Project settings: adds a link to 'Widget Authentication'
 - Bots: adds the ability to manage external bot
 - Fixes the login and logout errors caused by the Firebase Cloud Messaging
+- Adds Activities log
 
 ### 1.0.20
 - Adds the avatar of the agents in the column 'Served By' of the history table

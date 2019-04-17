@@ -200,13 +200,16 @@
     "SelectActivities": "Select activities",
     "AllActivities": "All activities",
     "NewRequest": "New request",
+    "_served": "served",
+    "_unserved": "unserved",
     "AssignedTo": "assigned to",
     "UpgradeNow": "Upgrade now",
     "Plan": "Plan",
     "ActivitiesOptions": {
         "AgentAvailabilityOrRoleChange": "Change agent availability or role",
         "AgentDeletion": "Agent deletion",
-        "AgentInvitation": "Agent invitation"
+        "AgentInvitation": "Agent invitation",
+        "NewRequest": "New request"
     },
     "UserProfile": {
         "Profile": "Profile",

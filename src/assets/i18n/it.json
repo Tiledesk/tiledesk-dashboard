@@ -200,13 +200,16 @@
     "SelectActivities":"Seleziona attività",
     "AllActivities": "Tutte le attività",
     "NewRequest": "Nuova richiesta",
+    "_served": "servita",
+    "_unserved": "non servita",
     "AssignedTo": "assegnata a",
     "UpgradeNow":"Aggiorna ora",
     "Plan":"Piano",
     "ActivitiesOptions": {
         "AgentAvailabilityOrRoleChange":"Modifica disponibilità o ruolo agente",
         "AgentDeletion":"Cancellazione agente",
-        "AgentInvitation": "Invito agente"
+        "AgentInvitation": "Invito agente",
+        "NewRequest": "Nuova richiesta"
     },
     "UserProfile": {
         "Profile": "Profilo",

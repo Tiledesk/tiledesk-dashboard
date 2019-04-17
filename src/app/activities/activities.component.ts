@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
+import { UsersLocalDbService } from '../services/users-local-db.service';
 import 'moment/locale/it.js';
 import 'moment/locale/en-gb.js';
 @Component({
@@ -57,12 +58,13 @@ export class ActivitiesComponent implements OnInit {
   agentAvailabilityOrRoleChange: string;
   agentDeletion: string;
   agentInvitation: string;
-
+  newRequest: string;
   constructor(
     private usersService: UsersService,
     public auth: AuthService,
     private translate: TranslateService,
-    private router: Router
+    private router: Router,
+    private usersLocalDbService: UsersLocalDbService,
   ) { }
 
   ngOnInit() {
@@ -84,10 +86,11 @@ export class ActivitiesComponent implements OnInit {
         this.agentAvailabilityOrRoleChange = text.AgentAvailabilityOrRoleChange;
         this.agentDeletion = text.AgentDeletion;
         this.agentInvitation = text.AgentInvitation;
-
+        this.newRequest = text.NewRequest;
         console.log('translateActivities AgentAvailabilityOrRoleChange ', text.AgentAvailabilityOrRoleChange)
         console.log('translateActivities AgentDeletion ', text.AgentDeletion)
         console.log('translateActivities AgentDeletion ', text.AgentInvitation)
+        console.log('translateActivities newRequest ', text.newRequest)
       }, (error) => {
         console.log('ActivitiesComponent - GET translations error ', error);
       }, () => {
@@ -97,6 +100,7 @@ export class ActivitiesComponent implements OnInit {
           { id: 'PROJECT_USER_UPDATE', name: this.agentAvailabilityOrRoleChange },
           { id: 'PROJECT_USER_DELETE', name: this.agentDeletion },
           { id: 'PROJECT_USER_INVITE', name: this.agentInvitation },
+          { id: 'REQUEST_CREATE', name: this.newRequest },
         ];
       });
   }
@@ -363,6 +367,25 @@ export class ActivitiesComponent implements OnInit {
                 } else {
                   activity.activity_request_text = activity.target.object.first_text
                 }
+
+                if (activity.target && activity.target.object && activity.target.object.status === 200) {
+
+                  if (activity.target && activity.target.object && activity.target.object.participants) {
+
+                    const participantId = activity.target.object.participants[0]
+                    console.log('ActivitiesComponent participant ', participantId);
+                    const user = this.usersLocalDbService.getMemberFromStorage(participantId);
+                    console.log('ActivitiesComponent participant - user', user);
+
+                    activity.participant_fullname = user.firstname + ' ' + user.lastname
+                    // participantsArray.forEach(participant => {
+
+                    //   console.log('ActivitiesComponent participant ', participant);
+
+                    // });
+                  }
+                }
+
               }
 
 
@@ -401,5 +424,7 @@ export class ActivitiesComponent implements OnInit {
 
   goToRequestDetails(request_id) {
     console.log('has clicked GO To REQUEST DETAILS ', request_id);
+    this.router.navigate(['project/' + this.projectId + '/request/' + request_id + '/messages']);
+
   }
 }

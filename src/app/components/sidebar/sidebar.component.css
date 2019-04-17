@@ -1,3 +1,5 @@
+/* @import url('https://fonts.googleapis.com/css?family=Architects+Daughter'); */
+
 li.active a span.sidebar-mini  {
 
  color: #ffffff !important
@@ -296,7 +298,7 @@ button.close {
     bottom: 21px;
 }
 
-.badge:after{
+/* .badge:after{
     content:"New";
     position: absolute;
     background: rgba(0,0,255,1);
@@ -310,21 +312,20 @@ button.close {
     border-radius: 50%;
     color:white;
     border:1px solid blue;
-}
-.badge {
-position: absolute;
-    top: 5px;
+} */
+._badge {
+    position: absolute;
+    top: 12px;
     border: 1px solid #FFF;
-    right: 10px;
+    left:180px;
     font-size: 9px;
     background: #f44336;
     color: #FFFFFF;
-    min-width: 20px;
-    padding: 0px 5px;
-    height: 20px;
-    border-radius: 10px;
+    padding: 0px 2px;
+    border-radius: 6px;
     text-align: center;
-    line-height: 19px;
+    line-height: 16px;
     vertical-align: middle;
     display: block;
+    font-weight:400;
 }

@@ -82,11 +82,11 @@
                     {{ 'HistoryPage.ClearSearch' | translate }}
                   </button>
 
-                  <button #exportcsvbtn class="btn btn-white pull-right export-to-csv-btn" (click)="exportActivitiesAsCSV()"
+                  <!-- <button #exportcsvbtn class="btn btn-white pull-right export-to-csv-btn" (click)="exportActivitiesAsCSV()"
                     style="padding:9px 30px;color:#7695a5">
-                    <!-- <span style="color: #394f5a">  </span> -->
+                    
                     {{ 'ExportToCSV' | translate }}
-                  </button>
+                  </button> -->
                 </div>
               </div>
             </div>
@@ -99,8 +99,17 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card" style="margin-top: 0px;">
+            <!-- float: right;  -->
+            <div class="sort-by-date" style="text-align:right; padding-top:16px; padding-right:28px">
+              <span style="cursor: pointer" (click)="sortDirection(asc = !asc)"> 
+                <span style="color:#7695a5; font-weight:400">
+                  {{ 'SortByDate' | translate}}
+                </span>
+                <span class="sorting" [ngClass]="{'sorting_desc' : direction === 1, 'sorting_asc': direction === -1}"></span>
+              </span>
+            </div>
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
-          <div *ngIf="!showSpinner"  class="card-content table-responsive" style="padding-bottom:0px">
+          <div *ngIf="!showSpinner"  class="card-content table-responsive" style="padding-bottom:0px; padding-top:0px">
             <table class="table table-hover">
               <thead>
                 <tr>
@@ -111,16 +120,17 @@
                       {{ 'LatestActivities' | translate}}
                     </span>
 
-                    <span style="float: right; cursor: pointer" (click)="sortDirection(asc = !asc)"> 
+                    <!-- <span style="float: right; cursor: pointer" (click)="sortDirection(asc = !asc)"> 
                       <span style="color:#7695a5; font-weight:400">
                         {{ 'SortByDate' | translate}}
                       </span>
                       <span class="sorting" [ngClass]="{'sorting_desc' : direction === 1, 'sorting_asc': direction === -1}"></span>
-                    </span>
+                    </span> -->
 
                   </th>
                 </tr>
               </thead>
+              
               <tbody>
 
                 <!-- ===== IF THERE ISN'T ACTIVITIES ===== -->
@@ -274,18 +284,44 @@
 
                   <td *ngIf="activity?.verb === 'REQUEST_CREATE'">
                       <p style="margin-bottom:0px; font-weight:500; font-size:13px ">
-                     {{ 'NewRequest' | translate }}:
+
+                     {{ 'NewRequest' | translate }}
+
+                    <span *ngIf="activity?.target?.object?.status === 200">
+                        <!-- {{ '_served' | translate }} -->
+
+                        {{ 'AssignedTo' | translate }} 
+
+                        <span *ngIf="activity?.participant_fullname"> 
+                            
+                          <span class="link-to-user-profile" (click)="goToMemberProfile(activity?.target?.object?.participants[0])"> 
+                             {{ activity?.participant_fullname }}
+                            </span>:
+                        </span>
+
+
+                    </span>
+
+                    <span *ngIf="activity?.target?.object?.status === 100">
+                        {{ '_unserved' | translate }}:
+
+                      
+                    </span>
                     <span *ngIf="activity?.activity_request_text" (click)="goToRequestDetails(activity?.target?.object?.request_id)"class="link-to-user-profile" style="cursor:pointer"> 
                       <em> {{ activity?.activity_request_text }}</em> 
                    </span>
 
-                   <span *ngIf="activity?.target?.object?.status === 200"> 
+                   <!-- <span *ngIf="activity?.target?.object?.status === 200"> 
 
-                    {{ 'AssignedTo' | translate }}
-                    {{activity?.target?.object?.status }}
-                </span>
+                      {{ 'AssignedTo' | translate }}
+                      {{activity?.target?.object?.status }}
+                    </span> -->
                  
                   </p>
+                  <span style="color:#7695a5; font-weight:400;line-height:18px; font-size:13px"> 
+                      <!-- {{ activity?.updatedAt | date: 'E/MM/yyyy HH:mm:ss' }}  -->
+                      <span style="text-transform:capitalize"> {{ activity?.date }} </span> 
+                    </span>
                   </td>
                 </tr>
 

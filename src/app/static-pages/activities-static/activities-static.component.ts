@@ -12,6 +12,7 @@ export class ActivitiesStaticComponent implements OnInit {
   agentAvailabilityOrRoleChange: string;
   agentDeletion: string;
   agentInvitation: string;
+  newRequest: string;
   projectId: string;
   
   constructor(
@@ -61,10 +62,12 @@ export class ActivitiesStaticComponent implements OnInit {
         this.agentAvailabilityOrRoleChange = text.AgentAvailabilityOrRoleChange;
         this.agentDeletion = text.AgentDeletion;
         this.agentInvitation = text.AgentInvitation;
+        this.newRequest = text.NewRequest;
 
         console.log('translateActivities AgentAvailabilityOrRoleChange ', text.AgentAvailabilityOrRoleChange)
         console.log('translateActivities AgentDeletion ', text.AgentDeletion)
         console.log('translateActivities AgentDeletion ', text.AgentInvitation)
+        console.log('translateActivities newRequest ', text.newRequest)
       }, (error) => {
         console.log('ActivitiesComponent - GET translations error', error);
       }, () => {
@@ -74,6 +77,7 @@ export class ActivitiesStaticComponent implements OnInit {
           { id: 'PROJECT_USER_UPDATE', name: this.agentAvailabilityOrRoleChange },
           { id: 'PROJECT_USER_DELETE', name: this.agentDeletion },
           { id: 'PROJECT_USER_INVITE', name: this.agentInvitation },
+          { id: 'REQUEST_CREATE', name: this.newRequest },
         ];
       });
   }
