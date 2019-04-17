@@ -146,6 +146,10 @@
                     <span *ngIf="activity?.verb === 'PROJECT_USER_UPDATE'"> 
                       <img class="fontawesome-icon" src="assets/img/user-edit-solid.svg" alt="user-plus"/> 
                     </span>
+
+                    <span *ngIf="activity?.verb === 'REQUEST_CREATE'"> 
+                        <img class="fontawesome-icon" src="assets/img/comment-medical-solid.svg" alt="user-plus"/> 
+                      </span>
                   </td>
 
                   <td *ngIf="activity?.actor?.name">
@@ -266,6 +270,13 @@
                       <!-- {{ activity?.updatedAt | date: 'E/MM/yyyy HH:mm:ss' }}  -->
                       <span style="text-transform:capitalize"> {{ activity?.date }} </span> 
                     </span>
+                  </td>
+
+                  <td *ngIf="activity?.verb === 'REQUEST_CREATE'">
+                     Nuova richiesta
+                    <span *ngIf="activity?.target?.object?.first_text" (click)="goToRequestDetails(activity?.target?.object?.request_id)" style="cursor:pointer"> 
+                    "{{ activity?.target.object.first_text }}"
+                  </span>
                   </td>
                 </tr>
 

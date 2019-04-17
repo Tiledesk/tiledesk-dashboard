@@ -381,4 +381,7 @@ export class ActivitiesComponent implements OnInit {
     this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
   }
 
+  goToRequestDetails(request_id) {
+    console.log('has clicked GO To REQUEST DETAILS ', request_id);
+  }
 }
