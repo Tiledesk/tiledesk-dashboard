@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
+import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
 @Component({
   selector: 'appdashboard-activities-static',
   templateUrl: './activities-static.component.html',
@@ -14,6 +15,12 @@ export class ActivitiesStaticComponent implements OnInit {
   agentInvitation: string;
   newRequest: string;
   projectId: string;
+
+  public myDatePickerOptions: IMyDpOptions = {
+    // other options...
+    dateFormat: 'dd/mm/yyyy',
+    // dateFormat: 'yyyy, mm , dd',
+  };
   
   constructor(
     private translate: TranslateService,

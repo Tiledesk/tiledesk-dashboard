@@ -59,6 +59,7 @@ export class ActivitiesComponent implements OnInit {
   agentDeletion: string;
   agentInvitation: string;
   newRequest: string;
+  asc: any;
   constructor(
     private usersService: UsersService,
     public auth: AuthService,
