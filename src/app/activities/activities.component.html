@@ -276,14 +276,14 @@
                       <p style="margin-bottom:0px; font-weight:500; font-size:13px ">
                      {{ 'NewRequest' | translate }}:
                     <span *ngIf="activity?.activity_request_text" (click)="goToRequestDetails(activity?.target?.object?.request_id)"class="link-to-user-profile" style="cursor:pointer"> 
-                    <em> {{ activity?.activity_request_text }}</em> 
-                    
-                    <span *ngIf="activity?.target?.object?.status === 200"> 
+                      <em> {{ activity?.activity_request_text }}</em> 
+                   </span>
 
-                        {{ 'AssignedTo' | translate }}
-{{activity?.target?.object?.status }}
-                    </span>
-                  </span>
+                   <span *ngIf="activity?.target?.object?.status === 200"> 
+
+                    {{ 'AssignedTo' | translate }}
+                    {{activity?.target?.object?.status }}
+                </span>
                  
                   </p>
                   </td>
