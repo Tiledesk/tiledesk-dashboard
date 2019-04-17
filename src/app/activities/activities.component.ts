@@ -348,6 +348,24 @@ export class ActivitiesComponent implements OnInit {
                 console.log('ActivitiesComponent - getActivities - updatedAt date', date);
                 activity.date = date;
               }
+
+              if (activity && activity.target && activity.target.object && activity.target.object.first_text) {
+
+                console.log('ActivitiesComponent - getActivities - first_text:  ', activity.target.object.first_text);
+
+
+                //         text.length >= 30 ?
+                // text.slice(0, 30) + '...' :
+                if (activity.target.object.first_text.length >= 30) {
+
+                  activity.activity_request_text = activity.target.object.first_text.slice(0, 30) + '...';
+
+                } else {
+                  activity.activity_request_text = activity.target.object.first_text
+                }
+              }
+
+
             });
           }
         }

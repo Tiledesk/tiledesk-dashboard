@@ -273,10 +273,19 @@
                   </td>
 
                   <td *ngIf="activity?.verb === 'REQUEST_CREATE'">
-                     Nuova richiesta
-                    <span *ngIf="activity?.target?.object?.first_text" (click)="goToRequestDetails(activity?.target?.object?.request_id)" style="cursor:pointer"> 
-                    "{{ activity?.target.object.first_text }}"
+                      <p style="margin-bottom:0px; font-weight:500; font-size:13px ">
+                     {{ 'NewRequest' | translate }}:
+                    <span *ngIf="activity?.activity_request_text" (click)="goToRequestDetails(activity?.target?.object?.request_id)"class="link-to-user-profile" style="cursor:pointer"> 
+                    <em> {{ activity?.activity_request_text }}</em> 
+                    
+                    <span *ngIf="activity?.target?.object?.status === 200"> 
+
+                        {{ 'AssignedTo' | translate }}
+{{activity?.target?.object?.status }}
+                    </span>
                   </span>
+                 
+                  </p>
                   </td>
                 </tr>
 

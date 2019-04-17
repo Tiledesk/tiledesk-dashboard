@@ -199,6 +199,8 @@
     "SortByDate":"ordina per data",
     "SelectActivities":"Seleziona attività",
     "AllActivities": "Tutte le attività",
+    "NewRequest": "Nuova richiesta",
+    "AssignedTo": "assegnata a",
     "UpgradeNow":"Aggiorna ora",
     "Plan":"Piano",
     "ActivitiesOptions": {

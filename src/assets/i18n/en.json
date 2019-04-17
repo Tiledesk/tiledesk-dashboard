@@ -188,7 +188,7 @@
     "HasChanged": "has changed",
     "HisStatus": "his status",
     "TheAvailabilityStatusOf": "the availability status of",
-    "TheRoleOf":"the role of",
+    "TheRoleOf": "the role of",
     "Into": "into",
     "HasRemoved": "has removed",
     "FromTheProject": "from the project",
@@ -199,8 +199,10 @@
     "SortByDate": "sort by date",
     "SelectActivities": "Select activities",
     "AllActivities": "All activities",
-    "UpgradeNow":"Upgrade now",
-    "Plan":"Plan",
+    "NewRequest": "New request",
+    "AssignedTo": "assigned to",
+    "UpgradeNow": "Upgrade now",
+    "Plan": "Plan",
     "ActivitiesOptions": {
         "AgentAvailabilityOrRoleChange": "Change agent availability or role",
         "AgentDeletion": "Agent deletion",
@@ -226,7 +228,7 @@
         "PendingEmailVerification": "Pending email verification",
         "YourAccountIsPending": "Your account is pending email verification.",
         "ClickHereToResend": "Click here to resend verification email",
-        "BotHasBeenRemoved":"this Bot has been removed"
+        "BotHasBeenRemoved": "this Bot has been removed"
     },
     "ChangePsw": {
         "ChangePsw": "Change password",
