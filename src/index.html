@@ -82,7 +82,7 @@
     // window.tiledeskSettings =
     //   {
     //     projectid: "5ad5bd52c975820014ba900a",
-    //     //filterByRequester: true,
+    //     filterByRequester: true,
     //     isLogEnabled: false
     //   };
     //   (function(d, s, id) {
@@ -90,8 +90,8 @@
     //     if (d.getElementById(id)) return;
     //     js = d.createElement(s); 
     //     js.id = id; //js.async=!0;
-    //     //js.src = "https://s3.eu-west-1.amazonaws.com/tiledesk-widget/dev/2.0.4-beta.26/launch.js"; //https://s3.eu-west-1.amazonaws.com/tiledesk-widget/dev/2.0.4-beta.1/
-    //     js.src = "http://localhost:4300/launch.js"; 
+    //     js.src = "https://s3.eu-west-1.amazonaws.com/tiledesk-widget/dev/2.0.4-beta.26/launch.js"; //https://s3.eu-west-1.amazonaws.com/tiledesk-widget/dev/2.0.4-beta.1/
+    //     // js.src = "http://localhost:4300/launch.js"; 
     //     fjs.parentNode.insertBefore(js, fjs);
     //   }(document, 'script', 'tiledesk-jssdk'));
     // /** 
@@ -103,52 +103,56 @@
 
     //   console.log('SetTiledeskWidgetUserSignin 1');
 
-      // usecase: the parameters name, email and userId 
-      // are passed from the signin component when the user login
-      // if (window && window.tiledesk) {
+    //   // usecase: the parameters name, email and userId 
+    //   // are passed from the signin component when the user login
+    //   if (window && window.tiledesk) {
         
-      //   /* --- COMMENTO QUESTO X TESTARE ACCESSO ALLE PROPRIETà userFullname E userEmail COME senderId --- */
-      //   window.tiledeskSettings.userFullname = name;
-      //   window.tiledeskSettings.userEmail = email;
-      //   // console.log('SetTiledeskWidgetUserSignin (index.html) - userFullname ', window.tiledeskSettings.userFullname);
-      //   // console.log('SetTiledeskWidgetUserSignin (index.html) - userEmail ', window.tiledeskSettings.userEmail);
+    //     /* --- COMMENTO QUESTO X TESTARE ACCESSO ALLE PROPRIETà userFullname E userEmail COME senderId --- */
+    //     window.tiledeskSettings.userFullname = name;
+    //     window.tiledeskSettings.userEmail = email;
+    //     // console.log('SetTiledeskWidgetUserSignin (index.html) - userFullname ', window.tiledeskSettings.userFullname);
+    //     // console.log('SetTiledeskWidgetUserSignin (index.html) - userEmail ', window.tiledeskSettings.userEmail);
 
-      //  // window.tiledesk.angularcomponent.component.g.userFullname = name;
-      //  // window.tiledesk.angularcomponent.component.g.userEmail = email;
-      //   window.tiledesk.angularcomponent.component.initAll();
-      //   window.tiledesk.angularcomponent.component.getMongDbDepartments();
-      //   console.log('SetTiledeskWidgetUserSignin (index.html) - userFullname ',window.tiledesk.angularcomponent.component.g.userFullname);
-      //   console.log('SetTiledeskWidgetUserSignin (index.html) - userEmail ', window.tiledesk.angularcomponent.component.g.userEmail);
+    //    // window.tiledesk.angularcomponent.component.g.userFullname = name;
+    //    // window.tiledesk.angularcomponent.component.g.userEmail = email;
 
-      //   window.tiledesk.angularcomponent.component.g.senderId = userId;
-      //   console.log('SetTiledeskWidgetUserSignin (index.html) - userId ', window.tiledesk.angularcomponent.component.g.senderId);
-      //   console.log('SetTiledeskWidgetUserSignin (index.html) - window.tiledesk ', window.tiledesk);
-      // } else {
-      //   // usecase: the parameters name, email and userId 
-      //   // are passed from the auth service when the page is refreshed
-      //   window.tileDeskAsyncInit = function () {
-      //     window.tiledesk.on('loadParams', function (event_data) {
+    //     // window.tiledesk.angularcomponent.component.initAll();
+    //     // window.tiledesk.angularcomponent.component.getMongDbDepartments();
 
-      //       // console.log('SetTiledeskWidgetUserSignin (index.html) - window ', window);
-      //       console.log('SetTiledeskWidgetUserSignin (index.html) - window.tiledesk ', window.tiledesk);
-      //       // console.log('SetTiledeskWidgetUserSignin (index.html) window.tiledesk.angularcomponent ', window.tiledesk.angularcomponent)
+    //     window['tiledesk'].reInit();
 
-      //       /* --- COMMENTO QUESTO X TESTARE ACCESSO ALLE PROPRIETà userFullname E userEmail COME senderId --- */
-      //       window.tiledeskSettings.userFullname = name;
-      //       window.tiledeskSettings.userEmail = email;
-      //       // console.log('SetTiledeskWidgetUserSignin (index.html) - userFullname ', window.tiledeskSettings.userFullname);
-      //       // console.log('SetTiledeskWidgetUserSignin (index.html) - userEmail ', window.tiledeskSettings.userEmail);
+    //     console.log('SetTiledeskWidgetUserSignin (index.html) - userFullname ',window.tiledesk.angularcomponent.component.g.userFullname);
+    //     console.log('SetTiledeskWidgetUserSignin (index.html) - userEmail ', window.tiledesk.angularcomponent.component.g.userEmail);
 
-      //       // window.tiledesk.angularcomponent.component.g.userFullname = name;
-      //       // window.tiledesk.angularcomponent.component.g.userEmail = email;
-      //       window.tiledesk.angularcomponent.component.g.senderId = userId;
-      //       console.log('SetTiledeskWidgetUserSignin (index.html) - userFullname ', window.tiledesk.angularcomponent.component.g.userFullname);
-      //       console.log('SetTiledeskWidgetUserSignin (index.html) - userEmail ', window.tiledesk.angularcomponent.component.g.userEmail);
+    //     window.tiledesk.angularcomponent.component.g.senderId = userId;
+    //     console.log('SetTiledeskWidgetUserSignin (index.html) - userId ', window.tiledesk.angularcomponent.component.g.senderId);
+    //     console.log('SetTiledeskWidgetUserSignin (index.html) - window.tiledesk ', window.tiledesk);
+    //   } else {
+    //     // usecase: the parameters name, email and userId 
+    //     // are passed from the auth service when the page is refreshed
+    //     window.tileDeskAsyncInit = function () {
+    //       window.tiledesk.on('loadParams', function (event_data) {
 
-      //       console.log('SetTiledeskWidgetUserSignin (index.html) - userId ', window.tiledesk.angularcomponent.component.g.senderId)
-      //     });
-      //   }
-      // }
+    //         // console.log('SetTiledeskWidgetUserSignin (index.html) - window ', window);
+    //         console.log('SetTiledeskWidgetUserSignin (index.html) - window.tiledesk ', window.tiledesk);
+    //         // console.log('SetTiledeskWidgetUserSignin (index.html) window.tiledesk.angularcomponent ', window.tiledesk.angularcomponent)
+
+    //         /* --- COMMENTO QUESTO X TESTARE ACCESSO ALLE PROPRIETà userFullname E userEmail COME senderId --- */
+    //         window.tiledeskSettings.userFullname = name;
+    //         window.tiledeskSettings.userEmail = email;
+    //         // console.log('SetTiledeskWidgetUserSignin (index.html) - userFullname ', window.tiledeskSettings.userFullname);
+    //         // console.log('SetTiledeskWidgetUserSignin (index.html) - userEmail ', window.tiledeskSettings.userEmail);
+
+    //         // window.tiledesk.angularcomponent.component.g.userFullname = name;
+    //         // window.tiledesk.angularcomponent.component.g.userEmail = email;
+    //         window.tiledesk.angularcomponent.component.g.senderId = userId;
+    //         console.log('SetTiledeskWidgetUserSignin (index.html) - userFullname ', window.tiledesk.angularcomponent.component.g.userFullname);
+    //         console.log('SetTiledeskWidgetUserSignin (index.html) - userEmail ', window.tiledesk.angularcomponent.component.g.userEmail);
+
+    //         console.log('SetTiledeskWidgetUserSignin (index.html) - userId ', window.tiledesk.angularcomponent.component.g.senderId)
+    //       });
+    //     }
+    //   }
     // }
   </script>
   <!-- ./end TILEDESK WIDGET -->

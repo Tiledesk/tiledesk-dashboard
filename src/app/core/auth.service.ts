@@ -259,6 +259,10 @@ export class AuthService {
     });
   }
 
+  checkProjectProfile(callingPage: string) {
+    console.log('!! »»»»» AUTH SERV - CHECK PROJECT PROFILE »»»»»  CHECK-PROJECT-PROFILE CALLING PAGE ', callingPage);
+  }
+
   checkRoleForCurrentProject() {
     console.log('!! »»»»» AUTH SERV - CHECK ROLE »»»»» CALLING CHECK-ROLE-FOR-CURRENT-PRJCT');
     // this.router.events.subscribe((e) => {

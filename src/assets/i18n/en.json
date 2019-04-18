@@ -206,6 +206,7 @@
     "UpgradeNow": "Upgrade now",
     "Plan": "Plan",
     "Upgrade":"Upgrade",
+    "TrialExpired":"trial expired",
     "ActivitiesOptions": {
         "AgentAvailabilityOrRoleChange": "Change agent availability or role",
         "AgentDeletion": "Agent deletion",

@@ -309,7 +309,7 @@ button.close {
     font-weight:400; */
     position: absolute;
     top: 11px;
-    left: 196px;
+    left: 185px;
     font-size: 11px;
     background: rgb(244, 67, 54);
     color: #FFFFFF;
@@ -337,10 +337,25 @@ button.close {
     z-index: 1050;
     background-color: #1e2129!important;
     /* bottom: 60px; */
-    bottom: 200px;
-    height: 70px;
+    bottom: 85px;
+    height: 85px;
     padding: 18px;
     color: #e1f5fecc
+}
+
+.upgrade-btn {
+    color: #fff;
+    font-size: 12px;
+    cursor:pointer
+}
+
+.upgrade-btn-trial-expired {
+    padding: 6px 15px; 
+    font-size: 11px;
+    font-size: 11px;
+    border-radius: 30px;
+    background-color: #039be5!important;
+    /* background-color: #ffb43e!important; */
 }
 
 /* // CIRCULAR PROGRESS BAR  */

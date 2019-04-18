@@ -183,13 +183,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.router.events.filter((event: any) => event instanceof NavigationEnd)
             .subscribe(event => {
                 // console.log('SIDEBAR NavigationEnd ', event.url);
-               if (event.url.indexOf('/activities') !== -1) {
-                // console.log('SIDEBAR - THE activities route IS ACTIVE  ', event.url);
-                this.ACTIVITIES_ROUTE_IS_ACTIVE = true;
-               } else {
-                // console.log('SIDEBAR - THE activities route IS NOT ACTIVE  ', event.url);
-                this.ACTIVITIES_ROUTE_IS_ACTIVE = false;
-               }
+                if (event.url.indexOf('/activities') !== -1) {
+                    // console.log('SIDEBAR - THE activities route IS ACTIVE  ', event.url);
+                    this.ACTIVITIES_ROUTE_IS_ACTIVE = true;
+                } else {
+                    // console.log('SIDEBAR - THE activities route IS NOT ACTIVE  ', event.url);
+                    this.ACTIVITIES_ROUTE_IS_ACTIVE = false;
+                }
             });
     }
 
@@ -620,5 +620,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.isOverAvar = _isOverAvar
         // console.log('Mouse Over Avatar Container ', _isOverAvar)
     }
+
+    goToPricing() {
+        this.router.navigate(['project/' + this.projectId + '/pricing']);
+    }
+
+    // goToAnalytics() {
+    //     this.router.navigate(['project/' + this.projectId + '/analytics']);
+    // }
+
+    // goToActivities() {
+    //     this.router.navigate(['project/' + this.projectId + '/activities']);
+    // }
 
 }

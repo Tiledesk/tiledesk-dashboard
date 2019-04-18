@@ -206,6 +206,7 @@
     "UpgradeNow":"Aggiorna ora",
     "Plan":"Piano",
     "Upgrade":"Upgrade",
+    "TrialExpired":"prova scaduta",
     "ActivitiesOptions": {
         "AgentAvailabilityOrRoleChange":"Modifica disponibilità o ruolo agente",
         "AgentDeletion":"Cancellazione agente",
