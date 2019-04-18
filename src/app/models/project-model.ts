@@ -11,5 +11,7 @@ export interface Project {
     settings?: any;
     role?: string;
     user_available?: boolean;
+    profile_name?: any;
+    trial_exipered?: any;
     __v?: any;
 }

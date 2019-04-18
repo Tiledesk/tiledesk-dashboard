@@ -95,17 +95,20 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   // project/:projectid/home
   // , available: boolean
-  goToHome(project_id: string, project_name: string) {
+  goToHome(project_id: string, project_name: string, project_profile_name: string, project_trial_exipered: string) {
     this.router.navigate([`/project/${project_id}/home`]);
 
     // WHEN THE USER SELECT A PROJECT ITS ID and NAME IS SEND IN THE AUTH SERVICE THAT PUBLISHES IT
     const project: Project = {
       _id: project_id,
       name: project_name,
+      profile_name: project_profile_name,
+      trial_exipered: project_trial_exipered,
+
     }
 
     this.auth.projectSelected(project)
-    console.log('!!! GO TO HOME PROJECT ', project)
+    console.log('!!! GO TO HOME - PROJECT ', project)
 
     /* !!! NO MORE USED - NOW THE ALL PROJECTS ARE SETTED IN THE STORAGE IN getProjectsAndSaveInStorage()
      * SET THE project_id IN THE LOCAL STORAGE
@@ -152,7 +155,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
             const prjct: Project = {
               _id: project.id_project._id,
               name: project.id_project.name,
-              role: project.role
+              role: project.role,
+              profile_name: project.id_project.profile.name,
+              trial_exipered: project.id_project.trialExpired,
             }
 
             /***  ADDED TO KNOW IF THE CURRENT USER IS AVAILABLE IN SOME PROJECT

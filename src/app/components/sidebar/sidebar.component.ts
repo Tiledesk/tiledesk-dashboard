@@ -112,6 +112,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     ACTIVITIES_ROUTE_IS_ACTIVE: boolean;
 
+    prjct_profile_name: string;
+    prjct_trial_expired: boolean;
+
     constructor(
         private requestsService: RequestsService,
         private router: Router,
@@ -179,12 +182,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
         this.router.events.filter((event: any) => event instanceof NavigationEnd)
             .subscribe(event => {
-                console.log('SIDEBAR NavigationEnd ', event.url);
+                // console.log('SIDEBAR NavigationEnd ', event.url);
                if (event.url.indexOf('/activities') !== -1) {
-                console.log('SIDEBAR - THE activities route IS ACTIVE  ', event.url);
+                // console.log('SIDEBAR - THE activities route IS ACTIVE  ', event.url);
                 this.ACTIVITIES_ROUTE_IS_ACTIVE = true;
                } else {
-                console.log('SIDEBAR - THE activities route IS NOT ACTIVE  ', event.url);
+                // console.log('SIDEBAR - THE activities route IS NOT ACTIVE  ', event.url);
                 this.ACTIVITIES_ROUTE_IS_ACTIVE = false;
                }
             });
@@ -339,12 +342,19 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     // GET CURRENT PROJECT - IF IS DEFINED THE CURRENT PROJECT GET THE PROJECTUSER
     getCurrentProject() {
+        console.log('SIDEBAR - CALLING GET CURRENT PROJECT  ', this.project)
         this.auth.project_bs.subscribe((project) => {
             this.project = project
             console.log('00 -> SIDEBAR project from AUTH service subscription  ', this.project)
 
             if (this.project) {
                 this.projectId = this.project._id
+
+                this.prjct_profile_name = this.project.profile_name;
+                this.prjct_trial_expired = this.project.trial_exipered;
+
+                console.log('SIDEBAR project profile name ', this.prjct_profile_name);
+                console.log('SIDEBAR project prjct trial exipered ', this.prjct_trial_expired);
 
                 // IS USED TO GET THE PROJECT-USER AND DETERMINE IF THE USER IS AVAILAVLE / UNAVAILABLE
                 // WHEN THE PAGE IS REFRESHED

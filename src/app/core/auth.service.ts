@@ -141,7 +141,7 @@ export class AuthService {
   }
 
 
-  // RECEIVE THE the project (name and id) AND PUBLISHES
+  // RECEIVE THE the project (name,  id, profile_name and trial_exipered) AND PUBLISHES
   projectSelected(project: Project) {
     // PUBLISH THE project
     console.log('!!C-U AUTH SERVICE: I PUBLISH THE PROJECT RECEIVED FROM PROJECT COMP ', project)
@@ -210,11 +210,17 @@ export class AuthService {
 
                 const project_name = storedProjectObject['name'];
 
+                const project_profile_name = storedProjectObject['profile_name'];
+                const project_trial_exipered = storedProjectObject['trial_exipered'];
+                
+
                 console.log('!! »»»»» AUTH SERV - PROJECT NAME GET FROM STORAGE: ', project_name);
 
                 const project: Project = {
                   _id: this.nav_project_id,
                   name: project_name,
+                  profile_name: project_profile_name,
+                  trial_exipered: project_trial_exipered
                 }
                 console.log('!!C-U »»»»» AUTH SERV - 1) PROJECT THAT IS PUBLISHED: ', project);
                 // SE NN C'è IL PROJECT NAME COMUNQUE PUBBLICO PERCHè CON L'ID DEL PROGETTO VENGONO EFFETTUATE DIVERSE CALLBACK

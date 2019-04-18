@@ -205,6 +205,7 @@
     "AssignedTo": "assigned to",
     "UpgradeNow": "Upgrade now",
     "Plan": "Plan",
+    "Upgrade":"Upgrade",
     "ActivitiesOptions": {
         "AgentAvailabilityOrRoleChange": "Change agent availability or role",
         "AgentDeletion": "Agent deletion",

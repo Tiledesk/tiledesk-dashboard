@@ -203,6 +203,8 @@ export class AuthGuard implements CanActivate {
         const project: Project = {
           _id: this.nav_project_id,
           name: this.nav_project_name,
+          profile_name: prjct[0].id_project.profile.name,
+          trial_exipered: prjct[0].id_project.trialExpired
         }
         // PROJECT ID and NAME ARE SENT TO THE AUTH SERVICE THAT PUBLISHES
         this.auth.projectSelected(project);
@@ -212,7 +214,9 @@ export class AuthGuard implements CanActivate {
         const projectForStorage: Project = {
           _id: this.nav_project_id,
           name: this.nav_project_name,
-          role: prjct[0].role
+          role: prjct[0].role,
+          profile_name: prjct[0].id_project.profile.name,
+          trial_exipered: prjct[0].id_project.trialExpired
         }
         // SET THE ID, the NAME OF THE PROJECT and THE USER ROLE IN THE LOCAL STORAGE.
         console.log('!! »»»»» AUTH GUARD - PROJECT THAT IS STORED', projectForStorage);
@@ -221,7 +225,7 @@ export class AuthGuard implements CanActivate {
         // GET AND SAVE ALL USERS OF CURRENT PROJECT IN LOCAL STORAGE
         this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
 
-         // GET AND SAVE ALL BOTS OF CURRENT PROJECT IN LOCAL STORAGE
+        // GET AND SAVE ALL BOTS OF CURRENT PROJECT IN LOCAL STORAGE
         this.usersService.getBotsByProjectIdAndSaveInStorage();
 
       } else {

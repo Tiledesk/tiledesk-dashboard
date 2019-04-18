@@ -390,7 +390,7 @@
             </a>
           </li>
 
-          <li *ngIf="SHOW_SETTINGS_SUBMENU" routerLinkActive="active" style="margin-bottom:24px" (click)="stopScroll()">
+          <li *ngIf="SHOW_SETTINGS_SUBMENU" routerLinkActive="active" style="margin-bottom:60px" (click)="stopScroll()">
             <a *ngIf="project"  class="customAncor" routerLink="project/{{ project._id }}/edit">
             <p class="onBlackBckgrnd">
               <span class="sidebar-mini">{{ 'PS' | translate }} </span> {{ 'NavBar.ProjectSettings' | translate }}
@@ -447,9 +447,41 @@
   
 </div>
 <!-- ////// SIDEBAR FOOTER -->
-<!-- <div class="sidebar-footer">
- {{ 'Plan' | translate }} 
-</div> -->
+<div class="sidebar-footer">
+
+  <div class="row">
+      <div class="col-sm-6">
+ {{ 'Plan' | translate }}: 
+ <!-- <span style="text-transform:capitalize">  {{ prjct_profile_name }} </span>   -->
+<span *ngIf="prjct_profile_name === 'free'">  Pro (trial)</span>  
+<div style="text-align:center">
+  <span *ngIf="prjct_trial_expired === true" style="color: #fff;font-size: 12px;cursor:pointer" class="upgrade-btn"> Upgrade</span>
+</div>
+ <span *ngIf="prjct_trial_expired === false"> Expired </span>
+</div>
+
+<div class="col-sm-6">
+ <div class="progress" data-percentage="50">
+    <span class="progress-left">
+      <span class="progress-bar"></span>
+    </span>
+    <span class="progress-right">
+      <span class="progress-bar"></span>
+    </span>
+    <div class="progress-value">
+      <div> -15
+        <!-- <br>
+        <span>completed</span> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</div>
+
+</div>
 
 
 
