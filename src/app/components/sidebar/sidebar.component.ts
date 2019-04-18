@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, NgModule, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { RequestsService } from '../../services/requests.service';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 
@@ -108,6 +108,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     isOverAvar = false;
 
     availabilityCount: number;
+    _route: string;
+
+    ACTIVITIES_ROUTE_IS_ACTIVE: boolean;
+
     constructor(
         private requestsService: RequestsService,
         private router: Router,
@@ -161,6 +165,29 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.checkUserImageExist();
 
         this.subscribeToMyAvailibilityCount();
+        this.getCurrentRoute();
+    }
+
+    getCurrentRoute() {
+        // this.router.events.subscribe((val) => {
+        //     if (this.location.path() !== '') {
+        //         this._route = this.location.path();
+
+        //         console.log('SIDEBAR route »> »> »> ', val)
+        //     }
+        // });
+
+        this.router.events.filter((event: any) => event instanceof NavigationEnd)
+            .subscribe(event => {
+                console.log('SIDEBAR NavigationEnd ', event.url);
+               if (event.url.indexOf('/activities') !== -1) {
+                console.log('SIDEBAR - THE activities route IS ACTIVE  ', event.url);
+                this.ACTIVITIES_ROUTE_IS_ACTIVE = true;
+               } else {
+                console.log('SIDEBAR - THE activities route IS NOT ACTIVE  ', event.url);
+                this.ACTIVITIES_ROUTE_IS_ACTIVE = false;
+               }
+            });
     }
 
 

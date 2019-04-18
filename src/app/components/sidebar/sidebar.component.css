@@ -314,7 +314,7 @@ button.close {
     border:1px solid blue;
 } */
 ._badge {
-    position: absolute;
+    /* position: absolute;
     top: 12px;
     border: 1px solid #FFF;
     left:180px;
@@ -327,5 +327,27 @@ button.close {
     line-height: 16px;
     vertical-align: middle;
     display: block;
-    font-weight:400;
+    font-weight:400; */
+    position: absolute;
+    top: 11px;
+    left: 196px;
+    font-size: 11px;
+    background: rgb(244, 67, 54);
+    color: #FFFFFF;
+    padding: 0px 7px;
+    border-radius: 20px;
+    text-align: center;
+    line-height: 16px;
+    vertical-align: middle;
+    font-weight: 400;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    min-width: 20px;
+
+}
+
+.change-badge-bckgrnd {
+    background: #fff !important;
+    color: rgba(0,0,0,.87)!important;
 }

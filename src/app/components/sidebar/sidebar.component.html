@@ -245,7 +245,7 @@
         <li *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="active" >
           <a class="customAncor" routerLink="project/{{ project._id }}/activities">
             <i class="material-icons sidebar-icons">view_list</i>
-            <span class="_badge">New</span>
+            <span class="_badge" [ngClass]="{'change-badge-bckgrnd' : ACTIVITIES_ROUTE_IS_ACTIVE === true}">New</span>
             <p class="onBlackBckgrnd">{{ 'Activities' | translate }}</p>
           </a>
         </li>
