@@ -14,6 +14,7 @@ import { UpgradeComponent } from './upgrade/upgrade.component';
 
 import { AuthGuard } from './core/auth.guard';
 import { AdminGuard } from './core/admin.guard';
+import { ProjectProfileGuard } from './core/project-profile.guard';
 import { CoreModule } from './core/core.module';
 
 
@@ -107,10 +108,10 @@ const routes: Routes = [
   { path: 'login', component: SigninComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'verify/email/:user_id', component: VerifyEmailComponent },
-  
+
   { path: 'project/:projectid/unauthorized', component: UnauthorizedComponent },
 
-   
+
   { path: 'userprofile', component: UserProfileComponent },
   // , canActivate: [AuthGuard]
   { path: 'project/:projectid/requests', component: RequestsListComponent, canActivate: [AuthGuard] },
@@ -172,7 +173,10 @@ const routes: Routes = [
   { path: 'project/:projectid/createbot', component: BotEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/editbot/:botid', component: BotEditAddComponent, canActivate: [AuthGuard] },
 
-  { path: 'project/:projectid/analytics', component: AnalyticsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/analytics', component: AnalyticsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
+  { path: 'project/:projectid/analytics-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/activities', component: ActivitiesComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
+  { path: 'project/:projectid/activities-demo', component: ActivitiesStaticComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
@@ -208,11 +212,10 @@ const routes: Routes = [
   { path: 'project/:projectid/contacts', component: ContactsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/contact/:requesterid', component: ContactDetailsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/contact/edit/:requesterid', component: ContactEditComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/activities', component: ActivitiesComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/pricing', component: PricingComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/analytics-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/activities-demo', component: ActivitiesStaticComponent, canActivate: [AuthGuard] },
   
+  { path: 'project/:projectid/pricing', component: PricingComponent, canActivate: [AuthGuard] },
+  
+
 
   { path: 'dashboard', component: DashboardComponent },
 
@@ -227,6 +230,6 @@ const routes: Routes = [
     RouterModule.forRoot(routes)
   ],
   exports: [RouterModule],
-  providers: [AuthGuard, AdminGuard]
+  providers: [AuthGuard, AdminGuard, ProjectProfileGuard]
 })
 export class AppRoutingModule { }

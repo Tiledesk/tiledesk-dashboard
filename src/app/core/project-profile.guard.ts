@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 // ActivatedRouteSnapshot, RouterStateSnapshot,
 // tslint:disable-next-line:max-line-length
-import { CanActivate, Router, NavigationEnd, CanDeactivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { CanActivate, Router, NavigationEnd, NavigationStart, CanDeactivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 import { AuthService } from './auth.service';
+import { AuthGuard } from './auth.guard';
 import { NotifyService } from './notify.service';
 
-// import { Observable } from 'rxjs/Observable';
-// import { map, take, tap } from 'rxjs/operators';
-// import * as firebase from 'firebase/app';
+import { Observable } from 'rxjs/Observable';
+import { map, take, tap } from 'rxjs/operators';
+
+import * as firebase from 'firebase/app';
 
 import { Location } from '@angular/common';
 import { ProjectService } from '../services/project.service';
@@ -21,38 +23,38 @@ import 'rxjs/add/operator/pairwise';
 
 // CanDeactivate<RequestsMsgsComponent | HomeComponent>
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class ProjectProfileGuard implements CanActivate {
 
   route: string;
+  IS_ANALYTICS_PAGE: boolean;
+  IS_ANALYTICS_DEMO_PAGE: boolean;
+  current_project_trial_expired: boolean;
+  current_project_id: string;
+
   user: any;
   is_verify_email_page: boolean;
   is_signup_page: boolean;
   is_reset_psw_page: boolean;
-
   nav_project_id: string;
-  current_project_id: string;
   nav_project_name: string;
-
   allow_navigation = true;
   unauthorizedPage: boolean;
-
   USER_ROLE: string;
   subscription: Subscription;
 
-  // »> »> PROJECT-PROFILE GUARD (WF in AUTH GUARD)
-  IS_ANALYTICS_PAGE: boolean;
-  IS_ANALYTICS_DEMO_PAGE: boolean;
-  current_project_trial_expired: boolean;
+  project_trial_expired: boolean;
+  URL_last_fragment: string;
 
   constructor(
     private auth: AuthService,
+    private authGuard: AuthGuard,
     private router: Router,
     private notify: NotifyService,
     public location: Location,
     private projectService: ProjectService,
     private usersService: UsersService
   ) {
-    console.log('HELLO AUTH GUARD !!!')
+    console.log('HELLO PROJECT-PROFILE GUARD !!!')
 
     this.user = auth.user_bs.value;
     this.auth.user_bs.subscribe((user) => {
@@ -62,83 +64,46 @@ export class AuthGuard implements CanActivate {
       console.log('AUTH GUARD USER ', user)
     });
 
-    this.detectVerifyEmailRoute();
-    this.detectSignUpRoute();
-    this.detectResetPswRoute();
-    this.canActivate();
 
-    // this.router.events.pairwise().subscribe((event) => {
-    //   console.log('-» -» -» AUTH GUARD EVENT ', event);
-    // });
+    // this.detectNavigationStart();
+    this.getCurrentProject();
 
-    /**
-     * !!! having made a change of logic getCurrentProject() is no more used
-     * NEW: initialize the new project when the id of the project get from url does not match with the current project id  */
-    // this.getCurrentProject();
-    this.getProjectIdFromUrl();
-
-    
   }
 
-  // canDeactivate(
-  //   component: RequestsMsgsComponent | HomeComponent,
-  //   route: ActivatedRouteSnapshot,
-  //   state: RouterStateSnapshot
-  // ): Observable<boolean> | boolean {
-  //   console.log('!! CAN DEACTIVATE !! - ALLOW NAVIGATION ', this.allow_navigation)
-  //   return this.allow_navigation;
-  // }
+
 
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
-      console.log('!! AUTH GUARD - CURRENT PROJECT: ', project)
+      console.log('»> »> PROJECT-PROFILE GUARD - CURRENT PROJECT: ', project)
       // tslint:disable-next-line:no-debugger
       // debugger
 
-      if (project) {
-        console.log('!! AUTH GUARD - CURRENT PROJECT ID : ', project._id)
+      if (project !== null) {
+        console.log('»> »> PROJECT-PROFILE GUARD - CURRENT PROJECT ID : ', project._id)
         this.current_project_id = project._id;
-        
+
+      } else {
+        console.log('»> »> PROJECT-PROFILE GUARD - CURRENT PROJECT ID NULL ')
+        this.getProjectIdFromUrl();
       }
     });
   }
 
   getProjectIdFromUrl() {
 
-
     this.subscription = this.router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
         const current_url = e.url
-        // if (this.location.path() !== '') {
-        // const current_url = this.location.path()
-        console.log('!!C-U AUTH GUARD - CURRENT URL ', current_url);
+
+        console.log('»> »> PROJECT-PROFILE GUARD - CURRENT URL ', current_url);
 
         const url_segments = current_url.split('/');
-        console.log('!!C-U AUTH GUARD - CURRENT URL SEGMENTS ', url_segments);
+        console.log('»> »> PROJECT-PROFILE GUARD - CURRENT URL SEGMENTS ', url_segments);
 
         this.nav_project_id = url_segments[2];
-        console.log('!! »»»»» AUTH GUARD - CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id);
+        // console.log('»> »> PROJECT-PROFILE GUARD - CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id);
 
-        /**
-         * !!! NO MORE USED checkIf_NavPrjctIdMatchesCurrentPrjctId()
-         * *** CHECK IF THE PROJECT ID GET FROM THE CURRENT URL IS THE SAME OF THE CURRENT PROJECT ***
-         * THE ID OF THE CURRENT PROJECT MAY BE DIFFERENT FROM THE ID OF THE PROJECT RETURNS FROM
-         * THE URL (the navigation project id) FOR EXAMPLE IN CASE THE USER ACCESSES A PAGE OF THE
-         * DASHBOARD FROM A LINK PRESENT IN THE EMAIL OF A REQUEST OR IN THE EMAIL OF INVITATION
-         * TO A NEW PROJECT  */
-        // this.checkIf_NavPrjctIdMatchesCurrentPrjctId();
-
-        /**
-         * WITH THE PROJECT ID GOT FROM URL RUN A CHECK FOR PROJECT NAME
-         * IF THE PROJECT NAME IS NULL MEANS THAT THE USER IS ACCESSING A PAGE OF A NEW
-         * PROJECT WITHOUT BEING PASSED FROM THE LIST OF PROJECTS (FOR EXAMPLE AFTER HAVING
-         * CLICKED ON THE LINK IN THE INVITATION EMAIL TO PARTICIPATE IN A PROJECT)
-         * IN THIS CASE, A CALL IS DONE TO OBTAIN THE NAME OF THE PROJECT AND AFTER THE ID
-         * AND NAME OF THE PROJECT ARE SAVED IN THE LOCAL STORAGE AND PASSES TO THE SERVICE THAT PUBLISHES
-         * (note: the NAVIGATION PROJECT ID returned from CURRENT URL SEGMENTS is = to 'email' 
-         * if the user navigate to the e-mail verification page)
-         * */
         if (this.nav_project_id && this.nav_project_id !== 'email') {
 
           this.subscription.unsubscribe();
@@ -146,45 +111,152 @@ export class AuthGuard implements CanActivate {
           this.checkStoredProject(this.nav_project_id)
         }
       }
-    }); // this.router.events.subscribe((e)
+    });
   }
 
   checkStoredProject(navigationProjectId) {
     const storedProjectJson = localStorage.getItem(navigationProjectId);
-    console.log('!! »»»»» AUTH GUARD - PROJECT JSON GET FROM STORAGE ', storedProjectJson);
+    // console.log('»> »> PROJECT-PROFILE GUARD  - PROJECT JSON GET FROM STORAGE ', storedProjectJson);
 
 
-    if (storedProjectJson === null) {
-      console.log('!!C-U  »»»»» AUTH GUARD - PROJECT JSON IS NULL - RUN getProjectById() ')
-      this.getProjectPublishAndSaveInStorage();
+    // if (storedProjectJson !== null) {
+    //   console.log('!!C-U  »»»»» AUTH GUARD - PROJECT JSON IS NULL - RUN getProjectById() ')
+    //   this.getProjectPublishAndSaveInStorage();
+    // }
+
+  }
+
+  // public checkTrialExpired(): Promise<boolean> {
+
+  //   return new Promise<boolean>((resolve, reject) => {
+  //     // tslint:disable-next-line:max-line-length
+  //     console.log('»> »> PROJECT-PROFILE GUARD called checkTrialExpired  TRIAL EXIPIRED ', this.project_trial_expired);
+
+  //     setTimeout(() => { }, 300)
+  //     resolve(this.project_trial_expired);
+
+  //   });
+  // }
+
+  // detectNavigationStart() {
+  //   console.log('»> »> PROJECT-PROFILE GUARD detectNavigationStart ');
+  //   this.router.events.subscribe((val) => {
+  //     this.router.events.filter((event: any) => event instanceof NavigationStart)
+  //       .subscribe(event => {
+  //         // console.log('»> »> PROJECT-PROFILE GUARD event.url', event.url);
+  //         const url_spiltted = event.url.split('/');
+  //         // console.log('»> »> PROJECT-PROFILE GUARD url_spiltted', url_spiltted);
+  //         this.URL_last_fragment = url_spiltted[3];
+  //         console.log('»> »> PROJECT-PROFILE GUARD detectNavigationStart ', this.URL_last_fragment);
+
+  //       });
+  //   })
+  // }
+
+  // public checkRoute(): Promise<string> {
+
+  //   return new Promise<string>((resolve, reject) => {
+  //     // tslint:disable-next-line:max-line-length
+  //     console.log('»> »> PROJECT-PROFILE GUARD called checkRoute URL last fragment ', this.URL_last_fragment);
+
+  //     setTimeout(() => { }, 300)
+  //     resolve(this.URL_last_fragment);
+
+  //   });
+  // }
+
+
+
+
+
+
+  async canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+
+    console.log('»> »> PROJECT-PROFILE GUARD  canActivate next ', next)
+    // console.log('»> »> PROJECT-PROFILE GUARD  canActivate state ', state)
+    const prjct_id = next.params.projectid
+    console.log('»> »> PROJECT-PROFILE GUARD canActivate state ****** PRJCT ID ****** ', prjct_id)
+    const url = state.url
+    console.log('»> »> PROJECT-PROFILE GUARD canActivate state ****** URL ****** ', url)
+    // console.log('»> »> PROJECT-PROFILE GUARD AuthWithRedirectGuard.canActivate ');
+    // tslint:disable-next-line:max-line-length
+    // console.log('»> »> PROJECT-PROFILE GUARD - CAN ACTIVATE - IS ANALYTICS PAGE ', this.IS_ANALYTICS_PAGE, ' TRIAL expired ', this.current_project_trial_expired);
+    let trial_expired = await this.auth.checkTrialExpired();
+    
+    if (trial_expired === undefined) {
+      const storedProjectJson = localStorage.getItem(prjct_id);
+      
+      const storedProjectObject = JSON.parse(storedProjectJson);
+      trial_expired = storedProjectObject.trial_expired
+      console.log('»> »> PROJECT-PROFILE GUARD canActivate state ****** trial_expired (from stored) ****** ', trial_expired)
     }
 
-    // else {
-    //   const projectObject = JSON.parse(storedProjectJson);
-    //   const projectNameStored = projectObject['name']
-    //   console.log('!! »»»»» AUTH GUARD - PROJECT NAME FROM STORAGE ', projectNameStored);
+    // const URL_last_fragment = await this.auth.checkRoute();
 
-    //   if (projectNameStored === undefined) {
-    //     console.log('!! »»»»» AUTH GUARD - PROJECT NAME IS UNDEFINED - RUN getProjectById() ')
-    //     // this.getProjectPublishAndSaveInStorage();
-    //   }
+    // let trial_expired = await this.checkTrialExpired();
+    // const URL_last_fragment = await this.checkRoute();
+    console.log('»> »> PROJECT-PROFILE GUARD canActivate await trial expired: ************* ' + trial_expired);
+    // console.log('»> »> PROJECT-PROFILE GUARD canActivate await URL_last_fragment: ************* ' + URL_last_fragment);
+    if (trial_expired === undefined) {
+      trial_expired = await this.auth.checkTrialExpired();
+    }
+    let authorized: boolean
 
-    //   this.usersService.project_user_role_bs.subscribe((user_role) => {
-    //     console.log('!! »»»»» AUTH GUARD - USER ROLE FROM SUBSCRIPTION ', user_role);
-    //     if (user_role !== null) {
+    trial_expired === true ? authorized = false : authorized = true;
 
-    //       const userRoleStored = projectObject['role'];
-    //       console.log('!! »»»»» AUTH GUARD - USER ROLE FROM STORAGE ', userRoleStored);
+    if (!authorized) {
+      // this.router.navigate(['/redirect']); `${id}`;
+      // this.router.navigate([`project/${this.current_project_id}/${URL_last_fragment}-demo`]);
+      this.router.navigate([url + '-demo']);
 
-    //       if (userRoleStored !== user_role) {
-    //         console.log('!! »»»»» AUTH GUARD - USER ROLE STORED NOT MATCHES USER ROLE PUBLISHED  - RUN getProjectById() ')
-    //         this.getProjectPublishAndSaveInStorage();
+    }
+    return authorized;
 
-    //       }
-    //     }
-    //   })
-    // }
+
   }
+
+
+
+  // || (this.IS_ANALYTICS_DEMO_PAGE === true) && (this.current_project_trial_expired=== false)
+
+  // canActivate() {
+  //   this.detectAnalyticsRoute();
+  //   this.getCurrentProject();
+  //   // tslint:disable-next-line:max-line-length
+  //   console.log('»> »> PROJECT-PROFILE GUARD - CAN ACTIVATE - IS ANALYTICS PAGE ', this.IS_ANALYTICS_PAGE, ' TRIAL expired ', this.current_project_trial_expired);
+
+  //   // tslint:disable-next-line:max-line-length
+  //   // && (this.IS_ANALYTICS_PAGE === true) 
+  //   if ((this.current_project_trial_expired === true)  && (this.IS_ANALYTICS_PAGE === true) ) {
+  //     // this.router.navigate(['/home']);
+  //     // this.router.navigate(['project/' + this.current_project_id + '/analytics']);
+  //     this.router.navigate(['project/' + this.current_project_id + '/analytics-demo']);
+  //     return false;
+
+
+  //     // if ((!this.user) || (this.is_verify_email_page === false))
+  //   } else {
+  //     // tslint:disable-next-line:no-debugger
+  //     // debugger
+
+
+  //     // this.router.navigate(['/login']);
+  //     return true;
+  //   }
+
+
+
+
+
+  // else if ((this.is_verify_email_page === false)) {
+  //   this.router.navigate(['verify/email/']);
+  //   return false;
+  // }
+  // }
+
+
+
+
 
   getProjectPublishAndSaveInStorage() {
     // this.projectService.getProjectAndUserDetailsByProjectId(this.nav_project_id).subscribe((prjct: any) => {
@@ -312,24 +384,7 @@ export class AuthGuard implements CanActivate {
   //   localStorage.removeItem('project');
   // }
 
-  detectVerifyEmailRoute() {
-    // this.router.events.subscribe((val) => {
-    if (this.location.path() !== '') {
-      this.route = this.location.path();
-      // console.log('»> »> AUTH GUARD »> »> ', this.route);
-      if (this.route.indexOf('/verify') !== -1) {
-        // this.router.navigate([`${this.route}`]);
-        this.is_verify_email_page = true;
-        console.log('»> »>  AUTH GUARD - IS VERIFY EMAIL PAGE »> »> ', this.is_verify_email_page);
 
-      } else {
-        this.is_verify_email_page = false;
-        console.log('»> »>  AUTH GUARD - IS VERIFY EMAIL PAGE »> »> ', this.is_verify_email_page);
-
-      }
-    }
-    // });
-  }
 
   detectSignUpRoute() {
     if (this.location.path() !== '') {
@@ -362,33 +417,6 @@ export class AuthGuard implements CanActivate {
       }
     }
   }
-
-  canActivate() {
-    console.log('»> »> !!! »»» AUTH GUARD - CAN ACTIVATE AlwaysAuthGuard');
-
-    // tslint:disable-next-line:max-line-length
-    if ((this.user) || (this.is_verify_email_page === true) || (this.is_signup_page === true) || (this.is_reset_psw_page === true)) {
-      // this.router.navigate(['/home']);
-      return true;
-      // if ((!this.user) || (this.is_verify_email_page === false))
-    } else {
-      // tslint:disable-next-line:no-debugger
-      // debugger
-      this.router.navigate(['/login']);
-      return false;
-    }
-    // else if ((this.is_verify_email_page === false)) {
-    //   this.router.navigate(['verify/email/']);
-    //   return false;
-    // }
-  }
-
-
-
-
-
-
- 
 
 
 

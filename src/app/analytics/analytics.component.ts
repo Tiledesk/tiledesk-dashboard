@@ -76,7 +76,7 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
-    this.auth.checkProjectProfile('analytics');
+    // this.auth.checkProjectProfile('analytics');
 
 
     /* ----------==========    NUMBER OF REQUEST for DEPARTMENT ** PIE CHART ** ==========---------- */

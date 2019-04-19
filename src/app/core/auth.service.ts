@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { Router, NavigationEnd, NavigationStart, ActivatedRoute } from '@angular/router';
 
 // import { AngularFireAuth } from 'angularfire2/auth';
 
@@ -78,6 +78,14 @@ export class AuthService {
   APP_IS_DEV_MODE: boolean;
   // FCM: Firebase Cloud Massaging
   FCM_Supported: boolean;
+
+  project_trial_expired: boolean;
+  IS_ANALYTICS_PAGE: boolean;
+  IS_ANALYTICS_DEMO_PAGE: boolean;
+  current_project_trial_expired: boolean;
+
+  URL_last_fragment: string;
+
   constructor(
     http: Http,
     // private afAuth: AngularFireAuth,
@@ -116,8 +124,57 @@ export class AuthService {
     this.checkIfFCMIsSupported();
 
     this.checkIfExpiredSessionModalIsOpened();
-
+    this.detectNavigationStart();
+    // this.detectAnalyticsRoute();
   }
+
+  public checkTrialExpired(): Promise<boolean> {
+
+    return new Promise<boolean>((resolve, reject) => {
+      // tslint:disable-next-line:max-line-length
+      console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH GUARD) called checkTrialExpired! TRIAL EXPIRED ', this.project_trial_expired);
+      // if (this.project_trial_expired === undefined) {
+      //   console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH GUARD) called checkTrialExpired nav_project_id ', this.nav_project_id);
+      //   const storedProjectJson = localStorage.getItem(this.nav_project_id);
+      //   const storedProjectObject = JSON.parse(storedProjectJson);
+      //   this.project_trial_expired = storedProjectObject['trial_expired'];
+      //   // tslint:disable-next-line:max-line-length
+      //   console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH GUARD checkStoredProjectAndPublish TRIAL EXSPIRED', this.project_trial_expired);
+      // }
+
+      setTimeout(() => { }, 300)
+      resolve(this.project_trial_expired);
+
+    });
+  }
+
+  detectNavigationStart() {
+    console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH GUARD) detectNavigationStart ');
+    this.router.events.subscribe((val) => {
+      // console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH GUARD) detectNavigationStart ** val ** ');
+      this.router.events.filter((event: any) => event instanceof NavigationStart)
+        .subscribe(event => {
+          // console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH GUARD) detectNavigationStart event.url', event.url);
+          const url_spiltted = event.url.split('/');
+          // console.log('»> »> PROJECT-PROFILE GUARD url_spiltted', url_spiltted);
+          this.URL_last_fragment = url_spiltted[3];
+          // console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH GUARD) detectNavigationStart URL_last_fragment ', this.URL_last_fragment);
+        });
+    })
+  }
+
+  public checkRoute(): Promise<string> {
+
+    return new Promise<string>((resolve, reject) => {
+      // tslint:disable-next-line:max-line-length
+      // console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH GUARD) called checkRoute URL last fragment ', this.URL_last_fragment);
+
+      setTimeout(() => { }, 300)
+      resolve(this.URL_last_fragment);
+
+    });
+  }
+
 
   checkIfFCMIsSupported() {
     if (firebase.messaging.isSupported()) {
@@ -132,7 +189,6 @@ export class AuthService {
   }
 
 
-
   // USED ONLY FOR A TEST
   getParamsProjectId() {
     this.route.params.subscribe((params) => {
@@ -141,7 +197,7 @@ export class AuthService {
   }
 
 
-  // RECEIVE THE the project (name,  id, profile_name and trial_exipered) AND PUBLISHES
+  // RECEIVE THE the project (name,  id, profile_name and trial_expired) AND PUBLISHES
   projectSelected(project: Project) {
     // PUBLISH THE project
     console.log('!!C-U AUTH SERVICE: I PUBLISH THE PROJECT RECEIVED FROM PROJECT COMP ', project)
@@ -165,6 +221,12 @@ export class AuthService {
     this.project_bs.subscribe((prjct) => {
 
       console.log('!!C-U  - 1) »»»»» AUTH SERV - PROJECT FROM SUBSCRIP', prjct);
+
+      if (prjct !== null && prjct.id_project !== undefined) {
+        this.project_trial_expired = prjct.id_project.trialExpired
+        // tslint:disable-next-line:max-line-length
+        console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH GUARD checkStoredProjectAndPublish) TRIAL expired 1', this.project_trial_expired);
+      }
 
       if (prjct === null) {
         console.log('!!C-U »»»»» AUTH SERV - PROJECT IS NULL: ', prjct);
@@ -209,10 +271,12 @@ export class AuthService {
                 console.log('!! »»»»» AUTH SERV - OBJECT OF STORED PROJECT', storedProjectObject);
 
                 const project_name = storedProjectObject['name'];
-
                 const project_profile_name = storedProjectObject['profile_name'];
-                const project_trial_exipered = storedProjectObject['trial_exipered'];
-                
+                const project_trial_expired = storedProjectObject['trial_expired'];
+
+               this.project_trial_expired = storedProjectObject['trial_expired'];
+               // tslint:disable-next-line:max-line-length
+               console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH GUARD checkStoredProjectAndPublish) TRIAL expired 2', this.project_trial_expired);
 
                 console.log('!! »»»»» AUTH SERV - PROJECT NAME GET FROM STORAGE: ', project_name);
 
@@ -220,7 +284,7 @@ export class AuthService {
                   _id: this.nav_project_id,
                   name: project_name,
                   profile_name: project_profile_name,
-                  trial_exipered: project_trial_exipered
+                  trial_expired: project_trial_expired
                 }
                 console.log('!!C-U »»»»» AUTH SERV - 1) PROJECT THAT IS PUBLISHED: ', project);
                 // SE NN C'è IL PROJECT NAME COMUNQUE PUBBLICO PERCHè CON L'ID DEL PROGETTO VENGONO EFFETTUATE DIVERSE CALLBACK
@@ -259,9 +323,8 @@ export class AuthService {
     });
   }
 
-  checkProjectProfile(callingPage: string) {
-    console.log('!! »»»»» AUTH SERV - CHECK PROJECT PROFILE »»»»»  CHECK-PROJECT-PROFILE CALLING PAGE ', callingPage);
-  }
+
+
 
   checkRoleForCurrentProject() {
     console.log('!! »»»»» AUTH SERV - CHECK ROLE »»»»» CALLING CHECK-ROLE-FOR-CURRENT-PRJCT');
@@ -297,7 +360,6 @@ export class AuthService {
           console.log('!! »»»»» AUTH SERV - CHECK ROLE (GOT FROM STORAGE) »»» ', this._user_role)
         }
       }
-
     }
     //   }
     // });

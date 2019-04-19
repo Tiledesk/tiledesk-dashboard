@@ -80,9 +80,9 @@ export class AnalyticsStaticComponent implements OnInit {
     this.chartLabelsArray = []
     for (let i = 0; i <= 6; i++) {
       const dateFrom = moment().subtract(i, 'd').format('YYYY-M-DD');
-      console.log('dateFrom ', dateFrom);
+      // console.log('dateFrom ', dateFrom);
       const splittedDate = dateFrom.split('-');
-      console.log('splittedDate ', splittedDate);
+      // console.log('splittedDate ', splittedDate);
       this.chartLabelsArray.push(splittedDate[2] + ' ' +  this.monthNames[splittedDate[1]])
      
     }

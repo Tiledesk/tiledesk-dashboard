@@ -114,6 +114,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     prjct_profile_name: string;
     prjct_trial_expired: boolean;
+  
 
     constructor(
         private requestsService: RequestsService,
@@ -351,10 +352,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 this.projectId = this.project._id
 
                 this.prjct_profile_name = this.project.profile_name;
-                this.prjct_trial_expired = this.project.trial_exipered;
+                this.prjct_trial_expired = this.project.trial_expired;
+
+         
 
                 console.log('SIDEBAR project profile name ', this.prjct_profile_name);
-                console.log('SIDEBAR project prjct trial exipered ', this.prjct_trial_expired);
+                console.log('SIDEBAR project prjct trial expired ', this.prjct_trial_expired);
 
                 // IS USED TO GET THE PROJECT-USER AND DETERMINE IF THE USER IS AVAILAVLE / UNAVAILABLE
                 // WHEN THE PAGE IS REFRESHED

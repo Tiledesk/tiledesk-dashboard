@@ -12,6 +12,6 @@ export interface Project {
     role?: string;
     user_available?: boolean;
     profile_name?: any;
-    trial_exipered?: any;
+    trial_expired?: any;
     __v?: any;
 }
