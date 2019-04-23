@@ -95,7 +95,13 @@ export class ProjectsComponent implements OnInit, OnDestroy {
 
   // project/:projectid/home
   // , available: boolean
-  goToHome(project_id: string, project_name: string, project_profile_name: string, project_trial_expired: string) {
+  goToHome(
+    project_id: string,
+    project_name: string,
+    project_profile_name: string,
+    project_trial_expired: string,
+    project_trial_days_left: number) {
+
     this.router.navigate([`/project/${project_id}/home`]);
 
     // WHEN THE USER SELECT A PROJECT ITS ID and NAME IS SEND IN THE AUTH SERVICE THAT PUBLISHES IT
@@ -104,7 +110,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
       name: project_name,
       profile_name: project_profile_name,
       trial_expired: project_trial_expired,
-
+      trial_days_left: project_trial_days_left
     }
 
     this.auth.projectSelected(project)
@@ -158,6 +164,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
               role: project.role,
               profile_name: project.id_project.profile.name,
               trial_expired: project.id_project.trialExpired,
+              trial_days_left: project.id_project.trialDaysLeft
             }
 
             /***  ADDED TO KNOW IF THE CURRENT USER IS AVAILABLE IN SOME PROJECT

@@ -111,10 +111,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     _route: string;
 
     ACTIVITIES_ROUTE_IS_ACTIVE: boolean;
+    ACTIVITIES_DEMO_ROUTE_IS_ACTIVE: boolean;
+    ANALYTICS_DEMO_ROUTE_IS_ACTIVE: boolean;
 
     prjct_profile_name: string;
     prjct_trial_expired: boolean;
-  
+    prjc_trial_days_left: number
+    prjc_trial_days_left_percentage: number
+
 
     constructor(
         private requestsService: RequestsService,
@@ -183,13 +187,33 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
         this.router.events.filter((event: any) => event instanceof NavigationEnd)
             .subscribe(event => {
-                // console.log('SIDEBAR NavigationEnd ', event.url);
+                console.log('SIDEBAR NavigationEnd ', event.url);
+
+                // USED FOR THE BADGE 'NEW'
                 if (event.url.indexOf('/activities') !== -1) {
-                    // console.log('SIDEBAR - THE activities route IS ACTIVE  ', event.url);
+                    console.log('SIDEBAR NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
                     this.ACTIVITIES_ROUTE_IS_ACTIVE = true;
                 } else {
-                    // console.log('SIDEBAR - THE activities route IS NOT ACTIVE  ', event.url);
+                    console.log('SIDEBAR NavigationEnd - THE activities-demo route IS NOT ACTIVE  ', event.url);
                     this.ACTIVITIES_ROUTE_IS_ACTIVE = false;
+                }
+
+
+                if (event.url.indexOf('/activities-demo') !== -1) {
+                    console.log('SIDEBAR NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
+                    this.ACTIVITIES_DEMO_ROUTE_IS_ACTIVE = true;
+                } else {
+                    console.log('SIDEBAR NavigationEnd - THE activities-demo route IS NOT ACTIVE  ', event.url);
+                    this.ACTIVITIES_DEMO_ROUTE_IS_ACTIVE = false;
+                }
+
+
+                if (event.url.indexOf('/analytics-demo') !== -1) {
+                    console.log('SIDEBAR NavigationEnd - THE analytics-demo route IS ACTIVE  ', event.url);
+                    this.ANALYTICS_DEMO_ROUTE_IS_ACTIVE = true;
+                } else {
+                    console.log('SIDEBAR NavigationEnd - THE analytics-demo route IS NOT ACTIVE  ', event.url);
+                    this.ANALYTICS_DEMO_ROUTE_IS_ACTIVE = false;
                 }
             });
     }
@@ -353,17 +377,93 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
                 this.prjct_profile_name = this.project.profile_name;
                 this.prjct_trial_expired = this.project.trial_expired;
+                this.prjc_trial_days_left = this.project.trial_days_left;
+                // this.prjc_trial_days_left_percentage = ((this.prjc_trial_days_left *= -1) * 100) / 30
+                this.prjc_trial_days_left_percentage = (this.prjc_trial_days_left * 100) / 30;
 
-         
+                // this.prjc_trial_days_left_percentage IT IS 
+                // A NEGATIVE NUMBER AND SO TO DETERMINE THE PERCENT IS MADE AN ADDITION
+                const perc = 100 + this.prjc_trial_days_left_percentage
+                console.log('SIDEBAR project perc ', perc)
+
+
+                this.prjc_trial_days_left_percentage = this.round5(perc)
+                console.log('SIDEBAR project trial days left % rounded', this.prjc_trial_days_left_percentage);
+                // if (roundedPercentage === 0) {
+                //     this.prjc_trial_days_left_percentage = 0;
+                // }
+
+
+
+                // FOR TEST
+                // this.prjc_trial_days_left_percentage = 5;
+                // this.prjc_trial_days_left_percentage = 10;
+                // this.prjc_trial_days_left_percentage = 15;
+                // this.prjc_trial_days_left_percentage = 20;
+                // this.prjc_trial_days_left_percentage = 25;
+                // this.prjc_trial_days_left_percentage = 30;
+                // this.prjc_trial_days_left_percentage = 35;
+                // this.prjc_trial_days_left_percentage = 40;
+                // this.prjc_trial_days_left_percentage = 45;
+
+                // this.prjc_trial_days_left_percentage = 50;
+                // this.prjc_trial_days_left_percentage = 55;
+                // this.prjc_trial_days_left_percentage = 60;
+                // this.prjc_trial_days_left_percentage = 65;
+                // this.prjc_trial_days_left_percentage = 70;
+                // this.prjc_trial_days_left_percentage = 75;
+                // this.prjc_trial_days_left_percentage = 80;
+                // this.prjc_trial_days_left_percentage = 85;
+                // this.prjc_trial_days_left_percentage = 90;
+                // this.prjc_trial_days_left_percentage = 95;
+                // this.prjc_trial_days_left_percentage = 100;
 
                 console.log('SIDEBAR project profile name ', this.prjct_profile_name);
-                console.log('SIDEBAR project prjct trial expired ', this.prjct_trial_expired);
+                console.log('SIDEBAR project trial expired ', this.prjct_trial_expired);
+                console.log('SIDEBAR project trial expired ', this.prjct_trial_expired);
+                console.log('SIDEBAR project trial days left  ', this.prjc_trial_days_left);
+                console.log('SIDEBAR project trial days left % ', this.prjc_trial_days_left_percentage);
+
+
 
                 // IS USED TO GET THE PROJECT-USER AND DETERMINE IF THE USER IS AVAILAVLE / UNAVAILABLE
                 // WHEN THE PAGE IS REFRESHED
                 this.getProjectUser();
             }
         });
+    }
+
+    round5(x) {
+
+        // const percentageRounded = Math.ceil(x / 5) * 5;
+        // console.log('SIDEBAR project trial days left % rounded', percentageRounded);
+        // return Math.ceil(x / 5) * 5;
+
+        return x % 5 < 3 ? (x % 5 === 0 ? x : Math.floor(x / 5) * 5) : Math.ceil(x / 5) * 5
+    }
+
+    ngAfterViewInit() {
+        // const elemProgressBar = <HTMLElement>document.querySelector('.progress');
+        // const elemProgressBarDataset = elemProgressBar.dataset.percentage
+        // console.log('SIDEBAR project ELEMENT PROGRESS', elemProgressBar);
+        // console.log('SIDEBAR project ELEMENT PROGRESS elemProgressBarDataset', elemProgressBarDataset);
+        // elemProgressBarDataset = '80'
+
+
+        // this.checkForUnathorizedRoute();
+
+        //     this.SETTINGS_SUBMENU_WAS_OPEN = localStorage.getItem('show_settings_submenu')
+        //     console.log('LOCAL STORAGE VALUE OF KEY show_settings_submenu: ', localStorage.getItem('show_settings_submenu'))
+
+        //     if (this.SETTINGS_SUBMENU_WAS_OPEN === 'true') {
+        //         console.log(' XXXXX ', this.SETTINGS_SUBMENU_WAS_OPEN)
+        //         this.trasform = 'rotate(180deg)';
+
+        //     } else {
+        //         this.trasform = 'none';
+        //         console.log(' XXXXX ', this.SETTINGS_SUBMENU_WAS_OPEN)
+        //     }
+
     }
 
     getLoggedUser() {
@@ -430,22 +530,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
 
-    ngAfterViewInit() {
-        // this.checkForUnathorizedRoute();
 
-        //     this.SETTINGS_SUBMENU_WAS_OPEN = localStorage.getItem('show_settings_submenu')
-        //     console.log('LOCAL STORAGE VALUE OF KEY show_settings_submenu: ', localStorage.getItem('show_settings_submenu'))
-
-        //     if (this.SETTINGS_SUBMENU_WAS_OPEN === 'true') {
-        //         console.log(' XXXXX ', this.SETTINGS_SUBMENU_WAS_OPEN)
-        //         this.trasform = 'rotate(180deg)';
-
-        //     } else {
-        //         this.trasform = 'none';
-        //         console.log(' XXXXX ', this.SETTINGS_SUBMENU_WAS_OPEN)
-        //     }
-
-    }
     isMobileMenu() {
         if ($(window).width() > 991) {
             this.IS_MOBILE_MENU = false

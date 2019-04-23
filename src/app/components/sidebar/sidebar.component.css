@@ -447,66 +447,183 @@ button.close {
   /* This for loop creates the 	necessary css animation names 
    Due to the split circle of progress-left and progress right, we must use the animations on each side. 
    */
+  .progress[data-percentage="5"] .progress-right .progress-bar {
+    animation: loading-1-minus-half 1.5s linear forwards;
+  }
+  .progress[data-percentage="5"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+
+
   .progress[data-percentage="10"] .progress-right .progress-bar {
     animation: loading-1 1.5s linear forwards;
   }
   .progress[data-percentage="10"] .progress-left .progress-bar {
     animation: 0;
   }
+
+
+  .progress[data-percentage="15"] .progress-right .progress-bar {
+    animation: loading-1-add-half 1.5s linear forwards;
+  }
+  .progress[data-percentage="15"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+
   .progress[data-percentage="20"] .progress-right .progress-bar {
     animation: loading-2 1.5s linear forwards;
   }
   .progress[data-percentage="20"] .progress-left .progress-bar {
     animation: 0;
   }
+
+
+  .progress[data-percentage="25"] .progress-right .progress-bar {
+    animation: loading-2-add-half 1.5s linear forwards;
+  }
+  .progress[data-percentage="25"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+  
   .progress[data-percentage="30"] .progress-right .progress-bar {
     animation: loading-3 1.5s linear forwards;
   }
   .progress[data-percentage="30"] .progress-left .progress-bar {
     animation: 0;
   }
+
+  .progress[data-percentage="35"] .progress-right .progress-bar {
+    animation: loading-3-add-half 1.5s linear forwards;
+  }
+  .progress[data-percentage="35"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+
+
   .progress[data-percentage="40"] .progress-right .progress-bar {
     animation: loading-4 1.5s linear forwards;
   }
   .progress[data-percentage="40"] .progress-left .progress-bar {
     animation: 0;
   }
+
+
+  .progress[data-percentage="45"] .progress-right .progress-bar {
+    animation: loading-4-add-half 1.5s linear forwards;
+  }
+  .progress[data-percentage="45"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+
+
   .progress[data-percentage="50"] .progress-right .progress-bar {
     animation: loading-5 1.5s linear forwards;
   }
   .progress[data-percentage="50"] .progress-left .progress-bar {
     animation: 0;
   }
+
+
+  .progress[data-percentage="55"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+  .progress[data-percentage="55"] .progress-left .progress-bar {
+    animation: loading-1-minus-half 1.5s linear forwards 1.5s;
+  }
+
+
   .progress[data-percentage="60"] .progress-right .progress-bar {
     animation: loading-5 1.5s linear forwards;
   }
   .progress[data-percentage="60"] .progress-left .progress-bar {
     animation: loading-1 1.5s linear forwards 1.5s;
   }
+
+
+  .progress[data-percentage="65"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+  .progress[data-percentage="65"] .progress-left .progress-bar {
+    animation: loading-1-add-half 1.5s linear forwards 1.5s;
+  }
+
+
   .progress[data-percentage="70"] .progress-right .progress-bar {
     animation: loading-5 1.5s linear forwards;
   }
   .progress[data-percentage="70"] .progress-left .progress-bar {
     animation: loading-2 1.5s linear forwards 1.5s;
   }
+
+  .progress[data-percentage="75"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+  .progress[data-percentage="75"] .progress-left .progress-bar {
+    animation: loading-2-add-half 1.5s linear forwards 1.5s;
+  }
+
+
   .progress[data-percentage="80"] .progress-right .progress-bar {
     animation: loading-5 1.5s linear forwards;
   }
   .progress[data-percentage="80"] .progress-left .progress-bar {
     animation: loading-3 1.5s linear forwards 1.5s;
   }
+
+
+
+  .progress[data-percentage="85"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+  .progress[data-percentage="85"] .progress-left .progress-bar {
+    animation: loading-3-add-half 1.5s linear forwards 1.5s;
+  }
+
+
+
   .progress[data-percentage="90"] .progress-right .progress-bar {
     animation: loading-5 1.5s linear forwards;
   }
   .progress[data-percentage="90"] .progress-left .progress-bar {
     animation: loading-4 1.5s linear forwards 1.5s;
   }
+
+  .progress[data-percentage="95"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+  .progress[data-percentage="95"] .progress-left .progress-bar {
+    animation: loading-4-add-half 1.5s linear forwards 1.5s;
+  }
+
+
+
+
   .progress[data-percentage="100"] .progress-right .progress-bar {
     animation: loading-5 1.5s linear forwards;
   }
   .progress[data-percentage="100"] .progress-left .progress-bar {
     animation: loading-5 1.5s linear forwards 1.5s;
   }
+
+  @keyframes loading-1-minus-half {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(18);
+      transform: rotate(18deg);
+    }
+  }
+
+
+
+
   @keyframes loading-1 {
     0% {
       -webkit-transform: rotate(0deg);
@@ -517,6 +634,20 @@ button.close {
       transform: rotate(36deg);
     }
   }
+
+
+  @keyframes loading-1-add-half {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(54);
+      transform: rotate(54deg);
+    }
+  }
+
+
   @keyframes loading-2 {
     0% {
       -webkit-transform: rotate(0deg);
@@ -527,6 +658,18 @@ button.close {
       transform: rotate(72deg);
     }
   }
+
+  @keyframes loading-2-add-half {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(90);
+      transform: rotate(90deg);
+    }
+  }
+
   @keyframes loading-3 {
     0% {
       -webkit-transform: rotate(0deg);
@@ -537,6 +680,20 @@ button.close {
       transform: rotate(108deg);
     }
   }
+
+  @keyframes loading-3-add-half {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(126);
+      transform: rotate(126deg);
+    }
+  }
+
+
+
   @keyframes loading-4 {
     0% {
       -webkit-transform: rotate(0deg);
@@ -547,6 +704,20 @@ button.close {
       transform: rotate(144deg);
     }
   }
+
+
+  @keyframes loading-4-add-half {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(162);
+      transform: rotate(162deg);
+    }
+  }
+
+
   @keyframes loading-5 {
     0% {
       -webkit-transform: rotate(0deg);
@@ -557,6 +728,9 @@ button.close {
       transform: rotate(180deg);
     }
   }
+
+
+
   .progress {
     margin-bottom: 1em;
   }

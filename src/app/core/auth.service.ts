@@ -157,7 +157,7 @@ export class AuthService {
   }
 
 
-  // RECEIVE THE the project (name,  id, profile_name and trial_expired) AND PUBLISHES
+  // RECEIVE THE the project (name, id, profile_name, trial_expired and trial_days_left) AND PUBLISHES
   projectSelected(project: Project) {
     // PUBLISH THE project
     console.log('!!C-U AUTH SERVICE: I PUBLISH THE PROJECT RECEIVED FROM PROJECT COMP ', project)
@@ -232,10 +232,11 @@ export class AuthService {
                 const project_name = storedProjectObject['name'];
                 const project_profile_name = storedProjectObject['profile_name'];
                 const project_trial_expired = storedProjectObject['trial_expired'];
+                const project_trial_days_left = storedProjectObject['trial_days_left'];
 
-               this.project_trial_expired = storedProjectObject['trial_expired'];
-               // tslint:disable-next-line:max-line-length
-               console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH SERV checkStoredProjectAndPublish) TRIAL expired 2', this.project_trial_expired);
+                this.project_trial_expired = storedProjectObject['trial_expired'];
+                // tslint:disable-next-line:max-line-length
+                console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH SERV checkStoredProjectAndPublish) TRIAL expired 2', this.project_trial_expired);
 
                 console.log('!! »»»»» AUTH SERV - PROJECT NAME GET FROM STORAGE: ', project_name);
 
@@ -243,9 +244,10 @@ export class AuthService {
                   _id: this.nav_project_id,
                   name: project_name,
                   profile_name: project_profile_name,
-                  trial_expired: project_trial_expired
+                  trial_expired: project_trial_expired,
+                  trial_days_left: project_trial_days_left
                 }
-                console.log('!!C-U »»»»» AUTH SERV - 1) PROJECT THAT IS PUBLISHED: ', project);
+                console.log('!! AUTH in auth.serv  - 1) PROJECT THAT IS PUBLISHED: ', project);
                 // SE NN C'è IL PROJECT NAME COMUNQUE PUBBLICO PERCHè CON L'ID DEL PROGETTO VENGONO EFFETTUATE DIVERSE CALLBACK
 
                 /**** ******* ******* ***** *** ** ***/
@@ -264,7 +266,8 @@ export class AuthService {
                 // IF THE STORED JSON OF THE PROJECT IS NULL  IS THE AUTH-GUARD THAT RUNS A REMOTE CALLBACK TO OBTAIN THE
                 // PROJECT BY ID AND THAT THEN PUBLISH IT AND SAVE IT (THE REMOTE CALLBACK IS PERFORMED IN AUTH-GUARD BECAUSE
                 // IS NOT POSSIBLE TO DO IT IN THIS SERVICE (BECAUSE OF THE CIRCULAR DEPEDENCY WARNING)  )
-                console.log('!! »»» AUTH SERV - FOR THE PRJCT ID ', this.nav_project_id, ' THERE IS NOT STORED PRJCT-JSON - SEE AUTH GUARD')
+                // tslint:disable-next-line:max-line-length
+                console.log('!! AUTH WF in auth.serv - FOR THE PRJCT ID ', this.nav_project_id, ' THERE IS NOT STORED PRJCT-JSON - SEE AUTH GUARD')
                 // this.projectService.getProjectById(this.nav_project_id).subscribe((prjct: any) => {
 
                 // public anyway to immediately make the project id available to subscribers
@@ -272,7 +275,7 @@ export class AuthService {
                 const project: Project = {
                   _id: this.nav_project_id,
                 }
-                console.log('!! »»»»» AUTH SERV - 2) PROJECT THAT IS PUBLISHED: ', project);
+                console.log('!! AUTH in auth.serv - 2) PROJECT THAT IS PUBLISHED: ', project);
                 this.project_bs.next(project);
               }
             }

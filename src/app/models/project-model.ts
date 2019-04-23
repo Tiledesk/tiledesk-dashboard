@@ -13,5 +13,6 @@ export interface Project {
     user_available?: boolean;
     profile_name?: any;
     trial_expired?: any;
+    trial_days_left?: number;
     __v?: any;
 }

@@ -191,7 +191,7 @@ background-size:     contain; " -->
           <!-- CARDS FROM THE PROJECT 'FOR' -->
           <!-- style="max-width: 256px;" -->
           <div class="card"  style="border-radius:10px" 
-            (click)='goToHome(project?.id_project?._id, project?.id_project?.name, project?.id_project?.profile?.name, project?.id_project?.trialExpired)'>
+            (click)='goToHome(project?.id_project?._id, project?.id_project?.name, project?.id_project?.profile?.name, project?.id_project?.trialExpired, project?.id_project?.trialDaysLeft)'>
             <div class="card-content"  style="height:160px">
               <h3 class="title" style="color: #566787; font-size:20px; margin-bottom: 0px;font-family: 'Google Sans',sans-serif!important">
                 {{ project?.id_project?.name }}

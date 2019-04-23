@@ -31,9 +31,11 @@ export class ProjectProfileGuard implements CanActivate {
     if (trial_expired === undefined) {
       const storedProjectJson = localStorage.getItem(prjct_id);
 
-      const storedProjectObject = JSON.parse(storedProjectJson);
-      trial_expired = storedProjectObject.trial_expired
-      console.log('»> »> PROJECT-PROFILE GUARD canActivate ******  (from stored) TRIAL EXPIRED ****** ', trial_expired)
+      if (storedProjectJson !== null) {
+        const storedProjectObject = JSON.parse(storedProjectJson);
+        trial_expired = storedProjectObject.trial_expired
+        console.log('»> »> PROJECT-PROFILE GUARD canActivate ******  (from stored) TRIAL EXPIRED ****** ', trial_expired)
+      }
     }
 
     let authorized: boolean

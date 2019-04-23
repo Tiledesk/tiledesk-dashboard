@@ -234,8 +234,8 @@
         </li> -->
 
         <!-- ANALYTICS -->
-        <li *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="active" >
-            <!--  -->
+        <li *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="active"
+          [ngClass]="{'active' : ANALYTICS_DEMO_ROUTE_IS_ACTIVE === true}"  (click)="stopScroll()">
           <a class="customAncor" routerLink="project/{{ project._id }}/analytics">
             <i class="material-icons sidebar-icons">trending_up</i>
             <p class="onBlackBckgrnd">Analytics</p>
@@ -243,7 +243,8 @@
         </li>
 
         <!-- ANALYTICS -->
-        <li *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="active" >
+        <li *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="active" 
+          [ngClass]="{'active' : ACTIVITIES_DEMO_ROUTE_IS_ACTIVE === true}"  (click)="stopScroll()">
           <a class="customAncor" routerLink="project/{{ project._id }}/activities">
             <i class="material-icons sidebar-icons">view_list</i>
             <span class="_badge" [ngClass]="{'change-badge-bckgrnd' : ACTIVITIES_ROUTE_IS_ACTIVE === true}">New</span>
@@ -252,7 +253,7 @@
         </li>
             
         <!-- REQUESTS HISTORY -->
-        <li *ngIf="project" routerLinkActive="active" >
+        <li *ngIf="project" routerLinkActive="active" (click)="stopScroll()">
           <a class="customAncor" routerLink="project/{{ project._id }}/history">
             <i class="material-icons sidebar-icons">history</i>
             <p class="onBlackBckgrnd">{{ 'History' | translate }}</p>
@@ -469,7 +470,9 @@
 
     <div class="col-sm-6">
       <div *ngIf="prjct_trial_expired === false"> 
-        <div class="progress" data-percentage="50">
+   
+        <!-- data-percentage="50" -->
+        <div id="progress" class="progress"  [attr.data-percentage]="prjc_trial_days_left_percentage" >
           <span class="progress-left">
             <span class="progress-bar"></span>
           </span>
@@ -477,7 +480,9 @@
             <span class="progress-bar"></span>
           </span>
           <div class="progress-value">
-            <div> -15
+            <div> 
+
+               {{ prjc_trial_days_left }}
               <!-- <br>
               <span>completed</span> -->
             </div>
