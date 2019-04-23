@@ -76,8 +76,6 @@ export class AuthGuard implements CanActivate {
      * NEW: initialize the new project when the id of the project get from url does not match with the current project id  */
     // this.getCurrentProject();
     this.getProjectIdFromUrl();
-
-    
   }
 
   // canDeactivate(
@@ -99,14 +97,11 @@ export class AuthGuard implements CanActivate {
       if (project) {
         console.log('!! AUTH GUARD - CURRENT PROJECT ID : ', project._id)
         this.current_project_id = project._id;
-        
       }
     });
   }
 
   getProjectIdFromUrl() {
-
-
     this.subscription = this.router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
         const current_url = e.url
@@ -382,14 +377,6 @@ export class AuthGuard implements CanActivate {
     //   return false;
     // }
   }
-
-
-
-
-
-
- 
-
 
 
   // canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {

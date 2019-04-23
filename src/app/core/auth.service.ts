@@ -122,58 +122,19 @@ export class AuthService {
     // const messaging = firebase.messaging();
 
     this.checkIfFCMIsSupported();
-
     this.checkIfExpiredSessionModalIsOpened();
-    this.detectNavigationStart();
-    // this.detectAnalyticsRoute();
   }
 
   public checkTrialExpired(): Promise<boolean> {
-
     return new Promise<boolean>((resolve, reject) => {
       // tslint:disable-next-line:max-line-length
-      console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH GUARD) called checkTrialExpired! TRIAL EXPIRED ', this.project_trial_expired);
-      // if (this.project_trial_expired === undefined) {
-      //   console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH GUARD) called checkTrialExpired nav_project_id ', this.nav_project_id);
-      //   const storedProjectJson = localStorage.getItem(this.nav_project_id);
-      //   const storedProjectObject = JSON.parse(storedProjectJson);
-      //   this.project_trial_expired = storedProjectObject['trial_expired'];
-      //   // tslint:disable-next-line:max-line-length
-      //   console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH GUARD checkStoredProjectAndPublish TRIAL EXSPIRED', this.project_trial_expired);
-      // }
-
-      setTimeout(() => { }, 300)
+      // console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH SERV) called checkTrialExpired! TRIAL EXPIRED ', this.project_trial_expired);
+      console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH SERV) called checkTrialExpired!');
       resolve(this.project_trial_expired);
 
     });
   }
 
-  detectNavigationStart() {
-    console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH GUARD) detectNavigationStart ');
-    this.router.events.subscribe((val) => {
-      // console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH GUARD) detectNavigationStart ** val ** ');
-      this.router.events.filter((event: any) => event instanceof NavigationStart)
-        .subscribe(event => {
-          // console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH GUARD) detectNavigationStart event.url', event.url);
-          const url_spiltted = event.url.split('/');
-          // console.log('»> »> PROJECT-PROFILE GUARD url_spiltted', url_spiltted);
-          this.URL_last_fragment = url_spiltted[3];
-          // console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH GUARD) detectNavigationStart URL_last_fragment ', this.URL_last_fragment);
-        });
-    })
-  }
-
-  public checkRoute(): Promise<string> {
-
-    return new Promise<string>((resolve, reject) => {
-      // tslint:disable-next-line:max-line-length
-      // console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH GUARD) called checkRoute URL last fragment ', this.URL_last_fragment);
-
-      setTimeout(() => { }, 300)
-      resolve(this.URL_last_fragment);
-
-    });
-  }
 
 
   checkIfFCMIsSupported() {
@@ -187,7 +148,6 @@ export class AuthService {
       console.log('*** >>>> FCM is Supported: ', this.FCM_Supported);
     }
   }
-
 
   // USED ONLY FOR A TEST
   getParamsProjectId() {
@@ -206,7 +166,6 @@ export class AuthService {
     this.project_bs.next(project);
   }
 
-
   /**
    * // REPLACE getProjectFromLocalStorage()
    * IF THE PROJECT RETURNED FROM THE project_bs SUBSCRIPTION IS NULL
@@ -219,13 +178,13 @@ export class AuthService {
   // getAndPublish_NavProjectIdAndProjectName() {
   checkStoredProjectAndPublish() {
     this.project_bs.subscribe((prjct) => {
-
+      console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH SERV checkStoredProjectAndPublish) prjct', prjct);
       console.log('!!C-U  - 1) »»»»» AUTH SERV - PROJECT FROM SUBSCRIP', prjct);
 
-      if (prjct !== null && prjct.id_project !== undefined) {
-        this.project_trial_expired = prjct.id_project.trialExpired
+      if (prjct !== null && prjct._id !== undefined) {
+        this.project_trial_expired = prjct.trial_expired;
         // tslint:disable-next-line:max-line-length
-        console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH GUARD checkStoredProjectAndPublish) TRIAL expired 1', this.project_trial_expired);
+        console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH SERV checkStoredProjectAndPublish) TRIAL expired 1', this.project_trial_expired);
       }
 
       if (prjct === null) {
@@ -276,7 +235,7 @@ export class AuthService {
 
                this.project_trial_expired = storedProjectObject['trial_expired'];
                // tslint:disable-next-line:max-line-length
-               console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH GUARD checkStoredProjectAndPublish) TRIAL expired 2', this.project_trial_expired);
+               console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH SERV checkStoredProjectAndPublish) TRIAL expired 2', this.project_trial_expired);
 
                 console.log('!! »»»»» AUTH SERV - PROJECT NAME GET FROM STORAGE: ', project_name);
 
@@ -322,8 +281,6 @@ export class AuthService {
       }
     });
   }
-
-
 
 
   checkRoleForCurrentProject() {
