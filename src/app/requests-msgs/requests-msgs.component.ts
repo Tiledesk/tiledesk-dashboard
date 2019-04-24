@@ -456,7 +456,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.messagesList = data;
         console.log('*MSGS - REQUESTS-MSGS.COMP getMessagesList RES', data);
         this.showSpinner = false;
-
+        // this.fillColour = getColorBck(this.requester_fullname);
         this.scrollCardContetToBottom();
         // console.log('TIMESTAMP ', this.messagesList);
         // if (data.length) {

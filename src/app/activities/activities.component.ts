@@ -378,7 +378,12 @@ export class ActivitiesComponent implements OnInit {
                     const user = this.usersLocalDbService.getMemberFromStorage(participantId);
                     console.log('ActivitiesComponent participant - user', user);
 
-                    activity.participant_fullname = user.firstname + ' ' + user.lastname
+                    if (user !== null) {
+                      activity.participant_fullname = user.firstname + ' ' + user.lastname
+                    } else {
+                      activity.participant_fullname = 'n.d.'
+                    }
+
                     // participantsArray.forEach(participant => {
 
                     //   console.log('ActivitiesComponent participant ', participant);

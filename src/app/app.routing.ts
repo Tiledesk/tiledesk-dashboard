@@ -173,9 +173,11 @@ const routes: Routes = [
   { path: 'project/:projectid/createbot', component: BotEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/editbot/:botid', component: BotEditAddComponent, canActivate: [AuthGuard] },
 
-  { path: 'project/:projectid/analytics', component: AnalyticsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
+  // , ProjectProfileGuard
+  { path: 'project/:projectid/analytics', component: AnalyticsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/analytics-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/activities', component: ActivitiesComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
+  // , ProjectProfileGuard
+  { path: 'project/:projectid/activities', component: ActivitiesComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/activities-demo', component: ActivitiesStaticComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard] },

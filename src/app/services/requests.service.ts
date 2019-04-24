@@ -455,6 +455,7 @@ export class RequestsService {
           m.recipient = data.recipient;
           m.recipient_fullname = data.recipient_fullname;
           m.sender_fullname = data.sender_fullname;
+          m.sender = data.sender;
           m.text = data.text;
           m.timestamp = data.timestamp;
 

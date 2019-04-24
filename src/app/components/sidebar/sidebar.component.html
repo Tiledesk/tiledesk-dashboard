@@ -391,8 +391,8 @@
               </span>  -->
             </a>
           </li>
-
-          <li *ngIf="SHOW_SETTINGS_SUBMENU" routerLinkActive="active" style="margin-bottom:95px" (click)="stopScroll()">
+          <!-- margin-bottom:95px -->
+          <li *ngIf="SHOW_SETTINGS_SUBMENU" routerLinkActive="active" style="margin-bottom:25px" (click)="stopScroll()">
             <a *ngIf="project"  class="customAncor" routerLink="project/{{ project._id }}/edit">
             <p class="onBlackBckgrnd">
               <span class="sidebar-mini">{{ 'PS' | translate }} </span> {{ 'NavBar.ProjectSettings' | translate }}
@@ -449,14 +449,10 @@
   
 </div>
 <!-- ////// SIDEBAR FOOTER -->
-<div class="sidebar-footer">
-
+<!-- <div class="sidebar-footer">
   <div class="row">
     <div class="col-sm-6">
       <div style="text-align:center; font-weight:400">
-      <!-- {{ 'Plan' | translate }}:  -->
-      
-      
         <span *ngIf="prjct_profile_name === 'free'">  Pro (trial)</span>  
      
         <span *ngIf="prjct_trial_expired === false" class="upgrade-btn" (click)="goToPricing()"> 
@@ -471,7 +467,6 @@
     <div class="col-sm-6">
       <div *ngIf="prjct_trial_expired === false"> 
    
-        <!-- data-percentage="50" -->
         <div id="progress" class="progress"  [attr.data-percentage]="prjc_trial_days_left_percentage" >
           <span class="progress-left">
             <span class="progress-bar"></span>
@@ -483,22 +478,16 @@
             <div> 
 
                {{ prjc_trial_days_left }}
-              <!-- <br>
-              <span>completed</span> -->
             </div>
           </div>
         </div>
       </div>
-
       <div *ngIf="prjct_trial_expired === true"> 
-
         <button class="btn upgrade-btn-trial-expired" (click)="goToPricing()"> upgrade </button>
       </div>
     </div>
-
   </div>
-
-</div>
+</div> -->
 
 
 

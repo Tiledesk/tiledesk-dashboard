@@ -40,7 +40,7 @@
                 <ng-select name="agent" [(ngModel)]="selectedAgentId" [clearable]="false">
                   <ng-option [value]="''">{{ 'HistoryPage.AllAgents' | translate }}</ng-option>
                   <ng-option *ngFor="let agent of agentsList" [value]="agent._id" >
-                    {{ agent.firstname }} {{ agent.lastname }} 
+                    {{ agent?.firstname }} {{ agent?.lastname }} 
                   </ng-option>
                 </ng-select>
               </div>
