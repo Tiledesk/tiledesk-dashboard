@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 1.0.23
+- Fixes minor bugs
+
 ### 1.0.22
 - Adds the ability to view the request details by clicking on the in app notifications
 - Adds the button "delete contact" in the contact details page
