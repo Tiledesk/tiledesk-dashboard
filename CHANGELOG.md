@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 1.0.24
+- Improves the chat in the request's detail page
+
 ### 1.0.23
 - Fixes minor bugs
 

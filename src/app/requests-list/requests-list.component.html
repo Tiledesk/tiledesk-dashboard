@@ -882,9 +882,9 @@
                     <div *ngFor="let m of request?.members_array"  style="font-size:0.8em;">
                       <span *ngIf="m !== request?.requester_id && m !== 'system' && m !== currentUserID" class="tooltipx"> 
                         <span (click)="goToMemberProfile( m )" style="cursor:pointer; display: block">
-                          <!-- IF IS A BOT -->
+                          <!-- IF IS A BOT bot_image.png  -->
                           <img *ngIf="m.indexOf('bot_') !== -1" style="vertical-align: middle; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee; margin-top: 1px; margin-bottom: 1px" 
-                          class="user-img" src="assets/img/bot_image.png" 
+                          class="user-img" src="assets/img/bot_image_as_human.jpg" 
                           onerror="this.src='assets/img/no_image_user.png'"/>
                           
                           <!-- IF IS A HUMAN -->

@@ -157,9 +157,11 @@
                   <!-- ////// REQUESTER -->
                   <div *ngIf="requester_id === message.sender" class="bubble">
                         <div class="avatar" style="  width: 35px; height: 35px; position: absolute;    left: -50px; bottom: 36px;">
-                          <div style="display: block;border-radius: 50%; height: 100%; margin-top: 35px;" [ngStyle]="{'background-color': fillColour }">
-                            <span class="senderFullname" style="position: absolute; top:42px; margin-left:14px; color: #fff; text-transform: uppercase">
-                              {{ messageSenderInitialLetter( message.sender_fullname )}}
+                          <div class="requester-avatar-wrapper" style="display: block;border-radius: 50%; height: 100%; margin-top: 35px;" [ngStyle]="{'background-color': fillColour }">
+                              <!-- position: absolute; top:42px; margin-left:10px; color: #fff; text-transform: uppercase -->
+                            <span class="_requester-avatar-inchat" style="">
+                              <!-- {{ messageSenderInitialLetter( message.sender_fullname )}} -->
+                              {{ requester_fullname_initial }}
                               
                             </span>
                           </div>
@@ -180,22 +182,34 @@
                   <div *ngIf="requester_id !== message.sender" class="bubble alt">
 
                       <div class="avatar" style="  width: 35px; height: 35px; position: absolute; left: 254px; bottom: 36px;">
-                          <div style="display: block;border-radius: 50%; height: 100%; margin-top: 35px; background-color: #ebebeb; ">
+                          <div style="display: block;border-radius: 50%; height: 100%; margin-top: 35px; background-color: #fff; border:1px solid #ebebeb;">
                             
-                            <span *ngIf="message?.sender !== 'system' && message?.sender.indexOf('bot_') === -1" class="senderFullname" style="position: absolute; top:43px; margin-left:13px; color: #999999; text-transform: uppercase">
+                            <!-- USE CASE: human -->
+                            <span *ngIf="message?.sender !== 'system' && message?.sender.indexOf('bot_') === -1" class="senderFullname" style="position: absolute; top:43px; margin-left:13px;">
                               <!-- {{ messageSenderInitialLetter( message?.sender_fullname )}} -->
 
                               <img style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; margin-top: 1px; margin-bottom: 1px;position: relative;top: -9px; left: -13px;" 
                               class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{message?.sender}}%2Fphoto.jpg?alt=media" 
                               onerror="this.src='assets/img/no_image_user.png'"/>
                             </span>
+
+                            <!-- USE CASE: bot -->
                             <span *ngIf="message?.sender.indexOf('bot_') !== -1" class="senderFullname" style="position: absolute; top:43px; margin-left:13px;">
                                 <img style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; position:relative;top: -9px;left: -13px;" 
-                                class="user-img" src="assets/img/bot_image.png" 
+                                class="user-img" src="assets/img/bot_image_as_human.jpg" 
                                 onerror="this.src='assets/img/no_image_user.png'"/>
                             </span>
-                            <span *ngIf="message?.sender === 'system'" class="senderFullname" style="position: absolute; top:43px; margin-left:13px;color: #999999;">
-                                <i class="material-icons" style="position: relative;left: -9px;top: -4px;font-size:28px">
+
+                            <!-- USE CASE: system but with name Bot -->
+                            <span *ngIf="message?.sender === 'system' && message?.sender_fullname === 'Bot'" class="senderFullname" style="position: absolute; top:43px; margin-left:13px;color: #999999;">
+                                <img style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; position:relative;top: -9px;left: -13px;" 
+                                class="user-img" src="assets/img/bot_image_as_human.jpg" 
+                                onerror="this.src='assets/img/no_image_user.png'"/>
+                            </span>
+
+                            <!-- USE CASE: system -->
+                            <span *ngIf="message?.sender === 'system' && message?.sender_fullname !== 'Bot'" class="senderFullname" style="position: absolute; top:43px; margin-left:13px;color: #999999;">
+                                <i class="material-icons" style="position: relative;left: -9px;top: -3px;font-size:26px">
                                     code
                                 </i>
                             </span>
@@ -498,7 +512,7 @@
                     onerror="this.src='assets/img/no_image_user.png'"/>
 
                     <img *ngIf="agent.isBot === true" style="vertical-align: middle; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee; margin-right: 8px;" 
-                    class="user-img" src="assets/img/bot_image.png" 
+                    class="user-img" src="assets/img/bot_image_as_human.jpg" 
                     onerror="this.src='assets/img/no_image_user.png'"/>
 
                     <span [ngClass]="{'current_user_is_agent' : agent?._id === currentUserID}" style="font-size:12px; font-weight: 400"> 
