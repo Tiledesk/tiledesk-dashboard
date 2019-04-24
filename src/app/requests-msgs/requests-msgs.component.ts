@@ -17,6 +17,7 @@ import { UsersService } from '../services/users.service';
 import { DOCUMENT } from '@angular/platform-browser';
 import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { Subscription } from 'rxjs/Subscription';
+import { fadeInAnimation } from '../_animations/index';
 
 import * as firebase from 'firebase';
 import 'firebase/database';
@@ -24,6 +25,9 @@ import 'firebase/database';
 @Component({
   selector: 'appdashboard-requests-msgs',
   templateUrl: './requests-msgs.component.html',
+  animations: [fadeInAnimation],
+  // tslint:disable-next-line:use-host-property-decorator
+  host: { '[@fadeInAnimation]': '' },
   styleUrls: ['./requests-msgs.component.scss'],
   encapsulation: ViewEncapsulation.None, /* it allows to customize 'Powered By' */
 })
@@ -116,6 +120,8 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   subscription: Subscription
 
   locationSubscription: any;
+  OPEN_RIGHT_SIDEBAR = false;
+  selectedQuestion: string;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -164,6 +170,16 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     // } else {
     //   elemMainContent.setAttribute('style', 'padding-right: 15px; padding-left: 15px');
     // }
+  }
+  openRightSideBar(message: string) {
+    this.OPEN_RIGHT_SIDEBAR = true;
+    console.log('»»»» OPEN RIGHT SIDEBAR ', this.OPEN_RIGHT_SIDEBAR, ' MSG: ', message);
+    this.selectedQuestion = message;
+  }
+
+  closeRightSidebar(event) {
+    console.log('»»»» CLOSE RIGHT SIDEBAR ', event);
+    this.OPEN_RIGHT_SIDEBAR = event;
   }
 
   // detect browser back button click
@@ -456,7 +472,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
         this.messagesList = data;
         console.log('*MSGS - REQUESTS-MSGS.COMP getMessagesList RES', data);
         this.showSpinner = false;
-        
+
         this.scrollCardContetToBottom();
         // console.log('TIMESTAMP ', this.messagesList);
         // if (data.length) {

@@ -113,7 +113,8 @@ import { ActivitiesComponent } from './activities/activities.component';
 import { PricingComponent } from './pricing/pricing.component';
 import { AnalyticsStaticComponent } from './static-pages/analytics-static/analytics-static.component';
 import { ActivitiesStaticComponent } from './static-pages/activities-static/activities-static.component';
-
+import { TrainBotComponent } from './requests-msgs/train-bot/train-bot.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
@@ -178,6 +179,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     PricingComponent,
     AnalyticsStaticComponent,
     ActivitiesStaticComponent,
+    TrainBotComponent,
   ],
   imports: [
     BrowserModule,
@@ -198,6 +200,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     NgSelectModule,
     MyDatePickerModule,
     ColorPickerModule,
+    BrowserAnimationsModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

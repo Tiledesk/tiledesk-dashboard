@@ -169,10 +169,12 @@
 
                     <div class="txt">
                       <p class="name" [ngStyle]="{'color': fillColour }">{{ message.sender_fullname }}
-                        <!-- <span style="float:right; margin-right: -45px;"> Addestra</span> -->
+                        <span style="float:right; margin-right: -45px;"> 
+                            <!-- routerLink="/project/{{ id_project }}/train"  -->
+                            <a class="btn btn-default" (click)="openRightSideBar(message?.text)">Addestra</a> </span>
                       </p>
-                      <p class="message">{{ message.text }}</p>
-                      <span class="timestamp"> {{ message.timestamp | date: 'd/M/y HH:mm:ss'}} </span>
+                      <p class="message">{{ message?.text }}</p>
+                      <span class="timestamp"> {{ message?.timestamp | date: 'd/M/y HH:mm:ss'}} </span>
                     </div>
                     <div class="bubble-arrow"></div>
                   </div>
@@ -1279,4 +1281,8 @@
       <!-- /.modal-content -->
     </div>
     <!-- /.modal-dialog -->
+  </div>
+
+  <div *ngIf="OPEN_RIGHT_SIDEBAR === true" class="view-side" >
+    <appdashboard-train-bot [selectedQuestion]="selectedQuestion" (valueChange)='closeRightSidebar($event)'></appdashboard-train-bot>
   </div>
