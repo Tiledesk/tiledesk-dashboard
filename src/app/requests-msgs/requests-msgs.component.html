@@ -147,11 +147,6 @@
                   </div>
                 </div> -->
 
-
-              
-
-
-
                 <div class="speech-wrapper">
 
                   <!-- ////// REQUESTER -->
@@ -169,9 +164,10 @@
 
                     <div class="txt">
                       <p class="name" [ngStyle]="{'color': fillColour }">{{ message.sender_fullname }}
-                        <span style="float:right; margin-right: -45px;"> 
+                        <span style="float:right; margin-right: -45px;cursor:pointer" (click)="openRightSideBar(message?.text)">Addestra
                             <!-- routerLink="/project/{{ id_project }}/train"  -->
-                            <a class="btn btn-default" (click)="openRightSideBar(message?.text)">Addestra</a> </span>
+                            <!-- <a class="btn btn-default" (click)="openRightSideBar(message?.text)">Addestra</a>  -->
+                          </span>
                       </p>
                       <p class="message">{{ message?.text }}</p>
                       <span class="timestamp"> {{ message?.timestamp | date: 'd/M/y HH:mm:ss'}} </span>
@@ -322,7 +318,7 @@
         </div> <!-- ./ col-md-7 -->
 
         <!-- // SIDEBAR // -->
-        <div class="col-sm-5 right-col">
+        <div class="col-sm-5 right-col"[ngClass]="{'hidden' : OPEN_RIGHT_SIDEBAR === true}">
           <div class="card right-card" style="padding-top:5px; padding-bottom:5px;">
 
             <div class="card-content" style="padding-top:5px;">

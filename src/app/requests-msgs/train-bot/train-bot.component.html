@@ -13,36 +13,87 @@ padding-right: 20px;
 padding-bottom: 20px;
 border-left: 1px solid #e0e0e0;">
 
-<div style="padding-top:60px; text-align: center"> 
-    <h3>{{ selectedQuestion}} </h3>
-
-
-    <input class="search-input" style="background-image:none;border: 1px solid #d9d9d9; border-radius: 30px;padding: 8px 16px; height:36px;    width: 100%;">
-
-    
-
-  </div>
-  <button (click)="closeRightSideBar()"> Close </button>
-<!-- <div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
-    <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">keyboard_arrow_left</i>
-
-    {{ "RequestMsgsPage.RequestDetails" | translate }}
-    
-  </div> -->
-
-  <!-- <div class="main-content" style="padding-top:0px">
-      <div class="container-fluid">
-          <div class="row">
-
-              <div class="col-sm-12">
-                  <div class="card">
-NIkola Nikola
-                  </div>
-              </div>
+<div style="padding-top:45px;border-bottom: 1px solid #eeeeee;">
+  <h6  style="color: #566787;font-weight: 400; text-transform: none"> Aggiungi domanda a FAQ esistente  </h6> 
+</div>
+<!-- text-align: center -->
+      <div class="speech-wrapper">
+        <div class="bubble">
+          <div class="txt">
+         
+            <p class="message"> {{ selectedQuestion}} </p>
+            
           </div>
+          <div class="bubble-arrow"></div>
+        </div>
+        <!--  Speech Bubble alternative -->
+        <!-- <div class="bubble alt">
+          <div class="txt">
+            <p class="name alt">+353 87 1234 567<span> ~ John</span></p>
+            <p class="message">Nice... this will work great for my new project.</p>
+            <span class="timestamp">10:22 pm</span>
+          </div>
+          <div class="bubble-arrow alt"></div>
+        </div> -->
+      </div>
+   
 
 
+    <!-- <input class="search-input" style="background-image:none;border: 1px solid #d9d9d9; border-radius: 30px;padding: 8px 16px; height:36px;    width: 100%;"> -->
+
+    <div class="row">
+        <div class="col-sm-12"> 
+          <div class="input-group">
+
+            <div class="buttonInside">
+              <input name="faqToSearch" type="text" [(ngModel)]="faqToSearch" class="form-control" autocomplete="off"
+                style="margin-bottom: 27px;
+                background-image:none;
+                border: 1px solid #d9d9d9;
+                border-bottom-right-radius: 0px !important;
+                border-top-right-radius: 0px !important;
+                border-bottom-left-radius: 30px !important;
+                border-top-left-radius: 30px !important;
+                padding: 8px 16px; height:36px;" 
+                placeholder="Search FAQs">
+              
+              <!-- // CLEAR SEARCH FULL-TEXT BTN -->
+              <span id="clear-faq-search"  *ngIf="faqToSearch?.length > 0" 
+                class="glyphicon glyphicon-remove tooltipx" aria-hidden="true" (click)="clearFaqToSearch()">
+                <span style="font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !important;" class="tooltiptext">
+                  {{ 'HistoryPage.ClearSearch' | translate }}
+                </span> 
+              </span>
+            </div>
+
+            <!-- // SEARCH FULL-TEXT BTN -->
+            <span class="input-group-btn" style="padding-right:0px; padding-left:0px">
+              <button #searchbtn class="btn btn-info searchTopBtn" type="submit" (click)="searchFaq()"
+                style="border-radius: 0px !important;  border-bottom-right-radius: 30px !important;
+                border-top-right-radius: 30px !important;height: 36px;">
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+              </button>
+            </span>
+
+            <!-- // OPEN ADVANCED OPTION BTN -->
+            <!-- <span class="input-group-btn" style="padding-left:0px; padding-right:0px">
+              <button #advancedoptionbtn class="btn btn-default" type="button" (click)="toggle()"
+                style="padding:9px 30px; margin-bottom: 0px">
+                <span class="caret"></span>
+              </button>
+            </span> -->
+          </div>
+        </div>
       </div>
 
+  
+
+  <!-- <div class="row">
+    <div class="col-sm-12">  -->
+      <div class="center" style="">
+        <button class="bottom-button" (click)="closeRightSideBar() "> Close </button>
+      </div>
+    <!-- </div>
   </div> -->
+
 </div>
