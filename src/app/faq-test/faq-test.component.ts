@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, HostListener, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
@@ -13,7 +13,7 @@ import { Location } from '@angular/common';
   templateUrl: './faq-test.component.html',
   styleUrls: ['./faq-test.component.scss']
 })
-export class FaqTestComponent implements OnInit {
+export class FaqTestComponent implements OnInit, AfterViewInit {
 
   @ViewChild('runtestbtn') private elementRef: ElementRef;
   project: Project;
@@ -23,6 +23,9 @@ export class FaqTestComponent implements OnInit {
   faq_number_of_found: number;
   showSpinner = false;
   hideScore = false;
+  bubbleAltMarginLeft: any;
+
+  questionsAndAnswersArray = [];
 
   constructor(
     private router: Router,
@@ -35,19 +38,66 @@ export class FaqTestComponent implements OnInit {
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
-    this.getSearchedQuestionFromStorage()
+    this.getSearchedQuestionFromStorage();
+
+
 
     this.getCurrentProject();
     this.getRemoteFaqKbKey();
 
-    if (this.questionToTest) {
+    console.log('FaqTestComponent - OnInit  questionToTest', this.questionToTest);
+    if (this.questionToTest && this.questionToTest !== null) {
       this.showSpinner = true;
 
-      // SET A TIMEOUT TO AVOID THAR REMOTE FAQ ARE NOT UPDATED
+      // SET A TIMEOUT TO AVOID THAT REMOTE FAQ ARE NOT UPDATED
       setTimeout(() => {
         this.onInitSearchRemoteFaq(this.questionToTest);
       }, 500);
     }
+  }
+
+  ngAfterViewInit() {
+    console.log('FaqTestComponent - ngAfterViewInit ');
+
+
+  }
+
+  getSpeechWrapperWidth() {
+    const elemSpeechWrapper = <HTMLElement>document.querySelector('.speech-wrapper');
+    console.log('FaqTestComponent - elemSpeechWrapper onInit ', elemSpeechWrapper);
+    if (elemSpeechWrapper) {
+      const elemSpeechWrapperWidth = elemSpeechWrapper.clientWidth;
+      console.log('FaqTestComponent - Speech Wrapper Width onInit ', elemSpeechWrapperWidth);
+      const windowWidth = window.innerWidth;
+      console.log('FaqTestComponent - Window Width onInit ', windowWidth);
+
+      if (windowWidth > 410) {
+        this.bubbleAltMarginLeft = elemSpeechWrapperWidth - 260 + 'px'
+      }
+    }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    const newInnerWidth = event.target.innerWidth;
+    console.log('FaqTestComponent newInnerWidth ', newInnerWidth)
+
+
+    const elemSpeechWrapper = <HTMLElement>document.querySelector('.speech-wrapper');
+    //  console.log('FaqTestComponent - elemSpeechWrapper onResize ', elemSpeechWrapper);
+    if (elemSpeechWrapper) {
+      const elemSpeechWrapperWidth = elemSpeechWrapper.clientWidth;
+      console.log('FaqTestComponent - elemSpeechWrapperWidth onResize', elemSpeechWrapperWidth);
+
+      if (newInnerWidth > 410) {
+
+        this.bubbleAltMarginLeft = elemSpeechWrapperWidth - 260 + 'px'
+      } else {
+
+        this.bubbleAltMarginLeft = 0 + 'px'
+      }
+    }
+
   }
 
   // setTimeout(() => {
@@ -62,8 +112,12 @@ export class FaqTestComponent implements OnInit {
    * USING THE QUESTION SAVED IN THE STORAGE (IN THIS WAY THE USER DISPLAY THE PREVIOUS RESULT OF RESEARCH)
    * WHEN THE USER GO TO THE PAGE 'EDIT BOT' (faq.comp) THE STORED SEARCHED QUESTION IS CLEARED  */
   getSearchedQuestionFromStorage() {
-    this.questionToTest = localStorage.getItem('searchedQuestion');
-    console.log('SEARCHED QUESTION - FROM LOcAL STORAGE ', this.questionToTest)
+    const storedQuestionToTest = localStorage.getItem('searchedQuestion');
+    console.log('FaqTestComponent SEARCHED QUESTION - FROM LOcAL STORAGE 1', storedQuestionToTest)
+    if (storedQuestionToTest !== 'null') {
+      this.questionToTest = storedQuestionToTest;
+      console.log('FaqTestComponent SEARCHED QUESTION - FROM LOcAL STORAGE 2', this.questionToTest)
+    }
   }
 
   getRemoteFaqKbKey() {
@@ -97,7 +151,8 @@ export class FaqTestComponent implements OnInit {
         console.log('REMOTE FAQ FOUND - POST DATA ', remoteFaq);
 
         if (remoteFaq) {
-          this.hits = remoteFaq.hits
+          this.hits = remoteFaq.hits;
+          console.log('FaqTestComponent *** hits *** ', this.hits);
           this.faq_number_of_found = remoteFaq.total;
           console.log('REMOTE FAQ LENGHT ', this.faq_number_of_found);
 
@@ -111,12 +166,17 @@ export class FaqTestComponent implements OnInit {
         console.log('REMOTE FAQ - POST REQUEST * COMPLETE *');
 
         this.showSpinner = false;
+
+        setTimeout(() => {
+          this.getSpeechWrapperWidth()
+        }, 500);
       });
   }
 
   searchRemoteFaq() {
+    this.getSpeechWrapperWidth();
     // BUG FIX 'RUN TEST button remains focused after clicking'
-    this.elementRef.nativeElement.blur();
+    // this.elementRef.nativeElement.blur();
 
     localStorage.setItem('searchedQuestion', this.questionToTest);
 
@@ -126,6 +186,14 @@ export class FaqTestComponent implements OnInit {
 
         if (remoteFaq) {
           this.hits = remoteFaq.hits
+          console.log('FaqTestComponent *** hits *** ', this.hits);
+          
+          this.questionsAndAnswersArray.push({'q': this.hits[0].document.question, 'a': this.hits[0].document.answer })
+          
+          console.log('FaqTestComponent *** Questions & Answers Array *** ', this.questionsAndAnswersArray);
+
+
+
           this.faq_number_of_found = remoteFaq.total;
           console.log('REMOTE FAQ LENGHT ', this.faq_number_of_found);
 
