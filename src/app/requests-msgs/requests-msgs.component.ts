@@ -125,8 +125,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   train_bot_sidebar_height: any;
   train_bot_sidebar_top_pos: any;
 
-  bubbleAltMarginLeft
- 
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -153,7 +152,8 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   onResize(event: any) {
 
     this.newInnerWidth = event.target.innerWidth;
-    // console.log('REQUEST-MSGS - ON RESIZE -> WINDOW WITH ', this.newInnerWidth);
+    console.log('REQUEST-MSGS - ON RESIZE -> WINDOW WITH ', this.newInnerWidth);
+
 
     this.newInnerHeight = event.target.innerHeight;
     // console.log('REQUEST-MSGS - ON RESIZE -> WINDOW HEIGHT ', this.newInnerHeight);
@@ -171,6 +171,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
       // console.log('REQUEST-MSGS - *** MODAL HEIGHT ***', this.users_list_modal_height);
     }
 
+
     // remove the padding on small device
     // if (this.newInnerWidth <= 768) {
     //   elemMainContent.setAttribute('style', 'padding-right: 0px; padding-left: 0px');
@@ -178,35 +179,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     //   elemMainContent.setAttribute('style', 'padding-right: 15px; padding-left: 15px');
     // }
   }
-  openRightSideBar(message: string) {
-    this.OPEN_RIGHT_SIDEBAR = true;
-    console.log('»»»» OPEN RIGHT SIDEBAR ', this.OPEN_RIGHT_SIDEBAR, ' MSG: ', message);
-    this.selectedQuestion = message;
 
-
-    // questo non funziona se è uncommented BUG RESOLVE
-    const elemMainContent = <HTMLElement>document.querySelector('.main-content');
-    this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
-    console.log('REQUEST-MSGS - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
-
-
-    // BUG RESOLVE inserisco questo visto che all'ampiezza in cui compare la sidebar sx non è comunque possibile scorrere
-    // la pagina
-    // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-    // _elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;overflow-y: hidden !important;');
-
-    // const mainPanelScrollPosition = _elemMainPanel.scrollTop;
-    // console.log('mainPanelScrollPosition ', mainPanelScrollPosition);
-    // this.train_bot_sidebar_top_pos = mainPanelScrollPosition + 'px'
-  }
-
-  closeRightSidebar(event) {
-    console.log('»»»» CLOSE RIGHT SIDEBAR ', event);
-    this.OPEN_RIGHT_SIDEBAR = event;
-    
-    // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-    // _elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;');
-  }
 
   // detect browser back button click
   @HostListener('window:popstate', ['$event'])
@@ -233,13 +206,43 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.getProjectUserRole();
   }
 
+
+  openRightSideBar(message: string) {
+    this.OPEN_RIGHT_SIDEBAR = true;
+    console.log('»»»» OPEN RIGHT SIDEBAR ', this.OPEN_RIGHT_SIDEBAR, ' MSG: ', message);
+    this.selectedQuestion = message;
+
+
+    // questo non funziona se è uncommented BUG RESOLVE
+    const elemMainContent = <HTMLElement>document.querySelector('.main-content');
+    this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
+    console.log('REQUEST-MSGS - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
+
+
+    // BUG RESOLVE inserisco questo visto che all'ampiezza in cui compare la sidebar sx non è comunque possibile scorrere
+    // la pagina
+    // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+    // _elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;overflow-y: hidden !important;');
+
+    // const mainPanelScrollPosition = _elemMainPanel.scrollTop;
+    // console.log('mainPanelScrollPosition ', mainPanelScrollPosition);
+    // this.train_bot_sidebar_top_pos = mainPanelScrollPosition + 'px'
+  }
+
+  closeRightSidebar(event) {
+    console.log('»»»» CLOSE RIGHT SIDEBAR ', event);
+    this.OPEN_RIGHT_SIDEBAR = event;
+
+    // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+    // _elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;');
+  }
+
+
+
   listenUrl() {
-
     // this.subscription = this.router.events.subscribe(() => {
-
     //   const location_path = this._location.path();
     //   console.log('»»» REQUEST DETAILS location (**** location path ****)', location_path);
-
 
     this.locationSubscription = this._location.subscribe((val: any) => {
       // console.log('»»»»» _location ', val)
@@ -267,20 +270,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     // });
   }
 
-  getSpeechWrapperWidth() {
-    const elemSpeechWrapper = <HTMLElement>document.querySelector('.chat-card');
-    console.log('RequestsMsgsComponent - elemSpeechWrapper onInit ', elemSpeechWrapper);
-    if (elemSpeechWrapper) {
-      const elemSpeechWrapperWidth = elemSpeechWrapper.clientWidth;
-      console.log('RequestsMsgsComponent - Speech Wrapper Width onInit ', elemSpeechWrapperWidth);
-      const windowWidth = window.innerWidth;
-      console.log('RequestsMsgsComponent - Window Width onInit ', windowWidth);
-
-      if (windowWidth > 410) {
-        this.bubbleAltMarginLeft = elemSpeechWrapperWidth - 260 + 'px'
-      }
-    }
-  }
+ 
 
   getProjectUserRole() {
     this.usersService.project_user_role_bs.subscribe((user_role) => {
@@ -427,7 +417,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    
+
   }
 
   getLoggedUser() {
@@ -494,7 +484,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     }, () => {
       console.log('»»» REQUESTS-MSGS.COMP: GET NODEJS REQUEST BY FireBase REQ ID * COMPLETE *');
 
-      this.getSpeechWrapperWidth();
+
     });
   }
 

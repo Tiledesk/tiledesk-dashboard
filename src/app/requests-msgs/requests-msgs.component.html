@@ -123,30 +123,9 @@
                 <!-- style="padding-bottom: 3px;" class="answer left" -->
               <div *ngFor="let message of messagesList"> 
 
-
-                <!-- <div class="avatar" style="  width: 35px; height: 35px; position: absolute;">
-                  <div style="display: block;border-radius: 20px; height: 100%; margin-top: 35px; background-color: #ebebeb">
-                    <span class="senderFullname" style="position: absolute; top:43px; margin-left:13px; color: #999999; text-transform: uppercase">
-                      {{ messageSenderInitialLetter( message.sender_fullname )}}
-                    </span>
-                  </div>
-                </div>
-                <div class="name">
-                  <strong>{{ message.sender_fullname }}</strong>
-                </div>
-                <div class="row">
-                  <div class="col-xs-11 text" style=" margin-left: 6px; vertical-align: middle; padding-top: 5px;padding-bottom: 5px;">
-                    <span class="messageTime" style=" float: right; padding-right: 0px; font-size: 11px; color:#aaa">
-                      {{ message.timestamp | date: 'd/M/y HH:mm:ss'}}
-                    </span>
-                    <div class="col-xs-8 col-sm-8 col-lg-8" style=" padding-left: 5px; padding-top: 5px;">
-                      <div class="messageText" style="font-size: 13px; line-height: normal; ">
-                        {{ message.text }}
-                      </div>
-                    </div>
-                  </div>
-                </div> -->
-
+                  <div class="parent">
+                      <div [ngClass]="{'child' : requester_id !== message.sender}"> 
+    
                 <div class="speech-wrapper">
 
                   <!-- ////// REQUESTER -->
@@ -154,7 +133,7 @@
                         <div class="avatar" style="  width: 35px; height: 35px; position: absolute; left: -50px; bottom: 36px;">
                           <div class="requester-avatar-wrapper" style="display: block;border-radius: 50%; height: 100%; margin-top: 35px;" [ngStyle]="{'background-color': fillColour }">
                               <!-- position: absolute; top:42px; margin-left:10px; color: #fff; text-transform: uppercase -->
-                            <span class="_requester-avatar-inchat" style="">
+                            <span class="_requester-avatar-inchat">
                               <!-- {{ messageSenderInitialLetter( message.sender_fullname )}} -->
                               {{ requester_fullname_initial }}
                               
@@ -166,26 +145,24 @@
                       <p class="name" [ngStyle]="{'color': fillColour }">{{ message.sender_fullname }}
                           <!-- margin-right: -45px; -->
                         <span style="float:right; cursor:pointer" (click)="openRightSideBar(message?.text)">
-                          Addestra
-                            <!-- routerLink="/project/{{ id_project }}/train"  -->
-                            <!-- <a class="btn btn-default" (click)="openRightSideBar(message?.text)">Addestra</a>  -->
-                          </span>
+                          <!-- Addestra -->
+                          {{ 'Train' | translate }}
+                       
+                        </span>
                       </p>
                       <p class="message">{{ message?.text }}</p>
                       <span class="timestamp"> {{ message?.timestamp | date: 'd/M/y HH:mm:ss'}} </span>
                     </div>
                     <div class="bubble-arrow"></div>
                   </div>
-                  <!--  Speech Bubble alternative -->
-
-                  <!-- float:right; -->
+                  <!-- ////////////////// Speech Bubble alternative ////////////////// -->
                   <div *ngIf="requester_id !== message.sender" class="bubble alt">
 
                       <div class="avatar" style="width: 35px; height: 35px; position: absolute; left: 254px; bottom: 36px;">
                           <div style="display: block;border-radius: 50%; height: 100%; margin-top: 35px; background-color: #fff; border:1px solid #ebebeb;">
                             
                             <!-- USE CASE: human -->
-                            <span *ngIf="message?.sender !== 'system' && message?.sender.indexOf('bot_') === -1" class="senderFullname" style="position: absolute; top:43px; margin-left:13px;">
+                            <span *ngIf="message?.sender !== 'system' && message?.sender.indexOf('bot_') === -1" style="position: absolute; top:43px; margin-left:13px;">
                               <!-- {{ messageSenderInitialLetter( message?.sender_fullname )}} -->
 
                               <img style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; margin-top: 1px; margin-bottom: 1px;position: relative;top: -9px; left: -14px;" 
@@ -194,21 +171,21 @@
                             </span>
 
                             <!-- USE CASE: bot -->
-                            <span *ngIf="message?.sender.indexOf('bot_') !== -1" class="senderFullname" style="position: absolute; top:43px; margin-left:13px;">
+                            <span *ngIf="message?.sender.indexOf('bot_') !== -1" style="position: absolute; top:43px; margin-left:13px;">
                                 <img style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; position:relative;top: -9px;left: -14px;" 
                                 class="user-img" src="assets/img/bot_image_as_human.jpg" 
                                 onerror="this.src='assets/img/no_image_user.png'"/>
                             </span>
 
                             <!-- USE CASE: system but with name Bot -->
-                            <span *ngIf="message?.sender === 'system' && message?.sender_fullname === 'Bot'" class="senderFullname" style="position: absolute; top:43px; margin-left:13px;color: #999999;">
+                            <span *ngIf="message?.sender === 'system' && message?.sender_fullname === 'Bot'" style="position: absolute; top:43px; margin-left:13px;color: #999999;">
                                 <img style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; position:relative;top: -9px;left: -14px;" 
                                 class="user-img" src="assets/img/bot_image_as_human.jpg" 
                                 onerror="this.src='assets/img/no_image_user.png'"/>
                             </span>
 
                             <!-- USE CASE: system -->
-                            <span *ngIf="message?.sender === 'system' && message?.sender_fullname !== 'Bot'" class="senderFullname" style="position: absolute; top:43px; margin-left:13px;color: #999999;">
+                            <span *ngIf="message?.sender === 'system' && message?.sender_fullname !== 'Bot'" style="position: absolute; top:43px; margin-left:13px;color: #999999;">
                                 <i class="material-icons" style="position: relative;left: -9px;top: -3px;font-size:26px">
                                     code
                                 </i>
@@ -228,7 +205,9 @@
                     <div class="bubble-arrow alt"></div>
                   </div>
                 </div>
+                </div>
 
+                </div>
               </div>
             </div>
             

@@ -161,6 +161,8 @@
     "RemoveGroupMemberErrorNoticationMsg": "An error occurred while removing the member",
     "UpdateWidgetProjectSuccessNoticationMsg": "Chat widget style updated",
     "UpdateDeptGreetingsSuccessNoticationMsg": "Your changes has been saved",
+    "FaqUpdatedSuccessfullyMsg":"FAQ successfully updated",
+    "FaqUpdatedErrorMsg":"An error occurred while updating the FAQ",
     "Login": "Login",
     "SignInToTiledesk": "Sign in to tiledesk",
     "LetSetUpYourTiledeskChat": "Let's set up your tiledesk chat",
@@ -207,6 +209,9 @@
     "Plan": "Plan",
     "Upgrade":"Upgrade",
     "TrialExpired":"trial expired",
+    "Train": "Train",
+    "Search": "Search",
+    "AddTheSelectedQuestionToAnExistingFAQ":"Add the selected question to an existing FAQ",
     "ActivitiesOptions": {
         "AgentAvailabilityOrRoleChange": "Change agent availability or role",
         "AgentDeletion": "Agent deletion",

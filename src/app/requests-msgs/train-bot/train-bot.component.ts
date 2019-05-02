@@ -1,6 +1,8 @@
 import { Component, OnInit, AfterViewInit, EventEmitter, Input, Output, ElementRef, ViewChild } from '@angular/core';
 import { slideInOutAnimation } from '../../_animations/index';
 import { MongodbFaqService } from '../../services/mongodb-faq.service';
+import { TranslateService } from '@ngx-translate/core';
+import { NotifyService } from '../../core/notify.service';
 
 @Component({
   selector: 'appdashboard-train-bot',
@@ -20,19 +22,48 @@ export class TrainBotComponent implements OnInit, AfterViewInit {
   isOpenRightSidebar = true;
   sidebar_content_height: any;
   windowActualHeight: any;
-  foundFAQs = []
-
+  foundFAQs = [];
+  faqSuccessfullyUpdated: string;
+  faqErrorWhileUpdating: string;
+  updatedFAQ: any;
+  scrollpos: number;
+  elSidebarContent: any;
   constructor(
-    private faqService: MongodbFaqService
+    private faqService: MongodbFaqService,
+    private translate: TranslateService,
+    private notify: NotifyService
   ) { }
 
   ngOnInit() {
     this.onInitSidebarContentHeight();
     console.log('TrainBotComponent - selectedQuestion ', this.selectedQuestion);
+
+    this.translateFaqSuccessfullyUpdated();
+    this.translateFaqErrorWhileUpdating();
   }
 
-  onInitSidebarContentHeight() {
+  // TRANSLATION
+  translateFaqSuccessfullyUpdated() {
+    this.translate.get('FaqUpdatedSuccessfullyMsg')
+      .subscribe((text: string) => {
 
+        this.faqSuccessfullyUpdated = text;
+        console.log('+ + + FaqUpdatedSuccessfullyMsg', text)
+      });
+  }
+
+  translateFaqErrorWhileUpdating() {
+    this.translate.get('FaqUpdatedErrorMsg')
+      .subscribe((text: string) => {
+
+        this.faqErrorWhileUpdating = text;
+        console.log('+ + + FaqUpdatedErrorMsg', text)
+      });
+  }
+
+
+
+  onInitSidebarContentHeight() {
     this.windowActualHeight = window.innerHeight;
     console.log('TrainBotComponent - windowActualHeight ', this.windowActualHeight);
   }
@@ -50,29 +81,6 @@ export class TrainBotComponent implements OnInit, AfterViewInit {
         el.setAttribute('style', 'text-transform: none');
       }
     );
-  }
-  /**
-    * GET ONLY THE FAQ WITH THE FAQ-KB ID PASSED FROM FAQ-KB COMPONENT
-    */
-  getFaqByFaqKbId() {
-    this.faqService.getMongoDbFaqByFaqKbId('d9497a95-f381-42ab-865a-1004685c0a94')
-      .subscribe((faq: any) => {
-        console.log('>> FAQs GOT BY FAQ-KB ID', faq);
-
-
-        // this.faq = faq;
-        //   if (faq) {
-        //     this.faq_lenght = faq.length
-        //   }
-        // }, (error) => {
-        //   this.showSpinner = false;
-        //   console.log('>> FAQs GOT BY FAQ-KB ID - ERROR', error);
-
-        // }, () => {
-        //   this.showSpinner = false;
-        //   console.log('>> FAQs GOT BY FAQ-KB ID - COMPLETE');
-        // });
-      })
   }
 
 
@@ -99,23 +107,41 @@ export class TrainBotComponent implements OnInit, AfterViewInit {
     this.searchbtnRef.nativeElement.blur();
     console.log('searchFaq - faqToSearch ', this.faqToSearch)
 
+    // if (this.elSidebarContent) {
+    //   this.elSidebarContent.scrollTop = 279;
+    //   console.log('TrainBotComponent SCROLL POSITION 2 ', this.scrollpos)
+    // }
+
     this.faqService.getFaqsByText(this.faqToSearch)
       .subscribe((faq: any) => {
-        console.log('TrainBotComponent FAQs GOT BY FAQ-KB ID', faq);
+        console.log('TrainBotComponent FAQs GOT BY TEXT ', faq);
         this.foundFAQs = faq;
         console.log('getFaq ', this.foundFAQs);
-      })
+      }, (error) => {
+        console.log('TrainBotComponent FAQs GOT BY TEXT  error', error);
+      },
+        () => {
+          console.log('TrainBotComponent FAQs GOT BY TEXT * COMPLETE *');
+
+
+        });
 
     // this.faqToSearch = getFaq.question
     console.log('searchFaq - faqToSearch ', this.faqToSearch);
 
   }
 
+  // onScroll(event: any): void {
+  //   this.elSidebarContent = <HTMLElement>document.querySelector('.sidebar-content');
+  //   this.scrollpos = this.elSidebarContent.scrollTop
+  //   console.log('TrainBotComponent SCROLL POSITION', this.scrollpos)
+  // }
+
   clearFaqToSearch() {
     console.log('calling clearFaqToSearch');
     this.faqToSearch = '';
+    this.foundFAQs = []
   }
-
 
   /**
    * *** EDIT FAQ ***
@@ -125,22 +151,27 @@ export class TrainBotComponent implements OnInit, AfterViewInit {
     console.log('TrainBotComponent FAQ QUESTION TO UPDATE ', question);
     console.log('TrainBotComponent FAQ ANSWER TO UPDATE ', answer);
 
+
     this.faqService.updateMongoDbFaq(faq_id, question + '\n\n' + this.selectedQuestion, answer)
-      .subscribe((data) => {
-        console.log('TrainBotComponent PUT DATA (UPDATE FAQ)', data);
+      .subscribe((updatedFAQ) => {
+        console.log('TrainBotComponent PUT DATA (UPDATED FAQs)', updatedFAQ);
+        this.updatedFAQ = updatedFAQ;
 
       }, (error) => {
         console.log('TrainBotComponent PUT (UPDATE FAQ) REQUEST ERROR ', error);
         // =========== NOTIFY ERROR ===========
-        // this.notify.showNotification('An error occurred while updating the FAQ', 4, 'report_problem');
-        // this.notify.showNotification(this.editFaqErrorNoticationMsg, 4, 'report_problem');
+        this.notify.showNotification(this.faqErrorWhileUpdating, 4, 'report_problem');
       }, () => {
         console.log('TrainBotComponent PUT (UPDATE FAQ) REQUEST * COMPLETE *');
         // =========== NOTIFY SUCCESS===========
-        // this.notify.showNotification('FAQ successfully updated', 2, 'done');
-        // this.notify.showNotification(this.editFaqSuccessNoticationMsg, 2, 'done');
+        this.notify.showNotification(this.faqSuccessfullyUpdated, 2, 'done');
 
-
+        this.foundFAQs.forEach(faq => {
+          console.log('TrainBotComponent foundFAQs faq', faq);
+          if (faq_id === faq._id) {
+            faq.question = faq.question + '\n\n' + this.selectedQuestion
+          }
+        });
       });
   }
 
