@@ -1,3 +1,12 @@
+
+<!-- <div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">keyboard_arrow_left</i>
+  {{ "RequestMsgsPage.RequestDetails" | translate }}
+</div> -->
+
+<!-- <div class="main-content" style="padding-top:0px">
+  <div class="container-fluid"> -->
+    <!-- height: 100%; border-left: 1px solid #e0e0e0;-->
 <div class="right-side-bar" style="    
 position: absolute;
 z-index: 100;
@@ -5,21 +14,34 @@ top: 0;
 right: 0;
 width: 33%;
 height: 100%;
-overflow: auto;
+overflow-y: auto;
+overflow-x: hidden;
 background: #fff;
-padding-top:20px;
-padding-left: 20px;
-padding-right: 20px;
-padding-bottom: 20px;
-border-left: 1px solid #e0e0e0;">
-
-<div style="padding-top:45px;border-bottom: 1px solid #eeeeee;">
-  <h6  style="color: #566787;font-weight: 400; text-transform: none"> Aggiungi domanda a FAQ esistente  </h6> 
+padding-top:15px;
+padding-left: 15px;
+padding-right: 15px;
+padding-bottom: 15px;">
+<!-- padding-top:45px; -->
+<!-- <div class="navbar-brand" >
+  
+  ++ Aggiungi domanda a FAQ esistente
+</div> -->
+<!-- color: #566787; -->
+<!-- background-color: #3c4252!important;
+color: #fff!important; -->
+<div style="border-bottom: 1px solid #eeeeee; background-color: #3c4252!important;
+color: #fff!important; margin-left:-20px; margin-right:-20px; margin-top:-15px">
+  <h5  style="font-weight: 400; text-transform: none; margin-top:0px; font-size: 16px; padding-top: 15px;padding-left: 21px;">
+     <!-- Aggiungi domanda a FAQ esistente   -->
+     Train Bot
+     <i class="material-icons" style="padding-right: 10px; float: right;cursor:pointer"
+     (click)="closeRightSideBar()">close</i>
+  </h5> 
 </div>
 <!-- text-align: center -->
-      <div class="speech-wrapper">
+      <div class="speech-wrapper-train">
         <div class="bubble">
-          <div class="txt">
+          <div class="txt selected-question">
          
             <p class="message"> {{ selectedQuestion}} </p>
             
@@ -46,7 +68,7 @@ border-left: 1px solid #e0e0e0;">
           <div class="input-group">
 
             <div class="buttonInside">
-              <input name="faqToSearch" type="text" [(ngModel)]="faqToSearch" class="form-control" autocomplete="off"
+              <input #searchbox name="faqToSearch" type="text" [(ngModel)]="faqToSearch" class="form-control" autocomplete="off"
                 style="margin-bottom: 27px;
                 background-image:none;
                 border: 1px solid #d9d9d9;
@@ -86,14 +108,48 @@ border-left: 1px solid #e0e0e0;">
         </div>
       </div>
 
+      <div class="sidebar-content"  style="overflow-y: auto;overflow-x: hidden;" [ngStyle]="{ 'height': sidebar_content_height }">
+
+        <div *ngIf="foundFAQs?.length === 0" style="text-align: center; max-width: 240px;margin: auto;color:#7695a5">
+          Cerca e aggiungi la domanda ad una FAQ esistente
+        </div>
+
+        <!-- <div> -->
+        <div *ngFor="let faq of foundFAQs" >
+          <div class="row" style="padding: 18px;">
+              <div class="col-sm-1" style="padding-left:4px; padding-right:4px; padding-top:8px">
+                  <i class="material-icons" style="cursor:pointer;color: #3c4252!important">
+                      add_circle_outline
+                  </i>
+              </div>
+            <div class="col-sm-5" style="padding-left:4px; padding-right:4px"> 
+              <div class="question-bubble" style="background-color: #f5f5f5; color:rgba(0,0,0,.87);border-radius: 15px 15px 15px 0px; padding:8px ">
+                {{ faq.question }}
+              </div> 
+            </div>
+            <div class="col-sm-6" style="padding-left:4px; padding-right:4px"> 
+              <div class="answer-bubble" style="background-color: #f5f5f5; color:rgba(0,0,0,.87);border-radius: 15px 15px 0px 15px; padding:8px  ">
+                {{ faq.answer }}
+              </div> 
+            </div>
+
+       
+          </div>
+            
+        </div>
+      <!-- </div> -->
+
+          <!-- <p> Select a contact to start a conversation. </p>  -->
+      </div>
+
   
 
-  <!-- <div class="row">
-    <div class="col-sm-12">  -->
-      <div class="center" style="">
-        <button class="bottom-button" (click)="closeRightSideBar() "> Close </button>
-      </div>
-    <!-- </div>
-  </div> -->
+  
+      <!-- <div class="center" style="">
+        <button class="bottom-button" (click)="closeRightSideBar()"> Close </button>
+      </div> -->
+
 
 </div>
+<!-- </div>
+</div> -->

@@ -118,7 +118,7 @@
                 </div>
               </div> -->
 
-            <div class="chat-body" style="vertical-align:baseline">
+            <div class="chat-body" style="vertical-align:baseline; max-width: 600px;">
 
                 <!-- style="padding-bottom: 3px;" class="answer left" -->
               <div *ngFor="let message of messagesList"> 
@@ -151,7 +151,7 @@
 
                   <!-- ////// REQUESTER -->
                   <div *ngIf="requester_id === message.sender" class="bubble">
-                        <div class="avatar" style="  width: 35px; height: 35px; position: absolute;    left: -50px; bottom: 36px;">
+                        <div class="avatar" style="  width: 35px; height: 35px; position: absolute; left: -50px; bottom: 36px;">
                           <div class="requester-avatar-wrapper" style="display: block;border-radius: 50%; height: 100%; margin-top: 35px;" [ngStyle]="{'background-color': fillColour }">
                               <!-- position: absolute; top:42px; margin-left:10px; color: #fff; text-transform: uppercase -->
                             <span class="_requester-avatar-inchat" style="">
@@ -164,7 +164,9 @@
 
                     <div class="txt">
                       <p class="name" [ngStyle]="{'color': fillColour }">{{ message.sender_fullname }}
-                        <span style="float:right; margin-right: -45px;cursor:pointer" (click)="openRightSideBar(message?.text)">Addestra
+                          <!-- margin-right: -45px; -->
+                        <span style="float:right; cursor:pointer" (click)="openRightSideBar(message?.text)">
+                          Addestra
                             <!-- routerLink="/project/{{ id_project }}/train"  -->
                             <!-- <a class="btn btn-default" (click)="openRightSideBar(message?.text)">Addestra</a>  -->
                           </span>
@@ -176,31 +178,31 @@
                   </div>
                   <!--  Speech Bubble alternative -->
 
-
+                  <!-- float:right; -->
                   <div *ngIf="requester_id !== message.sender" class="bubble alt">
 
-                      <div class="avatar" style="  width: 35px; height: 35px; position: absolute; left: 254px; bottom: 36px;">
+                      <div class="avatar" style="width: 35px; height: 35px; position: absolute; left: 254px; bottom: 36px;">
                           <div style="display: block;border-radius: 50%; height: 100%; margin-top: 35px; background-color: #fff; border:1px solid #ebebeb;">
                             
                             <!-- USE CASE: human -->
                             <span *ngIf="message?.sender !== 'system' && message?.sender.indexOf('bot_') === -1" class="senderFullname" style="position: absolute; top:43px; margin-left:13px;">
                               <!-- {{ messageSenderInitialLetter( message?.sender_fullname )}} -->
 
-                              <img style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; margin-top: 1px; margin-bottom: 1px;position: relative;top: -9px; left: -13px;" 
+                              <img style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; margin-top: 1px; margin-bottom: 1px;position: relative;top: -9px; left: -14px;" 
                               class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{message?.sender}}%2Fphoto.jpg?alt=media" 
                               onerror="this.src='assets/img/no_image_user.png'"/>
                             </span>
 
                             <!-- USE CASE: bot -->
                             <span *ngIf="message?.sender.indexOf('bot_') !== -1" class="senderFullname" style="position: absolute; top:43px; margin-left:13px;">
-                                <img style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; position:relative;top: -9px;left: -13px;" 
+                                <img style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; position:relative;top: -9px;left: -14px;" 
                                 class="user-img" src="assets/img/bot_image_as_human.jpg" 
                                 onerror="this.src='assets/img/no_image_user.png'"/>
                             </span>
 
                             <!-- USE CASE: system but with name Bot -->
                             <span *ngIf="message?.sender === 'system' && message?.sender_fullname === 'Bot'" class="senderFullname" style="position: absolute; top:43px; margin-left:13px;color: #999999;">
-                                <img style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; position:relative;top: -9px;left: -13px;" 
+                                <img style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; position:relative;top: -9px;left: -14px;" 
                                 class="user-img" src="assets/img/bot_image_as_human.jpg" 
                                 onerror="this.src='assets/img/no_image_user.png'"/>
                             </span>
@@ -318,7 +320,8 @@
         </div> <!-- ./ col-md-7 -->
 
         <!-- // SIDEBAR // -->
-        <div class="col-sm-5 right-col"[ngClass]="{'hidden' : OPEN_RIGHT_SIDEBAR === true}">
+        <!-- [ngClass]="{'hidden' : OPEN_RIGHT_SIDEBAR === true}" -->
+        <div class="col-sm-5 right-col">
           <div class="card right-card" style="padding-top:5px; padding-bottom:5px;">
 
             <div class="card-content" style="padding-top:5px;">
@@ -1278,7 +1281,42 @@
     </div>
     <!-- /.modal-dialog -->
   </div>
-
+  <!-- margin-top:70px -->
+  <!-- 'top':train_bot_sidebar_top_pos-->
+  <!-- position: absolute!important -->
   <div *ngIf="OPEN_RIGHT_SIDEBAR === true" class="view-side" >
-    <appdashboard-train-bot [selectedQuestion]="selectedQuestion" (valueChange)='closeRightSidebar($event)'></appdashboard-train-bot>
+    <appdashboard-train-bot style="" [ngStyle]="{'height':train_bot_sidebar_height }" [selectedQuestion]="selectedQuestion" (valueChange)='closeRightSidebar($event)'></appdashboard-train-bot>
   </div>
+
+
+  <!-- <div class="chat-panel right-chat-panel right-positioned"
+  style="    width: 360px;
+  min-width: 360px;
+  max-width: 360px;
+  position: absolute!important;
+    top: 0;
+    bottom: 0;
+    right: 0;">
+
+    <div style="    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    width: 360px;
+    min-width: 360px;
+    max-width: 360px;
+    z-index: 99;
+    overflow: hidden;">
+      <div style="flex-direction: row;
+      box-sizing: border-box;
+      display: flex;
+      place-content: center space-between;
+      align-items: center;
+      background-color: #3c4252!important;
+      color: #fff!important;">
+
+Ciao Pippo
+      </div>
+        
+    </div>
+ 
+  </div> -->

@@ -264,11 +264,15 @@
     // margin: 0 0 25px;
     &.alt{
       margin: 0 0 0 60px;
+      
       // added
+      // margin: 0 0 40px 60px;
+      // float:right;
       // background: #039be5!important;
     }
     .txt{
-      padding: 8px 55px 8px 14px;
+      // padding: 8px 55px 8px 14px;
+      padding: 8px 14px 8px 14px;
       .name{
         font-weight: 600;
         font-size: 12px;
@@ -330,6 +334,14 @@
     }
   }
 }
+
+// @media (max-width: 453px){
+//   .speech-wrapper .bubble.alt{
+//     float: none !important;
+//     margin-left:0px;
+//     margin-bottom:0px;
+//   }
+// }
 
 // ***************** ./END new CHAT *****************
 

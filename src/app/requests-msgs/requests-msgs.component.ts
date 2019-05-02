@@ -122,6 +122,12 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   locationSubscription: any;
   OPEN_RIGHT_SIDEBAR = false;
   selectedQuestion: string;
+  train_bot_sidebar_height: any;
+  train_bot_sidebar_top_pos: any;
+
+
+
+  
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -161,6 +167,8 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     // RESOLVE THE BUG: @media screen and (max-width: 992px) THE THE HEIGHT OF THE  MODAL 'USERS LIST' IS NOT 100%
     if (this.newInnerWidth <= 991) {
       this.users_list_modal_height = elemMainContent.clientHeight + 70 + 'px'
+
+      this.train_bot_sidebar_height = elemMainContent.clientHeight + 'px'
       // console.log('REQUEST-MSGS - *** MODAL HEIGHT ***', this.users_list_modal_height);
     }
 
@@ -175,11 +183,30 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.OPEN_RIGHT_SIDEBAR = true;
     console.log('»»»» OPEN RIGHT SIDEBAR ', this.OPEN_RIGHT_SIDEBAR, ' MSG: ', message);
     this.selectedQuestion = message;
+
+
+    // questo non funziona se è uncommented BUG RESOLVE
+    const elemMainContent = <HTMLElement>document.querySelector('.main-content');
+    this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
+    console.log('REQUEST-MSGS - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
+
+
+    // BUG RESOLVE inserisco questo visto che all'ampiezza in cui compare la sidebar sx non è comunque possibile scorrere
+    // la pagina
+    // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+    // _elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;overflow-y: hidden !important;');
+
+    // const mainPanelScrollPosition = _elemMainPanel.scrollTop;
+    // console.log('mainPanelScrollPosition ', mainPanelScrollPosition);
+    // this.train_bot_sidebar_top_pos = mainPanelScrollPosition + 'px'
   }
 
   closeRightSidebar(event) {
     console.log('»»»» CLOSE RIGHT SIDEBAR ', event);
     this.OPEN_RIGHT_SIDEBAR = event;
+    
+    // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+    // _elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;');
   }
 
   // detect browser back button click
@@ -784,8 +811,6 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     });
   }
-
-
   // end new
 
   /// new
@@ -812,7 +837,6 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
 
         });
     });
-
   }
 
 
