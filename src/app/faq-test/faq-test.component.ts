@@ -58,8 +58,6 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     console.log('FaqTestComponent - ngAfterViewInit ');
-
-
   }
 
   getSpeechWrapperWidth() {

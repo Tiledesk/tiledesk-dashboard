@@ -99,13 +99,32 @@ export class MongodbFaqService {
   }
 
   /**
-   * GET FAQ BY FAQ-KB ID
+   * GET FAQ BY FAQ-KB ID (alias BOT ID)
    * @param id_faq_kb
    */
   public getMongoDbFaqByFaqKbId(id_faq_kb: string): Observable<Faq[]> {
     // let url = 'http://localhost:3000/app1/faq/?id_faq_kb=5a81598721333b920c3e5949';
     let url = this.MONGODB_BASE_URL;
     url += '?id_faq_kb=' + `${id_faq_kb}`;
+
+    console.log('MONGO DB GET BY ID FAQ URL', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
+    /**
+   * GET FAQ BY TEXT (CONTAINED IN THE QUESTION OR IN THE ANSWER)
+   * @param id_faq_kb
+   */
+  public getFaqsByText(text: string): Observable<Faq[]> {
+    // let url = 'http://localhost:3000/app1/faq/?id_faq_kb=5a81598721333b920c3e5949';
+    let url = this.MONGODB_BASE_URL;
+    url += '?text=' + text;
 
     console.log('MONGO DB GET BY ID FAQ URL', url);
 
@@ -144,9 +163,9 @@ export class MongodbFaqService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'question': `${question}`, 'answer': `${answer}`, 'id_faq_kb': `${id_faq_kb}` };
+    const body = { 'question': question, 'answer': `${answer}`, 'id_faq_kb': `${id_faq_kb}` };
 
-    console.log('POST REQUEST BODY ', body);
+    console.log('ADD FAQ POST BODY ', body);
 
     const url = this.MONGODB_BASE_URL;
 

@@ -318,9 +318,11 @@
               </tr>
 
               <tr *ngFor="let faq of faq">
-                <td style="white-space: normal !important; word-wrap: break-word;font-size:13px; font-weight:400">
+                <td style="font-size:13px; font-weight:400">
                   <span class="tooltipx">
-                    {{ faq?.question }}
+                    <!-- <span [innerHTML]="faq?.question"> </span> -->
+                    <!-- white-space: pre-wrap !important; -->
+                    <span  style="white-space: pre-wrap; word-wrap: break-word">{{ faq?.question }}</span>
                     <span class="tooltiptext">{{ 'FaqPage.FaqId' | translate }}: <br> {{ faq?._id }} </span>
                   </span>
                 </td>

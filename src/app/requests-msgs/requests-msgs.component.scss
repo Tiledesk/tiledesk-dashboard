@@ -934,10 +934,32 @@ and also iPads specifically.
   -webkit-box-shadow:0 14px 26px -12px rgba(3, 155, 229, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(3, 155, 229, 0.2) !important;
 }
 
-
-
 @media (max-width: 767px) {
   .hidden {
     display: none;
   }
 }
+
+/* NK start CUSTOM SCROLL BAR */
+/* width */
+// ::-webkit-scrollbar {
+//   width: 8px;
+// }
+// /* Track */
+// ::-webkit-scrollbar-track {
+//   background: #f1f1f1; 
+//   border-radius: 10px;
+// }
+
+// /* Handle */
+// ::-webkit-scrollbar-thumb {
+//   background: #888; 
+//   border-radius: 10px;
+// }
+
+// /* Handle on hover */
+// ::-webkit-scrollbar-thumb:hover {
+//   background: #555; 
+//   /* width: 10px !important; */
+// }
+/* NK end CUSTOM SCROLL BAR */

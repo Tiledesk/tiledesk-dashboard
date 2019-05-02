@@ -117,19 +117,18 @@ color: #fff!important; margin-left:-20px; margin-right:-20px; margin-top:-15px">
         <!-- <div> -->
         <div *ngFor="let faq of foundFAQs" >
           <div class="row" style="padding: 18px;">
-              <div class="col-sm-1" style="padding-left:4px; padding-right:4px; padding-top:8px">
-                  <i class="material-icons" style="cursor:pointer;color: #3c4252!important">
+              <div class="col-xs-1" style="padding-left:4px; padding-right:4px; padding-top:8px">
+                  <i class="material-icons" style="cursor:pointer;color: #3c4252!important; font-size: 20px"
+                   (click)="editFaq(faq?._id, faq?.question, faq?.answer)">
                       add_circle_outline
                   </i>
               </div>
-            <div class="col-sm-5" style="padding-left:4px; padding-right:4px"> 
-              <div class="question-bubble" style="background-color: #f5f5f5; color:rgba(0,0,0,.87);border-radius: 15px 15px 15px 0px; padding:8px ">
-                {{ faq.question }}
-              </div> 
+            <div class="col-xs-5" style="padding-left:4px; padding-right:4px"> 
+              <div class="question-bubble">{{ faq?.question }}</div> 
             </div>
-            <div class="col-sm-6" style="padding-left:4px; padding-right:4px"> 
-              <div class="answer-bubble" style="background-color: #f5f5f5; color:rgba(0,0,0,.87);border-radius: 15px 15px 0px 15px; padding:8px  ">
-                {{ faq.answer }}
+            <div class="col-xs-6" style="padding-left:4px; padding-right:4px"> 
+              <div class="answer-bubble" style="background-color: #f5f5f5; color:rgba(0,0,0,.87);border-radius: 15px 15px 0px 15px; padding:8px;  font-size:12px; font-weight: 400">
+                {{ faq?.answer }}
               </div> 
             </div>
 

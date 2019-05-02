@@ -125,9 +125,8 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   train_bot_sidebar_height: any;
   train_bot_sidebar_top_pos: any;
 
-
-
-  
+  bubbleAltMarginLeft
+ 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -266,6 +265,21 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     // });
+  }
+
+  getSpeechWrapperWidth() {
+    const elemSpeechWrapper = <HTMLElement>document.querySelector('.chat-card');
+    console.log('RequestsMsgsComponent - elemSpeechWrapper onInit ', elemSpeechWrapper);
+    if (elemSpeechWrapper) {
+      const elemSpeechWrapperWidth = elemSpeechWrapper.clientWidth;
+      console.log('RequestsMsgsComponent - Speech Wrapper Width onInit ', elemSpeechWrapperWidth);
+      const windowWidth = window.innerWidth;
+      console.log('RequestsMsgsComponent - Window Width onInit ', windowWidth);
+
+      if (windowWidth > 410) {
+        this.bubbleAltMarginLeft = elemSpeechWrapperWidth - 260 + 'px'
+      }
+    }
   }
 
   getProjectUserRole() {
@@ -413,7 +427,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-
+    
   }
 
   getLoggedUser() {
@@ -479,6 +493,8 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.showSpinner = false;
     }, () => {
       console.log('»»» REQUESTS-MSGS.COMP: GET NODEJS REQUEST BY FireBase REQ ID * COMPLETE *');
+
+      this.getSpeechWrapperWidth();
     });
   }
 
@@ -511,6 +527,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
       }, () => {
         console.log('*MSGS - REQUESTS-MSGS.COMP getMessagesList * COMPLETE *');
         // this.showSpinner = false;
+
       });
 
   }

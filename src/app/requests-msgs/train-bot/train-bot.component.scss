@@ -61,6 +61,7 @@
           font-size: 14px;
           margin: 0;
           color: #2b2b2b;
+          font-weight: 400;
         }
         .timestamp{
           font-size: 11px;
@@ -102,7 +103,7 @@
  
 @media (max-width: 576px) {
     .right-side-bar {
-        width: 95% !important;
+        width: 100% !important;
     }
 }
 
@@ -113,6 +114,12 @@
   }
 }
 
+@media (min-width: 768px) and (max-width: 992px){
+  .right-side-bar  {
+      width: 40% !important;
+  }
+}
+
   // from 992 
 @media (min-width: 992px) {
   .right-side-bar {
@@ -120,17 +127,6 @@
   }
 }
 
-// @media (max-width: 767px) {
-//     .right-side-bar {
-//         width: 50% !important;
-//     }
-// }
-
-@media (min-width: 768px) and (max-width: 992px){
-    .right-side-bar  {
-        width: 40% !important;
-    }
-}
 
 .center {
  text-align: center;
@@ -158,4 +154,15 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #555; 
   /* width: 10px !important; */
+}
+
+.question-bubble {
+  background-color: #f5f5f5; 
+  color:rgba(0,0,0,.87);
+  border-radius: 15px 15px 15px 0px; 
+  padding:8px; 
+  font-size:12px; 
+  font-weight: 400;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
