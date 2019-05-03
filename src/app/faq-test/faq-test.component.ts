@@ -24,9 +24,13 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
   showSpinner = false;
   hideScore = false;
   bubbleAltMarginLeft: any;
+  elemSendCardContentWidth: any;
 
   questionsAndAnswersArray = [];
-
+  OPEN_RIGHT_SIDEBAR = false;
+  train_bot_sidebar_height: any;
+  selectedQuestion: string;
+  idBot: string;
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -46,34 +50,39 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
     this.getRemoteFaqKbKey();
 
     console.log('FaqTestComponent - OnInit  questionToTest', this.questionToTest);
-    if (this.questionToTest && this.questionToTest !== null) {
-      this.showSpinner = true;
+    // if (this.questionToTest && this.questionToTest !== null) {
+    //   this.showSpinner = true;
 
-      // SET A TIMEOUT TO AVOID THAT REMOTE FAQ ARE NOT UPDATED
-      setTimeout(() => {
-        this.onInitSearchRemoteFaq(this.questionToTest);
-      }, 500);
-    }
+    //   // SET A TIMEOUT TO AVOID THAT REMOTE FAQ ARE NOT UPDATED
+    //   setTimeout(() => {
+    //     this.onInitSearchRemoteFaq(this.questionToTest);
+    //   }, 500);
+    // }
   }
 
   ngAfterViewInit() {
     console.log('FaqTestComponent - ngAfterViewInit ');
+    const elemSendCardContent = <HTMLElement>document.querySelector('.ref-for-speech-wrapper');
+    console.log('FaqTestComponent - elemSendCardContent ', elemSendCardContent);
+    this.elemSendCardContentWidth = elemSendCardContent.clientWidth;
+    console.log('FaqTestComponent - elemSendCardContent Width', this.elemSendCardContentWidth);
+    
   }
 
-  getSpeechWrapperWidth() {
-    const elemSpeechWrapper = <HTMLElement>document.querySelector('.speech-wrapper');
-    console.log('FaqTestComponent - elemSpeechWrapper onInit ', elemSpeechWrapper);
-    if (elemSpeechWrapper) {
-      const elemSpeechWrapperWidth = elemSpeechWrapper.clientWidth;
-      console.log('FaqTestComponent - Speech Wrapper Width onInit ', elemSpeechWrapperWidth);
-      const windowWidth = window.innerWidth;
-      console.log('FaqTestComponent - Window Width onInit ', windowWidth);
+  // getSpeechWrapperWidth() {
+  //   const elemSpeechWrapper = <HTMLElement>document.querySelector('.speech-wrapper');
+  //   console.log('FaqTestComponent - elemSpeechWrapper onInit ', elemSpeechWrapper);
+  //   if (elemSpeechWrapper) {
+  //     const elemSpeechWrapperWidth = elemSpeechWrapper.clientWidth;
+  //     console.log('FaqTestComponent - Speech Wrapper Width onInit ', elemSpeechWrapperWidth);
+  //     const windowWidth = window.innerWidth;
+  //     console.log('FaqTestComponent - Window Width onInit ', windowWidth);
 
-      if (windowWidth > 410) {
-        this.bubbleAltMarginLeft = elemSpeechWrapperWidth - 260 + 'px'
-      }
-    }
-  }
+  //     if (windowWidth > 410) {
+  //       this.bubbleAltMarginLeft = elemSpeechWrapperWidth - 260 + 'px'
+  //     }
+  //   }
+  // }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -81,15 +90,22 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
     console.log('FaqTestComponent newInnerWidth ', newInnerWidth)
 
 
-    const elemSpeechWrapper = <HTMLElement>document.querySelector('.speech-wrapper');
+    // const elemSpeechWrapper = <HTMLElement>document.querySelector('.speech-wrapper');
+
+    const elemSendCardContent = <HTMLElement>document.querySelector('.ref-for-speech-wrapper');
     //  console.log('FaqTestComponent - elemSpeechWrapper onResize ', elemSpeechWrapper);
-    if (elemSpeechWrapper) {
-      const elemSpeechWrapperWidth = elemSpeechWrapper.clientWidth;
-      console.log('FaqTestComponent - elemSpeechWrapperWidth onResize', elemSpeechWrapperWidth);
+    if (elemSendCardContent) {
+      // const elemSpeechWrapperWidth = elemSpeechWrapper.clientWidth;
+      // elemSendCardContentWidth è la card sopra alla card che contiene le bubble.
+      // Uso questa x calcolare il margine delle bulle sx perchè la sua ampiezza e da subito calcolabile e non bisogna aspettare
+      // che venga effettuata una ricerca
+      this.elemSendCardContentWidth = elemSendCardContent.clientWidth;
+      console.log('FaqTestComponent - elemSendCardContentWidth onResize', this.elemSendCardContentWidth);
 
       if (newInnerWidth > 410) {
-
-        this.bubbleAltMarginLeft = elemSpeechWrapperWidth - 260 + 'px'
+        // this.bubbleAltMarginLeft = elemSpeechWrapperWidth - 260 + 'px';
+        this.bubbleAltMarginLeft = this.elemSendCardContentWidth - 406 + 'px';
+        console.log('FaqTestComponent - bubbleAltMarginLeft onResize', this.elemSendCardContentWidth);
       } else {
 
         this.bubbleAltMarginLeft = 0 + 'px'
@@ -121,6 +137,9 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
   getRemoteFaqKbKey() {
     this.remote_faq_kb_key = this.route.snapshot.params['remoteFaqKbKey'];
     console.log('FAQ-KB COMP HAS PASSED remote_faq_kb_key', this.remote_faq_kb_key);
+
+    this.idBot = this.route.snapshot.params['faqkbid'];
+    console.log('FAQ-KB COMP HAS PASSED idBot', this.idBot);
   }
 
   getCurrentProject() {
@@ -140,68 +159,82 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
     this._location.back();
   }
 
-  onInitSearchRemoteFaq(questionToTest) {
-    console.log('ON INIT QUESTION TO TEST ', questionToTest)
+  // onInitSearchRemoteFaq(questionToTest) {
+  //   console.log('ON INIT QUESTION TO TEST ', questionToTest)
+  //   this.faqService.searchRemoteFaqByRemoteFaqKbKey(this.remote_faq_kb_key, questionToTest)
+  //     .subscribe((remoteFaq) => {
+  //       console.log('REMOTE FAQ FOUND - POST DATA ', remoteFaq);
 
+  //       if (remoteFaq) {
+  //         this.hits = remoteFaq.hits;
+  //         console.log('FaqTestComponent *** hits *** ', this.hits);
+  //         this.faq_number_of_found = remoteFaq.total;
+  //         console.log('REMOTE FAQ LENGHT ', this.faq_number_of_found);
 
-    this.faqService.searchRemoteFaqByRemoteFaqKbKey(this.remote_faq_kb_key, questionToTest)
-      .subscribe((remoteFaq) => {
-        console.log('REMOTE FAQ FOUND - POST DATA ', remoteFaq);
+  //       }
 
-        if (remoteFaq) {
-          this.hits = remoteFaq.hits;
-          console.log('FaqTestComponent *** hits *** ', this.hits);
-          this.faq_number_of_found = remoteFaq.total;
-          console.log('REMOTE FAQ LENGHT ', this.faq_number_of_found);
+  //     }, (error) => {
+  //       console.log('REMOTE FAQ - POST REQUEST ERROR ', error);
 
-        }
+  //       this.showSpinner = false;
+  //     }, () => {
+  //       console.log('REMOTE FAQ - POST REQUEST * COMPLETE *');
 
-      }, (error) => {
-        console.log('REMOTE FAQ - POST REQUEST ERROR ', error);
+  //       this.showSpinner = false;
 
-        this.showSpinner = false;
-      }, () => {
-        console.log('REMOTE FAQ - POST REQUEST * COMPLETE *');
-
-        this.showSpinner = false;
-
-        setTimeout(() => {
-          this.getSpeechWrapperWidth()
-        }, 500);
-      });
-  }
+  //       setTimeout(() => {
+  //         this.getSpeechWrapperWidth()
+  //       }, 500);
+  //     });
+  // }
 
   searchRemoteFaq() {
-    this.getSpeechWrapperWidth();
+    this.bubbleAltMarginLeft = this.elemSendCardContentWidth - 406 + 'px'
+    console.log('FaqTestComponent  searchRemoteFaq bubbleAltMarginLeft : ', this.bubbleAltMarginLeft);
+
     // BUG FIX 'RUN TEST button remains focused after clicking'
     // this.elementRef.nativeElement.blur();
+    console.log('FaqTestComponent  questionToTest: ', this.questionToTest);
 
-    localStorage.setItem('searchedQuestion', this.questionToTest);
+    if (this.questionToTest) {
 
-    this.faqService.searchRemoteFaqByRemoteFaqKbKey(this.remote_faq_kb_key, this.questionToTest)
-      .subscribe((remoteFaq) => {
-        console.log('REMOTE FAQ FOUND - POST DATA ', remoteFaq);
+      localStorage.setItem('searchedQuestion', this.questionToTest);
 
-        if (remoteFaq) {
-          this.hits = remoteFaq.hits
-          console.log('FaqTestComponent *** hits *** ', this.hits);
-          
-          this.questionsAndAnswersArray.push({'q': this.hits[0].document.question, 'a': this.hits[0].document.answer })
-          
-          console.log('FaqTestComponent *** Questions & Answers Array *** ', this.questionsAndAnswersArray);
+      this.faqService.searchRemoteFaqByRemoteFaqKbKey(this.remote_faq_kb_key, this.questionToTest)
+        .subscribe((remoteFaq) => {
+          console.log('REMOTE FAQ FOUND - POST DATA ', remoteFaq);
 
+          if (remoteFaq) {
+            this.hits = remoteFaq.hits
+            console.log('FaqTestComponent *** hits *** ', this.hits);
+            let answer = '';
 
+            if (this.hits.length > 0) {
+              answer = this.hits[0].document.answer;
+            } else {
 
-          this.faq_number_of_found = remoteFaq.total;
-          console.log('REMOTE FAQ LENGHT ', this.faq_number_of_found);
+              answer = 'No good match found';
+            }
+            this.questionsAndAnswersArray.push({ 'q': this.questionToTest, 'a': answer })
+            // this.questionsAndAnswersArray.push({'q': this.hits[0].document.question, 'a': this.hits[0].document.answer })
 
-        }
+            console.log('FaqTestComponent *** Questions & Answers Array *** ', this.questionsAndAnswersArray);
 
-      }, (error) => {
-        console.log('REMOTE FAQ - POST REQUEST ERROR ', error);
-      }, () => {
-        console.log('REMOTE FAQ - POST REQUEST * COMPLETE *');
-      });
+            this.faq_number_of_found = remoteFaq.total;
+            console.log('REMOTE FAQ LENGHT ', this.faq_number_of_found);
+
+          }
+
+        }, (error) => {
+          console.log('REMOTE FAQ - POST REQUEST ERROR ', error);
+        }, () => {
+          console.log('REMOTE FAQ - POST REQUEST * COMPLETE *');
+        });
+
+    } else {
+      console.log('FaqTestComponent **** ***** NO QUESTION ENTERED');
+
+    }
   }
 
 
@@ -233,6 +266,29 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
 
     this.hideScore = $event.target.checked;
     console.log('ON CHANGE - HIDE SCORE', this.hideScore);
+  }
+
+  openRightSideBar (question: string ) {
+
+    this.OPEN_RIGHT_SIDEBAR = true;
+
+    this.selectedQuestion = question
+
+    console.log('FaqTestComponent »»»» OPEN RIGHT SIDEBAR selectetQuestion', this.selectedQuestion);
+
+    console.log('FaqTestComponent »»»» OPEN RIGHT SIDEBAR ', this.OPEN_RIGHT_SIDEBAR);
+    const elemMainContent = <HTMLElement>document.querySelector('.main-content');
+    this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
+    console.log('FaqTestComponent - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
+
+  }
+
+  closeRightSidebar(event) {
+    console.log('»»»» CLOSE RIGHT SIDEBAR ', event);
+    this.OPEN_RIGHT_SIDEBAR = event;
+
+    // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+    // _elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;');
   }
 
 }

@@ -6,100 +6,144 @@
 
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card custom_card" style="padding-top:25px; padding-bottom:25px; margin-bottom:0px">
-          <div class="card-content">
-            <div class="row">
-              <div class="col-sm-12"> 
-                <form>
-                  <!-- Domanda -->
-                  <!-- <label class="col-sm-2 custom-label">
-                    {{ "FaqTestPage.Question" | translate }}
-                  </label> -->
-                  <!-- <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> -->
-                  <div class="col-xs-6 col-xs-offset-3">
-                    <input [(ngModel)]="questionToTest" class="input" type="text" placeholder='{{ "FaqTestPage.EnterTheQuestion" | translate }}'  name="testquestion"
-                    style="padding-left: 16px;">
-                  
-                    <i class="material-icons send-icon" (click)="searchRemoteFaq()">
-                        send
-                    </i>
-                  </div>
-                  <!-- SPACER and BUTTON -->
-                  <!-- <div class="col-sm-12 spacer_div" style="height:15px"></div>
-                  <label class="col-sm-2"></label>
-                  <div class="col-sm-10"> 
-                    <button #runtestbtn type="submit" class="btn btn-success" (click)="searchRemoteFaq()">
-                      {{ "FaqTestPage.RunTest" | translate }}
-                    </button>
-                  </div> -->
-                </form>
-              </div>
-            </div>
 
-            <div class="row">
-              <div class="col-xs-8 col-xs-offset-2">
-                <div class="speech-wrapper" *ngIf="questionsAndAnswersArray.length === 0">
-                  <!-- //////////// GREETINGS BUBBLE //////////// -->
-                  <div class="bubble alt">
-                    <div class="avatar" style="width: 35px; height: 35px; position: absolute; left: 254px; bottom: 36px;">
-                      <div style="display: block;border-radius: 50%; height: 100%; margin-top: 35px; background-color: #fff; border:1px solid #ebebeb;">
-                        <img style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; margin-top: 1px; margin-bottom: 1px;position: relative;top: -2px; left: -1px;" 
-                        class="user-img" src="assets/img/tiledesk-chatbot.svg" />
-                      </div>
+       <div class="row">
+        <div class="col-sm-7">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card custom_card" style="padding-top:25px; padding-bottom:0px; margin-bottom:0px">
+                <div class="card-content ref-for-speech-wrapper">
+                    <!-- style="border-bottom: 1px solid #eeeeee; padding-left: 25px; padding-right: 25px;" -->
+                  <div class="row" >
+                    <div class="col-sm-12"> 
+                      <form>
+                        <!-- Domanda -->
+                        <!-- <label class="col-sm-2 custom-label">
+                          {{ "FaqTestPage.Question" | translate }}
+                        </label> -->
+                        <!-- <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> -->
+                        <div class="col-xs-6 col-xs-offset-3">
+                          <input [(ngModel)]="questionToTest" class="input" type="text" placeholder='{{ "FaqTestPage.EnterTheQuestion" | translate }}'  name="testquestion"
+                          style="padding-left: 16px;">
+                        
+                          <i class="material-icons send-icon" (click)="searchRemoteFaq()">
+                              send
+                          </i>
+                        </div>
+                        <!-- SPACER and BUTTON -->
+                        <!-- <div class="col-sm-12 spacer_div" style="height:15px"></div>
+                        <label class="col-sm-2"></label>
+                        <div class="col-sm-10"> 
+                          <button #runtestbtn type="submit" class="btn btn-success" (click)="searchRemoteFaq()">
+                            {{ "FaqTestPage.RunTest" | translate }}
+                          </button>
+                        </div> -->
+                      </form>
                     </div>
-                    <div class="txt">
-                      <p class="message">Hi Nikola, start to test the bot, then click on inspect ...... </p>
-                    </div>
-                    <div class="bubble-arrow alt"></div>
                   </div>
+      
                 </div>
               </div>
             </div>
-            <div class="row" *ngFor="let faq of questionsAndAnswersArray">
-                <!-- col-xs-8 col-xs-offset-2 -->
-                <!-- [ngClass]="{'col-xs-8 col-xs-offset-2' : true}" -->
-                <!-- [ngClass]="{'col-sm-8 col-sm-offset-2' : windowSize520 === true}"  -->
-                <!-- style="background-color:aqua" -->
-              <div class="col-xs-8 col-xs-offset-2">
-                  <!-- col-xs-8 col-xs-offset-2 -->
-              <!-- </div>
-            </div>
+          </div>  <!-- ./ row" -->
 
-            <div class="row">
-              <div class="col-sm-12"> -->
-                <div class="speech-wrapper">
-               
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card"  style="margin-top:0px">
+                <div class="card-content" style="height: 500px; overflow-y: auto;" >
+            
+                  <div class="row">
+                    <div class="col-xs-8 col-xs-offset-2">
+
+                      <!-- <div class="parent" style="display: flex;">
+
+                        <div class="child-centered" style="margin: auto;"> -->
+                          <div class="speech-wrapper" *ngIf="questionsAndAnswersArray.length === 0">
+                            
+                            <!-- //////////// GREETINGS BUBBLE //////////// -->
+                            <!-- [ngStyle]="{'margin-left': greetingsBubbleMarginLeft }" -->
+                            <div class="bubble" style="width: auto; background-color: rgb(117, 213, 253) ">
+                      
+                              <div class="txt">
+                                <p class="message" style="font-size: 14px;">Hi Nikola, start to test the bot, then click on inspect ...... </p>
+                              </div>
+                      
+
+                              <div class="bubble-arrow coloured"></div>
+
+                                <div class="avatar" style="  width: 35px; height: 35px; position: absolute; left: -50px; bottom: 36px;">
+                                  <div class="requester-avatar-wrapper" style="display: block;border-radius: 50%; height: 100%; margin-top: 35px;" [ngStyle]="{'background-color': fillColour }">
+                                      <!-- position: absolute; top:42px; margin-left:10px; color: #fff; text-transform: uppercase -->
+                                    <span>
+                                   
+                                      <img style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; margin-top: 1px; margin-bottom: 1px;position: relative;top: -2px; left: -1px;" 
+                                          class="user-img" src="assets/img/tiledesk-chatbot.svg" />
+                                      
+                                    </span>
+                                  </div>
+                                </div>
+                          
+                            </div>
+                          </div>
+                        <!-- </div>        
+                      </div> -->
+
+
+                    </div>
+                  </div>
+                  <!-- class="row"  -->
+                  <div *ngFor="let faq of questionsAndAnswersArray">
+                    <!-- <div class="col-xs-8 col-xs-offset-2"> -->
+                    
+                      <div class="speech-wrapper">
                       <div class="bubble">
                         <div class="txt">
-                          <!-- <p class="name">Benni</p> -->
+                      
+                           <!-- this.questionToTest -->
                           <p class="message">{{ faq?.q }}</p>
-                          
+                          <span class="timestamp" style="bottom: -20px;cursor:pointer; font-weight:400"  (click)="openRightSideBar(faq?.q)"> Inspect </span>
+                          <!-- <p class="message">{{ questionToTest }}</p> -->
                         </div>
                         <div class="bubble-arrow"></div>
                       </div>
-                    <!--  Speech Bubble alternative -->
+                        <!--  Speech Bubble alternative -->
+                        <div class="bubble alt" [ngStyle]="{'margin-left': bubbleAltMarginLeft }">
+                          <div class="txt">
+                          
+                            <p class="message">{{ faq?.a }}</p>
+                            <!-- <span class="timestamp" style="bottom: -20px;cursor:pointer"  (click)="openRightSideBar(faq?.q)"> inspect </span> -->
+                          </div>
+                        <div class="bubble-arrow alt"></div>
+                        </div>
                   
-                    <div class="bubble alt" [ngStyle]="{'margin-left': bubbleAltMarginLeft }">
-                      <div class="txt">
-                        <!-- <p class="name alt">+353 87 1234 567<span> ~ John</span></p> -->
-                        <p class="message">{{ faq?.a }}</p>
-                      
                       </div>
-                      <div class="bubble-arrow alt"></div>
-                    </div>
-            
+                    <!-- </div> -->
+                  </div>
+      
+                </div>
               </div>
             </div>
+          </div> <!-- ./ row" -->
+
+        </div>  <!-- ./ col-sm-7" -->
+
+        <div class="col-sm-5">
+          <div class="card">
+
+            <div class="card-content">
+
+              <h4 class="card-title requestattibutestitle" style="text-transform: none; color: #566787; 
+                font-weight:400; margin-bottom: 8px; border-bottom: 1px solid #eeeeee; padding-bottom: 12px;">
+              
+                <span class="requestattibutes">Quick Tips</span>
+              </h4>
+            </div>
           </div>
+        </div>
 
-        </div>
-        </div>
       </div>
-    </div>  
 
-    <div class="row">
+    <div class="row" style="display:none">
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-custom-bkgrnd">
@@ -115,10 +159,8 @@
             </h4>
           </div>   
           
-          <loading-spinner *ngIf="showSpinner"></loading-spinner>
-          
+          <loading-spinner *ngIf="showSpinner"></loading-spinner>         
           <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-top:0px">
-
             <table  class="table table-hover">
               <thead>
                 <tr>
@@ -152,12 +194,8 @@
                   </th>
                 </tr>
               </thead>
-
-              
               <tbody>
-                
                 <tr *ngFor="let hit of hits">
-                    
                   <!-- // FOR DEBUG - FAQ ID -->
                   <!-- <td>
                     {{ hit?.document.id }}
@@ -176,7 +214,6 @@
                       <span style="font-size:13px; font-weight:400"> {{ hit?.document.question }} </span>
                       <span class="tooltiptext"> {{ "FaqEditAddPage.FaqID" | translate }}: <br> {{ hit?.document.id }} </span>
                     </span>
-                   
                   </td>
 
                   <td class="td_answer" (click)="getFaqKbIdAndGoToEditFaqPage(hit?.document.id)" 
@@ -189,13 +226,8 @@
                     <br>
                     <span *ngIf='hideScore === false' class="score"> Score: {{ hit?.score }} </span>
                   </td>
-                 
                 </tr>
-   
-                
               </tbody>
-
-
             </table>
 
             <!-- <div class="row" *ngFor="let hit of hits">
@@ -214,6 +246,15 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>  
+<!--  -->
+<div *ngIf="OPEN_RIGHT_SIDEBAR === true" class="view-side">
+  
+  <appdashboard-faq-test-train-bot [ngStyle]="{'height':train_bot_sidebar_height }" 
+    [selectedQuestion]="selectedQuestion" 
+    [remote_faq_kb_key]="remote_faq_kb_key" 
+    [idBot]="idBot"
+    (valueChange)='closeRightSidebar($event)'>
+  </appdashboard-faq-test-train-bot>
+</div>

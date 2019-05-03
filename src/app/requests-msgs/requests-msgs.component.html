@@ -117,8 +117,8 @@
                   </div>
                 </div>
               </div> -->
-
-            <div class="chat-body" style="vertical-align:baseline; max-width: 600px;">
+              <!-- max-width: 600px;margin:auto -->
+            <div class="chat-body" style="vertical-align:baseline; padding-left: 15px; padding-left: 15px;">
 
                 <!-- style="padding-bottom: 3px;" class="answer left" -->
               <div *ngFor="let message of messagesList"> 
@@ -1263,7 +1263,7 @@
   <!-- margin-top:70px -->
   <!-- 'top':train_bot_sidebar_top_pos-->
   <!-- position: absolute!important -->
-  <div *ngIf="OPEN_RIGHT_SIDEBAR === true" class="view-side" >
+  <div *ngIf="OPEN_RIGHT_SIDEBAR === true" class="view-side">
     <appdashboard-train-bot style="" [ngStyle]="{'height':train_bot_sidebar_height }" [selectedQuestion]="selectedQuestion" (valueChange)='closeRightSidebar($event)'></appdashboard-train-bot>
   </div>
 

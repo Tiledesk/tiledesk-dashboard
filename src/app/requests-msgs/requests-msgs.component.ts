@@ -123,7 +123,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   OPEN_RIGHT_SIDEBAR = false;
   selectedQuestion: string;
   train_bot_sidebar_height: any;
-  train_bot_sidebar_top_pos: any;
+  // train_bot_sidebar_top_pos: any;
 
 
   constructor(
@@ -213,7 +213,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     this.selectedQuestion = message;
 
 
-    // questo non funziona se è uncommented BUG RESOLVE
+    // questo non funziona se è commented BUG RESOLVE
     const elemMainContent = <HTMLElement>document.querySelector('.main-content');
     this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
     console.log('REQUEST-MSGS - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);

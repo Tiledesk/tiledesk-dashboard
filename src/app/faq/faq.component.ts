@@ -195,7 +195,7 @@ export class FaqComponent implements OnInit {
 
   goToTestFaqPage() {
     console.log('GO TO TEST FAQ PAGE - REMOTE FAQKB KEY ', this.faq_kb_remoteKey);
-    this.router.navigate(['project/' + this.project._id + '/faq/test', this.faq_kb_remoteKey]);
+    this.router.navigate(['project/' + this.project._id + '/faq/test', this.faq_kb_remoteKey, this.id_faq_kb]);
   }
 
 

@@ -1,25 +1,27 @@
-// THE 'X' INSIDE THE 'fullText' INPUT
-.buttonInside{
-    position:relative;
-    // margin-bottom:10px;
-  }
-
-// THE 'X' INSIDE THE 'fullText' INPUT
-// .glyphicon-remove{
-#clear-faq-search{    
-    // .fulltext-remove-btn{
-    position:absolute;
-    right: 5px;
-    top: 10px;
-    padding:2px;
-    font-size: 0.9em;
-    color: #999999;
-    z-index: 3;
-    cursor: pointer;
+@media (max-width: 576px) {
+    .right-side-bar {
+        width: 100% !important;
+    }
 }
 
-#clear-faq-search:hover {   
-    color: #f44336;
+
+@media (min-width: 577px) and (max-width: 767px){
+  .right-side-bar {
+      width: 50% !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 992px){
+  .right-side-bar  {
+      width: 40% !important;
+  }
+}
+
+  // from 992 
+@media (min-width: 992px) {
+  .right-side-bar {
+    width: 40% !important;
+  }
 }
 
 .speech-wrapper-train{
@@ -100,79 +102,12 @@
     }
   }
 
- 
-@media (max-width: 576px) {
-    .right-side-bar {
-        width: 100% !important;
-    }
-}
 
-
-@media (min-width: 577px) and (max-width: 767px){
-  .right-side-bar {
-      width: 50% !important;
+  .answer-bubble {
+    background-color: #75d5fd; 
+    color:rgba(0,0,0,.87);
+    border-radius: 15px 15px 0px 15px; 
+    padding:8px;  
+    font-size:12px; 
+    font-weight: 400
   }
-}
-
-@media (min-width: 768px) and (max-width: 992px){
-  .right-side-bar  {
-      width: 40% !important;
-  }
-}
-
-  // from 992 
-@media (min-width: 992px) {
-  .right-side-bar {
-    width: 40% !important;
-  }
-}
-
-
-.center {
- text-align: center;
-
-}
-
-/* NK start CUSTOM SCROLL BAR */
-/* width */
-::-webkit-scrollbar {
-  width: 8px;
-}
-/* Track */
-::-webkit-scrollbar-track {
-  background: #f1f1f1; 
-  border-radius: 10px;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #888; 
-  border-radius: 10px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #555; 
-  /* width: 10px !important; */
-}
-
-.question-bubble {
-  background-color: #f5f5f5; 
-  color:rgba(0,0,0,.87);
-  border-radius: 15px 15px 15px 0px; 
-  padding:8px; 
-  font-size:12px; 
-  font-weight: 400;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
-
-.answer-bubble {
-  background-color: #f5f5f5; 
-  color:rgba(0,0,0,.87);
-  border-radius: 15px 15px 0px 15px; 
-  padding:8px;  
-  font-size:12px; 
-  font-weight: 400
-}
-

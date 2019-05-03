@@ -115,6 +115,7 @@ import { AnalyticsStaticComponent } from './static-pages/analytics-static/analyt
 import { ActivitiesStaticComponent } from './static-pages/activities-static/activities-static.component';
 import { TrainBotComponent } from './requests-msgs/train-bot/train-bot.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FaqTestTrainBotComponent } from './faq-test/faq-test-train-bot/faq-test-train-bot.component';
 
 console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
@@ -180,6 +181,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AnalyticsStaticComponent,
     ActivitiesStaticComponent,
     TrainBotComponent,
+    FaqTestTrainBotComponent,
   ],
   imports: [
     BrowserModule,
