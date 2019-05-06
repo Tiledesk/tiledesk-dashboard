@@ -9,6 +9,7 @@ import { AuthService } from '../core/auth.service';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { FaqKbService } from '../services/faq-kb.service';
 import { NotifyService } from '../core/notify.service';
+import { Location } from '@angular/common';
 
 // import $ = require('jquery');
 // declare const $: any;
@@ -62,6 +63,7 @@ export class FaqComponent implements OnInit {
     private route: ActivatedRoute,
     private auth: AuthService,
     private faqKbService: FaqKbService,
+    public location: Location,
     private notify: NotifyService
   ) { }
 
@@ -213,8 +215,8 @@ export class FaqComponent implements OnInit {
   }
 
   goBackToFaqKbList() {
-    // this.router.navigate(['project/' + this.project._id + '/faqkb']);
-    this.router.navigate(['project/' + this.project._id + '/bots']);
+    // this.router.navigate(['project/' + this.project._id + '/bots']);
+    this.location.back();
   }
 
   /**

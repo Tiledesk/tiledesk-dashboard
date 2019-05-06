@@ -30,7 +30,18 @@
                           <i class="material-icons send-icon" (click)="searchRemoteFaq()">
                               send
                           </i>
+
                         </div>
+                        <div class="col-xs-2" style="text-align: center;">
+                          <span class="tooltip-new"> 
+                            <i class="material-icons" style="position: relative; top: 6px;color: #039be5;cursor:pointer" (click)="startOver()">
+                                refresh
+                            </i> 
+                            <span class="tooltiptext-new">{{ 'StartOver' | translate }}</span>
+                          </span>
+
+                        </div>
+
                         <!-- SPACER and BUTTON -->
                         <!-- <div class="col-sm-12 spacer_div" style="height:15px"></div>
                         <label class="col-sm-2"></label>
@@ -59,7 +70,7 @@
                       <!-- <div class="parent" style="display: flex;">
 
                         <div class="child-centered" style="margin: auto;"> -->
-                          <div class="speech-wrapper" *ngIf="questionsAndAnswersArray.length === 0">
+                          <div class="speech-wrapper" *ngIf="questionsAndAnswersArray.length === 0" style="margin-top: 25px;">
                             
                             <!-- //////////// GREETINGS BUBBLE //////////// -->
                             <!-- [ngStyle]="{'margin-left': greetingsBubbleMarginLeft }" -->
@@ -67,7 +78,9 @@
                       
                               <div class="txt">
                                 <p class="message" style="font-size: 14px;">
-                                  Hi {{ currentUserFirstname }}, start to test the bot, then click on inspect ...... 
+                                  {{ 'Hi' | translate }} {{ currentUserFirstname }} {{ 'StartToTestTheBot' | translate }} <span style="font-weight:600">{{ botName }}</span>
+
+                                  <span style="display:block" > {{ 'TestingTheBotsIsAnImportantPart' | translate }}.  </span>
                                 </p>
                               </div>
                       
@@ -104,7 +117,10 @@
                       
                            <!-- this.questionToTest -->
                           <p class="message">{{ faq?.q }}</p>
-                          <span class="timestamp" style="color: #7695a5;bottom: -23px;cursor:pointer; font-weight:400; left: 0;"  (click)="openRightSideBar(faq?.q)"> Inspect </span>
+                          <span class="timestamp" style="color: #03a5e8;bottom: -23px;cursor:pointer; font-weight:400; left: 0;"  (click)="openRightSideBar(faq?.q)"> 
+                            {{ 'Inspect' | translate }}
+                          
+                          </span>
                           <!-- <p class="message">{{ questionToTest }}</p> -->
                         </div>
                         <div class="bubble-arrow"></div>
@@ -146,8 +162,48 @@
               <h4 class="card-title requestattibutestitle" style="text-transform: none; color: #566787; 
                 font-weight:400; margin-bottom: 8px; border-bottom: 1px solid #eeeeee; padding-bottom: 12px;">
               
-                <span class="requestattibutes">Quick Tips</span>
+                <span class="requestattibutes">
+                  {{ 'QuickTips' | translate}}
+  
+                </span>
               </h4>
+
+                <p style="color:#7695a5">
+
+                  <!-- Enter a question in the text box and click on the 'send' button. -->
+                  {{ 'EnterAQuestionInTheTextBox' | translate }}
+    
+                </p>
+                <p style="color:#7695a5">
+                  <!-- The best-matched answer from the bot is returned as the response. -->
+                  {{ 'TheBestMatchedAnswerFromTheBotIsReturned' | translate }}
+                </p>
+               
+                <p style="color:#7695a5">
+                  <!-- Select Inspect for more details on that response. -->
+                  {{ 'SelectInspectForMoreDetailsOnThatResponse' | translate }}
+                  
+                </p>
+
+                <p style="color:#7695a5">
+                  <!-- The 'Train bot' slide-out panel appears.  -->
+                  {{ 'TheTrainBotSlideOutPanelAppears' | translate }}
+                  <span style="display:block">
+                   <!-- You can add a new answer if any of the existing answers that were matched are incorrect or the answer does not exist in bot (no good match found). -->
+                   {{ 'YouCanAddANewAnswer' | translate }}  
+                  </span> 
+             
+                </p>
+                <p style="color:#7695a5">
+                    <!-- Enter the new answer to current question in the text box of the Train bot panel and press Add Answer to add it. -->
+                    {{ 'EnterTheNewAnswerToCurrentQuestion' | translate }}  
+                    
+                </p>
+                
+
+             
+
+
             </div>
           </div>
         </div>

@@ -37,7 +37,7 @@
                 <div class="checkbox">
                   <label>
                     <input type="checkbox" name="externalBot" (click)="hasClickedExternalBot(is_external_bot = !is_external_bot)" 
-                      [checked]="is_external_bot">
+                      [checked]="is_external_bot" disabled>
                     <span class="checkbox-label">
                         {{ "BotsPage.ExternalBot" | translate }} 
                     </span> 
@@ -236,11 +236,13 @@
                 style="padding:4px; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;float: right;" 
                 (click)="goToTestFaqPage()">
                 <span class="icon" style="padding-right:0px; text-transform:none;padding-left: 9px;">
-                  Bot test 
+                  <span style="position: relative; top: 1px;"> Bot test </span> 
                   <i class="material-icons" style="font-size:18px; top:0px;">play_arrow</i>
                 </span>
                 <!-- INTERROGA BOT -->
-                <span class="tooltiptext" style="text-transform:none">{{ 'FaqPage.BotQuery' | translate }}</span>
+                <span class="tooltiptext" style="text-transform:none">
+                  {{ 'FaqPage.BotQuery' | translate }}
+                </span>
               </button>
 
             </h4>

@@ -7,6 +7,7 @@ import { MongodbFaqService } from '../services/mongodb-faq.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 // USED FOR go back last page
 import { Location } from '@angular/common';
+import { FaqKbService } from '../services/faq-kb.service';
 
 
 @Component({
@@ -33,6 +34,7 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
   selectedQuestion: string;
   idBot: string;
   currentUserFirstname: string;
+  botName: string;
 
   constructor(
     private router: Router,
@@ -40,8 +42,7 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private faqService: MongodbFaqService,
     private _location: Location,
-    
-
+    private faqKbService: FaqKbService
   ) { }
 
   ngOnInit() {
@@ -61,7 +62,7 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
     //     this.onInitSearchRemoteFaq(this.questionToTest);
     //   }, 500);
     // }
-    
+
   }
 
 
@@ -82,7 +83,7 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
     console.log('FaqTestComponent - elemSendCardContent ', elemSendCardContent);
     this.elemSendCardContentWidth = elemSendCardContent.clientWidth;
     console.log('FaqTestComponent - elemSendCardContent Width', this.elemSendCardContentWidth);
-    
+
   }
 
 
@@ -96,7 +97,7 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
   //   const elemSendCardContent = <HTMLElement>document.querySelector('.ref-for-speech-wrapper');
   //   //  console.log('FaqTestComponent - elemSpeechWrapper onResize ', elemSpeechWrapper);
   //   if (elemSendCardContent) {
-     
+
   //     // elemSendCardContentWidth è la card sopra alla card che contiene le bubble.
   //     // Uso questa x calcolare il margine delle bulle sx perchè la sua ampiezza e da subito calcolabile e non bisogna aspettare
   //     // che venga effettuata una ricerca
@@ -124,18 +125,31 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
     const storedQuestionToTest = localStorage.getItem('searchedQuestion');
     console.log('FaqTestComponent SEARCHED QUESTION - FROM LOcAL STORAGE 1', storedQuestionToTest)
     if (storedQuestionToTest !== 'null') {
-      this.questionToTest = storedQuestionToTest;
+      // this.questionToTest = storedQuestionToTest;
       console.log('FaqTestComponent SEARCHED QUESTION - FROM LOcAL STORAGE 2', this.questionToTest)
     }
   }
 
   getRemoteFaqKbKey() {
     this.remote_faq_kb_key = this.route.snapshot.params['remoteFaqKbKey'];
-    console.log('FAQ-KB COMP HAS PASSED remote_faq_kb_key', this.remote_faq_kb_key);
+    console.log('FaqTestComponent - FAQ-KB COMP HAS PASSED remote_faq_kb_key', this.remote_faq_kb_key);
 
     this.idBot = this.route.snapshot.params['faqkbid'];
-    console.log('FAQ-KB COMP HAS PASSED idBot', this.idBot);
+    console.log('FaqTestComponent - FAQ-KB COMP HAS PASSED idBot', this.idBot);
+
+    if (this.idBot ) {
+      this.getFaqKbById();
+    }
   }
+
+  getFaqKbById() {
+    this.faqKbService.getMongDbFaqKbById(this.idBot).subscribe((faqKb: any) => {
+      console.log('FaqTestComponent - FAQ-KB GET BY ID', faqKb);
+      this.botName = faqKb.name;
+      console.log('FaqTestComponent - FAQ-KB NAME', this.botName);
+    });
+  }
+
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
@@ -232,6 +246,10 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
     }
   }
 
+  startOver() {
+    this.questionsAndAnswersArray = [];
+  }
+
 
   goToEditFaqPage(id_faq: string) {
     console.log('ID OF FAQ Pressed', id_faq);
@@ -263,7 +281,7 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
     console.log('ON CHANGE - HIDE SCORE', this.hideScore);
   }
 
-  openRightSideBar (question: string ) {
+  openRightSideBar(question: string) {
 
     this.OPEN_RIGHT_SIDEBAR = true;
 

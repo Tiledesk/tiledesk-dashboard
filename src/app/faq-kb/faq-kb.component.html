@@ -105,9 +105,11 @@
             
                   <tr *ngFor="let faqkb of faqkbList; let i = index">
                       <!--  -->
-                    <td style="cursor: pointer;">
+                    <td>
                       <span class="tooltipx">
-                        <span style="font-weight:400; font-size:13px" (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)'>  {{ faqkb?.name }}</span>
+                        <span style="font-weight:400; font-size:13px; cursor: pointer;" (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)'> 
+                          {{ faqkb?.name }}
+                        </span>
 
                         <span class="tooltiptext">
                           {{ 'BotsPage.BotId' | translate }}: <br> {{ faqkb?._id  }} 
@@ -115,7 +117,7 @@
                       </span>  
 
                      
-                      <span *ngIf="!faqkb?.external" style="font-weight:400; font-size:12px; display:block; color:#7695a5">
+                      <span *ngIf="!faqkb?.external" style="font-weight:400; font-size:12px; display:block; color:#7695a5; margin-top: 4px;">
                           # FAQs:
                         <span *ngIf="!faqkb?.has_faq">
                           0
@@ -138,7 +140,7 @@
                         </span>
                       </span>
 
-                      <span *ngIf="faqkb?.external" style="font-weight:400; font-size:12px; display:block; color:#7695a5">
+                      <span *ngIf="faqkb?.external" style="font-weight:400; font-size:12px; display:block; color:#7695a5; margin-top: 4px;">
 
                         <!-- <div style="display: flex;
                         flex-wrap: wrap;"> 
@@ -159,7 +161,7 @@
                       
                         <span [ngClass]="{'url-top-position' : faqkb?.url }"> Url: </span> 
                         <span *ngIf="faqkb?.url"  [ngClass]="{'truncate' : i !== rowIndexSelected }" 
-                          style="max-width: 250px;color: #03a5e8; cursor:pointer;display:inline-block; word-break: break-all;"
+                          style="max-width: 250px;color: #03a5e8; cursor:pointer; display:inline-block; word-break: break-all;"
                           (click)="$event.stopPropagation(); goToBotExternalUrl(faqkb?.url)">
                           {{ faqkb?.url}} 
                         </span>
@@ -193,7 +195,8 @@
                     </td>
 
                     <!-- (click)='goToFaqPage_ADD_EDIT_FAQ(faqkb?._id)' -->
-                    <td style="cursor: pointer;">
+                    <!-- style="cursor: pointer;" -->
+                    <td>
                       
                         <div class="checkbox">
                           <label>
@@ -243,7 +246,7 @@
                     <!-- ./ edit FAQ -->
                     
                     <!-- NEW EDIT / DELETE FAQ-KB   -->
-                    <td class="td-actions text-right" style="padding-top:16px">
+                    <td class="td-actions text-right" style="padding-top:20px">
                         <!-- Modifica FAQ Knowledge Base -->
                         <!-- goToEditAddPage_EDIT(faqkb?._id) -->
                         <button type="button" rel="tooltip" title="{{ 'BotsPage.tooltipEditBot' | translate }}" class="btn btn-primary btn-simple btn-xs" 
@@ -318,7 +321,7 @@
 
   <!-- !!! no more used MODAL DELETE BOT -->
   <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->
-  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}" style="background-color: rgba(90,90,90,0.5);">
+  <!-- <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}" style="background-color: rgba(90,90,90,0.5);">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -326,42 +329,28 @@
               <span aria-hidden="true">&times;</span>
             </button>         
             <h4 class="modal-title">
-              <!-- Delete FAQ Knowledge Base with id: -->
-              <!-- Elimina FAQ Knowledge Base con id: -->
-              <!-- Elimina Bot con id: -->
               {{ 'BotsPage.DeleteBotWithId' | translate }}
               <code>{{id_toDelete}}</code>
             </h4>    
           </div>
-
           <span *ngIf="!HAS_FAQ_RELATED">
             <div class="modal-body">    
-              <!-- <p> Are you sure you want to delete this FAQ KB?</p> -->
-              <!-- <p>Sei sicuro di voler eliminare questa FAQ Knowledge Base?</p> -->
-              <!-- <p>Sei sicuro di voler eliminare questo Bot?</p> -->
               <p> {{ 'BotsPage.AreYouSureDeleteBot' | translate }}</p>
               </div>
           </span>
           <span *ngIf="HAS_FAQ_RELATED ">
             <div class="modal-body">
-              <!-- <p>Sei sicuro di voler eliminare questa FAQ Knowledge Base e le FAQ a questa correlate?</p> -->
-              <!-- <p>Sei sicuro di voler eliminare questo Bot e le FAQ a questo correlate?</p> -->
               <p> {{ 'BotsPage.AreYouSureDeleteBotAndRElatedFAq' | translate }} </p>
             </div>
           </span>
           <div class="modal-footer">
-              <!-- Confirm -->
             <button type="button" class="btn btn-danger" (click)="onCloseDeleteModalHandled()">
-              <!-- Conferma -->
               {{ 'BotsPage.Confirm' | translate }} 
             </button>
           </div>
-    
         </div>
-        <!-- /.modal-content -->
       </div>
-      <!-- /.modal-dialog -->
-    </div>
+    </div> -->
 
   <!-- !!! no more used MODAL - INFO WINDOWS  - 'DELETE ACTION' COMPLETED -->
   <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayDeleteInfoModal}" style="background-color: rgba(90,90,90,0.5);">

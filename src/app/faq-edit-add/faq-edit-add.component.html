@@ -30,6 +30,7 @@
               <label class="col-sm-2 custom-label">
                 <!-- Domanda -->
                 {{ "FaqEditAddPage.Question" | translate }}
+                
               </label>
               <div class="col-sm-10">
                 <textarea style="border-radius:5px" [(ngModel)]="question" class="textarea" rows="4" placeholder='{{ "FaqEditAddPage.Question" | translate }}'>
@@ -74,10 +75,14 @@
 
               <loading-spinner *ngIf="showSpinner"></loading-spinner>
               <!-- height: 36px; -->
-              <label style="padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: left;" class="col-sm-12 ">
+              <label style="padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: left;color: #7695a5;" class="col-sm-12 ">
                 <!-- Domanda -->
                 {{ "FaqEditAddPage.Question" | translate }}
               </label>
+              <span style="display:block; font-size:12px; color: #7695a5;padding-left: 16px; "> 
+                <!-- Type/Add your questtion here separated with a new line -->
+                {{ 'TypeAddYourQuesttionHere' | translate}}
+              </span> 
               <div class="col-sm-12">
                 <textarea [(ngModel)]="question_toUpdate" class="textarea" rows="4" placeholder='{{ "FaqEditAddPage.Question" | translate }}'>
                 </textarea>
@@ -87,7 +92,7 @@
               <div class="col-sm-12" style="height:10px"></div>
                 
                 <!-- height: 36px; -->
-                <label style="padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: left;" class="col-sm-12 ">
+                <label style="padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: left;color: #7695a5;" class="col-sm-12 ">
                   <!-- Risposta -->
                   {{ "FaqEditAddPage.Answer" | translate }}
                 </label>

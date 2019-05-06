@@ -176,3 +176,21 @@
   font-weight: 400
 }
 
+.add-question {
+  cursor:pointer;
+  color: #039be5;
+  // color: #3c4252; 
+  font-size: 20px;
+  transition:all 0.2s ease-in-out;
+}
+
+.add-question:hover {
+  // color: #ffffff;
+  // background-color: #039be5;
+  // transform: scale(1.1)
+  opacity: 0.6;
+}
+
+
+
+

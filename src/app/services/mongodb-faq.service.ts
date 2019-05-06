@@ -63,12 +63,12 @@ export class MongodbFaqService {
   }
 
   /**
-   * READ (GET ALL FAQ)
+   * READ (GET ALL FAQ) - NOT USED
    */
   public getMongDbFaq(): Observable<Faq[]> {
     const url = this.MONGODB_BASE_URL;
 
-    console.log('MONGO DB FAQ URL', url);
+    console.log('GET ALL FAQ URL', url);
     // console.log('MONGO DB TOKEN', this.TOKEN);
 
     console.log('NEW DATE (FOR THE UPDATE) ', new Date().getTime());

@@ -216,36 +216,36 @@ export class FaqKbComponent implements OnInit {
   }
 
   // !!! NO MORE USED ????
-  getFaqByFaqKbIdForDeleteModal() {
-    // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
-    // let i: number;
-    // for (i = 0; i < this.faqkbList.length; i++) {
-    //   console.log('ID FAQ KB ', this.faqkbList[i]._id);
-    //   this.faqKbId = this.faqkbList[i]._id;
+  // getFaqByFaqKbIdForDeleteModal() {
+  //   // FOR ANY FAQ-KB ID GET THE FAQ ASSOCIATED
+  //   // let i: number;
+  //   // for (i = 0; i < this.faqkbList.length; i++) {
+  //   //   console.log('ID FAQ KB ', this.faqkbList[i]._id);
+  //   //   this.faqKbId = this.faqkbList[i]._id;
 
-    // '5a84754f7d70e79db67fb0da'
-    this.mongodbFaqService.getMongoDbFaqByFaqKbId(this.id_toDelete).subscribe((faq: any) => {
-      console.log('MONGO DB FAQ RETURNED BY getFaqByFaqKbIdForDeleteModal', faq);
-      console.log('FAQ-KB ID TO DELETE (IN getFaqByFaqKbIdForDeleteModal)', this.id_toDelete);
+  //   // '5a84754f7d70e79db67fb0da'
+  //   this.mongodbFaqService.getMongoDbFaqByFaqKbId(this.id_toDelete).subscribe((faq: any) => {
+  //     console.log('MONGO DB FAQ RETURNED BY getFaqByFaqKbIdForDeleteModal', faq);
+  //     console.log('FAQ-KB ID TO DELETE (IN getFaqByFaqKbIdForDeleteModal)', this.id_toDelete);
 
-      let j: number;
-      for (j = 0; j < faq.length; j++) {
-        // console.log('MONGO DB FAQ - FAQ ID', faq[j]._id);
-        console.log('MONGO DB FAQ - THE FAQ-KB WITH ID', faq[j].id_faq_kb, ' HAS RELATED THE FAQ ' + faq[j]._id);
-        this.faq_faqKbId = faq[j].id_faq_kb;
+  //     let j: number;
+  //     for (j = 0; j < faq.length; j++) {
+  //       // console.log('MONGO DB FAQ - FAQ ID', faq[j]._id);
+  //       console.log('MONGO DB FAQ - THE FAQ-KB WITH ID', faq[j].id_faq_kb, ' HAS RELATED THE FAQ ' + faq[j]._id);
+  //       this.faq_faqKbId = faq[j].id_faq_kb;
 
-        for (const faqkb of this.faqkbList) {
-          if (faqkb._id === this.faq_faqKbId) {
-            // console.log('+> ID COINCIDONO');
-            // this.HAS_FAQ_ASSOCIATED = true;
-            // set in the json the value true to the property has_faq
-            faqkb.has_faq = true;
-          }
-        }
-      }
-    });
-    // }
-  }
+  //       for (const faqkb of this.faqkbList) {
+  //         if (faqkb._id === this.faq_faqKbId) {
+  //           // console.log('+> ID COINCIDONO');
+  //           // this.HAS_FAQ_ASSOCIATED = true;
+  //           // set in the json the value true to the property has_faq
+  //           faqkb.has_faq = true;
+  //         }
+  //       }
+  //     }
+  //   });
+  //   // }
+  // }
 
   /**
    * MODAL DELETE FAQ KB
@@ -325,70 +325,70 @@ export class FaqKbComponent implements OnInit {
   }
 
   /**
-    * ON CLOSE DELETE MODAL:
+    * ON CLOSE DELETE MODAL - NO MORE USED
     * - SEARCH FOR ANY FAQ WITH THE ID of the FAQ-KB THAT THE USER INTENDS TO DELETE
     * - IF THERE ARE FAQs RELATED TO THE FAQ-KB, ARE FIRST DELETED THE FAQs AND THEN IS DELETED the FAQ-KB
     * - IF THERE ARE NO FAQ, THE FAQ-KB IS IMMEDIATELY DELETED
     * NOTE: THIS WF RESOLVES THE ISSUE 'FAQ-KB-ID NOT FOUND' WHEN IN CHAT21-SUPPORT-NODEJS-API ARE DELETED THE REMOTE FAQ
     */
-  onCloseDeleteModalHandled() {
-    this.display = 'none';
+  // onCloseDeleteModalHandled() {
+  //   this.display = 'none';
 
-    this.displayDeleteInfoModal = 'block'
-    this.SHOW_CIRCULAR_SPINNER = true;
-    // this.faqKbService.deleteMongoDbFaqKb(this.id_toDelete).subscribe((data) => {
-    //   console.log('DELETE DATA ', data);
+  //   this.displayDeleteInfoModal = 'block'
+  //   this.SHOW_CIRCULAR_SPINNER = true;
+  //   // this.faqKbService.deleteMongoDbFaqKb(this.id_toDelete).subscribe((data) => {
+  //   //   console.log('DELETE DATA ', data);
 
-    // SEARCH BY THE FAQ-KB ID THE RELATED FAQ TO DELETE
-    this.mongodbFaqService.getMongoDbFaqByFaqKbId(this.id_toDelete)
-      .subscribe((faq: any) => {
-        console.log(' ++ MONGO DB FAQ RETURNED WHEN CLOSE DELETE MODAL', faq);
-        console.log(' ++ FAQ-KB ID TO DELETE WHEN CLOSE DELETE MODAL', this.id_toDelete);
+  //   // SEARCH BY THE FAQ-KB ID THE RELATED FAQ TO DELETE
+  //   this.mongodbFaqService.getMongoDbFaqByFaqKbId(this.id_toDelete)
+  //     .subscribe((faq: any) => {
+  //       console.log(' ++ MONGO DB FAQ RETURNED WHEN CLOSE DELETE MODAL', faq);
+  //       console.log(' ++ FAQ-KB ID TO DELETE WHEN CLOSE DELETE MODAL', this.id_toDelete);
 
-        if (faq.length > 0 && faq !== undefined) {
-          console.log('THE FAQ-KB TO DELETE HAS FAQ RELATED ')
+  //       if (faq.length > 0 && faq !== undefined) {
+  //         console.log('THE FAQ-KB TO DELETE HAS FAQ RELATED ')
 
-          let w: number;
-          for (w = 0; w < faq.length; w++) {
+  //         let w: number;
+  //         for (w = 0; w < faq.length; w++) {
 
-            this.NUMBER_OF_CICLE = w
-            console.log('NUMBER OF CICLE ', this.NUMBER_OF_CICLE);
-            console.log(' ++ faq lenght to delete ', faq.length)
+  //           this.NUMBER_OF_CICLE = w
+  //           console.log('NUMBER OF CICLE ', this.NUMBER_OF_CICLE);
+  //           console.log(' ++ faq lenght to delete ', faq.length)
 
-            // if ((this.NUMBER_OF_CICLE + 1) === faq.length) {
-            //   console.log('**************************');
-            // }
+  //           // if ((this.NUMBER_OF_CICLE + 1) === faq.length) {
+  //           //   console.log('**************************');
+  //           // }
 
-            const relatedFaqIdToDelete = faq[w]._id
-            console.log('RELATED FAQ ID TO DELETE ', relatedFaqIdToDelete)
+  //           const relatedFaqIdToDelete = faq[w]._id
+  //           console.log('RELATED FAQ ID TO DELETE ', relatedFaqIdToDelete)
 
-            this.mongodbFaqService.deleteMongoDbFaq(relatedFaqIdToDelete).subscribe((faq_to_delete) => {
-              console.log('DELETE RELATED FAQ ', faq_to_delete);
-            }, (error) => {
-              console.log('DELETE RELATED FAQ - ERROR ', error);
-              this.SHOW_CIRCULAR_SPINNER = false;
-            }, () => {
-              console.log('DELETE RELATED FAQ * COMPLETE *');
-              this.deleteFaqKb();
-            });
-          }
-        } else {
-          this.deleteFaqKb();
-        }
+  //           this.mongodbFaqService.deleteMongoDbFaq(relatedFaqIdToDelete).subscribe((faq_to_delete) => {
+  //             console.log('DELETE RELATED FAQ ', faq_to_delete);
+  //           }, (error) => {
+  //             console.log('DELETE RELATED FAQ - ERROR ', error);
+  //             this.SHOW_CIRCULAR_SPINNER = false;
+  //           }, () => {
+  //             console.log('DELETE RELATED FAQ * COMPLETE *');
+  //             this.deleteFaqKb();
+  //           });
+  //         }
+  //       } else {
+  //         this.deleteFaqKb();
+  //       }
 
-      }, (error) => {
-        console.log('GET FAQ BY FAQ-KB ID - ERROR ', error);
-        this.SHOW_CIRCULAR_SPINNER = false;
-        this.DELETE_BOT_ERROR = true;
-      }, () => {
-        console.log('GET FAQ BY FAQ-KB * COMPLETE *');
-        setTimeout(() => {
-          this.SHOW_CIRCULAR_SPINNER = false
-        }, 300);
-        this.DELETE_BOT_ERROR = false;
-      });
+  //     }, (error) => {
+  //       console.log('GET FAQ BY FAQ-KB ID - ERROR ', error);
+  //       this.SHOW_CIRCULAR_SPINNER = false;
+  //       this.DELETE_BOT_ERROR = true;
+  //     }, () => {
+  //       console.log('GET FAQ BY FAQ-KB * COMPLETE *');
+  //       setTimeout(() => {
+  //         this.SHOW_CIRCULAR_SPINNER = false
+  //       }, 300);
+  //       this.DELETE_BOT_ERROR = false;
+  //     });
 
-  }
+  // }
 
   deleteFaqKb() {
     this.faqKbService.deleteMongoDbFaqKb(this.id_toDelete)

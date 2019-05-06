@@ -3,7 +3,8 @@ import { slideInOutAnimation } from '../../_animations/index';
 import { MongodbFaqService } from '../../services/mongodb-faq.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../../core/notify.service';
-
+import { Router } from '@angular/router';
+import { AuthService } from '../../core/auth.service';
 @Component({
   selector: 'appdashboard-train-bot',
   templateUrl: './train-bot.component.html',
@@ -29,18 +30,33 @@ export class TrainBotComponent implements OnInit, AfterViewInit {
   scrollpos: number;
   elSidebarContent: any;
   showSpinner = false;
+  project_id: string;
+  has_pressed_search = false;
+
   constructor(
     private faqService: MongodbFaqService,
     private translate: TranslateService,
-    private notify: NotifyService
+    private notify: NotifyService,
+    private router: Router,
+    private auth: AuthService
   ) { }
 
   ngOnInit() {
     this.onInitSidebarContentHeight();
+    this.getCurrentProject();
     console.log('TrainBotComponent - selectedQuestion ', this.selectedQuestion);
 
     this.translateFaqSuccessfullyUpdated();
     this.translateFaqErrorWhileUpdating();
+  }
+
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+
+      if (project) {
+        this.project_id = project._id;
+      }
+    });
   }
 
   // TRANSLATION
@@ -87,6 +103,7 @@ export class TrainBotComponent implements OnInit, AfterViewInit {
 
   searchFaq() {
     this.showSpinner = true;
+    this.has_pressed_search = true;
     const elemBubbleOfSelectedQuestion = <HTMLElement>document.querySelector('.selected-question');
     console.log('TrainBotComponent - elemBubbleOfSelectedQuestion ', elemBubbleOfSelectedQuestion);
     const elemBubbleHeight = elemBubbleOfSelectedQuestion.clientHeight;
@@ -141,6 +158,7 @@ export class TrainBotComponent implements OnInit, AfterViewInit {
   // }
 
   clearFaqToSearch() {
+    this.has_pressed_search = false;
     console.log('calling clearFaqToSearch');
     this.faqToSearch = '';
     this.foundFAQs = []
@@ -191,7 +209,7 @@ export class TrainBotComponent implements OnInit, AfterViewInit {
 
       document.querySelectorAll('footer ul li a'),
       function (el) {
-        console.log('footer > ul > li > a element: ', el);
+        // console.log('footer > ul > li > a element: ', el);
 
         el.setAttribute('style', 'z-index:-1; text-transform: none');
 
@@ -203,6 +221,13 @@ export class TrainBotComponent implements OnInit, AfterViewInit {
     //   // work with checkboxes[i]
     // }
     // elemFooter.setAttribute('style', 'z-index:-1');
+  }
+
+  goToBot(idFaqKb: string) {
+    console.log('TrainBotComponent goToBot id_bot', idFaqKb);
+
+    // this.router.navigate(['project/' + this.project._id + '/faq', idFaqKb]);
+    this.router.navigate(['project/' + this.project_id + '/bots', idFaqKb]);
   }
 
 }
