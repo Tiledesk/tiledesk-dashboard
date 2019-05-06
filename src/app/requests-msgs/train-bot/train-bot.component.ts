@@ -28,6 +28,7 @@ export class TrainBotComponent implements OnInit, AfterViewInit {
   updatedFAQ: any;
   scrollpos: number;
   elSidebarContent: any;
+  showSpinner = false;
   constructor(
     private faqService: MongodbFaqService,
     private translate: TranslateService,
@@ -85,6 +86,7 @@ export class TrainBotComponent implements OnInit, AfterViewInit {
 
 
   searchFaq() {
+    this.showSpinner = true;
     const elemBubbleOfSelectedQuestion = <HTMLElement>document.querySelector('.selected-question');
     console.log('TrainBotComponent - elemBubbleOfSelectedQuestion ', elemBubbleOfSelectedQuestion);
     const elemBubbleHeight = elemBubbleOfSelectedQuestion.clientHeight;
@@ -119,11 +121,12 @@ export class TrainBotComponent implements OnInit, AfterViewInit {
         console.log('getFaq ', this.foundFAQs);
       }, (error) => {
         console.log('TrainBotComponent FAQs GOT BY TEXT  error', error);
+        this.showSpinner = false;
       },
         () => {
           console.log('TrainBotComponent FAQs GOT BY TEXT * COMPLETE *');
 
-
+          this.showSpinner = false;
         });
 
     // this.faqToSearch = getFaq.question

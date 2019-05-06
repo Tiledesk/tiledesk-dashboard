@@ -30,7 +30,8 @@ color: #fff!important; -->
     </h5> 
   </div>
 
-  <div class="speech-wrapper-train">
+  <p style="margin-top: 15px; margin-bottom: 0px; font-weight:400">  Question </p>   
+  <div class="speech-wrapper-train" style="padding-top: 8px;">
     <div class="bubble">
       <div class="txt selected-question">
       
@@ -86,8 +87,8 @@ color: #fff!important; -->
         </div>
       </div>
     </div>
-
-    <div class="sidebar-content"  style="overflow-y: auto;overflow-x: hidden;" [ngStyle]="{ 'height': sidebar_content_height }">
+    <loading-spinner *ngIf="showSpinner"></loading-spinner>
+    <div *ngIf="!showSpinner" class="sidebar-content"  style="overflow-y: auto;overflow-x: hidden;" [ngStyle]="{ 'height': sidebar_content_height }">
 
       <div *ngIf="foundFAQs?.length === 0" style="text-align: center; max-width: 240px;margin: auto;color:#7695a5">
         <!-- Cerca e aggiungi la domanda ad una FAQ esistente -->
@@ -106,13 +107,15 @@ color: #fff!important; -->
               </div>
 
               <!-- ////// QUESTION -->
-            <div class="col-xs-5" style="padding-left:4px; padding-right:4px"> 
+              <!-- col-xs-5 -->
+            <div class="col-xs-8" style="padding-left:4px; padding-right:4px; margin-bottom: 8px;"> 
               <div class="question-bubble">{{ faq?.question }}</div> 
             </div>
 
             <!-- ////// ANSWER -->
-            <div class="col-xs-6" style="padding-left:4px; padding-right:4px"> 
-              <div class="answer-bubble">
+            <!-- col-xs-6 -->
+            <div class="col-xs-8 col-xs-offset-4" style="padding-left:4px; padding-right:4px;"> 
+              <div class="answer-bubble" style="background-color:#75d5fd">
                 {{ faq?.answer }}
               </div> 
             </div>
