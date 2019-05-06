@@ -23,7 +23,10 @@ color: #fff!important; margin-left:-20px; margin-right:-20px; margin-top:-15px">
   </h5> 
 </div>
 
-  <p style="margin-top: 15px; margin-bottom: 0px; font-weight:400">  Question </p>   
+  <p style="margin-top: 15px; margin-bottom: 0px; font-weight:400">  
+    <!-- Question -->
+  {{ 'FaqTestPage.Question' | translate }}
+  </p>   
   
   <div class="speech-wrapper-train" style="margin-bottom:15px; padding-top:10px">
     <div class="bubble">
@@ -36,11 +39,17 @@ color: #fff!important; margin-left:-20px; margin-right:-20px; margin-top:-15px">
     </div>
   </div>
 
-  
-
-
  
-  <p style="margin-top: 15px; margin-bottom: 10px; font-weight:400">Answers </p> 
+  <p style="margin-top: 15px; margin-bottom: 10px; font-weight:400">
+    <!-- Answers  -->
+    {{ 'Answers' | translate }}
+  </p> 
+
+  <div *ngIf="hits?.length === 0" style="text-align:center; color:#ec971f">
+
+    {{ 'NoGoodMatchFound' | translate }}
+
+  </div>
 
   <loading-spinner *ngIf="showSpinner"></loading-spinner>
   <!-- [ngStyle]="{ 'height': sidebar_content_height }" -->
@@ -61,16 +70,14 @@ color: #fff!important; margin-left:-20px; margin-right:-20px; margin-top:-15px">
 
   </div>
 
-
-  <div>
-
+  <div class="add-answer" style="margin-top:16px">
       <textarea [(ngModel)]="answer" class="textarea" rows="2" style="width:100%; border-radius:5px; border: 1px solid #d9d9d9 !important;padding:8px" 
-      placeholder="Add another answer to the above question"></textarea>
-  
-    </div>
-  
-    <button class="btn btn-block btn-info" style="margin-top:0px; margin-bottom:16px" (click)="create()"> Add Answer </button>
+      placeholder="{{ 'AddAnotherAnswerToTheAboveQuestion' | translate }}"></textarea>
 
+     <button class="btn-block btn-outline-primary" style="margin-top:0px; margin-bottom:16px" (click)="create()"> 
+      {{ 'Add' | translate }} {{ 'FaqTestPage.Answer' | translate }}
+     </button>
+  </div>
 
 
 

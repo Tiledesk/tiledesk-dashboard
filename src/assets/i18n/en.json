@@ -212,6 +212,12 @@
     "Train": "Train",
     "Search": "Search",
     "AddTheSelectedQuestionToAnExistingFAQ":"Add the selected question to an existing FAQ",
+    "Answers": "Answers",
+    "NoGoodMatchFound": "No good match found",
+    "AddAnotherAnswerToTheAboveQuestion":"Add another answer to the above question",
+    "Answer":"Add another answer to the above question",
+    "Add":"Add",
+    "AnswerSuccessfullyAdded":"Answer successfully added",
     "ActivitiesOptions": {
         "AgentAvailabilityOrRoleChange": "Change agent availability or role",
         "AgentDeletion": "Agent deletion",

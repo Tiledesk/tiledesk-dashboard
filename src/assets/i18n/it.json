@@ -212,6 +212,11 @@
     "Train": "Addestra",
     "Search": "Cerca",
     "AddTheSelectedQuestionToAnExistingFAQ":"Aggiungi la domanda selezionata ad una FAQ esistente",
+    "Answers": "Risposte",
+    "NoGoodMatchFound": "Non è stata trovata alcuna corrispondenza valida",
+    "AddAnotherAnswerToTheAboveQuestion":"Aggiungi un'altra risposta alla domanda sopra",
+    "Add":"Aggiungi",
+    "AnswerSuccessfullyAdded":"Risposta aggiunta con successo",
     "ActivitiesOptions": {
         "AgentAvailabilityOrRoleChange":"Modifica disponibilità o ruolo agente",
         "AgentDeletion":"Cancellazione agente",
