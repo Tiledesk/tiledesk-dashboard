@@ -11,7 +11,7 @@
         <div class="col-sm-7">
           <div class="row">
             <div class="col-md-12">
-              <div class="card custom_card" style="padding-top:25px; padding-bottom:0px; margin-bottom:0px">
+              <div class="card custom_card" style="padding-top:14px; padding-bottom:0px; margin-bottom:0px">
                 <div class="card-content ref-for-speech-wrapper">
                     <!-- style="border-bottom: 1px solid #eeeeee; padding-left: 25px; padding-right: 25px;" -->
                   <div class="row" >
@@ -22,7 +22,8 @@
                           {{ "FaqTestPage.Question" | translate }}
                         </label> -->
                         <!-- <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> -->
-                        <div class="col-xs-6 col-xs-offset-3">
+                            <!-- col-xs-6 col-xs-offset-3 -->
+                        <div class="col-xs-8 col-xs-offset-2">
                           <input [(ngModel)]="questionToTest" class="input" type="text" placeholder='{{ "FaqTestPage.EnterTheQuestion" | translate }}'  name="testquestion"
                           style="padding-left: 16px;">
                         
@@ -65,7 +66,9 @@
                             <div class="bubble" style="width: auto; background-color: rgb(117, 213, 253) ">
                       
                               <div class="txt">
-                                <p class="message" style="font-size: 14px;">Hi Nikola, start to test the bot, then click on inspect ...... </p>
+                                <p class="message" style="font-size: 14px;">
+                                  Hi {{ currentUserFirstname }}, start to test the bot, then click on inspect ...... 
+                                </p>
                               </div>
                       
 
@@ -95,22 +98,30 @@
                   <div *ngFor="let faq of questionsAndAnswersArray">
                     <!-- <div class="col-xs-8 col-xs-offset-2"> -->
                     
-                      <div class="speech-wrapper">
+                      <div class="speech-wrapper" style="display: flex;; flex-wrap: wrap;">
                       <div class="bubble">
                         <div class="txt">
                       
                            <!-- this.questionToTest -->
                           <p class="message">{{ faq?.q }}</p>
-                          <span class="timestamp" style="bottom: -20px;cursor:pointer; font-weight:400"  (click)="openRightSideBar(faq?.q)"> Inspect </span>
+                          <span class="timestamp" style="color: #7695a5;bottom: -23px;cursor:pointer; font-weight:400; left: 0;"  (click)="openRightSideBar(faq?.q)"> Inspect </span>
                           <!-- <p class="message">{{ questionToTest }}</p> -->
                         </div>
                         <div class="bubble-arrow"></div>
                       </div>
                         <!--  Speech Bubble alternative -->
-                        <div class="bubble alt" [ngStyle]="{'margin-left': bubbleAltMarginLeft }">
+                        <!-- [ngStyle]="{'margin-left': bubbleAltMarginLeft }" -->
+                        <div class="line-break" style="width: 100%;"></div>
+                        <div class="bubble alt" style="margin-left: auto;" [ngClass]="{'no-good-match' : faq?.a === 'NoGoodMatchFound'}">
                           <div class="txt">
                           
-                            <p class="message">{{ faq?.a }}</p>
+                            <p *ngIf="faq?.a !== 'NoGoodMatchFound'; else NoGoodMatch" class="message">
+                              {{ faq?.a }}
+                            </p>
+
+                            <ng-template #NoGoodMatch>
+                              {{ faq?.a  | translate }}
+                            </ng-template>
                             <!-- <span class="timestamp" style="bottom: -20px;cursor:pointer"  (click)="openRightSideBar(faq?.q)"> inspect </span> -->
                           </div>
                         <div class="bubble-arrow alt"></div>
