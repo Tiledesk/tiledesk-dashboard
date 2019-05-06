@@ -249,6 +249,18 @@
 
 
 // ***************** START new CHAT *****************
+
+.parent {
+  display: flex;
+  // height: 400px;
+  // background-color: #222;
+}
+
+.child {
+  margin-left: auto;
+}
+
+
 .speech-wrapper{
   // padding: 30px 40px;
   padding: 20px 55px;
@@ -268,7 +280,7 @@
       // added
       // margin: 0 0 40px 60px;
       // float:right;
-      // background: #039be5!important;
+      background: #75d5fd!important;
     }
     .txt{
       // padding: 8px 55px 8px 14px;
@@ -283,7 +295,8 @@
           color: #b3b3b3;
         }
         &.alt{
-          color: #2ecc71;
+          // color: #2ecc71;
+          color: #039be5;
         }
       }
       .message{
@@ -329,7 +342,9 @@
     .bubble-arrow.alt:after {
       transform: rotate(45deg) scaleY(-1);
       // added
-      // border-top: 9px solid #039be5!important;
+      // #039be5
+      border-top: 9px solid #75d5fd!important;
+
      
     }
   }
@@ -940,15 +955,7 @@ and also iPads specifically.
   }
 }
 
-.parent {
-  display: flex;
-  // height: 400px;
-  // background-color: #222;
-}
 
-.child {
-  margin-left: auto;
-}
 
 /* NK start CUSTOM SCROLL BAR */
 /* width */

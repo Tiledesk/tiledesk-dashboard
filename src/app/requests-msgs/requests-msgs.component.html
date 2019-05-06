@@ -118,13 +118,14 @@
                 </div>
               </div> -->
               <!-- max-width: 600px;margin:auto -->
-            <div class="chat-body" style="vertical-align:baseline; padding-left: 15px; padding-left: 15px;">
+              <!-- padding-left: 15px; -->
+            <div class="chat-body" style="vertical-align:baseline;">
 
                 <!-- style="padding-bottom: 3px;" class="answer left" -->
               <div *ngFor="let message of messagesList"> 
 
-                  <div class="parent">
-                      <div [ngClass]="{'child' : requester_id !== message.sender}"> 
+                <div class="parent">
+                  <div [ngClass]="{'child' : requester_id !== message.sender}"> 
     
                 <div class="speech-wrapper">
 
