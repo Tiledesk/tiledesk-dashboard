@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { slideInOutAnimation } from '../../_animations/index';
 import { MongodbFaqService } from '../../services/mongodb-faq.service';
+import { TranslateService } from '@ngx-translate/core';
+import { NotifyService } from '../../core/notify.service';
 
 @Component({
   selector: 'appdashboard-faq-test-train-bot',
@@ -20,8 +22,11 @@ export class FaqTestTrainBotComponent implements OnInit {
   hits: any;
   showSpinner = true;
   answer: string;
+  answerSuccessfullyAdded: string;
   constructor(
     private faqService: MongodbFaqService,
+    private notify: NotifyService,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
@@ -31,9 +36,24 @@ export class FaqTestTrainBotComponent implements OnInit {
     console.log('FaqTestTrainBotComponent - idBot ', this.idBot)
 
     this.searchRemoteFaq();
+
+    this.translateAnswerSuccessfullyAdded();
+  }
+
+  
+
+  translateAnswerSuccessfullyAdded(){
+
+    this.translate.get('AnswerSuccessfullyAdded')
+    .subscribe((text: string) => {
+
+      this.answerSuccessfullyAdded = text;
+      console.log('FaqTestTrainBotComponent + + + AnswerSuccessfullyAdded', text)
+    });
   }
 
   searchRemoteFaq() {
+   
     this.faqService.searchRemoteFaqByRemoteFaqKbKey(this.remote_faq_kb_key, this.selectedQuestion)
     .subscribe((remoteFaq) => {
       console.log('FaqTestTrainBotComponent - REMOTE FAQ FOUND - POST DATA ', remoteFaq);
@@ -53,7 +73,6 @@ export class FaqTestTrainBotComponent implements OnInit {
   }
 
 
-  
   /**
    * *** ADD FAQ ***
    */
@@ -61,20 +80,26 @@ export class FaqTestTrainBotComponent implements OnInit {
     console.log('MONGO DB CREATE FAQ - QUESTION: ', this.selectedQuestion, ' - ANSWER: ', this.answer, ' - ID FAQ KB ', this.idBot);
     this.faqService.addMongoDbFaq(this.selectedQuestion, this.answer, this.idBot)
       .subscribe((faq) => {
-        console.log('CREATED FAQ ', faq);
+        console.log('FaqTestComponent - CREATED FAQ ', faq);
 
        
       }, (error) => {
 
-        console.log('CREATED FAQ - ERROR ', error);
+        console.log('FaqTestComponent - CREATED FAQ - ERROR ', error);
         // =========== NOTIFY ERROR ===========
       
         // this.notify.showNotification(this.createFaqErrorNoticationMsg, 4, 'report_problem');
       }, () => {
-        console.log('CREATED FAQ * COMPLETE *');
+        console.log('FaqTestComponent - CREATED FAQ * COMPLETE *');
         // =========== NOTIFY SUCCESS===========
      
-        // this.notify.showNotification(this.createFaqSuccessNoticationMsg, 2, 'done');
+        this.notify.showNotification(this.answerSuccessfullyAdded, 2, 'done');
+
+      //  SET A TIMEOUT TO AVOID THAT REMOTE FAQ ARE NOT UPDATED
+      this.showSpinner = true;
+      setTimeout(() => {
+        this.searchRemoteFaq();
+      }, 500);
 
       });
 
