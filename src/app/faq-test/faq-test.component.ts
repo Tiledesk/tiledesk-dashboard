@@ -8,6 +8,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 // USED FOR go back last page
 import { Location } from '@angular/common';
 
+
 @Component({
   selector: 'app-faq-test',
   templateUrl: './faq-test.component.html',
@@ -31,12 +32,15 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
   train_bot_sidebar_height: any;
   selectedQuestion: string;
   idBot: string;
+  currentUserFirstname: string;
+
   constructor(
     private router: Router,
     private auth: AuthService,
     private route: ActivatedRoute,
     private faqService: MongodbFaqService,
-    private _location: Location
+    private _location: Location,
+    
 
   ) { }
 
@@ -44,10 +48,9 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
     this.auth.checkRoleForCurrentProject();
     this.getSearchedQuestionFromStorage();
 
-
-
     this.getCurrentProject();
     this.getRemoteFaqKbKey();
+    this.getCurrentUser();
 
     console.log('FaqTestComponent - OnInit  questionToTest', this.questionToTest);
     // if (this.questionToTest && this.questionToTest !== null) {
@@ -58,6 +61,19 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
     //     this.onInitSearchRemoteFaq(this.questionToTest);
     //   }, 500);
     // }
+    
+  }
+
+
+
+  getCurrentUser() {
+    this.auth.user_bs.subscribe((user) => {
+      console.log('FaqTestComponent - LoggedUser ', user);
+
+      if (user && user.firstname) {
+        this.currentUserFirstname = user.firstname;
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -69,55 +85,34 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
     
   }
 
-  // getSpeechWrapperWidth() {
-  //   const elemSpeechWrapper = <HTMLElement>document.querySelector('.speech-wrapper');
-  //   console.log('FaqTestComponent - elemSpeechWrapper onInit ', elemSpeechWrapper);
-  //   if (elemSpeechWrapper) {
-  //     const elemSpeechWrapperWidth = elemSpeechWrapper.clientWidth;
-  //     console.log('FaqTestComponent - Speech Wrapper Width onInit ', elemSpeechWrapperWidth);
-  //     const windowWidth = window.innerWidth;
-  //     console.log('FaqTestComponent - Window Width onInit ', windowWidth);
 
-  //     if (windowWidth > 410) {
-  //       this.bubbleAltMarginLeft = elemSpeechWrapperWidth - 260 + 'px'
+  // @HostListener('window:resize', ['$event'])
+  // onResize(event: any) {
+  //   const newInnerWidth = event.target.innerWidth;
+  //   console.log('FaqTestComponent newInnerWidth ', newInnerWidth)
+
+  //   // const elemSpeechWrapper = <HTMLElement>document.querySelector('.speech-wrapper');
+
+  //   const elemSendCardContent = <HTMLElement>document.querySelector('.ref-for-speech-wrapper');
+  //   //  console.log('FaqTestComponent - elemSpeechWrapper onResize ', elemSpeechWrapper);
+  //   if (elemSendCardContent) {
+     
+  //     // elemSendCardContentWidth è la card sopra alla card che contiene le bubble.
+  //     // Uso questa x calcolare il margine delle bulle sx perchè la sua ampiezza e da subito calcolabile e non bisogna aspettare
+  //     // che venga effettuata una ricerca
+  //     this.elemSendCardContentWidth = elemSendCardContent.clientWidth;
+  //     console.log('FaqTestComponent - elemSendCardContentWidth onResize', this.elemSendCardContentWidth);
+
+  //     if (newInnerWidth > 410) {
+  //       // this.bubbleAltMarginLeft = elemSpeechWrapperWidth - 260 + 'px';
+  //       this.bubbleAltMarginLeft = this.elemSendCardContentWidth - 406 + 'px';
+  //       console.log('FaqTestComponent - bubbleAltMarginLeft onResize', this.elemSendCardContentWidth);
+  //     } else {
+
+  //       this.bubbleAltMarginLeft = 0 + 'px'
   //     }
   //   }
   // }
-
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    const newInnerWidth = event.target.innerWidth;
-    console.log('FaqTestComponent newInnerWidth ', newInnerWidth)
-
-
-    // const elemSpeechWrapper = <HTMLElement>document.querySelector('.speech-wrapper');
-
-    const elemSendCardContent = <HTMLElement>document.querySelector('.ref-for-speech-wrapper');
-    //  console.log('FaqTestComponent - elemSpeechWrapper onResize ', elemSpeechWrapper);
-    if (elemSendCardContent) {
-      // const elemSpeechWrapperWidth = elemSpeechWrapper.clientWidth;
-      // elemSendCardContentWidth è la card sopra alla card che contiene le bubble.
-      // Uso questa x calcolare il margine delle bulle sx perchè la sua ampiezza e da subito calcolabile e non bisogna aspettare
-      // che venga effettuata una ricerca
-      this.elemSendCardContentWidth = elemSendCardContent.clientWidth;
-      console.log('FaqTestComponent - elemSendCardContentWidth onResize', this.elemSendCardContentWidth);
-
-      if (newInnerWidth > 410) {
-        // this.bubbleAltMarginLeft = elemSpeechWrapperWidth - 260 + 'px';
-        this.bubbleAltMarginLeft = this.elemSendCardContentWidth - 406 + 'px';
-        console.log('FaqTestComponent - bubbleAltMarginLeft onResize', this.elemSendCardContentWidth);
-      } else {
-
-        this.bubbleAltMarginLeft = 0 + 'px'
-      }
-    }
-
-  }
-
-  // setTimeout(() => {
-  //   this.SHOW_CIRCULAR_SPINNER = false
-  //   this.CREATE_BOT_ERROR = true;
-  // }, 300);
 
   /**
    * WHEN THE USER RUN A TEST, THE QUESTION FOR THAT SEARCH IS SAVED IN THE STORAGE
@@ -189,8 +184,8 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
   // }
 
   searchRemoteFaq() {
-    this.bubbleAltMarginLeft = this.elemSendCardContentWidth - 406 + 'px'
-    console.log('FaqTestComponent  searchRemoteFaq bubbleAltMarginLeft : ', this.bubbleAltMarginLeft);
+    // this.bubbleAltMarginLeft = this.elemSendCardContentWidth - 406 + 'px'
+    // console.log('FaqTestComponent  searchRemoteFaq bubbleAltMarginLeft : ', this.bubbleAltMarginLeft);
 
     // BUG FIX 'RUN TEST button remains focused after clicking'
     // this.elementRef.nativeElement.blur();
@@ -213,7 +208,7 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
               answer = this.hits[0].document.answer;
             } else {
 
-              answer = 'No good match found';
+              answer = 'NoGoodMatchFound';
             }
             this.questionsAndAnswersArray.push({ 'q': this.questionToTest, 'a': answer })
             // this.questionsAndAnswersArray.push({'q': this.hits[0].document.question, 'a': this.hits[0].document.answer })

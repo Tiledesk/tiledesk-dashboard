@@ -250,22 +250,22 @@ only screen and (max-width: 760px),
 //   }
 // }
 
-@media (max-width: 482px) {
-  .speech-wrapper{ 
-    // margin-left: -30px !important;
-    // margin-right: -30px !important;
-    .bubble{
-      width: auto !important;
-    }
-  }
-}
+// @media (max-width: 482px) {
+//   .speech-wrapper{ 
+//     // margin-left: -30px !important;
+//     // margin-right: -30px !important;
+//     .bubble{
+//       width: auto !important;
+//     }
+//   }
+// }
 
 .speech-wrapper{
     // padding: 30px 40px;
     // padding: 30px 10px;
     padding: 10px 10px;
     .bubble{
-      width: 340px;
+      width: 240px;
       height: auto;
       display: block;
       background: #f5f5f5;
@@ -341,6 +341,15 @@ only screen and (max-width: 760px),
   .coloured:after {
     border-top: 9px solid rgb(117, 213, 253) !important;
   } 
+
+  .no-good-match {
+
+    background: #ec971f !important;
+
+    .bubble-arrow.alt:after {
+      border-top: 9px solid #ec971f !important;
+    }
+  }
 
   
 
