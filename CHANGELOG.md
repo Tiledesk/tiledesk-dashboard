@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 1.0.25
+- Adds the "Train bot" slide-out panel in request's details and in the bot test page
+
 ### 1.0.24
 - Improves the chat in the request's detail page
 
