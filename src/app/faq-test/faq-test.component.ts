@@ -138,7 +138,7 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
     this.idBot = this.route.snapshot.params['faqkbid'];
     console.log('FaqTestComponent - FAQ-KB COMP HAS PASSED idBot', this.idBot);
 
-    if (this.idBot ) {
+    if (this.idBot) {
       this.getFaqKbById();
     }
   }
@@ -231,7 +231,7 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
             }
             this.questionsAndAnswersArray.push({ 'q': this.questionToTest, 'a': answer, 'time': time })
 
-            this.reverseQuestionsAndAnswersArray =  this.questionsAndAnswersArray.reverse();
+            this.reverseQuestionsAndAnswersArray = this.questionsAndAnswersArray.reverse();
             // this.questionsAndAnswersArray.push({'q': this.hits[0].document.question, 'a': this.hits[0].document.answer })
 
             console.log('FaqTestComponent *** Questions & Answers Array *** ', this.questionsAndAnswersArray);
@@ -255,6 +255,8 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
 
   startOver() {
     this.questionsAndAnswersArray = [];
+    this.reverseQuestionsAndAnswersArray = [];
+    this.questionToTest = '';
   }
 
 
