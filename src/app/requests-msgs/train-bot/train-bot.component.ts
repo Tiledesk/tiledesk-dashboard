@@ -18,7 +18,7 @@ export class TrainBotComponent implements OnInit, AfterViewInit {
   @ViewChild('searchbox') private searchboxRef: ElementRef;
 
   @Output() valueChange = new EventEmitter();
-  @Input() selectedQuestion;
+  @Input() selectedQuestion: string;
   faqToSearch: string;
   isOpenRightSidebar = true;
   sidebar_content_height: any;
@@ -32,6 +32,7 @@ export class TrainBotComponent implements OnInit, AfterViewInit {
   showSpinner = false;
   project_id: string;
   has_pressed_search = false;
+  selectQuestionForTooltip: string;
 
   constructor(
     private faqService: MongodbFaqService,
@@ -48,6 +49,18 @@ export class TrainBotComponent implements OnInit, AfterViewInit {
 
     this.translateFaqSuccessfullyUpdated();
     this.translateFaqErrorWhileUpdating();
+    this.sliceSelectedQuestion(this.selectedQuestion)
+  }
+
+  /* TRUNCATE THE Selected Question DISPLAYED TOOLTIP */
+  sliceSelectedQuestion(text: string) {
+    if (text) {
+      if (text.length >= 55) {
+        this.selectQuestionForTooltip = text.slice(0, 55) + '...'
+      } else {
+        this.selectQuestionForTooltip = text
+      }
+    }
   }
 
   getCurrentProject() {

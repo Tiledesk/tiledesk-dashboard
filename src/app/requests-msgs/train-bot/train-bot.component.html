@@ -49,46 +49,49 @@ color: #fff!important; -->
     <!-- <input class="search-input" style="background-image:none;border: 1px solid #d9d9d9; border-radius: 30px;padding: 8px 16px; height:36px;    width: 100%;"> -->
     <div class="row">
       <div class="col-sm-12"> 
-        <div class="input-group" style="margin-right: 8px; margin-left: 8px;">
 
-          <div class="buttonInside">
-            <input #searchbox name="faqToSearch" type="text" [(ngModel)]="faqToSearch" class="form-control" autocomplete="off"
-              style="margin-bottom: 27px;
-              background-image:none;
-              border: 1px solid #d9d9d9;
-              border-bottom-right-radius: 0px !important;
-              border-top-right-radius: 0px !important;
-              border-bottom-left-radius: 30px !important;
-              border-top-left-radius: 30px !important;
-              padding: 8px 16px; height:36px;" 
-              placeholder="{{ 'Search' | translate }} FAQ">
-              
-            <!-- // CLEAR SEARCH FULL-TEXT BTN -->
-            <span id="clear-faq-search"  *ngIf="faqToSearch?.length > 0" 
-              class="glyphicon glyphicon-remove tooltipx" aria-hidden="true" (click)="clearFaqToSearch()">
-              <span style="font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !important;font-weight:400!important;" class="tooltiptext">
-                {{ 'HistoryPage.ClearSearch' | translate }}
-              </span> 
-            </span>
-          </div>
+        <form>
+          <div class="input-group" style="margin-right: 8px; margin-left: 8px;">
+            <div class="buttonInside">
+              <input #searchbox name="faqToSearch" type="text" [(ngModel)]="faqToSearch" class="form-control" autocomplete="off"
+                style="margin-bottom: 27px;
+                background-image:none;
+                border: 1px solid #d9d9d9;
+                border-bottom-right-radius: 0px !important;
+                border-top-right-radius: 0px !important;
+                border-bottom-left-radius: 30px !important;
+                border-top-left-radius: 30px !important;
+                padding: 8px 16px; height:36px;" 
+                placeholder="{{ 'SearchForAnswersInBots' | translate }}">
+                
+              <!-- // CLEAR SEARCH FULL-TEXT BTN -->
+              <span id="clear-faq-search"  *ngIf="faqToSearch?.length > 0" 
+                class="glyphicon glyphicon-remove tooltipx" aria-hidden="true" (click)="clearFaqToSearch()">
+                <span style="font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !important;font-weight:400!important;" class="tooltiptext">
+                  {{ 'HistoryPage.ClearSearch' | translate }}
+                </span> 
+              </span>
+            </div>
 
-          <!-- // SEARCH FULL-TEXT BTN -->
-          <span class="input-group-btn" style="padding-right:0px; padding-left:0px">
-            <button #searchbtn class="btn btn-info searchTopBtn" type="submit" (click)="searchFaq()"
-              style="border-radius: 0px !important;  border-bottom-right-radius: 30px !important;
-              border-top-right-radius: 30px !important;height: 36px;">
-              <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-            </button>
-          </span>
-
-            <!-- // OPEN ADVANCED OPTION BTN -->
-            <!-- <span class="input-group-btn" style="padding-left:0px; padding-right:0px">
-              <button #advancedoptionbtn class="btn btn-default" type="button" (click)="toggle()"
-                style="padding:9px 30px; margin-bottom: 0px">
-                <span class="caret"></span>
+            <!-- // SEARCH FULL-TEXT BTN -->
+            <span class="input-group-btn" style="padding-right:0px; padding-left:0px">
+              <button #searchbtn class="btn btn-info searchTopBtn" type="submit" (click)="searchFaq()"
+                style="border-radius: 0px !important;  border-bottom-right-radius: 30px !important;
+                border-top-right-radius: 30px !important;height: 36px;">
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
               </button>
-            </span> -->
-        </div>
+            </span>
+
+              <!-- // OPEN ADVANCED OPTION BTN -->
+              <!-- <span class="input-group-btn" style="padding-left:0px; padding-right:0px">
+                <button #advancedoptionbtn class="btn btn-default" type="button" (click)="toggle()"
+                  style="padding:9px 30px; margin-bottom: 0px">
+                  <span class="caret"></span>
+                </button>
+              </span> -->
+          </div>
+        </form>
+
       </div>
     </div>
     <loading-spinner *ngIf="showSpinner"></loading-spinner>
@@ -103,16 +106,24 @@ color: #fff!important; -->
           {{ 'NoGoodMatchFound' | translate }}
       </div>
 
+      <div *ngIf="foundFAQs?.length > 0 && has_pressed_search === true " style="text-align: center; max-width: 240px;margin: auto;color:#039be5; font-weight: 500;">
+        {{ 'AnswersFound' | translate }} ({{foundFAQs?.length}}) 
+      </div>
+
         <div *ngFor="let faq of foundFAQs" >
           <div class="row" style="padding: 18px;">
 
             <!-- ////// ADD QUESTION BTN -->
               <div class="col-xs-1" style="padding-left:4px; padding-right:4px; padding-top:31px">
               
-                  <i class="material-icons add-question" style=""
-                   (click)="editFaq(faq?._id, faq?.question, faq?.answer)">
-                      add_circle_outline
-                  </i>
+                  <span class="tooltip-new"> 
+                    <i class="material-icons add-question" (click)="editFaq(faq?._id, faq?.question, faq?.answer)">
+                        add_circle_outline
+                    </i>
+                    <span class="tooltiptext-new" style="white-space: nowrap; padding-left: 8px;padding-right: 8px; font-size:12px">
+                      {{ 'Add' | translate }} "<span style="font-weight:400; font-style: italic;">{{ selectQuestionForTooltip }}</span>" {{ 'ToThisAnswer' | translate }}
+                     </span>
+                  </span>
  
               </div>
 
@@ -120,7 +131,7 @@ color: #fff!important; -->
               <!-- col-xs-5 -->
             <div class="col-xs-8" style="padding-left:4px; padding-right:4px; margin-bottom: 8px;"> 
 
-              <span style="font-size: 12px;font-weight: 400;"> Bot: 
+              <span style="font-size: 12px;font-weight: 400;"> {{ 'FoundIn' | translate }}: 
                 <span style="color:#03a5e8; cursor:pointer" (click)="goToBot(faq?.faq_kb[0]?._id)"> 
                   {{ faq?.faq_kb[0]?.name }} 
                 </span> 

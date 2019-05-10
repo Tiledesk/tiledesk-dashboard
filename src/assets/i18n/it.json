@@ -229,6 +229,10 @@
     "YouCanAddANewAnswer":"È possibile aggiungere una nuova risposta se una delle risposte esistenti individuate non è corretta o se la risposta non esiste nel bot (non è stata trovata alcuna corrispondenza valida).",
     "EnterTheNewAnswerToCurrentQuestion": "Immettere la nuova risposta alla domanda corrente nella casella di testo e premere Add Answer per aggiungerla.",
     "TypeAddYourQuesttionHere":"Scrivi/Aggiungi qui la tua domanda separata con una nuova riga",
+    "SearchForAnswersInBots":"Cerca risposte nei Bot",
+    "AnswersFound":"Risposte trovate",
+    "FoundIn":"trovata in",
+    "ToThisAnswer":"a questa risposta",
     "ActivitiesOptions": {
         "AgentAvailabilityOrRoleChange":"Modifica disponibilità o ruolo agente",
         "AgentDeletion":"Cancellazione agente",

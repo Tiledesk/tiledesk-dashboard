@@ -230,6 +230,10 @@
     "YouCanAddANewAnswer":"You can add a new answer if any of the existing answers that were matched are incorrect or the answer does not exist in bot (no good match found).",
     "EnterTheNewAnswerToCurrentQuestion": "Enter the new answer to current question in the text box of the Train bot panel and press Add Answer to add it.",
     "TypeAddYourQuesttionHere":"Type/Add your questtion here separated with a new line", 
+    "SearchForAnswersInBots":"Search for answers in Bots",
+    "AnswersFound":"Answers found",
+    "FoundIn":"found in",
+    "ToThisAnswer":"to this answer",
     "ActivitiesOptions": {
         "AgentAvailabilityOrRoleChange": "Change agent availability or role",
         "AgentDeletion": "Agent deletion",
