@@ -29,6 +29,7 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
   elemSendCardContentWidth: any;
 
   questionsAndAnswersArray = [];
+  reverseQuestionsAndAnswersArray = [];
   OPEN_RIGHT_SIDEBAR = false;
   train_bot_sidebar_height: any;
   selectedQuestion: string;
@@ -198,6 +199,10 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
   // }
 
   searchRemoteFaq() {
+
+    const today = new Date();
+    const time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
+    console.log('FaqTestComponent  time: ', time);
     // this.bubbleAltMarginLeft = this.elemSendCardContentWidth - 406 + 'px'
     // console.log('FaqTestComponent  searchRemoteFaq bubbleAltMarginLeft : ', this.bubbleAltMarginLeft);
 
@@ -224,7 +229,9 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
 
               answer = 'NoGoodMatchFound';
             }
-            this.questionsAndAnswersArray.push({ 'q': this.questionToTest, 'a': answer })
+            this.questionsAndAnswersArray.push({ 'q': this.questionToTest, 'a': answer, 'time': time })
+
+            this.reverseQuestionsAndAnswersArray =  this.questionsAndAnswersArray.reverse();
             // this.questionsAndAnswersArray.push({'q': this.hits[0].document.question, 'a': this.hits[0].document.answer })
 
             console.log('FaqTestComponent *** Questions & Answers Array *** ', this.questionsAndAnswersArray);

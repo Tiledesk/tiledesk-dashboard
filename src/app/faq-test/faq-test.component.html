@@ -24,12 +24,16 @@
                         <!-- <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> -->
                             <!-- col-xs-6 col-xs-offset-3 -->
                         <div class="col-xs-8 col-xs-offset-2">
-                          <input [(ngModel)]="questionToTest" class="input" type="text" placeholder='{{ "FaqTestPage.EnterTheQuestion" | translate }}'  name="testquestion"
-                          style="padding-left: 16px;">
-                        
-                          <i class="material-icons send-icon" (click)="searchRemoteFaq()">
-                              send
-                          </i>
+                          <form>
+                            <input [(ngModel)]="questionToTest" class="input" type="text" placeholder='{{ "FaqTestPage.EnterTheQuestion" | translate }}'  name="testquestion"
+                            style="padding-left: 16px;">
+                          
+                            <button type="submit" class="send-btn" (click)="searchRemoteFaq()">
+                            <i  class="material-icons send-icon" >
+                                send
+                            </i>
+                          </button>
+                          </form>
 
                         </div>
                         <div class="col-xs-2" style="text-align: center;">
@@ -108,7 +112,8 @@
                     </div>
                   </div>
                   <!-- class="row"  -->
-                  <div *ngFor="let faq of questionsAndAnswersArray">
+                  <!-- questionsAndAnswersArray -->
+                  <div *ngFor="let faq of reverseQuestionsAndAnswersArray">
                     <!-- <div class="col-xs-8 col-xs-offset-2"> -->
                     
                       <div class="speech-wrapper" style="display: flex;; flex-wrap: wrap;">
@@ -138,7 +143,9 @@
                             <ng-template #NoGoodMatch>
                               {{ faq?.a  | translate }}
                             </ng-template>
-                            <!-- <span class="timestamp" style="bottom: -20px;cursor:pointer"  (click)="openRightSideBar(faq?.q)"> inspect </span> -->
+                            <span class="timestamp" style="bottom: -20px; color: #7695a5;font-weight: 400; text-transform: lowercase">
+                                {{ 'At' | translate }} {{ faq?.time }} 
+                            </span>
                           </div>
                         <div class="bubble-arrow alt"></div>
                         </div>
@@ -171,23 +178,23 @@
                 <p style="color:#7695a5">
 
                   <!-- Enter a question in the text box and click on the 'send' button. -->
-                  {{ 'EnterAQuestionInTheTextBox' | translate }}
+                 1) {{ 'EnterAQuestionInTheTextBox' | translate }}
     
                 </p>
                 <p style="color:#7695a5">
                   <!-- The best-matched answer from the bot is returned as the response. -->
-                  {{ 'TheBestMatchedAnswerFromTheBotIsReturned' | translate }}
+                 2) {{ 'TheBestMatchedAnswerFromTheBotIsReturned' | translate }}
                 </p>
                
                 <p style="color:#7695a5">
                   <!-- Select Inspect for more details on that response. -->
-                  {{ 'SelectInspectForMoreDetailsOnThatResponse' | translate }}
+                 3) {{ 'SelectInspectForMoreDetailsOnThatResponse' | translate }}
                   
                 </p>
 
                 <p style="color:#7695a5">
                   <!-- The 'Train bot' slide-out panel appears.  -->
-                  {{ 'TheTrainBotSlideOutPanelAppears' | translate }}
+                 4) {{ 'TheTrainBotSlideOutPanelAppears' | translate }}
                   <span style="display:block">
                    <!-- You can add a new answer if any of the existing answers that were matched are incorrect or the answer does not exist in bot (no good match found). -->
                    {{ 'YouCanAddANewAnswer' | translate }}  
@@ -196,14 +203,10 @@
                 </p>
                 <p style="color:#7695a5">
                     <!-- Enter the new answer to current question in the text box of the Train bot panel and press Add Answer to add it. -->
-                    {{ 'EnterTheNewAnswerToCurrentQuestion' | translate }}  
+                 5) {{ 'EnterTheNewAnswerToCurrentQuestion' | translate }}  
                     
                 </p>
                 
-
-             
-
-
             </div>
           </div>
         </div>

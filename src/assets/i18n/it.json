@@ -233,6 +233,7 @@
     "AnswersFound":"Risposte trovate",
     "FoundIn":"trovata in",
     "ToThisAnswer":"a questa risposta",
+    "At":"alle",
     "ActivitiesOptions": {
         "AgentAvailabilityOrRoleChange":"Modifica disponibilità o ruolo agente",
         "AgentDeletion":"Cancellazione agente",
