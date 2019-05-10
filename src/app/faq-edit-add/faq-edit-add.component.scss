@@ -30,11 +30,13 @@ textarea {
     padding: 0px;
 }
 
-.custom-label {
+.custom-label-left {
     color: #7695a5;
-    height: 36px;
+    // height: 36px;
     padding-top: 7px;
     padding-left: 16px;
     padding-right: 16px;
-    text-align: right!important;
+    text-align: left!important;
+    // text-align: right!important;
+
 }

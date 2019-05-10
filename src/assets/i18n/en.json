@@ -583,14 +583,14 @@
         "Continue": "Continue"
     },
     "FaqEditAddPage": {
-        "AddFaq": "Add FAQ",
-        "EditFaq": "Edit FAQ",
+        "AddFaq": "Add Answer",
+        "EditFaq": "Edit Answer",
         "Question": "Question",
         "Answer": "Answer",
-        "CreateFaq": "Create FAQ",
-        "UpdateFaq": "Update FAQ",
-        "FaqAttributes": "FAQ attributes",
-        "FaqID": "FAQ Id",
+        "CreateFaq": "Create Answer",
+        "UpdateFaq": "Update Answer",
+        "FaqAttributes": "Answer attributes",
+        "FaqID": "Answer Id",
         "CreationDate": "Creation date"
     },
     "FaqTestPage": {

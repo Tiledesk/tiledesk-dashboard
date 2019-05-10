@@ -582,14 +582,14 @@
         "Continue": "Continua"
     },
     "FaqEditAddPage": {
-        "AddFaq": "Aggiungi FAQ",
-        "EditFaq": "Modifica FAQ",
+        "AddFaq": "Aggiungi Risposta",
+        "EditFaq": "Modifica Risposta",
         "Question": "Domanda",
         "Answer": "Risposta",
-        "CreateFaq": "Crea FAQ",
-        "UpdateFaq": "Aggiorna FAQ",
-        "FaqAttributes": "Attributi FAQ",
-        "FaqID": "Id FAQ",
+        "CreateFaq": "Crea Risposta",
+        "UpdateFaq": "Aggiorna Risposta",
+        "FaqAttributes": "Attributi Risposta",
+        "FaqID": "Id Risposta",
         "CreationDate": "Data creazione"
     },
     "FaqTestPage": {

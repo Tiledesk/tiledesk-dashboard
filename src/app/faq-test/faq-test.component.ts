@@ -229,12 +229,16 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
 
               answer = 'NoGoodMatchFound';
             }
-            this.questionsAndAnswersArray.push({ 'q': this.questionToTest, 'a': answer, 'time': time })
+            this.questionsAndAnswersArray.push({ 'q': this.questionToTest, 'a': answer, 'time': time });
+            
+            const questionsAndAnswersArrayClone = JSON.parse(JSON.stringify(this.questionsAndAnswersArray));
 
-            this.reverseQuestionsAndAnswersArray = this.questionsAndAnswersArray.reverse();
+
+            this.reverseQuestionsAndAnswersArray = questionsAndAnswersArrayClone.reverse();
             // this.questionsAndAnswersArray.push({'q': this.hits[0].document.question, 'a': this.hits[0].document.answer })
 
             console.log('FaqTestComponent *** Questions & Answers Array *** ', this.questionsAndAnswersArray);
+            console.log('FaqTestComponent *** Reverse Questions & Answers Array *** ', this.reverseQuestionsAndAnswersArray);
 
             this.faq_number_of_found = remoteFaq.total;
             console.log('REMOTE FAQ LENGHT ', this.faq_number_of_found);
