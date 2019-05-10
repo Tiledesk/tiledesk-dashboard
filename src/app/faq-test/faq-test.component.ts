@@ -8,7 +8,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 // USED FOR go back last page
 import { Location } from '@angular/common';
 import { FaqKbService } from '../services/faq-kb.service';
-
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-faq-test',
@@ -203,6 +203,13 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
     const today = new Date();
     const time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
     console.log('FaqTestComponent  time: ', time);
+
+    const momentTime = moment().toDate()
+
+    console.log('FaqTestComponent moment  time: ', momentTime);
+    const mTime = moment(momentTime).format('hh:mm:ss a');
+
+    console.log('FaqTestComponent  mTime: ', mTime);
     // this.bubbleAltMarginLeft = this.elemSendCardContentWidth - 406 + 'px'
     // console.log('FaqTestComponent  searchRemoteFaq bubbleAltMarginLeft : ', this.bubbleAltMarginLeft);
 
