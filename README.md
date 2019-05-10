@@ -18,7 +18,7 @@ Consider that Tiledesk.com cloud service makes every module available with the s
 - Tiledesk Backoffice (this repo)
 - All the chat components are available thanks to the Chat21 open source project, also available on GitHub (https://github.com/chat21)
 
-Feel free to ask for support on http://tiledesk.com, using the live chat widget on the the website.
+Feel free to ask for support on https://tiledesk.com, using the live chat widget on the the website.
 
 ## Features
 
