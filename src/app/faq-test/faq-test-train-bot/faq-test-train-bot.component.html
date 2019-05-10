@@ -42,7 +42,7 @@ color: #fff!important; margin-left:-20px; margin-right:-20px; margin-top:-15px">
  
   <p style="margin-top: 15px; margin-bottom: 10px; font-weight:400">
     <!-- Answers  -->
-    {{ 'Answers' | translate }}
+    {{ 'CurrentAnswers' | translate }}
   </p> 
 
   <div *ngIf="hits?.length === 0" style="text-align:center; color:#ec971f">
@@ -54,10 +54,10 @@ color: #fff!important; margin-left:-20px; margin-right:-20px; margin-top:-15px">
   <loading-spinner *ngIf="showSpinner"></loading-spinner>
   <!-- [ngStyle]="{ 'height': sidebar_content_height }" -->
   <div *ngIf="!showSpinner" class="sidebar-content"  style="overflow-y: auto;overflow-x: hidden;" >
-    <div  *ngFor="let hit of hits">
+    <div  *ngFor="let hit of hits; let first = first;">
     
       <div class="answer-wrap" style="margin-bottom: 30px;">
-        <div class="answer-bubble">
+        <div class="answer-bubble" [ngClass]="{ 'first-answer-bubble': first }">
             {{ hit?.document.answer }} 
         </div> 
         <span style="font-size: 12px; font-weight: 400;float: right;color:#7695a5"> 
@@ -72,10 +72,10 @@ color: #fff!important; margin-left:-20px; margin-right:-20px; margin-top:-15px">
 
   <div class="add-answer" style="margin-top:16px">
       <textarea [(ngModel)]="answer" class="textarea" rows="2" style="width:100%; border-radius:5px; border: 1px solid #d9d9d9 !important;padding:8px" 
-      placeholder="{{ 'AddAnotherAnswerToTheAboveQuestion' | translate }}"></textarea>
+      placeholder="{{ 'AddAnotherAnswerToTheCurrentQuestion' | translate }}"></textarea>
 
      <button class="btn-block btn-outline-primary" style="margin-top:0px; margin-bottom:16px" (click)="create()"> 
-      {{ 'Add' | translate }} {{ 'FaqTestPage.Answer' | translate }}
+      {{ 'AddAnswerToTheCurrentQuestion' | translate }}
      </button>
   </div>
 

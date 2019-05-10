@@ -214,7 +214,8 @@
     "AddTheAboveQuestionToAnExistingFAQ":"Aggiungi la domanda sopra ad una FAQ esistente",
     "Answers": "Risposte",
     "NoGoodMatchFound": "Non è stata trovata alcuna corrispondenza valida",
-    "AddAnotherAnswerToTheAboveQuestion":"Aggiungi un'altra risposta alla domanda sopra",
+    "AddAnotherAnswerToTheCurrentQuestion":"Aggiungi un'altra risposta alla domanda corrente",
+    "AddAnswerToTheCurrentQuestion":"Aggiungi risposta alla domanda corrente",
     "Add":"Aggiungi",
     "AnswerSuccessfullyAdded":"Risposta aggiunta con successo",
     "Inspect":"Ispeziona",
@@ -234,6 +235,7 @@
     "FoundIn":"trovata in",
     "ToThisAnswer":"a questa risposta",
     "At":"alle",
+    "CurrentAnswers":"Risposte attuali",
     "ActivitiesOptions": {
         "AgentAvailabilityOrRoleChange":"Modifica disponibilità o ruolo agente",
         "AgentDeletion":"Cancellazione agente",

@@ -214,7 +214,8 @@
     "AddTheAboveQuestionToAnExistingFAQ":"Add the above question to an existing FAQ",
     "Answers": "Answers",
     "NoGoodMatchFound": "No good match found",
-    "AddAnotherAnswerToTheAboveQuestion":"Add another answer to the above question",
+    "AddAnotherAnswerToTheCurrentQuestion":"Add another answer to the current question",
+    "AddAnswerToTheCurrentQuestion":"Add answer to current question",
     "Answer":"Add another answer to the above question",
     "Add":"Add",
     "AnswerSuccessfullyAdded":"Answer successfully added",
@@ -235,6 +236,7 @@
     "FoundIn":"found in",
     "ToThisAnswer":"to this answer",
     "At":"at",
+    "CurrentAnswers":"Current answers",
     "ActivitiesOptions": {
         "AgentAvailabilityOrRoleChange": "Change agent availability or role",
         "AgentDeletion": "Agent deletion",

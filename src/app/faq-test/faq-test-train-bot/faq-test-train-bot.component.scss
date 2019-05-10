@@ -104,12 +104,17 @@
 
 
   .answer-bubble {
-    background-color: #75d5fd; 
+    
+    background-color: #f5f5f5;  
     color:rgba(0,0,0,.87);
     border-radius: 15px 15px 0px 15px; 
     padding:8px;  
     font-size:12px; 
     font-weight: 400
+  }
+
+  .first-answer-bubble {
+    background-color: #75d5fd;
   }
 
 .btn-outline-primary {
