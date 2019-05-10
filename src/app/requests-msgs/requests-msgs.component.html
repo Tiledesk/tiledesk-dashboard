@@ -200,7 +200,7 @@
                           {{ message.sender_fullname }}
                         <!-- +353 87 1234 567<span> ~ John</span> -->
                       </p>
-                      <p class="message">{{ message.text }}</p>
+                      <p class="message" style="word-break: break-all;">{{ message.text }}</p>
                       <span class="timestamp"> {{ message.timestamp | date: 'd/M/y HH:mm:ss'}}</span>
                     </div>
                     <div class="bubble-arrow alt"></div>

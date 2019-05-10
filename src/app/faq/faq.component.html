@@ -169,7 +169,9 @@
 
           <div class="card-header card-header-custom-bkgrnd">
             <h4 class="faq-table-title" style="margin-bottom:2px;">
-                FAQs <span style="font-weight: 500">({{ faq_lenght }})</span> 
+                <!-- FAQs  -->
+                {{ 'Answers' | translate }}
+                <span style="font-weight: 500">({{ faq_lenght }})</span> 
 
               <!-- // ADD FAQ - CIRCLE BTN -->
               <!-- <button type="button" rel="tooltip" title="" class="btn btn-success btn-simple btn-xs add_faq_btn tooltipx" 
@@ -184,15 +186,18 @@
               *********************************
               -->
               <!-- btn-simple btn-xs  -->
-              <button class="btn btn-info tooltipx" 
+              <!--  -->
+              <button class="btn btn-info tooltipx" [ngClass]="{'add-padding' : windowWidthMore764 === true}"
                 style="padding:4px;  margin-top: 0px; margin-bottom: 0px; margin-left: 15px; border-radius: 50px;" 
                 (click)="goToEditAddPage_CREATE()">
                   <!-- is-small -->
                 <span class="icon" style="padding-right:0px">
-                  <i class="material-icons" style="font-size:18px; top:0px">add</i>
+                    <i class="material-icons" style="font-size:18px; top:0px">add</i>
+                    <span *ngIf="windowWidthMore764" style="position: relative; top: 1px; text-transform: initial; text-transform: initial;">
+                      {{ 'NewAnswer' | translate }}  
+                    </span> 
                 </span>
-                <!-- Aggiungi FAQ -->
-                <span class="tooltiptext" style="text-transform:none"> {{ 'FaqPage.AddFaq' | translate }} </span>
+                <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none"> {{ 'NewAnswer' | translate }} </span>
               </button>
 
               <!-- 
@@ -200,15 +205,19 @@
               BUTTON ADD FAQs FROM CSV FILE
               *********************************
               -->
-              <button class="btn btn-info tooltipx" 
+              <!--  -->
+              <button class="btn btn-info tooltipx" [ngClass]="{'add-padding' : windowWidthMore764 === true}"
                 style="padding:4px; text-transform:none; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;" 
                 (click)="openImportModal()">
                 
                 <span class="icon" style="padding-right:0px;">
+               
                   <i class="material-icons" style="font-size:18px; top:0px">file_upload</i>
+                    <span *ngIf="windowWidthMore764" style="position: relative; top: 1px; text-transform: initial; text-transform: initial;">
+                      {{ 'UploadAnswersFromCsv' | translate }}  
+                    </span> 
                 </span>
-                <!-- CARICA FAQs DA CSV  -->
-                <span class="tooltiptext" style="text-transform:none">{{ 'FaqPage.UploadFaqsFromCsv' | translate }}</span>
+                <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none">{{ 'UploadAnswersFromCsv' | translate }}</span>
               </button>
 
               <!-- 
@@ -216,15 +225,19 @@
               BUTTON EXPORT FAQs TO CSV 
               *********************************
               -->
-              <button class="btn btn-info tooltipx" 
+              <!--  -->
+              <button class="btn btn-info tooltipx" [ngClass]="{'add-padding' : windowWidthMore764 === true}" 
                 style="padding:4px; text-transform:none; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;" 
                 (click)="exportFaqsToCsv()">
                 
                 <span class="icon" style="padding-right:0px;">
+               
                   <i class="material-icons" style="font-size:18px; top:0px">save_alt</i>
+                    <span *ngIf="windowWidthMore764" style="position: relative; top: 1px; text-transform: initial; text-transform: initial;">
+                      {{ 'ExportAnswersToCsv' | translate }}  
+                    </span>
                 </span>
-                <!-- CARICA FAQs DA CSV  -->
-                <span class="tooltiptext" style="text-transform:none">{{ 'FaqPage.ExportFaqsToCsv' | translate }}</span>
+                <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none">{{ 'ExportAnswersToCsv' | translate }}</span>
               </button>
 
               <!-- 
@@ -232,7 +245,8 @@
               BUTTON TEST BOT 
               *********************************
               -->
-              <button class="btn btn-info tooltipx"
+              <!-- tooltipx -->
+              <button class="btn btn-info"
                 style="padding:4px; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;float: right;" 
                 (click)="goToTestFaqPage()">
                 <span class="icon" style="padding-right:0px; text-transform:none;padding-left: 9px;">
@@ -240,9 +254,7 @@
                   <i class="material-icons" style="font-size:18px; top:0px;">play_arrow</i>
                 </span>
                 <!-- INTERROGA BOT -->
-                <span class="tooltiptext" style="text-transform:none">
-                  {{ 'FaqPage.BotQuery' | translate }}
-                </span>
+                <!-- <span class="tooltiptext" style="text-transform:none">{{ 'FaqPage.BotQuery' | translate }} </span> -->
               </button>
 
             </h4>
@@ -259,7 +271,9 @@
                 <th>
                   <!-- Question -->
                   <span class="column-th-span">
-                    {{ 'FaqPage.Question' | translate }}
+                    <!-- {{ 'FaqPage.Question' | translate }} -->
+                    {{ 'Questions' | translate }}
+                    
                   </span>
                 </th>
                 <th>
@@ -329,7 +343,7 @@
                   </span>
                 </td>
 
-                <td style="white-space: normal !important; word-wrap: break-word;font-size:13px; font-weight:400">
+                <td style="white-space: normal !important; word-wrap: break-word;font-size:13px; font-weight:400; word-break: break-all;">
                   <span class="tooltipx">
                     {{ faq?.answer }}
                     <span class="tooltiptext">{{ 'FaqPage.FaqId' | translate }}: <br> {{ faq?._id }} </span>

@@ -136,7 +136,7 @@
                         <div class="bubble alt" style="margin-left: auto;" [ngClass]="{'no-good-match' : faq?.a === 'NoGoodMatchFound'}">
                           <div class="txt">
                           
-                            <p *ngIf="faq?.a !== 'NoGoodMatchFound'; else NoGoodMatch" class="message">
+                            <p *ngIf="faq?.a !== 'NoGoodMatchFound'; else NoGoodMatch" class="message" style="word-break: break-all;">
                               {{ faq?.a }}
                             </p>
 

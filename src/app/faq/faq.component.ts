@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { MongodbFaqService } from '../services/mongodb-faq.service';
 import { Faq } from '../models/faq-model';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -57,6 +57,7 @@ export class FaqComponent implements OnInit {
   faq_lenght: number;
   showSpinner = true;
   is_external_bot: boolean;
+  windowWidthMore764: boolean;
   constructor(
     private mongodbFaqService: MongodbFaqService,
     private router: Router,
@@ -84,6 +85,30 @@ export class FaqComponent implements OnInit {
     this.getFaqByFaqKbId();
 
     this.getCurrentProject();
+    this.getWindowWidth()
+  }
+
+  getWindowWidth() {
+    const actualWidth = window.innerWidth;
+    console.log('FaqComponent - ACTUAL WIDTH ', actualWidth);
+
+    if (actualWidth > 764) {
+      this.windowWidthMore764 = true;
+    } else {
+      this.windowWidthMore764 = false;
+    }
+
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    const newInnerWidth = event.target.innerWidth;
+    console.log('FaqComponent - NEW INNER WIDTH ', newInnerWidth);
+    if (newInnerWidth > 764) {
+      this.windowWidthMore764 = true;
+    } else {
+      this.windowWidthMore764 = false;
+    }
   }
 
   /**
@@ -197,7 +222,9 @@ export class FaqComponent implements OnInit {
 
   goToTestFaqPage() {
     console.log('GO TO TEST FAQ PAGE - REMOTE FAQKB KEY ', this.faq_kb_remoteKey);
-    this.router.navigate(['project/' + this.project._id + '/faq/test', this.faq_kb_remoteKey, this.id_faq_kb]);
+    if (this.faq_kb_remoteKey) {
+      this.router.navigate(['project/' + this.project._id + '/faq/test', this.faq_kb_remoteKey, this.id_faq_kb]);
+    }
   }
 
 
