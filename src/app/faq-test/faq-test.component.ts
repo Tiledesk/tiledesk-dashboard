@@ -200,14 +200,13 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
 
   searchRemoteFaq() {
 
-    const today = new Date();
-    const time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
-    console.log('FaqTestComponent  time: ', time);
+    // const today = new Date();
+    // const time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
+    // console.log('FaqTestComponent  time: ', time);
 
     const momentTime = moment().toDate()
-
     console.log('FaqTestComponent moment  time: ', momentTime);
-    const mTime = moment(momentTime).format('hh:mm:ss a');
+    const mTime = moment(momentTime).format('HH:mm:ss');
 
     console.log('FaqTestComponent  mTime: ', mTime);
     // this.bubbleAltMarginLeft = this.elemSendCardContentWidth - 406 + 'px'
@@ -236,7 +235,7 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
 
               answer = 'NoGoodMatchFound';
             }
-            this.questionsAndAnswersArray.push({ 'q': this.questionToTest, 'a': answer, 'time': time });
+            this.questionsAndAnswersArray.push({ 'q': this.questionToTest, 'a': answer, 'time': mTime });
             
             const questionsAndAnswersArrayClone = JSON.parse(JSON.stringify(this.questionsAndAnswersArray));
 
