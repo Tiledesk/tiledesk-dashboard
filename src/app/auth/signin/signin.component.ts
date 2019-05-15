@@ -49,6 +49,9 @@ export class SigninComponent implements OnInit {
 
   ngOnInit() {
 
+    this.widgetReInit()
+  
+
     // console.log('xxxx ', this.userForm)
     this.buildForm();
 
@@ -59,6 +62,14 @@ export class SigninComponent implements OnInit {
     //     x.item(i).value = '';
     //   }
     // }
+  }
+
+  widgetReInit() {
+    if (window && window['tiledesk']) {
+      console.log('SIGNIN PAGE ',  window['tiledesk'])
+
+      window['tiledesk'].reInit();
+    }
   }
 
   buildForm() {
@@ -123,10 +134,10 @@ export class SigninComponent implements OnInit {
         /**
          * *** WIDGET - pass data to the widget function setTiledeskWidgetUser in index.html ***
          */
-        // console.log('SetTiledeskWidgetUserSignin (Signin) - userFullname', user.firstname + user.lastname)
-        // console.log('SetTiledeskWidgetUserSignin (Signin) - userEmail', user.email);
-        // console.log('SetTiledeskWidgetUserSignin (Signin) - userId', user._id);
-        // window['setTiledeskWidgetUser'](user.firstname + ' ' + user.lastname, user.email, user._id);
+        console.log('SetTiledeskWidgetUserSignin (Signin) - userFullname', user.firstname + user.lastname)
+        console.log('SetTiledeskWidgetUserSignin (Signin) - userEmail', user.email);
+        console.log('SetTiledeskWidgetUserSignin (Signin) - userId', user._id);
+        window['setTiledeskWidgetUser'](user.firstname + ' ' + user.lastname, user.email, user._id);
 
 
         self.router.navigate(['/projects']);
