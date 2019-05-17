@@ -340,19 +340,19 @@ export class AuthService {
     // console.log('USER BS VALUE', this.user_bs.value)
     if (storedUser !== null) {
 
-      /**
-       * *** WIDGET - pass data to the widget function setTiledeskWidgetUser in index.html ***
-       */
-      const _storedUser = JSON.parse(storedUser);
-      console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - storedUser', _storedUser)
-      const userFullname = _storedUser['firstname'] + ' ' + _storedUser['lastname'];
-      console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userFullname', userFullname);
-      const userEmail = _storedUser['email']
-      console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userEmail', userEmail);
-      const userId = _storedUser['_id']
-      console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userId', userId);
-      console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - window', window);
-      window['setTiledeskWidgetUser'](userFullname, userEmail, userId)
+      // /**
+      //  * *** WIDGET - pass data to the widget function setTiledeskWidgetUser in index.html ***
+      //  */
+      // const _storedUser = JSON.parse(storedUser);
+      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - storedUser', _storedUser)
+      // const userFullname = _storedUser['firstname'] + ' ' + _storedUser['lastname'];
+      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userFullname', userFullname);
+      // const userEmail = _storedUser['email']
+      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userEmail', userEmail);
+      // const userId = _storedUser['_id']
+      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - userId', userId);
+      // console.log('SetTiledeskWidgetUserSignin (AUTH-SERVICE) - window', window);
+      // // window['setTiledeskWidgetUser'](userFullname, userEmail, userId)
 
 
       this.user_bs.next(JSON.parse(storedUser));
@@ -763,8 +763,6 @@ export class AuthService {
   }
 
   signOut() {
-  
-
     if (!this.APP_IS_DEV_MODE && this.FCM_Supported === true) {
 
       console.log('this.FCMcurrentToken ', this.FCMcurrentToken);
@@ -834,6 +832,7 @@ export class AuthService {
   }
 
   firebaseSignout() {
+    
     this.user_bs.next(null);
     this.project_bs.next(null);
 
@@ -845,9 +844,11 @@ export class AuthService {
     firebase.auth().signOut()
       .then(function () {
         console.log('Signed Out');
+        that.widgetReInit()
         that.router.navigate(['/login']);
       }, function (error) {
         console.error('Sign Out Error', error);
+        that.widgetReInit()
         that.router.navigate(['/login']);
       });
   }
@@ -856,6 +857,15 @@ export class AuthService {
   private handleError(error: Error) {
     console.error(error);
     this.notify.update(error.message, 'error');
+  }
+
+  widgetReInit() {
+    if (window && window['tiledesk']) {
+      console.log('AUTH-SERVICE   window[-tiledesk ',  window['tiledesk'])
+
+      window['tiledesk'].reInit();
+      // alert('logout');
+    }
   }
 
 }

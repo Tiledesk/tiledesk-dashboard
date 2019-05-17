@@ -49,8 +49,8 @@ export class SigninComponent implements OnInit {
 
   ngOnInit() {
 
-    this.widgetReInit()
-  
+    // this.widgetReInit()
+
 
     // console.log('xxxx ', this.userForm)
     this.buildForm();
@@ -64,13 +64,7 @@ export class SigninComponent implements OnInit {
     // }
   }
 
-  widgetReInit() {
-    if (window && window['tiledesk']) {
-      console.log('SIGNIN PAGE ',  window['tiledesk'])
 
-      window['tiledesk'].reInit();
-    }
-  }
 
   buildForm() {
     this.userForm = this.fb.group({
@@ -124,12 +118,19 @@ export class SigninComponent implements OnInit {
     console.log('SIGNIN email ', this.userForm.value['email'])
     this.auth.signin(this.userForm.value['email'], this.userForm.value['password'], function (error, user) {
 
+
       // this.auth.user = signinResponse.user;
       // this.auth.user.token = signinResponse.token
       // console.log('SIGNIN TOKEN ', this.auth.user.token)
       // tslint:disable-next-line:no-debugger
       // debugger
       if (!error) {
+        self.router.navigate(['/projects']);
+
+        self.widgetReInit();
+
+
+
 
         /**
          * *** WIDGET - pass data to the widget function setTiledeskWidgetUser in index.html ***
@@ -137,10 +138,11 @@ export class SigninComponent implements OnInit {
         console.log('SetTiledeskWidgetUserSignin (Signin) - userFullname', user.firstname + user.lastname)
         console.log('SetTiledeskWidgetUserSignin (Signin) - userEmail', user.email);
         console.log('SetTiledeskWidgetUserSignin (Signin) - userId', user._id);
-        window['setTiledeskWidgetUser'](user.firstname + ' ' + user.lastname, user.email, user._id);
 
+        setTimeout(() => {
+          window['setTiledeskWidgetUser'](user.firstname + ' ' + user.lastname, user.email, user._id);
+        }, 2000);
 
-        self.router.navigate(['/projects']);
 
       } else {
         self.showSpinnerInLoginBtn = false;
@@ -167,6 +169,15 @@ export class SigninComponent implements OnInit {
       // debugger
     });
 
+  }
+
+  widgetReInit() {
+    if (window && window['tiledesk']) {
+      console.log('SIGNIN PAGE ', window['tiledesk'])
+
+      window['tiledesk'].reInit();
+      // alert('signin reinit');
+    }
   }
 
   dismissAlert() {

@@ -163,7 +163,22 @@ export class SignupComponent implements OnInit, AfterViewInit {
       // tslint:disable-next-line:no-debugger
       // debugger
       if (!error) {
+        self.widgetReInit();
+        /**
+         * *** WIDGET - pass data to the widget function setTiledeskWidgetUser in index.html ***
+         */
+        const storedUser = localStorage.getItem('user')
+        console.log('Signup - STORED USER  ', storedUser)
+        if (storedUser !== null) {
+          const _storedUser = JSON.parse(storedUser);
+          console.log('SetTiledeskWidgetUserSignin (Signup) - userFullname', _storedUser.firstname + _storedUser.lastname)
+          console.log('SetTiledeskWidgetUserSignin (Signup) - userEmail', _storedUser.email);
+          console.log('SetTiledeskWidgetUserSignin (Signup) - userId', _storedUser._id);
 
+          setTimeout(() => {
+            window['setTiledeskWidgetUser'](_storedUser.firstname + ' ' + _storedUser.lastname, _storedUser.email, _storedUser._id);
+          }, 2000);
+        }
         self.router.navigate(['/projects']);
 
       } else {
@@ -181,7 +196,14 @@ export class SignupComponent implements OnInit, AfterViewInit {
     });
   }
 
+  widgetReInit() {
+    if (window && window['tiledesk']) {
+      console.log('SIGNUP PAGE ', window['tiledesk'])
 
+      window['tiledesk'].reInit();
+      // alert('signin reinit');
+    }
+  }
   buildForm() {
     this.userForm = this.fb.group({
       'email': ['', [
