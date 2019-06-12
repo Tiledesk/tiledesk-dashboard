@@ -9,6 +9,10 @@ import { Subscription } from 'rxjs/Subscription';
 import * as Chartist from 'chartist';
 import { DepartmentService } from '../services/mongodb-department.service';
 import * as moment from 'moment';
+import { AnalyticsService } from 'app/services/analytics.service';
+import { ITooltipEventArgs } from '@syncfusion/ej2-heatmap/src';
+import {HumanizeDurationLanguage, HumanizeDuration} from 'humanize-duration-ts';
+import { Chart } from 'chart.js';
 
 
 @Component({
@@ -47,6 +51,41 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   translatedHoursString: string;
   translatedMinutesString: string;
   translatedSecondsString: string;
+  
+  dataSource:Object;
+  xAxis: Object;
+  yAxis: Object;
+  titleSettings:Object;
+  cellSettings:Object;
+  paletteSettings:Object;
+  customData:any=[];
+  xlabel_ita=['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'];
+  xlabel_eng=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  ylabel_ita=['01:00','02:00','03:00','04:00','05:00','06:00','07:00','08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00']
+  ylabel_eng=['1am','2am','3am','4am','5am','6am','7am','8am','9am','10am','11am','12am','1pm','2pm','3pm','4pm','5pm','6pm','7pm','8pm','9pm','10pm','11pm']
+  weekday:any;
+  hour:any;
+  lang:string="it"
+
+  langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
+  humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
+
+  //avg time clock variable 
+  numberAVGtime:string;
+  unitAVGtime:string;
+  responseAVGtime:string
+  //avg time chart variable
+  xValueAVGchart:any;
+  yValueAVGchart:any;
+  dateRangeAvg:string;
+  //duration time clock variable
+  numberDurationCNVtime:string;
+  unitDurationCNVtime:string;
+  responseDurationtime:string;
+  //duration conversation chart variable
+  xValueDurationConversation:any;
+  yValueDurationConversation:any;
+  dataRangeDuration:string;
 
   constructor(
     private auth: AuthService,
@@ -54,7 +93,8 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     private usersService: UsersService,
     private router: Router,
     private translate: TranslateService,
-    private departmentService: DepartmentService
+    private departmentService: DepartmentService,
+    private analyticsService:AnalyticsService
   ) {
 
     console.log('!!! »»» HELLO ANALYTICS »»» ');
@@ -76,6 +116,11 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
+    this.buildgraph();//HEAT MAP GRAPH
+    this.avarageWaitingTimeCLOCK();//-->clock avg time response
+    this.avgTimeResponsechart();//-->avg time response bar chart
+    this.durationConvTimeCLOCK();//-->duration time clock 
+    this.durationConversationTimeCHART();//-->duration conversation bar chart
     // this.auth.checkProjectProfile('analytics');
 
 
@@ -791,6 +836,458 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
 
     seq = 0;
   };
+
+  buildgraph(){
+
+    //get the language of browser
+    this.lang=this.translate.getBrowserLang();
+    console.log("LANGUAGE",this.lang);
+    this.cellSettings= {
+        border: {
+            radius: 4,
+            width: 1,
+            color: 'white'
+        },
+        // tileType:'Bubble',
+        // bubbleType: 'Size',
+        showLabel: false, //set to true to show value over each block
+        //format: '{value} M',
+    };
+
+    this.paletteSettings={
+        palette: [
+          { color: '#a0d4e9' },
+          { color: '#5fa3f1' },
+          { color: '#5187ed' },
+          { color: '#254594' }
+        ],
+    };
+
+
+    this.analyticsService.getDataHeatMap().subscribe(res=>{
+      let data:object=res;
+      console.log("data from servoice->",res);
+
+      if(this.lang=='it'){
+         this.weekday={'1': 'Lun', '2': 'Mar', '3': 'Mer', '4': 'Gio', '5': 'Ven', '6': 'Sab', '7': 'Dom' }
+         this.hour={'1':'01:00','2':'02:00','3':'03:00','4':'04:00','5':'05:00','6':'06:00','7':'07:00','8':'08:00','9':'09:00','10':'10:00',
+                    '11':'11:00','12':'12:00','13':'13:00','14':'14:00','15':'15:00','16':'16:00','17':'17:00','18':'18:00','19':'19:00','20':'20:00',
+                    '21':'21:00','22':'22:00','23':'23:00'}
+          this.yAxis= { labels: this.ylabel_ita};
+          this.xAxis= {labels: this.xlabel_ita};
+          this.titleSettings= {
+            text: 'Utenti per ora del giorno',
+            textStyle: {
+                size: '15px',
+                fontWeight: '500',
+                fontStyle: 'Normal'
+            }
+          };
+          
+      }else{
+        this.weekday={'1': 'Mon', '2': 'Tue', '3': 'Wed', '4': 'The', '5': 'Fri', '6': 'Sat', '7': 'Sun' }
+        this.hour={'1':'1am','2':'2am','3':'3am','4':'4am','5':'5am','6':'6am','7':'7am','8':'8am','9':'9am','10':'10am',
+        '11':'11am','12':'12am','13':'1pm','14':'2pm','15':'3pm','16':'4pm','17':'5pm','18':'6pm','19':'7pm','20':'8pm',
+        '21':'9pm','22':'10pm','23':'11pm'}
+        
+        this.yAxis= { labels: this.ylabel_eng};
+        this.xAxis= {labels: this.xlabel_eng};
+        this.titleSettings= {
+          text: 'User per hour of day',
+          textStyle: {
+              size: '15px',
+              fontWeight: '500',
+              fontStyle: 'Normal'
+          }
+        };
+    
+      } 
+
+      //recostruct datafromservice to other customDataJson
+      for(let i in data){
+         
+        this.customData.push({'_id':{"hour": this.hour[data[i]._id.hour], "weekday":this.weekday[data[i]._id.weekday]},'count':data[i].count});
+      }
+    
+      console.log("CUSTOM", this.customData)
+      
+        this.dataSource={
+          data: this.customData,
+          isJsonData: true,
+          adaptorType: 'Cell',
+          yDataMapping: '_id.hour',
+          xDataMapping: '_id.weekday',
+          valueMapping: 'count'
+        }
+      })
+       
+    }
+
+    public tooltipRender(args: ITooltipEventArgs): void {
+      args.content = [args.xLabel + ' | ' + args.yLabel + ' : ' + args.value ];
+    };
+     
+    public showTooltip: Boolean = true;
+
+    
+    //convert number from millisecond to humanizer form 
+    humanizeDurations(timeInMillisecond) {
+      let result;
+      if (timeInMillisecond) {
+          if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30 * 12))) > 0) {//year
+              result = result === 1 ? result + " Year" : result + " Years";
+          } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30))) > 0) {//months
+              result = result === 1 ? result + " Month" : result + " Months";
+          } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24))) > 0) {//days
+              result = result === 1 ? result + " Day" : result + " Days";
+          } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60))) > 0) {//Hours
+              result = result === 1 ? result + " Hours" : result + " Hours";
+          } else if ((result = Math.round(timeInMillisecond / (1000 * 60))) > 0) {//minute
+              result = result === 1 ? result + " Minute" : result + " Minutes";
+          } else if ((result = Math.round(timeInMillisecond / 1000)) > 0) {//second
+              result = result === 1 ? result + " Second" : result + " Seconds";
+          } else {
+              result = timeInMillisecond + " Millisec";
+          }
+      }
+      return result;
+    }
+
+
+    avarageWaitingTimeCLOCK(){
+      this.analyticsService.getDataAVGWaitingCLOCK().subscribe((res:any)=>{
+        if(res){
+          //this.avarageWaitingTimestring= this.msToTime(res[0].waiting_time_avg)
+          
+          //this.humanizer.setOptions({round: true, units:['m']});
+          this.humanizer.setOptions({round: true});
+        
+          //this.avarageWaitingTimestring = this.humanizer.humanize(res[0].waiting_time_avg);
+          let avarageWaitingTimestring=this.humanizeDurations(res[0].waiting_time_avg)
+          var splitString= this.humanizeDurations(res[0].waiting_time_avg).split(" ");
+          this.numberAVGtime= splitString[0];
+          this.unitAVGtime= splitString[1];
+          const browserLang = this.translate.getBrowserLang();
+          if(browserLang){
+            
+            if(browserLang=='it'){
+                this.responseAVGtime='Il tempo di risposta medio complessivo del tuo team è '+ this.humanizer.humanize(res[0].waiting_time_avg);
+            }
+            else
+              this.responseAVGtime="Your team's overall Median Response Time is "+this.humanizer.humanize(res[0].waiting_time_avg);
+          }
+          console.log('Waiting time: humanize', this.humanizer.humanize(res[0].waiting_time_avg))
+          console.log('waiting time funtion:', avarageWaitingTimestring);
+        }
+        else
+          console.log('!!!ERROR!!! while get resources for waiting avarage time ');
+       
+      })
+      
+    }
+  
+
+    avgTimeResponsechart(){
+      this.analyticsService.getavarageWaitingTimeDataChart().subscribe((res:any)=>{
+        if(res){
+          console.log('chart data:',res);
+          
+        
+          //build a 30 days array of date with value 0--> is the init array
+          const last30days_initarray = []
+          for (let i = 0; i <= 30; i++) {
+            // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
+            last30days_initarray.push({ date: moment().subtract(i, 'd').format('D/M/YYYY'), value: 0  });
+          }
+          last30days_initarray.reverse()
+          this.dateRangeAvg= last30days_initarray[0].date.split(-4) +' - '+last30days_initarray[30].date;
+          console.log('»» !!! ANALYTICS - REQUESTS BY DAY - MOMENT LAST 30 DATE (init array)', last30days_initarray);
+  
+          //build a custom array with che same structure of "init array" but with key value of serviceData
+          //i'm using time_convert function that return avg_time always in hour 
+          const customDataLineChart= [];
+          for(let i in res){
+            
+            // this.humanizer.setOptions({round: true, units:['h']});
+            // const AVGtimevalue= this.humanizer.humanize(res[i].waiting_time_avg).split(" ")
+            // console.log("value humanizer:", this.humanizer.humanize(res[i].waiting_time_avg), "split:",AVGtimevalue)
+            if(res[i].waiting_time_avg==null)
+              res[i].waiting_time_avg=0;
+            
+                                                                                                    // to locale string allow format type dd/mm/yyyy
+            customDataLineChart.push({ date: new Date(res[i]._id.year, res[i]._id.month -1 , res[i]._id.day).toLocaleDateString(), value: res[i].waiting_time_avg});
+          }
+          console.log('Custom data:', customDataLineChart);
+  
+          //build a final array that compars value between the two arrray before builded with respect to date key value
+          const requestByDays_final_array = last30days_initarray.map(obj => customDataLineChart.find(o => o.date === obj.date) || obj);
+          console.log('»» !!! ANALYTICS - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
+        
+        
+        
+        
+        // this.xValue = this.customDataLineChart.map(function(e) {
+        //   let date =new Date(e.date); 
+        //   var dd=date.toISOString().substring(0,10); stampa nel formato yyyy/mm/dd   
+        //   return date.toLocaleDateString();  
+        //   return e.date
+        // });
+    
+        // this.yValue = this.customDataLineChart.map(function(e) {
+        //     return e.value;
+        // });
+  
+          this.xValueAVGchart=requestByDays_final_array.map(function(e){
+            return e.date
+          })
+          this.yValueAVGchart=requestByDays_final_array.map(function(e){
+            return e.value
+          })
+    
+          console.log('Xlabel-AVERAGE TIME', this.xValueAVGchart);
+          console.log('Ylabel-AVERAGE TIME', this.yValueAVGchart);
+        }
+        else
+          console.log('!!!ERROR!!! while get data from resouces for waiting avg time graph')
+  
+  
+        var lineChart = new Chart('avgTimeResponse', {
+          type: 'bar',
+          data: {
+                labels: this.xValueAVGchart,
+                datasets: [{
+                            label: 'Average time response in last 30 days ',
+                            data: this.yValueAVGchart,
+                            fill:false, //riempie zona sottostante dati
+                            lineTension:0.1,
+                            borderColor:'#073f74',
+                            backgroundColor: '#073f74',
+                            borderWidth: 5
+                          }]
+                }, 
+          options: {
+                  title:{
+                    text:'AVERAGE TIME RESPONSE',
+                    display:false
+                  },
+                  scales: {
+                    xAxes: [{
+                            ticks: {
+                              beginAtZero:true,
+                              display:true,
+                              minRotation:30
+                            },
+                            gridLines: {
+                              display: false
+                            }
+                            
+                    }],
+                    yAxes: [{
+                            ticks: {
+                              beginAtZero:true,
+                              display:true,
+                              callback: function(value, index, values) {
+                                let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
+                                let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
+                                let seconds = Math.floor(((value % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
+                                    return hours + 'h:' + minutes + 'm:' + seconds+'s'
+                               },
+                              
+                            }
+                    }]
+                  },
+                  tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            // var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                            // if (label) {
+                            //     label += ': ';
+                            // }
+                            // label += Math.round(tooltipItem.yLabel * 100) / 100;
+                            // return label + '';
+                            //console.log("data",data)
+                            const currentItemValue = tooltipItem.yLabel
+                            let langService = new HumanizeDurationLanguage();
+                            let humanizer= new HumanizeDuration(langService);
+                            humanizer.setOptions({round: true})
+                            //console.log("humanize", humanizer.humanize(currentItemValue))
+                          return data.datasets[tooltipItem.datasetIndex].label+': '+humanizer.humanize(currentItemValue)
+                            
+                        }
+                    }
+                  }
+          }
+        });
+  
+        
+      })
+    
+    }
+
+    durationConvTimeCLOCK(){
+      this.analyticsService.getDurationConversationTimeDataCLOCK().subscribe((res:any)=>{
+        if(res){
+          
+          
+          //this.humanizer.setOptions({round: true, units:['m']});
+          this.humanizer.setOptions({round: true});
+        
+          //this.avarageWaitingTimestring = this.humanizer.humanize(res[0].waiting_time_avg);
+          const avarageWaitingTimestring=this.humanizeDurations(res[0].duration_avg)
+          var splitString= this.humanizeDurations(res[0].duration_avg).split(" ");
+          this.numberDurationCNVtime= splitString[0];
+          this.unitDurationCNVtime= splitString[1];
+          
+          const browserLang = this.translate.getBrowserLang();
+          if(browserLang){
+            
+            if(browserLang=='it'){
+                this.responseDurationtime='La durata di conversazione media complessiva del tuo team è '+ this.humanizer.humanize(res[0].duration_avg, { language: 'it' });
+            }
+            else
+              this.responseDurationtime="Your team's overall Median Conversation Lenght is "+this.humanizer.humanize(res[0].duration_avg, { language: 'en' });
+
+          console.log('Waiting time: humanize', this.humanizer.humanize(res[0].duration_avg))
+          console.log('waiting time funtion:', avarageWaitingTimestring);
+          }
+          else
+            console.log('!!!ERROR!!! while get resources for waiting avarage time ');
+        }
+      });
+    
+      
+    }
+
+    durationConversationTimeCHART(){
+      this.analyticsService.getDurationConversationTimeDataChart().subscribe((resp:any)=>{
+          if(resp){
+            console.log("Duration time",resp)
+  
+            const last30days_initarrayDURATION = []
+            for (let i = 0; i <= 30; i++) {
+              // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
+              last30days_initarrayDURATION.push({ date: moment().subtract(i, 'd').format('D/M/YYYY'), value: 0  })
+            }
+            last30days_initarrayDURATION.reverse()
+            this.dataRangeDuration= last30days_initarrayDURATION[0].date +' - '+last30days_initarrayDURATION[30].date;
+  
+            console.log('»» !!! ANALYTICS - REQUESTS DURATION CONVERSATION BY DAY - MOMENT LAST 30 DATE (init array)', last30days_initarrayDURATION);
+  
+            //build a custom array with che same structure of "init array" but with key value of serviceData
+            //i'm using time_convert function that return avg_time always in hour 
+            const customDurationCOnversationChart=[];
+            for(let i in resp){
+            
+              // this.humanizer.setOptions({round: true, units:['h']});
+              // const AVGtimevalue= this.humanizer.humanize(res[i].waiting_time_avg).split(" ")
+              // console.log("value humanizer:", this.humanizer.humanize(res[i].waiting_time_avg), "split:",AVGtimevalue)
+              
+              if(resp[i].duration_avg==null)
+                 resp[i].duration_avg=0;
+            
+                customDurationCOnversationChart.push({ date: new Date(resp[i]._id.year, resp[i]._id.month -1 , resp[i]._id.day).toLocaleDateString(), value: resp[i].duration_avg});
+            }
+            console.log("Custom Duration COnversation data:", customDurationCOnversationChart);
+  
+            //build a final array that compars value between the two arrray before builded with respect to date key value
+            const requestDurationConversationByDays_final_array = last30days_initarrayDURATION.map(obj => customDurationCOnversationChart.find(o => o.date === obj.date) || obj);
+            console.log('»» !!! ANALYTICS - REQUESTS DURATION CONVERSATION BY DAY - FINAL ARRAY ', requestDurationConversationByDays_final_array);
+  
+            this.xValueDurationConversation=requestDurationConversationByDays_final_array.map(function(e){
+              return e.date
+            })
+            this.yValueDurationConversation=requestDurationConversationByDays_final_array.map(function(e){
+              return e.value
+            })
+      
+            console.log("Xlabel-DURATION", this.xValueDurationConversation);
+            console.log("Ylabel-DURATION", this.yValueDurationConversation);
+          }
+          else
+            console.log("!!!ERROR!!! while get data from resouces for duration conversation time graph")
+  
+            var lineChart = new Chart('durationConversationTimeResponse', {
+              type: 'bar',
+              data: {
+                    labels: this.xValueDurationConversation,
+                    datasets: [{
+                                label: 'Average duration conversation time response in last 30 days ',
+                                data: this.yValueDurationConversation,
+                                fill:false, //riempie zona sottostante dati
+                                lineTension:0.1,
+                                borderColor:'#1e88e5',
+                                backgroundColor: '#1e88e5',
+                                borderWidth: 5
+                              },
+                              // {
+                              //   label: 'Average duration conversation time response in last 30 days _LINE ',
+                              //   data: this.yValueDurationConversation,
+                              //   fill:false, //riempie zona sottostante dati
+                              //   lineTension:0.1,
+                              //   borderColor:'red',
+                              //   backgroundColor: 'red',
+                              //   borderWidth: 5,
+                              //   type: 'line'
+                              // },
+                            ]
+                    }, 
+              options: {
+                      title:{
+                        text:'DURATION CONVERSATION TIME RESPONSE',
+                        display:false
+                      },
+                      scales: {
+                        xAxes: [{
+                                ticks: {
+                                  beginAtZero:true,
+                                  display:true,
+                                  minRotation:30
+                                },
+                                
+                        }],
+                        yAxes: [{
+                                ticks: {
+                                  beginAtZero:true,
+                                  display:true,
+                                  callback: function(value, index, values) {
+                                    let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
+                                    let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
+                                    let seconds = Math.floor(((value % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
+                                        return hours + 'h:' + minutes + 'm:' + seconds+'s'
+                                   }
+                                  
+                                },
+                               
+                        }]
+                      },
+                      tooltips: {
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                                // var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                                // if (label) {
+                                //     label += ': ';
+                                // }
+                                // label += Math.round(tooltipItem.yLabel * 100) / 100;
+                                // return label + '';
+                                //console.log("data",data)
+                                const currentItemValue = tooltipItem.yLabel
+                                let langService = new HumanizeDurationLanguage();
+                                let humanizer= new HumanizeDuration(langService);
+                                humanizer.setOptions({round: true})
+                                //console.log("humanize", humanizer.humanize(currentItemValue))
+                                return data.datasets[tooltipItem.datasetIndex].label+': '+humanizer.humanize(currentItemValue)
+                                
+                            }
+                        }
+                      }
+              }
+            });
+            
+          
+      })
+    }
+  
+
 
   // !!!!! COMMENTO DA QUI
   // startAnimationForBarChart(chart) {

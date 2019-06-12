@@ -2,6 +2,9 @@
 
 // START - CARDS WITH THE COUNTS OF THE REQUESTS: TOTALS SERVED AND UNSERVED
 
+#heatmap-container_HeatmapBorder{
+    fill:none;
+}
 .tiledesk_card_header {
     padding:0px !important; 
     -webkit-box-shadow:none !important;  
@@ -109,5 +112,22 @@
     stroke: rgba(255, 255, 255, 0.5) !important;
 }
 
+.clock{
+    background-image: url('../../assets/img/stopwatch.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 200px;
+    width: 200px;
+    margin:auto;
+        
+}
 
+.numberCLOCK{
+    font-size: 100px;
+    line-height: 0;
+    padding-top: 94px;
+    color: #073f74;
+    font-family: 'Google Sans', sans-serif !important;
+}
 

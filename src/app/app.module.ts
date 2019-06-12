@@ -117,6 +117,8 @@ import { TrainBotComponent } from './requests-msgs/train-bot/train-bot.component
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FaqTestTrainBotComponent } from './faq-test/faq-test-train-bot/faq-test-train-bot.component';
 
+import { HeatMapModule, TooltipService, LegendService, AdaptorService } from '@syncfusion/ej2-angular-heatmap'
+import { AnalyticsService } from './services/analytics.service';
 console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -194,6 +196,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     HttpModule,
     ComponentsModule,
     RouterModule,
+    HeatMapModule,
     // AngularFireModule.initializeApp(firebaseConfig),
     HttpModule,
     HttpClientModule,
@@ -226,6 +229,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ResetPswService,
     UploadImageService,
     WidgetService,
+    LegendService,TooltipService, AdaptorService, AnalyticsService, HttpClientModule,
     { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [
