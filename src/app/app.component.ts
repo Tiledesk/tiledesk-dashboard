@@ -49,6 +49,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
         // private faqKbService: FaqKbService,
     ) {
+   
 
         /**
          * *** ---------------------- ***
@@ -205,6 +206,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
+
         this.runOnRouteChange();
 
         const elemFooter = <HTMLElement>document.querySelector('footer');
@@ -278,4 +280,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         }
         return bool;
     }
+
+
+   
 }
