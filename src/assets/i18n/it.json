@@ -834,5 +834,9 @@
     "Wednesday": "Mercoledì",
     "Thursday": "Giovedì",
     "Friday": "Venerdì",
-    "Saturday": "Sabato"
+    "Saturday": "Sabato",
+    "Analytics":{
+        "AvgTimeTitle": "Monitoraggio tempo medio",
+        "MedianResTimeClock": "Tempo medio di risposta "
+    }
 }

@@ -66,7 +66,7 @@ export class Analytics2Component implements OnInit , OnDestroy {
   ylabel_eng = ['1am', '2am', '3am', '4am', '5am', '6am', '7am', '8am', '9am', '10am', '11am', '12am', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm', '9pm', '10pm', '11pm']
   weekday: any;
   hour: any;
-  lang: string = 'it'
+  lang: string;
 
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
@@ -123,6 +123,7 @@ export class Analytics2Component implements OnInit , OnDestroy {
     this.durationConvTimeCLOCK(); // -->duration time clock
     this.durationConversationTimeCHART(); // -->duration conversation bar chart
     // this.auth.checkProjectProfile('analytics');
+    this.getRequestByLast7Day();
 
 
     /* ----------==========    NUMBER OF REQUEST for DEPARTMENT ** PIE CHART ** ==========---------- */
@@ -342,6 +343,190 @@ export class Analytics2Component implements OnInit , OnDestroy {
 
   /* ----------==========   end ON INIT    ==========---------- */
 
+  getRequestByLast7Day(){
+    this.requestsService.requestsByDay().subscribe((requestsByDay: any) => {
+      console.log('»» !!! ANALYTICS - REQUESTS BY DAY ', requestsByDay);
+
+      // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
+      const last7days_initarray = []
+      for (let i = 0; i <= 6; i++) {
+        // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
+        last7days_initarray.push({ 'count': 0, day: moment().subtract(i, 'd').format('D-M-YYYY') })
+      }
+
+      // last7days_initarray.sort(function compare(a, b) {
+      //   console.log('»» !!! ANALYTICS - REQUESTS BY DAY a.day', a.day);
+      //   console.log('»» !!! ANALYTICS - REQUESTS BY DAY b.day', b.day);
+      //   // if (a.day > b.day) {
+      //   //   return 1;
+      //   // }
+      //   // if (a.day < a.day) {
+      //   //   return -1;
+      //   // }
+      //   // return 0;
+
+      // })
+
+      last7days_initarray.reverse()
+
+      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - MOMENT LAST SEVEN DATE (init array)', last7days_initarray);
+
+      const requestsByDay_series_array = [];
+      const requestsByDay_labels_array = []
+
+      // CREATES A NEW ARRAY FROM THE ARRAY RETURNED FROM THE SERVICE SO THAT IT IS COMPARABLE WITH last7days_initarray
+      const requestsByDay_array = []
+      for (let j = 0; j < requestsByDay.length; j++) {
+        if (requestsByDay[j]) {
+          requestsByDay_array.push({ 'count': requestsByDay[j]['count'], day: requestsByDay[j]['_id']['day'] + '-' + requestsByDay[j]['_id']['month'] + '-' + requestsByDay[j]['_id']['year'] })
+
+          /* OLD LABELS & SERIES (TO USE FOR DEBUG) */
+          // const requestByDay_count = requestsByDay[j]['count']
+          // requestsByDay_series_array.push(requestByDay_count)
+          // const requestByDay_day = requestsByDay[j]['_id']['day']
+          // const requestByDay_month = requestsByDay[j]['_id']['month']
+          // requestsByDay_labels_array.push(requestByDay_day + ' ' + this.monthNames[requestByDay_month])
+        }
+
+      }
+      console.log('»» !!! ANALYTICS - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
+
+
+      /**
+       * MERGE THE ARRAY last7days_initarray WITH requestsByDay_array  */
+      // Here, requestsByDay_formatted_array.find(o => o.day === obj.day)
+      // will return the element i.e. object from requestsByDay_formatted_array if the day is found in the requestsByDay_formatted_array.
+      // If not, then the same element in last7days i.e. obj is returned.
+      const requestByDays_final_array = last7days_initarray.map(obj => requestsByDay_array.find(o => o.day === obj.day) || obj);
+      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
+
+      const _requestsByDay_series_array = [];
+      const _requestsByDay_labels_array = [];
+
+      requestByDays_final_array.forEach(requestByDay => {
+        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
+        _requestsByDay_series_array.push(requestByDay.count)
+
+        const splitted_date = requestByDay.day.split('-');
+        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
+        _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
+      });
+
+
+      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (ARRAY OF COUNT - to use for debug)', requestsByDay_series_array);
+      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDay_series_array);
+      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
+      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', _requestsByDay_labels_array);
+
+      const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
+      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
+
+      var lineChart = new Chart('last7dayChart', {
+        type: 'line',
+        data: {
+          labels: _requestsByDay_labels_array ,
+          datasets: [{
+            label: 'Average time response in last 30 days ',
+            data: _requestsByDay_series_array,
+            fill: false, //riempie zona sottostante dati
+            lineTension: 0.1,
+            backgroundColor: 'rgba(255, 255, 255, 0.7)',
+            borderColor: 'rgba(255, 255, 255, 0.7)',
+            borderWidth: 3,
+            pointBackgroundColor: 'rgba(255, 255, 255, 0.8)',
+            pointBorderColor: 'rgba(255, 255, 255, 0.8)'
+
+          }]
+        },
+        options: {
+          title: {
+            text: 'AVERAGE TIME RESPONSE',
+            display: false
+          },
+          scales: {
+            xAxes: [{
+              ticks: {
+                beginAtZero: true,
+                display: true,
+                //minRotation: 30,
+                fontColor: 'white',
+              },
+              gridLines: {
+                display: true,
+                color:'rgba(255, 255, 255, 0.5)',
+                borderDash:[3,1]
+              }
+
+            }],
+            yAxes: [{
+              gridLines: {
+                display: true ,
+                color:'rgba(255, 255, 255, 0.5)',
+                borderDash:[3,1],
+              },
+              ticks: {
+                beginAtZero: true,
+                display: true,
+                fontColor: 'white',
+                stepSize: 1,
+                suggestedMax: higherCount + 2,
+                
+        
+                // callback: function (value, index, values) {
+                //   let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
+                //   let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
+                //   let seconds = Math.floor(((value % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
+                //   return hours + 'h:' + minutes + 'm:' + seconds + 's'
+                // },
+
+              }
+            }]
+          },
+          tooltips: {
+            callbacks: {
+              label: function (tooltipItem, data) {
+                // var label = data.datasets[tooltipItem.datasetIndex].label || '';
+                // if (label) {
+                //     label += ': ';
+                // }
+                // label += Math.round(tooltipItem.yLabel * 100) / 100;
+                // return label + '';
+                //console.log("data",data)
+                const currentItemValue = tooltipItem.yLabel
+                let langService = new HumanizeDurationLanguage();
+                let humanizer = new HumanizeDuration(langService);
+                humanizer.setOptions({ round: true })
+                //console.log("humanize", humanizer.humanize(currentItemValue))
+                return data.datasets[tooltipItem.datasetIndex].label + ': ' + humanizer.humanize(currentItemValue)
+
+              }
+            }
+          }
+          
+        }
+        ,
+        plugins:[{
+          beforeDraw: function(chartInstance, easing) {
+            var ctx = chartInstance.chart.ctx;
+            console.log("chartistance",chartInstance)
+            //ctx.fillStyle = 'red'; // your color here
+            //ctx.height=128
+            //chartInstance.chart.canvas.parentNode.style.height = '128px';
+            ctx.font="Google Sans"
+            var chartArea = chartInstance.chartArea;
+            //ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
+          }
+        }]
+      });
+
+
+    }, (error) => {
+      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - ERROR ', error);
+    }, () => {
+      console.log('»» !!! ANALYTICS - REQUESTS BY DAY * COMPLETE *');
+    });
+  }
+    
   getRequestsByDay() {
     this.requestsService.requestsByDay().subscribe((requestsByDay: any) => {
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY ', requestsByDay);
@@ -938,136 +1123,169 @@ export class Analytics2Component implements OnInit , OnDestroy {
   // convert number from millisecond to humanizer form 
   humanizeDurations(timeInMillisecond) {
     let result;
-    if (timeInMillisecond) {
-      if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30 * 12))) > 0) {//year
-        result = result === 1 ? result + " Year" : result + " Years";
-      } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30))) > 0) {//months
-        result = result === 1 ? result + " Month" : result + " Months";
-      } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24))) > 0) {//days
-        result = result === 1 ? result + " Day" : result + " Days";
-      } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60))) > 0) {//Hours
-        result = result === 1 ? result + " Hours" : result + " Hours";
-      } else if ((result = Math.round(timeInMillisecond / (1000 * 60))) > 0) {//minute
-        result = result === 1 ? result + " Minute" : result + " Minutes";
-      } else if ((result = Math.round(timeInMillisecond / 1000)) > 0) {//second
-        result = result === 1 ? result + " Second" : result + " Seconds";
-      } else {
-        result = timeInMillisecond + " Millisec";
+    if (timeInMillisecond) {  
+      if(this.lang=='en'){
+        if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30 * 12))) > 0) {//year
+            result = result === 1 ? result + " Year" : result + " Years";
+        } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30))) > 0) {//months
+            result = result === 1 ? result + " Month" : result + " Months";
+        } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24))) > 0) {//days
+            result = result === 1 ? result + " Day" : result + " Days";
+        } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60))) > 0) {//Hours
+            result = result === 1 ? result + " Hours" : result + " Hours";
+        } else if ((result = Math.round(timeInMillisecond / (1000 * 60))) > 0) {//minute
+            result = result === 1 ? result + " Minute" : result + " Minutes";
+        } else if ((result = Math.round(timeInMillisecond / 1000)) > 0) {//second
+            result = result === 1 ? result + " Second" : result + " Seconds";
+        } else {
+            result = timeInMillisecond + " Millisec";
+        }
       }
-    }
-    return result;
+      else{
+          if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30 * 12))) > 0) {//year
+            result = result === 1 ? result + " Anno" : result + " Anni";
+        } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30))) > 0) {//months
+            result = result === 1 ? result + " Mese" : result + " Mesi";
+        } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24))) > 0) {//days
+            result = result === 1 ? result + " Giorno" : result + " Giorni";
+        } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60))) > 0) {//Hours
+            result = result === 1 ? result + " Ora" : result + " Ore";
+        } else if ((result = Math.round(timeInMillisecond / (1000 * 60))) > 0) {//minute
+            result = result === 1 ? result + " Minuto" : result + " Minuti";
+        } else if ((result = Math.round(timeInMillisecond / 1000)) > 0) {//second
+            result = result === 1 ? result + " Secondo" : result + " Secondi";
+        } else {
+            result = timeInMillisecond + " Millisecondi";
+        }
+      }
+        return result;
+
+      }
   }
 
 
-  avarageWaitingTimeCLOCK() {
-    this.analyticsService.getDataAVGWaitingCLOCK().subscribe((res: any) => {
-      if (res) {
+  avarageWaitingTimeCLOCK(){
+    this.analyticsService.getDataAVGWaitingCLOCK().subscribe((res:any)=>{
+      if(res){
         //this.avarageWaitingTimestring= this.msToTime(res[0].waiting_time_avg)
-
+        
         //this.humanizer.setOptions({round: true, units:['m']});
-        this.humanizer.setOptions({ round: true });
-
+        
+      
         //this.avarageWaitingTimestring = this.humanizer.humanize(res[0].waiting_time_avg);
-        let avarageWaitingTimestring = this.humanizeDurations(res[0].waiting_time_avg)
-        var splitString = this.humanizeDurations(res[0].waiting_time_avg).split(" ");
-        this.numberAVGtime = splitString[0];
-        this.unitAVGtime = splitString[1];
-        const browserLang = this.translate.getBrowserLang();
-        if (browserLang) {
-
-          if (browserLang == 'it') {
-            this.responseAVGtime = 'Il tempo di risposta medio complessivo del tuo team è ' + this.humanizer.humanize(res[0].waiting_time_avg);
+        let avarageWaitingTimestring=this.humanizeDurations(res[0].waiting_time_avg)
+        var splitString= this.humanizeDurations(res[0].waiting_time_avg).split(" ");
+        this.numberAVGtime= splitString[0];
+        this.unitAVGtime= splitString[1];
+        
+        if(this.lang){
+          if(this.lang=='it'){
+            this.humanizer.setOptions({round: true});
+              this.responseAVGtime='Il tempo di risposta medio complessivo del tuo team è '+ this.humanizer.humanize(res[0].waiting_time_avg, {round: true, language:'it'});
           }
           else
-            this.responseAVGtime = "Your team's overall Median Response Time is " + this.humanizer.humanize(res[0].waiting_time_avg);
+            this.responseAVGtime="Your team's overall Median Response Time is "+this.humanizer.humanize(res[0].waiting_time_avg, {round:true, language:'en'});
         }
         console.log('Waiting time: humanize', this.humanizer.humanize(res[0].waiting_time_avg))
         console.log('waiting time funtion:', avarageWaitingTimestring);
       }
       else
         console.log('!!!ERROR!!! while get resources for waiting avarage time ');
-
+     
     })
-
+    
   }
 
 
-  avgTimeResponsechart() {
-    this.analyticsService.getavarageWaitingTimeDataChart().subscribe((res: any) => {
-      if (res) {
-        console.log('chart data:', res);
-
-
+  avgTimeResponsechart(){
+    this.analyticsService.getavarageWaitingTimeDataChart().subscribe((res:any)=>{
+      if(res){
+        console.log('chart data:',res);
+        
+      
         //build a 30 days array of date with value 0--> is the init array
         const last30days_initarray = []
         for (let i = 0; i <= 30; i++) {
           // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
-          last30days_initarray.push({ date: moment().subtract(i, 'd').format('D/M/YYYY'), value: 0 });
+          last30days_initarray.push({ date: moment().subtract(i, 'd').format('D/M/YYYY'), value: 0  });
         }
         last30days_initarray.reverse()
-        this.dateRangeAvg = last30days_initarray[0].date.split(-4) + ' - ' + last30days_initarray[30].date;
+        this.dateRangeAvg= last30days_initarray[0].date.split(-4) +' - '+last30days_initarray[30].date;
         console.log('»» !!! ANALYTICS - REQUESTS BY DAY - MOMENT LAST 30 DATE (init array)', last30days_initarray);
 
         //build a custom array with che same structure of "init array" but with key value of serviceData
         //i'm using time_convert function that return avg_time always in hour 
-        const customDataLineChart = [];
-        for (let i in res) {
-
+        const customDataLineChart= [];
+        for(let i in res){
+          
           // this.humanizer.setOptions({round: true, units:['h']});
           // const AVGtimevalue= this.humanizer.humanize(res[i].waiting_time_avg).split(" ")
           // console.log("value humanizer:", this.humanizer.humanize(res[i].waiting_time_avg), "split:",AVGtimevalue)
-          if (res[i].waiting_time_avg == null)
-            res[i].waiting_time_avg = 0;
-
-          // to locale string allow format type dd/mm/yyyy
-          customDataLineChart.push({ date: new Date(res[i]._id.year, res[i]._id.month - 1, res[i]._id.day).toLocaleDateString(), value: res[i].waiting_time_avg });
+          if(res[i].waiting_time_avg==null)
+            res[i].waiting_time_avg=0;
+          
+                                                                                                  // to locale string allow format type dd/mm/yyyy
+          customDataLineChart.push({ date: new Date(res[i]._id.year, res[i]._id.month -1 , res[i]._id.day).toLocaleDateString(), value: res[i].waiting_time_avg});
         }
         console.log('Custom data:', customDataLineChart);
 
         //build a final array that compars value between the two arrray before builded with respect to date key value
         const requestByDays_final_array = last30days_initarray.map(obj => customDataLineChart.find(o => o.date === obj.date) || obj);
         console.log('»» !!! ANALYTICS - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
+      
+      
+      
+      
+      // this.xValue = this.customDataLineChart.map(function(e) {
+      //   let date =new Date(e.date); 
+      //   var dd=date.toISOString().substring(0,10); stampa nel formato yyyy/mm/dd   
+      //   return date.toLocaleDateString();  
+      //   return e.date
+      // });
+  
+      // this.yValue = this.customDataLineChart.map(function(e) {
+      //     return e.value;
+      // });
 
-
-
-
-        // this.xValue = this.customDataLineChart.map(function(e) {
-        //   let date =new Date(e.date); 
-        //   var dd=date.toISOString().substring(0,10); stampa nel formato yyyy/mm/dd   
-        //   return date.toLocaleDateString();  
-        //   return e.date
-        // });
-
-        // this.yValue = this.customDataLineChart.map(function(e) {
-        //     return e.value;
-        // });
-
-        this.xValueAVGchart = requestByDays_final_array.map(function (e) {
+        this.xValueAVGchart=requestByDays_final_array.map(function(e){
           return e.date
         })
-        this.yValueAVGchart = requestByDays_final_array.map(function (e) {
+        this.yValueAVGchart=requestByDays_final_array.map(function(e){
           return e.value
         })
-
+  
         console.log('Xlabel-AVERAGE TIME', this.xValueAVGchart);
         console.log('Ylabel-AVERAGE TIME', this.yValueAVGchart);
       }
       else
         console.log('!!!ERROR!!! while get data from resouces for waiting avg time graph')
 
+        // Chart.plugins.register({
+        //   beforeDraw: function(chartInstance, easing) {
+        //     var ctx = chartInstance.chart.ctx;
+        //     console.log("chart istance",chartInstance);
+        //     ctx.fillStyle = 'red'; // your color here
+        
+        //     var chartArea = chartInstance.chartArea;
+        //     ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
+        //   }
+        // });
 
       var lineChart = new Chart('avgTimeResponse', {
-        type: 'bar',
+        type: 'line',
         data: {
           labels: this.xValueAVGchart,
           datasets: [{
             label: 'Average time response in last 30 days ',
             data: this.yValueAVGchart,
-            fill: false, //riempie zona sottostante dati
+            fill: true, //riempie zona sottostante dati
             lineTension: 0.1,
-            borderColor: '#073f74',
-            backgroundColor: '#073f74',
-            borderWidth: 5
+            backgroundColor: 'rgba(255, 255, 255, 0.7)',
+            borderColor: 'rgba(255, 255, 255, 0.7)',
+            borderWidth: 3,
+            pointBackgroundColor: 'rgba(255, 255, 255, 0.8)',
+            pointBorderColor: 'rgba(255, 255, 255, 0.8)'
+
           }]
         },
         options: {
@@ -1080,17 +1298,26 @@ export class Analytics2Component implements OnInit , OnDestroy {
               ticks: {
                 beginAtZero: true,
                 display: true,
-                minRotation: 30
+                minRotation: 30,
+                fontColor: 'white',
               },
               gridLines: {
-                display: false
+                display: true,
+                color:'rgba(255, 255, 255, 0.5)',
+                borderDash:[3,1]
               }
 
             }],
             yAxes: [{
+              gridLines: {
+                display: true ,
+                color:'rgba(255, 255, 255, 0.5)',
+                borderDash:[3,1]
+              },
               ticks: {
                 beginAtZero: true,
                 display: true,
+                fontColor: 'white',
                 callback: function (value, index, values) {
                   let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
                   let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
@@ -1121,7 +1348,19 @@ export class Analytics2Component implements OnInit , OnDestroy {
               }
             }
           }
+          
         }
+        ,
+        plugins:[{
+          beforeDraw: function(chartInstance, easing) {
+            var ctx = chartInstance.chart.ctx;
+            console.log("chartistance",chartInstance)
+            //ctx.fillStyle = 'red'; // your color here
+            ctx.font="Google Sans"
+            var chartArea = chartInstance.chartArea;
+            //ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
+          }
+        }]
       });
 
 

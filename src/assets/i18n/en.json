@@ -836,5 +836,9 @@
     "Wednesday": "Wednesday",
     "Thursday": "Thursday",
     "Friday": "Friday",
-    "Saturday": "Saturday"
+    "Saturday": "Saturday",
+    "Analytics":{
+        "AvgTimeTitle": "Average Time Monitoring",
+        "MedianResTimeClock": "Median Response Time"
+    }
 }
