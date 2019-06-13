@@ -145,13 +145,15 @@
                     <div class="txt">
                       <p class="name" [ngStyle]="{'color': fillColour }">{{ message.sender_fullname }}
                           <!-- margin-right: -45px; -->
-                        <span style="float:right; cursor:pointer" (click)="openRightSideBar(message?.text)">
+                        <span style="float:right; cursor:pointer; color: #00bcf8; text-decoration: underline;" (click)="openRightSideBar(message?.text)">
                           <!-- Addestra -->
                           {{ 'Train' | translate }}
                        
                         </span>
                       </p>
-                      <p class="message">{{ message?.text }}</p>
+                      <p class="message" style="word-break: break-all;">
+                        {{ message?.text }}
+                      </p>
                       <span class="timestamp"> {{ message?.timestamp | date: 'd/M/y HH:mm:ss'}} </span>
                     </div>
                     <div class="bubble-arrow"></div>

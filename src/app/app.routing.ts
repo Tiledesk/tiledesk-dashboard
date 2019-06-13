@@ -38,7 +38,6 @@ import { FaqKbComponent } from './faq-kb/faq-kb.component';
 import { FaqKbEditAddComponent } from './faq-kb-edit-add/faq-kb-edit-add.component';
 
 import { BotEditAddComponent } from './bot-edit-add/bot-edit-add.component';
-import { AnalyticsComponent } from './analytics/analytics.component';
 
 import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.component';
 // import { RequestsListHistoryComponent } from './requests-list-history/requests-list-history.component';
@@ -82,7 +81,8 @@ import { ChatComponent } from './chat/chat.component';
 import { AnalyticsStaticComponent } from './static-pages/analytics-static/analytics-static.component';
 import { ActivitiesStaticComponent } from './static-pages/activities-static/activities-static.component';
 
-
+import { AnalyticsComponent } from './analytics/analytics.component';
+import { Analytics2Component } from './analytics2/analytics2.component';
 
 // import { UserProfileComponent } from './ui/user-profile/user-profile.component';
 
@@ -180,6 +180,8 @@ const routes: Routes = [
 
   // , ProjectProfileGuard
   { path: 'project/:projectid/analytics', component: AnalyticsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/analytics2', component: Analytics2Component, canActivate: [AuthGuard] },
+
   { path: 'project/:projectid/analytics-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] },
   // , ProjectProfileGuard
   { path: 'project/:projectid/activities', component: ActivitiesComponent, canActivate: [AuthGuard] },
