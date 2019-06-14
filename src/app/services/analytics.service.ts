@@ -1,15 +1,33 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { AuthService } from 'app/core/auth.service';
 
 @Injectable()
 export class AnalyticsService {
   
-  urlHeatMap:string="https://api.tiledesk.com/v1/5ad5bd52c975820014ba900a/analytics/requests/aggregate/dayoftheweek/hours"
-  baseURL:string="https://api.tiledesk.com/v1/5ad5bd52c975820014ba900a/analytics/requests/"
-
+  baseURL:string="https://api.tiledesk.com/v1/"
+  projectID:string;
   
-  constructor( private http:HttpClient) {}
+  constructor( private http:HttpClient,
+              public auth: AuthService) {
+    this.getCurrentProject()
+  }
+  
+  getCurrentProject() {
+    console.log('============ PROJECT SERVICE - SUBSCRIBE TO CURRENT PROJ ============');
+    // tslint:disable-next-line:no-debugger
+    // debugger
+    this.auth.project_bs.subscribe((project) => {
+      console.log("PPPP", project)
+      if (project) {
+
+        this.projectID = project._id;
+        console.log('ID PROJECT', this.projectID);
+        
+      }
+    });
+  }
 
   getDataHeatMap():Observable<[]>{
     
@@ -20,7 +38,7 @@ export class AnalyticsService {
       })
     };
 
-    return this.http.get<[]>(this.urlHeatMap, httpOptions);
+    return this.http.get<[]>(this.baseURL+this.projectID+'/analytics/requests/aggregate/dayoftheweek/hours', httpOptions);
 
   }
 
@@ -32,7 +50,7 @@ export class AnalyticsService {
       })
     };
 
-    return this.http.get<[]>(this.baseURL+'waiting', httpOptions);
+    return this.http.get<[]>(this.baseURL+this.projectID+'/analytics/requests/waiting', httpOptions);
   }
 
   getavarageWaitingTimeDataChart():Observable<[]>{
@@ -43,7 +61,7 @@ export class AnalyticsService {
       })
     };
 
-    return this.http.get<[]>(this.baseURL+'waiting/day', httpOptions);
+    return this.http.get<[]>(this.baseURL+this.projectID+'/analytics/requests/waiting/day', httpOptions);
   }
   
   getDurationConversationTimeDataCLOCK():Observable<[]>{
@@ -54,7 +72,7 @@ export class AnalyticsService {
       })
     };
 
-    return this.http.get<[]>(this.baseURL+'duration', httpOptions);
+    return this.http.get<[]>(this.baseURL+this.projectID+'/analytics/requests/duration', httpOptions);
   }
 
   getDurationConversationTimeDataChart():Observable<[]>{
@@ -65,7 +83,7 @@ export class AnalyticsService {
       })
     };
 
-    return this.http.get<[]>(this.baseURL+'duration/day', httpOptions);
+    return this.http.get<[]>(this.baseURL+this.projectID+'/analytics/requests/duration/day', httpOptions);
   }
   
 
