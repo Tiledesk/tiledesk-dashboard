@@ -80,6 +80,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     LOGIN_PAGE: boolean;
     // IS_UNAVAILABLE = false;
     IS_AVAILABLE: boolean;
+    IS_SMALL: boolean;
     projectUser_id: string;
 
     project: Project;
@@ -720,5 +721,37 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // goToActivities() {
     //     this.router.navigate(['project/' + this.projectId + '/activities']);
     // }
+
+/*
+    smallSidebar(IS_SMALL) {
+        console.log('smallSidebar ', IS_SMALL)
+
+        const elemAppSidebar = <HTMLElement>document.querySelector('.sidebar-wrapper');
+        // console.log('elemAppSidebar', elemAppSidebar)
+
+        const elemNavContainer = <HTMLElement>document.querySelector('.nav-container');
+        console.log('elemNavContainer', elemNavContainer)
+
+    
+
+
+        if (IS_SMALL === true) {
+            elemAppSidebar.setAttribute('style', 'width: 130px; background-color: #2d323e!important');
+        } else {
+            elemAppSidebar.setAttribute('style', 'width: 260px;background-color: #2d323e!important');
+        }
+    }
+
+
+    forTest () {
+        [].forEach.call(
+            document.querySelectorAll('footer ul li a'),
+            function (el) {
+                console.log('footer > ul > li > a element: ', el);
+                el.setAttribute('style', 'text-transform: none');
+            }
+        );
+    }
+    */
 
 }

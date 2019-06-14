@@ -111,6 +111,7 @@ export class TrainBotComponent implements OnInit, AfterViewInit {
         el.setAttribute('style', 'text-transform: none');
       }
     );
+  
   }
 
 
