@@ -5,25 +5,27 @@
       <img style="width:50%; top:20px" src="assets/img/tiledesk-logo_white.svg"/>
     </div>
   </a>
-  <!-- <button (click)="smallSidebar(IS_SMALL = !IS_SMALL)"> s</button> -->
+  <button (click)="smallSidebar(IS_SMALL = !IS_SMALL)"> s</button>
 </div>
 <!-- background-color: #191919 -->
 <div class="sidebar-wrapper" style="background-color: #2d323e!important;" (scroll)="onScroll($event)">
         
       <!-- // NK start NEW: AVATAR ON THE SIDEBAR  -->
       <div class="user tiledesk-nav-user" fxlayout="column" style="flex-direction: column; box-sizing: border-box; display: flex;">
-        <div *ngIf="user" class="h3 username" style="font-size: 16px;font-weight: 400;margin-top: 15px; margin-bottom: 5px;">
+        <div *ngIf="user" class="h3 username" style="font-size: 16px;font-weight: 400;margin-top: 15px; margin-bottom: 5px;"
+          [ngClass]="{'small-sidebar-userfullname' : SIDEBAR_IS_SMALL === true }">
           
           {{ user.firstname }} {{ user.lastname }}
         </div>
-        <div *ngIf="user" class="h5 email hint-text mt-8" style="color: rgba(255,255,255,.5)!important;font-size: 13px;margin-top: 5px!important;font-weight: 400;">
+        <div *ngIf="user" class="h5 email hint-text mt-8" style="color: rgba(255,255,255,.5)!important;font-size: 13px;margin-top: 5px!important;font-weight: 400;"
+        [ngClass]="{'small-sidebar-email' : SIDEBAR_IS_SMALL === true }">
             
           {{ user.email }}
         </div>
         <!-- routerLink="project/{{ project._id }}/user-profile" -->
         <!-- (mouseover)="mouseOver(true)" 
         (mouseout)="mouseOver(false)" -->
-        <div *ngIf="project" class="avatar-container tiledesk-nav-avatar">
+        <div *ngIf="project" class="avatar-container tiledesk-nav-avatar" [ngClass]="{'small-sidebar-avatar' : SIDEBAR_IS_SMALL === true }" >
 
           <img class="avatar" *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" 
               src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{user?._id}}%2Fphoto.jpg?alt=media" />
@@ -31,14 +33,19 @@
           <img class="avatar" *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true" 
               src="assets/img/no_image_user.png"/>
 
-            <div (click)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)" class="status-icon online" [ngClass]="{'is-user-online' : IS_AVAILABLE === true, 'is-user-offline' : IS_AVAILABLE === false }">
-              <span style="position:relative; top: -5px;left: 14px; cursor:pointer">  
+            <div (click)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)" class="status-icon online" 
+              [ngClass]="{'is-user-online' : IS_AVAILABLE === true, 'is-user-offline' : IS_AVAILABLE === false, 'small-sidebar-status-icon' : SIDEBAR_IS_SMALL === true  }">
+              <span style="position:relative; top: -5px;left: 14px; cursor:pointer"  [ngClass]="{'small-sidebar-status-text' : SIDEBAR_IS_SMALL === true }">  
                 <span style="
-                color: rgba(255,255,255,.5)!important; 
-                font-size: 12px;" *ngIf="IS_AVAILABLE"> {{ 'Available' | translate }} </span> 
+                  color: rgba(255,255,255,.5)!important; 
+                  font-size: 12px;" *ngIf="IS_AVAILABLE"> 
+                  {{ 'Available' | translate }} 
+                </span> 
                 <span style="
                 color: rgba(255,255,255,.5)!important;
-                font-size: 12px; white-space: nowrap" *ngIf="!IS_AVAILABLE"> {{ 'Unavailable' | translate }} </span>
+                font-size: 12px; white-space: nowrap" *ngIf="!IS_AVAILABLE"> 
+                  {{ 'Unavailable' | translate }} 
+                </span>
               
               </span>
             </div>

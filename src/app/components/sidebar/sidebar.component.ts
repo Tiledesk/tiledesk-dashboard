@@ -80,7 +80,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     LOGIN_PAGE: boolean;
     // IS_UNAVAILABLE = false;
     IS_AVAILABLE: boolean;
-    IS_SMALL: boolean;
+    SIDEBAR_IS_SMALL: boolean;
     projectUser_id: string;
 
     project: Project;
@@ -722,36 +722,54 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     //     this.router.navigate(['project/' + this.projectId + '/activities']);
     // }
 
-/*
+
     smallSidebar(IS_SMALL) {
+        this.SIDEBAR_IS_SMALL = IS_SMALL;
         console.log('smallSidebar ', IS_SMALL)
 
-        const elemAppSidebar = <HTMLElement>document.querySelector('.sidebar-wrapper');
+        const elemSidebarWrapper = <HTMLElement>document.querySelector('.sidebar-wrapper');
+        const elemSidebar = <HTMLElement>document.querySelector('.sidebar');
         // console.log('elemAppSidebar', elemAppSidebar)
 
-        const elemNavContainer = <HTMLElement>document.querySelector('.nav-container');
-        console.log('elemNavContainer', elemNavContainer)
-
-    
+        
 
 
         if (IS_SMALL === true) {
-            elemAppSidebar.setAttribute('style', 'width: 130px; background-color: #2d323e!important');
+
+           
+            elemSidebar.setAttribute('style', 'width: 70px;');
+            elemSidebarWrapper.setAttribute('style', 'width: 70px; background-color: #2d323e!important');
+
+            [].forEach.call(
+                document.querySelectorAll('.nav-container ul li a p'),
+                function (el) {
+                    console.log('footer > ul > li > a element: ', el);
+                    el.setAttribute('style', 'display: none');
+                }
+            );
+    
+            [].forEach.call(
+                document.querySelectorAll('.nav-container ul li a'),
+                function (el) {
+                    console.log('footer > ul > li > a element: ', el);
+                    el.setAttribute('style', 'height: 40px');
+                }
+            );
+
+
+
         } else {
-            elemAppSidebar.setAttribute('style', 'width: 260px;background-color: #2d323e!important');
+            elemSidebar.setAttribute('style', 'width: 260px;');
+            elemSidebarWrapper.setAttribute('style', 'width: 260px;background-color: #2d323e!important');
+
+            [].forEach.call(
+                document.querySelectorAll('.nav-container ul li a p'),
+                function (el) {
+                    console.log('footer > ul > li > a element: ', el);
+                    el.setAttribute('style', 'display: block');
+                }
+            );
         }
     }
-
-
-    forTest () {
-        [].forEach.call(
-            document.querySelectorAll('footer ul li a'),
-            function (el) {
-                console.log('footer > ul > li > a element: ', el);
-                el.setAttribute('style', 'text-transform: none');
-            }
-        );
-    }
-    */
 
 }
