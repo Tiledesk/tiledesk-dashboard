@@ -16,7 +16,7 @@ export class FaqKbService {
   BASE_URL = environment.mongoDbConfig.BASE_URL;
   MONGODB_BASE_URL: any;
 
-  TOKEN: string
+  TOKEN: string;
   user: any;
 
   project: any;

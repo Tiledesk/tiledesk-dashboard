@@ -2,90 +2,123 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from 'app/core/auth.service';
-
+import { environment } from '../../environments/environment';
 @Injectable()
 export class AnalyticsService {
-  
-  baseURL:string="https://api.tiledesk.com/v1/"
-  projectID:string;
-  
-  constructor( private http:HttpClient,
-              public auth: AuthService) {
+
+  // baseURL = 'https://api.tiledesk.com/v1/';
+
+  BASE_URL = environment.mongoDbConfig.BASE_URL;
+
+  projectID: string;
+  user: any;
+  TOKEN: string;
+
+  constructor(
+    private http: HttpClient,
+    public auth: AuthService
+  ) {
+
+
+    this.user = auth.user_bs.value
+    this.checkUser()
+
+    this.auth.user_bs.subscribe((user) => {
+      this.user = user;
+      this.checkUser()
+    });
+
+
     this.getCurrentProject()
   }
-  
+
   getCurrentProject() {
     console.log('============ PROJECT SERVICE - SUBSCRIBE TO CURRENT PROJ ============');
     // tslint:disable-next-line:no-debugger
     // debugger
     this.auth.project_bs.subscribe((project) => {
-      console.log("PPPP", project)
+      console.log('AnalyticsService  project', project)
       if (project) {
 
         this.projectID = project._id;
-        console.log('ID PROJECT', this.projectID);
-        
+        console.log('AnalyticsService ID PROJECT ', this.projectID);
+
       }
     });
   }
 
-  getDataHeatMap():Observable<[]>{
-    
-     const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Basic ' + btoa('alessia.calo@frontiere21.it:123456')
-      })
-    };
-
-    return this.http.get<[]>(this.baseURL+this.projectID+'/analytics/requests/aggregate/dayoftheweek/hours', httpOptions);
-
+  checkUser() {
+    if (this.user) {
+      this.TOKEN = this.user.token
+      // this.getToken();
+      console.log('AnalyticsService user is signed in');
+    } else {
+      console.log('AnalyticsService No user is signed in');
+    }
   }
 
-  getDataAVGWaitingCLOCK():Observable<[]>{
+  getDataHeatMap(): Observable<[]> {
+
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Basic ' + btoa('alessia.calo@frontiere21.it:123456')
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+        // 'Authorization': 'Basic ' + btoa('alessia.calo@frontiere21.it:123456')
       })
     };
 
-    return this.http.get<[]>(this.baseURL+this.projectID+'/analytics/requests/waiting', httpOptions);
+    return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/aggregate/dayoftheweek/hours', httpOptions);
+
   }
 
-  getavarageWaitingTimeDataChart():Observable<[]>{
+  getDataAVGWaitingCLOCK(): Observable<[]> {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Basic ' + btoa('alessia.calo@frontiere21.it:123456')
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+        // 'Authorization': 'Basic ' + btoa('alessia.calo@frontiere21.it:123456')
       })
     };
 
-    return this.http.get<[]>(this.baseURL+this.projectID+'/analytics/requests/waiting/day', httpOptions);
+    return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/waiting', httpOptions);
   }
-  
-  getDurationConversationTimeDataCLOCK():Observable<[]>{
+
+  getavarageWaitingTimeDataChart(): Observable<[]> {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Basic ' + btoa('alessia.calo@frontiere21.it:123456')
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+        // 'Authorization': 'Basic ' + btoa('alessia.calo@frontiere21.it:123456')
       })
     };
 
-    return this.http.get<[]>(this.baseURL+this.projectID+'/analytics/requests/duration', httpOptions);
+    return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/waiting/day', httpOptions);
   }
 
-  getDurationConversationTimeDataChart():Observable<[]>{
+  getDurationConversationTimeDataCLOCK(): Observable<[]> {
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        'Authorization': 'Basic ' + btoa('alessia.calo@frontiere21.it:123456')
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+        // 'Authorization': 'Basic ' + btoa('alessia.calo@frontiere21.it:123456')
       })
     };
 
-    return this.http.get<[]>(this.baseURL+this.projectID+'/analytics/requests/duration/day', httpOptions);
+    return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/duration', httpOptions);
   }
-  
+
+  getDurationConversationTimeDataChart(): Observable<[]> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+        // 'Authorization': 'Basic ' + btoa('alessia.calo@frontiere21.it:123456')
+      })
+    };
+
+    return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/duration/day', httpOptions);
+  }
+
 
 
 }
