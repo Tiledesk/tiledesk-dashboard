@@ -49,7 +49,7 @@ export class AppComponent implements OnInit, AfterViewInit {
 
         // private faqKbService: FaqKbService,
     ) {
-   
+
 
         /**
          * *** ---------------------- ***
@@ -126,6 +126,9 @@ export class AppComponent implements OnInit, AfterViewInit {
             let ps = new PerfectScrollbar(elemMainPanel);
             ps = new PerfectScrollbar(elemSidebar);
         }
+
+
+        this.unsetNavbarBoxShadow();
     }
 
     resetRequestsIfUserIsSignedOut() {
@@ -157,6 +160,25 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
 
+    // SET TO 'none' the box-shadow style of the navbar in the page in which is present the second navbar (i.e. the bottom-nav)
+    unsetNavbarBoxShadow() {
+        this.router.events.subscribe((val) => {
+            if (this.location.path() !== '') {
+                this.route = this.location.path();
+                console.log('»> ', this.route);
+
+                if (((this.route.indexOf('/analytics') !== -1) || (this.route.indexOf('/requests') !== -1))) {
+
+                    const elemNavbar = <HTMLElement>document.querySelector('.navbar');
+                    console.log('»> is analytics -- elemNavbar ', elemNavbar)
+                    elemNavbar.setAttribute('style', 'box-shadow:none');
+
+                }
+            }
+        })
+    }
+
+
     hideElementsInAuthPage() {
         // GET THE HTML ELEMENT NAVBAR AND SIDEBAR THAT WILL BE HIDDEN IF IS DETECTED THE LOGIN PAGE
         const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
@@ -184,7 +206,7 @@ export class AppComponent implements OnInit, AfterViewInit {
                     (this.route.indexOf('/verify') !== -1) ||
                     (this.route.indexOf('/resetpassword') !== -1) ||
                     (this.route.indexOf('/pricing') !== -1)
-                    ) {
+                ) {
 
                     elemNavbar.setAttribute('style', 'display:none;');
                     elemAppSidebar.setAttribute('style', 'display:none;');
@@ -282,5 +304,5 @@ export class AppComponent implements OnInit, AfterViewInit {
     }
 
 
-   
+
 }

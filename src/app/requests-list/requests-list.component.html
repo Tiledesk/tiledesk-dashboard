@@ -26,21 +26,26 @@
 -->
 <ul class="bottom-nav">
 
-    <li (click)="seeIamAgentRequests(seeAll = !seeAll)" *ngIf="ROLE_IS_AGENT === false" [ngClass]="{'disabled-li' : displayBtnLabelSeeYourRequets === false}">
-        <a 
-          class="btn-with-border-effect"
-          [ngClass]="{'a-active' : displayBtnLabelSeeYourRequets === false, 'border-from-center' : displayBtnLabelSeeYourRequets === true}" 
-          >
-          {{ "AllAgentsRequests" | translate }} 
-    </a> 
+    <li (click)="seeIamAgentRequests(seeAll = !seeAll)" 
+        *ngIf="ROLE_IS_AGENT === false"
+        [ngClass]="
+          { 'disabled-li' : displayBtnLabelSeeYourRequets === false, 
+            'border-from-center' : displayBtnLabelSeeYourRequets === true,
+            'li-active' : displayBtnLabelSeeYourRequets === false
+          }"
+        class="btn-with-border-effect">
+        
+        <a> {{ "AllAgentsRequests" | translate }} </a> 
     </li>
-    <li  (click)="seeIamAgentRequests(seeAll = !seeAll)" [ngClass]="{'disabled-li' : displayBtnLabelSeeYourRequets === true}">
-        <a
-          class="btn-with-border-effect" 
-          [ngClass]="{'a-active' : displayBtnLabelSeeYourRequets === true, 'border-from-center' : displayBtnLabelSeeYourRequets === false }" 
-         >
-            {{ "YourRequests" | translate }}
-    </a> 
+    <li (click)="seeIamAgentRequests(seeAll = !seeAll)" 
+        [ngClass]="
+        { 'disabled-li' : displayBtnLabelSeeYourRequets === true, 
+          'border-from-center' : displayBtnLabelSeeYourRequets === false, 
+          'li-active' : displayBtnLabelSeeYourRequets === true
+        }"
+        class="btn-with-border-effect">
+
+        <a> {{ "YourRequests" | translate }} </a> 
     </li>
  
 </ul>
