@@ -199,7 +199,12 @@ export class HomeComponent implements OnInit {
   }
 
   goToTiledeskMobileAppPage() {
-    const url = 'https://www.tiledesk.com/it/mobile-live-chat-android-iphone-app/';
+    let url = ''
+    if (this.browserLang === 'it') {
+      url = 'https://www.tiledesk.com/it/mobile-live-chat-android-iphone-app/';
+    } else {
+      url = 'https://www.tiledesk.com/mobile-live-chat-android-iphone-app-en/';
+    }
     window.open(url, '_blank');
   }
 

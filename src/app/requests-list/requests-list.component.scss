@@ -551,6 +551,48 @@ span .switch-agent-admin-requests-btn {
     font-weight: 400;
 }
 
+// - start - BOTTOM NAVBAR  //
+.bottom-nav {
+    background-color: #fff;
+    width: 100%;
+    z-index: 1029;
+    position: relative;
+    top: -5px;
+    box-shadow: 0 2px 2px rgba(0, 0, 60, 0.08);
+    padding-bottom: 5px;
+    float: left;
+    height: 50px;
+    padding-left: 0px
+}
+.bottom-nav li {
+    float: left;
+    padding: 15px;
+    list-style: none;
+    position: relative;
+    display: block;   
+}
+
+.bottom-nav li a {
+    padding: 18px 15px;
+    color: #797979;
+    line-height: 20px;
+    font-size: 14px!important;
+}
+
+.bottom-nav li a:hover{
+    text-decoration: none;
+    background-color: #eee;
+}
+
+.a-active {
+    border-bottom: 3px solid #039be5!important;
+    color: #039be5 !important;
+    padding-bottom: 15px!important;
+}
+.disabled-li {
+    pointer-events:none;
+}
+
 $f21blue: #039be5;
 // Basic styles
 .btn-with-border-effect {

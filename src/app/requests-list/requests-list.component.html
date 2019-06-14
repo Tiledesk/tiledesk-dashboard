@@ -1,5 +1,8 @@
+<p style="margin-top:6px; padding-left:30px;position: relative;z-index: 1050;" class="navbar-brand">
+    {{ 'Requests' | translate }}  
+</p>
 
-<!-- MOMGO DB REQUEST (ALIAS VISITORS) LIST -->
+<!--
 <div class="row">
   <div class="col-md-12">
     <button (click)="seeIamAgentRequests(seeAll = !seeAll)" *ngIf="ROLE_IS_AGENT === false" 
@@ -7,11 +10,9 @@
         class="navbar-brand btn-with-border-effect"  
         [ngClass]="{'tab-active' : displayBtnLabelSeeYourRequets === false, 'border-from-center' : displayBtnLabelSeeYourRequets === true}"
         [disabled]="displayBtnLabelSeeYourRequets === false">
-    
-      <!-- {{ 'SupportRequests' | translate }}  -->
-      {{ "AllAgentsRequests" | translate }} 
+        {{ "AllAgentsRequests" | translate }} 
     </button> 
-    <!--  -->
+
     <button (click)="seeIamAgentRequests(seeAll = !seeAll)" 
       style="z-index: 1050;position: relative;margin-top:6px; padding-right:30px; padding-left:30px; height:56px" 
       class="navbar-brand btn-with-border-effect"
@@ -20,23 +21,29 @@
   
         {{ "YourRequests" | translate }}
     </button> 
-
-    <!-- z-index:1050 -->
-    <!-- <ul id="pill-horizontal" *ngIf="ROLE_IS_AGENT === false" class="nav nav-pills nav-pills-info custom" 
-      style="position:relative; z-index:1030; margin-top: 14px; max-width: 528px;">
-      <li class="active" (click)="seeIamAgentRequests(seeAll = !seeAll)">
-        <a href="#pill1" data-toggle="tab">
-          {{ "AllAgentsRequests" | translate }} 
-        </a>
-        </li>
-      <li (click)="seeIamAgentRequests(seeAll = !seeAll)">
-        <a href="#pill2" data-toggle="tab">
-          {{ "YourRequests" | translate }}
-        </a>
-      </li>
-    </ul> -->
   </div>
 </div>
+-->
+<ul class="bottom-nav">
+
+    <li (click)="seeIamAgentRequests(seeAll = !seeAll)" *ngIf="ROLE_IS_AGENT === false" [ngClass]="{'disabled-li' : displayBtnLabelSeeYourRequets === false}">
+        <a 
+          class="btn-with-border-effect"
+          [ngClass]="{'a-active' : displayBtnLabelSeeYourRequets === false, 'border-from-center' : displayBtnLabelSeeYourRequets === true}" 
+          >
+          {{ "AllAgentsRequests" | translate }} 
+    </a> 
+    </li>
+    <li  (click)="seeIamAgentRequests(seeAll = !seeAll)" [ngClass]="{'disabled-li' : displayBtnLabelSeeYourRequets === true}">
+        <a
+          class="btn-with-border-effect" 
+          [ngClass]="{'a-active' : displayBtnLabelSeeYourRequets === true, 'border-from-center' : displayBtnLabelSeeYourRequets === false }" 
+         >
+            {{ "YourRequests" | translate }}
+    </a> 
+    </li>
+ 
+</ul>
 
 <div class="main-content" style="padding-top:0px; margin-top: 25px;">
   <div class="container-fluid">
