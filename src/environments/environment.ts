@@ -1,6 +1,6 @@
 // tslint:disable:max-line-length
 import { firebase } from '../firebase-data';
-console.log('firebase.apiKey ', firebase.apiKey)
+
 // const nodeBasePath = 'http://localhost:3000/';
 // const cloudFunctionBasePath = 'https://api.tiledesk.com/v1/chat/';
 const serverUrl = 'http://localhost:3000/';
