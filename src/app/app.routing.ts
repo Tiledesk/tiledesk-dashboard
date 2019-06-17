@@ -180,7 +180,7 @@ const routes: Routes = [
 
   // , ProjectProfileGuard
   { path: 'project/:projectid/analytics', component: AnalyticsComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/analytics2', component: Analytics2Component, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/analytics2/panoramica', component: Analytics2Component, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/analytics-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] },
   // , ProjectProfileGuard

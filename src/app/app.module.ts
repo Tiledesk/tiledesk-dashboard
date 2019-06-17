@@ -120,6 +120,7 @@ import { FaqTestTrainBotComponent } from './faq-test/faq-test-train-bot/faq-test
 import { HeatMapModule, TooltipService, LegendService, AdaptorService } from '@syncfusion/ej2-angular-heatmap'
 import { AnalyticsService } from './services/analytics.service';
 import { Analytics2Component } from './analytics2/analytics2.component';
+// import { SmallSidebarComponent } from './small-sidebar/small-sidebar.component';
 console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -186,6 +187,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     TrainBotComponent,
     FaqTestTrainBotComponent,
     Analytics2Component,
+    // SmallSidebarComponent,
   ],
   imports: [
     BrowserModule,
@@ -231,7 +233,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ResetPswService,
     UploadImageService,
     WidgetService,
-    LegendService,TooltipService, AdaptorService, AnalyticsService, HttpClientModule,
+    LegendService, TooltipService, AdaptorService, AnalyticsService, HttpClientModule,
     { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [

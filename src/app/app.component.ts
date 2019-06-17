@@ -167,11 +167,10 @@ export class AppComponent implements OnInit, AfterViewInit {
                 this.route = this.location.path();
                 console.log('»> ', this.route);
 
-                if ((this.route.indexOf('/analytics') !== -1) ||
-                    (this.route.indexOf('/requests') !== -1) ||
+                // (this.route.indexOf('/analytics') !== -1) ||
+                if ((this.route.indexOf('/requests') !== -1) ||
                     (this.route.indexOf('/users') !== -1) ||
-                    (this.route.indexOf('/groups') !== -1)
-                ) {
+                    (this.route.indexOf('/groups') !== -1)) {
 
                     const elemNavbar = <HTMLElement>document.querySelector('.navbar');
                     console.log('»> is analytics -- elemNavbar ', elemNavbar)

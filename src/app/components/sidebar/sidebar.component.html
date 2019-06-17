@@ -1,22 +1,35 @@
+<!-- 
 <div *ngIf="project" class="logo" style="background-color:#1e2129!important; padding-bottom: 5px;display: flex;
-flex-direction: row;
-flex: 1 0 auto;
-align-items: center;
-justify-content: space-between;
-height:61px;">
+  flex-direction: row;
+  flex: 1 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  height:61px;">
   
-    <div class="logo-img" style=" display: flex;    align-items: center;">
-        <!-- padding-left: 40px; -->
-        <a routerLink="project/{{ project._id }}/home" class="simple-text" style="text-transform: none; ">
-        <!-- padding-top: 5px; -->
-      <img style="width:50%; top:20px" src="assets/img/tiledesk-logo_white.svg"/>
+  <div class="logo-img" style=" display: flex; align-items: center;">
+    <a routerLink="project/{{ project._id }}/home" class="simple-text" style="text-transform: none; ">
+      <span *ngIf="SIDEBAR_IS_SMALL !== true">
+        <img style="width:50%; top:20px" src="assets/img/tiledesk-logo_white.svg"/>
+      </span>
+      <span *ngIf="SIDEBAR_IS_SMALL === true">
+          <img style="width:37%; top:20px" src="assets/img/tiledesk_logo_white_small.png"/>
+      </span>
     </a> 
-    </div>
-
-  <div style="display: flex;    align-items: center; padding-bottom: 6px">
-      <i class="material-icons" (click)="smallSidebar(IS_SMALL = !IS_SMALL)" style="color:rgba(255,255,255,0.7)!important">  menu  </i>
-    </div>
+  </div>
+  <div  style="display: flex; align-items: center; padding-bottom: 6px">
+    <i class="material-icons" (click)="smallSidebar(IS_SMALL = !IS_SMALL)" style="color:rgba(255,255,255,0.7)!important">  menu  </i>
+  </div>
 </div>
+-->
+
+<div *ngIf="project" class="logo" style="background-color:#1e2129!important; padding-bottom: 5px;">
+  <a routerLink="project/{{ project._id }}/home" class="simple-text" style="text-transform: none; padding-left: 40px;">
+    <div class="logo-img">
+      <img style="width:50%; top:20px" src="assets/img/tiledesk-logo_white.svg"/>
+    </div>
+  </a>
+</div>
+
 
 
 
@@ -471,7 +484,8 @@ height:61px;">
   
 </div>
 <!-- ////// SIDEBAR FOOTER -->
-<!-- <div class="sidebar-footer">
+<!--
+<div class="sidebar-footer">
   <div class="row">
     <div class="col-sm-6">
       <div style="text-align:center; font-weight:400">
@@ -509,9 +523,9 @@ height:61px;">
       </div>
     </div>
   </div>
-</div> -->
+</div>
 
-
+-->
 
 <!-- MODAL - LOGOUT WINDOWS -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayLogoutModal}" style="background-color: rgba(90,90,90,0.5);">

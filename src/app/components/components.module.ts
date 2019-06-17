@@ -6,6 +6,8 @@ import { FooterComponent } from './footer/footer.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { SmallSidebarComponent } from './small-sidebar/small-sidebar.component';
+
 
 @NgModule({
   imports: [
@@ -16,12 +18,14 @@ import { TranslateModule } from '@ngx-translate/core';
   declarations: [
     FooterComponent,
     NavbarComponent,
-    SidebarComponent
+    SidebarComponent,
+    SmallSidebarComponent
   ],
   exports: [
     FooterComponent,
     NavbarComponent,
     SidebarComponent,
+    SmallSidebarComponent,
     TranslateModule
   ]
 })
