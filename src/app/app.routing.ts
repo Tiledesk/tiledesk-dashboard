@@ -83,6 +83,9 @@ import { ActivitiesStaticComponent } from './static-pages/activities-static/acti
 
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { Analytics2Component } from './analytics2/analytics2.component';
+import { PanoramicaComponent } from './analytics2/panoramica/panoramica.component';
+import { MetricheComponent } from './analytics2/metriche/metriche.component';
+import { RealtimeComponent } from './analytics2/realtime/realtime.component';
 
 // import { UserProfileComponent } from './ui/user-profile/user-profile.component';
 
@@ -181,6 +184,7 @@ const routes: Routes = [
   // , ProjectProfileGuard
   { path: 'project/:projectid/analytics', component: AnalyticsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/analytics2/panoramica', component: Analytics2Component, canActivate: [AuthGuard] },
+  
 
   { path: 'project/:projectid/analytics-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] },
   // , ProjectProfileGuard

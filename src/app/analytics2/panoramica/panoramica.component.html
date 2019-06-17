@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col-md-12">
+      <!-- <div class="card">
+          <div class="card-header card-chart" data-background-color="green">
+              <div class="ct-chart" id="requestsByDayChart"></div>
+          </div>
+          <div class="card-content" style="padding-top: 10px; padding-bottom: 2px;">
+              <h4 class="request_count_footer" style="padding-top:0px; padding-bottom:0px">
+                  {{ "NumberOfRequestsLast7Days" | translate }}  
+              </h4>
+          </div>
+      </div> -->
+      <div class="chart-wrapper">
+          <div class="chart-title">
+              {{ "NumberOfRequestsLast7Days" | translate }}  
+          </div>
+              <!-- <div class="card">
+              <div class="card-header card-chart" data-background-color="green">
+                      <div class="ct-chart" id="requestsByDayChart"></div>
+                  </div>
+              </div> -->
+
+            <div class="card-content chart-container" style="position: relative; margin:auto; height:35vh; width:80vw">
+                <canvas id="last7dayChart" ></canvas>
+            </div>
+
+      </div>
+  </div>
+</div>
+
+
+<!-- -------------------HEAT MAP------------------------- -->
+<div  class="row">
+  <div class="col-md-12">
+      <ejs-heatmap id='heatmap-container' fill="none"style="display:block; width: 300px; margin-top:20px"
+                  [titleSettings]='titleSettings'
+                  [dataSource]='dataSource'
+                  [xAxis]='xAxis' 
+                  [yAxis]='yAxis'
+                  [legendSettings]='legendSettings'
+                  [cellSettings]='cellSettings'
+                  [paletteSettings]='paletteSettings'
+                  (tooltipRender)='tooltipRender($event)'
+                  [showTooltip]='showTooltip'>
+      </ejs-heatmap>  
+  </div>
+</div>

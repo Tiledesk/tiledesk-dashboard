@@ -1,3 +1,4 @@
+import { MetricheComponent } from './analytics2/metriche/metriche.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -120,6 +121,12 @@ import { FaqTestTrainBotComponent } from './faq-test/faq-test-train-bot/faq-test
 import { HeatMapModule, TooltipService, LegendService, AdaptorService } from '@syncfusion/ej2-angular-heatmap'
 import { AnalyticsService } from './services/analytics.service';
 import { Analytics2Component } from './analytics2/analytics2.component';
+import { PanoramicaComponent } from './analytics2/panoramica/panoramica.component';
+import { RealtimeComponent } from './analytics2/realtime/realtime.component';
+import { RichiesteComponent } from './analytics2/metriche/richieste/richieste.component';
+import { SentimentComponent } from './analytics2/metriche/sentiment/sentiment.component';
+import { TempirispostaComponent } from './analytics2/metriche/tempirisposta/tempirisposta.component';
+import { DurataconvComponent } from './analytics2/metriche/durataconv/durataconv.component';
 // import { SmallSidebarComponent } from './small-sidebar/small-sidebar.component';
 console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
@@ -187,6 +194,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     TrainBotComponent,
     FaqTestTrainBotComponent,
     Analytics2Component,
+    PanoramicaComponent,
+    MetricheComponent,
+    RealtimeComponent,
+    RichiesteComponent,
+    SentimentComponent,
+    TempirispostaComponent,
+    DurataconvComponent,
     // SmallSidebarComponent,
   ],
   imports: [

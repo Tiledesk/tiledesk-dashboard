@@ -22,6 +22,8 @@ import { Chart } from 'chart.js';
 })
 export class Analytics2Component implements OnInit , OnDestroy {
 
+  selected=1;
+
   activeRequestsCount: number;
   unservedRequestsCount: number;
   servedRequestsCount: number;
@@ -59,7 +61,7 @@ export class Analytics2Component implements OnInit , OnDestroy {
   cellSettings: Object;
   legendSettings: any; // nk
   paletteSettings: Object;
-  customData: any = [];
+  customData = [];
   xlabel_ita = ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'];
   xlabel_eng = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   ylabel_ita = ['01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']
@@ -103,6 +105,23 @@ export class Analytics2Component implements OnInit , OnDestroy {
     this.getBrowserLangAndSwitchMonthName();
   }
 
+  goToPanoramica(){
+    this.selected=1;
+    console.log("Move to PANORAMICA");
+
+  }
+
+  goToMetriche(){
+    this.selected=2;
+    console.log("Move to METRICHE");
+  }
+
+  goToRealtime(){
+    this.selected=3;
+    console.log("Move to REALTIME");
+  }
+    
+
   getBrowserLangAndSwitchMonthName() {
     const browserLang = this.translate.getBrowserLang();
     console.log('!!! ANALYTICS  - BROWSER LANG ', browserLang)
@@ -119,9 +138,9 @@ export class Analytics2Component implements OnInit , OnDestroy {
     this.auth.checkRoleForCurrentProject();
     this.buildgraph(); // HEAT MAP GRAPH
     this.avarageWaitingTimeCLOCK(); // -->clock avg time response
-    this.avgTimeResponsechart(); // -->avg time response bar chart
-    this.durationConvTimeCLOCK(); // -->duration time clock
-    this.durationConversationTimeCHART(); // -->duration conversation bar chart
+    this.avgTimeResponsechart(); // --> avg time response bar chart
+    this.durationConvTimeCLOCK(); // --> duration time clock
+    this.durationConversationTimeCHART(); // --> duration conversation bar chart
     // this.auth.checkProjectProfile('analytics');
     this.getRequestByLast7Day();
 
@@ -1166,18 +1185,21 @@ export class Analytics2Component implements OnInit , OnDestroy {
 
   avarageWaitingTimeCLOCK(){
     this.analyticsService.getDataAVGWaitingCLOCK().subscribe((res:any)=>{
-      if(res){
+      let avarageWaitingTimestring;
+      var splitString;
+
+      if(res && res.length!=0){
         //this.avarageWaitingTimestring= this.msToTime(res[0].waiting_time_avg)
         
         //this.humanizer.setOptions({round: true, units:['m']});
         
       
         //this.avarageWaitingTimestring = this.humanizer.humanize(res[0].waiting_time_avg);
-        let avarageWaitingTimestring=this.humanizeDurations(res[0].waiting_time_avg)
-        var splitString= this.humanizeDurations(res[0].waiting_time_avg).split(" ");
+        avarageWaitingTimestring=this.humanizeDurations(res[0].waiting_time_avg)
+        splitString= this.humanizeDurations(res[0].waiting_time_avg).split(" ");
         this.numberAVGtime= splitString[0];
         this.unitAVGtime= splitString[1];
-        
+
         if(this.lang){
           if(this.lang=='it'){
             this.humanizer.setOptions({round: true});
@@ -1188,8 +1210,29 @@ export class Analytics2Component implements OnInit , OnDestroy {
         }
         console.log('Waiting time: humanize', this.humanizer.humanize(res[0].waiting_time_avg))
         console.log('waiting time funtion:', avarageWaitingTimestring);
+        
+        
       }
-      else
+      else{
+        avarageWaitingTimestring=this.humanizeDurations(0)
+        splitString= this.humanizeDurations(0).split(" ");
+        this.numberAVGtime= splitString[0];
+        this.unitAVGtime= splitString[1];
+
+        if(this.lang){
+          if(this.lang=='it'){
+            this.humanizer.setOptions({round: true});
+              this.responseAVGtime='Il tempo di risposta medio complessivo del tuo team è '+ this.humanizer.humanize(0, {round: true, language:'it'});
+          }
+          else
+            this.responseAVGtime="Your team's overall Median Response Time is "+this.humanizer.humanize(0, {round:true, language:'en'});
+        }
+        console.log('Waiting time: humanize', this.humanizer.humanize(0))
+        console.log('waiting time funtion:', avarageWaitingTimestring);
+      }
+
+      
+      
         console.log('!!!ERROR!!! while get resources for waiting avarage time ');
      
     })
@@ -1209,6 +1252,7 @@ export class Analytics2Component implements OnInit , OnDestroy {
           // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
           last30days_initarray.push({ date: moment().subtract(i, 'd').format('D/M/YYYY'), value: 0  });
         }
+
         last30days_initarray.reverse()
         this.dateRangeAvg= last30days_initarray[0].date.split(-4) +' - '+last30days_initarray[30].date;
         console.log('»» !!! ANALYTICS - REQUESTS BY DAY - MOMENT LAST 30 DATE (init array)', last30days_initarray);
@@ -1216,16 +1260,15 @@ export class Analytics2Component implements OnInit , OnDestroy {
         //build a custom array with che same structure of "init array" but with key value of serviceData
         //i'm using time_convert function that return avg_time always in hour 
         const customDataLineChart= [];
-        for(let i in res){
+        for(let j = 0; j < customDataLineChart.length; j++){
           
-          // this.humanizer.setOptions({round: true, units:['h']});
-          // const AVGtimevalue= this.humanizer.humanize(res[i].waiting_time_avg).split(" ")
-          // console.log("value humanizer:", this.humanizer.humanize(res[i].waiting_time_avg), "split:",AVGtimevalue)
-          if(res[i].waiting_time_avg==null)
-            res[i].waiting_time_avg=0;
-          
+          if(customDataLineChart[j]){
+            if(res[j].waiting_time_avg==null){
+              res[j].waiting_time_avg=0;  //substitute null point with 0 value
+            }
                                                                                                   // to locale string allow format type dd/mm/yyyy
-          customDataLineChart.push({ date: new Date(res[i]._id.year, res[i]._id.month -1 , res[i]._id.day).toLocaleDateString(), value: res[i].waiting_time_avg});
+            customDataLineChart.push({ date: new Date(res[j]._id.year, res[j]._id.month -1 , res[j]._id.day).toLocaleDateString(), value: res[j].waiting_time_avg});
+          }
         }
         console.log('Custom data:', customDataLineChart);
 

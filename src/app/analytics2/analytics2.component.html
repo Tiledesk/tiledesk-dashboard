@@ -3,13 +3,13 @@
 </p>
 
 <ul class="bottom-nav">
-        <li class="btn-with-border-effect li-active" (click)="goTo()" >
+        <li class="btn-with-border-effect "  [ngClass]="{'li-active' : selected === 1, 'border-from-center': selected !== 1}" (click)="goToPanoramica()" >
             <a>Panoramica</a>
         </li>
-        <li class="btn-with-border-effect border-from-center">
+        <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 2, 'border-from-center': selected !== 2}" (click)="goToMetriche()">
             <a>Metriche</a>
         </li>
-        <li class="btn-with-border-effect border-from-center">
+        <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 3, 'border-from-center': selected !== 3}" (click)="goToRealtime()">
             <a>Realtime</a>
         </li>
     </ul>
@@ -21,6 +21,9 @@
 
   <div class="container-fluid">
 
+    <appdashboard-panoramica *ngIf="selected==1"></appdashboard-panoramica>
+    <appdashboard-metriche *ngIf="selected==2"></appdashboard-metriche>
+    <appdashboard-realtime *ngIf="selected==3"></appdashboard-realtime>
       <!-- ============------- COUNT OF TOTAL ACTIVE, SERVED & UNSERVED REQUESTS ------============ -->
       <!-- == (NOTE THE COUNT IS COMPUTED ONLY ON THE REQUEST IN WICH THERE IS THE CURRENT USER) == -->
       <!-- <div class="row" style="text-align: center">
@@ -139,36 +142,19 @@
 
 
           <!-- /// start ======== --- GRAPHICS "REQUESTS BY DAY" --- ======== /// -->
-          <div class="row">
+          <!-- <div class="row">
               <div class="col-md-12">
-                  <!-- <div class="card">
-                      <div class="card-header card-chart" data-background-color="green">
-                          <div class="ct-chart" id="requestsByDayChart"></div>
-                      </div>
-                      <div class="card-content" style="padding-top: 10px; padding-bottom: 2px;">
-                          <h4 class="request_count_footer" style="padding-top:0px; padding-bottom:0px">
-                              {{ "NumberOfRequestsLast7Days" | translate }}  
-                          </h4>
-                      </div>
-                  </div> -->
                   <div class="chart-wrapper">
                       <div class="chart-title">
                           {{ "NumberOfRequestsLast7Days" | translate }}  
                       </div>
-                          <!-- <div class="card">
-                          <div class="card-header card-chart" data-background-color="green">
-                                  <div class="ct-chart" id="requestsByDayChart"></div>
-                              </div>
-                          </div> -->
-
-                        <div class="card-content chart-container" style="position: relative; margin:auto">
+                         <div class="card-content chart-container" style="position: relative; margin:auto">
                             <canvas id="last7dayChart" ></canvas>
-                        </div>
-
-                  </div>
+                        </div> 
+                    </div>
               </div>
-          </div>
-          <div  class="row">
+          </div> -->
+          <!-- <div  class="row">
               <div class="col-md-12">
                   <ejs-heatmap id='heatmap-container' fill="none"style="display:block; width: 300px; margin-top:20px"
                               [titleSettings]='titleSettings'
@@ -182,7 +168,7 @@
                               [showTooltip]='showTooltip'>
                   </ejs-heatmap>  
               </div>
-          </div>
+          </div> -->
           
         <!-- ----------------START AVG TIME RESPONSE CLOCK & BAR CHART--------------------------------- -->
         <div class="row" style="text-align: center; margin-top:35px">
