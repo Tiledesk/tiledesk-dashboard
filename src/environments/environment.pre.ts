@@ -1,4 +1,6 @@
 // tslint:disable:max-line-length
+import { firebase_pre } from '../firebase-data';
+
 const serverUrl = 'https://tiledesk-server-pre.herokuapp.com/';
 const serverChatUrl = 'https://us-central1-chat21-pre-01.cloudfunctions.net/';
 export const environment = {
@@ -6,12 +8,12 @@ export const environment = {
     VERSION: require('../../package.json').version,
     widgetUrl: 'https://widget.tiledesk.com/v2/tiledesk.js',
     firebaseConfig: {
-        apiKey: 'AIzaSyCoWXHNvP1-qOllCpTshhC6VjPXeRTK0T4',
-        authDomain: 'chat21-pre-01.firebaseapp.com',
-        databaseURL: 'https://chat21-pre-01.firebaseio.com',
-        projectId: 'chat21-pre-01',
-        storageBucket: 'chat21-pre-01.appspot.com',
-        messagingSenderId: '269505353043'
+        apiKey: firebase_pre.apiKey,
+        authDomain: firebase_pre.authDomain,
+        databaseURL: firebase_pre.databaseURL,
+        projectId: firebase_pre.projectId,
+        storageBucket: firebase_pre.storageBucket,
+        messagingSenderId: firebase_pre.messagingSenderId
     },
     mongoDbConfig: {
         BASE_URL: `${serverUrl}`,

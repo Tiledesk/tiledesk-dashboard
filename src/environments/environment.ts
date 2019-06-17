@@ -1,4 +1,6 @@
 // tslint:disable:max-line-length
+import { firebase } from '../firebase-data';
+console.log('firebase.apiKey ', firebase.apiKey)
 // const nodeBasePath = 'http://localhost:3000/';
 // const cloudFunctionBasePath = 'https://api.tiledesk.com/v1/chat/';
 const serverUrl = 'http://localhost:3000/';
@@ -8,12 +10,12 @@ export const environment = {
     VERSION: require('../../package.json').version,
     widgetUrl: 'https://widget.tiledesk.com/v2/tiledesk.js',
     firebaseConfig: {
-        apiKey: 'AIzaSyDWMsqHBKmWVT7mWiSqBfRpS5U8YwTl7H0',
-        authDomain: 'chat-v2-dev.firebaseapp.com',
-        databaseURL: 'https://chat-v2-dev.firebaseio.com',
-        projectId: 'chat-v2-dev',
-        storageBucket: 'chat-v2-dev.appspot.com',
-        messagingSenderId: '77360455507',
+        apiKey: firebase.apiKey,
+        authDomain: firebase.authDomain,
+        databaseURL: firebase.databaseURL,
+        projectId: firebase.projectId,
+        storageBucket: firebase.storageBucket,
+        messagingSenderId: firebase.messagingSenderId,
         // timestampsInSnapshots: true,
     },
     mongoDbConfig: {
