@@ -80,6 +80,8 @@ import { PricingComponent } from './pricing/pricing.component';
 import { ChatComponent } from './chat/chat.component';
 import { AnalyticsStaticComponent } from './static-pages/analytics-static/analytics-static.component';
 import { ActivitiesStaticComponent } from './static-pages/activities-static/activities-static.component';
+import { HoursStaticComponent } from './static-pages/hours-static/hours-static.component';
+
 
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { Analytics2Component } from './analytics2/analytics2.component';
@@ -191,6 +193,8 @@ const routes: Routes = [
   { path: 'project/:projectid/activities', component: ActivitiesComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/activities-demo', component: ActivitiesStaticComponent, canActivate: [AuthGuard] },
 
+ 
+
   { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
@@ -217,6 +221,7 @@ const routes: Routes = [
 
   // HOURS
   { path: 'project/:projectid/hours', component: HoursComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/hours-demo', component: HoursStaticComponent, canActivate: [AuthGuard] },
 
   // RESET PASSORD (i.e. page forgot psw & reset psw )
   { path: 'forgotpsw', component: ResetPswComponent },

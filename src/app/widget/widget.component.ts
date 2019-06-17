@@ -566,7 +566,7 @@ export class WidgetComponent implements OnInit, OnDestroy {
     // '&themecolor=' + this.primaryColor
     // '&themeforegroundcolor=' + this.secondaryColor
     // http://testwidget.tiledesk.com/testsite?projectid='
-    const url = 'http://testwidget.tiledesk.com/testsitenw?projectid='
+    const url = 'http://testwidget.tiledesk.com/testsitenw?projectname=' + this.projectName + '&projectid='
       + this.projectId
       + paramPreChatForm
       + this.paramCalloutTimer

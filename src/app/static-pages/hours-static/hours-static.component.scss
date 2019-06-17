@@ -1,0 +1,26 @@
+.outline-btn-analytics {
+    background-color: transparent;
+    color: #1e88e5;
+    border-radius: 40px;
+    padding: 18px 36px;
+    line-height: 1.33em;
+    border: 2px solid #1e88e5;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.outline-btn-analytics:hover {
+    color: #fff;
+    background-color:  #1e88e5;
+}
+
+.left-div-padding {
+    padding-top:150px;
+}
+
+  // to 992 
+@media (max-width: 992px) {
+    .left-div-padding  {
+        padding-top:10px;
+    }
+}
