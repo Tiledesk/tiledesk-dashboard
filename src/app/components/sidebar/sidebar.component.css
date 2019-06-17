@@ -1,5 +1,12 @@
 /* @import url('https://fonts.googleapis.com/css?family=Architects+Daughter'); */
 
+.sidebar-wrapper {
+
+  transition-property: top,bottom,width;
+  transition-duration: .2s,.2s,.35s;
+  transition-timing-function: linear,linear,ease;
+}
+
 li.active a span.sidebar-mini  {
 
  color: #ffffff !important
@@ -210,29 +217,6 @@ button.close {
     border-radius: 50%;
 }
 
-.small-sidebar-avatar .avatar{
-
-    width: 50px;
-    height: 50px;
-}
-
-.small-sidebar-email {
- display: none;
-}
-
-.small-sidebar-status-icon {
-  left: 45px !important;
-
-}
-
-.small-sidebar-status-text {
-  display: none;
-}
-
-.small-sidebar-userfullname {
-  display: none;
-}
-
 .status-icon {
     position: absolute;
     width: 16px;
@@ -257,6 +241,35 @@ button.close {
 .is-mobile-menu {
     margin-top: 0px;
 }
+
+
+/* *** SMALL SIDEBAR STYLE ***  */
+.small-sidebar-avatar .avatar{
+  width: 50px;
+  height: 50px;
+}
+
+.small-sidebar-email {
+  display: none;
+}
+
+.small-sidebar-status-icon {
+  left: 45px !important;
+
+}
+
+.small-sidebar-status-text {
+  display: none;
+}
+
+.small-sidebar-userfullname {
+  display: none;
+}
+
+.small-sidebar-camera-icon {
+  top: 86px !important;
+}
+
 
 /* OVERWRITE THE DEFAULT STYLE */
 .nav-mobile-menu {

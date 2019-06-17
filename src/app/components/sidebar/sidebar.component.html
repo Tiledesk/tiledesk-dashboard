@@ -5,7 +5,9 @@
       <img style="width:50%; top:20px" src="assets/img/tiledesk-logo_white.svg"/>
     </div>
   </a>
-  <button (click)="smallSidebar(IS_SMALL = !IS_SMALL)"> s</button>
+  
+      <!-- <i class="material-icons" (click)="smallSidebar(IS_SMALL = !IS_SMALL)" style="color:rgba(255,255,255,0.7)!important">  menu  </i> -->
+ 
 </div>
 <!-- background-color: #191919 -->
 <div class="sidebar-wrapper" style="background-color: #2d323e!important;" (scroll)="onScroll($event)">
@@ -54,7 +56,8 @@
         <!-- CAMERA ICONS OVER THE AVATAR -->
         <!--  [ngClass]="{'hover-effect' : isOverAvar}"  -->
         <i *ngIf="project" routerLink="project/{{ project._id }}/user-profile" class="material-icons is-over-camera" 
-          style="z-index: 5; position: relative; top: 15px; background-color: rgba(45,50,62,0.7); padding: 15px;border-radius: 50%; opacity:0;"> camera_alt </i>
+          style="z-index: 5; position: relative; top: 15px; background-color: rgba(45,50,62,0.7); padding: 15px;border-radius: 50%; opacity:0;"
+          [ngClass]="{'small-sidebar-camera-icon' : SIDEBAR_IS_SMALL === true }"> camera_alt </i>
       </div>
 
             <!-- <div class="middle"> -->

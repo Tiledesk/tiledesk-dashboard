@@ -722,54 +722,51 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     //     this.router.navigate(['project/' + this.projectId + '/activities']);
     // }
 
-
-    smallSidebar(IS_SMALL) {
-        this.SIDEBAR_IS_SMALL = IS_SMALL;
-        console.log('smallSidebar ', IS_SMALL)
-
-        const elemSidebarWrapper = <HTMLElement>document.querySelector('.sidebar-wrapper');
-        const elemSidebar = <HTMLElement>document.querySelector('.sidebar');
-        // console.log('elemAppSidebar', elemAppSidebar)
-
-        
-
-
-        if (IS_SMALL === true) {
-
-           
-            elemSidebar.setAttribute('style', 'width: 70px;');
-            elemSidebarWrapper.setAttribute('style', 'width: 70px; background-color: #2d323e!important');
-
-            [].forEach.call(
-                document.querySelectorAll('.nav-container ul li a p'),
-                function (el) {
-                    console.log('footer > ul > li > a element: ', el);
-                    el.setAttribute('style', 'display: none');
-                }
-            );
+    /*
+        smallSidebar(IS_SMALL) {
+            this.SIDEBAR_IS_SMALL = IS_SMALL;
+            console.log('smallSidebar ', IS_SMALL)
     
-            [].forEach.call(
-                document.querySelectorAll('.nav-container ul li a'),
-                function (el) {
-                    console.log('footer > ul > li > a element: ', el);
-                    el.setAttribute('style', 'height: 40px');
-                }
-            );
-
-
-
-        } else {
-            elemSidebar.setAttribute('style', 'width: 260px;');
-            elemSidebarWrapper.setAttribute('style', 'width: 260px;background-color: #2d323e!important');
-
-            [].forEach.call(
-                document.querySelectorAll('.nav-container ul li a p'),
-                function (el) {
-                    console.log('footer > ul > li > a element: ', el);
-                    el.setAttribute('style', 'display: block');
-                }
-            );
+            const elemSidebarWrapper = <HTMLElement>document.querySelector('.sidebar-wrapper');
+            const elemSidebar = <HTMLElement>document.querySelector('.sidebar');
+            // console.log('elemAppSidebar', elemAppSidebar)
+    
+            if (IS_SMALL === true) {
+    
+    
+                elemSidebar.setAttribute('style', 'width: 70px;');
+                elemSidebarWrapper.setAttribute('style', 'width: 70px; background-color: #2d323e!important');
+    
+                [].forEach.call(
+                    document.querySelectorAll('.nav-container ul li a p'),
+                    function (el) {
+                        console.log('footer > ul > li > a element: ', el);
+                        el.setAttribute('style', 'display: none');
+                    }
+                );
+    
+                [].forEach.call(
+                    document.querySelectorAll('.nav-container ul li a'),
+                    function (el) {
+                        console.log('footer > ul > li > a element: ', el);
+                        el.setAttribute('style', 'height: 40px');
+                    }
+                );
+    
+            } else {
+                elemSidebar.setAttribute('style', 'width: 260px;');
+                elemSidebarWrapper.setAttribute('style', 'width: 260px;background-color: #2d323e!important');
+    
+                [].forEach.call(
+                    document.querySelectorAll('.nav-container ul li a p'),
+                    function (el) {
+                        console.log('footer > ul > li > a element: ', el);
+                        el.setAttribute('style', 'display: block');
+                    }
+                );
+            }
         }
-    }
+    
+    */
 
 }
