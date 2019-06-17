@@ -1,14 +1,25 @@
-<div *ngIf="project" class="logo" style="background-color:#1e2129!important; padding-bottom: 5px;">
-  <a routerLink="project/{{ project._id }}/home" class="simple-text" style="text-transform: none; padding-left: 40px;">
-    <div class="logo-img">
+<div *ngIf="project" class="logo" style="background-color:#1e2129!important; padding-bottom: 5px;display: flex;
+flex-direction: row;
+flex: 1 0 auto;
+align-items: center;
+justify-content: space-between;
+height:61px;">
+  
+    <div class="logo-img" style=" display: flex;    align-items: center;">
+        <!-- padding-left: 40px; -->
+        <a routerLink="project/{{ project._id }}/home" class="simple-text" style="text-transform: none; ">
         <!-- padding-top: 5px; -->
       <img style="width:50%; top:20px" src="assets/img/tiledesk-logo_white.svg"/>
+    </a> 
     </div>
-  </a>
-  
-      <!-- <i class="material-icons" (click)="smallSidebar(IS_SMALL = !IS_SMALL)" style="color:rgba(255,255,255,0.7)!important">  menu  </i> -->
- 
+
+  <div style="display: flex;    align-items: center; padding-bottom: 6px">
+      <i class="material-icons" (click)="smallSidebar(IS_SMALL = !IS_SMALL)" style="color:rgba(255,255,255,0.7)!important">  menu  </i>
+    </div>
 </div>
+
+
+
 <!-- background-color: #191919 -->
 <div class="sidebar-wrapper" style="background-color: #2d323e!important;" (scroll)="onScroll($event)">
         

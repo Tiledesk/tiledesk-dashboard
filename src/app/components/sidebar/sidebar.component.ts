@@ -722,7 +722,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     //     this.router.navigate(['project/' + this.projectId + '/activities']);
     // }
 
-    /*
+   
         smallSidebar(IS_SMALL) {
             this.SIDEBAR_IS_SMALL = IS_SMALL;
             console.log('smallSidebar ', IS_SMALL)
@@ -767,6 +767,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             }
         }
     
-    */
+ 
 
 }
