@@ -144,6 +144,10 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['project/' + this.projectId + '/activities-demo']);
   }
 
+  goToHoursStaticPage() {
+    this.router.navigate(['project/' + this.projectId + '/hours-demo']);
+  }
+
 
   openChat() {
     // localStorage.setItem('chatOpened', 'true');

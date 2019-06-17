@@ -25,14 +25,29 @@
                     {{ "HoursPage.ActivateTimetables" | translate }} 
                   </p>
               
-                  <!-- [ngClass]="{'chekboxCustomHeight' : isActiveOperatingHours == false }" -->
+                  
                   <label class="container" for="hoursActive" style="margin-left: 0px; margin-bottom: 6px; color:#7695a5; font-weight:300">
                     {{ "HoursPage.OpeningHoursActivated" | translate }} 
-                    <!-- <span *ngIf="isActiveOperatingHours === true "> {{ "HoursPage.OpeningHoursActivated" | translate }} </span>
-                    <span *ngIf="isActiveOperatingHours === false"> {{ "HoursPage.OpeningHoursDeactivated" | translate }} </span> -->
-                    <input type="checkbox" id="hoursActive"  (change)="onChange($event)" [checked]="isActiveOperatingHours"/>
+                      <input type="checkbox" id="hoursActive"  (change)="onChange($event)" [checked]="isActiveOperatingHours"/>
                     <span class="checkmark" style="margin-top: 2px;"></span>
                   </label>
+                  
+                  <!--
+                  <div class="onoffswitch">
+                    <input (change)="onChange($event)" 
+                    [checked]="isActiveOperatingHours" type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch">
+                    <label class="onoffswitch-label" for="myonoffswitch">
+                      <span class="onoffswitch-inner"></span>
+                      <span class="onoffswitch-switch"></span>
+                    </label>
+                  </div>
+
+                  <div class="info-div"> 
+                  <i class="material-icons" style="color: #5e9ded; vertical-align: middle;"> info </i> 
+                    <span style="color:#7695a5"> {{ "HoursPage.OpeningHoursActivated" | translate }} </span> 
+                  </div>
+                -->
+
 
                 </div>
               </div>
