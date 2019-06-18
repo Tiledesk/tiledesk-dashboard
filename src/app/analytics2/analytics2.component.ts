@@ -22,7 +22,7 @@ import { Chart } from 'chart.js';
 })
 export class Analytics2Component implements OnInit , OnDestroy {
 
-  selected=1;
+  selected='panoramica';
 
   activeRequestsCount: number;
   unservedRequestsCount: number;
@@ -106,18 +106,18 @@ export class Analytics2Component implements OnInit , OnDestroy {
   }
 
   goToPanoramica(){
-    this.selected=1;
+    this.selected='panoramica';
     console.log("Move to PANORAMICA");
 
   }
 
   goToMetriche(){
-    this.selected=2;
+    this.selected='metriche';
     console.log("Move to METRICHE");
   }
 
   goToRealtime(){
-    this.selected=3;
+    this.selected='realtime';
     console.log("Move to REALTIME");
   }
     
@@ -1200,52 +1200,38 @@ export class Analytics2Component implements OnInit , OnDestroy {
         this.numberAVGtime= splitString[0];
         this.unitAVGtime= splitString[1];
 
-        if(this.lang){
-          if(this.lang=='it'){
-            this.humanizer.setOptions({round: true});
-              this.responseAVGtime='Il tempo di risposta medio complessivo del tuo team è '+ this.humanizer.humanize(res[0].waiting_time_avg, {round: true, language:'it'});
-          }
-          else
-            this.responseAVGtime="Your team's overall Median Response Time is "+this.humanizer.humanize(res[0].waiting_time_avg, {round:true, language:'en'});
-        }
+        this.responseAVGtime=this.humanizer.humanize(res[0].waiting_time_avg, {round: true, language:this.lang})
+        
         console.log('Waiting time: humanize', this.humanizer.humanize(res[0].waiting_time_avg))
         console.log('waiting time funtion:', avarageWaitingTimestring);
         
         
       }
       else{
-        avarageWaitingTimestring=this.humanizeDurations(0)
-        splitString= this.humanizeDurations(0).split(" ");
-        this.numberAVGtime= splitString[0];
-        this.unitAVGtime= splitString[1];
-
-        if(this.lang){
-          if(this.lang=='it'){
-            this.humanizer.setOptions({round: true});
-              this.responseAVGtime='Il tempo di risposta medio complessivo del tuo team è '+ this.humanizer.humanize(0, {round: true, language:'it'});
-          }
-          else
-            this.responseAVGtime="Your team's overall Median Response Time is "+this.humanizer.humanize(0, {round:true, language:'en'});
-        }
+       
+        this.numberAVGtime= 'n.a'
+        this.unitAVGtime= ''
+        this.responseAVGtime='n.a.'
+        
         console.log('Waiting time: humanize', this.humanizer.humanize(0))
         console.log('waiting time funtion:', avarageWaitingTimestring);
       }
 
-      
-      
-        console.log('!!!ERROR!!! while get resources for waiting avarage time ');
      
-    })
+    }, (error) => {
+      console.log('!!! ANALYTICS - AVERAGE WAITING TIME REQUEST - ERROR ', error);
+    }, () => {
+      console.log('!!! ANALYTICS - AVERAGE TIME REQUEST * COMPLETE *');
+    });
     
   }
 
 
   avgTimeResponsechart(){
     this.analyticsService.getavarageWaitingTimeDataChart().subscribe((res:any)=>{
+      console.log('chart data:',res);
       if(res){
-        console.log('chart data:',res);
         
-      
         //build a 30 days array of date with value 0--> is the init array
         const last30days_initarray = []
         for (let i = 0; i <= 30; i++) {
