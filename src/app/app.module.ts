@@ -128,6 +128,7 @@ import { SentimentComponent } from './analytics2/metriche/sentiment/sentiment.co
 import { TempirispostaComponent } from './analytics2/metriche/tempirisposta/tempirisposta.component';
 import { DurataconvComponent } from './analytics2/metriche/durataconv/durataconv.component';
 import { HoursStaticComponent } from './static-pages/hours-static/hours-static.component';
+import { DepartmentsStaticComponent } from './static-pages/departments-static/departments-static.component';
 // import { SmallSidebarComponent } from './small-sidebar/small-sidebar.component';
 console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
@@ -202,7 +203,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     SentimentComponent,
     TempirispostaComponent,
     DurataconvComponent,
-    HoursStaticComponent
+    HoursStaticComponent,
+    DepartmentsStaticComponent
     // SmallSidebarComponent,
   ],
   imports: [

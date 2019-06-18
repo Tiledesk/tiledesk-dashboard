@@ -78,9 +78,11 @@ import { PricingComponent } from './pricing/pricing.component';
 // import { DashboardComponent} from './dashboard/dashboard.component';
 // Andrea
 import { ChatComponent } from './chat/chat.component';
+
 import { AnalyticsStaticComponent } from './static-pages/analytics-static/analytics-static.component';
 import { ActivitiesStaticComponent } from './static-pages/activities-static/activities-static.component';
 import { HoursStaticComponent } from './static-pages/hours-static/hours-static.component';
+import { DepartmentsStaticComponent } from './static-pages/departments-static/departments-static.component';
 
 
 import { AnalyticsComponent } from './analytics/analytics.component';
@@ -198,6 +200,9 @@ const routes: Routes = [
   { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
+  
+  { path: 'project/:projectid/departments-demo', component: DepartmentsStaticComponent, canActivate: [AuthGuard] },
+  
 
   // HISTORY
   // { path: 'project/:projectid/historyrt', component: RequestsListHistoryComponent, canActivate: [AuthGuard] },
