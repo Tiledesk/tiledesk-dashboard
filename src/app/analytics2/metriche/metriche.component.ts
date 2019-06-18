@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MetricheComponent implements OnInit {
 
+  selected='richieste'
   constructor() { }
 
   ngOnInit() {
   }
 
+  goTo(component){
+    this.selected=component;
+    console.log("Move to:",component)
+  }
 }

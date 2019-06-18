@@ -1,3 +1,23 @@
-<p>
-  metriche works!
-</p>
+
+<ul class="bottom-nav">
+  <li class="btn-with-border-effect "  [ngClass]="{'li-active' : selected === 'richieste', 'border-from-center': selected !== 'richieste'}" (click)="goTo('richieste')" >
+      <a>Richieste</a>
+  </li>
+  <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'sentiment', 'border-from-center': selected !== 'sentiment'}" (click)="goTo('sentiment')">
+      <a>Sentiment</a>
+  </li>
+  <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'tempiRisposta', 'border-from-center': selected !== 'tempiRisposta'}" (click)="goTo('tempiRisposta')">
+      <a>Tempi risposta</a>
+  </li>
+  <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'durataConv', 'border-from-center': selected !== 'durataConv'}" (click)="goTo('durataConv')">
+    <a>Durata conversazione</a>
+  </li>
+</ul>
+<div class="main-content" style="padding-top:0px">
+  <div class="container-fluid">
+    <appdashboard-richieste *ngIf="selected=='richieste'"></appdashboard-richieste>
+    <appdashboard-sentiment *ngIf="selected=='sentiment'"></appdashboard-sentiment>
+    <appdashboard-tempirisposta *ngIf="selected=='tempiRisposta'"></appdashboard-tempirisposta>
+    <appdashboard-durataconv *ngIf="selected=='durataConv'"></appdashboard-durataconv>
+  </div>
+</div>

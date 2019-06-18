@@ -31,6 +31,7 @@ export class PanoramicaComponent implements OnInit {
   ylabel_eng = ['1am', '2am', '3am', '4am', '5am', '6am', '7am', '8am', '9am', '10am', '11am', '12am', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm', '9pm', '10pm', '11pm']
   weekday: any;
   hour: any;
+
   constructor(  private requestsService:RequestsService,
                 private translate: TranslateService,
                 private analyticsService: AnalyticsService) {
@@ -128,7 +129,7 @@ export class PanoramicaComponent implements OnInit {
         data: {
           labels: _requestsByDay_labels_array ,
           datasets: [{
-            label: 'Average time response in last 30 days ',
+            label: 'Number of request in last 7 days ',
             data: _requestsByDay_series_array,
             fill: true, //riempie zona sottostante dati
             lineTension: 0.1,
@@ -148,6 +149,9 @@ export class PanoramicaComponent implements OnInit {
             text: 'AVERAGE TIME RESPONSE',
             display: false
           },
+          legend:{
+            display:false //do not show label title
+          },
           scales: {
             xAxes: [{
               ticks: {
@@ -155,6 +159,7 @@ export class PanoramicaComponent implements OnInit {
                 display: true,
                 //minRotation: 30,
                 fontColor: 'white',
+
               },
               gridLines: {
                 display: true,
@@ -200,11 +205,11 @@ export class PanoramicaComponent implements OnInit {
                 // return label + '';
                 //console.log("data",data)
                 const currentItemValue = tooltipItem.yLabel
-                let langService = new HumanizeDurationLanguage();
-                let humanizer = new HumanizeDuration(langService);
-                humanizer.setOptions({ round: true })
+                // let langService = new HumanizeDurationLanguage();
+                // let humanizer = new HumanizeDuration(langService);
+                // humanizer.setOptions({ round: true })
                 //console.log("humanize", humanizer.humanize(currentItemValue))
-                return data.datasets[tooltipItem.datasetIndex].label + ': ' + humanizer.humanize(currentItemValue)
+                return data.datasets[tooltipItem.datasetIndex].label + ': ' + currentItemValue
 
               }
             }

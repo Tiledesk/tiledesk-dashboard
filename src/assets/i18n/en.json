@@ -839,6 +839,10 @@
     "Saturday": "Saturday",
     "Analytics":{
         "AvgTimeTitle": "Average Time Monitoring",
-        "MedianResTimeClock": "Median Response Time"
+        "MedianResTimeClock": "Median Response Time",
+        "ResponseAVGtime":"Your team's overall Median Response Time is ",
+        "ConvDurationTitle":"Conversation Lenght Monitoring",
+        "MedianConvClock":"Median Conversation Lenght",
+        "ResponseDurationtime" : "Your team's overall Median Conversation Lenght is "
     }
 }

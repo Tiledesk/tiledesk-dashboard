@@ -837,6 +837,10 @@
     "Saturday": "Sabato",
     "Analytics":{
         "AvgTimeTitle": "Monitoraggio tempo medio",
-        "MedianResTimeClock": "Tempo medio di risposta "
+        "MedianResTimeClock": "Tempo medio di risposta ",
+        "ResponseAVGtime":"Il tempo di risposta medio complessivo del tuo team è ",
+        "ConvDurationTitle":"Monitoraggio durata conversazione",
+        "MedianConvClock": "Durata media conversazione",
+        "ResponseDurationtime" : "La durata di conversazione media complessiva del tuo team è "
     }
 }
