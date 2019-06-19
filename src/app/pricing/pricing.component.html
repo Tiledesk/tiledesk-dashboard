@@ -180,10 +180,23 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 
                  <span style="font-size: 30px;position: relative;top: -17px;left:18px">€</span> 
                  <span style="position: relative;left: 8px;font-weight: 700;">
-                 {{ numberOfAgentPerPrice }}
+                  <span *ngIf="perMonth === true"> 
+                    {{ numberOfAgentPerPrice }}
+                  </span>
+                  <span *ngIf="perYear === true"> 
+                    {{ numberOfAgentPerPrice * 12 }}
+                  </span>
                  
                 </span>
-                <span style="font-size: 18px;position:relative;top: -4px;">per month</span>
+                <span style="font-size: 18px;position:relative;top: -4px;">
+                 
+                  <span *ngIf="perMonth === true"> 
+                      per month
+                  </span>
+                  <span *ngIf="perYear === true"> 
+                      per year
+                  </span>
+                </span>
               
                 </div>
 
@@ -198,14 +211,15 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
                 <div class="period-options" style="text-align:center; margin-top:25px"> 
                   <div class="radio">
                       <label>
-                        <input type="radio" name="optionsRadios">
-                        per month
+                          <!-- (click)="periodOptionSelected(perMonth)"  -->
+                        <input type="radio" name="optionsRadios" [checked]="perMonth === true"  value="perMonth"  (click)="setPeriod('perMonth')">
+                          per month
                       </label>
 
                       <label>
-                          <input type="radio" name="optionsRadios">
+                        <input type="radio" name="optionsRadios" value="perYear" (click)="setPeriod('perYear')">
                           per year
-                        </label>
+                      </label>
                     </div>
                   </div>
 
@@ -224,11 +238,30 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
               <span class="price-agent">per agent per month</span>
             </div> -->
 
-      
-
-
-          </div>  <!-- ./ card-content -->
+           </div>  <!-- ./ card-content -->
         </div> <!-- ./ card -->
+
+
+        <div class="col-md-12" style="background-color: rosybrown">
+
+
+          <!-- Create a button that your customers click to complete their purchase. Customize the styling to suit your branding. -->
+          <button *ngIf="perMonth === true"
+            style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
+            id="checkout-button-plan_EjFHNnzJXE3jul"  role="link"  (click)="stripeProPlanPerMonthCheckout()">
+              Checkout x Month
+          </button>
+
+          <button *ngIf="perYear === true"
+            style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
+            id="checkout-button-plan_FHYWzhwbGermkq" role="link" (click)="stripeProPlanPerYearCheckout()">
+              Checkout x year
+          </button>
+
+          <div id="error-message">{{ displayStipeCheckoutError }} </div>
+
+        </div>
+
       </div>
     </div> <!-- ./ row -->
 
@@ -239,7 +272,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
             <button type="button" class="btn outline-btn btn-lg" 
               [ngClass]="{'pro-plan-outline-btn' : selectedPlanName === 'pro', 'enterprise-plan-outline-btn' : selectedPlanName === 'enterprise'}">
             
-            <span *ngIf="selectedPlanName === 'pro'"> Get Pro Plan  </span> 
+            <span *ngIf="selectedPlanName === 'pro'"> + Get Pro Plan  </span> 
             <span *ngIf="selectedPlanName === 'enterprise'"> Get Enterprise Plan  </span> 
             </button>
           </div>
@@ -249,3 +282,35 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
   </div>
 </div>
 </div>
+
+
+
+
+<!-- <script>
+    var stripe = Stripe('pk_test_lurAeBj5B7n7JGvE1zIPIFwV');
+  
+    var checkoutButton = document.getElementById('checkout-button-plan_EjFHNnzJXE3jul');
+    checkoutButton.addEventListener('click', function () {
+      // When the customer clicks on the button, redirect
+      // them to Checkout.
+      stripe.redirectToCheckout({
+        items: [{plan: 'plan_EjFHNnzJXE3jul', quantity: 1}],
+  
+        // Do not rely on the redirect to the successUrl for fulfilling
+        // purchases, customers may not always reach the success_url after
+        // a successful payment.
+        // Instead use one of the strategies described in
+        // https://stripe.com/docs/payments/checkout/fulfillment
+        successUrl: 'https://your-website.com/success',
+        cancelUrl: 'https://your-website.com/canceled',
+      })
+      .then(function (result) {
+        if (result.error) {
+          // If `redirectToCheckout` fails due to a browser or network
+          // error, display the localized error message to your customer.
+          var displayError = document.getElementById('error-message');
+          displayError.textContent = result.error.message;
+        }
+      });
+    });
+  </script> -->
