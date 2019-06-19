@@ -843,6 +843,13 @@
         "ResponseAVGtime":"Your team's overall Median Response Time is ",
         "ConvDurationTitle":"Conversation Lenght Monitoring",
         "MedianConvClock":"Median Conversation Lenght",
-        "ResponseDurationtime" : "Your team's overall Median Conversation Lenght is "
+        "ResponseDurationtime" : "Your team's overall Median Conversation Lenght is ",
+        "RequestChartTitle":"Number of requests last ",
+        "FilterReport":"Filter report:",
+        "Last":"Last",
+        "Days":"days",
+        "Month":"month",
+        "Months":"months",
+        "Year":"year"
     }
 }

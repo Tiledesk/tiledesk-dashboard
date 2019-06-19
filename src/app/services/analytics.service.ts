@@ -102,24 +102,26 @@ export class AnalyticsService {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': this.TOKEN
-         //'Authorization': 'Basic ' + btoa('alessia.calo@frontiere21.it:123456')
+        //'Authorization': this.TOKEN
+         'Authorization': 'Basic ' + btoa('alessia.calo@frontiere21.it:123456')
       })
     };
-
-    return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/duration', httpOptions);
+   
+    return this.http.get<[]>('https://api.tiledesk.com/v1/5ad5bd52c975820014ba900a' + '/analytics/requests/duration', httpOptions);
+    //return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/duration', httpOptions);
   }
 
   getDurationConversationTimeDataChart(): Observable<[]> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': this.TOKEN
-        // 'Authorization': 'Basic ' + btoa('alessia.calo@frontiere21.it:123456')
+        //'Authorization': this.TOKEN
+         'Authorization': 'Basic ' + btoa('alessia.calo@frontiere21.it:123456')
       })
     };
 
-    return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/duration/day', httpOptions);
+    return this.http.get<[]>('https://api.tiledesk.com/v1/5ad5bd52c975820014ba900a' + '/analytics/requests/duration/day', httpOptions);
+    //return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/duration/day', httpOptions);
   }
 
 

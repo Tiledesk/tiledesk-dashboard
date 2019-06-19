@@ -57,7 +57,7 @@ export class DurataconvComponent implements OnInit {
         this.unitDurationCNVtime = splitString[1];
 
         
-        this.responseDurationtime=this.humanizer.humanize(res[0].duration_avg, { rount: true, language: this.lang });
+        this.responseDurationtime=this.humanizer.humanize(res[0].duration_avg, { round: true, language: this.lang });
 
         
         console.log('Waiting time: humanize', this.humanizer.humanize(res[0].duration_avg))

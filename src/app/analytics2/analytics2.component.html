@@ -3,13 +3,13 @@
 </p>
 
 <ul class="bottom-nav">
-        <li class="btn-with-border-effect "  [ngClass]="{'li-active' : selected === 'panoramica', 'border-from-center': selected !== 'panoramica'}" (click)="goToPanoramica()" >
+        <li class="btn-with-border-effect "  [ngClass]="{'li-active' : selected === 'panoramica', 'border-from-center': selected !== 'panoramica'}" (click)="goTo('panoramica')" >
             <a>Panoramica</a>
         </li>
-        <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'metriche', 'border-from-center': selected !== 'metriche'}" (click)="goToMetriche()">
+        <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'metriche', 'border-from-center': selected !== 'metriche'}" (click)="goTo('metriche')">
             <a>Metriche</a>
         </li>
-        <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'realtime', 'border-from-center': selected !== 'realtime'}" (click)="goToRealtime()">
+        <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'realtime', 'border-from-center': selected !== 'realtime'}" (click)="goTo('realtime')">
             <a>Realtime</a>
         </li>
 </ul>

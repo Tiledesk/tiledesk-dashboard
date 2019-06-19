@@ -105,9 +105,9 @@ export class Analytics2Component implements OnInit , OnDestroy {
     this.getBrowserLangAndSwitchMonthName();
   }
 
-  goToPanoramica(){
-    this.selected='panoramica';
-    console.log("Move to PANORAMICA");
+  goTo(selected){
+    this.selected=selected;
+    console.log("Move to:", selected);
 
   }
 

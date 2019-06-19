@@ -6,6 +6,7 @@ import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts
 import { TranslateService } from '@ngx-translate/core';
 import { ITooltipEventArgs } from '@syncfusion/ej2-heatmap/src';
 import { Chart } from 'chart.js';
+import { TransferState } from '@angular/platform-browser';
 
 @Component({
   selector: 'appdashboard-panoramica',
@@ -129,7 +130,7 @@ export class PanoramicaComponent implements OnInit {
         data: {
           labels: _requestsByDay_labels_array ,
           datasets: [{
-            label: 'Number of request in last 7 days ',
+            label: 'Number of request in last 7 days ',//active labet setting to true the legend value
             data: _requestsByDay_series_array,
             fill: true, //riempie zona sottostante dati
             lineTension: 0.1,
@@ -178,9 +179,14 @@ export class PanoramicaComponent implements OnInit {
               },
               ticks: {
                 beginAtZero: true,
+                userCallback: function(label, index, labels) {
+                  //userCallback is used to return integer value to ylabel
+                  if (Math.floor(label) === label) {
+                      return label;
+                  }
+                },
                 display: true,
                 fontColor: 'white',
-                stepSize: 1,
                 suggestedMax: higherCount + 2,
                 
         
@@ -197,6 +203,10 @@ export class PanoramicaComponent implements OnInit {
           tooltips: {
             callbacks: {
               label: function (tooltipItem, data) {
+                
+                let traslate: TranslateService
+                let lang = traslate.getBrowserLang();
+                  
                 // var label = data.datasets[tooltipItem.datasetIndex].label || '';
                 // if (label) {
                 //     label += ': ';
@@ -209,7 +219,12 @@ export class PanoramicaComponent implements OnInit {
                 // let humanizer = new HumanizeDuration(langService);
                 // humanizer.setOptions({ round: true })
                 //console.log("humanize", humanizer.humanize(currentItemValue))
-                return data.datasets[tooltipItem.datasetIndex].label + ': ' + currentItemValue
+                //return data.datasets[tooltipItem.datasetIndex].label + ': ' + currentItemValue
+                if(lang==='it'){
+                  return 'Richieste: '+currentItemValue;
+                }else{
+                  return 'Request:' +currentItemValue;
+                }
 
               }
             }
@@ -220,7 +235,7 @@ export class PanoramicaComponent implements OnInit {
         plugins:[{
           beforeDraw: function(chartInstance, easing) {
             var ctx = chartInstance.chart.ctx;
-            //console.log("chartistance",chartInstance)
+            console.log("chartistance",chartInstance)
             //ctx.fillStyle = 'red'; // your color here
             ctx.height=128
             //chartInstance.chart.canvas.parentNode.style.height = '128px';

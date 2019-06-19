@@ -1,3 +1,63 @@
-<p>
-  richieste works!
-</p>
+<div class="row">
+  <div class="col-md-12">
+      
+      <div class="chart-wrapper">
+         <div class="row"> 
+              <div class="chart-title col-sm-3">
+                  {{ 'Analytics.RequestChartTitle' | translate }} {{lastdays}} 
+              </div>
+                <!-- ------last n days filter--------- -->
+              <div class="col-sm-3"> 
+                <div class="section-select-dept">
+                  <label  class="col-sm-12" style="text-align: left; color:#7695a5;">
+                      {{ 'Analytics.FilterReport' | translate }}
+                  </label>
+                  <div class="col-sm-12" style="margin-bottom: 20px;">
+                    <ng-select class="custom" name="days" [(ngModel)]="selectedDaysId" [clearable]="false" (click)="daysSelect(selectedDaysId)">
+                      <ng-option [value]="7">{{ 'Analytics.Last' | translate}} 7 {{ 'Analytics.Days' | translate}}</ng-option>
+                      <ng-option [value]="15">{{ 'Analytics.Last' | translate}} 15 {{ 'Analytics.Days' | translate}}</ng-option>
+                      <ng-option [value]="30">{{ 'Analytics.Last' | translate}} 30 {{ 'Analytics.Days' | translate}}</ng-option>
+                      <ng-option [value]="60">{{ 'Analytics.Last' | translate}} 3 {{ 'Analytics.Months' | translate}}</ng-option>
+                      <ng-option [value]="90">{{ 'Analytics.Last' | translate}} 6 {{ 'Analytics.Months' | translate}}</ng-option>
+                      <ng-option [value]="180">{{ 'Analytics.Last' | translate}} 1 {{ 'Analytics.Year' | translate}}</ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+              <!-- ------ init-end days show--------- -->
+              <div class="col-sm-3"> 
+                <div class="section-select-dept">
+                  <label  class="col-sm-12" style="text-align: left; color:#ffffff;">
+                      
+                  </label>
+                  <div class="col-sm-12 boxdays" >
+                   <p style="margin: 0 !important;"> {{initDay}} --> {{endDay}}</p>
+                  </div>
+                </div>
+              </div>
+              <!-- ------ department filter--------- -->
+              <div class="col-sm-3"> 
+                <div class="section-select-dept">
+                    <!-- color: rgba(0, 0, 0, 0.54); -->
+                  <label  class="col-sm-12" style="text-align: left; color:#ffffff;">
+                      {{ 'HistoryPage.FilterByDepartment' | translate }}
+                  </label>
+                  <div class="col-sm-12" style="margin-bottom: 20px;">
+                    <ng-select class="custom" name="dept" [(ngModel)]="selectedDeptId" [clearable]="false">
+                      <ng-option [value]="''">{{ 'HistoryPage.AllDepts' | translate }}</ng-option>
+                      <ng-option *ngFor="let dept of departments" [value]="dept._id">
+                        {{dept.name}}
+                      </ng-option>
+                    </ng-select>
+                  </div>
+                </div>
+              </div>
+          </div>
+            
+            <div class="card-content chart-container" style="position: relative; margin:auto 12px; height:35vh;">
+                <canvas id="lastNdayChart" ></canvas>
+            </div>
+
+      </div>
+  </div>
+</div>

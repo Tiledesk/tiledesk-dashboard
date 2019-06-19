@@ -841,6 +841,13 @@
         "ResponseAVGtime":"Il tempo di risposta medio complessivo del tuo team è ",
         "ConvDurationTitle":"Monitoraggio durata conversazione",
         "MedianConvClock": "Durata media conversazione",
-        "ResponseDurationtime" : "La durata di conversazione media complessiva del tuo team è "
+        "ResponseDurationtime" : "La durata di conversazione media complessiva del tuo team è ",
+        "RequestChartTitle":"Numero di richieste negli ultimi",
+        "FilterReport":"Filtra rapporto:",
+        "Last":"Ultimi",
+        "Days":"giorni",
+        "Month":"mese",
+        "Months":"mesi",
+        "Year":"anno"
     }
 }
