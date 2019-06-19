@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
+import { AuthService } from '../core/auth.service';
+import { Router } from '@angular/router'
+
 declare var Stripe: any;
 
 @Component({
@@ -8,6 +11,8 @@ declare var Stripe: any;
   styleUrls: ['./pricing.component.scss']
 })
 export class PricingComponent implements OnInit {
+  projectId: string;
+
   operatorNo = 1
   numberOfAgentPerPrice: number
   enterprisePlanNoAgentPerPrice: number
@@ -20,17 +25,45 @@ export class PricingComponent implements OnInit {
   perMonth = true;
   perYear: boolean;
 
+  dashboardHost: string;
+
   constructor(
     public location: Location,
+    public auth: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit() {
-
+    this.getCurrentProject();
     this.selectedPlanName = 'pro'
 
     this.switchPlanPrice()
+    // const route = this.router;
+    // console.log('PricingComponent route ', route)
+
+    this.getUrlHost()
+ 
   }
 
+
+  getUrlHost() {
+    const href = window.location.href;
+    console.log('PricingComponent href ', href)
+
+    var url = new URL(href);
+    this.dashboardHost = url.origin
+    console.log('PricingComponent host ',  this.dashboardHost)
+
+  }
+
+  getCurrentProject() {
+    this.auth.project_bs.subscribe((project) => {
+      if (project) {
+        this.projectId = project._id
+        console.log('PricingComponent - projectId ', this.projectId)
+      }
+    });
+  }
 
   selectedPlan(_selectedPlanName: string) {
     this.selectedPlanName = _selectedPlanName
@@ -85,8 +118,12 @@ export class PricingComponent implements OnInit {
     stripe.redirectToCheckout({
       items: [{ plan: 'plan_EjFHNnzJXE3jul', quantity: that.operatorNo }],
 
-      successUrl: 'https://your-website.com/success',
-      cancelUrl: 'https://your-website.com/canceled',
+      // successUrl: 'https://your-website.com/success',
+      // cancelUrl: 'https://your-website.com/canceled',
+
+      successUrl: this.dashboardHost + '/#/project/' + this.projectId + '/success',
+      cancelUrl: this.dashboardHost + '/#/project/' + this.projectId + '/canceled',
+
 
     }).then(function (result) {
       console.log('clicked on stripeProPlanPerMonthCheckout result', result);
@@ -106,8 +143,6 @@ export class PricingComponent implements OnInit {
     const that = this;
     const stripe = Stripe('pk_test_lurAeBj5B7n7JGvE1zIPIFwV');
 
-
-
     // When the customer clicks on the button, redirect
     // them to Checkout.
     stripe.redirectToCheckout({
@@ -118,8 +153,8 @@ export class PricingComponent implements OnInit {
       // a successful payment.
       // Instead use one of the strategies described in
       // https://stripe.com/docs/payments/checkout/fulfillment
-      successUrl: 'https://your-website.com/success',
-      cancelUrl: 'https://your-website.com/canceled',
+      successUrl: this.dashboardHost + '/#/project/' + this.projectId + '/success',
+      cancelUrl: this.dashboardHost + '/#/project/' + this.projectId + '/canceled',
     })
       .then(function (result) {
         if (result.error) {
@@ -133,10 +168,39 @@ export class PricingComponent implements OnInit {
         }
       });
 
-
-
   }
 
+
+
+
+  stripeEnterprisePlanPerMonthCheckout() {
+    const that = this;
+    var stripe = Stripe('pk_test_lurAeBj5B7n7JGvE1zIPIFwV');
+
+  
+    
+      // When the customer clicks on the button, redirect
+      // them to Checkout.
+      stripe.redirectToCheckout({
+        items: [{plan: 'plan_DidlhS2dfJrSST', quantity: 1}],
+  
+        // Do not rely on the redirect to the successUrl for fulfilling
+        // purchases, customers may not always reach the success_url after
+        // a successful payment.
+        // Instead use one of the strategies described in
+        // https://stripe.com/docs/payments/checkout/fulfillment
+        successUrl: this.dashboardHost + '/#/project/' + this.projectId + '/success',
+        cancelUrl: this.dashboardHost + '/#/project/' + this.projectId + '/canceled',
+      })
+      .then(function (result) {
+        if (result.error) {
+          // If `redirectToCheckout` fails due to a browser or network
+          // error, display the localized error message to your customer.
+          that.displayStipeCheckoutError = result.error.message;
+        }
+      });
+        
+  }
 
 
 }

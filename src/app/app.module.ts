@@ -129,6 +129,8 @@ import { TempirispostaComponent } from './analytics2/metriche/tempirisposta/temp
 import { DurataconvComponent } from './analytics2/metriche/durataconv/durataconv.component';
 import { HoursStaticComponent } from './static-pages/hours-static/hours-static.component';
 import { DepartmentsStaticComponent } from './static-pages/departments-static/departments-static.component';
+import { PaymentSuccessPageComponent } from './pricing/payment-success-page/payment-success-page.component';
+import { PaymentCanceledPageComponent } from './pricing/payment-canceled-page/payment-canceled-page.component';
 // import { SmallSidebarComponent } from './small-sidebar/small-sidebar.component';
 console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
@@ -204,7 +206,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     TempirispostaComponent,
     DurataconvComponent,
     HoursStaticComponent,
-    DepartmentsStaticComponent
+    DepartmentsStaticComponent,
+    PaymentSuccessPageComponent,
+    PaymentCanceledPageComponent
     // SmallSidebarComponent,
   ],
   imports: [

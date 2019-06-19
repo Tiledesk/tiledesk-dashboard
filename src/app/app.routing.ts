@@ -75,6 +75,10 @@ import { ContactEditComponent } from './contact-edit/contact-edit.component';
 import { UsersPendingComponent } from './users-pending/users-pending.component';
 import { ActivitiesComponent } from './activities/activities.component';
 import { PricingComponent } from './pricing/pricing.component';
+import { PaymentSuccessPageComponent } from './pricing/payment-success-page/payment-success-page.component';
+import { PaymentCanceledPageComponent } from './pricing/payment-canceled-page/payment-canceled-page.component';
+
+
 // import { DashboardComponent} from './dashboard/dashboard.component';
 // Andrea
 import { ChatComponent } from './chat/chat.component';
@@ -237,9 +241,9 @@ const routes: Routes = [
   { path: 'project/:projectid/contact/edit/:requesterid', component: ContactEditComponent, canActivate: [AuthGuard] },
   
   { path: 'project/:projectid/pricing', component: PricingComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/success', component: PaymentSuccessPageComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/canceled', component: PaymentCanceledPageComponent, canActivate: [AuthGuard] },
   
-
-
   { path: 'dashboard', component: DashboardComponent },
 
 

@@ -242,21 +242,32 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
         </div> <!-- ./ card -->
 
 
-        <div class="col-md-12" style="background-color: rosybrown">
+        <div class="col-md-12" style="">
 
 
           <!-- Create a button that your customers click to complete their purchase. Customize the styling to suit your branding. -->
-          <button *ngIf="perMonth === true"
-            style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
-            id="checkout-button-plan_EjFHNnzJXE3jul"  role="link"  (click)="stripeProPlanPerMonthCheckout()">
-              Checkout x Month
-          </button>
+          <div style="text-align: center; margin-top: 15px;" *ngIf="selectedPlanName === 'pro'"> 
+            <button type="button" *ngIf="perMonth === true" class="btn outline-btn btn-lg pro-plan-outline-btn"             
+              id="checkout-button-plan_EjFHNnzJXE3jul"  role="link"  (click)="stripeProPlanPerMonthCheckout()">
+              <!-- PerMonth -->
+                Get Pro Plan
+            </button>
 
-          <button *ngIf="perYear === true"
-            style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
-            id="checkout-button-plan_FHYWzhwbGermkq" role="link" (click)="stripeProPlanPerYearCheckout()">
-              Checkout x year
-          </button>
+            <button type="button" *ngIf="perYear === true" class="btn outline-btn btn-lg pro-plan-outline-btn" 
+              id="checkout-button-plan_FHYWzhwbGermkq" role="link" (click)="stripeProPlanPerYearCheckout()">
+              <!-- PerYear -->
+                Get Pro Plan
+            </button>
+          </div>
+
+          <div style="text-align: center; margin-top: 15px;" *ngIf="selectedPlanName === 'enterprise'">
+            <button *ngIf="perMonth === true"
+              style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
+              id="checkout-button-plan_DidlhS2dfJrSST" role="link" (click)="stripeEnterprisePlanPerMonthCheckout()">
+              Checkout Enterprise x month
+            </button>
+
+          </div>
 
           <div id="error-message">{{ displayStipeCheckoutError }} </div>
 
