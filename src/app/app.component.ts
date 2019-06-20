@@ -208,7 +208,8 @@ export class AppComponent implements OnInit, AfterViewInit {
                     (this.route === '/projects') ||
                     (this.route.indexOf('/verify') !== -1) ||
                     (this.route.indexOf('/resetpassword') !== -1) ||
-                    (this.route.indexOf('/pricing') !== -1)
+                    (this.route.indexOf('/pricing') !== -1) ||
+                    (this.route.indexOf('/success') !== -1)
                 ) {
 
                     elemNavbar.setAttribute('style', 'display:none;');
