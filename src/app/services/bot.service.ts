@@ -6,6 +6,8 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../core/auth.service';
+import { Router, NavigationEnd, NavigationStart, ActivatedRoute } from '@angular/router';
+
 
 @Injectable()
 export class BotService {

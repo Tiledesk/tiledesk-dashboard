@@ -17,6 +17,8 @@ export class PaymentSuccessPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+    this.getCurrentProject();
   }
 
 
@@ -25,6 +27,7 @@ export class PaymentSuccessPageComponent implements OnInit {
 
       if (project) {
         this.id_project = project._id
+        console.log('PaymentSuccessPageComponent CurrentProject ID ', this.id_project)
 
       }
     });

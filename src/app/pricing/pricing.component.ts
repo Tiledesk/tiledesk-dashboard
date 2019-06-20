@@ -42,7 +42,7 @@ export class PricingComponent implements OnInit {
     // console.log('PricingComponent route ', route)
 
     this.getUrlHost()
- 
+
   }
 
 
@@ -52,7 +52,7 @@ export class PricingComponent implements OnInit {
 
     var url = new URL(href);
     this.dashboardHost = url.origin
-    console.log('PricingComponent host ',  this.dashboardHost)
+    console.log('PricingComponent host ', this.dashboardHost)
 
   }
 
@@ -173,33 +173,10 @@ export class PricingComponent implements OnInit {
 
 
 
-  stripeEnterprisePlanPerMonthCheckout() {
-    const that = this;
-    var stripe = Stripe('pk_test_lurAeBj5B7n7JGvE1zIPIFwV');
-
-  
-    
-      // When the customer clicks on the button, redirect
-      // them to Checkout.
-      stripe.redirectToCheckout({
-        items: [{plan: 'plan_DidlhS2dfJrSST', quantity: 1}],
-  
-        // Do not rely on the redirect to the successUrl for fulfilling
-        // purchases, customers may not always reach the success_url after
-        // a successful payment.
-        // Instead use one of the strategies described in
-        // https://stripe.com/docs/payments/checkout/fulfillment
-        successUrl: this.dashboardHost + '/#/project/' + this.projectId + '/success',
-        cancelUrl: this.dashboardHost + '/#/project/' + this.projectId + '/canceled',
-      })
-      .then(function (result) {
-        if (result.error) {
-          // If `redirectToCheckout` fails due to a browser or network
-          // error, display the localized error message to your customer.
-          that.displayStipeCheckoutError = result.error.message;
-        }
-      });
-        
+  launchWidget() {
+    if (window && window['tiledesk']) {
+      window['tiledesk'].open();
+    }
   }
 
 

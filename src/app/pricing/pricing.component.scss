@@ -19,7 +19,11 @@
 //     height: 68px;
 // }
 $color-pro-plan: #3EA9F5;
-$color-enterprise-plan: #9c27b0;
+
+// #9c27b0;
+$color-enterprise-plan: #6772E5;
+
+
 
 .close-pricing-page {
     text-align: right;
@@ -67,7 +71,8 @@ $color-enterprise-plan: #9c27b0;
 .quantity-box-title {
     text-align: center;
     font-weight: 400 !important;
-    margin-bottom: 26px;
+    // margin-bottom: 26px;
+    margin-bottom: 12px;
 } 
 
 .btn-only-icon {
@@ -140,16 +145,21 @@ $color-enterprise-plan: #9c27b0;
 // }
 
 .pro-plan-card-bckgrnd {
-    // background-color: #6b72cb;
-    // background: linear-gradient(240deg, rgba(66, 48, 174, 0.6), rgba(107, 114, 203, 1) );
-    background: linear-gradient(240deg, rgba($color-pro-plan, 0.8), $color-pro-plan );
-    color: #fff;
+
+    // background: linear-gradient(240deg, rgba($color-pro-plan, 0.8), $color-pro-plan );
+    background: #fff;
+    // color: #fff;
+    color: $color-pro-plan;
     border-top-right-radius:10px;
     border-top-left-radius:10px	
 }
+
+
 .enterprise-plan-card-bckgrnd{
-    background: linear-gradient(240deg, rgba($color-enterprise-plan, 0.8), $color-enterprise-plan );
-    color: #fff;
+    // background: linear-gradient(240deg, rgba($color-enterprise-plan, 0.8), $color-enterprise-plan );
+    background: #fff;
+    // color: #fff;
+    color: $color-enterprise-plan;
     border-top-right-radius:10px;
     border-top-left-radius:10px	
 }
@@ -158,7 +168,8 @@ $color-enterprise-plan: #9c27b0;
 label.price{
     // font-weight:600;
     right:-3px;
-    top:8px;
+    // top:8px;
+    top: 20px;
     margin-left:50px;
     position:absolute;
     display:inline-block;
@@ -168,7 +179,7 @@ label.price{
     // line-height:40px;
     // font-size:24px;
     margin-left:15px;
-    background:#F0806F;
+    background:$color-pro-plan;
     // box-shadow:(rgba(255,255,255, .2) 1px 1px, rgba(255,255,255, .2) 1px 1px);
     border-radius:(0 3px 2px 0px);
     &:after{
@@ -183,7 +194,7 @@ label.price{
       border-width: 32px;
       border-style: solid;
     //   border-color: #FFDC40 #FFDC40 #FFDC40 transparent;
-      border-color: #F0806F #F0806F #F0806F transparent;
+      border-color: $color-pro-plan $color-pro-plan $color-pro-plan transparent;
     }
     &:before{
       content: '';
@@ -278,7 +289,8 @@ li:before {
     line-height: 1.33em;
     
     font-weight: 500;
-    font-size: 32px;
+    // font-size: 32px;
+    font-size: 18px;
 }
 
 .pro-plan-outline-btn {
@@ -290,6 +302,13 @@ li:before {
     color: $color-enterprise-plan;
     border: 2px solid $color-enterprise-plan;
 }
+
+.custom-hr{
+    border-style: solid;
+    border-width: 4px;
+    border-image: linear-gradient(to left, white 1%, #d3d7e0 50%, white 100%) 100% 0 100% 0/0px 0 3px 0 stretch;
+  }
+
 
 // @import url('https://fonts.googleapis.com/css?family=Kalam');
 // .highlight {

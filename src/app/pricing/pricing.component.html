@@ -45,13 +45,13 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
         <div style="margin-top:30px">
           <div class="btn-group btn-group-lg">
             <a class="btn" 
-            [ngClass]="{'pro-plan-btn' : selectedPlanName === 'pro', 'default-btn' : selectedPlanName === 'enterprise'}"
+            [ngClass]="{'pro-plan-btn' : selectedPlanName === 'pro', 'btn-white' : selectedPlanName === 'enterprise'}"
             (click)="selectedPlan('pro')" style="width: 152px;">
               Pro
               
             </a>
             <a class="btn" 
-              [ngClass]="{'enterprise-plan-btn' : selectedPlanName === 'enterprise', 'default-btn' : selectedPlanName === 'pro'}"
+              [ngClass]="{'enterprise-plan-btn' : selectedPlanName === 'enterprise', 'btn-white' : selectedPlanName === 'pro'}"
               (click)="selectedPlan('enterprise')">
               Enterprise
             
@@ -69,7 +69,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
                   <span style="display:block">everything in Free, and:</span> 
                 </h3>
 
-                <h3 *ngIf="selectedPlanName === 'enterprise'" style="color: #9c27b0;line-height: 1.3em;"> 
+                <h3 *ngIf="selectedPlanName === 'enterprise'" style="color: #6772E5;line-height: 1.3em;"> 
                   <span style="font-weight:500"> Enterprise includes </span>
                   <span style="display:block">everything in Pro, and:</span> 
                 </h3>
@@ -106,34 +106,34 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
          
         <div class="card" style="box-shadow: 0 14px 30px 0 rgba(60,72,91,0.22); border-radius:10px ">
 
-          <div class="card-header" 
-          [ngClass]="{'pro-plan-card-bckgrnd' : selectedPlanName === 'pro', 'enterprise-plan-card-bckgrnd' : selectedPlanName === 'enterprise'}"
-          style="margin:0px; box-shadow:none; border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;">
-            <h3 style="margin-top:5px;margin-bottom:5px;"> 
-              <span *ngIf="selectedPlanName === 'pro'">  Pro*  </span>
+          <div class="card-header"  *ngIf="selectedPlanName === 'pro'" 
+            [ngClass]="{'pro-plan-card-bckgrnd' : selectedPlanName === 'pro', 'enterprise-plan-card-bckgrnd' : selectedPlanName === 'enterprise'}"
+            style="margin:0px; box-shadow:none; border-bottom-left-radius: 0px; border-bottom-right-radius: 0px; height: 78px">
+            <!-- <h3 style="margin-top:5px;margin-bottom:5px;"> 
+              <span *ngIf="selectedPlanName === 'pro'">  Pro </span>
               <span *ngIf="selectedPlanName === 'enterprise'">  Enterprise  </span>
-            </h3> 
+            </h3>  -->
 
-            <label class="price" style="line-height:15px">
-                <span class="price-text">
-                  <span style="position: relative;top: -16px;"> € </span>  
+            <label class="price" style="line-height:15px" *ngIf="selectedPlanName === 'pro'">
+              
+               
+              <span class="price-text">
+                
+                <span style="position: relative;top: -16px;"> € </span>  
                   <span class="price" style="font-size:40px; font-weight: 400;">
-                    
-                    <span *ngIf="selectedPlanName === 'pro'">  
                       {{proPlanPerAgentPrice}} 
-                    </span>
-                    <span *ngIf="selectedPlanName === 'enterprise'">  
-                      {{enterprisePlanPerAgentPrice}}  
-                    </span>
-                  
                   </span>
-                  <span class="price-agent" style="display: block;">per agent per month</span>
-                </span>
-              </label>
+                <span class="price-agent" style="display: block;">per agent per month</span>
+              </span>
+            </label>
+
+
           </div>
-          <div class="card-content">
-              <div class="row">
-              <div class="col-md-12"> 
+
+
+          <div class="card-content" *ngIf="selectedPlanName === 'pro'">
+            <div class="row">
+              <div class="col-md-12" > 
                 <div class="quantity-box-title"> 
                   <h2 style="margin-top:10px"> Operators </h2>
                 </div>
@@ -197,9 +197,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
                       per year
                   </span>
                 </span>
-              
                 </div>
-
               </div>
             </div>
 
@@ -222,53 +220,66 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
                       </label>
                     </div>
                   </div>
+              </div>
+            </div>
 
-                  <!-- <div *ngIf="selectedPlanName === 'pro'">
-                      <p  class="highlight">  Try our PRO plan</p> 
-                      <p  class="highlight">  free for 30 days!</p> 
-                  </div> -->
+
+
+            <!-- Create a button that your customers click to complete their purchase. Customize the styling to suit your branding. -->
+            <div style="text-align: center; margin-top: 15px;" *ngIf="selectedPlanName === 'pro'"> 
+              <button type="button" *ngIf="perMonth === true" class="btn outline-btn btn-lg pro-plan-outline-btn"             
+                id="checkout-button-plan_EjFHNnzJXE3jul"  role="link"  (click)="stripeProPlanPerMonthCheckout()">
+                <!-- PerMonth -->
+                  Get Pro Plan
+              </button>
+  
+              <button type="button" *ngIf="perYear === true" class="btn outline-btn btn-lg pro-plan-outline-btn" 
+                id="checkout-button-plan_FHYWzhwbGermkq" role="link" (click)="stripeProPlanPerYearCheckout()">
+                <!-- PerYear -->
+                  Get Pro Plan
+              </button>
+            </div>
+
+
+          </div>  <!-- ./ card-content x pro-plan-->
+
+          <!-- 
+          ########################################################################
+          ################### card-content for enterprise plan ################### 
+          ########################################################################-->
+          <div class="card-content" *ngIf="selectedPlanName === 'enterprise'">
+              <div class="row">
+                <div class="col-md-12" style="text-align:center"> 
+                <h2>Contact us</h2>
+      
+                <hr class="custom-hr"> 
+      
+                  <div style="max-width: 350px; text-align:center; margin-left:auto;  margin-right:auto;"> 
+                    <!-- <h3> for custom packages <br> and pricing </h3> -->
+                    <h3> Our most comprehensive plan, with advanced features and dedicated support</h3>
+                  </div>
+                </div>
               </div>
 
-            </div>
-            <!-- <div class="quantity-status" style="">
-              <span class="currency-symbol" style="position: relative;
-              top: -12px;
-              font-size: 20px;">€</span>
-              <span class="price" style="font-size:40px">8</span>
-              <span class="price-agent">per agent per month</span>
-            </div> -->
 
-           </div>  <!-- ./ card-content -->
+              <div style="text-align: center; margin-top: 15px;">
+                  <button class="btn outline-btn btn-lg enterprise-plan-outline-btn"
+                    id="checkout-button-plan_DidlhS2dfJrSST" role="link" (click)="launchWidget()">
+                      Let's chat
+                  </button>
+              </div>
+
+          </div>
+
         </div> <!-- ./ card -->
 
 
         <div class="col-md-12" style="">
 
 
-          <!-- Create a button that your customers click to complete their purchase. Customize the styling to suit your branding. -->
-          <div style="text-align: center; margin-top: 15px;" *ngIf="selectedPlanName === 'pro'"> 
-            <button type="button" *ngIf="perMonth === true" class="btn outline-btn btn-lg pro-plan-outline-btn"             
-              id="checkout-button-plan_EjFHNnzJXE3jul"  role="link"  (click)="stripeProPlanPerMonthCheckout()">
-              <!-- PerMonth -->
-                Get Pro Plan
-            </button>
+ 
 
-            <button type="button" *ngIf="perYear === true" class="btn outline-btn btn-lg pro-plan-outline-btn" 
-              id="checkout-button-plan_FHYWzhwbGermkq" role="link" (click)="stripeProPlanPerYearCheckout()">
-              <!-- PerYear -->
-                Get Pro Plan
-            </button>
-          </div>
-
-          <div style="text-align: center; margin-top: 15px;" *ngIf="selectedPlanName === 'enterprise'">
-            <button *ngIf="perMonth === true"
-              style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
-              id="checkout-button-plan_DidlhS2dfJrSST" role="link" (click)="stripeEnterprisePlanPerMonthCheckout()">
-              Checkout Enterprise x month
-            </button>
-
-          </div>
-
+     
           <div id="error-message">{{ displayStipeCheckoutError }} </div>
 
         </div>
@@ -276,7 +287,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
       </div>
     </div> <!-- ./ row -->
 
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-sm-12">
 
           <div style="text-align: center; margin-top: 15px;"> 
@@ -288,7 +299,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
             </button>
           </div>
         </div>
-    </div>
+    </div> -->
 
   </div>
 </div>

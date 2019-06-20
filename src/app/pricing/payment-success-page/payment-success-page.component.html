@@ -1,15 +1,9 @@
 
- <!-- background-repeat: no-repeat;  -->
- <!-- background-attachment: scroll; background-position: bottom right; -->
-
- <div class="main-content" style="padding-top:0px; background-color: #ffffff;
+ <div class="main-content" style="padding-top:0px; background-color: #ffffff; 
  min-height: calc(100% - 53px);margin-top: 0px; padding: 0px">
 
-<!-- background-image: url(), linear-gradient(to bottom, #3EA9F5 0%, #3EA9F5 100%),linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
-background-size: 475px 449px, 188px 100%, 179px 100%;
-background-position: right -12px bottom,right,calc(100% - 179px);    background-repeat: no-repeat; -->
 
-<div style="min-height: calc(100vh - 53px);" class="plan-bckgrnd pro-plan-bckgrnd">
+<div style="min-height: calc(100vh - 53px);" class="plan-bckgrnd success-payment-bckgrnd">
 <div class="row">
  <div class="col-md-12">
    <div class="close-pricing-page">
@@ -24,23 +18,13 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
  
  <div class="row">
  
-   <div class="col-md-12"> 
+   <div class="col-md-12" style="text-align:center"> 
       
-     <div class="card" style="box-shadow: 0 14px 30px 0 rgba(60,72,91,0.22); border-radius:10px ">
-
-       <!-- <div class="card-header pro-plan-card-bckgrnd" style="margin:0px; box-shadow:none; border-bottom-left-radius: 0px; border-bottom-right-radius: 0px;">
-         <h3 style="margin-top:5px;margin-bottom:5px;"> 
-           <span>  Pro*  </span>
-           <span *ngIf="selectedPlanName === 'enterprise'">  Enterprise  </span>
-         </h3> 
-       </div> -->
+     <div class="card" style="box-shadow: 0 14px 30px 0 rgba(60,72,91,0.22); border-radius:10px; margin-top: 60px;max-width: 960px ">
        <div class="card-content">
            <div class="row">
            <div class="col-md-12"> 
-             
-             
-
-               <div class="icon-box">
+                <div class="icon-box">
                   <i class="material-icons">&#xE876;</i>
                 </div>
                 
@@ -73,7 +57,15 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 
             <div class="contat-us" style="text-align:center; margin-top:15px; margin-bottom:15px"> 
                 <!-- #014c8c -->
-                <h4>Having trouble? <span style="color: #0275d8 "> Contact us </span> </h4>
+                <h4>Having trouble? <span style="color: #0275d8 ">
+                    <a href="mailto:info@tiledesk.com" style="text-transform: none"> 
+                      
+                      Contact us 
+                    </a>
+                    
+                    </span> 
+                
+                </h4>
 
             </div>
 
@@ -91,9 +83,9 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
      <div class="col-sm-12">
 
        <div style="text-align: center; margin-top: 15px;"> 
-         <button type="button" class="btn outline-btn btn-lg pro-plan-outline-btn" >
+         <button type="button" class="btn outline-btn btn-lg success-payment-outline-btn" >
          
-         <span>  Continue to homepage  </span> 
+          <span (click)="goToHome()">  Continue to homepage  </span> 
         
          </button>
        </div>

@@ -307,6 +307,9 @@ export class AppComponent implements OnInit, AfterViewInit {
         return bool;
     }
 
+    changeOfRoutes() {
+        console.log('changeOfRoutes ')
+    }
 
 
 }
