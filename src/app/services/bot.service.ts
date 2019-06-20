@@ -19,9 +19,13 @@ export class BotService {
   TOKEN: string
   user: any;
 
+
+
+
   constructor(
     http: Http,
-    private auth: AuthService
+    private auth: AuthService,
+    private router: Router
   ) {
     this.http = http;
 
@@ -32,6 +36,14 @@ export class BotService {
     this.auth.user_bs.subscribe((user) => {
       this.user = user;
       this.checkUser()
+    });
+
+    this.router.events.subscribe((ev) => {
+      if (ev instanceof NavigationEnd) {
+
+        console.log('BotService - NavigationEnd');
+
+      }
     });
 
   }
