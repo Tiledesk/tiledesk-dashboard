@@ -30,7 +30,7 @@ export class PricingComponent implements OnInit {
 
   dshbrdBaseUrl: string;
 
-  displayDeleteModal = 'block'
+  displayPaymentReport = 'none'
 
   constructor(
     public location: Location,
@@ -221,5 +221,12 @@ export class PricingComponent implements OnInit {
     }
   }
 
+  openReportPaymentModal() {
+    this.displayPaymentReport = 'block'
+  }
+
+  closePaymentReportModal() {
+    this.displayPaymentReport = 'none'
+  }
 
 }

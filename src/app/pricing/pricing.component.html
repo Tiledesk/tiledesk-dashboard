@@ -230,17 +230,22 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 
             <!-- Create a button that your customers click to complete their purchase. Customize the styling to suit your branding. -->
             <div style="text-align: center; margin-top: 15px;" *ngIf="selectedPlanName === 'pro'"> 
-              <button type="button" *ngIf="perMonth === true" class="btn outline-btn btn-lg pro-plan-outline-btn"             
-                id="checkout-button-plan_EjFHNnzJXE3jul"  role="link"  (click)="stripeProPlanPerMonthCheckout()">
-                <!-- PerMonth -->
+                <button type="button" *ngIf="perMonth === true" class="btn outline-btn btn-lg pro-plan-outline-btn"             
+                id="checkout-button-plan_EjFHNnzJXE3jul"  role="link"  (click)="openReportPaymentModal()">
+                
                   Get Pro Plan
+              </button>
+              <!-- <button type="button" *ngIf="perMonth === true" class="btn outline-btn btn-lg pro-plan-outline-btn"             
+                id="checkout-button-plan_EjFHNnzJXE3jul"  role="link"  (click)="stripeProPlanPerMonthCheckout()">
+                
+                  Get Pro Plan (PerMonth)
               </button>
   
               <button type="button" *ngIf="perYear === true" class="btn outline-btn btn-lg pro-plan-outline-btn" 
                 id="checkout-button-plan_FHYWzhwbGermkq" role="link" (click)="stripeProPlanPerYearCheckout()">
-                <!-- PerYear -->
-                  Get Pro Plan
-              </button>
+            
+                  Get Pro Plan (PerYear)
+              </button> -->
             </div>
 
 
@@ -304,7 +309,15 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 
 
 <!-- ============= DELETE MODAL ============= -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDeleteModal}" style="background-color: rgba(90,90,90,0.5);">
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayPaymentReport}" style="background-color: rgba(90,90,90,0.9);">
+         <button type="button" class="close" aria-label="Close" (click)="closePaymentReportModal()" style="
+         font-size: 60px;
+         font-weight: 100;
+         right: 29px;
+         position: absolute;
+        ">
+            <span aria-hidden="true" style="color: #fff">&times;</span>
+          </button>
     <div class="modal-dialog" role="document">
       <div class="modal-content" style="border-top-left-radius:6px; border-top-right-radius:6px">
         <div class="modal-header" style="padding:0px!important; border-bottom:none!important;">
@@ -353,50 +366,67 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 
 
         </div>
-        <div class="modal-body" style="padding-top: 0px; padding-bottom: 35px; padding-right: 35px; padding-left: 35px;">
+        <div class="modal-body" style="padding-top: 0px; padding-bottom: 0px; padding-right: 35px; padding-left: 35px;">
 
-          <h3>
-             <!-- <i class="material-icons" style="color: #fff; font-size: 26px; line-height: 40px; width: 40px; height: 40px; text-align: center; border-radius: 50%;background-color: #3EA9F5; vertical-align: middle"> group </i> -->
+          <div class="row">
+            
+            <div class="col-sm-6">
 
-             <span style="font-size: 24px">  Operator numbers: </span> <span style="color: #5292e9">{{  operatorNo }}</span>
-          </h3>
+                <h3 style="text-align: center">
+                    <!-- <i class="material-icons" style="display:block;color: #fff; font-size: 26px; line-height: 40px; width: 40px; height: 40px; text-align: center; border-radius: 50%;background-color: #3EA9F5; vertical-align: middle"> group </i> -->
+                    <span style="font-size:16px;display: block;  color: #fff; line-height: 1.5;background-color: #3EA9F5">  Operators </span> 
+                    <span style="padding-top:8px; display:block;  font-family: 'Lato', sans-serif; font-size:42px">{{  operatorNo }}</span>
+                 </h3>
+            </div>
 
-          <h3 style="text-align: center"> tiledesk Pro plan </h3>
-          <p style="font-weight: 400; color: rgba(0,0,0,0.87); vertical-align: middle" >
-            <!-- Sei sicuro di voler rimuovere il gruppo  -->
-            {{ "GroupsPage.AreYouSureDeleteGroup" | translate }}
+            <div class="col-sm-6">
+
+                <h3 style="text-align: center">
+                    <!-- <i class="material-icons" style="display:block;color: #fff; font-size: 26px; line-height: 40px; width: 40px; height: 40px; text-align: center; border-radius: 50%;background-color: #3EA9F5; vertical-align: middle"> access_time </i> -->
+                    <span style="font-size:16px;display: block;  color: #fff; line-height: 1.5;background-color: #3EA9F5">  Subscription period </span>
+                    
+                    <!-- color: #5292e9; -->
+                    <span style="padding-top:8px; display:block;  font-family: 'Lato', sans-serif; font-size:32px">
+                    
+                      <span *ngIf="perMonth === true"> per Month </span>
+                     
+                      <span *ngIf="perYear === true"> per Year </span>
+                    
+                    </span>
+                 </h3>
+            </div>
+
+          </div>
+
+          <div class="row">
+              <div class="col-md-12" style="text-align:center">
+
+                <h2> Total <span class="total-price">  {{ numberOfAgentPerPrice }} €</span> </h2>
+              </div>
+          </div>
   
-            <span style="color: rgba(0,0,0,0.87)"> 
-              <strong>  </strong>
-            </span>?
-           
-          </p>
-         
-        
-  
-  
-<!-- startest -->
-
-
-
-
-
-
-
-
   </div>
-  <div class="modal-footer" style="margin-top: 0px;">
+  <div class="modal-footer" style="margin-top: 0px; background-color: #fff; border-top:none">
       <!-- (click)="onCloseDeleteModal()" -->
-    <button class="btn btn-white"  style="padding:12px 16px;">
-      <!-- Annulla -->
-      {{ "GroupsPage.Cancel" | translate }}
-    </button>
+  
     <!-- (click)="deleteGroup()" -->
-    <button style="margin-top:0px" class="btn btn-danger" >
-      <!-- Elimina Gruppo -->
-      {{ "GroupsPage.DeleteGroup" | translate }}
+    <div style="text-align: center; margin-bottom: 25px;" *ngIf="selectedPlanName === 'pro'"> 
+        <!-- <button class="btn btn-white"  style="padding:12px 16px;">
+          
+            {{ "GroupsPage.Cancel" | translate }}
+          </button> -->
+        <button type="button" *ngIf="perMonth === true" style="background-color:#3EA9F5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:24px"            
+          id="checkout-button-plan_EjFHNnzJXE3jul"  role="link"  (click)="stripeProPlanPerMonthCheckout()">
+          <!-- PerMonth -->
+            Paid with a Card
+        </button>
 
-    </button>
+        <button type="button" *ngIf="perYear === true" style="background-color:#3EA9F5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:24px"
+          id="checkout-button-plan_FHYWzhwbGermkq" role="link" (click)="stripeProPlanPerYearCheckout()">
+          <!-- PerYear -->
+          Paid with a Card
+        </button>
+      </div>
   </div>
 
 
