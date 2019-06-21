@@ -25,7 +25,7 @@ export class PricingComponent implements OnInit {
   perMonth = true;
   perYear: boolean;
 
-  dashboardHost: string;
+  dshbrdBaseUrl: string;
 
   constructor(
     public location: Location,
@@ -50,9 +50,13 @@ export class PricingComponent implements OnInit {
     const href = window.location.href;
     console.log('PricingComponent href ', href)
 
-    var url = new URL(href);
-    this.dashboardHost = url.origin
-    console.log('PricingComponent host ', this.dashboardHost)
+    const hrefArray =  href.split('/#/');
+    this.dshbrdBaseUrl = hrefArray[0]
+
+    console.log('PricingComponent dshbrdBaseUrl ',  this.dshbrdBaseUrl)
+    // var url = new URL(href);
+    // this.dashboardHost = url.origin
+    // console.log('PricingComponent host ', this.dashboardHost)
 
   }
 
@@ -117,12 +121,12 @@ export class PricingComponent implements OnInit {
 
     stripe.redirectToCheckout({
       items: [{ plan: 'plan_EjFHNnzJXE3jul', quantity: that.operatorNo }],
-
+      clientReferenceId: that.projectId,
       // successUrl: 'https://your-website.com/success',
       // cancelUrl: 'https://your-website.com/canceled',
-
-      successUrl: this.dashboardHost + '/#/project/' + this.projectId + '/success',
-      cancelUrl: this.dashboardHost + '/#/project/' + this.projectId + '/canceled',
+    
+      successUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/success',
+      cancelUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/canceled',
 
 
     }).then(function (result) {
@@ -147,14 +151,15 @@ export class PricingComponent implements OnInit {
     // them to Checkout.
     stripe.redirectToCheckout({
       items: [{ plan: 'plan_FHYWzhwbGermkq', quantity: that.operatorNo }],
+      clientReferenceId: that.projectId,
 
       // Do not rely on the redirect to the successUrl for fulfilling
       // purchases, customers may not always reach the success_url after
       // a successful payment.
       // Instead use one of the strategies described in
       // https://stripe.com/docs/payments/checkout/fulfillment
-      successUrl: this.dashboardHost + '/#/project/' + this.projectId + '/success',
-      cancelUrl: this.dashboardHost + '/#/project/' + this.projectId + '/canceled',
+      successUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/success',
+      cancelUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/canceled',
     })
       .then(function (result) {
         if (result.error) {
