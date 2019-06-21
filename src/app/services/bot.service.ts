@@ -8,7 +8,8 @@ import { environment } from '../../environments/environment';
 import { AuthService } from '../core/auth.service';
 import { Router, NavigationEnd, NavigationStart, ActivatedRoute } from '@angular/router';
 
-
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Project } from '../models/project-model';
 @Injectable()
 export class BotService {
 
@@ -20,7 +21,7 @@ export class BotService {
   user: any;
 
 
-
+  public test: BehaviorSubject<String> = new BehaviorSubject<String>(null);
 
   constructor(
     http: Http,
@@ -42,6 +43,7 @@ export class BotService {
       if (ev instanceof NavigationEnd) {
 
         console.log('BotService - NavigationEnd');
+        this.test.next('»»»»»»»»»   change of route »»»»»»»»»');
 
       }
     });
