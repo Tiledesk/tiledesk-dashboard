@@ -99,10 +99,11 @@ export class Analytics2Component implements OnInit , OnDestroy {
     private departmentService: DepartmentService,
     private analyticsService: AnalyticsService
   ) {
-
+    this.selected='panoramica';
     console.log('!!! »»» HELLO ANALYTICS »»» ');
     // this.getAllUsersOfCurrentProject();
     this.getBrowserLangAndSwitchMonthName();
+    
   }
 
   goTo(selected){
@@ -111,15 +112,7 @@ export class Analytics2Component implements OnInit , OnDestroy {
 
   }
 
-  goToMetriche(){
-    this.selected='metriche';
-    console.log("Move to METRICHE");
-  }
-
-  goToRealtime(){
-    this.selected='realtime';
-    console.log("Move to REALTIME");
-  }
+  
     
 
   getBrowserLangAndSwitchMonthName() {
@@ -143,7 +136,15 @@ export class Analytics2Component implements OnInit , OnDestroy {
     this.durationConversationTimeCHART(); // --> duration conversation bar chart
     // this.auth.checkProjectProfile('analytics');
     this.getRequestByLast7Day();
-
+    
+    this.analyticsService.richieste_bs.subscribe((hasClickedOnGraph)=>{
+      console.log("CLICK:",hasClickedOnGraph)
+      console.log("Has click graph title... move to METRICHE");
+      if(hasClickedOnGraph){
+        this.selected='metriche';
+      }
+      
+    })
 
     /* ----------==========    NUMBER OF REQUEST for DEPARTMENT ** PIE CHART ** ==========---------- */
 

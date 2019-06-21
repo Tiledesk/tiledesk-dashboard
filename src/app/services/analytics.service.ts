@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AuthService } from 'app/core/auth.service';
 import { environment } from '../../environments/environment';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 @Injectable()
 export class AnalyticsService {
 
@@ -14,7 +15,7 @@ export class AnalyticsService {
   user: any;
   TOKEN: string;
 
-  
+  public richieste_bs: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
   constructor(
     private http: HttpClient,
@@ -124,6 +125,8 @@ export class AnalyticsService {
     //return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/duration/day', httpOptions);
   }
 
-
+  goToRichieste(){
+    this.richieste_bs.next("hasClickedNumberOfRequestLast7Days");
+  }
 
 }
