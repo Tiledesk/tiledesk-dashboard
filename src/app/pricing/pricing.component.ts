@@ -12,6 +12,9 @@ declare var Stripe: any;
 })
 export class PricingComponent implements OnInit {
   projectId: string;
+  projectName: string;
+  currentUserID: string;
+  currentUserEmail: string;
 
   operatorNo = 1
   numberOfAgentPerPrice: number
@@ -41,19 +44,20 @@ export class PricingComponent implements OnInit {
     // const route = this.router;
     // console.log('PricingComponent route ', route)
 
-    this.getUrlHost()
+    this.getBaseUrl()
+    this.getCurrentUser();
 
   }
 
 
-  getUrlHost() {
+  getBaseUrl() {
     const href = window.location.href;
     console.log('PricingComponent href ', href)
 
-    const hrefArray =  href.split('/#/');
+    const hrefArray = href.split('/#/');
     this.dshbrdBaseUrl = hrefArray[0]
 
-    console.log('PricingComponent dshbrdBaseUrl ',  this.dshbrdBaseUrl)
+    console.log('PricingComponent dshbrdBaseUrl ', this.dshbrdBaseUrl)
     // var url = new URL(href);
     // this.dashboardHost = url.origin
     // console.log('PricingComponent host ', this.dashboardHost)
@@ -63,11 +67,31 @@ export class PricingComponent implements OnInit {
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       if (project) {
-        this.projectId = project._id
+        console.log('PricingComponent - project ', project)
+        this.projectId = project._id;
         console.log('PricingComponent - projectId ', this.projectId)
+        this.projectName = project.name;
       }
     });
   }
+
+
+  getCurrentUser() {
+    const user = this.auth.user_bs.value
+
+    console.log('PricingComponent user ', user);
+    if (user) {
+
+      this.currentUserID = user._id
+      this.currentUserEmail = user.email
+      console.log('PricingComponent USER UID ', this.currentUserID);
+      console.log('PricingComponent USER email ', this.currentUserEmail);
+
+    } else {
+      // console.log('No user is signed in');
+    }
+  }
+
 
   selectedPlan(_selectedPlanName: string) {
     this.selectedPlanName = _selectedPlanName
@@ -112,7 +136,11 @@ export class PricingComponent implements OnInit {
     this.location.back();
   }
 
-
+  /**
+   * ***************************
+   * *** PRO PLAN X MOUNTH  ***
+   * ***************************
+   */
   stripeProPlanPerMonthCheckout() {
     const that = this;
     console.log('clicked on stripeProPlanPerMonthCheckout ');
@@ -121,10 +149,12 @@ export class PricingComponent implements OnInit {
 
     stripe.redirectToCheckout({
       items: [{ plan: 'plan_EjFHNnzJXE3jul', quantity: that.operatorNo }],
-      clientReferenceId: that.projectId,
+      clientReferenceId: that.currentUserID,
+      customerEmail: that.currentUserEmail,
+
       // successUrl: 'https://your-website.com/success',
       // cancelUrl: 'https://your-website.com/canceled',
-    
+
       successUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/success',
       cancelUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/canceled',
 
@@ -142,7 +172,11 @@ export class PricingComponent implements OnInit {
   }
 
 
-
+  /**
+   * *************************
+   * *** PRO PLAN X YEAR  ***
+   * *************************
+   */
   stripeProPlanPerYearCheckout() {
     const that = this;
     const stripe = Stripe('pk_test_lurAeBj5B7n7JGvE1zIPIFwV');
@@ -151,7 +185,8 @@ export class PricingComponent implements OnInit {
     // them to Checkout.
     stripe.redirectToCheckout({
       items: [{ plan: 'plan_FHYWzhwbGermkq', quantity: that.operatorNo }],
-      clientReferenceId: that.projectId,
+      clientReferenceId: that.currentUserID,
+      customerEmail: that.currentUserEmail,
 
       // Do not rely on the redirect to the successUrl for fulfilling
       // purchases, customers may not always reach the success_url after
