@@ -278,13 +278,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 
 
         <div class="col-md-12" style="">
-
-
- 
-
-     
           <div id="error-message">{{ displayStipeCheckoutError }} </div>
-
         </div>
 
       </div>
@@ -312,17 +306,12 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 <!-- ============= DELETE MODAL ============= -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDeleteModal}" style="background-color: rgba(90,90,90,0.5);">
     <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header" style="">
-          <button type="button" class="close" aria-label="Close" (click)="onCloseDeleteModal()">
+      <div class="modal-content" style="border-top-left-radius:6px; border-top-right-radius:6px">
+        <div class="modal-header" style="padding:0px!important; border-bottom:none!important;">
+          <!-- <button type="button" class="close" aria-label="Close" (click)="onCloseDeleteModal()">
             <span aria-hidden="true" style="color: #fff">&times;</span>
-          </button>
-          <!-- <h4 class="modal-title" style="color: #fff">
-              <i class="material-icons" style="vertical-align: middle">report_problem</i>
-              <span style="vertical-align: middle; padding-left:8px">
-                {{ "GroupsPage.DeleteGroup" | translate }}
-              </span>
-          </h4> -->
+          </button> -->
+     
   
           <!-- <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em;">
 
@@ -331,21 +320,21 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
             {{ "GroupsPage.WillBeRemoved" | translate }}
   
           </h4> -->
-
-          <table dir="ltr" class="m_8887943420113036679Section m_8887943420113036679Header" width="100%" style="border:0;border-collapse:collapse;margin:0;padding:0;background-color:#ffffff">
+          <!-- background-color:#ffffff -->
+          <table dir="ltr" class="pricing-moda-header" width="100%" style="border:0;border-collapse:collapse;margin:0;padding:0;">
               <tbody>
               <tr>
-                <td class="m_8887943420113036679Header-left m_8887943420113036679Target" style="background-color:#f0806f;border:0;border-collapse:collapse;margin:0;padding:0;font-size:0;line-height:0px;background-size:100% 100%;border-top-left-radius:5px" align="right" height="156" valign="bottom" width="252">
+                <td class="pricing-moda-header-Left" style="background-color:#f0806f;border:0;border-collapse:collapse;margin:0;padding:0;font-size:0;line-height:0px;background-size:100% 100%;border-top-left-radius:5px" align="right" height="156" valign="bottom" width="252">
                   <a href="#m_8887943420113036679_">
                     <img alt="" height="156" width="252" src="assets/img/pricing_modal_header_Left.png" style="display:block;border:0;line-height:100%;width:100%" class="CToWUd">
                   </a>
                 </td>
-                <td class="m_8887943420113036679Header-icon m_8887943420113036679Target" style="background-color:#f0806f;border:0;border-collapse:collapse;margin:0;padding:0;font-size:0;line-height:0px;background-size:100% 100%" align="center" height="156" valign="bottom" width="96">
+                <td class="pricing-moda-header-Center" style="background-color:#f0806f;border:0;border-collapse:collapse;margin:0;padding:0;font-size:0;line-height:0px;background-size:100% 100%" align="center" height="156" valign="bottom" width="96">
                   <a style="outline:0;text-decoration:none">
                     <img alt="" height="156" width="96" src="assets/img/pricing_modal_header_twelve_degree_icon@2x.png" style="display:block;border:0;line-height:100%;width:100%" class="CToWUd">
                   </a>
                 </td>
-                <td class="m_8887943420113036679Header-right m_8887943420113036679Target" style="background-color:#f0806f;border:0;border-collapse:collapse;margin:0;padding:0;font-size:0;line-height:0px;background-size:100% 100%;border-top-right-radius:5px" align="left" height="156" valign="bottom" width="252">
+                <td class="pricing-moda-header-Right" style="background-color:#f0806f;border:0;border-collapse:collapse;margin:0;padding:0;font-size:0;line-height:0px;background-size:100% 100%;border-top-right-radius:5px" align="left" height="156" valign="bottom" width="252">
                   <a href="#m_8887943420113036679_">
                     <img alt="" height="156" width="252" src="assets/img/pricing_modal_header_Right.png" style="display:block;border:0;line-height:100%;width:100%" class="CToWUd">
                   </a>
@@ -354,17 +343,31 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
               </tbody>
           </table>
 
-
+          <h2 class="modal-title" style="color: #262f3c; text-align: center">
+              <span style="vertical-align: middle;">
+                  tiledesk Pro plan
+              </span>
+              <hr class="custom-hr" style="margin-top:10px; margin-bottom:10px">
+              <span style="display: block; color: #8894ab; font-size: 24px">Order details </span> 
+          </h2>
 
 
         </div>
-        <div class="modal-body">
+        <div class="modal-body" style="padding-top: 0px; padding-bottom: 35px; padding-right: 35px; padding-left: 35px;">
+
+          <h3>
+             <!-- <i class="material-icons" style="color: #fff; font-size: 26px; line-height: 40px; width: 40px; height: 40px; text-align: center; border-radius: 50%;background-color: #3EA9F5; vertical-align: middle"> group </i> -->
+
+             <span style="font-size: 24px">  Operator numbers: </span> <span style="color: #5292e9">{{  operatorNo }}</span>
+          </h3>
+
+          <h3 style="text-align: center"> tiledesk Pro plan </h3>
           <p style="font-weight: 400; color: rgba(0,0,0,0.87); vertical-align: middle" >
             <!-- Sei sicuro di voler rimuovere il gruppo  -->
             {{ "GroupsPage.AreYouSureDeleteGroup" | translate }}
   
             <span style="color: rgba(0,0,0,0.87)"> 
-              <strong> “{{name_group_to_delete}}” </strong>
+              <strong>  </strong>
             </span>?
            
           </p>
