@@ -1,4 +1,8 @@
 // tslint:disable:max-line-length
+
+/**
+ * ***  Note: create firebase-data.ts in the src folder and and edit it with your Firebase project configuration ***
+ */
 import { firebase_pre } from '../firebase-data';
 
 const serverUrl = 'https://tiledesk-server-pre.herokuapp.com/';

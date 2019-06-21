@@ -1,6 +1,9 @@
 // tslint:disable:max-line-length
+/**
+ * ***  Note: create firebase-data.ts in the src folder and and edit it with your Firebase project configuration ***
+ */
 import { firebase } from '../firebase-data';
-console.log('test ')
+
 // const nodeBasePath = 'http://localhost:3000/';
 // const cloudFunctionBasePath = 'https://api.tiledesk.com/v1/chat/';
 const serverUrl = 'http://localhost:3000/';

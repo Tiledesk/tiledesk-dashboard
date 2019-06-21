@@ -149,7 +149,7 @@ export class PricingComponent implements OnInit {
 
     stripe.redirectToCheckout({
       items: [{ plan: 'plan_EjFHNnzJXE3jul', quantity: that.operatorNo }],
-      clientReferenceId: that.currentUserID,
+      clientReferenceId: that.currentUserID + '|' + that.projectId,
       customerEmail: that.currentUserEmail,
 
       // successUrl: 'https://your-website.com/success',
@@ -185,7 +185,7 @@ export class PricingComponent implements OnInit {
     // them to Checkout.
     stripe.redirectToCheckout({
       items: [{ plan: 'plan_FHYWzhwbGermkq', quantity: that.operatorNo }],
-      clientReferenceId: that.currentUserID,
+      clientReferenceId: that.currentUserID + '|' + that.projectId,
       customerEmail: that.currentUserEmail,
 
       // Do not rely on the redirect to the successUrl for fulfilling
