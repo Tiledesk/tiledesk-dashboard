@@ -386,11 +386,13 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 
   </div>
   <div class="modal-footer" style="margin-top: 0px;">
-    <button class="btn btn-white" (click)="onCloseDeleteModal()" style="padding:12px 16px;">
+      <!-- (click)="onCloseDeleteModal()" -->
+    <button class="btn btn-white"  style="padding:12px 16px;">
       <!-- Annulla -->
       {{ "GroupsPage.Cancel" | translate }}
     </button>
-    <button style="margin-top:0px" class="btn btn-danger" (click)="deleteGroup()">
+    <!-- (click)="deleteGroup()" -->
+    <button style="margin-top:0px" class="btn btn-danger" >
       <!-- Elimina Gruppo -->
       {{ "GroupsPage.DeleteGroup" | translate }}
 
