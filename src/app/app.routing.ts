@@ -74,11 +74,6 @@ import { ContactDetailsComponent } from './contact-details/contact-details.compo
 import { ContactEditComponent } from './contact-edit/contact-edit.component';
 import { UsersPendingComponent } from './users-pending/users-pending.component';
 import { ActivitiesComponent } from './activities/activities.component';
-import { PricingComponent } from './pricing/pricing.component';
-import { PaymentSuccessPageComponent } from './pricing/payment-success-page/payment-success-page.component';
-import { PaymentCanceledPageComponent } from './pricing/payment-canceled-page/payment-canceled-page.component';
-
-
 // import { DashboardComponent} from './dashboard/dashboard.component';
 // Andrea
 import { ChatComponent } from './chat/chat.component';
@@ -94,11 +89,20 @@ import { Analytics2Component } from './analytics2/analytics2.component';
 import { PanoramicaComponent } from './analytics2/panoramica/panoramica.component';
 import { MetricheComponent } from './analytics2/metriche/metriche.component';
 import { RealtimeComponent } from './analytics2/realtime/realtime.component';
-
 // import { UserProfileComponent } from './ui/user-profile/user-profile.component';
+
+/* PRIVATE */
+import { PricingComponent } from './pricing/pricing.component';
+import { PaymentSuccessPageComponent } from './pricing/payment-success-page/payment-success-page.component';
+import { PaymentCanceledPageComponent } from './pricing/payment-canceled-page/payment-canceled-page.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
+  
+  /* PRIVATE */
+  { path: 'project/:projectid/pricing', component: PricingComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/success', component: PaymentSuccessPageComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/canceled', component: PaymentCanceledPageComponent, canActivate: [AuthGuard] },
 
   { path: 'table-list', component: TableListComponent },
   { path: 'typography', component: TypographyComponent },
@@ -239,10 +243,6 @@ const routes: Routes = [
   { path: 'project/:projectid/contacts', component: ContactsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/contact/:requesterid', component: ContactDetailsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/contact/edit/:requesterid', component: ContactEditComponent, canActivate: [AuthGuard] },
-  
-  { path: 'project/:projectid/pricing', component: PricingComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/success', component: PaymentSuccessPageComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/canceled', component: PaymentCanceledPageComponent, canActivate: [AuthGuard] },
   
   { path: 'dashboard', component: DashboardComponent },
 

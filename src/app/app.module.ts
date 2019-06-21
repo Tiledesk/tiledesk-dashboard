@@ -111,7 +111,7 @@ import { WidgetService } from './services/widget.service';
 import { ContactEditComponent } from './contact-edit/contact-edit.component';
 import { UsersPendingComponent } from './users-pending/users-pending.component';
 import { ActivitiesComponent } from './activities/activities.component';
-import { PricingComponent } from './pricing/pricing.component';
+
 import { AnalyticsStaticComponent } from './static-pages/analytics-static/analytics-static.component';
 import { ActivitiesStaticComponent } from './static-pages/activities-static/activities-static.component';
 import { TrainBotComponent } from './requests-msgs/train-bot/train-bot.component';
@@ -129,9 +129,10 @@ import { TempirispostaComponent } from './analytics2/metriche/tempirisposta/temp
 import { DurataconvComponent } from './analytics2/metriche/durataconv/durataconv.component';
 import { HoursStaticComponent } from './static-pages/hours-static/hours-static.component';
 import { DepartmentsStaticComponent } from './static-pages/departments-static/departments-static.component';
-import { PaymentSuccessPageComponent } from './pricing/payment-success-page/payment-success-page.component';
-import { PaymentCanceledPageComponent } from './pricing/payment-canceled-page/payment-canceled-page.component';
-// import { SmallSidebarComponent } from './small-sidebar/small-sidebar.component';
+
+/* PRIVATE */
+import { PricingModule } from './pricing/pricing.module';
+
 console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -192,7 +193,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     ContactEditComponent,
     UsersPendingComponent,
     ActivitiesComponent,
-    PricingComponent,
     AnalyticsStaticComponent,
     ActivitiesStaticComponent,
     TrainBotComponent,
@@ -207,11 +207,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     DurataconvComponent,
     HoursStaticComponent,
     DepartmentsStaticComponent,
-    PaymentSuccessPageComponent,
-    PaymentCanceledPageComponent
-    // SmallSidebarComponent,
   ],
   imports: [
+    /* PRIVATE */
+    PricingModule,
+    /* PRIVATE */
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,

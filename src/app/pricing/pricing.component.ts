@@ -30,6 +30,8 @@ export class PricingComponent implements OnInit {
 
   dshbrdBaseUrl: string;
 
+  displayDeleteModal = 'block'
+
   constructor(
     public location: Location,
     public auth: AuthService,

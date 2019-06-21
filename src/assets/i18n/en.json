@@ -241,6 +241,10 @@
     "NewAnswer":"New answer",
     "UploadAnswersFromCsv": "Upload answers from Csv", 
     "ExportAnswersToCsv":"Export answers to Csv",
+    "Pricing":{
+        "Operators":"Operators"
+     },
+
     "ActivitiesOptions": {
         "AgentAvailabilityOrRoleChange": "Change agent availability or role",
         "AgentDeletion": "Agent deletion",
