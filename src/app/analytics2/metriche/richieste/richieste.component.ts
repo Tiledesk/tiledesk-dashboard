@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment'
 import { Chart } from 'chart.js';
 import { TranslateService } from '@ngx-translate/core';
+import { tick } from '@angular/core/testing';
 
 @Component({
   selector: 'appdashboard-richieste',
@@ -17,11 +18,11 @@ export class RichiesteComponent implements OnInit {
   monthNames:any;
   lastdays=7;
 
-  initDay:String;
-  endDay:String;
+  initDay:string;
+  endDay:string;
 
-  selectedDaysId:String; //lastdays filter
-  selectedDeptId:String;  //department filter
+  selectedDaysId:number; //lastdays filter
+  selectedDeptId:string;  //department filter
 
   departments:any;
 
@@ -36,13 +37,14 @@ export class RichiesteComponent implements OnInit {
 
   ngOnInit() {
     this.selectedDeptId = '';
+    this.selectedDaysId=7
     this.getRequestByLastNDay(7);
     this.getDepartments();
     
   }
 
   daysSelect(value){
-    this.getRequestByLastNDay(value);
+    this.getRequestByLastNDay(this.selectedDaysId);
   }
 
   getDepartments() {
@@ -144,7 +146,15 @@ export class RichiesteComponent implements OnInit {
       const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
 
-      
+      //set the stepsize 
+      var stepsize;
+      if(this.selectedDaysId>60){
+          stepsize=10;
+      }
+      else {
+        stepsize=this.selectedDaysId
+      }
+      let lang=this.lang;
 
       var lineChart = new Chart('lastNdayChart', {
         type: 'line',
@@ -154,14 +164,14 @@ export class RichiesteComponent implements OnInit {
             label: 'Number of request in last 7 days ',//active labet setting to true the legend value
             data: _requestsByDay_series_array,
             fill: true, //riempie zona sottostante dati
-            lineTension: 0.1,
-            backgroundColor: 'rgba(255, 255, 255, 0.7)',
-            borderColor: 'rgba(255, 255, 255, 0.7)',
+            lineTension: 0.0,
+            backgroundColor: '#1e88e5',
+            borderColor: '#1e88e5',
             borderWidth: 3,
             borderDash: [],
             borderDashOffset: 0.0,
             pointBackgroundColor: 'rgba(255, 255, 255, 0.8)',
-            pointBorderColor: 'rgba(255, 255, 255, 0.8)'
+            pointBorderColor: '#1e88e5'
 
           }]
         },
@@ -178,15 +188,22 @@ export class RichiesteComponent implements OnInit {
             xAxes: [{
               ticks: {
                 beginAtZero: true,
+                maxTicksLimit: stepsize,
                 display: true,
                 //minRotation: 30,
-                fontColor: 'white',
+                fontColor: 'black',
+                // callback: function(tickValue, index, ticks) {
+                //      console.log("XXXX",tickValue);
+                //      console.log("III", index)
+                //      console.log("TTT", ticks)
+                 
+                // }
 
               },
               gridLines: {
                 display: true,
                 borderDash:[8,4],
-                color:'rgba(255, 255, 255, 0.5)',
+                //color:'rgba(255, 255, 255, 0.5)',
                 
               }
 
@@ -195,7 +212,7 @@ export class RichiesteComponent implements OnInit {
               gridLines: {
                 display: true ,
                 borderDash:[8,4],
-                color:'rgba(255, 255, 255, 0.5)',
+                //color:'rgba(255, 255, 255, 0.5)',
                 
               },
               ticks: {
@@ -207,7 +224,7 @@ export class RichiesteComponent implements OnInit {
                   }
                 },
                 display: true,
-                fontColor: 'white',
+                fontColor: 'black',
                 suggestedMax: higherCount + 2,
                 
         
@@ -225,9 +242,6 @@ export class RichiesteComponent implements OnInit {
             callbacks: {
               label: function (tooltipItem, data) {
                 
-                let traslate: TranslateService
-                let lang = traslate.getBrowserLang();
-                  
                 // var label = data.datasets[tooltipItem.datasetIndex].label || '';
                 // if (label) {
                 //     label += ': ';

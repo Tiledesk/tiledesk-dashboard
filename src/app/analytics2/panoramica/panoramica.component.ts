@@ -46,7 +46,10 @@ export class PanoramicaComponent implements OnInit {
     this.getRequestByLast7Day();
   }
 
-
+  goToRichieste(){
+    console.log("User click on last 7 days graph");
+    this.analyticsService.goToRichieste();
+  }
   getBrowserLangAndSwitchMonthName() {
     
     if (this.lang) {
@@ -125,6 +128,8 @@ export class PanoramicaComponent implements OnInit {
       const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
 
+      let lang=this.lang;
+
       var lineChart = new Chart('last7dayChart', {
         type: 'line',
         data: {
@@ -133,14 +138,14 @@ export class PanoramicaComponent implements OnInit {
             label: 'Number of request in last 7 days ',//active labet setting to true the legend value
             data: _requestsByDay_series_array,
             fill: true, //riempie zona sottostante dati
-            lineTension: 0.1,
-            backgroundColor: 'rgba(255, 255, 255, 0.7)',
-            borderColor: 'rgba(255, 255, 255, 0.7)',
+            lineTension: 0.0,
+            backgroundColor: '#1e88e5',
+            borderColor: '#1e88e5',
             borderWidth: 3,
             borderDash: [],
             borderDashOffset: 0.0,
             pointBackgroundColor: 'rgba(255, 255, 255, 0.8)',
-            pointBorderColor: 'rgba(255, 255, 255, 0.8)'
+            pointBorderColor: '#1e88e5'
 
           }]
         },
@@ -159,13 +164,13 @@ export class PanoramicaComponent implements OnInit {
                 beginAtZero: true,
                 display: true,
                 //minRotation: 30,
-                fontColor: 'white',
+                fontColor: 'black',
 
               },
               gridLines: {
                 display: true,
                 borderDash:[8,4],
-                color:'rgba(255, 255, 255, 0.5)',
+                //color:'rgba(255, 255, 255, 0.5)',
                 
               }
 
@@ -174,7 +179,7 @@ export class PanoramicaComponent implements OnInit {
               gridLines: {
                 display: true ,
                 borderDash:[8,4],
-                color:'rgba(255, 255, 255, 0.5)',
+                //color:'rgba(0, 0, 0, 0.5)',
                 
               },
               ticks: {
@@ -186,7 +191,7 @@ export class PanoramicaComponent implements OnInit {
                   }
                 },
                 display: true,
-                fontColor: 'white',
+                fontColor: 'black',
                 suggestedMax: higherCount + 2,
                 
         
@@ -204,9 +209,7 @@ export class PanoramicaComponent implements OnInit {
             callbacks: {
               label: function (tooltipItem, data) {
                 
-                let traslate: TranslateService
-                let lang = traslate.getBrowserLang();
-                  
+                      
                 // var label = data.datasets[tooltipItem.datasetIndex].label || '';
                 // if (label) {
                 //     label += ': ';
