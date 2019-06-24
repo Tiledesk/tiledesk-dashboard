@@ -78,8 +78,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     prjct_profile_name: string;
     prjct_trial_expired: boolean;
-    prjc_trial_days_left: number
-    prjc_trial_days_left_percentage: number
+
+    prjc_trial_days_left: number;
+    prjc_trial_days_left_percentage: number;
 
 
     constructor(
@@ -157,12 +158,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         this.getProjectPlan();
     } // OnInit
 
-    getProjectPlan() {
-        this.prjctPlanService.projectPlan.subscribe((string) => {
 
-            console.log('NAVBAR  prjctPlanService', string)
-        })
-    }
 
     getUserAvailability() {
         this.usersService.user_is_available_bs.subscribe((user_available) => {
@@ -307,36 +303,68 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 console.log('!!C-U 00 -> NAVBAR project from AUTH service subscription ', this.project);
                 this.projectId = project._id;
 
+                // this.prjct_profile_name = this.project.profile_name;
+                // this.prjct_trial_expired = this.project.trial_expired;
+                // this.prjc_trial_days_left = this.project.trial_days_left;
+                // // this.prjc_trial_days_left_percentage = ((this.prjc_trial_days_left *= -1) * 100) / 30
+                // this.prjc_trial_days_left_percentage = (this.prjc_trial_days_left * 100) / 30;
+
+                // // this.prjc_trial_days_left_percentage IT IS 
+                // // A NEGATIVE NUMBER AND SO TO DETERMINE THE PERCENT IS MADE AN ADDITION
+                // const perc = 100 + this.prjc_trial_days_left_percentage
+                // console.log('SIDEBAR project perc ', perc)
 
 
-
-                this.prjct_profile_name = this.project.profile_name;
-                this.prjct_trial_expired = this.project.trial_expired;
-                this.prjc_trial_days_left = this.project.trial_days_left;
-                // this.prjc_trial_days_left_percentage = ((this.prjc_trial_days_left *= -1) * 100) / 30
-                this.prjc_trial_days_left_percentage = (this.prjc_trial_days_left * 100) / 30;
-
-                // this.prjc_trial_days_left_percentage IT IS 
-                // A NEGATIVE NUMBER AND SO TO DETERMINE THE PERCENT IS MADE AN ADDITION
-                const perc = 100 + this.prjc_trial_days_left_percentage
-                console.log('SIDEBAR project perc ', perc)
-
-
-                this.prjc_trial_days_left_percentage = this.round5(perc)
-                console.log('SIDEBAR project trial days left % rounded', this.prjc_trial_days_left_percentage);
-
+                // this.prjc_trial_days_left_percentage = this.round5(perc)
+                // console.log('SIDEBAR project trial days left % rounded', this.prjc_trial_days_left_percentage);
 
             }
         });
     }
 
-    round5(x) {
 
+    getProjectPlan() {
+        this.prjctPlanService.projectPlan.subscribe((projectProfileData: any) => {
+            console.log('ProjectPlanService (navbar) project Profile Data', projectProfileData)
+            if (projectProfileData) {
+                this.prjct_profile_name = projectProfileData.profile_name;
+                this.prjct_trial_expired = projectProfileData.trial_expired;
+                this.prjc_trial_days_left = projectProfileData.trial_days_left;
+                // this.prjc_trial_days_left_percentage = ((this.prjc_trial_days_left *= -1) * 100) / 30
+
+
+
+
+
+                if (this.prjct_trial_expired === false) {
+                    this.prjc_trial_days_left_percentage = (this.prjc_trial_days_left * 100) / 30;
+
+                    // this.prjc_trial_days_left_percentage IT IS 
+                    // A NEGATIVE NUMBER AND SO TO DETERMINE THE PERCENT IS MADE AN ADDITION
+                    const perc = 100 + this.prjc_trial_days_left_percentage
+                    console.log('ProjectPlanService (navbar) project perc ', perc)
+
+                    this.prjc_trial_days_left_percentage = this.round5(perc);
+                    console.log('ProjectPlanService (navbar) trial days left % rounded', this.prjc_trial_days_left_percentage);
+                    
+                } else if (this.prjct_trial_expired === true) {
+                    this.prjc_trial_days_left_percentage = 100;
+
+                }
+
+            }
+        })
+    }
+
+    round5(x) {
         // const percentageRounded = Math.ceil(x / 5) * 5;
         // console.log('SIDEBAR project trial days left % rounded', percentageRounded);
         // return Math.ceil(x / 5) * 5;
-
         return x % 5 < 3 ? (x % 5 === 0 ? x : Math.floor(x / 5) * 5) : Math.ceil(x / 5) * 5
+    }
+
+    goToPricing() {
+        this.router.navigate(['project/' + this.projectId + '/pricing']);
     }
 
     getLoggedUser() {

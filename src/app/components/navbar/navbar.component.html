@@ -46,51 +46,50 @@
 
              <!-- ------------ ============ UPGRADE ============ ------------ -->
             <li *ngIf="project">
-                <!-- <span *ngIf="prjct_profile_name === 'free'">  Pro (trial)</span>   -->
-<!--      
-                <span *ngIf="prjct_trial_expired === false" class="upgrade-btn" (click)="goToPricing()"> 
-                  upgrade
-                </span>
-                <span *ngIf="prjct_trial_expired === true" style=" color: #fff; font-size: 12px;display: block;"> 
-                  {{ 'TrialExpired' | translate}}
-                </span> -->
 
-               <!-- <div *ngIf="prjct_trial_expired === false">  -->
-
-
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-top:0px; padding-bottom:0px">
-                    <div id="progress" class="progress"  [attr.data-percentage]="prjc_trial_days_left_percentage" >
-                      <span class="progress-left">
-                        <span class="progress-bar"></span>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-top:0px; padding-bottom:0px; padding-right: 0px;">
+                <div id="progress" class="progress"  [attr.data-percentage]="prjc_trial_days_left_percentage">
+                  <span class="progress-left">
+                    <span class="progress-bar" [ngClass]="{' progress-bar-expired' : prjct_trial_expired === true}"></span>
+                  </span>
+                  <span class="progress-right">
+                    <span class="progress-bar" [ngClass]="{' progress-bar-expired' : prjct_trial_expired === true}" ></span>
+                  </span>
+                  <div class="progress-value">
+                    <div style="font-size: 14px;font-weight: 400;"> 
+                      <span *ngIf="prjct_trial_expired === false">
+                        {{ prjc_trial_days_left }}
                       </span>
-                      <span class="progress-right">
-                        <span class="progress-bar"></span>
+                      <span *ngIf="prjct_trial_expired === true">
+                        0
                       </span>
-                      <div class="progress-value">
-                        <div style="font-size: 14px;font-weight: 400;"> 
-            
-                           {{ prjc_trial_days_left }}
-                        </div>
-                      </div>
                     </div>
-                    </a>
+                  </div>
+                </div>
+              </a>
 
-                    <ul class="dropdown-menu" style="margin-top: 11px; width: 232px;padding-left:8px;padding-right:8px;">
-                       <p style="margin-bottom:0px"> Your tiledesk trial Pro plan will expire in   {{ prjc_trial_days_left }} days </p> 
+              <ul class="dropdown-menu" style="margin-top: 11px; padding-left:20px;padding-right:20px;width: 200px;">
+                <p *ngIf="prjct_trial_expired === false" style="margin-bottom:0px"> 
+                  Your tiledesk Pro
+                  <span *ngIf="prjct_profile_name === 'free'" style="font-weight:600">
+                      30 days free trial
+                  </span>
+                    will expire in  {{ - prjc_trial_days_left }} days
+                </p> 
 
-                    </ul>
-
-                <!-- </div> -->
-        
-
+                <p *ngIf="prjct_trial_expired === true" style="margin-bottom:0px"> 
+                  Your  tiledesk Pro
+                  <span *ngIf="prjct_profile_name === 'free'" style="font-weight:600">
+                      30 days free trial
+                  </span>
+                    has expired
+                </p> 
+              </ul>
             </li> 
 
               <!-- ------------ ============ UPGRADE BTN============ ------------ -->
             <li *ngIf="project">
-              <!-- *ngIf="prjct_trial_expired === true" -->
-             
-                <a class="upgrade-btn-trial-expired" (click)="goToPricing()" style=""> upgrade </a>
-            
+                <a class="upgrade-btn-trial-expired" (click)="goToPricing()"> upgrade </a>
             </li>
 
 

@@ -12,7 +12,9 @@ export interface Project {
     role?: string;
     user_available?: boolean;
     profile_name?: any;
+    profile_agents?: any;
     trial_expired?: any;
     trial_days_left?: number;
+    trial_days?: number;
     __v?: any;
 }

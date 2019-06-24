@@ -256,8 +256,8 @@ button.close.custom-hover:hover {
     /* width: 150px;
     height: 150px;
     line-height: 150px; */
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     /* line-height: 50px; */
     background: none;
     margin: 0 auto;
@@ -267,7 +267,7 @@ button.close.custom-hover:hover {
     top: -9px; */
 
     left: 7px;
-    top: 4px;
+    top: 9px;
   }
   .progress:after {
     content: "";
@@ -302,6 +302,12 @@ button.close.custom-hover:hover {
     top: 0;
     border-color: #ffb43e;
   }
+
+  .progress .progress-bar-expired {
+    border-color: #f44336;
+  }
+
+
   .progress .progress-left .progress-bar {
     left: 100%;
     border-top-right-radius: 75px;
@@ -399,7 +405,6 @@ button.close.custom-hover:hover {
     animation: 0;
   }
 
-
   .progress[data-percentage="45"] .progress-right .progress-bar {
     animation: loading-4-add-half 1.5s linear forwards;
   }
@@ -420,7 +425,6 @@ button.close.custom-hover:hover {
   .progress[data-percentage="55"] .progress-left .progress-bar {
     animation: loading-1-minus-half 1.5s linear forwards 1.5s;
   }
-
 
   .progress[data-percentage="60"] .progress-right .progress-bar {
     animation: loading-5 1.5s linear forwards;
@@ -478,9 +482,6 @@ button.close.custom-hover:hover {
     animation: loading-4-add-half 1.5s linear forwards 1.5s;
   }
 
-
-
-
   .progress[data-percentage="100"] .progress-right .progress-bar {
     animation: loading-5 1.5s linear forwards;
   }
@@ -520,6 +521,7 @@ button.close.custom-hover:hover {
       transform: rotate(54deg);
     }
   }
+
   @keyframes loading-2 {
     0% {
       -webkit-transform: rotate(0deg);
@@ -564,8 +566,6 @@ button.close.custom-hover:hover {
     }
   }
 
-
-
   @keyframes loading-4 {
     0% {
       -webkit-transform: rotate(0deg);
@@ -577,7 +577,6 @@ button.close.custom-hover:hover {
     }
   }
 
-
   @keyframes loading-4-add-half {
     0% {
       -webkit-transform: rotate(0deg);
@@ -588,7 +587,6 @@ button.close.custom-hover:hover {
       transform: rotate(162deg);
     }
   }
-
 
   @keyframes loading-5 {
     0% {
@@ -669,3 +667,12 @@ button.close.custom-hover:hover {
    
 }
 /* new progress */
+
+
+.upgrade-btn-trial-expired {
+    cursor: pointer;
+}
+
+.upgrade-btn-trial-expired:hover {
+    color: #3ea9f5 !important;
+}
