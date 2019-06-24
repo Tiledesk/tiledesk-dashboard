@@ -16,9 +16,8 @@ import { environment } from '../../../environments/environment';
 import { UploadImageService } from '../../services/upload-image.service';
 import { TranslateService } from '@ngx-translate/core';
 
-import { BotService } from '../../services/bot.service';
-
 declare const $: any;
+
 declare interface RouteInfo {
     path: string;
     title: string;
@@ -134,8 +133,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         private usersLocalDbService: UsersLocalDbService,
         private notify: NotifyService,
         private uploadImageService: UploadImageService,
-        private translate: TranslateService,
-        private botService: BotService
+        private translate: TranslateService
     ) { console.log('!!!!! HELLO SIDEBAR') }
 
 
@@ -178,13 +176,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
         this.subscribeToMyAvailibilityCount();
         this.getCurrentRoute();
-
-
-
-        this.botService.test.subscribe((string) => {
-
-            console.log('sidebar botService', string)
-        })
     }
 
 

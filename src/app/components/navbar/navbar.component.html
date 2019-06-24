@@ -40,6 +40,60 @@
               </a>
             </li>
 
+
+  
+
+
+             <!-- ------------ ============ UPGRADE ============ ------------ -->
+            <li *ngIf="project">
+                <!-- <span *ngIf="prjct_profile_name === 'free'">  Pro (trial)</span>   -->
+<!--      
+                <span *ngIf="prjct_trial_expired === false" class="upgrade-btn" (click)="goToPricing()"> 
+                  upgrade
+                </span>
+                <span *ngIf="prjct_trial_expired === true" style=" color: #fff; font-size: 12px;display: block;"> 
+                  {{ 'TrialExpired' | translate}}
+                </span> -->
+
+               <!-- <div *ngIf="prjct_trial_expired === false">  -->
+
+
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-top:0px; padding-bottom:0px">
+                    <div id="progress" class="progress"  [attr.data-percentage]="prjc_trial_days_left_percentage" >
+                      <span class="progress-left">
+                        <span class="progress-bar"></span>
+                      </span>
+                      <span class="progress-right">
+                        <span class="progress-bar"></span>
+                      </span>
+                      <div class="progress-value">
+                        <div style="font-size: 14px;font-weight: 400;"> 
+            
+                           {{ prjc_trial_days_left }}
+                        </div>
+                      </div>
+                    </div>
+                    </a>
+
+                    <ul class="dropdown-menu" style="margin-top: 11px; width: 232px;padding-left:8px;padding-right:8px;">
+                       <p style="margin-bottom:0px"> Your tiledesk trial Pro plan will expire in   {{ prjc_trial_days_left }} days </p> 
+
+                    </ul>
+
+                <!-- </div> -->
+        
+
+            </li> 
+
+              <!-- ------------ ============ UPGRADE BTN============ ------------ -->
+            <li *ngIf="project">
+              <!-- *ngIf="prjct_trial_expired === true" -->
+             
+                <a class="upgrade-btn-trial-expired" (click)="goToPricing()" style=""> upgrade </a>
+            
+            </li>
+
+
             <!-- ------------ ============ PROJECTS ============ ------------ -->
             <li *ngIf="project">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">

@@ -120,7 +120,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
               <span class="price-text">
                 
                 <span style="position: relative;top: -16px;"> € </span>  
-                  <span class="price" style="font-size:40px; font-weight: 400;">
+                  <span class="price" style="font-size:40px; font-weight: 400;font-family: 'Lato', sans-serif;">
                       {{proPlanPerAgentPrice}} 
                   </span>
                 <span class="price-agent" style="display: block;">per agent per month</span>
@@ -146,8 +146,8 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
             <div class="row">
               <div class="col-xs-4 col-sm-4 col-md-4"> 
                 <a>
-                  <button class="btn-only-icon" (click)="decreaseOperatorNumber()" style="float: right"
-                    [ngClass]="{'pro-plan-btn-only-icon' : selectedPlanName === 'pro', 'enterprise-plan-btn-only-icon' : selectedPlanName === 'enterprise'}">
+                  <!-- [ngClass]="{'pro-plan-btn-only-icon' : selectedPlanName === 'pro', 'enterprise-plan-btn-only-icon' : selectedPlanName === 'enterprise'}" -->
+                  <button class="btn-only-icon pro-plan-btn-only-icon" (click)="decreaseOperatorNumber()" style="float: right" [disabled]="operatorNo <= 1">
                     <i class="material-icons btn-icon">
                       remove
                     </i>
@@ -156,7 +156,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
               </div>
 
               <div class="col-xs-4 col-sm-4 col-md-4"> 
-                <div class="quantity" style="text-align:center"
+                <div class="quantity" style="text-align:center; font-family: 'Lato', sans-serif;"
                   [ngClass]="{'pro-plan-quantity' : selectedPlanName === 'pro', 'enterprise-plan-quantity' : selectedPlanName === 'enterprise'}">
                   {{ operatorNo }}
                 </div>
@@ -164,8 +164,9 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 
               <div class="col-xs-4 col-sm-4 col-md-4"> 
                 <a>
-                  <button class="btn-only-icon"(click)="increaseOperatorNumber()"
-                  [ngClass]="{'pro-plan-btn-only-icon' : selectedPlanName === 'pro', 'enterprise-plan-btn-only-icon' : selectedPlanName === 'enterprise'}">
+
+                  <!-- [ngClass]="{'pro-plan-btn-only-icon' : selectedPlanName === 'pro', 'enterprise-plan-btn-only-icon' : selectedPlanName === 'enterprise'}" -->
+                  <button class="btn-only-icon pro-plan-btn-only-icon" (click)="increaseOperatorNumber()">
                     <i class="material-icons btn-icon">
                       add
                     </i>
@@ -180,18 +181,49 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 
                 <div class="total-price">
 
-
-                 <span style="font-size: 30px;position: relative;top: -17px;left:18px">€</span> 
-                 <span style="position: relative;left: 8px;font-weight: 700;">
                   <span *ngIf="perMonth === true"> 
-                    {{ numberOfAgentPerPrice }}
+                    <span style="font-size: 30px;position: relative;top: -17px;left:18px">€</span> 
+                    <span style="position: relative;left: 8px;font-weight: 700;font-family: 'Lato', sans-serif;">
+                    
+                      {{ numberOfAgentPerPrice }}
+
+                      <span style="font-size: 18px;position:relative;top: -4px;">
+                          per month
+                      </span>
+                    </span>
                   </span>
+
+
+
                   <span *ngIf="perYear === true"> 
-                    {{ numberOfAgentPerPrice * 12 }}
+
+                    <div class="total-price-x-year"> 
+                      <span style="font-size: 15px;position: relative;top: -6px;left:18px">€</span> 
+                      <span style="position: relative;left: 8px;font-weight: 700;font-family: 'Lato', sans-serif; font-size:30px; text-decoration: line-through;">
+                    
+                        {{ (numberOfAgentPerPrice * 12) - 16 }}
+
+                        <!-- <span style="font-size: 18px;position:relative;top: -4px;">
+                            per year
+                        </span> -->
+                      </span>
+                    
+
+                    <span style="font-size: 30px;position: relative;top: -17px;left:18px">€</span> 
+                    <span style="position: relative;left: 8px;font-weight: 700;font-family: 'Lato', sans-serif;">
+                  
+                      {{ numberOfAgentPerPrice * 12 }}
+                      <span style="font-size: 18px;position:relative;top: -4px;">
+                          per year
+                      </span>
+                    </span>
+
+                  </div>
                   </span>
+                  
                  
-                </span>
-                <span style="font-size: 18px;position:relative;top: -4px;">
+                
+                <!-- <span style="font-size: 18px;position:relative;top: -4px;">
                  
                   <span *ngIf="perMonth === true"> 
                       per month
@@ -199,16 +231,14 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
                   <span *ngIf="perYear === true"> 
                       per year
                   </span>
-                </span>
+                </span> -->
                 </div>
               </div>
             </div>
 
 
             <div class="row">
-
               <div class="col-sm-12">
-
                 <div class="period-options" style="text-align:center; margin-top:25px"> 
                   <div class="radio">
                       <label>
@@ -230,7 +260,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 
             <!-- Create a button that your customers click to complete their purchase. Customize the styling to suit your branding. -->
             <div style="text-align: center; margin-top: 15px;" *ngIf="selectedPlanName === 'pro'"> 
-                <button type="button" *ngIf="perMonth === true" class="btn outline-btn btn-lg pro-plan-outline-btn"             
+              <button type="button" class="btn outline-btn btn-lg pro-plan-outline-btn"             
                 id="checkout-button-plan_EjFHNnzJXE3jul"  role="link"  (click)="openReportPaymentModal()">
                 
                   Get Pro Plan
@@ -310,30 +340,23 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 
 <!-- ============= DELETE MODAL ============= -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayPaymentReport}" style="background-color: rgba(90,90,90,0.9);">
-         <button type="button" class="close" aria-label="Close" (click)="closePaymentReportModal()" style="
-         font-size: 60px;
-         font-weight: 100;
-         right: 29px;
-         position: absolute;
-        ">
-            <span aria-hidden="true" style="color: #fff">&times;</span>
-          </button>
+  
+ 
+
     <div class="modal-dialog" role="document">
       <div class="modal-content" style="border-top-left-radius:6px; border-top-right-radius:6px">
         <div class="modal-header" style="padding:0px!important; border-bottom:none!important;">
-          <!-- <button type="button" class="close" aria-label="Close" (click)="onCloseDeleteModal()">
-            <span aria-hidden="true" style="color: #fff">&times;</span>
+ 
+          <!-- <button type="button" class="close" aria-label="Close" (click)="closePaymentReportModal()" style="font-size: 60px; font-weight: 100; right: 29px; position: absolute;">
+            <span aria-hidden="true" style="color: #000">&times;</span>
           </button> -->
-     
-  
-          <!-- <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em;">
 
-            {{ "GroupsPage.TheGroupWithId" | translate }}
-            <code>{{ id_group_to_delete }}</code>
-            {{ "GroupsPage.WillBeRemoved" | translate }}
-  
-          </h4> -->
-          <!-- background-color:#ffffff -->
+            <div class="close-payment-report-modal" style="font-weight: 100; right: 6px; position: absolute;cursor:pointer" (click)="closePaymentReportModal()">
+              <i class="material-icons close-payment-report-icon" style="font-size: 35px; opacity: 0.5;">
+                clear
+              </i>
+            </div>
+
           <table dir="ltr" class="pricing-moda-header" width="100%" style="border:0;border-collapse:collapse;margin:0;padding:0;">
               <tbody>
               <tr>
@@ -356,7 +379,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
               </tbody>
           </table>
 
-          <h2 class="modal-title" style="color: #262f3c; text-align: center">
+          <h2 class="modal-title" style="color: #262f3c; text-align: center; font-family: 'Google Sans', sans-serif !important;">
               <span style="vertical-align: middle;">
                   tiledesk Pro plan
               </span>
@@ -366,7 +389,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 
 
         </div>
-        <div class="modal-body" style="padding-top: 0px; padding-bottom: 0px; padding-right: 35px; padding-left: 35px;">
+        <div class="modal-body" style="padding-top: 0px; padding-bottom: 0px; padding-right: 35px; padding-left: 35px; line-height: 1">
 
           <div class="row">
             
@@ -374,8 +397,8 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 
                 <h3 style="text-align: center">
                     <!-- <i class="material-icons" style="display:block;color: #fff; font-size: 26px; line-height: 40px; width: 40px; height: 40px; text-align: center; border-radius: 50%;background-color: #3EA9F5; vertical-align: middle"> group </i> -->
-                    <span style="font-size:16px;display: block;  color: #fff; line-height: 1.5;background-color: #3EA9F5">  Operators </span> 
-                    <span style="padding-top:8px; display:block;  font-family: 'Lato', sans-serif; font-size:42px">{{  operatorNo }}</span>
+                    <span style="font-size:14px;display: block;  color: #fff; line-height: 1.5;background-color: #3EA9F5">  Operators </span> 
+                    <span style="padding-top:8px; display:block;  font-family: 'Lato', sans-serif; font-size:25px">{{  operatorNo }}</span>
                  </h3>
             </div>
 
@@ -383,10 +406,10 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 
                 <h3 style="text-align: center">
                     <!-- <i class="material-icons" style="display:block;color: #fff; font-size: 26px; line-height: 40px; width: 40px; height: 40px; text-align: center; border-radius: 50%;background-color: #3EA9F5; vertical-align: middle"> access_time </i> -->
-                    <span style="font-size:16px;display: block;  color: #fff; line-height: 1.5;background-color: #3EA9F5">  Subscription period </span>
+                    <span style="font-size:14px;display: block;  color: #fff; line-height: 1.5;background-color: #3EA9F5">  Subscription period </span>
                     
                     <!-- color: #5292e9; -->
-                    <span style="padding-top:8px; display:block;  font-family: 'Lato', sans-serif; font-size:32px">
+                    <span style="padding-top:8px; display:block;  font-family: 'Lato', sans-serif; font-size:25px">
                     
                       <span *ngIf="perMonth === true"> per Month </span>
                      
@@ -400,12 +423,33 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 
           <div class="row">
               <div class="col-md-12" style="text-align:center">
+                  <!-- margin-left: -109px; -->
+                  <div class="total" style="">
+                  <h2 style="margin-top: 10px"> <span style="font-size: 32px; padding-right: 16px;color: #8894ab;"> Total </span> 
+                  
+                    
+                  <span class="total-price" style="border:none">  
+                    <span style="position: relative;top: -16px;font-size: 35px;"> € </span>
+                    <span style="font-family: 'Lato', sans-serif; font-weight: 700;"> 
+                      
+                      <span *ngIf="perMonth === true"> 
+                        {{ numberOfAgentPerPrice }}<span style="font-size: 40px">,00  </span>
+                      </span>
+                      <span *ngIf="perYear === true"> 
+                        {{ numberOfAgentPerPrice * 12 }}<span style="font-size: 40px">,00  </span>
+                      </span>
+                    </span> 
+                  </span> 
+              </h2>
+            </div>
 
-                <h2> Total <span class="total-price">  {{ numberOfAgentPerPrice }} €</span> </h2>
+            <hr class="custom-hr" style="margin-top:0px"> 
               </div>
           </div>
   
   </div>
+
+  
   <div class="modal-footer" style="margin-top: 0px; background-color: #fff; border-top:none">
       <!-- (click)="onCloseDeleteModal()" -->
   
@@ -415,16 +459,16 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
           
             {{ "GroupsPage.Cancel" | translate }}
           </button> -->
-        <button type="button" *ngIf="perMonth === true" style="background-color:#3EA9F5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:24px"            
+        <button type="button" *ngIf="perMonth === true" style="background-color:#3EA9F5;color:#FFF;padding:12px 16px;border:0;border-radius:4px;font-size:18px"            
           id="checkout-button-plan_EjFHNnzJXE3jul"  role="link"  (click)="stripeProPlanPerMonthCheckout()">
           <!-- PerMonth -->
-            Paid with a Card
+            Pay with a Card m
         </button>
 
-        <button type="button" *ngIf="perYear === true" style="background-color:#3EA9F5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:24px"
+        <button type="button" *ngIf="perYear === true" style="background-color:#3EA9F5;color:#FFF;padding:12px 16px;border:0;border-radius:4px;font-size:18px"
           id="checkout-button-plan_FHYWzhwbGermkq" role="link" (click)="stripeProPlanPerYearCheckout()">
           <!-- PerYear -->
-          Paid with a Card
+            Pay with a Card y
         </button>
       </div>
   </div>

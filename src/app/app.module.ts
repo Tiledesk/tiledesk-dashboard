@@ -129,6 +129,8 @@ import { TempirispostaComponent } from './analytics2/metriche/tempirisposta/temp
 import { DurataconvComponent } from './analytics2/metriche/durataconv/durataconv.component';
 import { HoursStaticComponent } from './static-pages/hours-static/hours-static.component';
 import { DepartmentsStaticComponent } from './static-pages/departments-static/departments-static.component';
+import { ProjectPlanService } from './services/project-plan.service';
+
 
 /* PRIVATE */
 import { PricingModule } from './pricing/pricing.module';
@@ -255,6 +257,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ResetPswService,
     UploadImageService,
     WidgetService,
+    ProjectPlanService,
     LegendService, TooltipService, AdaptorService, AnalyticsService, HttpClientModule,
     { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],

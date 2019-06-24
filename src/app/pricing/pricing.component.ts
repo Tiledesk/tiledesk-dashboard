@@ -117,13 +117,16 @@ export class PricingComponent implements OnInit {
   decreaseOperatorNumber() {
     this.operatorNo -= 1;
 
-    this.switchPlanPrice()
+    console.log('decreaseOperatorNumber operatorNo',  this.operatorNo);
+    // this.switchPlanPrice()
+    this.numberOfAgentPerPrice = this.operatorNo * this.proPlanPerAgentPrice;
   }
 
   increaseOperatorNumber() {
     this.operatorNo += 1;
 
-    this.switchPlanPrice()
+    // this.switchPlanPrice()
+    this.numberOfAgentPerPrice = this.operatorNo * this.proPlanPerAgentPrice;
   }
 
   switchPlanPrice() {

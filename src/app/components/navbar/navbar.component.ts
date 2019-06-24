@@ -17,6 +17,8 @@ import { isDevMode } from '@angular/core';
 import { UploadImageService } from '../../services/upload-image.service';
 import { NotifyService } from '../../core/notify.service';
 import * as moment from 'moment';
+import { ProjectPlanService } from '../../services/project-plan.service';
+
 
 @Component({
     selector: 'app-navbar',
@@ -73,6 +75,13 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     HAS_OPENED_THE_CHAT: boolean;
     IS_AVAILABLE: boolean;
     projectId: string;
+
+    prjct_profile_name: string;
+    prjct_trial_expired: boolean;
+    prjc_trial_days_left: number
+    prjc_trial_days_left_percentage: number
+
+
     constructor(
         location: Location,
         private element: ElementRef,
@@ -83,7 +92,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         private router: Router,
         private usersService: UsersService,
         private uploadImageService: UploadImageService,
-        private notifyService: NotifyService
+        private notifyService: NotifyService,
+        private prjctPlanService: ProjectPlanService
     ) {
         this.location = location;
         this.sidebarVisible = false;
@@ -144,7 +154,15 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         this.hasChangedAvailabilityStatusInUsersComp();
         // this.subscribeToLogoutPressedinSidebarNavMobile();
 
+        this.getProjectPlan();
     } // OnInit
+
+    getProjectPlan() {
+        this.prjctPlanService.projectPlan.subscribe((string) => {
+
+            console.log('NAVBAR  prjctPlanService', string)
+        })
+    }
 
     getUserAvailability() {
         this.usersService.user_is_available_bs.subscribe((user_available) => {
@@ -288,8 +306,37 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 this.project = project
                 console.log('!!C-U 00 -> NAVBAR project from AUTH service subscription ', this.project);
                 this.projectId = project._id;
+
+
+
+
+                this.prjct_profile_name = this.project.profile_name;
+                this.prjct_trial_expired = this.project.trial_expired;
+                this.prjc_trial_days_left = this.project.trial_days_left;
+                // this.prjc_trial_days_left_percentage = ((this.prjc_trial_days_left *= -1) * 100) / 30
+                this.prjc_trial_days_left_percentage = (this.prjc_trial_days_left * 100) / 30;
+
+                // this.prjc_trial_days_left_percentage IT IS 
+                // A NEGATIVE NUMBER AND SO TO DETERMINE THE PERCENT IS MADE AN ADDITION
+                const perc = 100 + this.prjc_trial_days_left_percentage
+                console.log('SIDEBAR project perc ', perc)
+
+
+                this.prjc_trial_days_left_percentage = this.round5(perc)
+                console.log('SIDEBAR project trial days left % rounded', this.prjc_trial_days_left_percentage);
+
+
             }
         });
+    }
+
+    round5(x) {
+
+        // const percentageRounded = Math.ceil(x / 5) * 5;
+        // console.log('SIDEBAR project trial days left % rounded', percentageRounded);
+        // return Math.ceil(x / 5) * 5;
+
+        return x % 5 < 3 ? (x % 5 === 0 ? x : Math.floor(x / 5) * 5) : Math.ceil(x / 5) * 5
     }
 
     getLoggedUser() {
@@ -488,19 +535,19 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 type: type[color],
                 timer: 2000,
                 template:
-                `<div data-notify="container" style="padding:10px!important;background-color:rgb(255, 255, 238);box-shadow:0px 0px 5px rgba(51, 51, 51, 0.3);cursor:pointer;border-left:15px solid;${borderColor}"
+                    `<div data-notify="container" style="padding:10px!important;background-color:rgb(255, 255, 238);box-shadow:0px 0px 5px rgba(51, 51, 51, 0.3);cursor:pointer;border-left:15px solid;${borderColor}"
                     class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">` +
                     '<button type="button" aria-hidden="true" class="close custom-hover" data-notify="dismiss" style="background-color:beige; padding-right:4px;padding-left:4px;border-radius:50%;">×</button>' +
                     '<div class="row">' +
-                        '<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">' +
-                            '<span data-notify="icon" class="notify-icon"> ' + `<img style="width:30px!important"src="assets/img/${chatIcon}" alt="Notify Icon"></span>` +
-                        '</div>' +
-                        '<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">' +
-                            '<span data-notify="title">{1}</span>' +
-                            '<span data-notify="message">{2}</span>' +
-                        '</div>' +
+                    '<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">' +
+                    '<span data-notify="icon" class="notify-icon"> ' + `<img style="width:30px!important"src="assets/img/${chatIcon}" alt="Notify Icon"></span>` +
                     '</div>' +
-                '</div>'
+                    '<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">' +
+                    '<span data-notify="title">{1}</span>' +
+                    '<span data-notify="message">{2}</span>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>'
                 // placement: {
                 //     from: from,
                 //     align: align
