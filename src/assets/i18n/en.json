@@ -245,7 +245,11 @@
         "Operators":"Operators",
         "UpgradePlan":"Upgrade Plan",
         "Your": "Your",
-        "30DaysFreeTrialOfTiledeskProPlan": "30 days free trial of tiledesk Pro plan"
+        "30DaysFreeTrialOfTiledeskProPlan": "30-days free trial of the tiledesk Pro plan",
+        "WillExpireIn": "will expire in",
+        "Days": "days",
+        "Tomorrow":"tomorrow",
+        "HasExpired":"has expired"
      },
 
     "ActivitiesOptions": {

@@ -244,7 +244,11 @@
         "Operators":"Operatori",
         "UpgradePlan":"Aggiorna Piano",
         "Your": "I tuoi",
-        "30DaysFreeTrialOfTiledeskProPlan": "30 giorni di prova gratuita del piano tiledesk Pro"
+        "30DaysFreeTrialOfTiledeskProPlan": "30 giorni di prova gratuita del piano tiledesk Pro",
+        "WillExpireIn": "scadranno tra",
+        "Days": "giorni",
+        "Tomorrow":"domani",
+        "HasExpired":"sono scaduti"
      },
     "ActivitiesOptions": {
         "AgentAvailabilityOrRoleChange":"Modifica disponibilità o ruolo agente",

@@ -75,15 +75,21 @@
                      
                       {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate }} 
                   </span>
-                    will expire in  {{ - prjc_trial_days_left }} days
+                    {{ "Pricing.WillExpireIn" | translate }}
+                  <span *ngIf="prjc_trial_days_left < -1"> 
+                      {{ - prjc_trial_days_left }} {{ "Pricing.Days" | translate }}
+                  </span>
+                  <span *ngIf="prjc_trial_days_left === -1"> 
+                      {{ "Pricing.Tomorrow" | translate }}
+                  </span>
                 </p> 
 
                 <p *ngIf="prjct_trial_expired === true" style="margin-bottom:0px"> 
-                  Your  tiledesk Pro
+                    {{ "Pricing.Your" | translate }}
                   <span *ngIf="prjct_profile_name === 'free'" style="font-weight:600">
-                      30 days free trial
+                      {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate }} 
                   </span>
-                    has expired
+                  {{ "Pricing.HasExpired" | translate }} 
                 </p> 
               </ul>
             </li> 
