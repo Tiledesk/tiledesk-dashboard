@@ -75,6 +75,7 @@ export class ProjectPlanService {
       const projectPlanData: Project = {
 
         _id:  project._id,
+        name: project.name,
         profile_name: project.profile['name'],
         profile_agents: project.profile['agents'],
         trial_days: project.profile['trialDays'],

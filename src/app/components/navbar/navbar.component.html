@@ -71,14 +71,17 @@
               <ul class="dropdown-menu" style="margin-top: 11px; padding-left:20px;padding-right:20px;width: 200px;">
                 <p *ngIf="prjct_trial_expired === false" style="margin-bottom:0px"> 
                    {{ "Pricing.Your" | translate }}
-                  <span *ngIf="prjct_profile_name === 'free'" style="font-weight:600">
-                     
-                      {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate }} 
+                   
+                  <span style="font-weight:600"> 
+                    {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate }}
                   </span>
-                    {{ "Pricing.WillExpireIn" | translate }}
-                  <span *ngIf="prjc_trial_days_left < -1"> 
+                  
+                  {{ "Pricing.WillExpireIn" | translate }}
+                  
+                   <span *ngIf="prjc_trial_days_left < -1"> 
                       {{ - prjc_trial_days_left }} {{ "Pricing.Days" | translate }}
                   </span>
+
                   <span *ngIf="prjc_trial_days_left === -1"> 
                       {{ "Pricing.Tomorrow" | translate }}
                   </span>
@@ -86,7 +89,7 @@
 
                 <p *ngIf="prjct_trial_expired === true" style="margin-bottom:0px"> 
                     {{ "Pricing.Your" | translate }}
-                  <span *ngIf="prjct_profile_name === 'free'" style="font-weight:600">
+                  <span style="font-weight:600">
                       {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate }} 
                   </span>
                   {{ "Pricing.HasExpired" | translate }} 

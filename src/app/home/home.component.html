@@ -22,7 +22,21 @@
 
                   
                   <div class="homeBanner__texts">
-                      <div class="project-name">  Piano 1</div>
+                      <div class="project-name" style="font-family: 'Google Sans',sans-serif;font-size: 21px;margin-bottom: 25px;">
+                         {{ prjct_name }} 
+                         <span style="    background-color: rgba(0,0,0,.14);
+                         border-radius: 12px;
+                        
+                         font-size: 12px;
+                         font-weight: 500;
+                         letter-spacing: .5px;
+                         line-height: 16px;
+                         padding: 4px 18px;
+                         margin-left: 12px;"> 
+                         <span *ngIf="prjct_trial_expired === false">  Pro (trial) </span>
+                         <span *ngIf="prjct_trial_expired === true">  {{ prjct_profile_name }} Plan </span>
+                        </span>
+                      </div>
                   <h2 class="homeBanner__textsHeader">
                     {{ 'GettingStartedWith' | translate }} <br> tiledesk. 
                   </h2>

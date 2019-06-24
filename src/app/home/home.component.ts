@@ -11,6 +11,8 @@ import { DepartmentService } from '../services/mongodb-department.service';
 import { RequestsService } from '../services/requests.service';
 import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
+import { ProjectPlanService } from '../services/project-plan.service';
+
 
 @Component({
   selector: 'home',
@@ -35,6 +37,11 @@ export class HomeComponent implements OnInit {
 
   CHAT_BASE_URL = environment.chat.CHAT_BASE_URL
   browserLang: string;
+
+  prjct_name: string;
+  prjct_profile_name: string;
+  prjct_trial_expired: boolean;
+
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -45,10 +52,12 @@ export class HomeComponent implements OnInit {
     private requestsService: RequestsService,
     private notify: NotifyService,
     private translate: TranslateService,
+    private prjctPlanService: ProjectPlanService
   ) { }
 
   ngOnInit() {
     console.log('!!! Hello HomeComponent! ');
+    this.getProjectPlan();
     this.getBrowserLanguage();
     // console.log(environment.firebaseConfig.projectId);
     // this.firebaseProjectId = environment.firebaseConfig.projectId;
@@ -78,6 +87,21 @@ export class HomeComponent implements OnInit {
     this.getAvailableProjectUsersByProjectId();
 
     this.getUserRole();
+
+  }
+
+  getProjectPlan() {
+    this.prjctPlanService.projectPlan.subscribe((projectProfileData: any) => {
+      console.log('ProjectPlanService (navbar) project Profile Data', projectProfileData)
+      if (projectProfileData) {
+        this.prjct_name = projectProfileData.name;
+        this.prjct_profile_name = projectProfileData.profile_name;
+        this.prjct_trial_expired = projectProfileData.trial_expired;
+
+
+      }
+    })
+
 
   }
 
