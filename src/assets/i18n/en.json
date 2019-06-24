@@ -242,7 +242,14 @@
     "UploadAnswersFromCsv": "Upload answers from Csv", 
     "ExportAnswersToCsv":"Export answers to Csv",
     "Pricing":{
-        "Operators":"Operators"
+        "Operators":"Operators",
+        "UpgradePlan":"Upgrade Plan",
+        "Your": "Your",
+        "30DaysFreeTrialOfTiledeskProPlan": "30-days free trial of the tiledesk Pro plan",
+        "WillExpireIn": "will expire in",
+        "Days": "days",
+        "Tomorrow":"tomorrow",
+        "HasExpired":"has expired"
      },
 
     "ActivitiesOptions": {
