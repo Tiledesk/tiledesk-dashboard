@@ -22,6 +22,7 @@ export class DurataconvComponent implements OnInit {
   dataRangeDuration: String;
   
   lang: string;
+  monthNames:any;
 
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
@@ -31,12 +32,31 @@ export class DurataconvComponent implements OnInit {
       
                 this.lang = this.translate.getBrowserLang();
                 console.log('LANGUAGE ', this.lang);
+                this.getBrowserLangAndSwitchMonthName();
                 }
 
   ngOnInit() {
     this.durationConvTimeCLOCK();
     this.durationConversationTimeCHART();
   }
+
+msToTIME(value){
+    let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
+    let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
+    let seconds = Math.floor(((value % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
+   return hours + 'h:' + minutes + 'm:' + seconds + 's'
+}
+
+getBrowserLangAndSwitchMonthName() {
+    
+  if (this.lang) {
+    if (this.lang === 'it') {
+      this.monthNames = { '1': 'Gen', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'Mag', '6': 'Giu', '7': 'Lug', '8': 'Ago', '9': 'Set', '10': 'Ott', '11': 'Nov', '12': 'Dic' }
+    } else {
+      this.monthNames = { '1': 'Jan', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'May', '6': 'Jun', '7': 'Jul', '8': 'Aug', '9': 'Sep', '10': 'Oct', '11': 'Nov', '12': 'Dec' }
+    }
+  }
+}
 
   durationConvTimeCLOCK() {
     this.analyticsService.getDurationConversationTimeDataCLOCK().subscribe((res: any) => {
@@ -53,7 +73,8 @@ export class DurataconvComponent implements OnInit {
         //this.avarageWaitingTimestring = this.humanizer.humanize(res[0].waiting_time_avg);
         avarageWaitingTimestring = this.humanizeDurations(res[0].duration_avg)
         splitString = this.humanizeDurations(res[0].duration_avg).split(" ");
-        this.numberDurationCNVtime = splitString[0];
+        //this.numberDurationCNVtime = splitString[0];
+        this.numberDurationCNVtime=this.msToTIME(res[0].duration_avg);//--> show in format h:m:s
         this.unitDurationCNVtime = splitString[1];
 
         
@@ -118,18 +139,36 @@ export class DurataconvComponent implements OnInit {
         const requestDurationConversationByDays_final_array = last30days_initarrayDURATION.map(obj => customDurationCOnversationChart.find(o => o.date === obj.date) || obj);
         console.log('»» !!! ANALYTICS - REQUESTS DURATION CONVERSATION BY DAY - FINAL ARRAY ', requestDurationConversationByDays_final_array);
 
-        this.xValueDurationConversation = requestDurationConversationByDays_final_array.map(function (e) {
-          return e.date
-        })
-        this.yValueDurationConversation = requestDurationConversationByDays_final_array.map(function (e) {
-          return e.value
-        })
+        const requestDurationConversationByDays_series_array = [];
+        const requestDurationConversationByDays_labels_array = [];
+  
+        requestDurationConversationByDays_final_array.forEach(requestByDay => {
+          console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
+          requestDurationConversationByDays_series_array.push(requestByDay.value)
+  
+          const splitted_date = requestByDay.date.split('/');
+          console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
+          requestDurationConversationByDays_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
+        });
+
+        this.xValueDurationConversation=requestDurationConversationByDays_labels_array;
+        this.yValueDurationConversation=requestDurationConversationByDays_series_array;
+
+
+        // this.xValueDurationConversation = requestDurationConversationByDays_final_array.map(function (e) {
+        //   return e.date
+        // })
+        // this.yValueDurationConversation = requestDurationConversationByDays_final_array.map(function (e) {
+        //   return e.value
+        // })
 
         console.log("Xlabel-DURATION", this.xValueDurationConversation);
         console.log("Ylabel-DURATION", this.yValueDurationConversation);
       }
       else
         console.log("!!!ERROR!!! while get data from resouces for duration conversation time graph")
+
+        let lang= this.lang;
 
       var lineChart = new Chart('durationConversationTimeResponse', {
         type: 'bar',
@@ -139,10 +178,12 @@ export class DurataconvComponent implements OnInit {
             label: 'Average duration conversation time response in last 30 days ',
             data: this.yValueDurationConversation,
             fill: false, //riempie zona sottostante dati
-            lineTension: 0.1,
-            borderColor: '#1e88e5',
-            backgroundColor: '#1e88e5',
-            borderWidth: 5
+            lineTension: 0.0,
+            backgroundColor: 'rgba(30, 136, 229, 0.6)',
+            borderColor: 'rgba(30, 136, 229, 1)',
+            borderWidth: 3,
+            borderDash: [],
+            borderDashOffset: 0.0,
           },
             // {
             //   label: 'Average duration conversation time response in last 30 days _LINE ',
@@ -157,20 +198,34 @@ export class DurataconvComponent implements OnInit {
           ]
         },
         options: {
+          maintainAspectRatio:false,
           title: {
             text: 'DURATION CONVERSATION TIME RESPONSE',
             display: false
+          },
+          legend:{
+            display:false //do not show label title
           },
           scales: {
             xAxes: [{
               ticks: {
                 beginAtZero: true,
                 display: true,
-                minRotation: 30
+                minRotation: 0,
+                fontColor:'black'
               },
-
+              gridLines: {
+                display: false,
+                borderDash:[8,4],
+                //color:'rgba(255, 255, 255, 0.5)',
+              }
             }],
             yAxes: [{
+              gridLines: {
+                display: true ,
+                borderDash:[8,4],
+                //color:'rgba(255, 255, 255, 0.5)',
+              },
               ticks: {
                 beginAtZero: true,
                 display: true,
@@ -198,10 +253,14 @@ export class DurataconvComponent implements OnInit {
                 const currentItemValue = tooltipItem.yLabel
                 let langService = new HumanizeDurationLanguage();
                 let humanizer = new HumanizeDuration(langService);
-                humanizer.setOptions({ round: true })
-                //console.log("humanize", humanizer.humanize(currentItemValue))
-                return data.datasets[tooltipItem.datasetIndex].label + ': ' + humanizer.humanize(currentItemValue)
-
+                // humanizer.setOptions({ round: true })
+                // //console.log("humanize", humanizer.humanize(currentItemValue))
+                // return data.datasets[tooltipItem.datasetIndex].label + ': ' + humanizer.humanize(currentItemValue)
+                if(lang==='it'){
+                  return 'Lunghezza conversazione media: '+humanizer.humanize(currentItemValue, { round: true, language: lang, units: ['y', 'mo', 'w', 'd', 'h', 'm', 's']  } );
+                }else{
+                  return 'Median Conversation Lenght: ' +humanizer.humanize(currentItemValue, { round: true, language: lang, units: ['y', 'mo', 'w', 'd', 'h', 'm', 's'] } );
+                }
               }
             }
           }
