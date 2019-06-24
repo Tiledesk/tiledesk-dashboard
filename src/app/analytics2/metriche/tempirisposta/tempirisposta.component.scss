@@ -1,0 +1,62 @@
+@import url(https://fonts.googleapis.com/css?family=Google+Sans);
+
+.card-header-custom {
+    box-shadow: none!important;
+    margin-left: 0px!important; 
+    margin-right: 0px!important; 
+    border-bottom: 1px solid #eff3f5!important;
+}
+
+.request_count_footer {
+    font-family: 'Google Sans', sans-serif !important;
+    font-size: 16px;
+    color:rgba(0,0,0,.54); 
+    text-align: center;
+}
+
+
+
+.chart-wrapper {
+    //background-color: #1e88e5!important; -->blue color
+    background-color: #ffffff;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-left: -30px;
+    margin-right: -30px;
+    min-height: 345px;
+}
+
+.chart-title {
+    padding-bottom: 24px;
+    padding-top: 24px;
+    font-size: 18px;
+    //color: #fff;
+    font-family: 'Google Sans', sans-serif !important;
+}
+
+.clock{
+    //background-image: url('../../assets/img/stopwatch.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 200px;
+    width: 200px;
+    margin:auto;
+        
+}
+
+.numberCLOCK{
+    //font-size: 73px;
+    font-size:21px;
+    line-height: 0;
+    padding-top: 94px;
+    color: #073f74;
+    font-family: 'Google Sans', sans-serif !important;
+}
+
+.chart-container{
+    //background-color: #1e88e5;
+    font-family: 'Google Sans', sans-serif !important;
+}

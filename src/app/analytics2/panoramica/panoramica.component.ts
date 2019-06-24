@@ -139,13 +139,13 @@ export class PanoramicaComponent implements OnInit {
             data: _requestsByDay_series_array,
             fill: true, //riempie zona sottostante dati
             lineTension: 0.0,
-            backgroundColor: '#1e88e5',
-            borderColor: '#1e88e5',
+            backgroundColor: 'rgba(30, 136, 229, 0.6)',
+            borderColor: 'rgba(30, 136, 229, 1)',
             borderWidth: 3,
             borderDash: [],
             borderDashOffset: 0.0,
-            pointBackgroundColor: 'rgba(255, 255, 255, 0.8)',
-            pointBorderColor: '#1e88e5'
+            //pointBackgroundColor: 'rgba(255, 255, 255, 0.8)', //-->point white
+            pointBorderColor: 'rgba(30, 136, 229, 0.8)'
 
           }]
         },

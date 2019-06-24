@@ -42,6 +42,13 @@ export class TempirispostaComponent implements OnInit {
     this.avgTimeResponsechart();
   }
 
+  msToTIME(value){
+       let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
+       let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
+       let seconds = Math.floor(((value % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
+      return hours + 'h:' + minutes + 'm:' + seconds + 's'
+  }
+
   getBrowserLangAndSwitchMonthName() {
     
     if (this.lang) {
@@ -67,8 +74,10 @@ export class TempirispostaComponent implements OnInit {
         //this.avarageWaitingTimestring = this.humanizer.humanize(res[0].waiting_time_avg);
         avarageWaitingTimestring=this.humanizeDurations(res[0].waiting_time_avg)
         splitString= this.humanizeDurations(res[0].waiting_time_avg).split(" ");
-        this.numberAVGtime= splitString[0];
+        //this.numberAVGtime= splitString[0];
         this.unitAVGtime= splitString[1];
+        
+        this.numberAVGtime=this.msToTIME(res[0].waiting_time_avg); //--> show in format h:m:s
 
         this.responseAVGtime=this.humanizer.humanize(res[0].waiting_time_avg, {round: true, language:this.lang})
         
@@ -114,44 +123,43 @@ export class TempirispostaComponent implements OnInit {
         //build a custom array with che same structure of "init array" but with key value of serviceData
         //i'm using time_convert function that return avg_time always in hour 
         const customDataLineChart= [];
-        for(let j = 0; j < customDataLineChart.length; j++){
-          
-          if(customDataLineChart[j]){
-            if(res[j].waiting_time_avg==null){
-              res[j].waiting_time_avg=0;  //substitute null point with 0 value
-            }
-                                                                                                  // to locale string allow format type dd/mm/yyyy
-            customDataLineChart.push({ date: new Date(res[j]._id.year, res[j]._id.month -1 , res[j]._id.day).toLocaleDateString(), value: res[j].waiting_time_avg});
+        for (let i in res) {
+
+          if (res[i].waiting_time_avg == null){
+            res[i].waiting_time_avg = 0;
           }
+
+            customDataLineChart.push({ date: new Date(res[i]._id.year, res[i]._id.month - 1, res[i]._id.day).toLocaleDateString(), value: res[i].waiting_time_avg });
         }
+        
         console.log('Custom data:', customDataLineChart);
 
         //build a final array that compars value between the two arrray before builded with respect to date key value
         const requestByDays_final_array = last30days_initarray.map(obj => customDataLineChart.find(o => o.date === obj.date) || obj);
         console.log('»» !!! ANALYTICS - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
         
-        // let _requestsByDay_series_array;
-        // let _requestsByDay_labels_array;
-        
-        // requestByDays_final_array.forEach(requestByDay => {
-        //   console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
-        //   _requestsByDay_series_array.push(requestByDay.value)
+        const _requestsByDay_series_array = [];
+        const _requestsByDay_labels_array = [];
   
-        //   const splitted_date = requestByDay.date.split('/');
-        //   console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
-        //   _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
-        // });
+        requestByDays_final_array.forEach(requestByDay => {
+          console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
+          _requestsByDay_series_array.push(requestByDay.value)
+  
+          const splitted_date = requestByDay.date.split('/');
+          console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
+          _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
+        });
 
-        // console.log("RRRRRRRRRRRRR", _requestsByDay_labels_array);
-
+        this.xValueAVGchart=_requestsByDay_labels_array;
+        this.yValueAVGchart=_requestsByDay_series_array;
         //console.log("XXXX", _requestsByDay_labels_array);
-        this.xValueAVGchart=requestByDays_final_array.map(function(e){
+        // this.xValueAVGchart=requestByDays_final_array.map(function(e){
           
-          return e.date
-        })
-        this.yValueAVGchart=requestByDays_final_array.map(function(e){
-          return e.value
-        })
+        //   return e.date
+        // })
+        // this.yValueAVGchart=requestByDays_final_array.map(function(e){
+        //   return e.value
+        // })
   
         console.log('Xlabel-AVERAGE TIME', this.xValueAVGchart);
         console.log('Ylabel-AVERAGE TIME', this.yValueAVGchart);
@@ -171,6 +179,8 @@ export class TempirispostaComponent implements OnInit {
         const higherCount = this.getMaxOfArray(this.yValueAVGchart);
         console.log('»» !!! ANALYTICS - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
 
+        let lang=this.lang;
+
       var lineChart = new Chart('avgTimeResponse', {
         type: 'bar',
         data: {
@@ -179,12 +189,15 @@ export class TempirispostaComponent implements OnInit {
             label: 'Average time response in last 30 days ',
             data: this.yValueAVGchart,
             fill: true, //riempie zona sottostante dati
-            lineTension: 0.1,
-            backgroundColor: 'rgba(255, 255, 255, 0.7)',
-            borderColor: 'rgba(255, 255, 255, 0.7)',
+            lineTension: 0.0,
+            backgroundColor: 'rgba(30, 136, 229, 0.6)',
+            borderColor: 'rgba(30, 136, 229, 1)',
             borderWidth: 3,
+            borderDash: [],
+            borderDashOffset: 0.0,
             //pointBackgroundColor: 'rgba(255, 255, 255, 0.8)',
-            //pointBorderColor: 'rgba(255, 255, 255, 0.8)'
+            //pointBorderColor: '#1e88e5'
+           
 
           }]
         },
@@ -202,26 +215,25 @@ export class TempirispostaComponent implements OnInit {
               ticks: {
                 beginAtZero: true,
                 display: true,
-                minRotation: 30,
-                fontColor: 'white',
+                minRotation: 0,
+                fontColor: 'black',
               },
               gridLines: {
-                display: true,
-                color:'rgba(255, 255, 255, 0.5)',
-                borderDash:[8,4]
+                display: false,
+                borderDash:[8,4],
+                //color:'rgba(255, 255, 255, 0.5)',
               }
             }],
             yAxes: [{
               gridLines: {
                 display: true ,
-                color:'rgba(255, 255, 255, 0.5)',
-                borderDash:[8,4]
+                borderDash:[8,4],
+                //color:'rgba(255, 255, 255, 0.5)',
               },
               ticks: {
                 beginAtZero: true,
-                display: true,
-                suggestedMax: higherCount + 200,
-                fontColor: 'white',
+                suggestedMax: higherCount + 200, //not work yet
+                fontColor: 'black',
                 callback: function (value, index, values) {
                   let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
                   let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
@@ -245,9 +257,14 @@ export class TempirispostaComponent implements OnInit {
                 const currentItemValue = tooltipItem.yLabel
                 let langService = new HumanizeDurationLanguage();
                 let humanizer = new HumanizeDuration(langService);
-                humanizer.setOptions({ round: true })
-                //console.log("humanize", humanizer.humanize(currentItemValue))
-                return data.datasets[tooltipItem.datasetIndex].label + ': ' + humanizer.humanize(currentItemValue)
+                // humanizer.setOptions({ round: true })
+                // //console.log("humanize", humanizer.humanize(currentItemValue))
+                // return data.datasets[tooltipItem.datasetIndex].label + ': ' + humanizer.humanize(currentItemValue)
+                if(lang==='it'){
+                  return 'Tempo risposta medio: '+humanizer.humanize(currentItemValue, { round: true, language: lang, units: ['y', 'mo', 'w', 'd', 'h', 'm', 's']  } );
+                }else{
+                  return 'Median respose time: ' +humanizer.humanize(currentItemValue, { round: true, language: lang, units: ['y', 'mo', 'w', 'd', 'h', 'm', 's']  } );
+                }
 
               }
             }

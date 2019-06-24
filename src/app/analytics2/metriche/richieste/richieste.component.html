@@ -1,10 +1,13 @@
 <div class="row">
   <div class="col-md-12">
       
-      <div class="chart-wrapper">
+      <div class="chart-wrapper-richieste">
          <div class="row"> 
-              <div class="chart-title col-sm-3">
+              <div class="chart-title-richieste col-sm-3">
                   {{ 'Analytics.RequestChartTitle' | translate }} {{lastdays}} 
+                  <span *ngIf="selectedDaysId <= 30">{{ 'Analytics.Days' | translate }}</span>
+                  <span *ngIf="selectedDaysId === 90 || selectedDaysId === 180  ">{{ 'Analytics.Months' | translate }}</span>
+                  <span *ngIf="selectedDaysId === 360">{{ 'Analytics.Year' | translate }}</span>
               </div>
                 <!-- ------last n days filter--------- -->
               <div class="col-sm-3"> 
@@ -17,9 +20,9 @@
                       <ng-option [value]="7">{{ 'Analytics.Last' | translate}} 7 {{ 'Analytics.Days' | translate}}</ng-option>
                       <ng-option [value]="15">{{ 'Analytics.Last' | translate}} 15 {{ 'Analytics.Days' | translate}}</ng-option>
                       <ng-option [value]="30">{{ 'Analytics.Last' | translate}} 30 {{ 'Analytics.Days' | translate}}</ng-option>
-                      <ng-option [value]="60">{{ 'Analytics.Last' | translate}} 3 {{ 'Analytics.Months' | translate}}</ng-option>
-                      <ng-option [value]="90">{{ 'Analytics.Last' | translate}} 6 {{ 'Analytics.Months' | translate}}</ng-option>
-                      <ng-option [value]="180">{{ 'Analytics.Last' | translate}} 1 {{ 'Analytics.Year' | translate}}</ng-option>
+                      <ng-option [value]="90">{{ 'Analytics.Last' | translate}} 3 {{ 'Analytics.Months' | translate}}</ng-option>
+                      <ng-option [value]="180">{{ 'Analytics.Last' | translate}} 6 {{ 'Analytics.Months' | translate}}</ng-option>
+                      <ng-option [value]="360">{{ 'Analytics.Last' | translate}} 1 {{ 'Analytics.Year' | translate}}</ng-option>
                     </ng-select>
                   </div>
                 </div>
@@ -27,11 +30,11 @@
               <!-- ------ init-end days show--------- -->
               <div class="col-sm-3"> 
                 <div class="section-select-dept">
-                  <label  class="col-sm-12" style="text-align: left; ">
-                      
+                  <label  class="col-sm-12" style="text-align: left; color:black">
+                      {{ 'Analytics.DataRangeRequest' | translate }} : 
                   </label>
                   <div class="col-sm-12 boxdays" >
-                   <p style="margin: 0 !important; "> {{initDay}} <i class="material-icons"> arrow_right </i> {{endDay}}</p>
+                   <p style="margin: 0 !important; "> {{initDay}} <i class="material-icons"> arrow_forward </i> {{endDay}}</p>
                   </div>
                 </div>
               </div>

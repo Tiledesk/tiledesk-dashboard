@@ -441,7 +441,7 @@ export class Analytics2Component implements OnInit , OnDestroy {
       const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
 
-      var lineChart = new Chart('last7dayChart', {
+      var lineChart = new Chart('last7dayChart_old', {
         type: 'line',
         data: {
           labels: _requestsByDay_labels_array ,
