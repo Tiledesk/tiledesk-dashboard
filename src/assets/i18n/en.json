@@ -854,6 +854,7 @@
         "Days":"days",
         "Month":"month",
         "Months":"months",
-        "Year":"year"
+        "Year":"year",
+        "DataRangeRequest":"Data range "
     }
 }

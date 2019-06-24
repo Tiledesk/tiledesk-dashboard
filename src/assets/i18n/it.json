@@ -851,6 +851,7 @@
         "Days":"giorni",
         "Month":"mese",
         "Months":"mesi",
-        "Year":"anno"
+        "Year":"anno",
+        "DataRangeRequest":"Range date "
     }
 }
