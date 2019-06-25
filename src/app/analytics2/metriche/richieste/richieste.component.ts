@@ -1,3 +1,4 @@
+import { AnalyticsService } from './../../../services/analytics.service';
 import { DepartmentService } from './../../../services/mongodb-department.service';
 import { RequestsService } from 'app/services/requests.service';
 import { Component, OnInit } from '@angular/core';
@@ -5,6 +6,7 @@ import * as moment from 'moment'
 import { Chart } from 'chart.js';
 import { TranslateService } from '@ngx-translate/core';
 import { tick } from '@angular/core/testing';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'appdashboard-richieste',
@@ -26,7 +28,9 @@ export class RichiesteComponent implements OnInit {
 
   departments:any;
 
-  constructor(private requestsService:RequestsService,
+  subscription:Subscription;
+
+  constructor(private analyticsService:AnalyticsService,
               private translate: TranslateService,
               private departmentService:DepartmentService) {
       
@@ -38,9 +42,14 @@ export class RichiesteComponent implements OnInit {
   ngOnInit() {
     this.selectedDeptId = '';
     this.selectedDaysId=7
-    this.getRequestByLastNDay(7);
+    this.getRequestByLastNDay(this.selectedDaysId);
     this.getDepartments();
     
+  }
+
+  ngOnDestroy() {
+    console.log('!!! ANALYTICS.RICHIESTE - !!!!! UN - SUBSCRIPTION TO REQUESTS');
+    this.subscription.unsubscribe();
   }
 
   daysSelect(value){
@@ -52,7 +61,8 @@ export class RichiesteComponent implements OnInit {
     }else if(value === 360){
       this.lastdays=1
     }
-    this.getRequestByLastNDay(this.selectedDaysId);
+    this.subscription.unsubscribe()
+    this.getRequestByLastNDay(value);
   }
 
   getDepartments() {
@@ -89,7 +99,7 @@ export class RichiesteComponent implements OnInit {
 
   //-----------LAST n DAYS GRAPH-----------------------
   getRequestByLastNDay(lastdays){
-    this.requestsService.requestsByDay().subscribe((requestsByDay: any) => {
+    this.subscription= this.analyticsService.requestsByDay().subscribe((requestsByDay: any) => {
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY ', requestsByDay);
 
       // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
@@ -151,6 +161,7 @@ export class RichiesteComponent implements OnInit {
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', _requestsByDay_labels_array);
 
+      //get higher value of xvalue array 
       const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
 

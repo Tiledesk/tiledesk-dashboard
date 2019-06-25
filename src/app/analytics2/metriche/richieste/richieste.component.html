@@ -1,8 +1,8 @@
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-12 card" style="border-radius: 11px">
       
-      <div class="chart-wrapper-richieste">
-         <div class="row"> 
+      <div class="chart-wrapper-richieste " style="margin: auto -15px">
+         <div class="row "> 
               <div class="chart-title-richieste col-sm-3">
                   {{ 'Analytics.RequestChartTitle' | translate }} {{lastdays}} 
                   <span *ngIf="selectedDaysId <= 30">{{ 'Analytics.Days' | translate }}</span>
@@ -34,7 +34,7 @@
                       {{ 'Analytics.DataRangeRequest' | translate }} : 
                   </label>
                   <div class="col-sm-12 boxdays" >
-                   <p style="margin: 0 !important; "> {{initDay}} <i class="material-icons"> arrow_forward </i> {{endDay}}</p>
+                   <p style="margin: 0 !important; "> {{initDay}} <i class="material-icons arrow_forward-custom"> arrow_forward </i> {{endDay}}</p>
                   </div>
                 </div>
               </div>
