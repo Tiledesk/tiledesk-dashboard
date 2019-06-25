@@ -7,7 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
-
+import { ProjectPlanService } from '../services/project-plan.service';
 @Component({
   selector: 'app-project-edit-add',
   templateUrl: './project-edit-add.component.html',
@@ -33,16 +33,22 @@ export class ProjectEditAddComponent implements OnInit {
 
   AUTO_SEND_TRANSCRIPT_IS_ON: boolean;
 
+  prjct_name: string;
+  prjct_profile_name: string;
+  prjct_trial_expired: boolean;
+
   constructor(
     private projectService: ProjectService,
     private router: Router,
     private route: ActivatedRoute,
     private _location: Location,
-    private auth: AuthService
+    private auth: AuthService,
+    private prjctPlanService: ProjectPlanService
   ) { }
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
+    this.getProjectPlan();
     /**
      * BASED ON THE URL PATH DETERMINE IF THE USER HAS SELECTED (IN BOT PAGE) 'CREATE' OR 'EDIT'
      */
@@ -64,6 +70,17 @@ export class ProjectEditAddComponent implements OnInit {
         this.getProjectById();
       }
     }
+  }
+
+  getProjectPlan() {
+    this.prjctPlanService.projectPlan.subscribe((projectProfileData: any) => {
+      console.log('ProjectPlanService (navbar) project Profile Data', projectProfileData)
+      if (projectProfileData) {
+        this.prjct_name = projectProfileData.name;
+        this.prjct_profile_name = projectProfileData.profile_name;
+        this.prjct_trial_expired = projectProfileData.trial_expired;
+      }
+    })
   }
 
   // !!! NO MORE USED - GO BACK TO PROJECT LIST

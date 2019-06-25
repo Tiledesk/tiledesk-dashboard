@@ -357,7 +357,8 @@
         "NoteThatWillBeSubscribed": "Note that by generating a new shared secret the previous one will be overwritten",
         "NoteThatWillBeDisplayedOnce": "Note that this shared secret will only be displayed once",
         "SharedSecretGenerated": "Shared Secret Generated",
-        "ThisIsYourSharedSecret": "This is your shared secret"
+        "ThisIsYourSharedSecret": "This is your shared secret",
+        "ProjectPlan":"Plan"
     },
     "HomePage": {
         "Widget": "To start configure your Widget !",

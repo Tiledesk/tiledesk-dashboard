@@ -97,12 +97,13 @@ export class HomeComponent implements OnInit {
         this.prjct_name = projectProfileData.name;
         this.prjct_profile_name = projectProfileData.profile_name;
         this.prjct_trial_expired = projectProfileData.trial_expired;
-
-
       }
     })
+  }
 
 
+  goToPricing() {
+    this.router.navigate(['project/' + this.projectId + '/pricing']);
   }
 
   getBrowserLanguage() {
@@ -397,9 +398,7 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['project/' + this.projectId + '/activities']);
   }
 
-  goToPricing() {
-    this.router.navigate(['project/' + this.projectId + '/pricing']);
-  }
+
 
 
 }

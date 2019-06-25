@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Google+Sans);
+// @import url(https://fonts.googleapis.com/css?family=Google+Sans);
 // @import url(https://fonts.googleapis.com/css?family=Alfa+Slab+One);
 // @import url(https://fonts.googleapis.com/css?family=Open+Sans:Bold);
 // @import url(https://fonts.googleapis.com/css?family=Open+Sans:Montserrat:700);
@@ -435,7 +435,38 @@
 	width: 100%;
 }
 
+.project-name-and-plan {
+	font-family: 'Google Sans',sans-serif;
+	font-size: 21px;
+	margin-bottom: 25px;
+	line-height: 32px;
+	display: flex;
+	font-weight: 500;
+}
 
+.project-name {
+	display: flex;
+	flex-direction: row;
+	min-width: 0;
+	min-width: 100px;
+}
+
+.project-plan {
+	 /* background-color: rgba(0,0,0,.14); */
+	 cursor:pointer;
+	 background-color: #039be5;
+	 color: #fff;
+	 border-radius: 30px;
+	 font-size: 12px;
+	 letter-spacing: .5px;
+	 line-height: 16px;
+	 padding: 4px 18px;
+	 margin-left: 12px;
+	 height: 24px;
+	 position: relative;
+	 top: 4px;
+	 min-width: 50px;
+}
 
 /* CALLOUT TOOLTIP */
 // div.callout {

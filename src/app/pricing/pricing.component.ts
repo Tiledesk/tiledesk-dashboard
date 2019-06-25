@@ -21,7 +21,7 @@ export class PricingComponent implements OnInit {
   enterprisePlanNoAgentPerPrice: number
 
   selectedPlanName: string;
-  proPlanPerAgentPrice = 8;
+  proPlanPerAgentPrice = 5;
   enterprisePlanPerAgentPrice = 59;
 
   displayStipeCheckoutError: any;
