@@ -210,3 +210,18 @@ button.close {
     margin-top: 10px
 }
 
+.project-plan-input {
+    border-top-right-radius: 0px !important; 
+    border-bottom-right-radius: 0px !important; 
+    text-transform:capitalize !important; 
+}
+
+.project-plan-btn {
+    padding-bottom: 9px; 
+    margin-bottom: 9px; 
+    padding-top: 10px; 
+    border-top-right-radius: 5px; 
+    border-bottom-right-radius: 5px; 
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}

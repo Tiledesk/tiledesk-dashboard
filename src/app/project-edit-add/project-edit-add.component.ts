@@ -36,6 +36,7 @@ export class ProjectEditAddComponent implements OnInit {
   prjct_name: string;
   prjct_profile_name: string;
   prjct_trial_expired: boolean;
+  prjc_trial_days_left: any;
 
   constructor(
     private projectService: ProjectService,
@@ -79,8 +80,27 @@ export class ProjectEditAddComponent implements OnInit {
         this.prjct_name = projectProfileData.name;
         this.prjct_profile_name = projectProfileData.profile_name;
         this.prjct_trial_expired = projectProfileData.trial_expired;
+        this.prjc_trial_days_left = projectProfileData.trial_days_left;
+
+        if (this.prjct_profile_name === 'free') {
+          if (this.prjct_trial_expired === false) {
+            this.prjct_profile_name = 'Pro (trial)'
+          } else {
+            this.prjct_profile_name = projectProfileData.profile_name;
+          }
+        } else if (this.prjct_profile_name === 'pro') {
+
+          this.prjct_profile_name = projectProfileData.profile_name;
+        }
+
+
+
       }
     })
+  }
+
+  goToPricing() {
+    this.router.navigate(['project/' + this.id_project + '/pricing']);
   }
 
   // !!! NO MORE USED - GO BACK TO PROJECT LIST

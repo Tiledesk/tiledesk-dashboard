@@ -87,7 +87,47 @@
                     {{ "ProjectEditPage.ProjectPlan" | translate }}
                   </label>
                   <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <input style="color:#999999" [(ngModel)]="prjct_profile_name" class="input" type="text" disabled style="text-transform: capitalize">
+                    <div class="input-group">
+                      <input [(ngModel)]="prjct_profile_name" class="input project-plan-input" type="text" disabled>
+                      <span class="input-group-btn" style="padding-right: 0px;padding-left: 0px;">
+                       
+                        <span *ngIf="prjct_trial_expired === true || prjct_trial_expired === false"> 
+                          <button class="btn btn-success project-plan-btn" (click)="goToPricing()">
+                            {{ "Pricing.UpgradePlan" | translate }}
+                          </button>
+                        </span> 
+                      </span>
+                    </div>
+
+                    <i class="material-icons" style="color:#5e9ded; vertical-align: middle;">
+                        info
+                    </i>
+
+                    <span *ngIf="prjct_trial_expired === false"> 
+                        {{ "Pricing.Your" | translate }}
+                        
+                       <span style="font-weight:500"> 
+                         {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate }}
+                       </span>
+                       
+                       {{ "Pricing.WillExpireIn" | translate }}
+                       
+                        <span *ngIf="prjc_trial_days_left < -1"> 
+                           {{ - prjc_trial_days_left }} {{ "Pricing.Days" | translate }}
+                       </span>
+     
+                       <span *ngIf="prjc_trial_days_left === -1"> 
+                           {{ "Pricing.Tomorrow" | translate }}
+                       </span>
+                     </span> 
+
+                     <span *ngIf="prjct_trial_expired === true"> 
+                        {{ "Pricing.Your" | translate }}
+                      <span style="font-weight:500">
+                          {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate }} 
+                      </span>
+                      {{ "Pricing.HasExpired" | translate }} 
+                    </span> 
                   </div>
                 </div>
    
