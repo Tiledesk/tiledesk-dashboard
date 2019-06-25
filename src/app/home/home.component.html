@@ -25,14 +25,17 @@
                       {{ prjct_name }} 
                     </span>
                     
-                    <span class="project-plan" (click)="goToPricing()"> 
+                    <span class="project-plan" (click)="goToPricing()" style="text-transform:capitalize">
+                      {{ prjct_profile_name }}
+                    </span>
+                    <!-- <span class="project-plan" (click)="goToPricing()"> 
                       <span *ngIf="prjct_trial_expired === false">  
-                        Pro (trial) 
+                        Pro (trial) Plan
                       </span>
                       <span *ngIf="prjct_trial_expired === true" style="text-transform:capitalize">  
                         {{ prjct_profile_name }} Plan 
                       </span>
-                    </span>
+                    </span> -->
                   </div>
 
                   <h2 class="homeBanner__textsHeader">
