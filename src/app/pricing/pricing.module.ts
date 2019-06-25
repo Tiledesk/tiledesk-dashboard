@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-
+import { SharedModule } from '../shared/shared.module';
 
 import { TranslateModule } from '@ngx-translate/core';
 import { PaymentSuccessPageComponent } from './payment-success-page/payment-success-page.component';
@@ -12,18 +12,21 @@ import { PricingComponent } from './pricing.component';
   imports: [
     CommonModule,
     RouterModule,
-    TranslateModule
+    TranslateModule,
+    SharedModule
   ],
   declarations: [
     PaymentSuccessPageComponent,
     PaymentCanceledPageComponent,
     PricingComponent
+
   ],
   exports: [
     PaymentSuccessPageComponent,
     PaymentCanceledPageComponent,
     PricingComponent,
-    TranslateModule
+    TranslateModule,
+
   ]
 })
 export class PricingModule { }

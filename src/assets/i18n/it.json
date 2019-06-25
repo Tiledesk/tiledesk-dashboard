@@ -253,7 +253,8 @@
         "AddMoreOperators":"Aggiungi più operatori",
         "ContactUs":"Contattaci",
         "PlanChange":"Modifica Piano",
-        "ContactUsViaChatAndTellIUsHowManyOperator": "Contattaci via chat e comunicaci quanti posti operatore vupi aggiungere al progetto"
+        "ContactUsViaChatAndTellIUsHowManyOperator": "Contattaci via chat e comunicaci quanti posti operatore vupi aggiungere al progetto",
+        "TheNumberOfOperatorSeatsCannotBeLess":"Il numero di posti operatore non può essere inferiore al numero di agenti nel progetto"
      },
     "ActivitiesOptions": {
         "AgentAvailabilityOrRoleChange":"Modifica disponibilità o ruolo agente",

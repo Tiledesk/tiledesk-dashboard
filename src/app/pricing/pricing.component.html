@@ -147,11 +147,14 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
               <div class="col-xs-4 col-sm-4 col-md-4"> 
                 <a>
                   <!-- [ngClass]="{'pro-plan-btn-only-icon' : selectedPlanName === 'pro', 'enterprise-plan-btn-only-icon' : selectedPlanName === 'enterprise'}" -->
-                  <button class="btn-only-icon pro-plan-btn-only-icon" (click)="decreaseOperatorNumber()" style="float: right" [disabled]="operatorNo <= 1">
+                 
+                  <!-- [disabled]="operatorNo < projectUsersNumber" -->
+                  <button class="btn-only-icon pro-plan-btn-only-icon" (click)="decreaseOperatorNumber()" style="float: right" [disabled]="operatorNo === 0">
                     <i class="material-icons btn-icon">
                       remove
                     </i>
                   </button>
+                  
                 </a>
               </div>
 
@@ -179,7 +182,8 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 
               <div class="col-sm-12">
 
-                <div class="total-price">
+                <loading-spinner *ngIf="showSpinner"></loading-spinner>
+                <div *ngIf="!showSpinner"class="total-price">
 
                   <span *ngIf="perMonth === true"> 
                     <span style="font-size: 30px;position: relative;top: -17px;left:18px">€</span> 
@@ -463,7 +467,52 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
     </div>
   </div>
 
-
+<!-- ============= INFO 'NO LESS OF THE NUMBER OF THE AGENT THET ARE ALREADY IN YOUR PROJECT' MODAL ============= -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayInfoModal}" style="background-color: rgba(90,90,90,0.9);"> 
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" style="border-top-left-radius:6px; border-top-right-radius:6px">
+        <div class="modal-header" style="padding:0px!important; border-bottom:none!important;">
+  
+          <!-- <div style="font-weight: 100; right: 6px; position: absolute;cursor:pointer" (click)="closeInfoModal()">
+            <i class="material-icons close-payment-report-icon" style="font-size: 35px; opacity: 0.5;">
+              clear
+            </i>
+          </div> -->
+  
+          <h2 class="modal-title" style="color: #262f3c; text-align: center; font-family: 'Google Sans', sans-serif !important; margin-top: 25px">
+            <!-- <span style="vertical-align: middle;"> -->
+              <i class="material-icons" style="vertical-align: middle; font-size:49px; color:#facea8 ">
+                error_outline
+              </i>
+            <!-- </span> -->
+          </h2>
+  
+        </div>
+        <hr class="custom-hr" style="margin-top:10px; margin-bottom:10px">
+        <div class="modal-body" style="padding-top: 0px; padding-bottom: 0px; padding-right: 35px; padding-left: 35px; line-height: 1">
+  
+          <div class="row">
+            <div class="col-sm-12">
+                <h3 style="text-align: center;  color: #8894ab; font-size: 24px">
+                    <!-- Contact us via chat and tell us how many operator seats you want to add to the project -->
+                    {{ "Pricing.TheNumberOfOperatorSeatsCannotBeLess" | translate }}
+                </h3>
+            </div>
+          </div>
+        </div>
+  
+        <div class="modal-footer" style="margin-top: 0px; background-color: #fff; border-top:none">
+          <div style="text-align: center; margin-bottom: 25px;"> 
+  
+            <button type="button"  style="background-color:#3EA9F5;color:#FFF;padding:12px 16px;border:0;border-radius:4px;font-size:18px"            
+              id="checkout-button-plan_EjFHNnzJXE3jul"  role="link"  (click)="closeInfoModal()">
+              <!-- PerMonth -->
+              {{ "Cancel" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
 <!-- <script>
