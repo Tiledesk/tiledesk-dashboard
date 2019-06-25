@@ -5,6 +5,16 @@
     //border: 1px solid grey;
     font-family: 'Google Sans', sans-serif !important;
     font-size:18px;
+    display: inline-block; //-->allow content vertical align
+    vertical-align: middle;
+    padding-top: 5px;
+
+    .arrow_forward-custom{
+        position: relative;
+        top: 5px;
+        font-size: 22px;
+        
+    }
 }
 
 .chart-wrapper-richieste{
@@ -20,8 +30,9 @@
 }
 
 .chart-title-richieste {
-    padding-bottom: 24px;
-    padding-top: 24px;
+    //padding-bottom: 24px;
+    //padding-top: 31px;
+    padding: 24px 5px;
     font-size: 17px;
     //color: #fff;
     font-family: 'Google Sans', sans-serif !important;
@@ -49,3 +60,15 @@
        padding-left: 25px;
     }
 }
+
+// .card_richieste {
+//     display: inline-block;
+//     position: relative;
+//     //width: 100%;
+//     //margin: 25px 0;
+//     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+//     border-radius: 3px;
+//     color: rgba(0,0,0, 0.87);
+//     background: #fff;
+//   }
+

@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs/Subscription';
 import { AnalyticsService } from './../../services/analytics.service';
 import { Component, OnInit } from '@angular/core';
 import { RequestsService } from 'app/services/requests.service';
@@ -33,6 +34,8 @@ export class PanoramicaComponent implements OnInit {
   weekday: any;
   hour: any;
 
+  subscription:Subscription;
+
   constructor(  private requestsService:RequestsService,
                 private translate: TranslateService,
                 private analyticsService: AnalyticsService) {
@@ -44,6 +47,11 @@ export class PanoramicaComponent implements OnInit {
 
   ngOnInit() {
     this.getRequestByLast7Day();
+  }
+
+  ngOnDestroy() {
+    console.log('!!! ANALYTICS - !!!!! UN - SUBSCRIPTION TO REQUESTS');
+    this.subscription.unsubscribe();
   }
 
   goToRichieste(){
@@ -68,7 +76,7 @@ export class PanoramicaComponent implements OnInit {
 
   //-----------LAST 7 DAYS GRAPH-----------------------
   getRequestByLast7Day(){
-    this.requestsService.requestsByDay().subscribe((requestsByDay: any) => {
+    this.subscription=this.analyticsService.requestsByDay().subscribe((requestsByDay: any) => {
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY ', requestsByDay);
 
       // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O

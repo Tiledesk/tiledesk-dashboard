@@ -4,13 +4,13 @@
 
 <ul class="bottom-nav">
         <li class="btn-with-border-effect "  [ngClass]="{'li-active' : selected === 'panoramica', 'border-from-center': selected !== 'panoramica'}" (click)="goTo('panoramica')" >
-            <a>Panoramica</a>
+            <a>{{ 'Analytics.PanoramicaComponentTitle' | translate }}</a>
         </li>
         <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'metriche', 'border-from-center': selected !== 'metriche'}" (click)="goTo('metriche')">
-            <a>Metriche</a>
+            <a>{{ 'Analytics.MetricsComponentTitle' | translate }}</a>
         </li>
         <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'realtime', 'border-from-center': selected !== 'realtime'}" (click)="goTo('realtime')">
-            <a>Realtime</a>
+            <a>{{ 'Analytics.RealTimeComponentTitle' | translate }}</a>
         </li>
 </ul>
 
@@ -246,31 +246,31 @@
 
 
 
-
-          <div class="row" style="text-align: center; margin-top:35px">
+            <!-- *************TITLE REAL TIME MONITORING***************** -->
+          <!-- <div class="row" style="text-align: center; margin-top:35px">
               <div class="col-md-12" >
                   <h4 class="section-title">
                       Real-Time Monitoring
                   </h4>
               </div>
-          </div>
+          </div> -->
 
           <!-- // START ALL THE REQUESTS COUNT (SERVED UNSERVED ACTIVE) -->
           <div class="row">
               <!-- ============ TOTAL ACTIVE - OVER ALL THE REQUESTS ============ -->
-              <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+              <!-- <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                   <div class="card card-stats" style="border-radius: 10px;">
                       
                       <div class="card-header tiledesk_card_header">
 
-                          <!-- <i class="material-icons card-header_icon " style="color: #ff9800; ">
+                          < - - <i class="material-icons card-header_icon " style="color: #ff9800; ">
                               message
-                          </i> -->
-                          <!-- <svg class="chat-icon" style="width: 32px; position: relative; top: 12px;" viewBox="0 0 16 16">
+                          </i> - ->
+                          <- - <svg class="chat-icon" style="width: 32px; position: relative; top: 12px;" viewBox="0 0 16 16">
                               <path d="M2.07 15.597c-.115-.253-.085-.556.075-.777.01-.016.958-1.33 1.146-2.707C1.63 11.207 0 9.29 0 6.88 0 3.088 3.59 0 8 0s8 3.087 8 6.88c0 3.826-3.59 6.938-8 6.938h-.957C5.74 15.888 2.815 15.996 2.683 16c-.268 0-.5-.156-.612-.403zM1.334 6.88c0 1.865 1.46 3.476 2.904 4.103.253.11.42.378.42.676 0 .964-.316 1.908-.654 2.643.77-.23 1.66-.678 2.07-1.546.116-.24.344-.393.594-.393H8c3.676 0 6.667-2.46 6.667-5.483 0-2.99-2.99-5.425-6.667-5.425-3.676 0-6.667 2.434-6.667 5.426z" 
                                   fill="#ff9800" fill-rule="evenodd">
                               </path>
-                          </svg> -->
+                          </svg> - ->
 
                           <svg viewBox="0 0 58.1 53.9" style="width: 42px; position: relative; top: 7px" xml:space="preserve">
                               <style type="text/css">
@@ -316,20 +316,20 @@
                   </div>
               </div>
   
-              <!-- ============ SERVED - OVER ALL THE REQUESTS ============ -->
+              <- - ============ SERVED - OVER ALL THE REQUESTS ============ - ->
               <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                   <div class="card card-stats" style="border-radius: 10px;">
                      
                       <div class="card-header tiledesk_card_header">
-                          <!-- <i class="material-icons card-header_icon " style="color: #00bcd4;">
+                          < - - <i class="material-icons card-header_icon " style="color: #00bcd4;">
                               visibility
-                          </i> -->
+                          </i> - ->
 
-                          <!-- <svg class="chat-icon" style="width: 32px; position: relative; top: 12px;" viewBox="0 0 16 16">
+                          < - - <svg class="chat-icon" style="width: 32px; position: relative; top: 12px;" viewBox="0 0 16 16">
                               <path d="M2.07 15.597c-.115-.253-.085-.556.075-.777.01-.016.958-1.33 1.146-2.707C1.63 11.207 0 9.29 0 6.88 0 3.088 3.59 0 8 0s8 3.087 8 6.88c0 3.826-3.59 6.938-8 6.938h-.957C5.74 15.888 2.815 15.996 2.683 16c-.268 0-.5-.156-.612-.403zM1.334 6.88c0 1.865 1.46 3.476 2.904 4.103.253.11.42.378.42.676 0 .964-.316 1.908-.654 2.643.77-.23 1.66-.678 2.07-1.546.116-.24.344-.393.594-.393H8c3.676 0 6.667-2.46 6.667-5.483 0-2.99-2.99-5.425-6.667-5.425-3.676 0-6.667 2.434-6.667 5.426z" 
                                   fill="#00bcd4" fill-rule="evenodd">
                               </path>
-                          </svg> -->
+                          </svg> - ->
                           <svg  viewBox="0 0 58.1 53.9" style="width: 42px; position: relative; top: 7px" xml:space="preserve">
                               <style type="text/css">
                                   .st0-served{fill:none;stroke:#05BDD4;stroke-width:3;stroke-miterlimit:10;}
@@ -382,15 +382,15 @@
                   </div>
               </div>
   
-              <!-- ============ UNSERVED - COUNT OVER ALL THE REQUESTS ============ -->
+              < - - ============ UNSERVED - COUNT OVER ALL THE REQUESTS ============ - ->
               <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                   <div class="card card-stats"  style="border-radius: 10px;">
   
                       <div class="card-header tiledesk_card_header">
-                          <!-- <i class="material-icons card-header_icon " style="color: #f44336; ">
+                          <- - <i class="material-icons card-header_icon " style="color: #f44336; ">
                               visibility
-                          </i> -->
-                          <!-- <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                          </i> - ->
+                          < - - <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                               viewBox="0 0 16 18" style="width: 32px; position: relative; top: 12px;" xml:space="preserve">
                           <style type="text/css">
                               .chat-icon-unserved-request{fill:#f44336;}
@@ -404,7 +404,7 @@
                               <path class="chat-icon-unserved-request" d="M9.1,5.6L8.7,8.3C8.7,8.7,8.3,8.9,7.9,8.9c-0.3,0-0.6-0.3-0.6-0.6L6.9,5.6C6.8,5,7.2,4.4,7.8,4.3
                               C8.4,4.2,9,4.6,9.1,5.2C9.2,5.3,9.2,5.5,9.1,5.6z"/>
                           </g>
-                          </svg> -->
+                          </svg> - ->
 
                           <svg viewBox="0 0 58.1 53.9" style="width: 42px; position:relative; top:7px" xml:space="preserve">
                               <style type="text/css">
@@ -455,12 +455,12 @@
                       </div>
                   </div>
               </div>
-          </div>
+          </div> -->
            <!-- // END GLOBAL REQUESTS COUNT (SERVED UNSERVED ACTIVE) -->
 
       <div class="row">
           <!-- /// start ======== --- TABLE "REQUESTS X AGENT" --- ======== /// -->
-          <div class="col-md-4">
+          <!-- <div class="col-md-4">
               <div class="card">
                   <div class="card-header card-header-custom" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
                       <h4 class="c21-title" style="margin-bottom:2px; margin-top:2px;">
@@ -476,30 +476,30 @@
 
                           <thead>
                               <tr>
-                                  <!-- ------====== column IMAGE (note: THE COLUMN HEADING IS 'USER') ======------ -->
+                                  <- - ------====== column IMAGE (note: THE COLUMN HEADING IS 'USER') ======------ - ->
                                   <th>
-                                      <!-- <span style="color: #566787">
+                                      < - - <span style="color: #566787">
                                           <strong>
                                           {{ "UsersPage.User" | translate }}
                                           </strong>
-                                      </span> -->
+                                      </span> - ->
                                   </th>
-                                  <!-- ------====== column USER (NAME + LASTNAME) ======------ -->
+                                  < - - ------====== column USER (NAME + LASTNAME) ======------ - ->
                                   <th>
-                                      <!-- <span style="color: #566787">
+                                      <- - <span style="color: #566787">
                                           <strong>
                                           {{ "UsersPage.User" | translate }}
                                           </strong>
-                                      </span> -->
+                                      </span> - ->
                                   </th>
 
-                                   <!-- ------====== column # OF ASSIGNEDE REQUESTS  ======------ -->
+                                   <- - ------====== column # OF ASSIGNEDE REQUESTS  ======------ - ->
                                   <th>
-                                      <!-- <span style="color: #566787">
+                                      <- - <span style="color: #566787">
                                           <strong>
                                           #
                                           </strong>
-                                      </span> -->
+                                      </span> - ->
                                   </th>
                               </tr>
                           </thead>
@@ -513,8 +513,8 @@
                                       class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{member?.id_user?._id}}%2Fphoto.jpg?alt=media" 
                                       onerror="this.src='assets/img/no_image_user.png'"/>
   
-                                      <!-- <img *ngIf="userProfileImageExist !== true" style="vertical-align: middle; width: 60px; height: 60px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
-                                      class="user-img" src="assets/img/no_image_user.png"/> -->
+                                      <- - <img *ngIf="userProfileImageExist !== true" style="vertical-align: middle; width: 60px; height: 60px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
+                                      class="user-img" src="assets/img/no_image_user.png"/> - ->
 
                                   </td>
 
@@ -524,18 +524,18 @@
               
                                   <td>
                                      <span style="font-weight: 400">  {{ member?.value }}</span> 
-                                     <!-- <span style="color: #999999; font-size:0.9em"> request </span> -->
+                                     <- - <span style="color: #999999; font-size:0.9em"> request </span> - ->
                                   </td>
                               </tr>
                           </tbody>
                       </table>
                   </div>
               </div>
-          </div>
+          </div> -->
           <!-- /// end ======== --- TABLE "REQUESTS X AGENT" --- ======== /// -->
 
           <!-- /// start ======== --- TABLE "REQUESTS X DEPTS" --- ======== /// -->
-          <div class="col-md-4">
+          <!-- <div class="col-md-4">
               <div class="card">
                   <div class="card-header card-header-custom" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
                       <h4 class="c21-title" style="margin-bottom:2px; margin-top:2px;">
@@ -545,43 +545,43 @@
                       </h4>
                   </div>
       
-                  <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
+                  <- - <loading-spinner *ngIf="showSpinner"></loading-spinner> - ->
                   <div class="card-content table-responsive" style="padding-top: 0px">
                       <table class="table table-hover">
 
                           <thead>
                               <tr>
-                                  <!-- ------====== column DEPT NAME ======------ -->
+                                  <- - ------====== column DEPT NAME ======------ - ->
                                   <th> </th>
 
-                                      <!-- ------====== column # OF ASSIGNED REQUESTS  ======------ -->
+                                      <- - ------====== column # OF ASSIGNED REQUESTS  ======------ - ->
                                   <th> </th>
                               </tr>
                           </thead>
                           
                           <tbody>
                               <tr  *ngFor="let dept of departments" >
-                                  <!-- *ngIf="dept.default === false" -->
+                                  <- - *ngIf="dept.default === false" - ->
                                   <td  style="cursor:pointer; font-weight: 400;" (click)="goToEditAddPage_EDIT(dept?._id)" >
                                       {{ dept?.name }}
                                   </td>
               
-                                  <!-- *ngIf="dept.default === false" -->
+                                  <- - *ngIf="dept.default === false" - ->
                                   <td>
                                       <span style="font-weight: 400">  
                                           {{ dept?.value }}
                                       </span> 
-                                      <!-- <span style="color: #999999; font-size:0.9em"> request </span> -->
+                                      <- - <span style="color: #999999; font-size:0.9em"> request </span> - ->
                                   </td>
                               </tr>
                           </tbody>
                       </table>
                   </div>
               </div>
-          </div>
+          </div> -->
 
           <!-- /// start ======== --- CARD "LAST MONTH REQUESTS COUNT" --- ======== /// -->
-          <div class="col-md-4">
+          <!-- <div class="col-md-4">
               <div class="card card-stats"  style="border-radius: 10px;">
                   
                   <div class="card-header tiledesk_card_header">
@@ -615,7 +615,7 @@
                       {{ "LastMonth" | translate }} 
                   </div>
               </div>
-          </div>
+          </div> -->
 
 
       </div>

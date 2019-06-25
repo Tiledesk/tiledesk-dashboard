@@ -847,6 +847,15 @@
     "Friday": "Venerdì",
     "Saturday": "Sabato",
     "Analytics":{
+        "PanoramicaComponentTitle": "Panoramica",
+        "MetricsComponentTitle": "Metrica",
+        "Metrics":{
+            "Requests":"Richieste",
+            "Sentiment":"Sentiment",
+            "ResponseTime":"Tempi risposta",
+            "ConversationLenght":"Durata conversazione"
+        },
+        "RealTimeComponentTitle": "Tempo reale",
         "AvgTimeTitle": "Monitoraggio tempo medio",
         "MedianResTimeClock": "Tempo medio di risposta ",
         "ResponseAVGtime":"Il tempo di risposta medio complessivo del tuo team è ",
@@ -860,6 +869,7 @@
         "Month":"mese",
         "Months":"mesi",
         "Year":"anno",
-        "DataRangeRequest":"Range date "
+        "DataRangeRequest":"Range date ",
+        "RealTimeMonitoring": "Monitoraggio in tempo reale"
     }
 }

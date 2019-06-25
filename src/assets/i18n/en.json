@@ -850,6 +850,15 @@
     "Friday": "Friday",
     "Saturday": "Saturday",
     "Analytics":{
+        "PanoramicaComponentTitle": "Panoramic",
+        "MetricsComponentTitle": "Metrics",
+        "Metrics":{
+            "Requests":"Requests",
+            "Sentiment":"Sentiment",
+            "ResponseTime":"Response time",
+            "ConversationLenght":"Conversation lenght"
+        },
+        "RealTimeComponentTitle": "Real Time",
         "AvgTimeTitle": "Average Time Monitoring",
         "MedianResTimeClock": "Median Response Time",
         "ResponseAVGtime":"Your team's overall Median Response Time is ",
@@ -863,6 +872,7 @@
         "Month":"month",
         "Months":"months",
         "Year":"year",
-        "DataRangeRequest":"Data range "
+        "DataRangeRequest":"Data range ",
+        "RealTimeMonitoring": "Real-time Monitoring"
     }
 }

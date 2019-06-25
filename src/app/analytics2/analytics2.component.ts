@@ -22,7 +22,7 @@ import { Chart } from 'chart.js';
 })
 export class Analytics2Component implements OnInit , OnDestroy {
 
-  selected='panoramica';
+  selected:any;
 
   activeRequestsCount: number;
   unservedRequestsCount: number;
@@ -99,13 +99,14 @@ export class Analytics2Component implements OnInit , OnDestroy {
     private departmentService: DepartmentService,
     private analyticsService: AnalyticsService
   ) {
-    this.selected='panoramica';
+    this.selected='panoramica';//-> default active component
     console.log('!!! »»» HELLO ANALYTICS »»» ');
     // this.getAllUsersOfCurrentProject();
     this.getBrowserLangAndSwitchMonthName();
     
   }
 
+  //go to different component passed throw arg of method
   goTo(selected){
     this.selected=selected;
     console.log("Move to:", selected);
@@ -1384,7 +1385,7 @@ export class Analytics2Component implements OnInit , OnDestroy {
         plugins:[{
           beforeDraw: function(chartInstance, easing) {
             var ctx = chartInstance.chart.ctx;
-            console.log("chartistance",chartInstance)
+            //console.log("chartistance",chartInstance)
             //ctx.fillStyle = 'red'; // your color here
             ctx.font="Google Sans"
             var chartArea = chartInstance.chartArea;
