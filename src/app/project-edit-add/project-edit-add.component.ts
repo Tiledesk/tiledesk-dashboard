@@ -38,6 +38,8 @@ export class ProjectEditAddComponent implements OnInit {
   prjct_trial_expired: boolean;
   prjc_trial_days_left: any;
 
+  displayContactUsModal = 'none';
+
   constructor(
     private projectService: ProjectService,
     private router: Router,
@@ -92,11 +94,23 @@ export class ProjectEditAddComponent implements OnInit {
 
           this.prjct_profile_name = projectProfileData.profile_name;
         }
-
-
-
       }
     })
+  }
+
+  openLetsChatModal() {
+    this.displayContactUsModal = 'block';
+    console.log('openLetsChatModal')
+  }
+
+  closeContactUsModal() {
+    this.displayContactUsModal = 'none';
+  }
+
+  launchWidget() {
+    if (window && window['tiledesk']) {
+      window['tiledesk'].open();
+    }
   }
 
   goToPricing() {

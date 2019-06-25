@@ -97,6 +97,21 @@ export class HomeComponent implements OnInit {
         this.prjct_name = projectProfileData.name;
         this.prjct_profile_name = projectProfileData.profile_name;
         this.prjct_trial_expired = projectProfileData.trial_expired;
+
+
+
+        if (this.prjct_profile_name === 'free') {
+          if (this.prjct_trial_expired === false) {
+            this.prjct_profile_name = 'Pro (trial) Plan'
+          } else {
+            this.prjct_profile_name = projectProfileData.profile_name + ' Plan';
+          }
+        } else if (this.prjct_profile_name === 'pro') {
+
+          this.prjct_profile_name = projectProfileData.profile_name + ' Plan';
+        }
+
+
       }
     })
   }

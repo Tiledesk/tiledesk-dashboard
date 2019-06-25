@@ -248,7 +248,12 @@
         "WillExpireIn": "scadranno tra",
         "Days": "giorni",
         "Tomorrow":"domani",
-        "HasExpired":"sono scaduti"
+        "HasExpired":"sono scaduti",
+        "YourSubscriptionIsActive":"Il tuo abbonamento è attivo",
+        "AddMoreOperators":"Aggiungi più operatori",
+        "ContactUs":"Contattaci",
+        "PlanChange":"Modifica Piano",
+        "ContactUsViaChatAndTellIUsHowManyOperator": "Contattaci via chat e comunicaci quanti posti operatore vupi aggiungere al progetto"
      },
     "ActivitiesOptions": {
         "AgentAvailabilityOrRoleChange":"Modifica disponibilità o ruolo agente",

@@ -438,11 +438,26 @@
 .project-name-and-plan {
 	font-family: 'Google Sans',sans-serif;
 	font-size: 21px;
-	margin-bottom: 25px;
+	position: relative;
 	line-height: 32px;
 	display: flex;
 	font-weight: 500;
 }
+
+@media only screen and (min-width: 794px){ 
+	.project-name-and-plan {
+		top: -65px;
+	}
+}
+
+@media only screen and (max-width: 794px){ 
+	.project-name-and-plan {
+		margin-bottom: 25px;
+	}
+}
+
+
+
 
 .project-name {
 	display: flex;

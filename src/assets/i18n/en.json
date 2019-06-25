@@ -249,7 +249,12 @@
         "WillExpireIn": "will expire in",
         "Days": "days",
         "Tomorrow":"tomorrow",
-        "HasExpired":"has expired"
+        "HasExpired":"has expired",
+        "YourSubscriptionIsActive":"Your subscription is active",
+        "AddMoreOperators":"Add more Operators",
+        "ContactUs":"Contact us",
+        "PlanChange":"Plan change",
+        "ContactUsViaChatAndTellIUsHowManyOperator": " Contact us via chat and tell us how many operator seats you want to add to the project"
      },
 
     "ActivitiesOptions": {
