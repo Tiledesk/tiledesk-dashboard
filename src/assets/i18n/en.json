@@ -249,7 +249,9 @@
         "WillExpireIn": "will expire in",
         "Days": "days",
         "Tomorrow":"tomorrow",
-        "HasExpired":"has expired"
+        "HasExpired":"has expired",
+        "YourSubscriptionIsActive":"Your subscription is active",
+        "AddMoreOperators":"Add more Operators"
      },
 
     "ActivitiesOptions": {

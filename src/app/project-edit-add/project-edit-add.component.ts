@@ -92,11 +92,13 @@ export class ProjectEditAddComponent implements OnInit {
 
           this.prjct_profile_name = projectProfileData.profile_name;
         }
-
-
-
       }
     })
+  }
+
+  openLetsChatModal() {
+
+    console.log('openLetsChatModal')
   }
 
   goToPricing() {
