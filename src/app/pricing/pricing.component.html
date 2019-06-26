@@ -200,36 +200,37 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
                     </span>
                   </span>
 
-
-
                   <span *ngIf="perYear === true"> 
 
                     <div class="total-price-x-year"> 
-                      <span style="font-size: 15px;position: relative;top: -6px;left:18px">€</span> 
-                      <span style="position: relative;left: 8px;font-weight: 700;font-family: 'Lato', sans-serif; font-size:30px; text-decoration: line-through;">
-                    
-                        {{ (numberOfAgentPerPrice * 12) - 16 }}
 
-                        <!-- <span style="font-size: 18px;position:relative;top: -4px;">
-                            per year
-                        </span> -->
-                      </span>
-                    
+                      <div class="per-year-total"> 
+                        <span style="font-size: 15px;position: relative;top: -6px;left:18px">€</span> 
+                        <span style="position: relative;left: 8px;font-weight: 700;font-family: 'Lato', sans-serif; font-size:30px; text-decoration: line-through;">
+                      
+                          2mesi  {{ (numberOfAgentPerPrice * 2) }} 
+                          <!-- 12mesi  -->
+                          {{ (numberOfAgentPerPrice * 12) }}
 
-                    <span style="font-size: 30px;position: relative;top: -17px;left:18px">€</span> 
-                    <span style="position: relative;left: 8px;font-weight: 700;font-family: 'Lato', sans-serif;">
+                          <!-- <span style="font-size: 18px;position:relative;top: -4px;">
+                              per year
+                          </span> -->
+                        </span>
+                      </div>
                   
-                      {{ numberOfAgentPerPrice * 12 }}
-                      <span style="font-size: 18px;position:relative;top: -4px;">
-                          per year
-                      </span>
-                    </span>
+                      <div class="per-year-total-discounted"> 
+                        <span style="font-size: 30px;position: relative;top: -17px;left:18px">€</span> 
+                        <span style="position: relative;left: 8px;font-weight: 700;font-family: 'Lato', sans-serif;">
+                      
+                          {{ (numberOfAgentPerPrice * 10) }}
+                          <span style="font-size: 18px;position:relative;top: -4px;">
+                              per year
+                          </span>
+                        </span>
+                      </div>
 
-                  </div>
+                    </div>
                   </span>
-                  
-                 
-                
                 <!-- <span style="font-size: 18px;position:relative;top: -4px;">
                  
                   <span *ngIf="perMonth === true"> 
@@ -268,7 +269,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
             <!-- Create a button that your customers click to complete their purchase. Customize the styling to suit your branding. -->
             <div style="text-align: center; margin-top: 15px;" *ngIf="selectedPlanName === 'pro'"> 
               <button type="button" class="btn outline-btn btn-lg pro-plan-outline-btn"             
-                id="checkout-button-plan_EjFHNnzJXE3jul"  role="link"  (click)="openReportPaymentModal()">
+                id="checkout-button-plan_EjFHNnzJXE3jul"  role="link"  (click)="openReportPaymentModal()" [disabled]="operatorNo < projectUsersNumber">
                 
                   Get Pro Plan
               </button>
