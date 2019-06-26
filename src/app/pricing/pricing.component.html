@@ -184,7 +184,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 
                 <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
                 <!-- *ngIf="!showSpinner" -->
-                <div class="total-price">
+                <div class="total-price" style="height:104px">
 
                   <span *ngIf="perMonth === true"> 
                     <span style="font-size: 30px;position: relative;top: -17px;left:18px">€</span> 
@@ -206,9 +206,9 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 
                       <div class="per-year-total"> 
                         <span style="font-size: 15px;position: relative;top: -6px;left:18px">€</span> 
-                        <span style="position: relative;left: 8px;font-weight: 700;font-family: 'Lato', sans-serif; font-size:30px; text-decoration: line-through;">
+                        <span style="position: relative;left: 0px;font-weight: 500;font-family: 'Lato', sans-serif; font-size:20px; text-decoration: line-through; top:-39px">
                       
-                          2mesi  {{ (numberOfAgentPerPrice * 2) }} 
+                          <!-- 2mesi  {{ (numberOfAgentPerPrice * 2) }}  -->
                           <!-- 12mesi  -->
                           {{ (numberOfAgentPerPrice * 12) }}
 
@@ -220,7 +220,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
                   
                       <div class="per-year-total-discounted"> 
                         <span style="font-size: 30px;position: relative;top: -17px;left:18px">€</span> 
-                        <span style="position: relative;left: 8px;font-weight: 700;font-family: 'Lato', sans-serif;">
+                        <span style="position: relative;left: 8px;font-weight: 700;font-family: 'Lato', sans-serif; top: -72px;">
                       
                           {{ (numberOfAgentPerPrice * 10) }}
                           <span style="font-size: 18px;position:relative;top: -4px;">
