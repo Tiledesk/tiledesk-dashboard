@@ -566,17 +566,17 @@ export class WidgetComponent implements OnInit, OnDestroy {
     // '&themecolor=' + this.primaryColor
     // '&themeforegroundcolor=' + this.secondaryColor
     // http://testwidget.tiledesk.com/testsite?projectid='
-    const url = 'http://testwidget.tiledesk.com/testsitenw?projectname=' + this.projectName + '&projectid='  + this.projectId
-      + paramPreChatForm
-      + this.paramCalloutTimer
-      + paramThemeColor
-      + paramThemeforegroundcolor
-      + paramCallout_title + calloutTitle
-      + paramCallout_msg + calloutMsg
-      + paramAlign
-      + this.paramWellcomeTitle
-      + this.paramWellcomeMsg
-      + this.paramLogoChat
+    const url = 'http://testwidget.tiledesk.com/testsitenw3?projectname=' + this.projectName + '&projectid='  + this.projectId
+      // + paramPreChatForm
+      // + this.paramCalloutTimer
+      // + paramThemeColor
+      // + paramThemeforegroundcolor
+      // + paramCallout_title + calloutTitle
+      // + paramCallout_msg + calloutMsg
+      // + paramAlign
+      // + this.paramWellcomeTitle
+      // + this.paramWellcomeMsg
+      // + this.paramLogoChat
     console.log('»» WIDGET - TEST WIDGET URL ', url);
     window.open(url, '_blank');
   }

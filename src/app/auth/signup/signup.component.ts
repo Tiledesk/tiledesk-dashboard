@@ -163,7 +163,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
       // tslint:disable-next-line:no-debugger
       // debugger
       if (!error) {
-        // self.widgetReInit();
+        self.widgetReInit();
         /**
          * *** WIDGET - pass data to the widget function setTiledeskWidgetUser in index.html ***
          */
@@ -175,9 +175,9 @@ export class SignupComponent implements OnInit, AfterViewInit {
           console.log('SetTiledeskWidgetUserSignin (Signup) - userEmail', _storedUser.email);
           console.log('SetTiledeskWidgetUserSignin (Signup) - userId', _storedUser._id);
 
-          // setTimeout(() => {
-          //   window['setTiledeskWidgetUser'](_storedUser.firstname + ' ' + _storedUser.lastname, _storedUser.email, _storedUser._id);
-          // }, 2000);
+          setTimeout(() => {
+            window['setTiledeskWidgetUser'](_storedUser.firstname + ' ' + _storedUser.lastname, _storedUser.email, _storedUser._id);
+          }, 2000);
         }
         self.router.navigate(['/projects']);
 
