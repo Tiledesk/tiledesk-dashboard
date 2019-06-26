@@ -127,10 +127,7 @@ export class SigninComponent implements OnInit {
       if (!error) {
         self.router.navigate(['/projects']);
 
-        self.widgetReInit();
-
-
-
+        // self.widgetReInit();
 
         /**
          * *** WIDGET - pass data to the widget function setTiledeskWidgetUser in index.html ***
@@ -139,9 +136,9 @@ export class SigninComponent implements OnInit {
         console.log('SetTiledeskWidgetUserSignin (Signin) - userEmail', user.email);
         console.log('SetTiledeskWidgetUserSignin (Signin) - userId', user._id);
 
-        setTimeout(() => {
-          window['setTiledeskWidgetUser'](user.firstname + ' ' + user.lastname, user.email, user._id);
-        }, 2000);
+        // setTimeout(() => {
+        //   window['setTiledeskWidgetUser'](user.firstname + ' ' + user.lastname, user.email, user._id);
+        // }, 2000);
 
 
       } else {

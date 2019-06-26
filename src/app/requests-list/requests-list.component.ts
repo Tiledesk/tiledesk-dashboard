@@ -600,7 +600,7 @@ export class RequestsListComponent implements OnInit {
   testWidgetPage() {
     // const url = 'http://support.tiledesk.com/testsite/?projectid=' + this.projectId;
     // + '&projectname=' + this.projectName
-    const url = 'http://testwidget.tiledesk.com/testsitenw3?projectname=' + this.projectName + ' &projectid=' + this.projectId
+    const url = 'http://testwidget.tiledesk.com/testsitenw?projectname=' + this.projectName + ' &projectid=' + this.projectId
     // + '&prechatform=' + false + '&callout_timer=' + false + '&align=right';
     window.open(url, '_blank');
   }

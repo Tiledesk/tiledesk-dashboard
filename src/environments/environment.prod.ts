@@ -9,7 +9,7 @@ const serverChatUrl = 'https://api.tiledesk.com/v1/chat/';
 export const environment = {
     production: true,
     VERSION: require('../../package.json').version,
-    widgetUrl: 'https://widget.tiledesk.com/v3/tiledesk.js',
+    widgetUrl: 'https://widget.tiledesk.com/v2/tiledesk.js',
     firebaseConfig: {
         apiKey: firebase.apiKey,
         authDomain: firebase.authDomain,
