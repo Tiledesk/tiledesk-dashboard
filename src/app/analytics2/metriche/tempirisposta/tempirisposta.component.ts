@@ -275,7 +275,7 @@ export class TempirispostaComponent implements OnInit {
         plugins:[{
           beforeDraw: function(chartInstance, easing) {
             var ctx = chartInstance.chart.ctx;
-            console.log("chartistance",chartInstance)
+            //console.log("chartistance",chartInstance)
             //ctx.fillStyle = 'red'; // your color here
             ctx.font="Google Sans"
             var chartArea = chartInstance.chartArea;
