@@ -564,10 +564,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     onScroll(event: any): void {
-        console.log('SIDEBAR RICHIAMO ON SCROLL ');
+        // console.log('SIDEBAR RICHIAMO ON SCROLL ');
         this.elSidebarWrapper = <HTMLElement>document.querySelector('.sidebar-wrapper');
         this.scrollpos = this.elSidebarWrapper.scrollTop
-        console.log('SIDEBAR SCROLL POSITION', this.scrollpos)
+        // console.log('SIDEBAR SCROLL POSITION', this.scrollpos)
     }
     stopScroll() {
         // const el = <HTMLElement>document.querySelector('.sidebar-wrapper');

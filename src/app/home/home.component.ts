@@ -57,8 +57,10 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     console.log('!!! Hello HomeComponent! ');
-    this.getProjectPlan();
+
     this.getBrowserLanguage();
+
+    
     // console.log(environment.firebaseConfig.projectId);
     // this.firebaseProjectId = environment.firebaseConfig.projectId;
 
@@ -87,7 +89,13 @@ export class HomeComponent implements OnInit {
     this.getAvailableProjectUsersByProjectId();
 
     this.getUserRole();
+    this.getProjectPlan();
+  }
 
+
+  getBrowserLanguage() {
+    this.browserLang = this.translate.getBrowserLang();
+    console.log('!!! ===== HELLO HOME COMP ===== BRS LANG ', this.browserLang)
   }
 
   getProjectPlan() {
@@ -102,15 +110,38 @@ export class HomeComponent implements OnInit {
 
         if (this.prjct_profile_name === 'free') {
           if (this.prjct_trial_expired === false) {
-            this.prjct_profile_name = 'Pro (trial) Plan'
+            console.log('!!! ===== HELLO HOME COMP this.browserLang 2 ', this.browserLang);
+
+            if (this.browserLang === 'it') {
+
+              this.prjct_profile_name = 'Piano Pro (trial)'
+
+            } else {
+              this.prjct_profile_name = 'Pro (trial) Plan'
+
+            }
           } else {
-            this.prjct_profile_name = projectProfileData.profile_name + ' Plan';
+            console.log('!!! ===== HELLO HOME COMP this.browserLang 3 ', this.browserLang);
+            if (this.browserLang === 'it') {
+
+              this.prjct_profile_name = 'Piano ' + projectProfileData.profile_name;
+            } else {
+
+              this.prjct_profile_name = projectProfileData.profile_name + ' Plan';
+
+            }
           }
         } else if (this.prjct_profile_name === 'pro') {
 
-          this.prjct_profile_name = projectProfileData.profile_name + ' Plan';
-        }
+          if (this.browserLang === 'it') {
 
+            this.prjct_profile_name = projectProfileData.profile_name + ' Plan';
+
+          } else {
+
+            this.prjct_profile_name = 'Piano ' + projectProfileData.profile_name;
+          }
+        }
 
       }
     })
@@ -121,10 +152,7 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['project/' + this.projectId + '/pricing']);
   }
 
-  getBrowserLanguage() {
-    this.browserLang = this.translate.getBrowserLang();
-    console.log('!!! ===== HELLO HOME COMP ===== BRS LANG ', this.browserLang)
-  }
+  
 
   // RISOLVE lo USE-CASE: L'UTENTE è NELLA HOME DEL PROGETTO A (DI CUI è OWNER)
   // SEGUE UN LINK CHE LO PORTA (AD ESEMPIO) AL DETTAGLIO DI UNA RICHIESTA DEL PROGETTO B (DI CUI è AGENT)

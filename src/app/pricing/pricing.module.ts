@@ -18,12 +18,14 @@ import { PricingComponent } from './pricing.component';
     PaymentSuccessPageComponent,
     PaymentCanceledPageComponent,
     PricingComponent
+
   ],
   exports: [
     PaymentSuccessPageComponent,
     PaymentCanceledPageComponent,
     PricingComponent,
-    TranslateModule
+    TranslateModule,
+
   ]
 })
 export class PricingModule { }

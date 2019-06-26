@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { AuthService } from '../core/auth.service';
 import { Router } from '@angular/router'
-
+import { UsersService } from '../services/users.service';
 declare var Stripe: any;
 
 @Component({
@@ -16,7 +16,8 @@ export class PricingComponent implements OnInit {
   currentUserID: string;
   currentUserEmail: string;
 
-  operatorNo = 1
+  // operatorNo = 1
+  operatorNo: number;
   numberOfAgentPerPrice: number
   enterprisePlanNoAgentPerPrice: number
 
@@ -31,25 +32,57 @@ export class PricingComponent implements OnInit {
   dshbrdBaseUrl: string;
 
   displayPaymentReport = 'none'
+  displayInfoModal = 'none'
 
+  projectUsersNumber: number;
+  showSpinnerInTotalPrice = true;
+  info_modal_has_been_displayed = false;
   constructor(
     public location: Location,
     public auth: AuthService,
-    private router: Router
+    private router: Router,
+    private usersService: UsersService
   ) { }
 
   ngOnInit() {
     this.getCurrentProject();
     this.selectedPlanName = 'pro'
 
-    this.switchPlanPrice()
-    // const route = this.router;
-    // console.log('PricingComponent route ', route)
+    // this.switchPlanPrice()
 
     this.getBaseUrl()
     this.getCurrentUser();
+    this.getAllUsersOfCurrentProject();
 
+    console.log('PricingComponent - PROJECT USERS (FILTERED FOR PROJECT ID) numberOfAgentPerPrice', this.numberOfAgentPerPrice);
   }
+
+
+  getAllUsersOfCurrentProject() {
+    this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
+      console.log('PricingComponent - PROJECT USERS (FILTERED FOR PROJECT ID)', projectUsers);
+
+      if (projectUsers) {
+        this.projectUsersNumber = projectUsers.length
+        console.log('PricingComponent - PROJECT USERS (FILTERED FOR PROJECT ID) projectUsersNumber', this.projectUsersNumber);
+
+
+        this.operatorNo = projectUsers.length
+        this.numberOfAgentPerPrice = this.operatorNo * this.proPlanPerAgentPrice;
+
+
+      }
+    }, error => {
+      this.showSpinnerInTotalPrice = false;
+      console.log('PricingComponent - PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
+    }, () => {
+      this.showSpinnerInTotalPrice = false;
+      console.log('PricingComponent - PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
+    });
+  }
+
+
+
 
 
   getBaseUrl() {
@@ -115,11 +148,31 @@ export class PricingComponent implements OnInit {
   }
 
   decreaseOperatorNumber() {
-    this.operatorNo -= 1;
 
-    console.log('decreaseOperatorNumber operatorNo',  this.operatorNo);
-    // this.switchPlanPrice()
-    this.numberOfAgentPerPrice = this.operatorNo * this.proPlanPerAgentPrice;
+
+      this.operatorNo -= 1;
+
+      console.log('decreaseOperatorNumber operatorNo', this.operatorNo);
+      // this.switchPlanPrice()
+      this.numberOfAgentPerPrice = this.operatorNo * this.proPlanPerAgentPrice;
+   
+
+    if ((this.operatorNo < this.projectUsersNumber) && (this.info_modal_has_been_displayed === false) ) {
+
+      this.openInfoModal()
+    }
+  }
+
+  openInfoModal() {
+    // if (this.operatorNo === this.projectUsersNumber) {
+    this.displayInfoModal = 'block'
+
+    this.info_modal_has_been_displayed = true;
+    // }
+  }
+
+  closeInfoModal() {
+    this.displayInfoModal = 'none'
   }
 
   increaseOperatorNumber() {

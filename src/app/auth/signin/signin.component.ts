@@ -129,9 +129,6 @@ export class SigninComponent implements OnInit {
 
         self.widgetReInit();
 
-
-
-
         /**
          * *** WIDGET - pass data to the widget function setTiledeskWidgetUser in index.html ***
          */
