@@ -97,7 +97,7 @@ export class AuthService {
   ) {
     this.http = http;
     console.log('version (AuthService)  ', this.version);
-
+    console.log('!!! ====== AUTH SERVICE ====== !!!')
     this.APP_IS_DEV_MODE = isDevMode();
     console.log('!!! ====== AUTH SERVICE !!! ====== isDevMode ', this.APP_IS_DEV_MODE)
     // this.user = this.afAuth.authState
