@@ -241,6 +241,7 @@
     "NewAnswer":"New answer",
     "UploadAnswersFromCsv": "Upload answers from Csv", 
     "ExportAnswersToCsv":"Export answers to Csv",
+    "Close": "Close",
     "Pricing":{
         "Operators":"Operators",
         "UpgradePlan":"Upgrade Plan",

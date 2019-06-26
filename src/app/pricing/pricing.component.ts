@@ -35,7 +35,7 @@ export class PricingComponent implements OnInit {
   displayInfoModal = 'none'
 
   projectUsersNumber: number;
-  showSpinner = true;
+  showSpinnerInTotalPrice = true;
   info_modal_has_been_displayed = false;
   constructor(
     public location: Location,
@@ -73,10 +73,10 @@ export class PricingComponent implements OnInit {
 
       }
     }, error => {
-      this.showSpinner = false;
+      this.showSpinnerInTotalPrice = false;
       console.log('PricingComponent - PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
     }, () => {
-      this.showSpinner = false;
+      this.showSpinnerInTotalPrice = false;
       console.log('PricingComponent - PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
     });
   }

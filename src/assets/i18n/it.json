@@ -240,6 +240,7 @@
     "NewAnswer":"Aggiungi risposta",
     "UploadAnswersFromCsv": "Carica risposte da Csv", 
     "ExportAnswersToCsv":"Esporta risposte in Csv",
+    "Close": "Chiudi",
     "Pricing":{
         "Operators":"Operatori",
         "UpgradePlan":"Aggiorna Piano",
