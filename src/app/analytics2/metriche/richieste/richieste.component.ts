@@ -15,6 +15,8 @@ import { Subscription } from 'rxjs';
 })
 export class RichiesteComponent implements OnInit {
 
+  lineChart:any;
+
   lang: String;
 
   monthNames:any;
@@ -61,6 +63,7 @@ export class RichiesteComponent implements OnInit {
     }else if(value === 360){
       this.lastdays=1
     }
+    this.lineChart.destroy();
     this.subscription.unsubscribe()
     this.getRequestByLastNDay(value);
   }
@@ -175,7 +178,7 @@ export class RichiesteComponent implements OnInit {
       }
       let lang=this.lang;
 
-      var lineChart = new Chart('lastNdayChart', {
+      this.lineChart = new Chart('lastNdayChart', {
         type: 'line',
         data: {
           labels: _requestsByDay_labels_array ,

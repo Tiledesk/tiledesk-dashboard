@@ -47,6 +47,8 @@ export class PanoramicaComponent implements OnInit {
 
   ngOnInit() {
     this.getRequestByLast7Day();
+    this.heatMap();
+    
   }
 
   ngOnDestroy() {
@@ -246,7 +248,7 @@ export class PanoramicaComponent implements OnInit {
         plugins:[{
           beforeDraw: function(chartInstance, easing) {
             var ctx = chartInstance.chart.ctx;
-            console.log("chartistance",chartInstance)
+            //console.log("chartistance",chartInstance)
             //ctx.fillStyle = 'red'; // your color here
             ctx.height=128
             //chartInstance.chart.canvas.parentNode.style.height = '128px';
@@ -314,6 +316,7 @@ export class PanoramicaComponent implements OnInit {
         }
         this.yAxis = { labels: this.ylabel_ita };
         this.xAxis = { labels: this.xlabel_ita };
+        
         this.titleSettings = {
           text: 'Utenti per ora del giorno',
           textStyle: {
