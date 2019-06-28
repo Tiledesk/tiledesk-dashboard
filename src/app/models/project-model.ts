@@ -16,5 +16,8 @@ export interface Project {
     trial_expired?: any;
     trial_days_left?: number;
     trial_days?: number;
+    profile_type?: string;
+    subscription_is_active?: any;
+    profile?: any;
     __v?: any;
 }

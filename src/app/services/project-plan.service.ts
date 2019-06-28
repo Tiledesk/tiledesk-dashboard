@@ -1,3 +1,4 @@
+// tslint:disable:max-line-length
 import { Injectable } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -41,7 +42,7 @@ export class ProjectPlanService {
     this.router.events.subscribe((ev) => {
       if (ev instanceof NavigationEnd) {
 
-       
+
         const current_url = ev.url
         console.log('ProjectPlanService - NavigationEnd current_url', current_url);
         const url_segments = current_url.split('/');
@@ -55,7 +56,7 @@ export class ProjectPlanService {
 
         // nav_project_id IS UNDEFINED IN THE LOGIN PAGE - IN THE PROJECT LIST PAGE
         // IN THE PAGE IN WICH THE  nav_project_id IS UNDEFINED SET TO NULL THE VALUE PUBLISHED BY projectPlan
-        if (nav_project_id === undefined ) {
+        if (nav_project_id === undefined) {
 
           this.projectPlan.next(null);
         }
@@ -70,17 +71,19 @@ export class ProjectPlanService {
   getProjectByID(nav_project_id: string) {
 
     this.projectService.getProjectById(nav_project_id).subscribe((project: any) => {
-      console.log('ProjectPlanService - getProjectByID * project ', project);
+      console.log('»> »> PROJECT-PROFILE GUARD (NEW WF IN ProjectPlanService) - getProjectByID * project ', project);
 
       const projectPlanData: Project = {
 
-        _id:  project._id,
+        _id: project._id,
         name: project.name,
         profile_name: project.profile['name'],
         profile_agents: project.profile['agents'],
         trial_days: project.profile['trialDays'],
         trial_days_left: project.trialDaysLeft,
         trial_expired: project.trialExpired,
+        subscription_is_active: project.isActiveSubscription,
+        profile_type: project.profile['type'],
       }
 
       this.projectPlan.next(projectPlanData);
@@ -90,6 +93,23 @@ export class ProjectPlanService {
     }, () => {
       console.log('ProjectPlanService - getProjectByID * complete ');
     });
+  }
+
+
+  public checkProjectPlan(prjct_id): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+
+
+      console.log('»> »> PROJECT-PROFILE GUARD (NEW WF IN ProjectPlanService) - getProjectByID * prjct_id (passed from ProjectProfileGuard) ', prjct_id);
+      this.projectService.getProjectById(prjct_id).subscribe((project: any) => {
+
+
+        resolve(project);
+
+      })
+
+    });
+
   }
 
 

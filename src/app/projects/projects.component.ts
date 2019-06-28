@@ -164,7 +164,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
               role: project.role,
               profile_name: project.id_project.profile.name,
               trial_expired: project.id_project.trialExpired,
-              trial_days_left: project.id_project.trialDaysLeft
+              trial_days_left: project.id_project.trialDaysLeft,
+              profile_type: project.id_project.profile.type,
+              subscription_is_active: project.id_project.isActiveSubscription
             }
 
             /***  ADDED TO KNOW IF THE CURRENT USER IS AVAILABLE IN SOME PROJECT
