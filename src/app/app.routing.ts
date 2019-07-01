@@ -194,13 +194,13 @@ const routes: Routes = [
   { path: 'project/:projectid/editbot/:botid', component: BotEditAddComponent, canActivate: [AuthGuard] },
 
   // , ProjectProfileGuard
-  { path: 'project/:projectid/analytics', component: AnalyticsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/analytics', component: AnalyticsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
   { path: 'project/:projectid/analytics2/panoramica', component: Analytics2Component, canActivate: [AuthGuard] },
   
 
   { path: 'project/:projectid/analytics-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] },
   // , ProjectProfileGuard
-  { path: 'project/:projectid/activities', component: ActivitiesComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/activities', component: ActivitiesComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
   { path: 'project/:projectid/activities-demo', component: ActivitiesStaticComponent, canActivate: [AuthGuard] },
 
  

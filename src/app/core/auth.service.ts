@@ -1,3 +1,4 @@
+// tslint:disable:max-line-length
 import { Injectable } from '@angular/core';
 import { Router, NavigationEnd, NavigationStart, ActivatedRoute } from '@angular/router';
 
@@ -41,6 +42,7 @@ const superusers = [
 import * as firebase from 'firebase';
 import 'firebase/messaging';
 import 'firebase/database'
+
 // import firebase from '@firebase/app';
 // import '@firebase/messaging';
 // import '@firebase/database';
@@ -97,7 +99,7 @@ export class AuthService {
   ) {
     this.http = http;
     console.log('version (AuthService)  ', this.version);
-
+    console.log('!!! ====== AUTH SERVICE ====== !!!')
     this.APP_IS_DEV_MODE = isDevMode();
     console.log('!!! ====== AUTH SERVICE !!! ====== isDevMode ', this.APP_IS_DEV_MODE)
     // this.user = this.afAuth.authState
@@ -123,18 +125,19 @@ export class AuthService {
 
     this.checkIfFCMIsSupported();
     this.checkIfExpiredSessionModalIsOpened();
+
   }
 
   public checkTrialExpired(): Promise<boolean> {
+    // this.getProjectById();
     return new Promise<boolean>((resolve, reject) => {
-      // tslint:disable-next-line:max-line-length
+
       // console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH SERV) called checkTrialExpired! TRIAL EXPIRED ', this.project_trial_expired);
       console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH SERV) called checkTrialExpired!');
       resolve(this.project_trial_expired);
 
     });
   }
-
 
 
   checkIfFCMIsSupported() {
@@ -236,7 +239,7 @@ export class AuthService {
 
                 this.project_trial_expired = storedProjectObject['trial_expired'];
                 // tslint:disable-next-line:max-line-length
-                console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH SERV checkStoredProjectAndPublish) TRIAL expired 2', this.project_trial_expired);
+                // console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH SERV checkStoredProjectAndPublish) TRIAL expired 2', this.project_trial_expired);
 
                 console.log('!! »»»»» AUTH SERV - PROJECT NAME GET FROM STORAGE: ', project_name);
 
@@ -433,6 +436,8 @@ export class AuthService {
 
         // ASSIGN THE RETURNED TOKEN TO THE USER OBJECT
         user.token = jsonRes.token
+
+
 
         // PUBLISH THE USER OBJECT
         this.user_bs.next(user);
@@ -832,7 +837,7 @@ export class AuthService {
   }
 
   firebaseSignout() {
-    
+
     this.user_bs.next(null);
     this.project_bs.next(null);
 
@@ -861,7 +866,7 @@ export class AuthService {
 
   widgetReInit() {
     if (window && window['tiledesk']) {
-      console.log('AUTH-SERVICE   window[-tiledesk ',  window['tiledesk'])
+      console.log('AUTH-SERVICE   window[-tiledesk ', window['tiledesk'])
 
       window['tiledesk'].reInit();
       // alert('logout');
