@@ -43,6 +43,7 @@ export class PanoramicaComponent implements OnInit {
                   this.lang = this.translate.getBrowserLang();
                   console.log('LANGUAGE ', this.lang);
                   this.getBrowserLangAndSwitchMonthName();
+                  this.getHeatMapSeriesDataByLang();
    }
 
   ngOnInit() {
@@ -59,6 +60,49 @@ export class PanoramicaComponent implements OnInit {
   goToRichieste(){
     console.log("User click on last 7 days graph");
     this.analyticsService.goToRichieste();
+  }
+
+  getHeatMapSeriesDataByLang(){
+    
+    if (this.lang === 'it') {
+      this.weekday = { '1': 'Lun', '2': 'Mar', '3': 'Mer', '4': 'Gio', '5': 'Ven', '6': 'Sab', '7': 'Dom' }
+      this.hour = {
+        '1': '01:00', '2': '02:00', '3': '03:00', '4': '04:00', '5': '05:00', '6': '06:00', '7': '07:00', '8': '08:00', '9': '09:00', '10': '10:00',
+        '11': '11:00', '12': '12:00', '13': '13:00', '14': '14:00', '15': '15:00', '16': '16:00', '17': '17:00', '18': '18:00', '19': '19:00', '20': '20:00',
+        '21': '21:00', '22': '22:00', '23': '23:00'
+      }
+      this.yAxis = { labels: this.ylabel_ita };
+      this.xAxis = { labels: this.xlabel_ita };
+      
+      this.titleSettings = {
+        text: 'Utenti per ora del giorno',
+        textStyle: {
+          size: '15px',
+          fontWeight: '500',
+          fontStyle: 'Normal'
+        }
+      };
+
+    } else {
+      this.weekday = { '1': 'Mon', '2': 'Tue', '3': 'Wed', '4': 'The', '5': 'Fri', '6': 'Sat', '7': 'Sun' }
+      this.hour = {
+        '1': '1am', '2': '2am', '3': '3am', '4': '4am', '5': '5am', '6': '6am', '7': '7am', '8': '8am', '9': '9am', '10': '10am',
+        '11': '11am', '12': '12am', '13': '1pm', '14': '2pm', '15': '3pm', '16': '4pm', '17': '5pm', '18': '6pm', '19': '7pm', '20': '8pm',
+        '21': '9pm', '22': '10pm', '23': '11pm','24': '12pm'
+      }
+
+      this.yAxis = { labels: this.ylabel_eng };
+      this.xAxis = { labels: this.xlabel_eng };
+      this.titleSettings = {
+        text: 'User per hour of day',
+        textStyle: {
+          size: '15px',
+          fontWeight: '500',
+          fontStyle: 'Normal'
+        }
+      };
+
+    }
   }
   getBrowserLangAndSwitchMonthName() {
     
@@ -78,7 +122,7 @@ export class PanoramicaComponent implements OnInit {
 
   //-----------LAST 7 DAYS GRAPH-----------------------
   getRequestByLast7Day(){
-    this.subscription=this.analyticsService.requestsByDay().subscribe((requestsByDay: any) => {
+    this.subscription=this.analyticsService.requestsByDay(7,null).subscribe((requestsByDay: any) => {
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY ', requestsByDay);
 
       // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
@@ -307,45 +351,19 @@ export class PanoramicaComponent implements OnInit {
         
       // }
 
-      if (this.lang === 'it') {
-        this.weekday = { '1': 'Lun', '2': 'Mar', '3': 'Mer', '4': 'Gio', '5': 'Ven', '6': 'Sab', '7': 'Dom' }
-        this.hour = {
-          '1': '01:00', '2': '02:00', '3': '03:00', '4': '04:00', '5': '05:00', '6': '06:00', '7': '07:00', '8': '08:00', '9': '09:00', '10': '10:00',
-          '11': '11:00', '12': '12:00', '13': '13:00', '14': '14:00', '15': '15:00', '16': '16:00', '17': '17:00', '18': '18:00', '19': '19:00', '20': '20:00',
-          '21': '21:00', '22': '22:00', '23': '23:00'
-        }
-        this.yAxis = { labels: this.ylabel_ita };
-        this.xAxis = { labels: this.xlabel_ita };
+      
+      const initialArray=[];
+      console.log("AAAAAAAAA",this.hour[1])
+      for(let i=1;i<24;i++){
         
-        this.titleSettings = {
-          text: 'Utenti per ora del giorno',
-          textStyle: {
-            size: '15px',
-            fontWeight: '500',
-            fontStyle: 'Normal'
-          }
-        };
-
-      } else {
-        this.weekday = { '1': 'Mon', '2': 'Tue', '3': 'Wed', '4': 'The', '5': 'Fri', '6': 'Sat', '7': 'Sun' }
-        this.hour = {
-          '1': '1am', '2': '2am', '3': '3am', '4': '4am', '5': '5am', '6': '6am', '7': '7am', '8': '8am', '9': '9am', '10': '10am',
-          '11': '11am', '12': '12am', '13': '1pm', '14': '2pm', '15': '3pm', '16': '4pm', '17': '5pm', '18': '6pm', '19': '7pm', '20': '8pm',
-          '21': '9pm', '22': '10pm', '23': '11pm'
+        for(let j=1;j<7;j++){
+          initialArray.push({ '_id': { 'hour': this.hour[i], 'weekday': this.weekday[j] }, 'count': 0 })
         }
-
-        this.yAxis = { labels: this.ylabel_eng };
-        this.xAxis = { labels: this.xlabel_eng };
-        this.titleSettings = {
-          text: 'User per hour of day',
-          textStyle: {
-            size: '15px',
-            fontWeight: '500',
-            fontStyle: 'Normal'
-          }
-        };
-
+        
       }
+
+      console.log("INITIALLLL",initialArray);
+      
 
       // recostruct datafromservice to other customDataJson
       for (let i in data) {
@@ -354,6 +372,9 @@ export class PanoramicaComponent implements OnInit {
       }
 
       console.log('CUSTOM', this.customData);
+
+      const requestByDays_final_array = initialArray.map(obj => this.customData.find(o => (o._id.hour === obj._id.hour)&&(o._id.weekday === obj._id.weekday)) || obj);
+      console.log("FINAL",requestByDays_final_array)
 
       this.dataSource = {
         data: this.customData,

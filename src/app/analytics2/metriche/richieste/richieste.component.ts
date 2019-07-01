@@ -39,12 +39,15 @@ export class RichiesteComponent implements OnInit {
           this.lang = this.translate.getBrowserLang();
           console.log('LANGUAGE ', this.lang);
           this.getBrowserLangAndSwitchMonthName();
+          
     }
 
   ngOnInit() {
     this.selectedDeptId = '';
     this.selectedDaysId=7
-    this.getRequestByLastNDay(this.selectedDaysId);
+    this.initDay=moment().subtract(6, 'd').format('D/M/YYYY')
+    this.endDay=moment().subtract(0, 'd').format('D/M/YYYY')
+    this.getRequestByLastNDay(this.selectedDaysId, this.selectedDeptId);
     this.getDepartments();
     
   }
@@ -55,17 +58,28 @@ export class RichiesteComponent implements OnInit {
   }
 
   daysSelect(value){
+    
+    this.selectedDaysId=value;//--> value to pass throw for graph method
       //check value for label in htlm
     if(value<=30){
-      this.lastdays=value
+      this.lastdays=value;
     }else if((value=== 90) || (value=== 180)){
-      this.lastdays=value/30
+      this.lastdays=value/30;
     }else if(value === 360){
-      this.lastdays=1
+      this.lastdays=1;
     }
     this.lineChart.destroy();
-    this.subscription.unsubscribe()
-    this.getRequestByLastNDay(value);
+    this.subscription.unsubscribe();
+    this.getRequestByLastNDay(value, this.selectedDeptId);
+    console.log('REQUEST:', value, this.selectedDeptId)
+  }
+
+  depSelected(selectedDeptId){
+    console.log('dep', selectedDeptId);
+    this.lineChart.destroy();
+    this.subscription.unsubscribe();
+    this.getRequestByLastNDay( this.selectedDaysId,selectedDeptId)
+    console.log('REQUEST:', this.selectedDaysId, selectedDeptId)
   }
 
   getDepartments() {
@@ -101,8 +115,8 @@ export class RichiesteComponent implements OnInit {
   }
 
   //-----------LAST n DAYS GRAPH-----------------------
-  getRequestByLastNDay(lastdays){
-    this.subscription= this.analyticsService.requestsByDay().subscribe((requestsByDay: any) => {
+  getRequestByLastNDay(lastdays, depID){
+    this.subscription= this.analyticsService.requestsByDay(lastdays, depID).subscribe((requestsByDay: any) => {
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY ', requestsByDay);
 
       // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
