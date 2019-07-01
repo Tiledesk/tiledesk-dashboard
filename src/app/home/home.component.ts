@@ -40,8 +40,9 @@ export class HomeComponent implements OnInit {
 
   prjct_name: string;
   prjct_profile_name: string;
+  prjct_profile_type: string;
   prjct_trial_expired: boolean;
-
+  subscription_is_active: boolean;
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -60,7 +61,7 @@ export class HomeComponent implements OnInit {
 
     this.getBrowserLanguage();
 
-    
+
     // console.log(environment.firebaseConfig.projectId);
     // this.firebaseProjectId = environment.firebaseConfig.projectId;
 
@@ -99,16 +100,16 @@ export class HomeComponent implements OnInit {
   }
 
   getProjectPlan() {
-    this.prjctPlanService.projectPlan.subscribe((projectProfileData: any) => {
-      console.log('ProjectPlanService (navbar) project Profile Data', projectProfileData)
+    this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
+      console.log('ProjectPlanService (HomeComponent) project Profile Data', projectProfileData)
       if (projectProfileData) {
         this.prjct_name = projectProfileData.name;
         this.prjct_profile_name = projectProfileData.profile_name;
         this.prjct_trial_expired = projectProfileData.trial_expired;
+        this.prjct_profile_type = projectProfileData.profile_type;
+        this.subscription_is_active = projectProfileData.subscription_is_active;
 
-
-
-        if (this.prjct_profile_name === 'free') {
+        if (this.prjct_profile_type === 'free') {
           if (this.prjct_trial_expired === false) {
             console.log('!!! ===== HELLO HOME COMP this.browserLang 2 ', this.browserLang);
 
@@ -131,7 +132,7 @@ export class HomeComponent implements OnInit {
 
             }
           }
-        } else if (this.prjct_profile_name === 'pro') {
+        } else if (this.prjct_profile_type === 'payment') {
 
           if (this.browserLang === 'it') {
 
@@ -148,11 +149,18 @@ export class HomeComponent implements OnInit {
   }
 
 
-  goToPricing() {
-    this.router.navigate(['project/' + this.projectId + '/pricing']);
+  goToPricingOrOpenModalSubsExpired() {
+    if (this.prjct_profile_type === 'free') {
+
+      this.router.navigate(['project/' + this.projectId + '/pricing']);
+
+    } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+
+      this.notify.showCheckListModal(true);
+    }
   }
 
-  
+
 
   // RISOLVE lo USE-CASE: L'UTENTE è NELLA HOME DEL PROGETTO A (DI CUI è OWNER)
   // SEGUE UN LINK CHE LO PORTA (AD ESEMPIO) AL DETTAGLIO DI UNA RICHIESTA DEL PROGETTO B (DI CUI è AGENT)

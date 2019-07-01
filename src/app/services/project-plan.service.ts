@@ -10,7 +10,7 @@ import { Project } from '../models/project-model';
 
 export class ProjectPlanService {
 
-  public projectPlan: BehaviorSubject<Project> = new BehaviorSubject<Project>(null);
+  public projectPlan$: BehaviorSubject<Project> = new BehaviorSubject<Project>(null);
 
   projectID: string;
 
@@ -38,7 +38,6 @@ export class ProjectPlanService {
   }
 
   ckeckProjrctPlan() {
-
     this.router.events.subscribe((ev) => {
       if (ev instanceof NavigationEnd) {
 
@@ -58,7 +57,7 @@ export class ProjectPlanService {
         // IN THE PAGE IN WICH THE  nav_project_id IS UNDEFINED SET TO NULL THE VALUE PUBLISHED BY projectPlan
         if (nav_project_id === undefined) {
 
-          this.projectPlan.next(null);
+          this.projectPlan$.next(null);
         }
 
       }
@@ -84,9 +83,10 @@ export class ProjectPlanService {
         trial_expired: project.trialExpired,
         subscription_is_active: project.isActiveSubscription,
         profile_type: project.profile['type'],
+        subscription_end_date: project.profile['subEnd'],
       }
 
-      this.projectPlan.next(projectPlanData);
+      this.projectPlan$.next(projectPlanData);
 
     }, error => {
       console.log('ProjectPlanService - getProjectByID * error ', error);
@@ -96,20 +96,14 @@ export class ProjectPlanService {
   }
 
 
-  public checkProjectPlan(prjct_id): Promise<boolean> {
+  public _getProjectById(prjct_id): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
-
-
       console.log('»> »> PROJECT-PROFILE GUARD (NEW WF IN ProjectPlanService) - getProjectByID * prjct_id (passed from ProjectProfileGuard) ', prjct_id);
       this.projectService.getProjectById(prjct_id).subscribe((project: any) => {
 
-
         resolve(project);
-
       })
-
     });
-
   }
 
 

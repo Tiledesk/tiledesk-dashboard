@@ -19,5 +19,6 @@ export interface Project {
     profile_type?: string;
     subscription_is_active?: any;
     profile?: any;
+    subscription_end_date?: any;
     __v?: any;
 }
