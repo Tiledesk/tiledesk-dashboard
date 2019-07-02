@@ -6,7 +6,7 @@ import { ProjectService } from '../../services/project.service';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { TranslateService } from '@ngx-translate/core';
-
+import { ProjectPlanService } from '../../services/project-plan.service';
 
 @Component({
   selector: 'notification-message',
@@ -28,7 +28,8 @@ export class NotificationMessageComponent implements OnInit {
     public auth: AuthService,
     public projectService: ProjectService,
     private router: Router,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private prjctPlanService: ProjectPlanService
   ) { }
 
   ngOnInit() {
@@ -160,11 +161,20 @@ export class NotificationMessageComponent implements OnInit {
 
     // BISOGNA FARE SERVIZIO SU TILEDESK API
     this.projectService.downgradePlanToFree(this.projectId)
-    .subscribe((prjct) => {
+      .subscribe((prjct) => {
 
+        console.log('NotificationMessageComponent -  downgradePlanToFree ', prjct);
+      }, (error) => {
+        console.log('NotificationMessageComponent -  downgradePlanToFree ERROR ', error);
+      },
+        () => {
+          console.log('NotificationMessageComponent -  downgradePlanToFree * COMPLETE *');
 
-    });
+          // CALL getProjectByID IN THE ProjectPlanService THAT PUBLISH THE UPDATED PROJECT
+          this.prjctPlanService.getProjectByID(this.projectId);
+          this.notify.closeModalSubsExpired();
+        });
   }
 
-
+  // 
 }

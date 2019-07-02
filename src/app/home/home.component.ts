@@ -12,6 +12,7 @@ import { RequestsService } from '../services/requests.service';
 import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
+import { e } from '@angular/core/src/render3';
 
 
 @Component({
@@ -44,7 +45,7 @@ export class HomeComponent implements OnInit {
   prjct_trial_expired: boolean;
   subscription_is_active: boolean;
   subscription_end_date: Date;
-
+  showSpinner = true;
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -105,12 +106,17 @@ export class HomeComponent implements OnInit {
     this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
       console.log('ProjectPlanService (HomeComponent) project Profile Data', projectProfileData)
       if (projectProfileData) {
+
+
         this.prjct_name = projectProfileData.name;
         this.prjct_profile_name = projectProfileData.profile_name;
         this.prjct_trial_expired = projectProfileData.trial_expired;
         this.prjct_profile_type = projectProfileData.profile_type;
         this.subscription_is_active = projectProfileData.subscription_is_active;
         this.subscription_end_date = projectProfileData.subscription_end_date
+
+
+        this.showSpinner = false;
 
         if (this.prjct_profile_type === 'free') {
           if (this.prjct_trial_expired === false) {
@@ -142,7 +148,7 @@ export class HomeComponent implements OnInit {
 
             this.prjct_profile_name = 'Piano ' + projectProfileData.profile_name;
 
-          } else  if (this.browserLang !== 'it') {
+          } else if (this.browserLang !== 'it') {
 
             this.prjct_profile_name = projectProfileData.profile_name + ' Plan';
           }
@@ -163,6 +169,10 @@ export class HomeComponent implements OnInit {
       this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
       // this.notify.showCheckListModal(true);
     }
+  }
+
+  goToPricing() {
+    this.router.navigate(['project/' + this.projectId + '/pricing']);
   }
 
 

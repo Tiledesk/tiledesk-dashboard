@@ -96,6 +96,7 @@ export class ProjectPlanService {
   }
 
 
+  // USED BY ProjectProfileGuard
   public _getProjectById(prjct_id): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       console.log('»> »> PROJECT-PROFILE GUARD (NEW WF IN ProjectPlanService) - getProjectByID * prjct_id (passed from ProjectProfileGuard) ', prjct_id);

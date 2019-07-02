@@ -10,35 +10,39 @@
        <!-- background-image: url(assets/img/tiledesk-login-background.jpg); background-size: contain; background-repeat:no-repeat -->
     <div class="row">
       <div class="col-md-12">
-        <div class="home-banner">
+          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+        <div class="home-banner" *ngIf="!showSpinner" style="min-height:538px">
           <div class="row" style="background-color:#ffffff;"> 
              
-            <div class="homeBanner">
-    
-              <div class="homeBanner__leftSideContent">
 
+            <!-- PROJECT PLAN AND PLAN -->
+            <div class="col-md-12">
+            <div class="project-name-and-plan">
+              <span class="project-name"> 
+                {{ prjct_name }} 
+              </span>
+              
+              <span class="project-plan" (click)="goToPricingOrOpenModalSubsExpired()" style="text-transform:capitalize">
+                {{ prjct_profile_name }} 
+                  
+            
+              </span>
+              <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false" style="color:#f44336; position:relative; top: -3px;" 
+                (click)="goToPricingOrOpenModalSubsExpired()" class="expired__Tooltip">
+                <i class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer" >
+                  error_outline
+                </i>
+                <span class="expired__Tooltiptext" style="font-size:14px"> {{ 'Pricing.SubscriptionExpired' | translate }}  </span>
+              </span>
+            </div>
+            </div>
+
+            <div class="homeBanner">
+
+              <div class="homeBanner__leftSideContent">
                   
                 <div class="homeBanner__texts">
                   
-                  
-                  <!-- PROJECT PLAN AND PLAN -->
-                  <div class="project-name-and-plan">
-                    <span class="project-name"> 
-                      {{ prjct_name }} 
-                    </span>
-                    
-                    <span class="project-plan" (click)="goToPricingOrOpenModalSubsExpired()" style="text-transform:capitalize">
-                      {{ prjct_profile_name }} 
-                        
-                 
-                    </span>
-                    <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false">
-                      <i class="material-icons">
-                        error_outline
-                      </i>
-                    </span>
-
-                  </div>
 
                   <h2 class="homeBanner__textsHeader">
                     {{ 'GettingStartedWith' | translate }} <br> tiledesk. 

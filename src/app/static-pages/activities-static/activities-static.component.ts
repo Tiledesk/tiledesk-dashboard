@@ -3,6 +3,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
 import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
+import { NotifyService } from '../../core/notify.service';
+import { ProjectPlanService } from '../../services/project-plan.service';
 @Component({
   selector: 'appdashboard-activities-static',
   templateUrl: './activities-static.component.html',
@@ -15,23 +17,55 @@ export class ActivitiesStaticComponent implements OnInit {
   agentInvitation: string;
   newRequest: string;
   projectId: string;
+  prjct_profile_type: string;
+  subscription_is_active: any;
+  prjct_profile_name: string;
+  subscription_end_date: Date;
 
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
     dateFormat: 'dd/mm/yyyy',
     // dateFormat: 'yyyy, mm , dd',
   };
-  
+
   constructor(
     private translate: TranslateService,
     public auth: AuthService,
-    private router: Router
+    private router: Router,
+    private prjctPlanService: ProjectPlanService,
+    private notify: NotifyService
   ) { }
 
   ngOnInit() {
     this.buildActivitiesOptions();
     this.getCurrentProject();
+    this.getProjectPlan();
   }
+
+
+  getProjectPlan() {
+    this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
+      console.log('ProjectPlanService (HomeComponent) project Profile Data', projectProfileData)
+      if (projectProfileData) {
+
+
+
+        this.prjct_profile_type = projectProfileData.profile_type;
+        this.subscription_is_active = projectProfileData.subscription_is_active;
+        this.prjct_profile_name = projectProfileData.profile_name;
+        this.subscription_end_date = projectProfileData.subscription_end_date
+
+        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+
+
+          this.notify.displaySubscripionHasExpiredModal(true, this.subscription_is_active,  this.subscription_end_date)
+        }
+
+
+      }
+    })
+  }
+
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {

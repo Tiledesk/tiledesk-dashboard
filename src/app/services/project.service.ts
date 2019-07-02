@@ -221,11 +221,11 @@ export class ProjectService {
   }
 
 
-  public downgradePlanToFree(id: string) {
+  public downgradePlanToFree(projectid: string) {
 
-    let url = this.PROJECT_BASE_URL;
-    url += id;
-    console.log('PUT URL ', url);
+    const url = this.PROJECT_BASE_URL + projectid + '/downgradeplan';
+
+    console.log('downgradePlanToFree URL ', url);
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -233,7 +233,7 @@ export class ProjectService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'name': `${name}` };
+    const body = { 'profile.type': 'free' , 'profile.name': 'free'};
 
     console.log('PUT REQUEST BODY ', body);
 
@@ -265,27 +265,27 @@ export class ProjectService {
       .map((res) => res.json());
   }
 
- /// ================ UPDATE GETTING STARTED ====================== ///
- public updateGettingStartedProject(getting_started: any) {
+  /// ================ UPDATE GETTING STARTED ====================== ///
+  public updateGettingStartedProject(getting_started: any) {
 
-  let url = this.PROJECT_BASE_URL;
-  url += this.projectID;
-  console.log('UPDATE GETTING-STARTED - URL ', url);
+    let url = this.PROJECT_BASE_URL;
+    url += this.projectID;
+    console.log('UPDATE GETTING-STARTED - URL ', url);
 
-  const headers = new Headers();
-  headers.append('Accept', 'application/json');
-  headers.append('Content-type', 'application/json');
-  headers.append('Authorization', this.TOKEN);
-  const options = new RequestOptions({ headers });
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
 
-  const body = { 'gettingStarted': getting_started };
+    const body = { 'gettingStarted': getting_started };
 
-  console.log('UPDATE GETTING-STARTED - BODY ', body);
+    console.log('UPDATE GETTING-STARTED - BODY ', body);
 
-  return this.http
-    .put(url, JSON.stringify(body), options)
-    .map((res) => res.json());
-}
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
 
 
   /// ================ UPDATE PROJECT SETTINGS > AUTO SEND TRANSCRIPT TO REQUESTER ====================== ///

@@ -201,13 +201,75 @@
 }
 
 
+.project-name {
+	display: flex;
+	flex-direction: row;
+	min-width: 0;
+	min-width: 100px;
+}
+
+.project-plan {
+	 /* background-color: rgba(0,0,0,.14); */
+	 cursor:pointer;
+	 background-color: #039be5;
+	 color: #fff;
+	 border-radius: 30px;
+	 font-size: 12px;
+	 letter-spacing: .5px;
+	 line-height: 16px;
+	 padding: 4px 18px;
+	 margin-left: 12px;
+	 height: 24px;
+	 position: relative;
+	 top: 4px;
+	 min-width: 50px;
+}
+
+.project-name-and-plan {
+	font-family: 'Google Sans',sans-serif;
+	font-size: 21px;
+	position: relative;
+	line-height: 32px;
+	display: flex;
+	font-weight: 500;
+	padding-top: 45px;
+	padding-left: 38px;
+	padding-right: 38px;
+	width: 100%;
+}
+
+.subscription_expired__icon:hover {
+	color: #eee !important;
+	.subscription_expired__text {
+		display: block !important;
+	}
+
+}
+
+// @media only screen and (min-width: 794px){ 
+// 	.project-name-and-plan {
+// 		top: -65px;
+// 	}
+// }
+
+// @media only screen and (max-width: 794px){ 
+// 	.project-name-and-plan {
+// 		margin-bottom: 25px;
+// 	}
+// }
+
 .homeBanner{
 	background-color: #fff;
 	display: flex;
 	flex-direction: row;
-	min-height: 517px;
+	// min-height: 517px;
+	min-height: 460px;
 	// padding: 53px 53px 53px 86px;
-	padding: 53px;
+	
+	padding-top: 16px;
+	padding-left: 53px;
+	padding-right: 53px;
+	padding-bottom: 53px;
 	position: relative;
 	width: 100%;
 	background-image: url(assets/img/home-bckgnd-v3.png);
@@ -232,23 +294,35 @@
 
 @media only screen and (max-width: 794px){
 
-.homeBanner__leftSideContent{
-	display: block;
- }
+	.homeBanner__leftSideContent{
+		display: block;
+	}
 
- .homeBanner__texts {
-	max-width: none !important;
-	margin-right: 0px !important; 
-	margin-bottom: 25px  !important;
- }
+	.homeBanner__texts {
+		max-width: none !important;
+		margin-right: 0px !important; 
+		margin-bottom: 25px  !important;
+	}
 
- .homeBanner__textsHeader {
-	margin-bottom: 0px !important; 
- }
+	.homeBanner__textsHeader {
+		margin-bottom: 0px !important; 
+	}
 
- .homeBanner__itemContainer {
-	max-width: none !important;
- }
+	.homeBanner__itemContainer {
+		max-width: none !important;
+	}
+
+
+	.project-name-and-plan { 
+		display: block;
+		padding-top: 90px;
+    	padding-bottom: 8px;
+	}
+
+	.project-plan {
+		margin-left: 0px;
+		top: 0px;
+	}
 }
 
 .homeBanner__texts {
@@ -435,53 +509,43 @@
 	width: 100%;
 }
 
-.project-name-and-plan {
-	font-family: 'Google Sans',sans-serif;
-	font-size: 21px;
+// TOOLTIP START
+.expired__Tooltip {
 	position: relative;
-	line-height: 32px;
-	display: flex;
-	font-weight: 500;
-}
+	display: inline-block;
+	border-bottom: 1px dotted black;
+  }
+  
+  .expired__Tooltip .expired__Tooltiptext {
+	visibility: hidden;
+	width: 120px;
+	background-color: #fff;
+	color: #f44336;
+	text-align: center;
+	border-radius: 6px;
+	padding: 5px 0;
+	position: absolute;
+	z-index: 1;
+	bottom: 100%;
+	left: 50%;
+	margin-left: -60px;
+	height: 41px;
+	line-height: 1.2;
+	border: 1px solid #eee;
+	
+	/* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
+	opacity: 0;
+	transition: opacity 1s;
+  }
+  
+  .expired__Tooltip:hover .expired__Tooltiptext {
+	visibility: visible;
+	opacity: 1;
+  }
 
-@media only screen and (min-width: 794px){ 
-	.project-name-and-plan {
-		top: -65px;
-	}
-}
-
-@media only screen and (max-width: 794px){ 
-	.project-name-and-plan {
-		margin-bottom: 25px;
-	}
-}
+// TOOLTIP END
 
 
-
-
-.project-name {
-	display: flex;
-	flex-direction: row;
-	min-width: 0;
-	min-width: 100px;
-}
-
-.project-plan {
-	 /* background-color: rgba(0,0,0,.14); */
-	 cursor:pointer;
-	 background-color: #039be5;
-	 color: #fff;
-	 border-radius: 30px;
-	 font-size: 12px;
-	 letter-spacing: .5px;
-	 line-height: 16px;
-	 padding: 4px 18px;
-	 margin-left: 12px;
-	 height: 24px;
-	 position: relative;
-	 top: 4px;
-	 min-width: 50px;
-}
 
 /* CALLOUT TOOLTIP */
 // div.callout {
