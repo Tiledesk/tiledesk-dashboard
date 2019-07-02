@@ -220,6 +220,29 @@ export class ProjectService {
 
   }
 
+
+  public downgradePlanToFree(id: string) {
+
+    let url = this.PROJECT_BASE_URL;
+    url += id;
+    console.log('PUT URL ', url);
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = { 'name': `${name}` };
+
+    console.log('PUT REQUEST BODY ', body);
+
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+
+  }
+
   /// ================ UPDATE WIDGET PROJECT ====================== ///
   public updateWidgetProject(widget_settings: any) {
 

@@ -27,13 +27,16 @@ export class NotifyService {
   notifySendingVerifyEmail: any;
 
   notifyArchivingRequest: any;
-
   displayCheckLIstModal: string;
+
+  displayModalSubsExpired: string;
+  _prjctPlanSubsEndDate: Date;
+  _prjctPlanName: string;
 
   public hasOpenChecklistModal: Subject<boolean> = new BehaviorSubject<boolean>(null);
   public bs_hasClickedChat: Subject<boolean> = new BehaviorSubject<boolean>(null);
   public isOpenedExpiredSessionModal: Subject<boolean> = new BehaviorSubject<boolean>(null);
-  
+
 
   constructor(
     private router: Router,
@@ -51,6 +54,22 @@ export class NotifyService {
     //     }
     //   }
     // })
+  }
+
+  displaySubscripionHasExpiredModal(subHasExpired: boolean, prjctPlanName: string, prjctPlanSubsEndDate: Date) {
+    if (subHasExpired === true) {
+      this.displayModalSubsExpired = 'block';
+    }
+
+    console.log('NotifyService - HasExpiredModal subHasExpired ', subHasExpired);
+    console.log('NotifyService - HasExpiredModal prjctPlanName ', prjctPlanName);
+    console.log('NotifyService - HasExpiredModal prjctPlanSubsEndDate ', prjctPlanSubsEndDate);
+    this._prjctPlanSubsEndDate = prjctPlanSubsEndDate;
+    this._prjctPlanName = prjctPlanName;
+  }
+
+  closeModalSubsExpired() {
+    this.displayModalSubsExpired = 'none';
   }
 
   update(content: string, style: 'error' | 'info' | 'success') {

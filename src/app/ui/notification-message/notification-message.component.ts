@@ -5,6 +5,7 @@ import { AuthService } from '../../core/auth.service';
 import { ProjectService } from '../../services/project.service';
 import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
+import { TranslateService } from '@ngx-translate/core';
 
 
 @Component({
@@ -20,16 +21,24 @@ export class NotificationMessageComponent implements OnInit {
 
   CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
   showSpinnerInModal = true;
+  browserLang: string;
+
   constructor(
     public notify: NotifyService,
     public auth: AuthService,
     public projectService: ProjectService,
-    private router: Router
+    private router: Router,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
+    this.getBrowserLang();
     this.getCurrentProject()
     this.getProjectById();
+  }
+
+  getBrowserLang() {
+    this.browserLang = this.translate.getBrowserLang();
   }
 
   onOkExpiredSessionModal() {
@@ -146,6 +155,16 @@ export class NotificationMessageComponent implements OnInit {
     this.notify.publishHasClickedChat(true);
   }
 
+
+  downgradePlanToFree() {
+
+    // BISOGNA FARE SERVIZIO SU TILEDESK API
+    this.projectService.downgradePlanToFree(this.projectId)
+    .subscribe((prjct) => {
+
+
+    });
+  }
 
 
 }

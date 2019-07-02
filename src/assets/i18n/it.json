@@ -255,7 +255,11 @@
         "ContactUs":"Contattaci",
         "PlanChange":"Modifica Piano",
         "ContactUsViaChatAndTellIUsHowManyOperator": "Contattaci via chat e comunicaci quanti posti operatore vupi aggiungere al progetto",
-        "TheNumberOfOperatorSeatsCannotBeLess":"Il numero di posti operatore non può essere inferiore al numero di agenti nel progetto"
+        "TheNumberOfOperatorSeatsCannotBeLess":"Il numero di posti operatore non può essere inferiore al numero di agenti nel progetto",
+        "SubscriptionExpired": "Abbonamento scaduto",
+        "YourSubscriptionToThe": "La tua sottoscrizione al",
+        "HasExpiredOn": "è scaduta il",
+        "DowngradeTo":"Downgrade al Free"
      },
     "ActivitiesOptions": {
         "AgentAvailabilityOrRoleChange":"Modifica disponibilità o ruolo agente",

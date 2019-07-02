@@ -76,3 +76,9 @@ button.close {
 .option-desc-disabled {
     color: #b5d2e1 !important;
 }
+
+.custom-hr {
+    border-style: solid;
+    border-width: 4px;
+    border-image: linear-gradient(to left, white 1%, #d3d7e0 50%, white 100%) 100% 0 100% 0/0px 0 3px 0 stretch;
+}

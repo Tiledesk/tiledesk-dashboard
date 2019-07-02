@@ -76,7 +76,7 @@ export class ProjectEditAddComponent implements OnInit {
   }
 
   getProjectPlan() {
-    this.prjctPlanService.projectPlan.subscribe((projectProfileData: any) => {
+    this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
       console.log('ProjectPlanService (navbar) project Profile Data', projectProfileData)
       if (projectProfileData) {
         this.prjct_name = projectProfileData.name;
