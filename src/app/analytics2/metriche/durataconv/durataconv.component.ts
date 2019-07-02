@@ -64,7 +64,7 @@ getBrowserLangAndSwitchMonthName() {
       let avarageWaitingTimestring;
       var splitString;
       
-      if (res && res.length!==0) {
+      if (res && res.length!=0) {
 
 
         //this.humanizer.setOptions({round: true, units:['m']});
@@ -86,9 +86,9 @@ getBrowserLangAndSwitchMonthName() {
       }
         else{
           
-          this.numberDurationCNVtime='n.a.'
-          this.numberDurationCNVtime='';
-          this.responseDurationtime='n.a.'
+          this.numberDurationCNVtime='N.a.'
+          this.unitDurationCNVtime='';
+          this.responseDurationtime='N.a.'
 
           console.log('Waiting time: humanize', this.humanizer.humanize(0))
           console.log('waiting time funtion:', avarageWaitingTimestring);
@@ -97,6 +97,9 @@ getBrowserLangAndSwitchMonthName() {
       
     },(error) => {
       console.log('!!! ANALYTICS - DURATION CONVERSATION CLOCK REQUEST - ERROR ', error);
+          this.numberDurationCNVtime='N.a.'
+          this.unitDurationCNVtime='';
+          this.responseDurationtime='N.a.'
     }, () => {
       console.log('!!! ANALYTICS - DURATION CONVERSATION CLOCK REQUEST * COMPLETE *');
     });
