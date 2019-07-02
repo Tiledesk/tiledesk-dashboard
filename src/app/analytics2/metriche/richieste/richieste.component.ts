@@ -117,7 +117,7 @@ export class RichiesteComponent implements OnInit {
   //-----------LAST n DAYS GRAPH-----------------------
   getRequestByLastNDay(lastdays, depID){
     this.subscription= this.analyticsService.requestsByDay(lastdays, depID).subscribe((requestsByDay: any) => {
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY ', requestsByDay);
+      console.log('»» !!! ANALYTICS - REQUESTS BY  N-DAY ', requestsByDay);
 
       // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
       const last7days_initarray = []
@@ -145,7 +145,7 @@ export class RichiesteComponent implements OnInit {
 
       }
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
-
+      
 
       /**
        * MERGE THE ARRAY last7days_initarray WITH requestsByDay_array  */
@@ -159,16 +159,16 @@ export class RichiesteComponent implements OnInit {
       const _requestsByDay_labels_array = [];
 
       //select init and end day to show on div
-      this.initDay=requestByDays_final_array[0].day
+      this.initDay=requestByDays_final_array[0].day;
       this.endDay=requestByDays_final_array[lastdays-1].day;
       console.log("INIT", this.initDay, "END", this.endDay);
 
       requestByDays_final_array.forEach(requestByDay => {
-        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
+        //console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
         _requestsByDay_series_array.push(requestByDay.count)
 
         const splitted_date = requestByDay.day.split('/');
-        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
+        //console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
         _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
       });
 

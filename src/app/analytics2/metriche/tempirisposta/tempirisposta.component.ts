@@ -87,9 +87,9 @@ export class TempirispostaComponent implements OnInit {
         
       }else{
        
-        this.numberAVGtime= 'n.a.'
+        this.numberAVGtime= 'N.a.'
         this.unitAVGtime= ''
-        this.responseAVGtime='n.a.'
+        this.responseAVGtime='N.a.'
         
         console.log('Waiting time: humanize', this.humanizer.humanize(0))
         console.log('waiting time funtion:', avarageWaitingTimestring);
@@ -98,6 +98,9 @@ export class TempirispostaComponent implements OnInit {
      
     }, (error) => {
       console.log('!!! ANALYTICS - AVERAGE WAITING TIME CLOCK REQUEST  - ERROR ', error);
+        this.numberAVGtime= 'N.a.'
+        this.unitAVGtime= ''
+        this.responseAVGtime='N.a.'
     }, () => {
       console.log('!!! ANALYTICS - AVERAGE TIME CLOCK REQUEST * COMPLETE *');
     });

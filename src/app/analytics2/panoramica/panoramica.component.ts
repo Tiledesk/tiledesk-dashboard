@@ -29,8 +29,8 @@ export class PanoramicaComponent implements OnInit {
   customData = [];
   xlabel_ita = ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'];
   xlabel_eng = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-  ylabel_ita = ['01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']
-  ylabel_eng = ['1am', '2am', '3am', '4am', '5am', '6am', '7am', '8am', '9am', '10am', '11am', '12am', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm', '9pm', '10pm', '11pm']
+  ylabel_ita = ['01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '24:00']
+  ylabel_eng = ['1am', '2am', '3am', '4am', '5am', '6am', '7am', '8am', '9am', '10am', '11am', '12am', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm', '7pm', '8pm', '9pm', '10pm', '11pm', '12pm']
   weekday: any;
   hour: any;
 
@@ -67,9 +67,9 @@ export class PanoramicaComponent implements OnInit {
     if (this.lang === 'it') {
       this.weekday = { '1': 'Lun', '2': 'Mar', '3': 'Mer', '4': 'Gio', '5': 'Ven', '6': 'Sab', '7': 'Dom' }
       this.hour = {
-        '1': '01:00', '2': '02:00', '3': '03:00', '4': '04:00', '5': '05:00', '6': '06:00', '7': '07:00', '8': '08:00', '9': '09:00', '10': '10:00',
-        '11': '11:00', '12': '12:00', '13': '13:00', '14': '14:00', '15': '15:00', '16': '16:00', '17': '17:00', '18': '18:00', '19': '19:00', '20': '20:00',
-        '21': '21:00', '22': '22:00', '23': '23:00'
+        '0': '01:00', '1': '02:00', '2': '03:00', '3': '04:00', '4': '05:00', '5': '06:00', '6': '07:00', '7': '08:00', '8': '09:00', '9': '10:00',
+        '10': '11:00', '11': '12:00', '12': '13:00', '13': '14:00', '14': '15:00', '15': '16:00', '16': '17:00', '17': '18:00', '18': '19:00', '19': '20:00',
+        '20': '21:00', '21': '22:00', '22': '23:00', '23': '24:00'
       }
       this.yAxis = { labels: this.ylabel_ita };
       this.xAxis = { labels: this.xlabel_ita };
@@ -84,11 +84,11 @@ export class PanoramicaComponent implements OnInit {
       };
 
     } else {
-      this.weekday = { '1': 'Mon', '2': 'Tue', '3': 'Wed', '4': 'The', '5': 'Fri', '6': 'Sat', '7': 'Sun' }
+      this.weekday = { '1': 'Mon', '2': 'Tue', '3': 'Wed', '4': 'Thu', '5': 'Fri', '6': 'Sat', '7': 'Sun' }
       this.hour = {
-        '1': '1am', '2': '2am', '3': '3am', '4': '4am', '5': '5am', '6': '6am', '7': '7am', '8': '8am', '9': '9am', '10': '10am',
-        '11': '11am', '12': '12am', '13': '1pm', '14': '2pm', '15': '3pm', '16': '4pm', '17': '5pm', '18': '6pm', '19': '7pm', '20': '8pm',
-        '21': '9pm', '22': '10pm', '23': '11pm','24': '12pm'
+        '0': '1am', '1': '2am', '2': '3am', '3': '4am', '4': '5am', '5': '6am', '6': '7am', '7': '8am', '8': '9am', '9': '10am',
+        '10': '11am', '11': '12am', '12': '1pm', '13': '2pm', '14': '3pm', '15': '4pm', '16': '5pm', '17': '6pm', '18': '7pm', '19': '8pm',
+        '20': '9pm', '21': '10pm', '22': '11pm','23': '12pm'
       }
 
       this.yAxis = { labels: this.ylabel_eng };
@@ -165,11 +165,11 @@ export class PanoramicaComponent implements OnInit {
       const _requestsByDay_labels_array = [];
 
       requestByDays_final_array.forEach(requestByDay => {
-        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
+        //console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
         _requestsByDay_series_array.push(requestByDay.count)
 
         const splitted_date = requestByDay.day.split('-');
-        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
+        //console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
         _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
       });
 
@@ -198,13 +198,13 @@ export class PanoramicaComponent implements OnInit {
             borderWidth: 3,
             borderDash: [],
             borderDashOffset: 0.0,
-            //pointBackgroundColor: 'rgba(255, 255, 255, 0.8)', //-->point white
-            pointBorderColor: 'rgba(30, 136, 229, 0.8)'
+            pointBackgroundColor: 'rgba(255, 255, 255, 0.8)',
+            pointBorderColor: '#1e88e5'
 
           }]
         },
         options: {
-          maintainAspectRatio:false,
+          maintainAspectRatio:false, //allow to resize chart
           title: {
             text: 'AVERAGE TIME RESPONSE',
             display: false
@@ -353,31 +353,30 @@ export class PanoramicaComponent implements OnInit {
 
       
       const initialArray=[];
-      console.log("AAAAAAAAA",this.hour[1])
-      for(let i=1;i<24;i++){
+      for(let i=0;i<24;i++){
         
-        for(let j=1;j<7;j++){
-          initialArray.push({ '_id': { 'hour': this.hour[i], 'weekday': this.weekday[j] }, 'count': 0 })
+        for(let j=1;j<8;j++){
+          initialArray.push({ '_id': { 'hour': this.hour[i], 'weekday': this.weekday[j] }, 'count': null })
         }
         
       }
-
       console.log("INITIALLLL",initialArray);
       
 
       // recostruct datafromservice to other customDataJson
-      for (let i in data) {
+      for (let z in data) {
 
-        this.customData.push({ '_id': { "hour": this.hour[data[i]._id.hour], "weekday": this.weekday[data[i]._id.weekday] }, 'count': data[i].count });
+        this.customData.push({ '_id': { "hour": this.hour[data[z]._id.hour], "weekday": this.weekday[data[z]._id.weekday] }, 'count': data[z].count });
       }
 
       console.log('CUSTOM', this.customData);
 
-      const requestByDays_final_array = initialArray.map(obj => this.customData.find(o => (o._id.hour === obj._id.hour)&&(o._id.weekday === obj._id.weekday)) || obj);
-      console.log("FINAL",requestByDays_final_array)
+      //map customdata to initial array to create filanArray by _id.hour & _id.weekday values
+      const finalArray = initialArray.map(obj => this.customData.find(o => (o._id.hour === obj._id.hour)&&(o._id.weekday === obj._id.weekday)) || obj);
+      console.log("FINAL",finalArray)
 
       this.dataSource = {
-        data: this.customData,
+        data: finalArray,
         isJsonData: true,
         adaptorType: 'Cell',
         yDataMapping: '_id.hour',
