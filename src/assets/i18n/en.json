@@ -256,7 +256,11 @@
         "ContactUs":"Contact us",
         "PlanChange":"Plan change",
         "ContactUsViaChatAndTellIUsHowManyOperator": " Contact us via chat and tell us how many operator seats you want to add to the project",
-        "TheNumberOfOperatorSeatsCannotBeLess":"The number of operator seats cannot be less than the number of agents in your project"
+        "TheNumberOfOperatorSeatsCannotBeLess":"The number of operator seats cannot be less than the number of agents in your project",
+        "SubscriptionExpired": "Subscription expired",
+        "YourSubscriptionToThe": "Your subscription for the",
+        "HasExpiredOn": "has expired on",
+        "DowngradeTo":"Downgrade to Free"
      },
 
     "ActivitiesOptions": {
