@@ -9,10 +9,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./static-page-base.component.scss']
 })
 export class StaticPageBaseComponent implements OnInit {
-  prjct_profile_type: string;
-  subscription_is_active: any;
+
   prjct_profile_name: string;
-  subscription_end_date: Date;
 
   constructor(
     // protected prjctPlanService: ProjectPlanService,
@@ -21,15 +19,31 @@ export class StaticPageBaseComponent implements OnInit {
 
   ngOnInit() {
     // this.getProjectPlan();
-   
+
 
   }
 
 
-  buildPlanName(planName: string, browserLang: string) {
+  // ADDS 'Plan' to the project plan's name
+  // NOTE: IF THE PLAN IS OF FREE TYPE IN THE USER INTERFACE THE MODAL 'YOU SUBSCRIPTION HAS EXPIRED' IS NOT DISPLAYED
+  buildPlanName(planName: string, browserLang: string, planType: string) {
+    console.log('StaticPageBaseComponent planName ', planName, ' browserLang  ', browserLang);
 
+    if (planType === 'payment') {
+      if (browserLang === 'it') {
 
-return planName
+        this.prjct_profile_name = 'Piano ' + planName;
+
+        return this.prjct_profile_name
+
+      } else if (browserLang !== 'it') {
+
+        this.prjct_profile_name = planName + ' Plan';
+
+        return this.prjct_profile_name
+      }
+    }
+
   }
 
 

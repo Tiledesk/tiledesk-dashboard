@@ -113,7 +113,7 @@ export class HomeComponent implements OnInit {
         this.prjct_trial_expired = projectProfileData.trial_expired;
         this.prjct_profile_type = projectProfileData.profile_type;
         this.subscription_is_active = projectProfileData.subscription_is_active;
-        this.subscription_end_date = projectProfileData.subscription_end_date
+        this.subscription_end_date = projectProfileData.subscription_end_date;
 
 
         this.showSpinner = false;

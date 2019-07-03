@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
@@ -6,14 +6,14 @@ import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
 import { NotifyService } from '../../core/notify.service';
 import { ProjectPlanService } from '../../services/project-plan.service';
 import { StaticPageBaseComponent } from './../static-page-base/static-page-base.component';
-
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'appdashboard-activities-static',
   templateUrl: './activities-static.component.html',
   styleUrls: ['./activities-static.component.scss']
 })
-export class ActivitiesStaticComponent extends StaticPageBaseComponent implements OnInit {
+export class ActivitiesStaticComponent extends StaticPageBaseComponent implements OnInit, OnDestroy {
   activities: any;
   agentAvailabilityOrRoleChange: string;
   agentDeletion: string;
@@ -25,6 +25,8 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
   prjct_profile_name: string;
   subscription_end_date: Date;
   browserLang: string;
+
+  subscription:Subscription;
 
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
@@ -46,14 +48,14 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
     this.buildActivitiesOptions();
     this.getCurrentProject();
     this.getBrowserLang();
-    // this.getProjectPlan();
+    this.getProjectPlan();
   }
   getBrowserLang() {
   this.browserLang = this.translate.getBrowserLang();
   }
 
   getProjectPlan() {
-    this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
+    this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
       console.log('ProjectPlanService (HomeComponent) project Profile Data', projectProfileData)
       if (projectProfileData) {
 
@@ -64,7 +66,7 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
        
         this.subscription_end_date = projectProfileData.subscription_end_date
 
-        this.prjct_profile_name = this.buildPlanName(projectProfileData.profile_name, this.browserLang);
+        this.prjct_profile_name = this.buildPlanName(projectProfileData.profile_name, this.browserLang,  this.prjct_profile_type);
 
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
 
@@ -77,6 +79,10 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
     })
   }
 
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {

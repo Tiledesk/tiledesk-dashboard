@@ -176,5 +176,11 @@ export class NotificationMessageComponent implements OnInit {
         });
   }
 
-  // 
+  goToPricing() {
+    console.log('goToPricing projectId ', this.projectId);
+    this.router.navigate(['project/' + this.projectId + '/pricing']);
+    this.notify.closeModalSubsExpired();
+  }
+
+
 }

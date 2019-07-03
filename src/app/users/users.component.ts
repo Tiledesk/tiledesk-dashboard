@@ -5,6 +5,7 @@ import { Project } from '../models/project-model';
 import { UsersService } from '../services/users.service';
 import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
+import { ProjectPlanService } from '../services/project-plan.service';
 
 @Component({
   selector: 'appdashboard-users',
@@ -35,14 +36,19 @@ export class UsersComponent implements OnInit {
 
   deleteProjectUserSuccessNoticationMsg: string;
   deleteProjectUserErrorNoticationMsg: string;
-
-  
+  projectPlanAgentsNo: number;
+  prjct_profile_name: string;
+  browserLang: string;
+  prjct_profile_type: string;
+  subscription_is_active: string;
+  subscription_end_date: string;
   constructor(
     private usersService: UsersService,
     private router: Router,
     private auth: AuthService,
     private notify: NotifyService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private prjctPlanService: ProjectPlanService
   ) { }
 
   ngOnInit() {
@@ -62,6 +68,44 @@ export class UsersComponent implements OnInit {
 
     this.hasChangedAvailabilityStatusInSidebar();
     this.getPendingInvitation();
+
+    this.getProjectPlan();
+  }
+
+
+  getBrowserLanguage() {
+    this.browserLang = this.translate.getBrowserLang();
+    console.log('UsersComponent - BRS LANG ', this.browserLang)
+  }
+
+  getProjectPlan() {
+
+    this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
+      console.log('UsersComponent - project Profile Data', projectProfileData)
+      if (projectProfileData) {
+
+        this.projectPlanAgentsNo = projectProfileData.profile_agents;
+        this.subscription_is_active = projectProfileData.subscription_is_active;
+        this.subscription_end_date = projectProfileData.subscription_end_date
+        this.prjct_profile_type = projectProfileData.profile_type;
+
+        // ADDS 'Plan' to the project plan's name
+        // NOTE: IF THE PLAN IS OF FREE TYPE IN THE USER INTERFACE THE MESSAGE 'You currently have ...' IS NOT DISPLAYED
+        if (this.prjct_profile_type === 'payment') {
+          if (this.browserLang === 'it') {
+
+            this.prjct_profile_name = 'Piano ' + projectProfileData.profile_name;
+
+          } else if (this.browserLang !== 'it') {
+
+            this.prjct_profile_name = projectProfileData.profile_name + ' Plan';
+          }
+        }
+
+
+      }
+    })
+
   }
 
   // TRANSLATION
@@ -126,6 +170,7 @@ export class UsersComponent implements OnInit {
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       this.project = project;
+      console.log('UsersComponent - getCurrentProject -> project', this.project)
       if (this.project) {
         this.id_project = project._id
 

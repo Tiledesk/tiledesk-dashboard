@@ -77,9 +77,27 @@ class="navbar-brand">
         </div>
       </div> -->
 
+    <div class="row" *ngIf="prjct_profile_type === 'payment'">
+        <div class="col-md-12">
+            <div class="card" style="margin-top: 0px; margin-bottom: 0px;">
+
+              <div class="card-content">
+                  <span *ngIf="subscription_is_active === true">
+                    <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i>
+                    <span class="msg-alert"> You currently have {{ projectPlanAgentsNo }} active operator seats in the <span style="text-transform: capitalize">  {{ prjct_profile_name }}</span></span>
+                  </span>
+                  <span *ngIf="subscription_is_active === false">
+                    <i class="material-icons" style="vertical-align: middle; color: #f44336;">error_outline</i>
+                    <span class="msg-alert" style="">{{ "Pricing.YourSubscriptionToThe" | translate}} <span style="text-transform: capitalize"> {{ prjct_profile_name }} </span> {{ "Pricing.HasExpiredOn" | translate}} {{ subscription_end_date | date: 'dd/MM/y' }}</span>
+                  </span>
+              </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
       <div class="col-md-12">
-        <div class="card" style="min-height: 195px">
+        <div class="card" style="min-height: 195px;margin-top: 15px;">
 
           
           <!-- table-responsive -->
