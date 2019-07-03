@@ -5,12 +5,15 @@ import { AuthService } from '../../core/auth.service';
 import { IMyDpOptions, IMyDateModel } from 'mydatepicker';
 import { NotifyService } from '../../core/notify.service';
 import { ProjectPlanService } from '../../services/project-plan.service';
+import { StaticPageBaseComponent } from './../static-page-base/static-page-base.component';
+
+
 @Component({
   selector: 'appdashboard-activities-static',
   templateUrl: './activities-static.component.html',
   styleUrls: ['./activities-static.component.scss']
 })
-export class ActivitiesStaticComponent implements OnInit {
+export class ActivitiesStaticComponent extends StaticPageBaseComponent implements OnInit {
   activities: any;
   agentAvailabilityOrRoleChange: string;
   agentDeletion: string;
@@ -21,6 +24,7 @@ export class ActivitiesStaticComponent implements OnInit {
   subscription_is_active: any;
   prjct_profile_name: string;
   subscription_end_date: Date;
+  browserLang: string;
 
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
@@ -34,14 +38,19 @@ export class ActivitiesStaticComponent implements OnInit {
     private router: Router,
     private prjctPlanService: ProjectPlanService,
     private notify: NotifyService
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit() {
     this.buildActivitiesOptions();
     this.getCurrentProject();
-    this.getProjectPlan();
+    this.getBrowserLang();
+    // this.getProjectPlan();
   }
-
+  getBrowserLang() {
+  this.browserLang = this.translate.getBrowserLang();
+  }
 
   getProjectPlan() {
     this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
@@ -52,13 +61,15 @@ export class ActivitiesStaticComponent implements OnInit {
 
         this.prjct_profile_type = projectProfileData.profile_type;
         this.subscription_is_active = projectProfileData.subscription_is_active;
-        this.prjct_profile_name = projectProfileData.profile_name;
+       
         this.subscription_end_date = projectProfileData.subscription_end_date
+
+        this.prjct_profile_name = this.buildPlanName(projectProfileData.profile_name, this.browserLang);
 
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
 
 
-          this.notify.displaySubscripionHasExpiredModal(true, this.subscription_is_active,  this.subscription_end_date)
+          this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
         }
 
 

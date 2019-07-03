@@ -134,6 +134,7 @@ import { ProjectPlanService } from './services/project-plan.service';
 
 /* PRIVATE */
 import { PricingModule } from './pricing/pricing.module';
+import { StaticPageBaseComponent } from './static-pages/static-page-base/static-page-base.component';
 
 console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
@@ -209,6 +210,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     DurataconvComponent,
     HoursStaticComponent,
     DepartmentsStaticComponent,
+    StaticPageBaseComponent,
   ],
   imports: [
     /* PRIVATE */
