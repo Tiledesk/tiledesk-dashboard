@@ -181,6 +181,9 @@ export class TempirispostaComponent implements OnInit {
 
         const higherCount = this.getMaxOfArray(this.yValueAVGchart);
         console.log('»» !!! ANALYTICS - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
+        var hours = (higherCount/4) / (1000*60*60);
+        var absoluteHours = Math.floor((higherCount/4) / (1000*60*60));
+        console.log("step", absoluteHours);
 
         let lang=this.lang;
 
@@ -235,7 +238,11 @@ export class TempirispostaComponent implements OnInit {
               },
               ticks: {
                 beginAtZero: true,
-                suggestedMax: higherCount + 200, //not work yet
+                //stepsize is calculate: transform higherCount/4 (4 because decide to divide yAxis i 4 region) in 
+                //hour with Math.floor( num/1000*60*60) that return an hour. then convert hour returned in
+                // milliconds again multipling Math.floor()*1000*60*60
+                stepSize:(Math.floor((higherCount/4) / (1000*60*60)))*1000*60*60,
+                //suggestedMax: higherCount,// + 20000000
                 fontColor: 'black',
                 callback: function (value, index, values) {
                   let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds

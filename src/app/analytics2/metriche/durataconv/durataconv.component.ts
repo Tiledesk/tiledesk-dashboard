@@ -172,6 +172,7 @@ getBrowserLangAndSwitchMonthName() {
         console.log("!!!ERROR!!! while get data from resouces for duration conversation time graph")
 
         let lang= this.lang;
+        const higherCount = this.getMaxOfArray(this.yValueDurationConversation);
 
       var lineChart = new Chart('durationConversationTimeResponse', {
         type: 'bar',
@@ -232,6 +233,10 @@ getBrowserLangAndSwitchMonthName() {
               ticks: {
                 beginAtZero: true,
                 display: true,
+                //stepsize is calculate: transform higherCount/4 (4 because decide to divide yAxis i 4 region) in 
+                //hour with Math.floor( num/1000*60*60) that return an hour. then convert hour returned in
+                // milliconds again multipling Math.floor()*1000*60*60
+                stepSize:(Math.floor((higherCount/4) / (1000*60*60)))*1000*60*60, 
                 callback: function (value, index, values) {
                   let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
                   let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
@@ -316,6 +321,10 @@ getBrowserLangAndSwitchMonthName() {
         return result;
 
       }
+  }
+
+  getMaxOfArray(array) {
+    return Math.max.apply(null, array);
   }
 
 

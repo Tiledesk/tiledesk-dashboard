@@ -36,6 +36,14 @@ export class PanoramicaComponent implements OnInit {
 
   subscription:Subscription;
 
+  showSpinner:boolean=true;
+  heatmapEND:boolean
+  chartEND:boolean
+
+  
+
+
+
   constructor(  private requestsService:RequestsService,
                 private translate: TranslateService,
                 private analyticsService: AnalyticsService) {
@@ -44,14 +52,33 @@ export class PanoramicaComponent implements OnInit {
                   console.log('LANGUAGE ', this.lang);
                   this.getBrowserLangAndSwitchMonthName();
                   this.getHeatMapSeriesDataByLang();
+                  
    }
 
   ngOnInit() {
+
     this.getRequestByLast7Day();
     this.heatMap();
     
+   
+      
+    
   }
 
+  startTimer() {
+    let timeLeft: number = 5;
+    let interval;
+    interval = setInterval(() => {
+      if(timeLeft > 0) {
+        timeLeft--;
+        console.log("TIME",timeLeft)
+      }
+      this.showSpinner=false;
+    },1000)
+    
+  }
+
+  
   ngOnDestroy() {
     console.log('!!! ANALYTICS - !!!!! UN - SUBSCRIPTION TO REQUESTS');
     this.subscription.unsubscribe();
@@ -302,8 +329,7 @@ export class PanoramicaComponent implements OnInit {
           }
         }]
       });
-
-
+      
     }, (error) => {
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY - ERROR ', error);
     }, () => {
@@ -383,6 +409,7 @@ export class PanoramicaComponent implements OnInit {
         xDataMapping: '_id.weekday',
         valueMapping: 'count'
       }
+      
     }, (error) => {
       console.log('»» !!! ANALYTICS - REQUESTS HEATMAP - ERROR ', error);
     }, () => {

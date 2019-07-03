@@ -1,34 +1,44 @@
-<div class="row">
-  <div class="col-md-12">
-      
-      <div class="chart-wrapper-panoramica">
-          <div class="chart-title-panoramica" (click)="goToRichieste()" style="cursor: pointer; width: 22%;">
-              {{ "NumberOfRequestsLast7Days" | translate }}  
-          </div>
-            
-            <div class="card-content chart-container" style="position: relative; margin:auto 12px; height:35vh; ">
-                <canvas id="last7dayChart" ></canvas>
-            </div>
-
-      </div>
-  </div>
+<div *ngIf="showSpinner">
+        <loading-spinner ></loading-spinner>
 </div>
 
 
-<!-- -------------------HEAT MAP------------------------- -->
-<div  class="row">
-  <div class="col-md-12">
-      <ejs-heatmap id='heatmap-container' fill="none"style="display:block; width: 300px; margin-top:20px"
-                  width='350px' height='500px' 
-                  [titleSettings]='titleSettings'
-                  [dataSource]='dataSource'
-                  [xAxis]='xAxis' 
-                  [yAxis]='yAxis'
-                  [legendSettings]='legendSettings'
-                  [cellSettings]='cellSettings'
-                  [paletteSettings]='paletteSettings'
-                  (tooltipRender)='tooltipRender($event)'
-                  [showTooltip]='showTooltip'>
-      </ejs-heatmap>  
-  </div>
+<div>
+    
+
+    <div class="row">
+        
+    <div class="col-md-12">
+        
+        <div class="chart-wrapper-panoramica">
+            <div class="chart-title-panoramica" (click)="goToRichieste()" style="cursor: pointer; width: 22%;">
+                {{ "NumberOfRequestsLast7Days" | translate }}  
+            </div>
+                
+                <div class="card-content chart-container" style="position: relative; margin:auto 12px; height:35vh; ">
+                    <canvas id="last7dayChart" ></canvas>
+                </div>
+
+        </div>
+    </div>
+    </div>
+
+
+    <!-- -------------------HEAT MAP------------------------- -->
+    <div  class="row">
+    <div class="col-md-12">
+        <ejs-heatmap id='heatmap-container' fill="none"style="display:block; width: 300px; margin-top:20px"
+                    width='350px' height='500px' 
+                    [titleSettings]='titleSettings'
+                    [dataSource]='dataSource'
+                    [xAxis]='xAxis' 
+                    [yAxis]='yAxis'
+                    [legendSettings]='legendSettings'
+                    [cellSettings]='cellSettings'
+                    [paletteSettings]='paletteSettings'
+                    (tooltipRender)='tooltipRender($event)'
+                    [showTooltip]='showTooltip'>
+        </ejs-heatmap>  
+    </div>
+    </div>
 </div>
