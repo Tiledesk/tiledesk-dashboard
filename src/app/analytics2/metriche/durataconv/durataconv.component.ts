@@ -1,9 +1,11 @@
+import { DepartmentService } from './../../../services/mongodb-department.service';
 import { AnalyticsService } from './../../../services/analytics.service';
 import { Component, OnInit } from '@angular/core';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import { Chart } from 'chart.js';
 import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'appdashboard-durataconv',
@@ -20,15 +22,29 @@ export class DurataconvComponent implements OnInit {
   xValueDurationConversation: any;
   yValueDurationConversation: any;
   dataRangeDuration: String;
+
+  barChart:any;
   
   lang: string;
   monthNames:any;
+
+  lastdays=7;
+  initDay:string;
+  endDay:string;
+
+  departments:any;
+
+  selectedDaysId:number; //lastdays filter
+  selectedDeptId:string;  //department filter
+
+  subscription:Subscription;
 
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
 
   constructor(  private analyticsService:AnalyticsService,
-                private translate: TranslateService,) {
+                private translate: TranslateService,
+                private departmentService:DepartmentService) {
       
                 this.lang = this.translate.getBrowserLang();
                 console.log('LANGUAGE ', this.lang);
@@ -36,8 +52,11 @@ export class DurataconvComponent implements OnInit {
                 }
 
   ngOnInit() {
+    this.selectedDeptId = '';
+    this.selectedDaysId=7
     this.durationConvTimeCLOCK();
-    this.durationConversationTimeCHART();
+    this.durationConversationTimeCHART(this.selectedDaysId,this.selectedDeptId);
+    this.getDepartments();
   }
 
 msToTIME(value){
@@ -45,6 +64,45 @@ msToTIME(value){
     let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
     let seconds = Math.floor(((value % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
    return hours + 'h:' + minutes + 'm:' + seconds + 's'
+}
+
+daysSelect(value){
+    
+  this.selectedDaysId=value;//--> value to pass throw for graph method
+    //check value for label in htlm
+  if(value<=30){
+    this.lastdays=value;
+  }else if((value=== 90) || (value=== 180)){
+    this.lastdays=value/30;
+  }else if(value === 360){
+    this.lastdays=1;
+  }
+  this.barChart.destroy();
+  this.subscription.unsubscribe();
+  this.durationConversationTimeCHART(value,this.selectedDeptId);
+  console.log('REQUEST:', value, this.selectedDeptId)
+}
+
+depSelected(selectedDeptId){
+  console.log('dep', selectedDeptId);
+  this.barChart.destroy();
+  this.subscription.unsubscribe();
+  this.durationConversationTimeCHART(this.selectedDaysId,selectedDeptId )
+  console.log('REQUEST:', this.selectedDaysId, selectedDeptId)
+}
+
+
+
+getDepartments() {
+    this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
+      console.log('!!! NEW REQUESTS HISTORY - GET DEPTS RESPONSE by analitycs ', _departments);
+      this.departments = _departments
+
+    }, error => {
+      console.log('!!! NEW REQUESTS HISTORY - GET DEPTS - ERROR: ', error);
+    }, () => {
+      console.log('!!! NEW REQUESTS HISTORY - GET DEPTS * COMPLETE *')
+    });
 }
 
 getBrowserLangAndSwitchMonthName() {
@@ -107,35 +165,37 @@ getBrowserLangAndSwitchMonthName() {
 
   }
 
-  durationConversationTimeCHART() {
-    this.analyticsService.getDurationConversationTimeDataChart().subscribe((resp: any) => {
+  durationConversationTimeCHART(lastdays, depID) {
+    this.subscription=this.analyticsService.getDurationConversationTimeDataCHART(lastdays,depID).subscribe((resp: any) => {
       if (resp) {
         console.log("Duration time", resp)
 
         const last30days_initarrayDURATION = []
-        for (let i = 0; i <= 30; i++) {
+        for (let i = 0; i < lastdays; i++) {
           // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
           last30days_initarrayDURATION.push({ date: moment().subtract(i, 'd').format('D/M/YYYY'), value: 0 })
         }
         last30days_initarrayDURATION.reverse()
-        this.dataRangeDuration = last30days_initarrayDURATION[0].date + ' - ' + last30days_initarrayDURATION[30].date;
+
+        //this.dataRangeDuration = last30days_initarrayDURATION[0].date + ' - ' + last30days_initarrayDURATION[30].date;
 
         console.log('»» !!! ANALYTICS - REQUESTS DURATION CONVERSATION BY DAY - MOMENT LAST 30 DATE (init array)', last30days_initarrayDURATION);
 
         //build a custom array with che same structure of "init array" but with key value of serviceData
         //i'm using time_convert function that return avg_time always in hour 
         const customDurationCOnversationChart = [];
-        for (let i in resp) {
+        for (let j in resp) {
 
           // this.humanizer.setOptions({round: true, units:['h']});
           // const AVGtimevalue= this.humanizer.humanize(res[i].waiting_time_avg).split(" ")
           // console.log("value humanizer:", this.humanizer.humanize(res[i].waiting_time_avg), "split:",AVGtimevalue)
 
-          if (resp[i].duration_avg == null)
-            resp[i].duration_avg = 0;
+          if (resp[j].duration_avg == null)
+            resp[j].duration_avg = 0;
 
-          customDurationCOnversationChart.push({ date: new Date(resp[i]._id.year, resp[i]._id.month - 1, resp[i]._id.day).toLocaleDateString(), value: resp[i].duration_avg });
+          customDurationCOnversationChart.push({ date: new Date(resp[j]._id.year, resp[j]._id.month - 1, resp[j]._id.day).toLocaleDateString(), value: resp[j].duration_avg });
         }
+
         console.log("Custom Duration COnversation data:", customDurationCOnversationChart);
 
         //build a final array that compars value between the two arrray before builded with respect to date key value
@@ -144,7 +204,12 @@ getBrowserLangAndSwitchMonthName() {
 
         const requestDurationConversationByDays_series_array = [];
         const requestDurationConversationByDays_labels_array = [];
-  
+       
+        //select init and end day to show on div
+        this.initDay=requestDurationConversationByDays_final_array[0].date;
+        this.endDay=requestDurationConversationByDays_final_array[lastdays-1].date;
+        console.log("INIT", this.initDay, "END", this.endDay);
+
         requestDurationConversationByDays_final_array.forEach(requestByDay => {
           console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
           requestDurationConversationByDays_series_array.push(requestByDay.value)
@@ -171,10 +236,18 @@ getBrowserLangAndSwitchMonthName() {
       else
         console.log("!!!ERROR!!! while get data from resouces for duration conversation time graph")
 
+        //set the stepsize 
+        var stepsize;
+        if(this.selectedDaysId>60){
+            stepsize=10;
+        }
+        else {
+          stepsize=this.selectedDaysId
+        }
         let lang= this.lang;
         const higherCount = this.getMaxOfArray(this.yValueDurationConversation);
 
-      var lineChart = new Chart('durationConversationTimeResponse', {
+      this.barChart = new Chart('durationConversationTimeResponse', {
         type: 'bar',
         data: {
           labels: this.xValueDurationConversation,
@@ -214,6 +287,7 @@ getBrowserLangAndSwitchMonthName() {
             xAxes: [{
               ticks: {
                 beginAtZero: true,
+                maxTicksLimit: stepsize,
                 display: true,
                 minRotation: 0,
                 fontColor:'black'
@@ -236,7 +310,7 @@ getBrowserLangAndSwitchMonthName() {
                 //stepsize is calculate: transform higherCount/4 (4 because decide to divide yAxis i 4 region) in 
                 //hour with Math.floor( num/1000*60*60) that return an hour. then convert hour returned in
                 // milliconds again multipling Math.floor()*1000*60*60
-                stepSize:(Math.floor((higherCount/4) / (1000*60*60)))*1000*60*60, 
+                //stepSize:(Math.floor((higherCount/4) / (1000*60*60)))*1000*60*60, 
                 callback: function (value, index, values) {
                   let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
                   let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds

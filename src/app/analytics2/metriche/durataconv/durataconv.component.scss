@@ -60,3 +60,38 @@
     //background-color: #1e88e5;
     font-family: 'Google Sans', sans-serif !important;
 }
+
+.boxdays{
+    height: 33px; 
+    //border: 1px solid grey;
+    font-family: 'Google Sans', sans-serif !important;
+    font-size:18px;
+    display: inline-block; //-->allow content vertical align
+    vertical-align: middle;
+    padding-top: 5px;
+
+    .arrow_forward-custom{
+        position: relative;
+        top: 5px;
+        font-size: 22px;
+        
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .advancedOptionForm {
+        width: 500px;
+        margin: 0 auto;
+    }
+
+    .section-select-dept {
+        padding-right: 15px;
+    }
+}
+
+@media screen and (max-width: 767px) { 
+    .advancedOptionForm {
+       padding-right: 25px;
+       padding-left: 25px;
+    }
+}
