@@ -81,6 +81,24 @@ export class AnalyticsService {
     
   }
 
+  requestsByDay2(lastdays, department_id): Observable<[]> {
+       
+    let headers= new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': this.TOKEN
+       //'Authorization': this.staticRemoteToken, 
+       //'Authorization': 'Basic ' + btoa('alessia.calo@frontiere21.it:123456')
+      });
+    let params= new HttpParams()
+                .set('lastdays', lastdays)
+                .set('department_id', department_id);
+    
+    //const url = 'https://api.tiledesk.com/v1/'
+    //return this.http.get<[]>('https://api.tiledesk.com/v1/'+ this.projectID + '/analytics/requests/aggregate/day/2',{ headers:headers, params:params});
+    return this.http.get<[]>(this.BASE_URL+ this.projectID + '/analytics/requests/aggregate/day/2' ,{ headers:headers, params:params})
+    
+  }
+
 
   getDataHeatMap(): Observable<[]> {
 
@@ -109,11 +127,13 @@ export class AnalyticsService {
        //'Authorization': 'Basic ' + btoa('alessia.calo@frontiere21.it:123456')
       })
     };
-    return this.http.get<[]>('https://api.tiledesk.com/v1/'+ this.projectID + '/analytics/requests/waiting', httpOptions);
-    //return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/waiting', httpOptions);
+    //return this.http.get<[]>('https://api.tiledesk.com/v1/'+ this.projectID + '/analytics/requests/waiting', httpOptions);
+    return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/waiting', httpOptions);
   }
 
-  getavarageWaitingTimeDataChart(): Observable<[]> {
+  getavarageWaitingTimeDataCHART(lastdays, department_id): Observable<[]> {
+    
+    console.log("PARAM",lastdays,department_id);
     
     const httpOptions = {
       headers: new HttpHeaders({
@@ -133,22 +153,23 @@ export class AnalyticsService {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': this.TOKEN
+         'Authorization': this.TOKEN
         //'Authorization': this.staticRemoteToken,
-        //'Authorization': 'Basic ' + btoa('alessia.calo@frontiere21.it:123456')
+        // 'Authorization': 'Basic ' + btoa('alessia.calo@frontiere21.it:123456')
       })
     };
    
-    //return this.http.get<[]>('https://api.tiledesk.com/v1/'+this.projectID + '/analytics/requests/duration', httpOptions);
+    ///return this.http.get<[]>('https://api.tiledesk.com/v1/'+this.projectID + '/analytics/requests/duration', httpOptions);
     return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/duration', httpOptions);
   }
 
-  getDurationConversationTimeDataChart(): Observable<[]> {
+  getDurationConversationTimeDataCHART(lastdays, department_id): Observable<[]> {
+    console.log("PARAM",lastdays,department_id);
     
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': this.TOKEN
+         'Authorization': this.TOKEN
         //'Authorization': this.staticRemoteToken,
         //'Authorization': 'Basic ' + btoa('alessia.calo@frontiere21.it:123456')
       })

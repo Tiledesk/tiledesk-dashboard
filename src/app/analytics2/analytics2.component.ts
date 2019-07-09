@@ -1230,7 +1230,7 @@ export class Analytics2Component implements OnInit , OnDestroy {
 
 
   avgTimeResponsechart(){
-    this.analyticsService.getavarageWaitingTimeDataChart().subscribe((res:any)=>{
+    this.analyticsService.getavarageWaitingTimeDataCHART(30,'').subscribe((res:any)=>{
       console.log('chart data:',res);
       if(res){
         
@@ -1434,7 +1434,7 @@ export class Analytics2Component implements OnInit , OnDestroy {
   }
 
   durationConversationTimeCHART() {
-    this.analyticsService.getDurationConversationTimeDataChart().subscribe((resp: any) => {
+    this.analyticsService.getDurationConversationTimeDataCHART(30,'').subscribe((resp: any) => {
       if (resp) {
         console.log("Duration time", resp)
 

@@ -1,11 +1,9 @@
 import { AnalyticsService } from './../../../services/analytics.service';
 import { DepartmentService } from './../../../services/mongodb-department.service';
-import { RequestsService } from 'app/services/requests.service';
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment'
 import { Chart } from 'chart.js';
 import { TranslateService } from '@ngx-translate/core';
-import { tick } from '@angular/core/testing';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -84,7 +82,7 @@ export class RichiesteComponent implements OnInit {
 
   getDepartments() {
     this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
-      console.log('!!! NEW REQUESTS HISTORY - GET DEPTS RESPONSE ', _departments);
+      console.log('!!! NEW REQUESTS HISTORY - GET DEPTS RESPONSE by analitycs ', _departments);
       this.departments = _departments
 
     }, error => {
@@ -116,7 +114,7 @@ export class RichiesteComponent implements OnInit {
 
   //-----------LAST n DAYS GRAPH-----------------------
   getRequestByLastNDay(lastdays, depID){
-    this.subscription= this.analyticsService.requestsByDay(lastdays, depID).subscribe((requestsByDay: any) => {
+    this.subscription= this.analyticsService.requestsByDay2(lastdays, depID).subscribe((requestsByDay: any) => {
       console.log('»» !!! ANALYTICS - REQUESTS BY  N-DAY ', requestsByDay);
 
       // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O

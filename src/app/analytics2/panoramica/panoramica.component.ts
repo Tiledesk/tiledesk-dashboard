@@ -52,7 +52,7 @@ export class PanoramicaComponent implements OnInit {
                   console.log('LANGUAGE ', this.lang);
                   this.getBrowserLangAndSwitchMonthName();
                   this.getHeatMapSeriesDataByLang();
-                  
+                  //this.startTimer();
    }
 
   ngOnInit() {
@@ -65,6 +65,12 @@ export class PanoramicaComponent implements OnInit {
     
   }
 
+  async showHideSpinner(){
+    if(this.heatmapEND==true && this.chartEND==true){
+      this.showSpinner=false
+    }
+  }
+
   startTimer() {
     let timeLeft: number = 5;
     let interval;
@@ -73,8 +79,10 @@ export class PanoramicaComponent implements OnInit {
         timeLeft--;
         console.log("TIME",timeLeft)
       }
-      this.showSpinner=false;
+     
     },1000)
+    
+   
     
   }
 
@@ -149,7 +157,7 @@ export class PanoramicaComponent implements OnInit {
 
   //-----------LAST 7 DAYS GRAPH-----------------------
   getRequestByLast7Day(){
-    this.subscription=this.analyticsService.requestsByDay(7,null).subscribe((requestsByDay: any) => {
+    this.subscription=this.analyticsService.requestsByDay2(7,'').subscribe((requestsByDay: any) => {
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY ', requestsByDay);
 
       // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
@@ -334,6 +342,7 @@ export class PanoramicaComponent implements OnInit {
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY - ERROR ', error);
     }, () => {
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY * COMPLETE *');
+      
     });
   }
 
@@ -414,6 +423,7 @@ export class PanoramicaComponent implements OnInit {
       console.log('»» !!! ANALYTICS - REQUESTS HEATMAP - ERROR ', error);
     }, () => {
       console.log('»» !!! ANALYTICS - REQUESTS HEATMAP * COMPLETE *');
+      
     })
 
   }

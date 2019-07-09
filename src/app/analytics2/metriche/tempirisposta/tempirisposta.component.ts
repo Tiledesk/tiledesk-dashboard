@@ -1,3 +1,4 @@
+import { DepartmentService } from './../../../services/mongodb-department.service';
 
 import { AnalyticsService } from './../../../services/analytics.service';
 import { Component, OnInit } from '@angular/core';
@@ -5,6 +6,7 @@ import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts
 import { Chart } from 'chart.js';
 import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -26,11 +28,25 @@ export class TempirispostaComponent implements OnInit {
   monthNames:any;
   lang: string;
 
+  barChart:any;
+
+  lastdays=7;
+  initDay:string;
+  endDay:string;
+
+  departments:any;
+
+  selectedDaysId:number; //lastdays filter
+  selectedDeptId:string;  //department filter
+
+  subscription:Subscription;
+
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
 
   constructor(  private analyticsService:AnalyticsService,
-                private translate: TranslateService,) {
+                private translate: TranslateService,
+                private departmentService:DepartmentService) {
                   
                   this.lang = this.translate.getBrowserLang();
                   console.log('LANGUAGE ', this.lang);
@@ -38,8 +54,12 @@ export class TempirispostaComponent implements OnInit {
                  }
 
   ngOnInit() {
+    this.selectedDeptId = '';
+    this.selectedDaysId=7
     this.avarageWaitingTimeCLOCK();
-    this.avgTimeResponsechart();
+    this.avgTimeResponseCHART(this.selectedDaysId, this.selectedDeptId);
+    this.getDepartments();
+
   }
 
   msToTIME(value){
@@ -47,6 +67,45 @@ export class TempirispostaComponent implements OnInit {
        let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
        let seconds = Math.floor(((value % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
       return hours + 'h:' + minutes + 'm:' + seconds + 's'
+  }
+
+  daysSelect(value){
+    
+    this.selectedDaysId=value;//--> value to pass throw for graph method
+      //check value for label in htlm
+    if(value<=30){
+      this.lastdays=value;
+    }else if((value=== 90) || (value=== 180)){
+      this.lastdays=value/30;
+    }else if(value === 360){
+      this.lastdays=1;
+    }
+    this.barChart.destroy();
+    this.subscription.unsubscribe();
+    this.avgTimeResponseCHART(value, this.selectedDeptId);
+    console.log('REQUEST:', value, this.selectedDeptId)
+  }
+  
+  depSelected(selectedDeptId){
+    console.log('dep', selectedDeptId);
+    this.barChart.destroy();
+    this.subscription.unsubscribe();
+    this.avgTimeResponseCHART(this.selectedDaysId, selectedDeptId)
+    console.log('REQUEST:', this.selectedDaysId, selectedDeptId)
+  }
+  
+  
+  
+  getDepartments() {
+      this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
+        console.log('!!! NEW REQUESTS HISTORY - GET DEPTS RESPONSE by analitycs ', _departments);
+        this.departments = _departments
+  
+      }, error => {
+        console.log('!!! NEW REQUESTS HISTORY - GET DEPTS - ERROR: ', error);
+      }, () => {
+        console.log('!!! NEW REQUESTS HISTORY - GET DEPTS * COMPLETE *')
+      });
   }
 
   getBrowserLangAndSwitchMonthName() {
@@ -107,32 +166,32 @@ export class TempirispostaComponent implements OnInit {
     
   }
 
-  avgTimeResponsechart(){
-    this.analyticsService.getavarageWaitingTimeDataChart().subscribe((res:any)=>{
+  avgTimeResponseCHART(lastdays, depID){
+    this.subscription=this.analyticsService.getavarageWaitingTimeDataCHART(lastdays,depID).subscribe((res:any)=>{
       console.log('chart data:',res);
       if(res){
         
         //build a 30 days array of date with value 0--> is the init array
         const last30days_initarray = []
-        for (let i = 0; i <= 30; i++) {
+        for (let i = 0; i < lastdays; i++) {
           // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
           last30days_initarray.push({ date: moment().subtract(i, 'd').format('D/M/YYYY'), value: 0  });
         }
 
         last30days_initarray.reverse()
-        this.dateRangeAvg= last30days_initarray[0].date.split(-4) +' - '+last30days_initarray[30].date;
+        //this.dateRangeAvg= last30days_initarray[0].date.split(-4) +' - '+last30days_initarray[30].date;
         console.log('»» !!! ANALYTICS - REQUESTS BY DAY - MOMENT LAST 30 DATE (init array)', last30days_initarray);
 
         //build a custom array with che same structure of "init array" but with key value of serviceData
         //i'm using time_convert function that return avg_time always in hour 
         const customDataLineChart= [];
-        for (let i in res) {
+        for (let j in res) {
 
-          if (res[i].waiting_time_avg == null){
-            res[i].waiting_time_avg = 0;
+          if (res[j].waiting_time_avg == null){
+            res[j].waiting_time_avg = 0;
           }
 
-            customDataLineChart.push({ date: new Date(res[i]._id.year, res[i]._id.month - 1, res[i]._id.day).toLocaleDateString(), value: res[i].waiting_time_avg });
+            customDataLineChart.push({ date: new Date(res[j]._id.year, res[j]._id.month - 1, res[j]._id.day).toLocaleDateString(), value: res[j].waiting_time_avg });
         }
         
         console.log('Custom data:', customDataLineChart);
@@ -143,6 +202,11 @@ export class TempirispostaComponent implements OnInit {
         
         const _requestsByDay_series_array = [];
         const _requestsByDay_labels_array = [];
+
+        //select init and end day to show on div
+        this.initDay=requestByDays_final_array[0].date;
+        this.endDay=requestByDays_final_array[lastdays-1].date;
+        console.log("INIT", this.initDay, "END", this.endDay);
   
         requestByDays_final_array.forEach(requestByDay => {
           console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
@@ -185,9 +249,17 @@ export class TempirispostaComponent implements OnInit {
         var absoluteHours = Math.floor((higherCount/4) / (1000*60*60));
         console.log("step", absoluteHours);
 
+        //set the stepsize 
+        var stepsize;
+        if(this.selectedDaysId>60){
+            stepsize=10;
+        }
+        else {
+          stepsize=this.selectedDaysId
+        }
         let lang=this.lang;
 
-      var lineChart = new Chart('avgTimeResponse', {
+      this.barChart = new Chart('avgTimeResponse', {
         type: 'bar',
         data: {
           labels: this.xValueAVGchart,
@@ -220,6 +292,7 @@ export class TempirispostaComponent implements OnInit {
             xAxes: [{
               ticks: {
                 beginAtZero: true,
+                maxTicksLimit: stepsize,
                 display: true,
                 minRotation: 0,
                 fontColor: 'black',
@@ -241,7 +314,7 @@ export class TempirispostaComponent implements OnInit {
                 //stepsize is calculate: transform higherCount/4 (4 because decide to divide yAxis i 4 region) in 
                 //hour with Math.floor( num/1000*60*60) that return an hour. then convert hour returned in
                 // milliconds again multipling Math.floor()*1000*60*60
-                stepSize:(Math.floor((higherCount/4) / (1000*60*60)))*1000*60*60,
+                //stepSize:(Math.floor((higherCount/4) / (1000*60*60)))*1000*60*60,
                 //suggestedMax: higherCount,// + 20000000
                 fontColor: 'black',
                 callback: function (value, index, values) {
