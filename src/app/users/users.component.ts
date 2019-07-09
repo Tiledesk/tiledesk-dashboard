@@ -42,6 +42,8 @@ export class UsersComponent implements OnInit {
   prjct_profile_type: string;
   subscription_is_active: string;
   subscription_end_date: string;
+  projectUsersLength: number;
+
   constructor(
     private usersService: UsersService,
     private router: Router,
@@ -78,35 +80,6 @@ export class UsersComponent implements OnInit {
     console.log('UsersComponent - BRS LANG ', this.browserLang)
   }
 
-  getProjectPlan() {
-
-    this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      console.log('UsersComponent - project Profile Data', projectProfileData)
-      if (projectProfileData) {
-
-        this.projectPlanAgentsNo = projectProfileData.profile_agents;
-        this.subscription_is_active = projectProfileData.subscription_is_active;
-        this.subscription_end_date = projectProfileData.subscription_end_date
-        this.prjct_profile_type = projectProfileData.profile_type;
-
-        // ADDS 'Plan' to the project plan's name
-        // NOTE: IF THE PLAN IS OF FREE TYPE IN THE USER INTERFACE THE MESSAGE 'You currently have ...' IS NOT DISPLAYED
-        if (this.prjct_profile_type === 'payment') {
-          if (this.browserLang === 'it') {
-
-            this.prjct_profile_name = 'Piano ' + projectProfileData.profile_name;
-
-          } else if (this.browserLang !== 'it') {
-
-            this.prjct_profile_name = projectProfileData.profile_name + ' Plan';
-          }
-        }
-
-
-      }
-    })
-
-  }
 
   // TRANSLATION
   translateChangeAvailabilitySuccessMsg() {
@@ -178,9 +151,7 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  goToAddUser() {
-    this.router.navigate(['project/' + this.id_project + '/user/add']);
-  }
+
   goToEditUser(projectUser_id) {
     this.router.navigate(['project/' + this.id_project + '/user/edit/' + projectUser_id]);
   }
@@ -193,11 +164,44 @@ export class UsersComponent implements OnInit {
     this.router.navigate(['project/' + this.id_project + '/users/pending']);
   }
 
+
+  getProjectPlan() {
+
+    this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
+      console.log('UsersComponent - project Profile Data', projectProfileData)
+      if (projectProfileData) {
+
+        this.projectPlanAgentsNo = projectProfileData.profile_agents;
+        this.subscription_is_active = projectProfileData.subscription_is_active;
+        this.subscription_end_date = projectProfileData.subscription_end_date
+        this.prjct_profile_type = projectProfileData.profile_type;
+
+        // ADDS 'Plan' to the project plan's name
+        // NOTE: IF THE PLAN IS OF FREE TYPE IN THE USER INTERFACE THE MESSAGE 'You currently have ...' IS NOT DISPLAYED
+        if (this.prjct_profile_type === 'payment') {
+          if (this.browserLang === 'it') {
+
+            this.prjct_profile_name = 'Piano ' + projectProfileData.profile_name;
+
+          } else if (this.browserLang !== 'it') {
+
+            this.prjct_profile_name = projectProfileData.profile_name + ' Plan';
+          }
+        }
+      }
+    })
+  }
+
   getAllUsersOfCurrentProject() {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
       console.log('PROJECT USERS (FILTERED FOR PROJECT ID)', projectUsers);
 
-      this.projectUsersList = projectUsers;
+      if (projectUsers) {
+        this.projectUsersList = projectUsers;
+        this.projectUsersLength = projectUsers.length;
+        console.log('PROJECT USERS Length  (FILTERED FOR PROJECT ID)', this.projectUsersLength);
+
+      }
 
     }, error => {
       this.showSpinner = false;
@@ -207,6 +211,16 @@ export class UsersComponent implements OnInit {
       this.showSpinner = false;
       console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
     });
+  }
+
+  goToAddUser() {
+
+    if ((this.projectUsersLength + this.countOfPendingInvites) < this.projectPlanAgentsNo) {
+    this.router.navigate(['project/' + this.id_project + '/user/add']);
+    } else {
+
+      this.notify._displayContactUsModal(true);
+    }
   }
 
   openDeleteModal(projectUser_id: string, userID: string, userFirstname: string, userLastname: string) {

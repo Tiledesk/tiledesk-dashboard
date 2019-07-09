@@ -30,6 +30,8 @@ export class NotifyService {
   displayCheckLIstModal: string;
 
   displayModalSubsExpired: string;
+  displayContactUsModal = 'none';
+
   _prjctPlanSubsEndDate: Date;
   _prjctPlanName: string;
 
@@ -71,6 +73,18 @@ export class NotifyService {
   closeModalSubsExpired() {
     this.displayModalSubsExpired = 'none';
   }
+
+  // "CONTACT US - LET'S CHAT" MODAL
+  _displayContactUsModal(displayModal: boolean) {
+    if (displayModal === true) {
+      this.displayContactUsModal = 'block';
+    }
+  }
+
+  closeContactUsModal() {
+    this.displayContactUsModal = 'none';
+  }
+
 
   update(content: string, style: 'error' | 'info' | 'success') {
     const msg: Msg = { content, style };

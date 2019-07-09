@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { UsersService } from '../services/users.service';
 import { ActivatedRoute } from '@angular/router';
 import { NotifyService } from '../core/notify.service';
-
+import { ProjectPlanService } from '../services/project-plan.service';
 @Component({
   selector: 'app-user-edit-add',
   templateUrl: './user-edit-add.component.html',
@@ -40,12 +40,17 @@ export class UserEditAddComponent implements OnInit {
   EMAIL_IS_VALID = true;
 
   selectedRole: string;
+  projectUsersLength: number;
+  projectPlanAgentsNo: number;
+  countOfPendingInvites: number;
+
   constructor(
     private router: Router,
     private auth: AuthService,
     private usersService: UsersService,
     private route: ActivatedRoute,
-    private notify: NotifyService
+    private notify: NotifyService,
+    private prjctPlanService: ProjectPlanService
   ) { }
 
   ngOnInit() {
@@ -67,6 +72,54 @@ export class UserEditAddComponent implements OnInit {
     }
 
     this.getCurrentProject();
+    this.getAllUsersOfCurrentProject();
+    this.getProjectPlan();
+
+  }
+
+  getAllUsersOfCurrentProject() {
+    this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
+      console.log('UserEditAddComponent PROJECT USERS ', projectUsers);
+
+      if (projectUsers) {
+        this.projectUsersLength = projectUsers.length;
+        console.log('UserEditAddComponent PROJECT USERS Length ', this.projectUsersLength);
+      }
+    }, error => {
+      console.log('UserEditAddComponent PROJECT USERS - ERROR', error);
+    }, () => {
+      console.log('UserEditAddComponent PROJECT USERS - COMPLETE');
+    });
+  }
+
+  getProjectPlan() {
+    this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
+      console.log('UserEditAddComponent - project Profile Data', projectProfileData)
+      if (projectProfileData) {
+
+        this.projectPlanAgentsNo = projectProfileData.profile_agents;
+        console.log('UserEditAddComponent projectPlanAgentsNo ', this.projectPlanAgentsNo);
+
+      }
+    })
+  }
+
+  getPendingInvitation() {
+    this.usersService.getPendingUsers()
+      .subscribe((pendingInvitation: any) => {
+        console.log('USER COMP - GET PENDING INVITATION ', pendingInvitation);
+
+        if (pendingInvitation) {
+          this.countOfPendingInvites = pendingInvitation.length
+          console.log('USER COMP - # OF PENDING INVITATION ', this.countOfPendingInvites);
+        }
+
+      }, error => {
+
+        console.log('USER COMP - GET PENDING INVITATION - ERROR', error);
+      }, () => {
+        console.log('USER COMP - GET PENDING INVITATION - COMPLETE');
+      });
 
   }
 
@@ -146,7 +199,7 @@ export class UserEditAddComponent implements OnInit {
   // setSelectedRole() {
   //   console.log('setSelected Selected ROLE ', this.selectedRole)
   // }
-    
+
 
   emailChange(event) {
     console.log('!!!!! INVITE THE USER - EDITING EMAIL ', event);
@@ -163,66 +216,75 @@ export class UserEditAddComponent implements OnInit {
   }
 
   invite() {
-    // show the modal windows
-    this.display = 'block';
 
-    this.SHOW_CIRCULAR_SPINNER = true
+    if ((this.projectUsersLength + this.countOfPendingInvites) < this.projectPlanAgentsNo) {
+      // show the modal windows
+      this.display = 'block';
 
-    setTimeout(() => {
-      this.SHOW_CIRCULAR_SPINNER = false
-    }, 1000);
+      this.SHOW_CIRCULAR_SPINNER = true
 
-    console.log('INVITE THE USER EMAIL ', this.user_email)
-    console.log('INVITE THE USER ROLE ', this.role)
+      setTimeout(() => {
+        this.SHOW_CIRCULAR_SPINNER = false
+      }, 1000);
 
-    this.usersService.inviteUser(this.user_email, this.role).subscribe((project_user: any) => {
-      console.log('INVITE USER - POST SUBSCRIPTION PROJECT-USER ', project_user);
+      console.log('INVITE THE USER EMAIL ', this.user_email)
+      console.log('INVITE THE USER ROLE ', this.role)
 
-    }, (error) => {
-      console.log('INVITE USER  ERROR ', error);
+      this.usersService.inviteUser(this.user_email, this.role).subscribe((project_user: any) => {
+        console.log('INVITE USER - POST SUBSCRIPTION PROJECT-USER ', project_user);
 
-      const invite_errorbody = JSON.parse(error._body)
-      console.log('INVITE USER  ERROR BODY ', invite_errorbody);
+      }, (error) => {
+        console.log('INVITE USER  ERROR ', error);
 
-      if ((invite_errorbody['success'] === false) && (invite_errorbody['code'] === 4000)) {
-        console.log('!!! Forbidden, you can not invite yourself')
+        const invite_errorbody = JSON.parse(error._body)
+        console.log('INVITE USER  ERROR BODY ', invite_errorbody);
 
-        this.INVITE_YOURSELF_ERROR = true;
+        if ((invite_errorbody['success'] === false) && (invite_errorbody['code'] === 4000)) {
+          console.log('!!! Forbidden, you can not invite yourself')
+
+          this.INVITE_YOURSELF_ERROR = true;
+          this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
+          this.INVITE_USER_NOT_FOUND = false;
+
+        } else if ((invite_errorbody['success'] === false) && (invite_errorbody['code'] === 4001)) {
+          console.log('!!! Forbidden, user is already a member')
+
+          this.INVITE_YOURSELF_ERROR = false;
+          this.INVITE_USER_ALREADY_MEMBER_ERROR = true;
+          this.INVITE_USER_NOT_FOUND = false;
+
+        } else if ((invite_errorbody['success'] === false) && (error['status'] === 404)) {
+          console.log('!!! USER NOT FOUND ')
+          this.INVITE_YOURSELF_ERROR = false;
+          this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
+          this.INVITE_USER_NOT_FOUND = true;
+
+        } else if (invite_errorbody['success'] === false) {
+
+          this.INVITE_YOURSELF_ERROR = false;
+          this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
+          this.INVITE_USER_NOT_FOUND = false;
+          this.INVITE_OTHER_ERROR = true;
+
+        }
+      }, () => {
+        console.log('INVITE USER  * COMPLETE *');
+        this.INVITE_YOURSELF_ERROR = false;
+        this.INVITE_OTHER_ERROR = false;
         this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
         this.INVITE_USER_NOT_FOUND = false;
 
-      } else if ((invite_errorbody['success'] === false) && (invite_errorbody['code'] === 4001)) {
-        console.log('!!! Forbidden, user is already a member')
+        this.getAllUsersOfCurrentProject();
+        this.getPendingInvitation();
 
-        this.INVITE_YOURSELF_ERROR = false;
-        this.INVITE_USER_ALREADY_MEMBER_ERROR = true;
-        this.INVITE_USER_NOT_FOUND = false;
+        // WHEN AN USER CLICK ON INVITE DISABLE THE BTN INVITE
+        // this.ROLE_NOT_SELECTED = true;
+      });
 
-      } else if ((invite_errorbody['success'] === false) && (error['status'] === 404)) {
-        console.log('!!! USER NOT FOUND ')
-        this.INVITE_YOURSELF_ERROR = false;
-        this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
-        this.INVITE_USER_NOT_FOUND = true;
+    } else {
 
-      } else if (invite_errorbody['success'] === false) {
-
-        this.INVITE_YOURSELF_ERROR = false;
-        this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
-        this.INVITE_USER_NOT_FOUND = false;
-        this.INVITE_OTHER_ERROR = true;
-
-      }
-    }, () => {
-      console.log('INVITE USER  * COMPLETE *');
-      this.INVITE_YOURSELF_ERROR = false;
-      this.INVITE_OTHER_ERROR = false;
-      this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
-      this.INVITE_USER_NOT_FOUND = false;
-
-      // WHEN AN USER CLICK ON INVITE DISABLE THE BTN INVITE
-      // this.ROLE_NOT_SELECTED = true;
-    });
-
+      this.notify._displayContactUsModal(true);
+    }
   }
 
   onCloseModalHandled() {

@@ -182,5 +182,11 @@ export class NotificationMessageComponent implements OnInit {
     this.notify.closeModalSubsExpired();
   }
 
+  launchWidget() {
+    if (window && window['tiledesk']) {
+      window['tiledesk'].open();
+    }
+  }
+
 
 }

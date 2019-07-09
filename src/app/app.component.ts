@@ -165,7 +165,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.router.events.subscribe((val) => {
             if (this.location.path() !== '') {
                 this.route = this.location.path();
-                console.log('»> ', this.route);
+                // console.log('»> ', this.route);
 
                 // (this.route.indexOf('/analytics') !== -1) ||
                 if ((this.route.indexOf('/requests') !== -1) ||
@@ -173,7 +173,7 @@ export class AppComponent implements OnInit, AfterViewInit {
                     (this.route.indexOf('/groups') !== -1)) {
 
                     const elemNavbar = <HTMLElement>document.querySelector('.navbar');
-                    console.log('»> is analytics -- elemNavbar ', elemNavbar)
+                    // console.log('»> is analytics -- elemNavbar ', elemNavbar)
                     elemNavbar.setAttribute('style', 'box-shadow:none');
 
                 }
