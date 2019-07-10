@@ -84,7 +84,9 @@ class="navbar-brand">
               <div class="card-content">
                   <span *ngIf="subscription_is_active === true">
                     <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i>
-                    <span class="msg-alert"> You currently have {{ projectPlanAgentsNo }} active operator seats in the <span style="text-transform: capitalize">  {{ prjct_profile_name }}</span></span>
+                    <span class="msg-alert">You currently are using {{ this.projectUsersLength + this.countOfPendingInvites }} of {{ projectPlanAgentsNo }}  active operator seats in the  
+                      <span style="text-transform: capitalize">  {{ prjct_profile_name }}</span> - <span style="color: #039be5;">  Get more </span>
+                    </span>
                   </span>
                   <span *ngIf="subscription_is_active === false">
                     <i class="material-icons" style="vertical-align: middle; color: #f44336;">error_outline</i>

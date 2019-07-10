@@ -367,7 +367,8 @@
         "NoteThatWillBeDisplayedOnce": "Nota che questo shared secret verrà visualizzato solo una volta",
         "SharedSecretGenerated": "Shared Secret Generato",
         "ThisIsYourSharedSecret": "Questo è il tuo shared secret",
-        "ProjectPlan":"Piano"
+        "ProjectPlan":"Piano",
+        "Your": "Il tuo"
     },
     "HomePage": {
         "Widget": "Per iniziare configura il tuo Widget!",

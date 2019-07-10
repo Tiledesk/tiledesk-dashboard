@@ -17,6 +17,7 @@ export class UsersPendingComponent implements OnInit {
   pendingInvitationEmail: string;
   resendInviteSuccessNoticationMsg: string;
   resendInviteErrorNoticationMsg: string;
+  showSpinner = true;
   constructor(
     private usersService: UsersService,
     private _location: Location,
@@ -56,16 +57,15 @@ export class UsersPendingComponent implements OnInit {
     this.usersService.getPendingUsers()
       .subscribe((pendingInvitation: any) => {
         console.log('GET PENDING INVITATION ', pendingInvitation);
-
         if (pendingInvitation) {
           this.pending_invites = pendingInvitation
         }
-
       }, error => {
-
         console.log('GET PENDING INVITATION - ERROR', error);
+        this.showSpinner = false;
       }, () => {
         console.log('GET PENDING INVITATION - COMPLETE');
+        this.showSpinner = false;
       });
   }
 
@@ -82,6 +82,7 @@ export class UsersPendingComponent implements OnInit {
         console.log('DELETE PENDING INVITATION - ERROR', error);
       }, () => {
         console.log('DELETE PENDING INVITATION - COMPLETE');
+        this.getPendingInvitation();
       });
   }
 

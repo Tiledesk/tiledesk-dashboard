@@ -74,6 +74,7 @@ export class UserEditAddComponent implements OnInit {
     this.getCurrentProject();
     this.getAllUsersOfCurrentProject();
     this.getProjectPlan();
+    this.getPendingInvitation()
 
   }
 
@@ -216,7 +217,9 @@ export class UserEditAddComponent implements OnInit {
   }
 
   invite() {
-
+    console.log('INVITE USER No of Project Users ', this.projectUsersLength)
+    console.log('INVITE USER No of Pending Invites ', this.countOfPendingInvites)
+    console.log('INVITE USER No of Operators Seats (agents purchased)', this.projectPlanAgentsNo)
     if ((this.projectUsersLength + this.countOfPendingInvites) < this.projectPlanAgentsNo) {
       // show the modal windows
       this.display = 'block';
