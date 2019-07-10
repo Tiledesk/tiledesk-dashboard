@@ -365,7 +365,7 @@ export class UsersService {
 
   }
 
-  /// ================================== PENDING USERS ================================== ///
+  /// ================================== GET PENDING USERS ================================== ///
   public getPendingUsers(): Observable<PendingInvitation[]> {
     const url = this.PENDING_INVITATION_URL;
 
@@ -377,6 +377,20 @@ export class UsersService {
     return this.http
       .get(url, { headers })
       .map((response) => response.json());
+  }
+
+  /// ================================== GET PENDING USERS ================================== ///
+  public deletePendingInvitation(pendingInvitationId): Observable<PendingInvitation[]> {
+    const url = this.PENDING_INVITATION_URL + '/' + pendingInvitationId;
+    console.log('DELETE PENDING INVITATION URL ', url);
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+    return this.http
+      .delete(url, options)
+      .map((res) => res.json());
   }
 
   /// ================================== RESEND EMAIL TO PENDING USERS ================================== ///

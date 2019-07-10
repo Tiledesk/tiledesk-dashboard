@@ -67,8 +67,24 @@ export class UsersPendingComponent implements OnInit {
       }, () => {
         console.log('GET PENDING INVITATION - COMPLETE');
       });
-
   }
+
+
+  deletePendinInvitation(pendingInvitationId: string) {
+
+    console.log('DELETE PENDING INVITATION - INVITATION ID ', pendingInvitationId);
+    this.usersService.deletePendingInvitation(pendingInvitationId)
+      .subscribe((pendingInvitation: any) => {
+        console.log('DELETE PENDING INVITATION ', pendingInvitation);
+
+         }, error => {
+
+        console.log('DELETE PENDING INVITATION - ERROR', error);
+      }, () => {
+        console.log('DELETE PENDING INVITATION - COMPLETE');
+      });
+  }
+
   goBack() {
     this._location.back();
   }

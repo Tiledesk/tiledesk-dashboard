@@ -31,6 +31,7 @@
                       </th>
 
                       <th></th>
+                      <th></th>
 
                     </tr>
                 </thead>
@@ -74,6 +75,13 @@
                     <td>
                       <span style="cursor: pointer; font-weight:400;color:#039be5" (click)="resendInvite(invites?._id)">
                         {{ "UsersPage.ResendInvite" | translate }} 
+                      </span>
+                      
+                    </td>
+
+                    <td>
+                      <span style="cursor: pointer; font-weight:400;color:#039be5" (click)="deletePendinInvitation(invites?._id)">
+                       Delete
                       </span>
                       
                     </td>
