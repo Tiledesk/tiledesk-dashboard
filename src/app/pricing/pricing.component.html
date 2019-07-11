@@ -102,7 +102,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
       </div>
 
      
-      <div class="col-md-6"> 
+      <div class="col-md-6" [ngClass]="{'hide-when-is-open-PaymentReport' : displayPaymentReport === 'block'}" > 
          
         <div class="card" style="box-shadow: 0 14px 30px 0 rgba(60,72,91,0.22); border-radius:10px ">
 
@@ -347,7 +347,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 
 
 <!-- ============= PAY WITH CARD MODAL ============= -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayPaymentReport}" style="background-color: rgba(90,90,90,0.9);">
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayPaymentReport}" style="background-color: rgba(90,90,90,0.9); overflow: auto;">
     <div class="modal-dialog" role="document">
       <div class="modal-content" style="border-top-left-radius:6px; border-top-right-radius:6px">
         <div class="modal-header" style="padding:0px!important; border-bottom:none!important;">

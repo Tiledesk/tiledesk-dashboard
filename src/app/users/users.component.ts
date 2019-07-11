@@ -16,6 +16,8 @@ export class UsersComponent implements OnInit {
 
   showSpinner = true;
   projectUsersList: any;
+  pendingInvitationList: any;
+
   id_projectUser: string;
   user_firstname: string;
   user_lastname: string;
@@ -23,6 +25,7 @@ export class UsersComponent implements OnInit {
 
   // set to none the property display of the modal
   display = 'none';
+  displayCancelInvitationModal = 'none';
   project: Project;
   id_project: string;
   USER_ROLE: string;
@@ -43,6 +46,19 @@ export class UsersComponent implements OnInit {
   subscription_is_active: string;
   subscription_end_date: string;
   projectUsersLength: number;
+
+  HAS_FINISHED_GET_PROJECT_USERS = false;
+  HAS_FINISHED_GET_PENDING_USERS = false;
+  pendingInvitationEmail: string;
+
+  resendInviteSuccessNoticationMsg: string;
+  resendInviteErrorNoticationMsg: string;
+
+  pendingInvitationIdToCancel: string;
+  pendingInvitationEmailToCancel: string;
+
+  canceledInviteSuccessMsg: string;
+  canceledInviteErrorMsg: string;
 
   constructor(
     private usersService: UsersService,
@@ -72,8 +88,49 @@ export class UsersComponent implements OnInit {
     this.getPendingInvitation();
 
     this.getProjectPlan();
+    this.translateResendInviteSuccessMsg();
+    this.translateResendInviteErrorMsg();
+    this.translateCanceledInviteSuccessMsg();
+    this.translateCanceledInviteErrorMsg();
   }
 
+
+  translateCanceledInviteSuccessMsg() {
+    this.translate.get('UsersPage.CanceledInviteSuccessMsg')
+      .subscribe((text: string) => {
+
+        this.canceledInviteSuccessMsg = text;
+        console.log('+ + + canceledInviteSuccessMsg Invite Success Notication Msg', text)
+      });
+  }
+
+  translateCanceledInviteErrorMsg() {
+    this.translate.get('UsersPage.CanceledInviteErrorMsg')
+      .subscribe((text: string) => {
+
+        this.canceledInviteErrorMsg = text;
+        console.log('+ + + canceledInviteErrorMsg Invite Success Notication Msg', text)
+      });
+
+  }
+
+  translateResendInviteSuccessMsg() {
+    this.translate.get('UsersPage.ResendInviteSuccessNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.resendInviteSuccessNoticationMsg = text;
+        console.log('+ + + resend Invite Success Notication Msg', text)
+      });
+  }
+
+  translateResendInviteErrorMsg() {
+    this.translate.get('UsersPage.ResendInviteErrorNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.resendInviteErrorNoticationMsg = text;
+        console.log('+ + + resend Invite Error Notication Msg', text)
+      });
+  }
 
   getBrowserLanguage() {
     this.browserLang = this.translate.getBrowserLang();
@@ -166,7 +223,6 @@ export class UsersComponent implements OnInit {
 
 
   getProjectPlan() {
-
     this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
       console.log('UsersComponent - project Profile Data', projectProfileData)
       if (projectProfileData) {
@@ -193,24 +249,109 @@ export class UsersComponent implements OnInit {
   }
 
   getAllUsersOfCurrentProject() {
-    this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
-      console.log('PROJECT USERS (FILTERED FOR PROJECT ID)', projectUsers);
 
+    this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
+      console.log('»» USER COMP - PROJECT USERS (FILTERED FOR PROJECT ID)', projectUsers);
       if (projectUsers) {
         this.projectUsersList = projectUsers;
         this.projectUsersLength = projectUsers.length;
         console.log('PROJECT USERS Length  (FILTERED FOR PROJECT ID)', this.projectUsersLength);
-
       }
-
     }, error => {
       this.showSpinner = false;
-
       console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
     }, () => {
+
+      this.HAS_FINISHED_GET_PROJECT_USERS = true;
       this.showSpinner = false;
       console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
+
+      // this.getPendingInvitation();
     });
+  }
+
+  getPendingInvitation() {
+    this.usersService.getPendingUsers()
+      .subscribe((pendingInvitation: any) => {
+        console.log('»» USER COMP - GET PENDING INVITATION ', pendingInvitation);
+
+        if (pendingInvitation) {
+          this.pendingInvitationList = pendingInvitation;
+          this.countOfPendingInvites = pendingInvitation.length;
+          console.log('USER COMP - # OF PENDING INVITATION ', this.countOfPendingInvites);
+
+          // pendingInvitation.forEach(invite => {
+          //   this.projectUsersList.push({ 'id_pending_user': invite })
+          // });
+        }
+      }, error => {
+        this.showSpinner = false;
+        console.log('USER COMP - GET PENDING INVITATION - ERROR', error);
+      }, () => {
+        console.log('USER COMP - GET PENDING INVITATION - COMPLETE');
+        this.HAS_FINISHED_GET_PENDING_USERS = true;
+        this.showSpinner = false;
+
+
+      });
+
+  }
+
+
+  resendInvite(pendingInvitationId: string) {
+    console.log('RESEND INVITE TO PENDING INVITATION ID: ', pendingInvitationId);
+    this.usersService.getPendingUsersByIdAndResendEmail(pendingInvitationId)
+      .subscribe((pendingInvitation: any) => {
+        console.log('GET PENDING INVITATION BY ID AND RESEND INVITE - RES ', pendingInvitation);
+        this.pendingInvitationEmail = pendingInvitation['Resend invitation email to']['email'];
+        console.log('GET PENDING INVITATION BY ID AND RESEND INVITE - RES  email', this.pendingInvitationEmail);
+      }, error => {
+
+        console.log('GET PENDING INVITATION BY ID AND RESEND INVITE - ERROR', error);
+        // this.notify.showNotification('An error occurred sending the email', 4, 'report_problem')
+        this.notify.showNotification(this.resendInviteErrorNoticationMsg, 4, 'report_problem')
+
+      }, () => {
+        console.log('GET PENDING INVITATION BY ID AND RESEND INVITE - COMPLETE');
+        // =========== NOTIFY SUCCESS===========
+        //  this.notify.showNotification('Invitation email has been sent to ' + this.pendingInvitationEmail, 2, 'done');
+        this.notify.showNotification(this.resendInviteSuccessNoticationMsg + this.pendingInvitationEmail, 2, 'done');
+      });
+  }
+
+  openCancelInvitationModal(pendingInvitationId: string, pendingInvitationEmail: string) {
+    this.displayCancelInvitationModal = 'block';
+    console.log('openCancelInvitationModal pendingInvitationId: ', pendingInvitationId, ' pendingInvitationEmail: ', pendingInvitationEmail)
+
+    this.pendingInvitationIdToCancel = pendingInvitationId;
+    this.pendingInvitationEmailToCancel = pendingInvitationEmail
+  }
+
+  closeCancelInvitationModal() {
+    this.displayCancelInvitationModal = 'none';
+  }
+
+  deletePendinInvitation() {
+    this.displayCancelInvitationModal = 'none';
+    console.log('DELETE PENDING INVITATION - INVITATION ID ', this.pendingInvitationIdToCancel);
+    this.usersService.deletePendingInvitation(this.pendingInvitationIdToCancel)
+      .subscribe((pendingInvitation: any) => {
+        console.log('DELETE PENDING INVITATION ', pendingInvitation);
+
+      }, error => {
+
+        console.log('DELETE PENDING INVITATION - ERROR', error);
+
+
+
+        this.notify.showNotification(this.canceledInviteErrorMsg, 4, 'report_problem')
+
+      }, () => {
+        console.log('DELETE PENDING INVITATION - COMPLETE');
+
+        this.notify.showNotification(this.canceledInviteSuccessMsg + this.pendingInvitationEmailToCancel, 2, 'done');
+        this.getPendingInvitation();
+      });
   }
 
   goToAddUser() {
@@ -218,7 +359,7 @@ export class UsersComponent implements OnInit {
     console.log('INVITE USER (GOTO) No of Pending Invites ', this.countOfPendingInvites)
     console.log('INVITE USER (GOTO) No of Operators Seats (agents purchased)', this.projectPlanAgentsNo)
     if ((this.projectUsersLength + this.countOfPendingInvites) < this.projectPlanAgentsNo) {
-    this.router.navigate(['project/' + this.id_project + '/user/add']);
+      this.router.navigate(['project/' + this.id_project + '/user/add']);
     } else {
 
       this.notify._displayContactUsModal(true);
@@ -234,6 +375,8 @@ export class UsersComponent implements OnInit {
 
     console.log('DELETE PROJECT-USER with ID ', this.id_projectUser, ' - (Firstname: ', userFirstname, '; Lastname: ', userLastname, ')');
   }
+
+
 
   onCloseDeleteModalHandled() {
     this.display = 'none';
@@ -305,28 +448,13 @@ export class UsersComponent implements OnInit {
   // RE-RUN getAllUsersOfCurrentProject TO UPDATE THE LIST OF THE PROJECT' MEMBER
   hasChangedAvailabilityStatusInSidebar() {
     this.usersService.has_changed_availability_in_sidebar.subscribe((has_changed_availability) => {
-      console.log('USER COMP SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE SIDEBAR', has_changed_availability)
-      this.getAllUsersOfCurrentProject();
+      console.log('»»USER COMP SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE SIDEBAR', has_changed_availability)
+      if (has_changed_availability === true) {
+        this.getAllUsersOfCurrentProject();
+      }
     })
   }
 
-  getPendingInvitation() {
-    this.usersService.getPendingUsers()
-      .subscribe((pendingInvitation: any) => {
-        console.log('USER COMP - GET PENDING INVITATION ', pendingInvitation);
 
-        if (pendingInvitation) {
-          this.countOfPendingInvites = pendingInvitation.length
-          console.log('USER COMP - # OF PENDING INVITATION ', this.countOfPendingInvites);
-        }
-
-      }, error => {
-
-        console.log('USER COMP - GET PENDING INVITATION - ERROR', error);
-      }, () => {
-        console.log('USER COMP - GET PENDING INVITATION - COMPLETE');
-      });
-
-  }
 
 }

@@ -414,9 +414,11 @@
         "tootipEditUser": "Edit role",
         "tootipDeleteUser": "Remove Member",
         "modalDeleteUser": "Remove Member",
+        "modalCancelInvite": "Cancel Invite",
         "TheMemberWithId": "The member with Id",
         "WillBeRemoved": "will be removed",
         "AreYouSure": "Are you sure you want to remove",
+        "AreYouSureCancelInvite":"Are you sure you want to revoke the invitation to",
         "FromTheProject": "from the project",
         "Confirm": "Confirm",
         "Cancel": "Cancel",
@@ -429,7 +431,9 @@
         "TheInvitedUsersWillBecomeMembers": "The invited users need to be registered on tiledesk in order to become members of the project",
         "ResendInvite": "Resend invite",
         "ResendInviteSuccessNoticationMsg": "Invitation email has been sent to ",
-        "ResendInviteErrorNoticationMsg": "An error occurred sending the email "
+        "ResendInviteErrorNoticationMsg": "An error occurred sending the email ",
+        "CanceledInviteSuccessMsg": "Invitation canceled for ",
+        "CanceledInviteErrorMsg": "An error occurred cancelling the invite"
     },
     "UserEditAddPage": {
         "AddUserToThe": "Add User to the",

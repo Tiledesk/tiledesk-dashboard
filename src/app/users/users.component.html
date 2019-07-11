@@ -112,9 +112,9 @@ class="navbar-brand">
               {{ "UsersPage.Invites" | translate }}
             </button>
 
-              <div class="pull-right" style="padding: 8px 16px;color: #039be5;font-weight: 500; cursor: pointer" (click)="goToPendingInvitation()"> 
+              <!-- <div class="pull-right" style="padding: 8px 16px;color: #039be5;font-weight: 500; cursor: pointer" (click)="goToPendingInvitation()"> 
                 {{ "UsersPage.PendingInvitation" | translate }} ({{ countOfPendingInvites }})
-              </div>
+              </div> -->
           </div>
 
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
@@ -202,12 +202,12 @@ class="navbar-brand">
                   </td>
 
                   <td (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer;">
-                    <span class="tooltipx">
+                    <span class="White__Tooltip">
                       <span style="font-weight:400; font-size: 13px"> {{ projectUser?.id_user?.firstname }} </span>
                       <span style="text-transform: uppercase; font-weight:400; font-size: 13px "> {{ projectUser?.id_user?.lastname }}  </span>
 
-                      <span class="tooltiptext">
-                        {{"UsersPage.ViewProfileUser" | translate }} {{projectUser?.id_user?._id}}
+                      <span class="White__Tooltiptext" >
+                        {{"UsersPage.ViewProfileUser" | translate }} <span  style="font-size:10px; display:block"> {{projectUser?.id_user?._id}}</span> 
                       </span>
                         
                       <span style="display: block; color:#7695a5; font-size: 12px; font-weight: 400">
@@ -217,10 +217,10 @@ class="navbar-brand">
                   </td>
 
                   <td (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
-                    <span class="tooltipx">
+                    <span class="White__Tooltip">
                       <span style="font-weight:400; font-size: 13px"> {{ projectUser?.role | translate}}</span>
-                      <span class="tooltiptext">
-                        {{"UsersPage.ViewProfileUser" | translate }} {{projectUser?.id_user?._id}}
+                      <span class="White__Tooltiptext">
+                        {{"UsersPage.ViewProfileUser" | translate }} <span  style="font-size:10px; display:block"> {{projectUser?.id_user?._id}}</span>
                       </span>
                     </span>
                   </td>
@@ -258,10 +258,10 @@ class="navbar-brand">
                   <!-- ACTIONS -->
                   <td class="td-actions text-right">
                     <span *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id">
-                      <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs tooltipx"
+                      <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs White__Tooltip"
                         (click)='goToEditUser(projectUser?._id)'>
                         <i class="material-icons">edit</i>
-                        <span class="tooltiptext" style="text-transform:capitalize"> {{ 'UsersPage.tootipEditUser' | translate }} </span>
+                        <span class="White__Tooltiptext" style="text-transform:capitalize"> {{ 'UsersPage.tootipEditUser' | translate }} </span>
                       </button>
                       <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipDeleteUser' | translate }}" class="btn btn-danger btn-simple btn-xs"
                         (click)='openDeleteModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'>
@@ -271,6 +271,50 @@ class="navbar-brand">
                   </td>
 
                 </tr>
+
+                <tr *ngFor="let invites of pendingInvitationList">
+                  <td style="text-align: center; width:1%; white-space:nowrap; "> 
+                      <i class="material-icons" style="color: rgba(0,0,0,0.54); vertical-align: middle">
+                        query_builder
+                      </i>
+                  </td>
+
+                  <td>
+                    <span style="font-weight:400"> 
+                      {{ invites?.email }}
+                    </span> 
+                    <span style="display: block; color:#7695a5; font-size: 12px; font-weight: 400">
+                      {{ "UsersPage.DateOfSending" | translate }}: {{ invites?.createdAt | date: 'dd/MM/yy' }}
+                    </span>
+                  </td>
+
+                  <td>
+                    <span style="font-weight:400;font-weight:400; font-size: 13px"> 
+                      {{ "UsersPage.InvitedToBecome" | translate }} 
+                      <span style="text-transform:capitalize"> 
+                        {{ invites?.role | translate }}
+                      </span>
+                    </span>
+                  </td>
+
+                  <td> </td>
+
+                  <td class="td-actions text-right">
+                    <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs White__Tooltip"
+                      (click)='resendInvite(invites?._id)'>
+                      <i class="material-icons">send</i>
+                      <span class="White__Tooltiptext" style="text-transform:capitalize; display: block; ">
+                          {{ "UsersPage.ResendInvite" | translate }} 
+                      </span>
+                    </button>
+                    <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs " 
+                      (click)='openCancelInvitationModal(invites?._id, invites?.email )' style="margin-left: 4px;">
+                      <i class="material-icons">close</i>
+                    </button>
+                  </td>
+                </tr>
+
+
               </tbody>
             </table>
           </div>
@@ -332,3 +376,47 @@ class="navbar-brand">
   </div>
   <!-- /.modal-dialog -->
 </div>
+
+
+<!-- ============ CANCEL PENDING INVITATION ============ -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayCancelInvitationModal}" style="background-color: rgba(90,90,90,0.5);">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color:#ff5252;">
+          <button type="button" class="close" aria-label="Close" (click)="closeCancelInvitationModal()">
+            <span aria-hidden="true" style="color: #fff">&times;</span>
+          </button>
+  
+          <h4 class="modal-title" style="color: #fff">
+            <i class="material-icons" style="vertical-align: middle">report_problem</i>
+            <span style="vertical-align: middle; padding-left:8px">
+              {{ "UsersPage.modalCancelInvite" | translate }}
+            </span>
+          </h4>
+  
+        </div>
+  
+        <div class="modal-body">
+          <p style="color:rgba(0,0,0,0.87)" style="margin-top:10px">
+            {{ "UsersPage.AreYouSureCancelInvite" | translate }}
+            <b>{{ pendingInvitationEmailToCancel }} </b>? 
+          </p>
+        </div>
+  
+        <div class="modal-footer">
+          <button class="btn btn-white" (click)="closeCancelInvitationModal()" style="padding:12px 16px;">
+            <!-- Annulla -->
+            {{ "UsersPage.Cancel" | translate }}
+          </button>
+          <!-- Confirm -->
+          <button class="btn btn-danger" (click)="deletePendinInvitation()">
+            {{ "UsersPage.modalCancelInvite" | translate }}
+          </button>
+        </div>
+  
+  
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>

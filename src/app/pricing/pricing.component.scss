@@ -379,6 +379,12 @@ li:before {
     opacity:1!important;
   }
 
+@media (max-width: 992px) {
+  .hide-when-is-open-PaymentReport {
+    display: none;
+  }
+}
+
 // @import url('https://fonts.googleapis.com/css?family=Kalam');
 // .highlight {
 //     font-family: 'Kalam', cursive;

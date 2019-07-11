@@ -190,7 +190,12 @@ button.close {
 
 @media (max-width: 768px) {
     .custom-label {
-        height: 0px !important;
+        // height: 0px !important;
+        height: 30px !important;
+    }
+
+    .custom-label-left {
+        text-align: left  !important;
     }
 
     .link-to-widget-auth {

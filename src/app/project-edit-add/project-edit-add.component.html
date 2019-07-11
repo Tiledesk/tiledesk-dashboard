@@ -14,7 +14,7 @@
    
       <div class="row">
         <div class="col-md-12">
-          <div class="card">
+          <div class="card" style="min-height: 518px">
             <loading-spinner *ngIf="showSpinner"></loading-spinner>
             
             <div *ngIf="!showSpinner" class="card-content">
@@ -98,7 +98,7 @@
                     </div>
                   </div>
 
-
+                  <div class="input-wrapper" style="max-width: 992px;"> 
                   <div class="row"> 
                     <label class="col-sm-2 custom-label">
                       {{ "ProjectEditPage.ProjectPlan" | translate }}
@@ -162,6 +162,7 @@
                       </span>
                     </div>
                   </div>
+                </div>
                   <!-- /.end project plan -->
 
 
@@ -186,18 +187,20 @@
                 </div>
 
                 <!-- AUTO SEND TRANSCRIPT BY EMAIL ON / OFF BTN -->
-                <div class="row">
-                  <label class="col-xs-6 col-sm-2 custom-label">
-                    {{ "ProjectEditPage.AutoSend" | translate }}
-                  </label>
-                  <div class="col-xs-6 col-sm-10">
-                    <div class="onoffswitch">
-                      <input (change)="autoSendTranscriptOnOff($event)" 
-                        [checked]="AUTO_SEND_TRANSCRIPT_IS_ON === true" type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch">
-                      <label class="onoffswitch-label" for="myonoffswitch">
-                          <span class="onoffswitch-inner"></span>
-                          <span class="onoffswitch-switch"></span>
-                      </label>
+                <div class="input-wrapper" style="max-width: 992px;"> 
+                  <div class="row">
+                    <label class="col-xs-12 col-sm-2 custom-label custom-label-left">
+                      {{ "ProjectEditPage.AutoSend" | translate }}
+                    </label>
+                    <div class="col-xs-12 col-sm-10">
+                      <div class="onoffswitch">
+                        <input (change)="autoSendTranscriptOnOff($event)" 
+                          [checked]="AUTO_SEND_TRANSCRIPT_IS_ON === true" type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch">
+                        <label class="onoffswitch-label" for="myonoffswitch">
+                            <span class="onoffswitch-inner"></span>
+                            <span class="onoffswitch-switch"></span>
+                        </label>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -224,15 +227,17 @@
                 </div>
 
                 <!-- SHARED SECRET GENERATE -->
-                <div class="row">
-                  <label class="col-xs-6 col-sm-2 custom-label" style="padding-top:10px">
-                    Shared Secret
-                  </label>
-                  <div class="col-xs-6 col-sm-10">
-                                            
-                    <button (click)="openConfirmJwtSecretCreationModal()" class="btn btn-danger" style="margin-top:5px; padding:6px 15px ">
-                      {{ "ProjectEditPage.Generate" | translate }}
-                    </button>
+                <div class="input-wrapper" style="max-width: 992px;"> 
+                  <div class="row">
+                    <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
+                      Shared Secret
+                    </label>
+                    <div class="col-xs-12 col-sm-10">
+                                              
+                      <button (click)="openConfirmJwtSecretCreationModal()" class="btn btn-danger" style="margin-top:5px; padding:6px 15px ">
+                        {{ "ProjectEditPage.Generate" | translate }}
+                      </button>
+                    </div>
                   </div>
                 </div>
 
