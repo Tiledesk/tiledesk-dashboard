@@ -150,14 +150,14 @@ export class PricingComponent implements OnInit {
   decreaseOperatorNumber() {
 
 
-      this.operatorNo -= 1;
+    this.operatorNo -= 1;
 
-      console.log('decreaseOperatorNumber operatorNo', this.operatorNo);
-      // this.switchPlanPrice()
-      this.numberOfAgentPerPrice = this.operatorNo * this.proPlanPerAgentPrice;
-   
+    console.log('decreaseOperatorNumber operatorNo', this.operatorNo);
+    // this.switchPlanPrice()
+    this.numberOfAgentPerPrice = this.operatorNo * this.proPlanPerAgentPrice;
 
-    if ((this.operatorNo < this.projectUsersNumber) && (this.info_modal_has_been_displayed === false) ) {
+
+    if ((this.operatorNo < this.projectUsersNumber) && (this.info_modal_has_been_displayed === false)) {
 
       this.openInfoModal()
     }
@@ -207,6 +207,7 @@ export class PricingComponent implements OnInit {
 
     stripe.redirectToCheckout({
       items: [{ plan: 'plan_EjFHNnzJXE3jul', quantity: that.operatorNo }],
+     
       clientReferenceId: that.currentUserID + '|' + that.projectId,
       customerEmail: that.currentUserEmail,
 

@@ -361,17 +361,18 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
           <table dir="ltr" class="pricing-moda-header" width="100%" style="border:0;border-collapse:collapse;margin:0;padding:0;">
               <tbody>
               <tr>
-                <td class="pricing-moda-header-Left" style="background-color:#f0806f;border:0;border-collapse:collapse;margin:0;padding:0;font-size:0;line-height:0px;background-size:100% 100%;border-top-left-radius:5px" align="right" height="156" valign="bottom" width="252">
+                  <!-- #f0806f -->
+                <td class="pricing-moda-header-Left" style="background-color:#3EA9F5;border:0;border-collapse:collapse;margin:0;padding:0;font-size:0;line-height:0px;background-size:100% 100%;border-top-left-radius:5px" align="right" height="156" valign="bottom" width="252">
                   <a href="#m_8887943420113036679_">
                     <img alt="" height="156" width="252" src="assets/img/pricing_modal_header_Left.png" style="display:block;border:0;line-height:100%;width:100%" class="CToWUd">
                   </a>
                 </td>
-                <td class="pricing-moda-header-Center" style="background-color:#f0806f;border:0;border-collapse:collapse;margin:0;padding:0;font-size:0;line-height:0px;background-size:100% 100%" align="center" height="156" valign="bottom" width="96">
+                <td class="pricing-moda-header-Center" style="background-color:#3EA9F5;border:0;border-collapse:collapse;margin:0;padding:0;font-size:0;line-height:0px;background-size:100% 100%" align="center" height="156" valign="bottom" width="96">
                   <a style="outline:0;text-decoration:none">
                     <img alt="" height="156" width="96" src="assets/img/pricing_modal_header_twelve_degree_icon@2x.png" style="display:block;border:0;line-height:100%;width:100%" class="CToWUd">
                   </a>
                 </td>
-                <td class="pricing-moda-header-Right" style="background-color:#f0806f;border:0;border-collapse:collapse;margin:0;padding:0;font-size:0;line-height:0px;background-size:100% 100%;border-top-right-radius:5px" align="left" height="156" valign="bottom" width="252">
+                <td class="pricing-moda-header-Right" style="background-color:#3EA9F5;border:0;border-collapse:collapse;margin:0;padding:0;font-size:0;line-height:0px;background-size:100% 100%;border-top-right-radius:5px" align="left" height="156" valign="bottom" width="252">
                   <a href="#m_8887943420113036679_">
                     <img alt="" height="156" width="252" src="assets/img/pricing_modal_header_Right.png" style="display:block;border:0;line-height:100%;width:100%" class="CToWUd">
                   </a>
@@ -453,13 +454,13 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
   <div class="modal-footer" style="margin-top: 0px; background-color: #fff; border-top:none">
     <div style="text-align: center; margin-bottom: 25px;" *ngIf="selectedPlanName === 'pro'"> 
 
-        <button type="button" *ngIf="perMonth === true" style="background-color:#3EA9F5;color:#FFF;padding:12px 16px;border:0;border-radius:4px;font-size:18px"            
+        <button class="pay-with-card-btn" type="button" *ngIf="perMonth === true" style="background-color:#3EA9F5;color:#FFF;padding:12px 16px;border:0;border-radius:4px;font-size:18px"            
           id="checkout-button-plan_EjFHNnzJXE3jul"  role="link"  (click)="stripeProPlanPerMonthCheckout()">
           <!-- PerMonth -->
             Pay with a Card 
         </button>
 
-        <button type="button" *ngIf="perYear === true" style="background-color:#3EA9F5;color:#FFF;padding:12px 16px;border:0;border-radius:4px;font-size:18px"
+        <button class="pay-with-card-btn" type="button" *ngIf="perYear === true" style="background-color:#3EA9F5;color:#FFF;padding:12px 16px;border:0;border-radius:4px;font-size:18px"
           id="checkout-button-plan_FHYWzhwbGermkq" role="link" (click)="stripeProPlanPerYearCheckout()">
           <!-- PerYear -->
             Pay with a Card 

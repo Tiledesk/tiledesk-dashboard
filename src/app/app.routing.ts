@@ -205,7 +205,7 @@ const routes: Routes = [
 
  
 
-  { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
   { path: 'project/:projectid/department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
   
