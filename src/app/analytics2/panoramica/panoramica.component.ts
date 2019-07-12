@@ -157,7 +157,7 @@ export class PanoramicaComponent implements OnInit {
 
   //-----------LAST 7 DAYS GRAPH-----------------------
   getRequestByLast7Day(){
-    this.subscription=this.analyticsService.requestsByDay2(7,'').subscribe((requestsByDay: any) => {
+    this.subscription=this.analyticsService.requestsByDay2(7).subscribe((requestsByDay: any) => {
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY ', requestsByDay);
 
       // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O

@@ -55,8 +55,8 @@ export class RichiesteComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
-  daysSelect(value){
-    
+  daysSelect(value, event){
+    console.log("EVENT", event)
     this.selectedDaysId=value;//--> value to pass throw for graph method
       //check value for label in htlm
     if(value<=30){
@@ -74,7 +74,7 @@ export class RichiesteComponent implements OnInit {
 
   depSelected(selectedDeptId){
     console.log('dep', selectedDeptId);
-    this.lineChart.destroy();
+    //this.lineChart.destroy();
     this.subscription.unsubscribe();
     this.getRequestByLastNDay( this.selectedDaysId,selectedDeptId)
     console.log('REQUEST:', this.selectedDaysId, selectedDeptId)
@@ -114,6 +114,7 @@ export class RichiesteComponent implements OnInit {
 
   //-----------LAST n DAYS GRAPH-----------------------
   getRequestByLastNDay(lastdays, depID){
+    
     this.subscription= this.analyticsService.requestsByDay2(lastdays, depID).subscribe((requestsByDay: any) => {
       console.log('»» !!! ANALYTICS - REQUESTS BY  N-DAY ', requestsByDay);
 
@@ -189,7 +190,8 @@ export class RichiesteComponent implements OnInit {
         stepsize=this.selectedDaysId
       }
       let lang=this.lang;
-
+      
+      
       this.lineChart = new Chart('lastNdayChart', {
         type: 'line',
         data: {

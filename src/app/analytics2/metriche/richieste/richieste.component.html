@@ -16,7 +16,7 @@
                       {{ 'Analytics.FilterReport' | translate }}
                   </label>
                   <div class="col-sm-12" style="margin-bottom: 20px;">
-                    <ng-select class="custom" name="days" [(ngModel)]="selectedDaysId" [clearable]="false" (click)="daysSelect(selectedDaysId)">
+                    <ng-select class="custom" name="days" [(ngModel)]="selectedDaysId" [clearable]="false" (change)="daysSelect(selectedDaysId, $event)">
                       <ng-option [value]="7">{{ 'Analytics.Last' | translate}} 7 {{ 'Analytics.Days' | translate}}</ng-option>
                       <ng-option [value]="15">{{ 'Analytics.Last' | translate}} 15 {{ 'Analytics.Days' | translate}}</ng-option>
                       <ng-option [value]="30">{{ 'Analytics.Last' | translate}} 30 {{ 'Analytics.Days' | translate}}</ng-option>
@@ -64,3 +64,4 @@
       </div>
   </div>
 </div>
+
