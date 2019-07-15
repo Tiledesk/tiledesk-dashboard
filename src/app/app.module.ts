@@ -136,6 +136,8 @@ import { ProjectPlanService } from './services/project-plan.service';
 import { PricingModule } from './pricing/pricing.module';
 import { StaticPageBaseComponent } from './static-pages/static-page-base/static-page-base.component';
 
+import {SlideshowModule} from 'ng-simple-slideshow';
+
 console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -236,6 +238,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MyDatePickerModule,
     ColorPickerModule,
     BrowserAnimationsModule,
+    SlideshowModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
