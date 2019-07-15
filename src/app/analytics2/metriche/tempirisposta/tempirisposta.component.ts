@@ -65,7 +65,8 @@ export class TempirispostaComponent implements OnInit {
   msToTIME(value){
        let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
        let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
-       let seconds = Math.floor(((value % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
+       let seconds = Math.round(((value % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds (prima era Math.floor ma non arrotonda i secondi)
+       //console.log("SECOND:",Math.round(((value % 360000) % 60000) / 1000))
       return hours + 'h:' + minutes + 'm:' + seconds + 's'
   }
 
@@ -121,7 +122,7 @@ export class TempirispostaComponent implements OnInit {
 
   avarageWaitingTimeCLOCK(){
     this.analyticsService.getDataAVGWaitingCLOCK().subscribe((res:any)=>{
-      let avarageWaitingTimestring;
+      
       var splitString;
 
       if(res && res.length!=0){
@@ -131,7 +132,7 @@ export class TempirispostaComponent implements OnInit {
         
       
         //this.avarageWaitingTimestring = this.humanizer.humanize(res[0].waiting_time_avg);
-        avarageWaitingTimestring=this.humanizeDurations(res[0].waiting_time_avg)
+        
         splitString= this.humanizeDurations(res[0].waiting_time_avg).split(" ");
         //this.numberAVGtime= splitString[0];
         this.unitAVGtime= splitString[1];
@@ -141,8 +142,7 @@ export class TempirispostaComponent implements OnInit {
         this.responseAVGtime=this.humanizer.humanize(res[0].waiting_time_avg, {round: true, language:this.lang})
         
         console.log('Waiting time: humanize', this.humanizer.humanize(res[0].waiting_time_avg))
-        console.log('waiting time funtion:', avarageWaitingTimestring);
-        
+        console.log('waiting time funtion:', this.humanizeDurations(res[0].waiting_time_avg));
         
       }else{
        
@@ -151,7 +151,7 @@ export class TempirispostaComponent implements OnInit {
         this.responseAVGtime='N.a.'
         
         console.log('Waiting time: humanize', this.humanizer.humanize(0))
-        console.log('waiting time funtion:', avarageWaitingTimestring);
+        console.log('waiting time funtion:', this.humanizeDurations(0));
       }
 
      
@@ -320,7 +320,7 @@ export class TempirispostaComponent implements OnInit {
                 callback: function (value, index, values) {
                   let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
                   let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
-                  let seconds = Math.floor(((value % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
+                  let seconds = Math.round(((value % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
                   return hours + 'h:' + minutes + 'm:' + seconds + 's'
                 },
 

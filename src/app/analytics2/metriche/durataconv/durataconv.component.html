@@ -50,7 +50,7 @@
               <!-- ------ init-end days show--------- -->
               <div class="col-sm-4"> 
                 <div class="section-select-dept">
-                  <label  class="col-sm-12" style="text-align: left; color:black">
+                  <label  class="col-sm-12" style="text-align: left; color:black; padding-right: 0px">
                       {{ 'Analytics.DataRangeRequest' | translate }} : 
                   </label>
                   <div class="col-sm-12 boxdays" >
@@ -66,7 +66,7 @@
                       {{ 'HistoryPage.FilterByDepartment' | translate }} :
                   </label>
                   <div class="col-sm-12" style="margin-bottom: 20px;">
-                    <ng-select class="custom" name="dept" [(ngModel)]="selectedDeptId" [clearable]="false" (click)="depSelected(selectedDeptId)">
+                    <ng-select class="custom" name="dept" [(ngModel)]="selectedDeptId" [clearable]="false" (change)="depSelected(selectedDeptId)">
                       <ng-option [value]="''">{{ 'HistoryPage.AllDepts' | translate }}</ng-option>
                       <ng-option *ngFor="let dept of departments" [value]="dept._id">
                         {{dept.name}}

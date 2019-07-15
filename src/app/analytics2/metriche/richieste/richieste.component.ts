@@ -74,7 +74,7 @@ export class RichiesteComponent implements OnInit {
 
   depSelected(selectedDeptId){
     console.log('dep', selectedDeptId);
-    //this.lineChart.destroy();
+    this.lineChart.destroy();
     this.subscription.unsubscribe();
     this.getRequestByLastNDay( this.selectedDaysId,selectedDeptId)
     console.log('REQUEST:', this.selectedDaysId, selectedDeptId)
@@ -294,7 +294,7 @@ export class RichiesteComponent implements OnInit {
                 if(lang==='it'){
                   return 'Richieste: '+currentItemValue;
                 }else{
-                  return 'Request:' +currentItemValue;
+                  return 'Requests: ' +currentItemValue;
                 }
 
               }

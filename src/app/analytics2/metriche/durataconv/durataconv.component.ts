@@ -62,7 +62,8 @@ export class DurataconvComponent implements OnInit {
 msToTIME(value){
     let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
     let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
-    let seconds = Math.floor(((value % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
+    let seconds = Math.round(((value % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
+    //per i secondi prima era Math.floor ma non arrotonda i secondi --> Math.round
    return hours + 'h:' + minutes + 'm:' + seconds + 's'
 }
 
@@ -314,7 +315,7 @@ getBrowserLangAndSwitchMonthName() {
                 callback: function (value, index, values) {
                   let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
                   let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
-                  let seconds = Math.floor(((value % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
+                  let seconds = Math.round(((value % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
                   return hours + 'h:' + minutes + 'm:' + seconds + 's'
                 }
 
