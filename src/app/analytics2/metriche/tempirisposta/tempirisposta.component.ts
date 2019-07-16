@@ -70,6 +70,53 @@ export class TempirispostaComponent implements OnInit {
       return hours + 'h:' + minutes + 'm:' + seconds + 's'
   }
 
+  //not in use
+  msToTime(duration) {
+      let seconds = Math.round((duration / 1000) % 60)
+      let minutes = Math.floor((duration / (1000 * 60)) % 60)
+      let hours = Math.floor((duration / (1000 * 60 * 60)) % 24)
+
+      
+        if(minutes%2!=0){
+           minutes=minutes+1
+        }else{
+          if(minutes<59){
+            hours=hours+1
+          }
+        }
+
+      console.log("H:M->",hours, minutes)
+  
+    let hoursS = (hours < 10) ? "0" + hours : hours;
+    let minutesS = (minutes < 10) ? "0" + minutes : minutes;
+    let secondsS = (seconds < 10) ? "0" + seconds : seconds;
+  
+    return hoursS + ":" + minutesS + ":" + secondsS 
+  }
+
+  stepSize(milliseconds){
+    let hours = Math.floor(milliseconds / 3600000) // 1 Hour = 36000 Milliseconds
+    let minutes = Math.floor((milliseconds % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
+    let seconds = Math.round(((milliseconds % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
+  
+  
+    if(hours!=0){
+      return (Math.floor((milliseconds/4) / (1000*60*60)))*1000*60*60
+    }else{
+      return (Math.floor((milliseconds/4) / (1000*60)))*1000*60
+    }
+    // if(hours!=0){
+    //   let hourss= ((hours/4)%2==0)? hours/4 : (hours/4)+1;
+    //   console.log("H:",hourss);
+    //   return (hourss)*1000*60*60
+    // }else{
+    //   let minutess=(minutes%2==0)? minutes : minutes+1;
+    //   console.log("M:",minutess);
+    //   return (minutess/4)*1000*60
+    // }
+   
+  }
+
   daysSelect(value){
     
     this.selectedDaysId=value;//--> value to pass throw for graph method
@@ -245,6 +292,7 @@ export class TempirispostaComponent implements OnInit {
 
         const higherCount = this.getMaxOfArray(this.yValueAVGchart);
         console.log('»» !!! ANALYTICS - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
+        this.msToTime(higherCount)
         var hours = (higherCount/4) / (1000*60*60);
         var absoluteHours = Math.floor((higherCount/4) / (1000*60*60));
         console.log("step", absoluteHours);
@@ -316,6 +364,7 @@ export class TempirispostaComponent implements OnInit {
                 // milliconds again multipling Math.floor()*1000*60*60
                 //stepSize:(Math.floor((higherCount/4) / (1000*60*60)))*1000*60*60,
                 //suggestedMax: higherCount,// + 20000000
+                stepSize:this.stepSize(higherCount),
                 fontColor: 'black',
                 callback: function (value, index, values) {
                   let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
