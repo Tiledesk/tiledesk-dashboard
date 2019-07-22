@@ -370,7 +370,13 @@ export class TempirispostaComponent implements OnInit {
                   let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
                   let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
                   let seconds = Math.round(((value % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
-                  return hours + 'h:' + minutes + 'm:' + seconds + 's'
+
+                  //add 0 before unit if needed to display 2-digit format hh:mm:ss
+                  let hours_final = (hours < 10) ? "0" + hours : hours;
+                  let minutes_final = (minutes < 10) ? "0" + minutes : minutes;
+                  let seconds_final = (seconds < 10) ? "0" + seconds : seconds;
+
+                  return hours_final + 'h:' + minutes_final + 'm:' + seconds_final + 's'
                 },
 
               }

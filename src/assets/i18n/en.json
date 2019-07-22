@@ -889,6 +889,7 @@
         "Months":"months",
         "Year":"year",
         "DataRangeRequest":"Data range ",
-        "RealTimeMonitoring": "Real-time Monitoring"
+        "RealTimeMonitoring": "Real-time Monitoring",
+        "SentimentTitle": "Customer Satisfaction"
     }
 }

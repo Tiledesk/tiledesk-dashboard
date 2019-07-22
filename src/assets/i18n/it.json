@@ -886,6 +886,7 @@
         "Months":"mesi",
         "Year":"anno",
         "DataRangeRequest":"Range date ",
-        "RealTimeMonitoring": "Monitoraggio in tempo reale"
+        "RealTimeMonitoring": "Monitoraggio in tempo reale",
+        "SentimentTitle": "Feedback cliente"
     }
 }
