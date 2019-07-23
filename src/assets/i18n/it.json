@@ -863,7 +863,9 @@
     "Friday": "Venerdì",
     "Saturday": "Sabato",
     "Analytics":{
+        "AnalyticsTITLE":"Statistiche",
         "PanoramicaComponentTitle": "Panoramica",
+        "HeatMapTitle":"Richieste per ora del giorno",
         "MetricsComponentTitle": "Metrica",
         "Metrics":{
             "Requests":"Richieste",
@@ -887,6 +889,8 @@
         "Year":"anno",
         "DataRangeRequest":"Range date ",
         "RealTimeMonitoring": "Monitoraggio in tempo reale",
-        "SentimentTitle": "Feedback cliente"
+        "SentimentTitle": "Feedback cliente",
+        "SentimentHEART": "Feedback cliente medio",
+        "SentimentMedianValueHEART": "Il feedback clienti medio del tuo team è di:"
     }
 }

@@ -27,6 +27,17 @@
 }
 
 
+
+.card-header-custom-heatmap {
+    font-size: 14px;
+    box-shadow: none!important;
+    margin-left: 0px!important; 
+    margin-right: 0px!important; 
+    border-bottom: 1px solid #eff3f5!important;
+    font-family: 'Google Sans', sans-serif !important;
+}
+
+
 .la-ball-scale-pulse,
 .la-ball-scale-pulse > div {
     position: relative;
@@ -145,4 +156,25 @@
              -o-transform: scale(1);
                 transform: scale(1);
     }
+}
+
+
+.clock{
+    //background-image: url('../../assets/img/stopwatch.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 200px;
+    width: 200px;
+    margin:auto;
+        
+}
+
+.numberCLOCK{
+    //font-size: 73px;
+    font-size:21px;
+    line-height: 0;
+    padding-top: 94px;
+    color: #073f74;
+    font-family: 'Google Sans', sans-serif !important;
 }

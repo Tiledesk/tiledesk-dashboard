@@ -866,6 +866,8 @@
     "Friday": "Friday",
     "Saturday": "Saturday",
     "Analytics":{
+        "AnalyticsTITLE":"Analytics",
+        "HeatMapTitle":"Requests per hour of day",
         "PanoramicaComponentTitle": "Panoramic",
         "MetricsComponentTitle": "Metrics",
         "Metrics":{
@@ -890,6 +892,8 @@
         "Year":"year",
         "DataRangeRequest":"Data range ",
         "RealTimeMonitoring": "Real-time Monitoring",
-        "SentimentTitle": "Customer Satisfaction"
+        "SentimentTitle": "Customer Satisfaction",
+        "SentimentHEART": "Median Customer Satisfaction",
+        "SentimentMedianValueHEART": "Your team's overall Median Customer Satisfaction is :"
     }
 }

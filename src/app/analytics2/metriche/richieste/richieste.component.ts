@@ -115,7 +115,7 @@ export class RichiesteComponent implements OnInit {
   //-----------LAST n DAYS GRAPH-----------------------
   getRequestByLastNDay(lastdays, depID){
     
-    this.subscription= this.analyticsService.requestsByDay2(lastdays, depID).subscribe((requestsByDay: any) => {
+    this.subscription= this.analyticsService.requestsByDay(lastdays, depID).subscribe((requestsByDay: any) => {
       console.log('»» !!! ANALYTICS - REQUESTS BY  N-DAY ', requestsByDay);
 
       // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
