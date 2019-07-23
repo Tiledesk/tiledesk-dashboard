@@ -1,9 +1,12 @@
 
 # tiledesk-dashboard
 
+### 1.0.28
+- Adds the chat widget
+- Adds the ability to revoke a pending invitation
+
 ### 1.0.26
 - Adds the "Train bot" slide-out panel in request's details and in the bot test page
-- Adds the chat widget
 - Fixes the link in the home page "Get The Mobile App"
 
 ### 1.0.24

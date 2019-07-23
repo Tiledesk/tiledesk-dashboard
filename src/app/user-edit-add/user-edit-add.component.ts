@@ -220,7 +220,7 @@ export class UserEditAddComponent implements OnInit {
     console.log('INVITE USER No of Project Users ', this.projectUsersLength)
     console.log('INVITE USER No of Pending Invites ', this.countOfPendingInvites)
     console.log('INVITE USER No of Operators Seats (agents purchased)', this.projectPlanAgentsNo)
-    if ((this.projectUsersLength + this.countOfPendingInvites) < this.projectPlanAgentsNo) {
+    // if ((this.projectUsersLength + this.countOfPendingInvites) < this.projectPlanAgentsNo) {
       // show the modal windows
       this.display = 'block';
 
@@ -284,10 +284,10 @@ export class UserEditAddComponent implements OnInit {
         // this.ROLE_NOT_SELECTED = true;
       });
 
-    } else {
+    // } else {
 
-      this.notify._displayContactUsModal(true);
-    }
+    //   this.notify._displayContactUsModal(true);
+    // }
   }
 
   onCloseModalHandled() {
