@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AnalyticsService } from 'app/services/analytics.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'appdashboard-sentiment',
@@ -7,9 +9,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SentimentComponent implements OnInit {
 
-  constructor() { }
+  constructor(private analyticsService:AnalyticsService,) { }
+
+  subscription:Subscription;
 
   ngOnInit() {
+    
+    this.getSatisfactionNumberHEART();
+  }
+ 
+  ngOnDestroy() {
+    console.log('!!! ANALYTICS.RICHIESTE - !!!!! UN - SUBSCRIPTION TO REQUESTS');
+    this.subscription.unsubscribe();
+  }
+
+  getSatisfactionNumberHEART(){
+    this.subscription=this.analyticsService.getSatisfactionDataHEART().subscribe((res)=>{
+      console.log("RES",res)
+    })
   }
 
 }

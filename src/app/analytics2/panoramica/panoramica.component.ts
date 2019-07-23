@@ -40,6 +40,19 @@ export class PanoramicaComponent implements OnInit {
   heatmapEND:boolean
   chartEND:boolean
 
+  // avg time clock variable 
+  numberAVGtime: String;
+  unitAVGtime: String;
+  responseAVGtime: String
+
+  // duration time clock variable
+  numberDurationCNVtime: String;
+  unitDurationCNVtime: String;
+  responseDurationtime: String;
+
+  langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
+  humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
+
   
 
 
@@ -59,6 +72,8 @@ export class PanoramicaComponent implements OnInit {
 
     this.getRequestByLast7Day();
     this.heatMap();
+    this.avarageWaitingTimeCLOCK();
+    this.durationConvTimeCLOCK();
     
    
       
@@ -110,7 +125,7 @@ export class PanoramicaComponent implements OnInit {
       this.xAxis = { labels: this.xlabel_ita };
       
       this.titleSettings = {
-        text: 'Utenti per ora del giorno',
+        text: 'Richieste per ora del giorno',
         textStyle: {
           size: '15px',
           fontWeight: '500',
@@ -129,7 +144,7 @@ export class PanoramicaComponent implements OnInit {
       this.yAxis = { labels: this.ylabel_eng };
       this.xAxis = { labels: this.xlabel_eng };
       this.titleSettings = {
-        text: 'User per hour of day',
+        text: 'Requests per hour of day',
         textStyle: {
           size: '15px',
           fontWeight: '500',
@@ -157,7 +172,7 @@ export class PanoramicaComponent implements OnInit {
 
   //-----------LAST 7 DAYS GRAPH-----------------------
   getRequestByLast7Day(){
-    this.subscription=this.analyticsService.requestsByDay2(7).subscribe((requestsByDay: any) => {
+    this.subscription=this.analyticsService.requestsByDay(7).subscribe((requestsByDay: any) => {
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY ', requestsByDay);
 
       // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
@@ -346,6 +361,7 @@ export class PanoramicaComponent implements OnInit {
     });
   }
 
+  //-----------REQUEST PER HOUR OF DAY-----------------------
   heatMap() {
 
     // get the language of browser
@@ -435,6 +451,101 @@ export class PanoramicaComponent implements OnInit {
   public showTooltip: Boolean = true;
 
 
+//-----------MEDIAN RESPONS TIME-----------------------
+  avarageWaitingTimeCLOCK(){
+    this.subscription=this.analyticsService.getDataAVGWaitingCLOCK().subscribe((res:any)=>{
+      
+      var splitString;
+
+      if(res && res.length!=0){
+        //this.avarageWaitingTimestring= this.msToTime(res[0].waiting_time_avg)
+        
+        //this.humanizer.setOptions({round: true, units:['m']});
+        
+      
+        //this.avarageWaitingTimestring = this.humanizer.humanize(res[0].waiting_time_avg);
+        
+        splitString= this.humanizeDurations(res[0].waiting_time_avg).split(" ");
+        //this.numberAVGtime= splitString[0];
+        this.unitAVGtime= splitString[1];
+        
+        this.numberAVGtime=this.msToTIME(res[0].waiting_time_avg); //--> show in format h:m:s
+
+        this.responseAVGtime=this.humanizer.humanize(res[0].waiting_time_avg, {round: true, language:this.lang})
+        
+        console.log('Waiting time: humanize', this.humanizer.humanize(res[0].waiting_time_avg))
+        console.log('waiting time funtion:', this.humanizeDurations(res[0].waiting_time_avg));
+        
+      }else{
+       
+        this.numberAVGtime= 'N.a.'
+        this.unitAVGtime= ''
+        this.responseAVGtime='N.a.'
+        
+        console.log('Waiting time: humanize', this.humanizer.humanize(0))
+        console.log('waiting time funtion:', this.humanizeDurations(0));
+      }
+
+     
+    }, (error) => {
+      console.log('!!! ANALYTICS - AVERAGE WAITING TIME CLOCK REQUEST  - ERROR ', error);
+        this.numberAVGtime= 'N.a.'
+        this.unitAVGtime= ''
+        this.responseAVGtime='N.a.'
+    }, () => {
+      console.log('!!! ANALYTICS - AVERAGE TIME CLOCK REQUEST * COMPLETE *');
+    });
+    
+  }
+
+  durationConvTimeCLOCK() {
+    this.subscription=this.analyticsService.getDurationConversationTimeDataCLOCK().subscribe((res: any) => {
+      
+      let avarageWaitingTimestring;
+      var splitString;
+      
+      if (res && res.length!=0) {
+
+
+        //this.humanizer.setOptions({round: true, units:['m']});
+    
+
+        //this.avarageWaitingTimestring = this.humanizer.humanize(res[0].waiting_time_avg);
+        avarageWaitingTimestring = this.humanizeDurations(res[0].duration_avg)
+        splitString = this.humanizeDurations(res[0].duration_avg).split(" ");
+        //this.numberDurationCNVtime = splitString[0];
+        this.numberDurationCNVtime=this.msToTIME(res[0].duration_avg);//--> show in format h:m:s
+        this.unitDurationCNVtime = splitString[1];
+
+        
+        this.responseDurationtime=this.humanizer.humanize(res[0].duration_avg, { round: true, language: this.lang });
+
+        
+        console.log('Waiting time: humanize', this.humanizer.humanize(res[0].duration_avg))
+        console.log('waiting time funtion:', avarageWaitingTimestring);
+      }
+        else{
+          
+          this.numberDurationCNVtime='N.a.'
+          this.unitDurationCNVtime='';
+          this.responseDurationtime='N.a.'
+
+          console.log('Waiting time: humanize', this.humanizer.humanize(0))
+          console.log('waiting time funtion:', avarageWaitingTimestring);
+        }
+          
+      
+    },(error) => {
+      console.log('!!! ANALYTICS - DURATION CONVERSATION CLOCK REQUEST - ERROR ', error);
+          this.numberDurationCNVtime='N.a.'
+          this.unitDurationCNVtime='';
+          this.responseDurationtime='N.a.'
+    }, () => {
+      console.log('!!! ANALYTICS - DURATION CONVERSATION CLOCK REQUEST * COMPLETE *');
+    });
+
+
+  }
 
 
 
@@ -443,8 +554,56 @@ export class PanoramicaComponent implements OnInit {
 
 
 
+// convert number from millisecond to humanizer form 
+humanizeDurations(timeInMillisecond) {
+  let result;
+  if (timeInMillisecond) {  
+    if(this.lang=='en'){
+      if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30 * 12))) > 0) {//year
+          result = result === 1 ? result + " Year" : result + " Years";
+      } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30))) > 0) {//months
+          result = result === 1 ? result + " Month" : result + " Months";
+      } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24))) > 0) {//days
+          result = result === 1 ? result + " Day" : result + " Days";
+      } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60))) > 0) {//Hours
+          result = result === 1 ? result + " Hours" : result + " Hours";
+      } else if ((result = Math.round(timeInMillisecond / (1000 * 60))) > 0) {//minute
+          result = result === 1 ? result + " Minute" : result + " Minutes";
+      } else if ((result = Math.round(timeInMillisecond / 1000)) > 0) {//second
+          result = result === 1 ? result + " Second" : result + " Seconds";
+      } else {
+          result = timeInMillisecond + " Millisec";
+      }
+    }
+    else{
+        if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30 * 12))) > 0) {//year
+          result = result === 1 ? result + " Anno" : result + " Anni";
+      } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30))) > 0) {//months
+          result = result === 1 ? result + " Mese" : result + " Mesi";
+      } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24))) > 0) {//days
+          result = result === 1 ? result + " Giorno" : result + " Giorni";
+      } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60))) > 0) {//Hours
+          result = result === 1 ? result + " Ora" : result + " Ore";
+      } else if ((result = Math.round(timeInMillisecond / (1000 * 60))) > 0) {//minute
+          result = result === 1 ? result + " Minuto" : result + " Minuti";
+      } else if ((result = Math.round(timeInMillisecond / 1000)) > 0) {//second
+          result = result === 1 ? result + " Secondo" : result + " Secondi";
+      } else {
+          result = timeInMillisecond + " Millisecondi";
+      }
+    }
+      return result;
 
+    }
+}
 
+msToTIME(value){
+  let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
+  let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
+  let seconds = Math.round(((value % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds (prima era Math.floor ma non arrotonda i secondi)
+  //console.log("SECOND:",Math.round(((value % 360000) % 60000) / 1000))
+ return hours + 'h:' + minutes + 'm:' + seconds + 's'
+}
 
 
 

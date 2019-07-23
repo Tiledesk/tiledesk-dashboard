@@ -24,21 +24,69 @@
     </div>
 
 
-    <!-- -------------------HEAT MAP------------------------- -->
-    <div  class="row">
-    <div class="col-md-12">
-        <ejs-heatmap id='heatmap-container' fill="none"style="display:block; width: 300px; margin-top:20px"
-                    width='350px' height='500px' 
-                    [titleSettings]='titleSettings'
-                    [dataSource]='dataSource'
-                    [xAxis]='xAxis' 
-                    [yAxis]='yAxis'
-                    [legendSettings]='legendSettings'
-                    [cellSettings]='cellSettings'
-                    [paletteSettings]='paletteSettings'
-                    (tooltipRender)='tooltipRender($event)'
-                    [showTooltip]='showTooltip'>
-        </ejs-heatmap>  
-    </div>
+    
+    <div class="row" style="text-align: center; margin-top:6px">
+        <!-- -------------------HEAT MAP START------------------------- -->
+        <div class="col-md-5 ">
+                <div class="card" style="border-radius: 10px;">
+                        <div class="card-header card-header-custom-heatmap" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
+                            <p>{{ "Analytics.HeatMapTitle" | translate }}</p>
+                        </div>
+                        <div class="card-content">
+                                <!-- [titleSettings]='titleSettings' -->
+                                <ejs-heatmap id='heatmap-container' fill="none"style="display:block; width: 300px; margin-top:20px"
+                                            width='350px' height='500px' 
+                                            
+                                            [dataSource]='dataSource'
+                                            [xAxis]='xAxis' 
+                                            [yAxis]='yAxis'
+                                            [legendSettings]='legendSettings'
+                                            [cellSettings]='cellSettings'
+                                            [paletteSettings]='paletteSettings'
+                                            (tooltipRender)='tooltipRender($event)'
+                                            [showTooltip]='showTooltip'>
+                                </ejs-heatmap>
+                        </div>
+                        <!-- <div class="card-footer request_count_footer" style="font-size: 14px">
+                            {{ "Analytics.ResponseDurationtime" | translate}} {{responseDurationtime}}
+                        </div> -->
+                </div>
+        </div>
+        <!-- -------------------END------------------------- -->
+        <!-- ---------RESPONSE TIME CLOCK START------------- -->
+        <div class="col-md-3 ">
+                <div class="card" style="border-radius: 10px;">
+                        <div class="card-header card-header-custom-heatmap" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
+                            <p>{{ "Analytics.MedianResTimeClock" | translate }}</p>
+                        </div>
+                        <div class="card-content clock">
+                            <p class="numberCLOCK">{{numberAVGtime}}</p>
+                            <!-- <p style="padding-top:25px">{{unitAVGtime}}</p> -->
+                        </div>
+                        <div class="card-footer request_count_footer" style="font-size: 14px">
+                            {{ 'Analytics.ResponseAVGtime' | translate }} {{responseAVGtime}}
+                        </div>
+                        <!-- <div class="card-footer request_count_footer" style="font-size: 14px">
+                            {{ "Analytics.ResponseDurationtime" | translate}} {{responseDurationtime}}
+                        </div> -->
+                </div>
+        </div>
+        <!-- -------------------END------------------------- -->
+        <!-- -------CONVERSATION LENGHT CLOCK START--------- -->
+        <div class="col-md-3 ">
+                <div class="card" style="border-radius: 10px;">
+                        <div class="card-header card-header-custom-heatmap" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
+                            <p>{{ "Analytics.MedianConvClock" | translate }}</p>
+                        </div>
+                        <div class="card-content clock">
+                            <p class="numberCLOCK">{{numberDurationCNVtime}}</p>
+                            <!-- <p style="padding-top:25px">{{unitDurationCNVtime}}</p> -->
+                        </div>
+                        <div class="card-footer request_count_footer" style="font-size: 14px">
+                            {{ "Analytics.ResponseDurationtime" | translate}} {{responseDurationtime}}
+                        </div>
+                </div>
+        </div>
+        <!-- -------------------END------------------------- -->
     </div>
 </div>

@@ -61,24 +61,22 @@ export class AnalyticsService {
     }
   }
 
-  requestsByDay(lastdays, department_id): Observable<[]> {
+  // requestsByDay(lastdays, department_id): Observable<[]> {
        
-    let headers= new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': this.TOKEN
-       //'Authorization': this.staticRemoteToken, 
-       //'Authorization': 'Basic ' + btoa('alessia.calo@frontiere21.it:123456')
-      });
-    let params= new HttpParams()
-                .set('lastdays', lastdays)
-                .set('department_id', department_id);
+  //   let headers= new HttpHeaders({
+  //     'Content-Type': 'application/json',
+  //     'Authorization': this.TOKEN
+  //     });
+  //   let params= new HttpParams()
+  //               .set('lastdays', lastdays)
+  //               .set('department_id', department_id);
     
     
-    return this.http.get<[]>(this.BASE_URL+ this.projectID + '/analytics/requests/aggregate/day' ,{ headers:headers, params:params})
+  //   return this.http.get<[]>(this.BASE_URL+ this.projectID + '/analytics/requests/aggregate/day' ,{ headers:headers, params:params})
     
-  }
+  // }
 
-  requestsByDay2(lastdays, department_id?): Observable<[]> {
+  requestsByDay(lastdays, department_id?): Observable<[]> {
        
         if(!department_id){
             department_id=''
@@ -88,14 +86,12 @@ export class AnalyticsService {
       let headers= new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN
-        //'Authorization': this.staticRemoteToken, 
-        //'Authorization': 'Basic ' + btoa('alessia.calo@frontiere21.it:123456')
         });
       let params= new HttpParams()
                   .set('lastdays', lastdays)
                   .set('department_id', department_id);
     
-   return this.http.get<[]>(this.BASE_URL+ this.projectID + '/analytics/requests/aggregate/day/2' ,{ headers:headers, params:params})
+   return this.http.get<[]>(this.BASE_URL+ this.projectID + '/analytics/requests/aggregate/day' ,{ headers:headers, params:params})
     
   }
 
@@ -106,8 +102,6 @@ export class AnalyticsService {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN
-        //'Authorization': this.staticRemoteToken,
-        //'Authorization': 'Basic ' + btoa('alessia.calo@frontiere21.it:123456')
       })
     };
    
@@ -122,8 +116,6 @@ export class AnalyticsService {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': this.TOKEN
-        //'Authorization': this.staticRemoteToken,
-       //'Authorization': 'Basic ' + btoa('alessia.calo@frontiere21.it:123456')
       })
     };
     
@@ -142,8 +134,6 @@ export class AnalyticsService {
     let headers= new HttpHeaders({
       'Content-Type': 'application/json',
        'Authorization': this.TOKEN
-       //'Authorization': this.staticRemoteToken, 
-       //'Authorization': 'Basic ' + btoa('alessia.calo@frontiere21.it:123456')
       });
     let params= new HttpParams()
                 .set('lastdays', lastdays)
@@ -159,8 +149,6 @@ export class AnalyticsService {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
          'Authorization': this.TOKEN
-        //'Authorization': this.staticRemoteToken,
-        // 'Authorization': 'Basic ' + btoa('alessia.calo@frontiere21.it:123456')
       })
     };
    
@@ -179,8 +167,6 @@ export class AnalyticsService {
     let headers= new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN
-       //'Authorization': this.staticRemoteToken, 
-        //'Authorization': 'Basic ' + btoa('alessia.calo@frontiere21.it:123456')
       });
     let params= new HttpParams()
                 .set('lastdays', lastdays)
@@ -189,6 +175,28 @@ export class AnalyticsService {
     
     return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/duration/day', { headers:headers, params:params});
   }
+
+  getSatisfactionDataHEART(): Observable<[]> {
+    
+    // console.log("PARAM",lastdays,department_id);
+    
+    // if(!department_id){
+    //   department_id=''
+    // }
+    // console.log("DEP-id",department_id);
+    
+    let headers= new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': this.TOKEN
+      });
+    // let params= new HttpParams()
+    //             .set('lastdays', lastdays)
+    //             .set('department_id', department_id);
+
+    
+    return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/satisfaction', { headers:headers});
+  }
+  
 
   goToRichieste(){
     this.richieste_bs.next("hasClickedNumberOfRequestLast7Days");
