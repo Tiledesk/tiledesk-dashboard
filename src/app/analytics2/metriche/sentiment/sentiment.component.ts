@@ -23,7 +23,6 @@ export class SentimentComponent implements OnInit, OnDestroy {
 
   constructor(private analyticsService: AnalyticsService, ) { }
 
-  
 
   ngOnInit() {
 
