@@ -10,7 +10,7 @@ const serverChatUrl = 'https://us-central1-chat21-pre-01.cloudfunctions.net/';
 export const environment = {
     production: true,
     VERSION: require('../../package.json').version,
-    widgetUrl: 'https://widget.tiledesk.com/v3/tiledesk.js',
+    widgetUrl: 'https://widget.tiledesk.com/v3/launch.js',
     firebaseConfig: {
         apiKey: firebase_pre.apiKey,
         authDomain: firebase_pre.authDomain,

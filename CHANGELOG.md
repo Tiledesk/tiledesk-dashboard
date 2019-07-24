@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 1.0.29
+- Fixes the widget url
+
 ### 1.0.28
 - Adds the chat widget
 - Adds the ability to revoke a pending invitation
