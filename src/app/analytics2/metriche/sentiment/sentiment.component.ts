@@ -13,25 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./sentiment.component.scss']
 })
 export class SentimentComponent implements OnInit, OnDestroy {
-  numberAVGtime: any;
-  responseAVGtime: any;
-  selectedDaysId: any;
-  initDay: any;
-  endDay: any;
-  selectedDeptId: any;
-  departments: any;
-  daysSelect: any;
-  depSelected: any;
-
-<<<<<<< HEAD
-  subscription:Subscription;
-=======
-  subscription: Subscription;
-
-
-  constructor(private analyticsService: AnalyticsService, ) { }
-
->>>>>>> ff9115a510c89d34e83a5fd49252592c0da7e509
+  
 
   //median heart value
   numberSentimentHEART:String;
@@ -53,6 +35,8 @@ export class SentimentComponent implements OnInit, OnDestroy {
 
   departments:any;
 
+  subscription:Subscription;
+
   selectedDaysId:number; //lastdays filter
   selectedDeptId:string;  //department filter
 
@@ -68,12 +52,10 @@ export class SentimentComponent implements OnInit, OnDestroy {
   
 
   ngOnInit() {
-<<<<<<< HEAD
+
     this.selectedDeptId= '';
     this.selectedDaysId=7
-=======
 
->>>>>>> ff9115a510c89d34e83a5fd49252592c0da7e509
     this.getSatisfactionNumberHEART();
     this.getSatisfactionCHART(this.selectedDaysId, this.selectedDeptId);
     this.getDepartments();
@@ -85,7 +67,7 @@ export class SentimentComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-<<<<<<< HEAD
+
   daysSelect(value){
     
     this.selectedDaysId=value;//--> value to pass throw for graph method
@@ -102,6 +84,7 @@ export class SentimentComponent implements OnInit, OnDestroy {
     this.getSatisfactionCHART(value, this.selectedDeptId);
     console.log('REQUEST:', value, this.selectedDeptId)
   }
+  
   
   depSelected(selectedDeptId){
     console.log('dep', selectedDeptId);
@@ -363,12 +346,9 @@ export class SentimentComponent implements OnInit, OnDestroy {
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY * COMPLETE *');
     });
 
-=======
-  getSatisfactionNumberHEART() {
-    this.subscription = this.analyticsService.getSatisfactionDataHEART().subscribe((res) => {
-      console.log('RES', res)
-    })
->>>>>>> ff9115a510c89d34e83a5fd49252592c0da7e509
   }
+ 
+
+  
 
 }
