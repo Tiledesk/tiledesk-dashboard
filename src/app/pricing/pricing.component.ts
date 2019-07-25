@@ -59,7 +59,7 @@ export class PricingComponent implements OnInit {
     this.getCurrentUser();
     this.getAllUsersOfCurrentProject();
     this.getProjectPlan();
-    
+
   }
 
 
@@ -70,7 +70,7 @@ export class PricingComponent implements OnInit {
       if (projectProfileData) {
 
         this.subscription_id = projectProfileData.subscription_id;
-        console.log('PricingComponent - project Profile Data > subscription_id ', this.subscription_id )
+        console.log('PricingComponent - project Profile Data > subscription_id ', this.subscription_id)
 
       }
     })
@@ -214,7 +214,7 @@ export class PricingComponent implements OnInit {
 
     stripe.redirectToCheckout({
       items: [{ plan: 'plan_EjFHNnzJXE3jul', quantity: that.operatorNo }],
-     
+
       clientReferenceId: that.currentUserID + '|' + that.projectId,
       customerEmail: that.currentUserEmail,
 
@@ -292,7 +292,14 @@ export class PricingComponent implements OnInit {
 
 
   cancelSubcription() {
-// this.projectService.cancelSubscription().subscribe((faq: any) => { });
+    this.projectService.cancelSubscription().subscribe((updatedProject: any) => {
+      console.log('cancelSubscription RES ', updatedProject);
+
+    }, error => {
+      console.log('cancelSubscription - ERROR: ', error);
+    }, () => {
+      console.log('cancelSubscription * COMPLETE *')
+    });
 
   }
 }

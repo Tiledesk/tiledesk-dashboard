@@ -229,7 +229,7 @@ export class ProjectService {
     headers.append('Content-type', 'application/json');
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
-    const body = { 'profile.type': 'free' , 'profile.name': 'free'};
+    const body = { 'profile.type': 'free', 'profile.name': 'free' };
     console.log('PUT REQUEST BODY ', body);
 
     return this.http
@@ -239,9 +239,9 @@ export class ProjectService {
 
 
   // ****** CANCEL SUBSCRIPTION ******
-  public cancelSubscription(subscrptionid: string) {
-
-    const url = this.BASE_URL + this.projectID + '/stripe/cancelsubscription';
+  public cancelSubscription() {
+    // this.projectID +
+    const url = this.BASE_URL + 'modules/payments/stripe/cancelsubscription';
 
     console.log('cancelSubscription PUT URL ', url);
 
@@ -251,7 +251,7 @@ export class ProjectService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'subscriptionid': subscrptionid };
+    const body = { 'projectid': this.projectID, 'userid': this.user._id };
 
     console.log('PUT REQUEST BODY ', body);
 

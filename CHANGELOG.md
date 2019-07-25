@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 1.0.30
+- Minor improvements
+
 ### 1.0.29
 - Fixes the widget url
 

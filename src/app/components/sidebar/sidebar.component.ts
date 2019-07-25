@@ -115,6 +115,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     ACTIVITIES_ROUTE_IS_ACTIVE: boolean;
     ACTIVITIES_DEMO_ROUTE_IS_ACTIVE: boolean;
     ANALYTICS_DEMO_ROUTE_IS_ACTIVE: boolean;
+    WIDGET_ROUTE_IS_ACTIVE: boolean;
 
     prjct_profile_name: string;
     prjct_trial_expired: boolean;
@@ -219,6 +220,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 } else {
                     console.log('SIDEBAR NavigationEnd - THE analytics-demo route IS NOT ACTIVE  ', event.url);
                     this.ANALYTICS_DEMO_ROUTE_IS_ACTIVE = false;
+                }
+
+                if (event.url.indexOf('/widget') !== -1) {
+                    console.log('SIDEBAR NavigationEnd - THE widget route IS ACTIVE  ', event.url);
+                    this.WIDGET_ROUTE_IS_ACTIVE = true;
+                } else {
+                    console.log('SIDEBAR NavigationEnd - THE widget route IS NOT ACTIVE  ', event.url);
+                    this.WIDGET_ROUTE_IS_ACTIVE = false;
                 }
             });
     }

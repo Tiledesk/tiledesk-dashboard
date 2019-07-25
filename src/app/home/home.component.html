@@ -53,8 +53,16 @@
 
                 <div class="homeBanner__itemContainer">
                   <ul class="homeBannerItems">
+                     <span style="display: block;
+                     width: 105px;
+                     background: #ffff7f;
+                     padding: 5px;
+                     font-weight: 600;position: relative; left: -20px;"> Just released a new version!</span> 
+                     <li> <img src="assets/img/arrow.svg" class="img-fluid" style="max-width: 150px; height: auto;     transform: scaleX(1) rotate(50deg); position: relative;
+                      left: 74px;   top: -25px;"/></li> 
                     <li *ngIf="USER_ROLE !== 'agent'" class="homeBanner__itemContainer" >
                       <button (click)="goToResources()" type="button" class="homeBanner__item homeBanner__item-round homeBanner__widget__item">
+                          
                         <span class="homeBanner__itemText">
                           Widget
                           <p class="homeBanner__itemTextSubtitle">
