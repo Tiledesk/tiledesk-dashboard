@@ -3,6 +3,8 @@ import { Location } from '@angular/common';
 import { AuthService } from '../core/auth.service';
 import { Router } from '@angular/router'
 import { UsersService } from '../services/users.service';
+import { ProjectService } from '../services/project.service';
+import { ProjectPlanService } from '../services/project-plan.service';
 declare var Stripe: any;
 
 @Component({
@@ -37,11 +39,14 @@ export class PricingComponent implements OnInit {
   projectUsersNumber: number;
   showSpinnerInTotalPrice = true;
   info_modal_has_been_displayed = false;
+  subscription_id: string
   constructor(
     public location: Location,
     public auth: AuthService,
     private router: Router,
-    private usersService: UsersService
+    private usersService: UsersService,
+    public projectService: ProjectService,
+    private prjctPlanService: ProjectPlanService
   ) { }
 
   ngOnInit() {
@@ -53,8 +58,22 @@ export class PricingComponent implements OnInit {
     this.getBaseUrl()
     this.getCurrentUser();
     this.getAllUsersOfCurrentProject();
+    this.getProjectPlan();
 
-    console.log('PricingComponent - PROJECT USERS (FILTERED FOR PROJECT ID) numberOfAgentPerPrice', this.numberOfAgentPerPrice);
+  }
+
+
+  getProjectPlan() {
+
+    this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
+      console.log('PricingComponent - project Profile Data ', projectProfileData)
+      if (projectProfileData) {
+
+        this.subscription_id = projectProfileData.subscription_id;
+        console.log('PricingComponent - project Profile Data > subscription_id ', this.subscription_id)
+
+      }
+    })
   }
 
 
@@ -69,8 +88,6 @@ export class PricingComponent implements OnInit {
 
         this.operatorNo = projectUsers.length
         this.numberOfAgentPerPrice = this.operatorNo * this.proPlanPerAgentPrice;
-
-
       }
     }, error => {
       this.showSpinnerInTotalPrice = false;
@@ -80,10 +97,6 @@ export class PricingComponent implements OnInit {
       console.log('PricingComponent - PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
     });
   }
-
-
-
-
 
   getBaseUrl() {
     const href = window.location.href;
@@ -96,7 +109,6 @@ export class PricingComponent implements OnInit {
     // var url = new URL(href);
     // this.dashboardHost = url.origin
     // console.log('PricingComponent host ', this.dashboardHost)
-
   }
 
   getCurrentProject() {
@@ -109,7 +121,6 @@ export class PricingComponent implements OnInit {
       }
     });
   }
-
 
   getCurrentUser() {
     const user = this.auth.user_bs.value
@@ -136,7 +147,6 @@ export class PricingComponent implements OnInit {
   }
 
   setPeriod(selectedPeriod: string) {
-
     console.log('selectedPeriod ', selectedPeriod);
     if (selectedPeriod === 'perMonth') {
       this.perMonth = true;
@@ -148,14 +158,11 @@ export class PricingComponent implements OnInit {
   }
 
   decreaseOperatorNumber() {
-
-
     this.operatorNo -= 1;
 
     console.log('decreaseOperatorNumber operatorNo', this.operatorNo);
     // this.switchPlanPrice()
     this.numberOfAgentPerPrice = this.operatorNo * this.proPlanPerAgentPrice;
-
 
     if ((this.operatorNo < this.projectUsersNumber) && (this.info_modal_has_been_displayed === false)) {
 
@@ -207,7 +214,7 @@ export class PricingComponent implements OnInit {
 
     stripe.redirectToCheckout({
       items: [{ plan: 'plan_EjFHNnzJXE3jul', quantity: that.operatorNo }],
-     
+
       clientReferenceId: that.currentUserID + '|' + that.projectId,
       customerEmail: that.currentUserEmail,
 
@@ -269,9 +276,6 @@ export class PricingComponent implements OnInit {
 
   }
 
-
-
-
   launchWidget() {
     if (window && window['tiledesk']) {
       window['tiledesk'].open();
@@ -286,4 +290,16 @@ export class PricingComponent implements OnInit {
     this.displayPaymentReport = 'none'
   }
 
+
+  cancelSubcription() {
+    this.projectService.cancelSubscription().subscribe((updatedProject: any) => {
+      console.log('cancelSubscription RES ', updatedProject);
+
+    }, error => {
+      console.log('cancelSubscription - ERROR: ', error);
+    }, () => {
+      console.log('cancelSubscription * COMPLETE *')
+    });
+
+  }
 }

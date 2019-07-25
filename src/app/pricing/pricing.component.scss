@@ -378,6 +378,9 @@ li:before {
   .hide-when-is-open-PaymentReport {
     display: none;
   }
+  .modal-payment-report {
+    height: fit-content;
+  }
 }
 
 .pay-with-card-btn:hover {

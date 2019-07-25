@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AnalyticsService } from 'app/services/analytics.service';
 import { Subscription } from 'rxjs';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
@@ -12,9 +12,26 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './sentiment.component.html',
   styleUrls: ['./sentiment.component.scss']
 })
-export class SentimentComponent implements OnInit {
+export class SentimentComponent implements OnInit, OnDestroy {
+  numberAVGtime: any;
+  responseAVGtime: any;
+  selectedDaysId: any;
+  initDay: any;
+  endDay: any;
+  selectedDeptId: any;
+  departments: any;
+  daysSelect: any;
+  depSelected: any;
 
+<<<<<<< HEAD
   subscription:Subscription;
+=======
+  subscription: Subscription;
+
+
+  constructor(private analyticsService: AnalyticsService, ) { }
+
+>>>>>>> ff9115a510c89d34e83a5fd49252592c0da7e509
 
   //median heart value
   numberSentimentHEART:String;
@@ -51,19 +68,24 @@ export class SentimentComponent implements OnInit {
   
 
   ngOnInit() {
+<<<<<<< HEAD
     this.selectedDeptId= '';
     this.selectedDaysId=7
+=======
+
+>>>>>>> ff9115a510c89d34e83a5fd49252592c0da7e509
     this.getSatisfactionNumberHEART();
     this.getSatisfactionCHART(this.selectedDaysId, this.selectedDeptId);
     this.getDepartments();
 
   }
- 
+
   ngOnDestroy() {
     console.log('!!! ANALYTICS.RICHIESTE - !!!!! UN - SUBSCRIPTION TO REQUESTS');
     this.subscription.unsubscribe();
   }
 
+<<<<<<< HEAD
   daysSelect(value){
     
     this.selectedDaysId=value;//--> value to pass throw for graph method
@@ -341,6 +363,12 @@ export class SentimentComponent implements OnInit {
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY * COMPLETE *');
     });
 
+=======
+  getSatisfactionNumberHEART() {
+    this.subscription = this.analyticsService.getSatisfactionDataHEART().subscribe((res) => {
+      console.log('RES', res)
+    })
+>>>>>>> ff9115a510c89d34e83a5fd49252592c0da7e509
   }
 
 }

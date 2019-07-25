@@ -84,6 +84,7 @@ export class ProjectPlanService {
         subscription_is_active: project.isActiveSubscription,
         profile_type: project.profile['type'],
         subscription_end_date: project.profile['subEnd'],
+        subscription_id: project.profile['subscriptionId'],
       }
 
       this.projectPlan$.next(projectPlanData);

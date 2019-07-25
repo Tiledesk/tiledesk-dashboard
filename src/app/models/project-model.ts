@@ -20,5 +20,6 @@ export interface Project {
     subscription_is_active?: any;
     profile?: any;
     subscription_end_date?: any;
+    subscription_id?: any;
     __v?: any;
 }

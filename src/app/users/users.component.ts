@@ -358,12 +358,15 @@ export class UsersComponent implements OnInit {
     console.log('INVITE USER (GOTO) No of Project Users ', this.projectUsersLength)
     console.log('INVITE USER (GOTO) No of Pending Invites ', this.countOfPendingInvites)
     console.log('INVITE USER (GOTO) No of Operators Seats (agents purchased)', this.projectPlanAgentsNo)
-    if ((this.projectUsersLength + this.countOfPendingInvites) < this.projectPlanAgentsNo) {
-      this.router.navigate(['project/' + this.id_project + '/user/add']);
-    } else {
 
-      this.notify._displayContactUsModal(true);
-    }
+    this.router.navigate(['project/' + this.id_project + '/user/add']);
+
+    // if ((this.projectUsersLength + this.countOfPendingInvites) < this.projectPlanAgentsNo) {
+    //   this.router.navigate(['project/' + this.id_project + '/user/add']);
+    // } else {
+
+    //   this.notify._displayContactUsModal(true);
+    // }
   }
 
   openDeleteModal(projectUser_id: string, userID: string, userFirstname: string, userLastname: string) {

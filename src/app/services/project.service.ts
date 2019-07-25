@@ -220,12 +220,30 @@ export class ProjectService {
 
   }
 
-
+  // ****** DOWNGRADE PLAN ******
   public downgradePlanToFree(projectid: string) {
-
     const url = this.PROJECT_BASE_URL + projectid + '/downgradeplan';
-
     console.log('downgradePlanToFree URL ', url);
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+    const body = { 'profile.type': 'free', 'profile.name': 'free' };
+    console.log('PUT REQUEST BODY ', body);
+
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
+
+  // ****** CANCEL SUBSCRIPTION ******
+  public cancelSubscription() {
+    // this.projectID +
+    const url = this.BASE_URL + 'modules/payments/stripe/cancelsubscription';
+
+    console.log('cancelSubscription PUT URL ', url);
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -233,7 +251,7 @@ export class ProjectService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'profile.type': 'free' , 'profile.name': 'free'};
+    const body = { 'projectid': this.projectID, 'userid': this.user._id };
 
     console.log('PUT REQUEST BODY ', body);
 

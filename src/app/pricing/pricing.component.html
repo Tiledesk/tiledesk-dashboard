@@ -87,6 +87,8 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
                 <li>Unlimited chat history</li>
                 <li>Data export</li>
                 <li>Post-chat surverys</li>
+                <!-- (click)="cancelSubcription()" -->
+                <li (click)="cancelSubcription()"> CANCEL SUBSCRIPTION</li>
               </ul>
 
               <ul *ngIf="selectedPlanName === 'enterprise'" class="enterprise-plan-ul">
@@ -116,7 +118,6 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 
             <label class="price" style="line-height:15px" *ngIf="selectedPlanName === 'pro'">
               
-               
               <span class="price-text">
                 
                 <span style="position: relative;top: -16px;"> € </span>  
@@ -127,9 +128,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
               </span>
             </label>
 
-
           </div>
-
 
           <div class="card-content" *ngIf="selectedPlanName === 'pro'">
             <div class="row">
@@ -347,7 +346,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 
 
 <!-- ============= PAY WITH CARD MODAL ============= -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayPaymentReport}" style="background-color: rgba(90,90,90,0.9); overflow: auto;">
+<div class="modal modal-payment-report" tabindex="-1" role="dialog" [ngStyle]="{'display':displayPaymentReport}" style="background-color: rgba(90,90,90,0.9); overflow: auto;">
     <div class="modal-dialog" role="document">
       <div class="modal-content" style="border-top-left-radius:6px; border-top-right-radius:6px">
         <div class="modal-header" style="padding:0px!important; border-bottom:none!important;">
