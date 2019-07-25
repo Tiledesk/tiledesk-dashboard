@@ -3,9 +3,9 @@
   <li class="btn-with-border-effect "  [ngClass]="{'li-active' : selected === 'richieste', 'border-from-center': selected !== 'richieste'}" (click)="goTo('richieste')" >
       <a>{{ 'Analytics.Metrics.Requests' | translate }}</a>
   </li>
-  <!-- <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'sentiment', 'border-from-center': selected !== 'sentiment'}" (click)="goTo('sentiment')">
+  <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'sentiment', 'border-from-center': selected !== 'sentiment'}" (click)="goTo('sentiment')">
       <a>{{ 'Analytics.Metrics.Sentiment' | translate }}</a>
-  </li> -->
+  </li>
   <li class="btn-with-border-effect " [ngClass]="{'li-active' : selected === 'tempiRisposta', 'border-from-center': selected !== 'tempiRisposta'}" (click)="goTo('tempiRisposta')">
       <a>{{ 'Analytics.Metrics.ResponseTime' | translate }}</a>
   </li>
