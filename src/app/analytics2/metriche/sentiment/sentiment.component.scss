@@ -1,4 +1,12 @@
 // @import url(https://fonts.googleapis.com/css?family=Google+Sans);
+.tiledesk_card_header {
+    padding:0px !important; 
+    -webkit-box-shadow:none !important;  
+    box-shadow: none !important; 
+    width: 0;height: 0 !important;
+    position: relative !important;
+    top: 24px !important;
+}
 
 .card-header-custom {
     box-shadow: none!important;
