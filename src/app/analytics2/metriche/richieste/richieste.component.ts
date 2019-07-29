@@ -15,7 +15,7 @@ import { UsersService } from 'app/services/users.service';
 export class RichiesteComponent implements OnInit {
 
   lineChart:any;
-  lineChartByMonth:any;
+  
 
   lang: String;
 
@@ -27,7 +27,7 @@ export class RichiesteComponent implements OnInit {
 
   selectedDaysId:number; //lastdays filter
   selectedDeptId:string;  //department filter
-  selectedAgentId:string; //agents filter
+  
 
   selected:string;
 
@@ -51,12 +51,11 @@ export class RichiesteComponent implements OnInit {
     this.selected='day'
     this.selectedDeptId = '';
     this.selectedDaysId=7;
-    this.selectedAgentId = '';
+    
     this.initDay=moment().subtract(6, 'd').format('D/M/YYYY')
     this.endDay=moment().subtract(0, 'd').format('D/M/YYYY')
     this.getRequestByLastNDay(this.selectedDaysId, this.selectedDeptId);
     this.getDepartments();
-    this.getAllProjectUsers();
     
   }
 
@@ -90,26 +89,6 @@ export class RichiesteComponent implements OnInit {
     console.log('REQUEST:', this.selectedDaysId, selectedDeptId)
   }
 
-  onDayWeekMonthCLICK(value){
-    if(value==='day'){
-      this.selected='day'
-      this.lineChartByMonth.destroy();  //destroy month chart
-                                        //destroy week chart
-      this.getRequestByLastNDay(this.selectedDaysId, this.selectedDeptId);
-    }else if(value==='week'){
-      this.selected='week';
-      this.lineChartByMonth.destroy();  //destroy month chart
-      this.lineChart.destroy();         //destroy day chart
-      this.getRequestFilteredByWeeks();
-    }else if(value==='month'){
-      this.selected='month';  
-      this.lineChart.destroy();       //destroy day chart
-                                      //destroy weekchart
-      this.getRequestFilteredByMonths(this.selectedDeptId);
-    }
-
-  }
- 
 
   getDepartments() {
     this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
@@ -123,29 +102,6 @@ export class RichiesteComponent implements OnInit {
     });
   }
 
-  getAllProjectUsers() {
-    // createBotsAndUsersArray() {
-    this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
-      console.log('!!! NEW REQUESTS HISTORY  - GET PROJECT-USERS ', projectUsers);
-
-      if (projectUsers) {
-        projectUsers.forEach(user => {
-          this.user_and_bot_array.push({ '_id': user.id_user._id, 'firstname': user.id_user.firstname, 'lastname': user.id_user.lastname });
-        });
-        
-       
-        
-        console.log('!!! NEW REQUESTS HISTORY  - !!!! USERS ARRAY ', this.user_and_bot_array);
-
-      }
-    }, (error) => {
-      console.log('!!! NEW REQUESTS HISTORY - GET PROJECT-USERS ', error);
-    }, () => {
-      console.log('!!! NEW REQUESTS HISTORY - GET PROJECT-USERS * COMPLETE *');
-      //this.getAllBot();
-    });
-
-  }
 
 
   getBrowserLangAndSwitchMonthName() {
@@ -381,265 +337,6 @@ export class RichiesteComponent implements OnInit {
     });
   }
 
- 
-  getRequestFilteredByMonths(depID){
-
-    this.subscription=this.analyticsService.requestByMonth(depID).subscribe((requestByMonth:any)=>{
-      console.log("REQUEST BY MONTH:",requestByMonth);
-
-      // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
-      const lastMONTH_initarray = []
-      for (let i = 0; i < 12; i++) {
-        // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
-        lastMONTH_initarray.push({ 'count': 0, month: moment().subtract(i, 'months').format('M/YYYY') })
-      }
-
-      lastMONTH_initarray.reverse()
-
-      console.log('»» !!! ANALYTICS - REQUESTS BY MONTH - MOMENT LAST MONTH (init array)', lastMONTH_initarray);
-
-      const requestsByMonth_series_array = [];
-      const requestsByMonth_labels_array = []
-
-      // CREATES A NEW ARRAY FROM THE ARRAY RETURNED FROM THE SERVICE SO THAT IT IS COMPARABLE WITH last7days_initarray
-      const requestsByMonth_array = []
-      for (let j = 0; j < requestByMonth.length; j++) {
-        if (requestByMonth[j]) {
-          requestsByMonth_array.push({ 'count': requestByMonth[j]['count'], month: requestByMonth[j]['_id']['month'] + '/' + requestByMonth[j]['_id']['year'] })
-
-        }
-
-      }
-      console.log('»» !!! ANALYTICS - REQUESTS BY MONTH FORMATTED ', requestsByMonth_array);
-      
-      /**
-       * MERGE THE ARRAY last7days_initarray WITH requestsByDay_array  */
-      // Here, requestsByDay_formatted_array.find(o => o.day === obj.day)
-      // will return the element i.e. object from requestsByDay_formatted_array if the day is found in the requestsByDay_formatted_array.
-      // If not, then the same element in last7days i.e. obj is returned.
-      const requestByMonths_final_array = lastMONTH_initarray.map(obj => requestsByMonth_array.find(o => o.month === obj.month) || obj);
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - FINAL ARRAY ', requestByMonths_final_array);
-
-      const _requestsByMonth_series_array = [];
-      const _requestsByMonth_labels_array = [];
-
-      //select init and end day to show on div
-      // this.initDay=requestByDays_final_array[0].day;
-      // this.endDay=requestByDays_final_array[lastdays-1].day;
-      // console.log("INIT", this.initDay, "END", this.endDay);
-
-      requestByMonths_final_array.forEach(requestByMonth => {
-        //console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
-        _requestsByMonth_series_array.push(requestByMonth.count)
-       
-        const splitted_date = requestByMonth.month.split('/');
-        
-        //console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
-        _requestsByMonth_labels_array.push(this.monthNames[splitted_date[0]] + ' ' + splitted_date[1])
-      });
-
-      console.log("FINAL ARRAY MONTH REQUEST", requestByMonths_final_array);
-      console.log('»» !!! ANALYTICS - REQUESTS BY MONTH - SERIES (ARRAY OF COUNT - to use for debug)', requestsByMonth_series_array);
-      console.log('»» !!! ANALYTICS - REQUESTS BY MONTH - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByMonth_series_array);
-      console.log('»» !!! ANALYTICS - REQUESTS BY MONTH - LABELS (ARRAY OF DAY - to use for debug)', requestsByMonth_labels_array);
-      console.log('»» !!! ANALYTICS - REQUESTS BY MONTH - LABELS (+ NEW + ARRAY OF DAY)', _requestsByMonth_labels_array);
-
-
-      //get higher value of xvalue array 
-      const higherCount = this.getMaxOfArray(_requestsByMonth_series_array);
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
-
-      
-      let lang=this.lang;
-
-      this.lineChartByMonth = new Chart('lastNdayChart', {
-        type: 'line',
-        data: {
-          labels: _requestsByMonth_labels_array ,
-          datasets: [{
-            label: 'Number of request in last 7 days ',//active labet setting to true the legend value
-            data: _requestsByMonth_series_array,
-            fill: true, //riempie zona sottostante dati
-            lineTension: 0.0,
-            backgroundColor: 'rgba(30, 136, 229, 0.6)',
-            borderColor: 'rgba(30, 136, 229, 1)',
-            borderWidth: 3,
-            borderDash: [],
-            borderDashOffset: 0.0,
-            pointBackgroundColor: 'rgba(255, 255, 255, 0.8)',
-            pointBorderColor: '#1e88e5'
-
-          }]
-        },
-        options: {
-          maintainAspectRatio:false,
-          title: {
-            text: 'AVERAGE TIME RESPONSE',
-            display: false
-          },
-          legend:{
-            display:false //do not show label title
-          },
-          scales: {
-            xAxes: [{
-              ticks: {
-                beginAtZero: true,
-                //maxTicksLimit: stepsize,
-                display: true,
-                //minRotation: 30,
-                fontColor: 'black',
-                // callback: function(tickValue, index, ticks) {
-                //      console.log("XXXX",tickValue);
-                //      console.log("III", index)
-                //      console.log("TTT", ticks)
-                 
-                // }
-
-              },
-              gridLines: {
-                display: true,
-                borderDash:[8,4],
-                //color:'rgba(255, 255, 255, 0.5)',
-                
-              }
-
-            }],
-            yAxes: [{
-              gridLines: {
-                display: true ,
-                borderDash:[8,4],
-                //color:'rgba(255, 255, 255, 0.5)',
-                
-              },
-              ticks: {
-                beginAtZero: true,
-                userCallback: function(label, index, labels) {
-                  //userCallback is used to return integer value to ylabel
-                  if (Math.floor(label) === label) {
-                      return label;
-                  }
-                },
-                display: true,
-                fontColor: 'black',
-                suggestedMax: higherCount + 2,
-                
-        
-                // callback: function (value, index, values) {
-                //   let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
-                //   let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
-                //   let seconds = Math.floor(((value % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
-                //   return hours + 'h:' + minutes + 'm:' + seconds + 's'
-                // },
-
-              }
-            }]
-          },
-          tooltips: {
-            callbacks: {
-              label: function (tooltipItem, data) {
-                
-                // var label = data.datasets[tooltipItem.datasetIndex].label || '';
-                // if (label) {
-                //     label += ': ';
-                // }
-                // label += Math.round(tooltipItem.yLabel * 100) / 100;
-                // return label + '';
-                //console.log("data",data)
-                const currentItemValue = tooltipItem.yLabel
-                // let langService = new HumanizeDurationLanguage();
-                // let humanizer = new HumanizeDuration(langService);
-                // humanizer.setOptions({ round: true })
-                //console.log("humanize", humanizer.humanize(currentItemValue))
-                //return data.datasets[tooltipItem.datasetIndex].label + ': ' + currentItemValue
-                if(lang==='it'){
-                  return 'Richieste: '+currentItemValue;
-                }else{
-                  return 'Requests: ' +currentItemValue;
-                }
-
-              }
-            }
-          }
-          
-        }
-        ,
-        plugins:[{
-          beforeDraw: function(chartInstance, easing) {
-            var ctx = chartInstance.chart.ctx;
-            //console.log("chartistance",chartInstance)
-            //ctx.fillStyle = 'red'; // your color here
-            ctx.height=128
-            //chartInstance.chart.canvas.parentNode.style.height = '128px';
-            ctx.font="Google Sans"
-            
-            var chartArea = chartInstance.chartArea;
-            //ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
-          }
-        }]
-      });
-
-    },(error) => {
-      console.log('»» !!! ANALYTICS - REQUESTS BY MONTH - ERROR ', error);
-    }, () => {
-      console.log('»» !!! ANALYTICS - REQUESTS BY MONTH * COMPLETE *');
-    });
-  }
-
-  getDayFromWeekNumber(weekNumber, year){
-    
-    var d = new Date("Jan 01, " + year + " 01:00:00");
-    var w = d.getTime() + 604800000 * (weekNumber);
-    //86400000 --> milliseconds of 1 day
-    var initWeekDay = new Date(w).toLocaleDateString();
-    var endWeekDay = new Date(w + 518400000).toLocaleDateString();
-
-    console.log("n1",initWeekDay);
-    console.log("n2",endWeekDay);
-
-    return { "initWeekDay": initWeekDay,"endWeekDay": endWeekDay }
-            
-    
-  }
-
-  getRequestFilteredByWeeks(){
-    this.subscription=this.analyticsService.requestByWeek().subscribe((requestByWeek:any)=>{
-      console.log("REQUEST BY WEEK:",requestByWeek);
-
-      console.log("FIRST DAY",this.getDayFromWeekNumber(0,2019))
-      const lastWEEK_initarray = []
-      for (let i = 0; i < 12; i++) {
-     
-        lastWEEK_initarray.push({ 'count': 0, week: { firstday: moment().subtract(i, 'week').format('DD/M/YYYY') ,
-                                                      lastday:  moment().subtract(i, 'week').format("DD/M/YYYY") }
-                                                    })
-      }
-
-      lastWEEK_initarray.reverse()
-
-      console.log('»» !!! ANALYTICS - REQUESTS BY MONTH - MOMENT LAST WEEK (init array)', lastWEEK_initarray);
-
-
-      const requestsByWeek_series_array = [];
-      const requestsByWeek_labels_array = []
-
-      // CREATES A NEW ARRAY FROM THE ARRAY RETURNED FROM THE SERVICE SO THAT IT IS COMPARABLE WITH last7days_initarray
-      const requestsByWeek_array = []
-      for (let j = 0; j < requestByWeek.length; j++) {
-        if (requestByWeek[j]) {
-          
-          requestsByWeek_array.push({ 'count': requestByWeek[j]['count'], week: { firstday: this.getDayFromWeekNumber(requestByWeek[j]['_id']['week'],requestByWeek[j]['_id']['year'])} })
-
-        }
-
-      }
-      console.log('»» !!! ANALYTICS - REQUESTS BY WEEK FORMATTED ', requestsByWeek_array);
-      
-    },(error) => {
-      console.log('»» !!! ANALYTICS - REQUESTS BY WEEK - ERROR ', error);
-    }, () => {
-      console.log('»» !!! ANALYTICS - REQUESTS BY WEEK * COMPLETE *');
-    });
-  }
 
 
 

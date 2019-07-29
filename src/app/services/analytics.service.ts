@@ -94,48 +94,7 @@ export class AnalyticsService {
     
   }
 
-  requestByMonth( department_id?): Observable<[]> {
-    
-    console.log("PARAM",department_id);
-    
-    if(!department_id){
-      department_id=''
-    }
-    console.log("DEP-id",department_id);
-    
-    let headers= new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': this.TOKEN
-      });
-    let params= new HttpParams()
-                .set('department_id', department_id);
-
-    
-    return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/aggregate/month', { headers:headers, params:params});
-  }
-
-  requestByWeek(lastdays?, department_id?): Observable<[]> {
-    
-    console.log("PARAM",lastdays,department_id);
-    
-    if(!department_id){
-      department_id=''
-    }
-    console.log("DEP-id",department_id);
-    
-    let headers= new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': this.TOKEN
-      });
-    let params= new HttpParams()
-                .set('lastdays', lastdays)
-                .set('department_id', department_id);
-
-    
-    return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/aggregate/week', { headers:headers, params:params});
-  }
-
-
+  
   getDataHeatMap(): Observable<[]> {
 
     const httpOptions = {

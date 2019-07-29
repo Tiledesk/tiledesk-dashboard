@@ -104,9 +104,9 @@ export class DepartmentService {
    * NOTE: chat21-api-node.js READ THE CURRENT PROJECT ID FROM THE URL SO IT SO NO LONGER NECESSARY TO PASS THE PROJECT ID AS PARAMETER
    */
   public getDeptsByProjectId(): Observable<Department[]> {
-    //const url = this.MONGODB_BASE_URL + 'allstatus';
+    const url = this.MONGODB_BASE_URL + 'allstatus';
    
-    const url = 'https://api.tiledesk.com/v1/5c28b587348b680015feecca/departments/'+'allstatus'
+    //const url = 'https://api.tiledesk.com/v1/5c28b587348b680015feecca/departments/'+'allstatus'
     console.log('DEPARTMENTS URL', url);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
