@@ -116,7 +116,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     ACTIVITIES_DEMO_ROUTE_IS_ACTIVE: boolean;
     ANALYTICS_DEMO_ROUTE_IS_ACTIVE: boolean;
     WIDGET_ROUTE_IS_ACTIVE: boolean;
-
+    ANALITYCS_ROUTE_IS_ACTIVE: boolean;
     prjct_profile_name: string;
     prjct_trial_expired: boolean;
     prjc_trial_days_left: number
@@ -229,6 +229,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     console.log('SIDEBAR NavigationEnd - THE widget route IS NOT ACTIVE  ', event.url);
                     this.WIDGET_ROUTE_IS_ACTIVE = false;
                 }
+
+
+                if (event.url.indexOf('/analytics') !== -1) {
+                    console.log('SIDEBAR NavigationEnd - THE analytics route IS ACTIVE  ', event.url);
+                    this.ANALITYCS_ROUTE_IS_ACTIVE = true;
+                } else {
+                    console.log('SIDEBAR NavigationEnd - THE analytics route IS NOT ACTIVE  ', event.url);
+                    this.ANALITYCS_ROUTE_IS_ACTIVE = false;
+                }
+
+
+
             });
     }
 

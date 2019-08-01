@@ -273,6 +273,7 @@
           [ngClass]="{'active' : ANALYTICS_DEMO_ROUTE_IS_ACTIVE === true}"  (click)="stopScroll()">
           <a class="customAncor" routerLink="project/{{ project._id }}/analytics">
             <i class="material-icons sidebar-icons">trending_up</i>
+            <span class="_badge" [ngClass]="{'change-badge-bckgrnd' : ANALITYCS_ROUTE_IS_ACTIVE === true}">New</span>
             <p class="onBlackBckgrnd">Analytics</p>
           </a>
         </li>

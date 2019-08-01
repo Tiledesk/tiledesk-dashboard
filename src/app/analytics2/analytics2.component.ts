@@ -130,13 +130,13 @@ export class Analytics2Component implements OnInit , OnDestroy {
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
-    this.buildgraph(); // HEAT MAP GRAPH
-    this.avarageWaitingTimeCLOCK(); // -->clock avg time response
-    this.avgTimeResponsechart(); // --> avg time response bar chart
-    this.durationConvTimeCLOCK(); // --> duration time clock
-    this.durationConversationTimeCHART(); // --> duration conversation bar chart
+    // this.buildgraph(); // HEAT MAP GRAPH
+    // this.avarageWaitingTimeCLOCK(); // -->clock avg time response
+    // this.avgTimeResponsechart(); // --> avg time response bar chart
+    // this.durationConvTimeCLOCK(); // --> duration time clock
+    // this.durationConversationTimeCHART(); // --> duration conversation bar chart
     // this.auth.checkProjectProfile('analytics');
-    this.getRequestByLast7Day();
+    // this.getRequestByLast7Day();
     
     this.analyticsService.richieste_bs.subscribe((hasClickedOnGraph)=>{
       console.log("CLICK:",hasClickedOnGraph)
@@ -260,12 +260,12 @@ export class Analytics2Component implements OnInit , OnDestroy {
     /* ----------==========   TILEDESK ANALYTICS   ==========---------- */
     this.getCurrentProject();
     // this.getCountOfRequestForAgent()
-    this.servedAndUnservedRequestsCount();
-    this.globalServedAndUnservedRequestsCount();
-    this.getCountOf_AllRequestsForAgent();
-    this.getRequestsByDay();
-    this.getlastMonthRequetsCount();
-    this.getCountOf_AllRequestsForDept();
+    // this.servedAndUnservedRequestsCount();
+    // this.globalServedAndUnservedRequestsCount();
+    // this.getCountOf_AllRequestsForAgent();
+    // this.getRequestsByDay();
+    // this.getlastMonthRequetsCount();
+    // this.getCountOf_AllRequestsForDept();
 
     /** NOT YET USED */
     // this.daysHoursRequestsDistribution()
@@ -1006,7 +1006,7 @@ export class Analytics2Component implements OnInit , OnDestroy {
 
   ngOnDestroy() {
     console.log('!!! ANALYTICS - !!!!! UN - SUBSCRIPTION TO REQUESTS-LIST-BS');
-    this.subscription.unsubscribe();
+    // this.subscription.unsubscribe();
   }
 
 

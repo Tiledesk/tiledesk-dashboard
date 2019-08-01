@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 1.0.31
+- Adds in Analytics the graphs: "Requests per hour of day", "Median Response Time", "Median Conversation Lenght"
+- Adds in Analytics' graph "Number of requests last 7 days" the ability to filter by time range and project's departments
+
 ### 1.0.30
 - Minor improvements
 

@@ -8,6 +8,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ITooltipEventArgs } from '@syncfusion/ej2-heatmap/src';
 import { Chart } from 'chart.js';
 import { TransferState } from '@angular/platform-browser';
+import { AuthService } from 'app/core/auth.service';
 
 @Component({
   selector: 'appdashboard-panoramica',
@@ -16,8 +17,8 @@ import { TransferState } from '@angular/platform-browser';
 })
 export class PanoramicaComponent implements OnInit {
 
-  monthNames:any;
-  lang:string;
+  monthNames: any;
+  lang: string;
 
   dataSource: Object;
   xAxis: Object;
@@ -34,11 +35,11 @@ export class PanoramicaComponent implements OnInit {
   weekday: any;
   hour: any;
 
-  subscription:Subscription;
+  subscription: Subscription;
 
-  showSpinner:boolean=true;
-  heatmapEND:boolean
-  chartEND:boolean
+  showSpinner: boolean = true;
+  heatmapEND: boolean
+  chartEND: boolean
 
   // avg time clock variable 
   numberAVGtime: String;
@@ -53,36 +54,38 @@ export class PanoramicaComponent implements OnInit {
   langService: HumanizeDurationLanguage = new HumanizeDurationLanguage();
   humanizer: HumanizeDuration = new HumanizeDuration(this.langService);
 
-  
 
 
 
-  constructor(  private requestsService:RequestsService,
-                private translate: TranslateService,
-                private analyticsService: AnalyticsService) {
-                  
-                  this.lang = this.translate.getBrowserLang();
-                  console.log('LANGUAGE ', this.lang);
-                  this.getBrowserLangAndSwitchMonthName();
-                  this.getHeatMapSeriesDataByLang();
-                  //this.startTimer();
-   }
+
+  constructor(private requestsService: RequestsService,
+    private translate: TranslateService,
+    private analyticsService: AnalyticsService,
+    private auth: AuthService
+  ) {
+
+    this.lang = this.translate.getBrowserLang();
+    console.log('LANGUAGE ', this.lang);
+    this.getBrowserLangAndSwitchMonthName();
+    this.getHeatMapSeriesDataByLang();
+    //this.startTimer();
+  }
 
   ngOnInit() {
-
+    this.auth.checkRoleForCurrentProject();
     this.getRequestByLast7Day();
     this.heatMap();
     this.avarageWaitingTimeCLOCK();
     this.durationConvTimeCLOCK();
-    
-   
-      
-    
+
+
+
+
   }
 
-  async showHideSpinner(){
-    if(this.heatmapEND==true && this.chartEND==true){
-      this.showSpinner=false
+  async showHideSpinner() {
+    if (this.heatmapEND === true && this.chartEND === true) {
+      this.showSpinner = false
     }
   }
 
@@ -90,30 +93,30 @@ export class PanoramicaComponent implements OnInit {
     let timeLeft: number = 5;
     let interval;
     interval = setInterval(() => {
-      if(timeLeft > 0) {
+      if (timeLeft > 0) {
         timeLeft--;
-        console.log("TIME",timeLeft)
+        console.log("TIME", timeLeft)
       }
-     
-    },1000)
-    
-   
-    
+
+    }, 1000)
+
+
+
   }
 
-  
+
   ngOnDestroy() {
     console.log('!!! ANALYTICS - !!!!! UN - SUBSCRIPTION TO REQUESTS');
     this.subscription.unsubscribe();
   }
 
-  goToRichieste(){
+  goToRichieste() {
     console.log("User click on last 7 days graph");
     this.analyticsService.goToRichieste();
   }
 
-  getHeatMapSeriesDataByLang(){
-    
+  getHeatMapSeriesDataByLang() {
+
     if (this.lang === 'it') {
       this.weekday = { '1': 'Lun', '2': 'Mar', '3': 'Mer', '4': 'Gio', '5': 'Ven', '6': 'Sab', '7': 'Dom' }
       this.hour = {
@@ -123,7 +126,7 @@ export class PanoramicaComponent implements OnInit {
       }
       this.yAxis = { labels: this.ylabel_ita };
       this.xAxis = { labels: this.xlabel_ita };
-      
+
       this.titleSettings = {
         text: 'Richieste per ora del giorno',
         textStyle: {
@@ -138,7 +141,7 @@ export class PanoramicaComponent implements OnInit {
       this.hour = {
         '0': '1am', '1': '2am', '2': '3am', '3': '4am', '4': '5am', '5': '6am', '6': '7am', '7': '8am', '8': '9am', '9': '10am',
         '10': '11am', '11': '12am', '12': '1pm', '13': '2pm', '14': '3pm', '15': '4pm', '16': '5pm', '17': '6pm', '18': '7pm', '19': '8pm',
-        '20': '9pm', '21': '10pm', '22': '11pm','23': '12pm'
+        '20': '9pm', '21': '10pm', '22': '11pm', '23': '12pm'
       }
 
       this.yAxis = { labels: this.ylabel_eng };
@@ -155,7 +158,7 @@ export class PanoramicaComponent implements OnInit {
     }
   }
   getBrowserLangAndSwitchMonthName() {
-    
+
     if (this.lang) {
       if (this.lang === 'it') {
         this.monthNames = { '1': 'Gen', '2': 'Feb', '3': 'Mar', '4': 'Apr', '5': 'Mag', '6': 'Giu', '7': 'Lug', '8': 'Ago', '9': 'Set', '10': 'Ott', '11': 'Nov', '12': 'Dic' }
@@ -168,13 +171,14 @@ export class PanoramicaComponent implements OnInit {
   getMaxOfArray(requestsByDay_series_array) {
     return Math.max.apply(null, requestsByDay_series_array);
   }
-  
 
-  //-----------LAST 7 DAYS GRAPH-----------------------
-  getRequestByLast7Day(){
-    this.subscription=this.analyticsService.requestsByDay(7).subscribe((requestsByDay: any) => {
+
+  // -----------LAST 7 DAYS GRAPH-----------------------
+  getRequestByLast7Day() {
+    this.subscription = this.analyticsService.requestsByDay(7).subscribe((requestsByDay: any) => {
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY ', requestsByDay);
 
+      
       // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
       const last7days_initarray = []
       for (let i = 0; i <= 6; i++) {
@@ -182,7 +186,7 @@ export class PanoramicaComponent implements OnInit {
         last7days_initarray.push({ 'count': 0, day: moment().subtract(i, 'd').format('D-M-YYYY') })
       }
 
-      
+
 
       last7days_initarray.reverse()
 
@@ -232,12 +236,12 @@ export class PanoramicaComponent implements OnInit {
       const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
 
-      let lang=this.lang;
+      let lang = this.lang;
 
       var lineChart = new Chart('last7dayChart', {
         type: 'line',
         data: {
-          labels: _requestsByDay_labels_array ,
+          labels: _requestsByDay_labels_array,
           datasets: [{
             label: 'Number of request in last 7 days ',//active labet setting to true the legend value
             data: _requestsByDay_series_array,
@@ -254,13 +258,13 @@ export class PanoramicaComponent implements OnInit {
           }]
         },
         options: {
-          maintainAspectRatio:false, //allow to resize chart
+          maintainAspectRatio: false, //allow to resize chart
           title: {
             text: 'AVERAGE TIME RESPONSE',
             display: false
           },
-          legend:{
-            display:false //do not show label title
+          legend: {
+            display: false //do not show label title
           },
           scales: {
             xAxes: [{
@@ -273,32 +277,32 @@ export class PanoramicaComponent implements OnInit {
               },
               gridLines: {
                 display: true,
-                borderDash:[8,4],
+                borderDash: [8, 4],
                 //color:'rgba(255, 255, 255, 0.5)',
-                
+
               }
 
             }],
             yAxes: [{
               gridLines: {
-                display: true ,
-                borderDash:[8,4],
+                display: true,
+                borderDash: [8, 4],
                 //color:'rgba(0, 0, 0, 0.5)',
-                
+
               },
               ticks: {
                 beginAtZero: true,
-                userCallback: function(label, index, labels) {
+                userCallback: function (label, index, labels) {
                   //userCallback is used to return integer value to ylabel
                   if (Math.floor(label) === label) {
-                      return label;
+                    return label;
                   }
                 },
                 display: true,
                 fontColor: 'black',
                 suggestedMax: higherCount + 2,
-                
-        
+
+
                 // callback: function (value, index, values) {
                 //   let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
                 //   let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
@@ -312,8 +316,8 @@ export class PanoramicaComponent implements OnInit {
           tooltips: {
             callbacks: {
               label: function (tooltipItem, data) {
-                
-                      
+
+
                 // var label = data.datasets[tooltipItem.datasetIndex].label || '';
                 // if (label) {
                 //     label += ': ';
@@ -327,45 +331,46 @@ export class PanoramicaComponent implements OnInit {
                 // humanizer.setOptions({ round: true })
                 //console.log("humanize", humanizer.humanize(currentItemValue))
                 //return data.datasets[tooltipItem.datasetIndex].label + ': ' + currentItemValue
-                if(lang==='it'){
-                  return 'Richieste: '+currentItemValue;
-                }else{
-                  return 'Request:' +currentItemValue;
+                if (lang === 'it') {
+                  return 'Richieste: ' + currentItemValue;
+                } else {
+                  return 'Request:' + currentItemValue;
                 }
 
               }
             }
           }
-          
+
         }
         ,
-        plugins:[{
-          beforeDraw: function(chartInstance, easing) {
+        plugins: [{
+          beforeDraw: function (chartInstance, easing) {
             var ctx = chartInstance.chart.ctx;
             //console.log("chartistance",chartInstance)
             //ctx.fillStyle = 'red'; // your color here
-            ctx.height=128
+            ctx.height = 128
             //chartInstance.chart.canvas.parentNode.style.height = '128px';
-            ctx.font="Google Sans"
+            ctx.font = "Google Sans"
             var chartArea = chartInstance.chartArea;
             //ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
           }
         }]
       });
-      
+
     }, (error) => {
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY - ERROR ', error);
+     
     }, () => {
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY * COMPLETE *');
-      
+   
     });
   }
-
+ 
   //-----------REQUEST PER HOUR OF DAY-----------------------
   heatMap() {
 
     // get the language of browser
-    
+
     this.cellSettings = {
       border: {
         radius: 4,
@@ -389,30 +394,30 @@ export class PanoramicaComponent implements OnInit {
 
 
     this.analyticsService.getDataHeatMap().subscribe(res => {
-      let data:object= res;
+      let data: object = res;
       console.log('data from servoice->', res);
       // let init_array=[];
       // if(res.length==0){
-        
+
       //   for(let i=1;i<8;i++) {
       //     init_array.push({ '_id': { "hour": this.xlabel_ita[i], "weekday": this.ylabel_ita[i] }, 'count': 0 })
       //   }
       // data=init_array;
       // console.log("init_array",init_array)
-        
+
       // }
 
-      
-      const initialArray=[];
-      for(let i=0;i<24;i++){
-        
-        for(let j=1;j<8;j++){
+
+      const initialArray = [];
+      for (let i = 0; i < 24; i++) {
+
+        for (let j = 1; j < 8; j++) {
           initialArray.push({ '_id': { 'hour': this.hour[i], 'weekday': this.weekday[j] }, 'count': null })
         }
-        
+
       }
-      console.log("INITIALLLL",initialArray);
-      
+      console.log("INITIALLLL", initialArray);
+
 
       // recostruct datafromservice to other customDataJson
       for (let z in data) {
@@ -423,8 +428,8 @@ export class PanoramicaComponent implements OnInit {
       console.log('CUSTOM', this.customData);
 
       //map customdata to initial array to create filanArray by _id.hour & _id.weekday values
-      const finalArray = initialArray.map(obj => this.customData.find(o => (o._id.hour === obj._id.hour)&&(o._id.weekday === obj._id.weekday)) || obj);
-      console.log("FINAL",finalArray)
+      const finalArray = initialArray.map(obj => this.customData.find(o => (o._id.hour === obj._id.hour) && (o._id.weekday === obj._id.weekday)) || obj);
+      console.log("FINAL", finalArray)
 
       this.dataSource = {
         data: finalArray,
@@ -434,12 +439,12 @@ export class PanoramicaComponent implements OnInit {
         xDataMapping: '_id.weekday',
         valueMapping: 'count'
       }
-      
+
     }, (error) => {
       console.log('»» !!! ANALYTICS - REQUESTS HEATMAP - ERROR ', error);
     }, () => {
       console.log('»» !!! ANALYTICS - REQUESTS HEATMAP * COMPLETE *');
-      
+
     })
 
   }
@@ -451,95 +456,95 @@ export class PanoramicaComponent implements OnInit {
   public showTooltip: Boolean = true;
 
 
-//-----------MEDIAN RESPONS TIME-----------------------
-  avarageWaitingTimeCLOCK(){
-    this.subscription=this.analyticsService.getDataAVGWaitingCLOCK().subscribe((res:any)=>{
-      
+  //-----------MEDIAN RESPONS TIME-----------------------
+  avarageWaitingTimeCLOCK() {
+    this.subscription = this.analyticsService.getDataAVGWaitingCLOCK().subscribe((res: any) => {
+
       var splitString;
 
-      if(res && res.length!=0){
+      if (res && res.length != 0) {
         //this.avarageWaitingTimestring= this.msToTime(res[0].waiting_time_avg)
-        
-        //this.humanizer.setOptions({round: true, units:['m']});
-        
-      
-        //this.avarageWaitingTimestring = this.humanizer.humanize(res[0].waiting_time_avg);
-        
-        splitString= this.humanizeDurations(res[0].waiting_time_avg).split(" ");
-        //this.numberAVGtime= splitString[0];
-        this.unitAVGtime= splitString[1];
-        
-        this.numberAVGtime=this.msToTIME(res[0].waiting_time_avg); //--> show in format h:m:s
 
-        this.responseAVGtime=this.humanizer.humanize(res[0].waiting_time_avg, {round: true, language:this.lang})
-        
+        //this.humanizer.setOptions({round: true, units:['m']});
+
+
+        //this.avarageWaitingTimestring = this.humanizer.humanize(res[0].waiting_time_avg);
+
+        splitString = this.humanizeDurations(res[0].waiting_time_avg).split(" ");
+        //this.numberAVGtime= splitString[0];
+        this.unitAVGtime = splitString[1];
+
+        this.numberAVGtime = this.msToTIME(res[0].waiting_time_avg); //--> show in format h:m:s
+
+        this.responseAVGtime = this.humanizer.humanize(res[0].waiting_time_avg, { round: true, language: this.lang })
+
         console.log('Waiting time: humanize', this.humanizer.humanize(res[0].waiting_time_avg))
         console.log('waiting time funtion:', this.humanizeDurations(res[0].waiting_time_avg));
-        
-      }else{
-       
-        this.numberAVGtime= 'N.a.'
-        this.unitAVGtime= ''
-        this.responseAVGtime='N.a.'
-        
+
+      } else {
+
+        this.numberAVGtime = 'N.a.'
+        this.unitAVGtime = ''
+        this.responseAVGtime = 'N.a.'
+
         console.log('Waiting time: humanize', this.humanizer.humanize(0))
         console.log('waiting time funtion:', this.humanizeDurations(0));
       }
 
-     
+
     }, (error) => {
       console.log('!!! ANALYTICS - AVERAGE WAITING TIME CLOCK REQUEST  - ERROR ', error);
-        this.numberAVGtime= 'N.a.'
-        this.unitAVGtime= ''
-        this.responseAVGtime='N.a.'
+      this.numberAVGtime = 'N.a.'
+      this.unitAVGtime = ''
+      this.responseAVGtime = 'N.a.'
     }, () => {
       console.log('!!! ANALYTICS - AVERAGE TIME CLOCK REQUEST * COMPLETE *');
     });
-    
+
   }
 
   durationConvTimeCLOCK() {
-    this.subscription=this.analyticsService.getDurationConversationTimeDataCLOCK().subscribe((res: any) => {
-      
+    this.subscription = this.analyticsService.getDurationConversationTimeDataCLOCK().subscribe((res: any) => {
+
       let avarageWaitingTimestring;
       var splitString;
-      
-      if (res && res.length!=0) {
+
+      if (res && res.length != 0) {
 
 
         //this.humanizer.setOptions({round: true, units:['m']});
-    
+
 
         //this.avarageWaitingTimestring = this.humanizer.humanize(res[0].waiting_time_avg);
         avarageWaitingTimestring = this.humanizeDurations(res[0].duration_avg)
         splitString = this.humanizeDurations(res[0].duration_avg).split(" ");
         //this.numberDurationCNVtime = splitString[0];
-        this.numberDurationCNVtime=this.msToTIME(res[0].duration_avg);//--> show in format h:m:s
+        this.numberDurationCNVtime = this.msToTIME(res[0].duration_avg);//--> show in format h:m:s
         this.unitDurationCNVtime = splitString[1];
 
-        
-        this.responseDurationtime=this.humanizer.humanize(res[0].duration_avg, { round: true, language: this.lang });
 
-        
+        this.responseDurationtime = this.humanizer.humanize(res[0].duration_avg, { round: true, language: this.lang });
+
+
         console.log('Waiting time: humanize', this.humanizer.humanize(res[0].duration_avg))
         console.log('waiting time funtion:', avarageWaitingTimestring);
       }
-        else{
-          
-          this.numberDurationCNVtime='N.a.'
-          this.unitDurationCNVtime='';
-          this.responseDurationtime='N.a.'
+      else {
 
-          console.log('Waiting time: humanize', this.humanizer.humanize(0))
-          console.log('waiting time funtion:', avarageWaitingTimestring);
-        }
-          
-      
-    },(error) => {
+        this.numberDurationCNVtime = 'N.a.'
+        this.unitDurationCNVtime = '';
+        this.responseDurationtime = 'N.a.'
+
+        console.log('Waiting time: humanize', this.humanizer.humanize(0))
+        console.log('waiting time funtion:', avarageWaitingTimestring);
+      }
+
+
+    }, (error) => {
       console.log('!!! ANALYTICS - DURATION CONVERSATION CLOCK REQUEST - ERROR ', error);
-          this.numberDurationCNVtime='N.a.'
-          this.unitDurationCNVtime='';
-          this.responseDurationtime='N.a.'
+      this.numberDurationCNVtime = 'N.a.'
+      this.unitDurationCNVtime = '';
+      this.responseDurationtime = 'N.a.'
     }, () => {
       console.log('!!! ANALYTICS - DURATION CONVERSATION CLOCK REQUEST * COMPLETE *');
     });
@@ -554,56 +559,56 @@ export class PanoramicaComponent implements OnInit {
 
 
 
-// convert number from millisecond to humanizer form 
-humanizeDurations(timeInMillisecond) {
-  let result;
-  if (timeInMillisecond) {  
-    if(this.lang=='en'){
-      if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30 * 12))) > 0) {//year
+  // convert number from millisecond to humanizer form 
+  humanizeDurations(timeInMillisecond) {
+    let result;
+    if (timeInMillisecond) {
+      if (this.lang == 'en') {
+        if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30 * 12))) > 0) {//year
           result = result === 1 ? result + " Year" : result + " Years";
-      } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30))) > 0) {//months
+        } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30))) > 0) {//months
           result = result === 1 ? result + " Month" : result + " Months";
-      } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24))) > 0) {//days
+        } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24))) > 0) {//days
           result = result === 1 ? result + " Day" : result + " Days";
-      } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60))) > 0) {//Hours
+        } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60))) > 0) {//Hours
           result = result === 1 ? result + " Hours" : result + " Hours";
-      } else if ((result = Math.round(timeInMillisecond / (1000 * 60))) > 0) {//minute
+        } else if ((result = Math.round(timeInMillisecond / (1000 * 60))) > 0) {//minute
           result = result === 1 ? result + " Minute" : result + " Minutes";
-      } else if ((result = Math.round(timeInMillisecond / 1000)) > 0) {//second
+        } else if ((result = Math.round(timeInMillisecond / 1000)) > 0) {//second
           result = result === 1 ? result + " Second" : result + " Seconds";
-      } else {
+        } else {
           result = timeInMillisecond + " Millisec";
+        }
       }
-    }
-    else{
+      else {
         if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30 * 12))) > 0) {//year
           result = result === 1 ? result + " Anno" : result + " Anni";
-      } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30))) > 0) {//months
+        } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24 * 30))) > 0) {//months
           result = result === 1 ? result + " Mese" : result + " Mesi";
-      } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24))) > 0) {//days
+        } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60 * 24))) > 0) {//days
           result = result === 1 ? result + " Giorno" : result + " Giorni";
-      } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60))) > 0) {//Hours
+        } else if ((result = Math.round(timeInMillisecond / (1000 * 60 * 60))) > 0) {//Hours
           result = result === 1 ? result + " Ora" : result + " Ore";
-      } else if ((result = Math.round(timeInMillisecond / (1000 * 60))) > 0) {//minute
+        } else if ((result = Math.round(timeInMillisecond / (1000 * 60))) > 0) {//minute
           result = result === 1 ? result + " Minuto" : result + " Minuti";
-      } else if ((result = Math.round(timeInMillisecond / 1000)) > 0) {//second
+        } else if ((result = Math.round(timeInMillisecond / 1000)) > 0) {//second
           result = result === 1 ? result + " Secondo" : result + " Secondi";
-      } else {
+        } else {
           result = timeInMillisecond + " Millisecondi";
+        }
       }
-    }
       return result;
 
     }
-}
+  }
 
-msToTIME(value){
-  let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
-  let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
-  let seconds = Math.round(((value % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds (prima era Math.floor ma non arrotonda i secondi)
-  //console.log("SECOND:",Math.round(((value % 360000) % 60000) / 1000))
- return hours + 'h:' + minutes + 'm:' + seconds + 's'
-}
+  msToTIME(value) {
+    let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
+    let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
+    let seconds = Math.round(((value % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds (prima era Math.floor ma non arrotonda i secondi)
+    //console.log("SECOND:",Math.round(((value % 360000) % 60000) / 1000))
+    return hours + 'h:' + minutes + 'm:' + seconds + 's'
+  }
 
 
 

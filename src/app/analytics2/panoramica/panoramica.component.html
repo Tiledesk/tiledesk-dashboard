@@ -7,15 +7,17 @@
     
 
     <div class="row">
-        
-    <div class="col-md-12">
+    <!-- <loading-spinner *ngIf="s
+        howSpinner"></loading-spinner> -->
+    <!-- *ngIf="!showSpinner" -->
+    <div  class="col-md-12">
         
         <div class="chart-wrapper-panoramica">
             <div class="chart-title-panoramica" (click)="goToRichieste()" style="cursor: pointer; width: 28%;">
                 {{ "NumberOfRequestsLast7Days" | translate }}  
             </div>
-                
-                <div class="card-content chart-container" style="position: relative; margin:auto 12px; height:35vh; ">
+               
+                <div  class="card-content chart-container" style="position: relative; margin:auto 12px; height:35vh; ">
                     <canvas id="last7dayChart" ></canvas>
                 </div>
 
