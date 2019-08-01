@@ -168,7 +168,7 @@ export class TempirispostaComponent implements OnInit {
   }
 
   avarageWaitingTimeCLOCK(){
-    this.analyticsService.getDataAVGWaitingCLOCK().subscribe((res:any)=>{
+    this.subscription=this.analyticsService.getDataAVGWaitingCLOCK().subscribe((res:any)=>{
       
       var splitString;
 
@@ -203,12 +203,12 @@ export class TempirispostaComponent implements OnInit {
 
      
     }, (error) => {
-      console.log('!!! ANALYTICS - AVERAGE WAITING TIME CLOCK REQUEST  - ERROR ', error);
+      console.log('!!! ANALYTICS - AVERAGE RESPONSE TIME CLOCK REQUEST  - ERROR ', error);
         this.numberAVGtime= 'N.a.'
         this.unitAVGtime= ''
         this.responseAVGtime='N.a.'
     }, () => {
-      console.log('!!! ANALYTICS - AVERAGE TIME CLOCK REQUEST * COMPLETE *');
+      console.log('!!! ANALYTICS - AVERAGE RESPONSE TIME CLOCK REQUEST * COMPLETE *');
     });
     
   }
@@ -219,15 +219,15 @@ export class TempirispostaComponent implements OnInit {
       if(res){
         
         //build a 30 days array of date with value 0--> is the init array
-        const last30days_initarray = []
+        const lastNdays_initarray = []
         for (let i = 0; i < lastdays; i++) {
           // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
-          last30days_initarray.push({ date: moment().subtract(i, 'd').format('D/M/YYYY'), value: 0  });
+          lastNdays_initarray.push({ date: moment().subtract(i, 'd').format('D/M/YYYY'), value: 0  });
         }
 
-        last30days_initarray.reverse()
+        lastNdays_initarray.reverse()
         //this.dateRangeAvg= last30days_initarray[0].date.split(-4) +' - '+last30days_initarray[30].date;
-        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - MOMENT LAST 30 DATE (init array)', last30days_initarray);
+        console.log('»» !!! ANALYTICS - RESPONSE TIME REQUESTS BY DAY - MOMENT LAST n DATE (init array)', lastNdays_initarray);
 
         //build a custom array with che same structure of "init array" but with key value of serviceData
         //i'm using time_convert function that return avg_time always in hour 
@@ -244,8 +244,8 @@ export class TempirispostaComponent implements OnInit {
         console.log('Custom data:', customDataLineChart);
 
         //build a final array that compars value between the two arrray before builded with respect to date key value
-        const requestByDays_final_array = last30days_initarray.map(obj => customDataLineChart.find(o => o.date === obj.date) || obj);
-        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
+        const requestByDays_final_array = lastNdays_initarray.map(obj => customDataLineChart.find(o => o.date === obj.date) || obj);
+        console.log('»» !!! ANALYTICS - RESPONSE TIME REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
         
         const _requestsByDay_series_array = [];
         const _requestsByDay_labels_array = [];
@@ -256,11 +256,11 @@ export class TempirispostaComponent implements OnInit {
         console.log("INIT", this.initDay, "END", this.endDay);
   
         requestByDays_final_array.forEach(requestByDay => {
-          console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
+          console.log('»» !!! ANALYTICS - RESPONSE TIME REQUESTS BY DAY - requestByDay', requestByDay);
           _requestsByDay_series_array.push(requestByDay.value)
   
           const splitted_date = requestByDay.date.split('/');
-          console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
+          console.log('»» !!! ANALYTICS - RESPONSE TIME REQUESTS BY DAY - SPLITTED DATE', splitted_date);
           _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
         });
 
@@ -275,8 +275,8 @@ export class TempirispostaComponent implements OnInit {
         //   return e.value
         // })
   
-        console.log('Xlabel-AVERAGE TIME', this.xValueAVGchart);
-        console.log('Ylabel-AVERAGE TIME', this.yValueAVGchart);
+        console.log('Xlabel-RESPONSE TIME', this.xValueAVGchart);
+        console.log('Ylabel-RESPONSE TIME', this.yValueAVGchart);
       
 
         // Chart.plugins.register({
@@ -291,7 +291,7 @@ export class TempirispostaComponent implements OnInit {
         // });
 
         const higherCount = this.getMaxOfArray(this.yValueAVGchart);
-        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
+        console.log('»» !!! ANALYTICS - RESPONSE TIME REQUESTS BY DAY - HIGHER COUNT ', higherCount);
         this.msToTime(higherCount)
         var hours = (higherCount/4) / (1000*60*60);
         var absoluteHours = Math.floor((higherCount/4) / (1000*60*60));
@@ -424,9 +424,9 @@ export class TempirispostaComponent implements OnInit {
     }//fine if
 
     },(error) => {
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - ERROR ', error);
+      console.log('»» !!! ANALYTICS - RESPONSE TIME REQUESTS BY DAY - ERROR ', error);
     }, () => {
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY * COMPLETE *');
+      console.log('»» !!! ANALYTICS - RESPONSE TIME REQUESTS BY DAY * COMPLETE *');
     });
 
   }

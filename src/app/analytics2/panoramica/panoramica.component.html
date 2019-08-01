@@ -27,16 +27,17 @@
     
     <div class="row" style="text-align: center; margin-top:6px">
         <!-- -------------------HEAT MAP START------------------------- -->
-        <div class="col-md-5 ">
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <div class="card" style="border-radius: 10px;">
-                        <div class="card-header card-header-custom-heatmap" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
+                        <!-- class="card-header card-header-custom-heatmap" -->
+                        <div style="padding-top: 12px; padding-bottom: 10px; font-size:15px;">
                             <p>{{ "Analytics.HeatMapTitle" | translate }}</p>
                         </div>
-                        <div class="card-content">
-                                <!-- [titleSettings]='titleSettings' -->
-                                <ejs-heatmap id='heatmap-container' fill="none"style="display:block; width: 300px; margin-top:20px"
-                                            width='350px' height='500px' 
-                                            
+                        <div class="card-content" style=" margin:0px auto">
+                                <!-- [titleSettings]='titleSettings' 
+                                    width='350px' height='500px'-->
+                                <ejs-heatmap id='heatmap-container' fill="none"
+                                             style="max-height: 500px; max-width: 350px;"
                                             [dataSource]='dataSource'
                                             [xAxis]='xAxis' 
                                             [yAxis]='yAxis'
@@ -54,9 +55,10 @@
         </div>
         <!-- -------------------END------------------------- -->
         <!-- ---------RESPONSE TIME CLOCK START------------- -->
-        <div class="col-md-3 ">
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
                 <div class="card" style="border-radius: 10px;">
-                        <div class="card-header card-header-custom-heatmap" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
+                        <!-- class="card-header card-header-custom-heatmap" -->
+                        <div  style="padding-top: 12px; padding-bottom: 10px; font-size:15px;">
                             <p>{{ "Analytics.MedianResTimeClock" | translate }}</p>
                         </div>
                         <div class="card-content clock">
@@ -64,7 +66,7 @@
                             <!-- <p style="padding-top:25px">{{unitAVGtime}}</p> -->
                         </div>
                         <div class="card-footer request_count_footer" style="font-size: 14px">
-                            {{ 'Analytics.ResponseAVGtime' | translate }} {{responseAVGtime}}
+                            {{ 'Analytics.ResponseAVGtime' | translate }} <b>{{responseAVGtime}}</b>
                         </div>
                         <!-- <div class="card-footer request_count_footer" style="font-size: 14px">
                             {{ "Analytics.ResponseDurationtime" | translate}} {{responseDurationtime}}
@@ -73,9 +75,10 @@
         </div>
         <!-- -------------------END------------------------- -->
         <!-- -------CONVERSATION LENGHT CLOCK START--------- -->
-        <div class="col-md-3 ">
+        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                 <div class="card" style="border-radius: 10px;">
-                        <div class="card-header card-header-custom-heatmap" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
+                        <!-- class="card-header card-header-custom-heatmap" -->
+                        <div style="padding-top: 12px; padding-bottom: 10px; font-size:15px;">
                             <p>{{ "Analytics.MedianConvClock" | translate }}</p>
                         </div>
                         <div class="card-content clock">
@@ -83,7 +86,7 @@
                             <!-- <p style="padding-top:25px">{{unitDurationCNVtime}}</p> -->
                         </div>
                         <div class="card-footer request_count_footer" style="font-size: 14px">
-                            {{ "Analytics.ResponseDurationtime" | translate}} {{responseDurationtime}}
+                            {{ "Analytics.ResponseDurationtime" | translate}} <b>{{responseDurationtime}}</b>
                         </div>
                 </div>
         </div>

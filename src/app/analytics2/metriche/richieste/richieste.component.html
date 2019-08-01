@@ -2,14 +2,14 @@
   <div class="col-md-12 card" style="border-radius: 11px">
       
       <div class="chart-wrapper-richieste " style="margin: auto -15px">
-         <div class="row "> 
-              <div class="chart-title-richieste col-sm-3">
-                  {{ 'Analytics.RequestChartTitle' | translate }} {{lastdays}} 
-                  <span *ngIf="selectedDaysId <= 30">{{ 'Analytics.Days' | translate }}</span>
-                  <span *ngIf="selectedDaysId === 90 || selectedDaysId === 180  ">{{ 'Analytics.Months' | translate }}</span>
-                  <span *ngIf="selectedDaysId === 360">{{ 'Analytics.Year' | translate }}</span>
-              </div>
-                <!-- ------last n days filter--------- -->
+        <div class="row "> 
+            <div class="chart-title-richieste col-sm-3" style="margin-top: 18px">
+                {{ 'Analytics.RequestChartTitle' | translate }} {{lastdays}} 
+                <span *ngIf="selectedDaysId <= 30">{{ 'Analytics.Days' | translate }}</span>
+                <span *ngIf="selectedDaysId === 90 || selectedDaysId === 180  ">{{ 'Analytics.Months' | translate }}</span>
+                <span *ngIf="selectedDaysId === 360">{{ 'Analytics.Year' | translate }}</span>
+            </div>
+              <!-- ------last n days filter--------- -->
               <div class="col-sm-3"> 
                 <div class="section-select-dept">
                   <label  class="col-sm-12" style="text-align: left; color:black">
@@ -30,10 +30,10 @@
               <!-- ------ init-end days show--------- -->
               <div class="col-sm-3"> 
                 <div class="section-select-dept">
-                  <label  class="col-sm-12" style="text-align: left; color:black; padding-right: 0px">
+                  <label  class="col-sm-10" style="text-align: left; color:black; padding-right: 0px">
                       {{ 'Analytics.DataRangeRequest' | translate }} : 
                   </label>
-                  <div class="col-sm-12 boxdays" >
+                  <div class="col-sm-10 boxdays" >
                    <p style="margin: 0 !important; "> {{initDay}} <i class="material-icons arrow_forward-custom"> arrow_forward </i> {{endDay}}</p>
                   </div>
                 </div>

@@ -5,6 +5,7 @@ import * as moment from 'moment'
 import { Chart } from 'chart.js';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { UsersService } from 'app/services/users.service';
 
 @Component({
   selector: 'appdashboard-richieste',
@@ -14,6 +15,7 @@ import { Subscription } from 'rxjs';
 export class RichiesteComponent implements OnInit {
 
   lineChart:any;
+  
 
   lang: String;
 
@@ -25,14 +27,19 @@ export class RichiesteComponent implements OnInit {
 
   selectedDaysId:number; //lastdays filter
   selectedDeptId:string;  //department filter
+  
+
+  selected:string;
 
   departments:any;
+  user_and_bot_array= [];
 
   subscription:Subscription;
 
   constructor(private analyticsService:AnalyticsService,
               private translate: TranslateService,
-              private departmentService:DepartmentService) {
+              private departmentService:DepartmentService,
+              private usersService: UsersService,) {
       
           this.lang = this.translate.getBrowserLang();
           console.log('LANGUAGE ', this.lang);
@@ -41,8 +48,10 @@ export class RichiesteComponent implements OnInit {
     }
 
   ngOnInit() {
+    this.selected='day'
     this.selectedDeptId = '';
-    this.selectedDaysId=7
+    this.selectedDaysId=7;
+    
     this.initDay=moment().subtract(6, 'd').format('D/M/YYYY')
     this.endDay=moment().subtract(0, 'd').format('D/M/YYYY')
     this.getRequestByLastNDay(this.selectedDaysId, this.selectedDeptId);
@@ -80,6 +89,7 @@ export class RichiesteComponent implements OnInit {
     console.log('REQUEST:', this.selectedDaysId, selectedDeptId)
   }
 
+
   getDepartments() {
     this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
       console.log('!!! NEW REQUESTS HISTORY - GET DEPTS RESPONSE by analitycs ', _departments);
@@ -91,6 +101,7 @@ export class RichiesteComponent implements OnInit {
       console.log('!!! NEW REQUESTS HISTORY - GET DEPTS * COMPLETE *')
     });
   }
+
 
 
   getBrowserLangAndSwitchMonthName() {
@@ -325,5 +336,8 @@ export class RichiesteComponent implements OnInit {
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY * COMPLETE *');
     });
   }
+
+
+
 
 }

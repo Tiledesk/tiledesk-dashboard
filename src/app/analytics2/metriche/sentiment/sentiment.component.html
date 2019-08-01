@@ -9,21 +9,23 @@
 <div class="row" style="text-align: center; margin-top:6px">
   <div class="col-md-3">
       <div class="card" style="border-radius: 10px;">
-          <div class="card-header card-header-custom" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
+           <div style="text-align: center; padding-top: 12px;padding-bottom: 10px;">
               <p>{{ 'Analytics.SentimentHEART' | translate }}</p>
            </div>
            <div class="card-content heart">
-              <p class="numberHEART">{{numberAVGtime}}</p>
+              <p class="numberHEART">{{numberSentimentHEART}} 
+                <!-- <i class="material-icons iconHEART">favorite</i> -->
+              </p>
               <!-- <p style="padding-top:25px">{{unitAVGtime}}</p> -->
-          </div>
+            </div>
           <div class="card-footer request_count_footer" style="font-size: 14px">
-              {{ 'Analytics.SentimentMedianValueHEART' | translate }} {{responseAVGtime}}
+              {{ 'Analytics.SentimentMedianValueHEART' | translate }} <b>{{responseSentimentHEART}}</b>
           </div>
       </div>
   </div>
   <div class="col-md-9" >
       <div class="card" style="border-radius: 10px;">
-          <div class="card-header card-header-custom" style="background-color: #fff; padding-top: 12px;padding-bottom: 10px;">
+          <div style="padding-top: 12px;padding-bottom: 10px; ">
               <!-- <p style="margin-bottom: -3px"><b>{{ 'Analytics.MedianResTimeClock' | translate }}</b></p>
               <p style="font-style: italic; font-size: 12px; line-height: 0px; padding-top: 10px; margin-top: 0px">{{dateRangeAvg}}</p> -->
               <div class="row">
@@ -32,7 +34,7 @@
                     <label  class="col-sm-12" style="text-align: left; color:black">
                         {{ 'Analytics.FilterReport' | translate }}
                     </label>
-                    <div class="col-sm-12" style="margin-bottom: 20px;">
+                    <div class="col-sm-12" style="margin-bottom: 20px; text-align: left">
                       <ng-select class="custom" name="days" [(ngModel)]="selectedDaysId" [clearable]="false" (change)="daysSelect(selectedDaysId)">
                         <ng-option [value]="7">{{ 'Analytics.Last' | translate}} 7 {{ 'Analytics.Days' | translate}}</ng-option>
                         <ng-option [value]="15">{{ 'Analytics.Last' | translate}} 15 {{ 'Analytics.Days' | translate}}</ng-option>
@@ -63,7 +65,7 @@
                     <label  class="col-sm-12" style="text-align: left; color:black">
                         {{ 'HistoryPage.FilterByDepartment' | translate }} :
                     </label>
-                    <div class="col-sm-12" style="margin-bottom: 20px;">
+                    <div class="col-sm-12" style="margin-bottom: 20px; text-align: left">
                       <ng-select class="custom" name="dept" [(ngModel)]="selectedDeptId" [clearable]="false" (change)="depSelected(selectedDeptId)">
                         <ng-option [value]="''">{{ 'HistoryPage.AllDepts' | translate }}</ng-option>
                         <ng-option *ngFor="let dept of departments" [value]="dept._id">
@@ -76,7 +78,7 @@
               </div>
           </div>
           <div class="card-content chart-container" style="position: relative; margin:auto; height: 30vh;">
-              <canvas id="avgTimeResponse"></canvas>
+              <canvas id="barChartSENTIMENT"></canvas>
           </div>
       </div>
   </div>

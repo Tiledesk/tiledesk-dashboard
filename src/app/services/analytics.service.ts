@@ -8,8 +8,7 @@ import { URLSearchParams } from 'url';
 @Injectable()
 export class AnalyticsService {
 
-  // baseURL = 'https://api.tiledesk.com/v1/';
-
+ 
   BASE_URL = environment.mongoDbConfig.BASE_URL;
   //BASE_URL = 'https://api.tiledesk.com/v1/'
   projectID: string;
@@ -95,7 +94,7 @@ export class AnalyticsService {
     
   }
 
-
+  
   getDataHeatMap(): Observable<[]> {
 
     const httpOptions = {
@@ -122,7 +121,7 @@ export class AnalyticsService {
     return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/waiting', httpOptions);
   }
 
-  getavarageWaitingTimeDataCHART(lastdays, department_id): Observable<[]> {
+  getavarageWaitingTimeDataCHART(lastdays, department_id?): Observable<[]> {
     
     console.log("PARAM",lastdays,department_id);
     
@@ -155,7 +154,7 @@ export class AnalyticsService {
    return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/duration', httpOptions);
   }
 
-  getDurationConversationTimeDataCHART(lastdays, department_id): Observable<[]> {
+  getDurationConversationTimeDataCHART(lastdays, department_id?): Observable<[]> {
     
     console.log("PARAM",lastdays,department_id);
     
@@ -178,23 +177,35 @@ export class AnalyticsService {
 
   getSatisfactionDataHEART(): Observable<[]> {
     
-    // console.log("PARAM",lastdays,department_id);
+    let headers= new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': this.TOKEN
+      });
     
-    // if(!department_id){
-    //   department_id=''
-    // }
-    // console.log("DEP-id",department_id);
+
+    
+    return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/satisfaction', { headers:headers});
+  }
+
+  getSatisfactionDataCHART(lastdays, department_id?): Observable<[]> {
+    
+    console.log("PARAM",lastdays,department_id);
+    
+    if(!department_id){
+      department_id=''
+    }
+    console.log("DEP-id",department_id);
     
     let headers= new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN
       });
-    // let params= new HttpParams()
-    //             .set('lastdays', lastdays)
-    //             .set('department_id', department_id);
+    let params= new HttpParams()
+                .set('lastdays', lastdays)
+                .set('department_id', department_id);
 
     
-    return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/satisfaction', { headers:headers});
+    return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/satisfaction/day', { headers:headers, params:params});
   }
   
 

@@ -1,4 +1,12 @@
 // @import url(https://fonts.googleapis.com/css?family=Google+Sans);
+.tiledesk_card_header {
+    padding:0px !important; 
+    -webkit-box-shadow:none !important;  
+    box-shadow: none !important; 
+    width: 0;height: 0 !important;
+    position: relative !important;
+    top: 24px !important;
+}
 
 .card-header-custom {
     box-shadow: none!important;
@@ -16,9 +24,9 @@
 
 
 
-.chart-wrapper {
-    //background-color: #1e88e5!important; -->blue color
-    background-color: #ffffff;
+.chart-wrapper-sentiment{
+    //background-color: rgb(30, 136, 229)!important; -->blue color
+    //background-color: #ffffff;
     padding-top: 15px;
     padding-bottom: 15px;
     padding-left: 30px;
@@ -37,13 +45,13 @@
 }
 
 .heart{
-    //background-image: url('../../assets/img/stopwatch.png');
+    //background-image: url('../../assets/img/heart.png');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    height: 200px;
-    width: 200px;
-    margin:auto;
+    height: 160px;
+    width: 160px;
+    margin: 9xp auto;
         
 }
 
@@ -51,9 +59,13 @@
     //font-size: 73px;
     font-size:21px;
     line-height: 0;
-    padding-top: 94px;
-    color: #073f74;
+    padding-top: 60px;
+    color: #b3190e;
     font-family: 'Google Sans', sans-serif !important;
+}
+
+.iconHEART{
+    font-size: 12px
 }
 
 .chart-container{

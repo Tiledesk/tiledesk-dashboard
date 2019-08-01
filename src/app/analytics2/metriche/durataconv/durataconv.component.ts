@@ -59,6 +59,11 @@ export class DurataconvComponent implements OnInit {
     this.getDepartments();
   }
 
+  ngOnDestroy() {
+    console.log('!!! ANALYTICS  CONVERSATION LENGHT - !!!!! UN - SUBSCRIPTION TO REQUESTS');
+    this.subscription.unsubscribe();
+  }
+
 msToTIME(value){
     let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
     let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
@@ -166,7 +171,7 @@ getBrowserLangAndSwitchMonthName() {
 }
 
   durationConvTimeCLOCK() {
-    this.analyticsService.getDurationConversationTimeDataCLOCK().subscribe((res: any) => {
+    this.subscription=this.analyticsService.getDurationConversationTimeDataCLOCK().subscribe((res: any) => {
       
       let avarageWaitingTimestring;
       var splitString;
@@ -203,12 +208,12 @@ getBrowserLangAndSwitchMonthName() {
           
       
     },(error) => {
-      console.log('!!! ANALYTICS - DURATION CONVERSATION CLOCK REQUEST - ERROR ', error);
+      console.log('!!! ANALYTICS - CONVERSATION LENGHT CLOCK REQUEST - ERROR ', error);
           this.numberDurationCNVtime='N.a.'
           this.unitDurationCNVtime='';
           this.responseDurationtime='N.a.'
     }, () => {
-      console.log('!!! ANALYTICS - DURATION CONVERSATION CLOCK REQUEST * COMPLETE *');
+      console.log('!!! ANALYTICS - CONVERSATION LENGHT CLOCK REQUEST * COMPLETE *');
     });
 
 
@@ -216,19 +221,20 @@ getBrowserLangAndSwitchMonthName() {
 
   durationConversationTimeCHART(lastdays, depID) {
     this.subscription=this.analyticsService.getDurationConversationTimeDataCHART(lastdays,depID).subscribe((resp: any) => {
+      
       if (resp) {
         console.log("Duration time", resp)
 
-        const last30days_initarrayDURATION = []
+        const lastNdays_initarrayDURATION = []
         for (let i = 0; i < lastdays; i++) {
           // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
-          last30days_initarrayDURATION.push({ date: moment().subtract(i, 'd').format('D/M/YYYY'), value: 0 })
+          lastNdays_initarrayDURATION.push({ date: moment().subtract(i, 'd').format('D/M/YYYY'), value: 0 })
         }
-        last30days_initarrayDURATION.reverse()
+        lastNdays_initarrayDURATION.reverse()
 
         //this.dataRangeDuration = last30days_initarrayDURATION[0].date + ' - ' + last30days_initarrayDURATION[30].date;
 
-        console.log('»» !!! ANALYTICS - REQUESTS DURATION CONVERSATION BY DAY - MOMENT LAST 30 DATE (init array)', last30days_initarrayDURATION);
+        console.log('»» !!! ANALYTICS - REQUESTS CONVERSATION LENGHT BY DAY - MOMENT LAST 30 DATE (init array)', lastNdays_initarrayDURATION);
 
         //build a custom array with che same structure of "init array" but with key value of serviceData
         //i'm using time_convert function that return avg_time always in hour 
@@ -248,8 +254,8 @@ getBrowserLangAndSwitchMonthName() {
         console.log("Custom Duration COnversation data:", customDurationCOnversationChart);
 
         //build a final array that compars value between the two arrray before builded with respect to date key value
-        const requestDurationConversationByDays_final_array = last30days_initarrayDURATION.map(obj => customDurationCOnversationChart.find(o => o.date === obj.date) || obj);
-        console.log('»» !!! ANALYTICS - REQUESTS DURATION CONVERSATION BY DAY - FINAL ARRAY ', requestDurationConversationByDays_final_array);
+        const requestDurationConversationByDays_final_array = lastNdays_initarrayDURATION.map(obj => customDurationCOnversationChart.find(o => o.date === obj.date) || obj);
+        console.log('»» !!! ANALYTICS - REQUESTS CONVERSATION LENGHT BY DAY - FINAL ARRAY ', requestDurationConversationByDays_final_array);
 
         const requestDurationConversationByDays_series_array = [];
         const requestDurationConversationByDays_labels_array = [];
@@ -260,11 +266,11 @@ getBrowserLangAndSwitchMonthName() {
         console.log("INIT", this.initDay, "END", this.endDay);
 
         requestDurationConversationByDays_final_array.forEach(requestByDay => {
-          console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
+          console.log('»» !!! ANALYTICS - REQUESTS CONVERSATION LENGHT BY DAY - requestByDay', requestByDay);
           requestDurationConversationByDays_series_array.push(requestByDay.value)
   
           const splitted_date = requestByDay.date.split('/');
-          console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
+          console.log('»» !!! ANALYTICS - REQUESTS CONVERSATION LENGHT BY DAY - SPLITTED DATE', splitted_date);
           requestDurationConversationByDays_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
         });
 
@@ -303,7 +309,7 @@ getBrowserLangAndSwitchMonthName() {
         data: {
           labels: this.xValueDurationConversation,
           datasets: [{
-            label: 'Average duration conversation time response in last 30 days ',
+            label: 'Average duration conversation lenght response in last N days ',
             data: this.yValueDurationConversation,
             fill: false, //riempie zona sottostante dati
             lineTension: 0.0,
@@ -328,7 +334,7 @@ getBrowserLangAndSwitchMonthName() {
         options: {
           maintainAspectRatio:false,
           title: {
-            text: 'DURATION CONVERSATION TIME RESPONSE',
+            text: 'DURATION CONVERSATION LENGHT RESPONSE',
             display: false
           },
           legend:{
