@@ -3,6 +3,7 @@ import { AnalyticsService } from './../../services/analytics.service';
 import { Component, OnInit } from '@angular/core';
 import { RequestsService } from 'app/services/requests.service';
 import * as moment from 'moment';
+import * as moment_tz from 'moment-timezone'
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import { TranslateService } from '@ngx-translate/core';
 import { ITooltipEventArgs } from '@syncfusion/ej2-heatmap/src';
@@ -81,6 +82,7 @@ export class PanoramicaComponent implements OnInit {
 
 
 
+
   }
 
   async showHideSpinner() {
@@ -118,11 +120,11 @@ export class PanoramicaComponent implements OnInit {
   getHeatMapSeriesDataByLang() {
 
     if (this.lang === 'it') {
-      this.weekday = { '1': 'Lun', '2': 'Mar', '3': 'Mer', '4': 'Gio', '5': 'Ven', '6': 'Sab', '7': 'Dom' }
+      this.weekday = { '1': 'Dom', '2': 'Lun', '3': 'Mar', '4': 'Mer', '5': 'Gio', '6': 'Ven', '7': 'Sab' }
       this.hour = {
-        '0': '01:00', '1': '02:00', '2': '03:00', '3': '04:00', '4': '05:00', '5': '06:00', '6': '07:00', '7': '08:00', '8': '09:00', '9': '10:00',
-        '10': '11:00', '11': '12:00', '12': '13:00', '13': '14:00', '14': '15:00', '15': '16:00', '16': '17:00', '17': '18:00', '18': '19:00', '19': '20:00',
-        '20': '21:00', '21': '22:00', '22': '23:00', '23': '24:00'
+        '1': '01:00', '2': '02:00', '3': '03:00', '4': '04:00', '5': '05:00', '6': '06:00', '7': '07:00', '8': '08:00', '9': '09:00', '10': '10:00',
+        '11': '11:00', '12': '12:00', '13': '13:00', '14': '14:00', '15': '15:00', '16': '16:00', '17': '17:00', '18': '18:00', '19': '19:00', '20': '20:00',
+        '21': '21:00', '22': '22:00', '23': '23:00', '24': '24:00'
       }
       this.yAxis = { labels: this.ylabel_ita };
       this.xAxis = { labels: this.xlabel_ita };
@@ -137,11 +139,11 @@ export class PanoramicaComponent implements OnInit {
       };
 
     } else {
-      this.weekday = { '1': 'Mon', '2': 'Tue', '3': 'Wed', '4': 'Thu', '5': 'Fri', '6': 'Sat', '7': 'Sun' }
+      this.weekday = { '1': 'Sun', '2': 'Mon', '3': 'Tue', '4': 'Wed', '5': 'Thu', '6': 'Fri', '7': 'Sat' }
       this.hour = {
-        '0': '1am', '1': '2am', '2': '3am', '3': '4am', '4': '5am', '5': '6am', '6': '7am', '7': '8am', '8': '9am', '9': '10am',
-        '10': '11am', '11': '12am', '12': '1pm', '13': '2pm', '14': '3pm', '15': '4pm', '16': '5pm', '17': '6pm', '18': '7pm', '19': '8pm',
-        '20': '9pm', '21': '10pm', '22': '11pm', '23': '12pm'
+        '1': '1am', '2': '2am', '3': '3am', '4': '4am', '5': '5am', '6': '6am', '7': '7am', '8': '8am', '9': '9am', '10': '10am',
+        '11': '11am', '12': '12am', '13': '1pm', '14': '2pm', '15': '3pm', '16': '4pm', '17': '5pm', '18': '6pm', '19': '7pm', '20': '8pm',
+        '21': '9pm', '22': '10pm', '23': '11pm', '24': '12pm'
       }
 
       this.yAxis = { labels: this.ylabel_eng };
@@ -178,7 +180,7 @@ export class PanoramicaComponent implements OnInit {
     this.subscription = this.analyticsService.requestsByDay(7).subscribe((requestsByDay: any) => {
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY ', requestsByDay);
 
-      
+
       // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
       const last7days_initarray = []
       for (let i = 0; i <= 6; i++) {
@@ -359,13 +361,13 @@ export class PanoramicaComponent implements OnInit {
 
     }, (error) => {
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY - ERROR ', error);
-     
+
     }, () => {
       console.log('»» !!! ANALYTICS - REQUESTS BY DAY * COMPLETE *');
-   
+
     });
   }
- 
+
   //-----------REQUEST PER HOUR OF DAY-----------------------
   heatMap() {
 
@@ -409,9 +411,9 @@ export class PanoramicaComponent implements OnInit {
 
 
       const initialArray = [];
-      for (let i = 0; i < 24; i++) {
+      for (let i = 1; i <= 24; i++) {
 
-        for (let j = 1; j < 8; j++) {
+        for (let j = 1; j <= 7; j++) {
           initialArray.push({ '_id': { 'hour': this.hour[i], 'weekday': this.weekday[j] }, 'count': null })
         }
 
@@ -419,13 +421,21 @@ export class PanoramicaComponent implements OnInit {
       console.log("INITIALLLL", initialArray);
 
 
-      // recostruct datafromservice to other customDataJson
-      for (let z in data) {
 
-        this.customData.push({ '_id': { "hour": this.hour[data[z]._id.hour], "weekday": this.weekday[data[z]._id.weekday] }, 'count': data[z].count });
+
+      for (let z in data) {
+        console.log("DATA", this.getOffset(data[z]._id.hour, data[z]._id.weekday))
+        this.customData.push({ '_id': { "hour": this.hour[this.getOffset(data[z]._id.hour, data[z]._id.weekday).hours], "weekday": this.weekday[this.getOffset(data[z]._id.hour, data[z]._id.weekday).weekday] }, 'count': data[z].count });
+        //this.customData.push({ '_id': { "hour": this.hour[data[z]._id.hour ], "weekday": this.weekday[data[z]._id.weekday] }, 'count': data[z].count });
+
       }
 
-      console.log('CUSTOM', this.customData);
+
+
+
+      console.log('CUSTOM', this.customData)
+
+
 
       //map customdata to initial array to create filanArray by _id.hour & _id.weekday values
       const finalArray = initialArray.map(obj => this.customData.find(o => (o._id.hour === obj._id.hour) && (o._id.weekday === obj._id.weekday)) || obj);
@@ -449,6 +459,57 @@ export class PanoramicaComponent implements OnInit {
 
   }
 
+  getOffset(hours, weekday) {
+
+    // get offset local time respect to utc in minutes
+    var offSet = moment_tz.tz(moment_tz.utc(), moment_tz.tz.guess()).utcOffset();
+    // console.log("Offset:",offSet); --> ACTIVE TO DEBUG
+
+    var prjTzOffsetToHours = (offSet / 60) // get offset in hours
+
+    const off_FINAL = hours + prjTzOffsetToHours;
+    // console.log("Hour + weekday:", hours, weekday); --> ACTIVE TO DEBUG
+    // console.log("OFFSEThour", prjTzOffsetToHours); --> ACTIVE TO DEBUG
+    // console.log("OFFSET_FINAL", off_FINAL); --> ACTIVE TO DEBUG
+
+    // offset+UtcHour is grater than 24
+    if (off_FINAL > 24) {
+
+      const weekday_final = weekday + 1;
+
+      if (weekday_final > 7) {
+        return { hours: off_FINAL - 24, weekday: weekday_final - 7 }
+      } else if (weekday_final < 1) {
+        return { hours: off_FINAL - 24, weekday: 7 + weekday_final }
+      } else {
+        return { hours: off_FINAL - 24, weekday: weekday_final }
+      }
+
+    }
+    // offset+UtcHour is less than 1
+    else if (off_FINAL < 1) {
+
+      let weekday_final = weekday - 1;
+
+      if (weekday_final > 7) { return { hours: 24 + off_FINAL, weekday: weekday_final - 7 } }
+      else if (weekday_final < 1) { return { hours: 24 + off_FINAL, weekday: 7 + weekday_final } }
+      else { return { hours: 24 + off_FINAL, weekday: weekday_final } }
+
+    }
+
+    // offset+UtcHour is between 1 & 24 --> no operation needed
+    else {
+
+      return {
+        hours: off_FINAL,
+        weekday: weekday
+      }
+    }
+
+  }
+
+
+
   public tooltipRender(args: ITooltipEventArgs): void {
     args.content = [args.xLabel + ' | ' + args.yLabel + ' : ' + args.value];
   };
@@ -456,7 +517,7 @@ export class PanoramicaComponent implements OnInit {
   public showTooltip: Boolean = true;
 
 
-  //-----------MEDIAN RESPONS TIME-----------------------
+  // -----------MEDIAN RESPONS TIME-----------------------
   avarageWaitingTimeCLOCK() {
     this.subscription = this.analyticsService.getDataAVGWaitingCLOCK().subscribe((res: any) => {
 
@@ -609,6 +670,13 @@ export class PanoramicaComponent implements OnInit {
     //console.log("SECOND:",Math.round(((value % 360000) % 60000) / 1000))
     return hours + 'h:' + minutes + 'm:' + seconds + 's'
   }
+
+
+
+
+
+
+
 
 
 
