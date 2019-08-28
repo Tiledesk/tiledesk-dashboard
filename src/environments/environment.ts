@@ -42,6 +42,6 @@ export const environment = {
         cloud_func_update_firstname_and_lastname: `${serverChatUrl}tilechat/contacts/me`, // old address: https://us-central1-chat-v2-dev.cloudfunctions.net/api/tilechat/contacts/me
     },
     chat: {
-        CHAT_BASE_URL: 'https://support.tiledesk.com/chat/',
+        CHAT_BASE_URL: 'http://localhost/chat/',
     }
 };
