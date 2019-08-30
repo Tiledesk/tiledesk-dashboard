@@ -67,6 +67,9 @@ import { TrainBotComponent } from './requests-msgs/train-bot/train-bot.component
 
 import { GroupsComponent } from './groups/groups.component';
 import { GroupEditAddComponent } from './group-edit-add/group-edit-add.component';
+import { GroupsStaticComponent } from './static-pages/groups-static/groups-static.component';
+
+
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { HoursComponent } from './hours/hours.component';
 import { ResetPswComponent } from './reset-psw/reset-psw.component';
@@ -98,7 +101,7 @@ import { PaymentCanceledPageComponent } from './pricing/payment-canceled-page/pa
 
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
-  
+
   /* PRIVATE */
   { path: 'project/:projectid/pricing', component: PricingComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/success', component: PaymentSuccessPageComponent, canActivate: [AuthGuard] },
@@ -139,7 +142,7 @@ const routes: Routes = [
   // tslint:disable-next-line:max-line-length
   { path: 'project/:projectid/request/:requestid/messages', component: RequestsMsgsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/train', component: TrainBotComponent, canActivate: [AuthGuard] },
-  
+
 
   // tslint:disable-next-line:max-line-length
   // ARE ALL THE USER OF A PROJECT (e.g. THE USER THAT HAS CREATED THE PROJECT AND THE USERS THAT HE HAS INVITED (THE OTHER MEMBERS OF THE PROJECT))
@@ -151,10 +154,14 @@ const routes: Routes = [
   { path: 'project/:projectid/users/pending', component: UsersPendingComponent, canActivate: [AuthGuard] },
 
   // GROUPS
-  { path: 'project/:projectid/groups', component: GroupsComponent, canActivate: [AuthGuard] },
+  // , ProjectProfileGuard
+  { path: 'project/:projectid/groups', component: GroupsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
   // GROUP EDIT/ADD
   { path: 'project/:projectid/group/create', component: GroupEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/group/edit/:groupid', component: GroupEditAddComponent, canActivate: [AuthGuard] },
+  
+  { path: 'project/:projectid/groups-demo', component: GroupsStaticComponent, canActivate: [AuthGuard] },
+
 
   // DISPLAY THE PROFILE OF THE MEMBER (USERS WHO HAVE BEEN INVITED)
   { path: 'project/:projectid/member/:memberid', component: UsersProfileComponent, canActivate: [AuthGuard] },
@@ -195,22 +202,21 @@ const routes: Routes = [
 
   // , ProjectProfileGuard
   { path: 'project/:projectid/analytics/old', component: AnalyticsComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/analytics', component: Analytics2Component, canActivate: [AuthGuard] },
-  
-
+  { path: 'project/:projectid/analytics', component: Analytics2Component, canActivate: [AuthGuard, ProjectProfileGuard] },
   { path: 'project/:projectid/analytics-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] },
+
   // , ProjectProfileGuard
-  { path: 'project/:projectid/activities', component: ActivitiesComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/activities', component: ActivitiesComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
   { path: 'project/:projectid/activities-demo', component: ActivitiesStaticComponent, canActivate: [AuthGuard] },
 
- 
+
   // , ProjectProfileGuard
-  { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/departments', component: DepartmentsComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
   { path: 'project/:projectid/department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
-  
+
   { path: 'project/:projectid/departments-demo', component: DepartmentsStaticComponent, canActivate: [AuthGuard] },
-  
+
 
   // HISTORY
   // { path: 'project/:projectid/historyrt', component: RequestsListHistoryComponent, canActivate: [AuthGuard] },
@@ -233,7 +239,7 @@ const routes: Routes = [
   { path: 'user/:userid/password/change', component: ChangePasswordComponent, canActivate: [AuthGuard] },
 
   // HOURS
-  { path: 'project/:projectid/hours', component: HoursComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/hours', component: HoursComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
   { path: 'project/:projectid/hours-demo', component: HoursStaticComponent, canActivate: [AuthGuard] },
 
   // RESET PASSORD (i.e. page forgot psw & reset psw )
@@ -243,7 +249,7 @@ const routes: Routes = [
   { path: 'project/:projectid/contacts', component: ContactsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/contact/:requesterid', component: ContactDetailsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/contact/edit/:requesterid', component: ContactEditComponent, canActivate: [AuthGuard] },
-  
+
   { path: 'dashboard', component: DashboardComponent },
 
 

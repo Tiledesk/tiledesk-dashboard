@@ -79,7 +79,7 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
 
         <div class="row">
           <div class="col-md-12">
-               <ul *ngIf="selectedPlanName === 'pro'" class="pro-plan-ul" >
+              <ul *ngIf="selectedPlanName === 'pro'" class="pro-plan-ul" >
                 <li>Operating hours</li> 
                 <li>Unlimited departments</li> 
                 <li>Agents groups</li>
@@ -89,6 +89,13 @@ background-position: right -12px bottom,right,calc(100% - 179px);    background-
                 <li>Post-chat surverys</li>
                 <!-- (click)="cancelSubcription()" -->
                 <li (click)="cancelSubcription()"> CANCEL SUBSCRIPTION</li>
+
+                <li (click)="updatesubscription()"> UPDATE SUBSCRIPTION</li>
+
+                <button  style="background-color:#6772E5;color:#FFF;padding:8px 12px;border:0;border-radius:4px;font-size:1em"
+                  id="checkout-button-plan_FiYA1sAElF2aNp" role="link" (click)="stripeProPlanPerDayCheckout()">
+                     DAILY PLAN 
+                </button>
               </ul>
 
               <ul *ngIf="selectedPlanName === 'enterprise'" class="enterprise-plan-ul">

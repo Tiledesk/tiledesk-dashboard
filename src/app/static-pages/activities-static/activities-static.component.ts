@@ -56,7 +56,7 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
-      console.log('ProjectPlanService (HomeComponent) project Profile Data', projectProfileData)
+      console.log('ProjectPlanService (ActivitiesStaticComponent) project Profile Data', projectProfileData)
       if (projectProfileData) {
 
 
@@ -86,7 +86,7 @@ export class ActivitiesStaticComponent extends StaticPageBaseComponent implement
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
-      console.log('!!! ANALYTICS STATIC - project ', project)
+      console.log('!!! ACTIVITIES STATIC - project ', project)
 
       if (project) {
         this.projectId = project._id

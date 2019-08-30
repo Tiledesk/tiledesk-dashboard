@@ -276,6 +276,43 @@ export class PricingComponent implements OnInit {
 
   }
 
+
+   /**
+   **! *** *** *** *** *** *** *** *** !*
+   **!  TEST DAILY PLAN €3.00 EUR/day  !*
+   **! *** *** *** *** *** *** *** *** !*
+   */
+  stripeProPlanPerDayCheckout() {
+    const that = this;
+    const stripe = Stripe('pk_test_lurAeBj5B7n7JGvE1zIPIFwV');
+
+    // When the customer clicks on the button, redirect
+    // them to Checkout.
+    stripe.redirectToCheckout({
+      items: [{ plan: 'plan_FiYA1sAElF2aNp', quantity: 1 }],
+      clientReferenceId: that.currentUserID + '|' + that.projectId,
+      customerEmail: that.currentUserEmail,
+
+      // Do not rely on the redirect to the successUrl for fulfilling
+      // purchases, customers may not always reach the success_url after
+      // a successful payment.
+      // Instead use one of the strategies described in
+      // https://stripe.com/docs/payments/checkout/fulfillment
+      successUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/success',
+      cancelUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/canceled',
+    })
+      .then(function (result) {
+        if (result.error) {
+          // If `redirectToCheckout` fails due to a browser or network
+          // error, display the localized error message to your customer.
+
+          // var displayError = document.getElementById('error-message');
+          // displayError.textContent = result.error.message;
+          that.displayStipeCheckoutError = result.error.message;
+        }
+      });
+  }
+
   launchWidget() {
     if (window && window['tiledesk']) {
       window['tiledesk'].open();
@@ -302,4 +339,20 @@ export class PricingComponent implements OnInit {
     });
 
   }
+
+  updatesubscription() {
+    this.projectService.updatesubscription().subscribe((updatesubscription: any) => {
+      console.log('updatesubscription RES ', updatesubscription);
+
+    }, error => {
+      console.log('updatesubscription - ERROR: ', error);
+    }, () => {
+      console.log('updatesubscription * COMPLETE *')
+    });
+
+  }
+
+
+
+
 }

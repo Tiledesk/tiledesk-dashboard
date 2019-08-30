@@ -3,12 +3,18 @@ import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'appdashboard-hours-static',
-  templateUrl: './hours-static.component.html',
-  styleUrls: ['./hours-static.component.scss']
+  selector: 'appdashboard-groups-static',
+  templateUrl: './groups-static.component.html',
+  styleUrls: ['./groups-static.component.scss']
 })
-export class HoursStaticComponent implements OnInit {
+export class GroupsStaticComponent implements OnInit {
   projectId: string;
+
+  imageUrlArray = [
+    { url: 'assets/img/static_group.png' , backgroundSize: 'contain'},
+    { url: 'assets/img/groups_static_2_v2.png' , backgroundSize: 'contain'}
+   ];
+
   constructor(
     private router: Router,
     public auth: AuthService

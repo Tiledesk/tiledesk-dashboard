@@ -137,6 +137,7 @@ import { PricingModule } from './pricing/pricing.module';
 import { StaticPageBaseComponent } from './static-pages/static-page-base/static-page-base.component';
 
 import {SlideshowModule} from 'ng-simple-slideshow';
+import { GroupsStaticComponent } from './static-pages/groups-static/groups-static.component';
 
 console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
@@ -213,6 +214,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     HoursStaticComponent,
     DepartmentsStaticComponent,
     StaticPageBaseComponent,
+    GroupsStaticComponent,
   ],
   imports: [
     /* PRIVATE */

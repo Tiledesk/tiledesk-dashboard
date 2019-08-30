@@ -261,6 +261,33 @@ export class ProjectService {
 
   }
 
+
+  
+
+ // ****** CANCEL SUBSCRIPTION ******
+ public updatesubscription() {
+  // this.projectID +
+  const url = this.BASE_URL + 'modules/payments/stripe/updatesubscription';
+
+  console.log('cancelSubscription PUT URL ', url);
+
+  const headers = new Headers();
+  headers.append('Accept', 'application/json');
+  headers.append('Content-type', 'application/json');
+  headers.append('Authorization', this.TOKEN);
+  const options = new RequestOptions({ headers });
+
+  const body = { 'projectid': this.projectID, 'userid': this.user._id };
+
+  console.log('PUT REQUEST BODY ', body);
+
+  return this.http
+    .put(url, JSON.stringify(body), options)
+    .map((res) => res.json());
+
+}
+
+
   /// ================ UPDATE WIDGET PROJECT ====================== ///
   public updateWidgetProject(widget_settings: any) {
 
