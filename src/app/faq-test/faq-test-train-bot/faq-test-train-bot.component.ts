@@ -54,7 +54,8 @@ export class FaqTestTrainBotComponent implements OnInit {
 
   searchRemoteFaq() {
 
-    this.faqService.searchRemoteFaqByRemoteFaqKbKey(this.remote_faq_kb_key, this.selectedQuestion)
+    // this.faqService.searchRemoteFaqByRemoteFaqKbKey(this.remote_faq_kb_key, this.selectedQuestion)
+    this.faqService.searchRemoteFaqByRemoteFaqKbKey(this.idBot, this.selectedQuestion)
       .subscribe((remoteFaq) => {
         console.log('FaqTestTrainBotComponent - REMOTE FAQ FOUND - POST DATA ', remoteFaq);
 

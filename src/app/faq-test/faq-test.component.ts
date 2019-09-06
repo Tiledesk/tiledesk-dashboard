@@ -220,7 +220,8 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
 
       localStorage.setItem('searchedQuestion', this.questionToTest);
 
-      this.faqService.searchRemoteFaqByRemoteFaqKbKey(this.remote_faq_kb_key, this.questionToTest)
+      // this.faqService.searchRemoteFaqByRemoteFaqKbKey(this.remote_faq_kb_key, this.questionToTest)
+      this.faqService.searchRemoteFaqByRemoteFaqKbKey(this.idBot, this.questionToTest)
         .subscribe((remoteFaq) => {
           console.log('REMOTE FAQ FOUND - POST DATA ', remoteFaq);
 
@@ -229,8 +230,9 @@ export class FaqTestComponent implements OnInit, AfterViewInit {
             console.log('FaqTestComponent *** hits *** ', this.hits);
             let answer = '';
 
-            if (this.hits.length > 0) {
-              answer = this.hits[0].document.answer;
+            if (this.hits && this.hits.length > 0) {
+              // answer = this.hits[0].document.answer;
+              answer = this.hits[0].answer;
             } else {
 
               answer = 'NoGoodMatchFound';

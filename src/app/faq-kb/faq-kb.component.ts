@@ -440,10 +440,10 @@ export class FaqKbComponent implements OnInit {
     this.router.navigate(['project/' + this.project._id + '/bots', idFaqKb]);
   }
 
-  goToTestFaqPage(remoteFaqKbKey: string) {
-    console.log('REMOTE FAQKB KEY SELECTED ', remoteFaqKbKey);
+  // goToTestFaqPage(remoteFaqKbKey: string) {
+  //   console.log('REMOTE FAQKB KEY SELECTED ', remoteFaqKbKey);
 
-    this.router.navigate(['project/' + this.project._id + '/faq/test', remoteFaqKbKey]);
-  }
+  //   this.router.navigate(['project/' + this.project._id + '/faq/test', remoteFaqKbKey]);
+  // }
 
 }

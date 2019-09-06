@@ -187,7 +187,9 @@ const routes: Routes = [
   { path: 'project/:projectid/editfaq/:faqkbid/:faqid', component: FaqEditAddComponent, canActivate: [AuthGuard] },
 
   // TEST-FAQ PAGE
-  { path: 'project/:projectid/faq/test/:remoteFaqKbKey/:faqkbid', component: FaqTestComponent, canActivate: [AuthGuard] },
+  // { path: 'project/:projectid/faq/test/:remoteFaqKbKey/:faqkbid', component: FaqTestComponent, canActivate: [AuthGuard] },
+  // TEST-FAQ PAGE NEW URL
+  { path: 'project/:projectid/faq/test/:faqkbid', component: FaqTestComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/bots', component: BotsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/createbot', component: BotEditAddComponent, canActivate: [AuthGuard] },

@@ -117,10 +117,10 @@ export class MongodbFaqService {
       .map((response) => response.json());
   }
 
-    /**
-   * GET FAQ BY TEXT (CONTAINED IN THE QUESTION OR IN THE ANSWER)
-   * @param id_faq_kb
-   */
+  /**
+ * GET FAQ BY TEXT (CONTAINED IN THE QUESTION OR IN THE ANSWER)
+ * @param id_faq_kb
+ */
   public getFaqsByText(text: string): Observable<Faq[]> {
     // let url = 'http://localhost:3000/app1/faq/?id_faq_kb=5a81598721333b920c3e5949';
     let url = this.MONGODB_BASE_URL;
@@ -246,17 +246,20 @@ export class MongodbFaqService {
       .map((res) => res.json());
 
   }
-
-  public searchRemoteFaqByRemoteFaqKbKey(remoteFaqKbKey: string, question: string) {
+  // public searchRemoteFaqByRemoteFaqKbKey(remoteFaqKbKey: string, question: string) {
+  public searchRemoteFaqByRemoteFaqKbKey(botId: string, question: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
     // headers.append('Authorization', 'Basic YWRtaW46YWRtaW5wNHNzdzByZA==');
     headers.append('Authorization', this.TOKEN);
-    const url = this.MONGODB_BASE_URL + 'askbot';
+    // const url = this.MONGODB_BASE_URL + 'askbot';
+    const url = this.BASE_URL + this.project._id + '/faq_kb/' + 'askbot';
     const options = new RequestOptions({ headers });
 
-    const body = { 'question': question, 'doctype': 'normal', 'min_score': '0.0', 'remote_faqkb_key': remoteFaqKbKey };
+    // const body = { 'question': question, 'doctype': 'normal', 'min_score': '0.0', 'botId': botId };
+    const body = { 'id_faq_kb': botId, 'question': question };
+
 
     console.log('SEARCH FAQ WITH THE REMOTE FAQKB KEY - POST REQUEST BODY ', body);
 

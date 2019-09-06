@@ -58,7 +58,8 @@ color: #fff!important; margin-left:-20px; margin-right:-20px; margin-top:-15px">
     
       <div class="answer-wrap" style="margin-bottom: 30px;">
         <div class="answer-bubble" [ngClass]="{ 'first-answer-bubble': first }" style="word-break: break-all;">
-            {{ hit?.document.answer }} 
+            <!-- {{ hit?.document.answer }}  -->
+            {{ hit?.answer }} 
         </div> 
         <span style="font-size: 12px; font-weight: 400;float: right;color:#7695a5"> 
             Score: {{ hit?.score }} 
