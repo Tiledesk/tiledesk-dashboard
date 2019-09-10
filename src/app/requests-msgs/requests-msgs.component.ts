@@ -483,8 +483,6 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.showSpinner = false;
     }, () => {
       console.log('»»» REQUESTS-MSGS.COMP: GET NODEJS REQUEST BY FireBase REQ ID * COMPLETE *');
-
-
     });
   }
 
@@ -730,6 +728,11 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.source_page = 'n.a.'
           }
         }
+      }, (err) => {
+        console.log('»»» REQUESTS-MSGS.COMP: getRequestByRecipient ', err);
+  
+      }, () => {
+        console.log('»»» REQUESTS-MSGS.COMP: getRequestByRecipient * COMPLETE *');
       });
   }
 

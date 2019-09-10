@@ -123,8 +123,9 @@ export class MongodbFaqService {
  */
   public getFaqsByText(text: string): Observable<Faq[]> {
     // let url = 'http://localhost:3000/app1/faq/?id_faq_kb=5a81598721333b920c3e5949';
-    let url = this.MONGODB_BASE_URL;
-    url += '?text=' + text;
+    // let url = this.MONGODB_BASE_URL;
+    const url = this.BASE_URL + this.project._id + '/faq/' + '?text=' + text;
+    // url += '?text=' + text;
 
     console.log('MONGO DB GET BY ID FAQ URL', url);
 
