@@ -589,39 +589,36 @@ export class PanoramicaComponent implements OnInit {
       if (res && res.length > 0) {
         console.log('»»»» res[0].duration_avg ', res[0].duration_avg)
         console.log('»»»» typeof res[0].duration_avg ', typeof res[0].duration_avg)
-        if ((res[0].duration_avg !== null) || (res[0].duration_avg !== undefined)) {
-
-          // this.humanizer.setOptions({round: true, units:['m']});
-
-
-          // this.avarageWaitingTimestring = this.humanizer.humanize(res[0].waiting_time_avg);
-          avarageWaitingTimestring = this.humanizeDurations(res[0].duration_avg)
-          splitString = this.humanizeDurations(res[0].duration_avg).split(" ");
-          // this.numberDurationCNVtime = splitString[0];
-          this.numberDurationCNVtime = this.msToTIME(res[0].duration_avg);// --> show in format h:m:s
-          this.unitDurationCNVtime = splitString[1];
+        if (res[0].duration_avg) {
+          if ((res[0].duration_avg !== null) || (res[0].duration_avg !== undefined)) {
+            // this.humanizer.setOptions({round: true, units:['m']});
+            // this.avarageWaitingTimestring = this.humanizer.humanize(res[0].waiting_time_avg);
+            avarageWaitingTimestring = this.humanizeDurations(res[0].duration_avg)
+            splitString = this.humanizeDurations(res[0].duration_avg).split(" ");
+            // this.numberDurationCNVtime = splitString[0];
+            this.numberDurationCNVtime = this.msToTIME(res[0].duration_avg);// --> show in format h:m:s
+            this.unitDurationCNVtime = splitString[1];
 
 
-          this.responseDurationtime = this.humanizer.humanize(res[0].duration_avg, { round: true, language: this.lang });
+            this.responseDurationtime = this.humanizer.humanize(res[0].duration_avg, { round: true, language: this.lang });
 
 
-          console.log('Waiting time: humanize', this.humanizer.humanize(res[0].duration_avg))
-          console.log('waiting time funtion:', avarageWaitingTimestring);
+            console.log('Waiting time: humanize', this.humanizer.humanize(res[0].duration_avg))
+            console.log('waiting time funtion:', avarageWaitingTimestring);
 
+          } else {
+
+            this.setToNa();
+          }
         } else {
-
-          this.numberDurationCNVtime = 'N.a.'
-          this.unitDurationCNVtime = '';
-          this.responseDurationtime = 'N.a.'
+          this.setToNa();
 
           console.log('Waiting time: humanize', this.humanizer.humanize(0))
           console.log('waiting time funtion:', avarageWaitingTimestring);
         }
       } else {
+        this.setToNa();
 
-        this.numberDurationCNVtime = 'N.a.'
-        this.unitDurationCNVtime = '';
-        this.responseDurationtime = 'N.a.'
 
         console.log('Waiting time: humanize', this.humanizer.humanize(0))
         console.log('waiting time funtion:', avarageWaitingTimestring);
@@ -630,13 +627,19 @@ export class PanoramicaComponent implements OnInit {
 
     }, (error) => {
       console.log('!!! ANALYTICS - DURATION CONVERSATION CLOCK REQUEST - ERROR ', error);
-      this.numberDurationCNVtime = 'N.a.'
-      this.unitDurationCNVtime = '';
-      this.responseDurationtime = 'N.a.'
+      this.setToNa();
+
     }, () => {
       console.log('!!! ANALYTICS - DURATION CONVERSATION CLOCK REQUEST * COMPLETE *');
     });
 
+
+  }
+
+  setToNa() {
+    this.numberDurationCNVtime = 'N.a.'
+    this.unitDurationCNVtime = '';
+    this.responseDurationtime = 'N.a.'
 
   }
 
