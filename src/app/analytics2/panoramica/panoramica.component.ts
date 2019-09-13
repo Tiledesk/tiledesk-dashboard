@@ -529,25 +529,36 @@ export class PanoramicaComponent implements OnInit {
 
       var splitString;
 
-      if (res && res[0].waiting_time_avg !== null || res[0].waiting_time_avg !== undefined) {
-        // this.avarageWaitingTimestring= this.msToTime(res[0].waiting_time_avg)
+      if (res && res.length > 0) {
 
-        // this.humanizer.setOptions({round: true, units:['m']});
+        if (res[0].waiting_time_avg !== null || res[0].waiting_time_avg !== undefined) {
+          // this.avarageWaitingTimestring= this.msToTime(res[0].waiting_time_avg)
+
+          // this.humanizer.setOptions({round: true, units:['m']});
 
 
-        // this.avarageWaitingTimestring = this.humanizer.humanize(res[0].waiting_time_avg);
+          // this.avarageWaitingTimestring = this.humanizer.humanize(res[0].waiting_time_avg);
 
-        splitString = this.humanizeDurations(res[0].waiting_time_avg).split(" ");
-        // this.numberAVGtime= splitString[0];
-        this.unitAVGtime = splitString[1];
+          splitString = this.humanizeDurations(res[0].waiting_time_avg).split(" ");
+          // this.numberAVGtime= splitString[0];
+          this.unitAVGtime = splitString[1];
 
-        this.numberAVGtime = this.msToTIME(res[0].waiting_time_avg); //--> show in format h:m:s
+          this.numberAVGtime = this.msToTIME(res[0].waiting_time_avg); //--> show in format h:m:s
 
-        this.responseAVGtime = this.humanizer.humanize(res[0].waiting_time_avg, { round: true, language: this.lang })
+          this.responseAVGtime = this.humanizer.humanize(res[0].waiting_time_avg, { round: true, language: this.lang })
 
-        console.log('Waiting time: humanize', this.humanizer.humanize(res[0].waiting_time_avg))
-        console.log('waiting time funtion:', this.humanizeDurations(res[0].waiting_time_avg));
+          console.log('Waiting time: humanize', this.humanizer.humanize(res[0].waiting_time_avg))
+          console.log('waiting time funtion:', this.humanizeDurations(res[0].waiting_time_avg));
 
+        } else {
+
+          this.numberAVGtime = 'N.a.'
+          this.unitAVGtime = ''
+          this.responseAVGtime = 'N.a.'
+
+          console.log('Waiting time: humanize', this.humanizer.humanize(0))
+          console.log('waiting time funtion:', this.humanizeDurations(0));
+        }
       } else {
 
         this.numberAVGtime = 'N.a.'
@@ -557,7 +568,6 @@ export class PanoramicaComponent implements OnInit {
         console.log('Waiting time: humanize', this.humanizer.humanize(0))
         console.log('waiting time funtion:', this.humanizeDurations(0));
       }
-
 
     }, (error) => {
       console.log('!!! ANALYTICS - AVERAGE WAITING TIME CLOCK REQUEST  - ERROR ', error);
@@ -576,27 +586,36 @@ export class PanoramicaComponent implements OnInit {
       let avarageWaitingTimestring;
       let splitString;
 
-      if (res && res[0].duration_avg !== null || res[0].duration_avg !== undefined) {
+      if (res && res.length > 0) {
+        if (res[0].duration_avg !== null || res[0].duration_avg !== undefined) {
+
+          // this.humanizer.setOptions({round: true, units:['m']});
 
 
-        //this.humanizer.setOptions({round: true, units:['m']});
+          // this.avarageWaitingTimestring = this.humanizer.humanize(res[0].waiting_time_avg);
+          avarageWaitingTimestring = this.humanizeDurations(res[0].duration_avg)
+          splitString = this.humanizeDurations(res[0].duration_avg).split(" ");
+          // this.numberDurationCNVtime = splitString[0];
+          this.numberDurationCNVtime = this.msToTIME(res[0].duration_avg);// --> show in format h:m:s
+          this.unitDurationCNVtime = splitString[1];
 
 
-        //this.avarageWaitingTimestring = this.humanizer.humanize(res[0].waiting_time_avg);
-        avarageWaitingTimestring = this.humanizeDurations(res[0].duration_avg)
-        splitString = this.humanizeDurations(res[0].duration_avg).split(" ");
-        //this.numberDurationCNVtime = splitString[0];
-        this.numberDurationCNVtime = this.msToTIME(res[0].duration_avg);//--> show in format h:m:s
-        this.unitDurationCNVtime = splitString[1];
+          this.responseDurationtime = this.humanizer.humanize(res[0].duration_avg, { round: true, language: this.lang });
 
 
-        this.responseDurationtime = this.humanizer.humanize(res[0].duration_avg, { round: true, language: this.lang });
+          console.log('Waiting time: humanize', this.humanizer.humanize(res[0].duration_avg))
+          console.log('waiting time funtion:', avarageWaitingTimestring);
 
+        } else {
 
-        console.log('Waiting time: humanize', this.humanizer.humanize(res[0].duration_avg))
-        console.log('waiting time funtion:', avarageWaitingTimestring);
-      }
-      else {
+          this.numberDurationCNVtime = 'N.a.'
+          this.unitDurationCNVtime = '';
+          this.responseDurationtime = 'N.a.'
+
+          console.log('Waiting time: humanize', this.humanizer.humanize(0))
+          console.log('waiting time funtion:', avarageWaitingTimestring);
+        }
+      } else {
 
         this.numberDurationCNVtime = 'N.a.'
         this.unitDurationCNVtime = '';
@@ -604,8 +623,8 @@ export class PanoramicaComponent implements OnInit {
 
         console.log('Waiting time: humanize', this.humanizer.humanize(0))
         console.log('waiting time funtion:', avarageWaitingTimestring);
-      }
 
+      }
 
     }, (error) => {
       console.log('!!! ANALYTICS - DURATION CONVERSATION CLOCK REQUEST - ERROR ', error);
@@ -618,12 +637,6 @@ export class PanoramicaComponent implements OnInit {
 
 
   }
-
-
-
-
-
-
 
 
   // convert number from millisecond to humanizer form 
