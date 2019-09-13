@@ -530,40 +530,34 @@ export class PanoramicaComponent implements OnInit {
       var splitString;
 
       if (res && res.length > 0) {
+        if (res[0].waiting_time_avg) {
+          if (res[0].waiting_time_avg !== null || res[0].waiting_time_avg !== undefined) {
+            // this.avarageWaitingTimestring= this.msToTime(res[0].waiting_time_avg)
+            // this.humanizer.setOptions({round: true, units:['m']});
+            // this.avarageWaitingTimestring = this.humanizer.humanize(res[0].waiting_time_avg);
+            splitString = this.humanizeDurations(res[0].waiting_time_avg).split(" ");
+            // this.numberAVGtime= splitString[0];
+            this.unitAVGtime = splitString[1];
 
-        if (res[0].waiting_time_avg !== null || res[0].waiting_time_avg !== undefined) {
-          // this.avarageWaitingTimestring= this.msToTime(res[0].waiting_time_avg)
+            this.numberAVGtime = this.msToTIME(res[0].waiting_time_avg); //--> show in format h:m:s
 
-          // this.humanizer.setOptions({round: true, units:['m']});
+            this.responseAVGtime = this.humanizer.humanize(res[0].waiting_time_avg, { round: true, language: this.lang })
 
+            console.log('Waiting time: humanize', this.humanizer.humanize(res[0].waiting_time_avg))
+            console.log('waiting time funtion:', this.humanizeDurations(res[0].waiting_time_avg));
 
-          // this.avarageWaitingTimestring = this.humanizer.humanize(res[0].waiting_time_avg);
+          } else {
+            this.setToNaAVG()
 
-          splitString = this.humanizeDurations(res[0].waiting_time_avg).split(" ");
-          // this.numberAVGtime= splitString[0];
-          this.unitAVGtime = splitString[1];
-
-          this.numberAVGtime = this.msToTIME(res[0].waiting_time_avg); //--> show in format h:m:s
-
-          this.responseAVGtime = this.humanizer.humanize(res[0].waiting_time_avg, { round: true, language: this.lang })
-
-          console.log('Waiting time: humanize', this.humanizer.humanize(res[0].waiting_time_avg))
-          console.log('waiting time funtion:', this.humanizeDurations(res[0].waiting_time_avg));
+            console.log('Waiting time: humanize', this.humanizer.humanize(0))
+            console.log('waiting time funtion:', this.humanizeDurations(0));
+          }
 
         } else {
-
-          this.numberAVGtime = 'N.a.'
-          this.unitAVGtime = ''
-          this.responseAVGtime = 'N.a.'
-
-          console.log('Waiting time: humanize', this.humanizer.humanize(0))
-          console.log('waiting time funtion:', this.humanizeDurations(0));
+          this.setToNaAVG();
         }
       } else {
-
-        this.numberAVGtime = 'N.a.'
-        this.unitAVGtime = ''
-        this.responseAVGtime = 'N.a.'
+        this.setToNaAVG();
 
         console.log('Waiting time: humanize', this.humanizer.humanize(0))
         console.log('waiting time funtion:', this.humanizeDurations(0));
@@ -571,13 +565,15 @@ export class PanoramicaComponent implements OnInit {
 
     }, (error) => {
       console.log('!!! ANALYTICS - AVERAGE WAITING TIME CLOCK REQUEST  - ERROR ', error);
-      this.numberAVGtime = 'N.a.'
-      this.unitAVGtime = ''
-      this.responseAVGtime = 'N.a.'
+      this.setToNaAVG();
     }, () => {
       console.log('!!! ANALYTICS - AVERAGE TIME CLOCK REQUEST * COMPLETE *');
     });
-
+  }
+  setToNaAVG() {
+    this.numberAVGtime = 'N.a.'
+    this.unitAVGtime = ''
+    this.responseAVGtime = 'N.a.'
   }
 
   durationConvTimeCLOCK() {
@@ -619,10 +615,8 @@ export class PanoramicaComponent implements OnInit {
       } else {
         this.setToNa();
 
-
         console.log('Waiting time: humanize', this.humanizer.humanize(0))
         console.log('waiting time funtion:', avarageWaitingTimestring);
-
       }
 
     }, (error) => {
@@ -632,15 +626,12 @@ export class PanoramicaComponent implements OnInit {
     }, () => {
       console.log('!!! ANALYTICS - DURATION CONVERSATION CLOCK REQUEST * COMPLETE *');
     });
-
-
   }
 
   setToNa() {
     this.numberDurationCNVtime = 'N.a.'
     this.unitDurationCNVtime = '';
     this.responseDurationtime = 'N.a.'
-
   }
 
 
