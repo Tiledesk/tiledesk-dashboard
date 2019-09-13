@@ -587,7 +587,9 @@ export class PanoramicaComponent implements OnInit {
       let splitString;
 
       if (res && res.length > 0) {
-        if (res[0].duration_avg !== null || res[0].duration_avg !== undefined) {
+        console.log('»»»» res[0].duration_avg ', res[0].duration_avg)
+        console.log('»»»» typeof res[0].duration_avg ', typeof res[0].duration_avg)
+        if ((res[0].duration_avg !== null) || (res[0].duration_avg !== undefined)) {
 
           // this.humanizer.setOptions({round: true, units:['m']});
 
