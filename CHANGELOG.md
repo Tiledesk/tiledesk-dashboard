@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 1.0.33
+- Fixes minor bugs
+
 ### 1.0.32
 - Implements the new FAQ services
 

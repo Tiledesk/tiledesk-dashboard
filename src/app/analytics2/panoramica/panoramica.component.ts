@@ -1,3 +1,4 @@
+// tslint:disable:max-line-length
 import { Subscription } from 'rxjs/Subscription';
 import { AnalyticsService } from './../../services/analytics.service';
 import { Component, OnInit } from '@angular/core';
@@ -221,11 +222,11 @@ export class PanoramicaComponent implements OnInit {
       const _requestsByDay_labels_array = [];
 
       requestByDays_final_array.forEach(requestByDay => {
-        //console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
+        // console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
         _requestsByDay_series_array.push(requestByDay.count)
 
         const splitted_date = requestByDay.day.split('-');
-        //console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
+        // console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
         _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
       });
 
@@ -260,27 +261,27 @@ export class PanoramicaComponent implements OnInit {
           }]
         },
         options: {
-          maintainAspectRatio: false, //allow to resize chart
+          maintainAspectRatio: false, // allow to resize chart
           title: {
             text: 'AVERAGE TIME RESPONSE',
             display: false
           },
           legend: {
-            display: false //do not show label title
+            display: false // do not show label title
           },
           scales: {
             xAxes: [{
               ticks: {
                 beginAtZero: true,
                 display: true,
-                //minRotation: 30,
+                // minRotation: 30,
                 fontColor: 'black',
 
               },
               gridLines: {
                 display: true,
                 borderDash: [8, 4],
-                //color:'rgba(255, 255, 255, 0.5)',
+                // color:'rgba(255, 255, 255, 0.5)',
 
               }
 
@@ -289,13 +290,13 @@ export class PanoramicaComponent implements OnInit {
               gridLines: {
                 display: true,
                 borderDash: [8, 4],
-                //color:'rgba(0, 0, 0, 0.5)',
+                // color:'rgba(0, 0, 0, 0.5)',
 
               },
               ticks: {
                 beginAtZero: true,
                 userCallback: function (label, index, labels) {
-                  //userCallback is used to return integer value to ylabel
+                  // userCallback is used to return integer value to ylabel
                   if (Math.floor(label) === label) {
                     return label;
                   }
@@ -326,13 +327,13 @@ export class PanoramicaComponent implements OnInit {
                 // }
                 // label += Math.round(tooltipItem.yLabel * 100) / 100;
                 // return label + '';
-                //console.log("data",data)
+                // console.log("data",data)
                 const currentItemValue = tooltipItem.yLabel
                 // let langService = new HumanizeDurationLanguage();
                 // let humanizer = new HumanizeDuration(langService);
                 // humanizer.setOptions({ round: true })
-                //console.log("humanize", humanizer.humanize(currentItemValue))
-                //return data.datasets[tooltipItem.datasetIndex].label + ': ' + currentItemValue
+                // console.log("humanize", humanizer.humanize(currentItemValue))
+                // return data.datasets[tooltipItem.datasetIndex].label + ': ' + currentItemValue
                 if (lang === 'it') {
                   return 'Richieste: ' + currentItemValue;
                 } else {
@@ -347,14 +348,14 @@ export class PanoramicaComponent implements OnInit {
         ,
         plugins: [{
           beforeDraw: function (chartInstance, easing) {
-            var ctx = chartInstance.chart.ctx;
-            //console.log("chartistance",chartInstance)
-            //ctx.fillStyle = 'red'; // your color here
+            const ctx = chartInstance.chart.ctx;
+            // console.log("chartistance",chartInstance)
+            // ctx.fillStyle = 'red'; // your color here
             ctx.height = 128
-            //chartInstance.chart.canvas.parentNode.style.height = '128px';
-            ctx.font = "Google Sans"
-            var chartArea = chartInstance.chartArea;
-            //ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
+            // chartInstance.chart.canvas.parentNode.style.height = '128px';
+            ctx.font = 'Google Sans'
+            const chartArea = chartInstance.chartArea;
+            // ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
           }
         }]
       });
@@ -368,7 +369,10 @@ export class PanoramicaComponent implements OnInit {
     });
   }
 
-  //-----------REQUEST PER HOUR OF DAY-----------------------
+
+  /**
+   **! REQUEST PER HOUR OF DAY ***
+   */
   heatMap() {
 
     // get the language of browser
@@ -396,7 +400,7 @@ export class PanoramicaComponent implements OnInit {
 
 
     this.analyticsService.getDataHeatMap().subscribe(res => {
-      let data: object = res;
+      const data: object = res;
       console.log('data from servoice->', res);
       // let init_array=[];
       // if(res.length==0){
@@ -418,15 +422,17 @@ export class PanoramicaComponent implements OnInit {
         }
 
       }
-      console.log("INITIALLLL", initialArray);
+      console.log('INITIALLLL', initialArray);
 
 
 
 
+      // tslint:disable-next-line:forin
       for (let z in data) {
-        console.log("DATA", this.getOffset(data[z]._id.hour, data[z]._id.weekday))
+        console.log('DATA', this.getOffset(data[z]._id.hour, data[z]._id.weekday))
+        // tslint:disable-next-line:quotemark
         this.customData.push({ '_id': { "hour": this.hour[this.getOffset(data[z]._id.hour, data[z]._id.weekday).hours], "weekday": this.weekday[this.getOffset(data[z]._id.hour, data[z]._id.weekday).weekday] }, 'count': data[z].count });
-        //this.customData.push({ '_id': { "hour": this.hour[data[z]._id.hour ], "weekday": this.weekday[data[z]._id.weekday] }, 'count': data[z].count });
+        // this.customData.push({ '_id': { "hour": this.hour[data[z]._id.hour ], "weekday": this.weekday[data[z]._id.weekday] }, 'count': data[z].count });
 
       }
 
@@ -437,9 +443,9 @@ export class PanoramicaComponent implements OnInit {
 
 
 
-      //map customdata to initial array to create filanArray by _id.hour & _id.weekday values
+      // map customdata to initial array to create filanArray by _id.hour & _id.weekday values
       const finalArray = initialArray.map(obj => this.customData.find(o => (o._id.hour === obj._id.hour) && (o._id.weekday === obj._id.weekday)) || obj);
-      console.log("FINAL", finalArray)
+      console.log('FINAL', finalArray)
 
       this.dataSource = {
         data: finalArray,
@@ -462,10 +468,10 @@ export class PanoramicaComponent implements OnInit {
   getOffset(hours, weekday) {
 
     // get offset local time respect to utc in minutes
-    var offSet = moment_tz.tz(moment_tz.utc(), moment_tz.tz.guess()).utcOffset();
+    const offSet = moment_tz.tz(moment_tz.utc(), moment_tz.tz.guess()).utcOffset();
     // console.log("Offset:",offSet); --> ACTIVE TO DEBUG
 
-    var prjTzOffsetToHours = (offSet / 60) // get offset in hours
+    const prjTzOffsetToHours = (offSet / 60) // get offset in hours
 
     const off_FINAL = hours + prjTzOffsetToHours;
     // console.log("Hour + weekday:", hours, weekday); --> ACTIVE TO DEBUG
@@ -523,16 +529,16 @@ export class PanoramicaComponent implements OnInit {
 
       var splitString;
 
-      if (res && res.length != 0) {
-        //this.avarageWaitingTimestring= this.msToTime(res[0].waiting_time_avg)
+      if (res && res[0].waiting_time_avg !== null || res[0].waiting_time_avg !== undefined) {
+        // this.avarageWaitingTimestring= this.msToTime(res[0].waiting_time_avg)
 
-        //this.humanizer.setOptions({round: true, units:['m']});
+        // this.humanizer.setOptions({round: true, units:['m']});
 
 
-        //this.avarageWaitingTimestring = this.humanizer.humanize(res[0].waiting_time_avg);
+        // this.avarageWaitingTimestring = this.humanizer.humanize(res[0].waiting_time_avg);
 
         splitString = this.humanizeDurations(res[0].waiting_time_avg).split(" ");
-        //this.numberAVGtime= splitString[0];
+        // this.numberAVGtime= splitString[0];
         this.unitAVGtime = splitString[1];
 
         this.numberAVGtime = this.msToTIME(res[0].waiting_time_avg); //--> show in format h:m:s
@@ -568,9 +574,9 @@ export class PanoramicaComponent implements OnInit {
     this.subscription = this.analyticsService.getDurationConversationTimeDataCLOCK().subscribe((res: any) => {
 
       let avarageWaitingTimestring;
-      var splitString;
+      let splitString;
 
-      if (res && res.length != 0) {
+      if (res && res[0].duration_avg !== null || res[0].duration_avg !== undefined) {
 
 
         //this.humanizer.setOptions({round: true, units:['m']});
