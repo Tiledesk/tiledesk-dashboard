@@ -72,6 +72,7 @@ export class ActivitiesComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.auth.checkRoleForCurrentProject();
     this.selectedAgentId = '';
     this.getBrowserLanguage();
     this.getCurrentProject();
