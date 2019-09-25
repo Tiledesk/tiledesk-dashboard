@@ -11,7 +11,7 @@ const serverChatUrl = 'https://api.tiledesk.com/v1/chat/';
 export const environment = {
     production: false,
     VERSION: require('../../package.json').version,
-    widgetUrl: 'https://widget.tiledesk.com/v3/launch.js',
+    widgetUrl: 'http://localhost:4200/launch.js',
     remoteConfig: true,
     remoteConfigUrl: '/firebase-config.json',
     firebase: {
