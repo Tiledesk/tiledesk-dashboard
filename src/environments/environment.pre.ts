@@ -11,13 +11,20 @@ export const environment = {
     production: true,
     VERSION: require('../../package.json').version,
     widgetUrl: 'https://widget.tiledesk.com/v3/launch.js',
-    firebaseConfig: {
-        apiKey: firebase_pre.apiKey,
-        authDomain: firebase_pre.authDomain,
-        databaseURL: firebase_pre.databaseURL,
-        projectId: firebase_pre.projectId,
-        storageBucket: firebase_pre.storageBucket,
-        messagingSenderId: firebase_pre.messagingSenderId
+    remoteConfig: false,
+    firebase: {
+        apiKey: 'CHANGEIT',
+        authDomain: 'CHANGEIT',
+        databaseURL: 'CHANGEIT',
+        projectId: 'CHANGEIT',
+        storageBucket: 'CHANGEIT',
+        messagingSenderId: 'CHANGEIT'
+        // apiKey: firebase_pre.apiKey,
+        // authDomain: firebase_pre.authDomain,
+        // databaseURL: firebase_pre.databaseURL,
+        // projectId: firebase_pre.projectId,
+        // storageBucket: firebase_pre.storageBucket,
+        // messagingSenderId: firebase_pre.messagingSenderId
     },
     mongoDbConfig: {
         BASE_URL: `${serverUrl}`,

@@ -1,6 +1,6 @@
 import { MetricheComponent } from './analytics2/metriche/metriche.component';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
@@ -136,14 +136,26 @@ import { ProjectPlanService } from './services/project-plan.service';
 import { PricingModule } from './pricing/pricing.module';
 import { StaticPageBaseComponent } from './static-pages/static-page-base/static-page-base.component';
 
-import {SlideshowModule} from 'ng-simple-slideshow';
+import { SlideshowModule } from 'ng-simple-slideshow';
 import { GroupsStaticComponent } from './static-pages/groups-static/groups-static.component';
+
+import { environment } from '../environments/environment';
+import { AppConfigService } from './services/app-config.service';
 
 console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
+
+
+const appInitializerFn = (appConfig: AppConfigService) => {
+  return () => {
+    if (environment.remoteConfig) {
+      return appConfig.loadAppConfig();
+    }
+  };
+};
 @NgModule({
   declarations: [
     AppComponent,
@@ -250,6 +262,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     }),
   ],
   providers: [
+    AppConfigService, // https://juristr.com/blog/2018/01/ng-app-runtime-config/
+    {
+      provide: APP_INITIALIZER,
+      useFactory: appInitializerFn,
+      multi: true,
+      deps: [AppConfigService]
+    },
     UsersService,
     ContactsService,
     RequestsService,

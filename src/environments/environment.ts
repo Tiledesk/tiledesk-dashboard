@@ -2,7 +2,7 @@
 /**
  * ***  Note: create firebase-data.ts in the src folder and and edit it with your Firebase project configuration ***
  */
-import { firebase } from '../firebase-data';
+// import { firebase } from '../firebase-data';
 
 // const nodeBasePath = 'http://localhost:3000/';
 // const cloudFunctionBasePath = 'https://api.tiledesk.com/v1/chat/';
@@ -12,14 +12,23 @@ export const environment = {
     production: false,
     VERSION: require('../../package.json').version,
     widgetUrl: 'https://widget.tiledesk.com/v3/launch.js',
-    firebaseConfig: {
-        apiKey: firebase.apiKey,
-        authDomain: firebase.authDomain,
-        databaseURL: firebase.databaseURL,
-        projectId: firebase.projectId,
-        storageBucket: firebase.storageBucket,
-        messagingSenderId: firebase.messagingSenderId,
-        // timestampsInSnapshots: true,
+    remoteConfig: true,
+    remoteConfigUrl: '/firebase-config.json',
+    firebase: {
+        apiKey: 'CHANGEIT',
+        authDomain: 'CHANGEIT',
+        databaseURL: 'CHANGEIT',
+        projectId: 'CHANGEIT',
+        storageBucket: 'CHANGEIT',
+        messagingSenderId: 'CHANGEIT'
+
+        // apiKey: firebase.apiKey,
+        // authDomain: firebase.authDomain,
+        // databaseURL: firebase.databaseURL,
+        // projectId: firebase.projectId,
+        // storageBucket: firebase.storageBucket,
+        // messagingSenderId: firebase.messagingSenderId,
+
     },
     mongoDbConfig: {
         BASE_URL: `${serverUrl}`,
