@@ -42,7 +42,7 @@ const superusers = [
 import * as firebase from 'firebase';
 import 'firebase/messaging';
 import 'firebase/database'
-
+import { AppConfigService } from '../services/app-config.service';
 // import firebase from '@firebase/app';
 // import '@firebase/messaging';
 // import '@firebase/database';
@@ -54,7 +54,9 @@ export class AuthService {
   SIGNIN_BASE_URL = environment.mongoDbConfig.SIGNIN_BASE_URL;
   FIREBASE_SIGNIN_BASE_URL = environment.mongoDbConfig.FIREBASE_SIGNIN_BASE_URL;
   VERIFY_EMAIL_BASE_URL = environment.mongoDbConfig.VERIFY_EMAIL_BASE_URL;
-  CLOUDFUNCTION_CREATE_CONTACT_URL = environment.cloudFunctions.cloud_func_create_contact_url;
+
+  CLOUDFUNCTION_CREATE_CONTACT_URL: any;
+  // CLOUDFUNCTION_CREATE_CONTACT_URL = environment.cloudFunctions.cloud_func_create_contact_url;
 
   // public version: string = require('../../../package.json').version;
   public version: string = environment.VERSION;
@@ -95,7 +97,8 @@ export class AuthService {
     private notify: NotifyService,
     private usersLocalDbService: UsersLocalDbService,
     private route: ActivatedRoute,
-    public location: Location
+    public location: Location,
+    public appConfigService: AppConfigService,
   ) {
     this.http = http;
     console.log('version (AuthService)  ', this.version);
@@ -125,6 +128,13 @@ export class AuthService {
 
     this.checkIfFCMIsSupported();
     this.checkIfExpiredSessionModalIsOpened();
+
+    const firebase_conf = JSON.parse(appConfigService.getConfig().firebase);
+    // console.log('nk --> AuthService firebase_conf ', firebase_conf);
+    const cloudBaseUrl = firebase_conf['chat21ApiUrl']
+    // console.log('nk --> AuthService cloudBaseUrl ', cloudBaseUrl);
+    this.CLOUDFUNCTION_CREATE_CONTACT_URL = cloudBaseUrl + 'tilechat/contacts'
+    console.log('nk --> AuthService cloudFunctions.cloud_func_create_contact_url ', this.CLOUDFUNCTION_CREATE_CONTACT_URL);
 
   }
 

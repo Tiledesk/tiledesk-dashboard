@@ -18,7 +18,8 @@ export const environment = {
         databaseURL: 'CHANGEIT',
         projectId: 'CHANGEIT',
         storageBucket: 'CHANGEIT',
-        messagingSenderId: 'CHANGEIT'
+        messagingSenderId: 'CHANGEIT',
+        
         // apiKey: firebase_pre.apiKey,
         // authDomain: firebase_pre.authDomain,
         // databaseURL: firebase_pre.databaseURL,
