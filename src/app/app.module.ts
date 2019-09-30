@@ -131,6 +131,11 @@ import { HoursStaticComponent } from './static-pages/hours-static/hours-static.c
 import { DepartmentsStaticComponent } from './static-pages/departments-static/departments-static.component';
 import { ProjectPlanService } from './services/project-plan.service';
 import { SubscriptionService } from './services/subscription.service';
+import { TriggerComponent } from './trigger/trigger.component';
+import { BasetriggerComponent } from './trigger/basetrigger/basetrigger.component';
+import { TriggerService } from './services/trigger.service';
+import { TriggerAddComponent } from './trigger/trigger-add/trigger-add.component';
+import { TriggerEditComponent } from './trigger/trigger-edit/trigger-edit.component';
 
 
 /* PRIVATE */
@@ -216,6 +221,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     DepartmentsStaticComponent,
     StaticPageBaseComponent,
     GroupsStaticComponent,
+    TriggerComponent,
+    TriggerAddComponent,
+    TriggerEditComponent,
+    BasetriggerComponent
   ],
   imports: [
     /* PRIVATE */
@@ -268,6 +277,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     ProjectPlanService,
     SubscriptionService,
     LegendService, TooltipService, AdaptorService, AnalyticsService, HttpClientModule,
+    TriggerService,
     { provide: LocationStrategy, useClass: HashLocationStrategy }
   ],
   bootstrap: [

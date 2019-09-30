@@ -336,6 +336,25 @@
           </a>
         </li>
 
+        <!-- TRIGGER -->
+        <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
+          <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/trigger">
+            
+            <p class="onBlackBckgrnd">
+                <span class="sidebar-mini">T </span>
+              <!-- <i class="material-icons sidebar-icons">description</i> -->
+             {{ 'Trigger.Trigger' | translate }} 
+            </p>
+
+            <!-- <span class="sidebar-mini">
+              U 
+            </span>
+            <span class="sidebar-normal">
+              {{ 'Users' | translate }} 
+            </span>  -->
+          </a>
+        </li>
+        
         <!-- USERS (ALIAS MEMBERS) -->
         <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
           <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/users">

@@ -92,6 +92,10 @@ import { Analytics2Component } from './analytics2/analytics2.component';
 import { PanoramicaComponent } from './analytics2/panoramica/panoramica.component';
 import { MetricheComponent } from './analytics2/metriche/metriche.component';
 import { RealtimeComponent } from './analytics2/realtime/realtime.component';
+
+import { TriggerComponent } from './trigger/trigger.component';
+import { TriggerEditComponent } from './trigger/trigger-edit/trigger-edit.component';
+import { TriggerAddComponent } from './trigger/trigger-add/trigger-add.component';
 // import { UserProfileComponent } from './ui/user-profile/user-profile.component';
 
 /* PRIVATE */
@@ -226,6 +230,11 @@ const routes: Routes = [
   // HISTORY
   // { path: 'project/:projectid/historyrt', component: RequestsListHistoryComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/history', component: RequestsListHistoryNewComponent, canActivate: [AuthGuard] },
+
+   // TRIGGER
+   { path: 'project/:projectid/trigger', component: TriggerComponent, canActivate: [AuthGuard] },
+   { path: 'project/:projectid/trigger/add', component: TriggerAddComponent, canActivate: [AuthGuard] },
+   { path: 'project/:projectid/trigger/:triggerId', component: TriggerEditComponent, canActivate: [AuthGuard] },
 
 
   // page RESOURCES (RENAMED WIDGET)   // path: 'project/:projectid/resources'

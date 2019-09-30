@@ -852,6 +852,142 @@
         "HistoryIsOnlyAvailableForThePast14Days":"La cronologia è disponibile solo per gli ultimi 14 giorni",
         "ForUnlimitedChatHistory":"per ottenere una cronologia chat illimitata"
     },
+    "Trigger":{
+        "Trigger": "Triggers",
+        "TriggerList":"Lista Trigger",
+        "AddTrigger":"Aggiungi Trigger",
+        "EditTrigger": "Modifica Trigger",
+        "TriggerName":"Nome Trigger",
+        "TriggerListDescription":"Descrizione",
+        "TriggerListActivated":"Attivato",
+        "Return": "Annulla",
+        "NoTrigger": "Nessun Trigger",
+        "Completed": "Completato",
+        "Processing": "Elaborazione...",
+        "TheTriggerHasBeenAdded": "Trigger aggiunto correttamente",
+        "TheTriggerHasBeenUpdated": "Trigger modificato correttamente",
+        "Continue": "Continua",
+        "Error": "Errore",
+        "ModalDeleteTriggerTitle":"Elimina Trigger",
+        "AreYouSureDeleteTrigger": "Sei sicuro di voler eliminare il trigger",
+        "ERROR_AllFieldMustBeCompleted": "ERRORE!! Compila tutti i campi",
+        "ERROR_ConditionTypeInNull": "ERRORE!! Scegliere una condizione per l'attivazione del trigger",
+        "ERROR_AllFieldConditionMustBeCompleted": "ERRORE!! Scegliere tutte le condizioni di attivazione del trigger",
+        "ERROR_AllActionFieldMustBeCompleted": "ERRORE!! Scegliere tutte le azioni che il trigger deve svolgere",
+        "ErrorMessage": "Per favore, correggi tutti gli errori",
+        "ErrorMessageServer": "Si è verificato un errore nel server",
+        "Add_Edit": {
+            "TriggerStatus": "Stato trigger",
+            "TriggerENABLED": "Attivo",
+            "TriggerDISABLED": "Disattivo",
+            "SetTheStatusOfTriggerByDefaultIsSetToENABLED": "Imposta lo stato del trigger. Di default è impostato ad ATTIVO",
+            "TriggerName": "Nome",
+            "TriggerRequiredFieldError": "Campo obbligatorio",
+            "Description": "Descrizione",
+            "CustomizeTrigger": "Personalizza trigger",
+            "RunTrigger": "Verifica condizioni",
+            "RunTrigger_dropdownElements": {
+                "Placeholder": "Seleziona metodo attivazione",
+                "WhenRequestChat": "Quando un visitatore richiede una chat",
+                "WhenMessageIsSent": "All'invio di un nuovo messaggio"
+            },
+            "CheckConditions": "Verifica condizioni",
+            "CheckConditions_dropdownElements": {
+                "Placeholder": "Seleziona condizioni di attivazione",
+                "CheckAllConditions": "Verifica tutte le condizioni seguenti",
+                "CheckAnyConditions": "Verifica una delle condizioni seguenti"
+            },
+            "ConditionPlaceholder": "Seleziona condizione",
+            "CompileAllField_error": "Compila tutti i campi",
+            "PerformFollowingActions": "Esegui le seguenti azioni",
+            "ActionPlaceholder": "Seleziona azione",
+            "CreateTriggerButton": "Crea trigger",
+            "UpdateTriggerButton": "Salva modifiche",
+            "CancelButton": "Cancella",
+            "ConditionNotifyError": "Deve essere presente almeno 1 condizione di attivazione del trigger",
+            "ActionNotifyError": "Deve essere presente almeno 1 azione da eseguire per il trigger"
+        },
+        "MessagePlaceholder": "Messaggio",
+        "ServerError": "Si è verificato un errore durante il caricamento dei dati",
+        "DeleteServerError": "Si è verificato un errore durante l'eliminazione del trigger",
+        "DeleteTriggerSuccess": "Trigger cancellato correttamente",
+        "ArrayCondition_Option_Action": {
+            "ConditionArray":{
+                "message": {  "groupId":{
+                                    "VisitorInformation": "Info visitatore",
+                                    "PageInformation": "Info pagina",
+                                    "SoftwareOfVisitor": "Software/Computer del visitatore",
+                                    "ChatInformation": "Info correlate alla chat"
+                                },
+                                "label_key":{
+                                    "VisitorSearchTerm": "Termini di ricerca visitatore",
+                                    "VisitorName": "Nome visitatore",
+                                    "VisitorMail":"Indirizzo e-mail visitatore",
+                                    "VisitorDepartment": "Dipartimento visitatore",
+                                    "VisitorReferrer": "Referente visitatore",
+                                    "VisitorURL": "URL pagina visitatore",
+                                    "VisitorPageTitle": "Titolo pagina visitatore",
+                                    "VisitorBrowser": "Browser visitatore",
+                                    "VisitorPlatform":"Piattaforma visitatore",
+                                    "Department": "Dipartimento",
+                                    "VisitorServed": "Visitatore assistito"
+                                 }
+                },
+                "chat": {  "groupId":{
+                                    "VisitorInformation": "Info visitatore",
+                                    "PageInformation": "Info pagina",
+                                    "SoftwareOfVisitor": "Software/Computer del visitatore",
+                                    "ChatInformation": "Info correlate alla chat",
+                                    "ChannelInformation": "Informazioni sul canale",
+                                    "LocationVisitor": "Ubicazione del visitatore"
+                                },
+                                "label_key":{
+                                    "VisitorSearchTerm": "Termini di ricerca visitatore",
+                                    "VisitorName": "Nome visitatore",
+                                    "VisitorMail":"Indirizzo e-mail visitatore",
+                                    "VisitorDepartment": "Dipartimento visitatore",
+                                    "VisitorReferrer": "Referente visitatore",
+                                    "VisitoruserAgent": "User agent visitatore",
+                                    "VisitorURL": "URL pagina visitatore",
+                                    "VisitorPageTitle": "Titolo pagina visitatore",
+                                    "VisitorBrowser": "Browser visitatore",
+                                    "VisitorPlatform":"Piattaforma visitatore",
+                                    "Department": "Dipartimento",
+                                    "VisitorServed": "Visitatore assistito",
+                                    "ChannelName": "Nome del canale",
+                                    "VisitorCountryRegion": "Regione del visitatore",
+                                    "VisitorCountryCode": "Codice paese visitatore",
+                                    "VisitorCountryName": "Nome paese visitatore"
+                                }
+                }
+    
+            },
+            "OptionArray":{ 
+                    "label_key":{
+                        "Equal": "Uguale a",
+                        "NotEqual": "Non uguale a",
+                        "Contains": "Contiene",
+                        "NotContain": "Non contiene",
+                        "GreatherThan": "Maggiore di",
+                        "LessThan": "Minore di",
+                        "GreaterEqualThan": "Maggiore o uguale a",
+                        "LessEqualThan": "Minore o uguale a"
+                    }
+    
+            },
+            "ActionArray": {
+                "label_key": {
+                    "SendMessageToVisitor": "Invia messaggio al visitatore"
+                },
+                "placeholder":{
+                    "NameAgent": "Nome dell'agente"
+                }
+    
+            }
+        }
+        
+        
+    },
     "Resourcepage": {
         "CopyScript": "Copia Script",
         "TestThisCode": "Testa questo codice !",

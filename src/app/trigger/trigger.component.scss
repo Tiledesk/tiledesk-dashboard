@@ -1,0 +1,128 @@
+.table td, .table th {
+    vertical-align: middle
+}
+
+.card-header-custom-bkgrnd {
+    box-shadow:none;
+    -webkit-box-shadow:none;
+    margin:0px;
+    border-radius: 3px 3px 0px 0px;
+    // background-color: #f2f6f8;
+    background-color: #ffffff;
+    border-bottom: 1px solid #eff3f5;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+  
+  .column-th-span {
+    font-size: 14px;
+    font-weight: 500;
+    color: #353f45;
+    font-weight: bold
+    
+    // color: #566787;
+  }
+
+  input[type=radio] {
+    box-sizing: border-box;
+    padding: 0;
+}
+.form-check-input {
+    position: absolute;
+    margin-top: .3rem;
+    margin-left: -1.25rem;
+}
+
+// TOOLTIP START
+.White__Tooltip {
+  position: relative;
+  display: inline-block;
+  // border-bottom: 1px dotted black;
+}
+  
+.White__Tooltip .White__Tooltiptext {
+  visibility: hidden;
+  width: fit-content;
+  // background-color: #fff;
+  // color: rgba(0,0,0, 0.87);
+  text-align: center;
+  border-radius: 6px;
+  padding: 4px 6px;
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px;
+  // min-height: 41px;
+  line-height: 1.9;
+  // font-size: 16px;
+  // border: 1px solid #eee;
+  
+  /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
+  opacity: 0;
+  transition: opacity 1s;
+
+  // NEW
+  color: #fff;
+  font-size: 14px;
+  box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
+  background-color: #394f5a;
+}
+  
+.White__Tooltip:hover .White__Tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+// TOOLTIP END
+
+.trigger:hover{
+  
+  background-color: rgba(185, 185, 185, 0.35)
+}
+
+.modal-header {
+  padding: 15px; border-bottom: 1px solid #e5e5e5;
+}
+
+// TOOLTIP START
+.White__Tooltip {
+  position: relative;
+  display: inline-block;
+  // border-bottom: 1px dotted black;
+}
+  
+.White__Tooltip .White__Tooltiptext {
+  visibility: hidden;
+  width: fit-content;
+  // background-color: #fff;
+  // color: rgba(0,0,0, 0.87);
+  text-align: center;
+  border-radius: 6px;
+  padding: 4px 6px;
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px;
+  // min-height: 41px;
+  line-height: 1.9;
+  // font-size: 16px;
+  // border: 1px solid #eee;
+  
+  /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
+  opacity: 0;
+  transition: opacity 1s;
+
+  // NEW
+  color: #fff;
+  font-size: 14px;
+  box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
+  background-color: #394f5a;
+}
+  
+.White__Tooltip:hover .White__Tooltiptext {
+  visibility: visible;
+  opacity: 1;
+  font-size: 10px;
+}

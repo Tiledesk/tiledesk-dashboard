@@ -854,6 +854,140 @@
         "HistoryIsOnlyAvailableForThePast14Days":"History is only available for the past 14 days",
         "ForUnlimitedChatHistory":"to get unlimited chat history"
     },
+    "Trigger":{
+        "Trigger": "Triggers",
+        "TriggerList":"Trigger list",
+        "AddTrigger": "Add Trigger",
+        "EditTrigger": "Edit Trigger",
+        "TriggerName":"Trigger name",
+        "TriggerListDescription": "Description",
+        "TriggerListActivated": "Activated",
+        "Return": "Return",
+        "NoTrigger": "No Trigger",
+        "Completed": "Completed",
+        "Processing": "Processing...",
+        "TheTriggerHasBeenAdded": "Trigger successfully added",
+        "TheTriggerHasBeenUpdated": "Trigger successfully updated",
+        "Continue": "Continue",
+        "Error": "Error",
+        "ModalDeleteTriggerTitle":"Delete Trigger",
+        "AreYouSureDeleteTrigger": "Are you sure you want to delete the trigger",
+        "ERROR_AllFieldMustBeCompleted": "ERROR!! Compile all fields",
+        "ERROR_ConditionTypeInNull": "ERROR!! Choose a condition for trigger activation ",
+        "ERROR_AllFieldConditionMustBeCompleted": "ERROR!! Choose all the conditions for trigger activation",
+        "ERROR_AllActionFieldMustBeCompleted": "ERROR!! Choose an action to be triggered",
+        "ErrorMessage": "Please, correct errors before saving",
+        "ErrorMessageServer": "Server error occurred",
+        "Add_Edit": {
+            "TriggerStatus": "Trigger status",
+            "TriggerENABLED": "Enabled",
+            "TriggerDISABLED": "Disabled",
+            "SetTheStatusOfTriggerByDefaultIsSetToENABLED": "Set the status of trigger. By default it's set to ENABLED",
+            "TriggerName": "Name",
+            "TriggerRequiredFieldError": "Required field",
+            "Description": "Description",
+            "CustomizeTrigger": "Customize trigger",
+            "RunTrigger": "Run trigger",
+            "RunTrigger_dropdownElements": {
+                "Placeholder": "Select activation method",
+                "WhenRequestChat": "When a visitor request a chat",
+                "WhenMessageIsSent": "When a chat message is sent"
+            },
+            "CheckConditions": "Check conditions",
+            "CheckConditions_dropdownElements": {
+                "Placeholder": "Select activation conditions",
+                "CheckAllConditions": "Check all of the following conditions",
+                "CheckAnyConditions": "Check any of the following conditions"
+            },
+            "ConditionPlaceholder": "Select condition",
+            "CompileAllField_error": "Compile all field",
+            "PerformFollowingActions": "Perform the following actions",
+            "ActionPlaceholder": "Select action",
+            "CreateTriggerButton": "Create trigger",
+            "UpdateTriggerButton": "Save changes",
+            "CancelButton": "Cancel",
+            "ConditionNotifyError": "Must be present at least 1 condition to active trigger",
+            "ActionNotifyError": "Must be present at least 1 action to perform for trigger"
+        },
+        "MessagePlaceholder": "Message",
+        "ServerError": "Error occurred while loading data",
+        "DeleteServerError": "Error occurred while deleting trigger",
+        "DeleteTriggerSuccess": "Trigger successfully deleted",
+        "ArrayCondition_Option_Action": {
+            "ConditionArray":{
+                "message": {  "groupId":{
+                                    "VisitorInformation": "Visitor information",
+                                    "PageInformation": "Page information",
+                                    "SoftwareOfVisitor": "Software/Computer of visitor",
+                                    "ChatInformation": "Char-related information"
+                                },
+                                "label_key":{
+                                    "VisitorSearchTerm": "Visitor search terms",
+                                    "VisitorName": "Visitor name",
+                                    "VisitorMail":"Visitor mail",
+                                    "VisitorDepartment": "Visitor department",
+                                    "VisitorReferrer": "Visitor referrer (Client)",
+                                    "VisitorURL": "Visitor page URL",
+                                    "VisitorPageTitle": "Visitor page title",
+                                    "VisitorBrowser": "Visitor browser",
+                                    "VisitorPlatform":"Visitor platform",
+                                    "Department": "Department",
+                                    "VisitorServed": "Visitor served"
+                                 }
+                },
+                "chat": {  "groupId":{
+                                    "VisitorInformation": "Visitor information",
+                                    "PageInformation": "Page information",
+                                    "SoftwareOfVisitor": "Software/Computer of visitor",
+                                    "ChatInformation": "Char-related information",
+                                    "ChannelInformation": "Channel information",
+                                    "LocationVisitor": "Location of visitor"
+                                },
+                                "label_key":{
+                                    "VisitorSearchTerm": "Visitor search terms",
+                                    "VisitorName": "Visitor name",
+                                    "VisitorMail":"Visitor mail",
+                                    "VisitorDepartment": "Visitor department",
+                                    "VisitorReferrer": "Visitor referrer (Client)",
+                                    "VisitoruserAgent": "Visitor user agent",
+                                    "VisitorURL": "Visitor page URL",
+                                    "VisitorPageTitle": "Visitor page title",
+                                    "VisitorBrowser": "Visitor browser",
+                                    "VisitorPlatform":"Visitor platform",
+                                    "Department": "Department",
+                                    "VisitorServed": "Visitor served",
+                                    "ChannelName": "Channel name",
+                                    "VisitorCountryRegion": "Visitor country region",
+                                    "VisitorCountryCode": "Visitor country code",
+                                    "VisitorCountryName": "Visitor country name"
+                                }
+                }
+    
+            },
+            "OptionArray":{ 
+                    "label_key":{
+                        "Equal": "Equals",
+                        "NotEqual": "Not equal",
+                        "Contains": "Contains",
+                        "NotContain": "Does not contain",
+                        "GreatherThan": "Greather than",
+                        "LessThan": "Less than",
+                        "GreaterEqualThan": "Greather than or equal to",
+                        "LessEqualThan": "Less than or equal to"
+                    }
+    
+            },
+            "ActionArray": {
+                "label_key": {
+                    "SendMessageToVisitor": "Send message to visitor"
+                },
+                "placeholder":{
+                    "NameAgent": "Name of agents"
+                }
+    
+            }
+        } 
+    },
     "Resourcepage": {
         "CopyScript": "Copy Script",
         "TestThisCode": "Test this code !",
