@@ -1,0 +1,408 @@
+input[type=text] {
+    // min-width: 307px !important;
+    height: 36px;
+    font-size: 14px;
+    width: 100%;
+    margin-bottom: 10px;
+    -webkit-appearance: none;
+    background: #fff;
+    border: 1px solid #d9d9d9 !important;
+    border-top: 1px solid #c0c0c0;
+    /* border-radius: 2px; */
+    padding: 0 8px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border-radius: 30px;
+    background-color: #fff !important;
+    border: solid 1px #ddd;
+}
+
+select {
+    height:36px;  
+    background: #fff; 
+    border-radius: 0px; 
+    border-color: #d9d9d9; 
+}
+
+
+
+// @media (max-width: 768px) { /* use the max to specify at each container level */
+//     .td_answer {    
+//         width:360px;  /* adjust to desired wrapping */
+//         display:table;
+//         white-space: pre-wrap; /* css-3 */
+//         white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+//         white-space: -pre-wrap; /* Opera 4-6 */
+//         white-space: -o-pre-wrap; /* Opera 7 */
+//         word-wrap: break-word; /* Internet Explorer 5.5+ */
+//     }
+// }
+
+// start TOOLTIP
+/* Tooltip container */
+.tooltipx {
+    position: relative;
+    display: inline-block;
+    // border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  }
+  
+  /* Tooltip text */
+  .tooltipx .tooltiptext {
+    visibility: hidden;
+    // width: 120px;
+    background-color: black; 
+    // background-color: rgba(0,0,0,0.6);
+    color: #fff;
+    text-align: center;
+    padding: 5px 5px;
+    border-radius: 5px;
+    font-size: 12px !important;
+  
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 1;
+    /* Position the tooltip text - TOP */
+    bottom: 100%;
+    left: 50%; 
+    margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+
+    // NEW
+    box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
+    background-color: #394f5a;
+  }
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .tooltipx:hover .tooltiptext {
+    visibility: visible;
+  }
+// end TOOLTIP
+
+.score {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    position: relative;
+    // left: -75px;
+    bottom: 0px;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+/* START NEW FOR TABLE */
+// table { 
+//     width: 100%; 
+//     border-collapse: collapse; 
+//   }
+//   /* Zebra striping */
+//   tr:nth-of-type(odd) { 
+//     background: #eee; 
+//   }
+//   th { 
+//     background: #333; 
+//     color: white; 
+//     font-weight: bold; 
+//   }
+//   td, th { 
+//     padding: 6px; 
+//     border: 1px solid #ccc; 
+//     text-align: left; 
+//   }
+/* 
+Max width before this PARTICULAR table gets nasty
+This query will take effect for any screen smaller than 760px
+and also iPads specifically.
+*/
+@media 
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+
+	/* Force table to not be like tables anymore */
+	table, thead, tbody, th, td, tr { 
+		display: block; 
+	}
+	
+	/* Hide table headers (but not display: none;, for accessibility) */
+	thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	
+	tr { border: 1px solid #ccc; }
+	
+	td { 
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid #eee; 
+		position: relative;
+		padding-left: 50%; 
+	}
+	
+	td:before { 
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+        white-space: nowrap;
+    }
+}
+    /* END NEW FOR TABLE */
+
+/**
+ * *** WHEN THE SCREEN IS < OF 768 PX  ***
+ * CARD - CUSTOM PADDING AND MARGIN 
+ * SPACER DIV HIDDEN
+ */    
+@media only screen and (max-width: 768px) {
+    .custom_card {
+        margin-top: 5px !important;
+        padding-top:5px !important; 
+        padding-bottom:5px !important;
+    }
+    .spacer_div {
+        display: none !important;
+    }
+}
+
+// if score is hidden remove the margin bottom to the td 'question'
+.hideScoreHidden {
+    margin-bottom: 0px !important;
+}
+
+.faq-table-title {
+    font-family: "Google Sans",sans-serif!important;
+    color: #394f5a;
+    font-weight: 500;
+    font-size:16px;
+}
+// height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;
+.custom-label {
+    color: #7695a5;
+    height: 36px !important;
+    padding-top: 7px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    text-align: right!important;
+}
+
+@media (max-width: 768px) {
+    .custom-label {
+        height: 0px !important;
+        padding-left:0px !important;
+    }
+    // .card form [class*="col-"] {
+    //     padding: 15px !important;
+    // }
+}
+
+.card-header-custom-bkgrnd {
+    // display:none;
+    box-shadow:none;
+    -webkit-box-shadow:none;
+    margin:0px;
+    border-radius: 3px 3px 0px 0px;
+    // background-color: #f2f6f8;
+    background-color: #ffffff;
+    border-bottom: 1px solid #eff3f5;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.column-th-span {
+    font-size: 14px;
+    font-weight: 500;
+    color: #353f45;
+    // color: #566787;
+}
+
+.card form [class*="col-"] {
+    padding: 0px;
+}
+
+.send-btn {
+    color: #039be5;
+    position: absolute;
+    right: 10px;
+    bottom: 20px;
+    padding: 0px;
+    border-radius: 50%;
+    cursor:pointer;
+    border: none;
+    width: 24px;
+    height: 24px;
+    background-color: transparent;
+}
+
+.send-icon {
+  transition:all 0.2s ease-in-out;
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.send-icon:hover {
+    border-radius: 50%;
+    color: #ffffff;
+    background-color: #039be5;
+    transform: scale(1.1);
+    
+}
+
+// @media (max-width: 410px) {
+//   .speech-wrapper{ 
+//     margin-left: -30px !important;
+//     margin-right: -30px !important;
+//     .bubble{
+//       width: auto !important;
+//     }
+//   }
+// }
+
+// @media (max-width: 482px) {
+//   .speech-wrapper{ 
+//     // margin-left: -30px !important;
+//     // margin-right: -30px !important;
+//     .bubble{
+//       width: auto !important;
+//     }
+//   }
+// }
+
+.speech-wrapper{
+    // padding: 30px 40px;
+    // padding: 30px 10px;
+    padding: 10px 10px;
+    .bubble{
+      width: 240px;
+      height: auto;
+      display: block;
+      background: #f5f5f5;
+      border-radius: 4px;
+      // box-shadow: 2px 8px 5px #000;
+      box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+      position: relative;
+      margin: 0 0 25px;
+      &.alt{
+    //   margin: 0 0 0 60px;
+      background: rgb(117, 213, 253)
+      }
+      .txt{
+        // padding: 8px 55px 8px 14px;
+        padding: 8px 14px 8px 14px;
+        .name{
+          font-weight: 600;
+          font-size: 12px;
+          margin: 0 0 4px;
+          color: #3498db;
+          span{
+            font-weight: normal;
+            color: #b3b3b3;
+          }
+          &.alt{
+            color: #2ecc71;
+          }
+        }
+        .message{
+          font-size: 12px;
+          margin: 0;
+          color: #2b2b2b;
+          font-weight: 400;
+        }
+        .timestamp{
+          font-size: 11px;
+          position: absolute;
+          bottom: 8px;
+          right: 10px;
+          text-transform: uppercase; color: #999
+        }
+      }
+      .bubble-arrow {
+        position: absolute;
+        width: 0;
+        bottom:42px;
+        left: -16px;
+        height: 0;
+        &.alt{
+          right: -2px;      
+          bottom: 40px;
+          left: auto;
+        }
+      }
+      .bubble-arrow:after {
+        content: "";
+        position: absolute;
+        border: 0 solid transparent;
+        border-top: 9px solid #f5f5f5;
+
+        border-radius: 0 20px 0;
+        width: 15px;
+        height: 30px;
+        transform: rotate(145deg);
+      }
+      .bubble-arrow.alt:after {
+        transform: rotate(45deg) scaleY(-1);
+        border-top: 9px solid rgb(117, 213, 253);
+      }
+    }
+  }
+
+  .coloured:after {
+    border-top: 9px solid rgb(117, 213, 253) !important;
+  } 
+
+  .no-good-match {
+
+    background: #ec971f !important;
+
+    .bubble-arrow.alt:after {
+      border-top: 9px solid #ec971f !important;
+    }
+  }
+
+  
+// START NEW TOOLTIP WITH ARROW
+.tooltip-new {
+  position: relative;
+  display: inline-block;
+  // border-bottom: 1px dotted black;
+}
+
+.tooltip-new  .tooltiptext-new  {
+  visibility: hidden;
+  width: 120px;
+  background-color: #394f5a;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip-new  .tooltiptext-new::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #394f5a transparent transparent transparent;
+}
+
+.tooltip-new:hover .tooltiptext-new {
+  visibility: visible;
+  opacity: 1;
+}
+// END NEW TOOLTIP WITH ARROW 
+
+
+  

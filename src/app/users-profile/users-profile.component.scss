@@ -1,0 +1,66 @@
+input[type=text] {
+    /* min-width: 307px !important; */
+   height: 36px;
+   font-size: 14px;
+   width: 100%;
+   margin-bottom: 10px;
+   -webkit-appearance: none;
+   background: #fff;
+   border: 1px solid #d9d9d9 !important;
+   border-top: 1px solid #c0c0c0;
+   /* border-radius: 2px; */
+   padding: 0 8px;
+   box-sizing: border-box;
+   -moz-box-sizing: border-box;
+   border-radius: 5px;
+   background-color: #fff !important;
+   border: solid 1px #ddd;
+}
+
+select {
+   height:36px;  
+   background: #fff; 
+   border-radius: 0px; 
+   border-color: #d9d9d9; 
+}
+.card form [class*="col-"] {
+   padding: 0px;
+}
+
+/* CUSTOM PADDING TO THE AVATAR LABEL WHEN THE WINDOWS WIDTH IS < OF 768  */
+@media (max-width: 767px){
+    label.col-sm-2.avatar_label {
+        padding-top:10px !important
+    }
+}
+
+/* CUSTOM INPUT WIDTH WHEN THE WINDOWS WIDTH IS < OF 768  */
+@media (min-width: 767px){
+    input[type=text] {
+        width: 400px !important
+    }
+}
+
+.custom-label {
+    color: #7695a5;
+    height: 36px !important;
+    padding-top: 7px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    text-align: right!important;
+}
+
+@media (max-width: 768px) {
+    .custom-label {
+        height: 0px !important;
+    }
+}
+
+.alert-custom-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: .25rem;
+    box-shadow: none;
+    padding:15px !important;
+}

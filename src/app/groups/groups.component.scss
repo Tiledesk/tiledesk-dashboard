@@ -1,0 +1,402 @@
+.modal {
+    top: 0;
+}
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #999;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 6px;
+    outline: 0;
+    -webkit-box-shadow: 0 3px 9px rgba(0,0,0,.5);
+    box-shadow: 0 3px 9px rgba(0,0,0,.5);
+}
+
+.modal-header {
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.modal-title {
+    margin: 0;
+    line-height: 1.42857143;
+}
+
+button.close {
+    -webkit-appearance: none;
+    padding: 0;
+    cursor: pointer;
+    background: 0 0;
+    border: 0;
+}
+.close {
+    float: right;
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    filter: alpha(opacity=20);
+    opacity: .2;
+}
+
+.modal-body {
+    position: relative;
+    padding-top: 35px;
+    padding-bottom: 35px;
+    padding-right: 0px;
+    padding-left: 15px;
+
+    // nk custom
+    // min-height:130px
+}
+
+.modal-footer {
+    // padding: 15px;
+    text-align: right;
+    border-top: 1px solid #e5e5e5;
+    // background-color: #edf0f1;
+    background-color: #eeeeee;
+    padding-top:10px !important;
+}
+/* MODAL END */
+
+// #table-wrapper {
+//     position:relative;
+//   }
+//   #table-scroll {
+//     height:150px;
+//     overflow:auto;  
+//     margin-top:20px;
+//   }
+//   #table-wrapper table {
+//     width:100%;
+  
+//   }
+//   #table-wrapper table * {
+//     // background:yellow;
+//     // color:black;
+//   }
+//   #table-wrapper table thead th .text {
+//     position:absolute;   
+//     top:-20px;
+//     z-index:2;
+//     height:20px;
+//     width:35%;
+//     background-color: #f9f9f9;
+//     // border:1px solid red;
+//   }
+
+// table {
+//     width: 100%;
+// }
+
+/* TABLE LIST OF USERS - IN THE MODAL WINDOWS */
+ .thead_table-fixed, .tbody_table-fixed, .tr_table-fixed, .td_table-fixed, .th_table-fixed {
+    display: block;
+}
+
+.thead_table-fixed, .th_table-fixed {
+    height: 40px;
+}
+
+.tbody_table-fixed {
+    overflow-y: auto;
+    
+}
+
+.td_table-fixed, .thead_table-fixed,  .th_table-fixed {
+    float: left;
+    width: 20%;
+}
+
+.tr_table-fixed:after {
+    clear: both;
+    content: ' ';
+    display: block;
+    visibility: hidden;
+}
+
+// start TOOLTIP
+/* Tooltip container */
+.tooltipx {
+    position: relative;
+    display: inline-block;
+    // border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  }
+  
+  /* Tooltip text */
+  .tooltipx .tooltiptext {
+    visibility: hidden;
+    // width: 120px;
+    background-color: black; 
+    // background-color: rgba(0,0,0,0.6);
+    color: #fff;
+    text-align: center;
+    padding: 5px 5px;
+    border-radius: 5px;
+    font-size: 12px !important;
+  
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 1;
+    /* Position the tooltip text - TOP */
+    bottom: 100%;
+    left: 50%; 
+    margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+
+    // NEW
+    box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
+    background-color: #394f5a;
+  }
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .tooltipx:hover .tooltiptext {
+    visibility: visible;
+  }
+  // end TOOLTIP
+
+  /*
+Max width before this PARTICULAR table gets nasty
+This query will take effect for any screen smaller than 760px
+and also iPads specifically.
+*/
+@media 
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+
+	/* Force table to not be like tables anymore */
+	table, thead, tbody, th, td, tr { 
+		display: block; 
+	}
+	
+	/* Hide table headers (but not display: none;, for accessibility) */
+	thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	
+	tr { border: 1px solid #ccc; }
+	
+	td { 
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid #eee; 
+		position: relative;
+		padding-left: 50%; 
+	}
+	
+	td:before { 
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+        white-space: nowrap;
+    }
+}
+/* END NEW FOR TABLE */
+
+.card-header-custom-bkgrnd {
+    // display:none;
+    box-shadow:none;
+    -webkit-box-shadow:none;
+    margin:0px;
+    border-radius: 3px 3px 0px 0px;
+    // background-color: #f2f6f8;
+    background-color: #ffffff;
+    border-bottom: 1px solid #eff3f5;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.btn-info-custom {
+    margin:0px; background-color: #039be5; padding: 8px 16px; text-transform: none;
+    text-transform: none;
+    font-size: 14px;
+    font-weight: 500;
+    // display: none;
+    box-shadow: 0 2px 2px 0 rgba(3, 155, 229, 0.14), 0 3px 1px -2px rgba(3, 155, 229, 0.2), 0 1px 5px 0 rgba(3, 155, 229, 0.12) !important;
+}
+
+.btn-info-custom:hover { 
+    background-color: #039be5 !important; 
+    box-shadow: 0 14px 26px -12px rgba(3, 155, 229, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(3, 155, 229, 0.2) !important;
+}
+
+.nav-pills.nav-pills-info.custom > li.active > a, .nav-pills.nav-pills-info.custom > li.active > a:focus, .nav-pills.nav-pills-info.custom > li.active > a:hover {
+    // background-color: #00bcd4; 
+    background-color: #039be5!important;
+    -webkit-box-shadow: 0 12px 20px -10px rgba(3, 115, 229, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(3, 115, 229, 0.2)!important;
+    box-shadow: 0 12px 20px -10px rgba(3, 115, 229, 0.28), 0 4px 20px 0px rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(3, 115, 229, 0.2)!important;
+}
+
+
+// .center {
+//   &:hover {
+//     color: $f21blue;
+//   }
+
+//   // Set up base styles, we're going to scale instead of animating width/height
+//   &::before,
+//   &::after {
+//     top: 0;
+//     left: 0;
+//     height: 100%;
+//     width: 100%;
+//     transform-origin: center; // Ensure scaling is done from the center (expands outwards)
+//   }
+
+//   // scale3d(<scale-horizontal>, <scale-vertical>, <scale-depth>);
+//   &::before {
+//     // border-top: 2px solid $purple;
+//     border-bottom: 3px solid $f21blue;
+//     transform: scale3d(0,1,1); // Shrink only width
+//   }
+
+//    &:hover::before,
+//   &:hover::after {
+//     transform: scale3d(1,1,1); // Show full-size
+//     transition: transform 0.5s;
+//   }
+// }
+
+.column-th-span {
+    font-size: 14px;
+    font-weight: 500;
+    color: #353f45;
+    // color: #566787;
+}
+
+
+
+// - start - BOTTOM NAVBAR  //
+.bottom-nav {
+  background-color: #fff;
+  width: 100%;
+  z-index: 1028;
+  position: relative;
+  top: -5px;
+  box-shadow: 0 2px 2px rgba(0, 0, 60, 0.08);
+  padding-bottom: 5px;
+  float: left;
+  height: 50px;
+  padding-left: 0px;
+  display: flex;
+  flex-grow: 1;
+ 
+}
+
+.bottom-nav li {
+  float: left;
+  padding: 15px;
+  list-style: none;
+  position: relative;
+  display: block;   
+  height: 52px;
+  cursor: pointer;
+}
+
+.bottom-nav li a {
+  padding: 18px 15px;
+  color: #797979;
+  line-height: 20px;
+}
+
+.bottom-nav li a:hover{
+  text-decoration: none;
+//  background-color: #eee;
+}
+
+.li-active  {
+  border-bottom: 3px solid #039be5 !important;
+  color: #039be5 !important;
+  cursor: default !important;
+}
+
+.li-active  a {
+  color: #039be5!important;
+}
+
+$f21blue: #039be5;
+.btn-with-border-effect {
+  background: none;
+  border: 0;
+  box-sizing: border-box;
+  // margin: 1em;
+  // padding: 1em 2em;
+//   padding-bottom: 37px;
+  font-size: 14px;
+  font-weight: 300;
+
+  // Required, since we're setting absolute on pseudo-elements
+  position: relative;
+  vertical-align: middle;
+
+  &::before,
+  &::after {
+    box-sizing: inherit;
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.border-from-center {
+  &:hover {
+    color: $f21blue;
+  }
+
+  // Set up base styles, we're going to scale instead of animating width/height
+  &::before,
+  &::after {
+  //   top: 3px;
+    top: 0px;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    transform-origin: center; // Ensure scaling is done from the center (expands outwards)
+  }
+
+  // scale3d(<scale-horizontal>, <scale-vertical>, <scale-depth>);
+  &::before {
+    // border-top: 2px solid $purple;
+    border-bottom: 3px solid $f21blue;
+    transform: scale3d(0,1,1); // Shrink only width
+  }
+
+   &:hover::before,
+  &:hover::after {
+    transform: scale3d(1,1,1); // Show full-size
+    transition: transform 0.5s;
+  }
+}
+
+@media (max-width: 991px){
+  .bottom-nav { 
+      top: -2px !important;
+  }
+
+  .chart-wrapper {
+      margin-top:60px !important;
+  }
+}
+
+
+@media (max-width: 370px){
+  .bottom-nav { 
+      height: 37px!important;
+  }
+
+  .bottom-nav li {
+      padding: 6px !important;
+      height: 39px;
+  }    
+}
+// - end - BOTTOM NAVBAR  //

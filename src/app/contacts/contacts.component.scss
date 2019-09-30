@@ -1,0 +1,190 @@
+input[type=text] {
+    // min-width: 307px !important;
+    height: 36px;
+    font-size: 14px;
+    width: 100%;
+    margin-bottom: 10px;
+    -webkit-appearance: none;
+    background: #fff;
+    border: 1px solid #d9d9d9 !important;
+    // border-top: 1px solid #c0c0c0;
+    /* border-radius: 2px; */
+    padding: 0 8px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border-radius: 5px !important;
+    background-color: #fff !important;
+    background-image: none !important;
+    // border: solid 1px #ddd;
+}
+
+input[type=email] {
+    // min-width: 307px !important;
+    height: 36px;
+    font-size: 14px;
+    width: 100%;
+    margin-bottom: 10px;
+    -webkit-appearance: none;
+    background: #fff;
+    border: 1px solid #d9d9d9 !important;
+    // border-top: 1px solid #c0c0c0;
+    /* border-radius: 2px; */
+    padding: 0 8px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border-radius: 5px;
+    background-color: #fff !important;
+    // border: solid 1px #ddd;
+}
+
+/* Remove input background colour from Chrome autocomplete */
+/* Change the white to any color ;) */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active  {
+    -webkit-box-shadow: 0 0 0 30px white inset;
+    box-shadow: 0 0 0 30px white inset;
+}
+
+/* TABLE CONTENT VERTICAL ALIGNMENT */
+.table td, .table th {
+    vertical-align: middle
+}
+
+
+@media screen and (min-width: 768px) {
+    .search-form {
+        width: 600px;
+        margin: 0 auto;
+        padding: 15px
+    }
+    .full-text-search {
+        max-width: 350px;
+    }
+
+}
+
+@media screen and (max-width: 767px) { 
+    .search-form {
+       padding-right: 25px;
+       padding-left: 25px;
+    }
+    .full-text-search {
+        width: 100%;
+    }
+    .search-card {
+        margin-bottom: 5px !important;
+    }
+}
+
+// THE 'X' INSIDE THE 'fullText' INPUT
+.buttonInside{
+    position:relative;
+    // margin-bottom:10px;
+  }
+
+// THE 'X' INSIDE THE 'fullText' INPUT
+#clear-fulltext-search{    
+    // .fulltext-remove-btn{
+    position:absolute;
+    right: 56px;
+    top: 10px;
+    padding:2px;
+    font-size: 0.9em;
+    color: #999999;;
+    z-index: 3;
+    cursor: pointer;
+}
+
+#clear-fulltext-search:hover {   
+    color: #f44336;
+}
+
+.card form [class*="col-"] {
+    padding: 0px;
+}
+
+// start TOOLTIP
+/* Tooltip container */
+.tooltipx {
+    position: relative;
+    display: inline-block;
+    // border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  }
+  
+  /* Tooltip text */
+  .tooltipx .tooltiptext-custom {
+    visibility: hidden;
+    // width: 120px;
+    
+    color: #fff;
+    text-align: center;
+    padding: 5px 5px;
+    border-radius: 5px;
+    font-size: 12px !important;
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 1;
+    /* Position the tooltip text - TOP */
+    // width: 420px;
+    bottom: 100%;
+    left: 50%; 
+    margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+    
+    max-width: 10em; // only for contacts component
+    overflow-wrap: break-word; // only for contacts component
+    // NEW
+    box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
+    z-index: 1000;
+    background-color: #394f5a;
+    
+
+  }
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .tooltipx:hover .tooltiptext-custom {
+    visibility: visible;
+  }
+  // /.end TOOLTIP 
+
+ // PLACEHOLDER CUSTOM FONT-SIZE
+ ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    font-size: 0.9em !important;
+  }
+ :-ms-input-placeholder { /* Internet Explorer 10-11 */
+     font-size: 0.9em !important;
+ }
+ ::-ms-input-placeholder { /* Microsoft Edge */
+     font-size: 0.9em !important;
+ }
+
+.avatar {
+    // margin: 0 8px 0 0;
+    border-radius: 50%;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: center;
+    // padding: 10px 11px;
+    padding-top: 12px;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+}
+
+.contact-verified {
+    position: relative; 
+    left: -20px;
+}
+
+.column-th-span {
+    font-size: 14px;
+    font-weight: 500;
+    color: #353f45;
+    // color: #566787;
+  }
+
+  .column-td  {
+    font-size:0.9em;
+    font-weight: 400;
+  }

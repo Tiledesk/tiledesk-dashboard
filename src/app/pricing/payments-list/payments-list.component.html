@@ -1,0 +1,144 @@
+<<div class="navbar-brand" style="margin-top:6px; padding-left:30px; z-index: 1050;position: relative;">
+    <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">keyboard_arrow_left</i>
+    {{ "ProjectEditPage.Payments" | translate }}
+</div>
+<div class="main-content" style="padding-top: 0px">
+  <div class="container-fluid">
+    <div class="row">
+
+
+      <div class="col-md-12">
+        <div class="card">
+          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+          <div *ngIf="!showSpinner"  class="card-content table-responsive" style="padding-bottom:5px">
+    
+            <table class="table table-hover">
+              <thead class="text">
+                <tr>
+
+                  <th>
+                    <span style="font-size: 14px; font-weight: 500; color: #353f45;">
+                        ID  {{ 'Invoice' | translate }} 
+                    </span>
+                  </th>
+
+                  <th>
+                    <span style="font-size: 14px; font-weight: 500; color: #353f45;">
+                      {{ 'Event' | translate }}  
+                    </span>
+                  </th>
+
+                  <!-- <th>
+                    <span style="font-size: 14px; font-weight: 500; color: #353f45;">
+                      {{ 'Plan' | translate }}  
+                    </span>
+                  </th> -->
+
+                  <th>
+                      <span style="font-size: 14px; font-weight: 500; color: #353f45;">
+                        {{ 'PaymentDate' | translate }}  
+                      </span>
+                  </th>
+  
+
+                  <th>
+                    <span style="font-size: 14px; font-weight: 500; color: #353f45;">
+                      {{ 'Period' | translate }}  
+                    </span>
+                  </th>
+
+                  <th>
+                    <span style="font-size: 14px; font-weight: 500; color: #353f45;">
+                      {{ 'Invoice' | translate }}  
+                    </span>
+                  </th>
+
+                </tr>
+              </thead>
+              <tbody>
+
+                <!-- ===== IF THERE ISN'T PAYMENTS ===== -->
+                <tr *ngIf="subscription_payments && subscription_payments?.length === 0"> 
+                  <td colspan="4" style="text-align: center; padding-top: 16px; cursor: pointer">
+
+                    <p style="font-size:1em; color:#7695a5; font-weight: 400">
+                      
+                      {{ 'Pricing.NoPayments' | translate }}
+                    </p>
+                  </td>
+                </tr> 
+                <tr *ngFor="let subscription of subscription_payments">
+
+                  <td style="white-space: nowrap; width: 1%;">
+                    <span style="font-size:14px; line-height:21px; font-weight: 500;"> 
+                      {{ subscription?.object?.data?.object?.id }}
+                    </span>  
+                  </td>
+
+                  <td style="white-space: nowrap; width: 1%;">
+
+                    <span *ngIf="subscription?.object?.data.object.billing_reason === 'subscription_create'">
+                      <span style="font-size:14px; line-height:21px; font-weight: 500;"> 
+                        {{ 'SubscriptionCreated' | translate }} 
+                      </span>
+                    </span>
+                    <span *ngIf="subscription?.object?.data.object.billing_reason === 'subscription_cycle'">
+                      <span style="font-size:14px; line-height:21px; font-weight: 500;"> 
+                        {{ 'SubscriptionRenewed' | translate }}
+                      </span>
+                    </span>
+
+                  </td>
+
+                  <!-- ================ PLAN NAME ================ -->
+                  <!-- <td style="white-space: nowrap; width: 1%;">
+                    <span style="font-size:14px; line-height:21px; font-weight: 500;"> 
+                      {{ subscription?.plan_name }}
+                    </span>
+                  </td> -->
+
+                  <!-- ================ PAYMENT DATE ================ -->
+                  <td style="white-space: nowrap; width: 1%;">
+                    <span style="font-size:14px; line-height:21px; font-weight: 500;"> 
+                    
+                      {{ subscription?.object?.data.object?.status_transitions?.paid_at * 1000 | date: 'dd/MM/y HH:mm:ss' }}
+                    </span>
+                  </td>
+                  <!-- style="white-space: nowrap; width: 1%;" -->
+
+           
+
+                  <td>
+                    <span style="font-size:14px; line-height:21px; font-weight: 500;"> 
+                      {{ subscription?.object?.data.object.lines.data[0].period.start * 1000 | date: 'dd/MM/y HH:mm:ss' }} -> {{   subscription?.object?.data.object.lines.data[0].period.end * 1000 | date: 'dd/MM/y HH:mm:ss' }}
+                    </span>  
+                  </td>
+                  <td class="td-actions text-center">
+                    <a [href]="subscription?.object?.data?.object?.hosted_invoice_url" target="_blank" class="tooltipx">
+                     <i class="material-icons">
+                      open_in_new
+                      </i>
+                      <span class="tooltiptext-custom" style="text-transform:none;height: 40px;line-height: 1.4;font-weight: 200;">
+                        {{ 'ViewInvoice' | translate }} 
+                      </span> 
+                    </a>
+                    <a [href]="subscription?.object?.data?.object?.invoice_pdf" class="tooltipx">
+                      <i class="material-icons" style="margin-left: 16px;">
+                        save_alt
+                      </i>
+                      <span class="tooltiptext-custom" style="text-transform:none;height: 40px;line-height: 1.4;font-weight: 200;">
+                        {{ 'DownloadInvoice' | translate }} 
+                      </span>
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

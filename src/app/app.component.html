@@ -1,0 +1,18 @@
+<div class="wrapper">
+     <!-- <div class="sidebar" data-color='red' data-image=""> -->
+    <div class="sidebar" data-color='orange' data-image="" >
+       <app-sidebar></app-sidebar>
+        <!-- <appdashboard-small-sidebar></appdashboard-small-sidebar> -->
+        <!-- <div class="sidebar-background" style="background-image: url(../assets/img/sidebar-4.jpg)"></div> -->
+    </div>
+    <div class="main-panel">
+        <app-navbar></app-navbar>
+
+        <notification-message></notification-message>
+        
+        <router-outlet (activate)="changeOfRoutes()"></router-outlet>
+        <div *ngIf="isMaps('maps')">
+            <app-footer></app-footer>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,93 @@
+// @import url(https://fonts.googleapis.com/css?family=Google+Sans);
+
+.boxdays{
+    height: 33px; 
+    //border: 1px solid grey;
+    font-family: 'Google Sans', sans-serif !important;
+    font-size:100%;
+    display: inline-block; //-->allow content vertical align
+    vertical-align: middle;
+    padding-top: 5px;
+
+    .arrow_forward-custom{
+        position: relative;
+        top: 5px;
+        font-size: 22px;
+        
+    }
+}
+
+.chart-wrapper-richieste{
+    //background-color: rgb(30, 136, 229)!important; -->blue color
+    //background-color: #ffffff;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-left: -30px;
+    margin-right: -30px;
+    min-height: 345px;
+}
+
+.btn{
+    background-color: rgb(255, 255, 255);
+    margin-bottom: 1px;
+    margin-top: 1px;
+    height: 36px;
+    color:black;
+    text-transform: none !important;
+    padding: inherit;
+    width: 60px;
+}
+
+.li-active{
+    border-top: 3px solid rgba(30, 136, 229, 1) !important;
+    border-bottom: 3px solid rgba(30, 136, 229, 1) !important;
+    color:black !important;
+
+}
+.chart-title-richieste {
+    
+    padding: 12px 0px;
+    font-size: 18px;
+    //color: #fff;
+    display: inline-block; //-->allow content vertical align
+    vertical-align: middle;
+    font-family: 'Google Sans', sans-serif !important;
+    //text-align: center;
+}
+
+.chart-container{
+    //background-color: #1e88e5;
+    font-family: 'Google Sans', sans-serif !important;
+}
+
+@media screen and (min-width: 768px) {
+    .advancedOptionForm {
+        width: 500px;
+        margin: 0 auto;
+    }
+
+    .section-select-dept {
+        padding-right: 15px;
+    }
+}
+
+@media screen and (max-width: 767px) { 
+    .advancedOptionForm {
+       padding-right: 25px;
+       padding-left: 25px;
+    }
+}
+
+// .card_richieste {
+//     display: inline-block;
+//     position: relative;
+//     //width: 100%;
+//     //margin: 25px 0;
+//     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+//     border-radius: 3px;
+//     color: rgba(0,0,0, 0.87);
+//     background: #fff;
+//   }
+

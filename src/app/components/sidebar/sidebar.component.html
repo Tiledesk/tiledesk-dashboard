@@ -1,0 +1,581 @@
+<!-- 
+<div *ngIf="project" class="logo" style="background-color:#1e2129!important; padding-bottom: 5px;display: flex;
+  flex-direction: row;
+  flex: 1 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  height:61px;">
+  
+  <div class="logo-img" style=" display: flex; align-items: center;">
+    <a routerLink="project/{{ project._id }}/home" class="simple-text" style="text-transform: none; ">
+      <span *ngIf="SIDEBAR_IS_SMALL !== true">
+        <img style="width:50%; top:20px" src="assets/img/tiledesk-logo_white.svg"/>
+      </span>
+      <span *ngIf="SIDEBAR_IS_SMALL === true">
+          <img style="width:37%; top:20px" src="assets/img/tiledesk_logo_white_small.png"/>
+      </span>
+    </a> 
+  </div>
+  <div  style="display: flex; align-items: center; padding-bottom: 6px">
+    <i class="material-icons" (click)="smallSidebar(IS_SMALL = !IS_SMALL)" style="color:rgba(255,255,255,0.7)!important">  menu  </i>
+  </div>
+</div>
+-->
+
+<div *ngIf="project" class="logo" style="background-color:#1e2129!important; padding-bottom: 5px;">
+  <a routerLink="project/{{ project._id }}/home" class="simple-text" style="text-transform: none; padding-left: 40px;">
+    <div class="logo-img">
+      <img style="width:50%; top:20px" src="assets/img/tiledesk-logo_white.svg"/>
+    </div>
+  </a>
+</div>
+
+
+
+
+<!-- background-color: #191919 -->
+<div class="sidebar-wrapper" style="background-color: #2d323e!important;" (scroll)="onScroll($event)">
+        
+      <!-- // NK start NEW: AVATAR ON THE SIDEBAR  -->
+      <div class="user tiledesk-nav-user" fxlayout="column" style="flex-direction: column; box-sizing: border-box; display: flex;">
+        <div *ngIf="user" class="h3 username" style="font-size: 16px;font-weight: 400;margin-top: 15px; margin-bottom: 5px;"
+          [ngClass]="{'small-sidebar-userfullname' : SIDEBAR_IS_SMALL === true }">
+          
+          {{ user.firstname }} {{ user.lastname }}
+        </div>
+        <div *ngIf="user" class="h5 email hint-text mt-8" style="color: rgba(255,255,255,.5)!important;font-size: 13px;margin-top: 5px!important;font-weight: 400;"
+        [ngClass]="{'small-sidebar-email' : SIDEBAR_IS_SMALL === true }">
+            
+          {{ user.email }}
+        </div>
+        <!-- routerLink="project/{{ project._id }}/user-profile" -->
+        <!-- (mouseover)="mouseOver(true)" 
+        (mouseout)="mouseOver(false)" -->
+        <div *ngIf="project" class="avatar-container tiledesk-nav-avatar" [ngClass]="{'small-sidebar-avatar' : SIDEBAR_IS_SMALL === true }" >
+
+          <img class="avatar" *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" 
+              src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{user?._id}}%2Fphoto.jpg?alt=media" />
+            
+          <img class="avatar" *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true" 
+              src="assets/img/no_image_user.png"/>
+
+            <div (click)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)" class="status-icon online" 
+              [ngClass]="{'is-user-online' : IS_AVAILABLE === true, 'is-user-offline' : IS_AVAILABLE === false, 'small-sidebar-status-icon' : SIDEBAR_IS_SMALL === true  }">
+              <span style="position:relative; top: -5px;left: 14px; cursor:pointer"  [ngClass]="{'small-sidebar-status-text' : SIDEBAR_IS_SMALL === true }">  
+                <span style="
+                  color: rgba(255,255,255,.5)!important; 
+                  font-size: 12px;" *ngIf="IS_AVAILABLE"> 
+                  {{ 'Available' | translate }} 
+                </span> 
+                <span style="
+                color: rgba(255,255,255,.5)!important;
+                font-size: 12px; white-space: nowrap" *ngIf="!IS_AVAILABLE"> 
+                  {{ 'Unavailable' | translate }} 
+                </span>
+              
+              </span>
+            </div>
+
+        </div>
+        <!-- CAMERA ICONS OVER THE AVATAR -->
+        <!--  [ngClass]="{'hover-effect' : isOverAvar}"  -->
+        <i *ngIf="project" routerLink="project/{{ project._id }}/user-profile" class="material-icons is-over-camera" 
+          style="z-index: 5; position: relative; top: 15px; background-color: rgba(45,50,62,0.7); padding: 15px;border-radius: 50%; opacity:0;"
+          [ngClass]="{'small-sidebar-camera-icon' : SIDEBAR_IS_SMALL === true }"> camera_alt </i>
+      </div>
+
+            <!-- <div class="middle"> -->
+               
+            <!-- </div> -->
+      <!-- // NK ./end NEW: AVATAR ON THE SIDEBAR  -->
+
+    <!-- SEARCH MOBILE MENU -->
+    <!-- <form class="navbar-form navbar-right" role="search" *ngIf="isMobileMenu()">
+        <div class="form-group form-black is-empty">
+            <input type="text" class="form-control" placeholder="Search">
+            <span class="material-input"></span>
+        </div>
+        <button type="submit" class="btn btn-white btn-round btn-just-icon">
+            <i class="material-icons">search</i><div class="ripple-container"></div>
+        </button>
+    </form> -->
+
+  <ul class="nav nav-mobile-menu" *ngIf="isMobileMenu()">
+    <li  *ngIf="project">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" (click)="has_cliked_hidden_project(SHOW_PRJCT_SUB = !SHOW_PRJCT_SUB)" style="cursor:pointer; border-radius:0px">
+        <i class="material-icons sidebar-icons">apps</i>
+        <p class="hidden-lg hidden-md">{{ project?.name }} 
+          <b style="position: absolute; top: 20px; right: 15px;" class="caret" [ngStyle]="{'transform': trasform_projectname_caret}"></b>
+        </p>
+      </a>
+      <ul *ngIf="project" class="dropdown-menu">
+        <li (click)="goToProjects()">
+          <a style="cursor:pointer">
+            <!-- Visualizza tutti i progetti -->
+            {{ "SideBar.ViewAllProjects" | translate }}
+          </a>
+        </li>
+        <li>
+          <a routerLink="/project/{{ project?._id }}/edit">
+            <!-- Impostazioni progetto -->
+            {{ "SideBar.ProjectSettings" | translate }}
+          </a>
+        </li>
+      </ul>
+    </li>
+    <!-- <li *ngIf="project" class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="material-icons">notifications</i>
+            <span class="notification" routerLink="/requests">{{ unservedRequestCount }}</span>
+            <p class="hidden-lg hidden-md" routerLink="/requests">Notifiche</p>
+        </a>
+    </li> -->
+    <li>
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" (click)="has_cliked_hidden_profile(SHOW_PROFILE_SUB = !SHOW_PROFILE_SUB)" style="border-radius:0px">
+          <i class="material-icons sidebar-icons">person</i>
+          <!-- Profile -->
+          <p class="hidden-lg hidden-md">
+              <!-- Profilo -->
+              {{ user?.firstname }} {{ user?.lastname }}
+              <b style="position: absolute; top: 20px; right: 15px;" class="caret" [ngStyle]="{'transform': transform_user_profile_caret}"></b>
+          </p>
+      </a>
+      <ul *ngIf="user" class="dropdown-menu">
+          
+        <li>
+          <a style="color: rgba(255,255,255,0.6); text-align: center; " routerLink="/user-profile"> 
+            <!-- VEDI PROFILO  -->
+            {{ "SideBar.UserProfile" | translate }}
+          </a>
+        </li>
+          <!-- COMMENTED FOR NOW -->
+        <!-- <h6 style="text-align: center; text-transform: none; font-size: 0.7; color: #333"> 
+            <strong>
+                {{ user?.firstname }} {{ user?.lastname }}
+            </strong>
+        </h6>
+        <h6 style="text-align: center; text-transform: none; font-size: 0.7; color: #333">
+            {{ user?.email }}
+        </h6> -->
+        <li>
+          <!-- setUnavailableAndlogout() -->
+          <a style="text-align: center; cursor: pointer" (click)="openLogoutModal()">
+            <!-- LOG OUT -->
+            {{ 'NavBar.LogOut' | translate }}
+          </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+
+    <div class="nav-container">
+      <ul class="nav" [ngClass]="{'is-desktop-menu' : IS_MOBILE_MENU === false, 'is-mobile-menu' : IS_MOBILE_MENU === true  }">
+            
+        <!-- SELECT AVAILABLE / UNAVAILABLE -->
+        <!-- <li *ngIf="project" style="margin-left: 10px;">
+          <a *ngIf="IS_AVAILABLE" 
+            style="background-color: rgba(255,255,255,0.2);                  
+              border-radius: 10px;
+              display:block;
+              margin:0 auto;
+              width: 200px;
+              padding: 5px 10px; 
+              cursor: pointer" 
+              (click)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)">
+
+            <i class="material-icons" style="font-size: 16px; color: #1eb848; margin-right:0px; padding-right: 8px">
+              fiber_manual_record
+            </i>
+
+            <p style="color:#fff ;">
+              <span style="padding-left: 8px">
+                {{ 'Available' | translate }}
+              </span>
+            </p>
+          </a>
+
+          <a *ngIf="!IS_AVAILABLE" 
+            style="background-color: rgba(255,255,255,0.2); 
+                    border-radius: 10px;
+                    display:block;
+                    margin:0 auto;
+                    width: 200px;  
+                    padding: 5px 10px; 
+                    cursor: pointer" 
+              (click)="changeAvailabilityState(IS_AVAILABLE = !IS_AVAILABLE)">
+
+            <i class="material-icons" style=" font-size: 16px; color: #cac9c9; margin-right:0px; padding-right: 8px ">
+              fiber_manual_record
+            </i>           
+            <p style="color:#cac9c9">
+              <span style="padding-left: 8px">
+                {{ 'Unavailable' | translate }}
+              </span>
+            </p>
+          </a>
+        </li> -->
+
+        <!-- !!!! NO MORE USED HOME - VISITORS (alias REQUESTS) - CHAT -->
+        <!-- <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}}">
+            <a  [routerLink]="[menuItem.path]">
+                <i class="material-icons">{{menuItem.icon}}</i>
+                <p>{{menuItem.title}}</p>
+            </a>
+        </li> -->
+            
+        <!-- HOME  -->
+        <!-- WITHOUT THE CONDITION *ngIf="projectid" THE MENU ITEM 'HOME' IT IS NOT RENDERED AS ACTIVE -->
+        <li *ngIf="project" routerLinkActive="active">
+          <a #homebtn class="customAncor" routerLink="project/{{ project._id }}/home">
+            <i class="material-icons sidebar-icons">dashboard</i>
+            <p class="onBlackBckgrnd">Home</p>
+          </a>
+        </li>
+
+        <!-- REQUESTS (VISITORS)  -->
+        <li *ngIf="project" routerLinkActive="active" >
+          <a class="customAncor" routerLink="project/{{ project._id }}/requests">
+            <i class="material-icons sidebar-icons">group</i>
+            <p class="onBlackBckgrnd">{{ 'Requests' | translate }}</p>
+          </a>
+        </li>
+
+        <!-- CONTACTS (LEADS)  -->
+        <li *ngIf="project" routerLinkActive="active" >
+          <a class="customAncor" routerLink="project/{{ project._id }}/contacts">
+            <i class="material-icons sidebar-icons">contacts</i>
+            <p class="onBlackBckgrnd">{{ 'Contacts' | translate }}</p>
+          </a>
+        </li>
+
+        <!-- CHAT  -->
+        <li *ngIf="project" routerLinkActive="active">
+          <!-- <a class="customAncor" routerLink="/chat"> -->
+          <a #openchatbtn class="customAncor" target="_blank" href="{{ CHAT_BASE_URL }}" (click)="removeChatBtnFocus()">     
+            <i class="material-icons sidebar-icons">chat</i>
+            <p class="onBlackBckgrnd">Chat</p>
+          </a>
+        </li>
+
+  
+
+
+        <!-- CHAT AS TARGET BLANK // SEE ABOVE: IS NO MORE NECESSARY TO LINK THE CHAT IN A EXTERNAL PAGE-->
+        <!-- <li>
+            <a target="_blank" href="http://support.tiledesk.com/web/">
+                <i class="material-icons">chat</i>
+                <p>Chat</p>
+            </a>
+        </li> -->
+
+        <!-- ANALYTICS -->
+        <li *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="active"
+          [ngClass]="{'active' : ANALYTICS_DEMO_ROUTE_IS_ACTIVE === true}"  (click)="stopScroll()">
+          <a class="customAncor" routerLink="project/{{ project._id }}/analytics">
+            <i class="material-icons sidebar-icons">trending_up</i>
+            <span class="_badge" [ngClass]="{'change-badge-bckgrnd' : ANALITYCS_ROUTE_IS_ACTIVE === true}">New</span>
+            <p class="onBlackBckgrnd">Analytics</p>
+          </a>
+        </li>
+
+        <!-- ANALYTICS -->
+        <li *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="active" 
+          [ngClass]="{'active' : ACTIVITIES_DEMO_ROUTE_IS_ACTIVE === true}"  (click)="stopScroll()">
+          <a class="customAncor" routerLink="project/{{ project._id }}/activities">
+            <i class="material-icons sidebar-icons">view_list</i>
+            <!-- <span class="_badge" [ngClass]="{'change-badge-bckgrnd' : ACTIVITIES_ROUTE_IS_ACTIVE === true}">New</span> -->
+            <p class="onBlackBckgrnd">{{ 'Activities' | translate }}</p>
+          </a>
+        </li>
+            
+        <!-- REQUESTS HISTORY -->
+        <li *ngIf="project" routerLinkActive="active" (click)="stopScroll()">
+          <a class="customAncor" routerLink="project/{{ project._id }}/history">
+            <i class="material-icons sidebar-icons">history</i>
+            <p class="onBlackBckgrnd">{{ 'History' | translate }}</p>
+          </a>
+        </li>
+
+        <!-- SETTINGS -->
+        <li *ngIf="project && USER_ROLE !== 'agent'" (click)="has_clicked_settings(SHOW_SETTINGS_SUBMENU = !SHOW_SETTINGS_SUBMENU)" style="cursor:pointer">
+          <!-- routerLink="/settings" -->
+          <a class="customAncor">
+            <i class="material-icons sidebar-icons">settings</i>
+            <p class="onBlackBckgrnd">
+                {{ 'Settings' | translate }} 
+                <b class="caret" style="position: absolute;right: 18px; margin-top: 13px" [ngStyle]="{'transform': trasform}"></b>
+            </p>
+          </a>
+        </li>
+
+        <!-- SECTION OF SETTINGS SUBMENU -->
+
+        <!-- BOT: NO MORE USED - THE CURRENT BOT (see down) IS FAQKB RENAMED TO BOT-->
+        <!-- <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" style="" >
+            <a  *ngIf="project" routerLink="project/{{ project._id }}/bots">
+                <span class="sidebar-mini">
+                    B 
+                </span>
+                <span class="sidebar-normal">Bots</span> 
+            </a>
+        </li> -->
+        
+        <!-- ROUTING -->
+        <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
+          <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/routing">
+            <p class="onBlackBckgrnd">
+              <span class="sidebar-mini">R </span>   Routing 
+            </p>
+
+            <!-- <span class="sidebar-mini">
+              R 
+            </span>
+            <span class="sidebar-normal">
+              Routing 
+            </span>  -->
+          </a>
+        </li>
+
+        <!-- USERS (ALIAS MEMBERS) -->
+        <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
+          <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/users">
+            
+            <p class="onBlackBckgrnd">
+              <span class="sidebar-mini">UG </span> {{ 'UsersAndGroups' | translate }}  
+            </p>
+
+            <!-- <span class="sidebar-mini">
+              U 
+            </span>
+            <span class="sidebar-normal">
+              {{ 'Users' | translate }} 
+            </span>  -->
+          </a>
+        </li>
+
+        <!-- GROUPS -->
+        <!-- <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
+          <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/groups">
+            <p class="onBlackBckgrnd">
+              <span class="sidebar-mini">G </span> {{ 'Groups' | translate }} 
+            </p>
+          </a>
+        </li> -->
+
+          <!-- FAQ (alias FAQKB) HAS BEEN RENAMED IN BOT (BOT - see above - IS CURRENTLY COMMENTED) -->
+          <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
+            <!-- routerLink="project/{{ project._id }}/faqkb" -->
+            <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/bots">
+             
+              <p class="onBlackBckgrnd">
+                <span class="sidebar-mini">B </span> Bots 
+              </p>
+              
+              <!-- <span class="sidebar-mini">
+                B 
+              </span>
+              <span class="sidebar-normal">
+                Bots
+              </span>  -->
+              </a>
+          </li>
+  
+          <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
+            <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/departments">
+              
+              <p class="onBlackBckgrnd">
+                <span class="sidebar-mini">D </span>{{ 'Departments' | translate }}
+              </p>
+              
+              <!-- <span class="sidebar-mini">
+                D
+              </span>
+              <span class="sidebar-normal">
+                {{ 'Departments' | translate }}
+              </span>  -->
+            </a>
+          </li>
+
+          <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
+            <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/widget">
+              <span class="_badge" [ngClass]="{'change-badge-bckgrnd' : WIDGET_ROUTE_IS_ACTIVE === true}">New</span>
+              <p class="onBlackBckgrnd">
+                <span class="sidebar-mini">W </span>Widget
+              </p>
+
+              <!-- <span class="sidebar-mini">
+                W
+              </span>
+              <span class="sidebar-normal"> 
+                Widget 
+              </span>  -->
+            </a>
+          </li>
+
+          <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
+            <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/hours">
+              
+              <p class="onBlackBckgrnd">
+                <span class="sidebar-mini">O </span>{{ 'Hours' | translate }}
+              </p>
+              
+              <!-- <span class="sidebar-mini">
+                O
+              </span>
+              <span class="sidebar-normal"> 
+                {{ 'Hours' | translate }}
+              </span>  -->
+            </a>
+          </li>
+          <!-- margin-bottom:95px -->
+          <li *ngIf="SHOW_SETTINGS_SUBMENU" routerLinkActive="active" style="margin-bottom:25px" (click)="stopScroll()">
+            <a *ngIf="project"  class="customAncor" routerLink="project/{{ project._id }}/edit">
+            <p class="onBlackBckgrnd">
+              <span class="sidebar-mini">{{ 'PS' | translate }} </span> {{ 'NavBar.ProjectSettings' | translate }}
+            </p>  
+              
+              <!-- <i class="material-icons sidebar-icons">settings</i>
+              <p class="onBlackBckgrnd">
+                {{ 'NavBar.ProjectSettings' | translate }}
+              </p> -->
+            </a>
+          </li>
+
+          <!-- <li *ngIf="SHOW_SETTINGS_SUBMENU"></li> -->
+
+          <!-- // SCRIPT -->
+          <!-- <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active">
+              <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/script">
+                  <span class="sidebar-mini">
+                      S
+                  </span>
+                  <span class="sidebar-normal">Script</span> 
+              </a>
+          </li> -->
+
+          <!-- /// CHANNELS -->
+          <!-- <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active">
+              <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/channels">
+                  <span class="sidebar-mini">
+                      C
+                  </span>
+                  <span class="sidebar-normal">Channels</span> 
+              </a>
+          </li> -->
+
+          <!-- <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" style="" >
+              <a routerLink="project/{{ projectid }}/social">
+                  <span class="sidebar-mini">
+                      S
+                  </span>
+                  <span class="sidebar-normal">Social</span> 
+              </a>
+          </li> -->
+ 
+          <!-- </span> -->
+          <!-- <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}}">
+              <a  [routerLink]="[menuItem.path]">
+                  <i class="material-icons">{{menuItem.icon}}</i>
+                  <p>{{menuItem.title}}</p>
+              </a>
+          </li> -->
+      </ul>
+  </div>
+
+  
+</div>
+<!-- ////// SIDEBAR FOOTER -->
+<!--
+<div class="sidebar-footer">
+  <div class="row">
+    <div class="col-sm-6">
+      <div style="text-align:center; font-weight:400">
+        <span *ngIf="prjct_profile_name === 'free'">  Pro (trial)</span>  
+     
+        <span *ngIf="prjct_trial_expired === false" class="upgrade-btn" (click)="goToPricing()"> 
+          upgrade
+        </span>
+        <span *ngIf="prjct_trial_expired === true" style=" color: #fff; font-size: 12px;display: block;"> 
+          {{ 'TrialExpired' | translate}}
+        </span>
+      </div>
+    </div>
+
+    <div class="col-sm-6">
+      <div *ngIf="prjct_trial_expired === false"> 
+   
+        <div id="progress" class="progress"  [attr.data-percentage]="prjc_trial_days_left_percentage" >
+          <span class="progress-left">
+            <span class="progress-bar"></span>
+          </span>
+          <span class="progress-right">
+            <span class="progress-bar"></span>
+          </span>
+          <div class="progress-value">
+            <div> 
+
+               {{ prjc_trial_days_left }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="prjct_trial_expired === true"> 
+        <button class="btn upgrade-btn-trial-expired" (click)="goToPricing()"> upgrade </button>
+      </div>
+    </div>
+  </div>
+</div>
+-->
+
+
+
+
+<!-- MODAL - LOGOUT WINDOWS -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayLogoutModal}" style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog " role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title">
+          <!-- tiledesk Log Out -->
+          {{ 'NavBar.TiledeskLogOut' | translate }}
+        </h4>
+      </div>
+
+      <div class="modal-body">
+        <p style="margin-top: 0px; text-align:center; color:#566787; font-size:16px; font-weight:400 ">
+          <!-- Are you sure you want to log out? -->
+          {{ "NavBar.AreYouSureYouWantToLogOut" | translate }}
+        </p>
+        <p  *ngIf="project &&  IS_AVAILABLE === true" style="margin-bottom:0px; text-align:center;">
+             <i class="material-icons" style="display: block; color:#f44336">warning</i>
+          <span *ngIf="project" style="color:#f44336"> {{ "NavBar.AttentionIfYouDoNotWantToReceiveRequests" | translate }} </span> 
+        </p>
+
+        <p  *ngIf="!project &&  availabilityCount > 0" style="margin-bottom:0px; text-align:center;">
+            <span style="color:#f44336"> {{ "NavBar.AttentionYouAreAvailable" | translate }}
+                {{availabilityCount}}  
+                <span *ngIf="availabilityCount === 1">{{ "NavBar.Project" | translate }}.</span>
+                <span *ngIf="availabilityCount > 1">{{ "NavBar.Projects" | translate }}.</span>
+                {{ "NavBar.IfYouDoNotWantToReceiveRequests" | translate }}
+               </span>
+          </p>
+      </div>
+
+      <div class="modal-footer" style="text-align: center;">
+        <button class="btn btn-white" (click)="onCloseLogoutModalHandled()" style="padding:12px 16px; font-size:12px ">
+          {{ "Cancel" | translate}}
+        </button>    
+        <button class="btn btn-info" (click)="onLogoutModalHandled()" style="padding:12px 16px; font-size:12px ">
+          <!-- Log Out -->
+          {{ 'NavBar.LogOut' | translate }}
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

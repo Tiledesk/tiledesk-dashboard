@@ -1,0 +1,114 @@
+$color-success: #4caf50;
+
+.close-pricing-page {
+  text-align: right;
+}
+
+.close-btn {
+  font-size: 60px;
+  font-weight: 100;
+  color: #000;
+  cursor: pointer;
+  opacity: 0.2;
+}
+
+.close-btn:hover {
+  opacity: 0.5;
+}
+
+@media (min-width: 691px) {
+  .plan-bckgrnd {
+    // background-size: 475px 449px, 188px 100%, 179px 100%;
+    background-size: 199px 449px, 188px 100%, 179px 100%;
+    background-position: right -12px bottom, right, calc(100% - 179px);
+    // background-repeat: repeat-y;
+    background-repeat: no-repeat;
+  }
+
+  .success-payment-bckgrnd {
+    background-image: url(assets/img/background-card-vertical_2.svg),
+      linear-gradient(to bottom, $color-success 0%, $color-success 100%),
+      linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
+  }
+}
+
+.custom-hr {
+  border-style: solid;
+  border-width: 4px;
+  border-image: linear-gradient(to left, white 1%, #d3d7e0 50%, white 100%) 100% 0 100% 0/0px 0 3px 0 stretch;
+}
+
+.icon-box {
+  color: #fff;
+  position: absolute;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  top: -70px;
+  width: 95px;
+  height: 95px;
+  border-radius: 50%;
+  z-index: 9;
+  background: #82ce34;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 992px) {
+  .icon-box {
+    top: -94px !important;
+  }
+}
+
+.icon-box i {
+  font-size: 58px;
+  position: relative;
+  top: 3px;
+}
+
+.success-page-card-title {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.success-page-card-subtitle {
+  text-align: center;
+}
+
+.success-payment-outline-btn {
+  color: $color-success;
+  border: 2px solid $color-success;
+}
+
+.success-payment-outline-btn:active {
+    background-color: #ffffff !important;
+    color: $color-success;
+  }
+
+/* OUTLINE BTN */
+.outline-btn {
+  background-color: transparent;
+  border-radius: 40px;
+  padding: 18px 36px;
+  line-height: 1.33em;
+  font-weight: 500;
+  // font-size: 32px;
+  font-size: 18px;
+}
+
+/* RESPONSIVE TEXT IN THE OUTLINE BTN */
+// @media (min-width:410px)  and (max-width: 992px){
+//     .outline-btn {
+//         font-size:24px !important;
+//     }
+// }
+
+@media (max-width: 410px) {
+  .outline-btn {
+    font-size: 14px !important;
+    padding: 16px 24px;
+  }
+}
+
+

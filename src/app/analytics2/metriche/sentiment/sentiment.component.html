@@ -1,0 +1,87 @@
+<!-- ----------------START SENTIMENT FEEDBACK & BAR CHART--------------------------------- -->
+<div class="row" style="text-align: center; margin-top:35px">
+  <div class="col-md-12" >
+      <h4 class="section-title">
+          {{ 'Analytics.SentimentTitle' | translate }}
+      </h4>
+  </div>
+</div>
+<div class="row" style="text-align: center; margin-top:6px">
+  <div class="col-md-3">
+      <div class="card" style="border-radius: 10px;">
+           <div style="text-align: center; padding-top: 12px;padding-bottom: 10px;">
+              <p>{{ 'Analytics.SentimentHEART' | translate }}</p>
+           </div>
+           <div class="card-content heart">
+              <p class="numberHEART">{{numberSentimentHEART}} 
+                <!-- <i class="material-icons iconHEART">favorite</i> -->
+              </p>
+              <!-- <p style="padding-top:25px">{{unitAVGtime}}</p> -->
+            </div>
+          <div class="card-footer request_count_footer" style="font-size: 14px">
+              {{ 'Analytics.SentimentMedianValueHEART' | translate }} <b>{{responseSentimentHEART}}</b>
+          </div>
+      </div>
+  </div>
+  <div class="col-md-9" >
+      <div class="card" style="border-radius: 10px;">
+          <div style="padding-top: 12px;padding-bottom: 10px; ">
+              <!-- <p style="margin-bottom: -3px"><b>{{ 'Analytics.MedianResTimeClock' | translate }}</b></p>
+              <p style="font-style: italic; font-size: 12px; line-height: 0px; padding-top: 10px; margin-top: 0px">{{dateRangeAvg}}</p> -->
+              <div class="row">
+                <div class="col-sm-4"> 
+                  <div class="section-select-dept">
+                    <label  class="col-sm-12" style="text-align: left; color:black">
+                        {{ 'Analytics.FilterReport' | translate }}
+                    </label>
+                    <div class="col-sm-12" style="margin-bottom: 20px; text-align: left">
+                      <ng-select class="custom" name="days" [(ngModel)]="selectedDaysId" [clearable]="false" (change)="daysSelect(selectedDaysId)">
+                        <ng-option [value]="7">{{ 'Analytics.Last' | translate}} 7 {{ 'Analytics.Days' | translate}}</ng-option>
+                        <ng-option [value]="15">{{ 'Analytics.Last' | translate}} 15 {{ 'Analytics.Days' | translate}}</ng-option>
+                        <ng-option [value]="30">{{ 'Analytics.Last' | translate}} 30 {{ 'Analytics.Days' | translate}}</ng-option>
+                        <ng-option [value]="90">{{ 'Analytics.Last' | translate}} 3 {{ 'Analytics.Months' | translate}}</ng-option>
+                        <ng-option [value]="180">{{ 'Analytics.Last' | translate}} 6 {{ 'Analytics.Months' | translate}}</ng-option>
+                        <ng-option [value]="360">{{ 'Analytics.Last' | translate}} 1 {{ 'Analytics.Year' | translate}}</ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+                </div>
+              
+                <!-- ------ init-end days show--------- -->
+                <div class="col-sm-4"> 
+                  <div class="section-select-dept">
+                    <label  class="col-sm-12" style="text-align: left; color:black; padding-right: 0px;">
+                        {{ 'Analytics.DataRangeRequest' | translate }} : 
+                    </label>
+                    <div class="col-sm-12 boxdays" >
+                     <p style="margin: 0 !important; text-align: left"> {{initDay}} <i class="material-icons arrow_forward-custom"> arrow_forward </i> {{endDay}}</p>
+                    </div>
+                  </div>
+                </div>
+                <!-- ------ department filter--------- -->
+                <div class="col-sm-4"> 
+                  <div class="section-select-dept">
+                      <!-- color: rgba(0, 0, 0, 0.54); -->
+                    <label  class="col-sm-12" style="text-align: left; color:black">
+                        {{ 'HistoryPage.FilterByDepartment' | translate }} :
+                    </label>
+                    <div class="col-sm-12" style="margin-bottom: 20px; text-align: left">
+                      <ng-select class="custom" name="dept" [(ngModel)]="selectedDeptId" [clearable]="false" (change)="depSelected(selectedDeptId)">
+                        <ng-option [value]="''">{{ 'HistoryPage.AllDepts' | translate }}</ng-option>
+                        <ng-option *ngFor="let dept of departments" [value]="dept._id">
+                          {{dept.name}}
+                        </ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+          <div class="card-content chart-container" style="position: relative; margin:auto; height: 30vh;">
+              <canvas id="barChartSENTIMENT"></canvas>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- --------------------------------FINE--------------------------------- -->
+

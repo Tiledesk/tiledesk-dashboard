@@ -1,0 +1,372 @@
+
+ <p style="z-index: 1050;position: relative; margin-top:6px; padding-left:30px" class="navbar-brand">
+    {{ 'Contacts' | translate }}
+  </p> 
+ 
+ <div class="main-content" style="padding-top:0px">
+   <div class="container-fluid">
+
+      <div class="row">
+          <div class="col-md-12">
+            <div class="card search-card" style="margin-bottom: 0px;">
+              <div class="card-content" style="padding-top: 0px;padding-bottom: 0px;">
+                  <!-- <div class="card-header" style="background-color:#ffffff; padding: 8px;"> -->
+             
+                      <!-- *********************** // PAGINATION // ***********************  -->
+                      <!-- <div class="row">
+                        <div class="col-md-12">
+                          <div class="tiledesk-pagination" style="margin-top: 10px; margin-right: 3px;  float: right">
+                            <div style="width: 120px;">
+                              <div class="input-group"> -->
+          
+                                <!-- -------====== BTN DECREASE PAGE  ======------ -->
+                                <!-- <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
+                                  <button [disabled]="pageNo + 1 === 1" class="btn btn-info" type="button" (click)="decreasePageNumber()" 
+                                   style="padding: 6px 8px">
+                                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                  </button>
+                                </span> -->
+          
+                                <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
+                                <!-- <span class="input-group-btn" style="padding-right:0px;">
+                                  <button #searchbtn class="btn btn-info" type="button" style="padding: 6px 8px">
+                                    {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
+                                  </button>
+                                </span> -->
+                                
+                                <!-- -------====== BTN INCREASE PAGE  ======------ -->
+                                <!-- <span class="input-group-btn" style="padding-right:0px">
+                                  <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0" class="btn btn-info" type="button" 
+                                   (click)="increasePageNumber()" style="padding: 6px 8px">
+                                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                  </button>
+                                </span>
+          
+                              </div>
+                          
+                            </div>
+                          </div>
+                        </div>
+                      </div> -->
+          
+                      <form #myForm="ngForm" novalidate class="search-form">
+                        
+                        <!-- ------====== INPUT 'FULL TEXT' + CLEAR FULL-TEXT SEARCH BTN   ======------ -->
+                        <div class="row">
+                          <div class="col-sm-8"> 
+                            <!-- <div class="input-group"> -->
+          
+                              <div class="buttonInside">
+                                <!-- INPUT 'FULL TEXT' -->
+                                
+                                <input name="fullText" type="text" [(ngModel)]="fullText" class="form-control full-text-search" autocomplete="off"
+                                  placeholder="{{ 'SearchYourContacts' | translate }}" style="padding-left: 8px;">
+                                      
+                                <!-- // CLEAR SEARCH FULL-TEXT BTN -->
+                                <span id="clear-fulltext-search"  *ngIf="fullText?.length > 0" class="glyphicon glyphicon-remove tooltipx" aria-hidden="true" 
+                                  (click)="clearFullText()">
+                                  <span style="font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !important;" class="tooltiptext-custom">
+                                   {{ 'ClearSearch' | translate }}
+                                 </span> 
+                                </span>
+                              </div>
+          
+                              <!-- // SEARCH FULL-TEXT BTN -->
+                             <!-- <span class="input-group-btn" style="padding-right:0px">
+                               <button class="btn btn-info searchbtn" type="submit" (click)="search()" style="border-top-right-radius: 0px;border-bottom-right-radius: 0px;">
+                                 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                               </button>
+                             </span>
+          
+                             <span class="input-group-btn" style="padding-left:0px; padding-right:0px">
+                               <button #advancedoptionbtn class="btn btn-default" type="button" (click)="toggleAdvancedOption()">
+                                 <span class="caret"></span>
+                               </button>
+                             </span> -->
+                            <!-- </div> -->
+                          </div>
+                        <!-- </div> -->
+         
+                        <!-- <div *ngIf="showAdvancedSearchOption"> -->
+         
+                         <!-- <div class="row" style="margin-bottom: 20px;"> -->
+                           <div class="col-sm-4">
+                             <!-- <label  class="col-sm-12" style="text-align: left; color: #7695a5 !important;">
+                               Email
+                             </label> -->
+                             <input style="margin-top:2px" name="contactEmail" [(ngModel)]="selectedContactEmail" class="form-control" type="email"
+                                style="background-image: none !important" placeholder="{{ 'SearchByEmail' | translate }}">
+         
+                           </div>
+         
+                         </div>
+         
+                           <!-- -------====== BTNS SEARCH  & CLEAR SEARCH & EXPORT TO CSV ======------ -->
+                           <div class="row">
+                             <div class="col-sm-12"> 
+                               <button style="padding: 9px 30px;" type="submit" class="btn btn-info searchbtn" (click)="search()">
+                                 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                               </button>
+         
+                               <button style="padding: 9px 30px; color: #7695a5" type="submit" class="btn btn-white clearsearchbtn" (click)="clearSearch()">
+                                 <!-- <span class="glyphicon glyphicon-remo" aria-hidden="true"></span> -->
+                                 {{ 'HistoryPage.ClearSearch' | translate }}
+                               </button>
+         
+                               <button style="padding: 9px 30px; color: #7695a5" class="btn btn-white pull-right export-to-csv-btn" (click)="exportContactsToCsv()">
+                                 <!-- <span style="color: #394f5a">  </span> -->
+                                   {{ 'ExportToCSV' | translate }}
+                               </button>
+                             </div>
+                           </div>
+         
+                         <!-- </div> -->
+          
+                       
+                      </form>
+          
+                    <!-- </div>   --> <!-- /.end card-header -->
+              </div>
+            </div>
+          </div>   
+        </div> 
+
+     <div class="row">
+       <div class="col-md-12">
+         
+ 
+         <div class="card" style="margin-top:0px">
+ 
+           <loading-spinner *ngIf="showSpinner"></loading-spinner>
+           <div  *ngIf="!showSpinner" class="card-content table-responsive">
+  
+            <table class="table table-hover">
+              <thead class="text">
+                <tr>
+ 
+                  <!-- ===== CONTACT NAME ===== -->
+                  <th>
+                    <span class="column-th-span">
+                      {{ 'Contact' | translate }}
+                    </span>  
+                  </th>
+ 
+                  <!-- ===== CONTACT EMAIL ===== -->
+                  <th>
+                    <span class="column-th-span">
+                      Email 
+                    </span>
+                  </th>
+ 
+   
+                  <!-- ===== CREATED ===== -->
+                  <th>
+                    <span class="column-th-span">
+                      {{ 'Created' | translate }}
+                    </span>
+                  </th>
+
+                  <!-- ========== ICON VIEW CONTACT DETAILS ========== -->
+                  <th>
+                    <span class="column-th-span">
+                      {{ 'Actions' | translate }}
+                    </span>
+                  </th>
+     
+                </tr>
+              </thead>
+              <tbody>
+ 
+                <!-- ===== IF THERE ISN'T CONTACTS ===== -->
+                <tr *ngIf="contacts && contacts?.length === 0"> 
+                  <td colspan="4" style="text-align: center; padding-top: 16px; cursor: pointer">
+ 
+                    <p style="font-size:1em; color:#7695a5; font-weight: 400">
+                      {{ 'NoContact' | translate }}
+                    </p>
+                  </td>
+                </tr> 
+                 
+                <tr *ngFor="let contact of contacts">
+   
+                  <!-- ===== CONTACT NAME ===== -->
+                  <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
+                        
+                    <span class="avatar" [ngStyle]="{'background-color': contact?.avatar_fill_colour }">
+                      <span style="color: #ffffff"> {{ contact?.name_initial }} </span>
+                    </span>
+                    <span *ngIf="contact?.contact_is_verified === true" class="tooltipx"> 
+                      <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                        viewBox="0 0 26.6 26.6" width="18" height="18" style="position: relative;left: -52px;top: -7px;" xml:space="preserve">
+                        <style type="text/css">
+                          .st0{fill:none;}
+                          .st1{fill:#FFFFFF;}
+                          .st2{fill:#18BDF7;}
+                        </style>
+                        <path class="st0" d="M1.3,1.3h24v24h-24V1.3z"/>
+                        <path class="st1" d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z"/>
+                        <path class="st2" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
+                          l6.6-6.6l1.4,1.4L11.3,18.3z"/>
+                      </svg>
+
+                      <span class="tooltiptext-custom"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
+                    </span>
+                    
+                      <span class="column-td" [ngClass]="{'contact-verified' : contact?.contact_is_verified === true}">
+                        {{ contact?.fullname }}
+                      </span>
+
+                      <span *ngIf="!contact?.fullname" class="column-td" [ngClass]="{'contact-verified' : contact?.contact_is_verified === true}">
+                        n.a
+                      </span>
+
+                  </td>
+ 
+                  <!-- ========== CONTACT EMAIL ========== -->
+                  <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
+                    
+                    <p class="column-td" style="margin-bottom: 5px; margin-top: 5px">
+                      {{ contact?.email }}
+                    </p>
+
+                    <p class="column-td" *ngIf="!contact?.email" style="margin-bottom: 5px; margin-top: 5px">
+                      n.a.
+                    </p>
+                  </td>
+ 
+                  <!-- ========== CREATED AT ========== -->
+                  <td (click)='goToContactDetails(contact?._id)' style="cursor:pointer">
+                    
+                    <p class="column-td" style="margin-bottom: 5px; margin-top: 5px">
+    
+                      {{ contact?.createdAt | amTimeAgo }}
+                       <!-- ({{ contact?.createdAt | date: 'd/M/y HH:mm' }})  -->
+
+                    </p>
+                  </td>
+
+                  <!-- ========== ICONS EDIT CONTACT - VIEW CONTACT REQUESTS - REMOVE CONTACT ========== -->
+                  <!-- <td (click)='goToContactDetails(contact?._id)' style="text-align:left; padding-top: 15px; padding-left: 22px;" > -->
+
+                    <td class="td-actions text-right" style="padding-left: 0px;padding-top: 17px;">
+
+                      <button style="margin-left: 8px;margin-right: 8px;" type="button" class="btn btn-info btn-simple btn-xs tooltipx" (click)='goToContactDetails(contact?._id)'>
+                        <i class="material-icons">chat</i>
+                        <span class="tooltiptext-custom" style="text-transform:none">
+                          {{ 'ViewContactRequests' | translate }} 
+                        </span> 
+                      </button>
+
+                      <button type="button" class="btn btn-primary btn-simple btn-xs tooltipx" (click)='goToEditContact(contact?._id)'>
+                        <i class="material-icons">edit</i>
+                        <span class="tooltiptext-custom" style="text-transform:none">
+                          {{ 'EditContact' | translate }} 
+                        </span> 
+                      </button>
+
+                      <button type="button" class="btn btn-danger btn-simple btn-xs tooltipx" [disabled]="IS_CURRENT_USER_AGENT === true" (click)='openDeleteContactModal(contact?._id, contact?.fullname)'>
+                        <i class="material-icons">close</i>
+                        <span class="tooltiptext-custom" style="text-transform:none">
+                          {{ 'DeleteContact' | translate }} 
+                        </span> 
+                      </button>
+
+                    </td>
+
+
+                    <!-- <span style="cursor:pointer" class="tooltipx">
+                        <i style="font-size: 17px !important; color: #00bcd4" class="material-icons">dvr</i>
+                        <span class="tooltiptext-custom">
+                          {{ 'ViewDetails' | translate }} 
+                         
+                        </span> 
+                    </span>
+                  </td> -->
+ 
+                </tr>
+              </tbody>
+            </table>
+          </div> <!-- ./ card-content table-responsive -->
+ 
+          <div *ngIf="displaysFooterPagination === true" class="card-footer" style="text-align:right">
+            <div class="stats">
+
+              <div style="width: 120px; margin: 0 auto; margin-top: 10px " >
+                <div class="input-group">
+
+                  <!-- -------====== BTN DECREASE PAGE  ======------ -->
+                  <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
+                    <button [disabled]="pageNo + 1 === 1" class="btn btn-info" type="button" (click)="decreasePageNumber()" style="padding: 6px 8px">
+                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    </button>
+                  </span>
+
+                  <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
+                  <span class="input-group-btn" style="padding-right:0px;">
+                    <button #searchbtn class="btn btn-info" type="button" style="padding: 6px 8px">
+                      {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
+                    </button>
+                  </span>
+                  
+                  <!-- -------====== BTN INCREASE PAGE  ======------ -->
+                  <span class="input-group-btn" style="padding-right:0px">
+                    <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0" class="btn btn-info" type="button" (click)="increasePageNumber()" style="padding: 6px 8px">
+                      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    </button>
+                  </span>
+
+                </div>
+              </div>
+              
+            </div>
+          </div>
+ 
+        </div> <!-- ./ card -->
+      </div> <!-- ./ col-md-12 -->
+    <div> <!-- ./ row -->
+   
+  </div> <!-- ./ container-fluid -->
+</div> <!-- ./ main-content -->
+
+<!-- ============= MODAL REMOVE 'CONTACT' ============= -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDeleteModal}" style="background-color: rgba(90,90,90,0.5);">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color:#ff5252; padding-bottom:24px">
+          <button type="button" class="close" aria-label="Close" (click)="onCloseDeleteModal()">
+            <span aria-hidden="true" style="color: #fff">&times;</span>
+          </button>
+          <h4 class="modal-title" style="color: #fff">
+            <i class="material-icons" style="vertical-align: middle">report_problem</i>
+            <span style="vertical-align: middle; padding-left:8px">
+              
+              {{ "DeleteContact" | translate }}
+            </span>
+          </h4>
+    
+        </div>
+        <div class="modal-body">
+          <p style="font-weight:500; text-align: left; margin-top: 10px; color: #394f5a;font-size: 16px;">
+            {{ "AreYouSure" | translate }} ?
+            <!-- <span style="font-weight:600;">{{ groupNameToUpdate }}</span> -->
+          </p>
+          <p style="color: #7695a5">
+              {{ "YouAreAboutToDeleteTheContact" | translate }}
+              <span style="font-weight:500;">{{ fullName_toDelete }}</span>
+          </p>
+        </div>
+        <div class="modal-footer" style="margin-top: 0px;">
+          <button class="btn btn-white" (click)="onCloseDeleteModal()" style="padding:12px 16px;">
+            
+            {{ "GroupsAddEditPage.Cancel" | translate }}
+          </button>
+          <button style="margin-top:0px" class="btn btn-danger" (click)="deleteContact()">
+            
+            {{ "DeleteContact" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+   

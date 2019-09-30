@@ -1,0 +1,269 @@
+
+<!-- NEW FOR THIS TEMPALTE -->
+<div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" 
+  (click)="goBackToFaqKbList()">
+    keyboard_arrow_left
+  </i>
+  <!-- Aggiungi FAQ Knowledge Base -->
+  <span *ngIf="CREATE_VIEW">
+    <!-- Aggiungi Bot -->
+    {{ "BotsAddEditPage.AddBot" | translate }}
+  </span>
+  <!-- Modifica FAQ Knowledge Base -->
+  <span *ngIf="EDIT_VIEW">
+    <!-- Modifica Bot -->
+    {{ "BotsAddEditPage.EditBot" | translate }}
+  </span>
+</div>
+  
+<div class="main-content" style="padding-top:0px">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card" style="padding-top:25px; padding-bottom:25px">
+          <div class="card-content">
+
+
+            <span *ngIf="CREATE_VIEW">
+
+              <loading-spinner *ngIf="showSpinner"></loading-spinner>
+              <!-- Nome FAQ KB -->
+              <div class="row"> 
+                <label class="col-sm-2 custom-label">
+                  <!-- Nome Bot -->
+                  {{ "BotsAddEditPage.BotName" | translate }}
+                </label>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                  <!-- Faq kb name -->
+                  <input [(ngModel)]="faqKbName" class="input" type="text" placeholder='{{ "BotsAddEditPage.BotName" | translate }}'>
+                </div>
+              </div>
+
+              <!-- SPACER -->
+              <!-- <div class="col-sm-12" style="height:10px"></div> -->
+
+              <!-- EXTERNAL URL CHECKBOX -->
+              <div class="row"> 
+                <label class="col-sm-2"></label>
+                <div class="col-sm-10"> 
+                  <div class="checkbox">
+                    <label>
+                      <input type="checkbox" name="externalBot" (click)="hasClickedExternalBot(is_external_bot = !is_external_bot)" >
+                      <span class="checkbox-label">
+                        {{ "BotsPage.ExternalBot" | translate }} 
+                      </span> 
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SPACER -->
+              <div class="col-sm-12" style="height:10px"></div>
+              
+              <div class="row"> 
+                <label class="col-sm-2 custom-label">Url</label>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                  <textarea [(ngModel)]="faqKbUrl" class="input" type="text" placeholder="{{ 'BotsPage.EnterExternalBotUrl' | translate }}" 
+                    [disabled]="!is_external_bot">
+                  </textarea>
+                </div>
+              </div>
+
+              <div class="row"> 
+                <label class="col-sm-2"></label>
+                <div class="col-sm-10"> 
+                    <!-- || faqKbUrl?.length < 5 -->
+                  <button class="btn btn-success" [disabled]="faqKbName?.length < 2" (click)="create()">
+                    <!-- Crea Bot -->
+                    {{ "BotsAddEditPage.CreateBot" | translate }}
+                  </button>
+                </div>
+              </div>
+
+            </span>
+            <!-- /. CREATE_VIEW -->
+
+            <span *ngIf="EDIT_VIEW">
+ 
+              <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+              <!-- Nome FAQ KB -->
+              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2">
+                <!-- Nome Bot -->
+                {{ "BotsAddEditPage.BotName" | translate }}
+              </label>
+              <div class="col-sm-10">
+                <input [(ngModel)]="faqKbNameToUpdate" class="input" type="text" placeholder="">
+              </div>
+
+              <!-- SPACER -->
+              <!-- <div class="col-sm-12" style="height:10px"></div>
+              <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">Url FAQ KB</label>
+              <div class="col-sm-10">
+                <input [(ngModel)]="faqKbUrlToUpdate" class="input" type="text" placeholder="Url FAQ Knowledge Base">
+              </div> -->
+
+              <!-- SPACER -->
+              <div class="col-sm-12" style="height:15px"></div>
+
+              <label class="col-sm-2"></label>
+              <div class="col-sm-10"> 
+                <button class="btn btn-success" (click)="edit()">
+                  <!-- Modifica FAQ KB -->
+                  <!-- Modifica Bot -->
+                  {{ "BotsAddEditPage.UpdateBot" | translate }}
+                </button>
+              </div>
+
+            </span>
+            <!-- /. EDIT_VIEW -->
+          </div>
+          <!-- ./ card-content -->
+        </div>
+        <!-- ./ card -->
+      </div> <!-- ./ col-md-8 -->
+
+
+      <!-- RIGHT SIDEBAR -->
+      <div class="col-md-4">
+          <!-- padding-top:25px; padding-bottom:25px -->
+        <div class="card" style="">
+          <div class="card-content">
+  
+            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
+              {{ "QuickTips" | translate }}
+            </h4>
+
+            <p style="color:#7695a5">
+
+              {{ "BotsPage.BotQuickTipsText" | translate }}
+
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- ./ row -->
+   </div> 
+  <!-- ./ container-fluid -->
+
+</div>
+<!-- ./ main-content -->
+
+<!-- MODAL - INFO WINDOWS -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayInfoModal }" style="background-color: rgba(90,90,90,0.5);">
+    <!-- modal-sm -->
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content custom-modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+
+          <h4 class="modal-title">
+              {{ "BotsAddEditPage.CreateBot" | translate }}
+            <!-- <code>{{id_toDelete}}</code> -->
+          </h4>
+        </div>
+
+        <div class="modal-body" style="padding-right: 15px; padding-top:15px; padding-bottom:15px">
+        
+          <span *ngIf="SHOW_CIRCULAR_SPINNER">
+            <div  class="loader" style="top:25%">
+              <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+              </svg>
+
+            </div>
+            <p style="margin-top: 60px; text-align: center;">
+                {{ "BotsAddEditPage.Processing" | translate }}
+            </p>
+          </span>
+
+          <span *ngIf="!SHOW_CIRCULAR_SPINNER">
+            <div style="text-align: center">
+
+              <!--      WHEN NO ERROR OCCUR      -->
+              <span *ngIf="!CREATE_BOT_ERROR">
+                <i class="material-icons" style="color:#70b665">done</i>
+                <p style="color:#70b665; font-weight: 500">
+                  {{ "BotsAddEditPage.Completed" | translate }}
+                </p> 
+              </span>
+
+              <!--   ERROR   -->
+              <span *ngIf="CREATE_BOT_ERROR">
+                <i class="material-icons" style="color:#ff5252">report_problem</i>
+                <p style="color:#ff5252; font-weight: 500">
+                    {{ "Error" | translate }}
+                </p> 
+              </span>  
+
+            </div>
+
+            <!--      WHEN NO ERROR OCCUR      -->
+            <span *ngIf="!CREATE_BOT_ERROR">
+              <p style="margin-top: 10px; text-align: center; font-weight: 500">
+                <!-- {{ "BotsAddEditPage.BotCreated" | translate }} -->
+                {{ "BotsAddEditPage.TheBot" | translate }} 
+                <span style="color: #566787"> 
+                  <strong>{{ newBot_name }} </strong>
+                </span>
+                {{ "BotsAddEditPage.HasBeenCreated" | translate }}
+              </p>
+
+              <span *ngIf="!newBot_External">
+                <div class="row">
+                  <div class="col-md-12" style="text-align: center; padding-left: 3px; padding-right: 6px;" 
+                    [ngClass]="{'it_custom_add_faq_now' : browser_lang == 'it'}">
+                    <label class="form-check">
+
+                      <input class="form-check-input" type="radio" name="mode" [checked]="true" 
+                      (change)="actionAfterGroupCreation(goToEditBot = true)">
+                        <span style="margin-left: 8px; color:#7695a5; font-weight: 500;">
+                          {{ "BotsAddEditPage.AddFaqToTheBot" | translate }} 
+                        </span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <!-- col-xs-8 col-xs-offset-2 -->
+                  <div class="col-md-12" style="text-align: center">
+                    <label class="form-check">
+
+                      <input class="form-check-input" type="radio" name="mode" [value]="false" 
+                      (change)="actionAfterGroupCreation(goToEditBot = false)">
+                        <span style="margin-left: 8px; color:#7695a5; font-weight: 500"> 
+
+                          {{ "BotsAddEditPage.ReturnToTheBotList" | translate }} 
+                        </span>
+                    </label>
+                  </div>
+                </div>
+              </span>
+            </span>  
+
+            <!--    ERROR     -->
+            <span *ngIf="CREATE_BOT_ERROR">
+              <p style="margin-top: 0px; text-align: center; font-weight: 500">
+                {{ "BotsAddEditPage.AnErrorHasOccurred" | translate }}
+              </p>
+            </span>
+
+          </span>
+        </div>
+
+        <div class="modal-footer" style="text-align: center;">
+          <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseInfoModalHandled()">
+              {{ "BotsAddEditPage.Continue" | translate }}
+          </button>
+        </div>
+
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>

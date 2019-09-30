@@ -1,0 +1,64 @@
+<p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px" class="navbar-brand">
+  {{ "Groups" | translate }}
+</p> 
+
+<div class="main-content" style="padding-top:0px">
+  <div class="container-fluid">
+
+    <div class="row col-container">
+      
+      <div class="col-md-5 left-side-in-col-container"> 
+          
+        <div class="left-div-padding">
+          <div class="row"> 
+            <div class="col-sm-12"> 
+              <h2 class="demopage-title">
+                <!-- Available with the PRO plan  -->
+                {{ "AvailableWithTheProPlan" | translate }}
+              </h2>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <h3 class="demopage-subtitle"> 
+                <!-- Use groups to organize support teams. -->
+                {{ "GroupsPage.UseGroupsToOrganizeSupportTeams" | translate }}. <br>
+                <!-- You can group agents based on skills and assign groups of agents to your departments. -->
+                {{ "GroupsPage.YouCanGroupAgents" | translate }}. 
+              </h3>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <div style="text-align: center;"> 
+                  <!-- (click)="goToPricing()" -->
+                <button type="button" class="btn outline-btn-analytics btn-lg" style="padding:11px 22px" (click)="goToPricing()">
+
+                  <span> {{ 'UpgradeNow' | translate }}  </span> 
+
+                </button>
+              </div>
+            </div>
+          </div>  
+        </div>
+      </div>
+        
+      <div class="col-md-7 right-side-in-col-container" > 
+        <div style="max-width:780px;margin:auto">
+          <div class="card" style="box-shadow: 0 14px 30px 0 rgba(60,72,91,0.22); border-radius:10px;">
+            <div class="card-content">
+              <div class="row">
+                <div  class="col-md-12">
+                  <!-- <img src="assets/img/static_group.png" class="img-fluid" style=""/> -->
+                  <slideshow [imageUrls]="imageUrlArray" [minHeight]="'410px'" [autoPlay]="true"  [showArrows]="false"></slideshow>
+                </div>
+              </div>
+            </div>  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,109 @@
+// @import url(https://fonts.googleapis.com/css?family=Google+Sans);
+.tiledesk_card_header {
+    padding:0px !important; 
+    -webkit-box-shadow:none !important;  
+    box-shadow: none !important; 
+    width: 0;height: 0 !important;
+    position: relative !important;
+    top: 24px !important;
+}
+
+.card-header-custom {
+    box-shadow: none!important;
+    margin-left: 0px!important; 
+    margin-right: 0px!important; 
+    border-bottom: 1px solid #eff3f5!important;
+}
+
+.request_count_footer {
+    font-family: 'Google Sans', sans-serif !important;
+    font-size: 16px;
+    color:rgba(0,0,0,.54); 
+    text-align: center;
+}
+
+
+
+.chart-wrapper-sentiment{
+    //background-color: rgb(30, 136, 229)!important; -->blue color
+    //background-color: #ffffff;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-left: -30px;
+    margin-right: -30px;
+    min-height: 345px;
+}
+
+.chart-title {
+    padding-bottom: 24px;
+    padding-top: 24px;
+    font-size: 18px;
+    //color: #fff;
+    font-family: 'Google Sans', sans-serif !important;
+}
+
+.heart{
+    //background-image: url('../../assets/img/heart.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 160px;
+    width: 160px;
+    margin: 9xp auto;
+        
+}
+
+.numberHEART{
+    //font-size: 73px;
+    font-size:21px;
+    line-height: 0;
+    padding-top: 60px;
+    color: #b3190e;
+    font-family: 'Google Sans', sans-serif !important;
+}
+
+.iconHEART{
+    font-size: 12px
+}
+
+.chart-container{
+    //background-color: #1e88e5;
+    font-family: 'Google Sans', sans-serif !important;
+}
+
+.boxdays{
+    height: 33px; 
+    //border: 1px solid grey;
+    font-family: 'Google Sans', sans-serif !important;
+    font-size:100%;
+    display: inline-block; //-->allow content vertical align
+    vertical-align: middle;
+    padding-top: 5px;
+
+    .arrow_forward-custom{
+        position: relative;
+        top: 5px;
+        font-size: 22px;
+        
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .advancedOptionForm {
+        width: 500px;
+        margin: 0 auto;
+    }
+
+    .section-select-dept {
+        padding-right: 15px;
+    }
+}
+
+@media screen and (max-width: 767px) { 
+    .advancedOptionForm {
+       padding-right: 25px;
+       padding-left: 25px;
+    }
+}

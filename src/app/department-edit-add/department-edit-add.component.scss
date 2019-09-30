@@ -1,0 +1,236 @@
+input[type=text] {
+    // min-width: 307px !important;
+    height: 36px;
+    font-size: 14px;
+    width: 100%;
+    margin-bottom: 10px;
+    -webkit-appearance: none;
+    background: #fff;
+    border: 1px solid #d9d9d9 !important;
+    border-top: 1px solid #c0c0c0;
+    /* border-radius: 2px; */
+    padding: 0 8px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border-radius: 5px;
+    background-color: #fff !important;
+    border: solid 1px #ddd;
+}
+
+select {
+    // height:36px;  
+    height:26px; 
+    background: #fff; 
+    border-radius: 0px; 
+    border-color: #d9d9d9; 
+}
+.card form [class*="col-"] {
+    padding: 0px;
+}
+
+// RADIO BTNS
+// .form-check-label {
+//     margin-bottom: 0;
+// }
+// label {
+//     display: inline-block;
+//     margin-bottom: .5rem;
+// }
+
+// .form-check-inline .form-check-input {
+//     position: static;
+//     margin-top: 0;
+//     margin-right: .3125rem;
+//     margin-left: 0;
+// }
+// input[type=checkbox], input[type=radio] {
+//     box-sizing: border-box;
+//     padding: 0;
+// }
+// .form-check-input {
+//     position: absolute;
+//     margin-top: .3rem;
+//     margin-left: -1.25rem;
+// }
+
+// .col-sm-12 .form-check-inline {
+//     display: -webkit-inline-box;
+//     display: -ms-inline-flexbox;
+//     display: inline-flex;
+//     -webkit-box-align: center;
+//     -ms-flex-align: center;
+//     align-items: center;
+//     padding-left: 0;
+//     margin-right: .75rem;
+// }
+// .form-check {
+//     position: relative;
+//     display: block;
+//     padding-left: 1.25rem;
+// }
+
+
+// .col-sm-2 .form-check-inline  {
+//     padding-top: 5px;
+// }
+
+
+// @media (max-width: 1354px){
+//     .col-sm-8 select {
+//         padding-top: 15px 
+            
+//     }
+// }
+
+// from 992 to 1020px 
+@media (min-width: 992px) and (max-width: 1283px){
+    .deptname {
+        padding-top: 0px !important;
+
+    }
+}
+
+
+
+input[type=radio] {
+    box-sizing: border-box;
+    padding: 0;
+}
+.form-check-input {
+    position: absolute;
+    margin-top: .3rem;
+    margin-left: -1.25rem;
+}
+
+// OPTION ITEM MENU
+@media (max-width: 768px){
+    .col-sm-9 {
+        padding-top:5px !important; 
+    }
+}
+
+.errorGroup {
+    color: #ff5252 !important;
+    border-color: #ff5252 !important;
+}
+.selectCustomDisabled {
+    color: #c0c0c0 !important;
+    background-color: rgba(192,192,192,.1) !important;
+}
+
+// START - CUSTOM NOTIFICATION 
+  // https://bootsnipp.com/snippets/featured/a-different-approach-to-bootstrap-alert
+  .oaerror {
+    width: 100%; /* Configure it fit in your design  */
+    margin: 0 auto; /* Centering Stuff */
+    background-color: #FFFFFF; /* Default background */
+    // padding: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left:20px;
+    padding-right:20px;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+    margin: 0 auto;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+  }
+
+  .danger {
+    border-left-color: #d9534f; /* Left side border color */
+    background-color: rgba(217, 83, 79, 0.1); /* Same color as the left border with reduced alpha to 0.1 */
+  }
+  
+  .danger strong {
+    color:  #d9534f;
+  }
+  
+  .warning {
+    border-left-color: #f0ad4e;
+    background-color: rgba(240, 173, 78, 0.1);
+  }
+  
+  .warning strong {
+    color: #f0ad4e;
+  }
+  
+  .info {
+    border-left-color: #5bc0de;
+    // background-color: rgba(91, 192, 222, 0.1);
+  }
+  
+  .info strong {
+    color: #5bc0de;
+  }
+  
+  .success {
+    border-left-color: #2b542c;
+    background-color: rgba(43, 84, 44, 0.1);
+  }
+
+  .disabled {
+    border-left-color: #999;
+    // background-color: rgba(192, 192, 192, 0.1);
+  }
+  
+  .success strong {
+    color: #2b542c;
+  }
+  // END - CUSTOM NOTIFICATION 
+
+.title-attribute {
+    font-family: "Google Sans",sans-serif!important;
+    color: #394f5a;
+    font-weight: 500;
+}
+
+.attribute {
+    color: #7695a5;
+}
+
+.disabled-label {
+    color:#aaa !important;
+}
+
+.custom-label-for-dept {
+  color: #7695a5;
+  height: 36px;
+  // padding-top: 7px;
+  padding-left: 16px;
+  padding-right: 16px;
+  text-align: right!important;
+}
+
+@media (max-width: 768px) {
+  .custom-label-for-dept {
+      // height: 0px !important;
+      padding-top: 18px !important;
+      text-align: left !important;
+  }
+
+  .card-padding {
+    padding-top:0px !important; 
+    padding-bottom:0px !important; 
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1200px) { 
+  .custom-label-for-dept { 
+    text-align: left !important;
+    padding-top: 18px !important;
+  }
+
+  .card-padding {
+    padding-top:0px !important; 
+    padding-bottom:0px !important;
+  }
+ 
+}
+
+@media (min-width: 1682px) { 
+  .custom-label-for-dept {
+    padding-top:8px;
+  }
+}
+

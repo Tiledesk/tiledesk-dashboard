@@ -1,0 +1,134 @@
+<div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">keyboard_arrow_left</i>
+  <!-- Profilo -->
+  {{ "UserProfile.Profile" | translate }}
+</div>
+<div class="main-content" style="padding-top:0px">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card" style="padding-top:25px; padding-bottom:25px">
+
+          <!-- // USER PROFILE -->
+          <div *ngIf="user" class="card-content">
+
+            <label style="height: 36px; padding-top: 20px; padding-left: 16px; padding-right: 16px; text-align: right; margin-top: 12px; color: #7695a5" class="col-sm-2 avatar_label">
+              Avatar
+            </label>
+            <div class="col-sm-10">
+                
+              <div class="card-avatar" style="padding-bottom:15px">
+                          
+                <!-- <img style="vertical-align: middle; width: 60px; height: 60px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" class="img" src="assets/img/no_image_user.png" /> -->
+                <img style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
+                class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{ user_id }}%2Fphoto.jpg?alt=media" 
+                onerror="this.src='assets/img/no_image_user.png'"/>     
+              </div> 
+            </div>
+
+            <label class="col-sm-2 custom-label">
+              <!-- Nome -->
+              {{ "UserProfile.Name" | translate }}            
+            </label>
+            <div class="col-sm-10">
+                <!-- user.firstname  -->
+              <input  style="color:#999999" [(ngModel)]="user_firstname" class="" type="text" placeholder='{{ "UserProfile.Name" | translate }}' disabled>
+            </div>
+
+            <label class="col-sm-2 custom-label">
+              <!-- Cognome -->
+              {{ "UserProfile.Lastname" | translate }}
+            
+            </label>
+            <div class="col-sm-10">
+                <!-- user.lastname  -->
+              <input style="color:#999999" [(ngModel)]="user_lastname " class="" type="text" placeholder='{{ "UserProfile.Lastname" | translate }}' disabled>
+            </div>
+
+            <label class="col-sm-2 custom-label">
+              Email
+            </label>
+            <div class="col-sm-10">
+                <!-- user.email  -->
+              <input style="color:#999999" [(ngModel)]="user_email" class="" type="text" placeholder="Email" disabled>
+            </div>
+
+            <label class="col-sm-2 custom-label">
+              <!-- ID Utente -->
+              {{ "UserProfile.UserId" | translate }}
+            </label>
+            <div class="col-sm-10">
+                <!-- user._id  -->
+              <input style="color:#999999" [(ngModel)]="user_id" class="" type="text" placeholder='{{ "UserProfile.UserId" | translate }}' disabled>
+            </div>
+
+          </div>
+
+          <!-- // FAQ-KB PROFILE  -->
+          <div *ngIf="faqKb" class="card-content" style="padding-top: 25px;">
+
+              <label style="height: 36px; padding-top: 20px; padding-left: 16px; padding-right: 16px; text-align: right; color: #7695a5" class="col-sm-2 avatar_label">
+                Avatar
+              </label>
+              <div class="col-sm-10">
+                  
+                <div class="card-avatar" style="padding-bottom:15px">
+                            
+                  <img style="vertical-align: middle; width: 60px; height: 60px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
+                  class="img" src="assets/img/bot_image_as_human.jpg" />
+                        
+                </div> 
+              </div>
+  
+              <label class="col-sm-2 custom-label">
+                
+                {{ "UserProfile.Name" | translate }}            
+              </label>
+              <div class="col-sm-10">
+               
+                <input  style="color:#999999" [(ngModel)]="faqKb_name" class="" type="text" placeholder='' disabled>
+              </div>
+  
+              <label class="col-sm-2 custom-label">
+                {{ "UserProfile.FaqKbId" | translate }}
+              </label>
+              <div class="col-sm-10">             
+                <input style="color:#999999" [(ngModel)]="faqKb_id " class="" type="text" placeholder='' disabled>
+              </div>
+              <label class="col-sm-2 custom-label">
+                {{ "UserProfile.FaqKbRemoteId" | translate }}
+              </label>
+              <div class="col-sm-10">
+                <input style="color:#999999" [(ngModel)]="faqKb_remoteId" class="" type="text" placeholder="" disabled>
+              </div>
+              <!-- style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right; margin-bottom:25px; color: #7695a5" -->
+              <label class="col-sm-2 custom-label">
+                {{ "UserProfile.FaqKbCreatedAt" | translate }}
+              </label>
+              <div class="col-sm-10">
+                <input style="color:#999999" [(ngModel)]="faqKb_createdAt" class="" type="text" placeholder='' disabled>
+              </div>
+            </div>
+
+        </div>
+      </div>
+    </div>
+
+
+    <div *ngIf="faqKb_trashed === true" class="row">
+      <div class="col-sm-12">
+        
+          <div class="alert alert-custom-danger" role="alert">
+              <i class="material-icons" style="position:relative;top: 3px;">
+                info
+              </i>
+           <span style="display:inline;position: relative;top: -4px;">
+              {{ "UserProfile.BotHasBeenRemoved" | translate }}
+           </span>
+          </div>
+        
+      </div>
+    </div>
+
+  </div>
+</div>

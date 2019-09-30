@@ -1,0 +1,369 @@
+<p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px" class="navbar-brand">
+  {{ "Activities" | translate }}
+</p>   
+<div class="main-content" style="padding-top:0px">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card filter-card" style="margin-bottom: 0px;">
+          <!-- padding-top: 0px;padding-bottom: 0px; -->
+          <div class="card-content">
+
+            <div class="row">
+              <div class="col-sm-4" style="padding-left:0px;padding-right:0px;"> 
+                
+                  <label class="col-xs-12 col-sm-12" style="text-align: left; color:#7695a5;">
+                    {{ 'HistoryPage.DateRange' | translate }}
+                  </label>
+                 
+                    <div class="row">
+                      <div class="col-xs-12 col-sm-12">
+                        <div class="col-xs-6 col-sm-6" style="padding-right:2px;">
+                          <my-date-picker name="mydate" [options]="myDatePickerOptions" 
+                            [(ngModel)]="startDate" ></my-date-picker>
+                        </div>
+                        <div class="col-xs-6 col-sm-6" style="padding-left:2px;">
+                          <my-date-picker name="mydate" [options]="myDatePickerOptions"
+                            [(ngModel)]="endDate" ></my-date-picker>
+                        </div>
+                      </div>
+                    </div>
+                
+              </div>
+
+              <div class="col-sm-4">
+                <label  class="col-xs-12 col-sm-12" style="text-align: left; color: #7695a5 !important;padding-left:2px">
+                  {{ 'HistoryPage.Agent' | translate }}
+                </label>
+                  
+                <ng-select name="agent" [(ngModel)]="selectedAgentId" [clearable]="false">
+                  <ng-option [value]="''">{{ 'HistoryPage.AllAgents' | translate }}</ng-option>
+                  <ng-option *ngFor="let agent of agentsList" [value]="agent._id" >
+                    {{ agent?.firstname }} {{ agent?.lastname }} 
+                  </ng-option>
+                </ng-select>
+              </div>
+
+              <div class="col-sm-4">
+                <label class="col-xs-12 col-sm-12 activity-label" style="text-align: left; color: #7695a5 !important;padding-left:2px">
+                  {{ 'Activity' | translate }}
+                </label>
+                <ng-select [(ngModel)]="selectedActivities" 
+                  [clearable]="false" 
+                  [multiple]="true" 
+                  [items]="activities"
+                  bindLabel="name"
+                  bindValue="id"
+                  [multiple]="true"
+                  [closeOnSelect]="false"
+                  placeholder="{{ 'AllActivities' | translate }}">
+                  <!-- <ng-option [value]="''">{{ 'HistoryPage.AllAgents' | translate }}</ng-option>
+                  <ng-option *ngFor="let agent of agentsList" [value]="agent._id" >
+                  {{ agent.firstname }} {{ agent.lastname }} 
+                  </ng-option> -->
+         
+                </ng-select>
+              </div>
+            </div>
+
+            <!-- -------====== BTNS SEARCH  & CLEAR SEARCH & EXPORT TO CSV ======------ -->
+            <div style="margin-top:15px">
+              <div class="row">
+                <div class="col-sm-12"> 
+                  <button #searchbtn type="submit" class="btn btn-info" (click)="search()"
+                    style="padding:9px 30px;">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                  </button>
+
+                  <button #clearsearchbtn type="submit" class="btn btn-white clearsearchbtn" (click)="clearSearch()"
+                    style="padding:9px 30px;color:#7695a5">
+                    <!-- <span class="glyphicon glyphicon-remo" aria-hidden="true"></span> -->
+                    {{ 'HistoryPage.ClearSearch' | translate }}
+                  </button>
+
+                  <!-- <button #exportcsvbtn class="btn btn-white pull-right export-to-csv-btn" (click)="exportActivitiesAsCSV()"
+                    style="padding:9px 30px;color:#7695a5">
+                    
+                    {{ 'ExportToCSV' | translate }}
+                  </button> -->
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card" style="margin-top: 0px;">
+            <!-- float: right;  -->
+            <div class="sort-by-date" style="text-align:right; padding-top:16px; padding-right:28px">
+              <span style="cursor: pointer" (click)="sortDirection(asc = !asc)"> 
+                <span style="color:#7695a5; font-weight:400">
+                  {{ 'SortByDate' | translate}}
+                </span>
+                <span class="sorting" [ngClass]="{'sorting_desc' : direction === 1, 'sorting_asc': direction === -1}"></span>
+              </span>
+            </div>
+          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+          <div *ngIf="!showSpinner"  class="card-content table-responsive" style="padding-bottom:0px; padding-top:0px">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th valign="middle">
+                    <span class="column-th-span">
+                      <!-- Ultime attività -->
+                      {{ 'LatestActivities' | translate}}
+                    </span>
+
+                    <!-- <span style="float: right; cursor: pointer" (click)="sortDirection(asc = !asc)"> 
+                      <span style="color:#7695a5; font-weight:400">
+                        {{ 'SortByDate' | translate}}
+                      </span>
+                      <span class="sorting" [ngClass]="{'sorting_desc' : direction === 1, 'sorting_asc': direction === -1}"></span>
+                    </span> -->
+
+                  </th>
+                </tr>
+              </thead>
+              
+              <tbody>
+
+                <!-- ===== IF THERE ISN'T ACTIVITIES ===== -->
+                <tr *ngIf="usersActivities && usersActivities?.length === 0"> 
+                  <td colspan="6" style="text-align: center; padding-top: 16px; cursor: pointer">
+
+                    <p style="font-size:1em; color:#7695a5; font-weight: 400">
+                      {{ 'NoActivities' | translate }}
+                    </p>
+                  </td>
+                </tr> 
+
+                <tr *ngFor="let activity of usersActivities">
+                  <td style="width:1%; white-space:nowrap"> 
+                    <span *ngIf="activity?.verb === 'PROJECT_USER_INVITE'"> 
+                      <img class="fontawesome-icon" src="assets/img/user-plus-solid.svg" alt="user-plus"/> 
+                    </span>
+
+                    <span *ngIf="activity?.verb === 'PROJECT_USER_DELETE'"> 
+                      <img class="fontawesome-icon" src="assets/img/user-minus-solid.svg" alt="user-plus"/> 
+                    </span>
+
+                    <span *ngIf="activity?.verb === 'PROJECT_USER_UPDATE'"> 
+                      <img class="fontawesome-icon" src="assets/img/user-edit-solid.svg" alt="user-plus"/> 
+                    </span>
+
+                    <span *ngIf="activity?.verb === 'REQUEST_CREATE'"> 
+                        <img class="fontawesome-icon" src="assets/img/comment-medical-solid.svg" alt="user-plus"/> 
+                      </span>
+                  </td>
+
+                  <td *ngIf="activity?.actor?.name">
+                    <p style="margin-bottom:0px; font-weight:500; font-size:13px ">
+                      <span *ngIf="activity?.actor?.id !== currentUserId"> 
+                        <!-- A {{selectedAgentId}} b {{activity?.actor?.id}} -->
+                        <span class="link-to-user-profile" (click)="goToMemberProfile(activity?.actor?.id)"
+                          [ngClass]="{'highlight' : activity?.actor?.id === selectedAgentId}">
+                          {{ activity?.actor?.name }} 
+                        </span>
+                      </span>
+
+                      <span *ngIf="activity?.actor?.id === currentUserId"
+                        [ngClass]="{'highlight' : activity?.actor?.id === selectedAgentId}"> 
+                        <!-- A {{selectedAgentId}} b {{activity?.actor?.id}} -->
+                        {{ activity?.actor?.name }}
+                      </span>
+
+                      <!-- *** ACTION TYPE:
+                      //////////////////////////////////////////////////////////////////////
+                      ////////////// PROJECT-USER UPDATE (AVAILABILITY STATUS) /////////////
+                      ////////////////////////////////////////////////////////////////////// -->
+                      <span *ngIf="activity?.verb === 'PROJECT_USER_UPDATE'"> 
+                        <!-- ha cambiato -->
+                        {{ 'HasChanged' | translate}}
+
+                        <!-- USE CASE 1: THE TARGET OF THE ACTION IS THE CURRENT USER (YOURSELF)  -->
+                        <span *ngIf="activity?.targetOfActionIsYourself"> 
+                          <!-- il suo stato -->
+                          {{ 'HisStatus' | translate}}  
+                        </span>  
+                        <!-- USE CASE 2: THE TARGET OF THE ACTION IS ANOTHER USER (NOT YOURSELF)  -->
+                        <span *ngIf="!activity.targetOfActionIsYourself"> 
+                          <!-- USE CASE 2A: THE ACTION IS THE CHANGE OF THE AVAILABILITY STATUS -->
+                          <span *ngIf="activity?.actionObj?.user_available === false || activity?.actionObj?.user_available === true">
+                            {{ 'TheAvailabilityStatusOf' | translate}} 
+                          </span>
+
+                          <!-- USE CASE 2b: THE ACTION IS THE CHANGE OF THE ROLE -->
+                          <span *ngIf="activity?.actionObj?.role">
+                            {{ 'TheRoleOf' | translate}} 
+                          </span>
+
+                          <span class="link-to-user-profile" (click)="goToMemberProfile(activity?.target?.object?.id_user?._id)"
+                            [ngClass]="{'highlight' : activity?.target?.object?.id_user?._id === selectedAgentId}">  
+                            {{ activity?.target?.object?.id_user?.firstname}} {{ activity?.target?.object?.id_user?.lastname}}
+                          </span>   
+                        </span>
+                          {{ 'Into' | translate }}
+                        <span *ngIf="activity?.actionObj?.user_available === false">
+                          <!-- non disponibile -->
+                          {{ 'Unavailable' | translate }} 
+                        </span>
+
+                        <span *ngIf="activity?.actionObj?.user_available === true">
+                          <!-- disponibile -->
+                          {{ 'Available' | translate }} 
+                        </span>
+
+                        <span *ngIf="activity?.actionObj?.role === 'admin'">
+                          {{ 'admin' | translate }} 
+                        </span>
+
+                        <span *ngIf="activity?.actionObj?.role === 'agent'">
+                          {{ 'agent' | translate }} 
+                        </span>
+                      </span>
+
+                      <!-- *** ACTION TYPE:
+                      /////////////////////////////////////////////////////////////////////
+                      ///////////////////////// PROJECT-USER DELETE ///////////////////////
+                      ///////////////////////////////////////////////////////////////////// -->
+                      <span *ngIf="activity?.verb === 'PROJECT_USER_DELETE'"> 
+                        <!-- ha rimosso  -->
+                        {{ 'HasRemoved' | translate}} 
+                        <span [ngClass]="{'highlight' : activity?.target?.object?.id_user?._id === selectedAgentId}">
+                        {{ activity?.target?.object?.id_user?.firstname}} {{ activity?.target?.object?.id_user?.lastname}}
+                        </span>
+                        <!-- dal progetto -->
+                        {{ 'FromTheProject' | translate}} 
+                      </span>
+
+                      <!-- *** ACTION TYPE:
+                      /////////////////////////////////////////////////////////////////////
+                      ///////////////////////// PROJECT-USER INVITE ///////////////////////
+                      ///////////////////////////////////////////////////////////////////// -->
+                      <span *ngIf="activity?.verb === 'PROJECT_USER_INVITE'"> 
+                        <!-- ha invitato -->
+                          {{ 'HasInvited' | translate}} 
+                        <span class="link-to-user-profile" (click)="goToMemberProfile(activity?.target?.object?.id_user?._id)"
+                          [ngClass]="{'highlight' : activity?.target?.object?.id_user?._id === selectedAgentId}">  
+                            {{ activity?.target?.object?.id_user?.firstname }} {{ activity?.target?.object?.id_user?.lastname }}
+                        </span>
+
+                        <!-- email with round brackets if it not is a pendinginvitation -->
+                        <span *ngIf="activity?.target?.type !== 'pendinginvitation'">
+                          ({{ activity?.actionObj?.email }})
+                        </span> 
+
+                        <!-- email without round brackets if it is a pendinginvitation -->
+                        <span *ngIf="activity?.target?.type === 'pendinginvitation'">
+                          <em> {{ activity?.actionObj?.email }}</em>
+                        </span>
+
+                        <!-- ad assumere il ruolo di   -->
+                          {{ 'ToTakeOnTheRoleOf' | translate}} 
+
+                          {{ activity?.actionObj?.role | translate }}
+
+                        <span *ngIf="activity?.target?.type === 'pendinginvitation'">
+                          <em> ({{ 'PendingInvitation' | translate}})</em>
+                        </span>
+                      </span>
+                    </p>
+
+                    <!-- ////////// DATE ///////// -->
+                    <span style="color:#7695a5; font-weight:400;line-height:18px; font-size:13px"> 
+                      <!-- {{ activity?.updatedAt | date: 'E/MM/yyyy HH:mm:ss' }}  -->
+                      <span style="text-transform:capitalize"> {{ activity?.date }} </span> 
+                    </span>
+                  </td>
+
+                  <td *ngIf="activity?.verb === 'REQUEST_CREATE'">
+                      <p style="margin-bottom:0px; font-weight:500; font-size:13px ">
+
+                     {{ 'NewRequest' | translate }}
+
+                    <span *ngIf="activity?.target?.object?.status === 200">
+                        <!-- {{ '_served' | translate }} -->
+
+                        {{ 'AssignedTo' | translate }} 
+
+                        <span *ngIf="activity?.participant_fullname"> 
+                            
+                          <span class="link-to-user-profile" (click)="goToMemberProfile(activity?.target?.object?.participants[0])"> 
+                             {{ activity?.participant_fullname }}
+                            </span>:
+                        </span>
+
+
+                    </span>
+
+                    <span *ngIf="activity?.target?.object?.status === 100">
+                        {{ '_unserved' | translate }}:
+
+                      
+                    </span>
+                    <span *ngIf="activity?.activity_request_text" (click)="goToRequestDetails(activity?.target?.object?.request_id)"class="link-to-user-profile" style="cursor:pointer"> 
+                      <em> {{ activity?.activity_request_text }}</em> 
+                   </span>
+
+                   <!-- <span *ngIf="activity?.target?.object?.status === 200"> 
+
+                      {{ 'AssignedTo' | translate }}
+                      {{activity?.target?.object?.status }}
+                    </span> -->
+                 
+                  </p>
+                  <span style="color:#7695a5; font-weight:400;line-height:18px; font-size:13px"> 
+                      <!-- {{ activity?.updatedAt | date: 'E/MM/yyyy HH:mm:ss' }}  -->
+                      <span style="text-transform:capitalize"> {{ activity?.date }} </span> 
+                    </span>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+          
+          <div  class="card-footer" style="text-align:right">
+            <div class="stats">
+              <div style="width: 120px; margin: 0 auto; margin-top: 10px " >
+                <div class="input-group">
+
+                  <!-- -------====== BTN DECREASE PAGE  ======------ -->
+                  <span class="input-group-btn" style="padding-right:0px;  padding-left: 0px;">
+                    <button [disabled]="pageNo + 1 === 1" class="btn btn-info" type="button" (click)="decreasePageNumber()" style="padding: 6px 8px">
+                      <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    </button>
+                  </span>
+
+                  <!-- -------====== DISPLAY No PAGE / No TOTAL PAGES   ======------ -->
+                  <span class="input-group-btn" style="padding-right:0px;">
+                    <button class="btn btn-info" type="button" style="padding: 6px 8px">
+                      {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
+                    </button>
+                  </span>
+
+                  <!-- -------====== BTN INCREASE PAGE  ======------ -->
+                  <span class="input-group-btn" style="padding-right:0px">
+                    <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0" class="btn btn-info" type="button" (click)="increasePageNumber()" style="padding: 6px 8px">
+                      <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    </button>
+                  </span>
+
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

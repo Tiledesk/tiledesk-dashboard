@@ -1,0 +1,384 @@
+<div class="row">
+  <div class="col-md-11 col-md-offset-1 col-sm-11 col-sm-offset-1 col-xs-9 col-xs-offset-3" style="right:25px;">
+    <nav class="navbar navbar-transparent navbar-absolute">
+      <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" style="margin-top:-3px" data-toggle="collapse" (click)="sidebarToggle()">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <!-- <a class="navbar-brand" href="#">{{getTitle()}}</a> -->
+            <!-- <a class="navbar-brand" href="#">Testina</a> -->
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav navbar-right">
+
+            <!-- // ======= START - TEST - LOGOUT FROM FIREBASE ======= // -->
+            <li *ngIf="APP_IS_DEV_MODE == true" style="cursor:pointer">                 
+                <a (click)="testExpiredSessionFirebaseLogout()">
+                    <i class="material-icons">lock_open</i>
+                      FireBase Logout
+                </a>
+            </li>
+            <!-- // ======= ./END - TEST - LOGOUT FROM FIREBASE ======= // -->
+
+            <li class="dropdown">
+            <!-- class="dropdown-toggle" -->
+            <!-- margin-top:56px; display:block; text-align:right; padding-top:15px;padding-bottom:15px; padding-right:28px; color: #555555;" -->
+              <a  data-toggle="dropdown" href="#" style="display:block !important; margin-top:0px; opacity:100 !important">
+              <i style="font-size:20px; display:block !important; float: right; color: #555555 !important; " class="material-icons">person</i>
+              <!-- <p class="hidden-lg hidden-md">Profile</p> -->
+
+              <span class="tooltipx"> 
+                  <span  *ngIf="user?.emailverified == false" class="notification" style="font-weight: 200; font-size:12px; right:11px!important; top:3px!important; position: absolute!important;">
+                      !
+                      <span class="tooltiptext">
+                        {{"NavBar.PendingVerification" | translate }}
+                      </span>
+                  </span>
+              </span>
+              </a>
+            <!-- float:right !important; right:0px!important; left:1px!important  -->
+              <ul class="dropdown-menu">
+
+                <div class="card card-profile" style="box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0)">
+                  <div class="card-avatar" style="max-width:80px; max-height:80px; background-color:#ffffff; border: 2px solid #ffffff">
+                    <a>
+                      <!-- <img class="img" src="assets/img/no_image_user.png" /> -->
+
+                      <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" 
+                      class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{user?._id}}%2Fphoto.jpg?alt=media" />
+                      
+                      <img *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true" 
+                      class="user-img" src="assets/img/no_image_user.png"/>
+
+                    </a>
+
+                  </div>
+                  <div class="content">
+                    <button  class="btn btn-info" routerLink="/user-profile" 
+                      style="padding-top:3.5px; padding-bottom:3.5px; letter-spacing: 2px;border-radius: 30px;padding-left: 16px;padding-right: 16px;">
+                      <!-- <h6 class="category text-gray"> -->
+                        <!-- <a routerLink="/user-profile">  -->
+                        <span style="font-size:0.8em"> {{ 'ProjectsPage.UserProfile' | translate }} </span>
+                        <!-- </a> -->
+                      <!-- </h6> -->
+                    </button>
+                    <h4 class="card-title" style="padding-right:16px; padding-left:16px; font-size:1em; color: #3C4858">
+                      <strong> 
+                        {{ user?.firstname }} {{ user?.lastname }} 
+                      </strong>
+                    </h4>
+                    <h4 class="card-title" style="padding-right:16px; padding-left:16px; font-size:1em; margin-bottom:30px">
+                      {{ user?.email }}
+                    </h4>
+                    <!-- <p class="card-content">{{ user.email }}</p> -->
+                  </div>
+                  <button style="padding-left:26px; padding-right:26px; font-size:0.9em;color: #7695a5" type="submit" class="btn btn-white" (click)="openLogoutModal()">
+                    <!-- Log out -->
+                    {{ 'NavBar.LogOut' | translate }}
+                  </button>
+                </div>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+    
+    <!-- ------------============= PENDING EMAIL VERIFICATION MSG =============------------ -->
+    <!-- *ngIf="DETECTED_PROJECT_PAGE === true" -->
+    <span >
+        <div routerLink="/user-profile" *ngIf="user?.emailverified == false" data-notify="container" class="alert alert-danger animated fadeInDown alert-pending-email-prjct-page" role="alert" data-notify-position="top-center">
+            <!-- <button type="button" aria-hidden="true" class="close" data-notify="dismiss" style="position: absolute; right: 10px; top: 5px; z-index: 1033;">×</button> -->
+            <span data-notify="icon" class="notifications">
+                <i class="fa fa-exclamation-circle" style="font-size: 13px;position: relative;top: -1px;"></i>  
+                <span style="font-family: Google Sans, sans-serif;font-weight: 400; display: inline; position: relative;top: -2px; font-size: 11px; padding-left: 5px;">
+                    {{"NavBar.PendingVerification" | translate }}
+                </span> 
+                <span class="tooltipx" style="display: inline-block; float: right;">
+                  <span> 
+                      <i class="material-icons" style="position: relative;top: 2px; font-size:14px; color:#ffffff">
+                        help_outline
+                      </i>
+                    </span>
+                    <!-- display: inline-block -->
+                  <span class="tooltiptext" style="min-width: 231px;line-height: 1.1;min-height: 34px; top: -5px; right: 105%;  ">
+                    {{ "NavBar.WhenPendingEmailVerification" | translate}}
+                  </span>
+                </span>
+            </span> 
+            <!-- <span data-notify="title" style="max-width: 100%;">{{"NavBar.SomeSystemAreDisabled" | translate }}</span>  -->
+        </div>
+    </span>
+
+</div>
+<!-- target="_blank" href="http://www.tiledesk.com" -->
+<a  style="margin-top:3px; padding-left:30px; cursor: pointer;" class="navbar-brand">
+    <!--  assets/img/tiledesk-logo_white.svg -->
+  <img style="width:100px" src="assets/img/tiledesk-logo.png"/>
+  <!-- TEST EMAIL VERIFY -->
+  <!-- <span (click)="testVerifyEmail()">VERIFY EMAIL</span> -->
+</a> 
+
+
+<!-- http://www.frontiere21.com/wp-content/uploads/2016/08/chat21-frontiere21-head-.png -->
+<!-- style="padding-top:0px; background-repeat: no-repeat; background-image: url(assets/img/tiledesk-header.png); background-attachment: scroll; background-position: top right;" -->
+<!-- height: 374px; -->
+<!-- style="
+margin-top: 0px; 
+padding:0px; 
+background-repeat: no-repeat; 
+background-image: url(assets/img/frontiere21-hero-bckgrnd-full.png); background-attachment: scroll; background-position: top center;
+background-size:     contain; " -->
+<div class="main-content">
+
+    <!-- frontiere21-hero-bckgrnd-full -->
+    <!-- text-white bg-primary -->
+  <div class="pt-5 py-5 project_background" style="">
+    <!-- // added for new style start -->
+    <span style="height: 64px; position: absolute; width: 100%; left: 0%; top: 0px; background-color: rgba(66, 71, 112, 0.1);"></span>
+    <span style="height: 64px; position: absolute; width: 40%; bottom: 0px; right: 12%; background: rgba(255, 255, 255, 0.45);"></span>
+    <span style="height: 64px; position: absolute; width: 35%; bottom: -64px; right: 6%; background: rgba(50, 50, 93, 0.05);"></span>
+    <!-- // added for new style end -->
+     <!-- // commented for new style start -->
+    <!-- <div class="container">
+      <div class="row text-center">
+        <div class="col-md-12 text-center align-self-center my-5">
+          <h1 class="display-1 head-title" style="font-family: 'Google Sans', sans-serif !important;margin-top: 95px;color: #f0806f">{{ 'ProjectsPage.Welcome' | translate }} in tiledesk. </h1>
+          <p class="lead" style="color: #f0806f"> {{ 'ProjectsPage.BuildYourCustomer_1' | translate }} <br> {{ 'ProjectsPage.BuildYourCustomer_2' | translate }}</p>
+        </div>
+      </div>
+    </div> -->
+     <!-- // commented for new style end -->
+
+
+  </div>
+
+ <!-- // added for new style start -->
+  <div class="container">
+    <div class="row text-center" style="margin-bottom:90px ">
+      <div class="col-md-12 text-center align-self-center my-5">
+        <h1 class="display-1 head-title" style="">{{ 'ProjectsPage.Welcome' | translate }} {{ 'to' | translate}} tiledesk. </h1>
+        <p class="head-sub-title" > {{ 'ProjectsPage.BuildYourCustomer_1' | translate }} <br> {{ 'ProjectsPage.BuildYourCustomer_2' | translate }}</p>
+      </div>
+    </div>
+  </div>
+    <!-- // added for new style end -->
+
+
+  <!-- margin-right:100px; margin-left:100px; -->
+  <!-- <div style="background-color: #fff; height: 400px; z-index: 3; position:relative; background-repeat: no-repeat; background-image: url(assets/img/tiledesk-header.png); background-attachment: scroll; background-position: top right; "></div> -->
+ 
+  <div class="container-fluid" style="max-width: 960px;">
+    <!-- <div class="row">
+      <div class="project-page-title">
+        <h3 class="prjct-page-title" style="font-family: 'Google Sans', sans-serif !important; font-size: 45px; color: #ffffff" >
+          {{ 'ProjectsPage.Welcome' | translate }} in tiledesk. 
+        </h3>
+        <h4  class="prjct-page-subtitle" style="color: #ffffff; font-weight: 400" > 
+          {{ 'ProjectsPage.BuildYourCustomer_1' | translate }} <br> {{ 'ProjectsPage.BuildYourCustomer_2' | translate }} 
+        </h4>
+      </div>
+    </div> -->
+
+    <div class="projects-cards" style="position: relative;top: -57px;">
+    <div class="row">
+      <div class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer">
+
+        <!-- CARD ADD PROJECT -->
+        <!-- style="max-width: 256px;" -->
+        <div class="card" (click)='openCreateModal()' style="border-radius:10px">
+          <div class="card-content" style="height:203px">
+              <!-- #55b9d1 -->
+            <h3 class="title" style="color: #f0806f; text-align: center; padding-top:25px">
+              <i class="material-icons" style="font-size:48px">add</i>
+            </h3>
+            <h4 class="card-title" style="color: #f0806f; text-align: center; margin-bottom: 15px; font-family: 'Google Sans',sans-serif!important; font-weight: 600;
+            font-size: 24px;">
+                {{ 'ProjectsPage.AddProject' | translate }}
+            </h4>
+          </div>
+        </div>
+
+      </div>
+
+      <loading-spinner *ngIf="showSpinner"></loading-spinner>
+        <span *ngIf="!showSpinner">
+        <div *ngFor="let project of projects" class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer">
+
+          <!-- CARDS FROM THE PROJECT 'FOR' -->
+          <!-- style="max-width: 256px;" -->
+          <div class="card"  style="border-radius:10px" 
+            (click)='goToHome(project?.id_project?._id, project?.id_project?.name, project?.id_project?.profile?.name, project?.id_project?.trialExpired, project?.id_project?.trialDaysLeft)'>
+            <div class="card-content"  style="height:160px">
+              <h3 class="title" style="color: #566787; font-size:20px; margin-bottom: 0px;font-family: 'Google Sans',sans-serif!important">
+                {{ project?.id_project?.name }}
+              </h3>
+
+              <p class="category" style="font-size:14px !important; color:#7695a5">
+                {{ project?.id_project?._id }}
+              </p>
+              <h4 class="category" style="font-size:16px; margin-top: 16px;font-family: 'Google Sans',sans-serif!important; color: #7695a5">
+                {{ project?.role }}
+              </h4>
+            </div>
+            <div class="card-footer">
+              <div class="stats" style="color:#7695a5">
+                <i class="material-icons">date_range</i> {{ project?.id_project?.createdAt | date: 'dd/MM/yyyy'}}
+
+                <!-- <button type="button" rel="tooltip" title="Modifica Progetto" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(project?._id)'> -->
+                <!-- <i class="material-icons">edit</i> -->
+                  <!-- </button> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </span>
+
+    </div>
+    </div>
+    <!-- /. row -->
+    </div>
+  
+</div>
+
+<!-- ------------ ============== MODAL CREATE A NEW PROJECT ============== ------------ -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayCreateModal}" style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title">
+          <!-- Aggiungi un progetto -->
+          {{ 'ProjectsPage.ModalAddAProject' | translate }} 
+        </h4>
+      </div>
+      <div class="modal-body">
+        <!-- height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right; -->
+        <label style="font-weight:400; color: #566787" class="col-sm-12 ">
+          {{ 'ProjectsPage.ModalAddAProjectLabel' | translate }}
+        </label>
+        <div class="col-sm-10">
+          <input [(ngModel)]="project_name" type="text" placeholder="{{ 'ProjectsPage.ModalPlaceHolder' | translate }}" style="margin-bottom: 5px;">
+          <span *ngIf="project_name?.length > 0 && project_name?.length < 4" style="padding-left: 5px; font-size: 0.9em; color:#da491c">
+            {{ 'ProjectsPage.ModalMustBeAtLeast' | translate }}
+          </span>
+        </div>
+      </div>
+      <div class="modal-footer" style="margin-top: 75px;">
+        <button [disabled]="project_name?.length < 4" class="btn btn-info" (click)="createProject()">
+          {{ 'ProjectsPage.ModalCreateProjectBtn' | translate }} 
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL - CREATE A NEW PROJECT INFO WINDOWS -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayInfoModal}" style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title">
+          {{ "ProjectsPage.modalCreateProject" | translate }}
+          <!-- <code>{{id_toDelete}}</code> -->
+        </h4>
+      </div>
+
+      <div class="modal-body">
+      
+        <span *ngIf="SHOW_CIRCULAR_SPINNER">
+          <div  class="loader" style="top:25%">
+            <svg class="circular" viewBox="25 25 50 50">
+              <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+            </svg>
+
+          </div>
+          <p style="margin-top: 50px; text-align: center;">
+              {{ "ProjectsPage.Processing" | translate }}
+          </p>
+        </span>
+
+        <span *ngIf="!SHOW_CIRCULAR_SPINNER">
+          <div  class="loader" style="top:5%">
+            <i class="material-icons" style="color:#70b665">done</i>
+            <span style="color:#70b665">
+                {{ "ProjectsPage.Completed" | translate }}
+            </span> 
+
+          </div>
+          <p style="margin-top: 50px; text-align: center;">
+              {{ "ProjectsPage.YourNewProjectIsReady" | translate }}
+          </p>
+        </span>
+      </div>
+
+      <div class="modal-footer" style="text-align: center;">
+        <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseInfoModalHandled()">
+            {{ "ProjectsPage.Continue" | translate }}
+        </button>
+      </div>
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+<!-- MODAL - LOGOUT WINDOWS -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayLogoutModal}" style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog " role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title">
+            <!-- <img src="assets/img/tiledesk-solo-logo.png" width="21px"> -->
+             <!-- tiledesk Log Out  -->
+             {{ 'NavBar.TiledeskLogOut' | translate }}
+        </h4>
+      </div>
+
+      <div class="modal-body">
+        <p style="margin-top: 0px; text-align:center; color:#566787; font-size:16px; font-weight:400 ">
+          <!-- Are you sure you want to log out? -->
+          {{ "NavBar.AreYouSureYouWantToLogOut" | translate }}
+        </p>
+        <p *ngIf="myAvailabilityCount > 0" style="margin-bottom:0px; text-align:center;max-width: 500px; margin: auto;">
+          <i class="material-icons" style="display: block; color:#f44336">warning</i>
+          <span style="color:#f44336"> {{ "NavBar.AttentionYouAreAvailable" | translate }}
+             {{myAvailabilityCount}}  
+             <span *ngIf="myAvailabilityCount === 1">{{ "NavBar.Project" | translate }}.</span>
+             <span *ngIf="myAvailabilityCount > 1">{{ "NavBar.Projects" | translate }}.</span>
+             {{ "NavBar.IfYouDoNotWantToReceiveRequests" | translate }}
+            </span>
+        </p>
+  
+      </div>
+
+      <div class="modal-footer" style="text-align: center;">
+        <button class="btn btn-white" (click)="onCloseLogoutModalHandled()" style="padding:12px 16px; font-size:12px ">
+          {{ "Cancel" | translate}}
+        </button>    
+        <button class="btn btn-info" (click)="onLogoutModalHandled()" style="padding:12px 16px; font-size:12px ">
+          <!-- Log Out -->
+          {{ 'NavBar.LogOut' | translate }}
+        </button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

@@ -1,0 +1,838 @@
+/* @import url('https://fonts.googleapis.com/css?family=Architects+Daughter'); */
+
+.sidebar-wrapper {
+
+  transition-property: top,bottom,width;
+  transition-duration: .2s,.2s,.35s;
+  transition-timing-function: linear,linear,ease;
+}
+
+li.active a span.sidebar-mini  {
+
+ color: #ffffff !important
+}
+
+.sidebar-mini {
+    width: 30px;
+    margin-right: 15px;
+    text-align: center;
+    letter-spacing: 1px;
+    position: relative;
+    float: left;
+    display: inherit;
+    color: #a9afbb;
+    /* font-size:1.2em */
+}
+
+/* START - USED WITH SIDWBAR WITH BLACK BACKGROUND */
+.onBlackBckgrnd {
+    color: rgba(255,255,255,0.6);
+    font-family: 'Google Sans', sans-serif !important;
+}
+
+li.active a p.onBlackBckgrnd {
+    color: #ffffff !important;
+    
+}
+
+span.sidebar-normal {
+    color: rgba(255,255,255,0.6)
+}
+
+li.active a span.sidebar-normal {
+    color: #ffffff !important
+}
+
+
+/* start - mobile sidebar USED WITH SIDWBAR WITH BLACK BACKGROUND */
+p.hidden-lg.hidden-md{
+    color: rgba(255,255,255,0.6)
+}
+li.active p.hidden-lg.hidden-md {
+    color: rgba(25,25,25,1) !important
+}
+.nav .open > a > p.hidden-lg.hidden-md {
+    color: rgba(25,25,25,1) !important
+}
+ul.dropdown-menu > li > a {
+    color: rgba(255,255,255,0.6)
+}
+/* end - mobile sidebar USED WITH SIDWBAR WITH BLACK BACKGROUND */
+/* END - USED WITH SIDWBAR WITH BLACK BACKGROUND */
+
+
+li.active a span.sidebar-mini  {
+
+    color: #ffffff !important
+}
+
+/* CUSTOM MARGIN BETWEEN THE MENU ITEM*/
+.nav li > a.customAncor  {
+    /* margin: 5px 15px !important; */
+
+    margin-top: 5px !important;
+    margin-right: 15px !important;
+    margin-bottom: 5px !important;
+    margin-left:0px !important;
+}
+
+/* MODAL START */
+.modal {
+    top: 0;
+}
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #999;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 6px;
+    outline: 0;
+    -webkit-box-shadow: 0 3px 9px rgba(0,0,0,.5);
+    box-shadow: 0 3px 9px rgba(0,0,0,.5);
+}
+
+.modal-header {
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.modal-title {
+    margin: 0;
+    line-height: 1.42857143;
+}
+
+button.close {
+    -webkit-appearance: none;
+    padding: 0;
+    cursor: pointer;
+    background: 0 0;
+    border: 0;
+}
+.close {
+    float: right;
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    filter: alpha(opacity=20);
+    opacity: .2;
+}
+
+.modal-body {
+    position: relative;
+    padding-top: 35px;
+    padding-bottom: 35px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.modal-footer {
+    /* // padding: 15px; */
+    text-align: right;
+    border-top: 1px solid #e5e5e5;
+    /* // background-color: #edf0f1; */
+    background-color: #eeeeee;
+    padding-top:10px !important;
+}
+@media (min-width: 768px) and (max-width: 991px){
+    .modal-dialog {
+        width: 240px;
+    }
+}
+
+/* MODAL END */
+
+.sidebar-icons {
+    font-size: 20px !important;
+}
+
+.avatar-container {
+    text-align: center;
+    cursor: pointer;
+    /* position: absolute;
+    top: 92px;
+    border-radius: 50%;
+    padding: 8px;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    left: 50%; */
+}
+/* // NK start NEW: AVATAR ON THE SIDEBAR  */
+/* .hover-effect {
+    opacity: 0.5 !important;
+} */
+
+.is-over-camera:hover {
+    opacity: 1 !important;
+    cursor: pointer;
+}
+
+
+.tiledesk-nav-user{
+    background-color: #1e2129!important;
+    color: #fff!important;
+}
+
+.user {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    /* height: 136px;
+    min-height: 136px;
+    max-height: 136px; */
+    height: 130px;
+    min-height: 130px;
+    max-height: 130px;
+    /* padding: 8px 0 64px; */
+}
+
+.username {
+    font-family: 'Google Sans', sans-serif !important;
+}
+.avatar-container{
+    position: absolute;
+    /* top: 92px; */
+    top: 80px;
+    border-radius: 50%;
+    padding: 8px;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    left: 50%;
+}
+
+.tiledesk-nav-avatar {
+    background-color: #2d323e!important;
+    color: #fff!important;
+}
+
+.avatar-container .avatar {
+    width: 72px;
+    height: 72px;
+    margin: 0;
+    border-radius: 50%;
+}
+
+.status-icon {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    bottom: 8px;
+    left: 61px;
+    border: 2px solid #2d323e;
+    border-radius: 50%;
+    background-color: #4caf50;
+}
+
+.is-user-online {
+    background-color: #4caf50;
+}
+.is-user-offline {
+    background-color: #f44336;
+}
+
+.is-desktop-menu {
+    margin-top: 40px;
+}
+.is-mobile-menu {
+    margin-top: 0px;
+}
+
+
+/* *** SMALL SIDEBAR STYLE ***  */
+.small-sidebar-avatar .avatar{
+  width: 50px;
+  height: 50px;
+}
+
+.small-sidebar-email {
+  display: none;
+}
+
+.small-sidebar-status-icon {
+  left: 45px !important;
+
+}
+
+.small-sidebar-status-text {
+  display: none;
+}
+
+.small-sidebar-userfullname {
+  display: none;
+}
+
+.small-sidebar-camera-icon {
+  top: 86px !important;
+}
+
+
+/* OVERWRITE THE DEFAULT STYLE */
+.nav-mobile-menu {
+    margin-top: 25px!important;
+}
+/* // NK end NEW: AVATAR ON THE SIDEBAR  */
+
+
+
+/* NK start CUSTOM SCROLL BAR */
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888; 
+    /* border-radius: 6px; */
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+    /* width: 10px !important; */
+}
+/* NK end CUSTOM SCROLL BAR */
+
+
+/* SIDEBAR NAV ITEMS  */
+.active  {
+    height: 40px;
+    /* padding: 0 12px 0 24px; */
+    border-radius: 0 20px 20px 0;
+    margin-right: 16px;
+    background-color: #039be5!important;
+    color: #fff!important;
+}
+
+.active a {
+    background-color: transparent!important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+}
+.nav > li > a {
+    padding: 5px 15px !important;
+
+    border-radius: 0 20px 20px 0;
+    margin-right: 16px;
+    padding: 0 12px 0 24px;
+}
+/* SIDEBAR NAV ITEMS  */
+
+
+._badge {
+    /* position: absolute;
+    top: 12px;
+    border: 1px solid #FFF;
+    left:180px;
+    font-size: 9px;
+    background: #f44336;
+    color: #FFFFFF;
+    padding: 0px 2px;
+    border-radius: 6px;
+    text-align: center;
+    line-height: 16px;
+    vertical-align: middle;
+    display: block;
+    font-weight:400; */
+    position: absolute;
+    top: 11px;
+    left: 185px;
+    font-size: 11px;
+    background: rgb(244, 67, 54);
+    color: #FFFFFF;
+    padding: 0px 7px;
+    border-radius: 20px;
+    text-align: center;
+    line-height: 16px;
+    vertical-align: middle;
+    font-weight: 400;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    min-width: 20px;
+
+}
+
+.change-badge-bckgrnd {
+    background: #fff !important;
+    color: rgba(0,0,0,.87)!important;
+}
+
+
+.sidebar-footer {
+    position: relative;
+    z-index: 1050;
+    background-color: #1e2129!important;
+    /* bottom: 60px; */
+    bottom: 85px;
+    height: 85px;
+    padding: 18px;
+    color: #e1f5fecc
+}
+
+.upgrade-btn {
+    color: #fff;
+    font-size: 12px;
+    cursor:pointer
+}
+
+.upgrade-btn-trial-expired {
+    padding: 6px 15px; 
+    font-size: 11px;
+    font-size: 11px;
+    border-radius: 30px;
+    background-color: #039be5!important;
+    /* background-color: #ffb43e!important; */
+}
+
+/* // CIRCULAR PROGRESS BAR  */
+.progress {
+    /* width: 150px;
+    height: 150px;
+    line-height: 150px; */
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    background: none;
+    margin: 0 auto;
+    box-shadow: none;
+    position: relative;
+    left: 42px;
+    top: -9px;
+  }
+  .progress:after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    /* border: 7px solid #eee; */
+    border: 4px solid #eee;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .progress > span {
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+  }
+  .progress .progress-left {
+    left: 0;
+  }
+  .progress .progress-bar {
+    width: 100%;
+    height: 100%;
+    background: none;
+    /* border-width: 7px; */
+    border-width: 4px;
+    border-style: solid;
+    position: absolute;
+    top: 0;
+    border-color: #ffb43e;
+  }
+  .progress .progress-left .progress-bar {
+    left: 100%;
+    border-top-right-radius: 75px;
+    border-bottom-right-radius: 75px;
+    border-left: 0;
+    -webkit-transform-origin: center left;
+    transform-origin: center left;
+  }
+  .progress .progress-right {
+    right: 0;
+  }
+  .progress .progress-right .progress-bar {
+    left: -100%;
+    border-top-left-radius: 75px;
+    border-bottom-left-radius: 75px;
+    border-right: 0;
+    -webkit-transform-origin: center right;
+    transform-origin: center right;
+  }
+  .progress .progress-value {
+    display: flex;
+    border-radius: 50%;
+    /* font-size: 36px; */
+    font-size: 16px;
+    text-align: center;
+    line-height: 20px;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-weight: 300;
+  }
+  .progress .progress-value div {
+    /* margin-top: 10px; */
+  }
+  .progress .progress-value span {
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+  /* This for loop creates the 	necessary css animation names 
+   Due to the split circle of progress-left and progress right, we must use the animations on each side. 
+   */
+  .progress[data-percentage="5"] .progress-right .progress-bar {
+    animation: loading-1-minus-half 1.5s linear forwards;
+  }
+  .progress[data-percentage="5"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+
+
+  .progress[data-percentage="10"] .progress-right .progress-bar {
+    animation: loading-1 1.5s linear forwards;
+  }
+  .progress[data-percentage="10"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+
+  .progress[data-percentage="15"] .progress-right .progress-bar {
+    animation: loading-1-add-half 1.5s linear forwards;
+  }
+  .progress[data-percentage="15"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+
+  .progress[data-percentage="20"] .progress-right .progress-bar {
+    animation: loading-2 1.5s linear forwards;
+  }
+  .progress[data-percentage="20"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+
+  .progress[data-percentage="25"] .progress-right .progress-bar {
+    animation: loading-2-add-half 1.5s linear forwards;
+  }
+  .progress[data-percentage="25"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+  
+  .progress[data-percentage="30"] .progress-right .progress-bar {
+    animation: loading-3 1.5s linear forwards;
+  }
+  .progress[data-percentage="30"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+  .progress[data-percentage="35"] .progress-right .progress-bar {
+    animation: loading-3-add-half 1.5s linear forwards;
+  }
+  .progress[data-percentage="35"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+
+
+  .progress[data-percentage="40"] .progress-right .progress-bar {
+    animation: loading-4 1.5s linear forwards;
+  }
+  .progress[data-percentage="40"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+
+  .progress[data-percentage="45"] .progress-right .progress-bar {
+    animation: loading-4-add-half 1.5s linear forwards;
+  }
+  .progress[data-percentage="45"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+
+
+  .progress[data-percentage="50"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+  .progress[data-percentage="50"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+
+  .progress[data-percentage="55"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+  .progress[data-percentage="55"] .progress-left .progress-bar {
+    animation: loading-1-minus-half 1.5s linear forwards 1.5s;
+  }
+
+
+  .progress[data-percentage="60"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+  .progress[data-percentage="60"] .progress-left .progress-bar {
+    animation: loading-1 1.5s linear forwards 1.5s;
+  }
+
+
+  .progress[data-percentage="65"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+  .progress[data-percentage="65"] .progress-left .progress-bar {
+    animation: loading-1-add-half 1.5s linear forwards 1.5s;
+  }
+
+
+  .progress[data-percentage="70"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+  .progress[data-percentage="70"] .progress-left .progress-bar {
+    animation: loading-2 1.5s linear forwards 1.5s;
+  }
+
+  .progress[data-percentage="75"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+  .progress[data-percentage="75"] .progress-left .progress-bar {
+    animation: loading-2-add-half 1.5s linear forwards 1.5s;
+  }
+
+
+  .progress[data-percentage="80"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+  .progress[data-percentage="80"] .progress-left .progress-bar {
+    animation: loading-3 1.5s linear forwards 1.5s;
+  }
+
+
+
+  .progress[data-percentage="85"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+  .progress[data-percentage="85"] .progress-left .progress-bar {
+    animation: loading-3-add-half 1.5s linear forwards 1.5s;
+  }
+
+
+
+  .progress[data-percentage="90"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+  .progress[data-percentage="90"] .progress-left .progress-bar {
+    animation: loading-4 1.5s linear forwards 1.5s;
+  }
+
+  .progress[data-percentage="95"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+  .progress[data-percentage="95"] .progress-left .progress-bar {
+    animation: loading-4-add-half 1.5s linear forwards 1.5s;
+  }
+
+
+
+
+  .progress[data-percentage="100"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+  .progress[data-percentage="100"] .progress-left .progress-bar {
+    animation: loading-5 1.5s linear forwards 1.5s;
+  }
+
+  @keyframes loading-1-minus-half {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(18);
+      transform: rotate(18deg);
+    }
+  }
+
+
+
+
+  @keyframes loading-1 {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(36);
+      transform: rotate(36deg);
+    }
+  }
+
+
+  @keyframes loading-1-add-half {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(54);
+      transform: rotate(54deg);
+    }
+  }
+
+
+  @keyframes loading-2 {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(72);
+      transform: rotate(72deg);
+    }
+  }
+
+  @keyframes loading-2-add-half {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(90);
+      transform: rotate(90deg);
+    }
+  }
+
+  @keyframes loading-3 {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(108);
+      transform: rotate(108deg);
+    }
+  }
+
+  @keyframes loading-3-add-half {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(126);
+      transform: rotate(126deg);
+    }
+  }
+
+
+
+  @keyframes loading-4 {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(144);
+      transform: rotate(144deg);
+    }
+  }
+
+
+  @keyframes loading-4-add-half {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(162);
+      transform: rotate(162deg);
+    }
+  }
+
+
+  @keyframes loading-5 {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(180);
+      transform: rotate(180deg);
+    }
+  }
+
+
+
+  .progress {
+    margin-bottom: 1em;
+  }
+
+
+  @keyframes load {
+  0% {
+    stroke-dashoffset: 0;
+  }
+}
+.progress {
+  position: relative;
+  display: inline-block;
+  padding: 0;
+  text-align: center;
+}
+.progress > li {
+  display: inline-block;
+  position: relative;
+  text-align: center;
+  color: #93a2ac;
+  font-family: Lato;
+  font-weight: 100;
+  margin: 2rem;
+}
+.progress > li:before {
+  content: attr(data-name);
+  position: absolute;
+  width: 100%;
+  bottom: -2rem;
+  font-weight: 400;
+}
+.progress > li:after {
+  content: attr(data-percent);
+  position: absolute;
+  width: 100%;
+  top: 3.7rem;
+  left: 0;
+  font-size: 2rem;
+  text-align: center;
+}
+.progress svg {
+  width: 10rem;
+  height: 10rem;
+}
+.progress svg:nth-child(2) {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: rotate(-90deg);
+}
+.progress svg:nth-child(2) path {
+  fill: none;
+  stroke-width: 25;
+  stroke-dasharray: 629;
+  stroke: #fff;
+  opacity: 0.9;
+  animation: load 10s;
+}
+
+.upgrade-btn:hover{
+   padding: 4px 6px!important;
+   border-radius:10px;
+   background-color: rgba(255,255,255,0.5)
+   
+}
+/* new progress */
+  

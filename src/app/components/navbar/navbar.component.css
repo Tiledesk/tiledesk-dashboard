@@ -1,0 +1,736 @@
+/* @import url(https://fonts.googleapis.com/css?family=Google+Sans); */
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.btn-outline-primary {
+    color: #007bff;
+    background-color: transparent;
+    background-image: none;
+    border-color: #007bff;
+}
+
+.btn-outline-primary:hover {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+/* (min-width: 992px) and  */
+/* RESOLVE ISSUE: THE NAVIGATION TO PREVIOUS PAGE IS IMPOSSIBLE BECAUSE THE NAVBAR IS OVER THE NAVBAR BRAND IN WHICH THERE IS THE BACK BUTTON  */
+@media (max-width: 766px){
+    .col-xs-10 {
+        /* background-color: red; */
+        right:40px !important;
+    }
+}
+
+/* MODAL START */
+.modal {
+    top: 0;
+}
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #999;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 6px;
+    outline: 0;
+    -webkit-box-shadow: 0 3px 9px rgba(0,0,0,.5);
+    box-shadow: 0 3px 9px rgba(0,0,0,.5);
+}
+
+.modal-header {
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.modal-title {
+    margin: 0;
+    line-height: 1.42857143;
+}
+
+button.close {
+    -webkit-appearance: none;
+    padding: 0;
+    cursor: pointer;
+    background: 0 0;
+    border: 0;
+}
+.close {
+    float: right;
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    filter: alpha(opacity=20);
+    opacity: .2;
+}
+
+.modal-body {
+    position: relative;
+    padding-top: 35px;
+    padding-bottom: 35px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.modal-footer {
+    /* // padding: 15px; */
+    text-align: right;
+    border-top: 1px solid #e5e5e5;
+    /* // background-color: #edf0f1; */
+    background-color: #eeeeee;
+    padding-top:10px !important;
+}
+/* MODAL END */
+
+/* // start TOOLTIP */
+/* Tooltip container */
+.tooltipx {
+    position: relative;
+    display: inline-block;
+    /* // border-bottom: 1px dotted black;  */  /* If you want dots under the hoverable text */
+  }
+  
+  /* Tooltip text */
+  .tooltipx .tooltiptext {
+    visibility: hidden;
+
+    background-color: black; 
+    /* // background-color: rgba(0,0,0,0.6); */
+    color: #fff;
+    text-align: center;
+    padding: 5px 5px;
+    border-radius: 5px;
+    font-size: 10px !important;
+    text-transform: none !important;
+  
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 1;
+    /* Position the tooltip text - BOTTOM */
+  
+
+    width: 120px;
+    top: 100%;
+    left: 50%; 
+    /* margin-left: -60px; */
+    margin-left: -92px;
+
+    /* // NEW */
+    box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
+    background-color: #394f5a;
+  }
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .tooltipx:hover .tooltiptext {
+    visibility: visible;
+  }
+  /* // end TOOLTIP */  
+
+/*  ============= PENDING EMAIL VERIFICATION MSG ============= */
+.alert-pending-email-verification {
+    display: inline-block;
+    margin: 0px auto;
+    position: fixed;
+    transition: all 0.5s ease-in-out 0s;
+    z-index: 1031;
+    top: 10px;
+    left: 245px;
+    right: 0px;
+    width: 275px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 5px;
+    padding-right: 3px;
+    /* width: 450px;
+    padding-top: 10px;
+    padding-bottom: 10px; */
+    cursor: pointer;
+}
+
+.is-user-profile-page {
+    left: 25px !important;
+}
+
+@media (max-width: 991px){ 
+    .alert-pending-email-verification {
+        right: 0px;
+        left: 0px;
+    }
+}
+
+@media (max-width: 768px){ 
+    .alert-pending-email-verification {
+        width: 350px;
+    }
+}
+
+@media (max-width: 568px){ 
+    .alert-pending-email-verification {
+        width: 300px;
+    }
+}
+
+/* @media (max-width: 468px){ 
+    .alert-pending-email-verification {
+        width: 180px;
+    }
+} */
+
+
+.alert-open-chat {
+    display: inline-block;
+    margin: 0px auto;
+    position: fixed;
+    transition: all 0.5s ease-in-out 0s;
+    z-index: 1030;
+    top: 10px;
+    left: 245px;
+    right: 0px;
+    width: 275px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 5px;
+    padding-right: 3px;
+    /* width: 450px;
+    padding-top: 10px;
+    padding-bottom: 10px; */
+    cursor: pointer;
+}
+
+@media (max-width: 991px){ 
+    .alert-open-chat {
+        right: 0px;
+        left: 0px;
+    }
+}
+
+@media (max-width: 768px){ 
+    .alert-open-chat {
+        width: 350px;
+    }
+}
+
+@media (max-width: 568px){ 
+    .alert-open-chat {
+        width: 300px;
+    }
+}
+
+/* @media (max-width: 468px){ 
+    .alert-open-chat {
+        width: 180px;
+    }
+} */
+
+.alert-open-chat-when-is-open-email-alert {
+    top: 42px !important;
+}
+
+button.close.custom-hover:hover {
+    color: #7695a5 !important;
+}
+
+
+/* // CIRCULAR PROGRESS BAR  */
+.progress {
+    /* width: 150px;
+    height: 150px;
+    line-height: 150px; */
+    width: 32px;
+    height: 32px;
+    /* line-height: 50px; */
+    background: none;
+    margin: 0 auto;
+    box-shadow: none;
+    position: relative;
+    /* left: 42px;
+    top: -9px; */
+
+    left: 7px;
+    top: 9px;
+  }
+  .progress:after {
+    content: "";
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    /* border: 7px solid #eee; */
+    border: 4px solid #eee;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .progress > span {
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+  }
+  .progress .progress-left {
+    left: 0;
+  }
+  .progress .progress-bar {
+    width: 100%;
+    height: 100%;
+    background: none;
+    /* border-width: 7px; */
+    border-width: 4px;
+    border-style: solid;
+    position: absolute;
+    top: 0;
+    border-color: #ffb43e;
+  }
+
+  .progress .progress-bar-expired {
+    border-color: #f44336;
+  }
+
+
+  .progress .progress-left .progress-bar {
+    left: 100%;
+    border-top-right-radius: 75px;
+    border-bottom-right-radius: 75px;
+    border-left: 0;
+    -webkit-transform-origin: center left;
+    transform-origin: center left;
+  }
+  .progress .progress-right {
+    right: 0;
+  }
+  .progress .progress-right .progress-bar {
+    left: -100%;
+    border-top-left-radius: 75px;
+    border-bottom-left-radius: 75px;
+    border-right: 0;
+    -webkit-transform-origin: center right;
+    transform-origin: center right;
+  }
+  .progress .progress-value {
+    display: flex;
+    border-radius: 50%;
+    /* font-size: 36px; */
+    font-size: 16px;
+    text-align: center;
+    line-height: 20px;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-weight: 300;
+  }
+  .progress .progress-value div {
+    /* margin-top: 10px; */
+  }
+  .progress .progress-value span {
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+  /* This for loop creates the 	necessary css animation names 
+   Due to the split circle of progress-left and progress right, we must use the animations on each side. 
+   */
+  .progress[data-percentage="5"] .progress-right .progress-bar {
+    animation: loading-1-minus-half 1.5s linear forwards;
+  }
+  .progress[data-percentage="5"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+  .progress[data-percentage="10"] .progress-right .progress-bar {
+    animation: loading-1 1.5s linear forwards;
+  }
+  .progress[data-percentage="10"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+  .progress[data-percentage="15"] .progress-right .progress-bar {
+    animation: loading-1-add-half 1.5s linear forwards;
+  }
+  .progress[data-percentage="15"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+  .progress[data-percentage="20"] .progress-right .progress-bar {
+    animation: loading-2 1.5s linear forwards;
+  }
+  .progress[data-percentage="20"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+  .progress[data-percentage="25"] .progress-right .progress-bar {
+    animation: loading-2-add-half 1.5s linear forwards;
+  }
+  .progress[data-percentage="25"] .progress-left .progress-bar {
+    animation: 0;
+  }
+  
+  .progress[data-percentage="30"] .progress-right .progress-bar {
+    animation: loading-3 1.5s linear forwards;
+  }
+  .progress[data-percentage="30"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+  .progress[data-percentage="35"] .progress-right .progress-bar {
+    animation: loading-3-add-half 1.5s linear forwards;
+  }
+  .progress[data-percentage="35"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+  .progress[data-percentage="40"] .progress-right .progress-bar {
+    animation: loading-4 1.5s linear forwards;
+  }
+  .progress[data-percentage="40"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+  .progress[data-percentage="45"] .progress-right .progress-bar {
+    animation: loading-4-add-half 1.5s linear forwards;
+  }
+  .progress[data-percentage="45"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+  .progress[data-percentage="50"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+  .progress[data-percentage="50"] .progress-left .progress-bar {
+    animation: 0;
+  }
+
+  .progress[data-percentage="55"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+  .progress[data-percentage="55"] .progress-left .progress-bar {
+    animation: loading-1-minus-half 1.5s linear forwards 1.5s;
+  }
+
+  .progress[data-percentage="60"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+  .progress[data-percentage="60"] .progress-left .progress-bar {
+    animation: loading-1 1.5s linear forwards 1.5s;
+  }
+
+  .progress[data-percentage="65"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+  .progress[data-percentage="65"] .progress-left .progress-bar {
+    animation: loading-1-add-half 1.5s linear forwards 1.5s;
+  }
+
+  .progress[data-percentage="70"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+  .progress[data-percentage="70"] .progress-left .progress-bar {
+    animation: loading-2 1.5s linear forwards 1.5s;
+  }
+
+  .progress[data-percentage="75"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+  .progress[data-percentage="75"] .progress-left .progress-bar {
+    animation: loading-2-add-half 1.5s linear forwards 1.5s;
+  }
+
+  .progress[data-percentage="80"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+  .progress[data-percentage="80"] .progress-left .progress-bar {
+    animation: loading-3 1.5s linear forwards 1.5s;
+  }
+
+  .progress[data-percentage="85"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+  .progress[data-percentage="85"] .progress-left .progress-bar {
+    animation: loading-3-add-half 1.5s linear forwards 1.5s;
+  }
+
+  .progress[data-percentage="90"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+  .progress[data-percentage="90"] .progress-left .progress-bar {
+    animation: loading-4 1.5s linear forwards 1.5s;
+  }
+
+  .progress[data-percentage="95"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+  .progress[data-percentage="95"] .progress-left .progress-bar {
+    animation: loading-4-add-half 1.5s linear forwards 1.5s;
+  }
+
+  .progress[data-percentage="100"] .progress-right .progress-bar {
+    animation: loading-5 1.5s linear forwards;
+  }
+  .progress[data-percentage="100"] .progress-left .progress-bar {
+    animation: loading-5 1.5s linear forwards 1.5s;
+  }
+
+  @keyframes loading-1-minus-half {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(18);
+      transform: rotate(18deg);
+    }
+  }
+
+  @keyframes loading-1 {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(36);
+      transform: rotate(36deg);
+    }
+  }
+
+  @keyframes loading-1-add-half {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(54);
+      transform: rotate(54deg);
+    }
+  }
+
+  @keyframes loading-2 {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(72);
+      transform: rotate(72deg);
+    }
+  }
+
+  @keyframes loading-2-add-half {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(90);
+      transform: rotate(90deg);
+    }
+  }
+
+  @keyframes loading-3 {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(108);
+      transform: rotate(108deg);
+    }
+  }
+
+  @keyframes loading-3-add-half {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(126);
+      transform: rotate(126deg);
+    }
+  }
+
+  @keyframes loading-4 {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(144);
+      transform: rotate(144deg);
+    }
+  }
+
+  @keyframes loading-4-add-half {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(162);
+      transform: rotate(162deg);
+    }
+  }
+
+  @keyframes loading-5 {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(180);
+      transform: rotate(180deg);
+    }
+  }
+
+
+  @keyframes load {
+  0% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.progress {
+    /* margin-bottom: 1em; */
+}
+
+.progress {
+  position: relative;
+  /* display: inline-block; */
+  padding: 0;
+  text-align: center;
+}
+.progress > li {
+  display: inline-block;
+  position: relative;
+  text-align: center;
+  color: #93a2ac;
+  font-family: Lato;
+  font-weight: 100;
+  margin: 2rem;
+}
+.progress > li:before {
+  content: attr(data-name);
+  position: absolute;
+  width: 100%;
+  bottom: -2rem;
+  font-weight: 400;
+}
+.progress > li:after {
+  content: attr(data-percent);
+  position: absolute;
+  width: 100%;
+  top: 3.7rem;
+  left: 0;
+  font-size: 2rem;
+  text-align: center;
+}
+.progress svg {
+  width: 10rem;
+  height: 10rem;
+}
+.progress svg:nth-child(2) {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: rotate(-90deg);
+}
+.progress svg:nth-child(2) path {
+  fill: none;
+  stroke-width: 25;
+  stroke-dasharray: 629;
+  stroke: #fff;
+  opacity: 0.9;
+  animation: load 10s;
+}
+
+.upgrade-btn:hover{
+   padding: 4px 6px!important;
+   border-radius:10px;
+   background-color: rgba(255,255,255,0.5)
+   
+}
+/* new progress */
+
+
+.upgrade-btn-trial-expired {
+    cursor: pointer;
+}
+
+.upgrade-btn-trial-expired:hover {
+    color: #3ea9f5 !important;
+}
+
+.project-plan-nav {
+  font-family: 'Google Sans', sans-serif !important;
+  cursor: pointer;
+  background-color: #039be5;
+  color: #fff;
+  border-radius: 30px;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  line-height: 16px;
+  padding: 4px 18px;
+  margin-left: 12px;
+  height: 24px;
+  position: relative;
+  /* top: 14px; */
+  min-width: 50px;
+  font-weight: 500;
+}
+
+/* // TOOLTIP START */
+.expired__Tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.expired__Tooltip .expired__Tooltiptext {
+  visibility: hidden;
+  /* width: 120px; */
+  width: 140px;
+  background-color: #fff;
+  color: #f44336;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 50%;
+  /* margin-left: -60px; */
+  margin-left: -67px;
+  height: 41px;
+  line-height: 1.2;
+  border: 1px solid #eee;
+  font-family: 'Google Sans', sans-serif !important;
+  text-transform: capitalize;
+  font-weight: 500;
+
+  /* Fade in tooltip - takes 1 second to go from 0% to 100% opac: */
+  opacity: 0;
+  transition: opacity 1s;
+}
+
+.expired__Tooltip:hover .expired__Tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+/* // TOOLTIP END */
