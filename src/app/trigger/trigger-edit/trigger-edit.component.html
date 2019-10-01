@@ -84,7 +84,7 @@
                                     <!-- -----first condition------- -->  
                                     <div class="col-sm-3">
                                       <!-- [items]='temp_cond' bindLabel='label_key' bindValue='id'  -->
-                                      <ng-select formControlName="path" (change)="onSelectedCondition($event, condition,i)" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
+                                      <ng-select formControlName="path" (change)="onSelectedCondition($event, condition)" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
                                         <ng-option *ngFor="let cond of temp_cond" [value]="cond.id" >{{cond.label_key}}</ng-option>
                                       </ng-select>
                                       <div *ngIf="form.conditions.controls.any.controls[i].invalid && form.conditions.controls.any.controls[i].value['path'] !== null && submitted" class="row is-invalid">{{ "Trigger.Add_Edit.CompileAllField_error" | translate }}</div>
@@ -113,7 +113,7 @@
                                     </div>
                                     <div *ngIf="condition.value.type==='boolean'">
                                         <ng-select class="custom-select col-sm-3" formControlName="value" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
-                                          <ng-option *ngFor="let oper of operator" [value]="oper.id">{{oper.label_key}}</ng-option>
+                                          <ng-option *ngFor="let oper of operator[condition.value.path]" [value]="oper.id">{{oper.label_key}}</ng-option>
                                         </ng-select>
                                     </div>
           
@@ -168,7 +168,7 @@
                               </div>
                               <div *ngIf="condition.value.type==='boolean'">
                                   <ng-select class="custom-select col-sm-3" formControlName="value" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
-                                    <ng-option *ngFor="let oper of operator" [value]="oper.id">{{oper.label_key}}</ng-option>
+                                    <ng-option *ngFor="let oper of operator[condition.value.path]" [value]="oper.id">{{oper.label_key}}</ng-option>
                                   </ng-select>
                               </div>
  

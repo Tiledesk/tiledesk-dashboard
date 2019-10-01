@@ -35,7 +35,7 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
   conditionType = 'conditions.all';
   temp_cond: any;
   temp_act: any;
-  operator: any;
+  // operator: any;
 
   triggerForm: FormGroup;
   conditions: FormArray;
@@ -124,29 +124,36 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
         name: trigger.trigger.name
       },
       conditionALL_ANY: this.conditionType.split('.')[1],
-      conditions: {
-      },
+      conditions: { },
       actions: [],
       enabled: trigger.enabled
     });
 
-    // add conditions to formValue depending on conditionAll_ANY value:
-    // -conditionsGROUP is all the condition.any/all array taken from trigger service value.
-    //  next is added the type field for each array to build the html input/dropdown depending on this value type
-    // -conditions_array is a new formbuilder array with the value of conditionsGROUP
-    // -cond_triggerFormNewArray is a variable that help to add controls (see line after) to
-    //  triggerForm with che value of conditions_array
-    const conditionsGROUP = trigger.conditions[this.conditionType.split('.')[1]]
-                                    .map( cond => this.formBuilder.group({fact: cond.fact,
-                                                                          operator: cond.operator,
-                                                                          path: cond.path,
-                                                                          value: cond.value, // this.condition.filter(b => b.id === cond.path)[0].operator.map( (b: any) => { console.log('b', b.filter( c => c.id === 'en-GB'))}),
-                                                                          type: this.condition.filter(b => b.id === cond.path)[0].type
-                                                                    }))
-    const conditions_array = this.formBuilder.array(conditionsGROUP)
-    const cond_triggerFormNewArray = this.triggerForm.get('conditions') as FormGroup
-    cond_triggerFormNewArray.setControl(this.conditionType.split('.')[1] , conditions_array)
+    // check if trigger has no condition array element
+    // if it hasn't al leat one element, add empty one with createCondition() method
+    // ( i don't need to check same info for action array because user must permorm at least one action)
+    if ( trigger.conditions[this.conditionType.split('.')[1]].length !== 0 ) {
+          // add conditions to formValue depending on conditionAll_ANY value:
+          // -conditionsGROUP is all the condition.any/all array taken from trigger service value.
+          //  next is added the type field for each array to build the html input/dropdown depending on this value type
+          // -conditions_array is a new formbuilder array with the value of conditionsGROUP
+          // -cond_triggerFormNewArray is a variable that help to add controls (see line after) to
+          //  triggerForm with che value of conditions_array
+          const conditionsGROUP = trigger.conditions[this.conditionType.split('.')[1]]
+          .map( cond => this.formBuilder.group({fact: cond.fact,
+                                                operator: cond.operator,
+                                                path: cond.path,
+                                                value: cond.value, // this.condition.filter(b => b.id === cond.path)[0].operator.map( (b: any) => { console.log('b', b.filter( c => c.id === 'en-GB'))}),
+                                                type: this.condition.filter(b => b.id === cond.path)[0].type
+                                          }))
+      const conditions_array = this.formBuilder.array(conditionsGROUP)
+      const cond_triggerFormNewArray = this.triggerForm.get('conditions') as FormGroup
+      cond_triggerFormNewArray.setControl(this.conditionType.split('.')[1] , conditions_array)
+    } else {
+      this.createCondition()
+    }
 
+    // this.condition.filter(b => b.id === cond.path)[0].operator.filter(el => el.id === cond.value)[0].id
 
     // same as conditions. After mapping trigger.condition to custom formBuilder group,
     // and create a fromBuilder array of actionsGroup, this array is added to triggerForm
@@ -262,9 +269,8 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
 
   onTriggerKey(value) {
 
-    // reset condition array and costruct temp_cond dropdown depending on value
-    // this.triggerForm.get(this.conditionType).reset();
-
+    // reset condition formArray value: delete all the index from 1  to conditions.length and
+    // finally clear the value of first index array
     this.conditions = this.triggerForm.get(this.conditionType) as FormArray;
 
     if (this.conditions.length !== null) {
@@ -287,9 +293,9 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
 
 
   onSelectedCondition(event, condition) {
-
+    this.submitted = false; // allow to reset errorMsg on screen
     this.type = null;
-    this.operator = null;
+    // this.operator = null;
     console.log('VALUE', event);
 
     console.log('condition before', condition)
@@ -300,7 +306,7 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
                           'value': undefined}); // set the first option parameter as default
     console.log('condition after', condition);
 
-    this.operator = this.condition.filter(b => b.id === event)[0].operator;
+    // this.operator = this.condition.filter(b => b.id === event)[0].operator;
 
     console.log('operator', this.operator)
     console.log('TYPE', this.type)
@@ -353,7 +359,6 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
             this.SHOW_CIRCULAR_SPINNER = false
             this.SHOW_ERROR_CROSS = true;
             this.errorMESSAGE = true;
-
           }, 1000);
 
     } else if (this.triggerForm.controls['actions'].invalid) {
@@ -365,7 +370,7 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
         this.errorMESSAGE = true;
       }, 1000);
 
-    } else if ( conditionsGROUP.controls[0].value['path'] !== null && conditionsGROUP.controls[0].invalid  ) {
+    } else if ( conditionsGROUP.invalid && conditionsGROUP.controls[0].value['path'] !== null ) {
 
             console.log('User selected only some dropdown condition but not all. SUMBIT KO')
 

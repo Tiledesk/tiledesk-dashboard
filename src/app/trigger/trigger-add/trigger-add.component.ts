@@ -31,7 +31,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
   conditionType = 'conditions.all';
   temp_cond: any;
   temp_act: any;
-  operator: any;
+  // operator: any;
 
   triggerForm: FormGroup;
   conditions: FormArray;
@@ -170,8 +170,6 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
                           'placeholder': this.action[0].placeholder}])
     console.log('init_act', init_act)
 
-    // const now = new Date().getDay(); // return day of week of now date
-    // const before = new Date('2019-09-12T10:39:40.542Z').getDay() // return day of week of custom date
   }
 
   createCondition(): FormGroup {
@@ -262,8 +260,18 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
 
   onTriggerKey(value) {
 
-    // reset condition array and costruct temp_cond dropdown depending on value
-    this.triggerForm.get(this.conditionType).reset();
+    // reset condition formArray value: delete all the index from 1  to conditions.length and
+    // finally clear the value of first index array
+    this.conditions = this.triggerForm.get(this.conditionType) as FormArray;
+
+    if (this.conditions.length !== null) {
+      for (let i = 1; i < this.conditions.length; i++) {
+        this.conditions.removeAt(i);
+      }
+      this.conditions.reset();
+    } else {
+      this.conditions.reset();
+    }
 
     console.log('Trigger key:', value);
     if (value) {
@@ -275,20 +283,20 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
   }
 
   onSelectedCondition(event, condition) {
-
+    this.submitted = false; // allow to reset errorMsg on screen
     this.type = null;
-    this.operator = null;
+    // this.operator = null;
     console.log('VALUE', event);
 
     console.log('condition before', condition)
     // set current value of key TYPE of selected condition passed as a parameter
     const type = this.condition.filter(b => b.id === event)[0].type
     condition.patchValue({'type': type,
-                          'operator': this.options[type + 'Opt'][0].id});
+                          'operator': this.options[type + 'Opt'][0].id,
+                          'value': undefined });
     console.log('condition after', condition);
 
-    this.operator = this.condition.filter(b => b.id === event)[0].operator;
-
+    // this.operator = this.condition.filter(b => b.id === event)[0].operator;
     console.log('operator', this.operator)
     console.log('TYPE', this.type)
 
@@ -336,7 +344,6 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
     // control validator for conditions.all/any elements
     const conditionsGROUP = this.triggerForm.get(this.conditionType) as FormGroup
 
-
     // controls name validation
     if ( this.triggerForm.controls['name'].invalid ) {
 
@@ -344,7 +351,6 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
             this.SHOW_CIRCULAR_SPINNER = false
             this.SHOW_ERROR_CROSS = true;
             this.errorMESSAGE = true;
-
           }, 1000);
 
     } else if (this.triggerForm.controls['actions'].invalid) {
@@ -356,8 +362,8 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
         this.errorMESSAGE = true;
       }, 1000);
 
-    } else if ( conditionsGROUP.controls[0].value['path'] !== null && conditionsGROUP.controls[0].invalid  ) {
-
+    } else if ( conditionsGROUP.invalid && conditionsGROUP.controls[0].value['path'] !== null ) {
+            // conditionsGROUP.controls[0].value['path'] !== null &&
             console.log('User selected only some dropdown condition but not all. SUMBIT KO')
 
             setTimeout(() => {
@@ -380,7 +386,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
 
 
               // add empty condition array for required server field request
-              // if contidion[any/all].path is null
+              // if condition[any/all].path is null
               if ( conditionsGROUP.controls[0].value['path'] === null ) {
                 this.triggerForm.value.conditions[this.conditionType.split('conditions.')[1]] = [];
               }

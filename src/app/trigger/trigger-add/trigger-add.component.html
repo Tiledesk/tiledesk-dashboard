@@ -113,7 +113,7 @@
                                         </div>
                                         <div *ngIf="condition.value.type==='boolean'">
                                             <ng-select class="custom-select col-sm-3" formControlName="value" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
-                                              <ng-option *ngFor="let oper of operator" [value]="oper.id">{{oper.label_key}}</ng-option>
+                                              <ng-option *ngFor="let oper of operator[condition.value.path]" [value]="oper.id">{{oper.label_key}}</ng-option>
                                             </ng-select>
                                         </div>
                
@@ -161,14 +161,13 @@
                                         <ng-option *ngFor="let boolean of options.booleanOpt" [value]="boolean.id" >{{boolean.label_key}}</ng-option>
                                       </ng-select>
                                   </div>
-
                                   <!-- -----third condition------- -->
                                   <div *ngIf="condition.value.type==='string' || condition.value.type==='int'">
                                       <input class="custom-input col-sm-3"  formControlName="value">
                                   </div>
                                   <div *ngIf="condition.value.type==='boolean'">
                                       <ng-select class="custom-select col-sm-3" formControlName="value" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
-                                        <ng-option *ngFor="let oper of operator" [value]="oper.id">{{oper.label_key}}</ng-option>
+                                        <ng-option *ngFor="let oper of operator[condition.value.path]" [value]="oper.id">{{oper.label_key}}</ng-option>
                                       </ng-select>
                                   </div>
        
