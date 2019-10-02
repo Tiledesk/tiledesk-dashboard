@@ -931,6 +931,10 @@
                                     "VisitorPlatform":"Piattaforma visitatore",
                                     "Department": "Dipartimento",
                                     "VisitorServed": "Visitatore assistito"
+                                 },
+                                 "placeholder": {
+                                     "SelectDepartment" : "Seleziona dipartimento",
+                                     "SelectStatus": "Seleziona stato"
                                  }
                 },
                 "chat": {  "groupId":{
@@ -958,6 +962,11 @@
                                     "VisitorCountryRegion": "Regione del visitatore",
                                     "VisitorCountryCode": "Codice paese visitatore",
                                     "VisitorCountryName": "Nome paese visitatore"
+                                },
+                                "placeholder": {
+                                    "SelectDepartment" : "Seleziona dipartimento",
+                                    "SelectStatus": "Seleziona stato",
+                                    "SelectLanguage": "Seleziona lingua"
                                 }
                 }
     

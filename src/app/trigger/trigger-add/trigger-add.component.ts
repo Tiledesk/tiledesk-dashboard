@@ -179,7 +179,8 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
       path: [ undefined, Validators.required],
       operator: [ undefined, Validators.required],
       value: [ undefined, Validators.required ],
-      type: undefined
+      type: undefined,
+      placeholder: undefined
     })
 
   }
@@ -234,6 +235,10 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
   onEnableDisable(status: boolean) {
     console.log('trigger status:', status)
     this.triggerForm.controls['enabled'].setValue(status);
+  }
+  swithOnOff($event){
+    console.log('trigger status', $event.target.checked)
+    this.triggerForm.controls['enabled'].setValue($event.target.checked);
   }
 
   // get dropdown ANY/ALL condition value
@@ -290,10 +295,11 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
 
     console.log('condition before', condition)
     // set current value of key TYPE of selected condition passed as a parameter
-    const type = this.condition.filter(b => b.id === event)[0].type
+    const type = this.condition.filter(b => b.id === event.id)[0].type
     condition.patchValue({'type': type,
                           'operator': this.options[type + 'Opt'][0].id,
-                          'value': undefined });
+                          'value': undefined,
+                          'placeholder': this.condition.filter(b => b.id === event.id)[0].placeholder });
     console.log('condition after', condition);
 
     // this.operator = this.condition.filter(b => b.id === event)[0].operator;

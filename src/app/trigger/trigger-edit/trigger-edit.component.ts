@@ -244,6 +244,10 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
     console.log('trigger status:', status)
     this.triggerForm.controls['enabled'].setValue(status);
   }
+  swithOnOff($event){
+    console.log('trigger status', $event.target.checked)
+    this.triggerForm.controls['enabled'].setValue($event.target.checked);
+  }
 
   // get dropdown ANY/ALL condition value
   conditionTriggerValue(value) {
@@ -300,7 +304,7 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
 
     console.log('condition before', condition)
     // set current value of key TYPE of selected condition passed as a parameter
-    const type = this.condition.filter(b => b.id === event)[0].type
+    const type = this.condition.filter(b => b.id === event.id)[0].type
     condition.patchValue({'type': type,                                    // set type for second dropdown option
                           'operator': this.options[type + 'Opt'][0].id,
                           'value': undefined}); // set the first option parameter as default

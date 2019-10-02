@@ -2,25 +2,17 @@
 <p style="margin-top:6px; padding-left:30px;position: relative;z-index: 1050;" class="navbar-brand">
     {{ 'Trigger.Trigger' | translate }} 
 </p>
+
 <div class="main-content" style="padding-top:0px">
     <div class="container-fluid">
   
-        <!-- text-align: right!important; -->
-      <!-- <div class="create" style="padding-top:5px; padding-bottom:0px">
-        <button class="btn btn-info" style="padding-left:8px; padding-right: 16px; margin-bottom: 0px;" (click)="goToEditAddPage_CREATE()">
-          <span class="icon" style="padding-right:8px">
-            <i class="material-icons">add_circle</i>
-          </span>
-           {{ "DepartmentsPage.AddDepartment" | translate }}
-        </button>
-      </div> -->
-   
-      <!-- MOMGO DB DEPARTMENTS LIST -->
+         
+      <!--TRIGGER LIST -->
       <div class="row">
         <div class="col-md-12">
           <div class="card">
   
-            <div class="card-header card-header-custom-bkgrnd">
+            <div class="card-header card-header-custom-bkgrnd" style="border-bottom: none">
               <button class="btn btn-info" style="padding: 8px 16px;margin:0px;" (click)="goToAddTrigger()">
                 <span class="icon" style="padding-right:8px">
                   <i class="material-icons">add_circle</i>
@@ -74,7 +66,6 @@
                     <td colspan="7" style="text-align: center; padding-top: 16px;">
                       <!-- color: #ff5252   -->
                       <p style="font-size:1em; color:#7695a5; font-weight: 400">
-                        <!-- Nessun Visitatore! Clicca qui per simulare un visitatore. -->
                         {{ 'Trigger.NoTrigger' | translate }}
                       </p>
                     </td>
@@ -82,29 +73,26 @@
                   
                   <tr *ngFor="let trigger of triggers"  style="cursor:pointer;" class="trigger" >
                     
-                    <td (click)='goToEditTrigger(trigger?._id)'>
+                    <td (click)='goToEditTrigger(trigger?._id)' style="max-width: 20px">
                         <span style="font-weight: 400;font-size:13px"> 
                               {{ trigger?.name }} 
                         </span>
                     </td>
                     
                     <!-- // DESCRIPTION -->
-                    <td style="text-transform: capitalize;" (click)='goToEditTrigger(trigger?._id)'>
-                        <!-- *ngIf="dept?.routing !== 'fixed'" -->
+                    <td style="text-transform: capitalize; max-width: 50px" (click)='goToEditTrigger(trigger?._id)' >
                       <span style="font-weight:400;font-size:13px"> {{ trigger?.description }}</span>
-                      <!-- <span *ngIf="dept?.routing === 'fixed'"> Bot </span> -->
                     </td>
   
                     <!-- // ACTIVATED -->
                     <td style="font-weight:400; text-align: center" (click)='goToEditTrigger(trigger?._id)'>
-                      
                       <span *ngIf="trigger?.enabled === true"> 
                           <i class="material-icons" style="font-size:17px;">done</i>
                       </span>
                     </td>
 
                     <!-- // ACTIONS -->
-                    <td style="font-weight:400; text-align: center; display: flex">
+                    <td style="font-weight:400; text-align: center; display: flex; overflow: unset">
                       <!-- EDIT -->
                       <span class="White__Tooltip">
                         <i class="material-icons" style="color:#9c27b0; font-size:17px;margin-right:6px;" (click)='goToEditTrigger(trigger?._id)'>edit</i>

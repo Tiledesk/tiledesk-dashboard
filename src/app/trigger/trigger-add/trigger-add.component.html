@@ -15,10 +15,17 @@
                 
                 <div class=" form-group row" style="border-bottom: solid 1px #ddd" >
                         
-                    <label class="col-sm-2 sub_title" >{{ "Trigger.Add_Edit.TriggerStatus" | translate }}</label>
-                    <div class="col-sm-4" style="margin-left: 25px " >
-                        <button class='btn-with-border-effect ' type='button' (click)="onEnableDisable(true)" [ngClass]="{'li-active' : triggerForm.value.enabled === true}">{{ "Trigger.Add_Edit.TriggerENABLED" | translate }}</button>
-                        <button class='btn-with-border-effect ' type='button' (click)="onEnableDisable(false)" [ngClass]="{'li-active' : triggerForm.value.enabled === false}">{{ "Trigger.Add_Edit.TriggerDISABLED" | translate }}</button>
+                    <label class="col-sm-2 custom-label" >{{ "Trigger.Add_Edit.TriggerStatus" | translate }}</label>
+                    <div class="col-sm-4" style="margin-left: 25px">
+                        <div class="onoffswitch">
+                          <input (change)="swithOnOff($event)" [checked]="triggerForm.value.enabled === true" type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch">
+                          <label class="onoffswitch-label" for="myonoffswitch">
+                              <span class="onoffswitch-inner"></span>
+                              <span class="onoffswitch-switch"></span>
+                          </label>
+                        </div>
+                        <!-- <button class='btn-with-border-effect ' type='button' (click)="onEnableDisable(true)" [ngClass]="{'li-active' : triggerForm.value.enabled === true}">{{ "Trigger.Add_Edit.TriggerENABLED" | translate }}</button>
+                        <button class='btn-with-border-effect ' type='button' (click)="onEnableDisable(false)" [ngClass]="{'li-active' : triggerForm.value.enabled === false}">{{ "Trigger.Add_Edit.TriggerDISABLED" | translate }}</button> -->
                         <div class="row" style="margin-left: 0px; font-size: 11px; font-style: oblique ">
                           {{ "Trigger.Add_Edit.SetTheStatusOfTriggerByDefaultIsSetToENABLED" | translate }}
                         </div>
@@ -29,7 +36,7 @@
                 <div style="border-bottom: solid 1px #ddd" >
 
                     <div class="form-group row">
-                        <label class="col-sm-2 sub_title">{{ "Trigger.Add_Edit.TriggerName" | translate }}</label>
+                        <label class="col-sm-2 custom-label">{{ "Trigger.Add_Edit.TriggerName" | translate }}</label>
                         <div class="col-sm-4">
                             <input type="text" class="custom-input" style="width: 100%" formControlName="name" />
                             <div *ngIf="form.name.invalid && submitted" class="row is-invalid">{{ "Trigger.Add_Edit.TriggerRequiredFieldError" | translate }}</div>
@@ -37,7 +44,7 @@
                     </div>
                     
                     <div class="form-group row">
-                        <label class="col-sm-2 sub_title">{{ "Trigger.Add_Edit.Description" | translate }}</label>
+                        <label class="col-sm-2 custom-label">{{ "Trigger.Add_Edit.Description" | translate }}</label>
                         <div class=" col-sm-4">
                             <textarea type="text" class="custom-input" style="width: 100%; height: 50px;" formControlName="description" ></textarea>
                         </div>
@@ -48,14 +55,14 @@
                 <!-- >>>>>>>>>>>>-------section PERSONALIZZA TRIGGER START------<<<<<<<<< -->
                 <div style="border-bottom: solid 1px #ddd">
                     
-                    <div class="row" style="padding: 2px 30px">
-                      <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6" style="text-align: left; font-size: 18px; margin-top:15px">
+                    <div class="row">
+                      <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6 title" >
                         {{ "Trigger.Add_Edit.CustomizeTrigger" | translate }}
                       </div>
                     </div>
                     
                     <div class="form-group row">
-                        <label for="triggerEvent" class="col-sm-2 sub_title">{{ "Trigger.Add_Edit.RunTrigger" | translate }}</label>
+                        <label for="triggerEvent" class="col-sm-2 custom-label">{{ "Trigger.Add_Edit.RunTrigger" | translate }}</label>
                         <div class="col-sm-4" formGroupName="trigger">
                             <ng-select formControlName="key"  placeholder='{{ "Trigger.Add_Edit.RunTrigger_dropdownElements.Placeholder" | translate }}' (change)=onTriggerKey($event) [searchable]="false" [clearable]="false">
                               <ng-option [value]="'request.create'">{{ "Trigger.Add_Edit.RunTrigger_dropdownElements.WhenRequestChat" | translate }}</ng-option>
@@ -65,7 +72,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label  class="col-sm-2 sub_title">{{ "Trigger.Add_Edit.CheckConditions" | translate }}</label>
+                        <label  class="col-sm-2 custom-label">{{ "Trigger.Add_Edit.CheckConditions" | translate }}</label>
                         <div class="col-sm-4" >
                             <ng-select  formControlName="conditionALL_ANY" placeholder='{{ "Trigger.Add_Edit.CheckConditions_dropdownElements.Placeholder" | translate }}' (change)="conditionTriggerValue($event)" [searchable]="false" [clearable]="false"> 
                               <ng-option [value]="'all'">{{ "Trigger.Add_Edit.CheckConditions_dropdownElements.CheckAllConditions" | translate }}</ng-option>
@@ -83,11 +90,17 @@
                                       
                                         <!-- -----first condition------- -->  
                                         <div class="col-sm-3">
-                                            <!-- [items]='temp_cond' bindLabel='label_key' bindValue='id'  -->
-                                            <ng-select formControlName="path" (change)="onSelectedCondition($event, condition)" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
-                                              <ng-option *ngFor="let cond of temp_cond" [value]="cond.id" >{{cond.label_key}}</ng-option>
-                                            </ng-select>
-                                            <div *ngIf="form.conditions.controls.any.controls[i].invalid && form.conditions.controls.any.controls[i].value['path'] !== null && submitted" class="row is-invalid">{{ "Trigger.Add_Edit.CompileAllField_error" | translate }}</div>
+                                          <ng-select  class="custom-select" (change)="onSelectedCondition($event, condition)" formControlName="path"
+                                                      [items]="temp_cond" bindLabel="label_key" bindValue="id" groupBy="groupId"
+                                                      placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
+                                              <ng-template ng-optgroup-tmp let-item="item" >
+                                                <span style="font-weight: bold; color: black"> {{item.groupId }} </span>
+                                              </ng-template>
+                                          </ng-select>
+                                          <!-- <ng-select formControlName="path" (change)="onSelectedCondition($event, condition)" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
+                                            <ng-option *ngFor="let cond of temp_cond" [value]="cond.id" >{{cond.label_key}}</ng-option>
+                                          </ng-select> -->
+                                          <div *ngIf="form.conditions.controls.any.controls[i].invalid && form.conditions.controls.any.controls[i].value['path'] !== null && submitted" class="row is-invalid">{{ "Trigger.Add_Edit.CompileAllField_error" | translate }}</div>
                                         </div>
                                           
                                         <!-- -----second condition------- -->
@@ -109,10 +122,10 @@
 
                                         <!-- -----third condition------- -->
                                         <div *ngIf="condition.value.type==='string' || condition.value.type==='int'">
-                                            <input class="custom-input col-sm-3"  formControlName="value">
+                                            <input class="custom-input col-sm-3"  formControlName="value" type="text">
                                         </div>
                                         <div *ngIf="condition.value.type==='boolean'">
-                                            <ng-select class="custom-select col-sm-3" formControlName="value" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
+                                            <ng-select class="custom-select col-sm-3" formControlName="value" [placeholder]="condition.value.placeholder" [searchable]="false" [clearable]="false">
                                               <ng-option *ngFor="let oper of operator[condition.value.path]" [value]="oper.id">{{oper.label_key}}</ng-option>
                                             </ng-select>
                                         </div>
@@ -140,10 +153,17 @@
                                   
                                   <!-- -----first condition------- -->  
                                   <div class="col-sm-3">
-                                      <ng-select  class="custom-select" formControlName="path" (change)="onSelectedCondition($event, condition)" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
-                                        <ng-option *ngFor="let cond of temp_cond" [value]="cond.id" >{{cond.label_key}}</ng-option>
-                                      </ng-select>
-                                      <div *ngIf="form.conditions.controls.all.controls[i].invalid && form.conditions.controls.all.controls[i].value['path'] !== null && submitted" class="row is-invalid">{{ "Trigger.Add_Edit.CompileAllField_error" | translate }}</div>
+                                    <ng-select  (change)="onSelectedCondition($event, condition)" formControlName="path"
+                                                [items]="temp_cond" bindLabel="label_key" bindValue="id" groupBy="groupId"
+                                                placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
+                                        <ng-template ng-optgroup-tmp let-item="item" >
+                                            <span style="font-weight: bold; color: black"> {{item.groupId }} </span>
+                                        </ng-template>
+                                    </ng-select>
+                                    <!-- <ng-select  class="custom-select" formControlName="path" (change)="onSelectedCondition($event, condition)" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
+                                      <ng-option *ngFor="let cond of temp_cond" [value]="cond.id" >{{cond.label_key}}</ng-option>
+                                    </ng-select> -->
+                                    <div *ngIf="form.conditions.controls.all.controls[i].invalid && form.conditions.controls.all.controls[i].value['path'] !== null && submitted" class="row is-invalid">{{ "Trigger.Add_Edit.CompileAllField_error" | translate }}</div>
                                   </div>
                                   <!-- -----second condition------- -->
                                   <div *ngIf="condition.value.type==='string'">
@@ -163,10 +183,10 @@
                                   </div>
                                   <!-- -----third condition------- -->
                                   <div *ngIf="condition.value.type==='string' || condition.value.type==='int'">
-                                      <input class="custom-input col-sm-3"  formControlName="value">
+                                      <input class="custom-input col-sm-3"  formControlName="value" type="text">
                                   </div>
                                   <div *ngIf="condition.value.type==='boolean'">
-                                      <ng-select class="custom-select col-sm-3" formControlName="value" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
+                                      <ng-select class="custom-select col-sm-3" formControlName="value" [placeholder]="condition.value.placeholder" [searchable]="false" [clearable]="false">
                                         <ng-option *ngFor="let oper of operator[condition.value.path]" [value]="oper.id">{{oper.label_key}}</ng-option>
                                       </ng-select>
                                   </div>
@@ -193,8 +213,10 @@
                 
                 <!-- >>>>>>>>>>>>-------section AZIONI TRIGGER START------<<<<<<<<< --> 
                 <div>
-                  <div class="form-group row">
-                    <label  class="col-sm-3">{{ "Trigger.Add_Edit.PerformFollowingActions" | translate }}</label>
+                  <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6 title">
+                      {{ "Trigger.Add_Edit.PerformFollowingActions" | translate }}
+                    </div>
                   </div>
                   
                   <!-- ---------------ARRAY !!!ACTIONS!!! START-------------------- -->
@@ -215,7 +237,7 @@
                                   <div formGroupName="parameters">
                                       <!-- -----second condition------- -->
                                       <div *ngIf="action.value.type==='input' ">
-                                          <input class="custom-input col-sm-3"  formControlName="fullName" [placeholder]="action.value.placeholder">
+                                          <input class="custom-input col-sm-3"  formControlName="fullName" type="text" [placeholder]="action.value.placeholder">
                                       </div>
                                       <div *ngIf="action.value.type==='select'">
                                           <ng-select class="custom-select col-sm-3" formControlName="fullName" [placeholder]="action.value.placeholder" [searchable]="false" [clearable]="false">
@@ -224,7 +246,7 @@
                                       </div>
                                       <!-- -----third condition------- -->
                                       <div *ngIf="action.value.type==='input' || action.value.type==='select' ">
-                                        <input class="custom-input col-sm-3"  formControlName="text" placeholder='{{ "Trigger.MessagePlaceholder" | translate }}'>
+                                        <input class="custom-input col-sm-3"  formControlName="text" type="text" placeholder='{{ "Trigger.MessagePlaceholder" | translate }}'>
                                     </div>
                                   </div>
 

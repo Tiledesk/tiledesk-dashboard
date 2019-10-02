@@ -933,7 +933,11 @@
                                     "VisitorPlatform":"Visitor platform",
                                     "Department": "Department",
                                     "VisitorServed": "Visitor served"
-                                 }
+                                 },
+                                 "placeholder": {
+                                    "SelectDepartment" : "Select department",
+                                    "SelectStatus": "Select status"
+                                }
                 },
                 "chat": {  "groupId":{
                                     "VisitorInformation": "Visitor information",
@@ -960,6 +964,11 @@
                                     "VisitorCountryRegion": "Visitor country region",
                                     "VisitorCountryCode": "Visitor country code",
                                     "VisitorCountryName": "Visitor country name"
+                                },
+                                "placeholder": {
+                                    "SelectDepartment" : "Select department",
+                                    "SelectStatus": "Select status",
+                                    "SelectLanguage": "Select language"
                                 }
                 }
     

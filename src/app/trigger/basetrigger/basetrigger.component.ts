@@ -80,25 +80,25 @@ export class BasetriggerComponent  {
             { groupId: translateConditions.message.groupId.VisitorInformation, id: 'senderFullname', label_key: translateConditions.message.label_key.VisitorName, triggerType: 'message.received', type: 'string'},
             { groupId: translateConditions.message.groupId.VisitorInformation, id: 'attributes.userEmail', label_key: translateConditions.message.label_key.VisitorMail, triggerType: 'message.received', type: 'string'},
             { groupId: translateConditions.message.groupId.VisitorInformation, id: 'attributes.departmentId', label_key: translateConditions.message.label_key.VisitorDepartment,
-                  triggerType: 'message.received', type: 'boolean', operator: this.departments },
+                  triggerType: 'message.received', type: 'boolean', operator: this.departments, placeholder: translateConditions.message.placeholder.SelectDepartment },
             { groupId: translateConditions.message.groupId.VisitorInformation, id: 'attributes.client', label_key: translateConditions.message.label_key.VisitorReferrer, triggerType: 'message.received', type: 'string'},
             { groupId: translateConditions.message.groupId.PageInformation, id: 'attributes.sourcePage', label_key: translateConditions.message.label_key.VisitorURL, triggerType: 'message.received', type: 'string'},
             { groupId: translateConditions.message.groupId.PageInformation, id: 'attributes.sourcePage', label_key: translateConditions.message.label_key.VisitorPageTitle, triggerType: 'message.received', type: 'string'},
             { groupId: translateConditions.message.groupId.SoftwareOfVisitor, id: 'attributes.client', label_key: translateConditions.message.label_key.VisitorBrowser, triggerType: 'message.received', type: 'string'},
             { groupId: translateConditions.message.groupId.SoftwareOfVisitor, id: 'attributes.client', label_key: translateConditions.message.label_key.VisitorPlatform, triggerType: 'message.received', type: 'string'},
             { groupId: translateConditions.message.groupId.ChatInformation, id: 'attributes.departmentId', label_key: translateConditions.message.label_key.Department,
-                  triggerType: 'message.received', type: 'boolean', operator: this.departments },
+                  triggerType: 'message.received', type: 'boolean', operator: this.departments, placeholder: translateConditions.message.placeholder.SelectDepartment},
             { groupId: translateConditions.message.groupId.ChatInformation, id: 'status', label_key: translateConditions.message.label_key.VisitorServed,
                   triggerType: 'message.received', type: 'boolean', operator: [ {id: 200, label_key: 'True'},
                                                                                 {id: 100, label_key: 'False'}
-                                                                  ]},
+                                                                  ], placeholder: translateConditions.message.placeholder.SelectStatus},
             // request.create conditions start
             { groupId: translateConditions.chat.groupId.PageInformation, id: 'sourcePage', label_key: translateConditions.chat.label_key.VisitorURL, triggerType: 'request.create', type: 'string'},
             { groupId: translateConditions.chat.groupId.PageInformation, id: 'sourcePage', label_key: translateConditions.chat.label_key.VisitorPageTitle, triggerType: 'request.create', type: 'string'},
             { groupId: translateConditions.chat.groupId.VisitorInformation, id: 'lead.fullname', label_key: translateConditions.chat.label_key.VisitorName, triggerType: 'request.create', type: 'string'},
             { groupId: translateConditions.chat.groupId.VisitorInformation, id: 'lead.email', label_key: translateConditions.chat.label_key.VisitorMail, triggerType: 'request.create', type: 'string'},
             { groupId: translateConditions.chat.groupId.VisitorInformation, id: 'lead.attributes.departmentId', label_key: translateConditions.chat.label_key.VisitorDepartment,
-                  triggerType: 'request.create', type: 'boolean', operator: this.departments},
+                  triggerType: 'request.create', type: 'boolean', operator: this.departments, placeholder: translateConditions.chat.placeholder.SelectDepartment},
             { groupId: translateConditions.chat.groupId.VisitorInformation, id: 'lead.attributes.client', label_key: translateConditions.chat.label_key.VisitorReferrer, triggerType: 'request.create', type: 'string'},
             { groupId: translateConditions.chat.groupId.SoftwareOfVisitor, id: 'userAgent', label_key: translateConditions.chat.label_key.VisitorBrowser, triggerType: 'request.create', type: 'string'},
             { groupId: translateConditions.chat.groupId.SoftwareOfVisitor, id: 'userAgent', label_key: translateConditions.chat.label_key.VisitorPlatform, triggerType: 'request.create', type: 'string'},
@@ -109,13 +109,13 @@ export class BasetriggerComponent  {
                                                                               { id: 'en-GB', label_key: 'English'},
                                                                               { id: 'fr-FR', label_key: 'Franch'},
                                                                               { id: 'it-IT', label_key: 'Italian'}
-                                                                          ]},
+                                                                          ], placeholder: translateConditions.chat.placeholder.SelectLanguage},
             { groupId: translateConditions.chat.groupId.ChatInformation, id: 'department.name', label_key: translateConditions.chat.label_key.Department,
-                  triggerType: 'request.create', type: 'boolean', operator: this.departments},
+                  triggerType: 'request.create', type: 'boolean', operator: this.departments, placeholder: translateConditions.chat.placeholder.SelectDepartment },
             { groupId: translateConditions.chat.groupId.ChatInformation, id: 'status', label_key: translateConditions.chat.label_key.VisitorServed,
                   triggerType: 'request.create', type: 'boolean', operator: [ {id: 200, label_key: 'True'},
                                                                               {id: 100, label_key: 'False'}
-                                                                  ]},
+                                                                  ], placeholder: translateConditions.chat.placeholder.SelectStatus},
 
       ]
 

@@ -18,19 +18,22 @@
     font-size: 14px;
     font-weight: 500;
     color: #353f45;
-    font-weight: bold
-    
+    font-weight: bold;
+    font-family: 'Google Sans', sans-serif !important;
     // color: #566787;
   }
 
-  input[type=radio] {
-    box-sizing: border-box;
-    padding: 0;
-}
+
 .form-check-input {
     position: absolute;
     margin-top: .3rem;
     margin-left: -1.25rem;
+}
+
+td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 // TOOLTIP START
