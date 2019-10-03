@@ -1108,7 +1108,7 @@
         "MedianConvClock": "Median Conversation Lenght",
         "ResponseDurationtime": "Your team's overall Median Conversation Lenght is ",
         "RequestChartTitle": "Number of requests last ",
-        "FilterReport": "Filter report:",
+        "FilterReport": "Filter report",
         "FilterByAgent": "Agent",
         "FilterByDay": "Days",
         "FilterByWeek": "Weeks",
@@ -1125,6 +1125,7 @@
         "SentimentHEART": "Median Customer Satisfaction",
         "SentimentMedianValueHEART": "Your team's overall Median Customer Satisfaction is :",
         "UpgradeYourAccounttoTrackTheChatsYouHaveWithCustomers": " Upgrade your account to track the chats you have with customers",
-        "DailyMedianResponseTime":"Daily Median Response Time"
+        "DailyMedianResponseTime":"Daily Median Response Time",
+        "DailyConvDurationTime": "Daily  Median Conversation Lenght"
     }
 }

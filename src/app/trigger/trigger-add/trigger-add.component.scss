@@ -69,18 +69,19 @@ ng-select{
       margin-left: 25px;
       background-image: none;
       font-size: 13px;
-     
 }
 
 .is-invalid{
-    margin-left: 25px;
+    margin-left: 28px;
+    margin-top: 2px;
+    font-size: 12px;
     color: red;
 }
   
 
 .condition{
     background-color: rgba(227, 230, 232, 0.6);
-    padding: 10px 11px;
+    padding: 7px 0px;
     width: 90%;
     margin: 10px auto;
     border-radius: 12px;
@@ -93,7 +94,7 @@ ng-select{
 }
 
 .card-custom-trigger {
-  padding-top: 15px;
+    padding-top: 15px;
     padding-bottom: 15px;
     padding-left: 30px;
     padding-right: 30px;
@@ -210,4 +211,25 @@ $f21blue: #039be5;
 }
 // ./end SWITCH BTN
 
+
+// // MODAL START --> PLACE MODAL ON CENTER OF CURRET WINDOW
+// .modal {
+//   text-align: center;
+// }
+
+// @media screen and (min-width: 768px) { 
+//   .modal:before {
+//     display: inline-block;
+//     vertical-align: middle;
+//     content: " ";
+//     height: 100%;
+//   }
+// }
+
+// .modal-dialog {
+//   display: inline-block;
+//   text-align: left;
+//   vertical-align: middle;
+// }
+// // MODAL END
 

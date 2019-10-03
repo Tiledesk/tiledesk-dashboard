@@ -214,9 +214,9 @@
                 <!-- >>>>>>>>>>>>-------section AZIONI TRIGGER START------<<<<<<<<< --> 
                 <div>
                   <div class="row">
-                    <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6 title">
+                    <label class="col-sm-2 custom-label" style="text-align: left">
                       {{ "Trigger.Add_Edit.PerformFollowingActions" | translate }}
-                    </div>
+                    </label>
                   </div>
                   
                   <!-- ---------------ARRAY !!!ACTIONS!!! START-------------------- -->
@@ -225,40 +225,40 @@
                         <div [formGroupName]="j">
                           <div class="form-group row condition">
                                   
-                                  <!-- -----first condition------- -->  
-                                  <div class="col-sm-3">
-                                      <ng-select  class="custom-select " formControlName="key" (change)="onSelectedAction($event, action)" placeholder='{{ "Trigger.Add_Edit.ActionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
-                                        <ng-option *ngFor="let act of temp_act" [value]="act.key" >{{act.label_key}}</ng-option>
+                              <!-- -----first condition------- -->  
+                              <div class="col-sm-3">
+                                  <ng-select  class="custom-select " formControlName="key" (change)="onSelectedAction($event, action)" placeholder='{{ "Trigger.Add_Edit.ActionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
+                                    <ng-option *ngFor="let act of temp_act" [value]="act.key" >{{act.label_key}}</ng-option>
+                                  </ng-select>
+                                  <div *ngIf="form.actions.controls[j].invalid && submitted" class="row is-invalid">{{ "Trigger.Add_Edit.CompileAllField_error" | translate }}</div>
+                              </div>
+
+                                
+                              <div formGroupName="parameters">
+                                  <!-- -----second condition------- -->
+                                  <div *ngIf="action.value.type==='input' ">
+                                      <input class="custom-input col-sm-3"  formControlName="fullName" type="text" [placeholder]="action.value.placeholder">
+                                  </div>
+                                  <div *ngIf="action.value.type==='select'">
+                                      <ng-select class="custom-select col-sm-3" formControlName="fullName" [placeholder]="action.value.placeholder" [searchable]="false" [clearable]="false">
+                                          <ng-option *ngFor="let int of intOpt" [value]="int.id" >{{int.label_key}}</ng-option>
                                       </ng-select>
-                                      <div *ngIf="form.actions.controls[j].invalid && submitted" class="row is-invalid">{{ "Trigger.Add_Edit.CompileAllField_error" | translate }}</div>
                                   </div>
-
-                                   
-                                  <div formGroupName="parameters">
-                                      <!-- -----second condition------- -->
-                                      <div *ngIf="action.value.type==='input' ">
-                                          <input class="custom-input col-sm-3"  formControlName="fullName" type="text" [placeholder]="action.value.placeholder">
-                                      </div>
-                                      <div *ngIf="action.value.type==='select'">
-                                          <ng-select class="custom-select col-sm-3" formControlName="fullName" [placeholder]="action.value.placeholder" [searchable]="false" [clearable]="false">
-                                              <ng-option *ngFor="let int of intOpt" [value]="int.id" >{{int.label_key}}</ng-option>
-                                          </ng-select>
-                                      </div>
-                                      <!-- -----third condition------- -->
-                                      <div *ngIf="action.value.type==='input' || action.value.type==='select' ">
-                                        <input class="custom-input col-sm-3"  formControlName="text" type="text" placeholder='{{ "Trigger.MessagePlaceholder" | translate }}'>
-                                    </div>
-                                  </div>
+                                  <!-- -----third condition------- -->
+                                  <div *ngIf="action.value.type==='input' || action.value.type==='select' ">
+                                    <input class="custom-input col-sm-3"  formControlName="text" type="text" placeholder='{{ "Trigger.MessagePlaceholder" | translate }}'>
+                                </div>
+                              </div>
 
 
-                                  <div style="text-align: right" >
-                                    <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=removeAction(j) >
-                                      <i class="material-icons custom-icon">remove</i>
-                                    </span>
-                                    <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=addActions()>
-                                      <i class="material-icons custom-icon">add</i>
-                                    </span>
-                                  </div>
+                              <div style="text-align: right" >
+                                <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=removeAction(j) >
+                                  <i class="material-icons custom-icon">remove</i>
+                                </span>
+                                <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=addActions()>
+                                  <i class="material-icons custom-icon">add</i>
+                                </span>
+                              </div>
                           </div>
                         </div>
                     </div>

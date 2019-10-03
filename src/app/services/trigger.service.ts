@@ -79,10 +79,8 @@ export class TriggerService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN,
-      // 'Authorization': 'Basic ' + btoa('aaa22@aaa22.it:123456')
       });
 
-    // return this.http.get<[]>(this.BASE_URL+ this.projectID + '/modules/triggers' ,{ headers:headers})
     return this.http.get<[Trigger]>(this.BASE_URL + this.projectID + '/modules/triggers/' + triggerId , { headers: headers})
 
 
@@ -93,7 +91,6 @@ export class TriggerService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN,
-      // 'Authorization': 'Basic ' + btoa('aaa22@aaa22.it:123456')
       });
 
     return this.http.post<[]>(this.BASE_URL + this.projectID + '/modules/triggers', JSON.stringify(trigger), {headers: headers});
@@ -105,7 +102,6 @@ export class TriggerService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN,
-      // 'Authorization': 'Basic ' + btoa('aaa22@aaa22.it:123456')
       });
 
     return this.http.put<[]>(this.BASE_URL + this.projectID + '/modules/triggers/' + trigger._id , JSON.stringify(trigger), {headers: headers});
@@ -118,7 +114,6 @@ export class TriggerService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN,
-      // 'Authorization': 'Basic ' + btoa('aaa22@aaa22.it:123456')
       });
 
     return this.http.delete<[]>(this.BASE_URL + this.projectID + '/modules/triggers/' + triggerID, {headers: headers});
