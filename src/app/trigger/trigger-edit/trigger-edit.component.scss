@@ -2,21 +2,28 @@
     padding: 0px;
 }
 
+input[type=text] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .custom-label{
-    color: #7695a5;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    color: #7695a5; 
     height: 36px; 
-    padding-top: 7px !important; 
-    padding-left: 16px !important; 
-    padding-right: 16px !important; 
+    padding-top: 8px !important;
+    padding-left: 16px;
+    padding-right: 16px;
     text-align: right !important;
 }
 
 .custom-input {
-    margin-left:25px;
-    border: solid 1px #ddd;
-    border-radius: 7px;
-    height: 36px;
-    padding-left: 5px !important;
+  font-size: 12px;
+  margin-left:25px;
+  border: solid 1px #d9d9d9;
+  border-radius: 7px;
+  height: 36px;
+  padding: 0 8px !important;
 }
 
 .title{
@@ -26,11 +33,6 @@
   font-size: 14px; 
   margin-top:10px;
   font-weight: 500;
-}
-
-.sub_title {
-    text-align: right; 
-    padding-top:8px !important;
 }
 
 @media (max-width: 768px) {
@@ -64,18 +66,16 @@
 }
 
 ng-select{
-      margin-left: 25px;
-      background-image: none; 
+  margin-left: 25px;
+  background-image: none;
+  font-size: 13px;
 }
 
 .is-invalid{
-  margin-left: 25px;
+  margin-left: 28px;
+  margin-top: 2px;
+  font-size: 12px;
   color: red;
-}
-
-input[type=text] {
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .condition{
@@ -93,7 +93,7 @@ input[type=text] {
 }
 
 .card-custom-trigger {
-  padding-top: 15px;
+    padding-top: 15px;
     padding-bottom: 15px;
     padding-left: 30px;
     padding-right: 30px;

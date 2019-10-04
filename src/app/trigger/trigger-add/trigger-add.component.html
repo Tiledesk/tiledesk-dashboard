@@ -46,7 +46,7 @@
                     <div class="form-group row">
                         <label class="col-sm-2 custom-label">{{ "Trigger.Add_Edit.Description" | translate }}</label>
                         <div class=" col-sm-4">
-                            <textarea type="text" class="custom-input" style="width: 100%; height: 50px;" formControlName="description" ></textarea>
+                            <textarea type="text" class="custom-input" style="width: 100%; height: 50px;" formControlName="description"></textarea>
                         </div>
                     </div>
                  
@@ -110,9 +110,9 @@
                                             </ng-select>
                                         </div>
                                         <div *ngIf="condition.value.type==='int'">
-                                              <ng-select  class="custom-select col-sm-3" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
-                                                <ng-option *ngFor="let int of options.intOpt" [value]="int.id" >{{int.label_key}}</ng-option>
-                                              </ng-select>
+                                            <ng-select  class="custom-select col-sm-3" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
+                                              <ng-option *ngFor="let int of options.intOpt" [value]="int.id" >{{int.label_key}}</ng-option>
+                                            </ng-select>
                                         </div>
                                         <div *ngIf="condition.value.type==='boolean'">
                                             <ng-select  class="custom-select col-sm-3" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
@@ -130,7 +130,7 @@
                                             </ng-select>
                                         </div>
                
-                                        <div style="text-align: right" >
+                                        <div style="text-align: right; margin-top:3px" >
                                           <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=removeCondition(i) >
                                             <i class="material-icons custom-icon">remove</i>
                                           </span>
@@ -172,9 +172,9 @@
                                       </ng-select>
                                   </div>
                                   <div *ngIf="condition.value.type==='int'">
-                                        <ng-select  class="custom-select col-sm-3" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
-                                          <ng-option *ngFor="let int of options.intOpt" [value]="int.id" >{{int.label_key}}</ng-option>
-                                        </ng-select>
+                                      <ng-select  class="custom-select col-sm-3" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
+                                        <ng-option *ngFor="let int of options.intOpt" [value]="int.id" >{{int.label_key}}</ng-option>
+                                      </ng-select>
                                   </div>
                                   <div *ngIf="condition.value.type==='boolean'">
                                       <ng-select  class="custom-select col-sm-3" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
@@ -191,7 +191,7 @@
                                       </ng-select>
                                   </div>
        
-                                  <div style="text-align: right" >
+                                  <div style="text-align: right; margin-top:3px" >
                                     <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=removeCondition(i) >
                                       <i class="material-icons custom-icon">remove</i>
                                     </span>
@@ -251,7 +251,7 @@
                               </div>
 
 
-                              <div style="text-align: right" >
+                              <div style="text-align: right; margin-top:3px" >
                                 <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=removeAction(j) >
                                   <i class="material-icons custom-icon">remove</i>
                                 </span>
@@ -292,7 +292,6 @@
 
         <h4 class="modal-title">
           {{ "Trigger.AddTrigger" | translate }}
-          <!-- <code>{{id_toDelete}}</code> -->
         </h4>
       </div>
 
@@ -322,7 +321,7 @@
               </p> 
             </span>
 
-            <!--              ERROR             -->
+            <!--             SERVER ERROR             -->
             <span *ngIf="!SHOW_CIRCULAR_SPINNER && SHOW_ERROR_CROSS && errorMESSAGE_server">
               <i class="material-icons" style="color:#ff5252">error</i>
               <p style="color:#ff5252; font-weight: 500">
@@ -330,7 +329,7 @@
               </p> 
             </span>
 
-            <!--              ERROR             -->
+            <!--             FORM ERROR             -->
             <span *ngIf="!SHOW_CIRCULAR_SPINNER && SHOW_ERROR_CROSS && errorMESSAGE">
               <i class="material-icons" style="color:#f5750c">warning</i>
               <p style="color:#f5750c; font-weight: 500">
@@ -349,17 +348,17 @@
             </p>
           </span>
 
+          <!--      ERROR -  * Server error occurred *    -->
+          <span *ngIf="!SHOW_CIRCULAR_SPINNER && SHOW_ERROR_CROSS && errorMESSAGE_server">
+              <p style="margin-top: 0px; text-align: center; font-weight: 500">
+                {{ "Trigger.ErrorMessageServer" | translate }}
+              </p>
+            </span>
+            
           <!--      ERROR - * Fields not valid *    -->
           <span *ngIf="!SHOW_CIRCULAR_SPINNER && SHOW_ERROR_CROSS && errorMESSAGE ">
             <p style="margin-top: 0px; text-align: center; font-weight: 500">
               {{ "Trigger.ErrorMessage" | translate }}
-            </p>
-          </span>
-
-          <!--      ERROR -  * Server error occurred *    -->
-          <span *ngIf="!SHOW_CIRCULAR_SPINNER && SHOW_ERROR_CROSS && errorMESSAGE_server">
-            <p style="margin-top: 0px; text-align: center; font-weight: 500">
-              {{ "Trigger.ErrorMessageServer" | translate }}
             </p>
           </span>
 
