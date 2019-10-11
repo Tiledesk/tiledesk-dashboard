@@ -973,6 +973,77 @@ h2.title {
   background-color: transparent;
   color: #00bcd4;
 }
+
+/* start tiledesk btn */
+.btn.btn-tdblu,
+.navbar .navbar-nav > li > a.btn.btn-tdblu {
+  box-shadow: 0 2px 2px 0 rgba(3, 155, 229, 0.14), 0 3px 1px -2px rgba(3, 155, 229,, 0.2), 0 1px 5px 0 rgba(3, 155, 229, 0.12);
+}
+.btn.btn-tdblu, .btn.btn-tdblu:hover, .btn.btn-tdblu:focus, .btn.btn-tdblu:active, .btn.btn-tdblu.active, .btn.btn-tdblu:active:focus, .btn.btn-tdblu:active:hover, .btn.btn-tdblu.active:focus, .btn.btn-tdblu.active:hover, .open > .btn.btn-tdblu.dropdown-toggle, .open > .btn.btn-tdblu.dropdown-toggle:focus, .open > .btn.btn-tdblu.dropdown-toggle:hover,
+.navbar .navbar-nav > li > a.btn.btn-tdblu,
+.navbar .navbar-nav > li > a.btn.btn-tdblu:hover,
+.navbar .navbar-nav > li > a.btn.btn-tdblu:focus,
+.navbar .navbar-nav > li > a.btn.btn-tdblu:active,
+.navbar .navbar-nav > li > a.btn.btn-tdblu.active,
+.navbar .navbar-nav > li > a.btn.btn-tdblu:active:focus,
+.navbar .navbar-nav > li > a.btn.btn-tdblu:active:hover,
+.navbar .navbar-nav > li > a.btn.btn-tdblu.active:focus,
+.navbar .navbar-nav > li > a.btn.btn-tdblu.active:hover, .open >
+.navbar .navbar-nav > li > a.btn.btn-tdblu.dropdown-toggle, .open >
+.navbar .navbar-nav > li > a.btn.btn-tdblu.dropdown-toggle:focus, .open >
+.navbar .navbar-nav > li > a.btn.btn-tdblu.dropdown-toggle:hover {
+  background-color: #039be5;
+  color: #FFFFFF;
+}
+.btn.btn-tdblu:focus, .btn.btn-tdblu:active, .btn.btn-tdblu:hover,
+.navbar .navbar-nav > li > a.btn.btn-tdblu:focus,
+.navbar .navbar-nav > li > a.btn.btn-tdblu:active,
+.navbar .navbar-nav > li > a.btn.btn-tdblu:hover {
+  box-shadow: 0 14px 26px -12px rgba(3, 155, 229, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(3, 155, 229, 0.2);
+}
+.btn.btn-tdblu.disabled, .btn.btn-tdblu.disabled:hover, .btn.btn-tdblu.disabled:focus, .btn.btn-tdblu.disabled.focus, .btn.btn-tdblu.disabled:active, .btn.btn-tdblu.disabled.active, .btn.btn-tdblu:disabled, .btn.btn-tdblu:disabled:hover, .btn.btn-tdblu:disabled:focus, .btn.btn-tdblu:disabled.focus, .btn.btn-tdblu:disabled:active, .btn.btn-tdblu:disabled.active, .btn.btn-tdblu[disabled], .btn.btn-tdblu[disabled]:hover, .btn.btn-tdblu[disabled]:focus, .btn.btn-tdblu[disabled].focus, .btn.btn-tdblu[disabled]:active, .btn.btn-tdblu[disabled].active, fieldset[disabled] .btn.btn-tdblu, fieldset[disabled] .btn.btn-tdblu:hover, fieldset[disabled] .btn.btn-tdblu:focus, fieldset[disabled] .btn.btn-tdblu.focus, fieldset[disabled] .btn.btn-tdblu:active, fieldset[disabled] .btn.btn-tdblu.active,
+.navbar .navbar-nav > li > a.btn.btn-tdblu.disabled,
+.navbar .navbar-nav > li > a.btn.btn-tdblu.disabled:hover,
+.navbar .navbar-nav > li > a.btn.btn-tdblu.disabled:focus,
+.navbar .navbar-nav > li > a.btn.btn-tdblu.disabled.focus,
+.navbar .navbar-nav > li > a.btn.btn-tdblu.disabled:active,
+.navbar .navbar-nav > li > a.btn.btn-tdblu.disabled.active,
+.navbar .navbar-nav > li > a.btn.btn-tdblu:disabled,
+.navbar .navbar-nav > li > a.btn.btn-tdblu:disabled:hover,
+.navbar .navbar-nav > li > a.btn.btn-tdblu:disabled:focus,
+.navbar .navbar-nav > li > a.btn.btn-tdblu:disabled.focus,
+.navbar .navbar-nav > li > a.btn.btn-tdblu:disabled:active,
+.navbar .navbar-nav > li > a.btn.btn-tdblu:disabled.active,
+.navbar .navbar-nav > li > a.btn.btn-tdblu[disabled],
+.navbar .navbar-nav > li > a.btn.btn-tdblu[disabled]:hover,
+.navbar .navbar-nav > li > a.btn.btn-tdblu[disabled]:focus,
+.navbar .navbar-nav > li > a.btn.btn-tdblu[disabled].focus,
+.navbar .navbar-nav > li > a.btn.btn-tdblu[disabled]:active,
+.navbar .navbar-nav > li > a.btn.btn-tdblu[disabled].active, fieldset[disabled]
+.navbar .navbar-nav > li > a.btn.btn-tdblu, fieldset[disabled]
+.navbar .navbar-nav > li > a.btn.btn-tdblu:hover, fieldset[disabled]
+.navbar .navbar-nav > li > a.btn.btn-tdblu:focus, fieldset[disabled]
+.navbar .navbar-nav > li > a.btn.btn-tdblu.focus, fieldset[disabled]
+.navbar .navbar-nav > li > a.btn.btn-tdblu:active, fieldset[disabled]
+.navbar .navbar-nav > li > a.btn.btn-tdblu.active {
+  box-shadow: none;
+}
+.btn.btn-tdblu.btn-simple,
+.navbar .navbar-nav > li > a.btn.btn-tdblu.btn-simple {
+  background-color: transparent;
+  color: #039be5;
+  box-shadow: none;
+}
+.btn.btn-tdblu.btn-simple:hover, .btn.btn-tdblu.btn-simple:focus, .btn.btn-tdblu.btn-simple:active,
+.navbar .navbar-nav > li > a.btn.btn-tdblu.btn-simple:hover,
+.navbar .navbar-nav > li > a.btn.btn-tdblu.btn-simple:focus,
+.navbar .navbar-nav > li > a.btn.btn-tdblu.btn-simple:active {
+  background-color: transparent;
+  color: #039be5;
+}
+
+/* end tiledesk btn */
+
 .btn.btn-success,
 .navbar .navbar-nav > li > a.btn.btn-success {
   box-shadow: 0 2px 2px 0 rgba(76, 175, 80, 0.14), 0 3px 1px -2px rgba(76, 175, 80, 0.2), 0 1px 5px 0 rgba(76, 175, 80, 0.12);
