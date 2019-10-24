@@ -6,7 +6,10 @@
 
 // const nodeBasePath = 'http://localhost:3000/';
 // const cloudFunctionBasePath = 'https://api.tiledesk.com/v1/chat/';
-const serverUrl = 'http://localhost:3000/';
+
+const serverUrl = '/api/';
+//last ok const serverUrl = 'http://localhost:3000/';
+
 // const serverChatUrl = 'https://api.tiledesk.com/v1/chat/';
 export const environment = {
     production: false,
@@ -51,6 +54,7 @@ export const environment = {
         // cloud_func_update_firstname_and_lastname: `${serverChatUrl}tilechat/contacts/me`, // old address: https://us-central1-chat-v2-dev.cloudfunctions.net/api/tilechat/contacts/me
     },
     chat: {
-        CHAT_BASE_URL: 'http://localhost/chat/',
+        CHAT_BASE_URL: '/chat/',
+        //last ok CHAT_BASE_URL: 'http://localhost/chat/',
     }
 };
