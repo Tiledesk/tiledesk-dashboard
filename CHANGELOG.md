@@ -1,6 +1,17 @@
 
 # tiledesk-dashboard
 
+### 1.0.37
+- Adds the tab 'Payments' in project settings page
+
+### 1.0.36
+- Adds a two step wizard (create project and install widget) after the sign up
+- Adds the list of recent projects in the navbar "project" dropdown menu 
+- Adds save button to widget settings
+- Improves graphics of the widget settings pages
+- Adds help page to improve new users pending invitations workflow
+- Fixes minor bugs
+
 ### 1.0.35
 - Fixes minor bugs
 
