@@ -1,24 +1,22 @@
 
-const serverUrl = '/api/';
-//last ok const serverUrl = 'http://localhost:3000/';
-
+// const nodeBasePath = 'http://localhost:3000/';
+// const cloudFunctionBasePath = 'https://api.tiledesk.com/v1/chat/';
+const serverUrl = 'http://localhost:3000/';
 const serverChatUrl = 'https://api.tiledesk.com/v1/chat/';
 export const environment = {
     t2y12PruGU9wUtEGzBJfolMIgK: 'uTdBCRvGAEhJ01cT3uBLg8oFJx',
     production: false,
     VERSION: require('../../package.json').version,
-    widgetUrl: 'http://localhost:4200/launch.js',
+    widgetUrl: 'https://widget.tiledesk.com/v3/launch.js',
     remoteConfig: true,
     remoteConfigUrl: '/firebase-config.json',
-    firebaseConfig: {
+    firebase: {
         apiKey: 'CHANGEIT',
         authDomain: 'CHANGEIT',
         databaseURL: 'CHANGEIT',
         projectId: 'CHANGEIT',
         storageBucket: 'CHANGEIT',
         messagingSenderId: 'CHANGEIT',
-        chat21ApiUrl: 'CHANGEIT'
- 
     },
     mongoDbConfig: {
         BASE_URL: `${serverUrl}`,
@@ -41,11 +39,11 @@ export const environment = {
         cloud_func_update_firstname_and_lastname: `${serverChatUrl}tilechat/contacts/me`, // old address: https://us-central1-chat-v2-dev.cloudfunctions.net/api/tilechat/contacts/me
     },
     chat: {
-        CHAT_BASE_URL: '/chat/',
-        //last ok CHAT_BASE_URL: 'http://localhost/chat/',
+        CHAT_BASE_URL: 'https://support.tiledesk.com/chat/',
     },
     testsite: {
+        // testsiteBaseUrl: 'http://testwidget.tiledesk.com/testsitenw3'
         testsiteBaseUrl: 'https://s3.eu-west-1.amazonaws.com/tiledesk-widget/dev/3.0.26-DEV/assets/test_widget_page/index.html'
-    }
 
+    }
 };

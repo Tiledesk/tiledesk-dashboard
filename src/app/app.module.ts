@@ -1,6 +1,6 @@
 import { MetricheComponent } from './analytics2/metriche/metriche.component';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
@@ -149,11 +149,23 @@ import { CreateProjectComponent } from './create-project/create-project.componen
 import { InstallTiledeskComponent } from './install-tiledesk/install-tiledesk.component';
 import { HandleInvitationComponent } from './auth/handle-invitation/handle-invitation.component';
 
+import { environment } from '../environments/environment';
+import { AppConfigService } from './services/app-config.service';
+
 console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
+
+const appInitializerFn = (appConfig: AppConfigService) => {
+  return () => {
+    if (environment.remoteConfig) {
+      return appConfig.loadAppConfig();
+    }
+  };
+};
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -268,6 +280,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     }),
   ],
   providers: [
+    AppConfigService, // https://juristr.com/blog/2018/01/ng-app-runtime-config/
+    {
+      provide: APP_INITIALIZER,
+      useFactory: appInitializerFn,
+      multi: true,
+      deps: [AppConfigService]
+    },
     UsersService,
     ContactsService,
     RequestsService,

@@ -1,25 +1,19 @@
-// tslint:disable:max-line-length
-/**
- * ***  Note: create firebase-data.ts in the src folder and and edit it with your Firebase project configuration ***
- */
-
 
 const serverUrl = 'https://api.tiledesk.com/v1/';
 const serverChatUrl = 'https://api.tiledesk.com/v1/chat/';
 export const environment = {
-    t2y12PruGU9wUtEGzBJfolMIgK: 'uTdBCRvGAEhJ01cT3uBLg8oFJx',
     production: true,
+    t2y12PruGU9wUtEGzBJfolMIgK: 'uTdBCRvGAEhJ01cT3uBLg8oFJx',
     VERSION: require('../../package.json').version,
     widgetUrl: 'https://widget.tiledesk.com/v3/launch.js',
     remoteConfig: false, // for performance don't load settings from remote
-    firebaseConfig: {
+    firebase: {
         apiKey: 'CHANGEIT',
         authDomain: 'CHANGEIT',
         databaseURL: 'CHANGEIT',
         projectId: 'CHANGEIT',
         storageBucket: 'CHANGEIT',
         messagingSenderId: 'CHANGEIT',
-        chat21ApiUrl: 'CHANGEIT'
     },
     mongoDbConfig: {
         BASE_URL: `${serverUrl}`,
@@ -43,5 +37,8 @@ export const environment = {
     },
     chat: {
         CHAT_BASE_URL: 'https://support.tiledesk.com/chat/',
+    },
+    testsite: {
+        testsiteBaseUrl: 'https://s3.eu-west-1.amazonaws.com/tiledesk-widget/dev/3.0.26-DEV/assets/test_widget_page/index.html'
     }
 };
