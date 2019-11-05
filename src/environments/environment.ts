@@ -12,6 +12,7 @@ const serverUrl = '/api/';
 
 // const serverChatUrl = 'https://api.tiledesk.com/v1/chat/';
 export const environment = {
+    t2y12PruGU9wUtEGzBJfolMIgK: 'uTdBCRvGAEhJ01cT3uBLg8oFJx',
     production: false,
     VERSION: require('../../package.json').version,
     widgetUrl: 'http://localhost:4200/launch.js',

@@ -8,6 +8,7 @@ import { firebase_pre } from '../firebase-data';
 const serverUrl = 'https://tiledesk-server-pre.herokuapp.com/';
 const serverChatUrl = 'https://us-central1-chat21-pre-01.cloudfunctions.net/';
 export const environment = {
+    t2y12PruGU9wUtEGzBJfolMIgK: 'uTdBCRvGAEhJ01cT3uBLg8oFJx',
     production: true,
     VERSION: require('../../package.json').version,
     widgetUrl: 'https://widget.tiledesk.com/v3/launch.js',
