@@ -9,16 +9,23 @@ const serverUrl = 'https://tiledesk-server-pre.herokuapp.com/';
 const serverChatUrl = 'https://us-central1-chat21-pre-01.cloudfunctions.net/';
 export const environment = {
     production: true,
-    t2y12PruGU9wUtEGzBJfolMIgK: 'uTdBCRvGAEhJ01cT3uBLg8oFJx',
     VERSION: require('../../package.json').version,
     widgetUrl: 'https://widget.tiledesk.com/v3/launch.js',
-    firebaseConfig: {
-        apiKey: firebase_pre.apiKey,
-        authDomain: firebase_pre.authDomain,
-        databaseURL: firebase_pre.databaseURL,
-        projectId: firebase_pre.projectId,
-        storageBucket: firebase_pre.storageBucket,
-        messagingSenderId: firebase_pre.messagingSenderId
+    remoteConfig: false,
+    firebase: {
+        apiKey: 'CHANGEIT',
+        authDomain: 'CHANGEIT',
+        databaseURL: 'CHANGEIT',
+        projectId: 'CHANGEIT',
+        storageBucket: 'CHANGEIT',
+        messagingSenderId: 'CHANGEIT',
+        
+        // apiKey: firebase_pre.apiKey,
+        // authDomain: firebase_pre.authDomain,
+        // databaseURL: firebase_pre.databaseURL,
+        // projectId: firebase_pre.projectId,
+        // storageBucket: firebase_pre.storageBucket,
+        // messagingSenderId: firebase_pre.messagingSenderId
     },
     mongoDbConfig: {
         BASE_URL: `${serverUrl}`,
@@ -43,9 +50,6 @@ export const environment = {
     },
     chat: {
         CHAT_BASE_URL: 'https://support-pre.tiledesk.com/chat/',
-    },
-    testsite: {
-        testsiteBaseUrl: 'https://s3.eu-west-1.amazonaws.com/tiledesk-widget/dev/3.0.26-DEV/assets/test_widget_page/index.html'
     }
 };
 
