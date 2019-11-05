@@ -1,56 +1,55 @@
-select {
-    height:36px;  
-    background: #fff; 
-    border-radius: 0px; 
-    border-color: #d9d9d9; 
-}
 .card form [class*="col-"] {
     padding: 0px;
 }
 
+input[type=text] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 .custom-label{
-    color: rgb(118, 149, 165); 
-    // height: 36px; 
-    padding-top: 7px !important; 
-    padding-left: 16px !important; 
-    padding-right: 16px !important; 
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    color: #7695a5; 
+    height: 36px; 
+    padding-top: 8px !important;
+    padding-left: 16px;
+    padding-right: 16px;
     text-align: right !important;
 }
 
-.custom-label-for-dept {
-    color: #7695a5;
-    height: 36px;
-    // padding-top: 7px;
-    padding-left: 16px;
-    padding-right: 16px;
-    text-align: right!important;
-  }
-
 .custom-input {
-    margin-left:25px;
-    border: solid 1px #ddd;
-    border-radius: 7px;
-    height: 36px;
-    padding-left: 5px !important;
+  font-size: 12px;
+  margin-left:25px;
+  border: solid 1px #d9d9d9;
+  border-radius: 7px;
+  height: 36px;
+  padding: 0 8px !important;
 }
-  
-.sub_title {
-    text-align: right; 
-    padding-top:8px !important;
+
+.title{
+  font-family: 'Google Sans', sans-serif !important;
+  padding: 0px 20px !important;
+  text-align: left; 
+  font-size: 14px; 
+  margin-top:10px;
+  font-weight: 500;
 }
 
 @media (max-width: 768px) {
-  .custom-label-for-dept {
-      // height: 0px !important;
-      padding-top: 18px !important;
-      text-align: left !important;
-  }
-
+  
   .card-padding {
     padding-top:0px !important; 
     padding-bottom:0px !important; 
   }
+}
+
+@media (min-width: 992px) and (max-width: 1200px) { 
+
+  .card-padding {
+    padding-top:0px !important; 
+    padding-bottom:0px !important;
+  }
+
 }
 
 .form-control{
@@ -58,53 +57,33 @@ select {
       border: solid 1px #ddd; 
       background-image: none;
       padding-left:5px;
-      border-radius:7px;
-      
-  }
+      border-radius:7px;    
+}
+
+.form-group {
+  padding-bottom: 0px;
+  margin: 10px 0 0 0;
+}
 
 ng-select{
-      margin-left: 25px;
-      background-image: none;
-      
-      
+  margin-left: 25px;
+  background-image: none;
+  font-size: 13px;
 }
 
 .is-invalid{
-  margin-left: 25px;
+  margin-left: 28px;
+  margin-top: 2px;
+  font-size: 12px;
   color: red;
-
-}
-
-input[type=checkbox]{
-    width:  15px;
-    height: 15px;
-}
-  
-@media (min-width: 992px) and (max-width: 1200px) { 
-  .custom-label-for-dept { 
-    text-align: left !important;
-    padding-top: 18px !important;
-  }
-
-  .card-padding {
-    padding-top:0px !important; 
-    padding-bottom:0px !important;
-  }
-  
-}
-
-@media (min-width: 1682px) { 
-  .custom-label-for-dept {
-    padding-top:8px;
-  }
 }
 
 .condition{
-    background-color: rgba(227, 230, 232, 0.6);
-    padding: 10px 11px;
-    width: 90%;
-    margin: 19px auto;
-    border-radius: 12px;
+  background-color: rgba(227, 230, 232, 0.6);
+  padding: 7px 0px;
+  width: 90%;
+  margin: 10px auto;
+  border-radius: 12px;
 }
 
 .custom-icon{
@@ -114,7 +93,7 @@ input[type=checkbox]{
 }
 
 .card-custom-trigger {
-  padding-top: 15px;
+    padding-top: 15px;
     padding-bottom: 15px;
     padding-left: 30px;
     padding-right: 30px;
@@ -136,6 +115,8 @@ input[type=checkbox]{
 .li-active  a {
   color: #039be5!important;
 }
+
+
 
 $f21blue: #039be5;
 .btn-with-border-effect {
@@ -161,3 +142,69 @@ $f21blue: #039be5;
     height: 100%;
   }
 }
+
+// start SWITCH BTN
+.onoffswitch {
+  position: relative; width: 90px;
+  -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+  display: none;
+}
+.onoffswitch-label {
+  display: block; overflow: hidden; cursor: pointer;
+  // border: 2px solid #999999; 
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 22px;
+}
+.onoffswitch-inner {
+  display: block; 
+  width: 200%; 
+  margin-left: -100%;
+  transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+  display: block; 
+  float: left; 
+  width: 50%; 
+  height: 30px; 
+  padding: 0; 
+  line-height: 30px;
+  font-size: 14px; 
+  color: white; 
+  font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+  box-sizing: border-box;
+}
+.onoffswitch-inner:before {
+  content: "ON";
+  padding-left: 10px;
+  // background-color: #EEEEEE; 
+  color: #4CAF50;
+}
+.onoffswitch-inner:after {
+  content: "OFF";
+  padding-right: 10px;
+  // background-color: #EEEEEE; 
+  color: #F44336;
+  text-align: right;
+}
+.onoffswitch-switch {
+  display: block; 
+  width: 22px; 
+  margin: 5px;
+  background: #F44336;
+  position: absolute; top: 0; bottom: 0;
+  right: 56px;
+  // border: 2px solid #999999;
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 22px;
+  transition: all 0.3s ease-in 0s; 
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+  margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+  right: 0px; 
+  background-color: #4CAF50; 
+}
+// ./end SWITCH BTN

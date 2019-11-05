@@ -933,7 +933,11 @@
                                     "VisitorPlatform":"Visitor platform",
                                     "Department": "Department",
                                     "VisitorServed": "Visitor served"
-                                 }
+                                 },
+                                 "placeholder": {
+                                    "SelectDepartment" : "Select department",
+                                    "SelectStatus": "Select status"
+                                }
                 },
                 "chat": {  "groupId":{
                                     "VisitorInformation": "Visitor information",
@@ -960,6 +964,11 @@
                                     "VisitorCountryRegion": "Visitor country region",
                                     "VisitorCountryCode": "Visitor country code",
                                     "VisitorCountryName": "Visitor country name"
+                                },
+                                "placeholder": {
+                                    "SelectDepartment" : "Select department",
+                                    "SelectStatus": "Select status",
+                                    "SelectLanguage": "Select language"
                                 }
                 }
     
@@ -1099,7 +1108,7 @@
         "MedianConvClock": "Median Conversation Lenght",
         "ResponseDurationtime": "Your team's overall Median Conversation Lenght is ",
         "RequestChartTitle": "Number of requests last ",
-        "FilterReport": "Filter report:",
+        "FilterReport": "Filter report",
         "FilterByAgent": "Agent",
         "FilterByDay": "Days",
         "FilterByWeek": "Weeks",
@@ -1116,6 +1125,7 @@
         "SentimentHEART": "Median Customer Satisfaction",
         "SentimentMedianValueHEART": "Your team's overall Median Customer Satisfaction is :",
         "UpgradeYourAccounttoTrackTheChatsYouHaveWithCustomers": " Upgrade your account to track the chats you have with customers",
-        "DailyMedianResponseTime":"Daily Median Response Time"
+        "DailyMedianResponseTime":"Daily Median Response Time",
+        "DailyConvDurationTime": "Daily  Median Conversation Lenght"
     }
 }

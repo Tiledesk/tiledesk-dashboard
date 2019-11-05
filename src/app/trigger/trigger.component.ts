@@ -15,6 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class TriggerComponent implements OnInit {
 
+
   triggers: any;
   trigger: Trigger;
   triggerName: string;
@@ -44,6 +45,7 @@ export class TriggerComponent implements OnInit {
     this.getCurrentProject();
     this.getAllTrigger();
     this.translateNotifyMsg();
+
   }
 
 

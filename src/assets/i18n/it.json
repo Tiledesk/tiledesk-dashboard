@@ -931,6 +931,10 @@
                                     "VisitorPlatform":"Piattaforma visitatore",
                                     "Department": "Dipartimento",
                                     "VisitorServed": "Visitatore assistito"
+                                 },
+                                 "placeholder": {
+                                     "SelectDepartment" : "Seleziona dipartimento",
+                                     "SelectStatus": "Seleziona stato"
                                  }
                 },
                 "chat": {  "groupId":{
@@ -958,6 +962,11 @@
                                     "VisitorCountryRegion": "Regione del visitatore",
                                     "VisitorCountryCode": "Codice paese visitatore",
                                     "VisitorCountryName": "Nome paese visitatore"
+                                },
+                                "placeholder": {
+                                    "SelectDepartment" : "Seleziona dipartimento",
+                                    "SelectStatus": "Seleziona stato",
+                                    "SelectLanguage": "Seleziona lingua"
                                 }
                 }
     
@@ -1098,7 +1107,7 @@
         "MedianConvClock": "Durata media conversazione",
         "ResponseDurationtime": "La durata di conversazione media complessiva del tuo team è ",
         "RequestChartTitle": "Numero di richieste negli ultimi",
-        "FilterReport": "Filtra rapporto:",
+        "FilterReport": "Filtra rapporto",
         "FilterByAgent": "Agenti",
         "FilterByWeek": "Settimane",
         "FilterByMonth": "Mesi",
@@ -1115,6 +1124,7 @@
         "SentimentHEART": "Feedback cliente medio",
         "SentimentMedianValueHEART": "Il feedback clienti medio del tuo team è di:",
         "UpgradeYourAccounttoTrackTheChatsYouHaveWithCustomers":"Aggiorna il tuo account per tenere traccia delle chat che hai con i clienti",
-        "DailyMedianResponseTime":"Tempo di risposta medio giornaliero"
+        "DailyMedianResponseTime":"Tempo di risposta medio giornaliero",
+        "DailyConvDurationTime": "Durata conversazione media giornaliera"
     }
 }
