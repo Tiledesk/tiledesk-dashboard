@@ -129,7 +129,11 @@ export class AppComponent implements OnInit, AfterViewInit {
 
 
         this.unsetNavbarBoxShadow();
+
+
     }
+
+
 
     resetRequestsIfUserIsSignedOut() {
         const self = this
@@ -168,9 +172,13 @@ export class AppComponent implements OnInit, AfterViewInit {
                 // console.log('»> ', this.route);
 
                 // (this.route.indexOf('/analytics') !== -1) ||
-                if ((this.route.indexOf('/requests') !== -1) ||
+                if (
+                    (this.route.indexOf('/requests') !== -1) ||
                     (this.route.indexOf('/users') !== -1) ||
-                    (this.route.indexOf('/groups') !== -1)) {
+                    (this.route.indexOf('/groups') !== -1) ||
+                    (this.route.indexOf('/project-settings') !== -1)
+
+                ) {
 
                     const elemNavbar = <HTMLElement>document.querySelector('.navbar');
                     // console.log('»> is analytics -- elemNavbar ', elemNavbar)
@@ -193,9 +201,17 @@ export class AppComponent implements OnInit, AfterViewInit {
 
         const elemNavbarToogle = <HTMLElement>document.querySelector('.navbar-toggle');
 
+        const elemSidebarWrapper = <HTMLElement>document.querySelector('.sidebar-wrapper')
 
 
-        /* DETECT IF IS THE LOGIN PAGE - SIGNUP - WELCOME - VERIFY-EMAIL */
+
+        /**
+         * DETECT IF IS THE LOGIN PAGE - SIGNUP - WELCOME - VERIFY-EMAIL - ...
+         * the path /create-project and /create-new-project they both lead to the same component (CreateProjectComponent)
+         * /create-project is called after the signup - In CreateProjectComponent is checked the current URL and if it is =
+         * to create-project is hidden ehe button 'close' that go to home (in this way the user cannot go to the home if he does
+         * not first create a project)
+         */
         this.router.events.subscribe((val) => {
             if (this.location.path() !== '') {
                 this.route = this.location.path();
@@ -204,12 +220,17 @@ export class AppComponent implements OnInit, AfterViewInit {
                 // tslint:disable-next-line:max-line-length
                 if ((this.route === '/login') ||
                     (this.route === '/signup') ||
+                    (this.route.indexOf('/signup-on-invitation') !== -1) ||
                     (this.route === '/forgotpsw') ||
                     (this.route === '/projects') ||
                     (this.route.indexOf('/verify') !== -1) ||
                     (this.route.indexOf('/resetpassword') !== -1) ||
                     (this.route.indexOf('/pricing') !== -1) ||
-                    (this.route.indexOf('/success') !== -1)
+                    (this.route.indexOf('/success') !== -1) ||
+                    (this.route.indexOf('/create-project') !== -1) ||
+                    (this.route.indexOf('/create-new-project') !== -1) ||
+                    (this.route.indexOf('/handle-invitation') !== -1) ||
+                    (this.route.indexOf('/install-tiledesk') !== -1)
                 ) {
 
                     elemNavbar.setAttribute('style', 'display:none;');
@@ -225,15 +246,28 @@ export class AppComponent implements OnInit, AfterViewInit {
                     elemNavbar.setAttribute('style', 'display:block;');
                     elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;');
                 }
+
+
+                // RESOLVE THE BUG: THE "MOBILE" SIDEBAR IN THE PAGE "RECENT PROJECT" IS SMALLER OF THE APP WINDOW
+                if (this.route === '/projects') {
+                    elemSidebarWrapper.setAttribute('style', 'height:100vh; background-color: #2d323e!important;');
+                } else {
+                    elemSidebarWrapper.setAttribute('style', 'background-color: #2d323e!important;');
+                }
+
             } else {
                 // console.log('»> * ', this.route)
             }
         });
     }
 
-    ngAfterViewInit() {
 
+
+
+    ngAfterViewInit() {
         this.runOnRouteChange();
+        this.setPrechatFormInWidgetSettings();
+
 
         const elemFooter = <HTMLElement>document.querySelector('footer');
         // console.log('xxxx xxxx APP FOOTER ', elemFooter)
@@ -244,7 +278,18 @@ export class AppComponent implements OnInit, AfterViewInit {
                 this.route = this.location.path();
                 // console.log('»> ', this.route)
                 // tslint:disable-next-line:max-line-length
-                if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/forgotpsw') || (this.route.indexOf('/resetpassword') !== -1)) {
+                if (
+                    (this.route === '/login') ||
+                    (this.route === '/signup') ||
+                    (this.route.indexOf('/signup-on-invitation') !== -1) ||
+                    (this.route === '/forgotpsw') ||
+                    (this.route.indexOf('/resetpassword') !== -1) ||
+                    (this.route.indexOf('/create-project') !== -1) ||
+                    (this.route.indexOf('/create-new-project') !== -1) ||
+                    (this.route.indexOf('/install-tiledesk') !== -1) ||
+                    (this.route.indexOf('/handle-invitation') !== -1) ||
+                    (this.route.indexOf('/chat') !== -1)
+                ) {
 
                     elemFooter.setAttribute('style', 'display:none;');
                     // console.log('DETECT LOGIN PAGE')
@@ -281,6 +326,31 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     }
 
+
+    setPrechatFormInWidgetSettings() {
+        this.router.events.subscribe((val) => {
+            if (this.location.path() !== '') {
+                this.route = this.location.path();
+                // console.log('»> ', this.route)
+                // tslint:disable-next-line:max-line-length
+                if (
+                    (this.route === '/login') ||
+                    (this.route === '/signup') ||
+                    (this.route === '/forgotpsw') ||
+                    (this.route.indexOf('/signup-on-invitation') !== -1)
+                ) {
+                    if (window && window['tiledeskSettings']) {
+                        window['tiledeskSettings']['preChatForm'] = true
+                    }
+                } else {
+                    if (window['tiledeskSettings']['preChatForm']) {
+                        delete window['tiledeskSettings']['preChatForm'];
+                    }
+                }
+                // console.log('APP.COMP currentUrl ', this.route, 'tiledeskSettings ', window['tiledeskSettings']);
+            }
+        });
+    }
 
     isMaps(path) {
         var titlee = this.location.prepareExternalUrl(this.location.path());

@@ -20,7 +20,9 @@ class="navbar-brand">
     <li class="btn-with-border-effect li-active">
         <a>  {{ "Users" | translate }} </a>
     </li>
-    <li class="btn-with-border-effect border-from-center" (click)="goToGroups()">
+
+
+    <li *ngIf="isVisible" class="btn-with-border-effect border-from-center" (click)="goToGroups()">
         <a>{{ "Groups" | translate }} </a>
     </li>
 

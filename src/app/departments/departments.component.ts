@@ -212,25 +212,41 @@ export class DepartmentsComponent implements OnInit {
    * NOTE: the DSBRD CALL /departments/allstatus  WHILE the OLD WIDGET VERSION CALL /departments
    * GET DEPTS ALL DEPTS (READ)
    */
-  getDepartments() {
-    this.mongodbDepartmentService.getMongDbDepartments().subscribe((departments: any) => {
-      console.log('RETRIEVED DEPTS AS THE OLD WIDGET VERSION: ', departments);
-      // this.departments = departments;
-    });
-  }
+  // getDepartments() {
+  //   this.mongodbDepartmentService.getMongDbDepartments().subscribe((departments: any) => {
+  //     console.log('RETRIEVED DEPTS AS THE OLD WIDGET VERSION: ', departments);
+  //     // this.departments = departments;
+  //   });
+  // }
 
-   /**
-   * !!! USED ONLY FOR TESTING THE CALLBACK RUNNED BY THE NEW WIDGET VERSION
-   * THAT GET DEPTS FILTERED FOR STATUS === 1 and WITHOUT AUTHENTICATION
-   * NOTE: the DSBRD CALL /departments/allstatus  WHILE the NEW WIDGET VERSION CALL /widget
-   * GET DEPTS ALL DEPTS (READ)
-   */
-  getDepartmentsAsNewWidgetVersion() {
-    this.mongodbDepartmentService.getDepartmentsAsNewWidgetVersion().subscribe((departments: any) => {
-      console.log('RETRIEVED DEPTS AS THE NEW WIDGET VERSION: ', departments);
-      // this.departments = departments;
-    });
-  }
+  /**
+  * !!! USED ONLY FOR TESTING THE CALLBACK RUNNED BY THE NEW WIDGET VERSION
+  * THAT GET DEPTS FILTERED FOR STATUS === 1 and WITHOUT AUTHENTICATION
+  * NOTE: the DSBRD CALL /departments/allstatus  WHILE the NEW WIDGET VERSION CALL /widget
+  * GET DEPTS ALL DEPTS (READ)
+  */
+  // getDepartmentsAsNewWidgetVersion() {
+  //   this.mongodbDepartmentService.getDepartmentsAsNewWidgetVersion().subscribe((departments: any) => {
+  //     console.log('RETRIEVED DEPTS AS THE NEW WIDGET VERSION: ', departments);
+  //     // this.departments = departments;
+  //   });
+  // }
+
+
+  // getVisitorCounter() {
+  //   this.mongodbDepartmentService.getVisitorCounter()
+  //     .subscribe((visitorCounter: any) => {
+  //       console.log('getVisitorCounter : ', visitorCounter);
+  //       // this.departments = departments;
+  //     }, (error) => {
+
+  //       console.log('getVisitorCounter ERROR ', error);
+
+  //     },
+  //       () => {
+  //         console.log('getVisitorCounter * COMPLETE *');
+  //       });
+  // }
 
   /**
    * ADD DEPARMENT

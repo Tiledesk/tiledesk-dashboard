@@ -222,7 +222,11 @@ export class FaqKbEditAddComponent implements OnInit {
     this.router.navigate(['project/' + this.project._id + '/bots']);
   }
 
-
+  launchWidget() {
+    if (window && window['tiledesk']) {
+      window['tiledesk'].open();
+    }
+  }
 
 
 }

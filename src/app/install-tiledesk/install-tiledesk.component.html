@@ -1,0 +1,119 @@
+
+<!-- wizard-bckgrnd -->
+<!-- filter: drop-shadow( 3px 3px 2px rgba(62,169,245, .2)); -->
+<div class="main-content " style="padding-top:0px; background-color: #ffffff; min-height: calc(100% - 0px);margin-top: 0px; padding: 0px" >
+  <img src="assets/img/razzo_wizard_v2(2).svg" class="img-fluid razzo_wizard_script"/>
+
+  <div style="min-height: calc(100vh - 0px);" class="wizard-bckgrnd">
+    <div class="row" >
+      <div class="col-md-12">
+        <div class="close-wizard-page" style="height: 66px">
+          <!-- <i *ngIf="!CLOSE_BTN_IS_HIDDEN" class="material-icons close-btn" (click)="goBack()">
+            clear
+          </i> -->
+        </div>
+    </div>
+  </div>
+
+  <div class="container">
+   
+    <div class="row">
+      <div class="col-md-12">
+        <div style="margin-top: 50px;"> 
+          <h1  style="font-size: 20px; line-height: 28px; color: rgba(0,0,0,.54); padding-bottom: 50px">
+
+            {{ 'InstallTiledesk' | translate }}
+
+          </h1>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <h1 class="install-tiledesk-page-title" style="max-width: 750px">
+    
+          {{ 'InstallTiledeskNow' | translate }}
+        
+        </h1>
+      </div>
+      <div class="col-md-7">
+
+    <!-- 
+    #######################################################################################################################################
+    ################################# REMEMBER TO UPDATE TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG ####################################
+    ########## !!!!!!! NOTE THAT TEXT AREA IS HIDDEN - IS USED ONLY TO COPY THE CODE WHEN THE USER CLICK ON THE BUTTON COPY CODE ########## 
+    ####################################################################################################################################### -->
+<textarea  name="exampleClipboard" class="textarea" readonly rows="18" value="" type="text" style="opacity: .01;height:0; position:absolute; z-index: -1;">
+    &lt;script type=&quot;application/javascript&quot;&gt;
+      window.tiledeskSettings = 
+        {
+        projectid: &quot;{{ projectId }}&quot;
+        };
+        (function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id; //js.async=!0;
+          js.src = &quot;{{WIDGET_URL}}&quot;;
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, &#39;script&#39;, &#39;tiledesk-jssdk&#39;));
+    &lt;/script&gt;</textarea>
+
+          <!-- 
+          #######################################################################################################################################
+          ################################# REMEMBER TO UPDATE TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG ####################################
+          ####### !!!!!!!  new incorpora WIDGET NOTE THAT: WHEN IS CLICKED THE BUTTON "COPY CODE" IS COPIED THE CODE IN THE ABOVE TEXAREA ####### 
+          ####################################################################################################################################### -->
+          <div class="wrap-description" style="margin-top: 16px; color: #525f7f; font-size:14px; font-weight: 400;"> 
+            {{ 'Resourcepage.ToChatWithYourVisitors...' | translate  }}  {{ 'Resourcepage.CopyTheFollowingScript...' | translate  }}<code><em>&lt;head&gt;</em></code> tags.
+          </div>
+
+          <div class="wrap-script" style="margin-top: 10px;"> 
+            <pre style="padding-left:0px; margin-bottom: 0px; height: 100px;">
+              <span>&lt;script type=&quot;application/javascript&quot;&gt;</span>
+              <span>  window.tiledeskSettings =</span>
+              <span>   {{'{'}}</span>
+              <span>	 projectid: &quot;{{ projectId }}&quot;</span>
+              <span>   {{'};'}}</span>
+              <span>   (function(d, s, id) {{'{'}}</span>
+              <span>    var js, fjs = d.getElementsByTagName(s)[0];    </span>
+              <span>    if (d.getElementById(id)) return;    </span>
+              <span>    js = d.createElement(s); js.id = id; //js.async=!0;    </span>
+              <span>    js.src = &quot;{{WIDGET_URL}}&quot;;</span>
+              <span>    fjs.parentNode.insertBefore(js, fjs);</span>
+              <span>  {{'}'}}(document, &#39;script&#39;, &#39;tiledesk-jssdk&#39;));</span>
+              <span>&lt;/script&gt;</span>	
+            </pre>
+
+            <button (click)="copyToClipboard()" class="btn btn-white copy-script">
+              <span> 	<i class="material-icons" style="vertical-align: middle; color: #039be5; font-size:13px">file_copy</i>	</span>		
+              <span style="font-size: 12px"> 	{{ 'Resourcepage.CopyScript' | translate }}</span>
+            </button>
+            
+
+            <div class="copied-to-clipboard-tooltip" style="opacity: 0; text-align: center;
+            position: relative;top: -78px; max-width: 360px;left: 50%;transform: translateX(-50%);padding: 5px"
+            [ngClass]="{'has-copied-text' : has_copied}" class="control-label " >
+              {{ 'Copied' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12" style="">
+          <button class="btn btn-tdblu" (click)="continueToHome()">
+              {{ "ProjectsPage.Continue" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+

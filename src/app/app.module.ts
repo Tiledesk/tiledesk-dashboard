@@ -144,6 +144,10 @@ import { StaticPageBaseComponent } from './static-pages/static-page-base/static-
 
 import {SlideshowModule} from 'ng-simple-slideshow';
 import { GroupsStaticComponent } from './static-pages/groups-static/groups-static.component';
+import { FaqSidebarComponent } from './faq/faq-sidebar/faq-sidebar.component';
+import { CreateProjectComponent } from './create-project/create-project.component';
+import { InstallTiledeskComponent } from './install-tiledesk/install-tiledesk.component';
+import { HandleInvitationComponent } from './auth/handle-invitation/handle-invitation.component';
 
 console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
@@ -224,7 +228,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     TriggerComponent,
     TriggerAddComponent,
     TriggerEditComponent,
-    BasetriggerComponent
+    BasetriggerComponent,
+    FaqSidebarComponent,
+    CreateProjectComponent,
+    InstallTiledeskComponent,
+    HandleInvitationComponent
   ],
   imports: [
     /* PRIVATE */

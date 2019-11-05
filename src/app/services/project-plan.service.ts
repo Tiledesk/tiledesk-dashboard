@@ -66,7 +66,7 @@ export class ProjectPlanService {
         const nav_project_id = url_segments[2];
         console.log('ProjectPlanService - nav_project_id ', nav_project_id);
 
-        if (nav_project_id && nav_project_id !== 'email' && url_segments[1] !== 'user') {
+        if (nav_project_id && nav_project_id !== 'email' && url_segments[1] !== 'user' && url_segments[1] !== 'handle-invitation' && url_segments[1] !== 'signup-on-invitation') {
           this.getProjectByID(nav_project_id)
         }
 

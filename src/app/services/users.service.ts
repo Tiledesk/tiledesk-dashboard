@@ -121,6 +121,8 @@ export class UsersService {
 
         this.PENDING_INVITATION_URL = this.BASE_URL + this.project._id + '/pendinginvitations';
 
+
+
         // MAYBE NOT USED anymore
         this.PROJECT_USER_DTLS_URL = this.BASE_URL + this.project._id + '/member/';
 
@@ -407,7 +409,19 @@ export class UsersService {
       .map((response) => response.json());
   }
 
-
+  /// ================================== GET PENDING USER BY ID ================================== ///
+  public getPendingUsersById(pendingInvitationId): Observable<PendingInvitation[]> {
+    // const url = this.PENDING_INVITATION_URL + '/' + pendingInvitationId;
+    const url = this.BASE_URL + 'auth/pendinginvitationsnoauth/' + pendingInvitationId;
+    console.log('GET PENDING USER BY ID URL', url);
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    // console.log('TOKEN TO COPY ', this.TOKEN)
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
 
 
 

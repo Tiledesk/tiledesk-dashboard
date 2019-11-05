@@ -1,13 +1,44 @@
 <!-- NEW FOR THIS TEMPLATE -->
-<div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
+<p class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px;">
     <!-- (click)="goBackToProjectsList() -->
     <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">keyboard_arrow_left</i>
-    <span *ngIf="CREATE_VIEW">Aggiungi Progetto</span>
-    <span *ngIf="EDIT_VIEW">
+
       <!-- Impostazioni Progetto -->
     {{ "ProjectEditPage.ProjectSettings" | translate }}
-    </span>
-  </div>
+  
+</p>
+
+
+  <ul class="bottom-nav">
+
+
+      <!-- [ngClass]="
+      { 'disabled-li' : displayBtnLabelSeeYourRequets === false, 
+        'border-from-center' : displayBtnLabelSeeYourRequets === true,
+        'li-active' : displayBtnLabelSeeYourRequets === false
+      }" -->
+      <li  (click)="goToProjectSettings_General()"
+        class="btn-with-border-effect"     
+        [ngClass]="{ 'li-active' : PROJECT_SETTINGS_ROUTE === true,  
+                      'border-from-center': PROJECT_SETTINGS_ROUTE === false}">
+          
+          <a> {{ "General" | translate }} </a> 
+      </li>
+
+      <!-- [ngClass]="
+      { 'disabled-li' : displayBtnLabelSeeYourRequets === true, 
+        'border-from-center' : displayBtnLabelSeeYourRequets === false, 
+        'li-active' : displayBtnLabelSeeYourRequets === true
+      }" -->
+      <li *ngIf="isVisible" (click)="goToProjectSettings_Payments()"
+        class="btn-with-border-effect" 
+        [ngClass]="{ 'li-active' : PROJECT_SETTINGS_PAYMENTS_ROUTE === true,  
+                      'border-from-center': PROJECT_SETTINGS_PAYMENTS_ROUTE === false }">
+ 
+          <a>  {{ "ProjectEditPage.Payments" | translate }}</a> 
+      </li>
+   
+  </ul>
   
   <div class="main-content" style="padding-top:0px">
     <div class="container-fluid">
@@ -20,27 +51,9 @@
             
             <div *ngIf="!showSpinner" class="card-content">
     
-              <!-- <span *ngIf="CREATE_VIEW">
-                <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2 ">
-                  {{ "ProjectEditPage.ProjectName" | translate }}
-                </label>
-                <div class="col-sm-10">
-                  <input [(ngModel)]="project_name" class="" type="text" placeholder="Nome Progetto">
-                </div>
-
-                <div class="col-sm-12" style="height:15px"></div>
-                <label style="" class="col-sm-2 "></label>
-  
-                <div class="col-sm-10">
-                  <button class="btn btn-success" [disabled]="project_name?.length < 2" (click)="createProject()">
-                    Crea Progetto 
-                  </button>
-                </div>
-    
-              </span> -->
-              <!-- /. CREATE_VIEW -->
-    
-              <span *ngIf="EDIT_VIEW">
+           
+              
+              <span *ngIf="PROJECT_SETTINGS_ROUTE">
  
                 
                 <!-- SECTION YOUR PROJECT -->
@@ -82,254 +95,8 @@
                   </div>
 
                 </div>
-                <!-- SECTION DIVIDER -->
-                <div class="row section-divider">
-                  <div class="col-sm-12" style="border-top: 1px solid #eeeeee;"></div>
-                </div>
+           
 
-                  <!-- ****************** start project plan ****************** -->
-
-                  <!-- SECTION TITLE AND SUBTITLE -->
-                   <div class="row">
-                    <div class="col-sm-12">
-                      <p class="card-section-title">
-                        {{ "ProjectEditPage.Your" | translate }} {{ "ProjectEditPage.ProjectPlan" | translate }}
-                      </p>
-                    </div>
-                  </div> 
-
-                 <div class="input-wrapper" style="max-width: 992px;"> 
-                  <div class="row"> 
-                    <label class="col-sm-2 custom-label">
-                      {{ "ProjectEditPage.ProjectPlan" | translate }}
-                    </label>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                      <span *ngIf="prjct_profile_type === 'payment'" > 
-                      <span class="payment-plan-name" style="font-family: 'Google Sans', sans-serif !important;"> 
-                        {{ 'YourCurrentPlan' | translate }}: 
-                        
-                        
-                        <span style="font-weight: 500"> 
-                          <span style="text-transform: capitalize">{{ prjct_profile_name }} </span>
-                        
-                          
-                            ( {{ numberOf_agents_seats }} {{ "AgentSeats" | translate }} x € {{ plan_amount / 100 }} .00 / {{ plan_interval | translate}} )  
-                        
-                        </span>
-                      </span>
-                    </span>
-
-
-                      <span *ngIf="prjct_profile_type === 'free'"> 
-                          <div class="input-group">
-                              <input style="border-color:transparent!important;font-family: 'Google Sans', sans-serif !important; font-weight: 500" 
-                                [(ngModel)]="prjct_profile_name" class="input project-plan-input" type="text" disabled>
-                              
-                              <span class="input-group-btn" style="padding-right: 0px;padding-left: 0px;">
-                              
-                                <span *ngIf="prjct_profile_type === 'free'"> 
-                                  <button class="btn btn-success" style="padding-top:9px; padding-bottom:9px" (click)="goToPricing()">
-                                    {{ "Pricing.UpgradePlan" | translate }}
-                                  </button>
-                                </span> 
-                                <!-- <span *ngIf="prjct_profile_type === 'payment'"> 
-                                  <button class="btn btn-success" (click)="getMoreOperatorsSeats()">
-                                    {{ "Pricing.AddMoreOperators" | translate }}
-                                  </button>
-                                </span> -->
-                              </span>
-                            </div>
-                      </span> 
-                    </div>                   
-                  </div>
-
-                  <!-- ****************** SUBSCRIPTION STATUS ****************** -->
-                  <div class="row">
-                    <label class="col-sm-2 custom-label">
-                      {{ "SubscriptionStatus" | translate }}
-                    </label>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                      <span class="subscription-info" style="font-weight: 500;"> 
-                        <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === true">      
-                            <i class="material-icons" style="color:#4caf50; vertical-align: middle;">
-                              check_circle
-                            </i>
-                            <span>  {{ "Pricing.YourSubscriptionIsActive" | translate }}, </span>
-                              {{ "NextRenew" | translate }} 
-                      
-                            <span *ngIf="days_to_next_renew === 0"> 
-                              {{ "Today" | translate}}  {{ "At" | translate}} {{ timeOfNextRenew }}
-                            </span>
-                            <span *ngIf="days_to_next_renew === 1"> 
-                              {{ "Pricing.Tomorrow" | translate }}
-                            </span>
-
-                            <span *ngIf="days_to_next_renew > 1"> 
-                              {{ "In" | translate }} {{days_to_next_renew}} {{ "Pricing.Days" | translate }}
-                            </span>
-                        </span>
-
-                        <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false">      
-                            <i class="material-icons" style="color:#f44336; vertical-align: middle;">
-                              error_outline
-                            </i>
-                            <span style="color:#f44336;">  
-                              {{ "Pricing.SubscriptionExpired" | translate }} -
-                            </span>
-
-                            <span style="color: #039be5; cursor:pointer" (click)="openModalSubsExpired()">
-                              {{ "Pricing.UpgradePlan" | translate }} 
-                            </span>
-                        </span>   
-
-                        <span *ngIf="prjct_profile_type !== 'payment'">
-                          <i class="material-icons" style="color:#5e9ded; vertical-align: middle;">
-                              info
-                          </i>
-                          <span *ngIf="prjct_trial_expired === false"> 
-                              {{ "Pricing.Your" | translate }}
-                              
-                            <span style="font-weight:500"> 
-                              {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate }}
-                            </span>
-                            
-                            {{ "Pricing.WillExpireIn" | translate }}
-                            
-                              <span *ngIf="prjc_trial_days_left < -1"> 
-                                {{ - prjc_trial_days_left }} {{ "Pricing.Days" | translate }}
-                            </span>
-          
-                            <span *ngIf="prjc_trial_days_left === -1"> 
-                                {{ "Pricing.Tomorrow" | translate }}
-                            </span>
-                          </span> 
-
-                          <span *ngIf="prjct_trial_expired === true" style="font-weight:500; color: #f44336"> 
-                              {{ "Pricing.Your" | translate }}
-                            
-                              {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate }} 
-                           
-                              {{ "Pricing.HasExpired" | translate }}
-                           
-                          </span> 
-                        </span>
-                      </span>
-                    </div>
-                  </div>
-
-                  <!-- ****************** SUBSCRIPTION START DATE ****************** -->
-                  <div class="row" *ngIf="prjct_profile_type !== 'free'"  style="margin-top: 16px;"> 
-                    <label class="col-sm-2 custom-label">
-                      {{ "SubscriptionStartDate" | translate }}
-                    </label>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                     
-                      <span class="subscription-info" style="">
-                        <i class="material-icons" style="vertical-align: middle;color: #697386;">
-                            flag
-                        </i>
-                        <span style="font-weight: 500;  padding: 5px;height:31px;position: relative;top: 2px;"> 
-                         
-                          <!-- IF THE  subscription_creation_date IS OBTAINED FROM THE PROJECT PROFILE -->
-                          <!-- {{ subscription_creation_date | date: 'dd/MM/yyyy' }} -->
-
-                         <!-- IF THE  subscription_creation_date IS OBTAINED FROM THE SUBSCRIPTION PAYMENT OBJECT -->
-                          {{ subscription_creation_date * 1000 | date: 'dd/MM/yyyy' }}
-                        </span>
-                      </span>
-                      
-                    </div>
-                  </div>
-
-                  <!-- ****************** CURRENT INVOICE START DATE ****************** -->
-                  <div class="row" *ngIf="prjct_profile_type !== 'free'"  style="margin-top: 16px;"> 
-                    <label class="col-sm-2 custom-label">
-                      {{ "CurrentInvoiceStartDate" | translate }}
-                    </label>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    
-                    <span class="subscription-info" style="">
-                        <i class="material-icons" style="vertical-align: middle;color: #697386;">
-                            calendar_today
-                        </i>
-
-                        <span style=" font-weight: 500;  padding: 5px;height:31px;position: relative;top: 2px;"> 
-                          {{ subscription_start_date | date: 'dd/MM/yyyy' }}
-                        </span>
-                    
-                    </span>
-                      
-                    </div>
-                  </div>
-
-                  <!-- ****************** CURRENT INVOICE END DATE ****************** -->
-                  <div class="row" *ngIf="prjct_profile_type !== 'free'"  style="margin-top: 16px;"> 
-                    <label class="col-sm-2 custom-label">
-                      {{ "CurrentInvoiceEndDate" | translate }}
-                    </label>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                      <span class="subscription-info" style="">
-                        <i class="material-icons" style="vertical-align: middle;color: #697386;">
-                            calendar_today
-                        </i>
-                        <span style="font-weight: 500;  padding: 5px;height:31px;position: relative;top: 2px;"> 
-                          {{ subscription_end_date | date: 'dd/MM/yyyy' }}
-                        </span>
-                      </span>
-                    </div>
-                  </div>
-
-                  <!-- ****************** NUMBER OF AGENTS SEATS ****************** -->
-                  <div class="row" *ngIf="prjct_profile_type !== 'free'"  style="margin-top: 16px;"> 
-                    <label class="col-sm-2 custom-label">
-                      {{ "NumberOfAgentSeats" | translate }}
-                    </label>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                      <span class="subscription-info" style="">
-                        <i class="material-icons" style="vertical-align: middle;color: #697386;">
-                            people_alt
-                        </i>
-                        <span style="font-weight: 500;  padding: 5px;height:31px;position: relative;top: 2px;"> 
-                          {{ numberOf_agents_seats }} 
-                        </span>
-                          <span style="color: #039be5; cursor:pointer; border: 1px solid;  padding: 5px; border-radius: 4px; font-weight: 400;
-                            font-size: 12px; margin-left: 16px;" (click)="getMoreOperatorsSeats()">
-                            {{ "Pricing.AddMoreOperators" | translate }}
-                          </span>
-                      </span>
-                    </div>
-                  </div>
-
-                  <div class="row" *ngIf="prjct_profile_type !== 'free'"  style="margin-top: 16px;"> 
-                    <label class="col-sm-2 ">        </label>
-                    <div class="col-sm-10" style="border-top: 1px solid #eeeeee;"></div>
-                  </div>
-
-               
-
-                  <!-- ****************** PAYMENTS ****************** -->
-                  <div class="row" *ngIf="prjct_profile_type !== 'free'"  style="margin-top: 16px;"> 
-                    <label class="col-sm-2 custom-label">
-                      {{ "ProjectEditPage.Payments" | translate }}
-                    </label>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                      <button class="btn btn-success" (click)="goToPayments()" style="padding: 6px 38px; margin-top: 5px;">
-                        {{ "ProjectEditPage.SeePayments" | translate }}
-                      </button>
-                    </div>
-                  </div>
-
-                  <div class="row"  *ngIf="prjct_profile_type !== 'free'"> 
-                      <label class="col-sm-2"> </label>
-                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        <button class="btn btn-danger" (click)="viewCancelSubscription()" style="padding: 6px 15px; margin-top: 5px;">
-                          {{ "CancelSubscription" | translate }}
-                        </button>
-                      </div>
-                  </div>
-
-                </div>
-                <!-- ****************** /.end project plan ****************** -->
 
 
                 <!-- SECTION DIVIDER -->
@@ -413,7 +180,265 @@
                   </div>
                 </div> -->
 
-              </span>   <!-- /. EDIT_VIEW -->
+              </span>   <!-- /. PROJECT_SETTINGS_ROUTE -->
+
+
+              <span *ngIf="PROJECT_SETTINGS_PAYMENTS_ROUTE">
+
+                  <!-- ****************** start project plan ****************** -->
+                  <!-- SECTION TITLE AND SUBTITLE -->
+                  <div class="row">
+                      <div class="col-sm-12">
+                        <p class="card-section-title">
+                          {{ "ProjectEditPage.Your" | translate }} {{ "ProjectEditPage.ProjectPlan" | translate }}
+                        </p>
+                      </div>
+                    </div> 
+  
+                   <div class="input-wrapper" style="max-width: 992px;"> 
+                    <div class="row"> 
+                      <label class="col-sm-2 custom-label">
+                        {{ "ProjectEditPage.ProjectPlan" | translate }}
+                      </label>
+                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <span *ngIf="prjct_profile_type === 'payment'" > 
+                        <span class="payment-plan-name" style="font-family: 'Google Sans', sans-serif !important;"> 
+                          {{ 'YourCurrentPlan' | translate }}: 
+                          
+                          
+                          <span style="font-weight: 500"> 
+                            <span style="text-transform: capitalize">{{ prjct_profile_name }} </span>
+                          
+                            
+                              ( {{ numberOf_agents_seats }} {{ "AgentSeats" | translate }} x € {{ plan_amount / 100 }} .00 / {{ plan_interval | translate}} )  
+                          
+                          </span>
+                        </span>
+                      </span>
+  
+  
+                        <span *ngIf="prjct_profile_type === 'free'"> 
+                            <div class="input-group">
+                                <input style="border-color:transparent!important;font-family: 'Google Sans', sans-serif !important; font-weight: 500" 
+                                  [(ngModel)]="prjct_profile_name" class="input project-plan-input" type="text" disabled>
+                                
+                                <span class="input-group-btn" style="padding-right: 0px;padding-left: 0px;">
+                                
+                                  <span *ngIf="prjct_profile_type === 'free'"> 
+                                    <button class="btn btn-success" style="padding-top:9px; padding-bottom:9px" (click)="goToPricing()">
+                                      {{ "Pricing.UpgradePlan" | translate }}
+                                    </button>
+                                  </span> 
+                                  <!-- <span *ngIf="prjct_profile_type === 'payment'"> 
+                                    <button class="btn btn-success" (click)="getMoreOperatorsSeats()">
+                                      {{ "Pricing.AddMoreOperators" | translate }}
+                                    </button>
+                                  </span> -->
+                                </span>
+                              </div>
+                        </span> 
+                      </div>                   
+                    </div>
+  
+                    <!-- ****************** SUBSCRIPTION STATUS ****************** -->
+                    <div class="row">
+                      <label class="col-sm-2 custom-label">
+                        {{ "SubscriptionStatus" | translate }}
+                      </label>
+                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <span class="subscription-info" style="font-weight: 500;"> 
+                          <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === true">      
+                              <i class="material-icons" style="color:#4caf50; vertical-align: middle;">
+                                check_circle
+                              </i>
+                              <span>  {{ "Pricing.YourSubscriptionIsActive" | translate }}, </span>
+                                {{ "NextRenew" | translate }} 
+                        
+                              <span *ngIf="days_to_next_renew === 0"> 
+                                {{ "Today" | translate}}  {{ "At" | translate}} {{ timeOfNextRenew }}
+                              </span>
+                              <span *ngIf="days_to_next_renew === 1"> 
+                                {{ "Pricing.Tomorrow" | translate }}
+                              </span>
+  
+                              <span *ngIf="days_to_next_renew > 1"> 
+                                {{ "In" | translate }} {{days_to_next_renew}} {{ "Pricing.Days" | translate }}
+                              </span>
+                          </span>
+  
+                          <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false">      
+                              <i class="material-icons" style="color:#f44336; vertical-align: middle;">
+                                error_outline
+                              </i>
+                              <span style="color:#f44336;">  
+                                {{ "Pricing.SubscriptionExpired" | translate }} -
+                              </span>
+  
+                              <span style="color: #039be5; cursor:pointer" (click)="openModalSubsExpired()">
+                                {{ "Pricing.UpgradePlan" | translate }} 
+                              </span>
+                          </span>   
+  
+                          <span *ngIf="prjct_profile_type !== 'payment'">
+                            <i class="material-icons" style="color:#5e9ded; vertical-align: middle;">
+                                info
+                            </i>
+                            <span *ngIf="prjct_trial_expired === false"> 
+                                {{ "Pricing.Your" | translate }}
+                                
+                              <span style="font-weight:500"> 
+                                {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate }}
+                              </span>
+                              
+                              {{ "Pricing.WillExpireIn" | translate }}
+                              
+                                <span *ngIf="prjc_trial_days_left < -1"> 
+                                  {{ - prjc_trial_days_left }} {{ "Pricing.Days" | translate }}
+                              </span>
+            
+                              <span *ngIf="prjc_trial_days_left === -1"> 
+                                  {{ "Pricing.Tomorrow" | translate }}
+                              </span>
+                            </span> 
+  
+                            <span *ngIf="prjct_trial_expired === true" style="font-weight:500; color: #f44336"> 
+                                {{ "Pricing.Your" | translate }}
+                              
+                                {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate }} 
+                             
+                                {{ "Pricing.HasExpired" | translate }}
+                             
+                            </span> 
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+  
+                    <!-- ****************** SUBSCRIPTION START DATE ****************** -->
+                    <div class="row" *ngIf="prjct_profile_type !== 'free'"  style="margin-top: 16px;"> 
+                      <label class="col-sm-2 custom-label">
+                        {{ "SubscriptionStartDate" | translate }}
+                      </label>
+                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                       
+                        <span class="subscription-info" style="">
+                          <i class="material-icons" style="vertical-align: middle;color: #697386;">
+                              flag
+                          </i>
+                          <span style="font-weight: 500;  padding: 5px;height:31px;position: relative;top: 2px;"> 
+                           
+                            <!-- IF THE  subscription_creation_date IS OBTAINED FROM THE PROJECT PROFILE -->
+                            <!-- {{ subscription_creation_date | date: 'dd/MM/yyyy' }} -->
+  
+                           <!-- IF THE  subscription_creation_date IS OBTAINED FROM THE SUBSCRIPTION PAYMENT OBJECT -->
+                            {{ subscription_creation_date * 1000 | date: 'dd/MM/yyyy' }}
+                          </span>
+                        </span>
+                        
+                      </div>
+                    </div>
+  
+                    <!-- ****************** CURRENT INVOICE START DATE ****************** -->
+                    <div class="row" *ngIf="prjct_profile_type !== 'free'"  style="margin-top: 16px;"> 
+                      <label class="col-sm-2 custom-label">
+                        {{ "CurrentInvoiceStartDate" | translate }}
+                      </label>
+                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                      
+                      <span class="subscription-info" style="">
+                          <i class="material-icons" style="vertical-align: middle;color: #697386;">
+                              calendar_today
+                          </i>
+  
+                          <span style=" font-weight: 500;  padding: 5px;height:31px;position: relative;top: 2px;"> 
+                            {{ subscription_start_date | date: 'dd/MM/yyyy' }}
+                          </span>
+                      
+                      </span>
+                        
+                      </div>
+                    </div>
+  
+                    <!-- ****************** CURRENT INVOICE END DATE ****************** -->
+                    <div class="row" *ngIf="prjct_profile_type !== 'free'"  style="margin-top: 16px;"> 
+                      <label class="col-sm-2 custom-label">
+                        {{ "CurrentInvoiceEndDate" | translate }}
+                      </label>
+                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <span class="subscription-info" style="">
+                          <i class="material-icons" style="vertical-align: middle;color: #697386;">
+                              calendar_today
+                          </i>
+                          <span style="font-weight: 500;  padding: 5px;height:31px;position: relative;top: 2px;"> 
+                            {{ subscription_end_date | date: 'dd/MM/yyyy' }}
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+  
+                    <!-- ****************** NUMBER OF AGENTS SEATS ****************** -->
+                    <div class="row" *ngIf="prjct_profile_type !== 'free'"  style="margin-top: 16px;"> 
+                      <label class="col-sm-2 custom-label">
+                        {{ "NumberOfAgentSeats" | translate }}
+                      </label>
+                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <span class="subscription-info" style="">
+                          <i class="material-icons" style="vertical-align: middle;color: #697386;">
+                              people_alt
+                          </i>
+                          <span style="font-weight: 500;  padding: 5px;height:31px;position: relative;top: 2px;"> 
+                            {{ numberOf_agents_seats }} 
+                          </span>
+                            <span style="color: #039be5; cursor:pointer; border: 1px solid;  padding: 5px; border-radius: 4px; font-weight: 400;
+                              font-size: 12px; margin-left: 16px;" (click)="getMoreOperatorsSeats()">
+                              {{ "Pricing.AddMoreOperators" | translate }}
+                            </span>
+                        </span>
+                      </div>
+                    </div>
+  
+                    <div class="row" *ngIf="prjct_profile_type !== 'free'"  style="margin-top: 16px;"> 
+                      <label class="col-sm-2 ">        </label>
+                      <div class="col-sm-10" style="border-top: 1px solid #eeeeee;"></div>
+                    </div>
+  
+                 
+  
+                    <!-- ****************** PAYMENTS ****************** -->
+                    <div class="row" *ngIf="prjct_profile_type !== 'free'"  style="margin-top: 16px;"> 
+                      <label class="col-sm-2 custom-label">
+                        {{ "ProjectEditPage.Payments" | translate }}
+                      </label>
+                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <button class="btn btn-success" (click)="goToPayments()" style="padding: 6px 38px; margin-top: 5px;">
+                          {{ "ProjectEditPage.SeePayments" | translate }}
+                        </button>
+                      </div>
+                    </div>
+  
+                    <div class="row"  *ngIf="prjct_profile_type !== 'free'"> 
+                        <label class="col-sm-2"> </label>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                          <button class="btn btn-danger" (click)="viewCancelSubscription()" style="padding: 6px 15px; margin-top: 5px;">
+                            {{ "CancelSubscription" | translate }}
+                          </button>
+                        </div>
+                    </div>
+  
+                  </div>
+                  <!-- ****************** /.end project plan ****************** -->
+
+              </span>
+
+
+
+
+
+
+
+
+
+
     
             </div>
             <!-- ./ card-content -->
@@ -435,7 +460,7 @@
   
       </div>
       <!-- ./ row -->
-      <div class="row">
+      <div class="row" *ngIf="PROJECT_SETTINGS_ROUTE">
 
         <div class="col-md-12" style="text-align: center; border-top: 1px solid #cccccc; margin-top:25px">
           <div style="color:#aaaaaa; margin-top:25px; cursor:pointer" (click)="openDeleteModal()">

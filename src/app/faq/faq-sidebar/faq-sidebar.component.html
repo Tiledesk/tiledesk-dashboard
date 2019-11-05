@@ -1,0 +1,137 @@
+<div class="right-side-bar" style="    
+position: absolute;
+z-index: 100;
+top: 0;
+right: 0;
+width: 33%;
+height: 100%;
+overflow-y: auto;
+overflow-x: hidden;
+background: #fff;
+padding-top:15px;
+padding-left: 15px;
+padding-right: 15px;
+padding-bottom: 15px;">
+
+<div style="border-bottom: 1px solid #eeeeee; background-color: #3c4252!important;
+color: #fff!important; margin-left:-20px; margin-right:-20px; margin-top:-15px; height:50px">
+  <h5  style="font-weight: 400; text-transform: none; margin-top:0px; font-size: 16px; padding-top: 15px;padding-left: 21px;">
+      <!-- Train Bot -->
+      <!-- {{ 'Train' | translate }} Bot -->
+     <i class="material-icons" style="padding-right: 10px; float: right;cursor:pointer"
+     (click)="closeRightSideBar()">close</i>
+  </h5> 
+</div>
+
+  <p style="margin-top: 15px; margin-bottom: 0px; font-weight:400;  text-align: center;
+  font-family: 'Google Sans', sans-serif !important; font-size: 21px;
+    padding: 16px; line-height: 1.5;">  
+
+Please choose a data source to populate your chatbot. Ai Engine will extract questions and aswers for you.
+  </p>   
+
+
+  <section class="globalFooterCards" style="margin-top: 25px;">
+      <div class="container-xl" style="justify-content: center;">
+          <div class="row">
+              <div class="col-xs-6" style="text-align: center">
+            <a class="common-Link globalFooterCard card-subscriptions"  data-analytics-action="subscriptions" data-analytics-source="card_link" style="padding: 35px!important;width: 230px;" (click)=displaydDemoModal()>
+    <svg viewBox="0 0 130 130" style="width: 100px;margin-left: 23px;" >
+    <path class="hover-fillLight" fill="#76E5A2" d="M65 10c30.376 0 55 24.624 55 55s-24.624 55-55 55-55-24.624-55-55 24.624-55 55-55z"></path>
+    <path fill="#FFF" d="M102.274 27.78v-.002c-9.628-9.615-22.968-15.526-37.69-15.408-28.292.228-51.557 23.072-52.238 51.32-.22 9.175 1.915 17.832 5.84 25.416.1.192.317.29.526.24.003 0 .006 0 .01-.002a.462.462 0 0 0 .324-.616c-5.15-13.598-2.25-29.54 8.713-40.488 14.915-14.898 39.102-14.898 54.02 0L48.25 81.725c14.917 14.897 39.104 14.897 54.022 0 14.916-14.897 14.917-39.048.002-53.945z"></path>
+    <path class="hover-fillDark" fill="#159570" d="M88.198 58.794c3.435 12.802-4.173 25.96-16.992 29.39-12.82 3.43-25.997-4.166-29.43-16.968-3.436-12.802 4.17-25.96 16.99-29.39 12.82-3.43 25.997 4.166 29.43 16.968z"></path>
+  </svg>
+    <h2 class="common-UppercaseText common-Link--arrow" style="margin-top: 5px">Web</h2>
+    <p class="common-BodyText">Upload from web</p>
+  </a>
+</div>
+<div class="col-xs-6" style="text-align: center">
+      <a class="common-Link globalFooterCard card-connect"  data-analytics-action="connect" data-analytics-source="card_link" style="padding: 35px!important;width: 230px;">
+    <svg viewBox="0 0 130 130" style="width: 100px; margin-left: 25px;">
+    <path class="hover-fillLight" fill="#69D5F8" d="M65 10c30.376 0 55 24.624 55 55s-24.624 55-55 55-55-24.624-55-55 24.624-55 55-55z"></path>
+    <path fill="#FFF" d="M48 79.552V47.998H34.73c-.65 0-1.275.26-1.735.72L13.765 68.07a3.7 3.7 0 0 0-1.053 3.068c2.92 23.81 22.293 43.188 46.103 46.114a3.7 3.7 0 0 0 3.067-1.052L81.29 97.05c.46-.46.717-1.084.717-1.735L82 82l-31.545.005A2.454 2.454 0 0 1 48 79.552z"></path>
+    <path class="hover-fillDark" fill="#217AB7" d="M119.55 58.073L96.344 81.28c-.46.46-1.085.72-1.736.72H81.993V50.462a2.454 2.454 0 0 0-2.453-2.455H48l.002-12.613c0-.65.258-1.276.718-1.736L71.93 10.45c24.83 3.123 44.497 22.79 47.62 47.623z"></path>
+  </svg>
+    <h2 class="common-UppercaseText common-Link--arrow" style="margin-top: 5px">Binaries</h2>
+    <p class="common-BodyText">Upload from binaries</p>
+  </a>
+</div>
+
+</div>
+  
+      </div>
+    </section>
+
+
+</div>
+
+
+<!-- ============= demo modal ============= -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':_displaydDemoModal}" style="background-color: rgba(90,90,90,0.9);"> 
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" style="border-top-left-radius:6px; border-top-right-radius:6px">
+        <div class="modal-header" style="padding:16px!important; border-bottom:none!important;">
+  
+          <button type="button" class="close" aria-label="Close" (click)="closeDemoModal()" style="position: absolute; right: 14px;">
+            <span aria-hidden="true">
+                <!-- &times; -->
+                <svg class="tide-icon " width="24" height="24" viewBox="0 0 24 24">
+                    <path d="M13.357 11.993l10.256 10.295c0.39 0.391 0.39 1.024 0 1.415-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292l-10.257-10.295-10.256 10.295c-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292c-0.39-0.391-0.39-1.024 0-1.415l10.256-10.295-10.256-10.294c-0.39-0.391-0.39-1.024 0-1.415s1.020-0.391 1.409 0l10.256 10.294 10.256-10.294c0.39-0.391 1.020-0.391 1.41 0 0.389 0.391 0.389 1.024 0 1.415l-10.256 10.294z">
+                    </path>
+                </svg>
+            </span>
+          </button> 
+ 
+          <h2 class="modal-title" style="color: #262f3c; text-align: center; font-family: 'Google Sans', sans-serif !important; margin-top: 20px; font-size:28px">
+            <span style="vertical-align: middle;">
+                <!-- {{ "Pricing.SubscriptionExpired" | translate }} -->
+              <span *ngIf="hasClickedStart === false"> Please enter the URL </span>  
+              <span *ngIf="hasClickedStart === true"> Processing  </span>
+            </span>
+          </h2>
+  
+        </div>
+        <hr class="custom-hr" style="margin-top:3px; margin-bottom:3px">
+        <div class="modal-body" style="padding-top: 0px; padding-bottom: 0px; padding-right: 34px; padding-left: 34px; line-height: 1;">
+  
+          <div class="row">
+            <div class="col-sm-12">
+                <h3 style="text-align: center;  color: #8894ab; font-size: 22px; margin-bottom: 20px;">
+                   
+                
+                        
+                         <span *ngIf="hasClickedStart === false">
+                             <input type="url" class="input">
+                          </span>
+
+                          <span *ngIf="hasClickedStart === true"> 
+                            You will receive an email as soon as you chatbot will be ready.  
+                          </span>
+                </h3>
+            </div>
+          </div>
+        </div>
+  
+        <div class="modal-footer" style="margin-top: 0px; background-color: #fff; border-top:none; border-bottom-left-radius:6px; border-bottom-right-radius:6px">
+          <div style="text-align: center; margin-bottom: 15px;"> 
+  
+            <span *ngIf="hasClickedStart === false"> 
+              <button type="button" class="btn btn-danger"  (click)="closeDemoModal()">   
+                Cancel
+              </button>
+              <button type="button"  class="btn btn-info" (click)="hasClickedStartAcquisitions()" >
+                Start acquisition
+              </button>
+            </span>
+
+            <span *ngIf="hasClickedStart === true"> 
+            <button type="button"  class="btn btn-info" (click)="closeDemoModalAndSetFalse()" >
+                OK 
+              </button>
+            </span>
+
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

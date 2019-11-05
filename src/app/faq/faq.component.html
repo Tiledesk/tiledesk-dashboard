@@ -38,10 +38,20 @@
                   <label>
                     <input type="checkbox" name="externalBot" (click)="hasClickedExternalBot(is_external_bot = !is_external_bot)" 
                       [checked]="is_external_bot" disabled>
-                    <span class="checkbox-label">
+                    <span class="checkbox-label" style="position: relative;top: 2px;">
                         {{ "BotsPage.ExternalBot" | translate }} 
                     </span> 
                   </label>
+
+                  <span style="font-size: 12px; font-weight: 400;"> 
+                    <i class="material-icons" style="vertical-align: middle; color: #ec971f; font-size: 20px;padding-left: 16px">info</i>
+                    <span style="position: relative;top: 2px;">
+                      <span style="color: #7695a5; "> {{'ExperimentalFeature' | translate }}. </span>
+                      <span style="color: #7695a5">{{'IfYouAreInterested' | translate }} </span>
+                      <span (click)="launchWidget()" style="color: #039be5; cursor:pointer;"> {{ 'ChatWithUs' | translate}} </span> 
+                    </span>
+                  </span>
+
                 </div>
               </div>
             </div>
@@ -240,6 +250,25 @@
                 <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none">{{ 'ExportAnswersToCsv' | translate }}</span>
               </button>
 
+
+              <!-- 
+              ****************************************  
+              ** FAKE ** FOR DEMO - OPEN RIGHT SIDEBAR
+              ****************************************
+              -->
+              <!-- <button class="btn btn-info tooltipx" [ngClass]="{'add-padding' : windowWidthMore764 === true}" 
+                style="padding:4px; text-transform:none; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;" 
+                (click)="openRightSidebar()">
+                <span class="icon" style="padding-right:0px;">           
+                  <i class="material-icons" style="font-size:18px; top:0px">file_upload</i>
+                    <span *ngIf="windowWidthMore764" style="position: relative; top: 1px; text-transform: initial; text-transform: initial;">
+                      Create from ...
+                    </span>
+                </span>
+                <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none"> Create from ...</span>
+              </button> -->
+
+
               <!-- 
               *********************************  
               BUTTON TEST BOT 
@@ -391,6 +420,14 @@
   </div>
   <div>
 <div>
+
+    <div *ngIf="OPEN_RIGHT_SIDEBAR === true" class="view-side">
+  
+        <appdashboard-faq-sidebar [ngStyle]="{'height':train_bot_sidebar_height }" 
+         
+          (valueChange)='closeRightSidebar($event)'>
+        </appdashboard-faq-sidebar>
+    </div>
 
 
 <!-- 

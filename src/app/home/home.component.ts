@@ -12,8 +12,9 @@ import { RequestsService } from '../services/requests.service';
 import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
-import { e } from '@angular/core/src/render3';
+
 import { Subscription } from 'rxjs';
+import { publicKey } from './../utils/util';
 
 @Component({
   selector: 'home',
@@ -36,7 +37,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   USER_ROLE: string;
 
-  CHAT_BASE_URL = environment.chat.CHAT_BASE_URL
+  CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
+  eos = environment.t2y12PruGU9wUtEGzBJfolMIgK;
   browserLang: string;
 
   prjct_name: string;
@@ -48,7 +50,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   showSpinner = true;
 
   subscription: Subscription;
-  
+  isVisible: boolean;
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -93,10 +95,40 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.usersService.getBotsByProjectIdAndSaveInStorage();
 
     // TEST FUNCTION : GET ALL AVAILABLE PROJECT USER
-    this.getAvailableProjectUsersByProjectId();
+    // this.getAvailableProjectUsersByProjectId();
 
     this.getUserRole();
     this.getProjectPlan();
+    this.getVisitorCounter();
+    this.getOSCODE();
+  }
+
+  getOSCODE() {
+    console.log('eoscode', this.eos)
+
+    if (this.eos  && this.eos === publicKey) {
+
+        this.isVisible = true;
+        console.log('eoscode isVisible ', this.isVisible);
+    } else {
+
+        this.isVisible = false;
+        console.log('eoscode isVisible ', this.isVisible);
+    }
+}
+
+  getVisitorCounter() {
+    this.departmentService.getVisitorCounter()
+      .subscribe((visitorCounter: any) => {
+        console.log('getVisitorCounter : ', visitorCounter);
+
+      }, (error) => {
+
+        console.log('getVisitorCounter ERROR ', error);
+
+      }, () => {
+        console.log('getVisitorCounter * COMPLETE *');
+      });
   }
 
 
@@ -375,7 +407,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
         // !!!! NO MORE USED - MOVED IN USER SERVICE
         // this.getAllUsersOfCurrentProject();
-
+        console.log('HOME CALL -> getAllUsersOfCurrentProjectAndSaveInStorage')
         this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
 
       }

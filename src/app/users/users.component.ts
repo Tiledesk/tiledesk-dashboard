@@ -7,6 +7,8 @@ import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
 import { Subscription } from 'rxjs';
+import { publicKey } from '../utils/util';
+import { environment } from '../../environments/environment';
 @Component({
   selector: 'appdashboard-users',
   templateUrl: './users.component.html',
@@ -60,6 +62,8 @@ export class UsersComponent implements OnInit, OnDestroy {
   canceledInviteSuccessMsg: string;
   canceledInviteErrorMsg: string;
   subscription: Subscription;
+  isVisible: boolean;
+  eos = environment.t2y12PruGU9wUtEGzBJfolMIgK;
   constructor(
     private usersService: UsersService,
     private router: Router,
@@ -92,8 +96,22 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.translateResendInviteErrorMsg();
     this.translateCanceledInviteSuccessMsg();
     this.translateCanceledInviteErrorMsg();
+    this.getOSCODE();
   }
 
+  getOSCODE() {
+    console.log('eoscode', this.eos)
+
+    if (this.eos  && this.eos === publicKey) {
+
+        this.isVisible = true;
+        console.log('eoscode isVisible ', this.isVisible);
+    } else {
+
+        this.isVisible = false;
+        console.log('eoscode isVisible ', this.isVisible);
+    }
+}
 
   translateCanceledInviteSuccessMsg() {
     this.translate.get('UsersPage.CanceledInviteSuccessMsg')

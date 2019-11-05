@@ -16,7 +16,7 @@
              
 
             <!-- PROJECT NAME AND PLAN -->
-            <div class="col-md-12">
+            <div *ngIf="isVisible" class="col-md-12">
               <div class="project-name-and-plan">
                 <span class="project-name"> 
                   {{ prjct_name }} 
@@ -53,9 +53,9 @@
 
                 <div class="homeBanner__itemContainer">
                   <ul class="homeBannerItems">
-                     <span class="highlighter"> Just released a new version!</span>
-                     <li> <img src="assets/img/arrow.svg" class="img-fluid" style="max-width: 150px; height: auto; transform: scaleX(1) rotate(50deg); position: relative;
-                      left: 74px;   top: -25px;"/></li> 
+                     <!-- <span class="highlighter"> Just released a new version!</span> -->
+                     <!-- <li> <img src="assets/img/arrow.svg" class="img-fluid" style="max-width: 150px; height: auto; transform: scaleX(1) rotate(50deg); position: relative;
+                      left: 74px;   top: -25px;"/></li>  -->
                     <li *ngIf="USER_ROLE !== 'agent'" class="homeBanner__itemContainer" >
                       <button (click)="goToResources()" type="button" class="homeBanner__item homeBanner__item-round homeBanner__widget__item">
                           
@@ -187,7 +187,7 @@
                 </div>
               </div>
             </div>           
-          </div>
+        </div>
       </div>
         <div class="col-sm-6 col-md-3">
           <div class="card-wrapper"> 

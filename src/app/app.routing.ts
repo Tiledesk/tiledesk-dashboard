@@ -44,10 +44,11 @@ import { ProjectEditAddComponent } from './project-edit-add/project-edit-add.com
 import { RequestsListHistoryNewComponent } from './requests-list-history-new/requests-list-history-new.component';
 
 
-// AUTH PAGE
+// AUTH PAGES
 import { SigninComponent } from './auth/signin/signin.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { UnauthorizedComponent } from './auth/unauthorized/unauthorized.component';
+import { HandleInvitationComponent } from './auth/handle-invitation/handle-invitation.component';
 
 import { WidgetComponent } from './widget/widget.component';
 import { WidgetDesignComponent } from './widget-design/widget-design.component';
@@ -103,6 +104,8 @@ import { PricingComponent } from './pricing/pricing.component';
 import { PaymentSuccessPageComponent } from './pricing/payment-success-page/payment-success-page.component';
 import { PaymentCanceledPageComponent } from './pricing/payment-canceled-page/payment-canceled-page.component';
 import { PaymentsListComponent } from './pricing/payments-list/payments-list.component';
+import { CreateProjectComponent } from './create-project/create-project.component';
+import { InstallTiledeskComponent } from './install-tiledesk/install-tiledesk.component';
 
 
 const routes: Routes = [
@@ -125,17 +128,39 @@ const routes: Routes = [
   // PROJECTS IS THE NEW HOME
   { path: 'projects', component: ProjectsComponent, canActivate: [AuthGuard] },
   { path: '', redirectTo: 'projects', pathMatch: 'full' },
+  // **** NEW - WIZARD CREATE PROJECT ****
+  // { path: 'project/create-project', component: CreateProjectComponent, canActivate: [AuthGuard] },
+  
+  // FOR CreateProjectComponent I HAVE CREATE TO PATH TO HIDE THE BUTTON 'close' WHEN THE
+  // COMPONENT IS CALLED AFTER THE SIGNUP
+  // USED AFTER THE SIGNUP
+  { path: 'create-project', component: CreateProjectComponent, canActivate: [AuthGuard] },
+  // USED WHEN THE USER CLICK ON 'ADD NEW PROJECT' FROM THE NAVBAR
+  { path: 'create-new-project', component: CreateProjectComponent, canActivate: [AuthGuard] },
+ 
+  { path: 'project/:projectid/install-tiledesk', component: InstallTiledeskComponent, canActivate: [AuthGuard] },
 
 
   { path: 'project/create', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/edit', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
+
+
+
+  // { path: 'project/:projectid/edit', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/project-settings', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/project-settings/payments', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
+
+
 
   // { path: 'home', component: HomeComponent, canActivate: [AuthGuard]}, // , canDeactivate: [AuthGuard]
   { path: 'project/:projectid/home', component: HomeComponent, canActivate: [AuthGuard] },
 
   { path: 'login', component: SigninComponent },
   { path: 'signup', component: SignupComponent },
+  { path: 'signup-on-invitation/:pendinginvitationemail', component: SignupComponent },
   { path: 'verify/email/:user_id', component: VerifyEmailComponent },
+
+  { path: 'handle-invitation/:pendinginvitationid/:projectname/:adminfirstname/:adminsurname', component: HandleInvitationComponent },
+  
 
   { path: 'project/:projectid/unauthorized', component: UnauthorizedComponent },
 
@@ -143,7 +168,10 @@ const routes: Routes = [
   { path: 'userprofile', component: UserProfileComponent },
   // , canActivate: [AuthGuard]
   { path: 'project/:projectid/requests', component: RequestsListComponent, canActivate: [AuthGuard] },
+  
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
+
+  { path: 'project/:projectid/chat', component: ChatComponent, canActivate: [AuthGuard] },
 
   // MESSAGES OF A REQUEST (IT BEFORE WERE DISPLAYED IN A MODAL WINDOW)
   // tslint:disable-next-line:max-line-length
@@ -231,15 +259,19 @@ const routes: Routes = [
   // { path: 'project/:projectid/historyrt', component: RequestsListHistoryComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/history', component: RequestsListHistoryNewComponent, canActivate: [AuthGuard] },
 
-   // TRIGGER
-   { path: 'project/:projectid/trigger', component: TriggerComponent, canActivate: [AuthGuard] },
-   { path: 'project/:projectid/trigger/add', component: TriggerAddComponent, canActivate: [AuthGuard] },
-   { path: 'project/:projectid/trigger/:triggerId', component: TriggerEditComponent, canActivate: [AuthGuard] },
+  // TRIGGER
+  { path: 'project/:projectid/trigger', component: TriggerComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/trigger/add', component: TriggerAddComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/trigger/:triggerId', component: TriggerEditComponent, canActivate: [AuthGuard] },
 
 
   // page RESOURCES (RENAMED WIDGET)   // path: 'project/:projectid/resources'
   { path: 'project/:projectid/widget', component: WidgetComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/widget/design', component: WidgetDesignComponent, canActivate: [AuthGuard] },
+
+  // { path: 'project/:projectid/widget/design', component: WidgetDesignComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/widget/greetings', component: WidgetDesignComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/widget/callout', component: WidgetDesignComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/widget/appearance', component: WidgetDesignComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/script', component: ScriptComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/channels', component: ChannelsComponent, canActivate: [AuthGuard] },
@@ -265,7 +297,8 @@ const routes: Routes = [
   { path: 'project/:projectid/contact/edit/:requesterid', component: ContactEditComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/payments', component: PaymentsListComponent, canActivate: [AuthGuard] },
 
-
+  
+  
   { path: 'dashboard', component: DashboardComponent },
 
 

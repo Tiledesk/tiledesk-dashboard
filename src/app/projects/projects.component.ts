@@ -134,11 +134,11 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     }
   }
 
-  // GO TO PROJECT-EDIT-ADD COMPONENT AND PASS THE PROJECT ID (RECEIVED FROM THE VIEW)
-  goToEditAddPage_EDIT(project_id: string) {
-    console.log('PROJECT ID ', project_id);
-    this.router.navigate(['project/edit', project_id]);
-  }
+  // !NO MORE USED - GO TO PROJECT-EDIT-ADD COMPONENT AND PASS THE PROJECT ID (RECEIVED FROM THE VIEW)
+  // goToEditAddPage_EDIT(project_id: string) {
+  //   console.log('PROJECT ID ', project_id);
+  //   this.router.navigate(['project/edit', project_id]);
+  // }
 
   /**
    * GET PROJECTS AND SAVE IN THE STORAGE: PROJECT ID - PROJECT NAME - USE ROLE   */
@@ -377,4 +377,11 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   testExpiredSessionFirebaseLogout() {
     this.auth.testExpiredSessionFirebaseLogout(true)
   }
+
+
+  goToCreateProject() {
+    this.router.navigate(['/create-new-project']);
+  }
+
+  
 }

@@ -3,7 +3,7 @@ import { Location } from '@angular/common';
 import { slideInOutAnimation } from './slide-in-out.animation';
 import { ColorPickerService, Cmyk } from 'ngx-color-picker';
 import { WidgetService } from '../services/widget.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { ProjectService } from '../services/project.service';
 import { AuthService } from '../core/auth.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -13,6 +13,7 @@ import { Subject } from 'rxjs/Subject';
 import { Department } from '../models/department-model';
 import { DepartmentService } from '../services/mongodb-department.service';
 import { NotifyService } from '../core/notify.service';
+import { environment } from '../../environments/environment';
 @Component({
   selector: 'appdashboard-widget-design',
   templateUrl: './widget-design.component.html',
@@ -22,6 +23,8 @@ import { NotifyService } from '../core/notify.service';
 
 export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
   // '#2889e9'
+  TESTSITE_BASE_URL = environment.testsite.testsiteBaseUrl
+  _route: string;
   public primaryColor: string;
   public primaryColorRgb: any
   public primaryColorRgba: string;
@@ -131,6 +134,23 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
   showSpinner = true;
   updateWidgetSuccessNoticationMsg: string;
   updateDeptGreetingsSuccessNoticationMsg: string;
+  onlineMsgSuccessNoticationMsg: string;
+  offlineMsgSuccessNoticationMsg: string;
+
+  projectName: string;
+
+  HAS_SELECTED_GREENTINGS = false;
+  HAS_SELECTED_CALLOUT = false;
+  HAS_SELECTED_APPEARANCE = false;
+  placeholderOnlineMsg: string;
+  placeholderOfflineMsg: string;
+  placeholderCalloutTitle: string;
+  placeholderCalloutMsg: string;
+  placeholderWelcomeTitle: string;
+  placeholderWelcomeMsg: string;
+
+  calloutContainerWidth: any;
+  IMAGE_EXIST: boolean;
   constructor(
     private notify: NotifyService,
     public location: Location,
@@ -140,7 +160,8 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
     private projectService: ProjectService,
     private auth: AuthService,
     private translate: TranslateService,
-    private departmentService: DepartmentService
+    private departmentService: DepartmentService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -172,20 +193,91 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.subscribeToSelectedSecondaryColor();
 
     // this.subscribeToWidgetAlignment();
-    this.translateDeptGreetingsSuccessNoticationMsg();
+
+    // this.translateDeptGreetingsSuccessNoticationMsg();
+    this.translateOnlineMsgSuccessNoticationMsg();
+    this.translateOfflineMsgSuccessNoticationMsg();
+    this.getSectionSelected();
+
+
   }
 
-  translateDeptGreetingsSuccessNoticationMsg() {
-    this.translate.get('UpdateDeptGreetingsSuccessNoticationMsg')
+
+  getSectionSelected() {
+    console.log('»» WIDGET DESIGN  url - this.router.url  ', this.router.url);
+    const currentUrl = this.router.url;
+    if (currentUrl.indexOf('/greetings') !== -1) {
+      this.HAS_SELECTED_GREENTINGS = true;
+      console.log('»» WIDGET DESIGN  url - HAS_SELECTED_GREENTINGS  ', this.HAS_SELECTED_GREENTINGS);
+    } else {
+      this.HAS_SELECTED_GREENTINGS = false;
+      console.log('»» WIDGET DESIGN  url - HAS_SELECTED_GREENTINGS  ', this.HAS_SELECTED_GREENTINGS);
+    }
+
+    if (currentUrl.indexOf('/callout') !== -1) {
+      this.HAS_SELECTED_CALLOUT = true;
+      console.log('»» WIDGET DESIGN  url - HAS_SELECTED_CALLOUT  ', this.HAS_SELECTED_CALLOUT);
+    } else {
+      this.HAS_SELECTED_CALLOUT = false;
+      console.log('»» WIDGET DESIGN  url - HAS_SELECTED_CALLOUT  ', this.HAS_SELECTED_CALLOUT);
+    }
+
+    if (currentUrl.indexOf('/appearance') !== -1) {
+      this.HAS_SELECTED_APPEARANCE = true;
+      console.log('»» WIDGET DESIGN  url - HAS_SELECTED_CALLOUT  ', this.HAS_SELECTED_CALLOUT);
+    } else {
+      this.HAS_SELECTED_APPEARANCE = false;
+      console.log('»» WIDGET DESIGN  url - HAS_SELECTED_CALLOUT  ', this.HAS_SELECTED_CALLOUT);
+    }
+  }
+
+  // translateDeptGreetingsSuccessNoticationMsg() {
+  //   this.translate.get('UpdateDeptGreetingsSuccessNoticationMsg')
+  //     .subscribe((text: string) => {
+
+  //       this.updateDeptGreetingsSuccessNoticationMsg = text;
+  //       // console.log('»» WIDGET SERVICE - Update Widget Project Success NoticationMsg', text)
+  //     }, (error) => {
+  //       console.log('»» WIDGET SERVICE -  Update Widget Project Success NoticationMsg - ERROR ', error);
+  //     }, () => {
+  //       // console.log('»» WIDGET SERVICE -  Update Widget Project Success NoticationMsg * COMPLETE *');
+  //     });
+  // }
+
+    translateOnlineMsgSuccessNoticationMsg() {
+    this.translate.get('UpdateDeptGreetingsOnlineMsgSuccessNoticationMsg')
       .subscribe((text: string) => {
 
-        this.updateDeptGreetingsSuccessNoticationMsg = text;
-        // console.log('»» WIDGET SERVICE - Update Widget Project Success NoticationMsg', text)
+        this.onlineMsgSuccessNoticationMsg = text;
+        // console.log('»» WIDGET SERVICE - translateOnlineMsgSuccessNoticationMsg ', text)
       }, (error) => {
-        console.log('»» WIDGET SERVICE -  Update Widget Project Success NoticationMsg - ERROR ', error);
+        // console.log('»» WIDGET SERVICE -  translateOnlineMsgSuccessNoticationMsg - ERROR ', error);
       }, () => {
         // console.log('»» WIDGET SERVICE -  Update Widget Project Success NoticationMsg * COMPLETE *');
       });
+  }
+
+  translateOfflineMsgSuccessNoticationMsg() {
+    this.translate.get('UpdateDeptGreetingsOfflineMsgSuccessNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.offlineMsgSuccessNoticationMsg = text;
+        // console.log('»» WIDGET SERVICE - translateOfflineMsgSuccessNoticationMsg ', text)
+      }, (error) => {
+        // console.log('»» WIDGET SERVICE -  translateOnlineMsgSuccessNoticationMsg - ERROR ', error);
+      }, () => {
+        // console.log('»» WIDGET SERVICE -  translateOfflineMsgSuccessNoticationMsg * COMPLETE *');
+      });
+  }
+
+
+  testWidgetPage() {
+    // const url = 'http://testwidget.tiledesk.com/testsitenw3?projectname=' + this.projectName + '&projectid=' + this.id_project
+    // const url = this.TESTSITE_BASE_URL + '?projectname=' + this.projectName + '&projectid=' + this.id_project + '&isOpen=true'
+    const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.id_project + '&project_name=' + this.projectName + '&isOpen=true'
+
+    console.log('»» WIDGET - TEST WIDGET URL ', url);
+    window.open(url, '_blank');
   }
 
   ngOnDestroy() {
@@ -196,8 +288,13 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
   onResize(event: any) {
     this.newInnerWidth = event.target.innerWidth;
     console.log('»» WIDGET DESIGN - NEW INNER WIDTH ', this.newInnerWidth);
+
     if (this.newInnerWidth <= 668) {
       console.log('»» >>>> WIDGET DESIGN - NEW INNER WIDTH ', this.newInnerWidth);
+
+      // let innerWidthLess368 = this.newInnerWidth - 368
+      // this.calloutContainerWidth =  innerWidthLess368 += 'px'
+
       this.custom_breakpoint = true;
     } else {
       this.custom_breakpoint = false;
@@ -225,6 +322,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
     this.sub = this.auth.project_bs.subscribe((project) => {
       if (project) {
         this.id_project = project._id
+        this.projectName = project.name;
         console.log('WIDGET DESIGN - SUBSCRIBE TO CURRENT - PRJCT-ID ', this.id_project)
 
         if (this.id_project) {
@@ -254,7 +352,8 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
 
             // ONLINE MSG
             if (dept.online_msg) {
-              this.onlineMsg = dept.online_msg
+              this.onlineMsg = dept.online_msg;
+              this.placeholderOnlineMsg = dept.online_msg;
             } else {
 
               this.setDefaultOnlineMsg()
@@ -263,6 +362,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
             // OFFLINE MSG
             if (dept.offline_msg) {
               this.offlineMsg = dept.offline_msg
+              this.placeholderOfflineMsg = dept.offline_msg
             } else {
 
               this.setDefaultOfflineMsg()
@@ -272,34 +372,283 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
   }
+  setDefaultOnlineMsg() {
+    if (this.browserLang) {
+      if (this.browserLang === 'it') {
 
+        this.onlineMsg = this.widgetDefaultSettings.it.online_msg;
+        console.log('»» WIDGET DESIGN - DEFAULT ONLINE MSG ', this.onlineMsg);
+
+        this.placeholderOnlineMsg = this.onlineMsg;
+        // const onlineMsg = ''
+        // this.updateOnlineMsg(onlineMsg)
+
+      } else {
+
+        this.onlineMsg = this.widgetDefaultSettings.en.online_msg;
+        console.log('»» WIDGET DESIGN - DEFAULT ONLINE MSG ', this.onlineMsg);
+
+        this.placeholderOnlineMsg = this.onlineMsg;
+        // const onlineMsg = ''
+        // this.updateOnlineMsg(onlineMsg)
+      }
+    }
+  }
+
+  setDefaultOfflineMsg() {
+    if (this.browserLang) {
+      if (this.browserLang === 'it') {
+
+        this.offlineMsg = this.widgetDefaultSettings.it.offline_msg;
+        console.log('»» WIDGET DESIGN - DEFAULT OFFLINE MSG ', this.offlineMsg);
+        this.placeholderOfflineMsg = this.offlineMsg;
+
+        // const offlineMsg = '';
+        // this.updateOfflineMsg(offlineMsg);
+      } else {
+        this.offlineMsg = this.widgetDefaultSettings.en.offline_msg;
+        console.log('»» WIDGET DESIGN - DEFAULT OFFLINE MSG ', this.offlineMsg);
+        this.placeholderOfflineMsg = this.offlineMsg;
+        // const offlineMsg = '';
+        // this.updateOfflineMsg(offlineMsg);
+      }
+    }
+  }
   /**
    * ===============================================================================
    * ================================= ONLINE  MSG =================================
    * ===============================================================================
    */
-  onBlurSaveOnlineMsg() {
-    console.log('»» WIDGET DESIGN - CALLING ON-BLUR-SAVE-ONLINE-MSG');
-    if (this.browserLang === 'it') {
-      if (this.onlineMsg !== this.widgetDefaultSettings.it.online_msg) {
+  // onBlurSaveOnlineMsg() {
+  //   console.log('»» WIDGET DESIGN - CALLING ON-BLUR-SAVE-ONLINE-MSG');
+  //   if (this.browserLang === 'it') {
+  //     if (this.onlineMsg !== this.widgetDefaultSettings.it.online_msg) {
 
-        // *** ADD PROPERTY
-        this.widgetObj['online_msg'] = this.onlineMsg;
-        // UPDATE WIDGET PROJECT
-        this.updateOnlineMsg(this.onlineMsg)
+  //       // *** ADD PROPERTY
+  //       this.widgetObj['online_msg'] = this.onlineMsg;
+  //       // UPDATE WIDGET PROJECT
+  //       this.updateOnlineMsg(this.onlineMsg)
+  //     }
+  //   }
+
+  //   if (this.browserLang === 'en') {
+  //     if (this.onlineMsg !== this.widgetDefaultSettings.en.online_msg) {
+
+  //       // *** ADD PROPERTY
+  //       // this.widgetObj['online_msg'] = this.onlineMsg;
+  //       // UPDATE WIDGET PROJECT
+  //       this.updateOnlineMsg(this.onlineMsg)
+  //     }
+  //   }
+  // }
+
+  onChangeOnlineMsg(event) {
+    console.log('»» WIDGET DESIGN - onChangeOnlineMsg ', event);
+
+    this.placeholderOnlineMsg = event;
+    if (event.length === 0 || event === this.widgetDefaultSettings.it.online_msg || event === this.widgetDefaultSettings.en.online_msg) {
+      console.log('»» WIDGET DESIGN - ONLINE-MSG LENGHT (modelChange) is ', event.length, ' SET DEFAULT ONLINE MSG');
+
+      this.setOnlinePlaceholderWithDefaultOnlineMsg();
+    }
+  }
+
+  setOnlinePlaceholderWithDefaultOnlineMsg() {
+    if (this.browserLang) {
+      if (this.browserLang === 'it') {
+
+        // this.onlineMsg = this.widgetDefaultSettings.it.online_msg;
+        this.placeholderOnlineMsg = this.widgetDefaultSettings.it.online_msg;
+        console.log('»» ONLINE MSG IS EMPTY - SET ONLINE-MSG PLACEHOLDER WITH THE DEFAULT onlineMsg ', this.placeholderOnlineMsg);
+        // const onlineMsg = ''
+        // this.updateOnlineMsg(onlineMsg)
+      } else {
+        // this.onlineMsg = this.widgetDefaultSettings.en.online_msg;
+        this.placeholderOnlineMsg = this.widgetDefaultSettings.en.online_msg;
+        console.log('»» ONLINE MSG IS EMPTY - SET ONLINE-MSG PLACEHOLDER WITH THE DEFAULT onlineMsg ', this.placeholderOnlineMsg);
+        // const onlineMsg = ''
+        // this.updateOnlineMsg(onlineMsg)
+      }
+    }
+  }
+
+
+  onChangeOfflineMsg(event) {
+
+    console.log('»» WIDGET DESIGN onChangeOfflineMsg ', event);
+
+    this.placeholderOfflineMsg = event;
+    // console.log('»» WIDGET DESIGN - DEFAULT DEPT OFFLINE MSG EVENT (modelChange) ', event);
+    // console.log('»» WIDGET DESIGN - DEFAULT DEPT OFFLINE MSG LENGHT (modelChange) is ', event.length, ' SET DEFAULT OFFLINE MSG');
+    if (event.length === 0 || event === this.widgetDefaultSettings.it.offline_msg || event === this.widgetDefaultSettings.en.offline_msg) {
+      console.log('»» WIDGET DESIGN - DEFAULT DEPT OFFLINE MSG LENGHT (modelChange) is ', event.length, ' SET DEFAULT OFFLINE MSG');
+      this.setOnlinePlaceholderWithDefaultOfflineMsg();
+    }
+  }
+
+  setOnlinePlaceholderWithDefaultOfflineMsg() {
+    if (this.browserLang) {
+      if (this.browserLang === 'it') {
+
+        // this.offlineMsg = this.widgetDefaultSettings.it.offline_msg;
+        this.placeholderOfflineMsg = this.widgetDefaultSettings.it.offline_msg;
+        console.log('»» OFFLINE MSG EMPTY - SET PLACEHOLDER OFFLINE-MSG WITH THE DEFAULT offlineMsg ', this.placeholderOfflineMsg);
+
+        // const offlineMsg = '';
+        // this.updateOfflineMsg(offlineMsg);
+      } else {
+        // this.offlineMsg = this.widgetDefaultSettings.en.offline_msg;
+        this.placeholderOfflineMsg = this.widgetDefaultSettings.en.offline_msg;
+        console.log('»» OFFLINE MSG EMPTY - SET PLACEHOLDER OFFLINE-MSG WITH THE DEFAULT offlineMsg ', this.placeholderOfflineMsg);
+
+        // const offlineMsg = '';
+        // this.updateOfflineMsg(offlineMsg);
       }
     }
 
-    if (this.browserLang === 'en') {
-      if (this.onlineMsg !== this.widgetDefaultSettings.en.online_msg) {
+  }
 
-        // *** ADD PROPERTY
-        // this.widgetObj['online_msg'] = this.onlineMsg;
-        // UPDATE WIDGET PROJECT
-        this.updateOnlineMsg(this.onlineMsg)
-      }
+  /**
+   * ================================================================================
+   * ================================= OFFLINE  MSG =================================
+   * ================================================================================
+   */
+  // onBlurSaveOfflineMsg() {
+  //   console.log('»» WIDGET DESIGN - CALLING ON-BLUR-SAVE-OFFLINE-MSG');
+  //   if (this.browserLang === 'it') {
+  //     if (this.offlineMsg !== this.widgetDefaultSettings.it.offline_msg) {
+
+  //       this.updateOfflineMsg(this.offlineMsg)
+  //     }
+  //   }
+
+  //   if (this.browserLang === 'en') {
+  //     if (this.offlineMsg !== this.widgetDefaultSettings.en.offline_msg) {
+
+  //       this.updateOfflineMsg(this.offlineMsg)
+  //     }
+  //   }
+  // }
+
+
+
+  /**
+   * *** ------------------------------------ ***
+   * ***    SAVE ONLINE / OFFLINE MESSAGES    ***
+   * *** ------------------------------------ ***
+   */
+  saveOnlineOfflineMsgs() {
+
+    const save_online_offline_msgs = <HTMLElement>document.querySelector('.save_online_offline_msgs');
+
+    if (save_online_offline_msgs) {
+      save_online_offline_msgs.blur()
     }
 
+    this.departmentService.getDeptsByProjectId().subscribe((departments: any) => {
+      // console.log('ROUTING PAGE - DEPTS (FILTERED FOR PROJECT ID)', departments);
+
+      if (departments) {
+        departments.forEach(dept => {
+
+          if (dept.default === true) {
+            console.log('»» WIDGET DESIGN - DEFAULT DEPT ', dept);
+
+            this.defaultdept_id = dept._id;
+            console.log('»» WIDGET DESIGN - DEFAULT DEPT id ', this.defaultdept_id);
+
+            // ONLINE MSG
+            // if (dept.online_msg) {
+
+
+            console.log('saveOnlineOfflineMsgs online_msg retrieved', dept.online_msg)
+            console.log('saveOnlineOfflineMsgs online_msg modified', this.onlineMsg)
+
+            // SAVE IF this.onlineMsg is unlike the default msg and the onlineMsg returned 
+            // from the server (i.e. different from a previous change)
+            if (this.browserLang === 'it') {
+
+              if (this.onlineMsg !== this.widgetDefaultSettings.it.online_msg) {
+
+                if (dept.online_msg !== this.onlineMsg) {
+
+                  this.updateOnlineMsg(this.onlineMsg);
+
+                }
+              }
+            }
+
+            if (this.browserLang === 'en') {
+              
+              if (this.onlineMsg !== this.widgetDefaultSettings.en.online_msg) {
+
+                if (dept.online_msg !== this.onlineMsg) {
+                  this.updateOnlineMsg(this.onlineMsg);
+                }
+              }
+            }
+
+            // }
+
+            // OFFLINE MSG
+            if (this.browserLang === 'it') {
+              if (this.offlineMsg !== this.widgetDefaultSettings.it.offline_msg) {
+                if (dept.offline_msg !== this.offlineMsg) {
+                  console.log('saveOnlineOfflineMsgs offline_msg ', dept.offline_msg);
+                  this.updateOfflineMsg(this.offlineMsg)
+                }
+              }
+            }
+
+            if (this.browserLang === 'en') {
+              if (this.offlineMsg !== this.widgetDefaultSettings.en.offline_msg) {
+                if (dept.offline_msg !== this.offlineMsg) {
+                  console.log('saveOnlineOfflineMsgs offline_msg ', dept.offline_msg);
+                  this.updateOfflineMsg(this.offlineMsg)
+                }
+              }
+            }
+          }
+        });
+      }
+    });
+
+
+
+    // console.log('saveOnlineOfflineMsgs onlineMsg: ', this.onlineMsg);
+    // console.log('saveOnlineOfflineMsgs onlineMsg: ', this.offlineMsg);
+    // if (this.browserLang === 'it') {
+
+    //   // || this.offlineMsg !== this.widgetDefaultSettings.it.offline_msg
+    //   if (this.onlineMsg !== this.widgetDefaultSettings.it.online_msg) {
+
+    //     // *** ADD PROPERTY
+    //     // this.widgetObj['online_msg'] = this.onlineMsg;
+    //     // UPDATE WIDGET PROJECT
+    //     this.updateOnlineMsg(this.onlineMsg)
+    //   }
+
+    //   if (this.offlineMsg !== this.widgetDefaultSettings.it.offline_msg) {
+    //     this.updateOfflineMsg(this.offlineMsg)
+    //   }
+
+    // }
+
+    // if (this.browserLang === 'en') {
+    //   // || this.offlineMsg !== this.widgetDefaultSettings.en.offline_msg
+    //   if (this.onlineMsg !== this.widgetDefaultSettings.en.online_msg) {
+
+    //     // *** ADD PROPERTY
+    //     // this.widgetObj['online_msg'] = this.onlineMsg;
+    //     // UPDATE WIDGET PROJECT
+    //     this.updateOnlineMsg(this.onlineMsg)
+    //   }
+
+    //   if (this.offlineMsg !== this.widgetDefaultSettings.en.offline_msg) {
+
+    //     this.updateOfflineMsg(this.offlineMsg)
+    //   }
+    // }
   }
 
   updateOnlineMsg(onlineMsg: string) {
@@ -310,82 +659,9 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log('»» WIDGET DESIGN - UPDATE DEFAULT DEPT ONLINE MSG - ERROR ', error);
       }, () => {
 
-        this.notify.showWidgetStyleUpdateNotification(this.updateDeptGreetingsSuccessNoticationMsg, 2, 'done');
+        this.notify.showWidgetStyleUpdateNotification(this.onlineMsgSuccessNoticationMsg, 2, 'done');
         console.log('»» WIDGET DESIGN - UPDATE DEFAULT DEPT ONLINE MSG * COMPLETE *');
       });
-  }
-
-  onChangeOnlineMsg(event) {
-    // console.log('»» WIDGET DESIGN - ONLINE-MSG EVENT ', event);
-    if (event.length === 0 || event === this.widgetDefaultSettings.it.online_msg || event === this.widgetDefaultSettings.en.online_msg) {
-      console.log('»» WIDGET DESIGN - ONLINE-MSG LENGHT (modelChange) is ', event.length, ' SET DEFAULT ONLINE MSG');
-
-      this.setDefaultAndUpdateOnlineMsg();
-    }
-  }
-
-  setDefaultAndUpdateOnlineMsg() {
-    if (this.browserLang) {
-      if (this.browserLang === 'it') {
-
-        this.onlineMsg = this.widgetDefaultSettings.it.online_msg;
-        console.log('»» WIDGET DESIGN - SET DEFAULT ONLINE-MSG AND UPDATE WITH onlineMsg = " " ', this.onlineMsg);
-
-        const onlineMsg = ''
-        this.updateOnlineMsg(onlineMsg)
-
-      } else {
-
-        this.onlineMsg = this.widgetDefaultSettings.en.online_msg;
-        console.log('»» WIDGET DESIGN - SET DEFAULT ONLINE-MSG AND UPDATE WITH onlineMsg = " " ', this.onlineMsg);
-
-        const onlineMsg = ''
-        this.updateOnlineMsg(onlineMsg)
-      }
-    }
-  }
-
-  setDefaultOnlineMsg() {
-    if (this.browserLang) {
-      if (this.browserLang === 'it') {
-
-        this.onlineMsg = this.widgetDefaultSettings.it.online_msg;
-        console.log('»» WIDGET DESIGN - DEFAULT ONLINE MSG ', this.onlineMsg);
-
-        // const onlineMsg = ''
-        // this.updateOnlineMsg(onlineMsg)
-
-      } else {
-
-        this.onlineMsg = this.widgetDefaultSettings.en.online_msg;
-        console.log('»» WIDGET DESIGN - DEFAULT ONLINE MSG ', this.onlineMsg);
-
-        // const onlineMsg = ''
-        // this.updateOnlineMsg(onlineMsg)
-      }
-    }
-  }
-
-  /**
-   * ================================================================================
-   * ================================= OFFLINE  MSG =================================
-   * ================================================================================
-   */
-  onBlurSaveOfflineMsg() {
-    console.log('»» WIDGET DESIGN - CALLING ON-BLUR-SAVE-OFFLINE-MSG');
-    if (this.browserLang === 'it') {
-      if (this.offlineMsg !== this.widgetDefaultSettings.it.offline_msg) {
-
-        this.updateOfflineMsg(this.offlineMsg)
-      }
-    }
-
-    if (this.browserLang === 'en') {
-      if (this.offlineMsg !== this.widgetDefaultSettings.en.offline_msg) {
-
-        this.updateOfflineMsg(this.offlineMsg)
-      }
-    }
   }
 
   updateOfflineMsg(offlineMsg: string) {
@@ -396,57 +672,9 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log('»» WIDGET DESIGN - UPDATE DEFAULT DEPT OFFLINE MSG - ERROR ', error);
       }, () => {
 
-        this.notify.showWidgetStyleUpdateNotification(this.updateDeptGreetingsSuccessNoticationMsg, 2, 'done');
+        this.notify.showWidgetStyleUpdateNotification(this.offlineMsgSuccessNoticationMsg, 2, 'done');
         console.log('»» WIDGET DESIGN - UPDATE DEFAULT DEPT OFFLINE MSG * COMPLETE *');
       });
-  }
-
-  onChangeOfflineMsg(event) {
-    console.log('»» WIDGET DESIGN - DEFAULT DEPT OFFLINE MSG EVENT (modelChange) ', event);
-    console.log('»» WIDGET DESIGN - DEFAULT DEPT OFFLINE MSG LENGHT (modelChange) is ', event.length, ' SET DEFAULT OFFLINE MSG');
-    if (event.length === 0 || event === this.widgetDefaultSettings.it.offline_msg || event === this.widgetDefaultSettings.en.offline_msg) {
-      console.log('»» WIDGET DESIGN - DEFAULT DEPT OFFLINE MSG LENGHT (modelChange) is ', event.length, ' SET DEFAULT OFFLINE MSG');
-      this.setDefaultAndUpdateOfflineMsg();
-    }
-  }
-
-  setDefaultAndUpdateOfflineMsg() {
-    if (this.browserLang) {
-      if (this.browserLang === 'it') {
-
-        this.offlineMsg = this.widgetDefaultSettings.it.offline_msg;
-        console.log('»» WIDGET DESIGN - SET DEFAULT OFFLINE-MSG AND UPDATE WITH offlineMsg = " " ', this.offlineMsg);
-
-        const offlineMsg = '';
-        this.updateOfflineMsg(offlineMsg);
-      } else {
-        this.offlineMsg = this.widgetDefaultSettings.en.offline_msg;
-        console.log('»» WIDGET DESIGN - SET DEFAULT OFFLINE-MSG AND UPDATE WITH offlineMsg = " " ', this.offlineMsg);
-
-        const offlineMsg = '';
-        this.updateOfflineMsg(offlineMsg);
-      }
-    }
-
-  }
-
-  setDefaultOfflineMsg() {
-    if (this.browserLang) {
-      if (this.browserLang === 'it') {
-
-        this.offlineMsg = this.widgetDefaultSettings.it.offline_msg;
-        console.log('»» WIDGET DESIGN - DEFAULT OFFLINE MSG ', this.offlineMsg);
-
-        // const offlineMsg = '';
-        // this.updateOfflineMsg(offlineMsg);
-      } else {
-        this.offlineMsg = this.widgetDefaultSettings.en.offline_msg;
-        console.log('»» WIDGET DESIGN - DEFAULT OFFLINE MSG ', this.offlineMsg);
-
-        // const offlineMsg = '';
-        // this.updateOfflineMsg(offlineMsg);
-      }
-    }
   }
 
 
@@ -487,6 +715,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
          */
         if (project.widget.calloutTitle) {
           this.calloutTitle = project.widget.calloutTitle;
+          this.placeholderCalloutTitle = project.widget.calloutTitle;
           console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) CALLOUT TITLE: ', this.calloutTitle);
 
         } else {
@@ -503,6 +732,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
          */
         if (project.widget.calloutMsg) {
           this.calloutMsg = project.widget.calloutMsg;
+          this.placeholderCalloutMsg = project.widget.calloutMsg;
           console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) CALLOUT MSG: ', this.calloutMsg);
         } else {
           /**
@@ -601,6 +831,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
          */
         if (project.widget.wellcomeTitle) {
           this.welcomeTitle = project.widget.wellcomeTitle;
+          this.placeholderWelcomeTitle = project.widget.wellcomeTitle;
 
           console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) WELCOME-TITLE: ', this.welcomeTitle);
         } else {
@@ -617,6 +848,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
          */
         if (project.widget.wellcomeMsg) {
           this.welcomeMsg = project.widget.wellcomeMsg;
+          this.placeholderWelcomeMsg = project.widget.wellcomeMsg;
           console.log('»» WIDGET DESIGN - (onInit WIDGET DEFINED) WELCOME-MSG: ', this.welcomeMsg);
           /**
            * *** wellcomeMsg (WIDGET DEFINED BUT NOT WELCOME-MSG - SET DEFAULT) ***
@@ -770,29 +1002,26 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
     this.primaryColor = event
 
     if (this.primaryColor !== this.widgetDefaultSettings.themeColor) {
-
       this.widgetObj['themeColor'] = this.primaryColor
     } else {
 
       // *** REMOVE PROPERTY
       delete this.widgetObj['themeColor'];
-      this.widgetService.updateWidgetProject(this.widgetObj)
+
+      /**
+       * *** WidgetProject IS UPDATED WHEN THE USER CLICK ON SAVE *** */
+      // this.widgetService.updateWidgetProject(this.widgetObj)
     }
-    // ASSIGN TO WIDEGET OBJ
-    // this.widgetObj =
-    //   [
-    //     {
-    //       'logoChat': this.logoUrl,
-    //       'themeColor': this.primaryColor,
-    //       'themeForegroundColor': this.secondaryColor,
-    //       'wellcomeTitle': this.welcomeTitle,
-    //       'wellcomeMsg': this.welcomeMsg
-    //     }
-    //   ]
 
     // UPDATE WIDGET PROJECT
-    this.widgetService.updateWidgetProject(this.widgetObj)
+    /**
+     * *** WidgetProject IS UPDATED WHEN THE USER CLICK ON SAVE ***   */
+    // this.widgetService.updateWidgetProject(this.widgetObj)
   }
+
+
+
+
 
   /**
    * onSelectPrimaryColor WHEN USER PRESS 'OK' UPDATE THE OBJECT WIDGET
@@ -846,28 +1075,53 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
       // *** ADD PROPERTY
       this.widgetObj['themeForegroundColor'] = this.secondaryColor
 
-      this.widgetService.updateWidgetProject(this.widgetObj)
+      /**
+       * *** WidgetProject IS UPDATED WHEN THE USER CLICK ON SAVE ***   */
+      // this.widgetService.updateWidgetProject(this.widgetObj)
     } else {
       // *** REMOVE PROPERTY
       delete this.widgetObj['themeForegroundColor'];
-      this.widgetService.updateWidgetProject(this.widgetObj)
+
+      /**
+       * *** WidgetProject IS UPDATED WHEN THE USER CLICK ON SAVE ***   */
+      // this.widgetService.updateWidgetProject(this.widgetObj)
 
     }
-
-    // ASSIGN TO WIDEGET OBJ
-    // this.widgetObj = [
-    //   {
-    //     'logoChat': this.logoUrl,
-    //     'themeColor': this.primaryColor,
-    //     'themeForegroundColor': this.secondaryColor,
-    //     'wellcomeTitle': this.welcomeTitle,
-    //     'wellcomeMsg': this.welcomeMsg
-    //   }
-    // ]
-    // UPDATE WIDGET PROJECT
-
-
   }
+
+  onChangeSecondaryColor(event) {
+    console.log('»» WIDGET DESIGN - onChangeSecondaryColor ', event);
+    this.secondaryColor = event;
+    if (this.secondaryColor !== this.widgetDefaultSettings.themeForegroundColor) {
+      // *** ADD PROPERTY
+      this.widgetObj['themeForegroundColor'] = this.secondaryColor
+
+      /**
+       * *** WidgetProject IS UPDATED WHEN THE USER CLICK ON SAVE ***   */
+      // this.widgetService.updateWidgetProject(this.widgetObj)
+    } else {
+      // *** REMOVE PROPERTY
+      delete this.widgetObj['themeForegroundColor'];
+
+      /**
+       * *** WidgetProject IS UPDATED WHEN THE USER CLICK ON SAVE ***   */
+      // this.widgetService.updateWidgetProject(this.widgetObj)
+
+    }
+  }
+
+  setPresetColorComb(primaryColor: string, secondaryColor: string) {
+
+    console.log('»» WIDGET DESIGN - setPresetCombOne ', primaryColor, secondaryColor);
+    this.primaryColor = primaryColor;
+    this.secondaryColor = secondaryColor;
+
+    this.onChangePrimaryColor(primaryColor);
+
+    this.widgetObj['themeColor'] = primaryColor
+    this.widgetObj['themeForegroundColor'] = secondaryColor
+  }
+
 
   // onSelectSecondaryColor($event) {
   //   console.log('++++++ WIDGET DESIGN - ON SELECT SECONDARY COLOR ', $event);
@@ -893,82 +1147,101 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
   // ===========================================================================
   /**
    * ON BLUR UPDATE THE OBJECT WIDGET */
-  onBlurChangeLogo() {
-    console.log('»» WIDGET DESIGN - ON BLUR LOGO URL ', this.logoUrl);
+  // onBlurChangeLogo() {
+  //   console.log('»» WIDGET DESIGN - ON BLUR LOGO URL ', this.logoUrl);
 
-    // if is defined logoUrl and LOGO_IS_ON === true set the property logoChat = to logoUrl
-    if (this.logoUrl && this.LOGO_IS_ON === true) {
+  //   // if is defined logoUrl and LOGO_IS_ON === true set the property logoChat = to logoUrl
+  //   if (this.logoUrl && this.LOGO_IS_ON === true) {
 
-      this.hasOwnLogo = true;
-      console.log('»» WIDGET DESIGN - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON);
+  //     this.hasOwnLogo = true;
+  //     console.log('»» WIDGET DESIGN - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON);
 
-      // *** ADD PROPERTY
-      this.widgetObj['logoChat'] = this.logoUrl
+  //     // *** ADD PROPERTY
+  //     this.widgetObj['logoChat'] = this.logoUrl
 
-      // ASSIGN TO WIDEGET OBJ
-      // this.widgetObj = [
-      //   {
-      //     'logoChat': this.logoUrl,
-      //     'themeColor': this.primaryColor,
-      //     'themeForegroundColor': this.secondaryColor,
-      //     'wellcomeTitle': this.welcomeTitle,
-      //     'wellcomeMsg': this.welcomeMsg
-      //   }
-      // ]
-      // console.log('HAS PRESSED CHANGE LOGO - WIDGET OBJ ', this.widgetObj);
-
-      // UPDATE WIDGET PROJECT
-      this.widgetService.updateWidgetProject(this.widgetObj)
+  //     // UPDATE WIDGET PROJECT
+  //     // this.widgetService.updateWidgetProject(this.widgetObj)
 
 
-    } else if (this.logoUrl && this.LOGO_IS_ON === false) {
+  //   } else if (this.logoUrl && this.LOGO_IS_ON === false) {
 
-      // if is defined logoUrl and LOGO_IS_ON === false set the property logoChat = to No Logo
-      // use case: the logo btn on/off is setted as off and the user enter an logo url
+  //     // if is defined logoUrl and LOGO_IS_ON === false set the property logoChat = to No Logo
+  //     // use case: the logo btn on/off is setted as off and the user enter an logo url
 
-      this.logoUrl = 'No Logo'
-      console.log('»» WIDGET DESIGN - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON);
+  //     this.logoUrl = 'No Logo'
+  //     console.log('»» WIDGET DESIGN - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON);
 
-      // *** ADD PROPERTY
-      this.widgetObj['logoChat'] = 'nologo';
+  //     // *** ADD PROPERTY
+  //     this.widgetObj['logoChat'] = 'nologo';
 
-      // ASSIGN TO WIDEGET OBJ
-      // this.widgetObj = [
-      //   {
-      //     'logoChat': 'nologo',
-      //     'themeColor': this.primaryColor,
-      //     'themeForegroundColor': this.secondaryColor,
-      //     'wellcomeTitle': this.welcomeTitle,
-      //     'wellcomeMsg': this.welcomeMsg
-      //   }
-      // ]
-      // console.log('HAS PRESSED CHANGE LOGO - WIDGET OBJ ', this.widgetObj);
+  //     // UPDATE WIDGET PROJECT
+  //     // this.widgetService.updateWidgetProject(this.widgetObj)
 
-      // UPDATE WIDGET PROJECT
-      this.widgetService.updateWidgetProject(this.widgetObj)
+  //   } else {
+  //     // if is not defined logoUrl remove the property logoChat
 
-    } else {
-      // if is not defined logoUrl remove the property logoChat
+  //     // *** REMOVE PROPERTY
+  //     delete this.widgetObj['logoChat'];
 
-      // *** REMOVE PROPERTY
-      delete this.widgetObj['logoChat'];
+  //     this.logoUrl = 'tiledesklogo'
+  //     this.hasOwnLogo = false;
+  //     console.log('»» WIDGET DESIGN - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON);
 
-      this.logoUrl = 'tiledesklogo'
-      this.hasOwnLogo = false;
-      console.log('»» WIDGET DESIGN - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON);
-      // ASSIGN TO WIDEGET OBJ
-      // this.widgetObj = [
-      //   {
-      //     'logoChat': '',
-      //     'themeColor': this.primaryColor,
-      //     'themeForegroundColor': this.secondaryColor,
-      //     'wellcomeTitle': this.welcomeTitle,
-      //     'wellcomeMsg': this.welcomeMsg
-      //   }
-      // ]
-      this.widgetService.updateWidgetProject(this.widgetObj)
+  //     // UPDATE WIDGET PROJECT
+  //     // this.widgetService.updateWidgetProject(this.widgetObj)
+  //   }
+  // }
+
+
+
+  verifyImageURL(url, callBack) {
+    const img = new Image();
+    img.src = url;
+    try {
+      img.onload = () => {
+        callBack(true);
+      };
+    } catch (err) {
+      console.log('»» WIDGET DESIGN - verifyImageURL', err);
+    }
+    try {
+      img.onerror = () => {
+        callBack(false);
+      };
+    } catch (err) {
+      console.log('»» WIDGET DESIGN - verifyImageURL', err);
     }
   }
+
+
+
+  logoChange(event) {
+    console.log('»» WIDGET DESIGN - logoChange event.length', event.length);
+
+    if (event.length === 0) {
+      this.hasOwnLogo = false;
+
+    } else {
+
+      if (this.LOGO_IS_ON === true) {
+
+        this.verifyImageURL(event, (imageExists) => {
+          // return imageExists
+          if (imageExists === true) {
+            console.log('checkImage Image Exists: ', imageExists);
+            this.hasOwnLogo = true;
+            this.IMAGE_EXIST = true;
+          } else {
+            console.log('checkImage Image Exists: ', imageExists);
+            this.hasOwnLogo = false;
+            this.IMAGE_EXIST = false;
+          }
+        });
+      }
+
+    }
+  }
+
 
   // logoUrlChange(event) {
   //   console.log('WIDGET DESIGN - CUSTOM LOGO URL CHANGE ', event)
@@ -986,16 +1259,8 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
       // *** ADD PROPERTY
       this.widgetObj['logoChat'] = 'nologo';
 
-      // this.widgetObj = [
-      //   {
-      //     'logoChat': 'nologo',
-      //     'themeColor': this.primaryColor,
-      //     'themeForegroundColor': this.secondaryColor,
-      //     'wellcomeTitle': this.welcomeTitle,
-      //     'wellcomeMsg': this.welcomeMsg
-      //   }
-      // ]
-      this.widgetService.updateWidgetProject(this.widgetObj);
+      // UPDATE WIDGET PROJECT
+      // this.widgetService.updateWidgetProject(this.widgetObj);
 
     } else if ($event.target.checked === true) {
 
@@ -1010,16 +1275,9 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
 
       console.log('»» WIDGET DESIGN - widgetObj', this.widgetObj)
 
-      // this.widgetObj = [
-      //   {
-      //     'logoChat': '',
-      //     'themeColor': this.primaryColor,
-      //     'themeForegroundColor': this.secondaryColor,
-      //     'wellcomeTitle': this.welcomeTitle,
-      //     'wellcomeMsg': this.welcomeMsg
-      //   }
-      // ]
-      this.widgetService.updateWidgetProject(this.widgetObj)
+
+      // UPDATE WIDGET PROJECT
+      // this.widgetService.updateWidgetProject(this.widgetObj)
 
     }
   }
@@ -1030,6 +1288,8 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // USED TO SET THE DEFAULT WELCOME TITLE IF THE IMPUT FIELD IS EMPTY
   welcomeTitleChange(event) {
+
+    this.placeholderWelcomeTitle = event;
     // this.HIDE_WELCOME_TITLE_SAVE_BTN = false;
 
     // console.log('»» WIDGET DESIGN - WELCOME TITLE (modelChange) CHANGE ', event);
@@ -1038,35 +1298,42 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
     if (event.length === 0 || event === this.widgetDefaultSettings.it.wellcomeTitle || event === this.widgetDefaultSettings.en.wellcomeTitle) {
       console.log('»» WIDGET DESIGN - WELCOME TITLE LENGHT (modelChange) is ', event.length, ' SET DEFAULT WELCOME TITLE');
 
+      // this.setDefaultAndRemovePropertyWelcomeTitle();
+      this.welcomeTitle_SetPlaceholderAndDeleteProperty();
 
-      this.setDefaultAndRemovePropertyWelcomeTitle();
     }
     // this.HAS_CHANGED_WELCOME_TITLE = true
   }
 
 
 
-  setDefaultAndRemovePropertyWelcomeTitle() {
+  welcomeTitle_SetPlaceholderAndDeleteProperty() {
     if (this.browserLang) {
       if (this.browserLang === 'it') {
 
-        this.welcomeTitle = this.widgetDefaultSettings.it.wellcomeTitle;
-        console.log('»» WIDGET DESIGN - DEFAULT WELCOME TITLE ', this.welcomeTitle);
+        // this.welcomeTitle = this.widgetDefaultSettings.it.wellcomeTitle;
+        // console.log('»» WIDGET DESIGN - DEFAULT WELCOME TITLE ', this.welcomeTitle);
+
+        this.placeholderWelcomeTitle = this.widgetDefaultSettings.it.wellcomeTitle;
 
         // *** REMOVE PROPERTY
         delete this.widgetObj['wellcomeTitle'];
+
         // UPDATE WIDGET PROJECT
-        this.widgetService.updateWidgetProject(this.widgetObj)
+        // this.widgetService.updateWidgetProject(this.widgetObj)
 
       } else {
 
-        this.welcomeTitle = this.widgetDefaultSettings.en.wellcomeTitle;
-        console.log('»» WIDGET DESIGN - DEFAULT WELCOME TITLE ', this.welcomeTitle);
+        // this.welcomeTitle = this.widgetDefaultSettings.en.wellcomeTitle;
+        // console.log('»» WIDGET DESIGN - DEFAULT WELCOME TITLE ', this.welcomeTitle);
+
+        this.placeholderWelcomeTitle = this.widgetDefaultSettings.en.wellcomeTitle;
 
         // *** REMOVE PROPERTY
         delete this.widgetObj['wellcomeTitle'];
+
         // UPDATE WIDGET PROJECT
-        this.widgetService.updateWidgetProject(this.widgetObj)
+        // this.widgetService.updateWidgetProject(this.widgetObj)
       }
     }
   }
@@ -1076,50 +1343,43 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
       if (this.browserLang === 'it') {
 
         this.welcomeTitle = this.widgetDefaultSettings.it.wellcomeTitle;
+        this.placeholderWelcomeTitle = this.widgetDefaultSettings.it.wellcomeTitle;
         console.log('»» WIDGET DESIGN - SET DEFAULT WELCOME TITLE (onInit) ', this.welcomeTitle);
 
       } else {
 
         this.welcomeTitle = this.widgetDefaultSettings.en.wellcomeTitle;
+        this.placeholderWelcomeTitle = this.widgetDefaultSettings.en.wellcomeTitle;
         console.log('»» WIDGET DESIGN - SET DEFAULT WELCOME TITLE (onInit) ', this.welcomeTitle);
 
       }
     }
   }
 
-  onBlurSaveWelcomeTitle() {
-    if (this.browserLang === 'it') {
-      if (this.welcomeTitle !== this.widgetDefaultSettings.it.wellcomeTitle) {
+  // onBlurSaveWelcomeTitle() {
+  //   if (this.browserLang === 'it') {
+  //     if (this.welcomeTitle !== this.widgetDefaultSettings.it.wellcomeTitle) {
 
-        // *** ADD PROPERTY
-        this.widgetObj['wellcomeTitle'] = this.welcomeTitle;
-        // UPDATE WIDGET PROJECT
-        this.widgetService.updateWidgetProject(this.widgetObj)
-      }
-    }
+  //       // *** ADD PROPERTY
+  //       this.widgetObj['wellcomeTitle'] = this.welcomeTitle;
 
-    if (this.browserLang === 'en') {
-      if (this.welcomeTitle !== this.widgetDefaultSettings.en.wellcomeTitle) {
+  //       // UPDATE WIDGET PROJECT
+  //       this.widgetService.updateWidgetProject(this.widgetObj)
+  //     }
+  //   }
 
-        // *** ADD PROPERTY
-        this.widgetObj['wellcomeTitle'] = this.welcomeTitle;
-        // UPDATE WIDGET PROJECT
-        this.widgetService.updateWidgetProject(this.widgetObj)
-      }
-    }
+  //   if (this.browserLang === 'en') {
+  //     if (this.welcomeTitle !== this.widgetDefaultSettings.en.wellcomeTitle) {
 
-    // ASSIGN TO WIDEGET OBJ
-    // this.widgetObj = [
-    //   {
-    //     'logoChat': this.logoUrl,
-    //     'themeColor': this.primaryColor,
-    //     'themeForegroundColor': this.secondaryColor,
-    //     'wellcomeTitle': this.welcomeTitle,
-    //     'wellcomeMsg': this.welcomeMsg
-    //   }
-    // ]
+  //       // *** ADD PROPERTY
+  //       this.widgetObj['wellcomeTitle'] = this.welcomeTitle;
+  //       // UPDATE WIDGET PROJECT
+  //       this.widgetService.updateWidgetProject(this.widgetObj)
+  //     }
+  //   }
+  // }
 
-  }
+
 
   // ================================================================================
   // ============== *** WIDGET MSG (alias for wellcomeMsg) ***  ==============
@@ -1128,37 +1388,43 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
   // USED TO SET THE DEAFULT WELCOME TITLE IF THE IMPUT FIELD IS EMPTY
   welcomeMsgChange(event) {
     console.log('»» WIDGET DESIGN - WELCOME MSG CHANGE ', event);
-
+    this.placeholderWelcomeMsg = event;
     if (event.length === 0 || event === this.widgetDefaultSettings.it.wellcomeMsg || event === this.widgetDefaultSettings.en.wellcomeMsg) {
       console.log('»» WIDGET DESIGN - WELCOME MSG LENGHT (modelChange) is ', event.length, ' SET DEFAULT WELCOME MSG');
 
-      this.setDefaultAndDeletePropertyWelcomeMsg();
+      // this.setDefaultAndDeletePropertyWelcomeMsg();
+      this.welcomeMsg_SetPlaceholderAndDeleteProperty();
     }
     // this.HAS_CHANGED_WELCOME_MSG = true;
   }
 
-  setDefaultAndDeletePropertyWelcomeMsg() {
+  welcomeMsg_SetPlaceholderAndDeleteProperty() {
     // this.welcomeMsg = this.widgetDefaultSettings.it.wellcomeMsg
     // console.log('»» WIDGET DESIGN - DEFAULT WELCOME MSG ', this.welcomeMsg);
     if (this.browserLang) {
       if (this.browserLang === 'it') {
-        // this.welcomeMsg = 'Come possiamo aiutare?'
-        this.welcomeMsg = this.widgetDefaultSettings.it.wellcomeMsg
-        console.log('»» WIDGET DESIGN - DEFAULT WELCOME MSG ', this.welcomeMsg);
+
+        // this.welcomeMsg = this.widgetDefaultSettings.it.wellcomeMsg
+        // console.log('»» WIDGET DESIGN - DEFAULT WELCOME MSG ', this.welcomeMsg);
+
+        this.placeholderWelcomeMsg = this.widgetDefaultSettings.it.wellcomeMsg
         // // *** REMOVE PROPERTY
         delete this.widgetObj['wellcomeMsg'];
+
         // // UPDATE WIDGET PROJECT
-        this.widgetService.updateWidgetProject(this.widgetObj)
+        // this.widgetService.updateWidgetProject(this.widgetObj)
 
       } else {
-        console.log('»» WIDGET DESIGN - DEFAULT WELCOME MSG ', this.welcomeMsg);
-        // this.welcomeMsg = 'How can we help?'
-        this.welcomeMsg = this.widgetDefaultSettings.en.wellcomeMsg
 
+        // this.welcomeMsg = this.widgetDefaultSettings.en.wellcomeMsg
+        // console.log('»» WIDGET DESIGN - DEFAULT WELCOME MSG ', this.welcomeMsg);
+
+        this.placeholderWelcomeMsg = this.widgetDefaultSettings.en.wellcomeMsg
         // *** REMOVE PROPERTY
         delete this.widgetObj['wellcomeMsg'];
+
         // UPDATE WIDGET PROJECT
-        this.widgetService.updateWidgetProject(this.widgetObj)
+        // this.widgetService.updateWidgetProject(this.widgetObj)
       }
     }
   }
@@ -1167,27 +1433,121 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.browserLang) {
       if (this.browserLang === 'it') {
         // this.welcomeMsg = 'Come possiamo aiutare?'
-        this.welcomeMsg = this.widgetDefaultSettings.it.wellcomeMsg
+        this.welcomeMsg = this.widgetDefaultSettings.it.wellcomeMsg;
+        this.placeholderWelcomeMsg = this.widgetDefaultSettings.it.wellcomeMsg;
         console.log('»» WIDGET DESIGN - SET DEFAULT WELCOME MSG (onInit) ', this.welcomeMsg);
 
       } else {
-        console.log('»» WIDGET DESIGN - SET DEFAULT WELCOME MSG (onInit) ', this.welcomeMsg);
-        // this.welcomeMsg = 'How can we help?'
-        this.welcomeMsg = this.widgetDefaultSettings.en.wellcomeMsg
 
+        // this.welcomeMsg = 'How can we help?'
+        this.welcomeMsg = this.widgetDefaultSettings.en.wellcomeMsg;
+        this.placeholderWelcomeMsg = this.widgetDefaultSettings.en.wellcomeMsg;
+        console.log('»» WIDGET DESIGN - SET DEFAULT WELCOME MSG (onInit) ', this.welcomeMsg);
       }
     }
   }
 
-  onBlurSaveWelcomeMsg() {
-    // console.log('»» WIDGET DESIGN - ON BLUR WELCOME MSG ', this.welcomeMsg);
+  // onBlurSaveWelcomeMsg() {
+  //   // console.log('»» WIDGET DESIGN - ON BLUR WELCOME MSG ', this.welcomeMsg);
+  //   if (this.browserLang === 'it') {
+  //     if (this.welcomeMsg !== this.widgetDefaultSettings.it.wellcomeMsg) {
+
+  //       // *** ADD PROPERTY
+  //       this.widgetObj['wellcomeMsg'] = this.welcomeMsg;
+  //       // UPDATE WIDGET PROJECT
+  //       this.widgetService.updateWidgetProject(this.widgetObj)
+  //     }
+  //   }
+
+  //   if (this.browserLang === 'en') {
+  //     if (this.welcomeMsg !== this.widgetDefaultSettings.en.wellcomeMsg) {
+
+  //       // *** ADD PROPERTY
+  //       this.widgetObj['wellcomeMsg'] = this.welcomeMsg;
+  //       // UPDATE WIDGET PROJECT
+  //       this.widgetService.updateWidgetProject(this.widgetObj)
+  //     }
+  //   }
+  // }
+
+
+  /**
+   * *** ---------------------------- ***
+   * ***    SAVE WIDGET APPEARANCE    ***
+   * *** ---------------------------- ***
+   */
+  saveWidgetAppearance() {
+
+    const appearance_save_btn_mobile = <HTMLElement>document.querySelector('.appearance_save_btn_mobile');
+    const appearance_save_btn_desktop = <HTMLElement>document.querySelector('.appearance-save-btn-desktop');
+
+    if (appearance_save_btn_mobile) {
+      appearance_save_btn_mobile.blur()
+    }
+
+    if (appearance_save_btn_desktop) {
+      appearance_save_btn_desktop.blur()
+    }
+
+
+    /// LOGO
+    if (this.logoUrl && this.LOGO_IS_ON === true) {
+
+      if (this.logoUrl !== 'tiledesklogo') {
+        this.hasOwnLogo = true;
+        console.log('»» WIDGET DESIGN - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON, ' logoUrl: ', this.logoUrl);
+      } else {
+        this.hasOwnLogo = false;
+      }
+      // *** ADD PROPERTY
+      this.widgetObj['logoChat'] = this.logoUrl
+
+    } else if (this.logoUrl && this.LOGO_IS_ON === false) {
+      // if is defined logoUrl and LOGO_IS_ON === false set the property logoChat = to No Logo
+      // use case: the logo btn on/off is setted as off and the user enter an logo url
+      this.logoUrl = 'No Logo'
+      console.log('»» WIDGET DESIGN - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON, ' logoUrl: ', this.logoUrl);
+      // *** ADD PROPERTY
+      this.widgetObj['logoChat'] = 'nologo';
+
+    } else {
+      // if is not defined logoUrl remove the property logoChat
+      // *** REMOVE PROPERTY
+      delete this.widgetObj['logoChat'];
+
+      this.logoUrl = 'tiledesklogo'
+      this.hasOwnLogo = false;
+      console.log('»» WIDGET DESIGN - HAS OWN LOGO ', this.hasOwnLogo, 'LOGO IS ON ', this.LOGO_IS_ON, ' logoUrl: ', this.logoUrl);
+
+    }
+
+    /// WELCOME TITLE
+    if (this.browserLang === 'it') {
+      if (this.welcomeTitle !== this.widgetDefaultSettings.it.wellcomeTitle) {
+
+        // *** ADD PROPERTY
+        this.widgetObj['wellcomeTitle'] = this.welcomeTitle;
+
+      }
+    }
+
+    if (this.browserLang === 'en') {
+      if (this.welcomeTitle !== this.widgetDefaultSettings.en.wellcomeTitle) {
+
+        // *** ADD PROPERTY
+        this.widgetObj['wellcomeTitle'] = this.welcomeTitle;
+
+      }
+    }
+
+    /// WELCOME MSG
     if (this.browserLang === 'it') {
       if (this.welcomeMsg !== this.widgetDefaultSettings.it.wellcomeMsg) {
 
         // *** ADD PROPERTY
         this.widgetObj['wellcomeMsg'] = this.welcomeMsg;
         // UPDATE WIDGET PROJECT
-        this.widgetService.updateWidgetProject(this.widgetObj)
+
       }
     }
 
@@ -1197,36 +1557,32 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
         // *** ADD PROPERTY
         this.widgetObj['wellcomeMsg'] = this.welcomeMsg;
         // UPDATE WIDGET PROJECT
-        this.widgetService.updateWidgetProject(this.widgetObj)
+
       }
     }
 
 
-    // this.widgetObj = [
-    //   {
-    //     'logoChat': this.logoUrl,
-    //     'themeColor': this.primaryColor,
-    //     'themeForegroundColor': this.secondaryColor,
-    //     'wellcomeTitle': this.welcomeTitle,
-    //     'wellcomeMsg': this.welcomeMsg
-    //   }
-    // ]
-    // UPDATE WIDGET PROJECT
-    // this.widgetService.updateWidgetProject(this.widgetObj)
+
+    this.widgetService.updateWidgetProject(this.widgetObj)
   }
 
   // ===========================================================================
   // ============== *** CALLOUT TIMER (calloutTimer) ***  ==============
   // ===========================================================================
-  setSelectedCalloutTimer() {
 
+
+  setSelectedCalloutTimer() {
     if (this.calloutTimerSecondSelected !== -1) {
       console.log('»» WIDGET DESIGN CALLOUT TIMER - TIMER SELECTED', this.calloutTimerSecondSelected);
       this.CALLOUT_IS_DISABLED = false;
       // *** ADD PROPERTY
       this.widgetObj['calloutTimer'] = this.calloutTimerSecondSelected;
       // UPDATE WIDGET PROJECT
-      this.widgetService.updateWidgetProject(this.widgetObj)
+
+      /**
+       * *** WidgetProject IS UPDATED WHEN THE USER CLICK ON SAVE ***  */
+      // this.widgetService.updateWidgetProject(this.widgetObj)
+
       // COMMENT AS FOR CALLOUT TITLE
       // this.widgetService.publishCalloutTimerSelected(this.calloutTimerSecondSelected)
 
@@ -1242,7 +1598,9 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
       //  delete this.widgetObj['calloutTitle'];
       //  delete this.widgetObj['calloutMsg'];
       // UPDATE WIDGET PROJECT
-      this.widgetService.updateWidgetProject(this.widgetObj)
+
+      // *** WidgetProject IS UPDATED WHEN THE USER CLICK ON SAVE ***
+      // this.widgetService.updateWidgetProject(this.widgetObj)
 
       // this.setDefaultcalloutTitle();
       // this.setDefaultcalloutMsg();
@@ -1261,187 +1619,19 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-
-
-  // ===========================================================================
-  // ============== *** CALLOUT TITLE ***  ==============
-  // ===========================================================================
-  // onKeyCalloutTitle() {
-  //   if (this.calloutTitleText) {
-  //     this.escaped_calloutTitle = this.calloutTitleText.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
-  //     console.log('+++ +++ ON KEY-UP CALLOUT TITLE TEXT  ', this.calloutTitleText);
-  //     console.log('+++ +++ ON KEY-UP ESCAPED CALLOUT TITLE ', this.escaped_calloutTitle);
-
-  //     /**
-  //      * THE calloutTitleText IS PASSED TO THE WIDGET SERVICE THAT PUBLISH the property calloutTitleBs
-  //      * THIS SAME COMP SUBSCRIBES TO THE WIDGET SERVICE (see subscribeToTypedCalloutTitle) TO AVOID THAT,
-  //      * WHEN THE USER GO TO THE WIDEGT DESIGN PAGE (or in another page) AND THEN RETURN IN THE
-  //      * WIDGET PAGE, THE VALUE OF THE CALLOUT TITLE BE EMPTY EVEN IF HE HAD PREVIOUSLY DIGITED IT */
-  //     this.widgetService.publishCalloutTitleTyped(this.calloutTitleText)
-
-  //     this.calloutTitle = `\n      calloutTitle: "${this.escaped_calloutTitle}",`
-  //      // is used in the texarea 'script'
-  //   } else {
-  //     console.log('+++ +++ ON KEY-UP CALLOUT TITLE TEXT (else) ', this.calloutTitleText);
-  //     this.widgetService.publishCalloutTitleTyped(this.calloutTitleText)
-  //     this.escaped_calloutTitle = '';
-  //     this.calloutTitle = '';
-  //   }
-  // }
-  onBlurSaveCalloutTitle() {
-    if (this.browserLang === 'it') {
-      if (this.calloutTitle !== this.widgetDefaultSettings.it.calloutTitle) {
-
-        // *** ADD PROPERTY
-        this.widgetObj['calloutTitle'] = this.calloutTitle;
-        // UPDATE WIDGET PROJECT
-        this.widgetService.updateWidgetProject(this.widgetObj)
-      }
-    }
-
-    if (this.browserLang === 'en') {
-      if (this.calloutTitle !== this.widgetDefaultSettings.en.calloutTitle) {
-
-        console.log('»» WIDGET DESIGN - >> CALLOUT TITLE ', this.calloutTitle);
-        // *** ADD PROPERTY
-        this.widgetObj['calloutTitle'] = this.calloutTitle;
-
-        // UPDATE WIDGET PROJECT
-        this.widgetService.updateWidgetProject(this.widgetObj)
-      }
-    }
-  }
-
-  calloutTitleChange(event) {
-    // tslint:disable-next-line:max-line-length
-    if (event.length === 0 || event === this.widgetDefaultSettings.it.calloutTitle || event === this.widgetDefaultSettings.en.calloutTitle) {
-      console.log('»» WIDGET DESIGN - CALLOUT TITLE LENGHT (modelChange) is ', event.length, ' SET DEFAULT CALLOUT TITLE');
-
-      // this.welcomeMsg = 'ciao'
-      // this.niko = 'ciao'
-      // console.log('»» WIDGET DESIGN - DEFAULT WELCOME MSG  NIKO ', this.welcomeMsg  );
-      this.setDefaultAndDeletePropertyCalloutTitle();
-    }
-
-  }
-
-  setDefaultAndDeletePropertyCalloutTitle() {
-    if (this.browserLang) {
-      if (this.browserLang === 'it') {
-
-        this.calloutTitle = this.widgetDefaultSettings.it.calloutTitle;
-        console.log('»» WIDGET DESIGN - DEFAULT CALLOUT TITLE ', this.calloutTitle);
-
-        // *** REMOVE PROPERTY
-        delete this.widgetObj['calloutTitle'];
-        // UPDATE WIDGET PROJECT
-        this.widgetService.updateWidgetProject(this.widgetObj)
-
-      } else {
-
-        this.calloutTitle = this.widgetDefaultSettings.en.calloutTitle;
-        console.log('»» WIDGET DESIGN - DEFAULT CALLOUT TITLE ', this.calloutTitle);
-
-        // *** REMOVE PROPERTY
-        delete this.widgetObj['calloutTitle'];
-        // UPDATE WIDGET PROJECT
-        this.widgetService.updateWidgetProject(this.widgetObj)
-      }
-    }
-  }
-
-
   setDefaultcalloutTitle() {
     if (this.browserLang) {
       if (this.browserLang === 'it') {
 
         this.calloutTitle = this.widgetDefaultSettings.it.calloutTitle;
+        this.placeholderCalloutTitle = this.widgetDefaultSettings.it.calloutTitle;
         console.log('»» WIDGET DESIGN - SET DEFAULT CALLOUT TITLE (onInit) ', this.calloutTitle);
 
       } else {
 
         this.calloutTitle = this.widgetDefaultSettings.en.calloutTitle;
+        this.placeholderCalloutTitle = this.widgetDefaultSettings.en.calloutTitle;
         console.log('»» WIDGET DESIGN - SET DEFAULT CALLOUT TITLE (onInit) ', this.calloutTitle);
-      }
-    }
-  }
-
-  // ===========================================================================
-  // ============== *** CALLOUT MSG (calloutMsg) ***  ==============
-  // ===========================================================================
-  // onKeyCalloutMsg() {
-  //   if (this.calloutMsgText) {
-  //     this.escaped_calloutMsg = this.calloutMsgText.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
-  //     console.log('+++ +++ ON KEY-UP CALLOUT MSG ', this.escaped_calloutMsg);
-  //     this.calloutMsg = `\n      calloutMsg: "${this.escaped_calloutMsg}",` // is used in the texarea 'script'
-
-  //     // COMMENT AS FOR CALLOUT TITLE
-  //     this.widgetService.publishCalloutMsgTyped(this.calloutMsgText);
-  //   } else {
-  //     this.escaped_calloutMsg = '';
-  //     this.calloutMsg = '';
-
-  //     // COMMENT AS FOR CALLOUT TITLE
-  //     this.widgetService.publishCalloutMsgTyped(this.calloutMsgText);
-  //   }
-  // }
-  onBlurSaveCalloutMsg() {
-    if (this.browserLang === 'it') {
-      if (this.calloutMsg !== this.widgetDefaultSettings.it.calloutMsg) {
-
-        // *** ADD PROPERTY
-        this.widgetObj['calloutMsg'] = this.calloutMsg;
-        // UPDATE WIDGET PROJECT
-        this.widgetService.updateWidgetProject(this.widgetObj)
-      }
-    }
-
-    if (this.browserLang === 'en') {
-      if (this.calloutMsg !== this.widgetDefaultSettings.en.calloutMsg) {
-
-        console.log('»» WIDGET DESIGN - >> CALLOUT MSG ', this.calloutMsg);
-        // *** ADD PROPERTY
-        this.widgetObj['calloutMsg'] = this.calloutMsg;
-
-        // UPDATE WIDGET PROJECT
-        this.widgetService.updateWidgetProject(this.widgetObj)
-      }
-    }
-  }
-
-  calloutMsgChange(event) {
-    if (event.length === 0 || event === this.widgetDefaultSettings.it.calloutMsg || event === this.widgetDefaultSettings.en.calloutMsg) {
-      console.log('»» WIDGET DESIGN - CALLOUT MSG LENGHT (modelChange) is ', event.length, ' SET DEFAULT CALLOUT MSG');
-
-      // this.welcomeMsg = 'ciao'
-      // this.niko = 'ciao'
-      // console.log('»» WIDGET DESIGN - DEFAULT WELCOME MSG  NIKO ', this.welcomeMsg  );
-      this.setDefaultAndRemovePropertyCalloutMsg();
-    }
-
-  }
-
-  setDefaultAndRemovePropertyCalloutMsg() {
-    if (this.browserLang) {
-      if (this.browserLang === 'it') {
-
-        this.calloutMsg = this.widgetDefaultSettings.it.calloutMsg;
-        console.log('»» WIDGET DESIGN - DEFAULT CALLOUT MSG ', this.calloutMsg);
-
-        // *** REMOVE PROPERTY
-        delete this.widgetObj['calloutMsg'];
-        // UPDATE WIDGET PROJECT
-        this.widgetService.updateWidgetProject(this.widgetObj)
-
-      } else {
-
-        this.calloutMsg = this.widgetDefaultSettings.en.calloutMsg;
-        console.log('»» WIDGET DESIGN - DEFAULT CALLOUT MSG ', this.calloutMsg);
-
-        // *** REMOVE PROPERTY
-        delete this.widgetObj['calloutMsg'];
-        // UPDATE WIDGET PROJECT
-        this.widgetService.updateWidgetProject(this.widgetObj)
       }
     }
   }
@@ -1451,17 +1641,219 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
       if (this.browserLang === 'it') {
 
         this.calloutMsg = this.widgetDefaultSettings.it.calloutMsg;
+        this.placeholderCalloutMsg = this.widgetDefaultSettings.it.calloutMsg;
         console.log('»» WIDGET DESIGN - SET DEFAULT CALLOUT MSG (onInit) ', this.calloutMsg);
-
       } else {
 
         this.calloutMsg = this.widgetDefaultSettings.en.calloutMsg;
+        this.placeholderCalloutMsg = this.widgetDefaultSettings.en.calloutMsg;
         console.log('»» WIDGET DESIGN - SET DEFAULT CALLOUT MSG (onInit) ', this.calloutMsg);
-
       }
+    }
+  }
+
+
+  /**
+   * *** ---------------------- ***
+   * ***     CALLOUT TITLE      ***
+   * *** ---------------------- ***
+   */
+
+  // *** !!! NO MORE USED ---
+  // WidgetProject IS UPDATED WHEN THE USER CLICK ON SAVE ***
+  // onBlurSaveCalloutTitle() {
+  //   if (this.browserLang === 'it') {
+  //     if (this.calloutTitle !== this.widgetDefaultSettings.it.calloutTitle) {
+  //       // *** ADD PROPERTY
+  //       this.widgetObj['calloutTitle'] = this.calloutTitle;
+  //       // UPDATE WIDGET PROJECT
+  //       this.widgetService.updateWidgetProject(this.widgetObj)
+  //     }
+  //   }
+  //   if (this.browserLang === 'en') {
+  //     if (this.calloutTitle !== this.widgetDefaultSettings.en.calloutTitle) {
+
+  //       console.log('»» WIDGET DESIGN - >> CALLOUT TITLE ', this.calloutTitle);
+  //       // *** ADD PROPERTY
+  //       this.widgetObj['calloutTitle'] = this.calloutTitle;
+  //       // UPDATE WIDGET PROJECT
+  //       this.widgetService.updateWidgetProject(this.widgetObj)
+  //     }
+  //   }
+  // }
+
+  calloutTitleChange(event) {
+
+    this.placeholderCalloutTitle = event;
+    // tslint:disable-next-line:max-line-length
+    if (event.length === 0 || event === this.widgetDefaultSettings.it.calloutTitle || event === this.widgetDefaultSettings.en.calloutTitle) {
+      console.log('»» WIDGET DESIGN - CALLOUT TITLE LENGHT (modelChange) is ', event.length, ' SET PLACEHOLDER DEFAULT CALLOUT TITLE');
+
+      // this.welcomeMsg = 'ciao'
+      // this.niko = 'ciao'
+      // console.log('»» WIDGET DESIGN - DEFAULT WELCOME MSG  NIKO ', this.welcomeMsg  );
+      // this.setDefaultAndDeletePropertyCalloutTitle();
+      this.calloutTitle_SetPlaceholderAndDeleteProperty();
     }
 
   }
+
+  calloutTitle_SetPlaceholderAndDeleteProperty() {
+    if (this.browserLang) {
+      if (this.browserLang === 'it') {
+
+        // this.calloutTitle = this.widgetDefaultSettings.it.calloutTitle;
+        // console.log('»» WIDGET DESIGN - DEFAULT CALLOUT TITLE ', this.calloutTitle);
+
+        this.placeholderCalloutTitle = this.widgetDefaultSettings.it.calloutTitle;
+        console.log('»» WIDGET DESIGN - SET PLACEHOLDER WITH DEFAULT CALLOUT TITLE ', this.placeholderCalloutTitle);
+
+        // *** REMOVE PROPERTY
+        delete this.widgetObj['calloutTitle'];
+
+        // UPDATE WIDGET PROJECT
+        // *** !!! WidgetProject IS UPDATED WHEN THE USER CLICK ON SAVE ***
+        // this.widgetService.updateWidgetProject(this.widgetObj)
+
+      } else {
+
+        // this.calloutTitle = this.widgetDefaultSettings.en.calloutTitle;
+        // console.log('»» WIDGET DESIGN - DEFAULT CALLOUT TITLE ', this.calloutTitle);
+
+        this.placeholderCalloutTitle = this.widgetDefaultSettings.en.calloutTitle;
+        console.log('»» WIDGET DESIGN - SET PLACEHOLDER WITH DEFAULT CALLOUT TITLE ', this.placeholderCalloutTitle);
+
+        // *** REMOVE PROPERTY
+        delete this.widgetObj['calloutTitle'];
+
+        // UPDATE WIDGET PROJECT
+        // *** !!! WidgetProject IS UPDATED WHEN THE USER CLICK ON SAVE ***
+        // this.widgetService.updateWidgetProject(this.widgetObj)
+      }
+    }
+  }
+
+
+  /**
+   * *** --------------------------------- ***
+   * ***     CALLOUT MSG (calloutMsg)      ***
+   * *** --------------------------------- ***
+   */
+  // *** !!! NO MORE USED ---
+  // WidgetProject IS UPDATED WHEN THE USER CLICK ON SAVE ***
+  // onBlurSaveCalloutMsg() {
+  //   if (this.browserLang === 'it') {
+  //     if (this.calloutMsg !== this.widgetDefaultSettings.it.calloutMsg) {
+
+  //       // *** ADD PROPERTY
+  //       this.widgetObj['calloutMsg'] = this.calloutMsg;
+  //       // UPDATE WIDGET PROJECT
+  //       this.widgetService.updateWidgetProject(this.widgetObj)
+  //     }
+  //   }
+
+  //   if (this.browserLang === 'en') {
+  //     if (this.calloutMsg !== this.widgetDefaultSettings.en.calloutMsg) {
+
+  //       console.log('»» WIDGET DESIGN - >> CALLOUT MSG ', this.calloutMsg);
+  //       // *** ADD PROPERTY
+  //       this.widgetObj['calloutMsg'] = this.calloutMsg;
+
+  //       // UPDATE WIDGET PROJECT
+  //       this.widgetService.updateWidgetProject(this.widgetObj)
+  //     }
+  //   }
+  // }
+
+
+  calloutMsgChange(event) {
+    this.placeholderCalloutMsg = event
+    if (event.length === 0 || event === this.widgetDefaultSettings.it.calloutMsg || event === this.widgetDefaultSettings.en.calloutMsg) {
+      console.log('»» WIDGET DESIGN - CALLOUT MSG LENGHT (modelChange) is ', event.length, ' SET PLACEHOLDER WITH DEFAULT CALLOUT MSG');
+
+      // this.welcomeMsg = 'ciao'
+      // this.niko = 'ciao'
+      // console.log('»» WIDGET DESIGN - DEFAULT WELCOME MSG  NIKO ', this.welcomeMsg  );
+      // this.setDefaultAndRemovePropertyCalloutMsg();
+      this.calloutMsg_SetPlaceholderAndDeleteProperty();
+    }
+
+  }
+
+  calloutMsg_SetPlaceholderAndDeleteProperty() {
+    if (this.browserLang) {
+      if (this.browserLang === 'it') {
+
+        // this.calloutMsg = this.widgetDefaultSettings.it.calloutMsg;
+        // console.log('»» WIDGET DESIGN - DEFAULT CALLOUT MSG ', this.calloutMsg);
+
+        this.placeholderCalloutMsg = this.widgetDefaultSettings.it.calloutMsg;
+        console.log('»» WIDGET DESIGN - SET PLACEHOLDER WITH DEFAULT CALLOUT MSG ', this.placeholderCalloutMsg);
+
+        // *** REMOVE PROPERTY
+        delete this.widgetObj['calloutMsg'];
+        // UPDATE WIDGET PROJECT
+        // this.widgetService.updateWidgetProject(this.widgetObj)
+
+      } else {
+
+        // this.calloutMsg = this.widgetDefaultSettings.en.calloutMsg;
+        // console.log('»» WIDGET DESIGN - DEFAULT CALLOUT MSG ', this.calloutMsg);
+
+        this.placeholderCalloutMsg = this.widgetDefaultSettings.en.calloutMsg;
+        console.log('»» WIDGET DESIGN - SET PLACEHOLDER WITH DEFAULT CALLOUT MSG ', this.placeholderCalloutMsg);
+
+        // *** REMOVE PROPERTY
+        delete this.widgetObj['calloutMsg'];
+        // UPDATE WIDGET PROJECT
+        // this.widgetService.updateWidgetProject(this.widgetObj)
+      }
+    }
+  }
+
+
+  saveCalloutSettings() {
+
+
+    const callout_settings_save_btn = <HTMLElement>document.querySelector('.callout-settings-save-btn');
+
+    if (callout_settings_save_btn) {
+      callout_settings_save_btn.blur()
+    }
+
+    if (this.browserLang === 'it') {
+      if (this.calloutTitle !== this.widgetDefaultSettings.it.calloutTitle) {
+
+        // *** ADD PROPERTY calloutTitle
+        this.widgetObj['calloutTitle'] = this.calloutTitle;
+
+        // *** ADD PROPERTY calloutMsg
+        this.widgetObj['calloutMsg'] = this.calloutMsg;
+
+        // UPDATE WIDGET PROJECT
+        // this.widgetService.updateWidgetProject(this.widgetObj)
+      }
+    }
+
+    if (this.browserLang === 'en') {
+      if (this.calloutTitle !== this.widgetDefaultSettings.en.calloutTitle) {
+
+        console.log('»» WIDGET DESIGN - >> CALLOUT TITLE ', this.calloutTitle);
+        // *** ADD PROPERTY calloutTitle
+        this.widgetObj['calloutTitle'] = this.calloutTitle;
+        // *** ADD PROPERTY calloutMsg
+        this.widgetObj['calloutMsg'] = this.calloutMsg;
+
+        // UPDATE WIDGET PROJECT
+        // this.widgetService.updateWidgetProject(this.widgetObj)
+      }
+    }
+
+    this.widgetService.updateWidgetProject(this.widgetObj)
+  }
+
+
+
 
 
 
@@ -1491,7 +1883,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
     //   }
     // ]
     // UPDATE WIDGET PROJECT
-    this.widgetService.updateWidgetProject(this.widgetObj)
+    // this.widgetService.updateWidgetProject(this.widgetObj)
   }
 
   aligmentRightSelected(right_selected: boolean) {
@@ -1513,7 +1905,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
     //   }
     // ]
     // UPDATE WIDGET PROJECT
-    this.widgetService.updateWidgetProject(this.widgetObj)
+    // this.widgetService.updateWidgetProject(this.widgetObj)
   }
 
   // subscribeToWidgetAlignment() {
@@ -1551,12 +1943,6 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
   //     }
   //   })
   // }
-
-
-
-
-
-
 
 
   goBack() {

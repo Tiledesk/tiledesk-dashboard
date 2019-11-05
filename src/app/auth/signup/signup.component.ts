@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angula
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { ActivatedRoute } from '@angular/router';
 
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
 type FormErrors = { [u in UserFields]: string };
@@ -18,8 +19,9 @@ export class SignupComponent implements OnInit, AfterViewInit {
   showSpinnerInLoginBtn = false;
   public signin_errormsg = '';
   display = 'none';
-
+  SKIP_WIZARD: boolean;
   currentLang: string;
+  pendingInvitationEmail: string;
 
   userForm: FormGroup;
   // newUser = false; // to toggle login or signup form
@@ -56,14 +58,39 @@ export class SignupComponent implements OnInit, AfterViewInit {
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
     this.buildForm();
-
     this.getBrowserLang();
+    this.checkCurrentUrlAndSkipWizard()
   }
+
+
+  checkCurrentUrlAndSkipWizard() {
+    console.log('SignupComponent checkCurrentUrlAndSkipWizard router.url  ', this.router.url)
+
+    // (this.router.url === '/signup-on-invitation')
+    if (this.router.url.indexOf('/signup-on-invitation') !== -1) {
+      this.SKIP_WIZARD = true;
+      console.log('SignupComponent checkCurrentUrlAndSkipWizard SKIP_WIZARD ', this.SKIP_WIZARD)
+      this.getAndPatchInvitationEmail();
+    } else {
+      console.log('SignupComponent checkCurrentUrlAndSkipWizard SKIP_WIZARD ', this.SKIP_WIZARD)
+      this.SKIP_WIZARD = false;
+
+    }
+  }
+
+  getAndPatchInvitationEmail() {
+    this.pendingInvitationEmail = this.route.snapshot.params['pendinginvitationemail'];
+
+    this.userForm.patchValue({ 'email': this.pendingInvitationEmail })
+    console.log('SignupComponent Pending Invitation Email (get From URL)  ', this.pendingInvitationEmail)
+  }
+
 
   getBrowserLang() {
     const browserLang = this.translate.getBrowserLang();
@@ -78,9 +105,9 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     const elemPswInput = <HTMLInputElement>document.getElementById('password');
-    console.log('ELEMENT INPUT PSW ', elemPswInput)
+    // console.log('ELEMENT INPUT PSW ', elemPswInput)
     const style = window.getComputedStyle(elemPswInput);
-    console.log('ELEMENT INPUT PSW STYLE', style)
+    // console.log('ELEMENT INPUT PSW STYLE', style)
 
     /**
      * THE HTML ELEMENT FOR INSERTING THE PASSWORD IS OF TEXT TYPE (instead of PASSWORD TYPE) TO AVOID THE CHROME SELF-COMPLETION
@@ -183,7 +210,12 @@ export class SignupComponent implements OnInit, AfterViewInit {
             }
           }, 2000);
         }
-        self.router.navigate(['/projects']);
+
+        if (self.SKIP_WIZARD === false) {
+          self.router.navigate(['/create-project']);
+        } else {
+          self.router.navigate(['/projects']);
+        }
 
       } else {
         self.showSpinnerInLoginBtn = false;
@@ -208,6 +240,8 @@ export class SignupComponent implements OnInit, AfterViewInit {
       // alert('signin reinit');
     }
   }
+
+  // 'email': [{ value: '', disabled: true }, [
   buildForm() {
     this.userForm = this.fb.group({
       'email': ['', [

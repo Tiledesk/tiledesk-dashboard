@@ -12,8 +12,8 @@ export class ChatComponent implements OnInit {
   CHAT_BASE_URL: any;
   actualHeight: any;
   // navbarHeight = 51;
-  navbarAndFooterHeight = 130;
-
+  // navbarAndFooterHeight = 130;
+  navbarAndFooterHeight = 67;
   newInnerHeight: any;
   // newInnerWidth: any;
   iframeHeight: any;

@@ -212,13 +212,16 @@ export class AuthService {
             console.log('!! »»»»» AUTH SERV - CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id);
             console.log('!! »»»»» AUTH SERV - CURRENT URL SEGMENTS > SEGMENT 1: ', url_segments[1]);
 
-            /*
+            /**
              * (note: the NAVIGATION PROJECT ID returned from CURRENT URL SEGMENTS is = to 'email'
              * if the user navigate to the e-mail verification page)
              * the url_segments[1] is = to 'user' instead of 'project' when the user not yet has select a project
              * (i.e. from the project list page) and go to user profile > change password
-             * */
-            if (this.nav_project_id && this.nav_project_id !== 'email' && url_segments[1] !== 'user') {
+             * If the CURRENT URL has only one element (for example /create-project (i.e. the wizard for the creation a of a project) 
+             * the url_segments[2] (that is the project id) is undefined)
+             * and the Workflow not proceed with the below code
+             */
+            if (this.nav_project_id && this.nav_project_id !== 'email' && url_segments[1] !== 'user' && url_segments[1] !== 'handle-invitation' && url_segments[1] !== 'signup-on-invitation') {
 
               console.log('!!C-U »»»»» QUI ENTRO ', this.nav_project_id);
               this.subscription.unsubscribe();

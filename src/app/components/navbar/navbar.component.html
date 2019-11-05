@@ -47,94 +47,101 @@
             ************ UPGRADE (PROFILE TYPE = FREE) ************
             ------------ ============================= ------------ 
             -->
-            <li *ngIf="project && prjct_profile_type === 'free'">
+            <ng-container *ngIf="isVisible">
+              <li *ngIf="project && prjct_profile_type === 'free'">
 
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-top:0px; padding-bottom:0px; padding-right: 0px;">
-                <div id="progress" class="progress"  [attr.data-percentage]="prjc_trial_days_left_percentage">
-                  <span class="progress-left">
-                    <span class="progress-bar" [ngClass]="{' progress-bar-expired' : prjct_trial_expired === true}"></span>
-                  </span>
-                  <span class="progress-right">
-                    <span class="progress-bar" [ngClass]="{' progress-bar-expired' : prjct_trial_expired === true}" ></span>
-                  </span>
-                  <div class="progress-value">
-                    <div style="font-size: 14px;font-weight: 400;"> 
-                      <span *ngIf="prjct_trial_expired === false">
-                        {{ prjc_trial_days_left }}
-                      </span>
-                      <span *ngIf="prjct_trial_expired === true">
-                        0
-                      </span>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-top:0px; padding-bottom:0px; padding-right: 0px;">
+                  <div id="progress" class="progress"  [attr.data-percentage]="prjc_trial_days_left_percentage">
+                    <span class="progress-left">
+                      <span class="progress-bar" [ngClass]="{' progress-bar-expired' : prjct_trial_expired === true}"></span>
+                    </span>
+                    <span class="progress-right">
+                      <span class="progress-bar" [ngClass]="{' progress-bar-expired' : prjct_trial_expired === true}" ></span>
+                    </span>
+                    <div class="progress-value">
+                      <div style="font-size: 14px;font-weight: 400;"> 
+                        <span *ngIf="prjct_trial_expired === false">
+                          {{ prjc_trial_days_left }}
+                        </span>
+                        <span *ngIf="prjct_trial_expired === true">
+                          0
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </a>
+                </a>
 
-              <ul class="dropdown-menu" style="margin-top: 11px; padding-left:20px;padding-right:20px;width: 200px;">
-                <p *ngIf="prjct_trial_expired === false" style="margin-bottom:0px"> 
-                   {{ "Pricing.Your" | translate }}
-                   
-                  <span style="font-weight:600"> 
-                    {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate }}
-                  </span>
-                  
-                  {{ "Pricing.WillExpireIn" | translate }}
-                  
-                   <span *ngIf="prjc_trial_days_left < -1"> 
-                      {{ - prjc_trial_days_left }} {{ "Pricing.Days" | translate }}
-                  </span>
-
-                  <span *ngIf="prjc_trial_days_left === -1"> 
-                      {{ "Pricing.Tomorrow" | translate }}
-                  </span>
-                </p> 
-
-                <p *ngIf="prjct_trial_expired === true" style="margin-bottom:0px"> 
+                <ul class="dropdown-menu" style="margin-top: 11px; padding-left:20px;padding-right:20px;width: 200px;">
+                  <p *ngIf="prjct_trial_expired === false" style="margin-bottom:0px"> 
                     {{ "Pricing.Your" | translate }}
-                  <span style="font-weight:600">
-                      {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate }} 
-                  </span>
-                  {{ "Pricing.HasExpired" | translate }} 
-                </p> 
-              </ul>
-            </li> 
+                    
+                    <span style="font-weight:600"> 
+                      {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate }}
+                    </span>
+                    
+                    {{ "Pricing.WillExpireIn" | translate }}
+                    
+                    <span *ngIf="prjc_trial_days_left < -1"> 
+                        {{ - prjc_trial_days_left }} {{ "Pricing.Days" | translate }}
+                    </span>
+
+                    <span *ngIf="prjc_trial_days_left === -1"> 
+                        {{ "Pricing.Tomorrow" | translate }}
+                    </span>
+                  </p> 
+
+                  <p *ngIf="prjct_trial_expired === true" style="margin-bottom:0px"> 
+                      {{ "Pricing.Your" | translate }}
+                    <span style="font-weight:600">
+                        {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate }} 
+                    </span>
+                    {{ "Pricing.HasExpired" | translate }} 
+                  </p> 
+                </ul>
+              </li>
+            </ng-container> 
 
             <!-- 
             ------------ ================================= ------------
             ************ UPGRADE BTN (PROFILE TYPE = FREE) ************
             ------------ ================================= ------------ 
             -->
-            <li *ngIf="project && prjct_profile_type === 'free'">
+            <ng-container *ngIf="isVisible">
+              <li *ngIf="project && prjct_profile_type === 'free'">
                 <a class="upgrade-btn-trial-expired" (click)="goToPricing()"> {{ "Pricing.UpgradePlan" | translate }} </a>
-            </li>
+              </li>
+            </ng-container>
 
             <!-- 
             ------------ =================================== ------------
             ************ PLAN NAME (PROFILE TYPE = PAYMENTS) ************
             ------------ =================================== ------------ 
             -->
-            <li *ngIf="project && prjct_profile_type === 'payment' && HOME_ROUTE_IS_ACTIVE === false">
-              <a>
-                <span class="project-plan-nav" style="text-transform:capitalize;padding-right: 8px;padding-left: 14px;">
-                  {{ prjct_profile_name }} 
-                </span>
-              
-                <!-- 
-                ------------ ============================================= ------------
-                ************ TOOLTIP SUB EXPIRED (PROFILE TYPE = PAYMENTS) ************
-                ------------ ============================================= ------------ 
-                -->
-                <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false" style="color:#f44336;" 
-                  (click)="openModalSubsExpired()" class="expired__Tooltip">
-                  <i class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer" >
-                    error_outline
-                  </i>
-                  <span class="expired__Tooltiptext" style="font-size:14px; top: 100%;text-transform:none"> 
-                    {{ 'Pricing.SubscriptionPaymentProblem' | translate }}  
+
+            <ng-container *ngIf="isVisible"> 
+              <li *ngIf="project && prjct_profile_type === 'payment' && HOME_ROUTE_IS_ACTIVE === false">
+                <a>
+                  <span class="project-plan-nav" style="text-transform:capitalize;padding-right: 8px;padding-left: 14px;">
+                    {{ prjct_profile_name }} 
                   </span>
-                </span>
-              </a> 
-            </li>
+                
+                  <!-- 
+                  ------------ ============================================= ------------
+                  ************ TOOLTIP SUB EXPIRED (PROFILE TYPE = PAYMENTS) ************
+                  ------------ ============================================= ------------ 
+                  -->
+                  <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false" style="color:#f44336;" 
+                    (click)="openModalSubsExpired()" class="expired__Tooltip">
+                    <i class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer" >
+                      error_outline
+                    </i>
+                    <span class="expired__Tooltiptext" style="font-size:14px; top: 100%;text-transform:none"> 
+                      {{ 'Pricing.SubscriptionPaymentProblem' | translate }}  
+                    </span>
+                  </span>
+                </a> 
+              </li>
+            </ng-container>
 
             <!-- ------------ ============ PROJECTS ============ ------------ -->
             <li *ngIf="project">
@@ -144,8 +151,8 @@
                 <p class="hidden-lg hidden-md">Projects</p>
               </a>
 
-              <ul class="dropdown-menu">
-                
+              <ul class="dropdown-menu" style="max-height: 240px;overflow-y: auto;">
+
                 <!-- ------------ ALL PROJECTS ------------ -->
                 <li (click)="goToProjects()">
                   <a style="cursor: pointer">
@@ -154,13 +161,70 @@
                   </a>
                 </li>
 
+                <!-- ------------ ADD PROJECT ------------ -->
+                <li (click)="goToCreateProject()">
+                  <a style="cursor: pointer">
+                    <i class="material-icons" style="padding-right: 5px; margin-bottom: 2px; font-size: 20px">add_circle_outline </i>
+                    {{ 'AddProject' | translate }}
+                  </a>
+                </li>
+                
+        
+                <!-- ------------ PROJECT SETTINGS ------------ -->
                 <li>
-                  <!-- ------------ PROJECT SETTINGS ------------ -->
-                  <a routerLink="/project/{{ project?._id }}/edit">
+                  <a routerLink="/project/{{ project?._id }}/project-settings">
                     <i class="material-icons" style="padding-right: 5px; margin-bottom: 2px; font-size: 20px">settings</i>
                     {{ 'NavBar.ProjectSettings' | translate }}
                   </a>
                 </li>
+
+
+                <li class="divider"></li>
+
+                <!-- ------------ RECENT PROJECTS ------------ -->
+                
+                <li> 
+                  <span style="padding-left: 24px;font-size: 12px; color: rgb(118,149,165);font-weight: 400">
+                    {{ 'RecentProjects' | translate  }}
+                  </span>
+                </li>
+
+                <!-- 
+                  ***** ngFor - reverse order of output using the index *****
+                  Reverse() works in place. It means, it will change the original array. 
+                  Slice without parameters returns a copy of projects, so original array, in this case, stays unchanged.  
+                  let prjct of projects?.reverse()
+                -->
+          
+                  <li *ngFor="let prjct of projects?.slice().reverse() | slice:0:5; let i=index" style="cursor: pointer">
+                    <a (click)="goToHome(prjct?.id_project?._id, prjct?.id_project?.name)" 
+                      [ngClass]="{'li-selected' : prjct?.id_project?._id === projectId }">
+            
+                    <span>  {{ prjct?.id_project?.name }}    </span>
+                    </a>
+                  </li>
+           
+                <ng-container *ngIf="projects?.length > 5"> 
+                  <li class="divider"></li>
+                  <li> 
+                    <span style="padding-left: 24px;font-size: 12px; color: rgb(118,149,165);font-weight: 400">
+                      {{ 'OtherProjects' | translate}} 
+                    </span>
+                  </li>
+
+                  <li *ngFor="let prjct of projects?.slice().reverse() | slice:5:10; let i=index" style="cursor: pointer">
+                    <a (click)="goToHome(prjct?.id_project?._id, prjct?.id_project?.name)">
+                      {{ prjct?.id_project?.name }}    
+                    </a>
+                  </li>
+                </ng-container>
+
+                <!-- <li *ngFor="let prjct of projects?.slice().reverse() | slice:5:10; let i=index" style="cursor: pointer">
+                    <a (click)="goToHome(prjct?.id_project?._id, prjct?.id_project?.name)">
+                      {{ prjct?.id_project?.name }}    
+                    </a>
+                </li> -->
+
               </ul>
             </li>
 

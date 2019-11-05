@@ -45,7 +45,8 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('openChatBtn')
   private openChatBtn: ElementRef;
 
-  CHAT_BASE_URL = environment.chat.CHAT_BASE_URL
+  CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
+  BASE_URL = environment.mongoDbConfig.BASE_URL;
 
   id_request: string;
   messagesList: Message[];
@@ -270,7 +271,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     // });
   }
 
- 
+
 
   getProjectUserRole() {
     this.usersService.project_user_role_bs.subscribe((user_role) => {
@@ -988,7 +989,10 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   openTranscript() {
-    const url = 'https://api.tiledesk.com/v1/public/requests/' + this.id_request + '/messages.html';
+
+    // const url = 'https://api.tiledesk.com/v1/public/requests/' + this.id_request + '/messages.html';
+    const url = this.BASE_URL + 'public/requests/' + this.id_request + '/messages.html';
+
     console.log('openTranscript url ', url);
     window.open(url, '_blank');
   }

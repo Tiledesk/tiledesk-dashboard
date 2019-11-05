@@ -112,6 +112,21 @@ export class DepartmentService {
   }
 
 
+    /**
+   **! *** GET VISITOR COUNTER ***
+   */
+  public getVisitorCounter(): Observable<[]> {
+    const url = this.BASE_URL + this.project._id + '/visitorcounter'
+    console.log('GET DEPTS AS THE NEW WIDGET VERSION URL', url);
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
+
   /**
    * GET ALL DEPTS WITH THE CURRENT PROJECT ID AND WITHOUT FILTER FOR STATUS
    * NOTE: THE CALLBACK TO GET THE DEPTS FILTERED FOR STATUS IS RUNNED BY THE WIDGET

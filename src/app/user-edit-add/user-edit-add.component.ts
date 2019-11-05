@@ -37,6 +37,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   INVITE_OTHER_ERROR: boolean;
   INVITE_USER_ALREADY_MEMBER_ERROR: boolean;
   INVITE_USER_NOT_FOUND: boolean;
+  PENDING_INVITATION_ALREADY_EXIST: boolean;
 
   project_user_id: string;
   user_role: string;
@@ -253,7 +254,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
 
   emailChange(event) {
-    console.log('!!!!! INVITE THE USER - EDITING EMAIL ', event);
+    // console.log('!!!!! INVITE THE USER - EDITING EMAIL ', event);
 
     this.EMAIL_IS_VALID = this.validateEmail(event)
     // console.log('!!!!! INVITE THE USER - EMAIL IS VALID ', this.EMAIL_IS_VALID);
@@ -299,9 +300,23 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
     console.log('INVITE THE USER EMAIL ', this.user_email)
     console.log('INVITE THE USER ROLE ', this.role)
+    
+    if (this.role === 'ROLE_NOT_SELECTED') {
+      this.role = ''
+
+    }
 
     this.usersService.inviteUser(this.user_email, this.role).subscribe((project_user: any) => {
       console.log('INVITE USER - POST SUBSCRIPTION PROJECT-USER ', project_user);
+
+      // HANDLE THE ERROR "Pending Invitation already exist"
+      if (project_user.success === false && project_user.msg === 'Pending Invitation already exist.') {
+
+        this.PENDING_INVITATION_ALREADY_EXIST = true;
+        console.log('INVITE USER SUCCESS = FALSE ', project_user.msg, ' PENDING_INVITATION_ALREADY_EXIST', this.PENDING_INVITATION_ALREADY_EXIST);
+      } else {
+        this.PENDING_INVITATION_ALREADY_EXIST = false;
+      }
 
     }, (error) => {
       console.log('INVITE USER  ERROR ', error);
@@ -315,6 +330,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
         this.INVITE_YOURSELF_ERROR = true;
         this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
         this.INVITE_USER_NOT_FOUND = false;
+        this.PENDING_INVITATION_ALREADY_EXIST = false;
 
       } else if ((invite_errorbody['success'] === false) && (invite_errorbody['code'] === 4001)) {
         console.log('!!! Forbidden, user is already a member')
@@ -322,12 +338,14 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
         this.INVITE_YOURSELF_ERROR = false;
         this.INVITE_USER_ALREADY_MEMBER_ERROR = true;
         this.INVITE_USER_NOT_FOUND = false;
+        this.PENDING_INVITATION_ALREADY_EXIST = false;
 
       } else if ((invite_errorbody['success'] === false) && (error['status'] === 404)) {
         console.log('!!! USER NOT FOUND ')
         this.INVITE_YOURSELF_ERROR = false;
         this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
         this.INVITE_USER_NOT_FOUND = true;
+        this.PENDING_INVITATION_ALREADY_EXIST = false;
 
       } else if (invite_errorbody['success'] === false) {
 
@@ -335,6 +353,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
         this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
         this.INVITE_USER_NOT_FOUND = false;
         this.INVITE_OTHER_ERROR = true;
+        this.PENDING_INVITATION_ALREADY_EXIST = false;
 
       }
     }, () => {
@@ -343,6 +362,7 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
       this.INVITE_OTHER_ERROR = false;
       this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
       this.INVITE_USER_NOT_FOUND = false;
+      // this.PENDING_INVITATION_ALREADY_EXIST = false;
 
       this.getAllUsersOfCurrentProject();
       this.getPendingInvitation();
@@ -355,10 +375,11 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
   onCloseModalHandled() {
     console.log('CONTINUE PRESSED ');
-    console.log('CONTINUE PRESSED Selected ROLE ', this.role);
+    // console.log('CONTINUE PRESSED Selected ROLE ', this.role);
     // this.role = 'ROLE_NOT_SELECTED';
     this.selectedRole = 'ROLE_NOT_SELECTED';
     this.user_email = '';
+    this.role = '';
     this.display = 'none';
 
     // this.router.navigate(['project/' + this.id_project + '/users']);

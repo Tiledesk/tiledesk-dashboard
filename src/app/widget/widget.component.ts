@@ -16,7 +16,7 @@ import { environment } from '../../environments/environment';
 })
 export class WidgetComponent implements OnInit, OnDestroy {
   @ViewChild('testwidgetbtn') private elementRef: ElementRef;
-
+  TESTSITE_BASE_URL = environment.testsite.testsiteBaseUrl
   WIDGET_URL = environment.widgetUrl;
   project: Project;
 
@@ -88,7 +88,7 @@ export class WidgetComponent implements OnInit, OnDestroy {
   paramLogoChat: string;
   sub: Subscription;
   showSpinner = true;
-
+  has_copied = false;
   constructor(
     http: Http,
     private auth: AuthService,
@@ -443,6 +443,11 @@ export class WidgetComponent implements OnInit, OnDestroy {
   copyToClipboard() {
     document.querySelector('textarea').select();
     document.execCommand('copy');
+
+    this.has_copied = true;
+    setTimeout(() => {
+      this.has_copied = false;
+    }, 2000);
   }
 
   togglePrechatformCheckBox(event) {
@@ -474,6 +479,8 @@ export class WidgetComponent implements OnInit, OnDestroy {
       console.log('»» WIDGET - INCLUDE PRE CHAT FORM ', event.target.checked)
     }
   }
+
+
 
   testWidgetPage() {
     this.elementRef.nativeElement.blur();
@@ -566,26 +573,42 @@ export class WidgetComponent implements OnInit, OnDestroy {
     // '&themecolor=' + this.primaryColor
     // '&themeforegroundcolor=' + this.secondaryColor
     // http://testwidget.tiledesk.com/testsite?projectid='
-    const url = 'http://testwidget.tiledesk.com/testsitenw3?projectname=' + this.projectName + '&projectid='  + this.projectId
-      // + paramPreChatForm
-      // + this.paramCalloutTimer
-      // + paramThemeColor
-      // + paramThemeforegroundcolor
-      // + paramCallout_title + calloutTitle
-      // + paramCallout_msg + calloutMsg
-      // + paramAlign
-      // + this.paramWellcomeTitle
-      // + this.paramWellcomeMsg
-      // + this.paramLogoChat
+
+    // const url = 'http://testwidget.tiledesk.com/testsitenw3?projectname=' + this.projectName + '&projectid=' + this.projectId
+    // const url = this.TESTSITE_BASE_URL + '?projectname=' + this.projectName + '&projectid=' + this.projectId
+    const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.projectId + '&project_name=' + this.projectName + '&isOpen=true'
+    // + paramPreChatForm
+    // + this.paramCalloutTimer
+    // + paramThemeColor
+    // + paramThemeforegroundcolor
+    // + paramCallout_title + calloutTitle
+    // + paramCallout_msg + calloutMsg
+    // + paramAlign
+    // + this.paramWellcomeTitle
+    // + this.paramWellcomeMsg
+    // + this.paramLogoChat
     console.log('»» WIDGET - TEST WIDGET URL ', url);
+    window.open(url, '_blank');
+  }
+
+  openWebSDK() {
+    const url = 'https://docs.tiledesk.com/widget/web-sdk'
     window.open(url, '_blank');
   }
 
 
   goToWidgetDesign() {
-    this.router.navigate(['project/' + this.project._id + '/widget/design']);
+    // this.router.navigate(['project/' + this.project._id + '/widget/design']);
+    this.router.navigate(['project/' + this.project._id + '/widget/appearance']);
+
   }
 
+  goToWidgetDesignGreetings() {
+    this.router.navigate(['project/' + this.project._id + '/widget/greetings']);
+  }
+  goToWidgetCallout() {
+    this.router.navigate(['project/' + this.project._id + '/widget/callout']);
+  }
   goToWidgetSection() {
     this.router.navigate(['project/' + this.project._id + '/widget/design'], { fragment: 'alignment' });
   }

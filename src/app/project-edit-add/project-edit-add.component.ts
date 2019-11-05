@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ProjectService } from '../services/project.service';
-import { Router } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+
 
 // USED FOR go back last page
 import { Location } from '@angular/common';
@@ -11,6 +11,9 @@ import { ProjectPlanService } from '../services/project-plan.service';
 import { NotifyService } from '../core/notify.service';
 import { Subscription } from 'rxjs/Subscription';
 import { TranslateService } from '@ngx-translate/core';
+import { environment } from './../../environments/environment';
+import { publicKey } from './../utils/util';
+
 import * as moment from 'moment';
 
 @Component({
@@ -22,6 +25,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   CREATE_VIEW = false;
   EDIT_VIEW = false;
+  PROJECT_SETTINGS_ROUTE: boolean;
+  PROJECT_SETTINGS_PAYMENTS_ROUTE: boolean;
+
+  eos = environment.t2y12PruGU9wUtEGzBJfolMIgK;
   showSpinner = true;
 
   project_name: string;
@@ -65,6 +72,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   timeOfNextRenew: string;
   plan_amount: string;
   plan_interval: string;
+  isVisible: boolean;
   constructor(
     private projectService: ProjectService,
     private router: Router,
@@ -79,6 +87,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
+    this.getCurrentUrlAndSwitchView();
 
     this.getProjectPlan();
 
@@ -86,27 +95,58 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
     this.translateMsgSubscriptionCanceledSuccessfully();
     this.translateMsgSubscriptionCanceledError();
-    /**
-     * BASED ON THE URL PATH DETERMINE IF THE USER HAS SELECTED (IN BOT PAGE) 'CREATE' OR 'EDIT'
-     */
-    if (this.router.url.indexOf('/create') !== -1) {
 
-      console.log('HAS CLICKED CREATE ');
-      this.CREATE_VIEW = true;
-      this.showSpinner = false;
+    this.getProjectId();
+
+    this.getOSCODE();
+  }
+
+
+  getOSCODE() {
+    console.log('ProjectEditAddComponent eoscode', this.eos)
+
+    if (this.eos && this.eos === publicKey) {
+
+      this.isVisible = true;
+      console.log('ProjectEditAddComponent eoscode isVisible ', this.isVisible);
+    } else {
+
+      this.isVisible = false;
+      console.log('ProjectEditAddComponent eoscode isVisible ', this.isVisible);
+    }
+  }
+
+  getCurrentUrlAndSwitchView() {
+
+    const currentUrl = this.router.url;
+    console.log('%ProjectEditAddComponent current_url ', currentUrl);
+    if ((currentUrl.indexOf('/project-settings') !== -1) && (currentUrl.indexOf('/project-settings/payments') === -1)) {
+      console.log('%ProjectEditAddComponent router.url', this.router.url);
+
+      this.PROJECT_SETTINGS_ROUTE = true;
+      this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
+      console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ROUTE ',
+        this.PROJECT_SETTINGS_ROUTE, ' is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
 
     } else {
-      console.log('HAS CLICKED EDIT ');
-      this.EDIT_VIEW = true;
 
-      // *** GET BOT ID FROM URL PARAMS ***
-      // IS USED TO GET THE BOT OBJECT ( THE ID IS PASSED FROM BOTS COMPONENT - goToEditAddPage_EDIT())
-      this.getProjectId();
-      // this.getBotIdAndFaqKbId();
-      if (this.id_project) {
-        this.getProjectById();
-      }
+      this.PROJECT_SETTINGS_ROUTE = false;
+      this.PROJECT_SETTINGS_PAYMENTS_ROUTE = true;
+      console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ROUTE ',
+        this.PROJECT_SETTINGS_ROUTE, ' is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
     }
+
+  }
+
+
+  goToProjectSettings_Payments() {
+    console.log('%ProjectEditAddComponent HAS CLICKED goToProjectSettings_Payments ');
+    this.router.navigate(['project/' + this.id_project + '/project-settings/payments']);
+  }
+
+  goToProjectSettings_General() {
+    console.log('%ProjectEditAddComponent HAS CLICKED goToProjectSettings_General ');
+    this.router.navigate(['project/' + this.id_project + '/project-settings']);
   }
 
   // "SubscriptionSuccessfullyCanceled":"Abbonamento annullato correttamente",
@@ -151,9 +191,6 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         //   this.subscription_creation_date = projectProfileData.subscription_creation_date;
         //   console.log('ProjectPlanService (ProjectEditAddComponent) subscription_creation_date', this.subscription_creation_date)
         // }
-
-
-
         // RETURN THE CURRENT DAY AT THE TIME 00:00:00
         const today = moment().startOf('day')
 
@@ -402,6 +439,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   getProjectId() {
     this.id_project = this.route.snapshot.params['projectid'];
     console.log('PROJECT COMPONENT HAS PASSED id_project ', this.id_project);
+    if (this.id_project) {
+      this.getProjectById();
+    }
+
   }
 
   /**

@@ -15,6 +15,7 @@ import { NotifyService } from '../../core/notify.service';
 import { environment } from '../../../environments/environment';
 import { UploadImageService } from '../../services/upload-image.service';
 import { TranslateService } from '@ngx-translate/core';
+import { publicKey } from '../../utils/util';
 
 declare const $: any;
 
@@ -95,7 +96,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     currentUserId: string
 
-    CHAT_BASE_URL = environment.chat.CHAT_BASE_URL
+    CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
+    eos = environment.t2y12PruGU9wUtEGzBJfolMIgK;
 
     userProfileImageExist: boolean;
     userImageHasBeenUploaded: boolean;
@@ -122,6 +124,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     prjct_trial_expired: boolean;
     prjc_trial_days_left: number
     prjc_trial_days_left_percentage: number
+    isVisible: boolean;
+    
 
 
     constructor(
@@ -140,6 +144,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
     ngOnInit() {
+        
         this.translateChangeAvailabilitySuccessMsg();
         this.translateChangeAvailabilityErrorMsg();
 
@@ -178,9 +183,23 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
         this.subscribeToMyAvailibilityCount();
         this.getCurrentRoute();
+
+        this.getOSCODE();
     }
 
+    getOSCODE() {
+        console.log('eoscode', this.eos)
 
+        if (this.eos  && this.eos === publicKey) {
+
+            this.isVisible = true;
+            console.log('eoscode isVisible ', this.isVisible);
+        } else {
+
+            this.isVisible = false;
+            console.log('eoscode isVisible ', this.isVisible);
+        }
+    }
 
 
     getCurrentRoute() {

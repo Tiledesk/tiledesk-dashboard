@@ -28,13 +28,15 @@
                   <i class="material-icons">&#xE876;</i>
                 </div>
                 
-                <h1 class="success-page-card-title">Awesome!</h1>
+                <h1 class="success-page-card-title">{{ 'Awesome' | translate }}!</h1>
             
                 <h3 class="success-page-card-subtitle">
-                  Your payment is successfully done.
+                  <!-- Your payment is successfully done. -->
+                  {{ 'YourPaymentIsSuccessfullyDone' | translate }}.
                 </h3>
                 <h3 class="success-page-card-subtitle" style="margin-top: 10px;">
-                  Please check your email you will receive a receipt.
+                  <!-- Please check your email you will receive a receipt. -->
+                  {{ 'PleaseCheckYourEmailYouWillReceiveReceipt'| translate }}.
                 </h3>
            </div>
          </div>
@@ -57,14 +59,15 @@
 
             <div class="contat-us" style="text-align:center; margin-top:15px; margin-bottom:15px"> 
                 <!-- #014c8c -->
-                <h4>Having trouble? <span style="color: #0275d8 ">
-                    <a href="mailto:info@tiledesk.com" style="text-transform: none"> 
-                      
-                      Contact us 
+                <h4>
+                  <!-- Having trouble?  -->
+                  {{ 'HavingTrouble' | translate }}? 
+                  
+                    <a href="mailto:info@tiledesk.com" style="text-transform: none; color: #0275d8 "> 
+                      <!-- Contact us  -->
+                      {{ 'ContactUs' | translate }}
                     </a>
                     
-                    </span> 
-                
                 </h4>
 
             </div>
@@ -85,7 +88,11 @@
        <div style="text-align: center; margin-top: 15px;"> 
          <button type="button" class="btn outline-btn btn-lg success-payment-outline-btn" (click)="goToHome()">
          
-          <span>  Continue to homepage  </span> 
+          <span>  
+            <!-- Continue to homepage   -->
+            {{ 'ContinueToHomepage' | translate }}
+          
+          </span> 
         
          </button>
        </div>

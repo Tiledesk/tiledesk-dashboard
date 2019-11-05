@@ -53,7 +53,7 @@ export class WidgetService implements OnInit {
   // }
 
   translateAndShowUpdateWidgetNotification() {
-    this.translate.get('UpdateWidgetProjectSuccessNoticationMsg')
+    this.translate.get('UpdateDeptGreetingsSuccessNoticationMsg')
       .subscribe((text: string) => {
 
         this.updateWidgetSuccessNoticationMsg = text;

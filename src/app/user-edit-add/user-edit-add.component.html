@@ -94,7 +94,8 @@
               <div class="col-sm-10">
                 <!-- [disabled]="bot_fullname?.length < 2 || FAQKB_NOT_SELECTED === true" -->
                 <!-- email length {{ user_email?.length }}  -->
-                <button class="btn btn-success" [disabled]="ROLE_NOT_SELECTED === true || !EMAIL_IS_VALID || user_email?.length < 1" (click)="invite()">
+
+                <button class="btn btn-success" [disabled]="ROLE_NOT_SELECTED === true || !EMAIL_IS_VALID || user_email?.length < 1 || role?.length < 1" (click)="invite()">
                   {{ "UserEditAddPage.Invites" | translate }}
                 </button>
               </div>
@@ -244,7 +245,7 @@
           <div style="text-align: center">
 
             <!--      WHEN NO ERROR OCCUR      -->
-            <span *ngIf="!INVITE_YOURSELF_ERROR && !INVITE_OTHER_ERROR && !INVITE_USER_ALREADY_MEMBER_ERROR && !INVITE_USER_NOT_FOUND">
+            <span *ngIf="!INVITE_YOURSELF_ERROR && !INVITE_OTHER_ERROR && !INVITE_USER_ALREADY_MEMBER_ERROR && !INVITE_USER_NOT_FOUND && !PENDING_INVITATION_ALREADY_EXIST">
               <i class="material-icons" style="color:#70b665">done</i>
               <p style="color:#70b665; font-weight: 500">
                   {{ "UserEditAddPage.Completed" | translate }}
@@ -252,7 +253,7 @@
             </span>
 
             <!--      ERROR - Not Allowed Action      -->
-            <span *ngIf="INVITE_YOURSELF_ERROR ||  INVITE_OTHER_ERROR || INVITE_USER_ALREADY_MEMBER_ERROR || INVITE_USER_NOT_FOUND">
+            <span *ngIf="INVITE_YOURSELF_ERROR ||  INVITE_OTHER_ERROR || INVITE_USER_ALREADY_MEMBER_ERROR || INVITE_USER_NOT_FOUND || PENDING_INVITATION_ALREADY_EXIST">
               <i class="material-icons" style="color:#ff5252">report_problem</i>
               <p style="color:#ff5252; font-weight: 500">
                   {{ "UserEditAddPage.Error" | translate }}
@@ -270,28 +271,28 @@
           </div>
 
           <!--      WHEN NO ERROR OCCUR      -->
-          <span *ngIf="!INVITE_YOURSELF_ERROR && !INVITE_OTHER_ERROR && !INVITE_USER_ALREADY_MEMBER_ERROR && !INVITE_USER_NOT_FOUND">
+          <span *ngIf="!INVITE_YOURSELF_ERROR && !INVITE_OTHER_ERROR && !INVITE_USER_ALREADY_MEMBER_ERROR && !INVITE_USER_NOT_FOUND && !PENDING_INVITATION_ALREADY_EXIST">
             <p style="margin-top: 0px; text-align: center; font-weight: 500">
               {{ "UserEditAddPage.TheUserHasBeenInvited" | translate }}
             </p>
           </span>
 
           <!--      ERROR - Not Allowed Action * You Can Not Invite Yourself *    -->
-          <span *ngIf="INVITE_YOURSELF_ERROR && !INVITE_OTHER_ERROR && !INVITE_USER_ALREADY_MEMBER_ERROR && !INVITE_USER_NOT_FOUND">
+          <span *ngIf="INVITE_YOURSELF_ERROR && !INVITE_OTHER_ERROR && !INVITE_USER_ALREADY_MEMBER_ERROR && !INVITE_USER_NOT_FOUND && !PENDING_INVITATION_ALREADY_EXIST">
             <p style="margin-top: 0px; text-align: center; font-weight: 500">
               {{ "UserEditAddPage.YouCanNotInviteYourself" | translate }}
             </p>
           </span>
 
           <!--      ERROR - Not Allowed Action * You can not invite a user already member of the project *    -->
-          <span *ngIf="!INVITE_YOURSELF_ERROR && !INVITE_OTHER_ERROR && INVITE_USER_ALREADY_MEMBER_ERROR && !INVITE_USER_NOT_FOUND">
+          <span *ngIf="!INVITE_YOURSELF_ERROR && !INVITE_OTHER_ERROR && INVITE_USER_ALREADY_MEMBER_ERROR && !INVITE_USER_NOT_FOUND && !PENDING_INVITATION_ALREADY_EXIST">
             <p style="margin-top: 0px; text-align: center; font-weight: 500">
               {{ "UserEditAddPage.YouCanNotInviteAProjectMember" | translate }}
             </p>
           </span>
 
           <!--      ERROR - User not found * You cannot invite a user that not is registered *    -->
-          <span *ngIf="!INVITE_YOURSELF_ERROR && !INVITE_OTHER_ERROR && !INVITE_USER_ALREADY_MEMBER_ERROR && INVITE_USER_NOT_FOUND">
+          <span *ngIf="!INVITE_YOURSELF_ERROR && !INVITE_OTHER_ERROR && !INVITE_USER_ALREADY_MEMBER_ERROR && INVITE_USER_NOT_FOUND && !PENDING_INVITATION_ALREADY_EXIST">
             <p style="margin-top: 0px; text-align: center; font-weight: 500">
                 {{ "UserEditAddPage.TheEmail" | translate }} 
                 <span style="font-weight: 600">{{ user_email }} </span> 
@@ -299,8 +300,17 @@
             </p>
           </span>
 
+              <!--      ERROR - PENDING INVITATION ALREADY EXIST *    -->
+              <span *ngIf="!INVITE_YOURSELF_ERROR && !INVITE_OTHER_ERROR && !INVITE_USER_ALREADY_MEMBER_ERROR && !INVITE_USER_NOT_FOUND && PENDING_INVITATION_ALREADY_EXIST">
+                  <p style="margin-top: 0px; text-align: center; font-weight: 500">
+                      {{ "YouHaveAlreadyInvitedThisUserSeeThePendingInvitations" | translate }} 
+                      <!-- <span style="font-weight: 600">{{ user_email }} </span>  -->
+                   
+                  </p>
+                </span>
+
           <!--      ERROR - other error     -->
-          <span *ngIf="!INVITE_YOURSELF_ERROR && INVITE_OTHER_ERROR && !INVITE_USER_ALREADY_MEMBER_ERROR && !INVITE_USER_NOT_FOUND">
+          <span *ngIf="!INVITE_YOURSELF_ERROR && INVITE_OTHER_ERROR && !INVITE_USER_ALREADY_MEMBER_ERROR && !INVITE_USER_NOT_FOUND && !PENDING_INVITATION_ALREADY_EXIST">
             <p style="margin-top: 0px; text-align: center; font-weight: 500">
               {{ "UserEditAddPage.AnErrorHasOccurred" | translate }}
             </p>

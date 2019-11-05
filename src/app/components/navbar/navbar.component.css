@@ -734,3 +734,8 @@ button.close.custom-hover:hover {
   opacity: 1;
 }
 /* // TOOLTIP END */
+
+.li-selected {
+  color: rgb(66,133,244);
+  background-color: #eee;
+}

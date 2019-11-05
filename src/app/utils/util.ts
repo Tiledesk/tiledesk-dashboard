@@ -79,3 +79,6 @@ export function getColorBck(requester_fullname) {
     // console.log('»»»»»»» UTILS getColorBck ------------->', requester_fullname, arrayBckColor[num]);
     return arrayBckColor[num];
 }
+
+export const publicKey = ''
+

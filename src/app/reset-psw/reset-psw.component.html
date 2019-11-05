@@ -28,7 +28,7 @@
                   <div style="padding-left: 5px; display:table-cell;">{{ signin_errormsg }}</div>
                 </div>
               </div>
-              </div>
+            </div>
 
               <!-- !!! NO MORE USED - (SUBSTITUTES FROM A MSG IN A DIV)
                 ALERT RESET PSW SENT EMAIL -->
@@ -59,7 +59,7 @@
                       {{ formErrors.email }}
                     </div> -->
 
-                    <button type="submit" style="width: 100%; background-color: #ff9800; height: 56px; font-size: 16px; letter-spacing: 2px;" class="btn btn-danger" 
+                    <button type="submit" style="width: 100%; background-color: #f0806f; height: 56px; font-size: 16px; letter-spacing: 2px;" class="btn btn-danger" 
                     [disabled]="!emailForm.valid">
                       <span *ngIf="!showSpinnerInRequestNewPswBtn"> 
                         {{ "RequestNewPsw" | translate }}
@@ -69,7 +69,7 @@
                     <!-- text-align: center -->
                     <div style="margin-top: 16px" routerLink="/login">
                       <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;">keyboard_arrow_left</i>
-                      <span style="font-size: 1.1em; vertical-align: middle !important; font-weight: 300; cursor:pointer"> 
+                      <span style="font-size: 1.1em; vertical-align: middle !important; font-weight: 300; cursor:pointer; color: #0275d8"> 
                         <!-- Back to login  -->
                         {{ "BackToLogin" | translate }}
                       </span>
@@ -90,7 +90,35 @@
                     <!-- Your password has been changed -->
                     {{ "YouWillReceiveAnEmail" | translate }}
                   </h4>
+
+                 
+                  <div style="margin-top: 26px; float: left" routerLink="/login">
+                    <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;">keyboard_arrow_left</i>
+                    <span style="font-size: 1.1em; vertical-align: middle !important; font-weight: 300; cursor:pointer; color: #0275d8"> 
+                      <!-- Back to login  -->
+                      {{ "BackToLogin" | translate }}
+                    </span>
+                  </div>
+
+                  <div class="contat-us" style="margin-top: 26px; float: right"> 
+                      <!-- #014c8c -->
+                      <h4 style="font-size: 1.1em; margin-top:0px">
+                        <!-- Having trouble?  -->
+                        {{ 'HavingTrouble' | translate }}? 
+                        
+                          <a href="mailto:info@tiledesk.com" style="text-transform: none; color: #0275d8 "> 
+                            <!-- Contact us  -->
+                            {{ 'ContactUs' | translate }}
+                          </a>
+                          
+                      </h4>
+      
+                  </div>
+
+
                 </div>
+
+
               </div>
             </div> 
  

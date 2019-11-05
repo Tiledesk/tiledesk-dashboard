@@ -28,6 +28,8 @@ export class AuthGuard implements CanActivate {
   is_verify_email_page: boolean;
   is_signup_page: boolean;
   is_reset_psw_page: boolean;
+  is_handleinvitation_page: boolean;
+  is_signup_on_invitation_page: boolean;
 
   nav_project_id: string;
   current_project_id: string;
@@ -62,6 +64,7 @@ export class AuthGuard implements CanActivate {
       console.log('!! AUTH WF USER ', user)
     });
 
+    this.detectRoute();
     this.detectVerifyEmailRoute();
     this.detectSignUpRoute();
     this.detectResetPswRoute();
@@ -131,10 +134,14 @@ export class AuthGuard implements CanActivate {
          * CLICKED ON THE LINK IN THE INVITATION EMAIL TO PARTICIPATE IN A PROJECT)
          * IN THIS CASE, A CALL IS DONE TO OBTAIN THE NAME OF THE PROJECT AND AFTER THE ID
          * AND NAME OF THE PROJECT ARE SAVED IN THE LOCAL STORAGE AND PASSES TO THE SERVICE THAT PUBLISHES
-         * (note: the NAVIGATION PROJECT ID returned from CURRENT URL SEGMENTS is = to 'email' 
+         * (note: the NAVIGATION PROJECT ID returned from CURRENT URL SEGMENTS is = to 'email'
          * if the user navigate to the e-mail verification page)
-         * */
-        if (this.nav_project_id && this.nav_project_id !== 'email') {
+         * If the CURRENT URL has only one element (for example /create-project (i.e. the wizard for the creation a of a project)
+         * the url_segments[2] (that is the project id) is undefined)
+         * and the Workflow not proceed with the below code
+         */
+        // tslint:disable-next-line:max-line-length
+        if (this.nav_project_id && this.nav_project_id !== 'email' && url_segments[1] !== 'handle-invitation' && url_segments[1] !== 'signup-on-invitation') {
 
           this.subscription.unsubscribe();
 
@@ -225,6 +232,7 @@ export class AuthGuard implements CanActivate {
         localStorage.setItem(this.nav_project_id, JSON.stringify(projectForStorage));
 
         // GET AND SAVE ALL USERS OF CURRENT PROJECT IN LOCAL STORAGE
+        console.log('AUTH GUARD CALL -> getAllUsersOfCurrentProjectAndSaveInStorage')
         this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
 
         // GET AND SAVE ALL BOTS OF CURRENT PROJECT IN LOCAL STORAGE
@@ -317,15 +325,49 @@ export class AuthGuard implements CanActivate {
       if (this.route.indexOf('/verify') !== -1) {
         // this.router.navigate([`${this.route}`]);
         this.is_verify_email_page = true;
-        console.log('»> »>  AUTH GUARD - IS VERIFY EMAIL PAGE »> »> ', this.is_verify_email_page);
+        console.log('%AUTH GUARD - IS VERIFY EMAIL PAGE »> »> ', this.is_verify_email_page);
 
       } else {
         this.is_verify_email_page = false;
-        console.log('»> »>  AUTH GUARD - IS VERIFY EMAIL PAGE »> »> ', this.is_verify_email_page);
+        console.log('%AUTH GUARD - IS VERIFY EMAIL PAGE »> »> ', this.is_verify_email_page);
 
       }
     }
     // });
+  }
+
+  // 
+
+  detectRoute() {
+    if (this.location.path() !== '') {
+      this.route = this.location.path();
+      // console.log('»> »> AUTH GUARD »> »> ', this.route);
+      if (this.route.indexOf('/handle-invitation') !== -1) {
+        // this.router.navigate([`${this.route}`]);
+        this.is_handleinvitation_page = true;
+        console.log('%AUTH GUARD - IS HANDLE-INVITATION PAGE »> »> ', this.is_handleinvitation_page);
+
+      } else {
+        this.is_handleinvitation_page = false;
+        console.log('%AUTH GUARD - IS HANDLE-INVITATION PAGE »> »> ', this.is_handleinvitation_page);
+
+      }
+
+
+      if (this.route.indexOf('/signup-on-invitation') !== -1) {
+        // this.router.navigate([`${this.route}`]);
+        this.is_signup_on_invitation_page = true;
+        console.log('%AUTH GUARD - IS SIGNUP-ON-INVITATION PAGE »> »> ', this.is_signup_on_invitation_page);
+
+      } else {
+        this.is_signup_on_invitation_page = false;
+        console.log('%AUTH GUARD - IS SIGNUP-ON-INVITATION  PAGE »> »> ', this.is_signup_on_invitation_page);
+
+      }
+
+
+    }
+
   }
 
   detectSignUpRoute() {
@@ -335,11 +377,11 @@ export class AuthGuard implements CanActivate {
       if (this.route.indexOf('/signup') !== -1) {
         // this.router.navigate([`${this.route}`]);
         this.is_signup_page = true;
-        console.log('»> »>  AUTH GUARD - IS SIGNUP PAGE »> »> ', this.is_signup_page);
+        console.log('%AUTH GUARD  - IS SIGNUP PAGE »> »> ', this.is_signup_page);
 
       } else {
         this.is_signup_page = false;
-        console.log('»> »>  AUTH GUARD - IS SIGNUP PAGE »> »> ', this.is_signup_page);
+        console.log('%AUTH GUARD  - IS SIGNUP PAGE »> »> ', this.is_signup_page);
 
       }
     }
@@ -352,10 +394,10 @@ export class AuthGuard implements CanActivate {
       if (this.route.indexOf('/resetpassword') !== -1) {
         // this.router.navigate([`${this.route}`]);
         this.is_reset_psw_page = true;
-        console.log('»> »>  AUTH GUARD - IS RESET PSW PAGE »> »> ', this.is_reset_psw_page);
+        console.log('%AUTH GUARD  - IS RESET PSW PAGE »> »> ', this.is_reset_psw_page);
       } else {
         this.is_reset_psw_page = false;
-        console.log('»> »>  AUTH GUARD - IS RESET PSW PAGE »> »> ', this.is_reset_psw_page);
+        console.log('%AUTH GUARD  - IS RESET PSW PAGE »> »> ', this.is_reset_psw_page);
       }
     }
   }
@@ -364,7 +406,12 @@ export class AuthGuard implements CanActivate {
     console.log('!! AUTH WF in auth.guard - CAN ACTIVATE AlwaysAuthGuard');
 
     // tslint:disable-next-line:max-line-length
-    if ((this.user) || (this.is_verify_email_page === true) || (this.is_signup_page === true) || (this.is_reset_psw_page === true)) {
+    if ((this.user) ||
+      (this.is_verify_email_page === true) ||
+      (this.is_signup_page === true) ||
+      (this.is_reset_psw_page === true) ||
+      (this.is_handleinvitation_page === true) ||
+      (this.is_signup_on_invitation_page === true)) {
       // this.router.navigate(['/home']);
       return true;
       // if ((!this.user) || (this.is_verify_email_page === false))

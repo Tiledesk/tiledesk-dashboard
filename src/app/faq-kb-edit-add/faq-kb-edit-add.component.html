@@ -50,11 +50,20 @@
                   <div class="checkbox">
                     <label>
                       <input type="checkbox" name="externalBot" (click)="hasClickedExternalBot(is_external_bot = !is_external_bot)" >
-                      <span class="checkbox-label">
+                      <span class="checkbox-label" style="position: relative;top: 2px;">
                         {{ "BotsPage.ExternalBot" | translate }} 
-                      </span> 
+                      </span>
                     </label>
+                      <span style="font-size: 12px; font-weight: 400;"> 
+                        <i class="material-icons" style="vertical-align: middle; color: #ec971f; font-size: 20px;padding-left: 16px">info</i>
+                        <span style="position: relative;top: 2px;">
+                          <span style="color: #7695a5; "> {{'ExperimentalFeature' | translate }}. </span>
+                          <span style="color: #7695a5">{{'IfYouAreInterested' | translate }} </span>
+                          <span (click)="launchWidget()" style="color: #039be5; cursor:pointer;"> {{ 'ChatWithUs' | translate}} </span> 
+                        </span>
+                      </span>
                   </div>
+
                 </div>
               </div>
 
@@ -69,6 +78,8 @@
                   </textarea>
                 </div>
               </div>
+
+           
 
               <div class="row"> 
                 <label class="col-sm-2"></label>

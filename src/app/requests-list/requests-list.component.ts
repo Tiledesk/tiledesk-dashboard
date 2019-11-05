@@ -38,7 +38,8 @@ export class RequestsListComponent implements OnInit {
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
   zone: NgZone;
 
-  CHAT_BASE_URL = environment.chat.CHAT_BASE_URL
+  TESTSITE_BASE_URL = environment.testsite.testsiteBaseUrl;
+  CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
   // user: Observable<User | null>;
   user: any;
   firebase_token: any;
@@ -600,7 +601,10 @@ export class RequestsListComponent implements OnInit {
   testWidgetPage() {
     // const url = 'http://support.tiledesk.com/testsite/?projectid=' + this.projectId;
     // + '&projectname=' + this.projectName
-    const url = 'http://testwidget.tiledesk.com/testsitenw3?projectname=' + this.projectName + ' &projectid=' + this.projectId
+    // const url = 'http://testwidget.tiledesk.com/testsitenw3?projectname=' + this.projectName + ' &projectid=' + this.projectId
+    const url = this.TESTSITE_BASE_URL + '?tiledesk_projectid=' + this.projectId + '&project_name=' + this.projectName + '&isOpen=true'
+
+
     // + '&prechatform=' + false + '&callout_timer=' + false + '&align=right';
     window.open(url, '_blank');
   }

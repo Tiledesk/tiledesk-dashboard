@@ -68,7 +68,8 @@ export class FaqComponent implements OnInit {
   subscription_end_date: Date;
   trial_expired: boolean;
   browserLang: string;
-
+  OPEN_RIGHT_SIDEBAR = false;
+  train_bot_sidebar_height: any;
   constructor(
     private mongodbFaqService: MongodbFaqService,
     private router: Router,
@@ -604,6 +605,28 @@ export class FaqComponent implements OnInit {
           }, 300);
         });
 
+    }
+  }
+
+  openRightSidebar() {
+
+    this.OPEN_RIGHT_SIDEBAR = true;
+    const elemMainContent = <HTMLElement>document.querySelector('.main-content');
+    this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
+    console.log('FaqComponent - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
+  }
+
+  closeRightSidebar(event) {
+    console.log('»»»» CLOSE RIGHT SIDEBAR ', event);
+    this.OPEN_RIGHT_SIDEBAR = event;
+
+    // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+    // _elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;');
+  }
+
+  launchWidget() {
+    if (window && window['tiledesk']) {
+      window['tiledesk'].open();
     }
   }
 

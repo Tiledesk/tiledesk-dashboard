@@ -18,6 +18,8 @@ import { UploadImageService } from '../../services/upload-image.service';
 import { NotifyService } from '../../core/notify.service';
 import * as moment from 'moment';
 import { ProjectPlanService } from '../../services/project-plan.service';
+import { ProjectService } from '../../services/project.service';
+import { publicKey } from '../../utils/util';
 
 
 @Component({
@@ -63,7 +65,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     HIDE_PENDING_EMAIL_NOTIFICATION = true;
 
     DETECTED_USER_PROFILE_PAGE = false;
-    CHAT_BASE_URL = environment.chat.CHAT_BASE_URL
+    CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
+    eos = environment.t2y12PruGU9wUtEGzBJfolMIgK;
 
     displayLogoutModal = 'none';
 
@@ -86,7 +89,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     subscription_end_date: any;
     subscription_is_active: boolean;
     HOME_ROUTE_IS_ACTIVE: boolean;
-
+    projects: any;
+    isVisible: boolean;
     constructor(
         location: Location,
         private element: ElementRef,
@@ -98,7 +102,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         private usersService: UsersService,
         private uploadImageService: UploadImageService,
         private notifyService: NotifyService,
-        private prjctPlanService: ProjectPlanService
+        private prjctPlanService: ProjectPlanService,
+        private projectService: ProjectService
     ) {
         this.location = location;
         this.sidebarVisible = false;
@@ -162,7 +167,42 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         this.getProjectPlan();
         this.getBrowserLanguage();
         this.listenCancelSubscription();
+        this.getIfIsCreatedNewProject();
+
+
+        this.getOSCODE();
     } // OnInit
+
+
+    getOSCODE() {
+        console.log('NavbarComponent eoscode', this.eos)
+
+        if (this.eos && this.eos === publicKey) {
+
+            this.isVisible = true;
+            console.log('NavbarComponent eoscode isVisible ', this.isVisible);
+        } else {
+
+            this.isVisible = false;
+            console.log('NavbarComponent eoscode isVisible ', this.isVisible);
+        }
+    }
+
+    getProjects() {
+        console.log('NavbarComponent calling getProjects ... ');
+        this.projectService.getProjects().subscribe((projects: any) => {
+            console.log('NavbarComponent getProjects PROJECTS ', projects);
+            if (projects) {
+                this.projects = projects;
+            }
+        }, error => {
+            console.log('NavbarComponent getProjects - ERROR ', error)
+        }, () => {
+            console.log('NavbarComponent getProjects - COMPLETE')
+        });
+    }
+
+
 
     getBrowserLanguage() {
         this.browserLang = this.translate.getBrowserLang();
@@ -250,6 +290,15 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                     console.log('NAVBAR NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
                     this.HOME_ROUTE_IS_ACTIVE = false;
                 }
+
+
+                if (event.url.indexOf('/chat') !== -1) {
+                    console.log('NAVBAR NavigationEnd - THE chat route IS ACTIVE  ', event.url);
+                    this.DETECTED_CHAT_PAGE = true;
+                } else {
+                    console.log('NAVBAR NavigationEnd - THE chat route IS NOT ACTIVE  ', event.url);
+                    this.DETECTED_CHAT_PAGE = false;
+                }
             })
     }
 
@@ -261,7 +310,18 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
             if (this.location.path() !== '') {
                 this.route = this.location.path();
                 // console.log('»> »> »> NAVBAR ROUTE DETECTED »> ', this.route)
-                if ((this.route === '/projects') || (this.route === '/login') || (this.route === '/signup')) {
+                if (
+                    (this.route === '/projects') ||
+                    (this.route === '/login') ||
+                    (this.route === '/signup') ||
+                    (this.route === '/create-project') ||
+                    (this.route === '/forgotpsw') ||
+                    (this.route.indexOf('/install-tiledesk') !== -1) ||
+                    (this.route.indexOf('/handle-invitation') !== -1) ||
+                    (this.route.indexOf('/signup-on-invitation') !== -1) ||
+                    (this.route.indexOf('/create-new-project') !== -1) ||
+                    (this.route.indexOf('/success') !== -1)
+                ) {
                     // console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
                     // this.DETECTED_PROJECT_PAGE = true;
                     this.HIDE_PENDING_EMAIL_NOTIFICATION = true;
@@ -295,13 +355,19 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     /**
      * WHEN IS DETECTED THE USER-PROFILE PAGE (NOTE: THE ROUTE '/user-profile' IS THAT IN WHICH THERE IS NOT THE SIDEBAR)
-     * TO THE "PENDING EMAIL VERIFICATION ALERT " IS ASIGNED THE CLASS is-user-profile-page THAT MODIFIED THE LEFT POSITION */
+     * TO THE "PENDING EMAIL VERIFICATION ALERT " IS ASIGNED THE CLASS is-user-profile-page THAT MODIFIED THE LEFT POSITION 
+     * USE THE SAME CLASS ALSO FOR create-new-project and pricing THAT are OTHER PAGE WITHOUT SIDEABAR */
     detectUserProfilePage() {
         this.router.events.subscribe((val) => {
 
             if (this.location.path() !== '') {
                 this.route = this.location.path();
-                if (this.route === '/user-profile') {
+                //  console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
+                if (
+                    this.route === '/user-profile' ||
+                    this.route === '/create-new-project' ||
+                    this.route.indexOf('/pricing') !== -1
+                ) {
 
                     this.DETECTED_USER_PROFILE_PAGE = true;
                     // console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route, 'DETECTED_USER_PROFILE_PAGE ', this.DETECTED_USER_PROFILE_PAGE)
@@ -380,14 +446,14 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     /**
      * *! ############ CANCEL SUBSCRIPTION ############ !*
-   * * the callback cancelSubscription() IS RUNNED in NotificationMessageComponent when the user click on
-   *   the modal button Cancel Subscription
-   * * NotificationMessageComponent, through the notify service, publishes the progress status
-   *   of the cancellation of the subscription
-   * * the NavbarComponent (this component) is subscribed to cancelSubscriptionCompleted$ and, when hasDone === true,
-   *   call prjctPlanService.getProjectByID() that get and publish (with prjctPlanService.projectPlan$) the updated project object
-   * * ProjectEditAddComponent is a subscriber of prjctPlanService.projectPlan$ so also his UI is refreshed when the prjctPlanService publish projectPlan$
-   */
+    * * the callback cancelSubscription() IS RUNNED in NotificationMessageComponent when the user click on
+    *   the modal button Cancel Subscription
+    * * NotificationMessageComponent, through the notify service, publishes the progress status
+    *   of the cancellation of the subscription
+    * * the NavbarComponent (this component) is subscribed to cancelSubscriptionCompleted$ and, when hasDone === true,
+    *   call prjctPlanService.getProjectByID() that get and publish (with prjctPlanService.projectPlan$) the updated project object
+    * * ProjectEditAddComponent is a subscriber of prjctPlanService.projectPlan$ so also his UI is refreshed when the prjctPlanService publish projectPlan$
+    */
 
     listenCancelSubscription() {
         this.notifyService.cancelSubscriptionCompleted$.subscribe((hasDone: boolean) => {
@@ -425,17 +491,46 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
             // tslint:disable-next-line:no-debugger
             // debugger
             this.user = user;
+
+            // GET ALL PROJECTS WHEN IS PUBLISHED THE USER
+            this.getProjects();
         });
+    }
+
+    getIfIsCreatedNewProject() {
+        this.projectService.hasCreatedNewProject$.subscribe((hasCreatedNewProject) => {
+            console.log('»»» »»» getIfIsCreatedNewProject hasCreatedNewProject', hasCreatedNewProject)
+
+            if (hasCreatedNewProject) {
+                this.getProjects();
+            }
+
+        })
     }
 
 
     goToProjects() {
         console.log('HAS CLICCKED GO TO PROJECT ')
         this.router.navigate(['/projects']);
-
         // (in AUTH SERVICE ) RESET PROJECT_BS AND REMOVE ITEM PROJECT FROM STORAGE WHEN THE USER GO TO PROJECTS PAGE
         this.auth.hasClickedGoToProjects()
         console.log('00 -> NAVBAR project AFTER GOTO PROJECTS ', this.project)
+    }
+
+    goToHome(id_project: string, project_name: string) {
+
+        // RUNS ONLY IF THE THE USER CLICK OVER A PROJECT WITH THE ID DIFFERENT FROM THE CURRENT PROJECT ID
+        if (id_project !== this.projectId) {
+            this.router.navigate([`/project/${id_project}/home`]);
+
+            // WHEN THE USER SELECT A PROJECT ITS ID and NAME IS SEND IN THE AUTH SERVICE THAT PUBLISHES IT
+            const project: Project = {
+                _id: id_project,
+                name: project_name,
+            }
+            this.auth.projectSelected(project)
+            console.log('!!! GO TO HOME - PROJECT ', project)
+        }
     }
 
     goToUserProfile() {
@@ -444,6 +539,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
             this.router.navigate(['/project/' + this.project._id + '/user-profile']);
 
         }
+    }
+
+    goToCreateProject() {
+        this.router.navigate(['/create-new-project']);
     }
 
 
@@ -612,27 +711,27 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
             // border-left-color: rgb(255, 179, 40);
 
         }, {
-                type: type[color],
-                timer: 2000,
-                template:
-                    `<div data-notify="container" style="padding:10px!important;background-color:rgb(255, 255, 238);box-shadow:0px 0px 5px rgba(51, 51, 51, 0.3);cursor:pointer;border-left:15px solid;${borderColor}"
+            type: type[color],
+            timer: 2000,
+            template:
+                `<div data-notify="container" style="padding:10px!important;background-color:rgb(255, 255, 238);box-shadow:0px 0px 5px rgba(51, 51, 51, 0.3);cursor:pointer;border-left:15px solid;${borderColor}"
                     class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">` +
-                    '<button type="button" aria-hidden="true" class="close custom-hover" data-notify="dismiss" style="background-color:beige; padding-right:4px;padding-left:4px;border-radius:50%;">×</button>' +
-                    '<div class="row">' +
-                    '<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">' +
-                    '<span data-notify="icon" class="notify-icon"> ' + `<img style="width:30px!important"src="assets/img/${chatIcon}" alt="Notify Icon"></span>` +
-                    '</div>' +
-                    '<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">' +
-                    '<span data-notify="title">{1}</span>' +
-                    '<span data-notify="message">{2}</span>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>'
-                // placement: {
-                //     from: from,
-                //     align: align
-                // }
-            },
+                '<button type="button" aria-hidden="true" class="close custom-hover" data-notify="dismiss" style="background-color:beige; padding-right:4px;padding-left:4px;border-radius:50%;">×</button>' +
+                '<div class="row">' +
+                '<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">' +
+                '<span data-notify="icon" class="notify-icon"> ' + `<img style="width:30px!important"src="assets/img/${chatIcon}" alt="Notify Icon"></span>` +
+                '</div>' +
+                '<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">' +
+                '<span data-notify="title">{1}</span>' +
+                '<span data-notify="message">{2}</span>' +
+                '</div>' +
+                '</div>' +
+                '</div>'
+            // placement: {
+            //     from: from,
+            //     align: align
+            // }
+        },
             {
                 // onClose: this.test(),
             }

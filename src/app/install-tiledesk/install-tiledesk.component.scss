@@ -1,0 +1,150 @@
+$color-pro-plan: #3ea9f5;
+.razzo_wizard_script {
+  //   max-width: 639px;
+  //   height: auto;
+  //   padding-top: 25px;
+  //   float: right;
+  //   position: absolute;
+  //   z-index: 1050;
+  //   right: -19px;
+  //   bottom: 217px;
+  //   transform: rotate(17deg);
+
+  max-width: 639px;
+  height: auto;
+  padding-top: 25px;
+  float: right;
+  position: absolute;
+  z-index: 1050;
+  right: -80px;
+  bottom: 200px;
+  -webkit-transform: rotate(30deg);
+  transform: rotate(30deg);
+}
+
+@media (min-width: 992px) {
+  .wizard-bckgrnd {
+    // background-size: 475px 449px, 188px 100%, 179px 100%;
+    // background-size: 199px 449px, 188px 100%, 179px 100%;
+    background-size: 375px 100%, 188px 100%, 179px 100%;
+    background-position: right -12px bottom, right, calc(100% - 179px);
+    // background-repeat: repeat-y;
+    background-repeat: no-repeat;
+
+    background-image: linear-gradient(to bottom, #1a73e8 0%, $color-pro-plan 100%),
+      linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
+  }
+
+  //       .pro-plan-bckgrnd {
+  //     background-image: url(assets/img/background-card-vertical_2.svg),
+  //       linear-gradient(to bottom, $color-pro-plan 0%, $color-pro-plan 100%),
+  //       linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
+  //   }
+  // url(assets/img/background-card-vertical_2.svg),
+  // .pro-plan-bckgrnd { }
+}
+
+@media (max-width: 992px) {
+  .razzo_wizard_script {
+    display: none;
+  }
+}
+
+.install-tiledesk-page-title {
+  margin-top: 10px;
+  font-family: Google Sans;
+  font-size: 36px;
+}
+
+@media (max-width: 510px) {
+  .install-tiledesk-page-title {
+    font-size: 24px;
+  }
+}
+
+pre {
+  font-family: monospace;
+  background-color: #fff;
+
+  // margin: 4em auto;
+  // padding: 0.5em;
+  border: none;
+  // border-radius: 0.25em;
+  border-radius: 0.25em 0.25em 0px 0px;
+  // box-shadow: .1em .1em .5em rgba(0,0,0,.45);
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+  line-height: 0;
+  counter-reset: line;
+
+  span {
+    display: block;
+    line-height: 2.1rem;
+
+    &:before {
+      counter-increment: line;
+      content: counter(line);
+      display: inline-block;
+      border-right: 1px solid #ddd;
+      padding: 0 0.5em;
+      margin-right: 0.5em;
+      color: #039be5;
+      // background: #f2feef;
+      background: rgba(3, 155, 229, 0.1);
+      width: 30px;
+      text-align: end;
+    }
+  }
+}
+
+.copy-script {
+  margin-top: 0px;
+  color: #039be5;
+  margin: 0px;
+  border-radius: 0em 0em 0.25px 0.25px;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+  position: relative;
+  bottom: 94px;
+  padding: 6px 7px;
+  float: right;
+  margin-right: 25px;
+}
+
+/// START COPY TO CLIPBOARD TOOLTIP EFFECT
+@-moz-keyframes fadeinout {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@-webkit-keyframes fadeinout {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes fadeinout {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.has-copied-text {
+  background-color: #555;
+  color: white;
+  -moz-animation: fadeinout 1s linear forwards;
+  -webkit-animation: fadeinout 1s linear forwards;
+  animation: fadeinout 2s linear forwards;
+}
+/// end COPY TO CLIPBOARD TOOLTIP EFFECT

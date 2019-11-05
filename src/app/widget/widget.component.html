@@ -6,7 +6,7 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-md-12">
-				<div class="card">
+				<div class="card" style="padding-bottom: 25px;">
 
 				<loading-spinner *ngIf="showSpinner"></loading-spinner>
 				
@@ -15,209 +15,45 @@
 					<div class="row">
 						<div class="col-sm-12">
 
-							<h4 class="card-title" style="text-transform: none; color: #566787; font-weight:600; font-family: Google Sans, sans-serif;">
+							<h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; font-family: Google Sans, sans-serif;">
 								{{ 'Resourcepage.EmbedTheTileDeskChatWidget' | translate }}
 							</h4>
-							<h6 class="category text-gray" style="text-transform: none; padding-left:15px; color: rgb(118, 149, 165);">
+							<h6 class="category text-gray" style="text-transform: none; color: #525f7f; font-size:14px; font-weight: 400;">
 								{{ 'Resourcepage.ToChatWithYourVisitors...' | translate  }}
 							</h6>
-							<h6 class="category text-gray" style="text-transform: none; padding-left:15px; margin-top:0px;color: rgb(118, 149, 165);">
-									{{ 'Resourcepage.CopyTheFollowingScript...' | translate  }}<code><em>&lt;head&gt;</em></code> tags,
+							<h6 class="category text-gray" style="text-transform: none; margin-top:0px;color: #525f7f;font-size:14px; font-weight: 400;">
+									{{ 'Resourcepage.CopyTheFollowingScript...' | translate  }}<code><em>&lt;head&gt;</em></code> tags.
 							</h6>
-							<h6 class="category text-gray" style="text-transform: none; padding-left:15px; margin-top:0px; color: rgb(118, 149, 165);">
+							<!-- <h6 class="category text-gray" style="text-transform: none; padding-left:15px; margin-top:0px; color: rgb(118, 149, 165);">
 									{{ 'Resourcepage.OrAddItWith...' | translate  }} <img style="width:20px" src="assets/img/google-tag-mgr-icon.png"/>
 									<span style="font-weight:500" >Google Tag Manager.</span> 
 									<a target="_blank" href="https://tiledesk.com/google-tag-manager-add-tiledesk-to-your-sites/">
 										<span style="color: #03a5e8">{{ 'Resourcepage.HereHow' | translate  }}</span> 
 									</a>  
-							</h6>
+							</h6> -->
 
-							<h5 style="padding-left:15px; margin-top:5px;margin-bottom:5px; font-family: 'Google Sans', sans-serif !important; font-weight: 500; color:#f0806f">
+							<!-- <h5 style="padding-left:15px; margin-top:5px;margin-bottom:5px; font-family: 'Google Sans', sans-serif !important; font-weight: 500; color:#f0806f">
 								 👉 Just released a new widget version. Upgrade your snippet now!
-							</h5>
+							</h5> -->
 						</div>
 					</div>
 
-							<div class="row" style=" margin-top: 15px;">
-								<!-- <div class="col-sm-5 col-xs-12"> -->
-                            
-									<!-- ========================= INCLUDE PRECHAT FORM  MOVED TO BOTTOM ========================= -->
-									<!-- <h6 class="category text-gray" style="text-transform: none; padding-left:15px">
-										<div>
-											<label style="color: #566787;" class="form-check-label" for="exampleCheck1">
-												{{ 'Resourcepage.IncludeThePreChatForm_1' | translate }} 
-											</label>
-											<div class="row" style="border-left: #5bc0de 2px solid; margin-left: 0px;">
-												<div class="col-sm-11" >
-													{{ 'Resourcepage.RequiresVisitorsToCompleteForm' | translate }} 
-												</div>
-												<div class="col-sm-8">
-													<label class="container" for="preChatForm" style="margin-left: 0px; margin-bottom: 6px; margin-top: 8px;">
-														<input type="checkbox" id="preChatForm" [checked]="preChatForm" (change)="togglePrechatformCheckBox($event)" style="position: relative;"/>
-														<span class="checkmark"></span>
-													</label>
-												</div>
-											</div>
-										</div>
-									</h6>    -->
-
-									<!-- ===========================  CALLOUT  =========================== -->
-									<!-- <h6 class="category text-gray" style="text-transform: none; padding-left:15px">        
-										<div>    
-											<label style="color: #566787; margin-top: 5px" class="form-check-label" for="exampleCheck1">
-												Callout                  
-											</label>
-											<div class="row" style="border-left: #5bc0de 2px solid; margin-left: 0px;">
-												<div class="col-sm-11">
-													{{ 'Resourcepage.MakeTheFirstStep' | translate }} 
-												</div> -->
-
-												<!-- ======------ CALLOUT TIMER ------====== -->
-												<!-- <div class="col-sm-8">                                 
-													<div style="color: rgba(0, 0, 0, 0.54);; font-weight: 600; margin-top: 8px; font-size: 13px; margin-bottom: 4px;">
-														{{ 'Resourcepage.CalloutTimer' | translate }} 
-													</div>
-													<ng-select #selectElemCallout [clearable]='false' [(ngModel)]="calloutTimerSecondSelected" (change)="setSelectedCalloutTimer()" style="min-width: 60px; background-color:#fff; color:#333333">
-														<ng-option *ngFor="let option of calloutTimerOptions" [value]="option.value">
-															{{ option.seconds }}    
-														</ng-option>
-													</ng-select>                                           
-												</div>
-
-												<div class="col-sm-11" style="margin-top: 5px">
-													<p *ngIf="calloutTimerSecondSelected == -1" style="font-weight:100;font-size:12px; margin-bottom:0px">
-														{{ 'Resourcepage.CalloutDisabled' | translate }}
-													</p>      
-													<p *ngIf="calloutTimerSecondSelected == 0" style="font-weight:100; font-size:12px; margin-bottom:0px"> 
-														{{ 'Resourcepage.OpensTheChatImmediately' | translate }}
-													</p>
-													<p *ngIf="calloutTimerSecondSelected !== -1 && calloutTimerSecondSelected !== 0;" style="font-weight:100;font-size:12px; margin-bottom:0px">
-														{{ 'Resourcepage.OpensTheChatAfter' | translate }} {{calloutTimerSecondSelected}} {{ 'Resourcepage.Seconds' | translate }} 
-													</p>
-												</div>  -->
-												
-												<!-- ======------ CALLOUT TITLE & CALLOUT MESSAGE ------====== -->
-												<!-- <div *ngIf="calloutTimerSecondSelected !== -1">
-													
-													<div class="col-sm-8">
-														<div style="color: rgba(0, 0, 0, 0.54);; font-weight: 600; margin-top: 8px; font-size: 13px; margin-bottom: 4px;">
-															{{ 'Resourcepage.CalloutTitle' | translate }} 
-														</div>
-														<input (keyup)="onKeyCalloutTitle()" [(ngModel)]="calloutTitleText" type="text" class="" style="height: 36px; width: 100%; border-radius: 4px; border: 1px solid #ccc; padding-left: 6px;">
-													</div>
-													<div class="col-sm-11" style="margin-top: 5px">
-														<p style="font-weight:100;font-size:12px; margin-bottom:0px"> 
-															{{ 'Resourcepage.CustomizeTheCalloutTitle' | translate }}
-														</p>
-													</div>
-
-													<div class="col-sm-8">
-														<div style="color: rgba(0, 0, 0, 0.54);; font-weight: 600; margin-top: 8px; font-size: 13px; margin-bottom: 4px;">
-															{{ 'Resourcepage.CalloutMsg' | translate }} 
-														</div>
-														<input (keyup)="onKeyCalloutMsg()" [(ngModel)]="calloutMsgText" type="text" class="" style="height: 36px; width: 100%; border-radius: 4px; border: 1px solid #ccc; padding-left: 6px;">
-													</div>
-													<div class="col-sm-11" style="margin-top: 5px">
-														<p style="font-weight:100;font-size:12px; margin-bottom:0px"> 
-															{{ 'Resourcepage.CustomizeTheCalloutMsg' | translate }}
-														</p>
-													</div>
-												</div>
-											</div>
-										</div>
-									</h6> -->
-                            
-									<!-- =========================== WIDGET ALIGNMENT - MOVED BOTTOM =========================== -->
-									<!-- <h6 class="category text-gray" style="text-transform: none; padding-left:15px"> 
-										<div>    
-											<label style="color: #566787; margin-top: 5px" class="form-check-label" for="exampleCheck1">
-												{{ 'Resourcepage.WidgetAlignment' | translate }}
-											</label>
-											<div class="row" style="border-left: #5bc0de 2px solid; margin-left: 0px;">
-												<div class="col-sm-8">
-													<ng-select #selectElemAlign [clearable]='false' [(ngModel)]="alignmentSelected" (change)="setSelectedAlignment()" style="min-width: 60px; background-color:#fff; color:#333333;" >
-														<ng-option *ngFor="let option of alignmentOptions" [value]="option.value">
-															{{ option.alignTo }}
-														</ng-option>
-													</ng-select>
-												</div>    
-												<div class="col-sm-11" style="margin-top: 5px">  
-													<p style="font-weight:100;font-size: 12px; margin-bottom:0px"> 
-														{{ 'Resourcepage.AlignsTheWidgetToThe' | translate }} {{ alignmentSelected | translate }} {{ 'Resourcepage.OfTneWindow' | translate }}
-													</p>
-												</div>    
-											</div>    
-										</div>
-									</h6> -->
-
-									<!-- =========================== WEB SDK LINK - MOVED TO BOTTOM  =========================== -->
-									<!-- <h6 class="category text-gray" style="text-transform: none; padding-left:15px"> 
-										<div>    
-											<label style="color: #566787; margin-top: 5px" class="form-check-label" for="exampleCheck1">
-												Web SDK
-											</label>
-											<div class="row" style="border-left: #5bc0de 2px solid; margin-left: 0px;">
-												<div class="col-sm-11" style="margin-top: 5px;padding-bottom: 5px;">  
-													<p style="font-weight:500;font-size: 14px; margin-bottom:0px; cursor:pointer"> 
-														<a target="_blank" href="http://docs.tiledesk.com/en/latest/Web%20SDK/">
-															<span style="color: #03a5e8;">
-																{{ 'Resourcepage.LearnMore' | translate }}
-															</span> 
-														</a>  
-													</p>
-												</div>    
-											</div>    
-										</div>
-									</h6> -->
-
-
-									<!-- =========================== WIDGET DESIGN - MOVED TO BOTTOM =========================== -->
-									<!-- <h6 class="category text-gray" style="text-transform: none; padding-left:15px"> 
-										<div>    
-											<label style="color: #566787; margin-top: 5px" class="form-check-label" for="exampleCheck1">
-												Widget design
-											</label>
-											<div class="row" style="border-left: #5bc0de 2px solid; margin-left: 0px;">
-												<div class="col-sm-11" style="margin-top: 10px">  
-													<p style="font-weight:100;font-size: 12px; margin-bottom:0px; color: #5bc0de; cursor:pointer"  (click)="goToWidgetDesign()"> 
-														Stylize your widget
-													</p>
-												</div>    
-											</div>    
-										</div>
-									</h6> -->
-      
-								<!-- </div>  -->
-								<!-- end col  --> 
-
-                        <!-- PREVIEW DIV -->
-                        <!-- style="background-repeat: no-repeat; background-image: url(assets/img/tiledesk-logo.svg); background-position: center; background-size: contain;" -->
-								<!-- <div class="col-sm-7 col-sm-offset-0 col-xs-10 col-xs-offset-1" > -->
-								<div class="col-sm-12" style="padding-left:25px; padding-right:25px; ">           
-									<div style="padding-bottom:0px; padding-left:0px">
-										<!-- <img *ngIf="preChatForm === false" [ngClass]="{'float_left_chat_img' : alignmentSelected === 'left'}"
-										style="width:50%; box-shadow: rgba(0,0,0,.18) 0 0 38px; float: right; margin-bottom: 0px; max-width:245px;" 
-										src="assets/img/tiledesk-chat-2.png"/>
-
-										<img *ngIf="preChatForm === true" [ngClass]="{'float_left_chat_img' : alignmentSelected === 'left'}"
-										style="width:50%; box-shadow: rgba(0,0,0,.18) 0 0 38px; float: right; margin-bottom: 2px; max-width:245px; " 
-										src="assets/img/tiledesk-chat-with-form-2.png"/>
-
-										<div class="col-sm-12 col-xs-12" style="text-align: center">
-												<button style="margin-top:0px" (click)="testWidgetPage()" class="btn btn-success">{{ 'Resourcepage.TestTheWidget' | translate }}</button>
-										</div> -->
-                            
- <!-- projectname: &quot;{{projectName}}&quot;, -->
- <!-- calloutTitle: {{ _calloutTitle }}, -->
- <!-- calloutMsg: {{ _calloutMsg }}, -->
- <!-- *ngIf="calloutTimerSecondSelected !== -1" -->
-
+					<div class="row" style=" margin-top: 15px;">
+						<div class="col-sm-12" style="padding-left:25px; padding-right:25px; ">           
+							<div style="padding-bottom:0px; padding-left:0px">
+	
 
  <!--
 	con questo codice row=18 
 	,{{preChatFormValue}}{{logoChatValue}}{{wellcomeTitleValue}}{{wellcomeMsgValue}}{{ calloutTimerSecondSelected }}{{calloutTitle}}{{calloutMsg}}{{ themeColor }}{{themeForegroundColor}}{{ alignmentSelected }} -->
+	<!-- font-size: 12px; line-height: 20px; padding:5px; background-color: #fff; max-width: 650px; -->
 
- <textarea  name="exampleClipboard" class="textarea" readonly rows="18" value="" type="text" style="font-size: 12px; line-height: 20px; padding:5px; background-color: #fff; max-width: 650px;">
+	<!-- 
+	#######################################################################################################################################
+	################################# REMEMBER TO UPDATE TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG ####################################
+	########## !!!!!!! NOTE THAT TEXT AREA IS HIDDEN - IS USED ONLY TO COPY THE CODE WHEN THE USER CLICK ON THE BUTTON COPY CODE ########## 
+	####################################################################################################################################### -->
+ <textarea  name="exampleClipboard" class="textarea" readonly rows="18" value="" type="text" style="opacity: .01;height:0; position:absolute; z-index: -1;">
 &lt;script type=&quot;application/javascript&quot;&gt;
   window.tiledeskSettings = 
     {
@@ -231,194 +67,271 @@
       fjs.parentNode.insertBefore(js, fjs);
     }(document, &#39;script&#39;, &#39;tiledesk-jssdk&#39;));
 &lt;/script&gt;</textarea>
-<!-- themeColor: {{ primaryColor }},  -->
-<!-- themeForegroundColor: {{ secondaryColor }}, -->
-<!-- <textarea *ngIf="calloutTimerSecondSelected === -1" name="exampleClipboard" class="textarea" readonly rows="16" value="" type="text" style="font-size: 12px; line-height: 20px; padding:5px">
-&lt;script type=&quot;application/javascript&quot;&gt;
-    window.tiledeskSettings = 
-    {
-        projectid: &quot;{{ projectId }}&quot;,
-        preChatForm: {{preChatFormValue}},
-        calloutTimer: {{ calloutTimerSecondSelected }},{{ themeColor }}{{themeForegroundColor}} 
-        align: '{{ alignmentSelected }}'
-    };
-    (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id; //js.async=!0;
-        js.src = &quot;https://widget.tiledesk.com/tiledesk.js&quot;;
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, &#39;script&#39;, &#39;tiledesk-jssdk&#39;));
-&lt;/script&gt;</textarea> -->
 
-									</div>
 
-									<div>
-										<button style="margin-top:0px; color: #7695a5" (click)="copyToClipboard()" class="btn btn-white pull-left">
-											{{ 'Resourcepage.CopyScript' | translate }}
-										</button>
+							</div>
+						<div>
+						<!-- <button style="margin-top:0px; color: #7695a5" (click)="copyToClipboard()" class="btn btn-white pull-left">
+							{{ 'Resourcepage.CopyScript' | translate }}
+						</button> -->
 
-										<button #testwidgetbtn style="margin-top:0px; margin-left: 15px;" (click)="testWidgetPage()" class="btn btn-success pull-left">
-											{{ 'Resourcepage.TestThisCode' | translate }}
-										</button>
-								
-									</div>
-								</div>
+						<!-- <button #testwidgetbtn style="margin-top:0px; margin-left: 15px;" (click)="testWidgetPage()" class="btn btn-success pull-left">
+							{{ 'Resourcepage.TestThisCode' | translate }}
+						</button> -->
+					
+						</div>
+					</div>
                
-							</div> <!-- end row --> 
-							
-							<!-- ========================= INCLUDE PRECHAT FORM ========================= -->
-							<div class="row">
-								<div class="col-sm-12" >
-									<div style="margin-left:15px;padding-bottom: 8px; border-bottom: 1px solid #e1eef4; max-width: 850px;">    
-										<label style="color: #566787; margin-top:8px; margin-bottom:8px; font-size:16px; font-family: Google Sans, sans-serif;">
-												{{ 'Resourcepage.IncludeThePreChatForm_1' | translate }} 
-										</label>
-										<div class="row" style="border-left: #5bc0de 2px solid; margin-left: 0px;">
-											
-											<div class="col-sm-8" style="margin-top: 10px;">  
-												<span style="color: rgb(118, 149, 165)"> 
-													{{ 'Resourcepage.RequiresVisitorsToCompleteForm' | translate }} 
-												</span> 
-											</div>
-											
-											<div class="col-sm-4" style="cursor: pointer;">
-												<!-- <label class="container" for="preChatForm" style="margin-left: 0px; margin-bottom: 6px; margin-top: 8px;">
-													<input type="checkbox" id="preChatForm" [checked]="preChatForm" (change)="togglePrechatformCheckBox($event)" style="position: relative;"/>
-													<span class="checkmark"></span>
-												</label> -->
-												<div class="onoffswitch" style="float:right">
-													<input (change)="togglePrechatformCheckBox($event)" 
-														[checked]="preChatForm" type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch">
-													<label class="onoffswitch-label" for="myonoffswitch">
-															<span class="onoffswitch-inner"></span>
-															<span class="onoffswitch-switch"></span>
-													</label>
-												</div>
+				</div> <!-- end row --> 
 
-											</div>
-										</div>    
-									</div>
+			<!-- /// new incorpora WIDGET NOTE THAT: WHEN IS CLICKED THE BUTTON "COPY CODE" IS COPIED THE CODE IN THE ABOVE TEXAREA  -->
+			<div class="row"> 
+				<div class="col-md-7">
 
-								</div>
-							</div>
+					<!-- 
+					#######################################################################################################################################
+					################################# REMEMBER TO UPDATE TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG ####################################
+					####### !!!!!!!  new incorpora WIDGET NOTE THAT: WHEN IS CLICKED THE BUTTON "COPY CODE" IS COPIED THE CODE IN THE ABOVE TEXAREA ####### 
+					####################################################################################################################################### -->
+					<pre style="padding-left:0px; margin-bottom: 0px;">
+						<span>&lt;script type=&quot;application/javascript&quot;&gt;</span>
+						<span>  window.tiledeskSettings =</span>
+						<span>   {{'{'}}</span>
+						<span>	 projectid: &quot;{{ projectId }}&quot;</span>
+						<span>   {{'};'}}</span>
+						<span>   (function(d, s, id) {{'{'}}</span>
+						<span>    var js, fjs = d.getElementsByTagName(s)[0];    </span>
+						<span>    if (d.getElementById(id)) return;    </span>
+						<span>    js = d.createElement(s); js.id = id; //js.async=!0;    </span>
+						<span>    js.src = &quot;{{WIDGET_URL}}&quot;;</span>
+						<span>    fjs.parentNode.insertBefore(js, fjs);</span>
+						<span>  {{'}'}}(document, &#39;script&#39;, &#39;tiledesk-jssdk&#39;));</span>
+						<span>&lt;/script&gt;</span>	
+					</pre>
 
-							
-						
-							<!-- =========================== WIDGET GREETING & CALLOUT =========================== -->
-							<div class="row">
-								<div class="col-sm-12" >
-									<div style="margin-left:15px;padding-bottom: 8px; border-bottom: 1px solid #e1eef4; max-width: 850px; ">    
-										<label style="color: #566787; margin-top:8px; margin-bottom:8px; font-size:16px; font-family: Google Sans, sans-serif;">
-											<!-- {{ 'Resourcepage.WidgetAlignment' | translate }} -->
-											<!-- Greetings -->
-											{{ 'GreetingsAndCallout' | translate }}
-											
-										</label>
-										<div class="row" style="border-left: #5bc0de 2px solid; margin-left: 0px;">
-											
-											<div class="col-sm-8" style="">  
-												<span style="color: rgb(118, 149, 165)"> 
-														<!-- {{ 'Resourcepage.MakeTheFirstStep' | translate }} -->
-														{{ 'CustomizeHowYouGreet' | translate }}
-														
-													<!-- Customize how you greet your site visitors when they select a department. -->
-
-													<!-- <span style="font-weight:500; color: #00bcd4" *ngIf="alignmentSelected === 'right'"> 
-														{{ 'BottomRight' | translate}} 
-													</span>
-													<span style="font-weight:500; color: #00bcd4" *ngIf="alignmentSelected === 'left'"> 
-														{{ 'BottomLeft' | translate}} 
-													</span> -->
-												</span> 
-											</div>
-											<!-- (click)="goToWidgetSection()" -->
-											<div class="col-sm-4" style="cursor: pointer;  text-align: right" (click)="goToWidgetDesign()"> 
-													<!-- #B5D2E1 -->
-									
-												<span style="color: #9c27b0;  vertical-align: middle; font-weight: 500" > 
-													{{ 'Customize' | translate }}
-												</span> 	
-												<i class="material-icons" style="vertical-align: middle; color: #9c27b0;">
-													keyboard_arrow_right
-												</i>
-											</div>
-										</div>    
-									</div>
-
-								</div>
-							</div>
-
-							<!-- =========================== WIDGET  APPEARENCE  =========================== -->
-							<div class="row">
-								<div class="col-sm-12" >
-									<div style="margin-left:15px;padding-bottom: 8px; border-bottom: 1px solid #e1eef4; max-width: 850px; ">    
-										<label style="color: #566787; margin-top:8px; margin-bottom:8px; font-size:16px; font-family: Google Sans, sans-serif;">
-											<!-- {{ 'WidgetColors' | translate }} -->
-											{{ 'WidgetAppearance' | translate }}
-											
-										</label>
-										<div class="row" style="border-left: #5bc0de 2px solid; margin-left: 0px;">
-											
-											<div class="col-sm-8" style="">  
-												<span style="color: rgb(118, 149, 165)"> 
-													{{ 'CustomizeTheWidgetColors' | translate }}
-													<!-- Customize colors, logo, welcome message and alignment -->
-												</span> 
-											</div>
-											
-											<div class="col-sm-4" style="cursor: pointer;  text-align: right" (click)="goToWidgetDesign()">
-													<!-- #B5D2E1 -->
-									
-												<span style="color: #9c27b0;  vertical-align: middle; font-weight: 500" > 
-														{{ 'Customize' | translate }}
-												</span> 	
-												<i class="material-icons" style="vertical-align: middle; color: #9c27b0;">
-													keyboard_arrow_right
-												</i>
-											</div>
-										</div>    
-									</div>
-
-								</div>
-							</div>
-
-
-							
-								<!-- =========================== WEB SDK LINK =========================== -->
-								<div class="row">
-									<div class="col-sm-12" >
-										<div style="margin-left:15px;padding-bottom: 8px; border-bottom: 1px solid #e1eef4; max-width: 850px;">    
-											<label style="color: #566787; margin-top:8px; margin-bottom:8px; font-size:16px; font-family: Google Sans, sans-serif;">
-													Web SDK
-											</label>
-											<div class="row" style="border-left: #5bc0de 2px solid; margin-left: 0px;">
-												
-												<div class="col-sm-8" style="">  
-													  <!-- http://docs.tiledesk.com/en/latest/Web%20SDK/ -->
-													<span style="color: rgb(118, 149, 165);" target="_blank" href="https://docs.tiledesk.com/widget/web-sdk"> 
-														{{ 'AdvancedWidgetConfigurations' | translate }}
-													</span> 
-												</div>
-												
-												<div class="col-sm-4" style="cursor: pointer; text-align: right">
-														<!-- #B5D2E1 -->
-													<a target="_blank" href="https://docs.tiledesk.com/widget/web-sdk">
-														<span style="color: #9c27b0;  vertical-align: middle; font-weight: 500" > 
-																{{ 'View' | translate }}
-														</span> 	
-														<i class="material-icons" style="vertical-align: middle; color: #9c27b0; font-size: 18px">
-																open_in_new
-														</i>
-													</a>
-												</div>
-											</div>    
-										</div>
 	
-									</div>
-								</div>
+					<button style="margin-top:0px; color: #039be5; margin: 0px; border-radius: 0em 0em 0.25px 0.25px;box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);" 
+						(click)="copyToClipboard()" class="btn btn-white btn-block">
+						<span> 	<i class="material-icons" style="vertical-align: middle; color: #039be5">file_copy</i>	</span>		
+						{{ 'Resourcepage.CopyScript' | translate }}
+					</button>
+		
+					<div class="copied-to-clipboard-tooltip" style="opacity: 0; text-align: center;
+					position: relative;top: -78px; max-width: 360px;left: 50%;transform: translateX(-50%);padding: 5px"
+					[ngClass]="{'has-copied-text' : has_copied}" class="control-label " >
+						{{ 'Copied' | translate }}
+					</div>
+	
+				</div>
+
+				<div class="col-md-5 large-device" >
+
+					<div class="row">
+						<div class="col-sm-12">   
+							<label style="color: #566787; margin-top:8px; margin-bottom:8px; font-size:16px; font-family: Google Sans, sans-serif;">
+								{{ 'Resourcepage.ActivateThePreChatForm' | translate }} 
+							</label>
+						</div>
+						
+						<div class="col-sm-12" style="cursor: pointer;">
+							<div class="onoffswitch">
+								<input (change)="togglePrechatformCheckBox($event)" 
+									[checked]="preChatForm" type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch">
+								<label class="onoffswitch-label" for="myonoffswitch">
+										<span class="onoffswitch-inner"></span>
+										<span class="onoffswitch-switch"></span>
+								</label>
+							</div>
+						</div>
+						
+						<div class="col-sm-12" style="margin-top: 10px;">  
+							<div class="wrap-subtitle-prechat-form" style="max-width: 320px;border-bottom:1px solid #e8f0f5;padding-bottom: 15px;"> 
+								<span style="color: rgb(118, 149, 165); font-weight:400; padding-right: 10px"> 
+									{{ 'Resourcepage.RequiresVisitorsToCompleteForm' | translate }}. 
+								</span>
+							</div> 
+						</div>
+					</div>
+
+					<!-- //// TEST WIDGET -->
+					<div class="row">
+						<div class="col-sm-12">   
+							<label style="color: #566787; margin-bottom:8px; font-size:16px; font-family: Google Sans, sans-serif;margin-top: 16px;">
+								{{ 'WidgetLiveTest' | translate }}
+							</label>
+						</div>
 
 
+						<div class="col-sm-12">  
+							<button #testwidgetbtn style="margin-top:0px; border-radius:50%; padding:12px" (click)="testWidgetPage()" class="btn btn-tdblu">
+								<span> 	<i class="material-icons" style="vertical-align: middle; color: #fff;font-size: 24px;">play_arrow</i>	</span>	
+								<!-- {{ 'Resourcepage.TestThisCode' | translate }} -->
+							</button>
+							<div class="wrap-subtitle-test-widget" style="max-width: 320px;">
+								<span style="color: rgb(118, 149, 165); font-weight:400; padding-right: 10px">
+									{{ 'TestWidgetAllowYou' | translate }}.
+								</span>
+							</div>  
+
+						</div>   
+					</div>    
+				</div>
+			</div>
+
+			<!-- 
+			####################################################################################
+			##################### START PRECHAT FORM & TEST WIDGET @ < 992 #####################
+			#################################################################################### -->
+			<div class="row small-device">
+				<div class="col-sm-6">
+					<div class="row">
+						<div class="col-sm-12">   
+							<label style="color: #566787; margin-top:8px; margin-bottom:8px; font-size:16px; font-family: Google Sans, sans-serif;">
+								{{ 'Resourcepage.ActivateThePreChatForm' | translate }} 
+							</label>
+						</div>
+							
+						<div class="col-sm-12" style="cursor: pointer;">
+							<div class="onoffswitch" style="">
+								<input (change)="togglePrechatformCheckBox($event)" 
+									[checked]="preChatForm" type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch">
+								<label class="onoffswitch-label" for="myonoffswitch">
+										<span class="onoffswitch-inner"></span>
+										<span class="onoffswitch-switch"></span>
+								</label>
+							</div>
+						</div>
+							
+						<div class="col-sm-12" style="margin-top: 10px;">  
+							<div class="wrap-subtitle-prechat-form-mobile" style=""> 
+								<span style="color: rgb(118, 149, 165); font-weight:400; padding-right: 10px"> 
+									{{ 'Resourcepage.RequiresVisitorsToCompleteForm' | translate }}. 
+								</span>
+							</div> 
+						</div>
+					</div>
+				</div>
+
+				<div class="col-sm-6">
+					<div class="row">
+						<div class="col-sm-12">   
+							<label style="color: #566787; margin-top:8px; margin-bottom:8px; font-size:16px; font-family: Google Sans, sans-serif;">
+								{{ 'WidgetLiveTest' | translate }}
+							</label>
+						</div>
+
+
+						<div class="col-sm-12">  
+							<button #testwidgetbtn style="margin-top:0px; border-radius:50%; padding:8px" (click)="testWidgetPage()" class="btn btn-tdblu">
+								<span> 	<i class="material-icons" style="vertical-align: middle; color: #fff;font-size: 21px;">play_arrow</i>	</span>	
+								<!-- {{ 'Resourcepage.TestThisCode' | translate }} -->
+							</button>
+							<div class="wrap-subtitle-test-widget-mobile" style="">
+								<span style="color: rgb(118, 149, 165); font-weight:400; padding-right: 10px">
+									{{ 'TestWidgetAllowYou' | translate }}.
+								</span>
+							</div>  
+
+						</div>   
+					</div>    
+
+				</div>
+			</div>
+
+			<!-- 
+			========================================================================
+			===========================	WIDGET GREETING  =========================== 
+			======================================================================== -->
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="widget-settings-div-button" (click)="goToWidgetDesignGreetings()"> 
+						<div style="padding-left: 15px"> 
+						
+							<label class="widget-setting-label">
+									<!-- {{ 'Resourcepage.WidgetAlignment' | translate }} -->
+									<!-- Greetings -->
+									{{ 'Greetings' | translate }}
+							</label>
+						
+							<div style="color: rgb(118, 149, 165); font-size: 13px; font-weight: 400"> 
+								{{ 'CustomizeHowYouGreetYourSiteVisitors' | translate }}
+							</div> 
+
+						</div> 
+					</div>
+				</div>
+			</div>
+
+			<!-- 
+			========================================================================
+			============================  	 CALLOUT     =========================== 
+			======================================================================== -->
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="widget-settings-div-button" (click)="goToWidgetCallout()"> 
+						<div style="padding-left: 15px"> 
+						
+							<label class="widget-setting-label">
+								{{ 'Callout' | translate }}
+							</label>
+						
+							<div style="color: rgb(118, 149, 165); font-size: 13px; font-weight: 400"> 
+								{{ 'CustomizeHowYouGreetInCallout' | translate }}
+							</div> 
+						</div> 
+					</div>
+				</div>
+			</div>
+
+
+			<!-- 
+			==============================================================================
+			=============================  WIDGET  APPEARENCE  =========================== 
+			============================================================================== -->
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="widget-settings-div-button" (click)="goToWidgetDesign()"> 
+						<div style="padding-left: 15px"> 
+						
+							<label class="widget-setting-label">
+								{{ 'WidgetAppearance' | translate }}
+							</label>
+						
+							<div style="color: rgb(118, 149, 165); font-size: 13px; font-weight: 400"> 
+								{{ 'ChooseYourWidgetColors' | translate }}
+							</div> 
+
+						</div> 
+
+
+					</div>
+				</div>
+			</div>
+
+			<!-- 
+			==============================================================================
+			=============================        Web SDK       =========================== 
+			============================================================================== -->
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="widget-settings-div-button" style="border-bottom: 1px solid #e8f0f5;" (click)="openWebSDK()"> 
+						<div style="padding-left: 15px"> 
+						
+							<label class="widget-setting-label">
+								Web SDK
+							</label>
+						
+							<div style="color: rgb(118, 149, 165); font-size: 13px; font-weight: 400"> 
+								{{ 'AdvancedWidgetConfigurations' | translate }}
+							</div> 
+
+						</div> 
+
+
+					</div>
+				</div>
+			</div>
+	
 
 						<!-- ANDROID SDK -->
 						<!-- <div class="col-sm-12" >

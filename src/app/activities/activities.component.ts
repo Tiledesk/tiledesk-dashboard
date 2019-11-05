@@ -53,15 +53,14 @@ export class ActivitiesComponent implements OnInit {
 
   selectedActivities: any;
   arrayOfSelectedActivity: any;
-
   hasAscDirection = false;
-
   activities: any;
   agentAvailabilityOrRoleChange: string;
   agentDeletion: string;
   agentInvitation: string;
   newRequest: string;
   asc: any;
+
   constructor(
     private usersService: UsersService,
     public auth: AuthService,

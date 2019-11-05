@@ -30,6 +30,9 @@
     &.btn-info{
       @include btn-styles($brand-info);
     }
+    &.btn-tdblu{
+      @include btn-styles($brand-tdblu);
+    }
     &.btn-success{
       @include btn-styles($brand-success);
     }

@@ -26,7 +26,7 @@ export class ProjectService {
   projectID: string;
 
   public myAvailabilityCount: BehaviorSubject<number> = new BehaviorSubject<number>(null);
-
+  public hasCreatedNewProject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   constructor(
     http: Http,
     public auth: AuthService,
@@ -52,6 +52,11 @@ export class ProjectService {
 
     console.log('============ PROJECT SERVICE - countOfMyAvailability ', numOfMyAvailability);
     this.myAvailabilityCount.next(numOfMyAvailability);
+  }
+
+  newProjectCreated(newProjectCreated: boolean) {
+    console.log('PROJECT SERVICE - newProjectCreated ', newProjectCreated);
+    this.hasCreatedNewProject$.next(newProjectCreated);
   }
 
   getCurrentProject() {
@@ -88,7 +93,7 @@ export class ProjectService {
   /* READ (GET ALL PROJECTS) */
   public getProjects(): Observable<Project[]> {
     const url = this.PROJECT_BASE_URL;
-    console.log('MONGO DB PROJECTS URL', url);
+    console.log('getProjects URL', url);
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -263,54 +268,54 @@ export class ProjectService {
   }
 
 
- // ****** UPDATE SUBSCRIPTION ******
- public updatesubscription() {
-  // this.projectID +
-  const url = this.BASE_URL + 'modules/payments/stripe/updatesubscription';
+  // ****** UPDATE SUBSCRIPTION ******
+  public updatesubscription() {
+    // this.projectID +
+    const url = this.BASE_URL + 'modules/payments/stripe/updatesubscription';
 
-  console.log('cancelSubscription PUT URL ', url);
+    console.log('cancelSubscription PUT URL ', url);
 
-  const headers = new Headers();
-  headers.append('Accept', 'application/json');
-  headers.append('Content-type', 'application/json');
-  headers.append('Authorization', this.TOKEN);
-  const options = new RequestOptions({ headers });
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
 
-  const body = { 'projectid': this.projectID, 'userid': this.user._id };
+    const body = { 'projectid': this.projectID, 'userid': this.user._id };
 
-  console.log('PUT REQUEST BODY ', body);
+    console.log('PUT REQUEST BODY ', body);
 
-  return this.http
-    .put(url, JSON.stringify(body), options)
-    .map((res) => res.json());
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
 
-}
+  }
 
-// ****** GET SUBSCRIPTION PAYMENTS ******
-public getSubscriptionPayments(subscriptionId: string): Observable<[]> {
-  const url = this.BASE_URL + 'modules/payments/stripe/' + subscriptionId;
-  console.log('getSubscriptionPayments URL', url);
+  // ****** GET SUBSCRIPTION PAYMENTS ******
+  public getSubscriptionPayments(subscriptionId: string): Observable<[]> {
+    const url = this.BASE_URL + 'modules/payments/stripe/' + subscriptionId;
+    console.log('getSubscriptionPayments URL', url);
 
-  const headers = new Headers();
-  headers.append('Content-Type', 'application/json');
-  headers.append('Authorization', this.TOKEN);
-  return this.http
-    .get(url, { headers })
-    .map((response) => response.json());
-}
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
 
-// ****** GET SUBSCRIPTION by ID ******
-public getSubscriptionById(subscriptionId: string): Observable<[]> {
-  const url = this.BASE_URL + 'modules/payments/stripe/stripesubs/' + subscriptionId;
-  console.log('getSubscriptionPayments URL', url);
+  // ****** GET SUBSCRIPTION by ID ******
+  public getSubscriptionById(subscriptionId: string): Observable<[]> {
+    const url = this.BASE_URL + 'modules/payments/stripe/stripesubs/' + subscriptionId;
+    console.log('getSubscriptionPayments URL', url);
 
-  const headers = new Headers();
-  headers.append('Content-Type', 'application/json');
-  headers.append('Authorization', this.TOKEN);
-  return this.http
-    .get(url, { headers })
-    .map((response) => response.json());
-}
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
 
 
 

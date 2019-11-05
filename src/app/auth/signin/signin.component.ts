@@ -62,8 +62,8 @@ export class SigninComponent implements OnInit {
     //     x.item(i).value = '';
     //   }
     // }
-  }
 
+  }
 
 
   buildForm() {

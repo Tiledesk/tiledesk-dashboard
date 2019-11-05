@@ -9,6 +9,7 @@ import { firebase } from '../firebase-data';
 const serverUrl = 'http://localhost:3000/';
 const serverChatUrl = 'https://api.tiledesk.com/v1/chat/';
 export const environment = {
+    t2y12PruGU9wUtEGzBJfolMIgK: 'uTdBCRvGAEhJ01cT3uBLg8oFJx',
     production: false,
     VERSION: require('../../package.json').version,
     widgetUrl: 'https://widget.tiledesk.com/v3/launch.js',
@@ -43,5 +44,10 @@ export const environment = {
     },
     chat: {
         CHAT_BASE_URL: 'https://support.tiledesk.com/chat/',
+    },
+    testsite: {
+        // testsiteBaseUrl: 'http://testwidget.tiledesk.com/testsitenw3'
+        testsiteBaseUrl: 'https://s3.eu-west-1.amazonaws.com/tiledesk-widget/dev/3.0.26-DEV/assets/test_widget_page/index.html'
+
     }
 };

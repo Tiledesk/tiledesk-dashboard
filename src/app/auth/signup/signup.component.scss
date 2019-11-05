@@ -34,13 +34,12 @@
   background: #fff;
   border: 1px solid #d9d9d9 !important;
   border-top: 1px solid #c0c0c0;
-  border-radius: 2px; 
+  // border-radius: 2px; 
   padding: 0 8px;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   border-radius: 5px;
-  background-color: #fff !important;
-  border: solid 1px #ddd;
+  // border: solid 1px #ddd;
 }
     
 .login-container input[type=text]:hover, input[type=password]:hover, input[type=email]:hover {
@@ -138,4 +137,8 @@ label {
 
 input.secure {
   -webkit-text-security: disc;
+}
+
+.gray-bckgnd {
+  background: #eeeeee !important;
 }

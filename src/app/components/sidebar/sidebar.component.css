@@ -273,7 +273,7 @@ button.close {
 
 /* OVERWRITE THE DEFAULT STYLE */
 .nav-mobile-menu {
-    margin-top: 25px!important;
+    margin-top: 45px!important;
 }
 /* // NK end NEW: AVATAR ON THE SIDEBAR  */
 
@@ -373,9 +373,11 @@ button.close {
     position: relative;
     z-index: 1050;
     background-color: #1e2129!important;
-    /* bottom: 60px; */
-    bottom: 85px;
-    height: 85px;
+
+    /* bottom: 85px;
+    height: 85px; */
+    bottom: 55px;
+    height: 55px;
     padding: 18px;
     color: #e1f5fecc
 }
@@ -835,4 +837,4 @@ button.close {
    
 }
 /* new progress */
-  
+
