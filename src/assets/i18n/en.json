@@ -485,6 +485,7 @@
         "ToDeleteTheProject": "To delete the project, enter the project ID",
         "Calcel": "Cancel",
         "VisitorAuthentication": "Visitor authentication",
+        "Authentication": "Authentication",
         "EnableVisitorAuthentication": "Enable visitor authentication",
         "GenerateSharedSecret": "Generate Shared Secret",
         "NoteThatWillBeSubscribed": "Note that by generating a new shared secret the previous one will be overwritten",

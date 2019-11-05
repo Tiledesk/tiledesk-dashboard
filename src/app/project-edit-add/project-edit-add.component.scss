@@ -394,3 +394,24 @@ $f21blue: #039be5;
     // margin-top:6px !important;
     // padding-bottom: 11px !important;
   }
+
+  .card-title {
+    text-transform: none;
+    color: #566787;
+    //   font-weight: 400;
+    font-family: Google Sans, sans-serif;
+    // margin-left: 15px;
+  }
+
+  .showPosts .greekCross, .showPosts h5 {
+    display:table-cell;
+}
+.greekCross {
+    color: #00BFF3;
+    font-size: 15px;
+}
+.showPosts > h5 {
+    font-size: 15px;
+    display: inline;
+    padding-left: 5px;
+}

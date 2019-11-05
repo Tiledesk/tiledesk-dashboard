@@ -458,7 +458,7 @@
 
           <!-- margin-bottom:95px -->
           <li *ngIf="SHOW_SETTINGS_SUBMENU" routerLinkActive="active" style="margin-bottom:25px" (click)="stopScroll()">
-            <a *ngIf="project"  class="customAncor" routerLink="project/{{ project._id }}/project-settings">
+            <a *ngIf="project"  class="customAncor" routerLink="project/{{ project._id }}/project-settings/general">
             <p class="onBlackBckgrnd">
               <span class="sidebar-mini">{{ 'PS' | translate }} </span> {{ 'NavBar.ProjectSettings' | translate }}
             </p>  

@@ -487,6 +487,7 @@
         "ToDeleteTheProject": "Per eliminare il progetto, digita l'ID del progetto",
         "Calcel": "Annulla",
         "VisitorAuthentication": "Autenticazione visitatore",
+        "Authentication": "Autenticazione",
         "EnableVisitorAuthentication": "Abilita l'autenticazione del visitatore",
         "GenerateSharedSecret": "Genera Shared Secret",
         "NoteThatWillBeSubscribed": "Nota che generando un nuovo shared secret il precedente verrà sovrascritto",

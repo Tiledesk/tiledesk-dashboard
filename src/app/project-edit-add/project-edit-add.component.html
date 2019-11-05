@@ -37,6 +37,14 @@
  
           <a>  {{ "ProjectEditPage.Payments" | translate }}</a> 
       </li>
+
+      <li *ngIf="isVisible" (click)="goToProjectSettings_Auth()"
+        class="btn-with-border-effect" 
+        [ngClass]="{ 'li-active' : PROJECT_SETTINGS_AUTH_ROUTE === true,  
+                    'border-from-center': PROJECT_SETTINGS_AUTH_ROUTE === false }">
+
+        <a>  {{ "ProjectEditPage.Authentication" | translate }}</a> 
+      </li>
    
   </ul>
   
@@ -53,17 +61,33 @@
     
            
               
-              <span *ngIf="PROJECT_SETTINGS_ROUTE">
- 
-                
+              <span *ngIf="PROJECT_SETTINGS_ROUTE">               
                 <!-- SECTION YOUR PROJECT -->
-                <div class="row">
+                <!-- <div class="row">
                   <div class="col-sm-12">
                     <p class="card-section-title" style="margin-bottom: 10px">
                       {{ "ProjectEditPage.YourProject" | translate }}
                     </p>
                   </div>
+                </div> -->
+                
+                <div class="row">
+                  <div class="col-md-12">
+                    <h4 class="card-title" style="margin-bottom: 0px">
+                      {{ "ProjectEditPage.YourProject" | translate }}
+                    </h4>
+                  </div>
+                  <div class="col-md-12">
+       
+                    <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400" > 
+               
+                    </span>
+                    
+                    <div class="section-subtitle" style="height:20px; border-top: 1px solid #e8f0f5; width: calc((100% / 3) + 372px);">	</div>
+                  </div>
                 </div>
+
+
 
                 <div class="input-wrapper" style="max-width: 992px;"> 
                   <div class="row"> 
@@ -96,16 +120,13 @@
 
                 </div>
            
-
-
-
                 <!-- SECTION DIVIDER -->
-                <div class="row section-divider" style="">
-                  <div class="col-sm-12" style="border-top: 1px solid #eeeeee;"></div>
+                <div class="row section-divider" >
+                  <div class="col-sm-12"></div>
                 </div>
 
                 <!-- SECTION TITLE AND SUBTITLE -->
-                <div class="row">
+                <!-- <div class="row">
                   <div class="col-sm-12" style="">
                     <p class="card-section-title" style="">
                       {{ "ProjectEditPage.TranscriptByEmail" | translate }}
@@ -113,6 +134,22 @@
                     <p class="card-section-subtitle">
                       {{ "ProjectEditPage.AutoSendTranscriptByEmail" | translate }}
                     </p>
+                  </div>
+                </div> -->
+
+                <div class="row">
+                  <div class="col-md-12" st>
+                    <h4 class="card-title" style="margin-bottom: 0px">
+                      {{ "ProjectEditPage.TranscriptByEmail" | translate }}
+                    </h4>
+                  </div>
+                  <div class="col-md-12">
+                      <!-- font-family: 'Montserrat', sans-serif; -->
+                    <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400" > 
+                      {{ "ProjectEditPage.AutoSendTranscriptByEmail" | translate }}
+                    </span>
+                    
+                    <div class="section-subtitle" style="height:20px; border-top: 1px solid #e8f0f5; width: calc((100% / 3) + 372px);">	</div>
                   </div>
                 </div>
 
@@ -134,14 +171,12 @@
                     </div>
                   </div>
                 </div>
+           
+              </span>   <!-- /. PROJECT_SETTINGS_ROUTE -->
 
-                <!-- SECTION DIVIDER -->
-                <div class="row section-divider">
-                  <div class="col-sm-12" style="border-top: 1px solid #eeeeee;"></div>
-                </div>
-
+              <span *ngIf="PROJECT_SETTINGS_AUTH_ROUTE">
                 <!-- SECTION SHARED SECRET - TITLE AND SUBTITLE -->
-                <div class="row">
+                <!-- <div class="row">
                   <div class="col-sm-12">
                     <p class="card-section-title">
                       {{ "ProjectEditPage.VisitorAuthentication" | translate }}
@@ -153,6 +188,25 @@
                         {{ 'Resourcepage.HereHow' | translate }} 
                       </span>
                     </p>
+                  </div>
+                </div> -->
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <h4 class="card-title" style="margin-bottom: 0px">
+                      {{ "ProjectEditPage.VisitorAuthentication" | translate }}
+                    </h4>
+                  </div>
+                  <div class="col-md-12">
+       
+                    <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400" > 
+                      {{ "ProjectEditPage.EnableVisitorAuthentication" | translate }}.
+                      <span class="link-to-widget-auth" (click)="goToWidgetAuthenticationDocs()"> 
+                        {{ 'Resourcepage.HereHow' | translate }} 
+                      </span>
+                    </span>
+                    
+                    <div class="section-subtitle" style="height:20px; border-top: 1px solid #e8f0f5; width: calc((100% / 3) + 372px);">	</div>
                   </div>
                 </div>
 
@@ -171,29 +225,38 @@
                   </div>
                 </div>
 
-                <!-- <div class="row">
-                  <label class="col-sm-2"></label>
-                  <div class="col-xs-12 col-sm-10">
-                    <div class="link-to-widget-auth" (click)="goToWidgetAuthenticationDocs()">
-                      {{ "HereTheDocumentationAboutTheVisitorsAuthentication" | translate }}
-                    </div>
-                  </div>
-                </div> -->
 
-              </span>   <!-- /. PROJECT_SETTINGS_ROUTE -->
+
+              </span>   <!-- /. AUTH ROUTE -->
 
 
               <span *ngIf="PROJECT_SETTINGS_PAYMENTS_ROUTE">
 
                   <!-- ****************** start project plan ****************** -->
                   <!-- SECTION TITLE AND SUBTITLE -->
-                  <div class="row">
+                    <!-- <div class="row">
                       <div class="col-sm-12">
                         <p class="card-section-title">
                           {{ "ProjectEditPage.Your" | translate }} {{ "ProjectEditPage.ProjectPlan" | translate }}
                         </p>
                       </div>
-                    </div> 
+                    </div>  -->
+
+                    <div class="row">
+                      <div class="col-md-12">
+                        <h4 class="card-title" style="margin-bottom: 0px">
+                          {{ "ProjectEditPage.Your" | translate }} {{ "ProjectEditPage.ProjectPlan" | translate }}
+                        </h4>
+                      </div>
+                      <div class="col-md-12">
+           
+                        <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400" > 
+                    
+                        </span>
+                        
+                        <div class="section-subtitle" style="height:20px; border-top: 1px solid #e8f0f5; width: calc((100% / 3) + 372px);">	</div>
+                      </div>
+                    </div>
   
                    <div class="input-wrapper" style="max-width: 992px;"> 
                     <div class="row"> 
@@ -265,6 +328,13 @@
                                 {{ "In" | translate }} {{days_to_next_renew}} {{ "Pricing.Days" | translate }}
                               </span>
                           </span>
+
+                          <!-- <div class="showPosts"> 
+                            <span class="greekCross">✚</span>
+
+                            <h5>Hvordan ser jeg statistik omkring besøgende?</h5>
+                       
+                          </div> -->
   
                           <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false">      
                               <i class="material-icons" style="color:#f44336; vertical-align: middle;">
@@ -430,16 +500,6 @@
 
               </span>
 
-
-
-
-
-
-
-
-
-
-    
             </div>
             <!-- ./ card-content -->
 
@@ -535,7 +595,8 @@
   *** CONFIRM THE CREATION OF THE SHARED SECRET MODAL INFO ***
   ************************************************************ -->
   <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayConfirmJwtSecretCreationModal}" style="background-color: rgba(90,90,90,0.5);">
-    <div class="modal-dialog modal-sm" role="document">
+    <!-- modal-sm -->
+    <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header" style="background-color:#f44336; padding-bottom:24px">
           <button type="button" class="close" aria-label="Close" (click)="closeConfirmJwtSecretCreationModal()" style="color: #ffffff;">
@@ -550,13 +611,13 @@
           </h4>
    
         </div>
-        <div class="modal-body">
+        <div class="modal-body" style="margin-top: 25px; margin-bottom: 25px;">
             <label style="text-align: left; padding-bottom:12px; color: #f44336" class="col-sm-12 ">
               {{ "ProjectEditPage.NoteThatWillBeSubscribed" | translate }}!
             </label>
    
         </div>
-        <div class="modal-footer" style="margin-top: 75px; text-align: center">
+        <div class="modal-footer" style="text-align: center">
           <button class="btn btn-white" (click)="closeConfirmJwtSecretCreationModal()" style="padding:12px 16px;">
               {{ "ProjectEditPage.Calcel" | translate }}
           </button>

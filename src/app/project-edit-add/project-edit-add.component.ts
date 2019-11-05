@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ProjectService } from '../services/project.service';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 
 // USED FOR go back last page
@@ -27,6 +27,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   EDIT_VIEW = false;
   PROJECT_SETTINGS_ROUTE: boolean;
   PROJECT_SETTINGS_PAYMENTS_ROUTE: boolean;
+  PROJECT_SETTINGS_AUTH_ROUTE: boolean;
 
   eos = environment.t2y12PruGU9wUtEGzBJfolMIgK;
   showSpinner = true;
@@ -120,20 +121,53 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
     const currentUrl = this.router.url;
     console.log('%ProjectEditAddComponent current_url ', currentUrl);
-    if ((currentUrl.indexOf('/project-settings') !== -1) && (currentUrl.indexOf('/project-settings/payments') === -1)) {
+
+    console.log('%ProjectEditAddComponent PROJECT_SETTINGS_ROUTE ', currentUrl.indexOf('/project-settings/general'));
+    console.log('%ProjectEditAddComponent PROJECT_SETTINGS_PAYMENTS_ROUTE ', currentUrl.indexOf('/project-settings/payments'));
+    console.log('%ProjectEditAddComponent PROJECT_SETTINGS_AUTH_ROUTE ', currentUrl.indexOf('/project-settings/auth'));
+
+    /** THE ACTIVE ROUTE IS /project-settings */
+    if (
+      (currentUrl.indexOf('/project-settings/general') !== -1) &&
+      (currentUrl.indexOf('/project-settings/payments') === -1) &&
+      (currentUrl.indexOf('/project-settings/auth') === -1)
+    ) {
       console.log('%ProjectEditAddComponent router.url', this.router.url);
 
       this.PROJECT_SETTINGS_ROUTE = true;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
-      console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ROUTE ',
-        this.PROJECT_SETTINGS_ROUTE, ' is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
+      this.PROJECT_SETTINGS_AUTH_ROUTE = false;
+      console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
+      console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
+      console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
 
-    } else {
+      /** THE ACTIVE ROUTE IS /project-settings/payments */
+    } else if (
+      (currentUrl.indexOf('/project-settings/general') === -1) &&
+      (currentUrl.indexOf('/project-settings/payments') !== -1) &&
+      (currentUrl.indexOf('/project-settings/auth') === -1)
 
+    ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = true;
-      console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ROUTE ',
-        this.PROJECT_SETTINGS_ROUTE, ' is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
+      this.PROJECT_SETTINGS_AUTH_ROUTE = false;
+
+      console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
+      console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
+      console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
+
+      /** THE ACTIVE ROUTE IS project-settings/auth */
+    } else if (
+      (currentUrl.indexOf('/project-settings/general') === -1) &&
+      (currentUrl.indexOf('/project-settings/payments') === -1) &&
+      (currentUrl.indexOf('/project-settings/auth') !== -1)
+    ) {
+      this.PROJECT_SETTINGS_ROUTE = false;
+      this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
+      this.PROJECT_SETTINGS_AUTH_ROUTE = true;
+      console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
+      console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
+      console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
     }
 
   }
@@ -146,7 +180,12 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   goToProjectSettings_General() {
     console.log('%ProjectEditAddComponent HAS CLICKED goToProjectSettings_General ');
-    this.router.navigate(['project/' + this.id_project + '/project-settings']);
+    this.router.navigate(['project/' + this.id_project + '/project-settings/general']);
+  }
+
+  goToProjectSettings_Auth() {
+    console.log('%ProjectEditAddComponent HAS CLICKED goToProjectSettings_Auth ');
+    this.router.navigate(['project/' + this.id_project + '/project-settings/auth']);
   }
 
   // "SubscriptionSuccessfullyCanceled":"Abbonamento annullato correttamente",
