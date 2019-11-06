@@ -22,7 +22,7 @@ import { Router } from '@angular/router';
 import { Project } from '../models/project-model';
 import { FaqKbService } from '../services/faq-kb.service';
 import { BotLocalDbService } from '../services/bot-local-db.service';
-
+import { AppConfigService } from '../services/app-config.service';
 
 interface NewUser {
   displayName: string;
@@ -44,7 +44,8 @@ export class UsersService {
 
   http: Http;
   BASE_URL = environment.mongoDbConfig.BASE_URL;
-  CLOUD_FUNC_UPDATE_USER_URL = environment.cloudFunctions.cloud_func_update_firstname_and_lastname;
+  CLOUD_FUNC_UPDATE_USER_URL: any;
+  // CLOUD_FUNC_UPDATE_USER_URL = environment.cloudFunctions.cloud_func_update_firstname_and_lastname;
   MONGODB_BASE_URL: any;
   INVITE_USER_URL: any;
   PROJECT_USER_DTLS_URL: any;
@@ -83,7 +84,8 @@ export class UsersService {
     private usersLocalDbService: UsersLocalDbService,
     private router: Router,
     private faqKbService: FaqKbService,
-    private botLocalDbService: BotLocalDbService
+    private botLocalDbService: BotLocalDbService,
+    public appConfigService: AppConfigService
   ) {
     // this.usersCollection = this.afs.collection('users', (ref) => ref.orderBy('time', 'desc').limit(5));
     // this.searchUserCollection = this.afs.collection('users', (ref) => ref.where('displayName', '>=', 'B'));
@@ -102,6 +104,12 @@ export class UsersService {
 
     this.getCurrentProject();
 
+    const firebase_conf = JSON.parse(appConfigService.getConfig().firebase);
+    // console.log('nk --> UsersService firebase_conf ',  firebase_conf);
+    const cloudBaseUrl = firebase_conf['chat21ApiUrl']
+    // console.log('nk --> UsersService cloudBaseUrl ',  cloudBaseUrl);
+    this.CLOUD_FUNC_UPDATE_USER_URL = cloudBaseUrl + 'tilechat/contacts/me';
+    console.log('nk --> UsersService cloud_func_update_firstname_and_lastname',  this.CLOUD_FUNC_UPDATE_USER_URL);  ;
   }
 
   getCurrentProject() {

@@ -21,7 +21,7 @@ import { environment } from '../../environments/environment';
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 // import { QuerySnapshot, DocumentChange, DocumentSnapshot } from '@firebase/firestore-types';
-
+import { AppConfigService } from '../services/app-config.service';
 @Injectable()
 export class RequestsService {
 
@@ -30,8 +30,10 @@ export class RequestsService {
   // messageCollection: AngularFirestoreCollection<Message>;
 
   http: Http;
-  CHAT21_CLOUD_FUNCTIONS_BASE_URL = environment.cloudFunctions.cloud_functions_base_url;
-  CHAT21_CLOUD_FUNC_CLOSE_GROUP_BASE_URL = environment.cloudFunctions.cloud_func_close_support_group_base_url
+  CHAT21_CLOUD_FUNCTIONS_BASE_URL: any;
+  // CHAT21_CLOUD_FUNCTIONS_BASE_URL = environment.cloudFunctions.cloud_functions_base_url;
+  CHAT21_CLOUD_FUNC_CLOSE_GROUP_BASE_URL: any
+  // CHAT21_CLOUD_FUNC_CLOSE_GROUP_BASE_URL = environment.cloudFunctions.cloud_func_close_support_group_base_url
   // FIREBASE_ID_TOKEN = environment.cloudFunctions.firebase_IdToken;
   FIREBASE_ID_TOKEN: any;
 
@@ -60,13 +62,14 @@ export class RequestsService {
   _seeOnlyRequestsHaveCurrentUserAsAgent = false
 
   project: Project;
-  constructor(
 
+  constructor(
     http: Http,
     // private afs: AngularFirestore,
     public auth: AuthService,
     private departmentService: DepartmentService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    public appConfigService: AppConfigService,
   ) {
 
     console.log('SEE REQUEST IM AGENT (REQUESTS SERVICE - ON INIT) ', this._seeOnlyRequestsHaveCurrentUserAsAgent)
@@ -95,8 +98,21 @@ export class RequestsService {
     });
 
     this.getCurrentProject();
-    // !! NO MORE USED
-    // this.getMyDepts();
+    
+    // this.getMyDepts(); // !! NO MORE USED
+
+    const firebase_conf = JSON.parse(appConfigService.getConfig().firebase);
+    // console.log('nk --> RequestsService firebase_conf ', firebase_conf);
+    const cloudBaseUrl = firebase_conf['chat21ApiUrl']
+    // console.log('nk --> RequestsService cloudBaseUrl ', cloudBaseUrl);
+
+    this.CHAT21_CLOUD_FUNCTIONS_BASE_URL = cloudBaseUrl + 'tilechat/groups/'
+    console.log('nk --> RequestsService cloudFunctions.cloud_functions_base_url', this.CHAT21_CLOUD_FUNCTIONS_BASE_URL);
+
+
+    this.CHAT21_CLOUD_FUNC_CLOSE_GROUP_BASE_URL = cloudBaseUrl + 'support/tilechat/groups/'
+    console.log('nk --> RequestsService cloud_func_close_support_group_base_url ', this.CHAT21_CLOUD_FUNC_CLOSE_GROUP_BASE_URL);
+
   }
 
   getProjectUserRole() {
