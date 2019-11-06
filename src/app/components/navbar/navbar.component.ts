@@ -366,7 +366,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 if (
                     this.route === '/user-profile' ||
                     this.route === '/create-new-project' ||
-                    this.route.indexOf('/pricing') !== -1
+                    this.route.indexOf('/pricing') !== -1 ||
+                    this.route.indexOf('/password/change') !== -1
                 ) {
 
                     this.DETECTED_USER_PROFILE_PAGE = true;
