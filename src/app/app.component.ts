@@ -18,6 +18,7 @@ import { environment } from '../environments/environment';
 export const firebaseConfig = environment.firebase;
 import * as firebase from 'firebase';
 import 'firebase/auth';
+import { AppConfigService } from './services/app-config.service';
 
 @Component({
     selector: 'appdashboard-root',
@@ -45,7 +46,8 @@ export class AppComponent implements OnInit, AfterViewInit {
         private translate: TranslateService,
         private requestsService: RequestsService,
         private auth: AuthService,
-        private notify: NotifyService
+        private notify: NotifyService,
+        public appConfigService: AppConfigService
 
         // private faqKbService: FaqKbService,
     ) {
@@ -56,7 +58,17 @@ export class AppComponent implements OnInit, AfterViewInit {
          * *** FIREBASE initializeApp ***
          * *** ---------------------- ***
          */
-        firebase.initializeApp(firebaseConfig);
+        // firebase.initializeApp(firebaseConfig);
+
+        if (!appConfigService.getConfig().firebase || appConfigService.getConfig().firebase.apiKey === 'CHANGEIT') {
+            throw new Error('firebase config is not defined. Please create your firebase-config.json. See the Chat21-Web_widget Installation Page');
+        }
+
+        const firebase_conf = JSON.parse(appConfigService.getConfig().firebase)
+        console.log('AppConfigService - AppComponent firebase_conf ', firebase_conf)
+        firebase.initializeApp(firebase_conf);
+
+
 
         localStorage.removeItem('firebase:previous_websocket_failure');
 
@@ -178,7 +190,8 @@ export class AppComponent implements OnInit, AfterViewInit {
                     (this.route.indexOf('/groups') !== -1) ||
                     (this.route.indexOf('/general') !== -1) ||
                     (this.route.indexOf('/payments') !== -1) ||
-                    (this.route.indexOf('/auth') !== -1)
+                    (this.route.indexOf('/auth') !== -1) ||
+                    (this.route.indexOf('/analytics') !== -1)
                 ) {
 
                     const elemNavbar = <HTMLElement>document.querySelector('.navbar');
