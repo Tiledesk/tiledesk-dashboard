@@ -5,7 +5,7 @@ export const environment = {
     t2y12PruGU9wUtEGzBJfolMIgK: 'uTdBCRvGAEhJ01cT3uBLg8oFJx',
     production: false,
     VERSION: require('../../package.json').version,
-    widgetUrl: 'https://widget.tiledesk.com/v3/launch.js',
+    widgetUrl: 'http://localhost:4200/launch.js',
     remoteConfig: true,
     remoteConfigUrl: '/firebase-config.json',
     firebase: {
