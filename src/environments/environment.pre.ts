@@ -1,6 +1,5 @@
 
 const serverUrl = 'https://tiledesk-server-pre.herokuapp.com/';
-const serverChatUrl = 'https://us-central1-chat21-pre-01.cloudfunctions.net/';
 export const environment = {
     production: true,
     t2y12PruGU9wUtEGzBJfolMIgK: 'uTdBCRvGAEhJ01cT3uBLg8oFJx',
