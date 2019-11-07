@@ -494,7 +494,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
             this.user = user;
 
             // GET ALL PROJECTS WHEN IS PUBLISHED THE USER
-            this.getProjects();
+            if (this.user) {
+                this.getProjects();
+            }
         });
     }
 
