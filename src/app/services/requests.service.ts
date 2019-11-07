@@ -106,11 +106,11 @@ export class RequestsService {
     const cloudBaseUrl = firebase_conf['chat21ApiUrl']
     // console.log('nk --> RequestsService cloudBaseUrl ', cloudBaseUrl);
 
-    this.CHAT21_CLOUD_FUNCTIONS_BASE_URL = cloudBaseUrl + 'tilechat/groups/'
+    this.CHAT21_CLOUD_FUNCTIONS_BASE_URL = cloudBaseUrl + '/tilechat/groups/'
     console.log('nk --> RequestsService cloudFunctions.cloud_functions_base_url', this.CHAT21_CLOUD_FUNCTIONS_BASE_URL);
 
 
-    this.CHAT21_CLOUD_FUNC_CLOSE_GROUP_BASE_URL = cloudBaseUrl + 'support/tilechat/groups/'
+    this.CHAT21_CLOUD_FUNC_CLOSE_GROUP_BASE_URL = cloudBaseUrl + '/support/tilechat/groups/'
     console.log('nk --> RequestsService cloud_func_close_support_group_base_url ', this.CHAT21_CLOUD_FUNC_CLOSE_GROUP_BASE_URL);
 
   }

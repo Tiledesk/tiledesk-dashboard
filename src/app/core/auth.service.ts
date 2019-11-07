@@ -133,7 +133,7 @@ export class AuthService {
     // console.log('nk --> AuthService firebase_conf ', firebase_conf);
     const cloudBaseUrl = firebase_conf['chat21ApiUrl'];
     // console.log('nk --> AuthService cloudBaseUrl ', cloudBaseUrl);
-    this.CLOUDFUNCTION_CREATE_CONTACT_URL = cloudBaseUrl + 'tilechat/contacts';
+    this.CLOUDFUNCTION_CREATE_CONTACT_URL = cloudBaseUrl + '/tilechat/contacts';
     console.log('nk --> AuthService cloudFunctions.cloud_func_create_contact_url ', this.CLOUDFUNCTION_CREATE_CONTACT_URL);
 
   }
