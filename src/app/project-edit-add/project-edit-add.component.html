@@ -1,132 +1,132 @@
 <!-- NEW FOR THIS TEMPLATE -->
 <p class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px;">
-    <!-- (click)="goBackToProjectsList() -->
-    <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">keyboard_arrow_left</i>
+  <!-- (click)="goBackToProjectsList() -->
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
+    (click)="goBack()">keyboard_arrow_left</i>
 
-      <!-- Impostazioni Progetto -->
-    {{ "ProjectEditPage.ProjectSettings" | translate }}
-  
+  <!-- Impostazioni Progetto -->
+  {{ "ProjectEditPage.ProjectSettings" | translate }}
+
 </p>
 
 
-  <ul class="bottom-nav">
+<ul class="bottom-nav">
 
 
-      <!-- [ngClass]="
+  <!-- [ngClass]="
       { 'disabled-li' : displayBtnLabelSeeYourRequets === false, 
         'border-from-center' : displayBtnLabelSeeYourRequets === true,
         'li-active' : displayBtnLabelSeeYourRequets === false
       }" -->
-      <li  (click)="goToProjectSettings_General()"
-        class="btn-with-border-effect"     
-        [ngClass]="{ 'li-active' : PROJECT_SETTINGS_ROUTE === true,  
+  <li (click)="goToProjectSettings_General()" class="btn-with-border-effect" [ngClass]="{ 'li-active' : PROJECT_SETTINGS_ROUTE === true,  
                       'border-from-center': PROJECT_SETTINGS_ROUTE === false}">
-          
-          <a> {{ "General" | translate }} </a> 
-      </li>
 
-      <!-- [ngClass]="
+    <a> {{ "General" | translate }} </a>
+  </li>
+
+  <!-- [ngClass]="
       { 'disabled-li' : displayBtnLabelSeeYourRequets === true, 
         'border-from-center' : displayBtnLabelSeeYourRequets === false, 
         'li-active' : displayBtnLabelSeeYourRequets === true
       }" -->
-      <li *ngIf="isVisible" (click)="goToProjectSettings_Payments()"
-        class="btn-with-border-effect" 
-        [ngClass]="{ 'li-active' : PROJECT_SETTINGS_PAYMENTS_ROUTE === true,  
+  <li *ngIf="isVisible" (click)="goToProjectSettings_Payments()" class="btn-with-border-effect" [ngClass]="{ 'li-active' : PROJECT_SETTINGS_PAYMENTS_ROUTE === true,  
                       'border-from-center': PROJECT_SETTINGS_PAYMENTS_ROUTE === false }">
- 
-          <a>  {{ "ProjectEditPage.Payments" | translate }}</a> 
-      </li>
 
-      <li *ngIf="isVisible" (click)="goToProjectSettings_Auth()"
-        class="btn-with-border-effect" 
-        [ngClass]="{ 'li-active' : PROJECT_SETTINGS_AUTH_ROUTE === true,  
+    <a> {{ "ProjectEditPage.Payments" | translate }}</a>
+  </li>
+
+  <li *ngIf="isVisible" (click)="goToProjectSettings_Auth()" class="btn-with-border-effect" [ngClass]="{ 'li-active' : PROJECT_SETTINGS_AUTH_ROUTE === true,  
                     'border-from-center': PROJECT_SETTINGS_AUTH_ROUTE === false }">
 
-        <a>  {{ "ProjectEditPage.Authentication" | translate }}</a> 
-      </li>
-   
-  </ul>
-  
-  <div class="main-content" style="padding-top:0px">
-    <div class="container-fluid">
-   
-      <div class="row">
-        <div class="col-md-12">
-            <!-- min-height: 518px -->
-          <div class="card" style="min-height: 425px">
-            <loading-spinner *ngIf="showSpinner"></loading-spinner>
-            
-            <div *ngIf="!showSpinner" class="card-content">
-    
-           
-              
-              <span *ngIf="PROJECT_SETTINGS_ROUTE">               
-                <!-- SECTION YOUR PROJECT -->
-                <!-- <div class="row">
+    <a> {{ "ProjectEditPage.Authentication" | translate }}</a>
+  </li>
+
+</ul>
+
+<div class="main-content" style="padding-top:0px">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-12">
+        <!-- min-height: 518px -->
+        <div class="card" style="min-height: 425px">
+          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+          <div *ngIf="!showSpinner" class="card-content">
+
+
+
+            <span *ngIf="PROJECT_SETTINGS_ROUTE">
+              <!-- SECTION YOUR PROJECT -->
+              <!-- <div class="row">
                   <div class="col-sm-12">
                     <p class="card-section-title" style="margin-bottom: 10px">
                       {{ "ProjectEditPage.YourProject" | translate }}
                     </p>
                   </div>
                 </div> -->
-                
-                <div class="row">
-                  <div class="col-md-12">
-                    <h4 class="card-title" style="margin-bottom: 0px">
-                      {{ "ProjectEditPage.YourProject" | translate }}
-                    </h4>
-                  </div>
-                  <div class="col-md-12">
-       
-                    <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400" > 
-               
-                    </span>
-                    
-                    <div class="section-subtitle" style="height:20px; border-top: 1px solid #e8f0f5; width: calc((100% / 3) + 372px);">	</div>
-                  </div>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <h4 class="card-title" style="margin-bottom: 0px">
+                    {{ "ProjectEditPage.YourProject" | translate }}
+                  </h4>
                 </div>
+                <div class="col-md-12">
+
+                  <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">
+
+                  </span>
+
+                  <div class="section-subtitle"
+                    style="height:20px; border-top: 1px solid #e8f0f5; width: calc((100% / 3) + 372px);"> </div>
+                </div>
+              </div>
 
 
 
-                <div class="input-wrapper" style="max-width: 992px;"> 
-                  <div class="row"> 
-                    <label class="col-sm-2 custom-label">
-                      {{ "ProjectEditPage.ProjectName" | translate }}
-                    </label>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                      <div class="input-group">
-                        <input [(ngModel)]="projectName_toUpdate" (ngModelChange)="onProjectNameChange($event)" class="input" type="text" placeholder="Nome Progetto" style="border-top-right-radius: 0px; border-bottom-right-radius: 0px">
-                        <span class="input-group-btn" style="padding-right: 0px;padding-left: 0px;">
-                          <button class="btn btn-success" (click)="edit()" [disabled]="DISABLE_UPDATE_BTN === true" style="padding-bottom: 9px; margin-bottom: 9px; padding-top: 10px; border-top-right-radius: 5px; border-bottom-right-radius: 5px">
-                            {{ "ProjectEditPage.Update" | translate }}
-                          </button>
-                        </span>
-                      </div>
-                      <span *ngIf="projectName_toUpdate?.length > 0 && projectName_toUpdate?.length < 4" style="padding-left: 5px; font-size: 0.9em; color:#da491c">
-                        {{ 'ProjectsPage.ModalMustBeAtLeast' | translate }}
+              <div class="input-wrapper" style="max-width: 992px;">
+                <div class="row">
+                  <label class="col-sm-2 custom-label">
+                    {{ "ProjectEditPage.ProjectName" | translate }}
+                  </label>
+                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div class="input-group">
+                      <input [(ngModel)]="projectName_toUpdate" (ngModelChange)="onProjectNameChange($event)"
+                        class="input" type="text" placeholder="Nome Progetto"
+                        style="border-top-right-radius: 0px; border-bottom-right-radius: 0px">
+                      <span class="input-group-btn" style="padding-right: 0px;padding-left: 0px;">
+                        <button class="btn btn-success" (click)="edit()" [disabled]="DISABLE_UPDATE_BTN === true"
+                          style="padding-bottom: 9px; margin-bottom: 9px; padding-top: 10px; border-top-right-radius: 5px; border-bottom-right-radius: 5px">
+                          {{ "ProjectEditPage.Update" | translate }}
+                        </button>
                       </span>
                     </div>
+                    <span *ngIf="projectName_toUpdate?.length > 0 && projectName_toUpdate?.length < 4"
+                      style="padding-left: 5px; font-size: 0.9em; color:#da491c">
+                      {{ 'ProjectsPage.ModalMustBeAtLeast' | translate }}
+                    </span>
                   </div>
-
-                  <div class="row"> 
-                    <label class="col-sm-2 custom-label">
-                      {{ "ProjectEditPage.ProjectId" | translate }}
-                    </label>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                      <input style="color:#999999" [(ngModel)]="id_project" class="input" type="text" disabled>
-                    </div>
-                  </div>
-
-                </div>
-           
-                <!-- SECTION DIVIDER -->
-                <div class="row section-divider" >
-                  <div class="col-sm-12"></div>
                 </div>
 
-                <!-- SECTION TITLE AND SUBTITLE -->
-                <!-- <div class="row">
+                <div class="row">
+                  <label class="col-sm-2 custom-label">
+                    {{ "ProjectEditPage.ProjectId" | translate }}
+                  </label>
+                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input style="color:#999999" [(ngModel)]="id_project" class="input" type="text" disabled>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- SECTION DIVIDER -->
+              <div class="row section-divider">
+                <div class="col-sm-12"></div>
+              </div>
+
+              <!-- SECTION TITLE AND SUBTITLE -->
+              <!-- <div class="row">
                   <div class="col-sm-12" style="">
                     <p class="card-section-title" style="">
                       {{ "ProjectEditPage.TranscriptByEmail" | translate }}
@@ -137,46 +137,47 @@
                   </div>
                 </div> -->
 
-                <div class="row">
-                  <div class="col-md-12" st>
-                    <h4 class="card-title" style="margin-bottom: 0px">
-                      {{ "ProjectEditPage.TranscriptByEmail" | translate }}
-                    </h4>
-                  </div>
-                  <div class="col-md-12">
-                      <!-- font-family: 'Montserrat', sans-serif; -->
-                    <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400" > 
-                      {{ "ProjectEditPage.AutoSendTranscriptByEmail" | translate }}
-                    </span>
-                    
-                    <div class="section-subtitle" style="height:20px; border-top: 1px solid #e8f0f5; width: calc((100% / 3) + 372px);">	</div>
-                  </div>
+              <div class="row">
+                <div class="col-md-12" st>
+                  <h4 class="card-title" style="margin-bottom: 0px">
+                    {{ "ProjectEditPage.TranscriptByEmail" | translate }}
+                  </h4>
                 </div>
+                <div class="col-md-12">
+                  <!-- font-family: 'Montserrat', sans-serif; -->
+                  <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">
+                    {{ "ProjectEditPage.AutoSendTranscriptByEmail" | translate }}
+                  </span>
 
-                <!-- AUTO SEND TRANSCRIPT BY EMAIL ON / OFF BTN -->
-                <div class="input-wrapper" style="max-width: 992px;"> 
-                  <div class="row">
-                    <label class="col-xs-12 col-sm-2 custom-label custom-label-left">
-                      {{ "ProjectEditPage.AutoSend" | translate }}
-                    </label>
-                    <div class="col-xs-12 col-sm-10">
-                      <div class="onoffswitch">
-                        <input (change)="autoSendTranscriptOnOff($event)" 
-                          [checked]="AUTO_SEND_TRANSCRIPT_IS_ON === true" type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch">
-                        <label class="onoffswitch-label" for="myonoffswitch">
-                            <span class="onoffswitch-inner"></span>
-                            <span class="onoffswitch-switch"></span>
-                        </label>
-                      </div>
+                  <div class="section-subtitle"
+                    style="height:20px; border-top: 1px solid #e8f0f5; width: calc((100% / 3) + 372px);"> </div>
+                </div>
+              </div>
+
+              <!-- AUTO SEND TRANSCRIPT BY EMAIL ON / OFF BTN -->
+              <div class="input-wrapper" style="max-width: 992px;">
+                <div class="row">
+                  <label class="col-xs-12 col-sm-2 custom-label custom-label-left">
+                    {{ "ProjectEditPage.AutoSend" | translate }}
+                  </label>
+                  <div class="col-xs-12 col-sm-10">
+                    <div class="onoffswitch">
+                      <input (change)="autoSendTranscriptOnOff($event)" [checked]="AUTO_SEND_TRANSCRIPT_IS_ON === true"
+                        type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch">
+                      <label class="onoffswitch-label" for="myonoffswitch">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                      </label>
                     </div>
                   </div>
                 </div>
-           
-              </span>   <!-- /. PROJECT_SETTINGS_ROUTE -->
+              </div>
 
-              <span *ngIf="PROJECT_SETTINGS_AUTH_ROUTE">
-                <!-- SECTION SHARED SECRET - TITLE AND SUBTITLE -->
-                <!-- <div class="row">
+            </span> <!-- /. PROJECT_SETTINGS_ROUTE -->
+
+            <span *ngIf="PROJECT_SETTINGS_AUTH_ROUTE">
+              <!-- SECTION SHARED SECRET - TITLE AND SUBTITLE -->
+              <!-- <div class="row">
                   <div class="col-sm-12">
                     <p class="card-section-title">
                       {{ "ProjectEditPage.VisitorAuthentication" | translate }}
@@ -191,50 +192,52 @@
                   </div>
                 </div> -->
 
-                <div class="row">
-                  <div class="col-md-12">
-                    <h4 class="card-title" style="margin-bottom: 0px">
-                      {{ "ProjectEditPage.VisitorAuthentication" | translate }}
-                    </h4>
-                  </div>
-                  <div class="col-md-12">
-       
-                    <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400" > 
-                      {{ "ProjectEditPage.EnableVisitorAuthentication" | translate }}.
-                      <span class="link-to-widget-auth" (click)="goToWidgetAuthenticationDocs()"> 
-                        {{ 'Resourcepage.HereHow' | translate }} 
-                      </span>
+              <div class="row">
+                <div class="col-md-12">
+                  <h4 class="card-title" style="margin-bottom: 0px">
+                    {{ "ProjectEditPage.VisitorAuthentication" | translate }}
+                  </h4>
+                </div>
+                <div class="col-md-12">
+
+                  <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">
+                    {{ "ProjectEditPage.EnableVisitorAuthentication" | translate }}.
+                    <span class="link-to-widget-auth" (click)="goToWidgetAuthenticationDocs()">
+                      {{ 'Resourcepage.HereHow' | translate }}
                     </span>
-                    
-                    <div class="section-subtitle" style="height:20px; border-top: 1px solid #e8f0f5; width: calc((100% / 3) + 372px);">	</div>
+                  </span>
+
+                  <div class="section-subtitle"
+                    style="height:20px; border-top: 1px solid #e8f0f5; width: calc((100% / 3) + 372px);"> </div>
+                </div>
+              </div>
+
+              <!-- SHARED SECRET GENERATE -->
+              <div class="input-wrapper" style="max-width: 992px;">
+                <div class="row">
+                  <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
+                    Shared Secret
+                  </label>
+                  <div class="col-xs-12 col-sm-10">
+
+                    <button (click)="openConfirmJwtSecretCreationModal()" class="btn btn-danger"
+                      style="margin-top:5px; padding:6px 15px ">
+                      {{ "ProjectEditPage.Generate" | translate }}
+                    </button>
                   </div>
                 </div>
-
-                <!-- SHARED SECRET GENERATE -->
-                <div class="input-wrapper" style="max-width: 992px;"> 
-                  <div class="row">
-                    <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
-                      Shared Secret
-                    </label>
-                    <div class="col-xs-12 col-sm-10">
-                                              
-                      <button (click)="openConfirmJwtSecretCreationModal()" class="btn btn-danger" style="margin-top:5px; padding:6px 15px ">
-                        {{ "ProjectEditPage.Generate" | translate }}
-                      </button>
-                    </div>
-                  </div>
-                </div>
+              </div>
 
 
 
-              </span>   <!-- /. AUTH ROUTE -->
+            </span> <!-- /. AUTH ROUTE -->
 
 
-              <span *ngIf="PROJECT_SETTINGS_PAYMENTS_ROUTE">
+            <span *ngIf="PROJECT_SETTINGS_PAYMENTS_ROUTE">
 
-                  <!-- ****************** start project plan ****************** -->
-                  <!-- SECTION TITLE AND SUBTITLE -->
-                    <!-- <div class="row">
+              <!-- ****************** start project plan ****************** -->
+              <!-- SECTION TITLE AND SUBTITLE -->
+              <!-- <div class="row">
                       <div class="col-sm-12">
                         <p class="card-section-title">
                           {{ "ProjectEditPage.Your" | translate }} {{ "ProjectEditPage.ProjectPlan" | translate }}
@@ -242,309 +245,395 @@
                       </div>
                     </div>  -->
 
-                    <div class="row">
-                      <div class="col-md-12">
-                        <h4 class="card-title" style="margin-bottom: 0px">
-                          {{ "ProjectEditPage.Your" | translate }} {{ "ProjectEditPage.ProjectPlan" | translate }}
-                        </h4>
-                      </div>
-                      <div class="col-md-12">
-           
-                        <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400" > 
-                    
-                        </span>
-                        
-                        <div class="section-subtitle" style="height:20px; border-top: 1px solid #e8f0f5; width: calc((100% / 3) + 372px);">	</div>
-                      </div>
-                    </div>
-  
-                   <div class="input-wrapper" style="max-width: 992px;"> 
-                    <div class="row"> 
-                      <label class="col-sm-2 custom-label">
-                        {{ "ProjectEditPage.ProjectPlan" | translate }}
-                      </label>
-                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        <span *ngIf="prjct_profile_type === 'payment'" > 
-                        <span class="payment-plan-name" style="font-family: 'Google Sans', sans-serif !important;"> 
-                          {{ 'YourCurrentPlan' | translate }}: 
-                          
-                          
-                          <span style="font-weight: 500"> 
-                            <span style="text-transform: capitalize">{{ prjct_profile_name }} </span>
-                          
-                            
-                              ( {{ numberOf_agents_seats }} {{ "AgentSeats" | translate }} x € {{ plan_amount / 100 }} .00 / {{ plan_interval | translate}} )  
-                          
-                          </span>
+              <div class="row">
+                <div class="col-md-12">
+                  <h4 class="card-title" style="margin-bottom: 0px">
+                    {{ "ProjectEditPage.Your" | translate }} {{ "ProjectEditPage.ProjectPlan" | translate }}
+                  </h4>
+                </div>
+                <div class="col-md-12">
+
+                  <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">
+                  </span>
+
+                  <div class="section-subtitle"
+                    style="height:20px; border-top: 1px solid #e8f0f5; width: calc((100% / 3) + 372px);"> </div>
+                </div>
+              </div>
+
+              <div class="input-wrapper" style="max-width: 992px;">
+                <div class="row">
+                  <label class="col-sm-2 custom-label">
+                    {{ "ProjectEditPage.ProjectPlan" | translate }}
+                  </label>
+                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="">
+
+
+                    <span *ngIf="prjct_profile_type === 'payment'">
+                      <span class="payment-plan-name" style="font-family: 'Google Sans', sans-serif !important;">
+                        {{ 'YourCurrentPlan' | translate }}:
+
+
+                        <span style="font-weight: 500">
+                          <span style="text-transform: capitalize">{{ prjct_profile_name }} </span>
+
+
+                          ( {{ numberOf_agents_seats }} {{ "AgentSeats" | translate }} x € {{ plan_amount / 100 }} .00 /
+                          {{ plan_interval | translate}} )
+
                         </span>
                       </span>
-  
-  
-                        <span *ngIf="prjct_profile_type === 'free'"> 
-                            <div class="input-group">
-                                <input style="border-color:transparent!important;font-family: 'Google Sans', sans-serif !important; font-weight: 500" 
-                                  [(ngModel)]="prjct_profile_name" class="input project-plan-input" type="text" disabled>
-                                
-                                <span class="input-group-btn" style="padding-right: 0px;padding-left: 0px;">
-                                
-                                  <span *ngIf="prjct_profile_type === 'free'"> 
-                                    <button class="btn btn-success" style="padding-top:9px; padding-bottom:9px" (click)="goToPricing()">
-                                      {{ "Pricing.UpgradePlan" | translate }}
-                                    </button>
-                                  </span> 
-                                  <!-- <span *ngIf="prjct_profile_type === 'payment'"> 
-                                    <button class="btn btn-success" (click)="getMoreOperatorsSeats()">
-                                      {{ "Pricing.AddMoreOperators" | translate }}
-                                    </button>
-                                  </span> -->
-                                </span>
-                              </div>
-                        </span> 
-                      </div>                   
-                    </div>
-  
-                    <!-- ****************** SUBSCRIPTION STATUS ****************** -->
-                    <div class="row">
-                      <label class="col-sm-2 custom-label">
-                        {{ "SubscriptionStatus" | translate }}
-                      </label>
-                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        <span class="subscription-info" style="font-weight: 500;"> 
-                          <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === true">      
-                              <i class="material-icons" style="color:#4caf50; vertical-align: middle;">
-                                check_circle
-                              </i>
-                              <span>  {{ "Pricing.YourSubscriptionIsActive" | translate }}, </span>
-                                {{ "NextRenew" | translate }} 
-                        
-                              <span *ngIf="days_to_next_renew === 0"> 
-                                {{ "Today" | translate}}  {{ "At" | translate}} {{ timeOfNextRenew }}
-                              </span>
-                              <span *ngIf="days_to_next_renew === 1"> 
-                                {{ "Pricing.Tomorrow" | translate }}
-                              </span>
-  
-                              <span *ngIf="days_to_next_renew > 1"> 
-                                {{ "In" | translate }} {{days_to_next_renew}} {{ "Pricing.Days" | translate }}
-                              </span>
+                    </span>
+
+
+                    <span *ngIf="prjct_profile_type === 'free'">
+
+                      <span class="payment-plan-name" style="font-family: 'Google Sans', sans-serif !important;">
+                        {{ 'YourCurrentPlan' | translate }}:
+
+
+                        <span style="font-weight: 500">
+                          <span style="text-transform: capitalize">{{ prjct_profile_name }} </span>
+
+
+                          ( {{ projectUsersLength }}
+                          <span *ngIf="projectUsersLength === 1">
+                            {{ "Agent" | translate }}
+                          </span>
+                          <span *ngIf="projectUsersLength > 1">
+                            {{ "Agents" | translate }}
                           </span>
 
-                          <!-- <div class="showPosts"> 
-                            <span class="greekCross">✚</span>
+                          <span *ngIf="countOfPendingInvites > 0">
 
-                            <h5>Hvordan ser jeg statistik omkring besøgende?</h5>
-                       
-                          </div> -->
-  
-                          <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false">      
-                              <i class="material-icons" style="color:#f44336; vertical-align: middle;">
-                                error_outline
-                              </i>
-                              <span style="color:#f44336;">  
-                                {{ "Pricing.SubscriptionExpired" | translate }} -
-                              </span>
-  
-                              <span style="color: #039be5; cursor:pointer" (click)="openModalSubsExpired()">
-                                {{ "Pricing.UpgradePlan" | translate }} 
-                              </span>
-                          </span>   
-  
-                          <span *ngIf="prjct_profile_type !== 'payment'">
-                            <i class="material-icons" style="color:#5e9ded; vertical-align: middle;">
-                                info
-                            </i>
-                            <span *ngIf="prjct_trial_expired === false"> 
-                                {{ "Pricing.Your" | translate }}
-                                
-                              <span style="font-weight:500"> 
-                                {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate }}
-                              </span>
-                              
-                              {{ "Pricing.WillExpireIn" | translate }}
-                              
-                                <span *ngIf="prjc_trial_days_left < -1"> 
-                                  {{ - prjc_trial_days_left }} {{ "Pricing.Days" | translate }}
-                              </span>
-            
-                              <span *ngIf="prjc_trial_days_left === -1"> 
-                                  {{ "Pricing.Tomorrow" | translate }}
-                              </span>
-                            </span> 
-  
-                            <span *ngIf="prjct_trial_expired === true" style="font-weight:500; color: #f44336"> 
-                                {{ "Pricing.Your" | translate }}
-                              
-                                {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate }} 
-                             
-                                {{ "Pricing.HasExpired" | translate }}
-                             
-                            </span> 
-                          </span>
-                        </span>
-                      </div>
-                    </div>
-  
-                    <!-- ****************** SUBSCRIPTION START DATE ****************** -->
-                    <div class="row" *ngIf="prjct_profile_type !== 'free'"  style="margin-top: 16px;"> 
-                      <label class="col-sm-2 custom-label">
-                        {{ "SubscriptionStartDate" | translate }}
-                      </label>
-                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                       
-                        <span class="subscription-info" style="">
-                          <i class="material-icons" style="vertical-align: middle;color: #697386;">
-                              flag
-                          </i>
-                          <span style="font-weight: 500;  padding: 5px;height:31px;position: relative;top: 2px;"> 
-                           
-                            <!-- IF THE  subscription_creation_date IS OBTAINED FROM THE PROJECT PROFILE -->
-                            <!-- {{ subscription_creation_date | date: 'dd/MM/yyyy' }} -->
-  
-                           <!-- IF THE  subscription_creation_date IS OBTAINED FROM THE SUBSCRIPTION PAYMENT OBJECT -->
-                            {{ subscription_creation_date * 1000 | date: 'dd/MM/yyyy' }}
-                          </span>
-                        </span>
-                        
-                      </div>
-                    </div>
-  
-                    <!-- ****************** CURRENT INVOICE START DATE ****************** -->
-                    <div class="row" *ngIf="prjct_profile_type !== 'free'"  style="margin-top: 16px;"> 
-                      <label class="col-sm-2 custom-label">
-                        {{ "CurrentInvoiceStartDate" | translate }}
-                      </label>
-                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                      
-                      <span class="subscription-info" style="">
-                          <i class="material-icons" style="vertical-align: middle;color: #697386;">
-                              calendar_today
-                          </i>
-  
-                          <span style=" font-weight: 500;  padding: 5px;height:31px;position: relative;top: 2px;"> 
-                            {{ subscription_start_date | date: 'dd/MM/yyyy' }}
-                          </span>
-                      
-                      </span>
-                        
-                      </div>
-                    </div>
-  
-                    <!-- ****************** CURRENT INVOICE END DATE ****************** -->
-                    <div class="row" *ngIf="prjct_profile_type !== 'free'"  style="margin-top: 16px;"> 
-                      <label class="col-sm-2 custom-label">
-                        {{ "CurrentInvoiceEndDate" | translate }}
-                      </label>
-                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        <span class="subscription-info" style="">
-                          <i class="material-icons" style="vertical-align: middle;color: #697386;">
-                              calendar_today
-                          </i>
-                          <span style="font-weight: 500;  padding: 5px;height:31px;position: relative;top: 2px;"> 
-                            {{ subscription_end_date | date: 'dd/MM/yyyy' }}
-                          </span>
-                        </span>
-                      </div>
-                    </div>
-  
-                    <!-- ****************** NUMBER OF AGENTS SEATS ****************** -->
-                    <div class="row" *ngIf="prjct_profile_type !== 'free'"  style="margin-top: 16px;"> 
-                      <label class="col-sm-2 custom-label">
-                        {{ "NumberOfAgentSeats" | translate }}
-                      </label>
-                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        <span class="subscription-info" style="">
-                          <i class="material-icons" style="vertical-align: middle;color: #697386;">
-                              people_alt
-                          </i>
-                          <span style="font-weight: 500;  padding: 5px;height:31px;position: relative;top: 2px;"> 
-                            {{ numberOf_agents_seats }} 
-                          </span>
-                            <span style="color: #039be5; cursor:pointer; border: 1px solid;  padding: 5px; border-radius: 4px; font-weight: 400;
-                              font-size: 12px; margin-left: 16px;" (click)="getMoreOperatorsSeats()">
-                              {{ "Pricing.AddMoreOperators" | translate }}
+                            {{ 'And' | translate }} {{countOfPendingInvites }}
+
+                            <span *ngIf="countOfPendingInvites === 1">
+                              {{ 'PendingInvitation' | translate }}
                             </span>
+                            <span *ngIf="countOfPendingInvites > 1">
+                              {{ 'PendingInvitations' | translate }}
+                            </span>
+                          </span>
+
+                          x € 0.00 / {{'PerMonth' | translate }})
+
                         </span>
-                      </div>
-                    </div>
-  
-                    <div class="row" *ngIf="prjct_profile_type !== 'free'"  style="margin-top: 16px;"> 
-                      <label class="col-sm-2 ">        </label>
-                      <div class="col-sm-10" style="border-top: 1px solid #eeeeee;"></div>
-                    </div>
-  
-                 
-  
-                    <!-- ****************** PAYMENTS ****************** -->
-                    <div class="row" *ngIf="prjct_profile_type !== 'free'"  style="margin-top: 16px;"> 
-                      <label class="col-sm-2 custom-label">
-                        {{ "ProjectEditPage.Payments" | translate }}
-                      </label>
-                      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                        <button class="btn btn-success" (click)="goToPayments()" style="padding: 6px 38px; margin-top: 5px;">
-                          {{ "ProjectEditPage.SeePayments" | translate }}
-                        </button>
-                      </div>
-                    </div>
-  
-                    <div class="row"  *ngIf="prjct_profile_type !== 'free'"> 
-                        <label class="col-sm-2"> </label>
-                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                          <button class="btn btn-danger" (click)="viewCancelSubscription()" style="padding: 6px 15px; margin-top: 5px;">
-                            {{ "CancelSubscription" | translate }}
-                          </button>
-                        </div>
-                    </div>
-  
+                      </span>
+
+
+
+
+                      <!-- <div class="input-group">
+                        <input
+                          style="border-color:transparent!important;font-family: 'Google Sans', sans-serif !important; font-weight: 500; padding-left: 0px;"
+                          [(ngModel)]="prjct_profile_name" class="input project-plan-input" type="text" disabled>
+
+                        <span class="input-group-btn" style="padding-right: 0px;padding-left: 0px;">
+
+                          <span *ngIf="prjct_profile_type === 'free'">
+                            <button class="btn btn-success" style="padding-top:9px; padding-bottom:9px"
+                              (click)="goToPricing()">
+                              {{ "Pricing.UpgradePlan" | translate }}
+                            </button>
+                          </span>
+                        </span>
+                      </div> -->
+                    </span>
                   </div>
-                  <!-- ****************** /.end project plan ****************** -->
+                  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" style="">
 
-              </span>
 
-            </div>
-            <!-- ./ card-content -->
+                    <div class="card"
+                      style="box-shadow: 0 14px 30px 0 rgba(60,72,91,0.22); border-radius:10px;position: absolute;left: -11px; margin-top: 0px;">
+                      <div class="card-content">
 
-            <!-- <div class="card-footer" style="text-align: center;">
+
+                        
+
+                          <div style="border-radius: 10px 10px 0 0;  margin-right: -20px;
+                          background: aliceblue;
+                          margin-left: -20px;
+                          margin-top: -20px;
+                          padding-top: 15px;
+                          padding-bottom: 1px;">
+                              <h4 class="card-title" style="text-transform: none; color: #566787;font-size:14px; font-weight:400; text-align: center; margin-top:0px">What you’re missing</h4>
+                            </div>  
+                            
+                            <ul class="pro-plan-ul" >
+                                <li>{{ 'Hours'| translate}}</li> 
+                                <li>{{'Unlimited'| translate}} {{'Departments' | translate}}</li> 
+                                <li>{{'AgentsGroups'| translate}}</li>
+                                <li>{{'AnalyticsAndRealTimeMonitoring' | translate}} </li>
+                                <li>{{'UnlimitedChatHistory' | translate}} </li>
+                                <li>{{'DataExport' | translate}}</li>
+                                <li>{{'PostChatSurveys' | translate}}</li>
+                            </ul>
+                      </div>
+                    </div>
+
+
+                  </div>
+                </div>
+
+                <!-- ****************** SUBSCRIPTION STATUS ****************** -->
+                <div class="row">
+                  <label class="col-sm-2 custom-label" style="height: 46px;"
+                    [ngStyle]="{'padding-top':  (browser_lang === 'en' ) ? '15px' : '' }">
+                    {{ "SubscriptionStatus" | translate }}
+                  </label>
+                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <span class="subscription-info" style="font-weight: 500;">
+                      <span style="display: flex;"
+                        *ngIf="prjct_profile_type === 'payment' && subscription_is_active === true">
+                        <i class="material-icons" style="color:#4caf50; vertical-align: middle; padding-right: 8px">
+                          check_circle
+                        </i>
+                        <span> {{ "Pricing.YourSubscriptionIsActive" | translate }}, </span>
+                        {{ "NextRenew" | translate }}
+
+                        <span *ngIf="days_to_next_renew === 0">
+                          {{ "Today" | translate}} {{ "At" | translate}} {{ timeOfNextRenew }}
+                        </span>
+                        <span *ngIf="days_to_next_renew === 1">
+                          {{ "Pricing.Tomorrow" | translate }}
+                        </span>
+
+                        <span *ngIf="days_to_next_renew > 1">
+                          {{ "In" | translate }} {{days_to_next_renew}} {{ "Pricing.Days" | translate }}
+                        </span>
+                      </span>
+
+
+                      <span style="display: flex;"
+                        *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false">
+                        <i class="material-icons" style="color:#f44336; vertical-align: middle; padding-right: 8px">
+                          error_outline
+                        </i>
+                        <span style="color:#f44336;">
+                          {{ "Pricing.SubscriptionExpired" | translate }} - &nbsp;
+                        </span>
+
+                        <span style="color: #039be5; cursor:pointer" (click)="openModalSubsExpired()">
+                          {{ "Pricing.UpgradePlan" | translate }}
+                        </span>
+                      </span>
+
+                      <span style="display: flex;" *ngIf="prjct_profile_type !== 'payment'">
+                        <i class="material-icons" style="color:#5e9ded; vertical-align: middle; padding-right: 8px">
+                          info
+                        </i>
+                        <span *ngIf="prjct_trial_expired === false">
+                          {{ "Pricing.Your" | translate }}
+
+                          <span style="font-weight:500">
+                            {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate }}
+                          </span>
+
+                          {{ "Pricing.WillExpireIn" | translate }}
+
+                          <span *ngIf="prjc_trial_days_left < -1">
+                            {{ - prjc_trial_days_left }} {{ "Pricing.Days" | translate }}
+                          </span>
+
+                          <span *ngIf="prjc_trial_days_left === -1">
+                            {{ "Pricing.Tomorrow" | translate }}
+                          </span>
+                        </span>
+
+                        <span *ngIf="prjct_trial_expired === true" style="font-weight:500; color: #f44336">
+                          {{ "Pricing.Your" | translate }}
+
+                          {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate }}
+
+                          {{ "Pricing.HasExpired" | translate }}
+
+                        </span>
+                      </span>
+                    </span>
+                  </div>
+                </div>
+
+                <!-- ****************** SUBSCRIPTION START DATE ****************** -->
+                <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
+                  <label class="col-sm-2 custom-label">
+                    {{ "SubscriptionStartDate" | translate }}
+                  </label>
+                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+
+                    <span class="subscription-info" style="">
+                      <i class="material-icons" style="vertical-align: middle;color: #697386;">
+                        flag
+                      </i>
+                      <span style="font-weight: 500;  padding: 5px;height:31px;position: relative;top: 2px;">
+
+                        <!-- IF THE  subscription_creation_date IS OBTAINED FROM THE PROJECT PROFILE -->
+                        <!-- {{ subscription_creation_date | date: 'dd/MM/yyyy' }} -->
+
+                        <!-- IF THE  subscription_creation_date IS OBTAINED FROM THE SUBSCRIPTION PAYMENT OBJECT -->
+                        {{ subscription_creation_date * 1000 | date: 'dd/MM/yyyy' }}
+                      </span>
+                    </span>
+
+                  </div>
+                </div>
+
+                <!-- ****************** CURRENT INVOICE START DATE ****************** -->
+                <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
+                  <label class="col-sm-2 custom-label">
+                    {{ "CurrentInvoiceStartDate" | translate }}
+                  </label>
+                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+
+                    <span class="subscription-info" style="">
+                      <i class="material-icons" style="vertical-align: middle;color: #697386;">
+                        calendar_today
+                      </i>
+
+                      <span style=" font-weight: 500;  padding: 5px;height:31px;position: relative;top: 2px;">
+                        {{ subscription_start_date | date: 'dd/MM/yyyy' }}
+                      </span>
+
+                    </span>
+
+                  </div>
+                </div>
+
+                <!-- ****************** CURRENT INVOICE END DATE ****************** -->
+                <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
+                  <label class="col-sm-2 custom-label">
+                    {{ "CurrentInvoiceEndDate" | translate }}
+                  </label>
+                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <span class="subscription-info" style="">
+                      <i class="material-icons" style="vertical-align: middle;color: #697386;">
+                        calendar_today
+                      </i>
+                      <span style="font-weight: 500;  padding: 5px;height:31px;position: relative;top: 2px;">
+                        {{ subscription_end_date | date: 'dd/MM/yyyy' }}
+                      </span>
+                    </span>
+                  </div>
+                </div>
+
+                <!-- ****************** NUMBER OF AGENTS SEATS ****************** -->
+                <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
+                  <label class="col-sm-2 custom-label">
+                    {{ "NumberOfAgentSeats" | translate }}
+                  </label>
+                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <span class="subscription-info" style="">
+                      <i class="material-icons" style="vertical-align: middle;color: #697386;">
+                        people_alt
+                      </i>
+                      <span style="font-weight: 500;  padding: 5px;height:31px;position: relative;top: 2px;">
+                        {{ numberOf_agents_seats }}
+                      </span>
+                      <span style="color: #039be5; cursor:pointer; border: 1px solid;  padding: 5px; border-radius: 4px; font-weight: 400;
+                              font-size: 12px; margin-left: 16px;" (click)="getMoreOperatorsSeats()">
+                        {{ "Pricing.AddMoreOperators" | translate }}
+                      </span>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
+                  <label class="col-sm-2 "> </label>
+                  <div class="col-sm-10" style="border-top: 1px solid #eeeeee;"></div>
+                </div>
+
+
+
+                <!-- ****************** PAYMENTS ****************** -->
+                <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
+                  <label class="col-sm-2 custom-label">
+                    {{ "ProjectEditPage.Payments" | translate }}
+                  </label>
+                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <button class="btn btn-success" (click)="goToPayments()"
+                      style="padding: 6px 38px; margin-top: 5px;">
+                      {{ "ProjectEditPage.SeePayments" | translate }}
+                    </button>
+                  </div>
+                </div>
+
+                <div class="row" *ngIf="prjct_profile_type !== 'free'">
+                  <label class="col-sm-2"> </label>
+                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <button class="btn btn-danger" (click)="viewCancelSubscription()"
+                      style="padding: 6px 15px; margin-top: 5px;">
+                      {{ "CancelSubscription" | translate }}
+                    </button>
+                  </div>
+                </div>
+
+                <!-- NO PAYMENTS - IF THERE IS NOT A SUBSCRIPTION CREATION DATE IS SUPPOSE THAT THERE ARE NOT PAYMENTS  -->
+                <div class="row" *ngIf="subscriptionPaymentsLength === 0">
+                  <label class="col-sm-2 custom-label" style="padding-top:15px">
+                    {{ "ProjectEditPage.Payments" | translate }} </label>
+                  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <!-- <button class="btn btn-danger" (click)="viewCancelSubscription()" style="padding: 6px 15px; margin-top: 5px;">
+                            {{ "CancelSubscription" | translate }}
+                          </button> -->
+                    <span class="subscription-info" style="font-weight: 400;">
+                      {{ 'NoPayments' | translate }}
+                    </span>
+                  </div>
+                </div>
+
+
+
+              </div>
+              <!-- ****************** /.end project plan ****************** -->
+
+            </span>
+
+          </div>
+          <!-- ./ card-content -->
+
+          <!-- <div class="card-footer" style="text-align: center;">
               <div class="stats">
                 <button class="btn btn-success" (click)="edit()">
                   {{ "ProjectEditPage.UpdateProject" | translate }}
                   </button>
               </div>
             </div> -->
-  
-            
-          </div>
-          <!-- ./ card -->
-  
-        </div>
-        <!-- ./ col-md-12 -->
-  
-      </div>
-      <!-- ./ row -->
-      <div class="row" *ngIf="PROJECT_SETTINGS_ROUTE">
 
-        <div class="col-md-12" style="text-align: center; border-top: 1px solid #cccccc; margin-top:25px">
-          <div style="color:#aaaaaa; margin-top:25px; cursor:pointer" (click)="openDeleteModal()">
-            <i class="material-icons" style="vertical-align: middle">delete_forever</i> 
-            <span style="vertical-align: middle; text-transform: uppercase">
-              <!-- ELIMINA PROGETTO -->
-              {{ "ProjectEditPage.DeleteProject" | translate }}
-            </span>
-          </div>
-          <!-- <h5 style="color:#aaaaaa; margin-top:25px; font-size:1em">ELIMINA PROGETTO</h5> -->
+
         </div>
+        <!-- ./ card -->
+
       </div>
- 
+      <!-- ./ col-md-12 -->
+
     </div>
-    <!-- ./ container-fluid -->
-  
-  </div> 
-  <!-- ./ main-content -->
+    <!-- ./ row -->
+    <div class="row" *ngIf="PROJECT_SETTINGS_ROUTE">
 
-        
+      <div class="col-md-12" style="text-align: center; border-top: 1px solid #cccccc; margin-top:25px">
+        <div style="color:#aaaaaa; margin-top:25px; cursor:pointer" (click)="openDeleteModal()">
+          <i class="material-icons" style="vertical-align: middle">delete_forever</i>
+          <span style="vertical-align: middle; text-transform: uppercase">
+            <!-- ELIMINA PROGETTO -->
+            {{ "ProjectEditPage.DeleteProject" | translate }}
+          </span>
+        </div>
+        <!-- <h5 style="color:#aaaaaa; margin-top:25px; font-size:1em">ELIMINA PROGETTO</h5> -->
+      </div>
+    </div>
+
+  </div>
+  <!-- ./ container-fluid -->
+
+</div>
+<!-- ./ main-content -->
+
+
 <!-- ******************************  
 *** DELETE PROJECT MODAL WINDOW ***
 *********************************** -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}" style="background-color: rgba(90,90,90,0.5);">
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}"
+  style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header" style="background-color:#ff5252; padding-bottom:24px">
@@ -552,11 +641,11 @@
           <span aria-hidden="true">&times;</span>
         </button>
         <h4 class="modal-title" style="color: #fff">
-            <i class="material-icons" style="vertical-align: middle">report_problem</i>
-            <span style="vertical-align: middle; padding-left:8px"> 
-              <!-- Elimina progetto -->
-              {{ "ProjectEditPage.DeleteProject" | translate }}
-            </span>
+          <i class="material-icons" style="vertical-align: middle">report_problem</i>
+          <span style="vertical-align: middle; padding-left:8px">
+            <!-- Elimina progetto -->
+            {{ "ProjectEditPage.DeleteProject" | translate }}
+          </span>
         </h4>
         <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em ">
           <!-- Il progetto verrà eliminato -->
@@ -564,17 +653,17 @@
         </h4>
       </div>
       <div class="modal-body">
-          <label style="font-weight:100; text-align: left; padding-bottom:12px" class="col-sm-10 ">
-            <!-- Per eliminare il progetto, digita l'ID del progetto: -->
-            {{ "ProjectEditPage.ToDeleteTheProject" | translate }}:
-              <span style="color:#212121">
-                <strong> {{ id_project }}</strong> 
-              </span>
-          </label>
-          <div class="col-sm-10">
-              <!-- [(ngModel)]="project_name" -->
-            <input  class="" type="text" placeholder="{{ 'ProjectEditPage.ProjectId' | translate }}">
-          </div>
+        <label style="font-weight:100; text-align: left; padding-bottom:12px" class="col-sm-10 ">
+          <!-- Per eliminare il progetto, digita l'ID del progetto: -->
+          {{ "ProjectEditPage.ToDeleteTheProject" | translate }}:
+          <span style="color:#212121">
+            <strong> {{ id_project }}</strong>
+          </span>
+        </label>
+        <div class="col-sm-10">
+          <!-- [(ngModel)]="project_name" -->
+          <input class="" type="text" placeholder="{{ 'ProjectEditPage.ProjectId' | translate }}">
+        </div>
       </div>
       <div class="modal-footer" style="margin-top: 75px;">
         <button class="btn btn-white" (click)="onCloseModal()" style="padding:12px 16px;">
@@ -591,83 +680,89 @@
   </div>
 </div>
 
-  <!-- *******************************************************  
+<!-- *******************************************************  
   *** CONFIRM THE CREATION OF THE SHARED SECRET MODAL INFO ***
   ************************************************************ -->
-  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayConfirmJwtSecretCreationModal}" style="background-color: rgba(90,90,90,0.5);">
-    <!-- modal-sm -->
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header" style="background-color:#f44336; padding-bottom:24px">
-          <button type="button" class="close" aria-label="Close" (click)="closeConfirmJwtSecretCreationModal()" style="color: #ffffff;">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <h4 class="modal-title" style="color: #fff">
-              <i class="material-icons" style="vertical-align: middle">warning</i>
-              <span style="vertical-align: middle; padding-left:8px"> 
-                
-                {{ "ProjectEditPage.GenerateSharedSecret" | translate }}
-              </span>
-          </h4>
-   
-        </div>
-        <div class="modal-body" style="margin-top: 25px; margin-bottom: 25px;">
-            <label style="text-align: left; padding-bottom:12px; color: #f44336" class="col-sm-12 ">
-              {{ "ProjectEditPage.NoteThatWillBeSubscribed" | translate }}!
-            </label>
-   
-        </div>
-        <div class="modal-footer" style="text-align: center">
-          <button class="btn btn-white" (click)="closeConfirmJwtSecretCreationModal()" style="padding:12px 16px;">
-              {{ "ProjectEditPage.Calcel" | translate }}
-          </button>
-          <button style="margin-top:0px" class="btn btn-danger" (click)="generateSharedSecret()">
-  
-            {{ "ProjectEditPage.Generate" | translate }}
-          </button>
-        </div>
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayConfirmJwtSecretCreationModal}"
+  style="background-color: rgba(90,90,90,0.5);">
+  <!-- modal-sm -->
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color:#f44336; padding-bottom:24px">
+        <button type="button" class="close" aria-label="Close" (click)="closeConfirmJwtSecretCreationModal()"
+          style="color: #ffffff;">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" style="color: #fff">
+          <i class="material-icons" style="vertical-align: middle">warning</i>
+          <span style="vertical-align: middle; padding-left:8px">
+
+            {{ "ProjectEditPage.GenerateSharedSecret" | translate }}
+          </span>
+        </h4>
+
+      </div>
+      <div class="modal-body" style="margin-top: 25px; margin-bottom: 25px;">
+        <label style="text-align: left; padding-bottom:12px; color: #f44336" class="col-sm-12 ">
+          {{ "ProjectEditPage.NoteThatWillBeSubscribed" | translate }}!
+        </label>
+
+      </div>
+      <div class="modal-footer" style="text-align: center">
+        <button class="btn btn-white" (click)="closeConfirmJwtSecretCreationModal()" style="padding:12px 16px;">
+          {{ "ProjectEditPage.Calcel" | translate }}
+        </button>
+        <button style="margin-top:0px" class="btn btn-danger" (click)="generateSharedSecret()">
+
+          {{ "ProjectEditPage.Generate" | translate }}
+        </button>
       </div>
     </div>
   </div>
+</div>
 
 <!-- *************************************  
 *** SHARED SECRET GENERATED MODAL INFO ***
 ****************************************** -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayJwtSecretGeneratedModal}" style="background-color: rgba(90,90,90,0.5);">
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayJwtSecretGeneratedModal}"
+  style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header" style="background-color:#00bcd4; padding-bottom:24px">
-        <button type="button" class="close" aria-label="Close" (click)="closeJwtSecretGeneratedModal()" style="color: #ffffff;">
+        <button type="button" class="close" aria-label="Close" (click)="closeJwtSecretGeneratedModal()"
+          style="color: #ffffff;">
           <span aria-hidden="true">&times;</span>
         </button>
         <h4 class="modal-title" style="color: #fff">
-            <i class="material-icons" style="vertical-align: middle">info</i>
-            <span style="vertical-align: middle; padding-left:8px"> 
-              
-              {{ "ProjectEditPage.SharedSecretGenerated" | translate }}
-            </span>
+          <i class="material-icons" style="vertical-align: middle">info</i>
+          <span style="vertical-align: middle; padding-left:8px">
+
+            {{ "ProjectEditPage.SharedSecretGenerated" | translate }}
+          </span>
         </h4>
         <!-- <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em ">
             {{ "ProjectEditPage.TheProjectWillBeDeleted" | translate }}
         </h4> -->
       </div>
       <div class="modal-body">
-          <label style="color: rgb(118, 149, 165); font-weight:100; text-align: left;" class="col-sm-10 ">
-            {{ "ProjectEditPage.ThisIsYourSharedSecret" | translate }}:
-          </label>
-          <div class="col-sm-10">
-            <div class="input-group">
-              <input id="sharedSecretInput" readonly [(ngModel)]="sharedSecret" class="" type="text" style="border-top-right-radius: 0px; border-bottom-right-radius: 0px">
-              <span class="input-group-btn" style="padding-right: 0px;padding-left: 0px;">
-                <button class="btn btn-info" (click)="copySharedSecret()" style="padding-bottom: 9px; margin-bottom: 9px; padding-top: 10px; border-top-right-radius: 5px; border-bottom-right-radius: 5px">
-                  {{ "ProjectEditPage.Copy" | translate }}
-                </button>
-              </span>
-            </div>  
+        <label style="color: rgb(118, 149, 165); font-weight:100; text-align: left;" class="col-sm-10 ">
+          {{ "ProjectEditPage.ThisIsYourSharedSecret" | translate }}:
+        </label>
+        <div class="col-sm-10">
+          <div class="input-group">
+            <input id="sharedSecretInput" readonly [(ngModel)]="sharedSecret" class="" type="text"
+              style="border-top-right-radius: 0px; border-bottom-right-radius: 0px">
+            <span class="input-group-btn" style="padding-right: 0px;padding-left: 0px;">
+              <button class="btn btn-info" (click)="copySharedSecret()"
+                style="padding-bottom: 9px; margin-bottom: 9px; padding-top: 10px; border-top-right-radius: 5px; border-bottom-right-radius: 5px">
+                {{ "ProjectEditPage.Copy" | translate }}
+              </button>
+            </span>
           </div>
-          <label style="color:#f44336; text-align: left; margin-top: 5px;" class="col-sm-10 ">
-            {{ "ProjectEditPage.NoteThatWillBeDisplayedOnce" | translate }}.
-          </label>
+        </div>
+        <label style="color:#f44336; text-align: left; margin-top: 5px;" class="col-sm-10 ">
+          {{ "ProjectEditPage.NoteThatWillBeDisplayedOnce" | translate }}.
+        </label>
       </div>
       <div class="modal-footer" style="margin-top: 75px; text-align: center">
         <button class="btn btn-white" (click)="closeJwtSecretGeneratedModal()" style="padding:12px 16px;">
@@ -684,20 +779,22 @@
 
 
 <!-- ============= "CONTACT US - LET'S CHAT" MODAL ============= -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayContactUsModal}" style="background-color: rgba(90,90,90,0.9);"> 
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayContactUsModal}"
+  style="background-color: rgba(90,90,90,0.9);">
   <div class="modal-dialog" role="document">
     <div class="modal-content" style="border-top-left-radius:6px; border-top-right-radius:6px">
       <div class="modal-header" style="padding:16px!important; border-bottom:none!important;">
 
         <button type="button" class="close" aria-label="Close" (click)="closeContactUsModal()">
           <span aria-hidden="true">
-              <!-- &times; -->
-              <svg class="tide-icon " width="24" height="24" viewBox="0 0 24 24">
-                  <path d="M13.357 11.993l10.256 10.295c0.39 0.391 0.39 1.024 0 1.415-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292l-10.257-10.295-10.256 10.295c-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292c-0.39-0.391-0.39-1.024 0-1.415l10.256-10.295-10.256-10.294c-0.39-0.391-0.39-1.024 0-1.415s1.020-0.391 1.409 0l10.256 10.294 10.256-10.294c0.39-0.391 1.020-0.391 1.41 0 0.389 0.391 0.389 1.024 0 1.415l-10.256 10.294z">
-                  </path>
-              </svg>
+            <!-- &times; -->
+            <svg class="tide-icon " width="24" height="24" viewBox="0 0 24 24">
+              <path
+                d="M13.357 11.993l10.256 10.295c0.39 0.391 0.39 1.024 0 1.415-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292l-10.257-10.295-10.256 10.295c-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292c-0.39-0.391-0.39-1.024 0-1.415l10.256-10.295-10.256-10.294c-0.39-0.391-0.39-1.024 0-1.415s1.020-0.391 1.409 0l10.256 10.294 10.256-10.294c0.39-0.391 1.020-0.391 1.41 0 0.389 0.391 0.389 1.024 0 1.415l-10.256 10.294z">
+              </path>
+            </svg>
           </span>
-        </button> 
+        </button>
 
         <!-- <div class="close-payment-report-modal" style="font-weight: 100; right: 6px; position: absolute;cursor:pointer" (click)="closeContactUsModal()">
           <i class="material-icons close-payment-report-icon" style="font-size: 35px; opacity: 0.5;">
@@ -705,31 +802,34 @@
           </i>
         </div> -->
 
-        <h2 class="modal-title" style="color: #262f3c; text-align: center; font-family: 'Google Sans', sans-serif !important; margin-top: 25px">
+        <h2 class="modal-title"
+          style="color: #262f3c; text-align: center; font-family: 'Google Sans', sans-serif !important; margin-top: 25px">
           <span style="vertical-align: middle;">
-              {{ "Pricing.PlanChange" | translate }}
+            {{ "Pricing.PlanChange" | translate }}
           </span>
         </h2>
 
       </div>
       <hr class="custom-hr" style="margin-top:10px; margin-bottom:10px">
-      <div class="modal-body" style="padding-top: 0px; padding-bottom: 0px; padding-right: 35px; padding-left: 35px; line-height: 1">
+      <div class="modal-body"
+        style="padding-top: 0px; padding-bottom: 0px; padding-right: 35px; padding-left: 35px; line-height: 1">
 
         <div class="row">
           <div class="col-sm-12">
-              <h3 style="text-align: center;  color: #8894ab; font-size: 24px">
-                  <!-- Contact us via chat and tell us how many operator seats you want to add to the project -->
-                  {{ "Pricing.ContactUsViaChatAndTellIUsHowManyOperator" | translate}}
-              </h3>
+            <h3 style="text-align: center;  color: #8894ab; font-size: 24px">
+              <!-- Contact us via chat and tell us how many operator seats you want to add to the project -->
+              {{ "Pricing.ContactUsViaChatAndTellIUsHowManyOperator" | translate}}
+            </h3>
           </div>
         </div>
       </div>
 
       <div class="modal-footer" style="margin-top: 0px; background-color: #fff; border-top:none">
-        <div style="text-align: center; margin-bottom: 25px;"> 
+        <div style="text-align: center; margin-bottom: 25px;">
 
-          <button type="button"  style="background-color:#3EA9F5;color:#FFF;padding:12px 16px;border:0;border-radius:4px;font-size:18px"            
-            id="checkout-button-plan_EjFHNnzJXE3jul"  role="link"  (click)="launchWidget()">
+          <button type="button"
+            style="background-color:#3EA9F5;color:#FFF;padding:12px 16px;border:0;border-radius:4px;font-size:18px"
+            id="checkout-button-plan_EjFHNnzJXE3jul" role="link" (click)="launchWidget()">
             <!-- PerMonth -->
             Let's chat
           </button>
@@ -738,8 +838,3 @@
     </div>
   </div>
 </div>
-
-
-
-
-

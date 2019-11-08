@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from './../../environments/environment';
 import { publicKey } from './../utils/util';
-
+import { UsersService } from '../services/users.service';
 import * as moment from 'moment';
 
 @Component({
@@ -74,6 +74,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   plan_amount: string;
   plan_interval: string;
   isVisible: boolean;
+  browser_lang: string;
+  countOfPendingInvites: number;
+  projectUsersLength: number;
+  subscriptionPaymentsLength: number;
   constructor(
     private projectService: ProjectService,
     private router: Router,
@@ -82,6 +86,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     private auth: AuthService,
     private prjctPlanService: ProjectPlanService,
     private notify: NotifyService,
+    private usersService: UsersService,
     private translate: TranslateService
 
   ) { }
@@ -98,8 +103,51 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.translateMsgSubscriptionCanceledError();
 
     this.getProjectId();
-
+    this.getBrowserLanguage();
     this.getOSCODE();
+    this.getAllUsersOfCurrentProject();
+    this.getPendingInvitation();
+  }
+
+  getPendingInvitation() {
+    this.usersService.getPendingUsers()
+      .subscribe((pendingInvitation: any) => {
+        console.log('ProjectEditAddComponent - GET PENDING INVITATION ', pendingInvitation);
+
+        if (pendingInvitation) {
+          this.countOfPendingInvites = pendingInvitation.length
+          console.log('ProjectEditAddComponent - # OF PENDING INVITATION ', this.countOfPendingInvites);
+        }
+
+      }, error => {
+
+        console.log('ProjectEditAddComponent - GET PENDING INVITATION - ERROR', error);
+      }, () => {
+        console.log('ProjectEditAddComponent - GET PENDING INVITATION - COMPLETE');
+      });
+
+  }
+
+
+  getAllUsersOfCurrentProject() {
+    this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
+      console.log('ProjectEditAddComponent PROJECT USERS ', projectUsers);
+
+      if (projectUsers) {
+        this.projectUsersLength = projectUsers.length;
+        console.log('ProjectEditAddComponent # OF PROJECT USERS ', this.projectUsersLength);
+      }
+    }, error => {
+      console.log('ProjectEditAddComponent PROJECT USERS - ERROR', error);
+    }, () => {
+      console.log('ProjectEditAddComponent PROJECT USERS - COMPLETE');
+    });
+  }
+
+
+  getBrowserLanguage() {
+    this.browser_lang = this.translate.getBrowserLang();
+    console.log('ProjectEditAddComponent - browser_lang ', this.browser_lang)
   }
 
 
@@ -222,7 +270,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         this.subscription_is_active = projectProfileData.subscription_is_active;
         this.subscription_end_date = projectProfileData.subscription_end_date;
         this.subscription_start_date = projectProfileData.subscription_start_date;
-
+        this.subscription_creation_date = projectProfileData.subscription_creation_date;
         /**
          * *** GET THE subscription_creation_date FROM THE PTOJECT PROFILE ***
          */
@@ -315,6 +363,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.projectService.getSubscriptionPayments(subscription_id).subscribe((subscriptionPayments: any) => {
       console.log('ProjectEditAddComponent get subscriptionPayments ', subscriptionPayments);
 
+      this.subscriptionPaymentsLength = subscriptionPayments.length
+      console.log('ProjectEditAddComponent get subscriptionPayments Length ', this.subscriptionPaymentsLength);
       if (subscriptionPayments) {
         this.subscription_payments = [];
         subscriptionPayments.forEach((subscriptionPayment, index) => {
