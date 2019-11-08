@@ -1,5 +1,6 @@
 <div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
-	<i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">keyboard_arrow_left</i>
+	<i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
+		(click)="goBack()">keyboard_arrow_left</i>
 	{{ "WidgetAppearance" | translate	}}
 </div>
 
@@ -10,7 +11,7 @@
 		<!-- 
 		*****************************************************************************
 		********************************* GREETINGS ********************************* 
-		***************************************************************************** --> 
+		***************************************************************************** -->
 		<!-- *ngIf="HAS_SELECTED_GREENTINGS === true"  -->
 		<section *ngIf="HAS_SELECTED_GREENTINGS === true" class="greetings">
 			<div class="row">
@@ -26,13 +27,40 @@
 									</h4>
 								</div>
 								<div class="col-md-12">
-										<!-- font-family: 'Montserrat', sans-serif; -->
-									<span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400" > 
-										{{ 'CustomizeHowYouGreetYourSiteVisitors' | translate }} 
+									<!-- font-family: 'Montserrat', sans-serif; -->
+									<span
+										style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">
+										{{ 'CustomizeHowYouGreetYourSiteVisitors' | translate }}
 									</span>
-									
-									<div class="section-subtitle" style="height:20px; border-top: 1px solid #e8f0f5; width: calc((100% / 3) + 372px);margin-bottom: 16px;">	</div>
+
+									<!-- /// GREETINGS SAVE BTN ON TOP  @ MEDIA > 768 -->
+									<button class="btn btn-tdblu appearance-save-btn-desktop" 
+										style="margin-top: 15px; margin-bottom: 16px; float: right; position: relative;	top: -61px;"  
+										(click)="saveOnlineOfflineMsgs()">
+										<i class="material-icons" style="right: 10px;"> save </i>
+										{{ 'ScriptPage.Save' | translate }}
+									</button>
+
+									<!-- height:20px; margin-bottom: 16px; -->
+									<div class="section-subtitle"
+										style=" border-top: 1px solid #e8f0f5; width: calc((100% / 3) + 372px);">
+									</div>
 								</div>
+
+								<div class="row">
+
+										<div class="col-md-12" style="text-align: center;">
+		
+											<!-- /// GREETINGS SAVE BTN ON TOP  @ MEDIA < 768 -->
+											<button class="btn btn-tdblu appearance-save-btn-mobile" 
+												style="margin-top: 15px; margin-bottom: 16px;" 
+												(click)="saveOnlineOfflineMsgs()">
+												<i class="material-icons" style="right: 10px;"> save </i>
+												{{ 'ScriptPage.Save' | translate }}
+											</button>
+		
+										</div>
+									</div>
 							</div>
 
 							<div class="row">
@@ -41,80 +69,103 @@
 									<!-- // ONLINE MSG TITLE & TEXTAREA -->
 									<div class="row">
 										<div class="col-xs-12">
-											<label style="color: #566787; font-weight: 400; margin-top: 8px; margin-bottom: 4px;">
+											<label
+												style="color: #566787; font-weight: 400; margin-top: 8px; margin-bottom: 4px;">
 												{{ "OnlineMessage" | translate}}
-									
+
 												<span class="widget_design__Tooltip">
-													<span> 
-													<i class="material-icons" style="position: relative;top: 2px; font-size:14px; color:#7695a5">
-														help_outline
-													</i>
+													<span>
+														<i class="material-icons"
+															style="position: relative;top: 2px; font-size:14px; color:#7695a5">
+															help_outline
+														</i>
 													</span>
-													<span class="widget_design__Tooltiptext" style="margin-left: -108px;min-width: 225px;height:53px">
+													<span class="widget_design__Tooltiptext"
+														style="margin-left: -108px;min-width: 225px;height:53px">
 														{{ 'TheOnlineMessageIsWhatSiteVisitors' | translate }}
 													</span>
 												</span>
 
 
-												
+
 											</label>
 										</div>
 										<div class="col-xs-12">
-											<textarea [(ngModel)]="onlineMsg" placeholder="{{placeholderOnlineMsg}}"  
-												(ngModelChange)="onChangeOnlineMsg($event)" rows="5" 
-												style="width: 100%; border-radius: 5px;border: solid 1px #ddd; padding: 8px;font-weight: 400;"> 
+											<textarea [(ngModel)]="onlineMsg" placeholder="{{placeholderOnlineMsg}}"
+												(ngModelChange)="onChangeOnlineMsg($event)" rows="5"
+												style="width: 100%; border-radius: 5px;border: solid 1px #ddd; padding: 8px;font-weight: 400;">
 											</textarea>
 										</div>
 									</div>
-							
+
 								</div>
 
 								<!-- // ONLINE MSG PREVIEW -->
-								<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8" style="background-image: url(data:image/gif;base64,R0lGODlhEAAQAJEAAAAAAP////X19f///yH5BAEAAAMALAAAAAAQABAAAAIflG+hq4jM3IFLJhqswNly/XkcBpIiVaInlLJr9FZWAQA7);">
-									<div class="td-widget-preview-wrapper" style="width:375px; position: sticky;position: -webkit-sticky;top: 40px; margin: auto;"
-										[ngStyle]="{'width':  (newInnerWidth < 490 ) ? 'auto' : '' }"> 
+								<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8"
+									style="background-image: url(data:image/gif;base64,R0lGODlhEAAQAJEAAAAAAP////X19f///yH5BAEAAAMALAAAAAAQABAAAAIflG+hq4jM3IFLJhqswNly/XkcBpIiVaInlLJr9FZWAQA7);">
+									<div class="td-widget-preview-wrapper"
+										style="width:375px; position: sticky;position: -webkit-sticky;top: 40px; margin: auto;"
+										[ngStyle]="{'width':  (newInnerWidth < 490 ) ? 'auto' : '' }">
 										<div class="card td-widget-preview-card" style="margin-top: 21px;">
-											<div class="card-content td-widget-preview-card-content" [ngStyle]="{'background-color': primaryColor}">
-												
+											<div class="card-content td-widget-preview-card-content"
+												[ngStyle]="{'background-color': primaryColor}">
+
 												<span class="card-header-center">
-													TileDesk Online
+													Tiledesk Online
 												</span>
 
 												<span class="card-header-left">
-													<svg  aria-labelledby="altIconTitle" height="20px" role="img" viewBox="0 0 24 24" width="24px" xmlns="http://www.w3.org/2000/svg" style="fill: rgb(255, 255, 255);">
+													<svg aria-labelledby="altIconTitle" height="20px" role="img"
+														viewBox="0 0 24 24" width="24px"
+														xmlns="http://www.w3.org/2000/svg"
+														style="fill: rgb(255, 255, 255);">
 														<path d="M0 0h24v24H0V0z" fill="none"></path>
-														<path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"></path>
+														<path
+															d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z">
+														</path>
 													</svg>
 												</span>
 
 												<span class="card-header-right">
 													<span class="option-icon">
-														<svg aria-labelledby="altIconTitle" height="21" viewBox="0 0 24 24" width="21" xmlns="http://www.w3.org/2000/svg" style="fill: rgb(255, 255, 255);">
+														<svg aria-labelledby="altIconTitle" height="21"
+															viewBox="0 0 24 24" width="21"
+															xmlns="http://www.w3.org/2000/svg"
+															style="fill: rgb(255, 255, 255);">
 															<path d="M0 0h24v24H0V0z" fill="none"></path>
-															<path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+															<path
+																d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z">
+															</path>
 														</svg>
 													</span>
 													<span class="td-preview-close-icon">
-														<svg aria-labelledby="altIconTitle" height="21px" role="img" viewBox="0 0 24 24" width="21px" xmlns="http://www.w3.org/2000/svg" style="fill: rgb(255, 255, 255);">
+														<svg aria-labelledby="altIconTitle" height="21px" role="img"
+															viewBox="0 0 24 24" width="21px"
+															xmlns="http://www.w3.org/2000/svg"
+															style="fill: rgb(255, 255, 255);">
 															<path d="M0 0h24v24H0V0z" fill="none"></path>
-															<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"></path>
+															<path
+																d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z">
+															</path>
 														</svg>
 													</span>
 												</span>
 											</div>
-											
+
 											<div class="card-footer td-widget-preview-card-footer">
-												<div  class="td-widget-preview-slide-in-left" role="messaggio">Bot</div>
-											
+												<div class="td-widget-preview-slide-in-left" role="messaggio">Bot</div>
+
 												<div class="td-widget-preview-avatar-image">
-													<img  src="https://s3.eu-west-1.amazonaws.com/tiledesk-widget/dev/2.0.4-beta.7/assets/images/avatar_bot_tiledesk.svg">
-												</div> 
+													<img
+														src="https://s3.eu-west-1.amazonaws.com/tiledesk-widget/dev/2.0.4-beta.7/assets/images/avatar_bot_tiledesk.svg">
+												</div>
 
 												<div class="td-widget-preview-msg_receive">
-													<p [innerHTML]="placeholderOnlineMsg" class="td-widget-preview-msg_receive-p"></p>
+													<p [innerHTML]="placeholderOnlineMsg"
+														class="td-widget-preview-msg_receive-p"></p>
 												</div>
 											</div>
-										</div>           
+										</div>
 									</div>
 								</div>
 							</div>
@@ -122,85 +173,108 @@
 							<!-- /// OFFLINE MSG ROW -->
 							<div class="row">
 								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-									
+
 									<!-- // OFFLINE MSG MSG TITLE & TEXTAREA  -->
 									<div class="row">
 										<div class="col-xs-12">
-											<label style="color: #566787; font-weight: 400; margin-top: 8px; margin-bottom: 4px;">
+											<label
+												style="color: #566787; font-weight: 400; margin-top: 8px; margin-bottom: 4px;">
 												{{ "OfflineMessage" | translate}}
 
-											<span class="widget_design__Tooltip">
-												<span> 
-												<i class="material-icons" style="position: relative;top: 2px; font-size:14px; color:#7695a5">
-													help_outline
-												</i>
+												<span class="widget_design__Tooltip">
+													<span>
+														<i class="material-icons"
+															style="position: relative;top: 2px; font-size:14px; color:#7695a5">
+															help_outline
+														</i>
+													</span>
+													<span class="widget_design__Tooltiptext"
+														style="margin-left: -108px;min-width: 225px;height:65px">
+														{{ 'TheOfflineMessageIsWhatSiteVisitors' | translate }}
+													</span>
 												</span>
-												<span class="widget_design__Tooltiptext" style="margin-left: -108px;min-width: 225px;height:65px">
-													{{ 'TheOfflineMessageIsWhatSiteVisitors' | translate }}
-												</span>
-											</span>
 
-												
+
 											</label>
 										</div>
 										<div class="col-xs-12">
-										
+
 											<textarea [(ngModel)]="offlineMsg" placeholder="{{placeholderOfflineMsg}}"
-												(ngModelChange)="onChangeOfflineMsg($event)" rows="5"  
-												style="width: 100%;border-radius: 5px;border: solid 1px #ddd; padding: 8px; font-weight: 400;"> 
+												(ngModelChange)="onChangeOfflineMsg($event)" rows="5"
+												style="width: 100%;border-radius: 5px;border: solid 1px #ddd; padding: 8px; font-weight: 400;">
 											</textarea>
 										</div>
 									</div>
 								</div>
 
 								<!-- // OFFLINE MSG PREVIEW -->
-								<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8" style="background-image: url(data:image/gif;base64,R0lGODlhEAAQAJEAAAAAAP////X19f///yH5BAEAAAMALAAAAAAQABAAAAIflG+hq4jM3IFLJhqswNly/XkcBpIiVaInlLJr9FZWAQA7);">
+								<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8"
+									style="background-image: url(data:image/gif;base64,R0lGODlhEAAQAJEAAAAAAP////X19f///yH5BAEAAAMALAAAAAAQABAAAAIflG+hq4jM3IFLJhqswNly/XkcBpIiVaInlLJr9FZWAQA7);">
 
 									<!-- ///// offline mssg widget preview start -->
-									<div class="td-widget-preview-wrapper" style="width:375px; position: sticky;position: -webkit-sticky;top: 40px; margin: auto;"
-										[ngStyle]="{'width':  (newInnerWidth < 490 ) ? 'auto' : '' }"> 
+									<div class="td-widget-preview-wrapper"
+										style="width:375px; position: sticky;position: -webkit-sticky;top: 40px; margin: auto;"
+										[ngStyle]="{'width':  (newInnerWidth < 490 ) ? 'auto' : '' }">
 										<div class="card td-widget-preview-card" style="margin-top: 21px;">
-											<div class="card-content td-widget-preview-card-content" [ngStyle]="{'background-color': primaryColor}">
-													
+											<div class="card-content td-widget-preview-card-content"
+												[ngStyle]="{'background-color': primaryColor}">
+
 												<span class="card-header-center">
-													TileDesk Offline
+													Tiledesk Offline
 												</span>
 
 												<span class="card-header-left">
-													<svg  aria-labelledby="altIconTitle" height="20px" role="img" viewBox="0 0 24 24" width="24px" xmlns="http://www.w3.org/2000/svg" style="fill: rgb(255, 255, 255);">
+													<svg aria-labelledby="altIconTitle" height="20px" role="img"
+														viewBox="0 0 24 24" width="24px"
+														xmlns="http://www.w3.org/2000/svg"
+														style="fill: rgb(255, 255, 255);">
 														<path d="M0 0h24v24H0V0z" fill="none"></path>
-														<path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"></path>
+														<path
+															d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z">
+														</path>
 													</svg>
 												</span>
 
 												<span class="card-header-right">
 													<span class="option-icon">
-														<svg aria-labelledby="altIconTitle" height="21" viewBox="0 0 24 24" width="21" xmlns="http://www.w3.org/2000/svg" style="fill: rgb(255, 255, 255);">
+														<svg aria-labelledby="altIconTitle" height="21"
+															viewBox="0 0 24 24" width="21"
+															xmlns="http://www.w3.org/2000/svg"
+															style="fill: rgb(255, 255, 255);">
 															<path d="M0 0h24v24H0V0z" fill="none"></path>
-															<path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
+															<path
+																d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z">
+															</path>
 														</svg>
 													</span>
 													<span class="td-preview-close-icon">
-														<svg aria-labelledby="altIconTitle" height="21px" role="img" viewBox="0 0 24 24" width="21px" xmlns="http://www.w3.org/2000/svg" style="fill: rgb(255, 255, 255);">
+														<svg aria-labelledby="altIconTitle" height="21px" role="img"
+															viewBox="0 0 24 24" width="21px"
+															xmlns="http://www.w3.org/2000/svg"
+															style="fill: rgb(255, 255, 255);">
 															<path d="M0 0h24v24H0V0z" fill="none"></path>
-															<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"></path>
+															<path
+																d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z">
+															</path>
 														</svg>
 													</span>
 												</span>
 											</div>
-											
+
 											<div class="card-footer td-widget-preview-card-footer">
-												<div  class="td-widget-preview-slide-in-left" role="messaggio">Bot</div>
+												<div class="td-widget-preview-slide-in-left" role="messaggio">Bot</div>
 
 												<div class="td-widget-preview-avatar-image">
-													<img src="https://s3.eu-west-1.amazonaws.com/tiledesk-widget/dev/2.0.4-beta.7/assets/images/avatar_bot_tiledesk.svg">
-												</div> 
-		
+													<img
+														src="https://s3.eu-west-1.amazonaws.com/tiledesk-widget/dev/2.0.4-beta.7/assets/images/avatar_bot_tiledesk.svg">
+												</div>
+
 												<div class="td-widget-preview-msg_receive">
-													<p [innerHTML]="placeholderOfflineMsg" class="td-widget-preview-msg_receive-p"></p>
+													<p [innerHTML]="placeholderOfflineMsg"
+														class="td-widget-preview-msg_receive-p"></p>
 												</div>
 											</div>
-										</div>           
+										</div>
 									</div>
 									<!-- // offline msg widhìget preview end -->
 
@@ -209,17 +283,24 @@
 
 							<div class="row">
 
-								<div class="col-lg-12">
-									<button class="btn btn-tdblu save_online_offline_msgs" (click)="saveOnlineOfflineMsgs()">
-										{{ 'ScriptPage.Save' | translate }}
+								<!-- <div class="col-lg-12"> -->
+								<!-- /// GREETINGS SAVE BTN ON BOTTOM -->
+								<!-- <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" style="text-align: center"> -->
+								<div class="col-xs-12" style="text-align: center">
+									<button class="btn btn-tdblu save_online_offline_msgs"
+										style="margin-top: 15px; margin-bottom:0px"
+										(click)="saveOnlineOfflineMsgs()">
+										<i class="material-icons" style="right: 10px;"> save </i>
+										<span> {{ 'ScriptPage.Save' | translate }} </span> 
 									</button>
 									<!-- </div>
 									<div class="col-lg-6"> -->
-										<!-- <button #testwidgetbtn style="margin-top:0px; margin-bottom: 0px;" (click)="testWidgetPage()" class="btn btn-tdblu">
+									<!-- <button #testwidgetbtn style="margin-top:0px; margin-bottom: 0px;" (click)="testWidgetPage()" class="btn btn-tdblu">
 											<span> 	<i class="material-icons" style="vertical-align: middle; color: #fff;font-size: 21px;">play_arrow</i>	</span>	
 											{{ 'Resourcepage.TestThisCode' | translate }}
 										</button> -->
 								</div>
+								<!-- <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8" style="text-align: center"></div> -->
 							</div>
 
 						</div>
@@ -231,7 +312,7 @@
 		<!-- 
 		*****************************************************************************
 		********************************** CALLOUT ********************************** 
-		***************************************************************************** --> 
+		***************************************************************************** -->
 		<!-- *ngIf="HAS_SELECTED_CALLOUT === true" -->
 		<section *ngIf="HAS_SELECTED_CALLOUT === true" class="callout">
 			<div class="row">
@@ -247,41 +328,70 @@
 										Callout
 									</h4>
 								</div>
-							
+
 
 								<div class="col-md-12">
-										<!-- font-family: 'Montserrat', sans-serif; -->
-									<span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400" > 
+									<!-- font-family: 'Montserrat', sans-serif; -->
+									<span
+										style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">
 										{{ 'CustomizeHowYouGreetInCalloutShort' | translate }}
 									</span>
-									
-									<div class="section-subtitle" style="height:20px; border-top: 1px solid #e8f0f5; width: calc((100% / 3) + 372px);margin-bottom: 16px;">	</div>
+									<!-- /// CALLOUT SAVE BTN ON BOTTOM  @ MEDIA > 768 -->
+									<button class="btn btn-tdblu appearance-save-btn-desktop"
+										style="margin-top: 15px; margin-bottom: 16px; float: right; position: relative;	top: -61px;"
+										(click)="saveCalloutSettings()">
+										<i class="material-icons" style="right: 10px;"> save </i>
+										{{ 'ScriptPage.Save' | translate }}
+									</button>
+
+									<div class="section-subtitle"
+										style="height:20px; border-top: 1px solid #e8f0f5; width: calc((100% / 3) + 372px);margin-bottom: 0px;">
+									</div>
 								</div>
 							</div>
 
+							<div class="row">
+
+									<div class="col-md-12" style="text-align: center;">
+									<!-- /// CALLOUT SAVE BTN ON BOTTOM  @ MEDIA < 768 -->
+									<button class="btn btn-tdblu appearance-save-btn-mobile"
+										style="margin-top: 15px; margin-bottom: 16px;"
+										(click)="saveCalloutSettings()">
+										<i class="material-icons" style="right: 10px;"> save </i>
+										{{ 'ScriptPage.Save' | translate }}
+									</button>
+	
+									</div>
+								</div>
+
 							<div class="row aligned-row">
-								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" [ngClass]="{'breakpoint' : custom_breakpoint === true}">
+								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"
+									[ngClass]="{'breakpoint' : custom_breakpoint === true}">
 
 									<div style="color: #566787; font-weight: 400; margin-top: 8px; margin-bottom: 4px;">
-										{{ 'Resourcepage.CalloutTimer' | translate }} 
+										{{ 'Resourcepage.CalloutTimer' | translate }}
 									</div>
 									<!-- max-width: 200px; -->
-									<ng-select class="custom-input" #selectElemCallout [clearable]='false' 
-										[(ngModel)]="calloutTimerSecondSelected" (change)="setSelectedCalloutTimer()" 
+									<ng-select class="custom-input" #selectElemCallout [clearable]='false'
+										[(ngModel)]="calloutTimerSecondSelected" (change)="setSelectedCalloutTimer()"
 										style="background-color:#fff; color:#333333">
 										<ng-option *ngFor="let option of calloutTimerOptions" [value]="option.value">
-											{{ option.seconds }}    
+											{{ option.seconds }}
 										</ng-option>
-									</ng-select> 
+									</ng-select>
 
-									<p *ngIf="calloutTimerSecondSelected == -1" style="color: rgb(118, 149, 165); margin-top: 10px">
+									<p *ngIf="calloutTimerSecondSelected == -1"
+										style="color: rgb(118, 149, 165); margin-top: 10px">
 										{{ 'Resourcepage.CalloutDisabled' | translate }}
-									</p>      
-									<p *ngIf="calloutTimerSecondSelected == 0" style="color: rgb(118, 149, 165); margin-top: 10px"> 
+									</p>
+									<p *ngIf="calloutTimerSecondSelected == 0"
+										style="color: rgb(118, 149, 165); margin-top: 10px">
 										{{ 'Resourcepage.OpensTheChatImmediately' | translate }}
 									</p>
-									<p *ngIf="calloutTimerSecondSelected !== -1 && calloutTimerSecondSelected !== 0;" style="color: rgb(118, 149, 165); margin-top: 10px">
-										{{ 'Resourcepage.OpensTheChatAfter' | translate }} {{calloutTimerSecondSelected}} {{ 'Resourcepage.Seconds' | translate }} 
+									<p *ngIf="calloutTimerSecondSelected !== -1 && calloutTimerSecondSelected !== 0;"
+										style="color: rgb(118, 149, 165); margin-top: 10px">
+										{{ 'Resourcepage.OpensTheChatAfter' | translate }}
+										{{calloutTimerSecondSelected}} {{ 'Resourcepage.Seconds' | translate }}
 									</p>
 
 									<div *ngIf="calloutTimerSecondSelected !== -1">
@@ -290,40 +400,45 @@
 										=======================================	
 										======------ CALLOUT TITLE ------====== 
 										======================================= -->
-										<div style="color: #566787; font-weight: 400; margin-top: 8px; margin-bottom: 4px;">
-										 {{ 'Resourcepage.CalloutTitle' | translate }} 
-								
-										 
+										<div
+											style="color: #566787; font-weight: 400; margin-top: 8px; margin-bottom: 4px;">
+											{{ 'Resourcepage.CalloutTitle' | translate }}
+
+
 											<span class="widget_design__Tooltip">
-												<span> 
-												<i class="material-icons" style="position: relative;top: 3px; font-size:16px; color:#7695a5">
-													help_outline
-												</i>
+												<span>
+													<i class="material-icons"
+														style="position: relative;top: 3px; font-size:16px; color:#7695a5">
+														help_outline
+													</i>
 												</span>
 												<span class="widget_design__Tooltiptext">
 													{{ 'Resourcepage.CustomizeTheCalloutTitle' | translate }}
 												</span>
 											</span>
 										</div>
-										
+
 										<!-- (blur)="onBlurSaveCalloutTitle()" -->
-										<input class="custom-input" [ngClass]="{'callout-disabled' : CALLOUT_IS_DISABLED === true}" placeholder="{{placeholderCalloutTitle}}"
-											[disabled]="CALLOUT_IS_DISABLED === true"  
-											[(ngModel)]="calloutTitle" 
-											(ngModelChange)="calloutTitleChange($event)" style="font-weight: 400;"> 
-												
+										<input class="custom-input"
+											[ngClass]="{'callout-disabled' : CALLOUT_IS_DISABLED === true}"
+											placeholder="{{placeholderCalloutTitle}}"
+											[disabled]="CALLOUT_IS_DISABLED === true" [(ngModel)]="calloutTitle"
+											(ngModelChange)="calloutTitleChange($event)" style="font-weight: 400;">
+
 										<!-- <p style="color: rgb(118, 149, 165); margin-bottom:0px"> 
 											{{ 'Resourcepage.CustomizeTheCalloutTitle' | translate }}
 										</p> -->
 
 										<!-- ======------ CALLOUT MESSAGE ------====== -->
-										<div style="color: #566787; font-weight: 400; margin-top: 8px; margin-bottom: 4px;">
-											{{ 'Resourcepage.CalloutMsg' | translate }} 
+										<div
+											style="color: #566787; font-weight: 400; margin-top: 8px; margin-bottom: 4px;">
+											{{ 'Resourcepage.CalloutMsg' | translate }}
 											<span class="widget_design__Tooltip">
-												<span> 
-												<i class="material-icons" style="position: relative;top: 3px; font-size:16px; color:#7695a5">
-													help_outline
-												</i>
+												<span>
+													<i class="material-icons"
+														style="position: relative;top: 3px; font-size:16px; color:#7695a5">
+														help_outline
+													</i>
 												</span>
 												<span class="widget_design__Tooltiptext">
 													{{ 'Resourcepage.CustomizeTheCalloutMsg' | translate }}
@@ -333,52 +448,57 @@
 										</div>
 
 										<!-- (blur)="onBlurSaveCalloutMsg()"  -->
-										<input class="custom-input" [ngClass]="{'callout-disabled' : CALLOUT_IS_DISABLED === true}" placeholder="{{ placeholderCalloutMsg }}" 
-											[disabled]="CALLOUT_IS_DISABLED === true"
-											[(ngModel)]="calloutMsg" 
-											(ngModelChange)="calloutMsgChange($event)" style="font-weight: 400;"> 
-											
+										<input class="custom-input"
+											[ngClass]="{'callout-disabled' : CALLOUT_IS_DISABLED === true}"
+											placeholder="{{ placeholderCalloutMsg }}"
+											[disabled]="CALLOUT_IS_DISABLED === true" [(ngModel)]="calloutMsg"
+											(ngModelChange)="calloutMsgChange($event)" style="font-weight: 400;">
+
 										<!-- <p style="color: rgb(118, 149, 165); margin-bottom:0px"> 
 											{{ 'Resourcepage.CustomizeTheCalloutMsg' | translate }}
 										</p> -->
-											
+
 									</div>
 								</div>
 								<!-- width: calc((100% / 3) + 372px) -->
-								<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8"  
-								 [ngClass]="{'breakpoint' : custom_breakpoint === true}" 
-								 style="background-image: url(data:image/gif;base64,R0lGODlhEAAQAJEAAAAAAP////X19f///yH5BAEAAAMALAAAAAAQABAAAAIflG+hq4jM3IFLJhqswNly/XkcBpIiVaInlLJr9FZWAQA7);">
-	
+								<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8"
+									[ngClass]="{'breakpoint' : custom_breakpoint === true}"
+									style="background-image: url(data:image/gif;base64,R0lGODlhEAAQAJEAAAAAAP////X19f///yH5BAEAAAMALAAAAAAQABAAAAIflG+hq4jM3IFLJhqswNly/XkcBpIiVaInlLJr9FZWAQA7);">
+
 									<!-- START CALLOUT CLONE -->
 									<!-- float: left;margin-top: 33px; -->
-									<div class="callout-container" [ngStyle]="{'width':  (newInnerWidth < 668 ) ? 'calc((100% - 368px)' : '' }" 
+									<div class="callout-container"
+										[ngStyle]="{'width':  (newInnerWidth < 668 ) ? 'calc((100% - 368px)' : '' }"
 										style="max-width:300px; position: sticky;position: -webkit-sticky;top: 40px;margin: auto;height: 140px; margin-top: 50px;">
-										<div class="eye-catcher-card" style="display: block; z-index: 1029;margin-top: 0px;margin-bottom: 0px;">
+										<div class="eye-catcher-card"
+											style="display: block; z-index: 1029;margin-top: 0px;margin-bottom: 0px;">
 											<div class="ng-tns-c0-0">
 												<div class="eye-catcher-card-close-btn-wrapper" style="display: block;">
 													<div class="eye-catcher-card-close-btn" style="display: none;">
-														<img class="eye-catcher-card-close-btn-img" src="https://widget.tiledesk.com/assets/images/tiledesk-chat-close.svg">
+														<img class="eye-catcher-card-close-btn-img"
+															src="https://widget.tiledesk.com/assets/images/tiledesk-chat-close.svg">
 													</div>
 												</div>
 											</div>
 											<div class="eye-catcher_row">
-															
+
 												<div class="eye-catcher_column ec_left">
-													<div class="eye-catcher-card-emoticons-wrapper ng-trigger ng-trigger-rotatedState" style="transform: scale(1);">
+													<div class="eye-catcher-card-emoticons-wrapper ng-trigger ng-trigger-rotatedState"
+														style="transform: scale(1);">
 														<span class="chat21-card-emoticons">✋ </span>
 													</div>
 												</div>
-									
+
 												<div class="eye-catcher_column ec_right">
 													<div class="eye-catcher-card-text-wrapper">
-														<div class="eye-catcher-card-title"> 
-														
+														<div class="eye-catcher-card-title">
+
 															<!-- {{ calloutTitle }} -->
 															{{ placeholderCalloutTitle }}
 														</div>
-					
+
 														<div class="eye-catcher-card-msg">
-														
+
 															<!-- {{ calloutMsg }} -->
 															{{ placeholderCalloutMsg }}
 
@@ -390,35 +510,47 @@
 										<!-- ./END CALLOUT CLONE -->
 
 										<!-- start LAUNCHER BTN -->
-										<div id="chat21-launcher-button" style="z-index:1029" [ngStyle]="{'background-color': primaryColor}"> 
+										<div id="chat21-launcher-button" style="z-index:1029"
+											[ngStyle]="{'background-color': primaryColor}">
 											<div style="width:100%; height:100%; padding:0px; margin: 0px;">
-							
-												<svg _ngcontent-c1="" class="ng-tns-c1-0" height="100%" role="img" viewBox="0 0 90 90" width="100%" xmlns="http://www.w3.org/2000/svg" 
-												[ngStyle]="{'fill': secondaryColor}" style="  -webkit-box-shadow: 0 3px 6px 0 rgba(70, 82, 89, 0.1), 0 10px 20px 0 rgba(70, 82, 89, 0.15);
+
+												<svg _ngcontent-c1="" class="ng-tns-c1-0" height="100%" role="img"
+													viewBox="0 0 90 90" width="100%" xmlns="http://www.w3.org/2000/svg"
+													[ngStyle]="{'fill': secondaryColor}" style="  -webkit-box-shadow: 0 3px 6px 0 rgba(70, 82, 89, 0.1), 0 10px 20px 0 rgba(70, 82, 89, 0.15);
 												box-shadow: 0 3px 6px 0 rgba(70, 82, 89, 0.1), 0 10px 20px 0 rgba(70, 82, 89, 0.15);border-radius: 50%;">
-													<path _ngcontent-c1="" class="ng-tns-c1-0" d="M0 0h24v24H0V0z" fill="none"></path>
-													<path _ngcontent-c1="" class="ng-tns-c1-0" d="M33.57,31A4.58,4.58,0,0,0,29,35.57V58.3a1.94,1.94,0,0,0,3.32,1.38l3-3a.29.29,0,0,1,.21-.09H56.43A4.58,4.58,0,0,0,61,52V35.57A4.58,4.58,0,0,0,56.43,31Z"></path>
+													<path _ngcontent-c1="" class="ng-tns-c1-0" d="M0 0h24v24H0V0z"
+														fill="none"></path>
+													<path _ngcontent-c1="" class="ng-tns-c1-0"
+														d="M33.57,31A4.58,4.58,0,0,0,29,35.57V58.3a1.94,1.94,0,0,0,3.32,1.38l3-3a.29.29,0,0,1,.21-.09H56.43A4.58,4.58,0,0,0,61,52V35.57A4.58,4.58,0,0,0,56.43,31Z">
+													</path>
 												</svg>
 											</div>
 										</div> <!-- /.end LAUNCHER BTN -->
 									</div><!-- /.end callout-container -->
-									
+
 								</div><!-- ./END col-* -->
 
 							</div>
 
 							<div class="row">
-								<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-									<button class="btn btn-tdblu callout-settings-save-btn" (click)="saveCalloutSettings()">
+								<!-- <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" style="text-align: center;"> -->
+								<div class="col-xs-12" style="text-align: center;">
+									<!-- /// CALLOUT SAVE BTN ON BOTTOM -->
+									<button class="btn btn-tdblu callout-settings-save-btn"
+										style="margin-top: 15px; margin-bottom: 0px"
+										(click)="saveCalloutSettings()">
+										<i class="material-icons" style="right: 10px;"> save </i>
 										{{ 'ScriptPage.Save' | translate }}
 									</button>
 								</div>
-								<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="text-align: center"> 
-									<button  (click)="testWidgetPage()" class="btn btn-tdblu">
-											<span> 	<i class="material-icons" style="vertical-align: middle; color: #fff;font-size: 17px;">play_arrow</i>	</span>	
-											{{ 'WidgetLiveTest' | translate }}
-									</button>
-								</div>
+								<!-- <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="text-align: center"> -->
+									<!-- <button (click)="testWidgetPage()" class="btn btn-tdblu">
+										<span> <i class="material-icons"
+												style="vertical-align: middle; color: #fff;font-size: 17px;">play_arrow</i>
+										</span>
+										{{ 'WidgetLiveTest' | translate }}
+									</button> -->
+								<!-- </div> -->
 							</div>
 
 						</div>
@@ -430,159 +562,223 @@
 		<!-- 
 		********************************************************************************
 		********************************** APPEARANCE ********************************** 
-		******************************************************************************** --> 
+		******************************************************************************** -->
 		<!-- *ngIf="HAS_SELECTED_APPEARANCE === true" -->
-	<section *ngIf="HAS_SELECTED_APPEARANCE === true">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="card" style="padding-top:0px; padding-bottom:0px;">	
-					<loading-spinner *ngIf="showSpinner"></loading-spinner>
-					
-					<div class="card-content" *ngIf="!showSpinner">
+		<section *ngIf="HAS_SELECTED_APPEARANCE === true">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card" style="padding-top:0px; padding-bottom:0px;">
+						<loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+						<div class="card-content" *ngIf="!showSpinner">
+
+							<div class="row">
+								<div class="col-md-12">
+									<h4 class="card-title">
+										<!-- Widget Appearance  -->
+										{{ "WidgetAppearance" | translate }}
+									</h4>
+								</div>
+
 							
-						<div class="row">
-							<div class="col-md-12">
-								<h4 class="card-title">
-									<!-- Widget Appearance  -->
-									{{ "WidgetAppearance" | translate }}
-								</h4>
+
+								<div class="col-md-12">
+									<!-- font-family: 'Montserrat', sans-serif; -->
+									<span
+										style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">
+										{{ 'CustomizeTheWidgetColors' | translate }}
+									</span>
+									<!-- /// APPEARANCE SAVE BTN ON TOP   @ MEDIA > 768 -->
+									<button class="btn btn-tdblu appearance-save-btn-desktop" 
+										style="margin-top: 15px; margin-bottom: 16px; float: right; position: relative;	top: -61px;" 
+										(click)="saveWidgetAppearance()">
+										<i class="material-icons" style="right: 10px;"> save </i>
+										{{ 'ScriptPage.Save' | translate }}
+									</button>
+							
+									<!-- margin-bottom: 16px; height:20px;-->
+									<div class="section-subtitle"
+										style="border-top: 1px solid #e8f0f5; width: calc((100% / 3) + 372px);margin-bottom: 0px;">
+									</div>
+								</div>
 							</div>
 
-							<div class="col-md-12">
-									<!-- font-family: 'Montserrat', sans-serif; -->
-								<span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400" > 
-									{{ 'CustomizeTheWidgetColors' | translate }}
-								</span>
-								
-								<div class="section-subtitle" style="height:20px; border-top: 1px solid #e8f0f5; width: calc((100% / 3) + 372px);margin-bottom: 16px;">	</div>
-							</div>		
-						</div>
+							<div class="row">
 
-		
-						<div class="row aligned-row">
-							<!-- <div class="col-sm-12">  -->
+								<div class="col-md-12" style="text-align: center;">
+
+									<!-- /// ************ SQUARE BTN ************ -->
+									<!-- <div class="buttonSquare--wrap" style="margin-bottom:16px">
+										<div class="buttonSquare lightblu buttonSquareSave"
+											(click)="saveWidgetAppearance()" style="margin-right: 8px;">
+											<i class="fa fa-floppy-o" style=""></i>
+											<span> {{ 'ScriptPage.Save' | translate }}</span>
+										</div>
+									</div> -->
+									
+									<!-- /// APPEARANCE SAVE BTN ON TOP  @ MEDIA < 768 -->
+									<!--  appearance-save-btn-desktop  <- THIS CLASS HIDE THE BUTTON AT  @ MEDIA < 768 -->
+									<button class="btn btn-tdblu appearance-save-btn-mobile" 
+										style="margin-top: 15px; margin-bottom: 16px;" 
+										(click)="saveWidgetAppearance()">
+										<i class="material-icons" style="right: 10px;"> save </i>
+										{{ 'ScriptPage.Save' | translate }}
+									</button>
+
+								</div>
+							</div>
+
+
+							<div class="row aligned-row">
+								<!-- <div class="col-sm-12">  -->
 								<!-- DA QUI -->
 
-								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"> 
-										<!-- --------------============ PRESET COLOR ============-------------- -->		
-										<div class="wrapper-primary-color-selection">
-												<!-- position: relative;	top: 18px; -->
-											<label style="color: #566787;width: 100%;">
-												{{ 'PresetColorCombinations' | translate}}
-											</label>
-										
-											<!-- display: flex;flex-direction: row;  -->
-											<div class="preset-colors-first-line" style="margin-bottom: 8px;max-width: 300px;">
-												<div class="row">
-													<div class="col-xs-2 col-sm-2"> 
-														<!--
+								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+									<!-- --------------============ PRESET COLOR ============-------------- -->
+									<div class="wrapper-primary-color-selection">
+										<!-- position: relative;	top: 18px; -->
+										<label style="color: #566787;width: 100%;">
+											{{ 'PresetColorCombinations' | translate}}
+										</label>
+
+										<!-- display: flex;flex-direction: row;  -->
+										<div class="preset-colors-first-line"
+											style="margin-bottom: 8px;max-width: 300px;">
+											<div class="row">
+												<div class="col-xs-2 col-sm-2">
+													<!--
 														############ preset-color-ONE ###########
 														* primaryColor === '#d70af1'
 														* secondaryColor === '#fed2ff' 	-->
-														<div class="preset-color-one" 
-														[ngClass]="{'checked-color' : primaryColor === '#d70af1' && secondaryColor === '#fed2ff', 
+													<div class="preset-color-one" [ngClass]="{'checked-color' : primaryColor === '#d70af1' && secondaryColor === '#fed2ff', 
 																	'unchecked-color': primaryColor !== '#d70af1' && secondaryColor !== '#fed2ff'}"
-															style="width: 40px;height: 40px; border-radius: 50%; cursor:pointer; transition: all .2s ease-in-out;position: relative" 
-															[ngStyle]="{'background-color': '#d70af1'}" (click)="setPresetColorComb('#d70af1','#fed2ff')"> 
-						
-															<!-- // IN SVG THE SECONDARY COLOR -->
-															<svg class="ng-tns-c8-0" height="100%" role="img" viewBox="0 0 90 90" width="100%" xmlns="http://www.w3.org/2000/svg" 
-																[ngStyle]="{'fill': '#fed2ff'}">
-																<path class="ng-tns-c8-0" d="M0 0h24v24H0V0z" fill="none"></path>
-																<path class="ng-tns-c8-0" d="M33.57,31A4.58,4.58,0,0,0,29,35.57V58.3a1.94,1.94,0,0,0,3.32,1.38l3-3a.29.29,0,0,1,.21-.09H56.43A4.58,4.58,0,0,0,61,52V35.57A4.58,4.58,0,0,0,56.43,31Z"></path>
-															</svg>
-														</div>
+														style="width: 40px;height: 40px; border-radius: 50%; cursor:pointer; transition: all .2s ease-in-out;position: relative"
+														[ngStyle]="{'background-color': '#d70af1'}"
+														(click)="setPresetColorComb('#d70af1','#fed2ff')">
+
+														<!-- // IN SVG THE SECONDARY COLOR -->
+														<svg class="ng-tns-c8-0" height="100%" role="img"
+															viewBox="0 0 90 90" width="100%"
+															xmlns="http://www.w3.org/2000/svg"
+															[ngStyle]="{'fill': '#fed2ff'}">
+															<path class="ng-tns-c8-0" d="M0 0h24v24H0V0z" fill="none">
+															</path>
+															<path class="ng-tns-c8-0"
+																d="M33.57,31A4.58,4.58,0,0,0,29,35.57V58.3a1.94,1.94,0,0,0,3.32,1.38l3-3a.29.29,0,0,1,.21-.09H56.43A4.58,4.58,0,0,0,61,52V35.57A4.58,4.58,0,0,0,56.43,31Z">
+															</path>
+														</svg>
 													</div>
+												</div>
 
-													<div class="col-xs-2 col-sm-2"> 
-													
+												<div class="col-xs-2 col-sm-2">
 
 
-														<div class="preset-color-eight" 
-														[ngClass]="{'checked-color' : primaryColor === '#606060' && secondaryColor === '#D6ED17', 
+
+													<div class="preset-color-eight" [ngClass]="{'checked-color' : primaryColor === '#606060' && secondaryColor === '#D6ED17', 
 																	'unchecked-color': primaryColor !== '#606060' && secondaryColor !== '#D6ED17'}"
-															style="width: 40px;height: 40px; border-radius: 50%; cursor:pointer; transition: all .2s ease-in-out;position: relative" 
-															[ngStyle]="{'background-color': '#606060'}" (click)="setPresetColorComb('#606060','#D6ED17')">
-															<svg class="ng-tns-c8-0" height="100%" role="img" viewBox="0 0 90 90" width="100%" xmlns="http://www.w3.org/2000/svg" 
-																[ngStyle]="{'fill': '#D6ED17'}">
-																<path class="ng-tns-c8-0" d="M0 0h24v24H0V0z" fill="none"></path>
-																<path class="ng-tns-c8-0" d="M33.57,31A4.58,4.58,0,0,0,29,35.57V58.3a1.94,1.94,0,0,0,3.32,1.38l3-3a.29.29,0,0,1,.21-.09H56.43A4.58,4.58,0,0,0,61,52V35.57A4.58,4.58,0,0,0,56.43,31Z"></path>
-															</svg>
-														</div>
-
-											
+														style="width: 40px;height: 40px; border-radius: 50%; cursor:pointer; transition: all .2s ease-in-out;position: relative"
+														[ngStyle]="{'background-color': '#606060'}"
+														(click)="setPresetColorComb('#606060','#D6ED17')">
+														<svg class="ng-tns-c8-0" height="100%" role="img"
+															viewBox="0 0 90 90" width="100%"
+															xmlns="http://www.w3.org/2000/svg"
+															[ngStyle]="{'fill': '#D6ED17'}">
+															<path class="ng-tns-c8-0" d="M0 0h24v24H0V0z" fill="none">
+															</path>
+															<path class="ng-tns-c8-0"
+																d="M33.57,31A4.58,4.58,0,0,0,29,35.57V58.3a1.94,1.94,0,0,0,3.32,1.38l3-3a.29.29,0,0,1,.21-.09H56.43A4.58,4.58,0,0,0,61,52V35.57A4.58,4.58,0,0,0,56.43,31Z">
+															</path>
+														</svg>
 													</div>
 
-													<div class="col-xs-2 col-sm-2"> 
-														<!--
+
+												</div>
+
+												<div class="col-xs-2 col-sm-2">
+													<!--
 														############ preset-color-THREE ###########
 														* primaryColor === '#990011'
 														* secondaryColor === '#C7D3D4' 	-->
-														<div class="preset-color-three" 
-														[ngClass]="{'checked-color' : primaryColor === '#990011' && secondaryColor === '#FCF6F5', 
+													<div class="preset-color-three" [ngClass]="{'checked-color' : primaryColor === '#990011' && secondaryColor === '#FCF6F5', 
 																	'unchecked-color': primaryColor !== '#990011' && secondaryColor !== '#FCF6F5'}"
-															style="width: 40px;height: 40px; border-radius: 50%; cursor:pointer; transition: all .2s ease-in-out;position: relative" 
-															[ngStyle]="{'background-color': '#990011'}" (click)="setPresetColorComb('#990011','#FCF6F5')"> 
-						
-															<!-- // IN SVG THE SECONDARY COLOR -->
-															<svg class="ng-tns-c8-0" height="100%" role="img" viewBox="0 0 90 90" width="100%" xmlns="http://www.w3.org/2000/svg" 
-																[ngStyle]="{'fill': '#FCF6F5'}">
-																<path class="ng-tns-c8-0" d="M0 0h24v24H0V0z" fill="none"></path>
-																<path class="ng-tns-c8-0" d="M33.57,31A4.58,4.58,0,0,0,29,35.57V58.3a1.94,1.94,0,0,0,3.32,1.38l3-3a.29.29,0,0,1,.21-.09H56.43A4.58,4.58,0,0,0,61,52V35.57A4.58,4.58,0,0,0,56.43,31Z"></path>
-															</svg>
-														</div>
-													</div>
+														style="width: 40px;height: 40px; border-radius: 50%; cursor:pointer; transition: all .2s ease-in-out;position: relative"
+														[ngStyle]="{'background-color': '#990011'}"
+														(click)="setPresetColorComb('#990011','#FCF6F5')">
 
-													<div class="col-xs-2 col-sm-2"> 
-														<!--
+														<!-- // IN SVG THE SECONDARY COLOR -->
+														<svg class="ng-tns-c8-0" height="100%" role="img"
+															viewBox="0 0 90 90" width="100%"
+															xmlns="http://www.w3.org/2000/svg"
+															[ngStyle]="{'fill': '#FCF6F5'}">
+															<path class="ng-tns-c8-0" d="M0 0h24v24H0V0z" fill="none">
+															</path>
+															<path class="ng-tns-c8-0"
+																d="M33.57,31A4.58,4.58,0,0,0,29,35.57V58.3a1.94,1.94,0,0,0,3.32,1.38l3-3a.29.29,0,0,1,.21-.09H56.43A4.58,4.58,0,0,0,61,52V35.57A4.58,4.58,0,0,0,56.43,31Z">
+															</path>
+														</svg>
+													</div>
+												</div>
+
+												<div class="col-xs-2 col-sm-2">
+													<!--
 														############ preset-color-FOUR ###########
 														* primaryColor === '#76528B'
 														* secondaryColor === '#C7D3D4' 	-->
-														<div class="preset-color-four" 
-														[ngClass]="{'checked-color' : primaryColor === '#76528B' && secondaryColor === '#CBCE91', 
+													<div class="preset-color-four" [ngClass]="{'checked-color' : primaryColor === '#76528B' && secondaryColor === '#CBCE91', 
 																	'unchecked-color': primaryColor !== '#76528B' && secondaryColor !== '#CBCE91'}"
-															style="width: 40px;height: 40px; border-radius: 50%; cursor:pointer; transition: all .2s ease-in-out;position: relative" 
-															[ngStyle]="{'background-color': '#76528B'}" (click)="setPresetColorComb('#76528B','#CBCE91')"> 
-						
-															<!-- // IN SVG THE SECONDARY COLOR -->
-															<svg class="ng-tns-c8-0" height="100%" role="img" viewBox="0 0 90 90" width="100%" xmlns="http://www.w3.org/2000/svg" 
-																[ngStyle]="{'fill': '#CBCE91'}">
-																<path class="ng-tns-c8-0" d="M0 0h24v24H0V0z" fill="none"></path>
-																<path class="ng-tns-c8-0" d="M33.57,31A4.58,4.58,0,0,0,29,35.57V58.3a1.94,1.94,0,0,0,3.32,1.38l3-3a.29.29,0,0,1,.21-.09H56.43A4.58,4.58,0,0,0,61,52V35.57A4.58,4.58,0,0,0,56.43,31Z"></path>
-															</svg>
-														</div>
-													</div>
+														style="width: 40px;height: 40px; border-radius: 50%; cursor:pointer; transition: all .2s ease-in-out;position: relative"
+														[ngStyle]="{'background-color': '#76528B'}"
+														(click)="setPresetColorComb('#76528B','#CBCE91')">
 
-													<div class="col-xs-2 col-sm-2"> 
-															<!--
+														<!-- // IN SVG THE SECONDARY COLOR -->
+														<svg class="ng-tns-c8-0" height="100%" role="img"
+															viewBox="0 0 90 90" width="100%"
+															xmlns="http://www.w3.org/2000/svg"
+															[ngStyle]="{'fill': '#CBCE91'}">
+															<path class="ng-tns-c8-0" d="M0 0h24v24H0V0z" fill="none">
+															</path>
+															<path class="ng-tns-c8-0"
+																d="M33.57,31A4.58,4.58,0,0,0,29,35.57V58.3a1.94,1.94,0,0,0,3.32,1.38l3-3a.29.29,0,0,1,.21-.09H56.43A4.58,4.58,0,0,0,61,52V35.57A4.58,4.58,0,0,0,56.43,31Z">
+															</path>
+														</svg>
+													</div>
+												</div>
+
+												<div class="col-xs-2 col-sm-2">
+													<!--
 															############ preset-color-SIX ###########
 															TILEDESK DEFAULT WIDGET COMBINATION COLORS
 															* primaryColor === '#2a6ac1'
 															* secondaryColor === '#ffffff' 	-->
-															<div class="preset-color-six" 
-															[ngClass]="{'checked-color' : primaryColor === '#2a6ac1' && secondaryColor === '#ffffff', 
+													<div class="preset-color-six" [ngClass]="{'checked-color' : primaryColor === '#2a6ac1' && secondaryColor === '#ffffff', 
 																		'unchecked-color': primaryColor !== '#2a6ac1' && secondaryColor !== '#ffffff'}"
-																style="width: 40px;height: 40px; border-radius: 50%; cursor:pointer; transition: all .2s ease-in-out;position: relative" 
-																[ngStyle]="{'background-color': '#2a6ac1'}" (click)="setPresetColorComb('#2a6ac1','#ffffff')"> 
-							
-																<!-- // IN SVG THE SECONDARY COLOR -->
-																<svg class="ng-tns-c8-0" height="100%" role="img" viewBox="0 0 90 90" width="100%" xmlns="http://www.w3.org/2000/svg" 
-																	[ngStyle]="{'fill': '#ffffff'}">
-																	<path class="ng-tns-c8-0" d="M0 0h24v24H0V0z" fill="none"></path>
-																	<path class="ng-tns-c8-0" d="M33.57,31A4.58,4.58,0,0,0,29,35.57V58.3a1.94,1.94,0,0,0,3.32,1.38l3-3a.29.29,0,0,1,.21-.09H56.43A4.58,4.58,0,0,0,61,52V35.57A4.58,4.58,0,0,0,56.43,31Z"></path>
-																</svg>
-															</div>
-														</div>
+														style="width: 40px;height: 40px; border-radius: 50%; cursor:pointer; transition: all .2s ease-in-out;position: relative"
+														[ngStyle]="{'background-color': '#2a6ac1'}"
+														(click)="setPresetColorComb('#2a6ac1','#ffffff')">
 
+														<!-- // IN SVG THE SECONDARY COLOR -->
+														<svg class="ng-tns-c8-0" height="100%" role="img"
+															viewBox="0 0 90 90" width="100%"
+															xmlns="http://www.w3.org/2000/svg"
+															[ngStyle]="{'fill': '#ffffff'}">
+															<path class="ng-tns-c8-0" d="M0 0h24v24H0V0z" fill="none">
+															</path>
+															<path class="ng-tns-c8-0"
+																d="M33.57,31A4.58,4.58,0,0,0,29,35.57V58.3a1.94,1.94,0,0,0,3.32,1.38l3-3a.29.29,0,0,1,.21-.09H56.43A4.58,4.58,0,0,0,61,52V35.57A4.58,4.58,0,0,0,56.43,31Z">
+															</path>
+														</svg>
+													</div>
 												</div>
-											</div>
 
-											<!--
+											</div>
+										</div>
+
+										<!--
 											##############################################################################
 											########################## PRESET COLORS SECOND ROW ########################## 
 											##############################################################################-->
-										
-											<!-- <div class="preset-colors-second-line" style="margin-bottom: 16px;max-width: 230px;">
+
+										<!-- <div class="preset-colors-second-line" style="margin-bottom: 16px;max-width: 230px;">
 												<div class="row"> 
 													<div class="col-xs-3 col-sm-3"> 
 										
@@ -652,48 +848,52 @@
 													</div>
 												</div>
 											</div> -->
-										</div>
+									</div>
 
-									<!-- --------------============ PRIMARY COLOR ============-------------- -->		
+									<!-- --------------============ PRIMARY COLOR ============-------------- -->
 									<div class="wrapper-primary-color-selection" style="margin-bottom: 8px;">
-											<!-- position: relative;	top: 18px; -->
+										<!-- position: relative;	top: 18px; -->
 										<label style="color: #566787;width: 100%;">
 											{{ 'Primary' | translate}}
 
-												<span class="widget_design__Tooltip">
-													<span> 
-													<i class="material-icons" style="position: relative;top: 2px; font-size:14px; color:#7695a5">
+											<span class="widget_design__Tooltip">
+												<span>
+													<i class="material-icons"
+														style="position: relative;top: 2px; font-size:14px; color:#7695a5">
 														help_outline
 													</i>
-													</span>
-													<span class="widget_design__Tooltiptext" style="margin-left: -90px;min-width: 187px;">
-														{{ 'PrimarySubtitle' | translate }}
-													</span>
 												</span>
+												<span class="widget_design__Tooltiptext"
+													style="margin-left: -90px;min-width: 187px;">
+													{{ 'PrimarySubtitle' | translate }}
+												</span>
+											</span>
 										</label>
 
-										<div class="primary-color-selection-and-input" style="display: flex;flex-direction: row;">
+										<div class="primary-color-selection-and-input"
+											style="display: flex;flex-direction: row;">
 											<div class="primary-color-selection" style="position: relative;">
 												<!-- [cpOutputFormat]="'hex'" -->
 												<!-- (colorPickerChange)="onChangePrimaryColor($event)" -->
 												<!-- [cpOKButton]="true" -->
 												<!-- (colorPickerSelect)="onSelectPrimaryColor($event)" -->
 												<!-- [cpOKButtonClass]= "'btn btn-primary btn-xs'" -->
-												<div class="palette" 
-													(colorPickerChange)="onChangePrimaryColor($event)"
-													[style.background-color]="primaryColor" 
-													[(colorPicker)]="primaryColor"
-													[cpAlphaChannel]="'disabled'"
+												<div class="palette" (colorPickerChange)="onChangePrimaryColor($event)"
+													[style.background-color]="primaryColor"
+													[(colorPicker)]="primaryColor" [cpAlphaChannel]="'disabled'"
 													(colorPickerClose)="onClosePrimaryColorDialog($event)">
 												</div>
 
-											<!-- <div> {{ primaryColor }} </div>	 -->
-											<!-- padding-left: 30px; -->
-											
+												<!-- <div> {{ primaryColor }} </div>	 -->
+												<!-- padding-left: 30px; -->
+
 											</div>
 
-											<input class="custom-input" class="custom-input" [value]="primaryColor" style="font-weight: 400; max-width: 255px;"
-											(colorPickerChange)="onChangePrimaryColor($event)" [colorPicker]="primaryColor" (colorPickerClose)="onClosePrimaryColorDialog($event)">
+											<input class="custom-input" class="custom-input" [value]="primaryColor"
+												style="font-weight: 400; max-width: 255px;"
+												(colorPickerChange)="onChangePrimaryColor($event)"
+												[colorPicker]="primaryColor"
+												(colorPickerClose)="onClosePrimaryColorDialog($event)">
 											<!-- <span class="custom-input" style="color: rgb(118, 149, 165)"> 
 												{{ 'PrimarySubtitle' | translate}}
 											</span> -->
@@ -701,24 +901,27 @@
 										</div>
 									</div>
 
-									<!-- --------------============ SECONDARY COLOR ============-------------- -->	
+									<!-- --------------============ SECONDARY COLOR ============-------------- -->
 									<div class="wrapper-secondary-color-selection" style="margin-bottom: 8px;">
-											<!-- position: relative;	top: 18px; -->
+										<!-- position: relative;	top: 18px; -->
 										<label style="color: #566787; width: 100%;">
 											{{ 'Secondary' | translate}}
 
 											<span class="widget_design__Tooltip">
-												<span> 
-												<i class="material-icons" style="position: relative;top: 2px; font-size:14px; color:#7695a5">
-													help_outline
-												</i>
+												<span>
+													<i class="material-icons"
+														style="position: relative;top: 2px; font-size:14px; color:#7695a5">
+														help_outline
+													</i>
 												</span>
-												<span class="widget_design__Tooltiptext" style="margin-left: -108px;min-width: 225px;height:53px">
+												<span class="widget_design__Tooltiptext"
+													style="margin-left: -108px;min-width: 225px;height:53px">
 													{{ 'SecondarySubtitle' | translate }}
 												</span>
 											</span>
 										</label>
-										<div class="secondary-color-selection-and-input" style="display: flex;flex-direction: row;">
+										<div class="secondary-color-selection-and-input"
+											style="display: flex;flex-direction: row;">
 
 											<div class="primary-secondary-selection" style="position: relative;">
 												<!-- [cpOutputFormat]="'hex'" -->
@@ -726,54 +929,58 @@
 												<!-- [cpOKButton]="true" -->
 												<!-- [cpOKButtonClass]= "'btn btn-primary btn-xs'" -->
 												<!-- (colorPickerSelect)="onSelectSecondaryColor($event)" -->
-												<div class="palette" 
-													[style.background-color]="secondaryColor" 
+												<div class="palette" [style.background-color]="secondaryColor"
 													[cpAlphaChannel]="'disabled'"
 													(colorPickerClose)="onCloseSecondaryColorDialog($event)"
 													[(colorPicker)]="secondaryColor">
 												</div>
 
-											<!-- <div> {{secondaryColor}} </div> -->
+												<!-- <div> {{secondaryColor}} </div> -->
 
-												
+
 											</div>
-											<input class="custom-input" [value]="secondaryColor" style="font-weight: 400;  max-width: 255px;"
-											[colorPicker]="secondaryColor" (colorPickerChange)="onChangeSecondaryColor($event)"
-											(colorPickerClose)="onCloseSecondaryColorDialog($event)">
-										
-										
+											<input class="custom-input" [value]="secondaryColor"
+												style="font-weight: 400;  max-width: 255px;"
+												[colorPicker]="secondaryColor"
+												(colorPickerChange)="onChangeSecondaryColor($event)"
+												(colorPickerClose)="onCloseSecondaryColorDialog($event)">
+
+
 											<!-- <p class="custom-input" style="color: rgb(118, 149, 165)"> 
 												{{ 'SecondarySubtitle' | translate}}
 											</p> -->
-										
-										</div>					
-									
+
+										</div>
+
 									</div>
-				
-										<!-- <input [value]="color"
+
+									<!-- <input [value]="color"
 										[style.background-color]="color"
 										[(colorPicker)]="color"
 										[cpOutputFormat]="'hex'"
 										(colorPickerChange)="onChangeColor($event)"/> -->
-			
+
 									<!-- --------------============ CUSTOM LOGO ============-------------- -->
 									<!-- display: flex; -->
 									<div class="wrapper-logo-link" style="margin-top: 16px;">
 										<!-- flex: 50% -->
-										<label style="color: #566787; display: block; width: fit-content; float: left;margin-right: 16px;">
+										<label
+											style="color: #566787; display: block; width: fit-content; float: left;margin-right: 16px;">
 											<!-- position: relative; bottom: -18px; -->
 											<span>
-												 <!-- Logo -->
-												 {{ 'displayLogo' | translate }}
+												<!-- Logo -->
+												{{ 'displayLogo' | translate }}
 											</span>
 										</label>
-												
+
 										<!-- left: 49px;		 -->
 										<!-- flex: 50% -->
-										<div class="onoffswitch-wrapper"  style="float: left; position: relative;top: -2px;margin-bottom: 12px;">
+										<div class="onoffswitch-wrapper"
+											style="float: left; position: relative;top: -2px;margin-bottom: 12px;">
 											<div class="onoffswitch">
-												<input (change)="onLogoOnOff($event)" type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" 
-												[checked]="LOGO_IS_ON === true">
+												<input (change)="onLogoOnOff($event)" type="checkbox" name="onoffswitch"
+													class="onoffswitch-checkbox" id="myonoffswitch"
+													[checked]="LOGO_IS_ON === true">
 												<label class="onoffswitch-label" for="myonoffswitch">
 													<span class="onoffswitch-inner"></span>
 													<span class="onoffswitch-switch"></span>
@@ -788,12 +995,13 @@
 												<!-- Logo -->
 												{{ 'YourLogoURL' | translate }}
 											</span>
-										
+
 											<span class="widget_design__Tooltip">
-												<span> 
-												<i class="material-icons" style="position: relative;top: 2px; font-size:14px; color:#7695a5">
-													help_outline
-												</i>
+												<span>
+													<i class="material-icons"
+														style="position: relative;top: 2px; font-size:14px; color:#7695a5">
+														help_outline
+													</i>
 												</span>
 												<span class="widget_design__Tooltiptext">
 													{{ 'EnterTheURL' | translate }}
@@ -803,104 +1011,120 @@
 
 										<!-- (blur)="onBlurChangeLogo()"  -->
 										<!-- (ngModelChange)="logoChange($event)"  -->
-										<input class="custom-input" (ngModelChange)="logoChange($event)" [(ngModel)]="logoUrl" style="font-weight: 400;margin-bottom: 0px;" 
-										[ngClass]="{'image-not-exist-input-border' : IMAGE_EXIST === false, 'input-is-disabled': LOGO_IS_ON === false}"	placeholder="tiledesklogo" [disabled]="LOGO_IS_ON === false">
+										<input class="custom-input" (ngModelChange)="logoChange($event)"
+											[(ngModel)]="logoUrl" style="font-weight: 400;margin-bottom: 0px;"
+											[ngClass]="{'image-not-exist-input-border' : IMAGE_EXIST === false, 'input-is-disabled': LOGO_IS_ON === false}"
+											placeholder="tiledesklogo" [disabled]="LOGO_IS_ON === false">
 
-										<span *ngIf="IMAGE_EXIST === false" style="color:#f44336; display: block;font-size: 12px;"> 
+										<span *ngIf="IMAGE_EXIST === false"
+											style="color:#f44336; display: block;font-size: 12px;">
 											{{ "LogoImageNotFound" | translate}}
 										</span>
 									</div>
 
 									<!-- --------------============  WELCOME TITLE ============-------------- -->
-									<div class="wrapper-welcome-title" style="margin-top: 18px"> 
+									<div class="wrapper-welcome-title" style="margin-top: 18px">
 										<label style="color: #566787; display: block">
 											{{ "WelcomeMessage" | translate }}
 
 											<span class="widget_design__Tooltip">
-												<span> 
-												<i class="material-icons" style="position: relative;top: 2px; font-size:14px; color:#7695a5">
-													help_outline
-												</i>
+												<span>
+													<i class="material-icons"
+														style="position: relative;top: 2px; font-size:14px; color:#7695a5">
+														help_outline
+													</i>
 												</span>
-												<span class="widget_design__Tooltiptext" style="margin-left: -108px;min-width: 212px;">
+												<span class="widget_design__Tooltiptext"
+													style="margin-left: -108px;min-width: 212px;">
 													{{ 'SayHello' | translate }}
 												</span>
 											</span>
 
 										</label>
-		
+
 										<!-- (blur)="onBlurSaveWelcomeTitle()"  -->
-										<input class="custom-input" placeholder="{{placeholderWelcomeTitle}}" 
-											[(ngModel)]="welcomeTitle" 
-											(ngModelChange)="welcomeTitleChange($event)" style="font-weight: 400;"> 
-										
+										<input class="custom-input" placeholder="{{placeholderWelcomeTitle}}"
+											[(ngModel)]="welcomeTitle" (ngModelChange)="welcomeTitleChange($event)"
+											style="font-weight: 400;">
+
 										<!-- <span style="color: rgb(118, 149, 165); display: block"> 
 											{{ "SayHello" | translate }}
 										</span> -->
-									</div> 
+									</div>
 
 									<!-- --------------============  TEAM INTRO ============-------------- -->
-									<div class="wrapper-welcome-title" style="margin-top: 8px"> 
+									<div class="wrapper-welcome-title" style="margin-top: 8px">
 										<label style="color: #566787; display: block">
 											{{ "TeamIntro" | translate }}
 
 											<span class="widget_design__Tooltip">
-												<span> 
-												<i class="material-icons" style="position: relative;top: 2px; font-size:14px; color:#7695a5">
-													help_outline
-												</i>
+												<span>
+													<i class="material-icons"
+														style="position: relative;top: 2px; font-size:14px; color:#7695a5">
+														help_outline
+													</i>
 												</span>
-												<span class="widget_design__Tooltiptext" style="margin-left: -108px;min-width: 212px;">
+												<span class="widget_design__Tooltiptext"
+													style="margin-left: -108px;min-width: 212px;">
 													{{ 'IntroduceYourTeam' | translate }}
 												</span>
 											</span>
 										</label>
 										<!-- (blur)="onBlurSaveWelcomeMsg()"  -->
 										<input class="custom-input" placeholder="{{placeholderWelcomeMsg}}"
-											[(ngModel)]="welcomeMsg" 
-											(ngModelChange)="welcomeMsgChange($event)" style="font-weight: 400;"> 
-										
+											[(ngModel)]="welcomeMsg" (ngModelChange)="welcomeMsgChange($event)"
+											style="font-weight: 400;">
+
 										<!-- <span style="color: rgb(118, 149, 165); display: block"> 			
 												{{ "IntroduceYourTeam" | translate }}
 										</span> -->
-									</div> 
+									</div>
 
 
 									<!-- --------------============  WIDGET ALIGNMENT ============-------------- -->
-									<div class="wrapper-welcome-title" style="margin-top: 8px"> 
+									<div class="wrapper-welcome-title" style="margin-top: 8px">
 										<label style="color: #566787; display: block">
-												{{ 'Resourcepage.WidgetAlignment' | translate }}: 
-												<span *ngIf="hasSelectedLeftAlignment === true">{{ 'BottomLeft' | translate}} </span> 
-												<span *ngIf="hasSelectedRightAlignment === true">  {{ 'BottomRight' | translate}} </span>
+											{{ 'Resourcepage.WidgetAlignment' | translate }}:
+											<span
+												*ngIf="hasSelectedLeftAlignment === true">{{ 'BottomLeft' | translate}}
+											</span>
+											<span *ngIf="hasSelectedRightAlignment === true">
+												{{ 'BottomRight' | translate}} </span>
 										</label>
 
 										<div class="row" style="">
-												
+
 											<!-- <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"> -->
 											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-												<div style="height: 168px"> 
-												<div class="wrapper-widget-left-alignment-option" *ngIf="hasSelectedLeftAlignment === true">
-													<!-- [ngClass]="{'left-alignment-selected' : hasSelectedLeftAlignment === true}" -->
-													<div class="widget-left-alignment-option" style="max-width:300px;" 
-														(click)="aligmentLeftSelected(true)">
-														<img  style="max-width:300px; height:100%" src="assets/img/widget_sx_aligment.svg" />	
-													</div>
-												
-												</div>
-		
-											<!-- </div> -->
-		
-													<!-- <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"> -->
-													<div class="wrapper-widget-right-alignment-option" *ngIf="hasSelectedRightAlignment === true">
-															<!-- [ngClass]="{'right-alignment-selected' : hasSelectedRightAlignment === true}" -->
-														<div class="widget-right-alignment-option" style="max-width:300px;" 
-															(click)="aligmentRightSelected(true)">
-															<img style="max-width:300px; height:100%" src="assets/img/widget_dx_aligment.svg" />	
+												<div style="height: 168px">
+													<div class="wrapper-widget-left-alignment-option"
+														*ngIf="hasSelectedLeftAlignment === true">
+														<!-- [ngClass]="{'left-alignment-selected' : hasSelectedLeftAlignment === true}" -->
+														<div class="widget-left-alignment-option"
+															style="max-width:300px;"
+															(click)="aligmentLeftSelected(true)">
+															<img style="max-width:300px; height:100%"
+																src="assets/img/widget_sx_aligment.svg" />
 														</div>
-													
-													</div>	
-												</div>	
+
+													</div>
+
+													<!-- </div> -->
+
+													<!-- <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6"> -->
+													<div class="wrapper-widget-right-alignment-option"
+														*ngIf="hasSelectedRightAlignment === true">
+														<!-- [ngClass]="{'right-alignment-selected' : hasSelectedRightAlignment === true}" -->
+														<div class="widget-right-alignment-option"
+															style="max-width:300px;"
+															(click)="aligmentRightSelected(true)">
+															<img style="max-width:300px; height:100%"
+																src="assets/img/widget_dx_aligment.svg" />
+														</div>
+
+													</div>
+												</div>
 											</div>
 
 											<!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align: center;">
@@ -918,58 +1142,61 @@
 											<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
 												<div class="radio">
-													<label style="color: #AAAAAA;"> 
-												
-														<input type="radio" name="optionsRadios" [checked]="hasSelectedLeftAlignment === true"  value=""  (click)="aligmentLeftSelected(true)">
-														
-														{{ 'BottomLeft' | translate}} 	
-														
-													</label>
-								
 													<label style="color: #AAAAAA;">
-														<input type="radio" name="optionsRadios" [checked]="hasSelectedRightAlignment === true" value="" (click)="aligmentRightSelected(true)">
-														
+
+														<input type="radio" name="optionsRadios"
+															[checked]="hasSelectedLeftAlignment === true" value=""
+															(click)="aligmentLeftSelected(true)">
+
+														{{ 'BottomLeft' | translate}}
+
+													</label>
+
+													<label style="color: #AAAAAA;">
+														<input type="radio" name="optionsRadios"
+															[checked]="hasSelectedRightAlignment === true" value=""
+															(click)="aligmentRightSelected(true)">
+
 														{{ 'BottomRight' | translate}}
 													</label>
 												</div>
-				
 											</div>
-												
-										</div>
-
-
-								
-									</div> 
-									
-
-									<!-- //// SAVE BTN VISIBLE @ MEDIA < 768 -->
-									<div class="row appearance-save-btn-mobile">
-										<div class="col-lg-12">
-											<button class="btn btn-tdblu appearance_save_btn_mobile" style="margin-top: 15px;margin-bottom: 0px;" (click)="saveWidgetAppearance()">
-												{{ 'ScriptPage.Save' | translate }}
-											</button>
 										</div>
 									</div>
 
-								</div> 						
+
+									<!-- //// SAVE BTN VISIBLE @ MEDIA < 768 -->
+									<!-- <div class="row appearance-save-btn-mobile">
+										<div class="col-lg-12">
+											<button class="btn btn-tdblu appearance_save_btn_mobile" style="margin-top: 15px;margin-bottom: 0px;" (click)="saveWidgetAppearance()">
+													@ MEDIA < 768		{{ 'ScriptPage.Save' | translate }}
+											</button>
+										</div>
+									</div> -->
+
+								</div>
 								<!-- /.end col-* -->
-							
-								<!-- background-color: aquamarine -->							
-								<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8" style="background-image: url(data:image/gif;base64,R0lGODlhEAAQAJEAAAAAAP////X19f///yH5BAEAAAMALAAAAAAQABAAAAIflG+hq4jM3IFLJhqswNly/XkcBpIiVaInlLJr9FZWAQA7);">
+
+								<!-- background-color: aquamarine -->
+								<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8"
+									style="background-image: url(data:image/gif;base64,R0lGODlhEAAQAJEAAAAAAP////X19f///yH5BAEAAAMALAAAAAAQABAAAAIflG+hq4jM3IFLJhqswNly/XkcBpIiVaInlLJr9FZWAQA7);">
 									<!-- 
 									#############################################################################################################
 									######################################### ./START WIDGET HTML CLONE #########################################
 									############################################################################################################# -->
 									<!-- top:-20px -->
-									<div class="widget-container" style="width:375px; position: sticky;position: -webkit-sticky;top: 40px; margin: auto; height: 550px;"
-									[ngStyle]="{'width':  (newInnerWidth < 490 ) ? 'auto' : '375px' }">
-										<div id="chat21-container"> 
-											<div class="chat21-window chat21-sheet" id="chat21-conversations" style="border-radius: 10px; z-index:1029"
+									<div class="widget-container"
+										style="width:375px; position: sticky;position: -webkit-sticky;top: 40px; margin: auto; height: 550px; padding-top: 15px;"
+										[ngStyle]="{'width':  (newInnerWidth < 490 ) ? 'auto' : '375px' }">
+										<div id="chat21-container">
+											<div class="chat21-window chat21-sheet" id="chat21-conversations"
+												style="border-radius: 10px; z-index:1029"
 												[ngStyle]="{'height':  (LOGO_IS_ON === true ) ? '480px' : '428px' }">
 												<div class="modal-page active">
 													<div id="chat21-home-component">
-													
-														<div class="c21-header" style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);" 
+
+														<div class="c21-header"
+															style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);"
 															[ngStyle]="{'background-image':primaryColorGradiend, 'height':  (LOGO_IS_ON === true ) ? '252px' : '200px' }">
 															<div class="c21-header-container">
 
@@ -981,7 +1208,9 @@
 																	right: 0;
 																	margin: 10px;
 																	z-index: 10;">
-																		<button aria-label="chiudi chat" class="c21-close-button-body" tabindex="2001" style="    cursor: pointer;
+																		<button aria-label="chiudi chat"
+																			class="c21-close-button-body"
+																			tabindex="2001" style="    cursor: pointer;
 																		width: 51px;
 																		height: 51px;
 																		border-radius: 8px;
@@ -996,48 +1225,67 @@
 																		-webkit-appearance: initial;
 																		border: none;
 																		background-color: rgba(0,0,0,0);">
-																			<svg aria-labelledby="altIconTitle" height="20px" role="img" viewBox="0 0 24 24" width="20px" xmlns="http://www.w3.org/2000/svg" style="fill: rgb(255, 255, 255);">
-																				<path d="M0 0h24v24H0V0z" fill="none"></path>
-																				<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"></path>
-																				
+																			<svg aria-labelledby="altIconTitle"
+																				height="20px" role="img"
+																				viewBox="0 0 24 24" width="20px"
+																				xmlns="http://www.w3.org/2000/svg"
+																				style="fill: rgb(255, 255, 255);">
+																				<path d="M0 0h24v24H0V0z" fill="none">
+																				</path>
+																				<path
+																					d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z">
+																				</path>
+
 																			</svg>
 																		</button>
 																	</div>
 																</div>
-											
+
 																<div class="c21-header-content">
 																	<div class="c21-logo" *ngIf="LOGO_IS_ON === true">
-																		<img *ngIf="!hasOwnLogo" style="height: 32px; width: auto;margin-bottom: 20px;" alt="logo" 
+																		<img *ngIf="!hasOwnLogo"
+																			style="height: 32px; width: auto;margin-bottom: 20px;"
+																			alt="logo"
 																			src="https://www.tiledesk.com/wp-content/uploads/2018/06/tiledesk-logo-cto-sm-wh.svg">
-																		<img *ngIf="hasOwnLogo" style="height: 32px; width: auto;margin-bottom: 20px;" alt="myLogo" [src]="logoUrl">
+																		<img *ngIf="hasOwnLogo"
+																			style="height: 32px; width: auto;margin-bottom: 20px;"
+																			alt="myLogo" [src]="logoUrl">
 																	</div>
-															
+
 																	<div class="c21-text">
-																			<!-- padding-top: 16px; -->
-																		<div class="c21-text-wellcome" style="font-size: 30px;margin-bottom: 10px;font-weight: 400;" [ngStyle]="{'color': secondaryColor}">
-																
-																			<span> 
+																		<!-- padding-top: 16px; -->
+																		<div class="c21-text-wellcome"
+																			style="font-size: 30px;margin-bottom: 10px;font-weight: 400;"
+																			[ngStyle]="{'color': secondaryColor}">
+
+																			<span>
 																				<!-- {{ welcomeTitle }}  -->
 																				{{ placeholderWelcomeTitle }}
 																			</span>
-																		</div>          
-																		<div class="c21-text-intro" style="font-size: 14px; font-weight: 400" [ngStyle]="{'color': secondaryColor}">
-																			
+																		</div>
+																		<div class="c21-text-intro"
+																			style="font-size: 14px; font-weight: 400"
+																			[ngStyle]="{'color': secondaryColor}">
+
 																			<span>
-																				 <!-- {{ welcomeMsg }} -->
-																				 {{ placeholderWelcomeMsg }}
+																				<!-- {{ welcomeMsg }} -->
+																				{{ placeholderWelcomeMsg }}
 																			</span>
 																		</div>
 																	</div>
 																</div>
 															</div>
 														</div>
-														<div class="c21-body" style="-webkit-box-shadow: none; box-shadow:none">
+														<div class="c21-body"
+															style="-webkit-box-shadow: none; box-shadow:none">
 															<div class="c21-body-container">
-																<div class="c21-body-content" style="padding-top:0px; margin-top:0px">
+																<div class="c21-body-content"
+																	style="padding-top:0px; margin-top:0px">
 																	<div class="c21-cards">
-																
-																		<div class="c21-card" [ngStyle]="{'border-top': primaryColorBorder }" style="margin-top: 20px;">
+
+																		<div class="c21-card"
+																			[ngStyle]="{'border-top': primaryColorBorder }"
+																			style="margin-top: 20px;">
 																			<div id="c21-app-list-conversations">
 																				<div class="c21-header">
 																					<div class="c21-title">
@@ -1049,34 +1297,55 @@
 																					<div class="c21-item-conversation">
 																						<div class="c21-body-conv">
 																							<div class="c21-left-conv">
-																								<div class="c21-icon-avatar" style="height: 52px;width: 52px;">
-																									<div class="c21-avatar-image" 
+																								<div class="c21-icon-avatar"
+																									style="height: 52px;width: 52px;">
+																									<div class="c21-avatar-image"
 																										style="background-image: url(&quot;https://user-images.githubusercontent.com/32448495/39111365-214552a0-46d5-11e8-9878-e5c804adfe6a.png&quot;);">
 																									</div>
 																								</div>
 																							</div>
 																							<div class="c21-right-conv">
-																								<div class="c21-last-time">2 {{ 'MinutesAgo' | translate }} </div>
-																								<div class="truncate c21-name">Nicola</div>
-																								<div class="truncate c21-msg">tiledesk, chat different!</div>
+																								<div
+																									class="c21-last-time">
+																									2
+																									{{ 'MinutesAgo' | translate }}
+																								</div>
+																								<div
+																									class="truncate c21-name">
+																									Nicola</div>
+																								<div
+																									class="truncate c21-msg">
+																									tiledesk, chat
+																									different!</div>
 																							</div>
 																						</div>
 																						<div class="clear"></div>
 																					</div>
 																				</div>
-																				<div class="c21-footer"> 
-																						
-																					<button class="c21-button-primary" style="margin: 16px 0 !important;" [ngStyle]="{'background-color': primaryColor, 'border-color': primaryColor, 'color': secondaryColor }">
-																							<span class="v-align-center">
-																								<svg height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
-																									<path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"  [ngStyle]="{'fill': secondaryColor }"></path>
-																									<path d="M0 0h24v24H0z" fill="none"></path>
-																								</svg>
-																							</span>
-																							<span class="v-align-center c21-label-button" style="font-size: 13px;	margin-left: 8px;font-weight: 500;">
-																								{{'NewConversation' | translate}}
-																							</span>  
-																							<div class="clear"></div>
+																				<div class="c21-footer">
+
+																					<button class="c21-button-primary"
+																						style="margin: 16px 0 !important;"
+																						[ngStyle]="{'background-color': primaryColor, 'border-color': primaryColor, 'color': secondaryColor }">
+																						<span class="v-align-center">
+																							<svg height="20"
+																								viewBox="0 0 24 24"
+																								width="20"
+																								xmlns="http://www.w3.org/2000/svg">
+																								<path
+																									d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"
+																									[ngStyle]="{'fill': secondaryColor }">
+																								</path>
+																								<path d="M0 0h24v24H0z"
+																									fill="none"></path>
+																							</svg>
+																						</span>
+																						<span
+																							class="v-align-center c21-label-button"
+																							style="font-size: 13px;	margin-left: 8px;font-weight: 500;">
+																							{{'NewConversation' | translate}}
+																						</span>
+																						<div class="clear"></div>
 																					</button>
 																				</div>
 																			</div>
@@ -1087,15 +1356,21 @@
 														</div>
 														<div class="c21-footer_nk" style="bottom: 47px;">
 															<div id="c21-powered-by">
-																<a target="_blank" href="http://www.tiledesk.com/" 
+																<a target="_blank" href="http://www.tiledesk.com/"
 																	style="color: #AAAAAA;
 																	font-size: 11px;
 																	font-weight: 500;
 																	line-height: 28px;">
 
-																		<svg _ngcontent-c10="" xml:space="preserve" xmlns:xlink="http://www.w3.org/1999/xlink" height="22" id="Livello_1" style="enable-background:new -113 139 24 24; border-radius: 4px;margin-top: 4px;margin-left: 4px;float:left" version="1.0" viewBox="-113 139 24 24" width="22" x="0px" xmlns="http://www.w3.org/2000/svg" y="0px">
-																			
-																			<path _ngcontent-c10="" class="svg-icon" d="M-90.7,148.6l-1.6-0.2c-0.2-0.5-0.4-1.1-0.6-1.6l0.9-1.4c0.4-0.6,0.3-1.3-0.2-1.8l-1.4-1.4
+																	<svg _ngcontent-c10="" xml:space="preserve"
+																		xmlns:xlink="http://www.w3.org/1999/xlink"
+																		height="22" id="Livello_1"
+																		style="enable-background:new -113 139 24 24; border-radius: 4px;margin-top: 4px;margin-left: 4px;float:left"
+																		version="1.0" viewBox="-113 139 24 24"
+																		width="22" x="0px"
+																		xmlns="http://www.w3.org/2000/svg" y="0px">
+
+																		<path _ngcontent-c10="" class="svg-icon" d="M-90.7,148.6l-1.6-0.2c-0.2-0.5-0.4-1.1-0.6-1.6l0.9-1.4c0.4-0.6,0.3-1.3-0.2-1.8l-1.4-1.4
 																			c-0.3-0.3-0.7-0.4-1-0.4c-0.3,0-0.6,0.1-0.8,0.2l-1.4,0.9c-0.5-0.3-1-0.5-1.6-0.7l-0.3-1.6c-0.1-0.7-0.7-1.2-1.4-1.2h-2
 																			c-0.7,0-1.3,0.5-1.4,1.2l-0.3,1.6l-1.6,0.7l-1.3-0.9c-0.3-0.2-0.5-0.2-0.8-0.2c-0.4,0-0.7,0.1-1,0.4l-1.5,1.4
 																			c-0.5,0.5-0.6,1.2-0.2,1.8l1,1.4c-0.3,0.5-0.5,1-0.6,1.5l-1.6,0.2c-0.7,0.1-1.2,0.7-1.2,1.4v2c0,0.7,0.5,1.3,1.2,1.4l1.6,0.2
@@ -1111,23 +1386,26 @@
 																			c0-0.1,0-0.1,0.1-0.1l1.4-1.4h0.2l1.7,1.2c0.2,0.2,0.5,0.2,0.7,0c0.6-0.4,1.3-0.6,2-0.8c0.3-0.1,0.4-0.3,0.5-0.6l0.3-2
 																			c0-0.1,0-0.1,0.1-0.1l0,0h2.1c0.1,0,0.1,0,0.1,0.1c0,0,0,0,0,0l0.3,2c0,0.2,0.2,0.4,0.5,0.5c0.7,0.2,1.4,0.5,2.1,0.9
 																			c0.2,0.1,0.5,0.1,0.7-0.1l1.7-1.2c0,0,0,0,0.1,0h0.1l1.4,1.4c0.1,0.1,0.1,0.1,0,0.2l-1.2,1.7c-0.1,0.2-0.1,0.5,0,0.6
-																			c0.4,0.6,0.6,1.3,0.8,2c0.1,0.2,0.3,0.4,0.5,0.5l2,0.4c0.1,0,0.1,0,0.1,0.1l0,0V152L-90.8,152z" style="fill: rgb(38, 89, 143);"></path>
-																			<path _ngcontent-c10="" d="M-101,146.1c-2.7,0-4.9,2.2-4.8,4.9c0,2.7,2.2,4.9,4.9,4.8c2.7,0,4.8-2.2,4.8-4.9
+																			c0.4,0.6,0.6,1.3,0.8,2c0.1,0.2,0.3,0.4,0.5,0.5l2,0.4c0.1,0,0.1,0,0.1,0.1l0,0V152L-90.8,152z"
+																			style="fill: rgb(38, 89, 143);"></path>
+																		<path _ngcontent-c10="" d="M-101,146.1c-2.7,0-4.9,2.2-4.8,4.9c0,2.7,2.2,4.9,4.9,4.8c2.7,0,4.8-2.2,4.8-4.9
 																			C-96,148.3-98.2,146.1-101,146.1C-101,146.1-101,146.1-101,146.1z M-101,154.6c-2,0-3.7-1.6-3.7-3.6s1.6-3.6,3.7-3.6
 																			s3.7,1.6,3.7,3.6l0,0C-97.3,153-99,154.6-101,154.6z" style="fill: rgb(38, 89, 143);"></path>
-																		</svg>
-																<span style="position: relative;left: -13px;"> 	Powered by <b>TileDesk</b> </span>
+																	</svg>
+																	<span style="position: relative;left: -13px;">
+																		Powered by <b>TileDesk</b> </span>
 																</a>
 															</div>
 														</div>
 													</div>
-												</div> 
-												
+												</div>
+
 											</div>
 
-										</div>	<!-- chat21-container -->
+										</div> <!-- chat21-container -->
 										<!-- z-index:1029 -->
-										<div id="chat21-launcher-button" style="" [ngStyle]="{'background-color': primaryColor}"> 
+										<div id="chat21-launcher-button" style=""
+											[ngStyle]="{'background-color': primaryColor}">
 											<div style="width:100%; height:100%; padding:0px; margin: 0px;">
 												<!-- <svg class="ng-tns-c0-0" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg" [ngStyle]="{'fill': secondaryColor}">
 													<defs class="ng-tns-c0-0">
@@ -1142,9 +1420,14 @@
 													</g>
 												</svg> -->
 
-												<svg _ngcontent-c8="" class="ng-tns-c8-0" height="100%" role="img" viewBox="0 0 90 90" width="100%" xmlns="http://www.w3.org/2000/svg" [ngStyle]="{'fill': secondaryColor}">
-													<path _ngcontent-c8="" class="ng-tns-c8-0" d="M0 0h24v24H0V0z" fill="none"></path>
-													<path _ngcontent-c8="" class="ng-tns-c8-0" d="M33.57,31A4.58,4.58,0,0,0,29,35.57V58.3a1.94,1.94,0,0,0,3.32,1.38l3-3a.29.29,0,0,1,.21-.09H56.43A4.58,4.58,0,0,0,61,52V35.57A4.58,4.58,0,0,0,56.43,31Z"></path>
+												<svg _ngcontent-c8="" class="ng-tns-c8-0" height="100%" role="img"
+													viewBox="0 0 90 90" width="100%" xmlns="http://www.w3.org/2000/svg"
+													[ngStyle]="{'fill': secondaryColor}">
+													<path _ngcontent-c8="" class="ng-tns-c8-0" d="M0 0h24v24H0V0z"
+														fill="none"></path>
+													<path _ngcontent-c8="" class="ng-tns-c8-0"
+														d="M33.57,31A4.58,4.58,0,0,0,29,35.57V58.3a1.94,1.94,0,0,0,3.32,1.38l3-3a.29.29,0,0,1,.21-.09H56.43A4.58,4.58,0,0,0,61,52V35.57A4.58,4.58,0,0,0,56.43,31Z">
+													</path>
 												</svg>
 
 											</div>
@@ -1153,41 +1436,64 @@
 
 									<!-- ------====== ./end WIDGET HTML CLONE ======------  -->
 
-								
+
 
 								</div> <!-- ------====== ./end col* ======------  -->
 
-							<!-- </div> -->  	<!-- A QUI -->
+								<!-- </div> -->
+								<!-- A QUI -->
 
-									
-							
-						</div> <!-- ------====== ./end row ======------  -->
 
-						<!-- //// SAVE BTN -->
-						<div class="row">
-							<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-								<!-- //// SAVE BTN VISIBLE @ MEDIA > 768 -->
-								<button class="btn btn-tdblu appearance-save-btn-desktop" style="margin-top: 15px; margin-bottom: 0px;" (click)="saveWidgetAppearance()">
+
+							</div> <!-- ------====== ./end row ======------  -->
+
+						
+							<div class="row">
+								<!-- <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" style="text-align: center"> -->
+								<div class="col-xs-12" style="text-align:center">
+								
+								<!-- /// APPEARANCE SAVE BTN ON BOTTOM -->
+								<!--  appearance-save-btn-desktop  <- THIS CLASS HIDE THE BUTTON AT  @ MEDIA < 768 -->
+								<button class="btn btn-tdblu" style="margin-top: 15px; margin-bottom: 0px;" (click)="saveWidgetAppearance()">
+									<i class="material-icons" style="right: 10px;"> save </i>
 									{{ 'ScriptPage.Save' | translate }}
 								</button>
-							
-							</div>
 
-							<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8" style="text-align: center">
-								<button (click)="testWidgetPage()" class="btn btn-tdblu" style="margin-top: 15px; margin-bottom: 0px;">
+									<!-- /// ******** SQUARE BUTTON ******** -->
+									<!-- <div class="buttonSquare--wrap" style="margin-top:16px">
+										<div class="buttonSquare lightblu buttonSquareSave"
+											(click)="saveWidgetAppearance()" style="margin-right: 8px;">
+											<i class="fa fa-floppy-o"></i>
+											<span> {{ 'ScriptPage.Save' | translate }}</span>
+										</div>
+									</div> -->
+								</div>
+								<!-- <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8" style="text-align: center"> -->
+
+									<!-- <button (click)="testWidgetPage()" class="btn btn-tdblu" style="margin-top: 15px; margin-bottom: 0px;">
 									<span> 
 										<i class="material-icons" style="vertical-align: middle; color: #fff;font-size: 17px;">play_arrow</i>	
 									</span>	
 									{{ 'WidgetLiveTest' | translate }}
-								</button>
+									</button> -->
+
+
+									<!-- <div class="buttonSquare--wrap" style="margin-top:16px">
+									<div class="buttonSquare lightgreen buttonSquareTest" (click)="testWidgetPage()" style="margin-left: 8px;">
+										<i class="fa fa-play"></i>
+										<span>{{ 'WidgetLiveTest' | translate }}</span>
+									</div>
+								</div> -->
+								<!-- </div> -->
+
 							</div>
-							
-						</div>
-					
 
-						<!-- ------====== start widget alignment ======------  -->
+							<!-- </div> -->
 
-<!-- 						 
+
+							<!-- ------====== start widget alignment ======------  -->
+
+							<!-- 						 
 							<div class="row">
 								<div class="col-sm-12">
 									<h4 class="card-title" style="">
@@ -1225,25 +1531,23 @@
 									</div>
 								</div>
 							</div> -->
-						
-						<!-- ------====== end widget alignment ======------  -->
 
-				
+							<!-- ------====== end widget alignment ======------  -->
 
 
 
-					</div> <!-- ./end CARD CONTENT -->
-				</div> <!-- ./end CARD -->
 
 
-			</div> <!-- ./end COL-* -->
-		</div> <!-- ./end ROW -->
+						</div> <!-- ./end CARD CONTENT -->
+					</div> <!-- ./end CARD -->
 
-	</section>
+
+				</div> <!-- ./end COL-* -->
+			</div> <!-- ./end ROW -->
+
+		</section>
 
 
 
 	</div>
 </div>
-
-    
