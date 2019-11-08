@@ -2,7 +2,10 @@
 # tiledesk-dashboard
 
 ### 1.0.37
-- Adds the tab 'Payments' in project settings page
+- Improves the project settings page organizing the contents in tabs
+- Adds in the sidebar the link to "Tiledesk changelog" blog
+- Adds a check for the widget installation on the user's website and display a  popup if the check failed
+- Adds a "SAVE" buttons on top of the widget settings pages 
 
 ### 1.0.36
 - Adds a two step wizard (create project and install widget) after the sign up
