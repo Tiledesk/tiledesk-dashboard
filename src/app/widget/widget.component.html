@@ -163,10 +163,28 @@
 
 
 						<div class="col-sm-12">  
-							<button #testwidgetbtn style="margin-top:0px; border-radius:50%; padding:12px" (click)="testWidgetPage()" class="btn btn-tdblu">
-								<span> 	<i class="material-icons" style="vertical-align: middle; color: #fff;font-size: 24px;">play_arrow</i>	</span>	
+							
+							<button #testwidgetbtn style="margin-top:0px;  background: #3ecf8e;text-shadow: 0 1px 3px rgba(36,180,126,.4);" (click)="testWidgetPage()" class="btn btn-tdgreen">
+								<!-- <span> 	<i class="material-icons" style="vertical-align: middle;">play_arrow</i>	</span>	 -->
+								<span>{{ 'WidgetLiveTest' | translate }}</span>
 								<!-- {{ 'Resourcepage.TestThisCode' | translate }} -->
 							</button>
+
+					
+							
+
+
+							<!-- 
+							<svg class="heading-icon">
+								<circle fill="#B9F4BC" cx="33" cy="33" r="33"></circle>
+								<path d="M20 24c0-1.7 1-2.3 2.5-1.3l13 8.6c1.4 1 1.4 2.4 0 3.4l-13 8.6c-1.4 1-2.5.4-2.5-1.3V24" fill="rgb(110, 214, 154)" 
+									fill-opacity="0.9999964506743272" 
+									transform="translate(-0.0001419730269134334 0.000058563873601258365) scale(0.9999982253371635)" id="progress-path">
+								</path>
+								<path d="M20 24c0-1.7 1-2.3 2.5-1.3l13 8.6c1.4 1 1.4 2.4 0 3.4l-13 8.6c-1.4 1-2.5.4-2.5-1.3V24" fill="rgb(18,182,116)" fill-opacity="0.9999999993715241" 
+									transform="translate(12.107415022079941)">
+								</path>
+							</svg> -->
 							<div class="wrap-subtitle-test-widget" style="max-width: 320px;">
 								<span style="color: rgb(118, 149, 165); font-weight:400; padding-right: 10px">
 									{{ 'TestWidgetAllowYou' | translate }}.
