@@ -628,6 +628,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         }
     }
 
+    goToHome() {
+        this.router.navigate(['/project/' + this.projectId + '/home']);
+    }
+
+    goToBlogChangelog() {
+       const url = 'https://www.tiledesk.com/category/changelog/';
+       window.open(url, '_blank');
+    }
+
+
+
     goToProjects() {
         console.log('SIDEBAR IS MOBILE -  HAS CLICCKED GO TO PROJECT  ')
         this.router.navigate(['/projects']);
