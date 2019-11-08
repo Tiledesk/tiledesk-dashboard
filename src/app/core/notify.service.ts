@@ -33,6 +33,7 @@ export class NotifyService {
   displayContactUsModal = 'none';
   viewCancelSubscriptionModal = 'none';
   displayDataExportNotAvailable = 'none';
+  displayInstallTiledeskModal =  'none';
 
   _prjctPlanSubsEndDate: Date;
   _prjctPlanName: string;
@@ -117,6 +118,15 @@ export class NotifyService {
     this.displayDataExportNotAvailable = 'none';
   }
 
+  presentModalInstallTiledeskModal () {
+    this.displayInstallTiledeskModal =  'block';
+  }
+
+  closeModalInstallTiledeskModal () {
+    this.displayInstallTiledeskModal =  'none';
+  }
+
+
   // CANCEL SUBSCRIPTION MODAL
   displayCancelSubscriptionModal(displayModal: boolean) {
     if (displayModal === true) {
@@ -138,7 +148,7 @@ export class NotifyService {
 
   }
 
-
+  
 
 
   update(content: string, style: 'error' | 'info' | 'success') {

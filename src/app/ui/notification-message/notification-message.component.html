@@ -391,3 +391,122 @@
     </div>
   </div>
 
+
+<!-- 
+=================================================================================== 
+===================== INSTALL TILEDESK TO START CHATTING MODAL ==================== 
+=================================================================================== -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':notify.displayInstallTiledeskModal}" style="background-color: rgba(90,90,90,0.9);"> 
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" style="border-top-left-radius:6px; border-top-right-radius:6px">
+        <!-- background-image: url(assets/img/error_outiline_icon.svg);background-size: contain;background-repeat: no-repeat; -->
+        <div class="modal-header" style="padding:16px!important; border-bottom:none!important; ">
+  
+          <button type="button" class="close" aria-label="Close" (click)="notify.closeModalInstallTiledeskModal()" style="position: absolute; right: 14px;">
+            <span aria-hidden="true">
+                 <svg class="tide-icon " width="24" height="24" viewBox="0 0 24 24">
+                    <path d="M13.357 11.993l10.256 10.295c0.39 0.391 0.39 1.024 0 1.415-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292l-10.257-10.295-10.256 10.295c-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292c-0.39-0.391-0.39-1.024 0-1.415l10.256-10.295-10.256-10.294c-0.39-0.391-0.39-1.024 0-1.415s1.020-0.391 1.409 0l10.256 10.294 10.256-10.294c0.39-0.391 1.020-0.391 1.41 0 0.389 0.391 0.389 1.024 0 1.415l-10.256 10.294z">
+                    </path>
+                </svg>
+            </span>
+          </button> 
+  
+          <h2 class="modal-title" style="color: #262f3c; text-align: center; font-family: 'Google Sans', sans-serif !important; margin-top: 20px; font-size:28px">
+            <span style="vertical-align: middle;">
+                {{ 'InstallTiledesk' | translate }}
+            </span>
+          </h2>
+        </div>
+        <hr class="custom-hr" style="margin-top:3px; margin-bottom:3px">
+        <div class="modal-body" style="padding-top: 0px; padding-bottom: 0px; padding-right: 34px; padding-left: 34px; line-height: 1">
+  
+          <div class="row">
+            <div class="col-sm-12">
+                <!-- margin-top: 8px; margin-bottom: 8px, -->
+              <h3 style="text-align: center;  color: #8894ab; font-size: 22px;  margin-bottom: 20px">
+                  {{ 'InstallTiledeskNowAndStartChatting' | translate }}
+                  
+              </h3>
+            </div>
+
+            <div class="col-sm-12">
+
+            <!-- 
+            #######################################################################################################################################
+            ################################# REMEMBER TO UPDATE TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG ####################################
+            ########## !!!!!!! NOTE THAT TEXT AREA IS HIDDEN - IS USED ONLY TO COPY THE CODE WHEN THE USER CLICK ON THE BUTTON COPY CODE ########## 
+            ####################################################################################################################################### -->
+<!-- <textarea  name="exampleClipboard" class="textarea" readonly rows="18" value="" type="text" style="opacity: .01;height:0; position:absolute; z-index: -1;">
+&lt;script type=&quot;application/javascript&quot;&gt;
+  window.tiledeskSettings = 
+    {
+    projectid: &quot;{{ projectId }}&quot;
+    };
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id; //js.async=!0;
+      js.src = &quot;{{WIDGET_URL}}&quot;;
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, &#39;script&#39;, &#39;tiledesk-jssdk&#39;));
+&lt;/script&gt;</textarea>  -->
+                
+              <!-- 
+              #######################################################################################################################################
+              ################################# REMEMBER TO UPDATE TEXAREA CODE IF UPDATE SCRIPT CODE IN PRE TAG ####################################
+              ####### !!!!!!!  new incorpora WIDGET NOTE THAT: WHEN IS CLICKED THE BUTTON "COPY CODE" IS COPIED THE CODE IN THE ABOVE TEXAREA ####### 
+              ####################################################################################################################################### -->
+
+              <!-- <div class="wrap-description" style="margin-top: 3px; color: #525f7f; font-size:14px; font-weight: 400;line-height: 1.5;"> 
+                  {{ 'Resourcepage.CopyTheFollowingScript...' | translate  }}<code><em>&lt;head&gt;</em></code> tags.
+              </div>
+              <div class="wrap-script" style="margin-top: 10px;"> 
+                <pre style="padding-left:0px; margin-bottom: 0px; height: 100px;">
+                  <span>&lt;script type=&quot;application/javascript&quot;&gt;</span>
+                  <span>  window.tiledeskSettings =</span>
+                  <span>   {{'{'}}</span>
+                  <span>	 projectid: &quot;{{ projectId }}&quot;</span>
+                  <span>   {{'};'}}</span>
+                  <span>   (function(d, s, id) {{'{'}}</span>
+                  <span>    var js, fjs = d.getElementsByTagName(s)[0];    </span>
+                  <span>    if (d.getElementById(id)) return;    </span>
+                  <span>    js = d.createElement(s); js.id = id; //js.async=!0;    </span>
+                  <span>    js.src = &quot;{{WIDGET_URL}}&quot;;</span>
+                  <span>    fjs.parentNode.insertBefore(js, fjs);</span>
+                  <span>  {{'}'}}(document, &#39;script&#39;, &#39;tiledesk-jssdk&#39;));</span>
+                  <span>&lt;/script&gt;</span>	
+                </pre>
+    
+                <button (click)="copyToClipboard()" class="btn btn-white copy-script">
+                  <span> 	<i class="material-icons" style="vertical-align: middle; color: #039be5; font-size:13px">file_copy</i>	</span>		
+                  <span style="font-size: 12px"> 	{{ 'Resourcepage.CopyScript' | translate }}</span>
+                </button>
+
+              </div> -->
+                
+    
+                <div class="copied-to-clipboard-tooltip" style="opacity: 0; text-align: center;
+                position: relative;top: -78px; max-width: 360px;left: 50%;transform: translateX(-50%);padding: 5px"
+                [ngClass]="{'has-copied-text' : has_copied}" class="control-label " >
+                  {{ 'Copied' | translate }}
+                </div>
+              </div>
+
+          </div>
+        </div>
+  
+        <div class="modal-footer" style="margin-top: 0px; background-color: #fff; border-top:none; border-bottom-left-radius:6px; border-bottom-right-radius:6px">
+          <div style="text-align: center; margin-bottom: 25px;"> 
+             <button class="btn btn-default" type="button" (click)="notify.closeModalInstallTiledeskModal()">
+                {{ "Close" | translate }}
+              </button> 
+  
+            <button class="btn btn-tdblu" type="button" (click)="goToWidgetPage()">
+              {{ "UpgradeNow" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+

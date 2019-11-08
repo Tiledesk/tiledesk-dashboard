@@ -32,7 +32,8 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
   subscription_end_date: any;
   prjct_profile_name: string;
   subscription: Subscription;
-
+  WIDGET_URL = environment.widgetUrl;
+  has_copied = false;
   constructor(
     public notify: NotifyService,
     public auth: AuthService,
@@ -294,6 +295,23 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
     if (window && window['tiledesk']) {
       window['tiledesk'].open();
     }
+  }
+
+  copyToClipboard() {
+    document.querySelector('textarea').select();
+    document.execCommand('copy');
+
+    this.has_copied = true;
+    setTimeout(() => {
+      this.has_copied = false;
+    }, 2000);
+  }
+
+  goToWidgetPage() {
+
+    this.router.navigate(['project/' + this.projectId + '/widget']);
+
+    this.notify.closeModalInstallTiledeskModal()
   }
 
 

@@ -121,6 +121,26 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.departmentService.getVisitorCounter()
       .subscribe((visitorCounter: any) => {
         console.log('getVisitorCounter : ', visitorCounter);
+      
+        console.log('getVisitorCounter length : ', visitorCounter.length);
+        if(visitorCounter && visitorCounter.length > 0) {
+        let count = 0;
+        visitorCounter.forEach(visitor => {
+          
+          console.log('getVisitorCounter visitor origin ', visitor.origin);
+          if (visitor.origin !== "https://s3.eu-west-1.amazonaws.com")  {
+
+            count = count + 1;
+            console.log('getVisitorCounter visitor count if origin != test site', count);
+          }
+
+        });
+
+      } else {
+        console.log('getVisitorCounter length : ', visitorCounter.length);
+
+        //  this.notify.presentModalInstallTiledeskModal()
+      }
 
       }, (error) => {
 

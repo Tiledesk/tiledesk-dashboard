@@ -98,3 +98,90 @@ button.close {
  .new-btn.danger:hover {
     background-color:#d43f3a;
  }
+
+ pre {
+    font-family: monospace;
+    background-color: #fff;
+  
+    // margin: 4em auto;
+    // padding: 0.5em;
+    border: none;
+    // border-radius: 0.25em;
+    border-radius: 0.25em 0.25em 0px 0px;
+    // box-shadow: .1em .1em .5em rgba(0,0,0,.45);
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+    line-height: 0;
+    counter-reset: line;
+  
+    span {
+      display: block;
+      line-height: 2.1rem;
+  
+      &:before {
+        counter-increment: line;
+        content: counter(line);
+        display: inline-block;
+        border-right: 1px solid #ddd;
+        padding: 0 0.5em;
+        margin-right: 0.5em;
+        color: #039be5;
+        // background: #f2feef;
+        background: rgba(3, 155, 229, 0.1);
+        width: 30px;
+        text-align: end;
+      }
+    }
+  }
+  
+  .copy-script {
+    margin-top: 0px;
+    color: #039be5;
+    margin: 0px;
+    border-radius: 0em 0em 0.25px 0.25px;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+    position: relative;
+    bottom: 94px;
+    padding: 6px 7px;
+    float: right;
+    margin-right: 25px;
+  }
+  
+  /// START COPY TO CLIPBOARD TOOLTIP EFFECT
+  @-moz-keyframes fadeinout {
+    0%,
+    100% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.8;
+    }
+  }
+  
+  @-webkit-keyframes fadeinout {
+    0%,
+    100% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.8;
+    }
+  }
+  
+  @keyframes fadeinout {
+    0%,
+    100% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.8;
+    }
+  }
+  
+  .has-copied-text {
+    background-color: #555;
+    color: white;
+    -moz-animation: fadeinout 1s linear forwards;
+    -webkit-animation: fadeinout 1s linear forwards;
+    animation: fadeinout 2s linear forwards;
+  }
+  /// end COPY TO CLIPBOARD TOOLTIP EFFECT
