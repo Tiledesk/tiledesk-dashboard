@@ -264,15 +264,20 @@
               <div class="input-wrapper" style="max-width: 992px;">
                 <div class="row">
                   <label class="col-sm-2 custom-label">
-                    {{ "ProjectEditPage.ProjectPlan" | translate }}
+                    <!-- {{ "ProjectEditPage.ProjectPlan" | translate }} -->
+                    {{ 'YourCurrentPlan' | translate }}
                   </label>
                   <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="">
 
 
+                    <!--
+                    ********************************************************************** 
+                    ********************** YOUR CURRENT PLAN: PAYMENT  ******************* 
+                    ********************************************************************** -->
                     <span *ngIf="prjct_profile_type === 'payment'">
                       <span class="payment-plan-name" style="font-family: 'Google Sans', sans-serif !important;">
-                        {{ 'YourCurrentPlan' | translate }}:
 
+                        <!-- {{ 'YourCurrentPlan' | translate }}: -->
 
                         <span style="font-weight: 500">
                           <span style="text-transform: capitalize">{{ prjct_profile_name }} </span>
@@ -286,17 +291,19 @@
                     </span>
 
 
+                    <!--
+                    ********************************************************************* 
+                    *********************** YOUR CURRENT PLAN: FREE  ******************** 
+                    ********************************************************************* -->
                     <span *ngIf="prjct_profile_type === 'free'">
 
                       <span class="payment-plan-name" style="font-family: 'Google Sans', sans-serif !important;">
-                        {{ 'YourCurrentPlan' | translate }}:
-
+                        <!-- {{ 'YourCurrentPlan' | translate }}: -->
 
                         <span style="font-weight: 500">
                           <span style="text-transform: capitalize">{{ prjct_profile_name }} </span>
 
-
-                          ( {{ projectUsersLength }}
+                          - {{ projectUsersLength }}
                           <span *ngIf="projectUsersLength === 1">
                             {{ "Agent" | translate }}
                           </span>
@@ -316,13 +323,10 @@
                             </span>
                           </span>
 
-                          x € 0.00 / {{'PerMonth' | translate }})
+                          x € 0.00 / {{'PerMonth' | translate }}
 
                         </span>
                       </span>
-
-
-
 
                       <!-- <div class="input-group">
                         <input
@@ -341,70 +345,122 @@
                       </div> -->
                     </span>
                   </div>
-                  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" style="">
+                  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" *ngIf="prjct_profile_type !== 'payment'">
 
-
-                    <div class="card"
-                      style="box-shadow: 0 14px 30px 0 rgba(60,72,91,0.22); border-radius:10px;position: absolute;left: -11px; margin-top: 0px;">
-                      <div class="card-content">
-
-
-                        
-
-                          <div style="border-radius: 10px 10px 0 0;  margin-right: -20px;
-                          background: aliceblue;
-                          margin-left: -20px;
+                    <!--
+                    ********************************************************************************************* 
+                    ******* YOUR CURRENT PLAN: FREE - CARD WITH LIST OF PRO FEATURES & UPGRADE PLAN BTN   *******
+                    ******* NOTE: CARD what-youre-missing-card VISIBLE ONLY @ MEDIA > 768                 *******
+                    ******* THE UPGRADE BTN @ MEDIA < 768 IS BOTTOM "NO PAYMENTS" ROW                     ******* 
+                    ********************************************************************************************* -->
+                    <div class="card what-youre-missing-card"
+                      style="box-shadow: rgba(155, 155, 155, .3) 0px 2px 12px; border-radius:10px;border: 1px solid #e1eef4;position: absolute;left: -11px; margin-top: 0px;">
+                      <div class="card-content" style="padding-left:5px; padding-right:5px; padding-bottom:0px">
+                        <div style="border-radius: 10px 10px 0 0;  
+                          /* background: #3ea9f5; */
+                          background-image: linear-gradient(to right, #3ea9f5, #1fb3f6, #00bcf4, #00c4f0, #12cceb);
+                          margin-right: -5px;
+                          margin-left: -5px;
                           margin-top: -20px;
                           padding-top: 15px;
                           padding-bottom: 1px;">
-                              <h4 class="card-title" style="text-transform: none; color: #566787;font-size:14px; font-weight:400; text-align: center; margin-top:0px">What you’re missing</h4>
-                            </div>  
-                            
-                            <ul class="pro-plan-ul" >
-                                <li>{{ 'Hours'| translate}}</li> 
-                                <li>{{'Unlimited'| translate}} {{'Departments' | translate}}</li> 
-                                <li>{{'AgentsGroups'| translate}}</li>
-                                <li>{{'AnalyticsAndRealTimeMonitoring' | translate}} </li>
-                                <li>{{'UnlimitedChatHistory' | translate}} </li>
-                                <li>{{'DataExport' | translate}}</li>
-                                <li>{{'PostChatSurveys' | translate}}</li>
-                            </ul>
+                          <h4 class="card-title"
+                            style="text-transform: none; color: #ffffff;font-size:14px; font-weight:400; text-align: center; margin-top:0px; text-shadow: 0.2px 0.2px #000000;">
+                            <span *ngIf="prjct_trial_expired === false">
+
+                              {{ 'OnceYourTrialHasEndedYouWillMissing' | translate }}:
+                            </span>
+                            <span *ngIf="prjct_trial_expired === true">
+                              {{ 'WhatYoureMissing' | translate }}
+                            </span>
+                          </h4>
+                        </div>
+
+                        <ul class="pro-plan-ul"
+                          style="color: #566787; list-style-type: none;padding-left: 15px; padding-top: 16px;line-height: 1.6;font-weight: 400;">
+                          <li>{{ 'Hours'| translate}}</li>
+                          <li>{{'Unlimited'| translate}} {{'Departments' | translate}}</li>
+                          <li>{{'AgentsGroups'| translate}}</li>
+                          <li>{{'AnalyticsAndRealTimeMonitoring' | translate}} </li>
+                          <li>{{'UnlimitedChatHistory' | translate}} </li>
+                          <li>{{'DataExport' | translate}}</li>
+                          <li>{{'PostChatSurveys' | translate}}</li>
+                        </ul>
+
+
+                        <!-- 
+                        **********************************************************************************
+                        *************** PROFILE TYPE: FREE - UPGRADE PLAN BTN  **************
+                        ********************************************************************************** -->
+
+                        <button class="btn btn-tdblu btn-block" style="padding-top:9px; padding-bottom:9px"
+                          (click)="goToPricing()">
+                          {{ "Pricing.UpgradePlan" | translate }}
+                        </button>
+
+
                       </div>
                     </div>
-
 
                   </div>
                 </div>
 
                 <!-- ****************** SUBSCRIPTION STATUS ****************** -->
-                <div class="row">
+                <div class="row" style="margin-top: 16px;">
                   <label class="col-sm-2 custom-label" style="height: 46px;"
                     [ngStyle]="{'padding-top':  (browser_lang === 'en' ) ? '15px' : '' }">
                     {{ "SubscriptionStatus" | translate }}
                   </label>
                   <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+
+                    <!--
+                    *************************************************************************************************************** 
+                    *********************** SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SUBSCRIPTION ACTIVE  ******************** 
+                    *************************************************************************************************************** -->
                     <span class="subscription-info" style="font-weight: 500;">
+
                       <span style="display: flex;"
                         *ngIf="prjct_profile_type === 'payment' && subscription_is_active === true">
-                        <i class="material-icons" style="color:#4caf50; vertical-align: middle; padding-right: 8px">
+                        <i *ngIf="!SUBSCRIPTION_BUFFER_DAYS" class="material-icons"
+                          style="color:#4caf50; vertical-align: middle; padding-right: 8px">
                           check_circle
                         </i>
-                        <span> {{ "Pricing.YourSubscriptionIsActive" | translate }}, </span>
-                        {{ "NextRenew" | translate }}
+                        <i *ngIf="SUBSCRIPTION_BUFFER_DAYS" class="material-icons"
+                          style="color:#f44336; vertical-align: middle; padding-right: 8px">
+                          error_outline
+                        </i>
 
-                        <span *ngIf="days_to_next_renew === 0">
-                          {{ "Today" | translate}} {{ "At" | translate}} {{ timeOfNextRenew }}
-                        </span>
-                        <span *ngIf="days_to_next_renew === 1">
-                          {{ "Pricing.Tomorrow" | translate }}
+                        <span *ngIf="!SUBSCRIPTION_BUFFER_DAYS">
+                          <span> {{ "Pricing.YourSubscriptionIsActive" | translate }}, </span>
+                          &nbsp; {{ "NextRenew" | translate }} &nbsp;
+
+                          <span *ngIf="days_to_next_renew === 0">
+                            {{ "Today" | translate}} {{ "At" | translate}} {{ timeOfNextRenew }}
+                          </span>
+                          <span *ngIf="days_to_next_renew === 1">
+                            {{ "Pricing.Tomorrow" | translate }}
+                          </span>
+
+                          <span *ngIf="days_to_next_renew > 1">
+                            {{ "In" | translate }} {{days_to_next_renew}} {{ "Pricing.Days" | translate }}
+                          </span>
                         </span>
 
-                        <span *ngIf="days_to_next_renew > 1">
-                          {{ "In" | translate }} {{days_to_next_renew}} {{ "Pricing.Days" | translate }}
+                        <span *ngIf="SUBSCRIPTION_BUFFER_DAYS">
+                          {{ "Pricing.SubscriptionExpired" | translate }} {{ 'On' | translate }} {{ subscription_end_date | date: 'dd/MM/yyyy' }} - &nbsp;
+                          <span style="color: #039be5; cursor:pointer" (click)="openModalSubsExpired()">
+                              {{ "Pricing.UpgradePlan" | translate }}
+                            </span>
                         </span>
+
+
                       </span>
 
 
+                      <!--
+                      ******************************************************************************************************************* 
+                      *********************** SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SUBSCRIPTION NOT ACTIVE  ******************** 
+                      ******************************************************************************************************************* -->
                       <span style="display: flex;"
                         *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false">
                         <i class="material-icons" style="color:#f44336; vertical-align: middle; padding-right: 8px">
@@ -419,10 +475,20 @@
                         </span>
                       </span>
 
+
+                      <!--
+                      ************************************************************************************** 
+                      ******************** SUBSCRIPTION STATUS - PROFILE TYPE:  FREE *********************** 
+                      ************************************************************************************** -->
                       <span style="display: flex;" *ngIf="prjct_profile_type !== 'payment'">
                         <i class="material-icons" style="color:#5e9ded; vertical-align: middle; padding-right: 8px">
                           info
                         </i>
+
+                        <!--
+                        ******************************************************************************************* 
+                        **************** SUBSCRIPTION STATUS - PROFILE TYPE: FREE + TRIAL NOT EXPIRED *************
+                        ******************************************************************************************* -->
                         <span *ngIf="prjct_trial_expired === false">
                           {{ "Pricing.Your" | translate }}
 
@@ -441,6 +507,10 @@
                           </span>
                         </span>
 
+                        <!--
+                        *************************************************************************************** 
+                        **************** SUBSCRIPTION STATUS - PROFILE TYPE: FREE + TRIAL EXPIRED *************
+                        *************************************************************************************** -->
                         <span *ngIf="prjct_trial_expired === true" style="font-weight:500; color: #f44336">
                           {{ "Pricing.Your" | translate }}
 
@@ -454,7 +524,10 @@
                   </div>
                 </div>
 
-                <!-- ****************** SUBSCRIPTION START DATE ****************** -->
+                <!--
+                ***************************************************************************************** 
+                ********** SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SUBSCRIPTION START DATE ********
+                ***************************************************************************************** -->
                 <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
                   <label class="col-sm-2 custom-label">
                     {{ "SubscriptionStartDate" | translate }}
@@ -478,7 +551,11 @@
                   </div>
                 </div>
 
-                <!-- ****************** CURRENT INVOICE START DATE ****************** -->
+
+                <!--
+                ******************************************************************************************** 
+                ********** SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - CURRENT INVOICE START DATE ********
+                ******************************************************************************************** -->
                 <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
                   <label class="col-sm-2 custom-label">
                     {{ "CurrentInvoiceStartDate" | translate }}
@@ -499,7 +576,11 @@
                   </div>
                 </div>
 
-                <!-- ****************** CURRENT INVOICE END DATE ****************** -->
+
+                <!--
+                ******************************************************************************************
+                ********** SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - CURRENT INVOICE END DATE ********
+                ****************************************************************************************** -->
                 <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
                   <label class="col-sm-2 custom-label">
                     {{ "CurrentInvoiceEndDate" | translate }}
@@ -516,7 +597,10 @@
                   </div>
                 </div>
 
-                <!-- ****************** NUMBER OF AGENTS SEATS ****************** -->
+                <!--
+                ****************************************************************************************
+                ********** SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - NUMBER OF AGENTS SEATS ********
+                **************************************************************************************** -->
                 <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
                   <label class="col-sm-2 custom-label">
                     {{ "NumberOfAgentSeats" | translate }}
@@ -542,9 +626,10 @@
                   <div class="col-sm-10" style="border-top: 1px solid #eeeeee;"></div>
                 </div>
 
-
-
-                <!-- ****************** PAYMENTS ****************** -->
+                <!-- 
+                ************************************************************************************************
+                ****************** SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SEE PAYMENTS BTN **************
+                ************************************************************************************************ -->
                 <div class="row" *ngIf="prjct_profile_type !== 'free'" style="margin-top: 16px;">
                   <label class="col-sm-2 custom-label">
                     {{ "ProjectEditPage.Payments" | translate }}
@@ -557,6 +642,10 @@
                   </div>
                 </div>
 
+                <!-- 
+                ************************************************************************************************
+                *************** SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - CANCEL SUBSCRIPTION **************
+                ************************************************************************************************ -->
                 <div class="row" *ngIf="prjct_profile_type !== 'free'">
                   <label class="col-sm-2"> </label>
                   <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -567,8 +656,11 @@
                   </div>
                 </div>
 
-                <!-- NO PAYMENTS - IF THERE IS NOT A SUBSCRIPTION CREATION DATE IS SUPPOSE THAT THERE ARE NOT PAYMENTS  -->
-                <div class="row" *ngIf="subscriptionPaymentsLength === 0">
+                <!--
+                *********************************************************
+                *********************** NO PAYMENTS *********************
+                ********************************************************* -->
+                <div class="row" style="margin-top: 16px;" *ngIf="subscriptionPaymentsLength === 0 && prjct_profile_type !== 'payment'">
                   <label class="col-sm-2 custom-label" style="padding-top:15px">
                     {{ "ProjectEditPage.Payments" | translate }} </label>
                   <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -582,8 +674,23 @@
                 </div>
 
 
+                <!-- 
+                ************************************************************************************************
+                ********************** PROFILE TYPE: FREE - SUBSCRIPTION BUTTON @ MEDIA < 768 ******************
+                ************************************************************************************************ -->
+                <div style="margin-top: 16px;" class="row upgrade-plan-btn-row" *ngIf="prjct_profile_type !== 'payment'">
+                  <div class="col-xs-12" style="text-align: center;">
+
+                    <button class="btn btn-tdblu" style="padding-top:9px; padding-bottom:9px" (click)="goToPricing()">
+                      {{ "Pricing.UpgradePlan" | translate }}
+                    </button>
+                  </div>
+                </div>
 
               </div>
+
+
+
               <!-- ****************** /.end project plan ****************** -->
 
             </span>

@@ -78,6 +78,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   countOfPendingInvites: number;
   projectUsersLength: number;
   subscriptionPaymentsLength: number;
+  SUBSCRIPTION_BUFFER_DAYS: boolean;
   constructor(
     private projectService: ProjectService,
     private router: Router,
@@ -295,6 +296,19 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
           this.timeOfNextRenew = moment(current_sub_end_date).format('HH.mm')
           console.log('»»»»» ProjectEditAddComponent project Profile Data timeOfNextRenew ', this.timeOfNextRenew);
+        }
+
+        // USE CASE 'BUFFER DAYS': WHEN THE SUBSCRIPTION IS EXPIRED WE ADD 3 DAYS TO THE SUB END DATE
+        // WHEN days_to_next_renew IS = -3 OR > 3 THE SUBSCRIPTION IS NOT ACTIVE
+        // WHEN days_to_next_renew IS = 0 THE SUBSCRIPTION IS ACTIVE
+        // WHEN days_to_next_renew IS = -1 OR = -2 THE STRIPE SUBCRIPTION IS EXPIRED BUT WE NOT STILL LOCKED THE PRO FEATURE
+        if (this.days_to_next_renew === -1 || this.days_to_next_renew === -2) {
+
+          this.SUBSCRIPTION_BUFFER_DAYS = true;
+          console.log('»»»»» ProjectEditAddComponent days_to_next_renew ', this.days_to_next_renew, ' SUBSCRIPTION_BUFFER_DAYS ', this.SUBSCRIPTION_BUFFER_DAYS);
+        } else {
+          this.SUBSCRIPTION_BUFFER_DAYS = false;
+          console.log('»»»»» ProjectEditAddComponent days_to_next_renew ', this.days_to_next_renew, ' SUBSCRIPTION_BUFFER_DAYS ', this.SUBSCRIPTION_BUFFER_DAYS);
         }
 
 
