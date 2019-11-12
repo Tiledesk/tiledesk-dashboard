@@ -19,6 +19,7 @@ export const firebaseConfig = environment.firebase;
 import * as firebase from 'firebase';
 import 'firebase/auth';
 import { AppConfigService } from './services/app-config.service';
+import { WsRequestsService } from './services/ws-requests.service';
 
 @Component({
     selector: 'appdashboard-root',
@@ -39,6 +40,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     @ViewChild(NavbarComponent) navbar: NavbarComponent;
 
     @ViewChild('myModal') myModal: ElementRef;
+    isPageWithNav: boolean;
 
     constructor(
         public location: Location,
@@ -47,11 +49,16 @@ export class AppComponent implements OnInit, AfterViewInit {
         private requestsService: RequestsService,
         private auth: AuthService,
         private notify: NotifyService,
-        public appConfigService: AppConfigService
-
+        public appConfigService: AppConfigService,
+        public wsRequestsService: WsRequestsService,
         // private faqKbService: FaqKbService,
     ) {
 
+
+        // wsRequestsService.messages.subscribe(msg => {
+        //     console.log("Response from websocket: ", msg);
+
+        // });
 
         /**
          * *** ---------------------- ***
@@ -64,7 +71,8 @@ export class AppComponent implements OnInit, AfterViewInit {
             throw new Error('firebase config is not defined. Please create your firebase-config.json. See the Chat21-Web_widget Installation Page');
         }
 
-        const firebase_conf = JSON.parse(appConfigService.getConfig().firebase)
+        // const firebase_conf = JSON.parse(appConfigService.getConfig().firebase)
+        const firebase_conf = appConfigService.getConfig().firebase;
         console.log('AppConfigService - AppComponent firebase_conf ', firebase_conf)
         firebase.initializeApp(firebase_conf);
 
@@ -87,6 +95,7 @@ export class AppComponent implements OnInit, AfterViewInit {
         // this.unservedRequestCount = 0
 
     }
+
 
     switchLanguage(language: string) {
         this.translate.use(language);
@@ -347,16 +356,17 @@ export class AppComponent implements OnInit, AfterViewInit {
                 this.route = this.location.path();
                 // console.log('»> ', this.route)
                 // tslint:disable-next-line:max-line-length
-                if (
-                    (this.route === '/login') ||
-                    (this.route === '/signup') ||
-                    (this.route === '/forgotpsw') ||
-                    (this.route.indexOf('/signup-on-invitation') !== -1)
-                ) {
+                if ((this.route === '/login') || (this.route === '/signup') || (this.route === '/forgotpsw') || (this.route.indexOf('/signup-on-invitation') !== -1)) {
+
+                    this.isPageWithNav = false;
+
                     if (window && window['tiledeskSettings']) {
                         window['tiledeskSettings']['preChatForm'] = true
                     }
                 } else {
+
+                    this.isPageWithNav = true;
+
                     if (window['tiledeskSettings']['preChatForm']) {
                         delete window['tiledeskSettings']['preChatForm'];
                     }

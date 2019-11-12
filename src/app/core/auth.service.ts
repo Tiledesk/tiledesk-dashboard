@@ -129,7 +129,10 @@ export class AuthService {
     this.checkIfFCMIsSupported();
     this.checkIfExpiredSessionModalIsOpened();
 
-    const firebase_conf = JSON.parse(appConfigService.getConfig().firebase);
+    console.log('% appConfigService.getConfig().firebase ', appConfigService.getConfig().firebase)
+    // const firebase_conf = JSON.parse(appConfigService.getConfig().firebase);
+    const firebase_conf = appConfigService.getConfig().firebase;
+
     // console.log('nk --> AuthService firebase_conf ', firebase_conf);
     const cloudBaseUrl = firebase_conf['chat21ApiUrl'];
     // console.log('nk --> AuthService cloudBaseUrl ', cloudBaseUrl);

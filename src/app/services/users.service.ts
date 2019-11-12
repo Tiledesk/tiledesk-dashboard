@@ -104,8 +104,9 @@ export class UsersService {
 
     this.getCurrentProject();
 
-    const firebase_conf = JSON.parse(appConfigService.getConfig().firebase);
-    // console.log('nk --> UsersService firebase_conf ',  firebase_conf);
+    // const firebase_conf = JSON.parse(appConfigService.getConfig().firebase);
+    const firebase_conf = appConfigService.getConfig().firebase;
+    console.log('nk --> UsersService firebase_conf ',  firebase_conf);
     const cloudBaseUrl = firebase_conf['chat21ApiUrl']
     // console.log('nk --> UsersService cloudBaseUrl ',  cloudBaseUrl);
     this.CLOUD_FUNC_UPDATE_USER_URL = cloudBaseUrl + '/tilechat/contacts/me';

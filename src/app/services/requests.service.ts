@@ -18,6 +18,7 @@ import { DepartmentService } from '../services/mongodb-department.service';
 import { UsersService } from '../services/users.service';
 import { environment } from '../../environments/environment';
 
+
 import * as firebase from 'firebase';
 import 'firebase/firestore';
 // import { QuerySnapshot, DocumentChange, DocumentSnapshot } from '@firebase/firestore-types';
@@ -69,7 +70,7 @@ export class RequestsService {
     public auth: AuthService,
     private departmentService: DepartmentService,
     private usersService: UsersService,
-    public appConfigService: AppConfigService,
+    public appConfigService: AppConfigService
   ) {
 
     console.log('SEE REQUEST IM AGENT (REQUESTS SERVICE - ON INIT) ', this._seeOnlyRequestsHaveCurrentUserAsAgent)
@@ -101,7 +102,8 @@ export class RequestsService {
     
     // this.getMyDepts(); // !! NO MORE USED
 
-    const firebase_conf = JSON.parse(appConfigService.getConfig().firebase);
+    // const firebase_conf = JSON.parse(appConfigService.getConfig().firebase);
+    const firebase_conf = appConfigService.getConfig().firebase;
     // console.log('nk --> RequestsService firebase_conf ', firebase_conf);
     const cloudBaseUrl = firebase_conf['chat21ApiUrl']
     // console.log('nk --> RequestsService cloudBaseUrl ', cloudBaseUrl);
@@ -196,6 +198,7 @@ export class RequestsService {
       });
       // PUBLISH THE REQUESTS LIST (ORDERED AND WITH THE CHANGES MANAGED BY addOrUpdateRequestsList)
       this.requestsList_bs.next(this.requestList);
+      
       console.log('!!! REQUESTS-SERVICE PUBLISH REQUEST LIST ', this.requestList);
 
       this.allRequestsList_bs.next(this.allRequestList);
@@ -205,6 +208,8 @@ export class RequestsService {
     }, () => {
       console.log('GET REQUEST * COMPLETE')
     });
+
+
   }
 
   seeOnlyRequestsHaveCurrentUserAsAgent(seeIamAgentReq) {
