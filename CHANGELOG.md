@@ -2,7 +2,7 @@
 # tiledesk-dashboard
 
 ### 1.0.37
-- Improves the project settings page organizing the contents in tabs
+- Improves the project settings page organizing the contents in tabs and adding info
 - Adds in the sidebar the link to "Tiledesk changelog" blog
 - Adds a check for the widget installation on the user's website and display a  popup if the check failed
 - Adds a "SAVE" buttons on top of the widget settings pages 
