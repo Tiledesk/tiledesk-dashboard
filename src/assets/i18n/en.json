@@ -350,19 +350,20 @@
     "FromTheRecentPojectPage": "from the Recent Poject page",
     "IAlreadyHaveAnAccount": "I already have an account",
     "IfYouAreAlreadyRegisteredOnTiledeskWwithADifferentEmailPleaseContact": "If you are already registered on Tiledesk with a different email please contact",
-    "YouHaveAlreadyInvitedThisUserSeeThePendingInvitations":"You have already invited this user (see the pending invitations)",
-    "Awesome":"Awesome",
-    "YourPaymentIsSuccessfullyDone":"Your payment is successfully done",
-    "PleaseCheckYourEmailYouWillReceiveReceipt":"Please check your email, you will receive a receipt",
-    "HavingTrouble":"Having trouble",
-    "ContinueToHomepage":"Continue to homepage",
-    "General":"General",
-    "NoPayments":"No payments",
-    "Agent":"Agent",
-    "Agents":"Agents",
+    "YouHaveAlreadyInvitedThisUserSeeThePendingInvitations": "You have already invited this user (see the pending invitations)",
+    "Awesome": "Awesome",
+    "YourPaymentIsSuccessfullyDone": "Your payment is successfully done",
+    "PleaseCheckYourEmailYouWillReceiveReceipt": "Please check your email, you will receive a receipt",
+    "HavingTrouble": "Having trouble",
+    "ContinueToHomepage": "Continue to homepage",
+    "General": "General",
+    "NoPayments": "No payments",
+    "Agent": "Agent",
+    "Agents": "Agents",
     "WhatYoureMissing": "What you're missing",
-    "OnceYourTrialHasEndedYouWillMissing":"Once your trial has ended, you will missing",
-    "On":"on",
+    "OnceYourTrialHasEndedYouWillMissing": "Once your trial has ended, you will missing",
+    "On": "on",
+    "InstallNow": "Installa ora",
     "Pricing": {
         "Operators": "Operators",
         "UpgradePlan": "Upgrade Plan",
@@ -914,12 +915,12 @@
         "HistoryIsOnlyAvailableForThePast14Days": "History is only available for the past 14 days",
         "ForUnlimitedChatHistory": "to get unlimited chat history"
     },
-    "Trigger":{
+    "Trigger": {
         "Trigger": "Triggers",
-        "TriggerList":"Trigger list",
+        "TriggerList": "Trigger list",
         "AddTrigger": "Add Trigger",
         "EditTrigger": "Edit Trigger",
-        "TriggerName":"Trigger name",
+        "TriggerName": "Trigger name",
         "TriggerListDescription": "Description",
         "TriggerListActivated": "Activated",
         "Return": "Return",
@@ -930,7 +931,7 @@
         "TheTriggerHasBeenUpdated": "Trigger successfully updated",
         "Continue": "Continue",
         "Error": "Error",
-        "ModalDeleteTriggerTitle":"Delete Trigger",
+        "ModalDeleteTriggerTitle": "Delete Trigger",
         "AreYouSureDeleteTrigger": "Are you sure you want to delete the trigger",
         "ERROR_AllFieldMustBeCompleted": "ERROR!! Compile all fields",
         "ERROR_ConditionTypeInNull": "ERROR!! Choose a condition for trigger activation ",
@@ -974,88 +975,87 @@
         "DeleteServerError": "Error occurred while deleting trigger",
         "DeleteTriggerSuccess": "Trigger successfully deleted",
         "ArrayCondition_Option_Action": {
-            "ConditionArray":{
-                "message": {  "groupId":{
-                                    "VisitorInformation": "Visitor information",
-                                    "PageInformation": "Page information",
-                                    "SoftwareOfVisitor": "Software/Computer of visitor",
-                                    "ChatInformation": "Char-related information"
-                                },
-                                "label_key":{
-                                    "VisitorSearchTerm": "Visitor search terms",
-                                    "VisitorName": "Visitor name",
-                                    "VisitorMail":"Visitor mail",
-                                    "VisitorDepartment": "Visitor department",
-                                    "VisitorReferrer": "Visitor referrer (Client)",
-                                    "VisitorURL": "Visitor page URL",
-                                    "VisitorPageTitle": "Visitor page title",
-                                    "VisitorBrowser": "Visitor browser",
-                                    "VisitorPlatform":"Visitor platform",
-                                    "Department": "Department",
-                                    "VisitorServed": "Visitor served"
-                                 },
-                                 "placeholder": {
-                                    "SelectDepartment" : "Select department",
-                                    "SelectStatus": "Select status"
-                                }
-                },
-                "chat": {  "groupId":{
-                                    "VisitorInformation": "Visitor information",
-                                    "PageInformation": "Page information",
-                                    "SoftwareOfVisitor": "Software/Computer of visitor",
-                                    "ChatInformation": "Char-related information",
-                                    "ChannelInformation": "Channel information",
-                                    "LocationVisitor": "Location of visitor"
-                                },
-                                "label_key":{
-                                    "VisitorSearchTerm": "Visitor search terms",
-                                    "VisitorName": "Visitor name",
-                                    "VisitorMail":"Visitor mail",
-                                    "VisitorDepartment": "Visitor department",
-                                    "VisitorReferrer": "Visitor referrer (Client)",
-                                    "VisitoruserAgent": "Visitor user agent",
-                                    "VisitorURL": "Visitor page URL",
-                                    "VisitorPageTitle": "Visitor page title",
-                                    "VisitorBrowser": "Visitor browser",
-                                    "VisitorPlatform":"Visitor platform",
-                                    "Department": "Department",
-                                    "VisitorServed": "Visitor served",
-                                    "ChannelName": "Channel name",
-                                    "VisitorCountryRegion": "Visitor country region",
-                                    "VisitorCountryCode": "Visitor country code",
-                                    "VisitorCountryName": "Visitor country name"
-                                },
-                                "placeholder": {
-                                    "SelectDepartment" : "Select department",
-                                    "SelectStatus": "Select status",
-                                    "SelectLanguage": "Select language"
-                                }
-                }
-    
-            },
-            "OptionArray":{ 
-                    "label_key":{
-                        "Equal": "Equals",
-                        "NotEqual": "Not equal",
-                        "Contains": "Contains",
-                        "NotContain": "Does not contain",
-                        "GreatherThan": "Greather than",
-                        "LessThan": "Less than",
-                        "GreaterEqualThan": "Greather than or equal to",
-                        "LessEqualThan": "Less than or equal to"
+            "ConditionArray": {
+                "message": {
+                    "groupId": {
+                        "VisitorInformation": "Visitor information",
+                        "PageInformation": "Page information",
+                        "SoftwareOfVisitor": "Software/Computer of visitor",
+                        "ChatInformation": "Char-related information"
+                    },
+                    "label_key": {
+                        "VisitorSearchTerm": "Visitor search terms",
+                        "VisitorName": "Visitor name",
+                        "VisitorMail": "Visitor mail",
+                        "VisitorDepartment": "Visitor department",
+                        "VisitorReferrer": "Visitor referrer (Client)",
+                        "VisitorURL": "Visitor page URL",
+                        "VisitorPageTitle": "Visitor page title",
+                        "VisitorBrowser": "Visitor browser",
+                        "VisitorPlatform": "Visitor platform",
+                        "Department": "Department",
+                        "VisitorServed": "Visitor served"
+                    },
+                    "placeholder": {
+                        "SelectDepartment": "Select department",
+                        "SelectStatus": "Select status"
                     }
-    
+                },
+                "chat": {
+                    "groupId": {
+                        "VisitorInformation": "Visitor information",
+                        "PageInformation": "Page information",
+                        "SoftwareOfVisitor": "Software/Computer of visitor",
+                        "ChatInformation": "Char-related information",
+                        "ChannelInformation": "Channel information",
+                        "LocationVisitor": "Location of visitor"
+                    },
+                    "label_key": {
+                        "VisitorSearchTerm": "Visitor search terms",
+                        "VisitorName": "Visitor name",
+                        "VisitorMail": "Visitor mail",
+                        "VisitorDepartment": "Visitor department",
+                        "VisitorReferrer": "Visitor referrer (Client)",
+                        "VisitoruserAgent": "Visitor user agent",
+                        "VisitorURL": "Visitor page URL",
+                        "VisitorPageTitle": "Visitor page title",
+                        "VisitorBrowser": "Visitor browser",
+                        "VisitorPlatform": "Visitor platform",
+                        "Department": "Department",
+                        "VisitorServed": "Visitor served",
+                        "ChannelName": "Channel name",
+                        "VisitorCountryRegion": "Visitor country region",
+                        "VisitorCountryCode": "Visitor country code",
+                        "VisitorCountryName": "Visitor country name"
+                    },
+                    "placeholder": {
+                        "SelectDepartment": "Select department",
+                        "SelectStatus": "Select status",
+                        "SelectLanguage": "Select language"
+                    }
+                }
+            },
+            "OptionArray": {
+                "label_key": {
+                    "Equal": "Equals",
+                    "NotEqual": "Not equal",
+                    "Contains": "Contains",
+                    "NotContain": "Does not contain",
+                    "GreatherThan": "Greather than",
+                    "LessThan": "Less than",
+                    "GreaterEqualThan": "Greather than or equal to",
+                    "LessEqualThan": "Less than or equal to"
+                }
             },
             "ActionArray": {
                 "label_key": {
                     "SendMessageToVisitor": "Send message to visitor"
                 },
-                "placeholder":{
+                "placeholder": {
                     "NameAgent": "Name of agents"
                 }
-    
             }
-        } 
+        }
     },
     "Resourcepage": {
         "CopyScript": "Copy Script",
@@ -1186,7 +1186,7 @@
         "SentimentHEART": "Median Customer Satisfaction",
         "SentimentMedianValueHEART": "Your team's overall Median Customer Satisfaction is :",
         "UpgradeYourAccounttoTrackTheChatsYouHaveWithCustomers": " Upgrade your account to track the chats you have with customers",
-        "DailyMedianResponseTime":"Daily Median Response Time",
+        "DailyMedianResponseTime": "Daily Median Response Time",
         "DailyConvDurationTime": "Daily  Median Conversation Lenght"
     }
 }
