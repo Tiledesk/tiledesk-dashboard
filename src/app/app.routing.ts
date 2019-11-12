@@ -24,6 +24,9 @@ import { HomeComponent } from './home/home.component';
 // NK
 import { ContactsComponent } from './contacts/contacts.component';
 import { RequestsListComponent } from './requests-list/requests-list.component';
+import { WsRequestsListComponent } from './ws-requests-list/ws-requests-list.component';
+
+
 import { DepartmentsComponent } from './departments/departments.component';
 import { DepartmentEditAddComponent } from './department-edit-add/department-edit-add.component';
 
@@ -168,6 +171,8 @@ const routes: Routes = [
   { path: 'userprofile', component: UserProfileComponent },
   // , canActivate: [AuthGuard]
   { path: 'project/:projectid/requests', component: RequestsListComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/wsrequests', component: WsRequestsListComponent, canActivate: [AuthGuard] },
+  
   
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
 
