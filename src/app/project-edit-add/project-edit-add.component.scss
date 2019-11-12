@@ -229,6 +229,12 @@ button.close {
   }
 }
 
+@media (max-width: 1369px) {
+  .what-youre-missing-card {
+    left: -11px;
+  }
+}
+
 .link-to-widget-auth {
   margin-top: 25px;
   margin-bottom: 25px;
