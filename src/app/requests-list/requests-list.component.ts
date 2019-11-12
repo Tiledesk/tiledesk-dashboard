@@ -180,7 +180,7 @@ export class RequestsListComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.archivingRequestErrorNoticationMsg = text;
-        console.log('+ + + ArchivingRequestErrorNoticationMsg', text)
+        // console.log('+ + + ArchivingRequestErrorNoticationMsg', text)
       });
   }
   // TRANSLATION
@@ -189,7 +189,7 @@ export class RequestsListComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.archivingRequestNoticationMsg = text;
-        console.log('+ + + ArchivingRequestNoticationMsg', text)
+        // console.log('+ + + ArchivingRequestNoticationMsg', text)
       });
   }
 
@@ -199,7 +199,7 @@ export class RequestsListComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.requestHasBeenArchivedNoticationMsg_part1 = text;
-        console.log('+ + + RequestHasBeenArchivedNoticationMsg_part1', text)
+        // console.log('+ + + RequestHasBeenArchivedNoticationMsg_part1', text)
       });
   }
 
@@ -209,7 +209,7 @@ export class RequestsListComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.requestHasBeenArchivedNoticationMsg_part2 = text;
-        console.log('+ + + RequestHasBeenArchivedNoticationMsg_part2', text)
+        // console.log('+ + + RequestHasBeenArchivedNoticationMsg_part2', text)
       });
   }
 
