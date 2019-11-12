@@ -25,8 +25,13 @@
 <div *ngIf="project" class="logo" style="background-color:#1e2129!important; padding-bottom: 5px;">
   <a class="simple-text" style="text-transform: none; padding-left: 40px;">
     <!-- routerLink="project/{{ project._id }}/home" -->
+    
     <div class="logo-img" (click)="goToHome()" style="cursor: pointer;">
-      <img style="width:50%; top:20px" src="assets/img/tiledesk-logo_white.svg" />
+      <!-- assets/img/tiledesk-logo_white.svg -->
+      <!-- assets/img/tiledesk-logo_white_orange.svg -->
+      <!-- assets/img/tiledesk-logo_white_blu.svg" -->
+      <!-- remove left: 26px to center -->
+      <img style="width:50%; top:20px; left: 26px;" src="assets/img/tiledesk-logo_white_orange.svg" />
     </div>
 
     <!--  -->
@@ -322,7 +327,11 @@
           <a class="customAncor" routerLink="project/{{ project._id }}/analytics">
             <i class="material-icons sidebar-icons">trending_up</i>
             <!-- <span class="_badge" [ngClass]="{'change-badge-bckgrnd' : ANALITYCS_ROUTE_IS_ACTIVE === true}">New</span> -->
-            <p class="onBlackBckgrnd">Analytics</p>
+            <p class="onBlackBckgrnd">
+              <!-- Analytics -->
+            
+              {{ 'Analytics.AnalyticsTITLE' | translate }}
+            </p>
           </a>
         </li>
       </ng-container>
