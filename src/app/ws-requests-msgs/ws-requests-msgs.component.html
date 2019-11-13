@@ -1,0 +1,1274 @@
+<div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
+    <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">keyboard_arrow_left</i>
+    <!-- Request  -->
+    {{ "RequestMsgsPage.RequestDetails" | translate }}
+    <!-- <code style="color:#3f87a6; border: 1px solid #cee9f9; font-size:0.8em"> {{cut_support_group_from_request_id(id_request)}} </code> -->
+  </div>
+  
+  <div class="main-content" style="padding-top:0px">
+    <div class="container-fluid">
+  
+      <loading-spinner *ngIf="showSpinner"></loading-spinner>
+      <div *ngIf="!showSpinner">
+        <div class="row">
+          <div class="col-sm-7 chat-col">
+            <div class="card chat-card" style="padding-top:0px; padding-bottom:0px;">
+              <div class="row" style="border-bottom: 1px solid #eeeeee; padding-left:25px; padding-right:25px">
+                <div class="col-sm-12">
+                  <div class="two-div-wrapper">
+                    <div style="float: left; width: 50%; ">
+                      <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-top: 18px; margin-bottom: 0px; padding-bottom: 15px;">
+                        {{ "RequestMsgsPage.Messages" | translate }}
+                        <!-- <code style="color: #566787; font-weight: 400" >{{cut_support_group_from_request_id(id_request)}} </code> -->
+                      </h4>
+                    </div>
+                    <div style="float: right; width: 50%; ">
+  
+                      <!-- -----------------============= ACTIONS DROPDOWN MENU =============----------------- -->
+                      <div class="dropdown pull-right">
+                        <a href="#" class="btn btn-info dropdown-toggle outline_btn" data-toggle="dropdown" style="padding:6px 15px; margin-top: 15px">
+                            {{ 'VisitorsPage.Actions' | translate }}
+                        <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                          <li [ngClass]="{'disable-dropdown-menu-btn' : request?.support_status == 1000}">
+                            <a (click)='openArchiveRequestModal(request?.recipient)' style="padding-left: 15px; padding-right: 15px;">
+                              <i class="material-icons" style="padding-right: 5px;">close</i>
+                              <span style="position: relative; top: 1px; cursor:pointer"> 
+                              {{ 'RequestMsgsPage.CloseTheRequest' | translate }}  
+                            </span>
+                            </a>
+                          </li>
+                          <li class="divider"></li>
+                          <!-- [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_AGENT === true}" -->
+                          <li> 
+                            <a (click)='openSelectUsersModal(action = "reassign")' style="padding-left: 15px; padding-right: 15px;">
+                              <i class="material-icons" style="padding-right: 5px;">swap_horiz</i>
+                              <span style="position: relative; top: 1px; cursor:pointer">
+                                {{ 'VisitorsPage.ReassignRequest' | translate }}
+                              </span>
+                            </a>
+                          </li>
+                          <!-- [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_AGENT === true}" -->
+                          <li> 
+                            <a (click)='openSelectUsersModal(action = "invite")' style="padding-left: 15px; padding-right: 15px;">
+                              <i class="material-icons" style="padding-right: 5px;">person_add</i>
+                              <span style="position: relative; top: 1px; cursor:pointer">
+                                {{ 'VisitorsPage.AddAgent' | translate }}
+                              </span>
+                            </a>
+                          </li>
+  
+                          <li class="divider"></li>
+                          <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false}">
+                              
+                            <a (click)='openleaveChatModal()' style="padding-left: 15px; padding-right: 15px;">
+                              <i class="material-icons" style="padding-right: 5px;">exit_to_app</i>
+                              <span style="position: relative; top: 1px; cursor:pointer"> 
+                                {{ 'VisitorsPage.LeaveChat' | translate }}
+                              </span>
+                            </a>
+                          </li>
+  
+                          <li class="divider"></li>
+                          <li>
+                            <a (click)='openTranscript()' style="padding-left: 15px; padding-right: 15px;">
+                              <i class="material-icons" style="padding-right: 5px;">open_in_new</i>
+                              <span style="position: relative; top: 1px; cursor:pointer"> 
+                                
+                                {{ 'VisitorsPage.Open' | translate }} transcript
+                              </span>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+            <div #scrollMe class="card-content" style="height: 500px; overflow-y: auto; padding: 0px; padding-left:25px; padding-right:25px " (scroll)="onScroll($event)">
+   
+              
+              <div class="chat-body" style="vertical-align:baseline;">
+  
+                  <!-- style="padding-bottom: 3px;" class="answer left" -->
+                <div *ngFor="let message of messagesList"> 
+  
+                  <div class="parent">
+                    <div [ngClass]="{'child' : requester_id !== message.sender}"> 
+      
+                  <div class="speech-wrapper">
+  
+                    <!-- ////// REQUESTER -->
+                    <div *ngIf="requester_id === message.sender" class="bubble">
+                          <div class="avatar" style="  width: 35px; height: 35px; position: absolute; left: -50px; bottom: 36px;">
+                            <div class="requester-avatar-wrapper" style="display: block;border-radius: 50%; height: 100%; margin-top: 35px;" [ngStyle]="{'background-color': fillColour }">
+                                <!-- position: absolute; top:42px; margin-left:10px; color: #fff; text-transform: uppercase -->
+                              <span class="_requester-avatar-inchat">
+                                <!-- {{ messageSenderInitialLetter( message.sender_fullname )}} -->
+                                {{ requester_fullname_initial }}
+                                
+                              </span>
+                            </div>
+                          </div>
+  
+                      <div class="txt">
+                        <p class="name" [ngStyle]="{'color': fillColour }">{{ message.sender_fullname }}
+                            <!-- margin-right: -45px; -->
+                          <span style="float:right; cursor:pointer; color: #00bcf8; text-decoration: underline;" (click)="openRightSideBar(message?.text)">
+                            <!-- Addestra -->
+                            {{ 'Train' | translate }}
+                         
+                          </span>
+                        </p>
+                        <p class="message" style="word-break: break-all;">
+                          {{ message?.text }}
+                        </p>
+                        <span class="timestamp"> {{ message?.timestamp | date: 'd/M/y HH:mm:ss'}} </span>
+                      </div>
+                      <div class="bubble-arrow"></div>
+                    </div>
+                    <!-- ////////////////// Speech Bubble alternative ////////////////// -->
+                    <div *ngIf="requester_id !== message.sender" class="bubble alt">
+  
+                        <div class="avatar" style="width: 35px; height: 35px; position: absolute; left: 254px; bottom: 36px;">
+                            <div style="display: block;border-radius: 50%; height: 100%; margin-top: 35px; background-color: #fff; border:1px solid #ebebeb;">
+                              
+                              <!-- USE CASE: human -->
+                              <span *ngIf="message?.sender !== 'system' && message?.sender.indexOf('bot_') === -1" style="position: absolute; top:43px; margin-left:13px;">
+                                <!-- {{ messageSenderInitialLetter( message?.sender_fullname )}} -->
+  
+                                <img style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; margin-top: 1px; margin-bottom: 1px;position: relative;top: -9px; left: -14px;" 
+                                class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{message?.sender}}%2Fphoto.jpg?alt=media" 
+                                onerror="this.src='assets/img/no_image_user.png'"/>
+                              </span>
+  
+                              <!-- USE CASE: bot -->
+                              <span *ngIf="message?.sender.indexOf('bot_') !== -1" style="position: absolute; top:43px; margin-left:13px;">
+                                  <img style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; position:relative;top: -9px;left: -14px;" 
+                                  class="user-img" src="assets/img/bot_image_as_human.jpg" 
+                                  onerror="this.src='assets/img/no_image_user.png'"/>
+                              </span>
+  
+                              <!-- USE CASE: system but with name Bot -->
+                              <span *ngIf="message?.sender === 'system' && message?.sender_fullname === 'Bot'" style="position: absolute; top:43px; margin-left:13px;color: #999999;">
+                                  <img style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; position:relative;top: -9px;left: -14px;" 
+                                  class="user-img" src="assets/img/bot_image_as_human.jpg" 
+                                  onerror="this.src='assets/img/no_image_user.png'"/>
+                              </span>
+  
+                              <!-- USE CASE: system -->
+                              <span *ngIf="message?.sender === 'system' && message?.sender_fullname !== 'Bot'" style="position: absolute; top:43px; margin-left:13px;color: #999999;">
+                                  <i class="material-icons" style="position: relative;left: -9px;top: -3px;font-size:26px">
+                                      code
+                                  </i>
+                              </span>
+  
+  
+                            </div>
+                          </div>
+                      <div class="txt">
+                        <p class="name alt">
+                            {{ message.sender_fullname }}
+                          <!-- +353 87 1234 567<span> ~ John</span> -->
+                        </p>
+                        <p class="message" style="word-break: break-all;">{{ message.text }}</p>
+                        <span class="timestamp"> {{ message.timestamp | date: 'd/M/y HH:mm:ss'}}</span>
+                      </div>
+                      <div class="bubble-arrow alt"></div>
+                    </div>
+                  </div>
+                  </div>
+  
+                  </div>
+                </div>
+              </div>
+              
+              <a id="fixed-button"  class="button" [ngStyle]="{'display':displayBtnScrollToBottom }" (click)="scrollToBottom()" >
+                <span class="icon is-small">
+                  <i class="fa fa-chevron-down"></i>
+                </span>
+              </a>
+  
+            </div>
+  
+            <div class="card-footer" style="text-align: center; margin-bottom: 0px;padding-top: 2px; margin:auto">
+              <div class="stats" style="width: 100%;">
+    
+                <!-- -------------------================== start new three btn ==================------------------- -->
+                <div class="row" style="width: 100%">
+                    
+                  <!-- -------------------====== CLOSE CHAT - MOVED IN DROPDOWN ======------------------- -->
+                  <!-- <div class="col-xs-4 col-sm-4 col-md-4" style="padding-right:5px">
+                    <button type="button" class="btn btn-danger btn-block tooltipx"
+                      (click)='openArchiveRequestModal(request?.recipient)' style="vertical-align: middle; padding-left: 0px;padding-right: 0px;" 
+                      [disabled]="request?.support_status == 1000">
+                        {{ 'RequestMsgsPage.Close' | translate }}
+                      <span class="tooltiptext">{{ 'RequestMsgsPage.CloseTheRequest' | translate }}</span>
+                    </button>
+                  </div> -->
+                    
+                  <!-- ------------============ BTNS SWITCH: OPEN THE CHAT, ENTER, LOADING, ERROR ============------------ -->
+                  <!-- [disabled]="request?.support_status == 1000" -->
+                  <div class="col-xs-12" style="padding-left:5px; padding-right:5px"> 
+                    
+                    <div class="centered-buttons" style="width: 100%; padding: 0px 35px;">
+                      <span *ngIf="HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === true || IS_CURRENT_USER_JOINED === true">
+                        <button #openChatBtn (click)="openChatInNewWindow()" class="btn btn-info btn-block open_the_chat_btn" role="button" 
+                        style="padding-left: 0px; padding-right: 0px" 
+                        [ngClass]="{'disable_open_the_chat_btn' : request?.support_status == 1000}">   
+                          
+                          <i class="material-icons" style="vertical-align: middle;  top:0px !important; padding-bottom: 2px;">open_in_new</i>
+                        <span style="vertical-align: middle"> {{ 'RequestMsgsPage.OpenTheChat' | translate }}</span>
+                        </button>
+                      </span>
+        
+                      <span *ngIf="JOIN_TO_GROUP_HAS_ERROR === false 
+                          && IS_CURRENT_USER_JOINED === false 
+                          && SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === false 
+                          && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false">
+                        <button class="btn btn-info btn-block" (click)="onJoinHandled()" 
+                          style="padding-left: 0px;padding-right: 0px;" [disabled]="request?.support_status == 1000">
+                          {{ 'RequestMsgsPage.Enter' | translate }}
+                        </button>
+                      </span>
+  
+                      <span *ngIf="SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === true 
+                          && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false  
+                          && JOIN_TO_GROUP_HAS_ERROR === false">
+                        <button class="btn btn-default btn-block" style="padding-left: 0px;padding-right: 0px;" btn-block>
+                          <i class="fa fa-spinner fa-spin" style="margin-right: 5px;"></i> 
+                            {{ 'RequestMsgsPage.Loading' | translate }}
+                        </button>
+                      </span>
+        
+                      <span *ngIf="JOIN_TO_GROUP_HAS_ERROR === true">
+                        <button class="btn btn-danger btn-block" disabled style="padding-left: 0px;padding-right: 0px;">
+                          {{ 'RequestMsgsPage.Error' | translate }}
+                        </button>
+                      </span>
+                    </div>
+  
+                    <!--  -------------------====== BTN REASSIGN REQUETS - MOVED IN DROPDOWN ======----------------- -->
+                    <!-- <div class="col-xs-4 col-sm-4 col-md-4" style="padding-left:5px;">
+                      <button type="button" class="btn btn-warning btn-block tooltipx"
+                          (click)='openSelectUsersModal()' 
+                          style="vertical-align: middle; padding-left: 0px;padding-right: 0px;" 
+                          [disabled]="request?.support_status == 1000">
+                          {{ 'VisitorsPage.Reassign' | translate }}
+                        
+                        <span class="tooltiptext" style="text-transform:none">
+                          {{ 'VisitorsPage.ReassignRequest' | translate }}
+                        </span>
+                      </button>
+                    </div> -->
+                  </div>
+                </div> <!-- ./end ROW -->
+                
+              </div>
+  
+            </div>
+            </div>  <!-- ./ card   -->
+          </div> <!-- ./ col-md-7 -->
+  
+          <!-- // SIDEBAR // -->
+          <!-- [ngClass]="{'hidden' : OPEN_RIGHT_SIDEBAR === true}" -->
+          <div class="col-sm-5 right-col">
+            <div class="card right-card" style="padding-top:5px; padding-bottom:5px;">
+  
+              <div class="card-content" style="padding-top:5px;">
+                
+                <h4 class="card-title requestattibutestitle" style="text-transform: none; color: #566787; 
+                  font-weight:400; margin-bottom: 8px; border-bottom: 1px solid #eeeeee; padding-bottom: 12px;">
+                  <!-- Request  -->
+                  <span class="requestattibutes">{{ "RequestMsgsPage.RequestAttributes" | translate }}</span>
+  
+                  <!-- {{ request?.timestamp | amTimeAgo }} -->
+                  <!-- <span class="requestattibutestime" style="font-size: 14px; color:#999999; float: right;">
+                      <i class="material-icons" style="vertical-align: middle">access_time</i>
+                      <span style="vertical-align: middle; font-weight: 500">
+                        {{ "RequestMsgsPage.Published" | translate }}: {{ request?.created_on | amTimeAgo }}
+                      </span>
+                  </span> -->
+                  
+                </h4>
+  
+                <p style="margin-bottom: 0px"> 
+  
+                  <!-- IF IS AN CLOSED REQUEST -->
+                  <span *ngIf="request?.support_status == 1000"> 
+                    <!-- <i style="font-size: 24px !important; vertical-align: middle; color: #999999" class="material-icons">visibility</i> -->
+                    <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
+                      <style type="text/css">
+                        .st0-chat-closed{fill:none;stroke:#999999;stroke-width:2;stroke-miterlimit:10;}
+                        .st1-chat-closed{fill:#999999;}
+                      </style>
+                      <path class="st0-chat-closed" d="M30.1,2.6c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C8.9,41.4,7.9,47.2,5.1,50c0,0,8.6-1.2,14.4-4.7
+                        c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S43.9,2.6,30.1,2.6z"/>
+                      <path class="st1-chat-closed" d="M30.4,13.8c-6.3,0-11.4,5-11.4,11.2h-3.8l4.9,4.9l0.1,0.2l5.1-5h-3.8c0-4.8,4-8.7,8.9-8.7s8.9,3.9,8.9,8.7
+                        s-4,8.7-8.9,8.7c-2.5,0-4.7-1-6.3-2.6L22.3,33c2.1,2,4.9,3.3,8.1,3.3c6.3,0,11.4-5,11.4-11.2S36.7,13.8,30.4,13.8z M29.1,20v6.2
+                        l5.4,3.2l0.9-1.5L31,25.3V20H29.1z"/>
+                    </svg>  
+                  
+                    <span class="request-category" style="position:relative;top:-10px; color: #999999">
+                      <!-- <strong> -->
+                        <!-- Request closed  -->
+                        <!-- - {{ "RequestMsgsPage.WasServedBy" | translate }} -->
+                        {{ "RequestMsgsPage.RequestClosed" | translate }} 
+                      <!-- </strong> -->
+                    </span>
+                  </span>
+  
+                  <!-- IF IS AN UNSERVED REQUEST -->
+                    <span *ngIf="request?.support_status == 100"> 
+                    <!-- <i style="font-size: 24px !important; vertical-align: middle; color: #f44336" class="material-icons">visibility</i> -->
+                      <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
+                        <style type="text/css">
+                          .st0-unserved{fill:none;stroke:#ED4537;stroke-width:2;stroke-miterlimit:10;}
+                          .st1-unserved{fill:#ED4537;}
+                        </style>
+                        <path class="st0-unserved" d="M30.5,3.3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
+                          c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S44.3,3.3,30.5,3.3z"/>
+                        <g>
+                          <path class="st1-unserved" d="M30.6,38.9c-1.7,0-3.1-1.4-3.1-3c0-1.7,1.4-3,3.1-3c1.7,0,3.1,1.4,3.1,3C33.6,37.6,32.3,38.9,30.6,38.9z"/>
+                          <path class="st1-unserved" d="M34.8,18l-1.5,10c-0.2,1.5-1.6,2.5-3.1,2.3c-1.2-0.2-2.1-1.1-2.3-2.2l-1.6-10c-0.4-2.3,1.2-4.5,3.6-4.9
+                            c2.4-0.4,4.6,1.2,5,3.5C34.9,17.1,34.9,17.6,34.8,18z"/>
+                        </g>
+                      </svg>
+                    <span class="request-category" style="position: relative;top:-10px; color: #f44336">
+                      <!-- <strong> -->
+                        <!-- Request unserved  -->
+                        {{ "RequestMsgsPage.RequestUnserved" | translate }}
+                      <!-- </strong> -->
+                    </span>
+                  </span>
+  
+                  <!-- IF IS A SERVED REQUEST AND BETWEEN THE MEMBERS THERE IS THE CURRENT USER -->
+                  <span *ngIf="request?.support_status == 200 && request?.currentUserIsJoined === true"> 
+                    <!-- <i style="font-size: 24px !important; vertical-align: middle; color: #4CAF50" class="material-icons">visibility</i> -->
+                    <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
+                      <style type="text/css">
+                        .st0-served-by-cu{fill:none;stroke:#4DAF4F;stroke-width:2;stroke-miterlimit:10;}
+                        .st1-served-by-cu{fill:#4DAF4F;}
+                      </style>
+                      <path class="st0-served-by-cu" d="M29.8,3.7c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
+                        c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S43.6,3.7,29.8,3.7z"/>
+                      <g id="XMLID_146_">
+                        <path id="XMLID_158_" class="st1-served-by-cu" d="M25.8,36.5l-8.4-7.4c-1.1-0.9-1.1-2.4,0-3.3c1.1-0.9,2.8-0.9,3.8,0l4.6,4.1l12.6-10.9
+                          c1.1-0.9,2.8-0.9,3.8,0c1,0.9,1,2.4,0,3.3L25.8,36.5z"/>
+                      </g>
+                    </svg>
+                  
+                    <span class="request-category" style="position:relative;top:-10px; color: #4CAF50">
+                      <!-- <strong> -->
+                        <!-- Request served by:  -->
+                        {{ "RequestMsgsPage.RequestServedBy" | translate }}
+                      <!-- </strong> -->
+                    </span>
+  
+                  </span>
+  
+                  <span *ngIf="request?.support_status == 200 && !request?.currentUserIsJoined"> 
+                    <!-- <i style="font-size: 24px !important; vertical-align: middle; color: #00bcd4" class="material-icons">visibility</i> -->
+                    <svg  viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
+                      <style type="text/css">
+                        .st0-served{fill:none;stroke:#05BDD4;stroke-width:2;stroke-miterlimit:10;}
+                        .st1-served{fill:#05BDD4;}
+                      </style>
+                      <g>
+                        <path class="st0-served" d="M30.5,3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
+                          c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S44.3,3,30.5,3z"/>
+                        <g>
+                          <circle class="st1-served" cx="17.5" cy="26.7" r="3"/>
+                          <circle class="st1-served" cx="30.5" cy="26.7" r="3"/>
+                          <circle class="st1-served" cx="43.5" cy="26.7" r="3"/>
+                        </g>
+                      </g>
+                    </svg>
+                  
+                    <span  class="request-category" style="position:relative;top: -10px; color: #00bcd4;">
+                      <!-- <strong> -->
+                        <!-- Request served by:  -->
+                        {{ "RequestMsgsPage.RequestServedBy" | translate }}
+                      <!-- </strong> -->
+                    </span>
+                  </span>
+  
+                  <!-- <span *ngFor="let m of members_array"  style="">
+                    <span *ngIf="m !== request?.requester_id && m !== 'system' && m !== currentUserID"> 
+                      <div class="tag_member" (click)="goToMemberProfile( m )" [innerHTML]="members_replace( m )" style="cursor: pointer;">  </div>
+                    </span> 
+                    <span *ngIf="m === currentUserID" style=""> 
+                        <span class="tag_member_me"> ME </span>
+                    </span>
+                  </span>    -->
+                </p>
+  
+                <span class="row-body">  
+                    <span style="color:#394f5a;"> id: </span>  {{ id_request }}
+                </span>
+  
+                <div class="row" style="margin-top:5px"> 
+                  <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4; border-top: 1px solid #e1eef4;">
+                    <p class="row-header" style=""> 
+                      <!-- <i class="material-icons" style="vertical-align: middle">access_time</i>  -->
+                      {{ "RequestMsgsPage.Created" | translate }}
+                    </p>
+          
+  
+                <!-- PUBLISHED (from now format) -->
+                <!-- <p style="margin-bottom: 3px; color:#566787; padding-top: 10px;"> 
+                  <strong>
+                    {{ "RequestMsgsPage.Published" | translate }}
+                  </strong>
+                </p>
+                <p style="color:#999999; font-weight: 500">  
+                  {{ request?.timestamp | amTimeAgo }}
+                </p> -->
+  
+                <!-- ============ PUBLICATION DATE ============ -->
+                <!-- <p style="margin-bottom: 3px; color:#566787; padding-top: 10px;"> 
+                  <strong>
+                    {{ "RequestMsgsPage.Date" | translate }} 
+                  </strong>
+                </p> -->
+                
+                <!-- color:#394f5a; font-weight: 400; font-size: 12px -->
+                <span class="row-body" >  
+                    
+                    {{ request?.created_on | amTimeAgo }} ({{ request?.created_on | date: 'd/M/y HH:mm:ss' }})
+                </span>
+  
+              </div>
+            </div>
+                  
+                <div class="row" style="margin-top:15px"> 
+                  <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4; border-top: 1px solid #e1eef4;">
+                    <p class="row-header" style=""> 
+                        <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
+                      <span style="vertical-align: middle"> 
+                          {{ "RequestMsgsPage.Agents" | translate }} 
+                       </span>
+                    </p>
+    
+  
+                <div class="served_by">
+                   
+                  <span *ngIf="agents_array?.length === 0" class="row-body">
+                    {{ "RequestMsgsPage.NoAgent" | translate }} 
+                  </span>
+                  <div *ngFor="let agent of agents_array" class="row-body"> 
+  
+                    <span (click)="goToMemberProfile( agent?._id )" style="cursor:pointer">
+                      <img *ngIf="agent.isBot === false" style="vertical-align: middle; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee; margin-right: 8px;" 
+                      class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media" 
+                      onerror="this.src='assets/img/no_image_user.png'"/>
+  
+                      <img *ngIf="agent.isBot === true" style="vertical-align: middle; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee; margin-right: 8px;" 
+                      class="user-img" src="assets/img/bot_image_as_human.jpg" 
+                      onerror="this.src='assets/img/no_image_user.png'"/>
+  
+                      <span [ngClass]="{'current_user_is_agent' : agent?._id === currentUserID}" style="font-size:12px; font-weight: 400"> 
+                        {{agent?.firstname}} {{agent?.lastname}} 
+                      </span> 
+                    </span>
+  
+                  </div>
+                </div>
+  
+              </div>
+            </div>
+  
+                <!-- REQUEST ID -->
+                <!-- <p style="margin-bottom: 3px; color:#566787;"> 
+                  <strong>
+                    {{ "RequestMsgsPage.RequestId" | translate }}
+                    </strong>
+                </p>
+                <p style="color:#999999; font-weight: 500">  
+                    {{ id_request }}
+                </p> -->
+    
+                <!-- ========== Requester  ========== -->
+                <!-- <p style="margin-bottom: 3px; color:#566787"> 
+                  <strong>
+                    {{ "RequestMsgsPage.Requester" | translate }}
+                  </strong>
+                </p> -->
+  
+                <div class="row" style="margin-top:15px"> 
+                  <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4; border-top: 1px solid #e1eef4;">
+                    <p class="row-header" style=""> 
+                        <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
+                      <span style="vertical-align: middle"> 
+                          {{ "RequestMsgsPage.Requester" | translate }}
+                        </span>
+                    </p>
+                      <!-- style="color:#999999; font-weight: 500" -->
+                    <p class="row-body" style="margin-bottom:0px; padding-bottom:0px">  
+                   
+                      <!-- // REQUESTER FULLNAME  -->
+                      <span class="requester-avatar-wrapper"> 
+                        <span class="_requester-avatar" [ngStyle]="{'background-color': fillColour }" [ngClass]="{'requester_fullname-undefined' : !requester_fullname}">
+                          <span style="color: #ffffff"> {{ requester_fullname_initial }} </span>
+                        </span>
+                        <span *ngIf="REQUESTER_IS_VERIFIED === true" class="tooltipx"> 
+                          <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                              viewBox="0 0 26.6 26.6" width="17" height="17" style="position: relative;left: -43px;top: -3px;" xml:space="preserve">
+                              <style type="text/css">
+                                .st0{fill:none;}
+                                .st1{fill:#FFFFFF;}
+                                .st2{fill:#18BDF7;}
+                              </style>
+                              <path class="st0" d="M1.3,1.3h24v24h-24V1.3z"/>
+                              <path class="st1" d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z"/>
+                              <path class="st2" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
+                                l6.6-6.6l1.4,1.4L11.3,18.3z"/>
+                            </svg>
+  
+                          <span class="tooltiptext"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
+                        
+                        </span>
+                        <div class="requester-status-icon" [ngClass]="{'requester_is_online' : REQUESTER_IS_ONLINE}"></div>
+   
+                      </span>
+  
+                      <!-- <span style="color:#394f5a;"> {{ "RequestMsgsPage.RequesterName" | translate }}: </span>  -->
+                      <span [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}" style="margin-left: 2px;font-size:13px"> 
+                        {{ requester_fullname }} 
+                      </span>
+                      <span *ngIf="!requester_fullname" [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}" style="margin-left: 2px;">
+                        n.a.
+                      </span>
+  
+                      <!-- // VIEW DETAILS BTN -->
+                      <span *ngIf="NODEJS_REQUEST_CNTCT_FOUND">
+                        <button class="btn btn-xs btn-white-custom-round pull-right" style="margin-left:8px;margin-top: 4px;" (click)="goToContactDetails()">
+                          {{ 'ViewDetails' | translate}}
+                        </button>
+                      </span>
+                    </p>
+                 
+  
+                    <p class="row-body" style="margin-top:8px; margin-bottom:0px; padding-bottom:0px"> 
+                      <span style="color:#394f5a;"> {{ "RequestMsgsPage.ChatFormUserName" | translate }}: </span> 
+                       {{ user_name }}
+                    </p>
+  
+                    <p class="row-body" style="margin-bottom:0px;padding-bottom:0px"> 
+                      <span style="color:#394f5a;"> {{ "RequestMsgsPage.ChatFormUserEmail" | translate }}: </span> 
+                      <a *ngIf="user_email !== 'n.a.'" href="mailto:{{user_email}}">{{ user_email }}</a>
+                      <a *ngIf="user_email === 'n.a.'" style="color:#7695a5;">{{ user_email }}</a>
+                    </p>
+  
+                    <p class="row-body" style="margin-bottom:0px; padding-bottom:0px"> 
+                      <!-- {{ "RequestMsgsPage.RequesterId" | translate }}: -->
+                      <span style="color:#394f5a;"> id: </span> 
+                        {{ requester_id }} 
+                    </p>
+  
+                  </div>
+                </div>
+  
+                <div class="row" style="margin-top:15px"> 
+                    <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4; border-top: 1px solid #e1eef4;">
+                      <p class="row-header" style=""> 
+                          <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
+                        <span style="vertical-align: middle"> 
+                            {{ "RequestMsgsPage.DepartmentName" | translate }}: <span style="color: #7695a5;"> {{ department_name }}</span>
+                         </span>
+                      </p>
+                      <!-- <span class="row-body">  
+                    
+                          {{ department_name }}
+                      </span> -->
+                  </div>
+                </div>
+  
+                <div class="row" style="margin-top:15px"> 
+                    <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4; border-top: 1px solid #e1eef4;">
+                      <p class="row-header" style=""> 
+                          <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
+                        <span style="vertical-align: middle"> 
+                            {{ "RequestMsgsPage.Rating" | translate }}: <span style="color: #7695a5;"> {{ rating }}</span>
+                         </span>
+                      </p>
+                      <!-- <p class="row-body"  style="margin-bottom:0px">  
+                          <span style="color:#394f5a;"> {{ "RequestMsgsPage.Rating" | translate }}: </span>
+                          {{ rating }}
+                      </p> -->
+  
+                      <p class="row-body"  style="margin-bottom:0px">  
+                    
+                          <span style="color:#394f5a;">  {{ "RequestMsgsPage.RatingMessage" | translate }}: </span>
+                          {{ rating_message }}
+                      </p>
+                  </div>
+                </div>
+  
+                <div class="row" style="margin-top:15px"> 
+                    <div class="col-sm-12" style="border-top: 1px solid #e1eef4;">
+                      <p class="row-header" style=""> 
+                          <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
+                        <span style="vertical-align: middle"> 
+                            {{ "RequestMsgsPage.SourcePage" | translate }}
+                         </span>
+                      </p>
+                      <p class="row-body"  style="margin-bottom:0px; word-wrap: break-word;">  
+                    
+                        <a href="{{source_page}}" target="_blank">{{source_page}}</a>
+                      </p>
+  
+                  </div>
+                </div>
+  
+  
+                <!-- <p style="margin-bottom: 3px; color:#566787"> 
+                  <strong>
+                    {{ "RequestMsgsPage.RequesterId" | translate }}
+                  </strong>
+                </p>
+                <p style="color:#999999; font-weight: 500">  
+                  {{ requester_id }}
+                </p> -->
+  
+                <!-- <p style="margin-bottom: 3px; color:#566787"> 
+                  <strong>
+                     {{ "RequestMsgsPage.ChatFormUserName" | translate }}
+                  </strong>
+                </p>
+                <p style="color:#999999; font-weight: 500">  
+                  {{ user_name }}
+                </p> -->
+  
+                <!-- <p style="margin-bottom: 3px; color:#566787"> 
+                  <strong>
+                    {{ "RequestMsgsPage.ChatFormUserEmail" | translate }}
+                  </strong>
+                </p>
+                <p style="color:#999999; font-weight: 500">  
+                  
+                  <a *ngIf="user_email !== 'n.a.'" href="mailto:{{user_email}}">{{ user_email }}</a>
+                  <a *ngIf="user_email === 'n.a.'" style="color:#999999;">{{ user_email }}</a>
+                </p> -->
+  
+                <!-- Department Name -->
+                <!-- <p style="margin-bottom: 3px; color:#566787"> 
+                  <strong>
+                    {{ "RequestMsgsPage.DepartmentName" | translate }}
+                  </strong>
+                </p>
+                <p style="color:#999999; font-weight: 500">  
+                  {{ department_name }}
+                </p> -->
+  
+                <!-- RATING -->
+                <!-- <p style="margin-bottom: 3px; color:#566787"> 
+                  <strong>
+                      {{ "RequestMsgsPage.Rating" | translate }}
+                  </strong>
+                </p>
+                <p style="color:#999999; font-weight: 500">  
+                  {{ rating }}
+                </p> -->
+  
+                <!-- RATING MESSAGE -->
+                <!-- <p style="margin-bottom: 3px; color:#566787"> 
+                  <strong>
+                      {{ "RequestMsgsPage.RatingMessage" | translate }}
+                  </strong>
+                </p>
+                <p style="color:#999999; font-weight: 500">  
+                  {{ rating_message }}
+                </p> -->
+  
+                <!-- ========== Department Id ========== -->
+                <!-- <p style="margin-bottom: 3px; color:#566787"> 
+                  <strong>
+                    {{ "RequestMsgsPage.DepartmentId" | translate }}
+                  </strong>
+                </p>
+                <p style="color:#999999; font-weight: 500">  
+                  {{ department_id }}
+                </p> -->
+  
+                <!-- <p style="margin-bottom: 3px; color:#566787"> 
+                  <strong>
+                     {{ "RequestMsgsPage.SourcePage" | translate }}
+                  </strong>
+                </p>
+                <p style="color:#999999; word-wrap: break-word; font-weight: 500">  
+                  
+                  <a href="{{source_page}}" target="_blank">{{source_page}}</a>
+                </p> -->
+  
+              </div>
+            </div>
+          </div>
+        </div> <!-- ./ row -->
+      </div>
+      
+    </div> <!-- ./ container fluid -->
+  </div>
+  
+  <!-- ------------============= USERS LIST MODAL - FULL WIDTH MODAL =============------------ -->
+  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayUsersListModal , 'height': users_list_modal_height}" 
+    style="background-color: rgba(90,90,90,0.5);">
+    <div class="modal-dialog modal-lg users-list-modal" role="document" style="width: 100%; height: 100%; margin:0; padding: 0;">
+      <div class="modal-content" style="height: auto; min-height: 100%; border-radius: 0; border:none;">
+        
+        <div class="modal-header">
+            <!-- class="close" -->
+          <button type="button" style="border: none !important; float: right" aria-label="Close" (click)="closeSelectUsersModal()">
+            <span aria-hidden="true" style="font-size:31px; color: rgb(60, 72, 88) !important;">&times;</span>
+          </button>
+  
+          <h4 class="modal-title">
+            <div class="title-wrapper" style="max-width: 936px; margin:auto">
+              <span *ngIf="actionInModal === 'reassign'"> {{ "VisitorsPage.ReassignRequest" | translate }} </span> 
+              <span *ngIf="actionInModal === 'invite'"> {{ "VisitorsPage.AddAgent" | translate }}  </span> 
+            </div>
+          </h4>
+        </div>
+  
+        <div class="modal-body" style="padding-right: 15px; padding-top:15px; padding-bottom:15px; max-width: 936px; margin:auto ">
+          
+          <!-- ------------============ image inside a text field ============------------ -->
+          <!-- <div class="row">
+            <div class="col-sm-12" style="padding-left: 0px;">
+              <h5 style="margin-bottom: 0px;">
+                Reassign the request to the user
+              </h5>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-8">
+              <div class="fake-input">
+                <input name="requester_email" type="email"  class="" autocomplete="off"
+                placeholder="" style="margin-top:8px; height: 45px; width: 100%; border-radius: 4px; border-color: #ccc; border-width:1px; border-style:solid; padding-left: 6px;">
+                <p style="font-size:14px; line-height:21px; font-weight: 500; margin-bottom: 0px;"> {{ userfirstname_selected }} {{ userlastname_selected }}</p>
+                <span style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px">
+                  {{ useremail_selected }}
+                </span>
+                <img *ngIf="userid_selected" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{userid_selected}}%2Fphoto.jpg?alt=media" width=25 
+                onerror="this.src='assets/img/no_image_user.png'"/>
+              </div>
+            </div>
+  
+            <div class="col-sm-4">
+              <button class="btn btn-info" (click)="reassignRequest(userid_selected)">
+                SWAP USER
+              </button>
+            </div>
+          </div> -->
+  
+          <div class="row">
+            <div class="col-md-12">
+              <span *ngIf="actionInModal === 'reassign'">  
+                <h4 style="font-weight:400"> 
+                  {{ "VisitorsPage.SelectTheUserToWhom" | translate }} 
+                </h4>
+              </span>
+  
+              <span *ngIf="actionInModal === 'invite'">  
+                <h4 style="font-weight:400"> 
+                  {{ "VisitorsPage.InviteAnotherUserToServe" | translate }} 
+                </h4>
+              </span>
+  
+  
+            </div>
+            <div class="col-md-12">
+              
+              <div class="card" style="margin-top:5px; margin-bottom:5px">
+  
+                <loading-spinner *ngIf="showSpinner_inModalUserList"></loading-spinner>
+  
+                <div *ngIf="!showSpinner_inModalUserList" class="card-content table-responsive">
+  
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th colspan="2">
+                          <span style="color: #566787">
+                            <strong>
+                              {{ "UsersPage.User" | translate }}
+                            </strong>
+                          </span>
+                        </th>
+  
+                        <th>
+                          <span style="color: #566787">
+                            <strong>
+                              {{ "UsersPage.Available" | translate }}
+                            </strong>
+                          </span>
+                        </th>
+  
+                        <th>
+                          <span style="color: #566787">
+                            <strong>
+                              {{ "UsersPage.Role" | translate }}
+                            </strong>
+                          </span>
+                        </th>
+  
+                        <!-- <th>
+                          <span style="color: #566787">
+                            <strong>
+                              Email
+                            </strong>
+                          </span>
+                        </th> -->
+  
+                        <th *ngIf="!isMobile"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+  
+                        <!-- <tr *ngIf="requestListServed.length === 0 && requestListUnserved.length === 0"> 
+                            <td colspan="3" style="text-align: center; padding-top: 16px; cursor: pointer">
+                            
+                            </td>
+                          </tr> -->
+                        <!--  -->
+                        <!-- let isFirstRow=first" [ngClass]="{'RowHeaderCSS' : isFirstRow}" (mouseover)="mouseOvered($event) -->
+                      <tr *ngFor="let projectUser of projectUsersList;" class="table-row">
+                        <!-- FOR DEBUG: ID OF THE PROJECT-USER  -->
+                        <!-- <td>
+                          {{ projectUser?._id }}
+                        </td> -->
+                        <!-- (mouseover)="mouseOvered=true" [class.btn-success]="mouseOvered" -->
+  
+                        <!-- *ngIf="projectUser?.id_user._id !== currentUserID"  -->
+                        <td style="width: 25px; cursor:pointer" (click)= "selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
+                          <img style="vertical-align: middle; width: 42px; height: 42px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
+                          class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media" 
+                          onerror="this.src='assets/img/no_image_user.png'"/>
+                        </td>
+  
+                        <!-- *ngIf="projectUser?.id_user._id !== currentUserID" -->
+                        <td style="cursor:pointer" (click)= "selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
+                          <p style="font-size:14px; line-height:21px; font-weight: 500; margin-bottom: 0px;"> 
+                            {{ projectUser?.id_user?.firstname }}
+                            <span style="text-transform: uppercase"> 
+                              {{ projectUser?.id_user?.lastname }} 
+                            </span>
+                          </p>
+                          <span style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px">
+                              {{ projectUser?.id_user?.email }}
+                          </span>
+                        </td>
+  
+                        <td style="cursor:pointer" (click)= "selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
+  
+                          
+                          <span *ngIf="projectUser?.user_available === true" style="color: #4caf50; text-transform: capitalize">
+                              {{ 'Available' | translate }}
+                          </span>
+                          <span *ngIf="projectUser?.user_available === false" style="color: #f44336; text-transform: capitalize">
+                              {{ 'Unavailable' | translate }}
+                          </span>
+                        </td>
+  
+                        <!-- *ngIf="projectUser?.id_user._id !== currentUserID" -->
+                        <td style="cursor:pointer" (click)= "selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)" >
+                          {{ projectUser?.role }}
+                        </td>
+  
+                        <!-- <td>
+                          {{ projectUser?.id_user?.email }}
+                        </td> -->
+  
+                        <!-- projectUser?.id_user._id !== currentUserID && -->
+                        <td *ngIf="!isMobile" style="cursor:pointer" (click)= "selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
+                          <!-- <span class="tooltipx"> -->
+                          <div class="assign-request">
+                            <!-- <i class="material-icons" style="cursor: pointer">
+                              swap_horiz
+                            </i> -->
+                            <p style="color: #00bcd4 ;margin-bottom:0px; font-size:12px; font-weight: 500;">
+                              <span *ngIf="actionInModal === 'reassign'"> 
+                                {{ 'VisitorsPage.ReassignTo' | translate}} 
+                              </span>
+                              <span *ngIf="actionInModal === 'invite'"> 
+                                {{ 'VisitorsPage.AssignTo' | translate}} 
+                              </span>
+                            </p>
+                            <span style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px">
+                              {{ projectUser?.id_user?.email }} 
+                            </span> 
+                          </div>
+                         
+                            <!-- <span class="tooltiptext">
+                              {{ "VisitorsPage.ReassignRequestTo" | translate }} {{ projectUser?.id_user?.email }}
+                            </span>
+                          </span> -->
+                       
+                        </td>
+    
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+        </div >  <!-- /. modal-body -->
+  
+        <!-- <div class="modal-footer" style="text-align: center;">
+          <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseUsersListModalHandler()" style="padding:12px 16px;">
+              {{ "VisitorsPage.Continue" | translate }}
+          </button>
+        </div> -->
+      </div> <!-- /.modal-content -->
+    </div> <!-- /.modal-dialog -->
+  </div>
+  
+  <!-- ============= CONFIRM REQUEST REASSIGNMENT MODAL ============= -->
+  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayConfirmReassignmentModal}" style="background-color: rgba(90,90,90,0.5);">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="padding-bottom:15px">
+          <button type="button" class="close" aria-label="Close" (click)="closeConfirmReassignmentModal()">
+            <span aria-hidden="true" style="">&times;</span>
+          </button>
+          <h4 class="modal-title" style="color: #00bcd4">
+            <i class="material-icons" style="vertical-align: middle">info</i>
+              <span style="vertical-align: middle; padding-left:8px">
+                <span *ngIf="actionInModal === 'reassign'"> 
+                  {{ "VisitorsPage.ReassignRequest" | translate }}
+                </span>
+                <span *ngIf="actionInModal === 'invite'"> 
+                  {{ "VisitorsPage.AddAgent" | translate }}
+                </span>
+              </span>
+          </h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-sm-10">
+              <h4 style="color: #566787;padding-top: 0px;font-size: 1.1em;font-weight: 500;margin-top: 0px;margin-bottom: 0px;">
+                <span *ngIf="actionInModal === 'reassign'"> 
+                  {{ "VisitorsPage.TheRequestWillBeReassignedTo" | translate }} 
+                </span>
+                <span *ngIf="actionInModal === 'invite'"> 
+                  {{ "VisitorsPage.TheRequestWillBeAssignedTo" | translate }} 
+                </span>
+                
+              </h4>
+  
+              <table class="table" style="margin-bottom: 0px;">
+                <tbody>
+                  <tr>
+                    <td style=" border-top-width: 0px; width: 25px;">
+                      <img *ngIf="userid_selected" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{userid_selected}}%2Fphoto.jpg?alt=media" 
+                        width=35 onerror="this.src='assets/img/no_image_user.png'"/>
+                    </td>
+                    <td  style=" border-top-width: 0px;">
+                      <p style="font-size:14px; line-height:21px; font-weight: 500; margin-bottom: 0px;"> 
+                        {{ userfirstname_selected }} 
+                        <span style="text-transform: uppercase"> 
+                          {{ userlastname_selected }}
+                        </span>
+                      </p>
+                      <span style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px">
+                        {{ useremail_selected }}
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer" style="margin-top: 0px;">
+          <button class="btn btn-white" (click)="closeConfirmReassignmentModal()" style="padding:12px 16px;">
+            {{ "VisitorsPage.Cancel" | translate }}
+          </button>
+  
+          <button *ngIf="actionInModal === 'reassign'" style="margin-top:0px" class="btn btn-info" (click)="reassignRequest(userid_selected)" style="padding:12px 16px;">
+            {{ "VisitorsPage.ReassignRequest" | translate }}
+          </button>
+          <button *ngIf="actionInModal === 'invite'" style="margin-top:0px" class="btn btn-info" (click)="assignRequest(userid_selected)" style="padding:12px 16px;">
+            {{ "VisitorsPage.AssignRequest" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <!-- ============= ARCHIVIVE REQUEST MODAL ============= -->
+  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayArchiveRequestModal}" style="background-color: rgba(90,90,90,0.5);">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <!-- background-color:#ff5252; -->
+        <div class="modal-header" style="padding-bottom:15px">
+          <button type="button" class="close" aria-label="Close" (click)="onCloseArchiveRequestModal()">
+              <!-- color: #fff -->
+            <span aria-hidden="true" style="">&times;</span>
+          </button>
+          <h4 class="modal-title" style="color: #f44336">
+              <i class="material-icons" style="vertical-align: middle">info</i>
+              <span style="vertical-align: middle; padding-left:8px">
+                <!-- Elimina richiesta -->
+                {{ "VisitorsPage.ArchiveRequest" | translate }}
+              </span>
+          </h4>
+          <!-- padding-left: 36px  -->
+          <h4 class="modal-title" 
+          style="color: #566787; padding-top:10px; font-size: 1.1em; font-weight: 500">
+            <!-- La richiesta con ID: <code>{{ id_request_to_delete }}</code> verrà eliminata -->
+            {{ "VisitorsPage.TheRequestWithId" | translate }} 
+            <code style="color: #566787">
+              {{ id_request_to_archive }}
+            </code> 
+            {{ "VisitorsPage.WillBeArchived" | translate }} 
+          </h4>
+        </div>
+        <div class="modal-body">
+            <p style="font-weight:400; text-align: left; margin-top: 10px; color: #566787">
+              <!-- Sei sicuro di voler rimuovere la richiesta selezionata? -->
+              {{ "VisitorsPage.AreYouSure" | translate }} <br>
+              <span style="font-weight:100; color: #999; font-size:12px"> 
+                <em>
+                  {{ "VisitorsPage.Note" | translate }}
+                </em>
+              </span> 
+            </p>
+  
+        </div>
+        <div class="modal-footer" style="margin-top: 0px;">
+          <button class="btn btn-white" (click)="onCloseArchiveRequestModal()" style="padding:12px 16px;">
+            <!-- Annulla -->
+            {{ "VisitorsPage.Cancel" | translate }}
+          </button>
+          <button style="margin-top:0px" class="btn btn-danger" (click)="archiveTheRequestHandler()" style="padding:12px 16px;">
+            <!-- Archivia Richiesta -->
+            {{ "VisitorsPage.ArchiveRequest" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- ============ INFO MODAL: ARCHIVING REQUEST IN PROGRESS ============ -->
+  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayArchivingInfoModal}" style="background-color: rgba(90,90,90,0.5);">
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" (click)="onCloseArchivingInfoModal()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+  
+          <h4 class="modal-title">
+              {{ "VisitorsPage.ArchiveRequest" | translate }}
+            <!-- <code>{{id_toDelete}}</code> -->
+          </h4>
+        </div>
+  
+        <div class="modal-body" style="padding-right: 15px; padding-top:15px; padding-bottom:15px">
+        
+          <span *ngIf="SHOW_CIRCULAR_SPINNER">
+            <div  class="loader" style="top:25%;">
+              <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+              </svg>
+  
+            </div>
+            <p style="margin-top: 60px; text-align: center; color: #566787; font-weight: 500">
+                {{ "VisitorsPage.Processing" | translate }}
+            </p>
+          </span>
+  
+          <span *ngIf="!SHOW_CIRCULAR_SPINNER && !ARCHIVE_REQUEST_ERROR ">
+              
+            <div style="text-align: center">
+              <i class="material-icons" style="color:#70b665">done</i>
+              <p style="color:#70b665; font-weight: 500">
+                  {{ "VisitorsPage.Completed" | translate }}
+              </p> 
+  
+            </div>
+            <p style="margin-top:10px; text-align: center; color: #566787; font-weight: 500">
+                {{ "VisitorsPage.RequestArchived" | translate }}
+            </p>
+          </span>
+  
+          <!-- IF THERE IS AN ERROR -->
+          <span *ngIf="!SHOW_CIRCULAR_SPINNER && ARCHIVE_REQUEST_ERROR ">
+            
+            <div style="text-align: center ">
+              <i class="material-icons" style="color:#ff5252">report_problem</i>
+              <p style="color:#ff5252; font-weight: 500">
+                  {{ "VisitorsPage.Error" | translate }}
+              </p> 
+  
+            </div>
+            <p style="margin-top:10px; text-align: center; color: #566787; font-weight: 500">
+                {{ "VisitorsPage.AnErrorHasOccurred" | translate }}
+            </p>
+          </span>
+        </div>
+  
+        <div class="modal-footer" style="text-align: center;">
+          <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseArchivingInfoModal()" style="padding:12px 16px;">
+              {{ "VisitorsPage.Continue" | translate }}
+          </button>
+        </div>
+  
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  
+  <!-- ============= LEAVE CHAT MODAL ============= -->
+  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayLeaveChatModal}" style="background-color: rgba(90,90,90,0.5);">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <!-- background-color:#ff5252; -->
+          <div class="modal-header" style="padding-bottom:15px">
+            <button type="button" class="close" aria-label="Close" (click)="closeLeaveChatModal()">
+                <!-- color: #fff -->
+              <span aria-hidden="true" style="">&times;</span>
+            </button>
+            <h4 class="modal-title" style="color: #f44336">
+                <i class="material-icons" style="vertical-align: middle">info</i>
+                <span style="vertical-align: middle; padding-left:8px">
+                  {{ "VisitorsPage.LeaveChat" | translate }}
+                </span>
+            </h4>
+          </div>
+          <div class="modal-body">
+              <p style="font-weight:400; text-align: left; margin-top: 10px; color: #566787">
+  
+                {{ "VisitorsPage.AreYouSureLeftTheChat" | translate }} <br>
+               </p>
+    
+          </div>
+          <div class="modal-footer" style="margin-top: 0px;">
+            <button class="btn btn-white" (click)="closeLeaveChatModal()" style="padding:12px 16px;">
+              <!-- Annulla -->
+              {{ "VisitorsPage.Cancel" | translate }}
+            </button>
+            <button style="margin-top:0px" class="btn btn-danger" (click)="leaveChat()" style="padding:12px 16px;">
+              <!-- Archivia Richiesta -->
+              {{ "VisitorsPage.LeaveChat" | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- ============ INFO MODAL: LEAVING CHAT IN PROGRESS ============ -->
+  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayLeavingChatInfoModal}" style="background-color: rgba(90,90,90,0.5);">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" aria-label="Close" (click)="closeLeavingChatInfoModal()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+    
+            <h4 class="modal-title">
+                {{ "VisitorsPage.LeaveChat" | translate }}
+   
+            </h4>
+          </div>
+    
+          <div class="modal-body" style="padding-right: 15px; padding-top:15px; padding-bottom:15px">
+          
+            <span *ngIf="SHOW_CIRCULAR_SPINNER">
+              <div  class="loader" style="top:25%;">
+                <svg class="circular" viewBox="25 25 50 50">
+                  <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+                </svg>
+    
+              </div>
+              <p style="margin-top: 60px; text-align: center; color: #566787; font-weight: 500">
+                  {{ "VisitorsPage.Processing" | translate }}
+              </p>
+            </span>
+    
+            <span *ngIf="!SHOW_CIRCULAR_SPINNER && !LEAVE_CHAT_ERROR ">
+                
+              <div style="text-align: center">
+                <i class="material-icons" style="color:#70b665">done</i>
+                <p style="color:#70b665; font-weight: 500">
+                    {{ "VisitorsPage.Completed" | translate }}
+                </p> 
+    
+              </div>
+              <p style="margin-top:10px; text-align: center; color: #566787; font-weight: 500">
+                  {{ "VisitorsPage.ChatLeft" | translate }}
+              </p>
+            </span>
+    
+            <!-- IF THERE IS AN ERROR -->
+            <span *ngIf="!SHOW_CIRCULAR_SPINNER && LEAVE_CHAT_ERROR">
+              
+              <div style="text-align: center ">
+                <i class="material-icons" style="color:#ff5252">report_problem</i>
+                <p style="color:#ff5252; font-weight: 500">
+                    {{ "VisitorsPage.Error" | translate }}
+                </p> 
+    
+              </div>
+              <p style="margin-top:10px; text-align: center; color: #566787; font-weight: 500">
+                  {{ "VisitorsPage.AnErrorHasOccurredLeavingTheChat" | translate }}
+              </p>
+            </span>
+          </div>
+    
+          <div class="modal-footer" style="text-align: center;">
+            <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="closeLeavingChatInfoModal()" style="padding:12px 16px;">
+              {{ "VisitorsPage.Continue" | translate }}
+            </button>
+          </div>
+    
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+    <!-- margin-top:70px -->
+    <!-- 'top':train_bot_sidebar_top_pos-->
+    <!-- position: absolute!important -->
+    <div *ngIf="OPEN_RIGHT_SIDEBAR === true" class="view-side">
+      <appdashboard-train-bot style="" [ngStyle]="{'height':train_bot_sidebar_height }" [selectedQuestion]="selectedQuestion" (valueChange)='closeRightSidebar($event)'></appdashboard-train-bot>
+    </div>
+  
+  
+    <!-- <div class="chat-panel right-chat-panel right-positioned"
+    style="    width: 360px;
+    min-width: 360px;
+    max-width: 360px;
+    position: absolute!important;
+      top: 0;
+      bottom: 0;
+      right: 0;">
+  
+      <div style="    display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      width: 360px;
+      min-width: 360px;
+      max-width: 360px;
+      z-index: 99;
+      overflow: hidden;">
+        <div style="flex-direction: row;
+        box-sizing: border-box;
+        display: flex;
+        place-content: center space-between;
+        align-items: center;
+        background-color: #3c4252!important;
+        color: #fff!important;">
+  
+  Ciao Pippo
+        </div>
+          
+      </div>
+   
+    </div> -->

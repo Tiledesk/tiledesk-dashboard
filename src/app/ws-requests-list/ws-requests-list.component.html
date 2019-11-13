@@ -375,10 +375,10 @@
                   </span>
         
                   <span class="column-td" style="white-space: nowrap;" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
-                    {{ request?.requester_fullname }}
+                    {{ request?.lead?.fullname }}
                   </span>
 
-                  <span *ngIf="!request?.requester_fullname" class="column-td" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
+                  <span *ngIf="!request?.lead?.fullname" class="column-td" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
                     n.a.
                   </span>
                   <!-- <p style="font-size:0.8em">
@@ -661,10 +661,10 @@
                   </span>
                   
                   <span class="column-td" style="white-space: nowrap;" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
-                    {{ request?.requester_fullname }} 
+                    {{ request?.lead?.fullname  }} 
                   </span>
 
-                  <span *ngIf="!request?.requester_fullname" class="column-td" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
+                  <span *ngIf="!request?.lead?.fullname" class="column-td" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
                      n.a.
                   </span>
                   <!-- <p style="font-size:0.8em">

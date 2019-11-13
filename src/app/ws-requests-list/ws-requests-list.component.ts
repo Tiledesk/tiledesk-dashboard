@@ -1,5 +1,5 @@
-import { Component, OnInit ,NgZone} from '@angular/core';
-import { WsRequestsService } from '../services/ws-requests.service';
+import { Component, OnInit, NgZone } from '@angular/core';
+import { WsRequestsService } from '../services/websocket/ws-requests.service';
 import { UsersLocalDbService } from '../services/users-local-db.service';
 import { BotLocalDbService } from '../services/bot-local-db.service';
 import { Router } from '@angular/router';
@@ -20,6 +20,7 @@ export class WsRequestsListComponent implements OnInit {
   SHOW_SIMULATE_REQUEST_BTN: boolean;
   showSpinner = true;
   displayArchiveRequestModal = 'none'
+  ws_requests: any[] = [];
   constructor(
     public wsRequestsService: WsRequestsService,
     private router: Router,
@@ -46,54 +47,95 @@ export class WsRequestsListComponent implements OnInit {
   }
 
   getWsRequests$() {
-    this.wsRequestsService.wsRequestsList$.subscribe((ws_request) => {
+    this.wsRequestsService.wsRequestsList$.subscribe((wsrequests) => {
 
-      console.log('%%% WsRequestsListComponent getWsRequests$ ws_request ', ws_request)
+      if (wsrequests) {
 
-      this.zone.run(() => {
+        this.ws_requests = wsrequests
+      }
 
-        if (ws_request.length > 0) {
-          this.SHOW_SIMULATE_REQUEST_BTN = false;
-          console.log('REQUESTS-LIST COMP - SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
+      console.log('%%% WsRequestsListComponent getWsRequests$ ws_request ', wsrequests)
+
+      console.log('%%% WsRequestsListComponent getWsRequests$ typeof ws_request ', typeof wsrequests)
+
+      // this.zone.run(() => {
+
+      if (wsrequests.length > 0) {
+        this.SHOW_SIMULATE_REQUEST_BTN = false;
+        // console.log('%%% WS REQUESTS-LIST COMP - SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
+      } else {
+        this.SHOW_SIMULATE_REQUEST_BTN = true;
+      }
+
+
+      this.ws_requests.forEach(request => {
+        console.log('%%% WsRequestsListComponent getWsRequests$ typeof ws_request ', typeof wsrequests)
+        if (request.lead && request.lead.fullname) {
+          request['requester_fullname_initial'] = avatarPlaceholder(request.lead.fullname);
+          request['requester_fullname_fillColour'] = getColorBck(request.lead.fullname)
         } else {
-          this.SHOW_SIMULATE_REQUEST_BTN = true;
+
+          request['requester_fullname_initial'] = 'n.a.';
+          request['requester_fullname_fillColour'] = '#eeeeee';
         }
 
-      })
+        if (request.lead
+          && request.lead.attributes
+          && request.lead.attributes.senderAuthInfo
+          && request.lead.attributes.senderAuthInfo.authVar
+          && request.lead.attributes.senderAuthInfo.authVar.token
+          && request.lead.attributes.senderAuthInfo.authVar.token.firebase
+          && request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider
+        ) {
+          if (request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider === 'custom') {
 
-      if (ws_request) {
-        this.wsRequestsUnserved = ws_request
-        .filter(r => {
-          if (r['status'] === 100) {
-            this.showSpinner = false;
-            return true
+            // console.log('- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider);
+            request['requester_is_verified'] = true;
           } else {
-            return false
+            // console.log('- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider);
+            request['requester_is_verified'] = false;
           }
-        }).sort(function compare(a: Request, b: Request) {
-          if (a['createdAt'] > b['createdAt']) {
-            return 1;
-          }
-          if (a['createdAt'] < b['createdAt']) {
-            return -1;
-          }
-          return 0;
-        });
-  
-      this.wsRequestsServed = ws_request
-        .filter(r => {
-          if (r['status'] !== 100) {
-            this.showSpinner = false;
-            return true
-          } else {
-            return false
-          }
-        });
+
+        } else {
+          request['requester_is_verified'] = false;
+        }
+
+      });
+
+
+      // })
+
+      if (wsrequests) {
+        this.wsRequestsUnserved = wsrequests
+          .filter(r => {
+            if (r['status'] === 100) {
+              this.showSpinner = false;
+              return true
+            } else {
+              return false
+            }
+          }).sort(function compare(a: Request, b: Request) {
+            if (a['createdAt'] > b['createdAt']) {
+              return 1;
+            }
+            if (a['createdAt'] < b['createdAt']) {
+              return -1;
+            }
+            return 0;
+          });
+
+        this.wsRequestsServed = wsrequests
+          .filter(r => {
+            if (r['status'] !== 100) {
+              this.showSpinner = false;
+              return true
+            } else {
+              return false
+            }
+          });
 
 
       }
-     
-
 
     }, error => {
       console.log('%%% WsRequestsListComponent getWsRequests$ * error * ', error)
@@ -200,6 +242,10 @@ export class WsRequestsListComponent implements OnInit {
         text.slice(0, 30) + '...' :
         text;
     }
+  }
+
+  goToRequestMsgs(request_id: string) {
+    this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/messages']);
   }
 
 }

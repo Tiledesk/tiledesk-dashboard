@@ -1,0 +1,982 @@
+// @import url(https://fonts.googleapis.com/css?family=Google+Sans);
+// MESSAGES IN MODAL 
+.msgcontainer  {
+    border: 2px solid #dedede;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 5px 0;
+    display: inline-block;
+    min-width: 150px;
+    max-width: 350px;
+}
+
+.msgcontainer::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+/* Style time text */
+.time-right {
+    float: left;
+    color: #aaa;
+    padding-right: 0px !important;
+}
+
+// .msg_sender{
+//     position: relative;
+//     display: block;
+//     z-index: 2;
+//     float: left;
+//     padding-top:10px;
+//     padding-right:10px;
+// }
+
+
+// new 2
+/* Right triangle placed top left flush. */
+.tri-right.border.left-top:before {
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+  left: -40px;
+	right: auto;
+  top: -8px;
+	bottom: auto;
+	border: 32px solid;
+	border-color: #666 transparent transparent transparent;
+}
+.tri-right.left-top:after{
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+  left: -20px;
+	right: auto;
+  top: 0px;
+	bottom: auto;
+	border: 22px solid;
+	border-color: #f1f1f1 transparent transparent transparent;
+}
+/* CSS talk bubble */
+.talk-bubble {
+	// margin: 40px;
+  display: inline-block;
+  position: relative;
+	// width: 350px;
+	height: auto;
+    background-color: #f1f1f1;
+    box-shadow: 0px 5px 8px -4px #c1c1c1;
+}
+
+/* Right triangle, left side slightly down */
+.tri-right.border.left-in:before {
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+  left: -40px;
+	right: auto;
+  top: 30px;
+	bottom: auto;
+	border: 20px solid;
+	border-color: #666 #666 transparent transparent;
+}
+.tri-right.left-in:after{
+	content: ' ';
+	position: absolute;
+	width: 0;
+	height: 0;
+  left: -20px;
+	right: auto;
+  top: 38px;
+	bottom: auto;
+	border: 12px solid;
+	border-color: #f1f1f1 #f1f1f1 transparent transparent;
+}
+
+.tag_member {
+
+   border: 1px solid #00bcd4;
+   padding: 2px 4px;
+   margin: 0 6px 6px 0;
+   color: #00bcd4;
+   font-size:12px;
+   font-weight: 400
+}
+
+.tag_member:hover {
+
+    border: 1px solid #fff;
+    padding: 2px 4px;
+    margin: 0 6px 6px 0;
+    color: #fff;
+    font-size:12px;
+    background-color: #00bcd4
+ }
+
+.tag_member_me {
+    border: 1px solid #4caf50;
+    padding: 1px 3px;
+    margin: 0 6px 6px 0;
+    color: #4caf50;
+    font-size:12px;
+    font-weight: 600
+}
+
+.current_user_is_agent {
+  color: #4caf50;
+}
+
+/*****************CHAT BODY *******************/
+// .chat-body h6 {
+//   font-size: 20px;
+//   margin: 0 0 20px;
+// }
+// .chat-body .answer.left {
+//   padding: 0 0 0 58px;
+//   text-align: left;
+//   float: left;
+// }
+// .chat-body .answer {
+//   position: relative;
+//   max-width: 600px;
+//   overflow: hidden;
+//   clear: both;
+// }
+// .chat-body .answer.left .avatar {
+//   left: 0;
+// }
+// .chat-body .answer .avatar {
+//   bottom: 36px;
+// }
+
+// .chat .avatar {
+//   width: 40px;
+//   height: 40px;
+//   position: absolute;
+// }
+// .chat .avatar img {
+//   display: block;
+//   border-radius: 20px;
+//   height: 100%;
+// }
+// .chat-body .answer .name {
+//   font-size: 12px;
+//   line-height: 16px;
+//   margin-top:15px;
+// }
+// .chat-body .answer.left .avatar .status {
+//   right: 4px;
+// }
+// .chat-body .answer .avatar .status {
+//   bottom: 0;
+// }
+// .chat-body .answer.left .text {
+//   background: #ebebeb;
+//   color: #333333;
+//   border-radius: 8px 8px 8px 0;
+// }
+// .chat-body .answer .text {
+//   padding: 12px;
+//   font-size: 16px;
+//   line-height: 26px;
+//   position: relative;
+// }
+// .chat-body .answer.left .text:before {
+//   left: -30px;
+//   border-right-color: #ebebeb;
+//   border-right-width: 12px;
+// }
+// .chat-body .answer .text:before {
+//   content: '';
+//   display: block;
+//   position: absolute;
+//   bottom: 0;
+//   border: 18px solid transparent;
+//   border-bottom-width: 0;
+// }
+// .chat-body .answer.left .time {
+//   padding-left: 12px;
+//   color: #333333;
+// }
+// .chat-body .answer .time {
+//   font-size: 16px;
+//   line-height: 36px;
+//   position: relative;
+//   padding-bottom: 1px;
+// }
+
+@media (min-width: 1270px) {
+  .messageText {
+        min-width: 300px;
+      }
+  }
+
+  .messageText {
+    font-family: Tahoma, Verdana, Segoe, sans-serif;
+  }
+
+  .messageTime {
+    font-family: Tahoma, Verdana, Segoe, sans-serif;
+  }
+
+  .senderFullname {
+    font-family: Tahoma, Verdana, Segoe, sans-serif;
+  }
+
+  #fixed-button {
+    bottom: 85px;
+    // right: 55px;
+    right: 25px;
+    position: absolute;
+    background-color: #eeeeee;
+    padding-right: 6px;
+    padding-left: 6px;
+    padding-top: 3px;
+    border-radius: 100px;
+    padding-bottom: 3px;
+    color:#00bcd4;
+    cursor: pointer
+}
+
+#fixed-button:hover {
+  color:#fff;
+  background-color: #00bcd4;
+} 
+
+
+// ***************** START new CHAT *****************
+
+.parent {
+  display: flex;
+  // height: 400px;
+  // background-color: #222;
+}
+
+.child {
+  margin-left: auto;
+}
+
+
+.speech-wrapper{
+  // padding: 30px 40px;
+  padding: 20px 55px;
+  .bubble{
+    width: 240px;
+    height: auto;
+    display: block;
+    background: #f5f5f5;
+    border-radius: 4px;
+    // box-shadow: 2px 8px 5px #000;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+    position: relative;
+    // margin: 0 0 25px;
+    &.alt{
+      // margin: 0 0 0 60px;
+      
+      // added
+      // margin: 0 0 40px 60px;
+      // float:right;
+      background: #75d5fd!important;
+    }
+    .txt{
+      // padding: 8px 55px 8px 14px;
+      padding: 8px 14px 8px 14px;
+      .name{
+        font-weight: 600;
+        font-size: 12px;
+        margin: 0 0 4px;
+        color: #3498db;
+        span{
+          font-weight: normal;
+          color: #b3b3b3;
+        }
+        &.alt{
+          // color: #2ecc71;
+          color: #039be5;
+        }
+      }
+      .message{
+        font-size: 12px;
+        font-weight: 400;
+        margin: 0;
+        color: #2b2b2b;
+      }
+      .timestamp{
+        font-size: 11px;
+        position: absolute;
+        // bottom: 8px;
+        bottom: -22px;
+        right: 10px;
+        text-transform: uppercase; 
+        // color: #999;
+        color:  #7695a5;
+        font-weight:400
+      }
+    }
+    .bubble-arrow {
+      position: absolute;
+      width: 0;
+      bottom:42px;
+      left: -16px;
+      height: 0;
+      &.alt{
+        right: -2px;      
+        bottom: 40px;
+        left: auto;
+      }
+    }
+    .bubble-arrow:after {
+      content: "";
+      position: absolute;
+      border: 0 solid transparent;
+      border-top: 9px solid #f5f5f5;
+      border-radius: 0 20px 0;
+      width: 15px;
+      height: 30px;
+      transform: rotate(145deg);
+    }
+    .bubble-arrow.alt:after {
+      transform: rotate(45deg) scaleY(-1);
+      // added
+      // #039be5
+      border-top: 9px solid #75d5fd!important;
+
+     
+    }
+  }
+}
+
+// @media (max-width: 453px){
+//   .speech-wrapper .bubble.alt{
+//     float: none !important;
+//     margin-left:0px;
+//     margin-bottom:0px;
+//   }
+// }
+
+// ***************** ./END new CHAT *****************
+
+// TITLE: REQUEST ATTRIBUTES
+// from 767px to 1330px 
+// @media (min-width: 767px) and (max-width: 1205px){
+//   .requestattibutestitle {
+//     height: 69px;  
+//   }
+//   .requestattibutestime {
+//     float: left !important;
+//   }
+//   .requestattibutes {
+//     float: left !important;
+//   }
+// }
+
+@media (min-width: 940px) and (max-width: 991px){
+  .requestattibutestitle {
+    height: 42px; 
+  }
+}
+
+// DISABLE THE OPEN THE CHAT BTN
+.disable_open_the_chat_btn {
+  background-color: #999999;
+  box-shadow:none !important;
+}
+
+.disable_open_the_chat_btn:hover {
+  background-color: #999999;
+} 
+
+// DISABLE DROPDOWN BTNS 'LEAVE THE CHAT' AND 'REASSIGN THE REQUEST' IF THE CURRENT USER IS NOT JOINED
+.disable-dropdown-menu-btn {
+  pointer-events:none;
+  opacity:0.6;
+  // cursor: not-allowed;
+}
+
+//  OUTLINE STYLE
+.outline_btn {
+  background-color: #fff !important; 
+  border: 1px solid #00bcd4 !important;  
+  
+  color: #00bcd4 !important;
+  box-shadow: 0 2px 2px 0 rgba(0, 188, 212, 0), 0 3px 1px -2px rgba(0, 188, 212, 0.2), 0 1px 5px 0 rgba(0, 188, 212, 0.12) !important;
+  // padding: 11px 11px;
+}
+
+// NO BOX-SHADOW FOE THE OUTLINE BTN THAT HAS ALSO THE CLASS .btn-info
+.pull-right .btn-info {
+  box-shadow: none !important ;
+}
+
+
+.outline_btn:focus {
+  border: 1px solid #00bcd4 !important;  
+}
+// .outline_btn:active {
+//   box-shadow: none !important;
+// }
+// .archive_btn:hover {
+//   background-color: #00bcd4 !important; 
+// }
+
+// CLOSE BTN - OUTLINE STYLE
+.close_request_btn {
+  background-color: #fff; 
+  border: 1px solid #f44336; 
+  color: #f44336;
+  padding: 11px 11px;
+  box-shadow: 0 2px 2px 0 rgba(244, 67, 54, 0), 0 3px 1px -2px rgba(244, 67, 54, 0.2), 0 1px 5px 0 rgba(244, 67, 54, 0.12);
+  // border-radius:50px
+}
+
+// da
+// @media (min-width: 1063px){
+//   .archive_btn {
+//     float: right !important;
+//   }
+// }
+// da -> a
+// @media (min-width: 768px) and (max-width: 803px){
+//   .open_the_chat_btn {
+//     margin-left: 0px !important;
+//   }
+// }
+
+// CHANGE THE COLOR TO THE ARCHIVE BTN IF IT IS DISABLED 
+.disable_archive_btn {
+  // background-color: #999999;
+  border: 1px solid #999999 !important;
+  color: #999999 !important;
+}
+.disable_archive_btn:hover {
+  background-color: #ffffff;
+}
+
+/* MODAL START */
+
+// .modal-dialog {
+//   width: 100%;
+//   height: 100%;
+//   padding: 0;
+// }
+
+// .modal-content {
+//   height: 100%;
+//   border-radius: 0;
+// }
+.modal {
+  top: 0;
+}
+
+.modal-content {
+  position: relative;
+  background-color: #fff;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  border: 1px solid #999;
+  border: 1px solid rgba(0,0,0,.2);
+  border-radius: 6px;
+  outline: 0;
+  -webkit-box-shadow: 0 3px 9px rgba(0,0,0,.5);
+  box-shadow: 0 3px 9px rgba(0,0,0,.5);
+}
+
+.modal-header {
+  padding: 15px;
+  border-bottom: 1px solid #e5e5e5 !important;
+}
+
+.modal-title {
+  margin: 0;
+  line-height: 1.42857143;
+}
+
+button.close {
+  -webkit-appearance: none;
+  padding: 0;
+  cursor: pointer;
+  background: 0 0;
+  border: 0;
+}
+.close {
+  float: right;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  filter: alpha(opacity=20);
+  opacity: .2;
+}
+
+.modal-body {
+  position: relative;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-right: 0px;
+  padding-left: 15px;
+}
+
+.modal-footer {
+  // padding: 15px;
+  text-align: right;
+  border-top: 1px solid #e5e5e5;
+  // background-color: #edf0f1;
+  background-color: #eeeeee;
+  padding-top:10px !important;
+}
+
+// @media screen and (max-width: 992px) {
+//   .modal-dialog {
+//     width: 100% !important; height: 100% !important; margin:0 !important; padding: 0 !important;
+//   }
+//   .modal-content {
+//     height: auto !important; min-height: 100% !important; border-radius: 0 !important; border:none !important
+//   }
+// }
+
+/* MODAL END */
+
+// start TOOLTIP
+/* Tooltip container */
+.tooltipx {
+  position: relative;
+  display: inline-block;
+  // border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltipx .tooltiptext {
+  visibility: hidden;
+  // width: 120px;
+  background-color: black; 
+  // background-color: rgba(0,0,0,0.6);
+  color: #fff;
+  text-align: center;
+  padding: 5px 5px;
+  border-radius: 5px;
+  font-size: 12px !important;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  /* Position the tooltip text - TOP */
+  bottom: 100%;
+  left: 50%; 
+  margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+
+  // NEW
+  box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
+  background-color: #394f5a;
+
+  text-transform:none
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltipx:hover .tooltiptext {
+  visibility: visible;
+}
+// /.end TOOLTIP 
+
+
+  // start CHECKBOX
+  /* Customize the label (the container) */
+  .checkbox-container {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    padding-top: 3px;
+  }
+  
+  /* Hide the browser's default checkbox */
+  .checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
+  /* Create a custom checkbox */
+  .checkmark {
+    position: absolute;
+    top: 0;
+    // top: 2;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    // height: 20px;
+    // width: 20px;
+    background-color: #fff;
+    border: solid 1px #ddd;
+    border-radius: 5px;
+  }
+  
+  /* On mouse-over, add a grey background color */
+  // .container:hover input ~ .checkmark {
+  //   background-color: #ccc;
+  // }
+  
+  /* When the checkbox is checked, add a blue background */
+  .checkbox-container input:checked ~ .checkmark {
+    background-color: #2196f3;
+  }
+  
+  /* Create the checkmark/indicator (hidden when not checked) */
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+  }
+  
+  /* Show the checkmark when checked */
+  .checkbox-container input:checked ~ .checkmark:after {
+    display: block;
+  }
+  
+  /* Style the checkmark/indicator */
+  .checkbox-container .checkmark:after {
+    left: 9px;
+    top: 5px;
+    // left: 7px;
+    // top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+  
+  // my cusyom 
+//   .chekboxCustomHeight {
+//     margin-bottom: 26px !important;
+//   }
+  // end CHECKBOX
+
+// FIX TABLE VISUAL BUG: REMOVE THE ONE THAT SEEMS A LINE AFTER THE TABLE
+@media screen and (max-width: 767px) {
+  .table-responsive {
+      width: 100%;
+      margin-bottom: 0px; 
+  }
+}
+
+// start IMAGE IN INPUT
+.fake-input { 
+  position: relative; 
+  // width:240px; 
+}
+.fake-input input { 
+  border:none; 
+  background:#fff; 
+  display:block; 
+  width: 100%; 
+  box-sizing: border-box 
+}
+
+.fake-input img { 
+  position: absolute; 
+  top: 9px; 
+  left: 5px 
+}
+
+.fake-input p { 
+  position: absolute; 
+  top: 5px; 
+  left: 40px 
+}
+
+.fake-input span { 
+  position: absolute; 
+  top: 25px; 
+  left: 40px 
+}
+// end IMAGE IN INPUT
+
+// .assign-request {
+//   opacity: 0;
+// }
+// .assign-request:hover {
+//   opacity: 1 !important;
+// }
+
+// // CLASSE ASSEGNATA ALLA FIRST ROW DETECT DA ANGULAR
+// .RowHeaderCSS{
+//   background-color: rgb(242, 242, 242);
+//   .assign-request {
+//     opacity: 1;
+//   }
+// }
+// .RowHeaderCSS:hover {
+//   background-color: rgb(242, 242, 242) !important;
+// }
+
+// ASSIGN REQUEST TO IS DISPLAYED ONLY ON HOVER THE ROW
+ .assign-request {
+    opacity: 0;
+}
+.table-row:hover {
+  .assign-request {
+      opacity: 1;
+    }
+}
+
+/** ================ SMALL DEVICES CUSTOMIZATIONS  (NOTE: IN THE .ts IS CUSTOMIZED THE .main-content )================ **/
+/* CUSTOM MARGIN AND PADDIG FOR THE CARDS AND THE ROWS THAT CONTAINS THEM WHEN ON Small Devices, Tablets */
+@media only screen and (max-width : 768px) {
+  .chat-card {
+    margin-top: 0px !important;
+  }
+  .right-card {
+    margin-top: 0px !important;
+  }
+  .chat-col {
+    padding-right: 4px !important;
+    padding-left: 4px !important;
+  }
+
+  .right-col {
+    padding-right: 4px !important;
+    padding-left: 4px !important;
+  }
+}
+
+
+
+
+.users-list-modal {
+  overflow-y: scroll !important; 
+}
+
+// USER LIST MODAL: REMOVE THE SCROLL WHEN SCREEN WIDTH IS > 991
+@media (max-width: 992px) {
+  .users-list-modal {
+    overflow-y: hidden !important; 
+  }
+}
+
+/* RESPONSIVE TABLE
+Max width before this PARTICULAR table gets nasty
+This query will take effect for any screen smaller than 760px
+and also iPads specifically.
+*/
+// @media 
+// only screen and (max-width: 760px),
+// (min-device-width: 768px) and (max-device-width: 1024px)  {
+
+// 	/* Force table to not be like tables anymore */
+// 	table, thead, tbody, th, td, tr { 
+// 		display: block; 
+// 	}
+	
+// 	/* Hide table headers (but not display: none;, for accessibility) */
+// 	thead tr { 
+// 		position: absolute;
+// 		top: -9999px;
+// 		left: -9999px;
+// 	}
+	
+// 	tr { border: 1px solid #ccc; }
+	
+// 	td { 
+// 		/* Behave  like a "row" */
+// 		border: none;
+// 		border-bottom: 1px solid #eee; 
+// 		position: relative;
+// 		padding-left: 50%; 
+// 	}
+	
+// 	td:before { 
+// 		/* Now like a table header */
+// 		position: absolute;
+// 		/* Top/left values mimic padding */
+// 		top: 6px;
+// 		left: 6px;
+// 		width: 45%; 
+// 		padding-right: 10px; 
+// 		white-space: nowrap;
+//   }
+// }
+
+.rightsidebar-user-img {
+  vertical-align: middle; 
+  width: 32px !important; 
+  height: 32px !important; 
+  border-radius: 50%; 
+  border: 1px solid #eee;
+  margin-right: 15px;
+}
+
+.request-category{
+  font-family: 'Google Sans', sans-serif !important;
+  font-weight: 500; 
+}
+
+.row-header {
+  font-family: 'Google Sans', sans-serif !important;
+  color: #394f5a; 
+  font-weight: 500; 
+  margin-bottom: 5px; 
+  margin-top: 5px;
+}
+
+.row-body {
+  color:#7695a5; 
+  font-weight: 500; 
+  font-size:12px;
+  padding-bottom: 5px
+}
+
+/// REQUESTER AVATAR
+._requester-avatar {
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 400;
+  text-align: center;
+  // padding: 4px 7px;
+  padding-top:6px;
+  padding-bottom: 0px;
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+}
+
+._requester-avatar-inchat {
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 400;
+  text-align: center;
+  // padding: 4px 7px;
+  padding-top:8px;
+  padding-bottom: 0px;
+  display: inline-block;
+  width: 35px;
+  height: 35px;
+  color: #fff;
+}
+
+.requester_fullname-undefined {
+  padding-left: 3px;
+}
+
+.requester-verified {
+  position: relative; 
+  left: -20px;
+  // margin-left: 3px !important;
+}
+
+.requester-status-icon {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  top: 52px;
+  left: 38px;
+  border: 2px solid #FFFFFF;
+  border-radius: 50%;
+  background-color: #f44336;
+}
+
+.requester_is_online {
+  background-color: #4caf50 !important;
+}
+// start TOOLTIP
+/* Tooltip container */
+.tooltipx {
+  position: relative;
+  display: inline-block;
+  // border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltipx .tooltiptext {
+  visibility: hidden;
+  // width: 120px;
+  // background-color: black; 
+  // background-color: rgba(0,0,0,0.6);
+  color: #fff;
+  text-align: center;
+  padding: 5px 5px;
+  border-radius: 5px;
+  font-size: 12px !important;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  /* Position the tooltip text - TOP */
+  bottom: 100%;
+  left: 50%; 
+  margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+
+  // NEW
+  box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
+  background-color: #394f5a;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltipx:hover .tooltiptext {
+  visibility: visible;
+}
+// end TOOLTIP
+
+.btn-white-custom-round{
+  margin:0px; 
+  background-color: #ffffff; 
+  text-transform: none;
+  font-weight: 500;
+  color: #039be5;
+  border: 1px solid #039be5;
+  border-radius:30px;
+  padding:3px 10px !important;
+  box-shadow: none !important;
+  -webkit-box-shadow:  none !important;
+  // box-shadow: 0 2px 2px 0 rgba(3, 155, 229, 0.14), 0 3px 1px -2px rgba(3, 155, 229, 0.2), 0 1px 5px 0 rgba(3, 155, 229, 0.12) !important;
+}
+
+.btn-white-custom-round:hover { 
+  background-color: #039be5 !important; 
+  box-shadow: 0 14px 26px -12px rgba(3, 155, 229, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(3, 155, 229, 0.2) !important;
+  -webkit-box-shadow:0 14px 26px -12px rgba(3, 155, 229, 0.42), 0 4px 23px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(3, 155, 229, 0.2) !important;
+}
+
+@media (max-width: 767px) {
+  .hidden {
+    display: none;
+  }
+}
+
+
+
+/* NK start CUSTOM SCROLL BAR */
+/* width */
+// ::-webkit-scrollbar {
+//   width: 8px;
+// }
+// /* Track */
+// ::-webkit-scrollbar-track {
+//   background: #f1f1f1; 
+//   border-radius: 10px;
+// }
+
+// /* Handle */
+// ::-webkit-scrollbar-thumb {
+//   background: #888; 
+//   border-radius: 10px;
+// }
+
+// /* Handle on hover */
+// ::-webkit-scrollbar-thumb:hover {
+//   background: #555; 
+//   /* width: 10px !important; */
+// }
+/* NK end CUSTOM SCROLL BAR */
