@@ -269,7 +269,7 @@ export class NotifyService {
 
     }, {
       type: type[color],
-      // timer: 55000,
+      timer: 55000,
       // delay: 100,
       placement: {
         from: 'bottom',
@@ -277,6 +277,34 @@ export class NotifyService {
       },
       // tslint:disable-next-line:max-line-length
       template: '<div data-notify="container" class="col-xs-12 col-sm-8 alert alert-{0}" style="text-align: center; background-color: #131313; color:#a9afbb" role="alert">' +
+        '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+        // '<span data-notify="title" style="max-width: 100%; font-size:1.1em; ">TileDesk</span> ' +
+        // tslint:disable-next-line:max-line-length
+        '<span data-notify="icon" style="display: inline;"><i style="vertical-align: middle; padding-right: 5px; color: #5bc0de;" class="material-icons">' + icon + '</i> </span> ' +
+        '<span data-notify="message" style="display: inline; vertical-align: middle ">' + message + '</span>' +
+        '</div>'
+    });
+  }
+
+  showNotificationInstallWidget(message, notificationColor, icon) {
+    const type = ['', 'info', 'success', 'warning', 'danger'];
+    // const color = Math.floor((Math.random() * 4) + 1);
+    const color = notificationColor
+
+    this.notify = $.notify({
+      // icon: 'glyphicon glyphicon-warning-sign',
+      // message: message
+
+    }, {
+      type: type[color],
+      timer: 55000,
+      // delay: 100,
+      placement: {
+        from: 'bottom',
+        align: 'center'
+      },
+      // tslint:disable-next-line:max-line-length
+      template: '<div data-notify="container" class="col-xs-12 col-sm-8 alert alert-{0}" style="text-align: center; background-color: rgb(251, 188, 5); color:rgb(66, 77, 87);font-size: 15px;font-weight: 600;" role="alert">' +
         '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
         // '<span data-notify="title" style="max-width: 100%; font-size:1.1em; ">TileDesk</span> ' +
         // tslint:disable-next-line:max-line-length
