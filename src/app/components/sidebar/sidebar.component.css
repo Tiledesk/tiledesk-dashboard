@@ -792,20 +792,20 @@ button.close {
   border-top-left-radius: 50%;
   border-bottom-right-radius: 50%;
   border-top-right-radius: 50%;
-  width: 11px;
-  height: 11px;
+  width: 10px;
+  height: 10px;
   /* background-color: #ff3e43; */
   /* position: absolute;
   right: 0;
   top: 0; */
   position: relative;
-  right: 4px;
-  top: -23px;
+  right: 3px;
+  top: -25px;
   color: #fff;
-  font-size: 8px;
+  font-size: 7px;
   font-family: arial;
   text-align: center;
-  line-height: 11px;
+  line-height: 10px;
   font-weight: 700;
   opacity: 1;
   letter-spacing: 0;
