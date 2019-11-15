@@ -1,9 +1,9 @@
-import { Component, OnInit, ElementRef, ViewChild, } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, HostListener} from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { WsRequestsService } from '../services/websocket/ws-requests.service';
 import { WsMsgsService } from '../services/websocket/ws-msgs.service';
-
+import { Location } from '@angular/common';
 @Component({
   selector: 'appdashboard-ws-requests-msgs',
   templateUrl: './ws-requests-msgs.component.html',
@@ -16,6 +16,16 @@ export class WsRequestsMsgsComponent implements OnInit {
   requester_fullname: string;
   requester_id: string;
   displayBtnScrollToBottom = 'none';
+  OPEN_RIGHT_SIDEBAR = false;
+  selectedQuestion: string;
+  train_bot_sidebar_height: any;
+  newInnerWidth: any;
+  newInnerHeight: any;
+  users_list_modal_height: any
+  main_content_height: any
+
+  windowWidth: any;
+
 
   @ViewChild('scrollMe')
   private myScrollContainer: ElementRef;
@@ -24,8 +34,42 @@ export class WsRequestsMsgsComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private wsRequestsService: WsRequestsService,
-    private wsMsgsService: WsMsgsService
+    private wsMsgsService: WsMsgsService,
+    private _location: Location
   ) { }
+
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+
+    this.newInnerWidth = event.target.innerWidth;
+    console.log('REQUEST-MSGS - ON RESIZE -> WINDOW WITH ', this.newInnerWidth);
+
+
+    this.newInnerHeight = event.target.innerHeight;
+    // console.log('REQUEST-MSGS - ON RESIZE -> WINDOW HEIGHT ', this.newInnerHeight);
+
+    const elemMainContent = <HTMLElement>document.querySelector('.main-content');
+    this.main_content_height = elemMainContent.clientHeight
+    // console.log('REQUEST-MSGS - ON RESIZE -> MAIN CONTENT HEIGHT', this.main_content_height);
+
+    // determine the height of the modal when the width of the window is <= of 991px when the window is resized
+    // RESOLVE THE BUG: @media screen and (max-width: 992px) THE THE HEIGHT OF THE  MODAL 'USERS LIST' IS NOT 100%
+    if (this.newInnerWidth <= 991) {
+      this.users_list_modal_height = elemMainContent.clientHeight + 70 + 'px'
+
+      this.train_bot_sidebar_height = elemMainContent.clientHeight + 'px'
+      // console.log('REQUEST-MSGS - *** MODAL HEIGHT ***', this.users_list_modal_height);
+    }
+
+
+    // remove the padding on small device
+    // if (this.newInnerWidth <= 768) {
+    //   elemMainContent.setAttribute('style', 'padding-right: 0px; padding-left: 0px');
+    // } else {
+    //   elemMainContent.setAttribute('style', 'padding-right: 15px; padding-left: 15px');
+    // }
+  }
 
   ngOnInit() {
     this.getParamRequestId();
@@ -102,8 +146,31 @@ export class WsRequestsMsgsComponent implements OnInit {
     }
   }
 
-  
+  openRightSideBar(message: string) {
+    this.OPEN_RIGHT_SIDEBAR = true;
+    console.log('»»»» OPEN RIGHT SIDEBAR ', this.OPEN_RIGHT_SIDEBAR, ' MSG: ', message);
+    this.selectedQuestion = message;
 
+
+    // questo non funziona se è commented BUG RESOLVE
+    const elemMainContent = <HTMLElement>document.querySelector('.main-content');
+    this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
+    console.log('REQUEST-MSGS - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
+
+
+    // BUG RESOLVE inserisco questo visto che all'ampiezza in cui compare la sidebar sx non è comunque possibile scorrere
+    // la pagina
+    // const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+    // _elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;overflow-y: hidden !important;');
+
+    // const mainPanelScrollPosition = _elemMainPanel.scrollTop;
+    // console.log('mainPanelScrollPosition ', mainPanelScrollPosition);
+    // this.train_bot_sidebar_top_pos = mainPanelScrollPosition + 'px'
+  }
+  goBack() {
+    this._location.back();
+
+  }
 
 
 }
