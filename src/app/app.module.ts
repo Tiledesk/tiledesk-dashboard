@@ -151,6 +151,11 @@ import { HandleInvitationComponent } from './auth/handle-invitation/handle-invit
 
 import { environment } from '../environments/environment';
 import { AppConfigService } from './services/app-config.service';
+import { WsRequestsListComponent } from './ws-requests-list/ws-requests-list.component';
+import { WsRequestsService } from './services/websocket/ws-requests.service';
+import { WsRequestsMsgsComponent } from './ws-requests-msgs/ws-requests-msgs.component';
+// import { WebsocketService } from './services/websocket.service';
+import { WsMsgsService } from './services/websocket/ws-msgs.service';
 
 console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
@@ -244,7 +249,9 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     FaqSidebarComponent,
     CreateProjectComponent,
     InstallTiledeskComponent,
-    HandleInvitationComponent
+    HandleInvitationComponent,
+    WsRequestsListComponent,
+    WsRequestsMsgsComponent
   ],
   imports: [
     /* PRIVATE */
@@ -287,6 +294,9 @@ const appInitializerFn = (appConfig: AppConfigService) => {
       multi: true,
       deps: [AppConfigService]
     },
+    WsRequestsService,
+    WsMsgsService,
+    // WebsocketService,
     UsersService,
     ContactsService,
     RequestsService,

@@ -19,7 +19,7 @@ export const firebaseConfig = environment.firebase;
 import * as firebase from 'firebase';
 import 'firebase/auth';
 import { AppConfigService } from './services/app-config.service';
-import { WsRequestsService } from './services/ws-requests.service';
+import { WsRequestsService } from './services/websocket/ws-requests.service';
 
 @Component({
     selector: 'appdashboard-root',
