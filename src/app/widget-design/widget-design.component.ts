@@ -244,7 +244,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
   //     });
   // }
 
-    translateOnlineMsgSuccessNoticationMsg() {
+  translateOnlineMsgSuccessNoticationMsg() {
     this.translate.get('UpdateDeptGreetingsOnlineMsgSuccessNoticationMsg')
       .subscribe((text: string) => {
 
@@ -576,15 +576,17 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 }
               }
-            }
+            } else if (this.browserLang === 'en') {
 
-            if (this.browserLang === 'en') {
-              
               if (this.onlineMsg !== this.widgetDefaultSettings.en.online_msg) {
 
                 if (dept.online_msg !== this.onlineMsg) {
                   this.updateOnlineMsg(this.onlineMsg);
                 }
+              }
+            } else {
+              if ((this.browserLang !== 'en') && (this.browserLang !== 'it')) {
+                this.updateOnlineMsg(this.onlineMsg);
               }
             }
 
@@ -598,15 +600,18 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
                   this.updateOfflineMsg(this.offlineMsg)
                 }
               }
-            }
-
-            if (this.browserLang === 'en') {
+            } else if (this.browserLang === 'en') {
               if (this.offlineMsg !== this.widgetDefaultSettings.en.offline_msg) {
                 if (dept.offline_msg !== this.offlineMsg) {
                   console.log('saveOnlineOfflineMsgs offline_msg ', dept.offline_msg);
                   this.updateOfflineMsg(this.offlineMsg)
                 }
               }
+            } else {
+              if ((this.browserLang !== 'en') && (this.browserLang !== 'it')) {
+                this.updateOfflineMsg(this.offlineMsg)
+              }
+
             }
           }
         });
@@ -1529,16 +1534,20 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
         this.widgetObj['wellcomeTitle'] = this.welcomeTitle;
 
       }
-    }
-
-    if (this.browserLang === 'en') {
+    } else if (this.browserLang === 'en') {
       if (this.welcomeTitle !== this.widgetDefaultSettings.en.wellcomeTitle) {
 
         // *** ADD PROPERTY
         this.widgetObj['wellcomeTitle'] = this.welcomeTitle;
+      }
+    } else {
 
+      // NEW - RESOLVE THE BUG IF THE BROWSER LANGUAGE IS != FROM 'it' OR FROM 'EN' THE WIDGET IS NOT UPDATED
+      if ((this.browserLang !== 'en') && (this.browserLang !== 'it')) {
+        this.widgetObj['wellcomeTitle'] = this.welcomeTitle;
       }
     }
+
 
     /// WELCOME MSG
     if (this.browserLang === 'it') {
@@ -1549,9 +1558,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
         // UPDATE WIDGET PROJECT
 
       }
-    }
-
-    if (this.browserLang === 'en') {
+    } else if (this.browserLang === 'en') {
       if (this.welcomeMsg !== this.widgetDefaultSettings.en.wellcomeMsg) {
 
         // *** ADD PROPERTY
@@ -1559,6 +1566,11 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
         // UPDATE WIDGET PROJECT
 
       }
+    } else {
+      if ((this.browserLang !== 'en') && (this.browserLang !== 'it')) {
+        this.widgetObj['wellcomeMsg'] = this.welcomeMsg;
+      }
+
     }
 
 
@@ -1833,9 +1845,7 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
         // UPDATE WIDGET PROJECT
         // this.widgetService.updateWidgetProject(this.widgetObj)
       }
-    }
-
-    if (this.browserLang === 'en') {
+    } else if (this.browserLang === 'en') {
       if (this.calloutTitle !== this.widgetDefaultSettings.en.calloutTitle) {
 
         console.log('»» WIDGET DESIGN - >> CALLOUT TITLE ', this.calloutTitle);
@@ -1846,6 +1856,13 @@ export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
 
         // UPDATE WIDGET PROJECT
         // this.widgetService.updateWidgetProject(this.widgetObj)
+      }
+    } else {
+      if ((this.browserLang !== 'en') && (this.browserLang !== 'it')) {
+          // *** ADD PROPERTY calloutTitle
+          this.widgetObj['calloutTitle'] = this.calloutTitle;
+          // *** ADD PROPERTY calloutMsg
+          this.widgetObj['calloutMsg'] = this.calloutMsg;
       }
     }
 

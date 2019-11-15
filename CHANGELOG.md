@@ -3,9 +3,8 @@
 
 ### 1.0.37
 - Improves the project settings page organizing the contents in tabs and adding info
-- Adds in the sidebar the link to "Tiledesk changelog" blog
-- Adds a check for the widget installation on the user's website and display a  popup if the check failed
 - Adds a "SAVE" buttons on top of the widget settings pages 
+- Fixes the issue of saving the widget setting
 
 ### 1.0.36
 - Adds a two step wizard (create project and install widget) after the sign up
