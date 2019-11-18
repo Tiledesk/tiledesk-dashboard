@@ -109,7 +109,7 @@ export class UsersService {
     console.log('nk --> UsersService firebase_conf ',  firebase_conf);
     const cloudBaseUrl = firebase_conf['chat21ApiUrl']
     // console.log('nk --> UsersService cloudBaseUrl ',  cloudBaseUrl);
-    this.CLOUD_FUNC_UPDATE_USER_URL = cloudBaseUrl + '/tilechat/contacts/me';
+    this.CLOUD_FUNC_UPDATE_USER_URL = cloudBaseUrl + '/api/tilechat/contacts/me';
     console.log('nk --> UsersService cloud_func_update_firstname_and_lastname',  this.CLOUD_FUNC_UPDATE_USER_URL);  ;
   }
 
