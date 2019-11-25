@@ -156,6 +156,9 @@ import { WsRequestsService } from './services/websocket/ws-requests.service';
 import { WsRequestsMsgsComponent } from './ws-requests-msgs/ws-requests-msgs.component';
 // import { WebsocketService } from './services/websocket.service';
 import { WsMsgsService } from './services/websocket/ws-msgs.service';
+import { WsSharedComponent } from './ws-shared/ws-shared.component';
+import { WsTrainBotComponent } from './ws-requests-msgs/ws-train-bot/ws-train-bot.component';
+import { WebSocketJs } from './services/websocket/websocketjs';
 
 console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
@@ -251,7 +254,9 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     InstallTiledeskComponent,
     HandleInvitationComponent,
     WsRequestsListComponent,
-    WsRequestsMsgsComponent
+    WsRequestsMsgsComponent,
+    WsSharedComponent,
+    WsTrainBotComponent
   ],
   imports: [
     /* PRIVATE */
@@ -297,6 +302,7 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     WsRequestsService,
     WsMsgsService,
     // WebsocketService,
+    WebSocketJs,
     UsersService,
     ContactsService,
     RequestsService,

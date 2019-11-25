@@ -955,6 +955,18 @@ and also iPads specifically.
   }
 }
 
+.is-user-online {
+  background-color: #4caf50;
+  
+}
+
+.is-user-offline {
+  background-color: #f44336;
+}
+
+.checkbox-no-notallowedcursor.disabled label {
+  cursor: pointer !important;
+}
 
 
 /* NK start CUSTOM SCROLL BAR */

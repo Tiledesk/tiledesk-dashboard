@@ -1,0 +1,291 @@
+// THE 'X' INSIDE THE 'fullText' INPUT
+.buttonInside{
+    position:relative;
+    // margin-bottom:10px;
+  }
+
+// THE 'X' INSIDE THE 'fullText' INPUT
+// .glyphicon-remove{
+#clear-faq-search{    
+    // .fulltext-remove-btn{
+    position:absolute;
+    right: 5px;
+    top: 10px;
+    padding:2px;
+    font-size: 0.9em;
+    color: #999999;
+    z-index: 3;
+    cursor: pointer;
+}
+
+#clear-faq-search:hover {   
+    color: #f44336;
+}
+
+.speech-wrapper-train{
+    padding-top: 15px;
+    padding-bottom: 0px;
+    padding-left:15px;
+    padding-right:15px;
+    .bubble{
+      width: 100%;
+    //   min-height: 150px;
+      height: auto;
+      display: block;
+      background: #f5f5f5;
+      // background:rgb(115,212,253);
+      border-radius: 4px;
+    //   box-shadow: 2px 8px 5px #000;
+      box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.20);
+      position: relative;
+    //   margin: 0 0 25px;
+      &.alt{
+        margin: 0 0 0 60px;
+      }
+      .txt{
+        padding: 8px 14px 8px 14px;
+        .name{
+          font-weight: 600;
+          font-size: 12px;
+          margin: 0 0 4px;
+          color: #3498db;
+          span{
+            font-weight: normal;
+            color: #b3b3b3;
+          }
+          &.alt{
+            color: #2ecc71;
+          }
+        }
+        .message{
+          font-size: 14px;
+          margin: 0;
+          color: #2b2b2b;
+          font-weight: 400;
+        }
+        .timestamp{
+          font-size: 11px;
+          position: absolute;
+          bottom: 8px;
+          right: 10px;
+          text-transform: uppercase; color: #999
+        }
+      }
+      .bubble-arrow {
+        position: absolute;
+        width: 0;
+        bottom:42px;
+        left: -16px;
+        height: 0;
+        &.alt{
+          right: -2px;      
+          bottom: 40px;
+          left: auto;
+        }
+      }
+      .bubble-arrow:after {
+        content: "";
+        position: absolute;
+        border: 0 solid transparent;
+        border-top: 9px solid #f5f5f5;
+        // border-top: 9px solid rgb(115,212,253);
+        border-radius: 0 20px 0;
+        width: 15px;
+        height: 30px;
+        transform: rotate(145deg);
+      }
+      .bubble-arrow.alt:after {
+        transform: rotate(45deg) scaleY(-1);
+      }
+    }
+  }
+
+ 
+@media (max-width: 576px) {
+    .right-side-bar {
+        width: 100% !important;
+    }
+}
+
+
+@media (min-width: 577px) and (max-width: 767px){
+  .right-side-bar {
+      width: 50% !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 992px){
+  .right-side-bar  {
+      width: 40% !important;
+  }
+}
+
+  // from 992 
+@media (min-width: 992px) {
+  .right-side-bar {
+    width: 40% !important;
+  }
+}
+
+
+.center {
+ text-align: center;
+
+}
+
+/* NK start CUSTOM SCROLL BAR */
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+  /* width: 10px !important; */
+}
+
+.question-bubble {
+  background-color: #f5f5f5; 
+  color:rgba(0,0,0,.87);
+  border-radius: 15px 15px 15px 0px; 
+  padding:8px; 
+  font-size:12px; 
+  font-weight: 400;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.answer-bubble {
+  background-color: #f5f5f5; 
+  color:rgba(0,0,0,.87);
+  border-radius: 15px 15px 0px 15px; 
+  padding:8px;  
+  font-size:12px; 
+  font-weight: 400
+}
+
+.add-question {
+  cursor:pointer;
+  color: #039be5;
+  // color: #3c4252; 
+  font-size: 20px;
+  transition:all 0.2s ease-in-out;
+}
+
+.add-question:hover {
+  // color: #ffffff;
+  // background-color: #039be5;
+  // transform: scale(1.1)
+  opacity: 0.6;
+}
+
+// START NEW TOOLTIP WITH ARROW
+/* Tooltip container */
+// START NEW TOOLTIP WITH ARROW
+.tooltip-new {
+  position: relative;
+  display: inline-block;
+  // border-bottom: 1px dotted black;
+}
+
+.tooltip-new  .tooltiptext-new  {
+  visibility: hidden;
+  background-color: #394f5a;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.3s;
+
+  // width: 120px;
+  // margin-left: -60px;
+  // bottom: 125%;
+  // left: 50%;
+
+  top: -38px;
+  left: -32%;
+}
+
+.tooltip-new  .tooltiptext-new::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  // left: 50%;
+  left: 10%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #394f5a transparent transparent transparent;
+}
+
+.tooltip-new:hover .tooltiptext-new {
+  visibility: visible;
+  opacity: 1;
+}
+// END NEW TOOLTIP WITH ARROW 
+
+
+// END NEW TOOLTIP WITH ARROW 
+
+
+// ------ right tooltip ------
+
+
+/* // start TOOLTIP */
+/* Tooltip container */
+.tooltipx {
+    position: relative;
+    display: inline-block;
+    /* // border-bottom: 1px dotted black;  */  /* If you want dots under the hoverable text */
+  }
+  
+  /* Tooltip text */
+  .tooltipx .tooltiptext {
+    visibility: hidden;
+
+    background-color: black; 
+    /* // background-color: rgba(0,0,0,0.6); */
+    color: #fff;
+    text-align: center;
+    padding: 5px 5px;
+    border-radius: 5px;
+    font-size: 10px !important;
+    text-transform: none !important;
+  
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 1;
+    /* Position the tooltip text - BOTTOM */
+  
+
+    width: 120px;
+    top: 100%;
+    left: 50%; 
+    /* margin-left: -60px; */
+    margin-left: -92px;
+
+    /* // NEW */
+    box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
+    background-color: #394f5a;
+  }
+  
+  /* Show the tooltip text when you mouse over the tooltip container */
+  .tooltipx:hover .tooltiptext {
+    visibility: visible;
+  }
+  /* // end TOOLTIP */  

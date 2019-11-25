@@ -19,8 +19,8 @@ export const firebaseConfig = environment.firebase;
 import * as firebase from 'firebase';
 import 'firebase/auth';
 import { AppConfigService } from './services/app-config.service';
-import { WsRequestsService } from './services/websocket/ws-requests.service';
-
+// import { WsRequestsService } from './services/websocket/ws-requests.service';
+// import { WebSocketJs } from './services/websocket/webSocketJs';
 @Component({
     selector: 'appdashboard-root',
     templateUrl: './app.component.html',
@@ -50,10 +50,14 @@ export class AppComponent implements OnInit, AfterViewInit {
         private auth: AuthService,
         private notify: NotifyService,
         public appConfigService: AppConfigService,
-        public wsRequestsService: WsRequestsService,
+        // public wsRequestsService: WsRequestsService,
+       
+        // public webSocketJs: WebSocketJs
         // private faqKbService: FaqKbService,
     ) {
 
+
+     
 
         // wsRequestsService.messages.subscribe(msg => {
         //     console.log("Response from websocket: ", msg);
@@ -104,6 +108,9 @@ export class AppComponent implements OnInit, AfterViewInit {
     ngOnInit() {
         console.log(' ====== >>> HELLO APP.COMP (ngOnInit) <<< ====== ')
         console.log('!! FIREBASE  ', firebase);
+        
+        // this.getCurrentUserAndConnectToWs();
+
 
         this.resetRequestsIfUserIsSignedOut();
 
@@ -153,6 +160,32 @@ export class AppComponent implements OnInit, AfterViewInit {
 
 
     }
+
+
+    // getCurrentUserAndConnectToWs() {
+    //     this.auth.user_bs.subscribe((user) => {
+    //       console.log('% WsRequestsService - LoggedUser ', user);
+    
+    //       if (user && user.token) {
+    
+    //         const CHAT_URL = 'ws://tiledesk-server-pre.herokuapp.com?token=' + user.token
+
+    //         // -----------------------------------------------------------------------------------------------------
+    //         // REQUESTS - Create websocket connection and listen @ websocket requests
+    //         // -----------------------------------------------------------------------------------------------------
+            
+    //         // this.webSocketJs.init(
+    //         //     CHAT_URL,
+    //         //     undefined,
+    //         //     undefined,
+    //         //     function () {     
+    //         //     }
+    //         //   );
+    
+    //       }
+
+    //     });
+    //   }
 
 
 
