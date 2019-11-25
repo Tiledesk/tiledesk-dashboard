@@ -362,6 +362,8 @@
     "OnceYourTrialHasEndedYouWillMissing": "Una volta terminato il periodo di prova, ti perderai",
     "On": "il",
     "InstallNow": "Install Now",
+    "AssigneeAgent":"Agente assegnatario",
+    "Assignee":"Assegnatario",
     "Pricing": {
         "Operators": "Operatori",
         "UpgradePlan": "Aggiorna Piano",

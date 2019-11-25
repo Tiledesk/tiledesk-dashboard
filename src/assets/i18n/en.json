@@ -364,6 +364,8 @@
     "OnceYourTrialHasEndedYouWillMissing": "Once your trial has ended, you will missing",
     "On": "on",
     "InstallNow": "Installa ora",
+    "AssigneeAgent":"Assignee agent",
+    "Assignee":"Assignee",
     "Pricing": {
         "Operators": "Operators",
         "UpgradePlan": "Upgrade Plan",
