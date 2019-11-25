@@ -51,6 +51,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   subscription: Subscription;
   isVisible: boolean;
+  installWidgetText: string;
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -68,7 +69,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     console.log('!!! Hello HomeComponent! ');
 
     this.getBrowserLanguage();
-
+    this.translateInstallWidget();
 
     // console.log(environment.firebaseConfig.projectId);
     // this.firebaseProjectId = environment.firebaseConfig.projectId;
@@ -102,6 +103,16 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getVisitorCounter();
     this.getOSCODE();
   }
+
+    // TRANSLATION
+    translateInstallWidget() {
+      this.translate.get('InstallTiledeskNowAndStartChatting')
+        .subscribe((text: string) => {
+  
+          this.installWidgetText = text;
+          console.log('+ + + translateInstallWidget', text)
+        });
+    }
 
   getOSCODE() {
     console.log('eoscode', this.eos)
@@ -155,7 +166,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
           if (count === 0) {
 
-            this.notify.presentModalInstallTiledeskModal()
+            // this.notify.presentModalInstallTiledeskModal()
             console.log('getVisitorCounter count', count, '!!!');
 
           }
@@ -163,7 +174,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         } else {
           console.log('getVisitorCounter length : ', visitorCounter.length);
           console.log('getVisitorCounter VISITOR COUNTER IS O »» HAS NOT INSTALLED');
-          this.notify.presentModalInstallTiledeskModal()
+          // this.notify.presentModalInstallTiledeskModal() 
+          //  this.notify.showNotificationInstallWidget(`${this.installWidgetText} <span style="color:#ffffff; display: inline-block; max-width: 100%;"> Nicola </span>`, 0, 'info');
+         
         }
 
       }, (error) => {
