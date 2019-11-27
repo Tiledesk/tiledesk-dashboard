@@ -158,7 +158,7 @@ import { WsRequestsMsgsComponent } from './ws-requests-msgs/ws-requests-msgs.com
 import { WsMsgsService } from './services/websocket/ws-msgs.service';
 import { WsSharedComponent } from './ws-shared/ws-shared.component';
 import { WsTrainBotComponent } from './ws-requests-msgs/ws-train-bot/ws-train-bot.component';
-import { WebSocketJs } from './services/websocket/websocketjs';
+import { WebSocketJs } from './services/websocket/websocket-js';
 
 console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
