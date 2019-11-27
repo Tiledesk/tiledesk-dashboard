@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subject } from "rxjs/Rx";
 import { AuthService } from '../../core/auth.service';
-import { WebSocketJs } from "./websocketjs";
+import { WebSocketJs } from "./websocket-js";
 import { environment } from '../../../environments/environment';
 // const CHAT_URL = "ws://echo.websocket.org/";
 
@@ -17,7 +17,6 @@ export interface Message {
 }
 
 
-
 @Injectable()
 
 export class WsRequestsService {
@@ -29,9 +28,9 @@ export class WsRequestsService {
   wsjsRequestsService: WebSocketJs;
   wsjsRequestByIdService: WebSocketJs;
   project_id: string;
-  CHAT_URL = environment.websocket.wsUrl;
+  // CHAT_URL = environment.websocket.wsUrl;
 
-
+  WS_IS_CONNECTED: number;
 
   /**
    * Constructor
@@ -53,34 +52,42 @@ export class WsRequestsService {
     // -----------------------------------------------------------------------------------------------------
     // REQUESTS - @ the publication of the 'current project' subscribes to the websocket requests
     // -----------------------------------------------------------------------------------------------------
+    // this.getCurrentUserAndConnectToWs();
+    this.getCurrentProjectAndSubscribeTo_WsRequests()
 
-
-
-
-    this.getCurrentUserAndConnectToWs();
   }
 
-  getCurrentUserAndConnectToWs() {
-    this.auth.user_bs.subscribe((user) => {
-      console.log('% WsRequestsService - LoggedUser ', user);
+  // websocketIsReady(websocketReadyState: number) {
+  //   this.WS_IS_CONNECTED = websocketReadyState
+  //   console.log('% »»» WebSocketJs WF - WS-REQUESTS-SERVICE - websocketIsReady ', websocketReadyState);
 
+  //   if (websocketReadyState === 1) {
+  //     // this.getCurrentProjectAndSubscribeTo_WsRequests()
+      
+  //     // this.WS_IS_CONNECTED = true;
+  //   } else {
+  //     // this.WS_IS_CONNECTED = false;
+  //   }
+  // }
 
-      if (user && user.token) {
+  // getCurrentUserAndConnectToWs() {
+  //   this.auth.user_bs.subscribe((user) => {
+  //     console.log('% WsRequestsService - LoggedUser ', user);
 
-        this.CHAT_URL = 'ws://tiledesk-server-pre.herokuapp.com?token=' + user.token
+  //     if (user && user.token) {
 
+  //       this.CHAT_URL = 'ws://tiledesk-server-pre.herokuapp.com?token=' + user.token
 
+  //       // -----------------------------------------------------------------------------------------------------
+  //       // REQUESTS - Create websocket connection and listen @ websocket requests
+  //       // -----------------------------------------------------------------------------------------------------
 
-        // -----------------------------------------------------------------------------------------------------
-        // REQUESTS - Create websocket connection and listen @ websocket requests
-        // -----------------------------------------------------------------------------------------------------
-        
-        // ***** UNCOMMENT *****
-        // this.initWsjsRequestsService();
+  //       // ***** UNCOMMENT *****
+  //       this.initWsjsRequestsService();
 
-      }
-    });
-  }
+  //     }
+  //   });
+  // }
 
   // -----------------------------------------------------------------------------------------------------
   // methods for REQUESTS 
@@ -89,22 +96,94 @@ export class WsRequestsService {
   /**
    * Create websocket connection and listen @ websocket requests
    */
-  initWsjsRequestsService() {
-    const self = this;
-    self.wsRequestsList = []
-    console.log("% NEW WS - REQUESTS");
+  // initWsjsRequestsService() {
+  //   console.log('% »»» WebSocketJs WF ****** WsRequestsService ****** CALLING INIT ****** ');
+  //   const self = this;
+  //   self.wsRequestsList = []
 
 
-    //init(url, onCreate, onUpdate, onOpen=undefined, onOpenCallback=undefined) {
-    this.webSocketJs.init(
-      this.CHAT_URL,
-      undefined,
-      undefined,
-      function () {
-        self.getCurrentProjectAndSubscribeTo_WsRequests();
+
+  //   // init(url, onCreate, onUpdate, onOpen=undefined, onOpenCallback=undefined) {
+  //   //  init(url, onCreate, onUpdate, onOpen=undefined, onOpenCallback=undefined, _topics=[], _callbacks=new Map() ) {
+  //   this.webSocketJs.init(
+  //     this.CHAT_URL,
+  //     undefined,
+  //     undefined,
+  //     function () {
+  //       self.getCurrentProjectAndSubscribeTo_WsRequests();
+  //     }
+  //   );
+
+  //   // this.webSocketJs.init(
+  //   //   this.CHAT_URL,
+  //   //   undefined,
+  //   //   undefined,
+  //   // );
+
+  // }
+  resetWsRequestList() {
+    this.wsRequestsList = [];
+    this.wsRequestsList$.next(this.wsRequestsList);
+  }
+
+  getCurrentProjectAndSubscribeTo_WsRequests() {
+    var self = this;
+    self.wsRequestsList = [];
+    this.auth.project_bs.subscribe((project) => {
+      // console.log('%% WsRequestsService PROJECT ', project)
+
+      if (project) {
+        console.log('% »»» WebSocketJs WF ****** WsRequestsService PROJECT._ID ', project._id)
+        /**
+         * Unsubscribe to websocket requests with the old project id  
+         */
+        if (this.project_id) {
+          console.log('%% WsRequestsService THIS.PROJECT_ID ', this.project_id)
+          //this.unsubsToWS_Requests(this.project_id);
+
+          this.webSocketJs.unsubscribe('/' + this.project_id + '/requests');
+          this.resetWsRequestList();
+        }
+
+        this.project_id = project._id;
+
+        // this.subsToWS_Requests(this.project_id)
+        // this.webSocketJs.subscribe('/' + this.project_id + '/requests');
+
+        // console.log('% »»» WebSocketJs WF ****** WS-REQUESTS-SERVICE - WS_IS_CONNECTED ****** ', this.WS_IS_CONNECTED );
+
+        // if (this.WS_IS_CONNECTED === 1) {
+          this.webSocketJs.ref('/' + this.project_id + '/requests',
+
+            function (data, notification) {
+
+              // console.log("% »»» WebSocketJs - WsRequestsService REQUESTS CREATE", data);
+
+              const hasFound = self.wsRequestsList.filter((obj: any) => {
+                if (data && obj) {
+                  return obj._id === data._id;
+                }
+              });
+
+              if (hasFound.length === 0) {
+                self.addWsRequests(data)
+              } else {
+                console.log("%%%  WsRequestsService hasFound - not add", hasFound);
+              }
+
+            }, function (data, notification) {
+
+              console.log("% »»» WebSocketJs - WsRequestsService REQUESTS UPDATE", data);
+              // this.wsRequestsList.push(data);
+
+              // self.addOrUpdateWsRequestsList(data);
+              self.updateWsRequests(data)
+            }, function (data, notification) {
+              // dismetti loading
+            });
+        // }
       }
-    );
-
+    });
   }
 
 
@@ -115,7 +194,7 @@ export class WsRequestsService {
    */
   addWsRequests(request: any) {
     // console.log("% WsRequestsService addWsRequest wsRequestsList.length", this.wsRequestsList.length);
-    // console.log("% WsRequestsService addWsRequest request._id", request._id);
+    // console.log("% »»» WebSocketJs WF - WsRequestsService addWsRequest request ", request);
     if (request !== null) {
       this.wsRequestsList.push(request);
     }
@@ -168,63 +247,10 @@ export class WsRequestsService {
   }
 
 
-  getCurrentProjectAndSubscribeTo_WsRequests() {
-    var self = this;
-    this.auth.project_bs.subscribe((project) => {
-      // console.log('%% WsRequestsService PROJECT ', project)
-
-      if (project) {
-        console.log('%% WsRequestsService PROJECT._ID ', project._id)
-        /**
-         * Unsubscribe to websocket requests with the old project id  
-         */
-        if (this.project_id) {
-          console.log('%% WsRequestsService THIS.PROJECT_ID ', this.project_id)
-          //this.unsubsToWS_Requests(this.project_id);
 
 
-          // !!!!!!!! 
-          // this.webSocketJs.unsubscribe('/' + this.project_id + '/requests');
 
-        }
-
-        this.project_id = project._id;
-
-        // this.subsToWS_Requests(this.project_id)
-        // this.webSocketJs.subscribe('/' + this.project_id + '/requests');
-
-        this.webSocketJs.ref('/' + this.project_id + '/requests',
-
-          function (data, notification) {
-
-            // console.log("% »»» WebSocketJs - WsRequestsService REQUESTS CREATE", data);
-
-            const hasFound = self.wsRequestsList.filter((obj: any) => {
-              if (data && obj) {
-                return obj._id === data._id;
-              }
-            });
-
-            if (hasFound.length === 0) {
-              self.addWsRequests(data)
-            } else {
-              console.log("%%%  WsRequestsService hasFound - not add", hasFound);
-            }
-
-          }, function (data, notification) {
-
-            console.log("% »»» WebSocketJs - WsRequestsService REQUESTS UPDATE", data);
-            // this.wsRequestsList.push(data);
-
-            // self.addOrUpdateWsRequestsList(data);
-            self.updateWsRequests(data)
-          });
-      }
-    });
-  }
-
-
-    // -----------------------------------------------------------------------------------------------------
+  // -----------------------------------------------------------------------------------------------------
   // methods for REQUEST BY ID  
   // -----------------------------------------------------------------------------------------------------
 
@@ -281,7 +307,7 @@ export class WsRequestsService {
 
       function (data, notification) {
 
-        console.log("% »»» WebSocketJs - WsMsgsService REQUEST-BY-ID CREATE ", data);
+        console.log("% »»» WebSocketJs WF - WsMsgsService REQUEST-BY-ID CREATE ", data);
         /**
          *  HERE MANAGE IF ALREADY HAS EMIT THE REQUEST BY ID
          */
@@ -302,15 +328,15 @@ export class WsRequestsService {
 
       }, function (data, notification) {
 
-        console.log("% »»» WebSocketJs - WsMsgsService REQUEST-BY-ID UPDATE ", data);
+        console.log("% »»» WebSocketJs WF - WsMsgsService REQUEST-BY-ID UPDATE ", data);
         self.updateWsRequest(data)
         // this.wsRequestsList.push(data);
 
         // self.addOrUpdateWsRequestsList(data);
         // self.updateWsRequest(data)
-      }
-
-    );
+      }, function (data, notification) {
+        // dismetti loading
+      });
     // console.log("% SUB »»»»»»» subsToWS RequestById from client to websocket: ", message);
 
   }
