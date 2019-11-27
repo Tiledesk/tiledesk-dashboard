@@ -5,9 +5,8 @@ import { Subject } from "rxjs/Rx";
 import { AuthService } from '../../core/auth.service';
 import { WebSocketJs } from "./websocket-js";
 import { environment } from '../../../environments/environment';
-// const CHAT_URL = "ws://echo.websocket.org/";
 
-// const CHAT_URL = "ws://tiledesk-server-pre.herokuapp.com?token=JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiZW1haWwiOjEsImZpcnN0bmFtZSI6MSwibGFzdG5hbWUiOjEsInBhc3N3b3JkIjoxLCJlbWFpbHZlcmlmaWVkIjoxLCJpZCI6MX0sImdldHRlcnMiOnt9LCJfaWQiOiI1YWM3NTIxNzg3ZjZiNTAwMTRlMGI1OTIiLCJ3YXNQb3B1bGF0ZWQiOmZhbHNlLCJhY3RpdmVQYXRocyI6eyJwYXRocyI6eyJwYXNzd29yZCI6ImluaXQiLCJlbWFpbCI6ImluaXQiLCJlbWFpbHZlcmlmaWVkIjoiaW5pdCIsImxhc3RuYW1lIjoiaW5pdCIsImZpcnN0bmFtZSI6ImluaXQiLCJfaWQiOiJpbml0In0sInN0YXRlcyI6eyJpZ25vcmUiOnt9LCJkZWZhdWx0Ijp7fSwiaW5pdCI6eyJlbWFpbHZlcmlmaWVkIjp0cnVlLCJsYXN0bmFtZSI6dHJ1ZSwiZmlyc3RuYW1lIjp0cnVlLCJwYXNzd29yZCI6dHJ1ZSwiZW1haWwiOnRydWUsIl9pZCI6dHJ1ZX0sIm1vZGlmeSI6e30sInJlcXVpcmUiOnt9fSwic3RhdGVOYW1lcyI6WyJyZXF1aXJlIiwibW9kaWZ5IiwiaW5pdCIsImRlZmF1bHQiLCJpZ25vcmUiXX0sInBhdGhzVG9TY29wZXMiOnt9LCJlbWl0dGVyIjp7Il9ldmVudHMiOnt9LCJfZXZlbnRzQ291bnQiOjAsIl9tYXhMaXN0ZW5lcnMiOjB9LCIkb3B0aW9ucyI6dHJ1ZX0sImlzTmV3IjpmYWxzZSwiX2RvYyI6eyJlbWFpbHZlcmlmaWVkIjp0cnVlLCJsYXN0bmFtZSI6IkxhbnppbG90dG8iLCJmaXJzdG5hbWUiOiJOaWNvIiwicGFzc3dvcmQiOiIkMmEkMTAkTlBoSk5VNVZDYlU2d05idG1Jck5lT3MxR0dBSW5rMERMeGVYWXN2dklHZ1JnY1dMWW1kYkciLCJlbWFpbCI6Im5pY29sYS5sYW56aWxvdHRvQGZyb250aWVyZTIxLml0IiwiX2lkIjoiNWFjNzUyMTc4N2Y2YjUwMDE0ZTBiNTkyIn0sIiRpbml0Ijp0cnVlLCJpYXQiOjE1NzQwODU4MTMsImF1ZCI6Imh0dHBzOi8vdGlsZWRlc2suY29tIiwiaXNzIjoiaHR0cHM6Ly90aWxlZGVzay5jb20iLCJzdWIiOiJ1c2VyIn0.GQpPEULk0OUyH6zqAmf2fz30MgtfJiI-WUfw8i-EtCY";
+
 export interface Message {
   action: string;
   payload: {
@@ -52,75 +51,19 @@ export class WsRequestsService {
     // -----------------------------------------------------------------------------------------------------
     // REQUESTS - @ the publication of the 'current project' subscribes to the websocket requests
     // -----------------------------------------------------------------------------------------------------
-    // this.getCurrentUserAndConnectToWs();
-    this.getCurrentProjectAndSubscribeTo_WsRequests()
+ 
+    
+    // this.getCurrentProjectAndSubscribeTo_WsRequests()
+
 
   }
 
-  // websocketIsReady(websocketReadyState: number) {
-  //   this.WS_IS_CONNECTED = websocketReadyState
-  //   console.log('% »»» WebSocketJs WF - WS-REQUESTS-SERVICE - websocketIsReady ', websocketReadyState);
-
-  //   if (websocketReadyState === 1) {
-  //     // this.getCurrentProjectAndSubscribeTo_WsRequests()
-      
-  //     // this.WS_IS_CONNECTED = true;
-  //   } else {
-  //     // this.WS_IS_CONNECTED = false;
-  //   }
-  // }
-
-  // getCurrentUserAndConnectToWs() {
-  //   this.auth.user_bs.subscribe((user) => {
-  //     console.log('% WsRequestsService - LoggedUser ', user);
-
-  //     if (user && user.token) {
-
-  //       this.CHAT_URL = 'ws://tiledesk-server-pre.herokuapp.com?token=' + user.token
-
-  //       // -----------------------------------------------------------------------------------------------------
-  //       // REQUESTS - Create websocket connection and listen @ websocket requests
-  //       // -----------------------------------------------------------------------------------------------------
-
-  //       // ***** UNCOMMENT *****
-  //       this.initWsjsRequestsService();
-
-  //     }
-  //   });
-  // }
-
+ 
   // -----------------------------------------------------------------------------------------------------
   // methods for REQUESTS 
   // -----------------------------------------------------------------------------------------------------
 
-  /**
-   * Create websocket connection and listen @ websocket requests
-   */
-  // initWsjsRequestsService() {
-  //   console.log('% »»» WebSocketJs WF ****** WsRequestsService ****** CALLING INIT ****** ');
-  //   const self = this;
-  //   self.wsRequestsList = []
-
-
-
-  //   // init(url, onCreate, onUpdate, onOpen=undefined, onOpenCallback=undefined) {
-  //   //  init(url, onCreate, onUpdate, onOpen=undefined, onOpenCallback=undefined, _topics=[], _callbacks=new Map() ) {
-  //   this.webSocketJs.init(
-  //     this.CHAT_URL,
-  //     undefined,
-  //     undefined,
-  //     function () {
-  //       self.getCurrentProjectAndSubscribeTo_WsRequests();
-  //     }
-  //   );
-
-  //   // this.webSocketJs.init(
-  //   //   this.CHAT_URL,
-  //   //   undefined,
-  //   //   undefined,
-  //   // );
-
-  // }
+ 
   resetWsRequestList() {
     this.wsRequestsList = [];
     this.wsRequestsList$.next(this.wsRequestsList);

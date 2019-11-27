@@ -19,8 +19,11 @@ export const firebaseConfig = environment.firebase;
 import * as firebase from 'firebase';
 import 'firebase/auth';
 import { AppConfigService } from './services/app-config.service';
-// import { WsRequestsService } from './services/websocket/ws-requests.service';
-// import { WebSocketJs } from './services/websocket/webSocketJs';
+import { WsRequestsService } from './services/websocket/ws-requests.service';
+import { WsMsgsService } from './services/websocket/ws-msgs.service';
+
+import { WebSocketJs } from './services/websocket/websocket-js';
+
 @Component({
     selector: 'appdashboard-root',
     templateUrl: './app.component.html',
@@ -50,14 +53,13 @@ export class AppComponent implements OnInit, AfterViewInit {
         private auth: AuthService,
         private notify: NotifyService,
         public appConfigService: AppConfigService,
-        // public wsRequestsService: WsRequestsService,
-       
-        // public webSocketJs: WebSocketJs
+        public wsRequestsService: WsRequestsService,
+        public wsMsgsService: WsMsgsService,
+        public webSocketJs: WebSocketJs
+        
         // private faqKbService: FaqKbService,
     ) {
 
-
-     
 
         // wsRequestsService.messages.subscribe(msg => {
         //     console.log("Response from websocket: ", msg);
@@ -81,7 +83,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         firebase.initializeApp(firebase_conf);
 
 
-
         localStorage.removeItem('firebase:previous_websocket_failure');
 
         console.log('!!! =========== HELLO APP.COMP (constructor) ===========')
@@ -97,7 +98,6 @@ export class AppComponent implements OnInit, AfterViewInit {
             }
         }
         // this.unservedRequestCount = 0
-
     }
 
 
@@ -109,9 +109,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         console.log(' ====== >>> HELLO APP.COMP (ngOnInit) <<< ====== ')
         console.log('!! FIREBASE  ', firebase);
         
-        // this.getCurrentUserAndConnectToWs();
-
-
         this.resetRequestsIfUserIsSignedOut();
 
         // NEW (SEE ALSO )
@@ -155,40 +152,37 @@ export class AppComponent implements OnInit, AfterViewInit {
             ps = new PerfectScrollbar(elemSidebar);
         }
 
-
         this.unsetNavbarBoxShadow();
 
-
+        // -----------------------------------------------------------------------------------------------------
+        // Websocket connection
+        // -----------------------------------------------------------------------------------------------------
+        // this.getCurrentUserAndConnectToWs();
     }
-
-
-    // getCurrentUserAndConnectToWs() {
-    //     this.auth.user_bs.subscribe((user) => {
-    //       console.log('% WsRequestsService - LoggedUser ', user);
     
-    //       if (user && user.token) {
+    getCurrentUserAndConnectToWs() {
+        const self = this
+        this.auth.user_bs.subscribe((user) => {
+          console.log('% »»» WebSocketJs WF - APP-COMPONENT - LoggedUser ', user);
     
-    //         const CHAT_URL = 'ws://tiledesk-server-pre.herokuapp.com?token=' + user.token
-
-    //         // -----------------------------------------------------------------------------------------------------
-    //         // REQUESTS - Create websocket connection and listen @ websocket requests
-    //         // -----------------------------------------------------------------------------------------------------
-            
-    //         // this.webSocketJs.init(
-    //         //     CHAT_URL,
-    //         //     undefined,
-    //         //     undefined,
-    //         //     function () {     
-    //         //     }
-    //         //   );
+          if (user && user.token) {
     
-    //       }
+            const CHAT_URL = 'CHANGE_IT'
 
-    //     });
-    //   }
+            // -----------------------------------------------------------------------------------------------------
+            // Websocket init 
+            // -----------------------------------------------------------------------------------------------------
+            this.webSocketJs.init(
+                CHAT_URL,
+                undefined,
+                undefined,
+                undefined
+            );
+          }
+        });
+      }
 
-
-
+ 
     resetRequestsIfUserIsSignedOut() {
         const self = this
         console.log('resetRequestsIfUserIsSignedOut ', typeof firebase.auth)
@@ -213,10 +207,22 @@ export class AppComponent implements OnInit, AfterViewInit {
                     self.requestsService.unsubscribe()
                     self.requestsService.resetRequestsList()
                 }
+
+            // -----------------------------------------------------------------------------------------------------    
+            //  Websocket - Close websocket and reset ws requests list 
+            // -----------------------------------------------------------------------------------------------------
+            // self.closeWebsocketAndResetRequestsList()
+            
+
             }
         });
     }
 
+
+    closeWebsocketAndResetRequestsList() {
+        this.webSocketJs.closeWebsocket()
+        this.wsRequestsService.resetWsRequestList()
+    }
 
     // SET TO 'none' the box-shadow style of the navbar in the page in which is present the second navbar (i.e. the bottom-nav)
     unsetNavbarBoxShadow() {

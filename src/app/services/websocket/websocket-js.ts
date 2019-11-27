@@ -71,13 +71,19 @@ public userHasClosed: boolean;
         } else {
 
         var that = this;
-        this.ws.addEventListener("open", function(event) {
-  
-          console.log('% »»» WebSocketJs WF *** REF *** OPEN EVENT *** ', event);
-          that.subscribe(topic);
-  
-        });
+
+        if(this.ws) {
+          this.ws.addEventListener("open", function(event) {
+    
+            console.log('% »»» WebSocketJs WF *** REF *** OPEN EVENT *** ', event);
+            that.subscribe(topic);
+    
+          });
+
+        }
        }
+
+
   }
 
   subscribe(topic) {
