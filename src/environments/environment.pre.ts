@@ -33,6 +33,6 @@ export const environment = {
         CHAT_BASE_URL: 'https://support-pre.tiledesk.com/chat/',
     },
     testsite: {
-        testsiteBaseUrl: 'https://widget.tiledesk.com/v3/assets/twp/index.html'
+        testsiteBaseUrl: 'https://widget-pre.tiledesk.com/v3/assets/twp/index.html'
     }
 };
