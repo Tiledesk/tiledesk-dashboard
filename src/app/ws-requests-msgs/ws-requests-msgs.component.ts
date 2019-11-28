@@ -311,8 +311,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
            * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
            */
           // this.requester_id = this.request.requester ??? 
-          this.requester_id = this.request.attributes.requester_id;
-          console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById REQUESTER ID (DA ATTRIBUTES)', this.requester_id);
+          // this.requester_id = this.request.attributes.requester_id;
+          this.requester_id = this.request.lead.lead_id;
+          console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById REQUESTER ID (DA LEAD)', this.requester_id);
           console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById REQUESTER EMAIL (DA ATTRIBUTES)', this.request.attributes.userEmail);
           console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById REQUESTER FULLNAME (DA ATTRIBUTES)', this.request.attributes.userFullname);
           // ********

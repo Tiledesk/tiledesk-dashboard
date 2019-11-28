@@ -698,20 +698,23 @@
                   </td> -->
 
                   <!-- ------ ====== NEW SERVED BY ====== ------ -->
+                  <!-- *ngIf="participant !== request?.requester_id && participant !== 'system' && participant !== currentUserID"  -->
                   <td>
                     <div *ngFor="let participant of request?.participants"  style="font-size:0.8em;">
-                      <span *ngIf="participant !== request?.requester_id && participant !== 'system' && participant !== currentUserID" class="tooltipx"> 
+                      <span *ngIf="participant !== request?.lead?.lead_id && participant !== 'system' && participant !== currentUserID" class="tooltipx"> 
+                        
                         <span (click)="goToMemberProfile( participant )" style="cursor:pointer; display: block">
-                  
                           <!-- IF IS A BOT bot_image.png -->
-                          <img *ngIf="participant.indexOf('bot_') !== -1" style="vertical-align: middle; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee; margin-top: 1px; margin-bottom: 1px" 
-                          class="user-img" src="assets/img/bot_image_as_human.jpg" 
-                          onerror="this.src='assets/img/no_image_user.png'"/>
+                          <img 
+                            *ngIf="participant.indexOf('bot_') !== -1"
+                            class="user-img ws-requests-list-servedby-avatar" src="assets/img/bot_image_as_human.jpg" 
+                            onerror="this.src='assets/img/no_image_user.png'"/>
 
-                          <!-- IF IS A HUMAN -->
-                          <img *ngIf="participant.indexOf('bot_') === -1" style="vertical-align: middle; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee; margin-top: 1px; margin-bottom: 1px" 
-                          class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media" 
-                          onerror="this.src='assets/img/no_image_user.png'"/>
+                          <!-- IF IS A HUMAN -->                                 
+                          <img 
+                            *ngIf="participant.indexOf('bot_') === -1"
+                            class="user-img ws-requests-list-servedby-avatar" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media" 
+                            onerror="this.src='assets/img/no_image_user.png'"/>
 
                           <span class="member" [innerHTML]="members_replace( participant )"></span>
 
@@ -723,9 +726,10 @@
 
                       <span *ngIf="participant === currentUserID"> 
                         <!-- IF IS THE LOGGED USER -->
-                        <img style="vertical-align: middle; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee;margin-top: 1px; margin-bottom: 1px" 
-                        class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media" 
-                        onerror="this.src='assets/img/no_image_user.png'"/>
+                        <img 
+                          class="user-img ws-requests-list-servedby-avatar" 
+                          src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media" 
+                          onerror="this.src='assets/img/no_image_user.png'"/>
                         <span class="current-user-member" [innerHTML]="members_replace(participant)"></span>
                       </span>
 

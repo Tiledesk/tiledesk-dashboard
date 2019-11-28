@@ -179,7 +179,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         this.ws_requests = wsrequests;
       }
 
-      console.log('%%% WsRequestsListComponent getWsRequests$ ws_request ', wsrequests)
+      console.log('% »»» WebSocketJs WF - WsRequestsListComponent getWsRequests$ ws_request ', wsrequests)
 
       console.log('%%% WsRequestsListComponent getWsRequests$ typeof ws_request ', typeof wsrequests)
 
@@ -187,7 +187,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
       if (wsrequests.length > 0) {
         this.SHOW_SIMULATE_REQUEST_BTN = false;
-        // console.log('%%% WS REQUESTS-LIST COMP - SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
+        console.log('%%% WS REQUESTS-LIST COMP - SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
       } else {
         this.SHOW_SIMULATE_REQUEST_BTN = true;
       }
@@ -262,14 +262,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
               return false
             }
           });
-
-
       }
-
     }, error => {
       console.log('%%% WsRequestsListComponent getWsRequests$ * error * ', error)
     });
-
   }
 
   _getWsRequests$() {
