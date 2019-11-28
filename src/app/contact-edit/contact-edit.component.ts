@@ -46,7 +46,7 @@ export class ContactEditComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.editContactSuccessNoticationMsg = text;
-        console.log('+ + + EditContactSuccessNoticationMsg', text)
+        // console.log('+ + + EditContactSuccessNoticationMsg', text)
       });
   }
  // TRANSLATION
@@ -55,7 +55,7 @@ export class ContactEditComponent implements OnInit {
       .subscribe((text: string) => {
 
         this.editContactErrorNoticationMsg = text;
-        console.log('+ + + EditContactErrorNoticationMsg', text)
+        // console.log('+ + + EditContactErrorNoticationMsg', text)
       });
   }
 
