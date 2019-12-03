@@ -15,7 +15,7 @@ export const environment = {
         projectId: 'CHANGEIT',
         storageBucket: 'CHANGEIT',
         messagingSenderId: 'CHANGEIT',
-        chat21UrlApi: 'CHANGEIT'
+        chat21ApiUrl: 'CHANGEIT'
     },
     mongoDbConfig: {
         BASE_URL: `${serverUrl}`,
