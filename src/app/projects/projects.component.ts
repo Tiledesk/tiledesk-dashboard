@@ -10,6 +10,8 @@ import { isDevMode } from '@angular/core';
 import { UsersService } from '../services/users.service';
 import { UploadImageService } from '../services/upload-image.service';
 import { Subscription } from 'rxjs/Subscription';
+import { AppConfigService } from '../services/app-config.service';
+
 @Component({
   selector: 'projects',
   templateUrl: './projects.component.html',
@@ -43,6 +45,9 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   userImageHasBeenUploaded: boolean;
   myAvailabilityCount: number;
   subscription: Subscription;
+
+  storageBucket: string;
+
   constructor(
     private projectService: ProjectService,
     private router: Router,
@@ -51,7 +56,8 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     private element: ElementRef,
     private departmentService: DepartmentService,
     private usersService: UsersService,
-    private uploadImageService: UploadImageService
+    private uploadImageService: UploadImageService,
+    public appConfigService: AppConfigService
   ) {
     console.log('IS DEV MODE ', isDevMode());
     this.APP_IS_DEV_MODE = isDevMode()
@@ -70,6 +76,13 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     this.checkUserImageExist();
 
     // this.subscribeToLogoutPressedinSidebarNavMobilePrjctUndefined();
+    this.getStorageBucket()
+  }
+
+  getStorageBucket() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    console.log('STORAGE-BUCKET Projects ', this.storageBucket)
   }
 
   checkUserImageExist() {
