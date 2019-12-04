@@ -21,6 +21,7 @@ import { ProjectPlanService } from '../../services/project-plan.service';
 import { ProjectService } from '../../services/project.service';
 import { publicKey } from '../../utils/util';
 
+import { AppConfigService } from '../../services/app-config.service';
 
 @Component({
     selector: 'app-navbar',
@@ -91,6 +92,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     HOME_ROUTE_IS_ACTIVE: boolean;
     projects: any;
     isVisible: boolean;
+
+    storageBucket: string;
+
     constructor(
         location: Location,
         private element: ElementRef,
@@ -103,7 +107,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         private uploadImageService: UploadImageService,
         private notifyService: NotifyService,
         private prjctPlanService: ProjectPlanService,
-        private projectService: ProjectService
+        private projectService: ProjectService,
+        public appConfigService: AppConfigService
     ) {
         this.location = location;
         this.sidebarVisible = false;
@@ -171,8 +176,14 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
 
         this.getOSCODE();
+        this.getStorageBucket()
     } // OnInit
 
+    getStorageBucket() {
+        const firebase_conf = this.appConfigService.getConfig().firebase;
+        this.storageBucket = firebase_conf['storageBucket'];
+        console.log('STORAGE-BUCKET Navbar ', this.storageBucket) 
+    }
 
     getOSCODE() {
         console.log('NavbarComponent eoscode', this.eos)
