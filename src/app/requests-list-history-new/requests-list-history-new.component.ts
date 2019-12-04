@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs';
 import { ProjectPlanService } from '../services/project-plan.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../core/notify.service';
+import { AppConfigService } from '../services/app-config.service';
 
 @Component({
   selector: 'appdashboard-requests-list-history-new',
@@ -100,6 +101,7 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
     dateFormat: 'dd/mm/yyyy',
     // dateFormat: 'yyyy, mm , dd',
   };
+  storageBucket: string;
 
   constructor(
     private requestsService: RequestsService,
@@ -112,7 +114,8 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
     private faqKbService: FaqKbService,
     private prjctPlanService: ProjectPlanService,
     private translate: TranslateService,
-    private notify: NotifyService
+    private notify: NotifyService,
+    public appConfigService: AppConfigService
   ) {  }
 
   ngOnInit() {
@@ -129,6 +132,14 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
     this.getProjectPlan();
     this.getBrowserLang();
     // this.createBotsAndUsersArray();
+
+    this.getStorageBucket();
+  }
+
+  getStorageBucket() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    console.log('STORAGE-BUCKET Requests-list-history ', this.storageBucket)
   }
 
   getBrowserLang() {
