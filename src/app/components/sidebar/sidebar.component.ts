@@ -194,11 +194,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     getStorageBucket() {
-
         const firebase_conf = this.appConfigService.getConfig().firebase;
         this.storageBucket = firebase_conf['storageBucket'];
-        console.log('SIDEBAR storageBucket ', this.storageBucket) 
-
+        console.log('STORAGE-BUCKET Sidebar ', this.storageBucket) 
     }
 
 
