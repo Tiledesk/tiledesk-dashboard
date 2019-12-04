@@ -16,6 +16,7 @@ import { environment } from '../../../environments/environment';
 import { UploadImageService } from '../../services/upload-image.service';
 import { TranslateService } from '@ngx-translate/core';
 import { publicKey } from '../../utils/util';
+import { AppConfigService } from '../../services/app-config.service';
 
 declare const $: any;
 
@@ -125,7 +126,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     prjc_trial_days_left: number
     prjc_trial_days_left_percentage: number
     isVisible: boolean;
-    
+
+   
+    storageBucket: string;
 
 
     constructor(
@@ -139,7 +142,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         private usersLocalDbService: UsersLocalDbService,
         private notify: NotifyService,
         private uploadImageService: UploadImageService,
-        private translate: TranslateService
+        private translate: TranslateService,
+        public appConfigService: AppConfigService
     ) { console.log('!!!!! HELLO SIDEBAR') }
 
 
@@ -185,7 +189,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.getCurrentRoute();
 
         this.getOSCODE();
+
+        this.getStorageBucket()
     }
+
+    getStorageBucket() {
+
+        const firebase_conf = this.appConfigService.getConfig().firebase;
+        this.storageBucket = firebase_conf['storageBucket'];
+        console.log('SIDEBAR storageBucket ', this.storageBucket) 
+
+    }
+
 
     getOSCODE() {
         console.log('eoscode', this.eos)
