@@ -20,7 +20,7 @@ import { avatarPlaceholder, getColorBck } from '../utils/util';
 import { TranslateService } from '@ngx-translate/core';
 
 import * as firebase from 'firebase/app';
-
+import { AppConfigService } from 'app/services/app-config.service';
 @Component({
   selector: 'appdashboard-requests-list',
   templateUrl: './requests-list.component.html',
@@ -118,6 +118,9 @@ export class RequestsListComponent implements OnInit {
   requestHasBeenArchivedNoticationMsg_part1: string;
   requestHasBeenArchivedNoticationMsg_part2: string;
   seeAll: boolean;
+
+  storageBucket: string;
+
   constructor(
     private requestsService: RequestsService,
     private elRef: ElementRef,
@@ -128,7 +131,8 @@ export class RequestsListComponent implements OnInit {
     private botLocalDbService: BotLocalDbService,
     private departmentService: DepartmentService,
     private usersService: UsersService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    public appConfigService: AppConfigService
   ) {
     this.zone = new NgZone({ enableLongStackTrace: false });
 
@@ -172,6 +176,13 @@ export class RequestsListComponent implements OnInit {
     //   });
 
     // this.getCountOfRequestsforDepts();
+    this.getStorageBucket()
+  }
+
+  getStorageBucket() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    console.log('STORAGE-BUCKET Requests list ', this.storageBucket)
   }
 
   // TRANSLATION
