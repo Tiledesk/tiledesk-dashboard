@@ -5,7 +5,7 @@ import { UsersService } from 'app/services/users.service';
 import { AuthService } from 'app/core/auth.service';
 import { DepartmentService } from 'app/services/mongodb-department.service';
 import { Router } from '@angular/router';
-
+import { AppConfigService } from 'app/services/app-config.service';
 @Component({
   selector: 'appdashboard-realtime',
   templateUrl: './realtime.component.html',
@@ -36,13 +36,17 @@ export class RealtimeComponent implements OnInit {
   id_project: any;
 
   departments: any;
-  
 
-  constructor(private requestsService:RequestsService,
-              private usersService:UsersService,
-              private auth:AuthService,
-              private departmentService:DepartmentService,
-              private router: Router) { }
+  storageBucket: string;
+
+  constructor(
+    private requestsService: RequestsService,
+    private usersService: UsersService,
+    private auth: AuthService,
+    private departmentService: DepartmentService,
+    private router: Router,
+    public appConfigService: AppConfigService
+  ) { }
 
   ngOnInit() {
     this.getCurrentProject();
@@ -51,6 +55,14 @@ export class RealtimeComponent implements OnInit {
     this.getCountOf_AllRequestsForAgent(); //request for agent
     this.getCountOf_AllRequestsForDept(); //request for department
     this.getlastMonthRequetsCount(); //last mounth request count
+
+    this.getStorageBucket()
+  }
+
+  getStorageBucket() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    console.log('STORAGE-BUCKET Realtime ', this.storageBucket)
   }
 
   ngOnDestroy() {
@@ -69,12 +81,12 @@ export class RealtimeComponent implements OnInit {
     });
   }
 
-   /**
-   * ******************************************************************************************
-   * ====== COUNT OF SERVED, UNSERVED AND OF THE ACTIVE (i.e. SERVED + UNSERVED) REQUESTS ======
-   * ******************************************************************************************
-   * --------------------------------NOT USED--------------------------------------------------
-   */
+  /**
+  * ******************************************************************************************
+  * ====== COUNT OF SERVED, UNSERVED AND OF THE ACTIVE (i.e. SERVED + UNSERVED) REQUESTS ======
+  * ******************************************************************************************
+  * --------------------------------NOT USED--------------------------------------------------
+  */
   servedAndUnservedRequestsCount() {
     this.subscription = this.requestsService.requestsList_bs.subscribe((requests) => {
       this.date = new Date();
@@ -170,7 +182,7 @@ export class RealtimeComponent implements OnInit {
     });
   }
 
-  
+
   /**
    * ********************************************************************************************
    * ========================== COUNT OF ** ALL ** REQUESTS X AGENT =============================
