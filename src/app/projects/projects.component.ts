@@ -76,7 +76,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     this.checkUserImageExist();
 
     // this.subscribeToLogoutPressedinSidebarNavMobilePrjctUndefined();
-    this.getStorageBucket()
+    this.getStorageBucket();
   }
 
   getStorageBucket() {
