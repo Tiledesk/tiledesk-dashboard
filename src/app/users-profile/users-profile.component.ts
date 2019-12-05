@@ -12,6 +12,7 @@ import * as moment from 'moment';
 
 // USED FOR go back last page
 import { Location } from '@angular/common';
+import { AppConfigService } from '../services/app-config.service';
 
 @Component({
   selector: 'app-users-profile',
@@ -34,6 +35,8 @@ export class UsersProfileComponent implements OnInit {
   faqKb_name: string;
   faqKb_createdAt: string;
   faqKb_trashed: boolean;
+  
+  storageBucket: string;
 
   constructor(
     private usersService: UsersService,
@@ -43,11 +46,19 @@ export class UsersProfileComponent implements OnInit {
     private _location: Location,
     private usersLocalDbService: UsersLocalDbService,
     private faqKbService: FaqKbService,
-    private botLocalDbService: BotLocalDbService
+    private botLocalDbService: BotLocalDbService,
+    public appConfigService: AppConfigService
   ) { }
 
   ngOnInit() {
     this.getMemberId();
+    this.getStorageBucket();
+  }
+
+  getStorageBucket() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    console.log('STORAGE-BUCKET Users Profile ', this.storageBucket)
   }
 
   getMemberId() {
