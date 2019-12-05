@@ -67,6 +67,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     DETECTED_USER_PROFILE_PAGE = false;
     CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
+    
     eos = environment.t2y12PruGU9wUtEGzBJfolMIgK;
 
     displayLogoutModal = 'none';
@@ -190,7 +191,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
         if (this.eos && this.eos === publicKey) {
 
-            this.isVisible = true;
+            // this.isVisible = true;
+            this.isVisible = false;
             console.log('NavbarComponent eoscode isVisible ', this.isVisible);
         } else {
 

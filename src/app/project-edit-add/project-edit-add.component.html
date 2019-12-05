@@ -29,7 +29,7 @@
         'border-from-center' : displayBtnLabelSeeYourRequets === false, 
         'li-active' : displayBtnLabelSeeYourRequets === true
       }" -->
-  <li *ngIf="isVisible" (click)="goToProjectSettings_Payments()" class="btn-with-border-effect" [ngClass]="{ 'li-active' : PROJECT_SETTINGS_PAYMENTS_ROUTE === true,  
+  <li style="display: none;" *ngIf="isVisible" (click)="goToProjectSettings_Payments()" class="btn-with-border-effect" [ngClass]="{ 'li-active' : PROJECT_SETTINGS_PAYMENTS_ROUTE === true,  
                       'border-from-center': PROJECT_SETTINGS_PAYMENTS_ROUTE === false }">
 
     <a> {{ "ProjectEditPage.Payments" | translate }}</a>
