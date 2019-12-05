@@ -210,7 +210,7 @@ class="navbar-brand">
 
                   <td (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer; width:1%;white-space:nowrap; text-align: center">
                       <img style="vertical-align: middle; width: 35px; height: 35px; border-radius: 50%; border: 1px solid #eee;" 
-                      class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media" 
+                      class="user-img" src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media" 
                       onerror="this.src='assets/img/no_image_user.png'"/>
                   </td>
 

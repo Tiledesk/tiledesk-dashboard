@@ -9,6 +9,7 @@ import { ProjectPlanService } from '../services/project-plan.service';
 import { Subscription } from 'rxjs';
 import { publicKey } from '../utils/util';
 import { environment } from '../../environments/environment';
+import { AppConfigService } from '../services/app-config.service';
 @Component({
   selector: 'appdashboard-users',
   templateUrl: './users.component.html',
@@ -64,13 +65,17 @@ export class UsersComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   isVisible: boolean;
   eos = environment.t2y12PruGU9wUtEGzBJfolMIgK;
+
+  storageBucket: string;
+
   constructor(
     private usersService: UsersService,
     private router: Router,
     private auth: AuthService,
     private notify: NotifyService,
     private translate: TranslateService,
-    private prjctPlanService: ProjectPlanService
+    private prjctPlanService: ProjectPlanService,
+    public appConfigService: AppConfigService
   ) { }
 
   ngOnInit() {
@@ -97,7 +102,16 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.translateCanceledInviteSuccessMsg();
     this.translateCanceledInviteErrorMsg();
     this.getOSCODE();
+
+    this.getStorageBucket();
   }
+
+  getStorageBucket() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    console.log('STORAGE-BUCKET Users ', this.storageBucket)
+  }
+
 
   getOSCODE() {
     console.log('eoscode', this.eos)
