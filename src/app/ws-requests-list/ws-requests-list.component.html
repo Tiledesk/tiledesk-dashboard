@@ -713,7 +713,7 @@
                           <!-- IF IS A HUMAN -->                                 
                           <img 
                             *ngIf="participant.indexOf('bot_') === -1"
-                            class="user-img ws-requests-list-servedby-avatar" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media" 
+                            class="user-img ws-requests-list-servedby-avatar" src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media" 
                             onerror="this.src='assets/img/no_image_user.png'"/>
 
                           <span class="member" [innerHTML]="members_replace( participant )"></span>
@@ -728,7 +728,7 @@
                         <!-- IF IS THE LOGGED USER -->
                         <img 
                           class="user-img ws-requests-list-servedby-avatar" 
-                          src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media" 
+                          src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media" 
                           onerror="this.src='assets/img/no_image_user.png'"/>
                         <span class="current-user-member" [innerHTML]="members_replace(participant)"></span>
                       </span>

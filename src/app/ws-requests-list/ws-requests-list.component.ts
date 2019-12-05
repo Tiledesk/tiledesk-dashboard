@@ -10,6 +10,8 @@ import { RequestsService } from '../services/requests.service';
 import { TranslateService } from '@ngx-translate/core';
 import { WsSharedComponent } from '../ws-shared/ws-shared.component';
 import * as firebase from 'firebase/app';
+import { AppConfigService } from '../services/app-config.service';
+
 @Component({
   selector: 'appdashboard-ws-requests-list',
   templateUrl: './ws-requests-list.component.html',
@@ -43,6 +45,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   currentUserID: string;
   depts_array_noduplicate = [];
+
+
+  storageBucket: string;
+
   /**
    * Constructor
    * 
@@ -63,7 +69,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     public auth: AuthService,
     private notify: NotifyService,
     private requestsService: RequestsService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    public appConfigService: AppConfigService
 
   ) {
     super(botLocalDbService, usersLocalDbService);
@@ -82,6 +89,13 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.getCurrentProject();
     this.getTranslations();
     this.getLoggedUser();
+    this.getStorageBucket();
+  }
+
+  getStorageBucket() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    console.log('STORAGE-BUCKET Ws Requests List ', this.storageBucket)
   }
 
 
