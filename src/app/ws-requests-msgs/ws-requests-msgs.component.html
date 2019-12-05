@@ -156,7 +156,7 @@
                                 <img
                                   style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; margin-top: 1px; margin-bottom: 1px;position: relative;top: -9px; left: -14px;"
                                   class="user-img"
-                                  src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{message?.sender}}%2Fphoto.jpg?alt=media"
+                                  src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{message?.sender}}%2Fphoto.jpg?alt=media"
                                   onerror="this.src='assets/img/no_image_user.png'" />
                               </span>
 
@@ -527,7 +527,7 @@
                         <img *ngIf="agent.isBot === false"
                           style="vertical-align: middle; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee; margin-right: 8px;"
                           class="user-img"
-                          src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
+                          src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
                           onerror="this.src='assets/img/no_image_user.png'" />
 
                         <img *ngIf="agent.isBot === true"
@@ -901,7 +901,7 @@
                       <!-- *ngIf="projectUser?.id_user._id !== currentUserID"  -->
                       <td style="width: 25px; cursor:pointer" (click)= "selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
                         <img style="vertical-align: middle; width: 42px; height: 42px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
-                        class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media" 
+                        class="user-img" src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media" 
                         onerror="this.src='assets/img/no_image_user.png'"/>
                         <div class="status-icon" [ngClass]="{'is-user-online' : projectUser?.user_available === true, 'is-user-offline' : projectUser?.user_available === false  }"
                         style="
@@ -1038,7 +1038,7 @@
               <tbody>
                 <tr>
                   <td style=" border-top-width: 0px; width: 25px;">
-                    <img *ngIf="userid_selected" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{userid_selected}}%2Fphoto.jpg?alt=media" 
+                    <img *ngIf="userid_selected" src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{userid_selected}}%2Fphoto.jpg?alt=media" 
                       width=35 onerror="this.src='assets/img/no_image_user.png'"/>
                   </td>
                   <td  style=" border-top-width: 0px;">

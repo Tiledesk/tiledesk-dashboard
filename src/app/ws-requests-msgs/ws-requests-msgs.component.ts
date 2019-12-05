@@ -16,6 +16,7 @@ import { WsMessage } from '../models/ws-message-model';
 import * as firebase from 'firebase';
 import 'firebase/database';
 import { forEach } from '@angular/router/src/utils/collection';
+import { AppConfigService } from '../services/app-config.service';
 
 @Component({
   selector: 'appdashboard-ws-requests-msgs',
@@ -106,6 +107,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   train_bot_sidebar_height: any;
 
+  storageBucket: string;
 
   /**
    * Constructor
@@ -133,7 +135,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     private usersService: UsersService,
     private requestsService: RequestsService,
     private notify: NotifyService,
-    private auth: AuthService
+    private auth: AuthService,
+    public appConfigService: AppConfigService
   ) {
     super(botLocalDbService, usersLocalDbService)
   }
@@ -184,9 +187,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.getCurrentProject();
     this.getLoggedUser();
     this.detectMobile();
-
+    this.getStorageBucket()
   }
 
+
+  getStorageBucket() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    console.log('STORAGE-BUCKET Ws Requests Msgs ', this.storageBucket)
+  }
   /**
    * On destroy
    */
