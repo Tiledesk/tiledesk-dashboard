@@ -77,6 +77,7 @@ export class UsersService {
   project_id: string;
   project_name: string;
 
+  storageBucket: string;
   constructor(
     http: Http,
     // private afs: AngularFirestore,
@@ -106,12 +107,16 @@ export class UsersService {
 
     // const firebase_conf = JSON.parse(appConfigService.getConfig().firebase);
     const firebase_conf = appConfigService.getConfig().firebase;
-    console.log('nk --> UsersService firebase_conf ',  firebase_conf);
+    console.log('nk --> UsersService firebase_conf ', firebase_conf);
     const cloudBaseUrl = firebase_conf['chat21ApiUrl']
     // console.log('nk --> UsersService cloudBaseUrl ',  cloudBaseUrl);
     this.CLOUD_FUNC_UPDATE_USER_URL = cloudBaseUrl + '/api/tilechat/contacts/me';
-    console.log('nk --> UsersService cloud_func_update_firstname_and_lastname',  this.CLOUD_FUNC_UPDATE_USER_URL);  ;
+    console.log('nk --> UsersService cloud_func_update_firstname_and_lastname', this.CLOUD_FUNC_UPDATE_USER_URL);
+
+
   }
+
+
 
   getCurrentProject() {
     console.log('============ USER SERVICE - SUBSCRIBE TO CURRENT PROJ ============')
@@ -150,17 +155,33 @@ export class UsersService {
     if (this.user) {
       this.TOKEN = this.user.token
       this.currentUserId = this.user._id
+
+      const storageBucket = this.getStorageBucket();
+      console.log('STORAGE-BUCKET Users service ', storageBucket)
       // this.getToken();
-      this.verifyUserProfileImageOnFirebaseStorage(this.currentUserId);
+
+      if (storageBucket) {
+        this.verifyUserProfileImageOnFirebaseStorage(this.currentUserId, storageBucket);
+      }
+
+
     } else {
       console.log('No user is signed in');
     }
   }
 
+  getStorageBucket() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
 
-  verifyUserProfileImageOnFirebaseStorage(user_id) {
+    // console.log('STORAGE-BUCKET Users service ', this.storageBucket)
+    return this.storageBucket = firebase_conf['storageBucket'];
+
+  }
+
+
+  verifyUserProfileImageOnFirebaseStorage(user_id, storageBucket) {
     // tslint:disable-next-line:max-line-length
-    const url = 'https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F' + user_id + '%2Fphoto.jpg?alt=media';
+    const url = 'https://firebasestorage.googleapis.com/v0/b/' + storageBucket + '/o/profiles%2F' + user_id + '%2Fphoto.jpg?alt=media';
     const self = this;
     this.verifyImageURL(url, function (imageExists) {
 
