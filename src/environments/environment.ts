@@ -39,6 +39,6 @@ export const environment = {
 
     },
     websocket:{
-        wsUrl:'ws://tiledesk-server-pre.herokuapp.com?token='
+        wsUrl:'ws://'+window.location.hostname + '/ws/?token='
     }
 };
