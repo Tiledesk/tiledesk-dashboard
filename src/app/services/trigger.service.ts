@@ -9,8 +9,8 @@ import { AuthService } from 'app/core/auth.service';
 @Injectable()
 export class TriggerService {
 
-  // BASE_URL = environment.mongoDbConfig.BASE_URL;
-  BASE_URL = 'https://tiledesk-server-pre.herokuapp.com/'
+  BASE_URL = environment.mongoDbConfig.BASE_URL;
+  // BASE_URL = 'https://tiledesk-server-pre.herokuapp.com/'
   projectID: string;
   user: any;
   TOKEN: string;

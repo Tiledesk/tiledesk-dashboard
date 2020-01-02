@@ -17,6 +17,7 @@ export class WsMsgsService {
   WS_IS_CONNECTED: number;
 
   public wsMsgsList$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
+  public wsMsgsGotAllData$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   // public _wsMsgsList = new Subject<any>();
 
@@ -36,7 +37,7 @@ export class WsMsgsService {
 
   //   this.WS_IS_CONNECTED = await websocketReadyState
   //   if (websocketReadyState === 1) {
-      
+
   //     // this.WS_IS_CONNECTED = true;
   //   } else {
   //     // this.WS_IS_CONNECTED = false;
@@ -44,7 +45,7 @@ export class WsMsgsService {
   // }
 
 
-  
+
   // getCurrentUserAndConnectToWs() {
   //   this.auth.user_bs.subscribe((user) => {
   //     console.log('% WsRequestsService - LoggedUser ', user);
@@ -106,12 +107,14 @@ export class WsMsgsService {
 
     // this.wsService.send(str);
 
-    console.log('% »»» WebSocketJs WF - WS-MESSAGES-SERVICE - this.WS_IS_CONNECTED  ', this.WS_IS_CONNECTED );
-    this.webSocketJs.ref('/' + this.project_id + '/requests/' + request_id + '/messages',
+    // console.log('% »»» WebSocketJs WF - WS-MESSAGES-SERVICE - this.WS_IS_CONNECTED  ', this.WS_IS_CONNECTED );
 
+    console.log('% »»» WebSocketJs WF ****** CALLING REF (ws-msgs service) ****** ');
+    const path =  '/' + this.project_id + '/requests/' + request_id + '/messages'
+    
+    this.webSocketJs.ref(path,
       function (data, notification) {
-
-        // console.log("% »»» WebSocketJs - WsMsgsService MSGS CREATE ", data);
+        console.log("% »»» WebSocketJs WF *** - WsMsgsService MSGS CREATE ", data , ' path ', path);
         // console.log("% WsMsgsService notification", notification);
 
         // Check if upcoming messages already exist in the messasges list
@@ -129,10 +132,18 @@ export class WsMsgsService {
         console.log("% WsMsgsService notification", notification);
 
         self.updateWsMsg(data)
-      
+
       }, function (data, notification) {
+
+        if (data) {
+          console.log("% »»» WebSocketJs - WsMsgsService MSGS *** DATA *** ", data);
+          self.wsMsgsGotAllData$.next(true);
+        }
+
         // dismetti loading
-      });
+      }
+
+    );
     // this.messages.next(message);
 
     // console.log("% SUB »»»»»» subsToWS_ Msgs By RequestId new message from client to websocket: ", message);

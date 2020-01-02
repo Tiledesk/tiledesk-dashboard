@@ -37,5 +37,8 @@ export const environment = {
     testsite: {
         testsiteBaseUrl: 'http://localhost:4200/assets/test_widget_page/index.html'
 
+    },
+    websocket:{
+        wsUrl:'ws://tiledesk-server-pre.herokuapp.com?token='
     }
 };

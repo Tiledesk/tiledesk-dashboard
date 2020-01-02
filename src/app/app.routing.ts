@@ -59,6 +59,8 @@ import { HandleInvitationComponent } from './auth/handle-invitation/handle-invit
 
 import { WidgetComponent } from './widget/widget.component';
 import { WidgetDesignComponent } from './widget-design/widget-design.component';
+import { WidgetMultilanguageComponent } from './widget-multilanguage/widget-multilanguage.component';
+
 
 import { ScriptComponent } from './script/script.component';
 import { ChannelsComponent } from './channels/channels.component';
@@ -177,6 +179,11 @@ const routes: Routes = [
   { path: 'project/:projectid/requests', component: RequestsListComponent, canActivate: [AuthGuard] },
 
   /*** WEBSOCKET ***/
+
+  /**
+   * if change wsrequest search for all occurrence - 
+   * remember that in the navbar component wsrequest is used for the link from the in app-notification to the request's messages
+   */
   { path: 'project/:projectid/wsrequests', component: WsRequestsListComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/wsrequest/:requestid/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
   
@@ -283,6 +290,8 @@ const routes: Routes = [
   { path: 'project/:projectid/widget/greetings', component: WidgetDesignComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/widget/callout', component: WidgetDesignComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/widget/appearance', component: WidgetDesignComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/widget/translations', component: WidgetMultilanguageComponent, canActivate: [AuthGuard] },
+  
 
   { path: 'project/:projectid/script', component: ScriptComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/channels', component: ChannelsComponent, canActivate: [AuthGuard] },

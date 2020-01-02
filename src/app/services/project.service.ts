@@ -27,6 +27,7 @@ export class ProjectService {
 
   public myAvailabilityCount: BehaviorSubject<number> = new BehaviorSubject<number>(null);
   public hasCreatedNewProject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  
   constructor(
     http: Http,
     public auth: AuthService,

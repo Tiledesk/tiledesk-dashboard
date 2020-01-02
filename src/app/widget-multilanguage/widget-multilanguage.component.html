@@ -1,0 +1,187 @@
+<div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
+    (click)="goBack()">keyboard_arrow_left</i>
+  {{ "WidgetTranslations" | translate	}}
+</div>
+
+
+<ul class="bottom-nav-widget-translations">
+  <!-- 
+  // -----------------------------------------------------------------------------
+  // @ For over language cod & language name
+  // ----------------------------------------------------------------------------- -->
+  <section *ngIf="showSheleton">
+    <div class="skeleton">
+      <li *ngFor="let fake of generateFake(2)">
+
+      </li>
+    </div>
+  </section>
+
+
+  <section *ngIf="!showSheleton">
+    <li *ngFor="let lang of availableTranslations" class="btn-with-border-effect"
+      (click)="selectTranslationTab(lang.code, lang.name)" [ngClass]="
+            { 'disabled-li' : selectedTranslationCode === lang.code, 
+              'border-from-center' : selectedTranslationCode !== lang.code,
+              'li-active' : selectedTranslationCode === lang.code}">
+      <a style="height:52px"> {{ lang?.name  }} </a>
+
+    </li>
+
+
+
+    <li (click)="selectTranslationTab('add', 'add')" class="btn-with-border-effect" [ngClass]="
+  { 'disabled-li' : selectedTranslationCode === 'add', 
+    'border-from-center' : selectedTranslationCode !== 'add', 
+    'li-active' : selectedTranslationCode === 'add'}">
+
+      <a> {{ "Add" | translate }} </a>
+    </li>
+  </section>
+
+</ul>
+
+<div class="main-content" style="padding-top:0px">
+
+  <div class="container-fluid">
+
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card" style="padding-top:0px; padding-bottom:0px;">
+          <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
+
+          <!--  
+          // --------------------------------------------------------------
+          // @ Skeleton
+          // -------------------------------------------------------------- -->
+          <div *ngIf="showSheleton" class="card-content skeleton">
+
+            <div class="row">
+              <div class="col-md-12">
+                <h4 class="card-title" style="margin-bottom: 12px; float: left;"> </h4>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="section-subtitle" style="border-top: 1px solid #e8f0f5; padding-top: 15px;">
+                    </div>
+                  </div>
+                </div>
+
+                <div *ngFor="let fake of generateFake(10)">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <h3> </h3>
+                    </div>
+                    <div class="col-md-5">
+                      <textarea class="textarea ml__label_value" rows="2"></textarea>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!--  
+          // --------------------------------------------------------------
+          // @ Real
+          // -------------------------------------------------------------- -->
+          <div *ngIf="!showSheleton" class="card-content">
+
+            <div class="row">
+              <div class="col-md-12">
+
+                <h4 class="card-title" style="margin-bottom: 12px; float: left;">
+
+                  <span *ngIf="selectedTranslationCode !== 'add'" style="display:block; height: 27px;">
+                    {{ selectedTranslationLabel }}
+                  </span>
+                  <span *ngIf="selectedTranslationCode === 'add'" style="display:block; height: 27px;">
+                    {{ 'Add' | translate }}
+                  </span>
+
+                </h4>
+
+                <button *ngIf="selectedTranslationCode !== 'add'" class="btn btn-danger"
+                  style="margin-top: 2px; margin-bottom: 1px; float: right;" (click)="deleteLang()">
+
+                  {{ 'Delete' | translate }}
+                </button>
+
+                <button *ngIf="selectedTranslationCode !== 'add'" class="btn btn-tdblu"
+                  style="margin-top: 2px; margin-bottom: 1px; float: right;" (click)="editLang()">
+
+                  {{ 'ScriptPage.Save' | translate }}
+                </button>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12">
+
+                <div class="section-subtitle" style="border-top: 1px solid #e8f0f5;  padding-top: 15px;">
+                </div>
+              </div>
+            </div>
+
+            <!-- 
+            // -----------------------------------------------------------------------------
+            // @ For
+            // ----------------------------------------------------------------------------- -->
+            <section *ngIf="selectedTranslationCode !== 'add' && selected_translation">
+
+              <span *ngFor="let item of selected_translation">
+
+                <div class="row">
+                  <div class="col-md-4">
+                    <span class="ml__label_name">
+                      {{ item?.labelName }}
+                    </span>
+
+                  </div>
+
+                  <div class="col-md-5">
+                    <textarea class="textarea ml__label_value"  
+                      [(ngModel)]=" item.labelValue" 
+                      (ngModelChange)="onChangeTranslation($event, item?.labelName)" rows="2">{{ item?.labelValue }}</textarea>
+                  </div>
+
+                </div>
+
+              </span>
+
+            </section>
+
+            <section *ngIf="selectedTranslationCode === 'add'">
+
+              <div class="row">
+                <div class="col-md-4">
+
+                  <ng-select id="language_option" style="margin-top: 11px;" [clearable]="false"
+                    [(ngModel)]="selectedLang" [items]="languages" bindLabel="name"
+                    placeholder="{{ 'ChooseALanguage' | translate }}" (change)="onSelectlang(selectedLang)">
+                  </ng-select>
+
+                </div>
+
+                <div class="col-md-5">
+                  <button class="btn btn-tdblu" style="padding-top: 10px; padding-bottom: 10px;"
+                    (click)="saveNewLanguage()">
+                    {{ 'Add' | translate }}
+                  </button>
+
+                </div>
+              </div>
+
+            </section>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

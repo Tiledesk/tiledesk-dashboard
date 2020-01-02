@@ -1,0 +1,212 @@
+.bottom-nav-widget-translations {
+  background-color: #fff;
+  width: 100%;
+  z-index: 1028;
+  position: relative;
+  top: 4px;
+  box-shadow: 0 2px 2px rgba(0, 0, 60, 0.08);
+  padding-bottom: 5px;
+  float: left;
+  height: 50px;
+  padding-left: 0px;
+  display: flex;
+  flex-grow: 1;
+}
+
+.bottom-nav-widget-translations li {
+  float: left;
+  padding: 15px;
+  list-style: none;
+  position: relative;
+  display: block;
+  height: 52px;
+  cursor: pointer;
+}
+
+.bottom-nav-widget-translations li a {
+  padding: 18px 15px;
+  color: #797979;
+  line-height: 20px;
+}
+
+.bottom-nav-widget-translations li a:hover {
+  text-decoration: none;
+  //  background-color: #eee;
+}
+
+.li-active {
+  border-bottom: 3px solid #039be5 !important;
+}
+.li-active a {
+  color: #039be5 !important;
+}
+.disabled-li {
+  pointer-events: none;
+}
+/*
+  .a-active {
+      border-bottom: 3px solid #039be5;
+      color: #039be5 !important;
+      padding-bottom: 16px;
+  }
+  */
+
+$f21blue: #039be5;
+.btn-with-border-effect {
+  background: none;
+  border: 0;
+  box-sizing: border-box;
+  // margin: 1em;
+  // padding: 1em 2em;
+  //   padding-bottom: 37px;
+  font-size: 14px;
+  font-weight: 300;
+
+  // Required, since we're setting absolute on pseudo-elements
+  position: relative;
+  vertical-align: middle;
+
+  &::before,
+  &::after {
+    box-sizing: inherit;
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.border-from-center {
+  &:hover {
+    color: $f21blue;
+  }
+
+  // Set up base styles, we're going to scale instead of animating width/height
+  &::before,
+  &::after {
+    //   top: 3px;
+    top: 0px;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    transform-origin: center; // Ensure scaling is done from the center (expands outwards)
+  }
+
+  // scale3d(<scale-horizontal>, <scale-vertical>, <scale-depth>);
+  &::before {
+    // border-top: 2px solid $purple;
+    border-bottom: 3px solid $f21blue;
+    transform: scale3d(0, 1, 1); // Shrink only width
+  }
+
+  &:hover::before,
+  &:hover::after {
+    transform: scale3d(1, 1, 1); // Show full-size
+    transition: transform 0.5s;
+  }
+}
+
+@media (max-width: 991px) {
+  .bottom-nav-widget-translations {
+    top: 4px !important;
+  }
+
+  // .chart-wrapper {
+  //     margin-top:60px !important;
+  // }
+}
+
+@media (max-width: 370px) {
+  .bottom-nav-widget-translations {
+    height: 37px !important;
+    top: 8px !important;
+  }
+
+  .bottom-nav-widget-translations li {
+    padding: 6px !important;
+    height: 39px;
+  }
+}
+
+.tab-active {
+  color: #039be5;
+  border-bottom: 3px solid #039be5;
+  // margin-top:6px !important;
+  // padding-bottom: 11px !important;
+}
+
+.ml__label_name {
+  font-size: 12px;
+  line-height: 1.42857143;
+  color: #262f3c;
+  font-weight: 600;
+  font-family: 'Google Sans', sans-serif !important;
+}
+
+.ml__label_value {
+  padding: 8px;
+  font-size: 12px;
+  line-height: 1.42857143;
+  color: #262f3c;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #e6e9ed;
+  border-radius: 4px;
+  font-weight: 300;
+  width: 100%;
+}
+
+// --------------------------------------------------------------
+// @ Skeleton
+// --------------------------------------------------------------
+.skeleton {
+  h3,
+  h4,
+  li,
+  p {
+    animation: loading 1.7s infinite linear;
+    background: #f6f7f8;
+    background-image: -webkit-linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
+    background-image: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
+    background-repeat: no-repeat;
+  }
+
+  h3 {
+    height: 22px;
+    width: 200px;
+    margin-top: 0px !important;
+  }
+
+  h4 {
+    height: 30px;
+    width: 200px;
+    
+  }
+
+  p {
+    height: 18px;
+    width: 200px;
+  }
+
+  li {
+    height: 18px;
+    width: 200px;
+    margin-left: 16px;
+    margin-top: 12px;
+  }
+  .skeleton_textarea {
+    height: 52px;
+    width: 300px;
+  }
+}
+
+@keyframes loading {
+  0% {
+    background-position: -100px;
+    width: 200px;
+  }
+
+  100% {
+    background-position: 200px;
+  }
+}

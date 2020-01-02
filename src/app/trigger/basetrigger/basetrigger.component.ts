@@ -97,6 +97,7 @@ export class BasetriggerComponent  {
             { groupId: translateConditions.chat.groupId.PageInformation, id: 'sourcePage', label_key: translateConditions.chat.label_key.VisitorPageTitle, triggerType: 'request.create', type: 'string'},
             { groupId: translateConditions.chat.groupId.VisitorInformation, id: 'lead.fullname', label_key: translateConditions.chat.label_key.VisitorName, triggerType: 'request.create', type: 'string'},
             { groupId: translateConditions.chat.groupId.VisitorInformation, id: 'lead.email', label_key: translateConditions.chat.label_key.VisitorMail, triggerType: 'request.create', type: 'string'},
+            { groupId: translateConditions.chat.groupId.VisitorInformation, id: 'first_text', label_key: translateConditions.chat.label_key.VisitorFirstText, triggerType: 'request.create', type: 'string'},
             { groupId: translateConditions.chat.groupId.VisitorInformation, id: 'lead.attributes.departmentId', label_key: translateConditions.chat.label_key.VisitorDepartment,
                   triggerType: 'request.create', type: 'boolean', operator: this.departments, placeholder: translateConditions.chat.placeholder.SelectDepartment},
             { groupId: translateConditions.chat.groupId.VisitorInformation, id: 'lead.attributes.client', label_key: translateConditions.chat.label_key.VisitorReferrer, triggerType: 'request.create', type: 'string'},

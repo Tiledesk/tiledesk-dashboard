@@ -138,9 +138,26 @@ export class FaqKbService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'name': name, 'url': urlfaqkb, 'id_project': this.project._id, 'external': is_external_bot };
 
-    console.log('POST REQUEST BODY ', body);
+    // const isPreDeploy = false
+
+    const body = { 'name': name, 'url': urlfaqkb, 'id_project': this.project._id };
+
+
+    /* FOR PRE */
+    let botType = ''
+    if (is_external_bot === true) {
+      botType = 'external'
+    } else {
+      botType = 'internal'
+    }
+    body['type'] = botType
+
+
+    /* FOR PROD */
+    // body['external'] = is_external_bot
+
+    console.log('CREATE BOT - POST REQUEST BODY ', body);
 
     const url = this.MONGODB_BASE_URL;
     // let url = `http://localhost:3000/${project_id}/faq_kb/`;
@@ -207,7 +224,7 @@ export class FaqKbService {
    * @param id
    * @param fullName
    */
-  public updateMongoDbFaqKb(id: string, name: string, urlfaqkb: string, isExternalBot: boolean) {
+  public updateMongoDbFaqKb(id: string, name: string, urlfaqkb: string, is_external_bot: boolean) {
 
     let url = this.MONGODB_BASE_URL;
     url = url += `${id}`;
@@ -219,7 +236,19 @@ export class FaqKbService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'name': name, 'url': urlfaqkb, 'external': isExternalBot };
+    const body = { 'name': name, 'url': urlfaqkb };
+
+    let botType = ''
+    if (is_external_bot === true) {
+      botType = 'external'
+    } else {
+      botType = 'internal'
+    }
+    body['type'] = botType
+
+
+    /* FOR PROD */
+    // body['external'] = is_external_bot
 
     console.log('PUT REQUEST BODY ', body);
 

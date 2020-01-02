@@ -93,7 +93,7 @@
     <div class="avatar-container tiledesk-nav-avatar" [ngClass]="{'small-sidebar-avatar' : SIDEBAR_IS_SMALL === true }">
 
       <img class="avatar" *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
-        src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{user?._id}}%2Fphoto.jpg?alt=media" />
+        src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{user?._id}}%2Fphoto.jpg?alt=media" />
 
       <img class="avatar" *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
         src="assets/img/no_image_user.png" />
@@ -290,7 +290,8 @@
 
       <!-- REQUESTS (VISITORS)  -->
       <li *ngIf="project" routerLinkActive="active">
-        <a class="customAncor" routerLink="project/{{ project._id }}/requests">
+        <!-- <a class="customAncor" routerLink="project/{{ project._id }}/requests"> -->
+        <a class="customAncor" routerLink="project/{{ project._id }}/wsrequests">
           <i class="material-icons sidebar-icons">group</i>
           <p class="onBlackBckgrnd">{{ 'Requests' | translate }}</p>
         </a>
@@ -395,14 +396,14 @@
       </li>
 
       <!-- TRIGGER -->
-      <!-- <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
+      <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
           <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/trigger">
             <p class="onBlackBckgrnd">
              <span class="sidebar-mini">T </span>
              {{ 'Trigger.Trigger' | translate }} 
             </p>
           </a>
-        </li> -->
+        </li>
 
       <!-- USERS (ALIAS MEMBERS) -->
       <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">

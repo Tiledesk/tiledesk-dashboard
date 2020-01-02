@@ -137,8 +137,6 @@ export class RequestsService {
     }, () => {
       console.log('SEE REQUEST IM AGENT - GET USER ROLE * COMPLETE *');
     });
-
-
   }
 
   getCurrentProject() {
@@ -200,10 +198,10 @@ export class RequestsService {
       // PUBLISH THE REQUESTS LIST (ORDERED AND WITH THE CHANGES MANAGED BY addOrUpdateRequestsList)
       this.requestsList_bs.next(this.requestList);
       
-      console.log('!!! REQUESTS-SERVICE PUBLISH REQUEST LIST ', this.requestList);
+      // console.log('!!! REQUESTS-SERVICE PUBLISH REQUEST LIST ', this.requestList);
 
       this.allRequestsList_bs.next(this.allRequestList);
-      console.log('!!! REQUESTS-SERVICE PUBLISH THE LIST OF * ALL * REQUESTS ', this.allRequestList)
+      // console.log('!!! REQUESTS-SERVICE PUBLISH THE LIST OF * ALL * REQUESTS ', this.allRequestList)
     }, error => {
       console.log('GET REQUEST - ERROR ', error)
     }, () => {
@@ -547,7 +545,8 @@ export class RequestsService {
 
   }
 
-  // CLOSE SUPPORT GROUP
+  // CLOSE SUPPORT GROUP !!!!! THIS IS NO MORE USED - REPLACED BY 
+  // closeSupportGroup IN WS-REQUESTS-SERVICE (this.wsRequestsService.closeSupportGroup)
   public closeSupportGroup(group_id: string, firebaseToken: any) {
 
     const headers = new Headers();

@@ -111,7 +111,27 @@ export class FaqKbComponent implements OnInit {
         if (this.faqkbList.length === 0) {
           this.showSpinner = false;
         }
+
+
+        // ------------------------------------------------------------------------------------
+        // FOR PRE
+        // ------------------------------------------------------------------------------------
+        let  i: number;
+        for (i = 0; i < this.faqkbList.length; i++) {
+         
+          if (this.faqkbList[i].type === 'external') {
+
+            this.faqkbList[i].external = true;
+
+          } else if (this.faqkbList[i].type === 'internal'){
+
+            this.faqkbList[i].external = false;
+          }
+          
+        }
       }
+
+
       /* this.showSpinner = false moved in getFaqByFaqKbId:
        * in this callback stop the spinner only if there isn't faq-kb and
        * if there is an error */

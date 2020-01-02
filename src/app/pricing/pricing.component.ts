@@ -56,6 +56,19 @@ export class PricingComponent implements OnInit, OnDestroy {
     private prjctPlanService: ProjectPlanService
   ) { }
 
+  /**
+   *  PER I PIANI DI TEST IN Stripe > Sviluppatori > Webhook > Dettagli Webhook clicca Aggiorna dettagli ed inserisci
+   *  in URL endpoint
+   *  
+   *  per testare in localhost fai partire ngrok e sortituisci la parte iniziale dell'url 
+   *  http://03caec73.ngrok.io/modules/payments/stripe/webhook
+   * 
+   *  per testate in PRE 
+   *  https://tiledesk-server-pre.herokuapp.com/modules/payments/stripe/webhook
+   * 
+   */
+ 
+
   ngOnInit() {
     this.getCurrentProject();
     this.selectedPlanName = 'pro'

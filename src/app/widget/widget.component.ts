@@ -609,10 +609,15 @@ export class WidgetComponent implements OnInit, OnDestroy {
   goToWidgetCallout() {
     this.router.navigate(['project/' + this.project._id + '/widget/callout']);
   }
+
+  goToWidgetMultilangage() {
+    this.router.navigate(['project/' + this.project._id + '/widget/translations']);
+  }
+  
+
   goToWidgetSection() {
     this.router.navigate(['project/' + this.project._id + '/widget/design'], { fragment: 'alignment' });
   }
-
 
 
 }

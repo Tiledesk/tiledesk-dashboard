@@ -30,6 +30,6 @@ cd dist
 # aws s3 sync . s3://tiledesk-dashboard/dashboard/dev/$version/
 # echo new version deployed on s3://tiledesk-dashboard/dashboard/dev/$version/
 # echo available on https://support.tiledesk.com/dashboard/dev/$version/index.html
-aws s3 sync . s3://tiledesk-dashboard/dashboard/dev/1.0.39/
-echo new version deployed on s3://tiledesk-dashboard/dashboard/dev/1.0.39/
-echo available on https://support.tiledesk.com/dashboard/dev/1.0.39/index.html
+aws s3 sync . s3://tiledesk-dashboard/dashboard/dev/2.0.0-beta.0/
+echo new version deployed on s3://tiledesk-dashboard/dashboard/dev/2.0.0-beta.0/
+echo available on https://support.tiledesk.com/dashboard/dev/2.0.0-beta.0/index.html

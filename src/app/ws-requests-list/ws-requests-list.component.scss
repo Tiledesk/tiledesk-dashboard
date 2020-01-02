@@ -428,8 +428,37 @@ span .switch-agent-admin-requests-btn {
   // padding-top:7px;
   padding-bottom: 3px;
   display: inline-block;
-  width: 25px;
-  height: 25px;
+  // width: 25px;
+  // height: 25px;
+  /* new */
+  width: 30px;
+  height: 30px;
+  line-height: 21px;
+  position: relative;
+  top: 7px;
+}
+
+.requester-email {
+  color: #7695a5;
+  font-weight: 400;
+  line-height: 18px;
+  font-size: 11px;
+  display: block;
+  margin-left: 34px;
+  margin-top: -8px;
+}
+
+.requester-verified-email {
+  position: relative;
+  left: 20px;
+}
+
+.user-agent-icon {
+  color: #7695a5 !important;
+  cursor: pointer !important;
+  font-size: 16px !important;
+  vertical-align: middle !important;
+  margin-right: 5px;
 }
 
 .requester_fullname-undefined {
@@ -575,8 +604,8 @@ span .switch-agent-admin-requests-btn {
   float: left;
   height: 50px;
   padding-left: 0px;
-  display: flex;
-  flex-grow: 1;
+  // display: flex;
+  // flex-grow: 1;
 }
 
 .bottom-nav li {
@@ -708,4 +737,70 @@ $f21blue: #039be5;
   border: 1px solid #eee;
   margin-top: 1px;
   margin-bottom: 1px;
+}
+
+// #team-container {
+//   border: 1px solid #ccc;
+//   overflow: scroll;
+//   // width: 200px;
+//   overflow-y: hidden;
+// }
+// #team-content {
+//   background-color: #ccc;
+//   width: 250px;
+//   white-space: nowrap;
+// }
+
+.team-container {
+  display: flex;
+  // height: 22.5vh !important;
+}
+
+// .side {
+//   width: 50px;
+//   height: 22.5vh !important;
+// }
+
+// .middle {
+//   flex-grow: 1;
+//   height: 22.5vh !important;
+//   overflow-x: scroll;
+//   overflow-y: hidden;
+//   white-space: nowrap;
+// }
+
+.team-agent {
+  // width: 31.75%;
+  // border: 1px solid black;
+  display: inline-block;
+
+  position: relative;
+  // display: -webkit-box;
+  // display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+
+  padding: 8px 16px;
+  // height: 56px;
+  cursor: pointer;
+}
+
+.middle {
+  float: left;
+  width: 100%;
+  overflow: auto;
+  /*will change this to hidden later to deny scolling to user*/
+  white-space: nowrap;
+}
+
+.side {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.right-li {
+  float: right !important;
+  padding-top: 10px !important;
 }

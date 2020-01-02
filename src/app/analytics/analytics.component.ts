@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs/Subscription';
 import * as Chartist from 'chartist';
 import { DepartmentService } from '../services/mongodb-department.service';
 import * as moment from 'moment';
-
+import { AppConfigService } from '../services/app-config.service';
 
 @Component({
   selector: 'appdashboard-analytics',
@@ -48,13 +48,16 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   translatedMinutesString: string;
   translatedSecondsString: string;
 
+  storageBucket: string;
+
   constructor(
     private auth: AuthService,
     private requestsService: RequestsService,
     private usersService: UsersService,
     private router: Router,
     private translate: TranslateService,
-    private departmentService: DepartmentService
+    private departmentService: DepartmentService,
+    public appConfigService: AppConfigService
   ) {
 
     console.log('!!! »»» HELLO ANALYTICS »»» ');
@@ -207,7 +210,13 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     // this.translateMinutes();
     // this.translateSeconds();
     // this.getWaitingTimeAverage();
+    this.getStorageBucket();
+  }
 
+  getStorageBucket() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    console.log('STORAGE-BUCKET Analytics List ', this.storageBucket)
   }
 
   translateHours() {

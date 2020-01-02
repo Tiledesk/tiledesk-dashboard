@@ -94,6 +94,8 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
 import { GroupNamePipe } from './groupname.pipe';
 import { SortByPipe } from './sortby.pipe';
 import { SortByDesPipe } from './sortbydes.pipe';
+import { MapToIterable } from './map-to-iterable-pipe';
+
 import { HoursComponent } from './hours/hours.component';
 
 import { AmazingTimePickerModule } from 'amazing-time-picker';
@@ -159,6 +161,8 @@ import { WsMsgsService } from './services/websocket/ws-msgs.service';
 import { WsSharedComponent } from './ws-shared/ws-shared.component';
 import { WsTrainBotComponent } from './ws-requests-msgs/ws-train-bot/ws-train-bot.component';
 import { WebSocketJs } from './services/websocket/websocket-js';
+import { WidgetMultilanguageComponent } from './widget-multilanguage/widget-multilanguage.component';
+import { BaseTranslationComponent } from './widget-multilanguage/base-translation/base-translation.component';
 
 console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
@@ -220,6 +224,7 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     GroupNamePipe,
     SortByPipe,
     SortByDesPipe,
+    MapToIterable,
     ChangePasswordComponent,
     HoursComponent,
     ResetPswComponent,
@@ -256,7 +261,9 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     WsRequestsListComponent,
     WsRequestsMsgsComponent,
     WsSharedComponent,
-    WsTrainBotComponent
+    WsTrainBotComponent,
+    WidgetMultilanguageComponent,
+    BaseTranslationComponent
   ],
   imports: [
     /* PRIVATE */

@@ -77,6 +77,8 @@ export class UsersService {
   project_id: string;
   project_name: string;
 
+  storageBucket: string;
+
   constructor(
     http: Http,
     // private afs: AngularFirestore,
@@ -150,17 +152,34 @@ export class UsersService {
     if (this.user) {
       this.TOKEN = this.user.token
       this.currentUserId = this.user._id
+
+      const storageBucket = this.getStorageBucket();
+      console.log('STORAGE-BUCKET Users service ', storageBucket)
+
+      if (storageBucket) {
+        this.verifyUserProfileImageOnFirebaseStorage(this.currentUserId, storageBucket);
+      }
+
       // this.getToken();
-      this.verifyUserProfileImageOnFirebaseStorage(this.currentUserId);
+      // this.verifyUserProfileImageOnFirebaseStorage(this.currentUserId);
     } else {
       console.log('No user is signed in');
     }
   }
 
+  getStorageBucket() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
 
-  verifyUserProfileImageOnFirebaseStorage(user_id) {
+    // console.log('STORAGE-BUCKET Users service ', this.storageBucket)
+    return this.storageBucket = firebase_conf['storageBucket'];
+
+  }
+
+
+  verifyUserProfileImageOnFirebaseStorage(user_id, storageBucket) {
     // tslint:disable-next-line:max-line-length
-    const url = 'https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F' + user_id + '%2Fphoto.jpg?alt=media';
+    // const url = 'https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F' + user_id + '%2Fphoto.jpg?alt=media';
+    const url = 'https://firebasestorage.googleapis.com/v0/b/' + storageBucket + '/o/profiles%2F' + user_id + '%2Fphoto.jpg?alt=media';
     const self = this;
     this.verifyImageURL(url, function (imageExists) {
 

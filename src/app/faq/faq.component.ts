@@ -58,7 +58,10 @@ export class FaqComponent implements OnInit {
   faqKb_created_at: any;
   faq_lenght: number;
   showSpinner = true;
-  is_external_bot: boolean;
+  // is_external_bot: boolean;
+  is_external_bot = true;
+ 
+
   windowWidthMore764: boolean;
 
   subscription: Subscription;
@@ -216,8 +219,27 @@ export class FaqComponent implements OnInit {
       this.faqKb_created_at = faqkb.createdAt;
       console.log('GET FAQ-KB (DETAILS) BY ID - CREATED AT ', this.faqKb_created_at);
 
-      this.is_external_bot = faqkb.external;
+      // ---------------------------------------------------------------------------------------------------------------
+      // Bot internal ed external
+      // ---------------------------------------------------------------------------------------------------------------
+      
+      /** IN PRE  */ 
+      if(faqkb.type === 'internal') {
+
+        this.is_external_bot = false;
+
+      } else if (faqkb.type === 'external') {
+       
+        this.is_external_bot = true;
+
+      }
+
+
+      /** IN PROD  */ 
+      // this.is_external_bot = faqkb.external;
       console.log('GET FAQ-KB (DETAILS) BY ID - BOT IS EXTERNAL ', this.is_external_bot);
+
+ 
 
       if (faqkb.url !== 'undefined') {
         this.faqKbUrlToUpdate = faqkb.url;
@@ -247,7 +269,6 @@ export class FaqComponent implements OnInit {
    * *** EDIT BOT ***
    * HAS BEEN MOVED in this COMPONENT FROM faq-kb-edit-add.component  */
   editBotName() {
-
     // RESOLVE THE BUG 'edit button remains focused after clicking'
     this.elementRef.nativeElement.blur();
 
@@ -322,7 +343,11 @@ export class FaqComponent implements OnInit {
       console.log('>> FAQs GOT BY FAQ-KB ID - ERROR', error);
 
     }, () => {
-      this.showSpinner = false;
+
+      setTimeout(() => {
+        this.showSpinner = false;
+      }, 800);
+     
       console.log('>> FAQs GOT BY FAQ-KB ID - COMPLETE');
     });
   }

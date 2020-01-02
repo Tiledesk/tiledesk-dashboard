@@ -1,6 +1,12 @@
 
 # tiledesk-dashboard
 
+### 1.0.40
+- Fixes the user profile urls
+
+### 1.0.39
+- Minor improvements
+
 ### 1.0.38
 - Changes the url of the widget live test page
 - Adds in the sidebar the link to "Tiledesk changelog" blog

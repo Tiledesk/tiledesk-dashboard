@@ -9,6 +9,7 @@ import { ProjectPlanService } from '../services/project-plan.service';
 import { Subscription } from 'rxjs';
 import { publicKey } from '../utils/util';
 import { environment } from '../../environments/environment';
+import { AppConfigService } from '../services/app-config.service';
 @Component({
   selector: 'appdashboard-users',
   templateUrl: './users.component.html',
@@ -64,13 +65,18 @@ export class UsersComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   isVisible: boolean;
   eos = environment.t2y12PruGU9wUtEGzBJfolMIgK;
+
+  storageBucket: string;
+  CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
+
   constructor(
     private usersService: UsersService,
     private router: Router,
     private auth: AuthService,
     private notify: NotifyService,
     private translate: TranslateService,
-    private prjctPlanService: ProjectPlanService
+    private prjctPlanService: ProjectPlanService,
+    public appConfigService: AppConfigService
   ) { }
 
   ngOnInit() {
@@ -97,21 +103,41 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.translateCanceledInviteSuccessMsg();
     this.translateCanceledInviteErrorMsg();
     this.getOSCODE();
+    this.getStorageBucket();
+  }
+
+
+  chatWithAgent(agentId, agentFirstname, agentLastname) {
+
+    console.log('USERS-COMP - CHAT WITH AGENT - agentId: ', agentId, ' - agentFirstname: ', agentFirstname, ' - agentLastname: ', agentLastname);
+    // console.log('USERS-COMP - CHAT URL ', this.CHAT_BASE_URL);
+
+    // https://support-pre.tiledesk.com/chat/index.html?recipient=5de9200d6722370017731969&recipientFullname=Nuovopre%20Pre
+      //  https://support-pre.tiledesk.com/chat/index.html?recipient=5dd278b8989ecd00174f9d6b&recipientFullname=Gian Burrasca
+    const url = this.CHAT_BASE_URL + '?' + 'recipient='+ agentId + '&recipientFullname=' + agentFirstname + ' ' + agentLastname;
+    console.log('USERS-COMP - CHAT URL ', url);
+    window.open(url, '_blank');
+  }
+
+  getStorageBucket() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    console.log('STORAGE-BUCKET Users ', this.storageBucket)
   }
 
   getOSCODE() {
     console.log('eoscode', this.eos)
 
-    if (this.eos  && this.eos === publicKey) {
+    if (this.eos && this.eos === publicKey) {
 
-        this.isVisible = true;
-        console.log('eoscode isVisible ', this.isVisible);
+      this.isVisible = true;
+      console.log('eoscode isVisible ', this.isVisible);
     } else {
 
-        this.isVisible = false;
-        console.log('eoscode isVisible ', this.isVisible);
+      this.isVisible = false;
+      console.log('eoscode isVisible ', this.isVisible);
     }
-}
+  }
 
   translateCanceledInviteSuccessMsg() {
     this.translate.get('UsersPage.CanceledInviteSuccessMsg')

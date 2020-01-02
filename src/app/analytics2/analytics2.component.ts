@@ -13,6 +13,8 @@ import { AnalyticsService } from 'app/services/analytics.service';
 import { ITooltipEventArgs } from '@syncfusion/ej2-heatmap/src';
 import { HumanizeDurationLanguage, HumanizeDuration } from 'humanize-duration-ts';
 import { Chart } from 'chart.js';
+import { WsRequestsService } from '../services/websocket/ws-requests.service';
+import { AppConfigService } from '../services/app-config.service';
 
 @Component({
   selector: 'appdashboard-analytics2',
@@ -90,6 +92,8 @@ export class Analytics2Component implements OnInit , OnDestroy {
   yValueDurationConversation: any;
   dataRangeDuration: string;
 
+  storageBucket: string;
+
   constructor(
     private auth: AuthService,
     private requestsService: RequestsService,
@@ -97,7 +101,9 @@ export class Analytics2Component implements OnInit , OnDestroy {
     private router: Router,
     private translate: TranslateService,
     private departmentService: DepartmentService,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    public wsRequestsService: WsRequestsService,
+    public appConfigService: AppConfigService
   ) {
     this.selected='panoramica';//-> default active component
     console.log('!!! »»» HELLO ANALYTICS »»» ');
@@ -275,7 +281,14 @@ export class Analytics2Component implements OnInit , OnDestroy {
     // this.translateMinutes();
     // this.translateSeconds();
     // this.getWaitingTimeAverage();
+    this.getStorageBucket();
+  }
 
+
+  getStorageBucket() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    console.log('STORAGE-BUCKET Analytics2 List ', this.storageBucket)
   }
 
   translateHours() {
@@ -701,8 +714,12 @@ export class Analytics2Component implements OnInit , OnDestroy {
       console.log('!!! ANALYTICS ALL REQUESTS X DEPT - ARRAY OF DEPTS IDs: ', project_depts_id_array);
 
 
-      this.subscription = this.requestsService.allRequestsList_bs.subscribe((global_requests) => {
-        // console.log('!!! ANALYTICS ALL REQUESTS X DEPT - !!!!! SUBSCRIPTION TO ALL-THE-REQUESTS-LIST-BS ', global_requests);
+      // FIRESTORE 
+      // this.subscription = this.requestsService.allRequestsList_bs.subscribe((global_requests) => {
+
+      // WEBSOCKET 
+      this.subscription = this.wsRequestsService.wsRequestsList$.subscribe((global_requests) => {
+        console.log('!!! ANALYTICS ALL REQUESTS X DEPT - !!!!! SUBSCRIPTION TO ALL-THE-REQUESTS-LIST-BS ', global_requests);
 
         const requests_depts_id_array = []
         if (global_requests) {
@@ -797,7 +814,10 @@ export class Analytics2Component implements OnInit , OnDestroy {
 
   getFlatMembersArrayFromAllRequestsAndRunGetOccurrence() {
     console.log('!!! ANALYTICS - !!!!! CALL GET COUNT OF REQUEST FOR AGENT');
-    this.subscription = this.requestsService.allRequestsList_bs.subscribe((requests) => {
+
+    // this.subscription = this.requestsService.allRequestsList_bs.subscribe((requests) => {
+    this.subscription = this.wsRequestsService.wsRequestsList$.subscribe((requests) => {
+
       console.log('!!! ANALYTICS - !!!!! SUBSCRIPTION TO ALL-THE-REQUESTS-LIST-BS');
 
       if (requests) {
@@ -944,7 +964,9 @@ export class Analytics2Component implements OnInit , OnDestroy {
    * *****************************************************************************************************
    */
   globalServedAndUnservedRequestsCount() {
-    this.subscription = this.requestsService.allRequestsList_bs.subscribe((global_requests) => {
+
+    // this.subscription = this.requestsService.allRequestsList_bs.subscribe((global_requests) => {
+    this.subscription = this.wsRequestsService.wsRequestsList$.subscribe((global_requests)  => {
       this.date = new Date();
       console.log('!!! ANALYTICS - CURRENT DATE : ', this.date);
       console.log('!!! ANALYTICS - SUBSCRIBE TO REQUEST SERVICE - GLOBAL REQUESTS LIST: ', global_requests);

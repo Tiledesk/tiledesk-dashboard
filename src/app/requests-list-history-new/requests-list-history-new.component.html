@@ -432,7 +432,7 @@
 
                           <!-- IF IS A HUMAN -->
                           <img *ngIf="participant.indexOf('bot_') === -1" style="vertical-align: middle; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee; margin-top: 1px; margin-bottom: 1px" 
-                          class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media" 
+                          class="user-img" src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media" 
                           onerror="this.src='assets/img/no_image_user.png'"/>
 
                           <span class="member" [innerHTML]="members_replace( participant )"></span>
@@ -446,7 +446,7 @@
                       <span *ngIf="participant === currentUserID"> 
                          <!-- IF IS THE LOGGED USER -->
                          <img style="vertical-align: middle; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee;margin-top: 1px; margin-bottom: 1px" 
-                         class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media" 
+                         class="user-img" src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media" 
                          onerror="this.src='assets/img/no_image_user.png'"/>
                          <span class="current-user-member" [innerHTML]="members_replace(participant)"></span>
                       </span>

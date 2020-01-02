@@ -22,6 +22,8 @@ import { fadeInAnimation } from '../_animations/index';
 import * as firebase from 'firebase';
 import 'firebase/database';
 
+import { AppConfigService } from '../services/app-config.service';
+
 @Component({
   selector: 'appdashboard-requests-msgs',
   templateUrl: './requests-msgs.component.html',
@@ -126,6 +128,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   train_bot_sidebar_height: any;
   // train_bot_sidebar_top_pos: any;
 
+  storageBucket: string;
 
   constructor(
     private router: Router,
@@ -138,6 +141,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     private platformLocation: PlatformLocation,
     private botLocalDbService: BotLocalDbService,
     private usersService: UsersService,
+    public appConfigService: AppConfigService,
     @Inject(DOCUMENT) private document: Document
   ) {
 
@@ -205,8 +209,14 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.detectMobile();
     this.getProjectUserRole();
+    this.getStorageBucket();
   }
 
+  getStorageBucket() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    console.log('STORAGE-BUCKET Requests-Msgs ', this.storageBucket)
+  }
 
   openRightSideBar(message: string) {
     this.OPEN_RIGHT_SIDEBAR = true;
@@ -709,7 +719,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
           if (request[0].rating) {
             this.rating = request[0].rating + '/5'
           } else {
-            this.rating = 'n.a.'
+            this.rating = 'n.a./5'
           }
 
           if (request[0].rating_message) {
@@ -1097,7 +1107,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   //     if (user) {
   //       // console.log('user ', user)
   // tslint:disable-next-line:max-line-length
-  //       const user_img = `<img class=\"rightsidebar-user-img\" src=\"https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F${user['_id']}%2Fphoto.jpg?alt=media\" onerror=\"this.src='assets/img/no_image_user.png'\"/>`
+  //       const user_img = `<img class=\"rightsidebar-user-img\" src=\"https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F${user['_id']}%2Fphoto.jpg?alt=media\" onerror=\"this.src='assets/img/no_image_user.png'\"/>`
 
   //       return member_id = user_img + user['firstname'] + ' ' + user['lastname']
   //     } else {

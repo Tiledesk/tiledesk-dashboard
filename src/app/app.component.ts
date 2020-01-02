@@ -44,6 +44,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 
     @ViewChild('myModal') myModal: ElementRef;
     isPageWithNav: boolean;
+ 
+    wsbasepath = environment.websocket.wsUrl;
 
     constructor(
         public location: Location,
@@ -157,17 +159,20 @@ export class AppComponent implements OnInit, AfterViewInit {
         // -----------------------------------------------------------------------------------------------------
         // Websocket connection
         // -----------------------------------------------------------------------------------------------------
-        // this.getCurrentUserAndConnectToWs();
+        this.getCurrentUserAndConnectToWs();
     }
     
     getCurrentUserAndConnectToWs() {
         const self = this
         this.auth.user_bs.subscribe((user) => {
           console.log('% »»» WebSocketJs WF - APP-COMPONENT - LoggedUser ', user);
+          console.log('% »»» WebSocketJs WF - APP-COMPONENT - WS URL ', this.wsbasepath);
     
           if (user && user.token) {
     
-            const CHAT_URL = 'CHANGE_IT'
+            // const CHAT_URL = 'ws://tiledesk-server-pre.herokuapp.com?token=' + user.token
+            const CHAT_URL = this.wsbasepath + user.token
+            
 
             // -----------------------------------------------------------------------------------------------------
             // Websocket init 
@@ -211,7 +216,7 @@ export class AppComponent implements OnInit, AfterViewInit {
             // -----------------------------------------------------------------------------------------------------    
             //  Websocket - Close websocket and reset ws requests list 
             // -----------------------------------------------------------------------------------------------------
-            // self.closeWebsocketAndResetRequestsList()
+            self.closeWebsocketAndResetRequestsList()
             
 
             }
@@ -220,7 +225,8 @@ export class AppComponent implements OnInit, AfterViewInit {
 
 
     closeWebsocketAndResetRequestsList() {
-        this.webSocketJs.closeWebsocket()
+        // this.webSocketJs.closeWebsocket()
+        this.webSocketJs.close()
         this.wsRequestsService.resetWsRequestList()
     }
 
@@ -234,6 +240,8 @@ export class AppComponent implements OnInit, AfterViewInit {
                 // (this.route.indexOf('/analytics') !== -1) ||
                 if (
                     (this.route.indexOf('/requests') !== -1) ||
+                    (this.route.indexOf('/wsrequests') !== -1) ||
+                    (this.route.indexOf('/translations') !== -1) ||
                     (this.route.indexOf('/users') !== -1) ||
                     (this.route.indexOf('/groups') !== -1) ||
                     (this.route.indexOf('/general') !== -1) ||

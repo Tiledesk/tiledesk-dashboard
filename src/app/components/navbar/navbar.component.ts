@@ -20,7 +20,8 @@ import * as moment from 'moment';
 import { ProjectPlanService } from '../../services/project-plan.service';
 import { ProjectService } from '../../services/project.service';
 import { publicKey } from '../../utils/util';
-
+import { WsRequestsService } from '../../services/websocket/ws-requests.service';
+import { AppConfigService } from '../../services/app-config.service';
 
 @Component({
     selector: 'app-navbar',
@@ -91,6 +92,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     HOME_ROUTE_IS_ACTIVE: boolean;
     projects: any;
     isVisible: boolean;
+
+    storageBucket: string;
     constructor(
         location: Location,
         private element: ElementRef,
@@ -103,7 +106,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         private uploadImageService: UploadImageService,
         private notifyService: NotifyService,
         private prjctPlanService: ProjectPlanService,
-        private projectService: ProjectService
+        private projectService: ProjectService,
+        public wsRequestsService: WsRequestsService,
+        public appConfigService: AppConfigService
     ) {
         this.location = location;
         this.sidebarVisible = false;
@@ -171,8 +176,15 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
 
         this.getOSCODE();
+        this.getStorageBucket();
     } // OnInit
 
+
+    getStorageBucket() {
+        const firebase_conf = this.appConfigService.getConfig().firebase;
+        this.storageBucket = firebase_conf['storageBucket'];
+        console.log('STORAGE-BUCKET Navbar ', this.storageBucket)
+      }
 
     getOSCODE() {
         console.log('NavbarComponent eoscode', this.eos)
@@ -516,8 +528,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         console.log('HAS CLICCKED GO TO PROJECT ')
         this.router.navigate(['/projects']);
         // (in AUTH SERVICE ) RESET PROJECT_BS AND REMOVE ITEM PROJECT FROM STORAGE WHEN THE USER GO TO PROJECTS PAGE
-        this.auth.hasClickedGoToProjects()
-        console.log('00 -> NAVBAR project AFTER GOTO PROJECTS ', this.project)
+        this.auth.hasClickedGoToProjects();
+        
+        this.project = null
+        console.log('!!C-U 00 -> NAVBAR project AFTER GOTO PROJECTS ', this.project)
+
+        
     }
 
     goToHome(id_project: string, project_name: string) {
@@ -551,11 +567,14 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     // NEW
     updateUnservedRequestCount() {
-        this.requestsService.requestsList_bs.subscribe((requests) => {
+        // this.requestsService.requestsList_bs.subscribe((requests) => {
+        this.wsRequestsService.wsRequestsList$.subscribe((requests) => {
+
             if (requests) {
                 let count = 0;
                 requests.forEach(r => {
-                    if (r.support_status === 100) {
+                    // if (r.support_status === 100) {
+                    if (r.status === 100) {
                         count = count + 1;
                     }
                 });
@@ -565,21 +584,26 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     }
 
     updateCurrentUserRequestCount() {
-        this.requestsService.requestsList_bs.subscribe((requests) => {
+        // this.requestsService.requestsList_bs.subscribe((requests) => {
+        this.wsRequestsService.wsRequestsList$.subscribe((requests) => {
             if (requests) {
                 let count = 0;
                 requests.forEach(r => {
 
-                    const membersArray = Object.keys(r.members);
+                    // const membersArray = Object.keys(r.members);
+                    const participantsArray = r.participants // new used with ws 
                     // console.log('»» WIDGET notifyLastUnservedRequest REQUEST currentUserRequestCount membersArray ', membersArray);
-                    const currentUserIsInMembers = membersArray.includes(this.user._id);
+
+                    // const currentUserIsInMembers = membersArray.includes(this.user._id);
+                    const currentUserIsInMembers = participantsArray.includes(this.user._id); // new used with ws 
+
                     // console.log('»» WIDGET notifyLastUnservedRequest REQUEST currentUserRequestCount currentUserIsInMembers ', currentUserIsInMembers);
                     if (currentUserIsInMembers === true) {
                         count = count + 1;
                     }
                 });
                 this.currentUserRequestCount = count;
-                console.log('»» WIDGET notifyLastUnservedRequest REQUEST currentUserRequestCount ', this.currentUserRequestCount);
+                console.log('»» NAVBAR notifyLastUnservedRequest REQUEST currentUserRequestCount ', this.currentUserRequestCount);
             }
         });
 
@@ -590,12 +614,16 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     // TO -> 200 (THE R. RECIPIENT IS SET TO FALSE IN  shown_requests )
     // SO IF THE REQUEST CHANGE AGAIN STATUS IN 100 THE NOTICATION IS AGAIN DISPLAYED
     checkRequestStatusInShown_requests() {
-        this.requestsService.requestsList_bs.subscribe((requests) => {
+        console.log('»» NAVBAR shown_requests object ', this.shown_requests)
+        // this.requestsService.requestsList_bs.subscribe((requests) => {
+        this.wsRequestsService.wsRequestsList$.subscribe((requests) => {
             if (requests) {
                 requests.forEach(r => {
-                    if (r.support_status !== 100) {
-                        console.log('REQUEST WITH STATUS != 100 ', r.support_status)
+                    // if (r.support_status !== 100) {
+                    if (r.status !== 100) {
+                        console.log('REQUEST WITH STATUS != 100 ', r.status)
                         this.shown_requests[r.id] = false;
+                        // this.shown_requests[r.request_id] = false;
                     }
                 });
             }
@@ -607,27 +635,36 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     // THAT ARE NOT FOUND (OR HAVE THE VALUE FALSE) IN THE LOCAL DICTIONARY shown_requests
     // FURTHERMORE THE NOTICATIONS WILL NOT BE DISPLAYED IF THE USER OBJECT IS NULL (i.e THERE ISN'T USER LOGGED IN)
     notifyLastUnservedRequest() {
-        this.requestsService.requestsList_bs.subscribe((requests) => {
-            if (requests) {
+        // this.requestsService.requestsList_bs.subscribe((requests) => {
+        this.wsRequestsService.wsRequestsList$.subscribe((requests) => {
 
+            if (requests) {
                 requests.forEach(r => {
 
                     // console.log('»» WIDGET notifyLastUnservedRequest REQUEST shown_requests ', this.shown_requests);
                     // console.log('»» WIDGET notifyLastUnservedRequest REQUEST shown_my_requests ', this.shown_my_requests);
-                    // console.log('»» WIDGET notifyLastUnservedRequest REQUEST r ', r);
+                    // console.log('»» NAVBAR notifyLastUnservedRequest REQUEST r ', r);
 
                     // console.log('»» WIDGET notifyLastUnservedRequest REQUEST this.user ID  ', this.user._id);
 
-                    const membersArray = Object.keys(r.members);
+                    // const membersArray = Object.keys(r.members); // old used with firestore 
                     // console.log('»» WIDGET notifyLastUnservedRequest REQUEST membersArray ', membersArray);
 
-                    const currentUserIsInMembers = membersArray.includes(this.user._id);
+                    const participantsArray = r.participants // new used with ws 
+                    // console.log('% »»» WebSocketJs WF - Navbar participantsArray ', participantsArray);
+
+                    // const currentUserIsInMembers = membersArray.includes(this.user._id);  // old used with firestore 
+                    const currentUserIsInMembers = participantsArray.includes(this.user._id); // new used with ws 
                     // console.log('»» WIDGET notifyLastUnservedRequest REQUEST currentUserIsInMembers ', currentUserIsInMembers);
 
-                    if (r.support_status === 100 && !this.shown_requests[r.id] && this.user !== null) {
+                    // if (r.support_status === 100 && !this.shown_requests[r.id] && this.user !== null) { // old used with firestore 
+                    if (r.status === 100 && !this.shown_requests[r.id] && this.user !== null) {
 
-                        const requestCreationDate = moment(r.created_on);
-                        // console.log('notifyLastUnservedRequest REQUEST', r.id, ' CREATED ON ', requestCreationDate);
+                        // const requestCreationDate = moment(r.created_on);
+                        const requestCreationDate = moment(r.createdAt);
+
+                        // console.log('notifyLastUnservedRequest REQUEST', r);
+                        // console.log('notifyLastUnservedRequest REQUEST ID', r.id, ' CREATED AT ', requestCreationDate);
                         // const today = new Date();
                         const currentTime = moment();
                         // console.log('notifyLastUnservedRequest REQUEST TODAY ', currentTime);
@@ -644,9 +681,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                             // console.log('!!! »»» LAST UNSERVED REQUEST ', this.lastRequest)
 
                             // console.log('!!! »»» UNSERVED REQUEST IN BOOTSTRAP NOTIFY ', r)
-                            const url = '#/project/' + this.projectId + '/request/' + r.id + '/messages'
+                            // const url = '#/project/' + this.projectId + '/request/' + r.id + '/messages'
+                            const url = '#/project/' + this.projectId + '/wsrequest/' + r.request_id + '/messages'
                             this.showNotification(
-                                '<span style="font-weight: 400; font-family: Google Sans, sans-serif;color:#2d323e!important">' + r.requester_fullname + '</span>' +
+                                // '<span style="font-weight: 400; font-family: Google Sans, sans-serif;color:#2d323e!important">' + r.requester_fullname + '</span>' +
+                                '<span style="font-weight: 400; font-family: Google Sans, sans-serif;color:#2d323e!important">' + r.lead.fullname + '</span>' +
                                 '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text +
                                 '</em>' + `<a href="${url}" target="_self" data-notify="url" style="height: 100%; left: 0px; position: absolute; top: 0px; width: 100%; z-index: 1032;"></a>`,
                                 3,
@@ -655,23 +694,35 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                             );
 
                             this.shown_requests[r.id] = true;
-                            // console.log('»» WIDGET notifyLastUnservedRequest shown_requests ', this.shown_requests[r.id])
+                            console.log('»» NAVBAR shown_requests object notifyLastUnservedRequest ', this.shown_requests)
                             // r.notification_already_shown = true;
                         }
                     }
 
                     if (this.user !== null && !this.shown_my_requests[r.id] && currentUserIsInMembers === true) {
 
-                        const requestCreationDate = moment(r.created_on);
+                        // const requestCreationDate = moment(r.created_on);
+                        const requestCreationDate = moment(r.createdAt);
+
                         const currentTime = moment();
 
                         const dateDiff = currentTime.diff(requestCreationDate, 'h');
                         // console.log('»» WIDGET notifyLastUnservedRequest currentUserIsInMembers DATE DIFF ', dateDiff);
 
                         if (dateDiff < 24) {
-                            const url = '#/project/' + this.projectId + '/request/' + r.id + '/messages'
+                            // const url = '#/project/' + this.projectId + '/request/' + r.id + '/messages'
+                            const url = '#/project/' + this.projectId + '/wsrequest/' + r.request_id + '/messages'
+
+                            let contact_fullname = ''
+                            if (r.lead) {
+                                contact_fullname = r.lead.fullname
+                            } else {
+                                contact_fullname = "n.a."
+                            }
+
                             this.showNotification(
-                                '<span style="font-weight: 400; font-family: Google Sans, sans-serif; color:#2d323e!important">' + r.requester_fullname + '</span>' +
+                                // '<span style="font-weight: 400; font-family: Google Sans, sans-serif; color:#2d323e!important">' + r.requester_fullname + '</span>' +
+                                '<span style="font-weight: 400; font-family: Google Sans, sans-serif; color:#2d323e!important">' + contact_fullname + '</span>' +
                                 '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text +
                                 '</em>' + `<a href="${url}" target="_self" data-notify="url" style="height: 100%; left: 0px; position: absolute; top: 0px; width: 100%; z-index: 1032;"></a>`,
                                 4,
@@ -680,6 +731,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                             );
 
                             this.shown_my_requests[r.id] = true;
+                            console.log('»» NAVBAR shown_my_requests object notifyLastUnservedRequest ', this.shown_my_requests)
+                            // this.shown_my_requests[r.request_id] = true;
+
                         }
                     }
 

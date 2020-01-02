@@ -156,7 +156,7 @@
                                 <img
                                   style="vertical-align: middle; width: 36px; height: 36px; border-radius: 50%; border: 1px solid #eee; margin-top: 1px; margin-bottom: 1px;position: relative;top: -9px; left: -14px;"
                                   class="user-img"
-                                  src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{message?.sender}}%2Fphoto.jpg?alt=media"
+                                  src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{message?.sender}}%2Fphoto.jpg?alt=media"
                                   onerror="this.src='assets/img/no_image_user.png'" />
                               </span>
 
@@ -519,7 +519,12 @@
                   <div class="served_by">
 
                     <span *ngIf="agents_array?.length === 0" class="row-body">
-                      {{ "RequestMsgsPage.NoAgent" | translate }}
+
+                      <div style="vertical-align: middle;width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee;background-color:#eee; float: left;margin-right: 8px;margin-bottom: 5px;">
+                          
+                      </div>
+                     <span style=""> {{ "RequestMsgsPage.NoAgent" | translate }} </span> 
+                     
                     </span>
                     <div *ngFor="let agent of agents_array" class="row-body">
 
@@ -527,7 +532,7 @@
                         <img *ngIf="agent.isBot === false"
                           style="vertical-align: middle; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee; margin-right: 8px;"
                           class="user-img"
-                          src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
+                          src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
                           onerror="this.src='assets/img/no_image_user.png'" />
 
                         <img *ngIf="agent.isBot === true"
@@ -632,15 +637,25 @@
                   </p>
 
 
-                  <p class="row-body" style="margin-top:8px; margin-bottom:0px; padding-bottom:0px">
+                  <!-- <p class="row-body" style="margin-top:8px; margin-bottom:0px; padding-bottom:0px">
                     <span style="color:#394f5a;"> {{ "RequestMsgsPage.ChatFormUserName" | translate }}: </span>
                     {{ user_name }}
-                  </p>
+                  </p> -->
 
                   <p class="row-body" style="margin-bottom:0px;padding-bottom:0px">
                     <span style="color:#394f5a;"> {{ "RequestMsgsPage.ChatFormUserEmail" | translate }}: </span>
-                    <a *ngIf="user_email !== 'n.a.'" href="mailto:{{user_email}}">{{ user_email }}</a>
-                    <a *ngIf="user_email === 'n.a.'" style="color:#7695a5;">{{ user_email }}</a>
+                    
+                    <!-- 
+                    // ------------------------------------------------------
+                    // no more get from request attributes but from lead 
+                    // ------------------------------------------------------ -->
+
+                     <!-- <a *ngIf="user_email !== 'n.a.'" href="mailto:{{user_email}}">{{ user_email }}</a>
+                     <a *ngIf="user_email === 'n.a.'" style="color:#7695a5;">{{ user_email }}</a> -->
+
+                     <a *ngIf="request?.lead?.email" href="mailto:{{request?.lead?.email}}">{{request?.lead?.email}}</a>
+                     <a *ngIf="!request?.lead?.email" style="color:#7695a5;">n.a.</a>
+
                   </p>
 
                   <p class="row-body" style="margin-bottom:0px; padding-bottom:0px">
@@ -657,14 +672,22 @@
                   <p class="row-header" style="">
                     <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
                     <span style="vertical-align: middle">
-                      {{ "RequestMsgsPage.DepartmentName" | translate }}: <span style="color: #7695a5;">
-                        {{ department_name }}</span>
+                      {{ "RequestMsgsPage.DepartmentName" | translate }}
+                      
+                      <!-- <span style="color: #7695a5;">  </span> -->
                     </span>
                   </p>
-                  <!-- <span class="row-body">  
-                    
-                          {{ department_name }}
-                      </span> -->
+
+                  <span class="row-body">
+                        <!-- 
+                        // ------------------------------------------------------
+                        // no more get from request attributes but from DEPARTMENT 
+                        // ------------------------------------------------------ -->
+                        <!-- {{ department_name }} -->
+                   
+                        <span style="color:#394f5a;"> {{ "DeptsAddEditPage.DeptName" | translate }}: </span> {{request?.department?.name}}
+                  </span>
+               
                 </div>
               </div>
 
@@ -673,8 +696,16 @@
                   <p class="row-header" style="">
                     <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
                     <span style="vertical-align: middle">
-                      {{ "RequestMsgsPage.Rating" | translate }}: <span style="color: #7695a5;"> {{ rating }}</span>
+                      {{ "RequestMsgsPage.Rating" | translate }}
+                      
+                     
                     </span>
+
+                    <!-- <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star checked"></span>
+                    <span class="fa fa-star"></span>
+                    <span class="fa fa-star"></span> -->
                   </p>
                   <!-- <p class="row-body"  style="margin-bottom:0px">  
                           <span style="color:#394f5a;"> {{ "RequestMsgsPage.Rating" | translate }}: </span>
@@ -683,7 +714,10 @@
 
                   <p class="row-body" style="margin-bottom:0px">
 
+                    <span style="color: #7695a5;display: block"> {{ rating }}</span>
+
                     <span style="color:#394f5a;"> {{ "RequestMsgsPage.RatingMessage" | translate }}: </span>
+    
                     {{ rating_message }}
                   </p>
                 </div>
@@ -699,7 +733,12 @@
                   </p>
                   <p class="row-body" style="margin-bottom:0px; word-wrap: break-word;">
 
-                    <a href="{{source_page}}" target="_blank">{{source_page}}</a>
+                   
+                    <!-- 
+                    // ----------------------------------------------------------------
+                    // no more get from request attributes but directly from request 
+                    // ---------------------------------------------------------------- -->
+                    <a href="{{request?.sourcePage}}" target="_blank">{{request?.sourcePage}}</a>
                   </p>
 
                 </div>
@@ -901,7 +940,7 @@
                       <!-- *ngIf="projectUser?.id_user._id !== currentUserID"  -->
                       <td style="width: 25px; cursor:pointer" (click)= "selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
                         <img style="vertical-align: middle; width: 42px; height: 42px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
-                        class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media" 
+                        class="user-img" src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media" 
                         onerror="this.src='assets/img/no_image_user.png'"/>
                         <div class="status-icon" [ngClass]="{'is-user-online' : projectUser?.user_available === true, 'is-user-offline' : projectUser?.user_available === false  }"
                         style="
@@ -1038,7 +1077,7 @@
               <tbody>
                 <tr>
                   <td style=" border-top-width: 0px; width: 25px;">
-                    <img *ngIf="userid_selected" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{userid_selected}}%2Fphoto.jpg?alt=media" 
+                    <img *ngIf="userid_selected" src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{userid_selected}}%2Fphoto.jpg?alt=media" 
                       width=35 onerror="this.src='assets/img/no_image_user.png'"/>
                   </td>
                   <td  style=" border-top-width: 0px;">

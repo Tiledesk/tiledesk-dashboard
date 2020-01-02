@@ -1,5 +1,5 @@
 <p style="margin-top:6px; padding-left:30px;position: relative;z-index: 1050;" class="navbar-brand">
-    {{ 'Users' | translate }}  
+  {{ 'Users' | translate }}
 </p>
 
 
@@ -17,22 +17,22 @@ class="navbar-brand">
 
 <ul class="bottom-nav">
 
-    <li class="btn-with-border-effect li-active">
-        <a>  {{ "Users" | translate }} </a>
-    </li>
+  <li class="btn-with-border-effect li-active">
+    <a> {{ "Users" | translate }} </a>
+  </li>
 
 
-    <li *ngIf="isVisible" class="btn-with-border-effect border-from-center" (click)="goToGroups()">
-        <a>{{ "Groups" | translate }} </a>
-    </li>
+  <li *ngIf="isVisible" class="btn-with-border-effect border-from-center" (click)="goToGroups()">
+    <a>{{ "Groups" | translate }} </a>
+  </li>
 
 </ul>
 
 <div class="main-content" style="padding-top:0px;">
   <div class="container-fluid">
-      <!-- *** this row to prevent that the two columns in the below row being displayed on two lines -->
-      <div class="row"></div>
-      <!-- <ul class="nav nav-pills nav-pills-info custom">
+    <!-- *** this row to prevent that the two columns in the below row being displayed on two lines -->
+    <div class="row"></div>
+    <!-- <ul class="nav nav-pills nav-pills-info custom">
         <li class="active">
           <a href="#pill1" data-toggle="tab">
             {{ "Users" | translate }}
@@ -45,7 +45,7 @@ class="navbar-brand">
         </li>
       </ul> -->
 
-    
+
     <!-- <div class="row">
       <div class="col-md-3" style="padding-left:0px">
         <div class="nav-items" style="margin-top:100px; position: relative;left: -15px;">
@@ -81,58 +81,61 @@ class="navbar-brand">
 
     <!-- *********** start PROJECT PROFILE INFO  *********** -->
     <div class="row" *ngIf="prjct_profile_type === 'payment'">
-        <div class="col-md-12">
-            <div class="card" style="margin-top: 0px; margin-bottom: 0px;">
-              <div class="card-content">
-                  <span *ngIf="subscription_is_active === true">
-                    <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i>
-                    <span class="msg-alert">
-                      {{ "YouCurrentlyAreUsing" |  translate }} {{ this.projectUsersLength + this.countOfPendingInvites }} 
-                      {{ "Of" | translate }} {{ projectPlanAgentsNo }}  {{ "ActiveOperatorSeatsInThe" | translate }} 
-                      <span style="text-transform: capitalize">  
-                        {{ prjct_profile_name }}</span> - <span style="color: #039be5; cursor:pointer" (click)="getMoreOperatorsSeats()">{{ "GetMore" | translate }} </span>
-                    </span>
-                  </span>
-                  <span *ngIf="subscription_is_active === false">
-                    <i class="material-icons" style="vertical-align: middle; color: #f44336;">error_outline</i>
-                    <span class="msg-alert">{{ "Pricing.YourSubscriptionToThe" | translate}} 
-                      <span style="text-transform: capitalize"> 
-                        {{ prjct_profile_name }} 
-                      </span> 
-                      {{ "Pricing.HasExpiredOn" | translate}} {{ subscription_end_date | date: 'dd/MM/y' }} -
+      <div class="col-md-12">
+        <div class="card" style="margin-top: 0px; margin-bottom: 0px;">
+          <div class="card-content">
+            <span *ngIf="subscription_is_active === true">
+              <i class="material-icons" style="vertical-align: middle; color: #039be5;"> info </i>
+              <span class="msg-alert">
+                {{ "YouCurrentlyAreUsing" |  translate }} {{ this.projectUsersLength + this.countOfPendingInvites }}
+                {{ "Of" | translate }} {{ projectPlanAgentsNo }} {{ "ActiveOperatorSeatsInThe" | translate }}
+                <span style="text-transform: capitalize">
+                  {{ prjct_profile_name }}</span> - <span style="color: #039be5; cursor:pointer"
+                  (click)="getMoreOperatorsSeats()">{{ "GetMore" | translate }} </span>
+              </span>
+            </span>
+            <span *ngIf="subscription_is_active === false">
+              <i class="material-icons" style="vertical-align: middle; color: #f44336;">error_outline</i>
+              <span class="msg-alert">{{ "Pricing.YourSubscriptionToThe" | translate}}
+                <span style="text-transform: capitalize">
+                  {{ prjct_profile_name }}
+                </span>
+                {{ "Pricing.HasExpiredOn" | translate}} {{ subscription_end_date | date: 'dd/MM/y' }} -
 
-                      <span style="color: #039be5; cursor:pointer" (click)="openModalSubsExpired()">{{ "Pricing.UpgradePlan" | translate }} </span>
-                    </span>
-                  </span>
-              </div>
-            </div>
+                <span style="color: #039be5; cursor:pointer"
+                  (click)="openModalSubsExpired()">{{ "Pricing.UpgradePlan" | translate }} </span>
+              </span>
+            </span>
+          </div>
         </div>
-    </div> 
+      </div>
+    </div>
     <!-- *********** ./end PROJECT PROFILE INFO  *********** -->
 
     <div class="row">
       <div class="col-md-12">
         <div class="card" style="min-height: 195px;margin-top: 15px;">
 
-          
+
           <!-- table-responsive -->
 
           <div class="card-header card-header-custom-bckgrnd">
-            <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-info" style="padding: 8px 16px;margin:0px;" (click)="goToAddUser()">
-                <span class="icon" style="padding-right:8px">
-                  <i class="material-icons">add_circle</i>
-                </span>
+            <button *ngIf="USER_ROLE !== 'agent'" class="btn btn-info" style="padding: 8px 16px;margin:0px;"
+              (click)="goToAddUser()">
+              <span class="icon" style="padding-right:8px">
+                <i class="material-icons">add_circle</i>
+              </span>
               {{ "UsersPage.Invites" | translate }}
             </button>
 
-              <!-- <div class="pull-right" style="padding: 8px 16px;color: #039be5;font-weight: 500; cursor: pointer" (click)="goToPendingInvitation()"> 
+            <!-- <div class="pull-right" style="padding: 8px 16px;color: #039be5;font-weight: 500; cursor: pointer" (click)="goToPendingInvitation()"> 
                 {{ "UsersPage.PendingInvitation" | translate }} ({{ countOfPendingInvites }})
               </div> -->
           </div>
 
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
-         
-        
+
+
           <div *ngIf="!showSpinner" class="card-content" style="padding-top:0px">
 
             <table class="table table-hover">
@@ -154,6 +157,7 @@ class="navbar-brand">
 
                   <th> </th>
 
+                  <th> </th>
                   <th>
                     <span class="column-th-span">
                       {{ "UsersPage.Role" | translate }}
@@ -208,23 +212,44 @@ class="navbar-brand">
                     {{ projectUser?._id }}
                   </td> -->
 
-                  <td (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer; width:1%;white-space:nowrap; text-align: center">
-                      <img style="vertical-align: middle; width: 35px; height: 35px; border-radius: 50%; border: 1px solid #eee;" 
-                      class="user-img" src="https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media" 
-                      onerror="this.src='assets/img/no_image_user.png'"/>
+                  <td (click)="goToMemberProfile(projectUser?.id_user?._id)"
+                    style="cursor:pointer; width:1%;white-space:nowrap; text-align: center">
+                    <img
+                      style="vertical-align: middle; width: 35px; height: 35px; border-radius: 50%; border: 1px solid #eee;"
+                      class="user-img"
+                      src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
+                      onerror="this.src='assets/img/no_image_user.png'" />
                   </td>
 
-                  <td (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer;">
+                  <td (click)="goToMemberProfile(projectUser?.id_user?._id)"
+                    style="cursor:pointer; white-space: nowrap;  width: 1%;">
                     <span class="White__Tooltip">
                       <span style="font-weight:400; font-size: 13px"> {{ projectUser?.id_user?.firstname }} </span>
-                      <span style="text-transform: uppercase; font-weight:400; font-size: 13px "> {{ projectUser?.id_user?.lastname }}  </span>
+                      <span style="text-transform: uppercase; font-weight:400; font-size: 13px ">
+                        {{ projectUser?.id_user?.lastname }} </span>
 
-                      <span class="White__Tooltiptext" >
-                        {{"UsersPage.ViewProfileUser" | translate }} <span  style="font-size:10px; display:block"> {{projectUser?.id_user?._id}}</span> 
+                      <span class="White__Tooltiptext">
+                        {{"UsersPage.ViewProfileUser" | translate }} <span style="font-size:10px; display:block">
+                          {{projectUser?.id_user?._id}}</span>
                       </span>
-                        
+
                       <span style="display: block; color:#7695a5; font-size: 12px; font-weight: 400">
-                        {{ projectUser?.id_user?.email }} 
+                        {{ projectUser?.id_user?.email }}
+                      </span>
+                    </span>
+                  </td>
+
+                  <td>
+                    <span>
+                      <span class="White__Tooltip">
+                        <i class="material-icons chat-with-agent"
+                          (click)="chatWithAgent(projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)">
+                          chat
+                        </i>
+                        <span class="White__Tooltiptext" style="font-size: 12px;">
+                          {{"ChatWith" | translate }} <span style="display:block">
+                            {{projectUser?.id_user?.firstname}} {{projectUser?.id_user?.lastname }} </span>
+                        </span>
                       </span>
                     </span>
                   </td>
@@ -233,7 +258,8 @@ class="navbar-brand">
                     <span class="White__Tooltip">
                       <span style="font-weight:400; font-size: 13px"> {{ projectUser?.role | translate}}</span>
                       <span class="White__Tooltiptext">
-                        {{"UsersPage.ViewProfileUser" | translate }} <span  style="font-size:10px; display:block"> {{projectUser?.id_user?._id}}</span>
+                        {{"UsersPage.ViewProfileUser" | translate }} <span style="font-size:10px; display:block">
+                          {{projectUser?.id_user?._id}}</span>
                       </span>
                     </span>
                   </td>
@@ -252,12 +278,14 @@ class="navbar-brand">
                     <i *ngIf="projectUser?.user_available === true" class="material-icons" style=" font-size: 16px; color: #1eb848; margin-right:0px">fiber_manual_record</i>
                     <i *ngIf="projectUser?.user_available === false" class="material-icons" style=" font-size: 16px; color: #cac9c9; margin-right:0px">fiber_manual_record</i>
                   </td> -->
-                  
+
 
                   <!-- SWITCH AVAILABLE / UNAILABLE  -->
                   <td>
                     <label class="switch" style="margin-bottom: 0px;">
-                      <input type="checkbox" (click)="changeAvailabilityStatus(projectUser?.user_available, projectUser?._id)" [checked]="projectUser?.user_available === true">
+                      <input type="checkbox"
+                        (click)="changeAvailabilityStatus(projectUser?.user_available, projectUser?._id)"
+                        [checked]="projectUser?.user_available === true">
                       <span class="slider round"></span>
                     </label>
                   </td>
@@ -271,12 +299,15 @@ class="navbar-brand">
                   <!-- ACTIONS -->
                   <td class="td-actions text-right">
                     <span *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id">
-                      <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs White__Tooltip"
+                      <button type="button" rel="tooltip" title=""
+                        class="btn btn-primary btn-simple btn-xs White__Tooltip"
                         (click)='goToEditUser(projectUser?._id)'>
                         <i class="material-icons">edit</i>
-                        <span class="White__Tooltiptext" style="text-transform:capitalize"> {{ 'UsersPage.tootipEditUser' | translate }} </span>
+                        <span class="White__Tooltiptext" style="text-transform:capitalize">
+                          {{ 'UsersPage.tootipEditUser' | translate }} </span>
                       </button>
-                      <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipDeleteUser' | translate }}" class="btn btn-danger btn-simple btn-xs"
+                      <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipDeleteUser' | translate }}"
+                        class="btn btn-danger btn-simple btn-xs"
                         (click)='openDeleteModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'>
                         <i class="material-icons">close</i>
                       </button>
@@ -286,41 +317,42 @@ class="navbar-brand">
                 </tr>
 
                 <tr *ngFor="let invites of pendingInvitationList">
-                  <td style="text-align: center; width:1%; white-space:nowrap; "> 
-                      <i class="material-icons" style="color: rgba(0,0,0,0.54); vertical-align: middle">
-                        query_builder
-                      </i>
+                  <td style="text-align: center; width:1%; white-space:nowrap; ">
+                    <i class="material-icons" style="color: rgba(0,0,0,0.54); vertical-align: middle">
+                      query_builder
+                    </i>
                   </td>
 
                   <td>
-                    <span style="font-weight:400"> 
+                    <span style="font-weight:400">
                       {{ invites?.email }}
-                    </span> 
+                    </span>
                     <span style="display: block; color:#7695a5; font-size: 12px; font-weight: 400">
                       {{ "UsersPage.DateOfSending" | translate }}: {{ invites?.createdAt | date: 'dd/MM/yy' }}
                     </span>
                   </td>
 
                   <td>
-                    <span style="font-weight:400;font-weight:400; font-size: 13px"> 
-                      {{ "UsersPage.InvitedToBecome" | translate }} 
-                      <span style="text-transform:capitalize"> 
+                    <span style="font-weight:400;font-weight:400; font-size: 13px">
+                      {{ "UsersPage.InvitedToBecome" | translate }}
+                      <span style="text-transform:capitalize">
                         {{ invites?.role | translate }}
                       </span>
                     </span>
                   </td>
 
                   <td> </td>
+                  <td> </td>
 
                   <td class="td-actions text-right">
-                    <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs White__Tooltip"
-                      (click)='resendInvite(invites?._id)'>
+                    <button type="button" rel="tooltip" title=""
+                      class="btn btn-primary btn-simple btn-xs White__Tooltip" (click)='resendInvite(invites?._id)'>
                       <i class="material-icons">send</i>
                       <span class="White__Tooltiptext" style="text-transform:capitalize; display: block; ">
-                          {{ "UsersPage.ResendInvite" | translate }} 
+                        {{ "UsersPage.ResendInvite" | translate }}
                       </span>
                     </button>
-                    <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs " 
+                    <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs "
                       (click)='openCancelInvitationModal(invites?._id, invites?.email )' style="margin-left: 4px;">
                       <i class="material-icons">close</i>
                     </button>
@@ -340,7 +372,8 @@ class="navbar-brand">
 </div>
 
 <!-- ============ USERS DELETE MODAL ============ -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}" style="background-color: rgba(90,90,90,0.5);">
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}"
+  style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header" style="background-color:#ff5252;">
@@ -367,7 +400,7 @@ class="navbar-brand">
       <div class="modal-body">
         <p style="color:rgba(0,0,0,0.87)">
           {{ "UsersPage.AreYouSure" | translate }}
-          <b>{{user_firstname}} {{user_lastname }} </b> 
+          <b>{{user_firstname}} {{user_lastname }} </b>
           {{ "UsersPage.FromTheProject" | translate }}?
         </p>
       </div>
@@ -392,44 +425,45 @@ class="navbar-brand">
 
 
 <!-- ============ CANCEL PENDING INVITATION ============ -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayCancelInvitationModal}" style="background-color: rgba(90,90,90,0.5);">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header" style="background-color:#ff5252;">
-          <button type="button" class="close" aria-label="Close" (click)="closeCancelInvitationModal()">
-            <span aria-hidden="true" style="color: #fff">&times;</span>
-          </button>
-  
-          <h4 class="modal-title" style="color: #fff">
-            <i class="material-icons" style="vertical-align: middle">report_problem</i>
-            <span style="vertical-align: middle; padding-left:8px">
-              {{ "UsersPage.modalCancelInvite" | translate }}
-            </span>
-          </h4>
-  
-        </div>
-  
-        <div class="modal-body">
-          <p style="color:rgba(0,0,0,0.87)" style="margin-top:10px">
-            {{ "UsersPage.AreYouSureCancelInvite" | translate }}
-            <b>{{ pendingInvitationEmailToCancel }} </b>? 
-          </p>
-        </div>
-  
-        <div class="modal-footer">
-          <button class="btn btn-white" (click)="closeCancelInvitationModal()" style="padding:12px 16px;">
-            <!-- Annulla -->
-            {{ "UsersPage.Cancel" | translate }}
-          </button>
-          <!-- Confirm -->
-          <button class="btn btn-danger" (click)="deletePendinInvitation()">
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayCancelInvitationModal}"
+  style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="background-color:#ff5252;">
+        <button type="button" class="close" aria-label="Close" (click)="closeCancelInvitationModal()">
+          <span aria-hidden="true" style="color: #fff">&times;</span>
+        </button>
+
+        <h4 class="modal-title" style="color: #fff">
+          <i class="material-icons" style="vertical-align: middle">report_problem</i>
+          <span style="vertical-align: middle; padding-left:8px">
             {{ "UsersPage.modalCancelInvite" | translate }}
-          </button>
-        </div>
-  
-  
+          </span>
+        </h4>
+
       </div>
-      <!-- /.modal-content -->
+
+      <div class="modal-body">
+        <p style="color:rgba(0,0,0,0.87)" style="margin-top:10px">
+          {{ "UsersPage.AreYouSureCancelInvite" | translate }}
+          <b>{{ pendingInvitationEmailToCancel }} </b>?
+        </p>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-white" (click)="closeCancelInvitationModal()" style="padding:12px 16px;">
+          <!-- Annulla -->
+          {{ "UsersPage.Cancel" | translate }}
+        </button>
+        <!-- Confirm -->
+        <button class="btn btn-danger" (click)="deletePendinInvitation()">
+          {{ "UsersPage.modalCancelInvite" | translate }}
+        </button>
+      </div>
+
+
     </div>
-    <!-- /.modal-dialog -->
+    <!-- /.modal-content -->
   </div>
+  <!-- /.modal-dialog -->
+</div>

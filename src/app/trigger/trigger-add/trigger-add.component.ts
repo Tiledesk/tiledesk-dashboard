@@ -259,9 +259,9 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
       delete this.triggerForm.value.conditions.all
     }
     // set value of all conditons.any/all.fact to 'json'
-    // for ( let i = 0; i < this.triggerForm.value.conditions[this.conditionType.split('conditions.')[1]].length; i++) {
-    //   this.triggerForm.value.conditions[this.conditionType.split('conditions.')[1]][i].fact = 'json'
-    // }
+    for ( let i = 0; i < this.triggerForm.value.conditions[this.conditionType.split('conditions.')[1]].length; i++) {
+      this.triggerForm.value.conditions[this.conditionType.split('conditions.')[1]][i].fact = 'json'
+    }
 
     // control validator for conditions.all/any elements
     const conditionsGROUP = this.triggerForm.get(this.conditionType) as FormGroup

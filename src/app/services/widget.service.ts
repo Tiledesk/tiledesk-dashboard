@@ -1,11 +1,16 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { NotifyService } from '../core/notify.service';
 import { ProjectService } from '../services/project.service';
 import { TranslateService } from '@ngx-translate/core';
+import { environment } from '../../environments/environment';
+import { AuthService } from '../core/auth.service';
+import { Observable } from 'rxjs/Observable';
+import { Http, Headers, RequestOptions } from '@angular/http';
+
 
 @Injectable()
-export class WidgetService implements OnInit {
+export class WidgetService {
 
   // public primaryColorBs: BehaviorSubject<string> = new BehaviorSubject<string>(null);
   // public secondaryColorBs: BehaviorSubject<string> = new BehaviorSubject<string>(null);
@@ -15,17 +20,53 @@ export class WidgetService implements OnInit {
   // public includePrechatformBs: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   // public widgetAlignmentBs: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
+  http: Http;
   public id_project: string;
   public widgetSettingsObjct;
   updateWidgetSuccessNoticationMsg: string;
+  BASE_URL = environment.mongoDbConfig.BASE_URL;
+  TOKEN: string;
+  projectID: string;
 
   constructor(
+    http: Http,
     private notify: NotifyService,
     private projectService: ProjectService,
-    private translate: TranslateService
-  ) { console.log('»» WIDGET SERVICE HELLO WIDGET SERVICE !') }
+    private translate: TranslateService,
+    public auth: AuthService
+  ) {
+    this.http = http;
+    console.log('»» WIDGET SERVICE HELLO WIDGET SERVICE !')
 
-  ngOnInit() {  }
+
+    this.getUserToken()
+    this.getCurrentProject();
+
+  }
+
+
+
+  getUserToken() {
+    console.log('»» WIDGET SERVICE - getUserToken');
+    this.auth.user_bs.subscribe((user) => {
+      if (user) {
+        this.TOKEN = user.token;
+        console.log('»» WIDGET SERVICE - TOKEN: ', this.TOKEN);
+      }
+    });
+  }
+
+  getCurrentProject() {
+    console.log('»» WIDGET SERVICE - getCurrentProject');
+    this.auth.project_bs.subscribe((project) => {
+
+      if (project) {
+
+        this.projectID = project._id;
+        console.log('»» WIDGET SERVICE - PROJECT ID: ', this.projectID);
+      }
+    });
+  }
 
   // saveCustomUrl(logo_url: string) {
   //   console.log('WIDGET SERVICE - CUSTOM LOGO URL ', logo_url);
@@ -67,6 +108,113 @@ export class WidgetService implements OnInit {
         // console.log('»» WIDGET SERVICE -  Update Widget Project Success NoticationMsg * COMPLETE *');
       });
   }
+
+  // -----------------------------------------------------------------------------------------------------
+  // @ Widget translation
+  // -----------------------------------------------------------------------------------------------------
+
+  // curl -v -X GET -H 'Content-Type:application/json'  http://localhost:3000/5df898a830dbc3c62d3ef16c/labels/it
+
+  /**
+   * Get all labels
+   */
+  public getLabels(): Observable<[]> {
+    // const url = this.BASE_URL + this.projectID + '/labels/it'
+    // https://tiledesk-server-pre.herokuapp.com/5df2240cecd41b00173a06bb/labels2
+
+
+    const url = this.BASE_URL + this.projectID + '/labels2'
+
+
+    console.log('»» WIDGET SERVICE - GET LABELS URL', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
+  public getMockLabels(lang): Observable<[]> {
+    // const url = this.BASE_URL + this.projectID + '/labels/it'
+    const url = "http://demo9971484.mockable.io/" + lang
+
+    console.log('»» WIDGET SERVICE - GET LABELS URL', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
+
+  public createMockLabel(translation) {
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+
+    const options = new RequestOptions({ headers });
+
+
+    const body = { "lang": "it", "key": "key1", "message": "msg1" };
+
+    console.log('»» WIDGET SERVICE create MOCK LABEL body ', body);
+
+    const url = "http://demo9971484.mockable.io/mytranslation"
+
+    return this.http
+      .post(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
+
+  public createLabel(langCode) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = { "lang": langCode};
+
+    console.log('»» WIDGET SERVICE createLabel body ', body);
+
+    const url = this.BASE_URL + this.projectID + '/labels2'
+
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
+  public editLang(translation) {
+    
+    // let url = this.BASE_URL + this.projectID + '/labels2/' + this.projectID
+    let url = this.BASE_URL + '5df2240cecd41b00173a06bb' + '/labels2'
+    
+    console.log('Multilanguage CREATE LABEL - PUT URL ', url);
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = { 'data': translation };
+
+    console.log('Multilanguage - PUT REQUEST BODY ', body);
+
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+
+  }
+
+
+
 
   /**
    * WHEN IN WIDGET-DESIGN IS CHANGED THE PRIMARY COLOR,

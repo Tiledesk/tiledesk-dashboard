@@ -29,54 +29,86 @@ Feel free to ask for support on https://tiledesk.com, using the live chat widget
 
 ## Prerequisite
 
-For Firebase Auth and Firebase Database: create an account at https://firebase.google.com/
-For MongoDB CRUD: install and running tiledesk-api-nodejs (https://github.com/Tiledesk/tiledesk-api-nodejs)
+tiledesk-server installed and running (https://github.com/Tiledesk/tiledesk-server.git)
+                                            
+## Installation
 
 - `git clone https://github.com/Tiledesk/tiledesk-dashboard.git`
 - `cd tiledesk-dashboard`
 - `npm install`
 
-Edit the environment.ts file and create the enviroment.prod.ts in `src/environments/`.
+## Dev configuration 
+
+Configure the environment.ts file in `src/environments/`.
 
 #### environment.ts
 ```typescript
+const serverUrl = 'https://<YOUR_TILEDESK_SERVER>/';
 export const environment = {
+ ...
     production: false,
-    firebaseConfig: {
-        apiKey: 'APIKEY',
-        authDomain: 'PROJECT-ID.firebaseapp.com',
-        databaseURL: 'https://PROJECT-ID.firebaseio.com',
-        projectId: 'PROJECT-ID',
-        storageBucket: 'PROJECT-ID.appspot.com',
-        messagingSenderId: '123456789'
+    VERSION: require('../../package.json').version,
+    widgetUrl: 'https://<YOUR_CHAT21_WEB_WIDGET_URL>:4200/launch.js',
+    remoteConfig: true,
+    remoteConfigUrl: '/firebase-config.json',
+    firebase: {
+        apiKey: 'CHANGEIT',
+        authDomain: 'CHANGEIT',
+        databaseURL: 'CHANGEIT',
+        projectId: 'CHANGEIT',
+        storageBucket: 'CHANGEIT',
+        messagingSenderId: 'CHANGEIT',
+        chat21ApiUrl: '<YOUR_CHAT21_CLOUD_FUNCTION_FIREBASE_ENDPOINT>'
     },
-    mongoDbConfig: {
-        BASE_URL: 'http://localhost:3000/',
-        PROJECTS_BASE_URL: 'http://localhost:3000/projects/',
-        SIGNUP_BASE_URL: 'http://localhost:3000/auth/signup',
-        SIGNIN_BASE_URL: 'http://localhost:3000/auth/signin',
+    ...
+    chat: {
+        CHAT_BASE_URL: 'https://<YOUR_CHAT21_IONIC_URL>/chat',
     },
+    testsite: {
+        testsiteBaseUrl: 'https://<YOUR_CHAT21_WEB_WIDGET_URL>:4200/testi.html'
+    }
 };
+
 ```
+### RUN in dev
+
+Run the app with `ng serve`
+
+## Prod configuration 
+
+For production installation, configure the environment.prod.ts file in `src/environments/`.
+
 #### environment.prod.ts
 ```typescript
+const serverUrl = 'https://api.TILEDESKSERVER/';
 export const environment = {
     production: true,
     firebaseConfig: {
         // same as above, or use a different firebase project to isolate environments
+    }
+    ...
+    chat: {
+        CHAT_BASE_URL: 'https://support.YOURDOMAIN/chat/',
     },
-     mongoDbConfig: {
-        // same as above
-    },
-};
+    testsite: {
+        testsiteBaseUrl: 'https://widget.YOURDOMAIN/testi.html'
+    }
+},
+
 ```
 
-And finally `ng serve`
 
 # Build 
 Run `ng build --prod --base-href ./`
 
-# Deploy on AWS CloudFront and AWS S3
+Copy the build files to your WebServer (Apache or Nginx)
+
+# Deploy
+
+## Deploy to a Web Server
+Copy the content of the dist folder to your Web Server (for example Apache or Nginx)
+
+## Deploy on AWS CloudFront and AWS S3
 
 ```
 aws s3 sync ./dist/ s3://tiledesk-dashboard/dashboard

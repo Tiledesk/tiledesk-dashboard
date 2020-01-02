@@ -128,7 +128,19 @@ export class FaqKbEditAddComponent implements OnInit {
         if (faqKb) {
           this.newBot_name = faqKb.name;
           this.newBot_Id = faqKb._id;
-          this.newBot_External = faqKb.external;
+          // type: "external"
+
+        
+          // this.newBot_External = faqKb.external;       
+
+          if(faqKb.type === 'external' ) {
+            this.newBot_External = true;
+          } else {
+            this.newBot_External = false;
+          }
+
+
+          
 
           // SAVE THE BOT IN LOCAL STORAGE
           this.botLocalDbService.saveBotsInStorage(this.newBot_Id, faqKb);

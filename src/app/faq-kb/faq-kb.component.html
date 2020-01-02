@@ -141,23 +141,6 @@
                       </span>
 
                       <span *ngIf="faqkb?.external" style="font-weight:400; font-size:12px; display:block; color:#7695a5; margin-top: 4px;">
-
-                        <!-- <div style="display: flex;
-                        flex-wrap: wrap;"> 
-                        <div style="	flex-grow: 1;
-                        width: 10%;background: #23a;">
-
-                        </div>
-                        <div style="	flex-grow: 1;
-                        width: 80%; background: #49b;">
-
-                        </div>
-                        <div style="	flex-grow: 1;
-                        width: 10%;background: #23a;">
-
-                        </div>
-                      </div> -->
-
                       
                         <span [ngClass]="{'url-top-position' : faqkb?.url }"> Url: </span> 
                         <span *ngIf="faqkb?.url"  [ngClass]="{'truncate' : i !== rowIndexSelected }" 

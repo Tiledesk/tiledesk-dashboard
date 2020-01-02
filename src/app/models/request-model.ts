@@ -33,12 +33,32 @@ export interface Request {
   rating_message?: string;
   participants?: any;
   lead?: any;
+
+  // wsrequet
+  createdAt?: any;
+  availableAgents?: any;
+  channel?: any;
+  createdBy?: any;
+  department?: any;
+  id_project?: any;
+  language?: any;
+  messages_count?: any;
+  request_id?: any;
+  requester?: any;
+  sourcePage?: any;
+  status?: any;
+  updatedAt?: any;
+  tags?: any;
+  userAgent?: any;
+  _id?: any;
+  // ./wsrequet
+
   hasAgent?(user_id: string): boolean;
 }
 
 export class Request implements Request {
   hasAgent?(current_user_id: string): boolean {
-    // console.log('MODEL REQUEST - USER ID ', current_user_id)
+    // console.log('% »»» REQUEST MODEL - USER ID ', current_user_id)
 
     let found = false
     if (this.agents !== undefined) {

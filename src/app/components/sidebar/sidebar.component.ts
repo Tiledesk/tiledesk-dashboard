@@ -16,6 +16,7 @@ import { environment } from '../../../environments/environment';
 import { UploadImageService } from '../../services/upload-image.service';
 import { TranslateService } from '@ngx-translate/core';
 import { publicKey } from '../../utils/util';
+import { AppConfigService } from '../../services/app-config.service';
 
 declare const $: any;
 
@@ -125,8 +126,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     prjc_trial_days_left: number
     prjc_trial_days_left_percentage: number
     isVisible: boolean;
-    
 
+    storageBucket: string;
 
     constructor(
         private requestsService: RequestsService,
@@ -139,12 +140,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         private usersLocalDbService: UsersLocalDbService,
         private notify: NotifyService,
         private uploadImageService: UploadImageService,
-        private translate: TranslateService
+        private translate: TranslateService,
+        public appConfigService: AppConfigService
     ) { console.log('!!!!! HELLO SIDEBAR') }
 
 
     ngOnInit() {
-        
+
         this.translateChangeAvailabilitySuccessMsg();
         this.translateChangeAvailabilityErrorMsg();
 
@@ -185,12 +187,19 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.getCurrentRoute();
 
         this.getOSCODE();
+        this.getStorageBucket();
+    }
+
+    getStorageBucket() {
+        const firebase_conf = this.appConfigService.getConfig().firebase;
+        this.storageBucket = firebase_conf['storageBucket'];
+        console.log('STORAGE-BUCKET Sidebar ', this.storageBucket)
     }
 
     getOSCODE() {
         console.log('eoscode', this.eos)
 
-        if (this.eos  && this.eos === publicKey) {
+        if (this.eos && this.eos === publicKey) {
 
             this.isVisible = true;
             console.log('eoscode isVisible ', this.isVisible);
@@ -266,7 +275,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     this.HOME_ROUTE_IS_ACTIVE = false;
                 }
 
-                
+
 
 
 
@@ -633,8 +642,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     goToBlogChangelog() {
-       const url = 'https://www.tiledesk.com/category/changelog/';
-       window.open(url, '_blank');
+        const url = 'https://www.tiledesk.com/category/changelog/';
+        window.open(url, '_blank');
     }
 
 

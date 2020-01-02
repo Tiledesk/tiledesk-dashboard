@@ -10,6 +10,7 @@ import { UploadImageService } from '../services/upload-image.service';
 import { NotifyService } from '../core/notify.service';
 import * as firebase from 'firebase/app';
 import { Router } from '@angular/router';
+import { AppConfigService } from '../services/app-config.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -36,13 +37,16 @@ export class UserProfileComponent implements OnInit {
   userProfileImageExist: boolean;
   userImageHasBeenUploaded: boolean;
 
+  storageBucket: string;
+
   constructor(
     public auth: AuthService,
     private _location: Location,
     private usersService: UsersService,
     public notify: NotifyService,
     private router: Router,
-    private uploadImageService: UploadImageService
+    private uploadImageService: UploadImageService,
+    public appConfigService: AppConfigService
   ) { }
 
   ngOnInit() {
@@ -54,8 +58,15 @@ export class UserProfileComponent implements OnInit {
     this.checkUserImageUploadIsComplete()
 
     // used when the page is refreshed
-    this.checkUserImageExist()
+    this.checkUserImageExist();
+    this.getStorageBucket();
 
+  }
+
+  getStorageBucket() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    console.log('STORAGE-BUCKET User profile ', this.storageBucket)
   }
 
   checkUserImageExist() {
@@ -127,7 +138,7 @@ export class UserProfileComponent implements OnInit {
 
   // verifyUserProfileImageOnStorage(user_id) {
   //   // tslint:disable-next-line:max-line-length
-  //   const url = 'https://firebasestorage.googleapis.com/v0/b/chat-v2-dev.appspot.com/o/profiles%2F' + user_id + '%2Fphoto.jpg?alt=media';
+  //   const url = 'https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F' + user_id + '%2Fphoto.jpg?alt=media';
   //   const self = this;
   //   this.verifyImageURL(url, function (imageExists) {
 

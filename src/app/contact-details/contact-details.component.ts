@@ -352,7 +352,8 @@ export class ContactDetailsComponent implements OnInit {
   }
 
   goToRequestMsgs(request_recipient: string) {
-    this.router.navigate(['project/' + this.projectId + '/request/' + request_recipient + '/messages']);
+    // this.router.navigate(['project/' + this.projectId + '/request/' + request_recipient + '/messages']);
+    this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_recipient + '/messages']);
   }
 
   goToEditContact(requester_id) {

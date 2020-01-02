@@ -5,6 +5,8 @@ import { UsersService } from 'app/services/users.service';
 import { AuthService } from 'app/core/auth.service';
 import { DepartmentService } from 'app/services/mongodb-department.service';
 import { Router } from '@angular/router';
+import { WsRequestsService } from '../../services/websocket/ws-requests.service';
+import { AppConfigService } from '../../services/app-config.service';
 
 @Component({
   selector: 'appdashboard-realtime',
@@ -36,13 +38,18 @@ export class RealtimeComponent implements OnInit {
   id_project: any;
 
   departments: any;
-  
 
-  constructor(private requestsService:RequestsService,
-              private usersService:UsersService,
-              private auth:AuthService,
-              private departmentService:DepartmentService,
-              private router: Router) { }
+  storageBucket: string;
+
+  constructor(
+    private requestsService: RequestsService,
+    private usersService: UsersService,
+    private auth: AuthService,
+    private departmentService: DepartmentService,
+    private router: Router,
+    public wsRequestsService: WsRequestsService,
+    public appConfigService: AppConfigService
+  ) { }
 
   ngOnInit() {
     this.getCurrentProject();
@@ -51,6 +58,13 @@ export class RealtimeComponent implements OnInit {
     this.getCountOf_AllRequestsForAgent(); //request for agent
     this.getCountOf_AllRequestsForDept(); //request for department
     this.getlastMonthRequetsCount(); //last mounth request count
+    this.getStorageBucket();
+  }
+
+  getStorageBucket() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    console.log('STORAGE-BUCKET Realtime ', this.storageBucket)
   }
 
   ngOnDestroy() {
@@ -69,12 +83,12 @@ export class RealtimeComponent implements OnInit {
     });
   }
 
-   /**
-   * ******************************************************************************************
-   * ====== COUNT OF SERVED, UNSERVED AND OF THE ACTIVE (i.e. SERVED + UNSERVED) REQUESTS ======
-   * ******************************************************************************************
-   * --------------------------------NOT USED--------------------------------------------------
-   */
+  /**
+  * ******************************************************************************************
+  * ====== COUNT OF SERVED, UNSERVED AND OF THE ACTIVE (i.e. SERVED + UNSERVED) REQUESTS ======
+  * ******************************************************************************************
+  * --------------------------------NOT USED--------------------------------------------------
+  */
   servedAndUnservedRequestsCount() {
     this.subscription = this.requestsService.requestsList_bs.subscribe((requests) => {
       this.date = new Date();
@@ -115,7 +129,8 @@ export class RealtimeComponent implements OnInit {
    * *****************************************************************************************************
    */
   globalServedAndUnservedRequestsCount() {
-    this.subscription = this.requestsService.allRequestsList_bs.subscribe((global_requests) => {
+    // this.subscription = this.requestsService.allRequestsList_bs.subscribe((global_requests) => {
+    this.subscription = this.wsRequestsService.wsRequestsList$.subscribe((global_requests) => {
       this.date = new Date();
       console.log('!!! ANALYTICS - CURRENT DATE : ', this.date);
       console.log('!!! ANALYTICS - SUBSCRIBE TO REQUEST SERVICE - GLOBAL REQUESTS LIST: ', global_requests);
@@ -127,10 +142,12 @@ export class RealtimeComponent implements OnInit {
         let count_globalServed = 0
         global_requests.forEach(g_r => {
 
-          if (g_r.support_status === 100) {
+          // if (g_r.support_status === 100) {
+          if (g_r.status === 100) {
             count_globalUnserved = count_globalUnserved + 1;
           }
-          if (g_r.support_status === 200) {
+          // if (g_r.support_status === 200) {
+          if (g_r.status === 200) {
             count_globalServed = count_globalServed + 1
           }
         });
@@ -170,7 +187,7 @@ export class RealtimeComponent implements OnInit {
     });
   }
 
-  
+
   /**
    * ********************************************************************************************
    * ========================== COUNT OF ** ALL ** REQUESTS X AGENT =============================
@@ -218,7 +235,9 @@ export class RealtimeComponent implements OnInit {
 
   getFlatMembersArrayFromAllRequestsAndRunGetOccurrence() {
     console.log('!!! ANALYTICS - !!!!! CALL GET COUNT OF REQUEST FOR AGENT');
-    this.subscription = this.requestsService.allRequestsList_bs.subscribe((requests) => {
+
+    // this.subscription = this.requestsService.allRequestsList_bs.subscribe((requests) => {
+    this.subscription = this.wsRequestsService.wsRequestsList$.subscribe((requests) => {
       console.log('!!! ANALYTICS - !!!!! SUBSCRIPTION TO ALL-THE-REQUESTS-LIST-BS');
 
       if (requests) {
@@ -229,7 +248,8 @@ export class RealtimeComponent implements OnInit {
          * CREATES AN UNIQUE ARRAY FROM ALL THE ARRAYS OF 'MEMBERS' THAT ARE NESTED IN THE ITERATED REQUESTS  */
         let flat_members_array = [];
         for (let i = 0; i < requests.length; i++) {
-          flat_members_array = flat_members_array.concat(Object.keys(requests[i].members));
+          // flat_members_array = flat_members_array.concat(Object.keys(requests[i].members));
+          flat_members_array = flat_members_array.concat(requests[i].participants);
         }
         // Result of the concatenation of the single arrays of members
         console.log('!!! ANALYTICS - !!!!! FLAT-MEMBERS-ARRAY  ', flat_members_array)
@@ -339,15 +359,21 @@ export class RealtimeComponent implements OnInit {
       console.log('!!! ANALYTICS ALL REQUESTS X DEPT - ARRAY OF DEPTS IDs: ', project_depts_id_array);
 
 
-      this.subscription = this.requestsService.allRequestsList_bs.subscribe((global_requests) => {
+      // this.subscription = this.requestsService.allRequestsList_bs.subscribe((global_requests) => {
+      this.subscription = this.wsRequestsService.wsRequestsList$.subscribe((global_requests) => {
+
         // console.log('!!! ANALYTICS ALL REQUESTS X DEPT - !!!!! SUBSCRIPTION TO ALL-THE-REQUESTS-LIST-BS ', global_requests);
 
         const requests_depts_id_array = []
         if (global_requests) {
           global_requests.forEach(g_r => {
 
-            if (g_r.attributes) {
-              requests_depts_id_array.push(g_r.attributes.departmentId)
+            // if (g_r.attributes) {
+            //   requests_depts_id_array.push(g_r.attributes.departmentId)
+            // }
+            if (g_r.department) { 
+
+              requests_depts_id_array.push(g_r.department._id);
             }
 
           });

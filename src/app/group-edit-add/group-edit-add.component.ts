@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { UsersService } from '../services/users.service';
 import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
+import { AppConfigService } from '../services/app-config.service';
 
 @Component({
   selector: 'app-group-edit-add',
@@ -58,6 +59,7 @@ export class GroupEditAddComponent implements OnInit {
   removeGroupMemberErrorNoticationMsg: string;
 
   count: number;
+  storageBucket: string;
 
   constructor(
     private router: Router,
@@ -68,6 +70,7 @@ export class GroupEditAddComponent implements OnInit {
     private usersService: UsersService,
     private notify: NotifyService,
     private translate: TranslateService,
+    public appConfigService: AppConfigService
   ) { }
 
   ngOnInit() {
@@ -82,6 +85,13 @@ export class GroupEditAddComponent implements OnInit {
     this.detectsCreateEditInTheUrl();
 
     this.getCurrentProject();
+    this.getStorageBucket();
+  }
+
+  getStorageBucket() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    console.log('STORAGE-BUCKET Group edit-add ', this.storageBucket)
   }
 
   // TRANSLATION

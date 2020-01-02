@@ -1,6 +1,6 @@
 {
   "name": "@tiledesk/tiledesk-dashboard",
-  "version": "1.0.39-beta",
+  "version": "2.0.0-beta.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --aot",
@@ -34,6 +34,7 @@
     "@ngx-translate/http-loader": "^2.0.1",
     "@syncfusion/ej2-angular-heatmap": "^17.1.47",
     "@types/node": "^11.11.3",
+    "@types/ua-parser-js": "^0.7.33",
     "amazing-time-picker": "^1.5.3",
     "angular2-moment": "^1.8.0",
     "arrive": "2.4.1",
@@ -57,6 +58,7 @@
     "perfect-scrollbar": "1.1.0",
     "rxjs": "^5.5.4",
     "tslib": "^1.9.0",
+    "ua-parser-js": "^0.7.20",
     "web-animations-js": "^2.3.1",
     "zone.js": "0.8.4"
   },
