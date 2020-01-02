@@ -25,7 +25,7 @@
 <div *ngIf="project" class="logo" style="background-color:#1e2129!important; padding-bottom: 5px;">
   <a class="simple-text" style="text-transform: none; padding-left: 40px;">
     <!-- routerLink="project/{{ project._id }}/home" -->
-    
+
     <div class="logo-img" (click)="goToHome()" style="cursor: pointer;">
       <!-- assets/img/tiledesk-logo_white.svg -->
       <!-- assets/img/tiledesk-logo_white_orange.svg -->
@@ -34,10 +34,10 @@
       <img style="width:45%; top:20px;left: 26px" src="assets/img/tiledesk-logo_white_orange.svg" />
     </div>
 
-    <div class="link-to-tiledesk-changelog-blog" (click)="goToBlogChangelog()" style="position: absolute; top: 18px; right: 25px; cursor:pointer">
-      <div class="news-rocket"  style="cursor: pointer;">
-        <img style="height: auto; width: 18px;"
-          src="assets/img/t_rocket.svg"/>
+    <div class="link-to-tiledesk-changelog-blog" (click)="goToBlogChangelog()"
+      style="position: absolute; top: 18px; right: 25px; cursor:pointer">
+      <div class="news-rocket" style="cursor: pointer;">
+        <img style="height: auto; width: 18px;" src="assets/img/t_rocket.svg" />
       </div>
       <div class="flame_icon">1 </div>
     </div>
@@ -326,7 +326,7 @@
             <!-- <span class="_badge" [ngClass]="{'change-badge-bckgrnd' : ANALITYCS_ROUTE_IS_ACTIVE === true}">New</span> -->
             <p class="onBlackBckgrnd">
               <!-- Analytics -->
-            
+
               {{ 'Analytics.AnalyticsTITLE' | translate }}
             </p>
           </a>
@@ -396,14 +396,14 @@
       </li>
 
       <!-- TRIGGER -->
-      <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
-          <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/trigger">
-            <p class="onBlackBckgrnd">
-             <span class="sidebar-mini">T </span>
-             {{ 'Trigger.Trigger' | translate }} 
-            </p>
-          </a>
-        </li>
+      <!-- <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
+        <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/trigger">
+          <p class="onBlackBckgrnd">
+            <span class="sidebar-mini">T </span>
+            {{ 'Trigger.Trigger' | translate }}
+          </p>
+        </a>
+      </li> -->
 
       <!-- USERS (ALIAS MEMBERS) -->
       <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">

@@ -112,6 +112,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   isSubscribedToMsgs = false;
 
+  clientStringCutted: string;
+  showAllClientString = false;
+
+  senderAuthInfoString: string;
+  senderAuthInfoStringCutted: string;
+  showAllsenderAuthInfoString = false;
+
+  showAllSourcePageString = false;
+  sourcePage: string;
+  sourcePageCutted: string;
+
   /**
    * Constructor
    * 
@@ -340,6 +351,21 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
+
+  toggleShowAllClientString() {
+    this.showAllClientString = !this.showAllClientString;
+    console.log('SHOW ALL TEXT OF THE ATTRIBUTES > CLIENT ', this.showAllClientString)
+  }
+
+  toggleShowAllsenderAuthInfoString() {
+    this.showAllsenderAuthInfoString = !this.showAllsenderAuthInfoString;
+    console.log('SHOW ALL TEXT OF THE ATTRIBUTES > SENDER AUTH INFO ', this.showAllsenderAuthInfoString);
+  }
+  toggleShowAllSourcePageString() {
+    this.showAllSourcePageString = !this.showAllSourcePageString;
+    console.log('SHOW ALL TEXT OF THE ATTRIBUTES > SOURCR PAGE ', this.showAllSourcePageString);
+  }
+
   /**
    * Get the request published
    */
@@ -378,6 +404,74 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         }
 
         console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById REQUESTER ID (DA LEAD)', this.requester_id);
+
+        if (this.request.attributes) {
+    
+          if (this.request.attributes.client) {
+            console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > CLIENT ', this.request.attributes.client);
+            const stripHere = 30;
+            this.clientStringCutted = this.request.attributes.client.substring(0, stripHere) + '...';
+            console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > CLIENT CUTTED ', this.clientStringCutted);
+          }
+
+          if (this.request.attributes.departmentId) {
+            console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > DEPT ID ', this.request.attributes.departmentId);
+   
+          }
+
+          if (this.request.attributes.departmentName) {
+            console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > DEPT NAME ', this.request.attributes.departmentName);
+   
+          }
+
+          if (this.request.attributes.projectId) {
+            console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > PROJECT ID ', this.request.attributes.projectId);
+   
+          }
+
+
+          if (this.request.attributes.requester_id) {
+            console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > REQUESTER ID ', this.request.attributes.requester_id);
+   
+          }
+
+          if (this.request.attributes.sourcePage) {
+            console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > SOURCE PAGE ', this.request.attributes.sourcePage);
+            this.sourcePage = this.request.attributes.sourcePage;
+
+            const stripHere = 20;
+            
+            this.sourcePageCutted = this.request.attributes.sourcePage.substring(0, stripHere) + '...';
+            console.log('%%% Ws-REQUESTS-Msgs getWsRequestById - ATTRIBUTES > SOURCR PAGE CUTTED: ', this.sourcePage);
+   
+          }
+
+          if (this.request.attributes.userEmail) {
+            console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > USER EMAIL ', this.request.attributes.userEmail);
+   
+          }
+
+          if (this.request.attributes.userFullname) {
+            console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > USER FULLNAME ', this.request.attributes.userFullname);
+   
+          }
+
+          if (this.request.attributes.senderAuthInfo) {
+            console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > SENDER AUTH INFO ', this.request.attributes.senderAuthInfo);
+
+           
+            const _senderAuthInfoString = JSON.stringify(this.request.attributes.senderAuthInfo)
+
+            // add a space after each comma
+            this.senderAuthInfoString = _senderAuthInfoString.split(',').join(', ')
+            console.log('%%% Ws-REQUESTS-Msgs - > SENDER AUTH INFO (STRING): ', this.senderAuthInfoString);
+
+            const stripHere = 20;
+            this.senderAuthInfoStringCutted = this.senderAuthInfoString.substring(0, stripHere) + '...';
+   
+          }
+          
+        }
 
 
 

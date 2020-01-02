@@ -745,6 +745,191 @@
               </div>
 
 
+                         <!-- 
+              // ----------------------------------------------------------------
+              // @ attributes
+              // ---------------------------------------------------------------- -->
+              <div class="row" style="margin-top:15px">
+                <div class="col-sm-12" style="border-top: 1px solid #e1eef4;">
+                  <p class="row-header" style="margin-bottom: 0px;">
+                    <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
+                    <span style="vertical-align: middle">
+                      {{ "Attributes" | translate }}
+                    </span>
+                  </p>
+                  <p class="row-body" style="margin-bottom:0px; word-wrap: break-word;">
+
+                    <!-- ------====== CLIENT ======------ -->
+                    <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
+                      Client:
+                      <span *ngIf="!showAllClientString" class="attribute" style="white-space: nowrap">
+                        {{ clientStringCutted }}
+                        <span>
+                          <i class="material-icons"
+                            style="cursor: pointer; color: #039be5; font-size:18px; position:relative; top:5px"
+                            (click)="toggleShowAllClientString()">
+                            keyboard_arrow_down
+                          </i>
+                        </span>
+                      </span>
+
+                      <span *ngIf="showAllClientString" class="attribute" style="">
+                        {{ request?.attributes?.client }}
+                        <span>
+                          <i class="material-icons"
+                            style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:5px"
+                            (click)="toggleShowAllClientString()">
+                            keyboard_arrow_up
+                          </i>
+                        </span>
+                      </span>
+
+                    </p>
+
+                    <!-- ------====== DEPARTMENT NAME ======------ -->
+                    <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
+                      <!-- <strong> -->
+                      {{ "Department" | translate }}:
+                      <!-- </strong> -->
+
+                      <span class="attribute" style="cursor: pointer" (click)="toggleShowAllClientString()">
+                        {{ request?.attributes?.departmentName }}
+                      </span>
+                    </p>
+
+                    <!-- ------====== DEPARTMENT ID ======------ -->
+                    <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
+                      <!-- <strong> -->
+                      {{ "DepartmentId" | translate }}:
+                      <!-- </strong> -->
+
+                      <span class="attribute">
+                        {{ request?.attributes?.departmentId }}
+                      </span>
+                    </p>
+
+                    <!-- ------====== PROJECT ID ======------ -->
+                    <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
+                      <!-- <strong> -->
+                      {{ "ProjectId" | translate }}:
+                      <!-- </strong> -->
+
+                      <span class="attribute">
+                        {{ request?.attributes?.projectId }}
+                      </span>
+                    </p>
+
+                    <!-- ------====== REQUESTER ID ======------ -->
+                    <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
+                      <!-- <strong> -->
+                      {{ "VisitorsPage.RequesterId" | translate }}
+                      <!-- </strong> -->
+
+                      <span class="attribute">
+                        {{ request?.attributes?.requester_id }}
+                      </span>
+                    </p>
+
+
+
+
+                    <!-- ------====== SOURCE PAGE  ======------ -->
+                    <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
+                      <!-- <strong> -->
+                      {{ "RequestMsgsPage.SourcePage" | translate }}:
+                      <!-- </strong> -->
+
+                      <span *ngIf="!showAllSourcePageString" class="attribute" style="white-space: nowrap">
+                        {{ sourcePageCutted }}
+
+                        <span>
+                          <i class="material-icons"
+                            style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:5px"
+                            (click)="toggleShowAllSourcePageString()">
+                            keyboard_arrow_down
+                          </i>
+                        </span>
+                      </span>
+
+                      <span *ngIf="showAllSourcePageString" class="attribute">
+                        <a href="{{sourcePage}}" target="_blank">{{sourcePage}}</a>
+                        <span>
+                          <i class="material-icons"
+                            style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:5px"
+                            (click)="toggleShowAllSourcePageString()">
+                            keyboard_arrow_up
+                          </i>
+                        </span>
+                      </span>
+                    </p>
+
+                    <!-- ------====== USER EMAIL ======------ -->
+                    <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
+                      <!-- <strong> -->
+                      {{ "UserEmail" | translate }}:
+                      <!-- </strong> -->
+
+                      <span class="attribute">
+                        <span *ngIf="request?.attributes?.userEmail">
+                          {{ request?.attributes?.userEmail }}
+                        </span>
+                        <span *ngIf="!request?.attributes?.userEmail">
+                          n.a.
+                        </span>
+                      </span>
+                    </p>
+
+                    <!-- ------====== USER FULLNAME ======------ -->
+                    <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
+                      <!-- <strong> -->
+                      {{ "UserFullName" | translate }}:
+                      <!-- </strong> -->
+
+                      <span class="attribute">
+                        <span *ngIf="request?.attributes?.userFullname">
+                          {{ request?.attributes?.userFullname }}
+                        </span>
+                        <span *ngIf="!request?.attributes?.userFullname">
+                          n.a.
+                        </span>
+                      </span>
+                    </p>
+
+                    <!-- ------====== SENDER AUTH INFO ======------ -->
+                    <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
+                      <!-- <strong> -->
+                      Sender Auth Info:
+                      <!-- </strong> -->
+
+                      <span *ngIf="!showAllsenderAuthInfoString" class="attribute" style="white-space: nowrap">
+                        {{ senderAuthInfoStringCutted }}
+
+                        <span>
+                          <i class="material-icons"
+                            style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:5px"
+                            (click)="toggleShowAllsenderAuthInfoString()">
+                            keyboard_arrow_down
+                          </i>
+                        </span>
+                      </span>
+                      <span *ngIf="showAllsenderAuthInfoString" class="attribute">
+                        {{ senderAuthInfoString }}
+
+                        <span>
+                          <i class="material-icons"
+                            style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:5px"
+                            (click)="toggleShowAllsenderAuthInfoString()">
+                            keyboard_arrow_up
+                          </i>
+                        </span>
+                      </span>
+                    </p>
+
+                </div>
+              </div>
+
+
+
               <!-- <p style="margin-bottom: 3px; color:#566787"> 
                   <strong>
                     {{ "RequestMsgsPage.RequesterId" | translate }}

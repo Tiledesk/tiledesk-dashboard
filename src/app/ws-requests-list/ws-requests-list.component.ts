@@ -161,7 +161,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   onChangeDepts() {
     this.hasFiltered = true
-    this.getWsRequests$();
+    // this.getWsRequests$();
     console.log('% »»» WebSocketJs WF WS-RL - onChangeDepts dept id', this.selectedDeptId)
     // this.wsRequestsUnserved = [];
     // this.wsRequestsServed = [];
@@ -593,20 +593,20 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         console.log('% »»» WebSocketJs WF WS-RL - WsRequestsList ALL-REQUESTS: ', wsrequests);
 
 
-        if (this.hasFiltered === true) {
-          // this.ws_requests = [];
+        // if (this.hasFiltered === true) {
+        //   // this.ws_requests = [];
 
-          console.log('% »»» WebSocketJs WF WS-RL - WsRequestsList QUI SI ');
-          this.ws_requests.filter(r => {
-            console.log('% »»» WebSocketJs WF WS-RL - WsRequestsList filter r department : ', r.department._id);
+        //   console.log('% »»» WebSocketJs WF WS-RL - WsRequestsList QUI SI ');
+        //   this.ws_requests.filter(r => {
+        //     console.log('% »»» WebSocketJs WF WS-RL - WsRequestsList filter r department : ', r.department._id);
 
-            // if (r['department']['_id'] === this.selectedDeptId) {
-            //   return true
-            // } else {
-            //   return false
-            // }
-          });
-        }
+        //     // if (r['department']['_id'] === this.selectedDeptId) {
+        //     //   return true
+        //     // } else {
+        //     //   return false
+        //     // }
+        //   });
+        // }
 
         if (this.ONLY_MY_REQUESTS === false) {
 
