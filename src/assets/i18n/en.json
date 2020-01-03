@@ -376,6 +376,9 @@
     "it": "Italian",
     "ChooseALanguage": "Choose a language",
     "Delete":  "Delete",
+    "NoUnservedRequests":"No Unserved Requests", 
+    "NoServedRequests":"No Served Requests", 
+    "NoRequests":"No Requests", 
     "Pricing": {
         "Operators": "Operators",
         "UpgradePlan": "Upgrade Plan",
@@ -834,7 +837,7 @@
         "Archive": "Archive",
         "Actions": "Actions",
         "tootipArchiveRequest": "Close request",
-        "NoVisitor": "No Visitor!",
+        "NoVisitor": "No active visitors",
         "ClickHereToSimulate": "Click here to simulate a visitor",
         "SimulateVisitor": "Simulate visitor",
         "RequestId": "Request Id:",

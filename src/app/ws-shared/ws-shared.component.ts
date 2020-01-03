@@ -19,7 +19,8 @@ export class WsSharedComponent implements OnInit {
   department_name: string;
   department_id: string;
   source_page: string;
-
+  participantsInRequests: any;
+  depts_array_noduplicate = [];
   constructor(
     public botLocalDbService: BotLocalDbService,
     public usersLocalDbService: UsersLocalDbService
@@ -174,7 +175,7 @@ export class WsSharedComponent implements OnInit {
   }
 
   currentUserIdIsInParticipants(participants: any, currentUserID: string, request_id): boolean {
-  
+
     let currentUserIsJoined = false
     participants.forEach((participantID: string) => {
 
@@ -188,6 +189,178 @@ export class WsSharedComponent implements OnInit {
     });
     // console.log('%%% Ws SHARED »»»»»»» CURRENT USER ', currentUserID, ' is JOINED ?', currentUserIsJoined, 'to the request ', request_id);
     return currentUserIsJoined;
+  }
+
+  getParticipantsInRequests(ws_requests) {
+
+    const participantsId = [];
+
+    this.participantsInRequests = [];
+
+    ws_requests.forEach(request => {
+
+      request.participants.forEach(participant => {
+
+
+        // WITH THE PURPOSE OF DISPLAYING IN THE "FILTER FOR AGENTS" ONLY THE AGENTS (WITHOUT DUPLICATES) THAT ARE PRESENT IN THE REQUESTS BELOW THE FILTER
+        // I CREATE AN ARRAY OF IDS OF PARTICIPANTS:  participantsId
+        // IF THE ID OF THE PARTICIPANT DOES NOT EXISTS IN THE "ARRAY participantsId" THE FOR CYCLE PROCEEDS BUILDING 
+        // THE ARRAY participantsInRequests
+
+        if (participantsId.indexOf(participant) === -1) {
+
+          participantsId.push(participant);
+
+          const participantIsBot = participant.includes('bot_')
+          if (participantIsBot === true) {
+
+            const bot_id = participant.slice(4);
+            // console.log('!!! NEW REQUESTS HISTORY - THE PARTICIP', member_id, 'IS A BOT ', participantIsBot, ' - ID ', bot_id);
+
+            const bot = this.botLocalDbService.getBotFromStorage(bot_id);
+            // console.log('% »»» WebSocketJs WF agentsArrayBuildFromRequests bot', bot);
+
+            if (bot) {
+              this.participantsInRequests.push({ '_id': participant, 'firstname': bot.name });
+            } else {
+              this.participantsInRequests.push({ '_id': participant, 'firstname': participant });
+            }
+
+          } else {
+
+            const user = this.usersLocalDbService.getMemberFromStorage(participant);
+            // console.log('% »»» WebSocketJs WF agentsArrayBuildFromRequests user', user);
+
+            if (user) {
+              this.participantsInRequests.push({ '_id': participant, 'firstname': user.firstname, 'lastname': user.lastname })
+            } else {
+
+              this.participantsInRequests.push({ '_id': participant, 'firstname': participant, })
+            }
+
+
+          }
+        }
+      });
+    });
+
+    console.log('% »»» WebSocketJs WF agentsArrayBuildFromRequests participantsId ', participantsId);
+    console.log('% »»» WebSocketJs WF agentsArrayBuildFromRequests ', this.participantsInRequests);
+  }
+
+
+  // -----------------------------------------------------------------------------------------------------
+  // @ departments in Requests & Count of depts in requests
+  // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Count of depts in requests !! no more get from request attributes but from department
+   * 
+   * @param requests_array 
+   */
+  getDeptsAndCountOfDeptsInRequests(requests_array) {
+    const depts_array = [];
+    const deptsIDs = [];
+
+    const deptsNames = [];
+
+    requests_array.forEach((request, index) => {
+      // if (request && request.attributes) {
+      if (request && request.department) {
+        // console.log('% WsRequestsList  - REQUEST ', request, '#', index);
+
+        /**
+         * CREATES AN ARRAY WITH ALL THE DEPTS RETURNED IN THE REQUESTS OBJCTS
+         * (FROM THIS IS CREATED requestsDepts_uniqueArray)
+         */
+
+        // depts_array.push({ '_id': request.attributes.departmentId, 'deptName': request.attributes.departmentName }); 
+        depts_array.push({ '_id': request.department._id, 'deptName': request.department.name });
+
+
+        /**
+         * CREATES AN ARRAY WITH * ONLY THE IDs * OF THE DEPTS RETURNED IN THE REQUESTS OBJCTS
+         * THIS IS USED TO GET THE OCCURRENCE IN IT OF THE ID OF THE ARRAY this.requestsDepts_array
+         */
+
+        /**
+         * USING DEPT ID  */
+        // deptsIDs.push(request.attributes.departmentId)
+        deptsIDs.push(request.department._id);
+
+        /**
+         * USING DEPT NAME  */
+        // deptsNames.push(request.attributes.departmentName)
+      } else {
+        // console.log('REQUESTS-LIST COMP - REQUEST (else)', request, '#', index);
+
+      }
+    });
+    // console.log('REQUESTS-LIST COMP - DEPTS ARRAY NK', depts_array);
+    // console.log('REQUESTS-LIST COMP - DEPTS ID ARRAY NK', deptsIDs);
+    // console.log('REQUESTS-LIST COMP - DEPTS NAME ARRAY NK', deptsNames)
+
+    /**
+     * *********************************************************************
+     * ************************* REMOVE DUPLICATE **************************
+     * *********************************************************************
+     * */
+
+    /**
+     * USING DEPT ID  */
+    this.depts_array_noduplicate = this.removeDuplicates(depts_array, '_id');
+
+    /**
+     * USING DEPT NAME  */
+    //  this.depts_array_noduplicate = this.removeDuplicates(depts_array, 'deptName');
+
+    console.log('% WsRequestsList - REQUESTSxDEPTS - DEPTS ARRAY [no duplicate] NK', this.depts_array_noduplicate)
+
+    // GET OCCURRENCY OF THE DEPT ID IN THE ARRAY OF THE TOTAL DEPT ID
+    this.depts_array_noduplicate.forEach(dept => {
+
+      /**
+       * USING DEPT ID  */
+      this.getDeptIdOccurrence(deptsIDs, dept._id)
+
+      /**
+       * USING DEPT NAME  */
+      // this.getDeptNameOccurrence(deptsNames, dept.deptName)
+    });
+  }
+
+  removeDuplicates(originalArray, prop) {
+    const newArray = [];
+    const lookupObject = {};
+
+    // tslint:disable-next-line:forin
+    for (const i in originalArray) {
+      lookupObject[originalArray[i][prop]] = originalArray[i];
+    }
+
+    // tslint:disable-next-line:forin
+    for (const i in lookupObject) {
+      newArray.push(lookupObject[i]);
+    }
+    return newArray;
+  }
+
+  getDeptIdOccurrence(array_of_all_depts_ids, dept_id) {
+    // console.log('!!! ANALYTICS - ALL REQUESTS X DEPT - GET DEP OCCURRENCE FOR DEPTS ');
+    const newUnicArray = []
+    let count = 0;
+    array_of_all_depts_ids.forEach((v) => (v === dept_id && count++));
+    // console.log('% WsRequestsList - REQUESTSxDEPTS - DEPT - #', count, ' REQUESTS ASSIGNED TO DEPT ', dept_id);
+    let i
+    for (i = 0; i < this.depts_array_noduplicate.length; ++i) {
+
+      for (const dept of this.depts_array_noduplicate) {
+        if (dept_id === dept._id) {
+          dept.requestsCount = count
+        }
+      }
+      // console.log('% WsRequestsList - REQUESTSxDEPTS DEPTS ARRAY [no duplicate] NK * 2 * : ', this.depts_array_noduplicate);
+    }
   }
 
 

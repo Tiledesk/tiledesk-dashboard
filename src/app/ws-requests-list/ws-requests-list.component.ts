@@ -37,7 +37,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   wsRequestsUnserved: any;
   projectId: string;
   zone: NgZone;
-  SHOW_SIMULATE_REQUEST_BTN: boolean;
+  SHOW_SIMULATE_REQUEST_BTN = false;
   showSpinner = true;
 
   ws_requests: any[] = [];
@@ -58,7 +58,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   train_bot_sidebar_height: any;
 
   currentUserID: string;
-  depts_array_noduplicate = [];
+
 
   ONLY_MY_REQUESTS: boolean = false;
 
@@ -83,6 +83,10 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   TESTSITE_BASE_URL = environment.testsite.testsiteBaseUrl;
   projectName: string;
 
+  participantsInRequests: any;
+  deptsArrayBuildFromRequests: any;
+
+  filter: any[] = [{ 'deptId': null }, { 'agentId': null }];
   hasFiltered = false;
 
   /**
@@ -137,11 +141,12 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     // this.getRequestsTotalCount()
 
     this.getStorageBucket();
-    this.getAllProjectUsersAndBot();
+    // this.getAllProjectUsersAndBot();
+    // this.getDepartments();
 
     // const teamContentEl = <HTMLElement>document.querySelector('.team-content');
     // const perfs = new PerfectScrollbar(teamContentEl);
-    this.getDepartments();
+
 
     // this.selectedDeptId = '';
     // this.selectedAgentId = '';
@@ -159,48 +164,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     });
   }
 
-  onChangeDepts() {
-    this.hasFiltered = true
-    // this.getWsRequests$();
-    console.log('% »»» WebSocketJs WF WS-RL - onChangeDepts dept id', this.selectedDeptId)
-    // this.wsRequestsUnserved = [];
-    // this.wsRequestsServed = [];
-    // console.log('% »»» WebSocketJs WF WS-RL - onChangeDepts ws_requests', this.ws_requests)
 
-
-    // const myClonedArray = Object.assign([], this.ws_requests);
-    // console.log('% »»» WebSocketJs WF WS-RL - myClonedArray ', myClonedArray)
-
-    // const results = []
-    // console.log('% »»» WebSocketJs WF WS-RL - onChangeDepts results', results)
-    // this.ws_requests = results
-    // myClonedArray.forEach(wsr => {
-    //   console.log('% »»» WebSocketJs WF WS-RL - onChangeDepts wsr', wsr)
-    //   if (wsr.department._id === this.selectedDeptId) {
-    //     results.push(wsr)
-    //   }
-    // });
-
-    // this.ws_requests = this.ws_requests.filter((obj: any) => {
-    //   if (this.selectedDeptId && obj) {
-    //     return obj.department._id === this.selectedDeptId;
-    //   }
-    // });
-
-  }
-
-  clearDeptFilter() {
-    console.log('% »»» WebSocketJs WF WS-RL - clearDeptFilter selectedDeptId', this.selectedDeptId)
-  }
-
-  onChangeAgent() {
-
-    console.log('% »»» WebSocketJs WF WS-RL - onChangeAgent selectedAgentId', this.selectedAgentId)
-  }
-
-  clearAgentFilter() {
-    console.log('% »»» WebSocketJs WF WS-RL - clearAgentFilter selectedAgentId', this.selectedAgentId)
-  }
 
   getStorageBucket() {
     const firebase_conf = this.appConfigService.getConfig().firebase;
@@ -296,7 +260,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         });
       }
       // console.log('% »»» WebSocketJs WF WS-RL - +++ TEAM IDs ARRAY (2) ', this.team_ids_array);
-      // console.log('% »»» WebSocketJs WF WS-RL - +++ TEAM ARRAY (2) ', this.user_and_bot_array);
+      console.log('% »»» WebSocketJs WF WS-RL - +++ TEAM ARRAY (2) ', this.user_and_bot_array);
 
 
       // this.doFlatParticipantsArray()
@@ -579,6 +543,44 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   //   return Observable.of(wsrequests);
   // }
 
+  onChangeDepts() {
+
+    this.hasFiltered = true
+    console.log('% »»» WebSocketJs WF WS-RL - on Change Depts - dept id', this.selectedDeptId);
+    // this.filter.push({ 'deptId': this.selectedDeptId }) //['deptId'] = 
+    this.filter[0]['deptId'] = this.selectedDeptId
+    console.log('% »»» WebSocketJs WF WS-RL - on Change Depts - filter', this.filter)
+    this.getWsRequests$();
+
+    console.log('% »»» WebSocketJs WF WS-RL - on Change Depts - ws Requests Unserved ', this.wsRequestsUnserved.length);
+    console.log('% »»» WebSocketJs WF WS-RL - on Change Depts - ws Requests Served length', this.wsRequestsServed.length)
+
+  }
+
+  clearDeptFilter() {
+    this.filter[0]['deptId'] = null;
+    // this.getWsRequests$();
+    console.log('% »»» WebSocketJs WF WS-RL - clear Dept Filter selectedDeptId', this.selectedDeptId)
+  }
+
+  onChangeAgent() {
+    this.hasFiltered = true
+    // this.filter['agentId'] = this.selectedAgentId
+    // this.filter.push({ 'agentId': this.selectedAgentId }) 
+    console.log('% »»» WebSocketJs WF WS-RL - on Change Agent filter', this.filter)
+    this.filter[1]['agentId'] = this.selectedAgentId;
+    console.log('% »»» WebSocketJs WF WS-RL - on Change Agent - selected Agent Id', this.selectedAgentId);
+    console.log('% »»» WebSocketJs WF WS-RL - on Change Agent - filter', this.filter)
+    this.getWsRequests$();
+
+    console.log('% »»» WebSocketJs WF WS-RL - on Change Agent - ws Requests Unserved ', this.wsRequestsUnserved.length);
+    console.log('% »»» WebSocketJs WF WS-RL - on Change Agent - ws Requests Served ', this.wsRequestsServed.length)
+  }
+
+  clearAgentFilter() {
+    console.log('% »»» WebSocketJs WF WS-RL - clear Agent Filter selectedAgentId', this.selectedAgentId)
+    this.filter[1]['agentId'] = null;
+  }
 
 
   // -----------------------------------------------------------------------------------------------------
@@ -589,6 +591,18 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
       if (wsrequests) {
         // this.showSpinner = false;
+        if (wsrequests.length > 0) {
+          this.SHOW_SIMULATE_REQUEST_BTN = false;
+
+          console.log('% »»» WebSocketJs WF - WsRequestsList - SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
+        } else if (wsrequests.length === 0) {
+
+          // setTimeout(() => {
+          this.SHOW_SIMULATE_REQUEST_BTN = true;
+          // }, 1500);
+
+          console.log('% »»» WebSocketJs WF - WsRequestsList - SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
+        }
 
         console.log('% »»» WebSocketJs WF WS-RL - WsRequestsList ALL-REQUESTS: ', wsrequests);
 
@@ -609,26 +623,17 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         // }
 
         if (this.ONLY_MY_REQUESTS === false) {
-
           this.ws_requests = wsrequests;
           console.log('% »»» WebSocketJs WF - WsRequestsList ONLY_MY_REQUESTS: ', this.ONLY_MY_REQUESTS, ' - this.ws_requests: ', this.ws_requests)
-
-
-
         }
 
         if (this.ONLY_MY_REQUESTS === true) {
-
           this.ws_requests = [];
-
-
           wsrequests.forEach(wsrequest => {
             // console.log('% »»» WebSocketJs WF - WsRequestsList wsrequest ', wsrequest)
 
             // const imInParticipants = this.hasmeInParticipants(wsrequest.participants)
             // console.log("% »»» WebSocketJs - WsRequestsService imInParticipants ", imInParticipants, 'for the request ', wsrequest.participants);
-
-
 
             if (wsrequest !== null && wsrequest !== undefined) {
               // || wsrequest.status === 100
@@ -637,19 +642,85 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
                 this.ws_requests.push(wsrequest);
               }
             }
-
-
           });
-
-
-
-
 
           console.log('% »»» WebSocketJs WF - WsRequestsList ONLY_MY_REQUESTS  ', this.ONLY_MY_REQUESTS, 'this.ws_requests', this.ws_requests)
         }
 
+        var ws_requests_clone = JSON.parse(JSON.stringify(this.ws_requests));
 
-        this.getCountOfDeptsInRequests(this.ws_requests);
+        this.getDeptsAndCountOfDeptsInRequests(ws_requests_clone);
+
+        this.getParticipantsInRequests(this.ws_requests);
+
+        if (this.hasFiltered === true) {
+          this.ws_requests = this.ws_requests.filter(r => {
+            // console.log('% »»» WebSocketJs WF WS-RL - WsRequestsList filter r department : ', r.department._id);
+            // console.log('% »»» WebSocketJs WF WS-RL - WsRequestsList filter selectedDeptId : ', this.selectedDeptId);
+
+            console.log('% »»» WebSocketJs WF WS-RL - WsRequestsList filter: ', this.filter);
+            // console.log('% »»» WebSocketJs WF WS-RL - WsRequestsList filter[0]: ', this.filter[0]);
+            // console.log('% »»» WebSocketJs WF WS-RL - WsRequestsList filter[1]: ', this.filter[1]);
+
+            // -----------------------------------------------------------------------------------------------------------
+            // USECASE: filter only for department
+            // -----------------------------------------------------------------------------------------------------------
+            if (this.filter[0] !== undefined && this.filter[0]['deptId'] !== null && this.filter[1]['agentId'] === null) {
+              console.log('% »»» WebSocketJs WF WS-RL - <<<<<<<<<<<<<< FILTER USECASE 1  >>>>>>>>>>>>>>  filter only for department ');
+              console.log('% »»» WebSocketJs WF WS-RL - WsRequestsList >>> filter[deptId] <<< ', this.filter[0]['deptId']);
+
+              if (r['department']['_id'] === this.filter[0]['deptId']) {
+                return true
+              } else {
+                return false
+              }
+            }
+
+            // -----------------------------------------------------------------------------------------------------------
+            // USECASE: filter only for participant
+            // -----------------------------------------------------------------------------------------------------------
+            if (this.filter[1] !== undefined && this.filter[1]['agentId'] !== null && this.filter[0]['deptId'] === null) {
+              console.log('% »»» WebSocketJs WF WS-RL - <<<<<<<<<<<<<< FILTER USECASE 2  >>>>>>>>>>>>>> filter only for participant');
+              console.log('% »»» WebSocketJs WF WS-RL - WsRequestsList >>> filter[agentId] <<< ', this.filter[1]['agentId']);
+              if (r['participants'].includes(this.filter[1]['agentId'])) {
+                return true
+              } else {
+                return false
+              }
+            }
+
+
+            // -----------------------------------------------------------------------------------------------------------
+            // USECASE: filter for department & participant
+            // -----------------------------------------------------------------------------------------------------------
+            if (this.filter[1] !== undefined && this.filter[1]['agentId'] !== null && this.filter[0] !== undefined && this.filter[0]['deptId'] !== null) {
+              console.log('% »»» WebSocketJs WF WS-RL - <<<<<<<<<<<<<< FILTER USECASE 3 >>>>>>>>>>>>>> filter for dept & participant');
+              console.log('% »»» WebSocketJs WF WS-RL - WsRequestsList >>> filter[agentId] <<< ', this.filter[1]['agentId']);
+              if (r['participants'].includes(this.filter[1]['agentId']) && (r['department']['_id'] === this.filter[0]['deptId'])) {
+                return true
+              } else {
+                return false
+              }
+            }
+
+            // -----------------------------------------------------------------------------------------------------------
+            // USECASE: all filters have been canceled
+            // -----------------------------------------------------------------------------------------------------------
+            if (this.filter[1]['agentId'] === null && this.filter[0]['deptId'] === null) {
+              console.log('% »»» WebSocketJs WF WS-RL - <<<<<<<<<<<<<< FILTER USECASE 4 >>>>>>>>>>>>>> all filters have been canceled');
+              this.hasFiltered = false
+              return true
+            }
+
+            // else {
+            //   return false
+            // }
+
+
+            console.log('% »»» WebSocketJs WF WS-RL - WsRequestsList filter[deptId]: ', this.filter[0]['deptId']);
+
+          });
+        }
       }
 
       console.log('% »»» WebSocketJs WF - WsRequestsList getWsRequests$ ws_request ', wsrequests)
@@ -686,14 +757,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
       // this.zone.run(() => {
 
-      if (wsrequests.length > 0) {
-        this.SHOW_SIMULATE_REQUEST_BTN = false;
 
-        // console.log('% »»» WebSocketJs WF - WsRequestsList - SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
-      } else if (wsrequests.length === 0) {
-        this.SHOW_SIMULATE_REQUEST_BTN = true;
-
-      }
 
 
       this.ws_requests.forEach(request => {
@@ -1032,123 +1096,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   //   console.log('»»»» CLOSE RIGHT SIDEBAR ', event);
   //   this.OPEN_RIGHT_SIDEBAR = event;
   // }
-
-
-
-  // -----------------------------------------------------------------------------------------------------
-  // @ Requests for department
-  // -----------------------------------------------------------------------------------------------------
-
-  /**
-   * Count of depts in requests !! no more get from request attributes but from department
-   * 
-   * @param requests_array 
-   */
-  getCountOfDeptsInRequests(requests_array) {
-    const depts_array = [];
-    const deptsIDs = [];
-
-    const deptsNames = [];
-
-    requests_array.forEach((request, index) => {
-      // if (request && request.attributes) {
-      if (request && request.department) {
-        // console.log('% WsRequestsList  - REQUEST ', request, '#', index);
-
-        /**
-         * CREATES AN ARRAY WITH ALL THE DEPTS RETURNED IN THE REQUESTS OBJCTS
-         * (FROM THIS IS CREATED requestsDepts_uniqueArray)
-         */
-
-        // depts_array.push({ '_id': request.attributes.departmentId, 'deptName': request.attributes.departmentName }); 
-        depts_array.push({ '_id': request.department._id, 'deptName': request.department.name });
-
-
-        /**
-         * CREATES AN ARRAY WITH * ONLY THE IDs * OF THE DEPTS RETURNED IN THE REQUESTS OBJCTS
-         * THIS IS USED TO GET THE OCCURRENCE IN IT OF THE ID OF THE ARRAY this.requestsDepts_array
-         */
-
-        /**
-         * USING DEPT ID  */
-        // deptsIDs.push(request.attributes.departmentId)
-        deptsIDs.push(request.department._id);
-
-        /**
-         * USING DEPT NAME  */
-        // deptsNames.push(request.attributes.departmentName)
-      } else {
-        // console.log('REQUESTS-LIST COMP - REQUEST (else)', request, '#', index);
-
-      }
-    });
-    // console.log('REQUESTS-LIST COMP - DEPTS ARRAY NK', depts_array);
-    // console.log('REQUESTS-LIST COMP - DEPTS ID ARRAY NK', deptsIDs);
-    // console.log('REQUESTS-LIST COMP - DEPTS NAME ARRAY NK', deptsNames)
-
-    /**
-     * *********************************************************************
-     * ************************* REMOVE DUPLICATE **************************
-     * *********************************************************************
-     * */
-
-    /**
-     * USING DEPT ID  */
-    this.depts_array_noduplicate = this.removeDuplicates(depts_array, '_id');
-
-    /**
-     * USING DEPT NAME  */
-    //  this.depts_array_noduplicate = this.removeDuplicates(depts_array, 'deptName');
-
-    console.log('% WsRequestsList - REQUESTSxDEPTS - DEPTS ARRAY [no duplicate] NK', this.depts_array_noduplicate)
-
-    // GET OCCURRENCY OF THE DEPT ID IN THE ARRAY OF THE TOTAL DEPT ID
-    this.depts_array_noduplicate.forEach(dept => {
-
-      /**
-       * USING DEPT ID  */
-      this.getDeptIdOccurrence(deptsIDs, dept._id)
-
-      /**
-       * USING DEPT NAME  */
-      // this.getDeptNameOccurrence(deptsNames, dept.deptName)
-    });
-  }
-
-  removeDuplicates(originalArray, prop) {
-    const newArray = [];
-    const lookupObject = {};
-
-    // tslint:disable-next-line:forin
-    for (const i in originalArray) {
-      lookupObject[originalArray[i][prop]] = originalArray[i];
-    }
-
-    // tslint:disable-next-line:forin
-    for (const i in lookupObject) {
-      newArray.push(lookupObject[i]);
-    }
-    return newArray;
-  }
-
-  getDeptIdOccurrence(array_of_all_depts_ids, dept_id) {
-    // console.log('!!! ANALYTICS - ALL REQUESTS X DEPT - GET DEP OCCURRENCE FOR DEPTS ');
-    const newUnicArray = []
-    let count = 0;
-    array_of_all_depts_ids.forEach((v) => (v === dept_id && count++));
-    console.log('% WsRequestsList - REQUESTSxDEPTS - DEPT - #', count, ' REQUESTS ASSIGNED TO DEPT ', dept_id);
-    let i
-    for (i = 0; i < this.depts_array_noduplicate.length; ++i) {
-
-      for (const dept of this.depts_array_noduplicate) {
-        if (dept_id === dept._id) {
-          dept.requestsCount = count
-        }
-      }
-      console.log('% WsRequestsList - REQUESTSxDEPTS DEPTS ARRAY [no duplicate] NK * 2 * : ' + JSON.stringify(this.depts_array_noduplicate));
-    }
-  }
-
 
   testWidgetPage() {
     this.testwidgetbtnRef.nativeElement.blur();

@@ -42,11 +42,10 @@
         <div class="row">
 
           <!-- 
-            // -------------------------------------------------------------------------------------- 
-            // @ CARDS COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED
-            // -------------------------------------------------------------------------------------- -->
+          // -------------------------------------------------------------------------------------- 
+          // @ CARDS COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED
+          // -------------------------------------------------------------------------------------- -->
           <div class="col-xs-12">
-
 
             <!-- // TOTAL ACTIVE -->
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4"
@@ -207,37 +206,42 @@
 
                 <div class="row">
                   <div class="col-sm-6">
-                    
 
-                      <label class="col-sm-12" style="text-align: left; color:#7695a5;padding-left:0px">
-                        {{ 'HistoryPage.FilterByDepartment' | translate }}
-                      </label>
+                    <label class="col-sm-12" style="text-align: left; color:#7695a5;padding-left:0px">
+                      {{ 'HistoryPage.FilterByDepartment' | translate }}
+                    </label>
 
-                      <ng-select class="custom" name="dept" [(ngModel)]="selectedDeptId" 
-                        (change)="onChangeDepts()" (clear)="clearDeptFilter()" placeholder="{{ 'HistoryPage.AllDepts' | translate }}">
-                        <!-- <!-- <ng-option [value]="''">{{ 'HistoryPage.AllDepts' | translate }}</ng-option> --> -->
-                        <ng-option *ngFor="let dept of departments" [value]="dept?._id">
-                          {{dept?.name}}
-                        </ng-option>
+                    <ng-select class="custom" name="dept" [(ngModel)]="selectedDeptId" (change)="onChangeDepts()"
+                      (clear)="clearDeptFilter()" placeholder="{{ 'HistoryPage.AllDepts' | translate }}">
+                      <!-- <ng-option [value]="''">{{ 'HistoryPage.AllDepts' | translate }}</ng-option> -->
+                      <!-- departments -->
+                      <ng-option *ngFor="let dept of depts_array_noduplicate" [value]="dept?._id">
+                        <!-- {{dept?.name}}  -->
+                        <!-- // use this if do the for with departments -->
+                        {{dept?.deptName}}
 
-                      </ng-select>
+                      </ng-option>
 
-                    
+                    </ng-select>
+
+
                   </div>
 
                   <div class="col-sm-6">
-                    <div class="">
-                      <label class="col-sm-12" style="text-align: left; color: #7695a5 !important;padding-left:0px">
-                        {{ 'HistoryPage.Agent' | translate }}
-                      </label>
-                      <ng-select name="agent" [(ngModel)]="selectedAgentId" placeholder="{{ 'HistoryPage.AllAgents' | translate }}"
-                      (clear)="clearAgentFilter()"  (change)="onChangeAgent()">
-                        <!-- <!-- <ng-option [value]="''">{{ 'HistoryPage.AllAgents' | translate }}</ng-option> --> -->
-                        <ng-option *ngFor="let agent of user_and_bot_array" [value]="agent?._id">
-                          {{ agent.firstname }} {{ agent.lastname }}
-                        </ng-option>
-                      </ng-select>
-                    </div>
+
+                    <label class="col-sm-12" style="text-align: left; color: #7695a5 !important;padding-left:0px">
+                      {{ 'HistoryPage.Agent' | translate }}
+                    </label>
+                    <ng-select name="agent" [(ngModel)]="selectedAgentId"
+                      placeholder="{{ 'HistoryPage.AllAgents' | translate }}" (clear)="clearAgentFilter()"
+                      (change)="onChangeAgent()">
+                      <!-- <ng-option [value]="''">{{ 'HistoryPage.AllAgents' | translate }}</ng-option> -->
+                      <!-- user_and_bot_array -->
+                      <ng-option *ngFor="let agent of participantsInRequests" [value]="agent?._id">
+                        {{ agent.firstname }} {{ agent.lastname }}
+                      </ng-option>
+                    </ng-select>
+
                   </div>
 
 
@@ -376,68 +380,131 @@
     </div>
     <!-- ------====== / .end CARDS COUNT OF REQUESTS: ACTIVE, SERVED & UNSERVED AND REQUESTS FOR DEPTS ======------ -->
 
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header card-header-custom">
-            <h4 class="title customh4" style="margin-bottom:2px;">
-              <!-- Richieste non servite -->
-              {{ 'VisitorsPage.UnservedRequests' | translate }}
-            </h4>
 
+    <section *ngIf="SHOW_SIMULATE_REQUEST_BTN === true">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card" style="margin-top:5px">
+            <div class="card-content" style="">
+
+              <div style="font-size:1em; font-weight: 400; display: flex;
+              align-items: center;
+              margin: auto;
+              flex-direction: column;
+              width: 100%;
+              padding: 30px;
+              text-align: center;">
+
+                <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 40 40"
+                  style="width: 40px;height: 40px;" xml:space="preserve">
+                  <style type="text/css">
+                    .message_rocket {
+                      fill: #737376;
+
+                    }
+                  </style>
+                  <path class="message_rocket" d="M38.8,2.4c-0.2-0.3-0.6-0.4-1-0.3l-36,9c-0.5,0.1-0.9,0.7-0.7,1.2c0.1,0.2,0.2,0.5,0.4,0.6l13.7,8.8l5.9,15.7
+c0.1,0.4,0.5,0.7,0.9,0.7c0.4,0,0.7-0.2,0.9-0.6l16-34C39.1,3.1,39,2.7,38.8,2.4z M4.5,12.4L33.9,5l-18,14.7L4.5,12.4z M22.1,34.4
+l-4.9-13l18-14.8L22.1,34.4z" />
+                </svg>
+
+                <!-- <span *ngIf="!showSpinner"> -->
+                  <span style="display: block; line-height:20px;color:#737376; font-size: 16px;margin-top: 16px;">
+                    {{ 'VisitorsPage.NoVisitor' | translate }}
+                  </span>
+
+
+                  <span
+                    style="display: block; line-height:20px;color:#737376; font-size: 14px;margin-bottom: 16px;text-decoration: underline;cursor: pointer;"
+                    (click)="testWidgetPage()">
+                    {{ 'VisitorsPage.ClickHereToSimulate' | translate }}
+                  </span>
+                <!-- </span> -->
+
+                <!-- <span *ngIf="showSpinner">
+                  <span style="display: block; line-height:20px;color:#737376; font-size: 16px;margin-top: 16px;">
+                    {{ 'VisitorsPage.Loading' | translate }}
+                  </span>
+                </span> -->
+
+
+
+                <!-- <button class="btn btn-tdgreen" (click)="testWidgetPage()"
+                  style="background: #3ecf8e;text-shadow: 0 1px 3px rgba(36,180,126,.4); padding:12px 16px;">
+                  {{ 'VisitorsPage.ClickHereToSimulate' | translate }}
+                </button> -->
+              </div>
+
+            </div>
           </div>
+        </div>
+      </div>
+    </section>
 
-          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+    <section *ngIf="SHOW_SIMULATE_REQUEST_BTN === false">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header card-header-custom">
+              <h4 class="title customh4" style="margin-bottom:2px;">
+                <!-- Richieste non servite -->
+                {{ 'VisitorsPage.UnservedRequests' | translate }}
+              </h4>
 
-          <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-top: 0px;">
-            <!-- style="overflow-x:auto;" -->
-            <table class="table table-hover">
-              <thead class="text">
-                <tr>
+            </div>
 
-                  <th></th>
-                  <!-- ====== REQUEST ID ====== -->
-                  <!-- <th>
+            <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+            <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-top: 0px;">
+              <!-- style="overflow-x:auto;" -->
+              <table class="table table-hover">
+                <thead class="text">
+                  <tr>
+
+                    <th></th>
+                    <!-- ====== REQUEST ID ====== -->
+                    <!-- <th>
                       <span style="color: #566787">
                         <strong>Id</strong>
                       </span>  
                     </th> -->
 
-                  <!-- ------ ====== MESSAGE ====== ------ -->
-                  <th>
-                    <span class="column-th-span">
-                      {{ 'VisitorsPage.Message' | translate }}
-                    </span>
-                  </th>
+                    <!-- ------ ====== MESSAGE ====== ------ -->
+                    <th>
+                      <span class="column-th-span">
+                        {{ 'VisitorsPage.Message' | translate }}
+                      </span>
+                    </th>
 
-                  <!-- ------ ====== REQUESTER ====== ------ -->
-                  <th>
-                    <!-- style="color: #566787; text-transform: uppercase" -->
-                    <span class="column-th-span">
-                      {{ 'VisitorsPage.Requester' | translate }}
-                    </span>
-                  </th>
+                    <!-- ------ ====== REQUESTER ====== ------ -->
+                    <th>
+                      <!-- style="color: #566787; text-transform: uppercase" -->
+                      <span class="column-th-span">
+                        {{ 'VisitorsPage.Requester' | translate }}
+                      </span>
+                    </th>
 
-                  <!-- ------ ====== USER AGENT BROWSER & OPERATING SYSTEM (in served requests)====== ------ -->
-                  <th></th>
+                    <!-- ------ ====== USER AGENT BROWSER & OPERATING SYSTEM (in served requests)====== ------ -->
+                    <th></th>
 
 
-                  <!-- ------ ====== DEPARTMENT ====== ------ -->
-                  <th>
-                    <span class="column-th-span">
-                      {{ 'VisitorsPage.Department' | translate }}
-                    </span>
-                  </th>
+                    <!-- ------ ====== DEPARTMENT ====== ------ -->
+                    <th>
+                      <span class="column-th-span">
+                        {{ 'VisitorsPage.Department' | translate }}
+                      </span>
+                    </th>
 
-                  <!-- REQUESTER ID * FOR DEBUG -->
-                  <!-- <th>
+                    <!-- REQUESTER ID * FOR DEBUG -->
+                    <!-- <th>
                       <span style="color: #566787">
                         <strong> Requester Id </strong>
                       </span>
                     </th> -->
 
-                  <!-- SERVED BY OF UNSERVED REQUEST -->
-                  <!-- <th>
+                    <!-- SERVED BY OF UNSERVED REQUEST -->
+                    <!-- <th>
                       <span style="color: #566787">
                         <strong> 
                       
@@ -445,618 +512,627 @@
                         </strong>
                       </span>
                     </th> -->
-                  <!-- <th>
+                    <!-- <th>
                       <span style="color: #566787">          
                         <strong> Membri </strong>
                       </span>
                     </th> -->
 
-                  <!-- ------ ====== CREATED ON ====== ------ -->
-                  <th>
-                    <span class="column-th-span">
-                      {{ 'VisitorsPage.Published' | translate }}
-                    </span>
-                  </th>
-                  <!-- <th>TEST</th> -->
+                    <!-- ------ ====== CREATED ON ====== ------ -->
+                    <th>
+                      <span class="column-th-span">
+                        {{ 'VisitorsPage.Published' | translate }}
+                      </span>
+                    </th>
+                    <!-- <th>TEST</th> -->
 
-                  <!-- ------ ====== ARCHIVE ACTION ====== ------ -->
-                  <th>
-                    <span class="column-th-span">
-                      {{ 'VisitorsPage.Actions' | translate }}
-                    </span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
+                    <!-- ------ ====== ARCHIVE ACTION ====== ------ -->
+                    <th>
+                      <span class="column-th-span">
+                        {{ 'VisitorsPage.Actions' | translate }}
+                      </span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
 
-                <!-- ------ ====== IF THERE ISN'T REQUEST (SERVED OR UNSERVED) ====== ------ -->
-                <tr *ngIf="SHOW_SIMULATE_REQUEST_BTN">
-                  <td colspan="7" style="text-align: center; padding-top: 16px; cursor: pointer"
-                    (click)="testWidgetPage()">
+                  <!-- ------ ====== IF THERE ISN'T REQUEST (SERVED OR UNSERVED) ====== ------ -->
+                  <!-- <tr *ngIf="SHOW_SIMULATE_REQUEST_BTN"> -->
+                  <tr *ngIf="wsRequestsUnserved?.length === 0">
 
-                    <p style="font-size:1em; color:rgb(118,149,165); font-weight: 400">
+                    <!-- <td colspan="7" style="text-align: center; padding-top: 16px; cursor: pointer" (click)="testWidgetPage()"> -->
+                    <td colspan="7" style="text-align: center; padding-top: 16px;">
 
-                      {{ 'VisitorsPage.NoVisitor' | translate }}
-                      <button class="btn btn-white" style="padding: 8px; color:rgb(118,149,165);">
-                        {{ 'VisitorsPage.ClickHereToSimulate' | translate }}
-                      </button>
-                    </p>
-                  </td>
-                </tr>
+                      <p style="font-size:1em; color:#737376; font-weight: 100">
+
+                        <!-- {{ 'VisitorsPage.NoVisitor' | translate }} -->
+
+                        {{ 'NoRequests' | translate }}
+                        <!-- <button class="btn btn-white" style="padding: 8px; color:rgb(118,149,165);">
+                          {{ 'VisitorsPage.ClickHereToSimulate' | translate }}
+                        </button> -->
+                      </p>
+                    </td>
+                  </tr>
 
 
 
-                <!-- ****************************************
+                  <!-- ****************************************
                   ------ ====== UNSERVED FOR ====== ------
                 ********************************************* -->
-                <tr *ngFor="let request of wsRequestsUnserved">
-                  <!-- FOR DEBUG: SHOW 'J' IF THE CURRENT USER UID IS BETWEEN 
+                  <tr *ngFor="let request of wsRequestsUnserved">
+                    <!-- FOR DEBUG: SHOW 'J' IF THE CURRENT USER UID IS BETWEEN 
                   THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
-                  <!-- <td>
+                    <!-- <td>
                     <span *ngIf="request?.currentUserIsJoined === true"> 
                       J
                     </span>
                   </td> -->
 
-                  <!-- ------ ====== VISIBILITY ICON ====== ------ -->
-                  <td style="text-align:center; white-space: nowrap; width: 1%;">
-                    <!-- <span *ngIf="request?.membersCount == 0"> 
+                    <!-- ------ ====== VISIBILITY ICON ====== ------ -->
+                    <td style="text-align:center; white-space: nowrap; width: 1%;">
+                      <!-- <span *ngIf="request?.membersCount == 0"> 
                       <i style="color:red;" class="material-icons">priority_high</i>
                     </span> -->
 
-                    <!-- IF THE REQUEST SUPPORT STATUS IS 100 (UNSERVED REQUEST) -->
-                    <span *ngIf="request?.status == 100">
-                      <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
+                      <!-- IF THE REQUEST SUPPORT STATUS IS 100 (UNSERVED REQUEST) -->
+                      <span *ngIf="request?.status == 100">
+                        <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
 
-                        <svg viewBox="0 0 58.1 53.9" style="width: 25px; position: relative; top: 3px;"
-                          xml:space="preserve">
-                          <style type="text/css">
-                            .st0-unserved {
-                              fill: none;
-                              stroke: #ED4537;
-                              stroke-width: 2;
-                              stroke-miterlimit: 10;
-                            }
+                          <svg viewBox="0 0 58.1 53.9" style="width: 25px; position: relative; top: 3px;"
+                            xml:space="preserve">
+                            <style type="text/css">
+                              .st0-unserved {
+                                fill: none;
+                                stroke: #ED4537;
+                                stroke-width: 2;
+                                stroke-miterlimit: 10;
+                              }
 
-                            .st1-unserved {
-                              fill: #ED4537;
-                            }
-                          </style>
-                          <path class="st0-unserved" d="M30.5,3.3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
+                              .st1-unserved {
+                                fill: #ED4537;
+                              }
+                            </style>
+                            <path class="st0-unserved" d="M30.5,3.3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
                             c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S44.3,3.3,30.5,3.3z" />
-                          <g>
-                            <path class="st1-unserved"
-                              d="M30.6,38.9c-1.7,0-3.1-1.4-3.1-3c0-1.7,1.4-3,3.1-3c1.7,0,3.1,1.4,3.1,3C33.6,37.6,32.3,38.9,30.6,38.9z" />
-                            <path class="st1-unserved" d="M34.8,18l-1.5,10c-0.2,1.5-1.6,2.5-3.1,2.3c-1.2-0.2-2.1-1.1-2.3-2.2l-1.6-10c-0.4-2.3,1.2-4.5,3.6-4.9
+                            <g>
+                              <path class="st1-unserved"
+                                d="M30.6,38.9c-1.7,0-3.1-1.4-3.1-3c0-1.7,1.4-3,3.1-3c1.7,0,3.1,1.4,3.1,3C33.6,37.6,32.3,38.9,30.6,38.9z" />
+                              <path class="st1-unserved" d="M34.8,18l-1.5,10c-0.2,1.5-1.6,2.5-3.1,2.3c-1.2-0.2-2.1-1.1-2.3-2.2l-1.6-10c-0.4-2.3,1.2-4.5,3.6-4.9
                               c2.4-0.4,4.6,1.2,5,3.5C34.9,17.1,34.9,17.6,34.8,18z" />
-                          </g>
-                        </svg>
+                            </g>
+                          </svg>
 
+                        </span>
                       </span>
-                    </span>
-                  </td>
+                    </td>
 
-                  <!-- ===== REQUEST ID ===== -->
-                  <!-- {{ request?.request_id }} -->
-                  <!-- <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
+                    <!-- ===== REQUEST ID ===== -->
+                    <!-- {{ request?.request_id }} -->
+                    <!-- <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
                     <p style="font-size:0.8em;" >                 
                       {{ replace_recipient(request?.request_id) }}
                     </p>
                   </td> -->
 
-                  <!-- ------ ====== MESSAGE ====== ------ -->
-                  <!-- white-space: nowrap;   width: 1%; padding-left: 15px; -->
-                  <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; ">
-                    <!-- max-width: 400px -->
-                    <p class="column-td" [innerHTML]="getRequestText(request?.first_text)">
-                      <!-- {{ request?.text }} -->
-                      <!-- {{ request?.first_text }} -->
-                    </p>
-                  </td>
+                    <!-- ------ ====== MESSAGE ====== ------ -->
+                    <!-- white-space: nowrap;   width: 1%; padding-left: 15px; -->
+                    <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; ">
+                      <!-- max-width: 400px -->
+                      <p class="column-td" [innerHTML]="getRequestText(request?.first_text)">
+                        <!-- {{ request?.text }} -->
+                        <!-- {{ request?.first_text }} -->
+                      </p>
+                    </td>
 
-                  <!-- ------ ====== REQUESTER (in UNSERVED)====== ------ -->
-                  <td (click)='goToRequestMsgs(request?.request_id)'
-                    style="cursor:pointer;white-space: nowrap; width: 1%;" rel="tooltip"
-                    title="requester id:{{ request?.lead?.fullname }}">
+                    <!-- ------ ====== REQUESTER (in UNSERVED)====== ------ -->
+                    <td (click)='goToRequestMsgs(request?.request_id)'
+                      style="cursor:pointer;white-space: nowrap; width: 1%;" rel="tooltip"
+                      title="requester id:{{ request?.lead?.fullname }}">
 
-                    <!-- REQUESTER VERIFIED ICON (UNSERVED REQUEST SECTION)-->
-                    <span class="requester-avatar-wrapper">
-                      <span class="requester-avatar"
-                        [ngStyle]="{'background-color': request?.requester_fullname_fillColour }"
-                        [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname}">
-                        <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
-                      </span>
-                      <span *ngIf="request?.requester_is_verified === true" class="tooltipx">
-                        <!-- left: -36px;top: -3px;  -->
-                        <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
-                          xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6" width="17"
-                          height="17" style="position: relative;left: -41px;top: 1px;" xml:space="preserve">
-                          <style type="text/css">
-                            .st0_UserVerified {
-                              fill: none;
-                            }
+                      <!-- REQUESTER VERIFIED ICON (UNSERVED REQUEST SECTION)-->
+                      <span class="requester-avatar-wrapper">
+                        <span class="requester-avatar"
+                          [ngStyle]="{'background-color': request?.requester_fullname_fillColour }"
+                          [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname}">
+                          <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
+                        </span>
+                        <span *ngIf="request?.requester_is_verified === true" class="tooltipx">
+                          <!-- left: -36px;top: -3px;  -->
+                          <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6"
+                            width="17" height="17" style="position: relative;left: -41px;top: 1px;"
+                            xml:space="preserve">
+                            <style type="text/css">
+                              .st0_UserVerified {
+                                fill: none;
+                              }
 
-                            .st1_UserVerified {
-                              fill: #FFFFFF;
-                            }
+                              .st1_UserVerified {
+                                fill: #FFFFFF;
+                              }
 
-                            .st2_UserVerified {
-                              fill: #18BDF7;
-                            }
-                          </style>
-                          <path class="st0_UserVerified" d="M1.3,1.3h24v24h-24V1.3z" />
-                          <path class="st1_UserVerified"
-                            d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z" />
-                          <path class="st2_UserVerified" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
+                              .st2_UserVerified {
+                                fill: #18BDF7;
+                              }
+                            </style>
+                            <path class="st0_UserVerified" d="M1.3,1.3h24v24h-24V1.3z" />
+                            <path class="st1_UserVerified"
+                              d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z" />
+                            <path class="st2_UserVerified" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
                               l6.6-6.6l1.4,1.4L11.3,18.3z" />
-                        </svg>
+                          </svg>
 
-                        <span class="tooltiptext"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
+                          <span class="tooltiptext"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
 
-                      </span>
-                    </span>
-
-                    <span class="column-td" style="white-space: nowrap;"
-                      [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
-
-                      {{ request?.lead?.fullname }}
-
-                      <span *ngIf="!request?.lead?.fullname">
-                        n.a.
+                        </span>
                       </span>
 
-                      <span class="requester-email"
-                        [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
-                        {{ request?.lead?.email }}
-                      </span>
-                      <span class="requester-email" *ngIf="!request?.lead?.email"
-                        [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
-                        n.a.
-                      </span>
-                    </span>
+                      <span class="column-td" style="white-space: nowrap;"
+                        [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
 
-                    <!-- <span *ngIf="!request?.lead?.fullname" class="column-td" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
+                        {{ request?.lead?.fullname }}
+
+                        <span *ngIf="!request?.lead?.fullname">
+                          n.a.
+                        </span>
+
+                        <span class="requester-email"
+                          [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
+                          {{ request?.lead?.email }}
+                        </span>
+                        <span class="requester-email" *ngIf="!request?.lead?.email"
+                          [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
+                          n.a.
+                        </span>
+                      </span>
+
+                      <!-- <span *ngIf="!request?.lead?.fullname" class="column-td" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
                       n.a.
                     </span> -->
-                    <!-- <p style="font-size:0.8em">
+                      <!-- <p style="font-size:0.8em">
                         {{ request?.requester_id }}
                     </p> -->
-                  </td>
+                    </td>
 
-                  <!-- ------ ====== USER AGENT BROWSER & OPERATING SYSTEM (in served requests)====== ------ -->
-                  <td>
-                    <span class="tooltipx">
-                      <i class="material-icons user-agent-icon">
-                        computer
-                      </i>
+                    <!-- ------ ====== USER AGENT BROWSER & OPERATING SYSTEM (in served requests)====== ------ -->
+                    <td>
+                      <span class="tooltipx">
+                        <i class="material-icons user-agent-icon">
+                          computer
+                        </i>
 
-                      <span class="tooltiptext" style="font-size: 10px !important; padding: 3px;">
+                        <span class="tooltiptext" style="font-size: 10px !important; padding: 3px;">
 
-                        <span *ngIf="request?.ua_os !== 'undefined undefined'"> {{ request?.ua_os }} </span>
-                        <span *ngIf="request?.ua_os === 'undefined undefined'"> not defined </span>
+                          <span *ngIf="request?.ua_os !== 'undefined undefined'"> {{ request?.ua_os }} </span>
+                          <span *ngIf="request?.ua_os === 'undefined undefined'"> not defined </span>
 
 
+                        </span>
                       </span>
-                    </span>
 
-                    <span class="tooltipx">
-                      <i class="material-icons user-agent-icon">
-                        public
-                      </i>
+                      <span class="tooltipx">
+                        <i class="material-icons user-agent-icon">
+                          public
+                        </i>
 
-                      <span class="tooltiptext" style="font-size: 10px !important; padding: 3px;">
-                        <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span>
+                        <span class="tooltiptext" style="font-size: 10px !important; padding: 3px;">
+                          <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span>
 
-                        <span *ngIf="request?.ua_browser === 'undefined undefined'"> not defined </span>
+                          <span *ngIf="request?.ua_browser === 'undefined undefined'"> not defined </span>
+                        </span>
                       </span>
-                    </span>
-                  </td>
+                    </td>
 
-                  <!-- ------ ============== DEPARTMENT =============== ------ -->
-                  <!-- no more get from request attributes but from department -->
-                  <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
-                    title="department id:{{ request?.department?._id }}">
+                    <!-- ------ ============== DEPARTMENT =============== ------ -->
+                    <!-- no more get from request attributes but from department -->
+                    <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
+                      title="department id:{{ request?.department?._id }}">
 
-                    <p *ngIf="request?.department?.name" class="column-td">
-
-
-                      {{ request?.department?.name }}
+                      <p *ngIf="request?.department?.name" class="column-td">
 
 
-                    </p>
-                    <p *ngIf="!request?.department?.name" class="column-td">
-                      <!-- {{ 'VisitorsPage.Default' | translate }} -->
-                      n.a.
-                    </p>
-                  </td>
-
-                  <!-- ------ ====== CREATED ON ====== ------ -->
-                  <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
-                    <p class="column-td">
-                      <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
-                      <!-- {{ request?.request_date_fromnow }} -->
-                      <!-- {{ getTimestampAsMoment(request?.timestamp) }} -->
-
-                      <!-- {{ request?.timestamp | amTimeAgo }} -->
-                      <!-- {{ request?.created_on | date: 'd/M/y HH:mm:ss' }} -->
-                      {{ request?.createdAt | amTimeAgo }}
-
-                    </p>
-                  </td>
-
-                  <!-- ------ ====== ARCHIVE Action ====== ------ -->
-                  <!-- class="td-actions text-right" -->
-                  <td>
-                    <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
-                      class="btn btn-danger btn-simple btn-xs" (click)='openDeleteRequestModal((request?.request_id))'>
-                      <i class="material-icons">clear</i>
-                    </button>
-                  </td>
-                </tr>
-                <!-- /. END UNSERVED REQUESTS -->
-
-              </tbody>
-            </table>
-          </div> <!-- ./ card-content table-responsive -->
-        </div> <!-- ./ card -->
-        <!-- / .END UNSERVED REQUESTS  -->
+                        {{ request?.department?.name }}
 
 
-        <!-- **********************************************
+                      </p>
+                      <p *ngIf="!request?.department?.name" class="column-td">
+                        <!-- {{ 'VisitorsPage.Default' | translate }} -->
+                        n.a.
+                      </p>
+                    </td>
+
+                    <!-- ------ ====== CREATED ON ====== ------ -->
+                    <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
+                      <p class="column-td">
+                        <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
+                        <!-- {{ request?.request_date_fromnow }} -->
+                        <!-- {{ getTimestampAsMoment(request?.timestamp) }} -->
+
+                        <!-- {{ request?.timestamp | amTimeAgo }} -->
+                        <!-- {{ request?.created_on | date: 'd/M/y HH:mm:ss' }} -->
+                        {{ request?.createdAt | amTimeAgo }}
+
+                      </p>
+                    </td>
+
+                    <!-- ------ ====== ARCHIVE Action ====== ------ -->
+                    <!-- class="td-actions text-right" -->
+                    <td>
+                      <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
+                        class="btn btn-danger btn-simple btn-xs"
+                        (click)='openDeleteRequestModal((request?.request_id))'>
+                        <i class="material-icons">clear</i>
+                      </button>
+                    </td>
+                  </tr>
+                  <!-- /. END UNSERVED REQUESTS -->
+
+                </tbody>
+              </table>
+            </div> <!-- ./ card-content table-responsive -->
+          </div> <!-- ./ card -->
+          <!-- / .END UNSERVED REQUESTS  -->
+
+
+          <!-- **********************************************
           ------ ====== SERVED REQUESTS ====== ------ 
         *********************************************** -->
-        <div class="card">
-          <div class="card-header card-header-custom">
-            <h4 class="title customh4" style="margin-bottom:2px;">
-              <!-- Richieste servite  -->
-              {{ 'VisitorsPage.ServedRequests' | translate }}
+          <div class="card">
+            <div class="card-header card-header-custom">
+              <h4 class="title customh4" style="margin-bottom:2px;">
+                <!-- Richieste servite  -->
+                {{ 'VisitorsPage.ServedRequests' | translate }}
 
-            </h4>
+              </h4>
 
-          </div>
+            </div>
 
-          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+            <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
-          <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-top: 0px;">
-            <!-- style="overflow-x:auto;" -->
-            <table class="table table-hover">
-              <thead class="text">
-                <tr>
-                  <!-- <th></th> -->
-                  <th></th>
+            <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-top: 0px;">
+              <!-- style="overflow-x:auto;" -->
+              <table class="table table-hover">
+                <thead class="text">
+                  <tr>
+                    <!-- <th></th> -->
+                    <th></th>
 
-                  <!-- ====== SERVED REQUETS ID ===== -->
-                  <!-- <th>
+                    <!-- ====== SERVED REQUETS ID ===== -->
+                    <!-- <th>
                     <span style="color: #566787">
                       <strong>Id</strong>
                     </span>  
                   </th> -->
 
-                  <!-- ------ ====== MESSAGE ====== ------ -->
-                  <th>
-                    <span class="column-th-span">
-                      <!-- Messagio -->
-                      {{ 'VisitorsPage.Message' | translate }}
-                    </span>
-                  </th>
+                    <!-- ------ ====== MESSAGE ====== ------ -->
+                    <th>
+                      <span class="column-th-span">
+                        <!-- Messagio -->
+                        {{ 'VisitorsPage.Message' | translate }}
+                      </span>
+                    </th>
 
-                  <!-- ------ ====== REQUESTER ====== ------ -->
-                  <th>
-                    <span class="column-th-span">
-                      <!-- Richiedente  -->
-                      {{ 'VisitorsPage.Requester' | translate }}
-                    </span>
-                  </th>
+                    <!-- ------ ====== REQUESTER ====== ------ -->
+                    <th>
+                      <span class="column-th-span">
+                        <!-- Richiedente  -->
+                        {{ 'VisitorsPage.Requester' | translate }}
+                      </span>
+                    </th>
 
-                  <!-- ------ ====== USER AGENT BROWSER & OPERATING SYSTEM ====== ------ -->
-                  <th> </th>
+                    <!-- ------ ====== USER AGENT BROWSER & OPERATING SYSTEM ====== ------ -->
+                    <th> </th>
 
-                  <!-- ------ ====== DEPARTMENT ====== ------ -->
-                  <th>
-                    <span class="column-th-span">
-                      {{ 'VisitorsPage.Department' | translate }}
-                    </span>
-                  </th>
+                    <!-- ------ ====== DEPARTMENT ====== ------ -->
+                    <th>
+                      <span class="column-th-span">
+                        {{ 'VisitorsPage.Department' | translate }}
+                      </span>
+                    </th>
 
-                  <!-- REQUESTER ID * FOR DEBUG -->
-                  <!-- <th>
+                    <!-- REQUESTER ID * FOR DEBUG -->
+                    <!-- <th>
                     <span style="color: #566787">
                       <strong> Requester Id </strong>
                     </span>
                   </th> -->
 
-                  <!-- ------ ====== SERVED BY ====== ------ -->
-                  <th>
-                    <span class="column-th-span">
-                      <!-- Servita da -->
-                      {{ 'VisitorsPage.ServedBy' | translate }}
-                    </span>
-                  </th>
+                    <!-- ------ ====== SERVED BY ====== ------ -->
+                    <th>
+                      <span class="column-th-span">
+                        <!-- Servita da -->
+                        {{ 'VisitorsPage.ServedBy' | translate }}
+                      </span>
+                    </th>
 
-                  <!-- <th>
+                    <!-- <th>
                     <span style="color: #566787">          
                       <strong> Membri </strong>
                     </span>
                   </th> -->
 
-                  <!-- ------ ====== CREATED ON ====== ------ -->
-                  <th>
-                    <span class="column-th-span">
-                      {{ 'VisitorsPage.Published' | translate }}
-                    </span>
-                  </th>
+                    <!-- ------ ====== CREATED ON ====== ------ -->
+                    <th>
+                      <span class="column-th-span">
+                        {{ 'VisitorsPage.Published' | translate }}
+                      </span>
+                    </th>
 
-                  <!-- <th>TEST</th> -->
+                    <!-- <th>TEST</th> -->
 
-                  <!-- ------ ====== ARCHIVE Action  ====== ------ -->
-                  <th>
-                    <span class="column-th-span">
-                      {{ 'VisitorsPage.Actions' | translate }}
-                    </span>
-                  </th>
+                    <!-- ------ ====== ARCHIVE Action  ====== ------ -->
+                    <th>
+                      <span class="column-th-span">
+                        {{ 'VisitorsPage.Actions' | translate }}
+                      </span>
+                    </th>
 
-                </tr>
-              </thead>
-              <tbody>
+                  </tr>
+                </thead>
+                <tbody>
 
-                <!-- IF THERE ISN'T REQUEST (SERVED OR UNSERVED) -->
-                <!-- <tr *ngIf="requestListServed.length === 0 && requestListUnserved.length === 0"> -->
-                <tr *ngIf="SHOW_SIMULATE_REQUEST_BTN">
-                  <td colspan="8" style="text-align: center; padding-top: 16px; cursor: pointer"
-                    (click)="testWidgetPage()">
+                  <!-- IF THERE ISN'T REQUEST (SERVED OR UNSERVED) -->
+                  <!-- <tr *ngIf="requestListServed.length === 0 && requestListUnserved.length === 0"> -->
+                  <!-- <tr *ngIf="SHOW_SIMULATE_REQUEST_BTN"> -->
+                  <tr *ngIf="wsRequestsServed?.length === 0">
+                    <!-- <td colspan="8" style="text-align: center; padding-top: 16px; cursor: pointer" (click)="testWidgetPage()"> -->
+                    <td colspan="8" style="text-align: center; padding-top: 16px;">
+                      <p style="font-size:1em; color:#737376; font-weight: 100">
 
-                    <p style="font-size:1em; color:rgb(118,149,165); font-weight: 400">
+                        <!-- {{ 'VisitorsPage.NoVisitor' | translate }} -->
+                        {{ 'NoRequests' | translate }}
 
-                      {{ 'VisitorsPage.NoVisitor' | translate }}
-                      <button class="btn btn-white" style="padding: 8px; color: rgb(118,149,165)">
-                        {{ 'VisitorsPage.ClickHereToSimulate' | translate }}
-                      </button>
-                    </p>
-                  </td>
-                </tr>
+                        <!-- <button class="btn btn-white" style="padding: 8px; color: rgb(118,149,165)">
+                          {{ 'VisitorsPage.ClickHereToSimulate' | translate }}
+                        </button> -->
+                      </p>
+                    </td>
+                  </tr>
 
-                <!-- ****************************************
+                  <!-- ****************************************
                   ------ ====== SERVED FOR ====== ------
                 ********************************************* -->
-                <tr *ngFor="let request of wsRequestsServed">
+                  <tr *ngFor="let request of wsRequestsServed">
 
-                  <!-- FOR DEBUG: SHOW 'J' IF THE CURRENT USER UID IS BETWEEN 
+                    <!-- FOR DEBUG: SHOW 'J' IF THE CURRENT USER UID IS BETWEEN 
                   THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
-                  <!-- <td>
+                    <!-- <td>
                     <span *ngIf="request?.currentUserIsJoined === true"> 
                       J
                     </span>
                   </td> -->
 
-                  <!-- ------ ====== VISIBILITY ICONS ====== ------ -->
-                  <td style="text-align:center; white-space: nowrap; width: 1%;">
-                    <!-- IF THE REQUEST SUPPORT STATUS IS 0 (??? REQUEST) -->
-                    <span *ngIf="request?.status == 0">
-                      <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
-                        title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}">
+                    <!-- ------ ====== VISIBILITY ICONS ====== ------ -->
+                    <td style="text-align:center; white-space: nowrap; width: 1%;">
+                      <!-- IF THE REQUEST SUPPORT STATUS IS 0 (??? REQUEST) -->
+                      <span *ngIf="request?.status == 0">
+                        <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
+                          title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}">
 
-                        <svg viewBox="0 0 58.1 53.9" style="width: 25px; position: relative; top: 3px;"
-                          xml:space="preserve">
-                          <style type="text/css">
-                            .st0 {
-                              fill: none;
-                              stroke: #999999;
-                              stroke-width: 2;
-                              stroke-miterlimit: 10;
-                            }
-                          </style>
-                          <path class="st0" d="M30.1,2.7c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
+                          <svg viewBox="0 0 58.1 53.9" style="width: 25px; position: relative; top: 3px;"
+                            xml:space="preserve">
+                            <style type="text/css">
+                              .st0 {
+                                fill: none;
+                                stroke: #999999;
+                                stroke-width: 2;
+                                stroke-miterlimit: 10;
+                              }
+                            </style>
+                            <path class="st0" d="M30.1,2.7c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
                             c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S43.9,2.7,30.1,2.7z" />
-                        </svg>
+                          </svg>
+                        </span>
                       </span>
-                    </span>
 
 
-                    <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) AND THE CURRENT USER UID IS BETWEEN 
+                      <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) AND THE CURRENT USER UID IS BETWEEN 
                     THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
-                    <span *ngIf="request?.status == 200 && request?.currentUserIsJoined === true">
-                      <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
-                        title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}">
+                      <span *ngIf="request?.status == 200 && request?.currentUserIsJoined === true">
+                        <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
+                          title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}">
 
-                        <svg viewBox="0 0 58.1 53.9" style="width: 25px; position: relative; top: 3px;"
-                          xml:space="preserve">
-                          <style type="text/css">
-                            .st0-served-by-cu {
-                              fill: none;
-                              stroke: #4DAF4F;
-                              stroke-width: 2;
-                              stroke-miterlimit: 10;
-                            }
+                          <svg viewBox="0 0 58.1 53.9" style="width: 25px; position: relative; top: 3px;"
+                            xml:space="preserve">
+                            <style type="text/css">
+                              .st0-served-by-cu {
+                                fill: none;
+                                stroke: #4DAF4F;
+                                stroke-width: 2;
+                                stroke-miterlimit: 10;
+                              }
 
-                            .st1-served-by-cu {
-                              fill: #4DAF4F;
-                            }
-                          </style>
-                          <path class="st0-served-by-cu" d="M29.8,3.7c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
+                              .st1-served-by-cu {
+                                fill: #4DAF4F;
+                              }
+                            </style>
+                            <path class="st0-served-by-cu" d="M29.8,3.7c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
                               c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S43.6,3.7,29.8,3.7z" />
-                          <g id="XMLID_146_">
-                            <path id="XMLID_158_" class="st1-served-by-cu" d="M25.8,36.5l-8.4-7.4c-1.1-0.9-1.1-2.4,0-3.3c1.1-0.9,2.8-0.9,3.8,0l4.6,4.1l12.6-10.9
+                            <g id="XMLID_146_">
+                              <path id="XMLID_158_" class="st1-served-by-cu" d="M25.8,36.5l-8.4-7.4c-1.1-0.9-1.1-2.4,0-3.3c1.1-0.9,2.8-0.9,3.8,0l4.6,4.1l12.6-10.9
                                 c1.1-0.9,2.8-0.9,3.8,0c1,0.9,1,2.4,0,3.3L25.8,36.5z" />
-                          </g>
-                        </svg>
-                      </span>
-                    </span>
-
-                    <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) BUT THE CURRENT USER UID IS NOT BETWEEN 
-                    THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has not joined to the request) -->
-                    <span *ngIf="request?.status == 200 && !request?.currentUserIsJoined">
-                      <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
-                        title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}">
-
-                        <svg viewBox="0 0 58.1 53.9" style="width: 25px; position: relative; top: 3px;"
-                          xml:space="preserve">
-                          <style type="text/css">
-                            .st0-served {
-                              fill: none;
-                              stroke: #05BDD4;
-                              stroke-width: 2;
-                              stroke-miterlimit: 10;
-                            }
-
-                            .st1-served {
-                              fill: #05BDD4;
-                            }
-                          </style>
-                          <g>
-                            <path class="st0-served" d="M30.5,3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
-                              c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S44.3,3,30.5,3z" />
-                            <g>
-                              <circle class="st1-served" cx="17.5" cy="26.7" r="3" />
-                              <circle class="st1-served" cx="30.5" cy="26.7" r="3" />
-                              <circle class="st1-served" cx="43.5" cy="26.7" r="3" />
                             </g>
-                          </g>
-                        </svg>
+                          </svg>
+                        </span>
                       </span>
-                    </span>
-                  </td>
+
+                      <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) BUT THE CURRENT USER UID IS NOT BETWEEN 
+                    THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has not joined to the request) -->
+                      <span *ngIf="request?.status == 200 && !request?.currentUserIsJoined">
+                        <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
+                          title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}">
+
+                          <svg viewBox="0 0 58.1 53.9" style="width: 25px; position: relative; top: 3px;"
+                            xml:space="preserve">
+                            <style type="text/css">
+                              .st0-served {
+                                fill: none;
+                                stroke: #05BDD4;
+                                stroke-width: 2;
+                                stroke-miterlimit: 10;
+                              }
+
+                              .st1-served {
+                                fill: #05BDD4;
+                              }
+                            </style>
+                            <g>
+                              <path class="st0-served" d="M30.5,3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
+                              c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S44.3,3,30.5,3z" />
+                              <g>
+                                <circle class="st1-served" cx="17.5" cy="26.7" r="3" />
+                                <circle class="st1-served" cx="30.5" cy="26.7" r="3" />
+                                <circle class="st1-served" cx="43.5" cy="26.7" r="3" />
+                              </g>
+                            </g>
+                          </svg>
+                        </span>
+                      </span>
+                    </td>
 
 
-                  <!-- ===== REQUEST ID ===== -->
-                  <!-- {{ request?.request_id }} -->
-                  <!-- <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
+                    <!-- ===== REQUEST ID ===== -->
+                    <!-- {{ request?.request_id }} -->
+                    <!-- <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
                     <p style="font-size:0.8em;" >
                       {{ replace_recipient(request?.request_id) }}
                     </p>
                   </td> -->
 
 
-                  <!-- ------ ====== MESSAGE  ====== ------ -->
-                  <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
-                    <!-- max-width: 400px -->
-                    <p class="column-td" [innerHTML]="getRequestText(request?.first_text)">
-                      <!-- {{ request?.text }} -->
-                      <!-- {{ request?.first_text }} -->
-                    </p>
-                  </td>
+                    <!-- ------ ====== MESSAGE  ====== ------ -->
+                    <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
+                      <!-- max-width: 400px -->
+                      <p class="column-td" [innerHTML]="getRequestText(request?.first_text)">
+                        <!-- {{ request?.text }} -->
+                        <!-- {{ request?.first_text }} -->
+                      </p>
+                    </td>
 
 
-                  <!-- ------ ====== REQUESTER ====== ------ -->
-                  <td (click)='goToRequestMsgs(request?.request_id)'
-                    style="cursor:pointer;white-space: nowrap; width: 1%;" rel="tooltip"
-                    title="{{ request?.lead?.lead_id }}">
-                    <!-- <p style="font-size:0.9em">{{ request.sender_fullname }}</p> -->
+                    <!-- ------ ====== REQUESTER ====== ------ -->
+                    <td (click)='goToRequestMsgs(request?.request_id)'
+                      style="cursor:pointer;white-space: nowrap; width: 1%;" rel="tooltip"
+                      title="{{ request?.lead?.lead_id }}">
+                      <!-- <p style="font-size:0.9em">{{ request.sender_fullname }}</p> -->
 
-                    <!-- REQUESTER VERIFIED ICON (SERVED REQUEST SECTION) -->
-                    <span class="requester-avatar-wrapper">
-                      <span class="requester-avatar"
-                        [ngStyle]="{'background-color': request?.requester_fullname_fillColour }"
-                        [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname}">
-                        <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
-                      </span>
-                      <span *ngIf="request?.requester_is_verified === true" class="tooltipx">
-                        <!-- left: -36px;top: -3px;  -->
-                        <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
-                          xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6" width="17"
-                          height="17" style="position: relative;left: -41px;top: 1px;" xml:space="preserve">
-                          <style type="text/css">
-                            .st0_UserVerified {
-                              fill: none;
-                            }
+                      <!-- REQUESTER VERIFIED ICON (SERVED REQUEST SECTION) -->
+                      <span class="requester-avatar-wrapper">
+                        <span class="requester-avatar"
+                          [ngStyle]="{'background-color': request?.requester_fullname_fillColour }"
+                          [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname}">
+                          <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
+                        </span>
+                        <span *ngIf="request?.requester_is_verified === true" class="tooltipx">
+                          <!-- left: -36px;top: -3px;  -->
+                          <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6"
+                            width="17" height="17" style="position: relative;left: -41px;top: 1px;"
+                            xml:space="preserve">
+                            <style type="text/css">
+                              .st0_UserVerified {
+                                fill: none;
+                              }
 
-                            .st1_UserVerified {
-                              fill: #FFFFFF;
-                            }
+                              .st1_UserVerified {
+                                fill: #FFFFFF;
+                              }
 
-                            .st2_UserVerified {
-                              fill: #18BDF7;
-                            }
-                          </style>
-                          <path class="st0_UserVerified" d="M1.3,1.3h24v24h-24V1.3z" />
-                          <path class="st1_UserVerified"
-                            d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z" />
-                          <path class="st2_UserVerified" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
+                              .st2_UserVerified {
+                                fill: #18BDF7;
+                              }
+                            </style>
+                            <path class="st0_UserVerified" d="M1.3,1.3h24v24h-24V1.3z" />
+                            <path class="st1_UserVerified"
+                              d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z" />
+                            <path class="st2_UserVerified" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
                                 l6.6-6.6l1.4,1.4L11.3,18.3z" />
-                        </svg>
+                          </svg>
 
-                        <span class="tooltiptext"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
+                          <span class="tooltiptext"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
 
-                      </span>
-                    </span>
-
-                    <span class="column-td" style="white-space: nowrap;"
-                      [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
-                      {{ request?.lead?.fullname  }}
-                      <!-- margin-top: -5px;margin-left:29px -->
-
-                      <span *ngIf="!request?.lead?.fullname">
-                        n.a.
+                        </span>
                       </span>
 
-                      <span class="requester-email"
-                        [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
-                        {{ request?.lead?.email }}
+                      <span class="column-td" style="white-space: nowrap;"
+                        [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
+                        {{ request?.lead?.fullname  }}
+                        <!-- margin-top: -5px;margin-left:29px -->
+
+                        <span *ngIf="!request?.lead?.fullname">
+                          n.a.
+                        </span>
+
+                        <span class="requester-email"
+                          [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
+                          {{ request?.lead?.email }}
+                        </span>
+
+                        <span class="requester-email" *ngIf="!request?.lead?.email"
+                          [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
+                          n.a.
+                        </span>
                       </span>
 
-                      <span class="requester-email" *ngIf="!request?.lead?.email"
-                        [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
-                        n.a.
-                      </span>
-                    </span>
-
-                    <!-- <span *ngIf="!request?.lead?.fullname" class="column-td" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
+                      <!-- <span *ngIf="!request?.lead?.fullname" class="column-td" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
                       n.a.
                     </span> -->
 
 
-                    <!-- <p style="font-size:0.8em">
+                      <!-- <p style="font-size:0.8em">
                       {{ request?.requester_id }}
                     </p> -->
-                  </td>
+                    </td>
 
-                  <!-- ------ ====== USER AGENT BROWSER & OPERATING SYSTEM (in served requests)====== ------ -->
-                  <td>
-                    <span class="tooltipx">
-                      <i class="material-icons user-agent-icon">
-                        computer
-                      </i>
+                    <!-- ------ ====== USER AGENT BROWSER & OPERATING SYSTEM (in served requests)====== ------ -->
+                    <td>
+                      <span class="tooltipx">
+                        <i class="material-icons user-agent-icon">
+                          computer
+                        </i>
 
-                      <span class="tooltiptext" style="font-size: 10px !important; padding: 3px;">
+                        <span class="tooltiptext" style="font-size: 10px !important; padding: 3px;">
 
-                        <span *ngIf="request?.ua_os !== 'undefined undefined'"> {{ request?.ua_os }} </span>
-                        <span *ngIf="request?.ua_os === 'undefined undefined'"> not defined </span>
+                          <span *ngIf="request?.ua_os !== 'undefined undefined'"> {{ request?.ua_os }} </span>
+                          <span *ngIf="request?.ua_os === 'undefined undefined'"> not defined </span>
 
+                        </span>
                       </span>
-                    </span>
 
-                    <span class="tooltipx">
-                      <i class="material-icons user-agent-icon">
-                        public
-                      </i>
+                      <span class="tooltipx">
+                        <i class="material-icons user-agent-icon">
+                          public
+                        </i>
 
-                      <span class="tooltiptext" style="font-size: 10px !important; padding: 3px;">
+                        <span class="tooltiptext" style="font-size: 10px !important; padding: 3px;">
 
 
-                        <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span>
-                        <span *ngIf="request?.ua_browser === 'undefined undefined'"> not defined </span>
+                          <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span>
+                          <span *ngIf="request?.ua_browser === 'undefined undefined'"> not defined </span>
 
+                        </span>
                       </span>
-                    </span>
-                  </td>
+                    </td>
 
-                  <!-- ------ ============== DEPARTMENT  ============== ------ -->
-                  <!-- no more get from request attributes but from department -->
-                  <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
-                    title="{{ request?.department?._id }}">
+                    <!-- ------ ============== DEPARTMENT  ============== ------ -->
+                    <!-- no more get from request attributes but from department -->
+                    <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
+                      title="{{ request?.department?._id }}">
 
-                    <p *ngIf="request?.department?.name" class="column-td">
+                      <p *ngIf="request?.department?.name" class="column-td">
 
-                      {{ request?.department?.name }}
+                        {{ request?.department?.name }}
 
-                    </p>
-                    <p *ngIf="!request?.department?.name" class="column-td">
-                      <!-- {{ 'VisitorsPage.Default' | translate }} -->
-                      n.a.
-                    </p>
-                  </td>
+                      </p>
+                      <p *ngIf="!request?.department?.name" class="column-td">
+                        <!-- {{ 'VisitorsPage.Default' | translate }} -->
+                        n.a.
+                      </p>
+                    </td>
 
-                  <!-- ------ ====== SERVED BY ====== ------ -->
-                  <!-- <td>
+                    <!-- ------ ====== SERVED BY ====== ------ -->
+                    <!-- <td>
                     <span *ngFor="let m of request?.members_array"  style="font-size:0.8em;">
                       <span *ngIf="m !== request?.requester_id && m !== 'system' && m !== currentUserID"> 
                         <p class="member" (click)="goToMemberProfile( m )" [innerHTML]="members_replace( m )" 
@@ -1069,78 +1145,80 @@
                     </span>
                   </td> -->
 
-                  <!-- ------ ====== NEW SERVED BY ====== ------ -->
-                  <!-- *ngIf="participant !== request?.requester_id && participant !== 'system' && participant !== currentUserID"  -->
-                  <td>
-                    <div *ngFor="let participant of request?.participants" style="font-size:0.8em;">
+                    <!-- ------ ====== NEW SERVED BY ====== ------ -->
+                    <!-- *ngIf="participant !== request?.requester_id && participant !== 'system' && participant !== currentUserID"  -->
+                    <td>
+                      <div *ngFor="let participant of request?.participants" style="font-size:0.8em;">
 
-                      <!-- participant !== request?.lead?.lead_id && participant !== 'system' && -->
-                      <span *ngIf="participant !== currentUserID" class="tooltipx">
+                        <!-- participant !== request?.lead?.lead_id && participant !== 'system' && -->
+                        <span *ngIf="participant !== currentUserID" class="tooltipx">
 
-                        <span (click)="goToMemberProfile( participant )" style="cursor:pointer; display: block">
-                          <!-- IF IS A BOT bot_image.png -->
-                          <img *ngIf="participant.indexOf('bot_') !== -1"
-                            class="user-img ws-requests-list-servedby-avatar" src="assets/img/bot_image_as_human.jpg"
-                            onerror="this.src='assets/img/no_image_user.png'" />
+                          <span (click)="goToMemberProfile( participant )" style="cursor:pointer; display: block">
+                            <!-- IF IS A BOT bot_image.png -->
+                            <img *ngIf="participant.indexOf('bot_') !== -1"
+                              class="user-img ws-requests-list-servedby-avatar" src="assets/img/bot_image_as_human.jpg"
+                              onerror="this.src='assets/img/no_image_user.png'" />
 
-                          <!-- IF IS A HUMAN -->
-                          <img *ngIf="participant.indexOf('bot_') === -1"
-                            class="user-img ws-requests-list-servedby-avatar"
-                            src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media"
-                            onerror="this.src='assets/img/no_image_user.png'" />
+                            <!-- IF IS A HUMAN -->
+                            <img *ngIf="participant.indexOf('bot_') === -1"
+                              class="user-img ws-requests-list-servedby-avatar"
+                              src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media"
+                              onerror="this.src='assets/img/no_image_user.png'" />
 
-                          <span class="member" [innerHTML]="members_replace( participant )"></span>
+                            <span class="member" [innerHTML]="members_replace( participant )"></span>
 
+                          </span>
+
+                          <span class="tooltiptext"> {{ "ViewProfile" | translate }} </span>
                         </span>
 
-                        <span class="tooltiptext"> {{ "ViewProfile" | translate }} </span>
-                      </span>
+
+                        <span *ngIf="participant === currentUserID">
+                          <!-- IF IS THE LOGGED USER -->
+                          <img class="user-img ws-requests-list-servedby-avatar"
+                            src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media"
+                            onerror="this.src='assets/img/no_image_user.png'" />
+                          <span class="current-user-member" [innerHTML]="members_replace(participant)"></span>
+                        </span>
+
+                      </div>
+                    </td>
 
 
-                      <span *ngIf="participant === currentUserID">
-                        <!-- IF IS THE LOGGED USER -->
-                        <img class="user-img ws-requests-list-servedby-avatar"
-                          src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media"
-                          onerror="this.src='assets/img/no_image_user.png'" />
-                        <span class="current-user-member" [innerHTML]="members_replace(participant)"></span>
-                      </span>
+                    <!-- ------ ====== CREATED ON ====== ------ -->
+                    <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
+                      <p class="column-td">
+                        <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
+                        <!-- {{ request?.request_date_fromnow }} -->
+                        <!-- {{ getTimestampAsMoment(request?.timestamp) }} -->
 
-                    </div>
-                  </td>
-
-
-                  <!-- ------ ====== CREATED ON ====== ------ -->
-                  <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
-                    <p class="column-td">
-                      <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
-                      <!-- {{ request?.request_date_fromnow }} -->
-                      <!-- {{ getTimestampAsMoment(request?.timestamp) }} -->
-
-                      <!-- {{ request?.timestamp | amTimeAgo }} -->
-                      <!-- {{ request?.created_on | date: 'd/M/y HH:mm:ss' }} -->
-                      {{ request?.createdAt | amTimeAgo }}
-                    </p>
-                  </td>
+                        <!-- {{ request?.timestamp | amTimeAgo }} -->
+                        <!-- {{ request?.created_on | date: 'd/M/y HH:mm:ss' }} -->
+                        {{ request?.createdAt | amTimeAgo }}
+                      </p>
+                    </td>
 
 
-                  <!-- class="td-actions text-right" -->
-                  <!-- ------ ====== ARCHIVE Action ====== ------ -->
-                  <!-- request?.request_id  -->
-                  <td>
-                    <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
-                      class="btn btn-danger btn-simple btn-xs" (click)='openDeleteRequestModal(request?.request_id)'>
-                      <i class="material-icons">clear</i>
-                    </button>
-                  </td>
+                    <!-- class="td-actions text-right" -->
+                    <!-- ------ ====== ARCHIVE Action ====== ------ -->
+                    <!-- request?.request_id  -->
+                    <td>
+                      <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
+                        class="btn btn-danger btn-simple btn-xs" (click)='openDeleteRequestModal(request?.request_id)'>
+                        <i class="material-icons">clear</i>
+                      </button>
+                    </td>
 
-                </tr>
-              </tbody>
-            </table>
-          </div> <!-- ./ card-content table-responsive -->
-        </div> <!-- ./ card -->
+                  </tr>
+                </tbody>
+              </table>
+            </div> <!-- ./ card-content table-responsive -->
+          </div> <!-- ./ card -->
 
-      </div> <!-- ./ col-md-12 -->
-    </div> <!-- ./ row -->
+        </div> <!-- ./ col-md-12 -->
+      </div> <!-- ./ row -->
+
+    </section>
 
     <!-- </div> -->
 
