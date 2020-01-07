@@ -19,7 +19,8 @@ import { NotifyService } from '../../core/notify.service';
 import * as moment from 'moment';
 import { ProjectPlanService } from '../../services/project-plan.service';
 import { ProjectService } from '../../services/project.service';
-import { publicKey } from '../../utils/util';
+// import { publicKey } from '../../utils/util';
+import { public_Key } from '../../utils/util';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
 import { AppConfigService } from '../../services/app-config.service';
 
@@ -67,7 +68,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     DETECTED_USER_PROFILE_PAGE = false;
     CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
-    eos = environment.t2y12PruGU9wUtEGzBJfolMIgK;
+
+    // eos = environment.t2y12PruGU9wUtEGzBJfolMIgK;
 
     displayLogoutModal = 'none';
 
@@ -75,6 +77,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     userProfileImageExist: boolean;
     userImageHasBeenUploaded: boolean;
+    userProfileImageurl: string;
+    timeStamp: any;
 
     HAS_OPENED_THE_CHAT: boolean;
     IS_AVAILABLE: boolean;
@@ -94,6 +98,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     isVisible: boolean;
 
     storageBucket: string;
+    currentUserId: string;
     constructor(
         location: Location,
         private element: ElementRef,
@@ -184,20 +189,39 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         const firebase_conf = this.appConfigService.getConfig().firebase;
         this.storageBucket = firebase_conf['storageBucket'];
         console.log('STORAGE-BUCKET Navbar ', this.storageBucket)
-      }
+    }
 
     getOSCODE() {
-        console.log('NavbarComponent eoscode', this.eos)
 
-        if (this.eos && this.eos === publicKey) {
+        console.log('NavbarComponent public_Key', public_Key)
 
-            this.isVisible = true;
-            console.log('NavbarComponent eoscode isVisible ', this.isVisible);
-        } else {
+        let keys = public_Key.split("-");
+        console.log('PUBLIC-KEY (Navbar) - public_Key keys', keys)
 
-            this.isVisible = false;
-            console.log('NavbarComponent eoscode isVisible ', this.isVisible);
-        }
+        keys.forEach(key => {
+            // console.log('NavbarComponent public_Key key', key)
+            if (key.includes("PAY")) {
+                console.log('PUBLIC-KEY (Navbar) - key', key);
+                let pay = key.split(":");
+                console.log('PUBLIC-KEY (Navbar) - pay key&value', pay);
+                if (pay[1] === "F") {
+                    this.isVisible = false;
+                    console.log('PUBLIC-KEY (Navbar) - pay isVisible', this.isVisible);
+                } else {
+                    this.isVisible = true;
+                    console.log('PUBLIC-KEY (Navbar) - pay isVisible', this.isVisible);
+                }
+            }
+        });
+        // console.log('NavbarComponent eoscode', this.eos);
+        // if (this.eos && this.eos === publicKey) {
+        //     this.isVisible = true;
+        //     console.log('NavbarComponent eoscode isVisible ', this.isVisible);
+        // } else {
+
+        //     this.isVisible = false;
+        //     console.log('NavbarComponent eoscode isVisible ', this.isVisible);
+        // }
     }
 
     getProjects() {
@@ -266,14 +290,40 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         this.usersService.userProfileImageExist.subscribe((image_exist) => {
             console.log('NAVBAR - USER PROFILE EXIST ? ', image_exist);
             this.userProfileImageExist = image_exist;
+            if (this.storageBucket && this.userProfileImageExist === true) {
+                console.log('NAVBAR - USER PROFILE EXIST - BUILD userProfileImageurl');
+                this.setImageProfileUrl(this.storageBucket)
+            }
         });
     }
     checkUserImageUploadIsComplete() {
         this.uploadImageService.imageExist.subscribe((image_exist) => {
             console.log('NAVBAR - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
             this.userImageHasBeenUploaded = image_exist;
+            if (this.storageBucket && this.userImageHasBeenUploaded === true) {
+                console.log('SIDEBAR - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
+                this.setImageProfileUrl(this.storageBucket)
+            }
         });
     }
+
+    setImageProfileUrl(storageBucket) {
+        this.userProfileImageurl = 'https://firebasestorage.googleapis.com/v0/b/' + storageBucket + '/o/profiles%2F' + this.currentUserId + '%2Fphoto.jpg?alt=media';
+        this.timeStamp = (new Date()).getTime();
+    }
+
+    getUserProfileImage() {
+        if (this.timeStamp) {
+
+            return this.userProfileImageurl + '&' + this.timeStamp;
+
+
+
+        }
+        return this.userProfileImageurl
+    }
+
+
 
     getActiveRoute() {
         // this.router.events.subscribe((val) => {
@@ -507,6 +557,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
             // GET ALL PROJECTS WHEN IS PUBLISHED THE USER
             if (this.user) {
+
+                this.currentUserId = this.user._id;
                 this.getProjects();
             }
         });
@@ -529,11 +581,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         this.router.navigate(['/projects']);
         // (in AUTH SERVICE ) RESET PROJECT_BS AND REMOVE ITEM PROJECT FROM STORAGE WHEN THE USER GO TO PROJECTS PAGE
         this.auth.hasClickedGoToProjects();
-        
+
         this.project = null
         console.log('!!C-U 00 -> NAVBAR project AFTER GOTO PROJECTS ', this.project)
 
-        
+
     }
 
     goToHome(id_project: string, project_name: string) {
