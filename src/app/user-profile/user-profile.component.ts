@@ -36,8 +36,11 @@ export class UserProfileComponent implements OnInit {
   projectId: string;
   userProfileImageExist: boolean;
   userImageHasBeenUploaded: boolean;
+  userProfileImageurl: string;
+  timeStamp: any;
 
   storageBucket: string;
+  showSpinnerInUploadImageBtn = false;
 
   constructor(
     public auth: AuthService,
@@ -52,14 +55,14 @@ export class UserProfileComponent implements OnInit {
   ngOnInit() {
 
     this.getLoggedUser();
-
+    this.getStorageBucket();
     this.getCurrentProject();
 
     this.checkUserImageUploadIsComplete()
-
     // used when the page is refreshed
     this.checkUserImageExist();
-    this.getStorageBucket();
+
+
 
   }
 
@@ -67,19 +70,51 @@ export class UserProfileComponent implements OnInit {
     const firebase_conf = this.appConfigService.getConfig().firebase;
     this.storageBucket = firebase_conf['storageBucket'];
     console.log('STORAGE-BUCKET User profile ', this.storageBucket)
+
+
   }
 
   checkUserImageExist() {
     this.usersService.userProfileImageExist.subscribe((image_exist) => {
-      console.log('USER-PROFILE - USER PROFILE IMAGE EXIST ? ', image_exist);
+      console.log('PROFILE IMAGE (USER-PROFILE ) - USER PROFILE IMAGE EXIST ? ', image_exist);
       this.userProfileImageExist = image_exist;
+      if (this.storageBucket && this.userProfileImageExist === true) {
+        console.log('PROFILE IMAGE (USER-PROFILE ) - USER PROFILE IMAGE EXIST - setImageProfileUrl ');
+        this.setImageProfileUrl(this.storageBucket)
+      }
     });
   }
   checkUserImageUploadIsComplete() {
     this.uploadImageService.imageExist.subscribe((image_exist) => {
-      console.log('USER-PROFILE - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
+      console.log('PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
       this.userImageHasBeenUploaded = image_exist;
+      if (this.storageBucket && this.userImageHasBeenUploaded === true) {
+
+        this.showSpinnerInUploadImageBtn = false;
+
+        console.log('PROFILE IMAGE (USER-PROFILE ) - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
+        
+        this.setImageProfileUrl(this.storageBucket)
+      }
     });
+  }
+
+  setImageProfileUrl(storageBucket) {
+    this.userProfileImageurl = 'https://firebasestorage.googleapis.com/v0/b/' + storageBucket + '/o/profiles%2F' + this.userId + '%2Fphoto.jpg?alt=media';
+    // console.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
+    this.timeStamp = (new Date()).getTime();
+  }
+
+  getUserProfileImage() {
+    if (this.timeStamp) {
+      // console.log('PROFILE IMAGE (USER-PROFILE ) - getUserProfileImage ', this.userProfileImageurl);
+      // setTimeout(() => {
+        return this.userProfileImageurl + '&' + this.timeStamp;
+      // }, 200);
+      
+    }
+
+    return this.userProfileImageurl
   }
 
   getCurrentProject() {
@@ -243,6 +278,7 @@ export class UserProfileComponent implements OnInit {
 
 
   upload(event) {
+    this.showSpinnerInUploadImageBtn = true;
     const file = event.target.files[0]
     this.uploadImageService.uploadUserAvatar(file, this.userId)
   }
