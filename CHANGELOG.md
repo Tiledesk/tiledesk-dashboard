@@ -6,6 +6,7 @@
 - Displays the request's attributes in the request details page
 - Multilanguage (in progress)
 - Fixes the user profile image reload
+- Fixes the bottom nav in metrics page
 - Replaces "publicKey" with "public_Key"
 
 ### 1.0.40
