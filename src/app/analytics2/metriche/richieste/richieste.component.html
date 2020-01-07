@@ -1,10 +1,19 @@
+<div class="row" style="text-align: center; margin-top:35px">
+  <div class="col-md-12" >
+      <h4 class="section-title">
+          {{ 'NumberOfRequests' | translate }}
+      </h4>
+  </div>
+</div>
 <div class="row">
   <div class="col-md-12 card" style="border-radius: 11px">
       <!-- margin: auto -15px -->
       <div class="chart-wrapper-richieste " style="">
           <div class="row "> 
             <div class="chart-title-richieste col-sm-12" style="margin-top: 0px;margin-bottom: 18px;text-align: center">
-            <span style="padding-bottom: 12px; padding-top:30px; font-size: 18px; font-family: 'Google Sans', sans-serif !important;"> {{ 'Analytics.RequestChartTitle' | translate }} {{lastdays}} </span> 
+            <span style="padding-bottom: 12px; padding-top:30px; font-size: 18px; font-family: 'Google Sans', sans-serif !important;"> 
+             {{ 'Analytics.RequestChartTitle' | translate }} {{lastdays}} 
+            </span> 
                 <span *ngIf="selectedDaysId <= 30">{{ 'Analytics.Days' | translate }}</span>
                 <span *ngIf="selectedDaysId === 90 || selectedDaysId === 180  ">{{ 'Analytics.Months' | translate }}</span>
                 <span *ngIf="selectedDaysId === 360">{{ 'Analytics.Year' | translate }}</span>
