@@ -7,7 +7,8 @@ import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
 import { Subscription } from 'rxjs';
-import { publicKey } from '../utils/util';
+// import { publicKey } from '../utils/util';
+import { public_Key } from '../utils/util';
 import { environment } from '../../environments/environment';
 import { AppConfigService } from '../services/app-config.service';
 @Component({
@@ -64,7 +65,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   canceledInviteErrorMsg: string;
   subscription: Subscription;
   isVisible: boolean;
-  eos = environment.t2y12PruGU9wUtEGzBJfolMIgK;
+  // eos = environment.t2y12PruGU9wUtEGzBJfolMIgK;
 
   storageBucket: string;
   CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
@@ -113,8 +114,8 @@ export class UsersComponent implements OnInit, OnDestroy {
     // console.log('USERS-COMP - CHAT URL ', this.CHAT_BASE_URL);
 
     // https://support-pre.tiledesk.com/chat/index.html?recipient=5de9200d6722370017731969&recipientFullname=Nuovopre%20Pre
-      //  https://support-pre.tiledesk.com/chat/index.html?recipient=5dd278b8989ecd00174f9d6b&recipientFullname=Gian Burrasca
-    const url = this.CHAT_BASE_URL + '?' + 'recipient='+ agentId + '&recipientFullname=' + agentFirstname + ' ' + agentLastname;
+    //  https://support-pre.tiledesk.com/chat/index.html?recipient=5dd278b8989ecd00174f9d6b&recipientFullname=Gian Burrasca
+    const url = this.CHAT_BASE_URL + '?' + 'recipient=' + agentId + '&recipientFullname=' + agentFirstname + ' ' + agentLastname;
     console.log('USERS-COMP - CHAT URL ', url);
     window.open(url, '_blank');
   }
@@ -126,17 +127,36 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   getOSCODE() {
-    console.log('eoscode', this.eos)
 
-    if (this.eos && this.eos === publicKey) {
 
-      this.isVisible = true;
-      console.log('eoscode isVisible ', this.isVisible);
-    } else {
+    let keys = public_Key.split("-");
+    keys.forEach(key => {
+      if (key.includes("GRO")) {
+        console.log('PUBLIC-KEY (Users) - key', key);
+        let gro = key.split(":");
+        console.log('PUBLIC-KEY (Users) - gro key&value', gro);
 
-      this.isVisible = false;
-      console.log('eoscode isVisible ', this.isVisible);
-    }
+        if (gro[1] === "F") {
+          this.isVisible = false;
+          console.log('PUBLIC-KEY (Users) - gro isVisible', this.isVisible);
+        } else {
+          this.isVisible = true;
+          console.log('PUBLIC-KEY (Users) - gro isVisible', this.isVisible);
+        }
+      }
+
+    });
+
+    // console.log('eoscode', this.eos)
+    // if (this.eos && this.eos === publicKey) {
+
+    //   this.isVisible = true;
+    //   console.log('eoscode isVisible ', this.isVisible);
+    // } else {
+
+    //   this.isVisible = false;
+    //   console.log('eoscode isVisible ', this.isVisible);
+    // }
   }
 
   translateCanceledInviteSuccessMsg() {

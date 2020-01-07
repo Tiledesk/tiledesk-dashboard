@@ -9,6 +9,8 @@ import { ProjectService } from '../services/project.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 import { environment } from '../../environments/environment';
+
+import { public_Key } from './../utils/util';
 @Component({
   selector: 'appdashboard-widget',
   templateUrl: './widget.component.html',
@@ -89,6 +91,7 @@ export class WidgetComponent implements OnInit, OnDestroy {
   sub: Subscription;
   showSpinner = true;
   has_copied = false;
+  isVisible: boolean;
   constructor(
     http: Http,
     private auth: AuthService,
@@ -103,6 +106,7 @@ export class WidgetComponent implements OnInit, OnDestroy {
     this.auth.checkRoleForCurrentProject();
     this.getBrowserLang();
     this.getCurrentProject();
+    this.getOSCODE();
 
     // this.subscribeToSelectedPrimaryColor();
     // this.subscribeToSelectedSecondaryColor();
@@ -112,6 +116,25 @@ export class WidgetComponent implements OnInit, OnDestroy {
     // this.subscribeToCheckedPrechatform();
     // this.subscribeToWidgetAlignment();
     console.log('**** ON INIT ALIGNMENT SELECTED ', this.alignmentSelected)
+  }
+
+  getOSCODE() { 
+    let keys = public_Key.split("-");
+    console.log('PUBLIC-KEY (Home) keys', keys)
+    keys.forEach(key => {
+      // console.log('NavbarComponent public_Key key', key)
+      if (key.includes("PAY")) {
+        console.log('PUBLIC-KEY (Home) - key', key);
+        let pay = key.split(":");
+        console.log('PUBLIC-KEY (Home) - pay key&value', pay);
+        if (pay[1] === "F") {
+          this.isVisible = false;
+        } else {
+          this.isVisible = true;
+        }
+      }
+    });
+
   }
 
   ngOnDestroy() {

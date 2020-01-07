@@ -14,7 +14,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
 
 import { Subscription } from 'rxjs';
-import { publicKey } from './../utils/util';
+// import { publicKey } from './../utils/util';
+import { public_Key } from './../utils/util';
 
 @Component({
   selector: 'home',
@@ -38,7 +39,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   USER_ROLE: string;
 
   CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
-  eos = environment.t2y12PruGU9wUtEGzBJfolMIgK;
+  // eos = environment.t2y12PruGU9wUtEGzBJfolMIgK;
   browserLang: string;
 
   prjct_name: string;
@@ -104,28 +105,45 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getOSCODE();
   }
 
-    // TRANSLATION
-    translateInstallWidget() {
-      this.translate.get('InstallTiledeskNowAndStartChatting')
-        .subscribe((text: string) => {
-  
-          this.installWidgetText = text;
-          console.log('+ + + translateInstallWidget', text)
-        });
-    }
+  // TRANSLATION
+  translateInstallWidget() {
+    this.translate.get('InstallTiledeskNowAndStartChatting')
+      .subscribe((text: string) => {
+
+        this.installWidgetText = text;
+        console.log('+ + + translateInstallWidget', text)
+      });
+  }
 
   getOSCODE() {
-    console.log('eoscode', this.eos)
 
-    if (this.eos && this.eos === publicKey) {
+    let keys = public_Key.split("-");
+    console.log('PUBLIC-KEY (Home) keys', keys)
+    keys.forEach(key => {
+      // console.log('NavbarComponent public_Key key', key)
+      if (key.includes("PAY")) {
+        console.log('PUBLIC-KEY (Home) - key', key);
+        let pay = key.split(":");
+        console.log('PUBLIC-KEY (Home) - pay key&value', pay);
+        if (pay[1] === "F") {
+          this.isVisible = false;
+        } else {
+          this.isVisible = true;
+        }
+      }
+    });
 
-      this.isVisible = true;
-      console.log('eoscode isVisible ', this.isVisible);
-    } else {
 
-      this.isVisible = false;
-      console.log('eoscode isVisible ', this.isVisible);
-    }
+    // console.log('eoscode', this.eos)
+    // if (this.eos && this.eos === publicKey) {
+
+    //   this.isVisible = true;
+    //   console.log('eoscode isVisible ', this.isVisible);
+    // } else {
+
+    //   this.isVisible = false;
+    //   console.log('eoscode isVisible ', this.isVisible);
+    // }
   }
 
   getVisitorCounter() {
@@ -176,7 +194,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           console.log('getVisitorCounter VISITOR COUNTER IS O »» HAS NOT INSTALLED');
           // this.notify.presentModalInstallTiledeskModal() 
           //  this.notify.showNotificationInstallWidget(`${this.installWidgetText} <span style="color:#ffffff; display: inline-block; max-width: 100%;"> Nicola </span>`, 0, 'info');
-         
+
         }
 
       }, (error) => {

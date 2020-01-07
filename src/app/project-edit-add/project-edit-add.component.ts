@@ -12,7 +12,8 @@ import { NotifyService } from '../core/notify.service';
 import { Subscription } from 'rxjs/Subscription';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from './../../environments/environment';
-import { publicKey } from './../utils/util';
+// import { publicKey } from './../utils/util';
+import { public_Key } from './../utils/util';
 import { UsersService } from '../services/users.service';
 import * as moment from 'moment';
 
@@ -29,7 +30,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   PROJECT_SETTINGS_PAYMENTS_ROUTE: boolean;
   PROJECT_SETTINGS_AUTH_ROUTE: boolean;
 
-  eos = environment.t2y12PruGU9wUtEGzBJfolMIgK;
+  // eos = environment.t2y12PruGU9wUtEGzBJfolMIgK;
   showSpinner = true;
 
   project_name: string;
@@ -153,17 +154,33 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
 
   getOSCODE() {
-    console.log('ProjectEditAddComponent eoscode', this.eos)
 
-    if (this.eos && this.eos === publicKey) {
 
-      this.isVisible = true;
-      console.log('ProjectEditAddComponent eoscode isVisible ', this.isVisible);
-    } else {
+    let keys = public_Key.split("-");
+    console.log('PUBLIC-KEY (Home) keys', keys)
+    keys.forEach(key => {
+      // console.log('NavbarComponent public_Key key', key)
+      if (key.includes("PAY")) {
+        console.log('PUBLIC-KEY (Home) - key', key);
+        let pay = key.split(":");
+        console.log('PUBLIC-KEY (Home) - pay key&value', pay);
+        if (pay[1] === "F") {
+          this.isVisible = false;
+        } else {
+          this.isVisible = true;
+        }
+      }
+    });
+    // console.log('ProjectEditAddComponent eoscode', this.eos);
+    // if (this.eos && this.eos === publicKey) {
 
-      this.isVisible = false;
-      console.log('ProjectEditAddComponent eoscode isVisible ', this.isVisible);
-    }
+    //   this.isVisible = true;
+    //   console.log('ProjectEditAddComponent eoscode isVisible ', this.isVisible);
+    // } else {
+
+    //   this.isVisible = false;
+    //   console.log('ProjectEditAddComponent eoscode isVisible ', this.isVisible);
+    // }
   }
 
   getCurrentUrlAndSwitchView() {

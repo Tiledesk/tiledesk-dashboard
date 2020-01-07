@@ -35,7 +35,7 @@
     <a> {{ "ProjectEditPage.Payments" | translate }}</a>
   </li>
 
-  <li *ngIf="isVisible" (click)="goToProjectSettings_Auth()" class="btn-with-border-effect" [ngClass]="{ 'li-active' : PROJECT_SETTINGS_AUTH_ROUTE === true,  
+  <li (click)="goToProjectSettings_Auth()" class="btn-with-border-effect" [ngClass]="{ 'li-active' : PROJECT_SETTINGS_AUTH_ROUTE === true,  
                     'border-from-center': PROJECT_SETTINGS_AUTH_ROUTE === false }">
 
     <a> {{ "ProjectEditPage.Authentication" | translate }}</a>

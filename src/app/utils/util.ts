@@ -80,5 +80,6 @@ export function getColorBck(requester_fullname) {
     return arrayBckColor[num];
 }
 
-export const publicKey = ''
+// export const publicKey = 'uTdBCRvGAEhJ01cT3uBLg8oFJx';
+export const public_Key = 'PAY:F-ANA:F-ACT:F-TRI:F-GRO:F-DEP:F-OPH:F-MTL:T'
 

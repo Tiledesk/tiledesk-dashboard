@@ -331,7 +331,7 @@
 			==============================================================================
 			=============================  WIDGET  MULTILANGUAGE  =========================== 
 			============================================================================== -->
-			<!-- <div class="row">
+			<div *ngIf="isVisible" class="row">
 				<div class="col-sm-12">
 					<div class="widget-settings-div-button" (click)="goToWidgetMultilangage()"> 
 						<div style="padding-left: 15px"> 
@@ -339,17 +339,14 @@
 							<label class="widget-setting-label">
 								{{ 'Multilanguage' | translate }}
 							</label>
-						
 							<div style="color: rgb(118, 149, 165); font-size: 13px; font-weight: 400"> 
 								{{ 'TranslateOrEditWidgetPhrases' | translate }}
 							</div> 
-
 						</div> 
-
 
 					</div>
 				</div>
-			</div> -->
+			</div>
 
 			<!-- 
 			==============================================================================
