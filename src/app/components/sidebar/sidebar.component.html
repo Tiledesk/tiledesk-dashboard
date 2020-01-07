@@ -31,10 +31,12 @@
       <!-- assets/img/tiledesk-logo_white_orange.svg -->
       <!-- assets/img/tiledesk-logo_white_blu.svg" -->
       <!-- note to center the logo remove > left: 26px -->
-      <img style="width:45%; top:20px;left: 26px" src="assets/img/tiledesk-logo_white_orange.svg" />
+      <!-- <img style="width:45%; top:20px;left: 26px" src="assets/img/tiledesk-logo_white_orange.svg" /> -->
+      <img class="sidebar__logo" [ngClass]="{'sidebar__logo_no_rocket' : hidechangelogrocket === true }"
+        [src]="sidebarlogourl" />
     </div>
 
-    <div class="link-to-tiledesk-changelog-blog" (click)="goToBlogChangelog()"
+    <div *ngIf="!hidechangelogrocket" class="link-to-tiledesk-changelog-blog" (click)="goToBlogChangelog()"
       style="position: absolute; top: 18px; right: 25px; cursor:pointer">
       <div class="news-rocket" style="cursor: pointer;">
         <img style="height: auto; width: 18px;" src="assets/img/t_rocket.svg" />
@@ -91,9 +93,9 @@
         (mouseout)="mouseOver(false)" -->
     <!--  -->
     <div class="avatar-container tiledesk-nav-avatar" [ngClass]="{'small-sidebar-avatar' : SIDEBAR_IS_SMALL === true }">
-
+      <!-- src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{user?._id}}%2Fphoto.jpg?alt=media"  -->
       <img class="avatar" *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
-        src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{user?._id}}%2Fphoto.jpg?alt=media" />
+        [src]="getUserProfileImage()" />
 
       <img class="avatar" *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true"
         src="assets/img/no_image_user.png" />
@@ -318,7 +320,7 @@
         </li> -->
 
       <!-- ANALYTICS -->
-      <ng-container *ngIf="isVisible">
+      <ng-container *ngIf="isVisibleANA">
         <li *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="active"
           [ngClass]="{'active' : ANALYTICS_DEMO_ROUTE_IS_ACTIVE === true}" (click)="stopScroll()">
           <a class="customAncor" routerLink="project/{{ project._id }}/analytics">
@@ -334,7 +336,7 @@
       </ng-container>
 
       <!-- ACTIVITIES -->
-      <ng-container *ngIf="isVisible">
+      <ng-container *ngIf="isVisibleACT">
         <li *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="active"
           [ngClass]="{'active' : ACTIVITIES_DEMO_ROUTE_IS_ACTIVE === true}" (click)="stopScroll()">
           <a class="customAncor" routerLink="project/{{ project._id }}/activities">
@@ -396,21 +398,31 @@
       </li>
 
       <!-- TRIGGER -->
-      <!-- <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
-        <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/trigger">
-          <p class="onBlackBckgrnd">
-            <span class="sidebar-mini">T </span>
-            {{ 'Trigger.Trigger' | translate }}
-          </p>
-        </a>
-      </li> -->
+      <ng-container *ngIf="isVisibleTRI">
+        <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
+          <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/trigger">
+            <p class="onBlackBckgrnd">
+              <span class="sidebar-mini">T </span>
+              {{ 'Trigger.Trigger' | translate }}
+            </p>
+          </a>
+        </li>
+      </ng-container>
 
       <!-- USERS (ALIAS MEMBERS) -->
       <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
         <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/users">
 
           <p class="onBlackBckgrnd">
-            <span class="sidebar-mini">UG </span> {{ 'UsersAndGroups' | translate }}
+            <span *ngIf="isVisibleGRO">
+              <span class="sidebar-mini">UG </span> {{ 'UsersAndGroups' | translate }}
+            </span>
+            
+
+            <span *ngIf="!isVisibleGRO">
+              <span class="sidebar-mini">U </span> {{ 'Users' | translate }}
+
+            </span>
           </p>
 
           <!-- <span class="sidebar-mini">
@@ -449,7 +461,7 @@
         </a>
       </li>
 
-      <ng-container *ngIf="isVisible">
+      <ng-container *ngIf="isVisibleDEP">
         <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
           <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/departments">
 
@@ -483,7 +495,7 @@
         </a>
       </li>
 
-      <ng-container *ngIf="isVisible">
+      <ng-container *ngIf="isVisibleOPH">
         <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
           <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/hours">
 

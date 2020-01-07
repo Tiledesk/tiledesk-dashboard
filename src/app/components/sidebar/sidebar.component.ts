@@ -15,9 +15,11 @@ import { NotifyService } from '../../core/notify.service';
 import { environment } from '../../../environments/environment';
 import { UploadImageService } from '../../services/upload-image.service';
 import { TranslateService } from '@ngx-translate/core';
-import { publicKey } from '../../utils/util';
+// import { publicKey } from '../../utils/util';
+import { public_Key } from '../../utils/util';
 import { AppConfigService } from '../../services/app-config.service';
 
+import brand from 'assets/brand/brand.json';
 declare const $: any;
 
 declare interface RouteInfo {
@@ -52,6 +54,10 @@ declare interface RouteInfo {
     styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit, AfterViewInit {
+
+
+    sidebarlogourl = brand.sidebar__logo_url;
+    hidechangelogrocket = brand.sidebar__hide_changelog_rocket
 
     @ViewChild('openchatbtn') private elementRef: ElementRef;
     @ViewChild('homebtn') private homeBtnElement: ElementRef;
@@ -98,10 +104,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     currentUserId: string
 
     CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
-    eos = environment.t2y12PruGU9wUtEGzBJfolMIgK;
+    // eos = environment.t2y12PruGU9wUtEGzBJfolMIgK;
 
     userProfileImageExist: boolean;
     userImageHasBeenUploaded: boolean;
+    userProfileImageurl: string;
+    timeStamp: any;
 
     IS_MOBILE_MENU: boolean;
     scrollpos: number;
@@ -125,9 +133,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     prjct_trial_expired: boolean;
     prjc_trial_days_left: number
     prjc_trial_days_left_percentage: number
-    isVisible: boolean;
+    isVisibleANA: boolean;
+    isVisibleACT: boolean;
+    isVisibleTRI: boolean;
+    isVisibleGRO: boolean;
+    isVisibleDEP: boolean;
+    isVisibleOPH: boolean;
 
     storageBucket: string;
+
 
     constructor(
         private requestsService: RequestsService,
@@ -145,8 +159,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     ) { console.log('!!!!! HELLO SIDEBAR') }
 
 
+
     ngOnInit() {
 
+        this.getBrand();
         this.translateChangeAvailabilitySuccessMsg();
         this.translateChangeAvailabilityErrorMsg();
 
@@ -189,6 +205,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.getOSCODE();
         this.getStorageBucket();
     }
+    getBrand() {
+
+        console.log('BRAND_JSON - SIDEBAR ', brand);
+        console.log('BRAND_JSON - SIDEBAR sidebarlogourl ', this.sidebarlogourl);
+        console.log('BRAND_JSON - SIDEBAR hidechangelogrocket ', this.hidechangelogrocket);
+
+    }
 
     getStorageBucket() {
         const firebase_conf = this.appConfigService.getConfig().firebase;
@@ -197,17 +220,105 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     getOSCODE() {
-        console.log('eoscode', this.eos)
 
-        if (this.eos && this.eos === publicKey) {
+        let keys = public_Key.split("-");
+        console.log('PUBLIC-KEY (SIDEBAR) - public_Key keys', keys)
 
-            this.isVisible = true;
-            console.log('eoscode isVisible ', this.isVisible);
-        } else {
+        keys.forEach(key => {
+            // console.log('NavbarComponent public_Key key', key)
+            if (key.includes("ANA")) {
+                console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+                let ana = key.split(":");
+                console.log('PUBLIC-KEY (SIDEBAR) - ana key&value', ana);
 
-            this.isVisible = false;
-            console.log('eoscode isVisible ', this.isVisible);
-        }
+                if (ana[1] === "F") {
+                    this.isVisibleANA = false;
+                    console.log('PUBLIC-KEY (SIDEBAR) - ana isVisible', this.isVisibleANA);
+                } else {
+                    this.isVisibleANA = true;
+                    console.log('PUBLIC-KEY (SIDEBAR) - ana isVisible', this.isVisibleANA);
+                }
+            }
+
+            if (key.includes("ACT")) {
+                console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+                let act = key.split(":");
+                console.log('PUBLIC-KEY (SIDEBAR) - act key&value', act);
+
+                if (act[1] === "F") {
+                    this.isVisibleACT = false;
+                    console.log('PUBLIC-KEY (SIDEBAR) - act isVisible', this.isVisibleACT);
+                } else {
+                    this.isVisibleACT = true;
+                    console.log('PUBLIC-KEY (SIDEBAR) - act isVisible', this.isVisibleACT);
+                }
+            }
+
+            if (key.includes("TRI")) {
+                console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+                let tri = key.split(":");
+                console.log('PUBLIC-KEY (SIDEBAR) - tri key&value', tri);
+
+                if (tri[1] === "F") {
+                    this.isVisibleTRI = false;
+                    console.log('PUBLIC-KEY (SIDEBAR) - tri isVisible', this.isVisibleTRI);
+                } else {
+                    this.isVisibleTRI = true;
+                    console.log('PUBLIC-KEY (SIDEBAR) - tri isVisible', this.isVisibleTRI);
+                }
+            }
+
+            if (key.includes("GRO")) {
+                console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+                let gro = key.split(":");
+                console.log('PUBLIC-KEY (SIDEBAR) - gro key&value', gro);
+
+                if (gro[1] === "F") {
+                    this.isVisibleGRO = false;
+                    console.log('PUBLIC-KEY (SIDEBAR) - gro isVisible', this.isVisibleGRO);
+                } else {
+                    this.isVisibleGRO = true;
+                    console.log('PUBLIC-KEY (SIDEBAR) - gro isVisible', this.isVisibleGRO);
+                }
+            }
+
+            if (key.includes("DEP")) {
+                console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+                let dep = key.split(":");
+                console.log('PUBLIC-KEY (SIDEBAR) - dep key&value', dep);
+
+                if (dep[1] === "F") {
+                    this.isVisibleDEP = false;
+                    console.log('PUBLIC-KEY (SIDEBAR) - dep isVisible', this.isVisibleDEP);
+                } else {
+                    this.isVisibleDEP = true;
+                    console.log('PUBLIC-KEY (SIDEBAR) - dep isVisible', this.isVisibleDEP);
+                }
+            }
+
+            if (key.includes("OPH")) {
+                console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+                let oph = key.split(":");
+                console.log('PUBLIC-KEY (SIDEBAR) - oph key&value', oph);
+
+                if (oph[1] === "F") {
+                    this.isVisibleOPH = false;
+                    console.log('PUBLIC-KEY (SIDEBAR) - oph isVisible', this.isVisibleOPH);
+                } else {
+                    this.isVisibleOPH = true;
+                    console.log('PUBLIC-KEY (SIDEBAR) - oph isVisible', this.isVisibleOPH);
+                }
+            }
+        });
+
+        // console.log('eoscode', this.eos)
+        // if (this.eos && this.eos === publicKey) {
+        //     this.isVisible = true;
+        //     console.log('eoscode isVisible ', this.isVisible);
+        // } else {
+        //     this.isVisible = false;
+        //     console.log('eoscode isVisible ', this.isVisible);
+        // }
     }
 
 
@@ -314,14 +425,37 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.usersService.userProfileImageExist.subscribe((image_exist) => {
             console.log('SIDEBAR - USER PROFILE EXIST ? ', image_exist);
             this.userProfileImageExist = image_exist;
+            if (this.storageBucket && this.userProfileImageExist === true) {
+                console.log('SIDEBAR - USER PROFILE EXIST - BUILD userProfileImageurl');
+                this.setImageProfileUrl(this.storageBucket)
+            }
         });
     }
+
+
     checkUserImageUploadIsComplete() {
         this.uploadImageService.imageExist.subscribe((image_exist) => {
             console.log('SIDEBAR - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
             this.userImageHasBeenUploaded = image_exist;
+            if (this.storageBucket && this.userImageHasBeenUploaded === true) {
+                console.log('SIDEBAR - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
+                this.setImageProfileUrl(this.storageBucket)
+            }
         });
     }
+
+    setImageProfileUrl(storageBucket) {
+        this.userProfileImageurl = 'https://firebasestorage.googleapis.com/v0/b/' + storageBucket + '/o/profiles%2F' + this.currentUserId + '%2Fphoto.jpg?alt=media';
+        this.timeStamp = (new Date()).getTime();
+    }
+
+    getUserProfileImage() {
+        if (this.timeStamp) {
+            return this.userProfileImageurl + '&' + this.timeStamp;
+        }
+        return this.userProfileImageurl
+    }
+
 
     getProjectUserRole() {
         this.usersService.project_user_role_bs.subscribe((user_role) => {
