@@ -1,6 +1,12 @@
 
 # tiledesk-dashboard
 
+### 2.0.0
+- Adds filters for agent and department in the requests' list page
+- Displays the request's attributes in the request details page
+- Multilanguage (in progress)
+- Fixes the user profile image reload
+
 ### 1.0.40
 - Fixes the user profile urls
 
