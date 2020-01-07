@@ -977,3 +977,13 @@ button.close {
     transform: rotate(1deg);
   }
 }
+
+.sidebar__logo {
+  width: 45% !important;
+  top: 20px !important;
+  left: 26px !important;
+}
+.sidebar__logo_no_rocket {
+  left: unset !important;
+  width: 50% !important;
+}
