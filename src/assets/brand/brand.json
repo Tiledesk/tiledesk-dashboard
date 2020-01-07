@@ -1,0 +1,14 @@
+{
+    "company_site_name": "tiledesk.com",
+    "company_site_url": "http://www.tiledesk.com",
+    "company_contact_us_email": "info@tiledesk.com",
+    "sidebar__logo_url": "assets/img/tiledesk-logo_white_orange.svg",
+    "sidebar__hide_changelog_rocket": false,
+    "footer": {
+        "privacy_policy_link_name": "Privacy Policy",
+        "privacy_policy_url": "http://www.tiledesk.com/privacy.html",
+        "display_terms_and_conditions_link": true,
+        "terms_and_conditions_url": "http://www.tiledesk.com/termsofservice.html",
+        "contact_us_email_link_text":""
+    }
+}
