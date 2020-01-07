@@ -40,9 +40,9 @@ export class UploadImageService {
         const progress = (uploadTask.snapshot.bytesTransferred / uploadTask.snapshot.totalBytes) * 100;
 
         if ( progress === 100 ) {
-          const self = this
-
-          this.imageExist.next(true);
+          // const self = this
+          // this.imageExist.next(true);
+         
           console.log('=== === UPLOAD-IMG-SERV PUBLISH - USER PROFILE IMAGE UPLOAD COMPLETE ', true )
         }
         console.log('Upload is ' + progress + '% done');
@@ -71,9 +71,11 @@ export class UploadImageService {
         }
       }, () => {
         // Upload completed successfully, now we can get the download URL
+        const self = this
         uploadTask.snapshot.ref.getDownloadURL().then(function (downloadURL) {
           console.log('File available at', downloadURL);
-  
+          
+          self.imageExist.next(true);
         });
       }
     );
