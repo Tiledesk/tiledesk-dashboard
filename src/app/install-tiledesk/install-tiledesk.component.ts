@@ -4,6 +4,7 @@ import { AuthService } from '../core/auth.service';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { slideInAnimation } from '../_animations/index';
+import brand from 'assets/brand/brand.json';
 
 @Component({
   selector: 'appdashboard-install-tiledesk',
@@ -14,6 +15,8 @@ import { slideInAnimation } from '../_animations/index';
   host: { '[@slideInAnimation]': '' }
 })
 export class InstallTiledeskComponent implements OnInit, OnDestroy {
+  tparams = brand;
+  logo_on_rocket = brand.wizard_install_widget_page.logo_on_rocket
 
   projectName: string;
   projectId: string;

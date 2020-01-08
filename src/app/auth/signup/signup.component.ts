@@ -5,7 +5,7 @@ import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
-
+import brand from 'assets/brand/brand.json';
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
 type FormErrors = { [u in UserFields]: string };
 
@@ -15,6 +15,17 @@ type FormErrors = { [u in UserFields]: string };
   styleUrls: ['./signup.component.scss']
 })
 export class SignupComponent implements OnInit, AfterViewInit {
+
+  // tparams = {value: 'world'};
+  tparams = brand;
+
+  companyLogoBlack_Url = brand.company_logo_black__url;
+  company_name = brand.company_name;
+  company_site_url = brand.company_site_url;
+  privacy_policy_link_text = brand.privacy_policy_link_text;
+  terms_and_conditions_url = brand.terms_and_conditions_url;
+  privacy_policy_url = brand.privacy_policy_url;
+  display_terms_and_conditions_link = brand.signup_page.display_terms_and_conditions_link;
 
   showSpinnerInLoginBtn = false;
   public signin_errormsg = '';
@@ -98,7 +109,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
       if (browserLang === 'it') {
         this.currentLang = 'it'
       } else {
-        this.currentLang = 'en'
+        this.currentLang = browserLang
       }
     }
   }
@@ -159,6 +170,10 @@ export class SignupComponent implements OnInit, AfterViewInit {
               this.signin_errormsg = `Un account con l'email ${this.userForm.value['email']} esiste già`;
 
             } else if (this.currentLang === 'en') {
+              this.signin_errormsg = `An account with the email ${this.userForm.value['email']} already exist`;
+
+            } else if (this.currentLang !== 'en' && this.currentLang !== 'it') {
+
               this.signin_errormsg = `An account with the email ${this.userForm.value['email']} already exist`;
             }
 
@@ -301,7 +316,8 @@ export class SignupComponent implements OnInit, AfterViewInit {
   }
 
   goToTileDeskDotCom() {
-    const url = 'http://tiledesk.com/'
+    // const url = 'http://tiledesk.com/'
+    const url = this.company_site_url;
     window.open(url);
     // , '_blank'
   }

@@ -5,8 +5,8 @@
           <!-- (click)="goToTileDeskDotCom()" -->
         <div style="text-align: center; cursor: pointer; margin-top: -70px;"> 
             <!-- max-width: 100%; -->
-          <a href="http://www.tiledesk.com" target="_blank">
-            <img src="assets/img/tiledesk-logo.svg" class="img-fluid" style="max-width: 150px; height: auto; padding-top:25px"/>
+          <a [href]="company_site_url" target="_blank">
+            <img [src]="companyLogoBlack_Url" class="img-fluid" style="max-width: 150px; height: auto; padding-top:25px"/>
           </a>
         </div>
 
@@ -25,7 +25,7 @@
 
         <div class="signup-title" style="text-align:center"> 
           <h2 style="font-family: 'Google Sans', sans-serif !important; ">
-            {{ "LetSetUpYourTiledeskChat" | translate}}
+            {{"LetSetUpYourTiledeskChat" | translate: tparams }}
           </h2>
         </div>
 
@@ -77,9 +77,15 @@
             
               <label class="container" for="terms" >
                   {{ "iAgree" | translate }} 
-                <a style="color: #03a5e8" target="_blank" href="http://www.tiledesk.com/termsofservice.html" >{{ "TermsAndConditions" | translate }}</a>
-                  {{ "And" | translate }} 
-                <a style="color: #03a5e8" target="_blank" href="http://www.tiledesk.com/privacy.html">Privacy Policy</a>
+                <a *ngIf="display_terms_and_conditions_link" style="color: #03a5e8" target="_blank" 
+                  [href]="terms_and_conditions_url">
+                  {{ "TermsAndConditions" | translate }}
+                </a>
+                 <span *ngIf="display_terms_and_conditions_link"> {{ "And" | translate }}  </span> 
+                <a style="color: #03a5e8" target="_blank" 
+                  [href]="privacy_policy_url">
+                  {{ privacy_policy_link_text }}
+                </a>
                 <!-- [checked]="checkModel" -->
                 <input type="checkbox" formControlName="terms" id="terms"  (change)="onChange($event)"  required />
                 <span class="checkmark"></span>

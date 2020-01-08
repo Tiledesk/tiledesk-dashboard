@@ -9,13 +9,16 @@ import { switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 declare var Stripe: any;
 import { Subscription } from 'rxjs';
-
+import brand from 'assets/brand/brand.json';
 @Component({
   selector: 'appdashboard-pricing',
   templateUrl: './pricing.component.html',
   styleUrls: ['./pricing.component.scss']
 })
 export class PricingComponent implements OnInit, OnDestroy {
+  
+  company_name = brand.company_name;
+
   projectId: string;
   projectName: string;
   currentUserID: string;

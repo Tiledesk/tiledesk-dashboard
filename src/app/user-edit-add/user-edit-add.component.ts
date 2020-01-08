@@ -9,12 +9,15 @@ import { NotifyService } from '../core/notify.service';
 import { ProjectPlanService } from '../services/project-plan.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import brand from 'assets/brand/brand.json';
+
 @Component({
   selector: 'app-user-edit-add',
   templateUrl: './user-edit-add.component.html',
   styleUrls: ['./user-edit-add.component.scss']
 })
 export class UserEditAddComponent implements OnInit, OnDestroy {
+  tparams = brand;
 
   CREATE_VIEW = false;
   EDIT_VIEW = false;

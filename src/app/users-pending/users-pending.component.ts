@@ -4,6 +4,7 @@ import { Location } from '@angular/common';
 import { PendingInvitation } from '../models/pending-invitation-model';
 import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
+import brand from 'assets/brand/brand.json';
 
 @Component({
   selector: 'appdashboard-users-pending',
@@ -12,7 +13,8 @@ import { TranslateService } from '@ngx-translate/core';
 })
 
 export class UsersPendingComponent implements OnInit {
-
+  tparams = brand;
+  
   pending_invites: PendingInvitation;
   pendingInvitationEmail: string;
   resendInviteSuccessNoticationMsg: string;

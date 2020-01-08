@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { environment } from '../../environments/environment';
 
 import { public_Key } from './../utils/util';
+import brand from 'assets/brand/brand.json';
 @Component({
   selector: 'appdashboard-widget',
   templateUrl: './widget.component.html',
@@ -18,6 +19,8 @@ import { public_Key } from './../utils/util';
 })
 export class WidgetComponent implements OnInit, OnDestroy {
   @ViewChild('testwidgetbtn') private elementRef: ElementRef;
+
+  tparams = brand;
   TESTSITE_BASE_URL = environment.testsite.testsiteBaseUrl
   WIDGET_URL = environment.widgetUrl;
   project: Project;

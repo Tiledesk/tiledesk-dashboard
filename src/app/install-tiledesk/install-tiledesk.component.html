@@ -3,6 +3,8 @@
 <!-- filter: drop-shadow( 3px 3px 2px rgba(62,169,245, .2)); -->
 <div class="main-content " style="padding-top:0px; background-color: #ffffff; min-height: calc(100% - 0px);margin-top: 0px; padding: 0px" >
   <img src="assets/img/razzo_wizard_v2(2).svg" class="img-fluid razzo_wizard_script"/>
+  <img [src]="logo_on_rocket" class="img-fluid logo_on_rocket"/>
+
 
   <div style="min-height: calc(100vh - 0px);" class="wizard-bckgrnd">
     <div class="row" >
@@ -33,7 +35,7 @@
       <div class="col-md-12">
         <h1 class="install-tiledesk-page-title" style="max-width: 750px">
     
-          {{ 'InstallTiledeskNow' | translate }}
+          {{ 'InstallTiledeskNow' | translate: tparams }}
         
         </h1>
       </div>

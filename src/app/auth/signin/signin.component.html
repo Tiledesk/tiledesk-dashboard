@@ -1,62 +1,69 @@
 <div class="main-content" style="padding-top:0px;">
-    <!--  background-image: url(assets/img/tiledesk-login-background.jpg); background-size: cover;" -->
+  <!--  background-image: url(assets/img/tiledesk-login-background.jpg); background-size: cover;" -->
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-          <!-- (click)="goToTileDeskDotCom()" -->
-          <div style="text-align: center; cursor: pointer; margin-top: -70px;"> 
-            <!-- max-width: 100%; -->
-            <a href="http://www.tiledesk.com" target="_blank">
-              <img src="assets/img/tiledesk-logo.svg" class="img-fluid" style="max-width: 150px; height: auto; padding-top:25px"/>
-            </a>
-          </div>
+        <!-- (click)="goToTileDeskDotCom()" -->
+        <div style="text-align: center; cursor: pointer; margin-top: -70px;">
+          <!-- max-width: 100%; -->
+          <!-- <a href="http://www.tiledesk.com" target="_blank"> -->
+          <a [href]="company_site_url" target="_blank">
+            <!-- <img src="assets/img/tiledesk-logo.svg" class="img-fluid" style="max-width: 150px; height: auto; padding-top:25px"/> -->
+            <img [src]="companyLogoBlack_Url" class="img-fluid"
+              style="max-width: 150px; height: auto; padding-top:25px" />
+          </a>
+        </div>
 
-           <!-- ALERT WITH ERROR MESSAGE -->
-          <div class="row" *ngIf="signin_errormsg" [ngStyle]="{'display':display}" style="transform: translateY(30%);">
-            <!-- <div class="col-md-6 col-md-offset-3 text-center"> -->
-              <div class="col-md-4 col-md-offset-4" align="center">
-              <div class="alert alert-danger" style="max-width: 400px;">
-                <button type="button" aria-hidden="true" class="close" (click)="dismissAlert()">×</button>
-                <div class="glyphicon glyphicon-exclamation-sign" style="display:table-cell; font-size:1.2em"></div>
-                <div style="padding-left: 5px; display:table-cell;">{{ signin_errormsg }}</div>
-              </div>
+        <!-- ALERT WITH ERROR MESSAGE -->
+        <div class="row" *ngIf="signin_errormsg" [ngStyle]="{'display':display}" style="transform: translateY(30%);">
+          <!-- <div class="col-md-6 col-md-offset-3 text-center"> -->
+          <div class="col-md-4 col-md-offset-4" align="center">
+            <div class="alert alert-danger" style="max-width: 400px;">
+              <button type="button" aria-hidden="true" class="close" (click)="dismissAlert()">×</button>
+              <div class="glyphicon glyphicon-exclamation-sign" style="display:table-cell; font-size:1.2em"></div>
+              <div style="padding-left: 5px; display:table-cell;">{{ signin_errormsg }}</div>
             </div>
           </div>
+        </div>
 
-        <div class="signin-title" style="text-align:center"> 
+        <div class="signin-title" style="text-align:center">
           <h2 style="font-family: 'Google Sans', sans-serif !important;">
-            {{ "SignInToTiledesk" | translate}}
+            <!-- {{ "SignInToTiledesk" | translate}} -->
+            {{ "SignInTo" | translate}} {{ company_name }}
+
           </h2>
         </div>
 
         <div class="login-container" style="padding-top: 15px;">
-        <!-- <div class="signin-container"> -->
-          <form [formGroup]="userForm"  (ngSubmit)="signin()">
+          <!-- <div class="signin-container"> -->
+          <form [formGroup]="userForm" (ngSubmit)="signin()">
 
             <label for="email">Email</label>
             <!-- id="email" -->
-            <input type="email" class="input" formControlName="email" id="email" required 
-              autocapitalize="off" spellcheck="false">
-              
+            <input type="email" class="input" formControlName="email" id="email" required autocapitalize="off"
+              spellcheck="false">
+
             <!-- <div *ngIf="formErrors.email" class="is-danger">
               {{ formErrors.email }}
             </div> -->
-  
+
             <label for="password">Password</label>
             <input type="password" id="password" class="input" formControlName="password" required>
-  
+
             <!-- <div *ngIf="formErrors.password" class="is-danger">
               {{ formErrors.password }}
             </div> -->
-  
-            <button type="submit" style="width: 100%; background-color: #f0806f; height: 56px; font-size: 16px; letter-spacing: 2px;" class="btn btn-danger" [disabled]="!userForm.valid">
-              <span *ngIf="!showSpinnerInLoginBtn"> 
+
+            <button type="submit"
+              style="width: 100%; background-color: #f0806f; height: 56px; font-size: 16px; letter-spacing: 2px;"
+              class="btn btn-danger" [disabled]="!userForm.valid">
+              <span *ngIf="!showSpinnerInLoginBtn">
                 <!-- Login  -->
                 {{ 'Login' | translate}}
               </span>
               <span *ngIf="showSpinnerInLoginBtn"> <i class="fa fa-spinner fa-spin"></i></span>
             </button>
-  
+
             <!-- <span *ngIf="userForm.valid" class="help is-success">Form Looks Valid</span> -->
             <div style="margin-top:16px; text-align: center">
               <!-- <p class="btn button is-small" (click)="toggleForm()">Non hai ancora un account? Registrati</p> -->
@@ -68,22 +75,22 @@
                 <span style="color: #03a5e8">
                   <!-- Sign up -->
                   {{ "SignUp" | translate }}
-                
+
                 </span></a>
             </div>
-  
+
             <p style="color: #666666; font-size: 1.1em; text-align: center; margin-top: 16px;">
-              {{ "ForgotYourPassword" | translate }}? 
+              {{ "ForgotYourPassword" | translate }}?
               <span style="color: #03a5e8; cursor:pointer" (click)="goToResetPsw()">
-                {{ "ClickHere" | translate }} 
+                {{ "ClickHere" | translate }}
               </span>
             </p>
             <!-- <a *ngIf="!passReset && userForm.controls.email.valid" class="help is-info" (click)="resetPassword()">Reset Password for {{userForm.value.email}}?</a>
             <p *ngIf="passReset" class="help is-info">Reset requested. Check your email instructions.</p> -->
-    
+
           </form>
 
+        </div>
       </div>
     </div>
   </div>
-</div>

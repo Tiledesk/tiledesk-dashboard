@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 
 import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
-
+import brand from 'assets/brand/brand.json';
 @Component({
   selector: 'app-channels',
   templateUrl: './channels.component.html',
   styleUrls: ['./channels.component.scss']
 })
 export class ChannelsComponent implements OnInit {
-
+  tparams = brand;
   project: Project;
   project_name: string;
 

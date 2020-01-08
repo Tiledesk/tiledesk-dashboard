@@ -11,13 +11,18 @@ import { UsersService } from '../services/users.service';
 import { UploadImageService } from '../services/upload-image.service';
 import { Subscription } from 'rxjs/Subscription';
 import { AppConfigService } from '../services/app-config.service';
-
+import brand from 'assets/brand/brand.json';
 @Component({
   selector: 'projects',
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.scss']
 })
 export class ProjectsComponent implements OnInit, OnDestroy {
+  tparams = brand;
+  
+  companyLogoBlack_Url = brand.company_logo_black__url;
+  companyLogoBlack_width = brand.recent_project_page.company_logo_black__width;
+  pageBackgroundColor = brand.recent_project_page.background_color;
 
   projects: Project[];
 

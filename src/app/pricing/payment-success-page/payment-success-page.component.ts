@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
+import brand from 'assets/brand/brand.json';
 
 @Component({
   selector: 'appdashboard-payment-success-page',
@@ -8,6 +9,8 @@ import { AuthService } from '../../core/auth.service';
   styleUrls: ['./payment-success-page.component.scss']
 })
 export class PaymentSuccessPageComponent implements OnInit {
+  
+  contact_us_email = brand.contact_us_email;
 
   id_project: string;
 

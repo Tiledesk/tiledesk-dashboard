@@ -3,13 +3,16 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { Router } from '@angular/router';
 import { User } from '../models/user-model';
-
+import brand from 'assets/brand/brand.json';
 @Component({
   selector: 'app-verify-email',
   templateUrl: './verify-email.component.html',
   styleUrls: ['./verify-email.component.scss']
 })
 export class VerifyEmailComponent implements OnInit {
+
+  company_logo_black__url = brand.company_logo_black__url;
+  company_site_url = brand.company_site_url;
 
   user_id: string;
   error_msg_title: string;

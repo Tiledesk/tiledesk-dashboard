@@ -23,6 +23,8 @@ import { WsRequestsService } from './services/websocket/ws-requests.service';
 import { WsMsgsService } from './services/websocket/ws-msgs.service';
 
 import { WebSocketJs } from './services/websocket/websocket-js';
+import { Title } from '@angular/platform-browser';
+import brand from 'assets/brand/brand.json';
 
 @Component({
     selector: 'appdashboard-root',
@@ -57,7 +59,9 @@ export class AppComponent implements OnInit, AfterViewInit {
         public appConfigService: AppConfigService,
         public wsRequestsService: WsRequestsService,
         public wsMsgsService: WsMsgsService,
-        public webSocketJs: WebSocketJs
+        public webSocketJs: WebSocketJs,
+        private metaTitle: Title,
+      
         
         // private faqKbService: FaqKbService,
     ) {
@@ -107,7 +111,21 @@ export class AppComponent implements OnInit, AfterViewInit {
         this.translate.use(language);
     }
 
+
+    setFavicon() {
+        var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+        console.log('APP.COMP setFavicon ', link)
+        link['type'] = 'image/x-icon';
+        link['rel'] = 'shortcut icon';
+        link['href'] = brand.favicon__url;
+        document.getElementsByTagName('head')[0].appendChild(link);
+
+    }
+
     ngOnInit() {
+        this.metaTitle.setTitle(brand.metaTitle);
+        this.setFavicon();
+
         console.log(' ====== >>> HELLO APP.COMP (ngOnInit) <<< ====== ')
         console.log('!! FIREBASE  ', firebase);
         

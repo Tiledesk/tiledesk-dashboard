@@ -9,13 +9,16 @@ import { AuthService } from '../core/auth.service';
 import { Location } from '@angular/common';
 import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
+import brand from 'assets/brand/brand.json';
 
 @Component({
   selector: 'faq-kb',
   templateUrl: './faq-kb.component.html',
   styleUrls: ['./faq-kb.component.scss'],
 })
+
 export class FaqKbComponent implements OnInit {
+  tparams = brand;
 
   faqkbList: FaqKb[];
 

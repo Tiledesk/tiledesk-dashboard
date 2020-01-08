@@ -3,8 +3,8 @@
 <!-- filter: drop-shadow( 3px 3px 2px rgba(62,169,245, .2)); -->
  <div class="main-content " style="padding-top:0px; background-color: #ffffff;
  min-height: calc(100% - 0px);margin-top: 0px; padding: 0px" >
- <img src="assets/img/razzo_wizard_v2_script.svg" class="img-fluid razzo_wizard" style=""/>
-
+ <img src="assets/img/razzo_wizard_v2_script.svg" class="img-fluid razzo_wizard"/>
+ <img [src]="logo_x_rocket" class="img-fluid logo_in_wizard"/>
 <!---->
 <div style="min-height: calc(100vh - 0px);" class="wizard-bckgrnd">
   <div class="row" >
@@ -87,7 +87,7 @@
 <div *ngIf="DISPLAY_SPINNER_SECTION" class="loading-section" style="display: flex;flex-flow: column;">
   <div  class="images-wrapper" style="">
   
-    <img src="assets/img/tiledesk-solo-logo.png" [ngClass]="{'scale-img-fluid-logo' : !DISPLAY_SPINNER}" class="img-fluid img-fluid-logo" style="">
+    <img [src]="company_logo_in_spinner" [ngClass]="{'scale-img-fluid-logo' : !DISPLAY_SPINNER}" class="img-fluid img-fluid-logo">
     <!-- *ngIf="DISPLAY_SPINNER" -->
     <div class="svg-wrapper"  [ngClass]="{'myhidden' : !DISPLAY_SPINNER, myvisible: DISPLAY_SPINNER}">
       <svg  class="spinner-svg" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" style="fill: #f0806f; ">
@@ -128,9 +128,9 @@
   </div>
 
 
-  <div *ngIf="DISPLAY_SPINNER" class="wizard-success-container" style="">
+  <div *ngIf="DISPLAY_SPINNER" class="wizard-success-container">
 
-      <div  class="success-label" style="">
+      <div  class="success-label">
         
         <span class="wizard-span-processing-msg">{{ "Processing" | translate }}</span>
       </div>

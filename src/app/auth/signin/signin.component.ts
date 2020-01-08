@@ -3,7 +3,7 @@ import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angula
 
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
-
+import brand from 'assets/brand/brand.json';
 type UserFields = 'email' | 'password';
 type FormErrors = { [u in UserFields]: string };
 
@@ -14,7 +14,9 @@ type FormErrors = { [u in UserFields]: string };
   styleUrls: ['./signin.component.scss']
 })
 export class SigninComponent implements OnInit {
-
+  companyLogoBlack_Url = brand.company_logo_black__url;
+  company_name = brand.company_name;
+  company_site_url = brand.company_site_url;
   showSpinnerInLoginBtn = false;
 
   public signin_errormsg = '';
@@ -187,7 +189,8 @@ export class SigninComponent implements OnInit {
   }
 
   goToTileDeskDotCom() {
-    const url = 'http://tiledesk.com/'
+    // const url = 'http://tiledesk.com/'
+    const url = this.company_site_url;
     window.open(url);
     // , '_blank'
   }

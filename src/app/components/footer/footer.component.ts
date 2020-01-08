@@ -11,15 +11,18 @@ export class FooterComponent implements OnInit {
   test: Date = new Date();
   // public version: string = require( '../../../../package.json').version;
   public version: string = environment.VERSION;
+  company_name = brand.company_name;
   companySiteName = brand.company_site_name;
   companySiteUrl = brand.company_site_url;
-  companyContactUsEmail = brand.company_contact_us_email;
 
-  privacyPolicyLinkName = brand.footer.privacy_policy_link_name
-  privacyPolicyUrl = brand.footer.privacy_policy_url
+  privacyPolicyLinkName = brand.privacy_policy_link_text
+  privacyPolicyUrl = brand.privacy_policy_url
+
   displayTermsAndConditionsLink = brand.footer.display_terms_and_conditions_link
-  termsAndConditionsUrl = brand.footer.terms_and_conditions_url
+  termsAndConditionsUrl = brand.terms_and_conditions_url
 
+  display_contact_us_email = brand.footer.display_contact_us_email;
+  contactUsEmail = brand.contact_us_email;
 
   constructor() { }
 
@@ -33,11 +36,12 @@ export class FooterComponent implements OnInit {
     console.log('BRAND_JSON - FOOTER ', brand);
     console.log('BRAND_JSON - FOOTER companySiteName ', this.companySiteName);
     console.log('BRAND_JSON - FOOTER companySiteUrl ', this.companySiteUrl);
-    console.log('BRAND_JSON - FOOTER companyContactUsEmail ', this.companyContactUsEmail);
+    console.log('BRAND_JSON - FOOTER companyContactUsEmail ', this.contactUsEmail);
     console.log('BRAND_JSON - FOOTER privacyPolicyLinkName ', this.privacyPolicyLinkName);
     console.log('BRAND_JSON - FOOTER privacyPolicyUrl ', this.privacyPolicyUrl);
     console.log('BRAND_JSON - FOOTER displayTermsAndConditionsLink ', this.displayTermsAndConditionsLink);
     console.log('BRAND_JSON - FOOTER termsAndConditionsUrl ', this.termsAndConditionsUrl);
+    console.log('BRAND_JSON - FOOTER display_contact_us_email ', this.display_contact_us_email);
   }
 
 }

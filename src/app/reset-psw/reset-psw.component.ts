@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ResetPswService } from '../services/reset-psw.service';
 import { Location } from '@angular/common';
 import { PasswordValidation } from './password-validation';
+import brand from 'assets/brand/brand.json';
 
 type EmailField = 'email';
 type EmailFormErrors = { [u in EmailField]: string };
@@ -19,10 +20,14 @@ type PswFormErrors = { [u in PswFields]: string };
 })
 export class ResetPswComponent implements OnInit {
 
+
+  companyLogoBlack_Url = brand.company_logo_black__url;
+  contact_us_email = brand.contact_us_email;
+  company_site_url = brand.company_site_url;
+
+
   emailForm: FormGroup;
-
   pswForm: FormGroup;
-
   emailformErrors: EmailFormErrors = {
     'email': '',
   };

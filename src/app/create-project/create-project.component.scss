@@ -115,6 +115,17 @@ button.close {
 //   opacity: 0 !important;
 // }
 
+
+.logo_in_wizard {
+  max-width: 115px;
+  height: auto;
+  padding-top: 25px;
+  /* float: right; */
+  position: absolute;
+  z-index: 1050;
+  right: 232px;
+  bottom: 604px;
+}
 .razzo_wizard {
   // max-width: 639px;
   // height: auto;
@@ -137,6 +148,9 @@ button.close {
 
 @media (max-width: 992px) {
   .razzo_wizard {
+    display: none;
+  }
+  .logo_in_wizard {
     display: none;
   }
   .images-wrapper {

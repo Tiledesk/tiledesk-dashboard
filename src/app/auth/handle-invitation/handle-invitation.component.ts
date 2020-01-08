@@ -4,6 +4,7 @@ import { UsersService } from '../../services/users.service';
 import { ProjectService } from '../../services/project.service';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import brand from 'assets/brand/brand.json';
 
 @Component({
   selector: 'appdashboard-handle-invitation',
@@ -21,6 +22,10 @@ export class HandleInvitationComponent implements OnInit {
   PENDING_INVITATION_NOT_FOUND: boolean;
   showSpinner: boolean;
   browser_lang: string;
+  
+  tparams = brand;
+  company_logo_45x45 = brand.handle_invitation_page.company_logo_45x45;
+
   constructor(
     private route: ActivatedRoute,
     public usersService: UsersService,

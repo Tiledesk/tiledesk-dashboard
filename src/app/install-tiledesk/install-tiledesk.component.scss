@@ -1,4 +1,18 @@
 $color-pro-plan: #3ea9f5;
+
+.logo_on_rocket {
+  max-width: 34px;
+  height: auto;
+  padding-top: 25px;
+  float: right;
+  position: absolute;
+  z-index: 1050;
+  right: 176px;
+  bottom: 323px;
+  -webkit-transform: rotate(30deg);
+  transform: rotate(-30deg);
+}
+
 .razzo_wizard_script {
   //   max-width: 639px;
   //   height: auto;
@@ -46,6 +60,9 @@ $color-pro-plan: #3ea9f5;
 
 @media (max-width: 992px) {
   .razzo_wizard_script {
+    display: none;
+  }
+  .logo_on_rocket {
     display: none;
   }
 }

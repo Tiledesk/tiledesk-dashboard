@@ -7,12 +7,15 @@ import { Project } from '../models/project-model';
 import { AuthService } from '../core/auth.service';
 import { TranslateService } from '@ngx-translate/core';
 import { BotLocalDbService } from '../services/bot-local-db.service';
+import brand from 'assets/brand/brand.json';
+
 @Component({
   selector: 'faq-kb-edit-add',
   templateUrl: './faq-kb-edit-add.component.html',
   styleUrls: ['./faq-kb-edit-add.component.scss']
 })
 export class FaqKbEditAddComponent implements OnInit {
+  tparams = brand;
 
   faqKbName: string;
   faqKbUrl: string;

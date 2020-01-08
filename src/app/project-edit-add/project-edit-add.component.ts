@@ -16,6 +16,7 @@ import { environment } from './../../environments/environment';
 import { public_Key } from './../utils/util';
 import { UsersService } from '../services/users.service';
 import * as moment from 'moment';
+import brand from 'assets/brand/brand.json';
 
 @Component({
   selector: 'app-project-edit-add',
@@ -23,7 +24,8 @@ import * as moment from 'moment';
   styleUrls: ['./project-edit-add.component.scss']
 })
 export class ProjectEditAddComponent implements OnInit, OnDestroy {
-
+  tparams = brand;
+  
   CREATE_VIEW = false;
   EDIT_VIEW = false;
   PROJECT_SETTINGS_ROUTE: boolean;

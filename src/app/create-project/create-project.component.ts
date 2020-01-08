@@ -5,6 +5,8 @@ import { AuthService } from '../core/auth.service';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { slideInAnimation } from '../_animations/index';
+import brand from 'assets/brand/brand.json';
+
 @Component({
   selector: 'appdashboard-create-project',
   templateUrl: './create-project.component.html',
@@ -16,6 +18,9 @@ import { slideInAnimation } from '../_animations/index';
 
 
 export class CreateProjectComponent implements OnInit {
+
+  company_logo_in_spinner = brand.wizard_create_project_page.company_logo_in_spinner;
+  logo_x_rocket = brand.wizard_create_project_page.logo_x_rocket
 
   projects: Project[];
   project_name: string;

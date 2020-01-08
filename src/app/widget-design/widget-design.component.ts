@@ -14,6 +14,7 @@ import { Department } from '../models/department-model';
 import { DepartmentService } from '../services/mongodb-department.service';
 import { NotifyService } from '../core/notify.service';
 import { environment } from '../../environments/environment';
+import brand from 'assets/brand/brand.json';
 @Component({
   selector: 'appdashboard-widget-design',
   templateUrl: './widget-design.component.html',
@@ -23,6 +24,10 @@ import { environment } from '../../environments/environment';
 
 export class WidgetDesignComponent implements OnInit, AfterViewInit, OnDestroy {
   // '#2889e9'
+  tparams = brand;
+  company_name = brand.company_name;
+  company_site_url = brand.company_site_url;
+   
   TESTSITE_BASE_URL = environment.testsite.testsiteBaseUrl
   _route: string;
   public primaryColor: string;

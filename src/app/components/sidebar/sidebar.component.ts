@@ -55,8 +55,8 @@ declare interface RouteInfo {
 })
 export class SidebarComponent implements OnInit, AfterViewInit {
 
-
-    sidebarlogourl = brand.sidebar__logo_url;
+    tparams = brand;
+    sidebarLogoWhite_Url = brand.company_logo_white__url;
     hidechangelogrocket = brand.sidebar__hide_changelog_rocket
 
     @ViewChild('openchatbtn') private elementRef: ElementRef;
@@ -162,7 +162,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
 
-        this.getBrand();
+        
         this.translateChangeAvailabilitySuccessMsg();
         this.translateChangeAvailabilityErrorMsg();
 
@@ -204,13 +204,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
         this.getOSCODE();
         this.getStorageBucket();
+        this.brandLog();
     }
-    getBrand() {
 
+    brandLog() {
         console.log('BRAND_JSON - SIDEBAR ', brand);
-        console.log('BRAND_JSON - SIDEBAR sidebarlogourl ', this.sidebarlogourl);
+        console.log('BRAND_JSON - SIDEBAR sidebarlogourl ', this.sidebarLogoWhite_Url);
         console.log('BRAND_JSON - SIDEBAR hidechangelogrocket ', this.hidechangelogrocket);
-
     }
 
     getStorageBucket() {

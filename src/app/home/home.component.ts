@@ -16,6 +16,7 @@ import { ProjectPlanService } from '../services/project-plan.service';
 import { Subscription } from 'rxjs';
 // import { publicKey } from './../utils/util';
 import { public_Key } from './../utils/util';
+import brand from 'assets/brand/brand.json';
 
 @Component({
   selector: 'home',
@@ -53,6 +54,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   isVisible: boolean;
   installWidgetText: string;
+
+  company_name = brand.company_name;
+  tparams = brand;
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -107,7 +111,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // TRANSLATION
   translateInstallWidget() {
-    this.translate.get('InstallTiledeskNowAndStartChatting')
+    this.translate.get('InstallTiledeskNowAndStartChatting', this.tparams )
       .subscribe((text: string) => {
 
         this.installWidgetText = text;
@@ -156,11 +160,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         console.log('getVisitorCounter length : ', visitorCounter.length);
         if (visitorCounter && visitorCounter.length > 0) {
 
-
-
           let count = 0;
           visitorCounter.forEach(visitor => {
-
             // console.log('getVisitorCounter visitor origin ', visitor.origin);
             if (
               visitor.origin !== "https://s3.eu-west-1.amazonaws.com" &&

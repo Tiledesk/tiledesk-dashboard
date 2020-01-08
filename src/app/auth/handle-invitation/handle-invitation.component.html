@@ -24,13 +24,13 @@
                       <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="2"></circle>
                       </svg> -->
                         <div  class="handle-invitation-images-wrapper">
-                          <img src="assets/img/tiledesk-solo-logo.png"  style="width: 45px;  height: 45px;  margin-top: 17px;  margin-left: 4px;">
+                          <img [src]="company_logo_45x45"  style="width: 45px;  height: 45px;  margin-top: 17px;  margin-left: 4px;">
                         </div>
                       </div>
                       
                       <div class="first-card--text" style="padding-top: 25px" *ngIf="PENDING_INVITATION_NOT_FOUND === false">
                         <h4 style="font-size: 16px;  color: #62738d">
-                        <!-- {{user_firstname }} {{ user_lastname }} has invited you to to take on the role of {{pendingInvitationRole}} of the Tiledesk project {{ projectName }} -->
+                       
                        
                           <span style="display: block"> {{ 'YouHaveBeenInvitedBy' | translate }}  
                             <span style="color: #3c4858;  font-weight: 400;"> {{user_firstname }} {{ user_lastname }} </span>  {{ 'ToJoinTheProject' | translate }}
@@ -38,7 +38,7 @@
                             <span style="text-transform:capitalize; color: #3c4858;  font-weight: 400; ">{{pendingInvitationRole | translate}}.</span> 
                           </span> 
                           <!-- <span style="display: block">  You have been given the <span style="text-transform:capitalize">{{pendingInvitationRole}} role.  </span> </span> -->
-                          <span style="display: block">  {{ 'ToGetStartedYouMustHaveATiledeskAccountWithEmail' | translate }} </span>
+                          <span style="display: block">  {{ 'ToGetStartedYouMustHaveATiledeskAccountWithEmail' | translate: tparams }} </span>
                           <span style="display: block; text-align: center; color: #3c4858;  font-weight: 400; ">  {{pendingInvitationEmail}}</span>
                         </h4>
                       </div>
@@ -99,7 +99,7 @@
                       <div class="col-md-12"> 
 
                         <h4 style="font-size: 1.1em;color: #62738d">
-                          {{'PleaseClickTheBelowButtonToCreateYourTiledeskAccount' | translate}}
+                          {{'PleaseClickTheBelowButtonToCreateYourTiledeskAccount' | translate: tparams}}
                           <span style="display: block" >{{ 'AfterRegistrationYouWillBeAbleToJoin' | translate }}
                           <span style="color: #3c4858;  font-weight: 400;"> {{ projectName }} </span> 
                            {{'FromTheRecentPojectPage' | translate}}.
@@ -134,12 +134,7 @@
                               <h4 style=" font-family: 'Google Sans', sans-serif; font-size: 21px; margin-bottom:0px">
                                {{'IAlreadyHaveAnAccount' | translate}}
                               </h4>
-                              <!-- <h4 style="font-size: 1.1em;color: #62738d">
-                                  If you are already registered on Tiledesk with the email <span style="font-weight:400"> {{pendingInvitationEmail}} </span> 
-  
-                                  join the project <span style="font-weight:400">{{ projectName }} </span> by clicking the below button
-  
-                              </h4> -->
+                
                           </div>    
                         </div>
 
@@ -154,7 +149,7 @@
                         <div class="col-sm-12">
                           <div class="second-card--subtitle" style="margin-bottom: 16px">
                             <h4 style="font-size: 1.1em;color: #62738d">
-                              {{ 'IfYouAreAlreadyRegisteredOnTiledeskWwithADifferentEmailPleaseContact' | translate }}
+                              {{ 'IfYouAreAlreadyRegisteredOnTiledeskWwithADifferentEmailPleaseContact' | translate: tparams }}
                               <span style="color: #3c4858;  font-weight: 400;">{{ projectName }} </span>
                               <span *ngIf="browser_lang === 'en'"> Administrator. </span>  
                             </h4>

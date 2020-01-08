@@ -5,8 +5,8 @@
           <!-- (click)="goToTileDeskDotCom()" -->
           <div style="text-align: center; cursor: pointer; margin-top: -70px;"> 
             <!-- max-width: 100%; -->
-            <a href="http://www.tiledesk.com" target="_blank">
-              <img src="assets/img/tiledesk-logo.svg" class="img-fluid" style="max-width: 150px; height: auto; padding-top:25px"/>
+            <a [href]="company_site_url" target="_blank">
+              <img [src]="companyLogoBlack_Url" class="img-fluid" style="max-width: 150px; height: auto; padding-top:25px"/>
             </a>
           </div>
 
@@ -106,7 +106,7 @@
                         <!-- Having trouble?  -->
                         {{ 'HavingTrouble' | translate }}? 
                         
-                          <a href="mailto:info@tiledesk.com" style="text-transform: none; color: #0275d8 "> 
+                          <a target="_blank" href="mailto:{{contact_us_email}}" style="text-transform: none; color: #0275d8 "> 
                             <!-- Contact us  -->
                             {{ 'ContactUs' | translate }}
                           </a>

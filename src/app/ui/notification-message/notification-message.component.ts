@@ -8,6 +8,7 @@ import { environment } from '../../../environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../../services/project-plan.service';
 import { Subscription } from 'rxjs';
+import brand from 'assets/brand/brand.json';
 
 @Component({
   selector: 'notification-message',
@@ -16,6 +17,10 @@ import { Subscription } from 'rxjs';
   encapsulation: ViewEncapsulation.None,
 })
 export class NotificationMessageComponent implements OnInit, OnDestroy {
+  
+  tparams = brand;
+  company_name = brand.company_name;
+
   displayExpiredSessionModal: string;
   projectId: string;
   gettingStartedChecklist: any;

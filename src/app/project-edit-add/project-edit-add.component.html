@@ -493,7 +493,7 @@
                           {{ "Pricing.Your" | translate }}
 
                           <span style="font-weight:500">
-                            {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate }}
+                            {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate: tparams }}
                           </span>
 
                           {{ "Pricing.WillExpireIn" | translate }}
@@ -514,7 +514,7 @@
                         <span *ngIf="prjct_trial_expired === true" style="font-weight:500; color: #f44336">
                           {{ "Pricing.Your" | translate }}
 
-                          {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate }}
+                          {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate: tparams }}
 
                           {{ "Pricing.HasExpired" | translate }}
 

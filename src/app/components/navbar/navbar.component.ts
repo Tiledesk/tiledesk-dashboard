@@ -23,6 +23,7 @@ import { ProjectService } from '../../services/project.service';
 import { public_Key } from '../../utils/util';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
 import { AppConfigService } from '../../services/app-config.service';
+import brand from 'assets/brand/brand.json';
 
 @Component({
     selector: 'app-navbar',
@@ -30,6 +31,8 @@ import { AppConfigService } from '../../services/app-config.service';
     styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit, AfterViewInit, AfterContentChecked, AfterViewChecked {
+    tparams = brand;
+    
     private listTitles: any[];
     location: Location;
     private toggleButton: any;
