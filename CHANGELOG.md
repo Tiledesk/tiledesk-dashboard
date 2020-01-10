@@ -9,6 +9,7 @@
 - Fixes the bottom nav in metrics page
 - Adds the ability to customize all over the app the properties concerning the company (company name, the logo images, company site and contact email and more)
 - Changes the environments' publicKey
+- Adds the ability to customize buttons' color (in progress)
 
 ### 1.0.40
 - Fixes the user profile urls
