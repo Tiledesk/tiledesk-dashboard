@@ -2,7 +2,7 @@
 const serverUrl = 'https://tiledesk-server-pre.herokuapp.com/';
 export const environment = {
     production: true,
-    t2y12PruGU9wUtEGzBJfolMIgK: 'uTdBCRvGAEhJ01cT3uBLg8oFJx',
+    t2y12PruGU9wUtEGzBJfolMIgK: 'PAY:F-ANA:F-ACT:F-TRI:F-GRO:F-DEP:F-OPH:F-MTL:F',
     VERSION: require('../../package.json').version,
     widgetUrl: 'https://widget.tiledesk.com/v3/launch.js',
     remoteConfig: false,

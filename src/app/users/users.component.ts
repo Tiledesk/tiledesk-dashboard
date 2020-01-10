@@ -7,16 +7,20 @@ import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
 import { Subscription } from 'rxjs';
-// import { publicKey } from '../utils/util';
-import { public_Key } from '../utils/util';
-import { environment } from '../../environments/environment';
 import { AppConfigService } from '../services/app-config.service';
+
+// import { publicKey } from '../utils/util';
+// import { public_Key } from '../utils/util';
+import { environment } from '../../environments/environment';
+
 @Component({
   selector: 'appdashboard-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })
 export class UsersComponent implements OnInit, OnDestroy {
+
+  public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK;
 
   showSpinner = true;
   projectUsersList: any;
@@ -65,7 +69,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   canceledInviteErrorMsg: string;
   subscription: Subscription;
   isVisible: boolean;
-  // eos = environment.t2y12PruGU9wUtEGzBJfolMIgK;
+  
 
   storageBucket: string;
   CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
@@ -127,9 +131,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   getOSCODE() {
-
-
-    let keys = public_Key.split("-");
+    let keys = this.public_Key.split("-");
     keys.forEach(key => {
       if (key.includes("GRO")) {
         console.log('PUBLIC-KEY (Users) - key', key);
@@ -144,7 +146,6 @@ export class UsersComponent implements OnInit, OnDestroy {
           console.log('PUBLIC-KEY (Users) - gro isVisible', this.isVisible);
         }
       }
-
     });
 
     // console.log('eoscode', this.eos)

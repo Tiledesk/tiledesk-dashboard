@@ -12,14 +12,15 @@ import { Project } from '../../models/project-model';
 // import { SharedModule } from '../../shared/shared.module';
 import { UsersLocalDbService } from '../../services/users-local-db.service';
 import { NotifyService } from '../../core/notify.service';
-import { environment } from '../../../environments/environment';
 import { UploadImageService } from '../../services/upload-image.service';
 import { TranslateService } from '@ngx-translate/core';
-// import { publicKey } from '../../utils/util';
-import { public_Key } from '../../utils/util';
-import { AppConfigService } from '../../services/app-config.service';
 
+import { AppConfigService } from '../../services/app-config.service';
 import brand from 'assets/brand/brand.json';
+
+// import { publicKey } from '../../utils/util';
+// import { public_Key } from '../../utils/util';
+import { environment } from '../../../environments/environment';
 declare const $: any;
 
 declare interface RouteInfo {
@@ -58,6 +59,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     tparams = brand;
     sidebarLogoWhite_Url = brand.company_logo_white__url;
     hidechangelogrocket = brand.sidebar__hide_changelog_rocket
+
+    public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK;
 
     @ViewChild('openchatbtn') private elementRef: ElementRef;
     @ViewChild('homebtn') private homeBtnElement: ElementRef;
@@ -104,8 +107,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     currentUserId: string
 
     CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
-    // eos = environment.t2y12PruGU9wUtEGzBJfolMIgK;
-
+  
     userProfileImageExist: boolean;
     userImageHasBeenUploaded: boolean;
     userProfileImageurl: string;
@@ -158,11 +160,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         public appConfigService: AppConfigService
     ) { console.log('!!!!! HELLO SIDEBAR') }
 
-
-
     ngOnInit() {
-
-        
         this.translateChangeAvailabilitySuccessMsg();
         this.translateChangeAvailabilityErrorMsg();
 
@@ -221,7 +219,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     getOSCODE() {
 
-        let keys = public_Key.split("-");
+        let keys = this.public_Key.split("-");
         console.log('PUBLIC-KEY (SIDEBAR) - public_Key keys', keys)
 
         keys.forEach(key => {

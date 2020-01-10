@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService, SuperUser } from '../core/auth.service';
-import { environment } from '../../environments/environment';
+
 import { ActivatedRoute } from '@angular/router';
 
 import { Project } from '../models/project-model';
@@ -15,7 +15,8 @@ import { ProjectPlanService } from '../services/project-plan.service';
 
 import { Subscription } from 'rxjs';
 // import { publicKey } from './../utils/util';
-import { public_Key } from './../utils/util';
+// import { public_Key } from './../utils/util';
+import { environment } from '../../environments/environment';
 import brand from 'assets/brand/brand.json';
 
 @Component({
@@ -24,6 +25,10 @@ import brand from 'assets/brand/brand.json';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
+
+  company_name = brand.company_name;
+  tparams = brand;
+  public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK;
 
   firebaseProjectId: any;
   LOCAL_STORAGE_CURRENT_USER: any;
@@ -40,7 +45,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   USER_ROLE: string;
 
   CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
-  // eos = environment.t2y12PruGU9wUtEGzBJfolMIgK;
+  
   browserLang: string;
 
   prjct_name: string;
@@ -55,8 +60,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   isVisible: boolean;
   installWidgetText: string;
 
-  company_name = brand.company_name;
-  tparams = brand;
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,
@@ -121,7 +124,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   getOSCODE() {
 
-    let keys = public_Key.split("-");
+    let keys = this.public_Key.split("-");
     console.log('PUBLIC-KEY (Home) keys', keys)
     keys.forEach(key => {
       // console.log('NavbarComponent public_Key key', key)

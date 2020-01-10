@@ -8,10 +8,11 @@ import { NotifyService } from '../core/notify.service';
 import { ProjectService } from '../services/project.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
-import { environment } from '../../environments/environment';
 
-import { public_Key } from './../utils/util';
+// import { public_Key } from './../utils/util';
+import { environment } from '../../environments/environment';
 import brand from 'assets/brand/brand.json';
+
 @Component({
   selector: 'appdashboard-widget',
   templateUrl: './widget.component.html',
@@ -21,6 +22,8 @@ export class WidgetComponent implements OnInit, OnDestroy {
   @ViewChild('testwidgetbtn') private elementRef: ElementRef;
 
   tparams = brand;
+  public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK;
+
   TESTSITE_BASE_URL = environment.testsite.testsiteBaseUrl
   WIDGET_URL = environment.widgetUrl;
   project: Project;
@@ -122,15 +125,15 @@ export class WidgetComponent implements OnInit, OnDestroy {
   }
 
   getOSCODE() { 
-    let keys = public_Key.split("-");
+    let keys = this.public_Key.split("-");
     console.log('PUBLIC-KEY (Home) keys', keys)
     keys.forEach(key => {
       // console.log('NavbarComponent public_Key key', key)
-      if (key.includes("PAY")) {
-        console.log('PUBLIC-KEY (Home) - key', key);
-        let pay = key.split(":");
-        console.log('PUBLIC-KEY (Home) - pay key&value', pay);
-        if (pay[1] === "F") {
+      if (key.includes("MTL")) {
+        console.log('PUBLIC-KEY (Widget) - mlt', key);
+        let mlt = key.split(":");
+        console.log('PUBLIC-KEY (Widget) - mlt key&value', mlt);
+        if (mlt[1] === "F") {
           this.isVisible = false;
         } else {
           this.isVisible = true;

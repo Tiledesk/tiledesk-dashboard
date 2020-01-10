@@ -11,12 +11,14 @@ import { ProjectPlanService } from '../services/project-plan.service';
 import { NotifyService } from '../core/notify.service';
 import { Subscription } from 'rxjs/Subscription';
 import { TranslateService } from '@ngx-translate/core';
-import { environment } from './../../environments/environment';
-// import { publicKey } from './../utils/util';
-import { public_Key } from './../utils/util';
+
 import { UsersService } from '../services/users.service';
 import * as moment from 'moment';
 import brand from 'assets/brand/brand.json';
+
+// import { publicKey } from './../utils/util';
+// import { public_Key } from './../utils/util';
+import { environment } from './../../environments/environment';
 
 @Component({
   selector: 'app-project-edit-add',
@@ -25,14 +27,15 @@ import brand from 'assets/brand/brand.json';
 })
 export class ProjectEditAddComponent implements OnInit, OnDestroy {
   tparams = brand;
-  
+  public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK;
+
   CREATE_VIEW = false;
   EDIT_VIEW = false;
   PROJECT_SETTINGS_ROUTE: boolean;
   PROJECT_SETTINGS_PAYMENTS_ROUTE: boolean;
   PROJECT_SETTINGS_AUTH_ROUTE: boolean;
 
-  // eos = environment.t2y12PruGU9wUtEGzBJfolMIgK;
+  
   showSpinner = true;
 
   project_name: string;
@@ -82,6 +85,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   projectUsersLength: number;
   subscriptionPaymentsLength: number;
   SUBSCRIPTION_BUFFER_DAYS: boolean;
+  
   constructor(
     private projectService: ProjectService,
     private router: Router,
@@ -122,16 +126,12 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.countOfPendingInvites = pendingInvitation.length
           console.log('ProjectEditAddComponent - # OF PENDING INVITATION ', this.countOfPendingInvites);
         }
-
       }, error => {
-
         console.log('ProjectEditAddComponent - GET PENDING INVITATION - ERROR', error);
       }, () => {
         console.log('ProjectEditAddComponent - GET PENDING INVITATION - COMPLETE');
       });
-
   }
-
 
   getAllUsersOfCurrentProject() {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
@@ -156,9 +156,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
 
   getOSCODE() {
-
-
-    let keys = public_Key.split("-");
+    let keys = this.public_Key.split("-");
     console.log('PUBLIC-KEY (Home) keys', keys)
     keys.forEach(key => {
       // console.log('NavbarComponent public_Key key', key)
@@ -173,6 +171,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         }
       }
     });
+
     // console.log('ProjectEditAddComponent eoscode', this.eos);
     // if (this.eos && this.eos === publicKey) {
 

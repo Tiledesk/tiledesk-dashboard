@@ -2,7 +2,7 @@
 
 const serverUrl = '/api/';
 export const environment = {
-    t2y12PruGU9wUtEGzBJfolMIgK: 'uTdBCRvGAEhJ01cT3uBLg8oFJx',
+    t2y12PruGU9wUtEGzBJfolMIgK: 'PAY:F-ANA:F-ACT:F-TRI:F-GRO:F-DEP:F-OPH:F-MTL:F',
     production: false,
     VERSION: require('../../package.json').version,
     widgetUrl: 'http://localhost:4200/launch.js',
@@ -38,7 +38,7 @@ export const environment = {
         testsiteBaseUrl: 'http://localhost:4200/assets/test_widget_page/index.html'
 
     },
-    websocket:{
-        wsUrl:'ws://'+window.location.hostname + '/ws/?token='
+    websocket: {
+        wsUrl: 'ws://' + window.location.hostname + '/ws/?token='
     }
 };

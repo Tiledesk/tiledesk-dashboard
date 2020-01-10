@@ -7,8 +7,8 @@
 - Multilanguage (in progress)
 - Fixes the user profile image reload
 - Fixes the bottom nav in metrics page
-- Replaces "publicKey" with "public_Key"
 - Adds the ability to customize all over the app the properties concerning the company (company name, the logo images, company site and contact email and more)
+- Changes the environments' publicKey
 
 ### 1.0.40
 - Fixes the user profile urls

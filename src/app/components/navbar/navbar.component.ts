@@ -12,18 +12,21 @@ declare var $: any;
 
 import { Project } from '../../models/project-model';
 import { UsersService } from '../../services/users.service';
-import { environment } from '../../../environments/environment';
+
 import { isDevMode } from '@angular/core';
 import { UploadImageService } from '../../services/upload-image.service';
 import { NotifyService } from '../../core/notify.service';
 import * as moment from 'moment';
 import { ProjectPlanService } from '../../services/project-plan.service';
 import { ProjectService } from '../../services/project.service';
-// import { publicKey } from '../../utils/util';
-import { public_Key } from '../../utils/util';
+
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
 import { AppConfigService } from '../../services/app-config.service';
 import brand from 'assets/brand/brand.json';
+
+// import { publicKey } from '../../utils/util';
+// import { public_Key } from '../../utils/util';
+import { environment } from '../../../environments/environment';
 
 @Component({
     selector: 'app-navbar',
@@ -32,7 +35,8 @@ import brand from 'assets/brand/brand.json';
 })
 export class NavbarComponent implements OnInit, AfterViewInit, AfterContentChecked, AfterViewChecked {
     tparams = brand;
-    
+    public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK;
+
     private listTitles: any[];
     location: Location;
     private toggleButton: any;
@@ -71,9 +75,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     DETECTED_USER_PROFILE_PAGE = false;
     CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
-
-    // eos = environment.t2y12PruGU9wUtEGzBJfolMIgK;
-
     displayLogoutModal = 'none';
 
     APP_IS_DEV_MODE: boolean;
@@ -134,14 +135,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         // debugger
         // this.listTitles = ROUTES.filter(listTitle => listTitle);
 
-
         // SUBSCRIBE TO IS LOGGED IN PUBLISHED BY AUTH GUARD
         // this.authguard.IS_LOGGED_IN.subscribe((islogged: boolean) => {
         //     this.USER_IS_SIGNED_IN = islogged
         //     console.log('>>> >>> USER IS SIGNED IN ', this.USER_IS_SIGNED_IN);
 
         // })
-
 
         this.updateUnservedRequestCount();
         this.updateCurrentUserRequestCount();
@@ -196,9 +195,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     getOSCODE() {
 
-        console.log('NavbarComponent public_Key', public_Key)
+        console.log('NavbarComponent public_Key', this.public_Key)
 
-        let keys = public_Key.split("-");
+        let keys = this.public_Key.split("-");
         console.log('PUBLIC-KEY (Navbar) - public_Key keys', keys)
 
         keys.forEach(key => {
