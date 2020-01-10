@@ -36,17 +36,12 @@
                     {{ 'Pricing.SubscriptionPaymentProblem' | translate }} </span>
                 </span>
               </span>
-
             </div>
           </div>
 
           <div class="homeBanner">
-
             <div class="homeBanner__leftSideContent">
-
               <div class="homeBanner__texts">
-
-
                 <h2 class="homeBanner__textsHeader">
                   {{ 'GettingStartedWith' | translate }} <br> {{company_name}}.
                 </h2>
@@ -173,13 +168,6 @@
     <div class="col-sm-6 col-md-3">
       <div class="card-wrapper">
         <div class="card" style="border-radius:10px; cursor:pointer" (click)="goToAdminDocs()">
-          <!-- background-image: url(assets/img/background-card.svg); background-size: cover; background-repeat:no-repeat -->
-          <!-- background-image: url(assets/img/outline-group-24px.svg);background-repeat:no-repeat; background-position: right 30px bottom,right 330px  -->
-          <!-- <div class="card-header" style=" min-height: 110px; margin:0px; box-shadow:none; border-radius:0px; background-color:#f0806f;">
-                  <h2  class="custom_title" style="margin-top:10px; line-height: 1.2em;color:#fff"> Getting started for agents</h2>              
-                  <span class="incard-round-button"> </span>
-              </div> -->
-          <!-- card-content-bckgnd -->
           <div class="card-content " style="padding:0px; text-align: center;">
             <div class="background-admin" style="border-top-right-radius:10px; border-top-left-radius:10px	">
               <div class="container"> </div>
@@ -188,7 +176,7 @@
 
           <div class="card-footer" style="margin-left:0px; margin-right:0px; text-align: center; min-height: 103px;">
             <div class="stats" style="padding:15px;">
-              <h3 class="custom_title" style="margin-top:10px;line-height: 1.2em;color: #f0806f;margin-top: 0px;">
+              <h3 class="custom_title">
                 <!-- Getting started for admin -->
                 {{ 'GettingStartedForAdmin' | translate }}
               </h3>
@@ -208,7 +196,7 @@
 
           <div class="card-footer" style="margin-left:0px; margin-right:0px; text-align: center; min-height: 103px;">
             <div class="stats" style="padding:15px; ">
-              <h3 class="custom_title" style="margin-top:10px;line-height: 1.2em;color: #f0806f;margin-top: 0px;">
+              <h3 class="custom_title">
                 <!-- Getting started for agents -->
                 {{ 'GettingStartedForAgents' | translate }}
               </h3>
@@ -231,7 +219,7 @@
 
           <div class="card-footer" style="margin-left:0px; margin-right:0px; text-align: center; min-height: 103px;">
             <div class="stats" style="padding:15px; ">
-              <h3 class="custom_title" style="margin-top:10px;line-height: 1.2em;color: #f0806f;margin-top: 0px;">
+              <h3 class="custom_title">
                 <!-- Developers docs -->
                 {{ 'DeveloperDocs' | translate }}
               </h3>
@@ -254,7 +242,7 @@
 
           <div class="card-footer" style="margin-left:0px; margin-right:0px; text-align: center; min-height: 103px;">
             <div class="stats" style="padding:15px; ">
-              <h3 class="custom_title" style="margin-top:10px;line-height: 1.2em;color: #f0806f;margin-top: 0px;">
+              <h3 class="custom_title">
                 <!-- Install with Google Tag Manager -->
                 {{ 'InstallWithGoogleTagManager' | translate }}
 
@@ -431,250 +419,7 @@
     </div>
   </div> -->
 
-  <!-- ------------------ OLD MENU ------------- -->
-  <div class="container-fluid" style="text-align: center; display: none">
 
-    <!-- ===== START ROW "HOWDY ... " (NOTE: HIDDEN FOR THE NEW HOME PAGE GRAPHICS)===== -->
-    <div class="row" style="display: none">
-      <div class="col-lg-12 col-md-12 col-sm-12">
-        <div *ngIf="user" style="float: left">
-          <h4 style="padding-left:15px; font-weight: 700; margin-bottom: 5px;">
-            {{ "Howdy" | translate }}, {{ user?.firstname }}!
-          </h4>
-        </div>
-      </div>
-      <div class="col-lg-12 col-md-12 col-sm-12" style="padding-left:25px; padding-right:25px">
-        <hr style="border-color:#aaaeba; margin-top:0px; margin-bottom:15px">
-        <!-- <h4 style="padding-left:15px; font-weight: 500; margin-bottom: 35px;">To start configure your Widget </h4> -->
-      </div>
-    </div>
-    <!-- ===== END ROW "HOWDY ... " (NOTE: HIDDEN FOR THE NEW HOME PAGE GRAPHICS)===== -->
-
-    <div class="row">
-
-      <!-- WIDGET -->
-      <!-- col-lg-6 col-md-6 col-sm-6 -->
-      <div *ngIf="USER_ROLE !== 'agent'" class="col-lg-6 col-md-6 col-sm-6" style="cursor:pointer">
-        <!-- routerLink="/requests" -->
-        <!-- max-width:480px; -->
-        <div class="card card-stats" style="max-width: 480px; min-height: 178px" (click)="goToResources()">
-          <!-- inverse -->
-          <!-- ===== NOTE: DISPLAY IS SETTED TO NONE ===== -->
-          <div class="card-header" data-background-color="orange" style="display:none">
-            <i class="material-icons">code</i>
-          </div>
-
-          <div class="card-content" style="text-align: center;">
-            <div class="custom_title" style="padding-top: 2px; padding-bottom: 2px;">
-              <i style="background: #c51162; font-size:25px; padding: 15px; color: #fff; border-radius:50%"
-                class="material-icons">
-                code
-              </i>
-              <!-- THERE WERE THIS -->
-              <!-- margin-left: 100px; font-size:12px; -->
-              <h4 class="custom_subtitle" style="padding-bottom:0px; color: rgba(0,0,0,0.87); font-size:18px">
-                <!-- {{ 'HomePage.WidgetSubtitle' | translate }} -->
-                Widget
-              </h4>
-              <!-- {{ "Howdy" | translate }}, {{ user?.firstname }}! -->
-              <!-- {{ 'HomePage.Widget' | translate }} -->
-              <span style="font-size: 14px; font-weight: 300; color: #999999">
-                <!-- Widget -->
-                {{ 'HomePage.WidgetSubtitle1' | translate }} {{ 'HomePage.WidgetSubtitle2' | translate }}
-              </span>
-            </div>
-
-          </div>
-          <div class="card-footer" style="display:none">
-            <div class="" style="float: left; width: 100%;">
-              <!-- <i class="material-icons text-danger">warning</i> <a href="#pablo">Get More Space...</a> -->
-              <i style="background: #c51162; font-size:25px; padding: 15px; color: #fff; border-radius:50%"
-                class="material-icons">
-                code
-              </i>
-              <!-- THERE WERE THIS -->
-              <!-- margin-left: 100px; font-size:12px; -->
-              <h4 class="custom_subtitle" style="padding-bottom:10px; color: rgba(0,0,0,0.87); font-size:18px">
-                <!-- {{ 'HomePage.WidgetSubtitle' | translate }} -->
-                Widget
-              </h4>
-
-              <!-- <h4 class="" style="padding-bottom:10px;  text-align: center; color:#ffffff; font-size:18px">
-                      Tiledesk is also mobile.. 
-                    </h4>  -->
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- REQUESTS -->
-      <!-- col-lg-5 col-lg-offset-1 col-md-6 col-sm-6 -->
-      <div class="col-lg-6 col-md-6 col-sm-6" style="cursor:pointer">
-        <!-- routerLink="/requests" -->
-        <!-- max-width:480px; -->
-        <div class="card card-stats" style="max-width: 480px;min-height: 178px" (click)="goToRequests()">
-          <!-- ===== NOTE: DISPLAY IS SETTED TO NONE ===== -->
-          <div class="card-header" data-background-color="orange" style="display:none">
-            <i class="material-icons">group</i>
-          </div>
-
-          <div class="card-content" style="text-align: center;">
-            <!-- <p class="category" -->
-            <div class="custom_title" style="padding-top: 2px; padding-bottom: 2px;">
-              <i style="font-size:25px; background: #00b8d4; color:#ffffff; padding: 15px; border-radius: 50px"
-                class="material-icons">group</i>
-              <!-- THERE WERE THIS -->
-              <h4 class="custom_subtitle"
-                style="font-size:18px; padding-bottom:0px; color: rgba(0,0,0,0.87); font-size:18px">
-                <!-- {{ 'HomePage.VisitorsSubtitle' | translate }} -->
-                {{ 'Requests' | translate }}
-              </h4>
-
-              <span style="font-size: 14px; font-weight: 300; color: #999999;">
-                {{ 'HomePage.VisitorsSubtitle1' | translate }} {{ 'HomePage.VisitorsSubtitle2' | translate }}
-              </span>
-            </div>
-            <!-- <h3 class="title">Visitatori<small>GB</small></h3> -->
-          </div>
-          <div class="card-footer" style="display:none">
-            <div class="stats" style="">
-              <!-- <i class="material-icons text-danger">warning</i> <a href="#pablo">Get More Space...</a> -->
-              <i style="font-size:25px; background: #00b8d4; color:#ffffff; padding: 15px; border-radius: 50px"
-                class="material-icons">group</i>
-              <!-- THERE WERE THIS -->
-              <h4 class="custom_subtitle"
-                style="font-size:18px; padding-bottom:10px; color: rgba(0,0,0,0.87); font-size:18px">
-                <!-- {{ 'HomePage.VisitorsSubtitle' | translate }} -->
-                {{ 'Requests' | translate }}
-              </h4>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-      <!-- CHAT -->
-      <!-- <div class="col-lg-3 col-md-6 col-sm-6"> -->
-      <!-- col-lg-5 col-lg-offset-1 col-md-6 col-sm-6 -->
-      <div class="col-lg-6  col-md-6 col-sm-6" style="cursor:pointer">
-        <!-- routerLink="/chat" -->
-        <!-- max-width:480px; -->
-        <div class="card card-stats" style="max-width: 480px;min-height: 178px" (click)="openChat()">
-          <!-- <div class="card-header" data-background-color="green"> -->
-          <!-- ===== NOTE: DISPLAY IS SETTED TO NONE ===== -->
-          <div class="card-header" data-background-color="orange" style="display:none">
-            <i class="material-icons">chat</i>
-          </div>
-          <div class="card-content" style="text-align: center;">
-            <div class="custom_title" style="padding-top: 2px; padding-bottom: 2px;">
-              <i style="background: #00bfa5; font-size:25px; padding: 15px; color: #fff; border-radius:50%"
-                class="material-icons">
-                chat
-              </i>
-              <!-- THERE WERE THIS -->
-              <!-- font-size:12px; padding-bottom:10px; text-align: left; -->
-              <h4 class="custom_subtitle" style="padding-bottom:0px; color: rgba(0,0,0,0.87); font-size:18px">
-                Chat
-                <!-- {{ 'HomePage.ChatSubtitle' | translate }} -->
-              </h4>
-              <span style="font-size: 14px; font-weight: 300; color: #999999">
-                <!-- Chat -->
-                {{ 'HomePage.ChatSubtitle' | translate }}
-              </span>
-            </div>
-            <!-- <h3 class="title">$34,245</h3> -->
-          </div>
-          <div class="card-footer" style="display:none">
-            <!-- class="stats"  -->
-            <div style="float: left; width: 100%;">
-              <!-- <i class="material-icons">date_range</i> Last 24 Hours -->
-              <i style="background: #00bfa5; font-size:40px; padding: 15px; color: #fff; border-radius:50%"
-                class="material-icons">
-                chat
-              </i>
-              <!-- THERE WERE THIS -->
-              <!-- font-size:12px; padding-bottom:10px; text-align: left; -->
-              <h4 class="custom_subtitle" style="padding-bottom:10px; color: rgba(0,0,0,0.87); font-size:18px">
-                Chat
-                <!-- {{ 'HomePage.ChatSubtitle' | translate }} -->
-              </h4>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ANALYTICS -->
-      <!-- <div *ngIf="USER_ROLE !== 'agent'" class="col-lg-6 col-md-6 col-sm-6" style="cursor:pointer">
-            <div class="card card-stats" style="max-width:480px;" (click)="goToAnalytics()">
-              <div class="card-header" data-background-color="orange">
-                <i class="material-icons">trending_up</i>
-              </div>
-              <div class="card-content">
-                <p class="category" style="font-size: 1.1em;">Analytics</p>
-              </div>
-              <div class="card-footer">
-                <div class="stats" style="float: left;">
-                  <h4 class="title" style="font-size:12px; padding-bottom:10px; text-align: left;">
-                    {{ 'HomePage.AnalyticsSubtitle' | translate }}
-                  </h4> 
-                </div>
-              </div>
-            </div>
-          </div> -->
-
-      <!-- HISTORY -->
-      <!-- col-lg-5 col-lg-offset-1 col-md-6 col-sm-6 -->
-      <div class="col-lg-6 col-md-6 col-sm-6" style="cursor:pointer">
-        <!-- style="max-width:480px;"  -->
-        <div class="card card-stats" style="max-width: 480px; min-height: 178px" (click)="goToHistory()">
-          <!-- ===== NOTE: DISPLAY IS SETTED TO NONE ===== -->
-          <div class="card-header" data-background-color="orange" style="display:none">
-            <i class="material-icons">history</i>
-          </div>
-          <div class="card-content" style="text-align: center;">
-            <!-- <p class="category" style="font-size: 1.1em;"> -->
-            <div class="custom_title" style="padding-top: 2px; padding-bottom: 2px;">
-              <!-- {{ 'History' | translate }} -->
-              <i style="background: #fb8c00; font-size:25px; padding: 15px; color: #fff; border-radius:50%"
-                class="material-icons">
-                history
-              </i>
-              <!-- style="font-size:12px; padding-bottom:10px; text-align: left;" -->
-              <h4 class="custom_subtitle" style="padding-bottom:0px; color: rgba(0,0,0,0.87); font-size:18px">
-                <!-- {{ 'HomePage.HistorySubtitle' | translate }} -->
-                {{ 'History' | translate }}
-              </h4>
-              <span style="font-size: 14px; font-weight: 300; color: #999999">
-                {{ 'HomePage.HistorySubtitle' | translate }}
-              </span>
-            </div>
-          </div>
-          <div class="card-footer" style="display: none">
-            <div class="stats" style="float: left; width: 100%;">
-
-              <span style="font-size: 16px; font-weight: 300; color: #999999">
-                {{ 'HomePage.HistorySubtitle' | translate }}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-12 col-md-12 col-sm-12">
-        <h4 style="margin-top: 15px;margin-bottom: 15px"> {{ 'HomePage.DownloadTiledesk' | translate: tparams }} </h4>
-        <div style="text-align: center">
-          <a target="_blank" href="https://www.tiledesk.com/it/mobile-live-chat-android-iphone-app/"
-            style="margin-right: 15px">
-            <img style="width:125px" src="assets/img/apple_app_store_icon.png" />
-          </a>
-          <a target="_blank" href="https://www.tiledesk.com/it/mobile-live-chat-android-iphone-app/"
-            style="margin-left: 15px">
-            <img style="width:128px" src="assets/img/get_it_on_Google_play.png" />
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
 
 
   <!-- ARROW MODAL -->

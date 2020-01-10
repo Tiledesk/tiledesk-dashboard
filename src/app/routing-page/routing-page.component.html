@@ -233,13 +233,13 @@
                 <div class="col-sm-10" style="margin-left: 0px; margin-bottom: 25px;"> 
                   <!-- <span *ngIf="SHOW_OPTION_FORM === 'true'"> -->
                   <span *ngIf="has_selected_bot === true">  
-                    <button class="btn btn-success" (click)="edit()" [disabled]="BOT_NOT_SELECTED === true">             
+                    <button class="btn btn-primary" (click)="edit()" [disabled]="BOT_NOT_SELECTED === true">             
                       {{ "RoutingPage.UpdateRoutingRules" | translate  }}
                     </button>
                   </span>
              
                   <span *ngIf="has_selected_bot !== true">
-                    <button class="btn btn-success" (click)="edit()" [disabled]='GROUP_ID_NOT_EXIST'>
+                    <button class="btn btn-primary" (click)="edit()" [disabled]='GROUP_ID_NOT_EXIST'>
                         <!-- Update routing rules -->
                       
                       <!-- ROUTING: {{ dept_routing }} GROUP_ID_NOT_EXIST: {{GROUP_ID_NOT_EXIST }} -->
@@ -348,7 +348,7 @@
       </div>
 
       <div class="modal-footer" style="text-align: center;">
-        <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseInfoModalHandled()">
+        <button class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseInfoModalHandled()">
             Ok
         </button>
       </div>

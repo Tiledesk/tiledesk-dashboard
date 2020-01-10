@@ -85,7 +85,7 @@
                 <label class="col-sm-2"></label>
                 <div class="col-sm-10"> 
                     <!-- || faqKbUrl?.length < 5 -->
-                  <button class="btn btn-success" [disabled]="faqKbName?.length < 2" (click)="create()">
+                  <button class="btn btn-primary" [disabled]="faqKbName?.length < 2" (click)="create()">
                     <!-- Crea Bot -->
                     {{ "BotsAddEditPage.CreateBot" | translate }}
                   </button>
@@ -120,7 +120,7 @@
 
               <label class="col-sm-2"></label>
               <div class="col-sm-10"> 
-                <button class="btn btn-success" (click)="edit()">
+                <button class="btn btn-primary" (click)="edit()">
                   <!-- Modifica FAQ KB -->
                   <!-- Modifica Bot -->
                   {{ "BotsAddEditPage.UpdateBot" | translate }}
@@ -268,7 +268,7 @@
         </div>
 
         <div class="modal-footer" style="text-align: center;">
-          <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseInfoModalHandled()">
+          <button class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseInfoModalHandled()">
               {{ "BotsAddEditPage.Continue" | translate }}
           </button>
         </div>

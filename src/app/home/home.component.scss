@@ -4,6 +4,8 @@
 // @import url(https://fonts.googleapis.com/css?family=Open+Sans:Montserrat:700);
 
 // <link href="https://fonts.googleapis.com/css?family=Alfa+Slab+One" rel="stylesheet">
+@import "./src/assets/sass/md/_variables.scss";
+
 .round-button {
   box-sizing: border-box;
   display: block;
@@ -163,6 +165,10 @@
 
 .custom_title {
   font-family: "Google Sans", sans-serif !important;
+  margin-top: 10px;
+  line-height: 1.2em;
+  color: $brand-secodary;
+  margin-top: 0px;
 }
 
 .custom_subtitle {
@@ -218,7 +224,8 @@
 .project-plan {
   /* background-color: rgba(0,0,0,.14); */
   cursor: pointer;
-  background-color: #039be5;
+  // background-color: #039be5;
+  background-color: $brand-primary;
   color: #fff;
   border-radius: 30px;
   font-size: 12px;
@@ -338,8 +345,8 @@
 }
 
 .homeBanner__textsHeader {
-  // color: #337ab7;
-  color: #f0806f;
+  // color: #f0806f;
+  color: $brand-secodary;
   font-size: 56px;
   font-weight: 900;
   line-height: 1.14;
@@ -418,7 +425,7 @@
 }
 
 .homeBanner__itemText {
-  color: #f0806f;
+  color: $brand-secodary;
   font-size: 22px;
   line-height: 1.44;
   font-weight: 500;

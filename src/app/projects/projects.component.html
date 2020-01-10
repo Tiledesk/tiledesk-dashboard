@@ -58,7 +58,7 @@
 
                   </div>
                   <div class="content">
-                    <button  class="btn btn-info" routerLink="/user-profile" 
+                    <button  class="btn btn-primary" routerLink="/user-profile" 
                       style="padding-top:3.5px; padding-bottom:3.5px; letter-spacing: 2px;border-radius: 30px;padding-left: 16px;padding-right: 16px;">
                       <!-- <h6 class="category text-gray"> -->
                         <!-- <a routerLink="/user-profile">  -->
@@ -199,11 +199,10 @@ background-size:     contain; " -->
         <div class="card" (click)='goToCreateProject()' style="border-radius:10px">
           <div class="card-content" style="height:203px">
               <!-- #55b9d1 -->
-            <h3 class="title" style="color: #f0806f; text-align: center; padding-top:25px">
+            <h3 class="card-add-project-icon" style="">
               <i class="material-icons" style="font-size:48px">add</i>
             </h3>
-            <h4 class="card-title" style="color: #f0806f; text-align: center; margin-bottom: 15px; font-family: 'Google Sans',sans-serif!important; font-weight: 400;
-            font-size: 24px;">
+            <h4 class="card-add-project-text" style="">
                 {{ 'ProjectsPage.AddProject' | translate }}
             </h4>
           </div>
@@ -251,7 +250,7 @@ background-size:     contain; " -->
   
 </div>
 
-<!-- ------------ ============== MODAL CREATE A NEW PROJECT ============== ------------ -->
+<!-- ------------ ============== MODAL CREATE A NEW PROJECT !! no more used ============== ------------ -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayCreateModal}" style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -277,7 +276,7 @@ background-size:     contain; " -->
         </div>
       </div>
       <div class="modal-footer" style="margin-top: 75px;">
-        <button [disabled]="project_name?.length < 4" class="btn btn-info" (click)="createProject()">
+        <button [disabled]="project_name?.length < 4" class="btn btn-primary" (click)="createProject()">
           {{ 'ProjectsPage.ModalCreateProjectBtn' | translate }} 
         </button>
       </div>
@@ -285,7 +284,7 @@ background-size:     contain; " -->
   </div>
 </div>
 
-<!-- MODAL - CREATE A NEW PROJECT INFO WINDOWS -->
+<!-- MODAL - CREATE A NEW PROJECT INFO WINDOWS - !!! no more used -->
 <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayInfoModal}" style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
@@ -329,7 +328,7 @@ background-size:     contain; " -->
       </div>
 
       <div class="modal-footer" style="text-align: center;">
-        <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseInfoModalHandled()">
+        <button class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseInfoModalHandled()">
             {{ "ProjectsPage.Continue" | translate }}
         </button>
       </div>
@@ -377,7 +376,7 @@ background-size:     contain; " -->
         <button class="btn btn-white" (click)="onCloseLogoutModalHandled()" style="padding:12px 16px; font-size:12px ">
           {{ "Cancel" | translate}}
         </button>    
-        <button class="btn btn-info" (click)="onLogoutModalHandled()" style="padding:12px 16px; font-size:12px ">
+        <button class="btn btn-primary" (click)="onLogoutModalHandled()" style="padding:12px 16px; font-size:12px ">
           <!-- Log Out -->
           {{ 'NavBar.LogOut' | translate }}
         </button>

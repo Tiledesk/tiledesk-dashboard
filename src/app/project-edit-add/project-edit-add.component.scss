@@ -1,3 +1,5 @@
+@import "./src/assets/sass/md/_variables.scss";
+
 input[type="text"] {
   // min-width: 307px !important;
   height: 36px;
@@ -317,10 +319,10 @@ button.close {
 }
 
 .li-active {
-  border-bottom: 3px solid #039be5 !important;
+  border-bottom: 3px solid $brand-primary !important;
 }
 .li-active a {
-  color: #039be5 !important;
+  color: $brand-primary !important;
 }
 .disabled-li {
   pointer-events: none;
@@ -360,7 +362,7 @@ $f21blue: #039be5;
 
 .border-from-center {
   &:hover {
-    color: $f21blue;
+    color: $brand-primary;
   }
 
   // Set up base styles, we're going to scale instead of animating width/height
@@ -377,7 +379,7 @@ $f21blue: #039be5;
   // scale3d(<scale-horizontal>, <scale-vertical>, <scale-depth>);
   &::before {
     // border-top: 2px solid $purple;
-    border-bottom: 3px solid $f21blue;
+    border-bottom: 3px solid $brand-primary;
     transform: scale3d(0, 1, 1); // Shrink only width
   }
 
@@ -410,8 +412,8 @@ $f21blue: #039be5;
 }
 
 .tab-active {
-  color: #039be5;
-  border-bottom: 3px solid #039be5;
+  color: $brand-primary;
+  border-bottom: 3px solid $brand-primary;
   // margin-top:6px !important;
   // padding-bottom: 11px !important;
 }
@@ -436,4 +438,15 @@ $f21blue: #039be5;
 
 .flex > div:first-child {
   flex: 0 1 100%;
+}
+
+.add-more-operator {
+  color: $brand-primary;
+  cursor: pointer;
+  border: 1px solid;
+  padding: 5px;
+  border-radius: 4px;
+  font-weight: 400;
+  font-size: 12px;
+  margin-left: 16px;
 }

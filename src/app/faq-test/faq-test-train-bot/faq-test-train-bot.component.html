@@ -75,7 +75,7 @@ color: #fff!important; margin-left:-20px; margin-right:-20px; margin-top:-15px">
       <textarea [(ngModel)]="answer" class="textarea" rows="2" style="width:100%; border-radius:5px; border: 1px solid #d9d9d9 !important;padding:8px" 
       placeholder="{{ 'AddAnotherAnswerToTheCurrentQuestion' | translate }}"></textarea>
       <!-- btn-block btn-outline-primary -->
-     <button class="btn btn-info" style="margin-top:0px; margin-bottom:16px" (click)="create()" [disabled]="answer?.length < 1"> 
+     <button class="btn btn-primary" style="margin-top:0px; margin-bottom:16px" (click)="create()" [disabled]="answer?.length < 1"> 
      <!-- {{ 'AddAnswerToTheCurrentQuestion' | translate }} -->
      {{ 'AddAnswer' | translate }}
      

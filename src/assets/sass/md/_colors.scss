@@ -8,6 +8,7 @@ $red-600: #e53935 !default;
 $red-700: #d32f2f !default;
 $red-800: #c62828 !default;
 $red-900: #b71c1c !default;
+$red-CEQUENS:#d72135 !default;
 $red-A100: #ff8a80 !default;
 $red-A200: #ff5252 !default;
 $red-A400: #ff1744 !default;
@@ -97,6 +98,7 @@ $blue-A100: #82b1ff !default;
 $blue-A200: #448aff !default;
 $blue-A400: #2979ff !default;
 $blue-A700: #2962ff !default;
+$blue-PYPESTREAM: #0a3ab4 !default;
 $blue: $blue-500 !default;
 
 
@@ -165,7 +167,9 @@ $green-A100: #b9f6ca !default;
 $green-A200: #69f0ae !default;
 $green-A400: #00e676 !default;
 $green-A700: #00c853 !default;
-$green: $green-500 !default;
+$green-NK: #3ecf8e !default;
+$green: $green-NK !default;
+// $green: $green-500 !default;
 
 
 $light-green-50: #f1f8e9 !default;

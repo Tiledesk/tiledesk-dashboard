@@ -75,7 +75,7 @@
               <label class="col-sm-2"></label>
               <div class="col-sm-10"> 
 
-                <button #editbotbtn class="btn btn-success" (click)="editBotName()" [disabled]="faqKb_name?.length < 2">
+                <button #editbotbtn class="btn btn-primary" (click)="editBotName()" [disabled]="faqKb_name?.length < 2">
                   {{ "BotsAddEditPage.UpdateBotName" | translate }}
                 </button>
               </div>
@@ -197,7 +197,7 @@
               -->
               <!-- btn-simple btn-xs  -->
               <!--  -->
-              <button class="btn btn-info tooltipx" [ngClass]="{'add-padding' : windowWidthMore764 === true}"
+              <button class="btn btn-white tooltipx text_primary" [ngClass]="{'add-padding' : windowWidthMore764 === true}"
                 style="padding:4px;  margin-top: 0px; margin-bottom: 0px; margin-left: 15px; border-radius: 50px;" 
                 (click)="goToEditAddPage_CREATE()">
                   <!-- is-small -->
@@ -216,7 +216,7 @@
               *********************************
               -->
               <!--  -->
-              <button class="btn btn-info tooltipx" [ngClass]="{'add-padding' : windowWidthMore764 === true}"
+              <button class="btn btn-white tooltipx text_primary" [ngClass]="{'add-padding' : windowWidthMore764 === true}"
                 style="padding:4px; text-transform:none; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;" 
                 (click)="openImportModal()">
                 
@@ -233,10 +233,8 @@
               <!-- 
               *********************************  
               BUTTON EXPORT FAQs TO CSV 
-              *********************************
-              -->
-              <!--  -->
-              <button class="btn btn-info tooltipx" [ngClass]="{'add-padding' : windowWidthMore764 === true}" 
+              ********************************* -->
+              <button class="btn btn-white tooltipx text_primary" [ngClass]="{'add-padding' : windowWidthMore764 === true}" 
                 style="padding:4px; text-transform:none; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;" 
                 (click)="exportFaqsToCsv()">
                 
@@ -272,10 +270,9 @@
               <!-- 
               *********************************  
               BUTTON TEST BOT 
-              *********************************
-              -->
+              ********************************* -->
               <!-- tooltipx -->
-              <button class="btn btn-info"
+              <button class="btn btn-white text_primary"
                 style="padding:4px; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;float: right;" 
                 (click)="goToTestFaqPage()">
                 <span class="icon" style="padding-right:0px; text-transform:none;padding-left: 9px;">
@@ -567,7 +564,7 @@
       <div class="modal-footer" style="text-align: center;">
         
         <input style="display:inline" name="file" id="file" class="inputfile" type="file" (change)="fileChange($event)" accept=".csv"/>
-        <label class="btn btn-info" for="file" style="padding-left:15px; padding-right:15px; text-transform: none" [ngClass]="{'disabled': modalChoosefileDisabled }">
+        <label class="btn btn-primary" for="file" style="padding-left:15px; padding-right:15px; text-transform: none" [ngClass]="{'disabled': modalChoosefileDisabled }">
             <!-- <i class="material-icons">file_upload</i> -->
             <!-- CHOOSE FILE  -->
             {{ 'FaqPage.ChooseFile' | translate }}
@@ -654,10 +651,10 @@
 
       <div class="modal-footer" style="text-align: center;">
         <!-- // IF SUCCESSFULLY UPLOADED -->
-        <button *ngIf="parse_done" class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseInfoModalHandledSuccess()">
+        <button *ngIf="parse_done" class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseInfoModalHandledSuccess()">
             Ok
         </button>
-        <button *ngIf="parse_err" class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseInfoModalHandledError()">
+        <button *ngIf="parse_err" class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseInfoModalHandledError()">
             <!-- Continue -->
             {{ "FaqPage.Continue" | translate }}
         </button>

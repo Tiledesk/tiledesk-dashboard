@@ -95,7 +95,7 @@
                 <!-- [disabled]="bot_fullname?.length < 2 || FAQKB_NOT_SELECTED === true" -->
                 <!-- email length {{ user_email?.length }}  -->
 
-                <button class="btn btn-success" [disabled]="ROLE_NOT_SELECTED === true || !EMAIL_IS_VALID || user_email?.length < 1 || role?.length < 1" (click)="invite()">
+                <button class="btn btn-primary" [disabled]="ROLE_NOT_SELECTED === true || !EMAIL_IS_VALID || user_email?.length < 1 || role?.length < 1" (click)="invite()">
                   {{ "UserEditAddPage.Invites" | translate }}
                 </button>
               </div>
@@ -321,7 +321,7 @@
       </div>
 
       <div class="modal-footer" style="text-align: center;">
-        <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseModalHandled()">
+        <button class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseModalHandled()">
             {{ "UserEditAddPage.Continue" | translate }}
         </button>
       </div>

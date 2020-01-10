@@ -1,5 +1,6 @@
-/* MODAL START */
+@import "./src/assets/sass/md/_variables.scss";
 
+/* MODAL START */
 // MODAL BOOTSTRAP BREAKPOINTS
 // from 992 to 1020px
 // @media (min-width: 992px) and (max-width: 1019px){
@@ -403,16 +404,16 @@ $f21blue: #039be5;
 }
 
 .li-active {
-  border-bottom: 3px solid #039be5 !important;
-  color: #039be5 !important;
+  border-bottom: 3px solid $brand-primary !important;
+  color: $brand-primary !important;
   cursor: default !important;
 }
 
 .li-active a {
-  color: #039be5 !important;
+  color: $brand-primary !important;
 }
 
-$f21blue: #039be5;
+// $f21blue: $brand-primary;
 .btn-with-border-effect {
   background: none;
   border: 0;
@@ -439,7 +440,7 @@ $f21blue: #039be5;
 
 .border-from-center {
   &:hover {
-    color: $f21blue;
+    color: $brand-primary;
   }
 
   // Set up base styles, we're going to scale instead of animating width/height
@@ -456,7 +457,7 @@ $f21blue: #039be5;
   // scale3d(<scale-horizontal>, <scale-vertical>, <scale-depth>);
   &::before {
     // border-top: 2px solid $purple;
-    border-bottom: 3px solid $f21blue;
+    border-bottom: 3px solid $brand-primary;
     transform: scale3d(0, 1, 1); // Shrink only width
   }
 

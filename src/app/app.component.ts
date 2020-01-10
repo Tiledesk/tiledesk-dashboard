@@ -265,7 +265,9 @@ export class AppComponent implements OnInit, AfterViewInit {
                     (this.route.indexOf('/general') !== -1) ||
                     (this.route.indexOf('/payments') !== -1) ||
                     (this.route.indexOf('/auth') !== -1) ||
-                    (this.route.indexOf('/analytics') !== -1)
+                    (this.route.indexOf('/analytics') !== -1) ||
+                    (this.route.indexOf('/user-profile') !== -1) ||
+                    (this.route.indexOf('/change') !== -1)
                 ) {
 
                     const elemNavbar = <HTMLElement>document.querySelector('.navbar');

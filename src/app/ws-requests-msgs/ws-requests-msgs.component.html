@@ -28,7 +28,7 @@
 
                     <!-- -----------------============= ACTIONS DROPDOWN MENU =============----------------- -->
                     <div class="dropdown pull-right">
-                      <a href="#" class="btn btn-info dropdown-toggle outline_btn" data-toggle="dropdown"
+                      <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
                         style="padding:6px 15px; margin-top: 15px">
                         {{ 'VisitorsPage.Actions' | translate }}
                         <b class="caret"></b>
@@ -243,7 +243,7 @@
                       <span
                         *ngIf="HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === true || IS_CURRENT_USER_JOINED === true">
                         <button #openChatBtn (click)="openChatInNewWindow()"
-                          class="btn btn-info btn-block open_the_chat_btn" role="button"
+                          class="btn btn-primary btn-block open_the_chat_btn" role="button"
                           style="padding-left: 0px; padding-right: 0px"
                           [ngClass]="{'disable_open_the_chat_btn' : request?.status == 1000}">
 
@@ -257,7 +257,7 @@
                           && IS_CURRENT_USER_JOINED === false 
                           && SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING === false 
                           && HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST === false">
-                        <button class="btn btn-info btn-block" (click)="onJoinHandled()"
+                        <button class="btn btn-primary btn-block" (click)="onJoinHandled()"
                           style="padding-left: 0px;padding-right: 0px;" [disabled]="request?.status == 1000">
                           {{ 'RequestMsgsPage.Enter' | translate }}
                         </button>
@@ -733,19 +733,16 @@
                   </p>
                   <p class="row-body" style="margin-bottom:0px; word-wrap: break-word;">
 
-                   
                     <!-- 
                     // ----------------------------------------------------------------
                     // no more get from request attributes but directly from request 
                     // ---------------------------------------------------------------- -->
                     <a href="{{request?.sourcePage}}" target="_blank">{{request?.sourcePage}}</a>
                   </p>
-
                 </div>
               </div>
 
-
-                         <!-- 
+              <!-- 
               // ----------------------------------------------------------------
               // @ attributes
               // ---------------------------------------------------------------- -->
@@ -1233,6 +1230,7 @@
         <button type="button" class="close" aria-label="Close" (click)="closeConfirmReassignmentModal()">
           <span aria-hidden="true" style="">&times;</span>
         </button>
+        <!-- style="color: #00bcd4" -->
         <h4 class="modal-title" style="color: #00bcd4">
           <i class="material-icons" style="vertical-align: middle">info</i>
             <span style="vertical-align: middle; padding-left:8px">
@@ -1287,10 +1285,10 @@
           {{ "VisitorsPage.Cancel" | translate }}
         </button>
 
-        <button *ngIf="actionInModal === 'reassign'" style="margin-top:0px" class="btn btn-info" (click)="reassignRequest(userid_selected)" style="padding:12px 16px;">
+        <button *ngIf="actionInModal === 'reassign'" style="margin-top:0px" class="btn btn-primary" (click)="reassignRequest(userid_selected)" style="padding:12px 16px;">
           {{ "VisitorsPage.ReassignRequest" | translate }}
         </button>
-        <button *ngIf="actionInModal === 'invite'" style="margin-top:0px" class="btn btn-info" (click)="assignRequest(userid_selected)" style="padding:12px 16px;">
+        <button *ngIf="actionInModal === 'invite'" style="margin-top:0px" class="btn btn-primary" (click)="assignRequest(userid_selected)" style="padding:12px 16px;">
           {{ "VisitorsPage.AssignRequest" | translate }}
         </button>
       </div>
@@ -1413,7 +1411,7 @@
       </div>
 
       <div class="modal-footer" style="text-align: center;">
-        <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseArchivingInfoModal()" style="padding:12px 16px;">
+        <button class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseArchivingInfoModal()" style="padding:12px 16px;">
             {{ "VisitorsPage.Continue" | translate }}
         </button>
       </div>
@@ -1522,7 +1520,7 @@
         </div>
   
         <div class="modal-footer" style="text-align: center;">
-          <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="closeLeavingChatInfoModal()" style="padding:12px 16px;">
+          <button class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="closeLeavingChatInfoModal()" style="padding:12px 16px;">
             {{ "VisitorsPage.Continue" | translate }}
           </button>
         </div>

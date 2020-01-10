@@ -11,8 +11,6 @@
 
 
 <ul class="bottom-nav">
-
-
   <!-- [ngClass]="
       { 'disabled-li' : displayBtnLabelSeeYourRequets === false, 
         'border-from-center' : displayBtnLabelSeeYourRequets === true,
@@ -20,7 +18,6 @@
       }" -->
   <li (click)="goToProjectSettings_General()" class="btn-with-border-effect" [ngClass]="{ 'li-active' : PROJECT_SETTINGS_ROUTE === true,  
                       'border-from-center': PROJECT_SETTINGS_ROUTE === false}">
-
     <a> {{ "General" | translate }} </a>
   </li>
 
@@ -96,7 +93,7 @@
                         class="input" type="text" placeholder="Nome Progetto"
                         style="border-top-right-radius: 0px; border-bottom-right-radius: 0px">
                       <span class="input-group-btn" style="padding-right: 0px;padding-left: 0px;">
-                        <button class="btn btn-success" (click)="edit()" [disabled]="DISABLE_UPDATE_BTN === true"
+                        <button class="btn btn-primary" (click)="edit()" [disabled]="DISABLE_UPDATE_BTN === true"
                           style="padding-bottom: 9px; margin-bottom: 9px; padding-top: 10px; border-top-right-radius: 5px; border-bottom-right-radius: 5px">
                           {{ "ProjectEditPage.Update" | translate }}
                         </button>
@@ -220,7 +217,7 @@
                   </label>
                   <div class="col-xs-12 col-sm-10">
 
-                    <button (click)="openConfirmJwtSecretCreationModal()" class="btn btn-danger"
+                    <button (click)="openConfirmJwtSecretCreationModal()" class="btn btn-primary"
                       style="margin-top:5px; padding:6px 15px ">
                       {{ "ProjectEditPage.Generate" | translate }}
                     </button>
@@ -613,8 +610,7 @@
                       <span style="font-weight: 500;  padding: 5px;height:31px;position: relative;top: 2px;">
                         {{ numberOf_agents_seats }}
                       </span>
-                      <span style="color: #039be5; cursor:pointer; border: 1px solid;  padding: 5px; border-radius: 4px; font-weight: 400;
-                              font-size: 12px; margin-left: 16px;" (click)="getMoreOperatorsSeats()">
+                      <span class="add-more-operator" style="" (click)="getMoreOperatorsSeats()">
                         {{ "Pricing.AddMoreOperators" | translate }}
                       </span>
                     </span>
@@ -635,7 +631,7 @@
                     {{ "ProjectEditPage.Payments" | translate }}
                   </label>
                   <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <button class="btn btn-success" (click)="goToPayments()"
+                    <button class="btn btn-primary" (click)="goToPayments()"
                       style="padding: 6px 38px; margin-top: 5px;">
                       {{ "ProjectEditPage.SeePayments" | translate }}
                     </button>
@@ -860,7 +856,7 @@
             <input id="sharedSecretInput" readonly [(ngModel)]="sharedSecret" class="" type="text"
               style="border-top-right-radius: 0px; border-bottom-right-radius: 0px">
             <span class="input-group-btn" style="padding-right: 0px;padding-left: 0px;">
-              <button class="btn btn-info" (click)="copySharedSecret()"
+              <button class="btn btn-white" (click)="copySharedSecret()"
                 style="padding-bottom: 9px; margin-bottom: 9px; padding-top: 10px; border-top-right-radius: 5px; border-bottom-right-radius: 5px">
                 {{ "ProjectEditPage.Copy" | translate }}
               </button>
@@ -872,7 +868,7 @@
         </label>
       </div>
       <div class="modal-footer" style="margin-top: 75px; text-align: center">
-        <button class="btn btn-white" (click)="closeJwtSecretGeneratedModal()" style="padding:12px 16px;">
+        <button class="btn btn-primary" (click)="closeJwtSecretGeneratedModal()" style="padding:12px 16px;">
           Ok
         </button>
         <!-- <button style="margin-top:0px" class="btn btn-danger" disabled (click)="createProject()">

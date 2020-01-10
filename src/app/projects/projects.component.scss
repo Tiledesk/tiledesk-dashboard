@@ -1,5 +1,6 @@
-/* MODAL START */
+@import "./src/assets/sass/md/_variables.scss";
 
+/* MODAL START */
 .modal {
   top: 0;
 }
@@ -245,6 +246,21 @@ input[type="text"] {
   color: #ffffff;
   font-size: 21px;
   line-height: 1.2;
+}
+
+.card-add-project-icon {
+  color: $brand-secodary;
+  text-align: center;
+  padding-top: 25px;
+}
+
+.card-add-project-text {
+  color: $brand-secodary;
+  text-align: center;
+  margin-bottom: 15px;
+  font-family: "Google Sans", sans-serif !important;
+  font-weight: 400;
+  font-size: 24px;
 }
 
 // @media (max-width: 468px){

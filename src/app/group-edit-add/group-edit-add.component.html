@@ -37,7 +37,7 @@
 
                 <label class="col-sm-2"></label>
                 <div class="col-sm-10"> 
-                  <button class="btn btn-success" [disabled]="groupName?.length < 2" (click)="create()">
+                  <button class="btn btn-primary" [disabled]="groupName?.length < 2" (click)="create()">
                     {{ "GroupsAddEditPage.CreateGroup" | translate }}
                   </button>
                 </div>
@@ -100,7 +100,7 @@
 
                     <!-- <label class="col-sm-2"></label> -->
                     <div class="col-sm-10 col-sm-offset-2"> 
-                      <button class="btn btn-success" (click)="editGroupName()">
+                      <button class="btn btn-primary" (click)="editGroupName()">
                         {{ "GroupsAddEditPage.UpdateGroupName" | translate }}
                       </button>
                     </div>
@@ -188,11 +188,11 @@
                   </button> -->
 
                 <!-- NEW BTN - ADD MEMBERS TO THE GROUP -->
-                <button class="btn btn-info tooltipx" 
+                <button class="btn btn-white tooltipx" 
                     style="padding:4px;  margin-top: 0px; margin-bottom: 0px; margin-left: 15px; border-radius: 50px;" 
                     (click)="open_users_list_modal()">
                   <span class="icon" style="padding-right:0px">
-                    <i class="material-icons" style="font-size:18px; top:0px">add</i>
+                    <i class="material-icons text_primary" style="font-size:18px; top:0px">add</i>
                   </span>
                   <span class="tooltiptext" style="text-transform:capitalize"> {{ 'GroupsAddEditPage.AddMembers' | translate }} </span>
                 </button>
@@ -425,7 +425,7 @@
           </button>
   
           <!-- [disabled]="add_btn_disabled" -->
-          <button type="button" class="btn btn-info" (click)="addMembersToTheGroup()">
+          <button type="button" class="btn btn-primary" (click)="addMembersToTheGroup()">
             <!-- ADD -->
             {{ "GroupsAddEditPage.Add" | translate }}
           </button>
@@ -505,7 +505,7 @@
         </div>
   
         <div class="modal-footer" style="text-align: center;">
-          <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseAddingMembersModal()">
+          <button class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseAddingMembersModal()">
              {{ "GroupsAddEditPage.Continue" | translate }}
           </button>
         </div>
@@ -619,7 +619,7 @@
       </div>
 
       <div class="modal-footer" style="text-align: center;">
-        <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseCreateGroupModal()">
+        <button class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseCreateGroupModal()">
            {{ "GroupsAddEditPage.Continue" | translate }}
         </button>
       </div>

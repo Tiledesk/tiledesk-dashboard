@@ -259,7 +259,6 @@
                 </a>
                 
                 <ul *ngIf="user" class="dropdown-menu">
-
                   <div class="card card-profile" style="box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0)">
                     <div class="card-avatar" style="max-width:80px; max-height:80px;background-color:#ffffff; border: 2px solid #ffffff">
                       <a>
@@ -273,9 +272,8 @@
                       </a>
                     </div>
                     <div class="content">
-                      
                       <!-- ------------ USER PROFILE ------------ -->
-                      <button *ngIf="project" class="btn btn-info" routerLink="project/{{ project._id }}/user-profile" 
+                      <button *ngIf="project" class="btn btn-primary" routerLink="project/{{ project._id }}/user-profile" 
                         style="letter-spacing: 2px;border-radius: 30px;padding-left: 16px;padding-right: 16px;">
                         {{ 'NavBar.UserProfile' | translate }}
                       </button>
@@ -380,7 +378,7 @@
         <button class="btn btn-white" (click)="onCloseLogoutModalHandled()" style="padding:12px 16px; font-size:12px ">
           {{ "Cancel" | translate}}
         </button>    
-        <button class="btn btn-info" (click)="onLogoutModalHandled()" style="padding:12px 16px; font-size:12px ">
+        <button class="btn btn-primary" (click)="onLogoutModalHandled()" style="padding:12px 16px; font-size:12px ">
           <!-- Log Out -->
           {{ 'NavBar.LogOut' | translate }}
         </button>

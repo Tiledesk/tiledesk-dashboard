@@ -25,7 +25,25 @@ $white-transparent: rgba($white-color, .8);
 
 $gray-color:  #999999 !default;
 
-$brand-primary: $purple !default;
+// $brand-primary: $purple !default;
+
+// --------------------------------------------------------
+// BRAND TILEDESK
+// --------------------------------------------------------
+$brand-primary: #3ea9f5 !default;
+$brand-secodary: #f0806f !default;
+
+// --------------------------------------------------------
+// BRAND PYPESTREAM
+// --------------------------------------------------------
+// $brand-primary: $blue-PYPESTREAM !default;
+// $brand-secodary: #000000 !default;
+
+// --------------------------------------------------------
+// BRAND CEQUENS
+// --------------------------------------------------------
+// $brand-primary: $red-CEQUENS !default;
+
 $brand-success: $green !default;
 $brand-danger: $red !default;
 $brand-warning: $orange !default;

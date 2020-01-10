@@ -1,44 +1,53 @@
 <div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
-    <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">keyboard_arrow_left</i>
+    <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
+        (click)="goBack()">keyboard_arrow_left</i>
     <!-- Profilo -->
-   {{ "UserProfile.Profile" | translate }}
+    {{ "UserProfile.Profile" | translate }}
 </div>
+
+<ul class="bottom-nav" style="top: 5px;">
+    <li class="btn-with-border-effect li-active">
+        <a> {{ "UserProfile.Profile" | translate }} </a>
+    </li>
+    <li class="btn-with-border-effect border-from-center" (click)="goToChangePsw()">
+        <a>{{ "UserProfile.ChangePsw" | translate }} </a>
+    </li>
+</ul>
 
 <div class="main-content" style="padding-top:0px">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div class="card" style="padding-top: 25px;padding-bottom: 25px;">
-                    <!-- <div class="card-header" data-background-color="red">
-                        <h4 class="title">Edit Profile</h4>
-                        <p class="category">Complete your profile</p>
-                    </div> -->
-
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-md-12">
-                            <ul class="nav nav-pills nav-pills-info custom" style="padding-left: 15px;padding-right: 15px;margin-bottom: 15px;">
-                            <li class="active">
-                                <a data-toggle="tab">
-                                    {{ "UserProfile.Profile" | translate }}
-                                </a>
-                            </li>
-                            <li>
-                                <a data-toggle="tab" (click)="goToChangePsw()" style="cursor: pointer">
-                                    {{ "UserProfile.ChangePsw" | translate }}
-                                </a>
-                            </li>
-                            
+                            <ul class="nav nav-pills nav-pills-info custom"
+                                style="padding-left: 15px;padding-right: 15px;margin-bottom: 15px;">
+                                <li class="active">
+                                    <a data-toggle="tab">
+                                        {{ "UserProfile.Profile" | translate }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a data-toggle="tab" (click)="goToChangePsw()" style="cursor: pointer">
+                                        {{ "UserProfile.ChangePsw" | translate }}
+                                    </a>
+                                </li>
+
                             </ul>
                         </div>
-                    </div>
+                    </div> -->
 
                     <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
-                    <div *ngIf="!showSpinner" class="card-content" style="border-top:1px solid #eee">
-             
+                    <!-- style="border-top:1px solid #eee" -->
+                    <div *ngIf="!showSpinner" class="card-content" >
 
-                        <label style="height: 36px; padding-top: 20px; padding-left: 16px; padding-right: 16px; text-align: right; margin-top:12px; color: #7695a5 " class="col-sm-2 avatar_label">
-                           Avatar
+
+                        <label
+                            style="height: 36px; padding-top: 20px; padding-left: 16px; padding-right: 16px; text-align: right; margin-top:12px; color: #7695a5 "
+                            class="col-sm-2 avatar_label">
+                            Avatar
                         </label>
                         <div class="col-sm-10">
                             <!-- src="assets/img/no_image_user.png" -->
@@ -46,23 +55,27 @@
                             <!-- userProfileImageExist: {{ userProfileImageExist }} - userImageHasBeenUploaded:{{ userImageHasBeenUploaded }} -->
                             <!-- src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{userId}}%2Fphoto.jpg?alt=media"  -->
                             <div class="card-avatar" style="padding-bottom:15px; min-height: 95px;">
-                                <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
-                                class="user-img" [src]="getUserProfileImage()" />
-                               
-                                <img *ngIf="userProfileImageExist === false && userImageHasBeenUploaded !== true" style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
-                                class="user-img" src="assets/img/no_image_user.png"/>
+                                <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
+                                    style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
+                                    class="user-img" [src]="getUserProfileImage()" />
+
+                                <img *ngIf="userProfileImageExist === false && userImageHasBeenUploaded !== true"
+                                    style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
+                                    class="user-img" src="assets/img/no_image_user.png" />
                                 <!-- <img style="vertical-align: middle; width: 60px; height: 60px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
                                 class="user-img" src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{userId}}%2F8a533bcc-59df-421a-98f0-f499ca40fbdf-01-01-1529932001.jpeg?alt=media" 
                                 onerror="this.onerror=null; this.src='assets/img/no_image_user.png';"/> -->
-                                
-                                <input  class="inputfile" name="file" id="file"  type="file" (change)="upload($event)" accept=".jpg" />
-                                <label class="btn btn-white" for="file" style="padding-left:15px; padding-right:15px; text-transform: none; color: #7695a5">
-                                      
-                                   
+
+                                <input class="inputfile" name="file" id="file" type="file" (change)="upload($event)"
+                                    accept=".jpg" />
+                                <label class="btn btn-white" for="file"
+                                    style="padding-left:15px; padding-right:15px; text-transform: none; color: #7695a5">
+
+
                                     <span *ngIf="!showSpinnerInUploadImageBtn">
                                         {{ "UserProfile.UploadImage" | translate }}
                                     </span>
-                                    <span *ngIf="showSpinnerInUploadImageBtn"> 
+                                    <span *ngIf="showSpinnerInUploadImageBtn">
                                         {{ 'VisitorsPage.Loading' | translate }}
                                         <i class="fa fa-spinner fa-spin"></i>
                                     </span>
@@ -72,16 +85,17 @@
                                 <!-- <button style="padding-left:16px; padding-right:16px; font-size:0.8em" type="submit" class="btn btn-white" (click)='uploadUserAvatar()'>
                                     {{ "UserProfile.UploadImage" | translate }}
                                 </button> -->
-                                
-                            </div> 
+
+                            </div>
                         </div>
-                            
+
                         <label class="col-sm-2 custom-label">
                             <!-- Nome -->
                             {{ "UserProfile.Name" | translate }}
                         </label>
                         <div class="col-sm-10">
-                            <input (input)="onEditFirstname($event.target.value)" [(ngModel)]="userFirstname" class="" type="text" placeholder='{{ "UserProfile.Name" | translate }}'>
+                            <input (input)="onEditFirstname($event.target.value)" [(ngModel)]="userFirstname" class=""
+                                type="text" placeholder='{{ "UserProfile.Name" | translate }}'>
                         </div>
 
                         <label class="col-sm-2 custom-label">
@@ -89,23 +103,26 @@
                             {{ "UserProfile.Lastname" | translate }}
                         </label>
                         <div class="col-sm-10">
-                            <input (input)="onEditLastname($event.target.value)" [(ngModel)]="userLastname" class="" type="text" placeholder='{{ "UserProfile.Lastname" | translate }}'>
+                            <input (input)="onEditLastname($event.target.value)" [(ngModel)]="userLastname" class=""
+                                type="text" placeholder='{{ "UserProfile.Lastname" | translate }}'>
                         </div>
 
                         <label class="col-sm-2 custom-label">
-                          Email
+                            Email
                         </label>
                         <div class="col-sm-10">
-                            <input style="color:#808080" [(ngModel)]="user.email" class="" type="text" placeholder="Email" 
+                            <input style="color:#808080" [(ngModel)]="user.email" class="" type="text"
+                                placeholder="Email"
                                 [ngClass]="{'pending-email-verification' : emailverified === false }" disabled>
-                           </div> 
+                        </div>
 
                         <label class="col-sm-2 custom-label">
                             <!-- ID Utente -->
                             {{ "UserProfile.UserId" | translate }}
                         </label>
                         <div class="col-sm-10">
-                            <input style="color: #808080" [(ngModel)]="user._id" class="" type="text" placeholder='{{ "UserProfile.UserId" | translate }}' disabled>
+                            <input style="color: #808080" [(ngModel)]="user._id" class="" type="text"
+                                placeholder='{{ "UserProfile.UserId" | translate }}' disabled>
                         </div>
 
                         <!-- USER PHOTO -->
@@ -117,27 +134,31 @@
                             </div> 
                         </div> -->
 
-                     
+
                         <span *ngIf="emailverified == false">
                             <label class="col-sm-2"></label>
                             <div class="col-sm-10" style="padding-top: 15px;">
-                                <i class="material-icons" style="vertical-align: middle; color:#f44336;">error_outline</i>
-                                <span style="vertical-align: middle; color:#f44336;"> 
-                                <!-- {{ "UserProfile.PendingEmailVerification" | translate }} -->
-                                {{ "UserProfile.YourAccountIsPending" | translate }} 
-                                <a (click)="resendVerificationEmail()" style="cursor: pointer; color: #03a5e8">{{ "UserProfile.ClickHereToResend" | translate }}  </a>
-                                </span>       
+                                <i class="material-icons"
+                                    style="vertical-align: middle; color:#f44336;">error_outline</i>
+                                <span style="vertical-align: middle; color:#f44336;">
+                                    <!-- {{ "UserProfile.PendingEmailVerification" | translate }} -->
+                                    {{ "UserProfile.YourAccountIsPending" | translate }}
+                                    <a (click)="resendVerificationEmail()"
+                                        style="cursor: pointer; color: #03a5e8">{{ "UserProfile.ClickHereToResend" | translate }}
+                                    </a>
+                                </span>
                             </div>
-                
+
                         </span>
 
                         <!-- SPACER -->
                         <div class="col-sm-12 spacer" style="height:15px"></div>
 
-                 
+
                         <label style="" class="col-sm-2"></label>
                         <div class="col-sm-10 ">
-                            <button class="btn btn-success" (click)="updateCurrentUserFirstnameLastname()" [disabled]="!HAS_EDIT_FIRSTNAME && !HAS_EDIT_LASTNAME"  >
+                            <button class="btn btn-primary" (click)="updateCurrentUserFirstnameLastname()"
+                                [disabled]="!HAS_EDIT_FIRSTNAME && !HAS_EDIT_LASTNAME">
                                 <!-- Aggiorna Profilo-->
                                 {{ "UserProfile.UpdateProfile" | translate }}
                             </button>
@@ -256,70 +277,73 @@
 <!-- <appdashboard-change-password></appdashboard-change-password> -->
 
 <!-- ============ INFO MODAL: UPDATING PROFILE IN PROGRESS ============ -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayModalUpdatingUser}" style="background-color: rgba(90,90,90,0.5);">
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayModalUpdatingUser}"
+    style="background-color: rgba(90,90,90,0.5);">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" aria-label="Close" (click)="closeModalUpdatingUser()">
-            <span aria-hidden="true">&times;</span>
-            </button>
+            <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="closeModalUpdatingUser()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
 
-            <h4 class="modal-title">
-                {{ "UserProfile.UpdateProfile" | translate }}
-            <!-- <code>{{id_toDelete}}</code> -->
-            </h4>
-        </div>
-
-        <div class="modal-body" style="padding-right: 15px; padding-top:15px; padding-bottom:15px">
-        
-            <span *ngIf="SHOW_CIRCULAR_SPINNER">
-            <div  class="loader" style="top:25%;">
-                <svg class="circular" viewBox="25 25 50 50">
-                <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10"/>
-                </svg>
-
+                <h4 class="modal-title">
+                    {{ "UserProfile.UpdateProfile" | translate }}
+                    <!-- <code>{{id_toDelete}}</code> -->
+                </h4>
             </div>
-            <p style="margin-top: 60px; text-align: center; color: #566787; font-weight: 500">
-                {{ "UserProfile.Processing" | translate }}
-            </p>
-            </span>
 
-            <!-- IF THERE IS NO ERROR -->
-            <span *ngIf="!SHOW_CIRCULAR_SPINNER && !UPDATE_USER_ERROR ">
-                
-                <div style="text-align: center">
-                    <i class="material-icons" style="color:#70b665">done</i>
-                    <p style="color:#70b665; font-weight: 500">
-                        {{ "UserProfile.Completed" | translate }}
-                    </p> 
+            <div class="modal-body" style="padding-right: 15px; padding-top:15px; padding-bottom:15px">
 
-                </div>
-                <p style="margin-top:10px; text-align: center; color: #566787; font-weight: 500">
-                    {{ "UserProfile.UserSuccessfullyUpdated" | translate }}
-                </p>
-            </span>
+                <span *ngIf="SHOW_CIRCULAR_SPINNER">
+                    <div class="loader" style="top:25%;">
+                        <svg class="circular" viewBox="25 25 50 50">
+                            <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2"
+                                stroke-miterlimit="10" />
+                        </svg>
 
-            <!-- IF THERE IS AN ERROR -->
-            <span *ngIf="!SHOW_CIRCULAR_SPINNER && UPDATE_USER_ERROR">
-            
-                <div style="text-align: center ">
-                    <i class="material-icons" style="color:#ff5252">report_problem</i>
-                    <p style="color:#ff5252; font-weight: 500">
-                        {{ "UserProfile.Error" | translate }}
-                    </p> 
+                    </div>
+                    <p style="margin-top: 60px; text-align: center; color: #566787; font-weight: 500">
+                        {{ "UserProfile.Processing" | translate }}
+                    </p>
+                </span>
 
-                </div>
-                <p style="margin-top:10px; text-align: center; color: #566787; font-weight: 500">
-                    {{ "UserProfile.AnErrorHasOccurred" | translate }}
-                </p>
-            </span>
-        </div>
+                <!-- IF THERE IS NO ERROR -->
+                <span *ngIf="!SHOW_CIRCULAR_SPINNER && !UPDATE_USER_ERROR ">
 
-        <div class="modal-footer" style="text-align: center;">
-            <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="closeModalUpdatingUserHandler()" style="padding:12px 16px;">
-                {{ "UserProfile.Continue" | translate }}
-            </button>
-        </div>
+                    <div style="text-align: center">
+                        <i class="material-icons" style="color:#70b665">done</i>
+                        <p style="color:#70b665; font-weight: 500">
+                            {{ "UserProfile.Completed" | translate }}
+                        </p>
+
+                    </div>
+                    <p style="margin-top:10px; text-align: center; color: #566787; font-weight: 500">
+                        {{ "UserProfile.UserSuccessfullyUpdated" | translate }}
+                    </p>
+                </span>
+
+                <!-- IF THERE IS AN ERROR -->
+                <span *ngIf="!SHOW_CIRCULAR_SPINNER && UPDATE_USER_ERROR">
+
+                    <div style="text-align: center ">
+                        <i class="material-icons" style="color:#ff5252">report_problem</i>
+                        <p style="color:#ff5252; font-weight: 500">
+                            {{ "UserProfile.Error" | translate }}
+                        </p>
+
+                    </div>
+                    <p style="margin-top:10px; text-align: center; color: #566787; font-weight: 500">
+                        {{ "UserProfile.AnErrorHasOccurred" | translate }}
+                    </p>
+                </span>
+            </div>
+
+            <div class="modal-footer" style="text-align: center;">
+                <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER"
+                    (click)="closeModalUpdatingUserHandler()" style="padding:12px 16px;">
+                    {{ "UserProfile.Continue" | translate }}
+                </button>
+            </div>
 
         </div>
         <!-- /.modal-content -->

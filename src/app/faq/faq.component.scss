@@ -1,3 +1,5 @@
+@import "./src/assets/sass/md/_variables.scss";
+
 input[type=text] {
     // min-width: 307px !important;
     height: 36px;
@@ -426,4 +428,9 @@ input[type="text"]:disabled::placeholder {
 
     padding-left:8px !important;
     padding-right:8px !important;
+}
+
+.text_primary {
+    color: $brand-primary;
+    font-weight: 500;
 }

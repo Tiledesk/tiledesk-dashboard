@@ -1,3 +1,5 @@
+@import "./src/assets/sass/md/_variables.scss";
+
 .modal {
     top: 0;
 }
@@ -289,7 +291,6 @@ only screen and (max-width: 760px),
   padding-left: 0px;
   display: flex;
   flex-grow: 1;
- 
 }
 
 .bottom-nav li {
@@ -314,13 +315,13 @@ only screen and (max-width: 760px),
 }
 
 .li-active  {
-  border-bottom: 3px solid #039be5 !important;
-  color: #039be5 !important;
+  border-bottom: 3px solid $brand-primary !important;
+  color: $brand-primary !important;
   cursor: default !important;
 }
 
 .li-active  a {
-  color: #039be5!important;
+  color: $brand-primary!important;
 }
 
 $f21blue: #039be5;
@@ -350,7 +351,7 @@ $f21blue: #039be5;
 
 .border-from-center {
   &:hover {
-    color: $f21blue;
+    color: $brand-primary;
   }
 
   // Set up base styles, we're going to scale instead of animating width/height
@@ -367,7 +368,7 @@ $f21blue: #039be5;
   // scale3d(<scale-horizontal>, <scale-vertical>, <scale-depth>);
   &::before {
     // border-top: 2px solid $purple;
-    border-bottom: 3px solid $f21blue;
+    border-bottom: 3px solid $brand-primary;
     transform: scale3d(0,1,1); // Shrink only width
   }
 
