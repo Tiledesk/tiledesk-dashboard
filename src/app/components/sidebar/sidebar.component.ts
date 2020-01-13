@@ -752,20 +752,19 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         } else {
             this.IS_MOBILE_MENU = true
         }
-
     }
 
     onScroll(event: any): void {
         // console.log('SIDEBAR RICHIAMO ON SCROLL ');
         this.elSidebarWrapper = <HTMLElement>document.querySelector('.sidebar-wrapper');
         this.scrollpos = this.elSidebarWrapper.scrollTop
-        console.log('SIDEBAR SCROLL POSITION', this.scrollpos)
+        // console.log('SIDEBAR SCROLL POSITION', this.scrollpos)
     }
 
     stopScroll() {
         // const el = <HTMLElement>document.querySelector('.sidebar-wrapper');
-        console.log('SIDEBAR SCROLL TO', this.scrollpos);
-        console.log('SIDEBAR SCROLL TO elSidebarWrapper ', this.elSidebarWrapper)
+        // console.log('SIDEBAR SCROLL TO', this.scrollpos);
+        // console.log('SIDEBAR SCROLL TO elSidebarWrapper ', this.elSidebarWrapper)
 
         if (this.elSidebarWrapper) {
             this.elSidebarWrapper.scrollTop = this.scrollpos;

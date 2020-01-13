@@ -122,11 +122,9 @@ export class WidgetService {
     // const url = this.BASE_URL + this.projectID + '/labels/it'
     // https://tiledesk-server-pre.herokuapp.com/5df2240cecd41b00173a06bb/labels2
 
-
     const url = this.BASE_URL + this.projectID + '/labels2'
 
-
-    console.log('»» WIDGET SERVICE - GET LABELS URL', url);
+    console.log('Multilanguage »» WIDGET SERVICE - GET LABELS URL', url);
 
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -136,9 +134,24 @@ export class WidgetService {
       .map((response) => response.json());
   }
 
-  public getMockLabels(lang): Observable<[]> {
+  public cloneLabel(langCode) {
+
+    const url = this.BASE_URL + this.projectID + '/labels2/default/clone?lang=' + langCode
+    console.log('Multilanguage »» WIDGET SERVICE - CLONE LABELS URL', url);
+
+    const headers = new Headers();
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+
+    return this.http
+      .get(url, { headers })
+      .map((res) => res.json());
+  }
+
+  public getMockLabels(): Observable<[]> {
     // const url = this.BASE_URL + this.projectID + '/labels/it'
-    const url = "http://demo9971484.mockable.io/" + lang
+    // const url = "http://demo9971484.mockable.io/" + lang
+    const url = "http://demo9971484.mockable.io/all"
 
     console.log('»» WIDGET SERVICE - GET LABELS URL', url);
 
@@ -172,29 +185,13 @@ export class WidgetService {
   }
 
 
-  public createLabel(langCode) {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
 
-    const body = { "lang": langCode};
-
-    console.log('»» WIDGET SERVICE createLabel body ', body);
-
-    const url = this.BASE_URL + this.projectID + '/labels2'
-
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
-  }
 
   public editLang(translation) {
-    
+
     // let url = this.BASE_URL + this.projectID + '/labels2/' + this.projectID
     let url = this.BASE_URL + '5df2240cecd41b00173a06bb' + '/labels2'
-    
+
     console.log('Multilanguage CREATE LABEL - PUT URL ', url);
 
     const headers = new Headers();

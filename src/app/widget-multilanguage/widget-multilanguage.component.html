@@ -21,7 +21,7 @@
 
   <section *ngIf="!showSheleton">
     <li *ngFor="let lang of availableTranslations" class="btn-with-border-effect"
-      (click)="selectTranslationTab(lang.code, lang.name)" [ngClass]="
+      (click)="_selectTranslationTab(lang.code, lang.name)" [ngClass]="
             { 'disabled-li' : selectedTranslationCode === lang.code, 
               'border-from-center' : selectedTranslationCode !== lang.code,
               'li-active' : selectedTranslationCode === lang.code}">
@@ -31,7 +31,7 @@
 
 
 
-    <li (click)="selectTranslationTab('add', 'add')" class="btn-with-border-effect" [ngClass]="
+    <li (click)="_selectTranslationTab('add', 'add')" class="btn-with-border-effect" [ngClass]="
   { 'disabled-li' : selectedTranslationCode === 'add', 
     'border-from-center' : selectedTranslationCode !== 'add', 
     'li-active' : selectedTranslationCode === 'add'}">
@@ -43,10 +43,7 @@
 </ul>
 
 <div class="main-content" style="padding-top:0px">
-
   <div class="container-fluid">
-
-
     <div class="row">
       <div class="col-md-12">
         <div class="card" style="padding-top:0px; padding-bottom:0px;">
@@ -62,7 +59,7 @@
               <div class="col-md-12">
                 <h4 class="card-title" style="margin-bottom: 12px; float: left;"> </h4>
 
-                <div class="row">
+                <div class="row" style="padding-bottom: 16px;">
                   <div class="col-md-12">
                     <div class="section-subtitle" style="border-top: 1px solid #e8f0f5; padding-top: 15px;">
                     </div>
@@ -135,7 +132,7 @@
 
               <span *ngFor="let item of selected_translation">
 
-                <div class="row">
+                <div class="row" style="padding-bottom: 16px;">
                   <div class="col-md-4">
                     <span class="ml__label_name">
                       {{ item?.labelName }}
@@ -144,9 +141,9 @@
                   </div>
 
                   <div class="col-md-5">
-                    <textarea class="textarea ml__label_value"  
-                      [(ngModel)]=" item.labelValue" 
-                      (ngModelChange)="onChangeTranslation($event, item?.labelName)" rows="2">{{ item?.labelValue }}</textarea>
+                    <textarea class="textarea ml__label_value" [(ngModel)]=" item.labelValue"
+                      (ngModelChange)="onChangeTranslation($event, item?.labelName)"
+                      rows="2">{{ item?.labelValue }}</textarea>
                   </div>
 
                 </div>
@@ -155,13 +152,19 @@
 
             </section>
 
+            <!-- 
+            // -----------------------------------------------------------------------------
+            // @ Add
+            // ----------------------------------------------------------------------------- -->
             <section *ngIf="selectedTranslationCode === 'add'">
-
-              <div class="row">
+              <div class="row" style="padding-bottom: 25px;">
                 <div class="col-md-4">
 
                   <ng-select id="language_option" style="margin-top: 11px;" [clearable]="false"
-                    [(ngModel)]="selectedLang" [items]="languages" bindLabel="name"
+                    [(ngModel)]="selectedLang" 
+                    [items]="languages" 
+                    bindLabel="name"
+                    groupBy="type"
                     placeholder="{{ 'ChooseALanguage' | translate }}" (change)="onSelectlang(selectedLang)">
                   </ng-select>
 
@@ -169,7 +172,7 @@
 
                 <div class="col-md-5">
                   <button class="btn btn-primary" style="padding-top: 10px; padding-bottom: 10px;"
-                    (click)="saveNewLanguage()">
+                    (click)="_saveNewLanguage()">
                     {{ 'Add' | translate }}
                   </button>
 
@@ -177,6 +180,16 @@
               </div>
 
             </section>
+          </div>
+
+          <div *ngIf="selectedTranslationCode !== 'add'" class="card-footer" style="border-color: #e8f0f5 !important;">
+            <button class="btn btn-primary" (click)="editLang()">
+              {{ 'ScriptPage.Save' | translate }}
+            </button>
+
+            <button class="btn btn-danger" (click)="deleteLang()">
+              {{ 'Delete' | translate }}
+            </button>
           </div>
 
         </div>
