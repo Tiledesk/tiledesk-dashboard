@@ -58,7 +58,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     tparams = brand;
     sidebarLogoWhite_Url = brand.company_logo_white__url;
-    hidechangelogrocket = brand.sidebar__hide_changelog_rocket
+    hidechangelogrocket = brand.sidebar__hide_changelog_rocket;
+    // background_bottom_section = brand.sidebar.background_bottom_section
 
     public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK;
 
@@ -758,11 +759,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // console.log('SIDEBAR RICHIAMO ON SCROLL ');
         this.elSidebarWrapper = <HTMLElement>document.querySelector('.sidebar-wrapper');
         this.scrollpos = this.elSidebarWrapper.scrollTop
-        // console.log('SIDEBAR SCROLL POSITION', this.scrollpos)
+        console.log('SIDEBAR SCROLL POSITION', this.scrollpos)
     }
+
     stopScroll() {
         // const el = <HTMLElement>document.querySelector('.sidebar-wrapper');
-        console.log('SIDEBAR SCROLL TO', this.scrollpos)
+        console.log('SIDEBAR SCROLL TO', this.scrollpos);
+        console.log('SIDEBAR SCROLL TO elSidebarWrapper ', this.elSidebarWrapper)
 
         if (this.elSidebarWrapper) {
             this.elSidebarWrapper.scrollTop = this.scrollpos;

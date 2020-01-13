@@ -28,11 +28,11 @@
             <!-- class="dropdown-toggle" -->
             <!-- margin-top:56px; display:block; text-align:right; padding-top:15px;padding-bottom:15px; padding-right:28px; color: #555555;" -->
               <a  data-toggle="dropdown" href="#" style="display:block !important; margin-top:0px; opacity:100 !important">
-              <i style="font-size:20px; display:block !important; float: right; color: #555555 !important; " class="material-icons">person</i>
+              <i class="material-icons open-user-profile-person-icon">person</i>
               <!-- <p class="hidden-lg hidden-md">Profile</p> -->
 
               <span class="tooltipx"> 
-                  <span  *ngIf="user?.emailverified == false" class="notification" style="font-weight: 200; font-size:12px; right:11px!important; top:3px!important; position: absolute!important;">
+                  <span  *ngIf="user?.emailverified == false" class="notification" style="font-weight: 200; font-size:9px; right:11px!important; top:3px!important; position: absolute!important;">
                       !
                       <span class="tooltiptext">
                         {{"NavBar.PendingVerification" | translate }}
@@ -127,19 +127,20 @@
 
 
 <!-- http://www.frontiere21.com/wp-content/uploads/2016/08/chat21-frontiere21-head-.png -->
-<!-- style="padding-top:0px; background-repeat: no-repeat; background-image: url(assets/img/tiledesk-header.png); background-attachment: scroll; background-position: top right;" -->
+
 <!-- height: 374px; -->
 <!-- style="
 margin-top: 0px; 
 padding:0px; 
 background-repeat: no-repeat; 
-background-image: url(assets/img/frontiere21-hero-bckgrnd-full.png); background-attachment: scroll; background-position: top center;
+
 background-size:     contain; " -->
 <div class="main-content">
 
-    <!-- frontiere21-hero-bckgrnd-full -->
+   
     <!-- text-white bg-primary -->
-  <div class="pt-5 py-5 project_background" [ngStyle]="{'background':pageBackgroundColor}">
+    <!-- [ngStyle]="{'background':pageBackgroundColor}" -->
+  <div class="pt-5 py-5 project_background">
     <!-- // added for new style start -->
     <span style="height: 64px; position: absolute; width: 100%; left: 0%; top: 0px; background-color: rgba(66, 71, 112, 0.1);"></span>
     <span style="height: 64px; position: absolute; width: 40%; bottom: 0px; right: 12%; background: rgba(255, 255, 255, 0.45);"></span>
@@ -174,8 +175,7 @@ background-size:     contain; " -->
     <!-- // added for new style end -->
 
 
-  <!-- margin-right:100px; margin-left:100px; -->
-  <!-- <div style="background-color: #fff; height: 400px; z-index: 3; position:relative; background-repeat: no-repeat; background-image: url(assets/img/tiledesk-header.png); background-attachment: scroll; background-position: top right; "></div> -->
+ 
  
   <div class="container-fluid" style="max-width: 960px;">
     <!-- <div class="row">

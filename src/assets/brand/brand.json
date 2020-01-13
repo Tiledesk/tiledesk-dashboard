@@ -1,6 +1,6 @@
 {
     "metaTitle": "Tiledesk Support Dashboard",
-    "favicon__url":"https://tiledesk.com/wp-content/uploads/2018/07/tiledesk-favicon.png",
+    "favicon__url": "https://tiledesk.com/wp-content/uploads/2018/07/tiledesk-favicon.png",
     "company_name": "Tiledesk",
     "company_site_name": "tiledesk.com",
     "company_site_url": "http://www.tiledesk.com",
@@ -17,8 +17,7 @@
         "display_contact_us_email": true
     },
     "recent_project_page": {
-        "company_logo_black__width": "100px",
-        "background_color": "rgb(240, 128, 111)"
+        "company_logo_black__width": "100px"
     },
     "signup_page": {
         "display_terms_and_conditions_link": true

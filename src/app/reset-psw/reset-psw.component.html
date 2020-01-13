@@ -59,8 +59,7 @@
                       {{ formErrors.email }}
                     </div> -->
 
-                    <button type="submit" style="width: 100%; background-color: #f0806f; height: 56px; font-size: 16px; letter-spacing: 2px;" class="btn btn-danger" 
-                    [disabled]="!emailForm.valid">
+                    <button type="submit" class="btn request-new-psw" [disabled]="!emailForm.valid">
                       <span *ngIf="!showSpinnerInRequestNewPswBtn"> 
                         {{ "RequestNewPsw" | translate }}
                       </span>
@@ -171,10 +170,11 @@
                       </div>
                     </div>
           
-                    <button type="submit" style="width: 100%; background-color: #ff9800; height: 56px; font-size: 16px; letter-spacing: 2px;" class="btn btn-danger" [disabled]="!pswForm.valid">
+                    <button type="submit" style="" 
+                      class="btn btn-forgotpsw_nomatch" [disabled]="!pswForm.valid">
                       <span *ngIf="!showSpinnerInResetPswBtn"> 
                         <!-- RESET PASSWORD  -->
-                        {{ "ResetPsw" | translate }}
+                       {{ "ResetPsw" | translate }}
 
                       </span>
                       <span *ngIf="showSpinnerInResetPswBtn"> <i class="fa fa-spinner fa-spin"></i></span>
@@ -197,8 +197,8 @@
                     {{ "YourPswHasBeenChanged" | translate }}
                   </h4>
                   <!-- (click)="goToLoginForm()" -->
-                    <button type="submit" style="width: 100%; background-color: #ff9800; height: 56px; font-size: 16px; letter-spacing: 2px; margin-top: 30px;" 
-                      class="btn btn-danger" routerLink="/login">
+                    <button type="submit" style="" 
+                      class="btn btn-forgotpsw" routerLink="/login">
                       <!-- GO TO LOGIN -->
                       {{ "GoToLogin" | translate }}
                     <span *ngIf="showSpinnerInResetPswBtn"> <i class="fa fa-spinner fa-spin"></i></span>

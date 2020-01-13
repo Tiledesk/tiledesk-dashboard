@@ -1,3 +1,4 @@
+
  .wrapper{
     position: relative;
     top: 0;
@@ -87,7 +88,8 @@
                 color: #FFFFFF;
 
                 i{
-                    color: #FFFFFF;
+                    // color: #FFFFFF;
+                    color: $brand-sidebar-active-item-icon-color
                 }
             }
         }
@@ -107,7 +109,8 @@
             line-height: 30px;
             width: 30px;
             text-align: center;
-            color: #a9afbb;
+            // color: #a9afbb;
+            color: $brand-sidebar-inactive-item-icon-color
         }
     }
 

@@ -5,11 +5,23 @@
   transition-property: top, bottom, width;
   transition-duration: 0.2s, 0.2s, 0.35s;
   transition-timing-function: linear, linear, ease;
+  background-color: $brand-sidebar-bckgrnd-bottom-section !important;
 }
 
-li.active a span.sidebar-mini {
-  color: #ffffff !important;
+// li.active a span.sidebar-mini {
+//   color: #ffffff !important;
+// }
+
+// li.active a span.sidebar-mini {
+//   color: #ffffff !important;
+// }
+
+.sidebar-icons {
+  font-size: 20px !important;
+  // color: #a9afbb !important;
 }
+
+
 
 .sidebar-mini {
   width: 30px;
@@ -19,27 +31,41 @@ li.active a span.sidebar-mini {
   position: relative;
   float: left;
   display: inherit;
-  color: #a9afbb;
+  // color: #a9afbb;
+  color: $brand-sidebar-inactive-item-text-color;
+  
   /* font-size:1.2em */
 }
 
-/* START - USED WITH SIDWBAR WITH BLACK BACKGROUND */
+/* SIDEBAR ITEMS TEXT */
 .onBlackBckgrnd {
-  color: rgba(255, 255, 255, 0.6);
+  // color: rgba(255, 255, 255, 0.6);
+  color: $brand-sidebar-inactive-item-text-color;
   font-family: "Google Sans", sans-serif !important;
 }
 
+/* SIDEBAR ACTIVE ITEMS TEXT */
 li.active a p.onBlackBckgrnd {
-  color: #ffffff !important;
+  color: $brand-sidebar-active-item-text-color !important;
 }
 
-span.sidebar-normal {
-  color: rgba(255, 255, 255, 0.6);
+/* SIDEBAR ACTIVE ITEMS INITIAL IN SETTINGS  */
+li.active a p.onBlackBckgrnd .sidebar-mini {
+  color: $brand-sidebar-active-item-icon-color !important;
 }
 
-li.active a span.sidebar-normal {
-  color: #ffffff !important;
-}
+// .sidebar-wrapper-in-projects {
+//   height: 100vh !important;
+// }
+
+
+// span.sidebar-normal {
+//   color: rgba(255, 255, 255, 0.6);
+// }
+
+// li.active a span.sidebar-normal {
+//   color: #ffffff !important;
+// }
 
 /* start - mobile sidebar USED WITH SIDWBAR WITH BLACK BACKGROUND */
 p.hidden-lg.hidden-md {
@@ -57,9 +83,7 @@ ul.dropdown-menu > li > a {
 /* end - mobile sidebar USED WITH SIDWBAR WITH BLACK BACKGROUND */
 /* END - USED WITH SIDWBAR WITH BLACK BACKGROUND */
 
-li.active a span.sidebar-mini {
-  color: #ffffff !important;
-}
+
 
 /* CUSTOM MARGIN BETWEEN THE MENU ITEM*/
 .nav li > a.customAncor {
@@ -140,9 +164,6 @@ button.close {
 
 /* MODAL END */
 
-.sidebar-icons {
-  font-size: 20px !important;
-}
 
 .avatar-container {
   text-align: center;
@@ -299,7 +320,7 @@ button.close {
   border-radius: 0 20px 20px 0;
   margin-right: 16px;
   /* background-color: #039be5 !important; */
-  background-color: $brand-primary;
+  background-color: $brand-sidebar-active-item-bckgrnd;
   color: #fff !important;
 }
 

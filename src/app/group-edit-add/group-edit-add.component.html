@@ -154,7 +154,7 @@
           <div class="col-md-12">
             <div class="create" style="text-align: left!important; padding-top:5px; padding-bottom:0px">
 
-              <button class="btn btn-info" style="padding-left:8px; padding-right: 16px;" (click)="open_users_list_modal()">
+              <button class="btn btn-primary" style="padding-left:8px; padding-right: 16px;" (click)="open_users_list_modal()">
                 <span class="icon" style="padding-right:0px">
                   <i class="material-icons">add_circle</i>
                 </span>
@@ -676,89 +676,3 @@
 </div>
 
 
-<!-- ============ OLD MODAL ADD MEMBER TO A GROUP ============ -->
-<!-- <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display_users_list_modal}" style="background-color: rgba(90,90,90,0.5);">
-    <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
-            <span aria-hidden="true">&times;</span>
-          </button>         
-          <h4 class="modal-title">
-            {{ "GroupsAddEditPage.AddMembersToTheGroup" | translate }}
-            <span style="color: #566787; font-weight: 500;"> {{ groupNameToUpdate }} </span> 
-          </h4>    
-        </div>
-        <div class="modal-body" style="padding-top: 10px; padding-bottom: 0px; padding-right: 15px;">
-          <loading-spinner *ngIf="showSpinnerInModal"></loading-spinner>
-          <table *ngIf="!showSpinnerInModal" class="table table-fixed table-responsive table-striped">
-            <thead style="color: #f9f9f9">
-              <tr class="tr_table-fixed">
-                <th class="th_table-fixed" style="text-align: center;">
-                  <span style="color: #566787">
-                    <strong>
-                      {{ "GroupsAddEditPage.Select" | translate }}
-                    </strong>
-                  </span>
-                </th>
-                
-                <th class="th_table-fixed">
-                  <span style="color: #566787">
-                    <strong>
-                      {{ "GroupsAddEditPage.User" | translate }}
-                    </strong>
-                  </span>
-                </th>
-  
-                <th class="th_table-fixed" style="max-width: 150px; padding-left: 3px;">
-                  <span style="color: #566787">
-                    <strong>
-                      {{ "GroupsAddEditPage.Role" | translate }}
-                    </strong>
-                  </span>
-                </th>
-  
-                <th class="th_table-fixed"> 
-                  <span class="text" style="color: #566787">
-                    <strong>
-                      Email
-                    </strong>
-                  </span>
-                </th>
-              </tr>
-            </thead>
-            <tbody class="tbody_table-fixed" [ngStyle]="{ 'height': users_list_modal_height }">
-              <tr class="tr_table-fixed" *ngFor="let project_user of projectUsersList">
-                <td class="td_table-fixed" style="text-align: center;">
-                  <div class="checkbox" *ngIf="!project_user?.is_group_member" style="margin: auto !important;">
-                    <label>
-                    <input type="checkbox" class="form-check-input" style="width: 16px;height: 16px;" value="{{project_user?.id_user?._id}}" 
-                    (click)="change(project_user?.id_user?._id)">
-                    </label>
-                  </div>
-                </td>
-                <td class="td_table-fixed" style="padding-left:10px;" rel="tooltip" title="{{ project_user?.id_user?._id }}" >
-                  {{ project_user?.id_user?.firstname }} <span style="text-transform: uppercase"> {{project_user?.id_user?.lastname}}</span>
-                </td>
-                <td class="td_table-fixed" style="padding-left:10px; max-width: 150px;">
-                  {{ project_user?.role | translate }} 
-                </td>
-                <td class="td_table-fixed" style="padding-left:10px;">
-                  {{project_user?.id_user?.email}}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="modal-footer" style="padding-right: 16px;">
-          <button type="button" class="btn btn-white" (click)="onCloseModal()" >
-            {{ "GroupsAddEditPage.Cancel" | translate }}
-          </button>
-          <button type="button" class="btn btn-info" (click)="addMembersToTheGroup()">
-            {{ "GroupsAddEditPage.Add" | translate }}
-          </button>
-        </div>
-      </div>
-    </div>
-  </div> -->
-  <!-- ============ END - OLD MODAL ADD MEMBER TO A GROUP ============ -->

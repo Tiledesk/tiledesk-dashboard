@@ -85,9 +85,7 @@ button.close {
   opacity: 0.5;
 }
 
-// .wizard-bckgrnd {
-//   background-image: url(assets/img/background-card-vertical_2.svg);
-// }
+
 
 @media (min-width: 992px) {
   .wizard-bckgrnd {
@@ -101,8 +99,7 @@ button.close {
     background-image: linear-gradient(to bottom, #1a73e8 0%, $color-pro-plan 100%),
       linear-gradient(to bottom, #ffffff 0%, #ffffff 50%, #eff2f6 50%, #eff2f6 100%);
   }
-  // url(assets/img/background-card-vertical_2.svg),
-  // .pro-plan-bckgrnd { }
+
 }
 
 .placeholder-custom-effect {

@@ -22,7 +22,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
   
   companyLogoBlack_Url = brand.company_logo_black__url;
   companyLogoBlack_width = brand.recent_project_page.company_logo_black__width;
-  pageBackgroundColor = brand.recent_project_page.background_color;
+  // pageBackgroundColor = brand.recent_project_page.background_color;
 
   projects: Project[];
 

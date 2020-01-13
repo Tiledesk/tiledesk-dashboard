@@ -218,7 +218,6 @@ input[type="text"] {
   // background-color: #ffffff;
   // margin-top: -102px;
   // margin-left: -15px;
-  // background-image: url(assets/img/frontiere21-hero.png);
   // background-position:center bottom;
   // background-repeat:no-repeat;
   // background-size:cover;
@@ -228,15 +227,23 @@ input[type="text"] {
   transform: skewY(-12deg);
   transform-origin: 0px center;
   // background: rgb(240, 128, 111);
+  background: $brand-recent-project-bckgrnd;
   height: 500px;
   left: 0;
+}
+
+.open-user-profile-person-icon {
+  font-size: 20px !important;
+  display: block !important;
+  float: right !important;
+  color: $brand-recent-project-text !important;
 }
 
 .head-title {
   font-family: "Google Sans", sans-serif !important;
   // margin-top: 95px;
   // color: #f0806f;
-  color: #ffffff;
+  color: $brand-recent-project-text; 
   margin-top: 25px;
   // font-weight: 600;
 }

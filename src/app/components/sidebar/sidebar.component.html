@@ -71,7 +71,7 @@
 
 
 <!-- background-color: #191919 -->
-<div class="sidebar-wrapper" style="background-color: #2d323e!important;" (scroll)="onScroll($event)">
+<div class="sidebar-wrapper" [ngStyle]="{'background-color':background_bottom_section}" (scroll)="onScroll($event)">
 
   <!-- // NK start NEW: AVATAR ON THE SIDEBAR  -->
   <div class="user tiledesk-nav-user" fxlayout="column"
@@ -167,7 +167,7 @@
     <li *ngIf="user" style="display: inline">
 
       <a style="margin-bottom:0px; text-align: center; color: #fff" routerLink="/user-profile">
-        <!-- <button class="btn btn-tdblu btn-sm" style="border-radius:20px; padding-top:12px; padding-bottom:12px"> -->
+        
         <!-- VEDI PROFILO  -->
         {{ "SideBar.UserProfile" | translate }}
         <!-- </button> -->
@@ -193,7 +193,7 @@
 
     <!-- <li *ngIf="user" style="display: inline">
       <a style="text-align: center; cursor: pointer" (click)="openLogoutModal()">
-          <button class="btn btn-tdblu btn-sm" style=" padding-top:12px; padding-bottom:12px">
+          <button class="btn btn-primary btn-sm" style=" padding-top:12px; padding-bottom:12px">
           <i class="material-icons" style=" color: #fff">
               exit_to_app
           </i>
@@ -205,7 +205,7 @@
 
     <li *ngIf="project">
       <a style="text-align: center; color: #fff" (click)="goToProjects()">
-        <!-- <button class="btn btn-tdblu btn-sm" style="border-radius:20px;  padding-top:12px; padding-bottom:12px" (click)="goToProjects()"> -->
+        
         {{ "SideBar.ViewAllProjects" | translate }}
         <!-- </button> -->
       </a>

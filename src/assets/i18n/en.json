@@ -1181,15 +1181,15 @@
             "Requests": "Requests",
             "Sentiment": "Sentiment",
             "ResponseTime": "Response time",
-            "ConversationLenght": "Conversation lenght"
+            "ConversationLenght": "Conversation Length"
         },
         "RealTimeComponentTitle": "Real Time",
         "AvgTimeTitle": "Average Time Monitoring",
         "MedianResTimeClock": "Median Response Time",
         "ResponseAVGtime": "Your team's overall Median Response Time is ",
-        "ConvDurationTitle": "Conversation Lenght Monitoring",
-        "MedianConvClock": "Median Conversation Lenght",
-        "ResponseDurationtime": "Your team's overall Median Conversation Lenght is ",
+        "ConvDurationTitle": "Conversation Length Monitoring",
+        "MedianConvClock": "Median Conversation Length",
+        "ResponseDurationtime": "Your team's overall Median Conversation Length is ",
         "RequestChartTitle": "Number of requests last ",
         "FilterReport": "Filter report",
         "FilterByAgent": "Agent",
@@ -1209,6 +1209,6 @@
         "SentimentMedianValueHEART": "Your team's overall Median Customer Satisfaction is :",
         "UpgradeYourAccounttoTrackTheChatsYouHaveWithCustomers": " Upgrade your account to track the chats you have with customers",
         "DailyMedianResponseTime": "Daily Median Response Time",
-        "DailyConvDurationTime": "Daily  Median Conversation Lenght"
+        "DailyConvDurationTime": "Daily Median Conversation Length"
     }
 }

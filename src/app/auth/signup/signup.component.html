@@ -98,8 +98,7 @@
 
             <!-- <div *ngIf="userForm.valid" class="notification is-success">Form is valid</div> -->
             <!-- SUBMIT -->
-            <button style="width: 100%; background-color: #f0806f; height: 56px; font-size: 16px; letter-spacing: 2px;" type="submit" class="btn" 
-              [disabled]="!userForm.valid">
+            <button type="submit" class="btn signup-button" [disabled]="!userForm.valid">
               <span *ngIf="!showSpinnerInLoginBtn"> 
                 <!-- SignUp  -->
                 {{ "SignUp" | translate }}

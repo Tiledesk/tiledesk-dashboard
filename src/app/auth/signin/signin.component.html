@@ -54,9 +54,7 @@
               {{ formErrors.password }}
             </div> -->
 
-            <button type="submit"
-              style="width: 100%; background-color: #f0806f; height: 56px; font-size: 16px; letter-spacing: 2px;"
-              class="btn btn-danger" [disabled]="!userForm.valid">
+            <button type="submit" class="btn signin-button" [disabled]="!userForm.valid">
               <span *ngIf="!showSpinnerInLoginBtn">
                 <!-- Login  -->
                 {{ 'Login' | translate}}

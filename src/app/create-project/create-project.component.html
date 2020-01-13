@@ -76,7 +76,7 @@
 
     <div class="row">
       <div class="col-sm-12">
-          <button [disabled]="project_name?.length < 4" class="btn btn-tdblu" style="padding:16px 40px" (click)="createNewProject()">
+          <button [disabled]="project_name?.length < 4" class="btn btn-primary" style="padding:16px 40px" (click)="createNewProject()">
               {{ 'ProjectsPage.ModalCreateProjectBtn' | translate }} 
           </button>
       </div>
@@ -146,7 +146,7 @@
       <span class="wizard-span-success-msg">{{ "ProjectsPage.YourNewProjectIsReady" | translate }}</span>
     </div>
 
-    <button class="btn btn-tdblu" (click)="continueToInstallScript()">
+    <button class="btn btn-primary" (click)="continueToInstallScript()">
      
         {{ "ProjectsPage.Continue" | translate }}
     </button>

@@ -30,19 +30,79 @@ $gray-color:  #999999 !default;
 // --------------------------------------------------------
 // BRAND TILEDESK
 // --------------------------------------------------------
+/* Buttons */
 $brand-primary: #3ea9f5 !default;
-$brand-secodary: #f0806f !default;
+
+/* text color used in the home page and for the card "add project" (in recent projects page) */
+$brand-secodary:#f0806f !default;
+
+/* Buttons in pages Signin, Signup and Forgot password */
+$brand-auth-pages-buttons-color: #f0806f; 
+
+/* Recent projects page background */
+$brand-recent-project-bckgrnd: #f0806f;
+$brand-recent-project-text: #ffffff;
+
+/* Sidebar section under the user avatar */
+$brand-sidebar-bckgrnd-bottom-section: #2d323e !default;
+$brand-sidebar-active-item-bckgrnd: #3ea9f5;
+$brand-sidebar-active-item-icon-color: #fff !default;
+$brand-sidebar-active-item-text-color: #fff !default;
+$brand-sidebar-inactive-item-icon-color: #a9afbb !default;
+$brand-sidebar-inactive-item-text-color: #a9afbb !default;
+
 
 // --------------------------------------------------------
 // BRAND PYPESTREAM
 // --------------------------------------------------------
+// /* Buttons */
 // $brand-primary: $blue-PYPESTREAM !default;
+
+// /* text color used in the home page and for the card "add project" (in recent projects page) */
 // $brand-secodary: #000000 !default;
+
+// /* Buttons in pages Signin, Signup and Forgot password */
+// $brand-auth-pages-buttons-color: $blue-PYPESTREAM !default;
+
+// /* Recent projects page background */
+// $brand-recent-project-bckgrnd: #000;
+// $brand-recent-project-text: #ffffff;
+
+// /* Sidebar section under the user avatar */
+// $brand-sidebar-bckgrnd-bottom-section: #ffffff !default;
+// $brand-sidebar-active-item-bckgrnd: #000000; // $blue-PYPESTREAM !default;
+// $brand-sidebar-active-item-icon-color: #ffffff !default;
+// $brand-sidebar-active-item-text-color: #ffffff !default;
+// $brand-sidebar-inactive-item-icon-color: #000 !default;
+// $brand-sidebar-inactive-item-text-color: #000 !default;
+
 
 // --------------------------------------------------------
 // BRAND CEQUENS
 // --------------------------------------------------------
+
+// /* Buttons */
 // $brand-primary: $red-CEQUENS !default;
+
+// /* text color used in the home page and for the card "add project" (in recent projects page) */
+// $brand-secodary: #000000 !default;
+
+// /* Buttons in pages Signin, Signup and Forgot password */
+// $brand-auth-pages-buttons-color: $red-CEQUENS !default;
+
+// /* Recent projects page background */
+// $brand-recent-project-bckgrnd: #000;
+// $brand-recent-project-text: #ffffff;
+
+// /* Sidebar section under the user avatar */
+// $brand-sidebar-bckgrnd-bottom-section: #ffffff !default;
+// $brand-sidebar-active-item-bckgrnd: #000000; // $blue-PYPESTREAM !default;
+// $brand-sidebar-active-item-icon-color: #ffffff !default;
+// $brand-sidebar-active-item-text-color: #ffffff !default;
+// $brand-sidebar-inactive-item-icon-color: #000 !default;
+// $brand-sidebar-inactive-item-text-color: #000 !default;
+
+
 
 $brand-success: $green !default;
 $brand-danger: $red !default;

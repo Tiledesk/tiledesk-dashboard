@@ -760,7 +760,8 @@ export class UsersService {
   // ================== UPDATE CURRENT USER LASTNAME / FIRSTNAME ==================
   public updateCurrentUserLastnameFirstname(user_firstname: string, user_lastname: string, callback) {
 
-    const url = this.UPDATE_USER_URL + this.currentUserId;
+    // const url = this.UPDATE_USER_URL + this.currentUserId; // old
+    const url = this.UPDATE_USER_URL;
 
     // ERROR TEST WITH A currentUserId that does not exist
     // const url = this.UPDATE_USER_URL + '5ad08846ea181e2e9cc2d20g';
