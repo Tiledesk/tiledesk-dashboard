@@ -769,6 +769,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         if (this.elSidebarWrapper) {
             this.elSidebarWrapper.scrollTop = this.scrollpos;
         }
+      
     }
 
     goToHome() {

@@ -30,7 +30,7 @@ $gray-color:  #999999 !default;
 // --------------------------------------------------------
 // BRAND TILEDESK
 // --------------------------------------------------------
-/* Buttons */
+/* Buttons & Tabs color */
 $brand-primary: #3ea9f5 !default;
 
 /* text color used in the home page and for the card "add project" (in recent projects page) */
@@ -53,16 +53,16 @@ $brand-sidebar-inactive-item-text-color: #a9afbb !default;
 
 
 // --------------------------------------------------------
-// BRAND PYPESTREAM
+// BRAND DEMO 1 - SIDEBAR BLACK & WHITE + DEEP BLUE BUTTONS
 // --------------------------------------------------------
-// /* Buttons */
-// $brand-primary: $blue-PYPESTREAM !default;
+// /* Buttons & Tabs color */
+// $brand-primary: $blue-DEEP-BLUE !default;
 
 // /* text color used in the home page and for the card "add project" (in recent projects page) */
 // $brand-secodary: #000000 !default;
 
 // /* Buttons in pages Signin, Signup and Forgot password */
-// $brand-auth-pages-buttons-color: $blue-PYPESTREAM !default;
+// $brand-auth-pages-buttons-color: $blue-DEEP-BLUE !default;
 
 // /* Recent projects page background */
 // $brand-recent-project-bckgrnd: #000;
@@ -70,7 +70,7 @@ $brand-sidebar-inactive-item-text-color: #a9afbb !default;
 
 // /* Sidebar section under the user avatar */
 // $brand-sidebar-bckgrnd-bottom-section: #ffffff !default;
-// $brand-sidebar-active-item-bckgrnd: #000000; // $blue-PYPESTREAM !default;
+// $brand-sidebar-active-item-bckgrnd: #000000; 
 // $brand-sidebar-active-item-icon-color: #ffffff !default;
 // $brand-sidebar-active-item-text-color: #ffffff !default;
 // $brand-sidebar-inactive-item-icon-color: #000 !default;
@@ -78,29 +78,29 @@ $brand-sidebar-inactive-item-text-color: #a9afbb !default;
 
 
 // --------------------------------------------------------
-// BRAND CEQUENS
+// BRAND DEMO 2 - RED & WHITE
 // --------------------------------------------------------
 
-// /* Buttons */
-// $brand-primary: $red-CEQUENS !default;
+// /* Buttons & Tabs color */
+// $brand-primary: $red-D72135 !default;
 
 // /* text color used in the home page and for the card "add project" (in recent projects page) */
-// $brand-secodary: #000000 !default;
+// $brand-secodary: $red-D72135 !default;
 
 // /* Buttons in pages Signin, Signup and Forgot password */
-// $brand-auth-pages-buttons-color: $red-CEQUENS !default;
+// $brand-auth-pages-buttons-color: $red-D72135 !default;
 
 // /* Recent projects page background */
-// $brand-recent-project-bckgrnd: #000;
+// $brand-recent-project-bckgrnd: $red-D72135;
 // $brand-recent-project-text: #ffffff;
 
 // /* Sidebar section under the user avatar */
 // $brand-sidebar-bckgrnd-bottom-section: #ffffff !default;
-// $brand-sidebar-active-item-bckgrnd: #000000; // $blue-PYPESTREAM !default;
+// $brand-sidebar-active-item-bckgrnd: $red-D72135 !default; 
 // $brand-sidebar-active-item-icon-color: #ffffff !default;
 // $brand-sidebar-active-item-text-color: #ffffff !default;
-// $brand-sidebar-inactive-item-icon-color: #000 !default;
-// $brand-sidebar-inactive-item-text-color: #000 !default;
+// $brand-sidebar-inactive-item-icon-color: $red-D72135 !default;
+// $brand-sidebar-inactive-item-text-color: $red-D72135 !default;
 
 
 
