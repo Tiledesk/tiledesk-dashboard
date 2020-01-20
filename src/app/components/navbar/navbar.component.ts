@@ -657,7 +657,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                     }
                 });
                 this.currentUserRequestCount = count;
-                console.log('»» NAVBAR notifyLastUnservedRequest REQUEST currentUserRequestCount ', this.currentUserRequestCount);
+                // console.log('»» NAVBAR notifyLastUnservedRequest REQUEST currentUserRequestCount ', this.currentUserRequestCount);
             }
         });
 
@@ -675,7 +675,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 requests.forEach(r => {
                     // if (r.support_status !== 100) {
                     if (r.status !== 100) {
-                        console.log('REQUEST WITH STATUS != 100 ', r.status)
+                        // console.log('REQUEST WITH STATUS != 100 ', r.status)
                         this.shown_requests[r.id] = false;
                         // this.shown_requests[r.request_id] = false;
                     }
