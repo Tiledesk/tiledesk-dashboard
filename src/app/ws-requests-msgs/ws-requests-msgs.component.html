@@ -302,7 +302,10 @@
           </div> <!-- ./ card   -->
         </div> <!-- ./ col-md-7 -->
 
-        <!-- // RIGHT SIDEBAR // -->
+        <!-- 
+        // -----------------------------------------------------------------------------
+        // @ RIGHT SIDEBAR
+        // ----------------------------------------------------------------------------- -->
         <div class="col-sm-5 right-col">
           <div class="card right-card" style="padding-top:5px; padding-bottom:5px;">
 
@@ -310,25 +313,16 @@
 
               <h4 class="card-title requestattibutestitle" style="text-transform: none; color: #566787; 
                   font-weight:400; margin-bottom: 8px; border-bottom: 1px solid #eeeeee; padding-bottom: 12px;">
-                <!-- Request  -->
-                <span class="requestattibutes">{{ "RequestMsgsPage.RequestAttributes" | translate }}</span>
 
-                <!-- {{ request?.createdAt | amTimeAgo }} -->
-                <!-- <span class="requestattibutestime" style="font-size: 14px; color:#999999; float: right;">
-                      <i class="material-icons" style="vertical-align: middle">access_time</i>
-                      <span style="vertical-align: middle; font-weight: 500">
-                        {{ "RequestMsgsPage.Published" | translate }}: {{ request?.created_on | amTimeAgo }}
-                      </span>
-                  </span> -->
+                <span class="requestattibutes">{{ "RequestMsgsPage.RequestAttributes" | translate }}</span>
 
               </h4>
 
-              <p style="margin-bottom: 0px">
+              <div style="margin-bottom: 0px">
 
                 <!-- IF IS AN CLOSED REQUEST -->
                 <span *ngIf="request?.status == 1000">
-                  <!-- <i style="font-size: 24px !important; vertical-align: middle; color: #999999" class="material-icons">visibility</i> -->
-                  <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
+                  <svg viewBox="0 0 58.1 53.9" style="width: 40px" xml:space="preserve">
                     <style type="text/css">
                       .st0-chat-closed {
                         fill: none;
@@ -348,19 +342,14 @@
                         l5.4,3.2l0.9-1.5L31,25.3V20H29.1z" />
                   </svg>
 
-                  <span class="request-category" style="position:relative;top:-10px; color: #999999">
-                    <!-- <strong> -->
-                    <!-- Request closed  -->
-                    <!-- - {{ "RequestMsgsPage.WasServedBy" | translate }} -->
+                  <span class="request-category" style="position:relative;top: -20px; color: #999999">
                     {{ "RequestMsgsPage.RequestClosed" | translate }}
-                    <!-- </strong> -->
                   </span>
                 </span>
 
                 <!-- IF IS AN UNSERVED REQUEST -->
                 <span *ngIf="request?.status == 100">
-                  <!-- <i style="font-size: 24px !important; vertical-align: middle; color: #f44336" class="material-icons">visibility</i> -->
-                  <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
+                  <svg viewBox="0 0 58.1 53.9" style="width: 40px" xml:space="preserve">
                     <style type="text/css">
                       .st0-unserved {
                         fill: none;
@@ -382,18 +371,15 @@
                             c2.4-0.4,4.6,1.2,5,3.5C34.9,17.1,34.9,17.6,34.8,18z" />
                     </g>
                   </svg>
-                  <span class="request-category" style="position: relative;top:-10px; color: #f44336">
-                    <!-- <strong> -->
-                    <!-- Request unserved  -->
+                  <span class="request-category" style="position: relative;top:-20px; color: #f44336">
                     {{ "RequestMsgsPage.RequestUnserved" | translate }}
-                    <!-- </strong> -->
                   </span>
                 </span>
 
                 <!-- IF IS A SERVED REQUEST AND BETWEEN THE MEMBERS THERE IS THE CURRENT USER -->
-                <span *ngIf="request?.status == 200 && request?.currentUserIsJoined === true">
-                  <!-- <i style="font-size: 24px !important; vertical-align: middle; color: #4CAF50" class="material-icons">visibility</i> -->
-                  <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
+                <!-- <span *ngIf="request?.status == 200 && request?.currentUserIsJoined === true"> -->
+                <span *ngIf="request?.status == 200 && IS_CURRENT_USER_JOINED === true">
+                  <svg viewBox="0 0 58.1 53.9" style="width: 40px" xml:space="preserve">
                     <style type="text/css">
                       .st0-served-by-cu {
                         fill: none;
@@ -414,18 +400,16 @@
                     </g>
                   </svg>
 
-                  <span class="request-category" style="position:relative;top:-10px; color: #4CAF50">
-                    <!-- <strong> -->
-                    <!-- Request served by:  -->
+                  <span class="request-category" style="position:relative;top:-20px; color: #4CAF50">
                     {{ "RequestMsgsPage.RequestServedBy" | translate }}
-                    <!-- </strong> -->
                   </span>
-
                 </span>
 
-                <span *ngIf="request?.status == 200 && !request?.currentUserIsJoined">
-                  <!-- <i style="font-size: 24px !important; vertical-align: middle; color: #00bcd4" class="material-icons">visibility</i> -->
-                  <svg viewBox="0 0 58.1 53.9" style="width: 32px" xml:space="preserve">
+                <!-- IF IS A SERVED REQUEST AND BETWEEN THE MEMBERS THERE ISN'T THE CURRENT USER -->
+                <!-- <span *ngIf="request?.status == 200 && !request?.currentUserIsJoined"> -->
+                <span *ngIf="request?.status == 200 && !IS_CURRENT_USER_JOINED">
+                 
+                  <svg viewBox="0 0 58.1 53.9" style="width: 40px" xml:space="preserve">
                     <style type="text/css">
                       .st0-served {
                         fill: none;
@@ -449,59 +433,46 @@
                     </g>
                   </svg>
 
-                  <span class="request-category" style="position:relative;top: -10px; color: #00bcd4;">
-                    <!-- <strong> -->
-                    <!-- Request served by:  -->
+                  <span class="request-category" style="position:relative;top: -20px; color: #00bcd4;">
+
                     {{ "RequestMsgsPage.RequestServedBy" | translate }}
-                    <!-- </strong> -->
+
                   </span>
                 </span>
 
-                <!-- <span *ngFor="let m of members_array"  style="">
-                    <span *ngIf="m !== request?.requester_id && m !== 'system' && m !== currentUserID"> 
-                      <div class="tag_member" (click)="goToMemberProfile( m )" [innerHTML]="members_replace( m )" style="cursor: pointer;">  </div>
-                    </span> 
-                    <span *ngIf="m === currentUserID" style=""> 
-                        <span class="tag_member_me"> ME </span>
-                    </span>
-                  </span>    -->
-              </p>
 
-              <span class="row-body">
+                <div class="id__request" style="color: #7695a5 !important;
+                  font-size: 10px;
+                  display: block;
+                  margin-left: 43px;
+                  margin-top: -26px;
+                  font-weight: 400;"> <span style="color:#394f5a;"> id: </span> {{ id_request }} </div>
+              </div>
+
+              <!-- <span class="row-body">
                 <span style="color:#394f5a;"> id: </span> {{ id_request }}
-              </span>
+              </span> -->
 
               <div class="row" style="margin-top:5px">
-                <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4; border-top: 1px solid #e1eef4;">
-                  <p class="row-header" style="">
-                    <!-- <i class="material-icons" style="vertical-align: middle">access_time</i>  -->
-                    {{ "RequestMsgsPage.Created" | translate }}
+                <!-- border-top: 1px solid #e1eef4;" -->
+                <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4;">
+                  <p class="" style="">
+                    <i class="material-icons"
+                      style="vertical-align: middle; color: #394f5a;font-size:16px">calendar_today</i>
+                    <span style="position: relative;top: 1px;">
+                      <span
+                        style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                        {{ "RequestMsgsPage.Created" | translate }}</span>
+
+                      <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                        {{ request?.createdAt | amTimeAgo }} ({{ request?.createdAt | date: 'd/M/y HH:mm:ss' }})
+                      </span>
+                    </span>
                   </p>
 
-
-                  <!-- PUBLISHED (from now format) -->
-                  <!-- <p style="margin-bottom: 3px; color:#566787; padding-top: 10px;"> 
-                  <strong>
-                    {{ "RequestMsgsPage.Published" | translate }}
-                  </strong>
-                </p>
-                <p style="color:#999999; font-weight: 500">  
-                  {{ request?.timestamp | amTimeAgo }}
-                </p> -->
-
-                  <!-- ============ PUBLICATION DATE ============ -->
-                  <!-- <p style="margin-bottom: 3px; color:#566787; padding-top: 10px;"> 
-                  <strong>
-                    {{ "RequestMsgsPage.Date" | translate }} 
-                  </strong>
-                </p> -->
-
-                  <!-- color:#394f5a; font-weight: 400; font-size: 12px -->
-                  <span class="row-body">
-
-                    <!-- {{ request?.created_on | amTimeAgo }} ({{ request?.created_on | date: 'd/M/y HH:mm:ss' }}) -->
+                  <!-- <span class="row-body">
                     {{ request?.createdAt | amTimeAgo }} ({{ request?.createdAt | date: 'd/M/y HH:mm:ss' }})
-                  </span>
+                  </span> -->
 
                 </div>
               </div>
@@ -520,11 +491,12 @@
 
                     <span *ngIf="agents_array?.length === 0" class="row-body">
 
-                      <div style="vertical-align: middle;width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee;background-color:#eee; float: left;margin-right: 8px;margin-bottom: 5px;">
-                          
+                      <div
+                        style="vertical-align: middle;width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee;background-color:#eee; float: left;margin-right: 8px;margin-bottom: 5px;">
+
                       </div>
-                     <span style=""> {{ "RequestMsgsPage.NoAgent" | translate }} </span> 
-                     
+                      <span style=""> {{ "RequestMsgsPage.NoAgent" | translate }} </span>
+
                     </span>
                     <div *ngFor="let agent of agents_array" class="row-body">
 
@@ -594,9 +566,11 @@
                             .st0 {
                               fill: none;
                             }
+
                             .st1 {
                               fill: #FFFFFF;
                             }
+
                             .st2 {
                               fill: #18BDF7;
                             }
@@ -642,27 +616,35 @@
                     {{ user_name }}
                   </p> -->
 
-                  <p class="row-body" style="margin-bottom:0px;padding-bottom:0px">
-                    <span style="color:#394f5a;"> {{ "RequestMsgsPage.ChatFormUserEmail" | translate }}: </span>
-                    
+                  <p class="row-body" style="margin-bottom:6px;padding-bottom:0px; margin-top:6px;">
+
                     <!-- 
                     // ------------------------------------------------------
                     // no more get from request attributes but from lead 
                     // ------------------------------------------------------ -->
 
-                     <!-- <a *ngIf="user_email !== 'n.a.'" href="mailto:{{user_email}}">{{ user_email }}</a>
+                    <!-- <a *ngIf="user_email !== 'n.a.'" href="mailto:{{user_email}}">{{ user_email }}</a>
                      <a *ngIf="user_email === 'n.a.'" style="color:#7695a5;">{{ user_email }}</a> -->
 
-                     <a *ngIf="request?.lead?.email" href="mailto:{{request?.lead?.email}}">{{request?.lead?.email}}</a>
-                     <a *ngIf="!request?.lead?.email" style="color:#7695a5;">n.a.</a>
+                    <i class="material-icons" style="vertical-align: middle; color: #394f5a;font-size:16px"> email
+                    </i>
+                    <span style="position: relative;top: 1px;">
+                      <span
+                        style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                        {{ "RequestMsgsPage.ChatFormUserEmail" | translate }}
+                      </span>
+                      <a target="_blank" *ngIf="request?.lead?.email" href="mailto:{{request?.lead?.email}}">
+                        {{request?.lead?.email}}
+                      </a>
+                      <a *ngIf="!request?.lead?.email" style="color:#7695a5;">n.a.</a>
+                    </span>
 
                   </p>
 
-                  <p class="row-body" style="margin-bottom:0px; padding-bottom:0px">
-                    <!-- {{ "RequestMsgsPage.RequesterId" | translate }}: -->
+                  <!-- <p class="row-body" style="margin-bottom:0px; padding-bottom:0px">
                     <span style="color:#394f5a;"> id: </span>
-                    {{ requester_id }}
-                  </p>
+                      {{ requester_id }}
+                  </p> -->
 
                 </div>
               </div>
@@ -670,24 +652,36 @@
               <div class="row" style="margin-top:15px">
                 <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4; border-top: 1px solid #e1eef4;">
                   <p class="row-header" style="">
-                    <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
-                    <span style="vertical-align: middle">
-                      {{ "RequestMsgsPage.DepartmentName" | translate }}
-                      
-                      <!-- <span style="color: #7695a5;">  </span> -->
-                    </span>
-                  </p>
-
-                  <span class="row-body">
-                        <!-- 
+                    <!-- 
                         // ------------------------------------------------------
                         // no more get from request attributes but from DEPARTMENT 
                         // ------------------------------------------------------ -->
-                        <!-- {{ department_name }} -->
-                   
-                        <span style="color:#394f5a;"> {{ "DeptsAddEditPage.DeptName" | translate }}: </span> {{request?.department?.name}}
+                    <!-- {{ department_name }} -->
+
+
+                    <span style="vertical-align: middle">
+                      {{ "RequestMsgsPage.DepartmentName" | translate }}
+                    </span>
+                  </p>
+
+                  <span class="row-body" style="display: block;">
+                    <i class="material-icons" style="vertical-align: middle; color: #394f5a;font-size:16px">
+                      account_balance </i>
+                    <!-- <span style="color:#394f5a;"> {{ "DeptsAddEditPage.DeptName" | translate }}: </span> -->
+
+                    <span style="position:relative; top:1px">
+                      <span
+                        style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                        {{ "Department" | translate }}
+                      </span>
+
+                      <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                        {{request?.department?.name}}
+                      </span>
+                    </span>
+
                   </span>
-               
+
                 </div>
               </div>
 
@@ -697,8 +691,8 @@
                     <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
                     <span style="vertical-align: middle">
                       {{ "RequestMsgsPage.Rating" | translate }}
-                      
-                     
+
+
                     </span>
 
                     <!-- <span class="fa fa-star checked"></span>
@@ -717,7 +711,7 @@
                     <span style="color: #7695a5;display: block"> {{ rating }}</span>
 
                     <span style="color:#394f5a;"> {{ "RequestMsgsPage.RatingMessage" | translate }}: </span>
-    
+
                     {{ rating_message }}
                   </p>
                 </div>
@@ -1016,45 +1010,49 @@
 </div>
 
 <!-- ------------============= USERS LIST MODAL - FULL WIDTH MODAL =============------------ -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayUsersListModal , 'height': users_list_modal_height}" 
+<div class="modal" tabindex="-1" role="dialog"
+  [ngStyle]="{'display': displayUsersListModal , 'height': users_list_modal_height}"
   style="background-color: rgba(90,90,90,0.5);">
-  <div class="modal-dialog modal-lg users-list-modal" role="document" style="width: 100%; height: 100%; margin:0; padding: 0;">
+  <div class="modal-dialog modal-lg users-list-modal" role="document"
+    style="width: 100%; height: 100%; margin:0; padding: 0;">
     <div class="modal-content" style="height: auto; min-height: 100%; border-radius: 0; border:none;">
-      
+
       <div class="modal-header">
-          <!-- class="close" -->
-        <button type="button" style="border: none !important; float: right" aria-label="Close" (click)="closeSelectUsersModal()">
+        <!-- class="close" -->
+        <button type="button" style="border: none !important; float: right" aria-label="Close"
+          (click)="closeSelectUsersModal()">
           <span aria-hidden="true" style="font-size:31px; color: rgb(60, 72, 88) !important;">&times;</span>
         </button>
 
         <h4 class="modal-title">
           <div class="title-wrapper" style="max-width: 936px; margin:auto">
-            <span *ngIf="actionInModal === 'reassign'"> {{ "VisitorsPage.ReassignRequest" | translate }} </span> 
-            <span *ngIf="actionInModal === 'invite'"> {{ "VisitorsPage.AddAgent" | translate }}  </span> 
+            <span *ngIf="actionInModal === 'reassign'"> {{ "VisitorsPage.ReassignRequest" | translate }} </span>
+            <span *ngIf="actionInModal === 'invite'"> {{ "VisitorsPage.AddAgent" | translate }} </span>
           </div>
         </h4>
       </div>
 
-      <div class="modal-body" style="padding-right: 15px; padding-top:15px; padding-bottom:15px; max-width: 936px; margin:auto ">
-        
+      <div class="modal-body"
+        style="padding-right: 15px; padding-top:15px; padding-bottom:15px; max-width: 936px; margin:auto ">
+
         <div class="row">
           <div class="col-md-12">
-            <span *ngIf="actionInModal === 'reassign'">  
-              <h4 style="font-weight:400"> 
-                {{ "VisitorsPage.SelectTheUserToWhom" | translate }} 
+            <span *ngIf="actionInModal === 'reassign'">
+              <h4 style="font-weight:400">
+                {{ "VisitorsPage.SelectTheUserToWhom" | translate }}
               </h4>
             </span>
 
-            <span *ngIf="actionInModal === 'invite'">  
-              <h4 style="font-weight:400"> 
-                {{ "VisitorsPage.InviteAnotherUserToServe" | translate }} 
+            <span *ngIf="actionInModal === 'invite'">
+              <h4 style="font-weight:400">
+                {{ "VisitorsPage.InviteAnotherUserToServe" | translate }}
               </h4>
             </span>
 
 
           </div>
           <div class="col-md-12">
-            
+
             <div class="card" style="margin-top:5px; margin-bottom:5px">
 
               <loading-spinner *ngIf="showSpinner_inModalUserList"></loading-spinner>
@@ -1103,13 +1101,13 @@
                   </thead>
                   <tbody>
 
-                      <!-- <tr *ngIf="requestListServed.length === 0 && requestListUnserved.length === 0"> 
+                    <!-- <tr *ngIf="requestListServed.length === 0 && requestListUnserved.length === 0"> 
                           <td colspan="3" style="text-align: center; padding-top: 16px; cursor: pointer">
                           
                           </td>
                         </tr> -->
-                      <!--  -->
-                      <!-- let isFirstRow=first" [ngClass]="{'RowHeaderCSS' : isFirstRow}" (mouseover)="mouseOvered($event) -->
+                    <!--  -->
+                    <!-- let isFirstRow=first" [ngClass]="{'RowHeaderCSS' : isFirstRow}" (mouseover)="mouseOvered($event) -->
                     <tr *ngFor="let projectUser of projectUsersList;" class="table-row">
                       <!-- FOR DEBUG: ID OF THE PROJECT-USER  -->
                       <!-- <td>
@@ -1117,15 +1115,19 @@
                       </td> -->
                       <!-- (mouseover)="mouseOvered=true" [class.btn-success]="mouseOvered" -->
 
-                      
+
 
                       <!-- *ngIf="projectUser?.id_user._id !== currentUserID"  -->
-                      <td style="width: 25px; cursor:pointer" (click)= "selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
-                        <img style="vertical-align: middle; width: 42px; height: 42px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
-                        class="user-img" src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media" 
-                        onerror="this.src='assets/img/no_image_user.png'"/>
-                        <div class="status-icon" [ngClass]="{'is-user-online' : projectUser?.user_available === true, 'is-user-offline' : projectUser?.user_available === false  }"
-                        style="
+                      <td style="width: 25px; cursor:pointer"
+                        (click)="selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
+                        <img
+                          style="vertical-align: middle; width: 42px; height: 42px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
+                          class="user-img"
+                          src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
+                          onerror="this.src='assets/img/no_image_user.png'" />
+                        <div class="status-icon"
+                          [ngClass]="{'is-user-online' : projectUser?.user_available === true, 'is-user-offline' : projectUser?.user_available === false  }"
+                          style="
                         position: relative;
                         width: 12px;
                         height: 12px;
@@ -1134,28 +1136,31 @@
                         border: 2px solid #ffffff;
                         border-radius: 50%;"></div>
                       </td>
-                    
+
 
                       <!-- *ngIf="projectUser?.id_user._id !== currentUserID" -->
-                      <td style="cursor:pointer" (click)= "selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
-                        <p style="font-size:14px; line-height:21px; font-weight: 500; margin-bottom: 0px;"> 
+                      <td style="cursor:pointer"
+                        (click)="selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
+                        <p style="font-size:14px; line-height:21px; font-weight: 500; margin-bottom: 0px;">
                           {{ projectUser?.id_user?.firstname }}
-                          <span style="text-transform: uppercase"> 
-                            {{ projectUser?.id_user?.lastname }} 
+                          <span style="text-transform: uppercase">
+                            {{ projectUser?.id_user?.lastname }}
                           </span>
                         </p>
                         <span style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px">
-                            {{ projectUser?.id_user?.email }}
+                          {{ projectUser?.id_user?.email }}
                         </span>
                       </td>
 
-                      <td style="cursor:pointer" (click)= "selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
+                      <td style="cursor:pointer"
+                        (click)="selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
 
-                        
-                          <div class="checkbox checkbox-no-notallowedcursor" style="" >
+
+                        <div class="checkbox checkbox-no-notallowedcursor" style="">
                           <label>
-                  
-                            <input [checked]="projectUser?.is_joined_to_request === true" type="checkbox" class="form-check-input" style="width: 16px;height: 16px;" disabled>
+
+                            <input [checked]="projectUser?.is_joined_to_request === true" type="checkbox"
+                              class="form-check-input" style="width: 16px;height: 16px;" disabled>
                           </label>
                         </div>
 
@@ -1168,7 +1173,8 @@
                       </td>
 
                       <!-- *ngIf="projectUser?.id_user._id !== currentUserID" -->
-                      <td style="cursor:pointer" (click)= "selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)" >
+                      <td style="cursor:pointer"
+                        (click)="selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
                         {{ projectUser?.role | translate}}
                       </td>
 
@@ -1177,32 +1183,33 @@
                       </td> -->
 
                       <!-- projectUser?.id_user._id !== currentUserID && -->
-                      <td *ngIf="!isMobile" style="cursor:pointer" (click)= "selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
+                      <td *ngIf="!isMobile" style="cursor:pointer"
+                        (click)="selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
                         <!-- <span class="tooltipx"> -->
                         <div class="assign-request">
                           <!-- <i class="material-icons" style="cursor: pointer">
                             swap_horiz
                           </i> -->
                           <p style="color: #00bcd4 ;margin-bottom:0px; font-size:12px; font-weight: 500;">
-                            <span *ngIf="actionInModal === 'reassign'"> 
-                              {{ 'VisitorsPage.ReassignTo' | translate}} 
+                            <span *ngIf="actionInModal === 'reassign'">
+                              {{ 'VisitorsPage.ReassignTo' | translate}}
                             </span>
-                            <span *ngIf="actionInModal === 'invite'"> 
-                              {{ 'VisitorsPage.AssignTo' | translate}} 
+                            <span *ngIf="actionInModal === 'invite'">
+                              {{ 'VisitorsPage.AssignTo' | translate}}
                             </span>
                           </p>
                           <span style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px">
-                            {{ projectUser?.id_user?.email }} 
-                          </span> 
+                            {{ projectUser?.id_user?.email }}
+                          </span>
                         </div>
-                       
-                          <!-- <span class="tooltiptext">
+
+                        <!-- <span class="tooltiptext">
                             {{ "VisitorsPage.ReassignRequestTo" | translate }} {{ projectUser?.id_user?.email }}
                           </span>
                         </span> -->
-                     
+
                       </td>
-  
+
                     </tr>
                   </tbody>
                 </table>
@@ -1211,7 +1218,7 @@
           </div>
         </div>
 
-      </div >  <!-- /. modal-body -->
+      </div> <!-- /. modal-body -->
 
       <!-- <div class="modal-footer" style="text-align: center;">
         <button class="btn btn-info" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseUsersListModalHandler()" style="padding:12px 16px;">
@@ -1223,7 +1230,8 @@
 </div>
 
 <!-- ============= CONFIRM REQUEST REASSIGNMENT MODAL ============= -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayConfirmReassignmentModal}" style="background-color: rgba(90,90,90,0.5);">
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayConfirmReassignmentModal}"
+  style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header" style="padding-bottom:15px">
@@ -1233,40 +1241,42 @@
         <!-- style="color: #00bcd4" -->
         <h4 class="modal-title" style="color: #00bcd4">
           <i class="material-icons" style="vertical-align: middle">info</i>
-            <span style="vertical-align: middle; padding-left:8px">
-              <span *ngIf="actionInModal === 'reassign'"> 
-                {{ "VisitorsPage.ReassignRequest" | translate }}
-              </span>
-              <span *ngIf="actionInModal === 'invite'"> 
-                {{ "VisitorsPage.AddAgent" | translate }}
-              </span>
+          <span style="vertical-align: middle; padding-left:8px">
+            <span *ngIf="actionInModal === 'reassign'">
+              {{ "VisitorsPage.ReassignRequest" | translate }}
             </span>
+            <span *ngIf="actionInModal === 'invite'">
+              {{ "VisitorsPage.AddAgent" | translate }}
+            </span>
+          </span>
         </h4>
       </div>
       <div class="modal-body">
         <div class="row">
           <div class="col-sm-10">
-            <h4 style="color: #566787;padding-top: 0px;font-size: 1.1em;font-weight: 500;margin-top: 0px;margin-bottom: 0px;">
-              <span *ngIf="actionInModal === 'reassign'"> 
-                {{ "VisitorsPage.TheRequestWillBeReassignedTo" | translate }} 
+            <h4
+              style="color: #566787;padding-top: 0px;font-size: 1.1em;font-weight: 500;margin-top: 0px;margin-bottom: 0px;">
+              <span *ngIf="actionInModal === 'reassign'">
+                {{ "VisitorsPage.TheRequestWillBeReassignedTo" | translate }}
               </span>
-              <span *ngIf="actionInModal === 'invite'"> 
-                {{ "VisitorsPage.TheRequestWillBeAssignedTo" | translate }} 
+              <span *ngIf="actionInModal === 'invite'">
+                {{ "VisitorsPage.TheRequestWillBeAssignedTo" | translate }}
               </span>
-              
+
             </h4>
 
             <table class="table" style="margin-bottom: 0px;">
               <tbody>
                 <tr>
                   <td style=" border-top-width: 0px; width: 25px;">
-                    <img *ngIf="userid_selected" src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{userid_selected}}%2Fphoto.jpg?alt=media" 
-                      width=35 onerror="this.src='assets/img/no_image_user.png'"/>
+                    <img *ngIf="userid_selected"
+                      src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{userid_selected}}%2Fphoto.jpg?alt=media"
+                      width=35 onerror="this.src='assets/img/no_image_user.png'" />
                   </td>
-                  <td  style=" border-top-width: 0px;">
-                    <p style="font-size:14px; line-height:21px; font-weight: 500; margin-bottom: 0px;"> 
-                      {{ userfirstname_selected }} 
-                      <span style="text-transform: uppercase"> 
+                  <td style=" border-top-width: 0px;">
+                    <p style="font-size:14px; line-height:21px; font-weight: 500; margin-bottom: 0px;">
+                      {{ userfirstname_selected }}
+                      <span style="text-transform: uppercase">
                         {{ userlastname_selected }}
                       </span>
                     </p>
@@ -1285,10 +1295,12 @@
           {{ "VisitorsPage.Cancel" | translate }}
         </button>
 
-        <button *ngIf="actionInModal === 'reassign'" style="margin-top:0px" class="btn btn-primary" (click)="reassignRequest(userid_selected)" style="padding:12px 16px;">
+        <button *ngIf="actionInModal === 'reassign'" style="margin-top:0px" class="btn btn-primary"
+          (click)="reassignRequest(userid_selected)" style="padding:12px 16px;">
           {{ "VisitorsPage.ReassignRequest" | translate }}
         </button>
-        <button *ngIf="actionInModal === 'invite'" style="margin-top:0px" class="btn btn-primary" (click)="assignRequest(userid_selected)" style="padding:12px 16px;">
+        <button *ngIf="actionInModal === 'invite'" style="margin-top:0px" class="btn btn-primary"
+          (click)="assignRequest(userid_selected)" style="padding:12px 16px;">
           {{ "VisitorsPage.AssignRequest" | translate }}
         </button>
       </div>
@@ -1298,43 +1310,43 @@
 
 
 <!-- ============= ARCHIVIVE REQUEST MODAL ============= -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayArchiveRequestModal}" style="background-color: rgba(90,90,90,0.5);">
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayArchiveRequestModal}"
+  style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-        <!-- background-color:#ff5252; -->
+      <!-- background-color:#ff5252; -->
       <div class="modal-header" style="padding-bottom:15px">
         <button type="button" class="close" aria-label="Close" (click)="onCloseArchiveRequestModal()">
-            <!-- color: #fff -->
+          <!-- color: #fff -->
           <span aria-hidden="true" style="">&times;</span>
         </button>
         <h4 class="modal-title" style="color: #f44336">
-            <i class="material-icons" style="vertical-align: middle">info</i>
-            <span style="vertical-align: middle; padding-left:8px">
-              <!-- Elimina richiesta -->
-              {{ "VisitorsPage.ArchiveRequest" | translate }}
-            </span>
+          <i class="material-icons" style="vertical-align: middle">info</i>
+          <span style="vertical-align: middle; padding-left:8px">
+            <!-- Elimina richiesta -->
+            {{ "VisitorsPage.ArchiveRequest" | translate }}
+          </span>
         </h4>
         <!-- padding-left: 36px  -->
-        <h4 class="modal-title" 
-        style="color: #566787; padding-top:10px; font-size: 1.1em; font-weight: 500">
+        <h4 class="modal-title" style="color: #566787; padding-top:10px; font-size: 1.1em; font-weight: 500">
           <!-- La richiesta con ID: <code>{{ id_request_to_delete }}</code> verrà eliminata -->
-          {{ "VisitorsPage.TheRequestWithId" | translate }} 
+          {{ "VisitorsPage.TheRequestWithId" | translate }}
           <code style="color: #566787">
             {{ id_request_to_archive }}
-          </code> 
-          {{ "VisitorsPage.WillBeArchived" | translate }} 
+          </code>
+          {{ "VisitorsPage.WillBeArchived" | translate }}
         </h4>
       </div>
       <div class="modal-body">
-          <p style="font-weight:400; text-align: left; margin-top: 10px; color: #566787">
-            <!-- Sei sicuro di voler rimuovere la richiesta selezionata? -->
-            {{ "VisitorsPage.AreYouSure" | translate }} <br>
-            <span style="font-weight:100; color: #999; font-size:12px"> 
-              <em>
-                {{ "VisitorsPage.Note" | translate }}
-              </em>
-            </span> 
-          </p>
+        <p style="font-weight:400; text-align: left; margin-top: 10px; color: #566787">
+          <!-- Sei sicuro di voler rimuovere la richiesta selezionata? -->
+          {{ "VisitorsPage.AreYouSure" | translate }} <br>
+          <span style="font-weight:100; color: #999; font-size:12px">
+            <em>
+              {{ "VisitorsPage.Note" | translate }}
+            </em>
+          </span>
+        </p>
 
       </div>
       <div class="modal-footer" style="margin-top: 0px;">
@@ -1342,7 +1354,8 @@
           <!-- Annulla -->
           {{ "VisitorsPage.Cancel" | translate }}
         </button>
-        <button style="margin-top:0px" class="btn btn-danger" (click)="archiveTheRequestHandler()" style="padding:12px 16px;">
+        <button style="margin-top:0px" class="btn btn-danger" (click)="archiveTheRequestHandler()"
+          style="padding:12px 16px;">
           <!-- Archivia Richiesta -->
           {{ "VisitorsPage.ArchiveRequest" | translate }}
         </button>
@@ -1352,7 +1365,8 @@
 </div>
 
 <!-- ============ INFO MODAL: ARCHIVING REQUEST IN PROGRESS ============ -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayArchivingInfoModal}" style="background-color: rgba(90,90,90,0.5);">
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayArchivingInfoModal}"
+  style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -1361,58 +1375,59 @@
         </button>
 
         <h4 class="modal-title">
-            {{ "VisitorsPage.ArchiveRequest" | translate }}
+          {{ "VisitorsPage.ArchiveRequest" | translate }}
           <!-- <code>{{id_toDelete}}</code> -->
         </h4>
       </div>
 
       <div class="modal-body" style="padding-right: 15px; padding-top:15px; padding-bottom:15px">
-      
+
         <span *ngIf="SHOW_CIRCULAR_SPINNER">
-          <div  class="loader" style="top:25%;">
+          <div class="loader" style="top:25%;">
             <svg class="circular" viewBox="25 25 50 50">
-              <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+              <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10" />
             </svg>
 
           </div>
           <p style="margin-top: 60px; text-align: center; color: #566787; font-weight: 500">
-              {{ "VisitorsPage.Processing" | translate }}
+            {{ "VisitorsPage.Processing" | translate }}
           </p>
         </span>
 
         <span *ngIf="!SHOW_CIRCULAR_SPINNER && !ARCHIVE_REQUEST_ERROR ">
-            
+
           <div style="text-align: center">
             <i class="material-icons" style="color:#70b665">done</i>
             <p style="color:#70b665; font-weight: 500">
-                {{ "VisitorsPage.Completed" | translate }}
-            </p> 
+              {{ "VisitorsPage.Completed" | translate }}
+            </p>
 
           </div>
           <p style="margin-top:10px; text-align: center; color: #566787; font-weight: 500">
-              {{ "VisitorsPage.RequestArchived" | translate }}
+            {{ "VisitorsPage.RequestArchived" | translate }}
           </p>
         </span>
 
         <!-- IF THERE IS AN ERROR -->
         <span *ngIf="!SHOW_CIRCULAR_SPINNER && ARCHIVE_REQUEST_ERROR ">
-          
+
           <div style="text-align: center ">
             <i class="material-icons" style="color:#ff5252">report_problem</i>
             <p style="color:#ff5252; font-weight: 500">
-                {{ "VisitorsPage.Error" | translate }}
-            </p> 
+              {{ "VisitorsPage.Error" | translate }}
+            </p>
 
           </div>
           <p style="margin-top:10px; text-align: center; color: #566787; font-weight: 500">
-              {{ "VisitorsPage.AnErrorHasOccurred" | translate }}
+            {{ "VisitorsPage.AnErrorHasOccurred" | translate }}
           </p>
         </span>
       </div>
 
       <div class="modal-footer" style="text-align: center;">
-        <button class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseArchivingInfoModal()" style="padding:12px 16px;">
-            {{ "VisitorsPage.Continue" | translate }}
+        <button class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseArchivingInfoModal()"
+          style="padding:12px 16px;">
+          {{ "VisitorsPage.Continue" | translate }}
         </button>
       </div>
 
@@ -1423,117 +1438,120 @@
 </div>
 
 <!-- ============= LEAVE CHAT MODAL ============= -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayLeaveChatModal}" style="background-color: rgba(90,90,90,0.5);">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-          <!-- background-color:#ff5252; -->
-        <div class="modal-header" style="padding-bottom:15px">
-          <button type="button" class="close" aria-label="Close" (click)="closeLeaveChatModal()">
-              <!-- color: #fff -->
-            <span aria-hidden="true" style="">&times;</span>
-          </button>
-          <h4 class="modal-title" style="color: #f44336">
-              <i class="material-icons" style="vertical-align: middle">info</i>
-              <span style="vertical-align: middle; padding-left:8px">
-                {{ "VisitorsPage.LeaveChat" | translate }}
-              </span>
-          </h4>
-        </div>
-        <div class="modal-body">
-            <p style="font-weight:400; text-align: left; margin-top: 10px; color: #566787">
-
-              {{ "VisitorsPage.AreYouSureLeftTheChat" | translate }} <br>
-             </p>
-  
-        </div>
-        <div class="modal-footer" style="margin-top: 0px;">
-          <button class="btn btn-white" (click)="closeLeaveChatModal()" style="padding:12px 16px;">
-            <!-- Annulla -->
-            {{ "VisitorsPage.Cancel" | translate }}
-          </button>
-          <button style="margin-top:0px" class="btn btn-danger" (click)="leaveChat()" style="padding:12px 16px;">
-            <!-- Archivia Richiesta -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayLeaveChatModal}"
+  style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <!-- background-color:#ff5252; -->
+      <div class="modal-header" style="padding-bottom:15px">
+        <button type="button" class="close" aria-label="Close" (click)="closeLeaveChatModal()">
+          <!-- color: #fff -->
+          <span aria-hidden="true" style="">&times;</span>
+        </button>
+        <h4 class="modal-title" style="color: #f44336">
+          <i class="material-icons" style="vertical-align: middle">info</i>
+          <span style="vertical-align: middle; padding-left:8px">
             {{ "VisitorsPage.LeaveChat" | translate }}
-          </button>
-        </div>
+          </span>
+        </h4>
+      </div>
+      <div class="modal-body">
+        <p style="font-weight:400; text-align: left; margin-top: 10px; color: #566787">
+
+          {{ "VisitorsPage.AreYouSureLeftTheChat" | translate }} <br>
+        </p>
+
+      </div>
+      <div class="modal-footer" style="margin-top: 0px;">
+        <button class="btn btn-white" (click)="closeLeaveChatModal()" style="padding:12px 16px;">
+          <!-- Annulla -->
+          {{ "VisitorsPage.Cancel" | translate }}
+        </button>
+        <button style="margin-top:0px" class="btn btn-danger" (click)="leaveChat()" style="padding:12px 16px;">
+          <!-- Archivia Richiesta -->
+          {{ "VisitorsPage.LeaveChat" | translate }}
+        </button>
       </div>
     </div>
   </div>
-
-  <!-- ============ INFO MODAL: LEAVING CHAT IN PROGRESS ============ -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayLeavingChatInfoModal}" style="background-color: rgba(90,90,90,0.5);">
-    <div class="modal-dialog modal-sm" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" aria-label="Close" (click)="closeLeavingChatInfoModal()">
-            <span aria-hidden="true">&times;</span>
-          </button>
-  
-          <h4 class="modal-title">
-              {{ "VisitorsPage.LeaveChat" | translate }}
- 
-          </h4>
-        </div>
-  
-        <div class="modal-body" style="padding-right: 15px; padding-top:15px; padding-bottom:15px">
-        
-          <span *ngIf="SHOW_CIRCULAR_SPINNER">
-            <div  class="loader" style="top:25%;">
-              <svg class="circular" viewBox="25 25 50 50">
-                <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10"/>
-              </svg>
-  
-            </div>
-            <p style="margin-top: 60px; text-align: center; color: #566787; font-weight: 500">
-                {{ "VisitorsPage.Processing" | translate }}
-            </p>
-          </span>
-  
-          <span *ngIf="!SHOW_CIRCULAR_SPINNER && !LEAVE_CHAT_ERROR ">
-              
-            <div style="text-align: center">
-              <i class="material-icons" style="color:#70b665">done</i>
-              <p style="color:#70b665; font-weight: 500">
-                  {{ "VisitorsPage.Completed" | translate }}
-              </p> 
-  
-            </div>
-            <p style="margin-top:10px; text-align: center; color: #566787; font-weight: 500">
-                {{ "VisitorsPage.ChatLeft" | translate }}
-            </p>
-          </span>
-  
-          <!-- IF THERE IS AN ERROR -->
-          <span *ngIf="!SHOW_CIRCULAR_SPINNER && LEAVE_CHAT_ERROR">
-            
-            <div style="text-align: center ">
-              <i class="material-icons" style="color:#ff5252">report_problem</i>
-              <p style="color:#ff5252; font-weight: 500">
-                  {{ "VisitorsPage.Error" | translate }}
-              </p> 
-  
-            </div>
-            <p style="margin-top:10px; text-align: center; color: #566787; font-weight: 500">
-                {{ "VisitorsPage.AnErrorHasOccurredLeavingTheChat" | translate }}
-            </p>
-          </span>
-        </div>
-  
-        <div class="modal-footer" style="text-align: center;">
-          <button class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="closeLeavingChatInfoModal()" style="padding:12px 16px;">
-            {{ "VisitorsPage.Continue" | translate }}
-          </button>
-        </div>
-  
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>
-
-  
-<div *ngIf="OPEN_RIGHT_SIDEBAR === true" class="view-side">
-    <!-- (valueChange)='closeRightSidebar($event)' -->
-  <appdashboard-ws-train-bot [ngStyle]="{'height':train_bot_sidebar_height }" [selectedQuestion]="selectedQuestion"  (valueChange)='handleCloseRightSidebar($event)'></appdashboard-ws-train-bot>
 </div>
 
+<!-- ============ INFO MODAL: LEAVING CHAT IN PROGRESS ============ -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayLeavingChatInfoModal}"
+  style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closeLeavingChatInfoModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title">
+          {{ "VisitorsPage.LeaveChat" | translate }}
+
+        </h4>
+      </div>
+
+      <div class="modal-body" style="padding-right: 15px; padding-top:15px; padding-bottom:15px">
+
+        <span *ngIf="SHOW_CIRCULAR_SPINNER">
+          <div class="loader" style="top:25%;">
+            <svg class="circular" viewBox="25 25 50 50">
+              <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10" />
+            </svg>
+
+          </div>
+          <p style="margin-top: 60px; text-align: center; color: #566787; font-weight: 500">
+            {{ "VisitorsPage.Processing" | translate }}
+          </p>
+        </span>
+
+        <span *ngIf="!SHOW_CIRCULAR_SPINNER && !LEAVE_CHAT_ERROR ">
+
+          <div style="text-align: center">
+            <i class="material-icons" style="color:#70b665">done</i>
+            <p style="color:#70b665; font-weight: 500">
+              {{ "VisitorsPage.Completed" | translate }}
+            </p>
+
+          </div>
+          <p style="margin-top:10px; text-align: center; color: #566787; font-weight: 500">
+            {{ "VisitorsPage.ChatLeft" | translate }}
+          </p>
+        </span>
+
+        <!-- IF THERE IS AN ERROR -->
+        <span *ngIf="!SHOW_CIRCULAR_SPINNER && LEAVE_CHAT_ERROR">
+
+          <div style="text-align: center ">
+            <i class="material-icons" style="color:#ff5252">report_problem</i>
+            <p style="color:#ff5252; font-weight: 500">
+              {{ "VisitorsPage.Error" | translate }}
+            </p>
+
+          </div>
+          <p style="margin-top:10px; text-align: center; color: #566787; font-weight: 500">
+            {{ "VisitorsPage.AnErrorHasOccurredLeavingTheChat" | translate }}
+          </p>
+        </span>
+      </div>
+
+      <div class="modal-footer" style="text-align: center;">
+        <button class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="closeLeavingChatInfoModal()"
+          style="padding:12px 16px;">
+          {{ "VisitorsPage.Continue" | translate }}
+        </button>
+      </div>
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+
+<div *ngIf="OPEN_RIGHT_SIDEBAR === true" class="view-side">
+  <!-- (valueChange)='closeRightSidebar($event)' -->
+  <appdashboard-ws-train-bot [ngStyle]="{'height':train_bot_sidebar_height }" [selectedQuestion]="selectedQuestion"
+    (valueChange)='handleCloseRightSidebar($event)'></appdashboard-ws-train-bot>
+</div>
