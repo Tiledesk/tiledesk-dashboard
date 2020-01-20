@@ -54,6 +54,8 @@ export class ContactDetailsComponent implements OnInit {
   deleteLeadSuccessNoticationMsg: string;
   deleteLeadErrorNoticationMsg: string;
 
+  lead_id: string;
+
   constructor(
     public location: Location,
     private route: ActivatedRoute,
@@ -217,6 +219,12 @@ export class ContactDetailsComponent implements OnInit {
         if (lead) {
           console.log('!!!!! CONTACTS DETAILS - GET LEAD BY REQUESTER ID ', lead);
           this.contact_details = lead;
+
+          if (this.contact_details && this.contact_details.lead_id) {
+
+            this.lead_id = this.contact_details.lead_id;
+          }
+
 
           if (this.contact_details.fullname) {
 
