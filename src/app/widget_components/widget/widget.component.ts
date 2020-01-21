@@ -1,16 +1,16 @@
 import { Component, OnInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
-import { AuthService } from '../core/auth.service';
-import { Project } from '../models/project-model';
+import { AuthService } from '../../core/auth.service';
+import { Project } from '../../models/project-model';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Router } from '@angular/router';
-import { WidgetService } from '../services/widget.service';
-import { NotifyService } from '../core/notify.service';
-import { ProjectService } from '../services/project.service';
+import { WidgetService } from '../../services/widget.service';
+import { NotifyService } from '../../core/notify.service';
+import { ProjectService } from '../../services/project.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 
 // import { public_Key } from './../utils/util';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import brand from 'assets/brand/brand.json';
 
 @Component({
@@ -126,7 +126,7 @@ export class WidgetComponent implements OnInit, OnDestroy {
 
   getOSCODE() { 
     let keys = this.public_Key.split("-");
-    console.log('PUBLIC-KEY (Home) keys', keys)
+    console.log('PUBLIC-KEY (Widget) keys', keys)
     keys.forEach(key => {
       // console.log('NavbarComponent public_Key key', key)
       if (key.includes("MTL")) {
@@ -140,7 +140,6 @@ export class WidgetComponent implements OnInit, OnDestroy {
         }
       }
     });
-
   }
 
   ngOnDestroy() {
@@ -639,7 +638,7 @@ export class WidgetComponent implements OnInit, OnDestroy {
     this.router.navigate(['project/' + this.project._id + '/widget/callout']);
   }
 
-  goToWidgetMultilangage() {
+  goToWidgetMultilanguage() {
     this.router.navigate(['project/' + this.project._id + '/widget/translations']);
   }
   

@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../core/auth.service';
 import { Observable } from 'rxjs/Observable';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Http, Headers, RequestOptions} from '@angular/http';
 
 
 @Injectable()
@@ -115,6 +115,9 @@ export class WidgetService {
 
   // curl -v -X GET -H 'Content-Type:application/json'  http://localhost:3000/5df898a830dbc3c62d3ef16c/labels/it
 
+  // Get a label by lang code
+  // https://tiledesk-server-pre.herokuapp.com/5df26badde7e1c001743b63c/labels2/EN
+
   /**
    * Get all labels
    */
@@ -134,19 +137,62 @@ export class WidgetService {
       .map((response) => response.json());
   }
 
+
+
   public cloneLabel(langCode) {
+    const headers = new Headers();
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = { "lang": langCode };
 
     const url = this.BASE_URL + this.projectID + '/labels2/default/clone?lang=' + langCode
     console.log('Multilanguage »» WIDGET SERVICE - CLONE LABELS URL', url);
 
+    return this.http
+      .post(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
+  public editLabels(langCode, translationObjct) {
     const headers = new Headers();
     headers.append('Content-type', 'application/json');
     headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    // const body = { "lang": 'it', "data": translationObjct };
+    const body = { "lang": langCode, "data": translationObjct };
+    const url = this.BASE_URL + this.projectID + '/labels2/'
+    console.log('Multilanguage »» WIDGET SERVICE - SAVE LABELS URL', url);
+    console.log('Multilanguage »» WIDGET SERVICE - SAVE LABELS Body', body);
 
     return this.http
-      .get(url, { headers })
+      .post(url, JSON.stringify(body), options)
       .map((res) => res.json());
   }
+
+
+  // delete all labels 
+  // curl -v -X DELETE -H 'Content-Type:application/json' -u andrea.leo@f21.it:123456 http://localhost:3000/4321/labels2
+
+  public deleteLabels(langCode) {
+    const url = this.BASE_URL + this.projectID + '/labels2/' + langCode
+    console.log('Multilanguage »» WIDGET SERVICE - DELETE LABELS URL', url);
+
+    const headers = new Headers();
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+  
+    return this.http
+      .delete(url,  options)
+      .map((res) => res.json());
+  }
+
+
+
+
 
   public getMockLabels(): Observable<[]> {
     // const url = this.BASE_URL + this.projectID + '/labels/it'
@@ -172,7 +218,6 @@ export class WidgetService {
 
     const options = new RequestOptions({ headers });
 
-
     const body = { "lang": "it", "key": "key1", "message": "msg1" };
 
     console.log('»» WIDGET SERVICE create MOCK LABEL body ', body);
@@ -187,28 +232,28 @@ export class WidgetService {
 
 
 
-  public editLang(translation) {
+  // public editLang(translation) {
 
-    // let url = this.BASE_URL + this.projectID + '/labels2/' + this.projectID
-    let url = this.BASE_URL + '5df2240cecd41b00173a06bb' + '/labels2'
+  //   // let url = this.BASE_URL + this.projectID + '/labels2/' + this.projectID
+  //   let url = this.BASE_URL + '5df2240cecd41b00173a06bb' + '/labels2'
 
-    console.log('Multilanguage CREATE LABEL - PUT URL ', url);
+  //   console.log('Multilanguage CREATE LABEL - PUT URL ', url);
 
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
+  //   const headers = new Headers();
+  //   headers.append('Accept', 'application/json');
+  //   headers.append('Content-type', 'application/json');
+  //   headers.append('Authorization', this.TOKEN);
+  //   const options = new RequestOptions({ headers });
 
-    const body = { 'data': translation };
+  //   const body = { 'data': translation };
 
-    console.log('Multilanguage - PUT REQUEST BODY ', body);
+  //   console.log('Multilanguage - PUT REQUEST BODY ', body);
 
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
+  //   return this.http
+  //     .put(url, JSON.stringify(body), options)
+  //     .map((res) => res.json());
 
-  }
+  // }
 
 
 

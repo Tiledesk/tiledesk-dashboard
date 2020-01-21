@@ -20,14 +20,16 @@
 
 
   <section *ngIf="!showSheleton">
-    <li *ngFor="let lang of availableTranslations" class="btn-with-border-effect"
-      (click)="_selectTranslationTab(lang.code, lang.name)" [ngClass]="
+    <span *ngFor="let lang of availableTranslations">
+      <li class="btn-with-border-effect" [id]="lang.code +'_tab'" (click)="_selectTranslationTab(lang.code, lang.name)"
+        [ngClass]="
             { 'disabled-li' : selectedTranslationCode === lang.code, 
               'border-from-center' : selectedTranslationCode !== lang.code,
               'li-active' : selectedTranslationCode === lang.code}">
-      <a style="height:52px"> {{ lang?.name  }} </a>
+        <a style="height:52px"> {{ lang?.name  }} </a>
 
-    </li>
+      </li>
+    </span>
 
 
 
@@ -102,13 +104,14 @@
 
                 </h4>
 
-                <button *ngIf="selectedTranslationCode !== 'add'" class="btn btn-danger"
+                <button *ngIf="selectedTranslationCode !== 'add' && selectedTranslationCode !== 'en'" 
+                  class="btn btn-danger btn_delete_lang"
                   style="margin-top: 2px; margin-bottom: 1px; float: right;" (click)="deleteLang()">
 
                   {{ 'Delete' | translate }}
                 </button>
 
-                <button *ngIf="selectedTranslationCode !== 'add'" class="btn btn-primary"
+                <button *ngIf="selectedTranslationCode !== 'add'" class="btn btn-primary btn_edit_lang"
                   style="margin-top: 2px; margin-bottom: 1px; float: right;" (click)="editLang()">
 
                   {{ 'ScriptPage.Save' | translate }}
@@ -160,19 +163,24 @@
               <div class="row" style="padding-bottom: 25px;">
                 <div class="col-md-4">
 
-                  <ng-select id="language_option" style="margin-top: 11px;" [clearable]="false"
+                  <ng-select id="language_option" style="margin-top: 11px;" 
+                    [clearable]="true"
                     [(ngModel)]="selectedLang" 
                     [items]="languages" 
-                    bindLabel="name"
+                    bindLabel="name" 
                     groupBy="type"
-                    placeholder="{{ 'ChooseALanguage' | translate }}" (change)="onSelectlang(selectedLang)">
+                    placeholder="{{ 'ChooseALanguage' | translate }}" 
+                    (clear)="onClearSelectedLanguage()"
+                    (change)="onSelectlang(selectedLang)">
                   </ng-select>
 
                 </div>
 
                 <div class="col-md-5">
-                  <button class="btn btn-primary" style="padding-top: 10px; padding-bottom: 10px;"
-                    (click)="_saveNewLanguage()">
+                  <button class="btn btn-primary" 
+                    style="padding-top: 10px; padding-bottom: 10px;"
+                    (click)="addNewLanguage()"
+                    [disabled]="disableAddBtn">
                     {{ 'Add' | translate }}
                   </button>
 
@@ -187,7 +195,7 @@
               {{ 'ScriptPage.Save' | translate }}
             </button>
 
-            <button class="btn btn-danger" (click)="deleteLang()">
+            <button *ngIf="selectedTranslationCode !== 'en'" class="btn btn-danger" (click)="deleteLang()">
               {{ 'Delete' | translate }}
             </button>
           </div>

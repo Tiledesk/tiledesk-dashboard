@@ -31,13 +31,13 @@
 									<span
 										style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">
 										{{ 'CustomizeHowYouGreetYourSiteVisitors' | translate: tparams }}
-										
+
 									</span>
 
 									<!-- /// GREETINGS SAVE BTN ON TOP  @ MEDIA > 768 -->
-									<button class="btn btn-primary appearance-save-btn-desktop" 
-										style="margin-top: 15px; margin-bottom: 16px; float: right; position: relative;	top: -61px;"  
-										(click)="saveOnlineOfflineMsgs()">
+									<button class="btn btn-primary appearance-save-btn-desktop"
+										style="margin-top: 15px; margin-bottom: 16px; float: right; position: relative;	top: -61px;"
+										(click)="saveTranslation()" [disabled]="onlineMsg?.length <= 0 || onlineMsg.length <= 0">
 										<i class="material-icons" style="right: 10px;"> save </i>
 										{{ 'ScriptPage.Save' | translate }}
 									</button>
@@ -50,22 +50,59 @@
 
 								<div class="row">
 
-										<div class="col-md-12" style="text-align: center;">
-		
-											<!-- /// GREETINGS SAVE BTN ON TOP  @ MEDIA < 768 -->
-											<button class="btn btn-primary appearance-save-btn-mobile" 
-												style="margin-top: 15px; margin-bottom: 16px;" 
-												(click)="saveOnlineOfflineMsgs()">
-												<i class="material-icons" style="right: 10px;"> save </i>
-												{{ 'ScriptPage.Save' | translate }}
-											</button>
-		
-										</div>
+									<div class="col-md-12" style="text-align: center;">
+
+										<!-- /// GREETINGS SAVE BTN ON TOP  @ MEDIA < 768 -->
+										<button class="btn btn-primary appearance-save-btn-mobile"
+											style="margin-top: 15px; margin-bottom: 16px;"
+											(click)="saveTranslation()"
+											[disabled]="onlineMsg?.length <= 0 || onlineMsg.length <= 0">
+											<i class="material-icons" style="right: 10px;"> save </i>
+											{{ 'ScriptPage.Save' | translate }}
+										</button>
+
 									</div>
+								</div>
 							</div>
 
 							<div class="row">
 								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+
+																		<!-- 
+									// --------------------------------------------------- 
+									// COMBO TO SELECT THE LANGUAGE PREVIEW 
+									// --------------------------------------------------- -->
+									<div *ngIf="isVisible" class="wrapper-multi-language-preview" style="margin-bottom: 16px;">
+										<label style="color: #566787;width: 100%;">
+											{{ 'MultiLanguagePreview' | translate}}
+
+										</label>
+										<ng-select id="language_option" style="margin-bottom: 6px;max-width: 300px;"
+											[clearable]="false" 
+											[(ngModel)]="selectedLang" 
+											[items]="wd_availableTranslations"
+											bindLabel="name"
+											placeholder="{{ 'ChooseALanguage' | translate }}"
+											(change)="onSelectlang(selectedLang)">
+										</ng-select>
+
+										<!-- wd_availableTranslations: {{ wd_availableTranslations | json}} -->
+
+										<li class="info-msg" style="max-width: 320px;">
+											<span class="info-msg-icon">
+												<i class="material-icons"
+												   style="vertical-align: middle; color: #00bcd4; margin-right: 8px;font-size:21px">info</i>
+											</span>
+											<h5 style="color:#687882; font-size:12px; font-weight: 400;">
+												{{ 'IfYouWantToTranslateOrEditWidgetPhrases' | translate }}
+												<span style="color: #039be5; cursor:pointer"
+													(click)="goToWidgetMultilanguage()">
+													- {{ 'ClickHere' | translate }}
+												</span>
+
+											</h5>
+										</li>
+									</div>
 
 									<!-- // ONLINE MSG TITLE & TEXTAREA -->
 									<div class="row">
@@ -86,16 +123,18 @@
 														{{ 'TheOnlineMessageIsWhatSiteVisitors' | translate: tparams }}
 													</span>
 												</span>
-
-
-
 											</label>
 										</div>
 										<div class="col-xs-12">
-											<textarea [(ngModel)]="onlineMsg" placeholder="{{placeholderOnlineMsg}}"
+											<!-- placeholder="{{placeholderOnlineMsg}}" -->
+											<textarea [(ngModel)]="onlineMsg" 
 												(ngModelChange)="onChangeOnlineMsg($event)" rows="5"
 												style="width: 100%; border-radius: 5px;border: solid 1px #ddd; padding: 8px;font-weight: 400;">
 											</textarea>
+											<div *ngIf="onlineMsg?.length <= 0" style="font-size: 11px; color: #f44336;"> 
+												{{ 'RequiredField' | translate}}
+											</div>
+											
 										</div>
 									</div>
 
@@ -112,7 +151,7 @@
 												[ngStyle]="{'background-color': primaryColor}">
 
 												<span class="card-header-center">
-													{{company_name}} Online
+													{{company_name}} {{ selected_translation?.AGENT_AVAILABLE }}
 												</span>
 
 												<span class="card-header-left">
@@ -161,7 +200,7 @@
 												</div>
 
 												<div class="td-widget-preview-msg_receive">
-													<p [innerHTML]="placeholderOnlineMsg"
+													<p [innerHTML]="onlineMsg"
 														class="td-widget-preview-msg_receive-p"></p>
 												</div>
 											</div>
@@ -198,11 +237,14 @@
 											</label>
 										</div>
 										<div class="col-xs-12">
-
-											<textarea [(ngModel)]="offlineMsg" placeholder="{{placeholderOfflineMsg}}"
+											<!-- placeholder="{{placeholderOfflineMsg}}" -->
+											<textarea [(ngModel)]="offlineMsg" 
 												(ngModelChange)="onChangeOfflineMsg($event)" rows="5"
 												style="width: 100%;border-radius: 5px;border: solid 1px #ddd; padding: 8px; font-weight: 400;">
 											</textarea>
+											<div *ngIf="offlineMsg?.length <= 0" style="font-size: 11px; color: #f44336;"> 
+												{{ 'RequiredField' | translate}}
+											</div>
 										</div>
 									</div>
 								</div>
@@ -220,7 +262,8 @@
 												[ngStyle]="{'background-color': primaryColor}">
 
 												<span class="card-header-center">
-													{{company_name}} Offline
+													{{company_name}} {{ selected_translation?.AGENT_NOT_AVAILABLE }}
+													<!-- Offline -->
 												</span>
 
 												<span class="card-header-left">
@@ -269,7 +312,7 @@
 												</div>
 
 												<div class="td-widget-preview-msg_receive">
-													<p [innerHTML]="placeholderOfflineMsg"
+													<p [innerHTML]="offlineMsg"
 														class="td-widget-preview-msg_receive-p"></p>
 												</div>
 											</div>
@@ -287,10 +330,11 @@
 								<!-- <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" style="text-align: center"> -->
 								<div class="col-xs-12" style="text-align: center">
 									<button class="btn btn-primary save_online_offline_msgs"
-										style="margin-top: 15px; margin-bottom:0px"
-										(click)="saveOnlineOfflineMsgs()">
+										style="margin-top: 15px; margin-bottom:0px" 
+										(click)="saveTranslation()"
+										[disabled]="onlineMsg?.length <= 0 || onlineMsg.length <= 0">
 										<i class="material-icons" style="right: 10px;"> save </i>
-										<span> {{ 'ScriptPage.Save' | translate }} </span> 
+										<span> {{ 'ScriptPage.Save' | translate }} </span>
 									</button>
 									<!-- </div>
 									<div class="col-lg-6"> -->
@@ -338,7 +382,8 @@
 									<!-- /// CALLOUT SAVE BTN ON BOTTOM  @ MEDIA > 768 -->
 									<button class="btn btn-primary appearance-save-btn-desktop"
 										style="margin-top: 15px; margin-bottom: 16px; float: right; position: relative;	top: -61px;"
-										(click)="saveCalloutSettings()">
+										(click)="saveCalloutSettings(); saveTranslation()"
+										[disabled]="calloutTitle?.length <= 0 || calloutMsg?.length <= 0">
 										<i class="material-icons" style="right: 10px;"> save </i>
 										{{ 'ScriptPage.Save' | translate }}
 									</button>
@@ -351,21 +396,60 @@
 
 							<div class="row">
 
-									<div class="col-md-12" style="text-align: center;">
+								<div class="col-md-12" style="text-align: center;">
 									<!-- /// CALLOUT SAVE BTN ON BOTTOM  @ MEDIA < 768 -->
 									<button class="btn btn-primary appearance-save-btn-mobile"
-										style="margin-top: 15px; margin-bottom: 16px;"
-										(click)="saveCalloutSettings()">
+										style="margin-top: 15px; margin-bottom: 16px;" 
+										(click)="saveCalloutSettings(); saveTranslation()"
+										[disabled]="calloutTitle?.length <= 0 || calloutMsg?.length <= 0">
 										<i class="material-icons" style="right: 10px;"> save </i>
 										{{ 'ScriptPage.Save' | translate }}
 									</button>
-	
-									</div>
+
 								</div>
+							</div>
 
 							<div class="row aligned-row">
 								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4"
 									[ngClass]="{'breakpoint' : custom_breakpoint === true}">
+
+									<!-- 
+									// --------------------------------------------------- 
+									// COMBO TO SELECT THE LANGUAGE PREVIEW 
+									// --------------------------------------------------- -->
+									<div *ngIf="isVisible" class="wrapper-multi-language-preview" style="margin-bottom: 16px;">
+										<!-- position: relative;	top: 18px; -->
+										<label style="color: #566787;width: 100%;">
+											{{ 'MultiLanguagePreview' | translate}}
+										</label>
+										<ng-select id="language_option" style="margin-bottom: 6px;max-width: 300px;"
+											[clearable]="false" 
+											[(ngModel)]="selectedLang" 
+											[items]="wd_availableTranslations"
+											bindLabel="name"
+											placeholder="{{ 'ChooseALanguage' | translate }}"
+											(change)="onSelectlang(selectedLang)">
+										</ng-select>
+
+										<!-- wd_availableTranslations: {{ wd_availableTranslations | json}} -->
+
+										<li class="info-msg" style="max-width: 320px;">
+											<span class="info-msg-icon">
+												<i class="material-icons"
+												   style="vertical-align: middle; color: #00bcd4; margin-right: 8px;font-size:21px">info</i>
+											</span>
+											<h5 style="color:#687882; font-size:12px; font-weight: 400;">
+												{{ 'IfYouWantToTranslateOrEditWidgetPhrases' | translate }}
+												<span style="color: #039be5; cursor:pointer"
+													(click)="goToWidgetMultilanguage()">
+													- {{ 'ClickHere' | translate }}
+												</span>
+
+											</h5>
+										</li>
+
+									</div>
+
 
 									<div style="color: #566787; font-weight: 400; margin-top: 8px; margin-bottom: 4px;">
 										{{ 'Resourcepage.CalloutTimer' | translate }}
@@ -417,16 +501,17 @@
 											</span>
 										</div>
 
-										<!-- (blur)="onBlurSaveCalloutTitle()" -->
+										<!-- placeholder="{{placeholderCalloutTitle}}" -->
 										<input class="custom-input"
-											[ngClass]="{'callout-disabled' : CALLOUT_IS_DISABLED === true}"
-											placeholder="{{placeholderCalloutTitle}}"
-											[disabled]="CALLOUT_IS_DISABLED === true" [(ngModel)]="calloutTitle"
-											(ngModelChange)="calloutTitleChange($event)" style="font-weight: 400;">
+											[ngClass]="{'callout-disabled' : CALLOUT_IS_DISABLED === true, 'required-field' : calloutTitle?.length <= 0}"
+											[disabled]="CALLOUT_IS_DISABLED === true" 
+											[(ngModel)]="calloutTitle"
+											(ngModelChange)="calloutTitleChange($event)" 
+											style="font-weight: 400; margin-bottom:3px">
 
-										<!-- <p style="color: rgb(118, 149, 165); margin-bottom:0px"> 
-											{{ 'Resourcepage.CustomizeTheCalloutTitle' | translate }}
-										</p> -->
+											<div *ngIf="calloutTitle?.length <= 0" style="font-size: 11px; color: #f44336;"> 
+												{{ 'RequiredField' | translate}}
+											</div>
 
 										<!-- ======------ CALLOUT MESSAGE ------====== -->
 										<div
@@ -446,16 +531,17 @@
 
 										</div>
 
-										<!-- (blur)="onBlurSaveCalloutMsg()"  -->
+										<!-- placeholder="{{ placeholderCalloutMsg }}"  -->
 										<input class="custom-input"
-											[ngClass]="{'callout-disabled' : CALLOUT_IS_DISABLED === true}"
-											placeholder="{{ placeholderCalloutMsg }}"
-											[disabled]="CALLOUT_IS_DISABLED === true" [(ngModel)]="calloutMsg"
-											(ngModelChange)="calloutMsgChange($event)" style="font-weight: 400;">
-
-										<!-- <p style="color: rgb(118, 149, 165); margin-bottom:0px"> 
-											{{ 'Resourcepage.CustomizeTheCalloutMsg' | translate }}
-										</p> -->
+											[ngClass]="{'callout-disabled' : CALLOUT_IS_DISABLED === true, 'required-field' : calloutTitle?.length <= 0}"
+											[disabled]="CALLOUT_IS_DISABLED === true" 
+											[(ngModel)]="calloutMsg"
+											(ngModelChange)="calloutMsgChange($event)" 
+											style="font-weight: 400; margin-bottom:3px">
+											<div *ngIf="calloutMsg?.length <= 0" style="font-size: 11px; color: #f44336;"> 
+												{{ 'RequiredField' | translate}}
+											</div>
+									
 
 									</div>
 								</div>
@@ -492,14 +578,14 @@
 													<div class="eye-catcher-card-text-wrapper">
 														<div class="eye-catcher-card-title">
 
-															<!-- {{ calloutTitle }} -->
-															{{ placeholderCalloutTitle }}
+															{{ calloutTitle }}
+															<!-- {{ placeholderCalloutTitle }} -->
 														</div>
 
 														<div class="eye-catcher-card-msg">
 
-															<!-- {{ calloutMsg }} -->
-															{{ placeholderCalloutMsg }}
+															{{ calloutMsg }}
+															<!-- {{ placeholderCalloutMsg }} -->
 
 														</div>
 													</div>
@@ -537,13 +623,14 @@
 									<!-- /// CALLOUT SAVE BTN ON BOTTOM -->
 									<button class="btn btn-primary callout-settings-save-btn"
 										style="margin-top: 15px; margin-bottom: 0px"
-										(click)="saveCalloutSettings()">
+										(click)="saveCalloutSettings(); saveTranslation()"
+										[disabled]="calloutTitle?.length <= 0 || calloutMsg?.length <= 0">
 										<i class="material-icons" style="right: 10px;"> save </i>
 										{{ 'ScriptPage.Save' | translate }}
 									</button>
 								</div>
 								<!-- <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="text-align: center"> -->
-									<!-- <button (click)="testWidgetPage()" class="btn btn-primary">
+								<!-- <button (click)="testWidgetPage()" class="btn btn-primary">
 										<span> <i class="material-icons"
 												style="vertical-align: middle; color: #fff;font-size: 17px;">play_arrow</i>
 										</span>
@@ -559,9 +646,9 @@
 		</section>
 
 		<!-- 
-		********************************************************************************
-		********************************** APPEARANCE ********************************** 
-		******************************************************************************** -->
+		// -----------------------------------------------------------------------------
+		// APPEARANCE 
+		// ----------------------------------------------------------------------------- -->
 		<!-- *ngIf="HAS_SELECTED_APPEARANCE === true" -->
 		<section *ngIf="HAS_SELECTED_APPEARANCE === true">
 			<div class="row">
@@ -579,7 +666,7 @@
 									</h4>
 								</div>
 
-							
+
 
 								<div class="col-md-12">
 									<!-- font-family: 'Montserrat', sans-serif; -->
@@ -588,13 +675,14 @@
 										{{ 'CustomizeTheWidgetColors' | translate }}
 									</span>
 									<!-- /// APPEARANCE SAVE BTN ON TOP   @ MEDIA > 768 -->
-									<button class="btn btn-primary appearance-save-btn-desktop" 
-										style="margin-top: 15px; margin-bottom: 16px; float: right; position: relative;	top: -61px;" 
-										(click)="saveWidgetAppearance()">
+									<button class="btn btn-primary appearance-save-btn-desktop"
+										style="margin-top: 15px; margin-bottom: 16px; float: right; position: relative;	top: -61px;"
+										(click)="saveWidgetAppearance(); saveTranslation()" 
+										[disabled]="welcomeTitle?.length <= 0 || welcomeMsg.length <= 0">
 										<i class="material-icons" style="right: 10px;"> save </i>
 										{{ 'ScriptPage.Save' | translate }}
 									</button>
-							
+
 									<!-- margin-bottom: 16px; height:20px;-->
 									<div class="section-subtitle"
 										style="border-top: 1px solid #e8f0f5; width: calc((100% / 3) + 372px);margin-bottom: 0px;">
@@ -605,21 +693,14 @@
 							<div class="row">
 
 								<div class="col-md-12" style="text-align: center;">
+							
 
-									<!-- /// ************ SQUARE BTN ************ -->
-									<!-- <div class="buttonSquare--wrap" style="margin-bottom:16px">
-										<div class="buttonSquare lightblu buttonSquareSave"
-											(click)="saveWidgetAppearance()" style="margin-right: 8px;">
-											<i class="fa fa-floppy-o" style=""></i>
-											<span> {{ 'ScriptPage.Save' | translate }}</span>
-										</div>
-									</div> -->
-									
 									<!-- /// APPEARANCE SAVE BTN ON TOP  @ MEDIA < 768 -->
 									<!--  appearance-save-btn-desktop  <- THIS CLASS HIDE THE BUTTON AT  @ MEDIA < 768 -->
-									<button class="btn btn-primary appearance-save-btn-mobile" 
+									<button class="btn btn-primary appearance-save-btn-mobile"
 										style="margin-top: 15px; margin-bottom: 16px;" 
-										(click)="saveWidgetAppearance()">
+										(click)="saveWidgetAppearance(); saveTranslation()"
+										[disabled]="welcomeTitle?.length <= 0 || welcomeMsg.length <= 0">
 										<i class="material-icons" style="right: 10px;"> save </i>
 										{{ 'ScriptPage.Save' | translate }}
 									</button>
@@ -632,9 +713,44 @@
 								<!-- <div class="col-sm-12">  -->
 								<!-- DA QUI -->
 
-								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+								<div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
+									<!-- 
+									// --------------------------------------------------- 
+									// COMBO TO SELECT THE LANGUAGE PREVIEW
+									// --------------------------------------------------- -->
+									<div *ngIf="isVisible" class="wrapper-multi-language-preview" style="margin-bottom: 16px;">
+										<!-- position: relative;	top: 18px; -->
+										<label style="color: #566787;width: 100%;">
+											{{ 'MultiLanguagePreview' | translate}}
+										</label>
+										<ng-select id="language_option" style="margin-bottom: 6px;max-width: 300px;"
+											[clearable]="false" 
+											[(ngModel)]="selectedLang" 
+											[items]="wd_availableTranslations"
+											bindLabel="name"
+											placeholder="{{ 'ChooseALanguage' | translate }}"
+											(change)="onSelectlang(selectedLang)">
+										</ng-select>
+
+										<!-- wd_availableTranslations: {{ wd_availableTranslations | json}} -->
+
+										<li class="info-msg" style="max-width: 320px;">
+											<span class="info-msg-icon">
+												<i class="material-icons"
+												   style="vertical-align: middle; color: #00bcd4; margin-right: 8px;font-size:21px">info</i>
+											</span>
+											<h5 style="color:#687882; font-size:12px; font-weight: 400;">
+												{{ 'IfYouWantToTranslateOrEditWidgetPhrases' | translate }}
+												<span style="color: #039be5; cursor:pointer"
+													(click)="goToWidgetMultilanguage()">
+													- {{ 'ClickHere' | translate }}
+												</span>
+											</h5>
+										</li>
+									</div>
+
 									<!-- --------------============ PRESET COLOR ============-------------- -->
-									<div class="wrapper-primary-color-selection">
+									<div class="wrapper-primary-color-selection" style="margin-bottom: 16px;">
 										<!-- position: relative;	top: 18px; -->
 										<label style="color: #566787;width: 100%;">
 											{{ 'PresetColorCombinations' | translate}}
@@ -670,9 +786,6 @@
 												</div>
 
 												<div class="col-xs-2 col-sm-2">
-
-
-
 													<div class="preset-color-eight" [ngClass]="{'checked-color' : primaryColor === '#606060' && secondaryColor === '#D6ED17', 
 																	'unchecked-color': primaryColor !== '#606060' && secondaryColor !== '#D6ED17'}"
 														style="width: 40px;height: 40px; border-radius: 50%; cursor:pointer; transition: all .2s ease-in-out;position: relative"
@@ -689,8 +802,6 @@
 															</path>
 														</svg>
 													</div>
-
-
 												</div>
 
 												<div class="col-xs-2 col-sm-2">
@@ -944,7 +1055,6 @@
 												(colorPickerChange)="onChangeSecondaryColor($event)"
 												(colorPickerClose)="onCloseSecondaryColorDialog($event)">
 
-
 											<!-- <p class="custom-input" style="color: rgb(118, 149, 165)"> 
 												{{ 'SecondarySubtitle' | translate}}
 											</p> -->
@@ -1021,7 +1131,10 @@
 										</span>
 									</div>
 
-									<!-- --------------============  WELCOME TITLE ============-------------- -->
+									<!-- 
+									// ------------------------------------------  
+									// WELCOME TITLE
+									// ------------------------------------------  -->
 									<div class="wrapper-welcome-title" style="margin-top: 18px">
 										<label style="color: #566787; display: block">
 											{{ "WelcomeMessage" | translate }}
@@ -1041,17 +1154,22 @@
 
 										</label>
 
-										<!-- (blur)="onBlurSaveWelcomeTitle()"  -->
-										<input class="custom-input" placeholder="{{placeholderWelcomeTitle}}"
-											[(ngModel)]="welcomeTitle" (ngModelChange)="welcomeTitleChange($event)"
-											style="font-weight: 400;">
+										<!-- placeholder="{{placeholderWelcomeTitle}}" -->
+										<input 	class="custom-input" 
+												[(ngModel)]="welcomeTitle" 
+												(ngModelChange)="welcomeTitleChange($event)"
+												style="font-weight: 400; margin-bottom:3px"
+												[ngClass]="{'required-field' : welcomeTitle?.length <= 0 }">
 
-										<!-- <span style="color: rgb(118, 149, 165); display: block"> 
-											{{ "SayHello" | translate }}
-										</span> -->
+												<div *ngIf="welcomeTitle?.length <= 0" style="font-size: 11px; color: #f44336;"> 
+													{{ 'RequiredField' | translate}}
+												</div>
 									</div>
 
-									<!-- --------------============  TEAM INTRO ============-------------- -->
+									<!-- 
+									// ------------------------------------------  
+									// TEAM INTRO
+									// ------------------------------------------  -->
 									<div class="wrapper-welcome-title" style="margin-top: 8px">
 										<label style="color: #566787; display: block">
 											{{ "TeamIntro" | translate }}
@@ -1069,14 +1187,18 @@
 												</span>
 											</span>
 										</label>
-										<!-- (blur)="onBlurSaveWelcomeMsg()"  -->
-										<input class="custom-input" placeholder="{{placeholderWelcomeMsg}}"
-											[(ngModel)]="welcomeMsg" (ngModelChange)="welcomeMsgChange($event)"
-											style="font-weight: 400;">
 
-										<!-- <span style="color: rgb(118, 149, 165); display: block"> 			
-												{{ "IntroduceYourTeam" | translate }}
-										</span> -->
+										<!-- placeholder="{{placeholderWelcomeMsg}}"		 -->
+										<input  class="custom-input"
+												[(ngModel)]="welcomeMsg" 
+												(ngModelChange)="welcomeMsgChange($event)"
+												style="font-weight: 400;margin-bottom:3px"
+												[ngClass]="{'required-field' : welcomeTitle?.length <= 0 }">
+
+												<div *ngIf="welcomeMsg?.length <= 0" style="font-size: 11px; color: #f44336;"> 
+													{{ 'RequiredField' | translate}}
+												</div>
+
 									</div>
 
 
@@ -1164,20 +1286,12 @@
 									</div>
 
 
-									<!-- //// SAVE BTN VISIBLE @ MEDIA < 768 -->
-									<!-- <div class="row appearance-save-btn-mobile">
-										<div class="col-lg-12">
-											<button class="btn btn-primary appearance_save_btn_mobile" style="margin-top: 15px;margin-bottom: 0px;" (click)="saveWidgetAppearance()">
-													@ MEDIA < 768		{{ 'ScriptPage.Save' | translate }}
-											</button>
-										</div>
-									</div> -->
 
 								</div>
 								<!-- /.end col-* -->
 
 								<!-- background-color: aquamarine -->
-								<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8"
+								<div class="col-xs-12 col-sm-7 col-md-7 col-lg-7"
 									style="background-image: url(data:image/gif;base64,R0lGODlhEAAQAJEAAAAAAP////X19f///yH5BAEAAAMALAAAAAAQABAAAAIflG+hq4jM3IFLJhqswNly/XkcBpIiVaInlLJr9FZWAQA7);">
 									<!-- 
 									#############################################################################################################
@@ -1258,8 +1372,8 @@
 																			[ngStyle]="{'color': secondaryColor}">
 
 																			<span>
-																				<!-- {{ welcomeTitle }}  -->
-																				{{ placeholderWelcomeTitle }}
+																				{{ welcomeTitle }} 
+																				<!-- {{ placeholderWelcomeTitle }} -->
 																			</span>
 																		</div>
 																		<div class="c21-text-intro"
@@ -1267,8 +1381,8 @@
 																			[ngStyle]="{'color': secondaryColor}">
 
 																			<span>
-																				<!-- {{ welcomeMsg }} -->
-																				{{ placeholderWelcomeMsg }}
+																				{{ welcomeMsg }}
+																				<!-- {{ placeholderWelcomeMsg }} -->
 																			</span>
 																		</div>
 																	</div>
@@ -1314,7 +1428,8 @@
 																									Nicola</div>
 																								<div
 																									class="truncate c21-msg">
-																									{{company_name}}, chat
+																									{{company_name}},
+																									chat
 																									different!</div>
 																							</div>
 																						</div>
@@ -1342,7 +1457,8 @@
 																						<span
 																							class="v-align-center c21-label-button"
 																							style="font-size: 13px;	margin-left: 8px;font-weight: 500;">
-																							{{'NewConversation' | translate}}
+																							<!-- {{'NewConversation' | translate}} -->
+																							{{ selected_translation?.LABEL_START_NW_CONV }}
 																						</span>
 																						<div class="clear"></div>
 																					</button>
@@ -1355,8 +1471,7 @@
 														</div>
 														<div class="c21-footer_nk" style="bottom: 47px;">
 															<div id="c21-powered-by">
-																<a target="_blank" [href]="company_site_url"
-																	style="color: #AAAAAA;
+																<a target="_blank" [href]="company_site_url" style="color: #AAAAAA;
 																	font-size: 11px;
 																	font-weight: 500;
 																	line-height: 28px;">
@@ -1403,8 +1518,7 @@
 
 										</div> <!-- chat21-container -->
 										<!-- z-index:1029 -->
-										<div id="chat21-launcher-button"
-											[ngStyle]="{'background-color': primaryColor}">
+										<div id="chat21-launcher-button" [ngStyle]="{'background-color': primaryColor}">
 											<div style="width:100%; height:100%; padding:0px; margin: 0px;">
 												<!-- <svg class="ng-tns-c0-0" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg" [ngStyle]="{'fill': secondaryColor}">
 													<defs class="ng-tns-c0-0">
@@ -1446,30 +1560,22 @@
 
 							</div> <!-- ------====== ./end row ======------  -->
 
-						
 							<div class="row">
 								<!-- <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" style="text-align: center"> -->
 								<div class="col-xs-12" style="text-align:center">
-								
-								<!-- /// APPEARANCE SAVE BTN ON BOTTOM -->
-								<!--  appearance-save-btn-desktop  <- THIS CLASS HIDE THE BUTTON AT  @ MEDIA < 768 -->
-								<button class="btn btn-primary" style="margin-top: 15px; margin-bottom: 0px;" (click)="saveWidgetAppearance()">
-									<i class="material-icons" style="right: 10px;"> save </i>
-									{{ 'ScriptPage.Save' | translate }}
-								</button>
-
-									<!-- /// ******** SQUARE BUTTON ******** -->
-									<!-- <div class="buttonSquare--wrap" style="margin-top:16px">
-										<div class="buttonSquare lightblu buttonSquareSave"
-											(click)="saveWidgetAppearance()" style="margin-right: 8px;">
-											<i class="fa fa-floppy-o"></i>
-											<span> {{ 'ScriptPage.Save' | translate }}</span>
-										</div>
-									</div> -->
+									<!-- /// APPEARANCE SAVE BTN ON BOTTOM -->
+									<!--  appearance-save-btn-desktop  <- THIS CLASS HIDE THE BUTTON AT  @ MEDIA < 768 -->
+									<button class="btn btn-primary appearance_save_btn_bottom" 
+										style="margin-top: 15px; margin-bottom: 0px;"
+										(click)="saveWidgetAppearance(); saveTranslation()"
+										[disabled]="welcomeTitle?.length <= 0 || welcomeMsg.length <= 0">
+										<i class="material-icons" style="right: 10px;"> save </i>
+										{{ 'ScriptPage.Save' | translate }}
+									</button>
 								</div>
 								<!-- <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8" style="text-align: center"> -->
 
-									<!-- <button (click)="testWidgetPage()" class="btn btn-primary" style="margin-top: 15px; margin-bottom: 0px;">
+								<!-- <button (click)="testWidgetPage()" class="btn btn-primary" style="margin-top: 15px; margin-bottom: 0px;">
 									<span> 
 										<i class="material-icons" style="vertical-align: middle; color: #fff;font-size: 17px;">play_arrow</i>	
 									</span>	
@@ -1477,7 +1583,7 @@
 									</button> -->
 
 
-									<!-- <div class="buttonSquare--wrap" style="margin-top:16px">
+								<!-- <div class="buttonSquare--wrap" style="margin-top:16px">
 									<div class="buttonSquare lightgreen buttonSquareTest" (click)="testWidgetPage()" style="margin-left: 8px;">
 										<i class="fa fa-play"></i>
 										<span>{{ 'WidgetLiveTest' | translate }}</span>

@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'appdashboard-base-translation',
-  templateUrl: './base-translation.component.html',
-  styleUrls: ['./base-translation.component.scss']
+  selector: 'appdashboard-widget-shared',
+  templateUrl: './widget-shared.component.html',
+  styleUrls: ['./widget-shared.component.scss']
 })
-export class BaseTranslationComponent implements OnInit {
+export class WidgetSharedComponent implements OnInit {
 
   availableTranslations: Array<any> = []
 
@@ -198,25 +198,14 @@ export class BaseTranslationComponent implements OnInit {
 
 
 
-
-
-
   constructor() { }
 
   ngOnInit() {
-
   }
 
 
-
-  // <ng-option value="zh">Chinese (中文 (Zhōngwén), 汉语, 漢語)</ng-option>
-  // <ng-option value="da">Danish (dansk)</ng-option>
-  // <ng-option value="nl">Dutch (Nederlands, Vlaams)</ng-option>
-
-  // availableTranslations = [{ code: 'en', name: 'English' }, { code: 'it', name: 'Italian' }]
-
   doAvailableLanguageArray(languagesCodes) {
-    console.log('Multilanguage Calling doAvailableLanguageArray in BaseTranslationComponent ')
+    console.log('Multilanguage Calling doAvailableLanguageArray in Widget-shared ')
     for (let i = 0; i < this.languages.length; i++) {
       // console.log('Multilanguage Calling doAvailableLanguageArray languages[i] ', this.languages[i])
       // Loop for array2 
@@ -226,7 +215,7 @@ export class BaseTranslationComponent implements OnInit {
         // every element from both of the 
         // arrays 
         if (this.languages[i]['code'] === languagesCodes[j]) {
-          console.log('Multilanguage BaseTranslationComponent LANG CODE FOUND IN LANG ARRAY - ITEM: ', this.languages[i])
+          console.log('Multilanguage (widget-shared) LANG CODE FOUND IN LANG ARRAY - ITEM: ', this.languages[i])
 
           this.availableTranslations.push(this.languages[i])
           // Return if common element found 
@@ -234,22 +223,19 @@ export class BaseTranslationComponent implements OnInit {
         }
       }
     }
-    console.log('Multilanguage BaseTranslationComponent availableTranslations - ARRAY: ', this.availableTranslations)
+    console.log('Multilanguage (widget-shared) availableTranslations - ARRAY: ', this.availableTranslations)
+    return this.availableTranslations
   }
 
-  spliceLanguageIfAlreadyAdded() {
-    // console.log('Multilanguage Calling doAvailableLanguageArray languages ', this.languages)
-    // console.log('Multilanguage Calling doAvailableLanguageArray availableTranslations ', this.availableTranslations)
+  spliceAvailableLanguage(selectedLangCode) {
+    const index = this.availableTranslations.indexOf(selectedLangCode);
+    if (index > -1) {
+      this.availableTranslations.splice(index, 1);
+    }
 
-    this.availableTranslations.forEach(translation => {
-      // console.log('Multilanguage Calling spliceLanguageIfAlreadyAdded availableTranslations translation', translation)
+    console.log('Multilanguage (widget-shared) availableTranslations - ARRAY: ', this.availableTranslations)
 
-      var foundIndex = this.languages.findIndex(x => x.code == translation.code);
-      console.log('Multilanguage splice Language If Already Added - foundIndex', foundIndex)
-      this.languages.splice(foundIndex, 1);
-      // console.log('Multilanguage Calling doAvailableLanguageArray availableTranslations this.languages ', this.languages)
-    });
   }
+
+
 }
-
-

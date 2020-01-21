@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { WidgetService } from '../services/widget.service';
+import { WidgetService } from '../../services/widget.service';
 import { BaseTranslationComponent } from './base-translation/base-translation.component';
-import { NotifyService } from '../core/notify.service';
+import { NotifyService } from '../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'appdashboard-widget-multilanguage',
@@ -29,9 +29,12 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
 
   translations: any
   currentTraslationClone: object;
+  modifiedTranslation : object;
 
   engTraslationClone: object;
   errorNoticationMsg: string;
+  disableAddBtn: boolean;
+  updateWidgetSuccessNoticationMsg: string;
 
   constructor(
     public location: Location,
@@ -53,11 +56,11 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
 
   translateGetTranslationErrorMsg() {
     this.translate.get('UserEditAddPage.AnErrorHasOccurred')
-    .subscribe((text: string) => {
+      .subscribe((text: string) => {
 
         this.errorNoticationMsg = text;
-        console.log('+ + + change Availability Error Notication Msg', text)
-    });
+        // console.log('+ + + An Error Has Occurred Notication Msg', text)
+      });
   }
 
   public generateFake(count: number): Array<number> {
@@ -108,12 +111,14 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
             }
             if (translation.lang !== 'EN') {
               console.log('Multilanguage ***** GET labels ***** - RES >>> TRANSLATION _id', translation._id);
+
+              // UNA LINGUA DIVERSA DALL'INGLESE FA PARTE DEL PROGETTO SE HA UN ID ED è IN QUESTO CASO CHE L'AGGIUNGO TRA LE DISPONIBILI
+              // (INFATTI LE LINGUE CON L'ID SONO QUELLE CHE AGGIUNGE L'UTENTE - ANCHE L'INGLESE AVRA' L'ID SE VIENE MODIFICATA)
               if (translation._id !== undefined) {
                 this.languages_codes.push(translation.lang.toLowerCase())
               }
             }
           }
-
         });
         console.log('Multilanguage ***** GET labels ***** - Array of LANG CODE ', this.languages_codes);
         this.doAvailableLanguageArray(this.languages_codes);
@@ -141,12 +146,10 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
 
       this.translations.forEach(translation => {
         if (translation) {
-          console.log('Multilanguage _selectTranslationTab traslation ', translation)
+          console.log('Multilanguage _selectTranslationTab traslation (forEach) ', translation)
 
           if (translation.lang.toLowerCase() === this.selectedTranslationCode) {
-
             // console.log('Multilanguage _selectTranslationTab traslation selected ', translation['data'])
-
             for (let [key, value] of Object.entries(translation['data'])) {
               // console.log(`Multilanguage selectTranslationTab key : ${key} - value ${value}`);
 
@@ -160,30 +163,32 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
             console.log('Multilanguage ***** GET labels ***** - selected_translation ', this.selected_translation);
           }
         }
-
       });
 
     } else if (this.selectedTranslationCode === 'add') {
       this.spliceLanguageIfAlreadyAdded();
       this.selectedLang = null;
+      this.disableAddBtn = true;
     }
   }
 
-  _saveNewLanguage() {
+  addNewLanguage() {
+    this.showSheleton = true;
     this.selectedTranslationCode = this.temp_SelectedLangCode
     this.selectedTranslationLabel = this.temp_SelectedLangName
-    console.log('Multilanguage ***** _saveNewLanguage selectedTranslationCode', this.selectedTranslationCode);
-    console.log('Multilanguage ***** _saveNewLanguage selectedTranslationLabel', this.selectedTranslationLabel);
-
-
+    console.log('Multilanguage ***** addNewLanguage selectedTranslationCode', this.selectedTranslationCode);
+    console.log('Multilanguage ***** addNewLanguage selectedTranslationLabel', this.selectedTranslationLabel);
 
     // cloneLabel CHE RITORNERA IN RESPONSE LA NUOVA LINGUA (l'inglese nel caso non sia una delle nostre lingue pretradotte)
     this.widgetService.cloneLabel(this.temp_SelectedLangCode.toUpperCase())
       .subscribe((res: any) => {
-        console.log('Multilanguage SAVE label - RES ', res);
+        // console.log('Multilanguage - addNewLanguage - CLONE LABEL RES ', res);
+        console.log('Multilanguage - addNewLanguage - CLONE LABEL RES LANGUAGES', res.data);
 
         if (res) {
 
+          // UPDATE THE ARRAY TRANSLATION CREATED ON INIT
+          this.translations = res.data
           this._selectTranslationTab(this.selectedTranslationCode, this.selectedTranslationLabel)
         }
 
@@ -191,6 +196,7 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
         console.log('Multilanguage SAVE label - ERROR ', error)
       }, () => {
         console.log('Multilanguage SAVE label * COMPLETE *')
+        this.showSheleton = false;
       });
 
     // // ADD THE NEW LANGUAGE TO BOTTOM NAV
@@ -203,14 +209,12 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
 
   onChangeTranslation(event, labelName) {
     console.log('Multilanguage - onChangeTranslation event: ', event, ' - labelName: ', labelName);
-
     this.translations.forEach(translation => {
-
       if (translation) {
-        // console.log('Multilanguage -- onChangeTranslation - traslation ', translation)
+        console.log('Multilanguage -- onChangeTranslation - traslation ', translation)
 
         if (translation.lang.toLowerCase() === this.selectedTranslationCode) {
-          this.currentTraslationClone = Object.assign({}, translation['data']);
+         
           // console.log('Multilanguage - onChangeTranslation CLONE OF CURRENT TRASLATION ', this.currentTraslationClone);
 
 
@@ -218,157 +222,77 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
           // Per modificare il clone della traduzione corrente individuo nel clone della traduzione inglese la key corrispondente al
           // alla labelName della label value che l'utente sta modificando
 
-          var key = Object.keys(this.engTraslationClone).find(key => this.engTraslationClone[key] === labelName);
-          console.log('Multilanguage - onChangeTranslation filter result ', key);
+          var found_key = Object.keys(this.engTraslationClone).find(key => this.engTraslationClone[key] === labelName);
+          console.log('Multilanguage - onChangeTranslation filter result found_key ', found_key);
+                  
+          translation['data'][found_key] = event
+          console.log('Multilanguage - onChangeTranslation ========== translation[data] ', translation['data']);
 
+          this.currentTraslationClone = Object.assign({}, translation['data']);
+          console.log('Multilanguage - onChangeTranslation currentTraslationClone Translation', this.currentTraslationClone);
+          
+          // console.log('Multilanguage - onChangeTranslation ========== this.translations', this.translations);
+          // const found_translation = this.translations.filter((obj: any) => {
+          //   return obj.lang === this.selectedTranslationCode.toUpperCase();
+          // });
+          // console.log('Multilanguage - onChangeTranslation ========== found_translation', found_translation);
 
-          this.currentTraslationClone[key] = event
-          // console.log('Multilanguage - onChangeTranslation original traslation', translation['data']);
-          // console.log('Multilanguage - onChangeTranslation this.selected_translation', this.selected_translation);
-          // console.log('Multilanguage - onChangeTranslation clone traslation', this.currentTraslationClone);
+     
         }
       }
     });
   }
 
   editLang() {
-    console.log('Multilanguage editLang translation ', this.currentTraslationClone)
-    // this.widgetService.editLang(translation)
-    //   .subscribe((res: any) => {
-    //     console.log('Multilanguage SAVE label - RES ', res);
-
-    //   }, error => {
-    //     console.log('Multilanguage SAVE label - ERROR ', error)
-    //   }, () => {
-    //     console.log('Multilanguage SAVE label * COMPLETE *')
-    //   });
-  }
-
-  onSelectlang(selectedLang) {
-    this.temp_SelectedLangCode = selectedLang.code
-    this.temp_SelectedLangName = selectedLang.name
-    console.log('Multilanguage onSelectlang selected TEMP Lang Code ', this.temp_SelectedLangCode)
-    console.log('Multilanguage onSelectlang selected TEMP Lang label ', this.temp_SelectedLangName)
-  }
-
-
-
-  getMockLabels() {
-    const self = this
-    this.widgetService.getMockLabels().subscribe((labels: any) => {
-      console.log('Multilanguage ***** GET labels ***** - RES', labels);
-
-      if (labels) {
-
-        // this.translation = labels[0].data[0];
-        this.translations = labels
-        // console.log('Multilanguage ***** GET labels ***** - RES > TRANSLATIONS ', labels[0].data[0]);
-        console.log('Multilanguage ***** GET labels ***** - RES > TRANSLATIONS ', labels);
-
-        this.languages_codes = [];
-
-        Object.keys(self.translations).forEach(function (key) {
-          var key = key;
-          var value = self.translations[key];
-
-          self.languages_codes.push(key)
-          // console.log('Multilanguage ***** GET labels ***** - KEY name', key);
-          // console.log('Multilanguage ***** GET labels ***** - KEY value', value);
-        });
-
-        console.log('Multilanguage ***** GET labels ***** - Array of LANG CODE ', this.languages_codes);
-        this.doAvailableLanguageArray(this.languages_codes);
-      }
-
-    }, error => {
-      console.log('Multilanguage ***** GET labels ***** - ERROR ', error)
-    }, () => {
-      console.log('Multilanguage ***** GET labels ***** * COMPLETE *')
-      this.showSheleton = false;
-      // this.selectTranslationTab('en', 'English')
-    });
-  }
-
-
-  // selectTranslationTab(langSelectedCode, langSelectedName) {
-  //   this.selectedTranslationCode = langSelectedCode;
-  //   console.log('Multilanguage selectTranslationTab lang Selected Code ', this.selectedTranslationCode);
-  //   this.selectedTranslationLabel = langSelectedName;
-  //   console.log('Multilanguage selectTranslationTab lang Selected Name ', this.selectedTranslationLabel);
-
-  //   this.selected_translation = []
-
-  //   if (this.selectedTranslationCode !== 'add') {
-
-  //     for (let [key, value] of Object.entries(this.translations[this.selectedTranslationCode])) {
-  //       // console.log(`Multilanguage selectTranslationTab key : ${key} value ${value}`);
-
-  //       let enLabel = this.translations['en'][key]
-  //       let entry = { "labelName": enLabel, "labelValue": value }
-
-  //       this.selected_translation.push(entry);
-  //     }
-  //     console.log(`Multilanguage selectTranslationTab selected_translation `, this.selected_translation);
-  //   } else if (this.selectedTranslationCode === 'add') {
-  //     this.spliceLanguageIfAlreadyAdded();
-  //   }
-  // }
-
- 
-
-  saveNewLanguage() {
-    // this.selectedTranslationCode = this.temp_SelectedLangCode
-    // this.selectedTranslationLabel = this.temp_SelectedLangName
-
-    // this.saveLabel(this.temp_SelectedLangCode) // -- questo è quello da richiamare a regime
-
-    // TEST CODE --  DA SOSTITUIRE CON saveLabel CHE RITORNERA IN RESPONSE LA NUOVA LINGUA (l'inglese nel caso non sia una delle nostre lingue pretradotte) 
-
-    const preTraslatedLang = ['es', 'it', 'fr']
-    if (preTraslatedLang.includes(this.temp_SelectedLangCode)) {
-
-      // this.getPreTrasletedLang(this.temp_SelectedLangCode)
-
-    } else {
-
-      // this.getPreTrasletedLang('nopretraslated');
-
+    console.log('Multilanguage (widget-mtl) - currentTraslationClone ', this.currentTraslationClone);
+    const btn_edit_lang = <HTMLElement>document.querySelector('.btn_edit_lang');
+    if (btn_edit_lang) {
+      btn_edit_lang.blur()
     }
 
-    // ADD THE NEW LANGUAGE TO BOTTOM NAV
-    const newLang = { code: this.temp_SelectedLangCode, name: this.temp_SelectedLangName };
-    console.log('Multilanguage saveNewLanguage newLang objct ', newLang);
+    this.widgetService.editLabels(this.selectedTranslationCode.toUpperCase(), this.currentTraslationClone)
+      .subscribe((labels: any) => {
+        console.log('Multilanguage (widget-mtl) - editLang RES ', labels);
+       
+      }, error => {
+        console.log('Multilanguage (widget-mtl) - editLang - ERROR ', error);
 
-    this.availableTranslations.push(newLang)
-    console.log('Multilanguage saveNewLanguage availableTranslations ', this.availableTranslations)
+        this.translateAndShowUpdateWidgetNotification();
+      }, () => {
+        console.log('Multilanguage (widget-mtl) - editLang * COMPLETE *')
+      });
+  }
+
+  translateAndShowUpdateWidgetNotification() {
+    this.translate.get('UpdateDeptGreetingsSuccessNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.updateWidgetSuccessNoticationMsg = text;
+        // console.log('»» WIDGET SERVICE - Update Widget Project Success NoticationMsg', text)
+      }, (error) => {
+
+        console.log('»» WIDGET SERVICE -  Update Widget Project Success NoticationMsg - ERROR ', error);
+      }, () => {
+
+        this.notify.showWidgetStyleUpdateNotification(this.updateWidgetSuccessNoticationMsg, 2, 'done');
+        // console.log('»» WIDGET SERVICE -  Update Widget Project Success NoticationMsg * COMPLETE *');
+      });
   }
 
 
-  // getPreTrasletedLang(temp_SelectedLangCode) {
-  //   this.widgetService.getMockLabels(temp_SelectedLangCode).subscribe((newTranslation: any) => {
+  onSelectlang(selectedLang) {
+    if (selectedLang) {
+      this.disableAddBtn = false;
+      this.temp_SelectedLangCode = selectedLang.code;
+      this.temp_SelectedLangName = selectedLang.name;
+      console.log('Multilanguage onSelectlang selected TEMP Lang Code ', this.temp_SelectedLangCode);
+      console.log('Multilanguage onSelectlang selected TEMP Lang label ', this.temp_SelectedLangName);
+    }
+  }
 
-  //     console.log('Multilanguage - saveNewLanguage - RES ', newTranslation);
-  //     // use case : the language is one of the our already translated:
-  //     // save the new language in the available traslation of the user
-  //     // append the new language to the initial object  this.mock_labels
-
-  //     // APPEND THE RESPONSE TO THE 'traslation' object
-  //     this.appendNewLang(this.temp_SelectedLangCode, newTranslation)
-
-  //   }, (error) => {
-  //     console.log('Multilanguage - saveNewLanguage - ERROR ', error);
-
-  //   }, () => {
-  //     console.log('Multilanguage - saveNewLanguage - getMockLabels * COMPLETE *');
-  //   });
-  // }
-
-
-  appendNewLang(langCode, newMockLabels) {
-    // qui salvo la nuova lingua nel progetto
-    // da fare
-    this.translations[langCode] = newMockLabels
-    console.log('Multilanguage saveNewLangInUserProjectAndAppendToInitialObject newMockLabels ', this.translations)
+  onClearSelectedLanguage() {
+    this.disableAddBtn = true;
+    console.log('Multilanguage onClearSelectedLanguage disableAddBtn ', this.disableAddBtn);
   }
 
 
@@ -376,9 +300,51 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
 
 
   deleteLang() {
+    const btn_delete_lang = <HTMLElement>document.querySelector('.btn_delete_lang');
+    if (btn_delete_lang) {
+      btn_delete_lang.blur()
+    }
+
+    console.log('Multilanguage (widget-mtl) - deleteLang ->  availableTranslations before splice', this.availableTranslations)
+    var foundIndex = this.availableTranslations.findIndex(x => x.code == this.selectedTranslationCode);
+
+    console.log('Multilanguage (widget-mtl) - deleteLang ->  availableTranslations foundIndex', foundIndex)
+
+    this.availableTranslations.splice(foundIndex, 1);
+    console.log('Multilanguage (widget-mtl) - deleteLang ->  availableTranslations after splice ', this.availableTranslations)
+
+    const elemLangTab = <HTMLElement>document.querySelector(`#${this.selectedTranslationCode}_tab`);
+    console.log('Multilanguage (widget-mtl) - deleteLang -> bottom nav tab to remove', elemLangTab)
+
+    if (elemLangTab) {
+      // elemLangTab.style.display = "none"
+
+      elemLangTab.remove()
+    }
+
+    // this.spliceAvailableLanguage(this.selectedTranslationCode)
+    // this.getLabels();
 
 
+    this.widgetService.deleteLabels(this.selectedTranslationCode.toUpperCase())
+      .subscribe((labels: any) => {
+        console.log('Multilanguage (widget-mtl) - deleteLang RES ', labels);
+      }, error => {
+        console.log('Multilanguage (widget-mtl) - deleteLang - ERROR ', error)
+
+        // TO MOVE IN COMPLETE WHEN ANDREA LEO FIX THE SERVICE
+        this.selectedTranslationCode = 'add'
+        this.selectedLang = null;
+        this.disableAddBtn = true;
+
+      }, () => {
+
+
+        console.log('Multilanguage (widget-mtl) - deleteLang * COMPLETE *')
+      });
   }
+
+
 
   goBack() {
     this.location.back();
