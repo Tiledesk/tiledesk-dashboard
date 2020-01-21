@@ -581,52 +581,6 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
             this.getOccurrenceAndAssignToProjectUser(flat_members_array, this.users_id_array[i])
           }
         }
-
-        /**
-         * ANDREA:
-         * RUNS A 'FOR EACH' OVER OF ANY MEMBERS OF EACH REQUEST AND ADDS '1' TO THE PROPERTY 'val'
-         * OF THE OBJECT 'users_reqs_dict' THAT HAS THE SAME ID OF THE ITERED MEMBER
-         */
-        // requests.forEach(req => {
-        //   Object.keys(req.members).forEach(m => {
-        //     if ((m !== 'system') && (m !== req.requester_id)) {
-        //       this.users_reqs_dict[m]['val'] = this.users_reqs_dict[m]['val'] + 1
-        //     }
-        //   })
-        // });
-        // console.log('!!! ANALYTICS - USERS DICTIONARY (updated)', this.users_reqs_dict)
-
-
-        /**
-         * ANDREA:
-         * ADD 'this.users_reqs_dict[m]['val']' TO THE PROPERTY 'value' OF THE OBJECT PROJECT-USERS
-         */
-        // if (this.projectUsers) {
-        //  console.log('!!! ANALYTICS - PROJECT USERS ', this.projectUsers)
-        //   for (const p of this.projectUsers) {
-
-        //     console.log('!!! ANALYTICS - USERS DICTIONARY - DICT KEY (updated) ', Object.keys(this.users_reqs_dict))
-
-        //     Object.keys(this.users_reqs_dict).forEach(element => {
-        //       console.log('!!! ANALYTICS - USERS DICTIONARY - ELEMENT ', element)
-        //       console.log('!!! ANALYTICS - USERS DICTIONARY  -PROJECT USER ID (updated) ', p.id_user._id)
-        //       if (element === p.id_user._id) {
-        //         console.log('!!! ANALYTICS - USERS DICTIONARY - IS THE SAME ', element, p.id_user._id)
-        //         console.log('!!! ANALYTICS - USERS DICTIONARY - IS THE SAME  value', this.users_reqs_dict[p.id_user._id]['val'])
-        //         p.value = this.users_reqs_dict[p.id_user._id]['val']
-        //       }
-        //     });
-        //   }
-        // }
-
-
-        /* trasforma un  json in array */
-        // const self = this;
-        // this.users_reqs_dict_array = Object.keys(this.users_reqs_dict).map(function (k) {
-
-        //   return self.users_reqs_dict[k];
-        // });
-
       }
     });
   }

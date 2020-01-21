@@ -84,16 +84,16 @@ export class Request implements Request {
     if (this.members !== undefined) {
       const _members = Object.keys(this.members);
       // console.log('MODEL REQUEST - MEMBER 2)', _members)
-      // console.log('MODEL REQUEST - requester_id)', this.requester_id)
+      
 
       _members.forEach(member => {
 
-        // if (member !== 'system' && member !== this.requester_id) {
+       
           if (current_user_id === member) {
             // console.log('MEMBER - ID MATCH ', member)
             found = true
           }
-        // }
+       
       });
 
     }

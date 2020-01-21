@@ -154,7 +154,7 @@ export class ContactDetailsComponent implements OnInit {
         if (requests_object) {
           console.log('!!!!! CONTACTS DETAILS - REQUESTS OBJECTS ', requests_object);
           this.requests_list = requests_object['requests'];
-          console.log('!!!!! CONTACTS DETAILS - REQUESTS GOT BY REQUESTER ID ', this.requests_list);
+          console.log('!!!!! CONTACTS DETAILS - REQUESTS GOT BY REQUEST LIST ', this.requests_list);
 
           this.requests_list = requests_object['requests'];
 

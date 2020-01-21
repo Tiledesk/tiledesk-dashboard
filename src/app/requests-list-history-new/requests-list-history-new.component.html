@@ -252,13 +252,7 @@
                     </span>
                   </th>
 
-                  <!-- ===== REQUESTER ID * FOR DEBUG * ===== -->
-                  <!-- <th>
-                    <span style="color: #566787">
-                      <strong> Requester Id </strong>
-                    </span>
-                  </th> -->
-
+                
                   <!-- ===== DEPARTMENT NAME ===== -->
                   <th>
                     <span class="column-th-span">
@@ -380,7 +374,7 @@
 
                     </span>
                     <span class="column-td" style="white-space: nowrap;" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
-                      <!-- {{ request?.requester_fullname }} -->
+      
                       {{ request?.lead?.fullname }}
                     </span>
                     <span *ngIf="!request?.lead?.fullname" class="column-td" [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
@@ -388,14 +382,7 @@
                      </span>
                   </td>
 
-                  <!-- ===== REQUESTER ID * FOR DEBUG * ===== -->
-                  <!-- <td>
-                    <p style="font-size:0.8em">
-                      {{ request?.requester_id }}
-                    </p>
-                  </td> -->
-
-            
+    
                   <!-- ===== DEPARTMENT NAME ===== -->
                   <td>
                     <p class="column-td">
@@ -403,21 +390,7 @@
                     </p>
                   </td>
  
-                  <!-- ===== SERVED BY ===== -->
-                  <!-- <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" >
-                    <span *ngFor="let participant of request?.participants"  style="font-size:0.8em;">
-                      <span *ngIf="participant !== request?.requester_id && participant !== 'system' && participant !== currentUserID"> 
-                        
-                        <p class="member" (click)="goToMemberProfile( participant )" 
-                          [innerHTML]="members_replace( participant )" 
-                          style="padding-top:1px; padding-bottom:1px; cursor: pointer;">  
-                        </p>
-                      </span>
-                      <p *ngIf="participant === currentUserID" style="padding-top:1px; padding-bottom:1px;"> 
-                        - <strong> 'ME' </strong>
-                      </p>
-                    </span>
-                  </td> -->
+           
 
                   <!-- ===== NEW SERVED BY ===== -->
                   <td>

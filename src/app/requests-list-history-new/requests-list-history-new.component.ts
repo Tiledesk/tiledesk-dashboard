@@ -440,8 +440,6 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
       console.log('!!! NEW REQUESTS HISTORY - SEARCH FOR END DATE ', this.endDate)
     }
 
-    // selectedAgentId: string;
-    // requester_email: string;
 
     if (this.selectedAgentId) {
 
@@ -628,47 +626,6 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
 
         }
 
-        // let flat_participants_array = [];
-        // const requesters_id_array = []
-        // this.requestList.forEach(request => {
-        //   flat_participants_array = flat_participants_array.concat(request.participants);
-        //   requesters_id_array.push(request.requester_id)
-        // });
-        // console.log('!!! NEW REQUESTS HISTORY - FLAT PARTICIPANTS ARRAY ', flat_participants_array);
-        // console.log('!!! NEW REQUESTS HISTORY - ARRAY OF REQUESTER ID ', requesters_id_array);
-
-        // REQUESTER ID ARRAY WITHOUT DUPLICATE
-        // const cleaned_requester_id_array = [];
-        // requesters_id_array.forEach(requester => {
-
-        //   if (cleaned_requester_id_array.indexOf(requester) < 0) {
-        //     cleaned_requester_id_array.push(requester)
-        //   }
-        // });
-        // console.log('!!! NEW REQUESTS HISTORY - ARRAY OF REQUESTER ID WITHOUT DUPLICATE', cleaned_requester_id_array);
-
-        // const participants_array = []
-        // flat_participants_array.forEach(participant => {
-        //   if (participants_array.indexOf(participant) < 0) {
-        // tslint:disable-next-line:max-line-length
-        //     // console.log('!!! NEW REQUESTS HISTORY - FLAT PARTICIPANTS ARRAY ! FILTERED INDEX OF', participants_array.indexOf(participant));
-        //     if (participant !== 'system') {
-        //       participants_array.push(participant)
-        //     }
-
-        //   }
-        // });
-        // console.log('!!! NEW REQUESTS HISTORY - FLAT PARTICIPANTS ARRAY ! CLEANED FROM DUPLICATE ', participants_array);
-
-        // participants_array.forEach(participant => {
-        //   if (participant.includes('bot_') === true) {
-
-        //     console.log('!!! NEW REQUESTS HISTORY - PARTICIPANTS ARRAY BOT ID ', participant);
-        //   } else {
-
-        //     console.log('!!! NEW REQUESTS HISTORY - PARTICIPANTS ARRAY USER ID ', participant);
-        //   }
-        // });
       }
 
     }, error => {

@@ -380,8 +380,7 @@ export class ProjectService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    // const body = { 'settings': { 'email': { 'autoSendTranscriptToRequester': autosend } } };
-    // settings.email.autoSendTranscriptToRequester":true
+   
 
     const body = { 'settings.email.autoSendTranscriptToRequester': autosend }
 
