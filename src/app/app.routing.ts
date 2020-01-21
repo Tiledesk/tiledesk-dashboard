@@ -26,8 +26,8 @@ import { ContactsComponent } from './contacts/contacts.component';
 import { RequestsListComponent } from './requests-list/requests-list.component';
 
 /*** WEBSOCKET ***/
-import { WsRequestsListComponent } from './ws-requests-list/ws-requests-list.component';
-import { WsRequestsMsgsComponent } from './ws-requests-msgs/ws-requests-msgs.component';
+import { WsRequestsListComponent } from './ws_requests/ws-requests-list/ws-requests-list.component';
+import { WsRequestsMsgsComponent } from './ws_requests/ws-requests-msgs/ws-requests-msgs.component';
 
 
 
@@ -57,9 +57,9 @@ import { SignupComponent } from './auth/signup/signup.component';
 import { UnauthorizedComponent } from './auth/unauthorized/unauthorized.component';
 import { HandleInvitationComponent } from './auth/handle-invitation/handle-invitation.component';
 
-import { WidgetComponent } from './widget/widget.component';
-import { WidgetDesignComponent } from './widget-design/widget-design.component';
-import { WidgetMultilanguageComponent } from './widget-multilanguage/widget-multilanguage.component';
+import { WidgetComponent } from './widget_components/widget/widget.component';
+import { WidgetDesignComponent } from './widget_components/widget-design/widget-design.component';
+import { WidgetMultilanguageComponent } from './widget_components/widget-multilanguage/widget-multilanguage.component';
 
 
 import { ScriptComponent } from './script/script.component';

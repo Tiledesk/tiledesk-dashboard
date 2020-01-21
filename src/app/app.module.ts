@@ -71,7 +71,7 @@ import { SigninComponent } from './auth/signin/signin.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { UnauthorizedComponent } from './auth/unauthorized/unauthorized.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { WidgetComponent } from './widget/widget.component';
+import { WidgetComponent } from './widget_components/widget/widget.component';
 import { ScriptComponent } from './script/script.component';
 import { ChannelsComponent } from './channels/channels.component';
 import { SocialComponent } from './social/social.component';
@@ -103,7 +103,7 @@ import { AmazingTimePickerModule } from 'amazing-time-picker';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ResetPswComponent } from './reset-psw/reset-psw.component';
 import { ResetPswService } from './services/reset-psw.service';
-import { WidgetDesignComponent } from './widget-design/widget-design.component';
+import { WidgetDesignComponent } from './widget_components/widget-design/widget-design.component';
 import { UploadImageService } from './services/upload-image.service';
 import { RequestsListHistoryNewComponent } from './requests-list-history-new/requests-list-history-new.component';
 import { MyDatePickerModule } from 'mydatepicker';
@@ -153,16 +153,22 @@ import { HandleInvitationComponent } from './auth/handle-invitation/handle-invit
 
 import { environment } from '../environments/environment';
 import { AppConfigService } from './services/app-config.service';
-import { WsRequestsListComponent } from './ws-requests-list/ws-requests-list.component';
+import { WsRequestsListComponent } from './ws_requests/ws-requests-list/ws-requests-list.component';
 import { WsRequestsService } from './services/websocket/ws-requests.service';
-import { WsRequestsMsgsComponent } from './ws-requests-msgs/ws-requests-msgs.component';
+import { WsRequestsMsgsComponent } from './ws_requests/ws-requests-msgs/ws-requests-msgs.component';
 // import { WebsocketService } from './services/websocket.service';
 import { WsMsgsService } from './services/websocket/ws-msgs.service';
-import { WsSharedComponent } from './ws-shared/ws-shared.component';
-import { WsTrainBotComponent } from './ws-requests-msgs/ws-train-bot/ws-train-bot.component';
+import { WsSharedComponent } from './ws_requests/ws-shared/ws-shared.component';
+import { WsTrainBotComponent } from './ws_requests/ws-requests-msgs/ws-train-bot/ws-train-bot.component';
 import { WebSocketJs } from './services/websocket/websocket-js';
-import { WidgetMultilanguageComponent } from './widget-multilanguage/widget-multilanguage.component';
-import { BaseTranslationComponent } from './widget-multilanguage/base-translation/base-translation.component';
+import { WidgetMultilanguageComponent } from './widget_components/widget-multilanguage/widget-multilanguage.component';
+import { BaseTranslationComponent } from './widget_components/widget-multilanguage/base-translation/base-translation.component';
+import { WidgetSharedComponent } from './widget_components/widget-shared/widget-shared.component';
+import { WidgetDesignBaseComponent } from './widget_components/widget-design/widget-design-base/widget-design-base.component';
+import { WsRequestsServedComponent } from './ws_requests/ws-requests-list/ws-requests-served/ws-requests-served.component';
+import { WsRequestsUnservedComponent } from './ws_requests/ws-requests-list/ws-requests-unserved/ws-requests-unserved.component';
+import { CloseRequestModalComponent } from './ws_requests/modals/close-request-modal/close-request-modal.component';
+
 
 console.log('************** APPMODULE ******************');
 // AoT requires an exported function for factories
@@ -263,7 +269,12 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     WsSharedComponent,
     WsTrainBotComponent,
     WidgetMultilanguageComponent,
-    BaseTranslationComponent
+    BaseTranslationComponent,
+    WidgetSharedComponent,
+    WidgetDesignBaseComponent,
+    WsRequestsServedComponent,
+    WsRequestsUnservedComponent,
+    CloseRequestModalComponent
   ],
   imports: [
     /* PRIVATE */
