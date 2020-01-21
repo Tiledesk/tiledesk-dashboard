@@ -1,10 +1,10 @@
 import { Component, OnInit, AfterViewInit, EventEmitter, Input, Output, ElementRef, ViewChild } from '@angular/core';
-import { slideInOutAnimation } from '../../_animations/index';
-import { MongodbFaqService } from '../../services/mongodb-faq.service';
+import { slideInOutAnimation } from '../../../_animations/index';
+import { MongodbFaqService } from '../../../services/mongodb-faq.service';
 import { TranslateService } from '@ngx-translate/core';
-import { NotifyService } from '../../core/notify.service';
+import { NotifyService } from '../../../core/notify.service';
 import { Router } from '@angular/router';
-import { AuthService } from '../../core/auth.service';
+import { AuthService } from '../../../core/auth.service';
 
 @Component({
   selector: 'appdashboard-ws-train-bot',

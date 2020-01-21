@@ -30,20 +30,27 @@ export class WsRequestsService {
   public messages: Subject<Message>;
 
   requesTtotal: number;
+  public wsRequestsList$: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
+  
+
+  public wsRequest$ = new Subject()
+  public wsRequestsListLength$ = new Subject()
+
 
   // public wsRequestsList$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
 
-  public wsRequestsList$: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
+  
   // public wsMyRequestsList$: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
 
   // public wsRequest$: BehaviorSubject<any> = new BehaviorSubject(null);
   // public wsRequest$:  AsyncSubject<any> = new AsyncSubject();
-  public wsRequest$ = new Subject()
+  
 
   // fwcUser: BehaviorSubject<FwcUser> = new BehaviorSubject<FwcUser>(null);
   // fwcUser$ = this.fwcUser.asObservable();
 
-  public wsRequestsListLength$: BehaviorSubject<number> = new BehaviorSubject(0)
+  // public wsRequestsListLength$: BehaviorSubject<number> = new BehaviorSubject(0)
+  
   // _wsRequestsListLength$ = this.wsRequestsListLength$.asObservable()
   // public wsRequestsListLength$$: ReplaySubject<number> = new ReplaySubject(null);
 
@@ -83,32 +90,24 @@ export class WsRequestsService {
     // -----------------------------------------------------------------------------------------------------
     // REQUESTS - @ the publication of the 'current project' subscribes to the websocket requests
     // -----------------------------------------------------------------------------------------------------
-
     this.getCurrentProjectAndSubscribeTo_WsRequests()
     this.getLoggedUser();
   }
 
   getLoggedUser() {
-
-
     this.auth.user_bs.subscribe((user) => {
-
       if (user) {
         this.TOKEN = user.token
         this.currentUserID = user._id
         console.log("% »»» WebSocketJs - WsRequestsService CURRENT USER ID", this.currentUserID);
         console.log("% »»» WebSocketJs - WsRequestsService TOKEN", this.TOKEN);
       }
-
     });
-
   }
 
   // -----------------------------------------------------------------------------------------------------
   // methods for REQUESTS 
   // -----------------------------------------------------------------------------------------------------
-
-
   resetWsRequestList() {
     this.wsRequestsList = [];
     this.wsAllRequestsList = [];
@@ -120,20 +119,24 @@ export class WsRequestsService {
     self.wsRequestsList = [];
     self.wsAllRequestsList = [];
     this.auth.project_bs.subscribe((project) => {
+
       // console.log('%% WsRequestsService PROJECT ', project)
+      // console.log('% »»» WebSocketJs WF ****** WsRequestsService PROJECT._ID 1', project)
+      /**
+       * Unsubscribe to websocket requests with the old project id  
+       */
+      if (this.project_id) {
+        // console.log('%% WsRequestsService THIS.PROJECT_ID ', this.project_id)
+        //this.unsubsToWS_Requests(this.project_id);
+
+        this.webSocketJs.unsubscribe('/' + this.project_id + '/requests');
+        this.resetWsRequestList();
+      }
+
 
       if (project) {
-        console.log('% »»» WebSocketJs WF ****** WsRequestsService PROJECT._ID ', project._id)
-        /**
-         * Unsubscribe to websocket requests with the old project id  
-         */
-        if (this.project_id) {
-          console.log('%% WsRequestsService THIS.PROJECT_ID ', this.project_id)
-          //this.unsubsToWS_Requests(this.project_id);
+        // console.log('% »»» WebSocketJs WF ****** WsRequestsService PROJECT._ID 2', project._id)
 
-          this.webSocketJs.unsubscribe('/' + this.project_id + '/requests');
-          this.resetWsRequestList();
-        }
 
         this.project_id = project._id;
 
@@ -160,10 +163,10 @@ export class WsRequestsService {
               // self.addWsRequests(data);
 
               self.addWsRequests(data)
-
+              console.log("% »»» WebSocketJs WF - WsRequestsService Not Found - <<<<<<<<<<<<<<< add request >>>>>>>>>>>>>>>", data);
 
             } else {
-              console.log("% »»» WebSocketJs WF - WsRequestsService hasFound - not add", hasFound);
+              // console.log("% »»» WebSocketJs WF - WsRequestsService hasFound - not added", hasFound);
             }
 
           }, function (data, notification) {
@@ -175,9 +178,7 @@ export class WsRequestsService {
             self.updateWsRequests(data)
 
 
-          }
-
-          , function (data, notification) {
+          }, function (data, notification) {
 
             console.log("% »»» WebSocketJs WF - WsRequestsService REQUESTS *** notification *** ", notification);
             console.log("% »»» WebSocketJs WF - WsRequestsService  >>>>>>> REQUESTS LENGTH BEFORE TO PUBLISH <<<<<<< ", data.length);
@@ -192,8 +193,24 @@ export class WsRequestsService {
             // && data.length > 0
             // setTimeout(() => { 
             if (data) {
-              self.wsRequestsListLength$.next(data.length);
-              console.log("% »»» WebSocketJs WF - WsRequestsService  >>>>>>> HERE 1 <<<<<<< ");
+
+              console.log("% »»» WebSocketJs WF - onData (ws-requests.serv) ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ data is ARRAY", Array.isArray(data));
+              // data.map works only with array
+              if (Array.isArray(data)) {
+                
+                // https://stackoverflow.com/questions/18983138/callback-after-all-asynchronous-foreach-callbacks-are-completed
+                let requests = data.map((item) => {
+                  return new Promise((resolve) => {
+                    self.asyncFunction(item, resolve);
+                  });
+                })
+                Promise.all(requests).then(() => {
+
+                  console.log('% »»» WebSocketJs WF - onData (ws-requests.serv) ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> data.length ', data.length)
+                  self.wsRequestsListLength$.next(data.length);
+                });
+
+              }
 
               // this.requesTtotal = data.length
               // if (this.requesTtotal) {
@@ -229,7 +246,12 @@ export class WsRequestsService {
     });
   }
 
-
+  asyncFunction(item, cb) {
+    setTimeout(() => {
+      // console.log('≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done with', item);
+      cb();
+    }, 100);
+  }
   // _getRequestsTotalCount(requestsLenght) {
   //   if (requestsLenght != null) {
   //     return Observable.of(requestsLenght);
@@ -301,7 +323,7 @@ export class WsRequestsService {
 
       // this.wsMyRequestsList$.next(myRequests); 
       // console.log("% »»» WebSocketJs - WsRequestsService only MY Requests ", myRequests);
-      console.log("% »»» WebSocketJs - WsRequestsService ALL Requests ", this.wsRequestsList);
+      console.log("% »»» WebSocketJs - WsRequestsService ALL Requests ", this.wsRequestsList.length);
 
 
       // request.agents.forEach(agent => {
@@ -334,8 +356,6 @@ export class WsRequestsService {
       //   }
       // }
 
-
-
       // });
 
 
@@ -349,8 +369,6 @@ export class WsRequestsService {
       // });
 
       // console.log("% »»» WebSocketJs - WsRequestsService request.hasAgent ", request.hasAgent(this.currentUserID));
-
-
 
       // console.log("% »»» WebSocketJs - WsRequestsService REQUEST LIST ", imInAgentsRequests);
     }
@@ -553,7 +571,7 @@ export class WsRequestsService {
 
     // const url = 'https://tiledesk-server-pre.herokuapp.com/' + this.project_id + '/requests/' + group_id + '/close';
     const url = this.BASE_URL + this.project_id + '/requests/' + group_id + '/close';
-    
+
     console.log('% »»» WebSocketJs WF - NEW CLOSE SUPPORT GROUP URL ', url);
     return this.http
       .put(url, body, options)

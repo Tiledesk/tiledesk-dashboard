@@ -492,7 +492,7 @@ export class WebSocketJs {
             // console.log("element", element);
             //let insUp = that.insertOrUpdate(element);
             let insUp = json.payload.method;
-            console.log("insUp", insUp);
+            console.log("% »»» WebSocketJs WF - insUp", insUp);
 
             var object = { event: json.payload, data: element };
 

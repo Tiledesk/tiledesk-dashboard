@@ -387,13 +387,7 @@
           <div class="card" style="margin-top:5px">
             <div class="card-content" style="">
 
-              <div style="font-size:1em; font-weight: 400; display: flex;
-              align-items: center;
-              margin: auto;
-              flex-direction: column;
-              width: 100%;
-              padding: 30px;
-              text-align: center;">
+              <div class="no_visitor__placeeholder" style="">
 
                 <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                   xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 40 40"
@@ -496,12 +490,7 @@ l-4.9-13l18-14.8L22.1,34.4z" />
                       </span>
                     </th>
 
-                    <!-- REQUESTER ID * FOR DEBUG -->
-                    <!-- <th>
-                      <span style="color: #566787">
-                        <strong> Requester Id </strong>
-                      </span>
-                    </th> -->
+              
 
                     <!-- SERVED BY OF UNSERVED REQUEST -->
                     <!-- <th>
@@ -560,7 +549,7 @@ l-4.9-13l18-14.8L22.1,34.4z" />
                   <!-- ****************************************
                   ------ ====== UNSERVED FOR ====== ------
                 ********************************************* -->
-                  <tr *ngFor="let request of wsRequestsUnserved">
+                  <tr *ngFor="let request of wsRequestsUnserved; trackBy: trackByFn">
                     <!-- FOR DEBUG: SHOW 'J' IF THE CURRENT USER UID IS BETWEEN 
                   THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
                     <!-- <td>
@@ -831,12 +820,7 @@ l-4.9-13l18-14.8L22.1,34.4z" />
                       </span>
                     </th>
 
-                    <!-- REQUESTER ID * FOR DEBUG -->
-                    <!-- <th>
-                    <span style="color: #566787">
-                      <strong> Requester Id </strong>
-                    </span>
-                  </th> -->
+                  
 
                     <!-- ------ ====== SERVED BY ====== ------ -->
                     <th>
@@ -893,7 +877,7 @@ l-4.9-13l18-14.8L22.1,34.4z" />
                   <!-- ****************************************
                   ------ ====== SERVED FOR ====== ------
                 ********************************************* -->
-                  <tr *ngFor="let request of wsRequestsServed">
+                  <tr *ngFor="let request of wsRequestsServed; trackBy: trackByFn">
 
                     <!-- FOR DEBUG: SHOW 'J' IF THE CURRENT USER UID IS BETWEEN 
                   THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
@@ -1131,56 +1115,32 @@ l-4.9-13l18-14.8L22.1,34.4z" />
                       </p>
                     </td>
 
-                    <!-- ------ ====== SERVED BY ====== ------ -->
-                    <!-- <td>
-                    <span *ngFor="let m of request?.members_array"  style="font-size:0.8em;">
-                      <span *ngIf="m !== request?.requester_id && m !== 'system' && m !== currentUserID"> 
-                        <p class="member" (click)="goToMemberProfile( m )" [innerHTML]="members_replace( m )" 
-                          style="padding-top:1px; padding-bottom:1px; cursor: pointer;">  
-                        </p>
-                      </span> 
-                      <p *ngIf="m === currentUserID" style="padding-top:1px; padding-bottom:1px;"> 
-                        - <strong> 'ME' </strong>
-                      </p>
-                    </span>
-                  </td> -->
+                
 
                     <!-- ------ ====== NEW SERVED BY ====== ------ -->
                     <!-- *ngIf="participant !== request?.requester_id && participant !== 'system' && participant !== currentUserID"  -->
                     <td>
                       <div *ngFor="let participant of request?.participants" style="font-size:0.8em;">
-
-                        <!-- participant !== request?.lead?.lead_id && participant !== 'system' && -->
                         <span *ngIf="participant !== currentUserID" class="tooltipx">
-
                           <span (click)="goToMemberProfile( participant )" style="cursor:pointer; display: block">
-                            <!-- IF IS A BOT bot_image.png -->
                             <img *ngIf="participant.indexOf('bot_') !== -1"
                               class="user-img ws-requests-list-servedby-avatar" src="assets/img/bot_image_as_human.jpg"
                               onerror="this.src='assets/img/no_image_user.png'" />
 
-                            <!-- IF IS A HUMAN -->
                             <img *ngIf="participant.indexOf('bot_') === -1"
                               class="user-img ws-requests-list-servedby-avatar"
                               src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media"
                               onerror="this.src='assets/img/no_image_user.png'" />
-
                             <span class="member" [innerHTML]="members_replace( participant )"></span>
-
                           </span>
-
                           <span class="tooltiptext"> {{ "ViewProfile" | translate }} </span>
                         </span>
-
-
                         <span *ngIf="participant === currentUserID">
-                          <!-- IF IS THE LOGGED USER -->
                           <img class="user-img ws-requests-list-servedby-avatar"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media"
                             onerror="this.src='assets/img/no_image_user.png'" />
                           <span class="current-user-member" [innerHTML]="members_replace(participant)"></span>
                         </span>
-
                       </div>
                     </td>
 

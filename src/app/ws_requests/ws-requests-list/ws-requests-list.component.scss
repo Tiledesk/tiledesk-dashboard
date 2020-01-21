@@ -805,3 +805,15 @@ $f21blue: #039be5;
   float: right !important;
   padding-top: 10px !important;
 }
+
+.no_visitor__placeeholder {
+  font-size: 1em;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  margin: auto;
+  flex-direction: column;
+  width: 100%;
+  padding: 63px;
+  text-align: center;
+}

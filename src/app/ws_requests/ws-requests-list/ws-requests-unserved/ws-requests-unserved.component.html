@@ -1,0 +1,279 @@
+<div class="card">
+  <div class="card-header card-header-custom">
+    <h4 class="title customh4" style="margin-bottom:2px;">
+   
+      {{ 'VisitorsPage.UnservedRequests' | translate }}
+    </h4>
+  </div>
+
+  <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+  <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-top: 0px;">
+    <table class="table table-hover">
+      <thead class="text">
+        <tr>
+          <th></th>
+
+          <!-- ------ ====== MESSAGE ====== ------ -->
+          
+          <th>
+            <span class="column-th-span">
+              {{ 'VisitorsPage.Message' | translate }}
+            </span>
+          </th>
+
+          <!-- ------ ====== REQUESTER ====== ------ -->
+          <th>
+
+            <span class="column-th-span">
+              {{ 'VisitorsPage.Requester' | translate }}
+            </span>
+          </th>
+
+          <!-- ------ ====== USER AGENT BROWSER & OPERATING SYSTEM (in served requests)====== ------ -->
+          <th></th>
+
+
+          <!-- ------ ====== DEPARTMENT ====== ------ -->
+          <th>
+            <span class="column-th-span">
+              {{ 'VisitorsPage.Department' | translate }}
+            </span>
+          </th>
+
+
+
+          <!-- ------ ====== CREATED ON ====== ------ -->
+          <th>
+            <span class="column-th-span">
+              {{ 'VisitorsPage.Published' | translate }}
+            </span>
+          </th>
+
+
+          <!-- ------ ====== ARCHIVE ACTION ====== ------ -->
+          <th>
+            <span class="column-th-span">
+              {{ 'VisitorsPage.Actions' | translate }}
+            </span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- ------ ====== IF THERE ISN'T REQUEST (SERVED OR UNSERVED) ====== ------ -->
+
+        <tr *ngIf="wsRequestsUnserved?.length === 0">
+
+
+          <td colspan="7" style="text-align: center; padding-top: 16px;">
+
+            <p style="font-size:1em; color:#737376; font-weight: 100">
+
+
+
+              {{ 'NoRequests' | translate }}
+
+            </p>
+          </td>
+        </tr>
+
+
+
+        <!-- ****************************************
+            ------ ====== UNSERVED FOR ====== ------
+          ********************************************* -->
+        <tr *ngFor="let request of wsRequestsUnserved; trackBy: trackByFn">
+
+
+          <!-- ------ ====== VISIBILITY ICON ====== ------ -->
+          <td style="text-align:center; white-space: nowrap; width: 1%;">
+
+
+            <!-- IF THE REQUEST SUPPORT STATUS IS 100 (UNSERVED REQUEST) -->
+            <span *ngIf="request?.status == 100">
+              <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
+
+                <svg viewBox="0 0 58.1 53.9" style="width: 25px; position: relative; top: 3px;" xml:space="preserve">
+                  <style type="text/css">
+                    .st0-unserved {
+                      fill: none;
+                      stroke: #ED4537;
+                      stroke-width: 2;
+                      stroke-miterlimit: 10;
+                    }
+
+                    .st1-unserved {
+                      fill: #ED4537;
+                    }
+                  </style>
+                  <path class="st0-unserved" d="M30.5,3.3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
+                      c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S44.3,3.3,30.5,3.3z" />
+                  <g>
+                    <path class="st1-unserved"
+                      d="M30.6,38.9c-1.7,0-3.1-1.4-3.1-3c0-1.7,1.4-3,3.1-3c1.7,0,3.1,1.4,3.1,3C33.6,37.6,32.3,38.9,30.6,38.9z" />
+                    <path class="st1-unserved" d="M34.8,18l-1.5,10c-0.2,1.5-1.6,2.5-3.1,2.3c-1.2-0.2-2.1-1.1-2.3-2.2l-1.6-10c-0.4-2.3,1.2-4.5,3.6-4.9
+                        c2.4-0.4,4.6,1.2,5,3.5C34.9,17.1,34.9,17.6,34.8,18z" />
+                  </g>
+                </svg>
+
+              </span>
+            </span>
+          </td>
+
+
+
+          <!-- ------ ====== MESSAGE ====== ------ -->
+
+          <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; ">
+
+            <p class="column-td" [innerHTML]="getRequestText(request?.first_text)">
+
+            </p>
+          </td>
+
+          <!-- ------ ====== REQUESTER (in UNSERVED)====== ------ -->
+          <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer;white-space: nowrap; width: 1%;"
+            rel="tooltip" title="requester id:{{ request?.lead?.fullname }}">
+
+            <!-- REQUESTER VERIFIED ICON (UNSERVED REQUEST SECTION)-->
+            <span class="requester-avatar-wrapper">
+              <span class="requester-avatar" [ngStyle]="{'background-color': request?.requester_fullname_fillColour }"
+                [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname}">
+                <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
+              </span>
+              <span *ngIf="request?.requester_is_verified === true" class="tooltipx">
+                <!-- left: -36px;top: -3px;  -->
+                <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                  xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6" width="17"
+                  height="17" style="position: relative;left: -41px;top: 1px;" xml:space="preserve">
+                  <style type="text/css">
+                    .st0_UserVerified {
+                      fill: none;
+                    }
+
+                    .st1_UserVerified {
+                      fill: #FFFFFF;
+                    }
+
+                    .st2_UserVerified {
+                      fill: #18BDF7;
+                    }
+                  </style>
+                  <path class="st0_UserVerified" d="M1.3,1.3h24v24h-24V1.3z" />
+                  <path class="st1_UserVerified"
+                    d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z" />
+                  <path class="st2_UserVerified" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
+                        l6.6-6.6l1.4,1.4L11.3,18.3z" />
+                </svg>
+
+                <span class="tooltiptext"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
+
+              </span>
+            </span>
+
+            <span class="column-td" style="white-space: nowrap;"
+              [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
+
+              {{ request?.lead?.fullname }}
+
+              <span *ngIf="!request?.lead?.fullname">
+                n.a.
+              </span>
+
+              <span class="requester-email"
+                [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
+                {{ request?.lead?.email }}
+              </span>
+              <span class="requester-email" *ngIf="!request?.lead?.email"
+                [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
+                n.a.
+              </span>
+            </span>
+
+
+          </td>
+
+          <!-- ------ ====== USER AGENT BROWSER & OPERATING SYSTEM (in served requests)====== ------ -->
+          <td>
+            <span class="tooltipx">
+              <i class="material-icons user-agent-icon">
+                computer
+              </i>
+
+              <span class="tooltiptext" style="font-size: 10px !important; padding: 3px;">
+
+                <span *ngIf="request?.ua_os !== 'undefined undefined'"> {{ request?.ua_os }} </span>
+                <span *ngIf="request?.ua_os === 'undefined undefined'"> not defined </span>
+
+
+              </span>
+            </span>
+
+            <span class="tooltipx">
+              <i class="material-icons user-agent-icon">
+                public
+              </i>
+
+              <span class="tooltiptext" style="font-size: 10px !important; padding: 3px;">
+                <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span>
+
+                <span *ngIf="request?.ua_browser === 'undefined undefined'"> not defined </span>
+              </span>
+            </span>
+          </td>
+
+          <!-- ------ ============== DEPARTMENT =============== ------ -->
+          <!-- no more get from request attributes but from department -->
+          <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
+            title="department id:{{ request?.department?._id }}">
+
+            <p *ngIf="request?.department?.name" class="column-td">
+
+
+              {{ request?.department?.name }}
+
+
+            </p>
+            <p *ngIf="!request?.department?.name" class="column-td">
+              <!-- {{ 'VisitorsPage.Default' | translate }} -->
+              n.a.
+            </p>
+          </td>
+
+          <!-- ------ ====== CREATED ON ====== ------ -->
+          <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
+            <p class="column-td">
+              <!-- {{ request?.timestamp | date: 'd/M/y HH:mm:ss'}} -->
+              <!-- {{ request?.request_date_fromnow }} -->
+              <!-- {{ getTimestampAsMoment(request?.timestamp) }} -->
+
+              <!-- {{ request?.timestamp | amTimeAgo }} -->
+              <!-- {{ request?.created_on | date: 'd/M/y HH:mm:ss' }} -->
+              {{ request?.createdAt | amTimeAgo }}
+
+            </p>
+          </td>
+
+          <!-- ------ ====== ARCHIVE Action ====== ------ -->
+          <!-- class="td-actions text-right" -->
+          <td>
+            <button type="button" rel="tooltip" title="{{ 'VisitorsPage.tootipArchiveRequest' | translate }}"
+              class="btn btn-danger btn-simple btn-xs" (click)='openDeleteRequestModal((request?.request_id))'>
+              <i class="material-icons">clear</i>
+            </button>
+          </td>
+        </tr>
+        <!-- /. END UNSERVED REQUESTS -->
+
+      </tbody>
+    </table>
+  </div> <!-- ./ card-content table-responsive -->
+</div> <!-- ./ card -->
+
+
+<appdashboard-close-request-modal *ngIf="displayArchiveRequestModal === 'block'"
+  [id_request_to_archive]="id_request_to_archive"
+  [displayArchiveRequestModal]="displayArchiveRequestModal"
+  (closeModal)='onCloseArchiveRequestModal()'> 
+</appdashboard-close-request-modal>

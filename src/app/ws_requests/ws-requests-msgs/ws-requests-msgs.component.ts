@@ -1,23 +1,26 @@
 import { Component, OnInit, ElementRef, ViewChild, HostListener, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { WsRequestsService } from '../services/websocket/ws-requests.service';
-import { WsMsgsService } from '../services/websocket/ws-msgs.service';
+import { WsRequestsService } from '../../services/websocket/ws-requests.service';
+import { WsMsgsService } from '../../services/websocket/ws-msgs.service';
 import { Location } from '@angular/common';
-import { UsersLocalDbService } from '../services/users-local-db.service';
-import { BotLocalDbService } from '../services/bot-local-db.service';
-import { UsersService } from '../services/users.service';
+import { UsersLocalDbService } from '../../services/users-local-db.service';
+import { BotLocalDbService } from '../../services/bot-local-db.service';
+import { UsersService } from '../../services/users.service';
 import { WsSharedComponent } from '../ws-shared/ws-shared.component';
-import { RequestsService } from '../services/requests.service';
-import { NotifyService } from '../core/notify.service';
-import { environment } from '../../environments/environment';
-import { AuthService } from '../core/auth.service';
-import { WsMessage } from '../models/ws-message-model';
+import { RequestsService } from '../../services/requests.service';
+import { NotifyService } from '../../core/notify.service';
+import { environment } from '../../../environments/environment';
+import { AuthService } from '../../core/auth.service';
+import { WsMessage } from '../../models/ws-message-model';
 import * as firebase from 'firebase';
 import 'firebase/database';
 import { forEach } from '@angular/router/src/utils/collection';
-import { AppConfigService } from '../services/app-config.service';
+import { AppConfigService } from '../../services/app-config.service';
 import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
+
 @Component({
   selector: 'appdashboard-ws-requests-msgs',
   templateUrl: './ws-requests-msgs.component.html',
@@ -83,17 +86,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   displayUsersListModal = 'none'
   displayLeaveChatModal = 'none'
   displayLeavingChatInfoModal = 'none'
-
   projectUsersList: any;
-
-
   userid_selected: string;
   userfirstname_selected: string;
   userlastname_selected: string;
   useremail_selected: string;
-
   REQUESTER_IS_VERIFIED = false;
-
   isMobile: boolean;
   actionInModal: string;
   REQUESTER_IS_ONLINE = false;
@@ -108,10 +106,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   train_bot_sidebar_height: any;
   storageBucket: string;
 
-  subscribe: Subscription;
-
-  isSubscribedToMsgs = false;
-
+  // isSubscribedToMsgs = false;
   clientStringCutted: string;
   showAllClientString = false;
 
@@ -123,6 +118,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   sourcePage: string;
   sourcePageCutted: string;
 
+  subscribe: Subscription;
+  private unsubscribe$: Subject<any> = new Subject<any>();
   /**
    * Constructor
    * 
@@ -139,8 +136,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
    * @param {AuthService} auth  
    */
   constructor(
-    private router: Router,
-    private route: ActivatedRoute,
+    public router: Router,
+    public route: ActivatedRoute,
     private wsRequestsService: WsRequestsService,
     private wsMsgsService: WsMsgsService,
     private _location: Location,
@@ -149,10 +146,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     private usersService: UsersService,
     private requestsService: RequestsService,
     private notify: NotifyService,
-    private auth: AuthService,
+    public auth: AuthService,
     public appConfigService: AppConfigService
   ) {
-    super(botLocalDbService, usersLocalDbService)
+    super(botLocalDbService, usersLocalDbService, router)
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -215,8 +212,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
    * On destroy
    */
   ngOnDestroy() {
-    console.log('!!!!!!!!!!!!! ngOnDestroy    ')
-    this.subscribe.unsubscribe();
+    console.log('!!!!!!!!!!!!! ngOnDestroy')
+
+    // this.subscribe.unsubscribe();
+    // the two snippet bottom replace  this.subscribe.unsubscribe()
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+
     // this.wsRequestsService.unsubscribeTo_wsRequestById(this.id_request)
     // this.wsMsgsService.unsubsToWS_MsgsByRequestId(this.id_request)
     if (this.id_request) {
@@ -370,179 +372,171 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
    * Get the request published
    */
   getWsRequestById$() {
-    this.subscribe = this.wsRequestsService.wsRequest$.subscribe((wsrequest) => {
+    // this.subscribe = 
+    this.wsRequestsService.wsRequest$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((wsrequest) => {
 
-      // console.log('% !!!!!!!!!!!! Ws-REQUESTS-Msgs - getWsRequestById$ *** wsrequest *** ', wsrequest)
-      this.request = wsrequest;
-      console.log('% !!!!!!!!!!!! Ws-REQUESTS-Msgs - getWsRequestById$ *** this.request *** ', this.request)
-      // this.showSpinner = false;
+        // console.log('% !!!!!!!!!!!! Ws-REQUESTS-Msgs - getWsRequestById$ *** wsrequest *** ', wsrequest)
+        this.request = wsrequest;
+        console.log('% !!!!!!!!!!!! Ws-REQUESTS-Msgs - getWsRequestById$ *** this.request *** ', this.request)
+        // this.showSpinner = false;
 
-      if (this.request) {
-        this.members_array = this.request.participants;
-        console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById PARTICIPANTS ARRAY ', this.members_array)
-
-        // this.requester_id = this.request.requester ??? 
-        // this.requester_id = this.request.attributes.requester_id;
-
-        if (this.request.lead) {
-          this.requester_id = this.request.lead.lead_id;
-          this.getRequesterAvailabilityStatus(this.requester_id);
-        } else {
-          this.requester_id = "n.a.";
-        }
-
-        if (this.request.rating) {
-          this.rating = this.request.rating + '/5'
-        } else {
-          this.rating = 'n.a./5'
-        }
-
-        if (this.request.rating_message) {
-          this.rating_message = this.request.rating_message
-        } else {
-          this.rating_message = 'n.a.'
-        }
-
-        console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById REQUESTER ID (DA LEAD)', this.requester_id);
-
-        if (this.request.attributes) {
-    
-          if (this.request.attributes.client) {
-            console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > CLIENT ', this.request.attributes.client);
-            const stripHere = 30;
-            this.clientStringCutted = this.request.attributes.client.substring(0, stripHere) + '...';
-            console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > CLIENT CUTTED ', this.clientStringCutted);
-          }
-
-          if (this.request.attributes.departmentId) {
-            console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > DEPT ID ', this.request.attributes.departmentId);
-   
-          }
-
-          if (this.request.attributes.departmentName) {
-            console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > DEPT NAME ', this.request.attributes.departmentName);
-   
-          }
-
-          if (this.request.attributes.projectId) {
-            console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > PROJECT ID ', this.request.attributes.projectId);
-   
-          }
-
-
-          if (this.request.attributes.requester_id) {
-            console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > REQUESTER ID ', this.request.attributes.requester_id);
-   
-          }
-
-          if (this.request.attributes.sourcePage) {
-            console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > SOURCE PAGE ', this.request.attributes.sourcePage);
-            this.sourcePage = this.request.attributes.sourcePage;
-
-            const stripHere = 20;
-            
-            this.sourcePageCutted = this.request.attributes.sourcePage.substring(0, stripHere) + '...';
-            console.log('%%% Ws-REQUESTS-Msgs getWsRequestById - ATTRIBUTES > SOURCR PAGE CUTTED: ', this.sourcePage);
-   
-          }
-
-          if (this.request.attributes.userEmail) {
-            console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > USER EMAIL ', this.request.attributes.userEmail);
-   
-          }
-
-          if (this.request.attributes.userFullname) {
-            console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > USER FULLNAME ', this.request.attributes.userFullname);
-   
-          }
-
-          if (this.request.attributes.senderAuthInfo) {
-            console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > SENDER AUTH INFO ', this.request.attributes.senderAuthInfo);
-
-           
-            const _senderAuthInfoString = JSON.stringify(this.request.attributes.senderAuthInfo)
-
-            // add a space after each comma
-            this.senderAuthInfoString = _senderAuthInfoString.split(',').join(', ')
-            console.log('%%% Ws-REQUESTS-Msgs - > SENDER AUTH INFO (STRING): ', this.senderAuthInfoString);
-
-            const stripHere = 20;
-            this.senderAuthInfoStringCutted = this.senderAuthInfoString.substring(0, stripHere) + '...';
-   
-          }
-          
-        }
-
-
-
-        // -----------------------------------------------------------------------------------------------------
-        // @ Msgs ws-subscription
-        // -----------------------------------------------------------------------------------------------------
-
-        this.isSubscribedToMsgs = true;
-
-        // if (!this.isSubscribedToMsgs) {
-        this.subscribeToWs_MsgsByRequestId(this.id_request);
-        // }
-
-
-
-        /**
-         * DISPLAY / HIDE THE VIEW 'CONTACT' DETAIL BUTTON 
-         * AND GET THE CONTACT-ID USED TO GO TO THE CONTACT DETAILS
-         */
         if (this.request) {
-          // this.contact_id = nodejsRequest['requests'][0]['requester_id']
+          this.members_array = this.request.participants;
+          console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById PARTICIPANTS ARRAY ', this.members_array)
+
+          // this.requester_id = this.request.requester ??? 
+          // this.requester_id = this.request.attributes.requester_id;
 
           if (this.request.lead) {
-            this.contact_id = this.request.lead._id
-            console.log('%% Ws-REQUESTS-Msgs: NODEJS REQUEST > CONTACT ID ', this.contact_id);
-            this.NODEJS_REQUEST_CNTCT_FOUND = true;
-            console.log('%% Ws-REQUESTS-Msgs: NODEJS REQUEST FOUND ? ', this.NODEJS_REQUEST_CNTCT_FOUND);
-
+            this.requester_id = this.request.lead.lead_id;
+            this.getRequesterAvailabilityStatus(this.requester_id);
           } else {
-
-            this.NODEJS_REQUEST_CNTCT_FOUND = false;
-            console.log('%% Ws-REQUESTS-Msgs: NODEJS REQUEST >  FOUND ? ', this.NODEJS_REQUEST_CNTCT_FOUND);
+            this.requester_id = "n.a.";
           }
 
+          if (this.request.rating) {
+            this.rating = this.request.rating + '/5'
+          } else {
+            this.rating = 'n.a./5'
+          }
+
+          if (this.request.rating_message) {
+            this.rating_message = this.request.rating_message
+          } else {
+            this.rating_message = 'n.a.'
+          }
+
+          console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById REQUESTER ID (DA LEAD)', this.requester_id);
+
+          if (this.request.attributes) {
+
+            if (this.request.attributes.client) {
+              console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > CLIENT ', this.request.attributes.client);
+              const stripHere = 30;
+              this.clientStringCutted = this.request.attributes.client.substring(0, stripHere) + '...';
+              console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > CLIENT CUTTED ', this.clientStringCutted);
+            }
+
+            if (this.request.attributes.departmentId) {
+              console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > DEPT ID ', this.request.attributes.departmentId);
+            }
+
+            if (this.request.attributes.departmentName) {
+              console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > DEPT NAME ', this.request.attributes.departmentName);
+            }
+
+            if (this.request.attributes.projectId) {
+              console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > PROJECT ID ', this.request.attributes.projectId);
+            }
+
+            if (this.request.attributes.requester_id) {
+              console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > REQUESTER ID ', this.request.attributes.requester_id);
+            }
+
+            if (this.request.attributes.sourcePage) {
+              console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > SOURCE PAGE ', this.request.attributes.sourcePage);
+              this.sourcePage = this.request.attributes.sourcePage;
+
+              const stripHere = 20;
+
+              this.sourcePageCutted = this.request.attributes.sourcePage.substring(0, stripHere) + '...';
+              console.log('%%% Ws-REQUESTS-Msgs getWsRequestById - ATTRIBUTES > SOURCR PAGE CUTTED: ', this.sourcePage);
+
+            }
+
+            if (this.request.attributes.userEmail) {
+              console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > USER EMAIL ', this.request.attributes.userEmail);
+            }
+
+            if (this.request.attributes.userFullname) {
+              console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > USER FULLNAME ', this.request.attributes.userFullname);
+            }
+
+            if (this.request.attributes.senderAuthInfo) {
+              console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > SENDER AUTH INFO ', this.request.attributes.senderAuthInfo);
+              const _senderAuthInfoString = JSON.stringify(this.request.attributes.senderAuthInfo)
+
+              // add a space after each comma
+              this.senderAuthInfoString = _senderAuthInfoString.split(',').join(', ')
+              console.log('%%% Ws-REQUESTS-Msgs - > SENDER AUTH INFO (STRING): ', this.senderAuthInfoString);
+
+              const stripHere = 20;
+              this.senderAuthInfoStringCutted = this.senderAuthInfoString.substring(0, stripHere) + '...';
+
+            }
+          }
+
+
+
+          // -----------------------------------------------------------------------------------------------------
+          // @ Msgs ws-subscription
+          // -----------------------------------------------------------------------------------------------------
+          // this.isSubscribedToMsgs = true;
+
+          // if (!this.isSubscribedToMsgs) {
+          this.subscribeToWs_MsgsByRequestId(this.id_request);
+          // }
+
+          /**
+           * DISPLAY / HIDE THE VIEW 'CONTACT' DETAIL BUTTON 
+           * AND GET THE CONTACT-ID USED TO GO TO THE CONTACT DETAILS
+           */
+          if (this.request) {
+            // this.contact_id = nodejsRequest['requests'][0]['requester_id']
+
+            if (this.request.lead) {
+              this.contact_id = this.request.lead._id
+              console.log('%% Ws-REQUESTS-Msgs: NODEJS REQUEST > CONTACT ID ', this.contact_id);
+              this.NODEJS_REQUEST_CNTCT_FOUND = true;
+              console.log('%% Ws-REQUESTS-Msgs: NODEJS REQUEST FOUND ? ', this.NODEJS_REQUEST_CNTCT_FOUND);
+
+            } else {
+
+              this.NODEJS_REQUEST_CNTCT_FOUND = false;
+              console.log('%% Ws-REQUESTS-Msgs: NODEJS REQUEST >  FOUND ? ', this.NODEJS_REQUEST_CNTCT_FOUND);
+            }
+
+          }
+
+
+          this.createAgentsArrayFromParticipantsId(this.members_array, this.requester_id)
+
+          this.createRequesterAvatar(this.request.lead);
+
+          /**
+           * ! NO MORE USED 
+           * Extracts the values
+           * - user_name // now get from lead
+           * - user_email // now get from lead
+           * - department_name // now get from department
+           * - department_id // now get from department
+           * - source_page // now get from request
+           * from the "attributes" object of the request and assign them to local variables
+           */
+          // this.destructureAttributes(this.request.attributes)
+
+
+          this.IS_CURRENT_USER_JOINED = this.currentUserIdIsInParticipants(this.request.participants, this.currentUserID, this.request.request_id);
+          console.log('%%% Ws-REQUESTS-Msgs »»»»»»» IS_CURRENT_USER_JOINED? ', this.IS_CURRENT_USER_JOINED)
+          console.log('%%% Ws-REQUESTS-Msgs »»»»»»» IS_CURRENT_USER_JOINED - PARTICIPANTS ', this.request.participants)
+          console.log('%%% Ws-REQUESTS-Msgs »»»»»»» IS_CURRENT_USER_JOINED - CURRENT USER ID ', this.currentUserID)
         }
 
 
-        this.createAgentsArrayFromParticipantsId(this.members_array, this.requester_id)
-
-        this.createRequesterAvatar(this.request.lead);
-
-        /**
-         * ! NO MORE USED 
-         * Extracts the values
-         * - user_name // now get from lead
-         * - user_email // now get from lead
-         * - department_name // now get from department
-         * - department_id // now get from department
-         * - source_page // now get from request
-         * from the "attributes" object of the request and assign them to local variables
-         */
-        // this.destructureAttributes(this.request.attributes)
-
-
-        this.IS_CURRENT_USER_JOINED = this.currentUserIdIsInParticipants(this.request.participants, this.currentUserID, this.request.request_id);
-        console.log('%%% Ws-REQUESTS-Msgs »»»»»»» IS_CURRENT_USER_JOINED? ', this.IS_CURRENT_USER_JOINED)
-        console.log('%%% Ws-REQUESTS-Msgs »»»»»»» IS_CURRENT_USER_JOINED - PARTICIPANTS ', this.request.participants)
-        console.log('%%% Ws-REQUESTS-Msgs »»»»»»» IS_CURRENT_USER_JOINED - CURRENT USER ID ', this.currentUserID)
-      }
-
-
-    }, error => {
-      console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById$ * error * ', error)
-    }, () => {
-      console.log('% !!!!!!!! Ws-REQUESTS-Msgs - getWsRequestById$ * COMPLETE *')
-    });
+      }, error => {
+        console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById$ * error * ', error)
+      }, () => {
+        console.log('% !!!!!!!! Ws-REQUESTS-Msgs - getWsRequestById$ * COMPLETE *')
+      });
 
   }
 
   // -----------------------------------------------------------------------------------------------------
-  // @ Messages ws-subscription (called On init > getParamRequestId) and get
+  // @ Messages ws-subscription and get
   // -----------------------------------------------------------------------------------------------------
 
   subscribeToWs_MsgsByRequestId(id_request: string) {
@@ -552,34 +546,38 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
   getWsMsgs$() {
-    this.wsMsgsService.wsMsgsList$.subscribe((wsmsgs) => {
-      // this.wsMsgsService._wsMsgsList.subscribe((wsmsgs) => {
-      console.log('%%% Ws-REQUESTS-Msgs Msgs getWsMsgs$ *** wsmsgs *** ', wsmsgs)
+    this.wsMsgsService.wsMsgsList$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((wsmsgs) => {
+        // this.wsMsgsService._wsMsgsList.subscribe((wsmsgs) => {
+        console.log('%%% Ws-REQUESTS-Msgs Msgs getWsMsgs$ *** wsmsgs *** ', wsmsgs)
 
 
-      this.messagesList = wsmsgs;
-      // console.log('%%% WsRequestsMsgsComponent getWsRequests$ *** messagesList *** ', this.messagesList)
+        this.messagesList = wsmsgs;
+        // console.log('%%% WsRequestsMsgsComponent getWsRequests$ *** messagesList *** ', this.messagesList)
 
-      this.showSpinner = false;
+        this.showSpinner = false;
 
-      // let i: number
-      // for (i = 0; i < this.messagesList.length; i++) {
-      //   if (this.messagesList.length - 1 === i) {
-      //     console.log('%%% Ws-REQUESTS-Msgs Msgs getWsMsgs$ *** loop ends *** ', wsmsgs)
-      //   }
-      // }
+        // let i: number
+        // for (i = 0; i < this.messagesList.length; i++) {
+        //   if (this.messagesList.length - 1 === i) {
+        //     console.log('%%% Ws-REQUESTS-Msgs Msgs getWsMsgs$ *** loop ends *** ', wsmsgs)
+        //   }
+        // }
 
-      //  this.wsMsgsService.wsMsgsList$.complete();
-      // console.log('%%% WsRequestsMsgsComponent getWsRequests$ * complete * ', x)
+        //  this.wsMsgsService.wsMsgsList$.complete();
+        // console.log('%%% WsRequestsMsgsComponent getWsRequests$ * complete * ', x)
 
-      this.scrollCardContetToBottom();
+        this.scrollCardContetToBottom();
 
-    }, error => {
-      this.showSpinner = false;
-      console.log('%%% Ws-REQUESTS-Msgs - getWsMsgs$ * error * ', error)
-    }, () => {
-      console.log('%%% Ws-REQUESTS-Msgs - getWsMsgs$ *** complete *** ')
-    });
+      }, error => {
+        this.showSpinner = false;
+        console.log('%%% Ws-REQUESTS-Msgs - getWsMsgs$ * error * ', error)
+      }, () => {
+        console.log('%%% Ws-REQUESTS-Msgs - getWsMsgs$ *** complete *** ')
+      });
 
   }
 

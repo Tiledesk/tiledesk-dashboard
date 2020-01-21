@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { UsersLocalDbService } from '../services/users-local-db.service';
-import { BotLocalDbService } from '../services/bot-local-db.service';
-import { avatarPlaceholder, getColorBck } from '../utils/util';
+import { UsersLocalDbService } from '../../services/users-local-db.service';
+import { BotLocalDbService } from '../../services/bot-local-db.service';
+import { avatarPlaceholder, getColorBck } from '../../utils/util';
+import { Router } from '@angular/router';
+
+
 @Component({
   selector: 'appdashboard-ws-shared',
   templateUrl: './ws-shared.component.html',
@@ -21,12 +24,18 @@ export class WsSharedComponent implements OnInit {
   source_page: string;
   participantsInRequests: any;
   depts_array_noduplicate = [];
+  OPEN_RIGHT_SIDEBAR = false;
+  selectedQuestion: string;
+  train_bot_sidebar_height: any;
+
   constructor(
     public botLocalDbService: BotLocalDbService,
-    public usersLocalDbService: UsersLocalDbService
+    public usersLocalDbService: UsersLocalDbService,
+    public router: Router
   ) { }
 
   ngOnInit() {
+    
   }
 
 
@@ -47,7 +56,7 @@ export class WsSharedComponent implements OnInit {
          * ** leaveTheGroup: WITH WHOM LEAVE THE GROUP THE MEMBER ID CONTAINED IN cleaned_members_array
          *    note: before of this in leaveTheGroup was used the currentUserID  */
         this.cleaned_members_array.push(member_id);
-        console.log('%%% WsRequestsMsgsComponent - CLEANED MEMBERS ARRAY ', this.cleaned_members_array);
+        // console.log('%%% WsRequestsMsgsComponent - CLEANED MEMBERS ARRAY ', this.cleaned_members_array);
 
         const memberIsBot = member_id.includes('bot_');
 
@@ -87,7 +96,7 @@ export class WsSharedComponent implements OnInit {
       }
     });
 
-    console.log('%%% WsRequestsMsgsComponent - AGENT ARRAY ', this.agents_array)
+    // console.log('%%% WsRequestsMsgsComponent - AGENT ARRAY ', this.agents_array)
   }
 
 
@@ -362,6 +371,77 @@ export class WsSharedComponent implements OnInit {
       // console.log('% WsRequestsList - REQUESTSxDEPTS DEPTS ARRAY [no duplicate] NK * 2 * : ', this.depts_array_noduplicate);
     }
   }
+
+
+
+// ------------------------------------------------------------------------------------------------
+// MOVED FROM ws-requests-list.component.ts after the creation of the component  
+// WsRequestsUnservedComponent & WsRequestsServedComponent
+// ------------------------------------------------------------------------------------------------
+
+
+  members_replace(member_id) {
+    // console.log('!!! NEW REQUESTS HISTORY  - SERVED BY ID ', member_id)
+    // console.log(' !!! NEW REQUESTS HISTORY underscore found in the participant id  ', member_id, member_id.includes('bot_'));
+
+    const participantIsBot = member_id.includes('bot_')
+
+    if (participantIsBot === true) {
+
+      const bot_id = member_id.slice(4);
+      // console.log('!!! NEW REQUESTS HISTORY - THE PARTICIP', member_id, 'IS A BOT ', participantIsBot, ' - ID ', bot_id);
+
+      const bot = this.botLocalDbService.getBotFromStorage(bot_id);
+      if (bot) {
+        // '- ' +
+        return member_id = bot['name'] + ' (bot)';
+      } else {
+        // '- ' +
+        return member_id
+      }
+
+    } else {
+
+      const user = this.usersLocalDbService.getMemberFromStorage(member_id);
+      if (user) {
+        // console.log('user ', user)
+        const lastnameInizial = user['lastname'].charAt(0);
+        // '- ' +
+        return member_id = user['firstname'] + ' ' + lastnameInizial + '.'
+      } else {
+        // '- ' +
+        return member_id
+      }
+    }
+  }
+
+
+  getRequestText(text: string): string {
+    if (text) {
+      return text.length >= 30 ?
+        text.slice(0, 30) + '...' :
+        text;
+    }
+  }
+
+   // -----------------------------------------------------------------------------------------------------
+  // @ Train bot sidebar
+  // -----------------------------------------------------------------------------------------------------
+
+  openRightSideBar(message: string) {
+    this.OPEN_RIGHT_SIDEBAR = true;
+    console.log('»»»» OPEN RIGHT SIDEBAR ', this.OPEN_RIGHT_SIDEBAR, ' MSG: ', message);
+    this.selectedQuestion = message;
+
+
+    // questo non funziona se è commented BUG RESOLVE
+    const elemMainContent = <HTMLElement>document.querySelector('.main-content');
+    this.train_bot_sidebar_height = elemMainContent.clientHeight + 10 + 'px'
+    console.log('REQUEST-MSGS - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
+
+  }
+
+
 
 
 }
