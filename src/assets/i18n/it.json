@@ -99,6 +99,7 @@
     "BottomRight": "In basso a destra",
     "BottomLeft": "In basso a sinistra",
     "WidgetColors": "Colori Widget",
+    "Colors": "Colori",
     "CustomizeTheWidgetColors": "Personalizza i colori del widget, il logo, i messaggi di benvenuto e l'allineamento",
     "ChooseYourWidgetColors": "Scegli i colori, il logo, i messaggi del tuo widget e altro!",
     "Change": "Cambia",
@@ -384,6 +385,8 @@
     "NoRequests": "Nessuna richiesta",
     "MultiLanguagePreview": "Cambia lingua di anteprima",
     "RequiredField":"Campo obbligatorio",
+    "Text":"Testo",
+    "Alignment":"Allineamento",
     "Pricing": {
         "Operators": "Operatori",
         "UpgradePlan": "Aggiorna Piano",
