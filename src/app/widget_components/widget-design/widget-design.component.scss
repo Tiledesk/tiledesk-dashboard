@@ -532,10 +532,10 @@
   position: relative;
 }
 
-#chat21-home-component .c21-body .c21-body-container .c21-body-content {
-  // padding-top: 38%;
-  // margin: 60px 0 40px;
-}
+// #chat21-home-component .c21-body .c21-body-container .c21-body-content {
+// padding-top: 38%;
+// margin: 60px 0 40px;
+// }
 
 #chat21-home-component .c21-body .c21-body-container .c21-body-content .c21-cards .c21-card {
   position: relative;
@@ -839,7 +839,7 @@ input {
   font-size: 14px;
   width: 100%;
   //    max-width: 200px;
-  margin-bottom: 10px;
+  // margin-bottom: 10px;
   -webkit-appearance: none;
   //    background: #fff;
   border: 1px solid #ccc !important;
@@ -855,6 +855,7 @@ input {
 
 .custom-input {
   max-width: 300px;
+  margin-bottom: 6px;
 }
 
 .image-not-exist-input-border {
@@ -1567,8 +1568,17 @@ button.buttonRounded:hover {
   display: table-cell;
 }
 
-
-.required-field{
+.required-field {
   border: 1px solid #f44336 !important;
- 
+}
+
+.widget-label {
+  font-size: 12px !important;
+}
+
+.widget-appearance-section {
+  font-family: Google Sans, sans-serif;
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 14px;
 }

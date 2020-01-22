@@ -331,15 +331,12 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
         console.log('Multilanguage (widget-mtl) - deleteLang RES ', labels);
       }, error => {
         console.log('Multilanguage (widget-mtl) - deleteLang - ERROR ', error)
+      
+      }, () => {
 
-        // TO MOVE IN COMPLETE WHEN ANDREA LEO FIX THE SERVICE
         this.selectedTranslationCode = 'add'
         this.selectedLang = null;
         this.disableAddBtn = true;
-
-      }, () => {
-
-
         console.log('Multilanguage (widget-mtl) - deleteLang * COMPLETE *')
       });
   }
