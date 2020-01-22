@@ -383,7 +383,8 @@ export class UsersService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'email': email, 'role': role, 'id_project': this.project_id, 'project_name': this.project_name };
+    // , 'id_project': this.project_id, 'project_name': this.project_name
+    const body = { 'email': email, 'role': role };
 
     console.log('POST INVITE USER - REQUEST BODY ', body);
 
@@ -455,7 +456,9 @@ export class UsersService {
 
   /// ============================= GET PROJECT-USER BY CURRENT-PROJECT-ID AND CURRENT-USER-ID ============================= ///
   public getProjectUsersByProjectIdAndUserId(user_id: string, project_id: string): Observable<ProjectUser[]> {
-    const url = this.MONGODB_BASE_URL + user_id + '/' + project_id;
+    // const url = this.MONGODB_BASE_URL + user_id + '/' + project_id; 
+    const url = this.MONGODB_BASE_URL + 'users/' + user_id;
+    
 
     console.log('GET PROJECT USERS BY PROJECT-ID & CURRENT-USER-ID URL', url);
     const headers = new Headers();
