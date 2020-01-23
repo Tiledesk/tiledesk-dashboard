@@ -27,7 +27,7 @@ Feel free to ask for support on https://tiledesk.com, using the live chat widget
 - Firebase Database CRUD (Firestore & Realtime DB)
 - MongoDB CRUD
 
-## Prerequisite
+## Prerequisites
 
 - Install Node and NPM (https://nodejs.org/en)
 - Install angular-cli v7.3.5 with `npm install -g @angular/cli@7.3.5`
@@ -76,7 +76,35 @@ export const environment = {
     }
 };
 
+
+
 ```
+
+
+#### environment.ts firebase config example
+```typescript
+const serverUrl = 'https://<YOUR_TILEDESK_SERVER>/';
+export const environment = {
+ ...
+    production: false,
+    ...
+    firebase: {
+        apiKey: '123ABC..',
+        authDomain: 'XYZ.firebaseapp.com',
+        databaseURL: 'https://XYZ.firebaseio.com',
+        projectId: 'XYZ',
+        storageBucket: 'XYZ.appspot.com',
+        messagingSenderId: '123456',
+        ...
+    },
+    ...
+    
+};
+
+
+
+```
+
 ### RUN in dev
 
 Run the app with `ng serve`
