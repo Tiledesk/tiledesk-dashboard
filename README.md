@@ -1,7 +1,7 @@
 [![npm version](https://badge.fury.io/js/%40tiledesk%2Ftiledesk-dashboard.svg)](https://badge.fury.io/js/%40tiledesk%2Ftiledesk-dashboard)
 
 # Tiledesk-dashboard
-
+![Demo Animation](../assets/img/home_screenshot.png?raw=true)
 <img width="1200" alt="tiledesk-routing" src="https://user-images.githubusercontent.com/32564846/43013863-8b1ed646-8c4a-11e8-8dba-54c1a6b3c8c1.png" width="500">
 <img width="1191" alt="tiledesk-hours" src="https://user-images.githubusercontent.com/32564846/43013892-a3864e4e-8c4a-11e8-97d6-1721076f1523.png" width="500">
 <img width="1203" alt="tiledesk-widget" src="https://user-images.githubusercontent.com/32564846/43013900-b2fffda2-8c4a-11e8-81ca-38aaaeff6c9a.png" width="500">
