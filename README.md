@@ -15,7 +15,7 @@ Consider that Tiledesk.com cloud service makes every module available with the s
 - iOS Widget API (work in progress)
 - full iOS App
 - full Android App
-- Tiledesk Backoffice (this repo)
+- Tiledesk Dashboard (this repo)
 - All the chat components are available thanks to the Chat21 open source project, also available on GitHub (https://github.com/chat21)
 
 Feel free to ask for support on https://tiledesk.com, using the live chat widget on the the website.
@@ -29,11 +29,15 @@ Feel free to ask for support on https://tiledesk.com, using the live chat widget
 
 ## Prerequisite
 
-tiledesk-server installed and running (https://github.com/Tiledesk/tiledesk-server.git)
+- Install Node and NPM (https://nodejs.org/en)
+- Install angular-cli v7.3.5 with `npm install -g @angular/cli@7.3.5`
+- A Firebase project (https://firebase.google.com)
+- tiledesk-server installed and running (https://github.com/Tiledesk/tiledesk-server.git)
                                             
 ## Installation
 
-- `git clone https://github.com/Tiledesk/tiledesk-dashboard.git`
+Install the latest stable release. Check on Github page the last release under the Releases tab and then run 
+- `git clone https://github.com/Tiledesk/tiledesk-dashboard.git --branch <LATEST-RELEASE-VERSION>`
 - `cd tiledesk-dashboard`
 - `npm install`
 
@@ -66,6 +70,9 @@ export const environment = {
     },
     testsite: {
         testsiteBaseUrl: 'https://<YOUR_CHAT21_WEB_WIDGET_URL>:4200/testi.html'
+    },
+    websocket: {
+        wsUrl: 'ws://' + window.location.hostname + '/ws/?token='
     }
 };
 
@@ -92,13 +99,17 @@ export const environment = {
     },
     testsite: {
         testsiteBaseUrl: 'https://widget.YOURDOMAIN/testi.html'
+    },
+    websocket: {
+        wsUrl: 'wss://<YOUR_TILEDESK_WS_URL>?token='
     }
 },
 
 ```
 
 
-# Build 
+# Build
+ 
 Run `ng build --prod --base-href ./`
 
 Copy the build files to your WebServer (Apache or Nginx)
