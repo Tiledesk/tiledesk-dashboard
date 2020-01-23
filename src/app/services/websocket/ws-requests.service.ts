@@ -258,8 +258,6 @@ export class WsRequestsService {
   //   }
   // }
 
-
-
   // public getTotalRequestLength(): Promise<number> {
   //   return new Promise<number>((resolve, reject) => {
 

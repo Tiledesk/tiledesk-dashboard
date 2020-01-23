@@ -322,13 +322,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
     getCurrentRoute() {
-        // this.router.events.subscribe((val) => {
-        //     if (this.location.path() !== '') {
-        //         this._route = this.location.path();
-
-        //         console.log('SIDEBAR route »> »> »> ', val)
-        //     }
-        // });
 
         this.router.events.filter((event: any) => event instanceof NavigationEnd)
             .subscribe(event => {
@@ -343,7 +336,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     this.ACTIVITIES_ROUTE_IS_ACTIVE = false;
                 }
 
-
                 if (event.url.indexOf('/activities-demo') !== -1) {
                     console.log('SIDEBAR NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
                     this.ACTIVITIES_DEMO_ROUTE_IS_ACTIVE = true;
@@ -351,7 +343,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     console.log('SIDEBAR NavigationEnd - THE activities-demo route IS NOT ACTIVE  ', event.url);
                     this.ACTIVITIES_DEMO_ROUTE_IS_ACTIVE = false;
                 }
-
 
                 if (event.url.indexOf('/analytics-demo') !== -1) {
                     console.log('SIDEBAR NavigationEnd - THE analytics-demo route IS ACTIVE  ', event.url);
@@ -384,11 +375,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     console.log('SIDEBAR NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
                     this.HOME_ROUTE_IS_ACTIVE = false;
                 }
-
-
-
-
-
             });
     }
 
@@ -404,18 +390,16 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     translateChangeAvailabilitySuccessMsg() {
         this.translate.get('ChangeAvailabilitySuccessNoticationMsg')
             .subscribe((text: string) => {
-
                 this.changeAvailabilitySuccessNoticationMsg = text;
-                console.log('+ + + change Availability Success Notication Msg', text)
+                // console.log('+ + + change Availability Success Notication Msg', text)
             });
     }
 
     translateChangeAvailabilityErrorMsg() {
         this.translate.get('ChangeAvailabilityErrorNoticationMsg')
             .subscribe((text: string) => {
-
                 this.changeAvailabilityErrorNoticationMsg = text;
-                console.log('+ + + change Availability Error Notication Msg', text)
+                // console.log('+ + + change Availability Error Notication Msg', text)
             });
     }
 

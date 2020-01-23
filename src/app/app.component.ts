@@ -25,6 +25,7 @@ import { WsMsgsService } from './services/websocket/ws-msgs.service';
 import { WebSocketJs } from './services/websocket/websocket-js';
 import { Title } from '@angular/platform-browser';
 import brand from 'assets/brand/brand.json';
+// import { webSocket } from "rxjs/webSocket";
 
 @Component({
     selector: 'appdashboard-root',
