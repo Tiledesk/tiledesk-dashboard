@@ -2,6 +2,7 @@
 
 # Tiledesk-dashboard
 
+<img width="1200" alt="home_screenshot" src="https://user-images.githubusercontent.com/26088187/72986544-b2d17580-3de8-11ea-867f-edd874bd8585.png" width="500">
 <img width="1200" alt="tiledesk-routing" src="https://user-images.githubusercontent.com/32564846/43013863-8b1ed646-8c4a-11e8-8dba-54c1a6b3c8c1.png" width="500">
 <img width="1191" alt="tiledesk-hours" src="https://user-images.githubusercontent.com/32564846/43013892-a3864e4e-8c4a-11e8-97d6-1721076f1523.png" width="500">
 <img width="1203" alt="tiledesk-widget" src="https://user-images.githubusercontent.com/32564846/43013900-b2fffda2-8c4a-11e8-81ca-38aaaeff6c9a.png" width="500">
