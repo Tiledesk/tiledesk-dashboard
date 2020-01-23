@@ -112,10 +112,10 @@ export const environment = {
 Edit the file brand.json in the folder `src/assets/brand/` to customize 
 - company name, 
 - logo images,
-- navigation
+- navigation,
 - contact email and more
 
-Edit the file _variables.scss in the folder `src/assets/sass/md/_variables.scss` to customize the colors
+Edit the file _variables.scss in the folder `src/assets/sass/md/` to customize the colors
 
 # Build
  
