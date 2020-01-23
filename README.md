@@ -129,6 +129,12 @@ export const environment = {
 
 ```
 
+# Build
+ 
+Run `ng build --prod --base-href ./`
+
+Copy the build files to your WebServer (Apache or Nginx)
+
 # Brand
 
 Edit the file brand.json in the folder `src/assets/brand/` to customize 
@@ -138,12 +144,6 @@ Edit the file brand.json in the folder `src/assets/brand/` to customize
 - contact email and more
 
 Edit the file _variables.scss in the folder `src/assets/sass/md/` to customize the colors
-
-# Build
- 
-Run `ng build --prod --base-href ./`
-
-Copy the build files to your WebServer (Apache or Nginx)
 
 # Deploy
 
