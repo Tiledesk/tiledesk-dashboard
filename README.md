@@ -87,7 +87,7 @@ For production installation, configure the environment.prod.ts file in `src/envi
 
 #### environment.prod.ts
 ```typescript
-const serverUrl = 'https://api.TILEDESKSERVER/';
+const serverUrl = 'https://<YOUR_TILEDESK_SERVER>/';
 export const environment = {
     production: true,
     firebaseConfig: {
