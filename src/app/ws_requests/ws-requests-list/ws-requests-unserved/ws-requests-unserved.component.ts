@@ -7,7 +7,8 @@ import { UsersLocalDbService } from '../../../services/users-local-db.service';
 import { Router } from '@angular/router';
 import { AppConfigService } from '../../../services/app-config.service';
 import { WsRequestsService } from '../../../services/websocket/ws-requests.service';
-
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
 @Component({
   selector: 'appdashboard-ws-requests-unserved',
   templateUrl: './ws-requests-unserved.component.html',
@@ -23,6 +24,8 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   id_request_to_archive: string;
   displayArchiveRequestModal: string;
   showSpinner = true;
+
+  private unsubscribe$: Subject<any> = new Subject<any>();
 
   constructor(
     public botLocalDbService: BotLocalDbService,
@@ -44,6 +47,11 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     console.log('% »»» WebSocketJs WF - onData (ws-requests-unserved) - wsRequestsUnserved', this.wsRequestsUnserved)
   }
 
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
 // IS USED WHEN IS GET A NEW MESSAGE (INN THIS CASE THE ONINIT IS NOT CALLED)
   getWsRequestsUnservedLength() {
     if (this.ws_requests_length > 0) {
@@ -54,7 +62,11 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
 
   // IS CALLING ON INIT
   listenToRequestsLength() {
-    this.wsRequestsService.wsRequestsListLength$.subscribe((totalrequests: number) => {
+    this.wsRequestsService.wsRequestsListLength$
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((totalrequests: number) => {
       console.log('% »»» WebSocketJs WF - onData (ws-requests-unserved) ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> totalrequests ', totalrequests)
 
       this.showSpinner = false;
@@ -63,7 +75,11 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   }
 
   getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
+    this.auth.project_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((project) => {
 
       // console.log('WsRequestsUnservedComponent - project', project)
 

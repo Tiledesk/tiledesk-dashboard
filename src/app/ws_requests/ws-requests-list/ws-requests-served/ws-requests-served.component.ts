@@ -6,7 +6,8 @@ import { UsersLocalDbService } from '../../../services/users-local-db.service';
 import { Router } from '@angular/router';
 import { AppConfigService } from '../../../services/app-config.service';
 import { WsRequestsService } from '../../../services/websocket/ws-requests.service';
-
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
 @Component({
   selector: 'appdashboard-ws-requests-served',
   templateUrl: './ws-requests-served.component.html',
@@ -23,6 +24,10 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   id_request_to_archive: string;
   displayArchiveRequestModal: string;
   showSpinner = true;
+  currentUserID: string;
+
+  private unsubscribe$: Subject<any> = new Subject<any>();
+
   constructor(
     public botLocalDbService: BotLocalDbService,
     public auth: AuthService,
@@ -42,9 +47,25 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     console.log('% »»» WebSocketJs WF - onData (ws-requests-served) - showSpinner', this.showSpinner)
     console.log('% »»» WebSocketJs WF - onData (ws-requests-served) - wsRequestsServed', this.wsRequestsServed)
 
-    this.getWsRequestsServedLength()
+    this.getWsRequestsServedLength();
+    this.getLoggedUser();
   }
 
+  getLoggedUser() {
+    this.auth.user_bs.subscribe((user) => {
+      console.log('%%% WsRequestsList  USER ', user)
+      // this.user = user;
+      if (user) {
+        this.currentUserID = user._id
+        console.log('% »»» WebSocketJs WF (ws-requests-served) currentUser ID', this.currentUserID);
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
   // IS USED WHEN IS GET A NEW MESSAGE (INN THIS CASE THE ONINIT IS NOT CALLED)
   getWsRequestsServedLength() {
 
@@ -62,7 +83,11 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
   // IS CALLING ON INIT
   listenToRequestsLength() {
-    this.wsRequestsService.wsRequestsListLength$.subscribe((totalrequests: number) => {
+    this.wsRequestsService.wsRequestsListLength$
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((totalrequests: number) => {
       console.log('% »»» WebSocketJs WF - onData (ws-requests-served) ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> totalrequests ', totalrequests)
 
       this.showSpinner = false;
@@ -77,7 +102,11 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
   getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
+    this.auth.project_bs
+    .pipe(
+      takeUntil(this.unsubscribe$)
+    )
+    .subscribe((project) => {
 
       console.log('WsRequestsServedComponent - project', project)
 
@@ -93,8 +122,11 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     console.log('WsRequestsServedComponent has clicked GO To MEMBER ', member_id);
     if (member_id.indexOf('bot_') !== -1) {
       console.log('WsRequestsServedComponent IS A BOT !');
+      const id_bot = (member_id.split('_').pop());
+      console.log('ID BOT ', id_bot);
+      // this.router.navigate(['project/' + this.projectId + '/botprofile/' + member_id]);
+      this.router.navigate(['project/' + this.projectId + '/bots', id_bot]);
 
-      this.router.navigate(['project/' + this.projectId + '/botprofile/' + member_id]);
     } else {
       this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
     }

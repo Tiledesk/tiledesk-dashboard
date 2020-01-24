@@ -61,17 +61,18 @@ export class UserProfileComponent implements OnInit {
     this.checkUserImageUploadIsComplete()
     // used when the page is refreshed
     this.checkUserImageExist();
-
-
-
   }
 
   getStorageBucket() {
     const firebase_conf = this.appConfigService.getConfig().firebase;
     this.storageBucket = firebase_conf['storageBucket'];
     console.log('STORAGE-BUCKET User profile ', this.storageBucket)
+  }
 
-
+  upload(event) {
+    this.showSpinnerInUploadImageBtn = true;
+    const file = event.target.files[0]
+    this.uploadImageService.uploadUserAvatar(file, this.userId)
   }
 
   checkUserImageExist() {
@@ -277,11 +278,7 @@ export class UserProfileComponent implements OnInit {
   }
 
 
-  upload(event) {
-    this.showSpinnerInUploadImageBtn = true;
-    const file = event.target.files[0]
-    this.uploadImageService.uploadUserAvatar(file, this.userId)
-  }
+
 
   resendVerificationEmail() {
     this.usersService.resendVerifyEmail().subscribe((res) => {

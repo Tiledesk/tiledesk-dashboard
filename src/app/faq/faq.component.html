@@ -1,14 +1,13 @@
-
 <div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
-  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" rel="tooltip" title="" 
-  (click)="goBackToFaqKbList()">keyboard_arrow_left</i>
-    <!-- FAQs of BOT:  -->
-    <!-- {{ 'FaqPage.FAQsOfBOT' | translate }} -->
-    {{ 'FaqPage.EditBOT' | translate }}
-    <span style="color: #566787; font-weight:400">
-        “{{ faqKb_name }}”
-     </span>
-</div> 
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" rel="tooltip" title=""
+    (click)="goBackToFaqKbList()">keyboard_arrow_left</i>
+  <!-- FAQs of BOT:  -->
+  <!-- {{ 'FaqPage.FAQsOfBOT' | translate }} -->
+  {{ 'FaqPage.EditBOT' | translate }}
+  <span style="color: #566787; font-weight:400">
+    “{{ faqKb_name }}”
+  </span>
+</div>
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
     <!-- 
@@ -19,10 +18,50 @@
     <div class="row">
       <div class="col-md-8">
         <div class="card custom_card" style="padding-top:25px; padding-bottom:25px; margin-bottom: 5px;">
-            <!-- style="margin-top: 16px" -->
+          <!-- style="margin-top: 16px" -->
           <div class="card-content">
-            
-            <div class="row"> 
+            <!-- 
+            //---------------------------------------------------------------------------------------------------
+            // Bot avatar
+            //--------------------------------------------------------------------------------------------------- -->
+            <div class="row">
+              <label
+                style=""
+                class="col-sm-2 bot_avatar_label">
+                Avatar
+              </label>
+              <div class="col-sm-10">
+
+                <div class="card-avatar" style="padding-bottom:15px; min-height: 95px;">
+                  <div class="bot_avatar" style="float: left;width: 80px; height: 80px;margin-right: 21px;">
+                    <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
+                      style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
+                      class="user-img" [src]="getUserProfileImage()" />
+
+                    <img *ngIf="userProfileImageExist === false && userImageHasBeenUploaded !== true"
+                      style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
+                      class="user-img" src="assets/img/avatar_bot_tiledesk.svg" />
+                  </div>
+
+
+                  <input class="inputfile" name="file" id="file" type="file" (change)="upload($event)" accept=".jpg" />
+                  <label class="btn btn-white upload-image-btn" for="file"
+                    style="padding-left:15px; padding-right:15px; text-transform: none; color: #7695a5">
+
+
+                    <span *ngIf="!showSpinnerInUploadImageBtn">
+                      {{ "UserProfile.UploadImage" | translate }}
+                    </span>
+                    <span *ngIf="showSpinnerInUploadImageBtn">
+                      {{ 'VisitorsPage.Loading' | translate }}
+                      <i class="fa fa-spinner fa-spin"></i>
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
               <label class="col-sm-2 custom-label">
                 {{ "BotsAddEditPage.BotName" | translate }}
               </label>
@@ -31,24 +70,27 @@
               </div>
             </div>
 
-            <div class="row"> 
+            <div class="row">
               <label class="col-sm-2"></label>
-              <div class="col-sm-10"> 
+              <div class="col-sm-10">
                 <div class="checkbox">
                   <label>
-                    <input type="checkbox" name="externalBot" (click)="hasClickedExternalBot(is_external_bot = !is_external_bot)" 
-                      [checked]="is_external_bot" disabled>
+                    <input type="checkbox" name="externalBot"
+                      (click)="hasClickedExternalBot(is_external_bot = !is_external_bot)" [checked]="is_external_bot"
+                      disabled>
                     <span class="checkbox-label" style="position: relative;top: 2px;">
-                        {{ "BotsPage.ExternalBot" | translate }} 
-                    </span> 
+                      {{ "BotsPage.ExternalBot" | translate }}
+                    </span>
                   </label>
 
-                  <span style="font-size: 12px; font-weight: 400;"> 
-                    <i class="material-icons" style="vertical-align: middle; color: #ec971f; font-size: 20px;padding-left: 16px">info</i>
+                  <span style="font-size: 12px; font-weight: 400;">
+                    <i class="material-icons"
+                      style="vertical-align: middle; color: #ec971f; font-size: 20px;padding-left: 16px">info</i>
                     <span style="position: relative;top: 2px;">
                       <span style="color: #7695a5; "> {{'ExperimentalFeature' | translate }}. </span>
                       <span style="color: #7695a5">{{'IfYouAreInterested' | translate }} </span>
-                      <span (click)="launchWidget()" style="color: #039be5; cursor:pointer;"> {{ 'ChatWithUs' | translate}} </span> 
+                      <span (click)="launchWidget()" style="color: #039be5; cursor:pointer;">
+                        {{ 'ChatWithUs' | translate}} </span>
                     </span>
                   </span>
 
@@ -58,12 +100,12 @@
 
             <!-- SPACER -->
             <div class="col-sm-12" style="height:10px"></div>
-      
-            <div class="row"> 
+
+            <div class="row">
               <label class="col-sm-2 custom-label">Url</label>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                <textarea [(ngModel)]="faqKbUrlToUpdate" class="input" type="text" placeholder="{{ 'BotsPage.EnterExternalBotUrl' | translate }}"
-                  [disabled]="!is_external_bot">
+                <textarea [(ngModel)]="faqKbUrlToUpdate" class="input" type="text"
+                  placeholder="{{ 'BotsPage.EnterExternalBotUrl' | translate }}" [disabled]="!is_external_bot">
                 </textarea>
               </div>
             </div>
@@ -71,9 +113,9 @@
             <!-- SPACER -->
             <!-- <div class="col-sm-12 spacer_div" style="height:15px"></div> -->
 
-            <div class="row"> 
+            <div class="row">
               <label class="col-sm-2"></label>
-              <div class="col-sm-10"> 
+              <div class="col-sm-10">
 
                 <button #editbotbtn class="btn btn-primary" (click)="editBotName()" [disabled]="faqKb_name?.length < 2">
                   {{ "BotsAddEditPage.UpdateBotName" | translate }}
@@ -98,12 +140,12 @@
               {{ "BotsAddEditPage.BotAttributes" | translate }}
             </h4>
 
-            <p class="title-attribute" style="margin-bottom: 3px; padding-top: 5px;"> 
+            <p class="title-attribute" style="margin-bottom: 3px; padding-top: 5px;">
               <!-- <strong> -->
-                {{ "BotsAddEditPage.BotID" | translate }}
+              {{ "BotsAddEditPage.BotID" | translate }}
               <!-- </strong> -->
             </p>
-            <p class="attribute" >  
+            <p class="attribute">
               {{ faqKb_id }}
             </p>
 
@@ -116,12 +158,12 @@
               {{ faq_kb_remoteKey }}
             </p> -->
 
-            <p class="title-attribute" style="margin-bottom: 3px; padding-top: 0px;"> 
+            <p class="title-attribute" style="margin-bottom: 3px; padding-top: 0px;">
               <!-- <strong> -->
-                {{ "BotsAddEditPage.CreationDate" | translate }}
+              {{ "BotsAddEditPage.CreationDate" | translate }}
               <!-- </strong> -->
             </p>
-            <p class="attribute" style="margin-bottom: 9px">  
+            <p class="attribute" style="margin-bottom: 9px">
               {{ faqKb_created_at | date: 'd/M/y'}}
             </p>
           </div>
@@ -137,24 +179,24 @@
     -->
     <!-- <div class="create" style="text-align: right!important; padding-top:5px; padding-bottom:0px"> -->
 
-      <!-- Aggiungi FAQ -->
-      <!-- <button class="btn btn-primary" style="padding-left:8px; padding-right: 16px;" (click)="goToEditAddPage_CREATE()">
+    <!-- Aggiungi FAQ -->
+    <!-- <button class="btn btn-primary" style="padding-left:8px; padding-right: 16px;" (click)="goToEditAddPage_CREATE()">
         <span class="icon" style="padding-right:0px">
           <i class="material-icons">add_circle</i>
         </span>
         {{ 'FaqPage.AddFaq' | translate }}
       </button> -->
 
-      <!-- NEW UPLAD CSV FILE -->
-      <!-- <button class="btn btn-primary" style="padding-left:8px; padding-right: 16px; text-transform:none" (click)="openImportModal()">
+    <!-- NEW UPLAD CSV FILE -->
+    <!-- <button class="btn btn-primary" style="padding-left:8px; padding-right: 16px; text-transform:none" (click)="openImportModal()">
         <span class="icon" style="padding-right:0px;">
           <i class="material-icons">file_upload</i>
         </span>
         {{ 'FaqPage.UploadFaqsFromCsv' | translate }}
       </button> -->
-      
-      <!-- INTERROGA BOT -->
-      <!-- <button class="btn btn-primary" style="padding-left:8px; padding-right: 16px;" (click)="goToTestFaqPage()">
+
+    <!-- INTERROGA BOT -->
+    <!-- <button class="btn btn-primary" style="padding-left:8px; padding-right: 16px;" (click)="goToTestFaqPage()">
         <span class="icon" style="padding-right:0px; text-transform:none">
           <i class="material-icons">play_arrow</i>
         </span>
@@ -162,26 +204,26 @@
       </button> -->
 
 
-      <!-- MOVED IN INPORT MODAL -->
-      <!-- <input style="display:inline" name="file" id="file" class="inputfile" type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".csv"/>
+    <!-- MOVED IN INPORT MODAL -->
+    <!-- <input style="display:inline" name="file" id="file" class="inputfile" type="file" (change)="fileChange($event)" placeholder="Upload file" accept=".csv"/>
       <label class="btn btn-primary" for="file" style="padding-left:15px; padding-right:15px; text-transform: none">
           <i class="material-icons">file_upload</i>
           CARICA FAQs DA CSV 
       </label> -->
- 
+
     <!-- </div> -->
 
-        
-  <!-- MOMGO DB FAQ LIST -->
-  <div class="row" *ngIf="!is_external_bot">
+
+    <!-- MOMGO DB FAQ LIST -->
+    <div class="row" *ngIf="!is_external_bot">
       <div class="col-md-12">
         <div class="card">
 
           <div class="card-header card-header-custom-bkgrnd">
             <h4 class="faq-table-title" style="margin-bottom:2px;">
-                <!-- FAQs  -->
-                {{ 'Answers' | translate }}
-                <span style="font-weight: 500">({{ faq_lenght }})</span> 
+              <!-- FAQs  -->
+              {{ 'Answers' | translate }}
+              <span style="font-weight: 500">({{ faq_lenght }})</span>
 
               <!-- // ADD FAQ - CIRCLE BTN -->
               <!-- <button type="button" rel="tooltip" title="" class="btn btn-success btn-simple btn-xs add_faq_btn tooltipx" 
@@ -197,17 +239,20 @@
               -->
               <!-- btn-simple btn-xs  -->
               <!--  -->
-              <button class="btn btn-white tooltipx text_primary" [ngClass]="{'add-padding' : windowWidthMore764 === true}"
-                style="padding:4px;  margin-top: 0px; margin-bottom: 0px; margin-left: 15px; border-radius: 50px;" 
+              <button class="btn btn-white tooltipx text_primary"
+                [ngClass]="{'add-padding' : windowWidthMore764 === true}"
+                style="padding:4px;  margin-top: 0px; margin-bottom: 0px; margin-left: 15px; border-radius: 50px;"
                 (click)="goToEditAddPage_CREATE()">
-                  <!-- is-small -->
+                <!-- is-small -->
                 <span class="icon" style="padding-right:0px">
-                    <i class="material-icons" style="font-size:18px; top:0px">add</i>
-                    <span *ngIf="windowWidthMore764" style="position: relative; top: 1px; text-transform: initial; text-transform: initial;">
-                      {{ 'NewAnswer' | translate }}  
-                    </span> 
+                  <i class="material-icons" style="font-size:18px; top:0px">add</i>
+                  <span *ngIf="windowWidthMore764"
+                    style="position: relative; top: 1px; text-transform: initial; text-transform: initial;">
+                    {{ 'NewAnswer' | translate }}
+                  </span>
                 </span>
-                <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none"> {{ 'NewAnswer' | translate }} </span>
+                <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none">
+                  {{ 'NewAnswer' | translate }} </span>
               </button>
 
               <!-- 
@@ -216,36 +261,42 @@
               *********************************
               -->
               <!--  -->
-              <button class="btn btn-white tooltipx text_primary" [ngClass]="{'add-padding' : windowWidthMore764 === true}"
-                style="padding:4px; text-transform:none; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;" 
+              <button class="btn btn-white tooltipx text_primary"
+                [ngClass]="{'add-padding' : windowWidthMore764 === true}"
+                style="padding:4px; text-transform:none; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;"
                 (click)="openImportModal()">
-                
+
                 <span class="icon" style="padding-right:0px;">
-               
+
                   <i class="material-icons" style="font-size:18px; top:0px">file_upload</i>
-                    <span *ngIf="windowWidthMore764" style="position: relative; top: 1px; text-transform: initial; text-transform: initial;">
-                      {{ 'UploadAnswersFromCsv' | translate }}  
-                    </span> 
+                  <span *ngIf="windowWidthMore764"
+                    style="position: relative; top: 1px; text-transform: initial; text-transform: initial;">
+                    {{ 'UploadAnswersFromCsv' | translate }}
+                  </span>
                 </span>
-                <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none">{{ 'UploadAnswersFromCsv' | translate }}</span>
+                <span *ngIf="windowWidthMore764 === false" class="tooltiptext"
+                  style="text-transform:none">{{ 'UploadAnswersFromCsv' | translate }}</span>
               </button>
 
               <!-- 
               *********************************  
               BUTTON EXPORT FAQs TO CSV 
               ********************************* -->
-              <button class="btn btn-white tooltipx text_primary" [ngClass]="{'add-padding' : windowWidthMore764 === true}" 
-                style="padding:4px; text-transform:none; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;" 
+              <button class="btn btn-white tooltipx text_primary"
+                [ngClass]="{'add-padding' : windowWidthMore764 === true}"
+                style="padding:4px; text-transform:none; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;"
                 (click)="exportFaqsToCsv()">
-                
+
                 <span class="icon" style="padding-right:0px;">
-               
+
                   <i class="material-icons" style="font-size:18px; top:0px">save_alt</i>
-                    <span *ngIf="windowWidthMore764" style="position: relative; top: 1px; text-transform: initial; text-transform: initial;">
-                      {{ 'ExportAnswersToCsv' | translate }}  
-                    </span>
+                  <span *ngIf="windowWidthMore764"
+                    style="position: relative; top: 1px; text-transform: initial; text-transform: initial;">
+                    {{ 'ExportAnswersToCsv' | translate }}
+                  </span>
                 </span>
-                <span *ngIf="windowWidthMore764 === false" class="tooltiptext" style="text-transform:none">{{ 'ExportAnswersToCsv' | translate }}</span>
+                <span *ngIf="windowWidthMore764 === false" class="tooltiptext"
+                  style="text-transform:none">{{ 'ExportAnswersToCsv' | translate }}</span>
               </button>
 
 
@@ -273,10 +324,10 @@
               ********************************* -->
               <!-- tooltipx -->
               <button class="btn btn-white text_primary"
-                style="padding:4px; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;float: right;" 
+                style="padding:4px; margin-top: 0px; margin-bottom: 0px; margin-left: 10px; border-radius: 50px;float: right;"
                 (click)="goToTestFaqPage()">
                 <span class="icon" style="padding-right:0px; text-transform:none;padding-left: 9px;">
-                  <span style="position: relative; top: 1px;"> Bot test </span> 
+                  <span style="position: relative; top: 1px;"> Bot test </span>
                   <i class="material-icons" style="font-size:18px; top:0px;">play_arrow</i>
                 </span>
                 <!-- INTERROGA BOT -->
@@ -290,34 +341,34 @@
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
           <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-top:0px">
-          <table class="table table-hover">
-            <thead>
-              <tr>
+            <table class="table table-hover">
+              <thead>
+                <tr>
 
-                <th>
-                  <!-- Question -->
-                  <span class="column-th-span">
-                    <!-- {{ 'FaqPage.Question' | translate }} -->
-                    {{ 'Questions' | translate }}
-                    
-                  </span>
-                </th>
-                <th>
-                  <!-- Answer -->
-                  <span class="column-th-span">
-                    {{ 'FaqPage.Answer' | translate }}
-                  </span>
-                </th>
+                  <th>
+                    <!-- Question -->
+                    <span class="column-th-span">
+                      <!-- {{ 'FaqPage.Question' | translate }} -->
+                      {{ 'Questions' | translate }}
 
-                <th>
-                  <!-- TOPIC -->
-                  <span class="column-th-span">
-                    {{ 'FaqPage.Topic' | translate }}
-                  </span>
-                </th>
-                
-                <!-- ******************* ID ******************* -->
-                <!-- <th style="width: 280px !important">
+                    </span>
+                  </th>
+                  <th>
+                    <!-- Answer -->
+                    <span class="column-th-span">
+                      {{ 'FaqPage.Answer' | translate }}
+                    </span>
+                  </th>
+
+                  <th>
+                    <!-- TOPIC -->
+                    <span class="column-th-span">
+                      {{ 'FaqPage.Topic' | translate }}
+                    </span>
+                  </th>
+
+                  <!-- ******************* ID ******************* -->
+                  <!-- <th style="width: 280px !important">
                   <span style="color: #566787">
                     <strong>
                       Id
@@ -325,11 +376,11 @@
                   </span>
                 </th> -->
 
-                <!-- 
+                  <!-- 
                 *******************  
                 Creation Date 
                 ******************* -->
-                <!-- <th>
+                  <!-- <th>
                   <span style="color: #566787">
                     <strong>
                       {{ 'FaqPage.CreationDate' | translate }}
@@ -337,331 +388,347 @@
                   </span>
                 </th> -->
 
-                <th>
-                  <!-- Actions -->
-                  <span class="column-th-span">
-                    {{ 'FaqPage.Actions' | translate }}
-                  </span>
-                </th>
-              </tr>
-            </thead>
-        
-            <tbody>
-        
-              <!-- IF THERE ISN'T FAQ -->
-              <tr *ngIf="faq?.length === 0"> 
-                <td colspan="4" style="text-align: center; padding-top: 16px;">
-                  <!-- color: #ff5252   -->
-                  <p style="font-size:1em; color:#7695a5; font-weight: 400">
-                    <!-- NO FAQ   -->
-                    {{ 'FaqPage.NoFAQ' | translate }}
-                  </p>
-                </td>
-              </tr>
+                  <th>
+                    <!-- Actions -->
+                    <span class="column-th-span">
+                      {{ 'FaqPage.Actions' | translate }}
+                    </span>
+                  </th>
+                </tr>
+              </thead>
 
-              <tr *ngFor="let faq of faq">
-                <td style="font-size:13px; font-weight:400">
-                  <span class="tooltipx">
-                    <!-- <span [innerHTML]="faq?.question"> </span> -->
-                    <!-- white-space: pre-wrap !important; -->
-                    <span  style="white-space: pre-wrap; word-wrap: break-word">{{ faq?.question }}</span>
-                    <span class="tooltiptext">{{ 'FaqPage.FaqId' | translate }}: <br> {{ faq?._id }} </span>
-                  </span>
-                </td>
+              <tbody>
 
-                <td style="white-space: normal !important; word-wrap: break-word;font-size:13px; font-weight:400; word-break: break-all;">
-                  <span class="tooltipx">
-                    {{ faq?.answer }}
-                    <span class="tooltiptext">{{ 'FaqPage.FaqId' | translate }}: <br> {{ faq?._id }} </span>
-                  </span>
-                </td>
+                <!-- IF THERE ISN'T FAQ -->
+                <tr *ngIf="faq?.length === 0">
+                  <td colspan="4" style="text-align: center; padding-top: 16px;">
+                    <!-- color: #ff5252   -->
+                    <p style="font-size:1em; color:#7695a5; font-weight: 400">
+                      <!-- NO FAQ   -->
+                      {{ 'FaqPage.NoFAQ' | translate }}
+                    </p>
+                  </td>
+                </tr>
 
-                <td>
-                  <span class="tooltipx" style="font-size:13px; font-weight:400">
-                    {{ faq?.topic }}
-                    <span class="tooltiptext">{{ 'FaqPage.FaqId' | translate }}: <br> {{ faq?._id }} </span>
-                  </span>
-                </td>
+                <tr *ngFor="let faq of faq">
+                  <td style="font-size:13px; font-weight:400">
+                    <span class="tooltipx">
+                      <!-- <span [innerHTML]="faq?.question"> </span> -->
+                      <!-- white-space: pre-wrap !important; -->
+                      <span style="white-space: pre-wrap; word-wrap: break-word">{{ faq?.question }}</span>
+                      <span class="tooltiptext">{{ 'FaqPage.FaqId' | translate }}: <br> {{ faq?._id }} </span>
+                    </span>
+                  </td>
 
-                <!-- style="width: 280px !important" -->
+                  <td
+                    style="white-space: normal !important; word-wrap: break-word;font-size:13px; font-weight:400; word-break: break-all;">
+                    <span class="tooltipx">
+                      {{ faq?.answer }}
+                      <span class="tooltiptext">{{ 'FaqPage.FaqId' | translate }}: <br> {{ faq?._id }} </span>
+                    </span>
+                  </td>
 
-                <!-- <td>
+                  <td>
+                    <span class="tooltipx" style="font-size:13px; font-weight:400">
+                      {{ faq?.topic }}
+                      <span class="tooltiptext">{{ 'FaqPage.FaqId' | translate }}: <br> {{ faq?._id }} </span>
+                    </span>
+                  </td>
+
+                  <!-- style="width: 280px !important" -->
+
+                  <!-- <td>
                   {{ faq?._id }}
                 </td> -->
 
-                <!-- <td>
+                  <!-- <td>
                   {{ faq?.createdAt | date: 'd/M/y'}}
                 </td> -->
-      
 
-                <!-- NEW -->
-                <td class="td-actions text-right">
-                    <button style="padding-top:0px" type="button" rel="tooltip" title="{{ 'FaqPage.tooltipEditFaq' | translate }}" class="btn btn-primary btn-simple btn-xs" 
+
+                  <!-- NEW -->
+                  <td class="td-actions text-right">
+                    <button style="padding-top:0px" type="button" rel="tooltip"
+                      title="{{ 'FaqPage.tooltipEditFaq' | translate }}" class="btn btn-primary btn-simple btn-xs"
                       (click)='goToEditAddPage_EDIT(faq?._id)'>
-                        <i class="material-icons">edit</i>
+                      <i class="material-icons">edit</i>
                     </button>
-                    <button style="padding-top:0px" type="button" rel="tooltip" title="{{ 'FaqPage.DeleteFaq' | translate }}" class="btn btn-danger btn-simple btn-xs" 
+                    <button style="padding-top:0px" type="button" rel="tooltip"
+                      title="{{ 'FaqPage.DeleteFaq' | translate }}" class="btn btn-danger btn-simple btn-xs"
                       (click)='openDeleteModal(faq?._id)'>
-                        <i class="material-icons">close</i>
+                      <i class="material-icons">close</i>
                     </button>
-                </td>
+                  </td>
 
 
-              </tr>
-            </tbody>
-          </table>
-      
+                </tr>
+              </tbody>
+            </table>
+
           </div>
         </div>
       </div>
-  </div>
-  <div>
-<div>
-
-    <div *ngIf="OPEN_RIGHT_SIDEBAR === true" class="view-side">
-  
-        <appdashboard-faq-sidebar [ngStyle]="{'height':train_bot_sidebar_height }" 
-         
-          (valueChange)='closeRightSidebar($event)'>
-        </appdashboard-faq-sidebar>
     </div>
+    <div>
+      <div>
+
+        <div *ngIf="OPEN_RIGHT_SIDEBAR === true" class="view-side">
+
+          <appdashboard-faq-sidebar [ngStyle]="{'height':train_bot_sidebar_height }"
+            (valueChange)='closeRightSidebar($event)'>
+          </appdashboard-faq-sidebar>
+        </div>
 
 
-<!-- 
+        <!-- 
 **********************************************************************************************  
 **************************************** MODAL WINDOWS ***************************************
 **********************************************************************************************
 -->
 
-<!-- =================== MODAL DELETE FAQ =================== -->
-<!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}" style="background-color: rgba(90,90,90,0.5);">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header" style="background-color: #ff5252; border-radius: 6px 6px 0px 0px;">
-        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
-          <span aria-hidden="true" style="color: #fff">&times;</span>
-        </button>
+        <!-- =================== MODAL DELETE FAQ =================== -->
+        <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->
+        <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':display}"
+          style="background-color: rgba(90,90,90,0.5);">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header" style="background-color: #ff5252; border-radius: 6px 6px 0px 0px;">
+                <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+                  <span aria-hidden="true" style="color: #fff">&times;</span>
+                </button>
 
-        <h4 class="modal-title" style="color: #fff">
-          <!-- Update FAQ with id: -->
-          <i class="material-icons" style="vertical-align: middle">
-            report_problem
-          </i>
-          <span style="vertical-align: middle; padding-left:8px">
-            {{ "FaqPage.DeleteFaq" | translate }}
-          </span>
-        </h4>
+                <h4 class="modal-title" style="color: #fff">
+                  <!-- Update FAQ with id: -->
+                  <i class="material-icons" style="vertical-align: middle">
+                    report_problem
+                  </i>
+                  <span style="vertical-align: middle; padding-left:8px">
+                    {{ "FaqPage.DeleteFaq" | translate }}
+                  </span>
+                </h4>
 
-        <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em">
-          <!-- Delete FAQ with id: -->
-          {{ 'FaqPage.TheFaqWithID' | translate }}
-          <code>{{id_toDelete}}</code>
-          {{ 'FaqPage.WillBeDeleted' | translate }}
-        </h4>
+                <h4 class="modal-title" style="color: #fff; padding-top:10px; font-size: 1.1em">
+                  <!-- Delete FAQ with id: -->
+                  {{ 'FaqPage.TheFaqWithID' | translate }}
+                  <code>{{id_toDelete}}</code>
+                  {{ 'FaqPage.WillBeDeleted' | translate }}
+                </h4>
 
-      </div>
+              </div>
 
-      <div class="modal-body">
-                    
-        <!-- <p> Are you sure you want to delete this FAQ ?</p> -->
-        <p style="font-weight: 400; color: rgba(0,0,0,0.87);"> 
-          <!-- Sei sicuro di voler eliminare questa FAQ? -->
-          {{ 'FaqPage.AreYouSure' | translate }}
-        </p>
-      </div>
+              <div class="modal-body">
 
-      <div class="modal-footer">
-          <button class="btn btn-white" (click)="onCloseModal()" style="padding:12px 16px;">
-            <!-- Annulla -->
-            {{ "GroupsPage.Cancel" | translate }}
-          </button>
-          <!-- Confirm -->
-        <button type="button" class="btn btn-danger" (click)="onCloseDeleteModalHandled()">
-          <!-- Conferma -->
-          {{ 'FaqPage.DeleteFaq' | translate }}
-        </button>
-      </div>
+                <!-- <p> Are you sure you want to delete this FAQ ?</p> -->
+                <p style="font-weight: 400; color: rgba(0,0,0,0.87);">
+                  <!-- Sei sicuro di voler eliminare questa FAQ? -->
+                  {{ 'FaqPage.AreYouSure' | translate }}
+                </p>
+              </div>
 
-    </div>
-    <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
+              <div class="modal-footer">
+                <button class="btn btn-white" (click)="onCloseModal()" style="padding:12px 16px;">
+                  <!-- Annulla -->
+                  {{ "GroupsPage.Cancel" | translate }}
+                </button>
+                <!-- Confirm -->
+                <button type="button" class="btn btn-danger" (click)="onCloseDeleteModalHandled()">
+                  <!-- Conferma -->
+                  {{ 'FaqPage.DeleteFaq' | translate }}
+                </button>
+              </div>
 
-
-<!-- MODAL - INPORT CSV  -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayImportModal}" style="background-color: rgba(90,90,90,0.5);">
-  <!-- modal-sm   -->
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-
-        <h4 class="modal-title">
-          <!-- Import CSV file -->
-          {{ 'FaqPage.ImportCsvFile' | translate }}
-        </h4>
-      </div>
-
-      <div class="modal-body">
-      
-        <div class="row" style="margin-right: 0px; margin-bottom:8px">
-            <div class="col-xs-6 col-xs-offset-3" style="text-align:center; border: 1px solid #eeeeee;background-color: antiquewhite">
-              <p (click)="downloadExampleCsv()" style="margin:5px; cursor:pointer"> <i class="material-icons" style="font-size:18px; top: 4px; position: relative;">save_alt</i>
-                {{ 'download' | translate }} <span style="font-weight:400"> {{ 'examplecsv' | translate }}  </span> 
-              </p>  
             </div>
-          <div class="col-xs-6 col-xs-offset-3" style="text-align:center; border-left: 1px solid #eeeeee; border-right: 1px solid #eeeeee">
-            <p style="margin:5px">
-              <span>
-                <em>
-                  <!-- Question -->
-                  {{ 'FaqPage.Question' | translate }}
-                </em>
-              </span> 
-              <span>
-                <strong>
-                  {{csvColumnsDelimiter}}
-                </strong> 
-              </span> 
-              <span>
-                <em>
-                  <!-- Answer -->
-                  {{ 'FaqPage.Answer' | translate }}
-                </em>
-              </span>
-            </p>
+            <!-- /.modal-content -->
           </div>
-
+          <!-- /.modal-dialog -->
         </div>
-        <div class="row" style="margin-right: 0px;">
-            <div class="col-sm-12">
-                <label style="height: 36px; padding-top:10px; padding-left:16px; padding-right:16px; text-align:right; color: #7695a5;" class="col-xs-6 col-sm-6 ">
-                  <!-- Columns separated with: -->
-                  {{ 'FaqPage.ColumnsSeparatedWith' | translate }}
-                </label>
-                <div class="col-xs-6 col-sm-6" style="text-align:start">
-                  <input style="padding-left:5px; margin-top:7px; width:55px" [(ngModel)]="csvColumnsDelimiter" (keyup)="countDelimiterDigit($event)">
+
+
+        <!-- MODAL - INPORT CSV  -->
+        <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayImportModal}"
+          style="background-color: rgba(90,90,90,0.5);">
+          <!-- modal-sm   -->
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+
+                <h4 class="modal-title">
+                  <!-- Import CSV file -->
+                  {{ 'FaqPage.ImportCsvFile' | translate }}
+                </h4>
+              </div>
+
+              <div class="modal-body">
+
+                <div class="row" style="margin-right: 0px; margin-bottom:8px">
+                  <div class="col-xs-6 col-xs-offset-3"
+                    style="text-align:center; border: 1px solid #eeeeee;background-color: antiquewhite">
+                    <p (click)="downloadExampleCsv()" style="margin:5px; cursor:pointer"> <i class="material-icons"
+                        style="font-size:18px; top: 4px; position: relative;">save_alt</i>
+                      {{ 'download' | translate }} <span style="font-weight:400"> {{ 'examplecsv' | translate }} </span>
+                    </p>
+                  </div>
+                  <div class="col-xs-6 col-xs-offset-3"
+                    style="text-align:center; border-left: 1px solid #eeeeee; border-right: 1px solid #eeeeee">
+                    <p style="margin:5px">
+                      <span>
+                        <em>
+                          <!-- Question -->
+                          {{ 'FaqPage.Question' | translate }}
+                        </em>
+                      </span>
+                      <span>
+                        <strong>
+                          {{csvColumnsDelimiter}}
+                        </strong>
+                      </span>
+                      <span>
+                        <em>
+                          <!-- Answer -->
+                          {{ 'FaqPage.Answer' | translate }}
+                        </em>
+                      </span>
+                    </p>
+                  </div>
+
                 </div>
-                
+                <div class="row" style="margin-right: 0px;">
+                  <div class="col-sm-12">
+                    <label
+                      style="height: 36px; padding-top:10px; padding-left:16px; padding-right:16px; text-align:right; color: #7695a5;"
+                      class="col-xs-6 col-sm-6 ">
+                      <!-- Columns separated with: -->
+                      {{ 'FaqPage.ColumnsSeparatedWith' | translate }}
+                    </label>
+                    <div class="col-xs-6 col-sm-6" style="text-align:start">
+                      <input style="padding-left:5px; margin-top:7px; width:55px" [(ngModel)]="csvColumnsDelimiter"
+                        (keyup)="countDelimiterDigit($event)">
+                    </div>
+
+                  </div>
+                  <div class="col-sm-12" style="text-align: center">
+
+                    <span *ngIf="modalChoosefileDisabled" style="color:#ff5252">
+                      <!-- Delimiter option must be one character long  -->
+                      {{ 'FaqPage.DelimiterOptionMustBe' | translate }}
+                    </span>
+                  </div>
+
+                </div>
+
+
+              </div>
+
+              <div class="modal-footer" style="text-align: center;">
+
+                <input style="display:inline" name="file" id="file" class="inputfile" type="file"
+                  (change)="fileChange($event)" accept=".csv" />
+                <label class="btn btn-primary" for="file"
+                  style="padding-left:15px; padding-right:15px; text-transform: none"
+                  [ngClass]="{'disabled': modalChoosefileDisabled }">
+                  <!-- <i class="material-icons">file_upload</i> -->
+                  <!-- CHOOSE FILE  -->
+                  {{ 'FaqPage.ChooseFile' | translate }}
+                </label>
+              </div>
+
             </div>
-            <div class="col-sm-12" style="text-align: center">
+            <!-- /.modal-content -->
+          </div>
+          <!-- /.modal-dialog -->
+        </div>
 
-              <span *ngIf="modalChoosefileDisabled" style="color:#ff5252">
-                <!-- Delimiter option must be one character long  -->
-                {{ 'FaqPage.DelimiterOptionMustBe' | translate }}
-              </span>
+
+        <!-- MODAL - INFO WINDOWS -->
+        <!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->
+        <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayInfoModal}"
+          style="background-color: rgba(90,90,90,0.5);">
+          <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+
+                <h4 class="modal-title">
+                  <!-- Upload CSV -->
+                  {{ 'FaqPage.UploadCsv' | translate }}
+                </h4>
+              </div>
+
+              <div class="modal-body">
+
+                <span *ngIf="SHOW_CIRCULAR_SPINNER">
+                  <div class="loader" style="top:25%">
+                    <svg class="circular" viewBox="25 25 50 50">
+                      <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10" />
+                    </svg>
+
+                  </div>
+                  <p style="margin-top: 50px; text-align: center;">
+                    {{ "FaqPage.Processing" | translate }}
+                  </p>
+                </span>
+
+                <span *ngIf="!SHOW_CIRCULAR_SPINNER">
+                  <div class="loader" style="top:5%">
+
+                    <!-- // IF SUCCESSFULLY UPLOADED -->
+                    <span *ngIf="parse_done">
+                      <i class="material-icons" style="color:#70b665">done</i>
+                      <span style="color:#70b665">
+                        {{ "FaqPage.Completed" | translate }}
+                      </span>
+                    </span>
+
+                    <!-- // IF AN ERROR OCCURRED DURING THE UPLOAD -->
+                    <span *ngIf="parse_err">
+                      <i class="material-icons" style="color:#ff5252">report_problem</i>
+                      <br>
+                      <span style="color:#ff5252">
+                        {{ "FaqPage.Error" | translate }}
+                      </span>
+                    </span>
+
+                  </div>
+
+                  <!-- // IF SUCCESSFULLY UPLOADED -->
+                  <span *ngIf="parse_done">
+                    <p style="margin-top: 50px; text-align: center;">
+                      <!-- FAQs successfully uploaded -->
+                      {{ "FaqPage.FaqsSuccessfullyUploaded" | translate }}
+                    </p>
+                  </span>
+
+                  <!-- // IF AN ERROR OCCURRED DURING THE UPLOAD -->
+                  <span *ngIf="parse_err">
+                    <p style="margin-top: 50px; text-align: center;">
+                      <!-- An error occurred during the upload -->
+                      {{ "FaqPage.AnErrorOccurredDuringTheUpload" | translate }}
+                    </p>
+                  </span>
+
+                </span>
+              </div>
+
+              <div class="modal-footer" style="text-align: center;">
+                <!-- // IF SUCCESSFULLY UPLOADED -->
+                <button *ngIf="parse_done" class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER"
+                  (click)="onCloseInfoModalHandledSuccess()">
+                  Ok
+                </button>
+                <button *ngIf="parse_err" class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER"
+                  (click)="onCloseInfoModalHandledError()">
+                  <!-- Continue -->
+                  {{ "FaqPage.Continue" | translate }}
+                </button>
+              </div>
+
             </div>
-            
+            <!-- /.modal-content -->
           </div>
-        
-
-      </div>
-
-      <div class="modal-footer" style="text-align: center;">
-        
-        <input style="display:inline" name="file" id="file" class="inputfile" type="file" (change)="fileChange($event)" accept=".csv"/>
-        <label class="btn btn-primary" for="file" style="padding-left:15px; padding-right:15px; text-transform: none" [ngClass]="{'disabled': modalChoosefileDisabled }">
-            <!-- <i class="material-icons">file_upload</i> -->
-            <!-- CHOOSE FILE  -->
-            {{ 'FaqPage.ChooseFile' | translate }}
-        </label>
-      </div>
-
-    </div>
-    <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
-
-
-<!-- MODAL - INFO WINDOWS -->
-<!-- <div class="backdrop" [ngStyle]="{'display':display}"></div> -->  
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayInfoModal}" style="background-color: rgba(90,90,90,0.5);">
-  <div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-
-        <h4 class="modal-title">
-          <!-- Upload CSV -->
-          {{ 'FaqPage.UploadCsv' | translate }}
-        </h4>
-      </div>
-
-      <div class="modal-body">
-      
-        <span *ngIf="SHOW_CIRCULAR_SPINNER">
-          <div  class="loader" style="top:25%">
-            <svg class="circular" viewBox="25 25 50 50">
-              <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10"/>
-            </svg>
-
-          </div>
-          <p style="margin-top: 50px; text-align: center;">
-              {{ "FaqPage.Processing" | translate }}
-          </p>
-        </span>
-
-        <span *ngIf="!SHOW_CIRCULAR_SPINNER">
-          <div  class="loader" style="top:5%">
-
-            <!-- // IF SUCCESSFULLY UPLOADED -->
-            <span *ngIf="parse_done">
-              <i class="material-icons" style="color:#70b665">done</i>
-              <span style="color:#70b665">
-                  {{ "FaqPage.Completed" | translate }}
-              </span> 
-            </span>
-
-            <!-- // IF AN ERROR OCCURRED DURING THE UPLOAD -->
-            <span *ngIf="parse_err">
-              <i class="material-icons" style="color:#ff5252">report_problem</i>
-              <br>
-              <span style="color:#ff5252">
-                  {{ "FaqPage.Error" | translate }}
-              </span> 
-            </span>
-
-          </div>
-          
-          <!-- // IF SUCCESSFULLY UPLOADED -->
-          <span *ngIf="parse_done">
-            <p style="margin-top: 50px; text-align: center;">
-              <!-- FAQs successfully uploaded -->
-              {{ "FaqPage.FaqsSuccessfullyUploaded" | translate }}
-            </p>
-          </span>
-
-          <!-- // IF AN ERROR OCCURRED DURING THE UPLOAD -->
-          <span *ngIf="parse_err">
-            <p style="margin-top: 50px; text-align: center;">
-              <!-- An error occurred during the upload -->
-              {{ "FaqPage.AnErrorOccurredDuringTheUpload" | translate }}
-            </p>
-          </span>
-
-        </span>
-      </div>
-
-      <div class="modal-footer" style="text-align: center;">
-        <!-- // IF SUCCESSFULLY UPLOADED -->
-        <button *ngIf="parse_done" class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseInfoModalHandledSuccess()">
-            Ok
-        </button>
-        <button *ngIf="parse_err" class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseInfoModalHandledError()">
-            <!-- Continue -->
-            {{ "FaqPage.Continue" | translate }}
-        </button>
-      </div>
-
-    </div>
-    <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
+          <!-- /.modal-dialog -->
+        </div>

@@ -817,3 +817,58 @@ $f21blue: #039be5;
   padding: 63px;
   text-align: center;
 }
+
+// --------------------------------------------------------------
+// @ Skeleton
+// --------------------------------------------------------------
+.skeleton {
+  h3,
+  h4,
+  li,
+  p {
+    animation: loading 1.7s infinite linear;
+    background: #f6f7f8;
+    background-image: -webkit-linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
+    background-image: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
+    background-repeat: no-repeat;
+  }
+
+  h3 {
+    height: 22px;
+    width: 200px;
+    margin-top: 0px !important;
+  }
+
+  h4 {
+    height: 30px;
+    width: 200px;
+    
+  }
+
+  p {
+    height: 18px;
+    width: 200px;
+  }
+
+  li {
+    height: 18px;
+    width: 200px;
+    margin-left: 16px;
+    margin-top: 12px;
+  }
+  .skeleton_textarea {
+    height: 52px;
+    width: 300px;
+  }
+}
+
+@keyframes loading {
+  0% {
+    background-position: -100px;
+    width: 200px;
+  }
+
+  100% {
+    background-position: 200px;
+  }
+}

@@ -13,6 +13,9 @@ import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { ProjectPlanService } from '../services/project-plan.service';
 import { TranslateService } from '@ngx-translate/core';
+import { AppConfigService } from '../services/app-config.service';
+import { UploadImageService } from '../services/upload-image.service';
+import { UsersService } from '../services/users.service';
 // import $ = require('jquery');
 // declare const $: any;
 @Component({
@@ -73,6 +76,19 @@ export class FaqComponent implements OnInit {
   browserLang: string;
   OPEN_RIGHT_SIDEBAR = false;
   train_bot_sidebar_height: any;
+
+
+  storageBucket: string;
+  showSpinnerInUploadImageBtn = false;
+  userProfileImageExist: boolean;
+
+  userImageHasBeenUploaded = false;
+
+  userProfileImageurl: string;
+  timeStamp: any;
+ 
+
+  
   constructor(
     private mongodbFaqService: MongodbFaqService,
     private router: Router,
@@ -82,7 +98,11 @@ export class FaqComponent implements OnInit {
     public location: Location,
     private notify: NotifyService,
     private prjctPlanService: ProjectPlanService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private uploadImageService: UploadImageService,
+    public appConfigService: AppConfigService,
+    private usersService: UsersService
+
   ) { }
 
   ngOnInit() {
@@ -105,6 +125,101 @@ export class FaqComponent implements OnInit {
     this.getWindowWidth();
     this.getProjectPlan();
     this.getBrowserLang();
+
+    
+    this.checkUserImageUploadIsComplete();
+  }
+
+
+
+  getFaqKbId() {
+    this.id_faq_kb = this.route.snapshot.params['faqkbid'];
+    console.log('FAQ KB HAS PASSED id_faq_kb ', this.id_faq_kb);
+
+    if (this.id_faq_kb) {
+      this.getStorageBucket();
+      this.getFaqKbById();
+
+    }
+  }
+
+  getStorageBucket() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    console.log('STORAGE-BUCKET Users-profile ', this.storageBucket)
+
+    this.checkBotImageExist(this.storageBucket) 
+  }
+
+  upload(event) {
+    this.showSpinnerInUploadImageBtn = true;
+    const file = event.target.files[0]
+    this.uploadImageService.uploadUserAvatar(file, this.id_faq_kb)
+  }
+
+  checkBotImageExist(storageBucket) {
+    const url = 'https://firebasestorage.googleapis.com/v0/b/' + storageBucket + '/o/profiles%2F' + this.id_faq_kb + '%2Fphoto.jpg?alt=media';
+    const self = this;
+    this.verifyImageURL(url, function (imageExists) {
+
+      if (imageExists === true) {
+        self.userProfileImageExist  = imageExists
+        console.log('PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists)
+        
+        self.setImageProfileUrl(storageBucket) 
+
+      } else {
+        self.userProfileImageExist  = imageExists
+        console.log('PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists)
+        
+        
+      }
+
+    })
+  }
+
+  verifyImageURL(image_url, callBack) {
+    const img = new Image();
+    img.src = image_url;
+    img.onload = function () {
+      callBack(true);
+    };
+    img.onerror = function () {
+      callBack(false);
+    };
+  }
+
+  checkUserImageUploadIsComplete() {
+    this.uploadImageService.imageExist.subscribe((image_exist) => {
+      console.log('PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
+      this.userImageHasBeenUploaded = image_exist;
+      if (this.storageBucket && this.userImageHasBeenUploaded === true) {
+
+        this.showSpinnerInUploadImageBtn = false;
+
+        console.log('PROFILE IMAGE (FAQ-COMP) - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
+        
+        this.setImageProfileUrl(this.storageBucket)
+      }
+    });
+  }
+
+  setImageProfileUrl(storageBucket) {
+    this.userProfileImageurl = 'https://firebasestorage.googleapis.com/v0/b/' + storageBucket + '/o/profiles%2F' + this.id_faq_kb + '%2Fphoto.jpg?alt=media';
+    // console.log('PROFILE IMAGE (USER-PROFILE ) - userProfileImageurl ', this.userProfileImageurl);
+    this.timeStamp = (new Date()).getTime();
+  }
+
+  getUserProfileImage() {
+    if (this.timeStamp) {
+      // console.log('PROFILE IMAGE (USER-PROFILE ) - getUserProfileImage ', this.userProfileImageurl);
+      // setTimeout(() => {
+        return this.userProfileImageurl + '&' + this.timeStamp;
+      // }, 200);
+      
+    }
+
+    return this.userProfileImageurl
   }
 
   getBrowserLang() {
@@ -181,16 +296,7 @@ export class FaqComponent implements OnInit {
     });
   }
 
-  getFaqKbId() {
-    this.id_faq_kb = this.route.snapshot.params['faqkbid'];
-    // console.log('FAQ KB HAS PASSED id_faq_kb ', this.id_faq_kb);
-
-    if (this.id_faq_kb) {
-
-      this.getFaqKbById();
-
-    }
-  }
+ 
 
   /**
    * *** GET FAQ-KB BY ID (FAQ-KB DETAILS) ***

@@ -8,9 +8,9 @@
 
   </div>
 
-  <loading-spinner *ngIf="showSpinner"></loading-spinner>
-
-  <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-top: 0px;">
+  <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
+  <!-- *ngIf="!showSpinner" -->
+  <div  class="card-content table-responsive" style="padding-top: 0px;">
     <!-- style="overflow-x:auto;" -->
     <table class="table table-hover">
       <thead class="text">
@@ -342,8 +342,10 @@
             <div *ngFor="let participant of request?.participants" style="font-size:0.8em;">
               <span *ngIf="participant !== currentUserID" class="tooltipx">
                 <span (click)="goToMemberProfile( participant )" style="cursor:pointer; display: block">
+              
                   <img *ngIf="participant.indexOf('bot_') !== -1" class="user-img ws-requests-list-servedby-avatar"
-                    src="assets/img/bot_image_as_human.jpg" onerror="this.src='assets/img/no_image_user.png'" />
+                    src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant | slice:4}}%2Fphoto.jpg?alt=media" 
+                      onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"/>
 
                   <img *ngIf="participant.indexOf('bot_') === -1" class="user-img ws-requests-list-servedby-avatar"
                     src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media"
@@ -352,6 +354,7 @@
                 </span>
                 <span class="tooltiptext"> {{ "ViewProfile" | translate }} </span>
               </span>
+              
               <span *ngIf="participant === currentUserID">
                 <img class="user-img ws-requests-list-servedby-avatar"
                   src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media"

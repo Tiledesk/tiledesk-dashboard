@@ -31,7 +31,7 @@ export class WsRequestsService {
 
   requesTtotal: number;
   public wsRequestsList$: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
-  
+
 
   public wsRequest$ = new Subject()
   public wsRequestsListLength$ = new Subject()
@@ -39,18 +39,18 @@ export class WsRequestsService {
 
   // public wsRequestsList$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
 
-  
+
   // public wsMyRequestsList$: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
 
   // public wsRequest$: BehaviorSubject<any> = new BehaviorSubject(null);
   // public wsRequest$:  AsyncSubject<any> = new AsyncSubject();
-  
+
 
   // fwcUser: BehaviorSubject<FwcUser> = new BehaviorSubject<FwcUser>(null);
   // fwcUser$ = this.fwcUser.asObservable();
 
   // public wsRequestsListLength$: BehaviorSubject<number> = new BehaviorSubject(0)
-  
+
   // _wsRequestsListLength$ = this.wsRequestsListLength$.asObservable()
   // public wsRequestsListLength$$: ReplaySubject<number> = new ReplaySubject(null);
 
@@ -67,6 +67,7 @@ export class WsRequestsService {
 
   BASE_URL = environment.mongoDbConfig.BASE_URL;
   TOKEN: string;
+  timeout: any;
   /**
    * Constructor
    * 
@@ -197,7 +198,7 @@ export class WsRequestsService {
               console.log("% »»» WebSocketJs WF - onData (ws-requests.serv) ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ data is ARRAY", Array.isArray(data));
               // data.map works only with array
               if (Array.isArray(data)) {
-                
+
                 // https://stackoverflow.com/questions/18983138/callback-after-all-asynchronous-foreach-callbacks-are-completed
                 let requests = data.map((item) => {
                   return new Promise((resolve) => {
@@ -307,7 +308,17 @@ export class WsRequestsService {
       // -----------------------------------------------------------------------------------------------------
       // publish all REQUESTS 
       // -----------------------------------------------------------------------------------------------------
-      this.wsRequestsList$.next(this.wsRequestsList);
+
+      // this.wsRequestsList$.next(this.wsRequestsList);
+      if (this.timeout) {
+        clearTimeout(this.timeout);
+      }
+
+      this.timeout = setTimeout(() => {
+        this.wsRequestsList$.next(this.wsRequestsList);
+      }, 1000);
+      
+
 
       // imInAgentsRequests = this.wsRequestsList.filter(this.hasmeInAgents(request.agents));
       // let myRequests = [];
