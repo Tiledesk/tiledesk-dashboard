@@ -36,14 +36,14 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     public wsRequestsService: WsRequestsService
   ) {
 
-    super(botLocalDbService, usersLocalDbService, router);
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService);
   }
 
   ngOnInit() {
     this.getStorageBucket();
     this.getCurrentProject();
-    this.listenToRequestsLength();
-    this.getWsRequestsUnservedLength()
+    // this.listenToRequestsLength();
+    // this.getWsRequestsUnservedLength()
     console.log('% »»» WebSocketJs WF - onData (ws-requests-unserved) - wsRequestsUnserved', this.wsRequestsUnserved)
   }
 

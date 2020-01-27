@@ -3,7 +3,7 @@ import { UsersLocalDbService } from '../../services/users-local-db.service';
 import { BotLocalDbService } from '../../services/bot-local-db.service';
 import { avatarPlaceholder, getColorBck } from '../../utils/util';
 import { Router } from '@angular/router';
-
+import { WsRequestsService } from '../../services/websocket/ws-requests.service';
 
 @Component({
   selector: 'appdashboard-ws-shared',
@@ -31,7 +31,8 @@ export class WsSharedComponent implements OnInit {
   constructor(
     public botLocalDbService: BotLocalDbService,
     public usersLocalDbService: UsersLocalDbService,
-    public router: Router
+    public router: Router,
+    public wsRequestsService: WsRequestsService
   ) { }
 
   ngOnInit() {
@@ -440,6 +441,30 @@ export class WsSharedComponent implements OnInit {
     console.log('REQUEST-MSGS - ON OPEN RIGHT SIDEBAR -> RIGHT SIDEBAR HEIGHT', this.train_bot_sidebar_height);
 
   }
+
+
+
+  joinDeptAndLeaveCurrentAgents(deptid_selected, requestid) {
+    console.log('REQUEST-MSGS - JOIN DEPT AND LEAVE CURRENT AGENTS - DEPT ID ', deptid_selected);
+
+    this.wsRequestsService.joinDept(deptid_selected, requestid)  
+    .subscribe((res: any) => {
+      console.log('REQUEST-MSGS - JOIN DEPT - RES ', res);
+
+
+    }, (error) => {
+
+      console.log('REQUEST-MSGS - JOIN DEPT - RES - ERROR ', error);
+    }, () => {
+      console.log('REQUEST-MSGS - JOIN DEPT - RES * COMPLETE *');
+
+    });
+
+
+
+    
+  }
+
 
 
 

@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit,
+  ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { WsSharedComponent } from '../../ws-shared/ws-shared.component';
 import { BotLocalDbService } from '../../../services/bot-local-db.service';
 import { AuthService } from '../../../core/auth.service';
@@ -8,10 +9,12 @@ import { AppConfigService } from '../../../services/app-config.service';
 import { WsRequestsService } from '../../../services/websocket/ws-requests.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
+
 @Component({
   selector: 'appdashboard-ws-requests-served',
   templateUrl: './ws-requests-served.component.html',
-  styleUrls: ['./ws-requests-served.component.scss']
+  styleUrls: ['./ws-requests-served.component.scss'],
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WsRequestsServedComponent extends WsSharedComponent implements OnInit {
 
@@ -34,20 +37,21 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     public usersLocalDbService: UsersLocalDbService,
     public router: Router,
     public appConfigService: AppConfigService,
-    public wsRequestsService: WsRequestsService
+    public wsRequestsService: WsRequestsService,
+    // private cdr: ChangeDetectorRef
 
   ) {
-    super(botLocalDbService, usersLocalDbService, router);
+    super(botLocalDbService, usersLocalDbService, router,wsRequestsService);
   }
 
   ngOnInit() {
     this.getStorageBucket();
     this.getCurrentProject();
-    this.listenToRequestsLength();
+    // this.listenToRequestsLength();
     console.log('% »»» WebSocketJs WF - onData (ws-requests-served) - showSpinner', this.showSpinner)
-    console.log('% »»» WebSocketJs WF - onData (ws-requests-served) - wsRequestsServed', this.wsRequestsServed)
+    console.log('% »»» WebSocketJs WF - onData >>>>>>>>>>>>>>>>>>>>>>>>>>>>> (ws-requests-served) - ngOnInit wsRequestsServed', this.wsRequestsServed)
 
-    this.getWsRequestsServedLength();
+    // this.getWsRequestsServedLength();
     this.getLoggedUser();
   }
 
@@ -62,10 +66,21 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     });
   }
 
+
+   // Wait until the view inits before disconnecting
+   ngAfterViewInit() {
+    console.log('% »»» WebSocketJs WF - onData >>>>>>>>>>>>>>>>>>>>>>>>>>>>> (ws-requests-served) - ngAfterViewInit wsRequestsServed', this.wsRequestsServed)
+    // Since we know the list is not going to change
+    // let's request that this component not undergo change detection at all
+    // this.cdr.detach();
+  }
+
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
+
   // IS USED WHEN IS GET A NEW MESSAGE (INN THIS CASE THE ONINIT IS NOT CALLED)
   getWsRequestsServedLength() {
 

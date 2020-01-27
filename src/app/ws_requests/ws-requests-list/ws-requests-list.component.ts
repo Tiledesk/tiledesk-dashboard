@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, NgZone, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, NgZone, ViewChild, ElementRef } from '@angular/core';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
 import { UsersLocalDbService } from '../../services/users-local-db.service';
 import { BotLocalDbService } from '../../services/bot-local-db.service';
@@ -25,16 +25,18 @@ import { environment } from '../../../environments/environment';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
   selector: 'appdashboard-ws-requests-list',
   templateUrl: './ws-requests-list.component.html',
   styleUrls: ['./ws-requests-list.component.scss']
 })
-export class WsRequestsListComponent extends WsSharedComponent implements OnInit, OnDestroy {
+export class WsRequestsListComponent extends WsSharedComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // used to unsuscribe from behaviour subject
   private unsubscribe$: Subject<any> = new Subject<any>();
+ 
 
   // @ViewChild('teamContent', { read: ElementRef }) public teamContent: ElementRef<any>;
   @ViewChild('teamContent') private teamContent: ElementRef;
@@ -82,6 +84,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   filter: any[] = [{ 'deptId': null }, { 'agentId': null }];
   hasFiltered = false;
+  
 
   /**
    * Constructor
@@ -108,7 +111,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     private departmentService: DepartmentService,
 
   ) {
-    super(botLocalDbService, usersLocalDbService, router);
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService);
     this.zone = new NgZone({ enableLongStackTrace: false });
   }
 
@@ -120,12 +123,14 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
    * On init
    */
   ngOnInit() {
+    console.log("% »»» WebSocketJs WF +++++ ws-requests--- list ----- ngOnInit ");
     this.getWsRequests$();
     this.getCurrentProject();
     this.getLoggedUser();
     this.getProjectUserRole();
     this.getStorageBucket();
-    this.listenToRequestsLength();
+    // this.listenToRequestsLength();
+
     // this.for1();
     // this.getRequestsTotalCount()  
     // this.getAllProjectUsersAndBot();
@@ -136,7 +141,13 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     // this.selectedAgentId = '';
   }
 
+  ngAfterViewInit() {
+    
+  }
+
   ngOnDestroy() {
+    console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ ngOnDestroy')
+    // this.subscription.unsubscribe()
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
@@ -299,29 +310,38 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
 
   listenToRequestsLength() {
-    this.wsRequestsService.wsRequestsListLength$.subscribe((totalrequests: number) => {
-      console.log('% »»» WebSocketJs WF - onData (ws-requests-list) ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> totalrequests ', totalrequests)
+    
+    this.subscription =  this.wsRequestsService.wsRequestsListLength$
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((totalrequests: number) => {
+        console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ listenToRequestsLength RECEIVED NEXT wsRequestsList LENGTH', totalrequests)
 
+       
+      
 
+        if (totalrequests === 0) {
+          this.SHOW_SIMULATE_REQUEST_BTN = true
+          this.showSpinner = false;
+          console.log('% »»» WebSocketJs WF +++++ ws-requests--- ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ listenToRequestsLength SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
+          console.log('% »»» WebSocketJs WF +++++ ws-requests--- ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ listenToRequestsLength showSpinner ', this.showSpinner)
 
-      if (totalrequests === 0) {
-        this.SHOW_SIMULATE_REQUEST_BTN = true
-        this.showSpinner = false;
+        } else if (totalrequests > 0) {
 
-      } else if (totalrequests > 0) {
+          this.showSpinner = false;
+          this.SHOW_SIMULATE_REQUEST_BTN = false
+          console.log('% »»» WebSocketJs WF +++++ ws-requests--- ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ listenToRequestsLength SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
+          console.log('% »»» WebSocketJs WF +++++ ws-requests--- ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ listenToRequestsLength showSpinner ', this.showSpinner)
 
-        this.showSpinner = false;
-        this.SHOW_SIMULATE_REQUEST_BTN = false
-        console.log('% »»» WebSocketJs WF - onData (ws-requests-list) ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> showSpinner ', this.showSpinner)
+        }
 
-      }
-
-      // console.log('% »»» WebSocketJs WF - WsRequestsList >>>>>>> >>>>>>> BEHAVIOUR TOTAL-REQUESTS <<<<<<< ', totalrequests)
-      // console.log('% »»» WebSocketJs WF - WsRequestsList >>>>>>> >>>>>>> THIS.WS-REQUESTS LENGTH <<<<<<< ', this.ws_requests.length)
-      // if (totalrequests) {
-      //   this.totalRequests = totalrequests
-      // }
-    })
+        // console.log('% »»» WebSocketJs WF - WsRequestsList >>>>>>> >>>>>>> BEHAVIOUR TOTAL-REQUESTS <<<<<<< ', totalrequests)
+        // console.log('% »»» WebSocketJs WF - WsRequestsList >>>>>>> >>>>>>> THIS.WS-REQUESTS LENGTH <<<<<<< ', this.ws_requests.length)
+        // if (totalrequests) {
+        //   this.totalRequests = totalrequests
+        // }
+      })
   }
 
   public generateFake(count: number): Array<number> {
@@ -499,22 +519,77 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   //     this.SHOW_SIMULATE_REQUEST_BTN = true;
   //   }
   // }
+  asyncFunction(item, cb) {
+    setTimeout(() => {
+      // console.log('% »»» WebSocketJs WF +++++ ws-requests--- list  ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ asyncFunction done with', item);
+      cb();
+    }, 100);
+  }
 
   // -----------------------------------------------------------------------------------------------------
   // @ Subscribe to get the published requests (called On init)
   // -----------------------------------------------------------------------------------------------------
   getWsRequests$() {
+
     this.wsRequestsService.wsRequestsList$
       .pipe(
         takeUntil(this.unsubscribe$)
       )
       .subscribe((wsrequests) => {
-        if (wsrequests) {
 
-          if (wsrequests.length > 0) {
-            this.SHOW_SIMULATE_REQUEST_BTN = false;
-            // this.showSpinner = false;
+        console.log("% »»» WebSocketJs WF +++++ ws-requests--- list ----- subscribe to NEXT ", wsrequests);
+      
+        if (wsrequests) {
+          
+          if (Array.isArray(wsrequests)) {
+
+            // https://stackoverflow.com/questions/18983138/callback-after-all-asynchronous-foreach-callbacks-are-completed
+            let requests = wsrequests.map((item) => {
+              return new Promise((resolve) => {
+                this.asyncFunction(item, resolve);
+              });
+            })
+            Promise.all(requests).then(() => {
+
+              console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> data.length ', wsrequests.length)
+   if (wsrequests.length > 0) {
+
+              this.SHOW_SIMULATE_REQUEST_BTN = false;
+              console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
+              this.showSpinner = false;
+              console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SPINNER ', this.showSpinner)
+
+
+            } else if (wsrequests.length === 0) {
+              this.SHOW_SIMULATE_REQUEST_BTN = true;
+              console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
+              this.showSpinner = false;
+              console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SPINNER ', this.showSpinner)
+            }
+
+            });
+
           }
+
+    
+          // console.log('% »»» WebSocketJs WF - WsRequestsList >>>>>>> WS-REQUESTS-LENGHT <<<<<<< ', wsrequests.length)
+          
+            
+            // if (wsrequests.length > 0) {
+
+            //   this.SHOW_SIMULATE_REQUEST_BTN = false;
+            //   console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
+            //   this.showSpinner = false;
+            //   console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SPINNER ', this.showSpinner)
+
+
+            // } else if (wsrequests.length === 0) {
+            //   this.SHOW_SIMULATE_REQUEST_BTN = true;
+            //   console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
+            //   this.showSpinner = false;
+            //   console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SPINNER ', this.showSpinner)
+            // }
+          
 
 
           if (this.ONLY_MY_REQUESTS === false) {
@@ -619,14 +694,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         }
 
         // console.log('% »»» WebSocketJs WF - WsRequestsList getWsRequests$ ws_request ', wsrequests)
-        console.log('% »»» WebSocketJs WF - WsRequestsList >>>>>>> WS-REQUESTS-LENGHT <<<<<<< ', wsrequests.length)
-        if (wsrequests.length > 0) {
-          this.showSpinner = false;
-          this.SHOW_SIMULATE_REQUEST_BTN = false;
-        } else if (wsrequests.length === 0) {
-          this.showSpinner = false;
-          this.SHOW_SIMULATE_REQUEST_BTN = true;
-        }
+
 
 
 

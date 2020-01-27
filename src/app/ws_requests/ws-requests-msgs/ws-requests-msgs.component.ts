@@ -19,7 +19,9 @@ import { forEach } from '@angular/router/src/utils/collection';
 import { AppConfigService } from '../../services/app-config.service';
 import { Subscription } from 'rxjs';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators'
+import { takeUntil } from 'rxjs/operators';
+import { DepartmentService } from '../../services/mongodb-department.service';
+
 
 @Component({
   selector: 'appdashboard-ws-requests-msgs',
@@ -68,6 +70,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   displayBtnScrollToBottom = 'none';
   displayArchiveRequestModal = 'none';
   displayConfirmReassignmentModal = 'none';
+  displayDeptConfirmReassignmentModal = 'none';
   id_request_to_archive: string;
   SHOW_CIRCULAR_SPINNER = false;
   displayArchivingInfoModal = 'none';
@@ -89,6 +92,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   projectUsersList: any;
   userid_selected: string;
   userfirstname_selected: string;
+  deptid_selected: string;
+  deptname_selected: string;
   userlastname_selected: string;
   useremail_selected: string;
   REQUESTER_IS_VERIFIED = false;
@@ -117,6 +122,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   showAllSourcePageString = false;
   sourcePage: string;
   sourcePageCutted: string;
+  departments: any;
 
   subscribe: Subscription;
   private unsubscribe$: Subject<any> = new Subject<any>();
@@ -138,7 +144,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   constructor(
     public router: Router,
     public route: ActivatedRoute,
-    private wsRequestsService: WsRequestsService,
+    public wsRequestsService: WsRequestsService,
     private wsMsgsService: WsMsgsService,
     private _location: Location,
     public botLocalDbService: BotLocalDbService,
@@ -147,9 +153,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     private requestsService: RequestsService,
     private notify: NotifyService,
     public auth: AuthService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    private departmentService: DepartmentService
   ) {
-    super(botLocalDbService, usersLocalDbService, router)
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService)
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -602,7 +609,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   scrollCardContetToBottom() {
-
     // if(this.myScrollContainer) {
     setTimeout(() => {
 
@@ -702,6 +708,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.actionInModal = actionSelected
     console.log('%%% Ws-REQUESTS-Msgs - ACTION IN MODAL ', this.actionInModal);
     this.getAllUsersOfCurrentProject();
+    this.getDepartments()
     this.displayUsersListModal = 'block'
     console.log('%%% Ws-REQUESTS-Msgs - DISPLAY USERS LIST MODAL ', this.displayUsersListModal);
     const actualHeight = window.innerHeight;
@@ -720,6 +727,19 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       console.log('%%% Ws-REQUESTS-Msgs - *** MODAL HEIGHT ***', this.users_list_modal_height);
     }
 
+  }
+
+  getDepartments() {
+    this.departmentService.getDeptsByProjectId().subscribe((depts: any) => {
+      console.log('% »»» WebSocketJs WF WS-RL - GET DEPTS RESPONSE ', depts);
+
+      this.departments = depts
+
+    }, error => {
+      console.log('% »»» WebSocketJs WF WS-RL - GET DEPTS - ERROR: ', error);
+    }, () => {
+      console.log('% »»» WebSocketJs WF WS-RL - GET DEPTS * COMPLETE *')
+    });
   }
 
   closeSelectUsersModal() {
@@ -769,9 +789,24 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // this.document.body.scrollTop = 0;
   }
 
+  selectDept(deptname: string, deptid: string) {
+    console.log('%%% Ws-REQUESTS-Msgs - SELECTED DEPT ID ', deptname);
+    console.log('%%% Ws-REQUESTS-Msgs - SELECTED DEPT NAME ', deptid);
+
+    this.deptid_selected = deptid
+    this.deptname_selected = deptname
+
+    this.displayDeptConfirmReassignmentModal = 'block'
+  }
+
   closeConfirmReassignmentModal() {
     this.displayConfirmReassignmentModal = 'none'
   }
+
+  closeDeptConfirmReassignmentModal() {
+    this.displayDeptConfirmReassignmentModal = 'none'
+  }
+
 
   reassignRequest(userid_selected) {
     console.log('%%% Ws-REQUESTS-Msgs - REASSIGN REQUEST TO USER ID ', userid_selected);
@@ -779,7 +814,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.displayUsersListModal = 'none'
 
     this.joinAnotherAgentLeaveCurrentAgents(userid_selected);
+  }
 
+  // ---------------------------------------------------------------------------------------------
+  // Reassign to department (joinDeptAndLeaveCurrentAgents in ws-shared) 
+  // ---------------------------------------------------------------------------------------------
+  reassignRequestToDept(deptid_selected) {
+    console.log('%%% Ws-REQUESTS-Msgs - REASSIGN REQUEST TO DEPT ID ', deptid_selected);
+    this.displayUsersListModal = 'none'
+    this.displayDeptConfirmReassignmentModal = 'none';
+    this.joinDeptAndLeaveCurrentAgents(deptid_selected, this.id_request);
   }
 
   assignRequest(userid_selected) {
@@ -795,7 +839,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   joinAnotherAgentLeaveCurrentAgents(userid_selected) {
     this.getFirebaseToken(() => {
 
-      // this.requestsService.joinToGroup(this.currentUserFireBaseUID, this.requestRecipient)
+
       this.requestsService.joinToGroup(this.id_request, this.firebase_token, userid_selected)
         .subscribe((joinToGroupRes: any) => {
 
@@ -882,42 +926,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.displayArchivingInfoModal = 'none'
   }
 
-  _archiveTheRequestHandler() {
-    console.log('%%% Ws-REQUESTS-Msgs - HAS CLICKED ARCHIVE REQUEST archiveTheRequestHandler');
 
-    this.displayArchiveRequestModal = 'none';
-
-    this.SHOW_CIRCULAR_SPINNER = true;
-
-    this.displayArchivingInfoModal = 'block'
-
-    this.getFirebaseToken(() => {
-
-      this.requestsService.closeSupportGroup(this.id_request_to_archive, this.firebase_token)
-        .subscribe((data: any) => {
-
-          console.log('%%% Ws-REQUESTS-Msgs - CLOSE SUPPORT GROUP - DATA ', data);
-        },
-          (err) => {
-            console.log('%%% Ws-REQUESTS-Msgs - CLOSE SUPPORT GROUP - ERROR ', err);
-            this.SHOW_CIRCULAR_SPINNER = false;
-            this.ARCHIVE_REQUEST_ERROR = true;
-            // =========== NOTIFY ERROR ===========
-            // tslint:disable-next-line:quotemark
-            this.notify.showNotification("An error has occurred archiving the request", 4, 'report_problem')
-          },
-          () => {
-            // this.ngOnInit();
-            console.log('%%% Ws-REQUESTS-Msgs - CLOSE SUPPORT GROUP - COMPLETE');
-            this.SHOW_CIRCULAR_SPINNER = false;
-            this.ARCHIVE_REQUEST_ERROR = false;
-
-            // =========== NOTIFY SUCCESS===========
-            // with id: ${this.id_request_to_archive}
-            this.notify.showNotification(`the request has been moved to History`, 2, 'done');
-          });
-    });
-  }
 
   archiveTheRequestHandler() {
     console.log('%%% Ws-REQUESTS-Msgs - HAS CLICKED ARCHIVE REQUEST archiveTheRequestHandler');
@@ -1093,6 +1102,44 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   openUserList() {
     this.router.navigate(['project/' + this.id_project + '/userslist']);
+  }
+
+
+  _archiveTheRequestHandler() {
+    console.log('%%% Ws-REQUESTS-Msgs - HAS CLICKED ARCHIVE REQUEST archiveTheRequestHandler');
+
+    this.displayArchiveRequestModal = 'none';
+
+    this.SHOW_CIRCULAR_SPINNER = true;
+
+    this.displayArchivingInfoModal = 'block'
+
+    this.getFirebaseToken(() => {
+
+      this.requestsService.closeSupportGroup(this.id_request_to_archive, this.firebase_token)
+        .subscribe((data: any) => {
+
+          console.log('%%% Ws-REQUESTS-Msgs - CLOSE SUPPORT GROUP - DATA ', data);
+        },
+          (err) => {
+            console.log('%%% Ws-REQUESTS-Msgs - CLOSE SUPPORT GROUP - ERROR ', err);
+            this.SHOW_CIRCULAR_SPINNER = false;
+            this.ARCHIVE_REQUEST_ERROR = true;
+            // =========== NOTIFY ERROR ===========
+            // tslint:disable-next-line:quotemark
+            this.notify.showNotification("An error has occurred archiving the request", 4, 'report_problem')
+          },
+          () => {
+            // this.ngOnInit();
+            console.log('%%% Ws-REQUESTS-Msgs - CLOSE SUPPORT GROUP - COMPLETE');
+            this.SHOW_CIRCULAR_SPINNER = false;
+            this.ARCHIVE_REQUEST_ERROR = false;
+
+            // =========== NOTIFY SUCCESS===========
+            // with id: ${this.id_request_to_archive}
+            this.notify.showNotification(`the request has been moved to History`, 2, 'done');
+          });
+    });
   }
 
 
