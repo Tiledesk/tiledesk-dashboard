@@ -27,6 +27,8 @@ import brand from 'assets/brand/brand.json';
 // import { publicKey } from '../../utils/util';
 // import { public_Key } from '../../utils/util';
 import { environment } from '../../../environments/environment';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
 
 @Component({
     selector: 'app-navbar',
@@ -34,6 +36,10 @@ import { environment } from '../../../environments/environment';
     styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit, AfterViewInit, AfterContentChecked, AfterViewChecked {
+
+    // used to unsuscribe from behaviour subject
+    private unsubscribe$: Subject<any> = new Subject<any>();
+
     tparams = brand;
     public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK;
 
@@ -185,6 +191,13 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         this.getOSCODE();
         this.getStorageBucket();
     } // OnInit
+
+    ngOnDestroy() {
+        console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ ngOnDestroy')
+
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
+    }
 
 
     getStorageBucket() {
@@ -580,6 +593,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     goToProjects() {
         console.log('HAS CLICCKED GO TO PROJECT ')
+
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
+
         this.router.navigate(['/projects']);
         // (in AUTH SERVICE ) RESET PROJECT_BS AND REMOVE ITEM PROJECT FROM STORAGE WHEN THE USER GO TO PROJECTS PAGE
         this.auth.hasClickedGoToProjects();
@@ -595,6 +612,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         // RUNS ONLY IF THE THE USER CLICK OVER A PROJECT WITH THE ID DIFFERENT FROM THE CURRENT PROJECT ID
         if (id_project !== this.projectId) {
             this.router.navigate([`/project/${id_project}/home`]);
+
+            this.unsubscribe$.next();
+            this.unsubscribe$.complete();
 
             // WHEN THE USER SELECT A PROJECT ITS ID and NAME IS SEND IN THE AUTH SERVICE THAT PUBLISHES IT
             const project: Project = {
@@ -622,44 +642,52 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     // NEW
     updateUnservedRequestCount() {
         // this.requestsService.requestsList_bs.subscribe((requests) => {
-        this.wsRequestsService.wsRequestsList$.subscribe((requests) => {
+        this.wsRequestsService.wsRequestsList$
+            .pipe(
+                takeUntil(this.unsubscribe$)
+            )
+            .subscribe((requests) => {
 
-            if (requests) {
-                let count = 0;
-                requests.forEach(r => {
-                    // if (r.support_status === 100) {
-                    if (r.status === 100) {
-                        count = count + 1;
-                    }
-                });
-                this.unservedRequestCount = count;
-            }
-        });
+                if (requests) {
+                    let count = 0;
+                    requests.forEach(r => {
+                        // if (r.support_status === 100) {
+                        if (r.status === 100) {
+                            count = count + 1;
+                        }
+                    });
+                    this.unservedRequestCount = count;
+                }
+            });
     }
 
     updateCurrentUserRequestCount() {
         // this.requestsService.requestsList_bs.subscribe((requests) => {
-        this.wsRequestsService.wsRequestsList$.subscribe((requests) => {
-            if (requests) {
-                let count = 0;
-                requests.forEach(r => {
+        this.wsRequestsService.wsRequestsList$
+            .pipe(
+                takeUntil(this.unsubscribe$)
+            )
+            .subscribe((requests) => {
+                if (requests) {
+                    let count = 0;
+                    requests.forEach(r => {
 
-                    // const membersArray = Object.keys(r.members);
-                    const participantsArray = r.participants // new used with ws 
-                    // console.log('»» WIDGET notifyLastUnservedRequest REQUEST currentUserRequestCount membersArray ', membersArray);
+                        // const membersArray = Object.keys(r.members);
+                        const participantsArray = r.participants // new used with ws 
+                        // console.log('»» WIDGET notifyLastUnservedRequest REQUEST currentUserRequestCount membersArray ', membersArray);
 
-                    // const currentUserIsInMembers = membersArray.includes(this.user._id);
-                    const currentUserIsInMembers = participantsArray.includes(this.user._id); // new used with ws 
+                        // const currentUserIsInMembers = membersArray.includes(this.user._id);
+                        const currentUserIsInMembers = participantsArray.includes(this.user._id); // new used with ws 
 
-                    // console.log('»» WIDGET notifyLastUnservedRequest REQUEST currentUserRequestCount currentUserIsInMembers ', currentUserIsInMembers);
-                    if (currentUserIsInMembers === true) {
-                        count = count + 1;
-                    }
-                });
-                this.currentUserRequestCount = count;
-                // console.log('»» NAVBAR notifyLastUnservedRequest REQUEST currentUserRequestCount ', this.currentUserRequestCount);
-            }
-        });
+                        // console.log('»» WIDGET notifyLastUnservedRequest REQUEST currentUserRequestCount currentUserIsInMembers ', currentUserIsInMembers);
+                        if (currentUserIsInMembers === true) {
+                            count = count + 1;
+                        }
+                    });
+                    this.currentUserRequestCount = count;
+                    // console.log('»» NAVBAR notifyLastUnservedRequest REQUEST currentUserRequestCount ', this.currentUserRequestCount);
+                }
+            });
 
     }
 
@@ -670,18 +698,22 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     checkRequestStatusInShown_requests() {
         console.log('»» NAVBAR shown_requests object ', this.shown_requests)
         // this.requestsService.requestsList_bs.subscribe((requests) => {
-        this.wsRequestsService.wsRequestsList$.subscribe((requests) => {
-            if (requests) {
-                requests.forEach(r => {
-                    // if (r.support_status !== 100) {
-                    if (r.status !== 100) {
-                        // console.log('REQUEST WITH STATUS != 100 ', r.status)
-                        this.shown_requests[r.id] = false;
-                        // this.shown_requests[r.request_id] = false;
-                    }
-                });
-            }
-        });
+        this.wsRequestsService.wsRequestsList$
+            .pipe(
+                takeUntil(this.unsubscribe$)
+            )
+            .subscribe((requests) => {
+                if (requests) {
+                    requests.forEach(r => {
+                        // if (r.support_status !== 100) {
+                        if (r.status !== 100) {
+                            // console.log('REQUEST WITH STATUS != 100 ', r.status)
+                            this.shown_requests[r.id] = false;
+                            // this.shown_requests[r.request_id] = false;
+                        }
+                    });
+                }
+            });
     }
 
     /*** from 14 feb are displayed also the request assigned to the current user */
@@ -690,109 +722,113 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     // FURTHERMORE THE NOTICATIONS WILL NOT BE DISPLAYED IF THE USER OBJECT IS NULL (i.e THERE ISN'T USER LOGGED IN)
     notifyLastUnservedRequest() {
         // this.requestsService.requestsList_bs.subscribe((requests) => {
-        this.wsRequestsService.wsRequestsList$.subscribe((requests) => {
+        this.wsRequestsService.wsRequestsList$
+            .pipe(
+                takeUntil(this.unsubscribe$)
+            )
+            .subscribe((requests) => {
 
-            if (requests) {
-                requests.forEach(r => {
+                if (requests) {
+                    requests.forEach(r => {
 
-                    // console.log('»» WIDGET notifyLastUnservedRequest REQUEST shown_requests ', this.shown_requests);
-                    // console.log('»» WIDGET notifyLastUnservedRequest REQUEST shown_my_requests ', this.shown_my_requests);
-                    // console.log('»» NAVBAR notifyLastUnservedRequest REQUEST r ', r);
+                        // console.log('»» WIDGET notifyLastUnservedRequest REQUEST shown_requests ', this.shown_requests);
+                        // console.log('»» WIDGET notifyLastUnservedRequest REQUEST shown_my_requests ', this.shown_my_requests);
+                        // console.log('»» NAVBAR notifyLastUnservedRequest REQUEST r ', r);
 
-                    // console.log('»» WIDGET notifyLastUnservedRequest REQUEST this.user ID  ', this.user._id);
+                        // console.log('»» WIDGET notifyLastUnservedRequest REQUEST this.user ID  ', this.user._id);
 
-                    // const membersArray = Object.keys(r.members); // old used with firestore 
-                    // console.log('»» WIDGET notifyLastUnservedRequest REQUEST membersArray ', membersArray);
+                        // const membersArray = Object.keys(r.members); // old used with firestore 
+                        // console.log('»» WIDGET notifyLastUnservedRequest REQUEST membersArray ', membersArray);
 
-                    const participantsArray = r.participants // new used with ws 
-                    // console.log('% »»» WebSocketJs WF - Navbar participantsArray ', participantsArray);
+                        const participantsArray = r.participants // new used with ws 
+                        // console.log('% »»» WebSocketJs WF - Navbar participantsArray ', participantsArray);
 
-                    // const currentUserIsInMembers = membersArray.includes(this.user._id);  // old used with firestore 
-                    const currentUserIsInMembers = participantsArray.includes(this.user._id); // new used with ws 
-                    // console.log('»» WIDGET notifyLastUnservedRequest REQUEST currentUserIsInMembers ', currentUserIsInMembers);
+                        // const currentUserIsInMembers = membersArray.includes(this.user._id);  // old used with firestore 
+                        const currentUserIsInMembers = participantsArray.includes(this.user._id); // new used with ws 
+                        // console.log('»» WIDGET notifyLastUnservedRequest REQUEST currentUserIsInMembers ', currentUserIsInMembers);
 
-                    // if (r.support_status === 100 && !this.shown_requests[r.id] && this.user !== null) { // old used with firestore 
-                    if (r.status === 100 && !this.shown_requests[r.id] && this.user !== null) {
+                        // if (r.support_status === 100 && !this.shown_requests[r.id] && this.user !== null) { // old used with firestore 
+                        if (r.status === 100 && !this.shown_requests[r.id] && this.user !== null) {
 
-                        // const requestCreationDate = moment(r.created_on);
-                        const requestCreationDate = moment(r.createdAt);
+                            // const requestCreationDate = moment(r.created_on);
+                            const requestCreationDate = moment(r.createdAt);
 
-                        // console.log('notifyLastUnservedRequest REQUEST', r);
-                        // console.log('notifyLastUnservedRequest REQUEST ID', r.id, ' CREATED AT ', requestCreationDate);
-                        // const today = new Date();
-                        const currentTime = moment();
-                        // console.log('notifyLastUnservedRequest REQUEST TODAY ', currentTime);
+                            // console.log('notifyLastUnservedRequest REQUEST', r);
+                            // console.log('notifyLastUnservedRequest REQUEST ID', r.id, ' CREATED AT ', requestCreationDate);
+                            // const today = new Date();
+                            const currentTime = moment();
+                            // console.log('notifyLastUnservedRequest REQUEST TODAY ', currentTime);
 
-                        const dateDiff = currentTime.diff(requestCreationDate, 'h');
-                        // console.log('»» WIDGET notifyLastUnservedRequest DATE DIFF ', dateDiff);
+                            const dateDiff = currentTime.diff(requestCreationDate, 'h');
+                            // console.log('»» WIDGET notifyLastUnservedRequest DATE DIFF ', dateDiff);
 
-                        /**
-                         * *** NEW 29JAN19: the unserved requests notifications are not displayed if it is older than one day ***
-                         */
-                        if (dateDiff < 24) {
+                            /**
+                             * *** NEW 29JAN19: the unserved requests notifications are not displayed if it is older than one day ***
+                             */
+                            if (dateDiff < 24) {
 
-                            // this.lastRequest = requests[requests.length - 1];
-                            // console.log('!!! »»» LAST UNSERVED REQUEST ', this.lastRequest)
+                                // this.lastRequest = requests[requests.length - 1];
+                                // console.log('!!! »»» LAST UNSERVED REQUEST ', this.lastRequest)
 
-                            // console.log('!!! »»» UNSERVED REQUEST IN BOOTSTRAP NOTIFY ', r)
-                            // const url = '#/project/' + this.projectId + '/request/' + r.id + '/messages'
-                            const url = '#/project/' + this.projectId + '/wsrequest/' + r.request_id + '/messages'
-                            this.showNotification(
-                                '<span style="font-weight: 400; font-family: Google Sans, sans-serif;color:#2d323e!important">' + r.lead.fullname + '</span>' +
-                                '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text +
-                                '</em>' + `<a href="${url}" target="_self" data-notify="url" style="height: 100%; left: 0px; position: absolute; top: 0px; width: 100%; z-index: 1032;"></a>`,
-                                3,
-                                'border-left-color: rgb(237, 69, 55)',
-                                'new-chat-icon-unserved.png'
-                            );
+                                // console.log('!!! »»» UNSERVED REQUEST IN BOOTSTRAP NOTIFY ', r)
+                                // const url = '#/project/' + this.projectId + '/request/' + r.id + '/messages'
+                                const url = '#/project/' + this.projectId + '/wsrequest/' + r.request_id + '/messages'
+                                this.showNotification(
+                                    '<span style="font-weight: 400; font-family: Google Sans, sans-serif;color:#2d323e!important">' + r.lead.fullname + '</span>' +
+                                    '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text +
+                                    '</em>' + `<a href="${url}" target="_self" data-notify="url" style="height: 100%; left: 0px; position: absolute; top: 0px; width: 100%; z-index: 1032;"></a>`,
+                                    3,
+                                    'border-left-color: rgb(237, 69, 55)',
+                                    'new-chat-icon-unserved.png'
+                                );
 
-                            this.shown_requests[r.id] = true;
-                            console.log('»» NAVBAR shown_requests object notifyLastUnservedRequest ', this.shown_requests)
-                            // r.notification_already_shown = true;
-                        }
-                    }
-
-                    if (this.user !== null && !this.shown_my_requests[r.id] && currentUserIsInMembers === true) {
-
-                        // const requestCreationDate = moment(r.created_on);
-                        const requestCreationDate = moment(r.createdAt);
-
-                        const currentTime = moment();
-
-                        const dateDiff = currentTime.diff(requestCreationDate, 'h');
-                        // console.log('»» WIDGET notifyLastUnservedRequest currentUserIsInMembers DATE DIFF ', dateDiff);
-
-                        if (dateDiff < 24) {
-                            // const url = '#/project/' + this.projectId + '/request/' + r.id + '/messages'
-                            const url = '#/project/' + this.projectId + '/wsrequest/' + r.request_id + '/messages'
-
-                            let contact_fullname = ''
-                            if (r.lead) {
-                                contact_fullname = r.lead.fullname
-                            } else {
-                                contact_fullname = "n.a."
+                                this.shown_requests[r.id] = true;
+                                console.log('»» NAVBAR shown_requests object notifyLastUnservedRequest ', this.shown_requests)
+                                // r.notification_already_shown = true;
                             }
-
-                            this.showNotification(
-                                '<span style="font-weight: 400; font-family: Google Sans, sans-serif; color:#2d323e!important">' + contact_fullname + '</span>' +
-                                '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text +
-                                '</em>' + `<a href="${url}" target="_self" data-notify="url" style="height: 100%; left: 0px; position: absolute; top: 0px; width: 100%; z-index: 1032;"></a>`,
-                                4,
-                                'border-left-color: rgb(77, 175, 79)',
-                                'new-chat-icon-served-by-me.png'
-                            );
-
-                            this.shown_my_requests[r.id] = true;
-                            console.log('»» NAVBAR shown_my_requests object notifyLastUnservedRequest ', this.shown_my_requests)
-                            // this.shown_my_requests[r.request_id] = true;
-
                         }
-                    }
 
-                });
-                // this.unservedRequestCount = count;
-            }
-        });
+                        if (this.user !== null && !this.shown_my_requests[r.id] && currentUserIsInMembers === true) {
+
+                            // const requestCreationDate = moment(r.created_on);
+                            const requestCreationDate = moment(r.createdAt);
+
+                            const currentTime = moment();
+
+                            const dateDiff = currentTime.diff(requestCreationDate, 'h');
+                            // console.log('»» WIDGET notifyLastUnservedRequest currentUserIsInMembers DATE DIFF ', dateDiff);
+
+                            if (dateDiff < 24) {
+                                // const url = '#/project/' + this.projectId + '/request/' + r.id + '/messages'
+                                const url = '#/project/' + this.projectId + '/wsrequest/' + r.request_id + '/messages'
+
+                                let contact_fullname = ''
+                                if (r.lead) {
+                                    contact_fullname = r.lead.fullname
+                                } else {
+                                    contact_fullname = "n.a."
+                                }
+
+                                this.showNotification(
+                                    '<span style="font-weight: 400; font-family: Google Sans, sans-serif; color:#2d323e!important">' + contact_fullname + '</span>' +
+                                    '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text +
+                                    '</em>' + `<a href="${url}" target="_self" data-notify="url" style="height: 100%; left: 0px; position: absolute; top: 0px; width: 100%; z-index: 1032;"></a>`,
+                                    4,
+                                    'border-left-color: rgb(77, 175, 79)',
+                                    'new-chat-icon-served-by-me.png'
+                                );
+
+                                this.shown_my_requests[r.id] = true;
+                                console.log('»» NAVBAR shown_my_requests object notifyLastUnservedRequest ', this.shown_my_requests)
+                                // this.shown_my_requests[r.request_id] = true;
+
+                            }
+                        }
+
+                    });
+                    // this.unservedRequestCount = count;
+                }
+            });
     }
 
 
