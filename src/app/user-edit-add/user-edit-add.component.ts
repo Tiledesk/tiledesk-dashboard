@@ -192,10 +192,10 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     this.usersService.getProjectUsersById(this.project_user_id).subscribe((projectUser: any) => {
       console.log('PROJECT-USER DETAILS: ', projectUser);
 
-      this.user_email = projectUser[0].id_user.email;
+      this.user_email = projectUser.id_user.email;
       console.log('PROJECT-USER DETAILS - EMAIL: ', this.user_email);
 
-      this.user_role = projectUser[0].role;
+      this.user_role = projectUser.role;
       console.log('PROJECT-USER DETAILS - ROLE: ', this.user_role);
     },
       (error) => {
