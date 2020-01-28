@@ -50,12 +50,6 @@ export class WsSharedComponent implements OnInit {
     members_array.forEach(member_id => {
       if (member_id !== requester_id && member_id !== 'system') {
 
-        /**
-         * cleaned_members_array USED IN reassignRequest:
-         * WHEN IS RIASSIGNED A REQUEST IS RUNNED:
-         * ** joinToGroup: WITH WHOM THE userid_selected IS JOINED TO THE GROUP
-         * ** leaveTheGroup: WITH WHOM LEAVE THE GROUP THE MEMBER ID CONTAINED IN cleaned_members_array
-         *    note: before of this in leaveTheGroup was used the currentUserID  */
         this.cleaned_members_array.push(member_id);
         // console.log('%%% WsRequestsMsgsComponent - CLEANED MEMBERS ARRAY ', this.cleaned_members_array);
 
@@ -97,7 +91,7 @@ export class WsSharedComponent implements OnInit {
       }
     });
 
-    // console.log('%%% WsRequestsMsgsComponent - AGENT ARRAY ', this.agents_array)
+    console.log('%%% WsRequestsMsgsComponent - AGENT ARRAY ', this.agents_array)
   }
 
 
@@ -446,11 +440,9 @@ export class WsSharedComponent implements OnInit {
 
   joinDeptAndLeaveCurrentAgents(deptid_selected, requestid) {
     console.log('REQUEST-MSGS - JOIN DEPT AND LEAVE CURRENT AGENTS - DEPT ID ', deptid_selected);
-
     this.wsRequestsService.joinDept(deptid_selected, requestid)  
     .subscribe((res: any) => {
       console.log('REQUEST-MSGS - JOIN DEPT - RES ', res);
-
 
     }, (error) => {
 
@@ -460,9 +452,6 @@ export class WsSharedComponent implements OnInit {
 
     });
 
-
-
-    
   }
 
 
