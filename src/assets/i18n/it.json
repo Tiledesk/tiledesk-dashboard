@@ -387,6 +387,8 @@
     "RequiredField":"Campo obbligatorio",
     "Text":"Testo",
     "Alignment":"Allineamento",
+    "UserRole": "Ruolo utente",
+    "BotType": " / Tipo bot",
     "Pricing": {
         "Operators": "Operatori",
         "UpgradePlan": "Aggiorna Piano",
@@ -714,7 +716,8 @@
         "BotQuickTipsText": "Quando un cliente entra in chat tramite {{ company_name }}, potresti non essere sempre in grado di rispondere. Fortunatamente, puoi configurare un Bot per aiutarti e poi attivarlo in un Dipartimento",
         "ExternalBot": "Bot esterno",
         "NoUrlProvided": "Nessun URL fornito",
-        "EnterExternalBotUrl": "inserire l'URL del Bot esterno"
+        "EnterExternalBotUrl": "inserire l'URL del Bot esterno",
+        "TheBotHasBeenTrashed": "il bot è stato eliminato"
     },
     "BotsAddEditPage": {
         "AddBot": "Aggiungi Bot",

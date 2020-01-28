@@ -390,6 +390,8 @@
     "RequiredField":"Required field",
     "Text":"Text",
     "Alignment":"Alignment",
+    "UserRole": "User role",
+    "BotType": " / Bot type",
     "Pricing": {
         "Operators": "Operators",
         "UpgradePlan": "Upgrade Plan",
@@ -717,7 +719,8 @@
         "BotQuickTipsText": "When a customer chats in through {{ company_name }}, you may not always be around to respond. Luckily, you can configure a Bot to help you and then activates it in a Department",
         "ExternalBot": "External Bot",
         "NoUrlProvided": "No url provided",
-        "EnterExternalBotUrl": "enter external Bot Url"
+        "EnterExternalBotUrl": "enter external Bot Url",
+        "TheBotHasBeenTrashed": "the bot has been trashed"
     },
     "BotsAddEditPage": {
         "AddBot": "Add Bot",
