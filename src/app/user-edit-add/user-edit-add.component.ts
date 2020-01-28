@@ -56,6 +56,8 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   prjct_profile_name: string;
   browserLang: string;
   subscription: Subscription;
+  showSpinner = true;
+  
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -200,8 +202,10 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     },
       (error) => {
         console.log('PROJECT-USER DETAILS - ERR  ', error);
+        this.showSpinner = false;
       },
       () => {
+        this.showSpinner = false;
         console.log('PROJECT-USER DETAILS * COMPLETE *');
       });
   }
