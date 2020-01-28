@@ -343,10 +343,18 @@
               <span *ngIf="participant !== currentUserID" class="tooltipx">
                 <span (click)="goToMemberProfile( participant )" style="cursor:pointer; display: block">
               
+                  <!-- 
+                  // ------------------------------------------------------------------------------------------------------
+                  // the Agent is a Bot
+                  // ------------------------------------------------------------------------------------------------------ -->
                   <img *ngIf="participant.indexOf('bot_') !== -1" class="user-img ws-requests-list-servedby-avatar"
                     src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant | slice:4}}%2Fphoto.jpg?alt=media" 
                       onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"/>
 
+                  <!-- 
+                  // ------------------------------------------------------------------------------------------------------
+                  // the Agent is a human
+                  // ------------------------------------------------------------------------------------------------------ -->
                   <img *ngIf="participant.indexOf('bot_') === -1" class="user-img ws-requests-list-servedby-avatar"
                     src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media"
                     onerror="this.src='assets/img/no_image_user.png'" />
@@ -355,6 +363,10 @@
                 <span class="tooltiptext"> {{ "ViewProfile" | translate }} </span>
               </span>
               
+              <!-- 
+              // ------------------------------------------------------------------------------------------------------
+              // the Agent is the current user
+              // ------------------------------------------------------------------------------------------------------ -->
               <span *ngIf="participant === currentUserID">
                 <img class="user-img ws-requests-list-servedby-avatar"
                   src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media"
