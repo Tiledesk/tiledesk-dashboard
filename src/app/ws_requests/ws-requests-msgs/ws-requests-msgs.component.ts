@@ -21,7 +21,9 @@ import { Subscription } from 'rxjs';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { DepartmentService } from '../../services/mongodb-department.service';
-
+import { GroupService } from '../../services/group.service';
+import { FaqKbService } from '../../services/faq-kb.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'appdashboard-ws-requests-msgs',
@@ -123,8 +125,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   sourcePage: string;
   sourcePageCutted: string;
   departments: any;
-
+  bots: any;
   subscribe: Subscription;
+  bot_participant_id: string;
+  selected_bot_id: string;
   private unsubscribe$: Subject<any> = new Subject<any>();
   /**
    * Constructor
@@ -154,7 +158,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     private notify: NotifyService,
     public auth: AuthService,
     public appConfigService: AppConfigService,
-    private departmentService: DepartmentService
+    private departmentService: DepartmentService,
+    private groupsService: GroupService,
+    private faqKbService: FaqKbService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService)
   }
@@ -388,12 +394,29 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         // console.log('% !!!!!!!!!!!! Ws-REQUESTS-Msgs - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
-        console.log('% !!!!!!!!!!!! Ws-REQUESTS-Msgs - getWsRequestById$ *** this.request *** ', this.request)
+        console.log('%%% Ws-REQUESTS-Msg - getWsRequestById$ ****************** this.request ****************** ', this.request)
         // this.showSpinner = false;
 
         if (this.request) {
           this.members_array = this.request.participants;
           console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById PARTICIPANTS ARRAY ', this.members_array)
+
+          this.members_array.forEach(member => {
+            console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById member ', member);
+            console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById member is bot?', member.includes('bot_'));
+
+
+            if (member.includes('bot_')) {
+
+              this.bot_participant_id = member.substr(4);
+              console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById id bot in participants (substring) ', this.bot_participant_id);
+
+            } else {
+              this.bot_participant_id = ''
+            }
+
+
+          });
 
           // this.requester_id = this.request.requester ??? 
           // this.requester_id = this.request.attributes.requester_id;
@@ -707,7 +730,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   openSelectUsersModal(actionSelected) {
     this.actionInModal = actionSelected
     console.log('%%% Ws-REQUESTS-Msgs - ACTION IN MODAL ', this.actionInModal);
-    this.getAllUsersOfCurrentProject();
+    // this.getAllUsersOfCurrentProject();
+    this.getProjectUsersAndBots();
+
     this.getDepartments()
     this.displayUsersListModal = 'block'
     console.log('%%% Ws-REQUESTS-Msgs - DISPLAY USERS LIST MODAL ', this.displayUsersListModal);
@@ -733,7 +758,20 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.departmentService.getDeptsByProjectId().subscribe((depts: any) => {
       console.log('% »»» WebSocketJs WF WS-RL - GET DEPTS RESPONSE ', depts);
 
-      this.departments = depts
+      this.departments = depts;
+      this.departments.forEach(dept => {
+
+        if (dept.routing === 'assigned' || dept.routing === 'pooled') {
+
+          if (dept.id_group !== null && dept.id_group !== undefined) {
+            this.getGroupById(dept.id_group)
+          }
+
+          if (dept.id_bot !== null && dept.id_bot !== undefined) {
+            this.getBotById(dept.id_bot);
+          }
+        }
+      });
 
     }, error => {
       console.log('% »»» WebSocketJs WF WS-RL - GET DEPTS - ERROR: ', error);
@@ -742,12 +780,82 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     });
   }
 
+  /**
+  * GET GROUP BY ID  */
+  getGroupById(id_group) {
+    this.groupsService.getGroupById(id_group).subscribe((group: any) => {
+
+      if (group) {
+        console.log('% »»» WebSocketJs WF WS-RL - GET GROUP RESPONSE', group);
+
+        // this.groupName = group.name
+        // this.groupIsTrashed = group.trashed
+        // console.log(' -- > GROUP NAME ', this.groupName, 'is TRASHED ', this.groupIsTrashed);
+        for (const dept of this.departments) {
+
+          if (dept.id_group === group._id) {
+
+            if (dept.routing === 'assigned' || dept.routing === 'pooled') {
+
+              dept.hasGroupName = group.name
+
+              if (group.trashed === true) {
+
+                dept.groupHasBeenTrashed = true
+              }
+            }
+          }
+        }
+      }
+    }, error => {
+      console.log('% »»» WebSocketJs WF WS-RL - GET GROUP - RESPONSE', error);
+    }, () => {
+      console.log('% »»» WebSocketJs WF WS-RL - GET GROUP - COMPLETE')
+    });
+  }
+
+
+  /**
+ * GET BOT BY ID  */
+  getBotById(id_bot) {
+
+    this.faqKbService.getMongDbFaqKbById(id_bot).subscribe((bot: any) => {
+      if (bot) {
+        console.log('% »»» WebSocketJs WF WS-RL BOT GET BY ID RES', bot);
+        const botName = bot.name;
+
+        for (const dept of this.departments) {
+          if (dept.id_bot === bot._id) {
+            dept.hasBotName = botName
+            dept.botHasBeenTrashed = bot.trashed
+          }
+        }
+      }
+    }, error => {
+      console.log('-- > BOT GET BY ID - ERROR', error);
+
+      const errorBody = JSON.parse(error._body)
+      console.log('% »»» WebSocketJs WF WS-RL BOT GET BY ID - ERROR BODY', errorBody);
+      if (errorBody.msg === 'Object not found.') {
+        console.log('% »»» WebSocketJs WF WS-RL - BOT GET BY ID - ERROR BODY MSG', errorBody.msg);
+        console.log('% »»» WebSocketJs WF WS-RL - BOT GET BY ID - ERROR url', error.url);
+        const IdOfBotNotFound = error.url.split('/').pop();
+        console.log('% »»» WebSocketJs WF WS-RL - BOT GET BY ID - ERROR - ID OF BOT NOT FOUND ', IdOfBotNotFound);
+
+      }
+    }, () => {
+      console.log('-- > BOT GET BY ID - COMPLETE')
+    });
+  }
+
+
   closeSelectUsersModal() {
     this.displayUsersListModal = 'none'
     console.log('%%% Ws-REQUESTS-Msgs - ON CLOSE USERS LIST MODAL ', this.displayUsersListModal);
   }
 
 
+  // NO MORE USED - REPLACED BY getProjectUsersAndBots
   // ------------------------------------------------------------------------------------------------------------------------
   // @ Get all project's Agents (i.e., project-users) - called when the user open the SelectUsersModal (openSelectUsersModal)
   // ------------------------------------------------------------------------------------------------------------------------
@@ -772,6 +880,51 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     });
   }
 
+  // ------------------------------------------------------------------------------------------------------------------------
+  // @ Get all project's Agents (project-users & bots) - called when the user open the SelectUsersModal (openSelectUsersModal)
+  // ------------------------------------------------------------------------------------------------------------------------
+  getProjectUsersAndBots() {
+    // https://stackoverflow.com/questions/44004144/how-to-wait-for-two-observables-in-rxjs
+    const projectUsers = this.usersService.getProjectUsersByProjectId();
+    const bots = this.faqKbService.getFaqKbByProjectId();
+
+    Observable
+      .zip(projectUsers, bots, (_projectUsers: any, _bots: any) => ({ _projectUsers, _bots }))
+      .subscribe(pair => {
+        console.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - PROJECT USERS : ', pair._projectUsers);
+        console.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - BOTS: ', pair._bots);
+
+        if (pair && pair._projectUsers) {
+          this.projectUsersList = pair._projectUsers;
+          this.projectUsersList.forEach(projectUser => {
+
+            projectUser['is_joined_to_request'] = this.currentUserIdIsInParticipants(this.request.participants, projectUser.id_user._id, this.request.request_id);
+            console.log('%%% Ws-REQUESTS-Msgs - PROJECT USERS ID', projectUser.id_user._id, ' is JOINED ', projectUser['is_joined_to_request']);
+          });
+        }
+
+        if (pair && pair._bots) {
+
+          this.bots = pair._bots
+            .filter(bot => {
+              if (bot['trashed'] === false) {
+                return true
+              } else {
+                return false
+              }
+            })
+        }
+
+
+      }, error => {
+        this.showSpinner_inModalUserList = false;
+        console.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - ERROR: ', error);
+      }, () => {
+        this.showSpinner_inModalUserList = false;
+        console.log('%% Ws-REQUESTS-Msgs - GET P-USERS-&-BOTS - COMPLETE');
+      });
+  }
+
   selectUser(user_id: string, user_firstname: string, user_lastname: string, user_email: string) {
     console.log('%%% Ws-REQUESTS-Msgs - SELECTED USER ID ', user_id);
     console.log('%%% Ws-REQUESTS-Msgs - SELECTED USER FIRSTNAME ', user_firstname);
@@ -787,6 +940,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.displayConfirmReassignmentModal = 'block'
 
     // this.document.body.scrollTop = 0;
+  }
+
+  selectBot(botid: string, botname: string) {
+    console.log('%%% Ws-REQUESTS-Msgs - SELECTED BOT ID ', botid);
+    console.log('%%% Ws-REQUESTS-Msgs - SELECTED BOT NAME ', botname);
+    this.userid_selected = 'bot_' + botid
+    this.userfirstname_selected = botname;
+    this.userlastname_selected = '';
+    this.useremail_selected = '';
+    this.displayConfirmReassignmentModal = 'block'
+
   }
 
   selectDept(deptname: string, deptid: string) {
@@ -837,77 +1001,71 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   /// new RIASSIGN REQUEST
   joinAnotherAgentLeaveCurrentAgents(userid_selected) {
-    this.getFirebaseToken(() => {
+    // this.getFirebaseToken(() => {
+    this.wsRequestsService.setParticipants(this.id_request, userid_selected)
+      .subscribe((joinToGroupRes: any) => {
 
+        console.log('%%% Ws-REQUESTS-Msgs - RIASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP ', joinToGroupRes);
 
-      this.requestsService.joinToGroup(this.id_request, this.firebase_token, userid_selected)
-        .subscribe((joinToGroupRes: any) => {
+      }, (err) => {
+        console.log('%%% Ws-REQUESTS-Msgs - RIASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP - ERROR ', err);
 
-          console.log('%%% Ws-REQUESTS-Msgs - RIASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP ', joinToGroupRes);
+        // =========== NOTIFY ERROR ===========
+        this.notify.showNotification('An error has occurred assigning the request', 4, 'report_problem')
+      }, () => {
+        console.log('%%% Ws-REQUESTS-Msgs- RIASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP - COMPLETE');
 
-        }, (err) => {
-          console.log('%%% Ws-REQUESTS-Msgs - RIASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP - ERROR ', err);
+        // =========== NOTIFY SUCCESS===========
+        this.notify.showNotification(`request reassigned to ${this.userfirstname_selected}  ${this.userlastname_selected}`, 2, 'done');
 
-          // =========== NOTIFY ERROR ===========
-          this.notify.showNotification('An error has occurred assigning the request', 4, 'report_problem')
-        }, () => {
-          console.log('%%% Ws-REQUESTS-Msgs- RIASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP - COMPLETE');
+        // this.cleaned_members_array.forEach(memberId => {
 
-          // =========== NOTIFY SUCCESS===========
-          this.notify.showNotification(`request reassigned to ${this.userfirstname_selected}  ${this.userlastname_selected}`, 2, 'done');
+        //   if (memberId !== userid_selected) {
+        //     console.log('%%% Ws-REQUESTS-Msgs - RIASSIGN REQUEST - USER ID OF THE USER THAT LEAVE THE GROUP ', memberId)
+        //     // this.requestsService.leaveTheGroup(this.id_request, this.firebase_token, memberId)
+        //     this.wsRequestsService.leaveTheGroup(this.id_request, memberId)
+        //       .subscribe((leaveTheGroupRes: any) => {
 
-          this.cleaned_members_array.forEach(memberId => {
-            // const memberId =  this.cleaned_members_array[0]['_id']
-
-            // this.requestsService.leaveTheGroup(this.id_request, this.firebase_token, this.currentUserID)
-
-            if (memberId !== userid_selected) {
-              console.log('%%% Ws-REQUESTS-Msgs - RIASSIGN REQUEST - USER ID OF THE USER THAT LEAVE THE GROUP ', memberId)
-              this.requestsService.leaveTheGroup(this.id_request, this.firebase_token, memberId)
-                .subscribe((leaveTheGroupRes: any) => {
-
-                  console.log('%%% Ws-REQUESTS-Msgs - RIASSIGN REQUEST - LEAVE THE GROUP - RESPONSE ', leaveTheGroupRes);
-                }, (err) => {
-                  console.log('%%% Ws-REQUESTS-Msgs - RIASSIGN REQUEST - LEAVE THE GROUP - ERROR ', err);
-
-                  // =========== NOTIFY ERROR ===========
-                  this.notify.showNotification('An error has occurred reassigning the request', 4, 'report_problem')
-                }, () => {
-
-                  console.log('%%% Ws-REQUESTS-Msgs -RIASSIGN REQUEST - LEAVE THE GROUP * COMPLETE');
-
-                });
-            }
-          });
-        });
-    });
+        //         console.log('%%% Ws-REQUESTS-Msgs - RIASSIGN REQUEST - LEAVE THE GROUP - RESPONSE ', leaveTheGroupRes);
+        //       }, (err) => {
+        //         console.log('%%% Ws-REQUESTS-Msgs - RIASSIGN REQUEST - LEAVE THE GROUP - ERROR ', err);
+        //         // =========== NOTIFY ERROR ===========
+        //         this.notify.showNotification('An error has occurred reassigning the request', 4, 'report_problem')
+        //       }, () => {
+        //         console.log('%%% Ws-REQUESTS-Msgs -RIASSIGN REQUEST - LEAVE THE GROUP * COMPLETE');
+        //       });
+        //   }
+        // });
+      });
+    // });
   }
   // end new
 
-  /// new
+  // -----------------------------------------------------------------------------------------
+  // Add Agent
+  // -----------------------------------------------------------------------------------------
   joinAnotherAgent(userid_selected) {
     console.log('%%% Ws-REQUESTS-Msgs - ASSIGN REQUEST - USER ID SELECTED ', userid_selected);
-    this.getFirebaseToken(() => {
+    // this.getFirebaseToken(() => {
 
-      // this.requestsService.joinToGroup(this.currentUserFireBaseUID, this.requestRecipient)
-      this.requestsService.joinToGroup(this.id_request, this.firebase_token, userid_selected)
-        .subscribe((joinToGroupRes: any) => {
+    this.wsRequestsService.addParticipant(this.id_request, userid_selected)
+      .subscribe((joinToGroupRes: any) => {
 
-          console.log('%%% Ws-REQUESTS-Msgs - ASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP ', joinToGroupRes);
+        console.log('%%% Ws-REQUESTS-Msgs - ASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP ', joinToGroupRes);
 
-        }, (err) => {
-          console.log('%%% Ws-REQUESTS-Msgs - ASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP - ERROR ', err);
+      }, (err) => {
+        console.log('%%% Ws-REQUESTS-Msgs - ASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP - ERROR ', err);
 
-          // =========== NOTIFY ERROR ===========
-          this.notify.showNotification('An error has occurred assigning the request', 4, 'report_problem')
-        }, () => {
-          console.log('%%% Ws-REQUESTS-Msgs - ASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP - COMPLETE');
+        // =========== NOTIFY ERROR ===========
+        this.notify.showNotification('An error has occurred assigning the request', 4, 'report_problem')
+      }, () => {
+        console.log('%%% Ws-REQUESTS-Msgs - ASSIGN REQUEST - JOIN ANOTHER USER TO CHAT GROUP - COMPLETE');
 
-          // =========== NOTIFY SUCCESS===========
-          this.notify.showNotification(`request assigned to ${this.userfirstname_selected}  ${this.userlastname_selected}`, 2, 'done');
+        // =========== NOTIFY SUCCESS===========
+        this.notify.showNotification(`request assigned to ${this.userfirstname_selected}  ${this.userlastname_selected}`, 2, 'done');
 
-        });
-    });
+      });
+    // });
   }
 
   // ARCHIVE REQUEST - OPEN THE POPUP
@@ -987,27 +1145,27 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   // JOIN TO CHAT GROUP
   onJoinHandled() {
-    this.getFirebaseToken(() => {
-      console.log('%%% Ws-REQUESTS-Msgs - JOIN PRESSED');
-      this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = true;
-      // this.requestsService.joinToGroup(this.currentUserFireBaseUID, this.requestRecipient)
-      this.requestsService.joinToGroup(this.id_request, this.firebase_token, this.currentUserID)
-        .subscribe((data: any) => {
+    // this.getFirebaseToken(() => {
+    console.log('%%% Ws-REQUESTS-Msgs - JOIN PRESSED');
+    this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = true;
 
-          console.log('%%% Ws-REQUESTS-Msgs - JOIN TO CHAT GROUP ', data);
-        }, (err) => {
-          console.log('%%% Ws-REQUESTS-Msgs - JOIN TO CHAT GROUP ERROR ', err);
-          this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
-          this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = false;
-          this.JOIN_TO_GROUP_HAS_ERROR = true;
-        }, () => {
-          console.log('%%% Ws-REQUESTS-Msgs - JOIN TO CHAT GROUP COMPLETE');
+    this.wsRequestsService.addParticipant(this.id_request, this.currentUserID)
+      .subscribe((data: any) => {
 
-          this.notify.showNotification(`You are successfully added to the chat`, 2, 'done');
-          this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
-          this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = true;
-        });
-    });
+        console.log('%%% Ws-REQUESTS-Msgs - addParticipant TO CHAT GROUP ', data);
+      }, (err) => {
+        console.log('%%% Ws-REQUESTS-Msgs - addParticipant TO CHAT GROUP ERROR ', err);
+        this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
+        this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = false;
+        this.JOIN_TO_GROUP_HAS_ERROR = true;
+      }, () => {
+        console.log('%%% Ws-REQUESTS-Msgs - addParticipant TO CHAT GROUP COMPLETE');
+
+        this.notify.showNotification(`You are successfully added to the chat`, 2, 'done');
+        this.SHOW_JOIN_TO_GROUP_SPINNER_PROCESSING = false;
+        this.HAS_COMPLETED_JOIN_TO_GROUP_POST_REQUEST = true;
+      });
+    // });
   }
 
   openleaveChatModal() {
@@ -1021,24 +1179,25 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.SHOW_CIRCULAR_SPINNER = true;
 
 
-    this.getFirebaseToken(() => {
-      this.requestsService.leaveTheGroup(this.id_request, this.firebase_token, this.currentUserID)
-        .subscribe((data: any) => {
+    // this.getFirebaseToken(() => {
+    // this.requestsService.leaveTheGroup(this.id_request, this.firebase_token, this.currentUserID)
+    this.wsRequestsService.leaveTheGroup(this.id_request, this.currentUserID)
+      .subscribe((data: any) => {
 
-          console.log('%%% Ws-REQUESTS-Msgs - LEAVE THE GROUP - RESPONSE ', data);
-        }, (err) => {
-          console.log('%%% Ws-REQUESTS-Msgs - LEAVE THE GROUP - ERROR ', err);
-          this.SHOW_CIRCULAR_SPINNER = false;
-          this.LEAVE_CHAT_ERROR = true;
+        console.log('%%% Ws-REQUESTS-Msgs - LEAVE THE GROUP - RESPONSE ', data);
+      }, (err) => {
+        console.log('%%% Ws-REQUESTS-Msgs - LEAVE THE GROUP - ERROR ', err);
+        this.SHOW_CIRCULAR_SPINNER = false;
+        this.LEAVE_CHAT_ERROR = true;
 
-        }, () => {
-          this.notify.showNotification(`You have successfully left the chat`, 2, 'done');
-          console.log('%%% Ws-REQUESTS-Msgs - LEAVE THE GROUP * COMPLETE');
-          this.SHOW_CIRCULAR_SPINNER = false;
-          this.LEAVE_CHAT_ERROR = false;
+      }, () => {
+        this.notify.showNotification(`You have successfully left the chat`, 2, 'done');
+        console.log('%%% Ws-REQUESTS-Msgs - LEAVE THE GROUP * COMPLETE');
+        this.SHOW_CIRCULAR_SPINNER = false;
+        this.LEAVE_CHAT_ERROR = false;
 
-        });
-    });
+      });
+    // });
   }
 
   closeLeaveChatModal() {
