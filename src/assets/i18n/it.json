@@ -980,7 +980,8 @@
             "RunTrigger_dropdownElements": {
                 "Placeholder": "Seleziona metodo attivazione",
                 "WhenRequestChat": "Quando un visitatore richiede una chat",
-                "WhenMessageIsSent": "All'invio di un nuovo messaggio"
+                "WhenMessageIsSent": "All'invio di un nuovo messaggio",
+                "WhenUserIsLogged": "Quando un utente ha effettuato l'accesso"
             },
             "CheckConditions": "Verifica condizioni",
             "CheckConditions_dropdownElements": {
@@ -1064,6 +1065,23 @@
                         "SelectDepartment": "Seleziona dipartimento",
                         "SelectStatus": "Seleziona stato",
                         "SelectLanguage": "Seleziona lingua"
+                    }
+                },
+                "user": {
+                    "groupId": {
+                        "VisitorInformation": "Info visitatore",
+                        "PageInformation": "Info pagina",
+                        "SoftwareOfVisitor": "Software/Computer del visitatore",
+                        "ChatInformation": "Info correlate alla chat"
+                    },
+                    "label_key": {
+                        "VisitorName": "Nome visitatore",
+                        "VisitorLastName" : "Cognome visitatore",
+                        "VisitorMail": "Indirizzo e-mail visitatore"
+                    },
+                    "placeholder": {
+                        "SelectDepartment": "Seleziona dipartimento",
+                        "SelectStatus": "Seleziona stato"
                     }
                 }
             },

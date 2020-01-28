@@ -67,6 +67,7 @@
                           <ng-select formControlName="key"  placeholder='{{ "Trigger.Add_Edit.RunTrigger_dropdownElements.Placeholder" | translate }}' (change)=onTriggerKey($event) [searchable]="false" [clearable]="false">
                             <ng-option [value]="'request.create'">{{ "Trigger.Add_Edit.RunTrigger_dropdownElements.WhenRequestChat" | translate }}</ng-option>
                             <ng-option [value]="'message.received'">{{ "Trigger.Add_Edit.RunTrigger_dropdownElements.WhenMessageIsSent" | translate }}</ng-option>
+                            <ng-option [value]="'user.login'">{{ "Trigger.Add_Edit.RunTrigger_dropdownElements.WhenUserIsLogged" | translate }}</ng-option>
                           </ng-select>
                       </div>
                     </div>

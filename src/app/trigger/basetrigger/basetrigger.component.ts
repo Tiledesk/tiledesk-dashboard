@@ -115,15 +115,18 @@ export class BasetriggerComponent  {
         { groupId: translateConditions.chat.groupId.ChatInformation, id: 'department.name', label_key: translateConditions.chat.label_key.Department,
               triggerType: 'request.create', type: 'boolean', operator: this.departments, placeholder: translateConditions.chat.placeholder.SelectDepartment },
         { groupId: translateConditions.chat.groupId.ChatInformation, id: 'department', label_key: translateConditions.chat.label_key.DepartmentHasBot,
-              triggerType: 'request.create', type: 'boolean', operator: [ {id: true, label_key: 'True'},
-                                                                          {id: false, label_key: 'False'}
+              triggerType: 'request.create', type: 'boolean', operator: [ {id: 'id_bot', label_key: 'True'},
+                                                                          {id: 'id_bot', label_key: 'False'}
                                                                         ], placeholder: translateConditions.chat.placeholder.SelectStatus },
         { groupId: translateConditions.chat.groupId.ChatInformation, id: 'status', label_key: translateConditions.chat.label_key.VisitorServed,
               triggerType: 'request.create', type: 'boolean', operator: [ {id: 200, label_key: 'True'},
                                                                           {id: 100, label_key: 'False'}
                                                               ], placeholder: translateConditions.chat.placeholder.SelectStatus},
         { groupId: translateConditions.chat.groupId.ChatInformation, id: 'status', label_key: translateConditions.chat.label_key.RequestStatus, triggerType: 'request.create', type: 'int'},
-
+        // user.login conditions start
+        { groupId: translateConditions.user.groupId.VisitorInformation, id: 'firstname', label_key: translateConditions.user.label_key.VisitorName, triggerType: 'user.login', type: 'string'},
+        { groupId: translateConditions.user.groupId.VisitorInformation, id: 'lastname', label_key: translateConditions.user.label_key.VisitorLastName, triggerType: 'user.login', type: 'string'},
+        { groupId: translateConditions.user.groupId.VisitorInformation, id: 'email', label_key: translateConditions.user.label_key.VisitorMail, triggerType: 'user.login', type: 'string'}
   ]
 
       this.options = {

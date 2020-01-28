@@ -216,7 +216,9 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
     // set current value of key
     // - TYPE of selected condition passed as a parameter
     // - PLACEHOLDER of selected condition passed as a parameter
-    const type = this.condition.filter(b => b.id === $event.id)[0].type
+    // const type = this.condition.filter(b => b.id === $event.id)[0].type
+    // double filter by id first and by label_key to determine unique type option (some conditions have same id and different type)
+    const type = this.condition.filter(b => b.id === $event.id).filter( d => d.label_key === $event.label_key)[0].type
     condition.patchValue({'type': type,
                           'operator': this.options[type + 'Opt'][0].id,
                           'value': undefined,

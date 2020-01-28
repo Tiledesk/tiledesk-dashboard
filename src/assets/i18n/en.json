@@ -983,7 +983,8 @@
             "RunTrigger_dropdownElements": {
                 "Placeholder": "Select activation method",
                 "WhenRequestChat": "When a visitor request a chat",
-                "WhenMessageIsSent": "When a chat message is sent"
+                "WhenMessageIsSent": "When a chat message is sent",
+                "WhenUserIsLogged": "When user has logged in"
             },
             "CheckConditions": "Check conditions",
             "CheckConditions_dropdownElements": {
@@ -1067,6 +1068,23 @@
                         "SelectDepartment": "Select department",
                         "SelectStatus": "Select status",
                         "SelectLanguage": "Select language"
+                    }
+                },
+                "user": {
+                    "groupId": {
+                        "VisitorInformation": "Visitor information",
+                        "PageInformation": "Page information",
+                        "SoftwareOfVisitor": "Software/Computer of visitor",
+                        "ChatInformation": "Char-related information"
+                    },
+                    "label_key": {
+                        "VisitorName": "Visitor name",
+                        "VisitorLastName": "Visitor surname",
+                        "VisitorMail": "Visitor mail"
+                    },
+                    "placeholder": {
+                        "SelectDepartment": "Select department",
+                        "SelectStatus": "Select status"
                     }
                 }
             },
