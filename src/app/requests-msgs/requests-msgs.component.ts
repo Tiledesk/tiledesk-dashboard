@@ -806,8 +806,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
           this.cleaned_members_array.forEach(memberId => {
             // const memberId =  this.cleaned_members_array[0]['_id']
 
-            // this.requestsService.leaveTheGroup(this.id_request, this.firebase_token, this.currentUserID)
-
+        
             if (memberId !== userid_selected) {
               console.log('RIASSIGN REQUEST - USER ID OF THE USER THAT LEAVE THE GROUP ', memberId)
               this.requestsService.leaveTheGroup(this.id_request, this.firebase_token, memberId)

@@ -36,7 +36,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   // used to unsuscribe from behaviour subject
   private unsubscribe$: Subject<any> = new Subject<any>();
- 
+
 
   // @ViewChild('teamContent', { read: ElementRef }) public teamContent: ElementRef<any>;
   @ViewChild('teamContent') private teamContent: ElementRef;
@@ -84,7 +84,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   filter: any[] = [{ 'deptId': null }, { 'agentId': null }];
   hasFiltered = false;
-  
+
 
   /**
    * Constructor
@@ -142,7 +142,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   }
 
   ngAfterViewInit() {
-    
+
   }
 
   ngOnDestroy() {
@@ -263,8 +263,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       }
       // console.log('% »»» WebSocketJs WF WS-RL - +++ TEAM IDs ARRAY (2) ', this.team_ids_array);
       console.log('% »»» WebSocketJs WF WS-RL - +++ TEAM ARRAY (2) ', this.user_and_bot_array);
-
-
       // this.doFlatParticipantsArray()
 
     }, (error) => {
@@ -310,16 +308,12 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
 
   listenToRequestsLength() {
-    
-    this.subscription =  this.wsRequestsService.wsRequestsListLength$
+    this.subscription = this.wsRequestsService.wsRequestsListLength$
       .pipe(
         takeUntil(this.unsubscribe$)
       )
       .subscribe((totalrequests: number) => {
         console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ listenToRequestsLength RECEIVED NEXT wsRequestsList LENGTH', totalrequests)
-
-       
-      
 
         if (totalrequests === 0) {
           this.SHOW_SIMULATE_REQUEST_BTN = true
@@ -351,7 +345,6 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     }
     return indexes;
   }
-
 
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
@@ -538,9 +531,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
       .subscribe((wsrequests) => {
 
         console.log("% »»» WebSocketJs WF +++++ ws-requests--- list ----- subscribe to NEXT ", wsrequests);
-      
+
         if (wsrequests) {
-          
+
           if (Array.isArray(wsrequests)) {
 
             // https://stackoverflow.com/questions/18983138/callback-after-all-asynchronous-foreach-callbacks-are-completed
@@ -552,44 +545,44 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
             Promise.all(requests).then(() => {
 
               console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> data.length ', wsrequests.length)
-   if (wsrequests.length > 0) {
+              if (wsrequests.length > 0) {
 
-              this.SHOW_SIMULATE_REQUEST_BTN = false;
-              console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
-              this.showSpinner = false;
-              console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SPINNER ', this.showSpinner)
+                this.SHOW_SIMULATE_REQUEST_BTN = false;
+                console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
+                this.showSpinner = false;
+                console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SPINNER ', this.showSpinner)
 
 
-            } else if (wsrequests.length === 0) {
-              this.SHOW_SIMULATE_REQUEST_BTN = true;
-              console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
-              this.showSpinner = false;
-              console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SPINNER ', this.showSpinner)
-            }
+              } else if (wsrequests.length === 0) {
+                this.SHOW_SIMULATE_REQUEST_BTN = true;
+                console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
+                this.showSpinner = false;
+                console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SPINNER ', this.showSpinner)
+              }
 
             });
 
           }
 
-    
+
           // console.log('% »»» WebSocketJs WF - WsRequestsList >>>>>>> WS-REQUESTS-LENGHT <<<<<<< ', wsrequests.length)
-          
-            
-            // if (wsrequests.length > 0) {
-
-            //   this.SHOW_SIMULATE_REQUEST_BTN = false;
-            //   console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
-            //   this.showSpinner = false;
-            //   console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SPINNER ', this.showSpinner)
 
 
-            // } else if (wsrequests.length === 0) {
-            //   this.SHOW_SIMULATE_REQUEST_BTN = true;
-            //   console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
-            //   this.showSpinner = false;
-            //   console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SPINNER ', this.showSpinner)
-            // }
-          
+          // if (wsrequests.length > 0) {
+
+          //   this.SHOW_SIMULATE_REQUEST_BTN = false;
+          //   console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
+          //   this.showSpinner = false;
+          //   console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SPINNER ', this.showSpinner)
+
+
+          // } else if (wsrequests.length === 0) {
+          //   this.SHOW_SIMULATE_REQUEST_BTN = true;
+          //   console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SIMULATE_REQUEST_BTN ', this.SHOW_SIMULATE_REQUEST_BTN)
+          //   this.showSpinner = false;
+          //   console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ----- SHOW_SPINNER ', this.showSpinner)
+          // }
+
 
 
           if (this.ONLY_MY_REQUESTS === false) {
