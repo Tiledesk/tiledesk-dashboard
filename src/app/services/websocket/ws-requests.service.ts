@@ -34,7 +34,8 @@ export class WsRequestsService {
 
 
   public wsRequest$ = new Subject()
-  public wsRequestsListLength$ = new Subject()
+  public wsRequestsListLength$ = new Subject<number>()
+  // public wsRequestsListLength$: ReplaySubject<number> = new ReplaySubject(1);
 
 
   // public wsRequestsList$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
@@ -54,7 +55,7 @@ export class WsRequestsService {
   // _wsRequestsListLength$ = this.wsRequestsListLength$.asObservable()
   // public wsRequestsListLength$$: ReplaySubject<number> = new ReplaySubject(null);
 
-  wsRequestsList: any
+  wsRequestsList: Request[]
   wsAllRequestsList: any
 
   wsjsRequestsService: WebSocketJs;
@@ -151,25 +152,29 @@ export class WsRequestsService {
 
           function (data, notification) {
 
-            // console.log("% »»» WebSocketJs - WsRequestsService REQUESTS CREATE", data);
 
-            const hasFound = self.wsRequestsList.filter((obj: any) => {
-              if (data && obj) {
-                return obj._id === data._id;
+
+            console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- HERE ON-CREATE !");
+
+            if (self.wsRequestsList.length > 0) {
+
+              // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA ", data);
+              // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - WS-REQUESTS ARRAY ", self.wsRequestsList);
+
+              const hasFound = self.wsRequestsList.filter((obj: any) => {
+                if (data && obj) {
+                  return obj._id === data._id;
+                }
+              });
+
+              if (hasFound.length === 0) {
+                // self.addWsRequests(data);
+                self.addWsRequests(data)
+                // console.log("% »»» WebSocketJs WF - WsRequestsService Not Found - <<<<<<<<<<<<<<< add request >>>>>>>>>>>>>>>", data);
+              } else {
+                // console.log("% »»» WebSocketJs WF - WsRequestsService hasFound - not added", hasFound);
               }
-            });
-
-            if (hasFound.length === 0) {
-
-              // self.addWsRequests(data);
-
-              self.addWsRequests(data)
-              console.log("% »»» WebSocketJs WF - WsRequestsService Not Found - <<<<<<<<<<<<<<< add request >>>>>>>>>>>>>>>", data);
-
-            } else {
-              // console.log("% »»» WebSocketJs WF - WsRequestsService hasFound - not added", hasFound);
             }
-
           }, function (data, notification) {
 
             console.log("% »»» WebSocketJs WF - WsRequestsService REQUESTS UPDATE", data);
@@ -180,9 +185,9 @@ export class WsRequestsService {
 
 
           }, function (data, notification) {
+            console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- HERE ON-DATA !");
+            // console.log("% »»» WebSocketJs WF - WsRequestsService ON-DATA REQUESTS *** notification *** ", notification);
 
-            console.log("% »»» WebSocketJs WF - WsRequestsService REQUESTS *** notification *** ", notification);
-            console.log("% »»» WebSocketJs WF - WsRequestsService  >>>>>>> REQUESTS LENGTH BEFORE TO PUBLISH <<<<<<< ", data.length);
             // && data.length !== undefined
 
             // setTimeout(() => {
@@ -195,8 +200,30 @@ export class WsRequestsService {
             // setTimeout(() => { 
             if (data) {
 
-              console.log("% »»» WebSocketJs WF - onData (ws-requests.serv) ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ data is ARRAY", Array.isArray(data));
-              // data.map works only with array
+
+              console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-DATA - WS-REQUESTS ARRAY ", self.wsRequestsList);
+
+              if (self.wsRequestsList && self.wsRequestsList.length === 0 && Array.isArray(data)) {
+
+                console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-DATA - DATA LENGHT ", data.length);
+                self.wsRequestsList = data;
+                self.wsRequestsList$.next(self.wsRequestsList);
+                console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-DATA ----- NEXT ", data);
+
+                // USE CASE : INIZIALMENTE DATA è VUOTO (NN CI SONO RICHIESTE) E POI ARRIVA UNA RICHIESTA - ARRIVANDO SINGOLA ARRIVA COME UN JSON
+              } else if (self.wsRequestsList && self.wsRequestsList.length === 0 && !Array.isArray(data)) {
+
+
+                self.wsRequestsList$.next([data]);
+                self.wsRequestsList.push(data);
+
+              }
+
+              // console.log("% »»» WebSocketJs WF - onData (ws-requests.serv) ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ data is ARRAY", Array.isArray(data));
+              /**
+               * data.map works only with array
+               * 
+               */
               if (Array.isArray(data)) {
 
                 // https://stackoverflow.com/questions/18983138/callback-after-all-asynchronous-foreach-callbacks-are-completed
@@ -207,7 +234,7 @@ export class WsRequestsService {
                 })
                 Promise.all(requests).then(() => {
 
-                  console.log('% »»» WebSocketJs WF - onData (ws-requests.serv) ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> data.length ', data.length)
+                  console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> data.length ', data.length)
                   self.wsRequestsListLength$.next(data.length);
                 });
 
@@ -315,9 +342,13 @@ export class WsRequestsService {
       }
 
       this.timeout = setTimeout(() => {
+
         this.wsRequestsList$.next(this.wsRequestsList);
+        console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ON-CREATE ----- NEXT wsRequestsList ', this.wsRequestsList)
+        this.wsRequestsListLength$.next(this.wsRequestsList.length);
+        console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ON-CREATE ----- NEXT wsRequestsList LENGTH', this.wsRequestsList.length)
       }, 1000);
-      
+
 
 
       // imInAgentsRequests = this.wsRequestsList.filter(this.hasmeInAgents(request.agents));
@@ -587,6 +618,91 @@ export class WsRequestsService {
     // commented because the service not return nothing and if try to map the json obtain the error:
     // ERROR  SyntaxError: Unexpected end of JSON
     // .map((res) => res.json());
+  }
+
+
+  joinDept(departmentid, requestid) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+
+    const options = new RequestOptions({ headers });
+    console.log('JOIN DEPT OPTIONS  ', options)
+
+    const url = this.BASE_URL + this.project_id + '/requests/' + requestid + '/departments'
+    console.log('JOIN DEPT URL ', url);
+
+    const body = { 'departmentid': departmentid };
+    // console.log('CLOUD FUNCT CLOSE SUPPORT GROUP REQUEST BODY ', body);
+
+    return this.http
+      .put(url, body, options)
+  }
+
+  public leaveTheGroup(requestid: string, userid: string, ) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+    console.log('LEAVE THE GROUP OPTIONS  ', options)
+
+    //   /:project_id/requests/:id/participants
+    const url = this.BASE_URL + this.project_id + '/requests/' + requestid + '/participants/'+ userid
+    console.log('LEAVE THE GROUP URL ', url)
+
+    return this.http
+      .delete(url, options)
+      .map((res) => res.json());
+  }
+
+  // SEE DOC HERE -> https://developer.tiledesk.com/apis/api/requests#set-the-request-participants
+  // -----------------------------------------------------------------------------------------
+  // Reassign request
+  // -----------------------------------------------------------------------------------------
+  public setParticipants(requestid: string, userUid: string) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+    // console.log('JOIN FUNCT OPTIONS  ', options);
+
+    const body = [userUid];
+
+    console.log('JOIN TO GROUP PUT REQUEST BODY ', body);
+
+    const url = this.BASE_URL + this.project_id + '/requests/' + requestid + '/participants/'
+    console.log('JOIN TO GROUP PUT JOIN A GROUP URL ', url)
+
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
+  // SEE DOC HERE -> https://developer.tiledesk.com/apis/api/requests#add-a-participant-to-a-request
+  // -----------------------------------------------------------------------------------------
+  // Add participant
+  // -----------------------------------------------------------------------------------------
+   public addParticipant(requestid: string, userid: string) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+    // console.log('JOIN FUNCT OPTIONS  ', options);
+
+    const body = { 'member': userid };
+
+    console.log('JOIN TO GROUP PUT REQUEST BODY ', body);
+   
+    const url = this.BASE_URL + this.project_id + '/requests/' + requestid + '/participants/'
+    console.log('JOIN TO GROUP PUT JOIN A GROUP URL ', url)
+
+    return this.http
+      .post(url, JSON.stringify(body), options)
+      .map((res) => res.json());
   }
 
 
