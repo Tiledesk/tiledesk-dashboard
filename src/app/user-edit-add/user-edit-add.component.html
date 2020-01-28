@@ -110,7 +110,8 @@
       <span *ngIf="EDIT_VIEW">
         <div class="col-md-8">
           <div class="card" style="padding-top:25px; padding-bottom:25px; margin-top: 15px;">
-            <div class="card-content">
+            <loading-spinner *ngIf="showSpinner"></loading-spinner>
+            <div *ngIf="!showSpinner" class="card-content">
 
               <!-- style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" -->
               <div class="row">
@@ -159,7 +160,7 @@
                 <label class="col-sm-2"></label>
                 <div class="col-sm-10">
                   <!-- [disabled]="bot_fullname?.length < 2 || FAQKB_NOT_SELECTED === true" -->
-                  <button class="btn btn-success" [disabled]="ROLE_NOT_SELECTED === true" (click)="updateUserRole()">
+                  <button class="btn btn-primary" [disabled]="ROLE_NOT_SELECTED === true" (click)="updateUserRole()">
                     {{ "UserEditAddPage.Update" | translate }}
                   </button>
                 </div>

@@ -259,14 +259,14 @@
                     IF THE LENGHT OF DEPT IS < 2 AND IF IS NOT SELECTED ANY BOT  -->
                 <!-- <span *ngIf="SHOW_OPTION_FORM === 'true'"> -->
                 <span *ngIf="has_selected_bot === true">    
-                  <button class="btn btn-success" [disabled]="dept_name?.length < 2 || BOT_NOT_SELECTED === true"  (click)="createDepartment()">
+                  <button class="btn btn-primary" [disabled]="dept_name?.length < 2 || BOT_NOT_SELECTED === true"  (click)="createDepartment()">
                     <!-- Crea Dipartimento -->
                     {{ "DeptsAddEditPage.CreateDept" | translate}}
                   </button>
                 </span>
                 <!-- <span *ngIf="SHOW_OPTION_FORM !== 'true'"> -->
                 <span *ngIf="has_selected_bot !== true">  
-                  <button class="btn btn-success" [disabled]="dept_name?.length < 2"  (click)="createDepartment()">
+                  <button class="btn btn-primary" [disabled]="dept_name?.length < 2"  (click)="createDepartment()">
                     <!-- Crea Dipartimento -->
                     {{ "DeptsAddEditPage.CreateDept" | translate}}
                   </button>
@@ -518,7 +518,7 @@
 
                 <!-- <span *ngIf="dept_routing === 'fixed'">     -->
                 <span *ngIf="has_selected_bot === true"> 
-                  <button class="btn btn-success" (click)="edit()" [disabled]="BOT_NOT_SELECTED === true">
+                  <button class="btn btn-primary" (click)="edit()" [disabled]="BOT_NOT_SELECTED === true">
                     <!-- Modifica Dipartimento -->
                     {{ "DeptsAddEditPage.UpdateDept" | translate }}
                   </button>
@@ -529,7 +529,7 @@
 
                 <!-- <span *ngIf="dept_routing === 'assigned' || dept_routing === 'pooled'">   -->
                 <span *ngIf="has_selected_bot !== true">  
-                  <button class="btn btn-success" (click)="edit()" [disabled]='GROUP_ID_NOT_EXIST'>
+                  <button class="btn btn-primary" (click)="edit()" [disabled]='GROUP_ID_NOT_EXIST'>
                     <!-- Modifica Dipartimento -->
                     {{ "DeptsAddEditPage.UpdateDept" | translate }}
                   </button>

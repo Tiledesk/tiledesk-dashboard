@@ -56,9 +56,9 @@
               <!-- SPACER -->
               <div class="col-sm-12" style="height:15px"></div>
 
-              <label style="" class="col-sm-2"></label>
-              <div class="col-sm-10"> 
-                <button class="btn btn-success" [disabled]="question?.length < 2 || answer?.length < 2" (click)="create()">
+              <!-- <label style="" class="col-sm-2"></label> -->
+              <div class="col-sm-12"> 
+                <button class="btn btn-primary" [disabled]="question?.length < 2 || answer?.length < 2" (click)="create()">
                   <!-- Crea FAQ  -->
                   {{ "FaqEditAddPage.CreateFaq" | translate }}
                 </button>
@@ -110,7 +110,7 @@
 
               <!-- <label style="" class="col-sm-2"></label> -->
               <div class="col-sm-12"> 
-                <button class="btn btn-success" (click)="edit()">
+                <button class="btn btn-primary" (click)="edit()">
                   <!-- Aggiorna FAQ -->
                   {{ "FaqEditAddPage.UpdateFaq" | translate }}
                 </button>
