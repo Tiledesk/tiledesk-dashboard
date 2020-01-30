@@ -389,6 +389,8 @@
     "Alignment":"Allineamento",
     "UserRole": "Ruolo utente",
     "BotType": " / Tipo bot",
+    "Language": "Lingua",
+    "ReassignToDept":"Riassegna al dipartimento",
     "Pricing": {
         "Operators": "Operatori",
         "UpgradePlan": "Aggiorna Piano",
@@ -1040,7 +1042,7 @@
                         "LocationVisitor": "Ubicazione del visitatore"
                     },
                     "label_key": {
-                        "VisitorSearchTerm": "Termini di ricerca visitatore",
+                        "VisitorSearchTerm": "Testo messaggio del visitatore",
                         "VisitorName": "Nome visitatore",
                         "VisitorMail": "Indirizzo e-mail visitatore",
                         "VisitorFirstText": "Primo messaggio visitatore",
@@ -1053,7 +1055,7 @@
                         "VisitorBrowser": "Browser visitatore",
                         "VisitorPlatform": "Piattaforma visitatore",
                         "Department": "Dipartimento",
-                        "DepartmentHasBot": "Dipartimento ha un bot",
+                        "DepartmentHasBot": "Dipartimento (bot)",
                         "VisitorServed": "Visitatore assistito",
                         "RequestStatus": "Stato richiesta",
                         "ChannelName": "Nome del canale",
@@ -1094,15 +1096,21 @@
                     "GreatherThan": "Maggiore di",
                     "LessThan": "Minore di",
                     "GreaterEqualThan": "Maggiore o uguale a",
-                    "LessEqualThan": "Minore o uguale a"
+                    "LessEqualThan": "Minore o uguale a",
+                    "HasOwnProperty": "Has a bot",
+                    "NotHasOwnProperty":"Not has a bot"
                 }
             },
             "ActionArray": {
                 "label_key": {
-                    "SendMessageToVisitor": "Invia messaggio al visitatore"
+                    "SendMessageToVisitor": "Invia messaggio al visitatore",
+                    "AssignToDep": "Assegna a dipartimento",
+                    "ReAssignToSameDep": "Riassegna allo stesso dipartimento"
                 },
                 "placeholder": {
-                    "NameAgent": "Nome dell'agente"
+                    "NameAgent": "Nome dell'agente",
+                    "SelectDepartment": "Seleziona dipartimento",
+                    "SelectStatus": "Seleziona stato"
                 }
             }
         }

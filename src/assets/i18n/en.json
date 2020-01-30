@@ -392,6 +392,8 @@
     "Alignment":"Alignment",
     "UserRole": "User role",
     "BotType": " / Bot type",
+    "Language": "Language",
+    "ReassignToDept":"Reassign to department",
     "Pricing": {
         "Operators": "Operators",
         "UpgradePlan": "Upgrade Plan",
@@ -1043,7 +1045,7 @@
                         "LocationVisitor": "Location of visitor"
                     },
                     "label_key": {
-                        "VisitorSearchTerm": "Visitor search terms",
+                        "VisitorSearchTerm": "Visitor text message ",
                         "VisitorName": "Visitor name",
                         "VisitorMail": "Visitor mail",
                         "VisitorFirstText": "Visitor First text",
@@ -1056,7 +1058,7 @@
                         "VisitorBrowser": "Visitor browser",
                         "VisitorPlatform": "Visitor platform",
                         "Department": "Department",
-                        "DepartmentHasBot": "Department has bot",
+                        "DepartmentHasBot": "Department (bot)",
                         "VisitorServed": "Visitor served",
                         "RequestStatus": "Request status",
                         "ChannelName": "Channel name",
@@ -1097,15 +1099,21 @@
                     "GreatherThan": "Greather than",
                     "LessThan": "Less than",
                     "GreaterEqualThan": "Greather than or equal to",
-                    "LessEqualThan": "Less than or equal to"
+                    "LessEqualThan": "Less than or equal to",
+                    "HasOwnProperty": "Has a bot",
+                    "NotHasOwnProperty":"Not has a bot"
                 }
             },
             "ActionArray": {
                 "label_key": {
-                    "SendMessageToVisitor": "Send message to visitor"
+                    "SendMessageToVisitor": "Send message to visitor",
+                    "AssignToDep": "Assign to department",
+                    "ReAssignToSameDep": "Reassign to the same department"
                 },
                 "placeholder": {
-                    "NameAgent": "Name of agents"
+                    "NameAgent": "Name of agents",
+                    "SelectDepartment": "Select department",
+                    "SelectStatus": "Select status"
                 }
             }
         }

@@ -115,13 +115,11 @@ export class BasetriggerComponent  {
         { groupId: translateConditions.chat.groupId.ChatInformation, id: 'department.name', label_key: translateConditions.chat.label_key.Department,
               triggerType: 'request.create', type: 'boolean', operator: this.departments, placeholder: translateConditions.chat.placeholder.SelectDepartment },
         { groupId: translateConditions.chat.groupId.ChatInformation, id: 'department', label_key: translateConditions.chat.label_key.DepartmentHasBot,
-              triggerType: 'request.create', type: 'boolean', operator: [ {id: 'id_bot', label_key: 'True'},
-                                                                          {id: 'id_bot', label_key: 'False'}
+              triggerType: 'request.create', type: 'keyExist', operator: [ {id: 'id_bot', label_key: 'True'},
+                                                                          {id: 'null', label_key: 'False'}
                                                                         ], placeholder: translateConditions.chat.placeholder.SelectStatus },
         { groupId: translateConditions.chat.groupId.ChatInformation, id: 'status', label_key: translateConditions.chat.label_key.VisitorServed,
-              triggerType: 'request.create', type: 'boolean', operator: [ {id: 200, label_key: 'True'},
-                                                                          {id: 100, label_key: 'False'}
-                                                              ], placeholder: translateConditions.chat.placeholder.SelectStatus},
+              triggerType: 'request.create', type: 'boolean', placeholder: translateConditions.chat.placeholder.SelectStatus},
         { groupId: translateConditions.chat.groupId.ChatInformation, id: 'status', label_key: translateConditions.chat.label_key.RequestStatus, triggerType: 'request.create', type: 'int'},
         // user.login conditions start
         { groupId: translateConditions.user.groupId.VisitorInformation, id: 'firstname', label_key: translateConditions.user.label_key.VisitorName, triggerType: 'user.login', type: 'string'},
@@ -147,13 +145,17 @@ export class BasetriggerComponent  {
         booleanOpt: [
           { id: 'equal', label_key: translateOptions.label_key.Equal, value: true},
           { id: 'notEqual', label_key: translateOptions.label_key.NotEqual, value: false}
+        ],
+        keyExistOpt: [
+          {id: 'hasOwnProperty', label_key: translateOptions.label_key.HasOwnProperty},
+          {id: 'notHasOwnProperty', label_key: translateOptions.label_key.NotHasOwnProperty}
         ]
       }
 
       this.action = [
         { key: 'message.send', label_key: translateAction.label_key.SendMessageToVisitor, type: 'input', placeholder: translateAction.placeholder.NameAgent},
-        // { key: 'message.received', label_key: 'Ricevi messaggio', type: 'select', placeholder: 'text here2'},
-        // { key: 'wait', label_key: 'Attesa', type: 'input', placeholder: 'text here2'}
+        { key: 'request.department.root', label_key: translateAction.label_key.AssignToDep, type: 'select', placeholder: translateAction.placeholder.SelectDepartment},
+        { key: 'request.department.root.self', label_key: translateAction.label_key.ReAssignToSameDep, type: 'select', placeholder: translateAction.placeholder.SelectStatus}
       ]
 
       this.operator = {
@@ -164,7 +166,7 @@ export class BasetriggerComponent  {
                     {id: 100, label_key: 'False'}
         ],
         'department': [ {id: 'id_bot', label_key: 'True'},
-                        {id: 'id__bot', label_key: 'False'}
+                        {id: 'null', label_key: 'False'}
         ],
         'language': [ { id: 'zh-CN', label_key: 'Chinese'},
                       { id: 'en-GB', label_key: 'English'},
@@ -172,6 +174,10 @@ export class BasetriggerComponent  {
                       { id: 'it-IT', label_key: 'Italian'},
                       { id: 'de-DE', label_key: 'German'},
                       { id: 'es-ES', label_key: 'Spanish'},
+        ],
+        'request.department.root' : this.departments,
+        'request.department.root.self' : [ {id: true, label_key: 'True'},
+                                           {id: false, label_key: 'False'}
         ]
       }
       console.log('No pair_cond:', this.condition)
@@ -226,12 +232,14 @@ export class BasetriggerComponent  {
           { groupId: translateConditions.chat.groupId.PageInformation, id: 'sourcePage', label_key: translateConditions.chat.label_key.VisitorPageTitle, triggerType: 'request.create', type: 'string'},
           { groupId: translateConditions.chat.groupId.VisitorInformation, id: 'lead.fullname', label_key: translateConditions.chat.label_key.VisitorName, triggerType: 'request.create', type: 'string'},
           { groupId: translateConditions.chat.groupId.VisitorInformation, id: 'lead.email', label_key: translateConditions.chat.label_key.VisitorMail, triggerType: 'request.create', type: 'string'},
+          { groupId: translateConditions.chat.groupId.VisitorInformation, id: 'first_text', label_key: translateConditions.chat.label_key.VisitorFirstText, triggerType: 'request.create', type: 'string'},
           { groupId: translateConditions.chat.groupId.VisitorInformation, id: 'lead.attributes.departmentId', label_key: translateConditions.chat.label_key.VisitorDepartment,
                 triggerType: 'request.create', type: 'boolean', operator: this.departments, placeholder: translateConditions.chat.placeholder.SelectDepartment},
           { groupId: translateConditions.chat.groupId.VisitorInformation, id: 'lead.attributes.client', label_key: translateConditions.chat.label_key.VisitorReferrer, triggerType: 'request.create', type: 'string'},
           { groupId: translateConditions.chat.groupId.SoftwareOfVisitor, id: 'userAgent', label_key: translateConditions.chat.label_key.VisitorBrowser, triggerType: 'request.create', type: 'string'},
           { groupId: translateConditions.chat.groupId.SoftwareOfVisitor, id: 'userAgent', label_key: translateConditions.chat.label_key.VisitorPlatform, triggerType: 'request.create', type: 'string'},
           { groupId: translateConditions.chat.groupId.SoftwareOfVisitor, id: 'agents.length', label_key: translateConditions.chat.label_key.VisitoruserAgent, triggerType: 'request.create', type: 'int'},
+          { groupId: translateConditions.chat.groupId.SoftwareOfVisitor, id: 'availableAgents.length', label_key: translateConditions.chat.label_key.VisitoruserAgentAvailable, triggerType: 'request.create', type: 'int'},
           { groupId: translateConditions.chat.groupId.ChannelInformation, id: 'channel.name', label_key: translateConditions.chat.label_key.ChannelName, triggerType: 'request.create', type: 'string'},
           { groupId: translateConditions.chat.groupId.LocationVisitor, id: 'language', label_key: translateConditions.chat.label_key.VisitorCountryRegion,
                 triggerType: 'request.create', type: 'boolean', operator: [ { id: 'zh-CN', label_key: 'Chinese'},
@@ -241,10 +249,19 @@ export class BasetriggerComponent  {
                                                                         ], placeholder: translateConditions.chat.placeholder.SelectLanguage},
           { groupId: translateConditions.chat.groupId.ChatInformation, id: 'department.name', label_key: translateConditions.chat.label_key.Department,
                 triggerType: 'request.create', type: 'boolean', operator: this.departments, placeholder: translateConditions.chat.placeholder.SelectDepartment },
+          { groupId: translateConditions.chat.groupId.ChatInformation, id: 'department', label_key: translateConditions.chat.label_key.DepartmentHasBot,
+                triggerType: 'request.create', type: 'keyExist', operator: [ {id: 'id_bot', label_key: 'True'},
+                                                                            {id: 'id_bot', label_key: 'False'}
+                                                                          ], placeholder: translateConditions.chat.placeholder.SelectStatus },
           { groupId: translateConditions.chat.groupId.ChatInformation, id: 'status', label_key: translateConditions.chat.label_key.VisitorServed,
                 triggerType: 'request.create', type: 'boolean', operator: [ {id: 200, label_key: 'True'},
                                                                             {id: 100, label_key: 'False'}
-                                                                ], placeholder: translateConditions.chat.placeholder.SelectStatus}
+                                                                ], placeholder: translateConditions.chat.placeholder.SelectStatus},
+          { groupId: translateConditions.chat.groupId.ChatInformation, id: 'status', label_key: translateConditions.chat.label_key.RequestStatus, triggerType: 'request.create', type: 'int'},
+          // user.login conditions start
+          { groupId: translateConditions.user.groupId.VisitorInformation, id: 'firstname', label_key: translateConditions.user.label_key.VisitorName, triggerType: 'user.login', type: 'string'},
+          { groupId: translateConditions.user.groupId.VisitorInformation, id: 'lastname', label_key: translateConditions.user.label_key.VisitorLastName, triggerType: 'user.login', type: 'string'},
+          { groupId: translateConditions.user.groupId.VisitorInformation, id: 'email', label_key: translateConditions.user.label_key.VisitorMail, triggerType: 'user.login', type: 'string'}
         ]
 
         this.options = {
@@ -265,35 +282,43 @@ export class BasetriggerComponent  {
           booleanOpt: [
             { id: 'equal', label_key: translateOptions.label_key.Equal, value: true},
             { id: 'notEqual', label_key: translateOptions.label_key.NotEqual, value: false}
+          ],
+          keyExistOpt: [
+            {id: 'hasOwnProperty', label_key: 'Ha un bot'},
+            {id: 'notHasOwnProperty', label_key: 'non ha un bot'}
           ]
         }
 
         this.action = [
           { key: 'message.send', label_key: translateAction.label_key.SendMessageToVisitor, type: 'input', placeholder: translateAction.placeholder.NameAgent},
-          // { key: 'message.received', label_key: 'Ricevi messaggio', type: 'select', placeholder: 'text here2'},
-          // { key: 'wait', label_key: 'Attesa', type: 'input', placeholder: 'text here2'}
+          // { key: 'request.department.root', label_key: 'Assegna a dipartimento', type: 'select', placeholder: 'text here2'},
+          // { key: 'request.department.root.self', label_key: 'Riassegna allo stesso dipartimento', type: 'input', placeholder: 'text here2'}
         ]
 
         this.operator = {
           'attributes.departmentId':  this.departments ,
           'lead.attributes.departmentId': this.departments,
+          'department.name': this.departments,
           'status': [ {id: 200, label_key: 'True'},
                       {id: 100, label_key: 'False'}
+          ],
+          'department': [ {id: 'id_bot', label_key: 'True'},
+                          {id: 'id__bot', label_key: 'False'}
           ],
           'language': [ { id: 'zh-CN', label_key: 'Chinese'},
                         { id: 'en-GB', label_key: 'English'},
                         { id: 'fr-FR', label_key: 'Franch'},
-                        { id: 'it-IT', label_key: 'Italian'}
+                        { id: 'it-IT', label_key: 'Italian'},
+                        { id: 'de-DE', label_key: 'German'},
+                        { id: 'es-ES', label_key: 'Spanish'},
           ]
         }
-
-      }
 
       console.log('pair_dep', this.departments)
       console.log('pair_cond', this.condition)
       console.log('pair_opt', this.options)
       console.log('pair_act', this.action)
-
+      }
     }, (error) => {
       console.log('!!!  REQUESTS DEP or TRANSLATE - ERROR: ', error);
     }, () => {

@@ -1,3 +1,4 @@
+import { ContactsService } from './../../services/contacts.service';
 import { BasetriggerComponent } from './../basetrigger/basetrigger.component';
 import { Trigger } from './../../models/trigger-model';
 import { NotifyService } from 'app/core/notify.service';
@@ -143,8 +144,12 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
                                                                                 operator: cond.operator,
                                                                                 path: cond.path,
                                                                                 value: cond.value,
-                                                                                type: this.condition.filter(b => b.id === cond.path)[0].type
+                                                                                //type: this.condition.filter(b => b.id === cond.path)[0].type,
+                                                                                type: this.condition.filter(b => b.triggerType === trigger.trigger.key).filter(c => c.id === cond.path)[0].type
                                                                           }))
+
+      console.log('condition.filter', typeof(trigger.conditions[this.conditionType.split('.')[1]][0].value))
+      console.log('aaaaaaaaaaaaa', this.condition.filter(a => a.triggerType === trigger.trigger.key).filter(b => b.id === trigger.conditions[this.conditionType.split('.')[1]][0].path).filter( c => c.type === typeof(trigger.conditions[this.conditionType.split('.')[1]][0]).value))                                                                    
       const conditions_array = this.formBuilder.array(conditionsGROUP)
       const cond_triggerFormNewArray = this.triggerForm.get('conditions') as FormGroup
       cond_triggerFormNewArray.setControl(this.conditionType.split('.')[1] , conditions_array)
@@ -309,8 +314,13 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
     console.log('action before', action);
     // set value of second and third dropdown action section and set it's placeholder value for selected action
     action.patchValue({'type': this.action.filter(b => b.key === event)[0].type,
-                       'placeholder': this.action.filter(b => b.key === event)[0].placeholder});
-
+                       'placeholder': this.action.filter(b => b.key === event)[0].placeholder,
+                       'parameters': {
+                        'fullName': undefined,
+                        'text': ' '
+                       }
+                    });
+    console.log('action after', action);
   }
 
   get form() { return this.triggerForm.controls }

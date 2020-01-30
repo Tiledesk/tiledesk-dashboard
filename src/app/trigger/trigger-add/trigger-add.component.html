@@ -105,28 +105,33 @@
                                         </div>
                                           
                                         <!-- -----second condition------- -->
-                                        <div *ngIf="condition.value.type==='string'">
-                                            <ng-select  class="custom-select col-sm-3" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
+                                        <div class="col-sm-3" *ngIf="condition.value.type==='string'">
+                                            <ng-select  class="custom-select" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
                                               <ng-option *ngFor="let string of options.stringOpt" [value]="string.id" >{{string.label_key}}</ng-option>
                                             </ng-select>
                                         </div>
-                                        <div *ngIf="condition.value.type==='int'">
-                                            <ng-select  class="custom-select col-sm-3" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
+                                        <div class="col-sm-3" *ngIf="condition.value.type==='int'">
+                                            <ng-select  class="custom-select" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
                                               <ng-option *ngFor="let int of options.intOpt" [value]="int.id" >{{int.label_key}}</ng-option>
                                             </ng-select>
                                         </div>
-                                        <div *ngIf="condition.value.type==='boolean'">
-                                            <ng-select  class="custom-select col-sm-3" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
+                                        <div class="col-sm-3" *ngIf="condition.value.type==='boolean'">
+                                            <ng-select  class="custom-select" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
                                               <ng-option *ngFor="let boolean of options.booleanOpt" [value]="boolean.id" >{{boolean.label_key}}</ng-option>
                                             </ng-select>
+                                        </div>
+                                        <div class="col-sm-3" *ngIf="condition.value.type==='keyExist'">
+                                          <ng-select  class="custom-select" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
+                                            <ng-option *ngFor="let keyExist of options.keyExistOpt" [value]="keyExist.id" >{{keyExist.label_key}}</ng-option>
+                                          </ng-select>
                                         </div>
 
                                         <!-- -----third condition------- -->
                                         <div *ngIf="condition.value.type==='string' || condition.value.type==='int'">
                                             <input class="custom-input col-sm-3"  formControlName="value" type="text">
                                         </div>
-                                        <div *ngIf="condition.value.type==='boolean'">
-                                            <ng-select class="custom-select col-sm-3" formControlName="value" [placeholder]="condition.value.placeholder" [searchable]="false" [clearable]="false">
+                                        <div class="col-sm-3" *ngIf="condition.value.type==='boolean' || condition.value.type==='keyExist'">
+                                            <ng-select class="custom-select" formControlName="value" [placeholder]="condition.value.placeholder" [searchable]="false" [clearable]="false">
                                               <ng-option *ngFor="let oper of operator[condition.value.path]" [value]="oper.id">{{oper.label_key}}</ng-option>
                                             </ng-select>
                                         </div>
@@ -167,27 +172,32 @@
                                     <div *ngIf="form.conditions.controls.all.controls[i].invalid && form.conditions.controls.all.controls[i].value['path'] !== null && submitted" class="row is-invalid">{{ "Trigger.Add_Edit.CompileAllField_error" | translate }}</div>
                                   </div>
                                   <!-- -----second condition------- -->
-                                  <div *ngIf="condition.value.type==='string'">
-                                      <ng-select  class="custom-select col-sm-3" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
+                                  <div class="col-sm-3" *ngIf="condition.value.type==='string'">
+                                      <ng-select  class="custom-select" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
                                         <ng-option *ngFor="let string of options.stringOpt" [value]="string.id" >{{string.label_key}}</ng-option>
                                       </ng-select>
                                   </div>
-                                  <div *ngIf="condition.value.type==='int'">
-                                      <ng-select  class="custom-select col-sm-3" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
+                                  <div class="col-sm-3" *ngIf="condition.value.type==='int'">
+                                      <ng-select  class="custom-select" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
                                         <ng-option *ngFor="let int of options.intOpt" [value]="int.id" >{{int.label_key}}</ng-option>
                                       </ng-select>
                                   </div>
-                                  <div *ngIf="condition.value.type==='boolean'">
-                                      <ng-select  class="custom-select col-sm-3" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
+                                  <div class="col-sm-3" *ngIf="condition.value.type==='boolean'">
+                                      <ng-select  class="custom-select" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
                                         <ng-option *ngFor="let boolean of options.booleanOpt" [value]="boolean.id" >{{boolean.label_key}}</ng-option>
                                       </ng-select>
+                                  </div>
+                                  <div class="col-sm-3" *ngIf="condition.value.type==='keyExist'">
+                                    <ng-select  class="custom-select" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
+                                      <ng-option *ngFor="let keyExist of options.keyExistOpt" [value]="keyExist.id" >{{keyExist.label_key}}</ng-option>
+                                    </ng-select>
                                   </div>
                                   <!-- -----third condition------- -->
                                   <div *ngIf="condition.value.type==='string' || condition.value.type==='int'">
                                       <input class="custom-input col-sm-3"  formControlName="value" type="text">
                                   </div>
-                                  <div *ngIf="condition.value.type==='boolean'">
-                                      <ng-select class="custom-select col-sm-3" formControlName="value" [placeholder]="condition.value.placeholder" [searchable]="false" [clearable]="false">
+                                  <div class="col-sm-3" *ngIf="condition.value.type==='boolean' || condition.value.type==='keyExist'">
+                                      <ng-select class="custom-select" formControlName="value" [placeholder]="condition.value.placeholder" [searchable]="false" [clearable]="false">
                                         <ng-option *ngFor="let oper of operator[condition.value.path]" [value]="oper.id">{{oper.label_key}}</ng-option>
                                       </ng-select>
                                   </div>
@@ -231,7 +241,7 @@
                                   <ng-select  class="custom-select " formControlName="key" (change)="onSelectedAction($event, action)" placeholder='{{ "Trigger.Add_Edit.ActionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
                                     <ng-option *ngFor="let act of temp_act" [value]="act.key" >{{act.label_key}}</ng-option>
                                   </ng-select>
-                                  <div *ngIf="form.actions.controls[j].invalid && submitted" class="row is-invalid">{{ "Trigger.Add_Edit.CompileAllField_error" | translate }}</div>
+                                  <div *ngIf="form.actions.controls[j].invalid && submitted && action.value.type!=='select'" class="row is-invalid">{{ "Trigger.Add_Edit.CompileAllField_error" | translate }}</div>
                               </div>
 
                                 
@@ -240,15 +250,15 @@
                                   <div *ngIf="action.value.type==='input' ">
                                       <input class="custom-input col-sm-3"  formControlName="fullName" type="text" [placeholder]="action.value.placeholder">
                                   </div>
-                                  <div *ngIf="action.value.type==='select'">
-                                      <ng-select class="custom-select col-sm-3" formControlName="fullName" [placeholder]="action.value.placeholder" [searchable]="false" [clearable]="false">
-                                          <ng-option *ngFor="let int of intOpt" [value]="int.id" >{{int.label_key}}</ng-option>
+                                  <div class="col-sm-3" *ngIf="action.value.type==='select'">
+                                      <ng-select class="custom-select " formControlName="fullName" [placeholder]="action.value.placeholder" [searchable]="false" [clearable]="false">
+                                          <ng-option *ngFor="let operator of operator[action.value.key]" [value]="operator.id" >{{operator.label_key}}</ng-option>
                                       </ng-select>
                                   </div>
                                   <!-- -----third condition------- -->
-                                  <div *ngIf="action.value.type==='input' || action.value.type==='select' ">
+                                  <div *ngIf="action.value.type==='input'">
                                     <input class="custom-input col-sm-3"  formControlName="text" type="text" placeholder='{{ "Trigger.MessagePlaceholder" | translate }}'>
-                                </div>
+                                  </div>
                               </div>
 
 

@@ -112,7 +112,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
       key: [ undefined, Validators.required],
       parameters: this.formBuilder.group({
         fullName: [undefined, Validators.required],
-        text: [undefined, Validators.required]
+        text: [' ', Validators.required]
       }),
       type: undefined, // change value to undefined if added multiple actions next
       placeholder: undefined
@@ -233,7 +233,13 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
     console.log('action before', action);
     // set value of second and third dropdown action section and set it's placeholder value for selected action
     action.patchValue({'type': this.action.filter(b => b.key === event)[0].type,
-                       'placeholder': this.action.filter(b => b.key === event)[0].placeholder});
+                       'placeholder': this.action.filter(b => b.key === event)[0].placeholder,
+                       'parameters': {
+                            'fullName': undefined,
+                            'text': ' '
+                        }
+                      });
+    console.log('action after', action);
 
   }
 
