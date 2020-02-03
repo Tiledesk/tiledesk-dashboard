@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { UsersService } from '../services/users.service';
 import { AuthService } from '../core/auth.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -10,13 +10,16 @@ import { BotLocalDbService } from '../services/bot-local-db.service';
 
 import 'moment/locale/it.js';
 import 'moment/locale/en-gb.js';
+import { Subscription } from 'rxjs/Subscription';
+
+
 @Component({
   selector: 'appdashboard-activities',
   templateUrl: './activities.component.html',
   styleUrls: ['./activities.component.scss']
 })
 
-export class ActivitiesComponent implements OnInit {
+export class ActivitiesComponent implements OnInit, OnDestroy {
   @ViewChild('searchbtn') private searchbtnRef: ElementRef;
   @ViewChild('clearsearchbtn') private clearsearchbtnRef: ElementRef;
   @ViewChild('exportcsvbtn') private exportcsvbtnRef: ElementRef;
@@ -60,6 +63,7 @@ export class ActivitiesComponent implements OnInit {
   agentInvitation: string;
   newRequest: string;
   asc: any;
+  subscription: Subscription;
 
   constructor(
     private usersService: UsersService,
@@ -81,6 +85,11 @@ export class ActivitiesComponent implements OnInit {
     this.getAllProjectUsers();
     this.buildActivitiesOptions();
     // this.getProjectUsers();
+  }
+
+  ngOnDestroy() {
+    console.log('% »»» WebSocketJs WF +++++ ws-requests--- activities ngOnDestroy')
+    this.subscription.unsubscribe();
   }
 
   buildActivitiesOptions() {
@@ -141,7 +150,7 @@ export class ActivitiesComponent implements OnInit {
   }
 
   getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
+    this.subscription = this.auth.project_bs.subscribe((project) => {
       if (project) {
         this.projectId = project._id
         console.log('ActivitiesComponent - projectId ', this.projectId)
