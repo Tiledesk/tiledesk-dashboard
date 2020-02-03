@@ -61,6 +61,7 @@ export class FaqComponent implements OnInit {
   faqKb_created_at: any;
   faq_lenght: number;
   showSpinner = true;
+  showSpinnerInUpdateBotCard = true;
   // is_external_bot: boolean;
   is_external_bot = true;
  
@@ -86,6 +87,7 @@ export class FaqComponent implements OnInit {
 
   userProfileImageurl: string;
   timeStamp: any;
+  
  
 
   
@@ -309,6 +311,7 @@ export class FaqComponent implements OnInit {
    * AND THE FAQ-KB ID, ID AND REMOTE ID IN THE 'BOT ATTRIBUTE' SECTION
    */
   getFaqKbById() {
+    this.showSpinnerInUpdateBotCard = true
     // this.botService.getMongDbBotById(this.botId).subscribe((bot: any) => { // NO MORE USED
     this.faqKbService.getMongDbFaqKbById(this.id_faq_kb).subscribe((faqkb: any) => {
       console.log('GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
@@ -331,15 +334,10 @@ export class FaqComponent implements OnInit {
       
       /** IN PRE  */ 
       if(faqkb.type === 'internal') {
-
         this.is_external_bot = false;
-
       } else if (faqkb.type === 'external') {
-       
         this.is_external_bot = true;
-
       }
-
 
       /** IN PROD  */ 
       // this.is_external_bot = faqkb.external;
@@ -357,11 +355,11 @@ export class FaqComponent implements OnInit {
     },
       (error) => {
         console.log('GET FAQ-KB BY ID (SUBSTITUTE BOT) - ERROR ', error);
-        // this.showSpinner = false;
+        this.showSpinnerInUpdateBotCard = false
       },
       () => {
         console.log('GET FAQ-KB ID (SUBSTITUTE BOT) - COMPLETE ');
-        // this.showSpinner = false;
+        this.showSpinnerInUpdateBotCard = false 
       });
 
   }
