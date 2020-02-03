@@ -179,7 +179,9 @@ export class AuthService {
     console.log('!!C-U AUTH SERVICE: I PUBLISH THE PROJECT RECEIVED FROM PROJECT COMP ', project)
     // tslint:disable-next-line:no-debugger
     // debugger
+    console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service PUBLISH THE PROJECT RECEIVED FROM PROJECT COMP', project._id)
     this.project_bs.next(project);
+
   }
 
   /**
@@ -194,6 +196,8 @@ export class AuthService {
   // getAndPublish_NavProjectIdAndProjectName() {
   checkStoredProjectAndPublish() {
     this.project_bs.subscribe((prjct) => {
+      console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service checkStoredProjectAndPublish prjct (1)', prjct)
+
       console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH SERV checkStoredProjectAndPublish) prjct', prjct);
       console.log('!!C-U  - 1) »»»»» AUTH SERV - PROJECT FROM SUBSCRIP', prjct);
 
@@ -202,104 +206,134 @@ export class AuthService {
         // tslint:disable-next-line:max-line-length
         console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH SERV checkStoredProjectAndPublish) TRIAL expired 1', this.project_trial_expired);
       }
-
-      if (prjct === null) {
-        console.log('!!C-U »»»»» AUTH SERV - PROJECT IS NULL: ', prjct);
+      console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service checkStoredProjectAndPublish PROJECT (2)', prjct)
+      if (prjct == null) {
+        // console.log('!!C-U »»»»» AUTH SERV - PROJECT IS NULL: ', prjct);
+        console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service checkStoredProjectAndPublish PROJECT IS NULL (3) ', prjct)
 
         /**
          * !!!! NO MORE - REPLACES 'router.events.subscribe' WITH 'location.path()'
          * BECAUSE OF 'events.subscribe' THAT IS ACTIVATED FOR THE FIRST
          * TIME WHEN THE PROJECT IS NULL AND THEN IS ALWAYS CALLED EVEN IF THE  PROJECT IS DEFINED */
-        this.subscription = this.router.events.subscribe((e) => {
-          if (e instanceof NavigationEnd) {
-            // if (this.location.path() !== '') {
-            // const current_url = this.location.path()
-            const current_url = e.url
-            console.log('!!C-U »»»»» AUTH SERV - CURRENT URL ', current_url);
+        this.subscription = this.router.events
+          .subscribe((e) => {
+            if (e instanceof NavigationEnd) {
+              // if (this.location.path() !== '') {
+              // const current_url = this.location.path()
+              const current_url = e.url
+              console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service checkStoredProjectAndPublish NavigationEnd current_url (4)', current_url)
+              console.log('!!C-U »»»»» AUTH SERV - CURRENT URL ', current_url);
 
-            const url_segments = current_url.split('/');
-            console.log('!!C-U »»»»» AUTH SERV - CURRENT URL SEGMENTS ', url_segments);
+              const url_segments = current_url.split('/');
+              console.log('!!C-U »»»»» AUTH SERV - CURRENT URL SEGMENTS ', url_segments);
 
 
-            this.nav_project_id = url_segments[2];
-            console.log('!! »»»»» AUTH SERV - CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id);
-            console.log('!! »»»»» AUTH SERV - CURRENT URL SEGMENTS > SEGMENT 1: ', url_segments[1]);
+              this.nav_project_id = url_segments[2];
+              console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service checkStoredProjectAndPublish this.nav_project_id (5)', this.nav_project_id)
+              console.log('!! »»»»» AUTH SERV - CURRENT URL SEGMENTS > NAVIGATION PROJECT ID: ', this.nav_project_id);
+              console.log('!! »»»»» AUTH SERV - CURRENT URL SEGMENTS > SEGMENT 1: ', url_segments[1]);
 
-            /**
-             * (note: the NAVIGATION PROJECT ID returned from CURRENT URL SEGMENTS is = to 'email'
-             * if the user navigate to the e-mail verification page)
-             * the url_segments[1] is = to 'user' instead of 'project' when the user not yet has select a project
-             * (i.e. from the project list page) and go to user profile > change password
-             * If the CURRENT URL has only one element (for example /create-project (i.e. the wizard for the creation a of a project) 
-             * the url_segments[2] (that is the project id) is undefined)
-             * and the Workflow not proceed with the below code
-             */
-            if (this.nav_project_id && this.nav_project_id !== 'email' && url_segments[1] !== 'user' && url_segments[1] !== 'handle-invitation' && url_segments[1] !== 'signup-on-invitation') {
+              // USECASE: ROUTES /projects (i.e., Recent Projects) /create-new-project 
+              if (this.nav_project_id === undefined) {
+                console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service --- QUI ENTRO 1 --- checkStoredProjectAndPublish this.nav_project_id (6)', this.nav_project_id)
+                this.subscription.unsubscribe();
+              }
+              /**
+               * (note: the NAVIGATION PROJECT ID returned from CURRENT URL SEGMENTS is = to 'email'
+               * if the user navigate to the e-mail verification page)
+               * the url_segments[1] is = to 'user' instead of 'project' when the user not yet has select a project
+               * (i.e. from the project list page) and go to user profile > change password
+               * If the CURRENT URL has only one element (for example /create-project (i.e. the wizard for the creation a of a project) 
+               * the url_segments[2] (that is the project id) is undefined)
+               * and the Workflow not proceed with the below code
+               */
+              if (this.nav_project_id &&
+                this.nav_project_id !== 'email' &&
+                url_segments[1] !== 'user' &&
+                url_segments[1] !== 'handle-invitation' &&
+                url_segments[1] !== 'signup-on-invitation' &&
+                current_url !== '/projects'
+              ) {
 
-              console.log('!!C-U »»»»» QUI ENTRO ', this.nav_project_id);
-              this.subscription.unsubscribe();
+                console.log('!!C-U »»»»» QUI ENTRO ', this.nav_project_id);
+                console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service --- QUI ENTRO 2 --- checkStoredProjectAndPublish this.nav_project_id (7)', this.nav_project_id)
+                this.subscription.unsubscribe();
 
-              const storedProjectJson = localStorage.getItem(this.nav_project_id);
-              console.log('!! »»»»» AUTH SERV - JSON OF STORED PROJECT: ', storedProjectJson);
+                const storedProjectJson = localStorage.getItem(this.nav_project_id);
+                console.log('!! »»»»» AUTH SERV - JSON OF STORED PROJECT: ', storedProjectJson);
 
-              // RUN THE BELOW ONLY IF EXIST THE PROJECT JSON SAVED IN THE STORAGE
-              if (storedProjectJson) {
+                // RUN THE BELOW ONLY IF EXIST THE PROJECT JSON SAVED IN THE STORAGE
+                if (storedProjectJson) {
+                  console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service checkStoredProjectAndPublish storedProjectJson (8)')
 
-                const storedProjectObject = JSON.parse(storedProjectJson);
-                console.log('!! »»»»» AUTH SERV - OBJECT OF STORED PROJECT', storedProjectObject);
+                  const storedProjectObject = JSON.parse(storedProjectJson);
+                  console.log('!! »»»»» AUTH SERV - OBJECT OF STORED PROJECT', storedProjectObject);
 
-                const project_name = storedProjectObject['name'];
-                const project_profile_name = storedProjectObject['profile_name'];
-                const project_trial_expired = storedProjectObject['trial_expired'];
-                const project_trial_days_left = storedProjectObject['trial_days_left'];
+                  const project_name = storedProjectObject['name'];
+                  const project_profile_name = storedProjectObject['profile_name'];
+                  const project_trial_expired = storedProjectObject['trial_expired'];
+                  const project_trial_days_left = storedProjectObject['trial_days_left'];
+                  this.project_trial_expired = storedProjectObject['trial_expired'];
+                  // tslint:disable-next-line:max-line-length
+                  // console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH SERV checkStoredProjectAndPublish) TRIAL expired 2', this.project_trial_expired);
 
-                this.project_trial_expired = storedProjectObject['trial_expired'];
-                // tslint:disable-next-line:max-line-length
-                // console.log('»> »> PROJECT-PROFILE GUARD (WF in AUTH SERV checkStoredProjectAndPublish) TRIAL expired 2', this.project_trial_expired);
+                  console.log('!! »»»»» AUTH SERV - PROJECT NAME GET FROM STORAGE: ', project_name);
 
-                console.log('!! »»»»» AUTH SERV - PROJECT NAME GET FROM STORAGE: ', project_name);
+                  const project: Project = {
+                    _id: this.nav_project_id,
+                    name: project_name,
+                    profile_name: project_profile_name,
+                    trial_expired: project_trial_expired,
+                    trial_days_left: project_trial_days_left
+                  }
+                  console.log('!! AUTH in auth.serv  - 1) PROJECT THAT IS PUBLISHED: ', project);
+                  // SE NN C'è IL PROJECT NAME COMUNQUE PUBBLICO PERCHè CON L'ID DEL PROGETTO VENGONO EFFETTUATE DIVERSE CALLBACK
 
-                const project: Project = {
-                  _id: this.nav_project_id,
-                  name: project_name,
-                  profile_name: project_profile_name,
-                  trial_expired: project_trial_expired,
-                  trial_days_left: project_trial_days_left
+                  /**** ******* ******* NEW BUG FIX ***** *** ** ***/
+
+                  // if(prjct.id ) { }
+
+                  // if (prjct && prjct._id !== this.nav_project_id) {
+
+                  console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service checkStoredProjectAndPublish BEFORE TO PUBLISH this.project_bs.value (9) ', this.project_bs.value)
+                  if (this.project_bs.value == null) {
+                    console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service checkStoredProjectAndPublish PROJECT (get from storage) THAT IS PUBLISHED (10) ', project)
+                    this.project_bs.next(project);
+                  }
+                  
+                  // }
+
+                  // NOTA: AUTH GUARD ESEGUE UN CHECK DEL PROGETTO SALVATO NEL LOCAL STORAGE E SE IL PROJECT NAME è NULL DOPO AVER 'GET' IL
+                  // PROGETTO PER nav_project_id SET THE ID and the NAME OF THE PROJECT IN THE LOCAL STORAGE and
+                  // SENT THEM TO THE AUTH SERVICE THAT PUBLISHES
+                  // if (project_name === null) {
+                  //   console.log('!! »»»»» AUTH SERV - PROJECT NAME IS NULL')
+                  // }
+                } else {
+                  console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service checkStoredProjectAndPublish FOR THE PRJCT ID ', this.nav_project_id, ' THERE IS NOT STORED PRJCT-JSON - SEE AUTH GUARD (11)')
+                  // USE-CASE: FOR THE ID (GOT FROM URL) OF THE CURRENT PROJECT THERE IS NO THE JSON SAVED IN THE STORAGE:
+                  // IT IS THE CASE IN WHICH THE USER ACCESS TO A NEW PROJECT IN THE DASHBOARD BY LINKS
+                  // WITHOUT BEING PASSED FROM THE PROJECT LIST.
+                  // IF THE STORED JSON OF THE PROJECT IS NULL  IS THE AUTH-GUARD THAT RUNS A REMOTE CALLBACK TO OBTAIN THE
+                  // PROJECT BY ID AND THAT THEN PUBLISH IT AND SAVE IT (THE REMOTE CALLBACK IS PERFORMED IN AUTH-GUARD BECAUSE
+                  // IS NOT POSSIBLE TO DO IT IN THIS SERVICE (BECAUSE OF THE CIRCULAR DEPEDENCY WARNING)  )
+                  // tslint:disable-next-line:max-line-length
+                  console.log('!! AUTH WF in auth.serv - FOR THE PRJCT ID ', this.nav_project_id, ' THERE IS NOT STORED PRJCT-JSON - SEE AUTH GUARD')
+                  // this.projectService.getProjectById(this.nav_project_id).subscribe((prjct: any) => {
+
+                  // public anyway to immediately make the project id available to subscribers
+                  // the project name will be published by the auth.guard
+                  const project: Project = {
+                    _id: this.nav_project_id,
+                  }
+                  console.log('!! AUTH in auth.serv - 2) PROJECT THAT IS PUBLISHED: ', project);
+
+                  this.project_bs.next(project);
+                  console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service 2) PROJECT THAT IS PUBLISHED ', project)
                 }
-                console.log('!! AUTH in auth.serv  - 1) PROJECT THAT IS PUBLISHED: ', project);
-                // SE NN C'è IL PROJECT NAME COMUNQUE PUBBLICO PERCHè CON L'ID DEL PROGETTO VENGONO EFFETTUATE DIVERSE CALLBACK
-
-                /**** ******* ******* ***** *** ** ***/
-                this.project_bs.next(project);
-
-                // NOTA: AUTH GUARD ESEGUE UN CHECK DEL PROGETTO SALVATO NEL LOCAL STORAGE E SE IL PROJECT NAME è NULL DOPO AVER 'GET' IL
-                // PROGETTO PER nav_project_id SET THE ID and the NAME OF THE PROJECT IN THE LOCAL STORAGE and
-                // SENT THEM TO THE AUTH SERVICE THAT PUBLISHES
-                // if (project_name === null) {
-                //   console.log('!! »»»»» AUTH SERV - PROJECT NAME IS NULL')
-                // }
-              } else {
-                // USE-CASE: FOR THE ID (GOT FROM URL) OF THE CURRENT PROJECT THERE IS NO THE JSON SAVED IN THE STORAGE:
-                // IT IS THE CASE IN WHICH THE USER ACCESS TO A NEW PROJECT IN THE DASHBOARD BY LINKS
-                // WITHOUT BEING PASSED FROM THE PROJECT LIST.
-                // IF THE STORED JSON OF THE PROJECT IS NULL  IS THE AUTH-GUARD THAT RUNS A REMOTE CALLBACK TO OBTAIN THE
-                // PROJECT BY ID AND THAT THEN PUBLISH IT AND SAVE IT (THE REMOTE CALLBACK IS PERFORMED IN AUTH-GUARD BECAUSE
-                // IS NOT POSSIBLE TO DO IT IN THIS SERVICE (BECAUSE OF THE CIRCULAR DEPEDENCY WARNING)  )
-                // tslint:disable-next-line:max-line-length
-                console.log('!! AUTH WF in auth.serv - FOR THE PRJCT ID ', this.nav_project_id, ' THERE IS NOT STORED PRJCT-JSON - SEE AUTH GUARD')
-                // this.projectService.getProjectById(this.nav_project_id).subscribe((prjct: any) => {
-
-                // public anyway to immediately make the project id available to subscribers
-                // the project name will be published by the auth.guard
-                const project: Project = {
-                  _id: this.nav_project_id,
-                }
-                console.log('!! AUTH in auth.serv - 2) PROJECT THAT IS PUBLISHED: ', project);
-                this.project_bs.next(project);
               }
             }
-          }
-        }); // this.router.events.subscribe((e)
+          }); // this.router.events.subscribe((e)
       }
     });
   }
@@ -724,7 +758,9 @@ export class AuthService {
 
   hasClickedGoToProjects() {
     this.project_bs.next(null);
-    console.log('!!C-U »»»»» AUTH SERV - HAS BEEN CALLED "HAS CLICKED GOTO PROJECTS" - PUBLISH PRJCT = ', this.project_bs.next(null))
+    console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service  PUBLISH PRJCT = ', this.project_bs.next(null))
+    console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service  PUBLISH PRJCT VALUE = ', this.project_bs.value)
+    // console.log('!!C-U »»»»» AUTH SERV - HAS BEEN CALLED "HAS CLICKED GOTO PROJECTS" - PUBLISH PRJCT = ', this.project_bs.next(null))
     localStorage.removeItem('project');
   }
 
