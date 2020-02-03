@@ -11,6 +11,7 @@
 - Adds the ability to customize buttons' color
 - Multilanguage 
 - Adds the ability to reassign a request to a department
+- Adds the ability to reassign a request to a bot
 
 ### 1.0.40
 - Fixes the user profile urls
