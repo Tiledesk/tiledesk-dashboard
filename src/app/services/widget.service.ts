@@ -125,7 +125,7 @@ export class WidgetService {
     // const url = this.BASE_URL + this.projectID + '/labels/it'
     // https://tiledesk-server-pre.herokuapp.com/5df2240cecd41b00173a06bb/labels2
 
-    const url = this.BASE_URL + this.projectID + '/labels2'
+    const url = this.BASE_URL + this.projectID + '/labels'
 
     console.log('Multilanguage »» WIDGET SERVICE - GET LABELS URL', url);
 
@@ -147,7 +147,7 @@ export class WidgetService {
 
     const body = { "lang": langCode };
 
-    const url = this.BASE_URL + this.projectID + '/labels2/default/clone?lang=' + langCode
+    const url = this.BASE_URL + this.projectID + '/labels/default/clone?lang=' + langCode
     console.log('Multilanguage »» WIDGET SERVICE - CLONE LABELS URL', url);
 
     return this.http
@@ -163,7 +163,7 @@ export class WidgetService {
 
     // const body = { "lang": 'it', "data": translationObjct };
     const body = { "lang": langCode, "data": translationObjct };
-    const url = this.BASE_URL + this.projectID + '/labels2/'
+    const url = this.BASE_URL + this.projectID + '/labels/'
     console.log('Multilanguage »» WIDGET SERVICE - SAVE LABELS URL', url);
     console.log('Multilanguage »» WIDGET SERVICE - SAVE LABELS Body', body);
 
@@ -177,7 +177,7 @@ export class WidgetService {
   // curl -v -X DELETE -H 'Content-Type:application/json' -u andrea.leo@f21.it:123456 http://localhost:3000/4321/labels2
 
   public deleteLabels(langCode) {
-    const url = this.BASE_URL + this.projectID + '/labels2/' + langCode
+    const url = this.BASE_URL + this.projectID + '/labels/' + langCode
     console.log('Multilanguage »» WIDGET SERVICE - DELETE LABELS URL', url);
 
     const headers = new Headers();
