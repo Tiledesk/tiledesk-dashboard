@@ -1,5 +1,5 @@
 // tslint:disable:max-line-length
-import { Component, OnInit, ElementRef, AfterContentChecked, AfterViewInit, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, ElementRef, AfterContentChecked, AfterViewInit, AfterViewChecked, OnDestroy } from '@angular/core';
 // import { ROUTES } from '../sidebar/sidebar.component';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { AuthService } from '../../core/auth.service';
@@ -29,13 +29,14 @@ import brand from 'assets/brand/brand.json';
 import { environment } from '../../../environments/environment';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
     selector: 'app-navbar',
     templateUrl: './navbar.component.html',
     styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit, AfterViewInit, AfterContentChecked, AfterViewChecked {
+export class NavbarComponent implements OnInit, AfterViewInit, AfterContentChecked, OnDestroy, AfterViewChecked {
 
     // used to unsuscribe from behaviour subject
     private unsubscribe$: Subject<any> = new Subject<any>();
@@ -109,6 +110,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     storageBucket: string;
     currentUserId: string;
+    subscription: Subscription;
     constructor(
         location: Location,
         private element: ElementRef,
@@ -150,7 +152,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
         this.updateUnservedRequestCount();
         this.updateCurrentUserRequestCount();
-
         this.notifyLastUnservedRequest();
 
         this.checkRequestStatusInShown_requests();
@@ -194,7 +195,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     ngOnDestroy() {
         console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ ngOnDestroy')
-
+        this.subscription.unsubscribe();
         this.unsubscribe$.next();
         this.unsubscribe$.complete();
     }
@@ -207,7 +208,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     }
 
     getOSCODE() {
-
         console.log('NavbarComponent public_Key', this.public_Key)
 
         let keys = this.public_Key.split("-");
@@ -300,7 +300,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         })
     }
 
-
     checkUserImageExist() {
         this.usersService.userProfileImageExist.subscribe((image_exist) => {
             console.log('NAVBAR - USER PROFILE EXIST ? ', image_exist);
@@ -329,16 +328,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
     getUserProfileImage() {
         if (this.timeStamp) {
-
             return this.userProfileImageurl + '&' + this.timeStamp;
-
-
-
         }
         return this.userProfileImageurl
     }
-
-
 
     getActiveRoute() {
         // this.router.events.subscribe((val) => {
@@ -582,39 +575,38 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     getIfIsCreatedNewProject() {
         this.projectService.hasCreatedNewProject$.subscribe((hasCreatedNewProject) => {
             console.log('»»» »»» getIfIsCreatedNewProject hasCreatedNewProject', hasCreatedNewProject)
-
             if (hasCreatedNewProject) {
                 this.getProjects();
             }
-
         })
     }
 
 
     goToProjects() {
         console.log('HAS CLICCKED GO TO PROJECT ')
-
-        this.unsubscribe$.next();
-        this.unsubscribe$.complete();
-
         this.router.navigate(['/projects']);
         // (in AUTH SERVICE ) RESET PROJECT_BS AND REMOVE ITEM PROJECT FROM STORAGE WHEN THE USER GO TO PROJECTS PAGE
         this.auth.hasClickedGoToProjects();
 
         this.project = null
+
+        // this.subscription.unsubscribe();
+        // this.unsubscribe$.next();
+        // this.unsubscribe$.complete();
+
         console.log('!!C-U 00 -> NAVBAR project AFTER GOTO PROJECTS ', this.project)
-
-
     }
 
+    // WHEN A USER CLICK ON A PROJECT IN THE NAVBAR DROPDOWN 
     goToHome(id_project: string, project_name: string) {
-
+        console.log('!NAVBAR  goToHome id_project ', id_project, 'project_name', project_name)
         // RUNS ONLY IF THE THE USER CLICK OVER A PROJECT WITH THE ID DIFFERENT FROM THE CURRENT PROJECT ID
         if (id_project !== this.projectId) {
-            this.router.navigate([`/project/${id_project}/home`]);
+            // this.subscription.unsubscribe();
+            // this.unsubscribe$.next();
+            // this.unsubscribe$.complete();
 
-            this.unsubscribe$.next();
-            this.unsubscribe$.complete();
+            this.router.navigate([`/project/${id_project}/home`]);
 
             // WHEN THE USER SELECT A PROJECT ITS ID and NAME IS SEND IN THE AUTH SERVICE THAT PUBLISHES IT
             const project: Project = {
@@ -626,6 +618,14 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         }
     }
 
+
+    goToCreateProject() {
+        this.router.navigate(['/create-new-project']);
+        this.subscription.unsubscribe();
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
+    }
+
     goToUserProfile() {
         console.log('»»» »»» NAVBAR GO TO USER PROFILE ', this.project)
         if (this.project) {
@@ -634,15 +634,13 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         }
     }
 
-    goToCreateProject() {
-        this.router.navigate(['/create-new-project']);
-    }
+
 
 
     // NEW
     updateUnservedRequestCount() {
         // this.requestsService.requestsList_bs.subscribe((requests) => {
-        this.wsRequestsService.wsRequestsList$
+        this.subscription = this.wsRequestsService.wsRequestsList$
             .pipe(
                 takeUntil(this.unsubscribe$)
             )
@@ -658,12 +656,18 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                     });
                     this.unservedRequestCount = count;
                 }
-            });
+            }, error => {
+                console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar updateUnservedRequestCount * error * ', error)
+            }, () => {
+
+
+                console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar updateUnservedRequestCount */* COMPLETE */*')
+            })
     }
 
     updateCurrentUserRequestCount() {
         // this.requestsService.requestsList_bs.subscribe((requests) => {
-        this.wsRequestsService.wsRequestsList$
+        this.subscription = this.wsRequestsService.wsRequestsList$
             .pipe(
                 takeUntil(this.unsubscribe$)
             )
@@ -687,7 +691,13 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                     this.currentUserRequestCount = count;
                     // console.log('»» NAVBAR notifyLastUnservedRequest REQUEST currentUserRequestCount ', this.currentUserRequestCount);
                 }
-            });
+            }, error => {
+                console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar updateCurrentUserRequestCount * error * ', error)
+            }, () => {
+
+
+                console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar updateCurrentUserRequestCount */* COMPLETE */*')
+            })
 
     }
 
@@ -698,7 +708,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     checkRequestStatusInShown_requests() {
         console.log('»» NAVBAR shown_requests object ', this.shown_requests)
         // this.requestsService.requestsList_bs.subscribe((requests) => {
-        this.wsRequestsService.wsRequestsList$
+        this.subscription = this.wsRequestsService.wsRequestsList$
             .pipe(
                 takeUntil(this.unsubscribe$)
             )
@@ -713,16 +723,22 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                         }
                     });
                 }
-            });
+            }, error => {
+                console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar checkRequestStatusInShown_requests * error * ', error)
+            }, () => {
+
+
+                console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar checkRequestStatusInShown_requests */* COMPLETE */*')
+            })
     }
 
-    /*** from 14 feb are displayed also the request assigned to the current user */
+    /*** from 14 feb 19 are displayed also the request assigned to the current user */
     // NOTE: ARE DISPLAYED IN THE NOTIFICATION ONLY THE UNSERVED REQUEST (support_status = 100)
     // THAT ARE NOT FOUND (OR HAVE THE VALUE FALSE) IN THE LOCAL DICTIONARY shown_requests
     // FURTHERMORE THE NOTICATIONS WILL NOT BE DISPLAYED IF THE USER OBJECT IS NULL (i.e THERE ISN'T USER LOGGED IN)
     notifyLastUnservedRequest() {
         // this.requestsService.requestsList_bs.subscribe((requests) => {
-        this.wsRequestsService.wsRequestsList$
+        this.subscription = this.wsRequestsService.wsRequestsList$
             .pipe(
                 takeUntil(this.unsubscribe$)
             )
@@ -745,7 +761,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
                         // const currentUserIsInMembers = membersArray.includes(this.user._id);  // old used with firestore 
                         const currentUserIsInMembers = participantsArray.includes(this.user._id); // new used with ws 
-                        // console.log('»» WIDGET notifyLastUnservedRequest REQUEST currentUserIsInMembers ', currentUserIsInMembers);
+                        console.log('»» WIDGET notifyLastUnservedRequest REQUEST currentUserIsInMembers ', currentUserIsInMembers);
 
                         // if (r.support_status === 100 && !this.shown_requests[r.id] && this.user !== null) { // old used with firestore 
                         if (r.status === 100 && !this.shown_requests[r.id] && this.user !== null) {
@@ -828,7 +844,13 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                     });
                     // this.unservedRequestCount = count;
                 }
-            });
+            }, error => {
+                console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar notifyLastUnservedRequest * error * ', error)
+            }, () => {
+
+
+                console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar notifyLastUnservedRequest */* COMPLETE */*')
+            })
     }
 
 
