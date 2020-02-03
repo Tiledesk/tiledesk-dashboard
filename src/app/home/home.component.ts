@@ -45,7 +45,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   USER_ROLE: string;
 
   CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
-  
+
   browserLang: string;
 
   prjct_name: string;
@@ -108,13 +108,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     this.getUserRole();
     this.getProjectPlan();
-    this.getVisitorCounter();
+    // this.getVisitorCounter();
     this.getOSCODE();
   }
 
   // TRANSLATION
   translateInstallWidget() {
-    this.translate.get('InstallTiledeskNowAndStartChatting', this.tparams )
+    this.translate.get('InstallTiledeskNowAndStartChatting', this.tparams)
       .subscribe((text: string) => {
 
         this.installWidgetText = text;
@@ -305,7 +305,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   // IN CUI ESGUE getProjectUser() PASSA LO USER ROLE ALLO USER SERVICE CHE LO PUBBLICA
   // NOTA: LA SIDEBAR AGGIORNA LO USER ROLE PRIMA DELLA HOME
   getUserRole() {
-    this.usersService.project_user_role_bs.subscribe((userRole) => {
+    this.subscription = this.usersService.project_user_role_bs.subscribe((userRole) => {
 
       console.log('!! »»» HOME - SUBSCRIPTION TO USER ROLE »»» ', userRole)
       // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
@@ -322,7 +322,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getCurrentProject() {
-    this.auth.project_bs.subscribe((project) => {
+    this.subscription = this.auth.project_bs.subscribe((project) => {
       this.project = project
       console.log('00 -> HOME project from AUTH service subscription  ', project)
 
@@ -476,7 +476,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getLoggedUser() {
-    this.auth.user_bs.subscribe((user) => {
+    this.subscription = this.auth.user_bs.subscribe((user) => {
       console.log('USER GET IN HOME ', user)
       // tslint:disable-next-line:no-debugger
       // debugger
