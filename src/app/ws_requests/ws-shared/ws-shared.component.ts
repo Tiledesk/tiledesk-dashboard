@@ -44,7 +44,6 @@ export class WsSharedComponent implements OnInit {
   // @ Create the agent array from the request's participant id
   // -----------------------------------------------------------------------------------------------------
   createAgentsArrayFromParticipantsId(members_array: any, requester_id: string) {
-
     this.agents_array = [];
     this.cleaned_members_array = [];
     members_array.forEach(member_id => {
@@ -437,25 +436,16 @@ export class WsSharedComponent implements OnInit {
   }
 
 
-
   joinDeptAndLeaveCurrentAgents(deptid_selected, requestid) {
     console.log('REQUEST-MSGS - JOIN DEPT AND LEAVE CURRENT AGENTS - DEPT ID ', deptid_selected);
     this.wsRequestsService.joinDept(deptid_selected, requestid)  
     .subscribe((res: any) => {
       console.log('REQUEST-MSGS - JOIN DEPT - RES ', res);
-
     }, (error) => {
-
       console.log('REQUEST-MSGS - JOIN DEPT - RES - ERROR ', error);
     }, () => {
       console.log('REQUEST-MSGS - JOIN DEPT - RES * COMPLETE *');
-
     });
-
   }
-
-
-
-
 
 }

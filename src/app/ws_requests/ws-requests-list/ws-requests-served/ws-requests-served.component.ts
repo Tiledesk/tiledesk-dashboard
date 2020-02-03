@@ -1,5 +1,7 @@
-import { Component, OnInit, Input, AfterViewInit,
-  ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import {
+  Component, OnInit, Input, OnChanges, AfterViewInit,
+  ChangeDetectionStrategy, ChangeDetectorRef, SimpleChange
+} from '@angular/core';
 import { WsSharedComponent } from '../../ws-shared/ws-shared.component';
 import { BotLocalDbService } from '../../../services/bot-local-db.service';
 import { AuthService } from '../../../core/auth.service';
@@ -9,27 +11,33 @@ import { AppConfigService } from '../../../services/app-config.service';
 import { WsRequestsService } from '../../../services/websocket/ws-requests.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
-
+import { UsersService } from '../../../services/users.service';
+import { browserRefresh } from '../../../app.component';
 @Component({
   selector: 'appdashboard-ws-requests-served',
   templateUrl: './ws-requests-served.component.html',
   styleUrls: ['./ws-requests-served.component.scss'],
   // changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class WsRequestsServedComponent extends WsSharedComponent implements OnInit {
+export class WsRequestsServedComponent extends WsSharedComponent implements OnInit, OnChanges, AfterViewInit {
 
   @Input() wsRequestsServed: Request[];
   @Input() ws_requests_length: number
   // @Input() showSpinner: boolean;
-  
+
   storageBucket: string;
   projectId: string;
   id_request_to_archive: string;
   displayArchiveRequestModal: string;
   showSpinner = true;
   currentUserID: string;
+  totalOf_servedRequests: number;
+  ROLE_IS_AGENT: boolean;
+  timeout: any;
 
   private unsubscribe$: Subject<any> = new Subject<any>();
+  public browserRefresh: boolean;
+  displayNoRequestString = false;
 
   constructor(
     public botLocalDbService: BotLocalDbService,
@@ -38,21 +46,76 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     public router: Router,
     public appConfigService: AppConfigService,
     public wsRequestsService: WsRequestsService,
+    public usersService: UsersService
     // private cdr: ChangeDetectorRef
 
   ) {
-    super(botLocalDbService, usersLocalDbService, router,wsRequestsService);
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService);
   }
 
   ngOnInit() {
     this.getStorageBucket();
     this.getCurrentProject();
-    // this.listenToRequestsLength();
+
     console.log('% »»» WebSocketJs WF - onData (ws-requests-served) - showSpinner', this.showSpinner)
-    console.log('% »»» WebSocketJs WF - onData >>>>>>>>>>>>>>>>>>>>>>>>>>>>> (ws-requests-served) - ngOnInit wsRequestsServed', this.wsRequestsServed)
+    console.log('% »»» WebSocketJs WF +++++ ws-requests--- served - ngOnInit wsRequestsServed', this.wsRequestsServed)
 
     // this.getWsRequestsServedLength();
     this.getLoggedUser();
+    this.detectBrowserRefresh();
+    // this.getProjectUserRole()
+  }
+  // Wait until the view inits before disconnecting
+  ngAfterViewInit() {
+    console.log('% »»» WebSocketJs WF - onData >>>>>>>>>>>>>>>>>>>>>>>>>>>>> (ws-requests-served) - ngAfterViewInit wsRequestsServed', this.wsRequestsServed)
+    // Since we know the list is not going to change
+    // let's request that this component not undergo change detection at all
+    // this.cdr.detach();
+
+    // setTimeout(() => {
+    //   const elemTable = <HTMLElement>document.querySelector('.served_requests_table tbody');
+    //   console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- ngAfterViewInit elemTable ", elemTable);
+    //   console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- ngAfterViewInit elemTable.childNodes.length ", elemTable.children.length);
+
+    //   if (elemTable.children.length === 0) {
+    //     this.displayNoRequestString = true;
+
+    //   } else {
+    //     this.displayNoRequestString = false;
+    //   }
+    // }, 2000);
+
+  }
+
+  ngOnChanges() {
+    // console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- ngOnChanges wsRequestsList$.value.length ",  this.wsRequestsService.wsRequestsList$.value.length);
+    // console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- ngOnChanges browserRefresh ", this.browserRefresh);
+    // console.log('% »»» WebSocketJs WF +++++ ws-requests--- served ----- ngOnChanges wsRequestsServed length', this.wsRequestsServed.length)
+    // setTimeout(() => {
+    //   if (this.wsRequestsServed.length === 0) {
+    //     this.displayNoRequestString = true;
+    //   } else {
+    //     this.displayNoRequestString = false;
+    //   }
+    // }, 2000);
+
+
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  detectBrowserRefresh() {
+    // console.log('% »»» WebSocketJs WF +++++ ws-requests--- served CALLING browserRefresh')
+    this.browserRefresh = browserRefresh;
+    console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- ngOnInit browserRefresh ", this.browserRefresh);
+    console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- ngOnInit wsRequestsList$.value.length ", this.wsRequestsService.wsRequestsList$.value.length);
+    if (this.wsRequestsServed.length === 0 && browserRefresh === false) {
+      this.displayNoRequestString = true;
+    }
+
   }
 
   getLoggedUser() {
@@ -66,49 +129,17 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     });
   }
 
-
-   // Wait until the view inits before disconnecting
-   ngAfterViewInit() {
-    console.log('% »»» WebSocketJs WF - onData >>>>>>>>>>>>>>>>>>>>>>>>>>>>> (ws-requests-served) - ngAfterViewInit wsRequestsServed', this.wsRequestsServed)
-    // Since we know the list is not going to change
-    // let's request that this component not undergo change detection at all
-    // this.cdr.detach();
-  }
-
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
-
-
   // IS USED WHEN IS GET A NEW MESSAGE (INN THIS CASE THE ONINIT IS NOT CALLED)
   getWsRequestsServedLength() {
-
     // if (this.wsRequestsServed.length > 0) {
     //   this.showSpinner = false;
     // }
-
     if (this.ws_requests_length > 0) {
       this.showSpinner = false;
     }
-   
     console.log('% »»» WebSocketJs WF - onData (ws-requests-served) ws_requests_length ', this.ws_requests_length)
-
   }
 
-  // IS CALLING ON INIT
-  listenToRequestsLength() {
-    this.wsRequestsService.wsRequestsListLength$
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    .subscribe((totalrequests: number) => {
-      console.log('% »»» WebSocketJs WF - onData (ws-requests-served) ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> totalrequests ', totalrequests)
-
-      this.showSpinner = false;
-      console.log('% »»» WebSocketJs WF - onData (ws-requests-served) ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> showSpinner ', this.showSpinner)
-    })
-  }
 
   getStorageBucket() {
     const firebase_conf = this.appConfigService.getConfig().firebase;
@@ -118,18 +149,18 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
   getCurrentProject() {
     this.auth.project_bs
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    .subscribe((project) => {
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((project) => {
 
-      console.log('WsRequestsServedComponent - project', project)
+        console.log('WsRequestsServedComponent - project', project)
 
-      if (project) {
-        this.projectId = project._id;
-        // this.projectName = project.name;
-      }
-    });
+        if (project) {
+          this.projectId = project._id;
+          // this.projectName = project.name;
+        }
+      });
   }
 
 
@@ -161,14 +192,16 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
   onCloseArchiveRequestModal() {
-    console.log('WsRequestsServedComponent onCloseArchiveRequestModal displayArchiveRequestModal', this.displayArchiveRequestModal)
+    console.log('% »»» WebSocketJs WF +++++ ws-requests--- served onCloseArchiveRequestModal ', this.displayArchiveRequestModal)
+    console.log('% »»» WebSocketJs WF +++++ ws-requests--- served onCloseArchiveRequestModal this.wsRequestsServed length', this.wsRequestsServed.length)
+
     this.displayArchiveRequestModal = 'none'
   }
 
-  trackByFn(index, request) {    
+  trackByFn(index, request) {
     // console.log('% »»» WebSocketJs WF WS-RL - trackByFn ', request );
-    if(!request) return null
+    if (!request) return null
     return index; // unique id corresponding to the item
- }
+  }
 
 }

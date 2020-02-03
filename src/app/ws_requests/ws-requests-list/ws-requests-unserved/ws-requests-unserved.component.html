@@ -9,7 +9,7 @@
   <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
   <!-- *ngIf="!showSpinner" -->
   <div  class="card-content table-responsive" style="padding-top: 0px;">
-    <table class="table table-hover">
+    <table class="table table-hover unserved_requests_table">
       <thead class="text">
         <tr>
           <th></th>
@@ -62,18 +62,11 @@
       <tbody>
 
         <!-- ------ ====== IF THERE ISN'T REQUEST (SERVED OR UNSERVED) ====== ------ -->
-
         <tr *ngIf="wsRequestsUnserved?.length === 0">
-
-
+        <!-- <tr *ngIf="displayNoRequestString"> -->
           <td colspan="7" style="text-align: center; padding-top: 16px;">
-
             <p style="font-size:1em; color:#737376; font-weight: 100">
-
-
-
               {{ 'NoRequests' | translate }}
-
             </p>
           </td>
         </tr>
