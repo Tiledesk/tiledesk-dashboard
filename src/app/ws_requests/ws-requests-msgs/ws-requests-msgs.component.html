@@ -457,10 +457,11 @@
 
               <div class="row" style="margin-top:5px">
                 <!-- border-top: 1px solid #e1eef4;" -->
-                <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4;">
-                  <p class="" style="">
+                <!-- border-bottom: 1px solid #e1eef4; -->
+                <div class="col-sm-12" style="">
+                  <p class="" style="margin-bottom: 1px;">
                     <i class="material-icons"
-                      style="vertical-align: middle; color: #394f5a;font-size:16px">calendar_today</i>
+                      style="vertical-align: middle; color: #394f5a;font-size:16px; margin-left: 3px;">calendar_today</i>
                     <span style="position: relative;top: 1px;">
                       <span
                         style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
@@ -479,6 +480,26 @@
                 </div>
               </div>
 
+              <div class="row" style="margin-top:5px">
+                <!-- border-top: 1px solid #e1eef4;" -->
+                <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4;">
+                  <p class="" style="">
+                    <i class="material-icons"
+                      style="vertical-align: middle; color: #394f5a;font-size:22px">outlined_flag</i>
+                    <span style="position: relative;top: 1px;">
+                      <span
+                        style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                        {{ "Language" | translate }}</span>
+
+                      <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                        {{ request?.language }}
+                      </span>
+                    </span>
+                  </p>
+
+                </div>
+              </div>
+
               <div class="row" style="margin-top:15px">
                 <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4; border-top: 1px solid #e1eef4;">
                   <p class="row-header" style="">
@@ -489,26 +510,29 @@
                   </p>
 
 
+
                   <div class="served_by">
 
                     <span *ngIf="agents_array?.length === 0" class="row-body">
 
                       <div class="ws_request_msgs___served_by"></div>
 
-                      <span> {{ "RequestMsgsPage.NoAgent" | translate }} </span>
+                      <span class="ws_request_msgs___served_by_no_agent" style="position: relative;top: 4px;">
+                        {{ "RequestMsgsPage.NoAgent" | translate }}
+                      </span>
 
                     </span>
                     <div *ngFor="let agent of agents_array" class="row-body">
 
                       <span (click)="goToMemberProfile( agent?._id )" style="cursor:pointer">
                         <img *ngIf="agent.isBot === false"
-                          style="vertical-align: middle; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee; margin-right: 8px;"
+                          style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
                           class="user-img"
                           src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
                           onerror="this.src='assets/img/no_image_user.png'" />
 
                         <img *ngIf="agent.isBot === true"
-                          style="vertical-align: middle; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee; margin-right: 8px;"
+                          style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
                           class="user-img"
                           src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id | slice:4 }}%2Fphoto.jpg?alt=media"
                           onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
@@ -516,6 +540,8 @@
                         <span [ngClass]="{'current_user_is_agent' : agent?._id === currentUserID}"
                           style="font-size:12px; font-weight: 400">
                           {{agent?.firstname}} {{agent?.lastname}}
+
+                          <span *ngIf="agent.isBot === true">(bot) </span>
                         </span>
                       </span>
 
@@ -627,7 +653,8 @@
                     <!-- <a *ngIf="user_email !== 'n.a.'" href="mailto:{{user_email}}">{{ user_email }}</a>
                      <a *ngIf="user_email === 'n.a.'" style="color:#7695a5;">{{ user_email }}</a> -->
 
-                    <i class="material-icons" style="vertical-align: middle; color: #394f5a;font-size:16px"> email
+                    <i class="material-icons"
+                      style="vertical-align: middle; color: #394f5a;font-size:16px; margin-left: 3px;"> email
                     </i>
                     <span style="position: relative;top: 1px;">
                       <span
@@ -665,13 +692,13 @@
                   </p>
 
                   <span class="row-body" style="display: block;">
-                    <i class="material-icons" style="vertical-align: middle; color: #394f5a;font-size:16px">
+                    <i class="material-icons"
+                      style="vertical-align: middle; color: #394f5a;font-size:16px; margin-left: 3px;">
                       account_balance </i>
                     <!-- <span style="color:#394f5a;"> {{ "DeptsAddEditPage.DeptName" | translate }}: </span> -->
 
                     <span style="position:relative; top:1px">
-                      <span
-                        style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                      <span class="ws_requets_msgs__attributes">
                         {{ "Department" | translate }}
                       </span>
 
@@ -710,7 +737,9 @@
 
                     <span style="color: #7695a5;display: block"> {{ rating }}</span>
 
-                    <span style="color:#394f5a;"> {{ "RequestMsgsPage.RatingMessage" | translate }}: </span>
+                    <span class="ws_requets_msgs__attributes"> 
+                      {{ "RequestMsgsPage.RatingMessage" | translate }}:
+                    </span>
 
                     {{ rating_message }}
                   </p>
@@ -752,7 +781,10 @@
 
                     <!-- ------====== CLIENT ======------ -->
                     <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
-                      Client:
+                      <span class="ws_requets_msgs__attributes">
+                        Client:
+                      </span>
+
                       <span *ngIf="!showAllClientString" class="attribute" style="white-space: nowrap">
                         {{ clientStringCutted }}
                         <span>
@@ -780,7 +812,9 @@
                     <!-- ------====== DEPARTMENT NAME ======------ -->
                     <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
                       <!-- <strong> -->
-                      {{ "Department" | translate }}:
+                      <span class="ws_requets_msgs__attributes">
+                        {{ "Department" | translate }}:
+                      </span>
                       <!-- </strong> -->
 
                       <span class="attribute" style="cursor: pointer" (click)="toggleShowAllClientString()">
@@ -791,7 +825,9 @@
                     <!-- ------====== DEPARTMENT ID ======------ -->
                     <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
                       <!-- <strong> -->
-                      {{ "DepartmentId" | translate }}:
+                      <span class="ws_requets_msgs__attributes">
+                        {{ "DepartmentId" | translate }}:
+                      </span>
                       <!-- </strong> -->
 
                       <span class="attribute">
@@ -802,7 +838,9 @@
                     <!-- ------====== PROJECT ID ======------ -->
                     <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
                       <!-- <strong> -->
-                      {{ "ProjectId" | translate }}:
+                      <span class="ws_requets_msgs__attributes">
+                        {{ "ProjectId" | translate }}:
+                      </span>
                       <!-- </strong> -->
 
                       <span class="attribute">
@@ -813,7 +851,9 @@
                     <!-- ------====== REQUESTER ID ======------ -->
                     <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
                       <!-- <strong> -->
-                      {{ "VisitorsPage.RequesterId" | translate }}
+                      <span class="ws_requets_msgs__attributes">
+                        {{ "VisitorsPage.RequesterId" | translate }}
+                      </span>
                       <!-- </strong> -->
 
                       <span class="attribute">
@@ -827,7 +867,9 @@
                     <!-- ------====== SOURCE PAGE  ======------ -->
                     <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
                       <!-- <strong> -->
-                      {{ "RequestMsgsPage.SourcePage" | translate }}:
+                      <span class="ws_requets_msgs__attributes">
+                        {{ "RequestMsgsPage.SourcePage" | translate }}:
+                      </span>
                       <!-- </strong> -->
 
                       <span *ngIf="!showAllSourcePageString" class="attribute" style="white-space: nowrap">
@@ -857,7 +899,9 @@
                     <!-- ------====== USER EMAIL ======------ -->
                     <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
                       <!-- <strong> -->
-                      {{ "UserEmail" | translate }}:
+                      <span class="ws_requets_msgs__attributes">
+                        {{ "UserEmail" | translate }}:
+                      </span>
                       <!-- </strong> -->
 
                       <span class="attribute">
@@ -873,7 +917,9 @@
                     <!-- ------====== USER FULLNAME ======------ -->
                     <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
                       <!-- <strong> -->
-                      {{ "UserFullName" | translate }}:
+                      <span class="ws_requets_msgs__attributes">
+                        {{ "UserFullName" | translate }}:
+                      </span>
                       <!-- </strong> -->
 
                       <span class="attribute">
@@ -889,7 +935,9 @@
                     <!-- ------====== SENDER AUTH INFO ======------ -->
                     <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
                       <!-- <strong> -->
-                      Sender Auth Info:
+                      <span class="ws_requets_msgs__attributes">
+                        Sender Auth Info:
+                      </span>
                       <!-- </strong> -->
 
                       <span *ngIf="!showAllsenderAuthInfoString" class="attribute" style="white-space: nowrap">
@@ -1135,7 +1183,7 @@
 
                         <td style="cursor:pointer" (click)="selectBot(bot?._id, bot?.name)">
                           <p style="font-size:14px; line-height:21px; font-weight: 500; margin-bottom: 0px;">
-                            {{  bot?.name }}
+                            {{  bot?.name }} (bot)
                           </p>
                         </td>
 
@@ -1167,7 +1215,7 @@
                               </span>
                             </p>
                             <span style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px">
-                              {{ bot?.name }}
+                              {{ bot?.name }} (bot)
                             </span>
                           </div>
                         </td>
@@ -1270,13 +1318,19 @@
                           <td style="cursor:pointer" (click)="selectDept(dept?.name, dept?._id)">
                             <span *ngIf="dept?.hasGroupName && !dept?.groupHasBeenTrashed">
 
+                              <span style="color: #7695a5; font-size: 12px; font-weight:400">
+                                {{ 'DepartmentsPage.Group' | translate }}
+                              </span>
                               {{ dept?.hasGroupName}}
                             </span>
-                            <span *ngIf="dept?.hasGroupName && dept?.groupHasBeenTrashed === true"> 
-                             
+                            <span *ngIf="dept?.hasGroupName && dept?.groupHasBeenTrashed === true">
+
                               <span style="vertical-align: middle;"> {{ dept?.hasGroupName }} </span>
-                              <i class="material-icons" style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i> 
-                              <span style="color: #ff5252; vertical-align: middle; font-size:12px;">{{ 'DepartmentsPage.TheGroupHasBeenTrashed' | translate }} </span> 
+                              <i class="material-icons"
+                                style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i>
+                              <span
+                                style="color: #ff5252; vertical-align: middle; font-size:12px;">{{ 'DepartmentsPage.TheGroupHasBeenTrashed' | translate }}
+                              </span>
                             </span>
 
                             <span *ngIf="!dept?.hasGroupName" style="font-size:13px">
@@ -1296,8 +1350,11 @@
                                 {{ 'DepartmentsPage.OnlyBot' | translate }}
                               </span>
                               <span *ngIf="dept.botHasBeenTrashed == true">
-                                <i class="material-icons" style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i> 
-                                <span style="color: #ff5252; vertical-align: middle; font-size:12px;">{{ 'BotsPage.TheBotHasBeenTrashed' | translate }} </span> 
+                                <i class="material-icons"
+                                  style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i>
+                                <span
+                                  style="color: #ff5252; vertical-align: middle; font-size:12px;">{{ 'BotsPage.TheBotHasBeenTrashed' | translate }}
+                                </span>
                               </span>
 
                             </span>
@@ -1309,7 +1366,7 @@
                             <div class="assign-request">
 
                               <p style="color: #00bcd4 ;margin-bottom:0px; font-size:12px; font-weight: 500;">
-                                {{ 'VisitorsPage.ReassignTo' | translate}}
+                                {{ 'ReassignToDept' | translate}}
                               </p>
 
                               <span style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px">

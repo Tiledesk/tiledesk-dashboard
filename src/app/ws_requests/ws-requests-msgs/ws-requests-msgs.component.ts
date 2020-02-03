@@ -1253,7 +1253,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     if (member_id.indexOf('bot_') !== -1) {
       console.log('IS A BOT !');
 
-      this.router.navigate(['project/' + this.id_project + '/botprofile/' + member_id]);
+      const id_bot = member_id.substring(4);
+      // this.router.navigate(['project/' + this.id_project + '/botprofile/' + member_id]);
+      this.router.navigate(['project/' + this.id_project + '/bots', id_bot]);
+
     } else {
       this.router.navigate(['project/' + this.id_project + '/member/' + member_id]);
     }
