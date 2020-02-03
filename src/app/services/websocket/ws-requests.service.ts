@@ -1,5 +1,5 @@
 
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { AsyncSubject } from 'rxjs/AsyncSubject';
@@ -10,7 +10,12 @@ import { WebSocketJs } from "./websocket-js";
 import { environment } from '../../../environments/environment';
 import { Request } from '../../models/request-model';
 import { Http, Headers, RequestOptions } from '@angular/http';
+import { Observable } from "rxjs/Observable";
+import 'rxjs/add/observable/of';
+// import { WsSharedComponent } from '../../ws_requests/ws-shared/ws-shared.component';
 // import * as Rx from "rxjs";
+import { Subscription } from 'rxjs/Subscription';
+
 
 
 export interface Message {
@@ -24,18 +29,20 @@ export interface Message {
 
 @Injectable()
 
-export class WsRequestsService {
+export class WsRequestsService implements OnDestroy {
 
   http: Http;
   public messages: Subject<Message>;
 
   requesTtotal: number;
   public wsRequestsList$: BehaviorSubject<Request[]> = new BehaviorSubject<Request[]>([]);
-
+  public ws__RequestsList$: any;
 
   public wsRequest$ = new Subject()
-  public wsRequestsListLength$ = new Subject<number>()
-  // public wsRequestsListLength$: ReplaySubject<number> = new ReplaySubject(1);
+  public ws_All_RequestsLength$ = new Subject<number>()
+  // public ws_Served_RequestsLength$ = new Subject<number>()
+  // public ws_Unserved_RequestsLength$ = new Subject<number>()
+  // public ws_All_RequestsLength$: ReplaySubject<number> = new ReplaySubject(1);
 
 
   // public wsRequestsList$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
@@ -50,10 +57,10 @@ export class WsRequestsService {
   // fwcUser: BehaviorSubject<FwcUser> = new BehaviorSubject<FwcUser>(null);
   // fwcUser$ = this.fwcUser.asObservable();
 
-  // public wsRequestsListLength$: BehaviorSubject<number> = new BehaviorSubject(0)
+  // public ws_All_RequestsLength$: BehaviorSubject<number> = new BehaviorSubject(0)
 
-  // _wsRequestsListLength$ = this.wsRequestsListLength$.asObservable()
-  // public wsRequestsListLength$$: ReplaySubject<number> = new ReplaySubject(null);
+  // _wsRequestsListLength$ = this.ws_All_RequestsLength$.asObservable()
+  // public ws_All_RequestsLength$$: ReplaySubject<number> = new ReplaySubject(null);
 
   wsRequestsList: Request[]
   wsAllRequestsList: any
@@ -69,6 +76,8 @@ export class WsRequestsService {
   BASE_URL = environment.mongoDbConfig.BASE_URL;
   TOKEN: string;
   timeout: any;
+  subscription: Subscription;
+
   /**
    * Constructor
    * 
@@ -96,6 +105,14 @@ export class WsRequestsService {
     this.getLoggedUser();
   }
 
+  ngOnDestroy() {
+    console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ ngOnDestroy')
+    this.subscription.unsubscribe();
+    // this.unsubscribe$.next();
+    // this.unsubscribe$.complete();
+}
+
+
   getLoggedUser() {
     this.auth.user_bs.subscribe((user) => {
       if (user) {
@@ -114,20 +131,25 @@ export class WsRequestsService {
     this.wsRequestsList = [];
     this.wsAllRequestsList = [];
     this.wsRequestsList$.next(this.wsRequestsList);
+    console.log('% »»» WebSocketJs WF +++++ ws-requests--- service resetWsRequestList')
   }
 
   getCurrentProjectAndSubscribeTo_WsRequests() {
     var self = this;
     self.wsRequestsList = [];
     self.wsAllRequestsList = [];
+    
+    // this.subscription  =  
     this.auth.project_bs.subscribe((project) => {
-
+      console.log('% »»» WebSocketJs WF +++++ ws-requests--- service  PRJCT VALUE = ', this.auth.project_bs.value)
+      
       // console.log('%% WsRequestsService PROJECT ', project)
       // console.log('% »»» WebSocketJs WF ****** WsRequestsService PROJECT._ID 1', project)
       /**
        * Unsubscribe to websocket requests with the old project id  
        */
       if (this.project_id) {
+        console.log('% »»» WebSocketJs WF +++++ ws-requests--- service getWsRequests */* ref */* this.project_id ', this.project_id)
         // console.log('%% WsRequestsService THIS.PROJECT_ID ', this.project_id)
         //this.unsubsToWS_Requests(this.project_id);
 
@@ -138,9 +160,11 @@ export class WsRequestsService {
 
       if (project) {
         // console.log('% »»» WebSocketJs WF ****** WsRequestsService PROJECT._ID 2', project._id)
-
+        console.log('% »»» WebSocketJs WF +++++ ws-requests--- service getWsRequests */* ref */* project._id', project._id)
+        console.log('% »»» WebSocketJs WF +++++ ws-requests--- service getWsRequests */* ref */* this.project_id ', this.project_id)
 
         this.project_id = project._id;
+
 
         // this.subsToWS_Requests(this.project_id)
         // this.webSocketJs.subscribe('/' + this.project_id + '/requests');
@@ -152,32 +176,42 @@ export class WsRequestsService {
 
           function (data, notification) {
 
+            // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- HERE ON-CREATE !");
 
+            // if (self.wsRequestsList.length > 0) {
 
-            console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- HERE ON-CREATE !");
+            // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA ", data);
+            // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - WS-REQUESTS ARRAY ", self.wsRequestsList);
 
-            if (self.wsRequestsList.length > 0) {
+            // const hasFound = self.wsRequestsList.filter((obj: any) => {
+            //   if (data && obj) {
+            //     return obj._id === data._id;
+            //   }
+            // });
 
-              // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA ", data);
-              // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - WS-REQUESTS ARRAY ", self.wsRequestsList);
+            // if (hasFound.length === 0) {
+            //   self.addWsRequests(data)
 
-              const hasFound = self.wsRequestsList.filter((obj: any) => {
-                if (data && obj) {
-                  return obj._id === data._id;
-                }
-              });
+            //   // console.log("% »»» WebSocketJs WF - WsRequestsService Not Found - <<<<<<<<<<<<<<< add request >>>>>>>>>>>>>>>", data);
+            // } else {
+            //   // console.log("% »»» WebSocketJs WF - WsRequestsService hasFound - not added", hasFound);
+            // }
 
-              if (hasFound.length === 0) {
-                // self.addWsRequests(data);
-                self.addWsRequests(data)
-                // console.log("% »»» WebSocketJs WF - WsRequestsService Not Found - <<<<<<<<<<<<<<< add request >>>>>>>>>>>>>>>", data);
-              } else {
-                // console.log("% »»» WebSocketJs WF - WsRequestsService hasFound - not added", hasFound);
-              }
+            // https://stackoverflow.com/questions/36719477/array-push-and-unique-items
+            const index = self.wsRequestsList.findIndex((e) => e.id === data.id);
+
+            if (index === -1) {
+              self.addWsRequests(data)
+
+              // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- CREATE the request not exist - addWsRequests!");
+            } else {
+              // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- CREATE the request exist - NOT addWsRequests!");
             }
+
+            // }
           }, function (data, notification) {
 
-            console.log("% »»» WebSocketJs WF - WsRequestsService REQUESTS UPDATE", data);
+            // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-UPDATE", data);
             // this.wsRequestsList.push(data);
 
             // self.addOrUpdateWsRequestsList(data);
@@ -185,7 +219,7 @@ export class WsRequestsService {
 
 
           }, function (data, notification) {
-            console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- HERE ON-DATA !");
+            // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- HERE ON-DATA !");
             // console.log("% »»» WebSocketJs WF - WsRequestsService ON-DATA REQUESTS *** notification *** ", notification);
 
             // && data.length !== undefined
@@ -193,7 +227,7 @@ export class WsRequestsService {
             // setTimeout(() => {
             //   // behaviorSubject.next('Angular 8');
             //   // replaySubject.next('Angular 8');
-            //   self.wsRequestsListLength$$.next(data.length);
+            //   self.ws_All_RequestsLength$$.next(data.length);
             // }, 1000);
 
             // && data.length > 0
@@ -201,23 +235,25 @@ export class WsRequestsService {
             if (data) {
 
 
-              console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-DATA - WS-REQUESTS ARRAY ", self.wsRequestsList);
+              // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-DATA - WS-REQUESTS ARRAY ", self.wsRequestsList);
 
-              if (self.wsRequestsList && self.wsRequestsList.length === 0 && Array.isArray(data)) {
+              // if (self.wsRequestsList && self.wsRequestsList.length === 0 && Array.isArray(data)) {
 
-                console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-DATA - DATA LENGHT ", data.length);
-                self.wsRequestsList = data;
-                self.wsRequestsList$.next(self.wsRequestsList);
-                console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-DATA ----- NEXT ", data);
+              //   console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-DATA - DATA LENGHT ", data.length);
+              //   self.wsRequestsList = data;
+              //   self.wsRequestsList$.next(self.wsRequestsList);
+              //   console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-DATA ----- NEXT ", data);
 
-                // USE CASE : INIZIALMENTE DATA è VUOTO (NN CI SONO RICHIESTE) E POI ARRIVA UNA RICHIESTA - ARRIVANDO SINGOLA ARRIVA COME UN JSON
-              } else if (self.wsRequestsList && self.wsRequestsList.length === 0 && !Array.isArray(data)) {
+              //   /**
+              //    * USE CASE : INIZIALMENTE DATA è VUOTO (NN CI SONO RICHIESTE) E POI ARRIVA UNA RICHIESTA - ARRIVANDO SINGOLA ARRIVA COME UN JSON *
+              //    */
+              // } else if (self.wsRequestsList && self.wsRequestsList.length === 0 && !Array.isArray(data)) {
 
 
-                self.wsRequestsList$.next([data]);
-                self.wsRequestsList.push(data);
+              //   self.wsRequestsList$.next([data]);
+              //   self.wsRequestsList.push(data);
 
-              }
+              // }
 
               // console.log("% »»» WebSocketJs WF - onData (ws-requests.serv) ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ data is ARRAY", Array.isArray(data));
               /**
@@ -235,7 +271,26 @@ export class WsRequestsService {
                 Promise.all(requests).then(() => {
 
                   console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> data.length ', data.length)
-                  self.wsRequestsListLength$.next(data.length);
+                  console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> data ', data)
+
+                  var served = data.filter(r => {
+                    if (r['status'] !== 100) {
+                      return true
+                    }
+                  })
+
+                  var unserved = data.filter(r => {
+                    if (r['status'] === 100) {
+                      return true
+                    }
+                  })
+                  console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> served length ', served.length)
+                  console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> unserved length ', unserved.length)
+
+
+                  self.ws_All_RequestsLength$.next(data.length);
+                  // self.ws_Served_RequestsLength$.next(served.length);
+                  // self.ws_Unserved_RequestsLength$.next(unserved.length);
                 });
 
               }
@@ -274,42 +329,17 @@ export class WsRequestsService {
     });
   }
 
-  asyncFunction(item, cb) {
+  asyncFunction(request, cb) {
     setTimeout(() => {
-      // console.log('≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done with', item);
+
       cb();
     }, 100);
   }
-  // _getRequestsTotalCount(requestsLenght) {
-  //   if (requestsLenght != null) {
-  //     return Observable.of(requestsLenght);
-  //   }
-  // }
 
-  // public getTotalRequestLength(): Promise<number> {
-  //   return new Promise<number>((resolve, reject) => {
 
-  //     resolve(this.requesTtotal);
-  //   });
-  // }
 
-  hasmeInAgents(agents) {
-    let found = false
-    for (let j = 0; j < agents.length; j++) {
-      console.log("% »»» WebSocketJs - WsRequestsService AGENT ", agents[j]);
-      console.log("% »»» WebSocketJs - WsRequestsService currentUserID 2 ", this.currentUserID);
-      console.log("% »»» WebSocketJs - WsRequestsService id_user ", agents[j].id_user);
 
-      if (this.currentUserID === agents[j].id_user) {
-        found = true
-        console.log("% »»» WebSocketJs - WsRequestsService HERE-YES ", found);
 
-      }
-
-      return found
-    }
-
-  }
 
   /**
    * REQUESTS publish @ the CREATE
@@ -320,22 +350,15 @@ export class WsRequestsService {
     // console.log("% WsRequestsService addWsRequest wsRequestsList.length", this.wsRequestsList.length);
     // console.log("% »»» WebSocketJs WF - WsRequestsService addWsRequest request ", request);
 
-
-
-    // SOLO RICHIESTE IN CUI IL CURRENT USER E' NEL NESTED ARRAY AGENTS DELLA RICHIESTA
-    // && this.hasmeInAgents(request.agents) === true
     if (request !== null && request !== undefined) {
       this.wsRequestsList.push(request);
     }
-
-
 
     if (this.wsRequestsList) {
 
       // -----------------------------------------------------------------------------------------------------
       // publish all REQUESTS 
       // -----------------------------------------------------------------------------------------------------
-
       // this.wsRequestsList$.next(this.wsRequestsList);
       if (this.timeout) {
         clearTimeout(this.timeout);
@@ -345,75 +368,12 @@ export class WsRequestsService {
 
         this.wsRequestsList$.next(this.wsRequestsList);
         console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ON-CREATE ----- NEXT wsRequestsList ', this.wsRequestsList)
-        this.wsRequestsListLength$.next(this.wsRequestsList.length);
-        console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ON-CREATE ----- NEXT wsRequestsList LENGTH', this.wsRequestsList.length)
+
+        // this.ws_All_RequestsLength$.next(this.wsRequestsList.length);
+        // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ON-CREATE ----- NEXT wsRequestsList LENGTH', this.wsRequestsList.length)
       }, 1000);
-
-
-
-      // imInAgentsRequests = this.wsRequestsList.filter(this.hasmeInAgents(request.agents));
-      // let myRequests = [];
-      // this.wsRequestsList.forEach(request => {
-      //   console.log("% »»» WebSocketJs - WsRequestsService request ", request);
-
-      //   if (request !== null && request !== undefined && this.hasmeInAgents(request.agents) === true) {
-      //     myRequests.push(request);
-      //   }
-      // });
-
-      // this.wsMyRequestsList$.next(myRequests); 
-      // console.log("% »»» WebSocketJs - WsRequestsService only MY Requests ", myRequests);
-      console.log("% »»» WebSocketJs - WsRequestsService ALL Requests ", this.wsRequestsList.length);
-
-
-      // request.agents.forEach(agent => {
-      //   console.log("% »»» WebSocketJs - WsRequestsService AGENTS ", agent);
-      //   // if (current_user_id === agent.id_user) {
-      //   //   // console.log('AGENT - ID USER MATCH', agent.id_user)
-
-      //   //   found = true
-
-      //   if (agent.id_user === this.currentUserID) {
-      //     imInAgentsRequests.push(request)
-
-      //   }
-
-      // })
-
-      // const iAreAgent = this.hasmeInAgents(request.agents);
-      // console.log("% »»» WebSocketJs - WsRequestsService AGENT iAreAgent ", iAreAgent);
-
-
-
-      // const requests_agents = request.agents
-      // for (let j = 0; j < requests_agents.length; j++) {
-      //   console.log("% »»» WebSocketJs - WsRequestsService AGENT ", requests_agents[j]);
-      //   console.log("% »»» WebSocketJs - WsRequestsService currentUserID 2 ", this.currentUserID);
-      //   console.log("% »»» WebSocketJs - WsRequestsService id_user ", requests_agents[j].id_user);
-      //   if (this.currentUserID === requests_agents[j].id_user) {
-      //     console.log("% »»» WebSocketJs - WsRequestsService HERE-YES ", requests_agents[j].id_user);
-      //     imInAgentsRequests.push(request)
-      //   }
-      // }
-
-      // });
-
-
-      // imInAgentsRequests = this.wsRequestsList.filter((obj: any) => {
-      //   console.log("% »»» WebSocketJs - WsRequestsService obj ", obj);
-
-      //   obj.agents.forEach(agent => {
-
-      //     return agent.id_user === this.currentUserID;
-      //   });
-      // });
-
-      // console.log("% »»» WebSocketJs - WsRequestsService request.hasAgent ", request.hasAgent(this.currentUserID));
-
-      // console.log("% »»» WebSocketJs - WsRequestsService REQUEST LIST ", imInAgentsRequests);
     }
   }
-
 
 
 
@@ -428,14 +388,14 @@ export class WsRequestsService {
     for (let i = 0; i < this.wsRequestsList.length; i++) {
 
       if (request._id === this.wsRequestsList[i]._id) {
-        console.log("% WsRequestsService getWsRequests UPATE AN EXISTING REQUESTS - request._id : ", request._id, ' wsRequestsList[i]._id: ', this.wsRequestsList[i]._id);
+        // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ON-UPATE AN EXISTING REQUESTS - request._id : ", request._id, " wsRequestsList[i]._id: ", this.wsRequestsList[i]._id);
 
 
         if (request.status !== 1000) {
 
           /// UPATE AN EXISTING REQUESTS
           this.wsRequestsList[i] = request
-          console.log("% WsRequestsService getWsRequests UPATE request (status !== 1000): ", request);
+          console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ON-UPATE request (status !== 1000): ", request);
 
           // if (this.wsRequestsList) {
           //   // this.wsRequestsList$.next(request);
@@ -444,7 +404,7 @@ export class WsRequestsService {
 
         } else if (request.status === 1000) {
 
-          console.log("% WsRequestsService getWsRequests UPATE request (status === 1000): ", request);
+          console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ON-UPATE request (status === 1000): ", request);
           // delete this.wsRequestsList[i]
           this.wsRequestsList.splice(i, 1);
 
@@ -452,19 +412,7 @@ export class WsRequestsService {
 
         if (this.wsRequestsList) {
           this.wsRequestsList$.next(this.wsRequestsList);
-          console.log("% WsRequestsService getWsRequests UPATED REQUESTS LIST: ", this.wsRequestsList);
-
-
-          // let myRequests = [];
-          // this.wsRequestsList.forEach(request => {
-          //   console.log("% »»» WebSocketJs - WsRequestsService request ", request);
-          //            if (request !== null && request !== undefined && this.hasmeInAgents(request.agents) === true) {
-          //     myRequests.push(request);
-          //   }
-          // });
-          // this.wsMyRequestsList$.next(myRequests); 
-
-
+          console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ON-UPATE REQUESTS LIST: ", this.wsRequestsList);
         }
       }
     }
@@ -649,7 +597,7 @@ export class WsRequestsService {
     console.log('LEAVE THE GROUP OPTIONS  ', options)
 
     //   /:project_id/requests/:id/participants
-    const url = this.BASE_URL + this.project_id + '/requests/' + requestid + '/participants/'+ userid
+    const url = this.BASE_URL + this.project_id + '/requests/' + requestid + '/participants/' + userid
     console.log('LEAVE THE GROUP URL ', url)
 
     return this.http
@@ -685,7 +633,7 @@ export class WsRequestsService {
   // -----------------------------------------------------------------------------------------
   // Add participant
   // -----------------------------------------------------------------------------------------
-   public addParticipant(requestid: string, userid: string) {
+  public addParticipant(requestid: string, userid: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -696,7 +644,7 @@ export class WsRequestsService {
     const body = { 'member': userid };
 
     console.log('JOIN TO GROUP PUT REQUEST BODY ', body);
-   
+
     const url = this.BASE_URL + this.project_id + '/requests/' + requestid + '/participants/'
     console.log('JOIN TO GROUP PUT JOIN A GROUP URL ', url)
 
