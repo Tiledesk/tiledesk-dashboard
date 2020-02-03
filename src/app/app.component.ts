@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, Self } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, Self , OnDestroy} from '@angular/core';
 import { Location, LocationStrategy, PathLocationStrategy, PopStateEvent } from '@angular/common';
 import 'rxjs/add/operator/filter';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -25,14 +25,16 @@ import { WsMsgsService } from './services/websocket/ws-msgs.service';
 import { WebSocketJs } from './services/websocket/websocket-js';
 import { Title } from '@angular/platform-browser';
 import brand from 'assets/brand/brand.json';
+
 // import { webSocket } from "rxjs/webSocket";
+export let browserRefresh = false;
 
 @Component({
     selector: 'appdashboard-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, AfterViewInit {
+export class AppComponent implements OnInit, AfterViewInit , OnDestroy{
     private _router: Subscription;
     private lastPoppedUrl: string;
     private yScrollStack: number[] = [];
@@ -49,6 +51,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     isPageWithNav: boolean;
  
     wsbasepath = environment.websocket.wsUrl;
+    subscription: Subscription;
     // background_bottom_section = brand.sidebar.background_bottom_section
     constructor(
         public location: Location,
@@ -105,8 +108,19 @@ export class AppComponent implements OnInit, AfterViewInit {
             }
         }
         // this.unservedRequestCount = 0
+
+
+        this.subscription = router.events.subscribe((event) => {
+            if (event instanceof NavigationStart) {
+              browserRefresh = !router.navigated;
+            }
+        });
     }
 
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+      }
 
     switchLanguage(language: string) {
         this.translate.use(language);
