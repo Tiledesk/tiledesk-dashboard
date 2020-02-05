@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener, AfterViewInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { RequestsService } from '../services/requests.service';
@@ -17,7 +17,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './contact-details.component.html',
   styleUrls: ['./contact-details.component.scss']
 })
-export class ContactDetailsComponent implements OnInit {
+export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
   public colours = [
     '#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e', '#16a085',
@@ -56,6 +56,9 @@ export class ContactDetailsComponent implements OnInit {
 
   lead_id: string;
 
+  attributesArray: Array<any>
+  rightSidebarWidth: number;
+
   constructor(
     public location: Location,
     private route: ActivatedRoute,
@@ -69,6 +72,21 @@ export class ContactDetailsComponent implements OnInit {
     private translate: TranslateService
   ) { }
 
+  // -----------------------------------------------------------------------------------------------------
+  // @ HostListener window:resize
+  // -----------------------------------------------------------------------------------------------------
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+
+    // ------------------------------
+    // Right sidebar width on resize
+    // ------------------------------
+    const rightSidebar = <HTMLElement>document.querySelector(`.right-card`);
+    this.rightSidebarWidth = rightSidebar.offsetWidth
+    // console.log(`:-D CONTACT DETAILS - ATTRIBUTES onResize attributeValueElem offsetWidth:`, this.rightSidebarWidth);
+  }
+
   ngOnInit() {
     this.translateDeleteLeadSuccessMsg();
     this.translateDeleteLeadErrorMsg();
@@ -78,8 +96,21 @@ export class ContactDetailsComponent implements OnInit {
     this.getCurrentUser();
   }
 
-   // TRANSLATION
-   translateDeleteLeadSuccessMsg() {
+  ngAfterViewInit() {
+    // -----------------------------------
+    // Right sidebar width after view init
+    // -----------------------------------
+    const rightSidebar = <HTMLElement>document.querySelector(`.right-card`);
+
+    this.rightSidebarWidth = rightSidebar.offsetWidth
+
+    console.log(`:-D CONTACT DETAILS - ATTRIBUTES AfterViewInit attributeValueElem offsetWidth:`, this.rightSidebarWidth);
+
+  }
+
+
+  // TRANSLATION
+  translateDeleteLeadSuccessMsg() {
     this.translate.get('DeleteLeadSuccessNoticationMsg')
       .subscribe((text: string) => {
 
@@ -263,35 +294,86 @@ export class ContactDetailsComponent implements OnInit {
 
           if (this.contact_details.attributes) {
 
-            if (this.contact_details.attributes.client) {
-              console.log('!!!!! CONTACTS DETAILS - ATTRIBUTES > CLIENT: ', this.contact_details.attributes.client);
-              const stripHere = 30;
-              this.clientStringCutted = this.contact_details.attributes.client.substring(0, stripHere) + '...';
-              console.log('!!!!! CONTACTS DETAILS - ATTRIBUTES > CLIENT cutted: ', this.clientStringCutted);
+
+            // --------------------------------------------------------------------------------------------------------------
+            // new: display all attributes dinamically
+            // --------------------------------------------------------------------------------------------------------------
+            this.attributesArray = []
+            for (let [key, value] of Object.entries(this.contact_details.attributes)) {
+
+              // console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES key : ${key} - value ${value}`);
+
+              let _value: any;
+              if (typeof value === 'object' && value !== null) {
+
+                console.log(`:-D CONTACTS DETAILS - ATTRIBUTES value is an object :`, JSON.stringify(value));
+                _value = JSON.stringify(value)
+              } else {
+                _value = value
+              }
+
+              // https://stackoverflow.com/questions/50463738/how-to-find-width-of-each-character-in-pixels-using-javascript
+              let letterLength = {};
+              let letters = ["", " ", " ?", "= ", " -", " :", " _", " ,", " ", " ", " ", "(", ")", "}", "{", "\"", " ", "/", ".", "a", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
+              for (let letter of letters) {
+                let span = document.createElement('span');
+                span.append(document.createTextNode(letter));
+                span.style.display = "inline-block";
+                document.body.append(span);
+                letterLength[letter] = span.offsetWidth;
+                span.remove();
+              }
+              let totalLength = 0;
+
+              // for (let i = 0; i < _value.length; i++) {
+              //   console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById _value[i]', _value[i] + ": " + letterLength[_value[i]])
+              // }
+
+              for (let i = 0; i < _value.length; i++) {
+                if (letterLength[_value[i]] !== undefined) {
+                  totalLength += letterLength[_value[i]];
+                } else {
+                  // if the letter not is in dictionary letters letterLength[_value[i]] is undefined so add the witdh of the 'S' letter (8px)
+                  totalLength += letterLength['S'];
+                }
+              }
+              
+              console.log(':-D CONTACTS DETAILS - ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
+
+              let entries = { 'attributeName': key, 'attributeValue': _value, 'attributeValueL': totalLength };
+
+              this.attributesArray.push(entries)
             }
+            console.log(':-D CONTACTS DETAILS - getWsRequestById attributesArray: ', this.attributesArray);
+            // --------------------------------------------------------------------------------------------------------------
 
-            if (this.contact_details.attributes.senderAuthInfo) {
-              console.log('!!!!! CONTACTS DETAILS - ATTRIB. > SENDER AUTH INFO: ', this.contact_details.attributes.senderAuthInfo);
-              const _senderAuthInfoString = JSON.stringify(this.contact_details.attributes.senderAuthInfo)
 
-              // add a space after each comma
-              this.senderAuthInfoString = _senderAuthInfoString.split(',').join(', ')
-              console.log('!!!!! CONTACTS DETAILS - ATTRIB. > SENDER AUTH INFO (STRING): ', this.senderAuthInfoString);
+            // if (this.contact_details.attributes.client) {
+            //   console.log('!!!!! CONTACTS DETAILS - ATTRIBUTES > CLIENT: ', this.contact_details.attributes.client);
+            //   const stripHere = 30;
+            //   this.clientStringCutted = this.contact_details.attributes.client.substring(0, stripHere) + '...';
+            //   console.log('!!!!! CONTACTS DETAILS - ATTRIBUTES > CLIENT cutted: ', this.clientStringCutted);
+            // }
 
-              const stripHere = 20;
-              this.senderAuthInfoStringCutted = this.senderAuthInfoString.substring(0, stripHere) + '...';
-              // const stripHere = 30;
-              // this.clientStringCutted = this.contact_details.attributes.client.substring(0, stripHere)  + '...';
-              // console.log('!!!!! CONTACTS DETAILS - ATTRIBUTES > CLIENT cutted: ', this.clientStringCutted);
-            }
+            // if (this.contact_details.attributes.senderAuthInfo) {
+            //   console.log('!!!!! CONTACTS DETAILS - ATTRIB. > SENDER AUTH INFO: ', this.contact_details.attributes.senderAuthInfo);
+            //   const _senderAuthInfoString = JSON.stringify(this.contact_details.attributes.senderAuthInfo)
 
-            if (this.contact_details.attributes.sourcePage) {
-              this.sourcePage = this.contact_details.attributes.sourcePage;
+            //   // add a space after each comma
+            //   this.senderAuthInfoString = _senderAuthInfoString.split(',').join(', ')
+            //   console.log('!!!!! CONTACTS DETAILS - ATTRIB. > SENDER AUTH INFO (STRING): ', this.senderAuthInfoString);
 
-              const stripHere = 20;
-              console.log('!!!!! CONTACTS DETAILS - ATTRIB. > SOURCR PAGE: ', this.sourcePage);
-              this.sourcePageCutted = this.contact_details.attributes.sourcePage.substring(0, stripHere) + '...';
-            }
+            //   const stripHere = 20;
+            //   this.senderAuthInfoStringCutted = this.senderAuthInfoString.substring(0, stripHere) + '...';
+            // }
+
+            // if (this.contact_details.attributes.sourcePage) {
+            //   this.sourcePage = this.contact_details.attributes.sourcePage;
+            //   const stripHere = 20;
+            //   console.log('!!!!! CONTACTS DETAILS - ATTRIB. > SOURCR PAGE: ', this.sourcePage);
+            //   this.sourcePageCutted = this.contact_details.attributes.sourcePage.substring(0, stripHere) + '...';
+            // }
           }
         }
 
@@ -305,6 +387,67 @@ export class ContactDetailsComponent implements OnInit {
         console.log('!!!!! CONTACTS DETAILS - GET LEAD BY REQUESTER ID * COMPLETE *');
       });
 
+  }
+
+
+  toggleShowAllString(elementAttributeValueId: any, elementArrowIconId: any, index) {
+  
+    console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES - element Attribute Value Id:`, elementAttributeValueId);
+    console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES - element Arrow Icon id:`, elementArrowIconId);
+
+    // -------------------------------------------------------------
+    // get the element that contains the attribute's value
+    // -------------------------------------------------------------
+    const attributeValueElem = <HTMLElement>document.querySelector(`#${elementAttributeValueId}`);
+    console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES attributeValueElem :`, attributeValueElem);
+
+    // -------------------------------------------------------------
+    // get the element arrow icon 
+    // -------------------------------------------------------------
+    const arrowIconElem = <HTMLElement>document.querySelector(`#${elementArrowIconId}`);
+    console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES arrowIconElem :`, arrowIconElem);
+
+    // -------------------------------------------------------------
+    // get the value of aria-expanded
+    // -------------------------------------------------------------
+    let isAriaExpanded = attributeValueElem.getAttribute('aria-expanded')
+    console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES - element »»»»»»»»»»» isAriaExpanded:`, isAriaExpanded);
+
+
+    if (isAriaExpanded === 'false') {
+      // -----------------------------------------------------------------------------------
+      // Replace class to the div that contains the attribute's value
+      // -----------------------------------------------------------------------------------
+      attributeValueElem.className = attributeValueElem.className.replace(/\battribute_cutted_text\b/g, "attribute_full_text")
+
+      // -----------------------------------------------------------------------------------
+      // Add class to the arrow icon
+      // -----------------------------------------------------------------------------------
+      arrowIconElem.classList.add("up");
+      
+
+      // -----------------------------------------------------------------------------------
+      // Set aria-expanded attribute to true
+      // -----------------------------------------------------------------------------------
+      attributeValueElem.setAttribute('aria-expanded', 'true');
+    }
+
+    if (isAriaExpanded === 'true') {
+      // -----------------------------------------------------------------------------------
+      // Replace class to the div that contains the attribute's value 
+      // -----------------------------------------------------------------------------------
+      attributeValueElem.className = attributeValueElem.className.replace(/\battribute_full_text\b/g, "attribute_cutted_text")
+
+      // -----------------------------------------------------------------------------------
+      // Remove the class 'up' to the arrow icon (note: Remove Class Cross-browser solution)
+      // ------------------------------------------------------------------------------------
+      arrowIconElem.className = arrowIconElem.className.replace(/\bup\b/g, "");
+
+      // -----------------------------------------------------------------------------------
+      // Set aria-expanded attribute to false
+      // -----------------------------------------------------------------------------------
+      attributeValueElem.setAttribute('aria-expanded', 'false');
+    }
   }
 
   toggleShowAllClientString() {
