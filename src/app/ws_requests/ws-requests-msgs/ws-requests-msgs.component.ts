@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, HostListener, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, HostListener, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
@@ -30,8 +30,8 @@ import { Observable } from 'rxjs';
   templateUrl: './ws-requests-msgs.component.html',
   styleUrls: ['./ws-requests-msgs.component.scss']
 })
-export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit, OnDestroy {
-
+export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit, OnDestroy, AfterViewInit {
+  objectKeys = Object.keys;
   @ViewChild('scrollMe')
   private myScrollContainer: ElementRef;
 
@@ -100,6 +100,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   useremail_selected: string;
   REQUESTER_IS_VERIFIED = false;
   isMobile: boolean;
+  action: any // used in template
   actionInModal: string;
   REQUESTER_IS_ONLINE = false;
 
@@ -130,6 +131,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   bot_participant_id: string;
   selected_bot_id: string;
   private unsubscribe$: Subject<any> = new Subject<any>();
+
+  timeout: any;
+
+  attributesArray: Array<any>
+  rightSidebarWidth: number;
+
   /**
    * Constructor
    * 
@@ -163,6 +170,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     private faqKbService: FaqKbService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService)
+
+    // force route reload whenever params change;
+    //  this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+
+
+    this.route.params.subscribe((params) => {
+      console.log('%%% Ws-REQUESTS-Msgs - route.params.subscribe  ', params);
+      
+
+    });
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -191,6 +208,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.train_bot_sidebar_height = elemMainContent.clientHeight + 'px'
       // console.log('%%% Ws-REQUESTS-Msgs - *** MODAL HEIGHT ***', this.users_list_modal_height);
     }
+
+    // ------------------------------
+    // Right sidebar width on resize
+    // ------------------------------
+    const rightSidebar = <HTMLElement>document.querySelector(`.right-card`);
+    this.rightSidebarWidth = rightSidebar.offsetWidth
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -242,21 +265,23 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
+
+
   // -----------------------------------------------------------------------------------------------------
   // @ Common methods
   // -----------------------------------------------------------------------------------------------------
 
-  listenToGotAllMsgAndDismissSpinner() {
-    this.wsMsgsService.wsMsgsGotAllData$.subscribe((hasAllData: boolean) => {
-      console.log('% »»» WebSocketJs WF - WsRequestsMsgsComponent got all msgs ', hasAllData)
-      if (hasAllData === true) {
-        setTimeout(() => {
-          this.showSpinner = false;
-          console.log('% »»» WebSocketJs WF - WsRequestsMsgsComponent got all msgs showSpinner', this.showSpinner)
-        }, 1000);
-      }
-    })
-  }
+  // listenToGotAllMsgAndDismissSpinner() {
+  //   this.wsMsgsService.wsMsgsGotAllData$.subscribe((hasAllData: boolean) => {
+  //     console.log('% »»» WebSocketJs WF - WsRequestsMsgsComponent got all msgs ', hasAllData)
+  //     if (hasAllData === true) {
+  //       setTimeout(() => {
+  //         this.showSpinner = false;
+  //         console.log('% »»» WebSocketJs WF - WsRequestsMsgsComponent got all msgs showSpinner', this.showSpinner)
+  //       }, 1000);
+  //     }
+  //   })
+  // }
 
   /**
    * Get the request id from url params and then with this
@@ -381,6 +406,91 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     console.log('SHOW ALL TEXT OF THE ATTRIBUTES > SOURCR PAGE ', this.showAllSourcePageString);
   }
 
+
+  checkOverflow(element) {
+    console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES calling checkOverflow on the value : ${element}`);
+    if (element.offsetHeight < element.scrollHeight ||
+      element.offsetWidth < element.scrollWidth) {
+      console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES checkOverflow offsetHeight : ${element.offsetHeight} - scrollHeight ${element.scrollHeight}`);
+      console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES checkOverflow offsetWidth : ${element.offsetWidth} - scrollWidth ${element.scrollWidth}`);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  ngAfterViewInit() {
+    // -----------------------------------
+    // Right sidebar width after view init
+    // -----------------------------------
+    const rightSidebar = <HTMLElement>document.querySelector(`.right-card`);
+
+    this.rightSidebarWidth = rightSidebar.offsetWidth
+
+    console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES attributeValueElem offsetWidth:`, this.rightSidebarWidth);
+
+  }
+
+  toggleShowAllString(elementAttributeValueId: any, elementArrowIconId: any, index) {
+
+    console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES - element Attribute Value Id:`, elementAttributeValueId);
+    console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES - element Arrow Icon id:`, elementArrowIconId);
+
+    // -------------------------------------------------------------
+    // get the element that contains the attribute's value
+    // -------------------------------------------------------------
+    const attributeValueElem = <HTMLElement>document.querySelector(`#${elementAttributeValueId}`);
+    console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES attributeValueElem :`, attributeValueElem);
+
+    // -------------------------------------------------------------
+    // get the element arrow icon 
+    // -------------------------------------------------------------
+    const arrowIconElem = <HTMLElement>document.querySelector(`#${elementArrowIconId}`);
+    console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES arrowIconElem :`, arrowIconElem);
+
+    // -------------------------------------------------------------
+    // get the value of aria-expanded
+    // -------------------------------------------------------------
+    let isAriaExpanded = attributeValueElem.getAttribute('aria-expanded')
+    console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES - element »»»»»»»»»»» isAriaExpanded:`, isAriaExpanded);
+
+
+    if (isAriaExpanded === 'false') {
+      // -----------------------------------------------------------------------------------
+      // Replace class to the div that contains the attribute's value
+      // -----------------------------------------------------------------------------------
+      attributeValueElem.className = attributeValueElem.className.replace(/\battribute_cutted_text\b/g, "attribute_full_text")
+
+      // -----------------------------------------------------------------------------------
+      // Add class to the arrow icon
+      // -----------------------------------------------------------------------------------
+      arrowIconElem.classList.add("up");
+
+
+      // -----------------------------------------------------------------------------------
+      // Set aria-expanded attribute to true
+      // -----------------------------------------------------------------------------------
+      attributeValueElem.setAttribute('aria-expanded', 'true');
+    }
+
+    if (isAriaExpanded === 'true') {
+      // -----------------------------------------------------------------------------------
+      // Replace class to the div that contains the attribute's value 
+      // -----------------------------------------------------------------------------------
+      attributeValueElem.className = attributeValueElem.className.replace(/\battribute_full_text\b/g, "attribute_cutted_text")
+
+      // -----------------------------------------------------------------------------------
+      // Remove the class 'up' to the arrow icon (note: Remove Class Cross-browser solution)
+      // ------------------------------------------------------------------------------------
+      arrowIconElem.className = arrowIconElem.className.replace(/\bup\b/g, "");
+
+      // -----------------------------------------------------------------------------------
+      // Set aria-expanded attribute to false
+      // -----------------------------------------------------------------------------------
+      attributeValueElem.setAttribute('aria-expanded', 'false');
+    }
+  }
+
   /**
    * Get the request published
    */
@@ -395,7 +505,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
         // console.log('% !!!!!!!!!!!! Ws-REQUESTS-Msgs - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
         console.log('%%% Ws-REQUESTS-Msg - getWsRequestById$ ****************** this.request ****************** ', this.request)
-        // this.showSpinner = false;
+
 
         if (this.request) {
           this.members_array = this.request.participants;
@@ -443,6 +553,59 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById REQUESTER ID (DA LEAD)', this.requester_id);
 
           if (this.request.attributes) {
+            console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES ', this.request.attributes);
+
+            // --------------------------------------------------------------------------------------------------------------
+            // new: display all attributes dinamically
+            // --------------------------------------------------------------------------------------------------------------
+            this.attributesArray = []
+            for (let [key, value] of Object.entries(this.request.attributes)) {
+
+              // console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES key : ${key} - value ${value}`);
+
+              let _value: any;
+              if (typeof value === 'object' && value !== null) {
+
+                console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value is an object :`, JSON.stringify(value));
+                _value = JSON.stringify(value)
+              } else {
+                _value = value
+              }
+
+              // https://stackoverflow.com/questions/50463738/how-to-find-width-of-each-character-in-pixels-using-javascript
+              let letterLength = {};
+              let letters = ["", " ", " ?", "= ", " -", " :", " _", " ,", " ", " ", " ", "(", ")", "}", "{", "\"", " ", "/", ".", "a", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+
+              for (let letter of letters) {
+                let span = document.createElement('span');
+                span.append(document.createTextNode(letter));
+                span.style.display = "inline-block";
+                document.body.append(span);
+                letterLength[letter] = span.offsetWidth;
+                span.remove();
+              }
+              let totalLength = 0;
+
+              // for (let i = 0; i < _value.length; i++) {
+              //   console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById _value[i]', _value[i] + ": " + letterLength[_value[i]])
+              // }
+
+              for (let i = 0; i < _value.length; i++) {
+                if (letterLength[_value[i]] !== undefined) {
+                  totalLength += letterLength[_value[i]];
+                } else {
+                  // if the letter not is in dictionary letters letterLength[_value[i]] is undefined so add the witdh of the 'S' letter (8px)
+                  totalLength += letterLength['S'];
+                }
+              }
+              console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
+
+              let entries = { 'attributeName': key, 'attributeValue': _value, 'attributeValueL': totalLength };
+
+              this.attributesArray.push(entries)
+            }
+            console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById attributesArray: ', this.attributesArray);
+            // --------------------------------------------------------------------------------------------------------------
 
             if (this.request.attributes.client) {
               console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > CLIENT ', this.request.attributes.client);
@@ -499,6 +662,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
             }
           }
+
+
 
 
 
@@ -586,21 +751,21 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
         this.messagesList = wsmsgs;
-        // console.log('%%% WsRequestsMsgsComponent getWsRequests$ *** messagesList *** ', this.messagesList)
+        console.log(':-D WsRequestsMsgsComponent getWsRequests$ *** messagesList *** ', this.messagesList)
 
-        this.showSpinner = false;
 
-        // let i: number
-        // for (i = 0; i < this.messagesList.length; i++) {
-        //   if (this.messagesList.length - 1 === i) {
-        //     console.log('%%% Ws-REQUESTS-Msgs Msgs getWsMsgs$ *** loop ends *** ', wsmsgs)
-        //   }
-        // }
 
-        //  this.wsMsgsService.wsMsgsList$.complete();
-        // console.log('%%% WsRequestsMsgsComponent getWsRequests$ * complete * ', x)
+        if (this.timeout) {
+          clearTimeout(this.timeout);
+        }
 
-        this.scrollCardContetToBottom();
+        this.timeout = setTimeout(() => {
+          console.log(':-D WsRequestsMsgsComponent getWsRequests$ *** messagesList *** completed ')
+          this.showSpinner = false;
+
+          this.scrollCardContetToBottom();
+
+        }, 200);
 
       }, error => {
         this.showSpinner = false;
@@ -611,38 +776,18 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   }
 
-
-  getRequesterAvailabilityStatus(requester_id: string) {
-    // const firebaseRealtimeDbUrl = `/apps/tilechat/presence/LmBT2IKjMzeZ3wqyU8up8KIRB6J3/connections`
-    const firebaseRealtimeDbUrl = `/apps/tilechat/presence/` + requester_id + `/connections`
-    const connectionsRef = firebase.database().ref().child(firebaseRealtimeDbUrl);
-    console.log('%%% Ws-REQUESTS-Msgs »»» REQUEST DETAILS - CALLING REQUESTER AVAILABILITY VALUE ');
-
-    connectionsRef.on('value', (child) => {
-      if (child.val()) {
-        this.REQUESTER_IS_ONLINE = true;
-        console.log('%%% Ws-REQUESTS-Msgs »»» REQUEST DETAILS - REQUESTER is ONLINE ', this.REQUESTER_IS_ONLINE);
-      } else {
-        this.REQUESTER_IS_ONLINE = false;
-
-        console.log('%%% Ws-REQUESTS-Msgs »»» REQUEST DETAILS - REQUESTER is ONLINE ', this.REQUESTER_IS_ONLINE);
-      }
-    })
-  }
-
-
+  // -------------------------------------------------------------------------
+  // Scroll
+  // -------------------------------------------------------------------------
   scrollCardContetToBottom() {
-    // if(this.myScrollContainer) {
     setTimeout(() => {
-
+      // CHECK THIS
       const initialScrollPosition = this.myScrollContainer.nativeElement;
       // console.log('SCROLL CONTAINER ', initialScrollPosition)
 
       initialScrollPosition.scrollTop = initialScrollPosition.scrollHeight;
       // console.log('SCROLL HEIGHT ', initialScrollPosition.scrollHeight);
     }, 100);
-    // }
-
   }
 
   // LISTEN TO SCROLL POSITION
@@ -672,6 +817,30 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       console.log('%%% Ws-REQUESTS-Msgs - scrollToBottom ERROR ', err);
     }
   }
+
+
+  getRequesterAvailabilityStatus(requester_id: string) {
+    // const firebaseRealtimeDbUrl = `/apps/tilechat/presence/LmBT2IKjMzeZ3wqyU8up8KIRB6J3/connections`
+    const firebaseRealtimeDbUrl = `/apps/tilechat/presence/` + requester_id + `/connections`
+    const connectionsRef = firebase.database().ref().child(firebaseRealtimeDbUrl);
+    console.log('%%% Ws-REQUESTS-Msgs »»» REQUEST DETAILS - CALLING REQUESTER AVAILABILITY VALUE ');
+
+    connectionsRef.on('value', (child) => {
+      if (child.val()) {
+        this.REQUESTER_IS_ONLINE = true;
+        console.log('%%% Ws-REQUESTS-Msgs »»» REQUEST DETAILS - REQUESTER is ONLINE ', this.REQUESTER_IS_ONLINE);
+      } else {
+        this.REQUESTER_IS_ONLINE = false;
+
+        console.log('%%% Ws-REQUESTS-Msgs »»» REQUEST DETAILS - REQUESTER is ONLINE ', this.REQUESTER_IS_ONLINE);
+      }
+    })
+  }
+
+
+
+
+
 
   openRightSideBar(message: string) {
     this.OPEN_RIGHT_SIDEBAR = true;

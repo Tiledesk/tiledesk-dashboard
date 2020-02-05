@@ -9,8 +9,9 @@
 <div class="main-content" style="padding-top:0px">
   <div class="container-fluid">
 
-    <loading-spinner *ngIf="showSpinner"></loading-spinner>
-    <div *ngIf="!showSpinner">
+    <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner>
+    *ngIf="!showSpinner" -->
+    <div>
       <div class="row">
         <div class="col-sm-7 chat-col">
           <div class="card chat-card" style="padding-top:0px; padding-bottom:0px;">
@@ -92,12 +93,22 @@
                 </div>
               </div>
             </div>
+            <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
+
+            <div *ngIf="showSpinner" class="stretchspinner">
+              <div class="rect1"></div>
+              <div class="rect2"></div>
+              <div class="rect3"></div>
+              <div class="rect4"></div>
+              <div class="rect5"></div>
+            </div>
+
             <div #scrollMe class="card-content"
               style="height: 500px; overflow-y: auto; padding: 0px; padding-left:25px; padding-right:25px "
               (scroll)="onScroll($event)">
 
 
-              <div class="chat-body" style="vertical-align:baseline;">
+              <div *ngIf="!showSpinner" class="chat-body" style="vertical-align:baseline;">
 
                 <!-- style="padding-bottom: 3px;" class="answer left" -->
                 <div *ngFor="let message of messagesList">
@@ -222,7 +233,7 @@
             </div>
 
             <div class="card-footer" style="text-align: center; margin-bottom: 0px;padding-top: 2px; margin:auto">
-              <div class="stats" style="width: 100%;">
+              <div class="stats" style="width: 100%; min-height: 69px;">
 
                 <!-- -------------------================== start new three btn ==================------------------- -->
                 <div class="row" style="width: 100%">
@@ -311,248 +322,249 @@
         <div class="col-sm-5 right-col">
           <div class="card right-card" style="padding-top:5px; padding-bottom:5px;">
 
-            <div class="card-content" style="padding-top:5px;">
+            <div *ngIf="showSpinner" class="stretchspinner">
+              <div class="rect1"></div>
+              <div class="rect2"></div>
+              <div class="rect3"></div>
+              <div class="rect4"></div>
+              <div class="rect5"></div>
+            </div>
 
-              <h4 class="card-title requestattibutestitle" style="text-transform: none; color: #566787; 
-                  font-weight:400; margin-bottom: 8px; border-bottom: 1px solid #eeeeee; padding-bottom: 12px;">
+            <h4 class="card-title requestattibutestitle"
+              style="text-transform: none; color: #566787; font-weight:400; margin-top: 14px; border-bottom: 1px solid #eeeeee; padding-left: 25px; padding-bottom: 15px;">
+              <span class="requestattibutes">{{ "RequestMsgsPage.RequestAttributes" | translate }}</span>
+            </h4>
 
-                <span class="requestattibutes">{{ "RequestMsgsPage.RequestAttributes" | translate }}</span>
+            <div class="card-content" style="padding-top:5px;min-height: 556px;">
 
-              </h4>
+              <div *ngIf="! showSpinner" class="content-wrap">
+                <div style="margin-bottom: 0px; min-height: 39px;">
 
-              <div style="margin-bottom: 0px">
+                  <!-- IF IS AN CLOSED REQUEST -->
+                  <span *ngIf="request?.status == 1000">
+                    <svg viewBox="0 0 58.1 53.9" style="width: 40px" xml:space="preserve">
+                      <style type="text/css">
+                        .st0-chat-closed {
+                          fill: none;
+                          stroke: #999999;
+                          stroke-width: 2;
+                          stroke-miterlimit: 10;
+                        }
 
-                <!-- IF IS AN CLOSED REQUEST -->
-                <span *ngIf="request?.status == 1000">
-                  <svg viewBox="0 0 58.1 53.9" style="width: 40px" xml:space="preserve">
-                    <style type="text/css">
-                      .st0-chat-closed {
-                        fill: none;
-                        stroke: #999999;
-                        stroke-width: 2;
-                        stroke-miterlimit: 10;
-                      }
-
-                      .st1-chat-closed {
-                        fill: #999999;
-                      }
-                    </style>
-                    <path class="st0-chat-closed" d="M30.1,2.6c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C8.9,41.4,7.9,47.2,5.1,50c0,0,8.6-1.2,14.4-4.7
+                        .st1-chat-closed {
+                          fill: #999999;
+                        }
+                      </style>
+                      <path class="st0-chat-closed" d="M30.1,2.6c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C8.9,41.4,7.9,47.2,5.1,50c0,0,8.6-1.2,14.4-4.7
                         c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S43.9,2.6,30.1,2.6z" />
-                    <path class="st1-chat-closed" d="M30.4,13.8c-6.3,0-11.4,5-11.4,11.2h-3.8l4.9,4.9l0.1,0.2l5.1-5h-3.8c0-4.8,4-8.7,8.9-8.7s8.9,3.9,8.9,8.7
+                      <path class="st1-chat-closed" d="M30.4,13.8c-6.3,0-11.4,5-11.4,11.2h-3.8l4.9,4.9l0.1,0.2l5.1-5h-3.8c0-4.8,4-8.7,8.9-8.7s8.9,3.9,8.9,8.7
                         s-4,8.7-8.9,8.7c-2.5,0-4.7-1-6.3-2.6L22.3,33c2.1,2,4.9,3.3,8.1,3.3c6.3,0,11.4-5,11.4-11.2S36.7,13.8,30.4,13.8z M29.1,20v6.2
                         l5.4,3.2l0.9-1.5L31,25.3V20H29.1z" />
-                  </svg>
+                    </svg>
 
-                  <span class="request-category" style="position:relative;top: -20px; color: #999999">
-                    {{ "RequestMsgsPage.RequestClosed" | translate }}
+                    <span class="request-category" style="position:relative;top: -20px; color: #999999">
+                      {{ "RequestMsgsPage.RequestClosed" | translate }}
+                    </span>
                   </span>
-                </span>
 
-                <!-- IF IS AN UNSERVED REQUEST -->
-                <span *ngIf="request?.status == 100">
-                  <svg viewBox="0 0 58.1 53.9" style="width: 40px" xml:space="preserve">
-                    <style type="text/css">
-                      .st0-unserved {
-                        fill: none;
-                        stroke: #ED4537;
-                        stroke-width: 2;
-                        stroke-miterlimit: 10;
-                      }
+                  <!-- IF IS AN UNSERVED REQUEST -->
+                  <span *ngIf="request?.status == 100">
+                    <svg viewBox="0 0 58.1 53.9" style="width: 40px" xml:space="preserve">
+                      <style type="text/css">
+                        .st0-unserved {
+                          fill: none;
+                          stroke: #ED4537;
+                          stroke-width: 2;
+                          stroke-miterlimit: 10;
+                        }
 
-                      .st1-unserved {
-                        fill: #ED4537;
-                      }
-                    </style>
-                    <path class="st0-unserved" d="M30.5,3.3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
+                        .st1-unserved {
+                          fill: #ED4537;
+                        }
+                      </style>
+                      <path class="st0-unserved" d="M30.5,3.3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
                           c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S44.3,3.3,30.5,3.3z" />
-                    <g>
-                      <path class="st1-unserved"
-                        d="M30.6,38.9c-1.7,0-3.1-1.4-3.1-3c0-1.7,1.4-3,3.1-3c1.7,0,3.1,1.4,3.1,3C33.6,37.6,32.3,38.9,30.6,38.9z" />
-                      <path class="st1-unserved" d="M34.8,18l-1.5,10c-0.2,1.5-1.6,2.5-3.1,2.3c-1.2-0.2-2.1-1.1-2.3-2.2l-1.6-10c-0.4-2.3,1.2-4.5,3.6-4.9
-                            c2.4-0.4,4.6,1.2,5,3.5C34.9,17.1,34.9,17.6,34.8,18z" />
-                    </g>
-                  </svg>
-                  <span class="request-category" style="position: relative;top:-20px; color: #f44336">
-                    {{ "RequestMsgsPage.RequestUnserved" | translate }}
-                  </span>
-                </span>
-
-                <!-- IF IS A SERVED REQUEST AND BETWEEN THE MEMBERS THERE IS THE CURRENT USER -->
-                <!-- <span *ngIf="request?.status == 200 && request?.currentUserIsJoined === true"> -->
-                <span *ngIf="request?.status == 200 && IS_CURRENT_USER_JOINED === true">
-                  <svg viewBox="0 0 58.1 53.9" style="width: 40px" xml:space="preserve">
-                    <style type="text/css">
-                      .st0-served-by-cu {
-                        fill: none;
-                        stroke: #4DAF4F;
-                        stroke-width: 2;
-                        stroke-miterlimit: 10;
-                      }
-
-                      .st1-served-by-cu {
-                        fill: #4DAF4F;
-                      }
-                    </style>
-                    <path class="st0-served-by-cu" d="M29.8,3.7c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
-                        c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S43.6,3.7,29.8,3.7z" />
-                    <g id="XMLID_146_">
-                      <path id="XMLID_158_" class="st1-served-by-cu" d="M25.8,36.5l-8.4-7.4c-1.1-0.9-1.1-2.4,0-3.3c1.1-0.9,2.8-0.9,3.8,0l4.6,4.1l12.6-10.9
-                          c1.1-0.9,2.8-0.9,3.8,0c1,0.9,1,2.4,0,3.3L25.8,36.5z" />
-                    </g>
-                  </svg>
-
-                  <span class="request-category" style="position:relative;top:-20px; color: #4CAF50">
-                    {{ "RequestMsgsPage.RequestServedBy" | translate }}
-                  </span>
-                </span>
-
-                <!-- IF IS A SERVED REQUEST AND BETWEEN THE MEMBERS THERE ISN'T THE CURRENT USER -->
-                <!-- <span *ngIf="request?.status == 200 && !request?.currentUserIsJoined"> -->
-                <span *ngIf="request?.status == 200 && !IS_CURRENT_USER_JOINED">
-
-                  <svg viewBox="0 0 58.1 53.9" style="width: 40px" xml:space="preserve">
-                    <style type="text/css">
-                      .st0-served {
-                        fill: none;
-                        stroke: #05BDD4;
-                        stroke-width: 2;
-                        stroke-miterlimit: 10;
-                      }
-
-                      .st1-served {
-                        fill: #05BDD4;
-                      }
-                    </style>
-                    <g>
-                      <path class="st0-served" d="M30.5,3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
-                          c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S44.3,3,30.5,3z" />
                       <g>
-                        <circle class="st1-served" cx="17.5" cy="26.7" r="3" />
-                        <circle class="st1-served" cx="30.5" cy="26.7" r="3" />
-                        <circle class="st1-served" cx="43.5" cy="26.7" r="3" />
+                        <path class="st1-unserved"
+                          d="M30.6,38.9c-1.7,0-3.1-1.4-3.1-3c0-1.7,1.4-3,3.1-3c1.7,0,3.1,1.4,3.1,3C33.6,37.6,32.3,38.9,30.6,38.9z" />
+                        <path class="st1-unserved" d="M34.8,18l-1.5,10c-0.2,1.5-1.6,2.5-3.1,2.3c-1.2-0.2-2.1-1.1-2.3-2.2l-1.6-10c-0.4-2.3,1.2-4.5,3.6-4.9
+                            c2.4-0.4,4.6,1.2,5,3.5C34.9,17.1,34.9,17.6,34.8,18z" />
                       </g>
-                    </g>
-                  </svg>
-
-                  <span class="request-category" style="position:relative;top: -20px; color: #00bcd4;">
-
-                    {{ "RequestMsgsPage.RequestServedBy" | translate }}
-
+                    </svg>
+                    <span class="request-category" style="position: relative;top:-20px; color: #f44336">
+                      {{ "RequestMsgsPage.RequestUnserved" | translate }}
+                    </span>
                   </span>
-                </span>
+
+                  <!-- IF IS A SERVED REQUEST AND BETWEEN THE MEMBERS THERE IS THE CURRENT USER -->
+                  <!-- <span *ngIf="request?.status == 200 && request?.currentUserIsJoined === true"> -->
+                  <span *ngIf="request?.status == 200 && IS_CURRENT_USER_JOINED === true">
+                    <svg viewBox="0 0 58.1 53.9" style="width: 40px" xml:space="preserve">
+                      <style type="text/css">
+                        .st0-served-by-cu {
+                          fill: none;
+                          stroke: #4DAF4F;
+                          stroke-width: 2;
+                          stroke-miterlimit: 10;
+                        }
+
+                        .st1-served-by-cu {
+                          fill: #4DAF4F;
+                        }
+                      </style>
+                      <path class="st0-served-by-cu" d="M29.8,3.7c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
+                        c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S43.6,3.7,29.8,3.7z" />
+                      <g id="XMLID_146_">
+                        <path id="XMLID_158_" class="st1-served-by-cu" d="M25.8,36.5l-8.4-7.4c-1.1-0.9-1.1-2.4,0-3.3c1.1-0.9,2.8-0.9,3.8,0l4.6,4.1l12.6-10.9
+                          c1.1-0.9,2.8-0.9,3.8,0c1,0.9,1,2.4,0,3.3L25.8,36.5z" />
+                      </g>
+                    </svg>
+
+                    <span class="request-category" style="position:relative;top:-20px; color: #4CAF50">
+                      {{ "RequestMsgsPage.RequestServedBy" | translate }}
+                    </span>
+                  </span>
+
+                  <!-- IF IS A SERVED REQUEST AND BETWEEN THE MEMBERS THERE ISN'T THE CURRENT USER -->
+                  <!-- <span *ngIf="request?.status == 200 && !request?.currentUserIsJoined"> -->
+                  <span *ngIf="request?.status == 200 && !IS_CURRENT_USER_JOINED">
+
+                    <svg viewBox="0 0 58.1 53.9" style="width: 40px" xml:space="preserve">
+                      <style type="text/css">
+                        .st0-served {
+                          fill: none;
+                          stroke: #05BDD4;
+                          stroke-width: 2;
+                          stroke-miterlimit: 10;
+                        }
+
+                        .st1-served {
+                          fill: #05BDD4;
+                        }
+                      </style>
+                      <g>
+                        <path class="st0-served" d="M30.5,3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
+                          c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S44.3,3,30.5,3z" />
+                        <g>
+                          <circle class="st1-served" cx="17.5" cy="26.7" r="3" />
+                          <circle class="st1-served" cx="30.5" cy="26.7" r="3" />
+                          <circle class="st1-served" cx="43.5" cy="26.7" r="3" />
+                        </g>
+                      </g>
+                    </svg>
+
+                    <span class="request-category" style="position:relative;top: -20px; color: #00bcd4;">
+
+                      {{ "RequestMsgsPage.RequestServedBy" | translate }}
+
+                    </span>
+                  </span>
 
 
-                <div class="id__request" style="color: #7695a5 !important;
+                  <div class="id__request" style="color: #7695a5 !important;
                   font-size: 10px;
                   display: block;
                   margin-left: 43px;
                   margin-top: -26px;
                   font-weight: 400;"> <span style="color:#394f5a;"> id: </span> {{ id_request }} </div>
-              </div>
+                </div>
 
-              <!-- <span class="row-body">
+                <!-- <span class="row-body">
                 <span style="color:#394f5a;"> id: </span> {{ id_request }}
               </span> -->
 
-              <div class="row" style="margin-top:5px">
-                <!-- border-top: 1px solid #e1eef4;" -->
-                <!-- border-bottom: 1px solid #e1eef4; -->
-                <div class="col-sm-12" style="">
-                  <p class="" style="margin-bottom: 1px;">
-                    <i class="material-icons"
-                      style="vertical-align: middle; color: #394f5a;font-size:16px; margin-left: 3px;">calendar_today</i>
-                    <span style="position: relative;top: 1px;">
-                      <span
-                        style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                        {{ "RequestMsgsPage.Created" | translate }}</span>
+                <div class="row" style="margin-top:5px">
+                  <!-- border-top: 1px solid #e1eef4;" -->
+                  <!-- border-bottom: 1px solid #e1eef4; -->
+                  <div class="col-sm-12" style="">
+                    <p class="" style="margin-bottom: 1px;">
+                      <i class="material-icons"
+                        style="vertical-align: middle; color: #394f5a;font-size:16px; margin-left: 3px;">calendar_today</i>
+                      <span style="position: relative;top: 1px;">
+                        <span
+                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                          {{ "RequestMsgsPage.Created" | translate }}</span>
 
-                      <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
-                        {{ request?.createdAt | amTimeAgo }} ({{ request?.createdAt | date: 'd/M/y HH:mm:ss' }})
+                        <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                          {{ request?.createdAt | amTimeAgo }} ({{ request?.createdAt | date: 'd/M/y HH:mm:ss' }})
+                        </span>
                       </span>
-                    </span>
-                  </p>
+                    </p>
 
-                  <!-- <span class="row-body">
+                    <!-- <span class="row-body">
                     {{ request?.createdAt | amTimeAgo }} ({{ request?.createdAt | date: 'd/M/y HH:mm:ss' }})
                   </span> -->
 
+                  </div>
                 </div>
-              </div>
 
-              <div class="row" style="margin-top:5px">
-                <!-- border-top: 1px solid #e1eef4;" -->
-                <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4;">
-                  <p class="" style="">
-                    <i class="material-icons"
-                      style="vertical-align: middle; color: #394f5a;font-size:22px">outlined_flag</i>
-                    <span style="position: relative;top: 1px;">
-                      <span
-                        style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                        {{ "Language" | translate }}</span>
+                <div class="row" style="margin-top:5px">
+                  <!-- border-top: 1px solid #e1eef4;" -->
+                  <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4;">
+                    <p class="" style="">
+                      <i class="material-icons"
+                        style="vertical-align: middle; color: #394f5a;font-size:22px">outlined_flag</i>
+                      <span style="position: relative;top: 1px;">
+                        <span
+                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                          {{ "Language" | translate }}</span>
 
-                      <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
-                        {{ request?.language }}
-                      </span>
-                    </span>
-                  </p>
-
-                </div>
-              </div>
-
-              <div class="row" style="margin-top:15px">
-                <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4; border-top: 1px solid #e1eef4;">
-                  <p class="row-header" style="">
-                    <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
-                    <span style="vertical-align: middle">
-                      {{ "RequestMsgsPage.Agents" | translate }}
-                    </span>
-                  </p>
-
-
-
-                  <div class="served_by">
-
-                    <span *ngIf="agents_array?.length === 0" class="row-body">
-
-                      <div class="ws_request_msgs___served_by"></div>
-
-                      <span class="ws_request_msgs___served_by_no_agent" style="position: relative;top: 4px;">
-                        {{ "RequestMsgsPage.NoAgent" | translate }}
-                      </span>
-
-                    </span>
-                    <div *ngFor="let agent of agents_array" class="row-body">
-
-                      <span (click)="goToMemberProfile( agent?._id )" style="cursor:pointer">
-                        <img *ngIf="agent.isBot === false"
-                          style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
-                          class="user-img"
-                          src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
-                          onerror="this.src='assets/img/no_image_user.png'" />
-
-                        <img *ngIf="agent.isBot === true"
-                          style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
-                          class="user-img"
-                          src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id | slice:4 }}%2Fphoto.jpg?alt=media"
-                          onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
-
-                        <span [ngClass]="{'current_user_is_agent' : agent?._id === currentUserID}"
-                          style="font-size:12px; font-weight: 400">
-                          {{agent?.firstname}} {{agent?.lastname}}
-
-                          <span *ngIf="agent.isBot === true">(bot) </span>
+                        <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                          {{ request?.language }}
                         </span>
                       </span>
+                    </p>
 
-                    </div>
                   </div>
-
                 </div>
-              </div>
 
-              <!-- REQUEST ID -->
-              <!-- <p style="margin-bottom: 3px; color:#566787;"> 
+                <div class="row" style="margin-top:15px">
+                  <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4; border-top: 1px solid #e1eef4;">
+                    <p class="row-header" style="">
+                      <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
+                      <span style="vertical-align: middle">
+                        {{ "RequestMsgsPage.Agents" | translate }}
+                      </span>
+                    </p>
+
+                    <div class="served_by">
+                      <span *ngIf="agents_array?.length === 0" class="row-body">
+                        <div class="ws_request_msgs___served_by"></div>
+                        <span class="ws_request_msgs___served_by_no_agent" style="position: relative;top: 4px;">
+                          {{ "RequestMsgsPage.NoAgent" | translate }}
+                        </span>
+                      </span>
+                      <div *ngFor="let agent of agents_array" class="row-body">
+
+                        <span (click)="goToMemberProfile( agent?._id )" style="cursor:pointer">
+                          <img *ngIf="agent.isBot === false"
+                            style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
+                            class="user-img"
+                            src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id}}%2Fphoto.jpg?alt=media"
+                            onerror="this.src='assets/img/no_image_user.png'" />
+
+                          <img *ngIf="agent.isBot === true"
+                            style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 3px;"
+                            class="user-img"
+                            src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{agent?._id | slice:4 }}%2Fphoto.jpg?alt=media"
+                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+
+                          <span [ngClass]="{'current_user_is_agent' : agent?._id === currentUserID}"
+                            style="font-size:12px; font-weight: 400">
+                            {{agent?.firstname}} {{agent?.lastname}}
+
+                            <span *ngIf="agent.isBot === true">(bot) </span>
+                          </span>
+                        </span>
+
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <!-- REQUEST ID -->
+                <!-- <p style="margin-bottom: 3px; color:#566787;"> 
                   <strong>
                     {{ "RequestMsgsPage.RequestId" | translate }}
                     </strong>
@@ -561,230 +573,276 @@
                     {{ id_request }}
                 </p> -->
 
-              <!-- ========== Requester  ========== -->
-              <!-- <p style="margin-bottom: 3px; color:#566787"> 
+                <!-- ========== Requester  ========== -->
+                <!-- <p style="margin-bottom: 3px; color:#566787"> 
                   <strong>
                     {{ "RequestMsgsPage.Requester" | translate }}
                   </strong>
                 </p> -->
 
-              <div class="row" style="margin-top:15px">
-                <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4; border-top: 1px solid #e1eef4;">
-                  <p class="row-header" style="">
-                    <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
-                    <span style="vertical-align: middle">
-                      {{ "RequestMsgsPage.Requester" | translate }}
-                    </span>
-                  </p>
-                  <!-- style="color:#999999; font-weight: 500" -->
-                  <p class="row-body" style="margin-bottom:0px; padding-bottom:0px">
-
-                    <!-- // REQUESTER FULLNAME  -->
-                    <span class="requester-avatar-wrapper">
-                      <span class="_requester-avatar" [ngStyle]="{'background-color': fillColour }"
-                        [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname}">
-                        <span style="color: #ffffff"> {{ requester_fullname_initial }} </span>
+                <div class="row" style="margin-top:15px">
+                  <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4; border-top: 1px solid #e1eef4;">
+                    <p class="row-header" style="">
+                      <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
+                      <span style="vertical-align: middle">
+                        {{ "RequestMsgsPage.Requester" | translate }}
                       </span>
-                      <span *ngIf="REQUESTER_IS_VERIFIED === true" class="tooltipx">
-                        <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
-                          xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6" width="17"
-                          height="17" style="position: relative;left: -43px;top: -3px;" xml:space="preserve">
-                          <style type="text/css">
-                            .st0 {
-                              fill: none;
-                            }
+                    </p>
+                    <!-- style="color:#999999; font-weight: 500" -->
+                    <p class="row-body" style="margin-bottom:0px; padding-bottom:0px">
 
-                            .st1 {
-                              fill: #FFFFFF;
-                            }
+                      <!-- // REQUESTER FULLNAME  -->
+                      <span class="requester-avatar-wrapper">
+                        <span class="_requester-avatar" [ngStyle]="{'background-color': fillColour }"
+                          [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname}">
+                          <span style="color: #ffffff"> {{ requester_fullname_initial }} </span>
+                        </span>
+                        <span *ngIf="REQUESTER_IS_VERIFIED === true" class="tooltipx">
+                          <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6"
+                            width="17" height="17" style="position: relative;left: -43px;top: -3px;"
+                            xml:space="preserve">
+                            <style type="text/css">
+                              .st0 {
+                                fill: none;
+                              }
 
-                            .st2 {
-                              fill: #18BDF7;
-                            }
-                          </style>
-                          <path class="st0" d="M1.3,1.3h24v24h-24V1.3z" />
-                          <path class="st1"
-                            d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z" />
-                          <path class="st2" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
+                              .st1 {
+                                fill: #FFFFFF;
+                              }
+
+                              .st2 {
+                                fill: #18BDF7;
+                              }
+                            </style>
+                            <path class="st0" d="M1.3,1.3h24v24h-24V1.3z" />
+                            <path class="st1"
+                              d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z" />
+                            <path class="st2" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
                                 l6.6-6.6l1.4,1.4L11.3,18.3z" />
-                        </svg>
+                          </svg>
 
-                        <span class="tooltiptext"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
+                          <span class="tooltiptext"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
+
+                        </span>
+                        <div class="requester-status-icon" [ngClass]="{'requester_is_online' : REQUESTER_IS_ONLINE}">
+                        </div>
 
                       </span>
-                      <div class="requester-status-icon" [ngClass]="{'requester_is_online' : REQUESTER_IS_ONLINE}">
-                      </div>
 
-                    </span>
+                      <!-- <span style="color:#394f5a;"> {{ "RequestMsgsPage.RequesterName" | translate }}: </span>  -->
+                      <span [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}"
+                        style="margin-left: 2px;font-size:12px">
+                        <!-- {{ requester_fullname }} -->
+                        {{request?.lead?.fullname}}
+                      </span>
+                      <span *ngIf="!request?.lead?.fullname"
+                        [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}" style="margin-left: 2px;">
+                        n.a.
+                      </span>
 
-                    <!-- <span style="color:#394f5a;"> {{ "RequestMsgsPage.RequesterName" | translate }}: </span>  -->
-                    <span [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}"
-                      style="margin-left: 2px;font-size:13px">
-                      <!-- {{ requester_fullname }} -->
-                      {{request?.lead?.fullname}}
-                    </span>
-                    <span *ngIf="!request?.lead?.fullname"
-                      [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}" style="margin-left: 2px;">
-                      n.a.
-                    </span>
-
-                    <!-- // VIEW DETAILS BTN -->
-                    <span *ngIf="NODEJS_REQUEST_CNTCT_FOUND">
-                      <button class="btn btn-xs btn-white-custom-round pull-right"
-                        style="margin-left:8px;margin-top: 4px;" (click)="goToContactDetails()">
-                        {{ 'ViewDetails' | translate}}
-                      </button>
-                    </span>
-                  </p>
+                      <!-- // VIEW DETAILS BTN -->
+                      <span *ngIf="NODEJS_REQUEST_CNTCT_FOUND">
+                        <button class="btn btn-xs btn-white-custom-round pull-right"
+                          style="margin-left:8px;margin-top: 4px;" (click)="goToContactDetails()">
+                          {{ 'ViewDetails' | translate}}
+                        </button>
+                      </span>
+                    </p>
 
 
-                  <!-- <p class="row-body" style="margin-top:8px; margin-bottom:0px; padding-bottom:0px">
+                    <!-- <p class="row-body" style="margin-top:8px; margin-bottom:0px; padding-bottom:0px">
                     <span style="color:#394f5a;"> {{ "RequestMsgsPage.ChatFormUserName" | translate }}: </span>
                     {{ user_name }}
                   </p> -->
 
-                  <p class="row-body" style="margin-bottom:6px;padding-bottom:0px; margin-top:6px;">
+                    <p class="row-body" style="margin-bottom:6px;padding-bottom:0px; margin-top:6px;">
 
-                    <!-- 
+                      <!-- 
                     // ------------------------------------------------------
                     // no more get from request attributes but from lead 
                     // ------------------------------------------------------ -->
 
-                    <!-- <a *ngIf="user_email !== 'n.a.'" href="mailto:{{user_email}}">{{ user_email }}</a>
+                      <!-- <a *ngIf="user_email !== 'n.a.'" href="mailto:{{user_email}}">{{ user_email }}</a>
                      <a *ngIf="user_email === 'n.a.'" style="color:#7695a5;">{{ user_email }}</a> -->
 
-                    <i class="material-icons"
-                      style="vertical-align: middle; color: #394f5a;font-size:16px; margin-left: 3px;"> email
-                    </i>
-                    <span style="position: relative;top: 1px;">
-                      <span
-                        style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                        {{ "RequestMsgsPage.ChatFormUserEmail" | translate }}
+                      <i class="material-icons"
+                        style="vertical-align: middle; color: #394f5a;font-size:16px; margin-left: 3px;"> email
+                      </i>
+                      <span style="position: relative;top: 1px;">
+                        <span
+                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                          {{ "RequestMsgsPage.ChatFormUserEmail" | translate }}
+                        </span>
+                        <a target="_blank" *ngIf="request?.lead?.email" href="mailto:{{request?.lead?.email}}">
+                          {{request?.lead?.email}}
+                        </a>
+                        <a *ngIf="!request?.lead?.email" style="color:#7695a5;">n.a.</a>
                       </span>
-                      <a target="_blank" *ngIf="request?.lead?.email" href="mailto:{{request?.lead?.email}}">
-                        {{request?.lead?.email}}
-                      </a>
-                      <a *ngIf="!request?.lead?.email" style="color:#7695a5;">n.a.</a>
-                    </span>
-                  </p>
+                    </p>
 
-                  <!-- <p class="row-body" style="margin-bottom:0px; padding-bottom:0px">
+                    <!-- <p class="row-body" style="margin-bottom:0px; padding-bottom:0px">
                     <span style="color:#394f5a;"> id: </span>
                       {{ requester_id }}
                   </p> -->
 
+                  </div>
                 </div>
-              </div>
 
-              <div class="row" style="margin-top:15px">
-                <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4; border-top: 1px solid #e1eef4;">
-                  <p class="row-header" style="">
-                    <!-- 
+                <div class="row" style="margin-top:15px">
+                  <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4; border-top: 1px solid #e1eef4;">
+                    <p class="row-header" style="">
+                      <!-- 
                         // ------------------------------------------------------
                         // no more get from request attributes but from DEPARTMENT 
                         // ------------------------------------------------------ -->
-                    <!-- {{ department_name }} -->
+                      <!-- {{ department_name }} -->
 
 
-                    <span style="vertical-align: middle">
-                      {{ "RequestMsgsPage.DepartmentName" | translate }}
-                    </span>
-                  </p>
+                      <span style="vertical-align: middle">
+                        {{ "RequestMsgsPage.DepartmentName" | translate }}
+                      </span>
+                    </p>
 
-                  <span class="row-body" style="display: block;">
-                    <i class="material-icons"
-                      style="vertical-align: middle; color: #394f5a;font-size:16px; margin-left: 3px;">
-                      account_balance </i>
-                    <!-- <span style="color:#394f5a;"> {{ "DeptsAddEditPage.DeptName" | translate }}: </span> -->
+                    <span class="row-body" style="display: block;">
+                      <i class="material-icons"
+                        style="vertical-align: middle; color: #394f5a;font-size:16px; margin-left: 3px;">
+                        account_balance </i>
+                      <!-- <span style="color:#394f5a;"> {{ "DeptsAddEditPage.DeptName" | translate }}: </span> -->
 
-                    <span style="position:relative; top:1px">
-                      <span class="ws_requets_msgs__attributes">
-                        {{ "Department" | translate }}
+                      <span style="position:relative; top:1px">
+                        <span class="ws_requets_msgs__attributes">
+                          {{ "Department" | translate }}
+                        </span>
+
+                        <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                          {{request?.department?.name}}
+                        </span>
                       </span>
 
-                      <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
-                        {{request?.department?.name}}
-                      </span>
                     </span>
 
-                  </span>
-
+                  </div>
                 </div>
-              </div>
 
-              <div class="row" style="margin-top:15px">
-                <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4; border-top: 1px solid #e1eef4;">
-                  <p class="row-header" style="">
-                    <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
-                    <span style="vertical-align: middle">
-                      {{ "RequestMsgsPage.Rating" | translate }}
+                <div class="row" style="margin-top:15px">
+                  <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4; border-top: 1px solid #e1eef4;">
+                    <p class="row-header" style="">
+                      <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
+                      <span style="vertical-align: middle">
+                        {{ "RequestMsgsPage.Rating" | translate }}
 
 
-                    </span>
+                      </span>
 
-                    <!-- <span class="fa fa-star checked"></span>
+                      <!-- <span class="fa fa-star checked"></span>
                     <span class="fa fa-star checked"></span>
                     <span class="fa fa-star checked"></span>
                     <span class="fa fa-star"></span>
                     <span class="fa fa-star"></span> -->
-                  </p>
-                  <!-- <p class="row-body"  style="margin-bottom:0px">  
+                    </p>
+                    <!-- <p class="row-body"  style="margin-bottom:0px">  
                           <span style="color:#394f5a;"> {{ "RequestMsgsPage.Rating" | translate }}: </span>
                           {{ rating }}
                       </p> -->
 
-                  <p class="row-body" style="margin-bottom:0px">
+                    <p class="row-body" style="margin-bottom:0px">
 
-                    <span style="color: #7695a5;display: block"> {{ rating }}</span>
+                      <span style="color: #7695a5;display: block"> {{ rating }}</span>
 
-                    <span class="ws_requets_msgs__attributes"> 
-                      {{ "RequestMsgsPage.RatingMessage" | translate }}:
-                    </span>
+                      <span class="ws_requets_msgs__attributes">
+                        {{ "RequestMsgsPage.RatingMessage" | translate }}:
+                      </span>
 
-                    {{ rating_message }}
-                  </p>
+                      {{ rating_message }}
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-              <div class="row" style="margin-top:15px">
-                <div class="col-sm-12" style="border-top: 1px solid #e1eef4;">
-                  <p class="row-header" style="">
-                    <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
-                    <span style="vertical-align: middle">
-                      {{ "RequestMsgsPage.SourcePage" | translate }}
-                    </span>
-                  </p>
-                  <p class="row-body" style="margin-bottom:0px; word-wrap: break-word;">
+                <div class="row" style="margin-top:15px">
+                  <div class="col-sm-12" style="border-top: 1px solid #e1eef4;">
+                    <p class="row-header" style="">
+                      <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
+                      <span style="vertical-align: middle">
+                        {{ "RequestMsgsPage.SourcePage" | translate }}
+                      </span>
+                    </p>
+                    <p class="row-body" style="margin-bottom:0px; word-wrap: break-word;">
 
-                    <!-- 
+                      <!-- 
                     // ----------------------------------------------------------------
                     // no more get from request attributes but directly from request 
                     // ---------------------------------------------------------------- -->
-                    <a href="{{request?.sourcePage}}" target="_blank">{{request?.sourcePage}}</a>
-                  </p>
+                      <a href="{{request?.sourcePage}}" target="_blank">{{request?.sourcePage}}</a>
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-              <!-- 
+                <!-- 
               // ----------------------------------------------------------------
               // @ attributes
               // ---------------------------------------------------------------- -->
-              <div class="row" style="margin-top:15px">
-                <div class="col-sm-12" style="border-top: 1px solid #e1eef4;">
-                  <p class="row-header" style="margin-bottom: 0px;">
-                    <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
-                    <span style="vertical-align: middle">
-                      {{ "Attributes" | translate }}
-                    </span>
-                  </p>
-                  <p class="row-body" style="margin-bottom:0px; word-wrap: break-word;">
+                <div class="row" style="margin-top:15px">
+                  <div class="col-sm-12" style="border-top: 1px solid #e1eef4;">
+                    <p class="row-header" style="margin-bottom: 0px;">
+                      <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
+                      <span style="vertical-align: middle">
+                        {{ "Attributes" | translate }}
+                      </span>
+                    </p>
 
-                    <!-- ------====== CLIENT ======------ -->
-                    <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
+
+                  <!-- 
+                  // ------------------------------------------------------
+                  // new attributes
+                  // ------------------------------------------------------ -->
+                    <div *ngFor="let attribute of attributesArray; let i = index">
+                      <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
+
+                        <div class="row">
+                          <div class="col-sm-10" style="padding-right: 1px;padding-bottom: 5px;">
+                            <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes">
+                              {{attribute?.attributeName }}:
+                            </div>
+
+                            <div aria-expanded="false" [id]="attribute?.attributeName +'_value'" class="attribute attribute_cutted_text">
+                              {{attribute?.attributeValue }}
+                            </div>
+
+                          </div>
+                          <!-- [id]="attribute?.attributeName +'_arrow_icon'" -->
+                          <!-- [ngClass]="{'down' : attributeFullText === true}" -->
+                          <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-sm-2"
+                            style="white-space: nowrap;width: 1%;">
+                            <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
+                              style="cursor: pointer; color: #039be5; font-size:18px;"
+                              (click)="toggleShowAllString(attribute?.attributeName +'_value', attribute?.attributeName +'_arrow_icon', 'isActive_' + i)">
+                              keyboard_arrow_down
+                            </i>
+
+                          </div>
+                        </div>
+
+                        <!-- 
+                      <div class="debug_div">
+                        L : {{attribute?.attributeValueL}} <br>
+                        L + 180 : {{attribute?.attributeValueL + 180}} <br>
+                        SB WIDTH : {{rightSidebarWidth}} 
+                      </div> -->
+
+                      </div>
+                    </div>
+                  <!-- 
+                  // ------------------------------------------------------
+                  // ./ end new attributes
+                  // ------------------------------------------------------ -->
+
+
+
+                    <!-- <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
                       <span class="ws_requets_msgs__attributes">
                         Client:
                       </span>
-
                       <span *ngIf="!showAllClientString" class="attribute" style="white-space: nowrap">
                         {{ clientStringCutted }}
                         <span>
@@ -795,7 +853,6 @@
                           </i>
                         </span>
                       </span>
-
                       <span *ngIf="showAllClientString" class="attribute" style="">
                         {{ request?.attributes?.client }}
                         <span>
@@ -806,75 +863,45 @@
                           </i>
                         </span>
                       </span>
-
-                    </p>
-
-                    <!-- ------====== DEPARTMENT NAME ======------ -->
-                    <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
-                      <!-- <strong> -->
+                    </p> -->
+                    <!-- <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
                       <span class="ws_requets_msgs__attributes">
                         {{ "Department" | translate }}:
                       </span>
-                      <!-- </strong> -->
-
                       <span class="attribute" style="cursor: pointer" (click)="toggleShowAllClientString()">
                         {{ request?.attributes?.departmentName }}
                       </span>
-                    </p>
-
-                    <!-- ------====== DEPARTMENT ID ======------ -->
-                    <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
-                      <!-- <strong> -->
+                    </p> -->
+                    <!-- <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
                       <span class="ws_requets_msgs__attributes">
                         {{ "DepartmentId" | translate }}:
                       </span>
-                      <!-- </strong> -->
-
                       <span class="attribute">
                         {{ request?.attributes?.departmentId }}
                       </span>
-                    </p>
-
-                    <!-- ------====== PROJECT ID ======------ -->
-                    <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
-                      <!-- <strong> -->
+                    </p> -->
+                    <!-- <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
                       <span class="ws_requets_msgs__attributes">
                         {{ "ProjectId" | translate }}:
                       </span>
-                      <!-- </strong> -->
-
                       <span class="attribute">
                         {{ request?.attributes?.projectId }}
                       </span>
-                    </p>
-
-                    <!-- ------====== REQUESTER ID ======------ -->
-                    <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
-                      <!-- <strong> -->
+                    </p> -->
+                    <!-- <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
                       <span class="ws_requets_msgs__attributes">
                         {{ "VisitorsPage.RequesterId" | translate }}
                       </span>
-                      <!-- </strong> -->
-
                       <span class="attribute">
                         {{ request?.attributes?.requester_id }}
                       </span>
-                    </p>
-
-
-
-
-                    <!-- ------====== SOURCE PAGE  ======------ -->
-                    <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
-                      <!-- <strong> -->
+                    </p> -->
+                    <!-- <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
                       <span class="ws_requets_msgs__attributes">
                         {{ "RequestMsgsPage.SourcePage" | translate }}:
                       </span>
-                      <!-- </strong> -->
-
                       <span *ngIf="!showAllSourcePageString" class="attribute" style="white-space: nowrap">
                         {{ sourcePageCutted }}
-
                         <span>
                           <i class="material-icons"
                             style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:5px"
@@ -883,7 +910,6 @@
                           </i>
                         </span>
                       </span>
-
                       <span *ngIf="showAllSourcePageString" class="attribute">
                         <a href="{{sourcePage}}" target="_blank">{{sourcePage}}</a>
                         <span>
@@ -894,16 +920,11 @@
                           </i>
                         </span>
                       </span>
-                    </p>
-
-                    <!-- ------====== USER EMAIL ======------ -->
-                    <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
-                      <!-- <strong> -->
+                    </p> -->
+                    <!-- <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
                       <span class="ws_requets_msgs__attributes">
                         {{ "UserEmail" | translate }}:
                       </span>
-                      <!-- </strong> -->
-
                       <span class="attribute">
                         <span *ngIf="request?.attributes?.userEmail">
                           {{ request?.attributes?.userEmail }}
@@ -912,16 +933,11 @@
                           n.a.
                         </span>
                       </span>
-                    </p>
-
-                    <!-- ------====== USER FULLNAME ======------ -->
-                    <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
-                      <!-- <strong> -->
+                    </p> -->
+                    <!-- <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
                       <span class="ws_requets_msgs__attributes">
                         {{ "UserFullName" | translate }}:
                       </span>
-                      <!-- </strong> -->
-
                       <span class="attribute">
                         <span *ngIf="request?.attributes?.userFullname">
                           {{ request?.attributes?.userFullname }}
@@ -930,19 +946,13 @@
                           n.a.
                         </span>
                       </span>
-                    </p>
-
-                    <!-- ------====== SENDER AUTH INFO ======------ -->
-                    <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
-                      <!-- <strong> -->
+                    </p> -->
+                    <!-- <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
                       <span class="ws_requets_msgs__attributes">
                         Sender Auth Info:
                       </span>
-                      <!-- </strong> -->
-
                       <span *ngIf="!showAllsenderAuthInfoString" class="attribute" style="white-space: nowrap">
                         {{ senderAuthInfoStringCutted }}
-
                         <span>
                           <i class="material-icons"
                             style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:5px"
@@ -953,7 +963,6 @@
                       </span>
                       <span *ngIf="showAllsenderAuthInfoString" class="attribute">
                         {{ senderAuthInfoString }}
-
                         <span>
                           <i class="material-icons"
                             style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:5px"
@@ -962,12 +971,12 @@
                           </i>
                         </span>
                       </span>
-                    </p>
-
+                    </p> -->
+                  </div>
                 </div>
+
+
               </div>
-
-
             </div>
           </div>
         </div>
