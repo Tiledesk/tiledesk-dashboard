@@ -12,6 +12,9 @@
 - Multilanguage 
 - Adds the ability to reassign a request to a department
 - Adds the ability to reassign a request to a bot
+- Adds the ability to view all the request' attributes
+- Adds the ability to view all the contact' attributes
+- Fixes the in-app notification and count of unserved requests when user' role is agent 
 
 ### 1.0.40
 - Fixes the user profile urls
