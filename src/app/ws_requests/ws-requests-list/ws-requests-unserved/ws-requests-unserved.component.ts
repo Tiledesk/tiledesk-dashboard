@@ -53,7 +53,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     // this.getWsRequestsUnservedLength()
     console.log('% »»» WebSocketJs WF - onData (ws-requests-unserved) - wsRequestsUnserved', this.wsRequestsUnserved)
     // this.getProjectUserRole()
-    this.getCount();
+    // this.getCount();
     this.detectBrowserRefresh();
   }
 
