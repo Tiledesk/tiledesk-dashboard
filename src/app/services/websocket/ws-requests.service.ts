@@ -270,22 +270,22 @@ export class WsRequestsService implements OnDestroy {
                 })
                 Promise.all(requests).then(() => {
 
-                  console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> data.length ', data.length)
-                  console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> data ', data)
+                  // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> data.length ', data.length)
+                  // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> data ', data)
 
-                  var served = data.filter(r => {
-                    if (r['status'] !== 100) {
-                      return true
-                    }
-                  })
+                  // var served = data.filter(r => {
+                  //   if (r['status'] !== 100) {
+                  //     return true
+                  //   }
+                  // })
 
-                  var unserved = data.filter(r => {
-                    if (r['status'] === 100) {
-                      return true
-                    }
-                  })
-                  console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> served length ', served.length)
-                  console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> unserved length ', unserved.length)
+                  // var unserved = data.filter(r => {
+                  //   if (r['status'] === 100) {
+                  //     return true
+                  //   }
+                  // })
+                  // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> served length ', served.length)
+                  // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ done -> unserved length ', unserved.length)
 
 
                   self.ws_All_RequestsLength$.next(data.length);
@@ -294,7 +294,6 @@ export class WsRequestsService implements OnDestroy {
                 });
 
               }
-
               // this.requesTtotal = data.length
               // if (this.requesTtotal) {
               // self.getRequestsTotalCount()
@@ -313,8 +312,6 @@ export class WsRequestsService implements OnDestroy {
 
               // self.getTotalRequestLength(data.length)
 
-
-
             }
             // }, 100);
             // else if (data.length === 0) {
@@ -323,7 +320,6 @@ export class WsRequestsService implements OnDestroy {
 
             // }
           }
-
         );
       }
     });
@@ -335,10 +331,6 @@ export class WsRequestsService implements OnDestroy {
       cb();
     }, 100);
   }
-
-
-
-
 
 
   /**
@@ -355,7 +347,6 @@ export class WsRequestsService implements OnDestroy {
     }
 
     if (this.wsRequestsList) {
-
       // -----------------------------------------------------------------------------------------------------
       // publish all REQUESTS 
       // -----------------------------------------------------------------------------------------------------
@@ -365,10 +356,8 @@ export class WsRequestsService implements OnDestroy {
       }
 
       this.timeout = setTimeout(() => {
-
         this.wsRequestsList$.next(this.wsRequestsList);
         console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ON-CREATE ----- NEXT wsRequestsList ', this.wsRequestsList)
-
         // this.ws_All_RequestsLength$.next(this.wsRequestsList.length);
         // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service ON-CREATE ----- NEXT wsRequestsList LENGTH', this.wsRequestsList.length)
       }, 1000);
