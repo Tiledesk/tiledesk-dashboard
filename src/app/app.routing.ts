@@ -115,7 +115,7 @@ import { PaymentCanceledPageComponent } from './pricing/payment-canceled-page/pa
 import { PaymentsListComponent } from './pricing/payments-list/payments-list.component';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { InstallTiledeskComponent } from './install-tiledesk/install-tiledesk.component';
-
+import { LoadingPageComponent } from './loading-page/loading-page.component';
 
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
@@ -169,7 +169,8 @@ const routes: Routes = [
   { path: 'verify/email/:user_id', component: VerifyEmailComponent },
 
   { path: 'handle-invitation/:pendinginvitationid/:projectname/:adminfirstname/:adminsurname', component: HandleInvitationComponent },
-  
+  // added to resolve the error Cannot match any routes when the surname is not available  
+  { path: 'handle-invitation/:pendinginvitationid/:projectname/:adminfirstname', component: HandleInvitationComponent }, 
 
   { path: 'project/:projectid/unauthorized', component: UnauthorizedComponent },
 
@@ -182,10 +183,15 @@ const routes: Routes = [
 
   /**
    * if change wsrequest search for all occurrence - 
-   * remember that in the navbar component wsrequest is used for the link from the in app-notification to the request's messages
-   */
+   * remember that in the navbar component wsrequest is used for the link from the in app-notification to the request's messages */
   { path: 'project/:projectid/wsrequests', component: WsRequestsListComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/wsrequest/:requestid/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
+
+  // is the dummy component used in ws-requests-msgs: when the user is in the request' details page and 
+  // click an in-app notification (of a request unserved or assigned to him) the navigation is redirect to the loading component 
+  // and then again to request' details page
+  { path: 'project/:projectid/wsrequest/loading', component: LoadingPageComponent, canActivate: [AuthGuard] },
+  
   
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
 
