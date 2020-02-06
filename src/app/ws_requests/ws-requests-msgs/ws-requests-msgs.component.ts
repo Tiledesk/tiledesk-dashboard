@@ -137,6 +137,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   attributesArray: Array<any>
   rightSidebarWidth: number;
 
+
   /**
    * Constructor
    * 
@@ -170,22 +171,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     private faqKbService: FaqKbService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService)
-
-    // force route reload whenever params change;
-    //  this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-
-
-    this.route.params.subscribe((params) => {
-      console.log('%%% Ws-REQUESTS-Msgs - route.params.subscribe  ', params);
-      
-
-    });
   }
 
   // -----------------------------------------------------------------------------------------------------
   // @ HostListener window:resize
   // -----------------------------------------------------------------------------------------------------
-
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
 
@@ -224,18 +214,59 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
    * On init
    */
   ngOnInit() {
-
-    if (this.id_request) {
-      this.unsuscribeRequestById(this.id_request);
-      this.unsuscribeMessages(this.id_request);
-    }
-
     this.getParamRequestId();
+
     this.getCurrentProject();
     this.getLoggedUser();
     this.detectMobile();
     // this.listenToGotAllMsgAndDismissSpinner()
     this.getStorageBucket();
+
+  }
+
+  /**
+ * Get the request id from url params and then with this
+ * start the subscription to websocket messages and to websocket request by id
+ */
+  getParamRequestId() {
+    // this.id_request = this.route.snapshot.params['requestid'];
+    // const id_request = this.route.snapshot.params['requestid'];
+    // console.log('%%% Ws-REQUESTS-Msgs - FROM URL PARAMS GET REQUEST-ID (1)', id_request);
+    // if (this.id_request) {
+    //   this.subscribeToWs_RequestById(this.id_request);
+    //   // this.getContactIdFromNodejsRequest()
+    // }
+
+    this.route.params.subscribe((params) => {
+
+      if (this.id_request) {
+        console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - UNSUB-REQUEST-BY-ID - id_request ', this.id_request);
+        console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - UNSUB-MSGS - id_request ', this.id_request);
+        this.unsuscribeRequestById(this.id_request);
+        this.unsuscribeMessages(this.id_request);
+      }
+      console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - HERE YES 1  this.id_request ', this.id_request, 'params.requestid ', params.requestid);
+
+      if (this.id_request !== undefined) { // this avoid to apply 'redirectTo' when the page is refreshed (indeed in this case this.id_request is undefined)
+        if (this.id_request !== params.requestid) { // this occur when the user click on the in-app notification when is in the request' details page
+          console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - HERE YES 2 this.id_request ', this.id_request, 'is != of params.requestid ', params.requestid);
+          this.redirectTo('project/' + params.projectid + '/wsrequest/' + params.requestid + '/messages', params.projectid);
+        }
+      }
+
+      console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - route.params.subscribe  ', params);
+      this.id_request = params.requestid;
+      console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - route.params.subscribe request_id ', this.id_request);
+    });
+
+    if (this.id_request) {
+      this.subscribeToWs_RequestById(this.id_request);
+    }
+  }
+  // https://stackoverflow.com/questions/40983055/how-to-reload-the-current-route-with-the-angular-2-router
+  redirectTo(uri: string, projectid: string) {
+    this.router.navigateByUrl('project/' + projectid + '/wsrequest/loading', { skipLocationChange: true }).then(() =>
+      this.router.navigate([uri]));
   }
 
   getStorageBucket() {
@@ -248,7 +279,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
    * On destroy
    */
   ngOnDestroy() {
-    console.log('!!!!!!!!!!!!! ngOnDestroy')
+    console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - ngOnDestroy')
 
     // this.subscribe.unsubscribe();
     // the two snippet bottom replace  this.subscribe.unsubscribe()
@@ -283,18 +314,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   //   })
   // }
 
-  /**
-   * Get the request id from url params and then with this
-   * start the subscription to websocket messages and to websocket request by id
-   */
-  getParamRequestId() {
-    this.id_request = this.route.snapshot.params['requestid'];
-    console.log('%%% Ws-REQUESTS-Msgs - FROM URL PARAMS GET REQUEST-ID  ', this.id_request);
-    if (this.id_request) {
-      this.subscribeToWs_RequestById(this.id_request);
-      // this.getContactIdFromNodejsRequest()
-    }
-  }
+
 
 
   // getContactIdFromNodejsRequest() {
@@ -383,13 +403,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
    * @param id_request 
    */
   subscribeToWs_RequestById(id_request) {
-    console.log('% !!!!!!!!!!!! Ws-REQUESTS-Msgs calling subscribe Request By Id: ', id_request)
+    console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp »»»»»»»»»» CALLING SUBSCRIBE Request-By-Id: ', id_request)
     // Start websocket subscription
     this.wsRequestsService.subscribeTo_wsRequestById(id_request);
     // Get request
     this.getWsRequestById$();
   }
-
 
 
   toggleShowAllClientString() {
@@ -407,32 +426,18 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
-  checkOverflow(element) {
-    console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES calling checkOverflow on the value : ${element}`);
-    if (element.offsetHeight < element.scrollHeight ||
-      element.offsetWidth < element.scrollWidth) {
-      console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES checkOverflow offsetHeight : ${element.offsetHeight} - scrollHeight ${element.scrollHeight}`);
-      console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES checkOverflow offsetWidth : ${element.offsetWidth} - scrollWidth ${element.scrollWidth}`);
-      return true;
-    } else {
-      return false;
-    }
-  }
 
   ngAfterViewInit() {
     // -----------------------------------
     // Right sidebar width after view init
     // -----------------------------------
     const rightSidebar = <HTMLElement>document.querySelector(`.right-card`);
-
     this.rightSidebarWidth = rightSidebar.offsetWidth
-
     console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES attributeValueElem offsetWidth:`, this.rightSidebarWidth);
 
   }
 
   toggleShowAllString(elementAttributeValueId: any, elementArrowIconId: any, index) {
-
     console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES - element Attribute Value Id:`, elementAttributeValueId);
     console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES - element Arrow Icon id:`, elementArrowIconId);
 
@@ -504,22 +509,22 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         // console.log('% !!!!!!!!!!!! Ws-REQUESTS-Msgs - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
-        console.log('%%% Ws-REQUESTS-Msg - getWsRequestById$ ****************** this.request ****************** ', this.request)
+        console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById$ ****************** this.request ****************** ', this.request)
 
 
         if (this.request) {
           this.members_array = this.request.participants;
-          console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById PARTICIPANTS ARRAY ', this.members_array)
+          console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById PARTICIPANTS ARRAY ', this.members_array)
 
           this.members_array.forEach(member => {
-            console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById member ', member);
-            console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById member is bot?', member.includes('bot_'));
+            console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById member ', member);
+            console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById member is bot?', member.includes('bot_'));
 
 
             if (member.includes('bot_')) {
 
               this.bot_participant_id = member.substr(4);
-              console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById id bot in participants (substring) ', this.bot_participant_id);
+              console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById id bot in participants (substring) ', this.bot_participant_id);
 
             } else {
               this.bot_participant_id = ''
@@ -550,10 +555,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             this.rating_message = 'n.a.'
           }
 
-          console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById REQUESTER ID (DA LEAD)', this.requester_id);
+          // console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById REQUESTER ID (DA LEAD)', this.requester_id);
 
           if (this.request.attributes) {
-            console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES ', this.request.attributes);
+            // console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById ATTRIBUTES ', this.request.attributes);
 
             // --------------------------------------------------------------------------------------------------------------
             // new: display all attributes dinamically
@@ -566,7 +571,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
               let _value: any;
               if (typeof value === 'object' && value !== null) {
 
-                console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value is an object :`, JSON.stringify(value));
+                // console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value is an object :`, JSON.stringify(value));
                 _value = JSON.stringify(value)
               } else {
                 _value = value
@@ -598,7 +603,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
                   totalLength += letterLength['S'];
                 }
               }
-              console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
+              // console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
 
               let entries = { 'attributeName': key, 'attributeValue': _value, 'attributeValueL': totalLength };
 
@@ -607,60 +612,46 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             console.log(':-D Ws-REQUESTS-Msgs - getWsRequestById attributesArray: ', this.attributesArray);
             // --------------------------------------------------------------------------------------------------------------
 
-            if (this.request.attributes.client) {
-              console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > CLIENT ', this.request.attributes.client);
-              const stripHere = 30;
-              this.clientStringCutted = this.request.attributes.client.substring(0, stripHere) + '...';
-              console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > CLIENT CUTTED ', this.clientStringCutted);
-            }
-
-            if (this.request.attributes.departmentId) {
-              console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > DEPT ID ', this.request.attributes.departmentId);
-            }
-
-            if (this.request.attributes.departmentName) {
-              console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > DEPT NAME ', this.request.attributes.departmentName);
-            }
-
-            if (this.request.attributes.projectId) {
-              console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > PROJECT ID ', this.request.attributes.projectId);
-            }
-
-            if (this.request.attributes.requester_id) {
-              console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > REQUESTER ID ', this.request.attributes.requester_id);
-            }
-
-            if (this.request.attributes.sourcePage) {
-              console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > SOURCE PAGE ', this.request.attributes.sourcePage);
-              this.sourcePage = this.request.attributes.sourcePage;
-
-              const stripHere = 20;
-
-              this.sourcePageCutted = this.request.attributes.sourcePage.substring(0, stripHere) + '...';
-              console.log('%%% Ws-REQUESTS-Msgs getWsRequestById - ATTRIBUTES > SOURCR PAGE CUTTED: ', this.sourcePage);
-
-            }
-
-            if (this.request.attributes.userEmail) {
-              console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > USER EMAIL ', this.request.attributes.userEmail);
-            }
-
-            if (this.request.attributes.userFullname) {
-              console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > USER FULLNAME ', this.request.attributes.userFullname);
-            }
-
-            if (this.request.attributes.senderAuthInfo) {
-              console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > SENDER AUTH INFO ', this.request.attributes.senderAuthInfo);
-              const _senderAuthInfoString = JSON.stringify(this.request.attributes.senderAuthInfo)
-
-              // add a space after each comma
-              this.senderAuthInfoString = _senderAuthInfoString.split(',').join(', ')
-              console.log('%%% Ws-REQUESTS-Msgs - > SENDER AUTH INFO (STRING): ', this.senderAuthInfoString);
-
-              const stripHere = 20;
-              this.senderAuthInfoStringCutted = this.senderAuthInfoString.substring(0, stripHere) + '...';
-
-            }
+            // if (this.request.attributes.client) {
+            //   console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > CLIENT ', this.request.attributes.client);
+            //   const stripHere = 30;
+            //   this.clientStringCutted = this.request.attributes.client.substring(0, stripHere) + '...';
+            //   console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > CLIENT CUTTED ', this.clientStringCutted);
+            // }
+            // if (this.request.attributes.departmentId) {
+            //   console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > DEPT ID ', this.request.attributes.departmentId);
+            // }
+            // if (this.request.attributes.departmentName) {
+            //   console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > DEPT NAME ', this.request.attributes.departmentName);
+            // }
+            // if (this.request.attributes.projectId) {
+            //   console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > PROJECT ID ', this.request.attributes.projectId);
+            // }
+            // if (this.request.attributes.requester_id) {
+            //   console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > REQUESTER ID ', this.request.attributes.requester_id);
+            // }
+            // if (this.request.attributes.sourcePage) {
+            //   console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > SOURCE PAGE ', this.request.attributes.sourcePage);
+            //   this.sourcePage = this.request.attributes.sourcePage;
+            //   const stripHere = 20;
+            //   this.sourcePageCutted = this.request.attributes.sourcePage.substring(0, stripHere) + '...';
+            //   console.log('%%% Ws-REQUESTS-Msgs getWsRequestById - ATTRIBUTES > SOURCR PAGE CUTTED: ', this.sourcePage);
+            // }
+            // if (this.request.attributes.userEmail) {
+            //   console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > USER EMAIL ', this.request.attributes.userEmail);
+            // }
+            // if (this.request.attributes.userFullname) {
+            //   console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > USER FULLNAME ', this.request.attributes.userFullname);
+            // }
+            // if (this.request.attributes.senderAuthInfo) {
+            //   console.log('%%% Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES > SENDER AUTH INFO ', this.request.attributes.senderAuthInfo);
+            //   const _senderAuthInfoString = JSON.stringify(this.request.attributes.senderAuthInfo)
+            //   // add a space after each comma
+            //   this.senderAuthInfoString = _senderAuthInfoString.split(',').join(', ')
+            //   console.log('%%% Ws-REQUESTS-Msgs - > SENDER AUTH INFO (STRING): ', this.senderAuthInfoString);
+            //   const stripHere = 20;
+            //   this.senderAuthInfoStringCutted = this.senderAuthInfoString.substring(0, stripHere) + '...';
+            // }
           }
 
 
@@ -735,7 +726,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // -----------------------------------------------------------------------------------------------------
 
   subscribeToWs_MsgsByRequestId(id_request: string) {
-    console.log('% Sottoscrizione a id_request ', id_request)
+    console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - subscribe To Ws Msgs ByRequestId ', id_request)
     this.wsMsgsService.subsToWS_MsgsByRequestId(id_request);
     this.getWsMsgs$();
   }
@@ -747,20 +738,17 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       )
       .subscribe((wsmsgs) => {
         // this.wsMsgsService._wsMsgsList.subscribe((wsmsgs) => {
-        console.log('%%% Ws-REQUESTS-Msgs Msgs getWsMsgs$ *** wsmsgs *** ', wsmsgs)
-
+        // console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsMsgs$ *** wsmsgs *** ', wsmsgs)
 
         this.messagesList = wsmsgs;
-        console.log(':-D WsRequestsMsgsComponent getWsRequests$ *** messagesList *** ', this.messagesList)
-
-
+        console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsMsgs$ *** this.messagesList *** ', this.messagesList)
 
         if (this.timeout) {
           clearTimeout(this.timeout);
         }
 
         this.timeout = setTimeout(() => {
-          console.log(':-D WsRequestsMsgsComponent getWsRequests$ *** messagesList *** completed ')
+          console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsMsgs$ *** messagesList *** completed ')
           this.showSpinner = false;
 
           this.scrollCardContetToBottom();
@@ -769,9 +757,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       }, error => {
         this.showSpinner = false;
-        console.log('%%% Ws-REQUESTS-Msgs - getWsMsgs$ * error * ', error)
+        console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsMsgs$ * error * ', error)
       }, () => {
-        console.log('%%% Ws-REQUESTS-Msgs - getWsMsgs$ *** complete *** ')
+        console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsMsgs$ *** complete *** ')
       });
 
   }
@@ -838,10 +826,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
-
-
-
-
   openRightSideBar(message: string) {
     this.OPEN_RIGHT_SIDEBAR = true;
     console.log('%%% Ws-REQUESTS-Msgs »»»» OPEN RIGHT SIDEBAR ', this.OPEN_RIGHT_SIDEBAR, ' MSG: ', message);
@@ -873,14 +857,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     // _elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;');
   }
 
-
-
   goBack() {
     this._location.back();
 
   }
-
-
 
   detectMobile() {
     // this.isMobile = true;
