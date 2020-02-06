@@ -168,6 +168,7 @@ import { WidgetDesignBaseComponent } from './widget_components/widget-design/wid
 import { WsRequestsServedComponent } from './ws_requests/ws-requests-list/ws-requests-served/ws-requests-served.component';
 import { WsRequestsUnservedComponent } from './ws_requests/ws-requests-list/ws-requests-unserved/ws-requests-unserved.component';
 import { CloseRequestModalComponent } from './ws_requests/modals/close-request-modal/close-request-modal.component';
+import { LoadingPageComponent } from './loading-page/loading-page.component';
 
 
 console.log('************** APPMODULE ******************');
@@ -274,7 +275,8 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     WidgetDesignBaseComponent,
     WsRequestsServedComponent,
     WsRequestsUnservedComponent,
-    CloseRequestModalComponent
+    CloseRequestModalComponent,
+    LoadingPageComponent
   ],
   imports: [
     /* PRIVATE */
