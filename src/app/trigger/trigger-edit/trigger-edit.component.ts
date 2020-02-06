@@ -144,12 +144,12 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
                                                                                 operator: cond.operator,
                                                                                 path: cond.path,
                                                                                 value: cond.value,
-                                                                                //type: this.condition.filter(b => b.id === cond.path)[0].type,
-                                                                                type: this.condition.filter(b => b.triggerType === trigger.trigger.key).filter(c => c.id === cond.path)[0].type
+                                                                                key: cond.key,
+                                                                                type: this.condition.filter(b => b.triggerType === trigger.trigger.key).filter(c => c.key === cond.key)[0].type
                                                                           }))
 
-      console.log('condition.filter', typeof(trigger.conditions[this.conditionType.split('.')[1]][0].value))
-      console.log('aaaaaaaaaaaaa', this.condition.filter(a => a.triggerType === trigger.trigger.key).filter(b => b.id === trigger.conditions[this.conditionType.split('.')[1]][0].path).filter( c => c.type === typeof(trigger.conditions[this.conditionType.split('.')[1]][0]).value))                                                                    
+      console.log('condition.filter', this.condition.filter(b => b.triggerType === trigger.trigger.key))
+      console.log('aaaaaaaaaaaaa', this.condition.filter(a => a.triggerType === trigger.trigger.key).filter(b => b.key === trigger.conditions[this.conditionType.split('.')[1]][0].key));
       const conditions_array = this.formBuilder.array(conditionsGROUP)
       const cond_triggerFormNewArray = this.triggerForm.get('conditions') as FormGroup
       cond_triggerFormNewArray.setControl(this.conditionType.split('.')[1] , conditions_array)
@@ -182,6 +182,7 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
       operator: [ undefined, Validators.required],
       value: [ undefined, Validators.required ],
       type: undefined,
+      key: undefined, 
       placeholder: undefined
     })
 
@@ -294,16 +295,15 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
     console.log('VALUE', $event);
 
     console.log('condition before', condition)
-    // set current value of key
-    // - TYPE of selected condition passed as a parameter
-    // - PLACEHOLDER of selected condition passed as a parameter
-    // const type = this.condition.filter(b => b.id === $event.id)[0].type
-    // double filter by id first and by label_key to determine unique type option (some conditions have same id and different type)
-    const type = this.condition.filter(b => b.id === $event.id).filter( d => d.label_key === $event.label_key)[0].type
-    condition.patchValue({'type': type,
-                          'operator': this.options[type + 'Opt'][0].id,
+     // set current value of selectedCondition filtering condition array by unique key : key
+    // set conditionFormArray by using selectedCondition value:
+    // - type , operator, key, placeholder
+    const selectedCondition = this.condition.filter(b => b.key === $event.key)[0]
+    condition.patchValue({'type': selectedCondition.type,
+                          'operator': this.options[selectedCondition.type + 'Opt'][0].id,
                           'value': undefined,
-                          'placeholder': this.condition.filter(b => b.id === $event.id)[0].placeholder });
+                          'key': selectedCondition.key,
+                          'placeholder': selectedCondition.placeholder });
     console.log('condition after', condition);
 
   }
