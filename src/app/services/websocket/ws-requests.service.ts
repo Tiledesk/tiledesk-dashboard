@@ -340,7 +340,7 @@ export class WsRequestsService implements OnDestroy {
    */
   addWsRequests(request: Request) {
     // console.log("% WsRequestsService addWsRequest wsRequestsList.length", this.wsRequestsList.length);
-    // console.log("% »»» WebSocketJs WF - WsRequestsService addWsRequest request ", request);
+    console.log("% »»» WebSocketJs WF - WsRequestsService addWsRequest request ", request);
 
     if (request !== null && request !== undefined) {
       this.wsRequestsList.push(request);
@@ -415,28 +415,6 @@ export class WsRequestsService implements OnDestroy {
 
   /**
    * 
-   * REQUEST BY ID publish @ the CREATE
-   * 
-   * @param request 
-   */
-  addWsRequest(request) {
-    this.wsRequest$.next(request);
-
-  }
-
-  /**
-   * 
-   * REQUEST BY ID publish @ the UPDATE
-   * 
-   * @param request 
-   */
-  updateWsRequest(request) {
-
-    this.wsRequest$.next(request);
-  }
-
-  /**
-   * 
    * REQUEST BY ID - Subscribe to websocket request by id service 
    * called when in WsRequestsMsgsComponent onInit() is got the request id from url params
    * 
@@ -462,11 +440,13 @@ export class WsRequestsService implements OnDestroy {
     // this.wsjsRequestByIdService.send(str);
 
     // this.webSocketJs.ref('/' + this.project_id + '/requests/' + id_request,
+    console.log('% »»» WebSocketJs WF >>> ws-msgs--- r-service - SUBSCR To WS REQUEST-BY-ID ****** CALLING REF ******');
     this.webSocketJs.ref('/' + this.project_id + '/requests/' + id_request,
 
       function (data, notification) {
 
         console.log("% »»» WebSocketJs WF - WsMsgsService REQUEST-BY-ID CREATE ", data);
+        console.log("% »»» WebSocketJs WF >>> ws-msgs--- r-service - SUBSCR To WS REQUEST-BY-ID - CREATE - data ", data);
         /**
          *  HERE MANAGE IF ALREADY HAS EMIT THE REQUEST BY ID
          */
@@ -487,7 +467,8 @@ export class WsRequestsService implements OnDestroy {
 
       }, function (data, notification) {
 
-        console.log("% »»» WebSocketJs WF - WsMsgsService REQUEST-BY-ID UPDATE ", data);
+        // console.log("% »»» WebSocketJs WF - WsMsgsService REQUEST-BY-ID UPDATE ", data);
+        console.log("% »»» WebSocketJs WF >>> ws-msgs--- r-service - SUBSCR To WS REQUEST-BY-ID - UPDATE - data ", data);
         self.updateWsRequest(data)
         // this.wsRequestsList.push(data);
 
@@ -500,6 +481,30 @@ export class WsRequestsService implements OnDestroy {
     );
     // console.log("% SUB »»»»»»» subsToWS RequestById from client to websocket: ", message);
 
+  }
+
+
+  /**
+   * 
+   * REQUEST BY ID publish @ the CREATE
+   * 
+   * @param request 
+   */
+  addWsRequest(request) {
+    console.log("% »»» WebSocketJs WF >>> ws-msgs--- r-service - ADD WS REQUEST-BT-ID (PUBLISH) ", request);
+    this.wsRequest$.next(request);
+
+  }
+
+  /**
+   * 
+   * REQUEST BY ID publish @ the UPDATE
+   * 
+   * @param request 
+   */
+  updateWsRequest(request) {
+    console.log("% »»» WebSocketJs WF >>> ws-msgs--- r-service - UPDATE WS REQUEST-BT-ID (PUBLISH) ", request);
+    this.wsRequest$.next(request);
   }
 
 
@@ -526,7 +531,7 @@ export class WsRequestsService implements OnDestroy {
     // ----------------------------------------------
     // this.wsjsRequestByIdService.send(str);
     this.webSocketJs.unsubscribe('/' + this.project_id + '/requests/' + id_request);
-    // console.log("% SUB (UN) »»»»»»» UN-subsToWS RequestById from client to websocket: ", message);
+    console.log("% »»» WebSocketJs WF >>> ws-msgs--- r-service - UN-SUBS REQUEST-BY-ID FROM WS »»»»»»» request_id ", id_request);
 
   }
 
@@ -534,7 +539,6 @@ export class WsRequestsService implements OnDestroy {
 
   // CLOSE SUPPORT GROUP
   public closeSupportGroup(group_id: string) {
-
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
