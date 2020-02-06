@@ -48,6 +48,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
     'email': {
       'required': 'Email is required.',
       'email': 'Email must be a valid email',
+      'pattern': 'Email must be a valid email',
     },
     'password': {
       'required': 'Password is required.',
@@ -159,32 +160,23 @@ export class SignupComponent implements OnInit, AfterViewInit {
 
         } else {
           console.log('SIGNUP ERROR CODE', signupResponse['code']);
-
           this.showSpinnerInLoginBtn = false;
           this.display = 'block';
 
           if (signupResponse['code'] === 11000) {
-
             if (this.currentLang === 'it') {
-
               this.signin_errormsg = `Un account con l'email ${this.userForm.value['email']} esiste già`;
-
             } else if (this.currentLang === 'en') {
               this.signin_errormsg = `An account with the email ${this.userForm.value['email']} already exist`;
-
             } else if (this.currentLang !== 'en' && this.currentLang !== 'it') {
-
               this.signin_errormsg = `An account with the email ${this.userForm.value['email']} already exist`;
             }
-
           } else {
-
             this.signin_errormsg = signupResponse['errmsg'];
           }
         }
       }, (error) => {
         console.log('CREATE NEW USER - POST REQUEST ERROR ', error);
-
         this.showSpinnerInLoginBtn = false;
       }, () => {
         console.log('CREATE NEW USER  - POST REQUEST COMPLETE ');
@@ -255,13 +247,15 @@ export class SignupComponent implements OnInit, AfterViewInit {
       // alert('signin reinit');
     }
   }
+  
 
   // 'email': [{ value: '', disabled: true }, [
   buildForm() {
     this.userForm = this.fb.group({
       'email': ['', [
         Validators.required,
-        Validators.email,
+        // Validators.email,
+        Validators.pattern(/^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)+$/),
       ]],
       'password': ['', [
         // Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
