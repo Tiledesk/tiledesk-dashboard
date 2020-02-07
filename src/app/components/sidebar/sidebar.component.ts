@@ -108,7 +108,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     currentUserId: string
 
     CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
-  
+
     userProfileImageExist: boolean;
     userImageHasBeenUploaded: boolean;
     userProfileImageurl: string;
@@ -491,6 +491,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
         this.usersService.updateProjectUser(this.projectUser_id, IS_AVAILABLE).subscribe((projectUser: any) => {
+            // NK-TO-TEST - da implementare quando viene implementato il servizio - serve per cambiare lo stato di disponibilità dell'utente corrente
+            // anche in USER & GROUP bisogna cambiare per la riga dell'utente corrente   
+            // this.usersService.updateCurrentUserAvailability(IS_AVAILABLE).subscribe((projectUser: any) => { 
+
             console.log('PROJECT-USER UPDATED ', projectUser)
 
             // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
@@ -753,7 +757,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         if (this.elSidebarWrapper) {
             this.elSidebarWrapper.scrollTop = this.scrollpos;
         }
-      
+
     }
 
     goToHome() {

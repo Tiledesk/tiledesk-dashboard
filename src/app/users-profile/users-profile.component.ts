@@ -204,7 +204,10 @@ export class UsersProfileComponent implements OnInit {
       });
   }
 
+
   getMemberByIdAndSaveInStorage() {
+     // NK-TO-TEST - da cambiare - vedi commento nel servizio
+    //  this.usersService.getUsersById("5e3d47b485aa8a0017012485")
     this.usersService.getUsersById(this.member_id)
       .subscribe((user) => {
         console.log('USERS PROFILES - USER GET BY ID ', user);
