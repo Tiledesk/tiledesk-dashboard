@@ -2,7 +2,7 @@
     <div class="container-fluid"  style="padding-left:0px;padding-right: 0px">
 
 
-        <div style="position: absolute; width: 100%; transform: skewY(-12deg); transform-origin: 0px center; background: rgb(240, 128, 111); height: 500px;">
+        <div class="handle-invitation-background">
           <span style="height: 64px; position: absolute; width: 100%; left: 0%; top: 0px; background-color: rgba(66, 71, 112, 0.1);"></span>
           <span style="height: 64px; position: absolute; width: 40%; bottom: 0px; right: 12%; background: rgba(255, 255, 255, 0.45);"></span>
           <span style="height: 64px; position: absolute; width: 35%; bottom: -64px; right: 6%; background: rgba(50, 50, 93, 0.05);"></span>
@@ -24,7 +24,13 @@
                       <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="2"></circle>
                       </svg> -->
                         <div  class="handle-invitation-images-wrapper">
-                          <img [src]="company_logo_45x45"  style="width: 45px;  height: 45px;  margin-top: 17px;  margin-left: 4px;">
+                          <div class="handle-invitation-logo">
+                            <!-- margin-top: 17px;  margin-left: 4px;     -->
+                            <img [src]="company_logo_45x45"  style="
+                            margin-top: 17px;
+                            width: 45px; 
+                            height: auto;">
+                          </div>
                         </div>
                       </div>
                       

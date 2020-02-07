@@ -1,92 +1,105 @@
+@import "./src/assets/sass/md/_variables.scss";
+.spinner {
+  // animation: rotate 2s linear infinite;
+  z-index: 2;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -25px 0 0 -25px;
+  width: 50px;
+  height: 50px;
 
-  .spinner {
-    // animation: rotate 2s linear infinite;
-    z-index: 2;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin: -25px 0 0 -25px;
-    width: 50px;
-    height: 50px;
-    
-    & .path {
-      stroke: hsl(210, 100, 75);
-      stroke-linecap: round;
+  & .path {
+    stroke: hsl(210, 100, 75);
+    stroke-linecap: round;
     //   animation: dash 1.5s ease-in-out infinite, colors 6s infinite;
-    }
-    
   }
-  
-  @keyframes rotate {
-    100% {
-      transform: rotate(360deg);
-    }
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
   }
-  
-  @keyframes dash {
-    0% {
-      stroke-dasharray: 1, 150;
-      stroke-dashoffset: 0;
-    }
-    50% {
-      stroke-dasharray: 90, 150;
-      stroke-dashoffset: -35;
-    }
-    100% {
-      stroke-dasharray: 90, 150;
-      stroke-dashoffset: -124;
-    }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
   }
-  
-  @keyframes colors {
-    0% {
-      stroke: hsl(0, 100, 50);
-    }
-    25% {
-      stroke: hsl(0, 100, 50);
-    }
-    26% {
-      stroke: hsl(50, 100, 45);
-    }
-    50% {
-      stroke: hsl(50, 100, 45);
-    }
-    51% {
-      stroke: hsl(100, 100, 30);
-    }  
-    75% {
-      stroke: hsl(100, 100, 30);
-    }
-    76% {
-      stroke: hsl(190, 100, 37);
-    }
-    100% {
-      stroke: hsl(190, 100, 37);
-    }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}
+
+@keyframes colors {
+  0% {
+    stroke: hsl(0, 100, 50);
+  }
+  25% {
+    stroke: hsl(0, 100, 50);
+  }
+  26% {
+    stroke: hsl(50, 100, 45);
+  }
+  50% {
+    stroke: hsl(50, 100, 45);
+  }
+  51% {
+    stroke: hsl(100, 100, 30);
+  }
+  75% {
+    stroke: hsl(100, 100, 30);
+  }
+  76% {
+    stroke: hsl(190, 100, 37);
+  }
+  100% {
+    stroke: hsl(190, 100, 37);
+  }
+}
+
+.handle-invitation-images-wrapper {
+  left: 50%;
+  position: absolute;
+  top: -15px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow: 0 0 42px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(0, 0, 0, 0.12), 0 0 4px rgba(0, 0, 0, 0.06);
+  height: 80px;
+  overflow: hidden;
+  width: 80px;
+}
+
+@media (max-width: 280px) {
+  .btn-signup-custom-padding {
+    padding: 16px 30px !important;
   }
 
-
-  .handle-invitation-images-wrapper {
-    left: 50%; 
-    position: absolute;
-    top: -15px;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    background-color: #fff;
-    box-shadow: 0 0 42px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(0, 0, 0, 0.12), 0 0 4px rgba(0, 0, 0, 0.06);
-    height: 80px;
-    overflow: hidden;
-    width: 80px;
+  .btn-gotologin-custom-padding {
+    padding: 16px 30px !important;
   }
+}
 
-  @media (max-width: 280px) {
-    .btn-signup-custom-padding {
-      padding:16px 30px !important; 
-    }
+.handle-invitation-background {
+  // position: absolute;
+  // width: 100%;
+  // transform: skewY(-12deg);
+  // transform-origin: 0px center;
+  // background: $brand-recent-project-bckgrnd;
+  // height: 500px;
+  // left: 0;
 
-    .btn-gotologin-custom-padding {
-      padding:16px 30px !important; 
-    }
-
-  }
-  
+  position: absolute;
+  width: 100%;
+  transform: skewY(-12deg);
+  transform-origin: 0px center;
+  background: $brand-recent-project-bckgrnd;
+  height: 500px;
+}
