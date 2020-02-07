@@ -119,13 +119,11 @@
                 // @ Save modified translation
                 // -------------------------------------------------------------- -->
                 <button *ngIf="selectedTranslationCode !== 'add'" class="btn btn-primary btn_edit_lang"
-                  style="margin-top: 2px; margin-bottom: 1px; float: right;" (click)="editLang()">
+                  style="margin-top: 2px; margin-bottom: 1px; float: right;" (click)="editLang()" [disabled]="currentTraslationClone === undefined">
                   {{ 'ScriptPage.Save' | translate }}
                 </button>
-
               </div>
             </div>
-
             <div class="row">
               <div class="col-md-12">
                 <div class="section-subtitle" style="border-top: 1px solid #e8f0f5;  padding-top: 15px;">
@@ -140,13 +138,11 @@
             <section *ngIf="selectedTranslationCode !== 'add' && selected_translation">
 
               <span *ngFor="let item of selected_translation">
-
                 <div class="row" style="padding-bottom: 16px;">
                   <div class="col-md-4">
                     <span class="ml__label_name">
                       {{ item?.labelName }}
                     </span>
-
                   </div>
 
                   <div class="col-md-5">
@@ -154,11 +150,8 @@
                       (ngModelChange)="onChangeTranslation($event, item?.labelName)"
                       rows="2">{{ item?.labelValue }}</textarea>
                   </div>
-
                 </div>
-
               </span>
-
             </section>
 
             <!-- 
