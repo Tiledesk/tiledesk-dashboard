@@ -391,6 +391,8 @@
     "BotType": " / Tipo bot",
     "Language": "Lingua",
     "ReassignToDept":"Riassegna al dipartimento",
+    "AddTranslation":"Aggiungi traduzione",
+    "Completed": "Completato",
     "Pricing": {
         "Operators": "Operatori",
         "UpgradePlan": "Aggiorna Piano",

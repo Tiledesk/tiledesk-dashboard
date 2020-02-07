@@ -394,6 +394,8 @@
     "BotType": " / Bot type",
     "Language": "Language",
     "ReassignToDept":"Reassign to department",
+    "AddTranslation":"Add translation",
+    "Completed": "Completed",
     "Pricing": {
         "Operators": "Operators",
         "UpgradePlan": "Upgrade Plan",
