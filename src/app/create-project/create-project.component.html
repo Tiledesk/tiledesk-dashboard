@@ -1,97 +1,117 @@
-
 <!-- wizard-bckgrnd -->
 <!-- filter: drop-shadow( 3px 3px 2px rgba(62,169,245, .2)); -->
- <div class="main-content " style="padding-top:0px; background-color: #ffffff;
- min-height: calc(100% - 0px);margin-top: 0px; padding: 0px" >
- <img src="assets/img/razzo_wizard_v2_script.svg" class="img-fluid razzo_wizard"/>
- <img [src]="logo_x_rocket" class="img-fluid logo_in_wizard"/>
-<!---->
-<div style="min-height: calc(100vh - 0px);" class="wizard-bckgrnd">
-  <div class="row" >
-  <div class="col-md-12">
-    <div class="close-wizard-page" style="height: 66px">
-      <i *ngIf="!CLOSE_BTN_IS_HIDDEN" class="material-icons close-btn" (click)="goBack()">
-        clear
-      </i>
-    </div>
-  </div>
-  </div>
-
-  <div class="container" *ngIf="!DISPLAY_SPINNER_SECTION">
-    
+<div class="main-content " style="padding-top:0px; background-color: #ffffff;
+ min-height: calc(100% - 0px);margin-top: 0px; padding: 0px">
+  <img src="assets/img/razzo_wizard_v2_script.svg" class="img-fluid razzo_wizard" />
+  <img [src]="logo_x_rocket" class="img-fluid logo_in_wizard" />
+  <!---->
+  <div style="min-height: calc(100vh - 0px);" class="wizard-bckgrnd">
     <div class="row">
       <div class="col-md-12">
-        <div style="margin-top: 50px;"> 
-          <h1  style="font-size: 20px; line-height: 28px; color: rgba(0,0,0,.54); padding-bottom: 50px">
-      
-            <!-- Crea un progetto -->
-            {{ 'CreateAProject' | translate }}
-
-          </h1>
+        <div class="close-wizard-page" style="height: 66px">
+          <i *ngIf="!CLOSE_BTN_IS_HIDDEN" class="material-icons close-btn" (click)="goBack()">
+            clear
+          </i>
         </div>
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-md-12">
-        <h1 class="wizard-page-title" style="">
-   
-          <!-- Inizia inserendo il nome del -->
-          {{ 'StartByEnteringTheNameOf' | translate }}
-          <span style="display: block">  {{ 'YourSite' | translate }} </span>
+    <div class="container" *ngIf="!DISPLAY_SPINNER_SECTION">
 
-        </h1>
-       
-        <div class="project-name form-group label-floating">
-          <input autocomplete="off"  [(ngModel)]="project_name"
-           id="projectName" type="text" class="form-control project-name-input">
-           <label  [ngClass]="{'placeholder-custom-effect' : project_name?.length > 0}"  class="project-name-label" for="projectName">
-      
-               <!-- Inserisci il nome del sito -->
-               {{ 'EnterTheSiteName' | translate }}
-           
-            </label>          
-            <label class="stacked-label" style="visibility: hidden; opacity: 0; transition: visibility 0.1s linear, opacity 0.1s linear;" 
+      <div class="row">
+        <div class="col-md-12">
+          <div style="margin-top: 50px;">
+            <h1 style="font-size: 20px; line-height: 28px; color: rgba(0,0,0,.54); padding-bottom: 50px">
+
+              <!-- Crea un progetto -->
+              {{ 'CreateAProject' | translate }}
+
+            </h1>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <h1 class="wizard-page-title" style="">
+
+            <!-- Inizia inserendo il nome del -->
+            {{ 'StartByEnteringTheNameOf' | translate }}
+            <span style="display: block"> {{ 'YourSite' | translate }} </span>
+
+          </h1>
+
+          <div class="project-name form-group label-floating">
+            <input autocomplete="off" [(ngModel)]="project_name" id="projectName" type="text"
+              class="form-control project-name-input">
+            <label [ngClass]="{'placeholder-custom-effect' : project_name?.length > 0}" class="project-name-label"
+              for="projectName">
+
+              <!-- Inserisci il nome del sito -->
+              {{ 'EnterTheSiteName' | translate }}
+
+            </label>
+            <label class="stacked-label"
+              style="visibility: hidden; opacity: 0; transition: visibility 0.1s linear, opacity 0.1s linear;"
               [ngClass]="{'label-custom-effect' : project_name?.length > 0}" class="control-label ">
               <span>
                 <!-- Nome sito -->
-               {{ 'SiteName' | translate }} 
+                {{ 'SiteName' | translate }}
               </span>
-            </label> 
-            <div class="msg" style="height:31px" > 
+            </label>
+            <div class="msg" style="height:31px">
 
-                <span *ngIf="!project_name">
-                  <!-- Il nome del sito è obbligatorio -->
-                  {{ 'TheSiteNameIsRequested'| translate }}
-                </span>
+              <span *ngIf="!project_name">
+                <!-- Il nome del sito è obbligatorio -->
+                {{ 'TheSiteNameIsRequested'| translate }}
+              </span>
 
-                <span *ngIf="project_name?.length > 0 && project_name?.length < 4" style="padding-left: 5px; font-size: 0.9em; color:#da491c">
-                  {{ 'ProjectsPage.ModalMustBeAtLeast' | translate }}
-                </span>
+              <span *ngIf="project_name?.length > 0 && project_name?.length < 4"
+                style="padding-left: 5px; font-size: 0.9em; color:#da491c">
+                {{ 'ProjectsPage.ModalMustBeAtLeast' | translate }}
+              </span>
             </div>
 
           </div>
+        </div>
       </div>
-    </div>
 
-    <div class="row">
-      <div class="col-sm-12">
-          <button [disabled]="project_name?.length < 4" class="btn btn-primary" style="padding:16px 40px" (click)="createNewProject()">
-              {{ 'ProjectsPage.ModalCreateProjectBtn' | translate }} 
+      <div class="row">
+        <div class="col-sm-12">
+          <button [disabled]="project_name?.length < 4" class="btn btn-primary" style="padding:16px 40px"
+            (click)="createNewProject()">
+            {{ 'ProjectsPage.ModalCreateProjectBtn' | translate }}
           </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div *ngIf="DISPLAY_SPINNER_SECTION" class="loading-section" style="display: flex;flex-flow: column;">
-  <div  class="images-wrapper" style="">
-  
-    <img [src]="company_logo_in_spinner" [ngClass]="{'scale-img-fluid-logo' : !DISPLAY_SPINNER}" class="img-fluid img-fluid-logo">
-    <!-- *ngIf="DISPLAY_SPINNER" -->
-    <div class="svg-wrapper"  [ngClass]="{'myhidden' : !DISPLAY_SPINNER, myvisible: DISPLAY_SPINNER}">
-      <svg  class="spinner-svg" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" style="fill: #f0806f; ">
+  <div *ngIf="DISPLAY_SPINNER_SECTION" class="loading-section" style="display: flex;flex-flow: column;">
+    <div class="images-wrapper">
+      <!-- company_logo_in_spinner  no more used - removed from brand-->
+      <!-- <img [src]="company_logo_in_spinner" [ngClass]="{'scale-img-fluid-logo' : !DISPLAY_SPINNER}" class="img-fluid img-fluid-logo"> -->
+      <div *ngIf="!DISPLAY_SPINNER">
+        <div class="success-checkmark-project">
+          <div class="check-icon-project">
+            <span class="icon-line line-tip"></span>
+            <span class="icon-line line-long"></span>
+            <div class="icon-circle"></div>
+            <div class="icon-fix"></div>
+          </div>
+        </div>
+      </div>
 
+      <!--  -->
+      <!-- [ngClass]="{'myhidden' : !DISPLAY_SPINNER, myvisible: DISPLAY_SPINNER}" -->
+      <div class="svg-wrapper" *ngIf="DISPLAY_SPINNER">
+
+        <div class="dot-spinner">
+          <div class="dot1"></div>
+          <div class="dot2"></div>
+        </div>
+
+        <!--    <svg  class="spinner-svg" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" style=" ">
         <g transform="rotate(-90 43 -17)">
           <circle cx="0" cy="0" r="8">
             <animateTransform id="b" attributeName="transform" dur="0.2s" type="translate" values="0 0; 14 0; 0 0" begin="0;a.end" />
@@ -123,40 +143,39 @@
             <animateTransform id="a" attributeName="transform" dur="0.2s" type="translate" values="0 0; 14 0; 0 0" begin="f.end" />
           </circle>
         </g>
-      </svg>
+      </svg> -->
+
+
+      </div>
     </div>
-  </div>
 
 
-  <div *ngIf="DISPLAY_SPINNER" class="wizard-success-container">
+    <div *ngIf="DISPLAY_SPINNER" class="wizard-success-container">
 
-      <div  class="success-label">
-        
+      <div class="success-label">
+
         <span class="wizard-span-processing-msg">{{ "Processing" | translate }}</span>
       </div>
-    
-  </div>
- 
 
-
-  <div *ngIf="!DISPLAY_SPINNER" class="wizard-success-container" style="">
-
-    <div  class="success-label" style="color:#70b665">
-      <i class="material-icons" style="vertical-align: middle; padding: 3px; background: #70b665; border-radius: 50%;color: #fff;" >done</i>
-      <span class="wizard-span-success-msg">{{ "ProjectsPage.YourNewProjectIsReady" | translate }}</span>
     </div>
 
-    <button class="btn btn-primary" (click)="continueToInstallScript()">
-     
+
+
+    <div *ngIf="!DISPLAY_SPINNER" class="wizard-success-container" style="">
+
+      <div class="success-label" style="color:#70b665">
+        <i class="material-icons"
+          style="vertical-align: middle; padding: 3px; background: #70b665; border-radius: 50%;color: #fff;">done</i>
+        <span class="wizard-span-success-msg">{{ "ProjectsPage.YourNewProjectIsReady" | translate }}</span>
+      </div>
+
+      <button class="btn btn-primary" (click)="continueToInstallScript()">
+
         {{ "ProjectsPage.Continue" | translate }}
-    </button>
+      </button>
+    </div>
+
+
   </div>
-
-
-</div> 
-<!-- loading section //  -->
-</div> 
-
-
-
-
+  <!-- loading section //  -->
+</div>

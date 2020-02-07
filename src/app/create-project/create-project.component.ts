@@ -19,7 +19,7 @@ import brand from 'assets/brand/brand.json';
 
 export class CreateProjectComponent implements OnInit {
 
-  company_logo_in_spinner = brand.wizard_create_project_page.company_logo_in_spinner;
+  // company_logo_in_spinner = brand.wizard_create_project_page.company_logo_in_spinner; // no more used - removed from brand
   logo_x_rocket = brand.wizard_create_project_page.logo_x_rocket
 
   projects: Project[];
