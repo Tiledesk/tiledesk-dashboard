@@ -176,14 +176,14 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
     this.showSheleton = true;
     this.selectedTranslationCode = this.temp_SelectedLangCode
     this.selectedTranslationLabel = this.temp_SelectedLangName
-    console.log('Multilanguage ***** addNewLanguage selectedTranslationCode', this.selectedTranslationCode);
-    console.log('Multilanguage ***** addNewLanguage selectedTranslationLabel', this.selectedTranslationLabel);
+    console.log('Multilanguage ***** ADD-NEW-LANG selectedTranslationCode', this.selectedTranslationCode);
+    console.log('Multilanguage ***** ADD-NEW-LANG selectedTranslationLabel', this.selectedTranslationLabel);
 
     // cloneLabel CHE RITORNERA IN RESPONSE LA NUOVA LINGUA (l'inglese nel caso non sia una delle nostre lingue pretradotte)
     this.widgetService.cloneLabel(this.temp_SelectedLangCode.toUpperCase())
       .subscribe((res: any) => {
         // console.log('Multilanguage - addNewLanguage - CLONE LABEL RES ', res);
-        console.log('Multilanguage - addNewLanguage - CLONE LABEL RES LANGUAGES', res.data);
+        console.log('Multilanguage - ADD-NEW-LANG (clone-label) RES ', res.data);
 
         if (res) {
 
@@ -193,10 +193,13 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
         }
 
       }, error => {
-        console.log('Multilanguage SAVE label - ERROR ', error)
+        console.log('Multilanguage ADD-NEW-LANG (clone-label) - ERROR ', error)
       }, () => {
-        console.log('Multilanguage SAVE label * COMPLETE *')
+        console.log('Multilanguage ADD-NEW-LANG (clone-label) * COMPLETE *')
+       
+       
         this.showSheleton = false;
+        this.notify.presentModalSuccessCheckModal('AddTranslation', 'Completed')
       });
 
     // // ADD THE NEW LANGUAGE TO BOTTOM NAV
@@ -294,9 +297,6 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
     this.disableAddBtn = true;
     console.log('Multilanguage onClearSelectedLanguage disableAddBtn ', this.disableAddBtn);
   }
-
-
-
 
 
   deleteLang() {

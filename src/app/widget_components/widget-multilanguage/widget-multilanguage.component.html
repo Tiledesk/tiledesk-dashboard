@@ -104,24 +104,30 @@
 
                 </h4>
 
+                <!--
+                // --------------------------------------------------------------
+                // @ Delete translation
+                // -------------------------------------------------------------- -->
                 <button *ngIf="selectedTranslationCode !== 'add' && selectedTranslationCode !== 'en'" 
                   class="btn btn-danger btn_delete_lang"
                   style="margin-top: 2px; margin-bottom: 1px; float: right;" (click)="deleteLang()">
-
                   {{ 'Delete' | translate }}
                 </button>
 
+                <!--
+                // --------------------------------------------------------------
+                // @ Save modified translation
+                // -------------------------------------------------------------- -->
                 <button *ngIf="selectedTranslationCode !== 'add'" class="btn btn-primary btn_edit_lang"
                   style="margin-top: 2px; margin-bottom: 1px; float: right;" (click)="editLang()">
-
                   {{ 'ScriptPage.Save' | translate }}
                 </button>
+
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-12">
-
                 <div class="section-subtitle" style="border-top: 1px solid #e8f0f5;  padding-top: 15px;">
                 </div>
               </div>
@@ -157,7 +163,7 @@
 
             <!-- 
             // -----------------------------------------------------------------------------
-            // @ Add
+            // @ Select language combo-box
             // ----------------------------------------------------------------------------- -->
             <section *ngIf="selectedTranslationCode === 'add'">
               <div class="row" style="padding-bottom: 25px;">
@@ -176,6 +182,10 @@
 
                 </div>
 
+                <!-- 
+                // -----------------------------------------------------------------------------
+                // @ Add language
+                // ----------------------------------------------------------------------------- -->
                 <div class="col-md-5">
                   <button class="btn btn-primary" 
                     style="padding-top: 10px; padding-bottom: 10px;"

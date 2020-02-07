@@ -33,7 +33,11 @@ export class NotifyService {
   displayContactUsModal = 'none';
   viewCancelSubscriptionModal = 'none';
   displayDataExportNotAvailable = 'none';
-  displayInstallTiledeskModal =  'none';
+  displayInstallTiledeskModal = 'none';
+
+  displaySuccessCheckModal = 'none';
+  successCheckModalTitleText: string;
+  successCheckModalBodyText: string;
 
   _prjctPlanSubsEndDate: Date;
   _prjctPlanName: string;
@@ -94,7 +98,6 @@ export class NotifyService {
       this.showSubtitleAllOperatorsSeatsUsed = true;
     } else {
       this.showSubtitleAllOperatorsSeatsUsed = false;
-
     }
 
     if (displayModal === true) {
@@ -107,27 +110,46 @@ export class NotifyService {
   }
 
 
-  /**
-   **! *** DataExportNotAvailable ***
-   */
+
+  // -----------------------------------------------
+  // Data Export Not Available Modal
+  // -----------------------------------------------
   openDataExportNotAvailable() {
     this.displayDataExportNotAvailable = 'block';
   }
 
-  closeDataExportNotAvailable () {
+  closeDataExportNotAvailable() {
     this.displayDataExportNotAvailable = 'none';
   }
 
-  presentModalInstallTiledeskModal () {
-    this.displayInstallTiledeskModal =  'block';
+  // -----------------------------------------------
+  // Install Tiledesk Modal
+  // -----------------------------------------------
+  presentModalInstallTiledeskModal() {
+    this.displayInstallTiledeskModal = 'block';
   }
 
-  closeModalInstallTiledeskModal () {
-    this.displayInstallTiledeskModal =  'none';
+  closeModalInstallTiledeskModal() {
+    this.displayInstallTiledeskModal = 'none';
+  }
+
+  // -----------------------------------------------
+  // Success Check Modal
+  // -----------------------------------------------
+  presentModalSuccessCheckModal(titletext: string, bodytext: string) {
+    this.successCheckModalTitleText = titletext;
+    this.successCheckModalBodyText = bodytext;
+    this.displaySuccessCheckModal = 'block';
+  }
+
+  closeModalSuccessCheckModal() {
+    this.displaySuccessCheckModal = 'none';
   }
 
 
-  // CANCEL SUBSCRIPTION MODAL
+  // -----------------------------------------------
+  // Cancel Subscription Modal
+  // -----------------------------------------------
   displayCancelSubscriptionModal(displayModal: boolean) {
     if (displayModal === true) {
       this.viewCancelSubscriptionModal = 'block';
@@ -148,7 +170,7 @@ export class NotifyService {
 
   }
 
-  
+
 
 
   update(content: string, style: 'error' | 'info' | 'success') {
