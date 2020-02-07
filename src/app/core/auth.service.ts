@@ -286,7 +286,7 @@ export class AuthService {
                     trial_expired: project_trial_expired,
                     trial_days_left: project_trial_days_left
                   }
-                  console.log('!! AUTH in auth.serv  - 1) PROJECT THAT IS PUBLISHED: ', project);
+                  // console.log('!! AUTH in auth.serv  - 1) PROJECT THAT IS PUBLISHED: ', project);
                   // SE NN C'è IL PROJECT NAME COMUNQUE PUBBLICO PERCHè CON L'ID DEL PROGETTO VENGONO EFFETTUATE DIVERSE CALLBACK
 
                   /**** ******* ******* NEW BUG FIX ***** *** ** ***/
