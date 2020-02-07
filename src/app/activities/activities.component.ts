@@ -390,12 +390,29 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
                     console.log('ActivitiesComponent participant ', participantId);
 
                     if (participantId.includes('bot_')) {
-                      console.log('ActivitiesComponent participant includes bot', participantId);
+                      console.log('ActivitiesComponent participant includes bot with id ', participantId);
                       const bot_id = participantId.slice(4);
-                      const bot = this.botLocalDbService.getBotFromStorage(bot_id);
-                      console.log('ActivitiesComponent participant bot', bot);
+                      console.log('ActivitiesComponent participant includes bot with id slice(4)', bot_id);
 
-                      activity.participant_fullname = bot.name + ' (bot)'
+                      let bot: any
+
+                      setTimeout(() => {
+                        bot = this.botLocalDbService.getBotFromStorage(bot_id);
+                        console.log('ActivitiesComponent participant bot', bot);
+                        if (bot) {
+                          activity.participant_fullname = bot.name + ' (bot)'
+                          console.log('ActivitiesComponent participant bot name', activity.participant_fullname);
+                        }
+                      }, 50);
+
+
+                      // const bot2 = JSON.parse((localStorage.getItem(bot_id)));
+                      // console.log('ActivitiesComponent participant bot2', bot2);
+
+                      // const bot3 = localStorage.getItem(bot_id);
+                      // console.log('ActivitiesComponent participant bot3', bot3);
+
+
                     } else {
 
                       const user = this.usersLocalDbService.getMemberFromStorage(participantId);
