@@ -396,6 +396,7 @@
     "ReassignToDept":"Reassign to department",
     "AddTranslation":"Add translation",
     "Completed": "Completed",
+    "TranslationDeleted": "{{language_name}} translation deleted",
     "Pricing": {
         "Operators": "Operators",
         "UpgradePlan": "Upgrade Plan",

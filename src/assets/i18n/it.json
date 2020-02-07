@@ -393,6 +393,7 @@
     "ReassignToDept":"Riassegna al dipartimento",
     "AddTranslation":"Aggiungi traduzione",
     "Completed": "Completato",
+    "TranslationDeleted": "traduzione {{language_name}}  eliminata",
     "Pricing": {
         "Operators": "Operatori",
         "UpgradePlan": "Aggiorna Piano",
@@ -1000,8 +1001,8 @@
             "CreateTriggerButton": "Crea trigger",
             "UpdateTriggerButton": "Salva modifiche",
             "CancelButton": "Cancella",
-            "ConditionNotifyError": "Deve essere presente almeno 1 condizione di attivazione del trigger",
-            "ActionNotifyError": "Deve essere presente almeno 1 azione da eseguire per il trigger"
+            "Condition]Error": "Deve essere presente almeno 1 condizione di attivazione del trigger",
+            "Action]Error": "Deve essere presente almeno 1 azione da eseguire per il trigger"
         },
         "MessagePlaceholder": "Messaggio",
         "ServerError": "Si è verificato un errore durante il caricamento dei dati",
