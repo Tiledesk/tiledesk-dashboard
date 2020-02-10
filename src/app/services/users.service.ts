@@ -319,12 +319,34 @@ export class UsersService {
   //   // return this.usersCollection.doc('PXmRJVrtzFAHsxjs7voD5R').set(user);
   // }
 
+
+  /**
+   * !!!! NOT YET USED
+   * Get Name Surname and id of the logged user
+   */
+  public getCurrentUserProfile(): Observable<User[]> {
+    // const url = this.BASE_URL + 'users/' + user_id;
+    const url = this.BASE_URL + 'users';
+    // const url = this.BASE_URL + 'project_users/users/' + user_id;
+
+    console.log('!! GET USERS BY ID - URL', url);
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
+
+
   /// ================================== GET USER BY ID ================================== ///
 
-  // NK-TO-TEST - questo va sostituito con /project_users/users/:user_id',
-  public getUsersById(user_id): Observable<User[]> {
-    const url = this.BASE_URL + 'users/' + user_id;
-    // const url = this.BASE_URL + '/project_users/users/'+user_id,
+  // DONE- WORKS - NK-TO-TEST - questo va sostituito con /project_users/users/:user_id',
+  public getProjectUserById(user_id): Observable<User[]> {
+    // const url = this.BASE_URL + 'users/' + user_id; 
+    const url = this.BASE_URL + this.project._id + '/project_users/users/' + user_id;;
+    
 
     console.log('!! GET USERS BY ID - URL', url);
     const headers = new Headers();
@@ -339,7 +361,7 @@ export class UsersService {
   /**
    * NOTE: the PROJECT-USER returned has nested the user's object
    */
-  // NK-TO-TEST - da testare dopo che L. esegue il commit del servizio aggiornato (is used to get the list of users in "Users & Groups")
+  // DONE - WORKS NK-TO-TEST - da testare dopo che L. esegue il commit del servizio aggiornato (is used to get the list of users in "Users & Groups")
   public getProjectUsersByProjectId(): Observable<ProjectUser[]> {
     const url = this.MONGODB_BASE_URL;
 
@@ -380,7 +402,7 @@ export class UsersService {
   }
 
   /// ================================== INVITE USER (ALIAS CREATE A MEMBER) ================================== ///
-   // NK-TO-TEST - da testare dopo che L. esegue il commit del servizio aggiornato (può falo solo l'admin)
+  // DONE - WORKS NK-TO-TEST - da testare dopo che L. esegue il commit del servizio aggiornato (può falo solo l'admin)
   public inviteUser(email: string, role: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -704,11 +726,11 @@ export class UsersService {
   /**
    * UPDATE PROJECT-USER AVAILABILITY (PUT)
    */
-  // NK-TO-TEST - da testare dopo che L. esegue il commit del servizio aggiornato (lo puo fare solo l'admin)
+  // DONE - WORKS NK-TO-TEST - da testare dopo che L. esegue il commit del servizio aggiornato (lo puo fare solo l'admin)
   public updateProjectUser(projectUser_id: string, user_is_available: boolean) {
 
-    let url = this.MONGODB_BASE_URL;
-    url += projectUser_id;
+    let url = this.BASE_URL + this.project._id + '/project_users/' + projectUser_id;
+
     console.log('PROJECT-USER UPDATE (PUT) URL ', url);
 
     const headers = new Headers();
@@ -726,12 +748,13 @@ export class UsersService {
       .map((res) => res.json());
   }
 
-  // NK-TO-TEST - da fare e da testare dopo che L. esegue il commit del servizio aggiornato (lo puo fare solo l'admin)
-  // questo è un servizio uguale updateProjectUser() ma nel quale nn passo projectUser_id
-  // va implementato per il cambio di status available / unavailable dell'utente loggato
+  // DONE - WORKS NK-TO-TEST - da fare e da testare dopo che L. esegue il commit del servizio aggiornato (lo puo fare solo l'admin)
+  // this is a service equal to updateProjectUser() in which project User_id was not passed
+  // must be implemented for to change the availability status (available / unavailable) of the current user
   public updateCurrentUserAvailability(user_is_available: boolean) {
 
-    let url = this.MONGODB_BASE_URL;
+    // let url = this.MONGODB_BASE_URL;
+    let url = this.BASE_URL + this.project._id + '/project_users/';
 
     console.log('PROJECT-USER UPDATE (PUT) URL ', url);
 
@@ -752,7 +775,7 @@ export class UsersService {
 
   /**
    * UPDATE PROJECT-USER ROLE (PUT) */
-  // NK-TO-TEST - da testare dopo che L. esegue il commit del servizio aggiornato (lo puo fare solo l'admin)
+  // DONE - WORKS NK-TO-TEST - da testare dopo che L. esegue il commit del servizio aggiornato (lo puo fare solo l'admin)
   public updateProjectUserRole(projectUser_id: string, user_role: string) {
 
     let url = this.MONGODB_BASE_URL;
@@ -795,7 +818,7 @@ export class UsersService {
   // ================== UPDATE CURRENT USER LASTNAME / FIRSTNAME ==================
   public updateCurrentUserLastnameFirstname(user_firstname: string, user_lastname: string, callback) {
 
-    // NK-TO-TEST - da testare dopo che L. esegue il commit del servizio aggiornato
+    // DONE - WORKS NK-TO-TEST - da testare dopo che L. esegue il commit del servizio aggiornato
     // const url = this.UPDATE_USER_URL + this.currentUserId; // old
     const url = this.UPDATE_USER_URL;
 
@@ -912,8 +935,8 @@ export class UsersService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    // NK-TO-TEST - nn passare + userid
-    const body = {'userid': user_id, 'oldpsw': old_psw, 'newpsw': new_psw };
+    // DONE -> WORKS NK-TO-TEST - nn passare + userid  -- 'userid': user_id, 
+    const body = { 'oldpsw': old_psw, 'newpsw': new_psw };
 
     console.log('PUT REQUEST BODY ', body);
 
