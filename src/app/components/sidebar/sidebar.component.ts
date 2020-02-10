@@ -490,10 +490,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         console.log('SB - CHANGE STATUS - PROJECT USER ID: ', this.projectUser_id);
 
 
-        this.usersService.updateProjectUser(this.projectUser_id, IS_AVAILABLE).subscribe((projectUser: any) => {
-            // NK-TO-TEST - da implementare quando viene implementato il servizio - serve per cambiare lo stato di disponibilità dell'utente corrente
-            // anche in USER & GROUP bisogna cambiare per la riga dell'utente corrente   
-            // this.usersService.updateCurrentUserAvailability(IS_AVAILABLE).subscribe((projectUser: any) => { 
+        // this.usersService.updateProjectUser(this.projectUser_id, IS_AVAILABLE).subscribe((projectUser: any) => {
+        // DONE - WORKS NK-TO-TEST - da implementare quando viene implementato il servizio - serve per cambiare lo stato di disponibilità dell'utente corrente
+        // anche in USER & GROUP bisogna cambiare per la riga dell'utente corrente   
+        this.usersService.updateCurrentUserAvailability(IS_AVAILABLE).subscribe((projectUser: any) => { // non 
 
             console.log('PROJECT-USER UPDATED ', projectUser)
 
@@ -751,18 +751,32 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     stopScroll() {
         // const el = <HTMLElement>document.querySelector('.sidebar-wrapper');
-        // console.log('SIDEBAR SCROLL TO', this.scrollpos);
-        // console.log('SIDEBAR SCROLL TO elSidebarWrapper ', this.elSidebarWrapper)
+        console.log('SIDEBAR SCROLL TO', this.scrollpos);
+        console.log('SIDEBAR SCROLL TO elSidebarWrapper ', this.elSidebarWrapper)
+        
+        // const oh = <HTMLElement>document.querySelector('.oh');
+        // console.log('SIDEBAR SCROLL TO operating hours ', oh)
+        // oh.scrollIntoView();
 
         if (this.elSidebarWrapper) {
-            this.elSidebarWrapper.scrollTop = this.scrollpos;
-        }
 
+            this.elSidebarWrapper.scrollTop = this.scrollpos;
+            // this.elSidebarWrapper.scrollTo(0,242)
+        }
     }
+
+    onEvent($event) {
+        console.log('SIDEBAR SCROLL event ', $event);
+        event.stopPropagation();
+    }
+
 
     goToHome() {
         this.router.navigate(['/project/' + this.projectId + '/home']);
     }
+    // goToOperatingHours() {
+    //     this.router.navigate(['/project/' + this.projectId + '/hours']);
+    // }
 
     goToBlogChangelog() {
         const url = 'https://www.tiledesk.com/category/changelog/';

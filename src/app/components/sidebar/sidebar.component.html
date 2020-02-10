@@ -21,9 +21,9 @@
   </div>
 </div>
 -->
-
-<div *ngIf="project" class="logo" style="background-color:#1e2129!important; padding-bottom: 5px;">
-  <a class="simple-text" style="text-transform: none; padding-left: 40px;">
+<!-- *ngIf="project"  -->
+<div class="logo" style="background-color:#1e2129!important; padding-bottom: 5px;min-height: 60px;">
+  <a class="simple-text" style="text-transform: none; padding-left: 40px; min-height: 40px;">
     <!-- routerLink="project/{{ project._id }}/home" -->
 
     <div class="logo-img" (click)="goToHome()" style="cursor: pointer;">
@@ -215,7 +215,7 @@
   </ul>
 
   <div class="nav-container">
-    <ul class="nav"
+    <ul style="padding-bottom: 65px;"  class="nav"
       [ngClass]="{'is-desktop-menu' : IS_MOBILE_MENU === false, 'is-mobile-menu' : IS_MOBILE_MENU === true  }">
 
       <!-- SELECT AVAILABLE / UNAVAILABLE -->
@@ -496,8 +496,9 @@
       </li>
 
       <ng-container *ngIf="isVisibleOPH">
-        <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
-          <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/hours">
+        <!-- , onEvent($event) -->
+        <li *ngIf="SHOW_SETTINGS_SUBMENU" routerLinkActive="active" (click)="stopScroll()">
+          <a *ngIf="project" class="customAncor" routerLink="project/{{ project._id }}/hours">
 
             <p class="onBlackBckgrnd">
               <span class="sidebar-mini">O </span>{{ 'Hours' | translate }}
@@ -515,7 +516,8 @@
 
 
       <!-- margin-bottom:95px -->
-      <li *ngIf="SHOW_SETTINGS_SUBMENU" routerLinkActive="active" style="margin-bottom:25px" (click)="stopScroll()">
+      <!-- style="margin-bottom:65px" -->
+      <li *ngIf="SHOW_SETTINGS_SUBMENU" routerLinkActive="active"  (click)="stopScroll()">
         <a *ngIf="project" class="customAncor" routerLink="project/{{ project._id }}/project-settings/general">
           <p class="onBlackBckgrnd">
             <span class="sidebar-mini">{{ 'PS' | translate }} </span> {{ 'NavBar.ProjectSettings' | translate }}
