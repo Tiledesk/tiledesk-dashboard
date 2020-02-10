@@ -40,7 +40,6 @@ export class UsersLocalDbService {
        * *** NEW 29JAN19 - SET IN LOCAL STORAGE MEMBER ID WITH PREFIX ***
        */
       localStorage.setItem(this.prefix + member_id, JSON.stringify(member_object));
-
       console.log('HEY - SAVE IN STORAGE !!! ');
     }
 
@@ -57,6 +56,26 @@ export class UsersLocalDbService {
     console.log('HEY - GET USER ROLE FROM STORAGE !!! ', user_role)
     return user_role
   }
+
+  // -----------------------------------------------------------
+  // display / hide the rocket "go-to-changelog"
+  // -----------------------------------------------------------
+  savChangelogDate() {
+    // 1) to display the rocket "go-to-changelog" change the chglog_date
+    const chglog_date = "041120"
+    localStorage.setItem(this.prefix + 'chglogdate', chglog_date);
+  }
+
+  getStoredChangelogDate() {
+    const chglog_date = localStorage.getItem(this.prefix + 'chglogdate')
+    let hasOpenBlog = false;
+    // 2) if this chglog_date is equal to that get from local storage the rocket "go-to-changelog" is hidden
+    if (chglog_date === '041120') {
+      hasOpenBlog = true
+    }
+    return hasOpenBlog
+  }
+
 
 }
 

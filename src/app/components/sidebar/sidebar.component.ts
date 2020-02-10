@@ -204,7 +204,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.getOSCODE();
         this.getStorageBucket();
         this.brandLog();
+        this.getHasOpenBlogKey()
     }
+    getHasOpenBlogKey() {
+        const hasOpenedBlog = this.usersLocalDbService.getStoredChangelogDate();
+        console.log('SIDEBAR  »»»»»»»»» hasOpenedBlog ', hasOpenedBlog);
+        
+        if (hasOpenedBlog === true) {
+            this.hidechangelogrocket = true;
+        }
+
+     }
 
     brandLog() {
         console.log('BRAND_JSON - SIDEBAR ', brand);
@@ -219,105 +229,96 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     getOSCODE() {
-
         let keys = this.public_Key.split("-");
         console.log('PUBLIC-KEY (SIDEBAR) - public_Key keys', keys)
 
         keys.forEach(key => {
             // console.log('NavbarComponent public_Key key', key)
             if (key.includes("ANA")) {
-                console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+                // console.log('PUBLIC-KEY (SIDEBAR) - key', key);
                 let ana = key.split(":");
-                console.log('PUBLIC-KEY (SIDEBAR) - ana key&value', ana);
+                // console.log('PUBLIC-KEY (SIDEBAR) - ana key&value', ana);
 
                 if (ana[1] === "F") {
                     this.isVisibleANA = false;
-                    console.log('PUBLIC-KEY (SIDEBAR) - ana isVisible', this.isVisibleANA);
+                    // console.log('PUBLIC-KEY (SIDEBAR) - ana isVisible', this.isVisibleANA);
                 } else {
                     this.isVisibleANA = true;
-                    console.log('PUBLIC-KEY (SIDEBAR) - ana isVisible', this.isVisibleANA);
+                    // console.log('PUBLIC-KEY (SIDEBAR) - ana isVisible', this.isVisibleANA);
                 }
             }
 
             if (key.includes("ACT")) {
-                console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+                // console.log('PUBLIC-KEY (SIDEBAR) - key', key);
                 let act = key.split(":");
-                console.log('PUBLIC-KEY (SIDEBAR) - act key&value', act);
+                // console.log('PUBLIC-KEY (SIDEBAR) - act key&value', act);
 
                 if (act[1] === "F") {
                     this.isVisibleACT = false;
-                    console.log('PUBLIC-KEY (SIDEBAR) - act isVisible', this.isVisibleACT);
+                    // console.log('PUBLIC-KEY (SIDEBAR) - act isVisible', this.isVisibleACT);
                 } else {
                     this.isVisibleACT = true;
-                    console.log('PUBLIC-KEY (SIDEBAR) - act isVisible', this.isVisibleACT);
+                    // console.log('PUBLIC-KEY (SIDEBAR) - act isVisible', this.isVisibleACT);
                 }
             }
 
             if (key.includes("TRI")) {
-                console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+                // console.log('PUBLIC-KEY (SIDEBAR) - key', key);
                 let tri = key.split(":");
-                console.log('PUBLIC-KEY (SIDEBAR) - tri key&value', tri);
+                // console.log('PUBLIC-KEY (SIDEBAR) - tri key&value', tri);
 
                 if (tri[1] === "F") {
                     this.isVisibleTRI = false;
-                    console.log('PUBLIC-KEY (SIDEBAR) - tri isVisible', this.isVisibleTRI);
+                    // console.log('PUBLIC-KEY (SIDEBAR) - tri isVisible', this.isVisibleTRI);
                 } else {
                     this.isVisibleTRI = true;
-                    console.log('PUBLIC-KEY (SIDEBAR) - tri isVisible', this.isVisibleTRI);
+                    // console.log('PUBLIC-KEY (SIDEBAR) - tri isVisible', this.isVisibleTRI);
                 }
             }
 
             if (key.includes("GRO")) {
-                console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+                // console.log('PUBLIC-KEY (SIDEBAR) - key', key);
                 let gro = key.split(":");
-                console.log('PUBLIC-KEY (SIDEBAR) - gro key&value', gro);
+                // console.log('PUBLIC-KEY (SIDEBAR) - gro key&value', gro);
 
                 if (gro[1] === "F") {
                     this.isVisibleGRO = false;
-                    console.log('PUBLIC-KEY (SIDEBAR) - gro isVisible', this.isVisibleGRO);
+                    // console.log('PUBLIC-KEY (SIDEBAR) - gro isVisible', this.isVisibleGRO);
                 } else {
                     this.isVisibleGRO = true;
-                    console.log('PUBLIC-KEY (SIDEBAR) - gro isVisible', this.isVisibleGRO);
+                    // console.log('PUBLIC-KEY (SIDEBAR) - gro isVisible', this.isVisibleGRO);
                 }
             }
 
             if (key.includes("DEP")) {
-                console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+                // console.log('PUBLIC-KEY (SIDEBAR) - key', key);
                 let dep = key.split(":");
-                console.log('PUBLIC-KEY (SIDEBAR) - dep key&value', dep);
+                // console.log('PUBLIC-KEY (SIDEBAR) - dep key&value', dep);
 
                 if (dep[1] === "F") {
                     this.isVisibleDEP = false;
-                    console.log('PUBLIC-KEY (SIDEBAR) - dep isVisible', this.isVisibleDEP);
+                    // console.log('PUBLIC-KEY (SIDEBAR) - dep isVisible', this.isVisibleDEP);
                 } else {
                     this.isVisibleDEP = true;
-                    console.log('PUBLIC-KEY (SIDEBAR) - dep isVisible', this.isVisibleDEP);
+                    // console.log('PUBLIC-KEY (SIDEBAR) - dep isVisible', this.isVisibleDEP);
                 }
             }
 
             if (key.includes("OPH")) {
-                console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+                // console.log('PUBLIC-KEY (SIDEBAR) - key', key);
                 let oph = key.split(":");
-                console.log('PUBLIC-KEY (SIDEBAR) - oph key&value', oph);
+                // console.log('PUBLIC-KEY (SIDEBAR) - oph key&value', oph);
 
                 if (oph[1] === "F") {
                     this.isVisibleOPH = false;
-                    console.log('PUBLIC-KEY (SIDEBAR) - oph isVisible', this.isVisibleOPH);
+                    // console.log('PUBLIC-KEY (SIDEBAR) - oph isVisible', this.isVisibleOPH);
                 } else {
                     this.isVisibleOPH = true;
-                    console.log('PUBLIC-KEY (SIDEBAR) - oph isVisible', this.isVisibleOPH);
+                    // console.log('PUBLIC-KEY (SIDEBAR) - oph isVisible', this.isVisibleOPH);
                 }
             }
         });
 
-        // console.log('eoscode', this.eos)
-        // if (this.eos && this.eos === publicKey) {
-        //     this.isVisible = true;
-        //     console.log('eoscode isVisible ', this.isVisible);
-        // } else {
-        //     this.isVisible = false;
-        //     console.log('eoscode isVisible ', this.isVisible);
-        // }
     }
 
 
@@ -619,11 +620,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     round5(x) {
-
         // const percentageRounded = Math.ceil(x / 5) * 5;
         // console.log('SIDEBAR project trial days left % rounded', percentageRounded);
         // return Math.ceil(x / 5) * 5;
-
         return x % 5 < 3 ? (x % 5 === 0 ? x : Math.floor(x / 5) * 5) : Math.ceil(x / 5) * 5
     }
 
@@ -713,9 +712,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
 
-
-
-
     isMobileMenu() {
         if ($(window).width() > 991) {
             this.IS_MOBILE_MENU = false
@@ -753,7 +749,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         // const el = <HTMLElement>document.querySelector('.sidebar-wrapper');
         console.log('SIDEBAR SCROLL TO', this.scrollpos);
         console.log('SIDEBAR SCROLL TO elSidebarWrapper ', this.elSidebarWrapper)
-        
+
         // const oh = <HTMLElement>document.querySelector('.oh');
         // console.log('SIDEBAR SCROLL TO operating hours ', oh)
         // oh.scrollIntoView();
@@ -778,12 +774,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     //     this.router.navigate(['/project/' + this.projectId + '/hours']);
     // }
 
+
     goToBlogChangelog() {
         const url = 'https://www.tiledesk.com/category/changelog/';
         window.open(url, '_blank');
+
+        this.usersLocalDbService.savChangelogDate()
+        this.hidechangelogrocket = true;
     }
-
-
 
     goToProjects() {
         console.log('SIDEBAR IS MOBILE -  HAS CLICCKED GO TO PROJECT  ')
