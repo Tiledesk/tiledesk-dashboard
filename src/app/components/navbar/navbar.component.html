@@ -1,338 +1,349 @@
 <!-- ROW AND CUSTOM COL RESOLVE THE ISSUE: THE NAVIGATION TO PREVIOUS PAGE IS IMPOSSIBLE BECAUSE THE NAVBAR IS OVER THE NAVBAR BRAND IN WHICH THERE IS THE BACK BUTTON -->
 <!-- <div class="row"> -->
-  <!-- <div class="col-md-11 col-md-offset-1 col-sm-11 col-sm-offset-1 col-xs-9 col-xs-offset-3" style="right:25px"> -->
-    <!-- navbar-transparent -->
-    <nav class="navbar navbar-absolute">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" style="margin-top:3px" data-toggle="collapse" (click)="sidebarToggle()">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <!-- <a class="navbar-brand" href="#">{{getTitle()}}</a> -->
-          <!-- <a class="navbar-brand" href="#">Testina</a> -->
-        </div>
-        <div class="collapse navbar-collapse">
-                        
-          <ul class="nav navbar-nav navbar-right">
-            <!-- <li>
+<!-- <div class="col-md-11 col-md-offset-1 col-sm-11 col-sm-offset-1 col-xs-9 col-xs-offset-3" style="right:25px"> -->
+<!-- navbar-transparent -->
+<nav class="navbar navbar-absolute">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" style="margin-top:3px" data-toggle="collapse"
+        (click)="sidebarToggle()">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <!-- <a class="navbar-brand" href="#">{{getTitle()}}</a> -->
+      <!-- <a class="navbar-brand" href="#">Testina</a> -->
+    </div>
+    <div class="collapse navbar-collapse">
+
+      <ul class="nav navbar-nav navbar-right">
+        <!-- <li>
                 <a href="#pablo" class="dropdown-toggle" data-toggle="dropdown">
                     <i class="material-icons">dashboard</i>
                     <p class="hidden-lg hidden-md">Dashboard</p>
                 </a>
             </li> -->
 
-            <!-- // ======= START - TEST - LOGOUT FROM FIREBASE ======= // -->
-            <!-- <li *ngIf="APP_IS_DEV_MODE == true" style="cursor:pointer">
+        <!-- // ======= START - TEST - LOGOUT FROM FIREBASE ======= // -->
+        <!-- <li *ngIf="APP_IS_DEV_MODE == true" style="cursor:pointer">
                 <a (click)="testExpiredSessionFirebaseLogout()">
                     <i class="material-icons">lock_open</i>
                     FireBase Logout
                 </a>
             </li> -->
-            <!-- // ======= ./END - TEST - LOGOUT FROM FIREBASE ======= // -->     
-                        
-            <li *ngIf="DETECTED_CHAT_PAGE">
-              <a target="_blank" href="{{ CHAT_BASE_URL }}">
-              <i class="material-icons">open_in_new</i>
-                {{ "NavBar.RunChatInAStandAloneTab"  | translate }}
-              </a>
-            </li>
+        <!-- // ======= ./END - TEST - LOGOUT FROM FIREBASE ======= // -->
+
+        <li *ngIf="DETECTED_CHAT_PAGE">
+          <a target="_blank" href="{{ CHAT_BASE_URL }}">
+            <i class="material-icons">open_in_new</i>
+            {{ "NavBar.RunChatInAStandAloneTab"  | translate }}
+          </a>
+        </li>
 
 
 
-            <!-- 
+        <!-- 
             ------------ ============================= ------------
             ************ UPGRADE (PROFILE TYPE = FREE) ************
             ------------ ============================= ------------ 
             -->
-            <ng-container *ngIf="isVisible">
-              <li *ngIf="project && prjct_profile_type === 'free'">
+        <ng-container *ngIf="isVisible">
+          <li *ngIf="project && prjct_profile_type === 'free'">
 
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-top:0px; padding-bottom:0px; padding-right: 0px;">
-                  <div id="progress" class="progress"  [attr.data-percentage]="prjc_trial_days_left_percentage">
-                    <span class="progress-left">
-                      <span class="progress-bar" [ngClass]="{' progress-bar-expired' : prjct_trial_expired === true}"></span>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+              style="padding-top:0px; padding-bottom:0px; padding-right: 0px;">
+              <div id="progress" class="progress" [attr.data-percentage]="prjc_trial_days_left_percentage">
+                <span class="progress-left">
+                  <span class="progress-bar"
+                    [ngClass]="{' progress-bar-expired' : prjct_trial_expired === true}"></span>
+                </span>
+                <span class="progress-right">
+                  <span class="progress-bar"
+                    [ngClass]="{' progress-bar-expired' : prjct_trial_expired === true}"></span>
+                </span>
+                <div class="progress-value">
+                  <div style="font-size: 14px;font-weight: 400;">
+                    <span *ngIf="prjct_trial_expired === false">
+                      {{ prjc_trial_days_left }}
                     </span>
-                    <span class="progress-right">
-                      <span class="progress-bar" [ngClass]="{' progress-bar-expired' : prjct_trial_expired === true}" ></span>
+                    <span *ngIf="prjct_trial_expired === true">
+                      0
                     </span>
-                    <div class="progress-value">
-                      <div style="font-size: 14px;font-weight: 400;"> 
-                        <span *ngIf="prjct_trial_expired === false">
-                          {{ prjc_trial_days_left }}
-                        </span>
-                        <span *ngIf="prjct_trial_expired === true">
-                          0
-                        </span>
-                      </div>
-                    </div>
                   </div>
-                </a>
+                </div>
+              </div>
+            </a>
 
-                <ul class="dropdown-menu" style="margin-top: 11px; padding-left:20px;padding-right:20px;width: 200px;">
-                  <p *ngIf="prjct_trial_expired === false" style="margin-bottom:0px"> 
-                    {{ "Pricing.Your" | translate }}
-                    
-                    <span style="font-weight:600"> 
-                      {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate: tparams }}
-                    </span>
-                    
-                    {{ "Pricing.WillExpireIn" | translate }}
-                    
-                    <span *ngIf="prjc_trial_days_left < -1"> 
-                        {{ - prjc_trial_days_left }} {{ "Pricing.Days" | translate }}
-                    </span>
+            <ul class="dropdown-menu" style="margin-top: 11px; padding-left:20px;padding-right:20px;width: 200px;">
+              <p *ngIf="prjct_trial_expired === false" style="margin-bottom:0px">
+                {{ "Pricing.Your" | translate }}
 
-                    <span *ngIf="prjc_trial_days_left === -1"> 
-                        {{ "Pricing.Tomorrow" | translate }}
-                    </span>
-                  </p> 
+                <span style="font-weight:600">
+                  {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate: tparams }}
+                </span>
 
-                  <p *ngIf="prjct_trial_expired === true" style="margin-bottom:0px"> 
-                      {{ "Pricing.Your" | translate }}
-                    <span style="font-weight:600">
-                        {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate: tparams }} 
-                    </span>
-                    {{ "Pricing.HasExpired" | translate }} 
-                  </p> 
-                </ul>
-              </li>
-            </ng-container> 
+                {{ "Pricing.WillExpireIn" | translate }}
 
-            <!-- 
+                <span *ngIf="prjc_trial_days_left < -1">
+                  {{ - prjc_trial_days_left }} {{ "Pricing.Days" | translate }}
+                </span>
+
+                <span *ngIf="prjc_trial_days_left === -1">
+                  {{ "Pricing.Tomorrow" | translate }}
+                </span>
+              </p>
+
+              <p *ngIf="prjct_trial_expired === true" style="margin-bottom:0px">
+                {{ "Pricing.Your" | translate }}
+                <span style="font-weight:600">
+                  {{ "Pricing.30DaysFreeTrialOfTiledeskProPlan" | translate: tparams }}
+                </span>
+                {{ "Pricing.HasExpired" | translate }}
+              </p>
+            </ul>
+          </li>
+        </ng-container>
+
+        <!-- 
             ------------ ================================= ------------
             ************ UPGRADE BTN (PROFILE TYPE = FREE) ************
             ------------ ================================= ------------ 
             -->
-            <ng-container *ngIf="isVisible">
-              <li *ngIf="project && prjct_profile_type === 'free'">
-                <a class="upgrade-btn-trial-expired" (click)="goToPricing()"> {{ "Pricing.UpgradePlan" | translate }} </a>
-              </li>
-            </ng-container>
+        <ng-container *ngIf="isVisible">
+          <li *ngIf="project && prjct_profile_type === 'free'">
+            <a class="upgrade-btn-trial-expired" (click)="goToPricing()"> {{ "Pricing.UpgradePlan" | translate }} </a>
+          </li>
+        </ng-container>
 
-            <!-- 
+        <!-- 
             ------------ =================================== ------------
             ************ PLAN NAME (PROFILE TYPE = PAYMENTS) ************
             ------------ =================================== ------------ 
             -->
 
-            <ng-container *ngIf="isVisible"> 
-              <li *ngIf="project && prjct_profile_type === 'payment' && HOME_ROUTE_IS_ACTIVE === false">
-                <a>
-                  <span class="project-plan-nav" style="text-transform:capitalize;padding-right: 8px;padding-left: 14px;">
-                    {{ prjct_profile_name }} 
-                  </span>
-                
-                  <!-- 
+        <ng-container *ngIf="isVisible">
+          <li *ngIf="project && prjct_profile_type === 'payment' && HOME_ROUTE_IS_ACTIVE === false">
+            <a>
+              <span class="project-plan-nav" style="text-transform:capitalize;padding-right: 8px;padding-left: 14px;">
+                {{ prjct_profile_name }}
+              </span>
+
+              <!-- 
                   ------------ ============================================= ------------
                   ************ TOOLTIP SUB EXPIRED (PROFILE TYPE = PAYMENTS) ************
                   ------------ ============================================= ------------ 
                   -->
-                  <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false" style="color:#f44336;" 
-                    (click)="openModalSubsExpired()" class="expired__Tooltip">
-                    <i class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer" >
-                      error_outline
-                    </i>
-                    <span class="expired__Tooltiptext" style="font-size:14px; top: 100%;text-transform:none"> 
-                      {{ 'Pricing.SubscriptionPaymentProblem' | translate }}  
-                    </span>
-                  </span>
-                </a> 
-              </li>
-            </ng-container>
+              <span *ngIf="prjct_profile_type === 'payment' && subscription_is_active === false" style="color:#f44336;"
+                (click)="openModalSubsExpired()" class="expired__Tooltip">
+                <i class="material-icons" style="vertical-align: middle; color:#f44336; cursor:pointer">
+                  error_outline
+                </i>
+                <span class="expired__Tooltiptext" style="font-size:14px; top: 100%;text-transform:none">
+                  {{ 'Pricing.SubscriptionPaymentProblem' | translate }}
+                </span>
+              </span>
+            </a>
+          </li>
+        </ng-container>
 
-            <!-- ------------ ============ PROJECTS ============ ------------ -->
-            <li *ngIf="project">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <i class="material-icons">apps</i>
-                <span style="text-transform: none"> {{ project.name }} </span> 
-                <p class="hidden-lg hidden-md">Projects</p>
+        <!-- ------------ ============ PROJECTS ============ ------------ -->
+        <li *ngIf="project">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="material-icons">apps</i>
+            <span style="text-transform: none"> {{ project.name }} </span>
+            <p class="hidden-lg hidden-md">Projects</p>
+          </a>
+
+          <ul class="dropdown-menu" style="max-height: 240px;overflow-y: auto;">
+
+            <!-- ------------ ALL PROJECTS ------------ -->
+            <li (click)="goToProjects()">
+              <a style="cursor: pointer">
+                <i class="material-icons" style="padding-right: 5px; margin-bottom: 2px; font-size: 20px">view_list</i>
+                {{ 'NavBar.ViewAllProjects' | translate }}
               </a>
+            </li>
 
-              <ul class="dropdown-menu" style="max-height: 240px;overflow-y: auto;">
-
-                <!-- ------------ ALL PROJECTS ------------ -->
-                <li (click)="goToProjects()">
-                  <a style="cursor: pointer">
-                    <i class="material-icons" style="padding-right: 5px; margin-bottom: 2px; font-size: 20px">view_list</i>
-                    {{ 'NavBar.ViewAllProjects' | translate }}
-                  </a>
-                </li>
-
-                <!-- ------------ ADD PROJECT ------------ -->
-                <li (click)="goToCreateProject()">
-                  <a style="cursor: pointer">
-                    <i class="material-icons" style="padding-right: 5px; margin-bottom: 2px; font-size: 20px">add_circle_outline </i>
-                    {{ 'AddProject' | translate }}
-                  </a>
-                </li>
-                
-        
-                <!-- ------------ PROJECT SETTINGS ------------ -->
-                <li>
-                  <a routerLink="/project/{{ project?._id }}/project-settings/general">
-                    <i class="material-icons" style="padding-right: 5px; margin-bottom: 2px; font-size: 20px">settings</i>
-                    {{ 'NavBar.ProjectSettings' | translate }}
-                  </a>
-                </li>
+            <!-- ------------ ADD PROJECT ------------ -->
+            <li (click)="goToCreateProject()">
+              <a style="cursor: pointer">
+                <i class="material-icons"
+                  style="padding-right: 5px; margin-bottom: 2px; font-size: 20px">add_circle_outline </i>
+                {{ 'AddProject' | translate }}
+              </a>
+            </li>
 
 
-                <li class="divider"></li>
+            <!-- ------------ PROJECT SETTINGS ------------ -->
+            <li>
+              <a routerLink="/project/{{ project?._id }}/project-settings/general">
+                <i class="material-icons" style="padding-right: 5px; margin-bottom: 2px; font-size: 20px">settings</i>
+                {{ 'NavBar.ProjectSettings' | translate }}
+              </a>
+            </li>
 
-                <!-- ------------ RECENT PROJECTS ------------ -->
-                
-                <li> 
-                  <span style="padding-left: 24px;font-size: 12px; color: rgb(118,149,165);font-weight: 400">
-                    {{ 'RecentProjects' | translate  }}
-                  </span>
-                </li>
 
-                <!-- 
+            <li class="divider"></li>
+
+            <!-- ------------ RECENT PROJECTS ------------ -->
+
+            <li>
+              <span style="padding-left: 24px;font-size: 12px; color: rgb(118,149,165);font-weight: 400">
+                {{ 'RecentProjects' | translate  }}
+              </span>
+            </li>
+
+            <!-- 
                   ***** ngFor - reverse order of output using the index *****
                   Reverse() works in place. It means, it will change the original array. 
                   Slice without parameters returns a copy of projects, so original array, in this case, stays unchanged.  
                   let prjct of projects?.reverse()
                 -->
-          
-                  <li *ngFor="let prjct of projects?.slice().reverse() | slice:0:5; let i=index" style="cursor: pointer">
-                    <a (click)="goToHome(prjct?.id_project?._id, prjct?.id_project?.name)" 
-                      [ngClass]="{'li-selected' : prjct?.id_project?._id === projectId }">
-            
-                    <span>  {{ prjct?.id_project?.name }}    </span>
-                    </a>
-                  </li>
-           
-                <ng-container *ngIf="projects?.length > 5"> 
-                  <li class="divider"></li>
-                  <li> 
-                    <span style="padding-left: 24px;font-size: 12px; color: rgb(118,149,165);font-weight: 400">
-                      {{ 'OtherProjects' | translate}} 
-                    </span>
-                  </li>
 
-                  <li *ngFor="let prjct of projects?.slice().reverse() | slice:5:10; let i=index" style="cursor: pointer">
-                    <a (click)="goToHome(prjct?.id_project?._id, prjct?.id_project?.name)">
-                      {{ prjct?.id_project?.name }}    
-                    </a>
-                  </li>
-                </ng-container>
+            <li *ngFor="let prjct of projects?.slice().reverse() | slice:0:5; let i=index" style="cursor: pointer">
+              <a (click)="goToHome(prjct?.id_project?._id, prjct?.id_project?.name)"
+                [ngClass]="{'li-selected' : prjct?.id_project?._id === projectId }">
 
-                <!-- <li *ngFor="let prjct of projects?.slice().reverse() | slice:5:10; let i=index" style="cursor: pointer">
+                <span> {{ prjct?.id_project?.name }} </span>
+              </a>
+            </li>
+
+            <ng-container *ngIf="projects?.length > 5">
+              <li class="divider"></li>
+              <li>
+                <span style="padding-left: 24px;font-size: 12px; color: rgb(118,149,165);font-weight: 400">
+                  {{ 'OtherProjects' | translate}}
+                </span>
+              </li>
+
+              <li *ngFor="let prjct of projects?.slice().reverse() | slice:5:10; let i=index" style="cursor: pointer">
+                <a (click)="goToHome(prjct?.id_project?._id, prjct?.id_project?.name)">
+                  {{ prjct?.id_project?.name }}
+                </a>
+              </li>
+            </ng-container>
+
+            <!-- <li *ngFor="let prjct of projects?.slice().reverse() | slice:5:10; let i=index" style="cursor: pointer">
                     <a (click)="goToHome(prjct?.id_project?._id, prjct?.id_project?.name)">
                       {{ prjct?.id_project?.name }}    
                     </a>
                 </li> -->
 
-              </ul>
-            </li>
-
-            <!-- ------------ ============ NOTIFICATION ============ ------------ -->
-            <li *ngIf="project" class="dropdown">
-              <a routerLink="project/{{ project._id }}/wsrequests" class="dropdown-toggle" data-toggle="dropdown">
-                <i class="material-icons">notifications</i>
-
-                <!-- SHOW THE BADGE OVER NOTIFICATION IF THE COUNT OF UNSERVED OR TO ASSIGNED TO CURRENT USER REQUESTS IS > 0 -->
-                <span *ngIf="unservedRequestCount > 0 || currentUserRequestCount > 0 ">
-                  <span class="notification">{{ unservedRequestCount + currentUserRequestCount }}</span>
-                </span>
-
-                <p class="hidden-lg hidden-md">Notifications</p>
-              </a>
-            </li>
-
-            <!-- ------------ ============ USER ============ ------------ -->
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="material-icons">person</i>
-                  <span class="tooltipx"> 
-                    <span  *ngIf="user?.emailverified == false" class="notification" style="font-weight: 200; font-size:12px; right:-1px; top:-24px">
-                      !
-                      <span class="tooltiptext" style="min-height:44px; line-height: 1.5">
-                        {{"NavBar.PendingVerification" | translate }}
-                      </span>
-                    </span>
-                  </span>
-                
-                  <p class="hidden-lg hidden-md">Profile</p>
-                </a>
-                
-                <ul *ngIf="user" class="dropdown-menu">
-                  <div class="card card-profile" style="box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0)">
-                    <div class="card-avatar" style="max-width:80px; max-height:80px;background-color:#ffffff; border: 2px solid #ffffff">
-                      <a>
-                        <!-- <img class="img" src="assets/img/no_image_user.png" /> -->
-                        <!-- src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{user?._id}}%2Fphoto.jpg?alt=media" -->
-                        <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" 
-                          class="user-img"  [src]="getUserProfileImage()"/>
-                          
-                        <img *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true" 
-                          class="user-img" src="assets/img/no_image_user.png"/>
-                      </a>
-                    </div>
-                    <div class="content">
-                      <!-- ------------ USER PROFILE ------------ -->
-                      <button *ngIf="project" class="btn btn-primary" routerLink="project/{{ project._id }}/user-profile" 
-                        style="letter-spacing: 2px;border-radius: 30px;padding-left: 16px;padding-right: 16px;">
-                        {{ 'NavBar.UserProfile' | translate }}
-                      </button>
-                      <h4 class="card-title" style="padding-right:16px; padding-left:16px; font-size:1em; color: #3C4858">
-                        <strong> {{ user?.firstname }} {{ user?.lastname }} </strong>
-                      </h4>
-                      <h4 class="card-title" style="padding-right:16px; padding-left:16px; font-size:1em; margin-bottom:30px">
-                        {{ user?.email }}
-                      </h4>
-
-                    </div>
-
-                    <button style="padding:12px 16px; font-size:12px; color: #7695a5" type="submit" class="btn btn-white" (click)="openLogoutModal()">
-                      <!-- Log Out -->
-                      {{ 'NavBar.LogOut' | translate }}
-                    </button>
-                  </div>
-
-                </ul>
-            </li>
           </ul>
+        </li>
 
-        </div>
-      </div>
-    </nav>
-  <!-- </div> -->
+        <!-- ------------ ============ NOTIFICATION ============ ------------ -->
+        <li *ngIf="project" class="dropdown">
+          <a routerLink="project/{{ project._id }}/wsrequests" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="material-icons">notifications</i>
 
-  <!-- ------------============= PENDING EMAIL VERIFICATION ALERT =============------------ -->
-  <span *ngIf="HIDE_PENDING_EMAIL_NOTIFICATION === false">
-    <div (click)="goToUserProfile()" *ngIf="user?.emailverified == false" data-notify="container" 
-      class="alert alert-danger animated fadeInDown alert-pending-email-verification" role="alert" data-notify-position="top-center" 
-      [ngClass]="{'is-user-profile-page' : DETECTED_USER_PROFILE_PAGE === true }" >
-      <!-- <button type="button" aria-hidden="true" class="close" data-notify="dismiss" style="position: absolute; right: 10px; top: 5px; z-index: 1033;">×</button> -->
-      <span data-notify="icon" class="notifications">
-        <i class="fa fa-exclamation-circle" style="font-size: 13px; position: relative;top: -1px;"></i>  
-        <span style="font-family: Google Sans, sans-serif;font-weight: 400; display: inline; position: relative;top: -2px; font-size: 11px; padding-left: 5px;">
-          {{"NavBar.PendingVerification" | translate }}
-
-          <span class="tooltipx" style="float: right;">
-            <span> 
-                <i class="material-icons" style="position: relative;top: 4px; font-size:14px; color:#ffffff">
-                  help_outline
-                </i>
-              </span>
-            <span class="tooltiptext" style="min-width: 231px;line-height: 1.1;min-height: 34px; top: -5px; right: 105%; ">
-              {{ "NavBar.WhenPendingEmailVerification" | translate}}
+            <!-- SHOW THE BADGE OVER NOTIFICATION IF THE COUNT OF UNSERVED OR TO ASSIGNED TO CURRENT USER REQUESTS IS > 0 -->
+            <span *ngIf="unservedRequestCount > 0 || currentUserRequestCount > 0 ">
+              <span class="notification">{{ unservedRequestCount + currentUserRequestCount }}</span>
             </span>
+
+            <p class="hidden-lg hidden-md">Notifications</p>
+          </a>
+        </li>
+
+        <!-- ------------ ============ USER ============ ------------ -->
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="material-icons">person</i>
+            <span class="tooltipx">
+              <span *ngIf="user?.emailverified == false" class="notification"
+                style="font-weight: 200; font-size:12px; right:-1px; top:-24px">
+                !
+                <span class="tooltiptext" style="min-height:44px; line-height: 1.5">
+                  {{"NavBar.PendingVerification" | translate }}
+                </span>
+              </span>
+            </span>
+
+            <p class="hidden-lg hidden-md">Profile</p>
+          </a>
+
+          <ul *ngIf="user" class="dropdown-menu">
+            <div class="card card-profile">
+              <div class="card-avatar user-profile-avatar">
+                <a>
+                  <!-- <img class="img" src="assets/img/no_image_user.png" /> -->
+                  <!-- src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{user?._id}}%2Fphoto.jpg?alt=media" -->
+                  <img style="width:80px; height:80px"
+                    *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" class="user-img"
+                    [src]="getUserProfileImage()" />
+
+                  <img *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true" class="user-img"
+                    src="assets/img/no_image_user.png" />
+                </a>
+              </div>
+              <div class="content">
+                <h4 class="card-title user-profile-fullname">
+                  <strong> {{ user?.firstname }} {{ user?.lastname }} </strong>
+                </h4>
+                <h4 class="card-title user-profile-email">
+                  {{ user?.email }}
+                </h4>
+
+                
+                <button *ngIf="project" class="btn btn-primary view-user-profile-btn" 
+                routerLink="project/{{ project._id }}/user-profile">
+                  {{ 'NavBar.UserProfile' | translate }}
+                </button>
+              </div>
+
+              <li class="divider"></li>
+              <button type="submit" class="btn btn-white logout-user-profile-btn"
+                (click)="openLogoutModal()">
+                <!-- Log Out -->
+                {{ 'NavBar.LogOut' | translate }}
+              </button>
+            </div>
+
+          </ul>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</nav>
+<!-- </div> -->
+
+<!-- ------------============= PENDING EMAIL VERIFICATION ALERT =============------------ -->
+<span *ngIf="HIDE_PENDING_EMAIL_NOTIFICATION === false">
+  <div (click)="goToUserProfile()" *ngIf="user?.emailverified == false" data-notify="container"
+    class="alert alert-danger animated fadeInDown alert-pending-email-verification" role="alert"
+    data-notify-position="top-center" [ngClass]="{'is-user-profile-page' : DETECTED_USER_PROFILE_PAGE === true }">
+    <!-- <button type="button" aria-hidden="true" class="close" data-notify="dismiss" style="position: absolute; right: 10px; top: 5px; z-index: 1033;">×</button> -->
+    <span data-notify="icon" class="notifications">
+      <i class="fa fa-exclamation-circle" style="font-size: 13px; position: relative;top: -1px;"></i>
+      <span
+        style="font-family: Google Sans, sans-serif;font-weight: 400; display: inline; position: relative;top: -2px; font-size: 11px; padding-left: 5px;">
+        {{"NavBar.PendingVerification" | translate }}
+
+        <span class="tooltipx" style="float: right;">
+          <span>
+            <i class="material-icons" style="position: relative;top: 4px; font-size:14px; color:#ffffff">
+              help_outline
+            </i>
           </span>
-        </span> 
-      </span> 
-      <!-- <span data-notify="title" style="max-width: 100%;">
+          <span class="tooltiptext"
+            style="min-width: 231px;line-height: 1.1;min-height: 34px; top: -5px; right: 105%; ">
+            {{ "NavBar.WhenPendingEmailVerification" | translate}}
+          </span>
+        </span>
+      </span>
+    </span>
+    <!-- <span data-notify="title" style="max-width: 100%;">
         {{"NavBar.SomeSystemAreDisabled" | translate }}
       </span>  -->
-    </div>
-  </span>
+  </div>
+</span>
 
-  <!-- ------------============= PENDING OPEN CHAT ALERT =============------------ -->
-    
-    <!-- <span *ngIf="HIDE_PENDING_EMAIL_NOTIFICATION === false">
+<!-- ------------============= PENDING OPEN CHAT ALERT =============------------ -->
+
+<!-- <span *ngIf="HIDE_PENDING_EMAIL_NOTIFICATION === false">
       <div (click)="openChat()" *ngIf="HAS_OPENED_THE_CHAT === false" data-notify="container" 
         class="alert alert-danger animated fadeInDown alert-open-chat" role="alert" data-notify-position="top-center" 
         [ngClass]="{'alert-open-chat-when-is-open-email-alert' : user?.emailverified == false, 'is-user-profile-page' : DETECTED_USER_PROFILE_PAGE === true  }" >
@@ -349,7 +360,8 @@
 <!-- </div> -->
 
 <!-- MODAL - LOGOUT WINDOWS -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayLogoutModal}" style="background-color: rgba(90,90,90,0.5);">
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayLogoutModal}"
+  style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog " role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -370,14 +382,14 @@
         <p *ngIf="IS_AVAILABLE === true" style="margin-bottom:0px; text-align:center;">
           <!-- {{ "NavBar.NoteThatThisWillNotChangeYourAvailability" | translate }} -->
           <i class="material-icons" style="display: block; color:#f44336">warning</i>
-          <span style="color:#f44336"> {{ "NavBar.AttentionIfYouDoNotWantToReceiveRequests" | translate }} </span> 
+          <span style="color:#f44336"> {{ "NavBar.AttentionIfYouDoNotWantToReceiveRequests" | translate }} </span>
         </p>
       </div>
 
       <div class="modal-footer" style="text-align: center;">
         <button class="btn btn-white" (click)="onCloseLogoutModalHandled()" style="padding:12px 16px; font-size:12px ">
           {{ "Cancel" | translate}}
-        </button>    
+        </button>
         <button class="btn btn-primary" (click)="onLogoutModalHandled()" style="padding:12px 16px; font-size:12px ">
           <!-- Log Out -->
           {{ 'NavBar.LogOut' | translate }}
@@ -389,4 +401,3 @@
   </div>
   <!-- /.modal-dialog -->
 </div>
-

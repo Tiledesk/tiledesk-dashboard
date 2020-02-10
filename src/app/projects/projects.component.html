@@ -42,44 +42,39 @@
               </a>
             <!-- float:right !important; right:0px!important; left:1px!important  -->
               <ul class="dropdown-menu">
-
-                <div class="card card-profile" style="box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0)">
-                  <div class="card-avatar" style="max-width:80px; max-height:80px; background-color:#ffffff; border: 2px solid #ffffff">
+                <div class="card card-profile">
+                  <div class="card-avatar user-profile-avatar">
                     <a>
                       <!-- <img class="img" src="assets/img/no_image_user.png" /> -->
-
-                      <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" 
+                      <img style="width:80px; height:80px" *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" 
                       class="user-img" src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{user?._id}}%2Fphoto.jpg?alt=media" />
                       
                       <img *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true" 
                       class="user-img" src="assets/img/no_image_user.png"/>
-
                     </a>
-
                   </div>
+
                   <div class="content">
-                    <button  class="btn btn-primary" routerLink="/user-profile" 
-                      style="padding-top:3.5px; padding-bottom:3.5px; letter-spacing: 2px;border-radius: 30px;padding-left: 16px;padding-right: 16px;">
-                      <!-- <h6 class="category text-gray"> -->
-                        <!-- <a routerLink="/user-profile">  -->
-                        <span style="font-size:0.8em"> {{ 'ProjectsPage.UserProfile' | translate }} </span>
-                        <!-- </a> -->
-                      <!-- </h6> -->
-                    </button>
-                    <h4 class="card-title" style="padding-right:16px; padding-left:16px; font-size:1em; color: #3C4858">
+
+                    <h4 class="card-title user-profile-fullname">
                       <strong> 
                         {{ user?.firstname }} {{ user?.lastname }} 
                       </strong>
                     </h4>
-                    <h4 class="card-title" style="padding-right:16px; padding-left:16px; font-size:1em; margin-bottom:30px">
+                    <h4 class="card-title user-profile-email">
                       {{ user?.email }}
                     </h4>
-                    <!-- <p class="card-content">{{ user.email }}</p> -->
-                  </div>
-                  <button style="padding-left:26px; padding-right:26px; font-size:0.9em;color: #7695a5" type="submit" class="btn btn-white" (click)="openLogoutModal()">
+                   
+                    <button class="btn btn-primary view-user-profile-btn" routerLink="/user-profile">
+                      <span style="font-size:0.8em"> {{ 'ProjectsPage.UserProfile' | translate }} </span>
+                  </button>
+                  <li class="divider"></li>
+                  <button  type="submit" class="btn btn-white logout-user-profile-btn" (click)="openLogoutModal()">
                     <!-- Log out -->
                     {{ 'NavBar.LogOut' | translate }}
                   </button>
+                  </div>
+                 
                 </div>
               </ul>
             </li>

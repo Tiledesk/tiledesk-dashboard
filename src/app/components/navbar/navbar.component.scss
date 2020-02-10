@@ -253,6 +253,59 @@ button.close.custom-hover:hover {
   color: #7695a5 !important;
 }
 
+.card-profile {
+  background-color: #fff;
+  margin-bottom: 15px;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0);
+}
+
+.user-profile-avatar {
+  max-width: 80px;
+  max-height: 80px;
+  width: 80px;
+  height: 80px;
+  background-color: #ffffff;
+  border: 2px solid #ffffff;
+}
+.user-profile-fullname {
+  padding: 0px 16px;
+  margin-bottom: 0px;
+  font-size: 16px;
+  color: #3c4858;
+  font-family: "Google Sans", sans-serif !important;
+  font-weight: 600;
+}
+
+.user-profile-email {
+  padding: 0px 16px;
+  margin-top: 0px;
+  font-size: 14px;
+  white-space: nowrap;
+  font-weight: 400;
+  color: #7695a5;
+}
+
+.view-user-profile-btn {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  letter-spacing: 1px;
+  border-radius: 30px;
+  padding-left: 18px;
+  padding-right: 18px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  margin-left: 16px;
+  margin-right: 16px;
+}
+
+.logout-user-profile-btn {
+  padding: 12px 26px;
+  font-size: 0.9em;
+  color: #7695a5;
+  margin-top: 10px;
+  
+}
+
 /* // CIRCULAR PROGRESS BAR  */
 .progress {
   /* width: 150px;
