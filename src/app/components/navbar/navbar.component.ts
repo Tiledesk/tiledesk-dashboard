@@ -920,8 +920,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
         }, {
             type: type[color],
-            // timer: 2000,
-            timer: 200000,
+            timer: 2000,
             template:
                 `<div data-notify="container" style="padding:10px!important;background-color:rgb(255, 255, 238);box-shadow:0px 0px 5px rgba(51, 51, 51, 0.3);cursor:pointer;border-left:15px solid;${borderColor}"
                     class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">` +
