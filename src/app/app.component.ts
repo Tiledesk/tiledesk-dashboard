@@ -356,8 +356,10 @@ export class AppComponent implements OnInit, AfterViewInit , OnDestroy{
                 // RESOLVE THE BUG: THE "MOBILE" SIDEBAR IN THE PAGE "RECENT PROJECT" IS SMALLER OF THE APP WINDOW
                 if (this.route === '/projects') {
                     // elemSidebarWrapper.setAttribute('style', `height:100vh; background-color: ${this.background_bottom_section} !important;`);
-                    elemSidebarWrapper.style.height = "100vh"
+
+                    elemSidebarWrapper.style.height = "100vh";
                 } else {
+                    elemSidebarWrapper.style.height = "calc(100vh - 60px)";
                     // elemSidebarWrapper.setAttribute('style', `background-color: ${this.background_bottom_section} !important;`);
                 }
 
