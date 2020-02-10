@@ -20,6 +20,8 @@
 - Fixes the reload of the request's details page when change the request id url parameter
 - Fixes the handle-invitation path without surname parameter 
 - Fixes registration form' email validation to not allow address without domain
+- Edits users and project users services endpoint
+- Fixes "project settings" sidebar menu item is not displayed
 
 ### 1.0.40
 - Fixes the user profile urls
