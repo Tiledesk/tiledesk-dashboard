@@ -206,23 +206,25 @@ export class UsersProfileComponent implements OnInit {
 
 
   getMemberByIdAndSaveInStorage() {
-     // NK-TO-TEST - da cambiare - vedi commento nel servizio
+    // DONE -> WORKS NK-TO-TEST - da cambiare - vedi commento nel servizio
     //  this.usersService.getUsersById("5e3d47b485aa8a0017012485")
-    this.usersService.getUsersById(this.member_id)
-      .subscribe((user) => {
-        console.log('USERS PROFILES - USER GET BY ID ', user);
+    this.usersService.getProjectUserById(this.member_id)
+      .subscribe((projectuser) => {
+        console.log('USERS PROFILES - USER GET BY ID ', projectuser);
 
-        if (user) {
-          this.user = user;
-          this.user_firstname = user['firstname'];
+      
+        if (projectuser) {
+          
+          this.user = projectuser[0].id_user;
+          this.user_firstname = this.user['firstname'];
           console.log('USER FIRSTNAME ', this.user_firstname);
-          this.user_lastname = user['lastname'];
+          this.user_lastname = this.user['lastname'];
           console.log('USER LASTNAME ', this.user_lastname);
-          this.user_email = 'unavailable';
+          this.user_email =  this.user['email'];
           console.log('USER EMAIL ', this.user_email);
-          this.user_id = user['_id'];
+          this.user_id = this.user['_id'];
 
-          this.usersLocalDbService.saveMembersInStorage(user['_id'], user);
+          this.usersLocalDbService.saveMembersInStorage(this.user['_id'], this.user);
         }
       }, (error) => {
         console.log('USERS PROFILES - USER GET BY ID - ERROR ', error);
