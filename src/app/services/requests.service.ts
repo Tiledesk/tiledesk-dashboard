@@ -98,7 +98,8 @@ export class RequestsService {
       this.checkUser()
     });
 
-    this.getCurrentProject();
+    /** UNCOMMENT THIS IF WHANT TO SUBSCRIBE TO FIRESTORE REQUESTS  */
+    // this.getCurrentProject();
     
     // this.getMyDepts(); // !! NO MORE USED
 
