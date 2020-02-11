@@ -164,10 +164,14 @@ export class WebSocketJs {
       this.topics.splice(index, 1);
     }
 
-    console.log("% »»» WebSocketJs *** UNSUBSCRIBE *** - topics after splice ", this.topics);
+    console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - topics after splice ", this.topics);
+    console.log("% »»» WebSocketJs WF *** UNSUBSCRIBE *** - topic  ", topic);
+    console.log('% »»» WebSocketJs WF *** UNSUBSCRIBE *** this.ws.readyState ', this.ws.readyState);
 
-    this.callbacks.delete(topic);
-    console.log("% »»» WebSocketJs *** UNSUBSCRIBE *** - callback after delete ", this.callbacks);
+    if (this.callbacks.length > 0) {
+      this.callbacks.delete(topic);
+      console.log("% »»» WebSocketJs *** UNSUBSCRIBE *** - callback after delete ", this.callbacks);
+    }
 
     var message = {
       action: 'unsubscribe',
@@ -181,7 +185,11 @@ export class WebSocketJs {
     var str = JSON.stringify(message);
     console.log("%% str " + str);
 
-    this.send(str, `calling method - UNSUSCRIBE from ${topic}`);
+    if (this.ws.readyState == 1) {
+      this.send(str, `calling method - UNSUSCRIBE from ${topic}`);
+    } else {
+      console.log('% »»» WebSocketJs WF -  UNSUSCRIBE try send but this.ws.readyState is = ', this.ws.readyState)
+    }
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -266,13 +274,11 @@ export class WebSocketJs {
     var milliSecondsTime = 15000;
     var timer;
 
-
     console.log('% »»» WebSocketJs - heartStart timer 1', milliSecondsTime / 1000);
     timer = setInterval(function () {
       milliSecondsTime = milliSecondsTime - 1000;
       if (milliSecondsTime / 1000 == 0) {
         clearTimeout(timer);
-
       }
       else {
         console.log('% »»» WebSocketJs - heartStart timer 2 ', milliSecondsTime / 1000);
@@ -284,26 +290,19 @@ export class WebSocketJs {
   // @ heartStart
   // -----------------------------------------------------------------------------------------------------
   heartStart() {
-
     // this.getRemainingTime();
-
     this.pingTimeoutId = setTimeout(() => {
 
       // Qui viene inviato un battito cardiaco Dopo averlo ricevuto, viene restituito un messaggio di battito cardiaco.
       // onmessage Ottieni il battito cardiaco restituito per indicare che la connessione è normale
       if (this.ws.readyState == 1) {
-
-
-
         // console.log('% »»» WebSocketJs - heartStart WS OK - readyState ', this.ws.readyState);
         // console.log('% »»» WebSocketJs - HEART-START send PING MSG ', JSON.stringify(this.pingMsg));
 
         // this.ws.send(JSON.stringify(this.pingMsg));
-
         this.send(JSON.stringify(this.pingMsg), 'HEART-START')
 
       } else {
-
         console.log('% »»» WebSocketJs - heartStart WS KO - readyState ', this.ws.readyState);
       }
 
@@ -410,7 +409,6 @@ export class WebSocketJs {
         // --------------------
 
         setTimeout(function () {
-
           that.init(url, onCreate, onUpdate, onData, onOpen, function () {
             that.resubscribe();
           }, that.topics, that.callbacks);
