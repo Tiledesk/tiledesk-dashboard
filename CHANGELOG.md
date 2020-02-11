@@ -22,6 +22,7 @@
 - Fixes registration form' email validation to not allow address without domain
 - Edits some services endpoints for users and project users
 - Fixes "project settings" sidebar menu item is not displayed
+- Fixes the error that generates the logout if made in the request' details page
 
 ### 1.0.40
 - Fixes the user profile urls
