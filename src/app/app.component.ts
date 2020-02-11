@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, Self , OnDestroy} from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ElementRef, Self, OnDestroy } from '@angular/core';
 import { Location, LocationStrategy, PathLocationStrategy, PopStateEvent } from '@angular/common';
 import 'rxjs/add/operator/filter';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -34,7 +34,7 @@ export let browserRefresh = false;
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit, AfterViewInit , OnDestroy{
+export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private _router: Subscription;
     private lastPoppedUrl: string;
     private yScrollStack: number[] = [];
@@ -49,7 +49,7 @@ export class AppComponent implements OnInit, AfterViewInit , OnDestroy{
 
     @ViewChild('myModal') myModal: ElementRef;
     isPageWithNav: boolean;
- 
+
     wsbasepath = environment.websocket.wsUrl;
     subscription: Subscription;
     // background_bottom_section = brand.sidebar.background_bottom_section
@@ -65,8 +65,8 @@ export class AppComponent implements OnInit, AfterViewInit , OnDestroy{
         public wsMsgsService: WsMsgsService,
         public webSocketJs: WebSocketJs,
         private metaTitle: Title,
-      
-        
+
+
         // private faqKbService: FaqKbService,
     ) {
 
@@ -112,7 +112,7 @@ export class AppComponent implements OnInit, AfterViewInit , OnDestroy{
 
         this.subscription = router.events.subscribe((event) => {
             if (event instanceof NavigationStart) {
-              browserRefresh = !router.navigated;
+                browserRefresh = !router.navigated;
             }
         });
     }
@@ -120,7 +120,7 @@ export class AppComponent implements OnInit, AfterViewInit , OnDestroy{
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
-      }
+    }
 
     switchLanguage(language: string) {
         this.translate.use(language);
@@ -143,8 +143,8 @@ export class AppComponent implements OnInit, AfterViewInit , OnDestroy{
 
         console.log(' ====== >>> HELLO APP.COMP (ngOnInit) <<< ====== ')
         console.log('!! FIREBASE  ', firebase);
-        
-        this.resetRequestsIfUserIsSignedOut();
+
+        this.closeWSAndResetWsRequestsIfUserIsSignedOut();
 
         // NEW (SEE ALSO )
         const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
@@ -194,74 +194,69 @@ export class AppComponent implements OnInit, AfterViewInit , OnDestroy{
         // -----------------------------------------------------------------------------------------------------
         this.getCurrentUserAndConnectToWs();
     }
-    
+
     getCurrentUserAndConnectToWs() {
-        const self = this
+
         this.auth.user_bs.subscribe((user) => {
-          console.log('% »»» WebSocketJs WF - APP-COMPONENT - LoggedUser ', user);
-          console.log('% »»» WebSocketJs WF - APP-COMPONENT - WS URL ', this.wsbasepath);
-    
-          if (user && user.token) {
-    
-            // const CHAT_URL = 'ws://tiledesk-server-pre.herokuapp.com?token=' + user.token
-            const CHAT_URL = this.wsbasepath + user.token
-            
+            console.log('% »»» WebSocketJs WF - APP-COMPONENT - LoggedUser ', user);
+            console.log('% »»» WebSocketJs WF - APP-COMPONENT - WS URL ', this.wsbasepath);
 
-            // -----------------------------------------------------------------------------------------------------
-            // Websocket init 
-            // -----------------------------------------------------------------------------------------------------
-            this.webSocketJs.init(
-                CHAT_URL,
-                undefined,
-                undefined,
-                undefined
-            );
-          }
+            if (user && user.token) {
+
+                // const CHAT_URL = 'ws://tiledesk-server-pre.herokuapp.com?token=' + user.token
+                const CHAT_URL = this.wsbasepath + user.token
+
+
+                // -----------------------------------------------------------------------------------------------------
+                // Websocket init 
+                // -----------------------------------------------------------------------------------------------------
+                this.webSocketJs.init(
+                    CHAT_URL,
+                    undefined,
+                    undefined,
+                    undefined
+                );
+            }
         });
-      }
+    }
 
- 
-    resetRequestsIfUserIsSignedOut() {
+
+    closeWSAndResetWsRequestsIfUserIsSignedOut() {
         const self = this
-        console.log('resetRequestsIfUserIsSignedOut ', typeof firebase.auth)
+        console.log('% »»» WebSocketJs WF - APP-COMPONENT - closeWSAndResetWsRequestsIfUserIsSignedOut ', typeof firebase.auth)
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
-                console.log('resetRequestsIfUserIsSignedOut - User is signed in. ', user)
+                console.log('% »»» WebSocketJs WF - APP-COMPONENT - User is signed in. ', user)
                 this.userIsSignedIn = true
 
             } else {
-                console.log('resetRequestsIfUserIsSignedOut - No user is signed in. ', user)
+                console.log('% »»» WebSocketJs WF - APP-COMPONENT - closeWSAndResetWsRequestsIfUserIsSignedOut - No user is signed in. ', user)
 
                 this.userIsSignedIn = false
-                console.log('resetRequestsIfUserIsSignedOut - User is signed in. ', this.userIsSignedIn)
+                console.log('% »»» WebSocketJs WF - APP-COMPONENT - User is signed in. ', this.userIsSignedIn)
 
                 // USED TO DETERMINE WHEN VISUALIZING THE POPUP WINDOW 'SESSION EXPIRED'
                 self.auth.userIsSignedIn(this.userIsSignedIn);
 
-                // No user is signed in.
-                // tslint:disable-next-line:no-debugger
-                // debugger
-                if (self.requestsService.unsubscribe) {
-                    self.requestsService.unsubscribe()
-                    self.requestsService.resetRequestsList()
-                }
+                // -----------------------------------------------------------------------------------------------------    
+                //  Websocket - Close websocket and reset ws requests list 
+                // -----------------------------------------------------------------------------------------------------
 
-            // -----------------------------------------------------------------------------------------------------    
-            //  Websocket - Close websocket and reset ws requests list 
-            // -----------------------------------------------------------------------------------------------------
-            self.closeWebsocketAndResetRequestsList()
-            
+                self.webSocketJs.close()
+                self.wsRequestsService.resetWsRequestList()
+
+                /* The old unsuscribe to firestore requests when No user is signed in. */
+                // if (self.requestsService.unsubscribe) {
+                //     self.requestsService.unsubscribe()
+                //     self.requestsService.resetRequestsList()
+                // }
 
             }
         });
     }
 
 
-    closeWebsocketAndResetRequestsList() {
-        // this.webSocketJs.closeWebsocket()
-        this.webSocketJs.close()
-        this.wsRequestsService.resetWsRequestList()
-    }
+
 
     // SET TO 'none' the box-shadow style of the navbar in the page in which is present the second navbar (i.e. the bottom-nav)
     unsetNavbarBoxShadow() {
@@ -351,7 +346,7 @@ export class AppComponent implements OnInit, AfterViewInit , OnDestroy{
                     elemNavbar.setAttribute('style', 'display:block;');
                     elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;');
                 }
-                
+
 
                 // RESOLVE THE BUG: THE "MOBILE" SIDEBAR IN THE PAGE "RECENT PROJECT" IS SMALLER OF THE APP WINDOW
                 if (this.route === '/projects') {
