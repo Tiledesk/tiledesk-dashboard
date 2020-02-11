@@ -110,7 +110,7 @@ export class WsRequestsService implements OnDestroy {
     this.subscription.unsubscribe();
     // this.unsubscribe$.next();
     // this.unsubscribe$.complete();
-}
+  }
 
 
   getLoggedUser() {
@@ -138,16 +138,17 @@ export class WsRequestsService implements OnDestroy {
     var self = this;
     self.wsRequestsList = [];
     self.wsAllRequestsList = [];
-    
+
     // this.subscription  =  
     this.auth.project_bs.subscribe((project) => {
       console.log('% »»» WebSocketJs WF +++++ ws-requests--- service  PRJCT VALUE = ', this.auth.project_bs.value)
-      
+
       // console.log('%% WsRequestsService PROJECT ', project)
       // console.log('% »»» WebSocketJs WF ****** WsRequestsService PROJECT._ID 1', project)
-      /**
-       * Unsubscribe to websocket requests with the old project id  
-       */
+
+      // ---------------------------------------------------------------------------------
+      // Unsubscribe to websocket requests with the old project id  
+      // ---------------------------------------------------------------------------------
       if (this.project_id) {
         console.log('% »»» WebSocketJs WF +++++ ws-requests--- service getWsRequests */* ref */* this.project_id ', this.project_id)
         // console.log('%% WsRequestsService THIS.PROJECT_ID ', this.project_id)
