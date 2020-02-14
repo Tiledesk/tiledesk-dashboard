@@ -384,16 +384,24 @@
     "NoServedRequests": "No richiesta servita",
     "NoRequests": "Nessuna richiesta",
     "MultiLanguagePreview": "Cambia lingua di anteprima",
-    "RequiredField":"Campo obbligatorio",
-    "Text":"Testo",
-    "Alignment":"Allineamento",
+    "RequiredField": "Campo obbligatorio",
+    "Text": "Testo",
+    "Alignment": "Allineamento",
     "UserRole": "Ruolo utente",
     "BotType": " / Tipo bot",
     "Language": "Lingua",
-    "ReassignToDept":"Riassegna al dipartimento",
-    "AddTranslation":"Aggiungi traduzione",
+    "ReassignToDept": "Riassegna al dipartimento",
+    "AddTranslation": "Aggiungi traduzione",
     "Completed": "Completato",
     "TranslationDeleted": "traduzione {{language_name}}  eliminata",
+    "BotIntegration": "Integrazione bot",
+    "ChooseBotType": "Scegli il tipo di bot",
+    "CreateA": "Crea a {{ bottype }} bot",
+    "ServiceAccountPrivateKeyFile":"File chiave privata dell'account di servizio",
+    "DragAFileHereOr":"Trascina un file qui o",
+    "ToUpload":"per caricare",
+    "Browse":"sfoglia",
+    "CreateAnswers":"Crea risposte",
     "Pricing": {
         "Operators": "Operatori",
         "UpgradePlan": "Aggiorna Piano",
@@ -741,8 +749,10 @@
         "HasBeenCreated": "è stato creato con successo",
         "AddFaqToTheBot": "Aggiungi FAQs al Bot",
         "ReturnToTheBotList": "Ritorna all'elenco dei bot",
+        "BackToBotsList": "Bots list",
         "AnErrorHasOccurred": "Si è verificato un errore",
-        "Continue": "Continua"
+        "Continue": "Continua",
+        "Type": "Tipo"
     },
     "FaqPage": {
         "EditBOT": "Modifica BOT",
@@ -986,7 +996,8 @@
                 "Placeholder": "Seleziona metodo attivazione",
                 "WhenRequestChat": "Quando un visitatore richiede una chat",
                 "WhenMessageIsSent": "All'invio di un nuovo messaggio",
-                "WhenUserIsLogged": "Quando un utente ha effettuato l'accesso"
+                "WhenUserIsLogged": "Quando un utente ha effettuato l'accesso",
+                "NewEvent": "Nuovo evento"
             },
             "CheckConditions": "Verifica condizioni",
             "CheckConditions_dropdownElements": {
@@ -1018,7 +1029,7 @@
                         "ChatInformation": "Info correlate alla chat"
                     },
                     "label_key": {
-                        "VisitorSearchTerm": "Termini di ricerca visitatore",
+                        "VisitorSearchTerm": "Messaggio",
                         "VisitorName": "Nome visitatore",
                         "VisitorMail": "Indirizzo e-mail visitatore",
                         "VisitorDepartment": "Dipartimento visitatore",
@@ -1045,20 +1056,20 @@
                         "LocationVisitor": "Ubicazione del visitatore"
                     },
                     "label_key": {
-                        "VisitorSearchTerm": "Testo messaggio del visitatore",
+                        "VisitorSearchTerm": "Messaggio",
                         "VisitorName": "Nome visitatore",
                         "VisitorMail": "Indirizzo e-mail visitatore",
-                        "VisitorFirstText": "Primo messaggio visitatore",
+                        "VisitorFirstText": "Primo messaggio",
                         "VisitorDepartment": "Dipartimento visitatore",
                         "VisitorReferrer": "Referente visitatore",
                         "VisitoruserAgent": "Numero di agenti",
-                        "VisitoruserAgentAvailable":"Numero di agenti disponibili online",
+                        "VisitoruserAgentAvailable": "Numero di agenti disponibili online",
                         "VisitorURL": "URL pagina visitatore",
                         "VisitorPageTitle": "Titolo pagina visitatore",
                         "VisitorBrowser": "Browser visitatore",
                         "VisitorPlatform": "Piattaforma visitatore",
                         "Department": "Dipartimento",
-                        "DepartmentHasBot": "Dipartimento (bot)",
+                        "DepartmentHasBot": "Dipartimento ha bot",
                         "VisitorServed": "Visitatore assistito",
                         "RequestStatus": "Stato richiesta",
                         "ChannelName": "Nome del canale",
@@ -1081,12 +1092,24 @@
                     },
                     "label_key": {
                         "VisitorName": "Nome visitatore",
-                        "VisitorLastName" : "Cognome visitatore",
+                        "VisitorLastName": "Cognome visitatore",
                         "VisitorMail": "Indirizzo e-mail visitatore"
                     },
                     "placeholder": {
                         "SelectDepartment": "Seleziona dipartimento",
                         "SelectStatus": "Seleziona stato"
+                    },
+                    "event": {
+                        "groupId": {
+                            "VisitorInformation": "Info visitatore"
+                        },
+                        "label_key": {
+                            "EventName": "Nome evento"
+                        },
+                        "placeholder": {
+                            "SelectDepartment": "Seleziona dipartimento",
+                            "SelectStatus": "Seleziona stato"
+                        }
                     }
                 }
             },
@@ -1101,14 +1124,20 @@
                     "GreaterEqualThan": "Maggiore o uguale a",
                     "LessEqualThan": "Minore o uguale a",
                     "HasOwnProperty": "Has a bot",
-                    "NotHasOwnProperty":"Not has a bot"
+                    "NotHasOwnProperty": "Not has a bot"
                 }
             },
             "ActionArray": {
                 "label_key": {
                     "SendMessageToVisitor": "Invia messaggio al visitatore",
                     "AssignToDep": "Assegna a dipartimento",
-                    "ReAssignToSameDep": "Riassegna allo stesso dipartimento"
+                    "ReAssignToSameDep": "Riassegna allo stesso dipartimento",
+                    "RequestUpdateStatus": "Cambia stato della richiesta",
+                    "RequestClose": "Chiudi richiesta",
+                    "RequestReopen": "Riapri richiesta",
+                    "RequestParticipantsJoin": "Partecipa alla richiesta",
+                    "RequestParticipantsLeave": "Lascia la richiesta",
+                    "RequestCreate": "Crea una richiesta"
                 },
                 "placeholder": {
                     "NameAgent": "Nome dell'agente",

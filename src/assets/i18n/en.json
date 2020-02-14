@@ -387,16 +387,24 @@
     "NoServedRequests": "No Served Requests",
     "NoRequests": "No Requests",
     "MultiLanguagePreview": "Change preview language",
-    "RequiredField":"Required field",
-    "Text":"Text",
-    "Alignment":"Alignment",
+    "RequiredField": "Required field",
+    "Text": "Text",
+    "Alignment": "Alignment",
     "UserRole": "User role",
     "BotType": " / Bot type",
     "Language": "Language",
-    "ReassignToDept":"Reassign to department",
-    "AddTranslation":"Add translation",
+    "ReassignToDept": "Reassign to department",
+    "AddTranslation": "Add translation",
     "Completed": "Completed",
     "TranslationDeleted": "{{language_name}} translation deleted",
+    "BotIntegration": "Bot integration",
+    "ChooseBotType": "Choose bot type",
+    "CreateABot": "Create a {{ bottype }} bot",
+    "ServiceAccountPrivateKeyFile":"Service account private key file",
+    "DragAFileHereOr":"Drag a file here or",
+    "Browse":"browse",
+    "ToUpload":"to upload",
+    "CreateAnswers":"Create answers",
     "Pricing": {
         "Operators": "Operators",
         "UpgradePlan": "Upgrade Plan",
@@ -744,8 +752,10 @@
         "HasBeenCreated": "has been successfully created",
         "AddFaqToTheBot": "Add FAQs to the bot",
         "ReturnToTheBotList": "Return to the bot list",
+        "BackToBotsList": "Bots list",
         "AnErrorHasOccurred": "An error has occurred",
-        "Continue": "Continue"
+        "Continue": "Continue",
+        "Type": "Type"
     },
     "FaqPage": {
         "EditBOT": "Edit BOT",
@@ -989,7 +999,8 @@
                 "Placeholder": "Select activation method",
                 "WhenRequestChat": "When a visitor request a chat",
                 "WhenMessageIsSent": "When a chat message is sent",
-                "WhenUserIsLogged": "When user has logged in"
+                "WhenUserIsLogged": "When user has logged in",
+                "NewEvent": "New event"
             },
             "CheckConditions": "Check conditions",
             "CheckConditions_dropdownElements": {
@@ -1021,7 +1032,7 @@
                         "ChatInformation": "Char-related information"
                     },
                     "label_key": {
-                        "VisitorSearchTerm": "Visitor search terms",
+                        "VisitorSearchTerm": "Message text",
                         "VisitorName": "Visitor name",
                         "VisitorMail": "Visitor mail",
                         "VisitorDepartment": "Visitor department",
@@ -1048,20 +1059,20 @@
                         "LocationVisitor": "Location of visitor"
                     },
                     "label_key": {
-                        "VisitorSearchTerm": "Visitor text message ",
+                        "VisitorSearchTerm": "Message text",
                         "VisitorName": "Visitor name",
                         "VisitorMail": "Visitor mail",
-                        "VisitorFirstText": "Visitor First text",
+                        "VisitorFirstText": "First message text",
                         "VisitorDepartment": "Visitor department",
                         "VisitorReferrer": "Visitor referrer (Client)",
                         "VisitoruserAgent": "Visitor user agent",
-                        "VisitoruserAgentAvailable":"Visitor agent available online",
+                        "VisitoruserAgentAvailable": "Visitor agent available online",
                         "VisitorURL": "Visitor page URL",
                         "VisitorPageTitle": "Visitor page title",
                         "VisitorBrowser": "Visitor browser",
                         "VisitorPlatform": "Visitor platform",
                         "Department": "Department",
-                        "DepartmentHasBot": "Department (bot)",
+                        "DepartmentHasBot": "Department has bot",
                         "VisitorServed": "Visitor served",
                         "RequestStatus": "Request status",
                         "ChannelName": "Channel name",
@@ -1091,6 +1102,18 @@
                         "SelectDepartment": "Select department",
                         "SelectStatus": "Select status"
                     }
+                },
+                "event": {
+                    "groupId": {
+                        "VisitorInformation": "Visitor information"
+                    },
+                    "label_key": {
+                        "EventName": "Event name"
+                    },
+                    "placeholder": {
+                        "SelectDepartment": "Select department",
+                        "SelectStatus": "Select status"
+                    }
                 }
             },
             "OptionArray": {
@@ -1104,14 +1127,20 @@
                     "GreaterEqualThan": "Greather than or equal to",
                     "LessEqualThan": "Less than or equal to",
                     "HasOwnProperty": "Has a bot",
-                    "NotHasOwnProperty":"Not has a bot"
+                    "NotHasOwnProperty": "Not has a bot"
                 }
             },
             "ActionArray": {
                 "label_key": {
                     "SendMessageToVisitor": "Send message to visitor",
                     "AssignToDep": "Assign to department",
-                    "ReAssignToSameDep": "Reassign to the same department"
+                    "ReAssignToSameDep": "Reassign to the same department",
+                    "RequestUpdateStatus": "Change request status",
+                    "RequestClose": "Close request",
+                    "RequestReopen": "Reopen request",
+                    "RequestParticipantsJoin": "Participant join request",
+                    "RequestParticipantsLeave": "Participant leave request",
+                    "RequestCreate": "Create a request"
                 },
                 "placeholder": {
                     "NameAgent": "Name of agents",
