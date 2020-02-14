@@ -99,7 +99,7 @@ export class RequestsService {
     });
 
     /** UNCOMMENT THIS IF WHANT TO SUBSCRIBE TO FIRESTORE REQUESTS  */
-    // this.getCurrentProject();
+    this.getCurrentProject();
     
     // this.getMyDepts(); // !! NO MORE USED
 
