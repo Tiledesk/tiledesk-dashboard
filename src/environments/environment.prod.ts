@@ -2,7 +2,7 @@
 const serverUrl = 'https://api.tiledesk.com/v1/';
 export const environment = {
     production: true,
-    t2y12PruGU9wUtEGzBJfolMIgK: 'PAY:F-ANA:F-ACT:F-TRI:F-GRO:F-DEP:F-OPH:F-MTL:F',
+    t2y12PruGU9wUtEGzBJfolMIgK: 'PAY:F-ANA:F-ACT:F-TRI:F-GRO:F-DEP:F-OPH:F-MTL:F-DGF:F',
     VERSION: require('../../package.json').version,
     widgetUrl: 'https://widget.tiledesk.com/v3/launch.js',
     remoteConfig: false, // for performance don't load settings from remote

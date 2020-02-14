@@ -2,7 +2,7 @@
 
 const serverUrl = '/api/';
 export const environment = {
-    t2y12PruGU9wUtEGzBJfolMIgK: 'PAY:F-ANA:F-ACT:F-TRI:F-GRO:F-DEP:F-OPH:F-MTL:F',
+    t2y12PruGU9wUtEGzBJfolMIgK: 'PAY:F-ANA:F-ACT:F-TRI:F-GRO:F-DEP:F-OPH:F-MTL:F-DGF:F',
     production: false,
     VERSION: require('../../package.json').version,
     widgetUrl: 'http://localhost:4200/launch.js',
