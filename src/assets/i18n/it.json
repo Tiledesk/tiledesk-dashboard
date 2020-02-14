@@ -25,6 +25,8 @@
     "SignUp": "Registrati",
     "AlreadyHaveAnAccount": "Hai già un account?",
     "DontHaveAnAccountYet": "Non hai ancora un account?",
+    "Dont": "Non",
+    "HaveAnAccountYet": "hai ancora un account?",
     "QuickTipsAssigned": "Le chat assegnate aiutano a mantenere una distribuzione uniforme del carico di lavoro, soprattutto per i team più grandi.",
     "QuickTipsPooled": "Le chat 'pooled' offrono agli agenti maggiore autonomia, consentendo loro di lavorare secondo i propri ritmi.",
     "QuickTipsBot": "Seleziona un bot che risponde automaticamente.",
@@ -402,6 +404,7 @@
     "ToUpload":"per caricare",
     "Browse":"sfoglia",
     "CreateAnswers":"Crea risposte",
+    "CreateAFreeAccount":"Crea un account gratis",
     "Pricing": {
         "Operators": "Operatori",
         "UpgradePlan": "Aggiorna Piano",
