@@ -5,6 +5,7 @@
   {{ "BotIntegration" | translate }}
 </div>
 
+<!-- margin-top: 61px;min-height: calc(100% - 114px); -->
 <div class="main-content" style="padding-top:0px; background-color: #fff;">
   <div class="container-fluid">
 
@@ -21,9 +22,8 @@
     </div>
 
     <div class="row">
-      <div class="col-sm-12 col-md-4">
-
-
+      <!-- class="col-sm-12 col-md-4" -->
+      <div [ngClass]="{'col-sm-12 col-md-4' : dgfIsVisible === true, 'col-sm-12 col-md-6' : dgfIsVisible === false}" >
         <!-- 
         // --------------------------------------------------------------
         // @ Native bot
@@ -58,7 +58,7 @@
       // --------------------------------------------------------------
       // @ Dialogflow bot
       // -------------------------------------------------------------- -->
-      <div class="col-sm-12 col-md-4">
+      <div [ngClass]="{'is_hidden' : dgfIsVisible === false}" class="col-sm-12 col-md-4">
         <div class="card bot-card" (click)="goToCreateBot('dialogflow')">
           <div class="card-content" style="text-align: center">
             <div class="bot-image">
@@ -112,7 +112,8 @@
       // --------------------------------------------------------------
       // @ External bot
       // -------------------------------------------------------------- -->
-      <div class="col-sm-12 col-md-4">
+      <!-- class="col-sm-12 col-md-4" -->
+      <div [ngClass]="{'col-sm-12 col-md-4' : dgfIsVisible === true, 'col-sm-12 col-md-6' : dgfIsVisible === false}">
         <div class="card bot-card" (click)="goToCreateBot('external')">
           <div class="card-content" style="text-align: center">
             <div class="bot-image">
