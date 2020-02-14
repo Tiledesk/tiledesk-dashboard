@@ -142,7 +142,7 @@ export class SigninComponent implements OnInit {
           try {
             window['setTiledeskWidgetUser'](user.firstname + ' ' + user.lastname, user.email, user._id);
           } catch (err) {
-            console.log('signin setTiledeskWidgetUser error', err);
+            console.log('SetTiledeskWidgetUserSignin (Signin) error', err);
           }
         }, 2000);
 

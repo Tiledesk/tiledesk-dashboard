@@ -213,7 +213,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
             try {
               window['setTiledeskWidgetUser'](_storedUser.firstname + ' ' + _storedUser.lastname, _storedUser.email, _storedUser._id);
             } catch (err) {
-              console.log('Signup setTiledeskWidgetUser error', err);
+              console.log('SetTiledeskWidgetUser (Signup) - error', err);
             }
           }, 2000);
         }
