@@ -4,12 +4,9 @@ import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
-
 import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
-
 import { AppComponent } from './app.component';
-
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { TableListComponent } from './table-list/table-list.component';
@@ -18,7 +15,6 @@ import { IconsComponent } from './icons/icons.component';
 import { MapsComponent } from './maps/maps.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { UpgradeComponent } from './upgrade/upgrade.component';
-
 import { UiModule } from './ui/shared/ui.module';
 
 ///// Start FireStarter
@@ -33,11 +29,8 @@ import { ChatComponent } from './chat/chat.component';
 
 // FIRESTORE
 import { UsersService } from './services/users.service';
-
 import { RequestsService } from './services/requests.service';
 import { RequestsListComponent } from './requests-list/requests-list.component';
-
-// MONGO DB
 
 import { ContactsService } from './services/contacts.service';
 import { ContactsComponent } from './contacts/contacts.component';
@@ -45,16 +38,22 @@ import { DepartmentService } from './services/mongodb-department.service';
 import { DepartmentsComponent } from './departments/departments.component';
 
 import { MongodbFaqService } from './services/mongodb-faq.service';
-import { FaqComponent } from './faq/faq.component';
+
 import { BotService } from './services/bot.service';
-import { BotsComponent } from './bots/bots.component';
+
 import { ProjectsComponent } from './projects/projects.component';
 import { UsersComponent } from './users/users.component';
+// BOTS & FAQ
+
 import { FaqKbService } from './services/faq-kb.service';
-import { FaqKbComponent } from './faq-kb/faq-kb.component';
-import { FaqKbEditAddComponent } from './faq-kb-edit-add/faq-kb-edit-add.component';
-import { FaqEditAddComponent } from './faq-edit-add/faq-edit-add.component';
-import { BotEditAddComponent } from './bot-edit-add/bot-edit-add.component';
+import { BotListComponent } from './bots/bots-list/bots-list.component';
+import { BotTypeSelectComponent } from './bots/bot-create/bot-type-select/bot-type-select.component';
+import { BotCreateComponent } from './bots/bot-create/bot-create.component';
+import { FaqEditAddComponent } from './bots/faq-edit-add/faq-edit-add.component';
+import { FaqComponent } from './bots/faq/faq.component';
+import { FaqTestComponent } from './bots/faq-test/faq-test.component';
+import { FaqTestTrainBotComponent } from './bots/faq-test/faq-test-train-bot/faq-test-train-bot.component';
+import { FaqSidebarComponent } from './bots/faq/faq-sidebar/faq-sidebar.component'; // fake comp used for a demo
 
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -75,7 +74,7 @@ import { WidgetComponent } from './widget_components/widget/widget.component';
 import { ScriptComponent } from './script/script.component';
 import { ChannelsComponent } from './channels/channels.component';
 import { SocialComponent } from './social/social.component';
-import { FaqTestComponent } from './faq-test/faq-test.component';
+
 import { UserEditAddComponent } from './user-edit-add/user-edit-add.component';
 import { UsersProfileComponent } from './users-profile/users-profile.component';
 import { UsersLocalDbService } from './services/users-local-db.service';
@@ -118,7 +117,7 @@ import { AnalyticsStaticComponent } from './static-pages/analytics-static/analyt
 import { ActivitiesStaticComponent } from './static-pages/activities-static/activities-static.component';
 import { TrainBotComponent } from './requests-msgs/train-bot/train-bot.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FaqTestTrainBotComponent } from './faq-test/faq-test-train-bot/faq-test-train-bot.component';
+
 
 import { HeatMapModule, TooltipService, LegendService, AdaptorService } from '@syncfusion/ej2-angular-heatmap'
 import { AnalyticsService } from './services/analytics.service';
@@ -146,7 +145,7 @@ import { StaticPageBaseComponent } from './static-pages/static-page-base/static-
 
 import {SlideshowModule} from 'ng-simple-slideshow';
 import { GroupsStaticComponent } from './static-pages/groups-static/groups-static.component';
-import { FaqSidebarComponent } from './faq/faq-sidebar/faq-sidebar.component';
+
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { InstallTiledeskComponent } from './install-tiledesk/install-tiledesk.component';
 import { HandleInvitationComponent } from './auth/handle-invitation/handle-invitation.component';
@@ -169,6 +168,7 @@ import { WsRequestsServedComponent } from './ws_requests/ws-requests-list/ws-req
 import { WsRequestsUnservedComponent } from './ws_requests/ws-requests-list/ws-requests-unserved/ws-requests-unserved.component';
 import { CloseRequestModalComponent } from './ws_requests/modals/close-request-modal/close-request-modal.component';
 import { LoadingPageComponent } from './loading-page/loading-page.component';
+
 
 
 console.log('************** APPMODULE ******************');
@@ -202,13 +202,11 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     ChatComponent,
     DepartmentsComponent,
     FaqComponent,
-    BotsComponent,
     ProjectsComponent,
     UsersComponent,
-    FaqKbComponent,
-    FaqKbEditAddComponent,
+    BotListComponent,
+    BotCreateComponent,
     FaqEditAddComponent,
-    BotEditAddComponent,
     AnalyticsComponent,
     DepartmentEditAddComponent,
     ProjectEditAddComponent,
@@ -276,7 +274,8 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     WsRequestsServedComponent,
     WsRequestsUnservedComponent,
     CloseRequestModalComponent,
-    LoadingPageComponent
+    LoadingPageComponent,
+    BotTypeSelectComponent
   ],
   imports: [
     /* PRIVATE */
