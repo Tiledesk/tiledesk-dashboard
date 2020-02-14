@@ -124,7 +124,8 @@ export class BasetriggerComponent  {
         // user.login conditions start
         { groupId: translateConditions.user.groupId.VisitorInformation, id: 'firstname', key: 'login.firstname', label_key: translateConditions.user.label_key.VisitorName, triggerType: 'user.login', type: 'string'},
         { groupId: translateConditions.user.groupId.VisitorInformation, id: 'lastname', key: 'login.lastname', label_key: translateConditions.user.label_key.VisitorLastName, triggerType: 'user.login', type: 'string'},
-        { groupId: translateConditions.user.groupId.VisitorInformation, id: 'email', key: 'login.email', label_key: translateConditions.user.label_key.VisitorMail, triggerType: 'user.login', type: 'string'}
+        { groupId: translateConditions.user.groupId.VisitorInformation, id: 'email', key: 'login.email', label_key: translateConditions.user.label_key.VisitorMail, triggerType: 'user.login', type: 'string'},
+        { groupId: translateConditions.event.groupId.VisitorInformation, id: 'name', key: 'event.name', label_key: translateConditions.event.label_key.EventName, triggerType: 'event.emit', type: 'string'}
   ]
 
       this.options = {
@@ -155,7 +156,15 @@ export class BasetriggerComponent  {
       this.action = [
         { key: 'message.send', label_key: translateAction.label_key.SendMessageToVisitor, type: 'input', placeholder: translateAction.placeholder.NameAgent},
         { key: 'request.department.root', label_key: translateAction.label_key.AssignToDep, type: 'select', placeholder: translateAction.placeholder.SelectDepartment},
-        { key: 'request.department.root.self', label_key: translateAction.label_key.ReAssignToSameDep, type: 'select', placeholder: translateAction.placeholder.SelectStatus}
+        //{ key: 'request.department.root.self', label_key: translateAction.label_key.ReAssignToSameDep, type: 'none'},
+        { key: 'request.department.root.self', label_key: translateAction.label_key.ReAssignToSameDep, type: 'select', placeholder: translateAction.placeholder.SelectStatus}, //none
+        { key: 'request.status.update', label_key: translateAction.label_key.RequestUpdateStatus, type: 'select', placeholder: translateAction.placeholder.SelectStatus},
+        { key: 'request.close', label_key: translateAction.label_key.RequestClose, type: 'select', placeholder: translateAction.placeholder.SelectStatus}, //none
+        { key: 'request.reopen', label_key: translateAction.label_key.RequestReopen, type: 'select', placeholder: translateAction.placeholder.SelectStatus}, //none
+        { key: 'request.participants.join', label_key: translateAction.label_key.RequestParticipantsJoin, type: 'select', placeholder: translateAction.placeholder.SelectStatus}, // dropdown con elenco utenti e bot.
+        { key: 'request.participants.leave', label_key: translateAction.label_key.RequestParticipantsLeave, type: 'select', placeholder: translateAction.placeholder.SelectStatus}, // dropdown con elenco utenti e bot
+        //{ key: 'request.create', label_key: translateAction.label_key.RequestCreate, type: 'input', placeholder: translateAction.placeholder.NameAgent, parameters: [{key:"fullname", placeholder: "placeholder", required:true}]}
+        { key: 'request.create', label_key: translateAction.label_key.RequestCreate, type: 'input', placeholder: translateAction.placeholder.NameAgent} //
       ]
 
       this.operator = {
@@ -178,7 +187,21 @@ export class BasetriggerComponent  {
         'request.department.root' : this.departments,
         'request.department.root.self' : [ {id: true, label_key: 'True'},
                                            {id: false, label_key: 'False'}
-        ]
+                                          ],
+        'request.close' : [ {id: true, label_key: 'True'},
+                                           {id: false, label_key: 'False'}
+                          ],
+        'request.reopen' : [ {id: true, label_key: 'True'},
+                                           {id: false, label_key: 'False'}
+                          ],
+        'request.participants.join' : [ {id: true, label_key: 'True'},
+                          {id: false, label_key: 'False'}
+                          ],                          
+        'request.participants.leave' : [ {id: true, label_key: 'True'},
+                                      {id: false, label_key: 'False'}
+                                        ],                                                                      
+        'request.status.update' : [{id: 100, label_key: 'Pooled'},
+                                  {id: 200, label_key: 'Assigned'}]
       }
       console.log('No pair_cond:', this.condition)
 
@@ -190,7 +213,7 @@ export class BasetriggerComponent  {
     });
   }
 
-
+//not in use?
   getTranslateAndDepartmentCallsEnd() {
     const translateArray = this.translate.get('Trigger.ArrayCondition_Option_Action')
     const _departments = this.departmentService.getDeptsByProjectId();
@@ -199,6 +222,7 @@ export class BasetriggerComponent  {
     Observable.zip(translateArray, _departments, (translateArray: any, _departments: any) => ({ translateArray, _departments}))
     .subscribe( (pair) => {
       console.log('pair', pair)
+
 
       if (pair) {
         const departments = pair._departments;
@@ -261,7 +285,8 @@ export class BasetriggerComponent  {
           // user.login conditions start
           { groupId: translateConditions.user.groupId.VisitorInformation, id: 'firstname', label_key: translateConditions.user.label_key.VisitorName, triggerType: 'user.login', type: 'string'},
           { groupId: translateConditions.user.groupId.VisitorInformation, id: 'lastname', label_key: translateConditions.user.label_key.VisitorLastName, triggerType: 'user.login', type: 'string'},
-          { groupId: translateConditions.user.groupId.VisitorInformation, id: 'email', label_key: translateConditions.user.label_key.VisitorMail, triggerType: 'user.login', type: 'string'}
+          { groupId: translateConditions.user.groupId.VisitorInformation, id: 'email', label_key: translateConditions.user.label_key.VisitorMail, triggerType: 'user.login', type: 'string'},
+          { groupId: translateConditions.event.groupId.VisitorInformation, id: 'name', key: 'event.name', label_key: translateConditions.event.label_key.EventName, triggerType: 'event.emit', type: 'string'}
         ]
 
         this.options = {

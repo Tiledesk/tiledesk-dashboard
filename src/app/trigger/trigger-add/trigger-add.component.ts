@@ -3,7 +3,7 @@ import { BasetriggerComponent } from './../basetrigger/basetrigger.component';
 import { NotifyService } from 'app/core/notify.service';
 import { DepartmentService } from './../../services/mongodb-department.service';
 import { TriggerService } from 'app/services/trigger.service';
-import { Component, OnInit, trigger} from '@angular/core';
+import { Component, OnInit, trigger } from '@angular/core';
 import * as _ from 'lodash';
 
 // USED FOR go back last page
@@ -52,31 +52,31 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
   // messageServerError: string;  --> get from BaseTriggerComponent
 
   constructor(public router: Router,
-              private _location: Location,
-              private formBuilder: FormBuilder,
-              private triggerService: TriggerService,
-              public departmentService: DepartmentService,
-              private notify: NotifyService,
-              public translate: TranslateService) {
-                super(translate, departmentService)
-            }
+    private _location: Location,
+    private formBuilder: FormBuilder,
+    private triggerService: TriggerService,
+    public departmentService: DepartmentService,
+    private notify: NotifyService,
+    public translate: TranslateService) {
+    super(translate, departmentService)
+  }
 
   ngOnInit() {
 
     this.triggerForm = this.formBuilder.group({
-        name: [ '', Validators.required],
-        description: '',
-        trigger: this.formBuilder.group({
-          key: ['message.received', Validators.required], // by default trigger.key is set to message.receiveed
-          name: 'message create event',
-        }),
-        conditionALL_ANY: 'all', // by default condition dropdown is set to all
-        conditions: this.formBuilder.group({
-          any: this.formBuilder.array([ this.createCondition() ]),
-          all: this.formBuilder.array([ this.createCondition() ]),
-        }),
-        actions: this.formBuilder.array([ this.createAction() ]),
-        enabled: true // by default the stutus of trigger is set to enabled
+      name: ['', Validators.required],
+      description: '',
+      trigger: this.formBuilder.group({
+        key: ['message.received', Validators.required], // by default trigger.key is set to message.receiveed
+        name: 'message create event',
+      }),
+      conditionALL_ANY: 'all', // by default condition dropdown is set to all
+      conditions: this.formBuilder.group({
+        any: this.formBuilder.array([this.createCondition()]),
+        all: this.formBuilder.array([this.createCondition()]),
+      }),
+      actions: this.formBuilder.array([this.createAction()]),
+      enabled: true // by default the stutus of trigger is set to enabled
 
     })
 
@@ -87,9 +87,11 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
 
     // set the initial value to action to the first element of this.action array
     const init_act = this.triggerForm.get('actions') as FormArray
-    init_act.patchValue([{'key': this.action[0].key,
-                          'type': this.action[0].type,
-                          'placeholder': this.action[0].placeholder}])
+    init_act.patchValue([{
+      'key': this.action[0].key,
+      'type': this.action[0].type,
+      'placeholder': this.action[0].placeholder
+    }])
 
   }
 
@@ -97,9 +99,9 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
 
     return this.formBuilder.group({
       fact: 'json',
-      path: [ undefined, Validators.required],
-      operator: [ undefined, Validators.required],
-      value: [ undefined, Validators.required ],
+      path: [undefined, Validators.required],
+      operator: [undefined, Validators.required],
+      value: [undefined, Validators.required],
       type: undefined,
       key: undefined,
       placeholder: undefined
@@ -110,7 +112,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
   createAction(): FormGroup {
 
     return this.formBuilder.group({
-      key: [ undefined, Validators.required],
+      key: [undefined, Validators.required],
       parameters: this.formBuilder.group({
         fullName: [undefined, Validators.required],
         text: [' ', Validators.required]
@@ -130,7 +132,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
     console.log('Remove CONDITION ARRAY with index:', rowIndex);
     this.conditions = this.triggerForm.get(this.conditionType) as FormArray;
     if (this.conditions.length === 1 && rowIndex === 0) {
-      this.notify.showNotification( this.messageCondition , 4, 'report_problem');
+      this.notify.showNotification(this.messageCondition, 4, 'report_problem');
     } else {
       this.conditions.removeAt(rowIndex);
     }
@@ -147,7 +149,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
     this.actions = this.triggerForm.get('actions') as FormArray;
     // check if exist at least 1 action to do for trigger
     if (this.actions.length === 1 && rowIndex === 0) {
-      this.notify.showNotification(this.messageAction , 4, 'report_problem');
+      this.notify.showNotification(this.messageAction, 4, 'report_problem');
     } else {
       this.actions.removeAt(rowIndex);
     }
@@ -218,11 +220,13 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
     // set conditionFormArray by using selectedCondition value:
     // - type , operator, key, placeholder
     const selectedCondition = this.condition.filter(b => b.key === $event.key)[0]
-    condition.patchValue({'type': selectedCondition.type,
-                          'operator': this.options[selectedCondition.type + 'Opt'][0].id,
-                          'value': undefined,
-                          'key': selectedCondition.key,
-                          'placeholder': selectedCondition.placeholder });
+    condition.patchValue({
+      'type': selectedCondition.type,
+      'operator': this.options[selectedCondition.type + 'Opt'][0].id,
+      'value': undefined,
+      'key': selectedCondition.key,
+      'placeholder': selectedCondition.placeholder
+    });
     console.log('condition after', condition);
 
   }
@@ -232,13 +236,14 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
 
     console.log('action before', action);
     // set value of second and third dropdown action section and set it's placeholder value for selected action
-    action.patchValue({'type': this.action.filter(b => b.key === event)[0].type,
-                       'placeholder': this.action.filter(b => b.key === event)[0].placeholder,
-                       'parameters': {
-                            'fullName': undefined,
-                            'text': ' '
-                        }
-                      });
+    action.patchValue({
+      'type': this.action.filter(b => b.key === event)[0].type,
+      'placeholder': this.action.filter(b => b.key === event)[0].placeholder,
+      'parameters': {
+        'fullName': undefined,
+        'text': ' '
+      }
+    });
     console.log('action after', action);
 
   }
@@ -260,14 +265,14 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
     this.submitted = true;
 
 
-     // delete the not choice conditionType array in triggerForm.conditions
-     if ( this.conditionType.split('conditions.')[1] === 'all' ) {
+    // delete the not choice conditionType array in triggerForm.conditions
+    if (this.conditionType.split('conditions.')[1] === 'all') {
       delete this.triggerForm.value.conditions.any
     } else {
       delete this.triggerForm.value.conditions.all
     }
     // set value of all conditons.any/all.fact to 'json'
-    for ( let i = 0; i < this.triggerForm.value.conditions[this.conditionType.split('conditions.')[1]].length; i++) {
+    for (let i = 0; i < this.triggerForm.value.conditions[this.conditionType.split('conditions.')[1]].length; i++) {
       this.triggerForm.value.conditions[this.conditionType.split('conditions.')[1]][i].fact = 'json'
     }
 
@@ -275,13 +280,13 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
     const conditionsGROUP = this.triggerForm.get(this.conditionType) as FormGroup
 
     // controls name validation
-    if ( this.triggerForm.controls['name'].invalid ) {
+    if (this.triggerForm.controls['name'].invalid) {
 
-          setTimeout(() => {
-            this.SHOW_CIRCULAR_SPINNER = false
-            this.SHOW_ERROR_CROSS = true;
-            this.errorMESSAGE = true;
-          }, 1000);
+      setTimeout(() => {
+        this.SHOW_CIRCULAR_SPINNER = false
+        this.SHOW_ERROR_CROSS = true;
+        this.errorMESSAGE = true;
+      }, 1000);
 
       // check at least one action is selected
     } else if (this.triggerForm.controls['actions'].invalid) {
@@ -294,51 +299,59 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
       }, 1000);
 
       // check condition validation and if first dropdawn has value than other ones has a valid value
-    } else if ( conditionsGROUP.invalid && conditionsGROUP.controls[0].value['path'] !== null ) {
+    } else if (conditionsGROUP.invalid && conditionsGROUP.controls[0].value['path'] !== null) {
 
-            console.log('User selected only some dropdown condition but not all. SUMBIT KO')
+      console.log('User selected only some dropdown condition but not all. SUMBIT KO')
 
-            setTimeout(() => {
-              this.SHOW_CIRCULAR_SPINNER = false
-              this.SHOW_ERROR_CROSS = true;
-              this.errorMESSAGE = true;
-            }, 1000);
+      setTimeout(() => {
+        this.SHOW_CIRCULAR_SPINNER = false
+        this.SHOW_ERROR_CROSS = true;
+        this.errorMESSAGE = true;
+      }, 1000);
 
     } else {
-            // ALL FIELD IS CORRECTLY ADDED
+      // ALL FIELD IS CORRECTLY ADDED
 
-              // add trigger.name value
-              if (this.triggerForm.value.trigger.key === 'message.received') {
-                this.triggerForm.value.trigger.name = 'message create event';
-              } else if (this.triggerForm.value.trigger.key === 'request.create') {
-                this.triggerForm.value.trigger.name = 'request create event';
-              }
+      // add trigger.name value
+      if (this.triggerForm.value.trigger.key === 'message.received') {
+        this.triggerForm.value.trigger.name = 'message create event';
+      } else if (this.triggerForm.value.trigger.key === 'request.create') {
+        this.triggerForm.value.trigger.name = 'request create event';
+      }
+      else if (this.triggerForm.value.trigger.key === 'user.login') {
+        this.triggerForm.value.trigger.name = 'user.login event';
+      }
+      else if (this.triggerForm.value.trigger.key === 'event.emit') {
+        this.triggerForm.value.trigger.name = 'event emit';
+      }else {
+        this.triggerForm.value.trigger.name = '';
+      }
 
 
-              // add empty condition any or all array because server required field
-              // if condition[any/all].path is null
-              if ( conditionsGROUP.controls[0].value['path'] === null ) {
-                this.triggerForm.value.conditions[this.conditionType.split('conditions.')[1]] = [];
-              }
+      // add empty condition any or all array because server required field
+      // if condition[any/all].path is null
+      if (conditionsGROUP.controls[0].value['path'] === null) {
+        this.triggerForm.value.conditions[this.conditionType.split('conditions.')[1]] = [];
+      }
 
-              this.triggerService.postTrigger(this.triggerForm.value).subscribe(res => {
-                console.log('add trigger...', res);
-                }, (error) => {
-                    setTimeout(() => {
-                      this.SHOW_CIRCULAR_SPINNER = false
-                      this.SHOW_ERROR_CROSS = true;
-                      this.errorMESSAGE_server = true;
-                    }, 1000);
-                    console.log('»» !!! TRIGGER -  ADD NEW TRIGGER REQUESTS  - ERROR ', error);
+      this.triggerService.postTrigger(this.triggerForm.value).subscribe(res => {
+        console.log('add trigger...', res);
+      }, (error) => {
+        setTimeout(() => {
+          this.SHOW_CIRCULAR_SPINNER = false
+          this.SHOW_ERROR_CROSS = true;
+          this.errorMESSAGE_server = true;
+        }, 1000);
+        console.log('»» !!! TRIGGER -  ADD NEW TRIGGER REQUESTS  - ERROR ', error);
 
-                }, () => {
-                    setTimeout(() => {
-                      this.SHOW_CIRCULAR_SPINNER = false;
-                      this.SHOW_ERROR_CROSS = false;
-                    }, 1000);
-                    console.log('»» !!! TRIGGER -  ADD NEW TRIGGER REQUESTS * COMPLETE *');
+      }, () => {
+        setTimeout(() => {
+          this.SHOW_CIRCULAR_SPINNER = false;
+          this.SHOW_ERROR_CROSS = false;
+        }, 1000);
+        console.log('»» !!! TRIGGER -  ADD NEW TRIGGER REQUESTS * COMPLETE *');
 
-              });
+      });
     }
 
     console.log('TRIGGER', this.triggerForm.value);
@@ -349,9 +362,9 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
   onCloseModalHandled() {
     console.log('CONTINUE PRESSED ');
 
-    if ( this.errorMESSAGE || this.errorMESSAGE_server ) {
+    if (this.errorMESSAGE || this.errorMESSAGE_server) {
 
-          console.log('Error occured. Return to current page')
+      console.log('Error occured. Return to current page')
 
     } else { this._location.back(); }
     this.displayMODAL_Window = 'none';

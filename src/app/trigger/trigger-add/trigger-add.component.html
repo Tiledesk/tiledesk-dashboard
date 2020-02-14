@@ -68,6 +68,7 @@
                               <ng-option [value]="'request.create'">{{ "Trigger.Add_Edit.RunTrigger_dropdownElements.WhenRequestChat" | translate }}</ng-option>
                               <ng-option [value]="'message.received'">{{ "Trigger.Add_Edit.RunTrigger_dropdownElements.WhenMessageIsSent" | translate }}</ng-option>
                               <ng-option [value]="'user.login'">{{ "Trigger.Add_Edit.RunTrigger_dropdownElements.WhenUserIsLogged" | translate }}</ng-option>
+                              <ng-option [value]="'event.emit'">{{ "Trigger.Add_Edit.RunTrigger_dropdownElements.NewEvent" | translate }}</ng-option>
                             </ng-select>
                         </div>
                     </div>
@@ -259,6 +260,11 @@
                                   <div *ngIf="action.value.type==='input'">
                                     <input class="custom-input col-sm-3"  formControlName="text" type="text" placeholder='{{ "Trigger.MessagePlaceholder" | translate }}'>
                                   </div>
+
+                                  <div *ngIf="action.value.type==='none' ">
+                                    <input class="custom-input col-sm-3"  style="display: none;" formControlName="fullName" type="text" value="none" [placeholder]="action.value.placeholder">
+                                    <input class="custom-input col-sm-3"  style="display: none;" formControlName="text" type="text" value="none" placeholder='{{ "Trigger.MessagePlaceholder" | translate }}'>
+                                </div>
                               </div>
 
 
