@@ -441,7 +441,7 @@ export class RoutingPageComponent implements OnInit {
   }
 
   goTo_BotEditAddPage_CREATE() {
-    this.router.navigate(['project/' + this.project._id + '/createfaqkb']);
+    this.router.navigate(['project/' + this.project._id + '/bots/bot-select-type']);
   }
 
 }
