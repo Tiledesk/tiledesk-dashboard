@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { slideInOutAnimation } from '../../_animations/index';
-import { MongodbFaqService } from '../../services/mongodb-faq.service';
+import { slideInOutAnimation } from '../../../_animations/index';
+import { MongodbFaqService } from '../../../services/mongodb-faq.service';
 import { TranslateService } from '@ngx-translate/core';
-import { NotifyService } from '../../core/notify.service';
+import { NotifyService } from '../../../core/notify.service';
 
 @Component({
   selector: 'appdashboard-faq-test-train-bot',

@@ -1,0 +1,232 @@
+input[type="text"] {
+  // min-width: 307px !important;
+  height: 36px;
+  font-size: 14px;
+  width: 100%;
+  margin-bottom: 10px;
+  -webkit-appearance: none;
+  background: #fff;
+  border: 1px solid #d9d9d9 !important;
+  border-top: 1px solid #c0c0c0;
+  /* border-radius: 2px; */
+  padding: 0 8px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  border-radius: 5px;
+  background-color: #fff !important;
+  border: solid 1px #ddd;
+}
+
+/* TABLE CONTENT VERTICAL ALIGNMENT */
+.table td,
+.table th {
+  vertical-align: middle;
+}
+
+/* MODAL START */
+
+// MODAL BOOTSTRAP BREAKPOINTS
+// from 992 to 1020px
+// @media (min-width: 992px) and (max-width: 1019px){
+//     .modal-dialog {
+//             margin-left: 33%;
+//         }
+//     }
+
+//     @media (min-width: 1020px) and (max-width: 1199px) {
+//         .modal-dialog {
+//             margin-left: 35%;
+//         }
+//     }
+
+//     @media (min-width: 1200px) and (max-width: 1469px)  {
+//         .modal-dialog {
+//             margin-left: 37%;
+//         }
+//     }
+
+//     @media (min-width: 1470px) and (max-width: 1549px) {
+//         .modal-dialog {
+//             margin-left: 38%;
+//         }
+//     }
+
+//     @media (min-width: 1550px) and (max-width: 1649px){
+//         .modal-dialog {
+//             margin-left: 39%;
+//         }
+//     }
+//     @media (min-width: 1650px) {
+//         .modal-dialog {
+//             margin-left: 40%;
+//         }
+//     }
+/**
+    * MODAL DELETE TYPE (RED MODAL HEADER)
+    */
+.modal {
+  top: 0;
+}
+.modal-content {
+  position: relative;
+  background-color: #fff;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  border: 1px solid #999;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  outline: 0;
+  -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+  padding: 15px;
+  border-bottom: 1px solid #e5e5e5;
+  border-radius: 6px 6px 0px 0px;
+  background-color: #ff5252;
+}
+
+.modal-title {
+  margin: 0;
+  line-height: 1.42857143;
+}
+
+button.close {
+  -webkit-appearance: none;
+  padding: 0;
+  cursor: pointer;
+  background: 0 0;
+  border: 0;
+}
+.close {
+  float: right;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  filter: alpha(opacity=20);
+  opacity: 0.2;
+}
+
+.modal-body {
+  position: relative;
+  // padding-top: 35px;
+  // padding-bottom: 35px;
+  padding-right: 0px;
+  padding-left: 15px;
+  min-height: 150px;
+}
+
+.modal-footer {
+  // padding: 15px;
+  text-align: right;
+  border-top: 1px solid #e5e5e5;
+  // background-color: #edf0f1;
+  background-color: #eeeeee;
+  padding-top: 10px !important;
+}
+
+/* MODAL END */
+
+/* REMOVE THE BORDER THAT IS USED TO SHOW THAT THE ELEMENT IS FOCUSED */
+*:focus {
+  outline: none;
+}
+
+/* MODAL END */
+
+/* TABLE CONTENT VERTICAL ALIGNMENT */
+.table td,
+.table th {
+  vertical-align: middle;
+}
+
+// start TOOLTIP
+/* Tooltip container */
+.tooltipx {
+  position: relative;
+  display: inline-block;
+  // border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltipx .tooltiptext {
+  visibility: hidden;
+  // width: 120px;
+  background-color: black;
+  // background-color: rgba(0,0,0,0.6);
+  color: #fff;
+  text-align: center;
+  padding: 5px 5px;
+  border-radius: 5px;
+  font-size: 12px !important;
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  /* Position the tooltip text - TOP */
+  bottom: 100%;
+  left: 50%;
+  margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+
+  // NEW
+  box-shadow: 0 1em 2em -0.5em rgba(0, 0, 0, 0.35);
+  background-color: #394f5a;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltipx:hover .tooltiptext {
+  visibility: visible;
+}
+// end TOOLTIP
+
+.card-header-custom-bkgrnd {
+  // display:none;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  margin: 0px;
+  border-radius: 3px 3px 0px 0px;
+  // background-color: #f2f6f8;
+  background-color: #ffffff;
+  border-bottom: 1px solid #eff3f5;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.column-th-span {
+  font-size: 14px;
+  font-weight: 500;
+  color: #353f45;
+  // color: #566787;
+}
+
+input[type="checkbox"]:disabled {
+  background-color: #f9f9f9 !important;
+  opacity: 0.5 !important;
+  // cursor: not-allowed;
+}
+
+.truncate {
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.url-top-position {
+  position: relative;
+  top: -5px;
+}
+
+.bot-type-logo {
+  width: 18px;
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  border-radius: 50%;
+  border: 1px solid #eee;
+  padding:  1px;
+  background: #fff;
+}

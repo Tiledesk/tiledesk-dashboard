@@ -1,21 +1,21 @@
 import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
-import { MongodbFaqService } from '../services/mongodb-faq.service';
-import { Faq } from '../models/faq-model';
+import { MongodbFaqService } from '../../services/mongodb-faq.service';
+import { Faq } from '../../models/faq-model';
 import { Router, ActivatedRoute } from '@angular/router';
 // import { ActivatedRoute } from '@angular/router';
 
-import { Project } from '../models/project-model';
-import { AuthService } from '../core/auth.service';
+import { Project } from '../../models/project-model';
+import { AuthService } from '../../core/auth.service';
 import { Http, Headers, RequestOptions } from '@angular/http';
-import { FaqKbService } from '../services/faq-kb.service';
-import { NotifyService } from '../core/notify.service';
+import { FaqKbService } from '../../services/faq-kb.service';
+import { NotifyService } from '../../core/notify.service';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { ProjectPlanService } from '../services/project-plan.service';
+import { ProjectPlanService } from '../../services/project-plan.service';
 import { TranslateService } from '@ngx-translate/core';
-import { AppConfigService } from '../services/app-config.service';
-import { UploadImageService } from '../services/upload-image.service';
-import { UsersService } from '../services/users.service';
+import { AppConfigService } from '../../services/app-config.service';
+import { UploadImageService } from '../../services/upload-image.service';
+import { UsersService } from '../../services/users.service';
 // import $ = require('jquery');
 // declare const $: any;
 @Component({
@@ -64,7 +64,7 @@ export class FaqComponent implements OnInit {
   showSpinnerInUpdateBotCard = true;
   // is_external_bot: boolean;
   is_external_bot = true;
- 
+
 
   windowWidthMore764: boolean;
 
@@ -87,10 +87,8 @@ export class FaqComponent implements OnInit {
 
   userProfileImageurl: string;
   timeStamp: any;
-  
- 
+  botType: string;
 
-  
   constructor(
     private mongodbFaqService: MongodbFaqService,
     private router: Router,
@@ -128,11 +126,26 @@ export class FaqComponent implements OnInit {
     this.getProjectPlan();
     this.getBrowserLang();
 
-    
+
     this.checkUserImageUploadIsComplete();
+    this.getParamsBotType();
   }
 
+  getParamsBotType() {
 
+    this.route.params.subscribe((params) => {
+      this.botType = params.type;
+
+      if (this.botType && this.botType === 'external') {
+        this.is_external_bot = true
+      }
+
+
+      console.log('Bot Create --->  PARAMS', params);
+      console.log('Bot Create --->  PARAMS botType', this.botType);
+    });
+
+  }
 
   getFaqKbId() {
     this.id_faq_kb = this.route.snapshot.params['faqkbid'];
@@ -150,7 +163,7 @@ export class FaqComponent implements OnInit {
     this.storageBucket = firebase_conf['storageBucket'];
     console.log('STORAGE-BUCKET Users-profile ', this.storageBucket)
 
-    this.checkBotImageExist(this.storageBucket) 
+    this.checkBotImageExist(this.storageBucket)
   }
 
   upload(event) {
@@ -165,16 +178,16 @@ export class FaqComponent implements OnInit {
     this.verifyImageURL(url, function (imageExists) {
 
       if (imageExists === true) {
-        self.userProfileImageExist  = imageExists
+        self.userProfileImageExist = imageExists
         console.log('PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists)
-        
-        self.setImageProfileUrl(storageBucket) 
+
+        self.setImageProfileUrl(storageBucket)
 
       } else {
-        self.userProfileImageExist  = imageExists
+        self.userProfileImageExist = imageExists
         console.log('PROFILE IMAGE (FAQ-COMP) - BOT PROFILE IMAGE EXIST ? ', imageExists)
-        
-        
+
+
       }
 
     })
@@ -200,7 +213,7 @@ export class FaqComponent implements OnInit {
         this.showSpinnerInUploadImageBtn = false;
 
         console.log('PROFILE IMAGE (FAQ-COMP) - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
-        
+
         this.setImageProfileUrl(this.storageBucket)
       }
     });
@@ -216,9 +229,9 @@ export class FaqComponent implements OnInit {
     if (this.timeStamp) {
       // console.log('PROFILE IMAGE (USER-PROFILE ) - getUserProfileImage ', this.userProfileImageurl);
       // setTimeout(() => {
-        return this.userProfileImageurl + '&' + this.timeStamp;
+      return this.userProfileImageurl + '&' + this.timeStamp;
       // }, 200);
-      
+
     }
 
     return this.userProfileImageurl
@@ -298,7 +311,7 @@ export class FaqComponent implements OnInit {
     });
   }
 
- 
+
 
   /**
    * *** GET FAQ-KB BY ID (FAQ-KB DETAILS) ***
@@ -331,19 +344,17 @@ export class FaqComponent implements OnInit {
       // ---------------------------------------------------------------------------------------------------------------
       // Bot internal ed external
       // ---------------------------------------------------------------------------------------------------------------
-      
-      /** IN PRE  */ 
-      if(faqkb.type === 'internal') {
+
+      /** IN PRE  */
+      if (faqkb.type === 'internal') {
         this.is_external_bot = false;
       } else if (faqkb.type === 'external') {
         this.is_external_bot = true;
       }
 
-      /** IN PROD  */ 
+      /** IN PROD  */
       // this.is_external_bot = faqkb.external;
       console.log('GET FAQ-KB (DETAILS) BY ID - BOT IS EXTERNAL ', this.is_external_bot);
-
- 
 
       if (faqkb.url !== 'undefined') {
         this.faqKbUrlToUpdate = faqkb.url;
@@ -359,15 +370,17 @@ export class FaqComponent implements OnInit {
       },
       () => {
         console.log('GET FAQ-KB ID (SUBSTITUTE BOT) - COMPLETE ');
-        this.showSpinnerInUpdateBotCard = false 
+        this.showSpinnerInUpdateBotCard = false
       });
 
   }
 
-  hasClickedExternalBot(externalBotselected: boolean) {
-    this.is_external_bot = externalBotselected;
-    console.log('hasClickedExternalBot - externalBotselected: ', this.is_external_bot);
-  }
+  /* !!NOT MORE USED - was used whith the 'bot external' checkbox - now the bot type is passwd from the component bot-type-select  */
+  // hasClickedExternalBot(externalBotselected: boolean) {
+  //   this.is_external_bot = externalBotselected;
+  //   console.log('hasClickedExternalBot - externalBotselected: ', this.is_external_bot);
+  // }
+
 
   /**
    * *** EDIT BOT ***
@@ -451,7 +464,7 @@ export class FaqComponent implements OnInit {
       setTimeout(() => {
         this.showSpinner = false;
       }, 800);
-     
+
       console.log('>> FAQs GOT BY FAQ-KB ID - COMPLETE');
     });
   }
@@ -698,7 +711,7 @@ export class FaqComponent implements OnInit {
     }
   }
   // UPLOAD FAQ FROM CSV
-  fileChange(event) {
+  fileChangeUploadCSV(event) {
     this.displayImportModal = 'none';
     this.displayInfoModal = 'block';
 
@@ -757,6 +770,12 @@ export class FaqComponent implements OnInit {
     if (window && window['tiledesk']) {
       window['tiledesk'].open();
     }
+  }
+
+  openBotExternalUrl() {
+    const url = this.faqKbUrlToUpdate;
+    window.open(url, '_blank');
+
   }
 
   // public changeListener(files: FileList) {

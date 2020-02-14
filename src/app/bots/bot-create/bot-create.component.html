@@ -1,0 +1,374 @@
+<div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
+  <!-- goBackToFaqKbList() -->
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">
+    keyboard_arrow_left
+  </i>
+  {{ "BotsAddEditPage.AddBot" | translate }}
+</div>
+
+<div class="main-content" style="padding-top:0px">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card" style="padding-top:25px; padding-bottom:25px">
+          <div class="card-content">
+
+            <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+
+            <div class="row">
+              <!-- <label class="col-sm-2 custom-label"> </label> -->
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                <div style="font-size: 16px;
+                font-family: 'Google Sans', sans-serif !important;
+                color: #394f5a;
+                font-weight: 500;
+                margin-bottom: 33px;
+                /* background: aliceblue; */
+                padding: 7px;
+                border-bottom: 1px solid #e8f0f5;">
+                  {{ 'CreateABot' | translate:translateparam }}
+                  <!-- Create a  <span style="text-transform: capitalize;"> {{ botType }} </span> bot -->
+                </div>
+
+              </div>
+            </div>
+
+            <div class="row">
+              <label class="col-sm-2 custom-label">
+
+                {{ "BotsAddEditPage.BotName" | translate }}
+              </label>
+              <div class="col-xs-12 col-sm-6 col-md-8 col-lg-6">
+
+                <input (ngModelChange)="botNameChanged($event)" [(ngModel)]="faqKbName" class="input" type="text"
+                  placeholder='{{ "BotsAddEditPage.BotName" | translate }}'>
+              </div>
+            </div>
+
+
+            <!-- EXTERNAL URL CHECKBOX -->
+            <!-- <div class="row" >
+              <label class="col-sm-2"></label>
+              <div class="col-sm-10">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" name="externalBot"
+                      (click)="hasClickedExternalBot(is_external_bot = !is_external_bot)">
+                    <span class="checkbox-label" style="position: relative;top: 2px;">
+                      {{ "BotsPage.ExternalBot" | translate }}
+                    </span>
+                  </label>
+                  <span style="font-size: 12px; font-weight: 400;">
+                    <i class="material-icons"
+                      style="vertical-align: middle; color: #ec971f; font-size: 20px;padding-left: 16px">info</i>
+                    <span style="position: relative;top: 2px;">
+                      <span style="color: #7695a5; "> {{'ExperimentalFeature' | translate }}. </span>
+                      <span style="color: #7695a5">{{'IfYouAreInterested' | translate }} </span>
+                      <span (click)="launchWidget()" style="color: #039be5; cursor:pointer;">
+                        {{ 'ChatWithUs' | translate}} </span>
+                    </span>
+                  </span>
+                </div>
+
+              </div>
+            </div> -->
+
+            <!-- SPACER -->
+            <div class="col-sm-12" style="height:10px"></div>
+
+            <!-- 
+            // ------------------------------------------------------
+            // External bot - url
+            // ------------------------------------------------------ -->
+            <div class="row" *ngIf="botType === 'external'">
+              <label class="col-sm-2 custom-label">Url</label>
+              <div class="col-xs-12 col-sm-6 col-md-8 col-lg-6">
+
+                <textarea [(ngModel)]="faqKbUrl" class="input" type="text"
+                  placeholder="{{ 'BotsPage.EnterExternalBotUrl' | translate }}">
+                </textarea>
+              </div>
+            </div>
+
+            <!-- 
+            // ------------------------------------------------------
+            // Dilaogflow bot Upload file
+            // ------------------------------------------------------ -->
+            <div class="row" *ngIf="botType === 'dialogflow'">
+              <label class="col-sm-2 custom-label"> </label>
+              <div class="col-xs-12 col-sm-6 col-md-8 col-lg-6">
+
+                <div style="color: rgba(0,0,0,.54);font-weight: 400; margin-bottom: 8px">
+                  {{ 'ServiceAccountPrivateKeyFile' | translate }}
+                </div>
+
+
+                <div [class.is-hidden]="hideDropZone === true" class="drop-container dropzone" (drop)="drop($event)"
+                  (dragover)="allowDrop($event)" (dragleave)="drag($event)" [class.hovering]="isHovering">
+                  <p class="m-0">
+                    <span style="color: rgba(0,0,0,.54);font-weight: 400;"> {{ 'DragAFileHereOr' | translate }}</span>
+                    <label class="upload-button">
+                      <input (change)="onFileChange($event)" id="uploadprivatekey" name="uploadprivatekey" type="file">
+                      <!-- <input style="display:inline" name="file" id="file" class="inputfile" type="file"
+                    (change)="fileChange($event)" /> -->
+                      <span class="browse-btn">{{ 'Browse' | translate }}</span>
+                    </label>
+                    <span style="color: rgba(0,0,0,.54);font-weight: 400;"> {{ 'ToUpload' | translate }} </span>
+                  </p>
+                </div>
+
+                <div [class.is-visible]="hideProgressBar === false" [class.is-hidden]="hideDropZone === false"
+                  class="progress___bar">
+                  <div class="progress" style="margin-bottom: 5px;">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="70" aria-valuemin="0"
+                      aria-valuemax="100" [ngStyle]="{'width': percentLoaded + '%'}">
+                      <span class="sr-only">{{ percentLoaded }} Complete</span>
+                    </div>
+                  </div>
+                  <div [ngClass]="{'successfully_uploaded' : percentLoaded === 100}"
+                    style="font-size: 12px;font-weight: 400;">
+                    {{percentLoaded }}% {{ 'Completed' | translate }}
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+
+
+            <div class="row">
+              <!-- SPACER -->
+              <div class="col-sm-12" style="height:10px"></div>
+
+              <label class="col-sm-2"></label>
+              <div class="col-sm-10">
+
+                <button class="btn btn-primary" [disabled]="btn_create_bot_is_disabled" (click)="createBot()">
+
+                  {{ "BotsAddEditPage.CreateBot" | translate }}
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- RIGHT SIDEBAR -->
+      <div class="col-md-4">
+        <!-- padding-top:25px; padding-bottom:25px -->
+        <div class="card" style="">
+          <div class="card-content">
+
+            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
+              {{ "QuickTips" | translate }}
+            </h4>
+
+            <p style="color:#7695a5">
+
+              {{ "BotsPage.BotQuickTipsText" | translate: tparams }}
+
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ./ row -->
+  </div>
+  <!-- ./ container-fluid -->
+</div>
+<!-- ./ main-content -->
+
+<!-- MODAL - INFO WINDOWS -->
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayInfoModal }"
+  style="background-color: rgba(90,90,90,0.5);">
+  <!-- modal-sm -->
+  <div class="modal-dialog" role="document">
+    <!-- custom-modal-content -->
+    <div class="modal-content" >
+      <!-- <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+
+        <h4 class="modal-title">
+          {{ "BotsAddEditPage.CreateBot" | translate }}
+        </h4>
+      </div> -->
+      <div class="modal-header" style="padding:16px!important; border-bottom:none!important;">
+        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()"
+          style="position: absolute; right: 14px;">
+          <span aria-hidden="true">
+            <!-- &times; -->
+            <svg class="tide-icon" width="24" height="24" viewBox="0 0 24 24">
+              <path
+                d="M13.357 11.993l10.256 10.295c0.39 0.391 0.39 1.024 0 1.415-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292l-10.257-10.295-10.256 10.295c-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292c-0.39-0.391-0.39-1.024 0-1.415l10.256-10.295-10.256-10.294c-0.39-0.391-0.39-1.024 0-1.415s1.020-0.391 1.409 0l10.256 10.294 10.256-10.294c0.39-0.391 1.020-0.391 1.41 0 0.389 0.391 0.389 1.024 0 1.415l-10.256 10.294z">
+              </path>
+            </svg>
+          </span>
+        </button>
+
+        <h2 class="modal-title custom__modal__title">
+          <span style="vertical-align: middle;">
+
+            {{ "BotsAddEditPage.CreateBot" | translate }}
+          </span>
+        </h2>
+
+      </div>
+      <hr class="custom-hr" style="margin-top:3px; margin-bottom:3px">
+      <div class="modal-body"
+        style="padding-top: 0px; padding-bottom: 0px; padding-right: 34px; padding-left: 34px; line-height: 1;min-height: 161px;">
+
+        <!-- <span *ngIf="SHOW_CIRCULAR_SPINNER">
+          <div class="loader" style="top:25%">
+            <svg class="circular" viewBox="25 25 50 50">
+              <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10" />
+            </svg>
+
+          </div>
+          <p style="margin-top: 60px; text-align: center;">
+            {{ "BotsAddEditPage.Processing" | translate }}
+          </p>
+        </span> -->
+
+        <!-- *ngIf="!SHOW_CIRCULAR_SPINNER" -->
+
+
+        <div style="text-align: center">
+
+          <!--      WHEN NO ERROR OCCUR      -->
+
+          <!-- botType =   {{ botType}} ||||  CREATE_DLGFLOW_BOT_ERROR = {{ CREATE_DLGFLOW_BOT_ERROR }} |||| CREATE_BOT_ERROR = {{ CREATE_BOT_ERROR }} -->
+          <span *ngIf="CREATE_BOT_CALLBACKS_COMPLETED">
+            <!-- <i class="material-icons" style="color:#70b665">done</i>
+              <p style="color:#70b665; font-weight: 500">
+                {{ "BotsAddEditPage.Completed" | translate }}
+              </p> -->
+
+            <div class="success-checkmark">
+              <div class="check-icon">
+                <span class="success-icon-line success-line-tip"></span>
+                <span class="success-icon-line success-line-long"></span>
+                <div class="success-icon-circle"></div>
+                <div class="success-icon-fix"></div>
+              </div>
+            </div>
+
+            <h3 style="text-align: center;  color: #8894ab; font-size: 22px; margin-bottom: 20px;">
+              {{ "BotsAddEditPage.Completed" | translate }}
+            </h3>
+
+            <!-- 
+            // ---------------------------------------------------------------------------------------------
+            // the bot <bot-name> has been created
+            // --------------------------------------------------------------------------------------------- -->
+            <!-- <p style="margin-top: 10px; text-align: center; font-weight: 500; font-size: 16px;color: #8894ab;">
+              {{ "BotsAddEditPage.TheBot" | translate }}
+              <span style="color: #566787"> <strong>{{ newBot_name }} </strong> </span>
+              {{ "BotsAddEditPage.HasBeenCreated" | translate }}
+            </p> -->
+
+
+            <!-- 
+              // ---------------------------------------------------------------------------------------------
+              //  WHEN IS CREATED A native bot DISPLAY NAVIGATION OPTION (AddFaqToTheBot or ReturnToTheBotList ) 
+              // --------------------------------------------------------------------------------------------- -->
+            <!-- <span *ngIf="botType === 'native'">
+              <div class="row">
+                <div class="col-md-12" style="text-align: center; padding-left: 3px; padding-right: 6px;"
+                  [ngClass]="{'it_custom_add_faq_now' : browser_lang == 'it'}">
+                  <label class="form-check">
+                    <input class="form-check-input" type="radio" name="mode" [checked]="true"
+                      (change)="actionAfterGroupCreation(goToEditBot = true)">
+                    <span style="margin-left: 8px; color:#7695a5; font-weight: 500;">
+                      {{ "BotsAddEditPage.AddFaqToTheBot" | translate }}
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-12" style="text-align: center">
+                  <label class="form-check">
+                    <input class="form-check-input" type="radio" name="mode" [value]="false"
+                      (change)="actionAfterGroupCreation(goToEditBot = false)">
+                    <span style="margin-left: 8px; color:#7695a5; font-weight: 500">
+                      {{ "BotsAddEditPage.ReturnToTheBotList" | translate }}
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </span> -->
+          </span>
+
+          <!--   ERROR   -->
+          <span *ngIf="CREATE_BOT_CALLBACKS_COMPLETED === false">
+            <div class="error-banmark">
+              <div class="ban-icon">
+                <span class="icon-line line-long-invert"></span>
+                <span class="icon-line line-long"></span>
+                <div class="icon-circle"></div>
+                <div class="icon-fix"></div>
+              </div>
+            </div>
+
+            <!-- <i class="material-icons" style="color:#ff5252">report_problem</i>
+            <p style="color:#ff5252; font-weight: 500">
+              {{ "Error" | translate }}
+            </p> -->
+
+            <!-- <p style="margin-top: 10px; text-align: center; font-weight: 500; font-size: 16px;color: #8894ab;">
+              {{ "BotsAddEditPage.AnErrorHasOccurred" | translate }}
+            </p> -->
+
+            <h3 style="text-align: center;  color: #8894ab; font-size: 22px; margin-bottom: 20px;">
+              {{ "BotsAddEditPage.AnErrorHasOccurred" | translate }}
+            </h3>
+          </span>
+
+        </div>
+
+        <!--      WHEN NO ERROR OCCUR      -->
+        <!-- <span *ngIf="!CREATE_BOT_ERROR || !CREATE_DLGFLOW_BOT_ERROR"> </span> -->
+
+        <!--    ERROR     -->
+        <!-- <span *ngIf="CREATE_BOT_ERROR || CREATE_DLGFLOW_BOT_ERROR"> </span> -->
+
+
+      </div>
+
+      <div class="modal-footer" style="text-align: center;">
+        <!-- style="float: left;" -->
+        <button *ngIf="CREATE_BOT_CALLBACKS_COMPLETED === true" class="btn btn-primary" (click)="goTo_BotsList()" >
+          <span> 
+            <i class="material-icons">
+              arrow_back
+            </i>
+            {{ "BotsAddEditPage.BackToBotsList" | translate }}
+          </span>
+        </button>
+
+        <button class="btn btn-white" type="button" (click)="onCloseModal()">
+          {{ "Close" | translate }}
+        </button>
+
+        <!-- style="float: right;" -->
+        <button *ngIf="CREATE_BOT_CALLBACKS_COMPLETED === true" class="btn btn-primary" (click)="goTo_EditBot()" >
+          <span> {{ "BotsAddEditPage.Continue" | translate }}
+            <i class="material-icons">
+              arrow_forward
+            </i>
+          </span>
+        </button>
+      </div>
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>

@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { slideInOutAnimation } from '../../_animations/index';
+import { slideInOutAnimation } from '../../../_animations/index';
 @Component({
   selector: 'appdashboard-faq-sidebar',
   templateUrl: './faq-sidebar.component.html',

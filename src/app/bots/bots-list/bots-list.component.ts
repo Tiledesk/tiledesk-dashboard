@@ -1,23 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { FaqKbService } from '../services/faq-kb.service';
-import { FaqKb } from '../models/faq_kb-model';
+import { FaqKbService } from '../../services/faq-kb.service';
+import { FaqKb } from '../../models/faq_kb-model';
 import { Router } from '@angular/router';
-import { MongodbFaqService } from '../services/mongodb-faq.service';
+import { MongodbFaqService } from '../../services/mongodb-faq.service';
 
-import { Project } from '../models/project-model';
-import { AuthService } from '../core/auth.service';
+import { Project } from '../../models/project-model';
+import { AuthService } from '../../core/auth.service';
 import { Location } from '@angular/common';
-import { NotifyService } from '../core/notify.service';
+import { NotifyService } from '../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import brand from 'assets/brand/brand.json';
+import { AppConfigService } from '../../services/app-config.service';
 
 @Component({
-  selector: 'faq-kb',
-  templateUrl: './faq-kb.component.html',
-  styleUrls: ['./faq-kb.component.scss'],
+  selector: 'bots-list',
+  templateUrl: './bots-list.component.html',
+  styleUrls: ['./bots-list.component.scss'],
 })
 
-export class FaqKbComponent implements OnInit {
+export class BotListComponent implements OnInit {
   tparams = brand;
 
   faqkbList: FaqKb[];
@@ -51,7 +52,7 @@ export class FaqKbComponent implements OnInit {
   text_is_truncated = true;
   rowIndexSelected: number;
 
-
+  storageBucket: string;
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -59,6 +60,7 @@ export class FaqKbComponent implements OnInit {
     private auth: AuthService,
     private _location: Location,
     private notify: NotifyService,
+    public appConfigService: AppConfigService,
     private translate: TranslateService
   ) { }
 
@@ -71,7 +73,12 @@ export class FaqKbComponent implements OnInit {
 
     // this.getFaqKb();
     this.getFaqKbByProjectId();
-
+    this.getStorageBucket();
+  }
+  getStorageBucket() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    console.log('STORAGE-BUCKET Analytics List ', this.storageBucket)
   }
 
   translateTrashBotSuccessMsg() {
@@ -119,18 +126,18 @@ export class FaqKbComponent implements OnInit {
         // ------------------------------------------------------------------------------------
         // FOR PRE
         // ------------------------------------------------------------------------------------
-        let  i: number;
+        let i: number;
         for (i = 0; i < this.faqkbList.length; i++) {
-         
+
           if (this.faqkbList[i].type === 'external') {
 
             this.faqkbList[i].external = true;
 
-          } else if (this.faqkbList[i].type === 'internal'){
+          } else if (this.faqkbList[i].type === 'internal') {
 
             this.faqkbList[i].external = false;
           }
-          
+
         }
       }
 
@@ -157,11 +164,11 @@ export class FaqKbComponent implements OnInit {
     window.open(botExternalUrl, '_blank');
   }
 
-  disableTruncateText (i: number) {
+  disableTruncateText(i: number) {
     this.text_is_truncated = false;
     // console.log('toggleShowUrl ', this.truncate_text);
     this.rowIndexSelected = i;
-    console.log('toggleShowUrl index ', i );
+    console.log('toggleShowUrl index ', i);
   }
 
   enableTruncateText() {
@@ -215,11 +222,11 @@ export class FaqKbComponent implements OnInit {
             for (const faqkb of this.faqkbList) {
 
               if (faqkb._id === this.faq_faqKbId) {
-                console.log('+> ID COINCIDONO');
+                // console.log('+> ID COINCIDONO');
 
 
                 faqkb.faqs_number = faq.length
-                console.log('»»» BOT ID', faqkb._id, 'FAQ LENGHT ', faq.length);
+                // console.log('»»» BOT ID', faqkb._id, 'FAQ LENGHT ', faq.length);
                 // set in the json the value true to the property has_faq
                 faqkb.has_faq = true;
               }
@@ -442,26 +449,36 @@ export class FaqKbComponent implements OnInit {
     this.displayDeleteInfoModal = 'none';
   }
 
-  // GO TO THE COMPONENT FAQ-KB-EDIT-ADD
-  goToEditAddPage_CREATE() {
-    this.router.navigate(['project/' + this.project._id + '/createfaqkb']);
+  // !!!! NO MORE USED IN THIS COMPONENT - when the user click 'ADD BOT' is redirected to bot-type-select
+  /* GO TO THE COMPONENT FAQ-KB-EDIT-ADD */
+  // goToEditAddPage_CREATE() {
+  //   this.router.navigate(['project/' + this.project._id + '/createfaqkb']);
+  // }
+
+  // ---------------------------------------------------
+  // Go to select bot type
+  // ---------------------------------------------------
+  goToSelectBotType() {
+    this.router.navigate(['project/' + this.project._id + '/bots/bot-select-type']);
   }
 
-  // GO TO THE COMPONENT FAQ-KB-EDIT-ADD
-  goToEditAddPage_EDIT(idFaqKb: string) {
-    this.router.navigate(['project/' + this.project._id + '/editfaqkb', idFaqKb]);
+
+  // ---------------------------------------------------------------------------
+  // Go to faq.component to: Add / Edit FAQ, Edit Bot name
+  // ---------------------------------------------------------------------------
+  goToFaqPage(idFaqKb: string, botType: string) {
+    console.log('ID OF THE BOT (FAQKB) SELECTED ', idFaqKb , 'bot type ', botType);
+    this.router.navigate(['project/' + this.project._id + '/bots', idFaqKb , botType]);
   }
 
-  /**
-   * GO TO FAQ-COMPONET TO:
-   * ADD OR EDIT FAQ
-   * EDIT THE BOT NAME
-   */
-  goToFaqPage_ADD_EDIT_FAQ(idFaqKb: string) {
-    console.log('ID OF THE BOT (FAQKB) SELECTED ', idFaqKb);
-    // this.router.navigate(['project/' + this.project._id + '/faq', idFaqKb]);
-    this.router.navigate(['project/' + this.project._id + '/bots', idFaqKb]);
-  }
+
+  // !! NO MORE USED - REPLACED WITH goToFaqPage (see above)
+  // GO TO THE COMPONENT FAQ-KB-EDIT-ADD
+  // goToEditAddPage_EDIT(idFaqKb: string) {
+  //   this.router.navigate(['project/' + this.project._id + '/editfaqkb', idFaqKb]);
+  // }
+
+
 
   goToTestFaqPage(remoteFaqKbKey: string) {
     console.log('REMOTE FAQKB KEY SELECTED ', remoteFaqKbKey);

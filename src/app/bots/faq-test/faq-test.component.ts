@@ -1,13 +1,13 @@
 import { Component, OnInit, ElementRef, ViewChild, HostListener, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../core/auth.service';
-import { Project } from '../models/project-model';
+import { AuthService } from '../../core/auth.service';
+import { Project } from '../../models/project-model';
 import { ActivatedRoute } from '@angular/router';
-import { MongodbFaqService } from '../services/mongodb-faq.service';
+import { MongodbFaqService } from '../../services/mongodb-faq.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 // USED FOR go back last page
 import { Location } from '@angular/common';
-import { FaqKbService } from '../services/faq-kb.service';
+import { FaqKbService } from '../../services/faq-kb.service';
 import * as moment from 'moment';
 
 @Component({

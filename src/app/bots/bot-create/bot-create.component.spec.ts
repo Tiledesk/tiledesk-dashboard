@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FaqKbEditAddComponent } from './faq-kb-edit-add.component';
+import { BotCreateComponent } from './bot-create.component';
 
 describe('FaqKbEditAddComponent', () => {
-  let component: FaqKbEditAddComponent;
-  let fixture: ComponentFixture<FaqKbEditAddComponent>;
+  let component: BotCreateComponent;
+  let fixture: ComponentFixture<BotCreateComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FaqKbEditAddComponent ]
+      declarations: [ BotCreateComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FaqKbEditAddComponent);
+    fixture = TestBed.createComponent(BotCreateComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

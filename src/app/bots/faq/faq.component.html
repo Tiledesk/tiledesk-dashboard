@@ -44,7 +44,7 @@
                   </div>
 
 
-                  <input class="inputfile" name="file" id="file" type="file" (change)="upload($event)" accept=".jpg" />
+                  <input class="inputfile" name="uploadbotimage" id="uploadbotimage" type="file" (change)="upload($event)" accept=".jpg" />
                   <label class="btn btn-white upload-image-btn" for="file"
                     style="padding-left:15px; padding-right:15px; text-transform: none; color: #7695a5">
 
@@ -61,6 +61,24 @@
               </div>
             </div>
 
+            <!-- 
+            // -------------------------------------------------------------------------------------------
+            // Bot type
+            // ------------------------------------------------------------------------------------------- -->
+            <div class="row">
+              <label class="col-sm-2 custom-label">
+                {{ "BotsAddEditPage.Type" | translate }}
+              </label>
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div style="text-transform: capitalize; margin-top:8px; color: rgba(0,0,0,.54); font-weight: 400;"> 
+                  {{ botType }} 
+                </div>
+              </div>
+            </div>
+
+            <!-- SPACER -->
+            <div class="col-sm-12" style="height:10px"></div>
+
             <div class="row">
               <label class="col-sm-2 custom-label">
                 {{ "BotsAddEditPage.BotName" | translate }}
@@ -70,7 +88,10 @@
               </div>
             </div>
 
-            <div class="row">
+
+
+            <!-- /// External bot checkbox -->
+            <!-- <div class="row">
               <label class="col-sm-2"></label>
               <div class="col-sm-10">
                 <div class="checkbox">
@@ -96,17 +117,33 @@
 
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <!-- SPACER -->
             <div class="col-sm-12" style="height:10px"></div>
-
-            <div class="row">
+            <!-- 
+            // -------------------------------------------------------------------------------------------
+            // Exernal bot url
+            // ------------------------------------------------------------------------------------------- -->
+            <div class="row" *ngIf="botType === 'external'">
               <label class="col-sm-2 custom-label">Url</label>
               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                <textarea [(ngModel)]="faqKbUrlToUpdate" class="input" type="text"
-                  placeholder="{{ 'BotsPage.EnterExternalBotUrl' | translate }}" [disabled]="!is_external_bot">
-                </textarea>
+                <!-- [disabled]="!is_external_bot" -->
+                <div class="row">
+                  <div class="col-xs-10" style="padding-right: 2px;">
+                    <textarea [(ngModel)]="faqKbUrlToUpdate" class="input" type="text"
+                      placeholder="{{ 'BotsPage.EnterExternalBotUrl' | translate }}">
+                    </textarea>
+                  </div>
+
+                  <div class="col-xs-2" style="padding-left: 2px;">
+                    <button type="submit" class="btn btn-white btn-open-external-bot-url" (click)="openBotExternalUrl()">
+                      <i class="material-icons">
+                        open_in_new
+                      </i>
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -116,7 +153,6 @@
             <div class="row">
               <label class="col-sm-2"></label>
               <div class="col-sm-10">
-
                 <button #editbotbtn class="btn btn-primary" (click)="editBotName()" [disabled]="faqKb_name?.length < 2">
                   {{ "BotsAddEditPage.UpdateBotName" | translate }}
                 </button>
@@ -141,9 +177,17 @@
             </h4>
 
             <p class="title-attribute" style="margin-bottom: 3px; padding-top: 5px;">
-              <!-- <strong> -->
+              {{ "BotsAddEditPage.Type" | translate }}
+            </p>
+
+            <p class="attribute">
+            <span style="text-transform:capitalize">  {{ botType }} </span > 
+            </p>
+
+            <p class="title-attribute" style="margin-bottom: 3px; padding-top: 5px;">
+              
               {{ "BotsAddEditPage.BotID" | translate }}
-              <!-- </strong> -->
+              
             </p>
             <p class="attribute">
               {{ faqKb_id }}
@@ -471,7 +515,10 @@
       <div>
 
         <div *ngIf="OPEN_RIGHT_SIDEBAR === true" class="view-side">
-
+          <!-- 
+          ****************************************  
+          ** FAKE ** FOR DEMO - RIGHT SIDEBAR
+          **************************************** -->
           <appdashboard-faq-sidebar [ngStyle]="{'height':train_bot_sidebar_height }"
             (valueChange)='closeRightSidebar($event)'>
           </appdashboard-faq-sidebar>
@@ -623,13 +670,13 @@
               <div class="modal-footer" style="text-align: center;">
 
                 <input style="display:inline" name="file" id="file" class="inputfile" type="file"
-                  (change)="fileChange($event)" accept=".csv" />
+                  (change)="fileChangeUploadCSV($event)" accept=".csv"/>
                 <label class="btn btn-primary" for="file"
                   style="padding-left:15px; padding-right:15px; text-transform: none"
                   [ngClass]="{'disabled': modalChoosefileDisabled }">
                   <!-- <i class="material-icons">file_upload</i> -->
                   <!-- CHOOSE FILE  -->
-                  {{ 'FaqPage.ChooseFile' | translate }}
+               ++   {{ 'FaqPage.ChooseFile' | translate }}
                 </label>
               </div>
 
