@@ -446,9 +446,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 } else {
 
                     this.isPageWithNav = true;
-
-                    if (window['tiledeskSettings']['preChatForm']) {
-                        delete window['tiledeskSettings']['preChatForm'];
+                    if (window && window['tiledeskSettings']) {
+                        if (window['tiledeskSettings']['preChatForm']) {
+                            delete window['tiledeskSettings']['preChatForm'];
+                        }
                     }
                 }
                 // console.log('APP.COMP currentUrl ', this.route, 'tiledeskSettings ', window['tiledeskSettings']);
