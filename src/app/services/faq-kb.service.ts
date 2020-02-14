@@ -131,7 +131,8 @@ export class FaqKbService {
    * CREATE (POST)
    * @param fullName
    */
-  public addMongoDbFaqKb(name: string, urlfaqkb: string, is_external_bot: boolean) {
+  // public addMongoDbFaqKb(name: string, urlfaqkb: string, is_external_bot: boolean) {
+    public addMongoDbFaqKb(name: string, urlfaqkb: string, bottype: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -141,17 +142,17 @@ export class FaqKbService {
 
     // const isPreDeploy = false
 
-    const body = { 'name': name, 'url': urlfaqkb, 'id_project': this.project._id };
+    const body = { 'name': name, 'url': urlfaqkb, 'id_project': this.project._id, 'type':  bottype};
 
 
     /* FOR PRE */
-    let botType = ''
-    if (is_external_bot === true) {
-      botType = 'external'
-    } else {
-      botType = 'internal'
-    }
-    body['type'] = botType
+    // let botType = ''
+    // if (is_external_bot === true) {
+    //   botType = 'external'
+    // } else {
+    //   botType = 'internal'
+    // }
+    // body['type'] = botType
 
 
     /* FOR PROD */
@@ -167,6 +168,25 @@ export class FaqKbService {
       .map((res) => res.json());
 
   }
+
+  // IF THE BOT IS OF TYPE DIALOGFLOW, AFTER THAT A NEW FAQKB WAS CREATED RUN A CALLBACK TO POST THE 
+  // dialogfolw bot CREDENTIOAL
+uploadDialogflowBotCredetial(botid: string, formData:any) {
+  const headers = new Headers();
+
+  // headers.append('Accept', 'text/csv');
+  headers.append('Accept', 'application/json');
+  headers.append('Content-type', 'multipart/form-data');
+  headers.append('Authorization', this.TOKEN);
+
+
+  const url =  "http://dialogflow-proxy-tiledesk.herokuapp.com/uploadgooglecredendials/" + botid
+  const options = new RequestOptions({ headers: headers });
+  return this.http
+    .post(url, formData, options)
+    .map(res => res.json())
+}
+
 
   /**
    * CREATE KBKEY
