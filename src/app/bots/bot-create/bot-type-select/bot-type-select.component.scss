@@ -1,0 +1,49 @@
+// .bot-card {
+//   height: 100%;
+//   display: flex;
+//   flex-direction: column;
+// }
+// @media (min-width: 768px) {
+//     .row.equal {
+//       display: flex;
+//       flex-wrap: wrap;
+//     }
+//   }
+
+.bot-card {
+  cursor: pointer;
+  min-height: 293px;
+  box-shadow: 0 14px 30px 0 rgba(60, 72, 91, 0.22);
+  border-radius: 10px;
+}
+
+.bot-card:hover {
+  box-shadow: 0 4px 18px 0 rgba(60, 72, 91, 0.22);
+
+  .dflogo_st2 {
+    fill: #a6a6a6 !important;
+  }
+  .dflogo_st1 {
+    fill: #878787 !important;
+  }
+
+  .tdlogo_st0 {
+    fill: #9f9f9f !important;
+  }
+
+  .extlogo_st1  {
+    fill: #7c7c7c !important;
+  }
+}
+
+.bot-image {
+  height: 140px;
+}
+
+.custom__modal__title {
+  color: #262f3c;
+  text-align: center;
+  font-family: "Google Sans", sans-serif !important;
+  margin-top: 20px;
+  font-size: 28px;
+}
