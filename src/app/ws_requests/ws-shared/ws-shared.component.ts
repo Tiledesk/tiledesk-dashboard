@@ -47,7 +47,8 @@ export class WsSharedComponent implements OnInit {
     this.agents_array = [];
     this.cleaned_members_array = [];
     members_array.forEach(member_id => {
-      if (member_id !== requester_id && member_id !== 'system') {
+      // !== requester_id
+      if (member_id && member_id !== 'system') {
 
         this.cleaned_members_array.push(member_id);
         // console.log('%%% WsRequestsMsgsComponent - CLEANED MEMBERS ARRAY ', this.cleaned_members_array);

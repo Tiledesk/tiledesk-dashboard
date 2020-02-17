@@ -27,6 +27,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { browserRefresh } from '../../app.component';
+import * as uuid from 'uuid';
 
 @Component({
   selector: 'appdashboard-ws-requests-list',
@@ -34,7 +35,8 @@ import { browserRefresh } from '../../app.component';
   styleUrls: ['./ws-requests-list.component.scss']
 })
 export class WsRequestsListComponent extends WsSharedComponent implements OnInit, AfterViewInit, OnDestroy {
-
+  
+  CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
   // used to unsuscribe from behaviour subject
   private unsubscribe$: Subject<any> = new Subject<any>();
 
@@ -86,6 +88,14 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   filter: any[] = [{ 'deptId': null }, { 'agentId': null }];
   hasFiltered = false;
   public browserRefresh: boolean;
+  displayInternalRequestModal = 'none';
+  internalRequest_subject: string;
+  internalRequest_deptId: string;
+  internalRequest_message: string;
+  showSpinner_createInternalRequest = false;
+  hasClickedCreateNewInternalRequest= false;
+  createNewInternalRequest_hasError: boolean;
+  internal_request_id: string;
 
   /**
    * Constructor
@@ -136,7 +146,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     // this.for1();
     // this.getRequestsTotalCount()  
     // this.getAllProjectUsersAndBot();
-    // this.getDepartments();
+    this.getDepartments();
     // const teamContentEl = <HTMLElement>document.querySelector('.team-content');
     // const perfs = new PerfectScrollbar(teamContentEl);
     // this.selectedDeptId = '';
@@ -173,32 +183,28 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     }
   }
 
-
-
   getProjectUserRole() {
     this.usersService.project_user_role_bs
-    .pipe(
-      takeUntil(this.unsubscribe$)
-    )
-    .subscribe((user_role) => {
-      console.log('% »»» WebSocketJs WF - WsRequestsList USER ROLE ', user_role);
-      if (user_role) {
-        if (user_role === 'agent') {
-          this.ROLE_IS_AGENT = true
-          this.displayBtnLabelSeeYourRequets = true
-          // ------ 
-          this.ONLY_MY_REQUESTS = true
-          this.getWsRequests$();
-        } else {
-          this.ROLE_IS_AGENT = false
-          this.displayBtnLabelSeeYourRequets = false;
-          this.getWsRequests$();
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user_role) => {
+        console.log('% »»» WebSocketJs WF - WsRequestsList USER ROLE ', user_role);
+        if (user_role) {
+          if (user_role === 'agent') {
+            this.ROLE_IS_AGENT = true
+            this.displayBtnLabelSeeYourRequets = true
+            // ------ 
+            this.ONLY_MY_REQUESTS = true
+            this.getWsRequests$();
+          } else {
+            this.ROLE_IS_AGENT = false
+            this.displayBtnLabelSeeYourRequets = false;
+            this.getWsRequests$();
+          }
         }
-      }
-    });
+      });
   }
-
-
 
   getDepartments() {
     this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
@@ -581,9 +587,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         if (wsrequests) {
           console.log("% »»» WebSocketJs WF +++++ ws-requests--- list - subscribe > if (wsrequests) ", wsrequests);
           this.browserRefresh = browserRefresh;
-    
+
           // console.log("% »»» WebSocketJs WF +++++ ws-requests--- list subscribe > if (wsrequests) browserRefresh ", this.browserRefresh, 'wsRequestsList$.value length ', this.wsRequestsService.wsRequestsList$.value.length);
-         
+
 
           if ((this.browserRefresh === false) || (this.browserRefresh === true && this.wsRequestsService.wsRequestsList$.value.length > 0)) {
             if (wsrequests.length > 0) {
@@ -914,6 +920,67 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   }
 
 
+  presentCreateInternalRequestModal() {
+    this.displayInternalRequestModal = 'block'
+    this.hasClickedCreateNewInternalRequest = false;
+  
+  }
+
+  closeInternalRequestModal() {
+    this.displayInternalRequestModal = 'none'
+    this.hasClickedCreateNewInternalRequest = false
+
+    this.resetCreateInternalRequest()
+ 
+  }
+
+
+  createNewInternalRequest() {
+    this.hasClickedCreateNewInternalRequest = true
+    this.showSpinner_createInternalRequest = true
+    console.log('% WsRequestsList create internalRequest - internalRequest_subject ', this.internalRequest_message);
+    console.log('% WsRequestsList create internalRequest - internalRequest_subject ', this.internalRequest_deptId);
+    console.log('% WsRequestsList create internalRequest - internalRequest_subject', this.internalRequest_subject);
+
+
+    const uiid = uuid.v4();
+    // console.log('% WsRequestsList createTicket - UUID', uiid);
+    this.internal_request_id = 'support-group-' + uiid
+    console.log('% WsRequestsList create internalRequest - this.internal_request_id', this.internal_request_id);
+    // (request_id:string, subject: string, message:string, departmentid: string)
+    this.wsRequestsService.createInternalRequest(this.internal_request_id, this.internalRequest_subject, this.internalRequest_message, this.internalRequest_deptId).subscribe((newticket: any) => {
+      console.log('% WsRequestsList create internalRequest - RES ', this.internal_request_id);
+
+
+    }, error => {
+      this.showSpinner_createInternalRequest = false;
+      this.createNewInternalRequest_hasError = true
+      console.log('% WsRequestsList create internalRequest  - ERROR: ', error);
+    }, () => {
+      console.log('% WsRequestsList create internalRequest * COMPLETE *')
+      this.showSpinner_createInternalRequest = false;
+      this.createNewInternalRequest_hasError = false;
+      // this.hasClickedCreateNewInternalRequest = false;
+
+    });
+  }
+
+  openTheChaForInternalRequest() {
+    this.displayInternalRequestModal = 'none'
+    const url = this.CHAT_BASE_URL + '?recipient=' + this.internal_request_id;
+    window.open(url, '_blank');
+
+    this.resetCreateInternalRequest();
+  }
+
+  resetCreateInternalRequest() {
+    this.hasClickedCreateNewInternalRequest = false
+    this.showSpinner_createInternalRequest = false
+    this.createNewInternalRequest_hasError = null;
+    this.internalRequest_message = undefined;
+    this.internalRequest_deptId = undefined;
+    this.internalRequest_subject = undefined;
+  }
 
 
 

@@ -1393,6 +1393,18 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // @ goTo & Navigate
   // -----------------------------------------------------------------------------------------------------
 
+  chatWithAgent(agentId, agentFirstname, agentLastname) {
+
+    console.log('%% Ws-REQUESTS-Msgs - CHAT WITH AGENT - agentId: ', agentId, ' - agentFirstname: ', agentFirstname, ' - agentLastname: ', agentLastname);
+    // console.log('USERS-COMP - CHAT URL ', this.CHAT_BASE_URL);
+
+    // https://support-pre.tiledesk.com/chat/index.html?recipient=5de9200d6722370017731969&recipientFullname=Nuovopre%20Pre
+    //  https://support-pre.tiledesk.com/chat/index.html?recipient=5dd278b8989ecd00174f9d6b&recipientFullname=Gian Burrasca
+    const url = this.CHAT_BASE_URL + '?' + 'recipient=' + agentId + '&recipientFullname=' + agentFirstname + ' ' + agentLastname;
+    console.log('%% Ws-REQUESTS-Msgs - CHAT URL ', url);
+    window.open(url, '_blank');
+  }
+
   goToContactDetails() {
     this.router.navigate(['project/' + this.id_project + '/contact', this.contact_id]);
   }

@@ -1,141 +1,7 @@
+
 // @import url(https://fonts.googleapis.com/css?family=Google+Sans);
 @import "./src/assets/sass/md/_variables.scss";
 
-/* TABLE CONTENT VERTICAL ALIGNMENT */
-.table td,
-.table th {
-  vertical-align: middle;
-}
-
-.table td {
-  padding-top: 3px;
-  padding-bottom: 3px;
-}
-
-.table td p {
-  margin-bottom: 0px;
-}
-
-button {
-  padding-top: 2px;
-  padding-bottom: 1px;
-  padding-right: 3px;
-  padding-left: 3px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-}
-
-/* MODAL START */
-// @media (min-width: 992px) {
-
-// }
-// @media (min-width: 768px) {
-//     .modal-dialog {
-//         width: 600px;
-//         margin: 30px auto;
-//     }
-// }
-
-// MODAL BOOTSTRAP BREAKPOINTS
-
-// @media (min-width: 769px) and (max-width: 991px){
-//     .modal-dialog {
-//         width: 700px;
-//         }
-//     }
-// // from 992 to 1020px
-// @media (min-width: 992px) and (max-width: 1019px){
-// .modal-dialog {
-//         margin-left: 33%;
-//     }
-// }
-
-// @media (min-width: 1020px) and (max-width: 1119px) {
-//     .modal-dialog {
-//         // margin-left: 35%;
-//         margin-left: 31%;
-//         width: 670px;
-//     }
-// }
-// @media (min-width: 1120px) and (max-width: 1199px) {
-//     .modal-dialog {
-//         // margin-left: 35%;
-//         margin-left: 31%;
-//         width: 700px;
-//     }
-// }
-
-// @media (min-width: 1200px) and (max-width: 1289px)  {
-//     .modal-dialog {
-//         // margin-left: 37%;
-//         margin-left: 29%;
-//         width: 800px;
-//     }
-// }
-
-// @media (min-width: 1290px) and (max-width: 1369px)  {
-//     .modal-dialog {
-//         // margin-left: 37%;
-//         margin-left: 29%;
-//         width: 850px;
-//     }
-// }
-
-// @media (min-width: 1369px) and (max-width: 1469px)  {
-//     .modal-dialog {
-//         // margin-left: 37%;
-//         margin-left: 29%;
-//         width: 850px;
-//     }
-// }
-
-// @media (min-width: 1470px) and (max-width: 1549px) {
-//     .modal-dialog {
-//         margin-left: 29%;
-//         width: 900px;
-//     }
-// }
-
-// @media (min-width: 1550px) and (max-width: 1649px){
-//     .modal-dialog {
-//         margin-left: 30%;
-//         width: 900px;
-//     }
-// }
-// @media (min-width: 1650px) and (max-width: 1679px) {
-//     .modal-dialog {
-//         // margin-left: 40%;
-//         margin-left: 31%;
-//         width: 900px;
-//     }
-// }
-// // and (max-width: 1679px)
-// @media (min-width: 1680px)  {
-//     .modal-dialog {
-//         // margin-left: 40%;
-//         margin-left: 33%;
-//         width: 900px;
-//     }
-// }
-
-// @media (min-width: 991px){
-// .modal-dialog {
-//     left: 110px !important;
-//     }
-// }
-
-// @media (min-width: 768px)  {
-//     .modal-dialog {
-//       width: 600px;
-//       margin: 30px auto;
-//     }
-// }
-
-// @media (min-width: 1252px) {
-//     .modal-dialog {
-//       width: 900px;
-//     }
-// }
 .modal {
   top: 0;
 }
@@ -183,12 +49,11 @@ button.close {
 
 .modal-body {
   position: relative;
-  // padding-top: 35px;
-  // padding-bottom: 35px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  padding-right: 0px;
-  padding-left: 15px;
+  padding: 20px 30px;
+  // padding-top: 20px;
+  // padding-bottom: 20px;
+  // padding-right: 0px;
+  // padding-left: 15px;
 }
 
 .modal-footer {
@@ -200,41 +65,84 @@ button.close {
   padding-top: 10px !important;
 }
 
-// .btn-default {
-//     color: #333;
-//     background-color: #fff;
-//     border-color: #ccc;
-// }
-
-// .btn {
-//     display: inline-block;
-//     padding: 6px 12px;
-//     margin-bottom: 0;
-//     font-size: 14px;
-//     font-weight: 400;
-//     line-height: 1.42857143;
-//     text-align: center;
-//     white-space: nowrap;
-//     vertical-align: middle;
-//     -ms-touch-action: manipulation;
-//     touch-action: manipulation;
-//     cursor: pointer;
-//     -webkit-user-select: none;
-//     -moz-user-select: none;
-//     -ms-user-select: none;
-//     user-select: none;
-//     background-image: none;
-//     border: 1px solid transparent;
-//     border-radius: 4px;
-// }
-
-// .btn-default {
-//     color: #333;
-//     background-color: #fff;
-//     border-color: #ccc;
-// }
 
 /* MODAL END */
+
+/* texarea & input in  MODAL  */
+input[type="text"] {
+  // min-width: 307px !important;
+  height: 36px;
+  font-size: 14px;
+  width: 100%;
+  margin-bottom: 10px;
+  -webkit-appearance: none;
+  background: #fff;
+  border: 1px solid #d9d9d9 !important;
+  border-top: 1px solid #c0c0c0;
+  /* border-radius: 2px; */
+  padding: 0 8px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  border-radius: 5px;
+  background-color: #fff !important;
+  border: solid 1px #ddd;
+}
+
+textarea[type="text"] {
+  // min-width: 307px !important;
+  height: 36px;
+  font-size: 14px;
+  width: 100%;
+  margin-bottom: 10px;
+  -webkit-appearance: none;
+  background: #fff;
+  border: 1px solid #d9d9d9 !important;
+  border-top: 1px solid #c0c0c0;
+  /* border-radius: 2px; */
+  padding-right: 8px;
+  padding-top: 5px;
+  padding-left: 8px;
+
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  border-radius: 5px;
+  background-color: #fff !important;
+  border: solid 1px #ddd;
+}
+
+/* END texarea & input in  MODAL  */
+
+
+
+
+
+
+
+/* TABLE CONTENT VERTICAL ALIGNMENT */
+.table td,
+.table th {
+  vertical-align: middle;
+}
+
+.table td {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+.table td p {
+  margin-bottom: 0px;
+}
+
+button {
+  padding-top: 2px;
+  padding-bottom: 1px;
+  padding-right: 3px;
+  padding-left: 3px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+
 
 // MESSAGES IN MODAL
 .msgcontainer {
@@ -870,5 +778,337 @@ $f21blue: #039be5;
 
   100% {
     background-position: 200px;
+  }
+}
+
+
+// -------------------------------------------------
+// stretch spinner https://tobiasahlin.com/spinkit/
+// -------------------------------------------------
+.stretchspinner {
+  margin: 100px auto;
+  width: 50px;
+  height: 40px;
+  text-align: center;
+  font-size: 10px;
+  position: absolute;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.stretchspinner > div {
+  background-color: $brand-primary;
+  height: 100%;
+  width: 6px;
+  display: inline-block;
+
+  -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+  animation: sk-stretchdelay 1.2s infinite ease-in-out;
+}
+
+.stretchspinner .rect2 {
+  -webkit-animation-delay: -1.1s;
+  animation-delay: -1.1s;
+}
+
+.stretchspinner .rect3 {
+  -webkit-animation-delay: -1s;
+  animation-delay: -1s;
+}
+
+.stretchspinner .rect4 {
+  -webkit-animation-delay: -0.9s;
+  animation-delay: -0.9s;
+}
+
+.stretchspinner .rect5 {
+  -webkit-animation-delay: -0.8s;
+  animation-delay: -0.8s;
+}
+
+@-webkit-keyframes sk-stretchdelay {
+  0%,
+  40%,
+  100% {
+    -webkit-transform: scaleY(0.4);
+  }
+  20% {
+    -webkit-transform: scaleY(1);
+  }
+}
+
+@keyframes sk-stretchdelay {
+  0%,
+  40%,
+  100% {
+    transform: scaleY(0.4);
+    -webkit-transform: scaleY(0.4);
+  }
+  20% {
+    transform: scaleY(1);
+    -webkit-transform: scaleY(1);
+  }
+}
+
+// -----------------------------------
+// Success Check Animation
+// -----------------------------------
+.success-checkmark {
+  width: 80px;
+  // height: 115px;
+  margin: 0 auto;
+  position: relative;
+  right: 5px;
+  margin-top: 16px;
+  
+  .check-icon {
+      width: 80px;
+      height: 80px;
+      position: relative;
+      border-radius: 50%;
+      box-sizing: content-box;
+      border: 4px solid #4CAF50;
+      
+      &::before {
+          top: 3px;
+          left: -2px;
+          width: 30px;
+          transform-origin: 100% 50%;
+          border-radius: 100px 0 0 100px;
+      }
+      
+      &::after {
+          top: 0;
+          left: 30px;
+          width: 60px;
+          transform-origin: 0 50%;
+          border-radius: 0 100px 100px 0;
+          animation: rotate-circle 4.25s ease-in;
+      }
+      
+      &::before, &::after {
+          content: '';
+          height: 100px;
+          position: absolute;
+          background: #FFFFFF;
+          transform: rotate(-45deg);
+      }
+      
+      .success-icon-line {
+          height: 5px;
+          background-color: #4CAF50;
+          display: block;
+          border-radius: 2px;
+          position: absolute;
+          z-index: 10;
+          
+          &.success-line-tip {
+              top: 46px;
+              left: 14px;
+              width: 25px;
+              transform: rotate(45deg);
+              animation: icon-line-tip 0.75s;
+          }
+          
+          &.success-line-long {
+              top: 38px;
+              right: 8px;
+              width: 47px;
+              transform: rotate(-45deg);
+              animation: icon-line-long 0.75s;
+          }
+      }
+      
+      .success-icon-circle {
+          top: -4px;
+          left: -4px;
+          z-index: 10;
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          position: absolute;
+          box-sizing: content-box;
+          border: 4px solid rgba(76, 175, 80, .5);
+      }
+      
+      .success-icon-fix {
+          top: 8px;
+          width: 5px;
+          left: 26px;
+          z-index: 1;
+          height: 85px;
+          position: absolute;
+          transform: rotate(-45deg);
+          background-color: #FFFFFF;
+      }
+  }
+}
+
+@keyframes rotate-circle {
+  0% {
+      transform: rotate(-45deg);
+  }
+  5% {
+      transform: rotate(-45deg);
+  }
+  12% {
+      transform: rotate(-405deg);
+  }
+  100% {
+      transform: rotate(-405deg);
+  }
+}
+
+@keyframes icon-line-tip {
+  0% {
+      width: 0;
+      left: 1px;
+      top: 19px;
+  }
+  54% {
+      width: 0;
+      left: 1px;
+      top: 19px;
+  }
+  70% {
+      width: 50px;
+      left: -8px;
+      top: 37px;
+  }
+  84% {
+      width: 17px;
+      left: 21px;
+      top: 48px;
+  }
+  100% {
+      width: 25px;
+      left: 14px;
+      top: 45px;
+  }
+}
+
+@keyframes icon-line-long {
+  0% {
+      width: 0;
+      right: 46px;
+      top: 54px;
+  }
+  65% {
+      width: 0;
+      right: 46px;
+      top: 54px;
+  }
+  84% {
+      width: 55px;
+      right: 0px;
+      top: 35px;
+  }
+  100% {
+      width: 47px;
+      right: 8px;
+      top: 38px;
+  }
+}
+
+
+// -----------------------------------
+// Success banmark Animation
+// -----------------------------------
+.error-banmark {
+  width: 80px;
+  // height: 115px;
+  margin: 0 auto;
+  position: relative;
+  right: 5px;
+  margin-top: 16px;
+  
+  .ban-icon {
+      width: 80px;
+      height: 80px;
+      position: relative;
+      border-radius: 50%;
+      box-sizing: content-box;
+      // border: 4px solid rgb(175, 76, 76);
+      border: 4px solid #f27474;
+      
+      
+      &::before {
+          top: 3px;
+          left: -2px;
+          width: 30px;
+          transform-origin: 100% 50%;
+          border-radius: 100px 0 0 100px;
+      }
+      
+      &::after {
+          top: 0;
+          left: 30px;
+          width: 60px;
+          transform-origin: 0 50%;
+          border-radius: 0 100px 100px 0;
+          animation: rotate-circle 4.25s ease-in;
+      }
+      
+      &::before, &::after {
+          content: '';
+          height: 100px;
+          position: absolute;
+          background: rgba(255, 255, 255, 0);
+          transform: rotate(-45deg);
+      }
+      
+      .icon-line {
+          height: 5px;
+          // background-color: rgb(175, 76, 76);
+          background-color: #f27474;
+          display: block;
+          border-radius: 2px;
+          position: absolute;
+          z-index: 10;
+          
+          &.line-long-invert {
+              top: 39px;
+              left: 8px;
+              width: 60px;
+              transform: rotate(45deg);
+              animation: icon-line-long 0.75s;
+          }
+          
+          &.line-long {
+              top: 39px;
+              left: 8px;
+              width: 60px;
+              transform: rotate(-45deg);
+              animation: icon-line-long 0.85s;
+          }
+      }
+      
+      .icon-circle {
+          top: -4px;
+          left: -4px;
+          z-index: 10;
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          position: absolute;
+          box-sizing: content-box;
+          // border: 4px solid rgba(175, 76, 76, 0.5);
+          border: 4px solid rgba(242, 116, 116, 0.5);
+      }
+      
+      .icon-fix {
+          top: 8px;
+          width: 5px;
+          left: 26px;
+          z-index: 1;
+          height: 85px;
+          position: absolute;
+          transform: rotate(-45deg);
+          background-color: rgba(255, 255, 255, 0);
+      }
   }
 }

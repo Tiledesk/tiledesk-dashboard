@@ -10,7 +10,7 @@
 
   <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
   <!-- *ngIf="!showSpinner" -->
-  <div  class="card-content table-responsive" style="padding-top: 0px;">
+  <div class="card-content table-responsive" style="padding-top: 0px;">
     <!-- style="overflow-x:auto;" -->
     <table class="table table-hover served_requests_table">
       <thead class="text">
@@ -51,7 +51,7 @@
             </span>
           </th>
 
-     
+
 
           <!-- ------ ====== SERVED BY ====== ------ -->
           <th>
@@ -87,9 +87,9 @@
       </thead>
       <tbody>
 
- 
+
         <tr *ngIf="wsRequestsServed?.length === 0">
-        <!-- <tr *ngIf="displayNoRequestString"> -->
+          <!-- <tr *ngIf="displayNoRequestString"> -->
 
           <td colspan="8" style="text-align: center; padding-top: 16px;">
             <p style="font-size:1em; color:#737376; font-weight: 100">
@@ -124,87 +124,192 @@
               <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
                 title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}">
 
-                <svg viewBox="0 0 58.1 53.9" style="width: 25px; position: relative; top: 3px;" xml:space="preserve">
-                  <style type="text/css">
-                    .st0 {
-                      fill: none;
-                      stroke: #999999;
-                      stroke-width: 2;
-                      stroke-miterlimit: 10;
-                    }
-                  </style>
-                  <path class="st0" d="M30.1,2.7c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
+                <span *ngIf="!request?.subject">
+                  <svg viewBox="0 0 58.1 53.9" style="width: 25px; position: relative; top: 3px;" xml:space="preserve">
+                    <style type="text/css">
+                      .st0 {
+                        fill: none;
+                        stroke: #999999;
+                        stroke-width: 2;
+                        stroke-miterlimit: 10;
+                      }
+                    </style>
+                    <path class="st0" d="M30.1,2.7c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
                   c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S43.9,2.7,30.1,2.7z" />
-                </svg>
+                  </svg>
+                </span>
+
+                <!-- 
+                // ------------------------------------------------------------------------------------------------------
+                // If is internal request
+                // ------------------------------------------------------------------------------------------------------ -->
+                <span *ngIf="request?.subject">
+
+                  <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
+                    style="width: 25px; position: relative; top: 3px;" xml:space="preserve">
+                    <style type="text/css">
+                      .status0_Internal_st0 {
+                        fill: none;
+                        stroke: #999999;
+                        stroke-width: 2;
+                        stroke-miterlimit: 10;
+                      }
+
+                      .status0_Internal_st1 {
+                        fill: #999999;
+                      }
+                    </style>
+                    <path class="status0_Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
+               C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
+                    <path class="status0_Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
+               c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
+               C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
+               c0.5,0,0.9-0.5,0.9-1.1V22z" />
+                  </svg>
+
+                </span>
+
+
+
               </span>
             </span>
 
 
-            <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) AND THE CURRENT USER UID IS BETWEEN 
-          THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
+            <!-- 
+            IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) AND THE CURRENT USER UID IS BETWEEN 
+            THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has joined to the request) -->
             <span *ngIf="request?.status == 200 && request?.currentUserIsJoined === true">
               <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
                 title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}">
 
-                <svg viewBox="0 0 58.1 53.9" style="width: 25px; position: relative; top: 3px;" xml:space="preserve">
-                  <style type="text/css">
-                    .st0-served-by-cu {
-                      fill: none;
-                      stroke: #4DAF4F;
-                      stroke-width: 2;
-                      stroke-miterlimit: 10;
-                    }
+                <span *ngIf="!request?.subject">
+                  <svg viewBox="0 0 58.1 53.9" style="width: 25px; position: relative; top: 3px;" xml:space="preserve">
+                    <style type="text/css">
+                      .st0-served-by-cu {
+                        fill: none;
+                        stroke: #4DAF4F;
+                        stroke-width: 2;
+                        stroke-miterlimit: 10;
+                      }
 
-                    .st1-served-by-cu {
-                      fill: #4DAF4F;
-                    }
-                  </style>
-                  <path class="st0-served-by-cu" d="M29.8,3.7c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
+                      .st1-served-by-cu {
+                        fill: #4DAF4F;
+                      }
+                    </style>
+                    <path class="st0-served-by-cu" d="M29.8,3.7c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
                     c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S43.6,3.7,29.8,3.7z" />
-                  <g id="XMLID_146_">
-                    <path id="XMLID_158_" class="st1-served-by-cu" d="M25.8,36.5l-8.4-7.4c-1.1-0.9-1.1-2.4,0-3.3c1.1-0.9,2.8-0.9,3.8,0l4.6,4.1l12.6-10.9
+                    <g id="XMLID_146_">
+                      <path id="XMLID_158_" class="st1-served-by-cu" d="M25.8,36.5l-8.4-7.4c-1.1-0.9-1.1-2.4,0-3.3c1.1-0.9,2.8-0.9,3.8,0l4.6,4.1l12.6-10.9
                       c1.1-0.9,2.8-0.9,3.8,0c1,0.9,1,2.4,0,3.3L25.8,36.5z" />
-                  </g>
-                </svg>
+                    </g>
+                  </svg>
+                </span>
+
+                <!-- 
+                // ------------------------------------------------------------------------------------------------------
+                // If is internal request
+                // ------------------------------------------------------------------------------------------------------ -->
+                <span *ngIf="request?.subject">
+                  <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
+                    style="width: 25px; position: relative; top: 3px;" xml:space="preserve">
+                    <style type="text/css">
+                      .servedbyCurrentUser_Internal_st0 {
+                        fill: none;
+                        stroke: #4DAF4F;
+                        stroke-width: 2;
+                        stroke-miterlimit: 10;
+                      }
+
+                      .servedbyCurrentUser_Internal_st1 {
+                        fill: #4DAF4F;
+                      }
+                    </style>
+                    <path class="servedbyCurrentUser_Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
+                 C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
+                    <path class="servedbyCurrentUser_Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
+                 c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
+                 C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
+                 c0.5,0,0.9-0.5,0.9-1.1V22z" />
+                  </svg>
+
+                </span>
+
+
               </span>
             </span>
 
-            <!-- IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) BUT THE CURRENT USER UID IS NOT BETWEEN 
+            <!-- 
+          IF THE REQUEST SUPPORT STATUS IS 200 (SERVED REQUEST) BUT THE CURRENT USER UID IS NOT BETWEEN 
           THE UID KEYS OF THE OBJECT MEMBER (i.e. the current user has not joined to the request) -->
             <span *ngIf="request?.status == 200 && !request?.currentUserIsJoined">
               <span (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
                 title="{{ 'VisitorsPage.ViewRequestDetails' | translate}}: {{request?.request_id}}">
 
-                <svg viewBox="0 0 58.1 53.9" style="width: 25px; position: relative; top: 3px;" xml:space="preserve">
-                  <style type="text/css">
-                    .st0-served {
-                      fill: none;
-                      stroke: #05BDD4;
-                      stroke-width: 2;
-                      stroke-miterlimit: 10;
-                    }
+                <span *ngIf="!request?.subject">
+                  <svg viewBox="0 0 58.1 53.9" style="width: 25px; position: relative; top: 3px;" xml:space="preserve">
+                    <style type="text/css">
+                      .st0-served {
+                        fill: none;
+                        stroke: #05BDD4;
+                        stroke-width: 2;
+                        stroke-miterlimit: 10;
+                      }
 
-                    .st1-served {
-                      fill: #05BDD4;
-                    }
-                  </style>
-                  <g>
-                    <path class="st0-served" d="M30.5,3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
-                    c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S44.3,3,30.5,3z" />
+                      .st1-served {
+                        fill: #05BDD4;
+                      }
+                    </style>
                     <g>
-                      <circle class="st1-served" cx="17.5" cy="26.7" r="3" />
-                      <circle class="st1-served" cx="30.5" cy="26.7" r="3" />
-                      <circle class="st1-served" cx="43.5" cy="26.7" r="3" />
+                      <path class="st0-served" d="M30.5,3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
+                    c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S44.3,3,30.5,3z" />
+                      <g>
+                        <circle class="st1-served" cx="17.5" cy="26.7" r="3" />
+                        <circle class="st1-served" cx="30.5" cy="26.7" r="3" />
+                        <circle class="st1-served" cx="43.5" cy="26.7" r="3" />
+                      </g>
                     </g>
-                  </g>
-                </svg>
+                  </svg>
+                </span>
+
+                <!-- 
+                // ------------------------------------------------------------------------------------------------------
+                // If is internal request
+                // ------------------------------------------------------------------------------------------------------ -->
+                <span *ngIf="request?.subject">
+
+                  <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
+                    style="width: 25px; position: relative; top: 3px;" xml:space="preserve">
+                    <style type="text/css">
+                      .served_Internal_st0 {
+                        fill: none;
+                        stroke: #05BDD4;
+                        stroke-width: 2;
+                        stroke-miterlimit: 10;
+                      }
+
+                      .served_Internal_st1 {
+                        fill: #05BDD4;
+                      }
+                    </style>
+                    <path class="served_Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
+               C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
+                    <path class="served_Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
+               c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
+               C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
+               c0.5,0,0.9-0.5,0.9-1.1V22z" />
+                  </svg>
+
+
+
+                </span>
+
+
               </span>
             </span>
           </td>
-
-
-        
-
 
           <!-- ------ ====== MESSAGE  ====== ------ -->
           <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
@@ -333,7 +438,7 @@
             </p>
           </td>
 
-         
+
 
           <!-- ------ ====== NEW SERVED BY ====== ------ -->
           <!-- *ngIf="participant !== request?.requester_id && participant !== 'system' && participant !== currentUserID"  -->
@@ -341,14 +446,14 @@
             <div *ngFor="let participant of request?.participants" style="font-size:0.8em;">
               <span *ngIf="participant !== currentUserID" class="tooltipx">
                 <span (click)="goToMemberProfile( participant )" style="cursor:pointer; display: block">
-              
+
                   <!-- 
                   // ------------------------------------------------------------------------------------------------------
                   // the Agent is a Bot
                   // ------------------------------------------------------------------------------------------------------ -->
                   <img *ngIf="participant.indexOf('bot_') !== -1" class="user-img ws-requests-list-servedby-avatar"
-                    src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant | slice:4}}%2Fphoto.jpg?alt=media" 
-                      onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"/>
+                    src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant | slice:4}}%2Fphoto.jpg?alt=media"
+                    onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
                   <!-- 
                   // ------------------------------------------------------------------------------------------------------
@@ -361,7 +466,7 @@
                 </span>
                 <span class="tooltiptext"> {{ "ViewProfile" | translate }} </span>
               </span>
-              
+
               <!-- 
               // ------------------------------------------------------------------------------------------------------
               // the Agent is the current user
@@ -408,7 +513,6 @@
 
 
 <appdashboard-close-request-modal *ngIf="displayArchiveRequestModal === 'block'"
-  [id_request_to_archive]="id_request_to_archive"
-  [displayArchiveRequestModal]="displayArchiveRequestModal"
-  (closeModal)='onCloseArchiveRequestModal()'> 
+  [id_request_to_archive]="id_request_to_archive" [displayArchiveRequestModal]="displayArchiveRequestModal"
+  (closeModal)='onCloseArchiveRequestModal()'>
 </appdashboard-close-request-modal>

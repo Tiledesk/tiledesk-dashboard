@@ -341,7 +341,7 @@
                 <div style="margin-bottom: 0px; min-height: 39px;">
 
                   <!-- IF IS AN CLOSED REQUEST -->
-                  <span *ngIf="request?.status == 1000">
+                  <span *ngIf="request?.status == 1000 && !request?.subject">
                     <svg viewBox="0 0 58.1 53.9" style="width: 40px" xml:space="preserve">
                       <style type="text/css">
                         .st0-chat-closed {
@@ -367,8 +367,38 @@
                     </span>
                   </span>
 
+
+                  <span *ngIf="request?.status == 1000 && request?.subject">
+                    <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
+                      style="width: 40px" xml:space="preserve">
+                      <style type="text/css">
+                        .closed_Internal_st0 {
+                          fill: none;
+                          stroke: #999999;
+                          stroke-width: 2;
+                          stroke-miterlimit: 10;
+                        }
+
+                        .closed_Internal_st1 {
+                          fill: #999999;
+                        }
+                      </style>
+                      <path class="closed_Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
+             C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
+                      <path class="closed_Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
+             c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
+             C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
+             c0.5,0,0.9-0.5,0.9-1.1V22z" />
+                    </svg>
+
+                    <span class="request-category" style="position:relative;top: -20px; color: #999999">
+                      {{ "RequestMsgsPage.InternalRequestClosed" | translate }}
+                    </span>
+                  </span>
+
                   <!-- IF IS AN UNSERVED REQUEST -->
-                  <span *ngIf="request?.status == 100">
+                  <span *ngIf="request?.status === 100 && !request?.subject">
                     <svg viewBox="0 0 58.1 53.9" style="width: 40px" xml:space="preserve">
                       <style type="text/css">
                         .st0-unserved {
@@ -395,10 +425,41 @@
                       {{ "RequestMsgsPage.RequestUnserved" | translate }}
                     </span>
                   </span>
+                  <!-- IF IS AN INTERNAL UNSERVED REQUEST -->
+                  <span *ngIf="request?.status === 100 && request?.subject">
+                    <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
+                      style="width: 40px" xml:space="preserve">
+                      <style type="text/css">
+                        .unserved_Internal_st0 {
+                          fill: none;
+                          stroke: #ED4537;
+                          stroke-width: 2;
+                          stroke-miterlimit: 10;
+                        }
+
+                        .unserved_Internal_st1 {
+                          fill: #ED4537;
+                        }
+                      </style>
+                      <path class="unserved_Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
+             C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
+                      <path class="unserved_Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
+             c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
+             C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
+             c0.5,0,0.9-0.5,0.9-1.1V22z" />
+                    </svg>
+
+                    <span class="request-category" style="position:relative;top: -20px; color: #999999">
+                      {{ "RequestMsgsPage.InternalRequestUnserved" | translate }}
+                    </span>
+                  </span>
+
+
 
                   <!-- IF IS A SERVED REQUEST AND BETWEEN THE MEMBERS THERE IS THE CURRENT USER -->
                   <!-- <span *ngIf="request?.status == 200 && request?.currentUserIsJoined === true"> -->
-                  <span *ngIf="request?.status == 200 && IS_CURRENT_USER_JOINED === true">
+                  <span *ngIf="request?.status == 200 && IS_CURRENT_USER_JOINED === true && !request?.subject">
                     <svg viewBox="0 0 58.1 53.9" style="width: 40px" xml:space="preserve">
                       <style type="text/css">
                         .st0-served-by-cu {
@@ -425,9 +486,41 @@
                     </span>
                   </span>
 
+                  <!-- IF IS A INTERNAL SERVED REQUEST AND BETWEEN THE MEMBERS THERE IS THE CURRENT USER -->
+                  <!-- <span *ngIf="request?.status == 200 && request?.currentUserIsJoined === true"> -->
+                  <span *ngIf="request?.status == 200 && IS_CURRENT_USER_JOINED === true && request?.subject">
+                    <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
+                      style="width: 40px" xml:space="preserve">
+                      <style type="text/css">
+                        .served_bycu_Internal_st0 {
+                          fill: none;
+                          stroke: #4DAF4F;
+                          stroke-width: 2;
+                          stroke-miterlimit: 10;
+                        }
+
+                        .served_bycu_Internal_st1 {
+                          fill: #4DAF4F;
+                        }
+                      </style>
+                      <path class="served_bycu_Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
+             C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
+                      <path class="served_bycu_Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
+             c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
+             C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
+             c0.5,0,0.9-0.5,0.9-1.1V22z" />
+                    </svg>
+
+                    <span class="request-category" style="position:relative;top:-20px; color: #4CAF50">
+                      {{ "RequestMsgsPage.InternalRequestServedBy" | translate }}
+                    </span>
+                  </span>
+
+
                   <!-- IF IS A SERVED REQUEST AND BETWEEN THE MEMBERS THERE ISN'T THE CURRENT USER -->
                   <!-- <span *ngIf="request?.status == 200 && !request?.currentUserIsJoined"> -->
-                  <span *ngIf="request?.status == 200 && !IS_CURRENT_USER_JOINED">
+                  <span *ngIf="request?.status == 200 && !IS_CURRENT_USER_JOINED && !request?.subject">
 
                     <svg viewBox="0 0 58.1 53.9" style="width: 40px" xml:space="preserve">
                       <style type="text/css">
@@ -460,6 +553,40 @@
                     </span>
                   </span>
 
+                  <!-- IF IS AN INTERNAL SERVED REQUEST AND BETWEEN THE MEMBERS THERE ISN'T THE CURRENT USER -->
+                  <!-- <span *ngIf="request?.status == 200 && !request?.currentUserIsJoined"> -->
+                  <span *ngIf="request?.status == 200 && !IS_CURRENT_USER_JOINED && request?.subject">
+
+                    <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
+                      style="width: 40px" xml:space="preserve">
+                      <style type="text/css">
+                        .served__Internal_st0 {
+                          fill: none;
+                          stroke: #05BDD4;
+                          stroke-width: 2;
+                          stroke-miterlimit: 10;
+                        }
+
+                        .served__Internal_st1 {
+                          fill: #05BDD4;
+                        }
+                      </style>
+                      <path class="served__Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
+             C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
+                      <path class="served__Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
+             c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
+             C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
+             c0.5,0,0.9-0.5,0.9-1.1V22z" />
+                    </svg>
+
+                    <span class="request-category" style="position:relative;top: -20px; color: #00bcd4;">
+
+                      {{ "RequestMsgsPage.RequestServedBy" | translate }}
+
+                    </span>
+                  </span>
+
 
                   <div class="id__request" style="color: #7695a5 !important;
                   font-size: 10px;
@@ -473,17 +600,33 @@
                 <span style="color:#394f5a;"> id: </span> {{ id_request }}
               </span> -->
 
+                <div *ngIf="request?.subject" class="row" style="margin-top:5px">
+                  <div class="col-sm-12">
+                    <p class="" style="margin-bottom: 1px;">
+                      <span
+                        style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;margin-left: 4px;">
+                        {{ "RequestMsgsPage.Subject" | translate }}
+                      </span>
+                      <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                        {{ request?.subject}}
+                      </span>
+
+                    </p>
+                  </div>
+                </div>
+
                 <div class="row" style="margin-top:5px">
                   <!-- border-top: 1px solid #e1eef4;" -->
                   <!-- border-bottom: 1px solid #e1eef4; -->
-                  <div class="col-sm-12" style="">
+                  <div class="col-sm-12">
                     <p class="" style="margin-bottom: 1px;">
                       <i class="material-icons"
-                        style="vertical-align: middle; color: #394f5a;font-size:16px; margin-left: 3px;">calendar_today</i>
+                        style="vertical-align: middle; color: #394f5a;font-size:16px; margin-left: 3px; margin-right: 3px;">calendar_today</i>
                       <span style="position: relative;top: 1px;">
                         <span
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                          {{ "RequestMsgsPage.Created" | translate }}</span>
+                          {{ "RequestMsgsPage.Created" | translate }}
+                        </span>
 
                         <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
                           {{ request?.createdAt | amTimeAgo }} ({{ request?.createdAt | date: 'd/M/y HH:mm:ss' }})
@@ -554,6 +697,20 @@
                             {{agent?.firstname}} {{agent?.lastname}}
 
                             <span *ngIf="agent.isBot === true">(bot) </span>
+                          </span>
+                        </span>
+
+                        <span>
+                          <span class="White__Tooltip">
+                            <i class="material-icons chat-with-agent-ws-request-detail"
+                              (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)">
+                              chat
+                            </i>
+                            <span class="White__Tooltiptext"
+                              style="font-size: 12px; white-space: nowrap;font-weight: 100;">
+                              {{"ChatWith" | translate }}:
+                              <span style="display:block"> {{agent?.firstname}} {{agent?.lastname }} </span>
+                            </span>
                           </span>
                         </span>
 
@@ -792,7 +949,7 @@
                     </p>
 
 
-                  <!-- 
+                    <!-- 
                   // ------------------------------------------------------
                   // new attributes
                   // ------------------------------------------------------ -->
@@ -805,7 +962,8 @@
                               {{attribute?.attributeName }}:
                             </div>
 
-                            <div aria-expanded="false" [id]="attribute?.attributeName +'_value'" class="attribute attribute_cutted_text">
+                            <div aria-expanded="false" [id]="attribute?.attributeName +'_value'"
+                              class="attribute attribute_cutted_text">
                               {{attribute?.attributeValue }}
                             </div>
 
@@ -832,7 +990,7 @@
 
                       </div>
                     </div>
-                  <!-- 
+                    <!-- 
                   // ------------------------------------------------------
                   // ./ end new attributes
                   // ------------------------------------------------------ -->
