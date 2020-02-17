@@ -648,6 +648,30 @@ export class WsRequestsService implements OnDestroy {
   }
 
 
+  // -----------------------------------------------------------------------------------------
+  // Create Ticket
+  // -----------------------------------------------------------------------------------------
+  createInternalRequest (request_id:string, subject: string, message:string, departmentid: string) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+    // console.log('JOIN FUNCT OPTIONS  ', options);
+
+    const body = { 'subject': subject, 'text': message, 'departmentid':departmentid };
+
+    console.log('createInternalRequest ', body);
+
+    const url = this.BASE_URL + this.project_id + '/requests/' + request_id + '/messages'
+    console.log('createInternalRequest URL ', url)
+
+    return this.http
+      .post(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
+
   // getWsRequestsById() {
   //   const self = this;
   //   self.wsRequestsList = []
