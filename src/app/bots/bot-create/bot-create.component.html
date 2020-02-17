@@ -343,8 +343,8 @@
       </div>
 
       <div class="modal-footer" style="text-align: center;">
-        <!-- style="float: left;" -->
-        <button *ngIf="CREATE_BOT_CALLBACKS_COMPLETED === true" class="btn btn-primary" (click)="goTo_BotsList()" >
+ 
+        <!-- <button *ngIf="CREATE_BOT_CALLBACKS_COMPLETED === true" class="btn btn-primary" (click)="goTo_BotsList()" >
           <span> 
             <i class="material-icons">
               arrow_back
@@ -355,14 +355,14 @@
 
         <button class="btn btn-white" type="button" (click)="onCloseModal()">
           {{ "Close" | translate }}
-        </button>
+        </button> -->
 
-        <!-- style="float: right;" -->
+   
         <button *ngIf="CREATE_BOT_CALLBACKS_COMPLETED === true" class="btn btn-primary" (click)="goTo_EditBot()" >
           <span> {{ "BotsAddEditPage.Continue" | translate }}
-            <i class="material-icons">
+            <!-- <i class="material-icons">
               arrow_forward
-            </i>
+            </i> -->
           </span>
         </button>
       </div>
