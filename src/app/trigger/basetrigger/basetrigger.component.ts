@@ -155,9 +155,9 @@ export class BasetriggerComponent  {
 
       this.action = [
         { key: 'message.send', label_key: translateAction.label_key.SendMessageToVisitor, type: 'input', placeholder: translateAction.placeholder.NameAgent},
-        { key: 'request.department.root', label_key: translateAction.label_key.AssignToDep, type: 'select', placeholder: translateAction.placeholder.SelectDepartment},
+        { key: 'request.department.route', label_key: translateAction.label_key.AssignToDep, type: 'select', placeholder: translateAction.placeholder.SelectDepartment},
         //{ key: 'request.department.root.self', label_key: translateAction.label_key.ReAssignToSameDep, type: 'none'},
-        { key: 'request.department.root.self', label_key: translateAction.label_key.ReAssignToSameDep, type: 'select', placeholder: translateAction.placeholder.SelectStatus}, //none
+        { key: 'request.department.route.self', label_key: translateAction.label_key.ReAssignToSameDep, type: 'select', placeholder: translateAction.placeholder.SelectStatus}, //none
         { key: 'request.status.update', label_key: translateAction.label_key.RequestUpdateStatus, type: 'select', placeholder: translateAction.placeholder.SelectStatus},
         { key: 'request.close', label_key: translateAction.label_key.RequestClose, type: 'select', placeholder: translateAction.placeholder.SelectStatus}, //none
         { key: 'request.reopen', label_key: translateAction.label_key.RequestReopen, type: 'select', placeholder: translateAction.placeholder.SelectStatus}, //none
@@ -184,8 +184,8 @@ export class BasetriggerComponent  {
                       { id: 'de-DE', label_key: 'German'},
                       { id: 'es-ES', label_key: 'Spanish'},
         ],
-        'request.department.root' : this.departments,
-        'request.department.root.self' : [ {id: true, label_key: 'True'},
+        'request.department.route' : this.departments,
+        'request.department.route.self' : [ {id: true, label_key: 'True'},
                                            {id: false, label_key: 'False'}
                                           ],
         'request.close' : [ {id: true, label_key: 'True'},
