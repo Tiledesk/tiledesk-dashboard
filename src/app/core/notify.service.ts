@@ -253,6 +253,15 @@ export class NotifyService {
     // const color = Math.floor((Math.random() * 4) + 1);
     const color = notificationColor
 
+    let icon_bckgrnd_color = ''
+    if (notificationColor === 4) {
+      icon_bckgrnd_color = '#d2291c'
+    } else if (notificationColor === 2) {
+      icon_bckgrnd_color = '#449d48'
+    }
+
+
+
     this.notify = $.notify({
       // icon: 'glyphicon glyphicon-warning-sign',
       // message: message
@@ -261,6 +270,7 @@ export class NotifyService {
       type: type[color],
       // timer: 1500,
       delay: 1500,
+     
       placement: {
         from: 'top',
         align: 'right'
@@ -274,7 +284,7 @@ export class NotifyService {
         '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
         // '<span data-notify="title" style="max-width: 100%; font-size:1.1em; ">TileDesk</span> ' +
         // tslint:disable-next-line:max-line-length
-        '<span data-notify="icon" style="display: inline;"><i style="vertical-align: middle; padding: 3px;background-color: #449d48; border-radius: 50%; font-size:16px " class="material-icons">' + icon + '</i> </span> ' +
+        `<span data-notify="icon" style="display: inline;"><i style="vertical-align: middle; padding: 3px;background-color: ${icon_bckgrnd_color}; border-radius: 50%; font-size:16px " class="material-icons">` + icon + '</i> </span> ' +
         '<span data-notify="message" style="display: inline; vertical-align: middle; padding-left:8px">' + message + '</span>' +
         '</div>'
     });
