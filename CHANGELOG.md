@@ -23,6 +23,9 @@
 - Edits some services endpoints for users and project users
 - Fixes "project settings" sidebar menu item is not displayed
 - Fixes the error that generates the logout if made in the request' details page
+- Adds the ability to create an "internal request"
+- Adds the ability to chat with an agent of a request
+- Adds the ability to integrate a Dialogflow bot
 
 ### 1.0.40
 - Fixes the user profile urls
