@@ -171,8 +171,20 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       const id_bot = (member_id.split('_').pop());
       console.log('ID BOT ', id_bot);
       // this.router.navigate(['project/' + this.projectId + '/botprofile/' + member_id]);
-      this.router.navigate(['project/' + this.projectId + '/bots', id_bot]);
 
+      const bot = this.botLocalDbService.getBotFromStorage(id_bot);
+      console.log('WsRequestsServedComponent BOT FROM STORAGE ', bot)
+      // const botType = bot.type
+
+      let botType = ''
+      if (bot.type === 'internal') {
+        botType = 'native'
+      } else {
+        botType = bot.type
+      }
+
+      // this.router.navigate(['project/' + this.projectId + '/bots/', id_bot]);
+      this.router.navigate(['project/' + this.projectId + '/bots', id_bot, botType]);
     } else {
       this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
     }

@@ -1400,7 +1400,13 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     // https://support-pre.tiledesk.com/chat/index.html?recipient=5de9200d6722370017731969&recipientFullname=Nuovopre%20Pre
     //  https://support-pre.tiledesk.com/chat/index.html?recipient=5dd278b8989ecd00174f9d6b&recipientFullname=Gian Burrasca
-    const url = this.CHAT_BASE_URL + '?' + 'recipient=' + agentId + '&recipientFullname=' + agentFirstname + ' ' + agentLastname;
+
+    let _agentLastName = ''
+
+    if (agentLastname) { 
+      _agentLastName = agentLastname
+    } 
+    const url = this.CHAT_BASE_URL + '?' + 'recipient=' + agentId + '&recipientFullname=' + agentFirstname + ' ' + _agentLastName;
     console.log('%% Ws-REQUESTS-Msgs - CHAT URL ', url);
     window.open(url, '_blank');
   }
@@ -1416,7 +1422,19 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
       const id_bot = member_id.substring(4);
       // this.router.navigate(['project/' + this.id_project + '/botprofile/' + member_id]);
-      this.router.navigate(['project/' + this.id_project + '/bots', id_bot]);
+      const bot = this.botLocalDbService.getBotFromStorage(id_bot);
+      console.log('%%% Ws-REQUESTS-Msgs BOT FROM STORAGE ', bot)
+     
+      let botType = ''
+      if (bot.type === 'internal') {
+        botType = 'native'
+      } else {
+        botType = bot.type
+      }
+      
+      this.router.navigate(['project/' + this.id_project + '/bots', id_bot, botType]);
+
+
 
     } else {
       this.router.navigate(['project/' + this.id_project + '/member/' + member_id]);

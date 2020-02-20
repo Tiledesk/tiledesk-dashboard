@@ -404,29 +404,32 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + this.botType]);
   }
 
-  goTo_BotsList() {
-    this.router.navigate(['project/' + this.project._id + '/bots/']);
-  }
-
-  onCloseInfoModalHandled() {
-    // this.router.navigate(['project/' + this.project._id + '/faqkb']);
-    this.CREATE_BOT_CALLBACKS_COMPLETED = null
-    if (this.botType === 'native') {
-      if (this.goToEditBot === true) {
-        this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + this.botType]);
-      } else {
-        this.router.navigate(['project/' + this.project._id + '/bots']);
-      }
-    } else {
-      this.router.navigate(['project/' + this.project._id + '/bots']);
-    }
-  }
-
   onCloseModal() {
     // this.CREATE_BOT_CALLBACKS_COMPLETED = null
     this.displayInfoModal = 'none';
   }
 
+
+  // goTo_BotsList() {
+  //   this.router.navigate(['project/' + this.project._id + '/bots/']);
+  // }
+
+  // onCloseInfoModalHandled() {
+  //   console.log('»»» »»» onCloseInfoModalHandled ' )
+  //   // this.router.navigate(['project/' + this.project._id + '/faqkb']);
+  //   this.CREATE_BOT_CALLBACKS_COMPLETED = null
+  //   if (this.botType === 'native') {
+  //     if (this.goToEditBot === true) {
+  //       this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + this.botType]);
+  //     } else {
+  //       this.router.navigate(['project/' + this.project._id + '/bots']);
+  //     }
+  //   } else {
+  //     this.router.navigate(['project/' + this.project._id + '/bots']);
+  //   }
+  // }
+
+ 
   // !!! NO MORE USED IN THIS COMPONENT - MOVED IN faq.component.html
   // edit() {
   //   console.log('FAQ KB NAME TO UPDATE ', this.faqKbNameToUpdate);

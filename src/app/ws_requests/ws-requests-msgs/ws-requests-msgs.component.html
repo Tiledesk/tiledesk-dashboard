@@ -340,7 +340,11 @@
               <div *ngIf="! showSpinner" class="content-wrap">
                 <div style="margin-bottom: 0px; min-height: 39px;">
 
-                  <!-- IF IS AN CLOSED REQUEST -->
+                 
+                  <!-- 
+                  // -------------------------------------
+                  // IF IS A CLOSED REQUEST
+                  // ------------------------------------- -->
                   <span *ngIf="request?.status == 1000 && !request?.subject">
                     <svg viewBox="0 0 58.1 53.9" style="width: 40px" xml:space="preserve">
                       <style type="text/css">
@@ -368,6 +372,10 @@
                   </span>
 
 
+                  <!-- 
+                  // -------------------------------------
+                  // IF IS AN INTERNAL CLOSED REQUEST
+                  // ------------------------------------- -->
                   <span *ngIf="request?.status == 1000 && request?.subject">
                     <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
@@ -397,7 +405,11 @@
                     </span>
                   </span>
 
-                  <!-- IF IS AN UNSERVED REQUEST -->
+          
+                  <!-- 
+                  // -------------------------------------
+                  // IF IS AN UNSERVED REQUEST
+                  // ------------------------------------- -->
                   <span *ngIf="request?.status === 100 && !request?.subject">
                     <svg viewBox="0 0 58.1 53.9" style="width: 40px" xml:space="preserve">
                       <style type="text/css">
@@ -425,7 +437,11 @@
                       {{ "RequestMsgsPage.RequestUnserved" | translate }}
                     </span>
                   </span>
-                  <!-- IF IS AN INTERNAL UNSERVED REQUEST -->
+
+                  <!-- 
+                  // -------------------------------------
+                  // IF IS AN INTERNAL UNSERVED REQUEST 
+                  // ------------------------------------- -->
                   <span *ngIf="request?.status === 100 && request?.subject">
                     <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
@@ -582,7 +598,7 @@
 
                     <span class="request-category" style="position:relative;top: -20px; color: #00bcd4;">
 
-                      {{ "RequestMsgsPage.RequestServedBy" | translate }}
+                      {{ "RequestMsgsPage.InternalRequestServedBy" | translate }}
 
                     </span>
                   </span>
@@ -700,7 +716,7 @@
                           </span>
                         </span>
 
-                        <span>
+                        <span *ngIf="agent.isBot === false">
                           <span class="White__Tooltip">
                             <i class="material-icons chat-with-agent-ws-request-detail"
                               (click)="chatWithAgent( agent?._id, agent?.firstname, agent?.lastname)">

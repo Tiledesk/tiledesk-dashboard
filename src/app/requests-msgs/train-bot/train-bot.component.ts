@@ -250,7 +250,7 @@ export class TrainBotComponent implements OnInit, AfterViewInit {
     console.log('TrainBotComponent goToBot id_bot', idFaqKb);
 
     // this.router.navigate(['project/' + this.project._id + '/faq', idFaqKb]);
-    this.router.navigate(['project/' + this.project_id + '/bots', idFaqKb]);
+    this.router.navigate(['project/' + this.project_id + '/bots', idFaqKb, 'native']);
   }
 
 }

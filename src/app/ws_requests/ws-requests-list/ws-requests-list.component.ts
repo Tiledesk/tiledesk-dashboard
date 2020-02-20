@@ -967,7 +967,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
   openTheChaForInternalRequest() {
     this.displayInternalRequestModal = 'none'
-    const url = this.CHAT_BASE_URL + '?recipient=' + this.internal_request_id;
+    // + '?recipient=' + this.internal_request_id;
+    const url = this.CHAT_BASE_URL 
     window.open(url, '_blank');
 
     this.resetCreateInternalRequest();
