@@ -32,12 +32,10 @@
               <thead>
                 <tr>
                   <th>
-                    
                     <span class="column-th-span">
                       <!-- {{ "BotsPage.Name" | translate }} -->
                       Bot
                     </span>
-
                   </th>
 
                   <th>
@@ -200,7 +198,7 @@
 
                   <td>
 
-                    {{ faqkb?.type}}
+                   <span style="text-transform: capitalize;"> {{ faqkb?.type}} </span>
                     <!-- <div class="checkbox">
                       <label>
                         <input style="opacity: 0.5!important;" type="checkbox" name="optionsCheckboxes"
@@ -218,7 +216,7 @@
 
                     <button type="button" rel="tooltip" title="{{ 'BotsPage.tooltipDeleteBot' | translate }}"
                       class="btn btn-danger btn-simple btn-xs"
-                      (click)='openDeleteModal(faqkb?._id, faqkb?.name, faqkb?.has_faq)'>
+                      (click)='openDeleteModal(faqkb?._id, faqkb?.name, faqkb?.has_faq, faqkb?.type)'>
                       <i class="material-icons">close</i>
                     </button>
                   </td>

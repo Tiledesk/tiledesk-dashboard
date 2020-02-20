@@ -22,71 +22,85 @@
 
           <loading-spinner *ngIf="showSpinnerInUpdateBotCard"></loading-spinner>
           <div *ngIf="!showSpinnerInUpdateBotCard" class="card-content">
+
+  
             <!-- 
             //---------------------------------------------------------------------------------------------------
-            // Bot avatar
+            // Bot avatar (for all bot type)
             //--------------------------------------------------------------------------------------------------- -->
-            <div class="row">
-              <label style="" class="col-sm-2 bot_avatar_label">
-                Avatar
-              </label>
-              <div class="col-sm-10">
+              <div class="row">
+                <label *ngIf="botType !== 'dialogflow'" class="col-sm-2 bot_avatar_label">
+                  Avatar
+                </label>
+                <!-- class="col-sm-10" -->
+                <div  [ngClass]="{'col-sm-10' : botType !== 'dialogflow', 'col-sm-12' : botType === 'dialogflow'}">
 
-                <div class="card-avatar" style="padding-bottom:15px; min-height: 95px;">
-                  <div class="bot_avatar" style="float: left;width: 80px; height: 80px;margin-right: 21px;">
-                    <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
-                      style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
-                      class="user-img" [src]="getUserProfileImage()" />
+                  <div class="card-avatar" style="padding-bottom:15px; min-height: 95px;">
+                    <div [ngStyle]="{'margin-left':botType === 'dialogflow' ? '35px' : 0 }" class="bot_avatar" style="float: left;width: 80px; height: 80px;margin-right: 21px;">
+                      <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
+                        style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
+                        class="user-img" [src]="getUserProfileImage()" />
 
-                    <img *ngIf="userProfileImageExist === false && userImageHasBeenUploaded !== true"
-                      style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
-                      class="user-img" src="assets/img/avatar_bot_tiledesk.svg" />
+                      <img *ngIf="userProfileImageExist === false && userImageHasBeenUploaded !== true"
+                        style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
+                        class="user-img" src="assets/img/avatar_bot_tiledesk.svg" />
+                    </div>
+
+
+                    <input class="inputfile" name="uploadbotimage" id="uploadbotimage" type="file"
+                      (change)="upload($event)" accept=".jpg" />
+                    <label class="btn btn-white upload-image-btn" for="uploadbotimage"
+                      style="padding-left:15px; padding-right:15px; text-transform: none; color: #7695a5">
+
+
+                      <span *ngIf="!showSpinnerInUploadImageBtn">
+                        {{ "UserProfile.UploadImage" | translate }}
+                      </span>
+                      <span *ngIf="showSpinnerInUploadImageBtn">
+                        {{ 'VisitorsPage.Loading' | translate }}
+                        <i class="fa fa-spinner fa-spin"></i>
+                      </span>
+                    </label>
                   </div>
-
-
-                  <input class="inputfile" name="uploadbotimage" id="uploadbotimage" type="file" (change)="upload($event)" accept=".jpg" />
-                  <label class="btn btn-white upload-image-btn" for="file"
-                    style="padding-left:15px; padding-right:15px; text-transform: none; color: #7695a5">
-
-
-                    <span *ngIf="!showSpinnerInUploadImageBtn">
-                      {{ "UserProfile.UploadImage" | translate }}
-                    </span>
-                    <span *ngIf="showSpinnerInUploadImageBtn">
-                      {{ 'VisitorsPage.Loading' | translate }}
-                      <i class="fa fa-spinner fa-spin"></i>
-                    </span>
-                  </label>
                 </div>
               </div>
-            </div>
+            
+            <!-- 
+            // -------------------------------------------------------------------------------------------
+            // Bot type (for external & native)
+            // ------------------------------------------------------------------------------------------- -->
+            <section *ngIf="botType !== 'dialogflow'">
+
+              <!-- <div class="row">
+
+                <label class="col-sm-2 custom-label"
+                  [ngClass]="{'col-sm-2 custom-label' : botType !== 'dialogflow', 'col-sm-12 custom-label__dlgflowbot' : botType === 'dialogflow'}">
+                  {{ "BotsAddEditPage.Type" | translate }}
+                </label>
+                <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                  <div style="text-transform: capitalize; margin-top:8px; color: rgba(0,0,0,.54); font-weight: 400;">
+                    {{ botType }}
+                  </div>
+                </div>
+              </div> -->
+
+              <!-- SPACER -->
+              <!-- <div class="col-sm-12" style="height:10px"></div> -->
 
             <!-- 
             // -------------------------------------------------------------------------------------------
-            // Bot type
+            // Bot name (for external & native)
             // ------------------------------------------------------------------------------------------- -->
-            <div class="row">
-              <label class="col-sm-2 custom-label">
-                {{ "BotsAddEditPage.Type" | translate }}
-              </label>
-              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                <div style="text-transform: capitalize; margin-top:8px; color: rgba(0,0,0,.54); font-weight: 400;"> 
-                  {{ botType }} 
+              <div class="row">
+                <label class="col-sm-2 custom-label">
+                  {{ "BotsAddEditPage.BotName" | translate }}
+                </label>
+                <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                  <input id="faqKb_name" name="faqKb_name" [(ngModel)]="faqKb_name" class="input" type="text">
                 </div>
               </div>
-            </div>
 
-            <!-- SPACER -->
-            <div class="col-sm-12" style="height:10px"></div>
-
-            <div class="row">
-              <label class="col-sm-2 custom-label">
-                {{ "BotsAddEditPage.BotName" | translate }}
-              </label>
-              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                <input [(ngModel)]="faqKb_name" class="input" type="text">
-              </div>
-            </div>
+            </section>
 
 
 
@@ -127,33 +141,119 @@
             // ------------------------------------------------------------------------------------------- -->
             <div class="row" *ngIf="botType === 'external'">
               <label class="col-sm-2 custom-label">Url</label>
-              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+              <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
                 <!-- [disabled]="!is_external_bot" -->
-                <div class="row">
-                  <div class="col-xs-10" style="padding-right: 2px;">
-                    <textarea [(ngModel)]="faqKbUrlToUpdate" class="input" type="text"
+                <!-- <div class="row"> -->
+                  <!-- <div class="col-xs-10" style="padding-right: 2px;"> -->
+                    <textarea id="faqKbUrlToUpdate" name="faqKbUrlToUpdate" [(ngModel)]="faqKbUrlToUpdate" rows="2" class="input" type="text"
                       placeholder="{{ 'BotsPage.EnterExternalBotUrl' | translate }}">
                     </textarea>
-                  </div>
+                  <!-- </div> -->
 
-                  <div class="col-xs-2" style="padding-left: 2px;">
-                    <button type="submit" class="btn btn-white btn-open-external-bot-url" (click)="openBotExternalUrl()">
+                  <!-- <div class="col-xs-2" style="padding-left: 2px;">
+                    <button type="submit" class="btn btn-white btn-open-external-bot-url"
+                      (click)="openBotExternalUrl()">
                       <i class="material-icons">
                         open_in_new
                       </i>
                     </button>
+                  </div> -->
+                <!-- </div> -->
+              </div>
+            </div>
+
+            <!-- 
+            // -------------------------------------------------------------------------------------------
+            // ******* Dialogflow bot data ********
+            // ------------------------------------------------------------------------------------------- -->
+            <section *ngIf="botType === 'dialogflow'" style="padding-right: 35px; padding-left: 35px;">
+  
+            <!-- 
+            // -------------------------------------------------------------------------------------------
+            //  Dialogflow bot - name
+            // ------------------------------------------------------------------------------------------- -->
+              <div class="row" style="margin-bottom: 18px;">
+                <label class="col-sm-12 custom-label__dlgflowbot">
+                  {{ "BotsAddEditPage.BotName" | translate }}
+                </label>
+                <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                  <input id="dlgflowbot_name" name="dlgflowbot_name" [(ngModel)]="faqKb_name" class="input" type="text" style="margin-bottom: 0px;">
+                </div>
+              </div>
+
+              <!-- 
+              // ---------------------------------------------------------
+              // Dilaogflow bot - Upload file (label service account private key)
+              // --------------------------------------------------------- -->
+              <div class="row" style="margin-bottom: 18px;">
+                <label class="col-sm-12 custom-label__dlgflowbot">
+                  {{ 'ServiceAccountPrivateKeyFile' | translate }}
+                </label>
+                <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+
+                  <div class="input-group">
+                    <input [(ngModel)]="uploadedFileName" class="input" type="text" title='{{uploadedFileName}}'
+                      style="border-top-right-radius: 0px; border-bottom-right-radius: 0px; color: #999999;" readonly>
+
+                    <span class="input-group-btn" style="padding-right: 0px;padding-left: 0px;">
+                      <label class="upload-button">
+                        <input (change)="onFileChange($event)" id="uploadprivatekey" accept="application/JSON" name="uploadprivatekey"
+                          type="file">
+                        <span class="change-file-browse-btn">
+                          <span style="position: relative;top: -3px;">
+                            {{ 'Change' | translate }}
+                          </span>
+                        </span>
+                      </label>
+                    </span>
                   </div>
                 </div>
               </div>
-            </div>
+
+
+              <!-- 
+              // ---------------------------------------------------------
+              //  Dialogflow bot - select Dialogflow bot language
+              // --------------------------------------------------------- -->
+              <div class="row" style="margin-bottom: 18px;">
+                <label class="col-sm-12 custom-label__dlgflowbot">
+                  {{ 'DefaultBotLanguageInDialogflow' | translate }}
+                </label>
+                <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                  <!--  (clear)="onClearSelectedLanguage()" -->
+                  <ng-select id="dlgflw_language_option" [clearable]="false" [(ngModel)]="dlgflwSelectedLang"
+                    [items]="dialogflowLanguage" bindLabel="name" placeholder="{{ 'ChooseALanguage' | translate }}"
+                    (change)="onSelectDialogFlowBotLang(dlgflwSelectedLang.code)">
+                  </ng-select>
+                </div>
+              </div>
+
+
+              <!-- 
+              // ---------------------------------------------------------
+              //  Dialogflow bot - knowledge base ID
+              // --------------------------------------------------------- -->
+              <div class="row" style="margin-bottom: 18px;">
+                <label class="col-sm-12 custom-label__dlgflowbot">
+                  {{ 'DialogflowKnowledgeBaseID' | translate }}
+                </label>
+                <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                  <input id="dlgflwKnowledgeBaseID" name="dlgflwKnowledgeBaseID" [(ngModel)]="dlgflwKnowledgeBaseID" class="input" type="text" style="margin-bottom: 0px;">
+                </div>
+              </div>
+
+            </section>
+
 
             <!-- SPACER -->
             <!-- <div class="col-sm-12 spacer_div" style="height:15px"></div> -->
 
             <div class="row">
-              <label class="col-sm-2"></label>
+              <label *ngIf="botType !== 'dialogflow'" class="col-sm-2"></label>
               <div class="col-sm-10">
-                <button #editbotbtn class="btn btn-primary" (click)="editBotName()" [disabled]="faqKb_name?.length < 2">
+                <button [ngStyle]="{'margin-left':botType === 'dialogflow' ? '35px' : 0 }" #editbotbtn class="btn btn-primary" 
+                  (click)="editBot()" 
+                  [disabled]="faqKb_name?.length < 2">
                   {{ "BotsAddEditPage.UpdateBotName" | translate }}
                 </button>
               </div>
@@ -181,13 +281,13 @@
             </p>
 
             <p class="attribute">
-            <span style="text-transform:capitalize">  {{ botType }} </span > 
+              <span style="text-transform:capitalize"> {{ botType }} </span>
             </p>
 
             <p class="title-attribute" style="margin-bottom: 3px; padding-top: 5px;">
-              
+
               {{ "BotsAddEditPage.BotID" | translate }}
-              
+
             </p>
             <p class="attribute">
               {{ faqKb_id }}
@@ -257,7 +357,12 @@
 
     <!-- </div> -->
 
-    <div class="row" *ngIf="!is_external_bot">
+
+    <!-- 
+    // ---------------------------------------------------------------------------------------------------
+    // Native bot FAQs
+    // --------------------------------------------------------------------------------------------------- -->
+    <div class="row" *ngIf="botType === 'native'">
       <div class="col-md-12">
         <div class="card">
 
@@ -669,14 +774,14 @@
 
               <div class="modal-footer" style="text-align: center;">
 
-                <input style="display:inline" name="file" id="file" class="inputfile" type="file"
-                  (change)="fileChangeUploadCSV($event)" accept=".csv"/>
-                <label class="btn btn-primary" for="file"
+                <input style="display:inline" name="fileChangeUploadCSV" id="fileChangeUploadCSV" class="inputfile" type="file"
+                  (change)="fileChangeUploadCSV($event)" accept=".csv" />
+                <label class="btn btn-primary" for="fileChangeUploadCSV"
                   style="padding-left:15px; padding-right:15px; text-transform: none"
                   [ngClass]="{'disabled': modalChoosefileDisabled }">
                   <!-- <i class="material-icons">file_upload</i> -->
                   <!-- CHOOSE FILE  -->
-               ++   {{ 'FaqPage.ChooseFile' | translate }}
+                  {{ 'FaqPage.ChooseFile' | translate }}
                 </label>
               </div>
 

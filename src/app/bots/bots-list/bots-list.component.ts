@@ -53,6 +53,7 @@ export class BotListComponent implements OnInit {
   rowIndexSelected: number;
 
   storageBucket: string;
+  _botType: string;
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -281,7 +282,7 @@ export class BotListComponent implements OnInit {
    * MODAL DELETE FAQ KB
    * @param id
    */
-  openDeleteModal(id: string, bot_name: string, HAS_FAQ_RELATED: boolean) {
+  openDeleteModal(id: string, bot_name: string, HAS_FAQ_RELATED: boolean, botType: string) {
 
     // FIX THE BUG: WHEN THE MODAL IS OPENED, IF ANOTHER BOT HAS BEEN DELETED PREVIOUSLY, IS DISPLAYED THE ID OF THE BOT DELETED PREVIOUSLY
     this.bot_id_typed = '';
@@ -292,7 +293,8 @@ export class BotListComponent implements OnInit {
     console.log('ON MODAL DELETE OPEN -> FAQ-KB ID ', id);
     console.log('ON MODAL DELETE OPEN -> FAQ-KB NAME ', bot_name);
     console.log('ON MODAL DELETE OPEN -> HAS_FAQ_RELATED ', HAS_FAQ_RELATED);
-
+    console.log('ON MODAL DELETE OPEN -> botType ', botType);
+    this._botType = botType
     this.HAS_FAQ_RELATED = HAS_FAQ_RELATED;
 
     // this.display = 'block'; // NO MORE USED (IS THE OLD MODAL USED TO DELETE THE BOT)
@@ -329,12 +331,51 @@ export class BotListComponent implements OnInit {
 
   trashTheBot() {
     this.showSpinner = true;
+    if (this._botType !== 'dialogflow') {
+
+      this.updateBotAsTrashed();
+    } else {
+
+      this.deleteDlflwBotCredentialAndUpdateBotAsTrashed();
+    }
+
+
+  }
+
+
+  deleteDlflwBotCredentialAndUpdateBotAsTrashed() {
+
+    // ------------------------------------------------------------------
+    // Delete Dialogflow Bot Credetial
+    // ------------------------------------------------------------------
+    this.faqKbService.deleteDialogflowBotCredetial(this.id_toDelete).subscribe((res: any) => {
+      console.log('deleteDlflwBotCredentialAndUpdateBotAsTrashed - RES ', res);
+
+    }, (error) => {
+      console.log('deleteDlflwBotCredentialAndUpdateBotAsTrashed - ERROR ', error);
+
+      // =========== NOTIFY ERROR ===========
+      this.notify.showWidgetStyleUpdateNotification(this.trashBotErrorNoticationMsg, 4, 'report_problem');
+
+    }, () => {
+      console.log('deleteDlflwBotCredentialAndUpdateBotAsTrashed * COMPLETE *');
+
+    // ------------------------------------------------------------------
+    // Update as trashed the bot on our db
+    // ------------------------------------------------------------------
+      this.updateBotAsTrashed()
+    });
+  }
+
+
+  updateBotAsTrashed() {
+
     this.faqKbService.updateFaqKbAsTrashed(this.id_toDelete, true).subscribe((updatedFaqKb: any) => {
       console.log('TRASH THE BOT - UPDATED FAQ-KB ', updatedFaqKb);
     }, (error) => {
       // =========== NOTIFY ERROR ===========
       // this.notify.showNotification('An error occurred while deleting the bot', 4, 'report_problem');
-      this.notify.showNotification(this.trashBotErrorNoticationMsg, 4, 'report_problem');
+      this.notify.showWidgetStyleUpdateNotification(this.trashBotErrorNoticationMsg, 4, 'report_problem');
 
       console.log('TRASH THE BOT - ERROR ', error);
       this.showSpinner = false;
@@ -343,7 +384,7 @@ export class BotListComponent implements OnInit {
       console.log('TRASH THE BOT - COMPLETE');
       // =========== NOTIFY SUCCESS===========
       // this.notify.showNotification('bot successfully deleted', 2, 'done');
-      this.notify.showNotification(this.trashBotSuccessNoticationMsg, 2, 'done');
+      this.notify.showWidgetStyleUpdateNotification(this.trashBotSuccessNoticationMsg, 2, 'done');
 
       this.getFaqKbByProjectId();
 
@@ -467,8 +508,16 @@ export class BotListComponent implements OnInit {
   // Go to faq.component to: Add / Edit FAQ, Edit Bot name
   // ---------------------------------------------------------------------------
   goToFaqPage(idFaqKb: string, botType: string) {
-    console.log('ID OF THE BOT (FAQKB) SELECTED ', idFaqKb , 'bot type ', botType);
-    this.router.navigate(['project/' + this.project._id + '/bots', idFaqKb , botType]);
+
+    let _botType = ""
+    if(botType === 'internal') {
+      _botType = 'native'
+    } else {
+      _botType = botType
+    }
+
+    console.log('ID OF THE BOT (FAQKB) SELECTED ', idFaqKb, 'bot type ', botType);
+    this.router.navigate(['project/' + this.project._id + '/bots', idFaqKb, _botType]);
   }
 
 

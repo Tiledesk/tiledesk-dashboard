@@ -10,20 +10,21 @@
   <div class="container-fluid">
 
     <div class="row">
-      <div class="col-sm-12 col-md-4">
+      <div class="col-sm-12">
 
 
-        <h1 style="font-size: 20px;line-height: 28px;color: rgba(0,0,0,.54);">
+        <h1 style="font-size: 20px;line-height: 28px;color: rgba(0,0,0,.54);margin-bottom: 0px;font-weight: 400;">
           {{ "ChooseBotType" | translate }}
         </h1>
-        <!-- <h4> Select the type of the type of the bot You can integrate </h4> -->
-
+        <h5 style="font-size: 14px;color: rgba(0,0,0,.54); margin-top: 0px;font-weight: 400;">
+          {{ "BotsPage.SelectAndConfigureABot" | translate }} </h5>
       </div>
     </div>
 
     <div class="row">
       <!-- class="col-sm-12 col-md-4" -->
-      <div [ngClass]="{'col-sm-12 col-md-4' : dgfIsVisible === true, 'col-sm-12 col-md-6' : dgfIsVisible === false}" >
+      <div
+        [ngClass]="{'col-sm-12 col-md-4' : dgfIsVisible === true && natIsVisible === true,'col-sm-12 col-md-6' : dgfIsVisible === false && natIsVisible === true, 'is_hidden' :  natIsVisible === false}">
         <!-- 
         // --------------------------------------------------------------
         // @ Native bot
@@ -48,7 +49,8 @@
               Native
             </h4>
             <h5 style="color:#7695a5; font-size: 14px;">
-              Our native, easy and powerful NPL (Natural Language Processing) chatbot
+              <!-- Our native, easy and powerful NPL (Natural Language Processing) chatbot -->
+              {{ 'OurNativeEasyAndPowerfulNLPChatbot' | translate}}
             </h5>
           </div>
         </div>
@@ -58,7 +60,9 @@
       // --------------------------------------------------------------
       // @ Dialogflow bot
       // -------------------------------------------------------------- -->
-      <div [ngClass]="{'is_hidden' : dgfIsVisible === false}" class="col-sm-12 col-md-4">
+      <!-- class="col-sm-12 col-md-4" -->
+      <div
+        [ngClass]="{'col-sm-12 col-md-4' : dgfIsVisible === true && natIsVisible === true, 'col-sm-12 col-md-6' : dgfIsVisible === true && natIsVisible === false, 'is_hidden' : dgfIsVisible === false}">
         <div class="card bot-card" (click)="goToCreateBot('dialogflow')">
           <div class="card-content" style="text-align: center">
             <div class="bot-image">
@@ -102,18 +106,24 @@
             <h4 class="title" style="font-family: 'Google Sans', sans-serif;font-weight: 400; margin-top: 8px;">
               Dialogflow
             </h4>
-            <h5 style="color:#7695a5; font-size: 14px;"> Use Dialogflow to train you bot with our native and
-              innovative Dialogflow integration</h5>
+            <h5 style="color:#7695a5; font-size: 14px;">
+              <!-- Use Dialogflow to train you bot with our native and innovative Dialogflow integration -->
+              {{ 'UseDialogflowToTrainYourBot...' | translate}}
+            </h5>
           </div>
         </div>
       </div>
 
+      <!-- 'col-sm-12 col-md-6' : dgfIsVisible === true && natIsVisible === false, -->
       <!-- 
       // --------------------------------------------------------------
       // @ External bot
       // -------------------------------------------------------------- -->
       <!-- class="col-sm-12 col-md-4" -->
-      <div [ngClass]="{'col-sm-12 col-md-4' : dgfIsVisible === true, 'col-sm-12 col-md-6' : dgfIsVisible === false}">
+      <div [ngClass]="{'col-sm-12 col-md-4' : dgfIsVisible === true && natIsVisible === true, 
+                        'col-sm-12 col-md-6' : natIsVisible === false || dgfIsVisible === false,
+                        'col-sm-12' : dgfIsVisible === false && natIsVisible === false 
+                      }">
         <div class="card bot-card" (click)="goToCreateBot('external')">
           <div class="card-content" style="text-align: center">
             <div class="bot-image">
@@ -150,8 +160,13 @@
               External
             </h4>
             <h5 style="color:#7695a5; font-size: 14px;">
-              Use your favourite technology to embed your chatbot with Tiledesk. Take a look at our
-              <span style="color: #03a5e8; text-decoration: underline;">Get Started Tutorial </span>
+              <!-- Use your favourite technology to embed your chatbot with Tiledesk. Take a look at our -->
+              {{'UseYourFavouriteTechnology...' | translate: tparams}}
+              <span style="color: #03a5e8; text-decoration: underline;"
+                (click)="$event.stopPropagation();openExternalBotIntegrationTutorial()">
+
+                {{'GetStartedTutorial' | translate}}
+              </span>
             </h5>
           </div>
         </div>

@@ -16,6 +16,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { AppConfigService } from '../../services/app-config.service';
 import { UploadImageService } from '../../services/upload-image.service';
 import { UsersService } from '../../services/users.service';
+import { BotsBaseComponent } from '../bots-base/bots-base.component';
+import brand from 'assets/brand/brand.json';
+
 // import $ = require('jquery');
 // declare const $: any;
 @Component({
@@ -23,7 +26,7 @@ import { UsersService } from '../../services/users.service';
   templateUrl: './faq.component.html',
   styleUrls: ['./faq.component.scss'],
 })
-export class FaqComponent implements OnInit {
+export class FaqComponent extends BotsBaseComponent implements OnInit {
   @ViewChild('editbotbtn') private elementRef: ElementRef;
 
   faq: Faq[];
@@ -78,7 +81,6 @@ export class FaqComponent implements OnInit {
   OPEN_RIGHT_SIDEBAR = false;
   train_bot_sidebar_height: any;
 
-
   storageBucket: string;
   showSpinnerInUploadImageBtn = false;
   userProfileImageExist: boolean;
@@ -88,6 +90,12 @@ export class FaqComponent implements OnInit {
   userProfileImageurl: string;
   timeStamp: any;
   botType: string;
+  uploadedFileName: string;
+  dlgflwSelectedLang: any;
+  dlgflwSelectedLangCode: any;
+  dlgflwKnowledgeBaseID: string;
+  uploadedFile: any;
+  tparams = brand;
 
   constructor(
     private mongodbFaqService: MongodbFaqService,
@@ -103,7 +111,9 @@ export class FaqComponent implements OnInit {
     public appConfigService: AppConfigService,
     private usersService: UsersService
 
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
@@ -129,6 +139,7 @@ export class FaqComponent implements OnInit {
 
     this.checkUserImageUploadIsComplete();
     this.getParamsBotType();
+
   }
 
   getParamsBotType() {
@@ -138,13 +149,86 @@ export class FaqComponent implements OnInit {
 
       if (this.botType && this.botType === 'external') {
         this.is_external_bot = true
+      } else {
+        this.is_external_bot = false
       }
 
+      if (this.botType && this.botType === 'dialogflow') {
 
-      console.log('Bot Create --->  PARAMS', params);
-      console.log('Bot Create --->  PARAMS botType', this.botType);
+        this.getDialogFlowBotData(params.faqkbid)
+      }
+
+      console.log('Bot Create (FaqComponent) --->  PARAMS', params);
+      console.log('Bot Create (FaqComponent)--->  PARAMS botType', this.botType);
     });
 
+  }
+
+
+  getDialogFlowBotData(dlgflwbotid: string) {
+    this.faqKbService.getDialogflowBotCredetial(dlgflwbotid).subscribe((res) => {
+      console.log('getDialogFlowBotData (FaqComponent) - RES ', res);
+
+      this.uploadedFileName = res.credentials;
+      console.log('getDialogFlowBotData (FaqComponent) - RES > uploadedFileName ', this.uploadedFileName);
+
+      this.dlgflwSelectedLangCode = res.language;
+      console.log('getDialogFlowBotData (FaqComponent) - RES > dlgflwSelectedLangCode ', this.dlgflwSelectedLangCode);
+
+      this.dlgflwSelectedLang = this.dialogflowLanguage[this.getIndexOfdialogflowLanguage(res.language)]
+      console.log('getDialogFlowBotData (FaqComponent) - RES > dlgflwSelectedLang ', this.dlgflwSelectedLang);
+
+      if (res.kbs !== 'undefined' && res.kbs !== 'null' && res.kbs !== null) {
+        this.dlgflwKnowledgeBaseID = res.kbs.trim();
+        console.log('getDialogFlowBotData (FaqComponent) - RES > dlgflwKnowledgeBaseID (kbs) ', this.dlgflwKnowledgeBaseID);
+      } else {
+        this.dlgflwKnowledgeBaseID = ''
+      }
+
+    }, (error) => {
+      console.log('getDialogFlowBotData (FaqComponent) - ERROR ', error);
+
+    }, () => {
+
+      console.log('getDialogFlowBotData (FaqComponent) * COMPLETE *');
+
+    });
+  }
+
+
+  onFileChange(event: any) {
+
+    // this.elemProgressPercent = <HTMLElement>document.querySelector('.percent');
+    // console.log('PROGRESS ELEMENT ', this.elemProgressPercent);
+
+    console.log('onFileChange (FaqComponent) - event.target.files ', event.target.files);
+    console.log('onFileChange(FaqComponent) - event.target.files.length ', event.target.files.length);
+    if (event.target.files && event.target.files.length) {
+      const fileList = event.target.files;
+      console.log('onFileChange (FaqComponent) - fileList ', fileList);
+
+      if (fileList.length > 0) { }
+      const file: File = fileList[0];
+      console.log('onFileChange (FaqComponent) - file ', file);
+
+      this.uploadedFile = file;
+      console.log('onFileChange (FaqComponent) - onFileChange this.uploadedFile ', this.uploadedFile);
+      this.uploadedFileName = this.uploadedFile.name
+      console.log('onFileChange (FaqComponent) - onFileChange uploadedFileName ', this.uploadedFileName);
+
+      // this.handleFileUploading(file);
+
+    }
+  }
+
+
+  onSelectDialogFlowBotLang(selectedLangCode: string) {
+    if (selectedLangCode) {
+
+      console.log('onSelectDialogFlowBotLang (FaqComponent) - Bot Type: ', this.botType, ' - selectedLang CODE : ', selectedLangCode);
+      this.dlgflwSelectedLangCode = selectedLangCode
+
+    }
   }
 
   getFaqKbId() {
@@ -154,7 +238,6 @@ export class FaqComponent implements OnInit {
     if (this.id_faq_kb) {
       this.getStorageBucket();
       this.getFaqKbById();
-
     }
   }
 
@@ -231,9 +314,7 @@ export class FaqComponent implements OnInit {
       // setTimeout(() => {
       return this.userProfileImageurl + '&' + this.timeStamp;
       // }, 200);
-
     }
-
     return this.userProfileImageurl
   }
 
@@ -346,11 +427,12 @@ export class FaqComponent implements OnInit {
       // ---------------------------------------------------------------------------------------------------------------
 
       /** IN PRE  */
-      if (faqkb.type === 'internal') {
-        this.is_external_bot = false;
-      } else if (faqkb.type === 'external') {
+      if (faqkb.type === 'external') {
         this.is_external_bot = true;
+      } else {
+        this.is_external_bot = false;
       }
+
 
       /** IN PROD  */
       // this.is_external_bot = faqkb.external;
@@ -385,25 +467,111 @@ export class FaqComponent implements OnInit {
   /**
    * *** EDIT BOT ***
    * HAS BEEN MOVED in this COMPONENT FROM faq-kb-edit-add.component  */
-  editBotName() {
+  editBot() {
     // RESOLVE THE BUG 'edit button remains focused after clicking'
     this.elementRef.nativeElement.blur();
 
     console.log('FAQ KB NAME TO UPDATE ', this.faqKb_name);
-    this.faqKbService.updateMongoDbFaqKb(this.id_faq_kb, this.faqKb_name, this.faqKbUrlToUpdate, this.is_external_bot)
+
+    let _botType = ''
+    if (this.botType === 'native') {
+
+      // the type 'native' needs to be changed into 'internal' for the service
+      _botType = 'internal'
+    } else {
+
+      _botType = this.botType
+    }
+    // this.faqKbService.updateMongoDbFaqKb(this.id_faq_kb, this.faqKb_name, this.faqKbUrlToUpdate, this.is_external_bot)
+    this.faqKbService.updateMongoDbFaqKb(this.id_faq_kb, this.faqKb_name, this.faqKbUrlToUpdate, _botType)
       .subscribe((faqKb) => {
         console.log('EDIT BOT - FAQ KB UPDATED ', faqKb);
       },
         (error) => {
           console.log('EDIT BOT -  ERROR ', error);
-          // =========== NOTIFY ERROR ===========
-          this.notify.showNotification('An error occurred while updating the bot', 4, 'report_problem');
+
+          if (this.botType !== 'dialogflow') {
+            // =========== NOTIFY ERROR ===========
+            this.notify.showWidgetStyleUpdateNotification('An error occurred while updating the bot', 4, 'report_problem');
+          }
         },
         () => {
           console.log('EDIT BOT - * COMPLETE *');
-          // =========== NOTIFY SUCCESS===========
-          this.notify.showNotification('bot successfully updated', 2, 'done');
+          if (this.botType !== 'dialogflow') {
+            // =========== NOTIFY SUCCESS===========
+            this.notify.showWidgetStyleUpdateNotification('bot successfully updated', 2, 'done');
+
+          }
+
+          if (this.botType === 'dialogflow') {
+
+            // --------------------------------------------------------------------------------
+            // Update dialogflow bot
+            // --------------------------------------------------------------------------------
+            console.log(
+              'Update BOT dialogflow »»»»»»»»»»» Bot Type: ', this.botType,
+              ' - uploadedFile: ', this.uploadedFile,
+              ' - lang Code ', this.dlgflwSelectedLangCode,
+              ' - kbs (knowledgeBaseID) ', this.dlgflwKnowledgeBaseID);
+
+
+            const formData = new FormData();
+
+            // --------------------------------------------------------------------------
+            // formData.append language
+            // --------------------------------------------------------------------------
+            formData.append('language', this.dlgflwSelectedLangCode);
+
+            // --------------------------------------------------------------------------
+            // formData.append Knowledge Base ID
+            // --------------------------------------------------------------------------
+            if (this.dlgflwKnowledgeBaseID !== undefined) {
+              if (this.dlgflwKnowledgeBaseID.length > 0) {
+                console.log('Update BOT (dialogflow) »»»»»»»»» - dlgflwKnowledgeBaseID.length ', this.dlgflwKnowledgeBaseID.length);
+                formData.append('kbs', this.dlgflwKnowledgeBaseID.trim());
+              } else {
+                console.log('Update BOT (dialogflow) »»»»»»»»» - dlgflwKnowledgeBaseID.length ', this.dlgflwKnowledgeBaseID.length);
+                formData.append('kbs', "");
+              }
+
+            } else if (this.dlgflwKnowledgeBaseID === undefined || this.dlgflwKnowledgeBaseID === 'undefined' || this.dlgflwKnowledgeBaseID === null || this.dlgflwKnowledgeBaseID === 'null') {
+              console.log('Update BOT (dialogflow) »»»»»»»»» - dlgflwKnowledgeBaseID ', this.dlgflwKnowledgeBaseID);
+              formData.append('kbs', "");
+            }
+
+            // --------------------------------------------------------------------------
+            // formData.append file
+            // --------------------------------------------------------------------------
+            if (this.uploadedFile !== undefined) {
+              formData.append('file', this.uploadedFile, this.uploadedFile.name);
+            }
+            console.log('FaqComponent Create dialogflow BOT FORM DATA ', formData)
+
+
+            this.uploaddialogflowBotCredential(this.id_faq_kb, formData);
+            //
+          }
         });
+  }
+
+  uploaddialogflowBotCredential(bot_Id, formData) {
+    this.faqKbService.uploadDialogflowBotCredetial(bot_Id, formData).subscribe((res) => {
+
+      console.log('FaqComponent - uploadDialogflowBotCredetial - RES ', res);
+
+    }, (error) => {
+      console.log('FaqComponent - uploadDialogflowBotCredetial - ERROR ', error);
+      // =========== NOTIFY ERROR ===========
+      this.notify.showWidgetStyleUpdateNotification('An error occurred while updating the bot', 4, 'report_problem');
+
+    }, () => {
+
+      console.log('FaqComponent- uploadDialogflowBotCredetial * COMPLETE *');
+      // =========== NOTIFY SUCCESS===========
+      this.notify.showWidgetStyleUpdateNotification('bot successfully updated', 2, 'done');
+
+    });
+
   }
 
   goToTestFaqPage() {
@@ -418,14 +586,14 @@ export class FaqComponent implements OnInit {
   // GO TO FAQ-EDIT-ADD COMPONENT AND PASS THE FAQ-KB ID (RECEIVED FROM FAQ-KB COMPONENT)
   goToEditAddPage_CREATE() {
     console.log('ID OF FAQKB ', this.id_faq_kb);
-    this.router.navigate(['project/' + this.project._id + '/createfaq', this.id_faq_kb]);
+    this.router.navigate(['project/' + this.project._id + '/createfaq', this.id_faq_kb, this.botType]);
   }
 
   // GO TO FAQ-EDIT-ADD COMPONENT AND PASS THE FAQ ID (RECEIVED FROM THE VIEW) AND
   // THE FAQ-KB ID (RECEIVED FROM FAQ-KB COMPONENT)
   goToEditAddPage_EDIT(faq_id: string) {
     console.log('ID OF FAQ ', faq_id);
-    this.router.navigate(['project/' + this.project._id + '/editfaq', this.id_faq_kb, faq_id]);
+    this.router.navigate(['project/' + this.project._id + '/editfaq', this.id_faq_kb, faq_id, this.botType]);
   }
 
   goBackToFaqKbList() {

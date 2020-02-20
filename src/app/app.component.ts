@@ -277,6 +277,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/auth') !== -1) ||
                     (this.route.indexOf('/analytics') !== -1) ||
                     (this.route.indexOf('/user-profile') !== -1) ||
+                    (this.route.indexOf('/bot-select-type') !== -1) ||
                     (this.route.indexOf('/change') !== -1)
                 ) {
 

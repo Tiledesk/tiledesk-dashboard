@@ -20,6 +20,7 @@ export class FaqKbService {
   user: any;
 
   project: any;
+  DLGFLW_BOT_CREDENTIAL_URL = environment.botcredendialsURL;
 
   constructor(
     http: Http,
@@ -132,17 +133,15 @@ export class FaqKbService {
    * @param fullName
    */
   // public addMongoDbFaqKb(name: string, urlfaqkb: string, is_external_bot: boolean) {
-    public addMongoDbFaqKb(name: string, urlfaqkb: string, bottype: string) {
+  public addMongoDbFaqKb(name: string, urlfaqkb: string, bottype: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-
     // const isPreDeploy = false
-
-    const body = { 'name': name, 'url': urlfaqkb, 'id_project': this.project._id, 'type':  bottype};
+    const body = { 'name': name, 'url': urlfaqkb, 'id_project': this.project._id, 'type': bottype };
 
 
     /* FOR PRE */
@@ -170,23 +169,55 @@ export class FaqKbService {
   }
 
   // IF THE BOT IS OF TYPE DIALOGFLOW, AFTER THAT A NEW FAQKB WAS CREATED RUN A CALLBACK TO POST THE 
-  // dialogfolw bot CREDENTIOAL
-uploadDialogflowBotCredetial(botid: string, formData:any) {
-  const headers = new Headers();
+  // dialogfolw bot CREDENTIAL
+  uploadDialogflowBotCredetial(botid: string, formData: any) {
+    const headers = new Headers();
 
-  // headers.append('Accept', 'text/csv');
-  headers.append('Accept', 'application/json');
-  headers.append('Content-type', 'multipart/form-data');
-  headers.append('Authorization', this.TOKEN);
+    // headers.append('Accept', 'text/csv');
+    // headers.append('Accept', 'application/json');
+    // headers.append('Content-type', 'multipart/form-data');
+    // headers.append('Authorization', this.TOKEN);
+    console.log('uploadDialogflowBotCredetial formData ', formData)
+
+    // const url =  "http://dialogflow-proxy-tiledesk.herokuapp.com/uploadgooglecredendials/" + botid
+    const url = this.DLGFLW_BOT_CREDENTIAL_URL + botid
+
+    const options = new RequestOptions({ headers: headers });
+    return this.http
+      .post(url, formData, options)
+      .map(res => res.json())
+  }
+
+  getDialogflowBotCredetial(botid: string) {
+    let url = this.DLGFLW_BOT_CREDENTIAL_URL + botid;
+  
+    console.log('getDialogflowBotCredetialURL', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
 
 
-  const url =  "http://dialogflow-proxy-tiledesk.herokuapp.com/uploadgooglecredendials/" + botid
-  const options = new RequestOptions({ headers: headers });
-  return this.http
-    .post(url, formData, options)
-    .map(res => res.json())
-}
+  public deleteDialogflowBotCredetial(id: string) {
 
+    let url = this.DLGFLW_BOT_CREDENTIAL_URL + id;
+  
+    console.log('deleteDialogflowBotCredetial DELETE URL ', url);
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+    return this.http
+      .delete(url, options)
+      .map((res) => res.json());
+
+  }
 
   /**
    * CREATE KBKEY
@@ -223,7 +254,6 @@ uploadDialogflowBotCredetial(botid: string, formData:any) {
    * @param id
    */
   public deleteMongoDbFaqKb(id: string) {
-
     let url = this.MONGODB_BASE_URL;
     url += `${id}# chat21-api-nodejs`;
     console.log('DELETE URL ', url);
@@ -244,10 +274,10 @@ uploadDialogflowBotCredetial(botid: string, formData:any) {
    * @param id
    * @param fullName
    */
-  public updateMongoDbFaqKb(id: string, name: string, urlfaqkb: string, is_external_bot: boolean) {
+  public updateMongoDbFaqKb(id: string, name: string, urlfaqkb: string, bottype: string) {
 
-    let url = this.MONGODB_BASE_URL;
-    url = url += `${id}`;
+    let url = this.MONGODB_BASE_URL + id;
+    // url = url += `${id}`;
     console.log('PUT URL ', url);
 
     const headers = new Headers();
@@ -256,15 +286,15 @@ uploadDialogflowBotCredetial(botid: string, formData:any) {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'name': name, 'url': urlfaqkb };
+    const body = { 'name': name, 'url': urlfaqkb, 'type': bottype };
 
-    let botType = ''
-    if (is_external_bot === true) {
-      botType = 'external'
-    } else {
-      botType = 'internal'
-    }
-    body['type'] = botType
+    // let botType = ''
+    // if (is_external_bot === true) {
+    //   botType = 'external'
+    // } else {
+    //   botType = 'internal'
+    // }
+    // body['type'] = botType
 
 
     /* FOR PROD */

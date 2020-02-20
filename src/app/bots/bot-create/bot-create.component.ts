@@ -9,14 +9,15 @@ import { TranslateService } from '@ngx-translate/core';
 import { BotLocalDbService } from '../../services/bot-local-db.service';
 import { Location } from '@angular/common';
 import brand from 'assets/brand/brand.json';
-
+import { BotsBaseComponent } from '../bots-base/bots-base.component';
+import { NotifyService } from '../../core/notify.service';
 
 @Component({
   selector: 'bot-create',
   templateUrl: './bot-create.component.html',
   styleUrls: ['./bot-create.component.scss']
 })
-export class BotCreateComponent implements OnInit {
+export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   tparams = brand;
 
   faqKbName: string;
@@ -41,13 +42,10 @@ export class BotCreateComponent implements OnInit {
   newBot_External: boolean;
   browser_lang: string;
 
-
-
   is_external_bot = false;
 
   botType: string;
   translateparam: any;
-
 
   isHovering: boolean;
   loadingFile: any;
@@ -69,6 +67,17 @@ export class BotCreateComponent implements OnInit {
 
   CREATE_BOT_CALLBACKS_COMPLETED: boolean;
 
+
+  uploadCompleted = false;
+  uploadedFileName: string;
+
+  hasAlreadyUploadAfile = false
+
+  dlgflwSelectedLang = this.dialogflowLanguage[5];
+  dlgflwSelectedLangCode = 'en';
+  dlgflwKnowledgeBaseID: string;
+  filetypeNotSupported: string
+
   constructor(
     private faqKbService: FaqKbService,
     private router: Router,
@@ -76,8 +85,11 @@ export class BotCreateComponent implements OnInit {
     private auth: AuthService,
     private translate: TranslateService,
     public location: Location,
-    private botLocalDbService: BotLocalDbService
-  ) { }
+    private botLocalDbService: BotLocalDbService,
+    private notify: NotifyService
+  ) {
+    super();
+  }
 
   ngOnInit() {
     console.log('»»»» Bot Create Component')
@@ -104,6 +116,7 @@ export class BotCreateComponent implements OnInit {
 
     this.getCurrentProject();
     this.getParamsBotType();
+    this.translateFileTypeNotSupported()
   }
   getParamsBotType() {
     this.route.params.subscribe((params) => {
@@ -120,6 +133,16 @@ export class BotCreateComponent implements OnInit {
       console.log('Bot Create --->  PARAMS botType', this.botType);
     });
   }
+
+    // TRANSLATION
+    translateFileTypeNotSupported() {
+      this.translate.get('FiletypeNotSupported')
+        .subscribe((text: string) => {
+  
+          this.filetypeNotSupported = text;
+          console.log('+ + + FiletypeNotSupported', text)
+        });
+    }
 
 
   // getFaqKbId() {
@@ -204,6 +227,9 @@ export class BotCreateComponent implements OnInit {
     }
 
     // this.is_external_bot
+    // ------------------------------------------------------------------------------------------------------------------------------
+    // Create bot - note for the creation of a dialogflow bot see the bottom uploaddialogflowBotCredential() called in the complete() 
+    // ------------------------------------------------------------------------------------------------------------------------------
     this.faqKbService.addMongoDbFaqKb(this.faqKbName, this.faqKbUrl, _botType)
       .subscribe((faqKb) => {
         console.log('»»»»»»»» »»»»»»»» »»»»»»»» CREATE FAQKB - POST DATA ', faqKb);
@@ -248,7 +274,7 @@ export class BotCreateComponent implements OnInit {
 
           if (this.botType !== 'dialogflow') {
             this.CREATE_BOT_CALLBACKS_COMPLETED = false
-            console.log('CREATE BOT - CREATE_BOT_CALLBACKS_COMPLETED ', this.CREATE_BOT_CALLBACKS_COMPLETED , 'BOT TYPE ', this.botType);
+            console.log('CREATE BOT - CREATE_BOT_CALLBACKS_COMPLETED ', this.CREATE_BOT_CALLBACKS_COMPLETED, 'BOT TYPE ', this.botType);
           }
         },
         () => {
@@ -258,7 +284,7 @@ export class BotCreateComponent implements OnInit {
           if (this.botType !== 'dialogflow') {
 
             this.CREATE_BOT_CALLBACKS_COMPLETED = true;
-            console.log('CREATE BOT - CREATE_BOT_CALLBACKS_COMPLETED ', this.CREATE_BOT_CALLBACKS_COMPLETED , 'BOT TYPE ', this.botType);
+            console.log('CREATE BOT - CREATE_BOT_CALLBACKS_COMPLETED ', this.CREATE_BOT_CALLBACKS_COMPLETED, 'BOT TYPE ', this.botType);
           }
 
           // setTimeout(() => {
@@ -269,11 +295,43 @@ export class BotCreateComponent implements OnInit {
           // if the bot type is 'dialogflow' with the bot-id returned from the response of 'createBot()' run another POST CALLBACK with the uploaded credential
           if (this.botType === 'dialogflow') {
 
-            console.log('Create Faq Kb - Bot Type: ', this.botType, ' - uploadedFile: ', this.uploadedFile);
+            console.log('Create Bot (dialogflow) »»»»»»»»» - Bot Type: ', this.botType,
+              ' - uploadedFile: ', this.uploadedFile,
+              ' - lang Code ', this.dlgflwSelectedLangCode,
+              ' - kbs (dlgflwKnowledgeBaseID) ', this.dlgflwKnowledgeBaseID);
 
-            const formData: FormData = new FormData();
-            formData.append('uploadFile', this.uploadedFile, this.uploadedFile.name);
-            console.log('FORM DATA ', formData)
+
+
+            const formData = new FormData();
+
+            // --------------------------------------------------------------------------
+            // formData.append language
+            // --------------------------------------------------------------------------
+            formData.append('language', this.dlgflwSelectedLangCode);
+
+            // --------------------------------------------------------------------------
+            // formData.append Knowledge Base ID
+            // --------------------------------------------------------------------------
+            if (this.dlgflwKnowledgeBaseID !== undefined) {
+              if (this.dlgflwKnowledgeBaseID.length > 0) {
+                console.log('Create BOT (dialogflow) »»»»»»»»» - dlgflwKnowledgeBaseID.length ', this.dlgflwKnowledgeBaseID.length);
+                formData.append('kbs', this.dlgflwKnowledgeBaseID.trim());
+              } else {
+                console.log('Create BOT (dialogflow) »»»»»»»»» - dlgflwKnowledgeBaseID.length ', this.dlgflwKnowledgeBaseID.length);
+                formData.append('kbs', "");
+              }
+
+            } else if (this.dlgflwKnowledgeBaseID === undefined || this.dlgflwKnowledgeBaseID === 'undefined' || this.dlgflwKnowledgeBaseID === null || this.dlgflwKnowledgeBaseID === 'null') {
+              console.log('Create BOT (dialogflow) »»»»»»»»» - dlgflwKnowledgeBaseID ', this.dlgflwKnowledgeBaseID);
+              formData.append('kbs', "");
+            }
+
+            // --------------------------------------------------------------------------
+            // formData.append file
+            // --------------------------------------------------------------------------
+            formData.append('file', this.uploadedFile, this.uploadedFile.name);
+            console.log('Create BOT FORM DATA ', formData)
+
 
             this.uploaddialogflowBotCredential(this.newBot_Id, formData);
             //
@@ -294,21 +352,16 @@ export class BotCreateComponent implements OnInit {
       // this.HAS_COMPLETED_UPLOAD_DLGFLOWBOT_CREDENTIAL = false
       this.CREATE_BOT_CALLBACKS_COMPLETED = false;
 
-
       // if (this.HAS_COMPLETED_CREATE_BOT && !this.HAS_COMPLETED_UPLOAD_DLGFLOWBOT_CREDENTIAL) {         
       // }
-
       // if (!this.HAS_COMPLETED_CREATE_BOT && !this.HAS_COMPLETED_UPLOAD_DLGFLOWBOT_CREDENTIAL) {
-
       //   this.CREATE_BOT_CALLBACKS_COMPLETED = false;
-
       // }
 
 
     }, () => {
 
       this.CREATE_BOT_CALLBACKS_COMPLETED = true
-
 
       // this.HAS_COMPLETED_UPLOAD_DLGFLOWBOT_CREDENTIAL = true;
 
@@ -325,6 +378,16 @@ export class BotCreateComponent implements OnInit {
       // this.CREATE_DLGFLOW_BOT_ERROR = false;
     });
 
+  }
+
+
+  onSelectDialogFlowBotLang(selectedLangCode: string) {
+    if (selectedLangCode) {
+
+      console.log('Create Faq Kb - Bot Type: ', this.botType, ' - selectedLang CODE : ', selectedLangCode);
+      this.dlgflwSelectedLangCode = selectedLangCode
+
+    }
   }
 
   // WHEN A BOT IS CREATED IN THE MODAL WINDOW 'CREATE BOT', TWO ACTIONS ARE POSSIBLE:
@@ -402,9 +465,15 @@ export class BotCreateComponent implements OnInit {
       window['tiledesk'].open();
     }
   }
-
+  hasClickedChangeFile() {
+    this.hideProgressBar = true;
+    this.uploadCompleted = true;
+    this.hasAlreadyUploadAfile = true;
+    console.log('Create Faq Kb - hasClickedChangeFile hideProgressBar - ', this.hideProgressBar);
+  }
 
   onFileChange(event: any) {
+
     // this.elemProgressPercent = <HTMLElement>document.querySelector('.percent');
     // console.log('PROGRESS ELEMENT ', this.elemProgressPercent);
 
@@ -420,14 +489,23 @@ export class BotCreateComponent implements OnInit {
 
       this.uploadedFile = file;
       console.log('----> FILE - onFileChange this.uploadedFile ', this.uploadedFile);
+      this.uploadedFileName = this.uploadedFile.name
+      console.log('Create Faq Kb - onFileChange uploadedFileName ', this.uploadedFileName);
       // const formData: FormData = new FormData();
       // formData.append('uploadFile', file, file.name);
       // console.log('FORM DATA ', formData)
 
       this.handleFileUploading(file);
+
       // this.doFormData(file)
 
     }
+  }
+
+  // not used
+  dragstart_handler(ev: any) {
+    console.log('----> FILE - dragstart_handler ', ev);
+    ev.dataTransfer.setData("application/JSON", ev.target.id);
   }
 
   // DROP (WHEN THE FILE IS RELEASED ON THE DROP ZONE)
@@ -435,7 +513,7 @@ export class BotCreateComponent implements OnInit {
     ev.preventDefault();
     ev.stopPropagation();
 
-    // console.log('----> FILE - DROP ev ', ev);
+    console.log('----> FILE - DROP ev ', ev);
     const fileList = ev.dataTransfer.files;
     // console.log('----> FILE - DROP ev.dataTransfer.files ', fileList);
 
@@ -443,15 +521,25 @@ export class BotCreateComponent implements OnInit {
       const file: File = fileList[0];
       console.log('----> FILE - DROP file ', file);
 
-      this.uploadedFile = file;
-      console.log('----> FILE - drop this.uploadedFile ', this.uploadedFile);
+      var mimeType = fileList[0].type;
+      console.log('----> FILE - drop mimeType files ', mimeType);
 
-      this.handleFileUploading(file);
-      // this.doFormData(file)
+      if (mimeType === "application/JSON" || mimeType === "application/json") {
 
+        this.uploadedFile = file;
+        console.log('----> FILE - drop this.uploadedFile ', this.uploadedFile);
+        this.uploadedFileName = this.uploadedFile.name
+        console.log('Create Faq Kb - drop uploadedFileName ', this.uploadedFileName);
 
+        this.handleFileUploading(file);
+        // this.doFormData(file)
+      } else {
+        console.log('----> FILE - drop mimeType files ', mimeType, 'NOT SUPPORTED FILE TYPE');
+
+        this.notify.showWidgetStyleUpdateNotification(this.filetypeNotSupported, 4, 'report_problem');
+
+      }
     }
-
   }
 
   // DRAG OVER (WHEN HOVER OVER ON THE "DROP ZONE")
@@ -471,17 +559,21 @@ export class BotCreateComponent implements OnInit {
   }
 
 
-  doFormData(file) {
-    const formData: FormData = new FormData();
-    formData.append('uploadFile', file, file.name);
-    console.log('FORM DATA ', formData)
+  // doFormData(file) {
+  //   const formData: FormData = new FormData();
+  //   formData.append('uploadFile', file, file.name);
+  //   console.log('FORM DATA ', formData)
 
-    return formData
-  }
+  //   // return formData
+  // }
 
   handleFileUploading(file: any) {
-    this.hideProgressBar = false;
-    this.hideDropZone = true;
+
+    if (this.hasAlreadyUploadAfile === false) {
+      this.hideProgressBar = false;
+      this.hideDropZone = true;
+    }
+
     // const reader = new FileReader();
     this.reader.readAsDataURL(file);
     // console.log('----> FILE - file ', reader.readAsDataURL(file));
@@ -498,10 +590,22 @@ export class BotCreateComponent implements OnInit {
         this.percentLoaded = Math.round((data.loaded / data.total) * 100);
         console.log('READER ON PROGRESS PROGRESS ', this.percentLoaded);
 
+        if (this.percentLoaded === 100) {
+
+          setTimeout(() => {
+            this.hideProgressBar = true;
+            this.uploadCompleted = true;
+          }, 500);
+
+
+        }
+
+
 
         if (this.botNameLength > 1 && this.percentLoaded === 100) {
 
           this.btn_create_bot_is_disabled = false;
+
         }
       }
     };
@@ -526,6 +630,27 @@ export class BotCreateComponent implements OnInit {
       }
     };
   }
+
+  openExternalBotIntegrationTutorial() {
+    const url = 'https://developer.tiledesk.com/apis/tutorials/connect-your-own-chatbot';
+    window.open(url, '_blank');
+  }
+
+  openDialogflowConsole() {
+    const url = 'https://dialogflow.cloud.google.com/#/login';
+    window.open(url, '_blank');
+  }
+
+  openDialogGenerateCredentialTutorial() {
+    const url = 'https://developer.tiledesk.com/apis/tutorials/generate-dialgoflow-google-credentials-file';
+    window.open(url, '_blank');
+  }
+
+  openDialogflowKbFeatureTutorial() {
+    const url = 'https://cloud.google.com/dialogflow/docs/knowledge-connectors';
+    window.open(url, '_blank');
+  }
+
 
 
 }

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../core/auth.service';
 import { Location } from '@angular/common';
 import { environment } from '../../../../environments/environment';
+import brand from 'assets/brand/brand.json';
 
 @Component({
   selector: 'appdashboard-bot-type-select',
@@ -13,6 +14,9 @@ export class BotTypeSelectComponent implements OnInit {
   public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK;
   projectId: string;
   dgfIsVisible: boolean;
+  natIsVisible: boolean;
+  tparams = brand;
+
   constructor(
     private router: Router,
     public location: Location,
@@ -23,8 +27,6 @@ export class BotTypeSelectComponent implements OnInit {
     this.getCurrentProject()
     this.getOSCODE();
   }
-
-
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
@@ -55,9 +57,20 @@ export class BotTypeSelectComponent implements OnInit {
           console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - dgf dgfIsVisible', this.dgfIsVisible);
         }
       }
+      if (key.includes("NAT")) {
+        // console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+        let nat = key.split(":");
+        console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat key&value', nat);
 
+        if (nat[1] === "F") {
+          this.natIsVisible = false;
+          console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat natIsVisible', this.natIsVisible);
+        } else {
+          this.natIsVisible = true;
+          console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - nat natIsVisible', this.natIsVisible);
+        }
+      }
     });
-
   }
 
 
@@ -70,6 +83,11 @@ export class BotTypeSelectComponent implements OnInit {
 
   goBack() {
     this.location.back();
+  }
+
+  openExternalBotIntegrationTutorial() {
+    const url = 'https://developer.tiledesk.com/apis/tutorials/connect-your-own-chatbot';
+    window.open(url, '_blank');
   }
 
 }

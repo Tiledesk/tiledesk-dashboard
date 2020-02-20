@@ -39,6 +39,7 @@ export class FaqEditAddComponent implements OnInit {
 
   editFaqSuccessNoticationMsg: string;
   editFaqErrorNoticationMsg: string;
+  botType: string;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -60,6 +61,8 @@ export class FaqEditAddComponent implements OnInit {
 
     // BASED ON THE URL PATH DETERMINE IF THE USER HAS SELECTED (IN FAQ PAGE) 'CREATE' OR 'EDIT'
     // if (this.router.url === '/createfaq') {
+    this.getUrlParams();
+
     if (this.router.url.indexOf('/createfaq') !== -1) {
       console.log('HAS CLICKED CREATE ');
       this.CREATE_VIEW = true;
@@ -71,7 +74,7 @@ export class FaqEditAddComponent implements OnInit {
       this.EDIT_VIEW = true;
       // GET THE ID OF FAQ PASSED BY FAQ PAGE &
       // GET THE ID OF FAQ-KB PASSED BY FAQ PAGE (AND THAT FAQ PAGE HAS RECEIVED FROM FAQ-KB)
-      this.getFaqKbIdAndFaqId();
+
 
       // IF EXIST THE FAQ ID (GET WITH getFaqKbIdAndFaqId RUN A CALLBACK TO OBTAIN THE FAQ OBJECT BY THE FAQ ID)
       if (this.id_faq) {
@@ -79,6 +82,26 @@ export class FaqEditAddComponent implements OnInit {
       }
     }
     this.getCurrentProject();
+  }
+
+
+  // GET FROM ROUTE PARAMS (PASSED FROM FAQ COMPONENT):
+  // THE FAQ ID - WHEN THE CALLBACK IS COMPLETED RUN GET-FAQ-BY-ID THAT RETURN THE OBJECT FAQ
+  // AND THE FAQ KB ID (THEN USED IN THE GOBACK)
+  getUrlParams() {
+    this.route.params.subscribe((params) => {
+      this.id_faq_kb = params.faqkbid;
+      this.id_faq = params.faqid;
+      this.botType = params.bottype
+      console.log('getUrlParams (FaqEditAddComponent) PARAMS', params);
+      console.log('getUrlParams (FaqEditAddComponent) BOT ID ', this.id_faq_kb);
+      console.log('getUrlParams (FaqEditAddComponent) FAQ ID ', this.id_faq);
+    });
+  }
+
+  getFaqKbId() {
+    this.id_faq_kb = this.route.snapshot.params['faqkbid'];
+    console.log('FAQ HAS PASSED id_faq_kb ', this.id_faq_kb);
   }
 
   // TRANSLATION
@@ -131,23 +154,7 @@ export class FaqEditAddComponent implements OnInit {
     });
   }
 
-  getFaqKbId() {
-    this.id_faq_kb = this.route.snapshot.params['faqkbid'];
-    console.log('FAQ HAS PASSED id_faq_kb ', this.id_faq_kb);
-  }
 
-  // GET FROM ROUTE PARAMS (PASSED FROM FAQ COMPONET):
-  // THE FAQ ID - WHEN THE CALLBACK IS COMPLETED RUN GET-FAQ-BY-ID THAT RETURN THE OBJECT FAQ
-  // AND THE FAQ KB ID (THEN USED IN THE GOBACK)
-  getFaqKbIdAndFaqId() {
-    this.route.params.subscribe((params) => {
-      this.id_faq_kb = params.faqkbid;
-      this.id_faq = params.faqid;
-      console.log('!! FAQ-EDIT-ADD PARAMS', params);
-      console.log('FAQ-KB ID ', this.id_faq_kb);
-      console.log('FAQ ID ', this.id_faq);
-    });
-  }
 
   /**
    * GET FAQ BY ID (GET THE DATA OF THE FAQ BY THE ID PASSED FROM FAQ LIST)
@@ -173,11 +180,11 @@ export class FaqEditAddComponent implements OnInit {
     });
   }
 
-  // GO BACK TO FAQ COMPONENT
-  goBackToFaqList() {
-    // this.router.navigate(['project/' + this.project._id  + '/faq', this.id_faq_kb]);
-    this.router.navigate(['project/' + this.project._id + '/bots', this.id_faq_kb]);
-  }
+  // // GO BACK TO FAQ COMPONENT
+  // goBackToFaqList() {
+  //   // this.router.navigate(['project/' + this.project._id  + '/faq', this.id_faq_kb]);
+  //   this.router.navigate(['project/' + this.project._id + '/bots', this.id_faq_kb]);
+  // }
 
   goBack() {
     this.location.back();
@@ -210,7 +217,7 @@ export class FaqEditAddComponent implements OnInit {
         this.notify.showNotification(this.createFaqSuccessNoticationMsg, 2, 'done');
 
         // this.router.navigate(['project/' + this.project._id  + '/faq', this.id_faq_kb]);
-        this.router.navigate(['project/' + this.project._id + '/bots', this.id_faq_kb]);
+        this.router.navigate(['project/' + this.project._id + '/bots', this.id_faq_kb, this.botType]);
       });
 
   }

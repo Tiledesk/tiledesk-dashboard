@@ -168,6 +168,7 @@ import { WsRequestsServedComponent } from './ws_requests/ws-requests-list/ws-req
 import { WsRequestsUnservedComponent } from './ws_requests/ws-requests-list/ws-requests-unserved/ws-requests-unserved.component';
 import { CloseRequestModalComponent } from './ws_requests/modals/close-request-modal/close-request-modal.component';
 import { LoadingPageComponent } from './loading-page/loading-page.component';
+import { BotsBaseComponent } from './bots/bots-base/bots-base.component';
 
 
 
@@ -275,7 +276,8 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     WsRequestsUnservedComponent,
     CloseRequestModalComponent,
     LoadingPageComponent,
-    BotTypeSelectComponent
+    BotTypeSelectComponent,
+    BotsBaseComponent
   ],
   imports: [
     /* PRIVATE */
