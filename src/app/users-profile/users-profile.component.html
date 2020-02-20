@@ -11,7 +11,10 @@
       <div class="col-md-12">
         <div class="card" style="padding-top:25px; padding-bottom:25px">
 
-          <!-- // USER PROFILE -->
+          <!-- 
+          // -----------------------------------------------------------------
+          // Human PROFILE  
+          // ----------------------------------------------------------------- -->
           <div *ngIf="user" class="card-content">
 
             <label style="height: 36px; padding-top: 20px; padding-left: 16px; padding-right: 16px; text-align: right; margin-top: 12px; color: #7695a5" class="col-sm-2 avatar_label">
@@ -66,7 +69,10 @@
 
           </div>
 
-          <!-- // FAQ-KB PROFILE  -->
+          <!-- 
+          // -----------------------------------------------------------------
+          // Bot PROFILE  
+          // ----------------------------------------------------------------- -->
           <div *ngIf="faqKb" class="card-content" style="padding-top: 25px;">
 
               <label style="height: 36px; padding-top: 20px; padding-left: 16px; padding-right: 16px; text-align: right; color: #7695a5" class="col-sm-2 avatar_label">
@@ -76,18 +82,19 @@
                   
                 <div class="card-avatar" style="padding-bottom:15px">
                             
-                  <img style="vertical-align: middle; width: 60px; height: 60px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
-                  class="img" src="assets/img/bot_image_as_human.jpg" />
+                  <!-- <img style="vertical-align: middle; width: 60px; height: 60px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
+                  class="img" src="assets/img/avatar_bot_tiledesk.svg" /> -->
+                  <img style="vertical-align: middle; width: 60px; height: 60px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
+                  src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{faqKb_id}}%2Fphoto.jpg?alt=media"
+                  onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
                         
                 </div> 
               </div>
   
               <label class="col-sm-2 custom-label">
-                
                 {{ "UserProfile.Name" | translate }}            
               </label>
               <div class="col-sm-10">
-               
                 <input  style="color:#999999" [(ngModel)]="faqKb_name" class="" type="text" placeholder='' disabled>
               </div>
   
@@ -97,13 +104,14 @@
               <div class="col-sm-10">             
                 <input style="color:#999999" [(ngModel)]="faqKb_id " class="" type="text" placeholder='' disabled>
               </div>
+
               <label class="col-sm-2 custom-label">
-                {{ "UserProfile.FaqKbRemoteId" | translate }}
+                {{ "BotsAddEditPage.Type" | translate }}
               </label>
               <div class="col-sm-10">
-                <input style="color:#999999" [(ngModel)]="faqKb_remoteId" class="" type="text" placeholder="" disabled>
+                <input style="color:#999999" [(ngModel)]="faqKb_type" class="" type="text" placeholder="" disabled>
               </div>
-              <!-- style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right; margin-bottom:25px; color: #7695a5" -->
+              
               <label class="col-sm-2 custom-label">
                 {{ "UserProfile.FaqKbCreatedAt" | translate }}
               </label>

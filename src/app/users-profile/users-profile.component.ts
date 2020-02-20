@@ -35,6 +35,7 @@ export class UsersProfileComponent implements OnInit {
   faqKb_name: string;
   faqKb_createdAt: string;
   faqKb_trashed: boolean;
+  faqKb_type: boolean;
 
   storageBucket: string;
 
@@ -89,8 +90,11 @@ export class UsersProfileComponent implements OnInit {
       console.log('USERS PROFILE - STORED FAQKB NAME', this.faqKb_name);
       this.faqKb_id = stored_faqKb._id;
       console.log('USERS PROFILE - STORED FAQKB ID', this.faqKb_id);
-      this.faqKb_remoteId = stored_faqKb.kbkey_remote;
-      console.log('USERS PROFILE - STORED FAQKB REMOTE ID', this.faqKb_remoteId);
+      // this.faqKb_remoteId = stored_faqKb.kbkey_remote;
+      // console.log('USERS PROFILE - STORED FAQKB REMOTE ID', this.faqKb_remoteId);
+
+      this.faqKb_type = stored_faqKb.type;
+      console.log('USERS PROFILE - STORED FAQKB TYPE', this.faqKb_type);
       this.faqKb_createdAt = moment(stored_faqKb.updatedAt).format('DD/MM/YYYY');
       console.log('USERS PROFILE - STORED FAQKB CREATED AT', this.faqKb_createdAt);
     } else {
@@ -107,6 +111,7 @@ export class UsersProfileComponent implements OnInit {
           this.faqKb_remoteId = faqKb.kbkey_remote;
           this.faqKb_createdAt = moment(faqKb.updatedAt).format('DD/MM/YYYY');
           this.faqKb_trashed = faqKb.trashed;
+          this.faqKb_type = faqKb.type;
 
 
           // SAVE THE BOT IN LOCAL STORAGE
