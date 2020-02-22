@@ -1,6 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { DomSanitizer } from '@angular/platform-browser'
+import { AppConfigService } from '../services/app-config.service';
 
 @Component({
   selector: 'chat',
@@ -19,9 +20,12 @@ export class ChatComponent implements OnInit {
   iframeHeight: any;
 
   constructor(
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    public appConfigService: AppConfigService
   ) {
-    this.CHAT_BASE_URL = sanitizer.bypassSecurityTrustResourceUrl(environment.chat.CHAT_BASE_URL);
+    // this.CHAT_BASE_URL = sanitizer.bypassSecurityTrustResourceUrl(environment.chat.CHAT_BASE_URL); // moved
+    // this.CHAT_BASE_URL = sanitizer.bypassSecurityTrustResourceUrl(environment.CHAT_BASE_URL); // now get from appconfig
+
     // // User screen size
     // const screenHeight = window.screen.height;
     // const screenWidth = window.screen.width;
@@ -33,10 +37,15 @@ export class ChatComponent implements OnInit {
 
   ngOnInit() {
 
+    this.getAndSanitizeChatUrl();
     this.onInitframeHeight();
     // const elemNavbar = <HTMLElement>document.querySelector('.navbar');
     // console.log('NAVBAR QUERY SELECTOR IN CHAT ', elemNavbar)
 
+  }
+
+  getAndSanitizeChatUrl() {
+    this.CHAT_BASE_URL = this.sanitizer.bypassSecurityTrustResourceUrl(this.appConfigService.getConfig().CHAT_BASE_URL);
   }
 
   @HostListener('window:resize', ['$event'])
