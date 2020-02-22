@@ -159,3 +159,15 @@ aws s3 sync ./dist/ s3://tiledesk-dashboard/dashboard
 ```
 aws cloudfront create-invalidation --distribution-id E2DTAKWHWQ7C3J --paths "/*
 ```
+
+
+
+# Run  with docker
+
+To run Tiledesk-dashboard on port 4500 run:
+
+```
+curl https://raw.githubusercontent.com/Tiledesk/tiledesk-dashboard/master/.env.sample --output .env
+nano .env #configure .env file properly
+docker run -p 4500:80 --env-file .env tiledesk/tiledesk-dashboard
+```
