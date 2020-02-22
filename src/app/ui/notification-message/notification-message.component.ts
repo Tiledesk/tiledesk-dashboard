@@ -9,6 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../../services/project-plan.service';
 import { Subscription } from 'rxjs';
 import brand from 'assets/brand/brand.json';
+import { AppConfigService } from '../../services/app-config.service';
 
 @Component({
   selector: 'notification-message',
@@ -17,7 +18,7 @@ import brand from 'assets/brand/brand.json';
   encapsulation: ViewEncapsulation.None,
 })
 export class NotificationMessageComponent implements OnInit, OnDestroy {
-  
+
   tparams = brand;
   company_name = brand.company_name;
 
@@ -25,7 +26,11 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
   projectId: string;
   gettingStartedChecklist: any;
 
-  CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
+  // CHAT_BASE_URL = environment.chat.CHAT_BASE_URL; // moved
+  // CHAT_BASE_URL = environment.CHAT_BASE_URL; // now get from appconfig
+  CHAT_BASE_URL: string;
+
+
   showSpinnerInModal = true;
   browserLang: string;
   subscriptionCanceledSuccessfully: string;
@@ -37,7 +42,9 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
   subscription_end_date: any;
   prjct_profile_name: string;
   subscription: Subscription;
-  WIDGET_URL = environment.widgetUrl;
+  // WIDGET_URL = environment.widgetUrl; // now get from appconfig
+  WIDGET_URL: string;
+
   has_copied = false;
   constructor(
     public notify: NotifyService,
@@ -45,7 +52,8 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
     public projectService: ProjectService,
     private router: Router,
     private translate: TranslateService,
-    private prjctPlanService: ProjectPlanService
+    private prjctPlanService: ProjectPlanService,
+    public appConfigService: AppConfigService
   ) { }
 
   ngOnInit() {
@@ -55,6 +63,20 @@ export class NotificationMessageComponent implements OnInit, OnDestroy {
     this.translateMsgSubscriptionCanceledSuccessfully();
     this.translateMsgSubscriptionCanceledError();
     this.getProjectPlan();
+    this.getWidgetUrl();
+    this.getChatUrl();
+  }
+
+  getChatUrl() {
+    this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
+    console.log('AppConfigService getAppConfig (Notification Message Component) CHAT_BASE_URL', this.CHAT_BASE_URL);
+  }
+
+
+  getWidgetUrl() {
+    this.WIDGET_URL = this.appConfigService.getConfig().widgetUrl;
+    console.log('AppConfigService getAppConfig (Notification Message Component) WIDGET_URL ', this.WIDGET_URL)
+
   }
 
   getProjectPlan() {
