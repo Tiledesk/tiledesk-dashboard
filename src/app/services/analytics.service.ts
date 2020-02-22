@@ -5,11 +5,16 @@ import { AuthService } from 'app/core/auth.service';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { URLSearchParams } from 'url';
+import { AppConfigService } from '../services/app-config.service';
+
 @Injectable()
 export class AnalyticsService {
 
  
-  BASE_URL = environment.mongoDbConfig.BASE_URL;
+  // BASE_URL = environment.mongoDbConfig.BASE_URL; // replaced with SERVER_BASE_PATH
+  // SERVER_BASE_PATH = environment.SERVER_BASE_URL; // now get from appconfig
+  SERVER_BASE_PATH: string;
+
   //BASE_URL = 'https://api.tiledesk.com/v1/'
   projectID: string;
   user: any;
@@ -19,10 +24,10 @@ export class AnalyticsService {
 
   constructor(
     private http: HttpClient,
-    public auth: AuthService
+    public auth: AuthService,
+    public appConfigService: AppConfigService
   ) {
     
-
     this.user = auth.user_bs.value
     this.checkUser()
 
@@ -32,7 +37,13 @@ export class AnalyticsService {
     });
 
 
-    this.getCurrentProject()
+    this.getCurrentProject();
+    this.getAppConfig();
+  }
+
+  getAppConfig() {
+    this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
+    console.log('AppConfigService getAppConfig (ANALYTICS-SERV) SERVER_BASE_PATH', this.SERVER_BASE_PATH);
   }
 
   getCurrentProject() {
@@ -71,7 +82,7 @@ export class AnalyticsService {
   //               .set('department_id', department_id);
     
     
-  //   return this.http.get<[]>(this.BASE_URL+ this.projectID + '/analytics/requests/aggregate/day' ,{ headers:headers, params:params})
+  //   return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/requests/aggregate/day' ,{ headers:headers, params:params})
     
   // }
 
@@ -90,7 +101,7 @@ export class AnalyticsService {
                   .set('lastdays', lastdays)
                   .set('department_id', department_id);
     
-   return this.http.get<[]>(this.BASE_URL+ this.projectID + '/analytics/requests/aggregate/day' ,{ headers:headers, params:params})
+   return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/requests/aggregate/day' ,{ headers:headers, params:params})
     
   }
 
@@ -104,7 +115,7 @@ export class AnalyticsService {
       })
     };
    
-   return this.http.get<[]>(this.BASE_URL + this.projectID+ '/analytics/requests/aggregate/dayoftheweek/hours', httpOptions);
+   return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID+ '/analytics/requests/aggregate/dayoftheweek/hours', httpOptions);
    
 
   }
@@ -118,7 +129,7 @@ export class AnalyticsService {
       })
     };
     
-    return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/waiting', httpOptions);
+    return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/requests/waiting', httpOptions);
   }
 
   getavarageWaitingTimeDataCHART(lastdays, department_id?): Observable<[]> {
@@ -139,7 +150,7 @@ export class AnalyticsService {
                 .set('department_id', department_id);
    
     
-    return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/waiting/day', { headers:headers, params:params});
+    return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/requests/waiting/day', { headers:headers, params:params});
   }
 
   getDurationConversationTimeDataCLOCK(): Observable<[]> {
@@ -151,7 +162,7 @@ export class AnalyticsService {
       })
     };
    
-   return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/duration', httpOptions);
+   return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/requests/duration', httpOptions);
   }
 
   getDurationConversationTimeDataCHART(lastdays, department_id?): Observable<[]> {
@@ -172,7 +183,7 @@ export class AnalyticsService {
                 .set('department_id', department_id);
 
     
-    return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/duration/day', { headers:headers, params:params});
+    return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/requests/duration/day', { headers:headers, params:params});
   }
 
   getSatisfactionDataHEART(): Observable<[]> {
@@ -184,7 +195,7 @@ export class AnalyticsService {
     
 
     
-    return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/satisfaction', { headers:headers});
+    return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/requests/satisfaction', { headers:headers});
   }
 
   getSatisfactionDataCHART(lastdays, department_id?): Observable<[]> {
@@ -205,7 +216,7 @@ export class AnalyticsService {
                 .set('department_id', department_id);
 
     
-    return this.http.get<[]>(this.BASE_URL + this.projectID + '/analytics/requests/satisfaction/day', { headers:headers, params:params});
+    return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/analytics/requests/satisfaction/day', { headers:headers, params:params});
   }
   
 

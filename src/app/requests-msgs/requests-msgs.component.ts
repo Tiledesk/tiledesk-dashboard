@@ -47,8 +47,12 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('openChatBtn')
   private openChatBtn: ElementRef;
 
-  CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
-  BASE_URL = environment.mongoDbConfig.BASE_URL;
+  // CHAT_BASE_URL = environment.chat.CHAT_BASE_URL; // moved
+   // BASE_URL = environment.mongoDbConfig.BASE_URL; // replaced with SERVER_BASE_PATH
+  // SERVER_BASE_PATH = environment.SERVER_BASE_URL; // now get from appconfig
+  // CHAT_BASE_URL = environment.CHAT_BASE_URL; // now get from appconfig
+  SERVER_BASE_PATH: string;
+  CHAT_BASE_URL: string;
 
   id_request: string;
   messagesList: Message[];
@@ -151,6 +155,17 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     // console.log('REQUEST-MSGS - ON RESIZE -> WINDOW WITH ', this.newInnerWidth);
+
+    this.getAppConfig()
+  }
+
+
+  getAppConfig() {
+    this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
+    this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
+
+    console.log('AppConfigService getAppConfig (REQUEST-MSGS) SERVER_BASE_PATH', this.SERVER_BASE_PATH);
+    console.log('AppConfigService getAppConfig (REQUEST-MSGS) SIGNUP_BASE_URL', this.CHAT_BASE_URL);
   }
 
   @HostListener('window:resize', ['$event'])
@@ -460,44 +475,43 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.id_request) {
       this.getMessagesList();
       this.getRequestByRecipient();
-      this.getContactIdFromNodejsRequest();
+      // this.getContactIdFromNodejsRequest();
     }
   }
 
-  getContactIdFromNodejsRequest() {
-    this.requestsService.getNodeJsRequestByFirebaseRequestId(this.id_request, 0).subscribe((nodejsRequest) => {
+  // getContactIdFromNodejsRequest() {
+  //   this.requestsService.getNodeJsRequestByFirebaseRequestId(this.id_request, 0).subscribe((nodejsRequest) => {
 
-      console.log('»»» REQUESTS-MSGS.COMP: GET NODEJS REQUEST BY FireBase REQ ID ', nodejsRequest);
+  //     console.log('»»» REQUESTS-MSGS.COMP: GET NODEJS REQUEST BY FireBase REQ ID ', nodejsRequest);
 
-      if (nodejsRequest) {
-        // if (nodejsRequest['requests'] && nodejsRequest['requests'].length > 0) {
+  //     if (nodejsRequest) {
+  //       // if (nodejsRequest['requests'] && nodejsRequest['requests'].length > 0) {
 
-        // if (nodejsRequest['requests'][0]['requester_id']) {
-        if (nodejsRequest['requester_id']) {
+  //       // if (nodejsRequest['requests'][0]['requester_id']) {
+  //       if (nodejsRequest['requester_id']) {
 
-          // this.contact_id = nodejsRequest['requests'][0]['requester_id']
-          this.contact_id = nodejsRequest['requester_id']
-          console.log('»»» REQUESTS-MSGS.COMP: NODEJS REQUEST > CONTACT ID ', this.contact_id);
-          this.NODEJS_REQUEST_CNTCT_FOUND = true;
-          console.log('»»» REQUESTS-MSGS.COMP: NODEJS REQUEST FOUND ? ', this.NODEJS_REQUEST_CNTCT_FOUND);
+  //         // this.contact_id = nodejsRequest['requests'][0]['requester_id']
+  //         this.contact_id = nodejsRequest['requester_id']
+  //         console.log('»»» REQUESTS-MSGS.COMP: NODEJS REQUEST > CONTACT ID ', this.contact_id);
+  //         this.NODEJS_REQUEST_CNTCT_FOUND = true;
+  //         console.log('»»» REQUESTS-MSGS.COMP: NODEJS REQUEST FOUND ? ', this.NODEJS_REQUEST_CNTCT_FOUND);
 
-        } else {
+  //       } else {
 
-          this.NODEJS_REQUEST_CNTCT_FOUND = false;
-          console.log('»»» REQUESTS-MSGS.COMP: NODEJS REQUEST >  FOUND ? ', this.NODEJS_REQUEST_CNTCT_FOUND);
-        }
+  //         this.NODEJS_REQUEST_CNTCT_FOUND = false;
+  //         console.log('»»» REQUESTS-MSGS.COMP: NODEJS REQUEST >  FOUND ? ', this.NODEJS_REQUEST_CNTCT_FOUND);
+  //       }
 
-        // }
-      }
-    }, (err) => {
-      console.log('»»» REQUESTS-MSGS.COMP: GET NODEJS REQUEST BY FireBase REQ ID ', err);
-      this.showSpinner = false;
-    }, () => {
-      console.log('»»» REQUESTS-MSGS.COMP: GET NODEJS REQUEST BY FireBase REQ ID * COMPLETE *');
+  //       // }
+  //     }
+  //   }, (err) => {
+  //     console.log('»»» REQUESTS-MSGS.COMP: GET NODEJS REQUEST BY FireBase REQ ID ', err);
+  //     this.showSpinner = false;
+  //   }, () => {
+  //     console.log('»»» REQUESTS-MSGS.COMP: GET NODEJS REQUEST BY FireBase REQ ID * COMPLETE *');
 
-
-    });
-  }
+  //   });
+  // }
 
   goToContactDetails() {
 
@@ -1000,7 +1014,7 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
   openTranscript() {
 
     // const url = 'https://api.tiledesk.com/v1/public/requests/' + this.id_request + '/messages.html';
-    const url = this.BASE_URL + 'public/requests/' + this.id_request + '/messages.html';
+    const url = this.SERVER_BASE_PATH + 'public/requests/' + this.id_request + '/messages.html';
 
     console.log('openTranscript url ', url);
     window.open(url, '_blank');
