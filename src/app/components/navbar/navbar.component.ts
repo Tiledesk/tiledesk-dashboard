@@ -42,7 +42,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     private unsubscribe$: Subject<any> = new Subject<any>();
 
     tparams = brand;
-    public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK;
+    // public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK; // now get from appconfig
+    public_Key: string;
 
     private listTitles: any[];
     location: Location;
@@ -81,7 +82,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     HIDE_PENDING_EMAIL_NOTIFICATION = true;
 
     DETECTED_USER_PROFILE_PAGE = false;
-    CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
+    
+    // CHAT_BASE_URL = environment.chat.CHAT_BASE_URL; // moved
+    // CHAT_BASE_URL = environment.CHAT_BASE_URL; // now get from appconfig
+    CHAT_BASE_URL: string;
+
     displayLogoutModal = 'none';
 
     APP_IS_DEV_MODE: boolean;
@@ -190,10 +195,17 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         this.listenCancelSubscription();
         this.getIfIsCreatedNewProject();
 
-
+        this.getChatUrl();
         this.getOSCODE();
         this.getStorageBucket();
     } // OnInit
+
+
+
+    getChatUrl() {
+        this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
+        console.log('AppConfigService getAppConfig (NAVBAR) CHAT_BASE_URL', this.CHAT_BASE_URL);
+    }
 
     getProjectUserRole() {
         this.usersService.project_user_role_bs
@@ -229,6 +241,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     }
 
     getOSCODE() {
+        this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+        console.log('AppConfigService getAppConfig (NAVBAR) public_Key', this.public_Key)
         console.log('NavbarComponent public_Key', this.public_Key)
 
         let keys = this.public_Key.split("-");

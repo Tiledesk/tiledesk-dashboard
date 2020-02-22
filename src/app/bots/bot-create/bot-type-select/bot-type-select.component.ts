@@ -4,6 +4,7 @@ import { AuthService } from '../../../core/auth.service';
 import { Location } from '@angular/common';
 import { environment } from '../../../../environments/environment';
 import brand from 'assets/brand/brand.json';
+import { AppConfigService } from '../../../services/app-config.service';
 
 @Component({
   selector: 'appdashboard-bot-type-select',
@@ -11,7 +12,10 @@ import brand from 'assets/brand/brand.json';
   styleUrls: ['./bot-type-select.component.scss']
 })
 export class BotTypeSelectComponent implements OnInit {
-  public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK;
+  
+  // public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK; // now get from appconfig
+  public_Key: string;
+
   projectId: string;
   dgfIsVisible: boolean;
   natIsVisible: boolean;
@@ -20,7 +24,8 @@ export class BotTypeSelectComponent implements OnInit {
   constructor(
     private router: Router,
     public location: Location,
-    public auth: AuthService
+    public auth: AuthService,
+    public appConfigService: AppConfigService
   ) { }
 
   ngOnInit() {
@@ -39,8 +44,11 @@ export class BotTypeSelectComponent implements OnInit {
 
 
   getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    console.log('AppConfigService getAppConfig (BOT-TYPE-SELECT) public_Key', this.public_Key)
+    
     let keys = this.public_Key.split("-");
-    console.log('PUBLIC-KEY (SIDEBAR) - public_Key keys', keys)
+    console.log('PUBLIC-KEY (BOT-TYPE-SELECT) - public_Key keys', keys)
 
     keys.forEach(key => {
       // console.log('NavbarComponent public_Key key', key)
