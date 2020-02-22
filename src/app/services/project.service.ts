@@ -8,14 +8,22 @@ import { environment } from '../../environments/environment';
 import { AuthService } from '../core/auth.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { AppConfigService } from '../services/app-config.service';
 
 @Injectable()
 export class ProjectService {
 
   http: Http;
-  PROJECT_BASE_URL = environment.mongoDbConfig.PROJECTS_BASE_URL;
-  BASE_URL = environment.mongoDbConfig.BASE_URL;
-  UPDATE_OPERATING_HOURS_URL: any;
+  // PROJECT_BASE_URL = environment.mongoDbConfig.PROJECTS_BASE_URL;
+  // BASE_URL = environment.mongoDbConfig.BASE_URL; // replaced with SERVER_BASE_PATH
+
+  // SERVER_BASE_PATH = environment.SERVER_BASE_URL; // now get from appconfig
+  // PROJECTS_URL = this.SERVER_BASE_PATH + 'projects/' // now built after get SERVER_BASE_PATH
+
+  SERVER_BASE_PATH: string;
+  PROJECTS_URL: string;
+
+  // UPDATE_OPERATING_HOURS_URL: any; // NO MORE USED
   // PROJECT_USER_BASE_URL = environment.mongoDbConfig.PROJECT_USER_BASE_URL;
   // TOKEN = environment.mongoDbConfig.TOKEN;
 
@@ -32,6 +40,7 @@ export class ProjectService {
     http: Http,
     public auth: AuthService,
     public http_client: HttpClient,
+    public appConfigService: AppConfigService
   ) {
     console.log('HELLO PROJECT SERVICE !!!!')
 
@@ -44,9 +53,17 @@ export class ProjectService {
       this.user = user;
       this.checkUser()
     });
-
+    this.getAppConfigAndBuildUrl();
     this.getCurrentProject();
 
+  }
+
+  getAppConfigAndBuildUrl() {
+
+    this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
+    console.log('AppConfigService getAppConfig (PROJECT SERV.) SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
+    this.PROJECTS_URL = this.SERVER_BASE_PATH + 'projects/';
+    console.log('AppConfigService getAppConfig (PROJECT SERV.) PROJECTS_URL (built with SERVER_BASE_PATH) ', this.PROJECTS_URL);
   }
 
   countOfMyAvailability(numOfMyAvailability: number) {
@@ -70,7 +87,7 @@ export class ProjectService {
 
         this.projectID = project._id;
         console.log('-- -- >>>> 00 -> PROJECT SERVICE project ID from AUTH service subscription ', this.projectID);
-        this.UPDATE_OPERATING_HOURS_URL = this.PROJECT_BASE_URL + this.projectID;
+        // this.UPDATE_OPERATING_HOURS_URL = this.PROJECTS_URL + this.projectID;
 
         // PROJECT-USER BY PROJECT ID AND CURRENT USER ID
         // this.PROJECT_USER_URL = this.BASE_URL + this.project._id + '/project_users/'
@@ -93,7 +110,7 @@ export class ProjectService {
   /** ********************************************** HTTP VERSION *********************************************** */
   /* READ (GET ALL PROJECTS) */
   public getProjects(): Observable<Project[]> {
-    const url = this.PROJECT_BASE_URL;
+    const url = this.PROJECTS_URL;
     console.log('getProjects URL', url);
 
     const headers = new Headers();
@@ -107,7 +124,7 @@ export class ProjectService {
   /** ******************************************** HTTP CLIENT VERSION ******************************************** */
   /* READ (GET ALL PROJECTS) */
   // public getProjects(): Observable<Project[]> {
-  //   const url = this.PROJECT_BASE_URL;
+  //   const url = this.PROJECTS_URL;
   //   console.log('MONGO DB PROJECTS URL', url);
   //   const headers = new HttpHeaders({ 'Content-Type': 'application/json' }).set('Authorization', this.TOKEN)
   //   return this.http_client
@@ -120,7 +137,7 @@ export class ProjectService {
    */
   public deleteMongoDbProject(id: string) {
 
-    let url = this.PROJECT_BASE_URL;
+    let url = this.PROJECTS_URL;
     url += `${id}# chat21-api-nodejs`;
     console.log('DELETE URL ', url);
 
@@ -140,7 +157,7 @@ export class ProjectService {
    * @param id
    */
   public getProjectById(id: string): Observable<Project[]> {
-    let url = this.PROJECT_BASE_URL;
+    let url = this.PROJECTS_URL;
     url += `${id}`;
     console.log('!!! GET PROJECT BY ID URL', url);
 
@@ -169,7 +186,7 @@ export class ProjectService {
 
     console.log('ADD PROJECT POST REQUEST BODY ', body);
 
-    const url = this.PROJECT_BASE_URL;
+    const url = this.PROJECTS_URL;
 
     return this.http
       .post(url, JSON.stringify(body), options)
@@ -206,7 +223,7 @@ export class ProjectService {
    */
   public updateMongoDbProject(id: string, name: string) {
 
-    let url = this.PROJECT_BASE_URL;
+    let url = this.PROJECTS_URL;
     url += id;
     console.log('PUT URL ', url);
 
@@ -228,7 +245,7 @@ export class ProjectService {
 
   // ****** DOWNGRADE PLAN ******
   public downgradePlanToFree(projectid: string) {
-    const url = this.PROJECT_BASE_URL + projectid + '/downgradeplan';
+    const url = this.PROJECTS_URL + projectid + '/downgradeplan';
     console.log('downgradePlanToFree URL ', url);
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -248,7 +265,7 @@ export class ProjectService {
   // ****** CANCEL SUBSCRIPTION ******
   public cancelSubscription() {
     // this.projectID +
-    const url = this.BASE_URL + 'modules/payments/stripe/cancelsubscription';
+    const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/cancelsubscription';
 
     console.log('cancelSubscription PUT URL ', url);
 
@@ -272,7 +289,7 @@ export class ProjectService {
   // ****** UPDATE SUBSCRIPTION ******
   public updatesubscription() {
     // this.projectID +
-    const url = this.BASE_URL + 'modules/payments/stripe/updatesubscription';
+    const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/updatesubscription';
 
     console.log('cancelSubscription PUT URL ', url);
 
@@ -294,7 +311,7 @@ export class ProjectService {
 
   // ****** GET SUBSCRIPTION PAYMENTS ******
   public getSubscriptionPayments(subscriptionId: string): Observable<[]> {
-    const url = this.BASE_URL + 'modules/payments/stripe/' + subscriptionId;
+    const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/' + subscriptionId;
     console.log('getSubscriptionPayments URL', url);
 
     const headers = new Headers();
@@ -307,7 +324,7 @@ export class ProjectService {
 
   // ****** GET SUBSCRIPTION by ID ******
   public getSubscriptionById(subscriptionId: string): Observable<[]> {
-    const url = this.BASE_URL + 'modules/payments/stripe/stripesubs/' + subscriptionId;
+    const url = this.SERVER_BASE_PATH + 'modules/payments/stripe/stripesubs/' + subscriptionId;
     console.log('getSubscriptionPayments URL', url);
 
     const headers = new Headers();
@@ -325,7 +342,7 @@ export class ProjectService {
   /// ================ UPDATE WIDGET PROJECT ====================== ///
   public updateWidgetProject(widget_settings: any) {
 
-    let url = this.PROJECT_BASE_URL;
+    let url = this.PROJECTS_URL;
     url += this.projectID;
     console.log('UPDATE WIDGET PROJECT - URL ', url);
 
@@ -347,7 +364,7 @@ export class ProjectService {
   /// ================ UPDATE GETTING STARTED ====================== ///
   public updateGettingStartedProject(getting_started: any) {
 
-    let url = this.PROJECT_BASE_URL;
+    let url = this.PROJECTS_URL;
     url += this.projectID;
     console.log('UPDATE GETTING-STARTED - URL ', url);
 
@@ -370,7 +387,7 @@ export class ProjectService {
   /// ================ UPDATE PROJECT SETTINGS > AUTO SEND TRANSCRIPT TO REQUESTER ====================== ///
   public updateAutoSendTranscriptToRequester(autosend: boolean) {
 
-    let url = this.PROJECT_BASE_URL;
+    let url = this.PROJECTS_URL;
     url += this.projectID;
     console.log('UPDATE WIDGET PROJECT - URL ', url);
 
@@ -399,7 +416,7 @@ export class ProjectService {
     headers.append('Content-type', 'application/json');
 
     headers.append('Authorization', this.TOKEN);
-    const url = this.BASE_URL + this.projectID + '/keys/generate';
+    const url = this.SERVER_BASE_PATH + this.projectID + '/keys/generate';
 
     /** ********* FOR TEST  ********* **/
     // headers.append('Authorization', 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiZW1haWwiOjEsImZpcnN0bmFtZSI6MSwibGFzdG5hbWUiOjEsInBhc3N3b3JkIjoxLCJlbWFpbHZlcmlmaWVkIjoxLCJpZCI6MX0sImdldHRlcnMiOnt9LCJfaWQiOiI1YWM3NTIxNzg3ZjZiNTAwMTRlMGI1OTIiLCJ3YXNQb3B1bGF0ZWQiOmZhbHNlLCJhY3RpdmVQYXRocyI6eyJwYXRocyI6eyJwYXNzd29yZCI6ImluaXQiLCJlbWFpbCI6ImluaXQiLCJlbWFpbHZlcmlmaWVkIjoiaW5pdCIsImxhc3RuYW1lIjoiaW5pdCIsImZpcnN0bmFtZSI6ImluaXQiLCJfaWQiOiJpbml0In0sInN0YXRlcyI6eyJpZ25vcmUiOnt9LCJkZWZhdWx0Ijp7fSwiaW5pdCI6eyJlbWFpbHZlcmlmaWVkIjp0cnVlLCJsYXN0bmFtZSI6dHJ1ZSwiZmlyc3RuYW1lIjp0cnVlLCJwYXNzd29yZCI6dHJ1ZSwiZW1haWwiOnRydWUsIl9pZCI6dHJ1ZX0sIm1vZGlmeSI6e30sInJlcXVpcmUiOnt9fSwic3RhdGVOYW1lcyI6WyJyZXF1aXJlIiwibW9kaWZ5IiwiaW5pdCIsImRlZmF1bHQiLCJpZ25vcmUiXX0sInBhdGhzVG9TY29wZXMiOnt9LCJlbWl0dGVyIjp7ImRvbWFpbiI6bnVsbCwiX2V2ZW50cyI6e30sIl9ldmVudHNDb3VudCI6MCwiX21heExpc3RlbmVycyI6MH0sIiRvcHRpb25zIjp0cnVlfSwiaXNOZXciOmZhbHNlLCJfZG9jIjp7ImVtYWlsdmVyaWZpZWQiOnRydWUsImxhc3RuYW1lIjoiTGFuemlsb3R0byIsImZpcnN0bmFtZSI6Ik5pY29sYSIsInBhc3N3b3JkIjoiJDJhJDEwJDEzZlROSnA3OUx5RVYvdzh6NXRrbmVrc3pYRUtuaWFxZm83TnR2aTZpSHdaQ2ZLRUZKd1kuIiwiZW1haWwiOiJuaWNvbGEubGFuemlsb3R0b0Bmcm9udGllcmUyMS5pdCIsIl9pZCI6IjVhYzc1MjE3ODdmNmI1MDAxNGUwYjU5MiJ9LCIkaW5pdCI6dHJ1ZSwiaWF0IjoxNTQwODE5MTUzfQ.af5nAtSYVmmWzmdgGummY6fQnt2dFTR0lCnrfP0vr6I');
@@ -416,7 +433,8 @@ export class ProjectService {
   /// ================ UPDATE OPERATING HOURS ====================== ///
   public updateProjectOperatingHours(_activeOperatingHours: boolean, _operatingHours: any): Observable<Project[]> {
 
-    const url = this.UPDATE_OPERATING_HOURS_URL;
+    // const url = this.UPDATE_OPERATING_HOURS_URL;
+    const url = this.PROJECTS_URL + this.projectID;
     console.log('»»»» »»»» UPDATE PROJECT OPERATING HOURS ', url);
     const headers = new Headers();
     headers.append('Accept', 'application/json');

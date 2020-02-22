@@ -8,6 +8,7 @@ import 'rxjs/add/operator/map';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../core/auth.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { AppConfigService } from '../services/app-config.service';
 
 @Injectable()
 export class DepartmentService {
@@ -16,10 +17,15 @@ export class DepartmentService {
 
   http: Http;
 
-  // MONGODB_BASE_URL = environment.mongoDbConfig.DEPARTMENTS_BASE_URL;
-  BASE_URL = environment.mongoDbConfig.BASE_URL;
-  MONGODB_BASE_URL: any;
-  MY_DEPTS_BASE_URL: any;
+
+  // BASE_URL = environment.mongoDbConfig.BASE_URL; // replaced with SERVER_BASE_PATH
+  // MONGODB_BASE_URL: any;  // replaced with DEPTS_URL
+
+  // SERVER_BASE_PATH = environment.SERVER_BASE_URL; // now get from appconfig
+  SERVER_BASE_PATH: string;
+  DEPTS_URL: string;
+
+
   // TOKEN =  environment.mongoDbConfig.TOKEN;
   TOKEN: string
   user: any;
@@ -28,14 +34,11 @@ export class DepartmentService {
   constructor(
     http: Http,
     // private mongodbConfService: MongodbConfService,
-    private auth: AuthService
+    private auth: AuthService,
+    public appConfigService: AppConfigService
   ) {
 
     this.http = http;
-
-    // this.MONGODB_BASE_URL = mongodbConfService.MONGODB_DEPARTMENTS_BASE_URL;
-    // console.log('MONGODB_DEPARTMENTS_BASE_URL ! ', this.MONGODB_BASE_URL);
-    // this.TOKEN = mongodbConfService.TOKEN;
 
     // SUBSCRIBE TO USER BS
     this.user = auth.user_bs.value
@@ -46,7 +49,13 @@ export class DepartmentService {
       this.checkUser()
     });
 
+    this.getAppConfig();
     this.getCurrentProject();
+  }
+
+  getAppConfig() {
+    this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
+    console.log('AppConfigService getAppConfig (DEPTS SERV.) SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
   }
 
   getCurrentProject() {
@@ -59,11 +68,12 @@ export class DepartmentService {
       // debugger
       if (this.project) {
         console.log('00 -> DEPT SERVICE project ID from AUTH service subscription  ', this.project._id);
-        this.MONGODB_BASE_URL = this.BASE_URL + this.project._id + '/departments/'
+        this.DEPTS_URL = this.SERVER_BASE_PATH + this.project._id + '/departments/';
+        console.log('AppConfigService getAppConfig (DEPTS SERV.) DEPTS_URL (built with SERVER_BASE_PATH) ', this.DEPTS_URL);
 
         // FOR TEST - CAUSES ERROR WITH A NO VALID PROJECT ID
         // this.MONGODB_BASE_URL = this.BASE_URL + '5b3fa93a6f0537d8b01968fX' + '/departments/'
-        this.MY_DEPTS_BASE_URL = this.BASE_URL + this.project._id + '/departments/mydepartments'
+
       }
     });
   }
@@ -85,7 +95,7 @@ export class DepartmentService {
   // headers.append('Authorization', 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnt9LCJnZXR0ZXJzIjp7fSwiX2lkIjoiNWE3MDQ0YzdjNzczNGQwZGU0ZGRlMmQ0Iiwid2FzUG9wdWxhdGVkIjpmYWxzZSwiYWN0aXZlUGF0aHMiOnsicGF0aHMiOnsicGFzc3dvcmQiOiJpbml0IiwidXNlcm5hbWUiOiJpbml0IiwiX192IjoiaW5pdCIsIl9pZCI6ImluaXQifSwic3RhdGVzIjp7Imlnbm9yZSI6e30sImRlZmF1bHQiOnt9LCJpbml0Ijp7Il9fdiI6dHJ1ZSwicGFzc3dvcmQiOnRydWUsInVzZXJuYW1lIjp0cnVlLCJfaWQiOnRydWV9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7fX0sInN0YXRlTmFtZXMiOlsicmVxdWlyZSIsIm1vZGlmeSIsImluaXQiLCJkZWZhdWx0IiwiaWdub3JlIl19LCJwYXRoc1RvU2NvcGVzIjp7fSwiZW1pdHRlciI6eyJkb21haW4iOm51bGwsIl9ldmVudHMiOnt9LCJfZXZlbnRzQ291bnQiOjAsIl9tYXhMaXN0ZW5lcnMiOjB9LCIkb3B0aW9ucyI6dHJ1ZX0sImlzTmV3IjpmYWxzZSwiX2RvYyI6eyJfX3YiOjAsInBhc3N3b3JkIjoiJDJhJDEwJGw3RnN1aS9FcDdONkEwTW10b1BNa2VjQnY0SzMzaFZwSlF3ckpGcHFSMVZSQ2JaUnkybHk2IiwidXNlcm5hbWUiOiJhbmRyZWEiLCJfaWQiOiI1YTcwNDRjN2M3NzM0ZDBkZTRkZGUyZDQifSwiJGluaXQiOnRydWUsImlhdCI6MTUxNzMwNzExM30.6kpeWLl_o5EgBzmzH3EGtJ_f3yhE7M9VMpx59ze_gbY');
   // headers.append('Authorization', 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnt9LCJnZXR0ZXJzIjp7fSwid2FzUG9wdWxhdGVkIjpmYWxzZSwiYWN0aXZlUGF0aHMiOnsicGF0aHMiOnsicGFzc3dvcmQiOiJpbml0IiwidXNlcm5hbWUiOiJpbml0IiwiX192IjoiaW5pdCIsIl9pZCI6ImluaXQifSwic3RhdGVzIjp7Imlnbm9yZSI6e30sImRlZmF1bHQiOnt9LCJpbml0Ijp7Il9fdiI6dHJ1ZSwicGFzc3dvcmQiOnRydWUsInVzZXJuYW1lIjp0cnVlLCJfaWQiOnRydWV9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7fX0sInN0YXRlTmFtZXMiOlsicmVxdWlyZSIsIm1vZGlmeSIsImluaXQiLCJkZWZhdWx0IiwiaWdub3JlIl19LCJlbWl0dGVyIjp7ImRvbWFpbiI6bnVsbCwiX2V2ZW50cyI6e30sIl9ldmVudHNDb3VudCI6MCwiX21heExpc3RlbmVycyI6MH19LCJpc05ldyI6ZmFsc2UsIl9kb2MiOnsiX192IjowLCJwYXNzd29yZCI6IiQyYSQxMCQ3WDBEOFY5T1dIYnNhZi91TTcuNml1ZUdCQjFUSWpoNGRnanFUS1dPOVk3UnQ1RjBwckVoTyIsInVzZXJuYW1lIjoiYW5kcmVhIiwiX2lkIjoiNWE2YWU1MjUwNmY2MmI2MDA3YTZkYzAwIn0sImlhdCI6MTUxNjk1NTA3Nn0.MHjEJFGmqqsEhm8sglvO6Hpt2bKBYs25VvGNP6W8JbI');
   public getMongDbDepartments(): Observable<Department[]> {
-    const url = this.MONGODB_BASE_URL;
+    const url = this.DEPTS_URL;
     // const url = `http://localhost:3000/app1/departments/`;
     // const url = `http://api.chat21.org/app1/departments/;
     console.log('GET DEPTS AS OLD WIDGET VERSION', url);
@@ -101,7 +111,7 @@ export class DepartmentService {
    **! *** GET DEPTS AS THE NEW WIDGET VERSION ***
    */
   public getDepartmentsAsNewWidgetVersion(): Observable<Department[]> {
-    const url = this.BASE_URL + this.project._id + '/widgets'
+    const url = this.SERVER_BASE_PATH + this.project._id + '/widgets'
     console.log('GET DEPTS AS THE NEW WIDGET VERSION URL', url);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -112,11 +122,11 @@ export class DepartmentService {
   }
 
 
-    /**
-   **! *** GET VISITOR COUNTER ***
-   */
+  /**
+ **! *** GET VISITOR COUNTER ***
+ */
   public getVisitorCounter(): Observable<[]> {
-    const url = this.BASE_URL + this.project._id + '/visitorcounter'
+    const url = this.SERVER_BASE_PATH + this.project._id + '/visitorcounter'
     console.log('GET DEPTS AS THE NEW WIDGET VERSION URL', url);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -135,7 +145,7 @@ export class DepartmentService {
    * NOTE: chat21-api-node.js READ THE CURRENT PROJECT ID FROM THE URL SO IT SO NO LONGER NECESSARY TO PASS THE PROJECT ID AS PARAMETER
    */
   public getDeptsByProjectId(): Observable<Department[]> {
-    const url = this.MONGODB_BASE_URL + 'allstatus';
+    const url = this.DEPTS_URL + 'allstatus';
 
     // const url = 'https://api.tiledesk.com/v1/5c28b587348b680015feecca/departments/'+'allstatus'
     console.log('DEPARTMENTS URL', url);
@@ -149,42 +159,14 @@ export class DepartmentService {
       .map((response) => response.json());
   }
 
-  // !!!! NO MORE USED - MOVED IN REQUEST SERVICE
-  // // GET MY_DEPTS
-  // public getMyDepts(): Observable<Department[]> {
-  //   const url = this.MY_DEPTS_BASE_URL;
-  //   // url += '?id_project=' + id_project;
-  //   // this.BASE_URL + this.project._id + '/departments/mydepartments'
 
-  //   console.log('MY DEPS URL', url);
-  //   const headers = new Headers();
-  //   headers.append('Content-Type', 'application/json');
-  //   headers.append('Authorization', this.TOKEN);
-  //   return this.http
-  //     .get(url, { headers })
-  //     .map((response) => response.json());
-  // }
-
-  // publishMyDepts() {
-  //   this.getMyDepts().subscribe((depts: any) => {
-  //     console.log('DEPTS SERV - MY DEPTS (publish)', depts);
-  //     // PUBBLISH MY DEPTS
-  //     this.myDepts_bs.next(depts);
-  //   },
-  //     (error) => {
-  //       console.log('DEPTS SERV - MY DEPTS ', error);
-  //     },
-  //     () => {
-  //       console.log('DEPTS SERV - MY DEPTS * COMPLETE *');
-  //     });
-  // }
 
   /**
    * READ DETAIL (GET BOT BY BOT ID)
    * @param id
    */
   public getMongDbDeptById(id: string): Observable<Department[]> {
-    let url = this.MONGODB_BASE_URL;
+    let url = this.DEPTS_URL;
     url += `${id}`;
     console.log('MONGO DB GET DEPT BY DEPT ID URL', url);
 
@@ -218,7 +200,7 @@ export class DepartmentService {
 
     console.log('POST REQUEST BODY ', body);
 
-    const url = this.MONGODB_BASE_URL;
+    const url = this.DEPTS_URL;
 
     return this.http
       .post(url, JSON.stringify(body), options)
@@ -242,7 +224,7 @@ export class DepartmentService {
    */
   public deleteMongoDbDeparment(id: string) {
 
-    const url = this.MONGODB_BASE_URL + id;
+    const url = this.DEPTS_URL + id;
     // url += `${id}# chat21-api-nodejs`; 
     console.log('DELETE URL ', url);
 
@@ -275,7 +257,7 @@ export class DepartmentService {
    */
   public updateMongoDbDepartment(id: string, deptName: string, id_bot: string, bot_only: boolean, id_group: string, routing: string) {
 
-    let url = this.MONGODB_BASE_URL;
+    let url = this.DEPTS_URL;
     url += id;
     console.log('PUT URL ', url);
 
@@ -319,7 +301,7 @@ export class DepartmentService {
    * @param status
    */
   public updateDeptStatus(dept_id: string, status: number) {
-    const url = this.MONGODB_BASE_URL + dept_id;
+    const url = this.DEPTS_URL + dept_id;
     console.log('UPDATE DEPT STATUS - URL ', url);
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -337,7 +319,7 @@ export class DepartmentService {
 
 
   public updateDefaultDeptOnlineMsg(id: string, onlineMsg: string) {
-    const url = this.MONGODB_BASE_URL + id;
+    const url = this.DEPTS_URL + id;
 
     console.log('UPDATE DEFAULT DEPARTMENT URL  ', url);
 
@@ -357,7 +339,7 @@ export class DepartmentService {
   }
 
   public updateDefaultDeptOfflineMsg(id: string, offlineMsg: string) {
-    const url = this.MONGODB_BASE_URL + id;
+    const url = this.DEPTS_URL + id;
 
     console.log('UPDATE DEFAULT DEPARTMENT URL  ', url);
 
@@ -381,7 +363,7 @@ export class DepartmentService {
    * @param id
    */
   public testChat21AssignesFunction(id: string): Observable<Department[]> {
-    let url = this.MONGODB_BASE_URL;
+    let url = this.DEPTS_URL;
     // + '?nobot=' + true
     url += id + '/operators';
     console.log('-- -- -- URL FOR TEST CHAT21 FUNC ', url);

@@ -6,8 +6,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../core/auth.service';
 import { Observable } from 'rxjs/Observable';
-import { Http, Headers, RequestOptions} from '@angular/http';
-
+import { Http, Headers, RequestOptions } from '@angular/http';
+import { AppConfigService } from '../services/app-config.service';
 
 @Injectable()
 export class WidgetService {
@@ -24,7 +24,11 @@ export class WidgetService {
   public id_project: string;
   public widgetSettingsObjct;
   updateWidgetSuccessNoticationMsg: string;
-  BASE_URL = environment.mongoDbConfig.BASE_URL;
+
+  // BASE_URL = environment.mongoDbConfig.BASE_URL; // replaced with SERVER_BASE_PATH
+  // SERVER_BASE_PATH = environment.SERVER_BASE_URL; // now get from appconfig
+  SERVER_BASE_PATH: string;
+
   TOKEN: string;
   projectID: string;
 
@@ -33,17 +37,21 @@ export class WidgetService {
     private notify: NotifyService,
     private projectService: ProjectService,
     private translate: TranslateService,
-    public auth: AuthService
+    public auth: AuthService,
+    public appConfigService: AppConfigService
   ) {
     this.http = http;
     console.log('»» WIDGET SERVICE HELLO WIDGET SERVICE !')
 
-
+    this.getAppConfig();
     this.getUserToken()
     this.getCurrentProject();
 
   }
-
+  getAppConfig() {
+    this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
+    console.log('AppConfigService getAppConfig (WIDGET SERV.) SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
+  }
 
 
   getUserToken() {
@@ -122,10 +130,10 @@ export class WidgetService {
    * Get all labels
    */
   public getLabels(): Observable<[]> {
-    // const url = this.BASE_URL + this.projectID + '/labels/it'
+    // const url = this.SERVER_BASE_PATH + this.projectID + '/labels/it'
     // https://tiledesk-server-pre.herokuapp.com/5df2240cecd41b00173a06bb/labels2
 
-    const url = this.BASE_URL + this.projectID + '/labels'
+    const url = this.SERVER_BASE_PATH + this.projectID + '/labels'
 
     console.log('Multilanguage »» WIDGET SERVICE - GET LABELS URL', url);
 
@@ -147,7 +155,7 @@ export class WidgetService {
 
     const body = { "lang": langCode };
 
-    const url = this.BASE_URL + this.projectID + '/labels/default/clone?lang=' + langCode
+    const url = this.SERVER_BASE_PATH + this.projectID + '/labels/default/clone?lang=' + langCode
     console.log('Multilanguage »» WIDGET SERVICE - CLONE LABELS URL', url);
 
     return this.http
@@ -163,7 +171,7 @@ export class WidgetService {
 
     // const body = { "lang": 'it', "data": translationObjct };
     const body = { "lang": langCode, "data": translationObjct };
-    const url = this.BASE_URL + this.projectID + '/labels/'
+    const url = this.SERVER_BASE_PATH + this.projectID + '/labels/'
     console.log('Multilanguage »» WIDGET SERVICE - SAVE LABELS URL', url);
     console.log('Multilanguage »» WIDGET SERVICE - SAVE LABELS Body', body);
 
@@ -177,16 +185,16 @@ export class WidgetService {
   // curl -v -X DELETE -H 'Content-Type:application/json' -u andrea.leo@f21.it:123456 http://localhost:3000/4321/labels2
 
   public deleteLabels(langCode) {
-    const url = this.BASE_URL + this.projectID + '/labels/' + langCode
+    const url = this.SERVER_BASE_PATH + this.projectID + '/labels/' + langCode
     console.log('Multilanguage »» WIDGET SERVICE - DELETE LABELS URL', url);
 
     const headers = new Headers();
     headers.append('Content-type', 'application/json');
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
-  
+
     return this.http
-      .delete(url,  options)
+      .delete(url, options)
       .map((res) => res.json());
   }
 
@@ -195,7 +203,7 @@ export class WidgetService {
 
 
   public getMockLabels(): Observable<[]> {
-    // const url = this.BASE_URL + this.projectID + '/labels/it'
+    // const url = this.SERVER_BASE_PATH + this.projectID + '/labels/it'
     // const url = "http://demo9971484.mockable.io/" + lang
     const url = "http://demo9971484.mockable.io/all"
 
@@ -234,8 +242,8 @@ export class WidgetService {
 
   // public editLang(translation) {
 
-  //   // let url = this.BASE_URL + this.projectID + '/labels2/' + this.projectID
-  //   let url = this.BASE_URL + '5df2240cecd41b00173a06bb' + '/labels2'
+  //   // let url = this.SERVER_BASE_PATH + this.projectID + '/labels2/' + this.projectID
+  //   let url = this.SERVER_BASE_PATH + '5df2240cecd41b00173a06bb' + '/labels2'
 
   //   console.log('Multilanguage CREATE LABEL - PUT URL ', url);
 

@@ -2,15 +2,20 @@ import { DepartmentService } from './../services/mongodb-department.service';
 import { Trigger } from './../models/trigger-model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { AuthService } from 'app/core/auth.service';
+import { AppConfigService } from '../services/app-config.service';
 
 @Injectable()
 export class TriggerService {
 
-  BASE_URL = environment.mongoDbConfig.BASE_URL;
+
   // BASE_URL = 'https://tiledesk-server-pre.herokuapp.com/'
+  // BASE_URL = environment.mongoDbConfig.BASE_URL;  // replaced with SERVER_BASE_PATH
+  // SERVER_BASE_PATH = environment.SERVER_BASE_URL; // now get from appconfig
+  SERVER_BASE_PATH: string;
+
   projectID: string;
   user: any;
   TOKEN: string;
@@ -19,7 +24,8 @@ export class TriggerService {
   constructor(
     private http: HttpClient,
     public auth: AuthService,
-    public departmentService: DepartmentService
+    public departmentService: DepartmentService,
+    public appConfigService: AppConfigService
   ) {
 
 
@@ -31,8 +37,13 @@ export class TriggerService {
       this.checkUser()
     });
 
-
+    this.getAppConfig();
     this.getCurrentProject()
+  }
+
+  getAppConfig() {
+    this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
+    console.log('AppConfigService getAppConfig (TRIGGER SERV.) SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
   }
 
   getCurrentProject() {
@@ -67,10 +78,10 @@ export class TriggerService {
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN,
       // 'Authorization': 'Basic ' + btoa('aaa22@aaa22.it:123456')
-      });
+    });
 
-    // return this.http.get<[]>(this.BASE_URL+ this.projectID + '/modules/triggers' ,{ headers:headers})
-    return this.http.get<[]>(this.BASE_URL + this.projectID + '/modules/triggers' , { headers: headers})
+    // return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/modules/triggers' ,{ headers:headers})
+    return this.http.get<[]>(this.SERVER_BASE_PATH + this.projectID + '/modules/triggers', { headers: headers })
 
   }
 
@@ -79,9 +90,9 @@ export class TriggerService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN,
-      });
+    });
 
-    return this.http.get<[Trigger]>(this.BASE_URL + this.projectID + '/modules/triggers/' + triggerId , { headers: headers})
+    return this.http.get<[Trigger]>(this.SERVER_BASE_PATH + this.projectID + '/modules/triggers/' + triggerId, { headers: headers })
 
 
   }
@@ -91,9 +102,9 @@ export class TriggerService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN,
-      });
+    });
 
-    return this.http.post<[]>(this.BASE_URL + this.projectID + '/modules/triggers', JSON.stringify(trigger), {headers: headers});
+    return this.http.post<[]>(this.SERVER_BASE_PATH + this.projectID + '/modules/triggers', JSON.stringify(trigger), { headers: headers });
 
   }
 
@@ -102,9 +113,9 @@ export class TriggerService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN,
-      });
+    });
 
-    return this.http.put<[]>(this.BASE_URL + this.projectID + '/modules/triggers/' + trigger._id , JSON.stringify(trigger), {headers: headers});
+    return this.http.put<[]>(this.SERVER_BASE_PATH + this.projectID + '/modules/triggers/' + trigger._id, JSON.stringify(trigger), { headers: headers });
 
   }
 
@@ -114,9 +125,9 @@ export class TriggerService {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': this.TOKEN,
-      });
+    });
 
-    return this.http.delete<[]>(this.BASE_URL + this.projectID + '/modules/triggers/' + triggerID, {headers: headers});
+    return this.http.delete<[]>(this.SERVER_BASE_PATH + this.projectID + '/modules/triggers/' + triggerID, { headers: headers });
   }
 
 

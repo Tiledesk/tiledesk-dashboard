@@ -5,23 +5,30 @@ import { Faq } from '../models/faq-model';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { AuthService } from '../core/auth.service';
+import { AppConfigService } from '../services/app-config.service';
 
 @Injectable()
 export class MongodbFaqService {
 
   http: Http;
   // MONGODB_BASE_URL = environment.mongoDbConfig.FAQ_BASE_URL;
-  BASE_URL = environment.mongoDbConfig.BASE_URL;
-  MONGODB_BASE_URL: any;
+
+  // BASE_URL = environment.mongoDbConfig.BASE_URL; // replaced with SERVER_BASE_PATH
+  // MONGODB_BASE_URL: any;  // replaced with FAQ_URL
+
+  // SERVER_BASE_PATH = environment.SERVER_BASE_URL; // now get from appconfig
+  SERVER_BASE_PATH: string;
+  FAQ_URL: any;
   EXPORT_FAQ_TO_CSV_URL: string;
-  // TOKEN = environment.mongoDbConfig.TOKEN;
+
   TOKEN: string
   user: any;
   project: any;
 
   constructor(
     http: Http,
-    private auth: AuthService
+    private auth: AuthService,
+    public appConfigService: AppConfigService
   ) {
     this.http = http;
 
@@ -33,10 +40,14 @@ export class MongodbFaqService {
       this.user = user;
       this.checkUser()
     });
-
+    this.getAppConfig();
     this.getCurrentProject();
   }
 
+  getAppConfig() {
+    this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
+    console.log('AppConfigService getAppConfig (FAQ SERV.) SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
+  }
   getCurrentProject() {
     console.log('FAQ SERV - SUBSCRIBE TO CURRENT PROJ ')
     // tslint:disable-next-line:no-debugger
@@ -47,8 +58,10 @@ export class MongodbFaqService {
       // debugger
       if (this.project) {
         console.log('00 -> FAQ SERVICE project ID from AUTH service subscription  ', this.project._id)
-        this.MONGODB_BASE_URL = this.BASE_URL + this.project._id + '/faq/'
-        this.EXPORT_FAQ_TO_CSV_URL = this.BASE_URL + this.project._id + '/faq/csv'
+        this.FAQ_URL = this.SERVER_BASE_PATH + this.project._id + '/faq/';
+        this.EXPORT_FAQ_TO_CSV_URL = this.SERVER_BASE_PATH + this.project._id + '/faq/csv';
+        console.log('AppConfigService getAppConfig (FAQ SERV.) FAQ_URL (built with SERVER_BASE_PATH) ', this.FAQ_URL);
+        console.log('AppConfigService getAppConfig (FAQ SERV.) EXPORT_FAQ_TO_CSV_URL (built with SERVER_BASE_PATH) ', this.EXPORT_FAQ_TO_CSV_URL);
       }
     });
   }
@@ -66,7 +79,7 @@ export class MongodbFaqService {
    * READ (GET ALL FAQ) - NOT USED
    */
   public getMongDbFaq(): Observable<Faq[]> {
-    const url = this.MONGODB_BASE_URL;
+    const url = this.FAQ_URL;
 
     console.log('GET ALL FAQ URL', url);
     // console.log('MONGO DB TOKEN', this.TOKEN);
@@ -86,7 +99,7 @@ export class MongodbFaqService {
    * READ DETAIL (GET FAQ BY FAQ ID)
    */
   public getMongDbFaqById(id: string): Observable<Faq[]> {
-    let url = this.MONGODB_BASE_URL;
+    let url = this.FAQ_URL;
     url += `${id}`;
     console.log('MONGO DB GET FAQ BY FAQ-ID URL', url);
 
@@ -104,7 +117,7 @@ export class MongodbFaqService {
    */
   public getMongoDbFaqByFaqKbId(id_faq_kb: string): Observable<Faq[]> {
     // let url = 'http://localhost:3000/app1/faq/?id_faq_kb=5a81598721333b920c3e5949';
-    let url = this.MONGODB_BASE_URL;
+    let url = this.FAQ_URL;
     url += '?id_faq_kb=' + `${id_faq_kb}`;
 
     console.log('MONGO DB GET BY ID FAQ URL', url);
@@ -117,13 +130,13 @@ export class MongodbFaqService {
       .map((response) => response.json());
   }
 
-    /**
-   * GET FAQ BY TEXT (CONTAINED IN THE QUESTION OR IN THE ANSWER)
-   * @param id_faq_kb
-   */
+  /**
+ * GET FAQ BY TEXT (CONTAINED IN THE QUESTION OR IN THE ANSWER)
+ * @param id_faq_kb
+ */
   public getFaqsByText(text: string): Observable<Faq[]> {
     // let url = 'http://localhost:3000/app1/faq/?id_faq_kb=5a81598721333b920c3e5949';
-    let url = this.MONGODB_BASE_URL;
+    let url = this.FAQ_URL;
     url += '?text=' + text;
 
     console.log('MONGO DB GET BY ID FAQ URL', url);
@@ -134,7 +147,7 @@ export class MongodbFaqService {
     return this.http
       .get(url, { headers })
       .map((response) => response.json())
-      // .filter((data) =>  data)
+    // .filter((data) =>  data)
   }
 
   /**
@@ -168,7 +181,7 @@ export class MongodbFaqService {
 
     console.log('ADD FAQ POST BODY ', body);
 
-    const url = this.MONGODB_BASE_URL;
+    const url = this.FAQ_URL;
 
     return this.http
       .post(url, JSON.stringify(body), options)
@@ -183,7 +196,7 @@ export class MongodbFaqService {
     // headers.append('Content-Type', 'multipart/form-data');
     headers.append('Accept', 'text/csv');
     headers.append('Authorization', this.TOKEN);
-    const url = this.MONGODB_BASE_URL + 'uploadcsv';
+    const url = this.FAQ_URL + 'uploadcsv';
     const options = new RequestOptions({ headers: headers });
     return this.http
       .post(url, formData, options)
@@ -203,7 +216,7 @@ export class MongodbFaqService {
    */
   public deleteMongoDbFaq(id: string) {
 
-    let url = this.MONGODB_BASE_URL;
+    let url = this.FAQ_URL;
     url += `${id}# chat21-api-nodejs`;
     console.log('DELETE URL ', url);
 
@@ -227,7 +240,7 @@ export class MongodbFaqService {
    */
   public updateMongoDbFaq(id: string, question: string, answer: string) {
     console.log('ID IN FAQ SERVICE ', id);
-    let url = this.MONGODB_BASE_URL;
+    let url = this.FAQ_URL;
     url = url += `${id}`;
     console.log('PUT URL ', url);
 
@@ -254,8 +267,8 @@ export class MongodbFaqService {
     headers.append('Content-type', 'application/json');
     // headers.append('Authorization', 'Basic YWRtaW46YWRtaW5wNHNzdzByZA==');
     headers.append('Authorization', this.TOKEN);
-    // const url = this.MONGODB_BASE_URL + 'askbot';
-    const url = this.BASE_URL + this.project._id + '/faq_kb/' + 'askbot';
+    // const url = this.FAQ_URL + 'askbot';
+    const url = this.SERVER_BASE_PATH + this.project._id + '/faq_kb/' + 'askbot';
     const options = new RequestOptions({ headers });
 
     // const body = { 'question': question, 'doctype': 'normal', 'min_score': '0.0', 'remote_faqkb_key': remoteFaqKbKey };

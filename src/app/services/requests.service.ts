@@ -49,9 +49,13 @@ export class RequestsService {
 
   myDepts: Department[]
 
-  BASE_URL = environment.mongoDbConfig.BASE_URL;
+  // BASE_URL = environment.mongoDbConfig.BASE_URL; // replaced with SERVER_BASE_PATH
+ 
+  // SERVER_BASE_PATH = environment.SERVER_BASE_URL; // now get from appconfig
+  SERVER_BASE_PATH: string;
+
   TOKEN: string
-  MY_DEPTS_BASE_URL: any;
+  // MY_DEPTS_BASE_URL: any; // NOT USED
 
   // public mySubject: BehaviorSubject<any> = new BehaviorSubject<any[]>(null);
   public mySubject: BehaviorSubject<any> = new BehaviorSubject<any[]>(null);
@@ -117,6 +121,8 @@ export class RequestsService {
     this.CHAT21_CLOUD_FUNC_CLOSE_GROUP_BASE_URL = cloudBaseUrl + '/supportapi/tilechat/groups/'
     console.log('nk --> RequestsService cloud_func_close_support_group_base_url ', this.CHAT21_CLOUD_FUNC_CLOSE_GROUP_BASE_URL);
 
+    this.SERVER_BASE_PATH = appConfigService.getConfig().SERVER_BASE_URL;
+    console.log('AppConfigService getAppConfig (REQUESTS SERV.) SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
   }
 
   getProjectUserRole() {
@@ -574,7 +580,7 @@ export class RequestsService {
   public requestsByDay() {
     // USED TO TEST (note: this service doesn't work in localhost)
     // const url = 'https://api.tiledesk.com/v1/' + '5c28b587348b680015feecca' + '/analytics/requests/aggregate/day';
-    const url = this.BASE_URL + this.project._id + '/analytics/requests/aggregate/day';
+    const url = this.SERVER_BASE_PATH + this.project._id + '/analytics/requests/aggregate/day';
     console.log('!!! ANALYTICS - REQUESTS BY DAY - URL ', url);
 
     const headers = new Headers();
@@ -594,7 +600,7 @@ export class RequestsService {
     // USED TO TEST (note: this service doesn't work in localhost)
     // const url = 'https://api.tiledesk.com/v1/' + '5ad5bd52c975820014ba900a' + '/analytics/requests/waiting';
 
-    const url = this.BASE_URL + this.project._id + '/analytics/requests/waiting';
+    const url = this.SERVER_BASE_PATH + this.project._id + '/analytics/requests/waiting';
     console.log('!!! ANALYTICS - AVERAGE WAIT - URL ', url);
 
     const headers = new Headers();
@@ -610,7 +616,7 @@ export class RequestsService {
 
   // NOT YET USED (NOTE the timezone is variable - see email 3 jan)
   public daysHoursRequestsDistribution() {
-    const url = this.BASE_URL + this.project._id + '/analytics/requests/aggregate/dayoftheweek/hours?timezone=%2B01';
+    const url = this.SERVER_BASE_PATH + this.project._id + '/analytics/requests/aggregate/dayoftheweek/hours?timezone=%2B01';
     console.log('!!! ANALYTICS - Requests Distribution IN THE HOURS OF THE DAYS - URL ', url);
 
     const headers = new Headers();
@@ -627,7 +633,7 @@ export class RequestsService {
   public lastMonthRequetsCount() {
     // USED TO TEST (note: this service doesn't work in localhost)
     //  const url = 'https://api.tiledesk.com/v1/' + '5ba35f0b9acdd40015d350b6' + '/analytics/requests/count';
-    const url = this.BASE_URL + this.project._id + '/analytics/requests/count';
+    const url = this.SERVER_BASE_PATH + this.project._id + '/analytics/requests/count';
     console.log('!!! ANALYTICS - REQUESTS BY DAY - URL ', url);
 
     const headers = new Headers();
@@ -645,7 +651,7 @@ export class RequestsService {
     if (querystring === undefined || !querystring) {
       _querystring = ''
     }
-    const url = this.BASE_URL + this.project._id + '/requests/csv?status=1000' + _querystring + '&page=' + pagenumber;
+    const url = this.SERVER_BASE_PATH + this.project._id + '/requests/csv?status=1000' + _querystring + '&page=' + pagenumber;
     console.log('!!! NEW REQUESTS HISTORY - DOWNLOAD REQUESTS AS CSV URL ', url);
 
     const headers = new Headers();
@@ -671,7 +677,7 @@ export class RequestsService {
     /* *** USED TO TEST IN LOCALHOST (note: this service doen't work in localhost) *** */
     // const url = 'https://api.tiledesk.com/v1/' + '5af02d8f705ac600147f0cbb' + '/requests?status=1000' + _querystring + '&page=' + pagenumber;
     /* *** USED IN PRODUCTION *** */
-    const url = this.BASE_URL + this.project._id + '/requests?status=1000' + _querystring + '&page=' + pagenumber;
+    const url = this.SERVER_BASE_PATH + this.project._id + '/requests?status=1000' + _querystring + '&page=' + pagenumber;
 
     console.log('!!! NEW REQUESTS HISTORY - REQUESTS SERVICE URL ', url);
 
@@ -688,45 +694,54 @@ export class RequestsService {
   }
 
 
-  public getNodeJsRequestsByRequesterId(requesterid: string, pagenumber: number) {
-    /* *** USED TO TEST IN LOCALHOST (note: this service doen't work in localhost) *** */
-    // const url = 'https://api.tiledesk.com/v1/' + '5ba35f0b9acdd40015d350b6' + '/requests?requester_id=' + requesterid + '&page=' + pagenumber;
-    /* *** USED IN PRODUCTION *** */
-    const url = this.BASE_URL + this.project._id + '/requests?lead=' + requesterid + '&page=' + pagenumber;
+  /**
+   * moved in contact service
+   */
 
-    console.log('!!!! CONTACT DETAILS - REQUESTS SERVICE URL ', url);
+  // public getNodeJsRequestsByRequesterId(requesterid: string, pagenumber: number) {
+  //   /* *** USED TO TEST IN LOCALHOST (note: this service doen't work in localhost) *** */
+  //   // const url = 'https://api.tiledesk.com/v1/' + '5ba35f0b9acdd40015d350b6' + '/requests?requester_id=' + requesterid + '&page=' + pagenumber;
+  //   /* *** USED IN PRODUCTION *** */
+  //   const url = this.SERVER_BASE_PATH + this.project._id + '/requests?lead=' + requesterid + '&page=' + pagenumber;
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    /* *** USED TO TEST IN LOCALHOST (note: this service doesn't work in localhost) *** */
-    // headers.append('Authorization', 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiZW1haWwiOjEsImZpcnN0bmFtZSI6MSwibGFzdG5hbWUiOjEsInBhc3N3b3JkIjoxLCJlbWFpbHZlcmlmaWVkIjoxLCJpZCI6MX0sImdldHRlcnMiOnt9LCJfaWQiOiI1YWFhOTJmZjRjM2IxMTAwMTRiNDc4Y2IiLCJ3YXNQb3B1bGF0ZWQiOmZhbHNlLCJhY3RpdmVQYXRocyI6eyJwYXRocyI6eyJwYXNzd29yZCI6ImluaXQiLCJlbWFpbCI6ImluaXQiLCJsYXN0bmFtZSI6ImluaXQiLCJmaXJzdG5hbWUiOiJpbml0IiwiX2lkIjoiaW5pdCJ9LCJzdGF0ZXMiOnsiaWdub3JlIjp7fSwiZGVmYXVsdCI6e30sImluaXQiOnsibGFzdG5hbWUiOnRydWUsImZpcnN0bmFtZSI6dHJ1ZSwicGFzc3dvcmQiOnRydWUsImVtYWlsIjp0cnVlLCJfaWQiOnRydWV9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7fX0sInN0YXRlTmFtZXMiOlsicmVxdWlyZSIsIm1vZGlmeSIsImluaXQiLCJkZWZhdWx0IiwiaWdub3JlIl19LCJwYXRoc1RvU2NvcGVzIjp7fSwiZW1pdHRlciI6eyJkb21haW4iOm51bGwsIl9ldmVudHMiOnt9LCJfZXZlbnRzQ291bnQiOjAsIl9tYXhMaXN0ZW5lcnMiOjB9LCIkb3B0aW9ucyI6dHJ1ZX0sImlzTmV3IjpmYWxzZSwiX2RvYyI6eyJsYXN0bmFtZSI6IkxhbnppbG90dG8iLCJmaXJzdG5hbWUiOiJOaWNvbGEgNzQiLCJwYXNzd29yZCI6IiQyYSQxMCRwVWdocTVJclgxMzhTOXBEY1pkbG1lcnNjVTdVOXJiNlFKaVliMXlEckljOHJDMFh6c2hUcSIsImVtYWlsIjoibGFuemlsb3R0b25pY29sYTc0QGdtYWlsLmNvbSIsIl9pZCI6IjVhYWE5MmZmNGMzYjExMDAxNGI0NzhjYiJ9LCIkaW5pdCI6dHJ1ZSwiaWF0IjoxNTM4MTIzNTcyfQ.CYnxkLbg5XWk2JWAxQg1QNGDpNgNbZAzs5PEQpLCCnI');
-    /* *** USED IN PRODUCTION *** */
-    headers.append('Authorization', this.TOKEN);
+  //   console.log('!!!! CONTACT DETAILS - REQUESTS SERVICE URL ', url);
 
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
-  }
+  //   const headers = new Headers();
+  //   headers.append('Content-Type', 'application/json');
+  //   /* *** USED TO TEST IN LOCALHOST (note: this service doesn't work in localhost) *** */
+  //   // headers.append('Authorization', 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiZW1haWwiOjEsImZpcnN0bmFtZSI6MSwibGFzdG5hbWUiOjEsInBhc3N3b3JkIjoxLCJlbWFpbHZlcmlmaWVkIjoxLCJpZCI6MX0sImdldHRlcnMiOnt9LCJfaWQiOiI1YWFhOTJmZjRjM2IxMTAwMTRiNDc4Y2IiLCJ3YXNQb3B1bGF0ZWQiOmZhbHNlLCJhY3RpdmVQYXRocyI6eyJwYXRocyI6eyJwYXNzd29yZCI6ImluaXQiLCJlbWFpbCI6ImluaXQiLCJsYXN0bmFtZSI6ImluaXQiLCJmaXJzdG5hbWUiOiJpbml0IiwiX2lkIjoiaW5pdCJ9LCJzdGF0ZXMiOnsiaWdub3JlIjp7fSwiZGVmYXVsdCI6e30sImluaXQiOnsibGFzdG5hbWUiOnRydWUsImZpcnN0bmFtZSI6dHJ1ZSwicGFzc3dvcmQiOnRydWUsImVtYWlsIjp0cnVlLCJfaWQiOnRydWV9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7fX0sInN0YXRlTmFtZXMiOlsicmVxdWlyZSIsIm1vZGlmeSIsImluaXQiLCJkZWZhdWx0IiwiaWdub3JlIl19LCJwYXRoc1RvU2NvcGVzIjp7fSwiZW1pdHRlciI6eyJkb21haW4iOm51bGwsIl9ldmVudHMiOnt9LCJfZXZlbnRzQ291bnQiOjAsIl9tYXhMaXN0ZW5lcnMiOjB9LCIkb3B0aW9ucyI6dHJ1ZX0sImlzTmV3IjpmYWxzZSwiX2RvYyI6eyJsYXN0bmFtZSI6IkxhbnppbG90dG8iLCJmaXJzdG5hbWUiOiJOaWNvbGEgNzQiLCJwYXNzd29yZCI6IiQyYSQxMCRwVWdocTVJclgxMzhTOXBEY1pkbG1lcnNjVTdVOXJiNlFKaVliMXlEckljOHJDMFh6c2hUcSIsImVtYWlsIjoibGFuemlsb3R0b25pY29sYTc0QGdtYWlsLmNvbSIsIl9pZCI6IjVhYWE5MmZmNGMzYjExMDAxNGI0NzhjYiJ9LCIkaW5pdCI6dHJ1ZSwiaWF0IjoxNTM4MTIzNTcyfQ.CYnxkLbg5XWk2JWAxQg1QNGDpNgNbZAzs5PEQpLCCnI');
+  //   /* *** USED IN PRODUCTION *** */
+  //   headers.append('Authorization', this.TOKEN);
 
-  public getNodeJsRequestByFirebaseRequestId(requestid: string, pagenumber: number) {
-    /* *** USED TO TEST IN LOCALHOST (note: this service doen't work in localhost) *** */
-    // const url = 'https://api.tiledesk.com/v1/' + '5ba35f0b9acdd40015d350b6' + '/requests?requester_id=' + requesterid + '&page=' + pagenumber;
-    /* *** USED IN PRODUCTION *** */
-    // const url = this.BASE_URL + this.project._id + '/requests?request_id=' + requestid;
-    const url = this.BASE_URL + this.project._id + '/requests/' + requestid;
+  //   return this.http
+  //     .get(url, { headers })
+  //     .map((response) => response.json());
+  // }
 
-    console.log('!!!! CONTACT DETAILS - GET NODEJS REQUEST BYSERVICE URL ', url);
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    /* *** USED TO TEST IN LOCALHOST (note: this service doesn't work in localhost) *** */
-    // headers.append('Authorization', 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiZW1haWwiOjEsImZpcnN0bmFtZSI6MSwibGFzdG5hbWUiOjEsInBhc3N3b3JkIjoxLCJlbWFpbHZlcmlmaWVkIjoxLCJpZCI6MX0sImdldHRlcnMiOnt9LCJfaWQiOiI1YWFhOTJmZjRjM2IxMTAwMTRiNDc4Y2IiLCJ3YXNQb3B1bGF0ZWQiOmZhbHNlLCJhY3RpdmVQYXRocyI6eyJwYXRocyI6eyJwYXNzd29yZCI6ImluaXQiLCJlbWFpbCI6ImluaXQiLCJsYXN0bmFtZSI6ImluaXQiLCJmaXJzdG5hbWUiOiJpbml0IiwiX2lkIjoiaW5pdCJ9LCJzdGF0ZXMiOnsiaWdub3JlIjp7fSwiZGVmYXVsdCI6e30sImluaXQiOnsibGFzdG5hbWUiOnRydWUsImZpcnN0bmFtZSI6dHJ1ZSwicGFzc3dvcmQiOnRydWUsImVtYWlsIjp0cnVlLCJfaWQiOnRydWV9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7fX0sInN0YXRlTmFtZXMiOlsicmVxdWlyZSIsIm1vZGlmeSIsImluaXQiLCJkZWZhdWx0IiwiaWdub3JlIl19LCJwYXRoc1RvU2NvcGVzIjp7fSwiZW1pdHRlciI6eyJkb21haW4iOm51bGwsIl9ldmVudHMiOnt9LCJfZXZlbnRzQ291bnQiOjAsIl9tYXhMaXN0ZW5lcnMiOjB9LCIkb3B0aW9ucyI6dHJ1ZX0sImlzTmV3IjpmYWxzZSwiX2RvYyI6eyJsYXN0bmFtZSI6IkxhbnppbG90dG8iLCJmaXJzdG5hbWUiOiJOaWNvbGEgNzQiLCJwYXNzd29yZCI6IiQyYSQxMCRwVWdocTVJclgxMzhTOXBEY1pkbG1lcnNjVTdVOXJiNlFKaVliMXlEckljOHJDMFh6c2hUcSIsImVtYWlsIjoibGFuemlsb3R0b25pY29sYTc0QGdtYWlsLmNvbSIsIl9pZCI6IjVhYWE5MmZmNGMzYjExMDAxNGI0NzhjYiJ9LCIkaW5pdCI6dHJ1ZSwiaWF0IjoxNTM4MTIzNTcyfQ.CYnxkLbg5XWk2JWAxQg1QNGDpNgNbZAzs5PEQpLCCnI');
-    /* *** USED IN PRODUCTION *** */
-    headers.append('Authorization', this.TOKEN);
+  /**
+   * was used in requests-msgs.components.ts (commented also here)
+   */
 
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
-  }
+  // public getNodeJsRequestByFirebaseRequestId(requestid: string, pagenumber: number) {
+  //   /* *** USED TO TEST IN LOCALHOST (note: this service doen't work in localhost) *** */
+  //   // const url = 'https://api.tiledesk.com/v1/' + '5ba35f0b9acdd40015d350b6' + '/requests?requester_id=' + requesterid + '&page=' + pagenumber;
+  //   /* *** USED IN PRODUCTION *** */
+  //   // const url = this.BASE_URL + this.project._id + '/requests?request_id=' + requestid;
+  //   const url = this.SERVER_BASE_PATH + this.project._id + '/requests/' + requestid;
+
+  //   console.log('!!!! CONTACT DETAILS - GET NODEJS REQUEST BYSERVICE URL ', url);
+
+  //   const headers = new Headers();
+  //   headers.append('Content-Type', 'application/json');
+  //   /* *** USED TO TEST IN LOCALHOST (note: this service doesn't work in localhost) *** */
+  //   // headers.append('Authorization', 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiZW1haWwiOjEsImZpcnN0bmFtZSI6MSwibGFzdG5hbWUiOjEsInBhc3N3b3JkIjoxLCJlbWFpbHZlcmlmaWVkIjoxLCJpZCI6MX0sImdldHRlcnMiOnt9LCJfaWQiOiI1YWFhOTJmZjRjM2IxMTAwMTRiNDc4Y2IiLCJ3YXNQb3B1bGF0ZWQiOmZhbHNlLCJhY3RpdmVQYXRocyI6eyJwYXRocyI6eyJwYXNzd29yZCI6ImluaXQiLCJlbWFpbCI6ImluaXQiLCJsYXN0bmFtZSI6ImluaXQiLCJmaXJzdG5hbWUiOiJpbml0IiwiX2lkIjoiaW5pdCJ9LCJzdGF0ZXMiOnsiaWdub3JlIjp7fSwiZGVmYXVsdCI6e30sImluaXQiOnsibGFzdG5hbWUiOnRydWUsImZpcnN0bmFtZSI6dHJ1ZSwicGFzc3dvcmQiOnRydWUsImVtYWlsIjp0cnVlLCJfaWQiOnRydWV9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7fX0sInN0YXRlTmFtZXMiOlsicmVxdWlyZSIsIm1vZGlmeSIsImluaXQiLCJkZWZhdWx0IiwiaWdub3JlIl19LCJwYXRoc1RvU2NvcGVzIjp7fSwiZW1pdHRlciI6eyJkb21haW4iOm51bGwsIl9ldmVudHMiOnt9LCJfZXZlbnRzQ291bnQiOjAsIl9tYXhMaXN0ZW5lcnMiOjB9LCIkb3B0aW9ucyI6dHJ1ZX0sImlzTmV3IjpmYWxzZSwiX2RvYyI6eyJsYXN0bmFtZSI6IkxhbnppbG90dG8iLCJmaXJzdG5hbWUiOiJOaWNvbGEgNzQiLCJwYXNzd29yZCI6IiQyYSQxMCRwVWdocTVJclgxMzhTOXBEY1pkbG1lcnNjVTdVOXJiNlFKaVliMXlEckljOHJDMFh6c2hUcSIsImVtYWlsIjoibGFuemlsb3R0b25pY29sYTc0QGdtYWlsLmNvbSIsIl9pZCI6IjVhYWE5MmZmNGMzYjExMDAxNGI0NzhjYiJ9LCIkaW5pdCI6dHJ1ZSwiaWF0IjoxNTM4MTIzNTcyfQ.CYnxkLbg5XWk2JWAxQg1QNGDpNgNbZAzs5PEQpLCCnI');
+  //   /* *** USED IN PRODUCTION *** */
+  //   headers.append('Authorization', this.TOKEN);
+
+  //   return this.http
+  //     .get(url, { headers })
+  //     .map((response) => response.json());
+  // }
 
 }

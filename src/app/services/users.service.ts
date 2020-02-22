@@ -43,18 +43,41 @@ export class UsersService {
   // public has_clicked_logoutfrom_mobile_sidebar_project_undefined: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   http: Http;
-  BASE_URL = environment.mongoDbConfig.BASE_URL;
+
+  // BASE_URL = environment.mongoDbConfig.BASE_URL; // replaced with SERVER_BASE_PATH
+  // PROJECT_BASE_URL = environment.mongoDbConfig.PROJECTS_BASE_URL; // moved
+  // UPDATE_USER_URL = environment.mongoDbConfig.UPDATE_USER_LASTNAME_FIRSTNAME; // moved
+  // CHANGE_PSW_URL = environment.mongoDbConfig.CHANGE_PSW; // moved
+  // RESEND_VERIFY_EMAIL = environment.mongoDbConfig.RESEND_VERIFY_EMAIL; // moved
+
+  // SERVER_BASE_PATH = environment.SERVER_BASE_URL; // now get from appconfig
+  // PROJECTS_URL = this.SERVER_BASE_PATH + 'projects/' // now built after get SERVER_BASE_PATH from appconfig
+  // UPDATE_USER_URL = this.SERVER_BASE_PATH + 'users/' // now built after get SERVER_BASE_PATH from appconfig
+  // CHANGE_PSW_URL = this.SERVER_BASE_PATH + 'users/changepsw/'; // now built after get SERVER_BASE_PATH from appconfig
+  // RESEND_VERIFY_EMAIL = this.SERVER_BASE_PATH + 'users/resendverifyemail/'; // now built after get SERVER_BASE_PATH from appconfig
+
+  SERVER_BASE_PATH: string;
+  PROJECTS_URL: string;
+  UPDATE_USER_URL: string;
+  CHANGE_PSW_URL: string;
+  RESEND_VERIFY_EMAIL: string;
+
+  AVAILABLE_USERS_URL: any;
+  // NEW_AVAILABLE_USERS_URL: any; // NO MORE USED
+  USERS_ACTIVITIES_URL: any;
   CLOUD_FUNC_UPDATE_USER_URL: any;
-  // CLOUD_FUNC_UPDATE_USER_URL = environment.cloudFunctions.cloud_func_update_firstname_and_lastname;
-  MONGODB_BASE_URL: any;
+  PROJECT_USER_URL: any;
   INVITE_USER_URL: any;
-  PROJECT_USER_DTLS_URL: any;
   PENDING_INVITATION_URL: string;
 
+  // http://localhost:3000/users/updateuser/'
+  // CLOUD_FUNC_UPDATE_USER_URL = environment.cloudFunctions.cloud_func_update_firstname_and_lastname;
+  // MONGODB_BASE_URL: any;
+  // PROJECT_USER_DTLS_URL: any;
   // GET_PROJECT_USER_URL: any;
+
   TOKEN: string
   user: any;
-
   orderBy_field: any;
   orderBy_direction: any;
 
@@ -63,20 +86,9 @@ export class UsersService {
   // searchUserCollection: AngularFirestoreCollection<User>;
 
   project: any;
-  PROJECT_BASE_URL = environment.mongoDbConfig.PROJECTS_BASE_URL;
-  AVAILABLE_USERS_URL: any;
-  NEW_AVAILABLE_USERS_URL: any;
-  USERS_ACTIVITIES_URL: any;
-
-
-  // http://localhost:3000/users/updateuser/'
-  UPDATE_USER_URL = environment.mongoDbConfig.UPDATE_USER_LASTNAME_FIRSTNAME;
-  CHANGE_PSW_URL = environment.mongoDbConfig.CHANGE_PSW;
-  RESEND_VERIFY_EMAIL = environment.mongoDbConfig.RESEND_VERIFY_EMAIL;
   currentUserId: string;
   project_id: string;
   project_name: string;
-
   storageBucket: string;
 
   constructor(
@@ -104,15 +116,29 @@ export class UsersService {
       this.checkUser()
     });
 
+    this.getAppConfigAndBuildUrl();
     this.getCurrentProject();
 
-    // const firebase_conf = JSON.parse(appConfigService.getConfig().firebase);
-    const firebase_conf = appConfigService.getConfig().firebase;
-    console.log('nk --> UsersService firebase_conf ', firebase_conf);
+
+  }
+
+  getAppConfigAndBuildUrl() {
+
+    const firebase_conf = this.appConfigService.getConfig().firebase;
     const cloudBaseUrl = firebase_conf['chat21ApiUrl']
-    // console.log('nk --> UsersService cloudBaseUrl ',  cloudBaseUrl);
     this.CLOUD_FUNC_UPDATE_USER_URL = cloudBaseUrl + '/api/tilechat/contacts/me';
-    console.log('nk --> UsersService cloud_func_update_firstname_and_lastname', this.CLOUD_FUNC_UPDATE_USER_URL);;
+
+    this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
+    console.log('AppConfigService getAppConfig (USERS SERV.) SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
+    this.PROJECTS_URL = this.SERVER_BASE_PATH + 'projects/';
+    this.UPDATE_USER_URL = this.SERVER_BASE_PATH + 'users/';
+    this.CHANGE_PSW_URL = this.SERVER_BASE_PATH + 'users/changepsw/';
+    this.RESEND_VERIFY_EMAIL = this.SERVER_BASE_PATH + 'users/resendverifyemail/';
+
+    console.log('AppConfigService getAppConfig (USERS SERV.) PROJECTS_URL (built with SERVER_BASE_PATH) ', this.PROJECTS_URL);
+    console.log('AppConfigService getAppConfig (USERS SERV.) UPDATE_USER_URL (built with SERVER_BASE_PATH) ', this.UPDATE_USER_URL);
+    console.log('AppConfigService getAppConfig (USERS SERV.) CHANGE_PSW_URL (built with SERVER_BASE_PATH) ', this.CHANGE_PSW_URL);
+    console.log('AppConfigService getAppConfig (USERS SERV.) RESEND_VERIFY_EMAIL (built with SERVER_BASE_PATH) ', this.RESEND_VERIFY_EMAIL);
   }
 
   getCurrentProject() {
@@ -127,23 +153,27 @@ export class UsersService {
         this.project_id = this.project._id;
         this.project_name = this.project.name;
         console.log('-- -- >>>> 00 -> USERS SERVICE project ID from AUTH service subscription  ', this.project._id);
-        this.MONGODB_BASE_URL = this.BASE_URL + this.project._id + '/project_users/';
-        this.INVITE_USER_URL = this.BASE_URL + this.project._id + '/project_users/invite';
+        // this.MONGODB_BASE_URL = this.SERVER_BASE_PATH + this.project._id + '/project_users/';
 
-        this.PENDING_INVITATION_URL = this.BASE_URL + this.project._id + '/pendinginvitations';
+        this.PROJECT_USER_URL = this.SERVER_BASE_PATH + this.project._id + '/project_users/';
+        this.INVITE_USER_URL = this.SERVER_BASE_PATH + this.project._id + '/project_users/invite';
+        this.PENDING_INVITATION_URL = this.SERVER_BASE_PATH + this.project._id + '/pendinginvitations';
+        this.AVAILABLE_USERS_URL = this.PROJECTS_URL + this.project._id + '/users/availables';
+        // this.NEW_AVAILABLE_USERS_URL = this.PROJECTS_URL + this.project._id + '/users/availables';
+        this.USERS_ACTIVITIES_URL = this.SERVER_BASE_PATH + this.project._id + '/activities';
 
-
-
-        // MAYBE NOT USED anymore
-        this.PROJECT_USER_DTLS_URL = this.BASE_URL + this.project._id + '/member/';
-
-        this.AVAILABLE_USERS_URL = this.PROJECT_BASE_URL + this.project._id + '/users/availables';
-        this.NEW_AVAILABLE_USERS_URL = this.PROJECT_BASE_URL + this.project._id + '/users/availables';
-
-        this.USERS_ACTIVITIES_URL = this.BASE_URL + this.project._id + '/activities';
+        console.log('AppConfigService getAppConfig (USERS SERV.) PROJECT_USER_URL (built with SERVER_BASE_PATH) ', this.PROJECT_USER_URL);
+        console.log('AppConfigService getAppConfig (USERS SERV.) INVITE_USER_URL (built with SERVER_BASE_PATH) ', this.INVITE_USER_URL);
+        console.log('AppConfigService getAppConfig (USERS SERV.) PENDING_INVITATION_URL (built with SERVER_BASE_PATH) ', this.PENDING_INVITATION_URL);
+        console.log('AppConfigService getAppConfig (USERS SERV.) AVAILABLE_USERS_URL (built with SERVER_BASE_PATH) ', this.AVAILABLE_USERS_URL);
+        // console.log('AppConfigService getAppConfig (USERS SERV.) NEW_AVAILABLE_USERS_URL (built with SERVER_BASE_PATH) ', this.NEW_AVAILABLE_USERS_URL);
+        console.log('AppConfigService getAppConfig (USERS SERV.) USERS_ACTIVITIES_URL (built with SERVER_BASE_PATH) ', this.USERS_ACTIVITIES_URL);
 
         // PROJECT-USER BY PROJECT ID AND CURRENT USER ID
         // this.PROJECT_USER_URL = this.BASE_URL + this.project._id + '/project_users/'
+
+        // MAYBE NOT USED anymore
+        // this.PROJECT_USER_DTLS_URL = this.SERVER_BASE_PATH + this.project._id + '/member/';
       }
     });
   }
@@ -326,7 +356,7 @@ export class UsersService {
    */
   public getCurrentUserProfile(): Observable<User[]> {
     // const url = this.BASE_URL + 'users/' + user_id;
-    const url = this.BASE_URL + 'users';
+    const url = this.SERVER_BASE_PATH + 'users';
     // const url = this.BASE_URL + 'project_users/users/' + user_id;
 
     console.log('!! GET USERS BY ID - URL', url);
@@ -345,8 +375,8 @@ export class UsersService {
   // DONE- WORKS - NK-TO-TEST - questo va sostituito con /project_users/users/:user_id',
   public getProjectUserById(user_id): Observable<User[]> {
     // const url = this.BASE_URL + 'users/' + user_id; 
-    const url = this.BASE_URL + this.project._id + '/project_users/users/' + user_id;;
-    
+    const url = this.SERVER_BASE_PATH + this.project._id + '/project_users/users/' + user_id;;
+
 
     console.log('!! GET USERS BY ID - URL', url);
     const headers = new Headers();
@@ -363,7 +393,7 @@ export class UsersService {
    */
   // DONE - WORKS NK-TO-TEST - da testare dopo che L. esegue il commit del servizio aggiornato (is used to get the list of users in "Users & Groups")
   public getProjectUsersByProjectId(): Observable<ProjectUser[]> {
-    const url = this.MONGODB_BASE_URL;
+    const url = this.PROJECT_USER_URL;
 
     console.log('!! GET PROJECT USERS BY PROJECT ID - URL', url);
     const headers = new Headers();
@@ -391,7 +421,7 @@ export class UsersService {
   ALSO CONSIDERING OPERATING HOURS ====================== */
   public getAvailableProjectUsersConsideringOperatingHours(): Observable<ProjectUser[]> {
     // const url = this.MONGODB_BASE_URL + 'availables';
-    const url = this.NEW_AVAILABLE_USERS_URL;
+    const url = this.AVAILABLE_USERS_URL;
     console.log('»»»» »»»» PROJECT USERS NEW AVAILABLE URL', url);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -468,7 +498,7 @@ export class UsersService {
   /// ================================== GET PENDING USER BY ID ================================== ///
   public getPendingUsersById(pendingInvitationId): Observable<PendingInvitation[]> {
     // const url = this.PENDING_INVITATION_URL + '/' + pendingInvitationId;
-    const url = this.BASE_URL + 'auth/pendinginvitationsnoauth/' + pendingInvitationId;
+    const url = this.SERVER_BASE_PATH + 'auth/pendinginvitationsnoauth/' + pendingInvitationId;
     console.log('GET PENDING USER BY ID URL', url);
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
@@ -484,7 +514,7 @@ export class UsersService {
   /// ============================= GET PROJECT-USER BY CURRENT-PROJECT-ID AND CURRENT-USER-ID ============================= ///
   public getProjectUsersByProjectIdAndUserId(user_id: string, project_id: string): Observable<ProjectUser[]> {
     // const url = this.MONGODB_BASE_URL + user_id + '/' + project_id; 
-    const url = this.MONGODB_BASE_URL + 'users/' + user_id;
+    const url = this.PROJECT_USER_URL + 'users/' + user_id;
 
 
     console.log('GET PROJECT USERS BY PROJECT-ID & CURRENT-USER-ID URL', url);
@@ -522,7 +552,7 @@ export class UsersService {
   /// ========================= GET PROJECT-USER BY ID (PROJECT USER DETAIL) ======================= ///
   public getProjectUsersById(projectuser_id: string): Observable<ProjectUser[]> {
     // const url = this.MONGODB_BASE_URL + 'details/' + projectuser_id; // old
-    const url = this.MONGODB_BASE_URL + '/' + projectuser_id;
+    const url = this.PROJECT_USER_URL + '/' + projectuser_id;
 
     console.log('GET PROJECT USERS BY ID ', url);
     const headers = new Headers();
@@ -729,7 +759,7 @@ export class UsersService {
   // DONE - WORKS NK-TO-TEST - da testare dopo che L. esegue il commit del servizio aggiornato (lo puo fare solo l'admin)
   public updateProjectUser(projectUser_id: string, user_is_available: boolean) {
 
-    let url = this.BASE_URL + this.project._id + '/project_users/' + projectUser_id;
+    let url = this.SERVER_BASE_PATH + this.project._id + '/project_users/' + projectUser_id;
 
     console.log('PROJECT-USER UPDATE (PUT) URL ', url);
 
@@ -754,7 +784,7 @@ export class UsersService {
   public updateCurrentUserAvailability(user_is_available: boolean) {
 
     // let url = this.MONGODB_BASE_URL;
-    let url = this.BASE_URL + this.project._id + '/project_users/';
+    let url = this.SERVER_BASE_PATH + this.project._id + '/project_users/';
 
     console.log('PROJECT-USER UPDATE (PUT) URL ', url);
 
@@ -778,7 +808,7 @@ export class UsersService {
   // DONE - WORKS NK-TO-TEST - da testare dopo che L. esegue il commit del servizio aggiornato (lo puo fare solo l'admin)
   public updateProjectUserRole(projectUser_id: string, user_role: string) {
 
-    let url = this.MONGODB_BASE_URL;
+    let url = this.PROJECT_USER_URL;
     url += projectUser_id;
     console.log('PROJECT-USER UPDATE (PUT) URL ', url);
 
@@ -800,7 +830,7 @@ export class UsersService {
   /**
    * DELETE PROJECT-USER (PUT)  */
   public deleteProjectUser(projectUser_id: string) {
-    let url = this.MONGODB_BASE_URL;
+    let url = this.PROJECT_USER_URL;
     url += projectUser_id + '# chat21-api-nodejs';
     console.log('PROJECT-USER DELETE URL ', url);
     const headers = new Headers();

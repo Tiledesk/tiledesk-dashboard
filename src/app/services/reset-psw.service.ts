@@ -3,20 +3,48 @@ import { environment } from '../../environments/environment';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { User } from '../models/user-model';
+import { AppConfigService } from '../services/app-config.service';
 
 @Injectable()
 export class ResetPswService {
   http: Http;
 
-  REQUEST_RESET_PSW_URL = environment.mongoDbConfig.REQUEST_RESET_PSW;
-  RESET_PSW_BASE_URL =  environment.mongoDbConfig.RESET_PSW;
-  CHECK_PSW_RESET_KEY_BASE_URL = environment.mongoDbConfig.CHECK_PSW_RESET_KEY;
+  // REQUEST_RESET_PSW_URL = environment.mongoDbConfig.REQUEST_RESET_PSW; // moved
+  // RESET_PSW_BASE_URL =  environment.mongoDbConfig.RESET_PSW; // moved
+  // CHECK_PSW_RESET_KEY_BASE_URL = environment.mongoDbConfig.CHECK_PSW_RESET_KEY; // moved
+  
+
+  // SERVER_BASE_PATH = environment.SERVER_BASE_URL;  // now get from appconfig
+  // REQUEST_RESET_PSW_URL = this.SERVER_BASE_PATH + 'auth/requestresetpsw'; // now built after get SERVER_BASE_PATH
+  // RESET_PSW_BASE_URL =  this.SERVER_BASE_PATH + 'auth/resetpsw/'; // now built after get SERVER_BASE_PATH
+  // CHECK_PSW_RESET_KEY_BASE_URL = this.SERVER_BASE_PATH + 'auth/checkpswresetkey/'; // now built after get SERVER_BASE_PATH
+
+  SERVER_BASE_PATH: string;
+  REQUEST_RESET_PSW_URL: string;
+  RESET_PSW_BASE_URL: string;
+  CHECK_PSW_RESET_KEY_BASE_URL: string;
+
   constructor(
     http: Http,
+    public appConfigService: AppConfigService
   ) {
     this.http = http;
+    this.getAppConfigAndBuildUrl();
   }
 
+  getAppConfigAndBuildUrl() {
+
+    this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
+    console.log('AppConfigService getAppConfig (RESET-PSW SERV.) SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
+
+
+    this.REQUEST_RESET_PSW_URL = this.SERVER_BASE_PATH + 'auth/requestresetpsw';
+    this.RESET_PSW_BASE_URL =  this.SERVER_BASE_PATH + 'auth/resetpsw/';
+    this.CHECK_PSW_RESET_KEY_BASE_URL = this.SERVER_BASE_PATH + 'auth/checkpswresetkey/';
+    console.log('AppConfigService getAppConfig (RESET-PSW SERV.) REQUEST_RESET_PSW_URL (built with SERVER_BASE_PATH) ', this.REQUEST_RESET_PSW_URL);
+    console.log('AppConfigService getAppConfig (RESET-PSW SERV.) RESET_PSW_BASE_URL (built with SERVER_BASE_PATH) ', this.RESET_PSW_BASE_URL);
+    console.log('AppConfigService getAppConfig (RESET-PSW SERV.) CHECK_PSW_RESET_KEY_BASE_URL (built with SERVER_BASE_PATH) ', this.CHECK_PSW_RESET_KEY_BASE_URL);
+  }
 
   sendResetPswEmailAndUpdateUserWithResetPswRequestId(user_email: string): Observable<User[]> {
     const headers = new Headers();
@@ -25,9 +53,7 @@ export class ResetPswService {
     const options = new RequestOptions({ headers });
 
     const url = this.REQUEST_RESET_PSW_URL;
-
     console.log('PSW RESET URL ', url)
-
     const body = { 'email': user_email };
 
     return this.http
