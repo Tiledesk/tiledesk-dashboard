@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { AuthService } from '../../core/auth.service';
@@ -18,6 +18,8 @@ export class SigninComponent implements OnInit {
   company_name = brand.company_name;
   company_site_url = brand.company_site_url;
   showSpinnerInLoginBtn = false;
+
+  hide_left_panel: boolean;
 
   public signin_errormsg = '';
   public signin_error_statusZero: boolean;
@@ -56,7 +58,7 @@ export class SigninComponent implements OnInit {
 
     // console.log('xxxx ', this.userForm)
     this.buildForm();
-
+    this.getWindowWidth();
     // const x = document.getElementsByTagName('input');
     // console.log('XX ', x)
     // for (let i = 0; i <= x.length - 1; i++) {
@@ -64,6 +66,35 @@ export class SigninComponent implements OnInit {
     //     x.item(i).value = '';
     //   }
     // }
+
+  }
+  getWindowWidth() {
+    console.log('SIGNUP - ACTUAL INNER WIDTH ', window.innerWidth);
+    if(window.innerWidth < 992) {
+
+      this.hide_left_panel = true;
+      console.log('SIGNUP - ACTUAL INNER WIDTH hide_left_panel ',  this.hide_left_panel);
+    } else {
+      this.hide_left_panel = false;
+      console.log('SIGNUP - ACTUAL INNER WIDTH hide_left_panel ',  this.hide_left_panel);
+    }
+    
+  }
+
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+
+    console.log('SIGNUP - NEW INNER WIDTH ', event.target.innerWidth);
+
+    if (event.target.innerWidth < 992) {
+      
+      this.hide_left_panel = true;
+      console.log('SIGNUP - NEW INNER WIDTH hide_left_panel ',  this.hide_left_panel);
+    } else {
+      this.hide_left_panel = false;
+      console.log('SIGNUP - NEW INNER WIDTH hide_left_panel ',  this.hide_left_panel);
+    }
 
   }
 
@@ -134,7 +165,7 @@ export class SigninComponent implements OnInit {
         /**
          * *** WIDGET - pass data to the widget function setTiledeskWidgetUser in index.html ***
          */
-        console.log('SetTiledeskWidgetUserSignin (Signin) - userFullname', user.firstname + ' ' +  user.lastname)
+        console.log('SetTiledeskWidgetUserSignin (Signin) - userFullname', user.firstname + ' ' + user.lastname)
         console.log('SetTiledeskWidgetUserSignin (Signin) - userEmail', user.email);
         console.log('SetTiledeskWidgetUserSignin (Signin) - userId', user._id);
 
@@ -198,5 +229,9 @@ export class SigninComponent implements OnInit {
   goToResetPsw() {
     console.log('HAS CLICKED FORGOT PWS ');
     this.router.navigate(['forgotpsw']);
+  }
+
+  goToSignupPage() {
+    this.router.navigate(['signup']);
   }
 }
