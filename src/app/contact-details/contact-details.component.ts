@@ -179,7 +179,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
 
   getRequests() {
-    this.requestsService.getNodeJsRequestsByRequesterId(this.requester_id, this.pageNo)
+    this.contactsService.getNodeJsRequestsByRequesterId(this.requester_id, this.pageNo)
       .subscribe((requests_object: any) => {
 
         if (requests_object) {
