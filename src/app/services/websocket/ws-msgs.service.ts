@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { WebSocketJs } from "./websocket-js";
 import { AuthService } from '../../core/auth.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { environment } from '../../../environments/environment';
 import { Subject } from 'rxjs/Subject';
 import { WsMessage } from '../../models/ws-message-model';
 
@@ -13,7 +12,7 @@ export class WsMsgsService {
   wsService: WebSocketJs;
   project_id: string;
   wsMsgsList: any;
-  // CHAT_URL = environment.websocket.wsUrl;
+ 
   WS_IS_CONNECTED: number;
 
   public wsMsgsList$: BehaviorSubject<[]> = new BehaviorSubject<[]>([]);
