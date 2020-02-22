@@ -50,7 +50,11 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('myModal') myModal: ElementRef;
     isPageWithNav: boolean;
 
-    wsbasepath = environment.websocket.wsUrl;
+    // wsbasepath = environment.websocket.wsUrl; // moved
+
+    // wsbasepath = environment.wsUrl;
+    
+
     subscription: Subscription;
     // background_bottom_section = brand.sidebar.background_bottom_section
     constructor(
@@ -84,7 +88,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         // firebase.initializeApp(firebaseConfig);
 
         if (!appConfigService.getConfig().firebase || appConfigService.getConfig().firebase.apiKey === 'CHANGEIT') {
-            throw new Error('firebase config is not defined. Please create your firebase-config.json. See the Chat21-Web_widget Installation Page');
+            throw new Error('firebase config is not defined. Please create your dashboard-config.json. See the Chat21-Web_widget Installation Page');
         }
 
         // const firebase_conf = JSON.parse(appConfigService.getConfig().firebase)
@@ -199,12 +203,13 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.auth.user_bs.subscribe((user) => {
             console.log('% »»» WebSocketJs WF - APP-COMPONENT - LoggedUser ', user);
-            console.log('% »»» WebSocketJs WF - APP-COMPONENT - WS URL ', this.wsbasepath);
+            // console.log('% »»» WebSocketJs WF - APP-COMPONENT - WS URL ', this.wsbasepath);
+            console.log('% »»» WebSocketJs WF - APP-COMPONENT - WS URL ', this.appConfigService.getConfig().wsUrl);
 
             if (user && user.token) {
 
                 // const CHAT_URL = 'ws://tiledesk-server-pre.herokuapp.com?token=' + user.token
-                const CHAT_URL = this.wsbasepath + user.token
+                const CHAT_URL = this.appConfigService.getConfig().wsUrl + user.token
 
 
                 // -----------------------------------------------------------------------------------------------------
