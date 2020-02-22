@@ -471,7 +471,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
 
   goToRequestDetails(request_id) {
     console.log('has clicked GO To REQUEST DETAILS ', request_id);
-    this.router.navigate(['project/' + this.projectId + '/request/' + request_id + '/messages']);
+    this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/messages']);
 
   }
 }
