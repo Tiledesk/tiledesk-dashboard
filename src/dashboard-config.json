@@ -1,0 +1,18 @@
+{
+  "t2y12PruGU9wUtEGzBJfolMIgK": "PAY:F-ANA:F-ACT:F-TRI:F-GRO:F-DEP:F-OPH:F-MTL:F-DGF:F-NAT:F",
+  "widgetUrl": "CHANGEIT",
+  "botcredendialsURL": "CHANGEIT",
+  "SERVER_BASE_URL": "CHANGEIT",
+  "CHAT_BASE_URL": "CHANGEIT",
+  "testsiteBaseUrl": "CHANGEIT",
+  "wsUrl": "CHANGEIT",
+  "firebase": {
+      "apiKey": "CHANGEIT",
+      "authDomain": "CHANGEIT",
+      "databaseURL": "CHANGEIT",
+      "projectId": "CHANGEIT",
+      "storageBucket": "CHANGEIT",
+      "messagingSenderId": "CHANGEIT",
+      "chat21ApiUrl": "CHANGEIT"
+  }
+}

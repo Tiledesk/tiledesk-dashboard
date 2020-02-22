@@ -18,7 +18,9 @@
             "polyfills": "src/polyfills.ts",
             "assets": [
               "src/assets",
-              "src/firebase-config.json"
+              "src/firebase-config.json",
+              "src/dashboard-config.json",
+              "src/dashboard-pre-config.json"
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
