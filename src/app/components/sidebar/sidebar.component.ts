@@ -61,7 +61,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     hidechangelogrocket = brand.sidebar__hide_changelog_rocket;
     // background_bottom_section = brand.sidebar.background_bottom_section
 
-    public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK;
+    // public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK; // now get from appconfig
+    public_Key: string;
 
     @ViewChild('openchatbtn') private elementRef: ElementRef;
     @ViewChild('homebtn') private homeBtnElement: ElementRef;
@@ -107,7 +108,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     currentUserId: string
 
-    CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
+    // CHAT_BASE_URL = environment.chat.CHAT_BASE_URL; // moved
+    // CHAT_BASE_URL = environment.CHAT_BASE_URL; // now get from appconfig
+    CHAT_BASE_URL: string;
 
     userProfileImageExist: boolean;
     userImageHasBeenUploaded: boolean;
@@ -205,7 +208,16 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.getStorageBucket();
         this.brandLog();
         this.getHasOpenBlogKey()
+        this.getChatUrl();
     }
+
+    getChatUrl() {
+        this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
+        console.log('AppConfigService getAppConfig (SIDEBAR) CHAT_BASE_URL', this.CHAT_BASE_URL);
+    }
+
+
+
     getHasOpenBlogKey() {
         const hasOpenedBlog = this.usersLocalDbService.getStoredChangelogDate();
         console.log('SIDEBAR  »»»»»»»»» hasOpenedBlog ', hasOpenedBlog);
@@ -229,6 +241,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     getOSCODE() {
+        this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+        console.log('AppConfigService getAppConfig (SIDEBAR) public_Key', this.public_Key);
+
         let keys = this.public_Key.split("-");
         console.log('PUBLIC-KEY (SIDEBAR) - public_Key keys', keys)
 
