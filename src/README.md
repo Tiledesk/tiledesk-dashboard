@@ -56,3 +56,14 @@ export const environment = {
 
 And finally `ng serve`
 
+
+
+# Run  with docker
+
+To run Tiledesk-dashboard on port 4500 run:
+
+```
+curl https://raw.githubusercontent.com/Tiledesk/tiledesk-dashboard/master/.env.sample --output .env
+nano .env #configure .env file properly
+docker run -p 4500:80 --env-file .env tiledesk/tiledesk-dashboard
+```
