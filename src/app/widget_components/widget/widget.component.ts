@@ -8,6 +8,8 @@ import { NotifyService } from '../../core/notify.service';
 import { ProjectService } from '../../services/project.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
+import { AppConfigService } from '../../services/app-config.service';
+
 
 // import { public_Key } from './../utils/util';
 import { environment } from '../../../environments/environment';
@@ -22,10 +24,16 @@ export class WidgetComponent implements OnInit, OnDestroy {
   @ViewChild('testwidgetbtn') private elementRef: ElementRef;
 
   tparams = brand;
-  public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK;
+  // public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK; // now get from appconfig 
+  public_Key: string;
 
-  TESTSITE_BASE_URL = environment.testsite.testsiteBaseUrl
-  WIDGET_URL = environment.widgetUrl;
+  // TESTSITE_BASE_URL = environment.testsite.testsiteBaseUrl; // moved
+  // TESTSITE_BASE_URL = environment.testsiteBaseUrl; // now get from appconfig
+  TESTSITE_BASE_URL: string;
+
+  // WIDGET_URL = environment.widgetUrl; // now get from appconfig
+  WIDGET_URL: string;
+
   project: Project;
 
   projectId: string;
@@ -105,7 +113,8 @@ export class WidgetComponent implements OnInit, OnDestroy {
     private widgetService: WidgetService,
     private notify: NotifyService,
     private projectService: ProjectService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    public appConfigService: AppConfigService
   ) { this.http = http }
 
   ngOnInit() {
@@ -113,7 +122,8 @@ export class WidgetComponent implements OnInit, OnDestroy {
     this.getBrowserLang();
     this.getCurrentProject();
     this.getOSCODE();
-
+    this.getWidgetUrl();
+    this.getTestSiteUrl();
     // this.subscribeToSelectedPrimaryColor();
     // this.subscribeToSelectedSecondaryColor();
     // this.subscribeToSelectedCalloutTimer();
@@ -124,7 +134,22 @@ export class WidgetComponent implements OnInit, OnDestroy {
     console.log('**** ON INIT ALIGNMENT SELECTED ', this.alignmentSelected)
   }
 
+  getTestSiteUrl() {
+    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
+    console.log('AppConfigService getAppConfig (Widget) TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
+  }
+
+  getWidgetUrl() {
+    this.WIDGET_URL = this.appConfigService.getConfig().widgetUrl;
+    console.log('AppConfigService getAppConfig (Widget) WIDGET_URL ', this.WIDGET_URL)
+
+  }
+
   getOSCODE() { 
+
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    console.log('AppConfigService getAppConfig (Widget) public_Key', this.public_Key);
+
     let keys = this.public_Key.split("-");
     console.log('PUBLIC-KEY (Widget) keys', keys)
     keys.forEach(key => {

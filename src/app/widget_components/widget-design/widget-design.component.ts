@@ -15,6 +15,7 @@ import { NotifyService } from '../../core/notify.service';
 import { environment } from '../../../environments/environment';
 import brand from 'assets/brand/brand.json';
 import { WidgetDesignBaseComponent } from './widget-design-base/widget-design-base.component';
+import { AppConfigService } from '../../services/app-config.service';
 
 @Component({
   selector: 'appdashboard-widget-design',
@@ -29,9 +30,11 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   company_name = brand.company_name;
   company_site_url = brand.company_site_url;
 
-  TESTSITE_BASE_URL = environment.testsite.testsiteBaseUrl;
-  public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK;
-
+  // TESTSITE_BASE_URL = environment.testsite.testsiteBaseUrl; // moved
+  // TESTSITE_BASE_URL = environment.testsiteBaseUrl; // now get from appconfig
+  TESTSITE_BASE_URL: string;
+  // public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK; // now get from appconfig
+  public_Key: string;
 
   _route: string;
   public primaryColor: string;
@@ -129,6 +132,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     public translate: TranslateService,
     private departmentService: DepartmentService,
     private router: Router,
+    public appConfigService: AppConfigService
   ) {
     super(translate);
   }
@@ -149,9 +153,17 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     this.translateGetTranslationErrorMsg();
     this.getLabels();
     this.getOSCODE();
+    this.getTestSiteUrl();
   }
 
+  getTestSiteUrl() {
+    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
+    console.log('AppConfigService getAppConfig (Widget-design) TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
+  }
   getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    console.log('AppConfigService getAppConfig (Widget-design) public_Key', this.public_Key);
+
     let keys = this.public_Key.split("-");
     console.log('PUBLIC-KEY (Widget-design) keys', keys)
     keys.forEach(key => {

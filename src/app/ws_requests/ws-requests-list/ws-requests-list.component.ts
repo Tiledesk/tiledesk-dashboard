@@ -36,7 +36,10 @@ import * as uuid from 'uuid';
 })
 export class WsRequestsListComponent extends WsSharedComponent implements OnInit, AfterViewInit, OnDestroy {
   
-  CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
+  // CHAT_BASE_URL = environment.chat.CHAT_BASE_URL; // moved
+  // CHAT_BASE_URL = environment.CHAT_BASE_URL; // now get from appconfig
+  CHAT_BASE_URL: string;
+
   // used to unsuscribe from behaviour subject
   private unsubscribe$: Subject<any> = new Subject<any>();
 
@@ -79,7 +82,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   selectedDeptId: string;
   selectedAgentId: string;
 
-  TESTSITE_BASE_URL = environment.testsite.testsiteBaseUrl;
+  // TESTSITE_BASE_URL = environment.testsite.testsiteBaseUrl; // moved
+  // TESTSITE_BASE_URL = environment.testsiteBaseUrl;   // now get from appconfig
+  TESTSITE_BASE_URL: string;
   projectName: string;
 
   participantsInRequests: any;
@@ -152,11 +157,22 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     // this.selectedDeptId = '';
     // this.selectedAgentId = '';
     this.detectBrowserRefresh();
+
+    this.getChatUrl();
+    this.getTestSiteUrl()
   }
 
-  ngAfterViewInit() {
-
+  getTestSiteUrl() {
+    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
+    console.log('AppConfigService getAppConfig (WS-REQUESTS-LIST COMP.) TESTSITE_BASE_URL', this.TESTSITE_BASE_URL);
   }
+
+  getChatUrl() {
+    this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
+    console.log('AppConfigService getAppConfig (WS-REQUESTS-LIST COMP.) CHAT_BASE_URL', this.CHAT_BASE_URL);
+  }
+
+  ngAfterViewInit() {  }
 
   ngOnDestroy() {
     console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ ngOnDestroy')

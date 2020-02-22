@@ -8,9 +8,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
 import { Subscription } from 'rxjs';
 import { AppConfigService } from '../services/app-config.service';
-
-// import { publicKey } from '../utils/util';
-// import { public_Key } from '../utils/util';
 import { environment } from '../../environments/environment';
 
 @Component({
@@ -20,7 +17,8 @@ import { environment } from '../../environments/environment';
 })
 export class UsersComponent implements OnInit, OnDestroy {
 
-  public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK;
+  // public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK; // now get from appconfig
+  public_Key: string
 
   showSpinner = true;
   projectUsersList: any;
@@ -72,7 +70,9 @@ export class UsersComponent implements OnInit, OnDestroy {
   
 
   storageBucket: string;
-  CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
+  // CHAT_BASE_URL = environment.chat.CHAT_BASE_URL; // moved
+  // CHAT_BASE_URL = environment.CHAT_BASE_URL;  // now get from appconfig
+  CHAT_BASE_URL: string;
 
   constructor(
     private usersService: UsersService,
@@ -109,6 +109,12 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.translateCanceledInviteErrorMsg();
     this.getOSCODE();
     this.getStorageBucket();
+    this.getChatUrl();
+  }
+
+  getChatUrl() {
+    this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
+    console.log('AppConfigService getAppConfig (USERS COMP.) CHAT_BASE_URL', this.CHAT_BASE_URL);
   }
 
 
@@ -131,6 +137,9 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    console.log('AppConfigService getAppConfig (USERS) public_Key', this.public_Key);
+
     let keys = this.public_Key.split("-");
     keys.forEach(key => {
       if (key.includes("GRO")) {

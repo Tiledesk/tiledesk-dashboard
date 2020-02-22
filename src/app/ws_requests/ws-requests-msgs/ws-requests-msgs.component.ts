@@ -38,9 +38,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   @ViewChild('openChatBtn')
   private openChatBtn: ElementRef;
 
+  // BASE_URL = environment.mongoDbConfig.BASE_URL; // replaced
+  // SERVER_BASE_PATH = environment.SERVER_BASE_URL; // now get from appconfig
+  SERVER_BASE_PATH: string;
 
-  CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
-  BASE_URL = environment.mongoDbConfig.BASE_URL;
+  // CHAT_BASE_URL = environment.chat.CHAT_BASE_URL; // moved
+  // CHAT_BASE_URL = environment.CHAT_BASE_URL; // now get from appconfig
+  CHAT_BASE_URL: string;
+
 
   // messagesList: WsMessage[] = [];
   messagesList: any;
@@ -221,7 +226,15 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.detectMobile();
     // this.listenToGotAllMsgAndDismissSpinner()
     this.getStorageBucket();
+    this.getAppConfig()
 
+  }
+
+  getAppConfig() {
+    this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
+    this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
+    console.log('AppConfigService getAppConfig (WsRequestsMsgsComponent) SERVER_BASE_PATH: ', this.SERVER_BASE_PATH);
+    console.log('AppConfigService getAppConfig (WsRequestsMsgsComponent) CHAT_BASE_URL: ', this.CHAT_BASE_URL);
   }
 
   /**
@@ -312,44 +325,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   //       }, 1000);
   //     }
   //   })
-  // }
-
-
-
-
-  // getContactIdFromNodejsRequest() {
-  //   this.requestsService.getNodeJsRequestByFirebaseRequestId(this.id_request, 0).subscribe((nodejsRequest) => {
-
-  //     console.log('% Ws MSGS: GET NODEJS REQUEST BY FireBase REQ ID ', nodejsRequest);
-
-  //     if (nodejsRequest) {
-  //       // if (nodejsRequest['requests'] && nodejsRequest['requests'].length > 0) {
-
-  //       // if (nodejsRequest['requests'][0]['requester_id']) {
-  //       if (nodejsRequest['requester_id']) {
-
-  //         // this.contact_id = nodejsRequest['requests'][0]['requester_id']
-  //         this.contact_id = nodejsRequest['requester_id']
-  //         console.log('% Ws MSGS: NODEJS REQUEST > CONTACT ID ', this.contact_id);
-  //         this.NODEJS_REQUEST_CNTCT_FOUND = true;
-  //         // console.log('% Ws MSGS: NODEJS REQUEST FOUND ? ', this.NODEJS_REQUEST_CNTCT_FOUND);
-
-  //       } else {
-
-  //         this.NODEJS_REQUEST_CNTCT_FOUND = false;
-  //         // console.log('% Ws MSGS: NODEJS REQUEST >  FOUND ? ', this.NODEJS_REQUEST_CNTCT_FOUND);
-  //       }
-
-  //       // }
-  //     }
-  //   }, (err) => {
-  //     console.log('»»» REQUESTS-MSGS.COMP: GET NODEJS REQUEST BY FireBase REQ ID ', err);
-  //     // this.showSpinner = false;
-  //   }, () => {
-  //     console.log('»»» REQUESTS-MSGS.COMP: GET NODEJS REQUEST BY FireBase REQ ID * COMPLETE *');
-
-
-  //   });
   // }
 
 
@@ -1360,7 +1335,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   openTranscript() {
 
     // const url = 'https://api.tiledesk.com/v1/public/requests/' + this.id_request + '/messages.html';
-    const url = this.BASE_URL + 'public/requests/' + this.id_request + '/messages.html';
+    const url = this.SERVER_BASE_PATH + 'public/requests/' + this.id_request + '/messages.html';
 
     console.log('openTranscript url ', url);
     window.open(url, '_blank');
@@ -1403,9 +1378,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
     let _agentLastName = ''
 
-    if (agentLastname) { 
+    if (agentLastname) {
       _agentLastName = agentLastname
-    } 
+    }
     const url = this.CHAT_BASE_URL + '?' + 'recipient=' + agentId + '&recipientFullname=' + agentFirstname + ' ' + _agentLastName;
     console.log('%% Ws-REQUESTS-Msgs - CHAT URL ', url);
     window.open(url, '_blank');
@@ -1424,14 +1399,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       // this.router.navigate(['project/' + this.id_project + '/botprofile/' + member_id]);
       const bot = this.botLocalDbService.getBotFromStorage(id_bot);
       console.log('%%% Ws-REQUESTS-Msgs BOT FROM STORAGE ', bot)
-     
+
       let botType = ''
       if (bot.type === 'internal') {
         botType = 'native'
       } else {
         botType = bot.type
       }
-      
+
       this.router.navigate(['project/' + this.id_project + '/bots', id_bot, botType]);
 
 
