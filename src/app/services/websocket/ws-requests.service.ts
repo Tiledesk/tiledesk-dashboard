@@ -15,7 +15,7 @@ import 'rxjs/add/observable/of';
 // import { WsSharedComponent } from '../../ws_requests/ws-shared/ws-shared.component';
 // import * as Rx from "rxjs";
 import { Subscription } from 'rxjs/Subscription';
-
+import { AppConfigService } from '../../services/app-config.service';
 
 
 export interface Message {
@@ -68,12 +68,14 @@ export class WsRequestsService implements OnDestroy {
   wsjsRequestsService: WebSocketJs;
   wsjsRequestByIdService: WebSocketJs;
   project_id: string;
-  // CHAT_URL = environment.websocket.wsUrl;
-
+  
   WS_IS_CONNECTED: number;
   currentUserID: string;
 
-  BASE_URL = environment.mongoDbConfig.BASE_URL;
+  // BASE_URL = environment.mongoDbConfig.BASE_URL; // replaced with SERVER_BASE_PATH
+  // SERVER_BASE_PATH = environment.SERVER_BASE_URL; // now get from appconfig
+  SERVER_BASE_PATH: string;
+
   TOKEN: string;
   timeout: any;
   subscription: Subscription;
@@ -86,23 +88,30 @@ export class WsRequestsService implements OnDestroy {
   constructor(
     http: Http,
     public auth: AuthService,
-    public webSocketJs: WebSocketJs
+    public webSocketJs: WebSocketJs,
+    public appConfigService: AppConfigService
   ) {
     this.http = http;
     console.log("% HI WsRequestsService wsjsRequestsService  ", this.wsjsRequestsService);
 
-    console.log("% »»» WebSocketJs - WsRequestsService BASE URL", this.BASE_URL);
+    console.log("% »»» WebSocketJs - WsRequestsService BASE URL", this.SERVER_BASE_PATH);
     // console.log("% HI WsRequestsService CHAT_URL ", CHAT_URL);
     //this.wsConnect(); !no more used
 
     // this.getWsRequestsById()
 
-
+    this.getAppConfig();
     // -----------------------------------------------------------------------------------------------------
     // REQUESTS - @ the publication of the 'current project' subscribes to the websocket requests
     // -----------------------------------------------------------------------------------------------------
     this.getCurrentProjectAndSubscribeTo_WsRequests()
     this.getLoggedUser();
+    
+  }
+
+  getAppConfig() {
+    this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
+    console.log('AppConfigService getAppConfig (WS-REQUESTS SERV.) SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
   }
 
   ngOnDestroy() {
@@ -552,7 +561,7 @@ export class WsRequestsService implements OnDestroy {
     // console.log('CLOUD FUNCT CLOSE SUPPORT GROUP REQUEST BODY ', body);
 
     // const url = 'https://tiledesk-server-pre.herokuapp.com/' + this.project_id + '/requests/' + group_id + '/close';
-    const url = this.BASE_URL + this.project_id + '/requests/' + group_id + '/close';
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + group_id + '/close';
 
     console.log('% »»» WebSocketJs WF - NEW CLOSE SUPPORT GROUP URL ', url);
     return this.http
@@ -572,7 +581,7 @@ export class WsRequestsService implements OnDestroy {
     const options = new RequestOptions({ headers });
     console.log('JOIN DEPT OPTIONS  ', options)
 
-    const url = this.BASE_URL + this.project_id + '/requests/' + requestid + '/departments'
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + requestid + '/departments'
     console.log('JOIN DEPT URL ', url);
 
     const body = { 'departmentid': departmentid };
@@ -591,7 +600,7 @@ export class WsRequestsService implements OnDestroy {
     console.log('LEAVE THE GROUP OPTIONS  ', options)
 
     //   /:project_id/requests/:id/participants
-    const url = this.BASE_URL + this.project_id + '/requests/' + requestid + '/participants/' + userid
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + requestid + '/participants/' + userid
     console.log('LEAVE THE GROUP URL ', url)
 
     return this.http
@@ -615,7 +624,7 @@ export class WsRequestsService implements OnDestroy {
 
     console.log('JOIN TO GROUP PUT REQUEST BODY ', body);
 
-    const url = this.BASE_URL + this.project_id + '/requests/' + requestid + '/participants/'
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + requestid + '/participants/'
     console.log('JOIN TO GROUP PUT JOIN A GROUP URL ', url)
 
     return this.http
@@ -639,7 +648,7 @@ export class WsRequestsService implements OnDestroy {
 
     console.log('JOIN TO GROUP PUT REQUEST BODY ', body);
 
-    const url = this.BASE_URL + this.project_id + '/requests/' + requestid + '/participants/'
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + requestid + '/participants/'
     console.log('JOIN TO GROUP PUT JOIN A GROUP URL ', url)
 
     return this.http
@@ -663,13 +672,63 @@ export class WsRequestsService implements OnDestroy {
 
     console.log('createInternalRequest ', body);
 
-    const url = this.BASE_URL + this.project_id + '/requests/' + request_id + '/messages'
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id + '/messages'
     console.log('createInternalRequest URL ', url)
 
     return this.http
       .post(url, JSON.stringify(body), options)
       .map((res) => res.json());
   }
+
+
+   // ---------------------------------------------------------------------
+   // HISTORY  Requests (used in history)
+   // ---------------------------------------------------------------------
+   public getNodeJsHistoryRequests(querystring: string, pagenumber: number) {
+    let _querystring = '&' + querystring
+    if (querystring === undefined || !querystring) {
+      _querystring = ''
+    }
+    /* *** USED TO TEST IN LOCALHOST (note: this service doen't work in localhost) *** */
+    // const url = 'https://api.tiledesk.com/v1/' + '5af02d8f705ac600147f0cbb' + '/requests?status=1000' + _querystring + '&page=' + pagenumber;
+    /* *** USED IN PRODUCTION *** */
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests?status=1000' + _querystring + '&page=' + pagenumber;
+
+    console.log('!!! NEW REQUESTS HISTORY - REQUESTS SERVICE URL ', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    /* *** USED TO TEST IN LOCALHOST (note: this service doesn't work in localhost) *** */
+    // headers.append('Authorization', 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiZW1haWwiOjEsImZpcnN0bmFtZSI6MSwibGFzdG5hbWUiOjEsInBhc3N3b3JkIjoxLCJlbWFpbHZlcmlmaWVkIjoxLCJpZCI6MX0sImdldHRlcnMiOnt9LCJfaWQiOiI1YWM3NTIxNzg3ZjZiNTAwMTRlMGI1OTIiLCJ3YXNQb3B1bGF0ZWQiOmZhbHNlLCJhY3RpdmVQYXRocyI6eyJwYXRocyI6eyJwYXNzd29yZCI6ImluaXQiLCJlbWFpbCI6ImluaXQiLCJlbWFpbHZlcmlmaWVkIjoiaW5pdCIsImxhc3RuYW1lIjoiaW5pdCIsImZpcnN0bmFtZSI6ImluaXQiLCJfaWQiOiJpbml0In0sInN0YXRlcyI6eyJpZ25vcmUiOnt9LCJkZWZhdWx0Ijp7fSwiaW5pdCI6eyJlbWFpbHZlcmlmaWVkIjp0cnVlLCJsYXN0bmFtZSI6dHJ1ZSwiZmlyc3RuYW1lIjp0cnVlLCJwYXNzd29yZCI6dHJ1ZSwiZW1haWwiOnRydWUsIl9pZCI6dHJ1ZX0sIm1vZGlmeSI6e30sInJlcXVpcmUiOnt9fSwic3RhdGVOYW1lcyI6WyJyZXF1aXJlIiwibW9kaWZ5IiwiaW5pdCIsImRlZmF1bHQiLCJpZ25vcmUiXX0sInBhdGhzVG9TY29wZXMiOnt9LCJlbWl0dGVyIjp7Il9ldmVudHMiOnt9LCJfZXZlbnRzQ291bnQiOjAsIl9tYXhMaXN0ZW5lcnMiOjB9LCIkb3B0aW9ucyI6dHJ1ZX0sImlzTmV3IjpmYWxzZSwiX2RvYyI6eyJlbWFpbHZlcmlmaWVkIjp0cnVlLCJsYXN0bmFtZSI6IkxhbnppbG90dG8iLCJmaXJzdG5hbWUiOiJOaWNvIiwicGFzc3dvcmQiOiIkMmEkMTAkTlBoSk5VNVZDYlU2d05idG1Jck5lT3MxR0dBSW5rMERMeGVYWXN2dklHZ1JnY1dMWW1kYkciLCJlbWFpbCI6Im5pY29sYS5sYW56aWxvdHRvQGZyb250aWVyZTIxLml0IiwiX2lkIjoiNWFjNzUyMTc4N2Y2YjUwMDE0ZTBiNTkyIn0sIiRpbml0Ijp0cnVlLCJpYXQiOjE1NjgzMDg2OTl9.sl2zMzVv__5Gc7Xj6TV1lkzxkqnRVMv7-U3YHBbpq20');
+    /* *** USED IN PRODUCTION *** */
+    headers.append('Authorization', this.TOKEN);
+
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
+  public downloadNodeJsHistoryRequestsAsCsv(querystring: string, pagenumber: number) {
+    let _querystring = '&' + querystring
+    if (querystring === undefined || !querystring) {
+      _querystring = ''
+    }
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/csv?status=1000' + _querystring + '&page=' + pagenumber;
+    console.log('!!! NEW REQUESTS HISTORY - DOWNLOAD REQUESTS AS CSV URL ', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/csv');
+    /* *** USED TO TEST IN LOCALHOST (note: this service doesn't work in localhost) *** */
+    // headers.append('Authorization', 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiZW1haWwiOjEsImZpcnN0bmFtZSI6MSwibGFzdG5hbWUiOjEsInBhc3N3b3JkIjoxLCJlbWFpbHZlcmlmaWVkIjoxLCJpZCI6MX0sImdldHRlcnMiOnt9LCJfaWQiOiI1YWFhOTJmZjRjM2IxMTAwMTRiNDc4Y2IiLCJ3YXNQb3B1bGF0ZWQiOmZhbHNlLCJhY3RpdmVQYXRocyI6eyJwYXRocyI6eyJwYXNzd29yZCI6ImluaXQiLCJlbWFpbCI6ImluaXQiLCJsYXN0bmFtZSI6ImluaXQiLCJmaXJzdG5hbWUiOiJpbml0IiwiX2lkIjoiaW5pdCJ9LCJzdGF0ZXMiOnsiaWdub3JlIjp7fSwiZGVmYXVsdCI6e30sImluaXQiOnsibGFzdG5hbWUiOnRydWUsImZpcnN0bmFtZSI6dHJ1ZSwicGFzc3dvcmQiOnRydWUsImVtYWlsIjp0cnVlLCJfaWQiOnRydWV9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7fX0sInN0YXRlTmFtZXMiOlsicmVxdWlyZSIsIm1vZGlmeSIsImluaXQiLCJkZWZhdWx0IiwiaWdub3JlIl19LCJwYXRoc1RvU2NvcGVzIjp7fSwiZW1pdHRlciI6eyJkb21haW4iOm51bGwsIl9ldmVudHMiOnt9LCJfZXZlbnRzQ291bnQiOjAsIl9tYXhMaXN0ZW5lcnMiOjB9LCIkb3B0aW9ucyI6dHJ1ZX0sImlzTmV3IjpmYWxzZSwiX2RvYyI6eyJsYXN0bmFtZSI6IkxhbnppbG90dG8iLCJmaXJzdG5hbWUiOiJOaWNvbGEgNzQiLCJwYXNzd29yZCI6IiQyYSQxMCRwVWdocTVJclgxMzhTOXBEY1pkbG1lcnNjVTdVOXJiNlFKaVliMXlEckljOHJDMFh6c2hUcSIsImVtYWlsIjoibGFuemlsb3R0b25pY29sYTc0QGdtYWlsLmNvbSIsIl9pZCI6IjVhYWE5MmZmNGMzYjExMDAxNGI0NzhjYiJ9LCIkaW5pdCI6dHJ1ZSwiaWF0IjoxNTM4MTIzNTcyfQ.CYnxkLbg5XWk2JWAxQg1QNGDpNgNbZAzs5PEQpLCCnI');
+    /* *** USED IN PRODUCTION *** */
+    headers.append('Authorization', this.TOKEN);
+
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.text());
+    // .map((response) => JSON.stringify(response.text()));
+  }
+
 
 
   // getWsRequestsById() {
