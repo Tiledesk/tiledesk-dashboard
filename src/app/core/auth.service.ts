@@ -1,29 +1,24 @@
 // tslint:disable:max-line-length
 import { Injectable } from '@angular/core';
-import { Router, NavigationEnd, NavigationStart, ActivatedRoute } from '@angular/router';
-
-// import { AngularFireAuth } from 'angularfire2/auth';
-
+import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { NotifyService } from './notify.service';
-
 import { Observable } from 'rxjs/Observable';
 import { switchMap } from 'rxjs/operators';
-
 import { environment } from '../../environments/environment';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { mergeMap } from 'rxjs/operators/mergeMap';
-
 import { User } from '../models/user-model';
 import { Project } from '../models/project-model';
-
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/toPromise';
 import { UsersLocalDbService } from '../services/users-local-db.service';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
-
 import { isDevMode } from '@angular/core';
-// declare var require: any;
+import * as firebase from 'firebase';
+import 'firebase/messaging';
+import 'firebase/database'
+import { AppConfigService } from '../services/app-config.service';
 
 
 // start SUPER USER
@@ -39,31 +34,37 @@ const superusers = [
 ];
 // .end SUPER USER
 
-import * as firebase from 'firebase';
-import 'firebase/messaging';
-import 'firebase/database'
-import { AppConfigService } from '../services/app-config.service';
-// import firebase from '@firebase/app';
-// import '@firebase/messaging';
-// import '@firebase/database';
 
 @Injectable()
 export class AuthService {
   http: Http;
-  SIGNUP_BASE_URL = environment.mongoDbConfig.SIGNUP_BASE_URL;
-  SIGNIN_BASE_URL = environment.mongoDbConfig.SIGNIN_BASE_URL;
-  FIREBASE_SIGNIN_BASE_URL = environment.mongoDbConfig.FIREBASE_SIGNIN_BASE_URL;
-  VERIFY_EMAIL_BASE_URL = environment.mongoDbConfig.VERIFY_EMAIL_BASE_URL;
 
-  CLOUDFUNCTION_CREATE_CONTACT_URL: any;
+  // SERVER_BASE_PATH = environment.SERVER_BASE_URL; // now get from appconfig
+
+
+  // SIGNUP_BASE_URL = environment.mongoDbConfig.SIGNUP_BASE_URL;
+  // SIGNIN_BASE_URL = environment.mongoDbConfig.SIGNIN_BASE_URL;
+  // VERIFY_EMAIL_BASE_URL = environment.mongoDbConfig.VERIFY_EMAIL_BASE_URL;
+  // FIREBASE_SIGNIN_BASE_URL = environment.mongoDbConfig.FIREBASE_SIGNIN_BASE_URL; // deprecated - now used CREATE_CUSTOM_TOKEN
+
+  // SIGNUP_BASE_URL = this.SERVER_BASE_PATH + 'auth/signup'; // now built after get SERVER_BASE_PATH from appconfig
+  // SIGNIN_BASE_URL = this.SERVER_BASE_PATH + 'auth/signin'; // now built after get SERVER_BASE_PATH from appconfig
+  // VERIFY_EMAIL_URL = this.SERVER_BASE_PATH + 'auth/verifyemail/'; // now build after get SERVER_BASE_PATH from appconfig
+  // CREATE_CUSTOM_TOKEN_URL = this.SERVER_BASE_PATH + 'chat21/firebase/auth/createCustomToken'; // now build after get SERVER_BASE_PATH from appconfig
+
+  SERVER_BASE_PATH: string;
+  SIGNUP_BASE_URL: string;
+  SIGNIN_BASE_URL: string;
+  VERIFY_EMAIL_URL: string;
+  CREATE_CUSTOM_TOKEN_URL: string
+  CLOUDFUNCTION_CREATE_CONTACT_URL: string;
+
+
   // CLOUDFUNCTION_CREATE_CONTACT_URL = environment.cloudFunctions.cloud_func_create_contact_url;
 
   // public version: string = require('../../../package.json').version;
   public version: string = environment.VERSION;
-
-
   token: string;
-
   displayName?: string;
   FCMcurrentToken: string;
 
@@ -104,18 +105,8 @@ export class AuthService {
     console.log('version (AuthService)  ', this.version);
     console.log('!!! ====== AUTH SERVICE ====== !!!')
     this.APP_IS_DEV_MODE = isDevMode();
-    console.log('!!! ====== AUTH SERVICE !!! ====== isDevMode ', this.APP_IS_DEV_MODE)
-    // this.user = this.afAuth.authState
-    //   .switchMap((user) => {
-    //     if (user) {
-    //       return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
-    //     } else {
-    //       return Observable.of(null);
-    //     }
-    //   });
+    console.log('!!! ====== AUTH SERVICE !!! ====== isDevMode ', this.APP_IS_DEV_MODE);
 
-    // tslint:disable-next-line:no-debugger
-    // debugger
     this.checkCredentials();
 
     /* !!! NO MORE USED - REPLACED BY checkStoredProjectAndPublish() */
@@ -129,17 +120,31 @@ export class AuthService {
     this.checkIfFCMIsSupported();
     this.checkIfExpiredSessionModalIsOpened();
 
-    console.log('% appConfigService.getConfig().firebase ', appConfigService.getConfig().firebase)
-    // const firebase_conf = JSON.parse(appConfigService.getConfig().firebase);
-    const firebase_conf = appConfigService.getConfig().firebase;
+    this.getAppConfigAnBuildUrl();
+  }
 
-    // console.log('nk --> AuthService firebase_conf ', firebase_conf);
+  getAppConfigAnBuildUrl() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    // console.log('% appConfigService.getConfig().firebase ', firebase_conf)
+
     const cloudBaseUrl = firebase_conf['chat21ApiUrl'];
-    // console.log('nk --> AuthService cloudBaseUrl ', cloudBaseUrl);
     this.CLOUDFUNCTION_CREATE_CONTACT_URL = cloudBaseUrl + '/api/tilechat/contacts';
-    console.log('nk --> AuthService cloudFunctions.cloud_func_create_contact_url ', this.CLOUDFUNCTION_CREATE_CONTACT_URL);
+
+    this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
+    this.SIGNUP_BASE_URL = this.SERVER_BASE_PATH + 'auth/signup';
+    this.SIGNIN_BASE_URL = this.SERVER_BASE_PATH + 'auth/signin';
+    this.VERIFY_EMAIL_URL = this.SERVER_BASE_PATH + 'auth/verifyemail/';
+    this.CREATE_CUSTOM_TOKEN_URL = this.SERVER_BASE_PATH + 'chat21/firebase/auth/createCustomToken';
+
+    console.log('AppConfigService getAppConfig (AUTH SERVICE) CLOUDFUNCTION_CREATE_CONTACT_URL', this.CLOUDFUNCTION_CREATE_CONTACT_URL);
+    console.log('AppConfigService getAppConfig (AUTH SERVICE) SERVER_BASE_PATH', this.SERVER_BASE_PATH);
+    console.log('AppConfigService getAppConfig (AUTH SERVICE) SIGNUP_BASE_URL', this.SIGNUP_BASE_URL);
+    console.log('AppConfigService getAppConfig (AUTH SERVICE) SIGNIN_BASE_URL', this.SIGNIN_BASE_URL);
+    console.log('AppConfigService getAppConfig (AUTH SERVICE) VERIFY_EMAIL_URL', this.VERIFY_EMAIL_URL);
+    console.log('AppConfigService getAppConfig (AUTH SERVICE) CREATE_CUSTOM_TOKEN_URL', this.CREATE_CUSTOM_TOKEN_URL);
 
   }
+
 
   public checkTrialExpired(): Promise<boolean> {
     // this.getProjectById();
@@ -300,7 +305,7 @@ export class AuthService {
                     console.log('% »»» WebSocketJs WF +++++ ws-requests--- auth service checkStoredProjectAndPublish PROJECT (get from storage) THAT IS PUBLISHED (10) ', project)
                     this.project_bs.next(project);
                   }
-                  
+
                   // }
 
                   // NOTA: AUTH GUARD ESEGUE UN CHECK DEL PROGETTO SALVATO NEL LOCAL STORAGE E SE IL PROJECT NAME è NULL DOPO AVER 'GET' IL
@@ -501,13 +506,18 @@ export class AuthService {
         console.log('1. POST DATA ', jsonRes);
         if (jsonRes['success'] === true) {
 
-          this.firebaseSignin(email, password).subscribe(token => {
 
-            console.log('2. FIREBASE SIGNIN RESPO ', token)
-            if (token) {
+          // '/chat21/firebase/auth/createCustomToken'
+          this.chat21CreateFirebaseCustomToken(jsonRes['token']).subscribe(fbtoken => {
+
+            // this.firebaseSignin(email, password).subscribe(fbtoken => {
+
+            console.log('2. FIREBASE SIGNIN RESPO ', fbtoken)
+            if (fbtoken) {
 
               // Firebase Sign in using custom token
-              firebase.auth().signInWithCustomToken(token)
+
+              firebase.auth().signInWithCustomToken(fbtoken)
                 .then(firebase_user => {
                   console.log('3. FIREBASE CUSTOM AUTH DATA ', firebase_user);
 
@@ -676,30 +686,61 @@ export class AuthService {
       });
   }
 
+  // !!!! DEPRECATED
   // NODE.JS FIREBASE SIGNIN (USED TO GET THE TOKEN THEN USED FOR Firebase Signin using custom token)
-  firebaseSignin(email: string, password: string) {
+  // firebaseSignin(email: string, password: string) {
+  //   const headers = new Headers();
+  //   headers.append('Accept', 'application/json');
+  //   headers.append('Content-type', 'application/json');
+  //   const options = new RequestOptions({ headers });
+  //   const url = this.FIREBASE_SIGNIN_BASE_URL;
+  //   console.log('FIREBASE SIGNIN URL ', url)
+
+  //   const body = { 'email': email, 'password': password };
+  //   console.log('FIREBASE SIGNIN URL BODY ', body);
+  //   // tslint:disable-next-line:no-debugger
+  //   // debugger
+  //   return this.http
+  //     .post(url, JSON.stringify(body), options)
+  //     .map((res) => {
+  //       // tslint:disable-next-line:no-debugger
+  //       // debugger
+  //       // console.log('FIREBASE SIGNIN RES TOKEN', res.text())
+  //       // const firebaseToken = res.text()
+  //       return res.text()
+
+  //     });
+  // }
+
+  chat21CreateFirebaseCustomToken(JWT_token: any) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
+    headers.append('Authorization', JWT_token);
     const options = new RequestOptions({ headers });
-    const url = this.FIREBASE_SIGNIN_BASE_URL;
-    console.log('FIREBASE SIGNIN URL ', url)
+    const url = this.CREATE_CUSTOM_TOKEN_URL;
 
-    const body = { 'email': email, 'password': password };
-    console.log('FIREBASE SIGNIN URL BODY ', body);
+    console.log('chat21CreateFirebaseCustomToken ', url)
+
+
     // tslint:disable-next-line:no-debugger
     // debugger
     return this.http
-      .post(url, JSON.stringify(body), options)
+      .post(url, null, options)
       .map((res) => {
         // tslint:disable-next-line:no-debugger
         // debugger
-        // console.log('FIREBASE SIGNIN RES TOKEN', res.text())
+        console.log('chat21CreateFirebaseCustomToken RES: ', res)
         // const firebaseToken = res.text()
         return res.text()
 
       });
+
   }
+
+
+
+
 
   /// ===================== VERIFY EMAIL ===================== ///
   emailVerify(user_id: string): Observable<User[]> {
@@ -708,7 +749,7 @@ export class AuthService {
     headers.append('Content-type', 'application/json');
     const options = new RequestOptions({ headers });
 
-    const url = this.VERIFY_EMAIL_BASE_URL + user_id;
+    const url = this.VERIFY_EMAIL_URL + user_id;
     console.log('VERIFY EMAIL URL ', url)
     const body = { 'emailverified': true };
     return this.http
