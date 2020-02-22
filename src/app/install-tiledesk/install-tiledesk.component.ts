@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { slideInAnimation } from '../_animations/index';
 import brand from 'assets/brand/brand.json';
+import { AppConfigService } from '../services/app-config.service';
 
 @Component({
   selector: 'appdashboard-install-tiledesk',
@@ -22,16 +23,26 @@ export class InstallTiledeskComponent implements OnInit, OnDestroy {
   projectId: string;
   sub: Subscription;
   has_copied = false;
-  WIDGET_URL = environment.widgetUrl;
+
+  // WIDGET_URL = environment.widgetUrl; // now get from appconfig
+  WIDGET_URL: string;
+  
   constructor(
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    public appConfigService: AppConfigService
   ) { }
 
   ngOnInit() {
     this.getCurrentProject();
+    this.getWidgetUrl();
   }
 
+  getWidgetUrl() {
+    this.WIDGET_URL = this.appConfigService.getConfig().widgetUrl;
+    console.log('AppConfigService getAppConfig (Install Tiledesk) WIDGET_URL ', this.WIDGET_URL)
+
+  }
 
   getCurrentProject() {
     this.sub = this.auth.project_bs

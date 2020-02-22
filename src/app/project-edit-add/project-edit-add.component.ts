@@ -15,10 +15,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { UsersService } from '../services/users.service';
 import * as moment from 'moment';
 import brand from 'assets/brand/brand.json';
-
-// import { publicKey } from './../utils/util';
-// import { public_Key } from './../utils/util';
 import { environment } from './../../environments/environment';
+import { AppConfigService } from '../services/app-config.service';
 
 @Component({
   selector: 'app-project-edit-add',
@@ -27,8 +25,8 @@ import { environment } from './../../environments/environment';
 })
 export class ProjectEditAddComponent implements OnInit, OnDestroy {
   tparams = brand;
-  public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK;
-
+  // public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK; // now get from appconfig
+  public_Key: string; 
   CREATE_VIEW = false;
   EDIT_VIEW = false;
   PROJECT_SETTINGS_ROUTE: boolean;
@@ -95,7 +93,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     private prjctPlanService: ProjectPlanService,
     private notify: NotifyService,
     private usersService: UsersService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    public appConfigService: AppConfigService
 
   ) { }
 
@@ -156,6 +155,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
 
   getOSCODE() {
+
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    console.log('AppConfigService getAppConfig (PROJECT-EDIT-ADD) public_Key', this.public_Key);
     let keys = this.public_Key.split("-");
     console.log('PUBLIC-KEY (Home) keys', keys)
     keys.forEach(key => {

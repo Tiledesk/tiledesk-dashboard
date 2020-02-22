@@ -709,3 +709,139 @@
 //   }
 
 /* MODAL WITH ARROW */
+
+
+/* STRIPE BG */
+.block {
+	width: 100%;
+	height: 760px;
+	background: linear-gradient(150deg, #53f 15%, #05d5ff 70%, #a6ffcb 94%);
+	transform: skewY(-12deg);
+	transform-origin: 0;
+	position: absolute;
+	top: 0;
+}
+.block span {
+	height: 190px;
+  position: absolute;
+  
+}
+.block span:nth-child(1) {
+	width: 33.3%;
+	width: calc(100% / 3);
+	left: -16.66666%;
+	left: calc(calc(calc(100% / 3) / 2) * -1);
+	background: #53f;
+}
+.block span:nth-child(2) {
+	width: 33.33333%;
+	width: calc(100% / 3);
+	top: 0;
+	left: 16.66666%;
+	left: calc(calc(100% / 3) / 2);
+	right: auto;
+	background: #4553ff;
+}
+.block span:nth-child(3) {
+	width: 33.33333%;
+	width: calc(100% / 3);
+	left: 49.99999%;
+	left: calc(calc(calc(100% / 3) / 2) + calc(100% / 3));
+	bottom: auto;
+	background: #4f40ff;
+}
+.block span:nth-child(4) {
+	width: 33.33333%;
+	width: calc(100% / 3);
+	bottom: 0;
+	background: #1fa2ff;
+}
+/* IMG */
+.img-wrapper {
+  position: absolute;
+  opacity: 0;
+	top: 450px;
+	right: 0px;
+	transform: translateY(100px) rotate(-12deg);
+	background: #fff;
+	padding: 8px 38px;
+	border-radius: 24px;
+	box-shadow: inset 0 4px 7px 1px #fff,
+		inset 0 -5px 20px rgba(173, 186, 204, 0.25), 0 2px 6px rgba(0, 21, 64, 0.14),
+    0 10px 20px rgba(0, 21, 64, 0.05);
+  animation: up 1s;
+  animation-delay: 0.6s;
+  animation-fill-mode: forwards;
+}
+.img-wrapper img {
+	width: 500px;
+	height: auto;
+}
+
+/* TEXT */
+.text {
+	position: relative;
+	height: 760px;
+	display: flex;
+	margin: -60px 0 0 150px;
+	flex-direction: column;
+	justify-content: center;
+	color: #fff;
+	max-width: 1024px;
+}
+.text h1 {
+	font-size: 40px;
+  opacity: 0;
+  animation: fadein 1s;
+  animation-delay: 0.2s;
+  animation-fill-mode: forwards;
+}
+.text p {
+	color: #d9fcff;
+	font-size: 20px;
+	max-width: 50%;
+	font-size: 17px;
+  line-height: 28px;
+  opacity: 0;
+  animation: fadein 1s;
+  animation-delay: 0.8s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes up {
+	0% {
+		transform: translateY(100px) rotate(-12deg);
+		opacity: 0;
+	}
+	100% {
+		transform: translateY(0) rotate(-12deg);
+		opacity: 1;
+	}
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@media screen and (max-width: 830px) {
+  .img-wrapper {
+    display: none;
+  }
+}
+
+@media screen and (max-height: 600px) {
+	.text {
+		margin: -200px 0 0 150px;
+	}
+	.block {
+		height: 500px;
+	}
+	.img-wrapper {
+		top: 280px;
+	}
+}

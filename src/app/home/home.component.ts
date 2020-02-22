@@ -14,10 +14,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
 
 import { Subscription } from 'rxjs';
-// import { publicKey } from './../utils/util';
-// import { public_Key } from './../utils/util';
+
 import { environment } from '../../environments/environment';
 import brand from 'assets/brand/brand.json';
+import { AppConfigService } from '../services/app-config.service';
 
 @Component({
   selector: 'home',
@@ -28,7 +28,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   company_name = brand.company_name;
   tparams = brand;
-  public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK;
+
+  // public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK; // now get from appconfig
+  public_Key: string;
 
   firebaseProjectId: any;
   LOCAL_STORAGE_CURRENT_USER: any;
@@ -44,7 +46,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   USER_ROLE: string;
 
-  CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
+  // CHAT_BASE_URL = environment.chat.CHAT_BASE_URL; // moved
+  // CHAT_BASE_URL = environment.CHAT_BASE_URL; // now get from appconfig
+  CHAT_BASE_URL: string;
 
   browserLang: string;
 
@@ -70,7 +74,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     private requestsService: RequestsService,
     private notify: NotifyService,
     private translate: TranslateService,
-    private prjctPlanService: ProjectPlanService
+    private prjctPlanService: ProjectPlanService,
+    public appConfigService: AppConfigService
   ) { }
 
   ngOnInit() {
@@ -110,7 +115,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.getProjectPlan();
     // this.getVisitorCounter();
     this.getOSCODE();
+    this.getChatUrl();
   }
+
+  getChatUrl() {
+    this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
+    console.log('AppConfigService getAppConfig (HOME) CHAT_BASE_URL', this.CHAT_BASE_URL);
+}
 
   // TRANSLATION
   translateInstallWidget() {
@@ -123,7 +134,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   getOSCODE() {
-
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    console.log('AppConfigService getAppConfig (HOME) public_Key', this.public_Key);
     let keys = this.public_Key.split("-");
     console.log('PUBLIC-KEY (Home) keys', keys)
     keys.forEach(key => {
@@ -338,7 +350,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.router.navigate(['project/' + this.projectId + '/widget']);
   }
   goToRequests() {
-    this.router.navigate(['project/' + this.projectId + '/requests']);
+    this.router.navigate(['project/' + this.projectId + '/wsrequests']);
   }
 
   goToAnalytics() {

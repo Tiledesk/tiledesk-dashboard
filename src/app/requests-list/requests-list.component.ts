@@ -39,8 +39,14 @@ export class RequestsListComponent implements OnInit {
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
   zone: NgZone;
 
-  TESTSITE_BASE_URL = environment.testsite.testsiteBaseUrl;
-  CHAT_BASE_URL = environment.chat.CHAT_BASE_URL;
+  // TESTSITE_BASE_URL = environment.testsite.testsiteBaseUrl; // moved
+  // TESTSITE_BASE_URL = environment.testsiteBaseUrl; // now get from appconfig
+
+  TESTSITE_BASE_URL: string;
+  // CHAT_BASE_URL = environment.chat.CHAT_BASE_URL; // moved
+  // CHAT_BASE_URL = environment.CHAT_BASE_URL; // now get from appconfig
+  CHAT_BASE_URL: string;
+
   // user: Observable<User | null>;
   user: any;
   firebase_token: any;
@@ -178,6 +184,18 @@ export class RequestsListComponent implements OnInit {
 
     // this.getCountOfRequestsforDepts();
     this.getStorageBucket();
+    this.getChatUrl();
+    this.getTestSiteUrl();
+  }
+
+  getTestSiteUrl() {
+    this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
+    console.log('AppConfigService getAppConfig (REQUESTS-LIST COMP) CHAT_BASE_URL', this.TESTSITE_BASE_URL);
+  }
+
+  getChatUrl() {
+    this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
+    console.log('AppConfigService getAppConfig (REQUESTS-LIST COMP) CHAT_BASE_URL', this.CHAT_BASE_URL);
   }
 
   getStorageBucket() {
