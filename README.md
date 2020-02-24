@@ -176,6 +176,7 @@ docker run -p 4500:80 --env-file .env tiledesk/tiledesk-dashboard
 
 To run Tiledesk-dashboard with npm:
 
+TODO. UNDER DEVELOPMENT
 ```
 curl https://raw.githubusercontent.com/Tiledesk/tiledesk-dashboard/master/.env.sample --output .env
 nano .env #configure .env file properly
