@@ -171,3 +171,14 @@ curl https://raw.githubusercontent.com/Tiledesk/tiledesk-dashboard/master/.env.s
 nano .env #configure .env file properly
 docker run -p 4500:80 --env-file .env tiledesk/tiledesk-dashboard
 ```
+
+# Run  with npm
+
+To run Tiledesk-dashboard with npm:
+
+```
+curl https://raw.githubusercontent.com/Tiledesk/tiledesk-dashboard/master/.env.sample --output .env
+nano .env #configure .env file properly
+npm install -g @tiledesk/tiledesk-dashboard
+tiledesk-dashboard 
+```

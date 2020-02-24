@@ -1,6 +1,6 @@
 {
   "name": "@tiledesk/tiledesk-dashboard",
-  "version": "2.0.0-beta.30",
+  "version": "2.0.0-beta.31",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --aot",
@@ -16,6 +16,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/Tiledesk/tiledesk-dashboard"
+  },
+  "bin": {
+    "tiledesk-dashboard": "./bin/dashboard"
   },
   "private": false,
   "dependencies": {
