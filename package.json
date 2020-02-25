@@ -1,10 +1,11 @@
 {
   "name": "@tiledesk/tiledesk-dashboard",
-  "version": "2.0.0-beta.32",
+  "version": "2.0.0-beta.35",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --aot",
-    "build": "ng build --prod",
+    "build": "ng build -- --output-path=dist --base-href ./",
+    "build2": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
