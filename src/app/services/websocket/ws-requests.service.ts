@@ -4,7 +4,6 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { AsyncSubject } from 'rxjs/AsyncSubject';
 import { Subject } from "rxjs/Subject";
-// import { Subject } from "rxjs/Rx";
 import { AuthService } from '../../core/auth.service';
 import { WebSocketJs } from "./websocket-js";
 import { environment } from '../../../environments/environment';
@@ -12,8 +11,6 @@ import { Request } from '../../models/request-model';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from "rxjs/Observable";
 import 'rxjs/add/observable/of';
-// import { WsSharedComponent } from '../../ws_requests/ws-shared/ws-shared.component';
-// import * as Rx from "rxjs";
 import { Subscription } from 'rxjs/Subscription';
 import { AppConfigService } from '../../services/app-config.service';
 
@@ -190,7 +187,7 @@ export class WsRequestsService implements OnDestroy {
 
             // if (self.wsRequestsList.length > 0) {
 
-            // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA ", data);
+            console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - DATA ", data);
             // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-CREATE - WS-REQUESTS ARRAY ", self.wsRequestsList);
 
             // const hasFound = self.wsRequestsList.filter((obj: any) => {

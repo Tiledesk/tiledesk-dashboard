@@ -166,16 +166,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     private _location: Location,
     public botLocalDbService: BotLocalDbService,
     public usersLocalDbService: UsersLocalDbService,
-    private usersService: UsersService,
+    public usersService: UsersService,
     private requestsService: RequestsService,
     private notify: NotifyService,
     public auth: AuthService,
     public appConfigService: AppConfigService,
     private departmentService: DepartmentService,
     private groupsService: GroupService,
-    private faqKbService: FaqKbService
+    public faqKbService: FaqKbService
   ) {
-    super(botLocalDbService, usersLocalDbService, router, wsRequestsService)
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService)
   }
 
   // -----------------------------------------------------------------------------------------------------

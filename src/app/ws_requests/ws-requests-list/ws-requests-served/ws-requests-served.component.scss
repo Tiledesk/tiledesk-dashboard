@@ -732,8 +732,8 @@ $f21blue: #039be5;
 
 .ws-requests-list-servedby-avatar {
   vertical-align: middle;
-  width: 25px;
-  height: 25px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   border: 1px solid #eee;
   margin-top: 1px;
@@ -816,4 +816,22 @@ $f21blue: #039be5;
   width: 100%;
   padding: 63px;
   text-align: center;
+}
+
+.served-by-agent {
+  font-size:11px;
+  font-weight: 400;
+}
+
+
+.served-by-bot-type-logo {
+  width: 18px;
+  height: 18px;
+  position: absolute;
+  top: -2px;
+  left: -6px;
+  border-radius: 50%;
+  border: 1px solid #eee;
+  padding: 1px;
+  background: #fff;
 }

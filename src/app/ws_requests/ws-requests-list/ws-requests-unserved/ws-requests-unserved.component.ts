@@ -11,6 +11,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { UsersService } from '../../../services/users.service';
 import { browserRefresh } from '../../../app.component';
+import { FaqKbService } from '../../../services/faq-kb.service';
+
 @Component({
   selector: 'appdashboard-ws-requests-unserved',
   templateUrl: './ws-requests-unserved.component.html',
@@ -40,10 +42,11 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     public router: Router,
     public appConfigService: AppConfigService,
     public wsRequestsService: WsRequestsService,
-    public usersService: UsersService
+    public usersService: UsersService,
+    public faqKbService : FaqKbService
   ) {
 
-    super(botLocalDbService, usersLocalDbService, router, wsRequestsService);
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService);
   }
 
   ngOnInit() {

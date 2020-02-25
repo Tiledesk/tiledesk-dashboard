@@ -13,6 +13,9 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { UsersService } from '../../../services/users.service';
 import { browserRefresh } from '../../../app.component';
+import { FaqKbService } from '../../../services/faq-kb.service';
+import { Request } from '../../../models/request-model';
+
 @Component({
   selector: 'appdashboard-ws-requests-served',
   templateUrl: './ws-requests-served.component.html',
@@ -46,11 +49,12 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     public router: Router,
     public appConfigService: AppConfigService,
     public wsRequestsService: WsRequestsService,
-    public usersService: UsersService
+    public usersService: UsersService,
+    public faqKbService: FaqKbService,
     // private cdr: ChangeDetectorRef
 
   ) {
-    super(botLocalDbService, usersLocalDbService, router, wsRequestsService);
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService);
   }
 
   ngOnInit() {
@@ -164,6 +168,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
 
+  // !!! No more used
   goToMemberProfile(member_id: any) {
     console.log('WsRequestsServedComponent has clicked GO To MEMBER ', member_id);
     if (member_id.indexOf('bot_') !== -1) {
@@ -189,6 +194,27 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
     }
   }
+
+  goToBotProfile(bot_id, bot_type) {
+    let botType = ''
+    if (bot_type === 'internal') {
+      botType = 'native'
+    } else {
+      botType = bot_type
+    }
+    this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
+
+  }
+
+
+  goToAgentProfile(member_id) {
+
+    this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
+  }
+
+
+
+
 
   goToRequestMsgs(request_id: string) {
     this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/messages']);
