@@ -400,7 +400,14 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
                         bot = this.botLocalDbService.getBotFromStorage(bot_id);
                         console.log('ActivitiesComponent participant bot', bot);
                         if (bot) {
-                          activity.participant_fullname = bot.name + ' (bot)'
+                          let botType = "";
+                          if (bot.type === 'internal') {
+
+                            botType = 'native'
+                          } else {
+                            botType = bot.type
+                          }
+                          activity.participant_fullname = bot.name + ` (${botType} bot)`
                           console.log('ActivitiesComponent participant bot name', activity.participant_fullname);
                         }
                       }, 50);
@@ -432,10 +439,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
                     // });
                   }
                 }
-
               }
-
-
             });
           }
         }
@@ -464,9 +468,26 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     this.getActivities();
   }
 
-  goToMemberProfile(member_id: any) {
-    console.log('has clicked GO To MEMBER ', member_id);
-    this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
+  goToMemberProfile(participantId: any) {
+    if (participantId.includes('bot_')) {
+      const bot_id = participantId.slice(4);
+      const bot = this.botLocalDbService.getBotFromStorage(bot_id);
+
+      let botType = ''
+      if (bot.type === 'internal') {
+        botType = 'native'
+      } else {
+        botType = bot.type
+      }
+
+      this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
+
+    } else {
+
+      console.log('has clicked GO To MEMBER ', participantId);
+      this.router.navigate(['project/' + this.projectId + '/member/' + participantId]);
+    }
+
   }
 
   goToRequestDetails(request_id) {
