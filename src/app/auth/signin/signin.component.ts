@@ -234,4 +234,12 @@ export class SigninComponent implements OnInit {
   goToSignupPage() {
     this.router.navigate(['signup']);
   }
+
+
+  goToTiledekV1() {
+    const url = "https://support.tiledesk.com/dashboard/#/login";
+    window.open(url);
+  }
+
+
 }
