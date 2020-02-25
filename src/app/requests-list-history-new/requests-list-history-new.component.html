@@ -461,17 +461,14 @@
                         <span (click)="goToMemberProfile( participant )" style="cursor:pointer; display: block">
 
                           <!-- IF IS A BOT bot_image.png -->
-                          <img *ngIf="participant.indexOf('bot_') !== -1"
-                            style="vertical-align: middle; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee; margin-top: 1px; margin-bottom: 1px"
-                            class="user-img" src="assets/img/bot_image_as_human.jpg"
-                            onerror="this.src='assets/img/no_image_user.png'" />
+                          <img *ngIf="participant.indexOf('bot_') !== -1" class="user_profile_in_history"  
+                            src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant | slice:4}}%2Fphoto.jpg?alt=media"
+                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"/>
 
                           <!-- IF IS A HUMAN -->
-                          <img *ngIf="participant.indexOf('bot_') === -1"
-                            style="vertical-align: middle; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee; margin-top: 1px; margin-bottom: 1px"
-                            class="user-img"
+                          <img *ngIf="participant.indexOf('bot_') === -1" class="user_profile_in_history"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media"
-                            onerror="this.src='assets/img/no_image_user.png'" />
+                            onerror="this.src='assets/img/no_image_user.png'"/>
 
                           <span class="member" [innerHTML]="members_replace( participant )"></span>
 
@@ -483,9 +480,7 @@
 
                       <span *ngIf="participant === currentUserID">
                         <!-- IF IS THE LOGGED USER -->
-                        <img
-                          style="vertical-align: middle; width: 25px; height: 25px; border-radius: 50%; border: 1px solid #eee;margin-top: 1px; margin-bottom: 1px"
-                          class="user-img"
+                        <img class="user_profile_in_history"
                           src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media"
                           onerror="this.src='assets/img/no_image_user.png'" />
                         <span class="current-user-member" [innerHTML]="members_replace(participant)"></span>
@@ -518,7 +513,10 @@
                       <!-- {{ request?.created_on | date: 'd/M/y HH:mm:ss' }} -->
                       <span> {{ request?.createdAt | amTimeAgo }} </span> <br>
                       <span style="font-size: 11px;color: #7695a5;">
-                        ({{ request?.createdAt | date: 'd/M/y HH:mm' }})
+                        <!-- ({{ request?.createdAt | date: 'd/M/y HH:mm' }}) -->
+                        
+                        {{ request?.fulldate }}
+                        
                       </span>
                     </p>
                   </td>
