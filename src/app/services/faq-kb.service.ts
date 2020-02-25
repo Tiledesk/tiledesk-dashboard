@@ -16,10 +16,11 @@ export class FaqKbService {
 
   // BASE_URL = environment.mongoDbConfig.BASE_URL;  // replaced
   // SERVER_BASE_PATH = environment.SERVER_BASE_URL;  // now get from appconfig
-  // DLGFLW_BOT_CREDENTIAL_URL = environment.botcredendialsURL; // now get from appconfig
+  // DLGFLW_BOT_CREDENTIAL_BASE_URL = environment.botcredendialsURL; // now get from appconfig
   
   SERVER_BASE_PATH: string;
-  DLGFLW_BOT_CREDENTIAL_URL: string;
+  DLGFLW_BOT_CREDENTIAL_BASE_URL: string;
+
 
   FAQKB_URL: any;
 
@@ -56,10 +57,10 @@ export class FaqKbService {
   }
 
   getAppConfig() {
-    this.DLGFLW_BOT_CREDENTIAL_URL = this.appConfigService.getConfig().botcredendialsURL;
+    // this.DLGFLW_BOT_CREDENTIAL_BASE_URL = this.appConfigService.getConfig().botcredendialsURL;
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
 
-    console.log('AppConfigService getAppConfig (FAQ-KB SERV.) DLGFLW_BOT_CREDENTIAL_URL ', this.DLGFLW_BOT_CREDENTIAL_URL);
+    console.log('AppConfigService getAppConfig (FAQ-KB SERV.) DLGFLW_BOT_CREDENTIAL_BASE_URL ', this.DLGFLW_BOT_CREDENTIAL_BASE_URL);
     console.log('AppConfigService getAppConfig (FAQ-KB SERV.) SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
   }
 
@@ -75,6 +76,9 @@ export class FaqKbService {
       if (this.project) {
         console.log('00 -> FAQKB SERVICE project ID from AUTH service subscription  ', this.project._id)
         this.FAQKB_URL = this.SERVER_BASE_PATH + this.project._id + '/faq_kb/'
+
+
+        this.DLGFLW_BOT_CREDENTIAL_BASE_URL = this.appConfigService.getConfig().botcredendialsURL + this.project._id + '/bots/';
       }
     });
   }
@@ -193,11 +197,11 @@ export class FaqKbService {
     // headers.append('Accept', 'text/csv');
     // headers.append('Accept', 'application/json');
     // headers.append('Content-type', 'multipart/form-data');
-    // headers.append('Authorization', this.TOKEN);
+    headers.append('Authorization', this.TOKEN);
     console.log('uploadDialogflowBotCredetial formData ', formData)
 
     // const url =  "http://dialogflow-proxy-tiledesk.herokuapp.com/uploadgooglecredendials/" + botid
-    const url = this.DLGFLW_BOT_CREDENTIAL_URL + botid
+    const url = this.DLGFLW_BOT_CREDENTIAL_BASE_URL + botid
 
     const options = new RequestOptions({ headers: headers });
     return this.http
@@ -206,7 +210,7 @@ export class FaqKbService {
   }
 
   getDialogflowBotCredetial(botid: string) {
-    let url = this.DLGFLW_BOT_CREDENTIAL_URL + botid;
+    let url = this.DLGFLW_BOT_CREDENTIAL_BASE_URL + botid;
 
     console.log('getDialogflowBotCredetialURL', url);
 
@@ -221,7 +225,7 @@ export class FaqKbService {
 
   public deleteDialogflowBotCredetial(id: string) {
 
-    let url = this.DLGFLW_BOT_CREDENTIAL_URL + id;
+    let url = this.DLGFLW_BOT_CREDENTIAL_BASE_URL + id;
 
     console.log('deleteDialogflowBotCredetial DELETE URL ', url);
 
