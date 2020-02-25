@@ -51,6 +51,9 @@ export interface Request {
   tags?: any;
   userAgent?: any;
   _id?: any;
+  fulldate?: any;
+  participatingAgents?:any;
+  participatingBots?:any;
   // ./wsrequet
 
   hasAgent?(user_id: string): boolean;
@@ -84,16 +87,16 @@ export class Request implements Request {
     if (this.members !== undefined) {
       const _members = Object.keys(this.members);
       // console.log('MODEL REQUEST - MEMBER 2)', _members)
-      
+
 
       _members.forEach(member => {
 
-       
-          if (current_user_id === member) {
-            // console.log('MEMBER - ID MATCH ', member)
-            found = true
-          }
-       
+
+        if (current_user_id === member) {
+          // console.log('MEMBER - ID MATCH ', member)
+          found = true
+        }
+
       });
 
     }
