@@ -4,7 +4,7 @@
 export const environment = {
     production: false,
     remoteConfig: true,
-    remoteConfigUrl: '/dashboard-config.json',
+    remoteConfigUrl: './dashboard-config.json',
     VERSION: require('../../package.json').version,
     t2y12PruGU9wUtEGzBJfolMIgK: 'PAY:F-ANA:F-ACT:F-TRI:F-GRO:F-DEP:F-OPH:F-MTL:F-DGF:F-NAT:F',
     widgetUrl: 'http://localhost:4200/launch.js',
