@@ -29,6 +29,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { browserRefresh } from '../../app.component';
 import * as uuid from 'uuid';
 
+
 @Component({
   selector: 'appdashboard-ws-requests-list',
   templateUrl: './ws-requests-list.component.html',
@@ -121,13 +122,13 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     public auth: AuthService,
     private requestsService: RequestsService,
     private translate: TranslateService,
-    private usersService: UsersService,
-    private faqKbService: FaqKbService,
+    public usersService: UsersService,
+    public faqKbService: FaqKbService,
     public appConfigService: AppConfigService,
     private departmentService: DepartmentService,
 
   ) {
-    super(botLocalDbService, usersLocalDbService, router, wsRequestsService);
+    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService);
     this.zone = new NgZone({ enableLongStackTrace: false });
   }
 
@@ -754,6 +755,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
           //  replace this.currentUserID with this.auth.user_bs.value._id  because at the go back from the request's details this.currentUserID at the moment in which is passed in currentUserIdIsInParticipants is undefined 
           request['currentUserIsJoined'] = this.currentUserIdIsInParticipants(request.participants, this.auth.user_bs.value._id, request.request_id);
 
+          // request["test"] = this.createFullParticipacipantsArray(request.participants)
+          // console.log('!! Ws SHARED  (from) »»»»»»» createFullParticipacipantsArray request["test"] ' , request["test"]);
 
           if (request.lead && request.lead.fullname) {
             request['requester_fullname_initial'] = avatarPlaceholder(request.lead.fullname);
@@ -792,6 +795,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
          * Sort requests and manage spinner
          */
         if (this.ws_requests) {
+          console.log('% »»» WebSocketJs WF +++++ ws-requests--- list getWsRequests *** ws_requests ***', this.ws_requests);
           this.wsRequestsUnserved = this.ws_requests
             .filter(r => {
               if (r['status'] === 100) {
