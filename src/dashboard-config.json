@@ -4,7 +4,7 @@
   "botcredendialsURL": "${BOT_CREDENTIAL_URL}",
   "SERVER_BASE_URL": "${SERVER_BASE_URL}",
   "CHAT_BASE_URL": "${CHAT_BASE_URL}",
-  "testsiteBaseUrl": "${TESTSITE_BASE_URL}",
+  "testsiteBaseUrl": "${WIDGET_TEST_LOCATION}",
   "wsUrl": "${WS_URL}",
   "firebase": {
       "apiKey": "${FIREBASE_APIKEY}",
