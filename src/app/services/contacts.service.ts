@@ -97,7 +97,7 @@ export class ContactsService {
       .map((response) => response.json());
   }
 
-  // GET LEADS
+  
   public exportLeadToCsv(querystring, pagenumber) {
     let _querystring = '&' + querystring
     if (querystring === undefined || !querystring) {

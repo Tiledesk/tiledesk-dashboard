@@ -1,3 +1,5 @@
+@import "./src/assets/sass/md/_variables.scss";
+
 .spinner {
   margin: 100px auto;
   width: 50px;
@@ -7,7 +9,8 @@
 }
 
 .spinner > div {
-  background-color: #333;
+  // background-color: #333;
+  background-color: $brand-primary;
   height: 100%;
   width: 6px;
   display: inline-block;
