@@ -52,7 +52,7 @@ export class WidgetDesignBaseComponent extends WidgetSharedComponent implements 
 
   browserLang: string;
 
-  constructor(public translate: TranslateService,) {
+  constructor(public translate: TranslateService) {
     super();
    }
 

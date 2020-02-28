@@ -340,7 +340,7 @@
               <div *ngIf="! showSpinner" class="content-wrap">
                 <div style="margin-bottom: 0px; min-height: 39px;">
 
-                 
+
                   <!-- 
                   // -------------------------------------
                   // IF IS A CLOSED REQUEST
@@ -405,7 +405,7 @@
                     </span>
                   </span>
 
-          
+
                   <!-- 
                   // -------------------------------------
                   // IF IS AN UNSERVED REQUEST
@@ -1235,9 +1235,9 @@
                             <!-- {{ "UsersPage.Role" | translate }} -->
                             {{ "UserRole" | translate }}
 
-                            <span *ngIf="bots?.length > 0">
+                            <!-- <span *ngIf="bots?.length > 0">
                               {{ "BotType" | translate }}
-                            </span>
+                            </span> -->
 
                           </strong>
                         </span>
@@ -1280,8 +1280,10 @@
                             {{ projectUser?.id_user?.lastname }}
                           </span>
                         </p>
-                        <span style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px">
-                          {{ projectUser?.id_user?.email }}
+                        <span style="color: #7695a5; line-height:18px; font-size:12px">
+
+                          email:
+                          <span style="font-weight: 400;"> {{ projectUser?.id_user?.email }} </span>
                         </span>
                       </td>
 
@@ -1360,14 +1362,41 @@
                         <td style="width: 25px; cursor:pointer" (click)="selectBot(bot?._id, bot?.name)">
                           <img class="ws_requets_msgs__user-img-in-modal"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{bot?._id}}%2Fphoto.jpg?alt=media"
-                            onerror="this.src='assets/img/no_image_user.png'" />
+                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
+
+
+                      <span *ngIf="bot.type === 'internal'"> 
+                        <img class="ws-request-msgs-bot-type-logo" src="assets/img/tiledesk_logo_no_text.png"/>
+                      </span>
+
+                      <span *ngIf="bot.type === 'external'"> 
+                        <img class="ws-request-msgs-bot-type-logo" src="assets/img/external_bot_logo.png"/>
+                      </span>
+
+                      <span *ngIf="bot.type === 'dialogflow'"> 
+                        <img class="ws-request-msgs-bot-type-logo" src="assets/img/Dialogflow_logo_no_text.png"/>
+                      </span>
 
                         </td>
 
                         <td style="cursor:pointer" (click)="selectBot(bot?._id, bot?.name)">
                           <p style="font-size:14px; line-height:21px; font-weight: 500; margin-bottom: 0px;">
-                            {{  bot?.name }} (bot)
+                            {{  bot?.name }}
                           </p>
+                          <span style="color: #7695a5; line-height:18px; font-size:12px">
+                            {{ 'BotType' | translate }}:
+                            <span style="text-transform: capitalize;font-weight: 400; ">
+
+                              <span *ngIf="bot.type !== 'internal'">
+                                {{ bot?.type }}
+                              </span>
+                              <span *ngIf="bot.type === 'internal'">
+
+                                native
+                              </span>
+
+                            </span>
+                          </span>
                         </td>
 
 
@@ -1382,7 +1411,7 @@
                         </td>
 
                         <td style="cursor:pointer" (click)="selectBot(bot?._id, bot?.name)">
-                          {{ bot?.type }}
+                          Bot
                         </td>
 
                         <td *ngIf="!isMobile" style="cursor:pointer" (click)="selectBot(bot?._id, bot?.name)">
@@ -1476,8 +1505,11 @@
                             <p style="font-size:14px; line-height:21px; font-weight: 500; margin-bottom: 0px;">
                               {{ dept?.name }}
 
-                              <span style="color: #7695a5; font-size: 12px; font-weight:400; display: block;">
-                                Routing: {{ dept?.routing }}
+                              <span style="color: #7695a5; font-size: 12px; display: block;">
+                                <span style="font-weight:400;">
+                                  Routing:
+                                </span>
+                                {{ dept?.routing }}
                               </span>
                             </p>
                           </td>
