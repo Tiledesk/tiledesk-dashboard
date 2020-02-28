@@ -107,19 +107,10 @@ export class RequestsService {
     
     // this.getMyDepts(); // !! NO MORE USED
 
-    // const firebase_conf = JSON.parse(appConfigService.getConfig().firebase);
-    const firebase_conf = appConfigService.getConfig().firebase;
-    // console.log('nk --> RequestsService firebase_conf ', firebase_conf);
-    const cloudBaseUrl = firebase_conf['chat21ApiUrl']
-    // console.log('nk --> RequestsService cloudBaseUrl ', cloudBaseUrl);
-
-    this.CHAT21_CLOUD_FUNCTIONS_BASE_URL = cloudBaseUrl + '/api/tilechat/groups/'
-    console.log('nk --> RequestsService cloudFunctions.cloud_functions_base_url', this.CHAT21_CLOUD_FUNCTIONS_BASE_URL);
-
-
-    // this.CHAT21_CLOUD_FUNC_CLOSE_GROUP_BASE_URL = cloudBaseUrl + '/support/tilechat/groups/'
-    this.CHAT21_CLOUD_FUNC_CLOSE_GROUP_BASE_URL = cloudBaseUrl + '/supportapi/tilechat/groups/'
-    console.log('nk --> RequestsService cloud_func_close_support_group_base_url ', this.CHAT21_CLOUD_FUNC_CLOSE_GROUP_BASE_URL);
+    // const firebase_conf = appConfigService.getConfig().firebase;
+    // const cloudBaseUrl = firebase_conf['chat21ApiUrl']
+    // this.CHAT21_CLOUD_FUNCTIONS_BASE_URL = cloudBaseUrl + '/api/tilechat/groups/'
+    // this.CHAT21_CLOUD_FUNC_CLOSE_GROUP_BASE_URL = cloudBaseUrl + '/supportapi/tilechat/groups/'
 
     this.SERVER_BASE_PATH = appConfigService.getConfig().SERVER_BASE_URL;
     console.log('AppConfigService getAppConfig (REQUESTS SERV.) SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
@@ -576,58 +567,56 @@ export class RequestsService {
     // .map((res) => res.json());
   }
 
-  // -------------MOVE TO ANALYTICS SERVICE----------------------
-  public requestsByDay() {
-    // USED TO TEST (note: this service doesn't work in localhost)
-    // const url = 'https://api.tiledesk.com/v1/' + '5c28b587348b680015feecca' + '/analytics/requests/aggregate/day';
-    const url = this.SERVER_BASE_PATH + this.project._id + '/analytics/requests/aggregate/day';
-    console.log('!!! ANALYTICS - REQUESTS BY DAY - URL ', url);
+  // ------------- MOVED TO ANALYTICS SERVICE----------------------
+  // public requestsByDay() {
+  //   // USED TO TEST (note: this service doesn't work in localhost)
+  //   // const url = 'https://api.tiledesk.com/v1/' + '5c28b587348b680015feecca' + '/analytics/requests/aggregate/day';
+  //   const url = this.SERVER_BASE_PATH + this.project._id + '/analytics/requests/aggregate/day';
+  //   console.log('!!! ANALYTICS - REQUESTS BY DAY - URL ', url);
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    // USED TO TEST (note: this service doesn't work in localhost)
-    // headers.append('Authorization', 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiZW1haWwiOjEsImZpcnN0bmFtZSI6MSwibGFzdG5hbWUiOjEsInBhc3N3b3JkIjoxLCJlbWFpbHZlcmlmaWVkIjoxLCJpZCI6MX0sImdldHRlcnMiOnt9LCJfaWQiOiI1YzI4YjU0ODM0OGI2ODAwMTVmZWVjYzkiLCJ3YXNQb3B1bGF0ZWQiOmZhbHNlLCJhY3RpdmVQYXRocyI6eyJwYXRocyI6eyJwYXNzd29yZCI6ImluaXQiLCJlbWFpbCI6ImluaXQiLCJlbWFpbHZlcmlmaWVkIjoiaW5pdCIsImxhc3RuYW1lIjoiaW5pdCIsImZpcnN0bmFtZSI6ImluaXQiLCJfaWQiOiJpbml0In0sInN0YXRlcyI6eyJpZ25vcmUiOnt9LCJkZWZhdWx0Ijp7fSwiaW5pdCI6eyJlbWFpbHZlcmlmaWVkIjp0cnVlLCJsYXN0bmFtZSI6dHJ1ZSwiZmlyc3RuYW1lIjp0cnVlLCJwYXNzd29yZCI6dHJ1ZSwiZW1haWwiOnRydWUsIl9pZCI6dHJ1ZX0sIm1vZGlmeSI6e30sInJlcXVpcmUiOnt9fSwic3RhdGVOYW1lcyI6WyJyZXF1aXJlIiwibW9kaWZ5IiwiaW5pdCIsImRlZmF1bHQiLCJpZ25vcmUiXX0sInBhdGhzVG9TY29wZXMiOnt9LCJlbWl0dGVyIjp7Il9ldmVudHMiOnt9LCJfZXZlbnRzQ291bnQiOjAsIl9tYXhMaXN0ZW5lcnMiOjB9LCIkb3B0aW9ucyI6dHJ1ZX0sImlzTmV3IjpmYWxzZSwiX2RvYyI6eyJlbWFpbHZlcmlmaWVkIjp0cnVlLCJsYXN0bmFtZSI6IlBhbmljbyIsImZpcnN0bmFtZSI6IkdhYnJpZWxlIiwicGFzc3dvcmQiOiIkMmEkMTAkMUJ0b0xEVmJFaDU5YmhPVlRRckRCT3NoMm8zU3Zlam5aY2VFU0VCZGRFVTc2dDk0d1lIRi4iLCJlbWFpbCI6ImdhYnJpZWxlLnBhbmljbzk1QGdtYWlsLmNvbSIsIl9pZCI6IjVjMjhiNTQ4MzQ4YjY4MDAxNWZlZWNjOSJ9LCIkaW5pdCI6dHJ1ZSwiaWF0IjoxNTU2MjY1MjI0fQ.aJkbYc2D-kMFZR3GgTiGA85sW-ZB5VWrQW7fLNQnICQ');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
-  }
+  //   const headers = new Headers();
+  //   headers.append('Content-Type', 'application/json');
+  //   // USED TO TEST (note: this service doesn't work in localhost)
+  //   // headers.append('Authorization', 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiZW1haWwiOjEsImZpcnN0bmFtZSI6MSwibGFzdG5hbWUiOjEsInBhc3N3b3JkIjoxLCJlbWFpbHZlcmlmaWVkIjoxLCJpZCI6MX0sImdldHRlcnMiOnt9LCJfaWQiOiI1YzI4YjU0ODM0OGI2ODAwMTVmZWVjYzkiLCJ3YXNQb3B1bGF0ZWQiOmZhbHNlLCJhY3RpdmVQYXRocyI6eyJwYXRocyI6eyJwYXNzd29yZCI6ImluaXQiLCJlbWFpbCI6ImluaXQiLCJlbWFpbHZlcmlmaWVkIjoiaW5pdCIsImxhc3RuYW1lIjoiaW5pdCIsImZpcnN0bmFtZSI6ImluaXQiLCJfaWQiOiJpbml0In0sInN0YXRlcyI6eyJpZ25vcmUiOnt9LCJkZWZhdWx0Ijp7fSwiaW5pdCI6eyJlbWFpbHZlcmlmaWVkIjp0cnVlLCJsYXN0bmFtZSI6dHJ1ZSwiZmlyc3RuYW1lIjp0cnVlLCJwYXNzd29yZCI6dHJ1ZSwiZW1haWwiOnRydWUsIl9pZCI6dHJ1ZX0sIm1vZGlmeSI6e30sInJlcXVpcmUiOnt9fSwic3RhdGVOYW1lcyI6WyJyZXF1aXJlIiwibW9kaWZ5IiwiaW5pdCIsImRlZmF1bHQiLCJpZ25vcmUiXX0sInBhdGhzVG9TY29wZXMiOnt9LCJlbWl0dGVyIjp7Il9ldmVudHMiOnt9LCJfZXZlbnRzQ291bnQiOjAsIl9tYXhMaXN0ZW5lcnMiOjB9LCIkb3B0aW9ucyI6dHJ1ZX0sImlzTmV3IjpmYWxzZSwiX2RvYyI6eyJlbWFpbHZlcmlmaWVkIjp0cnVlLCJsYXN0bmFtZSI6IlBhbmljbyIsImZpcnN0bmFtZSI6IkdhYnJpZWxlIiwicGFzc3dvcmQiOiIkMmEkMTAkMUJ0b0xEVmJFaDU5YmhPVlRRckRCT3NoMm8zU3Zlam5aY2VFU0VCZGRFVTc2dDk0d1lIRi4iLCJlbWFpbCI6ImdhYnJpZWxlLnBhbmljbzk1QGdtYWlsLmNvbSIsIl9pZCI6IjVjMjhiNTQ4MzQ4YjY4MDAxNWZlZWNjOSJ9LCIkaW5pdCI6dHJ1ZSwiaWF0IjoxNTU2MjY1MjI0fQ.aJkbYc2D-kMFZR3GgTiGA85sW-ZB5VWrQW7fLNQnICQ');
+  //   headers.append('Authorization', this.TOKEN);
+  //   return this.http
+  //     .get(url, { headers })
+  //     .map((response) => response.json());
+  // }
 
 
   // Waiting Time Average
-  public averageWait() {
+  // public averageWait() {
+  //   // USED TO TEST (note: this service doesn't work in localhost)
+  //   // const url = 'https://api.tiledesk.com/v1/' + '5ad5bd52c975820014ba900a' + '/analytics/requests/waiting';
+  //   const url = this.SERVER_BASE_PATH + this.project._id + '/analytics/requests/waiting';
+  //   console.log('!!! ANALYTICS - AVERAGE WAIT - URL ', url);
 
-    // USED TO TEST (note: this service doesn't work in localhost)
-    // const url = 'https://api.tiledesk.com/v1/' + '5ad5bd52c975820014ba900a' + '/analytics/requests/waiting';
+  //   const headers = new Headers();
+  //   headers.append('Content-Type', 'application/json');
+  //   // USED TO TEST (note: this service doesn't work in localhost)
+  //   // headers.append('Authorization', 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiZW1haWwiOjEsImZpcnN0bmFtZSI6MSwibGFzdG5hbWUiOjEsInBhc3N3b3JkIjoxLCJlbWFpbHZlcmlmaWVkIjoxLCJpZCI6MX0sImdldHRlcnMiOnt9LCJfaWQiOiI1YWM3NTIxNzg3ZjZiNTAwMTRlMGI1OTIiLCJ3YXNQb3B1bGF0ZWQiOmZhbHNlLCJhY3RpdmVQYXRocyI6eyJwYXRocyI6eyJwYXNzd29yZCI6ImluaXQiLCJlbWFpbCI6ImluaXQiLCJlbWFpbHZlcmlmaWVkIjoiaW5pdCIsImxhc3RuYW1lIjoiaW5pdCIsImZpcnN0bmFtZSI6ImluaXQiLCJfaWQiOiJpbml0In0sInN0YXRlcyI6eyJpZ25vcmUiOnt9LCJkZWZhdWx0Ijp7fSwiaW5pdCI6eyJlbWFpbHZlcmlmaWVkIjp0cnVlLCJsYXN0bmFtZSI6dHJ1ZSwiZmlyc3RuYW1lIjp0cnVlLCJwYXNzd29yZCI6dHJ1ZSwiZW1haWwiOnRydWUsIl9pZCI6dHJ1ZX0sIm1vZGlmeSI6e30sInJlcXVpcmUiOnt9fSwic3RhdGVOYW1lcyI6WyJyZXF1aXJlIiwibW9kaWZ5IiwiaW5pdCIsImRlZmF1bHQiLCJpZ25vcmUiXX0sInBhdGhzVG9TY29wZXMiOnt9LCJlbWl0dGVyIjp7ImRvbWFpbiI6bnVsbCwiX2V2ZW50cyI6e30sIl9ldmVudHNDb3VudCI6MCwiX21heExpc3RlbmVycyI6MH0sIiRvcHRpb25zIjp0cnVlfSwiaXNOZXciOmZhbHNlLCJfZG9jIjp7ImVtYWlsdmVyaWZpZWQiOnRydWUsImxhc3RuYW1lIjoiTGFuemlsb3R0byIsImZpcnN0bmFtZSI6Ik5pY29sYSIsInBhc3N3b3JkIjoiJDJhJDEwJDEzZlROSnA3OUx5RVYvdzh6NXRrbmVrc3pYRUtuaWFxZm83TnR2aTZpSHdaQ2ZLRUZKd1kuIiwiZW1haWwiOiJuaWNvbGEubGFuemlsb3R0b0Bmcm9udGllcmUyMS5pdCIsIl9pZCI6IjVhYzc1MjE3ODdmNmI1MDAxNGUwYjU5MiJ9LCIkaW5pdCI6dHJ1ZSwiaWF0IjoxNTUwMDc3Mzg5fQ.temvv0C-EsHNbjgj7p5ZmF_CmjykLaZn8fNhI-_tV0M');
+  //   headers.append('Authorization', this.TOKEN);
+  //   return this.http
+  //     .get(url, { headers })
+  //     .map((response) => response.json());
 
-    const url = this.SERVER_BASE_PATH + this.project._id + '/analytics/requests/waiting';
-    console.log('!!! ANALYTICS - AVERAGE WAIT - URL ', url);
+  // }
 
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    // USED TO TEST (note: this service doesn't work in localhost)
-    // headers.append('Authorization', 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiZW1haWwiOjEsImZpcnN0bmFtZSI6MSwibGFzdG5hbWUiOjEsInBhc3N3b3JkIjoxLCJlbWFpbHZlcmlmaWVkIjoxLCJpZCI6MX0sImdldHRlcnMiOnt9LCJfaWQiOiI1YWM3NTIxNzg3ZjZiNTAwMTRlMGI1OTIiLCJ3YXNQb3B1bGF0ZWQiOmZhbHNlLCJhY3RpdmVQYXRocyI6eyJwYXRocyI6eyJwYXNzd29yZCI6ImluaXQiLCJlbWFpbCI6ImluaXQiLCJlbWFpbHZlcmlmaWVkIjoiaW5pdCIsImxhc3RuYW1lIjoiaW5pdCIsImZpcnN0bmFtZSI6ImluaXQiLCJfaWQiOiJpbml0In0sInN0YXRlcyI6eyJpZ25vcmUiOnt9LCJkZWZhdWx0Ijp7fSwiaW5pdCI6eyJlbWFpbHZlcmlmaWVkIjp0cnVlLCJsYXN0bmFtZSI6dHJ1ZSwiZmlyc3RuYW1lIjp0cnVlLCJwYXNzd29yZCI6dHJ1ZSwiZW1haWwiOnRydWUsIl9pZCI6dHJ1ZX0sIm1vZGlmeSI6e30sInJlcXVpcmUiOnt9fSwic3RhdGVOYW1lcyI6WyJyZXF1aXJlIiwibW9kaWZ5IiwiaW5pdCIsImRlZmF1bHQiLCJpZ25vcmUiXX0sInBhdGhzVG9TY29wZXMiOnt9LCJlbWl0dGVyIjp7ImRvbWFpbiI6bnVsbCwiX2V2ZW50cyI6e30sIl9ldmVudHNDb3VudCI6MCwiX21heExpc3RlbmVycyI6MH0sIiRvcHRpb25zIjp0cnVlfSwiaXNOZXciOmZhbHNlLCJfZG9jIjp7ImVtYWlsdmVyaWZpZWQiOnRydWUsImxhc3RuYW1lIjoiTGFuemlsb3R0byIsImZpcnN0bmFtZSI6Ik5pY29sYSIsInBhc3N3b3JkIjoiJDJhJDEwJDEzZlROSnA3OUx5RVYvdzh6NXRrbmVrc3pYRUtuaWFxZm83TnR2aTZpSHdaQ2ZLRUZKd1kuIiwiZW1haWwiOiJuaWNvbGEubGFuemlsb3R0b0Bmcm9udGllcmUyMS5pdCIsIl9pZCI6IjVhYzc1MjE3ODdmNmI1MDAxNGUwYjU5MiJ9LCIkaW5pdCI6dHJ1ZSwiaWF0IjoxNTUwMDc3Mzg5fQ.temvv0C-EsHNbjgj7p5ZmF_CmjykLaZn8fNhI-_tV0M');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
+  // NOT  USED (NOTE the timezone is variable - see email 3 jan)
+  // public daysHoursRequestsDistribution() {
+  //   const url = this.SERVER_BASE_PATH + this.project._id + '/analytics/requests/aggregate/dayoftheweek/hours?timezone=%2B01';
+  //   console.log('!!! ANALYTICS - Requests Distribution IN THE HOURS OF THE DAYS - URL ', url);
 
-  }
-
-  // NOT YET USED (NOTE the timezone is variable - see email 3 jan)
-  public daysHoursRequestsDistribution() {
-    const url = this.SERVER_BASE_PATH + this.project._id + '/analytics/requests/aggregate/dayoftheweek/hours?timezone=%2B01';
-    console.log('!!! ANALYTICS - Requests Distribution IN THE HOURS OF THE DAYS - URL ', url);
-
-    const headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    // USED TO TEST (note: this service doesn't work in localhost)
-    // headers.append('Authorization', 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiZW1haWwiOjEsImZpcnN0bmFtZSI6MSwibGFzdG5hbWUiOjEsInBhc3N3b3JkIjoxLCJlbWFpbHZlcmlmaWVkIjoxLCJpZCI6MX0sImdldHRlcnMiOnt9LCJfaWQiOiI1YWM3NTIxNzg3ZjZiNTAwMTRlMGI1OTIiLCJ3YXNQb3B1bGF0ZWQiOmZhbHNlLCJhY3RpdmVQYXRocyI6eyJwYXRocyI6eyJwYXNzd29yZCI6ImluaXQiLCJlbWFpbCI6ImluaXQiLCJlbWFpbHZlcmlmaWVkIjoiaW5pdCIsImxhc3RuYW1lIjoiaW5pdCIsImZpcnN0bmFtZSI6ImluaXQiLCJfaWQiOiJpbml0In0sInN0YXRlcyI6eyJpZ25vcmUiOnt9LCJkZWZhdWx0Ijp7fSwiaW5pdCI6eyJlbWFpbHZlcmlmaWVkIjp0cnVlLCJsYXN0bmFtZSI6dHJ1ZSwiZmlyc3RuYW1lIjp0cnVlLCJwYXNzd29yZCI6dHJ1ZSwiZW1haWwiOnRydWUsIl9pZCI6dHJ1ZX0sIm1vZGlmeSI6e30sInJlcXVpcmUiOnt9fSwic3RhdGVOYW1lcyI6WyJyZXF1aXJlIiwibW9kaWZ5IiwiaW5pdCIsImRlZmF1bHQiLCJpZ25vcmUiXX0sInBhdGhzVG9TY29wZXMiOnt9LCJlbWl0dGVyIjp7ImRvbWFpbiI6bnVsbCwiX2V2ZW50cyI6e30sIl9ldmVudHNDb3VudCI6MCwiX21heExpc3RlbmVycyI6MH0sIiRvcHRpb25zIjp0cnVlfSwiaXNOZXciOmZhbHNlLCJfZG9jIjp7ImVtYWlsdmVyaWZpZWQiOnRydWUsImxhc3RuYW1lIjoiTGFuemlsb3R0byIsImZpcnN0bmFtZSI6Ik5pY29sYSIsInBhc3N3b3JkIjoiJDJhJDEwJDEzZlROSnA3OUx5RVYvdzh6NXRrbmVrc3pYRUtuaWFxZm83TnR2aTZpSHdaQ2ZLRUZKd1kuIiwiZW1haWwiOiJuaWNvbGEubGFuemlsb3R0b0Bmcm9udGllcmUyMS5pdCIsIl9pZCI6IjVhYzc1MjE3ODdmNmI1MDAxNGUwYjU5MiJ9LCIkaW5pdCI6dHJ1ZSwiaWF0IjoxNTM3MjkxNzcwfQ.dxovfEleb6I33rtWObY8SwyjfMVfaY7vXwHvQDeNTEY');
-    headers.append('Authorization', this.TOKEN);
-    return this.http
-      .get(url, { headers })
-      .map((response) => response.json());
-  }
+  //   const headers = new Headers();
+  //   headers.append('Content-Type', 'application/json');
+  //   // USED TO TEST (note: this service doesn't work in localhost)
+  //   // headers.append('Authorization', 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiZW1haWwiOjEsImZpcnN0bmFtZSI6MSwibGFzdG5hbWUiOjEsInBhc3N3b3JkIjoxLCJlbWFpbHZlcmlmaWVkIjoxLCJpZCI6MX0sImdldHRlcnMiOnt9LCJfaWQiOiI1YWM3NTIxNzg3ZjZiNTAwMTRlMGI1OTIiLCJ3YXNQb3B1bGF0ZWQiOmZhbHNlLCJhY3RpdmVQYXRocyI6eyJwYXRocyI6eyJwYXNzd29yZCI6ImluaXQiLCJlbWFpbCI6ImluaXQiLCJlbWFpbHZlcmlmaWVkIjoiaW5pdCIsImxhc3RuYW1lIjoiaW5pdCIsImZpcnN0bmFtZSI6ImluaXQiLCJfaWQiOiJpbml0In0sInN0YXRlcyI6eyJpZ25vcmUiOnt9LCJkZWZhdWx0Ijp7fSwiaW5pdCI6eyJlbWFpbHZlcmlmaWVkIjp0cnVlLCJsYXN0bmFtZSI6dHJ1ZSwiZmlyc3RuYW1lIjp0cnVlLCJwYXNzd29yZCI6dHJ1ZSwiZW1haWwiOnRydWUsIl9pZCI6dHJ1ZX0sIm1vZGlmeSI6e30sInJlcXVpcmUiOnt9fSwic3RhdGVOYW1lcyI6WyJyZXF1aXJlIiwibW9kaWZ5IiwiaW5pdCIsImRlZmF1bHQiLCJpZ25vcmUiXX0sInBhdGhzVG9TY29wZXMiOnt9LCJlbWl0dGVyIjp7ImRvbWFpbiI6bnVsbCwiX2V2ZW50cyI6e30sIl9ldmVudHNDb3VudCI6MCwiX21heExpc3RlbmVycyI6MH0sIiRvcHRpb25zIjp0cnVlfSwiaXNOZXciOmZhbHNlLCJfZG9jIjp7ImVtYWlsdmVyaWZpZWQiOnRydWUsImxhc3RuYW1lIjoiTGFuemlsb3R0byIsImZpcnN0bmFtZSI6Ik5pY29sYSIsInBhc3N3b3JkIjoiJDJhJDEwJDEzZlROSnA3OUx5RVYvdzh6NXRrbmVrc3pYRUtuaWFxZm83TnR2aTZpSHdaQ2ZLRUZKd1kuIiwiZW1haWwiOiJuaWNvbGEubGFuemlsb3R0b0Bmcm9udGllcmUyMS5pdCIsIl9pZCI6IjVhYzc1MjE3ODdmNmI1MDAxNGUwYjU5MiJ9LCIkaW5pdCI6dHJ1ZSwiaWF0IjoxNTM3MjkxNzcwfQ.dxovfEleb6I33rtWObY8SwyjfMVfaY7vXwHvQDeNTEY');
+  //   headers.append('Authorization', this.TOKEN);
+  //   return this.http
+  //     .get(url, { headers })
+  //     .map((response) => response.json());
+  // }
 
 
   public lastMonthRequetsCount() {

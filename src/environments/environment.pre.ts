@@ -10,14 +10,13 @@ export const environment = {
     SERVER_BASE_URL:'https://tiledesk-server-pre.herokuapp.com/',
     CHAT_BASE_URL: 'https://support-pre.tiledesk.com/chat/',
     testsiteBaseUrl: 'https://widget-pre.tiledesk.com/v2/testi.html',
-    wsUrl: 'wss://tiledesk-server-pre.herokuapp.com?token=',
+    wsUrl: 'wss://tiledesk-server-pre.herokuapp.com/',
     firebase: {
         apiKey: 'CHANGEIT',
         authDomain: 'CHANGEIT',
         databaseURL: 'CHANGEIT',
         projectId: 'CHANGEIT',
         storageBucket: 'CHANGEIT',
-        messagingSenderId: 'CHANGEIT',
-        chat21ApiUrl: 'CHANGEIT'
+        messagingSenderId: 'CHANGEIT'
     }
 };

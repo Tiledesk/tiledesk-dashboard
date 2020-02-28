@@ -53,7 +53,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     // wsbasepath = environment.websocket.wsUrl; // moved
 
     // wsbasepath = environment.wsUrl;
-    
+
 
     subscription: Subscription;
     // background_bottom_section = brand.sidebar.background_bottom_section
@@ -209,7 +209,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             if (user && user.token) {
 
                 // const CHAT_URL = 'ws://tiledesk-server-pre.herokuapp.com?token=' + user.token
-                const CHAT_URL = this.appConfigService.getConfig().wsUrl + user.token
+                const CHAT_URL = this.appConfigService.getConfig().wsUrl + '?token=' + user.token
 
 
                 // -----------------------------------------------------------------------------------------------------

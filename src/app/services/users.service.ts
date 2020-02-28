@@ -65,7 +65,7 @@ export class UsersService {
   AVAILABLE_USERS_URL: any;
   // NEW_AVAILABLE_USERS_URL: any; // NO MORE USED
   USERS_ACTIVITIES_URL: any;
-  CLOUD_FUNC_UPDATE_USER_URL: any;
+  // CLOUD_FUNC_UPDATE_USER_URL: any; // NO MORE USED 
   PROJECT_USER_URL: any;
   INVITE_USER_URL: any;
   PENDING_INVITATION_URL: string;
@@ -125,8 +125,8 @@ export class UsersService {
   getAppConfigAndBuildUrl() {
 
     const firebase_conf = this.appConfigService.getConfig().firebase;
-    const cloudBaseUrl = firebase_conf['chat21ApiUrl']
-    this.CLOUD_FUNC_UPDATE_USER_URL = cloudBaseUrl + '/api/tilechat/contacts/me';
+    // const cloudBaseUrl = firebase_conf['chat21ApiUrl']
+    // this.CLOUD_FUNC_UPDATE_USER_URL = cloudBaseUrl + '/api/tilechat/contacts/me';  // NO MORE USED
 
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
     console.log('AppConfigService getAppConfig (USERS SERV.) SERVER_BASE_PATH ', this.SERVER_BASE_PATH);
@@ -880,7 +880,7 @@ export class UsersService {
 
         if (jsonRes['success'] === true) {
 
-          callback('user successfully updated on mdb');
+          callback('success');
 
           const user: User = jsonRes.updatedUser;
 
@@ -897,9 +897,12 @@ export class UsersService {
           // -  RESET IT IN LOCAL STORAGE
           this.auth.publishUpdatedUser(user)
 
+          /** 
+           * !!!! NO MORE USED
+           */
           // chat21-cloud-functions - Update my FirstName and Last Name
           // on firebase Realtime Database
-          this.cloudFunctionsUpdateContact(user_firstname, user_lastname, callback);
+          // this.cloudFunctionsUpdateContact(user_firstname, user_lastname, callback);
 
         } else {
 
@@ -915,43 +918,36 @@ export class UsersService {
         });
   }
 
-  cloudFunctionsUpdateContact(updated_firstname: string, updated_lastname: string, callback) {
+  // cloudFunctionsUpdateContact(updated_firstname: string, updated_lastname: string, callback) {
+  //   const self = this;
+  //   firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+  //     .then(function (token) {
+  //       console.log('USER SERV - FIREBASE idToken.', token);
 
-    const self = this;
-    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
-      .then(function (token) {
-        console.log('USER SERV - FIREBASE idToken.', token);
+  //       const headers = new Headers();
+  //       headers.append('Accept', 'application/json');
+  //       headers.append('Content-type', 'application/json');
+  //       headers.append('Authorization', 'Bearer ' + token);
+  //       const options = new RequestOptions({ headers });
+  //       const url = self.CLOUD_FUNC_UPDATE_USER_URL;
+  //       console.log('CLOUD FUNCT - UPDATE CONTACT URL ', url)
+  //       const body = { 'firstname': updated_firstname, 'lastname': updated_lastname };
+  //       self.http
+  //         .put(url, JSON.stringify(body), options)
+  //         .toPromise().then(res => {
+  //           console.log('Cloud Functions Update Contact RESPONSE ', res)
+  //           console.log('Cloud Functions Update Contact RESPONSE STATUS', res.status)
+  //           if (res.status === 200) {
+  //             callback('user successfully updated on firebase')
+  //           }
+  //         });
 
-
-        const headers = new Headers();
-        headers.append('Accept', 'application/json');
-        headers.append('Content-type', 'application/json');
-        headers.append('Authorization', 'Bearer ' + token);
-
-        const options = new RequestOptions({ headers });
-        const url = self.CLOUD_FUNC_UPDATE_USER_URL;
-
-        console.log('CLOUD FUNCT - UPDATE CONTACT URL ', url)
-
-        const body = { 'firstname': updated_firstname, 'lastname': updated_lastname };
-
-        self.http
-          .put(url, JSON.stringify(body), options)
-          .toPromise().then(res => {
-            console.log('Cloud Functions Update Contact RESPONSE ', res)
-            console.log('Cloud Functions Update Contact RESPONSE STATUS', res.status)
-
-            if (res.status === 200) {
-              callback('user successfully updated on firebase')
-            }
-          });
-
-      }).catch(function (error) {
-        // Handle error
-        console.log('idToken.', error);
-        callback('error')
-      });
-  }
+  //     }).catch(function (error) {
+  //       // Handle error
+  //       console.log('idToken.', error);
+  //       callback('error')
+  //     });
+  // }
 
 
   public changePassword(user_id: string, old_psw: string, new_psw: string) {

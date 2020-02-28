@@ -12,14 +12,13 @@ export const environment = {
     SERVER_BASE_URL: 'http://localhost:3000/',
     CHAT_BASE_URL: 'http://localhost:8080/',
     testsiteBaseUrl: 'http://localhost:4200/assets/test_widget_page/index.html',
-    wsUrl: 'ws://' + window.location.hostname + '/ws/?token=',
+    wsUrl: 'ws://' + window.location.hostname + '/ws/',
     firebase: {
         apiKey: 'CHANGEIT',
         authDomain: 'CHANGEIT',
         databaseURL: 'CHANGEIT',
         projectId: 'CHANGEIT',
         storageBucket: 'CHANGEIT',
-        messagingSenderId: 'CHANGEIT',
-        chat21ApiUrl: 'CHANGEIT'
+        messagingSenderId: 'CHANGEIT'
     }
 };
