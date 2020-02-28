@@ -235,15 +235,16 @@ export class UserProfileComponent implements OnInit {
     this.displayModalUpdatingUser = 'block';
     this.SHOW_CIRCULAR_SPINNER = true;
 
-    console.log('»» »» »» WHEN CLICK UPDATE - USER FIRST NAME ', this.userFirstname);
-    console.log('»» »» »» WHEN CLICK UPDATE - USER LAST NAME ', this.userLastname);
+    console.log('»» »» »» UPDATE CURRENT USER - WHEN CLICK UPDATE - USER FIRST NAME ', this.userFirstname);
+    console.log('»» »» »» UPDATE CURRENT USER - WHEN CLICK UPDATE - USER LAST NAME ', this.userLastname);
     this.usersService.updateCurrentUserLastnameFirstname(this.userFirstname, this.userLastname, (response) => {
 
       console.log('»»»» CALLBACK RESPONSE ', response)
-      if (response === 'user successfully updated on firebase') {
+      if (response === 'success') {
 
         this.SHOW_CIRCULAR_SPINNER = false;
         this.UPDATE_USER_ERROR = false;
+        console.log('»» »» »» UPDATE CURRENT USER  ', this.SHOW_CIRCULAR_SPINNER);
         // =========== NOTIFY SUCCESS===========
         this.notify.showNotification('your profile has been successfully updated', 2, 'done');
 
