@@ -169,7 +169,9 @@ import { WsRequestsUnservedComponent } from './ws_requests/ws-requests-list/ws-r
 import { CloseRequestModalComponent } from './ws_requests/modals/close-request-modal/close-request-modal.component';
 import { LoadingPageComponent } from './loading-page/loading-page.component';
 import { BotsBaseComponent } from './bots/bots-base/bots-base.component';
-
+import { CannedResponsesListComponent } from './canned-responses/canned-responses-list.component';
+import { CannedResponsesAddEditComponent } from './canned-responses/canned-responses-add-edit/canned-responses-add-edit.component';
+import { CannedResponsesService } from './services/canned-responses.service';
 
 
 console.log('************** APPMODULE ******************');
@@ -277,7 +279,9 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     CloseRequestModalComponent,
     LoadingPageComponent,
     BotTypeSelectComponent,
-    BotsBaseComponent
+    BotsBaseComponent,
+    CannedResponsesListComponent,
+    CannedResponsesAddEditComponent
   ],
   imports: [
     /* PRIVATE */
@@ -326,6 +330,7 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     WebSocketJs,
     UsersService,
     ContactsService,
+    CannedResponsesService,
     RequestsService,
     DepartmentService,
     MongodbFaqService,

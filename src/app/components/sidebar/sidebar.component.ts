@@ -145,6 +145,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     isVisibleGRO: boolean;
     isVisibleDEP: boolean;
     isVisibleOPH: boolean;
+    isVisibleCAR: boolean; // canned responses
 
     storageBucket: string;
 
@@ -331,6 +332,22 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     this.isVisibleOPH = true;
                     // console.log('PUBLIC-KEY (SIDEBAR) - oph isVisible', this.isVisibleOPH);
                 }
+            }
+
+            if (key.includes("CAR")) {
+                console.log('PUBLIC-KEY (SIDEBAR) - key', key);
+                let car = key.split(":");
+                console.log('PUBLIC-KEY (SIDEBAR) - car key&value', car);
+
+                if (car[1] === "F") {
+                    this.isVisibleCAR = false;
+                    console.log('PUBLIC-KEY (SIDEBAR) - car isVisible', this.isVisibleCAR);
+                } else {
+                    this.isVisibleCAR = true;
+                    console.log('PUBLIC-KEY (SIDEBAR) - car isVisible', this.isVisibleCAR);
+                }
+            } else {
+                this.isVisibleCAR = false;
             }
         });
 

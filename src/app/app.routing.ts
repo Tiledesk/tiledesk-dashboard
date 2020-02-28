@@ -101,6 +101,8 @@ import { PaymentsListComponent } from './pricing/payments-list/payments-list.com
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { InstallTiledeskComponent } from './install-tiledesk/install-tiledesk.component';
 import { LoadingPageComponent } from './loading-page/loading-page.component';
+import { CannedResponsesListComponent } from './canned-responses/canned-responses-list.component';
+
 
 const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
@@ -131,6 +133,8 @@ const routes: Routes = [
   { path: 'create-project', component: CreateProjectComponent, canActivate: [AuthGuard] },
   // USED WHEN THE USER CLICK ON 'ADD NEW PROJECT' FROM THE NAVBAR
   { path: 'create-new-project', component: CreateProjectComponent, canActivate: [AuthGuard] },
+  
+  { path: 'project/:projectid/cannedresponses', component: CannedResponsesListComponent, canActivate: [AuthGuard] },
  
   { path: 'project/:projectid/install-tiledesk', component: InstallTiledeskComponent, canActivate: [AuthGuard] },
 

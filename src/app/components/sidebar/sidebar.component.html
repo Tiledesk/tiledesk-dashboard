@@ -369,6 +369,23 @@
         </a>
       </li>
 
+
+
+      <!-- Canned responses -->
+      <ng-container *ngIf="isVisibleCAR">
+        <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
+          <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/cannedresponses">
+            <p class="onBlackBckgrnd">
+              <span class="sidebar-mini">
+                {{'CannedResponses.CR' | translate}}  
+              </span> 
+              {{'CannedResponses.CannedResponses' | translate}}
+            </p>
+          </a>
+        </li>
+      </ng-container>
+
+
       <!-- SECTION OF SETTINGS SUBMENU -->
 
       <!-- BOT: NO MORE USED - THE CURRENT BOT (see down) IS FAQKB RENAMED TO BOT-->

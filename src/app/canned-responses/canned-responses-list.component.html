@@ -1,0 +1,138 @@
+<p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px" class="navbar-brand">
+  {{ 'CannedResponses.CannedResponses' | translate }}
+</p>
+<div class="main-content" style="padding-top:0px">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-9 col-lg-8">
+        <div class="card">
+          <div class="card-header card-header-custom-bkgrnd">
+
+            <button class="btn btn-primary" style="padding: 8px 16px; margin: 0px;min-width: 146px;"
+              (click)="presentResponseModal_inAddMode()">
+              <span class="icon" style="padding-right:8px">
+                <i class="material-icons">add_circle</i>
+              </span>
+              {{ "CannedResponses.AddResponses" | translate }}
+            </button>
+          </div>
+
+          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+          <div *ngIf="!showSpinner" class="card-content table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>
+                    <span class="column-th-span">
+
+                      {{ "CannedResponses.Responses" | translate }}
+                    </span>
+                  </th>
+
+                  <th>
+                    <span class="column-th-span">
+
+                      {{ "Actions" | translate }}
+                    </span>
+                  </th>
+
+                </tr>
+              </thead>
+
+              <tbody>
+                <!-- IF THERE ISN'T CANNED RESPONSES -->
+                <tr *ngIf="responsesList && responsesList?.length === 0">
+                  <td colspan="2" style="text-align: center; padding-top: 24px;">
+                    <p style="font-size:1em; margin-bottom: 0px; color:#7695a5; font-weight: 400">
+                      <i class="material-icons" style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;"> info
+                      </i>
+                      {{ 'CannedResponses.YouHaveNotAddedAnyCannedResponses' | translate }}
+                    </p>
+                  </td>
+                </tr>
+
+                <tr *ngFor="let response of responsesList; let i = index">
+                  <!--  style="width: 1%; white-space: nowrap;" -->
+                  <td>
+
+                    <span style="display: block;font-weight: 500;font-size: 14px;color: rgba(0, 0, 0, 0.87)"> 
+                      {{response?.title}} 
+                    </span>
+                    <span style="display: block;color:#7695a5; font-size: 13px;"> 
+                      {{response?.text}} 
+                    </span>
+                  </td>
+
+
+                  <td class="td-actions text-right" style="padding-top:20px">
+                    <button type="button" rel="tooltip" title="" class="btn btn-primary btn-simple btn-xs"
+                      (click)='presentResponseModal_inEditMode(response?._id)'>
+                      <i class="material-icons">edit</i>
+                    </button>
+
+                    <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs"
+                      (click)='deleteCannedResponse(response?._id)'>
+                      <i class="material-icons">close</i>
+                    </button>
+                  </td>
+
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+      <!-- /. end col-md-8 -->
+
+      <!-- // RIGHT SIDEBAR -->
+      <div class="col-md-3 col-lg-4">
+        <div class="card">
+          <div class="card-content">
+            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
+              {{ "QuickTips" | translate }}
+            </h4>
+
+            <p style="color:#7695a5">
+              {{ "CannedResponses.QuickTips.1" | translate }}
+            </p>
+            <p style="color:#7695a5">
+              {{ "CannedResponses.QuickTips.2" | translate }}
+            </p>
+            <p style="color:#7695a5">
+              {{ "CannedResponses.QuickTips.3" | translate }}
+            </p>
+            <p style="color:#7695a5">
+              {{ "CannedResponses.QuickTips.4" | translate }}
+            </p>
+            <p style="color:#7695a5">
+              {{ "CannedResponses.QuickTips.5" | translate }}
+            </p>
+            <p style="color:#7695a5">
+              {{ "CannedResponses.QuickTips.6" | translate }}
+            </p>
+            <p style="color:#7695a5">
+              {{ "CannedResponses.QuickTips.7" | translate }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<appdashboard-canned-responses-add-edit *ngIf="displayModal_AddEditResponse === 'block'"
+  (closeModal)='closeModal_AddEditResponse()' (hasSavedResponse)='onSaveResponse()' [modalMode]='modalMode'
+  [selectCannedResponseId]='selectCannedResponseId'>
+</appdashboard-canned-responses-add-edit>
+
+<!-- <appdashboard-canned-responses-create *ngIf="displayEditResponseModal === 'block'" 
+  (closeModal)='onCloseEditResponseModal()'
+  (hasSavedResponse)='onSaveResponse()'> 
+</appdashboard-canned-responses-create> -->
