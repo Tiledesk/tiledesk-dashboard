@@ -273,7 +273,7 @@ export class Analytics2Component implements OnInit , OnDestroy {
     // this.getlastMonthRequetsCount();
     // this.getCountOf_AllRequestsForDept();
 
-    /** NOT YET USED */
+    /** NOT  USED */
     // this.daysHoursRequestsDistribution()
 
     /** NOT YET USED */
@@ -368,311 +368,302 @@ export class Analytics2Component implements OnInit , OnDestroy {
   //   return hours + ':' + minutes + ':' + seconds + '.' + milliseconds;
   // }
 
-  daysHoursRequestsDistribution() {
-    this.requestsService.daysHoursRequestsDistribution().subscribe((requestsDistribution: any) => {
 
-      console.log('»» !!! ANALYTICS - REQUESTS DISTRIBUTION ', requestsDistribution);
-    })
-  }
+  /** NOT USED */
+  // daysHoursRequestsDistribution() {
+  //   this.requestsService.daysHoursRequestsDistribution().subscribe((requestsDistribution: any) => {
 
+  //     console.log('»» !!! ANALYTICS - REQUESTS DISTRIBUTION ', requestsDistribution);
+  //   })
+  // }
   /* ----------==========   end ON INIT    ==========---------- */
 
-  getRequestByLast7Day(){
-    this.requestsService.requestsByDay().subscribe((requestsByDay: any) => {
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY ', requestsByDay);
 
-      // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
-      const last7days_initarray = []
-      for (let i = 0; i <= 6; i++) {
-        // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
-        last7days_initarray.push({ 'count': 0, day: moment().subtract(i, 'd').format('D-M-YYYY') })
-      }
+  // !!! NOT USED - 
+  // getRequestByLast7Day(){
+  //   this.requestsService.requestsByDay().subscribe((requestsByDay: any) => {
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY ', requestsByDay);
 
-      // last7days_initarray.sort(function compare(a, b) {
-      //   console.log('»» !!! ANALYTICS - REQUESTS BY DAY a.day', a.day);
-      //   console.log('»» !!! ANALYTICS - REQUESTS BY DAY b.day', b.day);
-      //   // if (a.day > b.day) {
-      //   //   return 1;
-      //   // }
-      //   // if (a.day < a.day) {
-      //   //   return -1;
-      //   // }
-      //   // return 0;
+  //     // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
+  //     const last7days_initarray = []
+  //     for (let i = 0; i <= 6; i++) {
+  //       // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
+  //       last7days_initarray.push({ 'count': 0, day: moment().subtract(i, 'd').format('D-M-YYYY') })
+  //     }
 
-      // })
+  //     last7days_initarray.reverse()
 
-      last7days_initarray.reverse()
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - MOMENT LAST SEVEN DATE (init array)', last7days_initarray);
 
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - MOMENT LAST SEVEN DATE (init array)', last7days_initarray);
+  //     const requestsByDay_series_array = [];
+  //     const requestsByDay_labels_array = []
 
-      const requestsByDay_series_array = [];
-      const requestsByDay_labels_array = []
+  //     // CREATES A NEW ARRAY FROM THE ARRAY RETURNED FROM THE SERVICE SO THAT IT IS COMPARABLE WITH last7days_initarray
+  //     const requestsByDay_array = []
+  //     for (let j = 0; j < requestsByDay.length; j++) {
+  //       if (requestsByDay[j]) {
+  //         requestsByDay_array.push({ 'count': requestsByDay[j]['count'], day: requestsByDay[j]['_id']['day'] + '-' + requestsByDay[j]['_id']['month'] + '-' + requestsByDay[j]['_id']['year'] })
 
-      // CREATES A NEW ARRAY FROM THE ARRAY RETURNED FROM THE SERVICE SO THAT IT IS COMPARABLE WITH last7days_initarray
-      const requestsByDay_array = []
-      for (let j = 0; j < requestsByDay.length; j++) {
-        if (requestsByDay[j]) {
-          requestsByDay_array.push({ 'count': requestsByDay[j]['count'], day: requestsByDay[j]['_id']['day'] + '-' + requestsByDay[j]['_id']['month'] + '-' + requestsByDay[j]['_id']['year'] })
+  //         /* OLD LABELS & SERIES (TO USE FOR DEBUG) */
+  //         // const requestByDay_count = requestsByDay[j]['count']
+  //         // requestsByDay_series_array.push(requestByDay_count)
+  //         // const requestByDay_day = requestsByDay[j]['_id']['day']
+  //         // const requestByDay_month = requestsByDay[j]['_id']['month']
+  //         // requestsByDay_labels_array.push(requestByDay_day + ' ' + this.monthNames[requestByDay_month])
+  //       }
 
-          /* OLD LABELS & SERIES (TO USE FOR DEBUG) */
-          // const requestByDay_count = requestsByDay[j]['count']
-          // requestsByDay_series_array.push(requestByDay_count)
-          // const requestByDay_day = requestsByDay[j]['_id']['day']
-          // const requestByDay_month = requestsByDay[j]['_id']['month']
-          // requestsByDay_labels_array.push(requestByDay_day + ' ' + this.monthNames[requestByDay_month])
-        }
-
-      }
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
+  //     }
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
 
 
-      /**
-       * MERGE THE ARRAY last7days_initarray WITH requestsByDay_array  */
-      // Here, requestsByDay_formatted_array.find(o => o.day === obj.day)
-      // will return the element i.e. object from requestsByDay_formatted_array if the day is found in the requestsByDay_formatted_array.
-      // If not, then the same element in last7days i.e. obj is returned.
-      const requestByDays_final_array = last7days_initarray.map(obj => requestsByDay_array.find(o => o.day === obj.day) || obj);
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
+  //     /**
+  //      * MERGE THE ARRAY last7days_initarray WITH requestsByDay_array  */
+  //     // Here, requestsByDay_formatted_array.find(o => o.day === obj.day)
+  //     // will return the element i.e. object from requestsByDay_formatted_array if the day is found in the requestsByDay_formatted_array.
+  //     // If not, then the same element in last7days i.e. obj is returned.
+  //     const requestByDays_final_array = last7days_initarray.map(obj => requestsByDay_array.find(o => o.day === obj.day) || obj);
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
 
-      const _requestsByDay_series_array = [];
-      const _requestsByDay_labels_array = [];
+  //     const _requestsByDay_series_array = [];
+  //     const _requestsByDay_labels_array = [];
 
-      requestByDays_final_array.forEach(requestByDay => {
-        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
-        _requestsByDay_series_array.push(requestByDay.count)
+  //     requestByDays_final_array.forEach(requestByDay => {
+  //       console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
+  //       _requestsByDay_series_array.push(requestByDay.count)
 
-        const splitted_date = requestByDay.day.split('-');
-        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
-        _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
-      });
+  //       const splitted_date = requestByDay.day.split('-');
+  //       console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
+  //       _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
+  //     });
 
 
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (ARRAY OF COUNT - to use for debug)', requestsByDay_series_array);
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDay_series_array);
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', _requestsByDay_labels_array);
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (ARRAY OF COUNT - to use for debug)', requestsByDay_series_array);
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDay_series_array);
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', _requestsByDay_labels_array);
 
-      const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
+  //     const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
 
-      var lineChart = new Chart('last7dayChart_old', {
-        type: 'line',
-        data: {
-          labels: _requestsByDay_labels_array ,
-          datasets: [{
-            label: 'Average time response in last 30 days ',
-            data: _requestsByDay_series_array,
-            fill: false, //riempie zona sottostante dati
-            lineTension: 0.1,
-            backgroundColor: 'rgba(255, 255, 255, 0.7)',
-            borderColor: 'rgba(255, 255, 255, 0.7)',
-            borderWidth: 3,
-            pointBackgroundColor: 'rgba(255, 255, 255, 0.8)',
-            pointBorderColor: 'rgba(255, 255, 255, 0.8)'
+  //     var lineChart = new Chart('last7dayChart_old', {
+  //       type: 'line',
+  //       data: {
+  //         labels: _requestsByDay_labels_array ,
+  //         datasets: [{
+  //           label: 'Average time response in last 30 days ',
+  //           data: _requestsByDay_series_array,
+  //           fill: false, //riempie zona sottostante dati
+  //           lineTension: 0.1,
+  //           backgroundColor: 'rgba(255, 255, 255, 0.7)',
+  //           borderColor: 'rgba(255, 255, 255, 0.7)',
+  //           borderWidth: 3,
+  //           pointBackgroundColor: 'rgba(255, 255, 255, 0.8)',
+  //           pointBorderColor: 'rgba(255, 255, 255, 0.8)'
 
-          }]
-        },
-        options: {
-          title: {
-            text: 'AVERAGE TIME RESPONSE',
-            display: false
-          },
-          scales: {
-            xAxes: [{
-              ticks: {
-                beginAtZero: true,
-                display: true,
-                //minRotation: 30,
-                fontColor: 'white',
-              },
-              gridLines: {
-                display: true,
-                color:'rgba(255, 255, 255, 0.5)',
-                borderDash:[3,1]
-              }
+  //         }]
+  //       },
+  //       options: {
+  //         title: {
+  //           text: 'AVERAGE TIME RESPONSE',
+  //           display: false
+  //         },
+  //         scales: {
+  //           xAxes: [{
+  //             ticks: {
+  //               beginAtZero: true,
+  //               display: true,
+  //               //minRotation: 30,
+  //               fontColor: 'white',
+  //             },
+  //             gridLines: {
+  //               display: true,
+  //               color:'rgba(255, 255, 255, 0.5)',
+  //               borderDash:[3,1]
+  //             }
 
-            }],
-            yAxes: [{
-              gridLines: {
-                display: true ,
-                color:'rgba(255, 255, 255, 0.5)',
-                borderDash:[3,1],
-              },
-              ticks: {
-                beginAtZero: true,
-                display: true,
-                fontColor: 'white',
-                stepSize: 1,
-                suggestedMax: higherCount + 2,
+  //           }],
+  //           yAxes: [{
+  //             gridLines: {
+  //               display: true ,
+  //               color:'rgba(255, 255, 255, 0.5)',
+  //               borderDash:[3,1],
+  //             },
+  //             ticks: {
+  //               beginAtZero: true,
+  //               display: true,
+  //               fontColor: 'white',
+  //               stepSize: 1,
+  //               suggestedMax: higherCount + 2,
                 
         
-                // callback: function (value, index, values) {
-                //   let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
-                //   let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
-                //   let seconds = Math.floor(((value % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
-                //   return hours + 'h:' + minutes + 'm:' + seconds + 's'
-                // },
+  //               // callback: function (value, index, values) {
+  //               //   let hours = Math.floor(value / 3600000) // 1 Hour = 36000 Milliseconds
+  //               //   let minutes = Math.floor((value % 3600000) / 60000) // 1 Minutes = 60000 Milliseconds
+  //               //   let seconds = Math.floor(((value % 360000) % 60000) / 1000) // 1 Second = 1000 Milliseconds
+  //               //   return hours + 'h:' + minutes + 'm:' + seconds + 's'
+  //               // },
 
-              }
-            }]
-          },
-          tooltips: {
-            callbacks: {
-              label: function (tooltipItem, data) {
-                // var label = data.datasets[tooltipItem.datasetIndex].label || '';
-                // if (label) {
-                //     label += ': ';
-                // }
-                // label += Math.round(tooltipItem.yLabel * 100) / 100;
-                // return label + '';
-                //console.log("data",data)
-                const currentItemValue = tooltipItem.yLabel
-                let langService = new HumanizeDurationLanguage();
-                let humanizer = new HumanizeDuration(langService);
-                humanizer.setOptions({ round: true })
-                //console.log("humanize", humanizer.humanize(currentItemValue))
-                return data.datasets[tooltipItem.datasetIndex].label + ': ' + humanizer.humanize(currentItemValue)
+  //             }
+  //           }]
+  //         },
+  //         tooltips: {
+  //           callbacks: {
+  //             label: function (tooltipItem, data) {
+  //               // var label = data.datasets[tooltipItem.datasetIndex].label || '';
+  //               // if (label) {
+  //               //     label += ': ';
+  //               // }
+  //               // label += Math.round(tooltipItem.yLabel * 100) / 100;
+  //               // return label + '';
+  //               //console.log("data",data)
+  //               const currentItemValue = tooltipItem.yLabel
+  //               let langService = new HumanizeDurationLanguage();
+  //               let humanizer = new HumanizeDuration(langService);
+  //               humanizer.setOptions({ round: true })
+  //               //console.log("humanize", humanizer.humanize(currentItemValue))
+  //               return data.datasets[tooltipItem.datasetIndex].label + ': ' + humanizer.humanize(currentItemValue)
 
-              }
-            }
-          }
+  //             }
+  //           }
+  //         }
           
-        }
-        ,
-        plugins:[{
-          beforeDraw: function(chartInstance, easing) {
-            var ctx = chartInstance.chart.ctx;
-            console.log("chartistance",chartInstance)
-            //ctx.fillStyle = 'red'; // your color here
-            //ctx.height=128
-            //chartInstance.chart.canvas.parentNode.style.height = '128px';
-            ctx.font="Google Sans"
-            var chartArea = chartInstance.chartArea;
-            //ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
-          }
-        }]
-      });
+  //       }
+  //       ,
+  //       plugins:[{
+  //         beforeDraw: function(chartInstance, easing) {
+  //           var ctx = chartInstance.chart.ctx;
+  //           console.log("chartistance",chartInstance)
+  //           //ctx.fillStyle = 'red'; // your color here
+  //           //ctx.height=128
+  //           //chartInstance.chart.canvas.parentNode.style.height = '128px';
+  //           ctx.font="Google Sans"
+  //           var chartArea = chartInstance.chartArea;
+  //           //ctx.fillRect(chartArea.left, chartArea.top, chartArea.right - chartArea.left, chartArea.bottom - chartArea.top);
+  //         }
+  //       }]
+  //     });
 
 
-    }, (error) => {
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - ERROR ', error);
-    }, () => {
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY * COMPLETE *');
-    });
-  }
+  //   }, (error) => {
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - ERROR ', error);
+  //   }, () => {
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY * COMPLETE *');
+  //   });
+  // }
     
-  getRequestsByDay() {
-    this.requestsService.requestsByDay().subscribe((requestsByDay: any) => {
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY ', requestsByDay);
+  // NOT USED
+  // getRequestsByDay() {
+  //   this.requestsService.requestsByDay().subscribe((requestsByDay: any) => {
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY ', requestsByDay);
 
-      // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
-      const last7days_initarray = []
-      for (let i = 0; i <= 6; i++) {
-        // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
-        last7days_initarray.push({ 'count': 0, day: moment().subtract(i, 'd').format('D-M-YYYY') })
-      }
+  //     // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
+  //     const last7days_initarray = []
+  //     for (let i = 0; i <= 6; i++) {
+  //       // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
+  //       last7days_initarray.push({ 'count': 0, day: moment().subtract(i, 'd').format('D-M-YYYY') })
+  //     }
 
-      // last7days_initarray.sort(function compare(a, b) {
-      //   console.log('»» !!! ANALYTICS - REQUESTS BY DAY a.day', a.day);
-      //   console.log('»» !!! ANALYTICS - REQUESTS BY DAY b.day', b.day);
-      //   // if (a.day > b.day) {
-      //   //   return 1;
-      //   // }
-      //   // if (a.day < a.day) {
-      //   //   return -1;
-      //   // }
-      //   // return 0;
+  //     // last7days_initarray.sort(function compare(a, b) {
+  //     //   console.log('»» !!! ANALYTICS - REQUESTS BY DAY a.day', a.day);
+  //     //   console.log('»» !!! ANALYTICS - REQUESTS BY DAY b.day', b.day);
+  //     //   // if (a.day > b.day) {
+  //     //   //   return 1;
+  //     //   // }
+  //     //   // if (a.day < a.day) {
+  //     //   //   return -1;
+  //     //   // }
+  //     //   // return 0;
 
-      // })
+  //     // })
 
-      last7days_initarray.reverse()
+  //     last7days_initarray.reverse()
 
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - MOMENT LAST SEVEN DATE (init array)', last7days_initarray);
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - MOMENT LAST SEVEN DATE (init array)', last7days_initarray);
 
-      const requestsByDay_series_array = [];
-      const requestsByDay_labels_array = []
+  //     const requestsByDay_series_array = [];
+  //     const requestsByDay_labels_array = []
 
-      // CREATES A NEW ARRAY FROM THE ARRAY RETURNED FROM THE SERVICE SO THAT IT IS COMPARABLE WITH last7days_initarray
-      const requestsByDay_array = []
-      for (let j = 0; j < requestsByDay.length; j++) {
-        if (requestsByDay[j]) {
-          requestsByDay_array.push({ 'count': requestsByDay[j]['count'], day: requestsByDay[j]['_id']['day'] + '-' + requestsByDay[j]['_id']['month'] + '-' + requestsByDay[j]['_id']['year'] })
+  //     // CREATES A NEW ARRAY FROM THE ARRAY RETURNED FROM THE SERVICE SO THAT IT IS COMPARABLE WITH last7days_initarray
+  //     const requestsByDay_array = []
+  //     for (let j = 0; j < requestsByDay.length; j++) {
+  //       if (requestsByDay[j]) {
+  //         requestsByDay_array.push({ 'count': requestsByDay[j]['count'], day: requestsByDay[j]['_id']['day'] + '-' + requestsByDay[j]['_id']['month'] + '-' + requestsByDay[j]['_id']['year'] })
 
-          /* OLD LABELS & SERIES (TO USE FOR DEBUG) */
-          // const requestByDay_count = requestsByDay[j]['count']
-          // requestsByDay_series_array.push(requestByDay_count)
-          // const requestByDay_day = requestsByDay[j]['_id']['day']
-          // const requestByDay_month = requestsByDay[j]['_id']['month']
-          // requestsByDay_labels_array.push(requestByDay_day + ' ' + this.monthNames[requestByDay_month])
-        }
+  //         /* OLD LABELS & SERIES (TO USE FOR DEBUG) */
+  //         // const requestByDay_count = requestsByDay[j]['count']
+  //         // requestsByDay_series_array.push(requestByDay_count)
+  //         // const requestByDay_day = requestsByDay[j]['_id']['day']
+  //         // const requestByDay_month = requestsByDay[j]['_id']['month']
+  //         // requestsByDay_labels_array.push(requestByDay_day + ' ' + this.monthNames[requestByDay_month])
+  //       }
 
-      }
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
-
-
-      /**
-       * MERGE THE ARRAY last7days_initarray WITH requestsByDay_array  */
-      // Here, requestsByDay_formatted_array.find(o => o.day === obj.day)
-      // will return the element i.e. object from requestsByDay_formatted_array if the day is found in the requestsByDay_formatted_array.
-      // If not, then the same element in last7days i.e. obj is returned.
-      const requestByDays_final_array = last7days_initarray.map(obj => requestsByDay_array.find(o => o.day === obj.day) || obj);
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
-
-      const _requestsByDay_series_array = [];
-      const _requestsByDay_labels_array = [];
-
-      requestByDays_final_array.forEach(requestByDay => {
-        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
-        _requestsByDay_series_array.push(requestByDay.count)
-
-        const splitted_date = requestByDay.day.split('-');
-        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
-        _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
-      });
+  //     }
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
 
 
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (ARRAY OF COUNT - to use for debug)', requestsByDay_series_array);
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDay_series_array);
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', _requestsByDay_labels_array);
+  //     /**
+  //      * MERGE THE ARRAY last7days_initarray WITH requestsByDay_array  */
+  //     // Here, requestsByDay_formatted_array.find(o => o.day === obj.day)
+  //     // will return the element i.e. object from requestsByDay_formatted_array if the day is found in the requestsByDay_formatted_array.
+  //     // If not, then the same element in last7days i.e. obj is returned.
+  //     const requestByDays_final_array = last7days_initarray.map(obj => requestsByDay_array.find(o => o.day === obj.day) || obj);
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
 
-      const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
+  //     const _requestsByDay_series_array = [];
+  //     const _requestsByDay_labels_array = [];
 
-      const dataRequestsByDayChart: any = {
+  //     requestByDays_final_array.forEach(requestByDay => {
+  //       console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
+  //       _requestsByDay_series_array.push(requestByDay.count)
 
-        labels: _requestsByDay_labels_array,
-        series: [
-          _requestsByDay_series_array,
-        ]
-      };
+  //       const splitted_date = requestByDay.day.split('-');
+  //       console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
+  //       _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
+  //     });
 
-      const optionsRequestsByDayChart: any = {
-        lineSmooth: Chartist.Interpolation.cardinal({
-          tension: 0
-        }),
-        low: 0,
-        high: higherCount + 2, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-        // scaleMinSpace: 6,
-        chartPadding: { top: 0, right: 0, bottom: 0, left: 0 },
-        // fullWidth: false,
-        axisY: {
-          onlyInteger: true,
-          offset: 20
-        },
-        height: '240px'
-      }
 
-      const requestsByDayChart = new Chartist.Line('#requestsByDayChart', dataRequestsByDayChart, optionsRequestsByDayChart);
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (ARRAY OF COUNT - to use for debug)', requestsByDay_series_array);
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDay_series_array);
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', _requestsByDay_labels_array);
 
-      this.startAnimationForLineChart(requestsByDayChart);
+  //     const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
 
-    }, (error) => {
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - ERROR ', error);
-    }, () => {
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY * COMPLETE *');
-    });
-  }
+  //     const dataRequestsByDayChart: any = {
+
+  //       labels: _requestsByDay_labels_array,
+  //       series: [
+  //         _requestsByDay_series_array,
+  //       ]
+  //     };
+
+  //     const optionsRequestsByDayChart: any = {
+  //       lineSmooth: Chartist.Interpolation.cardinal({
+  //         tension: 0
+  //       }),
+  //       low: 0,
+  //       high: higherCount + 2, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+  //       // scaleMinSpace: 6,
+  //       chartPadding: { top: 0, right: 0, bottom: 0, left: 0 },
+  //       // fullWidth: false,
+  //       axisY: {
+  //         onlyInteger: true,
+  //         offset: 20
+  //       },
+  //       height: '240px'
+  //     }
+
+  //     const requestsByDayChart = new Chartist.Line('#requestsByDayChart', dataRequestsByDayChart, optionsRequestsByDayChart);
+
+  //     this.startAnimationForLineChart(requestsByDayChart);
+
+  //   }, (error) => {
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - ERROR ', error);
+  //   }, () => {
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY * COMPLETE *');
+  //   });
+  // }
 
   getMaxOfArray(requestsByDay_series_array) {
     return Math.max.apply(null, requestsByDay_series_array);

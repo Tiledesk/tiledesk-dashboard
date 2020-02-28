@@ -198,11 +198,11 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     this.servedAndUnservedRequestsCount();
     this.globalServedAndUnservedRequestsCount();
     this.getCountOf_AllRequestsForAgent();
-    this.getRequestsByDay();
+    // this.getRequestsByDay();
     this.getlastMonthRequetsCount();
     this.getCountOf_AllRequestsForDept();
 
-    /** NOT YET USED */
+    /** NOT USED */
     // this.daysHoursRequestsDistribution()
 
     /** NOT YET USED */
@@ -296,127 +296,129 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
   //   return hours + ':' + minutes + ':' + seconds + '.' + milliseconds;
   // }
 
-  daysHoursRequestsDistribution() {
-    this.requestsService.daysHoursRequestsDistribution().subscribe((requestsDistribution: any) => {
+  /** NOT USED  */
+  // daysHoursRequestsDistribution() {
+  //   this.requestsService.daysHoursRequestsDistribution().subscribe((requestsDistribution: any) => {
 
-      console.log('»» !!! ANALYTICS - REQUESTS DISTRIBUTION ', requestsDistribution);
-    })
-  }
+  //     console.log('»» !!! ANALYTICS - REQUESTS DISTRIBUTION ', requestsDistribution);
+  //   })
+  // }
 
   /* ----------==========   end ON INIT    ==========---------- */
 
-  getRequestsByDay() {
-    this.requestsService.requestsByDay().subscribe((requestsByDay: any) => {
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY ', requestsByDay);
+  // *** NOT USED ***
+  // getRequestsByDay() {
+  //   this.requestsService.requestsByDay().subscribe((requestsByDay: any) => {
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY ', requestsByDay);
 
-      // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
-      const last7days_initarray = []
-      for (let i = 0; i <= 6; i++) {
-        // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
-        last7days_initarray.push({ 'count': 0, day: moment().subtract(i, 'd').format('D-M-YYYY') })
-      }
+  //     // CREATES THE INITIAL ARRAY WITH THE LAST SEVEN DAYS (calculated with moment) AND REQUESTS COUNT = O
+  //     const last7days_initarray = []
+  //     for (let i = 0; i <= 6; i++) {
+  //       // console.log('»» !!! ANALYTICS - LOOP INDEX', i);
+  //       last7days_initarray.push({ 'count': 0, day: moment().subtract(i, 'd').format('D-M-YYYY') })
+  //     }
 
-      // last7days_initarray.sort(function compare(a, b) {
-      //   console.log('»» !!! ANALYTICS - REQUESTS BY DAY a.day', a.day);
-      //   console.log('»» !!! ANALYTICS - REQUESTS BY DAY b.day', b.day);
-      //   // if (a.day > b.day) {
-      //   //   return 1;
-      //   // }
-      //   // if (a.day < a.day) {
-      //   //   return -1;
-      //   // }
-      //   // return 0;
+  //     // last7days_initarray.sort(function compare(a, b) {
+  //     //   console.log('»» !!! ANALYTICS - REQUESTS BY DAY a.day', a.day);
+  //     //   console.log('»» !!! ANALYTICS - REQUESTS BY DAY b.day', b.day);
+  //     //   // if (a.day > b.day) {
+  //     //   //   return 1;
+  //     //   // }
+  //     //   // if (a.day < a.day) {
+  //     //   //   return -1;
+  //     //   // }
+  //     //   // return 0;
 
-      // })
+  //     // })
 
-      last7days_initarray.reverse()
+  //     last7days_initarray.reverse()
 
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - MOMENT LAST SEVEN DATE (init array)', last7days_initarray);
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - MOMENT LAST SEVEN DATE (init array)', last7days_initarray);
 
-      const requestsByDay_series_array = [];
-      const requestsByDay_labels_array = []
+  //     const requestsByDay_series_array = [];
+  //     const requestsByDay_labels_array = []
 
-      // CREATES A NEW ARRAY FROM THE ARRAY RETURNED FROM THE SERVICE SO THAT IT IS COMPARABLE WITH last7days_initarray
-      const requestsByDay_array = []
-      for (let j = 0; j < requestsByDay.length; j++) {
-        if (requestsByDay[j]) {
-          requestsByDay_array.push({ 'count': requestsByDay[j]['count'], day: requestsByDay[j]['_id']['day'] + '-' + requestsByDay[j]['_id']['month'] + '-' + requestsByDay[j]['_id']['year'] })
+  //     // CREATES A NEW ARRAY FROM THE ARRAY RETURNED FROM THE SERVICE SO THAT IT IS COMPARABLE WITH last7days_initarray
+  //     const requestsByDay_array = []
+  //     for (let j = 0; j < requestsByDay.length; j++) {
+  //       if (requestsByDay[j]) {
+  //         requestsByDay_array.push({ 'count': requestsByDay[j]['count'], day: requestsByDay[j]['_id']['day'] + '-' + requestsByDay[j]['_id']['month'] + '-' + requestsByDay[j]['_id']['year'] })
 
-          /* OLD LABELS & SERIES (TO USE FOR DEBUG) */
-          // const requestByDay_count = requestsByDay[j]['count']
-          // requestsByDay_series_array.push(requestByDay_count)
-          // const requestByDay_day = requestsByDay[j]['_id']['day']
-          // const requestByDay_month = requestsByDay[j]['_id']['month']
-          // requestsByDay_labels_array.push(requestByDay_day + ' ' + this.monthNames[requestByDay_month])
-        }
+  //         /* OLD LABELS & SERIES (TO USE FOR DEBUG) */
+  //         // const requestByDay_count = requestsByDay[j]['count']
+  //         // requestsByDay_series_array.push(requestByDay_count)
+  //         // const requestByDay_day = requestsByDay[j]['_id']['day']
+  //         // const requestByDay_month = requestsByDay[j]['_id']['month']
+  //         // requestsByDay_labels_array.push(requestByDay_day + ' ' + this.monthNames[requestByDay_month])
+  //       }
 
-      }
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
-
-
-      /**
-       * MERGE THE ARRAY last7days_initarray WITH requestsByDay_array  */
-      // Here, requestsByDay_formatted_array.find(o => o.day === obj.day)
-      // will return the element i.e. object from requestsByDay_formatted_array if the day is found in the requestsByDay_formatted_array.
-      // If not, then the same element in last7days i.e. obj is returned.
-      const requestByDays_final_array = last7days_initarray.map(obj => requestsByDay_array.find(o => o.day === obj.day) || obj);
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
-
-      const _requestsByDay_series_array = [];
-      const _requestsByDay_labels_array = [];
-
-      requestByDays_final_array.forEach(requestByDay => {
-        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
-        _requestsByDay_series_array.push(requestByDay.count)
-
-        const splitted_date = requestByDay.day.split('-');
-        console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
-        _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
-      });
+  //     }
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY FORMATTED ', requestsByDay_array);
 
 
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (ARRAY OF COUNT - to use for debug)', requestsByDay_series_array);
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDay_series_array);
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', _requestsByDay_labels_array);
+  //     /**
+  //      * MERGE THE ARRAY last7days_initarray WITH requestsByDay_array  */
+  //     // Here, requestsByDay_formatted_array.find(o => o.day === obj.day)
+  //     // will return the element i.e. object from requestsByDay_formatted_array if the day is found in the requestsByDay_formatted_array.
+  //     // If not, then the same element in last7days i.e. obj is returned.
+  //     const requestByDays_final_array = last7days_initarray.map(obj => requestsByDay_array.find(o => o.day === obj.day) || obj);
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - FINAL ARRAY ', requestByDays_final_array);
 
-      const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
+  //     const _requestsByDay_series_array = [];
+  //     const _requestsByDay_labels_array = [];
 
-      const dataRequestsByDayChart: any = {
+  //     requestByDays_final_array.forEach(requestByDay => {
+  //       console.log('»» !!! ANALYTICS - REQUESTS BY DAY - requestByDay', requestByDay);
+  //       _requestsByDay_series_array.push(requestByDay.count)
 
-        labels: _requestsByDay_labels_array,
-        series: [
-          _requestsByDay_series_array,
-        ]
-      };
+  //       const splitted_date = requestByDay.day.split('-');
+  //       console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SPLITTED DATE', splitted_date);
+  //       _requestsByDay_labels_array.push(splitted_date[0] + ' ' + this.monthNames[splitted_date[1]])
+  //     });
 
-      const optionsRequestsByDayChart: any = {
-        lineSmooth: Chartist.Interpolation.cardinal({
-          tension: 0
-        }),
-        low: 0,
-        high: higherCount + 2, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-        // scaleMinSpace: 6,
-        chartPadding: { top: 0, right: 0, bottom: 0, left: 0 },
-        // fullWidth: false,
-        axisY: {
-          onlyInteger: true,
-          offset: 20
-        },
-        height: '240px'
-      }
 
-      const requestsByDayChart = new Chartist.Line('#requestsByDayChart', dataRequestsByDayChart, optionsRequestsByDayChart);
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (ARRAY OF COUNT - to use for debug)', requestsByDay_series_array);
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - SERIES (+ NEW + ARRAY OF COUNT)', _requestsByDay_series_array);
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (ARRAY OF DAY - to use for debug)', requestsByDay_labels_array);
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - LABELS (+ NEW + ARRAY OF DAY)', _requestsByDay_labels_array);
 
-      this.startAnimationForLineChart(requestsByDayChart);
+  //     const higherCount = this.getMaxOfArray(_requestsByDay_series_array);
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - HIGHTER COUNT ', higherCount);
 
-    }, (error) => {
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY - ERROR ', error);
-    }, () => {
-      console.log('»» !!! ANALYTICS - REQUESTS BY DAY * COMPLETE *');
-    });
-  }
+  //     const dataRequestsByDayChart: any = {
+
+  //       labels: _requestsByDay_labels_array,
+  //       series: [
+  //         _requestsByDay_series_array,
+  //       ]
+  //     };
+
+  //     const optionsRequestsByDayChart: any = {
+  //       lineSmooth: Chartist.Interpolation.cardinal({
+  //         tension: 0
+  //       }),
+  //       low: 0,
+  //       high: higherCount + 2, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
+  //       // scaleMinSpace: 6,
+  //       chartPadding: { top: 0, right: 0, bottom: 0, left: 0 },
+  //       // fullWidth: false,
+  //       axisY: {
+  //         onlyInteger: true,
+  //         offset: 20
+  //       },
+  //       height: '240px'
+  //     }
+
+  //     const requestsByDayChart = new Chartist.Line('#requestsByDayChart', dataRequestsByDayChart, optionsRequestsByDayChart);
+
+  //     this.startAnimationForLineChart(requestsByDayChart);
+
+  //   }, (error) => {
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY - ERROR ', error);
+  //   }, () => {
+  //     console.log('»» !!! ANALYTICS - REQUESTS BY DAY * COMPLETE *');
+  //   });
+  // }
 
   getMaxOfArray(requestsByDay_series_array) {
     return Math.max.apply(null, requestsByDay_series_array);
