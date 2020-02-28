@@ -113,7 +113,7 @@ CHAT_BASE_URL: "https://<YOUR_CHAT21_IONIC_URL>/chat",
 
 testsiteBaseUrl: 'http://localhost:4200/assets/test_widget_page/index.html',
 
-wsUrl: 'ws://' + window.location.hostname + '/ws/?token=',
+wsUrl: 'ws://' + window.location.hostname + '/ws/',
 
 	firebase: {
 
@@ -127,9 +127,7 @@ wsUrl: 'ws://' + window.location.hostname + '/ws/?token=',
 
 		storageBucket: "XYZ.appspot.com",
 
-		messagingSenderId: "123456",
-
-		chat21ApiUrl: "<YOUR_CHAT21_CLOUD_FUNCTION_FIREBASE_ENDPOINT>"
+		messagingSenderId: "123456"
 
 	}
 
