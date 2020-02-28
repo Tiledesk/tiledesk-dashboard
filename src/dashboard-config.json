@@ -12,7 +12,6 @@
       "databaseURL": "${FIREBASE_DATABASEURL}",
       "projectId": "${FIREBASE_PROJECT_ID}",
       "storageBucket": "${FIREBASE_STORAGEBUCKET}",
-      "messagingSenderId": "${FIREBASE_MESSAGINGSENDERID}",
-      "chat21ApiUrl": "${CHAT21_API_URL}"
+      "messagingSenderId": "${FIREBASE_MESSAGINGSENDERID}"
   }
 }
