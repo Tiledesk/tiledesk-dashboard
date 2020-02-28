@@ -48,7 +48,7 @@ export class AppConfigService {
 
 
           if (allconfig.SERVER_BASE_URL.indexOf("http://") !== -1) {
-           
+
             const ws_url = allconfig.SERVER_BASE_URL.replace("http://", "ws://").slice(0, -1) + allconfig.wsUrlRel;
             console.log('AppConfigService loadAppConfig allconfig !!!! exist - SERVER_BASE_URL protocol is HTTP - wsUrl', ws_url);
 
@@ -57,10 +57,25 @@ export class AppConfigService {
           } else if (allconfig.SERVER_BASE_URL.indexOf("https://") !== -1) {
 
             const ws_url = allconfig.SERVER_BASE_URL.replace("https://", "wss://").slice(0, -1) + allconfig.wsUrlRel;
-           
+
             allconfig.wsUrl = ws_url
 
             console.log('AppConfigService loadAppConfig allconfig !!!! exist - SERVER_BASE_URL protocol is HTTPS - wsUrl', ws_url);
+          } else {
+            console.log('AppConfigService loadAppConfig allconfig !!!! exist - SERVER_BASE_URL !!! IS RELATIVE - window.location ', window.location);
+
+            // console.log(window.location)
+
+            if (window.location.protocol === 'http:') {
+              allconfig.wsUrl = 'ws://' + window.location.hostname + '/ws/'
+
+            } else if (window.location.protocol === 'https:') {
+
+              allconfig.wsUrl = 'wss://' + window.location.hostname + '/ws/'
+            } else {
+
+              allconfig.wsUrl = 'ws://' + window.location.hostname + '/ws/'
+            }
           }
 
         } else {
