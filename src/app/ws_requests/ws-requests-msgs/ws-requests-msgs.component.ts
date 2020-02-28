@@ -1244,29 +1244,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   }
 
-
-  // USED TO JOIN TO CHAT GROUP (SEE onJoinHandled())
-  getFirebaseToken(callback) {
-    const that = this;
-    // console.log('Notification permission granted.');
-    const firebase_currentUser = firebase.auth().currentUser;
-    console.log(' // firebase current user ', firebase_currentUser);
-    if (firebase_currentUser) {
-      firebase_currentUser.getIdToken(/* forceRefresh */ true)
-        .then(function (idToken) {
-          that.firebase_token = idToken;
-
-          // qui richiama la callback
-          callback();
-          console.log('!! »»» Firebase Token (for join-to-chat and for archive request)', idToken);
-        }).catch(function (error) {
-          // Handle error
-          console.log('!! »»» idToken.', error);
-          callback();
-        });
-    }
-  }
-
   // JOIN TO CHAT GROUP
   onJoinHandled() {
     // this.getFirebaseToken(() => {
@@ -1421,41 +1398,61 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
-  _archiveTheRequestHandler() {
-    console.log('%%% Ws-REQUESTS-Msgs - HAS CLICKED ARCHIVE REQUEST archiveTheRequestHandler');
+  /**
+   * the Old archive Request that used getFirebaseToken(()
+   */
+  // _archiveTheRequestHandler() {
+  //   console.log('%%% Ws-REQUESTS-Msgs - HAS CLICKED ARCHIVE REQUEST archiveTheRequestHandler');
+  //   this.displayArchiveRequestModal = 'none';
+  //   this.SHOW_CIRCULAR_SPINNER = true;
+  //   this.displayArchivingInfoModal = 'block'
+  //   this.getFirebaseToken(() => {
+  //     this.requestsService.closeSupportGroup(this.id_request_to_archive, this.firebase_token)
+  //       .subscribe((data: any) => {
+  //         console.log('%%% Ws-REQUESTS-Msgs - CLOSE SUPPORT GROUP - DATA ', data);
+  //       },
+  //         (err) => {
+  //           console.log('%%% Ws-REQUESTS-Msgs - CLOSE SUPPORT GROUP - ERROR ', err);
+  //           this.SHOW_CIRCULAR_SPINNER = false;
+  //           this.ARCHIVE_REQUEST_ERROR = true;
+  //           // =========== NOTIFY ERROR ===========
+  //           // tslint:disable-next-line:quotemark
+  //           this.notify.showNotification("An error has occurred archiving the request", 4, 'report_problem')
+  //         },
+  //         () => {
+  //           // this.ngOnInit();
+  //           console.log('%%% Ws-REQUESTS-Msgs - CLOSE SUPPORT GROUP - COMPLETE');
+  //           this.SHOW_CIRCULAR_SPINNER = false;
+  //           this.ARCHIVE_REQUEST_ERROR = false;
 
-    this.displayArchiveRequestModal = 'none';
+  //           // =========== NOTIFY SUCCESS===========
+  //           // with id: ${this.id_request_to_archive}
+  //           this.notify.showNotification(`the request has been moved to History`, 2, 'done');
+  //         });
+  //   });
+  // }
 
-    this.SHOW_CIRCULAR_SPINNER = true;
 
-    this.displayArchivingInfoModal = 'block'
+   // !!!!! NO MORE USED ---- USED TO JOIN TO CHAT GROUP (SEE onJoinHandled())
+   getFirebaseToken(callback) {
+    const that = this;
+    // console.log('Notification permission granted.');
+    const firebase_currentUser = firebase.auth().currentUser;
+    console.log(' // firebase current user ', firebase_currentUser);
+    if (firebase_currentUser) {
+      firebase_currentUser.getIdToken(/* forceRefresh */ true)
+        .then(function (idToken) {
+          that.firebase_token = idToken;
 
-    this.getFirebaseToken(() => {
-
-      this.requestsService.closeSupportGroup(this.id_request_to_archive, this.firebase_token)
-        .subscribe((data: any) => {
-
-          console.log('%%% Ws-REQUESTS-Msgs - CLOSE SUPPORT GROUP - DATA ', data);
-        },
-          (err) => {
-            console.log('%%% Ws-REQUESTS-Msgs - CLOSE SUPPORT GROUP - ERROR ', err);
-            this.SHOW_CIRCULAR_SPINNER = false;
-            this.ARCHIVE_REQUEST_ERROR = true;
-            // =========== NOTIFY ERROR ===========
-            // tslint:disable-next-line:quotemark
-            this.notify.showNotification("An error has occurred archiving the request", 4, 'report_problem')
-          },
-          () => {
-            // this.ngOnInit();
-            console.log('%%% Ws-REQUESTS-Msgs - CLOSE SUPPORT GROUP - COMPLETE');
-            this.SHOW_CIRCULAR_SPINNER = false;
-            this.ARCHIVE_REQUEST_ERROR = false;
-
-            // =========== NOTIFY SUCCESS===========
-            // with id: ${this.id_request_to_archive}
-            this.notify.showNotification(`the request has been moved to History`, 2, 'done');
-          });
-    });
+          // qui richiama la callback
+          callback();
+          console.log('!! »»» Firebase Token (for join-to-chat and for archive request)', idToken);
+        }).catch(function (error) {
+          // Handle error
+          console.log('!! »»» idToken.', error);
+          callback();
+        });
+    }
   }
 
 
