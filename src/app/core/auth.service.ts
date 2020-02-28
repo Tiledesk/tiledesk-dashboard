@@ -57,10 +57,10 @@ export class AuthService {
   SIGNIN_BASE_URL: string;
   VERIFY_EMAIL_URL: string;
   CREATE_CUSTOM_TOKEN_URL: string
-  CLOUDFUNCTION_CREATE_CONTACT_URL: string;
-
 
   // CLOUDFUNCTION_CREATE_CONTACT_URL = environment.cloudFunctions.cloud_func_create_contact_url;
+  // CLOUDFUNCTION_CREATE_CONTACT_URL: string; // NO MORE USED
+
 
   // public version: string = require('../../../package.json').version;
   public version: string = environment.VERSION;
@@ -127,8 +127,9 @@ export class AuthService {
     const firebase_conf = this.appConfigService.getConfig().firebase;
     // console.log('% appConfigService.getConfig().firebase ', firebase_conf)
 
-    const cloudBaseUrl = firebase_conf['chat21ApiUrl'];
-    this.CLOUDFUNCTION_CREATE_CONTACT_URL = cloudBaseUrl + '/api/tilechat/contacts';
+    // const cloudBaseUrl = firebase_conf['chat21ApiUrl']; // NO MORE USED
+    // this.CLOUDFUNCTION_CREATE_CONTACT_URL = cloudBaseUrl + '/api/tilechat/contacts'; // NO MORE USED
+    // console.log('AppConfigService getAppConfig (AUTH SERVICE) CLOUDFUNCTION_CREATE_CONTACT_URL', this.CLOUDFUNCTION_CREATE_CONTACT_URL);
 
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
     this.SIGNUP_BASE_URL = this.SERVER_BASE_PATH + 'auth/signup';
@@ -136,7 +137,6 @@ export class AuthService {
     this.VERIFY_EMAIL_URL = this.SERVER_BASE_PATH + 'auth/verifyemail/';
     this.CREATE_CUSTOM_TOKEN_URL = this.SERVER_BASE_PATH + 'chat21/firebase/auth/createCustomToken';
 
-    console.log('AppConfigService getAppConfig (AUTH SERVICE) CLOUDFUNCTION_CREATE_CONTACT_URL', this.CLOUDFUNCTION_CREATE_CONTACT_URL);
     console.log('AppConfigService getAppConfig (AUTH SERVICE) SERVER_BASE_PATH', this.SERVER_BASE_PATH);
     console.log('AppConfigService getAppConfig (AUTH SERVICE) SIGNUP_BASE_URL', this.SIGNUP_BASE_URL);
     console.log('AppConfigService getAppConfig (AUTH SERVICE) SIGNIN_BASE_URL', this.SIGNIN_BASE_URL);
@@ -541,8 +541,9 @@ export class AuthService {
                   }
 
 
-                  /* CHAT21-CLOUD-FUNCTIONS - CREATE CONTACT */
-                  this.cloudFunctionsCreateContact(user.firstname, user.lastname, user.email);
+                  /* !!!! NO MORE USED - CHAT21-CLOUD-FUNCTIONS - CREATE CONTACT */
+                  // this.cloudFunctionsCreateContact(user.firstname, user.lastname, user.email);
+
                   callback(null, user);
                 })
                 .catch(function (error) {
@@ -573,21 +574,22 @@ export class AuthService {
 
   getPermission() {
     const messaging = firebase.messaging();
-    if (firebase.messaging.isSupported()) { }
-    messaging.requestPermission()
-      .then(() => {
-        console.log('>>>> getPermission Notification permission granted.');
-        return messaging.getToken()
-      })
-      .then(FCMtoken => {
-        console.log('>>>> getPermission FCMtoken', FCMtoken)
-        // Save FCM Token in Firebase
-        this.FCMcurrentToken = FCMtoken;
-        this.updateToken(FCMtoken)
-      })
-      .catch((err) => {
-        console.log('>>>> getPermission Unable to get permission to notify.', err);
-      });
+    if (firebase.messaging.isSupported()) {
+      messaging.requestPermission()
+        .then(() => {
+          console.log('>>>> getPermission Notification permission granted.');
+          return messaging.getToken()
+        })
+        .then(FCMtoken => {
+          console.log('>>>> getPermission FCMtoken', FCMtoken)
+          // Save FCM Token in Firebase
+          this.FCMcurrentToken = FCMtoken;
+          this.updateToken(FCMtoken)
+        })
+        .catch((err) => {
+          console.log('>>>> getPermission Unable to get permission to notify.', err);
+        });
+    }
   }
 
   // requestPermissionGetFCMTokenAndRegisterInstanceId(userId) {
@@ -654,37 +656,37 @@ export class AuthService {
     firebase.database().ref().update(updates)
   }
 
-  // CREATE CONTACT ON FIREBASE Realtime Database
-  cloudFunctionsCreateContact(firstname, lastname, email) {
-    const self = this;
-    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
-      .then(function (token) {
-        console.log('cloudFunctionsCreateContact idToken.', token);
-        // console.log('idToken.', idToken);
-        const headers = new Headers();
-        headers.append('Accept', 'application/json');
-        headers.append('Content-type', 'application/json');
-        headers.append('Authorization', 'Bearer ' + token);
+  // !!!!!! NO MORE USED CREATE CONTACT ON FIREBASE Realtime Database
+  // cloudFunctionsCreateContact(firstname, lastname, email) {
+  //   const self = this;
+  //   firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+  //     .then(function (token) {
+  //       console.log('cloudFunctionsCreateContact idToken.', token);
+  //       // console.log('idToken.', idToken);
+  //       const headers = new Headers();
+  //       headers.append('Accept', 'application/json');
+  //       headers.append('Content-type', 'application/json');
+  //       headers.append('Authorization', 'Bearer ' + token);
 
-        const options = new RequestOptions({ headers });
-        // const url = 'https://us-central1-chat-v2-dev.cloudfunctions.net/api/tilechat/contacts';
-        const url = self.CLOUDFUNCTION_CREATE_CONTACT_URL
-        const body = { 'firstname': firstname, 'lastname': lastname, 'email': email };
+  //       const options = new RequestOptions({ headers });
+  //       // const url = 'https://us-central1-chat-v2-dev.cloudfunctions.net/api/tilechat/contacts';
+  //       const url = self.CLOUDFUNCTION_CREATE_CONTACT_URL
+  //       const body = { 'firstname': firstname, 'lastname': lastname, 'email': email };
 
-        self.http
-          .post(url, JSON.stringify(body), options)
-          .toPromise().then(res => {
-            console.log('Cloud Functions Create Contact RES ', res)
-          }).catch(function (error) {
-            // Handle error
-            console.log('Cloud Functions Create Contact RES ERROR', error);
-          })
+  //       self.http
+  //         .post(url, JSON.stringify(body), options)
+  //         .toPromise().then(res => {
+  //           console.log('Cloud Functions Create Contact RES ', res)
+  //         }).catch(function (error) {
+  //           // Handle error
+  //           console.log('Cloud Functions Create Contact RES ERROR', error);
+  //         })
 
-      }).catch(function (error) {
-        // Handle error
-        console.log('idToken.', error);
-      });
-  }
+  //     }).catch(function (error) {
+  //       // Handle error
+  //       console.log('idToken.', error);
+  //     });
+  // }
 
   // !!!! DEPRECATED
   // NODE.JS FIREBASE SIGNIN (USED TO GET THE TOKEN THEN USED FOR Firebase Signin using custom token)
@@ -787,15 +789,23 @@ export class AuthService {
   }
 
 
+/**
+ * OLD CODE NOT USED
+ */
+  // // Sends email allowing user to reset password
+  // resetPassword(email: string) {
+  //   const fbAuth = firebase.auth();
 
-  // Sends email allowing user to reset password
-  resetPassword(email: string) {
-    const fbAuth = firebase.auth();
+  //   return fbAuth.sendPasswordResetEmail(email)
+  //     .then(() => this.notify.update('Password update email sent', 'info'))
+  //     .catch((error) => this.handleError(error));
+  // }
 
-    return fbAuth.sendPasswordResetEmail(email)
-      .then(() => this.notify.update('Password update email sent', 'info'))
-      .catch((error) => this.handleError(error));
-  }
+  // // If error, console log and notify user
+  // private handleError(error: Error) {
+  //   console.error(error);
+  //   this.notify.update(error.message, 'error');
+  // }
 
   hasClickedGoToProjects() {
     this.project_bs.next(null);
@@ -954,11 +964,7 @@ export class AuthService {
       });
   }
 
-  // If error, console log and notify user
-  private handleError(error: Error) {
-    console.error(error);
-    this.notify.update(error.message, 'error');
-  }
+
 
   widgetReInit() {
     if (window && window['tiledesk']) {
