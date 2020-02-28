@@ -12,7 +12,7 @@ export const environment = {
     SERVER_BASE_URL: 'http://localhost:3000/',
     CHAT_BASE_URL: 'http://localhost:8080/',
     testsiteBaseUrl: 'http://localhost:4200/assets/test_widget_page/index.html',
-    wsUrl: 'ws://' + window.location.hostname + '/ws/',
+    wsUrl: 'ws://localhost:3000/',
     firebase: {
         apiKey: 'CHANGEIT',
         authDomain: 'CHANGEIT',
