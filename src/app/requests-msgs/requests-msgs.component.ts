@@ -889,18 +889,12 @@ export class RequestsMsgsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   archiveTheRequestHandler() {
     console.log('HAS CLICKED ARCHIVE REQUEST ');
-
     this.displayArchiveRequestModal = 'none';
-
     this.SHOW_CIRCULAR_SPINNER = true;
-
     this.displayArchivingInfoModal = 'block'
-
     this.getFirebaseToken(() => {
-
       this.requestsService.closeSupportGroup(this.id_request_to_archive, this.firebase_token)
         .subscribe((data: any) => {
-
           console.log('CLOSE SUPPORT GROUP - DATA ', data);
         },
           (err) => {
