@@ -12,7 +12,8 @@ import { TriggerService } from 'app/services/trigger.service';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { DepartmentService } from './../../services/mongodb-department.service';
-
+import { UsersService } from '../../services/users.service';
+import { FaqKbService } from '../../services/faq-kb.service';
 
 @Component({
   selector: 'appdashboard-trigger-edit',
@@ -53,14 +54,18 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
   // messageAction: string;       --> get from BaseTriggerComponent
   // messageServerError: string;  --> get from BaseTriggerComponent
 
-  constructor(private route: ActivatedRoute,
+  constructor(
+    private route: ActivatedRoute,
     private _location: Location,
     private formBuilder: FormBuilder,
     private triggerService: TriggerService,
     public departmentService: DepartmentService,
     private notify: NotifyService,
-    public translate: TranslateService) {
-      super(translate, departmentService)
+    public translate: TranslateService,
+    public usersService: UsersService,
+    public faqKbService: FaqKbService
+  ) {
+    super(translate, departmentService, usersService, faqKbService)
   }
 
   ngOnInit() {
@@ -402,8 +407,8 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
       }
       else if (this.triggerForm.value.trigger.key === 'event.emit') {
         this.triggerForm.value.trigger.name = 'event emit';
-      
-      }else {
+
+      } else {
         this.triggerForm.value.trigger.name = '';
       }
 
