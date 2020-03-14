@@ -1,7 +1,7 @@
 
 export const environment = {
     production: true,
-    t2y12PruGU9wUtEGzBJfolMIgK: 'PAY:F-ANA:F-ACT:F-TRI:F-GRO:F-DEP:F-OPH:F-MTL:F-DGF:F-NAT:F-CAR:F',
+    t2y12PruGU9wUtEGzBJfolMIgK: 'PAY:F-ANA:F-ACT:F-TRI:F-GRO:F-DEP:F-OPH:F-MTL:F-DGF:F-NAT:F-CAR:F-V1L:F-PSA:F',
     VERSION: require('../../package.json').version,
     widgetUrl: 'https://widget.tiledesk.com/v3/launch.js',
     botcredendialsURL: 'CHANGE-IT',
