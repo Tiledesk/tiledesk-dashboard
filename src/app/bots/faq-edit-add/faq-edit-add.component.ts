@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { MongodbFaqService } from '../../services/mongodb-faq.service';
-
 import { Project } from '../../models/project-model';
 import { AuthService } from '../../core/auth.service';
 import { NotifyService } from '../../core/notify.service';

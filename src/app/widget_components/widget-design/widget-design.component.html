@@ -22,29 +22,29 @@
 
 							<div class="row">
 								<div class="col-md-12">
-									<h4 class="card-title" style="margin-bottom: 0px">
-										Greetings
+									<h4 class="card_title__underlined" style="margin-bottom: 0px">
+										<span class="card_title__underline">
+											Greetings
+										</span>
+										
 									</h4>
 								</div>
 								<div class="col-md-12">
-									<!-- font-family: 'Montserrat', sans-serif; -->
-									<span
-										style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">
-										{{ 'CustomizeHowYouGreetYourSiteVisitors' | translate: tparams }}
 
-									</span>
+									<!-- <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">
+										{{ 'CustomizeHowYouGreetYourSiteVisitors' | translate: tparams }}
+									</span> -->
 
 									<!-- /// GREETINGS SAVE BTN ON TOP  @ MEDIA > 768 -->
 									<button class="btn btn-primary appearance-save-btn-desktop"
 										style="margin-top: 15px; margin-bottom: 16px; float: right; position: relative;	top: -61px;"
 										(click)="saveTranslation()" [disabled]="onlineMsg?.length <= 0 || onlineMsg.length <= 0">
-										<i class="material-icons" style="right: 10px;"> save </i>
+										<!-- <i class="material-icons" style="right: 10px;"> save </i> -->
 										{{ 'ScriptPage.Save' | translate }}
 									</button>
 
 									<!-- height:20px; margin-bottom: 16px; -->
-									<div class="section-subtitle"
-										style=" border-top: 1px solid #e8f0f5; width: calc((100% / 3) + 372px);">
+									<div class="section-subtitle">
 									</div>
 								</div>
 
@@ -57,7 +57,7 @@
 											style="margin-top: 15px; margin-bottom: 16px;"
 											(click)="saveTranslation()"
 											[disabled]="onlineMsg?.length <= 0 || onlineMsg.length <= 0">
-											<i class="material-icons" style="right: 10px;"> save </i>
+											<!-- <i class="material-icons" style="right: 10px;"> save </i> -->
 											{{ 'ScriptPage.Save' | translate }}
 										</button>
 
@@ -333,7 +333,7 @@
 										style="margin-top: 15px; margin-bottom:0px" 
 										(click)="saveTranslation()"
 										[disabled]="onlineMsg?.length <= 0 || onlineMsg.length <= 0">
-										<i class="material-icons" style="right: 10px;"> save </i>
+										<!-- <i class="material-icons" style="right: 10px;"> save </i> -->
 										<span> {{ 'ScriptPage.Save' | translate }} </span>
 									</button>
 									<!-- </div>
@@ -367,29 +367,31 @@
 
 							<div class="row">
 								<div class="col-md-12">
-									<h4 class="card-title" style="margin-bottom: 0px">
-										Callout
+									<h4 class="card_title__underlined" style="margin-bottom: 0px">
+										
+										<span class="card_title__underline"> 
+											Callout
+										</span>
 									</h4>
 								</div>
 
 
 								<div class="col-md-12">
-									<!-- font-family: 'Montserrat', sans-serif; -->
-									<span
-										style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">
+									
+									<!-- <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">
 										{{ 'CustomizeHowYouGreetInCalloutShort' | translate }}
-									</span>
+									</span> -->
+
 									<!-- /// CALLOUT SAVE BTN ON BOTTOM  @ MEDIA > 768 -->
 									<button class="btn btn-primary appearance-save-btn-desktop"
 										style="margin-top: 15px; margin-bottom: 16px; float: right; position: relative;	top: -61px;"
 										(click)="saveCalloutSettings(); saveTranslation()"
 										[disabled]="calloutTitle?.length <= 0 || calloutMsg?.length <= 0">
-										<i class="material-icons" style="right: 10px;"> save </i>
+										<!-- <i class="material-icons" style="right: 10px;"> save </i> -->
 										{{ 'ScriptPage.Save' | translate }}
 									</button>
 
-									<div class="section-subtitle"
-										style="height:20px; border-top: 1px solid #e8f0f5; width: calc((100% / 3) + 372px);margin-bottom: 0px;">
+									<div class="section-subtitle">
 									</div>
 								</div>
 							</div>
@@ -402,7 +404,7 @@
 										style="margin-top: 15px; margin-bottom: 16px;" 
 										(click)="saveCalloutSettings(); saveTranslation()"
 										[disabled]="calloutTitle?.length <= 0 || calloutMsg?.length <= 0">
-										<i class="material-icons" style="right: 10px;"> save </i>
+										<!-- <i class="material-icons" style="right: 10px;"> save </i> -->
 										{{ 'ScriptPage.Save' | translate }}
 									</button>
 
@@ -625,7 +627,7 @@
 										style="margin-top: 15px; margin-bottom: 0px"
 										(click)="saveCalloutSettings(); saveTranslation()"
 										[disabled]="calloutTitle?.length <= 0 || calloutMsg?.length <= 0">
-										<i class="material-icons" style="right: 10px;"> save </i>
+										<!-- <i class="material-icons" style="right: 10px;"> save </i> -->
 										{{ 'ScriptPage.Save' | translate }}
 									</button>
 								</div>
@@ -660,32 +662,28 @@
 
 							<div class="row">
 								<div class="col-md-12">
-									<h4 class="card-title">
-										<!-- Widget Appearance  -->
+									<h4 class="card_title__underlined">
+										<span class="card_title__underline">
 										{{ "WidgetAppearance" | translate }}
+										</span>
 									</h4>
 								</div>
 
-
-
 								<div class="col-md-12">
-									<!-- font-family: 'Montserrat', sans-serif; -->
-									<span
-										style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">
+									<!-- <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">
 										{{ 'CustomizeTheWidgetColors' | translate }}
-									</span>
+									</span> -->
 									<!-- /// APPEARANCE SAVE BTN ON TOP   @ MEDIA > 768 -->
 									<button class="btn btn-primary appearance-save-btn-desktop"
 										style="margin-top: 15px; margin-bottom: 16px; float: right; position: relative;	top: -61px;"
 										(click)="saveWidgetAppearance(); saveTranslation()" 
 										[disabled]="welcomeTitle?.length <= 0 || welcomeMsg.length <= 0">
-										<i class="material-icons" style="right: 10px;"> save </i>
+										<!-- <i class="material-icons" style="right: 10px;"> save </i> -->
 										{{ 'ScriptPage.Save' | translate }}
 									</button>
 
 									<!-- margin-bottom: 16px; height:20px;-->
-									<div class="section-subtitle"
-										style="border-top: 1px solid #e8f0f5; width: calc((100% / 3) + 372px);margin-bottom: 0px;">
+									<div class="section-subtitle">
 									</div>
 								</div>
 							</div>
@@ -701,7 +699,7 @@
 										style="margin-top: 15px; margin-bottom: 16px;" 
 										(click)="saveWidgetAppearance(); saveTranslation()"
 										[disabled]="welcomeTitle?.length <= 0 || welcomeMsg.length <= 0">
-										<i class="material-icons" style="right: 10px;"> save </i>
+										<!-- <i class="material-icons" style="right: 10px;"> save </i> -->
 										{{ 'ScriptPage.Save' | translate }}
 									</button>
 
@@ -1583,7 +1581,7 @@
 										style="margin-top: 15px; margin-bottom: 0px;"
 										(click)="saveWidgetAppearance(); saveTranslation()"
 										[disabled]="welcomeTitle?.length <= 0 || welcomeMsg.length <= 0">
-										<i class="material-icons" style="right: 10px;"> save </i>
+										<!-- <i class="material-icons" style="right: 10px;"> save </i> -->
 										{{ 'ScriptPage.Save' | translate }}
 									</button>
 								</div>

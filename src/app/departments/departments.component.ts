@@ -7,6 +7,8 @@ import { Project } from '../models/project-model';
 import { AuthService } from '../core/auth.service';
 import { GroupService } from '../services/group.service';
 import { FaqKbService } from '../services/faq-kb.service';
+import { TranslateService } from '@ngx-translate/core';
+import { NotifyService } from '../core/notify.service';
 
 @Component({
   selector: 'mongodb-departments',
@@ -26,30 +28,33 @@ export class DepartmentsComponent implements OnInit {
   DISPLAY_DATA_FOR_DELETE_MODAL = false;
   // set to none the property display of the modal
   displayDeleteModal = 'none';
-
   // DATA DISPLAYED IN THE 'DELETE' MODAL
   id_toDelete: string;
   deptName_toDelete: string;
-
   // DATA DISPLAYED IN THE 'UPDATE' MODAL
   id_toUpdate: string;
   deptName_toUpdate: string;
-
   project: Project;
   showSpinner = true;
-
   groupName: string;
   id_group: string;
   groupIsTrashed: string;
   botName: string;
   deptStatus: number;
+  deleteErrorMsg: string;
+  deleteSuccessMsg: string;
+  updateSuccessMsg: string;
+  updateErrorMsg: string;
+  browser_lang: string;
 
   constructor(
     private mongodbDepartmentService: DepartmentService,
     private router: Router,
     private auth: AuthService,
     private groupsService: GroupService,
-    private faqKbService: FaqKbService
+    private faqKbService: FaqKbService,
+    public translate: TranslateService,
+    private notify: NotifyService
   ) { }
 
   ngOnInit() {
@@ -58,7 +63,27 @@ export class DepartmentsComponent implements OnInit {
 
     // this.getDepartments();
     this.getDeptsByProjectId();
+    this.translateNotificationMsgs();
+    this.getBrowserLanguage();
   }
+  getBrowserLanguage() {
+    this.browser_lang = this.translate.getBrowserLang();
+    console.log('Depts - browser_lang ', this.browser_lang)
+    var userLang = navigator.language; 
+    console.log('Depts - browser_lang ', userLang)
+  }
+
+  translateNotificationMsgs() {
+    this.translate.get('DeptsAddEditPage.NotificationMsgs')
+      .subscribe((translation: any) => {
+        console.log('Depts - translateNotificationMsgs text', translation)
+        this.deleteErrorMsg = translation.DeleteDeptError;
+        this.deleteSuccessMsg = translation.DeleteDeptSuccess;
+        this.updateSuccessMsg = translation.UpdateDeptSuccess;
+        this.updateErrorMsg = translation.UpdateDeptError;
+      });
+  }
+
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
@@ -86,7 +111,7 @@ export class DepartmentsComponent implements OnInit {
     this.mongodbDepartmentService.getDeptsByProjectId().subscribe((departments: any) => {
       console.log('»»» »»» DEPTS PAGE - DEPTS (FILTERED FOR PROJECT ID)', departments);
 
-      this.showSpinner = false;
+      
 
       if (departments) {
         this.departments = departments;
@@ -110,6 +135,7 @@ export class DepartmentsComponent implements OnInit {
       console.log('DEPARTMENTS (FILTERED FOR PROJECT ID) - ERROR', error);
     }, () => {
       console.log('DEPARTMENTS (FILTERED FOR PROJECT ID) - COMPLETE')
+      this.showSpinner = false;
     });
   }
 
@@ -128,13 +154,15 @@ export class DepartmentsComponent implements OnInit {
     this.mongodbDepartmentService.updateDeptStatus(dept_id, this.deptStatus)
       .subscribe((department: any) => {
         console.log('»»» »»» DEPTS PAGE - UPDATE DEPT STATUS - UPDATED DEPT ', department)
-
+  
       }, error => {
-
+        this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
         console.log('»»» »»» DEPTS PAGE - UPDATE DEPT STATUS - ERROR', error);
       }, () => {
+        this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
         console.log('»»» »»» DEPTS PAGE - UPDATE DEPT STATUS - COMPLETE')
-      });
+
+     });
 
 
 
@@ -143,7 +171,6 @@ export class DepartmentsComponent implements OnInit {
   /**
    * GET BOT BY ID  */
   getBotById(id_bot) {
-
     this.faqKbService.getMongDbFaqKbById(id_bot).subscribe((bot: any) => {
       if (bot) {
         console.log(' -- > BOT GET BY ID', bot);
@@ -151,7 +178,8 @@ export class DepartmentsComponent implements OnInit {
 
         for (const dept of this.departments) {
           if (dept.id_bot === bot._id) {
-            dept.hasDeptName = this.botName
+            dept.hasDeptName = this.botName;
+            dept.botHasBeenTrashed = bot.trashed
           }
         }
       }
@@ -300,16 +328,19 @@ export class DepartmentsComponent implements OnInit {
     this.mongodbDepartmentService.deleteMongoDbDeparment(this.id_toDelete).subscribe((data) => {
       console.log('DELETE DATA ', data);
 
-      // RE-RUN GET CONTACT TO UPDATE THE TABLE
-      // this.getDepartments();
-      this.ngOnInit();
+     
+      this.getDeptsByProjectId();
+      // this.ngOnInit();
 
     },
       (error) => {
         console.log('DELETE REQUEST ERROR ', error);
+        this.notify.showWidgetStyleUpdateNotification(this.deleteErrorMsg, 4, 'report_problem');
       },
       () => {
         console.log('DELETE REQUEST * COMPLETE *');
+        this.notify.showWidgetStyleUpdateNotification(this.deleteSuccessMsg, 2, 'done');
+
       });
   }
 

@@ -69,10 +69,9 @@ export class RoutingPageComponent implements OnInit {
 
     this.getFaqKbByProjecId();
 
-    this.getCurrentProject();
-
     this.getGroupsByProjectId();
-    // tslint:disable-next-line:quotemark
+
+    this.getCurrentProject();
 
   }
 
@@ -417,7 +416,7 @@ export class RoutingPageComponent implements OnInit {
 
           // =========== NOTIFY ERROR ===========
           // tslint:disable-next-line:quotemark
-          this.notify.showNotification("An error occurred while updating routing rules", 4, 'report_problem')
+          this.notify.showWidgetStyleUpdateNotification("An error occurred while updating routing rules", 4, 'report_problem')
         },
         () => {
           console.log('PUT REQUEST * COMPLETE *');
@@ -425,9 +424,10 @@ export class RoutingPageComponent implements OnInit {
             this.SHOW_CIRCULAR_SPINNER = false
           }, 300);
 
-          this.ngOnInit();
+          // this.ngOnInit();
+
           // =========== NOTIFY SUCCESS===========
-          this.notify.showNotification('routing rules successfully updated', 2, 'done');
+          this.notify.showWidgetStyleUpdateNotification('routing rules successfully updated', 2, 'done');
         });
 
   }

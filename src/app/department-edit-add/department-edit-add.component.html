@@ -18,11 +18,12 @@
     <div class="row">
       <div class="col-md-8">
         <div class="card card-padding" style="padding-top:12px; padding-bottom:12px">
-          <div class="card-content">
+          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+          <div  *ngIf="!showSpinner" class="card-content">
   
             <span *ngIf="CREATE_VIEW">
     
-              <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
+              
               <!-- padding-left: 16px; -->
               <div class="row"> 
                 <label class="col-xs-12 col-sm-2 col-md-12 col-lg-2 custom-label-for-dept">
@@ -277,7 +278,11 @@
             </span>
             <!-- ./ end CREATE VIEW -->
 
-            <!-- start EDIT_VIEW -->
+           
+            <!-- 
+            // -------------------------------------------------------------------
+            // Edit view
+            // ------------------------------------------------------------------- -->
             <span *ngIf="EDIT_VIEW">
   
               <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->

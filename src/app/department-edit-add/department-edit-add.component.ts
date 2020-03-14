@@ -3,17 +3,15 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { DepartmentService } from '../services/mongodb-department.service';
-
 import { BotService } from '../services/bot.service'; // no more used
 import { FaqKbService } from '../services/faq-kb.service';
-
-
 import { Project } from '../models/project-model';
 import { AuthService } from '../core/auth.service';
-
 import { GroupService } from '../services/group.service';
 import { Group } from '../models/group-model';
 import { Location } from '@angular/common';
+import { TranslateService } from '@ngx-translate/core';
+import { NotifyService } from '../core/notify.service';
 
 @Component({
   selector: 'app-department-edit-add',
@@ -24,39 +22,34 @@ export class DepartmentEditAddComponent implements OnInit {
 
   CREATE_VIEW = false;
   EDIT_VIEW = false;
-
   id_dept: string;
   dept_name: string;
-
   // !!! NOTE: IS CALLED BOT LIST BUT REALLY IS THE LIST OF FAQ-KB LIST
   botsList: any;
-
   selectedBotId: string;
   selectedGroupId: string;
-
   SHOW_GROUP_OPTION_FORM: boolean;
-
   ROUTING_SELECTED: string;
-
   deptName_toUpdate: string;
   botId: string;
-
   selectedValue: string;
   selectedId: string;
   botIdEdit: string;
   dept_routing: string;
-
   project: Project;
-
   groupsList: Group[];
   GROUP_ID_NOT_EXIST: boolean;
-
   has_selected_bot: boolean
   BOT_NOT_SELECTED: boolean;
   SHOW_OPTION_FORM: boolean;
   has_selected_only_bot: boolean;
   bot_only: boolean;
   onlybot_disable_routing: boolean;
+  createSuccessMsg: string;
+  createErrorMsg: string;
+  updateSuccessMsg: string;
+  updateErrorMsg: string;
+  showSpinner = false;
 
   constructor(
     private router: Router,
@@ -66,7 +59,9 @@ export class DepartmentEditAddComponent implements OnInit {
     private faqKbService: FaqKbService,
     private auth: AuthService,
     private groupService: GroupService,
-    public location: Location
+    public location: Location,
+    public translate: TranslateService,
+    private notify: NotifyService
   ) { }
 
   ngOnInit() {
@@ -109,7 +104,7 @@ export class DepartmentEditAddComponent implements OnInit {
     } else {
       console.log('HAS CLICKED EDIT ');
       this.EDIT_VIEW = true;
-
+      this.showSpinner= true;
 
       // *** GET DEPT ID FROM URL PARAMS ***
       // IS USED TO GET THE BOT OBJECT ( THE ID IS PASSED FROM BOTS COMPONENT - goToEditAddPage_EDIT())
@@ -153,6 +148,19 @@ export class DepartmentEditAddComponent implements OnInit {
     this.getFaqKbByProjecId()
 
     this.getGroupsByProjectId();
+    this.translateNotificationMsgs()
+  }
+
+
+  translateNotificationMsgs() {
+    this.translate.get('DeptsAddEditPage.NotificationMsgs')
+      .subscribe((translation: any) => {
+        console.log('Depts Add Edit - translateNotificationMsgs text', translation)
+        this.createSuccessMsg = translation.CreateDeptSuccess;
+        this.createErrorMsg = translation.CreateDeptError;
+        this.updateSuccessMsg = translation.UpdateDeptSuccess;
+        this.updateErrorMsg = translation.UpdateDeptError;
+      });
   }
 
   // ============ NEW - SUBSTITUTES has_clicked_fixed ============
@@ -340,10 +348,13 @@ export class DepartmentEditAddComponent implements OnInit {
       },
         (error) => {
           console.log('DEPT POST REQUEST ERROR ', error);
+          this.notify.showWidgetStyleUpdateNotification(this.createErrorMsg, 4, 'report_problem');
         },
         () => {
+          this.notify.showWidgetStyleUpdateNotification(this.createSuccessMsg, 2, 'done');
           console.log('DEPT POST REQUEST * COMPLETE *');
           this.router.navigate(['project/' + this.project._id + '/departments']);
+
         });
   }
 
@@ -424,13 +435,13 @@ export class DepartmentEditAddComponent implements OnInit {
     },
       (error) => {
         console.log('GET DEPT BY ID - ERROR ', error);
-        // this.showSpinner = false;
+        this.showSpinner = false;
       },
       () => {
         console.log('GET DEPT BY ID - COMPLETE ');
 
-        // MOVED IN getFaqKbById
-        // this.showSpinner = false;
+        this.showSpinner = false;
+        
 
         if (this.botId === undefined) {
 
@@ -538,11 +549,15 @@ export class DepartmentEditAddComponent implements OnInit {
     },
       (error) => {
         console.log('PUT REQUEST ERROR ', error);
+
+        this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
+
       },
       () => {
         console.log('PUT REQUEST * COMPLETE *');
+        this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
 
-        this.router.navigate(['project/' + this.project._id + '/departments']);
+        // this.router.navigate(['project/' + this.project._id + '/departments']);
       });
 
   }

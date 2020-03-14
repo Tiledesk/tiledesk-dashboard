@@ -511,7 +511,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE SIDEBAR.COMP ***
   getProjectUser() {
     console.log('!!! HOME CALL GET-PROJECT-USER')
-    this.usersService.getProjectUsersByProjectIdAndUserId(this.user._id, this.projectId).subscribe((projectUser: any) => {
+    this.usersService.getProjectUserByUserId(this.user._id).subscribe((projectUser: any) => {
       console.log('!!! H PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser)
       if (projectUser) {
         console.log('H PROJECT-USER ID ', projectUser[0]._id)
