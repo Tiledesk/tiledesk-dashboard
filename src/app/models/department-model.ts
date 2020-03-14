@@ -9,8 +9,10 @@ export interface Department {
     bot_only: boolean;
     id_group: string;
     hasGroupName: string;
-    groupHasBeenTrashed: boolean;
-    hasDeptName: string;
     routing: string;
     __v: any;
+    // custom
+    groupHasBeenTrashed?: boolean;
+    botHasBeenTrashed?: boolean;
+    hasDeptName?: string;
 }
