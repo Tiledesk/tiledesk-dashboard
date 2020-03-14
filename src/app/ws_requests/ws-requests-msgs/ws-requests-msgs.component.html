@@ -11,20 +11,115 @@
 
     <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner>
     *ngIf="!showSpinner" -->
+
+    
     <div>
       <div class="row">
         <div class="col-sm-7 chat-col">
           <div class="card chat-card" style="padding-top:0px; padding-bottom:0px;">
             <div class="row" style="border-bottom: 1px solid #eeeeee; padding-left:25px; padding-right:25px">
               <div class="col-sm-12">
+
+
+
                 <div class="two-div-wrapper">
-                  <div style="float: left; width: 50%; ">
-                    <h4 class="card-title"
+                  <div style="float: left; width: 50%; height: 59px;">
+                    <span *ngIf="!showSpinner">
+                      <!-- <h4 class="card-title"
                       style="text-transform: none; color: #566787; font-weight:400; margin-top: 18px; margin-bottom: 0px; padding-bottom: 15px;">
                       {{ "RequestMsgsPage.Messages" | translate }}
-                      <!-- <code style="color: #566787; font-weight: 400" >{{cut_support_group_from_request_id(id_request)}} </code> -->
-                    </h4>
+                    
+                    </h4> -->
+                      <!-- <div class="contact-details">
+
+                      <i class="material-icons">
+                        more_vert
+                        </i>
+                    </div> -->
+
+                      <!-- -----new REQUESTER -->
+                      <span class="requester-avatar-wrapper">
+                        <span class="_requester-avatar_as_title" [ngStyle]="{'background-color': fillColour }"
+                          [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname}">
+                          <span style="color: #ffffff"> {{ requester_fullname_initial }} </span>
+                        </span>
+                        <span *ngIf="REQUESTER_IS_VERIFIED === true" class="tooltipx">
+                          <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6"
+                            width="17" height="17" style="position: relative;left: -61px;top: -7px;"
+                            xml:space="preserve">
+                            <style type="text/css">
+                              .st0 {
+                                fill: none;
+                              }
+
+                              .st1 {
+                                fill: #FFFFFF;
+                              }
+
+                              .st2 {
+                                fill: #18BDF7;
+                              }
+                            </style>
+                            <path class="st0" d="M1.3,1.3h24v24h-24V1.3z" />
+                            <path class="st1"
+                              d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z" />
+                            <path class="st2" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
+                                l6.6-6.6l1.4,1.4L11.3,18.3z" />
+                          </svg>
+                          <span class="tooltiptext"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
+                        </span>
+                        <div class="requester-status-icon-avatar_as_title"
+                          [ngClass]="{'requester_is_online' : REQUESTER_IS_ONLINE}">
+                        </div>
+
+                      </span>
+
+                      <!-- <span style="color:#394f5a;"> {{ "RequestMsgsPage.RequesterName" | translate }}: </span>  -->
+                      <div class="contact_info">
+
+                        <span [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}"
+                          style="margin-top: 13px; display: block; font-size: 18px;">
+                          <!-- {{ requester_fullname }} -->
+                          {{request?.lead?.fullname}}
+                        </span>
+                        <span *ngIf="!request?.lead?.fullname"
+                          [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}" style="margin-left: 2px;">
+                          n.a.
+                        </span>
+
+                        <span style="position: relative; top: -4px;"
+                          [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}">
+                          <i class="material-icons"
+                            style="vertical-align: middle; color: #7695a5;font-size:12px; position: relative; top: 1px;">
+                            email
+                          </i>
+                          <span style="position: relative;top: 1px;">
+                            <!-- <span
+                      style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                      {{ "RequestMsgsPage.ChatFormUserEmail" | translate }}
+                    </span> -->
+                            <a style="font-size: 13px;" target="_blank" *ngIf="request?.lead?.email"
+                              href="mailto:{{request?.lead?.email}}">
+                              {{request?.lead?.email}}
+                            </a>
+                            <a *ngIf="!request?.lead?.email" style="color:#7695a5;font-size: 13px;">n.a.</a>
+
+                            <span *ngIf="NODEJS_REQUEST_CNTCT_FOUND">
+                              <span (click)="goToContactDetails()" class="" style="margin-left: 30px;  color: #03a5e8;
+                          font-size: 12px;
+                          font-weight: 400;cursor:pointer">
+                                {{ 'ViewDetails' | translate}}
+                              </span>
+                            </span>
+                          </span>
+                        </span>
+                      </div>
+                      <!-- -----new REQUESTER -->
+
+                    </span>
                   </div>
+
                   <div style="float: right; width: 50%; ">
 
                     <!-- -----------------============= ACTIONS DROPDOWN MENU =============----------------- -->
@@ -320,7 +415,8 @@
         // @ RIGHT SIDEBAR
         // ----------------------------------------------------------------------------- -->
         <div class="col-sm-5 right-col">
-          <div class="card right-card" style="padding-top:5px; padding-bottom:5px;">
+
+          <div class="card right-card" style="padding-top:5px; padding-bottom:5px;margin-bottom: 10px;">
 
             <div *ngIf="showSpinner" class="stretchspinner">
               <div class="rect1"></div>
@@ -330,21 +426,14 @@
               <div class="rect5"></div>
             </div>
 
-            <h4 class="card-title requestattibutestitle"
-              style="text-transform: none; color: #566787; font-weight:400; margin-top: 14px; border-bottom: 1px solid #eeeeee; padding-left: 25px; padding-bottom: 15px;">
-              <span class="requestattibutes">{{ "RequestMsgsPage.RequestAttributes" | translate }}</span>
-            </h4>
 
-            <div class="card-content" style="padding-top:5px;min-height: 556px;">
-
-              <div *ngIf="! showSpinner" class="content-wrap">
-                <div style="margin-bottom: 0px; min-height: 39px;">
-
-
+            <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;min-height: 510px;">
+              <div *ngIf="!showSpinner" class="content-wrap">
+                <div style="margin-bottom: 0px; min-height: 50px;border-bottom: 1px solid #eeeeee;">
                   <!-- 
-                  // -------------------------------------
-                  // IF IS A CLOSED REQUEST
-                  // ------------------------------------- -->
+                // -------------------------------------
+                // IF IS A CLOSED REQUEST
+                // ------------------------------------- -->
                   <span *ngIf="request?.status == 1000 && !request?.subject">
                     <svg viewBox="0 0 58.1 53.9" style="width: 40px" xml:space="preserve">
                       <style type="text/css">
@@ -360,22 +449,20 @@
                         }
                       </style>
                       <path class="st0-chat-closed" d="M30.1,2.6c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C8.9,41.4,7.9,47.2,5.1,50c0,0,8.6-1.2,14.4-4.7
-                        c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S43.9,2.6,30.1,2.6z" />
+                      c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S43.9,2.6,30.1,2.6z" />
                       <path class="st1-chat-closed" d="M30.4,13.8c-6.3,0-11.4,5-11.4,11.2h-3.8l4.9,4.9l0.1,0.2l5.1-5h-3.8c0-4.8,4-8.7,8.9-8.7s8.9,3.9,8.9,8.7
-                        s-4,8.7-8.9,8.7c-2.5,0-4.7-1-6.3-2.6L22.3,33c2.1,2,4.9,3.3,8.1,3.3c6.3,0,11.4-5,11.4-11.2S36.7,13.8,30.4,13.8z M29.1,20v6.2
-                        l5.4,3.2l0.9-1.5L31,25.3V20H29.1z" />
+                      s-4,8.7-8.9,8.7c-2.5,0-4.7-1-6.3-2.6L22.3,33c2.1,2,4.9,3.3,8.1,3.3c6.3,0,11.4-5,11.4-11.2S36.7,13.8,30.4,13.8z M29.1,20v6.2
+                      l5.4,3.2l0.9-1.5L31,25.3V20H29.1z" />
                     </svg>
-
-                    <span class="request-category" style="position:relative;top: -20px; color: #999999">
+                    <span class="request-category" style="position:relative;top: -11px; color: #999999">
                       {{ "RequestMsgsPage.RequestClosed" | translate }}
                     </span>
                   </span>
 
-
                   <!-- 
-                  // -------------------------------------
-                  // IF IS AN INTERNAL CLOSED REQUEST
-                  // ------------------------------------- -->
+                // -------------------------------------
+                // IF IS AN INTERNAL CLOSED REQUEST
+                // ------------------------------------- -->
                   <span *ngIf="request?.status == 1000 && request?.subject">
                     <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
@@ -393,23 +480,21 @@
                         }
                       </style>
                       <path class="closed_Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
-             C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
+           C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
                       <path class="closed_Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
-             c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
-             C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
-             c0.5,0,0.9-0.5,0.9-1.1V22z" />
+           c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
+           C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
+           c0.5,0,0.9-0.5,0.9-1.1V22z" />
                     </svg>
-
-                    <span class="request-category" style="position:relative;top: -20px; color: #999999">
+                    <span class="request-category" style="position:relative;top: -11px; color: #999999">
                       {{ "RequestMsgsPage.InternalRequestClosed" | translate }}
                     </span>
                   </span>
 
-
                   <!-- 
-                  // -------------------------------------
-                  // IF IS AN UNSERVED REQUEST
-                  // ------------------------------------- -->
+                // -------------------------------------
+                // IF IS AN UNSERVED REQUEST
+                // ------------------------------------- -->
                   <span *ngIf="request?.status === 100 && !request?.subject">
                     <svg viewBox="0 0 58.1 53.9" style="width: 40px" xml:space="preserve">
                       <style type="text/css">
@@ -425,23 +510,23 @@
                         }
                       </style>
                       <path class="st0-unserved" d="M30.5,3.3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
-                          c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S44.3,3.3,30.5,3.3z" />
+                        c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S44.3,3.3,30.5,3.3z" />
                       <g>
                         <path class="st1-unserved"
                           d="M30.6,38.9c-1.7,0-3.1-1.4-3.1-3c0-1.7,1.4-3,3.1-3c1.7,0,3.1,1.4,3.1,3C33.6,37.6,32.3,38.9,30.6,38.9z" />
                         <path class="st1-unserved" d="M34.8,18l-1.5,10c-0.2,1.5-1.6,2.5-3.1,2.3c-1.2-0.2-2.1-1.1-2.3-2.2l-1.6-10c-0.4-2.3,1.2-4.5,3.6-4.9
-                            c2.4-0.4,4.6,1.2,5,3.5C34.9,17.1,34.9,17.6,34.8,18z" />
+                          c2.4-0.4,4.6,1.2,5,3.5C34.9,17.1,34.9,17.6,34.8,18z" />
                       </g>
                     </svg>
-                    <span class="request-category" style="position: relative;top:-20px; color: #f44336">
+                    <span class="request-category" style="position: relative;top:-11px; color: #f44336">
                       {{ "RequestMsgsPage.RequestUnserved" | translate }}
                     </span>
                   </span>
 
                   <!-- 
-                  // -------------------------------------
-                  // IF IS AN INTERNAL UNSERVED REQUEST 
-                  // ------------------------------------- -->
+                // -------------------------------------
+                // IF IS AN INTERNAL UNSERVED REQUEST 
+                // ------------------------------------- -->
                   <span *ngIf="request?.status === 100 && request?.subject">
                     <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                       xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 58.1 53.9"
@@ -459,14 +544,14 @@
                         }
                       </style>
                       <path class="unserved_Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
-             C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
+           C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
                       <path class="unserved_Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
-             c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
-             C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
-             c0.5,0,0.9-0.5,0.9-1.1V22z" />
+           c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
+           C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
+           c0.5,0,0.9-0.5,0.9-1.1V22z" />
                     </svg>
 
-                    <span class="request-category" style="position:relative;top: -20px; color: #999999">
+                    <span class="request-category" style="position:relative;top: -11px; color: #999999">
                       {{ "RequestMsgsPage.InternalRequestUnserved" | translate }}
                     </span>
                   </span>
@@ -490,14 +575,14 @@
                         }
                       </style>
                       <path class="st0-served-by-cu" d="M29.8,3.7c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
-                        c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S43.6,3.7,29.8,3.7z" />
+                      c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S43.6,3.7,29.8,3.7z" />
                       <g id="XMLID_146_">
                         <path id="XMLID_158_" class="st1-served-by-cu" d="M25.8,36.5l-8.4-7.4c-1.1-0.9-1.1-2.4,0-3.3c1.1-0.9,2.8-0.9,3.8,0l4.6,4.1l12.6-10.9
-                          c1.1-0.9,2.8-0.9,3.8,0c1,0.9,1,2.4,0,3.3L25.8,36.5z" />
+                        c1.1-0.9,2.8-0.9,3.8,0c1,0.9,1,2.4,0,3.3L25.8,36.5z" />
                       </g>
                     </svg>
 
-                    <span class="request-category" style="position:relative;top:-20px; color: #4CAF50">
+                    <span class="request-category" style="position:relative;top:-11px; color: #4CAF50">
                       {{ "RequestMsgsPage.RequestServedBy" | translate }}
                     </span>
                   </span>
@@ -521,14 +606,14 @@
                         }
                       </style>
                       <path class="served_bycu_Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
-             C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
+           C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
                       <path class="served_bycu_Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
-             c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
-             C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
-             c0.5,0,0.9-0.5,0.9-1.1V22z" />
+           c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
+           C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
+           c0.5,0,0.9-0.5,0.9-1.1V22z" />
                     </svg>
 
-                    <span class="request-category" style="position:relative;top:-20px; color: #4CAF50">
+                    <span class="request-category" style="position:relative;top:-11px; color: #4CAF50">
                       {{ "RequestMsgsPage.InternalRequestServedBy" | translate }}
                     </span>
                   </span>
@@ -553,7 +638,7 @@
                       </style>
                       <g>
                         <path class="st0-served" d="M30.5,3c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3c-0.3,4.1-1.3,9.9-4.1,12.7c0,0,8.6-1.2,14.4-4.7
-                          c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S44.3,3,30.5,3z" />
+                        c3.2,1.4,6.8,2.1,10.6,2.1c13.8,0,25-10,25-22.4S44.3,3,30.5,3z" />
                         <g>
                           <circle class="st1-served" cx="17.5" cy="26.7" r="3" />
                           <circle class="st1-served" cx="30.5" cy="26.7" r="3" />
@@ -562,7 +647,7 @@
                       </g>
                     </svg>
 
-                    <span class="request-category" style="position:relative;top: -20px; color: #00bcd4;">
+                    <span class="request-category" style="position:relative;top: -11px; color: #00bcd4;">
 
                       {{ "RequestMsgsPage.RequestServedBy" | translate }}
 
@@ -589,14 +674,14 @@
                         }
                       </style>
                       <path class="served__Internal_st0" d="M29,3.2c-13.8,0-25,10-25,22.4c0,4.6,1.5,8.8,4.1,12.3C7.8,42,6.8,47.9,4,50.7c0,0,8.6-1.2,14.4-4.7
-             C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
+           C21.6,47.4,25.2,48,29,48c13.8,0,25-10,25-22.4S42.8,3.2,29,3.2z" />
                       <path class="served__Internal_st1" d="M22.8,22.4h12.5v9.1H22.8V22.4z M38.5,27c0,1.3,0.8,2.3,1.9,2.3v4.5c0,1.3-0.8,2.3-1.9,2.3H19.6
-             c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
-             C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
-             c0.5,0,0.9-0.5,0.9-1.1V22z" />
+           c-1,0-1.9-1-1.9-2.3v-4.5c1,0,1.9-1,1.9-2.3s-0.8-2.3-1.9-2.3v-4.5c0-1.3,0.8-2.3,1.9-2.3h18.8c1,0,1.9,1,1.9,2.3v4.5
+           C39.3,24.7,38.5,25.7,38.5,27z M36.6,22c0-0.6-0.4-1.1-0.9-1.1H22.5c-0.5,0-0.9,0.5-0.9,1.1v9.8c0,0.6,0.4,1.1,0.9,1.1h13.2
+           c0.5,0,0.9-0.5,0.9-1.1V22z" />
                     </svg>
 
-                    <span class="request-category" style="position:relative;top: -20px; color: #00bcd4;">
+                    <span class="request-category" style="position:relative;top: -11px; color: #00bcd4;">
 
                       {{ "RequestMsgsPage.InternalRequestServedBy" | translate }}
 
@@ -604,17 +689,17 @@
                   </span>
 
 
-                  <div class="id__request" style="color: #7695a5 !important;
-                  font-size: 10px;
-                  display: block;
-                  margin-left: 43px;
-                  margin-top: -26px;
-                  font-weight: 400;"> <span style="color:#394f5a;"> id: </span> {{ id_request }} </div>
+                  <!-- <div class="id__request"
+                  style="color: #7695a5 !important; font-size: 10px; display: block; margin-left: 43px; margin-top: -26px;font-weight: 400;">
+                  <span style="color:#394f5a;"> id: </span>
+                  {{ id_request }}
+                </div> -->
+
                 </div>
 
                 <!-- <span class="row-body">
-                <span style="color:#394f5a;"> id: </span> {{ id_request }}
-              </span> -->
+              <span style="color:#394f5a;"> id: </span> {{ id_request }}
+            </span> -->
 
                 <div *ngIf="request?.subject" class="row" style="margin-top:5px">
                   <div class="col-sm-12">
@@ -635,9 +720,9 @@
                   <!-- border-top: 1px solid #e1eef4;" -->
                   <!-- border-bottom: 1px solid #e1eef4; -->
                   <div class="col-sm-12">
-                    <p class="" style="margin-bottom: 1px;">
+                    <p class="" style="margin-bottom: 1px;margin-top: 6px;">
                       <i class="material-icons"
-                        style="vertical-align: middle; color: #394f5a;font-size:16px; margin-left: 3px; margin-right: 3px;">calendar_today</i>
+                        style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-right: 3px;">calendar_today</i>
                       <span style="position: relative;top: 1px;">
                         <span
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
@@ -651,18 +736,18 @@
                     </p>
 
                     <!-- <span class="row-body">
-                    {{ request?.createdAt | amTimeAgo }} ({{ request?.createdAt | date: 'd/M/y HH:mm:ss' }})
-                  </span> -->
+                  {{ request?.createdAt | amTimeAgo }} ({{ request?.createdAt | date: 'd/M/y HH:mm:ss' }})
+                </span> -->
 
                   </div>
                 </div>
 
                 <div class="row" style="margin-top:5px">
                   <!-- border-top: 1px solid #e1eef4;" -->
-                  <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4;">
-                    <p class="" style="">
+                  <div class="col-sm-12">
+                    <p class="" style="margin-bottom: 0px;">
                       <i class="material-icons"
-                        style="vertical-align: middle; color: #394f5a;font-size:22px">outlined_flag</i>
+                        style="vertical-align: middle; color: #394f5a;font-size:16px">outlined_flag</i>
                       <span style="position: relative;top: 1px;">
                         <span
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
@@ -677,8 +762,106 @@
                   </div>
                 </div>
 
-                <div class="row" style="margin-top:15px">
-                  <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4; border-top: 1px solid #e1eef4;">
+                <div class="row" style="margin-top:5px">
+                  <div class="col-sm-12">
+                    <p class="" style="margin-bottom: 0px;">
+                      <i class="material-icons" style="vertical-align: middle; color: #394f5a;font-size:16px">code</i>
+                      <span style="position: relative;top: 1px;">
+                        <span
+                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                          {{ "RequestMsgsPage.RequestId" | translate }}</span>
+                        <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                          {{ id_request }}
+                        </span>
+                      </span>
+                    </p>
+                  </div>
+                </div>
+
+                <div class="row" style="margin-top:5px">
+                  <div class="col-sm-12">
+                    <p class="" style="margin-bottom: 0px;">
+                      <i class="material-icons"
+                        style="vertical-align: middle; color: #394f5a;font-size:16px">account_balance</i>
+                      <span style="position: relative;top: 1px;">
+                        <span
+                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                          {{ "Department" | translate }}
+                        </span>
+                        <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+
+
+                          <span *ngIf="request?.department">
+                            {{request?.department?.name}}
+                          </span>
+                          <span *ngIf="!request?.department" style="text-transform: lowercase;">
+                            {{'DepartmentsPage.NoDept' | translate}}
+                          </span>
+
+                        </span>
+                      </span>
+                    </p>
+                  </div>
+                </div>
+
+
+
+
+
+                <!-- 
+              // ------------------------------------------------------
+              // Source page
+              // ------------------------------------------------------ -->
+                <div class="row" style="margin-top:5px">
+                  <div class="col-sm-12">
+                    <p class="" style="">
+                      <span style="position: relative;top: 1px;">
+                        <div class="row">
+                          <div class="col-sm-10">
+                            <i class="material-icons"
+                              style="vertical-align: middle; color: #394f5a;font-size:16px">language</i>
+                            <span
+                              style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                              {{ "RequestMsgsPage.SourcePage" | translate }}</span>
+                            <span style=" font-weight: 500; font-size: 12px;">
+                              <span *ngIf="showAllSourcePageString" style="word-wrap: break-word;">
+                                <a href="{{request?.sourcePage}}" target="_blank">{{request?.sourcePage}}</a>
+                              </span>
+                              <span *ngIf="!showAllSourcePageString">
+                                <a href="{{request?.sourcePage}}" target="_blank">{{sourcePageCutted}}</a>
+                              </span>
+                            </span>
+                          </div>
+
+                          <div class="col-sm-2" style="text-align: right;">
+                            <i id="source_page_arrow_down" class="material-icons rotate"
+                              style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:5px"
+                              (click)="toggleShowAllSourcePageString()">
+                              keyboard_arrow_down
+                            </i>
+                          </div>
+                        </div>
+                      </span>
+                    </p>
+                  </div>
+                </div>
+
+
+                <!-- </div>
+          </div> -->
+                <!-- end card icon -->
+
+
+
+                <!-- 
+          // -----------------------------------------------------------------------------
+          // Agents
+          // ----------------------------------------------------------------------------- -->
+                <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
+            <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
+
+                <div class="row" style="">
+                  <div class="col-sm-12" style="border-bottom: 1px solid #dadde1; border-top: 1px solid #dadde1;">
                     <p class="row-header" style="">
                       <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
                       <span style="vertical-align: middle">
@@ -729,146 +912,411 @@
                             </span>
                           </span>
                         </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- </div>
+          </div> -->
 
+
+                <!-- 
+          // -----------------------------------------------------------------------------
+          // Tags
+          // ----------------------------------------------------------------------------- -->
+                <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
+            <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
+                <div class="row" style="">
+                  <div class="col-sm-12" style="border-bottom: 1px solid #dadde1;">
+                    <p class="row-header">
+                      <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
+                      <span style="vertical-align: middle">
+                        {{ "Tags.Tags" | translate }}
+                      </span>
+                    </p>
+                    <div class="col-sm-12" style="padding-left: 0px;padding-right: 0px;">
+                      <div class="tags-container">
+                        <div class="tag" *ngFor="let tag of request?.tags" role="button">
+                          <div (click)="removeTag(tag)">
+                            <!-- [style.background-color]="stringToColour(tag)" -->
+                            <!-- margin-right: 2px; -->
+                            <div class="icon-container" style="display: inline-block;">
+                              <svg style="width: 13px; height: auto;position:absolute;margin-top: 6px;"
+                                aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
+                                class="svg-inline--fa-tag-icon fa-tag fa-w-16" role="img"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+
+                                <path [ngStyle]="{'fill':tag.color}" class="tag_icon_in_ws_msgs"
+                                  d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
+                                </path>
+                              </svg>
+
+                              <span class="tag-delete">
+                                <i class="material-icons delete_note_icon" style="font-size: 16px;"> close </i>
+                              </span>
+
+                            </div>
+
+                            <!-- <div class="tag-color" [style.background-color]="tag.color">
+                            <span class="tag-delete">
+                              <i class="material-icons" style="font-size: 16px;"> close </i>
+                            </span>
+                          </div> -->
+                            {{ tag.tag}}
+                          </div>
+                        </div>
+                      </div>
+                      <!-- btn-white-custom-round  -->
+                      <button class="btn btn-xs btn-primary ws_msgs_small_btn add_tag_btn"
+                        style="margin-top: 4px;  margin-bottom: 6px;" (click)="toggleAddTagInputAndGetTags()">
+                        <i *ngIf="diplayAddTagInput === false" class="material-icons"
+                          style="font-size: 15px;">add_circle</i>
+                        <i *ngIf="diplayAddTagInput === true" class="material-icons"
+                          style="font-size: 15px;">remove_circle</i>
+
+                        {{ 'Tags.AddTags' | translate}}
+
+                      </button>
+                      <!-- btn-white-no-border -->
+                      <!-- <button class="btn btn-xs btn-white-custom-round" style="margin-left:8px;margin-top: 4px;"
+                      (click)="goToTags()">
+                      <i class="material-icons">edit</i>
+                      {{ 'Tags.ManageTags' | translate}}
+                    </button> -->
+
+                      <div *ngIf="CURRENT_USER_ROLE !== 'agent'"   (click)="goToTags()" class="manage_tags">
+                        {{ 'Tags.ManageTags' | translate}}
                       </div>
                     </div>
 
+                    <div class="col-sm-12" style="padding-left: 0px;padding-right: 0px;">
+                      <div *ngIf="diplayAddTagInput === true" class="tag-input-wrap" style="margin-bottom: 6px;">
+                        <!-- <input (keyup.enter)="addTag()" [(ngModel)]="tag" type="text" id="tag" class="input" 
+                        placeholder="{{ 'Tags.TypeALabelAndPressEnter' | translate}}"> -->
+
+
+                        <!-- [closeOnSelect]="true" -->
+                        <!--   -->
+                        <!--  -->
+                        <!-- [closeOnSelect]="true" 
+                        [clearSearchOnAdd]="true"
+                        bindLabel="tag"
+                        [items]="tagsList"
+                        placeholder="{{ 'Tags.TypeALabelAndPressEnter' | translate}}" -->
+                        <!-- <span [style.background-color]="tag.color"  style="height: 16px;width: 16px;"> </span> -->
+                        <!--  -->
+                        <!-- <ng-select [(ngModel)]="tag" (change)="addTag()" [clearSearchOnAdd]="true" [clearable]="false"
+                        placeholder="{{ 'Tags.TypeALabelAndPressEnter' | translate}}">
+
+                        <ng-option *ngFor="let tag of tagsList" [value]="tag">
+                          <ng-template>
+                            Custom footer
+                          </ng-template>
+                  
+                                             {{ tag.tag }}
+                                        
+                        </ng-option>
+
+                      </ng-select> -->
+                        <!-- 'Tags.TypeALabelAndPressEnter' | translate -->
+                        <!-- // ------------------------------------------------------ -->
+                        <ng-select (change)="addTag()" [items]="tagsList" bindLabel="tag" bindValue="_id"
+                          [clearable]="false" [clearSearchOnAdd]="true" placeholder="{{ typeALabelAndPressEnter}}"
+                          [(ngModel)]="tag" [loading]=loadingTags loadingText='Loading...'>
+
+                          <ng-template ng-label-tmp let-item="item">
+                            <!-- <img height="15" width="15" [src]="item.avatar"/> -->
+                            <i [style.color]="item.color" class="fa fa-tag"
+                              style="font-size: 18px;position: relative;top: 2px;margin-right: 5px;"></i>
+
+                            {{item.tag}}
+                          </ng-template>
+                          <ng-template ng-option-tmp let-item="item" let-index="index">
+                            <i [style.color]="item.color" class="fa fa-tag"
+                              style="font-size: 18px;position: relative;top: 2px;margin-right: 5px;"></i>
+                            {{item.tag}}
+                          </ng-template>
+
+                        </ng-select>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- </div>
+          </div> -->
+
+
+                <!-- 
+          // -----------------------------------------------------------------------------
+          // Notes TEST
+          // ----------------------------------------------------------------------------- -->
+                <div class="card right-card"
+                  style="display:none; padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
+                  <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;">
+                    <!-- BEGIN: Layout-B. -->
+                    <div>
+                      <textarea [(ngModel)]="new_note" placeholder="{{ 'Notes.AddANote' | translate  }}" rows="2" style="width: 100%;
+                  display: block;
+                  border: 1px solid #dee2e7;
+                  padding: 12px;
+                  border-radius: 3px;
+                  margin-bottom: 8px;"> </textarea>
+                      <button type="button" class="btn btn-primary ws_msgs_small_btn" #cont (click)="addNote()"
+                        [disabled]="!new_note || new_note?.length === 0">
+                        {{ 'Notes.AddNote' | translate }}
+                      </button>
+                    </div>
+                    <section class="layout layout--b">
+                      <div class="layout__top-panel">
+                        <div *ngFor="let note of notesArray;" class="content">
+                          <p>{{ note?.text }}</p>
+                        </div>
+                      </div>
+                      <!-- <div class="layout__bottom-panel">
+                  Using Overscroll-Behavior
+                </div> -->
+                    </section>
                   </div>
                 </div>
 
-                <!-- REQUEST ID -->
-                <!-- <p style="margin-bottom: 3px; color:#566787;"> 
-                  <strong>
-                    {{ "RequestMsgsPage.RequestId" | translate }}
-                    </strong>
-                </p>
-                <p style="color:#999999; font-weight: 500">  
-                    {{ id_request }}
-                </p> -->
 
-                <!-- ========== Requester  ========== -->
-                <!-- <p style="margin-bottom: 3px; color:#566787"> 
-                  <strong>
-                    {{ "RequestMsgsPage.Requester" | translate }}
-                  </strong>
-                </p> -->
+                <!-- 
+          // -----------------------------------------------------------------------------
+          // Notes
+          // ----------------------------------------------------------------------------- -->
+                <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
+            <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
 
-                <div class="row" style="margin-top:15px">
-                  <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4; border-top: 1px solid #e1eef4;">
-                    <p class="row-header" style="">
+
+                <div class="row" style="">
+                  <div class="col-sm-12"
+                    style="padding-left: 0px; padding-right: 0px; border-bottom: 1px solid #dadde1;">
+                    <p class="row-header accordion" (click)="openNotesAccordion()"
+                      style="padding-left:15px; padding-right:15px; font-size: 14px;">
                       <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
                       <span style="vertical-align: middle">
-                        {{ "RequestMsgsPage.Requester" | translate }}
+                        {{ "Notes.Notes" | translate }} ({{ notesArray?.length }})
                       </span>
                     </p>
-                    <!-- style="color:#999999; font-weight: 500" -->
-                    <p class="row-body" style="margin-bottom:0px; padding-bottom:0px">
+                    <div class="col-sm-12" style="padding-left: 0px;padding-right: 0px;">
 
-                      <!-- // REQUESTER FULLNAME  -->
-                      <span class="requester-avatar-wrapper">
-                        <span class="_requester-avatar" [ngStyle]="{'background-color': fillColour }"
-                          [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname}">
-                          <span style="color: #ffffff"> {{ requester_fullname_initial }} </span>
-                        </span>
-                        <span *ngIf="REQUESTER_IS_VERIFIED === true" class="tooltipx">
-                          <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
-                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6"
-                            width="17" height="17" style="position: relative;left: -43px;top: -3px;"
-                            xml:space="preserve">
-                            <style type="text/css">
-                              .st0 {
-                                fill: none;
-                              }
 
-                              .st1 {
-                                fill: #FFFFFF;
-                              }
+                      <div class="note-container">
+                        <div class="note-panel" (scroll)="onScrollx($event)">
+                          <div class="ws_msgs_note__textarea">
+                            <textarea [(ngModel)]="new_note" placeholder="{{ 'Notes.AddANote' | translate  }}" rows="2"
+                              style="width: 100%;
+                              display: block;
+                              border: 1px solid #dee2e7;
+                              padding: 12px;
+                              border-radius: 3px;
+                              resize: none;
+                              margin-bottom: 8px;">
 
-                              .st2 {
-                                fill: #18BDF7;
-                              }
-                            </style>
-                            <path class="st0" d="M1.3,1.3h24v24h-24V1.3z" />
-                            <path class="st1"
-                              d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z" />
-                            <path class="st2" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
-                                l6.6-6.6l1.4,1.4L11.3,18.3z" />
-                          </svg>
+                          </textarea>
+                            <button type="button" class="btn btn-xs btn-primary ws_msgs_small_btn" #cont
+                              (click)="addNote()" [disabled]="!new_note || new_note?.length === 0">
+                              <!-- <i class="material-icons" style="left: -5px;">add_circle</i> -->
+                              {{ 'Notes.AddNote' | translate }}
 
-                          <span class="tooltiptext"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
+                              <span *ngIf="showSpinnerInAddNoteBtn === true"> <i class="fa fa-spinner fa-spin"
+                                  style="font-size: 15px;"></i></span>
+                            </button>
+                          </div>
 
-                        </span>
-                        <div class="requester-status-icon" [ngClass]="{'requester_is_online' : REQUESTER_IS_ONLINE}">
+                          <div *ngIf="notesArray?.length > 0" class="ws_request_notes__container">
+
+                            <!-- 
+                              // ------------------------------------------------------
+                              // @ Notes' cards
+                              // ------------------------------------------------------ -->
+                            <div *ngFor="let note of notesArray;" class="ws_request_note">
+                              <div class="ws_request_note__content">
+                                {{ note?.text }}
+                              </div>
+                              <!-- HH:mm:ss -->
+                              <div class="ws_request_note__footer">
+                                {{ 'Created' | translate}} {{ note.createdAt| date: 'd/M/y'}} {{ 'By' | translate}}
+                                {{ note?.createdBy_user?.firstname}} {{ note?.createdBy_user?.lastname}}
+                              </div>
+
+
+                              <!-- 
+                              // ------------------------------------------------------
+                              // @ Remove note btn (click)="presentModalDeleteNote(note._id)"
+                              // ------------------------------------------------------ -->
+                              <button *ngIf="currentUserID === note.createdBy " (click)="deleteNote(note._id)"
+                                type="button" class="note__delete">
+                                <i class="material-icons delete_note_icon" style="font-size:16px">close</i>
+                              </button>
+                            </div>
+
+                          </div>
+
+                          <!-- <div class="ws_msgs_note__textarea">
+                          <textarea [(ngModel)]="new_note" placeholder="{{ 'Notes.AddANote' | translate  }}" rows="2"
+                            style="width: 100%;
+                              display: block;
+                              border: 1px solid #dee2e7;
+                              padding: 12px;
+                              border-radius: 3px;
+                              resize: none;
+                              margin-bottom: 8px;">
+
+                          </textarea>
+                          <button type="button" class="btn btn-primary ws_msgs_small_btn" #cont (click)="addNote()"
+                            [disabled]="!new_note || new_note?.length === 0">
+                            {{ 'Notes.AddNote' | translate }}
+                          </button>
+                        </div> -->
                         </div>
-
-                      </span>
-
-                      <!-- <span style="color:#394f5a;"> {{ "RequestMsgsPage.RequesterName" | translate }}: </span>  -->
-                      <span [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}"
-                        style="margin-left: 2px;font-size:12px">
-                        <!-- {{ requester_fullname }} -->
-                        {{request?.lead?.fullname}}
-                      </span>
-                      <span *ngIf="!request?.lead?.fullname"
-                        [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}" style="margin-left: 2px;">
-                        n.a.
-                      </span>
-
-                      <!-- // VIEW DETAILS BTN -->
-                      <span *ngIf="NODEJS_REQUEST_CNTCT_FOUND">
-                        <button class="btn btn-xs btn-white-custom-round pull-right"
-                          style="margin-left:8px;margin-top: 4px;" (click)="goToContactDetails()">
-                          {{ 'ViewDetails' | translate}}
-                        </button>
-                      </span>
-                    </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- </div>
+          </div> -->
 
 
-                    <!-- <p class="row-body" style="margin-top:8px; margin-bottom:0px; padding-bottom:0px">
+                <!-- 
+          // -----------------------------------------------------------------------------
+          // Requester  !! is not dispalyed (now is displayed as title of the left card)
+          // ----------------------------------------------------------------------------- -->
+                <div class="card right-card"
+                  style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px; display: none;">
+                  <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;">
+
+                    <div class="row" style="">
+                      <div class="col-sm-12" style="">
+                        <p class="row-header" style="">
+                          <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
+                          <span style="vertical-align: middle">
+                            {{ "RequestMsgsPage.Requester" | translate }}
+                          </span>
+                        </p>
+                        <!-- style="color:#999999; font-weight: 500" -->
+                        <p class="row-body" style="margin-bottom:0px; padding-bottom:0px">
+
+                          <!-- // REQUESTER FULLNAME  -->
+                          <span class="requester-avatar-wrapper">
+                            <span class="_requester-avatar" [ngStyle]="{'background-color': fillColour }"
+                              [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname}">
+                              <span style="color: #ffffff"> {{ requester_fullname_initial }} </span>
+                            </span>
+                            <span *ngIf="REQUESTER_IS_VERIFIED === true" class="tooltipx">
+                              <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                                xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6"
+                                width="17" height="17" style="position: relative;left: -43px;top: -3px;"
+                                xml:space="preserve">
+                                <style type="text/css">
+                                  .st0 {
+                                    fill: none;
+                                  }
+
+                                  .st1 {
+                                    fill: #FFFFFF;
+                                  }
+
+                                  .st2 {
+                                    fill: #18BDF7;
+                                  }
+                                </style>
+                                <path class="st0" d="M1.3,1.3h24v24h-24V1.3z" />
+                                <path class="st1"
+                                  d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z" />
+                                <path class="st2" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
+                                l6.6-6.6l1.4,1.4L11.3,18.3z" />
+                              </svg>
+
+                              <span class="tooltiptext"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
+
+                            </span>
+                            <div class="requester-status-icon"
+                              [ngClass]="{'requester_is_online' : REQUESTER_IS_ONLINE}">
+                            </div>
+
+                          </span>
+
+                          <!-- <span style="color:#394f5a;"> {{ "RequestMsgsPage.RequesterName" | translate }}: </span>  -->
+                          <span [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}"
+                            style="margin-left: 2px;font-size:12px">
+                            <!-- {{ requester_fullname }} -->
+                            {{request?.lead?.fullname}}
+                          </span>
+                          <span *ngIf="!request?.lead?.fullname"
+                            [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}"
+                            style="margin-left: 2px;">
+                            n.a.
+                          </span>
+
+                          <!-- // VIEW DETAILS BTN -->
+                          <span *ngIf="NODEJS_REQUEST_CNTCT_FOUND">
+                            <!-- <button class="btn btn-xs btn-white-custom-round pull-right"
+                        style="margin-left:8px;margin-top: 4px;" (click)="goToContactDetails()">
+                        {{ 'ViewDetails' | translate}}
+                      </button> -->
+
+
+                            <div (click)="goToContactDetails()" class="manage_tags">
+                              {{ 'ViewDetails' | translate}}
+                            </div>
+                          </span>
+                        </p>
+
+
+                        <!-- <p class="row-body" style="margin-top:8px; margin-bottom:0px; padding-bottom:0px">
                     <span style="color:#394f5a;"> {{ "RequestMsgsPage.ChatFormUserName" | translate }}: </span>
                     {{ user_name }}
                   </p> -->
 
-                    <p class="row-body" style="margin-bottom:6px;padding-bottom:0px; margin-top:6px;">
+                        <p class="row-body" style="margin-bottom:6px;padding-bottom:0px; margin-top:6px;">
 
-                      <!-- 
+                          <!-- 
                     // ------------------------------------------------------
                     // no more get from request attributes but from lead 
                     // ------------------------------------------------------ -->
 
-                      <!-- <a *ngIf="user_email !== 'n.a.'" href="mailto:{{user_email}}">{{ user_email }}</a>
+                          <!-- <a *ngIf="user_email !== 'n.a.'" href="mailto:{{user_email}}">{{ user_email }}</a>
                      <a *ngIf="user_email === 'n.a.'" style="color:#7695a5;">{{ user_email }}</a> -->
 
-                      <i class="material-icons"
-                        style="vertical-align: middle; color: #394f5a;font-size:16px; margin-left: 3px;"> email
-                      </i>
-                      <span style="position: relative;top: 1px;">
-                        <span
-                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                          {{ "RequestMsgsPage.ChatFormUserEmail" | translate }}
-                        </span>
-                        <a target="_blank" *ngIf="request?.lead?.email" href="mailto:{{request?.lead?.email}}">
-                          {{request?.lead?.email}}
-                        </a>
-                        <a *ngIf="!request?.lead?.email" style="color:#7695a5;">n.a.</a>
-                      </span>
-                    </p>
+                          <i class="material-icons"
+                            style="vertical-align: middle; color: #394f5a;font-size:16px; margin-left: 3px;"> email
+                          </i>
+                          <span style="position: relative;top: 1px;">
+                            <span
+                              style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                              {{ "RequestMsgsPage.ChatFormUserEmail" | translate }}
+                            </span>
+                            <a target="_blank" *ngIf="request?.lead?.email" href="mailto:{{request?.lead?.email}}">
+                              {{request?.lead?.email}}
+                            </a>
+                            <a *ngIf="!request?.lead?.email" style="color:#7695a5;">n.a.</a>
+                          </span>
+                        </p>
 
-                    <!-- <p class="row-body" style="margin-bottom:0px; padding-bottom:0px">
+                        <!-- <p class="row-body" style="margin-bottom:0px; padding-bottom:0px">
                     <span style="color:#394f5a;"> id: </span>
                       {{ requester_id }}
                   </p> -->
-
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <div class="row" style="margin-top:15px">
-                  <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4; border-top: 1px solid #e1eef4;">
+
+                <!-- 
+          // ------------------------------------------------------
+          // DEPARTMENT !! is not dispalyed (now is dispalyed in the first card)
+          // ------------------------------------------------------ -->
+                <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
+            <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
+                <div class="row" style="display: none;">
+                  <div class="col-sm-12" style="">
                     <p class="row-header" style="">
                       <!-- 
-                        // ------------------------------------------------------
-                        // no more get from request attributes but from DEPARTMENT 
-                        // ------------------------------------------------------ -->
+                      // ------------------------------------------------------
+                      // no more get from request attributes but from DEPARTMENT 
+                      // ------------------------------------------------------ -->
                       <!-- {{ department_name }} -->
 
 
@@ -888,36 +1336,45 @@
                           {{ "Department" | translate }}
                         </span>
 
-                        <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                        <span *ngIf="request?.department" style="color: #7695a5; font-weight: 500; font-size: 12px;">
                           {{request?.department?.name}}
                         </span>
+                        <span *ngIf="!request?.department"
+                          style="color: #7695a5; font-weight: 500; font-size: 12px; text-transform: lowercase;">
+                          {{'DepartmentsPage.NoDept' | translate}}
+                        </span>
                       </span>
-
                     </span>
-
                   </div>
                 </div>
+                <!-- </div>
+          </div> -->
 
-                <div class="row" style="margin-top:15px">
-                  <div class="col-sm-12" style="border-bottom: 1px solid #e1eef4; border-top: 1px solid #e1eef4;">
+
+                <!-- 
+          // ------------------------------------------------------
+          // Rating 
+          // ------------------------------------------------------ -->
+                <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
+            <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
+                <div class="row" style="">
+                  <div class="col-sm-12" style="border-bottom: 1px solid #dadde1;">
                     <p class="row-header" style="">
                       <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
                       <span style="vertical-align: middle">
                         {{ "RequestMsgsPage.Rating" | translate }}
-
-
                       </span>
 
                       <!-- <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star"></span>
-                    <span class="fa fa-star"></span> -->
+                  <span class="fa fa-star checked"></span>
+                  <span class="fa fa-star checked"></span>
+                  <span class="fa fa-star"></span>
+                  <span class="fa fa-star"></span> -->
                     </p>
                     <!-- <p class="row-body"  style="margin-bottom:0px">  
-                          <span style="color:#394f5a;"> {{ "RequestMsgsPage.Rating" | translate }}: </span>
-                          {{ rating }}
-                      </p> -->
+                        <span style="color:#394f5a;"> {{ "RequestMsgsPage.Rating" | translate }}: </span>
+                        {{ rating }}
+                    </p> -->
 
                     <p class="row-body" style="margin-bottom:0px">
 
@@ -931,33 +1388,48 @@
                     </p>
                   </div>
                 </div>
+                <!-- </div>
+          </div> -->
 
-                <div class="row" style="margin-top:15px">
-                  <div class="col-sm-12" style="border-top: 1px solid #e1eef4;">
-                    <p class="row-header" style="">
-                      <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
-                      <span style="vertical-align: middle">
-                        {{ "RequestMsgsPage.SourcePage" | translate }}
-                      </span>
-                    </p>
-                    <p class="row-body" style="margin-bottom:0px; word-wrap: break-word;">
+                <!-- 
+          // ------------------------------------------------------
+          // source page !! This is not diaìspayed (now is dispalyed in the first card)
+          // ------------------------------------------------------ -->
+                <div class="card right-card"
+                  style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px; display: none;">
+                  <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;">
+                    <div class="row" style="">
+                      <div class="col-sm-12" style="">
+                        <p class="row-header" style="">
+                          <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
+                          <span style="vertical-align: middle">
+                            {{ "RequestMsgsPage.SourcePage" | translate }}
+                          </span>
+                        </p>
+                        <p class="row-body" style="margin-bottom:0px; word-wrap: break-word;">
 
-                      <!-- 
-                    // ----------------------------------------------------------------
-                    // no more get from request attributes but directly from request 
-                    // ---------------------------------------------------------------- -->
-                      <a href="{{request?.sourcePage}}" target="_blank">{{request?.sourcePage}}</a>
-                    </p>
+                          <!-- 
+                  // ----------------------------------------------------------------
+                  // no more get from request attributes but directly from request 
+                  // ---------------------------------------------------------------- -->
+                          <a href="{{request?.sourcePage}}" target="_blank">{{request?.sourcePage}}</a>
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
+
+
+                <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
+            <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
 
                 <!-- 
               // ----------------------------------------------------------------
               // @ attributes
               // ---------------------------------------------------------------- -->
-                <div class="row" style="margin-top:15px">
-                  <div class="col-sm-12" style="border-top: 1px solid #e1eef4;">
-                    <p class="row-header" style="margin-bottom: 0px;">
+                <div *ngIf="request?.attributes" class="row" >
+                  <div class="col-sm-12">
+                    <p class="row-header">
                       <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
                       <span style="vertical-align: middle">
                         {{ "Attributes" | translate }}
@@ -966,9 +1438,9 @@
 
 
                     <!-- 
-                  // ------------------------------------------------------
-                  // new attributes
-                  // ------------------------------------------------------ -->
+                // ------------------------------------------------------
+                // new attributes
+                // ------------------------------------------------------ -->
                     <div *ngFor="let attribute of attributesArray; let i = index">
                       <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
 
@@ -986,8 +1458,9 @@
                           </div>
                           <!-- [id]="attribute?.attributeName +'_arrow_icon'" -->
                           <!-- [ngClass]="{'down' : attributeFullText === true}" -->
+                          <!-- white-space: nowrap;width: 1%; -->
                           <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-sm-2"
-                            style="white-space: nowrap;width: 1%;">
+                            style="text-align: right;">
                             <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
                               style="cursor: pointer; color: #039be5; font-size:18px;"
                               (click)="toggleShowAllString(attribute?.attributeName +'_value', attribute?.attributeName +'_arrow_icon', 'isActive_' + i)">
@@ -998,167 +1471,113 @@
                         </div>
 
                         <!-- 
-                      <div class="debug_div">
-                        L : {{attribute?.attributeValueL}} <br>
-                        L + 180 : {{attribute?.attributeValueL + 180}} <br>
-                        SB WIDTH : {{rightSidebarWidth}} 
-                      </div> -->
+                    <div class="debug_div">
+                      L : {{attribute?.attributeValueL}} <br>
+                      L + 180 : {{attribute?.attributeValueL + 180}} <br>
+                      SB WIDTH : {{rightSidebarWidth}} 
+                    </div> -->
 
                       </div>
                     </div>
                     <!-- 
-                  // ------------------------------------------------------
-                  // ./ end new attributes
-                  // ------------------------------------------------------ -->
+                // ------------------------------------------------------
+                // ./ end new attributes
+                // ------------------------------------------------------ -->
 
-
-
-                    <!-- <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
-                      <span class="ws_requets_msgs__attributes">
-                        Client:
-                      </span>
-                      <span *ngIf="!showAllClientString" class="attribute" style="white-space: nowrap">
-                        {{ clientStringCutted }}
-                        <span>
-                          <i class="material-icons"
-                            style="cursor: pointer; color: #039be5; font-size:18px; position:relative; top:5px"
-                            (click)="toggleShowAllClientString()">
-                            keyboard_arrow_down
-                          </i>
-                        </span>
-                      </span>
-                      <span *ngIf="showAllClientString" class="attribute" style="">
-                        {{ request?.attributes?.client }}
-                        <span>
-                          <i class="material-icons"
-                            style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:5px"
-                            (click)="toggleShowAllClientString()">
-                            keyboard_arrow_up
-                          </i>
-                        </span>
-                      </span>
-                    </p> -->
-                    <!-- <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
-                      <span class="ws_requets_msgs__attributes">
-                        {{ "Department" | translate }}:
-                      </span>
-                      <span class="attribute" style="cursor: pointer" (click)="toggleShowAllClientString()">
-                        {{ request?.attributes?.departmentName }}
-                      </span>
-                    </p> -->
-                    <!-- <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
-                      <span class="ws_requets_msgs__attributes">
-                        {{ "DepartmentId" | translate }}:
-                      </span>
-                      <span class="attribute">
-                        {{ request?.attributes?.departmentId }}
-                      </span>
-                    </p> -->
-                    <!-- <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
-                      <span class="ws_requets_msgs__attributes">
-                        {{ "ProjectId" | translate }}:
-                      </span>
-                      <span class="attribute">
-                        {{ request?.attributes?.projectId }}
-                      </span>
-                    </p> -->
-                    <!-- <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
-                      <span class="ws_requets_msgs__attributes">
-                        {{ "VisitorsPage.RequesterId" | translate }}
-                      </span>
-                      <span class="attribute">
-                        {{ request?.attributes?.requester_id }}
-                      </span>
-                    </p> -->
-                    <!-- <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
-                      <span class="ws_requets_msgs__attributes">
-                        {{ "RequestMsgsPage.SourcePage" | translate }}:
-                      </span>
-                      <span *ngIf="!showAllSourcePageString" class="attribute" style="white-space: nowrap">
-                        {{ sourcePageCutted }}
-                        <span>
-                          <i class="material-icons"
-                            style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:5px"
-                            (click)="toggleShowAllSourcePageString()">
-                            keyboard_arrow_down
-                          </i>
-                        </span>
-                      </span>
-                      <span *ngIf="showAllSourcePageString" class="attribute">
-                        <a href="{{sourcePage}}" target="_blank">{{sourcePage}}</a>
-                        <span>
-                          <i class="material-icons"
-                            style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:5px"
-                            (click)="toggleShowAllSourcePageString()">
-                            keyboard_arrow_up
-                          </i>
-                        </span>
-                      </span>
-                    </p> -->
-                    <!-- <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
-                      <span class="ws_requets_msgs__attributes">
-                        {{ "UserEmail" | translate }}:
-                      </span>
-                      <span class="attribute">
-                        <span *ngIf="request?.attributes?.userEmail">
-                          {{ request?.attributes?.userEmail }}
-                        </span>
-                        <span *ngIf="!request?.attributes?.userEmail">
-                          n.a.
-                        </span>
-                      </span>
-                    </p> -->
-                    <!-- <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
-                      <span class="ws_requets_msgs__attributes">
-                        {{ "UserFullName" | translate }}:
-                      </span>
-                      <span class="attribute">
-                        <span *ngIf="request?.attributes?.userFullname">
-                          {{ request?.attributes?.userFullname }}
-                        </span>
-                        <span *ngIf="!request?.attributes?.userFullname">
-                          n.a.
-                        </span>
-                      </span>
-                    </p> -->
-                    <!-- <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
-                      <span class="ws_requets_msgs__attributes">
-                        Sender Auth Info:
-                      </span>
-                      <span *ngIf="!showAllsenderAuthInfoString" class="attribute" style="white-space: nowrap">
-                        {{ senderAuthInfoStringCutted }}
-                        <span>
-                          <i class="material-icons"
-                            style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:5px"
-                            (click)="toggleShowAllsenderAuthInfoString()">
-                            keyboard_arrow_down
-                          </i>
-                        </span>
-                      </span>
-                      <span *ngIf="showAllsenderAuthInfoString" class="attribute">
-                        {{ senderAuthInfoString }}
-                        <span>
-                          <i class="material-icons"
-                            style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:5px"
-                            (click)="toggleShowAllsenderAuthInfoString()">
-                            keyboard_arrow_up
-                          </i>
-                        </span>
-                      </span>
-                    </p> -->
                   </div>
                 </div>
-
-
               </div>
             </div>
           </div>
+
+
+
+
+
+          <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px;">
+            <div *ngIf="showSpinner" class="stretchspinner">
+              <div class="rect1"></div>
+              <div class="rect2"></div>
+              <div class="rect3"></div>
+              <div class="rect4"></div>
+              <div class="rect5"></div>
+            </div>
+            <h4 class="card-title requestattibutestitle"
+              style="text-transform: none; color: #566787; font-weight:400; margin-top: 14px; border-bottom: 1px solid #eeeeee; padding-left: 25px; padding-bottom: 15px;min-height: 43px;">
+              <span class="requestattibutes">{{ "RequestMsgsPage.RequestAttributes" | translate }}</span>
+            </h4>
+            <div class="card-content" style="padding-top:5px;min-height: 556px;">
+              <div *ngIf="! showSpinner" class="content-wrap">
+              </div>
+            </div>
+          </div> -->
         </div>
-      </div> <!-- ./ row -->
+      </div>
     </div>
 
-  </div> <!-- ./ container fluid -->
+  </div>
 </div>
+
+
+<!-- 
+  // ----------------------------------------------------------------
+  // Delete note modal
+  // ---------------------------------------------------------------- -->
+
+<!-- <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayModalDeleteNote}"
+  style="background-color: rgba(90,90,90,0.9);">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="border-top-left-radius:6px; border-top-right-radius:6px">
+      
+      <div class="modal-header" style="padding:16px!important; border-bottom:none!important; ">
+
+        <button type="button" class="close" aria-label="Close" (click)="closeModalDeleteNote()"
+          style="position: absolute; right: 14px;">
+          <span aria-hidden="true">
+            <svg class="tide-icon " width="24" height="24" viewBox="0 0 24 24">
+              <path
+                d="M13.357 11.993l10.256 10.295c0.39 0.391 0.39 1.024 0 1.415-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292l-10.257-10.295-10.256 10.295c-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292c-0.39-0.391-0.39-1.024 0-1.415l10.256-10.295-10.256-10.294c-0.39-0.391-0.39-1.024 0-1.415s1.020-0.391 1.409 0l10.256 10.294 10.256-10.294c0.39-0.391 1.020-0.391 1.41 0 0.389 0.391 0.389 1.024 0 1.415l-10.256 10.294z">
+              </path>
+            </svg>
+          </span>
+        </button>
+
+        <h2 class="modal-title"
+          style="color: #f44336; text-align: center; font-family: 'Google Sans', sans-serif !important; margin-top: 20px; font-size:28px">
+          <span style="vertical-align: middle;">
+            {{ "Notes.DeleteNote" | translate }}
+          </span>
+        </h2>
+
+      </div>
+      <hr class="custom-hr" style="margin-top:3px; margin-bottom:3px">
+      <div class="modal-body"
+        style="padding-top: 0px; padding-bottom: 0px; padding-right: 34px; padding-left: 34px; line-height: 1">
+
+
+        <div class="row">
+          <div class="col-sm-12">
+            <h3 style="text-align: center;  color: #8894ab; font-size: 22px; margin-bottom: 20px">
+
+              {{ "Notes.DoYouReallyWantToCancelTheNote" | translate}}
+
+            </h3>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer"
+        style="margin-top: 0px; background-color: #fff; border-top:none; border-bottom-left-radius:6px; border-bottom-right-radius:6px">
+        <div style="text-align: center; margin-bottom: 25px;">
+          <button class="btn btn-danger" type="button" (click)="deleteNote()">
+
+            {{ "Notes.DeleteNote" | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
 
 <!-- ------------============= USERS LIST MODAL - FULL WIDTH MODAL =============------------ -->
 <div class="modal" tabindex="-1" role="dialog"
@@ -1365,17 +1784,17 @@
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
 
-                      <span *ngIf="bot.type === 'internal'"> 
-                        <img class="ws-request-msgs-bot-type-logo" src="assets/img/tiledesk_logo_no_text.png"/>
-                      </span>
+                          <span *ngIf="bot.type === 'internal'">
+                            <img class="ws-request-msgs-bot-type-logo" src="assets/img/tiledesk_logo_no_text.png" />
+                          </span>
 
-                      <span *ngIf="bot.type === 'external'"> 
-                        <img class="ws-request-msgs-bot-type-logo" src="assets/img/external_bot_logo.png"/>
-                      </span>
+                          <span *ngIf="bot.type === 'external'">
+                            <img class="ws-request-msgs-bot-type-logo" src="assets/img/external_bot_logo.png" />
+                          </span>
 
-                      <span *ngIf="bot.type === 'dialogflow'"> 
-                        <img class="ws-request-msgs-bot-type-logo" src="assets/img/Dialogflow_logo_no_text.png"/>
-                      </span>
+                          <span *ngIf="bot.type === 'dialogflow'">
+                            <img class="ws-request-msgs-bot-type-logo" src="assets/img/Dialogflow_logo_no_text.png" />
+                          </span>
 
                         </td>
 

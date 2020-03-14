@@ -9,6 +9,8 @@ import { NotifyService } from '../core/notify.service';
 import { ProjectPlanService } from '../services/project-plan.service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { AppConfigService } from '../services/app-config.service';
+import { Location } from '@angular/common';
 import brand from 'assets/brand/brand.json';
 
 @Component({
@@ -57,7 +59,20 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
   browserLang: string;
   subscription: Subscription;
   showSpinner = true;
-  
+  storageBucket: string;
+  user_id: string;
+  user_fullname: string;
+  projectUser: any;
+  IS_AVAILABLE: boolean;
+  CURRENT_USER_ID: string;
+  changeAvailabilitySuccessNoticationMsg: string;
+  changeAvailabilityErrorNoticationMsg: string;
+  CURRENT_USER_ROLE: string;
+  max_served_chat: number;
+  currentUser_projectUserID: string;
+
+  anErrorOccurredWhileUpdatingNoticationMsg: string;
+  successfullyUpdatedNoticationMsg: string;
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -66,23 +81,25 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     private notify: NotifyService,
     private prjctPlanService: ProjectPlanService,
     private translate: TranslateService,
-
+    public appConfigService: AppConfigService,
+    public location: Location
   ) { }
 
   ngOnInit() {
     console.log('on init Selected Role ', this.role);
     this.selectedRole = 'ROLE_NOT_SELECTED';
 
-    this.auth.checkRoleForCurrentProject();
+    // this.auth.checkRoleForCurrentProject();
 
     if (this.router.url.indexOf('/add') !== -1) {
 
       console.log('HAS CLICKED INVITES ');
       this.CREATE_VIEW = true;
-
+      this.EDIT_VIEW = false;
     } else {
       console.log('HAS CLICKED EDIT ');
       this.EDIT_VIEW = true;
+      this.CREATE_VIEW = false;
 
       this.getProjectUserId()
     }
@@ -92,7 +109,72 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     this.getProjectPlan();
     this.getPendingInvitation();
     this.getBrowserLang();
+    this.getStorageBucket();
+    this.getTranslations();
+    this.getLoggedUser();
+    this.getUserRole();
+    this.hasChangedAvailabilityStatusInSidebar();
+  }
 
+  getLoggedUser() {
+    this.auth.user_bs.subscribe((user) => {
+      console.log('LOGGED USER GET IN USER-EDIT-ADD-COMP ', user)
+      if (user) {
+        this.CURRENT_USER_ID = user._id;
+        console.log('PROJECT-USER DETAILS - CURRENT USER ID ', this.CURRENT_USER_ID)
+      }
+    });
+  }
+
+  getUserRole() {
+    this.subscription = this.usersService.project_user_role_bs.subscribe((userRole) => {
+
+      console.log('PROJECT-USER DETAILS - CURRENT USER ROLE »»» ', userRole)
+      // used to display / hide 'WIDGET' and 'ANALITCS' in home.component.html
+      this.CURRENT_USER_ROLE = userRole;
+    })
+  }
+
+  hasChangedAvailabilityStatusInSidebar() {
+    this.usersService.has_changed_availability_in_sidebar.subscribe((has_changed_availability) => {
+      console.log('»»USER COMP SUBSCRIBES TO HAS CHANGED AVAILABILITY FROM THE SIDEBAR', has_changed_availability)
+      if (has_changed_availability === true) {
+        this.getProjectUserId();
+      }
+    })
+  }
+
+  // TRANSLATION
+  getTranslations() {
+    this.translate.get('ChangeAvailabilitySuccessNoticationMsg')
+      .subscribe((text: string) => {
+        this.changeAvailabilitySuccessNoticationMsg = text;
+        // console.log('+ + + change Availability Success Notication Msg', text)
+      });
+
+    this.translate.get('ChangeAvailabilityErrorNoticationMsg')
+      .subscribe((text: string) => {
+        this.changeAvailabilityErrorNoticationMsg = text;
+        // console.log('+ + + change Availability Error Notication Msg', text)
+      });
+
+    this.translate.get('SuccessfullyUpdated')
+      .subscribe((text: string) => {
+        this.successfullyUpdatedNoticationMsg = text;
+        // console.log('+ + + change Availability Error Notication Msg', text)
+      });
+
+    this.translate.get('AnErrorOccurredWhileUpdating')
+      .subscribe((text: string) => {
+        this.anErrorOccurredWhileUpdatingNoticationMsg = text;
+        // console.log('+ + + change Availability Error Notication Msg', text)
+      });
+  }
+
+  getStorageBucket() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    console.log('STORAGE-BUCKET UserEditAddComponent ', this.storageBucket)
   }
 
   getBrowserLang() {
@@ -106,6 +188,15 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
       if (projectUsers) {
         this.projectUsersLength = projectUsers.length;
         console.log('UserEditAddComponent PROJECT USERS Length ', this.projectUsersLength);
+
+
+        // this.currentUser_projectUserID = projectUser._id;
+        const filteredProjectUser = projectUsers.filter((obj: any) => {
+          return obj.id_user._id === this.CURRENT_USER_ID;
+        });
+        console.log('UserEditAddComponent filteredProjectUser ', filteredProjectUser);
+        this.currentUser_projectUserID = filteredProjectUser[0]._id
+
       }
     }, error => {
       console.log('UserEditAddComponent PROJECT USERS - ERROR', error);
@@ -192,13 +283,24 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
   getProjectUsersById() {
     this.usersService.getProjectUsersById(this.project_user_id).subscribe((projectUser: any) => {
-      console.log('PROJECT-USER DETAILS: ', projectUser);
+
+      this.projectUser = projectUser;
+
+      console.log('PROJECT-USER DETAILS (GET getProjectUsersById): ', projectUser);
+      
+      this.user_id = projectUser.id_user._id;
+      this.user_fullname = projectUser.id_user.firstname + ' ' + projectUser.id_user.lastname
 
       this.user_email = projectUser.id_user.email;
       console.log('PROJECT-USER DETAILS - EMAIL: ', this.user_email);
 
       this.user_role = projectUser.role;
       console.log('PROJECT-USER DETAILS - ROLE: ', this.user_role);
+
+      if (projectUser && projectUser.max_served_chat) {
+        this.max_served_chat = projectUser.max_served_chat;
+      }
+
     },
       (error) => {
         console.log('PROJECT-USER DETAILS - ERR  ', error);
@@ -210,23 +312,86 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
       });
   }
 
-  updateUserRole() {
-    this.usersService.updateProjectUserRole(this.project_user_id, this.role)
+  changeAvailabilityStatus(event, projectUser_id: string) {
+    console.log('PROJECT-USER DETAILS - CHANGE STATUS - WHEN CLICK USER IS AVAILABLE event.target.checked ', event.target.checked);
+    this.IS_AVAILABLE = event.target.checked
+    // console.log('PROJECT-USER DETAILS - CHANGE STATUS - WHEN CLICK USER IS AVAILABLE ? ', IS_AVAILABLE);
+    console.log('PROJECT-USER DETAILS- CHANGE STATUS - WHEN CLICK USER PROJECT-USER ID ', projectUser_id);
+    // if (IS_AVAILABLE === true) {
+    //   this.IS_AVAILABLE = false
+    //   console.log('PROJECT-USER DETAILS - CHANGE STATUS - NEW USER AVAILABLITY  ', this.IS_AVAILABLE);
+    // }
+    // if (IS_AVAILABLE === false) {
+    //   this.IS_AVAILABLE = true
+    //   console.log('PROJECT-USER DETAILS - CHANGE STATUS - NEW USER AVAILABLITY  ', this.IS_AVAILABLE);
+    // }
+
+    this.usersService.updateProjectUser(projectUser_id, this.IS_AVAILABLE).subscribe((projectUser: any) => {
+      console.log('PROJECT-USER DETAILS - PROJECT-USER UPDATED ', projectUser)
+
+      // NOTIFY TO THE USER SERVICE WHEN THE AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
+      this.usersService.availability_switch_clicked(true)
+
+    }, (error) => {
+      console.log('PROJECT-USER DETAILS - PROJECT-USER UPDATED ERR  ', error);
+      // =========== NOTIFY ERROR ============
+      // this.notify.showNotification('An error occurred while updating status', 4, 'report_problem');
+      this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilityErrorNoticationMsg, 4, 'report_problem');
+    }, () => {
+      console.log('PROJECT-USER DETAILS - PROJECT-USER UPDATED  * COMPLETE *');
+      // =========== NOTIFY SUCCESS ==========
+      // this.notify.showNotification('status successfully updated', 2, 'done');
+      this.notify.showWidgetStyleUpdateNotification(this.changeAvailabilitySuccessNoticationMsg, 2, 'done');
+
+    });
+  }
+
+  updateUserRoleAndMaxchat() {
+
+    const update_project_user_btn = <HTMLElement>document.querySelector('.update-pu-btn');
+    console.log('!!! CONTACTS - SEARCH BTN ', update_project_user_btn)
+    update_project_user_btn.blur();
+
+    console.log('PROJECT-USER DETAILS - updateUserRole this.max_served_chat', this.max_served_chat)
+    console.log('PROJECT-USER DETAILS - updateUserRole current user id', this.CURRENT_USER_ID)
+    console.log('PROJECT-USER DETAILS - updateUserRole project_user_id', this.project_user_id)
+    console.log('PROJECT-USER DETAILS - updateUserRole  user_id  from project-user object', this.user_id)
+
+
+    let maxservedchat = -1
+    if (this.max_served_chat !== null && this.max_served_chat !== undefined) {
+      maxservedchat = this.max_served_chat;
+    }
+
+    if (this.role === undefined) {
+      this.role = this.user_role
+    }
+
+    // if the update is performed by the current user, the project-user-id must not be used
+    // the same was done for updating the available / unavailable status (see in user service the callbacks updateCurrentUserAvailability() and updateProjectUser() )
+    let projectuserid = "";
+    if (this.CURRENT_USER_ID !== this.user_id) {
+      console.log('PROJECT-USER DETAILS - IT IS NOT THE CURRENT USER WHO IS UPDATING HIS PROJECT-USER PROFILE ')
+      projectuserid = this.project_user_id
+    } else {
+      console.log('PROJECT-USER DETAILS - THE CURRENT USER IS UPDATING HIS PROJECT-USER PROFILE ')
+    }
+
+    this.usersService.updateProjectUserRoleAndMaxchat(projectuserid, this.role, maxservedchat)
       .subscribe((projectUser: any) => {
-        console.log('PROJECT-USER UPDATED ', projectUser)
+        console.log('PROJECT-USER DETAILS - PROJECT-USER UPDATED ', projectUser)
 
       }, (error) => {
-        console.log('PROJECT-USER UPDATED ERR  ', error);
+        console.log('PROJECT-USER DETAILS - PROJECT-USER UPDATED ERR  ', error);
+
         // =========== NOTIFY ERROR ===========
-        // tslint:disable-next-line:quotemark
-        this.notify.showNotification("An error occurred while updating user's role", 4, 'report_problem')
+        this.notify.showWidgetStyleUpdateNotification(this.anErrorOccurredWhileUpdatingNoticationMsg, 4, 'report_problem')
       }, () => {
-        console.log('PROJECT-USER UPDATED  * COMPLETE *');
+        console.log('PROJECT-USER DETAILS - PROJECT-USER UPDATED  * COMPLETE *');
 
         // =========== NOTIFY SUCCESS===========
-        this.notify.showNotification('user role successfully updated', 2, 'done');
-
-        this.router.navigate(['project/' + this.id_project + '/users']);
+        this.notify.showWidgetStyleUpdateNotification(this.successfullyUpdatedNoticationMsg, 2, 'done');
+        // this.router.navigate(['project/' + this.id_project + '/users']);
       });
   }
 
@@ -241,8 +406,13 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     });
   }
 
-  goBackToUsersList() {
-    this.router.navigate(['project/' + this.id_project + '/users']);
+  // !! No more used
+  // goBackToUsersList() {
+  //   this.router.navigate(['project/' + this.id_project + '/users']);
+  // }
+
+  goBack() {
+    this.location.back();
   }
 
   setSelected(role) {
@@ -307,10 +477,9 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
     console.log('INVITE THE USER EMAIL ', this.user_email)
     console.log('INVITE THE USER ROLE ', this.role)
-    
+
     if (this.role === 'ROLE_NOT_SELECTED') {
       this.role = ''
-
     }
 
     this.usersService.inviteUser(this.user_email, this.role).subscribe((project_user: any) => {

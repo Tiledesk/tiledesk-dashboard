@@ -1,46 +1,77 @@
 input[type="text"] {
-  // min-width: 307px !important;
   height: 36px;
   font-size: 14px;
   width: 100%;
   margin-bottom: 10px;
   -webkit-appearance: none;
-  background: #fff;
   border: 1px solid #d9d9d9 !important;
   border-top: 1px solid #c0c0c0;
-  /* border-radius: 2px; */
   padding: 0 8px;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   border-radius: 5px;
-  background-color: #fff !important;
-  border: solid 1px #ddd;
+  background-color: #fff;
 }
-input[type="email"] {
-  // min-width: 307px !important;
-  height: 36px;
-  font-size: 14px;
-  width: 100%;
-  margin-bottom: 10px;
-  -webkit-appearance: none;
-  background: #fff;
-  border: 1px solid #d9d9d9 !important;
-  border-top: 1px solid #c0c0c0;
-  /* border-radius: 2px; */
-  padding: 0 8px;
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  border-radius: 5px;
-  background-color: #fff !important;
-  border: solid 1px #ddd;
+input[type="text"]:disabled {
+  background-color: rgb(248, 249, 249);
+}
+input[type="text"].invalid-email {
+  border: 1px solid #f44336 !important;
 }
 
+input[type="email"] {
+  height: 36px;
+  font-size: 14px;
+  width: 100%;
+  margin-bottom: 10px;
+  -webkit-appearance: none;
+  border: 1px solid #d9d9d9 !important;
+  padding: 0 8px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  border-radius: 5px;
+  background-color: #fff;
+}
+input[type="email"]:disabled {
+  background-color: rgb(248, 249, 249);
+}
+
+input[type="number"] {
+  height: 36px;
+  font-size: 14px;
+  width: 100%;
+  margin-bottom: 10px;
+  -webkit-appearance: none;
+  border: 1px solid #d9d9d9 !important;
+  padding: 0 8px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  border-radius: 5px;
+  background-color: #fff;
+  
+}
+input[type="number"]:disabled {
+  background-color: rgb(248, 249, 249);
+}
 select {
   height: 36px;
+  font-size: 14px;
   background: #fff;
-  border-radius: 0px;
+  border-radius: 5px;
   border-color: #d9d9d9;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-appearance: none;
+  border: 1px solid #d9d9d9 !important;
+  padding: 0 8px;
 }
+
+select[disabled] { 
+  color: #999999; 
+  background-color: rgb(248, 249, 249);
+}
+
+
 .card form [class*="col-"] {
   padding: 0px;
 }
@@ -147,9 +178,7 @@ button.close {
 
 /* MODAL END */
 
-input[type="text"].invalid-email {
-  border: 1px solid #f44336 !important;
-}
+
 
 .custom-label {
   color: rgb(118, 149, 165);
@@ -170,3 +199,164 @@ input[type="text"].invalid-email {
   font-family: "Google Sans", sans-serif !important;
   font-weight: 400;
 }
+
+
+
+// <!-- SWITCH AVAILABLE / UNAILABLE  -->
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  // height: 34px;
+  height: 20px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  display: none;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  border: 1px solid #ccc;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  // height: 26px;
+  // width: 26px;
+  height: 11px;
+  width: 11px;
+  left: 4px;
+  bottom: 4px;
+  // background-color: white;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider:before {
+  background-color: #1eb848;
+}
+
+input:checked + .slider {
+  // background-color: #2196F3;
+  background: #fff;
+}
+
+//   input:focus + .slider {
+//     box-shadow: 0 0 1px #2196F3;
+//   }
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(40px);
+  -ms-transform: translateX(40px);
+  transform: translateX(40px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+// <!-- END SWITCH  -->
+
+
+// start new SWITCH BTN
+.onoffswitch__availability_status {
+  position: relative;
+  // width: 90px;
+  width: 120px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+.onoffswitch-checkbox__availability_status {
+  display: none;
+}
+.onoffswitch-label__availability_status {
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  // border: 2px solid #999999;
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 22px;
+}
+.onoffswitch-inner__availability_status {
+  display: block;
+  width: 200%;
+  margin-left: -100%;
+  transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner__availability_status:before,
+.onoffswitch-inner__availability_status:after {
+  display: block;
+  float: left;
+  width: 50%;
+  height: 30px;
+  padding: 0;
+  line-height: 30px;
+  font-size: 14px;
+  color: white;
+  font-family: Trebuchet, Arial, sans-serif;
+  // font-weight: bold;
+  box-sizing: border-box;
+}
+.onoffswitch-inner__availability_status:before {
+  content: "Available";
+  padding-left: 10px;
+  // background-color: #EEEEEE;
+  color: #4caf50;
+}
+.onoffswitch-inner__availability_status:after {
+  content: "Unavailable";
+  padding-right: 10px;
+  // background-color: #EEEEEE;
+  color: #f44336;
+  text-align: right;
+}
+.onoffswitch-switch__availability_status {
+  display: block;
+  width: 21px;
+  height: 21px;
+  margin: 6px;
+  background: #f44336;
+  position: absolute;
+  top: 0;
+  bottom: 5px;
+  // right: 56px;
+  right: 87px;
+  border: 1px solid #d9d9d9 !important;
+  border-radius: 22px;
+  transition: all 0.3s ease-in 0s;
+}
+.onoffswitch-checkbox__availability_status:checked + .onoffswitch-label__availability_status .onoffswitch-inner__availability_status {
+  margin-left: 0;
+}
+.onoffswitch-checkbox__availability_status:checked + .onoffswitch-label__availability_status .onoffswitch-switch__availability_status {
+  right: 0px;
+  background-color: #4caf50;
+}
+
+.onoffswitch-checkbox__availability_status:disabled + .onoffswitch-label__availability_status .onoffswitch-switch__availability_status {
+  background-color: #ddd;
+}
+
+// .onoffswitch-checkbox__availability_status:disabled + .onoffswitch-label__availability_status .onoffswitch-inner__availability_status:before, .onoffswitch-switch__availability_status:after{
+//   color: #999999;
+// }
+// ./end SWITCH BTN
