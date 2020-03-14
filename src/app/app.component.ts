@@ -154,7 +154,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
         // console.log('APP COMP - MAIN PANEL ', _elemMainPanel)
         _elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;');
-
+        // _elemMainPanel.setAttribute('style', 'overflow-x: auto !important;');
         $.material.init();
 
         // HIDE ELEMENT IF THE USER IN ONE OF THE 'AUTH' PAGES: SIGNIN, SIGUP, WELCOME
@@ -204,7 +204,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         this.auth.user_bs.subscribe((user) => {
             console.log('% »»» WebSocketJs WF - APP-COMPONENT - LoggedUser ', user);
             // console.log('% »»» WebSocketJs WF - APP-COMPONENT - WS URL ', this.wsbasepath);
-            console.log('% »»» WebSocketJs WF - APP-COMPONENT - WS URL ', this.appConfigService.getConfig().wsUrl);
+            console.log('AppConfigService % »»» WebSocketJs WF - APP-COMPONENT - WS URL ', this.appConfigService.getConfig().wsUrl);
 
             if (user && user.token) {
 
