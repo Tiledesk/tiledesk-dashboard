@@ -65,7 +65,7 @@ export class WsRequestsService implements OnDestroy {
   wsjsRequestsService: WebSocketJs;
   wsjsRequestByIdService: WebSocketJs;
   project_id: string;
-  
+
   WS_IS_CONNECTED: number;
   currentUserID: string;
 
@@ -103,7 +103,7 @@ export class WsRequestsService implements OnDestroy {
     // -----------------------------------------------------------------------------------------------------
     this.getCurrentProjectAndSubscribeTo_WsRequests()
     this.getLoggedUser();
-    
+
   }
 
   getAppConfig() {
@@ -471,7 +471,6 @@ export class WsRequestsService implements OnDestroy {
 
         // if() 
 
-
       }, function (data, notification) {
 
         // console.log("% »»» WebSocketJs WF - WsMsgsService REQUEST-BY-ID UPDATE ", data);
@@ -484,10 +483,8 @@ export class WsRequestsService implements OnDestroy {
       }, function (data, notification) {
         // dismetti loading
       }
-
     );
     // console.log("% SUB »»»»»»» subsToWS RequestById from client to websocket: ", message);
-
   }
 
 
@@ -541,7 +538,6 @@ export class WsRequestsService implements OnDestroy {
     console.log("% »»» WebSocketJs WF >>> ws-msgs--- r-service - UN-SUBS REQUEST-BY-ID FROM WS »»»»»»» request_id ", id_request);
 
   }
-
 
 
   // CLOSE SUPPORT GROUP
@@ -642,7 +638,6 @@ export class WsRequestsService implements OnDestroy {
     // console.log('JOIN FUNCT OPTIONS  ', options);
 
     const body = { 'member': userid };
-
     console.log('JOIN TO GROUP PUT REQUEST BODY ', body);
 
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + requestid + '/participants/'
@@ -655,9 +650,9 @@ export class WsRequestsService implements OnDestroy {
 
 
   // -----------------------------------------------------------------------------------------
-  // Create Ticket
+  // Create internal request
   // -----------------------------------------------------------------------------------------
-  createInternalRequest (request_id:string, subject: string, message:string, departmentid: string) {
+  createInternalRequest(request_id: string, subject: string, message: string, departmentid: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -665,7 +660,7 @@ export class WsRequestsService implements OnDestroy {
     const options = new RequestOptions({ headers });
     // console.log('JOIN FUNCT OPTIONS  ', options);
 
-    const body = { 'subject': subject, 'text': message, 'departmentid':departmentid };
+    const body = { 'subject': subject, 'text': message, 'departmentid': departmentid };
 
     console.log('createInternalRequest ', body);
 
@@ -677,11 +672,96 @@ export class WsRequestsService implements OnDestroy {
       .map((res) => res.json());
   }
 
+  // -----------------------------------------------------------------------------------------
+  // Update request by id - Remove all Tag
+  // -----------------------------------------------------------------------------------------
+  updateRequestsById_RemoveAllTags(request_id: string) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+    // console.log('JOIN FUNCT OPTIONS  ', options);
 
-   // ---------------------------------------------------------------------
-   // HISTORY  Requests (used in history)
-   // ---------------------------------------------------------------------
-   public getNodeJsHistoryRequests(querystring: string, pagenumber: number) {
+    const body = { 'tags': [] };
+
+    console.log('updateRequestsById - add tag body ', body);
+
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id
+    console.log('updateRequestsById - add tag URL ', url)
+
+    return this.http
+      .patch(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
+  // -----------------------------------------------------------------------------------------
+  // Update request by id - Add tag
+  // -----------------------------------------------------------------------------------------
+  updateRequestsById_AddTag(request_id: string, tags: Array<string>) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+    // console.log('JOIN FUNCT OPTIONS  ', options);
+
+    const body = { 'tags': tags };
+    // const body = { 'tags':  { tag: "kll", color: "#43B1F2" } };
+    console.log('updateRequestsById - add tag body ', body);
+
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id
+    console.log('updateRequestsById - add tag URL ', url)
+
+    return this.http
+      .patch(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
+
+
+
+  // -----------------------------------------------------------------------------------------
+  // Create note
+  // -----------------------------------------------------------------------------------------
+  public createNote(note: string, request_id: string,) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = { 'text': note };
+    console.log('create note - body ', body);
+
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + request_id + '/notes'
+    console.log('create note - URL ', url)
+
+    return this.http
+      .post(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
+
+  public deleteNote(requestid: string, noteid: string, ) {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/' + requestid + '/notes/' + noteid
+    console.log('delete note - url ', url);
+
+    return this.http
+      .delete(url, options)
+      .map((res) => res.json());
+  }
+
+  // ---------------------------------------------------------------------
+  // HISTORY  Requests (used in history)
+  // ---------------------------------------------------------------------
+  public getNodeJsHistoryRequests(querystring: string, pagenumber: number) {
     let _querystring = '&' + querystring
     if (querystring === undefined || !querystring) {
       _querystring = ''
