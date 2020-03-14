@@ -124,7 +124,7 @@ export class UsersService {
 
   getAppConfigAndBuildUrl() {
 
-    const firebase_conf = this.appConfigService.getConfig().firebase;
+    // const firebase_conf = this.appConfigService.getConfig().firebase;
     // const cloudBaseUrl = firebase_conf['chat21ApiUrl']
     // this.CLOUD_FUNC_UPDATE_USER_URL = cloudBaseUrl + '/api/tilechat/contacts/me';  // NO MORE USED
 
@@ -512,7 +512,7 @@ export class UsersService {
 
 
   /// ============================= GET PROJECT-USER BY CURRENT-PROJECT-ID AND CURRENT-USER-ID ============================= ///
-  public getProjectUsersByProjectIdAndUserId(user_id: string, project_id: string): Observable<ProjectUser[]> {
+  public getProjectUserByUserId(user_id: string): Observable<ProjectUser[]> {
     // const url = this.MONGODB_BASE_URL + user_id + '/' + project_id; 
     const url = this.PROJECT_USER_URL + 'users/' + user_id;
 
@@ -566,8 +566,8 @@ export class UsersService {
 
   // NEW - 22 AGO - DA SOSTITUIRE A getProjectUser() USATO COMPONENTI SIDEBAR AND HOME
   getProjectUserAvailabilityAndRole() {
-    this.getProjectUsersByProjectIdAndUserId(this.currentUserId, this.project_id).subscribe((projectUser: any) => {
-      console.log('!! USER SERVICE - PROJECT-USER GET BY PROJECT-ID ', this.project_id);
+    this.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
+      // console.log('!! USER SERVICE - PROJECT-USER GET BY PROJECT-ID ', this.project_id);
       console.log('!! USER SERVICE - GET BY CURRENT-USER-ID ', this.currentUserId);
       console.log('!! USER SERVICE - PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser);
       console.log('!! USER SERVICE - PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID LENGTH', projectUser.length);
@@ -806,11 +806,10 @@ export class UsersService {
   /**
    * UPDATE PROJECT-USER ROLE (PUT) */
   // DONE - WORKS NK-TO-TEST - da testare dopo che L. esegue il commit del servizio aggiornato (lo puo fare solo l'admin)
-  public updateProjectUserRole(projectUser_id: string, user_role: string) {
+  public updateProjectUserRoleAndMaxchat(projectUser_id: string, user_role: string, max_served_chat:number) {
 
-    let url = this.PROJECT_USER_URL;
-    url += projectUser_id;
-    console.log('PROJECT-USER UPDATE (PUT) URL ', url);
+    let url = this.PROJECT_USER_URL + projectUser_id;
+    console.log('PROJECT-USER DETAILS (calling from) - PROJECT-USER UPDATE ROLE & MAX-CHAT (PUT) URL ', url);
 
     const headers = new Headers();
     headers.append('Accept', 'application/json');
@@ -818,9 +817,9 @@ export class UsersService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'role': user_role };
+    const body = { 'role': user_role, 'max_served_chat': max_served_chat };
 
-    console.log('PUT REQUEST BODY ', body);
+    console.log('PROJECT-USER DETAILS (calling from) - PROJECT-USER UPDATE ROLE & MAX-CHAT BODY ', body);
 
     return this.http
       .put(url, JSON.stringify(body), options)
