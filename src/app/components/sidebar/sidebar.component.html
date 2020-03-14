@@ -33,7 +33,7 @@
       <!-- note to center the logo remove > left: 26px -->
       <!-- <img style="width:45%; top:20px;left: 26px" src="assets/img/tiledesk-logo_white_orange.svg" /> -->
       <img class="sidebar__logo" [ngClass]="{'sidebar__logo_no_rocket' : hidechangelogrocket === true }"
-        [src]="sidebarLogoWhite_Url"/>
+        [src]="sidebarLogoWhite_Url" />
     </div>
 
     <div *ngIf="!hidechangelogrocket" class="link-to-tiledesk-changelog-blog" (click)="goToBlogChangelog()"
@@ -167,7 +167,7 @@
     <li *ngIf="user" style="display: inline">
 
       <a style="margin-bottom:0px; text-align: center; color: #fff" routerLink="/user-profile">
-        
+
         <!-- VEDI PROFILO  -->
         {{ "SideBar.UserProfile" | translate }}
         <!-- </button> -->
@@ -205,7 +205,7 @@
 
     <li *ngIf="project">
       <a style="text-align: center; color: #fff" (click)="goToProjects()">
-        
+
         {{ "SideBar.ViewAllProjects" | translate }}
         <!-- </button> -->
       </a>
@@ -215,7 +215,7 @@
   </ul>
 
   <div class="nav-container">
-    <ul style="padding-bottom: 65px;"  class="nav"
+    <ul style="padding-bottom: 65px;" class="nav"
       [ngClass]="{'is-desktop-menu' : IS_MOBILE_MENU === false, 'is-mobile-menu' : IS_MOBILE_MENU === true  }">
 
       <!-- SELECT AVAILABLE / UNAVAILABLE -->
@@ -371,19 +371,39 @@
 
 
 
-      <!-- Canned responses -->
+    <!--
+    // ------------------------------------------------------- 
+    // Canned responses
+    // ------------------------------------------------------- -->
       <ng-container *ngIf="isVisibleCAR">
-        <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
+        <li *ngIf="SHOW_SETTINGS_SUBMENU && USER_ROLE !== 'agent'" routerLinkActive="active" (click)="stopScroll()">
           <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/cannedresponses">
             <p class="onBlackBckgrnd">
               <span class="sidebar-mini">
-                {{'CannedResponses.CR' | translate}}  
-              </span> 
+                {{'CannedResponses.CR' | translate}}
+              </span>
               {{'CannedResponses.CannedResponses' | translate}}
             </p>
           </a>
         </li>
       </ng-container>
+
+    <!--
+    // ------------------------------------------------------- 
+    // Tags (menu item name 'Labels') 
+    // ------------------------------------------------------- -->
+    <ng-container>
+      <li *ngIf="SHOW_SETTINGS_SUBMENU && USER_ROLE !== 'agent'" routerLinkActive="active" (click)="stopScroll()">
+        <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/labels">
+          <p class="onBlackBckgrnd">
+            <span class="sidebar-mini">
+              L
+            </span>
+            {{'Tags.Tags' | translate}}
+          </p>
+        </a>
+      </li>
+    </ng-container>
 
 
       <!-- SECTION OF SETTINGS SUBMENU -->
@@ -434,7 +454,7 @@
             <span *ngIf="isVisibleGRO">
               <span class="sidebar-mini">UG </span> {{ 'UsersAndGroups' | translate }}
             </span>
-            
+
 
             <span *ngIf="!isVisibleGRO">
               <span class="sidebar-mini">U </span> {{ 'Users' | translate }}
@@ -496,7 +516,8 @@
         </li>
       </ng-container>
 
-      <li style="display: block;" *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
+      <li style="display: block;" *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active"
+        (click)="stopScroll()">
         <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/widget">
           <!-- <span class="_badge" [ngClass]="{'change-badge-bckgrnd' : WIDGET_ROUTE_IS_ACTIVE === true}">New</span> -->
           <p class="onBlackBckgrnd">
@@ -534,7 +555,7 @@
 
       <!-- margin-bottom:95px -->
       <!-- style="margin-bottom:65px" -->
-      <li *ngIf="SHOW_SETTINGS_SUBMENU" routerLinkActive="active"  (click)="stopScroll()">
+      <li *ngIf="SHOW_SETTINGS_SUBMENU" routerLinkActive="active" (click)="stopScroll()">
         <a *ngIf="project" class="customAncor" routerLink="project/{{ project._id }}/project-settings/general">
           <p class="onBlackBckgrnd">
             <span class="sidebar-mini">{{ 'PS' | translate }} </span> {{ 'NavBar.ProjectSettings' | translate }}

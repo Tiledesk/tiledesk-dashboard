@@ -222,12 +222,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     getHasOpenBlogKey() {
         const hasOpenedBlog = this.usersLocalDbService.getStoredChangelogDate();
         console.log('SIDEBAR  »»»»»»»»» hasOpenedBlog ', hasOpenedBlog);
-        
+
         if (hasOpenedBlog === true) {
             this.hidechangelogrocket = true;
         }
 
-     }
+    }
 
     brandLog() {
         console.log('BRAND_JSON - SIDEBAR ', brand);
@@ -335,6 +335,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             }
 
             if (key.includes("CAR")) {
+                console.log('PUBLIC-KEY (SIDEBAR) - key.includes("CAR")', key.includes("CAR"));
                 console.log('PUBLIC-KEY (SIDEBAR) - key', key);
                 let car = key.split(":");
                 console.log('PUBLIC-KEY (SIDEBAR) - car key&value', car);
@@ -346,10 +347,21 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     this.isVisibleCAR = true;
                     console.log('PUBLIC-KEY (SIDEBAR) - car isVisible', this.isVisibleCAR);
                 }
-            } else {
-                this.isVisibleCAR = false;
             }
+
+            /* this generates bugs: the loop goes into the false until the "key" matches "CAR" */
+            // else {
+            //     this.isVisibleCAR = false;
+            //     console.log('PUBLIC-KEY (SIDEBAR) - car isVisible', this.isVisibleCAR);
+            // }
         });
+
+        if (!this.public_Key.includes("CAR")) {
+            console.log('PUBLIC-KEY (SIDEBAR) - key.includes("CAR")', this.public_Key.includes("CAR"));
+            this.isVisibleCAR = false;
+        }
+
+
 
     }
 
@@ -699,7 +711,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE HOME.COMP ***
     getProjectUser() {
         console.log('!!! SIDEBAR CALL GET-PROJECT-USER')
-        this.usersService.getProjectUsersByProjectIdAndUserId(this.currentUserId, this.projectId).subscribe((projectUser: any) => {
+        this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
             console.log('SB PROJECT-USER GET BY PROJECT-ID ', this.projectId);
             console.log('SB PROJECT-USER GET BY CURRENT-USER-ID ', this.user._id);
             console.log('SB PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser);
