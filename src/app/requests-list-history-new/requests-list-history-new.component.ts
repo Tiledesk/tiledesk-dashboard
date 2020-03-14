@@ -97,7 +97,7 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
   browserLang: string;
 
   date_picker_is_disabled: boolean;
-
+  projectUsersArray: any;
   public myDatePickerOptions: IMyDpOptions = {
     // other options...
     dateFormat: 'dd/mm/yyyy',
@@ -201,6 +201,7 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
       console.log('!!! NEW REQUESTS HISTORY  - GET PROJECT-USERS ', projectUsers);
 
       if (projectUsers) {
+        this.projectUsersArray = projectUsers;
         projectUsers.forEach(user => {
           this.user_and_bot_array.push({ '_id': user.id_user._id, 'firstname': user.id_user.firstname, 'lastname': user.id_user.lastname });
         });
@@ -631,20 +632,13 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
                 // console.log('- lead sign_in_provider ',  request.lead.attributes.senderAuthInfo.authVar.token.firebase.sign_in_provider);
                 this.REQUESTER_IS_VERIFIED = false;
               }
-
             } else {
               this.REQUESTER_IS_VERIFIED = false;
             }
-
             request.requester_is_verified = this.REQUESTER_IS_VERIFIED
-
-
           }
-
         }
-
       }
-
     }, error => {
       this.showSpinner = false;
       console.log('!!! NEW REQUESTS HISTORY  - GET REQUESTS - ERROR: ', error);
@@ -678,7 +672,6 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
         // ${botType} 
         return member_id = bot['name'] + ` (bot)`;
       } else {
-       
         return member_id
       }
 
@@ -702,7 +695,6 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
     if (member_id.indexOf('bot_') !== -1) {
       console.log('!!! NEW REQUESTS HISTORY IS A BOT !');
 
-
       const bot_id = member_id.slice(4);
       const bot = this.botLocalDbService.getBotFromStorage(bot_id);
 
@@ -715,20 +707,22 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
       // this.router.navigate(['project/' + this.projectId + '/botprofile/' + member_id]);
       this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
 
-
     } else {
       this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
+
+      const filteredProjectUser = this.projectUsersArray.filter((obj: any) => {
+        return obj.id_user._id === member_id;
+      });
+
+      this.router.navigate(['project/' + this.projectId + '/user/edit/' + filteredProjectUser[0]._id]);
     }
   }
 
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
-
       console.log('00 -> NEW REQUEST-LIST HISTORY - PRJCT FROM SUBSCRIPTION TO AUTH SERV  ', project)
-
       if (project) {
         this.projectId = project._id;
-
       }
     });
   }

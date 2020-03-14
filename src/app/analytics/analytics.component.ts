@@ -712,9 +712,9 @@ export class AnalyticsComponent implements OnInit, OnDestroy {
     });
   }
 
-  goToMemberProfile(member_id: string) {
-    this.router.navigate(['project/' + this.id_project + '/member/' + member_id]);
-  }
+  // goToMemberProfile(member_id: string) {
+  //   this.router.navigate(['project/' + this.id_project + '/member/' + member_id]);
+  // }
 
 
   ngOnDestroy() {

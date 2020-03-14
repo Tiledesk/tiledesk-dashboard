@@ -284,7 +284,9 @@ export class RealtimeComponent implements OnInit {
   }
 
   goToMemberProfile(member_id: string) {
-    this.router.navigate(['project/' + this.id_project + '/member/' + member_id]);
+    // this.router.navigate(['project/' + this.id_project + '/member/' + member_id]);
+
+    this.router.navigate(['project/' + this.id_project + '/user/edit/' + member_id]);
   }
 
   /**

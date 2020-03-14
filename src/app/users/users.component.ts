@@ -279,6 +279,11 @@ export class UsersComponent implements OnInit, OnDestroy {
     });
   }
 
+  // !! No more used - replaced by goToEditUser
+  // goToMemberProfile(member_id: string) {
+  //   this.router.navigate(['project/' + this.id_project + '/member/' + member_id]);
+  // }
+
   goToEditUser(projectUser_id) {
     this.router.navigate(['project/' + this.id_project + '/user/edit/' + projectUser_id]);
   }
@@ -481,9 +486,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.display = 'none';
   }
 
-  goToMemberProfile(member_id: string) {
-    this.router.navigate(['project/' + this.id_project + '/member/' + member_id]);
-  }
+
 
   changeAvailabilityStatus(IS_AVAILABLE: boolean, projectUser_id: string) {
     console.log('USERS COMP - CHANGE STATUS - WHEN CLICK USER IS AVAILABLE ? ', IS_AVAILABLE);

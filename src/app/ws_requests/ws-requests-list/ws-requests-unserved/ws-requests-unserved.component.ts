@@ -179,16 +179,16 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     // console.log('STORAGE-BUCKET Ws Requests List ', this.storageBucket)
   }
 
-  goToMemberProfile(member_id: any) {
-    console.log('!!! NEW REQUESTS HISTORY has clicked GO To MEMBER ', member_id);
-    if (member_id.indexOf('bot_') !== -1) {
-      console.log('!!! NEW REQUESTS HISTORY IS A BOT !');
+  // goToMemberProfile(member_id: any) {
+  //   console.log('!!! NEW REQUESTS HISTORY has clicked GO To MEMBER ', member_id);
+  //   if (member_id.indexOf('bot_') !== -1) {
+  //     console.log('!!! NEW REQUESTS HISTORY IS A BOT !');
 
-      this.router.navigate(['project/' + this.projectId + '/botprofile/' + member_id]);
-    } else {
-      this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
-    }
-  }
+  //     this.router.navigate(['project/' + this.projectId + '/botprofile/' + member_id]);
+  //   } else {
+  //     this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
+  //   }
+  // }
 
   goToRequestMsgs(request_id: string) {
     this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/messages']);

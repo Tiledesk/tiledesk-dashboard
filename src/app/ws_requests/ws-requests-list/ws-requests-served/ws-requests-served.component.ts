@@ -169,31 +169,31 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
 
   // !!! No more used
-  goToMemberProfile(member_id: any) {
-    console.log('WsRequestsServedComponent has clicked GO To MEMBER ', member_id);
-    if (member_id.indexOf('bot_') !== -1) {
-      console.log('WsRequestsServedComponent IS A BOT !');
-      const id_bot = (member_id.split('_').pop());
-      console.log('ID BOT ', id_bot);
-      // this.router.navigate(['project/' + this.projectId + '/botprofile/' + member_id]);
+  // goToMemberProfile(member_id: any) {
+  //   console.log('WsRequestsServedComponent has clicked GO To MEMBER ', member_id);
+  //   if (member_id.indexOf('bot_') !== -1) {
+  //     console.log('WsRequestsServedComponent IS A BOT !');
+  //     const id_bot = (member_id.split('_').pop());
+  //     console.log('ID BOT ', id_bot);
+  //     // this.router.navigate(['project/' + this.projectId + '/botprofile/' + member_id]);
 
-      const bot = this.botLocalDbService.getBotFromStorage(id_bot);
-      console.log('WsRequestsServedComponent BOT FROM STORAGE ', bot)
-      // const botType = bot.type
+  //     const bot = this.botLocalDbService.getBotFromStorage(id_bot);
+  //     console.log('WsRequestsServedComponent BOT FROM STORAGE ', bot)
+  //     // const botType = bot.type
 
-      let botType = ''
-      if (bot.type === 'internal') {
-        botType = 'native'
-      } else {
-        botType = bot.type
-      }
+  //     let botType = ''
+  //     if (bot.type === 'internal') {
+  //       botType = 'native'
+  //     } else {
+  //       botType = bot.type
+  //     }
 
-      // this.router.navigate(['project/' + this.projectId + '/bots/', id_bot]);
-      this.router.navigate(['project/' + this.projectId + '/bots', id_bot, botType]);
-    } else {
-      this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
-    }
-  }
+  //     // this.router.navigate(['project/' + this.projectId + '/bots/', id_bot]);
+  //     this.router.navigate(['project/' + this.projectId + '/bots', id_bot, botType]);
+  //   } else {
+  //     this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
+  //   }
+  // }
 
   goToBotProfile(bot_id, bot_type) {
     let botType = ''
@@ -208,8 +208,26 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
 
   goToAgentProfile(member_id) {
+    console.log('WsRequestsServedComponent goToAgentProfile ', member_id)
+    // this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
 
-    this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
+    this.getProjectuserbyUseridAndGoToEditProjectuser(member_id);
+  }
+
+  getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
+    this.usersService.getProjectUserByUserId(member_id)
+      .subscribe((projectUser: any) => {
+        console.log('% Ws-REQUESTS-Msgs GET projectUser by USER-ID ', projectUser)
+        if (projectUser) {
+          console.log('% Ws-REQUESTS-Msgs projectUser id', projectUser[0]._id);
+
+          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser[0]._id]);
+        }
+      }, (error) => {
+        console.log('% Ws-REQUESTS-Msgs GET projectUser by USER-ID - ERROR ', error);
+      }, () => {
+        console.log('% Ws-REQUESTS-Msgs GET projectUser by USER-ID * COMPLETE *');
+      });
   }
 
 

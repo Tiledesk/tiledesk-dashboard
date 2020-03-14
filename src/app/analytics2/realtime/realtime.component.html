@@ -255,9 +255,10 @@
                       </thead>
                       
                       <tbody>
+                        <!-- (click)="goToMemberProfile(member?.id_user?._id)" -->
                           <tr *ngFor="let member of projectUsers">
                               <td style="width:45px; padding-top:4px !important; padding-bottom:4px!important; cursor:pointer"
-                                  (click)="goToMemberProfile(member?.id_user?._id)">
+                                  (click)="goToMemberProfile(member?._id)">
                             
                                   <img style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
                                   class="user-img" src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{member?.id_user?._id}}%2Fphoto.jpg?alt=media" 
@@ -267,8 +268,8 @@
                                   class="user-img" src="assets/img/no_image_user.png"/> -->
 
                               </td>
-
-                              <td style="font-weight: 400;cursor:pointer"  (click)="goToMemberProfile(member?.id_user?._id)">
+                              <!-- (click)="goToMemberProfile(member?.id_user?._id)" -->
+                              <td style="font-weight: 400;cursor:pointer"  (click)="goToMemberProfile(member?._id)">
                                 <span style="text-transform: uppercase">{{ member?.id_user?.lastname }}</span>  {{ member?.id_user?.firstname }} 
                               </td>
           

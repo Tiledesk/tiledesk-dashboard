@@ -211,8 +211,8 @@ class="navbar-brand">
                   <!-- <td>
                     {{ projectUser?._id }}
                   </td> -->
-
-                  <td (click)="goToMemberProfile(projectUser?.id_user?._id)"
+                  <!-- goToMemberProfile(projectUser?.id_user?._id) -->
+                  <td (click)="goToEditUser(projectUser?._id)"
                     style="cursor:pointer; width:1%;white-space:nowrap; text-align: center">
                     <img
                       style="vertical-align: middle; width: 35px; height: 35px; border-radius: 50%; border: 1px solid #eee;"
@@ -221,17 +221,18 @@ class="navbar-brand">
                       onerror="this.src='assets/img/no_image_user.png'" />
                   </td>
 
-                  <td (click)="goToMemberProfile(projectUser?.id_user?._id)"
+                  <!-- goToMemberProfile(projectUser?.id_user?._id)  -->
+                  <td (click)="goToEditUser(projectUser?._id)"
                     style="cursor:pointer; white-space: nowrap;  width: 1%;">
                     <span class="White__Tooltip">
                       <span style="font-weight:400; font-size: 13px"> {{ projectUser?.id_user?.firstname }} </span>
                       <span style="text-transform: uppercase; font-weight:400; font-size: 13px ">
                         {{ projectUser?.id_user?.lastname }} </span>
 
-                      <span class="White__Tooltiptext">
+                      <!-- <span class="White__Tooltiptext">
                         {{"UsersPage.ViewProfileUser" | translate }} <span style="font-size:10px; display:block">
                           {{projectUser?.id_user?._id}}</span>
-                      </span>
+                      </span> -->
 
                       <span style="display: block; color:#7695a5; font-size: 12px; font-weight: 400">
                         {{ projectUser?.id_user?.email }}
@@ -256,30 +257,18 @@ class="navbar-brand">
                     </span>
                   </td>
 
-                  <td (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
+                  <!-- goToMemberProfile(projectUser?.id_user?._id)     -->
+                  <td (click)="goToEditUser(projectUser?._id)" style="cursor:pointer">
                     <span class="White__Tooltip">
-                      <span style="font-weight:400; font-size: 13px"> {{ projectUser?.role | translate}}</span>
-                      <span class="White__Tooltiptext">
+                      <span style="font-weight:400; font-size: 13px">
+                         {{ projectUser?.role | translate}}
+                      </span>
+                      <!-- <span class="White__Tooltiptext">
                         {{"UsersPage.ViewProfileUser" | translate }} <span style="font-size:10px; display:block">
                           {{projectUser?.id_user?._id}}</span>
-                      </span>
+                      </span> -->
                     </span>
                   </td>
-
-                  <!-- <td (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
-                    <span class="tooltipx">
-                      {{ projectUser?.id_user?.email }}
-                      <span class="tooltiptext">
-                        {{"UsersPage.ViewProfileUser" | translate }} {{projectUser?.id_user?._id}}
-                      </span>
-                    </span>
-                  </td> -->
-
-                  <!-- OLD: AVAILABLE / UNAVAILABLE INDICATOR -->
-                  <!-- <td (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
-                    <i *ngIf="projectUser?.user_available === true" class="material-icons" style=" font-size: 16px; color: #1eb848; margin-right:0px">fiber_manual_record</i>
-                    <i *ngIf="projectUser?.user_available === false" class="material-icons" style=" font-size: 16px; color: #cac9c9; margin-right:0px">fiber_manual_record</i>
-                  </td> -->
 
 
                   <!-- SWITCH AVAILABLE / UNAILABLE  -->
@@ -300,7 +289,8 @@ class="navbar-brand">
 
                   <!-- ACTIONS -->
                   <td class="td-actions text-right">
-                    <span *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id">
+                    <!-- *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id" -->
+                    <span>
                       <button type="button" rel="tooltip" title=""
                         class="btn btn-primary btn-simple btn-xs White__Tooltip"
                         (click)='goToEditUser(projectUser?._id)'>
@@ -308,6 +298,8 @@ class="navbar-brand">
                         <span class="White__Tooltiptext" style="text-transform:capitalize">
                           {{ 'UsersPage.tootipEditUser' | translate }} </span>
                       </button>
+
+
                       <button type="button" rel="tooltip" title="{{ 'UsersPage.tootipDeleteUser' | translate }}"
                         class="btn btn-danger btn-simple btn-xs"
                         (click)='openDeleteModal(projectUser?._id, projectUser?.id_user?._id, projectUser?.id_user?.firstname, projectUser?.id_user?.lastname)'>
@@ -318,6 +310,11 @@ class="navbar-brand">
 
                 </tr>
 
+
+                <!-- 
+                // --------------------------------------------------------------
+                // @ Pending invitation
+                // -------------------------------------------------------------- -->
                 <tr *ngFor="let invites of pendingInvitationList">
                   <td style="text-align: center; width:1%; white-space:nowrap; ">
                     <i class="material-icons" style="color: rgba(0,0,0,0.54); vertical-align: middle">
@@ -329,7 +326,7 @@ class="navbar-brand">
                     <span style="font-weight:400">
                       {{ invites?.email }}
                     </span>
-                    <span style="display: block; color:#7695a5; font-size: 12px; font-weight: 400">
+                    <span style="display: block; color:#7695a5; font-size: 12px; font-weight: 400; white-space: nowrap;">
                       {{ "UsersPage.DateOfSending" | translate }}: {{ invites?.createdAt | date: 'dd/MM/yy' }}
                     </span>
                   </td>

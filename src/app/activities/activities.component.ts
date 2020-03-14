@@ -64,6 +64,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   newRequest: string;
   asc: any;
   subscription: Subscription;
+  projectUsersArray: any;
 
   constructor(
     private usersService: UsersService,
@@ -125,6 +126,8 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
         console.log('ActivitiesComponent - GET PROJECT-USERS ', projectUsers);
 
         if (projectUsers) {
+          this.projectUsersArray = projectUsers;
+
           projectUsers.forEach(user => {
             console.log('ActivitiesComponent - PROJECT-USER ', user);
             // tslint:disable-next-line:max-line-length
@@ -485,7 +488,14 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
     } else {
 
       console.log('has clicked GO To MEMBER ', participantId);
-      this.router.navigate(['project/' + this.projectId + '/member/' + participantId]);
+      // this.router.navigate(['project/' + this.projectId + '/member/' + participantId]);
+  
+      const filteredProjectUser = this.projectUsersArray.filter((obj: any) => {
+        return obj.id_user._id === participantId;
+      });
+
+      console.log('ActivitiesComponent - filteredProjectUser ', filteredProjectUser[0]._id);
+      this.router.navigate(['project/' + this.projectId + '/user/edit/' + filteredProjectUser[0]._id]);
     }
 
   }

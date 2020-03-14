@@ -511,16 +511,16 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     this.router.navigate(['project/' + this.projectId + '/contact/edit', requester_id]);
   }
 
-  goToMemberProfile(member_id: any) {
-    console.log('!!!!! CONTACTS DETAILS has clicked GO To MEMBER ', member_id);
-    if (member_id.indexOf('bot_') !== -1) {
-      console.log('!!!!! CONTACTS DETAILS IS A BOT !');
+  // goToMemberProfile(member_id: any) {
+  //   console.log('!!!!! CONTACTS DETAILS has clicked GO To MEMBER ', member_id);
+  //   if (member_id.indexOf('bot_') !== -1) {
+  //     console.log('!!!!! CONTACTS DETAILS IS A BOT !');
 
-      this.router.navigate(['project/' + this.projectId + '/botprofile/' + member_id]);
-    } else {
-      this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
-    }
-  }
+  //     this.router.navigate(['project/' + this.projectId + '/botprofile/' + member_id]);
+  //   } else {
+  //     this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
+  //   }
+  // }
 
 
   openDeleteContactModal(id: string, fullName: string) {

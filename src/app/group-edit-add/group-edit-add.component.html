@@ -275,8 +275,9 @@
 
                       <!-- // USER AVATAR -->
                       <!-- <td *ngIf="projectUser?.is_group_member">                    </td> -->
-                      
-                      <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?.id_user?._id)" style="cursor:pointer">
+
+                      <!-- click)="goToMemberProfile(projectUser?.id_user?._id) -->
+                      <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?._id)" style="cursor:pointer">
                           <img style="vertical-align: middle; width: 32px; height: 32px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
                           class="user-img" src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media" 
                           onerror="this.src='assets/img/no_image_user.png'"/>
@@ -288,13 +289,14 @@
                           <span class="tooltiptext"> {{ "GroupsAddEditPage.UserId" | translate }}: {{ projectUser?.id_user?._id }} </span>
                         </span> 
                       </td>
-    
-                      <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?.id_user?._id)" 
+                      <!-- (click)="goToMemberProfile(projectUser?.id_user?._id) -->
+                      <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?._id)" 
                         style="cursor:pointer;font-size:13px">
                         {{ projectUser?.role | translate }}
                       </td>
     
-                      <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?.id_user?._id)" 
+                      <!-- (click)="goToMemberProfile(projectUser?.id_user?._id)"  -->
+                      <td *ngIf="projectUser?.is_group_member" (click)="goToMemberProfile(projectUser?._id)" 
                         style="cursor:pointer; font-size:13px">
                         {{ projectUser?.id_user?.email }}
                       </td>

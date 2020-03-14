@@ -478,7 +478,7 @@
                       </span>
 
 
-                      <span *ngIf="participant === currentUserID">
+                      <span style="cursor:pointer;" (click)="goToMemberProfile( participant )" *ngIf="participant === currentUserID">
                         <!-- IF IS THE LOGGED USER -->
                         <img class="user_profile_in_history"
                           src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media"
