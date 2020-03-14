@@ -26,6 +26,11 @@
 - Adds the ability to create an "internal request"
 - Adds the ability to chat with an agent of a request
 - Adds the ability to integrate a Dialogflow bot
+- Adds the ability to create canned responses
+- Adds the ability to add label to requests
+- Adds the ability to limit the number of concurrent chats each agent can take at once
+- Adds the ability to reassign chat after a specified time frame
+- Adds the ability to set an agent's status to unavailable after a consecutive number of chats reassigned
 
 ### 1.0.40
 - Fixes the user profile urls
