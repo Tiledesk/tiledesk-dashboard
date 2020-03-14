@@ -16,13 +16,8 @@ export class CannedResponsesListComponent implements OnInit {
   responsesList: Array<any>;
   modalMode: string;
   selectCannedResponseId = null;
-
-
-
-
   deleteErrorMsg: string;
   deleteSuccessMsg: string;
- 
   showSpinner = true;
 
   constructor(
@@ -69,7 +64,6 @@ export class CannedResponsesListComponent implements OnInit {
   }
 
   deleteCannedResponse(cannedresponseid) {
-
     this.cannedResponsesService.deleteCannedResponse(cannedresponseid).subscribe((responses: any) => {
       console.log('CANNED-RES.COMP - DELETE CANNED RESP - RES ', responses);
 

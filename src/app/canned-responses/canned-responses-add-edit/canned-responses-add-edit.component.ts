@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, Input, Output, EventEmitter, HostList
 import { CannedResponsesService } from '../../services/canned-responses.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../../core/notify.service';
-
+import { AuthService } from '../../core/auth.service';
 @Component({
   selector: 'appdashboard-canned-responses-add-edit',
   templateUrl: './canned-responses-add-edit.component.html',
@@ -31,13 +31,13 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
   texareaIsEmpty = false;
   showSkeleton = false;
   canned_response_modal_height: any
+  addWhiteSpaceBefore: boolean;
   // hideQuickTips = false // not used
 
-  // mobile_v = false;
+  //     { 'field_name': "Website_of_recipient", 'field_value': "$website", "field_desc": "CannedResponses.recipient_website_desc" },
+  // { 'field_name': "Email_of_recipient", 'field_value': "$email", "field_desc": "CannedResponses.recipient_email_desc" },
   customFields = [
     { 'field_name': "First_name_of_recipient", 'field_value': "$recipient_name", "field_desc": "CannedResponses.recipient_name_desc" },
-    { 'field_name': "Email_of_recipient", 'field_value': "$email", "field_desc": "CannedResponses.recipient_email_desc" },
-    { 'field_name': "Website_of_recipient", 'field_value': "$website", "field_desc": "CannedResponses.recipient_website_desc" },
     { 'field_name': "First_name_of_agent", 'field_value': "$agent_name", "field_desc": "CannedResponses.agent_name_desc" },
     
   ]
@@ -45,7 +45,8 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
   constructor(
     public cannedResponsesService: CannedResponsesService,
     public translate: TranslateService,
-    private notify: NotifyService
+    private notify: NotifyService,
+    private auth: AuthService
   ) { }
 
   // 
@@ -53,7 +54,9 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     console.log('CANNED-RES-CREATE.COMP - modalMode ', this.modalMode);
     console.log('CANNED-RES-CREATE.COMP - selectCannedResponseId ', this.selectCannedResponseId);
-
+    
+    this.auth.checkRoleForCurrentProject();
+    
     if (this.modalMode === 'edit') {
 
       this.showSkeleton = true
@@ -150,6 +153,13 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
   }
 
   insertAtCursor(myField, myValue) {
+    console.log('CANNED-RES-CREATE.COMP - insertAtCursor - myValue ', myValue );
+     
+    if (this.addWhiteSpaceBefore === true) {
+      myValue = ' ' + myValue;
+      console.log('CANNED-RES-CREATE.COMP - GET TEXT AREA - QUI ENTRO myValue ', myValue );
+    }
+   
     //IE support
     if (myField.selection) {
       myField.focus();
@@ -160,19 +170,20 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
     //MOZILLA and others
     else if (myField.selectionStart || myField.selectionStart == '0') {
       var startPos = myField.selectionStart;
-      console.log('CANNED-RES-CREATE.COMP - GET TEXT AREA - startPos ', startPos);
+      console.log('CANNED-RES-CREATE.COMP - insertAtCursor - startPos ', startPos);
+      
       var endPos = myField.selectionEnd;
-      console.log('CANNED-RES-CREATE.COMP - GET TEXT AREA - endPos ', endPos);
+      console.log('CANNED-RES-CREATE.COMP - insertAtCursor - endPos ', endPos);
+      
       myField.value = myField.value.substring(0, startPos) + myValue + myField.value.substring(endPos, myField.value.length);
-      console.log('CANNED-RES-CREATE.COMP - GET TEXT AREA - myField.value ', myField.value);
-
-      this.cannedResponseMessage = myField.value;
-
+  
       // place cursor at end of text in text input element
       myField.focus();
       var val = myField.value; //store the value of the element
       myField.value = ''; //clear the value of the element
       myField.value = val + ' '; //set that value back. 
+  
+      this.cannedResponseMessage = myField.value;
 
       this.texareaIsEmpty = false;
       // myField.select();
@@ -183,13 +194,25 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
   }
 
   cannedResponseMessageChanged($event) {
-
     console.log('CANNED-RES-CREATE.COMP - ON MSG CHANGED ', $event);
     if ($event && $event.length > 0) {
       this.texareaIsEmpty = false;
     } else {
       // this.texareaIsEmpty = true;
     }
+
+    if(/\s$/.test($event)) {
+    
+      console.log('CANNED-RES-CREATE.COMP - ON MSG CHANGED - string contains space at last');
+      this.addWhiteSpaceBefore = false;
+   } else {
+     
+      console.log('CANNED-RES-CREATE.COMP - ON MSG CHANGED - string does not contain space at last');
+
+      // IS USED TO ADD A WHITE SPACE TO THE 'PERSONALIZATION' VALUE IF THE STRING DOES NOT CONTAIN SPACE AT LAST
+      this.addWhiteSpaceBefore = true;
+   }       
+
   }
 
   createResponse() {
@@ -204,7 +227,7 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
         responseTitle = this.cannedResponseTitle
       }
 
-      this.cannedResponsesService.createCannedResponse(this.cannedResponseMessage, responseTitle)
+      this.cannedResponsesService.createCannedResponse(this.cannedResponseMessage.trim(), responseTitle)
         .subscribe((responses: any) => {
           console.log('CANNED-RES-CREATE.COMP - CREATE CANNED RESP - RES ', responses);
 
@@ -219,12 +242,13 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
         });
     } else {
       this.texareaIsEmpty = true;
+      this.elTextarea.focus()
+
     }
   }
 
 
   editResponse() {
-
     let responseTitle = 'Untitled'
     if (this.cannedResponseTitle) {
       responseTitle = this.cannedResponseTitle

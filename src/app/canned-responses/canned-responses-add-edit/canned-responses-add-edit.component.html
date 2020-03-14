@@ -2,12 +2,13 @@
 
 <!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" style="    position: absolute;
 top: 51px;">Open Modal</button> -->
-<div class="modal" id="myModal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayModal_AddEditResponse, 'height': canned_response_modal_height}"
-  style="background-color: rgba(90,90,90,0.5);" >
+<div class="modal" id="myModal" tabindex="-1" role="dialog"
+  [ngStyle]="{'display':displayModal_AddEditResponse, 'height': canned_response_modal_height}"
+  style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
 
-      <div class="modal-header" style="padding-bottom:15px">
+      <div class="modal-header" style="padding-bottom:15px; border-bottom:none !important">
         <button type="button" class="close" aria-label="Close" (click)="closeModal_AddEditResponse()">
 
           <span aria-hidden="true">
@@ -20,7 +21,8 @@ top: 51px;">Open Modal</button> -->
 
           </span>
         </button>
-        <h4 class="modal-title" style="">
+        <h4 class="modal-title"
+          style="text-align: center;font-family: 'Google Sans', sans-serif !important; font-size: 28px;">
           <!-- <i class="material-icons" style="vertical-align: middle">info</i> -->
 
           <!-- 
@@ -45,28 +47,35 @@ top: 51px;">Open Modal</button> -->
         </h4>
       </div>
       <!-- *ngIf="displayAddcustomizationView === false" -->
-      <div class="modal-body" [ngClass]="{'hidden_elem' : displayAddcustomizationView === true}">
+      <div class="modal-body" [ngClass]="{'hidden_elem' : displayAddcustomizationView === true}"
+        style="padding-top: 0px;padding-bottom: 0px;">
         <div class="create-response_view">
-          <div class="row" style="margin-bottom: 18px;">
-            <label class="col-xs-12 custom-label__canned_response">
+          <!-- margin-bottom: 18px; -->
+          <div class="row" style="">
+            <!-- <label class="col-xs-12 custom-label__canned_response">
               {{ "CannedResponses.Title" | translate }}
-            </label>
+            </label> -->
             <div class="col-xs-12">
 
               <!-- 
               // ------------------------------------------------------------------
               // Skeleton for the 'title' input (only edit mode)
               // ------------------------------------------------------------------ -->
-              <div *ngIf="showSkeleton === true" class="skeleton">
+              <!-- <div *ngIf="showSkeleton === true" class="skeleton">
                 <div class="skeleton_input"> </div>
-              </div>
+              </div> -->
 
               <!-- 
               // ------------------------------------------------------------------
               // Title
               // ------------------------------------------------------------------ -->
-              <input *ngIf="showSkeleton === false" id="canned-response-title" name="canned-response-title"
-                [(ngModel)]="cannedResponseTitle" class="input" type="text" style="margin-bottom: 0px;">
+              <!-- <input *ngIf="showSkeleton === false" id="canned-response-title" name="canned-response-title"
+                [(ngModel)]="cannedResponseTitle" class="input" type="text" style="margin-bottom: 0px;"> -->
+
+              <div class="form-group" style="margin-top: 0px;">
+                <input id="canned-response-title" name="canned-response-title" [(ngModel)]="cannedResponseTitle"
+                  value="" placeholder="{{ 'Enter canned response title'}}" class="form-control" />
+              </div>
             </div>
           </div>
 
@@ -76,44 +85,64 @@ top: 51px;">Open Modal</button> -->
             // ------------------------------------------------------------------
             // Message label
             // ------------------------------------------------------------------ -->
-            <label class="col-xs-6 custom-label__canned_response" style="margin-top: 11px;">
+            <!-- <label class="col-xs-6 custom-label__canned_response" style="margin-top: 11px;">
               {{ "CannedResponses.Message" | translate }}
-            </label>
+            </label> -->
 
             <!-- 
             // ------------------------------------------------------------------
             // Btn add personalization  
             // ------------------------------------------------------------------ -->
-            <div class="col-xs-6">
+            <!-- <div class="col-xs-6">
               <button _ngcontent-c2="" class="btn btn-white add_custom_field_in_msg_btn"
                 style="float: right; margin-bottom:5px" (click)="hasClickedAddCustomization()">
                 {{ "CannedResponses.AddCustomization" | translate }}
               </button>
-            </div>
+            </div> -->
 
             <div class="col-xs-12">
               <!-- 
               // ------------------------------------------------------------------
               // Skeleton for the 'message' texarea (only edit mode)
               // ------------------------------------------------------------------ -->
-              <div *ngIf="showSkeleton === true" class="skeleton">
+              <!-- <div *ngIf="showSkeleton === true" class="skeleton">
                 <div class="skeleton_canned_msg_textarea"> </div>
-              </div>
+              </div> -->
 
               <!-- 
               // ------------------------------------------------------------------
               // Message texarea
               // ------------------------------------------------------------------ -->
-              <textarea *ngIf="showSkeleton === false" style="resize: vertical;" id="canned-response-message" name="canned-response-message"
-                [ngClass]="{'texarea-is-empty' : texareaIsEmpty === true}" [(ngModel)]="cannedResponseMessage"
-                (ngModelChange)="cannedResponseMessageChanged($event)" rows="5" class="input canned-response-texarea"
-                type="text" placeholder="">
-              </textarea>
+              <div class="form-group" style="margin-top: 0px;">
+                <textarea *ngIf="showSkeleton === false" style="resize: vertical;" id="canned-response-message"
+                  name="canned-response-message" [ngClass]="{'texarea-is-empty' : texareaIsEmpty === true}"
+                  [(ngModel)]="cannedResponseMessage" (ngModelChange)="cannedResponseMessageChanged($event)" rows="9"
+                  class="form-control canned-response-texarea"
+                  placeholder="{{'Write a canned response message to send to your visitors' | translate}}"> </textarea>
+
+                <span *ngIf="texareaIsEmpty === true" class="error-message" style="color: #f6303a;font-size: 14px;">
+                  {{'CannedResponses.PleaseFillOutThisField' | translate }}
+                </span>
+              </div>
+
+              <!-- <textarea class="form-control" placeholder="Here can be your nice text" rows="5"></textarea> -->
+            </div>
+
+
+            <div class="col-xs-12">
+              <button _ngcontent-c2="" class="btn btn-white add_custom_field_in_msg_btn"
+                style="float: right; margin-bottom:5px" (click)="hasClickedAddCustomization()">
+                {{ "CannedResponses.AddCustomization" | translate }}
+              </button>
             </div>
           </div>
         </div>
       </div>
 
+      <!-- 
+      // ------------------------------------------------------------------
+      // Personalisation
+      // ------------------------------------------------------------------ -->
       <div class="modal-body" style="height: 299px;padding-top: 0px; padding-bottom: 0px;"
         [ngClass]="{'add_field_visible' : displayAddcustomizationView === true, 'add_field_hidden':displayAddcustomizationView === false}">
 
@@ -121,14 +150,17 @@ top: 51px;">Open Modal</button> -->
           <div class="row" style="height:100%;">
             <div class="col-xs-5" style="padding: 0px;height:100%;border-right: 1px solid #d9d9d9">
               <!-- border-top: 1px solid #d9d9d9 !important; border-bottom: 1px solid #d9d9d9 !important; -->
+
+
               <div *ngFor="let field of customFields; let first = first" class="left_field_container">
                 <!-- margin-bottom: 3px; [class.first-item]="first" -->
                 <div (mouseenter)="mouseEnter(field?.field_value)" (mouseleave)="mouseLeave()" style="padding: 15px 25px;
                   border-bottom: 1px solid #d9d9d9; border-left: 1px solid #d9d9d9; font-weight: 400;"
                   (click)="insertCustomField(field?.field_value)">
 
-                  {{ 'CannedResponses.' + field?.field_name | translate }}
-
+                  <div class="canned-res-name">
+                    {{ 'CannedResponses.' + field?.field_name | translate }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -159,7 +191,7 @@ top: 51px;">Open Modal</button> -->
       </div>
 
 
-      <div class="modal-footer" style="margin-top: 0px; text-align: center;">
+      <div class="modal-footer" style="margin-top: 0px; text-align: center;background-color: #fff;">
 
         <!-- 
         // ------------------------------------------------------------------
@@ -184,7 +216,7 @@ top: 51px;">Open Modal</button> -->
         </section>
 
         <button *ngIf="displayAddcustomizationView === true" class="btn btn-secondary"
-          (click)="closeAddcustomizationView()" style="padding:12px 16px;">
+          (click)="closeAddcustomizationView()" style="padding:12px 36px;">
           {{ "Cancel" | translate }}
         </button>
       </div>

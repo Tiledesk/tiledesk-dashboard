@@ -172,6 +172,10 @@ import { BotsBaseComponent } from './bots/bots-base/bots-base.component';
 import { CannedResponsesListComponent } from './canned-responses/canned-responses-list.component';
 import { CannedResponsesAddEditComponent } from './canned-responses/canned-responses-add-edit/canned-responses-add-edit.component';
 import { CannedResponsesService } from './services/canned-responses.service';
+import { TagsService } from './services/tags.service';
+import { TagsComponent } from './tags/tags.component';
+import { TagsDeleteComponent } from './tags/tags-delete/tags-delete.component';
+import { TagsEditComponent } from './tags/tags-edit/tags-edit.component';
 
 
 console.log('************** APPMODULE ******************');
@@ -281,7 +285,10 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     BotTypeSelectComponent,
     BotsBaseComponent,
     CannedResponsesListComponent,
-    CannedResponsesAddEditComponent
+    CannedResponsesAddEditComponent,
+    TagsComponent,
+    TagsDeleteComponent,
+    TagsEditComponent
   ],
   imports: [
     /* PRIVATE */
@@ -331,6 +338,7 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     UsersService,
     ContactsService,
     CannedResponsesService,
+    TagsService,
     RequestsService,
     DepartmentService,
     MongodbFaqService,

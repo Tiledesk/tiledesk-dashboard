@@ -1,0 +1,123 @@
+.card-header-custom-bkgrnd {
+  // display:none;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  margin: 0px;
+  border-radius: 3px 3px 0px 0px;
+  // background-color: #f2f6f8;
+  background-color: #ffffff;
+  border-bottom: 1px solid #eff3f5;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.column-th-span {
+  font-size: 14px;
+  font-weight: 500;
+  color: #353f45;
+  // color: #566787;
+}
+
+.tag-input-wrapper input[type="text"] {
+  height: 35px;
+  font-size: 14px;
+  //   width: 100%;
+  margin-bottom: 10px;
+  -webkit-appearance: none;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  padding-right: 8px;
+  padding-left: 26px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  //   border-radius: 5px;
+  float: left;
+  margin-right: 15px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  margin-bottom: 0px;
+}
+
+.tag-input-wrapper .dropdown .dropdown-toggle {
+  box-shadow: none !important;
+}
+
+.tag-input-wrapper .dropdown .dropdown-toggle:hover {
+  box-shadow: none !important;
+}
+
+.tag-input-wrapper .dropdown-menu li a:hover,
+.tag-input-wrapper .dropdown-menu li a:focus,
+.tag-input-wrapper .dropdown-menu li a:active {
+  background-color: transparent;
+  color: #000;
+}
+
+.tag-color-round-div--in-input {
+  position: absolute;
+  top: 22px;
+  left: 61px;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+}
+
+.svg-inline--fa {
+  width: 18px;
+  height: auto;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+.svg-inline--fa-in-table-row {
+  width: 18px;
+  height: auto;
+  vertical-align: middle;
+}
+
+.svg-inline--fa-horizontal-dropdown {
+    width: 18px;
+    height: auto;
+    vertical-align: middle;
+}
+
+.open-dropdown-icon {
+  background-color: #f5f5f5;
+  opacity: 0;
+  margin-top: -1px !important;
+}
+
+.table-hover > tbody > tr:hover {
+  .open-dropdown-icon {
+    background-color: #f5f5f5;
+    opacity: 1;
+  }
+}
+
+.td-tag-table {
+    font-weight: 400;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #d9d9d9;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #d9d9d9;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: #d9d9d9;
+}
+
+// -------------------------------------------------------------------------------
+// Horizontal dropdown menu - the follow style is applied in-line in the template
+// -------------------------------------------------------------------------------
+// .dropdown-menu > li {
+//     display: inline-block;
+//     float:left;
+// }
+// .open > ul {
+//     display: inline-flex !important; // 
+// }

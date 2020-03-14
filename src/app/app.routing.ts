@@ -102,6 +102,8 @@ import { CreateProjectComponent } from './create-project/create-project.componen
 import { InstallTiledeskComponent } from './install-tiledesk/install-tiledesk.component';
 import { LoadingPageComponent } from './loading-page/loading-page.component';
 import { CannedResponsesListComponent } from './canned-responses/canned-responses-list.component';
+import { TagsComponent } from './tags/tags.component';
+
 
 
 const routes: Routes = [
@@ -135,6 +137,8 @@ const routes: Routes = [
   { path: 'create-new-project', component: CreateProjectComponent, canActivate: [AuthGuard] },
   
   { path: 'project/:projectid/cannedresponses', component: CannedResponsesListComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/labels', component: TagsComponent, canActivate: [AuthGuard] },
+  
  
   { path: 'project/:projectid/install-tiledesk', component: InstallTiledeskComponent, canActivate: [AuthGuard] },
 
@@ -144,6 +148,7 @@ const routes: Routes = [
   { path: 'project/:projectid/project-settings/general', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/project-settings/payments', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/project-settings/auth', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/project-settings/advanced', component: ProjectEditAddComponent, canActivate: [AuthGuard] },
 
   // { path: 'home', component: HomeComponent, canActivate: [AuthGuard]}, // , canDeactivate: [AuthGuard]
   { path: 'project/:projectid/home', component: HomeComponent, canActivate: [AuthGuard] },
