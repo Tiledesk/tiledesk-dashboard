@@ -70,6 +70,8 @@
     "Contacts": "Contacts",
     "Contact": "Contact",
     "Created": "Created",
+    "By": "by",
+    "CreatedBy": "Created by",
     "NoContact": "No contact",
     "SearchYourContacts": "Search your contacts",
     "SearchByEmail": "Search by email",
@@ -184,6 +186,9 @@
     "Login": "Login",
     "SignInToTiledesk": "Sign in to {{company_name}}",
     "SignInTo": "Sign in to",
+    "SignIn": "Sign in",
+    "WelcomeTo": "Welcome To",
+    "IfYouWantToLoginToTheOldVersion": "If you want to login to the old version",
     "LetSetUpYourTiledeskChat": "Let's set up your {{company_name}} chat",
     "LetSetUpYourChat": "Let's set up your",
     "Chat": "Chat",
@@ -210,6 +215,7 @@
     "LatestActivities": "Latest Activities",
     "HasChanged": "has changed",
     "HisStatus": "his status",
+    "Status": "Status",
     "TheAvailabilityStatusOf": "the availability status of",
     "TheRoleOf": "the role of",
     "Into": "into",
@@ -422,6 +428,10 @@
     "FillTheFieldOnlyIfYouWantToUseDialogflowKB": "Fill the field only if you want to use the Dialogflow's Knowledge-base feature",
     "HereTheTutorial": "Here the tutorial on how connect your chatbots to {{ company_name }}.",
     "FiletypeNotSupported": "file type not supported",
+    "ChatLimit": "Chat limit",
+    "SuccessfullyUpdated":"Successfully updated",
+    "AnErrorOccurredWhileUpdating":"An error occurred while updating",
+    "NotificationNothingToSave":"Nothing to save",
     "CannedResponses": {
         "QuickTips": {
             "1": "Canned response are pre-made messages you can recall easily during chat.",
@@ -446,11 +456,14 @@
         "recipient_lastname_desc": "The surname of the person the agent replying to will be added to message.",
         "recipient_email_desc": "The email of the person the agent replying to will be added to message.",
         "recipient_website_desc": "The website of the person the agent replying to will be added to message.",
-        "agent_name_desc":"The name of the agent who is replying will be added to the message.",
-        "First_name_of_recipient":"First name of recipient",
-        "Email_of_recipient":"Email of recipient",
-        "Website_of_recipient":"Website of recipient",
-        "First_name_of_agent":"First name of agent",
+        "agent_name_desc": "The name of the agent who is replying will be added to the message.",
+        "First_name_of_recipient": "First name of recipient",
+        "Email_of_recipient": "Email of recipient",
+        "Website_of_recipient": "Website of recipient",
+        "First_name_of_agent": "First name of agent",
+        "EnterCannedResponseTitle": "Enter canned response title",
+        "WriteMsgToSendToYourVisitors": "Write a canned response message to send to your visitors",
+        "PleaseFillOutThisField": "Please fill out this field",
         "NotificationMsgs": {
             "DeleteCannedResError": "An error occurred while deleting response",
             "DeleteCannedResSuccess": "Response successfully deleted",
@@ -600,7 +613,27 @@
         "ProjectPlan": "Plan",
         "Your": "Your",
         "Payments": "Payments",
-        "SeePayments": "See Payments"
+        "SeePayments": "See Payments",
+        "Advanced": "Advanced",
+        "ChatLimit": "Chat limit",
+        "MaximumChats": "Maximum chats",
+        "LimitChatsNumber": "Limit the number of concurrent chats each agent can take at once",
+        "ThisChatLimitWillAppliedToAllAgents":"This chat limit will applied to all agents.",
+        "YouCanSpecifyAgentsIndividualChatLimit": "You can specify agents’ individual concurrent chat limit: select an agent to edit under Settings > Users & Groups and in his profile enter a value in the Chat Limit field.",
+        "Reassignment": "Reassignment",
+        "ReassignChatIf": "Reassign chat if the agent does not serve the assigned chat within a specified time frame",
+        "ReassignmentTimeout": "Reassignment Timeout",
+        "TimeWithNoResponse": "Time (in sec) with no response before a chat is assigned to another agent",
+        "NotificationMsgs": {
+            "UpdateProjectSuccess": "Project successfully updated",
+            "UpdateProjectError": "An error occurred while updating project"
+        },
+        "theMinimumAllowedIs_1":"the minimum allowed is 1",
+        "theMaximumAllowedIs_10000000":"the maximum allowed is 10.000.000",
+        "ChatsReassigned": "Chats reassigned",
+        "AutomaticUnavailableStatus":"Automatic unavailable status",
+        "SetAnAgentStatusToUnavailable":"Set an agent's status to unavailable if they have a consecutive number of chats reassigned",
+        "NumberOfChatsReassignedBefore":"Number of chats reassigned before the agent's status is changed"
     },
     "HomePage": {
         "Widget": "To start configure your Widget !",
@@ -640,8 +673,8 @@
         "Role": "Role",
         "Available": "Available",
         "Actions": "Actions",
-        "ViewProfileUser": "view profile user",
-        "tootipEditUser": "Edit role",
+        "ViewProfileUser": "view profile",
+        "tootipEditUser": "Edit profile",
         "tootipDeleteUser": "Remove Member",
         "modalDeleteUser": "Remove Member",
         "modalCancelInvite": "Cancel Invite",
@@ -669,7 +702,7 @@
         "AddUser": "Add User",
         "AddUserToThe": "Add User to the",
         "Project": "project",
-        "EditUserRole": "Edit user role",
+        "EditUserRole": "Edit profile",
         "UserEmail": "User email",
         "Role": "Role",
         "SelectRole": "Select a role",
@@ -692,7 +725,8 @@
         "wasNotFoundNoteThat": "was not found, note that only registered users can be invited",
         "Error": "Error",
         "AnErrorHasOccurred": "An error has occurred",
-        "EmailAddress": "Email address"
+        "EmailAddress": "Email address",
+        "NumberOfChatsAgentIsAllowedToTake":"Number of chats that agent is allowed to take at one time"
     },
     "GroupsPage": {
         "Groups": "Groups",
@@ -882,7 +916,7 @@
         "Visible": "Visible",
         "Hidden": "Hidden",
         "Actions": "Actions",
-        "NoDept": "No Departments",
+        "NoDept": "No Department",
         "ActivatedBot": "activated:",
         "OnlyBot": "(only bot)",
         "NoBotActivated": "no activated",
@@ -899,7 +933,8 @@
         "tooltipEditDept": "Edit Department",
         "VisibleColumnTooltip": "Only selected departments will be displayed in the list of widget's departments",
         "DepartmentsAreAGreatWayToSeparateChats": "Departments are a great way to separate chats and users into logical support groups",
-        "DirectUsersToTheTeamWhoCanAnswerTheUsersQuestionsBest": "Direct users to the team who can answer the users questions best."
+        "DirectUsersToTheTeamWhoCanAnswerTheUsersQuestionsBest": "Direct users to the team who can answer the users questions best.",
+        "DeptId": "Deptartment Id"
     },
     "DeptsAddEditPage": {
         "AddDept": "Add Department",
@@ -916,7 +951,15 @@
         "orCreateABot": "Create a new Bot",
         "CreateDept": "Create Department",
         "UpdateDept": "Update Department",
-        "QuickTips": "Quick tips"
+        "QuickTips": "Quick tips",
+        "NotificationMsgs": {
+            "DeleteDeptSuccess": "Department successfully deleted",
+            "DeleteDeptError": "An error occurred while deleting department",
+            "CreateDeptSuccess": "Department successfully created",
+            "CreateDeptError": "An error occurred while creating department",
+            "UpdateDeptSuccess": "Department successfully updated",
+            "UpdateDeptError": "An error occurred while updating department"
+        }
     },
     "VisitorsPage": {
         "UnservedRequests": "Unserved requests",
@@ -1009,6 +1052,50 @@
         "SourcePage": "Source page",
         "Agents": "Agents",
         "NoAgent": "No agent"
+    },
+    "Tags": {
+        "Tags": "Labels",
+        "Tag": "Label",
+        "TagName": "Label name",
+        "ManageTags": "Manage Labels",
+        "AddTags": "Add Label",
+        "DeleteLabel": "Delete Label",
+        "TypeALabelAndPressEnter": "Type a label and press Enter",
+        "YouHaveNotAddedAnyTags": "You have not added any labels",
+        "DoYouReallyWantToCancelTheTag": "Do you really want to cancel the label",
+        "Color": {
+            "red": "Red",
+            "orange": "Orange",
+            "yellow": "Yellow",
+            "green": "Green",
+            "blue": "Blue",
+            "violet": "Violet"
+        },
+        "NotificationMsgs": {
+            "CreateLabelSuccess": "Label successfully created",
+            "CreateLabelError": "An error occurred while creating label",
+            "DeleteLabelSuccess": "Label successfully deleted",
+            "DeleteLabelError": "An error occurred while deleting label",
+            "UpdateLabelSuccess": "Label successfully updated",
+            "UpdateLabelError": "An error occurred while updating label",
+            "AddLabelSuccess": "Label successfully added",
+            "AddLabelError": "An error occurred while adding label"
+           
+        }
+    },
+    "Notes": {
+        "Notes": "Notes",
+        "AddNote": "Add Note",
+        "AddANote": "Add a note ...",
+        "DeleteNote": "Delete Note",
+        "DoYouReallyWantToCancelTheNote": "Do you really want to cancel the note",
+        "NotificationMsgs": {
+            "CreateNoteSuccess": "Note successfully created",
+            "CreateNoteError": "An error occurred while creating note",
+            "DeleteNoteSuccess": "Note successfully deleted",
+            "DeleteNoteError": "An error occurred while deleting note"
+
+        }
     },
     "HistoryPage": {
         "Requester": "Requester",
