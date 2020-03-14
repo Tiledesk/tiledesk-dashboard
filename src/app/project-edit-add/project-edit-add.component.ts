@@ -26,14 +26,14 @@ import { AppConfigService } from '../services/app-config.service';
 export class ProjectEditAddComponent implements OnInit, OnDestroy {
   tparams = brand;
   // public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK; // now get from appconfig
-  public_Key: string; 
+  public_Key: string;
   CREATE_VIEW = false;
   EDIT_VIEW = false;
   PROJECT_SETTINGS_ROUTE: boolean;
   PROJECT_SETTINGS_PAYMENTS_ROUTE: boolean;
   PROJECT_SETTINGS_AUTH_ROUTE: boolean;
+  PROJECT_SETTINGS_ADVANCED_ROUTE: boolean;
 
-  
   showSpinner = true;
 
   project_name: string;
@@ -77,13 +77,42 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   timeOfNextRenew: string;
   plan_amount: string;
   plan_interval: string;
-  isVisible: boolean;
   browser_lang: string;
   countOfPendingInvites: number;
   projectUsersLength: number;
   subscriptionPaymentsLength: number;
   SUBSCRIPTION_BUFFER_DAYS: boolean;
+
+  isVisiblePaymentTab: boolean;
+  isVisibleAdvancedTab: boolean
+  max_agent_served_chat: number
+  reassignment_delay: number
+  automatic_idle_chats: number
+
+  updateSuccessMsg: string;
+  updateErrorMsg: string;
+
+  // maximum_chats_has_error = false;
+  // reassignment_timeout_has_error = false;
+  maximum_chats_has_minimum_error = false;
+  maximum_chats_has_maximum_error = false;
+  reassignment_timeout_has_minimum_error = false;
+  reassignment_timeout_has_maximum__error = false;
+  automatic_idle_chats_has_minimum_error = false;
+  automatic_idle_chats_has_maximum__error = false;
   
+  chat_limit_on: boolean;
+
+  reassignment_on: boolean;
+
+  automatic_unavailable_status_on: boolean;
+  // unavailable_status_on: boolean;
+
+  is_disabled_chat_limit_section: boolean;
+  is_disabled_reassignment_section: boolean;
+  is_disabled_unavailable_status_section: boolean;
+  notificationNothingToSave: string;
+
   constructor(
     private projectService: ProjectService,
     private router: Router,
@@ -114,7 +143,32 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.getOSCODE();
     this.getAllUsersOfCurrentProject();
     this.getPendingInvitation();
+    this.translateNotificationMsgs();
   }
+
+
+  translateNotificationMsgs() {
+    this.translate.get('ProjectEditPage.NotificationMsgs')
+      .subscribe((translation: any) => {
+        console.log('PROJECT-EDIT-ADD  translateNotificationMsgs text', translation)
+
+        this.updateSuccessMsg = translation.UpdateProjectSuccess;
+        this.updateErrorMsg = translation.UpdateProjectError;
+      });
+
+      this.translate.get('NotificationNothingToSave')
+      .subscribe((translation: any) => {
+        console.log('PROJECT-EDIT-ADD  translateNotificationMsgs text', translation)
+
+        this.notificationNothingToSave = translation;
+       
+      });
+
+      
+  }
+
+
+
 
   getPendingInvitation() {
     this.usersService.getPendingUsers()
@@ -159,31 +213,42 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
     console.log('AppConfigService getAppConfig (PROJECT-EDIT-ADD) public_Key', this.public_Key);
     let keys = this.public_Key.split("-");
-    console.log('PUBLIC-KEY (Home) keys', keys)
+    console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) keys', keys)
     keys.forEach(key => {
       // console.log('NavbarComponent public_Key key', key)
       if (key.includes("PAY")) {
-        console.log('PUBLIC-KEY (Home) - key', key);
+        console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
         let pay = key.split(":");
-        console.log('PUBLIC-KEY (Home) - pay key&value', pay);
+        console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - pay key&value', pay);
         if (pay[1] === "F") {
-          this.isVisible = false;
+          this.isVisiblePaymentTab = false;
         } else {
-          this.isVisible = true;
+          this.isVisiblePaymentTab = true;
+        }
+      }
+
+      if (key.includes("PSA")) {
+        console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let psa = key.split(":");
+        console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - pay key&value', psa);
+        if (psa[1] === "F") {
+          this.isVisibleAdvancedTab = false;
+        } else {
+          this.isVisibleAdvancedTab = true;
         }
       }
     });
 
-    // console.log('ProjectEditAddComponent eoscode', this.eos);
-    // if (this.eos && this.eos === publicKey) {
+    if (!this.public_Key.includes("PAY")) {
+      console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PAY")', this.public_Key.includes("PAY"));
+      this.isVisiblePaymentTab = false;
+    }
 
-    //   this.isVisible = true;
-    //   console.log('ProjectEditAddComponent eoscode isVisible ', this.isVisible);
-    // } else {
+    if (!this.public_Key.includes("PSA")) {
+      console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PSA")', this.public_Key.includes("PSA"));
+      this.isVisibleAdvancedTab = false;
+    }
 
-    //   this.isVisible = false;
-    //   console.log('ProjectEditAddComponent eoscode isVisible ', this.isVisible);
-    // }
   }
 
   getCurrentUrlAndSwitchView() {
@@ -194,49 +259,76 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     console.log('%ProjectEditAddComponent PROJECT_SETTINGS_ROUTE ', currentUrl.indexOf('/project-settings/general'));
     console.log('%ProjectEditAddComponent PROJECT_SETTINGS_PAYMENTS_ROUTE ', currentUrl.indexOf('/project-settings/payments'));
     console.log('%ProjectEditAddComponent PROJECT_SETTINGS_AUTH_ROUTE ', currentUrl.indexOf('/project-settings/auth'));
+    console.log('%ProjectEditAddComponent PROJECT_SETTINGS_AUTH_ROUTE ', currentUrl.indexOf('/project-settings/advanced'));
+
 
     /** THE ACTIVE ROUTE IS /project-settings */
     if (
       (currentUrl.indexOf('/project-settings/general') !== -1) &&
       (currentUrl.indexOf('/project-settings/payments') === -1) &&
-      (currentUrl.indexOf('/project-settings/auth') === -1)
+      (currentUrl.indexOf('/project-settings/auth') === -1) &&
+      (currentUrl.indexOf('/project-settings/advanced') === -1)
     ) {
       console.log('%ProjectEditAddComponent router.url', this.router.url);
 
       this.PROJECT_SETTINGS_ROUTE = true;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
       this.PROJECT_SETTINGS_AUTH_ROUTE = false;
+      this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
       console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
       console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
       console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
+      console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
 
       /** THE ACTIVE ROUTE IS /project-settings/payments */
     } else if (
       (currentUrl.indexOf('/project-settings/general') === -1) &&
       (currentUrl.indexOf('/project-settings/payments') !== -1) &&
-      (currentUrl.indexOf('/project-settings/auth') === -1)
+      (currentUrl.indexOf('/project-settings/auth') === -1) &&
+      (currentUrl.indexOf('/project-settings/advanced') === -1)
 
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = true;
       this.PROJECT_SETTINGS_AUTH_ROUTE = false;
+      this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
 
-      console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
-      console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
-      console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
+      // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
+      // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
+      // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
+      // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
 
       /** THE ACTIVE ROUTE IS project-settings/auth */
     } else if (
       (currentUrl.indexOf('/project-settings/general') === -1) &&
       (currentUrl.indexOf('/project-settings/payments') === -1) &&
-      (currentUrl.indexOf('/project-settings/auth') !== -1)
+      (currentUrl.indexOf('/project-settings/auth') !== -1) &&
+      (currentUrl.indexOf('/project-settings/advanced') === -1)
     ) {
       this.PROJECT_SETTINGS_ROUTE = false;
       this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
       this.PROJECT_SETTINGS_AUTH_ROUTE = true;
-      console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
-      console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
-      console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
+      this.PROJECT_SETTINGS_ADVANCED_ROUTE = false;
+      // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
+      // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
+      // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
+      // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
+    }
+
+    else if (
+      (currentUrl.indexOf('/project-settings/general') === -1) &&
+      (currentUrl.indexOf('/project-settings/payments') === -1) &&
+      (currentUrl.indexOf('/project-settings/auth') === -1) &&
+      (currentUrl.indexOf('/project-settings/advanced') !== -1)
+    ) {
+      this.PROJECT_SETTINGS_ROUTE = false;
+      this.PROJECT_SETTINGS_PAYMENTS_ROUTE = false;
+      this.PROJECT_SETTINGS_AUTH_ROUTE = false;
+      this.PROJECT_SETTINGS_ADVANCED_ROUTE = true;
+      // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ROUTE ', this.PROJECT_SETTINGS_ROUTE);
+      // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_PAYMENTS_ROUTE ', this.PROJECT_SETTINGS_PAYMENTS_ROUTE);
+      // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_AUTH_ROUTE ', this.PROJECT_SETTINGS_AUTH_ROUTE);
+      // console.log('%ProjectEditAddComponent is PROJECT_SETTINGS_ADVANCED_ROUTE ', this.PROJECT_SETTINGS_ADVANCED_ROUTE);
     }
 
   }
@@ -255,6 +347,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   goToProjectSettings_Auth() {
     console.log('%ProjectEditAddComponent HAS CLICKED goToProjectSettings_Auth ');
     this.router.navigate(['project/' + this.id_project + '/project-settings/auth']);
+  }
+
+  goToProjectSettings_Advanced() {
+    console.log('%ProjectEditAddComponent HAS CLICKED goToProjectSettings_Advanced');
+    this.router.navigate(['project/' + this.id_project + '/project-settings/advanced']);
   }
 
   // "SubscriptionSuccessfullyCanceled":"Abbonamento annullato correttamente",
@@ -412,9 +509,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
              */
             if (subscriptionPayment.object.data.object.billing_reason === 'subscription_create') {
               this.subscription_creation_date = subscriptionPayment.object.data.object.lines.data[0].period.start
-
               console.log('ProjectEditAddComponent subscription creation date ', this.subscription_creation_date);
-
             }
 
             // get the last iteration in a _.forEach() loop
@@ -435,14 +530,12 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
             const plan_description = subscriptionPayment.object.data.object.lines.data[0].description;
             console.log('ProjectEditAddComponent subscriptionPayment plan_description: ', plan_description);
-
             if (plan_description.indexOf('×') !== -1) {
               const planSubstring = plan_description.split('×').pop();
               console.log('ProjectEditAddComponent subscriptionPayment planSubstring: ', planSubstring);
               if (plan_description.indexOf('(') !== -1) {
                 const planName = planSubstring.substring(0, planSubstring.indexOf('('));
                 console.log('ProjectEditAddComponent subscriptionPayment planName: ', planName);
-
                 subscriptionPayment.plan_name = planName.trim()
               }
 
@@ -456,9 +549,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
               subscriptionPayment.plan_name = plan_description
             }
             this.subscription_payments.push(subscriptionPayment);
-
           }
-
 
         });
         console.log('ProjectEditAddComponent FILTERED subscriptionPayments ', this.subscription_payments);
@@ -586,20 +677,91 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
         if (project.settings) {
 
-          if (project.settings.email.autoSendTranscriptToRequester === true) {
-            console.log('PRJCT-EDIT-ADD - ON INIT AUTO SEND TRANSCRIPT IS ', project.settings.email.autoSendTranscriptToRequester);
+          if (project.settings.email) {
 
-            this.AUTO_SEND_TRANSCRIPT_IS_ON = true;
-            console.log('PRJCT-EDIT-ADD - ON INIT AUTO SEND TRANSCRIPT IS ON ', this.AUTO_SEND_TRANSCRIPT_IS_ON);
+            if (project.settings.email.autoSendTranscriptToRequester === true) {
+              console.log('PRJCT-EDIT-ADD - ON INIT AUTO SEND TRANSCRIPT IS ', project.settings.email.autoSendTranscriptToRequester);
 
+              this.AUTO_SEND_TRANSCRIPT_IS_ON = true;
+              console.log('PRJCT-EDIT-ADD - ON INIT AUTO SEND TRANSCRIPT IS ON ', this.AUTO_SEND_TRANSCRIPT_IS_ON);
+
+            } else {
+              this.AUTO_SEND_TRANSCRIPT_IS_ON = false;
+              console.log('PRJCT-EDIT-ADD - ON INIT AUTO SEND TRANSCRIPT IS ON ', this.AUTO_SEND_TRANSCRIPT_IS_ON);
+            }
           } else {
+
             this.AUTO_SEND_TRANSCRIPT_IS_ON = false;
             console.log('PRJCT-EDIT-ADD - ON INIT AUTO SEND TRANSCRIPT IS ON ', this.AUTO_SEND_TRANSCRIPT_IS_ON);
           }
-        } else {
 
+
+        } else {
           this.AUTO_SEND_TRANSCRIPT_IS_ON = false;
           console.log('PRJCT-EDIT-ADD - ON INIT AUTO SEND TRANSCRIPT IS ON ', this.AUTO_SEND_TRANSCRIPT_IS_ON);
+        }
+
+
+        // ------------------------------------------------------------
+        // Advanced section properties
+        // ------------------------------------------------------------
+
+        // chat_limit_on: boolean;
+        // reassignment_on: boolean;
+        // automatic_unavailable_status_on: boolean;
+
+        //       is_disabled_chat_limit_section: boolean;
+        // is_disabled_reassignment_section: boolean;
+        // is_disabled_unavailable_status_section: boolean;
+
+        if (project.settings) {
+          // Chat limit
+          if (project.settings.max_agent_served_chat) {
+            this.max_agent_served_chat = project.settings.max_agent_served_chat
+          } else {
+            this.max_agent_served_chat = 3
+          }
+
+          if (project.settings.chat_limit_on) {
+            this.chat_limit_on = project.settings.chat_limit_on;
+          } else {
+            this.chat_limit_on = false;
+          }
+
+          // Reassignment
+          if (project.settings.reassignment_delay) {
+            this.reassignment_delay = project.settings.reassignment_delay
+          } else {
+            this.reassignment_delay = 300;
+          }
+
+          if (project.settings.reassignment_on) {
+            this.reassignment_on = project.settings.reassignment_on
+          } else {
+            this.reassignment_on = false;
+          }
+
+          // Automatic unavailable status
+          if (project.settings.automatic_idle_chats) {
+            this.automatic_idle_chats = project.settings.automatic_idle_chats
+          } else {
+            this.automatic_idle_chats = 3;
+          }
+
+          if (project.settings.automatic_unavailable_status_on) {
+            this.automatic_unavailable_status_on = project.settings.automatic_unavailable_status_on
+          } else {
+            this.automatic_unavailable_status_on = false;
+          }
+
+
+        } else {
+          this.max_agent_served_chat = 3;
+          this.reassignment_delay = 300;
+          this.automatic_idle_chats = 3;
+          this.chat_limit_on = false;
+          this.reassignment_on = false;
+          this.automatic_unavailable_status_on = false;;
         }
       }
 
@@ -611,6 +773,52 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.showSpinner = false;
     });
   }
+
+
+  toggleChat_limit_on($event) {
+    if ($event.target.checked) {
+
+      this.chat_limit_on = true;
+      console.log('PRJCT-EDIT-ADD - toggleChat_limit_on ', this.chat_limit_on);
+    } else {
+
+      this.chat_limit_on = false;
+      console.log('PRJCT-EDIT-ADD - toggleChat_limit_on ', this.chat_limit_on);
+    }
+
+  }
+
+  toggleReassignment_on($event) {
+
+    if ($event.target.checked) {
+
+      this.reassignment_on = true;
+      console.log('PRJCT-EDIT-ADD - toggleReassignment_on ', this.reassignment_on);
+    } else {
+
+      this.reassignment_on = false;
+      console.log('PRJCT-EDIT-ADD - toggleReassignment_on ', this.reassignment_on);
+    }
+
+  }
+
+  toggleUnavailable_status_on($event) {
+
+    if ($event.target.checked) {
+
+      this.automatic_unavailable_status_on = true;
+      console.log('PRJCT-EDIT-ADD - toggleUnavailable_status_on ', this.automatic_unavailable_status_on);
+    } else {
+
+      this.automatic_unavailable_status_on = false;
+      console.log('PRJCT-EDIT-ADD - toggleUnavailable_status_on ', this.automatic_unavailable_status_on);
+    }
+
+  }
+
+
+
+
 
   /**
    * ADD PROJECT (CREATE VIEW)  */
@@ -704,9 +912,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
       }, (error) => {
         console.log('UPDATE PROJECT - ERROR ', error);
+
+        this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
+
       }, () => {
         console.log('UPDATE PROJECT * COMPLETE *');
         // this.router.navigate(['/projects']);
+
+
+        this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
       });
   }
 
@@ -717,13 +931,98 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.projectService.updateAutoSendTranscriptToRequester($event.target.checked)
       .subscribe((prjct) => {
         console.log('PRJCT-EDIT-ADD AUTO SEND TRANSCRIPT UPDATE PROJECT - RES ', prjct);
-
       }, (error) => {
         console.log('PRJCT-EDIT-ADD AUTO SEND TRANSCRIPT UPDATE PROJECT - ERROR ', error);
+        this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
+
       }, () => {
         console.log('PRJCT-EDIT-ADD AUTO SEND TRANSCRIPT UPDATE PROJECT * COMPLETE *');
+        this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
         // this.router.navigate(['/projects']);
       });
+  }
+
+  updateAdvancedSettings() {
+    const updateAdvancedSettingBtn = <HTMLElement>document.querySelector('.btn_edit_advanced_settings');
+    console.log('!!! PRJCT-EDIT-ADD  - SEARCH BTN ', updateAdvancedSettingBtn)
+    updateAdvancedSettingBtn.blur();
+    console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - max_agent_served_chat ', this.max_agent_served_chat, ' reassignment_delay ', this.reassignment_delay, ' automatic_idle_chats ', this.automatic_idle_chats);
+
+    console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - chat_limit_on ', this.chat_limit_on, ' reassignment_on ', this.reassignment_on, ' automatic_unavailable_status_on ', this.automatic_unavailable_status_on);
+
+
+    // if (this.chat_limit_on === true || this.reassignment_on === true || this.automatic_unavailable_status_on === true) {
+      this.projectService.updateAdvancedSettings(this.max_agent_served_chat, this.reassignment_delay, this.automatic_idle_chats, this.chat_limit_on, this.reassignment_on, this.automatic_unavailable_status_on)
+        .subscribe((prjct) => {
+          console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - RES ', prjct);
+        }, (error) => {
+          console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - ERROR ', error);
+          this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
+        }, () => {
+          console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS * COMPLETE *');
+          this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
+        })
+    // } else {
+
+    //   this.notify.showWidgetStyleUpdateNotification(this.notificationNothingToSave, 3, 'report_problem');
+    // }
+  }
+
+
+  onChangeMaximum_chats($event) {
+    console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - ON CHANGE MAXIMUM CHAT  ', $event);
+
+    if ($event < 1) {
+      this.maximum_chats_has_minimum_error = true;
+      console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - ON CHANGE MAXIMUM CHAT - HAS MIN ERROR ', this.maximum_chats_has_minimum_error);
+    } else {
+      this.maximum_chats_has_minimum_error = false;
+    }
+
+    if ($event > 10000000) {
+      this.maximum_chats_has_maximum_error = true;
+      console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - ON CHANGE MAXIMUM CHAT - HAS MAX ERROR ', this.maximum_chats_has_maximum_error);
+    } else {
+      this.maximum_chats_has_maximum_error = false;
+    }
+  }
+
+  onChangeReassignment_timeout($event) {
+    console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - ON CHANGE REASSIGMENT TIMEOUT ', $event);
+
+    if ($event < 1) {
+      this.reassignment_timeout_has_minimum_error = true;
+      console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - ON CHANGE REASSIGMENT TIMEOUT - HAS MIN ERROR ', this.reassignment_timeout_has_minimum_error);
+    } else {
+      this.reassignment_timeout_has_minimum_error = false;
+    }
+
+    if ($event > 10000000) {
+      this.reassignment_timeout_has_maximum__error = true;
+      console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - ON CHANGE REASSIGMENT TIMEOUT - HAS MAX ERROR ', this.reassignment_timeout_has_maximum__error);
+    } else {
+      this.reassignment_timeout_has_maximum__error = false;
+    }
+
+  }
+
+  onChangeAutomaticUnavailable($event) {
+    console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - ON CHANGE Automatic Unavailable after a n of chat ', $event);
+
+    if ($event < 1) {
+      this.automatic_idle_chats_has_minimum_error = true;
+      console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - ON CHANGE REASSIGMENT TIMEOUT - HAS MIN ERROR ', this.reassignment_timeout_has_minimum_error);
+    } else {
+      this.automatic_idle_chats_has_minimum_error = false;
+    }
+
+    if ($event > 10000000) {
+      this.automatic_idle_chats_has_maximum__error = true;
+      console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - ON CHANGE REASSIGMENT TIMEOUT - HAS MAX ERROR ', this.reassignment_timeout_has_maximum__error);
+    } else {
+      this.automatic_idle_chats_has_maximum__error = false;
+    }
+
   }
 
   openConfirmJwtSecretCreationModal() {

@@ -8,15 +8,33 @@ input[type="text"] {
   margin-bottom: 10px;
   -webkit-appearance: none;
   background: #fff;
-  border: 1px solid #d9d9d9 !important;
-  // border-top: 1px solid #c0c0c0;
-  /* border-radius: 2px; */
+  border: 1px solid #d9d9d9;
   padding: 0 8px;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   border-radius: 5px;
-  background-color: #fff !important;
-  // border: solid 1px #ddd;
+  background-color: #fff;
+}
+
+.chat-limit input[type="number"] {
+  height: 36px;
+  font-size: 14px;
+  margin-bottom: 10px;
+  -webkit-appearance: none;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  padding: 0 8px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+input[type="text"]:disabled {
+  background-color: rgb(248, 249, 249);
+}
+.chat-limit input[type="number"]:disabled {
+  background-color: rgb(248, 249, 249);
 }
 
 select {
@@ -238,8 +256,9 @@ button.close {
 }
 
 .link-to-widget-auth {
-  margin-top: 25px;
-  margin-bottom: 25px;
+  // margin-top: 25px;
+  // margin-bottom: 25px;
+  margin-left: 8px;
   color: #03a5e8;
   cursor: pointer;
 }
@@ -423,6 +442,10 @@ $f21blue: #039be5;
   color: #566787;
   //   font-weight: 400;
   font-family: Google Sans, sans-serif;
+  height: 30px;
+  font-size: 16px;
+  margin-top: 10px;
+
   // margin-left: 15px;
 }
 
@@ -449,4 +472,45 @@ $f21blue: #039be5;
   font-weight: 400;
   font-size: 12px;
   margin-left: 16px;
+}
+
+
+.card_title__underlined {
+  text-transform: none;
+  color: #566787;
+  margin-bottom: 0px;
+  height: 40px !important;
+  position: relative;
+  font-family: Google Sans, sans-serif;
+  height: 30px;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.card_title__underline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: -1px;
+  border-bottom: 2px solid $brand-primary;
+  z-index: 1;
+}
+
+.section-subtitle {
+  height: 20px;
+  border-top: 1px solid #ddd;
+  width: calc((100% / 3) + 372px);
+}
+
+.onoffswitch_container_first_line {
+  margin-top: 5px !important;
+}
+
+.onoffswitch_container {
+  margin-bottom: 9px;
+  margin-top: 25px;
+}
+
+.section-disabled {
+  opacity: 0.4;
 }

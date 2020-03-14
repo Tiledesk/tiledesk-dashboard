@@ -16,8 +16,8 @@
         'border-from-center' : displayBtnLabelSeeYourRequets === true,
         'li-active' : displayBtnLabelSeeYourRequets === false
       }" -->
-  <li (click)="goToProjectSettings_General()" class="btn-with-border-effect" [ngClass]="{ 'li-active' : PROJECT_SETTINGS_ROUTE === true,  
-                      'border-from-center': PROJECT_SETTINGS_ROUTE === false}">
+  <li (click)="goToProjectSettings_General()" class="btn-with-border-effect"
+    [ngClass]="{ 'li-active' : PROJECT_SETTINGS_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_ROUTE === false}">
     <a> {{ "General" | translate }} </a>
   </li>
 
@@ -26,16 +26,22 @@
         'border-from-center' : displayBtnLabelSeeYourRequets === false, 
         'li-active' : displayBtnLabelSeeYourRequets === true
       }" -->
-  <li *ngIf="isVisible" (click)="goToProjectSettings_Payments()" class="btn-with-border-effect" [ngClass]="{ 'li-active' : PROJECT_SETTINGS_PAYMENTS_ROUTE === true,  
-                      'border-from-center': PROJECT_SETTINGS_PAYMENTS_ROUTE === false }">
+  <li *ngIf="isVisiblePaymentTab" (click)="goToProjectSettings_Payments()" class="btn-with-border-effect"
+    [ngClass]="{ 'li-active' : PROJECT_SETTINGS_PAYMENTS_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_PAYMENTS_ROUTE === false }">
 
     <a> {{ "ProjectEditPage.Payments" | translate }}</a>
   </li>
 
-  <li (click)="goToProjectSettings_Auth()" class="btn-with-border-effect" [ngClass]="{ 'li-active' : PROJECT_SETTINGS_AUTH_ROUTE === true,  
-                    'border-from-center': PROJECT_SETTINGS_AUTH_ROUTE === false }">
+  <li (click)="goToProjectSettings_Auth()" class="btn-with-border-effect"
+    [ngClass]="{ 'li-active' : PROJECT_SETTINGS_AUTH_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_AUTH_ROUTE === false }">
 
     <a> {{ "ProjectEditPage.Authentication" | translate }}</a>
+  </li>
+
+  <li *ngIf="isVisibleAdvancedTab" (click)="goToProjectSettings_Advanced()" class="btn-with-border-effect"
+    [ngClass]="{ 'li-active' : PROJECT_SETTINGS_ADVANCED_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_ADVANCED_ROUTE === false }">
+
+    <a> {{ "ProjectEditPage.Advanced" | translate }}</a>
   </li>
 
 </ul>
@@ -65,18 +71,16 @@
 
               <div class="row">
                 <div class="col-md-12">
-                  <h4 class="card-title" style="margin-bottom: 0px">
-                    {{ "ProjectEditPage.YourProject" | translate }}
-                  </h4>
+                  <h3 class="card_title__underlined" style="">
+                    <span class="card_title__underline">
+                      {{ "ProjectEditPage.YourProject" | translate }}
+                    </span>
+                  </h3>
                 </div>
                 <div class="col-md-12">
+                  <!-- <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">  </span> -->
 
-                  <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">
-
-                  </span>
-
-                  <div class="section-subtitle"
-                    style="height:20px; border-top: 1px solid #e8f0f5; width: calc((100% / 3) + 372px);"> </div>
+                  <div class="section-subtitle"> </div>
                 </div>
               </div>
 
@@ -135,24 +139,38 @@
                 </div> -->
 
               <div class="row">
-                <div class="col-md-12" st>
-                  <h4 class="card-title" style="margin-bottom: 0px">
-                    {{ "ProjectEditPage.TranscriptByEmail" | translate }}
-                  </h4>
+                <div class="col-md-12">
+                  <h3 class="card_title__underlined" style="margin-top:30px">
+                    <span class="card_title__underline">
+                      {{ "ProjectEditPage.TranscriptByEmail" | translate }}
+                    </span>
+                  </h3>
                 </div>
                 <div class="col-md-12">
-                  <!-- font-family: 'Montserrat', sans-serif; -->
-                  <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">
-                    {{ "ProjectEditPage.AutoSendTranscriptByEmail" | translate }}
-                  </span>
 
-                  <div class="section-subtitle"
-                    style="height:20px; border-top: 1px solid #e8f0f5; width: calc((100% / 3) + 372px);"> </div>
+                  <!-- <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">
+                    {{ "ProjectEditPage.AutoSendTranscriptByEmail" | translate }}
+                  </span> -->
+
+                  <div class="section-subtitle"> </div>
                 </div>
               </div>
 
               <!-- AUTO SEND TRANSCRIPT BY EMAIL ON / OFF BTN -->
               <div class="input-wrapper" style="max-width: 992px;">
+                <div class="row">
+
+                  <div class="col-sm-8">
+                    <div class="alert"
+                      style="background-color: #fff; border: 1px solid #e8f0f5;box-shadow: none;padding: 10px">
+                      <i style="vertical-align: middle; display: inline-flex; color:#00bcd4" class="material-icons">info
+                      </i>
+                      <span style="vertical-align: middle; display: inline-flex;">
+                        {{ "ProjectEditPage.AutoSendTranscriptByEmail" | translate  }}</span>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="row">
                   <label class="col-xs-12 col-sm-2 custom-label custom-label-left">
                     {{ "ProjectEditPage.AutoSend" | translate }}
@@ -172,64 +190,13 @@
 
             </span> <!-- /. PROJECT_SETTINGS_ROUTE -->
 
-            <span *ngIf="PROJECT_SETTINGS_AUTH_ROUTE">
-              <!-- SECTION SHARED SECRET - TITLE AND SUBTITLE -->
-              <!-- <div class="row">
-                  <div class="col-sm-12">
-                    <p class="card-section-title">
-                      {{ "ProjectEditPage.VisitorAuthentication" | translate }}
-                    </p>
-                    <p class="card-section-subtitle">
-                      {{ "ProjectEditPage.EnableVisitorAuthentication" | translate }}.
-
-                      <span class="link-to-widget-auth" (click)="goToWidgetAuthenticationDocs()"> 
-                        {{ 'Resourcepage.HereHow' | translate }} 
-                      </span>
-                    </p>
-                  </div>
-                </div> -->
-
-              <div class="row">
-                <div class="col-md-12">
-                  <h4 class="card-title" style="margin-bottom: 0px">
-                    {{ "ProjectEditPage.VisitorAuthentication" | translate }}
-                  </h4>
-                </div>
-                <div class="col-md-12">
-
-                  <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">
-                    {{ "ProjectEditPage.EnableVisitorAuthentication" | translate }}.
-                    <span class="link-to-widget-auth" (click)="goToWidgetAuthenticationDocs()">
-                      {{ 'Resourcepage.HereHow' | translate }}
-                    </span>
-                  </span>
-
-                  <div class="section-subtitle"
-                    style="height:20px; border-top: 1px solid #e8f0f5; width: calc((100% / 3) + 372px);"> </div>
-                </div>
-              </div>
-
-              <!-- SHARED SECRET GENERATE -->
-              <div class="input-wrapper" style="max-width: 992px;">
-                <div class="row">
-                  <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
-                    Shared Secret
-                  </label>
-                  <div class="col-xs-12 col-sm-10">
-
-                    <button (click)="openConfirmJwtSecretCreationModal()" class="btn btn-primary"
-                      style="margin-top:5px; padding:6px 15px ">
-                      {{ "ProjectEditPage.Generate" | translate }}
-                    </button>
-                  </div>
-                </div>
-              </div>
 
 
 
-            </span> <!-- /. AUTH ROUTE -->
-
-
+            <!-- 
+            // --------------------------------------------------------
+            // Payments
+            // -------------------------------------------------------- -->
             <span *ngIf="PROJECT_SETTINGS_PAYMENTS_ROUTE">
 
               <!-- ****************** start project plan ****************** -->
@@ -244,19 +211,20 @@
 
               <div class="row">
                 <div class="col-md-12">
-                  <h4 class="card-title" style="margin-bottom: 0px">
-                    {{ "ProjectEditPage.Your" | translate }} {{ "ProjectEditPage.ProjectPlan" | translate }}
-                  </h4>
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      {{ "ProjectEditPage.Your" | translate }} {{ "ProjectEditPage.ProjectPlan" | translate }}
+                    </span>
+                  </h3>
                 </div>
                 <div class="col-md-12">
 
-                  <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">
-                  </span>
+                  <!-- <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">
+                  </span> -->
 
-                  <div class="section-subtitle"
-                    style="height:20px; border-top: 1px solid #e8f0f5; width: calc((100% / 3) + 372px);"> </div>
+                  <div class="section-subtitle"> </div>
                 </div>
-              </div>
+              </div> <!-- ./end row-->
 
               <div class="input-wrapper" style="max-width: 992px;">
                 <div class="row">
@@ -444,10 +412,11 @@
                         </span>
 
                         <span *ngIf="SUBSCRIPTION_BUFFER_DAYS">
-                          {{ "Pricing.SubscriptionExpired" | translate }} {{ 'On' | translate }} {{ subscription_end_date | date: 'dd/MM/yyyy' }} - &nbsp;
+                          {{ "Pricing.SubscriptionExpired" | translate }} {{ 'On' | translate }}
+                          {{ subscription_end_date | date: 'dd/MM/yyyy' }} - &nbsp;
                           <span style="color: #039be5; cursor:pointer" (click)="openModalSubsExpired()">
-                              {{ "Pricing.UpgradePlan" | translate }}
-                            </span>
+                            {{ "Pricing.UpgradePlan" | translate }}
+                          </span>
                         </span>
 
 
@@ -656,7 +625,8 @@
                 *********************************************************
                 *********************** NO PAYMENTS *********************
                 ********************************************************* -->
-                <div class="row" style="margin-top: 16px;" *ngIf="subscriptionPaymentsLength === 0 && prjct_profile_type !== 'payment'">
+                <div class="row" style="margin-top: 16px;"
+                  *ngIf="subscriptionPaymentsLength === 0 && prjct_profile_type !== 'payment'">
                   <label class="col-sm-2 custom-label" style="padding-top:15px">
                     {{ "ProjectEditPage.Payments" | translate }} </label>
                   <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -674,7 +644,8 @@
                 ************************************************************************************************
                 ********************** PROFILE TYPE: FREE - SUBSCRIPTION BUTTON @ MEDIA < 768 ******************
                 ************************************************************************************************ -->
-                <div style="margin-top: 16px;" class="row upgrade-plan-btn-row" *ngIf="prjct_profile_type !== 'payment'">
+                <div style="margin-top: 16px;" class="row upgrade-plan-btn-row"
+                  *ngIf="prjct_profile_type !== 'payment'">
                   <div class="col-xs-12" style="text-align: center;">
 
                     <button class="btn btn-primary" style="padding-top:9px; padding-bottom:9px" (click)="goToPricing()">
@@ -684,23 +655,372 @@
                 </div>
 
               </div>
-
-
-
               <!-- ****************** /.end project plan ****************** -->
-
             </span>
+
+            <!-- 
+            // --------------------------------------------------------
+            // Authentication
+            // -------------------------------------------------------- -->
+            <span *ngIf="PROJECT_SETTINGS_AUTH_ROUTE">
+              <!-- SECTION SHARED SECRET - TITLE AND SUBTITLE -->
+              <!-- <div class="row">
+                  <div class="col-sm-12">
+                    <p class="card-section-title">
+                      {{ "ProjectEditPage.VisitorAuthentication" | translate }}
+                    </p>
+                    <p class="card-section-subtitle">
+                      {{ "ProjectEditPage.EnableVisitorAuthentication" | translate }}.
+
+                      <span class="link-to-widget-auth" (click)="goToWidgetAuthenticationDocs()"> 
+                        {{ 'Resourcepage.HereHow' | translate }} 
+                      </span>
+                    </p>
+                  </div>
+                </div> -->
+
+              <div class="row">
+                <div class="col-md-12">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      {{ "ProjectEditPage.VisitorAuthentication" | translate }}
+                    </span>
+                  </h3>
+                </div>
+                <div class="col-md-12">
+
+                  <!-- <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">
+                    {{ "ProjectEditPage.EnableVisitorAuthentication" | translate }}.
+                    <span class="link-to-widget-auth" (click)="goToWidgetAuthenticationDocs()">
+                      {{ 'Resourcepage.HereHow' | translate }}
+                    </span>
+                  </span> -->
+
+                  <div class="section-subtitle"> </div>
+                </div>
+              </div>
+
+              <!-- SHARED SECRET GENERATE -->
+              <div class="input-wrapper" style="max-width: 992px;">
+
+                <div class="row">
+                  <div class="col-sm-8">
+                    <div class="alert"
+                      style="background-color: #fff; border: 1px solid #e8f0f5;box-shadow: none;padding: 10px">
+                      <i style="vertical-align: middle; display: inline-flex; color:#00bcd4" class="material-icons">info
+                      </i>
+                      <span style="vertical-align: middle; display: inline-flex;">
+                        {{ "ProjectEditPage.EnableVisitorAuthentication" | translate }}.
+                        <span class="link-to-widget-auth" (click)="goToWidgetAuthenticationDocs()">
+                          {{ 'Resourcepage.HereHow' | translate }}
+                        </span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
+                    Shared Secret
+                  </label>
+                  <div class="col-xs-12 col-sm-10">
+
+                    <button (click)="openConfirmJwtSecretCreationModal()" class="btn btn-primary"
+                      style="margin-top:5px; padding:6px 15px ">
+                      {{ "ProjectEditPage.Generate" | translate }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </span> <!-- /. AUTH ROUTE -->
+
+
+            <!-- 
+            // --------------------------------------------------------
+            // Advanced
+            // -------------------------------------------------------- -->
+            <span *ngIf="PROJECT_SETTINGS_ADVANCED_ROUTE">
+
+              <!-- 
+            // --------------------------------------------------------
+            // Chat limit
+            // -------------------------------------------------------- -->
+              <div class="row">
+                <div class="col-md-6">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      {{ "ProjectEditPage.ChatLimit" | translate }}
+                    </span>
+                  </h3>
+                </div>
+
+                <div class="col-md-6">
+                  <h3 class="card-title onoffswitch_container_first_line">
+
+                    <div class="onoffswitch">
+                      <input (change)="toggleChat_limit_on($event)" [checked]="chat_limit_on" type="checkbox"
+                        name="chat_limit_on_onoffswitch" class="onoffswitch-checkbox" id="chat_limit_on_onoffswitch">
+                      <label class="onoffswitch-label" for="chat_limit_on_onoffswitch">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                      </label>
+                    </div>
+                  </h3>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="section-subtitle"> </div>
+                </div>
+              </div>
+
+              <div class="input-wrapper" style="max-width: 992px;"
+                [ngClass]="{'section-disabled' : chat_limit_on === false}">
+                <div class="row">
+                  <div class="col-sm-8">
+                    <div class="alert"
+                      style="background-color: #fff; border: 1px solid #e8f0f5;box-shadow: none;padding: 10px">
+                      <i style="vertical-align: middle; display: inline-flex; color:#00bcd4" class="material-icons">info
+                      </i>
+                      <span style="vertical-align: middle; display: inline-flex;">
+                        {{ "ProjectEditPage.LimitChatsNumber" | translate  }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:7px">
+                    {{ 'ProjectEditPage.MaximumChats' | translate}}
+                  </label>
+                  <div class="col-xs-12 col-sm-10">
+
+                    <!-- 
+                    // --------------------------------------------------------
+                    // Maximum chats input
+                    // -------------------------------------------------------- -->
+                    <div class="chat-limit">
+                      <input type="number" [(ngModel)]="max_agent_served_chat"
+                        (ngModelChange)="onChangeMaximum_chats($event)" class="input" id="chat_limit" name="chat_limit"
+                        min="1" max="10000000" style="margin-bottom: 1px;" [disabled]="chat_limit_on === false">
+                    </div>
+
+
+                    <div *ngIf="maximum_chats_has_minimum_error === true" class="error-message"
+                      style="color: #f6303a;font-size: 14px">
+                      {{'ProjectEditPage.theMinimumAllowedIs_1' | translate }}
+                    </div>
+                    <div *ngIf="maximum_chats_has_maximum_error === true" class="error-message"
+                      style="color: #f6303a;font-size: 14px">
+                      {{'ProjectEditPage.theMaximumAllowedIs_10000000' | translate }}
+                    </div>
+
+                    <span
+                      style="display: block; font-size: 12px; font-weight: 100;color: #7695a5;line-height: 1.2em;padding-top: 3px;">
+                      {{ "ProjectEditPage.ThisChatLimitWillAppliedToAllAgents" | translate  }}
+                    </span>
+                    <span
+                      style="display: block; font-size: 12px; font-weight: 100;color: #7695a5;line-height: 1.2em;padding-top: 3px; max-width: 415px;margin-top: 5px;">
+                      {{ "ProjectEditPage.YouCanSpecifyAgentsIndividualChatLimit" | translate  }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 
+            // --------------------------------------------------------
+            // Reassigment
+            // -------------------------------------------------------- -->
+              <div class="row">
+                <div class="col-md-6">
+                  <h3 class="card_title__underlined" style="margin-top:30px">
+                    <span class="card_title__underline">
+                      {{ "ProjectEditPage.Reassignment" | translate }}
+                    </span>
+                  </h3>
+                </div>
+
+                <div class="col-md-6">
+                  <h3 class="card-title onoffswitch_container">
+                    <div class="onoffswitch">
+                      <input (change)="toggleReassignment_on($event)" [checked]="reassignment_on" type="checkbox"
+                        name="reassignment_on_onoffswitch" class="onoffswitch-checkbox" id="reassignment_on">
+                      <label class="onoffswitch-label" for="reassignment_on">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                      </label>
+                    </div>
+                  </h3>
+                </div>
+                <div class="col-md-12">
+                  <div class="section-subtitle"> </div>
+                </div>
+              </div>
+
+
+              <div class="input-wrapper" style="max-width: 992px;"
+                [ngClass]="{'section-disabled' : reassignment_on === false}">
+                
+                <div class="row">
+                  <div class="col-sm-8">
+                    <div class="alert"
+                      style="background-color: #fff; border: 1px solid #e8f0f5;box-shadow: none;padding: 10px">
+                      <i style="vertical-align: middle; display: inline-flex; color:#00bcd4" class="material-icons">info
+                      </i>
+                      <span style="vertical-align: middle; display: inline-flex;">
+                        {{ "ProjectEditPage.ReassignChatIf" | translate  }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="padding-top:0px">
+                    {{ "ProjectEditPage.ReassignmentTimeout" | translate  }}
+                  </label>
+                  <div class="col-xs-12 col-sm-10">
+
+                    <div class="chat-limit">
+
+                      <!-- 
+                      // --------------------------------------------------------
+                      // Reassignment Timeout input
+                      // -------------------------------------------------------- -->
+                      <input type="number" [(ngModel)]="reassignment_delay"
+                        (ngModelChange)="onChangeReassignment_timeout($event)" class="input" id="reassignment_timeout"
+                        name="reassignment_timeout" min="1" max="10000000"
+                        style="margin-bottom: 1px;" [disabled]="reassignment_on === false">
+
+                      <div *ngIf="reassignment_timeout_has_minimum_error === true" class="error-message"
+                        style="color: #f6303a;font-size: 14px">
+                        {{'ProjectEditPage.theMinimumAllowedIs_1' | translate }}
+                      </div>
+                      <div *ngIf="reassignment_timeout_has_maximum__error === true" class="error-message"
+                        style="color: #f6303a;font-size: 14px">
+                        {{'ProjectEditPage.theMaximumAllowedIs_10000000' | translate }}
+                      </div>
+
+                      <span
+                        style="display: block; font-size: 12px; font-weight: 100;color: #7695a5;line-height: 1.2em;padding-top: 3px;">
+                        {{ "ProjectEditPage.TimeWithNoResponse" | translate  }}
+                      </span>
+
+                    </div>
+
+
+                  </div>
+                </div>
+              </div>
+
+              <!-- 
+            // --------------------------------------------------------
+            // Automatic Unavailable Status
+            // -------------------------------------------------------- -->
+              <div class="row">
+                <div class="col-md-6">
+                  <h3 class="card_title__underlined" style="margin-top:30px">
+                    <span class="card_title__underline">
+                      {{ "ProjectEditPage.AutomaticUnavailableStatus" | translate }}
+                    </span>
+                  </h3>
+                </div>
+
+                <div class="col-md-6">
+                  <h3 class="card-title onoffswitch_container">
+
+                    <div class="onoffswitch">
+                      <input (change)="toggleUnavailable_status_on($event)"
+                        [checked]="automatic_unavailable_status_on === true" type="checkbox"
+                        name="unavailable_status_on_onoffswitch" class="onoffswitch-checkbox"
+                        id="unavailable_status_on">
+                      <label class="onoffswitch-label" for="unavailable_status_on">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                      </label>
+                    </div>
+
+                  </h3>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="section-subtitle"> </div>
+                </div>
+              </div>
+
+
+              <div class="input-wrapper" style="max-width: 992px;"
+                [ngClass]="{'section-disabled' : automatic_unavailable_status_on === false}">
+                <div class="row">
+                  <div class="col-sm-8">
+                    <div class="alert"
+                      style="background-color: #fff; border: 1px solid #e8f0f5;box-shadow: none;padding: 10px">
+                      <i style="vertical-align: middle; display: inline-flex; color:#00bcd4" class="material-icons">info
+                      </i>
+                      <span style="vertical-align: middle; display: inline-flex;">
+                        {{ "ProjectEditPage.SetAnAgentStatusToUnavailable" | translate  }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <label class="col-xs-12 col-sm-2 custom-label custom-label-left" style="">
+                    {{ "ProjectEditPage.ChatsReassigned" | translate  }}
+                  </label>
+                  <div class="col-xs-12 col-sm-10">
+
+                    <div class="chat-limit">
+
+                      <!-- 
+                      // --------------------------------------------------------
+                      // Automatic Unavailable Status input
+                      // -------------------------------------------------------- -->
+                      <input type="number" [(ngModel)]="automatic_idle_chats"
+                        (ngModelChange)="onChangeAutomaticUnavailable($event)" class="input" id="automatic_idle_chats"
+                        name="automatic_idle_chats" style="margin-bottom: 1px;"
+                        style="margin-bottom: 1px;max-width: 93px;"
+                        [disabled]="automatic_unavailable_status_on === false">
+
+                      <div *ngIf="automatic_idle_chats_has_minimum_error === true" class="error-message"
+                        style="color: #f6303a;font-size: 14px">
+                        {{'ProjectEditPage.theMinimumAllowedIs_1' | translate }}
+                      </div>
+                      <div *ngIf="automatic_idle_chats_has_maximum__error === true" class="error-message"
+                        style="color: #f6303a;font-size: 14px">
+                        {{'ProjectEditPage.theMaximumAllowedIs_10000000' | translate }}
+                      </div>
+
+                      <span
+                        style="display: block; font-size: 12px; font-weight: 100;color: #7695a5;line-height: 1.2em;padding-top: 3px;">
+                        {{ "ProjectEditPage.NumberOfChatsReassignedBefore" | translate  }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+            </span> <!-- /. ADVANCED ROUTE -->
 
           </div>
           <!-- ./ card-content -->
 
-          <!-- <div class="card-footer" style="text-align: center;">
-              <div class="stats">
-                <button class="btn btn-success" (click)="edit()">
-                  {{ "ProjectEditPage.UpdateProject" | translate }}
-                  </button>
-              </div>
-            </div> -->
+
+          <!-- 
+          // --------------------------------------------------------
+          // Save btn displayed olny for the tab 'Advanced'
+          // -------------------------------------------------------- -->
+          <span *ngIf="PROJECT_SETTINGS_ADVANCED_ROUTE">
+            <div class="card-footer" style="border-color: #e8f0f5 !important;">
+
+              <button class="btn btn-primary btn_edit_advanced_settings" (click)="updateAdvancedSettings()" [disabled]="maximum_chats_has_minimum_error === true || 
+                            maximum_chats_has_maximum_error === true || 
+                            reassignment_timeout_has_minimum_error === true || 
+                            reassignment_timeout_has_maximum__error === true ||
+                            automatic_idle_chats_has_minimum_error === true ||
+                            automatic_idle_chats_has_maximum__error === true">
+                {{ 'ScriptPage.Save' | translate }}
+              </button>
+
+            </div>
+          </span>
 
 
         </div>
