@@ -28,7 +28,7 @@ import { takeUntil } from 'rxjs/operators'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { browserRefresh } from '../../app.component';
 import * as uuid from 'uuid';
-
+import { Chart } from 'chart.js';
 
 @Component({
   selector: 'appdashboard-ws-requests-list',
@@ -36,7 +36,7 @@ import * as uuid from 'uuid';
   styleUrls: ['./ws-requests-list.component.scss']
 })
 export class WsRequestsListComponent extends WsSharedComponent implements OnInit, AfterViewInit, OnDestroy {
-  
+
   // CHAT_BASE_URL = environment.chat.CHAT_BASE_URL; // moved
   // CHAT_BASE_URL = environment.CHAT_BASE_URL; // now get from appconfig
   CHAT_BASE_URL: string;
@@ -99,7 +99,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   internalRequest_deptId: string;
   internalRequest_message: string;
   showSpinner_createInternalRequest = false;
-  hasClickedCreateNewInternalRequest= false;
+  hasClickedCreateNewInternalRequest = false;
   createNewInternalRequest_hasError: boolean;
   internal_request_id: string;
 
@@ -160,8 +160,15 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.detectBrowserRefresh();
 
     this.getChatUrl();
-    this.getTestSiteUrl()
+    this.getTestSiteUrl();
+
+    
   }
+
+
+
+
+ 
 
   getTestSiteUrl() {
     this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
@@ -173,7 +180,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     console.log('AppConfigService getAppConfig (WS-REQUESTS-LIST COMP.) CHAT_BASE_URL', this.CHAT_BASE_URL);
   }
 
-  ngAfterViewInit() {  }
+  ngAfterViewInit() { }
 
   ngOnDestroy() {
     console.log('% »»» WebSocketJs WF +++++ ws-requests--- list ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ ngOnDestroy')
@@ -839,6 +846,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         console.log('% »»» WebSocketJs WF +++++ ws-requests--- list getWsRequests (served)', this.wsRequestsServed);
         console.log('% »»» WebSocketJs WF +++++ ws-requests--- list getWsRequests (unserved)', this.wsRequestsUnserved);
 
+        this.initRequestsDoughnutChart();
         // var self = this
         // // https://stackoverflow.com/questions/8267857/how-to-wait-until-array-is-filled-asynchronous
         // var isFinished = false;
@@ -864,6 +872,35 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
 
         console.log('% »»» WebSocketJs WF +++++ ws-requests--- list getWsRequests */* COMPLETE */*')
       })
+  }
+
+   // And for a doughnut chart
+   initRequestsDoughnutChart() {
+    var myDoughnutChart = new Chart('doughnutChart', {
+      type: 'doughnut',
+      data: {
+        labels: ["Served", "Unserved"],
+        datasets: [
+          {
+          
+            backgroundColor: ["#05BDD4", "#ED4537"],
+            data: [this.wsRequestsServed.length, this.wsRequestsUnserved.length]
+          }
+        ]
+      },
+      
+      options: {
+        aspectRatio: 1,
+        cutoutPercentage: 60,
+        legend: {
+          display: false,
+      },
+        title: {
+          display: false,
+          text: 'Requests'
+        }
+      }
+    });
   }
 
   checkIfFinished(wsRequestsServed) {
@@ -943,7 +980,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   presentCreateInternalRequestModal() {
     this.displayInternalRequestModal = 'block'
     this.hasClickedCreateNewInternalRequest = false;
-  
+
   }
 
   closeInternalRequestModal() {
@@ -951,7 +988,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
     this.hasClickedCreateNewInternalRequest = false
 
     this.resetCreateInternalRequest()
- 
+
   }
 
 
@@ -988,7 +1025,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   openTheChaForInternalRequest() {
     this.displayInternalRequestModal = 'none'
     // + '?recipient=' + this.internal_request_id;
-    const url = this.CHAT_BASE_URL 
+    const url = this.CHAT_BASE_URL
     window.open(url, '_blank');
 
     this.resetCreateInternalRequest();
