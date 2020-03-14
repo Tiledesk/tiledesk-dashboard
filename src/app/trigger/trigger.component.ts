@@ -45,6 +45,7 @@ export class TriggerComponent implements OnInit {
     this.getCurrentProject();
     this.getAllTrigger();
     this.translateNotifyMsg();
+    
 
   }
 

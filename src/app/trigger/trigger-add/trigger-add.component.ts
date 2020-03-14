@@ -11,6 +11,8 @@ import { Location } from '@angular/common';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
+import { UsersService } from '../../services/users.service';
+import { FaqKbService } from '../../services/faq-kb.service';
 
 
 @Component({
@@ -51,14 +53,18 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
   // messageAction: string;       --> get from BaseTriggerComponent
   // messageServerError: string;  --> get from BaseTriggerComponent
 
-  constructor(public router: Router,
+  constructor(
+    public router: Router,
     private _location: Location,
     private formBuilder: FormBuilder,
     private triggerService: TriggerService,
     public departmentService: DepartmentService,
     private notify: NotifyService,
-    public translate: TranslateService) {
-    super(translate, departmentService)
+    public translate: TranslateService,
+    public usersService: UsersService,
+    public faqKbService: FaqKbService
+    ) {
+    super(translate, departmentService, usersService, faqKbService)
   }
 
   ngOnInit() {
