@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { AuthService } from '../core/auth.service';
 import { AppConfigService } from '../services/app-config.service';
+
 @Injectable()
 export class CannedResponsesService {
 
@@ -27,7 +28,6 @@ export class CannedResponsesService {
     console.log('AppConfigService getAppConfig (CANNED-RES.SERV) SERVER_BASE_PATH', this.SERVER_BASE_PATH);
   }
 
-
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       console.log('CANNED-RES.SERV: SUBSCRIBE TO THE PROJECT PUBLISHED BY AUTH SERVICE ', project)
@@ -39,9 +39,7 @@ export class CannedResponsesService {
   }
 
   getToken() {
-
     this.auth.user_bs.subscribe((user) => {
-
       if (user) {
         this.TOKEN = user.token
       }
@@ -127,14 +125,14 @@ export class CannedResponsesService {
     const url = this.SERVER_BASE_PATH + this.projectId + '/canned/' + cannedresid;
     console.log('CANNED-RES.SERV UPDATE CANNED-RES URL ', url);
 
-    console.log('UPDATE CONTACT REQUEST BODY ', body);
+    console.log('UPDATE CANNED-RES REQUEST BODY ', body);
     return this.http
       .put(url, JSON.stringify(body), options)
       .map((res) => res.json());
 
   }
 
-    // -------------------------------------------------------------------------------------
+  // -------------------------------------------------------------------------------------
   // @ Delete - delete canned response
   // -------------------------------------------------------------------------------------
   public deleteCannedResponse(cannedresid: string, ) {
