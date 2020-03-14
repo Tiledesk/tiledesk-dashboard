@@ -20,12 +20,14 @@ export class SignupComponent implements OnInit, AfterViewInit {
   tparams = brand;
 
   companyLogoBlack_Url = brand.company_logo_black__url;
+  companyLogoAllWithe_Url = brand.company_logo_allwhite__url;
   company_name = brand.company_name;
   company_site_url = brand.company_site_url;
   privacy_policy_link_text = brand.privacy_policy_link_text;
   terms_and_conditions_url = brand.terms_and_conditions_url;
   privacy_policy_url = brand.privacy_policy_url;
   display_terms_and_conditions_link = brand.signup_page.display_terms_and_conditions_link;
+ 
 
   showSpinnerInLoginBtn = false;
   public signin_errormsg = '';
@@ -33,6 +35,9 @@ export class SignupComponent implements OnInit, AfterViewInit {
   SKIP_WIZARD: boolean;
   currentLang: string;
   pendingInvitationEmail: string;
+
+  hide_left_panel: boolean;
+  bckgndImageSize = 60 + '%'
 
   userForm: FormGroup;
   // newUser = false; // to toggle login or signup form
@@ -78,6 +83,29 @@ export class SignupComponent implements OnInit, AfterViewInit {
     this.buildForm();
     this.getBrowserLang();
     this.checkCurrentUrlAndSkipWizard()
+  }
+
+  getWindowWidthAndHeight() {
+    console.log('SIGN-IN - ACTUAL INNER WIDTH ', window.innerWidth);
+    console.log('SIGN-IN - ACTUAL INNER HEIGHT ', window.innerHeight);
+
+    if( window.innerHeight <= 680) {
+
+      this.bckgndImageSize = 50 + '%'
+    } else {
+      this.bckgndImageSize = 60 + '%'
+    }
+
+
+    if(window.innerWidth < 992) {
+
+      this.hide_left_panel = true;
+      console.log('SIGN-IN - ACTUAL INNER WIDTH hide_left_panel ',  this.hide_left_panel);
+    } else {
+      this.hide_left_panel = false;
+      console.log('SIGN-IN - ACTUAL INNER WIDTH hide_left_panel ',  this.hide_left_panel);
+    }
+    
   }
 
 
@@ -176,8 +204,11 @@ export class SignupComponent implements OnInit, AfterViewInit {
           }
         }
       }, (error) => {
+
         console.log('CREATE NEW USER - POST REQUEST ERROR ', error);
         this.showSpinnerInLoginBtn = false;
+        this.display = 'block';
+        this.signin_errormsg = 'An error occurred while creating the account';
       }, () => {
         console.log('CREATE NEW USER  - POST REQUEST COMPLETE ');
       });
@@ -315,6 +346,13 @@ export class SignupComponent implements OnInit, AfterViewInit {
     window.open(url);
     // , '_blank'
   }
+
+ 
+
+  goToSigninPage() {
+      this.router.navigate(['login']);
+    }
+  
 
   onChange($event) {
     const checkModel = $event.target.checked;

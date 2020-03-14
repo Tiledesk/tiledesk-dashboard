@@ -1,4 +1,234 @@
-<div class="main-content" style="padding-top:0px;">
+<!-- background-image: linear-gradient(to bottom, #fc766a, #f9796b, #f67b6c, #f37e6e, #f0806f); -->
+<div class="main-content"
+  style="padding-top:0px;min-height: calc(100% - 0px); margin-top: 0px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;">
+  <!--  background-image: url(assets/img/tiledesk-login-background.jpg); background-size: cover;" -->
+  <div class="container-fluid">
+
+    <!-- test -->
+    <!--  background-size: contain; -->
+    <!-- background-size: 50%; -->
+    <div class="split left" [ngStyle]="{'background-size': bckgndImageSize}"
+      [ngClass]="{
+        'hidden_left_panel' : hide_left_panel === true, 
+        'brand-background-image': company_name === 'Tiledesk',
+        'no_brand-background-image': company_name !== 'Tiledesk'}">
+
+      <!-- 
+    // ---------------------------------------------------------------
+    // Right logo
+    // --------------------------------------------------------------- -->
+
+      <div class="centered-horizontally" style="margin:auto">
+        <!-- <img src="img_avatar2.png" alt="Avatar woman"> -->
+        <!-- <h2>Jane Flex</h2>
+      <p>Some text.</p> -->
+        <div class="welcome-text" style="text-align: center;margin:auto;width:350px; font-family: 'Montserrat', sans-serif; color:#fff; font-size:24px; line-height: 1.1em;
+    font-weight: 400; letter-spacing: 2px;padding-top:40px; text-transform: uppercase;">
+          {{'WelcomeTo' | translate }}
+
+          <div class="left-logo">
+            <a [href]="company_site_url" target="_blank">
+              <!-- <img [src]="companyLogoBlack_Url" class="img-fluid" style="max-width: 120px; height: auto; padding-top:25px" /> -->
+              <!-- height: auto; margin-top: 3px; margin-left: 30px;" -->
+              <!-- max-width: 280px; -->
+              <!-- src="assets/img/logos/tiledesk_2.0_logo_all_white_v2.svg" -->
+              <img [src]="companyLogoAllWithe_Url" class="img-fluid" style="width: 90%;
+              margin-top: 30px;
+              margin-bottom: 30px;" />
+            </a>
+          </div>
+        </div>
+        <div style="width: 250px;
+      margin: auto;
+      text-align: center;">
+          <!-- text-shadow: 1px 1px 1px rgba(0,0,0,0.4); -->
+          <h2
+            style="font-size: 26px;font-family:'Montserrat', sans-serif;color:#fff; text-align:left; line-height: 1.2em;">
+
+            <!-- {{ "DontHaveAnAccountYet" | translate }} -->
+            {{ "Dont" | translate }} <br>
+            {{ "HaveAnAccountYet" | translate }}
+
+          </h2>
+
+          <button (click)="goToSignupPage()" type="submit" class="btn btn-white"
+            style="height: 56px;padding-left: 54px;padding-right: 54px;">
+            {{ 'CreateAFreeAccount' | translate}}
+          </button>
+        </div>
+        <!-- We are excited to announce that we released Tiledesk V2 with powerful new feature. <br><br> -->
+        <div *ngIf="isVisibleV1L === true" style="margin:auto;width:350px; font-family: 'Montserrat', sans-serif; color:#fff; font-size:16px; line-height: 1.5em;
+      font-weight: 400; letter-spacing: 2px;padding-top: 40px; text-align: center;">
+
+          {{ 'IfYouWantToLoginToTheOldVersion' | translate}}
+          <span style="text-decoration:underline; cursor: pointer;text-transform: lowercase;" (click)="goToTiledekV1()">
+            {{'ClickHere' | translate}} </span>
+        </div>
+
+        <div class="round-div"> </div>
+
+        <!-- <div>
+          <svg id="rocket-icon" viewBox="0 0 75 75">
+            <circle r="1.0886831579551413" cx="70.86274843664218" cy="62.098516191597504" fill="#AAB7C4"
+              fill-opacity="0.0837258487142225"></circle>
+            <circle r="0.8200726938020282" cx="64.24379981782918" cy="65.57739077494638" fill="#AAB7C4"
+              fill-opacity="0.27088732770443164"></circle>
+            <circle r="1.1793424772415706" cx="57.09723898709481" cy="68.03233092672572" fill="#AAB7C4"
+              fill-opacity="0.46043820999619195"></circle>
+            <circle r="0.2900594485514157" cx="52.24273402272637" cy="44.73889569197119" fill="#AAB7C4"
+              fill-opacity="0.6037958189601991"></circle>
+            <circle r="0.7760989832358942" cx="47.31017554196839" cy="5.334562847345147" fill="#AAB7C4"
+              fill-opacity="0.7328667360940185"></circle>
+            <circle r="0.47156541914035804" cx="43.91619318632008" cy="10.749047327898642" fill="#AAB7C4"
+              fill-opacity="0.826722537451349"></circle>
+            <circle r="0.5527929581697508" cx="34.4064823519186" cy="33.808690333921376" fill="#AAB7C4"
+              fill-opacity="0.9162719486596365"></circle>
+            <circle r="0.7139180597562771" cx="28.62980286030298" cy="18.722027817394263" fill="#AAB7C4"
+              fill-opacity="0.7588708372338755"></circle>
+            <circle r="0.2467665830142725" cx="22.81449796637584" cy="53.26003295950476" fill="#AAB7C4"
+              fill-opacity="0.6057925531122283"></circle>
+            <circle r="0.32312464306769334" cx="19.809815312180653" cy="41.11933182417028" fill="#AAB7C4"
+              fill-opacity="0.5241616053534017"></circle>
+            <circle r="0.8608514260529727" cx="17.289760479827144" cy="52.51323205128108" fill="#AAB7C4"
+              fill-opacity="0.44839767552503296"></circle>
+            <circle r="0.6855621276193922" cx="9.831849496722185" cy="35.74587685929175" fill="#AAB7C4"
+              fill-opacity="0.24844294515127285"></circle>
+            <circle r="0.35807855508273595" cx="6.0971903614629355" cy="10.578569785307469" fill="#AAB7C4"
+              fill-opacity="0.15451844124142822"></circle>
+            <polygon fill="#68D4F8" points="18 21 35 21 44 30 27 30"></polygon>
+            <polygon fill="#68D4F8" points="27 45 44 45 35 54 18 54"></polygon>
+            <path fill="#68D4F8"
+              d="M30.94 47.7c-3.79-.93-6.98-2.35-9.25-4.07a14.88 14.88 0 0 0 0-12.26c2.27-1.72 5.46-3.14 9.25-4.08A14.72 14.72 0 0 1 35 37.5c0 3.98-1.55 7.59-4.06 10.2z">
+            </path>
+            <path fill="#8DDEF9"
+              d="M30.94 27.3c-3.79.93-6.98 2.35-9.25 4.07.84 1.86 1.31 3.94 1.31 6.13h12c0-3.98-1.55-7.59-4.06-10.2z">
+            </path>
+            <path fill="#68D4F8"
+              d="M57.06 30.13C62.5 33.1 66 36.73 66 37.5c0 .77-3.49 4.4-8.94 7.37A14.83 14.83 0 0 0 59 37.5c0-2.7-.7-5.21-1.94-7.37z">
+            </path>
+            <path fill="#8DDEF9" d="M57.06 30.13C62.5 33.1 66 36.73 66 37.5h-7c0-2.7-.7-5.21-1.94-7.37z"></path>
+            <path fill="#ECFAFF"
+              d="M57.06 44.87C52.94 47.12 47.7 49 42 49c-3.99 0-7.75-.47-11.06-1.3A14.72 14.72 0 0 0 35 37.5c0-3.98-1.55-7.59-4.06-10.2C34.25 26.46 38.01 26 42 26c5.7 0 10.94 1.88 15.06 4.13A14.83 14.83 0 0 1 59 37.5c0 2.7-.7 5.21-1.94 7.37z">
+            </path>
+            <path fill="#FCFEFF"
+              d="M57.06 30.13C52.94 27.88 47.7 26 42 26c-3.99 0-7.75.47-11.06 1.3A14.72 14.72 0 0 1 35 37.5h24c0-2.7-.7-5.21-1.94-7.37z">
+            </path>
+            <circle cx="49.5" cy="37.5" r="3.5" fill="#68D4F8"></circle>
+            <path fill="#8DDEF9" d="M46 37.5h7a3.5 3.5 0 0 0-7 0z"></path>
+            <path fill="#68D4F8" d="M21 37.5c0-10.04-11 0-12 0 1 0 12 10.04 12 0z" class="flame"
+              style="transform: scale(0.805877, 0.871812);"></path>
+          </svg>
+
+        </div> -->
+      </div>
+    </div>
+
+    <div class="split right">
+      <!-- ALERT WITH ERROR MESSAGE -->
+      <div class="row" *ngIf="signin_errormsg" [ngStyle]="{'display':display}" style="transform: translateY(30%);">
+        <!-- <div class="col-md-6 col-md-offset-3 text-center"> -->
+        <div class="col-md-4 col-md-offset-4" align="center">
+          <div class="alert alert-danger" style="max-width: 400px;">
+            <button type="button" aria-hidden="true" class="close" (click)="dismissAlert()">×</button>
+            <div class="glyphicon glyphicon-exclamation-sign" style="display:table-cell; font-size:1.2em"></div>
+            <div style="padding-left: 5px; display:table-cell;">{{ signin_errormsg }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 
+    // ---------------------------------------------------------------
+    // Right logo
+    // --------------------------------------------------------------- -->
+      <!-- position: relative;  top: 16px; -->
+      <div class="right-logo" style="text-align: center;">
+        <a [href]="company_site_url" target="_blank">
+          <!-- [src]="companyLogoBlack_Url"  -->
+          <!-- assets/img/logos/tiledesk_2.0_logo_black_v2.svg -->
+          <img [src]="companyLogoBlack_Url" class="img-fluid" style="max-width: 150px; height: auto;" />
+        </a>
+      </div>
+      <div class="centered">
+
+        <div class="signin-title" style="text-align:center">
+          <h2 style="font-family: 'Montserrat', sans-serif; font-weight: 400;">
+            {{ "SignInTo" | translate}}
+            <!-- {{ "SignIn" | translate}} -->
+            {{ company_name }}
+          </h2>
+          <!-- <img src="assets/img/logos/tiledesk_2.0_logo_black_v2.svg" class="img-fluid" style="max-width: 280px;
+          margin-top: 30px;
+          margin-bottom: 30px;" /> -->
+        </div>
+        <div class="login-container">
+          <form [formGroup]="userForm" (ngSubmit)="signin()">
+
+            <label for="email">Email</label>
+            <input type="email" class="input" formControlName="email" id="email" required autocapitalize="off"
+              spellcheck="false">
+
+            <!-- <div *ngIf="formErrors.email" class="is-danger">
+          {{ formErrors.email }}
+        </div> -->
+
+            <label for="password">Password</label>
+            <input type="password" id="password" class="input" formControlName="password" required>
+
+            <!-- <div *ngIf="formErrors.password" class="is-danger">
+          {{ formErrors.password }}
+        </div> -->
+
+            <button type="submit" class="btn signin-button" [disabled]="!userForm.valid">
+              <span *ngIf="!showSpinnerInLoginBtn">
+                <!-- Login  -->
+                {{ 'Login' | translate}}
+              </span>
+              <span *ngIf="showSpinnerInLoginBtn"> <i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+
+            <!-- <span *ngIf="userForm.valid" class="help is-success">Form Looks Valid</span> -->
+            <div class="left-panel-signup-link" style="margin-top:16px; text-align: center">
+              <a routerLink="/signup" style="color: #666666; font-size: 1.1em">
+                {{ "DontHaveAnAccountYet" | translate }}
+                <span style="color: #03a5e8">
+                  {{ "SignUp" | translate }}
+                </span>
+              </a>
+            </div>
+
+            <p style="color: #666666; font-size: 1.1em; text-align: center; margin-top: 16px;">
+              {{ "ForgotYourPassword" | translate }}?
+              <span style="color: #03a5e8; cursor:pointer" (click)="goToResetPsw()">
+                {{ "ClickHere" | translate }}
+              </span>
+            </p>
+            <!-- <a *ngIf="!passReset && userForm.controls.email.valid" class="help is-info" (click)="resetPassword()">Reset Password for {{userForm.value.email}}?</a>
+        <p *ngIf="passReset" class="help is-info">Reset requested. Check your email instructions.</p> -->
+
+            <p *ngIf="isVisibleV1L === true" class="left-panel-gotov1-link"
+              style="color: #666666; font-size: 1.1em; text-align: center; margin-top: 16px;">
+              {{ "IfYouWantToLoginToTheOldVersion" | translate }}
+              <span style="color: #03a5e8; cursor:pointer; text-transform: lowercase;" (click)="goToTiledekV1()">
+                {{ "ClickHere" | translate }}
+              </span>
+            </p>
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+<!-- 
+// --------------------------------------------------------------------------------------------
+// Old login template
+// -------------------------------------------------------------------------------------------- -->
+<div class="main-content" style="padding-top:0px;display: none;">
   <!--  background-image: url(assets/img/tiledesk-login-background.jpg); background-size: cover;" -->
   <div class="container-fluid">
     <div class="row">

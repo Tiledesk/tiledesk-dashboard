@@ -1,38 +1,116 @@
-<div class="main-content" style="padding-top:0px">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-12">
-          <!-- (click)="goToTileDeskDotCom()" -->
-        <div style="text-align: center; cursor: pointer; margin-top: -70px;"> 
-            <!-- max-width: 100%; -->
-          <a [href]="company_site_url" target="_blank">
-            <img [src]="companyLogoBlack_Url" class="img-fluid" style="max-width: 150px; height: auto; padding-top:25px"/>
-          </a>
-        </div>
+<div class="main-content"
+  style="padding-top:0px;min-height: calc(100% - 0px); margin-top: 0px;padding-left: 0px;padding-right: 0px;padding-bottom: 0px;">
 
-        <!-- ALERT WITH ERROR MESSAGE -->
-        <div class="row" *ngIf="signin_errormsg" [ngStyle]="{'display':display}" style="transform: translateY(30%);">
-          
-          <div class="col-md-4 col-md-offset-4" align="center">
-            <!-- <div class="col-md-6 col-md-offset-3 text-center"> -->
-            <div class="alert alert-danger" style="max-width: 400px;">
-              <button type="button" aria-hidden="true" class="close" (click)="dismissAlert()">×</button>
-              <div class="glyphicon glyphicon-exclamation-sign" style="display:table-cell; font-size:1.2em"></div>
-              <div style="padding-left: 5px; display:table-cell;" >{{ signin_errormsg }}</div>
-            </div>
+  <div class="container-fluid">
+
+
+    <!-- style="background-image: url(assets/img/rocket-login-page.svg); background-repeat:no-repeat; background-position: center bottom;" -->
+    <div class="split left" [ngStyle]="{'background-size': bckgndImageSize}"
+      [ngClass]="{
+        'hidden_left_panel' : hide_left_panel === true, 
+        'brand-background-image': company_name === 'Tiledesk',
+        'no_brand-background-image': company_name !== 'Tiledesk'}">
+
+      <!-- 
+    // ---------------------------------------------------------------
+    // Right logo
+    // --------------------------------------------------------------- -->
+
+      <div class="centered-horizontally" style="margin:auto">
+        <!-- <img src="img_avatar2.png" alt="Avatar woman"> -->
+        <!-- <h2>Jane Flex</h2>
+      <p>Some text.</p> -->
+        <!--  -->
+        <div class="welcome-text" style="text-align: center;margin:auto;width:350px; font-family: 'Montserrat', sans-serif; color:#fff; font-size:24px; line-height: 1.1em;
+    font-weight: 400; letter-spacing: 2px;padding-top:40px; text-transform: uppercase;">
+          {{'WelcomeTo' | translate }}
+          <!-- <span>
+            {{"LetSetUpYourTiledeskChat" | translate: tparams }}
+          </span> -->
+
+          <div class="left-logo">
+            <a [href]="company_site_url" target="_blank">
+
+              <img [src]="companyLogoAllWithe_Url" class="img-fluid" style="width: 90%;
+              margin-top: 30px;
+              margin-bottom: 30px;" />
+            </a>
           </div>
         </div>
+        <div style="width: 450px;
+      margin: auto;
+      text-align: center;">
 
-        <div class="signup-title" style="text-align:center"> 
-          <h2 style="font-family: 'Google Sans', sans-serif !important; ">
+          <h2 style="font-size: 46px;font-family: 'Montserrat', sans-serif; color:#fff;  line-height: 1.2em;">
+
             {{"LetSetUpYourTiledeskChat" | translate: tparams }}
+
           </h2>
+
+        </div>
+        <div style="width: 250px;
+        margin: auto;
+        text-align: center;">
+          <h2
+            style="font-size: 26px;font-family: 'Montserrat', sans-serif;color:#fff; text-align:left; line-height: 1.2em;">
+
+            {{ "AlreadyHaveAnAccount" | translate }}
+
+          </h2>
+
+
+          <button (click)="goToSigninPage()" type="submit" class="btn btn-white"
+            style="height: 56px;padding-left: 107px;padding-right: 107px;">
+            Login
+          </button>
         </div>
 
+
+
+
+
+      </div>
+    </div>
+
+    <div class="split right">
+      <!-- ALERT WITH ERROR MESSAGE -->
+      <div class="row" *ngIf="signin_errormsg" [ngStyle]="{'display':display}" style="transform: translateY(30%);">
+
+        <div class="col-md-4 col-md-offset-4" align="center">
+          <!-- <div class="col-md-6 col-md-offset-3 text-center"> -->
+          <div class="alert alert-danger" style="max-width: 400px;">
+            <button type="button" aria-hidden="true" class="close" (click)="dismissAlert()">×</button>
+            <div class="glyphicon glyphicon-exclamation-sign" style="display:table-cell; font-size:1.2em"></div>
+            <div style="padding-left: 5px; display:table-cell;">{{ signin_errormsg }}</div>
+          </div>
+        </div>
+      </div>
+      <!-- 
+    // ---------------------------------------------------------------
+    // Right logo
+    // --------------------------------------------------------------- -->
+
+      <div class="right-logo" style="text-align: center;">
+        <a [href]="company_site_url" target="_blank">
+
+          <img [src]="companyLogoBlack_Url" class="img-fluid" style="max-width: 150px; height: auto;" />
+        </a>
+      </div>
+      <div class="centered">
+
+        <div class="signin-title" style="text-align:center">
+          <h2 style="font-family: 'Montserrat', sans-serif; font-weight:400">
+            {{ 'CreateAFreeAccount' | translate}}
+
+          </h2>
+          <!-- <img src="assets/img/logos/tiledesk_2.0_logo_black_v2.svg" class="img-fluid" style="max-width: 280px;
+          margin-top: 30px;
+          margin-bottom: 30px;" /> -->
+        </div>
         <div class="login-container" style="padding-top: 15px;">
 
           <form [formGroup]="userForm" (ngSubmit)="signup()" autocomplete="off">
-  
+
             <label for="firstName">
               <!-- First Name -->
               {{ "FirstName" | translate }} <span style="color:#ff5252">*</span>
@@ -42,70 +120,203 @@
             <div *ngIf="formErrors.firstName" class="is-danger" translate>
               {{ formErrors.firstName }}
             </div>
-  
+
             <label for="lastName">
               <!-- Last Name -->
               {{ "LastName" | translate }}
             </label>
-            <input type="text" id="lastName" class="input"
-                  formControlName="lastName">
-                  <!-- required -->
+            <input type="text" id="lastName" class="input" formControlName="lastName">
+            <!-- required -->
 
             <!-- <div *ngIf="formErrors.lastName" class="is-danger">
               {{ formErrors.lastName }}
             </div> -->
-  
+
             <label for="email">Email <span style="color:#ff5252">*</span></label>
             <!-- id="email" -->
             <!-- [readonly]="SKIP_WIZARD"   [ngClass]="{'gray-bckgnd' : SKIP_WIZARD}" -->
-            <input type="email" class="input" formControlName="email" 
-              required autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-  
+            <input type="email" class="input" formControlName="email" required autocomplete="off" autocorrect="off"
+              autocapitalize="off" spellcheck="false">
+
             <div *ngIf="formErrors.email" class="is-danger" translate>
               {{ formErrors.email }}
             </div>
-  
+
             <label for="password">Password <span style="color:#ff5252">*</span></label>
             <input type="text" id="password" class="input secure" formControlName="password" required>
-                       
-  
+
+
             <div *ngIf="formErrors.password" class="is-danger" translate>
               {{ formErrors.password }}
             </div>
-  
-            <!-- TERMS AND CONDITION -->
-            
-              <label class="container" for="terms" >
-                  {{ "iAgree" | translate }} 
-                <a *ngIf="display_terms_and_conditions_link" style="color: #03a5e8" target="_blank" 
-                  [href]="terms_and_conditions_url">
-                  {{ "TermsAndConditions" | translate }}
-                </a>
-                 <span *ngIf="display_terms_and_conditions_link"> {{ "And" | translate }}  </span> 
-                <a style="color: #03a5e8" target="_blank" 
-                  [href]="privacy_policy_url">
-                  {{ privacy_policy_link_text }}
-                </a>
-                <!-- [checked]="checkModel" -->
-                <input type="checkbox" formControlName="terms" id="terms"  (change)="onChange($event)"  required />
-                <span class="checkmark"></span>
-              </label>
 
-              <div *ngIf="formErrors.terms" class="is-danger" translate>
-                {{ formErrors.terms }}
-              </div>
+            <!-- TERMS AND CONDITION -->
+
+            <label class="container" for="terms">
+              {{ "iAgree" | translate }}
+              <a *ngIf="display_terms_and_conditions_link" style="color: #03a5e8" target="_blank"
+                [href]="terms_and_conditions_url">
+                {{ "TermsAndConditions" | translate }}
+              </a>
+              <span *ngIf="display_terms_and_conditions_link"> {{ "And" | translate }} </span>
+              <a style="color: #03a5e8" target="_blank" [href]="privacy_policy_url">
+                {{ privacy_policy_link_text }}
+              </a>
+              <!-- [checked]="checkModel" -->
+              <input type="checkbox" formControlName="terms" id="terms" (change)="onChange($event)" required />
+              <span class="checkmark"></span>
+            </label>
+
+            <div *ngIf="formErrors.terms" class="is-danger" translate>
+              {{ formErrors.terms }}
+            </div>
             <!-- </div> -->
 
             <!-- <div *ngIf="userForm.valid" class="notification is-success">Form is valid</div> -->
             <!-- SUBMIT -->
             <button type="submit" class="btn signup-button" [disabled]="!userForm.valid">
-              <span *ngIf="!showSpinnerInLoginBtn"> 
+              <span *ngIf="!showSpinnerInLoginBtn">
+
+                {{ "SignUp" | translate }}
+              </span>
+              <span *ngIf="showSpinnerInLoginBtn"> <i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+
+            <div class="left-panel-signin-link" style="margin-top:16px; text-align: center">
+              <a routerLink="/login" style="color: #666666; font-size: 1.1em">
+                {{ "AlreadyHaveAnAccount" | translate }}
+                <span style="color: #03a5e8">Login</span>
+              </a>
+            </div>
+
+          </form>
+
+        </div>
+        <!-- ./login-container -->
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+<!-- 
+// ---------------------------------------------------
+// Old Signup
+// --------------------------------------------------- -->
+
+<div class="main-content" style="padding-top:0px" style="display: none;">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <!-- (click)="goToTileDeskDotCom()" -->
+        <div style="text-align: center; cursor: pointer; margin-top: -70px;">
+          <!-- max-width: 100%; -->
+          <a [href]="company_site_url" target="_blank">
+            <img [src]="companyLogoBlack_Url" class="img-fluid"
+              style="max-width: 150px; height: auto; padding-top:25px" />
+          </a>
+        </div>
+
+        <!-- ALERT WITH ERROR MESSAGE -->
+        <div class="row" *ngIf="signin_errormsg" [ngStyle]="{'display':display}" style="transform: translateY(30%);">
+
+          <div class="col-md-4 col-md-offset-4" align="center">
+            <!-- <div class="col-md-6 col-md-offset-3 text-center"> -->
+            <div class="alert alert-danger" style="max-width: 400px;">
+              <button type="button" aria-hidden="true" class="close" (click)="dismissAlert()">×</button>
+              <div class="glyphicon glyphicon-exclamation-sign" style="display:table-cell; font-size:1.2em"></div>
+              <div style="padding-left: 5px; display:table-cell;">{{ signin_errormsg }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="signup-title" style="text-align:center">
+          <h2 style="font-family: 'Google Sans', sans-serif !important; ">
+            {{"LetSetUpYourTiledeskChat" | translate: tparams }}
+          </h2>
+        </div>
+
+        <div class="login-container" style="padding-top: 15px;">
+
+          <form [formGroup]="userForm" (ngSubmit)="signup()" autocomplete="off">
+
+            <label for="firstName">
+              <!-- First Name -->
+              {{ "FirstName" | translate }} <span style="color:#ff5252">*</span>
+            </label>
+            <input type="text" id="firstName" class="input" formControlName="firstName" required>
+
+            <div *ngIf="formErrors.firstName" class="is-danger" translate>
+              {{ formErrors.firstName }}
+            </div>
+
+            <label for="lastName">
+              <!-- Last Name -->
+              {{ "LastName" | translate }}
+            </label>
+            <input type="text" id="lastName" class="input" formControlName="lastName">
+            <!-- required -->
+
+            <!-- <div *ngIf="formErrors.lastName" class="is-danger">
+              {{ formErrors.lastName }}
+            </div> -->
+
+            <label for="email">Email <span style="color:#ff5252">*</span></label>
+            <!-- id="email" -->
+            <!-- [readonly]="SKIP_WIZARD"   [ngClass]="{'gray-bckgnd' : SKIP_WIZARD}" -->
+            <input type="email" class="input" formControlName="email" required autocomplete="off" autocorrect="off"
+              autocapitalize="off" spellcheck="false">
+
+            <div *ngIf="formErrors.email" class="is-danger" translate>
+              {{ formErrors.email }}
+            </div>
+
+            <label for="password">Password <span style="color:#ff5252">*</span></label>
+            <input type="text" id="password" class="input secure" formControlName="password" required>
+
+
+            <div *ngIf="formErrors.password" class="is-danger" translate>
+              {{ formErrors.password }}
+            </div>
+
+            <!-- TERMS AND CONDITION -->
+
+            <label class="container" for="terms">
+              {{ "iAgree" | translate }}
+              <a *ngIf="display_terms_and_conditions_link" style="color: #03a5e8" target="_blank"
+                [href]="terms_and_conditions_url">
+                {{ "TermsAndConditions" | translate }}
+              </a>
+              <span *ngIf="display_terms_and_conditions_link"> {{ "And" | translate }} </span>
+              <a style="color: #03a5e8" target="_blank" [href]="privacy_policy_url">
+                {{ privacy_policy_link_text }}
+              </a>
+              <!-- [checked]="checkModel" -->
+              <input type="checkbox" formControlName="terms" id="terms" (change)="onChange($event)" required />
+              <span class="checkmark"></span>
+            </label>
+
+            <div *ngIf="formErrors.terms" class="is-danger" translate>
+              {{ formErrors.terms }}
+            </div>
+            <!-- </div> -->
+
+            <!-- <div *ngIf="userForm.valid" class="notification is-success">Form is valid</div> -->
+            <!-- SUBMIT -->
+            <button type="submit" class="btn signup-button" [disabled]="!userForm.valid">
+              <span *ngIf="!showSpinnerInLoginBtn">
                 <!-- SignUp  -->
                 {{ "SignUp" | translate }}
               </span>
               <span *ngIf="showSpinnerInLoginBtn"> <i class="fa fa-spinner fa-spin"></i></span>
             </button>
-  
+
             <div style="margin-top:16px; text-align: center">
               <!-- <p class="button is-small" (click)="toggleForm()">Sei già registrato?</p> -->
               <!-- <a (click)="toggleForm()">Sei già registrato? </a> -->
@@ -113,7 +324,7 @@
               <a routerLink="/login" style="color: #666666; font-size: 1.1em">
                 <!-- Already have an account?  -->
                 {{ "AlreadyHaveAnAccount" | translate }}
-                <span style="color: #03a5e8">Login</span> 
+                <span style="color: #03a5e8">Login</span>
               </a>
             </div>
           </form>

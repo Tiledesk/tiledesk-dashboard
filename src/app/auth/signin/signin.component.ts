@@ -1,6 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-
+import { AppConfigService } from '../../services/app-config.service';
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
 import brand from 'assets/brand/brand.json';
@@ -15,17 +15,24 @@ type FormErrors = { [u in UserFields]: string };
 })
 export class SigninComponent implements OnInit {
   companyLogoBlack_Url = brand.company_logo_black__url;
+  companyLogoAllWithe_Url = brand.company_logo_allwhite__url;
   company_name = brand.company_name;
   company_site_url = brand.company_site_url;
   showSpinnerInLoginBtn = false;
 
+
   hide_left_panel: boolean;
+  bckgndImageSize = 60 + '%'
 
   public signin_errormsg = '';
   public signin_error_statusZero: boolean;
   display = 'none';
 
   userForm: FormGroup;
+
+  isVisibleV1L: boolean;
+  public_Key: string;
+
   // newUser = false; // to toggle login or signup form
   // passReset = false; // set to true when password reset is triggered
   formErrors: FormErrors = {
@@ -48,7 +55,8 @@ export class SigninComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    public appConfigService: AppConfigService
   ) { }
 
   ngOnInit() {
@@ -58,7 +66,7 @@ export class SigninComponent implements OnInit {
 
     // console.log('xxxx ', this.userForm)
     this.buildForm();
-    this.getWindowWidth();
+    this.getWindowWidthAndHeight();
     // const x = document.getElementsByTagName('input');
     // console.log('XX ', x)
     // for (let i = 0; i <= x.length - 1; i++) {
@@ -67,33 +75,91 @@ export class SigninComponent implements OnInit {
     //   }
     // }
 
-  }
-  getWindowWidth() {
-    console.log('SIGNUP - ACTUAL INNER WIDTH ', window.innerWidth);
-    if(window.innerWidth < 992) {
 
+    // const elemLeftPanelSignin = <HTMLElement>document.querySelector('.centered');
+    // const elemLoginContainer = <HTMLElement>document.querySelector('.login-container');
+    // console.log('SIGN-IN - ACTUAL INNER WIDTH elem Left Panel Signin ',  elemLeftPanelSignin);
+    // console.log('SIGN-IN - ACTUAL INNER WIDTH elem Left Panel Signin div offsetTop ',  elemLeftPanelSignin.getBoundingClientRect());
+    // console.log('SIGN-IN - ACTUAL INNER WIDTH elem Left Panel Login Container offsetTop',  elemLoginContainer.offsetTop);
+    this.getOSCODE();
+  }
+
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+
+    let keys = this.public_Key.split("-");
+    console.log('PUBLIC-KEY (SIGN-IN) - public_Key keys', keys)
+
+    keys.forEach(key => {
+      if (key.includes("V1L")) {
+        console.log('PUBLIC-KEY (SIGN-IN) - key', key);
+        let v1l = key.split(":");
+        console.log('PUBLIC-KEY (SIGN-IN) - v1l key&value', v1l);
+
+        if (v1l[1] === "F") {
+          this.isVisibleV1L = false;
+          console.log('PUBLIC-KEY (SIGN-IN) - v1l isVisible', this.isVisibleV1L);
+        } else {
+          this.isVisibleV1L = true;
+          console.log('PUBLIC-KEY (SIGN-IN) - v1l isVisible', this.isVisibleV1L);
+        }
+      }
+      /* this generates bugs: the loop goes into the false until the "key" matches "V1L" */
+      // else {
+      //   this.isVisibleV1L = false;
+      // }
+    });
+
+    if (!this.public_Key.includes("V1L")) {
+      console.log('PUBLIC-KEY (SIDEBAR) - key.includes("V1L")', this.public_Key.includes("V1L"));
+      this.isVisibleV1L = false;
+    }
+
+  }
+
+
+  getWindowWidthAndHeight() {
+    console.log('SIGN-IN - ACTUAL INNER WIDTH ', window.innerWidth);
+    console.log('SIGN-IN - ACTUAL INNER HEIGHT ', window.innerHeight);
+
+    if (window.innerHeight <= 680) {
+      this.bckgndImageSize = 50 + '%'
+    } else {
+      this.bckgndImageSize = 60 + '%'
+    }
+
+    if (window.innerWidth < 992) {
       this.hide_left_panel = true;
-      console.log('SIGNUP - ACTUAL INNER WIDTH hide_left_panel ',  this.hide_left_panel);
+      console.log('SIGN-IN - ACTUAL INNER WIDTH hide_left_panel ', this.hide_left_panel);
     } else {
       this.hide_left_panel = false;
-      console.log('SIGNUP - ACTUAL INNER WIDTH hide_left_panel ',  this.hide_left_panel);
+      console.log('SIGN-IN - ACTUAL INNER WIDTH hide_left_panel ', this.hide_left_panel);
     }
-    
   }
 
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
 
-    console.log('SIGNUP - NEW INNER WIDTH ', event.target.innerWidth);
+    const elemLeftPanelSignin = <HTMLElement>document.querySelector('.centered');
+    console.log('SIGN-IN - ACTUAL INNER WIDTH elem Left Panel Signin div offsetTop ', elemLeftPanelSignin.getBoundingClientRect());
+    console.log('SIGN-IN - NEW INNER WIDTH ', event.target.innerWidth);
+    console.log('SIGN-IN - NEW INNER HEIGHT ', event.target.innerHeight);
+
+    if (event.target.innerHeight <= 680) {
+
+      this.bckgndImageSize = 50 + '%'
+    } else {
+      this.bckgndImageSize = 60 + '%'
+    }
 
     if (event.target.innerWidth < 992) {
-      
+
       this.hide_left_panel = true;
-      console.log('SIGNUP - NEW INNER WIDTH hide_left_panel ',  this.hide_left_panel);
+      console.log('SIGN-IN - NEW INNER WIDTH hide_left_panel ', this.hide_left_panel);
     } else {
       this.hide_left_panel = false;
-      console.log('SIGNUP - NEW INNER WIDTH hide_left_panel ',  this.hide_left_panel);
+      console.log('SIGN-IN - NEW INNER WIDTH hide_left_panel ', this.hide_left_panel);
     }
 
   }
