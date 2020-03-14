@@ -35,7 +35,7 @@ export class ProjectService {
 
   public myAvailabilityCount: BehaviorSubject<number> = new BehaviorSubject<number>(null);
   public hasCreatedNewProject$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  
+
   constructor(
     http: Http,
     public auth: AuthService,
@@ -193,72 +193,9 @@ export class ProjectService {
       .map((res) => res.json());
   }
 
-  /**
-   * CREATE USER-PROJECT RELATION
-   * @param id_project
-   */
-  // public createUserProject(id_project: string) {
 
-  //   const headers = new Headers();
-  //   headers.append('Accept', 'application/json');
-  //   headers.append('Content-type', 'application/json');
-  //   headers.append('Authorization', this.TOKEN);
-  //   const options = new RequestOptions({ headers });
 
-  //   const body = { 'id_project': `${id_project}`, 'id_user': this.currentUserID, 'role': 'admin'};
 
-  //   console.log('ADD PROJECT POST REQUEST BODY ', body);
-
-  //   const url = this.PROJECT_USER_BASE_URL;
-
-  //   return this.http
-  //     .post(url, JSON.stringify(body), options)
-  //     .map((res) => res.json());
-  // }
-
-  /**
-   * UPDATE (PUT)
-   * @param id
-   * @param name
-   */
-  public updateMongoDbProject(id: string, name: string) {
-
-    let url = this.PROJECTS_URL;
-    url += id;
-    console.log('PUT URL ', url);
-
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-
-    const body = { 'name': `${name}` };
-
-    console.log('PUT REQUEST BODY ', body);
-
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
-
-  }
-
-  // ****** DOWNGRADE PLAN ******
-  public downgradePlanToFree(projectid: string) {
-    const url = this.PROJECTS_URL + projectid + '/downgradeplan';
-    console.log('downgradePlanToFree URL ', url);
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-    const body = { 'profile.type': 'free', 'profile.name': 'free' };
-    console.log('PUT REQUEST BODY ', body);
-
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
-  }
 
 
 
@@ -336,14 +273,115 @@ export class ProjectService {
   }
 
 
+  // -----------------------------------------------------------------
+  // !!! Maybe not used DOWNGRADE PLAN - todo from put to patch
+  // -----------------------------------------------------------------
+  public downgradePlanToFree(projectid: string) {
+    const url = this.PROJECTS_URL + projectid + '/downgradeplan';
+    console.log('downgradePlanToFree URL ', url);
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+    const body = { 'profile.type': 'free', 'profile.name': 'free' };
+    console.log('PUT REQUEST BODY ', body);
+
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
+
+  // -----------------------------------------------------------------
+  // Used to update the project name - todo from put to patch
+  // -----------------------------------------------------------------
+  public updateMongoDbProject(id: string, name: string) {
+
+    let url = this.PROJECTS_URL + id;
+    // url += id;
+    console.log('PUT URL ', url);
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = { 'name': `${name}` };
+
+    console.log('PUT REQUEST BODY ', body);
+
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
 
 
 
-  /// ================ UPDATE WIDGET PROJECT ====================== ///
+  // -----------------------------------------------------------------
+  // UPDATE PROJECT SETTINGS > Chat limit & Reassignment Timeout
+  // -----------------------------------------------------------------
+  public updateAdvancedSettings(chatlimit: number, reassignmenttimeout: number, automaticidlechats: number, chat_limit_on: boolean, reassignment_on: boolean, unavailable_status_on: boolean) {
+
+    let url = this.PROJECTS_URL + this.projectID;
+    // url += this.projectID;
+    console.log('UPDATE ADVANCED SETTINGS - URL ', url);
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = {
+      'settings.max_agent_served_chat': chatlimit,
+      'settings.reassignment_delay': reassignmenttimeout,
+      'settings.automatic_idle_chats': automaticidlechats,
+      'settings.chat_limit_on': chat_limit_on,
+      'settings.reassignment_on': reassignment_on,
+      'settings.automatic_unavailable_status_on': unavailable_status_on,
+    }
+
+    console.log('UPDATE ADVANCED SETTINGS - BODY ', body);
+
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
+  // -----------------------------------------------------------------
+  // UPDATE PROJECT SETTINGS > AUTO SEND TRANSCRIPT TO REQUESTER  - todo from put to patch
+  // -----------------------------------------------------------------
+  public updateAutoSendTranscriptToRequester(autosend: boolean) {
+
+    let url = this.PROJECTS_URL + this.projectID;
+    // url += this.projectID;
+    console.log('UPDATE WIDGET PROJECT - URL ', url);
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = { 'settings.email.autoSendTranscriptToRequester': autosend }
+
+    console.log('UPDATE WIDGET PROJECT - BODY ', body);
+
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
+
+  // -----------------------------------------------------------------
+  // UPDATE WIDGET PROJECT  - todo from put to patch
+  // -----------------------------------------------------------------
   public updateWidgetProject(widget_settings: any) {
 
-    let url = this.PROJECTS_URL;
-    url += this.projectID;
+    let url = this.PROJECTS_URL + this.projectID;
+    // url += this.projectID;
     console.log('UPDATE WIDGET PROJECT - URL ', url);
 
     const headers = new Headers();
@@ -361,76 +399,10 @@ export class ProjectService {
       .map((res) => res.json());
   }
 
-  /// ================ UPDATE GETTING STARTED ====================== ///
-  public updateGettingStartedProject(getting_started: any) {
 
-    let url = this.PROJECTS_URL;
-    url += this.projectID;
-    console.log('UPDATE GETTING-STARTED - URL ', url);
-
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-
-    const body = { 'gettingStarted': getting_started };
-
-    console.log('UPDATE GETTING-STARTED - BODY ', body);
-
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
-  }
-
-
-  /// ================ UPDATE PROJECT SETTINGS > AUTO SEND TRANSCRIPT TO REQUESTER ====================== ///
-  public updateAutoSendTranscriptToRequester(autosend: boolean) {
-
-    let url = this.PROJECTS_URL;
-    url += this.projectID;
-    console.log('UPDATE WIDGET PROJECT - URL ', url);
-
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-    headers.append('Authorization', this.TOKEN);
-    const options = new RequestOptions({ headers });
-
-   
-
-    const body = { 'settings.email.autoSendTranscriptToRequester': autosend }
-
-    console.log('UPDATE WIDGET PROJECT - BODY ', body);
-
-    return this.http
-      .put(url, JSON.stringify(body), options)
-      .map((res) => res.json());
-  }
-
-  /// ================ GENERATE SHARED SECRET ====================== ///
-  // https://api.tiledesk.com/v1/PROJECTID/keys/generate
-  public generateSharedSecret() {
-    const headers = new Headers();
-    headers.append('Accept', 'application/json');
-    headers.append('Content-type', 'application/json');
-
-    headers.append('Authorization', this.TOKEN);
-    const url = this.SERVER_BASE_PATH + this.projectID + '/keys/generate';
-
-    /** ********* FOR TEST  ********* **/
-    // headers.append('Authorization', 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiZW1haWwiOjEsImZpcnN0bmFtZSI6MSwibGFzdG5hbWUiOjEsInBhc3N3b3JkIjoxLCJlbWFpbHZlcmlmaWVkIjoxLCJpZCI6MX0sImdldHRlcnMiOnt9LCJfaWQiOiI1YWM3NTIxNzg3ZjZiNTAwMTRlMGI1OTIiLCJ3YXNQb3B1bGF0ZWQiOmZhbHNlLCJhY3RpdmVQYXRocyI6eyJwYXRocyI6eyJwYXNzd29yZCI6ImluaXQiLCJlbWFpbCI6ImluaXQiLCJlbWFpbHZlcmlmaWVkIjoiaW5pdCIsImxhc3RuYW1lIjoiaW5pdCIsImZpcnN0bmFtZSI6ImluaXQiLCJfaWQiOiJpbml0In0sInN0YXRlcyI6eyJpZ25vcmUiOnt9LCJkZWZhdWx0Ijp7fSwiaW5pdCI6eyJlbWFpbHZlcmlmaWVkIjp0cnVlLCJsYXN0bmFtZSI6dHJ1ZSwiZmlyc3RuYW1lIjp0cnVlLCJwYXNzd29yZCI6dHJ1ZSwiZW1haWwiOnRydWUsIl9pZCI6dHJ1ZX0sIm1vZGlmeSI6e30sInJlcXVpcmUiOnt9fSwic3RhdGVOYW1lcyI6WyJyZXF1aXJlIiwibW9kaWZ5IiwiaW5pdCIsImRlZmF1bHQiLCJpZ25vcmUiXX0sInBhdGhzVG9TY29wZXMiOnt9LCJlbWl0dGVyIjp7ImRvbWFpbiI6bnVsbCwiX2V2ZW50cyI6e30sIl9ldmVudHNDb3VudCI6MCwiX21heExpc3RlbmVycyI6MH0sIiRvcHRpb25zIjp0cnVlfSwiaXNOZXciOmZhbHNlLCJfZG9jIjp7ImVtYWlsdmVyaWZpZWQiOnRydWUsImxhc3RuYW1lIjoiTGFuemlsb3R0byIsImZpcnN0bmFtZSI6Ik5pY29sYSIsInBhc3N3b3JkIjoiJDJhJDEwJDEzZlROSnA3OUx5RVYvdzh6NXRrbmVrc3pYRUtuaWFxZm83TnR2aTZpSHdaQ2ZLRUZKd1kuIiwiZW1haWwiOiJuaWNvbGEubGFuemlsb3R0b0Bmcm9udGllcmUyMS5pdCIsIl9pZCI6IjVhYzc1MjE3ODdmNmI1MDAxNGUwYjU5MiJ9LCIkaW5pdCI6dHJ1ZSwiaWF0IjoxNTQwODE5MTUzfQ.af5nAtSYVmmWzmdgGummY6fQnt2dFTR0lCnrfP0vr6I');
-    // const url = 'https://api.tiledesk.com/v1/5b55e806c93dde00143163dd/keys/generate'
-
-    console.log('GENERATE SHARED SECRET URL ', url);
-    const body = {};
-    const options = new RequestOptions({ headers });
-    return this.http
-      .post(url, JSON.stringify(body), options)
-      .map((res) => res.json());
-  }
-
-  /// ================ UPDATE OPERATING HOURS ====================== ///
+  // -----------------------------------------------------------------
+  // UPDATE OPERATING HOURS - todo from put to patch
+  // -----------------------------------------------------------------
   public updateProjectOperatingHours(_activeOperatingHours: boolean, _operatingHours: any): Observable<Project[]> {
 
     // const url = this.UPDATE_OPERATING_HOURS_URL;
@@ -453,6 +425,60 @@ export class ProjectService {
       .map((response) => response.json());
   }
   /// UPDATE TIMETABLE AND GET AVAILABLE PROJECT USER
+
+
+
+  // -----------------------------------------------------------------
+  // GENERATE SHARED SECRET
+  // -----------------------------------------------------------------
+  /* https://api.tiledesk.com/v1/PROJECTID/keys/generate */
+  public generateSharedSecret() {
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+
+    headers.append('Authorization', this.TOKEN);
+    const url = this.SERVER_BASE_PATH + this.projectID + '/keys/generate';
+
+    /** ********* FOR TEST  ********* **/
+    // headers.append('Authorization', 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiZW1haWwiOjEsImZpcnN0bmFtZSI6MSwibGFzdG5hbWUiOjEsInBhc3N3b3JkIjoxLCJlbWFpbHZlcmlmaWVkIjoxLCJpZCI6MX0sImdldHRlcnMiOnt9LCJfaWQiOiI1YWM3NTIxNzg3ZjZiNTAwMTRlMGI1OTIiLCJ3YXNQb3B1bGF0ZWQiOmZhbHNlLCJhY3RpdmVQYXRocyI6eyJwYXRocyI6eyJwYXNzd29yZCI6ImluaXQiLCJlbWFpbCI6ImluaXQiLCJlbWFpbHZlcmlmaWVkIjoiaW5pdCIsImxhc3RuYW1lIjoiaW5pdCIsImZpcnN0bmFtZSI6ImluaXQiLCJfaWQiOiJpbml0In0sInN0YXRlcyI6eyJpZ25vcmUiOnt9LCJkZWZhdWx0Ijp7fSwiaW5pdCI6eyJlbWFpbHZlcmlmaWVkIjp0cnVlLCJsYXN0bmFtZSI6dHJ1ZSwiZmlyc3RuYW1lIjp0cnVlLCJwYXNzd29yZCI6dHJ1ZSwiZW1haWwiOnRydWUsIl9pZCI6dHJ1ZX0sIm1vZGlmeSI6e30sInJlcXVpcmUiOnt9fSwic3RhdGVOYW1lcyI6WyJyZXF1aXJlIiwibW9kaWZ5IiwiaW5pdCIsImRlZmF1bHQiLCJpZ25vcmUiXX0sInBhdGhzVG9TY29wZXMiOnt9LCJlbWl0dGVyIjp7ImRvbWFpbiI6bnVsbCwiX2V2ZW50cyI6e30sIl9ldmVudHNDb3VudCI6MCwiX21heExpc3RlbmVycyI6MH0sIiRvcHRpb25zIjp0cnVlfSwiaXNOZXciOmZhbHNlLCJfZG9jIjp7ImVtYWlsdmVyaWZpZWQiOnRydWUsImxhc3RuYW1lIjoiTGFuemlsb3R0byIsImZpcnN0bmFtZSI6Ik5pY29sYSIsInBhc3N3b3JkIjoiJDJhJDEwJDEzZlROSnA3OUx5RVYvdzh6NXRrbmVrc3pYRUtuaWFxZm83TnR2aTZpSHdaQ2ZLRUZKd1kuIiwiZW1haWwiOiJuaWNvbGEubGFuemlsb3R0b0Bmcm9udGllcmUyMS5pdCIsIl9pZCI6IjVhYzc1MjE3ODdmNmI1MDAxNGUwYjU5MiJ9LCIkaW5pdCI6dHJ1ZSwiaWF0IjoxNTQwODE5MTUzfQ.af5nAtSYVmmWzmdgGummY6fQnt2dFTR0lCnrfP0vr6I');
+    // const url = 'https://api.tiledesk.com/v1/5b55e806c93dde00143163dd/keys/generate'
+
+    console.log('GENERATE SHARED SECRET URL ', url);
+    const body = {};
+    const options = new RequestOptions({ headers });
+    return this.http
+      .post(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
+
+  // -----------------------------------------------------------------
+  // !!! not used - UPDATE GETTING STARTED
+  // -----------------------------------------------------------------
+  public updateGettingStartedProject(getting_started: any) {
+
+    let url = this.PROJECTS_URL + this.projectID
+    // url += this.projectID;
+    console.log('UPDATE GETTING-STARTED - URL ', url);
+
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+
+    const body = { 'gettingStarted': getting_started };
+
+    console.log('UPDATE GETTING-STARTED - BODY ', body);
+
+    return this.http
+      .put(url, JSON.stringify(body), options)
+      .map((res) => res.json());
+  }
+
+
+
 
 
 }
