@@ -11,6 +11,9 @@ import { NotifyService } from '../core/notify.service';
 import * as firebase from 'firebase/app';
 import { Router } from '@angular/router';
 import { AppConfigService } from '../services/app-config.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-profile',
@@ -41,6 +44,10 @@ export class UserProfileComponent implements OnInit {
 
   storageBucket: string;
   showSpinnerInUploadImageBtn = false;
+  userRole: string;
+
+  // used to unsuscribe from behaviour subject
+  private unsubscribe$: Subject<any> = new Subject<any>();
 
   constructor(
     public auth: AuthService,
@@ -49,7 +56,8 @@ export class UserProfileComponent implements OnInit {
     public notify: NotifyService,
     private router: Router,
     private uploadImageService: UploadImageService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    private translate: TranslateService,
   ) { }
 
   ngOnInit() {
@@ -61,6 +69,26 @@ export class UserProfileComponent implements OnInit {
     this.checkUserImageUploadIsComplete()
     // used when the page is refreshed
     this.checkUserImageExist();
+    this.getProjectUserRole();
+  }
+
+  getProjectUserRole() {
+    this.usersService.project_user_role_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user_role) => {
+        console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar - USER ROLE ', user_role);
+        if (user_role) {        
+            // this.userRole = user_role
+
+            this.translate.get(user_role)
+            .subscribe((text: string) => {
+              this.userRole = text;
+              
+            });
+        }
+      });
   }
 
   getStorageBucket() {
@@ -85,6 +113,7 @@ export class UserProfileComponent implements OnInit {
       }
     });
   }
+
   checkUserImageUploadIsComplete() {
     this.uploadImageService.imageExist.subscribe((image_exist) => {
       console.log('PROFILE IMAGE - IMAGE UPLOADING IS COMPLETE ? ', image_exist);
@@ -94,7 +123,6 @@ export class UserProfileComponent implements OnInit {
         this.showSpinnerInUploadImageBtn = false;
 
         console.log('PROFILE IMAGE (USER-PROFILE ) - IMAGE UPLOADING IS COMPLETE - BUILD userProfileImageurl ');
-        
         this.setImageProfileUrl(this.storageBucket)
       }
     });
@@ -110,11 +138,9 @@ export class UserProfileComponent implements OnInit {
     if (this.timeStamp) {
       // console.log('PROFILE IMAGE (USER-PROFILE ) - getUserProfileImage ', this.userProfileImageurl);
       // setTimeout(() => {
-        return this.userProfileImageurl + '&' + this.timeStamp;
+      return this.userProfileImageurl + '&' + this.timeStamp;
       // }, 200);
-      
     }
-
     return this.userProfileImageurl
   }
 
