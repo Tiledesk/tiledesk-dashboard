@@ -174,6 +174,7 @@ const routes: Routes = [
    * remember that in the navbar component wsrequest is used for the link from the in app-notification to the request's messages */
   { path: 'project/:projectid/wsrequests', component: WsRequestsListComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/wsrequest/:requestid/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/request-for-panel/:requestid', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
 
   // is the dummy component used in ws-requests-msgs: when the user is in the request' details page and 
   // click an in-app notification (of a request unserved or assigned to him) the navigation is redirect to the loading component 

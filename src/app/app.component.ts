@@ -336,7 +336,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/create-project') !== -1) ||
                     (this.route.indexOf('/create-new-project') !== -1) ||
                     (this.route.indexOf('/handle-invitation') !== -1) ||
-                    (this.route.indexOf('/install-tiledesk') !== -1)
+                    (this.route.indexOf('/install-tiledesk') !== -1) ||
+                    (this.route.indexOf('/request-for-panel') !== -1)
                 ) {
 
                     elemNavbar.setAttribute('style', 'display:none;');
@@ -379,7 +380,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
         const elemFooter = <HTMLElement>document.querySelector('footer');
-        // console.log('xxxx xxxx APP FOOTER ', elemFooter)
+        const eleWidget = <HTMLElement>document.querySelector('#tiledesk-container');
+        // console.log('APP.COMP - elem FOOTER ', elemFooter);
+        console.log('APP.COMP - elem WIDGET ', eleWidget);
 
         /* HIDE FOOTER IF IS LOGIN PAGE - SIGNUP PAGE */
         this.router.events.subscribe((val) => {
@@ -397,7 +400,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/create-new-project') !== -1) ||
                     (this.route.indexOf('/install-tiledesk') !== -1) ||
                     (this.route.indexOf('/handle-invitation') !== -1) ||
-                    (this.route.indexOf('/chat') !== -1)
+                    (this.route.indexOf('/chat') !== -1) ||
+                    (this.route.indexOf('/request-for-panel') !== -1)
                 ) {
 
                     elemFooter.setAttribute('style', 'display:none;');
@@ -408,6 +412,22 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     elemFooter.setAttribute('style', '');
 
                 }
+
+                // WIDGET HIDDEN IF THE ROUTE IS request-for-panel
+                if (this.route.indexOf('/request-for-panel') !== -1) {
+
+                    if (eleWidget) {
+                        eleWidget.style.display = 'none';
+                    } else {
+                        console.log('APP.COMP - elem WIDGET ', eleWidget) 
+                    }
+
+                    // if (window && window['tiledeskSettings']) { 
+                    //     window['tiledeskSettings']['isShow'] = false
+                    // }
+
+                }
+
             } else {
                 // console.log('»> * ', this.route)
             }
@@ -458,7 +478,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                         }
                     }
                 }
-                // console.log('APP.COMP currentUrl ', this.route, 'tiledeskSettings ', window['tiledeskSettings']);
+                console.log('APP.COMP currentUrl ', this.route, 'tiledeskSettings ', window['tiledeskSettings']);
             }
         });
     }
