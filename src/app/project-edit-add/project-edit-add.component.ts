@@ -123,7 +123,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   SHOW_CIRCULAR_SPINNER = false;
   DISPLAY_DELETE_PRJCT_BTN: boolean;
   DISPLAY_ADVANCED_TAB: boolean;
-  
+
   constructor(
     private projectService: ProjectService,
     private router: Router,
@@ -473,16 +473,17 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.prjct_profile_name = projectProfileData.profile_name;
         }
 
-        
+
         if (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true || this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
           this.DISPLAY_ADVANCED_TAB = false;
         } else if (this.prjct_profile_type === 'free' && this.prjct_trial_expired === false || this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
           this.DISPLAY_ADVANCED_TAB = true;
         }
 
-
-        this.getSubscriptionPayments(projectProfileData.subscription_id)
-        // this.getSubscriptionByID(projectProfileData.subscription_id);
+        if (projectProfileData.subscription_id) {
+          this.getSubscriptionPayments(projectProfileData.subscription_id)
+          // this.getSubscriptionByID(projectProfileData.subscription_id);
+        }
       }
     })
   }

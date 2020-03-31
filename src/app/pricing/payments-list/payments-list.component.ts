@@ -31,7 +31,7 @@ export class PaymentsListComponent implements OnInit, OnDestroy {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
       console.log('ProjectPlanService (PaymentsListComponent) project Profile Data', projectProfileData)
 
-      if (projectProfileData) {
+      if (projectProfileData && projectProfileData.subscription_id) {
         this.getSubscriptionPayments(projectProfileData.subscription_id)
       }
     });
