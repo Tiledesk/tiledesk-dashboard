@@ -184,6 +184,17 @@ button.close {
   right: 0px;
   background-color: #4caf50;
 }
+.onoffswitch-checkbox:disabled + .onoffswitch-label .onoffswitch-switch {
+  background-color: #ddd;
+}
+
+.onoffswitch-checkbox:disabled + .onoffswitch-label .onoffswitch-inner::before {
+  color: #ddd;
+}
+
+.onoffswitch-checkbox:disabled + .onoffswitch-label .onoffswitch-inner::after {
+  color: #ddd;
+}
 // ./end SWITCH BTN
 
 .card-section-title {

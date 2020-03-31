@@ -38,7 +38,7 @@
     <a> {{ "ProjectEditPage.Authentication" | translate }}</a>
   </li>
 
-  <li *ngIf="isVisibleAdvancedTab" (click)="goToProjectSettings_Advanced()" class="btn-with-border-effect"
+  <li *ngIf="isVisibleAdvancedTab && DISPLAY_ADVANCED_TAB === true" (click)="goToProjectSettings_Advanced()" class="btn-with-border-effect"
     [ngClass]="{ 'li-active' : PROJECT_SETTINGS_ADVANCED_ROUTE === true, 'border-from-center': PROJECT_SETTINGS_ADVANCED_ROUTE === false }">
 
     <a> {{ "ProjectEditPage.Advanced" | translate }}</a>
@@ -858,7 +858,7 @@
 
               <div class="input-wrapper" style="max-width: 992px;"
                 [ngClass]="{'section-disabled' : reassignment_on === false}">
-                
+
                 <div class="row">
                   <div class="col-sm-8">
                     <div class="alert"
@@ -885,8 +885,8 @@
                       // -------------------------------------------------------- -->
                       <input type="number" [(ngModel)]="reassignment_delay"
                         (ngModelChange)="onChangeReassignment_timeout($event)" class="input" id="reassignment_timeout"
-                        name="reassignment_timeout" min="1" max="10000000"
-                        style="margin-bottom: 1px;" [disabled]="reassignment_on === false">
+                        name="reassignment_timeout" min="1" max="10000000" style="margin-bottom: 1px;"
+                        [disabled]="reassignment_on === false">
 
                       <div *ngIf="reassignment_timeout_has_minimum_error === true" class="error-message"
                         style="color: #f6303a;font-size: 14px">
@@ -928,8 +928,8 @@
                     <div class="onoffswitch">
                       <input (change)="toggleUnavailable_status_on($event)"
                         [checked]="automatic_unavailable_status_on === true" type="checkbox"
-                        name="unavailable_status_on_onoffswitch" class="onoffswitch-checkbox"
-                        id="unavailable_status_on">
+                        name="unavailable_status_on_onoffswitch" class="onoffswitch-checkbox" id="unavailable_status_on"
+                        [disabled]="reassignment_on === false">
                       <label class="onoffswitch-label" for="unavailable_status_on">
                         <span class="onoffswitch-inner"></span>
                         <span class="onoffswitch-switch"></span>
@@ -946,7 +946,7 @@
 
 
               <div class="input-wrapper" style="max-width: 992px;"
-                [ngClass]="{'section-disabled' : automatic_unavailable_status_on === false}">
+                [ngClass]="{'section-disabled' : automatic_unavailable_status_on === false || reassignment_on === false}">
                 <div class="row">
                   <div class="col-sm-8">
                     <div class="alert"
@@ -975,7 +975,7 @@
                         (ngModelChange)="onChangeAutomaticUnavailable($event)" class="input" id="automatic_idle_chats"
                         name="automatic_idle_chats" style="margin-bottom: 1px;"
                         style="margin-bottom: 1px;max-width: 93px;"
-                        [disabled]="automatic_unavailable_status_on === false">
+                        [disabled]="automatic_unavailable_status_on === false || reassignment_on === false">
 
                       <div *ngIf="automatic_idle_chats_has_minimum_error === true" class="error-message"
                         style="color: #f6303a;font-size: 14px">
@@ -1033,8 +1033,8 @@
     <!-- ./ row -->
     <div class="row" *ngIf="PROJECT_SETTINGS_ROUTE">
 
-      <div class="col-md-12" style="text-align: center; border-top: 1px solid #cccccc; margin-top:25px">
-        <div style="color:#aaaaaa; margin-top:25px; cursor:pointer" (click)="openDeleteModal()">
+      <div *ngIf="DISPLAY_DELETE_PRJCT_BTN === true" class="col-md-12" style="text-align: center; border-top: 1px solid #cccccc; margin-top:25px">
+        <div style="color: rgba(0, 0, 0, 0.54); margin-top:25px; cursor:pointer" (click)="openDeleteModal()">
           <i class="material-icons" style="vertical-align: middle">delete_forever</i>
           <span style="vertical-align: middle; text-transform: uppercase">
             <!-- ELIMINA PROGETTO -->
@@ -1075,27 +1075,44 @@
           {{ "ProjectEditPage.TheProjectWillBeDeleted" | translate }}
         </h4>
       </div>
-      <div class="modal-body">
-        <label style="font-weight:100; text-align: left; padding-bottom:12px" class="col-sm-10 ">
-          <!-- Per eliminare il progetto, digita l'ID del progetto: -->
-          {{ "ProjectEditPage.ToDeleteTheProject" | translate }}:
-          <span style="color:#212121">
-            <strong> {{ id_project }}</strong>
-          </span>
-        </label>
-        <div class="col-sm-10">
-          <!-- [(ngModel)]="project_name" -->
-          <input class="" type="text" placeholder="{{ 'ProjectEditPage.ProjectId' | translate }}">
-        </div>
+      <div class="modal-body" style="min-height: 135px;">
+
+        <span *ngIf="SHOW_CIRCULAR_SPINNER === true">
+          <div class="loader" style="top:25%">
+            <svg class="circular" viewBox="25 25 50 50">
+              <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10" />
+            </svg>
+
+          </div>
+          <p style="margin-top: 40px; text-align: center;">
+            {{ "FaqPage.Processing" | translate }}
+          </p>
+        </span>
+
+        <span *ngIf="SHOW_CIRCULAR_SPINNER === false">
+          <label style="font-weight:100; text-align: left; padding-bottom:12px" class="col-sm-10 ">
+            <!-- Per eliminare il progetto, digita l'ID del progetto: -->
+            {{ "ProjectEditPage.ToDeleteTheProject" | translate }}:
+            <span style="color:#212121">
+              <strong> {{ id_project }}</strong>
+            </span>
+          </label>
+          <div class="col-sm-10">
+
+            <input class="" [(ngModel)]="project_id_to_delete" (ngModelChange)="onProjectIdToDeleteChange($event)"
+              type="text" placeholder="{{ 'ProjectEditPage.ProjectId' | translate }}">
+          </div>
+
+        </span>
       </div>
-      <div class="modal-footer" style="margin-top: 75px;">
+      <div class="modal-footer" style="">
         <button class="btn btn-white" (click)="onCloseModal()" style="padding:12px 16px;">
-          <!-- Chiudi -->
           {{ "ProjectEditPage.Calcel" | translate }}
         </button>
-        <!-- (click)="createProject() -->
-        <button style="margin-top:0px" class="btn btn-danger" disabled>
-          <!-- Elimina Progetto -->
+
+        <button (click)="deleteProject()" style="margin-top:0px" class="btn btn-danger"
+          [disabled]="DISABLE_DELETE_PROJECT_BTN === true">
+
           {{ "ProjectEditPage.DeleteProject" | translate }}
         </button>
       </div>

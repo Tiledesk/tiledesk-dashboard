@@ -17,6 +17,8 @@ import * as moment from 'moment';
 import brand from 'assets/brand/brand.json';
 import { environment } from './../../environments/environment';
 import { AppConfigService } from '../services/app-config.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators'
 
 @Component({
   selector: 'app-project-edit-add',
@@ -24,6 +26,8 @@ import { AppConfigService } from '../services/app-config.service';
   styleUrls: ['./project-edit-add.component.scss']
 })
 export class ProjectEditAddComponent implements OnInit, OnDestroy {
+
+  private unsubscribe$: Subject<any> = new Subject<any>();
   tparams = brand;
   // public_Key = environment.t2y12PruGU9wUtEGzBJfolMIgK; // now get from appconfig
   public_Key: string;
@@ -46,6 +50,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   sharedSecret: string;
 
   DISABLE_UPDATE_BTN = true;
+  DISABLE_DELETE_PROJECT_BTN = true;
   project: Project;
 
   AUTO_SEND_TRANSCRIPT_IS_ON: boolean;
@@ -91,6 +96,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   updateSuccessMsg: string;
   updateErrorMsg: string;
+  deleteSuccessMsg: string;
+  deleteErrorMsg: string;
 
   // maximum_chats_has_error = false;
   // reassignment_timeout_has_error = false;
@@ -100,7 +107,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   reassignment_timeout_has_maximum__error = false;
   automatic_idle_chats_has_minimum_error = false;
   automatic_idle_chats_has_maximum__error = false;
-  
+
   chat_limit_on: boolean;
 
   reassignment_on: boolean;
@@ -112,7 +119,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   is_disabled_reassignment_section: boolean;
   is_disabled_unavailable_status_section: boolean;
   notificationNothingToSave: string;
-
+  project_id_to_delete: string;
+  SHOW_CIRCULAR_SPINNER = false;
+  DISPLAY_DELETE_PRJCT_BTN: boolean;
+  DISPLAY_ADVANCED_TAB: boolean;
+  
   constructor(
     private projectService: ProjectService,
     private router: Router,
@@ -144,6 +155,26 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     this.getAllUsersOfCurrentProject();
     this.getPendingInvitation();
     this.translateNotificationMsgs();
+    this.getProjectUserRole()
+  }
+
+  getProjectUserRole() {
+    this.usersService.project_user_role_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user_role) => {
+        console.log('PROJECT-EDIT-ADD  USER ROLE ', user_role);
+        if (user_role) {
+          if (user_role === 'owner') {
+
+            this.DISPLAY_DELETE_PRJCT_BTN = true
+          } else {
+            this.DISPLAY_DELETE_PRJCT_BTN = false
+
+          }
+        }
+      });
   }
 
 
@@ -154,17 +185,18 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
         this.updateSuccessMsg = translation.UpdateProjectSuccess;
         this.updateErrorMsg = translation.UpdateProjectError;
+        this.deleteSuccessMsg = translation.DeleteProjectSuccess
+        this.deleteErrorMsg = translation.DeleteProjectError
+
       });
 
-      this.translate.get('NotificationNothingToSave')
+    this.translate.get('NotificationNothingToSave')
       .subscribe((translation: any) => {
         console.log('PROJECT-EDIT-ADD  translateNotificationMsgs text', translation)
 
         this.notificationNothingToSave = translation;
-       
-      });
 
-      
+      });
   }
 
 
@@ -440,6 +472,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
           this.prjct_profile_name = projectProfileData.profile_name;
         }
+
+        
+        if (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true || this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+          this.DISPLAY_ADVANCED_TAB = false;
+        } else if (this.prjct_profile_type === 'free' && this.prjct_trial_expired === false || this.prjct_profile_type === 'payment' && this.subscription_is_active === true) {
+          this.DISPLAY_ADVANCED_TAB = true;
+        }
+
 
         this.getSubscriptionPayments(projectProfileData.subscription_id)
         // this.getSubscriptionByID(projectProfileData.subscription_id);
@@ -850,7 +890,6 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   // }
 
   onProjectNameChange(event) {
-
     console.log('ON PROJECT NAME CHANGE ', event);
     console.log('ON PROJECT NAME TO UPDATE ', this.project_name);
 
@@ -861,6 +900,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.DISABLE_UPDATE_BTN = false;
     }
   }
+
+
 
   edit() {
     console.log('PROJECT ID WHEN EDIT IS PRESSED ', this.id_project);
@@ -952,16 +993,16 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
 
     // if (this.chat_limit_on === true || this.reassignment_on === true || this.automatic_unavailable_status_on === true) {
-      this.projectService.updateAdvancedSettings(this.max_agent_served_chat, this.reassignment_delay, this.automatic_idle_chats, this.chat_limit_on, this.reassignment_on, this.automatic_unavailable_status_on)
-        .subscribe((prjct) => {
-          console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - RES ', prjct);
-        }, (error) => {
-          console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - ERROR ', error);
-          this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
-        }, () => {
-          console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS * COMPLETE *');
-          this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
-        })
+    this.projectService.updateAdvancedSettings(this.max_agent_served_chat, this.reassignment_delay, this.automatic_idle_chats, this.chat_limit_on, this.reassignment_on, this.automatic_unavailable_status_on)
+      .subscribe((prjct) => {
+        console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - RES ', prjct);
+      }, (error) => {
+        console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS - ERROR ', error);
+        this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
+      }, () => {
+        console.log('PRJCT-EDIT-ADD UPDATE ADVANCED SETTINGS * COMPLETE *');
+        this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
+      })
     // } else {
 
     //   this.notify.showWidgetStyleUpdateNotification(this.notificationNothingToSave, 3, 'report_problem');
@@ -1073,6 +1114,45 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   onCloseModal() {
     this.display = 'none';
   }
+
+  onProjectIdToDeleteChange($event) {
+    console.log('ON PROJECT ID CHANGE ', $event);
+    console.log('PROJECT ID  ', this.id_project);
+
+    if ($event === this.id_project) {
+      this.DISABLE_DELETE_PROJECT_BTN = false;
+
+    } else {
+      this.DISABLE_DELETE_PROJECT_BTN = true;
+    }
+  }
+
+  deleteProject() {
+    this.SHOW_CIRCULAR_SPINNER = true;
+    console.log('deleteProject ID PROJECT TO DELETE ', this.project_id_to_delete);
+    console.log('deleteProject ID PROJECT ', this.id_project);
+
+    this.projectService.deleteProject(this.id_project).subscribe((data) => {
+      console.log('deleteProject RES ', data);
+
+    },
+      (error) => {
+        this.SHOW_CIRCULAR_SPINNER = false;
+        console.log('deleteProject - ERROR ', error);
+        this.notify.showWidgetStyleUpdateNotification(this.deleteErrorMsg, 4, 'report_problem');
+      },
+      () => {
+        console.log('deleteProject * COMPLETE *');
+
+        setTimeout(() => {
+          this.SHOW_CIRCULAR_SPINNER = false;
+          this.notify.showNotificationChangeProject(this.deleteSuccessMsg, 2, 'done');
+          this.router.navigate(['/projects']);
+        }, 1500);
+      });
+  }
+
+
 
   goToWidgetAuthenticationDocs() {
     const url = 'https://docs.tiledesk.com/widget/auth'
