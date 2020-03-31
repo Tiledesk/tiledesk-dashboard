@@ -127,8 +127,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   showAllsenderAuthInfoString = false;
 
   showAllSourcePageString = false;
+  showAllIdRequest = false;
   sourcePage: string;
   sourcePageCutted: string;
+  requestidCutted: string;
   departments: any;
   bots: any;
   subscribe: Subscription;
@@ -170,6 +172,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   showSpinnerInAddNoteBtn: boolean;
   subscription: Subscription;
   CURRENT_USER_ROLE: string;
+
+  CHAT_PANEL_MODE: boolean;
+  dshbrdBaseUrl
   // @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
 
   //   cities3 = [
@@ -270,6 +275,20 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     this.translateNotificationMsgs();
     this.getUserRole();
     console.log('% Ws-REQUESTS-Msgs - note-wf - new_note value oninit: ', this.new_note)
+
+    this.getRouteUrl();
+    this.getBaseUrl();
+  }
+  getRouteUrl() {
+    this.CHAT_PANEL_MODE = false
+    if (this.router.url.indexOf('/request-for-panel') !== -1) {
+
+      this.CHAT_PANEL_MODE = true;
+      console.log('% Ws-REQUESTS-Msgs - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE)
+    } else {
+      this.CHAT_PANEL_MODE = false;
+      console.log('% Ws-REQUESTS-Msgs - CHAT_PANEL_MODE »»» ', this.CHAT_PANEL_MODE)
+    }
   }
 
   getUserRole() {
@@ -486,6 +505,22 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
+  toggleShowAllRequestId() {
+    this.showAllIdRequest = !this.showAllIdRequest;
+    console.log('SHOW ALL REQUEST ID ', this.showAllIdRequest);
+
+    const requestIdArrowIconElem = <HTMLElement>document.querySelector('#request_id_arrow_down');
+    // console.log('SHOW ALL REQUEST ID requestIdArrowIconElem', this.showAllIdRequest);
+    if (this.showAllIdRequest === true) {
+      requestIdArrowIconElem.classList.add("up");
+    }
+    if (this.showAllIdRequest === false) {
+      requestIdArrowIconElem.className = requestIdArrowIconElem.className.replace(/\bup\b/g, "");
+    }
+  }
+
+  
+
 
 
 
@@ -639,14 +674,29 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           }
 
           // ---------------------------------------------------------
-          // @ Notes
+          // @ Source page
           // ---------------------------------------------------------
-          const stripHere = 20;
+          let stripHere = 20;
+          if (this.CHAT_PANEL_MODE){
+            stripHere = 10;
+          }
           if (this.request.sourcePage) {
+
             this.sourcePageCutted = this.request.sourcePage.substring(0, stripHere) + '...';
             console.log('% Ws-REQUESTS-Msgs getWsRequestById - > SOURCE PAGE CUTTED: ', this.sourcePageCutted);
           }
 
+          // ---------------------------------------------------------
+          // @ Request id
+          // ---------------------------------------------------------
+          if (this.CHAT_PANEL_MODE){
+            stripHere = 10;
+          }
+          if (this.request.request_id) {
+
+            this.requestidCutted = this.request.request_id.substring(0, stripHere) + '...';
+            console.log('% Ws-REQUESTS-Msgs getWsRequestById - > request id CUTTED: ', this.requestidCutted);
+          }
 
 
           // ---------------------------------------------------------
@@ -1552,6 +1602,35 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
       this.getProjectuserbyUseridAndGoToEditProjectuser(member_id);
     }
   }
+
+  getBaseUrl() {
+    const href = window.location.href;
+    console.log('PricingComponent href ', href)
+
+    const hrefArray = href.split('/#/');
+    this.dshbrdBaseUrl = hrefArray[0]
+
+    console.log('% Ws-REQUESTS-Msg dshbrdBaseUrl ', this.dshbrdBaseUrl)
+    // var url = new URL(href);
+    // this.dashboardHost = url.origin
+    // console.log('PricingComponent host ', this.dashboardHost)
+  }
+
+  // dispalyed only if CHAT_PANEL_MODE === true
+  goToRequestInNewTab() {
+    // target="_blank" routerLink="project/{{id_project}}/wsrequest/{{id_request}}/messages"
+    const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/wsrequest/' + this.id_request + '/messages'
+    window.open(url, '_blank');
+  }
+
+  goToContactDetailsInNewTab() {
+    // this.router.navigate(['project/' + this.id_project + '/contact', this.contact_id]);
+
+    const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/contact/' + this.contact_id
+    window.open(url, '_blank');
+  }
+
+
 
 
   getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {

@@ -844,7 +844,6 @@ and also iPads specifically.
   height: 32px;
 }
 
-
 .requester-avatar-wrapper {
   display: block;
   float: left;
@@ -876,8 +875,6 @@ and also iPads specifically.
   border-radius: 50%;
   background-color: #f44336;
 }
-
-
 
 ._requester-avatar-inchat {
   border-radius: 50%;
@@ -1047,7 +1044,7 @@ and also iPads specifically.
   height: 42px;
   border-radius: 50%;
   border: 1px solid #eee;
-  margin-right: 15px;
+  // margin-right: 15px;
 }
 .ws_requets_msgs__attributes {
   font-size: 12px;
@@ -1373,7 +1370,7 @@ and also iPads specifically.
 .accordion:after {
   content: "\002B";
   // color: #777;
-  color:#039be5;
+  color: #039be5;
   font-weight: bold;
   float: right;
   // margin-left: 5px;
@@ -1470,13 +1467,13 @@ and also iPads specifically.
 // ------ Notes TEST
 
 .layout {
-  background-color: #ffffff ;
-  height: 500px ;
-  border: 5px solid #cccccc ;
-  margin: -250px 0px 0px 0px ;
-  position: fixed ;
-  top: 50% ;
-  width: 300px ;
+  background-color: #ffffff;
+  height: 500px;
+  border: 5px solid #cccccc;
+  margin: -250px 0px 0px 0px;
+  position: fixed;
+  top: 50%;
+  width: 300px;
 }
 // .layout--b {
 //   left: 51% ;
@@ -1484,33 +1481,31 @@ and also iPads specifically.
 
 .layout__top-panel {
   // bottom: 100px ;
-  bottom: 30px ;
-  left: 0px ;
-  overflow: auto ; /* The panel becomes SCROLLABLE due to content overflow. */
-  position: absolute ;
-  right: 0px ;
+  bottom: 30px;
+  left: 0px;
+  overflow: auto; /* The panel becomes SCROLLABLE due to content overflow. */
+  position: absolute;
+  right: 0px;
   // top: 0px ;
   top: 145px;
 }
 
 .layout--b .layout__top-panel {
-  overscroll-behavior: contain ; /* Prevent SCROLL-CHAINING to parent elements. */
+  overscroll-behavior: contain; /* Prevent SCROLL-CHAINING to parent elements. */
 }
 
 .layout__bottom-panel {
-  border-top: 1px solid #cccccc ;
-  bottom: 0px ;
-  font-weight: bold ;
-  height: 100px ;
-  left: 0px ;
-  padding: 20px 20px 20px 20px ;
-  position: absolute ;
-  right: 0px ;
+  border-top: 1px solid #cccccc;
+  bottom: 0px;
+  font-weight: bold;
+  height: 100px;
+  left: 0px;
+  padding: 20px 20px 20px 20px;
+  position: absolute;
+  right: 0px;
 }
 
 // end ------ Notes TEST
-
-
 
 // ----- new-page-test
 .page-layout {
@@ -1566,9 +1561,9 @@ and also iPads specifically.
   flex-direction: column;
   flex: 1 0 auto;
   overflow: hidden;
-  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 3px 0px rgba(0, 0, 0, 0.12);
 }
-
 
 #chat .center .content-card .mat-sidenav-container {
   display: flex;
@@ -1627,7 +1622,7 @@ and also iPads specifically.
   outline: 0;
   box-sizing: border-box;
   overflow-y: auto;
-  transform: translate3d(-100%,0,0);
+  transform: translate3d(-100%, 0, 0);
 }
 
 .mat-drawer-inner-container {
@@ -1680,25 +1675,26 @@ and also iPads specifically.
 .mat-toolbar-multiple-rows {
   min-height: 64px;
   display: flex;
-    box-sizing: border-box;
-    flex-direction: column;
-    width: 100%;
+  box-sizing: border-box;
+  flex-direction: column;
+  width: 100%;
 }
 
-.mat-toolbar{
+.mat-toolbar {
   font: 600 20px/32px Muli, Helvetica Neue, Arial, sans-serif;
   margin: 0;
 }
 
-.mat-toolbar-row, .mat-toolbar-single-row {
+.mat-toolbar-row,
+.mat-toolbar-single-row {
   height: 64px;
   display: flex;
-    box-sizing: border-box;
-    padding: 0 16px;
-    width: 100%;
-    flex-direction: row;
-    align-items: center;
-    white-space: nowrap;
+  box-sizing: border-box;
+  padding: 0 16px;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  white-space: nowrap;
 }
 
 .avatar-wrapper {
@@ -1724,7 +1720,10 @@ and also iPads specifically.
   align-items: center;
 }
 
-.mat-button, .mat-flat-button, .mat-icon-button, .mat-stroked-button {
+.mat-button,
+.mat-flat-button,
+.mat-icon-button,
+.mat-stroked-button {
   box-sizing: border-box;
   position: relative;
   -webkit-user-select: none;
@@ -1747,6 +1746,165 @@ and also iPads specifically.
   border-radius: 4px;
   overflow: visible;
 }
+
+// CHAT PANEL MODE
+.main-content-chat-panel-mode {
+  margin-top: 0px !important;
+  padding-bottom: 0px !important;
+  background: #fff;
+}
+
+.hidden-if-chat-panel-mode {
+  display: none !important;
+}
+
+.container-fluid-no-padding {
+  padding: 0px !important;
+}
+
+.right-card-chat-panel-mode {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+  box-shadow: unset;
+  border-radius: unset;
+  min-height: 100vh;
+}
+
+.no-padding {
+  padding: 0px !important;
+}
+
+.contact-in-right-sidebar {
+  display: none;
+}
+
+// .request-icons-in-right-sidebar {
+//   margin-bottom: 0px; min-height: 50px;border-bottom: 1px solid #eeeeee;
+// }
+
+.right-sidebar-header {
+  border-bottom: 1px solid #eeeeee;
+  margin-bottom: 0px;
+}
+
+.right-sidebar-header-with-contact {
+  min-height: 82px;
+}
+
+.right-sidebar-header-with-request {
+  min-height: 50px;
+}
+
+.visible-if-chat-panel-mode {
+  display: block !important;
+}
+
+.requester-avatar-wrapper-in-right-sidebar {
+  display: block;
+  float: left;
+}
+
+._requester-avatar_as_title-in-right-sidebar {
+  border-radius: 50%;
+  font-size: 30px;
+  font-weight: 400;
+  text-align: center;
+  // padding: 4px 7px;
+  padding-top: 10px;
+  padding-bottom: 0px;
+  display: inline-block;
+  width: 72px;
+  height: 72px;
+  margin-right: 8px;
+  line-height: 54px;
+}
+
+.requester-status-icon-avatar_as_title-in-right-sidebar {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  top: 68px;
+  left: 69px;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  background-color: #f44336;
+}
+
+.contact_info_in_right-sidebar {
+  float: left;
+  margin-top: 9px;
+}
+
+.right-sidebar-actions {
+  float: right;
+}
+.right-sidebar-actions-with-contact {
+  position: relative;
+  top: 25px;
+}
+
+.right-sidebar-actions-with-request {
+  position: relative;
+  top: -33px;
+}
+
+// modal add agent - reassign request
+
+.card-content-chat-panel-mode {
+  overflow-x: hidden !important;
+  padding: 0px;
+}
+
+.modal-subtitle-chat-panel-mode {
+  font-size: 14px;
+  text-align: center;
+}
+
+.ws_requets_msgs__user-img-in-modal-chat-panel-mode {
+  vertical-align: middle;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1px solid #eee;
+  // margin-right: 15px;
+}
+
+.ws_request_msgs__status-icon-chat-panel-mode {
+  left: 37px;
+}
+.ws-request-msgs-bot-type-logo-chat-panel-mode {
+  left: 7px;
+}
+
+.group-name {
+  font-size: 12px;
+  color: #7695a5;
+}
+
+.modal-card-chat-panel-mode {
+  box-shadow: unset;
+}
+
+.no-bottom-margin {
+  margin-bottom: 0px !important;
+}
+
+.no-top-margin {
+  margin-top: 0px !important;
+}
+
+.yes-margin {
+  margin-bottom: 10px !important;
+}
+
+.grey-background {
+  background: #fafafa;
+}
+
+
+
+
+
 // end ----- new-page-test
 
 /* ./end Notes Accordion */
