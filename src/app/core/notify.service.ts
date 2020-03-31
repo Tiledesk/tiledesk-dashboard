@@ -298,22 +298,28 @@ export class NotifyService {
 
     }, {
       type: type[color],
-      timer: 55000,
+      timer: 1500,
       // delay: 100,
       placement: {
-        from: 'bottom',
-        align: 'center'
+        // from: 'bottom',
+        // align: 'center'
+        from: 'top',
+        align: 'right'
       },
       // tslint:disable-next-line:max-line-length
-      template: '<div data-notify="container" class="col-xs-12 col-sm-8 alert alert-{0}" style="text-align: center; background-color: #131313; color:#a9afbb" role="alert">' +
+      
+      // col-xs-12 col-sm-8 <- used with from: 'bottom', align: 'center' (toast)
+      template: '<div data-notify="container" class="col-xs-11 col-sm-3  alert alert-{0}" style="text-align: left; padding-top: 8px;padding-bottom: 8px; background-color: #131313; color:#a9afbb" role="alert">' +
         '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
         // '<span data-notify="title" style="max-width: 100%; font-size:1.1em; ">TileDesk</span> ' +
         // tslint:disable-next-line:max-line-length
-        '<span data-notify="icon" style="display: inline;"><i style="vertical-align: middle; padding-right: 5px; color: #5bc0de;" class="material-icons">' + icon + '</i> </span> ' +
+        '<span data-notify="icon" style="display: inline;"><i style="vertical-align: middle; padding: 2px;border-radius: 50%; margin-right: 6px;background-color: #3c4858;color: #5bc0de;" class="material-icons">' + icon + '</i> </span> ' +
         '<span data-notify="message" style="display: inline; vertical-align: middle ">' + message + '</span>' +
         '</div>'
     });
   }
+
+
 
   showNotificationInstallWidget(message, notificationColor, icon) {
     const type = ['', 'info', 'success', 'warning', 'danger'];
