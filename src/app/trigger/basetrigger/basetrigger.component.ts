@@ -63,7 +63,7 @@ export class BasetriggerComponent {
           this.projectUsersList.forEach(p_user => {
 
             this.projectUserAndBotsArray.push({ id: p_user.id_user._id, label_key: p_user.id_user.firstname + ' ' + p_user.id_user.lastname });
-           
+
 
           });
 
@@ -88,7 +88,7 @@ export class BasetriggerComponent {
 
         // console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - BOTS: ', this.bots);
         // console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - PROJECT-USER: ', this.projectUsersList);
-        
+
         console.log('BASE-TRIGGER - GET P-USERS-&-BOTS - PROJECT-USER & BOTS ARRAY : ', this.projectUserAndBotsArray);
 
 
@@ -125,7 +125,7 @@ export class BasetriggerComponent {
       _departments.forEach(element => {
         this.departments.push({ id: element._id, label_key: element.name })
       });
-     
+
       console.log('BASE-TRIGGER - GET DEPTS - ARRAY : ', this.departments);
     }, error => {
       console.log('BASE-TRIGGER - GET DEPTS - ERROR: ', error);
@@ -147,27 +147,96 @@ export class BasetriggerComponent {
 
       this.condition = [
         // message.received conditions start
-        { groupId: translateConditions.message.groupId.VisitorInformation, id: 'text', key: 'message.text', label_key: translateConditions.message.label_key.VisitorSearchTerm, triggerType: 'message.received', type: 'string' },
-        { groupId: translateConditions.message.groupId.VisitorInformation, id: 'senderFullname', key: 'message.senderFullname', label_key: translateConditions.message.label_key.VisitorName, triggerType: 'message.received', type: 'string' },
-        { groupId: translateConditions.message.groupId.VisitorInformation, id: 'attributes.userEmail', key: 'message.userEmail', label_key: translateConditions.message.label_key.VisitorMail, triggerType: 'message.received', type: 'string' },
         {
-          groupId: translateConditions.message.groupId.VisitorInformation, id: 'attributes.departmentId', key: 'message.attributes.departmentId', label_key: translateConditions.message.label_key.VisitorDepartment,
-          triggerType: 'message.received', type: 'boolean', operator: this.departments, placeholder: translateConditions.message.placeholder.SelectDepartment
-        },
-        { groupId: translateConditions.message.groupId.VisitorInformation, id: 'attributes.client', key: 'message.attributes.client', label_key: translateConditions.message.label_key.VisitorReferrer, triggerType: 'message.received', type: 'string' },
-        { groupId: translateConditions.message.groupId.PageInformation, id: 'attributes.sourcePage', key: 'message.attributes.sourcePageUrl', label_key: translateConditions.message.label_key.VisitorURL, triggerType: 'message.received', type: 'string' },
-        { groupId: translateConditions.message.groupId.PageInformation, id: 'attributes.sourcePage', key: 'message.attribute.sourcePageTitle', label_key: translateConditions.message.label_key.VisitorPageTitle, triggerType: 'message.received', type: 'string' },
-        { groupId: translateConditions.message.groupId.SoftwareOfVisitor, id: 'attributes.client', key: 'message.attributes.clientBrowser', label_key: translateConditions.message.label_key.VisitorBrowser, triggerType: 'message.received', type: 'string' },
-        { groupId: translateConditions.message.groupId.SoftwareOfVisitor, id: 'attributes.client', key: 'message.attributes.clientPlatform', label_key: translateConditions.message.label_key.VisitorPlatform, triggerType: 'message.received', type: 'string' },
-        {
-          groupId: translateConditions.message.groupId.ChatInformation, id: 'attributes.departmentId', key: 'message.attributes.departmentId', label_key: translateConditions.message.label_key.Department,
-          triggerType: 'message.received', type: 'boolean', operator: this.departments, placeholder: translateConditions.message.placeholder.SelectDepartment
+          groupId: translateConditions.message.groupId.VisitorInformation,
+          id: 'text',
+          key: 'message.text',
+          label_key: translateConditions.message.label_key.VisitorSearchTerm,
+          triggerType: 'message.received', type: 'string'
         },
         {
-          groupId: translateConditions.message.groupId.ChatInformation, id: 'status', key: 'message.status', label_key: translateConditions.message.label_key.VisitorServed,
-          triggerType: 'message.received', type: 'boolean', operator: [{ id: 200, label_key: 'True' },
-          { id: 100, label_key: 'False' }
-          ], placeholder: translateConditions.message.placeholder.SelectStatus
+          groupId: translateConditions.message.groupId.VisitorInformation,
+          id: 'senderFullname',
+          key: 'message.senderFullname',
+          label_key: translateConditions.message.label_key.VisitorName,
+          triggerType: 'message.received',
+          type: 'string'
+        },
+        {
+          groupId: translateConditions.message.groupId.VisitorInformation,
+          id: 'attributes.userEmail',
+          key: 'message.userEmail',
+          label_key: translateConditions.message.label_key.VisitorMail,
+          triggerType: 'message.received',
+          type: 'string'
+        },
+        {
+          groupId: translateConditions.message.groupId.VisitorInformation,
+          id: 'attributes.departmentId',
+          key: 'message.attributes.departmentId',
+          label_key: translateConditions.message.label_key.VisitorDepartment,
+          triggerType: 'message.received',
+          type: 'boolean',
+          operator: this.departments,
+          placeholder: translateConditions.message.placeholder.SelectDepartment
+        },
+        {
+          groupId: translateConditions.message.groupId.VisitorInformation,
+          id: 'attributes.client',
+          key: 'message.attributes.client',
+          label_key: translateConditions.message.label_key.VisitorReferrer,
+          triggerType: 'message.received',
+          type: 'string'
+        },
+        {
+          groupId: translateConditions.message.groupId.PageInformation,
+          id: 'attributes.sourcePage', key: 'message.attributes.sourcePageUrl',
+          label_key: translateConditions.message.label_key.VisitorURL,
+          triggerType: 'message.received',
+          type: 'string'
+        },
+        {
+          groupId: translateConditions.message.groupId.PageInformation,
+          id: 'attributes.sourcePage',
+          key: 'message.attribute.sourcePageTitle',
+          label_key: translateConditions.message.label_key.VisitorPageTitle,
+          triggerType: 'message.received',
+          type: 'string'
+        },
+        {
+          groupId: translateConditions.message.groupId.SoftwareOfVisitor,
+          id: 'attributes.client',
+          key: 'message.attributes.clientBrowser',
+          label_key: translateConditions.message.label_key.VisitorBrowser,
+          triggerType: 'message.received', type: 'string'
+        },
+        {
+          groupId: translateConditions.message.groupId.SoftwareOfVisitor,
+          id: 'attributes.client',
+          key: 'message.attributes.clientPlatform',
+          label_key: translateConditions.message.label_key.VisitorPlatform,
+          triggerType: 'message.received',
+          type: 'string'
+        },
+        {
+          groupId: translateConditions.message.groupId.ChatInformation,
+          id: 'attributes.departmentId',
+          key: 'message.attributes.departmentId',
+          label_key: translateConditions.message.label_key.Department,
+          triggerType: 'message.received',
+          type: 'boolean',
+          operator: this.departments,
+          placeholder: translateConditions.message.placeholder.SelectDepartment
+        },
+        {
+          groupId: translateConditions.message.groupId.ChatInformation,
+          id: 'status',
+          key: 'message.status',
+          label_key: translateConditions.message.label_key.VisitorServed,
+          triggerType: 'message.received',
+          type: 'boolean',
+          operator: [{ id: 200, label_key: 'True' }, { id: 100, label_key: 'False' }],
+          placeholder: translateConditions.message.placeholder.SelectStatus
         },
         // request.create conditions start
         { groupId: translateConditions.chat.groupId.PageInformation, id: 'sourcePage', key: 'request.sourcePageUrl', label_key: translateConditions.chat.label_key.VisitorURL, triggerType: 'request.create', type: 'string' },
@@ -184,6 +253,7 @@ export class BasetriggerComponent {
         { groupId: translateConditions.chat.groupId.SoftwareOfVisitor, id: 'userAgent', key: 'request.userAgentPlatform', label_key: translateConditions.chat.label_key.VisitorPlatform, triggerType: 'request.create', type: 'string' },
         { groupId: translateConditions.chat.groupId.SoftwareOfVisitor, id: 'agents.length', key: 'request.agents.length', label_key: translateConditions.chat.label_key.VisitoruserAgent, triggerType: 'request.create', type: 'int' },
         { groupId: translateConditions.chat.groupId.SoftwareOfVisitor, id: 'availableAgents.length', key: 'request.availableAgents.length', label_key: translateConditions.chat.label_key.VisitoruserAgentAvailable, triggerType: 'request.create', type: 'int' },
+        { groupId: translateConditions.chat.groupId.SoftwareOfVisitor, id: 'participatingBots.length', key: 'request.participatingBots.length', label_key: translateConditions.chat.label_key.NumberOfParticipatingBot, triggerType: 'request.create', type: 'int' },
         { groupId: translateConditions.chat.groupId.ChannelInformation, id: 'channel.name', key: 'request.channel.name', label_key: translateConditions.chat.label_key.ChannelName, triggerType: 'request.create', type: 'string' },
         {
           groupId: translateConditions.chat.groupId.LocationVisitor, id: 'language', key: 'request.language', label_key: translateConditions.chat.label_key.VisitorCountryRegion,
@@ -241,17 +311,64 @@ export class BasetriggerComponent {
       }
 
       this.action = [
-        { key: 'message.send', label_key: translateAction.label_key.SendMessageToVisitor, type: 'input', placeholder: translateAction.placeholder.NameAgent },
-        { key: 'request.department.route', label_key: translateAction.label_key.AssignToDep, type: 'select', placeholder: translateAction.placeholder.SelectDepartment },
+        {
+          key: 'message.send',
+          label_key: translateAction.label_key.SendMessageToVisitor,
+          type: 'input',
+          placeholder: translateAction.placeholder.NameAgent
+        },
+        {
+          key: 'request.department.route',
+          label_key: translateAction.label_key.AssignToDep,
+          type: 'select',
+          placeholder: translateAction.placeholder.SelectDepartment
+        },
         //{ key: 'request.department.root.self', label_key: translateAction.label_key.ReAssignToSameDep, type: 'none'},
-        { key: 'request.department.route.self', label_key: translateAction.label_key.ReAssignToSameDep, type: 'select', placeholder: translateAction.placeholder.SelectStatus }, //none
-        { key: 'request.status.update', label_key: translateAction.label_key.RequestUpdateStatus, type: 'select', placeholder: translateAction.placeholder.SelectStatus },
-        { key: 'request.close', label_key: translateAction.label_key.RequestClose, type: 'select', placeholder: translateAction.placeholder.SelectStatus }, //none
-        { key: 'request.reopen', label_key: translateAction.label_key.RequestReopen, type: 'select', placeholder: translateAction.placeholder.SelectStatus }, //none
-        { key: 'request.participants.join', label_key: translateAction.label_key.RequestParticipantsJoin, type: 'select', placeholder: translateAction.placeholder.SelectStatus }, // dropdown con elenco utenti e bot.
-        { key: 'request.participants.leave', label_key: translateAction.label_key.RequestParticipantsLeave, type: 'select', placeholder: translateAction.placeholder.SelectStatus }, // dropdown con elenco utenti e bot
+        {
+          key: 'request.department.route.self',
+          label_key: translateAction.label_key.ReAssignToSameDep,
+          type: 'select',
+          placeholder: translateAction.placeholder.SelectStatus
+        }, //none
+        {
+          key: 'request.status.update',
+          label_key: translateAction.label_key.RequestUpdateStatus,
+          type: 'select',
+          placeholder: translateAction.placeholder.SelectStatus
+        },
+        {
+          key: 'request.close',
+          label_key: translateAction.label_key.RequestClose,
+          type: 'select',
+          placeholder: translateAction.placeholder.SelectStatus
+        }, //none
+        {
+          key: 'request.reopen',
+          label_key: translateAction.label_key.RequestReopen,
+          type: 'select',
+          placeholder: translateAction.placeholder.SelectStatus
+        }, //none
+        {
+          key: 'request.participants.join',
+          label_key: translateAction.label_key.RequestParticipantsJoin,
+          type: 'select',
+          placeholder: translateAction.placeholder.SelectAgent
+        }, // dropdown con elenco utenti e bot.
+        {
+          key: 'request.participants.leave',
+          label_key: translateAction.label_key.RequestParticipantsLeave,
+          type: 'select',
+          placeholder: translateAction.placeholder.SelectAgent
+        }, // dropdown con elenco utenti e bot
         //{ key: 'request.create', label_key: translateAction.label_key.RequestCreate, type: 'input', placeholder: translateAction.placeholder.NameAgent, parameters: [{key:"fullname", placeholder: "placeholder", required:true}]}
-        { key: 'request.create', label_key: translateAction.label_key.RequestCreate, type: 'input', placeholder: translateAction.placeholder.NameAgent } //
+        {
+          key: 'request.create',
+          label_key: translateAction.label_key.RequestCreate,
+          type: 'select', // nk
+          placeholder: translateAction.placeholder.SelectDepartment // nk
+          // type: 'input',
+          // placeholder: translateAction.placeholder.NameAgent
+        }
       ]
 
       this.operator = {
@@ -298,7 +415,9 @@ export class BasetriggerComponent {
         'request.participants.leave': this.projectUserAndBotsArray,
         'request.status.update': [
           { id: 100, label_key: 'Pooled' },
-          { id: 200, label_key: 'Assigned' }]
+          { id: 200, label_key: 'Assigned' }
+        ],
+        'request.create': this.departments,
       }
       console.log('No pair_cond:', this.condition)
 
@@ -328,6 +447,7 @@ export class BasetriggerComponent {
           });
 
           const translateConditions = pair.translateArray.ConditionArray;
+          console.log('TRIGGER - TRANSLATE COND ', translateConditions);
           const translateOptions = pair.translateArray.OptionArray;
           const translateAction = pair.translateArray.ActionArray;
           this.condition = [

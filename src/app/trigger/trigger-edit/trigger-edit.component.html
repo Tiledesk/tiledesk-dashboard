@@ -1,279 +1,394 @@
 <div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
-    <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">keyboard_arrow_left</i>
-    <!-- Profilo -->
-    {{ "Trigger.EditTrigger" | translate }}
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
+    (click)="goBack()">keyboard_arrow_left</i>
+  <!-- Profilo -->
+  {{ "Trigger.EditTrigger" | translate }}
 </div>
 
-<div class="row">
-    <div class="col-md-12">
-      <div class="card card-padding card-custom-trigger" >
-        <div class="card-content">
+<div class="main-content" style="padding-top:0px">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card card-padding card-custom-trigger">
+          <div class="card-content" style="">
 
-        <loading-spinner *ngIf="showSpinner"></loading-spinner> 
-        <div class="row" *ngIf="!showSpinner">
-            <form  (ngSubmit)="onSubmit()" [formGroup]="triggerForm">
-                
-              <div class=" form-group row" style="border-bottom: solid 1px #ddd" >
-                        
-                <label class="col-sm-2 custom-label">{{ "Trigger.Add_Edit.TriggerStatus" | translate }}</label>
-                <div class="col-sm-4" style="margin-left: 25px " >
+            <loading-spinner *ngIf="showSpinner"></loading-spinner>
+            <div class="row" *ngIf="!showSpinner">
+              <form (ngSubmit)="onSubmit()" [formGroup]="triggerForm">
+
+                <div class=" form-group row" style="border-bottom: solid 1px #ddd">
+
+                  <label class="col-sm-2 custom-label" style="white-space: nowrap">
+                    {{ "Trigger.Add_Edit.TriggerStatus" | translate }}
+                  </label>
+                  <div class="col-sm-4" style="margin-bottom: 12px; ">
                     <div class="onoffswitch">
-                      <input (change)="swithOnOff($event)" [checked]="triggerForm.value.enabled === true" type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch">
-                      <label class="onoffswitch-label" for="myonoffswitch">
-                          <span class="onoffswitch-inner"></span>
-                          <span class="onoffswitch-switch"></span>
+                      <input (change)="swithOnOff($event)" [checked]="triggerForm.value.enabled === true"
+                        type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch">
+                      <label class="onoffswitch-label" for="myonoffswitch" style="margin-bottom:5px">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
                       </label>
                     </div>
                     <!-- <button class='btn-with-border-effect ' type='button' (click)="onEnableDisable(true)" [ngClass]="{'li-active' : triggerForm.value.enabled === true}">{{ "Trigger.Add_Edit.TriggerENABLED" | translate }}</button>
                     <button class='btn-with-border-effect ' type='button' (click)="onEnableDisable(false)" [ngClass]="{'li-active' : triggerForm.value.enabled === false}">{{ "Trigger.Add_Edit.TriggerDISABLED" | translate }}</button> -->
-                    <div class="row" style="margin-left: 0px; font-size: 11px; font-style: oblique ">
-                      {{ "Trigger.Add_Edit.SetTheStatusOfTriggerByDefaultIsSetToENABLED" | translate }}
+                    <!-- font-style: oblique -->
+                    <div class="row" style="margin-left: 0px; font-size: 12px; color: #7695a5; line-height: 1.2em;font-weight: 100;">
+                      <!-- {{ "Trigger.Add_Edit.SetTheStatusOfTriggerByDefaultIsSetToENABLED" | translate }} -->
+                     <span> {{ "Trigger.Add_Edit.SetTheStatusOfTrigger" | translate }} </span> 
+                     <span style="display: block;"> {{ "Trigger.Add_Edit.ByDefaultIsSetToENABLED" | translate }} </span>
+                      
                     </div>
-                </div>
-                
+                  </div>
+
                 </div>
 
-                <div style="border-bottom: solid 1px #ddd" >
+                <div style="border-bottom: solid 1px #ddd">
 
-                  <div class="form-group row">
+                  <div class="form-group row" style="margin-top: 16px;">
                     <label class="col-sm-2 custom-label">{{ "Trigger.Add_Edit.TriggerName" | translate }}</label>
                     <div class="col-sm-4">
-                        <input type="text" class="custom-input" style="width: 100%" formControlName="name" />
-                        <div *ngIf="form.name.invalid && submitted" class="row is-invalid">{{ "Trigger.Add_Edit.TriggerRequiredFieldError" | translate }}</div>
+                      <input type="text" class="custom-input" style="width: 100%" formControlName="name" />
+                      <div *ngIf="form.name.invalid && submitted" class="row is-invalid">
+                        {{ "Trigger.Add_Edit.TriggerRequiredFieldError" | translate }}</div>
                     </div>
                   </div>
 
-                  <div class="form-group row">
+                  <div class="form-group row" style="margin-bottom: 10px;">
                     <label class="col-sm-2 custom-label">{{ "Trigger.Add_Edit.Description" | translate }}</label>
                     <div class=" col-sm-4">
-                        <textarea type="text" class="custom-input" style="width: 100%; height: 50px;" formControlName="description"></textarea>
+                      <textarea type="text" class="custom-input" style="width: 100%; height: 50px;"
+                        formControlName="description"></textarea>
                     </div>
                   </div>
-                 
+
                 </div>
 
                 <!-- >>>>>>>>>>>>-------section PERSONALIZZA TRIGGER START------<<<<<<<<< -->
-                <div style="border-bottom: solid 1px #ddd">
-                    
-                    <div class="row">
-                      <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6 title" >
-                        {{ "Trigger.Add_Edit.CustomizeTrigger" | translate }}
-                      </div>
-                    </div>
-                    
-                    <div class="form-group row">
-                      <label for="triggerEvent" class="col-sm-2 custom-label">{{ "Trigger.Add_Edit.RunTrigger" | translate }}</label>
-                      <div class="col-sm-4" formGroupName="trigger">
-                          <ng-select formControlName="key"  placeholder='{{ "Trigger.Add_Edit.RunTrigger_dropdownElements.Placeholder" | translate }}' (change)=onTriggerKey($event) [searchable]="false" [clearable]="false">
-                            <ng-option [value]="'request.create'">{{ "Trigger.Add_Edit.RunTrigger_dropdownElements.WhenRequestChat" | translate }}</ng-option>
-                            <ng-option [value]="'message.received'">{{ "Trigger.Add_Edit.RunTrigger_dropdownElements.WhenMessageIsSent" | translate }}</ng-option>
-                            <ng-option [value]="'user.login'">{{ "Trigger.Add_Edit.RunTrigger_dropdownElements.WhenUserIsLogged" | translate }}</ng-option>
-                            <ng-option [value]="'event.emit'">{{ "Trigger.Add_Edit.RunTrigger_dropdownElements.NewEvent" | translate }}</ng-option>
-                          </ng-select>
-                      </div>
-                    </div>
+                <!-- style="border-bottom: solid 1px #ddd" -->
+                <div>
 
-                    <div class="form-group row">
-                      <label  class="col-sm-2 custom-label">{{ "Trigger.Add_Edit.CheckConditions" | translate }}</label>
-                      <div class="col-sm-4" >
-                          <ng-select  formControlName="conditionALL_ANY" placeholder='{{ "Trigger.Add_Edit.CheckConditions_dropdownElements.Placeholder" | translate }}' (change)="conditionTriggerValue($event)" [searchable]="false" [clearable]="false"> 
-                            <ng-option [value]="'all'">{{ "Trigger.Add_Edit.CheckConditions_dropdownElements.CheckAllConditions" | translate }}</ng-option>
-                            <ng-option [value]="'any'">{{ "Trigger.Add_Edit.CheckConditions_dropdownElements.CheckAnyConditions" | translate }}</ng-option>
-                          </ng-select>
-                      </div>
+                  <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6 trigger-section-title">
+                      {{ "Trigger.Add_Edit.CustomizeTrigger" | translate }}
                     </div>
+                  </div>
 
-                    <div formGroupName="conditions">
-                      <!-- ---------------ARRAY !!!ANY!!! CONDITION START-------------------- -->
-                      <div *ngIf="conditionType==='conditions.any'" >
-                        <div formArrayName="any" *ngFor="let condition of triggerForm.get('conditions.any').controls; let i = index">
-                            <div [formGroupName]="i">
-                                <div class="form-group row condition">
-                                    
-                                    <!-- -----first condition------- -->  
-                                    <div class="col-sm-3">
-                                      <ng-select  class="custom-select" (change)="onSelectedCondition($event, condition)" formControlName="path"
-                                                  [items]="temp_cond" bindLabel="label_key" bindValue="id" groupBy="groupId"
-                                                  placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
-                                          <ng-template ng-optgroup-tmp let-item="item" >
-                                            <span style="font-weight: bold; color: black"> {{item.groupId }} </span>
-                                          </ng-template>
-                                      </ng-select>
-                                      <!-- <ng-select formControlName="path" (change)="onSelectedCondition($event, condition)" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
+                  <div class="form-group row">
+                    <label for="triggerEvent" class="col-sm-2 custom-label">
+                      {{ "Trigger.Add_Edit.RunTrigger" | translate }}
+                    </label>
+                    <div class="col-sm-4" formGroupName="trigger">
+                      <ng-select formControlName="key"
+                        placeholder='{{ "Trigger.Add_Edit.RunTrigger_dropdownElements.Placeholder" | translate }}'
+                        (change)=onTriggerKey($event) [searchable]="false" [clearable]="false" style="width: 100%;">
+                        <ng-option [value]="'request.create'">
+                          {{ "Trigger.Add_Edit.RunTrigger_dropdownElements.WhenRequestChat" | translate }}</ng-option>
+                        <ng-option [value]="'message.received'">
+                          {{ "Trigger.Add_Edit.RunTrigger_dropdownElements.WhenMessageIsSent" | translate }}</ng-option>
+                        <ng-option [value]="'user.login'">
+                          {{ "Trigger.Add_Edit.RunTrigger_dropdownElements.WhenUserIsLogged" | translate }}</ng-option>
+                        <ng-option [value]="'event.emit'">
+                          {{ "Trigger.Add_Edit.RunTrigger_dropdownElements.NewEvent" | translate }}</ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label class="col-sm-2 custom-label">
+                      {{ "Trigger.Add_Edit.CheckConditions" | translate }}
+                    </label>
+                    <div class="col-sm-4">
+                      <ng-select formControlName="conditionALL_ANY"
+                        placeholder='{{ "Trigger.Add_Edit.CheckConditions_dropdownElements.Placeholder" | translate }}'
+                        (change)="conditionTriggerValue($event)" [searchable]="false" [clearable]="false" style="width: 100%;">
+                        <ng-option [value]="'all'">
+                          {{ "Trigger.Add_Edit.CheckConditions_dropdownElements.CheckAllConditions" | translate }}
+                        </ng-option>
+                        <ng-option [value]="'any'">
+                          {{ "Trigger.Add_Edit.CheckConditions_dropdownElements.CheckAnyConditions" | translate }}
+                        </ng-option>
+                      </ng-select>
+                    </div>
+                  </div>
+
+                  <div formGroupName="conditions">
+                    <!-- ---------------ARRAY !!!ANY!!! CONDITION START-------------------- -->
+                    <div *ngIf="conditionType==='conditions.any'">
+                      <div formArrayName="any"
+                        *ngFor="let condition of triggerForm.get('conditions.any').controls; let i = index">
+                        <div [formGroupName]="i">
+                          <div class="form-group row condition">
+
+                            <!-- -----first condition------- -->
+                            <div class="col-sm-3">
+                              <ng-select class="custom-select" (change)="onSelectedCondition($event, condition)"
+                                formControlName="path" [items]="temp_cond" bindLabel="label_key" bindValue="id"
+                                groupBy="groupId"
+                                placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}'
+                                [searchable]="false" [clearable]="false">
+                                <ng-template ng-optgroup-tmp let-item="item">
+                                  <span style="font-weight: bold; color: black"> {{item.groupId }} </span>
+                                </ng-template>
+                              </ng-select>
+                              <!-- <ng-select formControlName="path" (change)="onSelectedCondition($event, condition)" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
                                         <ng-option *ngFor="let cond of temp_cond" [value]="cond.id" >{{cond.label_key}}</ng-option>
                                       </ng-select> -->
-                                      <div *ngIf="form.conditions.controls.any.controls[i].invalid && form.conditions.controls.any.controls[i].value['path'] !== null && submitted" class="row is-invalid">{{ "Trigger.Add_Edit.CompileAllField_error" | translate }}</div>
-                                    </div>
-
-                                    <!-- -----second condition------- -->
-                                    <div class="col-sm-3" *ngIf="condition.value.type==='string'">
-                                        <ng-select  class="custom-select" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
-                                          <ng-option *ngFor="let string of options.stringOpt" [value]="string.id" >{{string.label_key}}</ng-option>
-                                        </ng-select>
-                                    </div>
-                                    <div class="col-sm-3" *ngIf="condition.value.type==='int'">
-                                        <ng-select  class="custom-select" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
-                                          <ng-option *ngFor="let int of options.intOpt" [value]="int.id" >{{int.label_key}}</ng-option>
-                                        </ng-select>
-                                    </div>
-                                    <div class="col-sm-3" *ngIf="condition.value.type==='boolean'">
-                                        <ng-select  class="custom-select" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
-                                          <ng-option *ngFor="let boolean of options.booleanOpt" [value]="boolean.id" >{{boolean.label_key}}</ng-option>
-                                        </ng-select>
-                                    </div>
-                                    <div class="col-sm-3" *ngIf="condition.value.type==='keyExist'">
-                                      <ng-select  class="custom-select" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
-                                        <ng-option *ngFor="let keyExist of options.keyExistOpt" [value]="keyExist.id" >{{keyExist.label_key}}</ng-option>
-                                      </ng-select>
-                                    </div>
-
-                                    <!-- -----third condition------- -->
-                                    <div *ngIf="condition.value.type==='string' || condition.value.type==='int'">
-                                      <input class="custom-input col-sm-3"  formControlName="value" type="text">
-                                    </div>
-                                    <div class="col-sm-3" *ngIf="condition.value.type==='boolean' || condition.value.type==='keyExist'">
-                                      <ng-select class="custom-select" formControlName="value" [placeholder]="condition.value.placeholder" [searchable]="false" [clearable]="false">
-                                        <ng-option *ngFor="let oper of operator[condition.value.path]" [value]="oper.id">{{oper.label_key}}</ng-option>
-                                      </ng-select>
-                                    </div>
-          
-                                    <div style="text-align: right; margin-top:3px" >
-                                      <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=removeCondition(i) >
-                                        <i class="material-icons custom-icon">remove</i>
-                                      </span>
-                                      <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=addConditions()>
-                                        <i class="material-icons custom-icon">add</i>
-                                      </span>
-                                    </div>
-                                     
-                                </div>
+                              <div
+                                *ngIf="form.conditions.controls.any.controls[i].invalid && form.conditions.controls.any.controls[i].value['path'] !== null && submitted"
+                                class="row is-invalid">{{ "Trigger.Add_Edit.CompileAllField_error" | translate }}</div>
                             </div>
+
+                            <!-- -----second condition------- -->
+                            <div class="col-sm-3" *ngIf="condition.value.type==='string'">
+                              <ng-select class="custom-select" formControlName="operator"
+                                placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}'
+                                [searchable]="false" [clearable]="false">
+                                <ng-option *ngFor="let string of options.stringOpt" [value]="string.id">
+                                  {{string.label_key}}
+                                </ng-option>
+                              </ng-select>
+                            </div>
+                            <div class="col-sm-3" *ngIf="condition.value.type==='int'">
+                              <ng-select class="custom-select" formControlName="operator"
+                                placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}'
+                                [searchable]="false" [clearable]="false">
+                                <ng-option *ngFor="let int of options.intOpt" [value]="int.id">{{int.label_key}}
+                                </ng-option>
+                              </ng-select>
+                            </div>
+                            <div class="col-sm-3" *ngIf="condition.value.type==='boolean'">
+                              <ng-select class="custom-select" formControlName="operator"
+                                placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}'
+                                [searchable]="false" [clearable]="false">
+                                <ng-option *ngFor="let boolean of options.booleanOpt" [value]="boolean.id">
+                                  {{boolean.label_key}}</ng-option>
+                              </ng-select>
+                            </div>
+                            <div class="col-sm-3" *ngIf="condition.value.type==='keyExist'">
+                              <ng-select class="custom-select" formControlName="operator"
+                                placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}'
+                                [searchable]="false" [clearable]="false">
+                                <ng-option *ngFor="let keyExist of options.keyExistOpt" [value]="keyExist.id">
+                                  {{keyExist.label_key}}</ng-option>
+                              </ng-select>
+                            </div>
+
+                            <!-- -----third condition------- -->
+                            <div class="col-sm-3" *ngIf="condition.value.type==='string' || condition.value.type==='int'" style="padding-right: 3px;">
+                              <input class="custom-input" formControlName="value" 
+                                [type]="condition.value.type === 'string' ? 'text' : 'number'" [min]="condition.value.type === 'string' ? '' : '1'">
+                            </div>
+
+                            <div *ngIf="condition.value.type==='boolean' || condition.value.type==='keyExist'" style="padding-right: 3px;">
+                              <ng-select class="custom-select" formControlName="value"
+                                [placeholder]="condition.value.placeholder" [searchable]="false" [clearable]="false">
+                                <ng-option *ngFor="let oper of operator[condition.value.path]" [value]="oper.id">
+                                  {{oper.label_key}}</ng-option>
+                              </ng-select>
+                            </div>
+
+                            <div class="add-remove-icons-wrap" style="">
+                              <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=removeCondition(i)>
+                                <i class="material-icons custom-icon">remove</i>
+                              </span>
+                              <!-- padding-right:8px;  -->
+                              <span class="icon" style="cursor: pointer;" (click)=addConditions()>
+                                <i class="material-icons custom-icon">add</i>
+                              </span>
+                            </div>
+
                           </div>
+                        </div>
+                      </div>
                     </div>
                     <!-- ---------------ARRAY !!!ANY!!! CONDITION END-------------------- -->
 
                     <!-- ---------------ARRAY !!!ALL!!! CONDITION START-------------------- -->
-                    <div *ngIf="conditionType==='conditions.all'" >
-                        <div formArrayName="all" *ngFor="let condition of triggerForm.get('conditions.all').controls; let i = index">
-                          <div [formGroupName]="i">
-                            <div class="form-group row condition">
+                    <div *ngIf="conditionType==='conditions.all'">
+                      <div formArrayName="all"
+                        *ngFor="let condition of triggerForm.get('conditions.all').controls; let i = index">
+                        <div [formGroupName]="i">
+                          <div class="form-group row condition">
 
-                              <!-- -----first condition------- -->  
-                              <div class="col-sm-3">
-                                <ng-select  class="custom-select" (change)="onSelectedCondition($event, condition)" formControlName="path"
-                                            [items]="temp_cond" bindLabel="label_key" bindValue="id" groupBy="groupId"
-                                            placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
-                                    <ng-template ng-optgroup-tmp let-item="item" >
-                                      <span style="font-weight: bold; color: black"> {{item.groupId }} </span>
-                                    </ng-template>
-                                </ng-select>
-                                <!-- <ng-select  class="custom-select" formControlName="path" (change)="onSelectedCondition($event, condition)" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
+                            <!-- -----first condition------- -->
+                            <div class="col-sm-3">
+                              <ng-select class="custom-select" (change)="onSelectedCondition($event, condition)"
+                                formControlName="path" [items]="temp_cond" bindLabel="label_key" bindValue="id"
+                                groupBy="groupId"
+                                placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}'
+                                [searchable]="false" [clearable]="false">
+                                <ng-template ng-optgroup-tmp let-item="item">
+                                  <span style="font-weight: bold; color: black"> {{item.groupId }} </span>
+                                </ng-template>
+                              </ng-select>
+                              <!-- <ng-select  class="custom-select" formControlName="path" (change)="onSelectedCondition($event, condition)" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
                                   <ng-option *ngFor="let cond of temp_cond" [value]="cond.id" >{{cond.label_key}}</ng-option>
                                 </ng-select> -->
-                                <div *ngIf="form.conditions.controls.all.controls[i].invalid && form.conditions.controls.all.controls[i].value['path'] !== null && submitted" class="row is-invalid">{{ "Trigger.Add_Edit.CompileAllField_error" | translate }}</div>
-                              </div>
-                              <!-- -----second condition------- -->
-                              <div class="col-sm-3" *ngIf="condition.value.type==='string'">
-                                  <ng-select  class="custom-select" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
-                                    <ng-option *ngFor="let string of options.stringOpt" [value]="string.id" >{{string.label_key}}</ng-option>
-                                  </ng-select>
-                              </div>
-                              <div class="col-sm-3" *ngIf="condition.value.type==='int'">
-                                  <ng-select  class="custom-select" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
-                                    <ng-option *ngFor="let int of options.intOpt" [value]="int.id" >{{int.label_key}}</ng-option>
-                                  </ng-select>
-                              </div>
-                              <div class="col-sm-3" *ngIf="condition.value.type==='boolean'">
-                                  <ng-select  class="custom-select" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
-                                    <ng-option *ngFor="let boolean of options.booleanOpt" [value]="boolean.id" >{{boolean.label_key}}</ng-option>
-                                  </ng-select>
-                              </div>
-                              <div class="col-sm-3" *ngIf="condition.value.type==='keyExist'">
-                                <ng-select  class="custom-select" formControlName="operator" placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
-                                  <ng-option *ngFor="let keyExist of options.keyExistOpt" [value]="keyExist.id" >{{keyExist.label_key}}</ng-option>
-                                </ng-select>
-                              </div>
-
-                              <!-- -----third condition------- -->
-                              <div *ngIf="condition.value.type==='string' || condition.value.type==='int'">
-                                  <input class="custom-input col-sm-3"  formControlName="value" type="text">
-                              </div>
-                              <div class="col-sm-3" *ngIf="condition.value.type==='boolean' || condition.value.type==='keyExist'">
-                                <ng-select class="custom-select" formControlName="value" [placeholder]="condition.value.placeholder" [searchable]="false" [clearable]="false">
-                                  <ng-option *ngFor="let oper of operator[condition.value.path]" [value]="oper.id">{{oper.label_key}}</ng-option>
-                                </ng-select>
-                              </div>
- 
-                              <div style="text-align: right; margin-top:3px" >
-                                <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=removeCondition(i) >
-                                  <i class="material-icons custom-icon">remove</i>
-                                </span>
-                                <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=addConditions()>
-                                  <i class="material-icons custom-icon">add</i>
-                                </span>
-                              </div>
-                                 
+                              <div
+                                *ngIf="form.conditions.controls.all.controls[i].invalid && form.conditions.controls.all.controls[i].value['path'] !== null && submitted"
+                                class="row is-invalid">{{ "Trigger.Add_Edit.CompileAllField_error" | translate }}</div>
                             </div>
+                            <!-- -----second condition------- -->
+                            <div class="col-sm-3" *ngIf="condition.value.type==='string'">
+                              <ng-select class="custom-select" formControlName="operator"
+                                placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}'
+                                [searchable]="false" [clearable]="false">
+                                <ng-option *ngFor="let string of options.stringOpt" [value]="string.id">
+                                  {{string.label_key}}
+                                </ng-option>
+                              </ng-select>
+                            </div>
+                            <div class="col-sm-3" *ngIf="condition.value.type==='int'">
+                              <ng-select class="custom-select" formControlName="operator"
+                                placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}'
+                                [searchable]="false" [clearable]="false">
+                                <ng-option *ngFor="let int of options.intOpt" [value]="int.id">{{int.label_key}}
+                                </ng-option>
+                              </ng-select>
+                            </div>
+                            <div class="col-sm-3" *ngIf="condition.value.type==='boolean'">
+                              <ng-select class="custom-select" formControlName="operator"
+                                placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}'
+                                [searchable]="false" [clearable]="false">
+                                <ng-option *ngFor="let boolean of options.booleanOpt" [value]="boolean.id">
+                                  {{boolean.label_key}}</ng-option>
+                              </ng-select>
+                            </div>
+                            <div class="col-sm-3" *ngIf="condition.value.type==='keyExist'">
+                              <ng-select class="custom-select" formControlName="operator"
+                                placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}'
+                                [searchable]="false" [clearable]="false">
+                                <ng-option *ngFor="let keyExist of options.keyExistOpt" [value]="keyExist.id">
+                                  {{keyExist.label_key}}</ng-option>
+                              </ng-select>
+                            </div>
+
+                            <!-- -----third condition------- -->
+                            <div class="col-sm-3" *ngIf="condition.value.type==='string' || condition.value.type==='int'" style="padding-right: 3px;">
+                              <input class="custom-input" formControlName="value" 
+                              [type]="condition.value.type === 'string' ? 'text' : 'number'" [min]="condition.value.type === 'string' ? '' : '1'">
+                            </div>
+
+                            <div class="col-sm-3"
+                              *ngIf="condition.value.type==='boolean' || condition.value.type==='keyExist'" style="padding-right: 3px;">
+                              <ng-select class="custom-select" formControlName="value"
+                                [placeholder]="condition.value.placeholder" [searchable]="false" [clearable]="false">
+                                <ng-option *ngFor="let oper of operator[condition.value.path]" [value]="oper.id">
+                                  {{oper.label_key}}</ng-option>
+                              </ng-select>
+                            </div>
+
+                            <div class="add-remove-icons-wrap" style="">
+                              <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=removeCondition(i)>
+                                <i class="material-icons custom-icon">remove</i>
+                              </span>
+                              <!-- padding-right:8px;  -->
+                              <span class="icon" style="cursor: pointer;" (click)=addConditions()>
+                                <i class="material-icons custom-icon">add</i>
+                              </span>
+                            </div>
+
                           </div>
                         </div>
                       </div>
-                      <!-- ---------------ARRAY !!!ALL!!! CONDITION END-------------------- -->
+                    </div>
+                    <!-- ---------------ARRAY !!!ALL!!! CONDITION END-------------------- -->
                   </div>
-                   
-                  
-                </div>  
-                <!-- >>>>>>>>>>>>-------section PERSONALIZZA TRIGGER END------<<<<<<<<< -->    
-                
-                <!-- >>>>>>>>>>>>-------section AZIONI TRIGGER START------<<<<<<<<< --> 
+
+
+                </div>
+                <!-- >>>>>>>>>>>>-------section PERSONALIZZA TRIGGER END------<<<<<<<<< -->
+
+                <!-- >>>>>>>>>>>>-------section AZIONI TRIGGER START------<<<<<<<<< -->
                 <div>
-                  <div class="row">
-                    <label class="col-sm-2 custom-label" style="text-align: left">
+                  <div class="form-group row condition" style="background-color: #fff">
+                    <label class="col-sm-2 custom-label" style="text-align: left!important;height: 17px;white-space: nowrap;padding-left: 0px!important;">
                       {{ "Trigger.Add_Edit.PerformFollowingActions" | translate }}
                     </label>
                   </div>
-          
-                  <!-- ---------------ARRAY !!!ACTIONS!!! START-------------------- -->
+
+                  <!-- 
+                  // ---------------------------------------------------------------
+                  // ARRAY !!!ACTIONS!!! START
+                  // --------------------------------------------------------------- -->
                   <div>
-                    <div formArrayName="actions" *ngFor="let action of triggerForm.get('actions').controls; let j = index">
-                        <div [formGroupName]="j">
-                          <div class="form-group row condition">
-                                  
-                              <!-- -----first condition------- -->  
-                              <div class="col-sm-3">
-                                <ng-select  class="custom-select " formControlName="key" (change)="onSelectedAction($event, action)" placeholder='{{ "Trigger.Add_Edit.ActionPlaceholder" | translate }}' [searchable]="false" [clearable]="false">
-                                  <ng-option *ngFor="let act of temp_act" [value]="act.key" >{{act.label_key}}</ng-option>
-                                </ng-select>
-                                <div *ngIf="form.actions.controls[j].invalid && submitted" class="row is-invalid">{{ "Trigger.Add_Edit.CompileAllField_error" | translate }}</div>
-                              </div>
+                    <div formArrayName="actions"
+                      *ngFor="let action of triggerForm.get('actions').controls; let j = index">
+                      <div [formGroupName]="j">
+                        <div class="form-group row condition">
 
-                                
-                              <div formGroupName="parameters">
-                                <!-- -----second condition------- -->
-                                <div *ngIf="action.value.type==='input' ">
-                                    <input class="custom-input col-sm-3"  formControlName="fullName" type="text" [placeholder]="action.value.placeholder">
-                                </div>
-                                <div class="col-sm-3" *ngIf="action.value.type==='select'">
-                                  <ng-select class="custom-select " formControlName="fullName" [placeholder]="action.value.placeholder" [searchable]="false" [clearable]="false">
-                                      <ng-option *ngFor="let operator of operator[action.value.key]" [value]="operator.id" >{{operator.label_key}}</ng-option>
-                                  </ng-select>
-                                </div>
-                                <!-- -----third condition------- -->
-                                <div *ngIf="action.value.type==='input'">
-                                    <input class="custom-input col-sm-3" formControlName="text" type="text" placeholder='{{ "Trigger.MessagePlaceholder" | translate }}'>
-                                </div>
-                              </div>
+                          <!-- 
+                          // ---------------------------
+                          // First condition
+                          // --------------------------- -->
+                          <div class="col-sm-3">
+                            <ng-select class="custom-select " formControlName="key"
+                              (change)="onSelectedAction($event, action)"
+                              placeholder='{{ "Trigger.Add_Edit.ActionPlaceholder" | translate }}' [searchable]="false"
+                              [clearable]="false">
+                              <ng-option *ngFor="let act of temp_act" [value]="act.key">{{act.label_key}}</ng-option>
+                            </ng-select>
+                            <div *ngIf="form.actions.controls[j].invalid && submitted" class="row is-invalid">
+                              {{ "Trigger.Add_Edit.CompileAllField_error" | translate }}
+                            </div>
+
+                            <!-- // display error message if the action key is request.create -->
+                            <!-- <div *ngIf="form.actions.controls[j].invalid && submitted && action.value.key ==='request.create'" 
+                              class="row is-invalid">
+                              {{ "Trigger.Add_Edit.CompileAllField_error" | translate }}
+                            </div> -->
+                          </div>
 
 
-                              <div style="text-align: right; margin-top:3px" >
-                                <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=removeAction(j) >
-                                  <i class="material-icons custom-icon">remove</i>
-                                </span>
-                                <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=addActions()>
-                                  <i class="material-icons custom-icon">add</i>
-                                </span>
-                              </div>
+                          <div
+                            *ngIf="action.value.key !== 'request.department.route.self' && action.value.key !== 'request.close' && action.value.key !== 'request.reopen'"
+                            formGroupName="parameters">
+                             
+                            <!-- 
+                            // ---------------------------
+                            // Second condition
+                            // --------------------------- -->
+                            <div class="col-sm-3" *ngIf="action.value.type==='input' ">
+                              <input class="custom-input" formControlName="fullName" type="text"
+                                [placeholder]="action.value.placeholder">
+                            </div>
+                            <div class="col-sm-3" *ngIf="action.value.type==='select'">
+                              <ng-select class="custom-select " formControlName="fullName"
+                                [placeholder]="action.value.placeholder" [searchable]="false" [clearable]="false">
+                                <ng-option *ngFor="let operator of operator[action.value.key]" [value]="operator.id">
+                                  {{operator.label_key}}</ng-option>
+                              </ng-select>
+                            </div>
+
+                            <!-- 
+                            // ---------------------------
+                            // Third condition
+                            // --------------------------- -->
+                            <div class="col-sm-3" *ngIf="action.value.type==='input'" style="padding-right: 3px;">
+                              <input class="custom-input" formControlName="text" type="text"
+                                placeholder='{{ "Trigger.MessagePlaceholder" | translate }}'>
+                            </div>
+
+                            <!-- // display text input if the action key is request.create -->
+                            <div class="col-sm-3" *ngIf="action.value.key==='request.create'" style="padding-right: 3px;">
+                              <input class="custom-input" formControlName="text" type="text"
+                                placeholder='{{ "Trigger.MessagePlaceholder" | translate }}'>
+                            </div>
+                          </div>
+
+
+                          <div class="add-remove-icons-wrap" style="">
+                            <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=removeAction(j)>
+                              <i class="material-icons custom-icon">remove</i>
+                            </span>
+                            <!-- padding-right:8px;  -->
+                            <span class="icon" style="cursor: pointer;" (click)=addActions()>
+                              <i class="material-icons custom-icon">add</i>
+                            </span>
                           </div>
                         </div>
+                      </div>
                     </div>
                   </div>
                   <!-- ---------------ARRAY !!!ACTIONS!!! END-------------------- -->
@@ -281,105 +396,157 @@
                 </div>
                 <!-- >>>>>>>>>>>>-------section AZIONI TRIGGER END------<<<<<<<<< -->
 
-                <div class="form-group">
-                  <button class="btn btn-primary" type="submit">{{ "Trigger.Add_Edit.UpdateTriggerButton" | translate }}</button>
-                  <button class="btn btn-light" type='button' (click)="goBack()" >{{ "Trigger.Add_Edit.CancelButton" | translate }}</button>
+                <div class="form-group" style="border-top: solid 1px #ddd; padding-top: 18px;margin-top: 16px;">
+                  <button class="btn btn-primary"
+                    type="submit">{{ "Trigger.Add_Edit.UpdateTriggerButton" | translate }}</button>
+                  <!-- <button class="btn btn-light" type='button' (click)="goBack()">{{ "Trigger.Add_Edit.CancelButton" | translate }}</button> -->
                 </div>
-            </form>
+              </form>
+            </div>
+
           </div>
-          
         </div>
       </div>
     </div>
+  </div>
 </div>
 
 <!-- ============ MODAL - INFO WINDOWS ============ -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayMODAL_Window}" style="background-color: rgba(90,90,90,0.5);">
-  <div class="modal-dialog modal-sm" role="document">
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayMODAL_Window}"
+  style="background-color: rgba(90,90,90,0.5);">
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+      <div class="modal-header" style="padding:16px!important; border-bottom:none!important;">
+        <!-- <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
           <span aria-hidden="true">&times;</span>
+        </button> -->
+
+        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()"
+          style="position: absolute; right: 14px;">
+          <span aria-hidden="true">
+            <svg class="tide-icon" width="24" height="24" viewBox="0 0 24 24">
+              <path
+                d="M13.357 11.993l10.256 10.295c0.39 0.391 0.39 1.024 0 1.415-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292l-10.257-10.295-10.256 10.295c-0.194 0.195-0.449 0.292-0.704 0.292s-0.51-0.097-0.705-0.292c-0.39-0.391-0.39-1.024 0-1.415l10.256-10.295-10.256-10.294c-0.39-0.391-0.39-1.024 0-1.415s1.020-0.391 1.409 0l10.256 10.294 10.256-10.294c0.39-0.391 1.020-0.391 1.41 0 0.389 0.391 0.389 1.024 0 1.415l-10.256 10.294z">
+              </path>
+            </svg>
+          </span>
         </button>
 
-        <h4 class="modal-title">
-          {{ "Trigger.EditTrigger" | translate }}
-        </h4>
+        <h2 class="modal-title custom__modal__title">
+          <span style="vertical-align: middle;">
+            {{ "Trigger.EditTrigger" | translate }}
+          </span>
+        </h2>
       </div>
 
-      <div class="modal-body" style="padding-right: 15px; padding-top:15px; padding-bottom:15px">
-      
-        <span *ngIf="SHOW_CIRCULAR_SPINNER">
-          <div  class="loader" style="top:25%">
-            <svg class="circular" viewBox="25 25 50 50">
-              <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10"/>
-            </svg>
+      <hr class="custom-hr" style="margin-top:3px; margin-bottom:3px">
 
+      <div class="modal-body"
+        style="padding-top: 0px; padding-bottom: 0px; padding-right: 34px; padding-left: 34px; line-height: 1;min-height: 161px;">
+
+        <span *ngIf="SHOW_CIRCULAR_SPINNER">
+          <div class="loader" style="top:25%;width: 135px;margin-top: 18px;">
+            <svg class="circular" viewBox="25 25 50 50">
+              <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10" />
+            </svg>
           </div>
-          <p style="margin-top: 60px; text-align: center; color: #566787; font-weight: 500">
-              {{ "Trigger.Processing" | translate }}
-          </p>
+          <!-- <p style="margin-top: 40px; text-align: center; color: #566787; font-weight: 500">
+            {{ "Trigger.Processing" | translate }}
+          </p> -->
         </span>
 
-        <span *ngIf="!SHOW_CIRCULAR_SPINNER ">
-            <!-- class="loader" style="top:5%" -->
-          <div style="text-align: center">
+        <!-- <span *ngIf="!SHOW_CIRCULAR_SPINNER"> -->
 
-            <!--      WHEN NO ERROR OCCUR      -->
-            <span *ngIf="!SHOW_CIRCULAR_SPINNER && !SHOW_ERROR_CROSS">
-              <i class="material-icons" style="color:#70b665">done</i>
-              <p style="color:#70b665; font-weight: 500">
-                  {{ "Trigger.Completed" | translate }}
-              </p> 
-            </span>
-
-            <!--             SERVER ERROR             -->
-            <span *ngIf="!SHOW_CIRCULAR_SPINNER && SHOW_ERROR_CROSS && errorMESSAGE_server">
-              <i class="material-icons" style="color:#ff5252">error</i>
-              <p style="color:#ff5252; font-weight: 500">
-                  {{ "Trigger.Error" | translate }}
-              </p> 
-            </span>
-
-            <!--             FORM ERROR             -->
-            <span *ngIf="!SHOW_CIRCULAR_SPINNER && SHOW_ERROR_CROSS && errorMESSAGE">
-              <i class="material-icons" style="color:#f5750c">warning</i>
-              <p style="color:#f5750c; font-weight: 500">
-                  {{ "Trigger.Error" | translate }}
-              </p> 
-            </span>
-
-            
-
-          </div>
+        <div style="text-align: center">
 
           <!--      WHEN NO ERROR OCCUR      -->
           <span *ngIf="!SHOW_CIRCULAR_SPINNER && !SHOW_ERROR_CROSS">
-            <p style="margin-top: 0px; text-align: center; font-weight: 500">
-              {{ "Trigger.TheTriggerHasBeenUpdated" | translate }}
-            </p>
+
+            <!-- <i class="material-icons" style="color:#70b665">done</i> -->
+            <div class="success-checkmark">
+              <div class="check-icon">
+                <span class="success-icon-line success-line-tip"></span>
+                <span class="success-icon-line success-line-long"></span>
+                <div class="success-icon-circle"></div>
+                <div class="success-icon-fix"></div>
+              </div>
+            </div>
+            <!-- <p style="color:#70b665; font-weight: 500">  {{ "Trigger.Completed" | translate }}  </p> -->
+            <h3
+              style="text-align: center;  color: #8894ab; font-size: 22px; margin-bottom: 10px; min-height: 33px; margin-top: 10px;">
+              {{ "Trigger.Completed" | translate }}
+            </h3>
           </span>
 
-          <!--      ERROR -  * Server error occurred *    -->
+          <!--             SERVER ERROR             -->
           <span *ngIf="!SHOW_CIRCULAR_SPINNER && SHOW_ERROR_CROSS && errorMESSAGE_server">
-              <p style="margin-top: 0px; text-align: center; font-weight: 500">
-                {{ "Trigger.ErrorMessageServer" | translate }}
-              </p>
-            </span>
-            
-          <!--      ERROR - * Fields not valid *    -->
-          <span *ngIf="!SHOW_CIRCULAR_SPINNER && SHOW_ERROR_CROSS && errorMESSAGE ">
-            <p style="margin-top: 0px; text-align: center; font-weight: 500">
-              {{ "Trigger.ErrorMessage" | translate }}
-            </p>
+            <!-- <i class="material-icons" style="color:#ff5252">error</i> -->
+            <!-- <p style="color:#ff5252; font-weight: 500"> {{ "Trigger.Error" | translate }} </p> -->
+
+            <div class="error-banmark">
+              <div class="ban-icon">
+                <span class="icon-line line-long-invert"></span>
+                <span class="icon-line line-long"></span>
+                <div class="icon-circle"></div>
+                <div class="icon-fix"></div>
+              </div>
+            </div>
+            <h3
+              style="text-align: center;  color: #8894ab; font-size: 22px; margin-bottom: 10px;margin-top: 10px;;min-height: 33px;">
+              {{ "Trigger.Error" | translate }}
+            </h3>
           </span>
 
+          <!--             FORM ERROR             -->
+          <span *ngIf="!SHOW_CIRCULAR_SPINNER && SHOW_ERROR_CROSS && errorMESSAGE">
+            <!-- <i class="material-icons" style="color:#f5750c">warning</i> -->
+            <!-- <p style="color:#f5750c; font-weight: 500"> {{ "Trigger.Error" | translate }} </p> -->
+            <div class="error-banmark">
+              <div class="ban-icon">
+                <span class="icon-line line-long-invert"></span>
+                <span class="icon-line line-long"></span>
+                <div class="icon-circle"></div>
+                <div class="icon-fix"></div>
+              </div>
+            </div>
+
+
+            <h3
+              style="text-align: center;  color: #8894ab; font-size: 22px;margin-bottom: 10px;margin-top: 10px;min-height: 33px;">
+              {{ "Trigger.Error" | translate }}
+            </h3>
+
+          </span>
+        </div>
+
+        <!--      WHEN NO ERROR OCCUR      -->
+        <span *ngIf="!SHOW_CIRCULAR_SPINNER && !SHOW_ERROR_CROSS">
+          <p style="margin-top: 0px; text-align: center; font-weight: 400; padding-bottom:20px">
+            {{ "Trigger.TheTriggerHasBeenUpdated" | translate }}
+          </p>
         </span>
+
+        <!--      ERROR -  * Server error occurred *    -->
+        <span *ngIf="!SHOW_CIRCULAR_SPINNER && SHOW_ERROR_CROSS && errorMESSAGE_server">
+          <p style="margin-top: 0px; text-align: center; font-weight: 400; padding-bottom:20px">
+            {{ "Trigger.ErrorMessageServer" | translate }}
+          </p>
+        </span>
+
+        <!--      ERROR - * Fields not valid *    -->
+        <span *ngIf="!SHOW_CIRCULAR_SPINNER && SHOW_ERROR_CROSS && errorMESSAGE ">
+          <p style="margin-top: 0px; text-align: center; font-weight: 400; padding-bottom:20px">
+            {{ "Trigger.ErrorMessage" | translate }}
+          </p>
+        </span>
+
+        <!-- </span> -->
+
       </div>
 
       <div class="modal-footer" style="text-align: center;">
         <button class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseModalHandled()">
-            {{ "UserEditAddPage.Continue" | translate }}
+          {{ "UserEditAddPage.Continue" | translate }}
         </button>
       </div>
 

@@ -1,6 +1,9 @@
 .table td, .table th {
-    vertical-align: middle
+    // vertical-align: middle;
+    vertical-align: top !important;
 }
+
+
 
 .card-header-custom-bkgrnd {
     box-shadow:none;
@@ -18,7 +21,7 @@
     font-size: 14px;
     font-weight: 500;
     color: #353f45;
-    font-weight: bold;
+    // font-weight: bold;
     font-family: 'Google Sans', sans-serif !important;
     // color: #566787;
   }

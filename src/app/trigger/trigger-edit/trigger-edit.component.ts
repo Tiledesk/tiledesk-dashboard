@@ -50,6 +50,7 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
   errorMESSAGE_server: boolean;
   submitted = false;
 
+  actionsGROUP: any;
   // messageCondition: string;    --> get from BaseTriggerComponent
   // messageAction: string;       --> get from BaseTriggerComponent
   // messageServerError: string;  --> get from BaseTriggerComponent
@@ -89,7 +90,7 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
 
     this.triggeriD = this.route.snapshot.params['triggerId'];
     this.triggerService.getTriggerById(this.triggeriD).subscribe((triggerDetail: any) => {
-      console.log('trigger DETAIL RESPONSE', triggerDetail);
+      console.log('TRIGGER (EDIT) ->>>>> GET TRIGGER BY ID RES ', triggerDetail);
 
       this.setFormValue(triggerDetail)
 
@@ -107,8 +108,31 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
 
   }
 
+  // getType(cond, triggerKey) {
+  //   console.log('TRIGGER (EDIT) - getType(cond) condition', cond);
+  //   console.log('TRIGGER (EDIT) - getType(cond) condition key', cond);
+  //   console.log('TRIGGER (EDIT) - getType(cond) triggerKey', triggerKey);
+  //   // if (this.condition) {
+  //   //   // this.condition.filter(b => b.triggerType === triggerKey).filter(c => c.key === cond.key)[0].type;
+  //   // }
+  //   const conditionsFilteredForTriggerKey = this.condition.filter((condition: any) => {
+
+  //     return condition.triggerType === triggerKey;
+  //   });
+
+  //   console.log('TRIGGER (EDIT) - getType(cond) conditionFilteredForTriggerKey', conditionsFilteredForTriggerKey);
+
+  //   if (conditionsFilteredForTriggerKey.length > 0) {
+  //    const condType  = conditionsFilteredForTriggerKey.filter((condition: any) => {
+
+  //     return condition.key === cond.key;
+  //   });
+  //   console.log('TRIGGER (EDIT) - getType(cond) condType ', condType);
+  //   }
+  // }
+
   setFormValue(trigger: Trigger): void {
-    console.log('TRIGGER_detail', trigger);
+    console.log('TRIGGER (EDIT) - setFormValue TRIGGER_detail', trigger);
 
     // check whitch array of conditions exist
     if (Array.isArray(trigger.conditions.all) && trigger.conditions.all.length) {
@@ -139,6 +163,8 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
     // if it hasn't at least one element, add empty one with createCondition() method
     // ( i don't need to check same info for action array because user must perform at least one action)
     if (trigger.conditions[this.conditionType.split('.')[1]].length !== 0) {
+
+
       // add conditions to formValue depending on conditionAll_ANY value:
       // -conditionsGROUP is all the condition.any/all array taken from trigger service value.
       //  next is added the type field for each array to build the html input/dropdown depending on this value type
@@ -155,8 +181,10 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
           type: this.condition.filter(b => b.triggerType === trigger.trigger.key).filter(c => c.key === cond.key)[0].type
         }))
 
-      console.log('condition.filter', this.condition.filter(b => b.triggerType === trigger.trigger.key))
-      console.log('aaaaaaaaaaaaa', this.condition.filter(a => a.triggerType === trigger.trigger.key).filter(b => b.key === trigger.conditions[this.conditionType.split('.')[1]][0].key));
+
+
+      console.log('All condition array (condition.filter)', this.condition.filter(b => b.triggerType === trigger.trigger.key))
+      console.log('Found condition', this.condition.filter(a => a.triggerType === trigger.trigger.key).filter(b => b.key === trigger.conditions[this.conditionType.split('.')[1]][0].key));
       const conditions_array = this.formBuilder.array(conditionsGROUP)
       const cond_triggerFormNewArray = this.triggerForm.get('conditions') as FormGroup
       cond_triggerFormNewArray.setControl(this.conditionType.split('.')[1], conditions_array)
@@ -164,27 +192,114 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
       this.createCondition()
     }
 
+
+    console.log('TRIGGER (EDIT) ->>>>> setFormValue (EDIT) - Actions: ', trigger.actions);
+
     // (same as conditions) After mapping trigger.condition to custom formBuilder group,
     // and create a fromBuilder array of actionsGroup, this array is added to triggerForm
     // with a new Control (setControl() )
-    const actionsGROUP = trigger.actions.map(act => this.formBuilder.group({
-      key: act.key,
-      parameters: this.formBuilder.group({
-        fullName: act.parameters.fullName,
-        text: act.parameters.text
-      }),
-      type: this.action.filter(b => b.key === act.key)[0].type,
-      placeholder: this.action.filter(b => b.key === act.key)[0].placeholder
-    }))
-    const actions_array = this.formBuilder.array(actionsGROUP)
+    // act.key === 'request.participants.join' ?  act.parameters['member']
+
+    // fullName: [
+    //   act.parameters === undefined ? ' ' : act.parameters.fullName ||
+    //     act.key === 'request.participants.join' && act.parameters['member'].indexOf('bot_') === -1 ? act.parameters['member'] : '' ||
+    //       act.key === 'request.participants.join' && act.parameters['member'].indexOf('bot_') !== -1 ? act.parameters['member'].slice(4) : '' ||
+    //         act.key === 'request.participants.leave' && act.parameters['member'].indexOf('bot_') === -1 ? act.parameters['member'] : '' ||
+    //           act.key === 'request.participants.leave' && act.parameters['member'].indexOf('bot_') !== -1 ? act.parameters['member'].slice(4) : '',
+    //   Validators.required
+    // ],
+    this.actionsGROUP = trigger.actions
+      .map(act => this.formBuilder.group({
+        key: act.key,
+        parameters: this.formBuilder.group({
+          fullName: [this.doFullNameValue(act), Validators.required],
+          text: [act.parameters === undefined ? ' ' : act.parameters.text, Validators.required],
+        }),
+        type: this.action.filter(b => b.key === act.key)[0].type,
+        placeholder: this.action.filter(b => b.key === act.key)[0].placeholder
+      }))
+
+
+    // nk 
+    // --------------------------------------------------------------------------------------------------------------------------------------------
+    // Clear action parameters validators if the event is:
+    // - request.department.route.self (i.e. 'Reassign to the same department')
+    // - request.close (i.e. 'Close request')
+    // - request.reopen (i.e. 'Reopen request') 
+    // - request.participants.leave (i.e. 'Participant leave request')
+    // - request.department.route
+    // - request.status.update
+    // --------------------------------------------------------------------------------------------------------------------------------------------
+    this.actionsGROUP.forEach(actions => {
+      console.log('TRIGGER (EDIT) ->>>>> actionsGROUP actions value : ', actions.value);
+      const parameters = actions.get('parameters')
+      console.log('TRIGGER (EDIT) ->>>>> actionsGROUP actions parameters : ', parameters);
+      if (
+        (actions.value.key === 'request.department.route.self') ||
+        (actions.value.key === 'request.close') ||
+        (actions.value.key === 'request.reopen') ||
+        (actions.value.key === 'request.participants.join') ||
+        (actions.value.key === 'request.participants.leave') ||
+        (actions.value.key === 'request.department.route') ||
+        (actions.value.key === 'request.status.update')
+      ) {
+        for (const key in parameters.controls) {
+          console.log('TRIGGER ->>>>> onSelectedAction - parameters.controls key: ', key);
+          parameters.get(key).clearValidators();
+          parameters.get(key).updateValueAndValidity();
+        }
+      }
+    });
+    console.log('TRIGGER (EDIT) ->>>>> setFormValue  - actionsGROUP: ', this.actionsGROUP);
+    const actions_array = this.formBuilder.array(this.actionsGROUP)
     this.triggerForm.setControl('actions', actions_array)
-
     this.temp_cond = this.condition.filter(b => b.triggerType === trigger.trigger.key);
+  }
 
+  doFullNameValue(act) {
+    console.log('TRIGGER (EDIT) ->>>>> setFormValue > doFullNameValue act: ', act);
+
+    let fullNameValue = ''
+
+    if (act.parameters) {
+      // -------------------------------------------------
+      // Parameters has the key fullName
+      // -------------------------------------------------
+      if (act.parameters.fullName) {
+        return fullNameValue = act.parameters.fullName;
+      }
+
+      // --------------------------------------------------
+      // Parameters has the key member instead of fullname 
+      // --------------------------------------------------
+      if (act.parameters.member) {
+        if (act.parameters['member'].indexOf('bot_') === -1) {
+          return fullNameValue = act.parameters['member']
+        }
+
+        // if the value of member has the prefic 'bot_'
+        if (act.parameters['member'].indexOf('bot_') !== -1) {
+          return fullNameValue = act.parameters['member'].slice(4)
+        }
+      }
+
+      // -------------------------------------------------------
+      // Parameters has the key departmentid instead of fullname 
+      // -------------------------------------------------------
+      if (act.parameters.departmentid) {
+        return fullNameValue = act.parameters['departmentid']
+      }
+
+      // -------------------------------------------------------
+      // Parameters has the key status instead of fullname 
+      // -------------------------------------------------------
+      if (act.parameters.status) {
+        return fullNameValue = act.parameters['status']
+      }
+    }
   }
 
   createCondition(): FormGroup {
-
     return this.formBuilder.group({
       fact: 'fact',
       path: [undefined, Validators.required],
@@ -194,16 +309,14 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
       key: undefined,
       placeholder: undefined
     })
-
   }
 
   createAction(): FormGroup {
-
     return this.formBuilder.group({
       key: [undefined, Validators.required],
       parameters: this.formBuilder.group({
-        fullName: [undefined, Validators.required],
-        text: [undefined, Validators.required]
+        fullName: [undefined, [Validators.required, Validators.minLength(1)]],
+        text: [undefined, [Validators.required]]
       }),
       type: undefined, // change value to undefined if added multiple actions next
       placeholder: undefined
@@ -215,6 +328,7 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
     this.conditions = this.triggerForm.get(this.conditionType) as FormArray;
     this.conditions.push(this.createCondition());
   }
+
   removeCondition(rowIndex: number): void {
     console.log('Remove CONDITION ARRAY with index:', rowIndex);
     this.conditions = this.triggerForm.get(this.conditionType) as FormArray;
@@ -223,14 +337,15 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
     } else {
       this.conditions.removeAt(rowIndex);
     }
-
   }
 
   addActions(): void {
     console.log('Add NEW CONDITIONS ARRAY');
     this.actions = this.triggerForm.get('actions') as FormArray;
     this.actions.push(this.createAction());
+    // this.cleanForm()
   }
+
   removeAction(rowIndex: number): void {
     console.log('Remove CONDITION ARRAY with index:', rowIndex);
     this.actions = this.triggerForm.get('actions') as FormArray;
@@ -240,13 +355,13 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
     } else {
       this.actions.removeAt(rowIndex);
     }
-
   }
 
   onEnableDisable(status: boolean) {
     console.log('trigger status:', status)
     this.triggerForm.controls['enabled'].setValue(status);
   }
+
   swithOnOff($event) {
     console.log('trigger status', $event.target.checked)
     this.triggerForm.controls['enabled'].setValue($event.target.checked);
@@ -254,7 +369,6 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
 
   // get dropdown ANY/ALL condition value
   conditionTriggerValue(value) {
-
     // this.temp_cond = this.condition;
     // this.temp_act = this.action;
     this.conditionType = 'conditions.' + value;
@@ -275,7 +389,6 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
   }
 
   onTriggerKey(value) {
-
     // reset condition formArray value: delete all the index from 1  to conditions.length and
     // finally clear the value of first index array
     this.conditions = this.triggerForm.get(this.conditionType) as FormArray;
@@ -320,8 +433,48 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
   }
 
   onSelectedAction(event, action) {
-    console.log('VALUE', event)
+    console.log('TRIGGER (EDIT) ->>>>> VALUE', event)
+    console.log('TRIGGER (EDIT) ->>>>> action before', action);
 
+    // nk 
+    // --------------------------------------------------------------------------------------------------------------------------------------------
+    // Clear action parameters validators if the event is:
+    // - request.department.route.self (i.e. 'Reassign to the same department')
+    // - request.close (i.e. 'Close request')
+    // - request.reopen (i.e. 'Reopen request') 
+    // - request.participants.join (i.e. Participant join request)
+    // - request.participants.leave (i.e. 'Participant leave request')
+    // - request.department.route
+    // - request.status.update
+    // --------------------------------------------------------------------------------------------------------------------------------------------
+    if (
+      (event === 'request.department.route.self') ||
+      (event === 'request.close') ||
+      (event === 'request.reopen') ||
+      (event === 'request.participants.join') ||
+      (event === 'request.participants.leave') ||
+      (event === 'request.department.route') ||
+      (event === 'request.status.update')
+    ) {
+      const parameters = action.get('parameters');
+      console.log('TRIGGER ->>>>> onSelectedAction (EDIT) - ACTIONS PARAMETER: ', parameters);
+
+      for (const key in parameters.controls) {
+        console.log('TRIGGER (EDIT) ->>>>> onSelectedAction  parameters.controls key: ', key);
+        parameters.get(key).clearValidators();
+        parameters.get(key).updateValueAndValidity();
+      }
+    } else {
+      const parameters = action.get('parameters');
+
+      for (const key in parameters.controls) {
+        console.log('TRIGGER (EDIT) ->>>>> onSelectedAction  parameters.controls key: ', key);
+        parameters.get(key).setValidators([Validators.required]);
+        parameters.get(key).updateValueAndValidity();
+      }
+    }
+
+    console.log('action before', action);
     console.log('action before', action);
     // set value of second and third dropdown action section and set it's placeholder value for selected action
     action.patchValue({
@@ -329,24 +482,157 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
       'placeholder': this.action.filter(b => b.key === event)[0].placeholder,
       'parameters': {
         'fullName': undefined,
-        'text': ' '
+        'text': event === 'request.create' || event === 'message.send' ? '' : ' '
       }
     });
-    console.log('action after', action);
+    console.log('TRIGGER (EDIT) ->>>>> action after', action);
+    console.log('TRIGGER (EDIT) ->>>>> event', event);
+    // if (event === 'request.create') {
+    //   this.cleanForm()
+    // }
+  }
+
+  public cleanForm() {
+    console.log('TRIGGER ->>>>> HERW YES ');
+    //  let actions =  this.triggerForm.get('actions');
+    let action_controls = this.triggerForm.get('actions')['controls'][0]
+    console.log('TRIGGER ->>>>> cleanForm - TRIGGER FORM > ACTIONS CONTROLS: ', action_controls);
+    let parameters_text_value = action_controls.controls['parameters'].value.text;
+    action_controls.get('parameters')
+
+    const action_parameters_text_control = action_controls.get('parameters.text')
+    console.log('TRIGGER ->>>>> cleanForm - TRIGGER FORM > action_parameters_text_control: ', action_parameters_text_control);
+
+    action_parameters_text_control.setValue(parameters_text_value.trim())
   }
 
   get form() { return this.triggerForm.controls }
 
-  onSubmit() {
 
-    console.log('get form', this.form);
+
+
+  onSubmit() {
+    console.log('TRIGGER (EDIT) ->>>>> onSubmit - get form', this.form);
 
     this.displayMODAL_Window = 'block';
     this.SHOW_CIRCULAR_SPINNER = true;
     this.errorMESSAGE = false;
     this.errorMESSAGE_server = false;
-
     this.submitted = true;
+
+
+    for (let w = 0; w < this.triggerForm.value.actions.length; w++) {
+      console.log('TRIGGER ->>>>> onSubmit triggerForm.value.actions[w].key: ', this.triggerForm.value.actions[w].key);
+
+      // nk 
+      // --------------------------------------------------------------------------------------------------------------------------------------------
+      // Delete the object parameters from actions if the action key is:
+      // - request.department.route.self (i.e. 'Reassign to the same department')
+      // - request.close (i.e. 'Close request') 
+      // - request.reopen (i.e. 'Reopen request') 
+      // --------------------------------------------------------------------------------------------------------------------------------------------
+      if ((this.triggerForm.value.actions[w].key === "request.department.route.self") ||
+        (this.triggerForm.value.actions[w].key === 'request.close') ||
+        (this.triggerForm.value.actions[w].key === 'request.reopen')) {
+        delete this.triggerForm.value.actions[w].parameters
+      }
+
+
+      // nk 
+      // --------------------------------------------------------------------------------------------------------------------------------------------
+      // Rename the parameters key 'fullName' in 'member' and add the string 'bot_' if the select agent is a bot.
+      // Actions key for which it is made:
+      // - request.participants.join (i.e. 'Participant join request')
+      // - request.participants.leave (i.e. 'Participant leave request')
+      // --------------------------------------------------------------------------------------------------------------------------------------------
+      if (
+        (this.triggerForm.value.actions[w].key === 'request.participants.join') ||
+        (this.triggerForm.value.actions[w].key === 'request.participants.leave')
+      ) {
+        console.log('TRIGGER ->>>>> onSubmit action key is: ', this.triggerForm.value.actions[w].key);
+
+        // ----------------------------------------------------------------
+        // search the id of the selected agent (fullnameValue) in 
+        // the bots array and, if it is found, add the string 'bot_' to it
+        // ----------------------------------------------------------------
+        const fullnameValue = this.triggerForm.value.actions[w].parameters.fullName
+        console.log('TRIGGER ->>>>> onSubmit parameters fullname value ', fullnameValue);
+
+        let foundBot = this.bots.find(bot => bot._id === fullnameValue);
+        console.log('TRIGGER ->>>>> onSubmit foundBot ', foundBot);
+
+        if (foundBot !== undefined) {
+          this.triggerForm.value.actions[w].parameters.fullName = 'bot_' + fullnameValue
+        }
+
+        // -------------------------------------------------------
+        // delete the field 'text'
+        // -------------------------------------------------------
+        delete this.triggerForm.value.actions[w].parameters.text
+
+        console.log('TRIGGER ->>>>> onSubmit parameters: ', this.triggerForm.value.actions[w].parameters);
+        console.log('TRIGGER ->>>>> onSubmit bots: ', this.bots);
+
+        // -------------------------------------------------------
+        // Rename the key fullName in member
+        // -------------------------------------------------------
+        if (this.triggerForm.value.actions[w].parameters.hasOwnProperty("fullName")) {
+          this.renameKey(this.triggerForm.value.actions[w].parameters, 'fullName', 'member');
+        }
+      }
+
+      // nk 
+      // --------------------------------------------------------------------------------------------------------------------------------------------
+      // Rename the parameters key 'fullName' in 'departmentid' if the Actions key is 
+      // - request.department.route (i.e. 'Assign to department')
+      // Rename the parameters key 'fullName' in 'status' if the Actions key is  
+      // - request.status.update (i.e. 'Change request status')
+      // --------------------------------------------------------------------------------------------------------------------------------------------
+
+      if (
+        (this.triggerForm.value.actions[w].key === 'request.department.route') ||
+        (this.triggerForm.value.actions[w].key === 'request.status.update')
+      ) {
+        console.log('TRIGGER ->>>>> onSubmit action key is: ', this.triggerForm.value.actions[w].key);
+
+        // -------------------------------------------------------
+        // delete the field 'text'
+        // -------------------------------------------------------
+        delete this.triggerForm.value.actions[w].parameters.text
+
+        console.log('TRIGGER ->>>>> onSubmit parameters: ', this.triggerForm.value.actions[w].parameters);
+
+        // -------------------------------------------------------
+        // Rename the key fullName in departmentid
+        // -------------------------------------------------------
+        if (this.triggerForm.value.actions[w].parameters.hasOwnProperty("fullName")) {
+
+          if (this.triggerForm.value.actions[w].key === 'request.department.route') {
+            this.renameKey(this.triggerForm.value.actions[w].parameters, 'fullName', 'departmentid');
+          }
+
+          if (this.triggerForm.value.actions[w].key === 'request.status.update') {
+            this.renameKey(this.triggerForm.value.actions[w].parameters, 'fullName', 'status');
+          }
+        }
+      }
+
+      // nk 
+      // --------------------------------------------------------------------------------------------------------------------------------------------
+      // Rename the parameters key 'fullName' in 'departmentid' if the Actions key is 
+      // - request.create (i.e. 'Create a request')
+      // --------------------------------------------------------------------------------------------------------------------------------------------
+      if (this.triggerForm.value.actions[w].key === 'request.create') {
+        console.log('TRIGGER ->>>>> onSubmit action key is: ', this.triggerForm.value.actions[w].key);
+        // -------------------------------------------------------
+        // Rename the key fullName in departmentid
+        // -------------------------------------------------------
+        if (this.triggerForm.value.actions[w].parameters.hasOwnProperty("fullName")) {
+          this.renameKey(this.triggerForm.value.actions[w].parameters, 'fullName', 'departmentid');
+        }
+      }
+
+    }
 
     // delete the not choice conditionType array in triggerForm.conditions
     if (this.conditionType.split('conditions.')[1] === 'all') {
@@ -355,9 +641,30 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
       delete this.triggerForm.value.conditions.all
     }
     // set value of all conditons.any/all.fact to 'json'
-    // for ( let i = 0; i < this.triggerForm.value.conditions[this.conditionType.split('conditions.')[1]].length; i++) {
-    //   this.triggerForm.value.conditions[this.conditionType.split('conditions.')[1]][i].fact = 'json'
-    // }
+
+
+
+    // nk 
+    // --------------------------------------------------------------------------------------------------------------------------------------------
+    //  uncommented to resolve the: for the new condition added in the edit the property fact is = to 'json' instead of to 'json'
+    // --------------------------------------------------------------------------------------------------------------------------------------------
+    for (let i = 0; i < this.triggerForm.value.conditions[this.conditionType.split('conditions.')[1]].length; i++) {
+      const condition = this.triggerForm.value.conditions[this.conditionType.split('conditions.')[1]][i]
+      console.log('TRIGGER ->>>>> onSubmit condition ', condition);
+
+      this.triggerForm.value.conditions[this.conditionType.split('conditions.')[1]][i].fact = 'json';
+
+
+      // nk
+      // --------------------------------------------------------------------------------------------------------------------------------------------
+      // If the condition type is 'int' convert the condition value from string to number
+      // --------------------------------------------------------------------------------------------------------------------------------------------
+      if (this.triggerForm.value.conditions[this.conditionType.split('conditions.')[1]][i].type === 'int') {
+        const conditionValue = this.triggerForm.value.conditions[this.conditionType.split('conditions.')[1]][i].value;
+        console.log('TRIGGER ->>>>> onSubmit conditionValue ', conditionValue);
+        this.triggerForm.value.conditions[this.conditionType.split('conditions.')[1]][i].value = parseInt(conditionValue, 10);
+      }
+    }
 
     // control validator for conditions.all/any elements
     const conditionsGROUP = this.triggerForm.get(this.conditionType) as FormGroup
@@ -374,7 +681,7 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
 
       // check at least one action is selected
     } else if (this.triggerForm.controls['actions'].invalid) {
-      console.log('action validator', this.triggerForm.controls['actions']);
+      console.log('TRIGGER (EDIT)  action validator', this.triggerForm.controls['actions']);
 
       setTimeout(() => {
         this.SHOW_CIRCULAR_SPINNER = false
@@ -382,7 +689,7 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
         this.errorMESSAGE = true;
       }, 1000);
 
-      // check condition validation and if first dropdawn has value than other ones has a valid value
+      // check condition validation and if first dropdown has value than other ones has a valid value
     } else if (conditionsGROUP.invalid && conditionsGROUP.controls[0].value['path'] !== null) {
 
       console.log('User selected only some dropdown condition but not all. SUMBIT KO')
@@ -399,6 +706,7 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
       // add trigger.name value
       if (this.triggerForm.value.trigger.key === 'message.received') {
         this.triggerForm.value.trigger.name = 'message create event';
+
       } else if (this.triggerForm.value.trigger.key === 'request.create') {
         this.triggerForm.value.trigger.name = 'request create event';
       }
@@ -438,9 +746,19 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
 
       });
     }
-
     console.log('TRIGGER', this.triggerForm.value);
   }
+
+  renameKey(obj, old_key, new_key) {
+    console.log('TRIGGER ->>>>> onSubmit - renameKey obj: ', obj, ' - old_key: ', old_key, ' - new_key: ', new_key);
+    // check if old key = new key   
+    if (old_key !== new_key) {
+      Object.defineProperty(obj, new_key, // modify old key 
+        Object.getOwnPropertyDescriptor(obj, old_key));  // fetch description from object 
+      delete obj[old_key]; // delete old key 
+    }
+  }
+
 
   // modal button CONTINUE
   onCloseModalHandled() {
@@ -450,7 +768,9 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
 
       console.log('Error occured. Return to current page')
 
-    } else { this._location.back(); }
+    } else {
+      // this._location.back();
+    }
     this.displayMODAL_Window = 'none';
 
   }
