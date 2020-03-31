@@ -429,9 +429,10 @@
     "HereTheTutorial": "Here the tutorial on how connect your chatbots to {{ company_name }}.",
     "FiletypeNotSupported": "file type not supported",
     "ChatLimit": "Chat limit",
-    "SuccessfullyUpdated":"Successfully updated",
-    "AnErrorOccurredWhileUpdating":"An error occurred while updating",
-    "NotificationNothingToSave":"Nothing to save",
+    "SuccessfullyUpdated": "Successfully updated",
+    "AnErrorOccurredWhileUpdating": "An error occurred while updating",
+    "NotificationNothingToSave": "Nothing to save",
+    "GoToRequest": "Go to request",
     "CannedResponses": {
         "QuickTips": {
             "1": "Canned response are pre-made messages you can recall easily during chat.",
@@ -503,7 +504,7 @@
         "NoPayments": "No Payments"
     },
     "ActivitiesOptions": {
-        "AgentAvailabilityOrRoleChange": "Change agent availability or role",
+        "AgentAvailabilityOrRoleChange": "Agent update",
         "AgentDeletion": "Agent deletion",
         "AgentInvitation": "Agent invitation",
         "NewRequest": "New request"
@@ -600,6 +601,8 @@
         "Copy": "Copy",
         "DeleteProject": "Delete Project",
         "TheProjectWillBeDeleted": "The project will be deleted",
+        "TheProject": "The project",
+        "WillBeDeleted": "will be deleted",
         "ToDeleteTheProject": "To delete the project, enter the project ID",
         "Calcel": "Cancel",
         "VisitorAuthentication": "Visitor authentication",
@@ -618,7 +621,7 @@
         "ChatLimit": "Chat limit",
         "MaximumChats": "Maximum chats",
         "LimitChatsNumber": "Limit the number of concurrent chats each agent can take at once",
-        "ThisChatLimitWillAppliedToAllAgents":"This chat limit will applied to all agents.",
+        "ThisChatLimitWillAppliedToAllAgents": "This chat limit will applied to all agents.",
         "YouCanSpecifyAgentsIndividualChatLimit": "You can specify agents’ individual concurrent chat limit: select an agent to edit under Settings > Users & Groups and in his profile enter a value in the Chat Limit field.",
         "Reassignment": "Reassignment",
         "ReassignChatIf": "Reassign chat if the agent does not serve the assigned chat within a specified time frame",
@@ -626,14 +629,17 @@
         "TimeWithNoResponse": "Time (in sec) with no response before a chat is assigned to another agent",
         "NotificationMsgs": {
             "UpdateProjectSuccess": "Project successfully updated",
-            "UpdateProjectError": "An error occurred while updating project"
+            "UpdateProjectError": "An error occurred while updating project",
+            "DeleteProjectSuccess": "Project successfully deleted",
+            "DeleteProjectError": "An error occurred while deleting project",
+            "TheProjectHasBeenDeleted":"the project has been deleted"
         },
-        "theMinimumAllowedIs_1":"the minimum allowed is 1",
-        "theMaximumAllowedIs_10000000":"the maximum allowed is 10.000.000",
+        "theMinimumAllowedIs_1": "the minimum allowed is 1",
+        "theMaximumAllowedIs_10000000": "the maximum allowed is 10.000.000",
         "ChatsReassigned": "Chats reassigned",
-        "AutomaticUnavailableStatus":"Automatic unavailable status",
-        "SetAnAgentStatusToUnavailable":"Set an agent's status to unavailable if they have a consecutive number of chats reassigned",
-        "NumberOfChatsReassignedBefore":"Number of chats reassigned before the agent's status is changed"
+        "AutomaticUnavailableStatus": "Automatic unavailable status",
+        "SetAnAgentStatusToUnavailable": "Set an agent's status to unavailable if they have a consecutive number of chats reassigned",
+        "NumberOfChatsReassignedBefore": "Number of chats reassigned before the agent's status is changed"
     },
     "HomePage": {
         "Widget": "To start configure your Widget !",
@@ -726,7 +732,7 @@
         "Error": "Error",
         "AnErrorHasOccurred": "An error has occurred",
         "EmailAddress": "Email address",
-        "NumberOfChatsAgentIsAllowedToTake":"Number of chats that agent is allowed to take at one time"
+        "NumberOfChatsAgentIsAllowedToTake": "Number of chats that agent is allowed to take at one time"
     },
     "GroupsPage": {
         "Groups": "Groups",
@@ -1080,7 +1086,6 @@
             "UpdateLabelError": "An error occurred while updating label",
             "AddLabelSuccess": "Label successfully added",
             "AddLabelError": "An error occurred while adding label"
-           
         }
     },
     "Notes": {
@@ -1094,7 +1099,6 @@
             "CreateNoteError": "An error occurred while creating note",
             "DeleteNoteSuccess": "Note successfully deleted",
             "DeleteNoteError": "An error occurred while deleting note"
-
         }
     },
     "HistoryPage": {
@@ -1146,6 +1150,8 @@
             "TriggerENABLED": "Enabled",
             "TriggerDISABLED": "Disabled",
             "SetTheStatusOfTriggerByDefaultIsSetToENABLED": "Set the status of trigger. By default it's set to ENABLED",
+            "SetTheStatusOfTrigger": "Set the status of trigger.",
+            "ByDefaultIsSetToENABLED": "By default it's set to Enabled",
             "TriggerName": "Name",
             "TriggerRequiredFieldError": "Required field",
             "Description": "Description",
@@ -1222,7 +1228,8 @@
                         "VisitorDepartment": "Visitor department",
                         "VisitorReferrer": "Visitor referrer (Client)",
                         "VisitoruserAgent": "Visitor user agent",
-                        "VisitoruserAgentAvailable": "Visitor agent available online",
+                        "VisitoruserAgentAvailable": "Number of available agent",
+                        "NumberOfParticipatingBot": "Number of participating bot",
                         "VisitorURL": "Visitor page URL",
                         "VisitorPageTitle": "Visitor page title",
                         "VisitorBrowser": "Visitor browser",
@@ -1301,7 +1308,8 @@
                 "placeholder": {
                     "NameAgent": "Name of agents",
                     "SelectDepartment": "Select department",
-                    "SelectStatus": "Select status"
+                    "SelectStatus": "Select status",
+                    "SelectAgent": "Select agent"
                 }
             }
         }

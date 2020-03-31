@@ -425,10 +425,11 @@
     "FillTheFieldOnlyIfYouWantToUseDialogflowKB": "Compila il campo solo se si desideri utilizzare la funzionalità della Knowledge-base di Dialogflow",
     "HereTheTutorial": "Qui il tutorial su come connettere i tuoi chatbot a {{ company_name }}.",
     "FiletypeNotSupported": "file type not supported",
-    "ChatLimit":"Limite di chat",
-    "SuccessfullyUpdated":"Aggiornato con successo",
-    "AnErrorOccurredWhileUpdating":"Si è verificato un errore durante l'aggiornamento",
-    "NotificationNothingToSave":"Niente da salvare",
+    "ChatLimit": "Limite di chat",
+    "SuccessfullyUpdated": "Aggiornato con successo",
+    "AnErrorOccurredWhileUpdating": "Si è verificato un errore durante l'aggiornamento",
+    "NotificationNothingToSave": "Niente da salvare",
+    "GoToRequest": "Vai a richiesta",
     "CannedResponses": {
         "QuickTips": {
             "1": "Le Risposte Predefinite sono messaggi predefiniti che è possibile richiamare facilmente durante la chat.",
@@ -500,7 +501,7 @@
         "NoPayments": "Nessun pagamento"
     },
     "ActivitiesOptions": {
-        "AgentAvailabilityOrRoleChange": "Modifica disponibilità o ruolo agente",
+        "AgentAvailabilityOrRoleChange": "Aggiornamento agente",
         "AgentDeletion": "Cancellazione agente",
         "AgentInvitation": "Invito agente",
         "NewRequest": "Nuova richiesta"
@@ -597,6 +598,8 @@
         "Copy": "Copia",
         "DeleteProject": "Elimina Progetto",
         "TheProjectWillBeDeleted": "Il progetto verrà eliminato",
+        "TheProject": "Il progetto",
+        "WillBeDeleted": "verrà eliminato",
         "ToDeleteTheProject": "Per eliminare il progetto, digita l'ID del progetto",
         "Calcel": "Annulla",
         "VisitorAuthentication": "Autenticazione visitatore",
@@ -612,25 +615,28 @@
         "Payments": "Pagamenti",
         "SeePayments": "Vedi Pagamenti",
         "Advanced": "Avanzate",
-        "ChatLimit":"Limite di chat",
-        "MaximumChats":"Num. massimimo di chat",
-        "LimitChatsNumber":"Limita il numero di chat simultanee che ciascun agente può eseguire contemporaneamente",
-        "ThisChatLimitWillAppliedToAllAgents":"Questo limite verrà applicato a tutti gli agenti.",
+        "ChatLimit": "Limite di chat",
+        "MaximumChats": "Num. massimimo di chat",
+        "LimitChatsNumber": "Limita il numero di chat simultanee che ciascun agente può eseguire contemporaneamente",
+        "ThisChatLimitWillAppliedToAllAgents": "Questo limite verrà applicato a tutti gli agenti.",
         "YouCanSpecifyAgentsIndividualChatLimit": "Puoi specificare il limite di chat simultanea individuale degli agenti: seleziona un agente da modificare in Impostazioni > Utenti & Gruppi e nel suo profilo inserisci un valore nel campo Limite Chat.",
-        "Reassignment":"Riassegnazione",
-        "ReassignChatIf":"Riassegna la chat se l'agente non serve la chat assegnata entro il periodo di tempo specificato",
-        "ReassignmentTimeout":"Timeout di riassegnazione",
-        "TimeWithNoResponse":"Tempo (in secondi) senza risposta prima che una chat venga assegnata a un altro agente",
-        "NotificationMsgs": {         
+        "Reassignment": "Riassegnazione",
+        "ReassignChatIf": "Riassegna la chat se l'agente non serve la chat assegnata entro il periodo di tempo specificato",
+        "ReassignmentTimeout": "Timeout di riassegnazione",
+        "TimeWithNoResponse": "Tempo (in secondi) senza risposta prima che una chat venga assegnata a un altro agente",
+        "NotificationMsgs": {
             "UpdateProjectSuccess": "Progetto aggiornato con successo",
-            "UpdateProjectError": "Si è verificato un errore durante l'aggiornamento del progetto"
+            "UpdateProjectError": "Si è verificato un errore durante l'aggiornamento del progetto",
+            "DeleteProjectSuccess": "Progetto eliminato con successo",
+            "DeleteProjectError": "Si è verificato un errore durante l'eliminazione del progetto",
+            "TheProjectHasBeenDeleted":"il progetto è stato cancellato"
         },
-        "theMinimumAllowedIs_1":"til minimo consentito è 1",
-        "theMaximumAllowedIs_10000000":"il massimo consentito è 10.000.000",
+        "theMinimumAllowedIs_1": "til minimo consentito è 1",
+        "theMaximumAllowedIs_10000000": "il massimo consentito è 10.000.000",
         "ChatsReassigned": "Chat riassegnate",
-        "AutomaticUnavailableStatus":"Stato non disponibile automatico",
-        "SetAnAgentStatusToUnavailable":"Imposta lo stato di un agente su non disponibile se è stato riassegnato un numero consecutivo di chat",
-        "NumberOfChatsReassignedBefore":"Numero di chat riassegnate prima della modifica dello stato dell'agente"
+        "AutomaticUnavailableStatus": "Stato non disponibile automatico",
+        "SetAnAgentStatusToUnavailable": "Imposta lo stato di un agente su non disponibile se è stato riassegnato un numero consecutivo di chat",
+        "NumberOfChatsReassignedBefore": "Numero di chat riassegnate prima della modifica dello stato dell'agente"
     },
     "HomePage": {
         "Widget": "Per iniziare configura il tuo Widget!",
@@ -723,7 +729,7 @@
         "Error": "Errore",
         "AnErrorHasOccurred": "Si è verificato un errore",
         "EmailAddress": "Indirizzo email",
-        "NumberOfChatsAgentIsAllowedToTake":"Numero di chat che l'agente può eseguire contemporaneamente"
+        "NumberOfChatsAgentIsAllowedToTake": "Numero di chat che l'agente può eseguire contemporaneamente"
     },
     "GroupsPage": {
         "Groups": "Gruppi",
@@ -1058,14 +1064,14 @@
         "DeleteLabel": "Elimina etichetta",
         "TypeALabelAndPressEnter": "Digita un'etichetta e premi Invio",
         "YouHaveNotAddedAnyTags": "Non hai ancora aggiunto etichette",
-        "DoYouReallyWantToCancelTheTag":"Vuoi davvero cancellare l'etichetta",
+        "DoYouReallyWantToCancelTheTag": "Vuoi davvero cancellare l'etichetta",
         "Color": {
-            "red":"Rossp",
-            "orange":"Arancio",
-            "yellow":"Giallo",
-            "green":"Verde",
-            "blue":"Blu",
-            "violet":"Viola"
+            "red": "Rossp",
+            "orange": "Arancio",
+            "yellow": "Giallo",
+            "green": "Verde",
+            "blue": "Blu",
+            "violet": "Viola"
         },
         "NotificationMsgs": {
             "CreateLabelSuccess": "Etichetta creata correttamente",
@@ -1089,7 +1095,6 @@
             "CreateNoteError": "Si è verificato un errore durante la creazione della nota",
             "DeleteNoteSuccess": "Nota eliminata correttamente",
             "DeleteNoteError": "Si è verificato un errore durante l'eliminazione  della nota"
-
         }
     },
     "HistoryPage": {
@@ -1141,11 +1146,13 @@
             "TriggerENABLED": "Attivo",
             "TriggerDISABLED": "Disattivo",
             "SetTheStatusOfTriggerByDefaultIsSetToENABLED": "Imposta lo stato del trigger. Di default è impostato ad ATTIVO",
+            "SetTheStatusOfTrigger": "Imposta lo stato del trigger.",
+            "ByDefaultIsSetToENABLED": "Di default è impostato ad Attivo",
             "TriggerName": "Nome",
             "TriggerRequiredFieldError": "Campo obbligatorio",
             "Description": "Descrizione",
             "CustomizeTrigger": "Personalizza trigger",
-            "RunTrigger": "Verifica condizioni",
+            "RunTrigger": "Esegui trigger",
             "RunTrigger_dropdownElements": {
                 "Placeholder": "Seleziona metodo attivazione",
                 "WhenRequestChat": "Quando un visitatore richiede una chat",
@@ -1217,7 +1224,8 @@
                         "VisitorDepartment": "Dipartimento visitatore",
                         "VisitorReferrer": "Referente visitatore",
                         "VisitoruserAgent": "Numero di agenti",
-                        "VisitoruserAgentAvailable": "Numero di agenti disponibili online",
+                        "VisitoruserAgentAvailable": "Numero di agenti disponibili",
+                        "NumberOfParticipatingBot": "Numero di bot partecipanti",
                         "VisitorURL": "URL pagina visitatore",
                         "VisitorPageTitle": "Titolo pagina visitatore",
                         "VisitorBrowser": "Browser visitatore",
@@ -1252,18 +1260,18 @@
                     "placeholder": {
                         "SelectDepartment": "Seleziona dipartimento",
                         "SelectStatus": "Seleziona stato"
+                    }
+                },
+                "event": {
+                    "groupId": {
+                        "VisitorInformation": "Info visitatore"
                     },
-                    "event": {
-                        "groupId": {
-                            "VisitorInformation": "Info visitatore"
-                        },
-                        "label_key": {
-                            "EventName": "Nome evento"
-                        },
-                        "placeholder": {
-                            "SelectDepartment": "Seleziona dipartimento",
-                            "SelectStatus": "Seleziona stato"
-                        }
+                    "label_key": {
+                        "EventName": "Nome evento"
+                    },
+                    "placeholder": {
+                        "SelectDepartment": "Seleziona dipartimento",
+                        "SelectStatus": "Seleziona stato"
                     }
                 }
             },
@@ -1296,7 +1304,8 @@
                 "placeholder": {
                     "NameAgent": "Nome dell'agente",
                     "SelectDepartment": "Seleziona dipartimento",
-                    "SelectStatus": "Seleziona stato"
+                    "SelectStatus": "Seleziona stato",
+                    "SelectAgent": "Seleziona agente"
                 }
             }
         }
