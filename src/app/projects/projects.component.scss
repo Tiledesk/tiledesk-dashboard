@@ -102,8 +102,61 @@ input[type="text"] {
   border: solid 1px #ddd;
 }
 
-.card:hover {
-  background-color: #fafafa;
+.custom-card-box-shadow:hover {
+  // background-color: #fafafa;
+  box-shadow: 0 7px 8px -4px rgba(0,0,0,.2), 0 12px 17px 2px rgba(0,0,0,.14), 0 5px 22px 4px rgba(0,0,0,.12) !important;
+}
+
+.card-header-custom-bkgrnd-project {
+  // display:none;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  margin: 0px;
+  // border-radius: 3px 3px 0px 0px;
+  // background-color: #f2f6f8;
+  background-color: #ffffff;
+  border-bottom: 1px solid #eff3f5;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.card-content-custom-height {
+  height:160px !important;
+}
+
+.project-deleted-card {
+  background-color: #eee;
+  
+}
+
+.project-deleted-card-text-color {
+  color:#999 !important;
+  opacity: 0.4;
+}
+.delete-image-bckground {
+  background-image: url('../../assets/img/deleted.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.project-deleted-card:hover {
+  box-shadow:unset !important;
+  cursor: not-allowed !important;
+}
+
+.project-deleted-msg-in-card-wrap {
+  position: relative;
+}
+.project-deleted-msg-in-card {
+  position: absolute;margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
 }
 
 /* Tooltip text */
@@ -278,10 +331,11 @@ input[type="text"] {
   width: 100%;
   transform: skewY(-12deg);
   transform-origin: 0px center;
-  // background: rgb(240, 128, 111);
-  background: $brand-recent-project-bckgrnd;
+  background: $brand-recent-project-bckgrnd; 
+  // background: linear-gradient(90deg,#0e2a3b 0,#34306b); // new
   height: 500px;
   left: 0;
+  // top: 19px; // new
 }
 
 .open-user-profile-person-icon {
@@ -292,7 +346,7 @@ input[type="text"] {
 }
 
 .head-title {
-  font-family: "Google Sans", sans-serif !important;
+  // font-family: "Google Sans", sans-serif !important;
   // margin-top: 95px;
   // color: #f0806f;
   color: $brand-recent-project-text;

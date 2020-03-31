@@ -19,8 +19,9 @@ import brand from 'assets/brand/brand.json';
 })
 export class ProjectsComponent implements OnInit, OnDestroy {
   tparams = brand;
-  
+
   companyLogoBlack_Url = brand.company_logo_black__url;
+  // companyLogoBlack_Url = brand.company_logo_allwhite__url
   companyLogoBlack_width = brand.recent_project_page.company_logo_black__width;
   // pageBackgroundColor = brand.recent_project_page.background_color;
 
@@ -118,22 +119,27 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     project_name: string,
     project_profile_name: string,
     project_trial_expired: string,
-    project_trial_days_left: number) {
+    project_trial_days_left: number,
+    project_status: number) {
 
-    this.router.navigate([`/project/${project_id}/home`]);
+    console.log('!!! GO TO HOME - PROJECT status ', project_status)
 
-    // WHEN THE USER SELECT A PROJECT ITS ID and NAME IS SEND IN THE AUTH SERVICE THAT PUBLISHES IT
-    const project: Project = {
-      _id: project_id,
-      name: project_name,
-      profile_name: project_profile_name,
-      trial_expired: project_trial_expired,
-      trial_days_left: project_trial_days_left
+    if (project_status !== 0) {
+
+      this.router.navigate([`/project/${project_id}/home`]);
+      // WHEN THE USER SELECT A PROJECT ITS ID and NAME IS SEND IN THE AUTH SERVICE THAT PUBLISHES IT
+      const project: Project = {
+        _id: project_id,
+        name: project_name,
+        profile_name: project_profile_name,
+        trial_expired: project_trial_expired,
+        trial_days_left: project_trial_days_left
+      }
+
+      this.auth.projectSelected(project)
+      console.log('!!! GO TO HOME - PROJECT ', project)
+
     }
-
-    this.auth.projectSelected(project)
-    console.log('!!! GO TO HOME - PROJECT ', project)
-
     /* !!! NO MORE USED - NOW THE ALL PROJECTS ARE SETTED IN THE STORAGE IN getProjectsAndSaveInStorage()
      * SET THE project_id IN THE LOCAL STORAGE
      * WHEN THE PAGE IS RELOADED THE SIDEBAR GET THE PROJECT ID FROM THE LOCAL STORAGE */
@@ -235,24 +241,7 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     this.displayLogoutModal = 'none';
   }
 
-  /** !! NO MORE USED
-   * DELETE PROJECT (WHEN THE 'CONFIRM' BUTTON IN MODAL IS CLICKED)
-   */
-  // onCloseDeleteModalHandled() {
-  //   this.displayCreateModal = 'none';
-  //   this.projectService.deleteMongoDbProject(this.id_toDelete).subscribe((data) => {
-  //     console.log('DELETE DATA ', data);
-  //     // RE-RUN GET CONTACT TO UPDATE THE TABLE
-  //     // this.getDepartments();
-  //     this.ngOnInit();
-  //   },
-  //     (error) => {
-  //       console.log('DELETE REQUEST ERROR ', error);
-  //     },
-  //     () => {
-  //       console.log('DELETE REQUEST * COMPLETE *');
-  //     });
-  // }
+
 
   createProject() {
     console.log('OPEN CREATE MODAL ');
@@ -401,5 +390,5 @@ export class ProjectsComponent implements OnInit, OnDestroy {
     this.router.navigate(['/create-new-project']);
   }
 
-  
+
 }

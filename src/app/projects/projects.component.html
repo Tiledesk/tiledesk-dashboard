@@ -3,78 +3,82 @@
     <nav class="navbar navbar-transparent navbar-absolute">
       <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" style="margin-top:-3px" data-toggle="collapse" (click)="sidebarToggle()">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <!-- <a class="navbar-brand" href="#">{{getTitle()}}</a> -->
-            <!-- <a class="navbar-brand" href="#">Testina</a> -->
+          <button type="button" class="navbar-toggle" style="margin-top:-3px; color:#fff" data-toggle="collapse"
+            (click)="sidebarToggle()">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <!-- <a class="navbar-brand" href="#">{{getTitle()}}</a> -->
+          <!-- <a class="navbar-brand" href="#">Testina</a> -->
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
 
             <!-- // ======= START - TEST - LOGOUT FROM FIREBASE ======= // -->
-            <li *ngIf="APP_IS_DEV_MODE == true" style="cursor:pointer">                 
-                <a (click)="testExpiredSessionFirebaseLogout()">
-                    <i class="material-icons">lock_open</i>
-                      FireBase Logout
-                </a>
+            <li *ngIf="APP_IS_DEV_MODE == true" style="cursor:pointer">
+              <a (click)="testExpiredSessionFirebaseLogout()">
+                <i class="material-icons">lock_open</i>
+                FireBase Logout
+              </a>
             </li>
             <!-- // ======= ./END - TEST - LOGOUT FROM FIREBASE ======= // -->
 
             <li class="dropdown">
-            <!-- class="dropdown-toggle" -->
-            <!-- margin-top:56px; display:block; text-align:right; padding-top:15px;padding-bottom:15px; padding-right:28px; color: #555555;" -->
-              <a  data-toggle="dropdown" href="#" style="display:block !important; margin-top:0px; opacity:100 !important">
-              <i class="material-icons open-user-profile-person-icon">person</i>
-              <!-- <p class="hidden-lg hidden-md">Profile</p> -->
+              <!-- class="dropdown-toggle" -->
+              <!-- margin-top:56px; display:block; text-align:right; padding-top:15px;padding-bottom:15px; padding-right:28px; color: #555555;" -->
+              <a data-toggle="dropdown" href="#"
+                style="display:block !important; margin-top:0px; opacity:100 !important">
+                <i class="material-icons open-user-profile-person-icon">person</i>
+                <!-- <p class="hidden-lg hidden-md">Profile</p> -->
 
-              <span class="tooltipx"> 
-                  <span  *ngIf="user?.emailverified == false" class="notification" style="font-weight: 200; font-size:9px; right:11px!important; top:3px!important; position: absolute!important;">
-                      !
-                      <span class="tooltiptext">
-                        {{"NavBar.PendingVerification" | translate }}
-                      </span>
+                <span class="tooltipx">
+                  <span *ngIf="user?.emailverified == false" class="notification"
+                    style="font-weight: 200; font-size:9px; right:11px!important; top:3px!important; position: absolute!important;">
+                    !
+                    <span class="tooltiptext">
+                      {{"NavBar.PendingVerification" | translate }}
+                    </span>
                   </span>
-              </span>
+                </span>
               </a>
-            <!-- float:right !important; right:0px!important; left:1px!important  -->
+              <!-- float:right !important; right:0px!important; left:1px!important  -->
               <ul class="dropdown-menu">
                 <div class="card card-profile">
                   <div class="card-avatar user-profile-avatar">
                     <a>
                       <!-- <img class="img" src="assets/img/no_image_user.png" /> -->
-                      <img style="width:80px; height:80px" *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" 
-                      class="user-img" src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{user?._id}}%2Fphoto.jpg?alt=media" />
-                      
-                      <img *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true" 
-                      class="user-img" src="assets/img/no_image_user.png"/>
+                      <img style="width:80px; height:80px"
+                        *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true" class="user-img"
+                        src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{user?._id}}%2Fphoto.jpg?alt=media" />
+
+                      <img *ngIf="userProfileImageExist !== true && userImageHasBeenUploaded !== true" class="user-img"
+                        src="assets/img/no_image_user.png" />
                     </a>
                   </div>
 
                   <div class="content">
 
                     <h4 class="card-title user-profile-fullname">
-                      <strong> 
-                        {{ user?.firstname }} {{ user?.lastname }} 
+                      <strong>
+                        {{ user?.firstname }} {{ user?.lastname }}
                       </strong>
                     </h4>
                     <h4 class="card-title user-profile-email">
                       {{ user?.email }}
                     </h4>
-                   
+
                     <button class="btn btn-primary view-user-profile-btn" routerLink="/user-profile">
                       <span style="font-size:0.8em"> {{ 'ProjectsPage.UserProfile' | translate }} </span>
-                  </button>
-                  <li class="divider"></li>
-                  <button  type="submit" class="btn btn-white logout-user-profile-btn" (click)="openLogoutModal()">
-                    <!-- Log out -->
-                    {{ 'NavBar.LogOut' | translate }}
-                  </button>
+                    </button>
+                    <li class="divider"></li>
+                    <button type="submit" class="btn btn-white logout-user-profile-btn" (click)="openLogoutModal()">
+                      <!-- Log out -->
+                      {{ 'NavBar.LogOut' | translate }}
+                    </button>
                   </div>
-                 
+
                 </div>
               </ul>
             </li>
@@ -83,65 +87,67 @@
       </div>
     </nav>
   </div>
-    
-    <!-- ------------============= PENDING EMAIL VERIFICATION MSG =============------------ -->
-    <!-- *ngIf="DETECTED_PROJECT_PAGE === true" -->
-    <span >
-        <div routerLink="/user-profile" *ngIf="user?.emailverified == false" data-notify="container" class="alert alert-danger animated fadeInDown alert-pending-email-prjct-page" role="alert" data-notify-position="top-center">
-            <!-- <button type="button" aria-hidden="true" class="close" data-notify="dismiss" style="position: absolute; right: 10px; top: 5px; z-index: 1033;">×</button> -->
-            <span data-notify="icon" class="notifications">
-                <i class="fa fa-exclamation-circle" style="font-size: 13px;position: relative;top: -1px;"></i>  
-                <span style="font-family: Google Sans, sans-serif;font-weight: 400; display: inline; position: relative;top: -2px; font-size: 11px; padding-left: 5px;">
-                    {{"NavBar.PendingVerification" | translate }}
-                </span> 
-                <span class="tooltipx" style="display: inline-block; float: right;">
-                  <span> 
-                      <i class="material-icons" style="position: relative;top: 2px; font-size:14px; color:#ffffff">
-                        help_outline
-                      </i>
-                    </span>
-                    <!-- display: inline-block -->
-                  <span class="tooltiptext" style="min-width: 231px;line-height: 1.1;min-height: 34px; top: -5px; right: 105%;  ">
-                    {{ "NavBar.WhenPendingEmailVerification" | translate}}
-                  </span>
-                </span>
-            </span> 
-            <!-- <span data-notify="title" style="max-width: 100%;">{{"NavBar.SomeSystemAreDisabled" | translate }}</span>  -->
-        </div>
-    </span>
+
+  <!-- ------------============= PENDING EMAIL VERIFICATION MSG =============------------ -->
+  <!-- *ngIf="DETECTED_PROJECT_PAGE === true" -->
+  <span>
+    <div routerLink="/user-profile" *ngIf="user?.emailverified == false" data-notify="container"
+      class="alert alert-danger animated fadeInDown alert-pending-email-prjct-page" role="alert"
+      data-notify-position="top-center">
+      <!-- <button type="button" aria-hidden="true" class="close" data-notify="dismiss" style="position: absolute; right: 10px; top: 5px; z-index: 1033;">×</button> -->
+      <span data-notify="icon" class="notifications">
+        <i class="fa fa-exclamation-circle" style="font-size: 13px;position: relative;top: -1px;"></i>
+        <span
+          style="font-family: Google Sans, sans-serif;font-weight: 400; display: inline; position: relative;top: -2px; font-size: 11px; padding-left: 5px;">
+          {{"NavBar.PendingVerification" | translate }}
+        </span>
+        <span class="tooltipx" style="display: inline-block; float: right;">
+          <span>
+            <i class="material-icons" style="position: relative;top: 2px; font-size:14px; color:#ffffff">
+              help_outline
+            </i>
+          </span>
+          <!-- display: inline-block -->
+          <span class="tooltiptext"
+            style="min-width: 231px;line-height: 1.1;min-height: 34px; top: -5px; right: 105%;  ">
+            {{ "NavBar.WhenPendingEmailVerification" | translate}}
+          </span>
+        </span>
+      </span>
+      <!-- <span data-notify="title" style="max-width: 100%;">{{"NavBar.SomeSystemAreDisabled" | translate }}</span>  -->
+    </div>
+  </span>
 
 </div>
 <!-- target="_blank" href="http://www.tiledesk.com" -->
-<a  style="margin-top:3px; padding-left:30px; cursor: pointer;" class="navbar-brand">
-    <!--  assets/img/tiledesk-logo_white.svg -->
+<a style="margin-top:3px; padding-left:30px; cursor: pointer;" class="navbar-brand">
+  <!--  assets/img/tiledesk-logo_white.svg -->
   <!-- <img style="width:100px" src="assets/img/tiledesk-logo.png"/> -->
-  <img [ngStyle]="{'width':companyLogoBlack_width}" [src]="companyLogoBlack_Url"/>
+  <img [ngStyle]="{'width':companyLogoBlack_width}" [src]="companyLogoBlack_Url"
+    style="z-index: 1;position: relative;" />
   <!-- TEST EMAIL VERIFY -->
   <!-- <span (click)="testVerifyEmail()">VERIFY EMAIL</span> -->
-</a> 
+</a>
 
 
 <!-- http://www.frontiere21.com/wp-content/uploads/2016/08/chat21-frontiere21-head-.png -->
 
-<!-- height: 374px; -->
-<!-- style="
-margin-top: 0px; 
-padding:0px; 
-background-repeat: no-repeat; 
 
-background-size:     contain; " -->
-<div class="main-content">
+<div class="main-content" style="">
 
-   
-    <!-- text-white bg-primary -->
-    <!-- [ngStyle]="{'background':pageBackgroundColor}" -->
+
+  <!-- text-white bg-primary -->
+  <!-- [ngStyle]="{'background':pageBackgroundColor}" -->
   <div class="pt-5 py-5 project_background">
     <!-- // added for new style start -->
-    <span style="height: 64px; position: absolute; width: 100%; left: 0%; top: 0px; background-color: rgba(66, 71, 112, 0.1);"></span>
-    <span style="height: 64px; position: absolute; width: 40%; bottom: 0px; right: 12%; background: rgba(255, 255, 255, 0.45);"></span>
-    <span style="height: 64px; position: absolute; width: 35%; bottom: -64px; right: 6%; background: rgba(50, 50, 93, 0.05);"></span>
+    <span
+      style="height: 64px; position: absolute; width: 100%; left: 0%; top: 0px; background-color: rgba(66, 71, 112, 0.1);"></span>
+    <span
+      style="height: 64px; position: absolute; width: 40%; bottom: 0px; right: 12%; background: rgba(255, 255, 255, 0.45);"></span>
+    <span
+      style="height: 64px; position: absolute; width: 35%; bottom: -64px; right: 6%; background: rgba(50, 50, 93, 0.05);"></span>
     <!-- // added for new style end -->
-     <!-- // commented for new style start -->
+    <!-- // commented for new style start -->
     <!-- <div class="container">
       <div class="row text-center">
         <div class="col-md-12 text-center align-self-center my-5">
@@ -150,12 +156,12 @@ background-size:     contain; " -->
         </div>
       </div>
     </div> -->
-     <!-- // commented for new style end -->
+    <!-- // commented for new style end -->
 
 
   </div>
 
- <!-- // added for new style start -->
+  <!-- // added for new style start -->
   <div class="container">
     <div class="row text-center" style="margin-bottom:90px ">
       <div class="col-md-12 text-center align-self-center my-5">
@@ -167,11 +173,11 @@ background-size:     contain; " -->
       </div>
     </div>
   </div>
-    <!-- // added for new style end -->
+  <!-- // added for new style end -->
 
 
- 
- 
+
+
   <div class="container-fluid" style="max-width: 960px;">
     <!-- <div class="row">
       <div class="project-page-title">
@@ -185,68 +191,87 @@ background-size:     contain; " -->
     </div> -->
 
     <div class="projects-cards" style="position: relative;top: -57px;">
-    <div class="row">
-      <div class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer">
+      <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer">
 
-        <!-- CARD ADD PROJECT -->
-        <!-- style="max-width: 256px;" -->
-        <!-- openCreateModal()  -->
-        <div class="card" (click)='goToCreateProject()' style="border-radius:10px">
-          <div class="card-content" style="height:203px">
-              <!-- #55b9d1 -->
-            <h3 class="card-add-project-icon" style="">
-              <i class="material-icons" style="font-size:48px">add</i>
-            </h3>
-            <h4 class="card-add-project-text" style="">
-                {{ 'ProjectsPage.AddProject' | translate }}
-            </h4>
-          </div>
-        </div>
-
-      </div>
-
-      <loading-spinner *ngIf="showSpinner"></loading-spinner>
-        <span *ngIf="!showSpinner">
-        <div *ngFor="let project of projects" class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer">
-
-          <!-- CARDS FROM THE PROJECT 'FOR' -->
+          <!-- CARD ADD PROJECT -->
           <!-- style="max-width: 256px;" -->
-          <div class="card"  style="border-radius:10px" 
-            (click)='goToHome(project?.id_project?._id, project?.id_project?.name, project?.id_project?.profile?.name, project?.id_project?.trialExpired, project?.id_project?.trialDaysLeft)'>
-            <div class="card-content"  style="height:160px">
-              <h3 class="title" style="color: #566787; font-size:20px; margin-bottom: 0px;font-family: 'Google Sans',sans-serif!important">
-                {{ project?.id_project?.name }}
+          <!-- openCreateModal()  -->
+          <div class="card custom-card-box-shadow" (click)='goToCreateProject()' style="border-radius:3px">
+            <div class="card-content" style="height:203px">
+              <!-- #55b9d1 -->
+              <h3 class="card-add-project-icon" style="">
+                <i class="material-icons" style="font-size:48px">add</i>
               </h3>
-
-              <p class="category" style="font-size:14px !important; color:#7695a5">
-                {{ project?.id_project?._id }}
-              </p>
-              <h4 class="category" style="font-size:16px; margin-top: 16px;font-family: 'Google Sans',sans-serif!important; color: #7695a5">
-                {{ project?.role }}
+              <h4 class="card-add-project-text" style="">
+                {{ 'ProjectsPage.AddProject' | translate }}
               </h4>
             </div>
-            <div class="card-footer">
-              <div class="stats" style="color:#7695a5">
-                <i class="material-icons">date_range</i> {{ project?.id_project?.createdAt | date: 'dd/MM/yyyy'}}
+          </div>
 
-                <!-- <button type="button" rel="tooltip" title="Modifica Progetto" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(project?._id)'> -->
-                <!-- <i class="material-icons">edit</i> -->
+        </div>
+
+        <loading-spinner *ngIf="showSpinner"></loading-spinner>
+        <span *ngIf="!showSpinner">
+          <div *ngFor="let project of projects" class="col-lg-4 col-md-4 col-sm-6" style="cursor:pointer">
+
+            <!-- CARDS FROM THE PROJECT 'FOR' -->
+            <!-- style="max-width: 256px;" -->
+            <div class="card custom-card-box-shadow"
+              [ngClass]="{'project-deleted-card' : project?.id_project?.status === 0, 'delete-image-bckground':project?.id_project?.status === 0}"
+              style="border-bottom-left-radius: 3px; border-bottom-right-radius: 3px;"
+              (click)='goToHome(project?.id_project?._id, project?.id_project?.name, project?.id_project?.profile?.name, project?.id_project?.trialExpired, project?.id_project?.trialDaysLeft, project?.id_project?.status)'>
+              <!-- <div class="card-header card-header-custom-bkgrnd-project"> </div> -->
+
+              <div class="card-content card-content-custom-height">
+                <h3 class="title"
+                [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}"
+                  style="color: #566787; font-size:20px; margin-bottom: 0px;font-family: 'Google Sans',sans-serif!important">
+                  {{ project?.id_project?.name }}
+                </h3>
+
+                <p class="category" 
+                [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}"
+                style="font-size:14px !important; color:#7695a5">
+                  {{ project?.id_project?._id }}
+                </p>
+                <h4 class="category"
+                [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}"
+                  style="font-size:16px; margin-top: 16px;font-family: 'Google Sans',sans-serif!important; color: #7695a5">
+                  {{ project?.role }}
+                </h4>
+              </div>
+              <!-- <div class="project-deleted-msg-in-card-wrap" style=""> 
+              
+                <div class="project-deleted-msg-in-card" style=""> 
+                  DELETED
+                </div>
+              </div> -->
+              <div class="card-footer">
+                <div
+                  [ngClass]="{'project-deleted-card-text-color' : project?.id_project?.status === 0}"
+                  class="stats" style="color:#7695a5">
+                  <i class="material-icons">date_range</i> {{ project?.id_project?.createdAt | date: 'dd/MM/yyyy'}}
+
+                  <!-- <button type="button" rel="tooltip" title="Modifica Progetto" class="btn btn-primary btn-simple btn-xs" (click)='goToEditAddPage_EDIT(project?._id)'> -->
+                  <!-- <i class="material-icons">edit</i> -->
                   <!-- </button> -->
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </span>
+        </span>
 
-    </div>
+      </div>
     </div>
     <!-- /. row -->
-    </div>
-  
+  </div>
+
 </div>
 
 <!-- ------------ ============== MODAL CREATE A NEW PROJECT !! no more used ============== ------------ -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayCreateModal}" style="background-color: rgba(90,90,90,0.5);">
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayCreateModal}"
+  style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -255,7 +280,7 @@ background-size:     contain; " -->
         </button>
         <h4 class="modal-title">
           <!-- Aggiungi un progetto -->
-          {{ 'ProjectsPage.ModalAddAProject' | translate }} 
+          {{ 'ProjectsPage.ModalAddAProject' | translate }}
         </h4>
       </div>
       <div class="modal-body">
@@ -264,15 +289,17 @@ background-size:     contain; " -->
           {{ 'ProjectsPage.ModalAddAProjectLabel' | translate }}
         </label>
         <div class="col-sm-10">
-          <input [(ngModel)]="project_name" type="text" placeholder="{{ 'ProjectsPage.ModalPlaceHolder' | translate }}" style="margin-bottom: 5px;">
-          <span *ngIf="project_name?.length > 0 && project_name?.length < 4" style="padding-left: 5px; font-size: 0.9em; color:#da491c">
+          <input [(ngModel)]="project_name" type="text" placeholder="{{ 'ProjectsPage.ModalPlaceHolder' | translate }}"
+            style="margin-bottom: 5px;">
+          <span *ngIf="project_name?.length > 0 && project_name?.length < 4"
+            style="padding-left: 5px; font-size: 0.9em; color:#da491c">
             {{ 'ProjectsPage.ModalMustBeAtLeast' | translate }}
           </span>
         </div>
       </div>
       <div class="modal-footer" style="margin-top: 75px;">
         <button [disabled]="project_name?.length < 4" class="btn btn-primary" (click)="createProject()">
-          {{ 'ProjectsPage.ModalCreateProjectBtn' | translate }} 
+          {{ 'ProjectsPage.ModalCreateProjectBtn' | translate }}
         </button>
       </div>
     </div>
@@ -280,7 +307,8 @@ background-size:     contain; " -->
 </div>
 
 <!-- MODAL - CREATE A NEW PROJECT INFO WINDOWS - !!! no more used -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayInfoModal}" style="background-color: rgba(90,90,90,0.5);">
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayInfoModal}"
+  style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -295,36 +323,36 @@ background-size:     contain; " -->
       </div>
 
       <div class="modal-body">
-      
+
         <span *ngIf="SHOW_CIRCULAR_SPINNER">
-          <div  class="loader" style="top:25%">
+          <div class="loader" style="top:25%">
             <svg class="circular" viewBox="25 25 50 50">
-              <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+              <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10" />
             </svg>
 
           </div>
           <p style="margin-top: 50px; text-align: center;">
-              {{ "ProjectsPage.Processing" | translate }}
+            {{ "ProjectsPage.Processing" | translate }}
           </p>
         </span>
 
         <span *ngIf="!SHOW_CIRCULAR_SPINNER">
-          <div  class="loader" style="top:5%">
+          <div class="loader" style="top:5%">
             <i class="material-icons" style="color:#70b665">done</i>
             <span style="color:#70b665">
-                {{ "ProjectsPage.Completed" | translate }}
-            </span> 
+              {{ "ProjectsPage.Completed" | translate }}
+            </span>
 
           </div>
           <p style="margin-top: 50px; text-align: center;">
-              {{ "ProjectsPage.YourNewProjectIsReady" | translate }}
+            {{ "ProjectsPage.YourNewProjectIsReady" | translate }}
           </p>
         </span>
       </div>
 
       <div class="modal-footer" style="text-align: center;">
         <button class="btn btn-primary" [disabled]="SHOW_CIRCULAR_SPINNER" (click)="onCloseInfoModalHandled()">
-            {{ "ProjectsPage.Continue" | translate }}
+          {{ "ProjectsPage.Continue" | translate }}
         </button>
       </div>
 
@@ -335,7 +363,8 @@ background-size:     contain; " -->
 </div>
 
 <!-- MODAL - LOGOUT WINDOWS -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayLogoutModal}" style="background-color: rgba(90,90,90,0.5);">
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayLogoutModal}"
+  style="background-color: rgba(90,90,90,0.5);">
   <div class="modal-dialog " role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -344,9 +373,9 @@ background-size:     contain; " -->
         </button>
 
         <h4 class="modal-title">
-            <!-- <img src="assets/img/tiledesk-solo-logo.png" width="21px"> -->
-             <!-- tiledesk Log Out  -->
-             {{ 'NavBar.TiledeskLogOut' | translate: tparams }}
+          <!-- <img src="assets/img/tiledesk-solo-logo.png" width="21px"> -->
+          <!-- tiledesk Log Out  -->
+          {{ 'NavBar.TiledeskLogOut' | translate: tparams }}
         </h4>
       </div>
 
@@ -358,19 +387,19 @@ background-size:     contain; " -->
         <p *ngIf="myAvailabilityCount > 0" style="margin-bottom:0px; text-align:center;max-width: 500px; margin: auto;">
           <i class="material-icons" style="display: block; color:#f44336">warning</i>
           <span style="color:#f44336"> {{ "NavBar.AttentionYouAreAvailable" | translate }}
-             {{myAvailabilityCount}}  
-             <span *ngIf="myAvailabilityCount === 1">{{ "NavBar.Project" | translate }}.</span>
-             <span *ngIf="myAvailabilityCount > 1">{{ "NavBar.Projects" | translate }}.</span>
-             {{ "NavBar.IfYouDoNotWantToReceiveRequests" | translate }}
-            </span>
+            {{myAvailabilityCount}}
+            <span *ngIf="myAvailabilityCount === 1">{{ "NavBar.Project" | translate }}.</span>
+            <span *ngIf="myAvailabilityCount > 1">{{ "NavBar.Projects" | translate }}.</span>
+            {{ "NavBar.IfYouDoNotWantToReceiveRequests" | translate }}
+          </span>
         </p>
-  
+
       </div>
 
       <div class="modal-footer" style="text-align: center;">
         <button class="btn btn-white" (click)="onCloseLogoutModalHandled()" style="padding:12px 16px; font-size:12px ">
           {{ "Cancel" | translate}}
-        </button>    
+        </button>
         <button class="btn btn-primary" (click)="onLogoutModalHandled()" style="padding:12px 16px; font-size:12px ">
           <!-- Log Out -->
           {{ 'NavBar.LogOut' | translate }}
