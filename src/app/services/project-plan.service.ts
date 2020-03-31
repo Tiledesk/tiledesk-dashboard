@@ -8,7 +8,8 @@ import { ProjectService } from '../services/project.service';
 import { Project } from '../models/project-model';
 import { Observable } from 'rxjs/Observable';
 import { Http, Headers, RequestOptions } from '@angular/http';
-
+import { NotifyService } from '../core/notify.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 
@@ -18,18 +19,31 @@ export class ProjectPlanService {
 
   projectID: string;
   TOKEN: string
+  project_deleted_notification: string
 
   constructor(
     http: Http,
     private router: Router,
     private auth: AuthService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private notify: NotifyService,
+    private translate: TranslateService
   ) {
     this.http = http;
     // this.getCurrentProject();
     this.ckeckProjectPlan();
     this.getUserToken();
+    this.translateNotificationMsgs();
+  }
 
+  translateNotificationMsgs() {
+    this.translate.get('ProjectEditPage.NotificationMsgs')
+      .subscribe((translation: any) => {
+        console.log('PROJECT-PLAN-SERVICE  translateNotificationMsgs text', translation)
+
+        this.project_deleted_notification = translation.TheProjectHasBeenDeleted;
+       
+      });
   }
 
   getUserToken() {
@@ -110,6 +124,11 @@ export class ProjectPlanService {
 
     }, error => {
       console.log('ProjectPlanService - getProjectByID * error ', error);
+
+      if (error.status === 404) {
+        this.router.navigate(['/projects']);
+        this.notify.showNotificationChangeProject(this.project_deleted_notification, 2, 'report_problem');
+      }
     }, () => {
       console.log('ProjectPlanService - getProjectByID * complete ');
     });
