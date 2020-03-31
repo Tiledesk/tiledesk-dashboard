@@ -157,6 +157,14 @@
 
           <ul class="dropdown-menu" style="max-height: 240px;overflow-y: auto;">
 
+            <!-- ------------ PROJECT SETTINGS ------------ -->
+            <li *ngIf="ROLE_IS_AGENT === false">
+              <a routerLink="/project/{{ project?._id }}/project-settings/general">
+                <i class="material-icons" style="padding-right: 5px; margin-bottom: 2px; font-size: 20px">settings</i>
+                {{ 'NavBar.ProjectSettings' | translate }}
+              </a>
+            </li>
+
             <!-- ------------ ALL PROJECTS ------------ -->
             <li (click)="goToProjects()">
               <a style="cursor: pointer">
@@ -175,13 +183,7 @@
             </li>
 
 
-            <!-- ------------ PROJECT SETTINGS ------------ -->
-            <li>
-              <a routerLink="/project/{{ project?._id }}/project-settings/general">
-                <i class="material-icons" style="padding-right: 5px; margin-bottom: 2px; font-size: 20px">settings</i>
-                {{ 'NavBar.ProjectSettings' | translate }}
-              </a>
-            </li>
+      
 
 
             <li class="divider"></li>
@@ -233,6 +235,20 @@
           </ul>
         </li>
 
+        <!-- 
+        // ---------------------------------------------------------------------
+        // Sound on / off
+        // --------------------------------------------------------------------- -->
+        <li *ngIf="project">
+          <a style="cursor: pointer;" *ngIf="NOTIFICATION_SOUND === 'enabled'" (click)="soundOFF()">
+            <i class="material-icons">volume_up</i>
+            <p class="hidden-lg hidden-md">soundon</p>
+          </a>
+          <a style="cursor: pointer;" *ngIf="NOTIFICATION_SOUND === 'disabled'" (click)="soundON()">
+            <i class="material-icons">volume_off</i>
+            <p class="hidden-lg hidden-md">soundoff</p>
+          </a>
+        </li>
         <!-- ------------ ============ NOTIFICATION ============ ------------ -->
         <li *ngIf="project" class="dropdown">
           <a routerLink="project/{{ project._id }}/wsrequests" class="dropdown-toggle" data-toggle="dropdown">

@@ -82,7 +82,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     HIDE_PENDING_EMAIL_NOTIFICATION = true;
 
     DETECTED_USER_PROFILE_PAGE = false;
-    
+
     // CHAT_BASE_URL = environment.chat.CHAT_BASE_URL; // moved
     // CHAT_BASE_URL = environment.CHAT_BASE_URL; // now get from appconfig
     CHAT_BASE_URL: string;
@@ -117,6 +117,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     currentUserId: string;
     subscription: Subscription;
     ROLE_IS_AGENT: boolean;
+    IS_REQUEST_FOR_PANEL_ROUTE: boolean;
+
+    NOTIFICATION_SOUND: string;
+    storedValuePrefix = 'dshbrd----'
+    hasPlayed = false
+
     constructor(
         location: Location,
         private element: ElementRef,
@@ -198,8 +204,29 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         this.getChatUrl();
         this.getOSCODE();
         this.getStorageBucket();
+
+        this.setNotificationSound();
+
+
     } // OnInit
 
+    setNotificationSound() {
+        // NOTIFICATION_SOUND = 'enabled';
+        const storedNotificationSound = localStorage.getItem(this.storedValuePrefix + 'sound');
+        console.log('NAV NOTIFICATION_SOUND STORED ', storedNotificationSound)
+
+        if (storedNotificationSound !== 'undefined' && storedNotificationSound !== null) {
+            console.log('NAV NOTIFICATION_SOUND - EXIST STORED SO SET STORED VALUE', storedNotificationSound)
+            this.NOTIFICATION_SOUND = storedNotificationSound;
+        } else {
+
+            this.NOTIFICATION_SOUND = 'enabled';
+
+            localStorage.setItem(this.storedValuePrefix + 'sound', this.NOTIFICATION_SOUND);
+            console.log('NAV NOTIFICATION_SOUND - NOT EXIST STORED SO SET DEFAULT ', this.NOTIFICATION_SOUND)
+        }
+
+    }
 
 
     getChatUrl() {
@@ -278,8 +305,16 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         console.log('NavbarComponent calling getProjects ... ');
         this.projectService.getProjects().subscribe((projects: any) => {
             console.log('NavbarComponent getProjects PROJECTS ', projects);
+
             if (projects) {
-                this.projects = projects;
+                // this.projects = projects;
+
+                this.projects = projects.filter((project: any) => {
+                    console.log('NavbarComponent getProjects PROJECTS status ', project.id_project.status);
+                    return project.id_project.status === 100;
+
+                });
+                console.log('NavbarComponent getProjects this.projects ', this.projects);
             }
         }, error => {
             console.log('NavbarComponent getProjects - ERROR ', error)
@@ -396,13 +431,20 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                     this.HOME_ROUTE_IS_ACTIVE = false;
                 }
 
-
                 if (event.url.indexOf('/chat') !== -1) {
                     console.log('NAVBAR NavigationEnd - THE chat route IS ACTIVE  ', event.url);
                     this.DETECTED_CHAT_PAGE = true;
                 } else {
                     console.log('NAVBAR NavigationEnd - THE chat route IS NOT ACTIVE  ', event.url);
                     this.DETECTED_CHAT_PAGE = false;
+                }
+
+                if (event.url.indexOf('/request-for-panel') !== -1) {
+                    this.IS_REQUEST_FOR_PANEL_ROUTE = true;
+                    console.log('NAVBAR NavigationEnd - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
+                } else {
+                    this.IS_REQUEST_FOR_PANEL_ROUTE = false;
+                    console.log('NAVBAR NavigationEnd - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
                 }
             })
     }
@@ -425,7 +467,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                     (this.route.indexOf('/handle-invitation') !== -1) ||
                     (this.route.indexOf('/signup-on-invitation') !== -1) ||
                     (this.route.indexOf('/create-new-project') !== -1) ||
-                    (this.route.indexOf('/success') !== -1)
+                    (this.route.indexOf('/success') !== -1) ||
+                    (this.route.indexOf('/request-for-panel') !== -1)
                 ) {
                     // console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route)
                     // this.DETECTED_PROJECT_PAGE = true;
@@ -480,6 +523,15 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                     this.DETECTED_USER_PROFILE_PAGE = false;
                     // console.log('»> »> »> NAVBAR ROUTE DETECTED  »> ', this.route, 'DETECTED_USER_PROFILE_PAGE ', this.DETECTED_USER_PROFILE_PAGE)
                 }
+
+                if (this.route.indexOf('/request-for-panel') !== -1) {
+                    this.IS_REQUEST_FOR_PANEL_ROUTE = true;
+                    console.log('NAVBAR route detected - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
+                } else {
+                    this.IS_REQUEST_FOR_PANEL_ROUTE = false;
+                    console.log('NAVBAR route detected - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
+                }
+
             }
         });
     }
@@ -839,14 +891,24 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                                     contact_fullname = "n.a."
                                 }
 
+                                console.log('NAV (showNotification) before to show notification (my) this.notify ', this.notify)
+                                // if (this.notify === undefined) {
                                 this.showNotification(
                                     '<span style="font-weight: 400; font-family: Google Sans, sans-serif; color:#2d323e!important">' + contact_fullname + '</span>' +
-                                    '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text +
+                                    '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text + r.request_id +
                                     '</em>' + `<a href="${url}" target="_self" data-notify="url" style="height: 100%; left: 0px; position: absolute; top: 0px; width: 100%; z-index: 1032;"></a>`,
                                     4,
                                     'border-left-color: rgb(77, 175, 79)',
                                     'new-chat-icon-served-by-me.png'
                                 );
+                                // } 
+
+                                // else {
+                                //     setTimeout(() => {
+                                //     this.notify.update({'type': 'success', 'title': '<strong>Success</strong> Your page has been saved!'});;
+                                // }, 1500);
+
+                                // }
 
                                 this.shown_my_requests[r.id] = true;
                                 // console.log('»» NAVBAR shown_my_requests object notifyLastUnservedRequest ', this.shown_my_requests)
@@ -892,9 +954,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
             // const url = '#/project/' + this.projectId + '/request/' + r.id + '/messages'
             const url = '#/project/' + this.projectId + '/wsrequest/' + r.request_id + '/messages'
             console.log('% »»» WebSocketJs WF +++++ ws-requests--- navbar unserved request url ', url);
+
+            console.log('NAV NOTIFICATION_SOUND (showNotification) before to show notification (unserved) this.notify ', this.notify)
+
             this.showNotification(
                 '<span style="font-weight: 400; font-family: Google Sans, sans-serif;color:#2d323e!important">' + r.lead.fullname + '</span>' +
-                '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text +
+                '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text + r.request_id +
                 '</em>' + `<a href="${url}" target="_self" data-notify="url" style="height: 100%; left: 0px; position: absolute; top: 0px; width: 100%; z-index: 1032;"></a>`,
                 3,
                 'border-left-color: rgb(237, 69, 55)',
@@ -920,60 +985,94 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         // console.log('COLOR ', color)
         // const color = '#ffffff';
 
-        this.notify = $.notify({
-            icon: 'notifications',
-            // message: 'Welcome to <b>Material Dashboard</b> - a beautiful freebie for every web developer.'
-            // this.lastRequest.text + '<br>ID: ' + request_recipient,
-            message: text
-            // url: 'routerLink="/requests"',
-            // url: 'https://github.com/mouse0270/bootstrap-notify',
-            // url: '<a routerLink="/requests">',
-            // url: this.router.navigate(['/requests']),
-            // target: '_self'
-            // border-left-color: rgb(255, 179, 40);
+        // the in-app notifications are not displayed if the route is /request-for-panel
+        if (this.IS_REQUEST_FOR_PANEL_ROUTE === false) {
 
-        }, {
-            type: type[color],
-            timer: 2000,
-            template:
-                `<div data-notify="container" style="padding:10px!important;background-color:rgb(255, 255, 238);box-shadow:0px 0px 5px rgba(51, 51, 51, 0.3);cursor:pointer;border-left:15px solid;${borderColor}"
+            
+            // const elemNotificationAlert = $('#request-notify');
+            // console.log('NAV NOTIFICATION_SOUND (showNotification) notify alert get by id ', elemNotificationAlert)
+
+           
+            this.notify = $.notify({
+                icon: 'notifications',
+                // message: 'Welcome to <b>Material Dashboard</b> - a beautiful freebie for every web developer.'
+                // this.lastRequest.text + '<br>ID: ' + request_recipient,
+                message: text
+                // url: 'routerLink="/requests"',
+                // url: 'https://github.com/mouse0270/bootstrap-notify',
+                // url: '<a routerLink="/requests">',
+                // url: this.router.navigate(['/requests']),
+                // target: '_self'
+                // border-left-color: rgb(255, 179, 40);
+
+            }, {
+                type: type[color],
+                timer: 1000,
+                template:
+                    `<div id="request-notify" data-notify="container" style="padding:10px!important;background-color:rgb(255, 255, 238);box-shadow:0px 0px 5px rgba(51, 51, 51, 0.3);cursor:pointer;border-left:15px solid;${borderColor}"
                     class="col-xs-11 col-sm-3 alert alert-{0}" role="alert">` +
-                '<button type="button" aria-hidden="true" class="close custom-hover" data-notify="dismiss" style="background-color:beige; padding-right:4px;padding-left:4px;border-radius:50%;">×</button>' +
-                '<div class="row">' +
-                '<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">' +
-                '<span data-notify="icon" class="notify-icon"> ' + `<img style="width:30px!important"src="assets/img/${chatIcon}" alt="Notify Icon"></span>` +
-                '</div>' +
-                '<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">' +
-                '<span data-notify="title">{1}</span>' +
-                '<span data-notify="message">{2}</span>' +
-                '</div>' +
-                '</div>' +
-                '</div>'
-            // placement: {
-            //     from: from,
-            //     align: align
-            // }
-        },
-            {
-                // onClose: this.test(),
-            }
-        );
+                    '<button type="button" aria-hidden="true" class="close custom-hover" data-notify="dismiss" style="background-color:beige; padding-right:4px;padding-left:4px;border-radius:50%;">×</button>' +
+                    '<div class="row">' +
+                    '<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">' +
+                    '<span data-notify="icon" class="notify-icon"> ' + `<img style="width:30px!important"src="assets/img/${chatIcon}" alt="Notify Icon"></span>` +
+                    '</div>' +
+                    '<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">' +
+                    '<span data-notify="title">{1}</span>' +
+                    '<span data-notify="message">{2}</span>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>'
+                // placement: {
+                //     from: from,
+                //     align: align
+                // }
+            },
+                {
+                    // onClose: this.test(),
+                }
+            );
+           
 
-        // if (request_recipient === this.lastRequest.recipient) {
-        //     console.log('!! HO GIà VISUALIZZATO NOTIFICA PER QUESTA REQUEST  RR ', request_recipient, 'LRR ', this.lastRequest.recipient)
-        //     this.SHOW_NOTIFICATION_FOR_REQUEST_RECIPIENT = false;
 
-        // } else {
-        //     this.SHOW_NOTIFICATION_FOR_REQUEST_RECIPIENT = true;
-        // }
-        // localStorage.setItem(request_recipient, request_recipient);
-        // console.log(' -- -- LOCAL STORAGE  SET REQUEST ID ', localStorage.setItem(request_recipient, request_recipient))
+        } // end if IS_REQUEST_FOR_PANEL_ROUTE
 
-        this.audio = new Audio();
-        this.audio.src = 'assets/Carme.mp3';
-        this.audio.load();
-        this.audio.play();
 
+        //------------------------------------------
+        // Notification Sound
+        //------------------------------------------
+
+       
+        this.NOTIFICATION_SOUND = localStorage.getItem(this.storedValuePrefix + 'sound');
+        console.log('NAV NOTIFICATION_SOUND (showNotification)', this.NOTIFICATION_SOUND)
+        console.log('NAV NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
+        if (this.NOTIFICATION_SOUND === 'enabled' && this.hasPlayed === false) {
+            this.audio = new Audio();
+            this.audio.src = 'assets/Carme.mp3';
+            this.audio.load();
+            this.audio.play();
+           
+        }
+        this.hasPlayed = true
+        console.log('NAV NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
+        setTimeout(() => {
+            this.hasPlayed = false
+        }, 3000);
+    }  // end show notification
+
+
+
+    soundON() {
+        this.NOTIFICATION_SOUND = 'enabled';
+        this.setNoticationSoundUserPreference(this.NOTIFICATION_SOUND)
+    }
+    soundOFF() {
+        this.NOTIFICATION_SOUND = 'disabled';
+        this.setNoticationSoundUserPreference(this.NOTIFICATION_SOUND)
+    }
+
+    setNoticationSoundUserPreference(value) {
+        console.log('NAV NOTIFICATION_SOUND (setNoticationSoundUserPreference)', value)
+        localStorage.setItem(this.storedValuePrefix + 'sound', value);
     }
 
     ngAfterContentChecked() {
