@@ -200,6 +200,33 @@ button.close {
   width: 100%;
 }
 
+.project-name .form-group.label-floating label.control-label {
+  // top: -7px;
+  // font-size: 14px;
+  top: -31px; 
+  font-size: 36px;
+  line-height: 1.42857143;
+}
+
+.project-name .form-group.label-floating.is-focused label.control-label {
+  // top: -28px; 
+  top: -45px; 
+  left: 0;
+  font-size: 11px;
+  line-height: 1.42857143;
+}
+
+.project-name .form-group.label-floating:not(.is-empty) label.control-label {
+  // top: -28px;
+  top: -45px; 
+  left: 0;
+  font-size: 11px;
+  line-height: 1.42857143;
+}
+.project-name .form-control {
+  font-size: 36px;
+  height:42px
+}
 .wizard-page-title {
   margin-top: 10px;
   font-family: Google Sans;
@@ -239,7 +266,7 @@ button.close {
   transform: translate(-50%, -50%);
   border-radius: 50%;
   background-color: #fff;
-  box-shadow: 0 0 42px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(0, 0, 0, 0.12), 0 0 4px rgba(0, 0, 0, 0.06);
+  // box-shadow: 0 0 42px rgba(0, 0, 0, 0.08), 0 1px 0 rgba(0, 0, 0, 0.12), 0 0 4px rgba(0, 0, 0, 0.06);
   height: 112px;
   overflow: hidden;
   width: 112px;

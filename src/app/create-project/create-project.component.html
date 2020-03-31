@@ -40,25 +40,22 @@
             <span style="display: block"> {{ 'YourSite' | translate }} </span>
 
           </h1>
+        </div>
+        <div class="col-md-12">
 
-          <div class="project-name form-group label-floating">
-            <input autocomplete="off" [(ngModel)]="project_name" id="projectName" type="text"
-              class="form-control project-name-input">
-            <label [ngClass]="{'placeholder-custom-effect' : project_name?.length > 0}" class="project-name-label"
-              for="projectName">
+          <!-- 
+          // ---------------------------------------------------------------
+          // New Input site name
+          // --------------------------------------------------------------- -->
+          <div class="project-name">
 
-              <!-- Inserisci il nome del sito -->
-              {{ 'EnterTheSiteName' | translate }}
-
-            </label>
-            <label class="stacked-label"
-              style="visibility: hidden; opacity: 0; transition: visibility 0.1s linear, opacity 0.1s linear;"
-              [ngClass]="{'label-custom-effect' : project_name?.length > 0}" class="control-label ">
-              <span>
-                <!-- Nome sito -->
+            <div class="form-group label-floating">
+              <label class="control-label">
                 {{ 'SiteName' | translate }}
-              </span>
-            </label>
+              </label>
+              <input [(ngModel)]="project_name" id="projectName" type="text" class="form-control">
+            </div>
+
             <div class="msg" style="height:31px">
 
               <span *ngIf="!project_name">
@@ -71,9 +68,40 @@
                 {{ 'ProjectsPage.ModalMustBeAtLeast' | translate }}
               </span>
             </div>
-
+            
           </div>
+          <!-- new  Input site name -->
+
+          <!-- 
+          <div class="project-name form-group label-floating">
+            <input autocomplete="off" [(ngModel)]="project_name" id="projectName" type="text"
+              class="form-control project-name-input">
+
+            <label [ngClass]="{'placeholder-custom-effect' : project_name?.length > 0}" class="project-name-label"
+              for="projectName">
+              {{ 'EnterTheSiteName' | translate }}
+            </label>
+
+            <label class="stacked-label"
+              style="visibility: hidden; opacity: 0; transition: visibility 0.1s linear, opacity 0.1s linear;"
+              [ngClass]="{'label-custom-effect' : project_name?.length > 0}" class="control-label ">
+              <span>
+                {{ 'SiteName' | translate }}
+              </span>
+            </label>
+            <div class="msg" style="height:31px">
+              <span *ngIf="!project_name">
+                {{ 'TheSiteNameIsRequested'| translate }}
+              </span>
+              <span *ngIf="project_name?.length > 0 && project_name?.length < 4"
+                style="padding-left: 5px; font-size: 0.9em; color:#da491c">
+                {{ 'ProjectsPage.ModalMustBeAtLeast' | translate }}
+              </span>
+            </div>
+          </div> -->
+
         </div>
+
       </div>
 
       <div class="row">
