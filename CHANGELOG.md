@@ -31,6 +31,9 @@
 - Adds the ability to limit the number of concurrent chats each agent can take at once
 - Adds the ability to reassign chat after a specified time frame
 - Adds the ability to set an agent's status to unavailable after a consecutive number of chats reassigned
+- Adds real time update of the current user availability
+- Fixes the delete of a project
+- Adds the ability to turn off the in-app notifications sound
 
 ### 1.0.40
 - Fixes the user profile urls
