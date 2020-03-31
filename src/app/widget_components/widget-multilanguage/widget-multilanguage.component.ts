@@ -162,7 +162,7 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
           console.log('Multilanguage _selectTranslationTab traslation (forEach) ', translation)
 
           if (translation.lang.toLowerCase() === this.selectedTranslationCode) {
-            // console.log('Multilanguage _selectTranslationTab traslation selected ', translation['data'])
+            console.log('Multilanguage _selectTranslationTab traslation selected ', translation['data'])
             for (let [key, value] of Object.entries(translation['data'])) {
               // console.log(`Multilanguage selectTranslationTab key : ${key} - value ${value}`);
 
