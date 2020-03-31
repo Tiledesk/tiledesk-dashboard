@@ -1901,9 +1901,10 @@ and also iPads specifically.
   background: #fafafa;
 }
 
-
-
-
+.modal-body-chat-panel-mode {
+  padding-top: 0px !important;
+  margin-top: -5px !important;
+}
 
 // end ----- new-page-test
 

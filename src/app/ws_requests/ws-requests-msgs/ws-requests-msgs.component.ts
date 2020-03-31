@@ -519,7 +519,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
-  
+
 
 
 
@@ -677,7 +677,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // @ Source page
           // ---------------------------------------------------------
           let stripHere = 20;
-          if (this.CHAT_PANEL_MODE){
+          if (this.CHAT_PANEL_MODE) {
             stripHere = 10;
           }
           if (this.request.sourcePage) {
@@ -689,7 +689,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // ---------------------------------------------------------
           // @ Request id
           // ---------------------------------------------------------
-          if (this.CHAT_PANEL_MODE){
+          if (this.CHAT_PANEL_MODE) {
             stripHere = 10;
           }
           if (this.request.request_id) {
@@ -1625,9 +1625,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   goToContactDetailsInNewTab() {
     // this.router.navigate(['project/' + this.id_project + '/contact', this.contact_id]);
-
-    const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/contact/' + this.contact_id
-    window.open(url, '_blank');
+    if (this.NODEJS_REQUEST_CNTCT_FOUND === true) {
+      const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/contact/' + this.contact_id
+      window.open(url, '_blank');
+    }
   }
 
 

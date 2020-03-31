@@ -75,7 +75,7 @@
                       <!-- <span style="color:#394f5a;"> {{ "RequestMsgsPage.RequesterName" | translate }}: </span>  -->
                       <div class="contact_info">
                         <span [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}"
-                          style="margin-top: 13px; display: block; font-size: 18px;">
+                          style="margin-top: 20px; display: block; font-size: 18px;">
                           <!-- {{ requester_fullname }} -->
                           {{request?.lead?.fullname}}
                         </span>
@@ -84,30 +84,28 @@
                           n.a.
                         </span>
 
-                        <span style="position: relative; top: -4px;"
+                        <!-- <span style="position: relative; top: -4px;"
                           [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}">
                           <i class="material-icons"
                             style="vertical-align: middle; color: #7695a5;font-size:12px; position: relative; top: 1px;">
                             email
                           </i>
                           <span style="position: relative;top: 1px;">
-                            <!-- <span
-                      style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                      {{ "RequestMsgsPage.ChatFormUserEmail" | translate }}
-                    </span> -->
+  
                             <a style="font-size: 13px;" target="_blank" *ngIf="request?.lead?.email"
                               href="mailto:{{request?.lead?.email}}">
                               {{request?.lead?.email}}
                             </a>
                             <a *ngIf="!request?.lead?.email" style="color:#7695a5;font-size: 13px;">n.a.</a>
 
-                            <!-- <span *ngIf="NODEJS_REQUEST_CNTCT_FOUND">
+                            <span *ngIf="NODEJS_REQUEST_CNTCT_FOUND" style="display: none;">
                               <span (click)="goToContactDetails()" class="" style="margin-left: 30px;  color: #03a5e8; font-size: 12px; font-weight: 400;cursor:pointer">
                                 {{ 'ViewDetails' | translate}}
                               </span>
-                            </span> -->
+                            </span>
                           </span>
-                        </span>
+                        </span> -->
+
                       </div>
                       <!-- -----new REQUESTER -->
 
@@ -116,24 +114,22 @@
 
                   <div style="float: right; width: 50%; ">
 
-                      <!-- 
+                    <!-- 
                       // ------------------------------------------------------------ 
                       // CONTACT INFO DROPDOWN MENU  
                       // ------------------------------------------------------------  -->
                     <div *ngIf="NODEJS_REQUEST_CNTCT_FOUND" class="dropdown pull-right">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    
                         <span class="material-icons" style="color:rgba(0, 0, 0, 0.87); margin-top: 20px;">
                           more_vert
-                          </span>
+                        </span>
                       </a>
                       <ul class="dropdown-menu">
                         <li>
-                          <a (click)='goToContactDetails()' style="">
+                          <a (click)='goToContactDetails()'>
                             {{ 'ContactDetails' | translate}}
                           </a>
                         </li>
-  
                       </ul>
                     </div>
 
@@ -457,7 +453,7 @@
                 // ----------------------------------------------------------------------------- -->
                 <div class="right-sidebar-header"
                   [ngClass]="{'right-sidebar-header-with-contact' : CHAT_PANEL_MODE === true,'right-sidebar-header-with-request': CHAT_PANEL_MODE === false}">
-                  
+
                   <div (click)="goToContactDetailsInNewTab()" class="contact-in-right-sidebar"
                     [ngClass]="{'visible-if-chat-panel-mode' : CHAT_PANEL_MODE === true}" style="cursor: pointer;">
 
@@ -499,7 +495,9 @@
 
                     <div class="contact_info_in_right-sidebar">
                       <span [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}"
-                        style="margin-top: 11px; display: block; font-size: 18px;">
+                        style="margin-top: 18px; display: block; font-size: 18px;width: 135px; white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;">
 
                         {{request?.lead?.fullname}}
                       </span>
@@ -508,7 +506,7 @@
                         n.a.
                       </span>
 
-                      <span style="position: relative; top: -4px;"
+                      <!-- <span style="position: relative; top: -4px;"
                         [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}">
                         <i class="material-icons"
                           style="vertical-align: middle; color: #7695a5;font-size:12px; position: relative; top: 1px;">
@@ -522,15 +520,15 @@
                           </a>
                           <a *ngIf="!request?.lead?.email" style="color:#7695a5;font-size: 13px;">n.a.</a>
 
-                          <!-- <span *ngIf="NODEJS_REQUEST_CNTCT_FOUND">
-                          <span (click)="goToContactDetails()" class="" style="margin-left: 30px;  color: #03a5e8;
-                      font-size: 12px;
-                      font-weight: 400;cursor:pointer">
-                            {{ 'ViewDetails' | translate}}
+                          <span *ngIf="NODEJS_REQUEST_CNTCT_FOUND" style="display: none;">
+                            <span (click)="goToContactDetails()" class="" style="margin-left: 30px;  color: #03a5e8;
+                            font-size: 12px;
+                            font-weight: 400;cursor:pointer">
+                              {{ 'ViewDetails' | translate}}
+                            </span>
                           </span>
-                        </span> -->
                         </span>
-                      </span>
+                      </span> -->
                     </div>
                   </div> <!-- contact in right sidebar -->
 
@@ -803,7 +801,7 @@
 
                   </div>
 
-                  <div class="right-sidebar-actions" 
+                  <div class="right-sidebar-actions"
                     [ngClass]="{'right-sidebar-actions-with-contact' : CHAT_PANEL_MODE === true,'right-sidebar-actions-with-request': CHAT_PANEL_MODE === false}">
                     <!-- btn btn-primary  -->
                     <!-- style="padding:6px 15px; margin-top: 15px" -->
@@ -817,7 +815,8 @@
                         </span>
                       </a>
                       <ul class="dropdown-menu">
-                        <li *ngIf="CHAT_PANEL_MODE === false" [ngClass]="{'disable-dropdown-menu-btn' : request?.status == 1000}">
+                        <li *ngIf="CHAT_PANEL_MODE === false"
+                          [ngClass]="{'disable-dropdown-menu-btn' : request?.status == 1000}">
                           <a (click)='openArchiveRequestModal(request?.request_id)'
                             style="padding-left: 15px; padding-right: 15px;">
                             <i class="material-icons" style="padding-right: 5px;">close</i>
@@ -849,7 +848,8 @@
                         </li>
 
                         <li *ngIf="CHAT_PANEL_MODE === false" class="divider"></li>
-                        <li *ngIf="CHAT_PANEL_MODE === false" [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false}">
+                        <li *ngIf="CHAT_PANEL_MODE === false"
+                          [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false}">
 
                           <a (click)='openleaveChatModal()' style="padding-left: 15px; padding-right: 15px;">
                             <i class="material-icons" style="padding-right: 5px;">exit_to_app</i>
@@ -871,14 +871,14 @@
                         </li>
                       </ul>
                     </div>
-                  
+
                   </div>
 
                 </div>
                 <!-- <span class="row-body">
               <span style="color:#394f5a;"> id: </span> {{ id_request }}
             </span> -->
-          <!-- 
+                <!-- 
               // ---------------------------------------------------------------------
               // old Subject
               // --------------------------------------------------------------------- -->
@@ -896,32 +896,58 @@
                   </div>
                 </div> -->
 
-              <!-- 
+                <!-- 
               // ---------------------------------------------------------------------
               // Subject
               // --------------------------------------------------------------------- -->
-              <div class="row" *ngIf="request?.subject"  style="margin-top:5px">
-                <!-- border-top: 1px solid #e1eef4;" -->
-                <div class="col-sm-12">
-                  <p class="" style="margin-bottom: 0px;">
-                    <i class="material-icons"
-                      style="vertical-align: middle; color: #394f5a;font-size:16px">short_text</i>
-                    <span style="position: relative;top: 1px;">
-                      <span
-                        style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                        {{ "RequestMsgsPage.Subject" | translate }}
+                <div class="row" *ngIf="request?.subject" style="margin-top:5px">
+                  <!-- border-top: 1px solid #e1eef4;" -->
+                  <div class="col-sm-12">
+                    <p class="" style="margin-bottom: 0px;">
+                      <i class="material-icons"
+                        style="vertical-align: middle; color: #394f5a;font-size:16px">short_text</i>
+                      <span style="position: relative;top: 1px;">
+                        <span
+                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                          {{ "RequestMsgsPage.Subject" | translate }}
+                        </span>
+                        <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                          {{ request?.subject}}
+                        </span>
                       </span>
-
-                      <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
-                        {{ request?.subject}}
-                      </span>
-                    </span>
-                  </p>
-
+                    </p>
+                  </div>
                 </div>
-              </div>
 
-              <!-- 
+                <!-- 
+              // ---------------------------------------------------------------------
+              // Contact email
+              // --------------------------------------------------------------------- -->
+                <div class="row" style="margin-top:5px">
+                  <!-- border-top: 1px solid #e1eef4;" -->
+                  <!-- border-bottom: 1px solid #e1eef4; -->
+                  <div class="col-sm-12">
+                    <!-- margin-top: 6px; -->
+                    <p [ngClass]="{'no-top-margin' : request?.subject}" style="margin-bottom: 0px;">
+                      <i class="material-icons"
+                        style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;">email</i>
+                      <span style="position: relative;top: 1px;">
+                        <span
+                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                          {{ "ContactEmail" | translate }}
+                        </span>
+
+                        <a style="font-size: 13px;" target="_blank" *ngIf="request?.lead?.email"
+                          href="mailto:{{request?.lead?.email}}">
+                          {{request?.lead?.email}}
+                        </a>
+                        <a *ngIf="!request?.lead?.email" style="color: #7695a5; font-weight: 500; font-size: 12px;">n.a.</a>
+                      </span>
+                    </p>
+                  </div>
+                </div>
+
+                <!-- 
               // ---------------------------------------------------------------------
               // Created At
               // --------------------------------------------------------------------- -->
@@ -929,31 +955,28 @@
                   <!-- border-top: 1px solid #e1eef4;" -->
                   <!-- border-bottom: 1px solid #e1eef4; -->
                   <div class="col-sm-12">
-                    <p [ngClass]="{'no-top-margin' : request?.subject}" style="margin-bottom: 0px;margin-top: 6px;">
+                    <!-- margin-top: 6px; -->
+                    <p [ngClass]="{'no-top-margin' : request?.subject}" style="margin-bottom: 0px;">
                       <i class="material-icons"
-                        style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 2px;">calendar_today</i>
+                        style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;">calendar_today</i>
                       <span style="position: relative;top: 1px;">
                         <span
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
                           {{ "RequestMsgsPage.Created" | translate }}
                         </span>
 
-                        <span  style="color: #7695a5; font-weight: 500; font-size: 12px;">
-                          {{ request?.createdAt | amTimeAgo }} 
-                          
-                          <span *ngIf="CHAT_PANEL_MODE === false">({{ request?.createdAt | date: 'd/M/y HH:mm:ss' }}) </span>
+                        <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                          {{ request?.createdAt | amTimeAgo }}
+
+                          <span *ngIf="CHAT_PANEL_MODE === false">({{ request?.createdAt | date: 'd/M/y HH:mm:ss' }})
+                          </span>
                         </span>
                       </span>
                     </p>
-
-                    <!-- <span class="row-body">
-                  {{ request?.createdAt | amTimeAgo }} ({{ request?.createdAt | date: 'd/M/y HH:mm:ss' }})
-                </span> -->
-
                   </div>
                 </div>
 
-              <!-- 
+                <!-- 
               // ---------------------------------------------------------------------
               // Language
               // --------------------------------------------------------------------- -->
@@ -977,7 +1000,7 @@
                   </div>
                 </div>
 
-              <!-- 
+                <!-- 
               // ------------------------------------------------------
               // Request ID
               // ------------------------------------------------------ -->
@@ -1032,7 +1055,7 @@
               // ------------------------------------------------------ -->
                 <div class="row" style="margin-top:5px">
                   <div class="col-sm-12">
-                    <p [ngClass]="{'yes-margin' : !request?.sourcePage}" style="margin-bottom: 0px;">
+                    <p [ngClass]="{'yes-margin' : !request?.sourcePage && CHAT_PANEL_MODE === false}" style="margin-bottom: 0px;">
                       <i class="material-icons"
                         style="vertical-align: middle; color: #394f5a;font-size:16px">account_balance</i>
                       <span style="position: relative;top: 1px;">
@@ -1056,13 +1079,13 @@
                 </div>
 
 
-              <!-- 
+                <!-- 
               // ---------------------------------------------------------------------
               // Source page - note when a requets is internal source page there isn't
               // --------------------------------------------------------------------- -->
                 <div *ngIf="request?.sourcePage" class="row" style="margin-top:5px">
                   <div class="col-sm-12">
-                    <p  [ngClass]="{'no-bottom-margin' : CHAT_PANEL_MODE === true}" >
+                    <p [ngClass]="{'no-bottom-margin' : CHAT_PANEL_MODE === true}">
                       <span style="position: relative;top: 1px;">
                         <div class="row">
                           <div class="col-xs-10" style="padding-right:10px">
@@ -1094,7 +1117,7 @@
                   </div>
                 </div>
 
-              <!-- 
+                <!-- 
               // ------------------------------------------------------------------
               // Go to request details - dispalyed only if CHAT_PANEL_MODE === true
               // ------------------------------------------------------------------ -->
@@ -1108,9 +1131,10 @@
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
                           <!-- routerLink="project/{{ project._id }}/wsrequests" -->
                           <!-- target="_blank" routerLink="project/{{id_project}}/wsrequest/{{id_request}}/messages" -->
-                          <a style="cursor: pointer;" (click)="goToRequestInNewTab()">  {{ 'GoToRequest' | translate }} </a>
-                        </span> 
-            
+                          <a style="cursor: pointer;" (click)="goToRequestInNewTab()"> {{ 'GoToRequest' | translate }}
+                          </a>
+                        </span>
+
                       </span>
                     </p>
                   </div>
@@ -1147,8 +1171,8 @@
                       // ------------------------------------------------------ -->
                       <div *ngIf="agents_array?.length === 0" class="row-body" style="margin-bottom: 10px;">
                         <div class="ws_request_msgs___served_by">
-                          <img style="height: auto; width: 22px;margin-left: 5px;margin-top: 5px;" 
-                            src="assets/img/user-alt-slash-solid.svg" /> 
+                          <img style="height: auto; width: 22px;margin-left: 5px;margin-top: 5px;"
+                            src="assets/img/user-alt-slash-solid.svg" />
                         </div>
                         <span class="ws_request_msgs___served_by_no_agent" style="position: relative;top: 5px;">
                           {{ "RequestMsgsPage.NoAgent" | translate }}
@@ -1266,7 +1290,8 @@
                       {{ 'Tags.ManageTags' | translate}}
                     </button> -->
 
-                      <div *ngIf="CURRENT_USER_ROLE !== 'agent' && CHAT_PANEL_MODE === false" (click)="goToTags()" class="manage_tags">
+                      <div *ngIf="CURRENT_USER_ROLE !== 'agent' && CHAT_PANEL_MODE === false" (click)="goToTags()"
+                        class="manage_tags">
                         {{ 'Tags.ManageTags' | translate}}
                       </div>
                     </div>
@@ -1875,7 +1900,7 @@
           (click)="closeSelectUsersModal()">
           <span aria-hidden="true" style="font-size:31px; color: rgb(60, 72, 88) !important;">&times;</span>
         </button>
-      
+
         <h4 class="modal-title">
           <div class="title-wrapper" style="max-width: 936px; margin:auto">
             <span *ngIf="actionInModal === 'reassign'"> {{ "VisitorsPage.ReassignRequest" | translate }} </span>
@@ -1884,7 +1909,7 @@
         </h4>
       </div>
 
-      <div class="modal-body"
+      <div class="modal-body" [ngClass]="{'modal-body-chat-panel-mode' : CHAT_PANEL_MODE === true}"
         style="padding-right: 15px; padding-top:15px; padding-bottom:15px; max-width: 936px; margin:auto ">
 
         <div class="row">
@@ -1909,38 +1934,42 @@
 
           <div class="col-md-12" [ngClass]="{'no-padding' : CHAT_PANEL_MODE === true}">
 
-            <div class="card" style="margin-top:5px; margin-bottom:5px" [ngClass]="{'modal-card-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+            <div class="card" style="margin-top:5px; margin-bottom:5px"
+              [ngClass]="{'modal-card-chat-panel-mode' : CHAT_PANEL_MODE === true}">
 
               <loading-spinner *ngIf="showSpinner_inModalUserList"></loading-spinner>
-              
+
               <!-- table-responsive -->
-              <div *ngIf="!showSpinner_inModalUserList"  class="card-content"
-              [ngClass]="{'card-content-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+              <div *ngIf="!showSpinner_inModalUserList" class="card-content"
+                [ngClass]="{'card-content-chat-panel-mode' : CHAT_PANEL_MODE === true}">
 
                 <table class="table table-hover">
                   <thead>
                     <tr>
                       <th colspan="2" [ngClass]="{'grey-background' : CHAT_PANEL_MODE === true}">
-                        <span style="color: #566787" [ngClass]="{'hidden-if-chat-panel-mode' : CHAT_PANEL_MODE === true}" >
+                        <span style="color: #566787"
+                          [ngClass]="{'hidden-if-chat-panel-mode' : CHAT_PANEL_MODE === true}">
                           <strong>
                             {{ "UsersPage.User" | translate }}
                           </strong>
                         </span>
 
 
-                          <!-- 
+                        <!-- 
                           // ---------------------------------------------------------------------------------------------
                           // the table header if CHAT_PANEL_MODE === true (replace the label User abd the above modal subtitle)
                           // --------------------------------------------------------------------------------------------- -->
                         <span *ngIf="CHAT_PANEL_MODE === true" style="color: #566787">
                           <span *ngIf="actionInModal === 'reassign'">
-                            <h4 style="font-weight:400" [ngClass]="{'modal-subtitle-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+                            <h4 style="font-weight:400"
+                              [ngClass]="{'modal-subtitle-chat-panel-mode' : CHAT_PANEL_MODE === true}">
                               {{ "VisitorsPage.SelectTheUserToWhom" | translate }}
                             </h4>
                           </span>
-              
+
                           <span *ngIf="actionInModal === 'invite'">
-                            <h4 style="font-weight:400" [ngClass]="{'modal-subtitle-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+                            <h4 style="font-weight:400"
+                              [ngClass]="{'modal-subtitle-chat-panel-mode' : CHAT_PANEL_MODE === true}">
                               {{ "VisitorsPage.InviteAnotherUserToServe" | translate }}
                             </h4>
                           </span>
@@ -1993,11 +2022,11 @@
 
                       <td style="width: 25px; cursor:pointer"
                         (click)="selectUser(projectUser?.id_user._id, projectUser?.id_user.firstname, projectUser?.id_user.lastname, projectUser?.id_user?.email)">
-                        <img class="ws_requets_msgs__user-img-in-modal" [ngClass]="{'ws_requets_msgs__user-img-in-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}"
+                        <img class="ws_requets_msgs__user-img-in-modal"
+                          [ngClass]="{'ws_requets_msgs__user-img-in-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}"
                           src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
                           onerror="this.src='assets/img/no_image_user.png'" />
-                        <div class="ws_request_msgs__status-icon"
-                          [ngClass]="{'is-user-online' : projectUser?.user_available === true, 
+                        <div class="ws_request_msgs__status-icon" [ngClass]="{'is-user-online' : projectUser?.user_available === true, 
                                       'is-user-offline' : projectUser?.user_available === false,
                                       'ws_request_msgs__status-icon-chat-panel-mode' : CHAT_PANEL_MODE === true
                                      }">
@@ -2018,10 +2047,11 @@
                           <span style="font-weight: 400;"> {{ projectUser?.id_user?.email }} </span>
                         </span>
 
-                        <span *ngIf="CHAT_PANEL_MODE === true" style="color: #7695a5; line-height:18px; font-size:12px; display: block;">
+                        <span *ngIf="CHAT_PANEL_MODE === true"
+                          style="color: #7695a5; line-height:18px; font-size:12px; display: block;">
 
                           {{ "UserRole" | translate }}
-                          <span style="font-weight: 400;">  {{ projectUser?.role | translate}} </span>
+                          <span style="font-weight: 400;"> {{ projectUser?.role | translate}} </span>
                         </span>
                       </td>
 
@@ -2101,23 +2131,27 @@
                       <tr *ngFor="let bot of bots;" class="table-row">
 
                         <td style="width: 25px; cursor:pointer" (click)="selectBot(bot?._id, bot?.name)">
-                          <img class="ws_requets_msgs__user-img-in-modal" [ngClass]="{'ws_requets_msgs__user-img-in-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}"
+                          <img class="ws_requets_msgs__user-img-in-modal"
+                            [ngClass]="{'ws_requets_msgs__user-img-in-modal-chat-panel-mode' : CHAT_PANEL_MODE === true}"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{bot?._id}}%2Fphoto.jpg?alt=media"
                             onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
 
                           <span *ngIf="bot.type === 'internal'">
-                            <img class="ws-request-msgs-bot-type-logo" [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}"
-                             src="assets/img/tiledesk_logo_no_text.png" />
+                            <img class="ws-request-msgs-bot-type-logo"
+                              [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}"
+                              src="assets/img/tiledesk_logo_no_text.png" />
                           </span>
 
                           <span *ngIf="bot.type === 'external'">
-                            <img class="ws-request-msgs-bot-type-logo" [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}"
+                            <img class="ws-request-msgs-bot-type-logo"
+                              [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}"
                               src="assets/img/external_bot_logo.png" />
                           </span>
 
                           <span *ngIf="bot.type === 'dialogflow'">
-                            <img class="ws-request-msgs-bot-type-logo" [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}"
+                            <img class="ws-request-msgs-bot-type-logo"
+                              [ngClass]="{'ws-request-msgs-bot-type-logo-chat-panel-mode' : CHAT_PANEL_MODE === true}"
                               src="assets/img/Dialogflow_logo_no_text.png" />
                           </span>
                         </td>
@@ -2143,7 +2177,8 @@
                         </td>
 
 
-                        <td *ngIf="CHAT_PANEL_MODE === false" style="cursor:pointer" (click)="selectBot(bot?._id, bot?.name)">
+                        <td *ngIf="CHAT_PANEL_MODE === false" style="cursor:pointer"
+                          (click)="selectBot(bot?._id, bot?.name)">
                           <div *ngIf="bot?._id === bot_participant_id">
                             <i class="material-icons" style="margin-left: 14px;">
                               done
@@ -2151,15 +2186,17 @@
                           </div>
                         </td>
 
-                        <td *ngIf="CHAT_PANEL_MODE === false"  style="cursor:pointer" (click)="selectBot(bot?._id, bot?.name)">
+                        <td *ngIf="CHAT_PANEL_MODE === false" style="cursor:pointer"
+                          (click)="selectBot(bot?._id, bot?.name)">
                           Bot
                         </td>
 
-                      <!-- 
+                        <!-- 
                       // ------------------------------------------------------
                       // column displayed on the over
                       // ------------------------------------------------------ -->
-                        <td *ngIf="!isMobile && CHAT_PANEL_MODE === false" style="cursor:pointer" (click)="selectBot(bot?._id, bot?.name)">
+                        <td *ngIf="!isMobile && CHAT_PANEL_MODE === false" style="cursor:pointer"
+                          (click)="selectBot(bot?._id, bot?.name)">
                           <div class="assign-request">
                             <p style="color: #00bcd4 ;margin-bottom:0px; font-size:12px; font-weight: 500;">
                               <span *ngIf="actionInModal === 'reassign'">
@@ -2190,14 +2227,14 @@
           // Reassign to a dept
           // ------------------------------------------------------------------------------ -->
           <section *ngIf="actionInModal === 'reassign' && departments?.length > 1">
-            
-            
+
+
             <!-- 
             // ---------------------------------------------------------------------------------------------
             // modal subtitle
             // --------------------------------------------------------------------------------------------- -->
             <div class="col-md-12" *ngIf="CHAT_PANEL_MODE === false">
-              <span> 
+              <span>
                 <h4 style="font-weight:400">
                   {{ "VisitorsPage.SelectTheDeptsToWhom" | translate }}
                 </h4>
@@ -2205,19 +2242,20 @@
             </div>
             <div class="col-md-12" [ngClass]="{'no-padding' : CHAT_PANEL_MODE === true}">
 
-              <div class="card" style="margin-top:5px; margin-bottom:5px" 
+              <div class="card" style="margin-top:5px; margin-bottom:5px"
                 [ngClass]="{'modal-card-chat-panel-mode' : CHAT_PANEL_MODE === true}">
 
                 <loading-spinner *ngIf="showSpinner_inModalUserList"></loading-spinner>
                 <!-- table-responsive -->
                 <div *ngIf="!showSpinner_inModalUserList" class="card-content"
-                [ngClass]="{'card-content-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+                  [ngClass]="{'card-content-chat-panel-mode' : CHAT_PANEL_MODE === true}">
 
                   <table class="table table-hover">
                     <thead>
                       <tr>
                         <th colspan="2" [ngClass]="{'grey-background' : CHAT_PANEL_MODE === true}">
-                          <span style="color: #566787" [ngClass]="{'hidden-if-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+                          <span style="color: #566787"
+                            [ngClass]="{'hidden-if-chat-panel-mode' : CHAT_PANEL_MODE === true}">
                             <strong>
                               {{ "Department" | translate }}
                             </strong>
@@ -2228,14 +2266,15 @@
                           // the table header if CHAT_PANEL_MODE === true (replace Department abd the above modal subtitle)
                           // --------------------------------------------------------------------------------------------- -->
                           <span *ngIf="CHAT_PANEL_MODE === true">
-                            <h4 style="font-weight:400" [ngClass]="{'modal-subtitle-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+                            <h4 style="font-weight:400"
+                              [ngClass]="{'modal-subtitle-chat-panel-mode' : CHAT_PANEL_MODE === true}">
                               {{ "VisitorsPage.SelectTheDeptsToWhom" | translate }}
                             </h4>
                           </span>
                         </th>
 
                         <th *ngIf="CHAT_PANEL_MODE === false">
-                          <span  style="color: #566787">
+                          <span style="color: #566787">
                             <strong>
                               {{ "Assignee" | translate }}
                             </strong>
@@ -2257,7 +2296,7 @@
 
                       <tr *ngFor="let dept of departments;" class="table-row">
                         <ng-container *ngIf="dept.default === false">
-                          <td *ngIf="CHAT_PANEL_MODE === false" style="width: 25px; cursor:pointer" 
+                          <td *ngIf="CHAT_PANEL_MODE === false" style="width: 25px; cursor:pointer"
                             (click)="selectDept(dept?.name, dept?._id)">
                           </td>
 
@@ -2278,30 +2317,29 @@
                                   <span style="color: #7695a5; font-size: 12px; font-weight:100">
                                     {{ 'DepartmentsPage.Group' | translate }}
                                   </span>
-                                 <span  [ngClass]="{'group-name' : CHAT_PANEL_MODE === true}" class=""> 
-                                   {{ dept?.hasGroupName}} 
-                                  </span> 
+                                  <span [ngClass]="{'group-name' : CHAT_PANEL_MODE === true}" class="">
+                                    {{ dept?.hasGroupName}}
+                                  </span>
                                 </span>
                                 <span *ngIf="dept?.hasGroupName && dept?.groupHasBeenTrashed === true">
-    
+
                                   <span style="vertical-align: middle;"> {{ dept?.hasGroupName }} </span>
                                   <i class="material-icons"
                                     style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i>
-                                  <span
-                                    style="color: #ff5252; vertical-align: middle; font-size:12px;">
-                                      {{ 'DepartmentsPage.TheGroupHasBeenTrashed' | translate }}
+                                  <span style="color: #ff5252; vertical-align: middle; font-size:12px;">
+                                    {{ 'DepartmentsPage.TheGroupHasBeenTrashed' | translate }}
                                   </span>
                                 </span>
-    
+
                                 <span *ngIf="!dept?.hasGroupName" style="font-size:12px; color: #7695a5">
                                   {{ 'DepartmentsPage.AllUsers' | translate }}
                                 </span>
-    
+
                                 <span *ngIf="dept?.id_bot" style="display: block;">
                                   <span style="color: #7695a5; font-size: 12px; font-weight:100">
                                     Bot {{ 'DepartmentsPage.ActivatedBot' | translate }}
                                   </span>
-    
+
                                   <span style="font-size:12px; font-weight:400; color: #7695a5">
                                     {{ dept?.hasBotName }}
                                   </span>
@@ -2321,7 +2359,8 @@
                             </p>
                           </td>
 
-                          <td *ngIf="CHAT_PANEL_MODE === false" style="cursor:pointer" (click)="selectDept(dept?.name, dept?._id)">
+                          <td *ngIf="CHAT_PANEL_MODE === false" style="cursor:pointer"
+                            (click)="selectDept(dept?.name, dept?._id)">
                             <!-- <div class="checkbox checkbox-no-notallowedcursor" style="">
                             <label>
 
@@ -2337,7 +2376,8 @@
                           </td>
 
 
-                          <td *ngIf="CHAT_PANEL_MODE === false" style="cursor:pointer" (click)="selectDept(dept?.name, dept?._id)">
+                          <td *ngIf="CHAT_PANEL_MODE === false" style="cursor:pointer"
+                            (click)="selectDept(dept?.name, dept?._id)">
                             <span *ngIf="dept?.hasGroupName && !dept?.groupHasBeenTrashed">
                               <span style="color: #7695a5; font-size: 12px; font-weight:400">
                                 {{ 'DepartmentsPage.Group' | translate }}
@@ -2349,9 +2389,8 @@
                               <span style="vertical-align: middle;"> {{ dept?.hasGroupName }} </span>
                               <i class="material-icons"
                                 style="vertical-align: middle; font-size:12px; color: #ff5252; padding-left: 8px">report_problem</i>
-                              <span
-                                style="color: #ff5252; vertical-align: middle; font-size:12px;">
-                                  {{ 'DepartmentsPage.TheGroupHasBeenTrashed' | translate }}
+                              <span style="color: #ff5252; vertical-align: middle; font-size:12px;">
+                                {{ 'DepartmentsPage.TheGroupHasBeenTrashed' | translate }}
                               </span>
                             </span>
 
@@ -2382,7 +2421,8 @@
 
                           </td>
 
-                          <td *ngIf="!isMobile && CHAT_PANEL_MODE === false" style="cursor:pointer" (click)="selectDept(dept?.name, dept?._id)">
+                          <td *ngIf="!isMobile && CHAT_PANEL_MODE === false" style="cursor:pointer"
+                            (click)="selectDept(dept?.name, dept?._id)">
                             <div class="assign-request">
                               <p style="color: #00bcd4 ;margin-bottom:0px; font-size:12px; font-weight: 500;">
                                 {{ 'ReassignToDept' | translate}}
