@@ -23,6 +23,7 @@ import { Project } from '../models/project-model';
 import { FaqKbService } from '../services/faq-kb.service';
 import { BotLocalDbService } from '../services/bot-local-db.service';
 import { AppConfigService } from '../services/app-config.service';
+import { WebSocketJs } from "../services/websocket/websocket-js";
 
 interface NewUser {
   displayName: string;
@@ -33,12 +34,15 @@ interface NewUser {
 @Injectable()
 export class UsersService {
 
+  wsService: WebSocketJs;
   public user_is_available_bs: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   public project_user_id_bs: BehaviorSubject<string> = new BehaviorSubject<string>('');
   public project_user_role_bs: BehaviorSubject<string> = new BehaviorSubject<string>('');
   public has_changed_availability_in_sidebar: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public has_changed_availability_in_users: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public userProfileImageExist: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  public currentUserWsAvailability$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+
   // public has_clicked_logoutfrom_mobile_sidebar: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   // public has_clicked_logoutfrom_mobile_sidebar_project_undefined: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
@@ -99,7 +103,8 @@ export class UsersService {
     private router: Router,
     private faqKbService: FaqKbService,
     private botLocalDbService: BotLocalDbService,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    public webSocketJs: WebSocketJs
   ) {
     // this.usersCollection = this.afs.collection('users', (ref) => ref.orderBy('time', 'desc').limit(5));
     // this.searchUserCollection = this.afs.collection('users', (ref) => ref.where('displayName', '>=', 'B'));
@@ -653,7 +658,10 @@ export class UsersService {
 
   }
 
-  // ======================  PUBLISH projectUser_id AND user_available ======================
+
+  // -----------------------------------------------------------------------------------------------------
+  // Availability - PUBLISH projectUser_id AND user_available
+  // -----------------------------------------------------------------------------------------------------
   // NOTE: THE projectUser_id AND user_available ARE PASSED FROM HOME.COMPONENT and from SIDEBAR.COMP
   public user_availability(projectUser_id: string, user_available: boolean) {
     console.log('!!! USER SERVICE - PROJECT-USER-ID ', projectUser_id)
@@ -663,20 +671,68 @@ export class UsersService {
     this.user_is_available_bs.next(user_available);
   }
 
-  // ======================  PUBLISH WHEN THE SIDEBAR AVAILABLE / UNAVAILABLE BUTTON IS CLICKED  ======================
+
+  // -----------------------------------------------------------------------------------------------------
+  // Availability - PUBLISH WHEN THE SIDEBAR AVAILABLE / UNAVAILABLE BUTTON IS CLICKED
+  // -----------------------------------------------------------------------------------------------------
   // NOTE: USER COMP SUBSCRIBES TO has_changed_availability TO RE-RUN getAllUsersOfCurrentProject
   // WITCH UPDATE THE LIST OF THE PROJECT' MEMBER
   public availability_btn_clicked(clicked: boolean) {
     this.has_changed_availability_in_sidebar.next(clicked)
   }
 
-  // ======================  PUBLISH WHEN THE USERS-COMP AVAILABLE / UNAVAILABLE Toggle Switch BTN IS CLICKED  ======================
+
+  // -----------------------------------------------------------------------------------------------------
+  // Availability - PUBLISH WHEN THE USERS-COMP AVAILABLE / UNAVAILABLE Toggle Switch BTN IS CLICKED
+  // -----------------------------------------------------------------------------------------------------
   // NOTE: SIDEBAR SUBSCRIBES TO has_changed_availability TO RE-RUN getAllUsersOfCurrentProject
   // WITCH UPDATE THE LIST OF THE PROJECT' MEMBER
   public availability_switch_clicked(clicked: boolean) {
     this.has_changed_availability_in_users.next(clicked)
 
   }
+
+  // -----------------------------------------------------------------------------------------------------
+  // Availability - subscribe to WS Current user availability
+  // -----------------------------------------------------------------------------------------------------
+  subscriptionToWsCurrentUserAvailability(prjctuserid) {
+    var self = this;
+  
+    console.log('% »»» WebSocketJs WF >>> ws-msgs--- m-service - SUBSCR To WS MSGS ****** CALLING REF ****** ');
+    const path =  '/' + this.project_id + '/project_users/' + prjctuserid
+    
+    this.webSocketJs.ref(path,
+      function (data, notification) {
+        // console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data ", data , ' path ', path);
+        console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data ", data );
+        console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data  user_available ", data.user_available );
+    
+        self.currentUserWsAvailability$.next(data.user_available);
+
+        self.availability_btn_clicked(true)
+
+      }, function (data, notification) {
+
+        console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - UPDATE - data ", data);
+   
+
+      }, function (data, notification) {
+
+        if (data) {
+          console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - ON-DATA - data", data);
+          
+        }  
+      }
+    );
+  }
+
+
+
+
+
+
+
+
 
   // ===================  PUBLISH PROJECT-USER ROLE AND CHECK THE ROLE (FOR THE CURRENT PROJECT) SAVED IN THE STORAGE ======================
   // NOTE: THE projectUser_role IS PASSED FROM HOME.COMPONENT AND FROM SIDEBAR
@@ -806,7 +862,7 @@ export class UsersService {
   /**
    * UPDATE PROJECT-USER ROLE (PUT) */
   // DONE - WORKS NK-TO-TEST - da testare dopo che L. esegue il commit del servizio aggiornato (lo puo fare solo l'admin)
-  public updateProjectUserRoleAndMaxchat(projectUser_id: string, user_role: string, max_served_chat:number) {
+  public updateProjectUserRoleAndMaxchat(projectUser_id: string, user_role: string, max_served_chat: number) {
 
     let url = this.PROJECT_USER_URL + projectUser_id;
     console.log('PROJECT-USER DETAILS (calling from) - PROJECT-USER UPDATE ROLE & MAX-CHAT (PUT) URL ', url);
