@@ -65,7 +65,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   asc: any;
   subscription: Subscription;
   projectUsersArray: any;
-
+  objectKeys = Object.keys;
   constructor(
     private usersService: UsersService,
     public auth: AuthService,
@@ -96,15 +96,15 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
   buildActivitiesOptions() {
     this.translate.get('ActivitiesOptions')
       .subscribe((text: any) => {
-
+        // console.log('translateActivities text ', text)
         this.agentAvailabilityOrRoleChange = text.AgentAvailabilityOrRoleChange;
         this.agentDeletion = text.AgentDeletion;
         this.agentInvitation = text.AgentInvitation;
         this.newRequest = text.NewRequest;
-        console.log('translateActivities AgentAvailabilityOrRoleChange ', text.AgentAvailabilityOrRoleChange)
-        console.log('translateActivities AgentDeletion ', text.AgentDeletion)
-        console.log('translateActivities AgentDeletion ', text.AgentInvitation)
-        console.log('translateActivities newRequest ', text.newRequest)
+        // console.log('translateActivities AgentAvailabilityOrRoleChange ', text.AgentAvailabilityOrRoleChange)
+        // console.log('translateActivities AgentDeletion ', text.AgentDeletion)
+        // console.log('translateActivities AgentDeletion ', text.AgentInvitation)
+        // console.log('translateActivities newRequest ', text.NewRequest)
       }, (error) => {
         console.log('ActivitiesComponent - GET translations error ', error);
       }, () => {
@@ -392,7 +392,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
                     const participantId = activity.target.object.participants[0]
                     console.log('ActivitiesComponent participant ', participantId);
 
-                    if (participantId.includes('bot_')) {
+                    if (participantId && participantId.includes('bot_')) {
                       console.log('ActivitiesComponent participant includes bot with id ', participantId);
                       const bot_id = participantId.slice(4);
                       console.log('ActivitiesComponent participant includes bot with id slice(4)', bot_id);
@@ -414,7 +414,7 @@ export class ActivitiesComponent implements OnInit, OnDestroy {
                           console.log('ActivitiesComponent participant bot name', activity.participant_fullname);
                         }
                       }, 50);
-
+                   
 
                       // const bot2 = JSON.parse((localStorage.getItem(bot_id)));
                       // console.log('ActivitiesComponent participant bot2', bot2);
