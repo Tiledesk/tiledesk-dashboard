@@ -4,7 +4,7 @@ import 'rxjs/add/operator/filter';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import PerfectScrollbar from 'perfect-scrollbar';
+import PerfectScrollbar from 'perfect-scrollbar'; // https://github.com/mdbootstrap/perfect-scrollbar
 
 import { AuthService } from './core/auth.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -44,6 +44,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     LOGIN_PAGE: boolean;
 
     userIsSignedIn: boolean;
+    IS_REQUEST_X_PANEL_ROUTE: boolean
 
     @ViewChild(NavbarComponent) navbar: NavbarComponent;
 
@@ -190,6 +191,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             let ps = new PerfectScrollbar(elemMainPanel);
             ps = new PerfectScrollbar(elemSidebar);
         }
+     
 
         this.unsetNavbarBoxShadow();
 
@@ -365,6 +367,18 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     // elemSidebarWrapper.setAttribute('style', `background-color: ${this.background_bottom_section} !important;`);
                 }
 
+                if (this.route.indexOf('/request-for-panel') !== -1) {
+                    this.IS_REQUEST_X_PANEL_ROUTE = true
+
+                    const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+                    if(this.IS_REQUEST_X_PANEL_ROUTE === true) {
+                     let ps = new PerfectScrollbar(elemMainPanel);
+                    } 
+                } else {
+                    this.IS_REQUEST_X_PANEL_ROUTE = false
+                }
+
+
             } else {
                 // console.log('»> * ', this.route)
             }
@@ -414,19 +428,14 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
 
                 // WIDGET HIDDEN IF THE ROUTE IS request-for-panel
-                if (this.route.indexOf('/request-for-panel') !== -1) {
+                // if (this.route.indexOf('/request-for-panel') !== -1) {
 
-                    if (eleWidget) {
-                        eleWidget.style.display = 'none';
-                    } else {
-                        console.log('APP.COMP - elem WIDGET ', eleWidget) 
-                    }
-
-                    // if (window && window['tiledeskSettings']) { 
-                    //     window['tiledeskSettings']['isShow'] = false
-                    // }
-
-                }
+                //     if (eleWidget) {
+                //         eleWidget.style.display = 'none';
+                //     } else {
+                //         console.log('APP.COMP - elem WIDGET ', eleWidget) 
+                //     }
+                // }
 
             } else {
                 // console.log('»> * ', this.route)
