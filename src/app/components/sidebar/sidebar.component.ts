@@ -14,6 +14,8 @@ import { UsersLocalDbService } from '../../services/users-local-db.service';
 import { NotifyService } from '../../core/notify.service';
 import { UploadImageService } from '../../services/upload-image.service';
 import { TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { AppConfigService } from '../../services/app-config.service';
 import brand from 'assets/brand/brand.json';
@@ -148,7 +150,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     isVisibleCAR: boolean; // canned responses
 
     storageBucket: string;
-
+    private unsubscribe$: Subject<any> = new Subject<any>();
 
     constructor(
         private requestsService: RequestsService,
@@ -210,6 +212,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.brandLog();
         this.getHasOpenBlogKey()
         this.getChatUrl();
+
+      
     }
 
     getChatUrl() {
@@ -508,6 +512,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         });
     }
 
+    getProjectUserId() {
+        this.usersService.project_user_id_bs.subscribe((projectUser_id) => {
+            console.log('SIDEBAR - PROJECT-USER-ID ', projectUser_id);
+            this.projectUser_id = projectUser_id;
+        });
+    }
+
     // ============ SUBSCRIPTION TO user_is_available_bs  AND project_user_id_bs PUBLISHED BY THE USER SERVICE USED
     /* WF: when the user select A PROJECT,
        - in the HOME COMP is made a call-back to get the PROJECT-USER OBJECT
@@ -523,12 +534,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         });
     }
 
-    getProjectUserId() {
-        this.usersService.project_user_id_bs.subscribe((projectUser_id) => {
-            console.log('SIDEBAR - PROJECT-USER-ID ', projectUser_id);
-            this.projectUser_id = projectUser_id;
-        });
-    }
 
     changeAvailabilityState(IS_AVAILABLE) {
         console.log('SB - CHANGE STATUS - USER IS AVAILABLE ? ', IS_AVAILABLE);
@@ -574,8 +579,88 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 this.getProjectUser()
             }
         })
-
     }
+
+
+    // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE HOME.COMP ***
+    getProjectUser() {
+        console.log('!!! SIDEBAR CALL GET-PROJECT-USER')
+        this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
+            console.log('SB PROJECT-USER GET BY PROJECT-ID ', this.projectId);
+            console.log('SB PROJECT-USER GET BY CURRENT-USER-ID ', this.user._id);
+            console.log('SB PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser);
+            console.log('SB PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID LENGTH', projectUser.length);
+            if ((projectUser) && (projectUser.length !== 0)) {
+                console.log('SB PROJECT-USER ID ', projectUser[0]._id)
+                console.log('SB USER IS AVAILABLE ', projectUser[0].user_available)
+                // this.user_is_available_bs = projectUser.user_available;
+                
+                this.subsTo_WsCurrentUserAvailability(projectUser[0]._id)
+
+
+
+                if (projectUser[0].user_available !== undefined) {
+                    this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available)
+                }
+
+                // ADDED 21 AGO
+                if (projectUser[0].role !== undefined) {
+                    console.log('!!! »» SIDEBAR GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser[0].role);
+
+                    // ASSIGN THE projectUser[0].role VALUE TO USER_ROLE
+                    this.USER_ROLE = projectUser[0].role;
+
+                    // SEND THE ROLE TO USER SERVICE THAT PUBLISH
+                    this.usersService.user_role(projectUser[0].role);
+
+
+
+                    // save the user role in storage - then the value is get by auth.service:
+                    // the user with agent role can not access to the pages under the settings sub-menu
+                    // this.auth.user_role(projectUser[0].role);
+
+                    // this.usersLocalDbService.saveUserRoleInStorage(projectUser[0].role);
+                }
+            } else {
+                // this could be the case in which the current user was deleted as a member of the current project
+                console.log('SB PROJECT-USER UNDEFINED ')
+            }
+
+        }, (error) => {
+            console.log('SB PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID  ', error);
+        }, () => {
+            console.log('SB PROJECT-USER GET BY PROJECT ID & CURRENT-USER-ID  * COMPLETE *');
+        });
+    }
+
+
+    subsTo_WsCurrentUserAvailability(currentuserprjctuserid) {
+        console.log('SB - SUBSCRIBE TO WS CURRENT-USER AVAILABILITY  prjct user id of current user ', currentuserprjctuserid);
+        this.usersService.subscriptionToWsCurrentUserAvailability(currentuserprjctuserid);
+        this.getWsCurrentUserAvailability$();
+    }
+
+    getWsCurrentUserAvailability$() {
+
+        this.usersService.currentUserWsAvailability$
+        .pipe(
+          takeUntil(this.unsubscribe$)
+        )
+        .subscribe((currentuser_availability) => {
+            console.log('SB - GET WS CURRENT-USER AVAILABILITY - IS AVAILABLE? ', currentuser_availability);
+
+            if(currentuser_availability !== null)  {
+                this.IS_AVAILABLE = currentuser_availability;
+            }
+
+        }, error => {
+          console.log('SB - GET WS CURRENT-USER AVAILABILITY * error * ', error)
+        }, () => {
+          console.log('SB - GET WS CURRENT-USER AVAILABILITY *** complete *** ')
+        });
+  
+    }
+
     // NO MORE USED - SUBSTITUDED WITH changeAvailabilityState
     // availale_unavailable_status(hasClickedChangeStatus: boolean) {
     //     hasClickedChangeStatus = hasClickedChangeStatus;
@@ -708,52 +793,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         });
     }
 
-    // *** NOTE: THE SAME CALLBACK IS RUNNED IN THE HOME.COMP ***
-    getProjectUser() {
-        console.log('!!! SIDEBAR CALL GET-PROJECT-USER')
-        this.usersService.getProjectUserByUserId(this.currentUserId).subscribe((projectUser: any) => {
-            console.log('SB PROJECT-USER GET BY PROJECT-ID ', this.projectId);
-            console.log('SB PROJECT-USER GET BY CURRENT-USER-ID ', this.user._id);
-            console.log('SB PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID ', projectUser);
-            console.log('SB PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID LENGTH', projectUser.length);
-            if ((projectUser) && (projectUser.length !== 0)) {
-                console.log('SB PROJECT-USER ID ', projectUser[0]._id)
-                console.log('SB USER IS AVAILABLE ', projectUser[0].user_available)
-                // this.user_is_available_bs = projectUser.user_available;
 
-                if (projectUser[0].user_available !== undefined) {
-                    this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available)
-                }
-
-                // ADDED 21 AGO
-                if (projectUser[0].role !== undefined) {
-                    console.log('!!! »» SIDEBAR GET PROJECT USER ROLE FOR THE PROJECT ', this.projectId, ' »» ', projectUser[0].role);
-
-                    // ASSIGN THE projectUser[0].role VALUE TO USER_ROLE
-                    this.USER_ROLE = projectUser[0].role;
-
-                    // SEND THE ROLE TO USER SERVICE THAT PUBLISH
-                    this.usersService.user_role(projectUser[0].role);
-
-
-
-                    // save the user role in storage - then the value is get by auth.service:
-                    // the user with agent role can not access to the pages under the settings sub-menu
-                    // this.auth.user_role(projectUser[0].role);
-
-                    // this.usersLocalDbService.saveUserRoleInStorage(projectUser[0].role);
-                }
-            } else {
-                // this could be the case in which the current user was deleted as a member of the current project
-                console.log('SB PROJECT-USER UNDEFINED ')
-            }
-
-        }, (error) => {
-            console.log('SB PROJECT-USER GET BY PROJECT-ID & CURRENT-USER-ID  ', error);
-        }, () => {
-            console.log('SB PROJECT-USER GET BY PROJECT ID & CURRENT-USER-ID  * COMPLETE *');
-        });
-    }
 
 
     isMobileMenu() {
