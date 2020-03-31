@@ -135,10 +135,9 @@ export class ProjectService {
    * DELETE (DELETE)
    * @param id
    */
-  public deleteMongoDbProject(id: string) {
+  public deleteProject(projectid: string) {
 
-    let url = this.PROJECTS_URL;
-    url += `${id}# chat21-api-nodejs`;
+    let url = this.PROJECTS_URL + projectid;
     console.log('DELETE URL ', url);
 
     const headers = new Headers();
