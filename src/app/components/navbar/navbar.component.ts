@@ -960,7 +960,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
             this.showNotification(
                 '<span style="font-weight: 400; font-family: Google Sans, sans-serif;color:#2d323e!important">' + r.lead.fullname + '</span>' +
-                '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text + r.request_id +
+                '<em style="font-family: Google Sans, sans-serif;color:#7695a5!important">' + r.first_text +
                 '</em>' + `<a href="${url}" target="_self" data-notify="url" style="height: 100%; left: 0px; position: absolute; top: 0px; width: 100%; z-index: 1032;"></a>`,
                 3,
                 'border-left-color: rgb(237, 69, 55)',
