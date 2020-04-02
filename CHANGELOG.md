@@ -35,6 +35,7 @@
 - Fixes the delete of a project
 - Adds the ability to turn off the in-app notifications sound
 
+
 ### 1.0.40
 - Fixes the user profile urls
 
