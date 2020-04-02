@@ -989,11 +989,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         // the in-app notifications are not displayed if the route is /request-for-panel
         if (this.IS_REQUEST_FOR_PANEL_ROUTE === false) {
 
-            
+
             // const elemNotificationAlert = $('#request-notify');
             // console.log('NAV NOTIFICATION_SOUND (showNotification) notify alert get by id ', elemNotificationAlert)
 
-           
+
             this.notify = $.notify({
                 icon: 'notifications',
                 // message: 'Welcome to <b>Material Dashboard</b> - a beautiful freebie for every web developer.'
@@ -1032,7 +1032,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                     // onClose: this.test(),
                 }
             );
-           
+
 
 
         } // end if IS_REQUEST_FOR_PANEL_ROUTE
@@ -1042,16 +1042,24 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
         // Notification Sound
         //------------------------------------------
 
-       
+
         this.NOTIFICATION_SOUND = localStorage.getItem(this.storedValuePrefix + 'sound');
         console.log('NAV NOTIFICATION_SOUND (showNotification)', this.NOTIFICATION_SOUND)
         console.log('NAV NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
-        if (this.NOTIFICATION_SOUND === 'enabled' && this.hasPlayed === false) {
-            this.audio = new Audio();
-            this.audio.src = 'assets/Carme.mp3';
-            this.audio.load();
-            this.audio.play();
-           
+        if (this.NOTIFICATION_SOUND === 'enabled') {
+            console.log('NAV NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
+            if (this.hasPlayed === false) {
+                console.log('NAV NOTIFICATION_SOUND (showNotification) hasPlayed (HERE IN IF)', this.hasPlayed)
+                this.audio = new Audio();
+                // this.audio.src = 'assets/Carme.mp3';
+                // this.audio.src = 'assets/microbounce.mp3';
+                this.audio.src = 'assets/justsaying.mp3';
+               
+                this.audio.load();
+                this.audio.play();
+
+            }
+
         }
         this.hasPlayed = true
         console.log('NAV NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
