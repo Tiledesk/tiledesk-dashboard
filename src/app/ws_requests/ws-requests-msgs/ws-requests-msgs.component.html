@@ -27,13 +27,13 @@
                       style="text-transform: none; color: #566787; font-weight:400; margin-top: 18px; margin-bottom: 0px; padding-bottom: 15px;">
                       {{ "RequestMsgsPage.Messages" | translate }}
                     
-                    </h4> -->
-                      <!-- <div class="contact-details">
+                      </h4> -->
+                        <!-- <div class="contact-details">
 
-                      <i class="material-icons">
-                        more_vert
-                        </i>
-                    </div> -->
+                        <i class="material-icons">
+                          more_vert
+                          </i>
+                      </div> -->
 
                       <!-- -----new REQUESTER -->
                       <span class="requester-avatar-wrapper">
@@ -75,7 +75,7 @@
                       <!-- <span style="color:#394f5a;"> {{ "RequestMsgsPage.RequesterName" | translate }}: </span>  -->
                       <div class="contact_info">
                         <span [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}"
-                          style="margin-top: 20px; display: block; font-size: 18px;">
+                          style="margin-top: 20px; display: block; font-size: 18px;white-space: nowrap;">
                           <!-- {{ requester_fullname }} -->
                           {{request?.lead?.fullname}}
                         </span>
@@ -919,7 +919,7 @@
                   </div>
                 </div>
 
-                <!-- 
+              <!-- 
               // ---------------------------------------------------------------------
               // Contact email
               // --------------------------------------------------------------------- -->
@@ -947,7 +947,7 @@
                   </div>
                 </div>
 
-                <!-- 
+              <!-- 
               // ---------------------------------------------------------------------
               // Created At
               // --------------------------------------------------------------------- -->
@@ -976,7 +976,7 @@
                   </div>
                 </div>
 
-                <!-- 
+              <!-- 
               // ---------------------------------------------------------------------
               // Language
               // --------------------------------------------------------------------- -->
@@ -1078,8 +1078,7 @@
                   </div>
                 </div>
 
-
-                <!-- 
+              <!-- 
               // ---------------------------------------------------------------------
               // Source page - note when a requets is internal source page there isn't
               // --------------------------------------------------------------------- -->
@@ -1493,9 +1492,9 @@
                   style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px; display: none;">
                   <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;">
 
-                    <div class="row" style="">
-                      <div class="col-sm-12" style="">
-                        <p class="row-header" style="">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <p class="row-header">
                           <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
                           <span style="vertical-align: middle">
                             {{ "RequestMsgsPage.Requester" | translate }}
@@ -1745,9 +1744,9 @@
 
 
                     <!-- 
-                // ------------------------------------------------------
-                // new attributes
-                // ------------------------------------------------------ -->
+                    // ------------------------------------------------------
+                    // new attributes
+                    // ------------------------------------------------------ -->
                     <div *ngFor="let attribute of attributesArray; let i = index">
                       <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
 
