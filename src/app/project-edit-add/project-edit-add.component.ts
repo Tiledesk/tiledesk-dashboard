@@ -181,7 +181,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   translateNotificationMsgs() {
     this.translate.get('ProjectEditPage.NotificationMsgs')
       .subscribe((translation: any) => {
-        console.log('PROJECT-EDIT-ADD  translateNotificationMsgs text', translation)
+        // console.log('PROJECT-EDIT-ADD  translateNotificationMsgs text', translation)
 
         this.updateSuccessMsg = translation.UpdateProjectSuccess;
         this.updateErrorMsg = translation.UpdateProjectError;
