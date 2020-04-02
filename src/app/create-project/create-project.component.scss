@@ -199,34 +199,39 @@ button.close {
   /* transition: all .5s cubic-bezier(0, 0, 0.2, 1),font .15s cubic-bezier(0, 0, 0.2, 1); */
   width: 100%;
 }
+/* start Custom floatin label */
+// .project-name .form-group.label-floating label.control-label {
+//   // top: -7px;
+//   // font-size: 14px;
+//   top: -31px; 
+//   font-size: 36px;
+//   line-height: 1.42857143;
+// }
 
-.project-name .form-group.label-floating label.control-label {
-  // top: -7px;
-  // font-size: 14px;
-  top: -31px; 
-  font-size: 36px;
-  line-height: 1.42857143;
-}
+// .project-name .form-group.label-floating.is-focused label.control-label {
+//   // top: -28px; 
+//   top: -45px; 
+//   left: 0;
+//   font-size: 11px;
+//   line-height: 1.42857143;
+// }
 
-.project-name .form-group.label-floating.is-focused label.control-label {
-  // top: -28px; 
-  top: -45px; 
-  left: 0;
-  font-size: 11px;
-  line-height: 1.42857143;
-}
 
-.project-name .form-group.label-floating:not(.is-empty) label.control-label {
-  // top: -28px;
-  top: -45px; 
-  left: 0;
-  font-size: 11px;
-  line-height: 1.42857143;
-}
-.project-name .form-control {
-  font-size: 36px;
-  height:42px
-}
+
+// .project-name .form-group.label-floating:not(.is-empty) label.control-label {
+//   // top: -28px;
+//   top: -45px; 
+//   left: 0;
+//   font-size: 11px;
+//   line-height: 1.42857143;
+// }
+// .project-name .form-control {
+//   font-size: 36px;
+//   height:42px
+// }
+
+/* end Custom floatin label */
+
 .wizard-page-title {
   margin-top: 10px;
   font-family: Google Sans;

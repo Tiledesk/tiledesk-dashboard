@@ -36,12 +36,14 @@ export class UsersService {
 
   wsService: WebSocketJs;
   public user_is_available_bs: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  public user_is_busy$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public project_user_id_bs: BehaviorSubject<string> = new BehaviorSubject<string>('');
   public project_user_role_bs: BehaviorSubject<string> = new BehaviorSubject<string>('');
   public has_changed_availability_in_sidebar: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public has_changed_availability_in_users: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public userProfileImageExist: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
   public currentUserWsAvailability$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
+  public currentUserWsIsBusy$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null);
 
   // public has_clicked_logoutfrom_mobile_sidebar: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   // public has_clicked_logoutfrom_mobile_sidebar_project_undefined: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -582,7 +584,7 @@ export class UsersService {
         // this.user_is_available_bs = projectUser.user_available;
 
         if (projectUser[0].user_available !== undefined) {
-          this.user_availability(projectUser[0]._id, projectUser[0].user_available)
+          this.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy)
         }
 
         // ADDED 21 AGO
@@ -660,15 +662,17 @@ export class UsersService {
 
 
   // -----------------------------------------------------------------------------------------------------
-  // Availability - PUBLISH projectUser_id AND user_available
+  // Project User ID, Availability; Busy - PUBLISH projectUser_id, user_available, isBusy
   // -----------------------------------------------------------------------------------------------------
   // NOTE: THE projectUser_id AND user_available ARE PASSED FROM HOME.COMPONENT and from SIDEBAR.COMP
-  public user_availability(projectUser_id: string, user_available: boolean) {
-    console.log('!!! USER SERVICE - PROJECT-USER-ID ', projectUser_id)
-    console.log('!!! USER SERVICE - USER AVAILABLE ', user_available)
+  public user_availability(projectUser_id: string, user_available: boolean, user_isbusy: boolean) {
+    console.log('!!! USER SERVICE - PROJECT-USER-ID ', projectUser_id);
+    console.log('!!! USER SERVICE - USER AVAILABLE ', user_available);
+    console.log('!!! USER SERVICE - USER IS BUSY ', user_isbusy);
 
     this.project_user_id_bs.next(projectUser_id);
     this.user_is_available_bs.next(user_available);
+    this.user_is_busy$.next(user_isbusy);
   }
 
 
@@ -695,7 +699,7 @@ export class UsersService {
   // -----------------------------------------------------------------------------------------------------
   // Availability - subscribe to WS Current user availability
   // -----------------------------------------------------------------------------------------------------
-  subscriptionToWsCurrentUserAvailability(prjctuserid) {
+  subscriptionToWsCurrentUser(prjctuserid) {
     var self = this;
   
     console.log('% »»» WebSocketJs WF >>> ws-msgs--- m-service - SUBSCR To WS MSGS ****** CALLING REF ****** ');
@@ -708,6 +712,12 @@ export class UsersService {
         console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data  user_available ", data.user_available );
     
         self.currentUserWsAvailability$.next(data.user_available);
+
+        if (data.isBusy) {
+          self.currentUserWsIsBusy$.next(data.isBusy)
+        } else {
+          self.currentUserWsIsBusy$.next(false)
+        }
 
         self.availability_btn_clicked(true)
 
