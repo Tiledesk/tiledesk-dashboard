@@ -68,6 +68,7 @@
     "LastMonth": "Ultimo mese",
     "Contacts": "Contatti",
     "Contact": "Contatto",
+    "ContactId": "Id Contatto",
     "ContactEmail": "Email Contatto",
     "Created": "Creato",
     "By": "da",
@@ -431,6 +432,16 @@
     "AnErrorOccurredWhileUpdating": "Si è verificato un errore durante l'aggiornamento",
     "NotificationNothingToSave": "Niente da salvare",
     "GoToRequest": "Vai a richiesta",
+    "Busy": "occupato",
+    "Company": "Azienda",
+    "Address": "Indirizzo",
+    "StreetAddress": "Via",
+    "City": "Città",
+    "Provincia": "Provincia",
+    "PostalCode": "Codice Postale",
+    "Country": "Nazione",
+    "PhoneNumber":"Numero di telefono",
+    "StartDate":"Data inizio",
     "CannedResponses": {
         "QuickTips": {
             "1": "Le Risposte Predefinite sono messaggi predefiniti che è possibile richiamare facilmente durante la chat.",
@@ -630,7 +641,7 @@
             "UpdateProjectError": "Si è verificato un errore durante l'aggiornamento del progetto",
             "DeleteProjectSuccess": "Progetto eliminato con successo",
             "DeleteProjectError": "Si è verificato un errore durante l'eliminazione del progetto",
-            "TheProjectHasBeenDeleted":"il progetto è stato cancellato"
+            "TheProjectHasBeenDeleted": "il progetto è stato cancellato"
         },
         "theMinimumAllowedIs_1": "til minimo consentito è 1",
         "theMaximumAllowedIs_10000000": "il massimo consentito è 10.000.000",
