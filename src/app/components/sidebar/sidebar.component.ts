@@ -96,6 +96,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     LOGIN_PAGE: boolean;
     // IS_UNAVAILABLE = false;
     IS_AVAILABLE: boolean;
+    IS_BUSY: boolean;
     SIDEBAR_IS_SMALL: boolean;
     projectUser_id: string;
 
@@ -194,6 +195,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.getCurrentProject();
 
         this.getUserAvailability();
+        this.getUserUserIsBusy();
         this.getProjectUserId();
 
         this.getProjectUserRole();
@@ -519,18 +521,26 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         });
     }
 
-    // ============ SUBSCRIPTION TO user_is_available_bs  AND project_user_id_bs PUBLISHED BY THE USER SERVICE USED
+    // ============ SUBSCRIPTION TO user_is_available_bs, project_user_id_bs AND user_is_busy$ PUBLISHED BY THE USER SERVICE USED
     /* WF: when the user select A PROJECT,
        - in the HOME COMP is made a call-back to get the PROJECT-USER OBJECT
-         (filtering all PROJECT-USER OBJECTS the  by the id of the logged user and by the id of the project selected)
-       - the HOME COMP PASS THE PROJECT-USER AVAILABILITY AND THE PROJECT-USER ID TO THE  USER SERVICE
+       - the HOME COMP PASS THE PROJECT-USER AVAILABILITY AND THE PROJECT-USER-ID  AND USER IS BUSY TO THE  USER SERVICE
        - the USER-SERVICE PUBLISH THE PROJECT-USER AVAILABILITY AND THE PROJECT-USER ID
-       - the SIDEBAR (this component) SUBSCRIBES THESE VALUES TO PERFORM the updateProjectUser()
+       - the SIDEBAR (this component) SUBSCRIBES THESE VALUES
     */
     getUserAvailability() {
         this.usersService.user_is_available_bs.subscribe((user_available) => {
             this.IS_AVAILABLE = user_available;
             console.log('!!! SIDEBAR - USER IS AVAILABLE ', this.IS_AVAILABLE);
+        });
+    }
+
+    getUserUserIsBusy() {
+        this.usersService.user_is_busy$.subscribe((user_isbusy) => {
+            this.IS_BUSY = user_isbusy;
+            // THE VALUE OS  IS_BUSY IS THEN UPDATED WITH THE VALUE RETURNED FROM THE WEBSOCKET getWsCurrentUserIsBusy$()
+            // WHEN, FOR EXAMPLE IN PROJECT-SETTINGS > ADVANCED THE NUM OF MAX CHAT IS 3 AND THE 
+            console.log('!!! SIDEBAR - USER IS BUSY ', this.IS_BUSY); 
         });
     }
 
@@ -593,14 +603,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             if ((projectUser) && (projectUser.length !== 0)) {
                 console.log('SB PROJECT-USER ID ', projectUser[0]._id)
                 console.log('SB USER IS AVAILABLE ', projectUser[0].user_available)
+                console.log('SB USER IS BUSY ', projectUser[0].isBusy)
                 // this.user_is_available_bs = projectUser.user_available;
                 
-                this.subsTo_WsCurrentUserAvailability(projectUser[0]._id)
+                this.subsTo_WsCurrentUser(projectUser[0]._id)
 
 
 
                 if (projectUser[0].user_available !== undefined) {
-                    this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available)
+                    this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy)
                 }
 
                 // ADDED 21 AGO
@@ -634,33 +645,49 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
 
-    subsTo_WsCurrentUserAvailability(currentuserprjctuserid) {
+    subsTo_WsCurrentUser(currentuserprjctuserid) {
         console.log('SB - SUBSCRIBE TO WS CURRENT-USER AVAILABILITY  prjct user id of current user ', currentuserprjctuserid);
-        this.usersService.subscriptionToWsCurrentUserAvailability(currentuserprjctuserid);
+        this.usersService.subscriptionToWsCurrentUser(currentuserprjctuserid);
         this.getWsCurrentUserAvailability$();
+        this.getWsCurrentUserIsBusy$();
     }
 
     getWsCurrentUserAvailability$() {
-
         this.usersService.currentUserWsAvailability$
         .pipe(
           takeUntil(this.unsubscribe$)
         )
         .subscribe((currentuser_availability) => {
             console.log('SB - GET WS CURRENT-USER AVAILABILITY - IS AVAILABLE? ', currentuser_availability);
-
             if(currentuser_availability !== null)  {
                 this.IS_AVAILABLE = currentuser_availability;
             }
-
         }, error => {
           console.log('SB - GET WS CURRENT-USER AVAILABILITY * error * ', error)
         }, () => {
           console.log('SB - GET WS CURRENT-USER AVAILABILITY *** complete *** ')
         });
-  
     }
 
+    getWsCurrentUserIsBusy$() {
+        this.usersService.currentUserWsIsBusy$
+        .pipe(
+          takeUntil(this.unsubscribe$)
+        )
+        .subscribe((currentuser_isbusy) => {
+            console.log('SB - GET WS CURRENT-USER - currentuser_isbusy? ', currentuser_isbusy);
+            if(currentuser_isbusy !== null)  {
+                this.IS_BUSY = currentuser_isbusy;
+                console.log('SB - GET WS CURRENT-USER - this.IS_BUSY? ', this.IS_BUSY);
+            }
+        }, error => {
+          console.log('SB - GET WS CURRENT-USER IS BUSY * error * ', error)
+        }, () => {
+          console.log('SB - GET WS CURRENT-USER IS BUSY *** complete *** ')
+        });
+
+
+    }
     // NO MORE USED - SUBSTITUDED WITH changeAvailabilityState
     // availale_unavailable_status(hasClickedChangeStatus: boolean) {
     //     hasClickedChangeStatus = hasClickedChangeStatus;

@@ -21,8 +21,6 @@
   // color: #a9afbb !important;
 }
 
-
-
 .sidebar-mini {
   width: 30px;
   margin-right: 15px;
@@ -33,7 +31,7 @@
   display: inherit;
   // color: #a9afbb;
   color: $brand-sidebar-inactive-item-text-color;
-  
+
   /* font-size:1.2em */
 }
 
@@ -58,7 +56,6 @@ li.active a p.onBlackBckgrnd .sidebar-mini {
 //   height: 100vh !important;
 // }
 
-
 // span.sidebar-normal {
 //   color: rgba(255, 255, 255, 0.6);
 // }
@@ -82,8 +79,6 @@ ul.dropdown-menu > li > a {
 }
 /* end - mobile sidebar USED WITH SIDWBAR WITH BLACK BACKGROUND */
 /* END - USED WITH SIDWBAR WITH BLACK BACKGROUND */
-
-
 
 /* CUSTOM MARGIN BETWEEN THE MENU ITEM*/
 .nav li > a.customAncor {
@@ -164,7 +159,6 @@ button.close {
 
 /* MODAL END */
 
-
 .avatar-container {
   text-align: center;
   cursor: pointer;
@@ -241,6 +235,88 @@ button.close {
   border: 2px solid #2d323e;
   border-radius: 50%;
   background-color: #4caf50;
+}
+.isBusy {
+  // border-radius: 50%;
+  // background-color: #fedd00;
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: 109px;
+  right: 60px;
+  // background-image: url('../../../assets/img/clock_hands.svg');
+  // background-position: center;
+  // background-repeat: no-repeat;
+  // background-size: cover;
+}
+
+.isBusyClockHands {
+  background-image: url('../../../assets/img/clock_hands.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+// available status icon infinite color transition
+.isBusyTest {
+  // content: url("../../../assets/img/clock_hands.svg");
+  // background-image: url('../../../assets/img/clock_hands.svg');
+  // background-position: center;
+  // background-repeat: no-repeat;
+  // background-size: cover;
+  color: #fedd00;
+  animation: myfirst 5s;
+  -moz-animation: myfirst 5s infinite; /* Firefox */
+  -webkit-animation: myfirst 5s infinite; /* Safari and Chrome */
+}
+
+@keyframes myfirst {
+  0% {
+    // background: #4caf50;
+    color: rgba(255,255,255,.5);
+  }
+  50% {
+    // background: #fedd00;
+    color: #fedd00;
+  }
+  100% {
+    // background: #4caf50;
+    // color: #1e2129;
+    color: rgba(255,255,255,.5);
+  }
+}
+@-moz-keyframes myfirst /* Firefox */ {
+  0% {
+    // background: #4caf50;
+    // color: #1e2129;
+    color: rgba(255,255,255,.5);
+  }
+  50% {
+    // background: #fedd00;
+    color: #fedd00;
+  }
+  100% {
+    // background: #4caf50;
+    // color: #1e2129;
+    color: rgba(255,255,255,.5);
+  }
+}
+
+@-webkit-keyframes myfirst /* Safari and Chrome */ {
+  0% {
+    // background: #4caf50;
+    // color: #1e2129;
+    color: rgba(255,255,255,.5);
+  }
+  50% {
+    // background: #fedd00;
+    color: #fedd00;
+  }
+  100% {
+    // background: #4caf50;
+    // color: #1e2129;
+    color: rgba(255,255,255,.5);
+  }
 }
 
 .is-user-online {

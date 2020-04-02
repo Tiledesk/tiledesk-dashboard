@@ -34,7 +34,7 @@
 - Adds real time update of the current user availability
 - Fixes the delete of a project
 - Adds the ability to turn off the in-app notifications sound
-
+- Adds the user status 'busy'
 
 ### 1.0.40
 - Fixes the user profile urls
