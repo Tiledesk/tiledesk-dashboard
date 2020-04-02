@@ -176,6 +176,7 @@ import { TagsService } from './services/tags.service';
 import { TagsComponent } from './tags/tags.component';
 import { TagsDeleteComponent } from './tags/tags-delete/tags-delete.component';
 import { TagsEditComponent } from './tags/tags-edit/tags-edit.component';
+import { TriggerStaticComponent } from './static-pages/trigger-static/trigger-static.component';
 
 
 console.log('************** APPMODULE ******************');
@@ -288,7 +289,8 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     CannedResponsesAddEditComponent,
     TagsComponent,
     TagsDeleteComponent,
-    TagsEditComponent
+    TagsEditComponent,
+    TriggerStaticComponent
   ],
   imports: [
     /* PRIVATE */

@@ -91,6 +91,8 @@ import { RealtimeComponent } from './analytics2/realtime/realtime.component';
 import { TriggerComponent } from './trigger/trigger.component';
 import { TriggerEditComponent } from './trigger/trigger-edit/trigger-edit.component';
 import { TriggerAddComponent } from './trigger/trigger-add/trigger-add.component';
+import { TriggerStaticComponent } from './static-pages/trigger-static/trigger-static.component';
+
 // import { UserProfileComponent } from './ui/user-profile/user-profile.component';
 
 /* PRIVATE */
@@ -265,6 +267,8 @@ const routes: Routes = [
 
   // TRIGGER
   { path: 'project/:projectid/trigger', component: TriggerComponent, canActivate: [AuthGuard] },
+  { path: 'project/:projectid/trigger-demo', component: TriggerStaticComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
+
   { path: 'project/:projectid/trigger/add', component: TriggerAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/trigger/:triggerId', component: TriggerEditComponent, canActivate: [AuthGuard] },
 
