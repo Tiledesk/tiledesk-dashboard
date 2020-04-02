@@ -15,6 +15,14 @@ export class ContactEditComponent implements OnInit {
   lead_id: string;
   lead_fullname: string;
   lead_email: string;
+  lead_company: string;
+  lead_street_address: string;
+  lead_city: string;
+  lead_state: string;
+  lead_postalcode: string;
+  lead_country: string;
+  lead_phone_number: string;
+  lead_note: string;
 
   lead_fullnameCurrentValue: string;
   lead_emailCurrentValue: string;
@@ -40,7 +48,7 @@ export class ContactEditComponent implements OnInit {
 
     this.getRequesterIdParam();
   }
- // TRANSLATION
+  // TRANSLATION
   translateEditContactSuccessMsg() {
     this.translate.get('EditContactSuccessNoticationMsg')
       .subscribe((text: string) => {
@@ -49,7 +57,7 @@ export class ContactEditComponent implements OnInit {
         // console.log('+ + + EditContactSuccessNoticationMsg', text)
       });
   }
- // TRANSLATION
+  // TRANSLATION
   translateEditContactErrorMsg() {
     this.translate.get('EditContactErrorNoticationMsg')
       .subscribe((text: string) => {
@@ -80,8 +88,17 @@ export class ContactEditComponent implements OnInit {
           console.log('!!!!! EDIT CONTACT - GET LEAD BY ID ', lead);
           this.lead_fullname = lead.fullname;
           this.lead_email = lead.email;
-          this.lead_fullnameCurrentValue = lead.fullname;
-          this.lead_emailCurrentValue = lead.email;
+          this.lead_company = lead.company;
+          this.lead_street_address = lead.streetAddress;
+          this.lead_city = lead.city;
+          this.lead_state = lead.region;
+          this.lead_postalcode = lead.zipcode;
+          this.lead_country = lead.country;
+          this.lead_phone_number = lead.phone;
+          this.lead_note = lead.note;
+
+          // this.lead_fullnameCurrentValue = lead.fullname; // No more used
+          // this.lead_emailCurrentValue = lead.email; // No more used
         }
       }, (error) => {
         this.showSpinner = false;
@@ -95,12 +112,26 @@ export class ContactEditComponent implements OnInit {
   }
 
   editContact() {
-    this.HAS_EDIT_FULLNAME = false;
-    this.HAS_EDIT_EMAIL = false;
+    this.HAS_EDIT_FULLNAME = false; // No more used
+    this.HAS_EDIT_EMAIL = false; // No more used
     this.EMAIL_IS_VALID = true;
     this.edit_lead_btn_ref.nativeElement.blur();
 
-    this.contactsService.updateLead(this.lead_id, this.lead_fullname, this.lead_email)
+
+
+    this.contactsService.updateLead(
+      this.lead_id,
+      this.lead_fullname.trim(),
+      this.lead_email.trim(),
+      this.lead_company.trim(),
+      this.lead_street_address.trim(),
+      this.lead_city.trim(),
+      this.lead_state.trim(),
+      this.lead_postalcode.trim(),
+      this.lead_country.trim(),
+      this.lead_phone_number.trim(),
+      this.lead_note.trim()
+    )
       .subscribe((contact) => {
         console.log('!!!!! EDIT CONTACT - UPDATED CONTACT ', contact);
 
@@ -109,40 +140,46 @@ export class ContactEditComponent implements OnInit {
         console.log('!!!!! EDIT CONTACT - UPDATE CONTACT - ERROR ', error);
         // =========== NOTIFY ERROR ===========
         // this.notify.showNotification('An error occurred while updating contact', 4, 'report_problem');
-        this.notify.showNotification(this.editContactErrorNoticationMsg, 4, 'report_problem')
+        this.notify.showWidgetStyleUpdateNotification(this.editContactErrorNoticationMsg, 4, 'report_problem')
 
       }, () => {
         console.log('!!!!! EDIT CONTACT - UPDATE CONTACT * COMPLETE *');
 
         // =========== NOTIFY SUCCESS===========
         // this.notify.showNotification('Contact successfully updated', 2, 'done');
-        this.notify.showNotification(this.editContactSuccessNoticationMsg, 2, 'done');
+        this.notify.showWidgetStyleUpdateNotification(this.editContactSuccessNoticationMsg, 2, 'done');
 
       });
   }
 
-  fullnameChange(event) {
-    console.log('!!!!! EDIT CONTACT - EDITING FULLNAME ', event);
-    console.log('!!!!! EDIT CONTACT - EDITING FULLNAME CURRENT VALUE ', this.lead_fullnameCurrentValue);
-    if (event === this.lead_fullnameCurrentValue) {
-      this.HAS_EDIT_FULLNAME = false;
-    } else {
-      this.HAS_EDIT_FULLNAME = true;
-    }
-  }
+  /* !!! no more used */
+  // fullnameChange(event) {
+  //   console.log('!!!!! EDIT CONTACT - EDITING FULLNAME ', event);
+  //   console.log('!!!!! EDIT CONTACT - EDITING FULLNAME CURRENT VALUE ', this.lead_fullnameCurrentValue);
+  //   if (event === this.lead_fullnameCurrentValue) {
+  //     this.HAS_EDIT_FULLNAME = false;
+  //   } else {
+  //     this.HAS_EDIT_FULLNAME = true;
+  //   }
+  // }
 
   emailChange(event) {
     console.log('!!!!! EDIT CONTACT - EDITING EMAIL ', event);
+    console.log('!!!!! EDIT CONTACT - EDITING EMAIL length ', event.length);
 
-    if (event === this.lead_emailCurrentValue) {
-      this.HAS_EDIT_EMAIL = false;
-    } else {
-      this.HAS_EDIT_EMAIL = true;
+    // if (event === this.lead_emailCurrentValue) {
+    //   this.HAS_EDIT_EMAIL = false;
+    // } else {
+    //   this.HAS_EDIT_EMAIL = true;
+    // }
 
-    }
 
     this.EMAIL_IS_VALID = this.validateEmail(event)
     console.log('!!!!! EDIT CONTACT - EMAIL IS VALID ', this.EMAIL_IS_VALID);
+
+    if (event.length === 0) {
+      this.EMAIL_IS_VALID = true;
+    }
   }
 
   validateEmail(email) {

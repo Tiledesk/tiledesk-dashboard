@@ -45,6 +45,44 @@ p.member:hover {
   font-weight: 500;
 }
 
+.ws_requets_msgs__attributes {
+  font-family: "Google Sans", sans-serif !important;
+  color: #394f5a;
+  font-weight: 500;
+}
+
+.attribute_cutted_text {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
+}
+.attribute_full_text {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
+}
+
+.row-header {
+  font-family: "Google Sans", sans-serif !important;
+  color: #394f5a;
+  font-weight: 500;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+.showPosts {
+  cursor: pointer;
+  display:table;
+}
+.showPosts .greekCross, .showPosts h5 {
+  display:table-cell;
+}
+.greekCross {
+  color: #00BFF3;
+  font-size: 15px;
+}
+.showPosts > h5 {
+  font-size: 15px;
+  display: inline;
+  padding-left: 5px;
+}
+
 // start TOOLTIP
 /* Tooltip container */
 .tooltipx {
@@ -91,8 +129,8 @@ p.member:hover {
   font-size: 13px;
   font-weight: 400;
   text-align: center;
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   // padding: 10px 11px;
   padding-top: 10px;
   display: inline-block;

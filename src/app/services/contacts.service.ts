@@ -97,7 +97,7 @@ export class ContactsService {
       .map((response) => response.json());
   }
 
-  
+
   public exportLeadToCsv(querystring, pagenumber) {
     let _querystring = '&' + querystring
     if (querystring === undefined || !querystring) {
@@ -148,7 +148,19 @@ export class ContactsService {
    * @param id
    * @param fullName
    */
-  public updateLead(id: string, fullName: string, _email: string) {
+  public updateLead(
+    id: string,
+    fullName: string,
+    lead_email: string,
+    lead_company: string,
+    lead_street_address: string,
+    lead_city: string,
+    lead_state: string,
+    lead_postalcode: string,
+    lead_country: string,
+    lead_phone_number: string,
+    lead_note: string
+  ) {
 
     const url = this.SERVER_BASE_PATH + this.projectId + '/leads/' + id;
 
@@ -167,7 +179,18 @@ export class ContactsService {
 
     const options = new RequestOptions({ headers });
 
-    const body = { 'fullname': fullName, 'email': _email };
+    const body = {
+      'fullname': fullName,
+      'email': lead_email,
+      'company': lead_company,
+      'streetAddress': lead_street_address,
+      'city': lead_city,
+      'region': lead_state,
+      'zipcode': lead_postalcode,
+      'country': lead_country,
+      'phone': lead_phone_number,
+      'note': lead_note
+    };
     // const body = {};
     // if (fullName) {
     //   body['fullname'] = fullName
@@ -228,7 +251,7 @@ export class ContactsService {
       .get(url, { headers })
       .map((response) => response.json());
   }
-  
+
 
   /**
    * CREATE (POST)

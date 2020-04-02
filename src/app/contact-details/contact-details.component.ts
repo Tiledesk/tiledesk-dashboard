@@ -58,6 +58,15 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
   attributesArray: Array<any>
   rightSidebarWidth: number;
+  contact_full_address: string;
+  showAllAddress = false;
+  showAttributes = false;
+
+  streetAddress: string;
+  city: string;
+  region: string;
+  zipcode: string;
+  country: string;
 
   constructor(
     public location: Location,
@@ -243,6 +252,39 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     }
   }
 
+
+  toggleAddress() {
+    this.showAllAddress = !this.showAllAddress;
+    console.log('!!!!! CONTACTS DETAILS SHOW ALL ADDRESS ', this.showAllAddress);
+
+    const addressArrowIconElem = <HTMLElement>document.querySelector('#address_arrow_down');
+
+    if (this.showAllAddress === true) {
+      addressArrowIconElem.classList.add("up");
+    }
+    if (this.showAllAddress === false) {
+      addressArrowIconElem.className = addressArrowIconElem.className.replace(/\bup\b/g, "");
+    }
+  }
+
+  toggleAttributes() {
+
+    
+
+    this.showAttributes = !this.showAttributes;
+    console.log('!!!!! CONTACTS DETAILS SHOW ALL ATTRIBUTES ', this.showAttributes);
+
+    const attributesArrowIconElem = <HTMLElement>document.querySelector('#attributes_arrow_down');
+
+    if (this.showAttributes === true) {
+      attributesArrowIconElem.classList.add("up");
+    }
+    if (this.showAttributes === false) {
+      attributesArrowIconElem.className = attributesArrowIconElem.className.replace(/\bup\b/g, "");
+    }
+
+  }
+
   getContactById() {
     this.contactsService.getLeadById(this.requester_id)
       .subscribe((lead: any) => {
@@ -252,10 +294,39 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
           this.contact_details = lead;
 
           if (this.contact_details && this.contact_details.lead_id) {
-
             this.lead_id = this.contact_details.lead_id;
           }
 
+
+          if (this.contact_details.streetAddress && this.contact_details.streetAddress !== "") {
+            this.streetAddress = this.contact_details.streetAddress
+          } else {
+            this.streetAddress = 'n/a'
+          }
+
+          if (this.contact_details.city && this.contact_details.city !== "") {
+            this.city = this.contact_details.city
+          } else {
+            this.city = 'n/a'
+          }
+
+          if (this.contact_details.region && this.contact_details.region !== "") {
+            this.region = this.contact_details.region
+          } else {
+            this.region = 'n/a'
+          }
+
+          if (this.contact_details.zipcode && this.contact_details.zipcode !== "") {
+            this.zipcode = this.contact_details.zipcode
+          } else {
+            this.zipcode = 'n/a'
+          }
+
+          if (this.contact_details.country && this.contact_details.country !== "") {
+            this.country = this.contact_details.country
+          } else {
+            this.country = 'n/a'
+          }
 
           if (this.contact_details.fullname) {
 
@@ -338,7 +409,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
                   totalLength += letterLength['S'];
                 }
               }
-              
+
               console.log(':-D CONTACTS DETAILS - ATTRIBUTES value LENGHT ', _value + " totalLength : " + totalLength)
 
               let entries = { 'attributeName': key, 'attributeValue': _value, 'attributeValueL': totalLength };
@@ -391,7 +462,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
 
   toggleShowAllString(elementAttributeValueId: any, elementArrowIconId: any, index) {
-  
+
     console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES - element Attribute Value Id:`, elementAttributeValueId);
     console.log(`:-D Ws-REQUESTS-Msgs - getWsRequestById ATTRIBUTES - element Arrow Icon id:`, elementArrowIconId);
 
@@ -424,7 +495,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
       // Add class to the arrow icon
       // -----------------------------------------------------------------------------------
       arrowIconElem.classList.add("up");
-      
+
 
       // -----------------------------------------------------------------------------------
       // Set aria-expanded attribute to true

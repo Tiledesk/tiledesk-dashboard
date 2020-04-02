@@ -1,68 +1,221 @@
 <div class="navbar-brand" style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px">
-    <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;" (click)="goBack()">keyboard_arrow_left</i>
-    {{ "EditContact" | translate }}
+  <i class="material-icons" style="vertical-align: middle !important; cursor: pointer;"
+    (click)="goBack()">keyboard_arrow_left</i>
+  {{ "EditContact" | translate }}
 </div>
 
 <div class="main-content" style="padding-top: 0px">
   <div class="container-fluid">
 
     <div class="row">
-  
+
       <div class="col-md-12">
         <div class="card" style="padding-top: 25px;">
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
           <!--  -->
-          <div *ngIf="!showSpinner" class="card-content">
-            <form>
+          <form>
+            <div *ngIf="!showSpinner" class="card-content">
 
-              <div class="row"> 
+
+              <!-- 
+              // ---------------------------------------
+              // Full name
+              // --------------------------------------- -->
+              <!-- (ngModelChange)="fullnameChange($event)" -->
+              <div class="row">
                 <label class="col-sm-2  custom-label">
                   {{ "Name" | translate }}
                 </label>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                  <input name="fullname" [(ngModel)]="lead_fullname" (ngModelChange)="fullnameChange($event)" class="input" type="text">
+                  <input name="fullname" [(ngModel)]="lead_fullname" class="input" type="text">
                 </div>
               </div>
 
 
-              <div class="row"> 
-                <label  class="col-sm-2 custom-label">
+              <!-- 
+              // ---------------------------------------
+              // Email
+              // --------------------------------------- -->
+              <div class="row">
+                <label class="col-sm-2 custom-label">
                   Email
                 </label>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                  <input name="email"  [(ngModel)]="lead_email" (ngModelChange)="emailChange($event)" class="input" type="text"
-                   [ngClass]="{'invalid-email' : !EMAIL_IS_VALID}">
+                  <input name="email" [(ngModel)]="lead_email" (ngModelChange)="emailChange($event)" class="input"
+                    type="text" [ngClass]="{'invalid-email' : !EMAIL_IS_VALID}" style="margin-bottom:3px">
 
-                  <span *ngIf="!EMAIL_IS_VALID" style="color: #f44336">
+                  <span *ngIf="!EMAIL_IS_VALID" style="color: #f44336; font-size: 12px;">
                     {{ "EnterValidEmail" | translate }}
                   </span>
                 </div>
               </div>
-    
-                <!-- SPACER -->
-                <!-- <div class="col-sm-12 spacer_div" style="height:15px"></div> -->
-    
-              <div class="row"> 
-                <label class="col-sm-2"></label>
-                <div class="col-sm-10"> 
-    
-                  <button type="submit" #editleadbtn class="btn btn-primary" (click)="editContact()" 
-                    [disabled]="!HAS_EDIT_FULLNAME && !HAS_EDIT_EMAIL || !EMAIL_IS_VALID">
-                    {{ "EditContact" | translate }}
-                  </button>
+
+              <!-- 
+              // ---------------------------------------
+              // Company
+              // --------------------------------------- -->
+              <div class="row">
+                <label class="col-sm-2  custom-label">
+                  {{ "Company" | translate }}
+                </label>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                  <input name="company" [(ngModel)]="lead_company" class="input" type="text">
                 </div>
               </div>
 
-            </form>
+              <!-- 
+              // ---------------------------------------------------------
+              // Address section
+              // --------------------------------------------------------- -->
+              <div class="row">
+                <div class="col-md-12 col-12-section-title">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      {{ "Address" | translate }}
+                    </span>
+                    <span class="card_title__gray_underline">
+                    </span>
+                  </h3>
+                </div>
+              </div>
 
-     
-          </div> <!-- ./ card-content-->
+              <!-- 
+              // ---------------------------------------
+              // Street address
+              // --------------------------------------- -->
+              <div class="row">
+                <label class="col-sm-2  custom-label">
+                  {{ "StreetAddress" | translate }}
+                </label>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                  <input name="street_address" [(ngModel)]="lead_street_address" class="input" type="text">
+                </div>
+              </div>
 
-              
+              <!-- 
+              // ---------------------------------------
+              // City
+              // --------------------------------------- -->
+              <div class="row">
+                <label class="col-sm-2  custom-label">
+                  {{ "City" | translate }}
+                </label>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                  <input name="city" [(ngModel)]="lead_city" class="input" type="text">
+                </div>
+              </div>
+
+              <!-- 
+              // ---------------------------------------
+              // State
+              // --------------------------------------- -->
+              <div class="row">
+                <label class="col-sm-2  custom-label">
+                  {{ "State" | translate }}
+                </label>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                  <input name="state" [(ngModel)]="lead_state" class="input" type="text">
+                </div>
+              </div>
+
+              <!-- 
+              // ---------------------------------------
+              // Postal code / Zip
+              // --------------------------------------- -->
+              <div class="row">
+                <label class="col-sm-2  custom-label">
+                  {{ "PostalCode" | translate }}
+                </label>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                  <input name="postalcode" [(ngModel)]="lead_postalcode" class="input" type="text">
+                </div>
+              </div>
+
+              <!-- 
+              // ---------------------------------------
+              // Country
+              // --------------------------------------- -->
+              <div class="row">
+                <label class="col-sm-2  custom-label">
+                  {{ "Country" | translate }}
+                </label>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                  <input name="country" [(ngModel)]="lead_country" class="input" type="text">
+                </div>
+              </div>
+
+              <!-- 
+              // ---------------------------------------------------------
+              // Phone Number section
+              // --------------------------------------------------------- -->
+              <div class="row">
+                <div class="col-md-12 col-12-section-title">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      {{ "PhoneNumber" | translate }}
+                    </span>
+                    <span class="card_title__gray_underline">
+                    </span>
+                  </h3>
+                </div>
+              </div>
+
+              <!-- 
+              // ---------------------------------------
+              // Phone Number
+              // --------------------------------------- -->
+              <div class="row">
+                <label class="col-sm-2  custom-label">
+                  {{ "PhoneNumber" | translate }}
+                </label>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                  <input name="phone_number" [(ngModel)]="lead_phone_number" class="input" type="text">
+                </div>
+              </div>
+
+              <!-- 
+              // ---------------------------------------------------------
+              // Note section
+              // --------------------------------------------------------- -->
+              <div class="row">
+                <div class="col-md-12 col-12-section-title">
+                  <h3 class="card_title__underlined">
+                    <span class="card_title__underline">
+                      Note
+                    </span>
+                    <span class="card_title__gray_underline">
+                    </span>
+                  </h3>
+                </div>
+              </div>
+
+              <!--     
+              // ---------------------------------------
+              // Phone Number
+              // --------------------------------------- -->
+              <div class="row">
+                <label class="col-sm-2  custom-label">
+                  Note
+                </label>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                  <textarea name="note" [(ngModel)]="lead_note" rows="3" class="input" type="text">   </textarea>
+                </div>
+              </div>
+
+            </div> <!-- ./ card-content-->
+            <!-- !HAS_EDIT_FULLNAME && !HAS_EDIT_EMAIL ||  -->
+            
+            <div class="card-footer" style="border-color: #e8f0f5 !important;">
+              <button type="submit" #editleadbtn class="btn btn-primary" (click)="editContact()"
+                [disabled]="!EMAIL_IS_VALID">
+                {{ "EditContact" | translate }}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
       <!-- /. end col-md-8 -->
-       
+
       <!-- ------------============ RIGHT SIDEBAR ============------------ -->
       <!-- <div class="col-md-4">
         <div class="card" style="padding-top:8px;">

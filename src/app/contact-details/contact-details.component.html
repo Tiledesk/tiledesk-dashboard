@@ -9,7 +9,7 @@
 
     <div class="row">
 
-      <div class="col-md-8">
+      <div class="col-sm-7">
         <div class="card">
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
           <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-bottom:5px">
@@ -19,59 +19,16 @@
                 <tr>
 
                   <!-- ===== VISIBILITY ICON ===== -->
-                  <th></th>
-
-                  <!-- ===== REQUEST FIRST TEXT ===== -->
-                  <th style="padding-top: 6px;">
-                    <span class="column-th-span">
-                      {{ 'Requests' | translate }}
-                    </span>
+                  <th colspan="2" style="line-height: 26px;">
+                    {{ 'Requests' | translate }}
                   </th>
-
-                  <!-- ===== DEPARTMENT NAME ===== -->
-                  <!-- <th>
-                      <span style="color: #566787">
-                        <strong>
-                          <strong>{{ 'Department' | translate }}</strong>
-                        </strong>
-                      </span>  
-                    </th> -->
-
-
-                  <!-- ===== SERVED BY ===== -->
-                  <!-- <th style="padding-top: 6px;">
-                      <span style="color: #566787">
-                        <strong> 
-                          {{ 'ServedBy' | translate }}
-                        </strong>
-                      </span>
-                    </th> -->
-
-                  <!-- ===== RATING ===== -->
-                  <!-- <th>
-                      <span style="color: #566787">
-                        <strong> 
-                          {{ 'Rating' | translate }}
-                        </strong>
-                      </span>
-                    </th> -->
-
-
-                  <!-- ===== PUBLISHED ===== -->
-                  <!-- <th>
-                      <span style="color: #566787">
-                        <strong> 
-                        {{ 'Created' | translate }}
-                        </strong>
-                      </span>
-                    </th> -->
 
                 </tr>
               </thead>
 
               <tbody>
 
-                <!-- ===== IF THERE ISN'T HISTORY REQUEST ===== -->
+                <!-- ===== IF THERE ISN'T CONTACT REQUEST ===== -->
                 <tr *ngIf="requests_list && requests_list.length === 0">
                   <td colspan="2" style="text-align: center; padding-top: 16px; cursor: pointer">
 
@@ -282,19 +239,101 @@
       <!-- /. end col-md-8 -->
 
       <!-- ------------============ RIGHT SIDEBAR ============------------ -->
-      <div class="col-md-4">
+      <div class="col-sm-5">
         <div class="card right-card" style="padding-top:8px;">
-          <loading-spinner *ngIf="showSpinner"></loading-spinner>
-          <div *ngIf="!showSpinner" class="card-content" style="padding-top: 0px;">
-            <h4 class="card-title" style="text-transform: none; 
-                                          color: #566787; 
-                                          font-weight:400; 
-                                          /* margin-bottom: 16px; */
-                                          border-bottom: 1px solid #e1eef4; 
-                                          padding-bottom: 8px; 
-                                          margin-top: 0px;">
-              {{ "ContactDetails" | translate }}
+          <div class="row"
+            style="border-bottom: 1px solid #eeeeee; padding-left:16px; padding-right:16px; height: 50px;">
 
+            <span *ngIf="!showSpinner">
+              <div class="col-xs-9">
+
+
+
+                <span class="contact-avatar-wrapper">
+
+                  <span class="contact-avatar" [ngStyle]="{'background-color': fillColour }"
+                    style="float: left; margin-right: 8px;">
+                    <span style="color: #ffffff;font-size: 18px;font-weight: 400; position: relative;
+                    top: 1px;">
+                      {{ contact_fullname_initial }}
+                    </span>
+                  </span>
+                  <span *ngIf="CONTACT_IS_VERIFIED === true" class="tooltipx">
+                    <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                      xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6" width="18"
+                      height="18" style="position: relative;left: -52px;top: -6px;" xml:space="preserve">
+                      <style type="text/css">
+                        .st0 {
+                          fill: none;
+                        }
+
+                        .st1 {
+                          fill: #FFFFFF;
+                        }
+
+                        .st2 {
+                          fill: #18BDF7;
+                        }
+                      </style>
+                      <path class="st0" d="M1.3,1.3h24v24h-24V1.3z" />
+                      <path class="st1"
+                        d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z" />
+                      <path class="st2" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
+                            l6.6-6.6l1.4,1.4L11.3,18.3z" />
+                    </svg>
+
+                    <span class="tooltiptext-custom"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
+
+                  </span>
+                </span>
+                <span style="margin-top: 11px; display: block;font-size: 18px; margin-left: 5px;"
+                  [ngClass]="{'contact-verified' : CONTACT_IS_VERIFIED === true}">
+                  {{ contact_details?.fullname }}
+                </span>
+                <span style="padding-left: 5px" *ngIf="!contact_details?.fullname"
+                  [ngClass]="{'contact-verified' : CONTACT_IS_VERIFIED === true}">
+                  n.a.
+                </span>
+
+              </div>
+
+              <div class="col-xs-3">
+
+                <!-- 
+                // ------------------------------------------------------------ 
+                // CONTACT INFO DROPDOWN MENU  
+                // ------------------------------------------------------------  -->
+                <div class="dropdown pull-right">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <span class="material-icons" style="color:rgba(0, 0, 0, 0.87); margin-top: 10px;">
+                      more_vert
+                    </span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a (click)='goToEditContact(contact_details?._id)'>
+                        {{ 'EditContact' | translate}}
+                      </a>
+                    </li>
+
+                    <li>
+                      <a (click)='openDeleteContactModal(contact_details?._id, contact_details?.fullname)'>
+                        {{ 'DeleteContact' | translate}}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+
+            </span>
+          </div>
+
+          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+          <div *ngIf="!showSpinner" class="card-content" style="padding-top: 0px;">
+            <!-- <h4 class="card-title" style="text-transform: none; color: #566787;  font-weight:400; border-bottom: 1px solid #e1eef4; padding-bottom: 8px;margin-top: 0px;">
+              {{ "ContactDetails" | translate }}
               <span class="tooltipx" style="vertical-align: middle; cursor: pointer;float: right;"
                 (click)='openDeleteContactModal(contact_details?._id, contact_details?.fullname)'>
                 <i class="material-icons" style="font-size: 18px;padding-left: 8px; color: #f44336">
@@ -305,7 +344,6 @@
                   {{ 'DeleteContact' | translate }}
                 </span>
               </span>
-
               <span class="tooltipx" style="vertical-align: middle; cursor: pointer;float: right;"
                 (click)='goToEditContact(contact_details?._id)'>
                 <i class="material-icons" style="font-size: 18px;">
@@ -316,9 +354,7 @@
                   {{ 'EditContact' | translate }}
                 </span>
               </span>
-
-
-            </h4>
+            </h4> -->
 
             <!-- ------====== ID ======------ -->
             <!-- <p style="margin-bottom: 3px">
@@ -336,331 +372,385 @@
                 {{ "Name" | translate }}
               </strong>
             </p> -->
-            <p class="attribute">
-
-              <span class="contact-avatar-wrapper">
-
-                <span class="contact-avatar" [ngStyle]="{'background-color': fillColour }">
-                  <span style="color: #ffffff;"> {{ contact_fullname_initial }} </span>
-                </span>
-                <span *ngIf="CONTACT_IS_VERIFIED === true" class="tooltipx">
-                  <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6" width="18"
-                    height="18" style="position: relative;left: -52px;top: -6px;" xml:space="preserve">
-                    <style type="text/css">
-                      .st0 {
-                        fill: none;
-                      }
-
-                      .st1 {
-                        fill: #FFFFFF;
-                      }
-
-                      .st2 {
-                        fill: #18BDF7;
-                      }
-                    </style>
-                    <path class="st0" d="M1.3,1.3h24v24h-24V1.3z" />
-                    <path class="st1"
-                      d="M13.3,0L2.4,4.9v7.3c0,6.7,4.6,13,10.9,14.5c6.2-1.5,10.9-7.8,10.9-14.5V4.9L13.3,0z" />
-                    <path class="st2" d="M13.3,2.3l-9,4v6c0,5.5,3.8,10.7,9,12c5.2-1.3,9-6.5,9-12v-6L13.3,2.3z M11.3,18.3l-4-4l1.4-1.4l2.6,2.6
-                          l6.6-6.6l1.4,1.4L11.3,18.3z" />
-                  </svg>
-
-                  <span class="tooltiptext-custom"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
-
-                </span>
-              </span>
-              <span style="padding-left: 5px" [ngClass]="{'contact-verified' : CONTACT_IS_VERIFIED === true}">
-                {{ contact_details?.fullname }}
-              </span>
-              <span style="padding-left: 5px" *ngIf="!contact_details?.fullname"
-                [ngClass]="{'contact-verified' : CONTACT_IS_VERIFIED === true}">
-                n.a.
-              </span>
-            </p>
-
-            <!-- ------====== EMAIL ======------ -->
-            <p class="title-attribute" style="margin-bottom: 3px">
-              <strong>
-                Email
-              </strong>
-            </p>
-
-            <p class="attribute">
-              <span *ngIf="contact_details?.email">
-                {{ contact_details?.email }}
-              </span>
-              <span *ngIf="!contact_details?.email">
-                n.a.
-              </span>
-            </p>
-
-
-            <!-- ------====== CREATED ======------ -->
-            <p class="title-attribute" style="margin-bottom: 3px">
-              <strong>
-                {{ "Created" | translate }}
-              </strong>
-            </p>
-            <p class="attribute">
-              <span *ngIf="contact_details?.createdAt">
-                {{ contact_details?.createdAt | date: 'd/M/y HH:mm' }}
-              </span>
-              <span *ngIf="!contact_details?.createdAt">
-                n.a.
-              </span>
-            </p>
-
 
             <!-- 
-            // -----------------------------------------------------------
-            // Lead ID
-            // ----------------------------------------------------------- -->
-            <p class="title-attribute" style="margin-bottom: 3px">
-              <strong>
-                Id
-              </strong>
-            </p>
-            <p class="attribute">
-              <span>
-                {{ lead_id }}
-              </span>
+            // ---------------------------------------------------------------------
+            // Contact email
+            // --------------------------------------------------------------------- -->
+            <div class="row" style="margin-top:5px">
+              <div class="col-sm-12">
 
-            </p>
+                <p style="margin-bottom: 0px;margin-top: 6px; ">
+                  <i class="material-icons"
+                    style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;">email</i>
+                  <span style="position: relative;top: 1px;">
+                    <span
+                      style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                      {{ "ContactEmail" | translate }}
+                    </span>
 
-
-            <!-- ------====== ATTIBUTES ======------ -->
-            <!-- style="margin-bottom: 8px; color: #566787; border-top: 1px solid #e1eef4; padding-top: 8px; font-weight: 400; font-size: 18px" -->
-            <span *ngIf="contact_details?.attributes">
-              <p class="title-attribute" style="margin-bottom: 3px;">
-                {{ "Attributes" | translate }}
-              </p>
-
+                    <a style="font-size: 12px;" target="_blank" *ngIf="contact_details?.email"
+                      href="mailto:{{contact_details?.email}}">
+                      {{ contact_details?.email }}
+                    </a>
+                    <a *ngIf="!contact_details?.email"
+                      style="color: #7695a5; font-weight: 500; font-size: 12px;">n.a.</a>
+                  </span>
+                </p>
+              </div>
+            </div>
 
               <!-- 
-              // ------------------------------------------------------
-              // new attributes
-              // ------------------------------------------------------ -->
-              <div *ngFor="let attribute of attributesArray; let i = index">
-                <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
+              // ---------------------------------------------------------------------
+              // Company
+              // --------------------------------------------------------------------- -->
+              <div class="row">
+                <div class="col-sm-12">
+  
+                  <p style="margin-bottom: 0px;margin-top: 3px;">
+                    <i class="material-icons"
+                      style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;">business</i>
+                    <span style="position: relative;top: 1px;">
+                      <span
+                        style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                        {{ "Company" | translate }}
+                      </span>
 
-                  <div class="row">
-                    <div class="col-sm-10" style="padding-right: 1px;padding-bottom: 5px;">
-                      <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes">
-                        {{attribute?.attributeName }}:
+                      <span *ngIf="contact_details?.company"
+                      style="color: #7695a5; font-weight: 500; font-size: 12px;">  {{ contact_details?.company }}</span>
+                    
+                   
+                      <span *ngIf="!contact_details?.company"
+                        style="color: #7695a5; font-weight: 500; font-size: 12px;">n/a</span>
+                    </span>
+                  </p>
+                </div>
+              </div>
+
+      
+
+            <!-- 
+              // ---------------------------------------------------------------------
+              // Created At
+              // --------------------------------------------------------------------- -->
+            <div class="row" style="margin-top:5px">
+              <div class="col-sm-12">
+                <p [ngClass]="{'no-top-margin' : request?.subject}" style="margin-bottom: 0px;">
+                  <i class="material-icons"
+                    style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;">calendar_today</i>
+                  <span style="position: relative;top: 1px;">
+                    <span
+                      style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                      {{ "StartDate" | translate }}
+                    </span>
+
+                    <span *ngIf="contact_details?.createdAt" style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                      {{ contact_details?.createdAt | amTimeAgo }}
+
+                      <span>({{ contact_details?.createdAt | date: 'd/M/y HH:mm' }}) </span>
+                    </span>
+                    <span *ngIf="!contact_details?.createdAt">
+                      n.a.
+                    </span>
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            <!-- 
+            // ---------------------------------------------------------------------
+            // Lead ID
+            // --------------------------------------------------------------------- -->
+            <div class="row" style="margin-top:5px">
+              <div class="col-sm-12">
+                <p style="margin-bottom: 0px;">
+                  <i class="material-icons"
+                    style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;">code</i>
+                  <span style="position: relative;top: 1px;">
+                    <span
+                      style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                      {{ "ContactId" | translate }}
+                    </span>
+
+                    <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                      {{ lead_id }}
+                    </span>
+
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            <!-- 
+              // ---------------------------------------------------------------------
+              // Address
+              // --------------------------------------------------------------------- -->
+            <div class="row" style="margin-top:5px">
+              <div class="col-sm-12">
+                <p style="margin-bottom: 0px;">
+                  <span style="position: relative;top: 1px;">
+                    <div class="row">
+                      <div class="col-xs-10" style="padding-right:10px">
+                        <i class="material-icons"
+                          style="vertical-align: middle; color: #394f5a;font-size:16px">person_pin_circle</i>
+                        <span
+                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                          {{ "Address" | translate }}
+                        </span>
+                        <span style=" font-weight: 500; font-size: 12px;">
+
+                          <span *ngIf="!showAllAddress">
+                            <!-- 
+                            // ------------------------------------
+                            // Street Address
+                            // ------------------------------------ -->
+                            <!-- style="display: block; margin-left: 20px;" -->
+                            <span>
+                              <!-- <span>
+                                {{ 'StreetAddress' | translate }}
+                              </span> -->
+                              <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                                {{streetAddress}} ...
+                              </span>
+
+                            </span> <!-- ./end !showAllAddress -->
+
+                          </span>
+
+                          <span *ngIf="showAllAddress" style="word-wrap: break-word;">
+                            <!-- 
+                            // ------------------------------------
+                            // Street Address
+                            // ------------------------------------ -->
+                            <span style="display: block; margin-left: 20px;">
+                              <span>
+                                {{ 'StreetAddress' | translate }}
+                              </span>
+                              <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                                {{streetAddress}}
+                              </span>
+                            </span>
+
+                            <!-- 
+                            // ------------------------------------
+                            // City
+                            // ------------------------------------ -->
+                            <span style="display: block; margin-left: 20px;">
+                              <span>
+                                {{ 'City' | translate }}
+                              </span>
+                              <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                                {{city}}
+                              </span>
+                            </span>
+
+                            <!-- 
+                            // ------------------------------------
+                            // State (field name 'region')
+                            // ------------------------------------ -->
+                            <span style="display: block; margin-left: 20px;">
+                              <span>
+                                {{ 'State' | translate }}
+                              </span>
+                              <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                                {{region}}
+                              </span>
+                            </span>
+
+                            <!-- 
+                            // ------------------------------------
+                            // PostalCode (field name 'zipcode')
+                            // ------------------------------------ -->
+                            <span style="display: block; margin-left: 20px;">
+                              <span>
+                                {{ 'PostalCode' | translate }}
+                              </span>
+                              <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                                {{zipcode}}
+                              </span>
+                            </span>
+
+                            <!-- 
+                            // ------------------------------------
+                            // PostalCode (field name 'zipcode')
+                            // ------------------------------------ -->
+                            <span style="display: block; margin-left: 20px;">
+                              <span>
+                                {{ 'Country' | translate }}
+                              </span>
+                              <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                                {{country}}
+                              </span>
+                            </span>
+                          </span> <!-- ./end showAllAddress -->
+
+                        </span>
                       </div>
 
-                      <div aria-expanded="false" [id]="attribute?.attributeName +'_value'"
-                        class="attribute attribute_cutted_text">
-                        {{attribute?.attributeValue }}
+                      <div class="col-xs-2" style="text-align: right;">
+                        <i id="address_arrow_down" class="material-icons rotate"
+                          style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:2px"
+                          (click)="toggleAddress()">
+                          keyboard_arrow_down
+                        </i>
+                      </div>
+                    </div>
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            <!-- 
+            // ---------------------------------------------------------------------
+            // Note
+            // --------------------------------------------------------------------- -->
+            <div class="row" style="margin-top:5px">
+              <div class="col-sm-12"  style="border-bottom: 1px solid #dadde1;padding-bottom: 4px;">
+                <p style="margin-bottom: 0px;">
+
+                  <span class="showPosts"> 
+                    <span class="greekCross">
+
+                      <span style="white-space: nowrap; margin-right: 3px;">
+                  <i class="material-icons"
+                    style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;">subject</i>
+                
+                  <!-- <span style="position: relative;top: 1px;"> -->
+                    <span
+                      style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                     Note
+                    </span>
+
+                  </span>
+                  </span>
+                    <span *ngIf="contact_details?.note" style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                      {{ contact_details?.note }}
+                    </span>
+
+                    <span *ngIf="!contact_details?.note"
+                    style="color: #7695a5; font-weight: 500; font-size: 12px;">n/a</span>
+                  <!-- </span> -->
+
+                </span>
+                </p>
+              </div>
+            </div>
+
+
+
+            <!-- ------====== ATTRIBUTES ======------ -->
+            <!-- style="margin-bottom: 8px; color: #566787; border-top: 1px solid #e1eef4; padding-top: 8px; font-weight: 400; font-size: 18px" -->
+            <div *ngIf="contact_details?.attributes" class="row">
+              <div class="col-sm-12">
+                <p class="row-header">
+                  <span style="vertical-align: middle">
+                    {{ "Attributes" | translate }}
+                  </span>
+
+                  <span style="float: right;">
+                    <i id="attributes_arrow_down" class="material-icons rotate"
+                      style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:2px"
+                      (click)="toggleAttributes()">
+                      keyboard_arrow_down
+                    </i>
+                  </span>
+                </p>
+
+
+                <!-- 
+                // ------------------------------------------------------
+                // new attributes
+                // ------------------------------------------------------ -->
+                <span *ngIf="showAttributes">
+                  <div *ngFor="let attribute of attributesArray; let i = index">
+                    <div class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
+
+                      <div class="row">
+                        <div class="col-xs-10" style="padding-right: 1px;;padding-bottom: 5px;">
+                          <div style="float: left; margin-right: 4px;" class="ws_requets_msgs__attributes">
+                            {{attribute?.attributeName }}:
+                          </div>
+
+                          <div aria-expanded="false" [id]="attribute?.attributeName +'_value'"
+                            class="attribute attribute_cutted_text">
+                            {{attribute?.attributeValue }}
+                          </div>
+
+                        </div>
+                        <!-- [id]="attribute?.attributeName +'_arrow_icon'" -->
+                        <!-- [ngClass]="{'down' : attributeFullText === true}" -->
+                        <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
+                          style="white-space: nowrap;width: 1%;">
+                          <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
+                            style="cursor: pointer; color: #394f5a; font-size:18px;"
+                            (click)="toggleShowAllString(attribute?.attributeName +'_value', attribute?.attributeName +'_arrow_icon', 'isActive_' + i)">
+                            keyboard_arrow_down
+                          </i>
+
+                        </div>
                       </div>
 
-                    </div>
-                    <!-- [id]="attribute?.attributeName +'_arrow_icon'" -->
-                    <!-- [ngClass]="{'down' : attributeFullText === true}" -->
-                    <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-sm-2"
-                      style="white-space: nowrap;width: 1%;">
-                      <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
-                        style="cursor: pointer; color: #039be5; font-size:18px;"
-                        (click)="toggleShowAllString(attribute?.attributeName +'_value', attribute?.attributeName +'_arrow_icon', 'isActive_' + i)">
-                        keyboard_arrow_down
-                      </i>
-
-                    </div>
-                  </div>
-
-                  <!-- 
+                      <!-- 
                     <div class="debug_div">
                       L : {{attribute?.attributeValueL}} <br>
                       L + 180 : {{attribute?.attributeValueL + 180}} <br>
                       SB WIDTH : {{rightSidebarWidth}} 
                     </div> -->
 
-                </div>
-              </div>
-              <!-- 
-              // ------------------------------------------------------
-              // ./ end new attributes
-              // ------------------------------------------------------ -->
+                    </div>
+                  </div> <!-- ./ end new attributes -->
 
+                </span>
 
+              </div> <!-- ./ col-sm-12 -->
 
-              <!-- <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
-                <strong>
-                  Client:
-                </strong>
-                <span *ngIf="!showAllClientString" class="attribute" style="white-space: nowrap">
-                  {{ clientStringCutted }}
-                  <span> 
-                    <i class="material-icons" style="cursor: pointer; color: #039be5; font-size:18px; position:relative; top:5px" 
-                      (click)="toggleShowAllClientString()">
-                      keyboard_arrow_down
-                    </i>   
-                  </span>
-                </span>
-                <span *ngIf="showAllClientString" class="attribute" style="">
-                  {{ contact_details?.attributes?.client }}
-                  <span> 
-                    <i class="material-icons" style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:5px" 
-                      (click)="toggleShowAllClientString()">
-                      keyboard_arrow_up
-                    </i>   
-                  </span>
-                </span>
-              </p> -->
-              <!-- <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
-                <strong>
-                  {{ "Department" | translate }}:
-                </strong>
-                <span class="attribute" style="cursor: pointer" (click)="toggleShowAllClientString()">
-                  {{ contact_details?.attributes?.departmentName }}
-                </span>    
-              </p> -->
-              <!-- <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
-                <strong>
-                  {{ "DepartmentId" | translate }}:
-                </strong>
-                <span class="attribute">
-                  {{ contact_details?.attributes?.departmentId }}
-                </span>
-              </p> -->
-              <!-- <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
-                <strong>
-                  {{ "ProjectId" | translate }}:
-                </strong>
-                <span class="attribute">
-                  {{ contact_details?.attributes?.projectId }}
-                </span>
-              </p> -->
-              <!-- <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
-                <strong>
-                  Sender Auth Info:
-                </strong>
-                <span *ngIf="!showAllsenderAuthInfoString" class="attribute" style="white-space: nowrap">
-                    {{ senderAuthInfoStringCutted }}
-                  <span> 
-                    <i class="material-icons" style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:5px" 
-                      (click)="toggleShowAllsenderAuthInfoString()">
-                      keyboard_arrow_down
-                    </i>   
-                  </span>
-                </span>
-                <span *ngIf="showAllsenderAuthInfoString" class="attribute">
-                  {{ senderAuthInfoString }} 
-                  <span> 
-                    <i class="material-icons" style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:5px" 
-                      (click)="toggleShowAllsenderAuthInfoString()">
-                      keyboard_arrow_up
-                    </i>   
-                  </span>
-                </span>
-              </p> -->
-              <!-- <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px">
-                <strong>
-                    {{ "RequestMsgsPage.SourcePage" | translate }}:
-                </strong>
-                <span *ngIf="!showAllSourcePageString" class="attribute" style="white-space: nowrap">
-                  {{ sourcePageCutted }}
-                  <span> 
-                    <i class="material-icons" style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:5px" 
-                      (click)="toggleShowAllSourcePageString()">
-                      keyboard_arrow_down
-                    </i>   
-                  </span>
-                </span>
-                <span *ngIf="showAllSourcePageString" class="attribute">
-                  <a href="{{sourcePage}}" target="_blank">{{sourcePage}}</a>
-                  <span> 
-                    <i class="material-icons" style="cursor: pointer; color: #039be5; font-size:18px;position:relative; top:5px" 
-                      (click)="toggleShowAllSourcePageString()">
-                      keyboard_arrow_up
-                    </i>   
-                  </span>
-                </span>
-              </p> -->
-              <!-- <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
-                <strong>
-                  {{ "UserEmail" | translate }}:
-                </strong>
-                <span class="attribute">
-                  <span *ngIf="contact_details?.attributes?.userEmail"> 
-                    {{ contact_details?.attributes?.userEmail }}
-                  </span>
-                  <span *ngIf="!contact_details?.attributes?.userEmail"> 
-                    n.a.
-                  </span>
-                </span>
-              </p> -->
-              <!-- <p class="title-attribute" style="margin-bottom: 3px; font-size: 12px; padding-top: 4px;">
-                <strong>
-                  {{ "UserFullName" | translate }}:
-                </strong>
-                <span class="attribute">
-                  <span *ngIf="contact_details?.attributes?.userFullname"> 
-                    {{ contact_details?.attributes?.userFullname }}
-                  </span>
-                  <span *ngIf="!contact_details?.attributes?.userFullname"> 
-                    n.a.
-                  </span>
-                </span>
-              </p> -->
-            </span>
-
-          </div>
-          <!-- <div class="card-footer">
-            <div class="stats" style="color:#f44336; cursor:pointer; text-align: center">
-              <i class="material-icons">delete_forever</i> Remove permanently
             </div>
-          </div> -->
-
+          </div>
 
         </div>
       </div>
 
     </div>
-
   </div>
-</div>
 
-<!-- ============= MODAL REMOVE 'CONTACT' ============= -->
-<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDeleteModal}"
-  style="background-color: rgba(90,90,90,0.5);">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header" style="background-color:#ff5252; padding-bottom:24px">
-        <button type="button" class="close" aria-label="Close" (click)="onCloseDeleteModal()">
-          <span aria-hidden="true" style="color: #fff">&times;</span>
-        </button>
-        <h4 class="modal-title" style="color: #fff">
-          <i class="material-icons" style="vertical-align: middle">report_problem</i>
-          <span style="vertical-align: middle; padding-left:8px">
+  <!-- ============= MODAL REMOVE 'CONTACT' ============= -->
+  <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayDeleteModal}"
+    style="background-color: rgba(90,90,90,0.5);">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header" style="background-color:#ff5252; padding-bottom:24px">
+          <button type="button" class="close" aria-label="Close" (click)="onCloseDeleteModal()">
+            <span aria-hidden="true" style="color: #fff">&times;</span>
+          </button>
+          <h4 class="modal-title" style="color: #fff">
+            <i class="material-icons" style="vertical-align: middle">report_problem</i>
+            <span style="vertical-align: middle; padding-left:8px">
+
+              {{ "DeleteContact" | translate }}
+            </span>
+          </h4>
+
+        </div>
+        <div class="modal-body">
+          <p style="font-weight:500; text-align: left; margin-top: 10px; color: #394f5a;font-size: 16px;">
+            {{ "AreYouSure" | translate }} ?
+            <!-- <span style="font-weight:600;">{{ groupNameToUpdate }}</span> -->
+          </p>
+          <p style="color: #7695a5">
+            {{ "YouAreAboutToDeleteTheContact" | translate }}
+            <span style="font-weight:500;">{{ fullName_toDelete }}</span>
+          </p>
+        </div>
+        <div class="modal-footer" style="margin-top: 0px;">
+          <button class="btn btn-white" (click)="onCloseDeleteModal()" style="padding:12px 16px;">
+
+            {{ "GroupsAddEditPage.Cancel" | translate }}
+          </button>
+          <button style="margin-top:0px" class="btn btn-danger" (click)="deleteContact()">
 
             {{ "DeleteContact" | translate }}
-          </span>
-        </h4>
-
-      </div>
-      <div class="modal-body">
-        <p style="font-weight:500; text-align: left; margin-top: 10px; color: #394f5a;font-size: 16px;">
-          {{ "AreYouSure" | translate }} ?
-          <!-- <span style="font-weight:600;">{{ groupNameToUpdate }}</span> -->
-        </p>
-        <p style="color: #7695a5">
-          {{ "YouAreAboutToDeleteTheContact" | translate }}
-          <span style="font-weight:500;">{{ fullName_toDelete }}</span>
-        </p>
-      </div>
-      <div class="modal-footer" style="margin-top: 0px;">
-        <button class="btn btn-white" (click)="onCloseDeleteModal()" style="padding:12px 16px;">
-
-          {{ "GroupsAddEditPage.Cancel" | translate }}
-        </button>
-        <button style="margin-top:0px" class="btn btn-danger" (click)="deleteContact()">
-
-          {{ "DeleteContact" | translate }}
-        </button>
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
