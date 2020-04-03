@@ -424,27 +424,27 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
                 /** HIDE THE PLAN NAME IF THE ROUTE ACTIVE IS THE HOME */
                 if (event.url.indexOf('/home') !== -1) {
-                    console.log('NAVBAR NavigationEnd - THE home route IS ACTIVE  ', event.url);
+                    // console.log('NAVBAR NavigationEnd - THE home route IS ACTIVE  ', event.url);
                     this.HOME_ROUTE_IS_ACTIVE = true;
                 } else {
-                    console.log('NAVBAR NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
+                    // console.log('NAVBAR NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
                     this.HOME_ROUTE_IS_ACTIVE = false;
                 }
 
                 if (event.url.indexOf('/chat') !== -1) {
-                    console.log('NAVBAR NavigationEnd - THE chat route IS ACTIVE  ', event.url);
+                    // console.log('NAVBAR NavigationEnd - THE chat route IS ACTIVE  ', event.url);
                     this.DETECTED_CHAT_PAGE = true;
                 } else {
-                    console.log('NAVBAR NavigationEnd - THE chat route IS NOT ACTIVE  ', event.url);
+                    // console.log('NAVBAR NavigationEnd - THE chat route IS NOT ACTIVE  ', event.url);
                     this.DETECTED_CHAT_PAGE = false;
                 }
 
                 if (event.url.indexOf('/request-for-panel') !== -1) {
                     this.IS_REQUEST_FOR_PANEL_ROUTE = true;
-                    console.log('NAVBAR NavigationEnd - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
+                    // console.log('NAVBAR NavigationEnd - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
                 } else {
                     this.IS_REQUEST_FOR_PANEL_ROUTE = false;
-                    console.log('NAVBAR NavigationEnd - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
+                    // console.log('NAVBAR NavigationEnd - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
                 }
             })
     }
@@ -638,7 +638,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
     }
 
     goToPricing() {
-        this.router.navigate(['project/' + this.projectId + '/pricing']);
+        if (this.ROLE_IS_AGENT === false) {
+            this.router.navigate(['project/' + this.projectId + '/pricing']);
+        }
     }
 
     getLoggedUser() {
@@ -1054,7 +1056,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
                 // this.audio.src = 'assets/Carme.mp3';
                 // this.audio.src = 'assets/microbounce.mp3';
                 this.audio.src = 'assets/justsaying.mp3';
-               
+
                 this.audio.load();
                 this.audio.play();
 

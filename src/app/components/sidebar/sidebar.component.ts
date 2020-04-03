@@ -540,7 +540,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             this.IS_BUSY = user_isbusy;
             // THE VALUE OS  IS_BUSY IS THEN UPDATED WITH THE VALUE RETURNED FROM THE WEBSOCKET getWsCurrentUserIsBusy$()
             // WHEN, FOR EXAMPLE IN PROJECT-SETTINGS > ADVANCED THE NUM OF MAX CHAT IS 3 AND THE 
-            console.log('!!! SIDEBAR - USER IS BUSY ', this.IS_BUSY); 
+            console.log('!!! SIDEBAR - USER IS BUSY (from db)', this.IS_BUSY); 
         });
     }
 
@@ -603,7 +603,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             if ((projectUser) && (projectUser.length !== 0)) {
                 console.log('SB PROJECT-USER ID ', projectUser[0]._id)
                 console.log('SB USER IS AVAILABLE ', projectUser[0].user_available)
-                console.log('SB USER IS BUSY ', projectUser[0].isBusy)
+                console.log('SB USER IS BUSY (from db)', projectUser[0].isBusy)
                 // this.user_is_available_bs = projectUser.user_available;
                 
                 this.subsTo_WsCurrentUser(projectUser[0]._id)
@@ -678,7 +678,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             console.log('SB - GET WS CURRENT-USER - currentuser_isbusy? ', currentuser_isbusy);
             if(currentuser_isbusy !== null)  {
                 this.IS_BUSY = currentuser_isbusy;
-                console.log('SB - GET WS CURRENT-USER - this.IS_BUSY? ', this.IS_BUSY);
+                console.log('SB - GET WS CURRENT-USER (from ws)- this.IS_BUSY? ', this.IS_BUSY);
             }
         }, error => {
           console.log('SB - GET WS CURRENT-USER IS BUSY * error * ', error)

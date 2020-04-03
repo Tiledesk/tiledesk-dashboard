@@ -66,7 +66,8 @@ export class CloseRequestModalComponent implements OnInit {
 
   // TRANSLATION
   translateRequestHasBeenArchivedNoticationMsg_part1() {
-    this.translate.get('RequestHasBeenArchivedNoticationMsg_part1')
+    // this.translate.get('RequestHasBeenArchivedNoticationMsg_part1')
+    this.translate.get('RequestSuccessfullyClosed')
       .subscribe((text: string) => {
         this.requestHasBeenArchivedNoticationMsg_part1 = text;
         // console.log('+ + + RequestHasBeenArchivedNoticationMsg_part1', text)
@@ -112,7 +113,7 @@ export class CloseRequestModalComponent implements OnInit {
 
         // =========== NOTIFY SUCCESS===========
         // this.notify.showNotification(`request with id: ${this.id_request_to_archive} has been moved to History`, 2, 'done');
-        this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1, this.id_request_to_archive, this.requestHasBeenArchivedNoticationMsg_part2);
+        this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
       });
 
   }

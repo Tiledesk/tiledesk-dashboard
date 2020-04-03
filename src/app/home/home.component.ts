@@ -121,7 +121,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   getChatUrl() {
     this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
     console.log('AppConfigService getAppConfig (HOME) CHAT_BASE_URL', this.CHAT_BASE_URL);
-}
+  }
 
   // TRANSLATION
   translateInstallWidget() {
@@ -290,14 +290,17 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
   goToPricingOrOpenModalSubsExpired() {
-    if (this.prjct_profile_type === 'free') {
+    console.log('HOME goToPricingOrOpenModalSubsExpired')
+    if (this.USER_ROLE !== 'agent') {
+      if (this.prjct_profile_type === 'free') {
 
-      this.router.navigate(['project/' + this.projectId + '/pricing']);
+        this.router.navigate(['project/' + this.projectId + '/pricing']);
 
-    } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+      } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
 
-      this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
-      // this.notify.showCheckListModal(true);
+        this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
+        // this.notify.showCheckListModal(true);
+      }
     }
   }
 
@@ -520,7 +523,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         // this.user_is_available_bs = projectUser.user_available;
 
         if (projectUser[0].user_available !== undefined) {
-          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available,  projectUser[0].isBusy);
+          this.usersService.user_availability(projectUser[0]._id, projectUser[0].user_available, projectUser[0].isBusy);
         }
         if (projectUser[0].role !== undefined) {
           console.log('!!! »»» HOME GET THE USER ROLE FOR THE PROJECT »»', this.projectId, '»»» ', projectUser[0].role);

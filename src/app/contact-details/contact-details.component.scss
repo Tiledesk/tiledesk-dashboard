@@ -138,7 +138,8 @@ p.member:hover {
 
 .contact-verified {
   position: relative;
-  left: -20px;
+  // left: -20px;
+  margin-top: -13px !important;
 }
 
 .column-th-span {
@@ -173,5 +174,15 @@ p.member:hover {
   -webkit-transform: rotate(180deg);
   transform: rotate(180deg);
 }
+
+// @media (max-width: 768px){ 
+//   .truncate {
+//     width: 223px;
+//     white-space: nowrap;
+//     overflow: hidden;
+//     text-overflow: ellipsis;
+//   }
+
+// }
 
 // ./ end attribute 'accordion' style
