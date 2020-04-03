@@ -4,6 +4,8 @@
 ### 2.0.1
 - Fixes in 'Labels' the labels color dropdown is always open at media width < 992px
 - Allows agents to edit notes and labels only of their own requests
+- Allows agents to edit notes and labels only of their own requests
+- Adds in the users list the evidence of the "busy user" status if an agent reach the limit of maximum chats
 
 ### 2.0.0
 - Adds widget trigger
@@ -38,7 +40,7 @@
 - Adds real time update of the current user availability
 - Fixes the delete of a project
 - Adds the ability to turn off the in-app notifications sound
-- Adds the user status 'busy'
+- Adds in the sidebar the evidence of the "busy user" status if the current user reach the limit of maximum chats
 - Adds attributes to contacts (company, note, address, phone)
 
 ### 1.0.40
