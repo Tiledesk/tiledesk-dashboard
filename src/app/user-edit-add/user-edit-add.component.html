@@ -271,20 +271,32 @@
 
       <!-- RIGHT SIDEBAR -->
       <div class="col-md-4">
-        <div class="card" style="padding-top:25px; padding-bottom:25px; margin-top: 15px;">
+        <div class="card" style="padding-top:16px; padding-bottom:16px; margin-top: 15px;">
           <div class="card-content" style="padding-top: 0px;">
-            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
+            <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 5px">
               <!-- User Roles -->
               {{ "UserEditAddPage.UserRoles" | translate }}
             </h4>
 
-            <p class="title-attribute" style="margin-bottom: 3px">
-              <!-- <strong> -->
-              {{ "UserEditAddPage.Admin" | translate }}
-              <!-- </strong> -->
-            </p>
+            
             <p style="color:#7695a5">
-              <!-- An Administrator has full power over the app and can do everything related to TileDesk administration. Administrators can create more Administrators, invite new users, remove users, change user roles, serve Visitors.  -->
+              {{ "UserEditAddPage.ThereAreThreeRolesIn" | translate: tparams }}
+            </p>
+            <p class="title-attribute" style="margin-bottom: 3px">
+              {{ "UserEditAddPage.Owner" | translate }}
+            </p>
+
+            <p style="color:#7695a5">
+             
+              {{ "UserEditAddPage.TheOwnerIs" | translate: tparams }}.  {{ "UserEditAddPage.AnOwenerHas" | translate: tparams }}
+            </p>
+ 
+            <p class="title-attribute" style="margin-bottom: 3px">
+              {{ "UserEditAddPage.Admin" | translate }}
+            </p>
+
+            <p style="color:#7695a5">
+             
               {{ "UserEditAddPage.AnAdministratorHas" | translate: tparams }}
             </p>
 

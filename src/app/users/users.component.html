@@ -136,12 +136,15 @@ class="navbar-brand">
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
 
-          <div *ngIf="!showSpinner" class="card-content" style="padding-top:0px">
+          <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-top:0px">
 
             <table class="table table-hover">
               <thead>
                 <tr>
-                  <!-- FOR DEBUG: ID OF THE PROJECT-USER  -->
+                  <!-- 
+                  // ---------------------------------
+                  // FOR DEBUG: ID OF THE PROJECT-USER  
+                  // --------------------------------- -->
                   <!-- <th>
                     <span style="color: #566787">
                       <strong>
@@ -149,47 +152,62 @@ class="navbar-brand">
                       </strong>
                     </span>
                   </th> -->
+
+                  <!-- 
+                  // ---------------------------------
+                  // User Avatar
+                  // --------------------------------- -->
                   <th>
                     <span class="column-th-span">
                       {{ "UsersPage.User" | translate }}
                     </span>
                   </th>
 
+                  <!-- 
+                  // ---------------------------------
+                  // User Fullname
+                  // --------------------------------- -->
                   <th> </th>
 
+                  <!-- 
+                  // ---------------------------------
+                  // Chat with
+                  // --------------------------------- -->
                   <th> </th>
+
+                  <!-- 
+                  // ---------------------------------
+                  // Role
+                  // --------------------------------- -->
                   <th>
                     <span class="column-th-span">
                       {{ "UsersPage.Role" | translate }}
                     </span>
                   </th>
 
-                  <!-- <th>
-                    <span style="color: #566787">
-                      <strong>
-                        Email
-                      </strong>
-                    </span>
-                  </th> -->
-
-                  <!-- OLD: AVAILABLE / UNAVAILABLE INDICATOR -->
-                  <!-- <th>
-                    <span style="color: #566787">
-                      <strong>
-                        {{ "UsersPage.Available" | translate }}
-                      </strong>
-                    </span>
-                  </th> -->
-
-                  <!-- SWITCH BTN AVAILABLE / UNAVAILABLE  -->
+                  <!-- 
+                  // ---------------------------------
+                  // SWITCH BTN AVAILABLE / UNAVAILABLE
+                  // --------------------------------- -->
                   <th>
                     <span class="column-th-span">
                       {{ "UsersPage.Available" | translate }}
                     </span>
                   </th>
 
-                  <!-- FOR DEBUG: USER ID -->
-                  <!-- <th>
+                  <!-- 
+                  // ---------------------------------
+                  // IS BUSY
+                  // --------------------------------- -->
+                  <!-- <th>  </th> -->
+
+
+                  <!-- 
+                  // ---------------------------------
+                  // FOR DEBUG: USER ID  
+                  // --------------------------------- -->
+                  <!-- 
+                    <th>
                     <span style="color: #566787">
                       <strong>
                         {{ "UsersPage.UserId" | translate }}
@@ -214,16 +232,28 @@ class="navbar-brand">
                   <!-- goToMemberProfile(projectUser?.id_user?._id) -->
                   <td (click)="goToEditUser(projectUser?._id)"
                     style="cursor:pointer; width:1%;white-space:nowrap; text-align: center">
-                    <img
-                      style="vertical-align: middle; width: 35px; height: 35px; border-radius: 50%; border: 1px solid #eee;"
-                      class="user-img"
-                      src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
-                      onerror="this.src='assets/img/no_image_user.png'" />
+                    
+                    <div class="user-avatar-wrap">
+                      <img
+                        style="vertical-align: middle; width: 52px; height: 52px; border-radius: 50%; border: 1px solid #eee;"
+                        class="user-img"
+                        src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
+                        onerror="this.src='assets/img/no_image_user.png'" />
+
+                      <div *ngIf="projectUser?.isBusy" class="user-is-busy">
+                        <img src="assets/img/clock_hands.svg" class="img-fluid" style="width:16px;" />
+                        <!-- <span class="material-icons" style="font-size: 16px; color:#fff;"> access_tim  </span> -->
+                      </div>
+
+                    </div>
+
+                    <div *ngIf="projectUser?.isBusy" class="is-busy-text is-busy-color-transition"> 
+                      {{ 'Busy' | translate }} 
+                    </div>
                   </td>
 
                   <!-- goToMemberProfile(projectUser?.id_user?._id)  -->
-                  <td (click)="goToEditUser(projectUser?._id)"
-                    style="cursor:pointer; white-space: nowrap;  width: 1%;">
+                  <td (click)="goToEditUser(projectUser?._id)" style="cursor:pointer; white-space: nowrap;  width: 1%;">
                     <span class="White__Tooltip">
                       <span style="font-weight:400; font-size: 13px"> {{ projectUser?.id_user?.firstname }} </span>
                       <span style="text-transform: uppercase; font-weight:400; font-size: 13px ">
@@ -249,9 +279,9 @@ class="navbar-brand">
                         </i>
                         <span class="White__Tooltiptext" style="font-size: 12px; white-space: nowrap;font-weight: 100;">
                           {{"ChatWith" | translate }}:
-                           <span style="display:block">
-                             {{projectUser?.id_user?.firstname}} {{projectUser?.id_user?.lastname }} 
-                            </span>
+                          <span style="display:block">
+                            {{projectUser?.id_user?.firstname}} {{projectUser?.id_user?.lastname }}
+                          </span>
                         </span>
                       </span>
                     </span>
@@ -261,7 +291,7 @@ class="navbar-brand">
                   <td (click)="goToEditUser(projectUser?._id)" style="cursor:pointer">
                     <span class="White__Tooltip">
                       <span style="font-weight:400; font-size: 13px">
-                         {{ projectUser?.role | translate}}
+                        {{ projectUser?.role | translate}}
                       </span>
                       <!-- <span class="White__Tooltiptext">
                         {{"UsersPage.ViewProfileUser" | translate }} <span style="font-size:10px; display:block">
@@ -273,13 +303,25 @@ class="navbar-brand">
 
                   <!-- SWITCH AVAILABLE / UNAILABLE  -->
                   <td>
-                    <label class="switch" style="margin-bottom: 0px;">
+                    <label class="switch" style="margin-bottom: -6px;">
                       <input type="checkbox"
                         (click)="changeAvailabilityStatus(projectUser?.user_available, projectUser?._id)"
                         [checked]="projectUser?.user_available === true">
                       <span class="slider round"></span>
                     </label>
                   </td>
+
+                  <!-- <td>
+                    <span *ngIf="projectUser?.isBusy === true">
+                    <span class="material-icons" style="font-size: 16px; color:#fedd00;">
+                      access_time
+                      </span>
+                     <span class="isBusyTest"  style="position: relative; top: -25px;left: 18px;font-size: 11px;"> 
+                      {{ 'Busy' | translate }} 
+                    </span> 
+                  </span>
+
+                  </td> -->
 
 
                   <!-- FOR DEBUG: USER ID -->
@@ -288,9 +330,9 @@ class="navbar-brand">
                   </td> -->
 
                   <!-- ACTIONS -->
-                  <td class="td-actions text-right">
+                  <td class="td-actions text-right" >
                     <!-- *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id" -->
-                    <span>
+                    <span style="position: relative;top: 15px;">
                       <button type="button" rel="tooltip" title=""
                         class="btn btn-primary btn-simple btn-xs White__Tooltip"
                         (click)='goToEditUser(projectUser?._id)'>
@@ -326,7 +368,8 @@ class="navbar-brand">
                     <span style="font-weight:400">
                       {{ invites?.email }}
                     </span>
-                    <span style="display: block; color:#7695a5; font-size: 12px; font-weight: 400; white-space: nowrap;">
+                    <span
+                      style="display: block; color:#7695a5; font-size: 12px; font-weight: 400; white-space: nowrap;">
                       {{ "UsersPage.DateOfSending" | translate }}: {{ invites?.createdAt | date: 'dd/MM/yy' }}
                     </span>
                   </td>

@@ -73,6 +73,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   // CHAT_BASE_URL = environment.chat.CHAT_BASE_URL; // moved
   // CHAT_BASE_URL = environment.CHAT_BASE_URL;  // now get from appconfig
   CHAT_BASE_URL: string;
+  IS_BUSY: boolean;
 
   constructor(
     private usersService: UsersService,
@@ -332,20 +333,20 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   getAllUsersOfCurrentProject() {
     this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
-      console.log('»» USER COMP - PROJECT USERS (FILTERED FOR PROJECT ID)', projectUsers);
+      console.log('»» USERS COMP - PROJECT USERS (FILTERED FOR PROJECT ID)', projectUsers);
       if (projectUsers) {
         this.projectUsersList = projectUsers;
         this.projectUsersLength = projectUsers.length;
-        console.log('PROJECT USERS Length  (FILTERED FOR PROJECT ID)', this.projectUsersLength);
+        console.log('»» USERS COMP - PROJECT USERS Length  (FILTERED FOR PROJECT ID)', this.projectUsersLength);
       }
     }, error => {
       this.showSpinner = false;
-      console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
+      console.log('»» USERS COMP - PROJECT USERS (FILTERED FOR PROJECT ID) - ERROR', error);
     }, () => {
 
       this.HAS_FINISHED_GET_PROJECT_USERS = true;
       this.showSpinner = false;
-      console.log('PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
+      console.log('»» USERS COMP - PROJECT USERS (FILTERED FOR PROJECT ID) - COMPLETE');
 
       // this.getPendingInvitation();
     });

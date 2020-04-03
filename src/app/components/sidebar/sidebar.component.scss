@@ -285,7 +285,8 @@ button.close {
     color: rgba(255,255,255,.5);
   }
 }
-@-moz-keyframes myfirst /* Firefox */ {
+ /* Firefox */
+@-moz-keyframes myfirst {
   0% {
     // background: #4caf50;
     // color: #1e2129;
@@ -301,8 +302,8 @@ button.close {
     color: rgba(255,255,255,.5);
   }
 }
-
-@-webkit-keyframes myfirst /* Safari and Chrome */ {
+/* Safari and Chrome */
+@-webkit-keyframes myfirst  {
   0% {
     // background: #4caf50;
     // color: #1e2129;

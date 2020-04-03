@@ -220,47 +220,47 @@ Max width before this PARTICULAR table gets nasty
 This query will take effect for any screen smaller than 760px
 and also iPads specifically.
 */
-@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
-  /* Force table to not be like tables anymore */
-  table,
-  thead,
-  tbody,
-  th,
-  td,
-  tr {
-    display: block;
-  }
+// @media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px) {
+//   /* Force table to not be like tables anymore */
+//   table,
+//   thead,
+//   tbody,
+//   th,
+//   td,
+//   tr {
+//     display: block;
+//   }
 
-  /* Hide table headers (but not display: none;, for accessibility) */
-  thead tr {
-    position: absolute;
-    top: -9999px;
-    left: -9999px;
-  }
+//   /* Hide table headers (but not display: none;, for accessibility) */
+//   thead tr {
+//     position: absolute;
+//     top: -9999px;
+//     left: -9999px;
+//   }
 
-  tr {
-    border: 1px solid #ccc;
-  }
+//   tr {
+//     border: 1px solid #ccc;
+//   }
 
-  td {
-    /* Behave  like a "row" */
-    border: none;
-    border-bottom: 1px solid #eee;
-    position: relative;
-    padding-left: 50%;
-  }
+//   td {
+//     /* Behave  like a "row" */
+//     border: none;
+//     border-bottom: 1px solid #eee;
+//     position: relative;
+//     padding-left: 50%;
+//   }
 
-  td:before {
-    /* Now like a table header */
-    position: absolute;
-    /* Top/left values mimic padding */
-    top: 6px;
-    left: 6px;
-    width: 45%;
-    padding-right: 10px;
-    white-space: nowrap;
-  }
-}
+//   td:before {
+//     /* Now like a table header */
+//     position: absolute;
+//     /* Top/left values mimic padding */
+//     top: 6px;
+//     left: 6px;
+//     width: 45%;
+//     padding-right: 10px;
+//     white-space: nowrap;
+//   }
+// }
 /* END NEW FOR TABLE */
 
 .users-groups-tab {
@@ -544,4 +544,112 @@ $f21blue: #039be5;
   font-size: 16px !important;
   vertical-align: middle !important;
   margin-right: 5px;
+}
+
+// IS BUSY
+.isBusy {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: 109px;
+  right: 60px;
+}
+
+
+
+.user-is-busy {
+  background-color: #fedd00;
+  color: #fff;
+  position: absolute;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  top: 2px;
+  left: 12px;
+  border-radius: 9px;
+  /* padding: 0 5px; */
+  font-size: 11px;
+  text-align: center;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.35);
+}
+.is-busy-text {
+  position: absolute;
+  left: 58px;
+  margin-top: -4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+.user-avatar-wrap {
+  position: relative;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  padding: 0 16px;
+  height: 56px;
+  // cursor: pointer;
+}
+
+.is-busy-color-transition {
+  color: #fedd00;
+  animation: myfirst 5s;
+  -moz-animation: myfirst 5s infinite; /* Firefox */
+  -webkit-animation: myfirst 5s infinite; /* Safari and Chrome */
+}
+
+@keyframes myfirst {
+  0% {
+    // background: #4caf50;
+    color: #7695a5
+  }
+  50% {
+    // background: #fedd00;
+    color: #fedd00;
+  }
+  100% {
+    // background: #4caf50;
+    // color: #1e2129;
+    color: #7695a5
+  }
+}
+ /* Firefox */
+@-moz-keyframes myfirst {
+  0% {
+    // background: #4caf50;
+    // color: #1e2129;
+    color:#7695a5
+  }
+  50% {
+    // background: #fedd00;
+    color: #fedd00;
+  }
+  100% {
+    // background: #4caf50;
+    // color: #1e2129;
+    color:#7695a5
+  }
+}
+/* Safari and Chrome */
+@-webkit-keyframes myfirst  {
+  0% {
+    // background: #4caf50;
+    // color: #1e2129;
+    color: #7695a5
+  }
+  50% {
+    // background: #fedd00;
+    color: #fedd00;
+  }
+  100% {
+    // background: #4caf50;
+    // color: #1e2129;
+    color: #7695a5
+  }
 }
