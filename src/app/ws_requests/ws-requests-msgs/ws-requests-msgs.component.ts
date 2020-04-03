@@ -174,7 +174,10 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   CURRENT_USER_ROLE: string;
 
   CHAT_PANEL_MODE: boolean;
-  dshbrdBaseUrl
+  dshbrdBaseUrl: string;
+  project_name: string;
+
+  DISABLE_ADD_NOTE_AND_TAGS = false;
   // @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
 
   //   cities3 = [
@@ -427,8 +430,9 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
       if (project) {
+        console.log('% Ws-REQUESTS-Msgs >>>>> project <<<<<', project)
         this.id_project = project._id
-        // console.log('00 -> BOT EDIT/ADD COMP project ID from AUTH service subscription  ', this.project._id)
+        this.project_name = project.name
       }
     });
   }
@@ -520,10 +524,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   }
 
 
-
-
-
-
   ngAfterViewInit() {
     // -----------------------------------
     // Right sidebar width after view init
@@ -594,8 +594,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
 
-
-
   /**
    * Get the request published
    */
@@ -614,9 +612,25 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         if (this.request) {
           this.members_array = this.request.participants;
-          console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById PARTICIPANTS ARRAY ', this.members_array)
+          console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById PARTICIPANTS_ARRAY ', this.members_array)
 
           this.members_array.forEach(member => {
+
+            // ----------------------------------------------------------------------------------------------
+            // disable notes and tags if the current user has agent role and is not among the participants
+            // ----------------------------------------------------------------------------------------------
+            console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById CURRENT_USER_ROLE ', this.CURRENT_USER_ROLE);
+            console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById CURRENT_USER_ID ', this.currentUserID);
+
+
+            if (this.currentUserID !== member && this.CURRENT_USER_ROLE === 'agent') {
+              console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById CURRENT USER NOT IN PARTICIPANT AND IS AGENT');
+              this.DISABLE_ADD_NOTE_AND_TAGS = true;
+            } else if (this.currentUserID === member && this.CURRENT_USER_ROLE === 'agent')  {
+              console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById CURRENT USER IS IN PARTICIPANT AND IS AGENT');
+              this.DISABLE_ADD_NOTE_AND_TAGS = false;
+            }
+
             console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById member ', member);
             console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById member is bot?', member.includes('bot_'));
 
@@ -1750,27 +1764,29 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
 
   removeTag(tag: string) {
-    console.log('% Ws-REQUESTS-Msgs - tag-wf - REMOVE TAG - tag TO REMOVE: ', tag);
-    var index = this.tagsArray.indexOf(tag);
-    if (index !== -1) {
-      this.tagsArray.splice(index, 1);
+    if (this.DISABLE_ADD_NOTE_AND_TAGS === false) {
+      console.log('% Ws-REQUESTS-Msgs - tag-wf - REMOVE TAG - tag TO REMOVE: ', tag);
+      var index = this.tagsArray.indexOf(tag);
+      if (index !== -1) {
+        this.tagsArray.splice(index, 1);
+      }
+      // this.removeTagFromTaglistIfAlreadyAssigned(this.tagsList, this.tagsArray);
+      this.getTag();
+
+      console.log('% Ws-REQUESTS-Msgs - tag-wf -  REMOVE TAG - TAGS ARRAY AFTER SPLICE: ', this.tagsArray);
+      this.wsRequestsService.updateRequestsById_AddTag(this.id_request, this.tagsArray)
+        .subscribe((data: any) => {
+
+          console.log('% Ws-REQUESTS-Msgs - tag-wf - REMOVE TAG - RES: ', data);
+        }, (err) => {
+          console.log('% Ws-REQUESTS-Msgs - tag-wf - REMOVE TAG - ERROR: ', err);
+          this.notify.showWidgetStyleUpdateNotification(this.delete_label_error, 4, 'report_problem');
+
+        }, () => {
+          console.log('% Ws-REQUESTS-Msgs - tag-wf - REMOVE TAG - COMPLETE');
+          this.notify.showWidgetStyleUpdateNotification(this.delete_label_success, 2, 'done');
+        });
     }
-    // this.removeTagFromTaglistIfAlreadyAssigned(this.tagsList, this.tagsArray);
-    this.getTag();
-
-    console.log('% Ws-REQUESTS-Msgs - tag-wf -  REMOVE TAG - TAGS ARRAY AFTER SPLICE: ', this.tagsArray);
-    this.wsRequestsService.updateRequestsById_AddTag(this.id_request, this.tagsArray)
-      .subscribe((data: any) => {
-
-        console.log('% Ws-REQUESTS-Msgs - tag-wf - REMOVE TAG - RES: ', data);
-      }, (err) => {
-        console.log('% Ws-REQUESTS-Msgs - tag-wf - REMOVE TAG - ERROR: ', err);
-        this.notify.showWidgetStyleUpdateNotification(this.delete_label_error, 4, 'report_problem');
-
-      }, () => {
-        console.log('% Ws-REQUESTS-Msgs - tag-wf - REMOVE TAG - COMPLETE');
-        this.notify.showWidgetStyleUpdateNotification(this.delete_label_success, 2, 'done');
-      });
   }
 
 

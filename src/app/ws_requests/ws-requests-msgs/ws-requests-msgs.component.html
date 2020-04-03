@@ -8,7 +8,7 @@
 </div>
 
 <div class="main-content" style="padding-top:0px"
-  [ngClass]="{'main-content-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+  [ngClass]="{'main-content-chat-panel-mode' : CHAT_PANEL_MODE === true, 'main-content-normal-mode': CHAT_PANEL_MODE === false}">
   <div class="container-fluid" [ngClass]="{'container-fluid-no-padding' : CHAT_PANEL_MODE === true}">
 
     <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner>
@@ -16,8 +16,9 @@
 
     <div>
       <div class="row">
-        <div class="col-sm-7 chat-col" [ngClass]="{'hidden-if-chat-panel-mode' : CHAT_PANEL_MODE === true}">
-          <div class="card chat-card" style="padding-top:0px; padding-bottom:0px;">
+        <div class="col-sm-7 chat-col" [ngClass]="{'hidden-if-chat-panel-mode' : CHAT_PANEL_MODE === true, 'chat-col-normal-mode': CHAT_PANEL_MODE === false }">
+          <div class="card chat-card" [ngClass]="{'chat-card-normal-mode': CHAT_PANEL_MODE === false}" 
+            style="padding-top:0px; padding-bottom:0px;">
             <div class="row" style="border-bottom: 1px solid #eeeeee; padding-left:25px; padding-right:25px">
               <div class="col-sm-12">
                 <div class="two-div-wrapper">
@@ -28,7 +29,7 @@
                       {{ "RequestMsgsPage.Messages" | translate }}
                     
                       </h4> -->
-                        <!-- <div class="contact-details">
+                      <!-- <div class="contact-details">
 
                         <i class="material-icons">
                           more_vert
@@ -36,7 +37,7 @@
                       </div> -->
 
                       <!-- -----new REQUESTER -->
-                      <span class="requester-avatar-wrapper">
+                      <span style="cursor: pointer;" (click)='goToContactDetails()' class="requester-avatar-wrapper">
                         <span class="_requester-avatar_as_title" [ngStyle]="{'background-color': fillColour }"
                           [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname}">
                           <span style="color: #ffffff"> {{ requester_fullname_initial }} </span>
@@ -433,7 +434,7 @@
           [ngClass]="{'col-sm-5' : CHAT_PANEL_MODE === false, 'col-sm-12 no-padding' : CHAT_PANEL_MODE === true}">
 
           <div class="card right-card" style="padding-top:5px; padding-bottom:5px;margin-bottom: 10px;"
-            [ngClass]="{'right-card-chat-panel-mode' : CHAT_PANEL_MODE === true}">
+            [ngClass]="{'right-card-chat-panel-mode' : CHAT_PANEL_MODE === true, 'right-card-normal-mode' : CHAT_PANEL_MODE === false}">
 
             <div *ngIf="showSpinner" class="stretchspinner">
               <div class="rect1"></div>
@@ -494,8 +495,7 @@
                     </span>
 
                     <div class="contact_info_in_right-sidebar">
-                      <span [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}"
-                        style="margin-top: 18px; display: block; font-size: 18px;width: 135px; white-space: nowrap;
+                      <span [ngClass]="{'requester-verified' : REQUESTER_IS_VERIFIED === true}" style="margin-top: 18px; display: block; font-size: 18px;width: 135px; white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;">
 
@@ -815,24 +815,26 @@
                         </span>
                       </a>
                       <ul class="dropdown-menu">
-                        <li *ngIf="CHAT_PANEL_MODE === false"
+                        <li
                           [ngClass]="{'disable-dropdown-menu-btn' : request?.status == 1000}">
                           <a (click)='openArchiveRequestModal(request?.request_id)'
                             style="padding-left: 15px; padding-right: 15px;">
                             <i class="material-icons" style="padding-right: 5px;">close</i>
                             <span style="position: relative; top: 1px; cursor:pointer">
-                              {{ 'RequestMsgsPage.CloseTheRequest' | translate }}
+                              <!-- {{ 'RequestMsgsPage.CloseTheRequest' | translate }} -->
+                              {{ 'RequestMsgsPage.Close' | translate }}
                             </span>
                           </a>
                         </li>
-                        <li *ngIf="CHAT_PANEL_MODE === false" class="divider"></li>
+                        <li class="divider"></li>
                         <!-- [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_AGENT === true}" -->
                         <li>
                           <a (click)='openSelectUsersModal(action = "reassign")'
                             style="padding-left: 15px; padding-right: 15px;">
                             <i class="material-icons" style="padding-right: 5px;">swap_horiz</i>
                             <span style="position: relative; top: 1px; cursor:pointer">
-                              {{ 'VisitorsPage.ReassignRequest' | translate }}
+                              <!-- {{ 'VisitorsPage.ReassignRequest' | translate }} -->
+                              {{ 'VisitorsPage.Reassign' | translate }}
                             </span>
                           </a>
                         </li>
@@ -847,14 +849,15 @@
                           </a>
                         </li>
 
-                        <li *ngIf="CHAT_PANEL_MODE === false" class="divider"></li>
-                        <li *ngIf="CHAT_PANEL_MODE === false"
-                          [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false}">
+                        <li class="divider"></li>
+
+                        <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false}">
 
                           <a (click)='openleaveChatModal()' style="padding-left: 15px; padding-right: 15px;">
                             <i class="material-icons" style="padding-right: 5px;">exit_to_app</i>
                             <span style="position: relative; top: 1px; cursor:pointer">
-                              {{ 'VisitorsPage.LeaveChat' | translate }}
+                              <!-- {{ 'VisitorsPage.LeaveChat' | translate }} -->
+                              {{ 'VisitorsPage.Leave' | translate }}
                             </span>
                           </a>
                         </li>
@@ -871,9 +874,7 @@
                         </li>
                       </ul>
                     </div>
-
                   </div>
-
                 </div>
                 <!-- <span class="row-body">
               <span style="color:#394f5a;"> id: </span> {{ id_request }}
@@ -897,13 +898,35 @@
                 </div> -->
 
                 <!-- 
-              // ---------------------------------------------------------------------
-              // Subject
-              // --------------------------------------------------------------------- -->
+                // ---------------------------------------------------------------------
+                // Project name
+                // --------------------------------------------------------------------- -->
+                <div *ngIf="CHAT_PANEL_MODE === true" class="row" style="margin-top:5px">
+                  <!-- border-top: 1px solid #e1eef4;" -->
+                  <div class="col-sm-12">
+                    <p class="" style="margin-bottom: 0px;;margin-top: 8px;">
+                      <i class="material-icons" style="vertical-align: middle; color: #394f5a;font-size:16px">apps</i>
+                      <span style="position: relative;top: 1px;">
+                        <span
+                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                          {{ "ProjectEditPage.ProjectName" | translate }}
+                        </span>
+                        <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                          {{ project_name }}
+                        </span>
+                      </span>
+                    </p>
+                  </div>
+                </div>
+
+                <!-- 
+                // ---------------------------------------------------------------------
+                // Subject
+                // --------------------------------------------------------------------- -->
                 <div class="row" *ngIf="request?.subject" style="margin-top:5px">
                   <!-- border-top: 1px solid #e1eef4;" -->
                   <div class="col-sm-12">
-                    <p class="" style="margin-bottom: 0px;">
+                    <p class="" style="margin-bottom: 0px">
                       <i class="material-icons"
                         style="vertical-align: middle; color: #394f5a;font-size:16px">short_text</i>
                       <span style="position: relative;top: 1px;">
@@ -919,10 +942,10 @@
                   </div>
                 </div>
 
-              <!-- 
-              // ---------------------------------------------------------------------
-              // Contact email
-              // --------------------------------------------------------------------- -->
+                <!-- 
+                // ---------------------------------------------------------------------
+                // Contact email
+                // --------------------------------------------------------------------- -->
                 <div class="row" style="margin-top:5px">
                   <!-- border-top: 1px solid #e1eef4;" -->
                   <!-- border-bottom: 1px solid #e1eef4; -->
@@ -937,20 +960,21 @@
                           {{ "ContactEmail" | translate }}
                         </span>
 
-                        <a style="font-size: 13px;" target="_blank" *ngIf="request?.lead?.email"
+                        <a style="font-size: 12px;font-weight: 500;" target="_blank" *ngIf="request?.lead?.email"
                           href="mailto:{{request?.lead?.email}}">
                           {{request?.lead?.email}}
                         </a>
-                        <a *ngIf="!request?.lead?.email" style="color: #7695a5; font-weight: 500; font-size: 12px;">n.a.</a>
+                        <a *ngIf="!request?.lead?.email"
+                          style="color: #7695a5; font-weight: 500; font-size: 12px;">n.a.</a>
                       </span>
                     </p>
                   </div>
                 </div>
 
-              <!-- 
-              // ---------------------------------------------------------------------
-              // Created At
-              // --------------------------------------------------------------------- -->
+                <!-- 
+                // ---------------------------------------------------------------------
+                // Created At
+                // --------------------------------------------------------------------- -->
                 <div class="row" style="margin-top:5px">
                   <!-- border-top: 1px solid #e1eef4;" -->
                   <!-- border-bottom: 1px solid #e1eef4; -->
@@ -976,10 +1000,10 @@
                   </div>
                 </div>
 
-              <!-- 
-              // ---------------------------------------------------------------------
-              // Language
-              // --------------------------------------------------------------------- -->
+                <!-- 
+                // ---------------------------------------------------------------------
+                // Language
+                // --------------------------------------------------------------------- -->
                 <div class="row" style="margin-top:5px">
                   <!-- border-top: 1px solid #e1eef4;" -->
                   <div class="col-sm-12">
@@ -1001,9 +1025,9 @@
                 </div>
 
                 <!-- 
-              // ------------------------------------------------------
-              // Request ID
-              // ------------------------------------------------------ -->
+                // ------------------------------------------------------
+                // Request ID
+                // ------------------------------------------------------ -->
                 <div class="row" style="margin-top:5px">
                   <div class="col-sm-12">
                     <!-- <p class="" style="margin-bottom: 0px;">
@@ -1049,13 +1073,14 @@
                 </div>
 
 
-              <!-- 
+                <!-- 
               // ------------------------------------------------------
               // Department
               // ------------------------------------------------------ -->
                 <div class="row" style="margin-top:5px">
                   <div class="col-sm-12">
-                    <p [ngClass]="{'yes-margin' : !request?.sourcePage && CHAT_PANEL_MODE === false}" style="margin-bottom: 0px;">
+                    <p [ngClass]="{'yes-margin' : !request?.sourcePage && CHAT_PANEL_MODE === false}"
+                      style="margin-bottom: 0px;">
                       <i class="material-icons"
                         style="vertical-align: middle; color: #394f5a;font-size:16px">account_balance</i>
                       <span style="position: relative;top: 1px;">
@@ -1078,7 +1103,7 @@
                   </div>
                 </div>
 
-              <!-- 
+                <!-- 
               // ---------------------------------------------------------------------
               // Source page - note when a requets is internal source page there isn't
               // --------------------------------------------------------------------- -->
@@ -1125,7 +1150,7 @@
                     <p class="" style="">
                       <i (click)="goToRequestInNewTab()" class="material-icons"
                         style="vertical-align: middle; color: #394f5a;font-size:16px; cursor: pointer;">open_in_new</i>
-                      <span style="position: relative;top: 1px;">
+                      <span style="position: relative;top: 0px;">
                         <span
                           style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
                           <!-- routerLink="project/{{ project._id }}/wsrequests" -->
@@ -1138,21 +1163,18 @@
                     </p>
                   </div>
                 </div>
-
-
                 <!-- </div>
-          </div> -->
+                </div> -->
                 <!-- end card icon -->
 
 
 
                 <!-- 
-          // -----------------------------------------------------------------------------
-          // Agents
-          // ----------------------------------------------------------------------------- -->
+                // -----------------------------------------------------------------------------
+                // Agents
+                // ----------------------------------------------------------------------------- -->
                 <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
-            <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
-
+                <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
                 <div class="row" style="">
                   <div class="col-sm-12" style="border-bottom: 1px solid #dadde1; border-top: 1px solid #dadde1;">
                     <p class="row-header" style="">
@@ -1226,11 +1248,11 @@
 
 
                 <!-- 
-          // -----------------------------------------------------------------------------
-          // Tags
-          // ----------------------------------------------------------------------------- -->
+              // -----------------------------------------------------------------------------
+              // Tags
+              // ----------------------------------------------------------------------------- -->
                 <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
-            <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
+              <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
                 <div class="row" style="">
                   <div class="col-sm-12" style="border-bottom: 1px solid #dadde1;">
                     <p class="row-header">
@@ -1242,9 +1264,12 @@
                     <div class="col-sm-12" style="padding-left: 0px;padding-right: 0px;">
                       <div class="tags-container">
                         <div class="tag" *ngFor="let tag of request?.tags" role="button">
+
+                          <!-- 
+                        // ------------------------------------------------------------------------------------------------------------
+                        // Revove tag (note: the request to remove tag in is not called if the current user has agent role and is not among the participants)
+                        // ------------------------------------------------------------------------------------------------------------ -->
                           <div (click)="removeTag(tag)">
-                            <!-- [style.background-color]="stringToColour(tag)" -->
-                            <!-- margin-right: 2px; -->
                             <div class="icon-container" style="display: inline-block;">
                               <svg style="width: 13px; height: auto;position:absolute;margin-top: 6px;"
                                 aria-hidden="true" focusable="false" data-prefix="fas" data-icon="tag"
@@ -1255,25 +1280,24 @@
                                   d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
                                 </path>
                               </svg>
-
                               <span class="tag-delete">
                                 <i class="material-icons delete_note_icon" style="font-size: 16px;"> close </i>
                               </span>
-
                             </div>
-
-                            <!-- <div class="tag-color" [style.background-color]="tag.color">
-                            <span class="tag-delete">
-                              <i class="material-icons" style="font-size: 16px;"> close </i>
-                            </span>
-                          </div> -->
                             {{ tag.tag}}
                           </div>
+
                         </div>
                       </div>
-                      <!-- btn-white-custom-round  -->
+
+                      <!-- 
+                      // ------------------------------------------------------------------------------------------------------------
+                      // Btn Add Labels (note: is disabled if if the current user has agent role and is not among the participants)
+                      // ------------------------------------------------------------------------------------------------------------ -->
                       <button class="btn btn-xs btn-primary ws_msgs_small_btn add_tag_btn"
-                        style="margin-top: 4px;  margin-bottom: 6px;" (click)="toggleAddTagInputAndGetTags()">
+                        style="margin-top: 4px;  margin-bottom: 6px;" (click)="toggleAddTagInputAndGetTags()"
+                        [disabled]="DISABLE_ADD_NOTE_AND_TAGS === true">
+
                         <i *ngIf="diplayAddTagInput === false" class="material-icons"
                           style="font-size: 15px;">add_circle</i>
                         <i *ngIf="diplayAddTagInput === true" class="material-icons"
@@ -1349,57 +1373,19 @@
                   </div>
                 </div>
                 <!-- </div>
-          </div> -->
-
-
-                <!-- 
-          // -----------------------------------------------------------------------------
-          // Notes TEST
-          // ----------------------------------------------------------------------------- -->
-                <div class="card right-card"
-                  style="display:none; padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
-                  <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;">
-                    <!-- BEGIN: Layout-B. -->
-                    <div>
-                      <textarea [(ngModel)]="new_note" placeholder="{{ 'Notes.AddANote' | translate  }}" rows="2" style="width: 100%;
-                  display: block;
-                  border: 1px solid #dee2e7;
-                  padding: 12px;
-                  border-radius: 3px;
-                  margin-bottom: 8px;"> </textarea>
-                      <button type="button" class="btn btn-primary ws_msgs_small_btn" #cont (click)="addNote()"
-                        [disabled]="!new_note || new_note?.length === 0">
-                        {{ 'Notes.AddNote' | translate }}
-                      </button>
-                    </div>
-                    <section class="layout layout--b">
-                      <div class="layout__top-panel">
-                        <div *ngFor="let note of notesArray;" class="content">
-                          <p>{{ note?.text }}</p>
-                        </div>
-                      </div>
-                      <!-- <div class="layout__bottom-panel">
-                  Using Overscroll-Behavior
                 </div> -->
-                    </section>
-                  </div>
-                </div>
 
 
                 <!-- 
-          // -----------------------------------------------------------------------------
-          // Notes
-          // ----------------------------------------------------------------------------- -->
-                <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
-            <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
-
-
-                <div class="row" style="">
+                // -----------------------------------------------------------------------------
+                // Notes
+                // ----------------------------------------------------------------------------- -->
+                <div class="row">
                   <div class="col-sm-12"
                     style="padding-left: 0px; padding-right: 0px; border-bottom: 1px solid #dadde1;">
                     <p class="row-header accordion" (click)="openNotesAccordion()"
                       style="padding-left:15px; padding-right:15px; font-size: 14px;">
-                      <!-- <i class="material-icons" style="vertical-align: middle"> group  </i>  -->
+
                       <span style="vertical-align: middle">
                         {{ "Notes.Notes" | translate }} ({{ notesArray?.length }})
                       </span>
@@ -1417,11 +1403,15 @@
                               padding: 12px;
                               border-radius: 3px;
                               resize: none;
-                              margin-bottom: 8px;">
+                              margin-bottom: 8px;"> </textarea>
 
-                          </textarea>
+
+                            <!-- 
+                            // ------------------------------------------------------------------------------------------------------------
+                            // Btn Add Notes (note: is disabled if if the current user has agent role and is not among the participants)
+                            // ------------------------------------------------------------------------------------------------------------ -->
                             <button type="button" class="btn btn-xs btn-primary ws_msgs_small_btn" #cont
-                              (click)="addNote()" [disabled]="!new_note || new_note?.length === 0">
+                              (click)="addNote()" [disabled]="!new_note || new_note?.length === 0 || DISABLE_ADD_NOTE_AND_TAGS === true">
                               <!-- <i class="material-icons" style="left: -5px;">add_circle</i> -->
                               {{ 'Notes.AddNote' | translate }}
 
@@ -1433,9 +1423,9 @@
                           <div *ngIf="notesArray?.length > 0" class="ws_request_notes__container">
 
                             <!-- 
-                              // ------------------------------------------------------
-                              // @ Notes' cards
-                              // ------------------------------------------------------ -->
+                            // ------------------------------------------------------
+                            // @ Notes' cards
+                            // ------------------------------------------------------ -->
                             <div *ngFor="let note of notesArray;" class="ws_request_note">
                               <div class="ws_request_note__content">
                                 {{ note?.text }}

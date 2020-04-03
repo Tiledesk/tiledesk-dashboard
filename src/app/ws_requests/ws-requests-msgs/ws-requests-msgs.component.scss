@@ -745,6 +745,10 @@ button.close {
     padding-left: 4px !important;
   }
 }
+.right-col {
+  padding-right: 10px;
+  padding-left: 5px;
+}
 
 .users-list-modal {
   overflow-y: scroll !important;
@@ -1747,11 +1751,28 @@ and also iPads specifically.
   overflow: visible;
 }
 
+.chat-card-normal-mode {
+  margin-top: 5px !important;
+}
+.right-card-normal-mode {
+  margin-top: 5px !important;
+}
+
+.chat-col-normal-mode {
+  padding-right: 5px !important;
+  padding-left: 10px !important;
+}
+
 // CHAT PANEL MODE
 .main-content-chat-panel-mode {
   margin-top: 0px !important;
   padding-bottom: 0px !important;
   background: #fff;
+}
+
+.main-content-normal-mode {
+  padding-left: 0px;
+  padding-right: 0px;
 }
 
 .hidden-if-chat-panel-mode {
@@ -1905,6 +1926,31 @@ and also iPads specifically.
   padding-top: 0px !important;
   margin-top: -5px !important;
 }
+
+// --------------------------------
+// NK start CUSTOM SCROLL BAR
+// -------------------------------- 
+// /* width */
+// ::-webkit-scrollbar {
+//   width: 8px;
+// }
+
+// /* Track */
+// ::-webkit-scrollbar-track {
+//   background: #f1f1f1;
+// }
+
+// /* Handle */
+// ::-webkit-scrollbar-thumb {
+//   background: #888;
+ 
+// }
+
+// /* Handle on hover */
+// ::-webkit-scrollbar-thumb:hover {
+//   background: #555;
+// }
+/* NK end CUSTOM SCROLL BAR */
 
 // end ----- new-page-test
 
