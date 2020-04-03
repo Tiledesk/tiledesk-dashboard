@@ -76,9 +76,9 @@
 }
 
 .svg-inline--fa-horizontal-dropdown {
-    width: 18px;
-    height: auto;
-    vertical-align: middle;
+  width: 18px;
+  height: auto;
+  vertical-align: middle;
 }
 
 .open-dropdown-icon {
@@ -95,20 +95,29 @@
 }
 
 .td-tag-table {
-    font-weight: 400;
+  font-weight: 400;
 }
 
-::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: #d9d9d9;
   opacity: 1; /* Firefox */
 }
 
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
   color: #d9d9d9;
 }
 
-::-ms-input-placeholder { /* Microsoft Edge */
+::-ms-input-placeholder {
+  /* Microsoft Edge */
   color: #d9d9d9;
+}
+
+@media (min-width: 992px) {
+  .dropdown-menu-inline {
+    display: inline-flex !important;
+  }
 }
 
 // -------------------------------------------------------------------------------
@@ -119,5 +128,5 @@
 //     float:left;
 // }
 // .open > ul {
-//     display: inline-flex !important; // 
+//     display: inline-flex !important; //
 // }

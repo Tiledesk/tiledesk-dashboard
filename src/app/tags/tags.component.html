@@ -149,7 +149,7 @@
                             expand_more </i>
                         </a>
 
-                        <ul class="dropdown-menu" style="display: inline-flex !important;">
+                        <ul class="dropdown-menu dropdown-menu-inline" style="">
                           <li *ngFor="let color of tagColor" class="{{color.name}}" style="display: inline-block;float:left;">
 
                             <a (click)="editTag(tag.tag, color?.hex, tag._id, i)" style="padding:10px !important; margin-left:0px; margin-right:0px"> 
