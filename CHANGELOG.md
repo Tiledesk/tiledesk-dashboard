@@ -1,6 +1,10 @@
 
 # tiledesk-dashboard
 
+### 2.0.1
+- Fixes in 'Labels' the labels color dropdown is always open at media width < 992px
+- Allows agents to edit notes and labels only of their own requests
+
 ### 2.0.0
 - Adds widget trigger
 - Adds filters for agent and department in the requests' list page
@@ -20,7 +24,7 @@
 - Fixes the reload of the request's details page when change the request id url parameter
 - Fixes the handle-invitation path without surname parameter 
 - Fixes registration form' email validation to not allow address without domain
-- Edits some services endpoints for users and project users
+- Edits endpoints services for users and project users
 - Fixes "project settings" sidebar menu item is not displayed
 - Fixes the error that generates the logout if made in the request' details page
 - Adds the ability to create an "internal request"
@@ -35,6 +39,7 @@
 - Fixes the delete of a project
 - Adds the ability to turn off the in-app notifications sound
 - Adds the user status 'busy'
+- Adds attributes to contacts (company, note, address, phone)
 
 ### 1.0.40
 - Fixes the user profile urls
