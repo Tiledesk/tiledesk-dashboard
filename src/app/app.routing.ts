@@ -67,7 +67,8 @@ import { TrainBotComponent } from './requests-msgs/train-bot/train-bot.component
 import { GroupsComponent } from './groups/groups.component';
 import { GroupEditAddComponent } from './group-edit-add/group-edit-add.component';
 import { GroupsStaticComponent } from './static-pages/groups-static/groups-static.component';
-import { ChangePasswordComponent } from './change-password/change-password.component';
+import { ChangePasswordComponent } from './user-profile/change-password/change-password.component';
+import { AccountSettingsComponent } from './user-profile/account-settings/account-settings.component';
 import { HoursComponent } from './hours/hours.component';
 import { ResetPswComponent } from './reset-psw/reset-psw.component';
 import { ContactDetailsComponent } from './contact-details/contact-details.component';
@@ -266,8 +267,8 @@ const routes: Routes = [
   { path: 'project/:projectid/history', component: RequestsListHistoryNewComponent, canActivate: [AuthGuard] },
 
   // TRIGGER
-  { path: 'project/:projectid/trigger', component: TriggerComponent, canActivate: [AuthGuard] },
-  { path: 'project/:projectid/trigger-demo', component: TriggerStaticComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
+  { path: 'project/:projectid/trigger', component: TriggerComponent, canActivate: [AuthGuard, ProjectProfileGuard] },
+  { path: 'project/:projectid/trigger-demo', component: TriggerStaticComponent, canActivate: [AuthGuard] },
 
   { path: 'project/:projectid/trigger/add', component: TriggerAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/trigger/:triggerId', component: TriggerEditComponent, canActivate: [AuthGuard] },
@@ -293,6 +294,13 @@ const routes: Routes = [
   { path: 'project/:projectid/user/:userid/password/change', component: ChangePasswordComponent, canActivate: [AuthGuard] },
   // CHANGE PSWRD if project is undefined (use case: THE USER HAS NOT YET SELECTED A PROJECT)
   { path: 'user/:userid/password/change', component: ChangePasswordComponent, canActivate: [AuthGuard] },
+
+  // Account settings if project is defined (use case: THE USER SELECTED A PROJECT)
+  { path: 'project/:projectid/user/:userid/settings', component: AccountSettingsComponent, canActivate: [AuthGuard] },
+  // Account settings if project is undefined (use case: THE USER HAS NOT YET SELECTED A PROJECT)
+  { path: 'user/:userid/settings', component: AccountSettingsComponent, canActivate: [AuthGuard] },
+  
+
 
   // HOURS
   { path: 'project/:projectid/hours', component: HoursComponent, canActivate: [AuthGuard, ProjectProfileGuard] },

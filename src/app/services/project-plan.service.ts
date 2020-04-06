@@ -39,7 +39,7 @@ export class ProjectPlanService {
   translateNotificationMsgs() {
     this.translate.get('ProjectEditPage.NotificationMsgs')
       .subscribe((translation: any) => {
-        console.log('PROJECT-PLAN-SERVICE  translateNotificationMsgs text', translation)
+        // console.log('PROJECT-PLAN-SERVICE  translateNotificationMsgs text', translation)
 
         this.project_deleted_notification = translation.TheProjectHasBeenDeleted;
        
@@ -129,6 +129,12 @@ export class ProjectPlanService {
         this.router.navigate(['/projects']);
         this.notify.showNotificationChangeProject(this.project_deleted_notification, 2, 'report_problem');
       }
+
+      if (error.status === 401) {
+        this.router.navigate(['/login']);
+      }
+
+
     }, () => {
       console.log('ProjectPlanService - getProjectByID * complete ');
     });

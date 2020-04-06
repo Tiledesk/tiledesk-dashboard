@@ -87,7 +87,7 @@ import { GroupsComponent } from './groups/groups.component';
 import { GroupEditAddComponent } from './group-edit-add/group-edit-add.component';
 
 import { BotLocalDbService } from './services/bot-local-db.service';
-import { ChangePasswordComponent } from './change-password/change-password.component';
+import { ChangePasswordComponent } from './user-profile//change-password/change-password.component';
 
 // PIPE
 import { GroupNamePipe } from './groupname.pipe';
@@ -177,6 +177,7 @@ import { TagsComponent } from './tags/tags.component';
 import { TagsDeleteComponent } from './tags/tags-delete/tags-delete.component';
 import { TagsEditComponent } from './tags/tags-edit/tags-edit.component';
 import { TriggerStaticComponent } from './static-pages/trigger-static/trigger-static.component';
+import { AccountSettingsComponent } from './user-profile/account-settings/account-settings.component';
 
 
 console.log('************** APPMODULE ******************');
@@ -290,7 +291,8 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     TagsComponent,
     TagsDeleteComponent,
     TagsEditComponent,
-    TriggerStaticComponent
+    TriggerStaticComponent,
+    AccountSettingsComponent
   ],
   imports: [
     /* PRIVATE */

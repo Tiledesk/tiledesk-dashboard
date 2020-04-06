@@ -1,0 +1,485 @@
+@import "./src/assets/sass/md/_variables.scss";
+
+// - start - BOTTOM NAVBAR  //
+.bottom-nav {
+    background-color: #fff;
+    width: 100%;
+    z-index: 1028;
+    position: relative;
+    top: -5px;
+    box-shadow: 0 2px 2px rgba(0, 0, 60, 0.08);
+    padding-bottom: 5px;
+    float: left;
+    height: 50px;
+    padding-left: 0px;
+    display: flex;
+    flex-grow: 1;
+   
+  }
+  
+  .bottom-nav li {
+    float: left;
+    padding: 15px;
+    list-style: none;
+    position: relative;
+    display: block;   
+    height: 52px;
+    cursor: pointer;
+  }
+  
+  .bottom-nav li a {
+    padding: 18px 15px;
+    color: #797979;
+    line-height: 20px;
+  }
+  
+  .bottom-nav li a:hover{
+    text-decoration: none;
+  //  background-color: #eee;
+  }
+  
+  .li-active  {
+    border-bottom: 3px solid $brand-primary !important;
+    color: $brand-primary!important;
+    cursor: default !important;
+  }
+  
+  .li-active  a {
+    color: $brand-primary !important;
+  }
+  
+//   $f21blue: $brand-primary;
+  .btn-with-border-effect {
+    background: none;
+    border: 0;
+    box-sizing: border-box;
+    // margin: 1em;
+    // padding: 1em 2em;
+  //   padding-bottom: 37px;
+    font-size: 14px;
+    font-weight: 300;
+  
+    // Required, since we're setting absolute on pseudo-elements
+    position: relative;
+    vertical-align: middle;
+  
+    &::before,
+    &::after {
+      box-sizing: inherit;
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+  }
+  
+  .border-from-center {
+    &:hover {
+      color: $brand-primary;
+    }
+  
+    // Set up base styles, we're going to scale instead of animating width/height
+    &::before,
+    &::after {
+    //   top: 3px;
+      top: 0px;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      transform-origin: center; // Ensure scaling is done from the center (expands outwards)
+    }
+  
+    // scale3d(<scale-horizontal>, <scale-vertical>, <scale-depth>);
+    &::before {
+      // border-top: 2px solid $purple;
+      border-bottom: 3px solid $brand-primary;
+      transform: scale3d(0,1,1); // Shrink only width
+    }
+  
+     &:hover::before,
+    &:hover::after {
+      transform: scale3d(1,1,1); // Show full-size
+      transition: transform 0.5s;
+    }
+  }
+  
+  @media (max-width: 991px){
+    .bottom-nav { 
+        top: -2px !important;
+    }
+  
+    .chart-wrapper {
+        margin-top:60px !important;
+    }
+  }
+  
+  
+  @media (max-width: 370px){
+    .bottom-nav { 
+        height: 37px!important;
+    }
+  
+    .bottom-nav li {
+        padding: 6px !important;
+        height: 39px;
+    }    
+  }
+  // - end - BOTTOM NAVBAR  //
+
+  .card_title__underlined {
+    text-transform: none;
+    color: #566787;
+    margin-bottom: 0px;
+    height: 40px !important;
+    position: relative;
+    font-family: Google Sans, sans-serif;
+    height: 30px;
+    font-size: 16px;
+    margin-top: 10px;
+  }
+  
+  .card_title__underline {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: -1px;
+    border-bottom: 2px solid $brand-primary;
+    z-index: 1;
+  }
+  
+  .section-subtitle {
+    height: 20px;
+    border-top: 1px solid #ddd;
+    width: calc((100% / 3) + 372px);
+  }
+
+  // -----------------------------------
+// Success Check Animation
+// -----------------------------------
+.success-checkmark {
+  width: 80px;
+  // height: 115px;
+  margin: 0 auto;
+  position: relative;
+  right: 5px;
+  margin-top: 5px;
+
+  .check-icon {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    border-radius: 50%;
+    box-sizing: content-box;
+    border: 4px solid #4caf50;
+
+    &::before {
+      top: 3px;
+      left: -2px;
+      width: 30px;
+      transform-origin: 100% 50%;
+      border-radius: 100px 0 0 100px;
+    }
+
+    &::after {
+      top: 0;
+      left: 30px;
+      width: 60px;
+      transform-origin: 0 50%;
+      border-radius: 0 100px 100px 0;
+      animation: rotate-circle 4.25s ease-in;
+    }
+
+    &::before,
+    &::after {
+      content: "";
+      height: 100px;
+      position: absolute;
+      background: #ffffff;
+      transform: rotate(-45deg);
+    }
+
+    .success-icon-line {
+      height: 5px;
+      background-color: #4caf50;
+      display: block;
+      border-radius: 2px;
+      position: absolute;
+      z-index: 10;
+
+      &.success-line-tip {
+        top: 46px;
+        left: 14px;
+        width: 25px;
+        transform: rotate(45deg);
+        animation: icon-line-tip 0.75s;
+      }
+
+      &.success-line-long {
+        top: 38px;
+        right: 8px;
+        width: 47px;
+        transform: rotate(-45deg);
+        animation: icon-line-long 0.75s;
+      }
+    }
+
+    .success-icon-circle {
+      top: -4px;
+      left: -4px;
+      z-index: 10;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      position: absolute;
+      box-sizing: content-box;
+      border: 4px solid rgba(76, 175, 80, 0.5);
+    }
+
+    .success-icon-fix {
+      top: 8px;
+      width: 5px;
+      left: 26px;
+      z-index: 1;
+      height: 85px;
+      position: absolute;
+      transform: rotate(-45deg);
+      background-color: #ffffff;
+    }
+  }
+}
+
+@keyframes rotate-circle {
+  0% {
+    transform: rotate(-45deg);
+  }
+  5% {
+    transform: rotate(-45deg);
+  }
+  12% {
+    transform: rotate(-405deg);
+  }
+  100% {
+    transform: rotate(-405deg);
+  }
+}
+
+@keyframes icon-line-tip {
+  0% {
+    width: 0;
+    left: 1px;
+    top: 19px;
+  }
+  54% {
+    width: 0;
+    left: 1px;
+    top: 19px;
+  }
+  70% {
+    width: 50px;
+    left: -8px;
+    top: 37px;
+  }
+  84% {
+    width: 17px;
+    left: 21px;
+    top: 48px;
+  }
+  100% {
+    width: 25px;
+    left: 14px;
+    top: 45px;
+  }
+}
+
+@keyframes icon-line-long {
+  0% {
+    width: 0;
+    right: 46px;
+    top: 54px;
+  }
+  65% {
+    width: 0;
+    right: 46px;
+    top: 54px;
+  }
+  84% {
+    width: 55px;
+    right: 0px;
+    top: 35px;
+  }
+  100% {
+    width: 47px;
+    right: 8px;
+    top: 38px;
+  }
+}
+
+// -----------------------------------
+// Error banmark Animation
+// -----------------------------------
+.error-banmark {
+  width: 80px;
+  // height: 115px;
+  margin: 0 auto;
+  position: relative;
+  right: 3px;
+  margin-top: 5px;
+
+  .ban-icon {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    border-radius: 50%;
+    box-sizing: content-box;
+    // border: 4px solid rgb(175, 76, 76);
+    border: 4px solid #f27474;
+
+    &::before {
+      top: 3px;
+      left: -2px;
+      width: 30px;
+      transform-origin: 100% 50%;
+      border-radius: 100px 0 0 100px;
+    }
+
+    &::after {
+      top: 0;
+      left: 30px;
+      width: 60px;
+      transform-origin: 0 50%;
+      border-radius: 0 100px 100px 0;
+      animation: rotate-circle 4.25s ease-in;
+    }
+
+    &::before,
+    &::after {
+      content: "";
+      height: 100px;
+      position: absolute;
+      background: rgba(255, 255, 255, 0);
+      transform: rotate(-45deg);
+    }
+
+    .icon-line {
+      height: 5px;
+      // background-color: rgb(175, 76, 76);
+      background-color: #f27474;
+      display: block;
+      border-radius: 2px;
+      position: absolute;
+      z-index: 10;
+
+      &.line-long-invert {
+        top: 39px;
+        left: 8px;
+        width: 60px;
+        transform: rotate(45deg);
+        animation: icon-line-long 0.75s;
+      }
+
+      &.line-long {
+        top: 39px;
+        left: 8px;
+        width: 60px;
+        transform: rotate(-45deg);
+        animation: icon-line-long 0.85s;
+      }
+    }
+
+    .icon-circle {
+      top: -4px;
+      left: -4px;
+      z-index: 10;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      position: absolute;
+      box-sizing: content-box;
+      // border: 4px solid rgba(175, 76, 76, 0.5);
+      border: 4px solid rgba(242, 116, 116, 0.5);
+    }
+
+    .icon-fix {
+      top: 8px;
+      width: 5px;
+      left: 26px;
+      z-index: 1;
+      height: 85px;
+      position: absolute;
+      transform: rotate(-45deg);
+      background-color: rgba(255, 255, 255, 0);
+    }
+  }
+}
+
+// -------------------------------------------------
+// stretch spinner https://tobiasahlin.com/spinkit/
+// -------------------------------------------------
+.stretchspinner {
+  margin: 100px auto;
+  width: 50px;
+  height: 40px;
+  text-align: center;
+  font-size: 10px;
+  position: absolute;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.stretchspinner > div {
+  background-color: $brand-primary;
+  height: 100%;
+  width: 6px;
+  display: inline-block;
+
+  -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+  animation: sk-stretchdelay 1.2s infinite ease-in-out;
+}
+
+.stretchspinner .rect2 {
+  -webkit-animation-delay: -1.1s;
+  animation-delay: -1.1s;
+}
+
+.stretchspinner .rect3 {
+  -webkit-animation-delay: -1s;
+  animation-delay: -1s;
+}
+
+.stretchspinner .rect4 {
+  -webkit-animation-delay: -0.9s;
+  animation-delay: -0.9s;
+}
+
+.stretchspinner .rect5 {
+  -webkit-animation-delay: -0.8s;
+  animation-delay: -0.8s;
+}
+
+@-webkit-keyframes sk-stretchdelay {
+  0%,
+  40%,
+  100% {
+    -webkit-transform: scaleY(0.4);
+  }
+  20% {
+    -webkit-transform: scaleY(1);
+  }
+}
+
+@keyframes sk-stretchdelay {
+  0%,
+  40%,
+  100% {
+    transform: scaleY(0.4);
+    -webkit-transform: scaleY(0.4);
+  }
+  20% {
+    transform: scaleY(1);
+    -webkit-transform: scaleY(1);
+  }
+}

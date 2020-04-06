@@ -2,8 +2,9 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 // USED FOR go back last page
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { UsersService } from '../services/users.service';
-import { AuthService } from '../core/auth.service';
+import { UsersService } from '../../services/users.service';
+import { AuthService } from '../../core/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'appdashboard-change-password',
@@ -18,6 +19,7 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
   DISABLE_UPDATE_PSW_BTN = true
 
   userId: string;
+  projectId: string;
   displayModalChangingPsw = 'none';
   SHOW_CIRCULAR_SPINNER: boolean;
 
@@ -29,19 +31,19 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
     private _location: Location,
     private route: ActivatedRoute,
     private usersService: UsersService,
-    public auth: AuthService
+    public auth: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.getUserIdFromRouteParams();
-
     this.getCurrentProject();
   }
   getCurrentProject() {
     this.auth.project_bs.subscribe((project) => {
 
       if (project) {
-
+        this.projectId = project._id;
         console.log('00 -> CHANGE PSW - project from AUTH service subscription  ', project)
       } else {
         console.log('00 -> CHANGE PSW - project from AUTH service subscription ? ', project)
@@ -87,9 +89,7 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
     console.log('CHANGE PSW COMP - USER ID ', this.userId)
   }
 
-  goBack() {
-    this._location.back();
-  }
+
 
 
   onDigitNewPsw() {
@@ -128,8 +128,7 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
       .subscribe((user) => {
         console.log('CHANGE PASSWORD - DATA ', user);
 
-      },
-        (error) => {
+      },        (error) => {
           console.log('CHANGE PASSWORD - ERROR ', error);
           this.SHOW_CIRCULAR_SPINNER = false;
           this.CHANGE_PSW_NO_ERROR = false;
@@ -145,8 +144,7 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
             this.CURRENT_PSW_INVALID_ERROR = false;
           }
 
-        },
-        () => {
+        },         () => {
           console.log('CHANGE PASSWORD * COMPLETE *');
           this.CHANGE_PSW_OTHER_ERROR = false;
           this.CURRENT_PSW_INVALID_ERROR = false;
@@ -156,9 +154,7 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
   }
 
   closeModalChangingPswHandler() {
-
     this.displayModalChangingPsw = 'none';
-
     this._location.back();
   }
 
@@ -167,14 +163,41 @@ export class ChangePasswordComponent implements OnInit, AfterViewInit {
   }
 
 
-    // hides the sidebar if the user views his profile but has not yet selected a project
-    selectSidebar() {
-      const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
-      console.log('USER PROFILE  elemAppSidebar ', elemAppSidebar)
-      elemAppSidebar.setAttribute('style', 'display:none;');
-  
-      const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-      console.log('USER PROFILE  elemMainPanel ', elemMainPanel)
-      elemMainPanel.setAttribute('style', 'width:100% !important; overflow-x: hidden !important;');
+  // hides the sidebar if the user views his profile but has not yet selected a project
+  selectSidebar() {
+    const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
+    console.log('USER PROFILE  elemAppSidebar ', elemAppSidebar)
+    elemAppSidebar.setAttribute('style', 'display:none;');
+
+    const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+    console.log('USER PROFILE  elemMainPanel ', elemMainPanel)
+    elemMainPanel.setAttribute('style', 'width:100% !important; overflow-x: hidden !important;');
+  }
+
+
+  goBack() {
+    this._location.back();
+  }
+
+  goToUserProfile() {
+    console.log('»» GO TO USER PROFILE  - PROJECT ID ', this.projectId)
+    if (this.projectId === undefined) {
+    
+      this.router.navigate(['user-profile']);
+    } else {
+      this.router.navigate(['project/' + this.projectId + '/user-profile']);
     }
+  }
+
+  goToAccountSettings() {
+    console.log('»» GO TO USER  PROFILE SETTINGS - PROJECT ID ', this.projectId)
+    if (this.projectId === undefined) {
+      this.router.navigate(['user/' + this.userId + '/settings']);
+    } else {
+      this.router.navigate(['project/' + this.projectId + '/user/' + this.userId + '/settings']);
+    }
+  }
+
+  
+
 }

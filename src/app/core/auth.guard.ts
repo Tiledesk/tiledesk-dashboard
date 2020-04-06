@@ -158,7 +158,12 @@ export class AuthGuard implements CanActivate {
 
     if (storedProjectJson === null) {
       console.log('!! AUTH WF in auth.guard - PROJECT JSON IS NULL - RUN getProjectById() ')
+
+
       this.getProjectPublishAndSaveInStorage();
+
+
+      
     }
 
     // else {
