@@ -19,7 +19,7 @@ import * as firebase from 'firebase';
 import 'firebase/messaging';
 import 'firebase/database'
 import { AppConfigService } from '../services/app-config.service';
-
+import { WebSocketJs } from '../services/websocket/websocket-js';
 
 // start SUPER USER
 export class SuperUser {
@@ -99,7 +99,8 @@ export class AuthService {
     private usersLocalDbService: UsersLocalDbService,
     private route: ActivatedRoute,
     public location: Location,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    public webSocketJs: WebSocketJs
   ) {
     this.http = http;
     console.log('version (AuthService)  ', this.version);
@@ -361,6 +362,7 @@ export class AuthService {
     // console.log('!! »»»»» AUTH SERV - CHECK ROLE - NAVIGATION PROJECT ID: ', nav_project_id);
 
     const storedProjectJson = localStorage.getItem(this.nav_project_id);
+    console.log('!! »»»»» AUTH SERV - CHECK ROLE - JSON OF STORED PROJECT', storedProjectJson);
     if (storedProjectJson) {
 
       const storedProjectObject = JSON.parse(storedProjectJson);
@@ -937,13 +939,16 @@ export class AuthService {
           console.log('removeInstanceId - err: ', err);
 
           that.firebaseSignout();
-
+          that.webSocketClose();
         });
     }
   }
 
-  firebaseSignout() {
+  webSocketClose() {
+    this.webSocketJs.close()
+  }
 
+  firebaseSignout() {
     this.user_bs.next(null);
     this.project_bs.next(null);
 
