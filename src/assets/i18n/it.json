@@ -289,6 +289,7 @@
     "ActiveOperatorSeatsInThe": "posti operatore attivi nel",
     "GetMore": "Ottieni altri",
     "AvailableWithTheProPlan": "Disponibile con il piano PRO",
+    "BoostCustomerEngagementThroughTriggers":"Aumenta il coinvolgimento dei clienti attraverso i trigger. Invia il messaggio giusto al momento giusto alle persone giuste.",
     "UpgradeYourAccountToTrackWhatAgentsAreDoing": "Aggiorna il tuo account per tenere traccia di ciò che gli agenti stanno facendo!",
     "UpgradeYourAccount": "Aggiorna il tuo account",
     "Includes": "include",
@@ -443,6 +444,12 @@
     "Country": "Nazione",
     "PhoneNumber":"Numero di telefono",
     "StartDate":"Data inizio",
+    "ExtremeMeasures": "Misure estreme",
+    "DeleteAccount":"Elimina account",
+    "AreYouSureYouWantDeleteYourAccount":"Sei sicuro di voler eliminare il tuo account",
+    "AllProjectWillBeDeleted":"Tutti ({{projects_length}}) i progetto/i creati all'interno di questo account verranno eliminati", 
+    "CancelAnyActiveSubscriptionsBeforeProceeding":"Cancella eventuali sottoscrizioni attive prima di procedere",
+    "YesDeleteMyAccount":"Si, elimina il mio account",
     "CannedResponses": {
         "QuickTips": {
             "1": "Le Risposte Predefinite sono messaggi predefiniti che è possibile richiamare facilmente durante la chat.",

@@ -291,6 +291,7 @@
     "ActiveOperatorSeatsInThe": "active operator seats in the",
     "GetMore": "Get more",
     "AvailableWithTheProPlan": "Available with the PRO plan",
+    "BoostCustomerEngagementThroughTriggers":"Boost customer engagement through triggers. Send the right message at the right time to the right people.",
     "UpgradeYourAccountToTrackWhatAgentsAreDoing": "Upgrade your account to track what agents are doing!",
     "UpgradeYourAccount": "Upgrade your account",
     "Includes": "includes",
@@ -446,6 +447,12 @@
     "Country": "Country",
     "PhoneNumber":"Phone number",
     "StartDate":"Start Date",
+    "ExtremeMeasures": "Extreme measures",
+    "DeleteAccount":"Delete account",
+    "AreYouSureYouWantDeleteYourAccount":"Are you sure you want delete your account",
+    "AllProjectWillBeDeleted":"All ({{projects_length}}) project(s) created within this account will be deleted", 
+    "CancelAnyActiveSubscriptionsBeforeProceeding":"Cancel any active subscriptions before proceeding",
+    "YesDeleteMyAccount":"Yes, delete my account",
     "CannedResponses": {
         "QuickTips": {
             "1": "Canned response are pre-made messages you can recall easily during chat.",
