@@ -253,9 +253,7 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-  goBack() {
-    this._location.back();
-  }
+
 
   updateCurrentUserFirstnameLastname() {
     this.displayModalUpdatingUser = 'block';
@@ -295,21 +293,9 @@ export class UserProfileComponent implements OnInit {
     this.HAS_EDIT_LASTNAME = false;
   }
 
-  goToChangePsw() {
-    console.log('»» GO TO CHANGE PSW - PROJECT ID ', this.projectId)
-    if (this.projectId === undefined) {
-      this.router.navigate(['user/' + this.userId + '/password/change']);
-    } else {
-      this.router.navigate(['project/' + this.projectId + '/user/' + this.userId + '/password/change']);
-    }
-  }
-
-
-
-
+ 
   resendVerificationEmail() {
     this.usersService.resendVerifyEmail().subscribe((res) => {
-
 
       console.log('RESEND VERIFY EMAIL - RESPONSE ', res);
       const res_success = res['success'];
@@ -330,5 +316,28 @@ export class UserProfileComponent implements OnInit {
       () => {
         console.log('RESEND VERIFY EMAIL * COMPLETE *');
       });
+  }
+
+
+  goBack() {
+    this._location.back();
+  }
+
+  goToChangePsw() {
+    console.log('»» GO TO CHANGE PSW - PROJECT ID ', this.projectId)
+    if (this.projectId === undefined) {
+      this.router.navigate(['user/' + this.userId + '/password/change']);
+    } else {
+      this.router.navigate(['project/' + this.projectId + '/user/' + this.userId + '/password/change']);
+    }
+  }
+
+  goToAccountSettings() {
+    console.log('»» GO TO USER  PROFILE SETTINGS - PROJECT ID ', this.projectId)
+    if (this.projectId === undefined) {
+      this.router.navigate(['user/' + this.userId + '/settings']);
+    } else {
+      this.router.navigate(['project/' + this.projectId + '/user/' + this.userId + '/settings']);
+    }
   }
 }
