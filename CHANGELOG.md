@@ -1,6 +1,9 @@
 
 # tiledesk-dashboard
 
+### 2.0.4
+- Adds the ability to remove the account
+
 ### 2.0.1
 - Fixes in 'Labels' the labels color dropdown is always open at media width < 992px
 - Allows agents to edit notes and labels only of their own requests
