@@ -380,50 +380,50 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
                 // USED FOR THE BADGE 'NEW'
                 if (event.url.indexOf('/activities') !== -1) {
-                    console.log('SIDEBAR NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
+                    // console.log('SIDEBAR NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
                     this.ACTIVITIES_ROUTE_IS_ACTIVE = true;
                 } else {
-                    console.log('SIDEBAR NavigationEnd - THE activities-demo route IS NOT ACTIVE  ', event.url);
+                    // console.log('SIDEBAR NavigationEnd - THE activities-demo route IS NOT ACTIVE  ', event.url);
                     this.ACTIVITIES_ROUTE_IS_ACTIVE = false;
                 }
 
                 if (event.url.indexOf('/activities-demo') !== -1) {
-                    console.log('SIDEBAR NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
+                    // console.log('SIDEBAR NavigationEnd - THE activities-demo route IS ACTIVE  ', event.url);
                     this.ACTIVITIES_DEMO_ROUTE_IS_ACTIVE = true;
                 } else {
-                    console.log('SIDEBAR NavigationEnd - THE activities-demo route IS NOT ACTIVE  ', event.url);
+                    // console.log('SIDEBAR NavigationEnd - THE activities-demo route IS NOT ACTIVE  ', event.url);
                     this.ACTIVITIES_DEMO_ROUTE_IS_ACTIVE = false;
                 }
 
                 if (event.url.indexOf('/analytics-demo') !== -1) {
-                    console.log('SIDEBAR NavigationEnd - THE analytics-demo route IS ACTIVE  ', event.url);
+                    // console.log('SIDEBAR NavigationEnd - THE analytics-demo route IS ACTIVE  ', event.url);
                     this.ANALYTICS_DEMO_ROUTE_IS_ACTIVE = true;
                 } else {
-                    console.log('SIDEBAR NavigationEnd - THE analytics-demo route IS NOT ACTIVE  ', event.url);
+                    // console.log('SIDEBAR NavigationEnd - THE analytics-demo route IS NOT ACTIVE  ', event.url);
                     this.ANALYTICS_DEMO_ROUTE_IS_ACTIVE = false;
                 }
 
                 if (event.url.indexOf('/widget') !== -1) {
-                    console.log('SIDEBAR NavigationEnd - THE widget route IS ACTIVE  ', event.url);
+                    // console.log('SIDEBAR NavigationEnd - THE widget route IS ACTIVE  ', event.url);
                     this.WIDGET_ROUTE_IS_ACTIVE = true;
                 } else {
-                    console.log('SIDEBAR NavigationEnd - THE widget route IS NOT ACTIVE  ', event.url);
+                    // console.log('SIDEBAR NavigationEnd - THE widget route IS NOT ACTIVE  ', event.url);
                     this.WIDGET_ROUTE_IS_ACTIVE = false;
                 }
 
                 if (event.url.indexOf('/analytics') !== -1) {
-                    console.log('SIDEBAR NavigationEnd - THE analytics route IS ACTIVE  ', event.url);
+                    // console.log('SIDEBAR NavigationEnd - THE analytics route IS ACTIVE  ', event.url);
                     this.ANALITYCS_ROUTE_IS_ACTIVE = true;
                 } else {
-                    console.log('SIDEBAR NavigationEnd - THE analytics route IS NOT ACTIVE  ', event.url);
+                    // console.log('SIDEBAR NavigationEnd - THE analytics route IS NOT ACTIVE  ', event.url);
                     this.ANALITYCS_ROUTE_IS_ACTIVE = false;
                 }
 
                 if (event.url.indexOf('/home') !== -1) {
-                    console.log('SIDEBAR NavigationEnd - THE home route IS ACTIVE  ', event.url);
+                    // console.log('SIDEBAR NavigationEnd - THE home route IS ACTIVE  ', event.url);
                     this.HOME_ROUTE_IS_ACTIVE = true;
                 } else {
-                    console.log('SIDEBAR NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
+                    // console.log('SIDEBAR NavigationEnd - THE home route IS NOT ACTIVE  ', event.url);
                     this.HOME_ROUTE_IS_ACTIVE = false;
                 }
             });
