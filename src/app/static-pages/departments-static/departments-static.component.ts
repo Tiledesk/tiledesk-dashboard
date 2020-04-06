@@ -76,18 +76,11 @@ export class DepartmentsStaticComponent extends StaticPageBaseComponent implemen
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
       console.log('ProjectPlanService (DepartmentsStaticComponent) project Profile Data', projectProfileData)
       if (projectProfileData) {
-
-
-
         this.prjct_profile_type = projectProfileData.profile_type;
         this.subscription_is_active = projectProfileData.subscription_is_active;
-
         this.subscription_end_date = projectProfileData.subscription_end_date
-
         this.prjct_profile_name = this.buildPlanName(projectProfileData.profile_name, this.browserLang, this.prjct_profile_type);
-
         if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-
           this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date)
         }
       }
