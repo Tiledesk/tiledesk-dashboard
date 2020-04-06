@@ -73,6 +73,7 @@ export class PricingComponent implements OnInit, OnDestroy {
  
 
   ngOnInit() {
+    this.auth.checkRoleForCurrentProject();
     this.getCurrentProject();
     this.selectedPlanName = 'pro'
 
@@ -427,7 +428,7 @@ export class PricingComponent implements OnInit, OnDestroy {
   **! *** *** *** *** *** *** *** *** *** *** *** !*
   */
   stripeLiveProDailyCheckout() {
-    const that = this;
+    const that = this;  
     const stripe = Stripe('pk_live_XcOe1UfJm9GkSgreETF7WGsc');
 
     // When the customer clicks on the button, redirect
