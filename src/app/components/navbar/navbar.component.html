@@ -197,13 +197,13 @@
             </li>
 
             <!-- 
-                  ***** ngFor - reverse order of output using the index *****
-                  Reverse() works in place. It means, it will change the original array. 
-                  Slice without parameters returns a copy of projects, so original array, in this case, stays unchanged.  
-                  let prjct of projects?.reverse()
-                -->
-
-            <li *ngFor="let prjct of projects?.slice().reverse() | slice:0:5; let i=index" style="cursor: pointer">
+            ***** ngFor - reverse order of output using the index *****
+            Reverse() works in place. It means, it will change the original array. 
+            Slice without parameters returns a copy of projects, so original array, in this case, stays unchanged.  
+            let prjct of projects?.reverse()
+            -->
+            <!-- *ngFor="let prjct of projects?.slice().reverse() | slice:0:5; let i=index" -->
+            <li *ngFor="let prjct of projects?.slice() | slice:0:5; let i=index" style="cursor: pointer">
               <a (click)="goToHome(prjct?.id_project?._id, prjct?.id_project?.name)"
                 [ngClass]="{'li-selected' : prjct?.id_project?._id === projectId }">
 
@@ -219,7 +219,8 @@
                 </span>
               </li>
 
-              <li *ngFor="let prjct of projects?.slice().reverse() | slice:5:10; let i=index" style="cursor: pointer">
+              <!-- *ngFor="let prjct of projects?.slice().reverse() | slice:5:10; let i=index" -->
+              <li *ngFor="let prjct of projects?.slice() | slice:5:10; let i=index" style="cursor: pointer">
                 <a (click)="goToHome(prjct?.id_project?._id, prjct?.id_project?.name)">
                   {{ prjct?.id_project?.name }}
                 </a>

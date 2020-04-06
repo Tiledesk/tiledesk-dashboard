@@ -526,10 +526,10 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
                 if (this.route.indexOf('/request-for-panel') !== -1) {
                     this.IS_REQUEST_FOR_PANEL_ROUTE = true;
-                    console.log('NAVBAR route detected - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
+                    // console.log('NAVBAR route detected - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
                 } else {
                     this.IS_REQUEST_FOR_PANEL_ROUTE = false;
-                    console.log('NAVBAR route detected - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
+                    // console.log('NAVBAR route detected - IS_REQUEST_FOR_PANEL_ROUTE  ', this.IS_REQUEST_FOR_PANEL_ROUTE);
                 }
 
             }
