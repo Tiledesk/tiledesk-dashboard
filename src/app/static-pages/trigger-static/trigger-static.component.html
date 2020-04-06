@@ -1,3 +1,95 @@
-<p>
-  trigger-static works!
+<p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px" class="navbar-brand">
+  {{ 'Trigger.Trigger' | translate }}
 </p>
+
+<div class="main-content" style="padding-top:0px;  background: #fff;">
+  <div class="container-fluid">
+
+    <!-- <div class="row">
+  <div class="col-sm-12">
+    <h2 class="demopage-title" style="padding-top: 30px;
+    padding-bottom: 15px;">
+      Automate your chat assistance with <br> personalized Triggers
+ 
+    </h2>
+ </div>
+</div> -->
+    <div class="row col-container">
+      <div class="col-md-5 left-side-in-col-container">
+        <div class="left-div-padding" style="padding-top: 16px;">
+          <div class="row">
+            <div class="col-sm-12" style="text-align: center;">
+              <h2 class="demopage-title" style="line-height: 1.3em;">
+
+
+                {{ "AvailableWithTheProPlan" | translate }}
+
+
+              </h2>
+              <!-- <span style="color: rgba(0,0,0,.54);font-size:14px">{{ "AvailableWithTheProPlan" | translate }}</span> -->
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <h3 class="demopage-subtitle">
+                {{'BoostCustomerEngagementThroughTriggers'  | translate}}
+
+              </h3>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-12">
+              <div style="text-align: center; padding-bottom: 16px;">
+                <button type="button" class="btn outline-btn-analytics btn-lg" style="padding:11px 22px"
+                  (click)="goToPricing()">
+                  <span> {{ 'UpgradeNow' | translate }} </span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+
+      <div class="col-md-7 right-side-in-col-container">
+        <!-- <div style="max-width:780px;margin:auto">
+          <div class="card" style="box-shadow: 0 14px 30px 0 rgba(60,72,91,0.22); border-radius:10px;">
+            <div class="card-content">
+              <div class="row">
+                <div  class="col-md-12">
+             <slideshow [imageUrls]="imageUrlArray" [minHeight]="'410px'" [autoPlay]="true"  [showArrows]="false"></slideshow>
+                </div>
+              
+              </div>
+            </div>  
+          </div>
+        </div> -->
+        <div class="trigger-card-wrap" style="">
+          <div class="trigger-card">
+            <div>
+              <!-- https://www.w3.org/Style/Examples/007/slideshow.en.html -->
+              <div id=slideset1>
+                <div>
+
+                  <img src="assets/img/trigger_static_1.png" style="width:100%">
+                </div>
+                <div>
+                  <img src="assets/img/trigger_static_2.png" style="width:100%">
+                </div>
+                <div>
+                  <img src="assets/img/trigger_static_3.png" style="width:100%">
+                </div>
+              </div>
+
+            </div>
+
+            <div class="card-shine"> </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
