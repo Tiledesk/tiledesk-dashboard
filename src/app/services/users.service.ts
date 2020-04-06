@@ -375,6 +375,22 @@ export class UsersService {
       .map((response) => response.json());
   }
 
+  // ---------------------------------------------------------
+  // Delete user account 
+  // ---------------------------------------------------------
+  public deleteUserAccount() {
+    const url = this.SERVER_BASE_PATH + 'users';
+    console.log('DELETE ACCOUNT URL ', url);
+    const headers = new Headers();
+    headers.append('Accept', 'application/json');
+    headers.append('Content-type', 'application/json');
+    headers.append('Authorization', this.TOKEN);
+    const options = new RequestOptions({ headers });
+    return this.http
+      .delete(url, options)
+      .map((res) => res.json());
+  }
+
 
 
   /// ================================== GET USER BY ID ================================== ///
@@ -448,7 +464,7 @@ export class UsersService {
     const options = new RequestOptions({ headers });
 
     // , 'id_project': this.project_id, 'project_name': this.project_name
-    const body = { 'email': email, 'role': role };
+    const body = { 'email': email, 'role': role , 'user_available': false};
 
     console.log('POST INVITE USER - REQUEST BODY ', body);
 
@@ -701,16 +717,16 @@ export class UsersService {
   // -----------------------------------------------------------------------------------------------------
   subscriptionToWsCurrentUser(prjctuserid) {
     var self = this;
-  
+
     console.log('% »»» WebSocketJs WF >>> ws-msgs--- m-service - SUBSCR To WS MSGS ****** CALLING REF ****** ');
-    const path =  '/' + this.project_id + '/project_users/' + prjctuserid
-    
+    const path = '/' + this.project_id + '/project_users/' + prjctuserid
+
     this.webSocketJs.ref(path,
       function (data, notification) {
         // console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data ", data , ' path ', path);
-        console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data ", data );
-        console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data  user_available ", data.user_available );
-    
+        console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data ", data);
+        console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - CREATE - data  user_available ", data.user_available);
+
         self.currentUserWsAvailability$.next(data.user_available);
 
         if (data.isBusy) {
@@ -724,14 +740,14 @@ export class UsersService {
       }, function (data, notification) {
 
         console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - UPDATE - data ", data);
-   
+
 
       }, function (data, notification) {
 
         if (data) {
           console.log("SB >>> user-service - SUBSCR To CURRENT-USER AVAILABILITY - ON-DATA - data", data);
-          
-        }  
+
+        }
       }
     );
   }
