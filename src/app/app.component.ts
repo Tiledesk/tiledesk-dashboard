@@ -28,6 +28,7 @@ import brand from 'assets/brand/brand.json';
 
 // import { webSocket } from "rxjs/webSocket";
 export let browserRefresh = false;
+import * as moment from 'moment';
 
 @Component({
     selector: 'appdashboard-root',
@@ -69,9 +70,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         public wsRequestsService: WsRequestsService,
         public wsMsgsService: WsMsgsService,
         public webSocketJs: WebSocketJs,
-        private metaTitle: Title,
-
-
+        private metaTitle: Title
         // private faqKbService: FaqKbService,
     ) {
 
@@ -108,6 +107,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         if (browserLang) {
             if (browserLang === 'it') {
                 this.translate.use('it');
+                moment.locale('it')
             } else {
                 this.translate.use('en');
             }
@@ -212,7 +212,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 // const CHAT_URL = 'ws://tiledesk-server-pre.herokuapp.com?token=' + user.token
                 const CHAT_URL = this.appConfigService.getConfig().wsUrl + '?token=' + user.token
-
+                
+                console.log('AppConfigService % »»» WebSocketJs WF - APP-COMPONENT - I am about to connect to ws ')
 
                 // -----------------------------------------------------------------------------------------------------
                 // Websocket init 
@@ -249,7 +250,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 //  Websocket - Close websocket and reset ws requests list 
                 // -----------------------------------------------------------------------------------------------------
 
-                self.webSocketJs.close()
+                // self.webSocketJs.close()
+                self.webSocketClose()
                 self.wsRequestsService.resetWsRequestList()
 
                 /* The old unsuscribe to firestore requests when No user is signed in. */
@@ -260,6 +262,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
             }
         });
+    }
+
+    webSocketClose () {
+        this.webSocketJs.close()
     }
 
 
@@ -282,8 +288,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     (this.route.indexOf('/general') !== -1) ||
                     (this.route.indexOf('/payments') !== -1) ||
                     (this.route.indexOf('/auth') !== -1) ||
+                    (this.route.indexOf('/advanced') !== -1) ||
                     (this.route.indexOf('/analytics') !== -1) ||
                     (this.route.indexOf('/user-profile') !== -1) ||
+                    (this.route.indexOf('/settings') !== -1) || // account settings
                     (this.route.indexOf('/bot-select-type') !== -1) ||
                     (this.route.indexOf('/change') !== -1)
                 ) {
