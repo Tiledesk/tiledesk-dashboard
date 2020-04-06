@@ -5,8 +5,7 @@
 
 
     <!-- style="background-image: url(assets/img/rocket-login-page.svg); background-repeat:no-repeat; background-position: center bottom;" -->
-    <div class="split left" [ngStyle]="{'background-size': bckgndImageSize}"
-      [ngClass]="{
+    <div class="split left" [ngStyle]="{'background-size': bckgndImageSize}" [ngClass]="{
         'hidden_left_panel' : hide_left_panel === true, 
         'brand-background-image': company_name === 'Tiledesk',
         'no_brand-background-image': company_name !== 'Tiledesk'}">
@@ -21,8 +20,15 @@
         <!-- <h2>Jane Flex</h2>
       <p>Some text.</p> -->
         <!--  -->
-        <div class="welcome-text" style="text-align: center;margin:auto;width:350px; font-family: 'Montserrat', sans-serif; color:#fff; font-size:24px; line-height: 1.1em;
-    font-weight: 400; letter-spacing: 2px;padding-top:40px; text-transform: uppercase;">
+        <div class="welcome-text" style="text-align: center;
+        margin:auto;width:350px; 
+        font-family: 'Montserrat', sans-serif; 
+        color:#fff; font-size:24px; 
+        line-height: 1.1em;
+        font-weight: 400; 
+        letter-spacing: 2px;
+        padding-top:40px; 
+        text-transform: uppercase;">
           {{'WelcomeTo' | translate }}
           <!-- <span>
             {{"LetSetUpYourTiledeskChat" | translate: tparams }}
@@ -37,9 +43,7 @@
             </a>
           </div>
         </div>
-        <div style="width: 450px;
-      margin: auto;
-      text-align: center;">
+        <div style="width: 350px; margin: auto; text-align: center;">
 
           <h2 style="font-size: 46px;font-family: 'Montserrat', sans-serif; color:#fff;  line-height: 1.2em;">
 

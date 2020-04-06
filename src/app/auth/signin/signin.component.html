@@ -22,8 +22,17 @@
         <!-- <img src="img_avatar2.png" alt="Avatar woman"> -->
         <!-- <h2>Jane Flex</h2>
       <p>Some text.</p> -->
-        <div class="welcome-text" style="text-align: center;margin:auto;width:350px; font-family: 'Montserrat', sans-serif; color:#fff; font-size:24px; line-height: 1.1em;
-    font-weight: 400; letter-spacing: 2px;padding-top:40px; text-transform: uppercase;">
+        <div class="welcome-text" style="
+          text-align: center;margin:auto;
+          width:350px; 
+          font-family: 'Montserrat', sans-serif; 
+          color:#fff; 
+          font-size:24px; 
+          line-height: 1.1em;
+          font-weight: 400; 
+          letter-spacing: 2px;
+          padding-top:40px; 
+          text-transform: uppercase;">
           {{'WelcomeTo' | translate }}
 
           <div class="left-logo">
@@ -38,9 +47,7 @@
             </a>
           </div>
         </div>
-        <div style="width: 250px;
-      margin: auto;
-      text-align: center;">
+        <div style="width: 250px; margin: auto; text-align: center;">
           <!-- text-shadow: 1px 1px 1px rgba(0,0,0,0.4); -->
           <h2
             style="font-size: 26px;font-family:'Montserrat', sans-serif;color:#fff; text-align:left; line-height: 1.2em;">
@@ -228,7 +235,7 @@
 // --------------------------------------------------------------------------------------------
 // Old login template
 // -------------------------------------------------------------------------------------------- -->
-<div class="main-content" style="padding-top:0px;display: none;">
+<div class="main-content" style="padding-top:0px; display: none;">
   <!--  background-image: url(assets/img/tiledesk-login-background.jpg); background-size: cover;" -->
   <div class="container-fluid">
     <div class="row">
@@ -270,7 +277,7 @@
 
             <label for="email">Email</label>
             <!-- id="email" -->
-            <input type="email" class="input" formControlName="email" id="email" required autocapitalize="off"
+            <input type="email" class="input" formControlName="email" id="email_old" required autocapitalize="off"
               spellcheck="false">
 
             <!-- <div *ngIf="formErrors.email" class="is-danger">
@@ -278,7 +285,7 @@
             </div> -->
 
             <label for="password">Password</label>
-            <input type="password" id="password" class="input" formControlName="password" required>
+            <input type="password" id="password_old" class="input" formControlName="password" required>
 
             <!-- <div *ngIf="formErrors.password" class="is-danger">
               {{ formErrors.password }}

@@ -142,9 +142,9 @@ export class SigninComponent implements OnInit {
   onResize(event: any) {
 
     const elemLeftPanelSignin = <HTMLElement>document.querySelector('.centered');
-    console.log('SIGN-IN - ACTUAL INNER WIDTH elem Left Panel Signin div offsetTop ', elemLeftPanelSignin.getBoundingClientRect());
-    console.log('SIGN-IN - NEW INNER WIDTH ', event.target.innerWidth);
-    console.log('SIGN-IN - NEW INNER HEIGHT ', event.target.innerHeight);
+    // console.log('SIGN-IN - ACTUAL INNER WIDTH elem Left Panel Signin div offsetTop ', elemLeftPanelSignin.getBoundingClientRect());
+    // console.log('SIGN-IN - NEW INNER WIDTH ', event.target.innerWidth);
+    // console.log('SIGN-IN - NEW INNER HEIGHT ', event.target.innerHeight);
 
     if (event.target.innerHeight <= 680) {
 
