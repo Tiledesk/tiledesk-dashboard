@@ -269,9 +269,32 @@
             </span>
 
             <span class="tooltipx">
-              <i class="material-icons user-agent-icon">
-                public
-              </i>
+
+              <span *ngIf="(request?.ua_browser.indexOf('Chrome') === -1) && 
+              (request?.ua_browser.indexOf('Chromium') === -1) &&
+              (request?.ua_browser.indexOf('Firefox') === -1)">
+
+                <i class="material-icons user-agent-icon">
+                  public
+                </i>
+              </span>
+
+              <!-- 
+              // ----------------------------------------------------------------
+              // Chrome or Chromium
+              // ---------------------------------------------------------------- -->
+              <span
+                *ngIf="request?.ua_browser.indexOf('Chrome') !== -1 || request?.ua_browser.indexOf('Chromium') !== -1">
+                <img style="width: 13px;margin-bottom: 2px;" class="" src="assets/img/user_agent/chrome.svg" />
+              </span>
+
+              <!-- 
+              // ----------------------------------------------------------------
+              // Firefox
+              // ---------------------------------------------------------------- -->
+              <span *ngIf="request?.ua_browser.indexOf('Firefox') !== -1">
+                <img style="width: 13px;margin-bottom: 2px;" class="" src="assets/img/user_agent/firefox.svg" />
+              </span>
 
               <span class="tooltiptext" style="font-size: 10px !important; padding: 3px;">
                 <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span>
