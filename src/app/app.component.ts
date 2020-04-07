@@ -107,7 +107,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         if (browserLang) {
             if (browserLang === 'it') {
                 this.translate.use('it');
-                moment.locale('it')
+               
             } else {
                 this.translate.use('en');
             }
