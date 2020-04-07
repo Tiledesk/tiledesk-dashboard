@@ -141,7 +141,10 @@ export class AuthGuard implements CanActivate {
          * and the Workflow not proceed with the below code
          */
         // tslint:disable-next-line:max-line-length
-        if (this.nav_project_id && this.nav_project_id !== 'email' && url_segments[1] !== 'handle-invitation' && url_segments[1] !== 'signup-on-invitation') {
+        if (this.nav_project_id && 
+          this.nav_project_id !== 'email' && 
+          url_segments[1] !== 'handle-invitation' && 
+          url_segments[1] !== 'signup-on-invitation') {
 
           this.subscription.unsubscribe();
 
@@ -238,6 +241,7 @@ export class AuthGuard implements CanActivate {
 
         // GET AND SAVE ALL USERS OF CURRENT PROJECT IN LOCAL STORAGE
         console.log('AUTH GUARD CALL -> getAllUsersOfCurrentProjectAndSaveInStorage')
+
         this.usersService.getAllUsersOfCurrentProjectAndSaveInStorage();
 
         // GET AND SAVE ALL BOTS OF CURRENT PROJECT IN LOCAL STORAGE

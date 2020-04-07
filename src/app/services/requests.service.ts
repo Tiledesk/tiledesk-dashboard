@@ -144,24 +144,26 @@ export class RequestsService {
       // // tslint:disable-next-line:no-debugger
       // debugger
       if (project) {
-        // console.log('REQ SERV PROJECT ', project)
-        // this.MY_DEPTS_BASE_URL = this.BASE_URL + project._id + '/departments/mydepartments'
-
-        if (this.unsubscribe) {
-          this.unsubscribe();
-          console.log('!!! REQUEST SERVICE: unsubscribe ', this.unsubscribe)
-          this.resetRequestsList();
-        }
         this.project = project;
 
-        this.startRequestsQuery();
+      /* start old */
+      //   if (this.unsubscribe) {
+      //     this.unsubscribe();
+      //     console.log('!!! REQUEST SERVICE: unsubscribe ', this.unsubscribe)
+      //     this.resetRequestsList();
+      //   }
+      //   this.project = project;
 
-      } else {
-        if (this.unsubscribe) {
-          this.unsubscribe();
-          this.resetRequestsList();
-        }
-        this.project = project;
+      //   this.startRequestsQuery();
+
+      // } else {
+      //   if (this.unsubscribe) {
+      //     this.unsubscribe();
+      //     this.resetRequestsList();
+      //   }
+      //   this.project = project;
+      /* end old */
+
       }
 
       // console.log('00 -> REQUEST SERVICE project from AUTH service subscription ', project)

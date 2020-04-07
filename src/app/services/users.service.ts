@@ -163,6 +163,7 @@ export class UsersService {
         // this.MONGODB_BASE_URL = this.SERVER_BASE_PATH + this.project._id + '/project_users/';
 
         this.PROJECT_USER_URL = this.SERVER_BASE_PATH + this.project._id + '/project_users/';
+        
         this.INVITE_USER_URL = this.SERVER_BASE_PATH + this.project._id + '/project_users/invite';
         this.PENDING_INVITATION_URL = this.SERVER_BASE_PATH + this.project._id + '/pendinginvitations';
         this.AVAILABLE_USERS_URL = this.PROJECTS_URL + this.project._id + '/users/availables';
@@ -628,6 +629,8 @@ export class UsersService {
 
   // NEW 22 AGO - GET AND SAVE ALL USERS OF CURRENT PROJECT IN LOCAL STORAGE
   getAllUsersOfCurrentProjectAndSaveInStorage() {
+    console.log('!! USER SERVICE  - PROJECT-USERS FILTERED FOR PROJECT ID ', this.project_id);
+ 
     this.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
       console.log('!! USER SERVICE  - PROJECT-USERS (FILTERED FOR PROJECT ID ', this.project_id, ')', projectUsers);
 
