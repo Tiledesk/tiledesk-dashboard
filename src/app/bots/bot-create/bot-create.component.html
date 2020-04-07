@@ -10,7 +10,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-8">
-        <div class="card" style="padding-top:25px; padding-bottom:25px">
+        <div class="card" style="padding-bottom:25px">
           <div class="card-content">
 
             <loading-spinner *ngIf="showSpinner"></loading-spinner>
@@ -20,7 +20,26 @@
               <!-- <label class="col-sm-2 custom-label"> </label> -->
               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-                <div style="font-size: 16px;
+                <div class="row">
+                  <div class="col-md-12">
+                    <h3 class="card_title__underlined" style="">
+                      <span class="card_title__underline">
+                        <span *ngIf="botType !== 'external'">
+                          {{ 'CreateA' | translate: translateparam }}
+                        </span>
+      
+                        <span *ngIf="botType === 'external'">
+                          {{ 'CreateAN' | translate:translateparam }}
+                        </span>
+                      </span>
+                    </h3>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="section-subtitle"> </div>
+                  </div>
+                </div>
+
+                <!-- <div style="font-size: 16px;
                 font-family: 'Google Sans', sans-serif !important;
                 color: #394f5a;
                 font-weight: 500;
@@ -35,8 +54,7 @@
                   <span *ngIf="botType === 'external'">
                     {{ 'CreateAN' | translate:translateparam }}
                   </span>
-
-                </div>
+                </div> -->
 
               </div>
             </div>
@@ -45,7 +63,7 @@
             // ------------------------------------------------------
             // Bot name - common for native and external
             // ------------------------------------------------------ -->
-            <div class="row" *ngIf="botType !== 'dialogflow'">
+            <div class="row" *ngIf="botType !== 'dialogflow'" style="margin-top: 18px;">
               <label class="col-sm-2 custom-label">
 
                 {{ "BotsAddEditPage.BotName" | translate }}
