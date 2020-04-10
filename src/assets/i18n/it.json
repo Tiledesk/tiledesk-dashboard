@@ -168,6 +168,9 @@
     "UpdateFaqErrorNoticationMsg": "Si è verificato un errore durante l'aggiornamento delle FAQ",
     "TrashBotSuccessNoticationMsg": "Bot cancellato con successo",
     "TrashBotErrorNoticationMsg": "Si è verificato un errore durante l'eliminazione del bot",
+    "UpdateBotError":"Si è verificato un errore durante l'aggiornamento the bot",
+    "Not a valid JSON file.":"file JSON non valido",
+    "UpdateBotSuccess":"bot aggiornato con successo",
     "ArchivingRequestErrorNoticationMsg": "Si è verificato un errore durante l'archiviazione della richiesta",
     "ArchivingRequestNoticationMsg": "Archiviazione della richiesta ...",
     "RequestHasBeenArchivedNoticationMsg_part1": "La richiesta con id: ",
@@ -602,6 +605,8 @@
         "Processing": "Elaborazione...",
         "Completed": "Completato",
         "YourNewProjectIsReady": "Il tuo nuovo progetto è pronto",
+        "YourNewProject": "Il tuo nuovo progetto",
+		"IsReady": "è pronto",
         "Continue": "Continua"
     },
     "ProjectEditPage": {

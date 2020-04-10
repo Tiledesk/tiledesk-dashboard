@@ -169,6 +169,9 @@
     "UpdateFaqErrorNoticationMsg": "An error occurred while updating the FAQ",
     "TrashBotSuccessNoticationMsg": "Bot successfully deleted",
     "TrashBotErrorNoticationMsg": "An error occurred while deleting the bot",
+    "UpdateBotError":"An error occurred while updating the bot",
+    "Not a valid JSON file.":"Not a valid JSON file",
+    "UpdateBotSuccess":" bot successfully updated",
     "ArchivingRequestErrorNoticationMsg": "An error has occurred archiving the request",
     "ArchivingRequestNoticationMsg": "Archiving the request ...",
     "RequestHasBeenArchivedNoticationMsg_part1": "Request with id: ",
@@ -607,6 +610,8 @@
         "Processing": "Processing...",
         "Completed": "Completed",
         "YourNewProjectIsReady": "Your new project is ready",
+        "YourNewProject": "Your new project",
+		"IsReady": "is ready",
         "Continue": "Continue"
     },
     "ProjectEditPage": {

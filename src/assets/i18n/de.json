@@ -169,6 +169,9 @@
 	"UpdateFaqErrorNoticationMsg": "Ein Fehler ist während der Aktualisierung des FAQ aufgetreten",
 	"TrashBotSuccessNoticationMsg": "Bot erfolgreich entfernt",
 	"TrashBotErrorNoticationMsg": "Ein Fehler ist während dem Entfernen des Bots aufgetreten",
+	"UpdateBotError":"Beim aktualisieren des bots ist ein Fehler aufgetreten",
+	"Not a valid JSON file.":"Keine gültige JSON-Datei",
+    "UpdateBotSuccess":"Bot erfolgreich aktualisiert",
 	"ArchivingRequestErrorNoticationMsg": "Ein Fehler ist während der Archivierung der Anfrage aufgetreten",
 	"ArchivingRequestNoticationMsg": "Archiviere Anfrage...",
 	"RequestHasBeenArchivedNoticationMsg_part1": "Anfrage mit id: ",
@@ -454,7 +457,7 @@
     "AreYouSureYouWantDeleteYourAccount":"Sind Sie sicher, dass Sie Ihr Konto löschen möchten",
     "AllProjectWillBeDeleted":"Alle ({{projects_length}}) Projekte, die in diesem Konto erstellt wurden, werden gelöscht", 
     "CancelAnyActiveSubscriptionsBeforeProceeding":"Kündigen Sie alle aktiven Abonnements, bevor Sie fortfahren",
-    "YesDeleteMyAccount":"Ja, lösche mein Konto",
+	"YesDeleteMyAccount":"Ja, lösche mein Konto",
 	"CannedResponses": {
 		"QuickTips": {
 			"1": "Vordefinierte Antworten sind Nachrichten, die es Ihnen ermöglichen schneller auf oft gestellte Fragen zu reagieren.",
@@ -607,6 +610,8 @@
 		"Processing": "Verarbeiten...",
 		"Completed": "Abgeschlossen",
 		"YourNewProjectIsReady": "Ihr Projekt ist nun bereit",
+		"YourNewProject": "Ihr Projekt",
+		"IsReady": "ist nun bereit",
 		"Continue": "Weiter"
 	},
 	"ProjectEditPage": {
@@ -872,7 +877,7 @@
 		"BotName": "Name",
 		"CreateBot": "Bot erstellen",
 		"UpdateBot": "Bot aktualisieren",
-		"UpdateBotName": "Bot Name aktualisieren",
+		"UpdateBotName": "Bot aktualisieren",
 		"BotAttributes": "Bot Attribute",
 		"BotID": "Bot Id",
 		"CreationDate": "Erstellungsdatum",
@@ -884,7 +889,7 @@
 		"AddFaqToTheBot": "FAQs zum Bot hinzufügen",
 		"ReturnToTheBotList": "Zurück zur Bot-Übersicht",
 		"BackToBotsList": "Bot Übersicht",
-		"AnErrorHasOccurred": "An error has occurred",
+		"AnErrorHasOccurred": "Ein Fehler ist aufgetreten",
 		"Continue": "Weiter",
 		"Type": "Typ"
 	},
