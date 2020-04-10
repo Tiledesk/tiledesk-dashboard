@@ -97,6 +97,10 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   uploadedFile: any;
   tparams = brand;
 
+  updateBotError: string;
+  updateBotSuccess: string;
+  notValidJson: string;
+
   constructor(
     private mongodbFaqService: MongodbFaqService,
     private router: Router,
@@ -136,9 +140,27 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     this.getProjectPlan();
     this.getBrowserLang();
 
-
     this.checkUserImageUploadIsComplete();
     this.getParamsBotType();
+
+    this.getTranslations()
+  }
+  getTranslations() {
+    this.translate.get('UpdateBotError')
+      .subscribe((text: string) => {
+        this.updateBotError = text;
+      });
+
+    this.translate.get('UpdateBotSuccess')
+      .subscribe((text: string) => {
+        this.updateBotSuccess = text;
+      });
+
+    this.translate.get('Not a valid JSON file.')
+      .subscribe((text: string) => {
+        this.notValidJson = text;
+      });
+
 
   }
 
@@ -492,14 +514,14 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
 
           if (this.botType !== 'dialogflow') {
             // =========== NOTIFY ERROR ===========
-            this.notify.showWidgetStyleUpdateNotification('An error occurred while updating the bot', 4, 'report_problem');
+            this.notify.showWidgetStyleUpdateNotification(this.updateBotError, 4, 'report_problem');
           }
         },
         () => {
           console.log('EDIT BOT - * COMPLETE *');
           if (this.botType !== 'dialogflow') {
             // =========== NOTIFY SUCCESS===========
-            this.notify.showWidgetStyleUpdateNotification('bot successfully updated', 2, 'done');
+            this.notify.showWidgetStyleUpdateNotification(this.updateBotSuccess, 2, 'done');
 
           }
 
@@ -562,13 +584,19 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     }, (error) => {
       console.log('FaqComponent - uploadDialogflowBotCredetial - ERROR ', error);
       // =========== NOTIFY ERROR ===========
-      this.notify.showWidgetStyleUpdateNotification('An error occurred while updating the bot', 4, 'report_problem');
+
+      const objctErrorBody = JSON.parse(error._body)
+      if (objctErrorBody && objctErrorBody.msg === 'Not a valid JSON file.') {
+        this.notify.showWidgetStyleUpdateNotification(this.updateBotError + ': ' + this.notValidJson, 4, 'report_problem');
+      } else {
+        this.notify.showWidgetStyleUpdateNotification(this.updateBotError, 4, 'report_problem');
+      }
 
     }, () => {
 
       console.log('FaqComponent- uploadDialogflowBotCredetial * COMPLETE *');
       // =========== NOTIFY SUCCESS===========
-      this.notify.showWidgetStyleUpdateNotification('bot successfully updated', 2, 'done');
+      this.notify.showWidgetStyleUpdateNotification(this.updateBotSuccess, 2, 'done');
 
     });
 
