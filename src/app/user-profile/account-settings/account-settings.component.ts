@@ -17,7 +17,7 @@ export class AccountSettingsComponent implements OnInit {
 
   hasClickedDeleteAccount = false;
   displayDeleteAccountModal = 'none';
-  deleteAccount_hasError= false;
+  deleteAccount_hasError = false;
   showSpinner_deleteAccount: boolean;
   delete_account_completed = false;
   projects_length: number;
@@ -47,12 +47,12 @@ export class AccountSettingsComponent implements OnInit {
 
       if (projects) {
         this.projects_length = projects.length;
-        console.log('ACCOUNT_SETTINGS - GET PROJECTS - LENGTH ',  this.projects_length);
+        console.log('ACCOUNT_SETTINGS - GET PROJECTS - LENGTH ', this.projects_length);
 
         this.translateparam = { projects_length: this.projects_length };
       }
     }, error => {
-     
+
       console.log('ACCOUNT_SETTINGS - GET PROJECTS - ERROR ', error)
     }, () => {
       console.log('ACCOUNT_SETTINGS - GET PROJECTS - COMPLETE')
@@ -65,7 +65,7 @@ export class AccountSettingsComponent implements OnInit {
       if (project) {
         console.log('ACCOUNT_SETTINGS - project from AUTH-SERV subscr ', project)
         this.projectId = project._id;
-      
+
       } else {
         console.log('ACCOUNT_SETTINGS - project from AUTH-SERV subscr ? ', project)
 
@@ -75,100 +75,104 @@ export class AccountSettingsComponent implements OnInit {
   }
 
 
-    // hides the sidebar if the user is in the CHANGE PSW PAGE but has not yet selected a project
-    hideSidebar() {
-      const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
-      console.log('ACCOUNT_SETTINGS  elemAppSidebar ', elemAppSidebar)
-      elemAppSidebar.setAttribute('style', 'display:none;');
-  
-      const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-      console.log('ACCOUNT_SETTINGS  elemMainPanel ', elemMainPanel)
-      elemMainPanel.setAttribute('style', 'width:100% !important; overflow-x: hidden !important;');
-    }
+  // hides the sidebar if the user is in the CHANGE PSW PAGE but has not yet selected a project
+  hideSidebar() {
+    const elemAppSidebar = <HTMLElement>document.querySelector('app-sidebar');
+    console.log('ACCOUNT_SETTINGS  elemAppSidebar ', elemAppSidebar)
+    elemAppSidebar.setAttribute('style', 'display:none;');
 
-    getUserIdFromRouteParams() {
-      this.userId = this.route.snapshot.params['userid'];
-      console.log('ACCOUNT_SETTINGS - USER ID ', this.userId)
-    }
-  
+    const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
+    console.log('ACCOUNT_SETTINGS  elemMainPanel ', elemMainPanel)
+    elemMainPanel.setAttribute('style', 'width:100% !important; overflow-x: hidden !important;');
+  }
 
-    openDeleteAccountModal() {
-      this.displayDeleteAccountModal = 'block'
-      this.hasClickedDeleteAccount = false;
-
-    }
-
-    closeDeleteAccountModal() {
-      this.displayDeleteAccountModal = 'none'
-      this.showSpinner_deleteAccount = null;
-      this.deleteAccount_hasError === false
-    }
-
-    deleteAccount() {
-      this.hasClickedDeleteAccount = true;
-      this.showSpinner_deleteAccount = true;
-      this.deleteAccount_hasError = false;
-     
-      // setTimeout(() => { 
-      //   this.showSpinner_deleteAccount = false;
-      //   this.deleteAccount_hasError  = true;
-      //   if(this.deleteAccount_hasError === true) {
-      //     this.hasClickedDeleteAccount = false;
-      //     this.showSpinner_deleteAccount  = null;
-      //   }
-      //   }, 300);
-
-        this.usersService.deleteUserAccount().subscribe((res: any) => {
-          console.log('ACCOUNT_SETTINGS - DELETE-USER-ACCOUNT RES ', res);
-  
-        }, (error) => {
-          console.log('ACCOUNT_SETTINGS - DELETE-USER-ACCOUNT ', error);
-
-          this.showSpinner_deleteAccount = false;
-          this.deleteAccount_hasError  = true;
-          this.hasClickedDeleteAccount = false;
-        }, () => {
-          console.log('ACCOUNT_SETTINGS - DELETE-USER-ACCOUNT * COMPLETE *');
-  
-          this.showSpinner_deleteAccount = false;
-          this.deleteAccount_hasError  = false;
-
-          this.auth.signOut();
-          this.auth.showExpiredSessionPopup(false);
-          
-        });
-    }
+  getUserIdFromRouteParams() {
+    this.userId = this.route.snapshot.params['userid'];
+    console.log('ACCOUNT_SETTINGS - USER ID ', this.userId)
+  }
 
 
+  openDeleteAccountModal() {
+    this.displayDeleteAccountModal = 'block'
+    this.hasClickedDeleteAccount = false;
 
-    // --------------------------------------------------------------
-    // Go to
-    // --------------------------------------------------------------
+  }
 
-    goBack() {
-      this._location.back();
-    }
+  closeDeleteAccountModal() {
+    this.displayDeleteAccountModal = 'none'
+    this.showSpinner_deleteAccount = null;
+    this.deleteAccount_hasError === false
 
-    goToChangePsw() {
-      console.log('»» GO TO CHANGE PSW - PROJECT ID ', this.projectId)
-      if (this.projectId === undefined) {
-        this.router.navigate(['user/' + this.userId + '/password/change']);
-      } else {
-        this.router.navigate(['project/' + this.projectId + '/user/' + this.userId + '/password/change']);
-      }
-    }
-
-    goToUserProfile() {
-      console.log('»» GO TO USER PROFILE  - PROJECT ID ', this.projectId)
-      if (this.projectId === undefined) {
-        this.router.navigate(['user-profile']);
-      } else {
-        this.router.navigate(['project/' + this.projectId + '/user-profile']);
-      }
-    }
-
-    goToLogin() {
+    if (this.delete_account_completed === true) {
       this.router.navigate(['/login']);
-    } 
- 
+    }
+  }
+
+  deleteAccount() {
+    this.hasClickedDeleteAccount = true;
+    this.showSpinner_deleteAccount = true;
+    this.deleteAccount_hasError = false;
+
+    // setTimeout(() => { 
+    //   this.showSpinner_deleteAccount = false;
+    //   this.deleteAccount_hasError  = true;
+    //   if(this.deleteAccount_hasError === true) {
+    //     this.hasClickedDeleteAccount = false;
+    //     this.showSpinner_deleteAccount  = null;
+    //   }
+    //   }, 300);
+
+    this.usersService.deleteUserAccount().subscribe((res: any) => {
+      console.log('ACCOUNT_SETTINGS - DELETE-USER-ACCOUNT RES ', res);
+
+    }, (error) => {
+      console.log('ACCOUNT_SETTINGS - DELETE-USER-ACCOUNT ', error);
+
+      this.showSpinner_deleteAccount = false;
+      this.deleteAccount_hasError = true;
+      this.hasClickedDeleteAccount = false;
+    }, () => {
+      console.log('ACCOUNT_SETTINGS - DELETE-USER-ACCOUNT * COMPLETE *');
+      this.delete_account_completed = true;
+      this.showSpinner_deleteAccount = false;
+      this.deleteAccount_hasError = false;
+
+      this.auth.signOut();
+      this.auth.showExpiredSessionPopup(false);
+
+    });
+  }
+
+
+
+  // --------------------------------------------------------------
+  // Go to
+  // --------------------------------------------------------------
+
+  goBack() {
+    this._location.back();
+  }
+
+  goToChangePsw() {
+    console.log('»» GO TO CHANGE PSW - PROJECT ID ', this.projectId)
+    if (this.projectId === undefined) {
+      this.router.navigate(['user/' + this.userId + '/password/change']);
+    } else {
+      this.router.navigate(['project/' + this.projectId + '/user/' + this.userId + '/password/change']);
+    }
+  }
+
+  goToUserProfile() {
+    console.log('»» GO TO USER PROFILE  - PROJECT ID ', this.projectId)
+    if (this.projectId === undefined) {
+      this.router.navigate(['user-profile']);
+    } else {
+      this.router.navigate(['project/' + this.projectId + '/user-profile']);
+    }
+  }
+
+  goToLogin() {
+    this.router.navigate(['/login']);
+  }
+
 }
