@@ -744,7 +744,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         this.ws_requests.forEach((request) => {
 
           const user_agent_result = this.parseUserAgent(request.userAgent)
-
+          console.log('% »»» WebSocketJs WF - WsRequestsList - USER-AGENT RESULT ', user_agent_result)      
+          
           const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
           // console.log('% »»» WebSocketJs WF - WsRequestsList - USER-AGENT BROWSER ', ua_browser)
 

@@ -819,19 +819,23 @@ $f21blue: #039be5;
 }
 
 .served-by-agent {
-  font-size:11px;
+  font-size: 11px;
   font-weight: 400;
 }
 
-
 .served-by-bot-type-logo {
-  width: 18px;
-  height: 18px;
+  width: 15px;
+  height: 15px;
   position: absolute;
   top: -2px;
-  left: -6px;
+  left: -3px;
   border-radius: 50%;
   border: 1px solid #eee;
   padding: 1px;
   background: #fff;
+}
+
+.ua_browser_icon {
+  width: 13px;
+  // margin-bottom: 2px;
 }

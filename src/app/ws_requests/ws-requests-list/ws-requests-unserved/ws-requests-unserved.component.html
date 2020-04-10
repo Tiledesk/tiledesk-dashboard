@@ -255,28 +255,78 @@
           <!-- ------ ====== USER AGENT BROWSER & OPERATING SYSTEM (in served requests)====== ------ -->
           <td>
             <span class="tooltipx">
-              <i class="material-icons user-agent-icon">
+              <!-- 
+              // ----------------------------------------------------------------
+              // @ OS - if not is
+              // ---------------------------------------------------------------- -->
+              <span *ngIf="(request?.ua_os?.indexOf('Android') === -1) && 
+              (request?.ua_os?.indexOf('Mac OS') === -1) && 
+              (request?.ua_os?.indexOf('iOS') === -1) &&
+              (request?.ua_os?.indexOf('Windows') === -1) &&
+              (request?.ua_os?.indexOf('Ubuntu') === -1)">
+
+                <img style="width: 13px;margin-bottom: 2px;" class="" src="assets/img/user_agent/laptop.svg" />
+              </span>
+
+              <!-- <i class="material-icons user-agent-icon">
                 computer
-              </i>
+              </i> -->
+
+              <!-- 
+              // ----------------------------------------------------------------
+              // if is Android
+              // ---------------------------------------------------------------- -->
+              <span *ngIf="request?.ua_os.indexOf('Android') !== -1">
+                <img style="width: 13px;margin-bottom: 2px;" class="" src="assets/img/user_agent/android.svg" />
+              </span>
+
+              <!-- 
+              // ----------------------------------------------------------------
+              // if is Mac OS or iOS
+              // ---------------------------------------------------------------- -->
+              <span *ngIf="request?.ua_os.indexOf('Mac OS') !== -1 || request?.ua_os.indexOf('iOS') !== -1">
+                <img style="width: 13px;margin-bottom: 2px;" class="" src="assets/img/user_agent/apple.svg" />
+              </span>
+
+              <!-- 
+              // ----------------------------------------------------------------
+              // if is Windows
+              // ---------------------------------------------------------------- -->
+              <span *ngIf="request?.ua_os.indexOf('Windows') !== -1">
+                <img style="width: 13px;margin-bottom: 2px;" class="" src="assets/img/user_agent/windows.svg" />
+              </span>
+
+              <!-- 
+              // ----------------------------------------------------------------
+              // if is Ubuntu
+              // ---------------------------------------------------------------- -->
+              <span *ngIf="request?.ua_os.indexOf('Ubuntu') !== -1">
+                <img style="width: 13px;margin-bottom: 2px;" class="" src="assets/img/user_agent/ubuntu.svg" />
+              </span>
 
               <span class="tooltiptext" style="font-size: 10px !important; padding: 3px;">
-
                 <span *ngIf="request?.ua_os !== 'undefined undefined'"> {{ request?.ua_os }} </span>
                 <span *ngIf="request?.ua_os === 'undefined undefined'"> not defined </span>
-
-
               </span>
             </span>
 
             <span class="tooltipx">
-
+              <!-- 
+              // ----------------------------------------------------------------
+              // @ Browser - if not is
+              // ---------------------------------------------------------------- -->
               <span *ngIf="(request?.ua_browser.indexOf('Chrome') === -1) && 
               (request?.ua_browser.indexOf('Chromium') === -1) &&
-              (request?.ua_browser.indexOf('Firefox') === -1)">
+              (request?.ua_browser.indexOf('Firefox') === -1) &&
+              (request?.ua_browser.indexOf('Edge') === -1) &&
+              (request?.ua_browser.indexOf('Opera') === -1) &&
+              (request?.ua_browser.indexOf('Safari') === -1) &&
+              (request?.ua_browser.indexOf('IE') === -1)">
 
-                <i class="material-icons user-agent-icon">
+              <img class="ua_browser_icon" src="assets/img/user_agent/globe.svg" />
+                <!-- <i class="material-icons user-agent-icon">
                   public
-                </i>
+                </i> -->
               </span>
 
               <!-- 
@@ -285,7 +335,7 @@
               // ---------------------------------------------------------------- -->
               <span
                 *ngIf="request?.ua_browser.indexOf('Chrome') !== -1 || request?.ua_browser.indexOf('Chromium') !== -1">
-                <img style="width: 13px;margin-bottom: 2px;" class="" src="assets/img/user_agent/chrome.svg" />
+                <img class="ua_browser_icon"  src="assets/img/user_agent/chrome.svg" />
               </span>
 
               <!-- 
@@ -293,8 +343,42 @@
               // Firefox
               // ---------------------------------------------------------------- -->
               <span *ngIf="request?.ua_browser.indexOf('Firefox') !== -1">
-                <img style="width: 13px;margin-bottom: 2px;" class="" src="assets/img/user_agent/firefox.svg" />
+                <img class="ua_browser_icon"  src="assets/img/user_agent/firefox.svg" />
               </span>
+
+              <!-- 
+              // ----------------------------------------------------------------
+              // Edge
+              // ---------------------------------------------------------------- -->
+              <span *ngIf="request?.ua_browser.indexOf('Edge') !== -1">
+                <img class="ua_browser_icon"  src="assets/img/user_agent/edge.svg" />
+              </span>
+
+              <!-- 
+              // ----------------------------------------------------------------
+              // Opera
+              // ---------------------------------------------------------------- -->
+              <span *ngIf="request?.ua_browser.indexOf('Opera') !== -1">
+                <img class="ua_browser_icon" src="assets/img/user_agent/opera.svg" />
+              </span>
+
+              <!-- 
+              // ----------------------------------------------------------------
+              // Safari
+              // ---------------------------------------------------------------- -->
+              <span *ngIf="request?.ua_browser.indexOf('Safari') !== -1">
+                <img class="ua_browser_icon" src="assets/img/user_agent/safari.svg" />
+              </span>
+
+              <!-- 
+              // ----------------------------------------------------------------
+              // Explorer
+              // ---------------------------------------------------------------- -->
+              <span *ngIf="request?.ua_browser.indexOf('IE') !== -1">
+                <img class="ua_browser_icon" src="assets/img/user_agent/explorer.svg" />
+              </span>
+
+
 
               <span class="tooltiptext" style="font-size: 10px !important; padding: 3px;">
                 <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span>
