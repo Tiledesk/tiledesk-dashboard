@@ -349,6 +349,35 @@ export class NotifyService {
     });
   }
 
+
+  showToast(message, notificationColor, icon) {
+    const type = ['', 'info', 'success', 'warning', 'danger'];
+    // const color = Math.floor((Math.random() * 4) + 1);
+    const color = notificationColor
+
+    this.notify = $.notify({
+      // icon: 'glyphicon glyphicon-warning-sign',
+      // message: message
+
+    }, {
+      type: type[color],
+      timer: 65000,
+      // delay: 100,
+      placement: {
+        from: 'bottom',
+        align: 'center'
+      },
+      // tslint:disable-next-line:max-line-length
+      template: '<div data-notify="container" class="col-xs-12 col-sm-8 alert alert-{0}" style="text-align: center; background-color:' +color+'; color:rgb(66, 77, 87);font-size: 15px;font-weight: 600;" role="alert">' +
+        '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+        // '<span data-notify="title" style="max-width: 100%; font-size:1.1em; ">TileDesk</span> ' +
+        // tslint:disable-next-line:max-line-length
+        '<span data-notify="icon" style="display: inline;"><i style="vertical-align: middle; padding-right: 5px; color: #fff;" class="material-icons">' + icon + '</i> </span> ' +
+        '<span data-notify="message" style="display: inline; vertical-align: middle; color:#fff ">' + message + '</span>' +
+        '</div>'
+    });
+  }
+
   showResendingVerifyEmailNotification(user_email) {
     this.notifySendingVerifyEmail = $.notify('Sending verification link ...', {
       allow_dismiss: false,
