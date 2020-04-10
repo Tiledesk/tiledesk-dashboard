@@ -71,7 +71,7 @@
           </div>
 
           <div class="wrap-script" style="margin-top: 10px;"> 
-            <pre style="padding-left:0px; margin-bottom: 0px; height: 100px;">
+            <pre style="padding-left:0px; margin-bottom: 0px; height: 155px;">
               <span>&lt;script type=&quot;application/javascript&quot;&gt;</span>
               <span>  window.tiledeskSettings =</span>
               <span>   {{'{'}}</span>
@@ -92,10 +92,10 @@
               <span style="font-size: 12px"> 	{{ 'Resourcepage.CopyScript' | translate }}</span>
             </button>
             
-
+            <!-- top: -78px; -->
             <div class="copied-to-clipboard-tooltip" style="opacity: 0; text-align: center;
-            position: relative;top: -78px; max-width: 360px;left: 50%;transform: translateX(-50%);padding: 5px"
-            [ngClass]="{'has-copied-text' : has_copied}" class="control-label " >
+            position: relative; max-width: 360px;left: 50%;transform: translateX(-50%);padding: 5px"
+            [ngClass]="{'has-copied-text' : has_copied}" >
               {{ 'Copied' | translate }}
             </div>
           </div>
@@ -104,7 +104,7 @@
 
       <div class="row">
         <div class="col-sm-12" style="">
-          <button class="btn btn-primary" (click)="continueToHome()">
+          <button class="btn btn-lg btn-primary" (click)="continueToHome()">
               {{ "ProjectsPage.Continue" | translate }}
           </button>
         </div>
