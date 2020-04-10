@@ -4,6 +4,7 @@ import { AppConfigService } from '../../services/app-config.service';
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
 import brand from 'assets/brand/brand.json';
+import { NotifyService } from '../../core/notify.service';
 type UserFields = 'email' | 'password';
 type FormErrors = { [u in UserFields]: string };
 
@@ -19,7 +20,6 @@ export class SigninComponent implements OnInit {
   company_name = brand.company_name;
   company_site_url = brand.company_site_url;
   showSpinnerInLoginBtn = false;
-
 
   hide_left_panel: boolean;
   bckgndImageSize = 60 + '%'
@@ -56,11 +56,12 @@ export class SigninComponent implements OnInit {
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router,
-    public appConfigService: AppConfigService
+    public appConfigService: AppConfigService,
+    private notify: NotifyService
   ) { }
 
   ngOnInit() {
-
+    // this.redirectIfLogged();
     // this.widgetReInit()
 
 
@@ -82,6 +83,16 @@ export class SigninComponent implements OnInit {
     // console.log('SIGN-IN - ACTUAL INNER WIDTH elem Left Panel Signin div offsetTop ',  elemLeftPanelSignin.getBoundingClientRect());
     // console.log('SIGN-IN - ACTUAL INNER WIDTH elem Left Panel Login Container offsetTop',  elemLoginContainer.offsetTop);
     this.getOSCODE();
+  }
+
+  redirectIfLogged() {
+
+    const storedUser = localStorage.getItem('user')
+   
+    if (storedUser) {
+      console.log('SIGN-IN - REDIRECT TO DASHBORD IF USER IS LOGGED-IN - STORED USER', storedUser);
+      this.router.navigate(['/projects']);
+    }
   }
 
   getOSCODE() {
@@ -253,6 +264,7 @@ export class SigninComponent implements OnInit {
 
           self.display = 'block';
           self.signin_errormsg = 'Sorry, there was an error connecting to the server'
+          self.notify.showToast(self.signin_errormsg, 4, 'report_problem')
         } else {
           self.display = 'block';
           // if ( )
@@ -263,6 +275,8 @@ export class SigninComponent implements OnInit {
           // console.log('SIGNIN USER - POST REQUEST ERROR ', error);
           // console.log('SIGNIN USER - POST REQUEST BODY ERROR ', signin_errorbody);
           console.log('SIGNIN USER - POST REQUEST MSG ERROR ', self.signin_errormsg);
+
+          self.notify.showToast(self.signin_errormsg, 4, 'report_problem')
         }
       }
       // tslint:disable-next-line:no-debugger

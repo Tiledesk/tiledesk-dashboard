@@ -1,11 +1,12 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-
 import { AuthService } from '../../core/auth.service';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute } from '@angular/router';
 import brand from 'assets/brand/brand.json';
+import { NotifyService } from '../../core/notify.service';
+
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
 type FormErrors = { [u in UserFields]: string };
 
@@ -76,18 +77,29 @@ export class SignupComponent implements OnInit, AfterViewInit {
     private auth: AuthService,
     private router: Router,
     private translate: TranslateService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private notify: NotifyService
   ) { }
 
   ngOnInit() {
+    this.redirectIfLogged();
     this.buildForm();
     this.getBrowserLang();
     this.checkCurrentUrlAndSkipWizard()
   }
 
+  redirectIfLogged() {
+
+    const storedUser = localStorage.getItem('user');
+    if(storedUser) { 
+    console.log('SIGN-UP - REDIRECT TO DASHBORD IF USER IS LOGGED-IN - STORED USER', storedUser);
+    this.router.navigate(['/projects']);
+  }
+  }
+
   getWindowWidthAndHeight() {
-    console.log('SIGN-IN - ACTUAL INNER WIDTH ', window.innerWidth);
-    console.log('SIGN-IN - ACTUAL INNER HEIGHT ', window.innerHeight);
+    console.log('SIGN-UP - ACTUAL INNER WIDTH ', window.innerWidth);
+    console.log('SIGN-UP - ACTUAL INNER HEIGHT ', window.innerHeight);
 
     if( window.innerHeight <= 680) {
 
@@ -194,13 +206,20 @@ export class SignupComponent implements OnInit, AfterViewInit {
           if (signupResponse['code'] === 11000) {
             if (this.currentLang === 'it') {
               this.signin_errormsg = `Un account con l'email ${this.userForm.value['email']} esiste già`;
+
+              this.notify.showToast(this.signin_errormsg, 4, 'report_problem')
             } else if (this.currentLang === 'en') {
               this.signin_errormsg = `An account with the email ${this.userForm.value['email']} already exist`;
+              this.notify.showToast(this.signin_errormsg, 4, 'report_problem')
+
             } else if (this.currentLang !== 'en' && this.currentLang !== 'it') {
               this.signin_errormsg = `An account with the email ${this.userForm.value['email']} already exist`;
+              this.notify.showToast(this.signin_errormsg, 4, 'report_problem')
+
             }
           } else {
             this.signin_errormsg = signupResponse['errmsg'];
+            this.notify.showToast(this.signin_errormsg, 4, 'report_problem')
           }
         }
       }, (error) => {
@@ -209,6 +228,7 @@ export class SignupComponent implements OnInit, AfterViewInit {
         this.showSpinnerInLoginBtn = false;
         this.display = 'block';
         this.signin_errormsg = 'An error occurred while creating the account';
+        this.notify.showToast(this.signin_errormsg, 4, 'report_problem')
       }, () => {
         console.log('CREATE NEW USER  - POST REQUEST COMPLETE ');
       });
