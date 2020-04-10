@@ -117,20 +117,58 @@ export class ContactEditComponent implements OnInit {
     this.EMAIL_IS_VALID = true;
     this.edit_lead_btn_ref.nativeElement.blur();
 
+    if (this.lead_fullname) {
+      this.lead_fullname = this.lead_fullname.trim()
+    }
 
+    if (this.lead_email) {
+      this.lead_email =  this.lead_email.trim()
+    }
+
+    if (this.lead_company) {
+      this.lead_company =  this.lead_company.trim()
+    }
+
+    if (this.lead_street_address) {
+      this.lead_street_address = this.lead_street_address.trim()
+    }
+
+    if (this.lead_city) {
+      this.lead_city = this.lead_city.trim()
+    }
+
+    if (this.lead_state) {
+      this.lead_state = this.lead_state.trim()
+    }
+
+    if (this.lead_postalcode) {
+      this.lead_postalcode = this.lead_postalcode.trim()
+    }
+
+    if (this.lead_country) {
+      this.lead_country = this.lead_country.trim()
+    }
+
+    if (this.lead_phone_number) {
+      this.lead_phone_number = this.lead_phone_number.trim()
+    }
+
+    if (this.lead_note) {
+      this.lead_note = this.lead_note.trim()
+    }
 
     this.contactsService.updateLead(
       this.lead_id,
-      this.lead_fullname.trim(),
-      this.lead_email.trim(),
-      this.lead_company.trim(),
-      this.lead_street_address.trim(),
-      this.lead_city.trim(),
-      this.lead_state.trim(),
-      this.lead_postalcode.trim(),
-      this.lead_country.trim(),
-      this.lead_phone_number.trim(),
-      this.lead_note.trim()
+      this.lead_fullname,
+      this.lead_email,
+      this.lead_company,
+      this.lead_street_address,
+      this.lead_city,
+      this.lead_state,
+      this.lead_postalcode,
+      this.lead_country,
+      this.lead_phone_number,
+      this.lead_note
     )
       .subscribe((contact) => {
         console.log('!!!!! EDIT CONTACT - UPDATED CONTACT ', contact);
