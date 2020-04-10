@@ -34,7 +34,7 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   showSpinner = false;
   project: Project;
   displayInfoModal = 'none';
-  // SHOW_CIRCULAR_SPINNER = false;
+  SHOW_CIRCULAR_SPINNER = false;
   goToEditBot = true;
 
   newBot_name: string;
@@ -60,13 +60,9 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
   btn_create_bot_is_disabled = true;
   botNameLength: number;
 
-  HAS_COMPLETED_CREATE_BOT: boolean;
-  HAS_COMPLETED_UPLOAD_DLGFLOWBOT_CREDENTIAL: boolean;
   CREATE_BOT_ERROR: boolean;
-  CREATE_DLGFLOW_BOT_ERROR: boolean;
-
-  CREATE_BOT_CALLBACKS_COMPLETED: boolean;
-
+  CREATE_DIALOGFLOW_BOT_ERROR: boolean;
+  DIALOGFLOW_BOT_ERROR_MSG: string;
 
   uploadCompleted = false;
   uploadedFileName: string;
@@ -134,15 +130,15 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     });
   }
 
-    // TRANSLATION
-    translateFileTypeNotSupported() {
-      this.translate.get('FiletypeNotSupported')
-        .subscribe((text: string) => {
-  
-          this.filetypeNotSupported = text;
-          console.log('+ + + FiletypeNotSupported', text)
-        });
-    }
+  // TRANSLATION
+  translateFileTypeNotSupported() {
+    this.translate.get('FiletypeNotSupported')
+      .subscribe((text: string) => {
+
+        this.filetypeNotSupported = text;
+        console.log('+ + + FiletypeNotSupported', text)
+      });
+  }
 
 
   // getFaqKbId() {
@@ -207,22 +203,21 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
 
   // CREATE (mongoDB)
   createBot() {
+
     this.displayInfoModal = 'block'
-    // this.SHOW_CIRCULAR_SPINNER = true;
-    // this.CREATE_BOT_ERROR = false;
+    this.SHOW_CIRCULAR_SPINNER = true;
 
     console.log('HAS CLICKED CREATE NEW FAQ-KB');
     console.log('BOT-CREATE-COMP Create Bot - NAME ', this.faqKbName);
     console.log('BOT-CREATE-COMP Create Bot - URL ', this.faqKbUrl);
     console.log('BOT-CREATE-COMP Create Bot - PROJ ID ', this.project._id);
     console.log('BOT-CREATE-COMP Create Bot - Bot Type ', this.botType);
+
     let _botType = ''
     if (this.botType === 'native') {
-
       // the type 'native' needs to be changed into 'internal' for the service
       _botType = 'internal'
     } else {
-
       _botType = this.botType
     }
 
@@ -231,16 +226,13 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     // Create bot - note for the creation of a dialogflow bot see the bottom uploaddialogflowBotCredential() called in the complete() 
     // ------------------------------------------------------------------------------------------------------------------------------
     this.faqKbService.addMongoDbFaqKb(this.faqKbName, this.faqKbUrl, _botType)
+
       .subscribe((faqKb) => {
         console.log('»»»»»»»» »»»»»»»» »»»»»»»» CREATE FAQKB - POST DATA ', faqKb);
 
         if (faqKb) {
           this.newBot_name = faqKb.name;
           this.newBot_Id = faqKb._id;
-          // type: "external"
-
-
-          // this.newBot_External = faqKb.external;       
 
           if (faqKb.type === 'external') {
             this.newBot_External = true;
@@ -251,46 +243,26 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
           // SAVE THE BOT IN LOCAL STORAGE
           this.botLocalDbService.saveBotsInStorage(this.newBot_Id, faqKb);
         }
-        // this.bot_fullname = '';
 
-        // RE-RUN GET CONTACT TO UPDATE THE TABLE
-        // this.getDepartments();
-        // this.ngOnInit();
       },
         (error) => {
 
           console.log('CREATE FAQKB - POST REQUEST ERROR ', error);
-          // setTimeout(() => {
-          //   this.SHOW_CIRCULAR_SPINNER = false
-          // }, 300);
 
-          // IF THERE IS AN ERROR, PREVENT THAT THE USER BE ADDRESSED TO THE PAGE 'EDIT BOT'
-          // WHEN CLICK ON THE BUTTON 'CONTINUE' OF THE MODAL 'CREATE BOT'
-          this.goToEditBot = false;
-
-
-          // this.CREATE_BOT_ERROR = true;
-          // this.HAS_COMPLETED_CREATE_BOT = false;
+          this.SHOW_CIRCULAR_SPINNER = false;
+          this.CREATE_DIALOGFLOW_BOT_ERROR = true;
 
           if (this.botType !== 'dialogflow') {
-            this.CREATE_BOT_CALLBACKS_COMPLETED = false
-            console.log('CREATE BOT - CREATE_BOT_CALLBACKS_COMPLETED ', this.CREATE_BOT_CALLBACKS_COMPLETED, 'BOT TYPE ', this.botType);
+            this.CREATE_BOT_ERROR = true;
           }
         },
         () => {
           console.log('CREATE FAQKB - POST REQUEST * COMPLETE *');
-          this.HAS_COMPLETED_CREATE_BOT = true;
 
           if (this.botType !== 'dialogflow') {
-
-            this.CREATE_BOT_CALLBACKS_COMPLETED = true;
-            console.log('CREATE BOT - CREATE_BOT_CALLBACKS_COMPLETED ', this.CREATE_BOT_CALLBACKS_COMPLETED, 'BOT TYPE ', this.botType);
+            this.SHOW_CIRCULAR_SPINNER = false;
+            this.CREATE_BOT_ERROR = false;
           }
-
-          // setTimeout(() => {
-          //   this.SHOW_CIRCULAR_SPINNER = false
-          // }, 300);
-
 
           // if the bot type is 'dialogflow' with the bot-id returned from the response of 'createBot()' run another POST CALLBACK with the uploaded credential
           if (this.botType === 'dialogflow') {
@@ -299,8 +271,6 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
               ' - uploadedFile: ', this.uploadedFile,
               ' - lang Code ', this.dlgflwSelectedLangCode,
               ' - kbs (dlgflwKnowledgeBaseID) ', this.dlgflwKnowledgeBaseID);
-
-
 
             const formData = new FormData();
 
@@ -332,7 +302,6 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
             formData.append('file', this.uploadedFile, this.uploadedFile.name);
             console.log('Create BOT FORM DATA ', formData)
 
-
             this.uploaddialogflowBotCredential(this.newBot_Id, formData);
             //
           }
@@ -341,118 +310,45 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
 
   uploaddialogflowBotCredential(bot_Id, formData) {
     this.faqKbService.uploadDialogflowBotCredetial(bot_Id, formData).subscribe((res) => {
-
       console.log('CREATE FAQKB - uploadDialogflowBotCredetial - RES ', res);
 
     }, (error) => {
       console.log('CREATE FAQKB - uploadDialogflowBotCredetial - ERROR ', error);
+      if (error) {
+       const objctErrorBody = JSON.parse(error._body)
+        this.DIALOGFLOW_BOT_ERROR_MSG = objctErrorBody.msg
+        console.log('CREATE FAQKB - DIALOGFLOW_BOT_ERROR_MSG ',  this.DIALOGFLOW_BOT_ERROR_MSG);
+      }
 
-      // this.CREATE_DLGFLOW_BOT_ERROR = true;
-
-      // this.HAS_COMPLETED_UPLOAD_DLGFLOWBOT_CREDENTIAL = false
-      this.CREATE_BOT_CALLBACKS_COMPLETED = false;
-
-      // if (this.HAS_COMPLETED_CREATE_BOT && !this.HAS_COMPLETED_UPLOAD_DLGFLOWBOT_CREDENTIAL) {         
-      // }
-      // if (!this.HAS_COMPLETED_CREATE_BOT && !this.HAS_COMPLETED_UPLOAD_DLGFLOWBOT_CREDENTIAL) {
-      //   this.CREATE_BOT_CALLBACKS_COMPLETED = false;
-      // }
-
+      this.CREATE_DIALOGFLOW_BOT_ERROR = true;
+      this.SHOW_CIRCULAR_SPINNER = false;
 
     }, () => {
+      console.log('CREATE FAQKB - uploadDialogflowBotCredetial - COMPLETE ');
 
-      this.CREATE_BOT_CALLBACKS_COMPLETED = true
-
-      // this.HAS_COMPLETED_UPLOAD_DLGFLOWBOT_CREDENTIAL = true;
-
-      // if (this.HAS_COMPLETED_CREATE_BOT && this.HAS_COMPLETED_UPLOAD_DLGFLOWBOT_CREDENTIAL) {
-      //   this.CREATE_BOT_CALLBACKS_COMPLETED = true
-      // }
-
-      // if (!this.HAS_COMPLETED_CREATE_BOT && this.HAS_COMPLETED_UPLOAD_DLGFLOWBOT_CREDENTIAL) {
-      //   this.CREATE_BOT_CALLBACKS_COMPLETED = false
-      // }
-
+      this.CREATE_DIALOGFLOW_BOT_ERROR = false;
+      this.SHOW_CIRCULAR_SPINNER = false;
 
       console.log('CREATE FAQKB - uploadDialogflowBotCredetial * COMPLETE *');
-      // this.CREATE_DLGFLOW_BOT_ERROR = false;
     });
-
   }
-
 
   onSelectDialogFlowBotLang(selectedLangCode: string) {
     if (selectedLangCode) {
-
       console.log('Create Faq Kb - Bot Type: ', this.botType, ' - selectedLang CODE : ', selectedLangCode);
       this.dlgflwSelectedLangCode = selectedLangCode
-
     }
   }
-
-  // WHEN A BOT IS CREATED IN THE MODAL WINDOW 'CREATE BOT', TWO ACTIONS ARE POSSIBLE:
-  // "ADD FAQS NOW" and "RETURN TO THE BOT LIST (ADD AFTER)". DEFAULT IS SELECTED THE FIRST ACTION.
-  // WHEN THE USER CLICK ON "CONTINUE" WILL BE ADDRESSED: TO THE VIEW OF "EDIT BOT" or,
-  // IF THE USER SELECT THE SECOND OPTION, TO THE LIST OF BOT
-  actionAfterGroupCreation(goToEditBot) {
-    this.goToEditBot = goToEditBot;
-    console.log('»»» »»» GO TO EDIT BOT ', goToEditBot)
-  }
-
 
   goTo_EditBot() {
     this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + this.botType]);
   }
 
   onCloseModal() {
-    // this.CREATE_BOT_CALLBACKS_COMPLETED = null
     this.displayInfoModal = 'none';
+    this.CREATE_DIALOGFLOW_BOT_ERROR = null;
+    this.CREATE_BOT_ERROR = null;
   }
-
-
-  // goTo_BotsList() {
-  //   this.router.navigate(['project/' + this.project._id + '/bots/']);
-  // }
-
-  // onCloseInfoModalHandled() {
-  //   console.log('»»» »»» onCloseInfoModalHandled ' )
-  //   // this.router.navigate(['project/' + this.project._id + '/faqkb']);
-  //   this.CREATE_BOT_CALLBACKS_COMPLETED = null
-  //   if (this.botType === 'native') {
-  //     if (this.goToEditBot === true) {
-  //       this.router.navigate(['project/' + this.project._id + '/bots/' + this.newBot_Id + "/" + this.botType]);
-  //     } else {
-  //       this.router.navigate(['project/' + this.project._id + '/bots']);
-  //     }
-  //   } else {
-  //     this.router.navigate(['project/' + this.project._id + '/bots']);
-  //   }
-  // }
-
- 
-  // !!! NO MORE USED IN THIS COMPONENT - MOVED IN faq.component.html
-  // edit() {
-  //   console.log('FAQ KB NAME TO UPDATE ', this.faqKbNameToUpdate);
-  //   console.log('FAQ KB URL TO UPDATE ', this.faqKbUrlToUpdate);
-
-  //   this.faqKbService.updateMongoDbFaqKb(this.id_faq_kb, this.faqKbNameToUpdate, this.faqKbUrlToUpdate).subscribe((data) => {
-  //     console.log('PUT DATA ', data);
-
-  //     // RE-RUN GET CONTACT TO UPDATE THE TABLE
-  //     // this.getDepartments();
-  //     this.ngOnInit();
-  //   },
-  //     (error) => {
-
-  //       console.log('PUT REQUEST ERROR ', error);
-
-  //     },
-  //     () => {
-  //       console.log('PUT REQUEST * COMPLETE *');
-
-  //       this.router.navigate(['project/' + this.project._id + '/faqkb']);
-  //     });
-  // }
 
   goBackToFaqKbList() {
     // this.router.navigate(['project/' + this.project._id + '/faqkb']);
@@ -594,21 +490,14 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
         console.log('READER ON PROGRESS PROGRESS ', this.percentLoaded);
 
         if (this.percentLoaded === 100) {
-
           setTimeout(() => {
             this.hideProgressBar = true;
             this.uploadCompleted = true;
           }, 500);
-
-
         }
 
-
-
         if (this.botNameLength > 1 && this.percentLoaded === 100) {
-
           this.btn_create_bot_is_disabled = false;
-
         }
       }
     };
@@ -653,6 +542,41 @@ export class BotCreateComponent extends BotsBaseComponent implements OnInit {
     const url = 'https://cloud.google.com/dialogflow/docs/knowledge-connectors';
     window.open(url, '_blank');
   }
+
+
+
+  // !!! NO MORE USED - WHEN A BOT IS CREATED IN THE MODAL WINDOW 'CREATE BOT', TWO ACTIONS ARE POSSIBLE:
+  // "ADD FAQS NOW" and "RETURN TO THE BOT LIST (ADD AFTER)". DEFAULT IS SELECTED THE FIRST ACTION.
+  // WHEN THE USER CLICK ON "CONTINUE" WILL BE ADDRESSED: TO THE VIEW OF "EDIT BOT" or,
+  // IF THE USER SELECT THE SECOND OPTION, TO THE LIST OF BOT
+  actionAfterGroupCreation(goToEditBot) {
+    this.goToEditBot = goToEditBot;
+    console.log('»»» »»» GO TO EDIT BOT ', goToEditBot)
+  }
+
+  // !!! NO MORE USED IN THIS COMPONENT - MOVED IN faq.component.html
+  // edit() {
+  //   console.log('FAQ KB NAME TO UPDATE ', this.faqKbNameToUpdate);
+  //   console.log('FAQ KB URL TO UPDATE ', this.faqKbUrlToUpdate);
+
+  //   this.faqKbService.updateMongoDbFaqKb(this.id_faq_kb, this.faqKbNameToUpdate, this.faqKbUrlToUpdate).subscribe((data) => {
+  //     console.log('PUT DATA ', data);
+
+  //     // RE-RUN GET CONTACT TO UPDATE THE TABLE
+  //     // this.getDepartments();
+  //     this.ngOnInit();
+  //   },
+  //     (error) => {
+
+  //       console.log('PUT REQUEST ERROR ', error);
+
+  //     },
+  //     () => {
+  //       console.log('PUT REQUEST * COMPLETE *');
+
+  //       this.router.navigate(['project/' + this.project._id + '/faqkb']);
+  //     });
+  // }
 
 
 

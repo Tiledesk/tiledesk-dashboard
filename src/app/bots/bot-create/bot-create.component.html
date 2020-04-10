@@ -15,7 +15,6 @@
 
             <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
-
             <div class="row">
               <!-- <label class="col-sm-2 custom-label"> </label> -->
               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -27,7 +26,7 @@
                         <span *ngIf="botType !== 'external'">
                           {{ 'CreateA' | translate: translateparam }}
                         </span>
-      
+
                         <span *ngIf="botType === 'external'">
                           {{ 'CreateAN' | translate:translateparam }}
                         </span>
@@ -35,7 +34,7 @@
                     </h3>
                   </div>
                   <div class="col-md-12">
-                    <div class="section-subtitle"> </div>
+                    <div class="create-bot-section-subtitle"> </div>
                   </div>
                 </div>
 
@@ -112,7 +111,7 @@
               <div class="row">
                 <label class="col-sm-2 custom-label">Url</label>
                 <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
-                  <textarea [(ngModel)]="faqKbUrl" class="input" type="text"
+                  <textarea [(ngModel)]="faqKbUrl" class="input" type="text" rows="2"
                     placeholder="{{ 'BotsPage.EnterExternalBotUrl' | translate }}">
                 </textarea>
                 </div>
@@ -151,8 +150,8 @@
                     <p class="m-0">
                       <span style="color: rgba(0,0,0,.54);font-weight: 400;"> {{ 'DragAFileHereOr' | translate }}</span>
                       <label class="upload-button">
-                        <input (change)="onFileChange($event)" id="uploadprivatekey" accept="application/JSON" name="uploadprivatekey"
-                          type="file">
+                        <input (change)="onFileChange($event)" id="uploadprivatekey" accept="application/JSON"
+                          name="uploadprivatekey" type="file">
                         <span class="browse-btn">{{ 'Browse' | translate }}</span>
                       </label>
                       <span style="color: rgba(0,0,0,.54);font-weight: 400;"> {{ 'ToUpload' | translate }} </span>
@@ -231,12 +230,13 @@
               <div class="row" style="margin-bottom: 18px;">
                 <label class="col-sm-12 custom-label__dlgflowbot">
                   {{ 'DialogflowKnowledgeBaseID' | translate }}
-          
+
                 </label>
                 <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
                   <input [(ngModel)]="dlgflwKnowledgeBaseID" class="input" type="text" style="margin-bottom: 0px;">
 
-                  <span style="display: block; font-size: 12px; font-weight: 100;color: #7695a5;line-height: 1.2em;padding-top: 3px;">
+                  <span
+                    style="display: block; font-size: 12px; font-weight: 100;color: #7695a5;line-height: 1.2em;padding-top: 3px;">
                     {{ 'FillTheFieldOnlyIfYouWantToUseDialogflowKB' | translate }}
 
                     <span (click)="openDialogflowKbFeatureTutorial()">
@@ -383,31 +383,31 @@
       </div>
 
       <hr class="custom-hr" style="margin-top:3px; margin-bottom:3px">
-      
+
       <div class="modal-body"
         style="padding-top: 0px; padding-bottom: 0px; padding-right: 34px; padding-left: 34px; line-height: 1;min-height: 161px;">
+        <!-- CREATE_DIALOGFLOW_BOT_ERROR:  {{CREATE_DIALOGFLOW_BOT_ERROR}} <br>
+        SHOW_CIRCULAR_SPINNER: {{SHOW_CIRCULAR_SPINNER}}
+        CREATE_BOT_ERROR: {{CREATE_BOT_ERROR}} -->
 
-        <!-- <span *ngIf="SHOW_CIRCULAR_SPINNER">
-          <div class="loader" style="top:25%">
-            <svg class="circular" viewBox="25 25 50 50">
-              <circle class="path" cx="50" cy="50" r="15" fill="none" stroke-width="2" stroke-miterlimit="10" />
-            </svg>
-
-          </div>
-          <p style="margin-top: 60px; text-align: center;">
-            {{ "BotsAddEditPage.Processing" | translate }}
-          </p>
-        </span> -->
-
-        <!-- *ngIf="!SHOW_CIRCULAR_SPINNER" -->
 
 
         <div style="text-align: center">
 
+          <div *ngIf="SHOW_CIRCULAR_SPINNER" style="min-height: 171px;">
+            <div class="stretchspinner">
+              <div class="rect1"></div>
+              <div class="rect2"></div>
+              <div class="rect3"></div>
+              <div class="rect4"></div>
+              <div class="rect5"></div>
+            </div>
+          </div>
+
           <!--      WHEN NO ERROR OCCUR      -->
 
           <!-- botType =   {{ botType}} ||||  CREATE_DLGFLOW_BOT_ERROR = {{ CREATE_DLGFLOW_BOT_ERROR }} |||| CREATE_BOT_ERROR = {{ CREATE_BOT_ERROR }} -->
-          <span *ngIf="CREATE_BOT_CALLBACKS_COMPLETED">
+          <div *ngIf="!CREATE_DIALOGFLOW_BOT_ERROR && !CREATE_BOT_ERROR && !SHOW_CIRCULAR_SPINNER">
             <!-- <i class="material-icons" style="color:#70b665">done</i>
               <p style="color:#70b665; font-weight: 500">
                 {{ "BotsAddEditPage.Completed" | translate }}
@@ -422,117 +422,54 @@
               </div>
             </div>
 
-            <h3 style="text-align: center;  color: #8894ab; font-size: 22px; margin-bottom: 20px; min-height: 33px;">
+            <h3 style="text-align: center;  color: #8894ab; font-size: 22px; margin-bottom: 20px;">
               {{ "BotsAddEditPage.Completed" | translate }}
             </h3>
-
-            <!-- 
-            // ---------------------------------------------------------------------------------------------
-            // the bot <bot-name> has been created
-            // --------------------------------------------------------------------------------------------- -->
-            <!-- <p style="margin-top: 10px; text-align: center; font-weight: 500; font-size: 16px;color: #8894ab;">
-              {{ "BotsAddEditPage.TheBot" | translate }}
-              <span style="color: #566787"> <strong>{{ newBot_name }} </strong> </span>
-              {{ "BotsAddEditPage.HasBeenCreated" | translate }}
-            </p> -->
-
-
-            <!-- 
-              // ---------------------------------------------------------------------------------------------
-              //  WHEN IS CREATED A native bot DISPLAY NAVIGATION OPTION (AddFaqToTheBot or ReturnToTheBotList ) 
-              // --------------------------------------------------------------------------------------------- -->
-            <!-- <span *ngIf="botType === 'native'">
-              <div class="row">
-                <div class="col-md-12" style="text-align: center; padding-left: 3px; padding-right: 6px;"
-                  [ngClass]="{'it_custom_add_faq_now' : browser_lang == 'it'}">
-                  <label class="form-check">
-                    <input class="form-check-input" type="radio" name="mode" [checked]="true"
-                      (change)="actionAfterGroupCreation(goToEditBot = true)">
-                    <span style="margin-left: 8px; color:#7695a5; font-weight: 500;">
-                      {{ "BotsAddEditPage.AddFaqToTheBot" | translate }}
-                    </span>
-                  </label>
-                </div>
-              </div>
-
-              <div class="row">
-                <div class="col-md-12" style="text-align: center">
-                  <label class="form-check">
-                    <input class="form-check-input" type="radio" name="mode" [value]="false"
-                      (change)="actionAfterGroupCreation(goToEditBot = false)">
-                    <span style="margin-left: 8px; color:#7695a5; font-weight: 500">
-                      {{ "BotsAddEditPage.ReturnToTheBotList" | translate }}
-                    </span>
-                  </label>
-                </div>
-              </div>
-            </span> -->
-          </span>
+          </div>
 
           <!--   ERROR   -->
-          <span *ngIf="CREATE_BOT_CALLBACKS_COMPLETED === false">
-            <div class="error-banmark">
+          <div *ngIf="CREATE_DIALOGFLOW_BOT_ERROR || CREATE_BOT_ERROR && !SHOW_CIRCULAR_SPINNER">
+            <!-- <div class="error-banmark">
               <div class="ban-icon">
                 <span class="icon-line line-long-invert"></span>
                 <span class="icon-line line-long"></span>
                 <div class="icon-circle"></div>
                 <div class="icon-fix"></div>
               </div>
+            </div> -->
+
+            <!-- 
+            // ------------------------------------------------------
+            // New error animate icon
+            // ------------------------------------------------------ -->
+            <div class="swal2-icon swal2-error swal2-animate-error-icon" style="display: flex;">
+              <span class="swal2-x-mark">
+                <span class="swal2-x-mark-line-left"></span>
+                <span class="swal2-x-mark-line-right">
+                </span>
+              </span>
             </div>
 
-            <!-- <i class="material-icons" style="color:#ff5252">report_problem</i>
-            <p style="color:#ff5252; font-weight: 500">
-              {{ "Error" | translate }}
-            </p> -->
-
-            <!-- <p style="margin-top: 10px; text-align: center; font-weight: 500; font-size: 16px;color: #8894ab;">
+            <h3 style="text-align: center;  color: #8894ab; font-size: 22px; margin-bottom: 20px;">
               {{ "BotsAddEditPage.AnErrorHasOccurred" | translate }}
-            </p> -->
 
-            <h3 style="text-align: center;  color: #8894ab; font-size: 22px; margin-bottom: 20px;min-height: 33px;">
-              {{ "BotsAddEditPage.AnErrorHasOccurred" | translate }}
+              <span *ngIf="DIALOGFLOW_BOT_ERROR_MSG === 'Not a valid JSON file.'" style="font-size: 16px;display: block;color: #f27474;"> 
+                {{ DIALOGFLOW_BOT_ERROR_MSG | translate}} 
+              </span>
             </h3>
-          </span>
-
+          </div>
         </div>
-
-        <!--      WHEN NO ERROR OCCUR      -->
-        <!-- <span *ngIf="!CREATE_BOT_ERROR || !CREATE_DLGFLOW_BOT_ERROR"> </span> -->
-
-        <!--    ERROR     -->
-        <!-- <span *ngIf="CREATE_BOT_ERROR || CREATE_DLGFLOW_BOT_ERROR"> </span> -->
-
-
       </div>
 
       <div class="modal-footer" style="text-align: center;min-height: 59px;">
-
-        <!-- <button *ngIf="CREATE_BOT_CALLBACKS_COMPLETED === true" class="btn btn-primary" (click)="goTo_BotsList()" >
-          <span> 
-            <i class="material-icons">
-              arrow_back
-            </i>
-            {{ "BotsAddEditPage.BackToBotsList" | translate }}
-          </span>
+        <button *ngIf="CREATE_DIALOGFLOW_BOT_ERROR === false || CREATE_BOT_ERROR === false" class="btn btn-primary"
+          (click)="goTo_EditBot()">
+          <span> {{ "BotsAddEditPage.Continue" | translate }} </span>
         </button>
 
-        <button class="btn btn-white" type="button" (click)="onCloseModal()">
-          {{ "Close" | translate }}
-        </button> -->
-
-
-        <button *ngIf="CREATE_BOT_CALLBACKS_COMPLETED === true" class="btn btn-primary" (click)="goTo_EditBot()">
-          <span> {{ "BotsAddEditPage.Continue" | translate }}
-            <!-- <i class="material-icons">
-              arrow_forward
-            </i> -->
-          </span>
-        </button>
-
-        <button *ngIf="CREATE_BOT_CALLBACKS_COMPLETED === false" class="btn btn-primary" (click)="onCloseModal()">
-          <span>
-            {{ "Close" | translate }}
-          </span>
+        <button *ngIf="CREATE_DIALOGFLOW_BOT_ERROR === true || CREATE_BOT_ERROR === true" class="btn btn-primary"
+          (click)="onCloseModal()">
+          <span> {{ "Close" | translate }} </span>
         </button>
       </div>
 
