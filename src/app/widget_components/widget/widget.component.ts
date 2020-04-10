@@ -645,7 +645,8 @@ export class WidgetComponent implements OnInit, OnDestroy {
   }
 
   openWebSDK() {
-    const url = 'https://docs.tiledesk.com/widget/web-sdk'
+    // const url = 'https://docs.tiledesk.com/widget/web-sdk'
+    const url = 'https://developer.tiledesk.com/widget/web-sdk';
     window.open(url, '_blank');
   }
 
