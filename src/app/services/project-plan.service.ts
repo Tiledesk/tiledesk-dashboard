@@ -42,7 +42,7 @@ export class ProjectPlanService {
         // console.log('PROJECT-PLAN-SERVICE  translateNotificationMsgs text', translation)
 
         this.project_deleted_notification = translation.TheProjectHasBeenDeleted;
-       
+
       });
   }
 
@@ -80,7 +80,15 @@ export class ProjectPlanService {
         const nav_project_id = url_segments[2];
         console.log('ProjectPlanService - nav_project_id ', nav_project_id);
 
-        if (nav_project_id && nav_project_id !== 'email' && url_segments[1] !== 'user' && url_segments[1] !== 'handle-invitation' && url_segments[1] !== 'signup-on-invitation') {
+        if (
+          nav_project_id &&
+          nav_project_id !== 'email' &&
+          url_segments[1] !== 'user' &&
+          url_segments[1] !== 'handle-invitation' &&
+          url_segments[1] !== 'signup-on-invitation' &&
+          url_segments[1] !== 'resetpassword' &&
+          current_url !== '/projects'
+        ) {
           this.getProjectByID(nav_project_id)
         }
 
@@ -128,10 +136,12 @@ export class ProjectPlanService {
       if (error.status === 404) {
         this.router.navigate(['/projects']);
         this.notify.showNotificationChangeProject(this.project_deleted_notification, 2, 'report_problem');
+        console.log('ProjectPlanService - hey i redirect to projects');
       }
 
       if (error.status === 401) {
         this.router.navigate(['/login']);
+        console.log('ProjectPlanService - hey i redirect to login');
       }
 
 

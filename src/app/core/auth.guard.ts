@@ -143,8 +143,11 @@ export class AuthGuard implements CanActivate {
         // tslint:disable-next-line:max-line-length
         if (this.nav_project_id && 
           this.nav_project_id !== 'email' && 
+          url_segments[1] !== 'user' &&
           url_segments[1] !== 'handle-invitation' && 
-          url_segments[1] !== 'signup-on-invitation') {
+          url_segments[1] !== 'signup-on-invitation' &&
+          url_segments[1] !== 'resetpassword' &&
+          current_url !== '/projects') {
 
           this.subscription.unsubscribe();
 

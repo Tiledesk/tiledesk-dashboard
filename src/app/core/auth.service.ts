@@ -258,6 +258,7 @@ export class AuthService {
                 url_segments[1] !== 'user' &&
                 url_segments[1] !== 'handle-invitation' &&
                 url_segments[1] !== 'signup-on-invitation' &&
+                url_segments[1] !== 'resetpassword'  &&
                 current_url !== '/projects'
               ) {
 
@@ -951,6 +952,7 @@ export class AuthService {
   firebaseSignout() {
     this.user_bs.next(null);
     this.project_bs.next(null);
+    console.log('SIGNOUT project_bs VALUE: ', this.project_bs.value);
 
     localStorage.removeItem('user');
     localStorage.removeItem('project');
