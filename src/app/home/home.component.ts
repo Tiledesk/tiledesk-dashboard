@@ -458,7 +458,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   goToDeveloperDocs() {
-    const url = ' https://docs.tiledesk.com/';
+    // const url = 'https://docs.tiledesk.com/';
+    const url = 'https://developer.tiledesk.com';
+   
     window.open(url, '_blank');
   }
 
