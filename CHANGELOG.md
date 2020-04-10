@@ -1,6 +1,15 @@
 
 # tiledesk-dashboard
 
+### 2.0.12
+- Fixes bugs
+- Redirects to the recent projects page if the user is logged in and is directed to the login or registration page
+- Adds a spinner in the popup window "create bot"
+
+### 2.0.8
+- Adds mimor improvements
+- Merges pull request 'German language support'
+
 ### 2.0.4
 - Adds the ability to remove the account
 
