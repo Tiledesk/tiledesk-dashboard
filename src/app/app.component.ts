@@ -500,7 +500,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                         }
                     }
                 }
-                console.log('APP.COMP currentUrl ', this.route, 'tiledeskSettings ', window['tiledeskSettings']);
+                // console.log('APP.COMP currentUrl ', this.route, 'tiledeskSettings ', window['tiledeskSettings']);
             }
         });
     }

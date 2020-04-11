@@ -15,7 +15,6 @@
           <th></th>
 
           <!-- ------ ====== MESSAGE ====== ------ -->
-
           <th>
             <span class="column-th-span">
               {{ 'VisitorsPage.Message' | translate }}
@@ -24,7 +23,6 @@
 
           <!-- ------ ====== REQUESTER ====== ------ -->
           <th>
-
             <span class="column-th-span">
               {{ 'VisitorsPage.Requester' | translate }}
             </span>
@@ -176,18 +174,11 @@
                   </span>
                 </span> -->
 
-
           </td>
 
-
-
           <!-- ------ ====== MESSAGE ====== ------ -->
-
           <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; ">
-
-            <p class="column-td" [innerHTML]="getRequestText(request?.first_text)">
-
-            </p>
+            <p class="column-td" [innerHTML]="getRequestText(request?.first_text)">  </p>
           </td>
 
           <!-- ------ ====== REQUESTER (in UNSERVED)====== ------ -->
@@ -200,8 +191,10 @@
                 [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname}">
                 <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
               </span>
+
+
               <span *ngIf="request?.requester_is_verified === true" class="tooltipx">
-                <!-- left: -36px;top: -3px;  -->
+              
                 <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                   xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6" width="17"
                   height="17" style="position: relative;left: -41px;top: 1px;" xml:space="preserve">
@@ -233,28 +226,28 @@
             <span class="column-td" style="white-space: nowrap;"
               [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
 
-              {{ request?.lead?.fullname }}
+              <span class="lead_data">
 
-              <span *ngIf="!request?.lead?.fullname">
-                n.a.
-              </span>
+                {{ request?.lead?.fullname }}
+                <span *ngIf="!request?.lead?.fullname">
+                  n.a.
+                </span>
 
-              <span class="requester-email"
-                [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
-                {{ request?.lead?.email }}
-              </span>
-              <span class="requester-email" *ngIf="!request?.lead?.email"
-                [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
-                n.a.
+                <span class="requester-email"
+                  [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
+                  {{ request?.lead?.email }}
+                </span>
+                <span class="requester-email" *ngIf="!request?.lead?.email"
+                  [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
+                  n.a.
+                </span>
               </span>
             </span>
-
-
           </td>
 
           <!-- ------ ====== USER AGENT BROWSER & OPERATING SYSTEM (in served requests)====== ------ -->
           <td>
-            <span class="tooltipx">
+            <span *ngIf="request?.userAgent" class="tooltipx">
               <!-- 
               // ----------------------------------------------------------------
               // @ OS - if not is
@@ -265,7 +258,7 @@
               (request?.ua_os?.indexOf('Windows') === -1) &&
               (request?.ua_os?.indexOf('Ubuntu') === -1)">
 
-                <img style="width: 13px;margin-bottom: 2px;" class="" src="assets/img/user_agent/laptop.svg" />
+                <img style="width: 13px; margin-top: 2px;" class="" src="assets/img/user_agent/laptop.svg" />
               </span>
 
               <!-- <i class="material-icons user-agent-icon">
@@ -277,7 +270,7 @@
               // if is Android
               // ---------------------------------------------------------------- -->
               <span *ngIf="request?.ua_os.indexOf('Android') !== -1">
-                <img style="width: 13px;margin-bottom: 2px;" class="" src="assets/img/user_agent/android.svg" />
+                <img style="width: 13px;" class="" src="assets/img/user_agent/android.svg" />
               </span>
 
               <!-- 
@@ -293,7 +286,7 @@
               // if is Windows
               // ---------------------------------------------------------------- -->
               <span *ngIf="request?.ua_os.indexOf('Windows') !== -1">
-                <img style="width: 13px;margin-bottom: 2px;" class="" src="assets/img/user_agent/windows.svg" />
+                <img style="width: 12px; margin-top: 2px;" class="" src="assets/img/user_agent/windows.svg" />
               </span>
 
               <!-- 
@@ -301,7 +294,7 @@
               // if is Ubuntu
               // ---------------------------------------------------------------- -->
               <span *ngIf="request?.ua_os.indexOf('Ubuntu') !== -1">
-                <img style="width: 13px;margin-bottom: 2px;" class="" src="assets/img/user_agent/ubuntu.svg" />
+                <img style="width: 13px;" class="" src="assets/img/user_agent/ubuntu.svg" />
               </span>
 
               <span class="tooltiptext" style="font-size: 10px !important; padding: 3px;">
@@ -310,7 +303,7 @@
               </span>
             </span>
 
-            <span class="tooltipx">
+            <span *ngIf="request?.userAgent" class="tooltipx">
               <!-- 
               // ----------------------------------------------------------------
               // @ Browser - if not is
@@ -323,10 +316,8 @@
               (request?.ua_browser.indexOf('Safari') === -1) &&
               (request?.ua_browser.indexOf('IE') === -1)">
 
-              <img class="ua_browser_icon" src="assets/img/user_agent/globe.svg" />
-                <!-- <i class="material-icons user-agent-icon">
-                  public
-                </i> -->
+                <img class="ua_browser_icon" src="assets/img/user_agent/globe.svg" />
+
               </span>
 
               <!-- 
@@ -335,7 +326,7 @@
               // ---------------------------------------------------------------- -->
               <span
                 *ngIf="request?.ua_browser.indexOf('Chrome') !== -1 || request?.ua_browser.indexOf('Chromium') !== -1">
-                <img class="ua_browser_icon"  src="assets/img/user_agent/chrome.svg" />
+                <img class="ua_browser_icon" src="assets/img/user_agent/chrome.svg" />
               </span>
 
               <!-- 
@@ -343,7 +334,7 @@
               // Firefox
               // ---------------------------------------------------------------- -->
               <span *ngIf="request?.ua_browser.indexOf('Firefox') !== -1">
-                <img class="ua_browser_icon"  src="assets/img/user_agent/firefox.svg" />
+                <img class="ua_browser_icon" src="assets/img/user_agent/firefox.svg" />
               </span>
 
               <!-- 
@@ -351,7 +342,7 @@
               // Edge
               // ---------------------------------------------------------------- -->
               <span *ngIf="request?.ua_browser.indexOf('Edge') !== -1">
-                <img class="ua_browser_icon"  src="assets/img/user_agent/edge.svg" />
+                <img class="ua_browser_icon" src="assets/img/user_agent/edge.svg" />
               </span>
 
               <!-- 
@@ -382,7 +373,6 @@
 
               <span class="tooltiptext" style="font-size: 10px !important; padding: 3px;">
                 <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span>
-
                 <span *ngIf="request?.ua_browser === 'undefined undefined'"> not defined </span>
               </span>
             </span>
@@ -394,11 +384,7 @@
             title="department id:{{ request?.department?._id }}">
 
             <p *ngIf="request?.department?.name" class="column-td">
-
-
               {{ request?.department?.name }}
-
-
             </p>
             <p *ngIf="!request?.department?.name" class="column-td">
               <!-- {{ 'VisitorsPage.Default' | translate }} -->

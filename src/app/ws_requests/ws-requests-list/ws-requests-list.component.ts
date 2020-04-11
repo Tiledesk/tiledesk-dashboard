@@ -102,7 +102,9 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   hasClickedCreateNewInternalRequest = false;
   createNewInternalRequest_hasError: boolean;
   internal_request_id: string;
-
+  deptIdSelectedInRequuestsXDepts
+  ws_requestslist_deptIdSelected: string
+display_dept_sidebar = false;
   /**
    * Constructor
    * 
@@ -475,7 +477,12 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   // }
 
   goToDept(deptid) {
+   
     this.router.navigate(['project/' + this.projectId + '/department/edit/' + deptid]);
+
+    // this.display_dept_sidebar = true;
+    // this.ws_requestslist_deptIdSelected = deptid
+
   }
 
 
@@ -744,16 +751,14 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         this.ws_requests.forEach((request) => {
 
           const user_agent_result = this.parseUserAgent(request.userAgent)
-          console.log('% »»» WebSocketJs WF - WsRequestsList - USER-AGENT RESULT ', user_agent_result)      
-          
+          // console.log('% »»» WebSocketJs WF - WsRequestsList - USER-AGENT RESULT ', user_agent_result)      
+
           const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
           // console.log('% »»» WebSocketJs WF - WsRequestsList - USER-AGENT BROWSER ', ua_browser)
-
           request['ua_browser'] = ua_browser;
 
           const ua_os = user_agent_result.os.name + ' ' + user_agent_result.os.version
           // console.log('% »»» WebSocketJs WF - WsRequestsList - USER-AGENT OPERATING SYSTEM ', ua_os)
-
           request['ua_os'] = ua_os;
 
           // console.log("% »»» currentUserID WebSocketJs WF - WsRequestsList in ws_requests.forEach ", this.currentUserID);

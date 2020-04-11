@@ -436,7 +436,11 @@ span .switch-agent-admin-requests-btn {
   height: 30px;
   line-height: 21px;
   position: relative;
-  top: 7px;
+  top: 4px;
+}
+.lead_data {
+  position: relative;
+  top: -2px;
 }
 
 .requester-email {
@@ -446,7 +450,7 @@ span .switch-agent-admin-requests-btn {
   font-size: 11px;
   display: block;
   margin-left: 34px;
-  margin-top: -8px;
+  margin-top: -10px;
 }
 
 .requester-verified-email {
