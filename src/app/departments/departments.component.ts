@@ -9,6 +9,7 @@ import { GroupService } from '../services/group.service';
 import { FaqKbService } from '../services/faq-kb.service';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../core/notify.service';
+import { avatarPlaceholder, getColorBck } from '../utils/util';
 
 @Component({
   selector: 'mongodb-departments',
@@ -111,12 +112,39 @@ export class DepartmentsComponent implements OnInit {
     this.mongodbDepartmentService.getDeptsByProjectId().subscribe((departments: any) => {
       console.log('»»» »»» DEPTS PAGE - DEPTS (FILTERED FOR PROJECT ID)', departments);
 
-      
-
       if (departments) {
         this.departments = departments;
 
+
+
         this.departments.forEach(dept => {
+
+            // -------------------------------------------------------------------
+            // Dept's avatar
+            // -------------------------------------------------------------------
+            let newInitials = '';
+            let newFillColour = '';
+
+            if (dept.name) {
+              newInitials = avatarPlaceholder(dept.name);
+              newFillColour = getColorBck(dept.name)
+            } else {
+
+              newInitials = 'n.a.';
+              newFillColour = '#eeeeee';
+            }
+
+            dept['dept_name_initial'] = newInitials;
+            dept['dept_name_fillcolour'] = newFillColour;
+
+            // -------------------------------------------------------------------
+            // Dept's description
+            // -------------------------------------------------------------------
+
+            if (dept.description) { 
+              let stripHere = 20;
+              dept['truncated_desc'] = dept.description.substring(0, stripHere) + '...';
+            }
 
           if (dept.routing === 'assigned' || dept.routing === 'pooled') {
 

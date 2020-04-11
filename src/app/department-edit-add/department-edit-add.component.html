@@ -23,14 +23,25 @@
   
             <span *ngIf="CREATE_VIEW">
     
-              
-              <!-- padding-left: 16px; -->
-              <div class="row"> 
+              <div class="row" style="margin-bottom: 15px;"> 
+
+
                 <label class="col-xs-12 col-sm-2 col-md-12 col-lg-2 custom-label-for-dept">
                   {{ "DeptsAddEditPage.DeptName" | translate}}
                 </label>
                 <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
                   <input [(ngModel)]="dept_name" class="" type="text" placeholder='{{ "DeptsAddEditPage.DeptName" | translate}}' style="margin-top: 2px">
+                </div>
+              </div>
+
+              <div class="row"> 
+                <label class="col-xs-12 col-sm-2 col-md-12 col-lg-2" style="color:#7695a5">
+                  {{ "DeptsAddEditPage.Description" | translate}}
+            
+                </label>
+                <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+                  <textarea [(ngModel)]="dept_description" class="" type="text"  rows="3"
+                      placeholder='{{ "DeptsAddEditPage.Description" | translate}}' style="margin-top: 2px"> </textarea>
                 </div>
               </div>
 
@@ -286,7 +297,7 @@
             <span *ngIf="EDIT_VIEW">
   
               <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
-              <div class="row">
+              <div class="row" style="margin-bottom: 15px;">
                   <!-- deptname -->
                 <label class="col-xs-12 col-sm-2 col-md-12 col-lg-2  custom-label-for-dept">
                   {{ "DeptsAddEditPage.DeptName" | translate}}
@@ -295,6 +306,22 @@
                   <input [(ngModel)]="deptName_toUpdate" class="input" type="text" style="margin-top: 2px">
                 </div>
               </div>
+
+              <!--
+              // -------------------------------------------------------------------
+              // Dept description in edit view
+              // ------------------------------------------------------------------- -->
+              <div class="row"> 
+                <label class="col-xs-12 col-sm-2 col-md-12 col-lg-2" style="color:#7695a5">
+                  {{ "DeptsAddEditPage.Description" | translate}}
+            
+                </label>
+                <div class="col-xs-12 col-sm-6 col-md-12 col-lg-6">
+                  <textarea [(ngModel)]="dept_description_toUpdate" class="" type="text"  rows="3"
+                      placeholder='{{ "DeptsAddEditPage.Description" | translate}}' style="margin-top: 2px"> </textarea>
+                </div>
+              </div>
+
               <!-- col-sm-10 col-sm-offset-2 -->
               <!-- padding-left:30px; -->
               <div class="row">
@@ -548,12 +575,15 @@
       </div>
       <!-- /. col-md-8 -->
       
-      <!-- RIGHT SIDEBAR -->
+      <!-- 
+      // ---------------------------------------------------
+      // RIGHT SIDEBAR in edit view
+      // --------------------------------------------------- -->
       <div class="col-md-4">
         <div class="card">
           <div class="card-content" style="padding-top: 25px;">
             <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
-              <!-- Quick tips -->
+             
               {{ "DeptsAddEditPage.QuickTips" | translate }}
             </h4>
 

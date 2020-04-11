@@ -1,5 +1,5 @@
 // tslint:disable:max-line-length
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { DepartmentService } from '../services/mongodb-department.service';
@@ -12,25 +12,36 @@ import { Group } from '../models/group-model';
 import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../core/notify.service';
+import { slideInOutAnimation } from '../_animations/index';
 
 @Component({
   selector: 'app-department-edit-add',
   templateUrl: './department-edit-add.component.html',
-  styleUrls: ['./department-edit-add.component.scss']
+  styleUrls: ['./department-edit-add.component.scss'],
+  // animations: [slideInOutAnimation],
+  // tslint:disable-next-line:use-host-property-decorator
+  // host: { '[@slideInOutAnimation]': '' }
 })
 export class DepartmentEditAddComponent implements OnInit {
+ 
+  @Input() ws_requestslist_deptIdSelected: string;
+  @Input() display_dept_sidebar: boolean;
 
   CREATE_VIEW = false;
   EDIT_VIEW = false;
   id_dept: string;
   dept_name: string;
+  deptName_toUpdate: string;
+  dept_description: string;
+  dept_description_toUpdate: string;
+
   // !!! NOTE: IS CALLED BOT LIST BUT REALLY IS THE LIST OF FAQ-KB LIST
   botsList: any;
   selectedBotId: string;
   selectedGroupId: string;
   SHOW_GROUP_OPTION_FORM: boolean;
   ROUTING_SELECTED: string;
-  deptName_toUpdate: string;
+
   botId: string;
   selectedValue: string;
   selectedId: string;
@@ -66,6 +77,15 @@ export class DepartmentEditAddComponent implements OnInit {
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
+    console.log('DEPT-EDIT-ADD selectedDeptId FROM @INPUT: ', this.ws_requestslist_deptIdSelected)
+    console.log('DEPT-EDIT-ADD display_dept_sidebar FROM @INPUT: ', this.display_dept_sidebar)
+
+    if(this.display_dept_sidebar === true) {
+
+      this.EDIT_VIEW = true;
+      this.id_dept = this.ws_requestslist_deptIdSelected;
+      this.getDeptById();
+    }
     /**
      * ==================================================================
      * !!! NO MORE USED - getBots() HAS BEEN REPLACED BY getFaqKbByProjecId()
@@ -104,7 +124,7 @@ export class DepartmentEditAddComponent implements OnInit {
     } else {
       console.log('HAS CLICKED EDIT ');
       this.EDIT_VIEW = true;
-      this.showSpinner= true;
+      this.showSpinner = true;
 
       // *** GET DEPT ID FROM URL PARAMS ***
       // IS USED TO GET THE BOT OBJECT ( THE ID IS PASSED FROM BOTS COMPONENT - goToEditAddPage_EDIT())
@@ -155,7 +175,7 @@ export class DepartmentEditAddComponent implements OnInit {
   translateNotificationMsgs() {
     this.translate.get('DeptsAddEditPage.NotificationMsgs')
       .subscribe((translation: any) => {
-        console.log('Depts Add Edit - translateNotificationMsgs text', translation)
+        // console.log('Depts Add Edit - translateNotificationMsgs text', translation)
         this.createSuccessMsg = translation.CreateDeptSuccess;
         this.createErrorMsg = translation.CreateDeptError;
         this.updateSuccessMsg = translation.UpdateDeptSuccess;
@@ -191,7 +211,6 @@ export class DepartmentEditAddComponent implements OnInit {
       this.onlybot_disable_routing = false;
       this.bot_only = false;
     }
-
   }
 
   /**
@@ -206,6 +225,14 @@ export class DepartmentEditAddComponent implements OnInit {
         this.groupsList = groups;
 
         console.log('for DEBUG GROUP ID SELECTED', this.selectedGroupId);
+        this.groupsList.forEach(element => {
+          
+
+        });
+
+     
+
+
 
         // CHECK IN THE GROUPS LIST THE GROUP-ID RETURNED FROM THE DEPT OBJECT.
         // IF THE GROUP-ID DOES NOT EXIST MEANS THAT WAS DELETED
@@ -340,10 +367,16 @@ export class DepartmentEditAddComponent implements OnInit {
    * ADD DEPARMENT
    */
   createDepartment() {
-    console.log('MONGO DB DEPT-NAME DIGIT BY USER ', this.dept_name);
-    console.log('GROUP ID WHEN CREATE IS PRESSED ', this.selectedGroupId);
-    this.mongodbDepartmentService.addMongoDbDepartments(this.dept_name, this.selectedBotId, this.bot_only, this.selectedGroupId, this.ROUTING_SELECTED)
-      .subscribe((department) => {
+    console.log('createDepartment DEPT NAME  ', this.dept_name);
+    console.log('createDepartment DEPT DESCRIPTION DIGIT BY USER ', this.dept_description);
+    console.log('createDepartment GROUP ID WHEN CREATE IS PRESSED ', this.selectedGroupId);
+    this.mongodbDepartmentService.addDept(
+      this.dept_name,
+      this.dept_description,
+      this.selectedBotId,
+      this.bot_only,
+      this.selectedGroupId,
+      this.ROUTING_SELECTED).subscribe((department) => {
         console.log('+++ ++++ POST DATA DEPT', department);
       },
         (error) => {
@@ -413,6 +446,7 @@ export class DepartmentEditAddComponent implements OnInit {
       console.log('++ > GET DEPT (DETAILS) BY ID - DEPT OBJECT: ', dept);
 
       this.deptName_toUpdate = dept.name;
+      this.dept_description_toUpdate= dept.description;
       this.botId = dept.id_bot;
       this.dept_routing = dept.routing;
       this.selectedGroupId = dept.id_group;
@@ -427,6 +461,7 @@ export class DepartmentEditAddComponent implements OnInit {
       }
 
       console.log('++ DEPT DTLS - DEPT FULLNAME TO UPDATE: ', this.deptName_toUpdate);
+      console.log('++ DEPT DTLS - DEPT DESCRIPTION TO UPDATE: ', this.dept_description_toUpdate);
       console.log('++ DEPT DTLS - BOT ID (IT IS ACTUALLY FAQ-KB ID) GET FROM DEPT OBJECT: ', this.botId);
       console.log('++ DEPT DTLS - ONLY BOT: ', this.bot_only);
       console.log('++ DEPT DTLS - DEPT ROUTING GET FROM DEPT OBJECT: ', this.dept_routing);
@@ -441,7 +476,7 @@ export class DepartmentEditAddComponent implements OnInit {
         console.log('GET DEPT BY ID - COMPLETE ');
 
         this.showSpinner = false;
-        
+
 
         if (this.botId === undefined) {
 
@@ -516,6 +551,7 @@ export class DepartmentEditAddComponent implements OnInit {
   edit() {
     console.log('DEPT ID WHEN EDIT IS PRESSED ', this.id_dept);
     console.log('DEPT FULL-NAME WHEN EDIT IS PRESSED ', this.deptName_toUpdate);
+    console.log('DEPT DESCRIPTION WHEN EDIT IS PRESSED ', this.dept_description_toUpdate);
     console.log('BOT ID WHEN EDIT IS PRESSED IF USER HAS SELECT ANOTHER BOT', this.selectedBotId);
     console.log('BOT ID WHEN EDIT IS PRESSED IF USER ! DOES NOT SELECT A ANOTHER BOT', this.botId);
     console.log('* DEPT_ROUTING WHEN EDIT IS PRESSED ', this.dept_routing);
@@ -528,11 +564,11 @@ export class DepartmentEditAddComponent implements OnInit {
     // if (this.ROUTING_SELECTED === 'fixed') {
 
     // if (this.dept_routing === 'fixed') {
-      if (this.selectedBotId === undefined) {
-        this.botIdEdit = this.botId
-      } else {
-        this.botIdEdit = this.selectedBotId
-      }
+    if (this.selectedBotId === undefined) {
+      this.botIdEdit = this.botId
+    } else {
+      this.botIdEdit = this.selectedBotId
+    }
     // } else {
     //   this.botIdEdit = null;
     // }
@@ -540,7 +576,7 @@ export class DepartmentEditAddComponent implements OnInit {
 
     // this.faqKbEdit
     // this.ROUTING_SELECTED
-    this.mongodbDepartmentService.updateMongoDbDepartment(this.id_dept, this.deptName_toUpdate, this.botIdEdit, this.bot_only, this.selectedGroupId, this.dept_routing).subscribe((data) => {
+    this.mongodbDepartmentService.updateDept(this.id_dept, this.deptName_toUpdate, this.dept_description_toUpdate, this.botIdEdit, this.bot_only, this.selectedGroupId, this.dept_routing).subscribe((data) => {
       console.log('PUT DATA ', data);
 
       // RE-RUN GET CONTACT TO UPDATE THE TABLE

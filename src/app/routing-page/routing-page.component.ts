@@ -18,6 +18,7 @@ export class RoutingPageComponent implements OnInit {
 
   default_dept: Department[];
   default_dept_name: string;
+  default_dept_description: string;
   dept_routing: string;
   botId: string;
   id_dept: string;
@@ -136,6 +137,7 @@ export class RoutingPageComponent implements OnInit {
             console.log('++ ROUTING PAGE - DEFAULT DEPT (FILTERED FOR PROJECT ID)', this.default_dept);
 
             this.default_dept_name = dept.name;
+            this.default_dept_description = dept.description;
             this.dept_routing = dept.routing
 
             this.botId = dept.id_bot;
@@ -377,6 +379,7 @@ export class RoutingPageComponent implements OnInit {
 
     console.log('DEPT ID WHEN EDIT IS PRESSED ', this.id_dept);
     console.log('DEPT FULL-NAME WHEN EDIT IS PRESSED ', this.default_dept_name);
+    console.log('DEPT DESCRIPTION WHEN EDIT IS PRESSED ', this.default_dept_description);
     console.log('BOT ID WHEN EDIT IS PRESSED IF USER HAS SELECT ANOTHER BOT', this.selectedBotId);
     console.log('BOT ID WHEN EDIT IS PRESSED IF USER ! DOES NOT SELECT A ANOTHER BOT', this.botId);
     console.log('GROUP ID WHEN EDIT IS PRESSED ', this.selectedGroupId);
@@ -402,7 +405,7 @@ export class RoutingPageComponent implements OnInit {
     // this.faqKbEdit
     // this.ROUTING_SELECTED
     // tslint:disable-next-line:max-line-length
-    this.mongodbDepartmentService.updateMongoDbDepartment(this.id_dept, this.default_dept_name, this.botIdEdit, this.bot_only, this.selectedGroupId, this.dept_routing)
+    this.mongodbDepartmentService.updateDept(this.id_dept, this.default_dept_name,this.default_dept_description, this.botIdEdit, this.bot_only, this.selectedGroupId, this.dept_routing)
       .subscribe((data) => {
         console.log('PUT DATA ', data);
 

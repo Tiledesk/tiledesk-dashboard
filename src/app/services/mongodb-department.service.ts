@@ -182,14 +182,21 @@ export class DepartmentService {
    * CREATE (POST)
    * @param fullName
    */
-  public addMongoDbDepartments(deptName: string, id_bot: string, bot_only: boolean, id_group: string, routing: string) {
+  public addDept(deptName: string, deptDescription: string, id_bot: string, bot_only: boolean, id_group: string, routing: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'name': `${deptName}`, id_group: id_group, 'routing': `${routing}`, 'id_project': this.project._id };
+    const body = {
+      'name': deptName,
+      'description': deptDescription,
+      'id_group': id_group,
+      'routing': routing,
+      'id_project': this.project._id
+    };
+
     if (id_bot) {
       body['id_bot'] = id_bot;
       body['bot_only'] = bot_only;
@@ -255,7 +262,7 @@ export class DepartmentService {
    * @param id
    * @param deptName
    */
-  public updateMongoDbDepartment(id: string, deptName: string, id_bot: string, bot_only: boolean, id_group: string, routing: string) {
+  public updateDept(id: string, deptName: string, deptDescription: string, id_bot: string, bot_only: boolean, id_group: string, routing: string) {
 
     let url = this.DEPTS_URL;
     url += id;
@@ -267,7 +274,7 @@ export class DepartmentService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'name': `${deptName}`, id_group: id_group, 'routing': `${routing}` };
+    const body = { 'name': deptName, 'description': deptDescription  ,'id_group': id_group, 'routing': routing };
     if (id_bot) {
       body['id_bot'] = id_bot;
       body['bot_only'] = bot_only;
