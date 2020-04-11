@@ -16,8 +16,9 @@
 
     <div>
       <div class="row">
-        <div class="col-sm-7 chat-col" [ngClass]="{'hidden-if-chat-panel-mode' : CHAT_PANEL_MODE === true, 'chat-col-normal-mode': CHAT_PANEL_MODE === false }">
-          <div class="card chat-card" [ngClass]="{'chat-card-normal-mode': CHAT_PANEL_MODE === false}" 
+        <div class="col-sm-7 chat-col"
+          [ngClass]="{'hidden-if-chat-panel-mode' : CHAT_PANEL_MODE === true, 'chat-col-normal-mode': CHAT_PANEL_MODE === false }">
+          <div class="card chat-card" [ngClass]="{'chat-card-normal-mode': CHAT_PANEL_MODE === false}"
             style="padding-top:0px; padding-bottom:0px;">
             <div class="row" style="border-bottom: 1px solid #eeeeee; padding-left:25px; padding-right:25px">
               <div class="col-sm-12">
@@ -815,8 +816,7 @@
                         </span>
                       </a>
                       <ul class="dropdown-menu">
-                        <li
-                          [ngClass]="{'disable-dropdown-menu-btn' : request?.status == 1000}">
+                        <li [ngClass]="{'disable-dropdown-menu-btn' : request?.status == 1000}">
                           <a (click)='openArchiveRequestModal(request?.request_id)'
                             style="padding-left: 15px; padding-right: 15px;">
                             <i class="material-icons" style="padding-right: 5px;">close</i>
@@ -1020,7 +1020,6 @@
                         </span>
                       </span>
                     </p>
-
                   </div>
                 </div>
 
@@ -1109,12 +1108,13 @@
               // --------------------------------------------------------------------- -->
                 <div *ngIf="request?.sourcePage" class="row" style="margin-top:5px">
                   <div class="col-sm-12">
-                    <p [ngClass]="{'no-bottom-margin' : CHAT_PANEL_MODE === true}">
+                    <p style="margin-bottom:0px">
                       <span style="position: relative;top: 1px;">
                         <div class="row">
                           <div class="col-xs-10" style="padding-right:10px">
-                            <i class="material-icons"
-                              style="vertical-align: middle; color: #394f5a;font-size:16px">language</i>
+                            <!-- <i class="material-icons" style="vertical-align: middle; color: #394f5a;font-size:16px">language</i> -->
+
+                              <img class="request_details___ua_browser_icon" src="assets/img/user_agent/source_page.svg" />
                             <span
                               style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
                               {{ "RequestMsgsPage.SourcePage" | translate }}</span>
@@ -1136,6 +1136,163 @@
                             </i>
                           </div>
                         </div>
+                      </span>
+                    </p>
+                  </div>
+                </div>
+
+                <!-- 
+                // ---------------------------------------------------------------------
+                // User Agent browser 
+                // --------------------------------------------------------------------- -->
+                <div *ngIf="request?.userAgent" class="row" style="margin-top:5px">
+                  <!-- border-top: 1px solid #e1eef4;" -->
+                  <div class="col-sm-12">
+                    <p class="" style="margin-bottom: 0px;">
+
+                      <span *ngIf="(request?.ua_browser.indexOf('Chrome') === -1) && 
+                      (request?.ua_browser.indexOf('Chromium') === -1) &&
+                      (request?.ua_browser.indexOf('Firefox') === -1) &&
+                      (request?.ua_browser.indexOf('Edge') === -1) &&
+                      (request?.ua_browser.indexOf('Opera') === -1) &&
+                      (request?.ua_browser.indexOf('Safari') === -1) &&
+                      (request?.ua_browser.indexOf('IE') === -1)">
+
+                        <img class="request_details___ua_browser_icon" src="assets/img/user_agent/globe.svg" />
+
+                      </span>
+
+                      <!-- 
+                      // ----------------------------------------------------------------
+                      // Chrome or Chromium
+                      // ---------------------------------------------------------------- -->
+                      <span
+                        *ngIf="request?.ua_browser.indexOf('Chrome') !== -1 || request?.ua_browser.indexOf('Chromium') !== -1">
+                        <img class="request_details___ua_browser_icon" src="assets/img/user_agent/chrome.svg" />
+                      </span>
+
+                      <!-- 
+                      // ----------------------------------------------------------------
+                      // Firefox
+                      // ---------------------------------------------------------------- -->
+                      <span *ngIf="request?.ua_browser.indexOf('Firefox') !== -1">
+                        <img class="request_details___ua_browser_icon" src="assets/img/user_agent/firefox.svg" />
+                      </span>
+
+                      <!-- 
+                      // ----------------------------------------------------------------
+                      // Edge
+                      // ---------------------------------------------------------------- -->
+                      <span *ngIf="request?.ua_browser.indexOf('Edge') !== -1">
+                        <img class="request_details___ua_browser_icon" src="assets/img/user_agent/edge.svg" />
+                      </span>
+
+                      <!-- 
+                      // ----------------------------------------------------------------
+                      // Opera
+                      // ---------------------------------------------------------------- -->
+                      <span *ngIf="request?.ua_browser.indexOf('Opera') !== -1">
+                        <img class="request_details___ua_browser_icon" src="assets/img/user_agent/opera.svg" />
+                      </span>
+
+                      <!-- 
+                      // ----------------------------------------------------------------
+                      // Safari
+                      // ---------------------------------------------------------------- -->
+                      <span *ngIf="request?.ua_browser.indexOf('Safari') !== -1">
+                        <img class="request_details___ua_browser_icon" src="assets/img/user_agent/safari.svg" />
+                      </span>
+
+                      <!-- 
+                      // ----------------------------------------------------------------
+                      // Explorer
+                      // ---------------------------------------------------------------- -->
+                      <span *ngIf="request?.ua_browser.indexOf('IE') !== -1">
+                        <img class="request_details___ua_browser_icon" src="assets/img/user_agent/explorer.svg" />
+                      </span>
+
+
+                      <!-- ------------------------------------------------------ -->
+
+                      <span style="position: relative;top: 1px;">
+                        <span
+                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                          Browser</span>
+
+                        <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                          <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span>
+                          <span *ngIf="request?.ua_browser === 'undefined undefined'"> N/A </span>
+                        </span>
+                      </span>
+                    </p>
+                  </div>
+                </div>
+
+                <!-- 
+                // ---------------------------------------------------------------------
+                // User Agent Operating system
+                // --------------------------------------------------------------------- -->
+                <div *ngIf="request?.userAgent" class="row" style="margin-top:5px">
+                  <!-- border-top: 1px solid #e1eef4;" -->
+                  <div class="col-sm-12">
+                    <p [ngClass]="{'no-bottom-margin' : CHAT_PANEL_MODE === true}">
+
+                      <!-- 
+                      // ----------------------------------------------------------------
+                      // @ OS - if not is
+                      // ---------------------------------------------------------------- -->
+                      <span *ngIf="(request?.ua_os?.indexOf('Android') === -1) && 
+                                   (request?.ua_os?.indexOf('Mac OS') === -1) && 
+                                   (request?.ua_os?.indexOf('iOS') === -1) &&
+                                   (request?.ua_os?.indexOf('Windows') === -1) &&
+                                   (request?.ua_os?.indexOf('Ubuntu') === -1)">
+
+                        <img class="request_details___os_icon" src="assets/img/user_agent/laptop.svg" />
+                      </span>
+
+                      <!-- 
+                      // ----------------------------------------------------------------
+                      // if is Android
+                      // ---------------------------------------------------------------- -->
+                      <span *ngIf="request?.ua_os.indexOf('Android') !== -1">
+                        <img class="request_details___os_icon" src="assets/img/user_agent/android.svg" />
+                      </span>
+
+                      <!-- 
+                      // ----------------------------------------------------------------
+                      // if is Mac OS or iOS
+                      // ---------------------------------------------------------------- -->
+                      <span *ngIf="request?.ua_os.indexOf('Mac OS') !== -1 || request?.ua_os.indexOf('iOS') !== -1">
+                        <img class="request_details___os_icon" src="assets/img/user_agent/apple.svg" />
+                      </span>
+
+                      <!-- 
+                      // ----------------------------------------------------------------
+                      // if is Windows
+                      // ---------------------------------------------------------------- -->
+                      <span *ngIf="request?.ua_os.indexOf('Windows') !== -1">
+                        <img class="request_details___os_icon" src="assets/img/user_agent/windows.svg" />
+                      </span>
+
+                      <!-- 
+                      // ----------------------------------------------------------------
+                      // if is Ubuntu
+                      // ---------------------------------------------------------------- -->
+                      <span *ngIf="request?.ua_os.indexOf('Ubuntu') !== -1">
+                        <img class="request_details___os_icon" src="assets/img/user_agent/ubuntu.svg" />
+                      </span>
+
+
+                      <span style="position: relative;top: 1px;">
+                        <span
+                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                          {{ 'OperatingSystem' | translate }}
+                        </span>
+
+                        <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                          <span *ngIf="request?.ua_os !== 'undefined undefined'"> {{ request?.ua_os }} </span>
+                          <span *ngIf="request?.ua_os === 'undefined undefined'"> N/A </span>
+                        </span>
                       </span>
                     </p>
                   </div>
@@ -1411,7 +1568,8 @@
                             // Btn Add Notes (note: is disabled if if the current user has agent role and is not among the participants)
                             // ------------------------------------------------------------------------------------------------------------ -->
                             <button type="button" class="btn btn-xs btn-primary ws_msgs_small_btn" #cont
-                              (click)="addNote()" [disabled]="!new_note || new_note?.length === 0 || DISABLE_ADD_NOTE_AND_TAGS === true">
+                              (click)="addNote()"
+                              [disabled]="!new_note || new_note?.length === 0 || DISABLE_ADD_NOTE_AND_TAGS === true">
                               <!-- <i class="material-icons" style="left: -5px;">add_circle</i> -->
                               {{ 'Notes.AddNote' | translate }}
 

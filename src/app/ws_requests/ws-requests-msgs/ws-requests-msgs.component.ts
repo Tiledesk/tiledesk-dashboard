@@ -27,7 +27,7 @@ import { FaqKbService } from '../../services/faq-kb.service';
 import { TranslateService } from '@ngx-translate/core';
 import { TagsService } from '../../services/tags.service';
 import PerfectScrollbar from 'perfect-scrollbar';
-
+import { UAParser } from 'ua-parser-js';
 
 @Component({
   selector: 'appdashboard-ws-requests-msgs',
@@ -592,7 +592,12 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     }
   }
 
-
+  parseUserAgent(uastring) {
+    // https://github.com/faisalman/ua-parser-js
+    var parser = new UAParser();
+    parser.setUA(uastring);
+    return parser.getResult();
+  }
 
   /**
    * Get the request published
@@ -607,10 +612,28 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
         // console.log('% !!!!!!!!!!!! Ws-REQUESTS-Msgs - getWsRequestById$ *** wsrequest *** ', wsrequest)
         this.request = wsrequest;
-        console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById$ ****************** this.request ****************** ', this.request);
-        console.log('% Ws-REQUESTS-Msgs - tag-wf - this.request ', this.request)
 
         if (this.request) {
+
+          console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById$ ****************** this.request ****************** ', this.request);
+          console.log('% Ws-REQUESTS-Msgs - tag-wf - this.request ', this.request)
+
+          // -------------------------------------------------------------------
+          // User Agent
+          // -------------------------------------------------------------------
+          const user_agent_result = this.parseUserAgent(this.request.userAgent);
+          const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
+          // console.log(''% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById$ - USER-AGENT BROWSER ', ua_browser)
+          this.request['ua_browser'] = ua_browser;
+
+          const ua_os = user_agent_result.os.name + ' ' + user_agent_result.os.version
+          // console.log(''% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById$ - USER-AGENT OPERATING SYSTEM ', ua_os)
+          this.request['ua_os'] = ua_os;
+
+
+          // -------------------------------------------------------------------
+          // Members array
+          // -------------------------------------------------------------------
           this.members_array = this.request.participants;
           console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById PARTICIPANTS_ARRAY ', this.members_array)
 
@@ -626,7 +649,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             if (this.currentUserID !== member && this.CURRENT_USER_ROLE === 'agent') {
               console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById CURRENT USER NOT IN PARTICIPANT AND IS AGENT');
               this.DISABLE_ADD_NOTE_AND_TAGS = true;
-            } else if (this.currentUserID === member && this.CURRENT_USER_ROLE === 'agent')  {
+            } else if (this.currentUserID === member && this.CURRENT_USER_ROLE === 'agent') {
               console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById CURRENT USER IS IN PARTICIPANT AND IS AGENT');
               this.DISABLE_ADD_NOTE_AND_TAGS = false;
             }
