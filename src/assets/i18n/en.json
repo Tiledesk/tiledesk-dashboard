@@ -458,6 +458,7 @@
     "AllProjectWillBeDeleted":"All ({{projects_length}}) project(s) created within this account will be deleted", 
     "CancelAnyActiveSubscriptionsBeforeProceeding":"Cancel any active subscriptions before proceeding",
     "YesDeleteMyAccount":"Yes, delete my account",
+    "OperatingSystem":"Operating System",
     "CannedResponses": {
         "QuickTips": {
             "1": "Canned response are pre-made messages you can recall easily during chat.",
@@ -989,6 +990,7 @@
         "CreateDept": "Create Department",
         "UpdateDept": "Update Department",
         "QuickTips": "Quick tips",
+        "Description":"Description",
         "NotificationMsgs": {
             "DeleteDeptSuccess": "Department successfully deleted",
             "DeleteDeptError": "An error occurred while deleting department",

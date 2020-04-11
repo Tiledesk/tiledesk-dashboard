@@ -453,6 +453,7 @@
     "AllProjectWillBeDeleted":"Tutti ({{projects_length}}) i progetto/i creati all'interno di questo account verranno eliminati", 
     "CancelAnyActiveSubscriptionsBeforeProceeding":"Cancella eventuali sottoscrizioni attive prima di procedere",
     "YesDeleteMyAccount":"Si, elimina il mio account",
+    "OperatingSystem":"Sistema operativo",
     "CannedResponses": {
         "QuickTips": {
             "1": "Le Risposte Predefinite sono messaggi predefiniti che è possibile richiamare facilmente durante la chat.",
@@ -984,6 +985,7 @@
         "CreateDept": "Crea Dipartimento",
         "UpdateDept": "Aggiorna Dipartimento",
         "QuickTips": "Consigli veloci",
+        "Description":"Descrizione",
         "NotificationMsgs": {
             "DeleteDeptSuccess": "Dipartimento eliminato correttamente",
             "DeleteDeptError": "Si è verificato un errore durante l'eliminazione del dipartimento",

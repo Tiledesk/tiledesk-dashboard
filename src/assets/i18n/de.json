@@ -458,6 +458,7 @@
     "AllProjectWillBeDeleted":"Alle ({{projects_length}}) Projekte, die in diesem Konto erstellt wurden, werden gelöscht", 
     "CancelAnyActiveSubscriptionsBeforeProceeding":"Kündigen Sie alle aktiven Abonnements, bevor Sie fortfahren",
 	"YesDeleteMyAccount":"Ja, lösche mein Konto",
+	"OperatingSystem":"Betriebssystem",
 	"CannedResponses": {
 		"QuickTips": {
 			"1": "Vordefinierte Antworten sind Nachrichten, die es Ihnen ermöglichen schneller auf oft gestellte Fragen zu reagieren.",
@@ -989,6 +990,7 @@
 		"CreateDept": "Abteilung erstellen",
 		"UpdateDept": "Abteilung aktualisieren",
 		"QuickTips": "Quick Tips",
+		"Description":"Beschreibung",
 		"NotificationMsgs": {
 			"DeleteDeptSuccess": "Abteilung erfolgreich gelöscht",
 			"DeleteDeptError": "Ein Fehler ist während dem Entfernen der Abteilung aufgetreten",
