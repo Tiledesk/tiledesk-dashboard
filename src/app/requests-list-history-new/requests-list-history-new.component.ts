@@ -18,6 +18,7 @@ import { AppConfigService } from '../services/app-config.service';
 import * as moment from 'moment';
 // import { RequestsService } from '../services/requests.service';
 import { WsRequestsService } from '../services/websocket/ws-requests.service';
+import { UAParser } from 'ua-parser-js';
 
 @Component({
   selector: 'appdashboard-requests-list-history-new',
@@ -551,6 +552,13 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
   }
 
 
+  parseUserAgent(uastring) {
+    // https://github.com/faisalman/ua-parser-js
+    var parser = new UAParser();
+    parser.setUA(uastring);
+    return parser.getResult();
+  }
+
   getRequests() {
     this.showSpinner = true;
     this.wsRequestsService.getNodeJsHistoryRequests(this.queryString, this.pageNo).subscribe((requests: any) => {
@@ -586,6 +594,21 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
           if (request) {
             // console.log('!!! NEW REQUESTS HISTORY - request ', request);
 
+            // -------------------------------------------------------------------
+            // User Agent
+            // -------------------------------------------------------------------
+            const user_agent_result = this.parseUserAgent(request.userAgent);
+            const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
+            // console.log('!!! NEW REQUESTS HISTORY  - USER-AGENT BROWSER ', ua_browser)
+            request['ua_browser'] = ua_browser;
+
+            const ua_os = user_agent_result.os.name + ' ' + user_agent_result.os.version
+            // console.log('!!! NEW REQUESTS HISTORY - USER-AGENT OPERATING SYSTEM ', ua_os)
+            request['ua_os'] = ua_os;
+
+            // -------------------------------------------------------------------
+            // Contact's avatar
+            // -------------------------------------------------------------------
             let newInitials = '';
             let newFillColour = '';
 
@@ -607,11 +630,11 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
             if (this.browserLang === 'it') {
               // moment.locale('it')
               const date = moment(request.createdAt).format('dddd, DD MMM YYYY - HH:mm:ss');
-              console.log('ActivitiesComponent - getActivities - updatedAt date', date);
+              console.log('!!! NEW REQUESTS HISTORY - createdAt date', date);
               request.fulldate = date;
             } else {
               const date = moment(request.createdAt).format('dddd, MMM DD, YYYY - HH:mm:ss');
-              console.log('ActivitiesComponent - getActivities - updatedAt date', date);
+              console.log('!!! NEW REQUESTS HISTORY - createdAt date', date);
               request.fulldate = date;
             }
 
@@ -662,7 +685,7 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
       const bot = this.botLocalDbService.getBotFromStorage(bot_id);
       if (bot) {
 
-         let botType = "";
+        let botType = "";
         if (bot.type === 'internal') {
 
           botType = 'native'

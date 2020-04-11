@@ -1046,12 +1046,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, AfterContentCheck
 
 
         this.NOTIFICATION_SOUND = localStorage.getItem(this.storedValuePrefix + 'sound');
-        console.log('NAV NOTIFICATION_SOUND (showNotification)', this.NOTIFICATION_SOUND)
-        console.log('NAV NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
+        // console.log('NAV NOTIFICATION_SOUND (showNotification)', this.NOTIFICATION_SOUND)
+        // console.log('NAV NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
         if (this.NOTIFICATION_SOUND === 'enabled') {
-            console.log('NAV NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
+            // console.log('NAV NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
             if (this.hasPlayed === false) {
-                console.log('NAV NOTIFICATION_SOUND (showNotification) hasPlayed (HERE IN IF)', this.hasPlayed)
+                // console.log('NAV NOTIFICATION_SOUND (showNotification) hasPlayed (HERE IN IF)', this.hasPlayed)
                 this.audio = new Audio();
                 // this.audio.src = 'assets/Carme.mp3';
                 // this.audio.src = 'assets/microbounce.mp3';

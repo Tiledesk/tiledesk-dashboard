@@ -257,6 +257,9 @@
                     </span>
                   </th>
 
+                  <!-- ====== USER AGENT BROWSER & OPERATING SYSTEM ====== -->
+                  <th></th>
+
 
                   <!-- ===== DEPARTMENT NAME ===== -->
                   <th>
@@ -301,7 +304,7 @@
 
                 <!-- ===== IF THERE ISN'T HISTORY REQUEST ===== -->
                 <tr *ngIf="requestList && requestList?.length === 0">
-                  <td colspan="6" style="text-align: center; padding-top: 16px; cursor: pointer">
+                  <td colspan="7" style="text-align: center; padding-top: 16px; cursor: pointer">
 
                     <p style="font-size:1em; color:#7695a5; font-weight: 400">
 
@@ -372,11 +375,7 @@
              c0.5,0,0.9-0.5,0.9-1.1V22z" />
                         </svg>
                       </span>
-
-
-
                     </span>
-
                   </td>
 
                   <!-- ===== REQUEST ID ===== -->
@@ -393,7 +392,8 @@
                   </td>
 
                   <!-- ===== REQUESTER FULL NAME ===== -->
-                  <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
+                  <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer;white-space: nowrap;
+                  width: 1%;" rel="tooltip"
                     title="{{ request?.requester_id }}">
 
                     <span class="requester-avatar-wrapper">
@@ -405,7 +405,7 @@
                       <span *ngIf="request?.requester_is_verified === true" class="tooltipx">
                         <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                           xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6" width="17"
-                          height="17" style="position: relative;left: -36px;top: -3px;" xml:space="preserve">
+                          height="17" style="position: relative;left: -41px;top: 1px;" xml:space="preserve">
                           <style type="text/css">
                             .st0 {
                               fill: none;
@@ -427,21 +427,161 @@
                         </svg>
 
                         <span class="tooltiptext"> {{ "VisitorsPage.AuthenticatedUser" | translate }} </span>
-
                       </span>
-
                     </span>
+
+
                     <span class="column-td" style="white-space: nowrap;"
                       [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
 
-                      {{ request?.lead?.fullname }}
-                    </span>
-                    <span *ngIf="!request?.lead?.fullname" class="column-td"
-                      [ngClass]="{'requester-verified' : request?.requester_is_verified === true}">
-                      n.a.
+                      <span class="lead_data">
+                        {{ request?.lead?.fullname }}
+                        <span *ngIf="!request?.lead?.fullname">
+                          n.a.
+                        </span>
+
+                        <span class="requester-email"
+                          [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
+                          {{ request?.lead?.email }}
+                        </span>
+                        <span class="requester-email" *ngIf="!request?.lead?.email"
+                          [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
+                          n.a.
+                        </span>
+                      </span>
+
                     </span>
                   </td>
 
+                  <!-- ------ ====== USER AGENT BROWSER & OPERATING SYSTEM (in served requests)====== ------ -->
+                  <td>
+                    <span *ngIf="request?.userAgent" class="tooltipx">
+                      <!-- 
+                      // ----------------------------------------------------------------
+                      // @ OS - if not is
+                      // ---------------------------------------------------------------- -->
+                      <span *ngIf="(request?.ua_os?.indexOf('Android') === -1) && 
+                                    (request?.ua_os?.indexOf('Mac OS') === -1) && 
+                                    (request?.ua_os?.indexOf('iOS') === -1) &&
+                                    (request?.ua_os?.indexOf('Windows') === -1) &&
+                                    (request?.ua_os?.indexOf('Ubuntu') === -1)">
+
+                        <img style="width: 13px;margin-top: 2px;" class="" src="assets/img/user_agent/laptop.svg" />
+                      </span>
+
+
+                      <!-- 
+                      // ----------------------------------------------------------------
+                      // if is Android
+                      // ---------------------------------------------------------------- -->
+                      <span *ngIf="request?.ua_os.indexOf('Android') !== -1">
+                        <img style="width: 13px;" class="" src="assets/img/user_agent/android.svg" />
+                      </span>
+
+                      <!-- 
+                      // ----------------------------------------------------------------
+                      // if is Mac OS or iOS
+                      // ---------------------------------------------------------------- -->
+                      <span *ngIf="request?.ua_os.indexOf('Mac OS') !== -1 || request?.ua_os.indexOf('iOS') !== -1">
+                        <img style="width: 13px;margin-bottom: 2px;" class="" src="assets/img/user_agent/apple.svg" />
+                      </span>
+
+                      <!-- 
+                      // ----------------------------------------------------------------
+                      // if is Windows
+                      // ---------------------------------------------------------------- -->
+                      <span *ngIf="request?.ua_os.indexOf('Windows') !== -1">
+                        <img style="width: 12px; margin-top: 2px;" class="" src="assets/img/user_agent/windows.svg" />
+                      </span>
+
+                      <!-- 
+                      // ----------------------------------------------------------------
+                      // if is Ubuntu
+                      // ---------------------------------------------------------------- -->
+                      <span *ngIf="request?.ua_os.indexOf('Ubuntu') !== -1">
+                        <img style="width: 13px;" class="" src="assets/img/user_agent/ubuntu.svg" />
+                      </span>
+
+                      <span class="tooltiptext" style="font-size: 10px !important; padding: 3px;">
+                        <span *ngIf="request?.ua_os !== 'undefined undefined'"> {{ request?.ua_os }} </span>
+                        <span *ngIf="request?.ua_os === 'undefined undefined'"> not defined </span>
+                      </span>
+                    </span>
+
+                    <span *ngIf="request?.userAgent" class="tooltipx">
+                      <!-- 
+                      // ----------------------------------------------------------------
+                      // @ Browser - if not is
+                      // ---------------------------------------------------------------- -->
+                      <span *ngIf="(request?.ua_browser.indexOf('Chrome') === -1) && 
+                                  (request?.ua_browser.indexOf('Chromium') === -1) &&
+                                  (request?.ua_browser.indexOf('Firefox') === -1) &&
+                                  (request?.ua_browser.indexOf('Edge') === -1) &&
+                                  (request?.ua_browser.indexOf('Opera') === -1) &&
+                                  (request?.ua_browser.indexOf('Safari') === -1) &&
+                                  (request?.ua_browser.indexOf('IE') === -1)">
+
+                        <img class="ua_browser_icon" src="assets/img/user_agent/globe.svg" />
+
+                      </span>
+
+                      <!-- 
+                      // ----------------------------------------------------------------
+                      // Chrome or Chromium
+                      // ---------------------------------------------------------------- -->
+                      <span
+                        *ngIf="request?.ua_browser.indexOf('Chrome') !== -1 || request?.ua_browser.indexOf('Chromium') !== -1">
+                        <img class="ua_browser_icon" src="assets/img/user_agent/chrome.svg" />
+                      </span>
+
+                      <!-- 
+                      // ----------------------------------------------------------------
+                      // Firefox
+                      // ---------------------------------------------------------------- -->
+                      <span *ngIf="request?.ua_browser.indexOf('Firefox') !== -1">
+                        <img class="ua_browser_icon" src="assets/img/user_agent/firefox.svg" />
+                      </span>
+
+                      <!-- 
+                      // ----------------------------------------------------------------
+                      // Edge
+                      // ---------------------------------------------------------------- -->
+                      <span *ngIf="request?.ua_browser.indexOf('Edge') !== -1">
+                        <img class="ua_browser_icon" src="assets/img/user_agent/edge.svg" />
+                      </span>
+
+                      <!-- 
+                      // ----------------------------------------------------------------
+                      // Opera
+                      // ---------------------------------------------------------------- -->
+                      <span *ngIf="request?.ua_browser.indexOf('Opera') !== -1">
+                        <img class="ua_browser_icon" src="assets/img/user_agent/opera.svg" />
+                      </span>
+
+                      <!-- 
+                      // ----------------------------------------------------------------
+                      // Safari
+                      // ---------------------------------------------------------------- -->
+                      <span *ngIf="request?.ua_browser.indexOf('Safari') !== -1">
+                        <img class="ua_browser_icon" src="assets/img/user_agent/safari.svg" />
+                      </span>
+
+                      <!-- 
+                      // ----------------------------------------------------------------
+                      // Explorer
+                      // ---------------------------------------------------------------- -->
+                      <span *ngIf="request?.ua_browser.indexOf('IE') !== -1">
+                        <img class="ua_browser_icon" src="assets/img/user_agent/explorer.svg" />
+                      </span>
+
+
+
+                      <span class="tooltiptext" style="font-size: 10px !important; padding: 3px;">
+                        <span *ngIf="request?.ua_browser !== 'undefined undefined'"> {{ request?.ua_browser }} </span>
+                        <span *ngIf="request?.ua_browser === 'undefined undefined'"> not defined </span>
+                      </span>
+                    </span>
+                  </td>
 
                   <!-- ===== DEPARTMENT NAME ===== -->
                   <td>
@@ -449,8 +589,6 @@
                       {{ request?.department?.name }}
                     </p>
                   </td>
-
-
 
                   <!-- ===== NEW SERVED BY ===== -->
                   <td>
@@ -461,14 +599,14 @@
                         <span (click)="goToMemberProfile( participant )" style="cursor:pointer; display: block">
 
                           <!-- IF IS A BOT bot_image.png -->
-                          <img *ngIf="participant.indexOf('bot_') !== -1" class="user_profile_in_history"  
+                          <img *ngIf="participant.indexOf('bot_') !== -1" class="user_profile_in_history"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant | slice:4}}%2Fphoto.jpg?alt=media"
-                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'"/>
+                            onerror="this.src='assets/img/avatar_bot_tiledesk.svg'" />
 
                           <!-- IF IS A HUMAN -->
                           <img *ngIf="participant.indexOf('bot_') === -1" class="user_profile_in_history"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media"
-                            onerror="this.src='assets/img/no_image_user.png'"/>
+                            onerror="this.src='assets/img/no_image_user.png'" />
 
                           <span class="member" [innerHTML]="members_replace( participant )"></span>
 
@@ -478,7 +616,8 @@
                       </span>
 
 
-                      <span style="cursor:pointer;" (click)="goToMemberProfile( participant )" *ngIf="participant === currentUserID">
+                      <span style="cursor:pointer;" (click)="goToMemberProfile( participant )"
+                        *ngIf="participant === currentUserID">
                         <!-- IF IS THE LOGGED USER -->
                         <img class="user_profile_in_history"
                           src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{participant}}%2Fphoto.jpg?alt=media"
@@ -512,12 +651,9 @@
                       <!-- {{ request?.request_date_fromnow }} -->
                       <!-- {{ request?.created_on | date: 'd/M/y HH:mm:ss' }} -->
                       <span> {{ request?.createdAt | amTimeAgo }} </span> <br>
-                      <span style="font-size: 11px;color: #7695a5;">
-                        <!-- ({{ request?.createdAt | date: 'd/M/y HH:mm' }}) -->
-                        
+                      <!-- <span style="font-size: 11px;color: #7695a5;">
                         {{ request?.fulldate }}
-                        
-                      </span>
+                      </span> -->
                     </p>
                   </td>
 
