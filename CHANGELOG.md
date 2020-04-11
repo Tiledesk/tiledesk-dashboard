@@ -1,6 +1,15 @@
 
 # tiledesk-dashboard
 
+### 2.0.16
+-  Adds the ability to add or edit a description for departments
+
+### 2.0.15
+-  Adds to history and request's details custom icons for browser and operating system data retrieved from the "User-agent"
+
+### 2.0.14
+- Adds to requests list custom icons for browser and operating system data retrieved from the "User-agent"
+
 ### 2.0.12
 - Fixes bugs
 - Redirects to the recent projects page if the user is logged in and is directed to the login or registration page
