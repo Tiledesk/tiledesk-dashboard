@@ -17,6 +17,10 @@ COPY . .
 
 RUN npm run ng build -- --output-path=dist --base-href ./
 
+# with prod option
+# RUN npm run ng build -- --prod --output-path=dist --base-href ./
+
+
 ### STAGE 2: Setup ###
 
 FROM nginx:1.14.1-alpine
