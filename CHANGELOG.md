@@ -1,6 +1,12 @@
 
 # tiledesk-dashboard
 
+### 2.0.26
+- Adds the ability to add or edit a description for bots
+- Improves departments list page, department create and edit page and the routing page
+
+### 2.0.23
+-  Adds the labels in requests list and history
 
 ### 2.0.16
 -  Adds to history and request's details custom icons for browser and operating system data retrieved from the "User-agent"
