@@ -16,6 +16,7 @@ import { browserRefresh } from '../../../app.component';
 import { FaqKbService } from '../../../services/faq-kb.service';
 import { Request } from '../../../models/request-model';
 
+
 @Component({
   selector: 'appdashboard-ws-requests-served',
   templateUrl: './ws-requests-served.component.html',
@@ -41,6 +42,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   private unsubscribe$: Subject<any> = new Subject<any>();
   public browserRefresh: boolean;
   displayNoRequestString = false;
+
 
   constructor(
     public botLocalDbService: BotLocalDbService,
@@ -105,6 +107,41 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
 
   }
+
+  // --------------------------------------------------
+  // @ Tags - display more tags
+  // --------------------------------------------------
+  displayMoreTags(requestid) {
+    // console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - id request ", requestid);
+    const hiddenTagsElem = <HTMLElement>document.querySelector(`#more_tags_for_request_${requestid}`);
+    console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - hiddenTagsElem ", hiddenTagsElem);
+    hiddenTagsElem.style.display = "inline-block";
+
+    const moreTagsBtn = <HTMLElement>document.querySelector(`#more_tags_btn_for_request_${requestid}`);
+    console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - moreTagsBtn ", moreTagsBtn);
+    moreTagsBtn.style.display = "none";
+
+    // const lessTagsBtn = <HTMLElement>document.querySelector(`#less_tags_btn_for_request_${requestid}`);
+    // console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - lessTagsBtn ", lessTagsBtn);
+    // lessTagsBtn.style.display = "inline-block";
+  }
+
+  // --------------------------------------------------
+  // @ Tags - display ledd tags
+  // --------------------------------------------------
+  displayLessTag(requestid) {
+    const hiddenTagsElem = <HTMLElement>document.querySelector(`#more_tags_for_request_${requestid}`);
+    console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - hiddenTagsElem ", hiddenTagsElem);
+    hiddenTagsElem.style.display = "none";
+
+    const moreTagsBtn = <HTMLElement>document.querySelector(`#more_tags_btn_for_request_${requestid}`);
+    console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - moreTagsBtn ", moreTagsBtn);
+    moreTagsBtn.style.display = "inline-block";
+
+    // const lessTagsBtn = <HTMLElement>document.querySelector(`#less_tags_btn_for_request_${requestid}`);
+    // console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - lessTagsBtn ", lessTagsBtn);
+    // lessTagsBtn.style.display = "none";
+  } 
 
   ngOnDestroy() {
     this.unsubscribe$.next();
@@ -231,11 +268,12 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
 
-
-
-
   goToRequestMsgs(request_id: string) {
     this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/messages']);
+  }
+
+  goToWsRequestsNoRealtimeServed() {
+    this.router.navigate(['project/' + this.projectId + '/wsrequests-all/' + '200' ]);
   }
 
   // ======================== ARCHIVE A REQUEST ========================
@@ -244,7 +282,6 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
     this.id_request_to_archive = request_recipient;
     this.displayArchiveRequestModal = 'block'
-
   }
 
   onCloseArchiveRequestModal() {

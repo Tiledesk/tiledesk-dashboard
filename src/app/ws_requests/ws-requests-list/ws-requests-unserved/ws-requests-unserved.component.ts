@@ -43,7 +43,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     public appConfigService: AppConfigService,
     public wsRequestsService: WsRequestsService,
     public usersService: UsersService,
-    public faqKbService : FaqKbService
+    public faqKbService: FaqKbService
   ) {
 
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService);
@@ -81,7 +81,6 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     if (this.wsRequestsUnserved.length === 0 && browserRefresh === false) {
       this.displayNoRequestString = true;
     }
-
   }
 
   ngOnChanges() {
@@ -99,6 +98,41 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  // --------------------------------------------------
+  // @ Tags - display more tags
+  // --------------------------------------------------
+  displayMoreTags(requestid) {
+    // console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - id request ", requestid);
+    const hiddenTagsElem = <HTMLElement>document.querySelector(`#more_tags_for_request_${requestid}`);
+    console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - hiddenTagsElem ", hiddenTagsElem);
+    hiddenTagsElem.style.display = "inline-block";
+
+    const moreTagsBtn = <HTMLElement>document.querySelector(`#more_tags_btn_for_request_${requestid}`);
+    console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - moreTagsBtn ", moreTagsBtn);
+    moreTagsBtn.style.display = "none";
+
+    // const lessTagsBtn = <HTMLElement>document.querySelector(`#less_tags_btn_for_request_${requestid}`);
+    // console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - lessTagsBtn ", lessTagsBtn);
+    // lessTagsBtn.style.display = "inline-block";
+  }
+
+  // --------------------------------------------------
+  // @ Tags - display ledd tags
+  // --------------------------------------------------
+  displayLessTag(requestid) {
+    const hiddenTagsElem = <HTMLElement>document.querySelector(`#more_tags_for_request_${requestid}`);
+    console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - hiddenTagsElem ", hiddenTagsElem);
+    hiddenTagsElem.style.display = "none";
+
+    const moreTagsBtn = <HTMLElement>document.querySelector(`#more_tags_btn_for_request_${requestid}`);
+    console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - moreTagsBtn ", moreTagsBtn);
+    moreTagsBtn.style.display = "inline-block";
+
+    // const lessTagsBtn = <HTMLElement>document.querySelector(`#less_tags_btn_for_request_${requestid}`);
+    // console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - lessTagsBtn ", lessTagsBtn);
+    // lessTagsBtn.style.display = "none";
   }
 
   getCount() {
@@ -192,6 +226,10 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
 
   goToRequestMsgs(request_id: string) {
     this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/messages']);
+  }
+
+  goToWsRequestsNoRealtimeUnserved() {
+    this.router.navigate(['project/' + this.projectId + '/wsrequests-all/' + '100' ]);
   }
 
   // ======================== ARCHIVE A REQUEST ========================

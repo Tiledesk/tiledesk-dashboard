@@ -1,9 +1,35 @@
 <div class="card">
   <div class="card-header card-header-custom">
-    <h4 class="title customh4" style="margin-bottom:2px;">
 
-      {{ 'VisitorsPage.UnservedRequests' | translate }}
-    </h4>
+
+    <div class="row">
+
+      <div class="col-xs-6">
+        <h4 class="title customh4" style="margin-bottom:2px;">
+          {{ 'VisitorsPage.UnservedRequests' | translate }}
+        </h4>
+      </div>
+
+      <div class="col-xs-6">
+        <div class="dropdown pull-right">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <span class="material-icons" style="color:rgba(0, 0, 0, 0.87);">
+              more_vert
+            </span>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a (click)='goToWsRequestsNoRealtimeUnserved()'>
+                {{ 'SeeAll' | translate}}
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+
   </div>
 
   <!-- <loading-spinner *ngIf="showSpinner"></loading-spinner> -->
@@ -177,8 +203,85 @@
           </td>
 
           <!-- ------ ====== MESSAGE ====== ------ -->
-          <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; ">
+          <td [ngClass]="{'padding_5' : request?.tags?.length > 0}" (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; ">
             <p class="column-td" [innerHTML]="getRequestText(request?.first_text)">  </p>
+           <!-- 
+            // ---------------------------------------
+            // Request Tag
+            // --------------------------------------- -->
+            <section style="max-width: 210px;" *ngIf="request?.tags?.length > 0">
+
+              <div style="display: inline-block;" *ngFor="let tag of request?.tags;  let i=index">
+                <div *ngIf="i<2">
+                  <div class="icon-container" style="display: inline-block;">
+                    <svg style="width: 10px; height: auto;" aria-hidden="true" focusable="false" data-prefix="fas"
+                      data-icon="tag" class="svg-inline--fa-tag-icon fa-tag fa-w-16" role="img"
+                      xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+
+                      <path [ngStyle]="{'fill':tag.color}" class="tag_icon_in_ws_msgs"
+                        d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
+                      </path>
+                    </svg>
+
+                    <span style="font-size: 11px; color: #7695a5; position: relative; top: -2px; left: -2px;">
+                      {{ tag.tag}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 
+              // --------------------------------------------------------------------
+              // Display more tags
+              // -------------------------------------------------------------------- -->
+              <div  [id]="'more_tags_btn_for_request_' + request?.request_id" style="display: inline-block;" *ngIf="request?.tags?.length > 2">
+               <a  (click)="$event.stopPropagation(); displayMoreTags(request?.request_id)" style="font-size: 11px;
+               color: rgba(0, 0, 0, 0.54) !important;
+               position: relative;
+               top: -2px;">...  {{request?.tags?.length - 2}} {{'more' | translate }}
+               </a>
+              </div>
+
+              <!-- 
+              // --------------------------------------------------------------------
+              // Tag from 3 to ... 
+              // -------------------------------------------------------------------- -->
+              <div (click)="$event.stopPropagation(); displayLessTag(request?.request_id)" [id]="'more_tags_for_request_' + request?.request_id" style="display: none" *ngIf="request?.tags?.length > 2">
+                <div style="display: inline-block;" *ngFor="let tag of request?.tags;  let i=index">
+                  <div *ngIf="i >= 2">
+                    <div class="icon-container" style="display: inline-block;">
+                      <svg style="width: 10px; height: auto;" aria-hidden="true" focusable="false" data-prefix="fas"
+                        data-icon="tag" class="svg-inline--fa-tag-icon fa-tag fa-w-16" role="img"
+                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  
+                        <path [ngStyle]="{'fill':tag.color}" class="tag_icon_in_ws_msgs"
+                          d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
+                        </path>
+                      </svg>
+  
+                      <span style="font-size: 11px; color: #7695a5; position: relative; top: -2px; left: -2px;">
+                        {{ tag.tag}}
+                      </span>
+
+                    </div>
+                  </div>
+                </div>
+               </div>
+
+                <!-- 
+              // --------------------------------------------------------------------
+              // Display more tags
+              // -------------------------------------------------------------------- -->
+               <!-- <div  [id]="'less_tags_btn_for_request_' + request?.request_id" style="display: none" *ngIf="request?.tags?.length > 2">
+                <a  (click)="$event.stopPropagation(); displayLessTag(request?.request_id)" style="font-size: 11px;
+                color: rgba(0, 0, 0, 0.54) !important;
+                position: relative;
+                top: -2px;"> display less
+                </a>
+               </div> -->
+            </section>
+
+
           </td>
 
           <!-- ------ ====== REQUESTER (in UNSERVED)====== ------ -->

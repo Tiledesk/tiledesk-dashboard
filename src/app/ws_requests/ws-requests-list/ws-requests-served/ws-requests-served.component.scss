@@ -445,7 +445,7 @@ span .switch-agent-admin-requests-btn {
 
 .requester-email {
   color: #7695a5;
-  font-weight: 400;
+  font-weight: 100;
   line-height: 18px;
   font-size: 11px;
   display: block;
@@ -842,4 +842,9 @@ $f21blue: #039be5;
 .ua_browser_icon {
   width: 13px;
   // margin-bottom: 2px;
+}
+
+.padding_5 {
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
 }
