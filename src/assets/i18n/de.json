@@ -459,6 +459,12 @@
     "CancelAnyActiveSubscriptionsBeforeProceeding":"Kündigen Sie alle aktiven Abonnements, bevor Sie fortfahren",
 	"YesDeleteMyAccount":"Ja, lösche mein Konto",
 	"OperatingSystem":"Betriebssystem",
+	"ThisGroupHasNoMembers":"Diese Gruppe hat keine Mitglieder",
+	"Description":"Beschreibung",
+	"more":"mehr",
+	"SeeAll": "Alles sehen",
+	"AllDepts": "Alle Abteilungen",
+	"AllRequests": "Alle Anfragen",
 	"CannedResponses": {
 		"QuickTips": {
 			"1": "Vordefinierte Antworten sind Nachrichten, die es Ihnen ermöglichen schneller auf oft gestellte Fragen zu reagieren.",
@@ -686,8 +692,10 @@
 		"SelectABotThatWill": "Wählen Sie einen Bot aus, der auf die Anfragen Ihrer Besucher antwortet, bevor Ihr Personal die Anfrage entgegennimmt",
 		"ActivateBOT": "Bot aktivieren",
 		"SelectABot": "Bot auswählen",
-		"orCreateABot": "Neuen Bot erstellen",
+		"orCreateABot": "neuen Bot erstellen",
+		"SelectAnExistingOne":"wählen Sie eine vorhandene oder",
 		"BotOnly": "Nur Bot",
+		"RoutingRules": "Routing-Regeln",
 		"SetRoutingRules": "Routing-Regeln für Agenten-Zuweisung definieren",
 		"ErrorGroupId": "Fehler: Gruppen Id",
 		"Trashed": "entfernt",
@@ -986,11 +994,18 @@
 		"AllUsers": "Alle Benutzer",
 		"Trashed": "gelöscht",
 		"SelectABot": "Bot auswählen",
-		"orCreateABot": "Neuen Bot erstellen",
+		"orCreateABot": "neuen Bot erstellen",
+		"SelectAnExistingOne":"wählen Sie eine vorhandene oder",
 		"CreateDept": "Abteilung erstellen",
 		"UpdateDept": "Abteilung aktualisieren",
 		"QuickTips": "Quick Tips",
 		"Description":"Beschreibung",
+		"DeptId":"Abt. ID",
+		"DeptBot":"Abt. Bot",
+		"DeptAgents":"Abt. Agenten",
+		"AssignTo": "Zuweisen",
+		"AutomaticallyAssign":"Ordnen Sie eingehende Anforderungen automatisch Online-Agenten zu.",
+		"AgentsAreNotified":"Agenten werden über alle eingehenden Anfragen informiert",
 		"NotificationMsgs": {
 			"DeleteDeptSuccess": "Abteilung erfolgreich gelöscht",
 			"DeleteDeptError": "Ein Fehler ist während dem Entfernen der Abteilung aufgetreten",
@@ -1089,7 +1104,7 @@
 		"Rating": "Bewertung",
 		"RatingMessage": "Nachricht der Bewertung",
 		"DepartmentId": "Abteilung Id",
-		"SourcePage": "Urpsrungsseite",
+		"SourcePage": "Urpsrung",
 		"Agents": "Agenten",
 		"NoAgent": "Kein Agent"
 	},
@@ -1191,6 +1206,7 @@
 			"Description": "Beschreibung",
 			"CustomizeTrigger": "Trigger anpassen",
 			"RunTrigger": "Trigger ausführen",
+			"ResetToDefaults":"Einstellungen zurücksetzen",
 			"RunTrigger_dropdownElements": {
 				"Placeholder": "Aktivierungsmetode auswählen",
 				"WhenRequestChat": "Wenn ein Besucher eine Anfrage startet",
@@ -1270,6 +1286,7 @@
 						"VisitorPlatform": "Besucher Plattform",
 						"Department": "Abteilung",
 						"DepartmentHasBot": "Abteilung besitzt Bot",
+						"OfficesAreOpen": "Büros sind geöffnet",
 						"VisitorServed": "Anfrage wird bearbeitet",
 						"RequestStatus": "Anfrage Status",
 						"ChannelName": "Kanal Name",
@@ -1337,13 +1354,16 @@
 					"RequestReopen": "Anfrage wieder öffnen",
 					"RequestParticipantsJoin": "Teilnehmer Beitritts-Anfrage",
 					"RequestParticipantsLeave": "Teilnehmer Verlassens-Anfrage",
-					"RequestCreate": "Anfrage erstellen"
+					"RequestCreate": "Anfrage erstellen",
+					"AssignLabel": "Etikett zuweisen",
+					"LaunchDeptBot":"Abteilungsbot starten"
 				},
 				"placeholder": {
 					"NameAgent": "Namen der Agenten",
 					"SelectDepartment": "Abteilung auswählen",
 					"SelectStatus": "Status auswählen",
-					"SelectAgent": "Agent auswählen"
+					"SelectAgent": "Agent auswählen",
+					"Label": "Etikette"
 				}
 			}
 		}

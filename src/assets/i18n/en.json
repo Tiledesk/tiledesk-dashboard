@@ -459,6 +459,12 @@
     "CancelAnyActiveSubscriptionsBeforeProceeding":"Cancel any active subscriptions before proceeding",
     "YesDeleteMyAccount":"Yes, delete my account",
     "OperatingSystem":"Operating System",
+    "ThisGroupHasNoMembers":"This group has no members",
+    "Description":"Description",
+    "more":"more", 
+    "SeeAll": "See all",
+    "AllDepts": "All departments",
+    "AllRequests": "All requests",
     "CannedResponses": {
         "QuickTips": {
             "1": "Canned response are pre-made messages you can recall easily during chat.",
@@ -686,8 +692,10 @@
         "SelectABotThatWill": "Select a bot that will respond to visitor's requests before agent's commitment",
         "ActivateBOT": "Activate Bot",
         "SelectABot": "Select a Bot",
-        "orCreateABot": "Create a new Bot",
+        "orCreateABot": "create a new Bot",
+        "SelectAnExistingOne":"select an existing one or",
         "BotOnly": "Bot only",
+        "RoutingRules": "Routing rules",
         "SetRoutingRules": "Set routing rules for agents commitment",
         "ErrorGroupId": "Error: group id",
         "Trashed": "trashed",
@@ -986,11 +994,18 @@
         "AllUsers": "All users",
         "Trashed": "trashed",
         "SelectABot": "Select a Bot",
-        "orCreateABot": "Create a new Bot",
+        "orCreateABot": "create a new Bot",
+        "SelectAnExistingOne":"select an existing one or",
         "CreateDept": "Create Department",
         "UpdateDept": "Update Department",
         "QuickTips": "Quick tips",
         "Description":"Description",
+        "DeptId":"Dept ID",
+        "DeptBot":"Dept Bot",
+        "DeptAgents":"Dept Agents",
+        "AssignTo": "Assign to",
+        "AutomaticallyAssign":"Automatically assign incoming requests to Online agents.",
+        "AgentsAreNotified":"Agents are notified of all incoming requests",
         "NotificationMsgs": {
             "DeleteDeptSuccess": "Department successfully deleted",
             "DeleteDeptError": "An error occurred while deleting department",
@@ -1089,7 +1104,7 @@
         "Rating": "Rating",
         "RatingMessage": "Rating message",
         "DepartmentId": "Department Id",
-        "SourcePage": "Source page",
+        "SourcePage": "Source",
         "Agents": "Agents",
         "NoAgent": "No agent"
     },
@@ -1191,6 +1206,7 @@
             "Description": "Description",
             "CustomizeTrigger": "Customize trigger",
             "RunTrigger": "Run trigger",
+            "ResetToDefaults":"Reset to defaults",
             "RunTrigger_dropdownElements": {
                 "Placeholder": "Select activation method",
                 "WhenRequestChat": "When a visitor request a chat",
@@ -1270,6 +1286,7 @@
                         "VisitorPlatform": "Visitor platform",
                         "Department": "Department",
                         "DepartmentHasBot": "Department has bot",
+                        "OfficesAreOpen": "Offices are open",
                         "VisitorServed": "Visitor served",
                         "RequestStatus": "Request status",
                         "ChannelName": "Channel name",
@@ -1337,13 +1354,16 @@
                     "RequestReopen": "Reopen request",
                     "RequestParticipantsJoin": "Participant join request",
                     "RequestParticipantsLeave": "Participant leave request",
-                    "RequestCreate": "Create a request"
+                    "RequestCreate": "Create a request",
+                    "AssignLabel": "Assign label",
+                    "LaunchDeptBot":"Launch dept. bot"
                 },
                 "placeholder": {
                     "NameAgent": "Name of agents",
                     "SelectDepartment": "Select department",
                     "SelectStatus": "Select status",
-                    "SelectAgent": "Select agent"
+                    "SelectAgent": "Select agent",
+                    "Label": "Label"
                 }
             }
         }

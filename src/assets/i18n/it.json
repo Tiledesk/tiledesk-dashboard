@@ -454,6 +454,12 @@
     "CancelAnyActiveSubscriptionsBeforeProceeding":"Cancella eventuali sottoscrizioni attive prima di procedere",
     "YesDeleteMyAccount":"Si, elimina il mio account",
     "OperatingSystem":"Sistema operativo",
+    "ThisGroupHasNoMembers":"Questo gruppo non ha membri",
+    "Description":"Descrizione",
+    "more":"altre", 
+    "SeeAll": "Vedi tutto",
+    "AllDepts": "Tutti i dipartimenti",
+    "AllRequests": "Tutte le richieste",
     "CannedResponses": {
         "QuickTips": {
             "1": "Le Risposte Predefinite sono messaggi predefiniti che è possibile richiamare facilmente durante la chat.",
@@ -681,8 +687,10 @@
         "SelectABotThatWill": "Seleziona un bot che risponderà alle richieste del visitatore prima dell'ingaggio di un agente",
         "ActivateBOT": "Attiva BOT",
         "SelectABot": "Select a Bot",
-        "orCreateABot": "Create a new Bot",
+        "orCreateABot": "create a new Bot",
+        "SelectAnExistingOne":"seleziona uno esistente o",
         "BotOnly": "Solo bot",
+        "RoutingRules": "Regole di routing",
         "SetRoutingRules": "Imposta le regole di routing per gli agenti ingaggiati",
         "ErrorGroupId": "Errore: gruppo id",
         "Trashed": "eliminato",
@@ -981,11 +989,18 @@
         "AllUsers": "Tutti gli utenti",
         "Trashed": "eliminato",
         "SelectABot": "Seleziona un BOT ",
-        "orCreateABot": "Crea un nuovo Bot",
+        "orCreateABot": "crea un nuovo Bot",
+        "SelectAnExistingOne":"seleziona uno esistente o",
         "CreateDept": "Crea Dipartimento",
         "UpdateDept": "Aggiorna Dipartimento",
         "QuickTips": "Consigli veloci",
         "Description":"Descrizione",
+        "DeptId":"ID dipart.",
+        "DeptBot":"Bot dipart.",
+        "DeptAgents":"Agenti dipart.",
+        "AssignTo": "Assegnate a",
+        "AutomaticallyAssign":"Assegna automaticamente le richieste in arrivo agli agenti online.",
+        "AgentsAreNotified":"Gli agenti vengono informati di tutte le richieste in arrivo",
         "NotificationMsgs": {
             "DeleteDeptSuccess": "Dipartimento eliminato correttamente",
             "DeleteDeptError": "Si è verificato un errore durante l'eliminazione del dipartimento",
@@ -1083,7 +1098,7 @@
         "Rating": "Valutazione",
         "RatingMessage": "Messaggio di valutazione",
         "DepartmentId": "Id dipartimento",
-        "SourcePage": "Pagina di origine",
+        "SourcePage": "Origine",
         "Agents": "Agenti",
         "NoAgent": "Nessun agente"
     },
@@ -1185,6 +1200,7 @@
             "Description": "Descrizione",
             "CustomizeTrigger": "Personalizza trigger",
             "RunTrigger": "Esegui trigger",
+            "ResetToDefaults":"Ripristina impostazioni",
             "RunTrigger_dropdownElements": {
                 "Placeholder": "Seleziona metodo attivazione",
                 "WhenRequestChat": "Quando un visitatore richiede una chat",
@@ -1264,6 +1280,7 @@
                         "VisitorPlatform": "Piattaforma visitatore",
                         "Department": "Dipartimento",
                         "DepartmentHasBot": "Dipartimento ha bot",
+                        "OfficesAreOpen": "Uffici aperti",
                         "VisitorServed": "Visitatore assistito",
                         "RequestStatus": "Stato richiesta",
                         "ChannelName": "Nome del canale",
@@ -1331,13 +1348,16 @@
                     "RequestReopen": "Riapri richiesta",
                     "RequestParticipantsJoin": "Partecipa alla richiesta",
                     "RequestParticipantsLeave": "Lascia la richiesta",
-                    "RequestCreate": "Crea una richiesta"
+                    "RequestCreate": "Crea una richiesta",
+                    "AssignLabel": "Assegna etichetta",
+                    "LaunchDeptBot":"Avvia il bot del dipartimento"
                 },
                 "placeholder": {
                     "NameAgent": "Nome dell'agente",
                     "SelectDepartment": "Seleziona dipartimento",
                     "SelectStatus": "Seleziona stato",
-                    "SelectAgent": "Seleziona agente"
+                    "SelectAgent": "Seleziona agente",
+                    "Label": "Etichetta"
                 }
             }
         }
