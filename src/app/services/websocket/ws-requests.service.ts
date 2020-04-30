@@ -101,6 +101,7 @@ export class WsRequestsService implements OnDestroy {
     // -----------------------------------------------------------------------------------------------------
     // REQUESTS - @ the publication of the 'current project' subscribes to the websocket requests
     // -----------------------------------------------------------------------------------------------------
+    // NOTE_nk: comment this.getCurrentProjectAndSubscribeTo_WsRequests()
     this.getCurrentProjectAndSubscribeTo_WsRequests()
     this.getLoggedUser();
 
@@ -210,15 +211,15 @@ export class WsRequestsService implements OnDestroy {
             if (index === -1) {
               self.addWsRequests(data)
 
-              // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- CREATE the request not exist - addWsRequests!");
+              console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- CREATE the request not exist - addWsRequests!");
             } else {
-              // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- CREATE the request exist - NOT addWsRequests!");
+              console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- CREATE the request exist - NOT addWsRequests!");
             }
 
             // }
           }, function (data, notification) {
 
-            // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-UPDATE", data);
+            console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-UPDATE", data);
             // this.wsRequestsList.push(data);
 
             // self.addOrUpdateWsRequestsList(data);
@@ -242,7 +243,7 @@ export class WsRequestsService implements OnDestroy {
             if (data) {
 
 
-              // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-DATA - WS-REQUESTS ARRAY ", self.wsRequestsList);
+              console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-DATA - WS-REQUESTS ARRAY ", self.wsRequestsList);
 
               // if (self.wsRequestsList && self.wsRequestsList.length === 0 && Array.isArray(data)) {
 
@@ -381,10 +382,34 @@ export class WsRequestsService implements OnDestroy {
    * @param request 
    */
   updateWsRequests(request: any) {
+
+    // QUANDO UNA RICHIESTA VIENE EMESSA CON preflight = true non passa dal ON CREATE
+    // sull ON UPDATE VENGONO AGGIORNATE SOLO LE RICHIESTE CHE VERIFICANO LA condizione request._id === this.wsRequestsList[i]._id
+    // PER PUBBLICARE LE RICHIESTE CHE LA CUI PROPRIETà preflight = true E AGGIORNATA A FALSE (E CHE QUINDI è DA VISUALIZZARE) CERCO
+    // L'ESISTENZA DELL'ID NELLA wsRequestsList
+    // const hasFound = this.wsRequestsList.filter((obj: any) => {
+    //   return obj._id === request._id;
+    // });
+    // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ON-UPATE hasFound IN wsRequestsList: ", hasFound , 'THE REQUEST ID', request._id);
+    
+    const index = this.wsRequestsList.findIndex((e) => e.id === request.id);
+    if (index === -1) {
+   
+      console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-UPATE the request not exist - PUSH & PUBLISH ");
+      this.wsRequestsList.push(request);
+      this.wsRequestsList$.next(this.wsRequestsList);
+      
+    } else {
+      console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ----- ON-UPATE the request exist");
+    }
+
+
+   
+    
     for (let i = 0; i < this.wsRequestsList.length; i++) {
 
       if (request._id === this.wsRequestsList[i]._id) {
-        // console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ON-UPATE AN EXISTING REQUESTS - request._id : ", request._id, " wsRequestsList[i]._id: ", this.wsRequestsList[i]._id);
+        console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ON-UPATE AN EXISTING REQUESTS - request._id : ", request._id, " wsRequestsList[i]._id: ", this.wsRequestsList[i]._id);
 
 
         if (request.status !== 1000) {
@@ -411,6 +436,11 @@ export class WsRequestsService implements OnDestroy {
           console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ON-UPATE REQUESTS LIST: ", this.wsRequestsList);
         }
       }
+
+      // else {
+
+      //   console.log("% »»» WebSocketJs WF +++++ ws-requests--- service ON-UPATE AN !NOT EXISTING REQUESTS - request._id : ", request._id, " wsRequestsList[i]._id: ", this.wsRequestsList[i]._id);
+      // }
     }
   }
 
@@ -724,7 +754,7 @@ export class WsRequestsService implements OnDestroy {
   // -----------------------------------------------------------------------------------------
   // Create note
   // -----------------------------------------------------------------------------------------
-  public createNote(note: string, request_id: string,) {
+  public createNote(note: string, request_id: string, ) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -791,6 +821,49 @@ export class WsRequestsService implements OnDestroy {
       _querystring = ''
     }
     const url = this.SERVER_BASE_PATH + this.project_id + '/requests/csv?status=1000' + _querystring + '&page=' + pagenumber;
+    console.log('!!! NEW REQUESTS HISTORY - DOWNLOAD REQUESTS AS CSV URL ', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/csv');
+    /* *** USED TO TEST IN LOCALHOST (note: this service doesn't work in localhost) *** */
+    // headers.append('Authorization', 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnsiZW1haWwiOjEsImZpcnN0bmFtZSI6MSwibGFzdG5hbWUiOjEsInBhc3N3b3JkIjoxLCJlbWFpbHZlcmlmaWVkIjoxLCJpZCI6MX0sImdldHRlcnMiOnt9LCJfaWQiOiI1YWFhOTJmZjRjM2IxMTAwMTRiNDc4Y2IiLCJ3YXNQb3B1bGF0ZWQiOmZhbHNlLCJhY3RpdmVQYXRocyI6eyJwYXRocyI6eyJwYXNzd29yZCI6ImluaXQiLCJlbWFpbCI6ImluaXQiLCJsYXN0bmFtZSI6ImluaXQiLCJmaXJzdG5hbWUiOiJpbml0IiwiX2lkIjoiaW5pdCJ9LCJzdGF0ZXMiOnsiaWdub3JlIjp7fSwiZGVmYXVsdCI6e30sImluaXQiOnsibGFzdG5hbWUiOnRydWUsImZpcnN0bmFtZSI6dHJ1ZSwicGFzc3dvcmQiOnRydWUsImVtYWlsIjp0cnVlLCJfaWQiOnRydWV9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7fX0sInN0YXRlTmFtZXMiOlsicmVxdWlyZSIsIm1vZGlmeSIsImluaXQiLCJkZWZhdWx0IiwiaWdub3JlIl19LCJwYXRoc1RvU2NvcGVzIjp7fSwiZW1pdHRlciI6eyJkb21haW4iOm51bGwsIl9ldmVudHMiOnt9LCJfZXZlbnRzQ291bnQiOjAsIl9tYXhMaXN0ZW5lcnMiOjB9LCIkb3B0aW9ucyI6dHJ1ZX0sImlzTmV3IjpmYWxzZSwiX2RvYyI6eyJsYXN0bmFtZSI6IkxhbnppbG90dG8iLCJmaXJzdG5hbWUiOiJOaWNvbGEgNzQiLCJwYXNzd29yZCI6IiQyYSQxMCRwVWdocTVJclgxMzhTOXBEY1pkbG1lcnNjVTdVOXJiNlFKaVliMXlEckljOHJDMFh6c2hUcSIsImVtYWlsIjoibGFuemlsb3R0b25pY29sYTc0QGdtYWlsLmNvbSIsIl9pZCI6IjVhYWE5MmZmNGMzYjExMDAxNGI0NzhjYiJ9LCIkaW5pdCI6dHJ1ZSwiaWF0IjoxNTM4MTIzNTcyfQ.CYnxkLbg5XWk2JWAxQg1QNGDpNgNbZAzs5PEQpLCCnI');
+    /* *** USED IN PRODUCTION *** */
+    headers.append('Authorization', this.TOKEN);
+
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.text());
+    // .map((response) => JSON.stringify(response.text()));
+  }
+
+  // -------------------------------------------------------------
+  // WS Requests no-realtime
+  // -------------------------------------------------------------
+  public getNodeJsWSRequests(operator:string, status: string, querystring: string, pagenumber: number) {
+    let _querystring = '&' + querystring
+    if (querystring === undefined || !querystring) {
+      _querystring = ''
+    }
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests?status' + operator + status + _querystring + '&page=' + pagenumber;
+
+    console.log('!!! NEW REQUESTS HISTORY - REQUESTS SERVICE URL ', url);
+
+    const headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    
+    headers.append('Authorization', this.TOKEN);
+
+    return this.http
+      .get(url, { headers })
+      .map((response) => response.json());
+  }
+
+  public downloadNodeJsWSRequestsAsCsv(querystring: string, pagenumber: number) {
+    let _querystring = '&' + querystring
+    if (querystring === undefined || !querystring) {
+      _querystring = ''
+    }
+    const url = this.SERVER_BASE_PATH + this.project_id + '/requests/csv?status<1000' + _querystring + '&page=' + pagenumber;
     console.log('!!! NEW REQUESTS HISTORY - DOWNLOAD REQUESTS AS CSV URL ', url);
 
     const headers = new Headers();
