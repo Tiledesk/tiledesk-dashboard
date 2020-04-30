@@ -28,6 +28,8 @@ import { WsRequestsListComponent } from './ws_requests/ws-requests-list/ws-reque
 import { WsRequestsMsgsComponent } from './ws_requests/ws-requests-msgs/ws-requests-msgs.component';
 import { DepartmentsComponent } from './departments/departments.component';
 import { DepartmentEditAddComponent } from './department-edit-add/department-edit-add.component';
+import { RoutingPageComponent } from './routing-page/routing-page.component';
+
 import { ProjectsComponent } from './projects/projects.component';
 import { UsersComponent } from './users/users.component';
 
@@ -60,7 +62,7 @@ import { SocialComponent } from './social/social.component';
 
 import { UserEditAddComponent } from './user-edit-add/user-edit-add.component';
 import { UsersProfileComponent } from './users-profile/users-profile.component';
-import { RoutingPageComponent } from './routing-page/routing-page.component';
+
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
 import { RequestsMsgsComponent } from './requests-msgs/requests-msgs.component';
 import { TrainBotComponent } from './requests-msgs/train-bot/train-bot.component';
@@ -106,7 +108,7 @@ import { InstallTiledeskComponent } from './install-tiledesk/install-tiledesk.co
 import { LoadingPageComponent } from './loading-page/loading-page.component';
 import { CannedResponsesListComponent } from './canned-responses/canned-responses-list.component';
 import { TagsComponent } from './tags/tags.component';
-
+import { WsRequestsNortComponent } from './ws_requests/ws-requests-nort/ws-requests-nort.component';
 
 
 const routes: Routes = [
@@ -178,6 +180,9 @@ const routes: Routes = [
   { path: 'project/:projectid/wsrequests', component: WsRequestsListComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/wsrequest/:requestid/messages', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/request-for-panel/:requestid', component: WsRequestsMsgsComponent, canActivate: [AuthGuard] },
+
+  { path: 'project/:projectid/wsrequests-all/:requeststatus', component: WsRequestsNortComponent, canActivate: [AuthGuard] },
+
 
   // is the dummy component used in ws-requests-msgs: when the user is in the request' details page and 
   // click an in-app notification (of a request unserved or assigned to him) the navigation is redirect to the loading component 
@@ -259,6 +264,13 @@ const routes: Routes = [
   { path: 'project/:projectid/department/create', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/department/edit/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] },
 
+  { path: 'project/:projectid/routing', component: RoutingPageComponent, canActivate: [AuthGuard] }, // no more used
+  
+  // new routing page is the edit department
+  { path: 'project/:projectid/routing/:deptid', component: DepartmentEditAddComponent, canActivate: [AuthGuard] }, // new
+
+
+
   { path: 'project/:projectid/departments-demo', component: DepartmentsStaticComponent, canActivate: [AuthGuard] },
 
 
@@ -288,7 +300,7 @@ const routes: Routes = [
   { path: 'project/:projectid/channels', component: ChannelsComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/social', component: SocialComponent, canActivate: [AuthGuard] },
 
-  { path: 'project/:projectid/routing', component: RoutingPageComponent, canActivate: [AuthGuard] },
+  
 
   // CHANGE PSWRD if project is defined (use case: THE USER SELECTED A PROJECT)
   { path: 'project/:projectid/user/:userid/password/change', component: ChangePasswordComponent, canActivate: [AuthGuard] },

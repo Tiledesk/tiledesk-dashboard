@@ -178,6 +178,7 @@ import { TagsDeleteComponent } from './tags/tags-delete/tags-delete.component';
 import { TagsEditComponent } from './tags/tags-edit/tags-edit.component';
 import { TriggerStaticComponent } from './static-pages/trigger-static/trigger-static.component';
 import { AccountSettingsComponent } from './user-profile/account-settings/account-settings.component';
+import { WsRequestsNortComponent } from './ws_requests/ws-requests-nort/ws-requests-nort.component';
 
 
 console.log('************** APPMODULE ******************');
@@ -292,7 +293,8 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     TagsDeleteComponent,
     TagsEditComponent,
     TriggerStaticComponent,
-    AccountSettingsComponent
+    AccountSettingsComponent,
+    WsRequestsNortComponent
   ],
   imports: [
     /* PRIVATE */
