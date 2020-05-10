@@ -15,7 +15,7 @@ import { UsersService } from '../../../services/users.service';
 import { browserRefresh } from '../../../app.component';
 import { FaqKbService } from '../../../services/faq-kb.service';
 import { Request } from '../../../models/request-model';
-
+import { DepartmentService } from '../../../services/mongodb-department.service';
 
 @Component({
   selector: 'appdashboard-ws-requests-served',
@@ -38,6 +38,8 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   totalOf_servedRequests: number;
   ROLE_IS_AGENT: boolean;
   timeout: any;
+  projectUsersArray: any;
+  depts: any;
 
   private unsubscribe$: Subject<any> = new Subject<any>();
   public browserRefresh: boolean;
@@ -53,6 +55,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     public wsRequestsService: WsRequestsService,
     public usersService: UsersService,
     public faqKbService: FaqKbService,
+    private departmentService: DepartmentService
     // private cdr: ChangeDetectorRef
 
   ) {
@@ -62,6 +65,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   ngOnInit() {
     this.getStorageBucket();
     this.getCurrentProject();
+    this.getDepartments();
 
     console.log('% »»» WebSocketJs WF - onData (ws-requests-served) - showSpinner', this.showSpinner)
     console.log('% »»» WebSocketJs WF +++++ ws-requests--- served - ngOnInit wsRequestsServed', this.wsRequestsServed)
@@ -70,7 +74,26 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.getLoggedUser();
     this.detectBrowserRefresh();
     // this.getProjectUserRole()
+
   }
+
+  getDepartments() {
+    this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
+      console.log('% »»» WebSocketJs WF +++++ ws-requests--- served GET DEPTS RESPONSE ', _departments);
+      this.depts = _departments;
+
+
+
+    }, error => {
+      console.log('% »»» WebSocketJs WF +++++ ws-requests--- served GET DEPTS - ERROR: ', error);
+    }, () => {
+      console.log('% »»» WebSocketJs WF +++++ ws-requests--- served GET DEPTS * COMPLETE *')
+    });
+  }
+
+
+
+
   // Wait until the view inits before disconnecting
   ngAfterViewInit() {
     console.log('% »»» WebSocketJs WF - onData >>>>>>>>>>>>>>>>>>>>>>>>>>>>> (ws-requests-served) - ngAfterViewInit wsRequestsServed', this.wsRequestsServed)
@@ -141,7 +164,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     // const lessTagsBtn = <HTMLElement>document.querySelector(`#less_tags_btn_for_request_${requestid}`);
     // console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - lessTagsBtn ", lessTagsBtn);
     // lessTagsBtn.style.display = "none";
-  } 
+  }
 
   ngOnDestroy() {
     this.unsubscribe$.next();
@@ -205,6 +228,31 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
 
+  // SERVED_BY: add this
+  goToMemberProfile(member_id: any) {
+    console.log('!!! NEW REQUESTS HISTORY has clicked GO To MEMBER ', member_id);
+    if (member_id.indexOf('bot_') !== -1) {
+      console.log('!!! NEW REQUESTS HISTORY IS A BOT !');
+
+      const bot_id = member_id.slice(4);
+      const bot = this.botLocalDbService.getBotFromStorage(bot_id);
+
+      let botType = ''
+      if (bot.type === 'internal') {
+        botType = 'native'
+      } else {
+        botType = bot.type
+      }
+      // this.router.navigate(['project/' + this.projectId + '/botprofile/' + member_id]);
+      this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
+
+    } else {
+      this.getProjectuserbyUseridAndGoToEditProjectuser(member_id);
+    }
+  }
+
+
+
   // !!! No more used
   // goToMemberProfile(member_id: any) {
   //   console.log('WsRequestsServedComponent has clicked GO To MEMBER ', member_id);
@@ -232,6 +280,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   //   }
   // }
 
+  // !!! Not used
   goToBotProfile(bot_id, bot_type) {
     let botType = ''
     if (bot_type === 'internal') {
@@ -243,7 +292,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
   }
 
-
+  // !!! Not used
   goToAgentProfile(member_id) {
     console.log('WsRequestsServedComponent goToAgentProfile ', member_id)
     // this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
@@ -251,6 +300,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.getProjectuserbyUseridAndGoToEditProjectuser(member_id);
   }
 
+  // SERVED_BY: add this if not exist -->
   getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
     this.usersService.getProjectUserByUserId(member_id)
       .subscribe((projectUser: any) => {
@@ -273,7 +323,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
   goToWsRequestsNoRealtimeServed() {
-    this.router.navigate(['project/' + this.projectId + '/wsrequests-all/' + '200' ]);
+    this.router.navigate(['project/' + this.projectId + '/wsrequests-all/' + '200']);
   }
 
   // ======================== ARCHIVE A REQUEST ========================
@@ -295,6 +345,51 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     // console.log('% »»» WebSocketJs WF WS-RL - trackByFn ', request );
     if (!request) return null
     return index; // unique id corresponding to the item
+  }
+
+  // dept_replace(deptid) {
+  //   if (this.depts) {
+  //     const foundDept = this.depts.filter((obj: any) => {
+  //       return obj._id === deptid;
+  //     });
+  //     // console.log('% »»» WebSocketJs WF +++++ ws-requests--- served - dept_replace foundDept', foundDept)
+  //     return deptid = foundDept[0]['name'];
+  //   }
+  // }
+
+  // SERVED_BY: add this
+  members_replace(member_id) {
+    const participantIsBot = member_id.includes('bot_')
+
+    if (participantIsBot === true) {
+
+      const bot_id = member_id.slice(4);
+      // console.log('!!! NEW REQUESTS HISTORY - THE PARTICIP', member_id, 'IS A BOT ', participantIsBot, ' - ID ', bot_id);
+
+      const bot = this.botLocalDbService.getBotFromStorage(bot_id);
+      if (bot) {
+        // '- ' +
+        return member_id = bot['name'] + ' (bot)';
+      } else {
+        // '- ' +
+        return member_id
+      }
+
+    } else {
+
+      const user = this.usersLocalDbService.getMemberFromStorage(member_id);
+      if (user) {
+        // console.log('user ', user)
+        if (user['lastname']) {
+          const lastnameInizial = user['lastname'].charAt(0);
+          // '- ' +
+          return member_id = user['firstname'] + ' ' + lastnameInizial + '.'
+        }
+      } else {
+        // '- ' +
+        return member_id
+      }
+    }
   }
 
 }

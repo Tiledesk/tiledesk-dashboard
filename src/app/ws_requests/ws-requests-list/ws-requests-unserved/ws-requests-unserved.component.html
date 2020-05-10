@@ -482,17 +482,22 @@
           </td>
 
           <!-- ------ ============== DEPARTMENT =============== ------ -->
-          <!-- no more get from request attributes but from department -->
-          <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer" rel="tooltip"
-            title="department id:{{ request?.department?._id }}">
+      
+          <!-- // DEPTS_LAZY: edit the existing one as this -->
+          <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer; font-size: 12px;
+          font-weight: 400;">
+            
+            <!-- // DEPTS_LAZY: edit the existing one as this -->
+            <p *ngIf="request?.dept?.name" class="column-td">
+              {{ request?.dept?.name }}
+            </p>
+            <p *ngIf="!request?.dept?.name" class="column-td">
+              n/a
+            </p>
 
-            <p *ngIf="request?.department?.name" class="column-td">
-              {{ request?.department?.name }}
-            </p>
-            <p *ngIf="!request?.department?.name" class="column-td">
-              <!-- {{ 'VisitorsPage.Default' | translate }} -->
-              n.a.
-            </p>
+            <!-- <p *ngIf="request?.department" class="column-td" 
+              [innerHTML]="dept_replace( request?.department )"></p> -->
+           
           </td>
 
           <!-- ------ ====== CREATED ON ====== ------ -->

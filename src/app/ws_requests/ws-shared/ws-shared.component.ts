@@ -229,7 +229,7 @@ export class WsSharedComponent implements OnInit {
             }
 
             this.newParticipants.push([{ '_id': participantid, 'name': user.firstname, 'lastname': lastnameInizial, 'botType': '' }])
-     
+
           } else {
             console.log('!! Ws SHARED »»»»»»» createFullParticipacipantsArray participants - user NOT IN STORAGE ');
 
@@ -271,7 +271,7 @@ export class WsSharedComponent implements OnInit {
       .subscribe((projectuser) => {
         console.log('!! Ws SHARED »»»»»»» createFullParticipacipantsArray getProjectuserByIdAndSaveInStorage - RES', projectuser);
 
-      
+
         if (projectuser) {
 
           this.user = projectuser[0].id_user;
@@ -280,7 +280,7 @@ export class WsSharedComponent implements OnInit {
           if (this.user.lastname) {
             lastnameInizial = this.user.lastname.charAt(0);
           }
-          
+
           this.newParticipants.push([{ '_id': userid, 'name': this.user.firstname, 'lastname': lastnameInizial, 'botType': '' }])
 
           this.usersLocalDbService.saveMembersInStorage(userid, this.user);
@@ -369,6 +369,7 @@ export class WsSharedComponent implements OnInit {
   }
 
 
+
   // -----------------------------------------------------------------------------------------------------
   // @ departments in Requests & Count of depts in requests
   // -----------------------------------------------------------------------------------------------------
@@ -378,6 +379,7 @@ export class WsSharedComponent implements OnInit {
    * 
    * @param requests_array 
    */
+  // DEPTS_LAZY: replace the existing one with this
   getDeptsAndCountOfDeptsInRequests(requests_array) {
     const depts_array = [];
     const deptsIDs = [];
@@ -385,9 +387,10 @@ export class WsSharedComponent implements OnInit {
     const deptsNames = [];
 
     requests_array.forEach((request, index) => {
+      // console.log('% WsRequestsList - DEPTS-COUNT request 1', request, '#', index);
       // if (request && request.attributes) {
-      if (request && request.department) {
-        // console.log('% WsRequestsList  - REQUEST ', request, '#', index);
+      if (request && request.dept) {
+        // console.log('% WsRequestsList - DEPTS-COUNT request 2', request, '#', index);
 
         /**
          * CREATES AN ARRAY WITH ALL THE DEPTS RETURNED IN THE REQUESTS OBJCTS
@@ -395,7 +398,7 @@ export class WsSharedComponent implements OnInit {
          */
 
         // depts_array.push({ '_id': request.attributes.departmentId, 'deptName': request.attributes.departmentName }); 
-        depts_array.push({ '_id': request.department._id, 'deptName': request.department.name });
+        depts_array.push({ '_id': request.dept._id, 'deptName': request.dept.name });
 
 
         /**
@@ -406,7 +409,7 @@ export class WsSharedComponent implements OnInit {
         /**
          * USING DEPT ID  */
         // deptsIDs.push(request.attributes.departmentId)
-        deptsIDs.push(request.department._id);
+        deptsIDs.push(request.dept._id);
 
         /**
          * USING DEPT NAME  */
@@ -449,6 +452,7 @@ export class WsSharedComponent implements OnInit {
     });
   }
 
+
   removeDuplicates(originalArray, prop) {
     const newArray = [];
     const lookupObject = {};
@@ -485,11 +489,11 @@ export class WsSharedComponent implements OnInit {
 
 
 
+
   // ------------------------------------------------------------------------------------------------
   // MOVED FROM ws-requests-list.component.ts after the creation of the component  
   // WsRequestsUnservedComponent & WsRequestsServedComponent
   // ------------------------------------------------------------------------------------------------
-
 
   members_replace(member_id) {
     // console.log('!!! NEW REQUESTS HISTORY  - SERVED BY ID ', member_id)
@@ -516,9 +520,11 @@ export class WsSharedComponent implements OnInit {
       const user = this.usersLocalDbService.getMemberFromStorage(member_id);
       if (user) {
         // console.log('user ', user)
-        const lastnameInizial = user['lastname'].charAt(0);
-        // '- ' +
-        return member_id = user['firstname'] + ' ' + lastnameInizial + '.'
+        if (user['lastname']) {
+          const lastnameInizial = user['lastname'].charAt(0);
+          // '- ' +
+          return member_id = user['firstname'] + ' ' + lastnameInizial + '.'
+        }
       } else {
         // '- ' +
         return member_id

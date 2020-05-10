@@ -104,7 +104,7 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   internal_request_id: string;
   deptIdSelectedInRequuestsXDepts
   ws_requestslist_deptIdSelected: string
-display_dept_sidebar = false;
+  display_dept_sidebar = false;
   /**
    * Constructor
    * 
@@ -142,7 +142,7 @@ display_dept_sidebar = false;
    * On init
    */
   ngOnInit() {
-
+    this.getDepartments();
     // this.getWsRequests$();
     this.getCurrentProject();
     this.getLoggedUser();
@@ -154,7 +154,7 @@ display_dept_sidebar = false;
     // this.for1();
     // this.getRequestsTotalCount()  
     // this.getAllProjectUsersAndBot();
-    this.getDepartments();
+
     // const teamContentEl = <HTMLElement>document.querySelector('.team-content');
     // const perfs = new PerfectScrollbar(teamContentEl);
     // this.selectedDeptId = '';
@@ -164,13 +164,7 @@ display_dept_sidebar = false;
     this.getChatUrl();
     this.getTestSiteUrl();
 
-    
   }
-
-
-
-
- 
 
   getTestSiteUrl() {
     this.TESTSITE_BASE_URL = this.appConfigService.getConfig().testsiteBaseUrl;
@@ -236,15 +230,12 @@ display_dept_sidebar = false;
     this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
       console.log('% »»» WebSocketJs WF WS-RL - GET DEPTS RESPONSE ', _departments);
       this.departments = _departments
-
     }, error => {
       console.log('% »»» WebSocketJs WF WS-RL - GET DEPTS - ERROR: ', error);
     }, () => {
       console.log('% »»» WebSocketJs WF WS-RL - GET DEPTS * COMPLETE *')
     });
   }
-
-
 
   getStorageBucket() {
     const firebase_conf = this.appConfigService.getConfig().firebase;
@@ -294,7 +285,6 @@ display_dept_sidebar = false;
     if (this.i == this.Xlength) {
       console.log('% »»» WebSocketJs WF >>>>>>>>> >>>>>>> FOR 1 == Xlength ');
       // this.showSpinner = false;
-
       return false;
     }
     setTimeout(() => {
@@ -477,7 +467,7 @@ display_dept_sidebar = false;
   // }
 
   goToDept(deptid) {
-   
+
     this.router.navigate(['project/' + this.projectId + '/department/edit/' + deptid]);
 
     // this.display_dept_sidebar = true;
@@ -501,9 +491,10 @@ display_dept_sidebar = false;
   onChangeDepts() {
     this.hasFiltered = true
     // console.log('% »»» WebSocketJs WF WS-RL - on Change Depts - dept id', this.selectedDeptId);
-    // this.filter.push({ 'deptId': this.selectedDeptId }) //['deptId'] = 
+
     this.filter[0]['deptId'] = this.selectedDeptId
-    // console.log('% »»» WebSocketJs WF WS-RL - on Change Depts - filter', this.filter)
+
+    console.log('% »»» WebSocketJs WF WS-RL - on Change Depts - filter', this.filter)
     this.getWsRequests$();
     // console.log('% »»» WebSocketJs WF WS-RL - on Change Depts - ws Requests Unserved ', this.wsRequestsUnserved.length);
     // console.log('% »»» WebSocketJs WF WS-RL - on Change Depts - ws Requests Served length', this.wsRequestsServed.length)
@@ -602,6 +593,37 @@ display_dept_sidebar = false;
 
   }
 
+  // DEPTS_LAZY: add this 
+  addDeptObject(wsrequests) {
+    this.departmentService.getDeptsByProjectIdToPromise().then((_departments: any) => {
+      console.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> DEPTS <-X', _departments)
+
+      wsrequests.forEach(request => {
+        const deptHasName = request.department.hasOwnProperty('name')
+        if (deptHasName) {
+          // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> REQ DEPT HAS NAME', deptHasName)
+          request['dept'] = request.department
+        } else {
+          // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> REQ DEPT HAS NAME', deptHasName)
+
+          request['dept'] = this.getDeptObj(request.department, _departments)
+        }
+
+      });
+
+      this.getDeptsAndCountOfDeptsInRequests(wsrequests);
+    });
+  }
+ // DEPTS_LAZY: add this 
+  getDeptObj(departmentid: string, deparments: any) {
+    // const deptObjct =  this.departments.findIndex((e) => e.department === departmentid);
+    const deptObjct = deparments.filter((obj: any) => {
+      return obj._id === departmentid;
+    });
+    // console.log('% »»» WebSocketJs WF +++++ ws-requests--- service -  X-> DEPT OBJECT <-X', deptObjct)
+    return deptObjct[0]
+  }
+
   // -----------------------------------------------------------------------------------------------------
   // @ Subscribe to get the published requests (called On init)
   // -----------------------------------------------------------------------------------------------------
@@ -612,8 +634,11 @@ display_dept_sidebar = false;
         takeUntil(this.unsubscribe$)
       )
       .subscribe((wsrequests) => {
+        
+        // DEPTS_LAZY: add this 
+        this.addDeptObject(wsrequests)
 
-        console.log("% »»» WebSocketJs WF +++++ ws-requests--- list - subscribe ", wsrequests);
+        // console.log("% »»» WebSocketJs WF +++++ ws-requests--- list - subscribe ", wsrequests);
 
         if (wsrequests) {
           console.log("% »»» WebSocketJs WF +++++ ws-requests--- list - subscribe > if (wsrequests) ", wsrequests);
@@ -668,9 +693,9 @@ display_dept_sidebar = false;
             // console.log('% »»» WebSocketJs WF +++++ ws-requests--- list - ONLY_MY_REQUESTS  ', this.ONLY_MY_REQUESTS, 'this.ws_requests', this.ws_requests)
           }
 
-          var ws_requests_clone = JSON.parse(JSON.stringify(this.ws_requests));
-
-          this.getDeptsAndCountOfDeptsInRequests(ws_requests_clone);
+          // DEPTS_LAZY: comment this 2 lines
+          // var ws_requests_clone = JSON.parse(JSON.stringify(this.ws_requests));
+          // this.getDeptsAndCountOfDeptsInRequests(ws_requests_clone);
 
           this.getParticipantsInRequests(this.ws_requests);
 
@@ -690,7 +715,9 @@ display_dept_sidebar = false;
                 console.log('% »»» WebSocketJs WF WS-RL - <<<<<<<<<<<<<< FILTER USECASE 1  >>>>>>>>>>>>>>  filter only for department ');
                 console.log('% »»» WebSocketJs WF WS-RL - WsRequestsList >>> filter[deptId] <<< ', this.filter[0]['deptId']);
 
-                if (r['department']['_id'] === this.filter[0]['deptId']) {
+                console.log('% »»» WebSocketJs WF WS-RL - <<<<<<<<<<<<<< FILTER USECASE 1  >>>>>>>>>>>>>>  r[dept] ', r['dept']);
+                // if (r['department']['_id'] === this.filter[0]['deptId']) {
+                if (r['dept']['_id'] === this.filter[0]['deptId']) {
                   return true
                 } else {
                   return false
@@ -717,7 +744,8 @@ display_dept_sidebar = false;
               if (this.filter[1] !== undefined && this.filter[1]['agentId'] !== null && this.filter[0] !== undefined && this.filter[0]['deptId'] !== null) {
                 console.log('% »»» WebSocketJs WF WS-RL - <<<<<<<<<<<<<< FILTER USECASE 3 >>>>>>>>>>>>>> filter for dept & participant');
                 console.log('% »»» WebSocketJs WF WS-RL - WsRequestsList >>> filter[agentId] <<< ', this.filter[1]['agentId']);
-                if (r['participants'].includes(this.filter[1]['agentId']) && (r['department']['_id'] === this.filter[0]['deptId'])) {
+                // if (r['participants'].includes(this.filter[1]['agentId']) && (r['department']['_id'] === this.filter[0]['deptId'])) {
+                if (r['participants'].includes(this.filter[1]['agentId']) && (r['dept']['_id'] === this.filter[0]['deptId'])) {
                   return true
                 } else {
                   return false
@@ -750,6 +778,8 @@ display_dept_sidebar = false;
         // this.ws_requests.forEach(request => {
         this.ws_requests.forEach((request) => {
 
+          console.log('% »»» WebSocketJs WF - WsRequestsList request ', request)
+
           const user_agent_result = this.parseUserAgent(request.userAgent)
           // console.log('% »»» WebSocketJs WF - WsRequestsList - USER-AGENT RESULT ', user_agent_result)      
 
@@ -765,6 +795,17 @@ display_dept_sidebar = false;
           // console.log("% »»» currentUserID WebSocketJs WF - WsRequestsList in ws_requests.forEach 2 ", this.auth.user_bs.value._id);
 
 
+          //  console.log('% »»» WebSocketJs WF - WsRequestsList - department id ', request.department)
+          // if (this.departments) {
+          //   this.departments.forEach(dept => {
+          //     if (dept.id === request.department) {
+          //       request['dept'] = dept;
+          //     }
+          //   });
+          // }
+
+
+
           //  replace this.currentUserID with this.auth.user_bs.value._id  because at the go back from the request's details this.currentUserID at the moment in which is passed in currentUserIdIsInParticipants is undefined 
           request['currentUserIsJoined'] = this.currentUserIdIsInParticipants(request.participants, this.auth.user_bs.value._id, request.request_id);
 
@@ -776,8 +817,8 @@ display_dept_sidebar = false;
             request['requester_fullname_fillColour'] = getColorBck(request.lead.fullname)
           } else {
 
-            request['requester_fullname_initial'] = 'n.a.';
-            request['requester_fullname_fillColour'] = '#eeeeee';
+            request['requester_fullname_initial'] = 'N/A';
+            request['requester_fullname_fillColour'] = '#6264a7';
           }
 
           if (request.lead
@@ -880,27 +921,27 @@ display_dept_sidebar = false;
       })
   }
 
-   // And for a doughnut chart
-   initRequestsDoughnutChart() {
+  // And for a doughnut chart
+  initRequestsDoughnutChart() {
     var myDoughnutChart = new Chart('doughnutChart', {
       type: 'doughnut',
       data: {
         labels: ["Served", "Unserved"],
         datasets: [
           {
-          
+
             backgroundColor: ["#05BDD4", "#ED4537"],
             data: [this.wsRequestsServed.length, this.wsRequestsUnserved.length]
           }
         ]
       },
-      
+
       options: {
         aspectRatio: 1,
         cutoutPercentage: 60,
         legend: {
           display: false,
-      },
+        },
         title: {
           display: false,
           text: 'Requests'
