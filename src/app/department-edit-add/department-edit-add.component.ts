@@ -1,5 +1,5 @@
 // tslint:disable:max-line-length
-import { Component, OnInit, Input, Output, } from '@angular/core';
+import { Component, OnInit, Input, Output, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { DepartmentService } from '../services/mongodb-department.service';
@@ -13,6 +13,10 @@ import { Location } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../core/notify.service';
 import { slideInOutAnimation } from '../_animations/index';
+import { UsersService } from '../services/users.service';
+import { avatarPlaceholder, getColorBck } from '../utils/util';
+import { AppConfigService } from '../services/app-config.service';
+declare const $: any;
 
 @Component({
   selector: 'app-department-edit-add',
@@ -22,17 +26,18 @@ import { slideInOutAnimation } from '../_animations/index';
   // tslint:disable-next-line:use-host-property-decorator
   // host: { '[@slideInOutAnimation]': '' }
 })
-export class DepartmentEditAddComponent implements OnInit {
- 
+export class DepartmentEditAddComponent implements OnInit, AfterViewInit {
+
   @Input() ws_requestslist_deptIdSelected: string;
   @Input() display_dept_sidebar: boolean;
 
   CREATE_VIEW = false;
   EDIT_VIEW = false;
   id_dept: string;
-  dept_name: string;
+  dept_name: string; // not more used
+  dept_description: string; // not more used
+
   deptName_toUpdate: string;
-  dept_description: string;
   dept_description_toUpdate: string;
 
   // !!! NOTE: IS CALLED BOT LIST BUT REALLY IS THE LIST OF FAQ-KB LIST
@@ -61,6 +66,22 @@ export class DepartmentEditAddComponent implements OnInit {
   updateSuccessMsg: string;
   updateErrorMsg: string;
   showSpinner = false;
+  projectUsers: any;
+  projectUsersInGroup: any;
+
+  dept_name_initial: string
+  dept_name_fillcolour: string
+  dept_created_at: string
+  dept_ID: string;
+
+  bot_type: string;
+  storageBucket: string;
+  group_name: string;
+  bot_description: string;
+  ROUTING_PAGE_MODE: boolean;
+
+  display_btn_read_all_descr: boolean;
+read_all: boolean
 
   constructor(
     private router: Router,
@@ -72,41 +93,35 @@ export class DepartmentEditAddComponent implements OnInit {
     private groupService: GroupService,
     public location: Location,
     public translate: TranslateService,
-    private notify: NotifyService
+    private notify: NotifyService,
+    private usersService: UsersService,
+    public appConfigService: AppConfigService
   ) { }
 
   ngOnInit() {
     this.auth.checkRoleForCurrentProject();
+    this.getStorageBucket();
+
     console.log('DEPT-EDIT-ADD selectedDeptId FROM @INPUT: ', this.ws_requestslist_deptIdSelected)
     console.log('DEPT-EDIT-ADD display_dept_sidebar FROM @INPUT: ', this.display_dept_sidebar)
 
-    if(this.display_dept_sidebar === true) {
-
-      this.EDIT_VIEW = true;
-      this.id_dept = this.ws_requestslist_deptIdSelected;
-      this.getDeptById();
-    }
-    /**
-     * ==================================================================
-     * !!! NO MORE USED - getBots() HAS BEEN REPLACED BY getFaqKbByProjecId()
-     * (IN THE HTML THE USER CONTINUE TO SEE 'Select a Bot' but, really,
-     * in the options form are displayed the faq-kb list)
-     * ==================================================================
-     *
-     * *** GET ALL BOTS LIST ***
-     * ARE SHOWED AS OPTIONS TO SELECT IN THE SELECTION FIELD (IN CREATE VIEW)
-     */
-    // this.getBots();
+    // toDo: to call the department detail as a sidebar in the request list
+    // if (this.display_dept_sidebar === true) {
+    //   this.EDIT_VIEW = true;
+    //   this.id_dept = this.ws_requestslist_deptIdSelected;
+    //   this.getDeptById();
+    // }
 
 
 
     /**
-     * BASED ON THE URL PATH DETERMINE IF THE USER HAS SELECTED (IN DEPARTMENTS PAGE) 'CREATE' OR 'EDIT'
+     * BASED ON THE URL PATH DETERMINE IF THE USER HAS SELECTED (IN DEPARTMENTS PAGE) 'CREATE' OR 'EDIT' OR  ROUTING
      */
     // if (this.router.url === '/create') {
+
     if (this.router.url.indexOf('/create') !== -1) {
 
-      console.log('HAS CLICKED CREATE ');
+      console.log('++ DEPT DTLS HAS CLICKED CREATE ');
       this.CREATE_VIEW = true;
       // this.showSpinner = false;
       // this.SHOW_OPTION_FORM = true;
@@ -115,47 +130,37 @@ export class DepartmentEditAddComponent implements OnInit {
       this.ROUTING_SELECTED = 'assigned';
       this.dept_routing = 'assigned';
 
-      this.SHOW_OPTION_FORM = false;
+      this.SHOW_OPTION_FORM = false; // to check if is used
       this.BOT_NOT_SELECTED = true;
       this.has_selected_bot = false;
       this.selectedBotId = null;
       console.log('ON INIT (IF HAS SELECT CREATE) SHOW OPTION FORM ', this.SHOW_OPTION_FORM, 'ROUTING SELECTED ', this.ROUTING_SELECTED);
+      this.ROUTING_PAGE_MODE = false;
 
-    } else {
-      console.log('HAS CLICKED EDIT ');
+    } else if (this.router.url.indexOf('/edit') !== -1) {
+      console.log('++ DEPT DTLS - HAS CLICKED EDIT DEPT');
       this.EDIT_VIEW = true;
       this.showSpinner = true;
+      this.SHOW_OPTION_FORM = false; // to check if is used
+      this.ROUTING_PAGE_MODE = false;
 
-      // *** GET DEPT ID FROM URL PARAMS ***
-      // IS USED TO GET THE BOT OBJECT ( THE ID IS PASSED FROM BOTS COMPONENT - goToEditAddPage_EDIT())
-      this.getDeptId();
-      this.SHOW_OPTION_FORM = false;
+      // *** GET DEPT ID FROM URL PARAMS AND THEN DEPT BY ID ***
+      this.getParamsAndDeptById();
 
-      if (this.id_dept) {
-        this.getDeptById();
 
-        // WHEN IT IS OPENED THE EDIT VIEW IF DEPT ROUTING HAS THE VALUE POOLED IT NOT DISPLAYED THE ITEM
-        // FORM FOR THE SELECTION OF A BOT (TO CORRELATE WITH THE CURRENT DEPT)
-        // NOTE: dept_routing is determinate in getDeptById()
-        // THE VALUE fixed or pooled TO dept_routing IS THEN REASSIGNED IN has_clicked_fixed() AND has_clicked_POOLED
-        if (this.dept_routing === 'pooled') {
-          this.SHOW_OPTION_FORM = false;
-          this.dept_routing = 'pooled'
-          this.BOT_NOT_SELECTED = true;
-        } else if (this.dept_routing === 'fixed') {
-          this.SHOW_OPTION_FORM = true;
-          this.dept_routing = 'fixed'
-          this.BOT_NOT_SELECTED = false;
-        } else if (this.dept_routing === 'assigned') {
-          this.SHOW_OPTION_FORM = false;
-          this.dept_routing = 'fixed'
-          this.BOT_NOT_SELECTED = true;
-        }
+    } else if (this.router.url.indexOf('/routing') !== -1) {
 
-        // TEST CHAT21-API-NODEJS router.get('/:departmentid/operators'
-        /* GET OPERATORS OF A DEPT */
-        this.getDeptByIdToTestChat21AssigneesFunction()
-      }
+      console.log('++ DEPT DTLS HAS CLICKED ROUTING FROM SIDEBAR');
+      this.EDIT_VIEW = true;
+      this.SHOW_OPTION_FORM = false; // to check if is used
+      this.showSpinner = true;
+
+      this.ROUTING_PAGE_MODE = true;
+
+      // *** GET DEPT ID FROM URL PARAMS AND THEN DEPT BY ID ***
+      this.getParamsAndDeptById();
+
+
     }
 
     this.getCurrentProject();
@@ -167,8 +172,62 @@ export class DepartmentEditAddComponent implements OnInit {
      */
     this.getFaqKbByProjecId()
 
-    this.getGroupsByProjectId();
+    this.getUsersAndGroup()
+    // this.getProjectUsers();
+
     this.translateNotificationMsgs()
+  }
+
+  getParamsAndDeptById() {
+    this.id_dept = this.route.snapshot.params['deptid'];
+    console.log('DEPATMENT COMPONENT HAS PASSED id_DEPT ', this.id_dept);
+    if (this.id_dept) {
+      this.getDeptById();
+
+      // TEST CHAT21-API-NODEJS router.get('/:departmentid/operators'
+      /* GET OPERATORS OF A DEPT */
+      // this.getDeptByIdToTestChat21AssigneesFunction()
+    }
+
+  }
+
+  ngAfterViewInit() {
+    // console.log('ngAfterViewInit  $(window)',  $(window)) 
+    // console.log('ngAfterViewInit   $("#right_edit_card")',   $("#right_edit_card")) 
+    // $(window).scroll(function(){
+    //   console.log('ngAfterViewInit   $(window).scrollTop())',   $(window).scrollTop()) 
+    //   $("#right_edit_card").stop().animate({"marginTop": ($(window).scrollTop()) + "px", "marginLeft":($(window).scrollLeft()) + "px"}, "slow" );
+    // });
+
+
+
+  }
+
+  getStorageBucket() {
+    const firebase_conf = this.appConfigService.getConfig().firebase;
+    this.storageBucket = firebase_conf['storageBucket'];
+    console.log('STORAGE-BUCKET DEPT EDIT-ADD ', this.storageBucket)
+  }
+
+  getUsersAndGroup() {
+    this.getProjectUsers();
+  }
+
+  getProjectUsers() {
+    this.usersService.getProjectUsersByProjectId().subscribe((projectUsers: any) => {
+      console.log('DEPT EDIT-ADD - GET PROJECT USERS - RES ', projectUsers)
+
+      if (projectUsers) {
+        this.projectUsers = projectUsers;
+
+      }
+    }, error => {
+      console.log('DEPT EDIT-ADD - GET PROJECT USERS - ERROR', error);
+    }, () => {
+      console.log('DEPT EDIT-ADD - GET PROJECT USERS - COMPLETE');
+
+      this.getGroupsByProjectId();
+    });
   }
 
 
@@ -185,15 +244,14 @@ export class DepartmentEditAddComponent implements OnInit {
 
   // ============ NEW - SUBSTITUTES has_clicked_fixed ============
   has_clicked_bot(has_selected_bot: boolean) {
-
     console.log('HAS CLICKED BOT - SHOW DROPDOWN ', has_selected_bot);
     if (has_selected_bot === false) {
       this.BOT_NOT_SELECTED = true;
-      console.log('HAS CLICKED BOT - BOT NOT SELECTED ', this.BOT_NOT_SELECTED);
+      console.log('DEPT EDIT-ADD - HAS CLICKED BOT - BOT NOT SELECTED ', this.BOT_NOT_SELECTED);
 
 
       this.selectedBotId = null;
-      console.log('SELECTED BOT ID ', this.selectedBotId)
+      console.log('DEPT EDIT-ADD - SELECTED BOT ID ', this.selectedBotId)
 
       // ONLY BOT AUEOMATIC DESELECTION IF has_selected_bot IS FALSE
       this.has_selected_only_bot = false
@@ -202,8 +260,13 @@ export class DepartmentEditAddComponent implements OnInit {
     }
   }
 
+
+  toggleActivateBot($event) {
+    console.log('toggleActivateBot event', $event);
+  }
+
   has_clicked_only_bot(has_selected_only_bot) {
-    console.log('HAS CLICKED ONLY BOT ', has_selected_only_bot);
+    console.log('DEPT EDIT-ADD - HAS CLICKED ONLY BOT ', has_selected_only_bot);
     if (has_selected_only_bot === true) {
       this.onlybot_disable_routing = true;
       this.bot_only = true;
@@ -213,25 +276,69 @@ export class DepartmentEditAddComponent implements OnInit {
     }
   }
 
+  // WHEN THE USER EDITS A DEPTS CAN SELECT A BOT TO CORRELATE AT THE DEPARTMENT
+  // WHEN THE BTN 'EDIT DEPARTMENT' IS PRESSED THE VALUE OF THE ID OF THE SELECTED BOT IS MODIFIED IN THE DEPT'S FIELD id_bot
+  // Note: is used also for the 'CREATE VIEW'
+  setSelectedBot(id: any): void {
+    this.selectedBotId = id;
+    console.log('FAQ-KB ID SELECTED (SUBSTITUTE BOT): ', this.selectedBotId);
+
+
+
+    // IN THE CREATE VIEW IF IS NOT SELECTET ANY FAQ-KB (SUBSTITUTE BOT) THE BUTTON 'CREATE BOT' IS DISABLED
+    if (this.selectedBotId !== 'BOT_NOT_SELECTED') {
+      this.BOT_NOT_SELECTED = false;
+
+      // Used to display bot info in right sidebar
+      this.botId = this.selectedBotId
+      this.getBotById()
+
+    }
+    if (this.selectedBotId === 'BOT_NOT_SELECTED') {
+      this.BOT_NOT_SELECTED = true;
+    }
+  }
+
   /**
    * ======================= GETS ALL GROUPS WITH THE CURRENT PROJECT-ID =======================
    * USED TO POPULATE THE DROP-DOWN LIST 'GROUPS' ASSOCIATED TO THE ASSIGNED ANF POOLED ROUTING
    */
   getGroupsByProjectId() {
     this.groupService.getGroupsByProjectId().subscribe((groups: any) => {
-      console.log('+ + GROUPS GET BY PROJECT ID', groups);
+      console.log('DEPT EDIT-ADD - GROUPS GET BY PROJECT ID', groups);
 
       if (groups) {
         this.groupsList = groups;
 
-        console.log('for DEBUG GROUP ID SELECTED', this.selectedGroupId);
-        this.groupsList.forEach(element => {
-          
+        console.log('DEPT EDIT-ADD - GROUP ID SELECTED', this.selectedGroupId);
+        this.groupsList.forEach(group => {
 
+          if (this.selectedGroupId) {
+            if (group._id === this.selectedGroupId) {
+              console.log('DEPT EDIT-ADD - GROUP ASSIGNED TO THIS DEPT', group);
+              this.group_name = group.name
+              this.projectUsersInGroup = [];
+
+              group.members.forEach(member => {
+                console.log('DEPT EDIT-ADD - MEMBER OF THE GROUP ASSIGNED TO THIS DEPT', member);
+
+                this.projectUsers.forEach(projectuser => {
+                  // console.log('DEPT EDIT-ADD - PROJECT USER ', projectuser);
+                  if (member === projectuser.id_user._id) {
+
+                    this.projectUsersInGroup.push(projectuser.id_user)
+                  }
+                });
+
+              });
+
+              console.log('DEPT EDIT-ADD - PROJECT USERS IN GROUP ', this.projectUsersInGroup);
+              // const filteredProjectUsers = group.members
+            }
+          } else {
+            console.log('DEPT EDIT-ADD - NO GROUP ASSIGNED TO THIS DEPT - GROUP ID', this.selectedGroupId);
+          }
         });
-
-     
-
 
 
         // CHECK IN THE GROUPS LIST THE GROUP-ID RETURNED FROM THE DEPT OBJECT.
@@ -276,6 +383,8 @@ export class DepartmentEditAddComponent implements OnInit {
     // - IF THE USER SELECT ANOTHER OPTION this.GROUP_ID_NOT_EXIST IS SET TO false
     if (this.selectedGroupId !== 'Group error') {
       this.GROUP_ID_NOT_EXIST = false
+
+      this.getGroupsByProjectId()
     }
 
     // if (this.selectedGroupId !== 'ALL_USERS_SELECTED') {
@@ -295,28 +404,7 @@ export class DepartmentEditAddComponent implements OnInit {
     });
   }
 
-  getDeptId() {
-    this.id_dept = this.route.snapshot.params['deptid'];
-    console.log('DEPATMENT COMPONENT HAS PASSED id_DEPT ', this.id_dept);
-  }
 
-  /**
-   * !!! NO MORE USED (see THE COMMENT ABOVE)
-   * === GET ALL BOTS LIST ===
-   * * USED IN THE CREATE VIEW *
-   */
-  getBots() {
-    this.botService.getMongDbBots().subscribe((bots: any) => {
-      console.log('GET BOTS LIST (TO SHOW IN SELECTION FIELD) ', bots);
-      this.botsList = bots;
-    },
-      (error) => {
-        console.log('GET BOTS LIST - ERROR ', error);
-      },
-      () => {
-        console.log('GET BOTS LIST - COMPLETE ');
-      });
-  }
 
   /**
    * GET THE FAQ-KB LIST FILTERING ALL THE FAQ-KB FOR THE CURRENT PROJECT ID
@@ -327,6 +415,13 @@ export class DepartmentEditAddComponent implements OnInit {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqkb: any) => {
       console.log('GET FAQ-KB LIST - SUBSTITUTE BOT (TO SHOW IN SELECTION FIELD) ', faqkb);
       this.botsList = faqkb;
+
+      // this.botsList.forEach(bot => {
+      //   if (bot && bot.description) {
+      //     let stripHere = 10;
+      //     bot['truncated_desc'] = bot.description.substring(0, stripHere) + '...';
+      //   }
+      // });
     },
       (error) => {
         console.log('GET FAQ-KB LIST - SUBSTITUTE BOT - ERROR ', error);
@@ -347,49 +442,7 @@ export class DepartmentEditAddComponent implements OnInit {
     this.location.back();
   }
 
-  // WHEN THE USER EDITS A DEPTS CAN SELECT A BOT TO CORRELATE AT THE DEPARTMENT
-  // WHEN THE BTN 'EDIT DEPARTMENT' IS PRESSED THE VALUE OF THE ID OF THE SELECTED BOT IS MODIFIED IN THE DEPT'S FIELD id_bot
-  // Note: is used also for the 'CREATE VIEW'
-  setSelectedBot(id: any): void {
-    this.selectedBotId = id;
-    console.log('FAQ-KB ID SELECTED (SUBSTITUTE BOT): ', this.selectedBotId);
 
-    // IN THE CREATE VIEW IF IS NOT SELECTET ANY FAQ-KB (SUBSTITUTE BOT) THE BUTTON 'CREATE BOT' IS DISABLED
-    if (this.selectedBotId !== 'BOT_NOT_SELECTED') {
-      this.BOT_NOT_SELECTED = false;
-    }
-    if (this.selectedBotId === 'BOT_NOT_SELECTED') {
-      this.BOT_NOT_SELECTED = true;
-    }
-  }
-
-  /**
-   * ADD DEPARMENT
-   */
-  createDepartment() {
-    console.log('createDepartment DEPT NAME  ', this.dept_name);
-    console.log('createDepartment DEPT DESCRIPTION DIGIT BY USER ', this.dept_description);
-    console.log('createDepartment GROUP ID WHEN CREATE IS PRESSED ', this.selectedGroupId);
-    this.mongodbDepartmentService.addDept(
-      this.dept_name,
-      this.dept_description,
-      this.selectedBotId,
-      this.bot_only,
-      this.selectedGroupId,
-      this.ROUTING_SELECTED).subscribe((department) => {
-        console.log('+++ ++++ POST DATA DEPT', department);
-      },
-        (error) => {
-          console.log('DEPT POST REQUEST ERROR ', error);
-          this.notify.showWidgetStyleUpdateNotification(this.createErrorMsg, 4, 'report_problem');
-        },
-        () => {
-          this.notify.showWidgetStyleUpdateNotification(this.createSuccessMsg, 2, 'done');
-          console.log('DEPT POST REQUEST * COMPLETE *');
-          this.router.navigate(['project/' + this.project._id + '/departments']);
-
-        });
-  }
 
   has_clicked_assigned(show_group_option_form: boolean, show_option_form: boolean, routing: string) {
 
@@ -403,21 +456,16 @@ export class DepartmentEditAddComponent implements OnInit {
   }
 
   // is the option (called Bot in the html) that provides for the selection of a faq-kb (also this called Bot in the html)
-  has_clicked_fixed(show_option_form: boolean, routing: string) {
-    // this.HAS_CLICKED_FIXED = true;
-    // this.HAS_CLICKED_POOLED = false;
-    this.SHOW_OPTION_FORM = show_option_form;
-    this.ROUTING_SELECTED = routing
-    console.log('HAS CLICKED FIXED - SHOW OPTION ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
-    // ONLY FOR THE EDIT VIEW (see above in ngOnInit the logic for the EDIT VIEW)
-    this.dept_routing = 'fixed'
-    this.BOT_NOT_SELECTED = true;
-  }
+  // has_clicked_fixed(show_option_form: boolean, routing: string) {
+
+  //   this.SHOW_OPTION_FORM = show_option_form;
+  //   this.ROUTING_SELECTED = routing
+  //   console.log('HAS CLICKED FIXED - SHOW OPTION ', this.SHOW_OPTION_FORM, ' ROUTING SELECTED ', this.ROUTING_SELECTED)
+  //   this.dept_routing = 'fixed'
+  //   this.BOT_NOT_SELECTED = true;
+  // }
 
   has_clicked_pooled(show_group_option_form: boolean, show_option_form: boolean, routing: string) {
-    // console.log('HAS CLICKED POOLED')
-    // this.HAS_CLICKED_FIXED = false;
-    // this.HAS_CLICKED_POOLED = true;
     this.SHOW_GROUP_OPTION_FORM = show_group_option_form;
     this.SHOW_OPTION_FORM = show_option_form;
     this.ROUTING_SELECTED = routing
@@ -446,12 +494,32 @@ export class DepartmentEditAddComponent implements OnInit {
       console.log('++ > GET DEPT (DETAILS) BY ID - DEPT OBJECT: ', dept);
 
       this.deptName_toUpdate = dept.name;
-      this.dept_description_toUpdate= dept.description;
+      this.dept_description_toUpdate = dept.description;
       this.botId = dept.id_bot;
       this.dept_routing = dept.routing;
       this.selectedGroupId = dept.id_group;
-
+      this.dept_created_at = dept.createdAt;
+      this.dept_ID = dept.id;
       this.bot_only = dept.bot_only
+
+      if (this.dept_routing === 'pooled') {
+        this.SHOW_OPTION_FORM = false;
+        this.dept_routing = 'pooled'
+        this.BOT_NOT_SELECTED = true;
+     
+      } else if (this.dept_routing === 'assigned') {
+        this.SHOW_OPTION_FORM = false;
+        this.dept_routing = 'assigned'
+        this.BOT_NOT_SELECTED = true;
+      } 
+      // else if (this.dept_routing === 'fixed') {
+      //   this.SHOW_OPTION_FORM = true;
+      //   this.dept_routing = 'fixed'
+      //   this.BOT_NOT_SELECTED = false;
+      // }
+
+
+
 
       if (this.bot_only === false || this.bot_only === undefined || this.bot_only === null) {
         this.has_selected_only_bot = false;
@@ -467,6 +535,24 @@ export class DepartmentEditAddComponent implements OnInit {
       console.log('++ DEPT DTLS - DEPT ROUTING GET FROM DEPT OBJECT: ', this.dept_routing);
       console.log('++ DEPT DTLS - GROUP ID GET FROM DEPT OBJECT: ', this.selectedGroupId);
 
+
+      // -------------------------------------------------------------------
+      // Dept's avatar
+      // -------------------------------------------------------------------
+      let newInitials = '';
+      let newFillColour = '';
+
+      if (dept.name) {
+        newInitials = avatarPlaceholder(dept.name);
+        newFillColour = getColorBck(dept.name)
+      } else {
+
+        newInitials = 'n.a.';
+        newFillColour = '#eeeeee';
+      }
+
+      this.dept_name_initial = newInitials;
+      this.dept_name_fillcolour = newFillColour;
     },
       (error) => {
         console.log('GET DEPT BY ID - ERROR ', error);
@@ -484,8 +570,8 @@ export class DepartmentEditAddComponent implements OnInit {
 
           this.BOT_NOT_SELECTED = true;
           this.has_selected_bot = false;
-
-          console.log(' !!! BOT ID UNDEFINED ', this.botId, ', BOT NOT SELECTED: ', this.BOT_NOT_SELECTED);
+          console.log('++ DEPT DTLS getDeptById has_selected_bot ', this.has_selected_bot);
+          console.log('++ DEPT DTLS !!! BOT ID UNDEFINED ', this.botId, ', BOT NOT SELECTED: ', this.BOT_NOT_SELECTED);
           // this.showSpinner = false;
           // this.selectedValue = 'Selezione FAQ KB';
 
@@ -495,6 +581,7 @@ export class DepartmentEditAddComponent implements OnInit {
 
           this.BOT_NOT_SELECTED = true;
           this.has_selected_bot = false;
+          console.log('++ DEPT DTLS getDeptById has_selected_bot ', this.has_selected_bot);
           console.log(' !!! BOT ID NULL ', this.botId, ', BOT NOT SELECTED: ', this.BOT_NOT_SELECTED);
           // this.showSpinner = false;
         } else {
@@ -503,6 +590,7 @@ export class DepartmentEditAddComponent implements OnInit {
 
           // if the bot is defined it means that the user had selected the bot
           this.has_selected_bot = true
+          this.BOT_NOT_SELECTED = false;
 
           this.getBotById();
           console.log(' !!! BOT ID DEFINED ', this.botId);
@@ -523,11 +611,64 @@ export class DepartmentEditAddComponent implements OnInit {
     this.faqKbService.getMongDbFaqKbById(this.botId).subscribe((faqkb: any) => {
       console.log('GET FAQ-KB (DETAILS) BY ID (SUBSTITUTE BOT) ', faqkb);
       // this.selectedId = bot._id;
-      this.selectedId = faqkb._id;
 
-      // USED ONLY FOR DEBUG
-      // this.selectedValue = bot.fullname;
-      this.selectedValue = faqkb.name;
+      if (faqkb) {
+        this.selectedId = faqkb._id;
+        this.bot_type = faqkb.type;
+        // USED ONLY FOR DEBUG
+        // this.selectedValue = bot.fullname;
+
+        this.selectedValue = faqkb.name;
+        if (faqkb.description) {
+          this.bot_description = faqkb.description
+
+          // --------------------------------------------------------------------------------
+          // add btn read all if bot description text line are more of 2
+          // --------------------------------------------------------------------------------   
+          const elemSidebarDescription = <HTMLElement>document.querySelector('.sidebar-description');
+          console.log(' DEPT EDIT-ADD elem Sidebar Description', elemSidebarDescription)
+
+       
+       
+          let lines = undefined;
+          if (this.bot_description) {
+            if (elemSidebarDescription) {
+            setTimeout(() => {
+             
+              const divHeight = elemSidebarDescription.offsetHeight
+              const lineHeight = parseInt(elemSidebarDescription.style.lineHeight);
+              console.log(' DEPT EDIT-ADD elem Sidebar Description divHeight', divHeight);
+              console.log(' DEPT EDIT-ADD elem Sidebar Description lineHeight', lineHeight)
+  
+             
+              if (divHeight && lineHeight) {
+                lines = divHeight / lineHeight;
+                console.log(' DEPT EDIT-ADD elem Sidebar Description lines', lines)
+              }
+
+              // const elemDescription = <HTMLElement>document.querySelector('.sidebar-description .description-icon-and-text .bot-description')
+              // console.log(' DEPT EDIT-ADD elem Sidebar Description elemDescription', elemDescription)
+              const textInDescription =  elemSidebarDescription.textContent.replace(/(<.*?>)|\s+/g, (m, $1) => $1 ? $1 : ' ')
+              console.log(' DEPT EDIT-ADD elem Sidebar Description elemDescription text', textInDescription)
+              const lastThree = textInDescription.substr(textInDescription.length - 3);
+              console.log(' DEPT EDIT-ADD elem Sidebar Description elemDescription text lastThree', lastThree)
+
+              if (lines && lines > 3) {
+                console.log(' DEPT EDIT-ADD elem Sidebar Description lines is > 3', lines)
+                // elemSidebarDescription.setAttribute('style', ' display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;');
+                elemSidebarDescription.classList.add("sidebar-description-cropped");
+                this.display_btn_read_all_descr = true;
+                this.read_all = true;
+              } else {
+                this.display_btn_read_all_descr = false
+              }
+            }, 300);
+          }
+          }
+        } else {
+          this.bot_description = 'n/a'
+        }
+      }
 
       // this.faqKbUrlToUpdate = faqKb.url;
       console.log('FAQ-KB NAME (SUBSTITUTE BOT) ', this.selectedValue);
@@ -535,6 +676,7 @@ export class DepartmentEditAddComponent implements OnInit {
     },
       (error) => {
         console.log('GET FAQ-KB BY ID (SUBSTITUTE BOT) - ERROR ', error);
+
         // this.showSpinner = false;
       },
       () => {
@@ -545,9 +687,97 @@ export class DepartmentEditAddComponent implements OnInit {
 
   }
 
-  // WHEN IS PRESSES EDIT THE DATA PASSED TO THE FUNCTION updateMongoDbDepartment ARE
-  // * this.id_dept: IS PASSED BY DEPARTMENT COMPONENT VIA URL (see getDeptId())
-  // * deptName_toUpdate: IS RETURNED BY THE DEPARTMENT OBJECT (see getDeptById())
+  toggleDescriptionReadAll () {
+    const elemSidebarDescription = <HTMLElement>document.querySelector('.sidebar-description');
+    console.log(' DEPT EDIT-ADD elem Sidebar Description toggleDescriptionReadAll', elemSidebarDescription)
+    if (elemSidebarDescription.classList) {
+      elemSidebarDescription.classList.toggle("sidebar-description-cropped");
+     
+      const hasClassCropped = elemSidebarDescription.classList.contains("sidebar-description-cropped")
+      console.log(' DEPT EDIT-ADD elem Sidebar Description toggleDescriptionReadAll hasClassCropped', hasClassCropped)
+     if( hasClassCropped === false) {
+      this.read_all = false;
+     } else {
+      this.read_all = true;
+     }
+
+    } else {
+      // For IE9
+      var classes = elemSidebarDescription.className.split(" ");
+      var i = classes.indexOf("sidebar-description-cropped");
+    
+      if (i >= 0)
+        classes.splice(i, 1);
+      else
+        classes.push("sidebar-description-cropped");
+        elemSidebarDescription.className = classes.join(" ");
+    }
+  }
+
+
+  goToBotDetails() {
+    let botType = ''
+    if (this.bot_type === 'internal') {
+      botType = 'native'
+    } else {
+      botType = this.bot_type
+    }
+
+    this.router.navigate(['project/' + this.project._id + '/bots', this.selectedId, botType]);
+  }
+
+  goToMemberProfile(memberid) {
+    this.getProjectuserbyUseridAndGoToEditProjectuser(memberid)
+
+  }
+
+  getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
+
+    this.usersService.getProjectUserByUserId(member_id).subscribe((projectUser: any) => {
+      console.log('% Ws-REQUESTS-Msgs GET projectUser by USER-ID ', projectUser)
+      if (projectUser) {
+        console.log('% Ws-REQUESTS-Msgs projectUser id', projectUser[0]._id);
+
+        this.router.navigate(['project/' + this.project._id + '/user/edit/' + projectUser[0]._id]);
+      }
+    }, (error) => {
+      console.log('% Ws-REQUESTS-Msgs GET projectUser by USER-ID - ERROR ', error);
+    }, () => {
+      console.log('% Ws-REQUESTS-Msgs GET projectUser by USER-ID * COMPLETE *');
+    });
+  }
+
+  /**
+ * ADD DEPARMENT
+ *       this.dept_name,
+    this.dept_description,
+ */
+  createDepartment() {
+    console.log('createDepartment DEPT NAME  ', this.deptName_toUpdate);
+    console.log('createDepartment DEPT DESCRIPTION DIGIT BY USER ', this.dept_description_toUpdate);
+    console.log('createDepartment GROUP ID WHEN CREATE IS PRESSED ', this.selectedGroupId);
+    this.mongodbDepartmentService.addDept(
+      this.deptName_toUpdate,
+      this.dept_description_toUpdate,
+      this.selectedBotId,
+      this.bot_only,
+      this.selectedGroupId,
+      this.ROUTING_SELECTED).subscribe((department) => {
+        console.log('+++ ++++ POST DATA DEPT', department);
+      },
+        (error) => {
+          console.log('DEPT POST REQUEST ERROR ', error);
+          this.notify.showWidgetStyleUpdateNotification(this.createErrorMsg, 4, 'report_problem');
+        },
+        () => {
+          this.notify.showWidgetStyleUpdateNotification(this.createSuccessMsg, 2, 'done');
+          console.log('DEPT POST REQUEST * COMPLETE *');
+          this.router.navigate(['project/' + this.project._id + '/departments']);
+
+        });
+  }
+
+
   edit() {
     console.log('DEPT ID WHEN EDIT IS PRESSED ', this.id_dept);
     console.log('DEPT FULL-NAME WHEN EDIT IS PRESSED ', this.deptName_toUpdate);
@@ -569,32 +799,35 @@ export class DepartmentEditAddComponent implements OnInit {
     } else {
       this.botIdEdit = this.selectedBotId
     }
-    // } else {
-    //   this.botIdEdit = null;
-    // }
 
 
     // this.faqKbEdit
     // this.ROUTING_SELECTED
-    this.mongodbDepartmentService.updateDept(this.id_dept, this.deptName_toUpdate, this.dept_description_toUpdate, this.botIdEdit, this.bot_only, this.selectedGroupId, this.dept_routing).subscribe((data) => {
-      console.log('PUT DATA ', data);
+    this.mongodbDepartmentService.updateDept(this.id_dept,
+      this.deptName_toUpdate,
+      this.dept_description_toUpdate,
+      this.botIdEdit,
+      this.bot_only,
+      this.selectedGroupId,
+      this.dept_routing).subscribe((data) => {
+        console.log('PUT DATA ', data);
 
-      // RE-RUN GET CONTACT TO UPDATE THE TABLE
-      // this.getDepartments();
-      // this.ngOnInit();
-    },
-      (error) => {
-        console.log('PUT REQUEST ERROR ', error);
-
-        this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
-
+        // RE-RUN GET CONTACT TO UPDATE THE TABLE
+        // this.getDepartments();
+        // this.ngOnInit();
       },
-      () => {
-        console.log('PUT REQUEST * COMPLETE *');
-        this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
+        (error) => {
+          console.log('PUT REQUEST ERROR ', error);
 
-        // this.router.navigate(['project/' + this.project._id + '/departments']);
-      });
+          this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
+
+        },
+        () => {
+          console.log('PUT REQUEST * COMPLETE *');
+          this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
+
+          // this.router.navigate(['project/' + this.project._id + '/departments']);
+        });
 
   }
 

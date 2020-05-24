@@ -52,7 +52,7 @@
 
           <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
-          <div *ngIf="!showSpinner" class="card-content table-responsive">
+          <div *ngIf="!showSpinner" class="card-content table-responsive" style="overflow:visible;">
 
             <table class="table">
               <thead>
@@ -61,14 +61,13 @@
 
                   <th>
                     <span class="column-th-span">
-                      <!-- Dept Name -->
                       {{ "Name" | translate }}
                     </span>
                   </th>
 
                   <th style="white-space: nowrap;">
                     <span class="column-th-span">
-                      <!-- Dept Name -->
+
                       {{ "DepartmentsPage.Visible" | translate }}
                       <span class="tooltip_custom">
                         <!-- class="tooltip-question-mark" -->
@@ -133,15 +132,14 @@
                   <td colspan="8" style="text-align: center; padding-top: 16px;">
                     <!-- color: #ff5252   -->
                     <p style="font-size:1em; color:#7695a5; font-weight: 400">
-                      <!-- Nessun Visitatore! Clicca qui per simulare un visitatore. -->
+                      <i class="material-icons" style="vertical-align: middle; margin-bottom: 2px;color: #00bcd4;"> info
+                      </i>
                       {{ 'DepartmentsPage.NoDept' | translate }}
                     </p>
                   </td>
                 </tr>
 
                 <tr *ngFor="let dept of departments">
-
-
                   <td *ngIf="dept?.default !== true"
                     style="text-align: center;white-space: nowrap; width: 1%;padding-top: 4px;">
                     <span class="dept-avatar-wrapper" (click)='goToEditAddPage_EDIT(dept?._id, dept?.name)'>
@@ -158,20 +156,31 @@
                   </td>
 
                   <td *ngIf="dept?.default !== true">
-                    <!-- <span class="tooltipx"> -->
+                    <span (click)='goToEditAddPage_EDIT(dept?._id, dept?.name)'>
 
                       <span style="font-weight: 400;font-size:13px">
                         {{ dept?.name }}
                       </span>
-                      <span style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px; display: block;">
-                        <!-- {{ "DepartmentsPage.CreatedThe" | translate }} {{ dept?.createdAt | date: 'd/M/y'}} -->
 
-                        {{ dept?.truncated_desc}}
-                      </span>
+                      <div *ngIf="dept?.description" class="tool_tip" style="display: block;">
+                        <div
+                          style="color: #7695a5; font-weight: 400; line-height:18px; font-size:12px; display: block;">
+                          {{ dept?.truncated_desc}}
+                        </div>
 
-                      <!-- <span class="tooltiptext">
-                        {{'DeptId' | translate}}: <br> {{ dept?._id   }} </span>
-                    </span> -->
+                        <div class="top">
+                          <h4>{{ 'Description' | translate }}</h4>
+                         <div class="line-clamp" style="display: -webkit-box;
+                         -webkit-line-clamp: 3;
+                         -webkit-box-orient: vertical;
+                         overflow: hidden;
+                         text-overflow: ellipsis;"> {{ dept?.description}} </div> 
+                          <i></i>
+                        </div>
+                      </div>
+
+
+                    </span>
 
                   </td>
 

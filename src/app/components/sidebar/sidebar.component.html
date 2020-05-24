@@ -432,7 +432,7 @@
 
       <!-- ROUTING -->
       <li *ngIf="SHOW_SETTINGS_SUBMENU" class="" routerLinkActive="active" (click)="stopScroll()">
-        <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/routing">
+        <a class="customAncor" *ngIf="project" routerLink="project/{{ project._id }}/routing/{{default_dept_id}}">
           <p class="onBlackBckgrnd">
             <span class="sidebar-mini">R </span> Routing
           </p>

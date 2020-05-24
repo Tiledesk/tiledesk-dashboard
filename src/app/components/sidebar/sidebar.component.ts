@@ -19,6 +19,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { AppConfigService } from '../../services/app-config.service';
 import brand from 'assets/brand/brand.json';
+import { DepartmentService } from '../../services/mongodb-department.service';
 
 // import { publicKey } from '../../utils/util';
 // import { public_Key } from '../../utils/util';
@@ -151,6 +152,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     isVisibleCAR: boolean; // canned responses
 
     storageBucket: string;
+    default_dept_id: string;
+
     private unsubscribe$: Subject<any> = new Subject<any>();
 
     constructor(
@@ -165,7 +168,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         private notify: NotifyService,
         private uploadImageService: UploadImageService,
         private translate: TranslateService,
-        public appConfigService: AppConfigService
+        public appConfigService: AppConfigService,
+        private deptService: DepartmentService
     ) { console.log('!!!!! HELLO SIDEBAR') }
 
     ngOnInit() {
@@ -192,7 +196,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         //     this.trasform = 'none';
         // }
         this.getLoggedUser();
-        this.getCurrentProject();
+        this.getCurrentProject_andThenDepts();
 
         this.getUserAvailability();
         this.getUserUserIsBusy();
@@ -215,8 +219,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.getHasOpenBlogKey()
         this.getChatUrl();
 
-      
     }
+
 
     getChatUrl() {
         this.CHAT_BASE_URL = this.appConfigService.getConfig().CHAT_BASE_URL;
@@ -540,7 +544,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             this.IS_BUSY = user_isbusy;
             // THE VALUE OS  IS_BUSY IS THEN UPDATED WITH THE VALUE RETURNED FROM THE WEBSOCKET getWsCurrentUserIsBusy$()
             // WHEN, FOR EXAMPLE IN PROJECT-SETTINGS > ADVANCED THE NUM OF MAX CHAT IS 3 AND THE 
-            console.log('!!! SIDEBAR - USER IS BUSY (from db)', this.IS_BUSY); 
+            console.log('!!! SIDEBAR - USER IS BUSY (from db)', this.IS_BUSY);
         });
     }
 
@@ -605,7 +609,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 console.log('SB USER IS AVAILABLE ', projectUser[0].user_available)
                 console.log('SB USER IS BUSY (from db)', projectUser[0].isBusy)
                 // this.user_is_available_bs = projectUser.user_available;
-                
+
+                // NOTE_nk: comment this this.subsTo_WsCurrentUser(projectUser[0]._id)
                 this.subsTo_WsCurrentUser(projectUser[0]._id)
 
 
@@ -654,37 +659,37 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     getWsCurrentUserAvailability$() {
         this.usersService.currentUserWsAvailability$
-        .pipe(
-          takeUntil(this.unsubscribe$)
-        )
-        .subscribe((currentuser_availability) => {
-            console.log('SB - GET WS CURRENT-USER AVAILABILITY - IS AVAILABLE? ', currentuser_availability);
-            if(currentuser_availability !== null)  {
-                this.IS_AVAILABLE = currentuser_availability;
-            }
-        }, error => {
-          console.log('SB - GET WS CURRENT-USER AVAILABILITY * error * ', error)
-        }, () => {
-          console.log('SB - GET WS CURRENT-USER AVAILABILITY *** complete *** ')
-        });
+            .pipe(
+                takeUntil(this.unsubscribe$)
+            )
+            .subscribe((currentuser_availability) => {
+                console.log('SB - GET WS CURRENT-USER AVAILABILITY - IS AVAILABLE? ', currentuser_availability);
+                if (currentuser_availability !== null) {
+                    this.IS_AVAILABLE = currentuser_availability;
+                }
+            }, error => {
+                console.log('SB - GET WS CURRENT-USER AVAILABILITY * error * ', error)
+            }, () => {
+                console.log('SB - GET WS CURRENT-USER AVAILABILITY *** complete *** ')
+            });
     }
 
     getWsCurrentUserIsBusy$() {
         this.usersService.currentUserWsIsBusy$
-        .pipe(
-          takeUntil(this.unsubscribe$)
-        )
-        .subscribe((currentuser_isbusy) => {
-            console.log('SB - GET WS CURRENT-USER - currentuser_isbusy? ', currentuser_isbusy);
-            if(currentuser_isbusy !== null)  {
-                this.IS_BUSY = currentuser_isbusy;
-                console.log('SB - GET WS CURRENT-USER (from ws)- this.IS_BUSY? ', this.IS_BUSY);
-            }
-        }, error => {
-          console.log('SB - GET WS CURRENT-USER IS BUSY * error * ', error)
-        }, () => {
-          console.log('SB - GET WS CURRENT-USER IS BUSY *** complete *** ')
-        });
+            .pipe(
+                takeUntil(this.unsubscribe$)
+            )
+            .subscribe((currentuser_isbusy) => {
+                console.log('SB - GET WS CURRENT-USER - currentuser_isbusy? ', currentuser_isbusy);
+                if (currentuser_isbusy !== null) {
+                    this.IS_BUSY = currentuser_isbusy;
+                    console.log('SB - GET WS CURRENT-USER (from ws)- this.IS_BUSY? ', this.IS_BUSY);
+                }
+            }, error => {
+                console.log('SB - GET WS CURRENT-USER IS BUSY * error * ', error)
+            }, () => {
+                console.log('SB - GET WS CURRENT-USER IS BUSY *** complete *** ')
+            });
 
 
     }
@@ -708,13 +713,23 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
     // GET CURRENT PROJECT - IF IS DEFINED THE CURRENT PROJECT GET THE PROJECTUSER
-    getCurrentProject() {
+    getCurrentProject_andThenDepts() {
         console.log('SIDEBAR - CALLING GET CURRENT PROJECT  ', this.project)
         this.auth.project_bs.subscribe((project) => {
             this.project = project
             console.log('00 -> SIDEBAR project from AUTH service subscription  ', this.project)
 
+
+
             if (this.project) {
+                // ------------------------------------------------------------------------------------
+                // Get Depts & filter defautt dept id to use in the path ../routing/:deptid
+                // when the user click on the sidebar menu item 'routing' is redirect to
+                // the the component DepartmentEditAddComponent in the edit mode (no more to the comp. RoutingPageComponent), 
+                // the new path for routing is ../routing/:deptid (no more routing)
+                // ------------------------------------------------------------------------------------
+                this.getDeptsAndFilterDefaultDept();
+
                 this.projectId = this.project._id
 
                 this.prjct_profile_name = this.project.profile_name;
@@ -773,6 +788,27 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 this.getProjectUser();
             }
         });
+    }
+
+    getDeptsAndFilterDefaultDept() {
+        this.deptService.getDeptsByProjectId().subscribe((departments: any) => {
+            //   console.log('SIDEBAR - DEPTS (FILTERED FOR PROJECT ID)', departments);
+
+            if (departments) {
+                departments.forEach(dept => {
+                    if (dept.default === true) {
+                        console.log('SIDEBAR - GET DEPTS - DEFAULT DEPT ', dept);
+                        this.default_dept_id = dept._id;
+                        console.log('SIDEBAR - GET DEPTS - DEFAULT DEPT ID: ', this.default_dept_id);
+                    }
+                })
+            }
+        }, error => {
+            console.log('SIDEBAR - GET DEPTS ERR', error);
+        }, () => {
+            console.log('SIDEBAR - GET DEPTS COMPLETE');
+        });
+
     }
 
     round5(x) {
