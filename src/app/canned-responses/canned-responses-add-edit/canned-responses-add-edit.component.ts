@@ -131,10 +131,10 @@ export class CannedResponsesAddEditComponent implements OnInit, AfterViewInit {
 
       }, (error) => {
         console.log('CANNED-RES - GET CANNED RES BY ID - ERROR  ', error);
-        this.showSkeleton = false
+        this.showSkeleton = false;
       }, () => {
         console.log('CANNED-RES - GET CANNED RES BY ID * COMPLETE *');
-        this.showSkeleton = false
+        this.showSkeleton = false;
 
       });
   }

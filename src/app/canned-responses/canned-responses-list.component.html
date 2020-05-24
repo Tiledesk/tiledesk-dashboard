@@ -1,12 +1,12 @@
 <p style="z-index: 1050;position: relative;margin-top:6px; padding-left:30px" class="navbar-brand">
   {{ 'CannedResponses.CannedResponses' | translate }}
 </p>
-<div class="main-content" style="padding-top:0px">
+<div class="main-content main-content-no-padding" style="">
   <div class="container-fluid">
 
     <div class="row">
-      <div class="col-md-9 col-lg-8">
-        <div class="card">
+      <div class="col-sm-7 left-col-custom-padding">
+        <div class="card card-custom-margin">
           <div class="card-header card-header-custom-bkgrnd">
 
             <button class="btn btn-primary" style="padding: 8px 16px; margin: 0px;min-width: 146px;"
@@ -56,11 +56,11 @@
                   <!--  style="width: 1%; white-space: nowrap;" -->
                   <td>
 
-                    <span style="display: block;font-weight: 500;font-size: 14px;color: rgba(0, 0, 0, 0.87)"> 
-                      {{response?.title}} 
+                    <span style="display: block;font-weight: 500;font-size: 14px;color: rgba(0, 0, 0, 0.87)">
+                      {{response?.title}}
                     </span>
-                    <span style="display: block;color:#7695a5; font-size: 13px;"> 
-                      {{response?.text}} 
+                    <span style="display: block;color:#7695a5; font-size: 13px;">
+                      {{response?.text}}
                     </span>
                   </td>
 
@@ -87,8 +87,8 @@
       <!-- /. end col-md-8 -->
 
       <!-- // RIGHT SIDEBAR -->
-      <div class="col-md-3 col-lg-4">
-        <div class="card">
+      <div class="col-sm-5 right-col-custom-padding">
+        <div class="card card-custom-margin">
           <div class="card-content">
             <h4 class="card-title" style="text-transform: none; color: #566787; font-weight:400; margin-bottom: 15px">
               {{ "QuickTips" | translate }}
@@ -96,15 +96,25 @@
 
             <p style="color:#7695a5">
               {{ "CannedResponses.QuickTips.1" | translate }}
+
             </p>
             <p style="color:#7695a5">
+              {{ "CannedResponses.QuickTips.1B" | translate }}
+            </p>
+            <p style="color:#7695a5">
+              {{ "CannedResponses.QuickTips.1C" | translate }}
+            </p>
+            <div>
+              <img src="assets/img/canned_response_2.gif">
+            </div>
+            <!-- <p style="color:#7695a5;">
               {{ "CannedResponses.QuickTips.2" | translate }}
             </p>
             <p style="color:#7695a5">
               {{ "CannedResponses.QuickTips.3" | translate }}
-            </p>
-            <p style="color:#7695a5">
-              {{ "CannedResponses.QuickTips.4" | translate }}
+            </p> -->
+            <p style="color:#7695a5;  margin-top: 10px;">
+             {{ "CannedResponses.QuickTips.4" | translate }}
             </p>
             <p style="color:#7695a5">
               {{ "CannedResponses.QuickTips.5" | translate }}

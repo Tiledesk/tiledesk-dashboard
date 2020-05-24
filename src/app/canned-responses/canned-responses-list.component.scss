@@ -17,3 +17,35 @@
   color: #353f45;
   // color: #566787;
 }
+
+.main-content-no-padding {
+  padding-left: 0px;
+  padding-right: 0px;
+  padding-top: 0px;
+}
+
+.left-col-custom-padding {
+  padding-right: 5px !important;
+  padding-left: 10px !important;
+}
+
+.right-col-custom-padding {
+  padding-right: 10px !important;
+  padding-left: 5px !important;
+}
+
+.card-custom-margin {
+  margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+  .left-col-custom-padding {
+    padding-right: 10px !important;
+    
+  }
+
+  .right-col-custom-padding {
+  
+    padding-left: 10px !important;
+  }
+}

@@ -37,7 +37,7 @@ top: 51px;">Open Modal</button> -->
 
           <!-- 
           // ------------------------------------------------------------------
-          // title 'Edit response' (if modalMode is = add )
+          // title 'Edit response' (if modalMode is = edit )
           // ------------------------------------------------------------------ -->
           <section *ngIf="modalMode === 'edit'">
             <span style="vertical-align: middle; padding-left:8px">
@@ -49,12 +49,21 @@ top: 51px;">Open Modal</button> -->
       <!-- *ngIf="displayAddcustomizationView === false" -->
       <div class="modal-body" [ngClass]="{'hidden_elem' : displayAddcustomizationView === true}"
         style="padding-top: 0px;padding-bottom: 0px;">
-        <div class="create-response_view">
-          <!-- margin-bottom: 18px; -->
-          <div class="row" style="">
-            <!-- <label class="col-xs-12 custom-label__canned_response">
-              {{ "CannedResponses.Title" | translate }}
-            </label> -->
+
+        <div *ngIf="showSkeleton === true" class="edit-response_view" style="min-height: 200px;">
+          <div class="stretchspinner">
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
+          </div>
+        </div>
+
+        <div *ngIf="showSkeleton === false" class="edit-response_view">
+        
+          <div class="row" >
+    
             <div class="col-xs-12">
 
               <!-- 
@@ -114,9 +123,9 @@ top: 51px;">Open Modal</button> -->
               // Message texarea
               // ------------------------------------------------------------------ -->
               <div class="form-group" style="margin-top: 0px;">
-                <textarea *ngIf="showSkeleton === false" style="resize: vertical;" id="canned-response-message"
+                <textarea style="resize: vertical;" id="canned-response-message"
                   name="canned-response-message" [ngClass]="{'texarea-is-empty' : texareaIsEmpty === true}"
-                  [(ngModel)]="cannedResponseMessage" (ngModelChange)="cannedResponseMessageChanged($event)" rows="9"
+                  [(ngModel)]="cannedResponseMessage" (ngModelChange)="cannedResponseMessageChanged($event)" rows="4"
                   class="form-control canned-response-texarea"
                   placeholder="{{'Write a canned response message to send to your visitors' | translate}}"> </textarea>
 
@@ -131,7 +140,7 @@ top: 51px;">Open Modal</button> -->
 
             <div class="col-xs-12">
               <button _ngcontent-c2="" class="btn btn-white add_custom_field_in_msg_btn"
-                style="float: right; margin-bottom:5px" (click)="hasClickedAddCustomization()">
+                style="float: right; margin-bottom:5px; box-shadow:none" (click)="hasClickedAddCustomization()">
                 {{ "CannedResponses.AddCustomization" | translate }}
               </button>
             </div>
@@ -143,7 +152,7 @@ top: 51px;">Open Modal</button> -->
       // ------------------------------------------------------------------
       // Personalisation
       // ------------------------------------------------------------------ -->
-      <div class="modal-body" style="height: 299px;padding-top: 0px; padding-bottom: 0px;"
+      <div class="modal-body" style="height: 200px;padding-top: 0px; padding-bottom: 0px;"
         [ngClass]="{'add_field_visible' : displayAddcustomizationView === true, 'add_field_hidden':displayAddcustomizationView === false}">
 
         <div class="add-field-to-texarea_view" style="height:100%;">
@@ -211,7 +220,7 @@ top: 51px;">Open Modal</button> -->
         <section *ngIf="modalMode === 'edit'">
           <button *ngIf="displayAddcustomizationView === false" style="margin-top:0px;" class="btn btn-primary"
             (click)="editResponse()" style="padding:12px 16px;">
-            {{ "CannedResponses.EditResponses" | translate }}
+            {{ "Update" | translate }}
           </button>
         </section>
 
