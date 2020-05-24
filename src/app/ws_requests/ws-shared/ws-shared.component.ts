@@ -47,7 +47,7 @@ export class WsSharedComponent implements OnInit {
 
 
   // -----------------------------------------------------------------------------------------------------
-  // @ Create the agent array from the request's participant id
+  // @ Create the agent array from the request's participant id (used in ws-requests-msgs) 
   // -----------------------------------------------------------------------------------------------------
   createAgentsArrayFromParticipantsId(members_array: any, requester_id: string) {
     this.agents_array = [];
@@ -111,8 +111,8 @@ export class WsSharedComponent implements OnInit {
       this.fillColour = getColorBck(lead.fullname)
     } else {
 
-      this.requester_fullname_initial = 'n.a.';
-      this.fillColour = '#eeeeee';
+      this.requester_fullname_initial = 'N/A';
+      this.fillColour = 'rgb(98, 100, 167)';
     }
 
   }
@@ -185,7 +185,81 @@ export class WsSharedComponent implements OnInit {
   }
 
 
-  createFullParticipacipantsArray(participants: any) {
+
+  doParticipatingAgentsArray(participants, first_text) {
+
+    console.log('!! Ws SHARED »»»»»»» doParticipatingAgentsArray - first_text ', first_text, ' participants', participants);
+  
+    const newpartarray = []
+    participants.forEach(participantid => {
+
+      const participantIsBot = participantid.includes('bot_');
+      
+      if (participantIsBot === true) {
+        console.log('!! Ws SHARED »»»»»»» THE PARTICIP IS A BOT?', participantIsBot, 'GET BOT FROM STORAGE');
+       
+        const bot_id = participantid.slice(4);
+
+        const bot = this.botLocalDbService.getBotFromStorage(bot_id);
+        if (bot) { 
+          console.log('!! Ws SHARED »»»»»»» STORED BOT ', bot);
+         
+          bot['is_bot'] = true;
+          newpartarray.push(bot)
+       
+        } else {
+          console.log('!! Ws SHARED »»»»»»» BOT IS NOT IN STORAGE  - RUN GET FROM SERVICE');
+         
+          this.faqKbService.getMongDbFaqKbById(bot_id).subscribe((bot: any) => {
+            console.log('!! Ws SHARED »»»»»»» GET BOT BY ID - RES', bot);
+      
+
+            bot['is_bot'] = true;
+            newpartarray.push(bot)
+      
+            this.botLocalDbService.saveBotsInStorage(bot_id, bot);
+
+          }, (error) => {
+      
+            console.log('!! Ws SHARED »»»»»»» GET BOT BY ID - ERR', error);
+          }, () => {
+            console.log('!! Ws SHARED »»»»»»» GET BOT BY ID - COMPLETE');
+          });
+
+        }
+      } else {
+        console.log('!! Ws SHARED »»»»»»» THE PARTICIP IS A BOT?', participantIsBot, 'GET USER FROM STORAGE');
+        const user = this.usersLocalDbService.getMemberFromStorage(participantid);
+
+        if (user) { 
+          console.log('!! Ws SHARED »»»»»»» STORED USER ', user);
+         
+          user['is_bot'] = false
+          newpartarray.push(user)
+       
+        } else{
+          console.log('!! Ws SHARED »»»»»»» USER IS NOT IN STORAGE - RUN GET FROM SERVICE');
+          this.usersService.getProjectUserById(participantid)
+          .subscribe((projectuser) => {
+            console.log('!! Ws SHARED »»»»»»» GET PROJECT-USER BY ID - RES', projectuser);
+            const user = projectuser[0].id_user;
+            
+            user['is_bot'] = false
+            newpartarray.push(user)
+         
+            this.usersLocalDbService.saveMembersInStorage(user['_id'], user);
+
+          })
+        }
+      }
+
+   
+     
+    });
+    return newpartarray
+  }
+
+  createFullParticipacipantsArray(request, participants: any) {
     // console.log('%%% Ws SHARED »»»»»»» getBotType participants ', participants);
 
     if (participants.length > 0) {
@@ -204,6 +278,7 @@ export class WsSharedComponent implements OnInit {
           if (bot) {
 
             this.newParticipants.push([{ '_id': participantid, 'name': bot.name, 'lastname': '', 'botType': bot.type }])
+            request['test'] = this.newParticipants
             //   // '- ' +
             //   return member_id = bot['name'] + ' (bot)';
             // } else {
@@ -228,12 +303,44 @@ export class WsSharedComponent implements OnInit {
               lastnameInizial = user['lastname'].charAt(0);
             }
 
-            this.newParticipants.push([{ '_id': participantid, 'name': user.firstname, 'lastname': lastnameInizial, 'botType': '' }])
+            if (this.newParticipants.indexOf(participantid) === -1) {
+              this.newParticipants.push({ '_id': participantid, 'name': user.firstname, 'lastname': lastnameInizial, 'botType': '' })
+              request['test'] = this.newParticipants
+            }
 
           } else {
             console.log('!! Ws SHARED »»»»»»» createFullParticipacipantsArray participants - user NOT IN STORAGE ');
 
-            this.getProjectuserByIdAndSaveInStorage(participantid);
+            this.getProjectuserByIdAndSaveInStorage(request, participantid);
+
+
+            this.usersService.getProjectUserById(participantid)
+              .subscribe((projectuser) => {
+
+                this.newParticipants.push({ projectuser })
+                request['test'] = this.newParticipants
+              })
+
+
+            // setTimeout(() => {
+
+
+            //   const user = this.usersLocalDbService.getMemberFromStorage(participantid);
+            //   if (user) {
+            //     console.log('!! Ws SHARED »»»»»»» createFullParticipacipantsArray participants - user get from storage ', user);
+
+            //     let lastnameInizial = ''
+            //     if (user.lastname) {
+            //       lastnameInizial = user['lastname'].charAt(0);
+            //     }
+
+            //     if (this.newParticipants.indexOf(participantid) === -1) {
+            //       this.newParticipants.push([{ '_id': participantid, 'name': user.firstname, 'lastname': lastnameInizial, 'botType': '' }])
+            //     }
+            //   }
+            // }, 100);
+
+            // this.getProjectuserByIdAndSaveInStorage(participantid);
           }
         }
 
@@ -241,7 +348,7 @@ export class WsSharedComponent implements OnInit {
 
 
       console.log('!! Ws SHARED »»»»»»» createFullParticipacipantsArray - newParticipants Array ', this.newParticipants);
-      return this.newParticipants
+      // return this.newParticipants
 
     }
   }
@@ -251,7 +358,7 @@ export class WsSharedComponent implements OnInit {
     this.faqKbService.getMongDbFaqKbById(bot_id).subscribe((res: any) => {
       console.log('!! Ws SHARED »»»»»»» createFullParticipacipantsArray getBotFromRemoteAndSaveInStorage - RES', res);
 
-      this.newParticipants.push([{ '_id': participantid, 'name': res.name, 'lastname': '', 'botType': res.type }])
+      this.newParticipants.push({ '_id': participantid, 'name': res.name, 'lastname': '', 'botType': res.type })
 
       this.botLocalDbService.saveBotsInStorage(bot_id, res);
     }, (error) => {
@@ -264,9 +371,11 @@ export class WsSharedComponent implements OnInit {
 
   }
 
-  getProjectuserByIdAndSaveInStorage(userid) {
+  getProjectuserByIdAndSaveInStorage(request, userid) {
     // DONE -> WORKS NK-TO-TEST - da cambiare - vedi commento nel servizio
     //  this.usersService.getUsersById("5e3d47b485aa8a0017012485")
+
+
     this.usersService.getProjectUserById(userid)
       .subscribe((projectuser) => {
         console.log('!! Ws SHARED »»»»»»» createFullParticipacipantsArray getProjectuserByIdAndSaveInStorage - RES', projectuser);
@@ -281,16 +390,34 @@ export class WsSharedComponent implements OnInit {
             lastnameInizial = this.user.lastname.charAt(0);
           }
 
-          this.newParticipants.push([{ '_id': userid, 'name': this.user.firstname, 'lastname': lastnameInizial, 'botType': '' }])
 
+          const index = this.newParticipants.findIndex((e) => e._id === userid);
+
+          if (index === -1) {
+
+            this.newParticipants.push({ '_id': userid, 'name': this.user.firstname, 'lastname': lastnameInizial, 'botType': '' })
+            request['test'] = this.newParticipants
+            console.log('!! Ws SHARED »»»»»»» createFullParticipacipantsArray   this.newParticipants  QUI SI', this.newParticipants);
+          }
+          // console.log('!! Ws SHARED »»»»»»» createFullParticipacipantsArray   this.newParticipants  subito dopo', this.newParticipants);
           this.usersLocalDbService.saveMembersInStorage(userid, this.user);
+
+          // const obj = { '_id': userid, 'name': this.user.firstname, 'lastname': lastnameInizial, 'botType': '' }
+          // console.log('!! Ws SHARED »»»»»»» createFullParticipacipantsArray getProjectuserByIdAndSaveInStorage obj ', obj)
+          // newUser = { '_id': userid, 'name': this.user.firstname, 'lastname': lastnameInizial, 'botType': '' }
+          // return obj
         }
       }, (error) => {
         console.log('!! Ws SHARED »»»»»»» createFullParticipacipantsArray getProjectuserByIdAndSaveInStorage - ERROR ', error);
       }, () => {
         console.log('!! Ws SHARED »»»»»»» createFullParticipacipantsArray getProjectuserByIdAndSaveInStorage * COMPLETE *');
       });
+
+    // return newUser
   }
+
+
+
 
 
 
@@ -335,7 +462,7 @@ export class WsSharedComponent implements OnInit {
           if (participantIsBot === true) {
 
             const bot_id = participant.slice(4);
-            // console.log('!!! NEW REQUESTS HISTORY - THE PARTICIP', member_id, 'IS A BOT ', participantIsBot, ' - ID ', bot_id);
+            console.log('!!! NEW REQUESTS HISTORY - THE PARTICIP', participant, 'IS A BOT ', participantIsBot, ' - ID ', bot_id);
 
             const bot = this.botLocalDbService.getBotFromStorage(bot_id);
             // console.log('% »»» WebSocketJs WF agentsArrayBuildFromRequests bot', bot);
@@ -356,17 +483,39 @@ export class WsSharedComponent implements OnInit {
             } else {
 
               this.participantsInRequests.push({ '_id': participant, 'firstname': participant, })
+              // this._getProjectUserByUserId(participant) 
             }
 
 
           }
         }
       });
+
+      // request['test'] = this.participantsInRequests
     });
 
     console.log('% »»» WebSocketJs WF agentsArrayBuildFromRequests participantsId ', participantsId);
     console.log('% »»» WebSocketJs WF agentsArrayBuildFromRequests ', this.participantsInRequests);
+
+
   }
+
+  _getProjectUserByUserId(member_id) {
+    this.usersService.getProjectUserByUserId(member_id)
+      .subscribe((projectUser: any) => {
+        console.log('% Ws-REQUESTS-shared GET projectUser by USER-ID ', projectUser)
+        if (projectUser) {
+          console.log('% Ws-REQUESTS-shared projectUser id', projectUser);
+
+          this.usersLocalDbService.saveMembersInStorage(projectUser.id_user._id, projectUser.id_user);
+        }
+      }, (error) => {
+        console.log('% Ws-REQUESTS-shared GET projectUser by USER-ID - ERROR ', error);
+      }, () => {
+        console.log('% Ws-REQUESTS-shared GET projectUser by USER-ID * COMPLETE *');
+      });
+  }
+
 
 
 
