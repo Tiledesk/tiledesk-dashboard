@@ -112,7 +112,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             } else if (browserLang === 'de') {
                 this.translate.use('de');
                 moment.locale('de')
-           
+
             } else {
                 this.translate.use('en');
             }
@@ -196,7 +196,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             let ps = new PerfectScrollbar(elemMainPanel);
             ps = new PerfectScrollbar(elemSidebar);
         }
-     
+
 
         this.unsetNavbarBoxShadow();
 
@@ -217,12 +217,13 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 // const CHAT_URL = 'ws://tiledesk-server-pre.herokuapp.com?token=' + user.token
                 const CHAT_URL = this.appConfigService.getConfig().wsUrl + '?token=' + user.token
-                
+
                 console.log('AppConfigService % »»» WebSocketJs WF - APP-COMPONENT - I am about to connect to ws ')
 
                 // -----------------------------------------------------------------------------------------------------
                 // Websocket init 
                 // -----------------------------------------------------------------------------------------------------
+                // NOTE_nk: comment this.webSocketJs.init
                 this.webSocketJs.init(
                     CHAT_URL,
                     undefined,
@@ -269,7 +270,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
 
-    webSocketClose () {
+    webSocketClose() {
         this.webSocketJs.close()
     }
 
@@ -384,9 +385,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.IS_REQUEST_X_PANEL_ROUTE = true
 
                     const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-                    if(this.IS_REQUEST_X_PANEL_ROUTE === true) {
-                     let ps = new PerfectScrollbar(elemMainPanel);
-                    } 
+                    if (this.IS_REQUEST_X_PANEL_ROUTE === true) {
+                        let ps = new PerfectScrollbar(elemMainPanel);
+                    }
                 } else {
                     this.IS_REQUEST_X_PANEL_ROUTE = false
                 }
