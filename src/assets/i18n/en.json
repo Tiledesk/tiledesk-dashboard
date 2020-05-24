@@ -121,6 +121,7 @@
     "WidgetAppearance": "Widget Appearance",
     "OnlineMessage": "Online message",
     "OfflineMessage": "Offline message",
+    "OfficeClosedMessage": "Closed offices message",
     "EnterTheURL": "Enter the URL of your logo",
     "YourLogoURL": "Your logo URL",
     "displayLogo": "Display logo",
@@ -185,6 +186,7 @@
     "UpdateDeptGreetingsSuccessNoticationMsg": "Your changes has been saved",
     "UpdateDeptGreetingsOnlineMsgSuccessNoticationMsg": "Online message has been saved",
     "UpdateDeptGreetingsOfflineMsgSuccessNoticationMsg": "Offline message has been saved",
+    "UpdateDeptGreetingsOfficeClosedMsgSuccessNoticationMsg": "Office closed message has been saved",
     "FaqUpdatedSuccessfullyMsg": "FAQ successfully updated",
     "FaqUpdatedErrorMsg": "An error occurred while updating the FAQ",
     "SubscriptionSuccessfullyCanceled": "Subscription successfully canceled",
@@ -361,6 +363,7 @@
     "PresetColorCombinations": "Preset Color Combinations",
     "TestWidgetAllowYou": "Test widget allow you to simulate visitors, to share your widget and verify your design settings",
     "TheOnlineMessageIsWhatSiteVisitors": "The Online Message is what site visitors will see when they click on the {{company_name}} Widget and your team is online",
+    "TheClosedOfficeMessageIsWhatSiteVisitors": "The Closed offices Message is what site visitors will see when they click on the {{company_name}} Widget outside of office hours",
     "TheOfflineMessageIsWhatSiteVisitors": "The Offline Message is what site visitors will see when they click on the {{company_name}} Widget and your team is offline",
     "YouHaveBeenInvitedBy": "You have been invited by",
     "ToJoinTheProject": "to join the project",
@@ -464,10 +467,14 @@
     "more":"more", 
     "SeeAll": "See all",
     "AllDepts": "All departments",
-    "AllRequests": "All requests",
+    "All": "All",
+    "Save":"Save",
+    "Update": "Update",
     "CannedResponses": {
         "QuickTips": {
-            "1": "Canned response are pre-made messages you can recall easily during chat.",
+            "1": "Canned responses are pre-made messages you can recall easily during chat.",
+            "1B":"To use it type “/” (forward slash) and follow it with a word or the first few letters of any word that is included in the canned response title.",
+            "1C":"From the returned list of saved responses select the response you want to use.",
             "2": "If you often reply to the same customer questions, consider saving those replies as canned responses.",
             "3": "With canned responses, you type it once, save it and reuse it in chats whenever you need.",
             "4": "You can also create a more engaging experience for your customers by using personalization in your message:",
@@ -520,7 +527,7 @@
         "AddMoreOperators": "Add more Operators",
         "ContactUs": "Contact us",
         "PlanChange": "Plan change",
-        "ContactUsViaChatAndTellIUsHowManyOperator": " Contact us via chat and tell us how many operator seats you want to add to the project",
+        "ContactUsViaChatAndTellIUsHowManyOperator": "Contact us via chat and tell us how many operator seats you want to add to the project",
         "TheNumberOfOperatorSeatsCannotBeLess": "The number of operator seats cannot be less than the number of agents in your project",
         "SubscriptionExpired": "Subscription expired",
         "BillingProblem": "Billing Problem",
@@ -533,7 +540,9 @@
         "DowngradeTo": "Downgrade to Free",
         "YouCurrentlyAreUsingAllActiveOperatorSeats": "You currently are using all active operator seats",
         "ContactUsViaChatToUpgradeYourPricingPlan": "Contact us via chat to upgrade your pricing plan",
-        "NoPayments": "No Payments"
+        "NoPayments": "No Payments",
+        "ToEnableAllFeatures":"to enable all features",
+        "AutoSendTranscriptByEmailIsUnavailable": "Auto-send transcript by email is unavailable in your current plan"
     },
     "ActivitiesOptions": {
         "AgentAvailabilityOrRoleChange": "Agent update",
@@ -561,7 +570,11 @@
         "PendingEmailVerification": "Pending email verification",
         "YourAccountIsPending": "Your account is pending email verification.",
         "ClickHereToResend": "Click here to resend verification email",
-        "BotHasBeenRemoved": "this Bot has been removed"
+        "BotHasBeenRemoved": "this Bot has been removed",
+        "YourDetails": "Your Details",
+        "AddYourOwnPicture": "⚡️ Add your own picture to gives your conversations a more intimate feel!",
+        "AddYourOwnPicture_": "⚡️ Add your own picture to gives your conversations a more intimate feel, as your visitor can see who they are talking to!",
+        "PreferredSize": "Preferred image size 128 x 128 px"
     },
     "ChangePsw": {
         "ChangePsw": "Change password",

@@ -120,6 +120,7 @@
 	"NewConversation": "Unterhaltung",
 	"WidgetAppearance": "Widget Aussehen",
 	"OnlineMessage": "Online Nachricht",
+	"OfficeClosedMessage": "Nachricht über geschlossene Büros",
 	"OfflineMessage": "Offline Nachricht",
 	"EnterTheURL": "Geben Sie die URL ihres Logos ein",
 	"YourLogoURL": "Ihre Logo URL",
@@ -185,6 +186,7 @@
 	"UpdateDeptGreetingsSuccessNoticationMsg": "Ihre Änderungen wurden übernommen",
 	"UpdateDeptGreetingsOnlineMsgSuccessNoticationMsg": "Online Nachricht wurde gespeichert",
 	"UpdateDeptGreetingsOfflineMsgSuccessNoticationMsg": "Offline Nachricht wurde gespeichert",
+	"UpdateDeptGreetingsOfficeClosedMsgSuccessNoticationMsg": "Die Nachricht Büro geschlossen wurde gespeichert",
 	"FaqUpdatedSuccessfullyMsg": "FAQ erfolgreich aktualisiert",
 	"FaqUpdatedErrorMsg": "Ein Fehler ist während der Aktualisierung des FAQ aufgetreten",
 	"SubscriptionSuccessfullyCanceled": "Abo erfolgreich gekündigt",
@@ -361,6 +363,7 @@
 	"PresetColorCombinations": "Voreingestellte Farbkombinationen",
 	"TestWidgetAllowYou": "Test Widget ermöglichen es Ihnen Besucher zu simulieren, Ihr Widget zu teilen und Ihr Design zu verifizieren",
 	"TheOnlineMessageIsWhatSiteVisitors": "Die Online Nachricht ist die Nachricht, die Ihre Besucher sehen, wenn Sie auf das {{company_name}} Widget klicken und Ihr Team online ist",
+	"TheClosedOfficeMessageIsWhatSiteVisitors": "Die Nachricht Geschlossene Büros wird den Website-Besuchern angezeigt, wenn sie außerhalb der Bürozeiten auf das Widget {{company_name}} klicken",
 	"TheOfflineMessageIsWhatSiteVisitors": "Die Offline Nachricht ist die Nachricht, die Ihre Besucher sehen, wenn Sie auf das {{company_name}} Widget klicken und ihr Team nicht online ist",
 	"YouHaveBeenInvitedBy": "Sie wurden eingeladen von",
 	"ToJoinTheProject": "um am Projekt",
@@ -464,10 +467,14 @@
 	"more":"mehr",
 	"SeeAll": "Alles sehen",
 	"AllDepts": "Alle Abteilungen",
-	"AllRequests": "Alle Anfragen",
+	"All": "Alle",
+	"Save":"Speichern",
+    "Update": "Aktualisieren",
 	"CannedResponses": {
 		"QuickTips": {
 			"1": "Vordefinierte Antworten sind Nachrichten, die es Ihnen ermöglichen schneller auf oft gestellte Fragen zu reagieren.",
+			"1B":"Um es zu verwenden, geben Sie “/” (Schrägstrich) ein und folgen Sie ihm mit einem Wort oder den ersten Buchstaben eines Wortes, das im vordefinierten Antworttitel enthalten ist",
+			"1C":"Wählen Sie aus der zurückgegebenen Liste der gespeicherten Antworten die Antwort aus, die Sie verwenden möchten.",
 			"2": "Wenn Sie gewisse Fragen oft beantworten, speichern Sie diese als vordefinierte Antworten ab.",
 			"3": "Vordefinierte Antworten können nach dem Speichern beliebig oft wiederverwendet werden.",
 			"4": "Sie können die Betreuung Ihrer Besucher persönlicher gesatlten, indem Sie vordefinierte Nachrichten personalisieren:",
@@ -533,7 +540,9 @@
 		"DowngradeTo": "Downgrade auf die kostenlose Version",
 		"YouCurrentlyAreUsingAllActiveOperatorSeats": "Ihre maximale Anzahl an aktiven Operator ist zurzeit ausgenützt",
 		"ContactUsViaChatToUpgradeYourPricingPlan": "Kontaktieren Sie uns um ein Upgrade Ihrer Version durchzuführen ",
-		"NoPayments": "Keine Zahlungen"
+		"NoPayments": "Keine Zahlungen",
+		"ToEnableAllFeatures":"um alle Funktionen zu aktivieren",
+		"AutoSendTranscriptByEmailIsUnavailable": "Das automatische Senden eines Transkripts per e-mail ist in ihrem aktuellen plan nicht verfügbar."
 	},
 	"ActivitiesOptions": {
 		"AgentAvailabilityOrRoleChange": "Verfügbarkeit eines Agenten / einer Rolle ändern",
@@ -561,7 +570,11 @@
 		"PendingEmailVerification": "Account-Bestätigung offen",
 		"YourAccountIsPending": "Warte auf Account-Bestätigung.",
 		"ClickHereToResend": "Klicken Sie hier um die Bestätigungsmail erneut zu senden",
-		"BotHasBeenRemoved": "Dieser Bot wurde entfernt"
+		"BotHasBeenRemoved": "Dieser Bot wurde entfernt",
+		"YourDetails": "Deine Details",
+		"AddYourOwnPicture": "Fügen Sie Ihr eigenes Bild hinzu, um Ihren Gesprächen ein intimeres Gefühl zu verleihen!",
+		"AddYourOwnPicture_": "Fügen Sie Ihr eigenes Bild hinzu, um Ihren Gesprächen ein intimeres Gefühl zu verleihen, da Ihr Besucher sehen kann, mit wem er spricht!",
+		"PreferredSize": "Bevorzugte Bildgröße"
 	},
 	"ChangePsw": {
 		"ChangePsw": "Passwort ändern",

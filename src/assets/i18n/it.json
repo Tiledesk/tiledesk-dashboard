@@ -119,6 +119,7 @@
     "NewConversation": "Nuova conversazione",
     "WidgetAppearance": "Aspetto del widget",
     "OnlineMessage": "Messaggio online",
+    "OfficeClosedMessage": "Messaggio uffici chiusi",
     "OfflineMessage": "Messaggio offline",
     "EnterTheURL": "Inserisci l'URL del tuo logo",
     "YourLogoURL": "URL del tuo logo",
@@ -184,6 +185,7 @@
     "UpdateDeptGreetingsSuccessNoticationMsg": "Le tue modifiche sono state salvate",
     "UpdateDeptGreetingsOnlineMsgSuccessNoticationMsg": "Il messaggio Online è stato salvato",
     "UpdateDeptGreetingsOfflineMsgSuccessNoticationMsg": "Il messaggio Offline è stato salvato",
+    "UpdateDeptGreetingsOfficeClosedMsgSuccessNoticationMsg": "Il messaggio Uffici chiusi è stato salvato",
     "FaqUpdatedSuccessfullyMsg": "FAQ aggiornata con successo",
     "FaqUpdatedErrorMsg": "Si è verificato un errore durante l'aggiornamento della FAQ",
     "SubscriptionSuccessfullyCanceled": "Abbonamento annullato correttamente",
@@ -358,6 +360,7 @@
     "PresetColorCombinations": "Combinazioni di colori preimpostate",
     "TestWidgetAllowYou": "Test widget ti consente di simulare i visitatori, condividere il widget e verificare le impostazioni di design",
     "TheOnlineMessageIsWhatSiteVisitors": "Il messaggio online è ciò che i visitatori del sito vedranno quando fanno clic sul widget {{company_name}} e il tuo team è online",
+    "TheClosedOfficeMessageIsWhatSiteVisitors": "Il messaggio Uffici chiusi è ciò che i visitatori del sito vedranno quando fanno clic sul widget {{company_name}} al di fuori degli orari di ufficio",
     "TheOfflineMessageIsWhatSiteVisitors": "Il messaggio offline è ciò che i visitatori del sito vedranno quando fanno clic sul widget {{company_name}} e il tuo team è offline",
     "YouHaveBeenInvitedBy": "Sei stato invitato da",
     "ToJoinTheProject": "a partecipare al progetto",
@@ -459,10 +462,14 @@
     "more":"altre", 
     "SeeAll": "Vedi tutto",
     "AllDepts": "Tutti i dipartimenti",
-    "AllRequests": "Tutte le richieste",
+    "All": "Tutte",
+    "Save":"Salva",
+    "Update": "Aggiorna",
     "CannedResponses": {
         "QuickTips": {
             "1": "Le Risposte Predefinite sono messaggi predefiniti che è possibile richiamare facilmente durante la chat.",
+            "1B":"Per usarle digita “/” (barra) e seguilo con una parola o le prime lettere di qualsiasi parola inclusa nel titolo della risposta predefinita",
+            "1C":"Dall'elenco restituito delle risposte salvate selezionare la risposta che si desidera utilizzare.",
             "2": "Se si risponde spesso alle stesse domande, considera di salvare quelle risposte come risposte predefinite.",
             "3": "Con risposte predefinite, digiti il messaggio una volta, lo salvi e lo riutilizzi in chat ogni volta che ne hai bisogno.",
             "4": "Puoi anche creare un'esperienza più coinvolgente per i tuoi clienti usando la personalizzazione nel tuo messaggio:",
@@ -528,7 +535,9 @@
         "DowngradeTo": "Downgrade al Free",
         "YouCurrentlyAreUsingAllActiveOperatorSeats": "Attualmente stai utilizzando tutti i posti operatore attivi",
         "ContactUsViaChatToUpgradeYourPricingPlan": "Contattaci via chat per aggiornare il tuo piano tariffario",
-        "NoPayments": "Nessun pagamento"
+        "NoPayments": "Nessun pagamento",
+        "ToEnableAllFeatures":"per abilitare tutte le funzionalità",
+        "AutoSendTranscriptByEmailIsUnavailable": "L'invio automatico via e-mail del chat transcript non è disponibile nel piano corrente."
     },
     "ActivitiesOptions": {
         "AgentAvailabilityOrRoleChange": "Aggiornamento agente",
@@ -556,7 +565,11 @@
         "PendingEmailVerification": "Email non verificata",
         "YourAccountIsPending": "Il tuo account è in attesa di verifica via email.",
         "ClickHereToResend": "Clicca qui per inviare nuovamente l'email di verifica",
-        "BotHasBeenRemoved": "questo Bot è stato rimosso"
+        "BotHasBeenRemoved": "questo Bot è stato rimosso",
+        "YourDetails": "I tuoi dettagli",
+        "AddYourOwnPicture": "⚡️ Aggiungi la tua foto per dare alle tue conversazioni un'atmosfera più intima!",
+        "AddYourOwnPicture_": "⚡️ Aggiungi la tua foto per dare alle tue conversazioni un'atmosfera più intima, poiché il tuo visitatore può vedere con chi sta parlando!",
+        "PreferredSize": "Dimensione preferita immagine 128 x 128 px"
     },
     "ChangePsw": {
         "ChangePsw": "Cambia password",
