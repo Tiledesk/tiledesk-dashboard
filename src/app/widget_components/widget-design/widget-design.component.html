@@ -31,13 +31,10 @@
 								</div>
 								<div class="col-md-12">
 
-									<!-- <span style="display: block; margin-bottom: 8px; color: #687882; font-size:13px; font-weight: 400">
-										{{ 'CustomizeHowYouGreetYourSiteVisitors' | translate: tparams }}
-									</span> -->
 
 									<!-- /// GREETINGS SAVE BTN ON TOP  @ MEDIA > 768 -->
 									<button class="btn btn-primary appearance-save-btn-desktop"
-										style="margin-top: 15px; margin-bottom: 16px; float: right; position: relative;	top: -61px;"
+										style="margin-top: 15px; margin-bottom: 16px; float: right; position: absolute;	top: -63px; right: 15px;"
 										(click)="saveTranslation()" [disabled]="onlineMsg?.length <= 0 || onlineMsg.length <= 0">
 										<!-- <i class="material-icons" style="right: 10px;"> save </i> -->
 										{{ 'ScriptPage.Save' | translate }}
@@ -65,14 +62,12 @@
 								</div>
 							</div>
 
+							<!-- 
+							// ---------------------------------------------------- 
+							// COMBO TO SELECT THE LANGUAGE PREVIEW  - (GREETINGS)
+							// ---------------------------------------------------- -->
 							<div class="row">
 								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-
-									<!-- 
-									// ---------------------------------------------------- 
-									// COMBO TO SELECT THE LANGUAGE PREVIEW  - (GREETINGS)
-									// ---------------------------------------------------- -->
-
 									<div *ngIf="isVisible" class="wrapper-multi-language-preview" style="margin-bottom: 16px;">
 										<label class="widget-label" style="color: #566787;width: 100%;">
 											{{ 'MultiLanguagePreview' | translate}}
@@ -103,6 +98,11 @@
 											</h5>
 										</li>
 									</div>
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
 
 									<!-- // ONLINE MSG TITLE & TEXTAREA -->
 									<div class="row">
@@ -129,7 +129,7 @@
 											<!-- placeholder="{{placeholderOnlineMsg}}" -->
 											<textarea [(ngModel)]="onlineMsg" 
 												(ngModelChange)="onChangeOnlineMsg($event)" rows="5"
-												style="width: 100%; border-radius: 5px;border: solid 1px #ddd; padding: 8px;font-weight: 400;">
+												style="width: 100%; border-radius: 5px;border: solid 1px #ddd; padding: 8px;font-weight: 400;resize: vertical">
 											</textarea>
 											<div *ngIf="onlineMsg?.length <= 0" style="font-size: 11px; color: #f44336;"> 
 												{{ 'RequiredField' | translate}}
@@ -228,7 +228,7 @@
 														</i>
 													</span>
 													<span class="widget_design__Tooltiptext"
-														style="margin-left: -108px;min-width: 225px;height:65px">
+														style="margin-left: -108px;min-width: 225px;height:55px">
 														{{ 'TheOfflineMessageIsWhatSiteVisitors' | translate: tparams }}
 													</span>
 												</span>
@@ -240,7 +240,7 @@
 											<!-- placeholder="{{placeholderOfflineMsg}}" -->
 											<textarea [(ngModel)]="offlineMsg" 
 												(ngModelChange)="onChangeOfflineMsg($event)" rows="5"
-												style="width: 100%;border-radius: 5px;border: solid 1px #ddd; padding: 8px; font-weight: 400;">
+												style="width: 100%;border-radius: 5px;border: solid 1px #ddd; padding: 8px; font-weight: 400;resize: vertical">
 											</textarea>
 											<div *ngIf="offlineMsg?.length <= 0" style="font-size: 11px; color: #f44336;"> 
 												{{ 'RequiredField' | translate}}
@@ -320,6 +320,114 @@
 									</div>
 									<!-- // offline msg widhìget preview end -->
 
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+
+									<!-- // OFFICE CLOSED MSG TITLE & TEXTAREA -->
+									<div class="row">
+										<div class="col-xs-12">
+											<label class="widget-label"
+												style="color: #566787; font-weight: 400; margin-top: 8px; margin-bottom: 4px;">
+												{{ "OfficeClosedMessage" | translate}}
+
+												<span class="widget_design__Tooltip">
+													<span>
+														<i class="material-icons"
+															style="position: relative;top: 2px; font-size:14px; color:#7695a5">
+															help_outline
+														</i>
+													</span>
+													<span class="widget_design__Tooltiptext"
+														style="margin-left: -108px;min-width: 228px;height:53px">
+														{{ 'TheClosedOfficeMessageIsWhatSiteVisitors' | translate: tparams }}
+													</span>
+												</span>
+											</label>
+										</div>
+										<div class="col-xs-12">
+											<!-- placeholder="{{placeholderOnlineMsg}}" -->
+											<textarea [(ngModel)]="officeClosedMsg" 
+												(ngModelChange)="onChangeOfficeClosedMsg($event)" rows="5"
+												style="width: 100%; border-radius: 5px;border: solid 1px #ddd; padding: 8px;font-weight: 400; resize: vertical">
+											</textarea>
+											<div *ngIf="officeClosedMsg?.length <= 0" style="font-size: 11px; color: #f44336;"> 
+												{{ 'RequiredField' | translate}}
+											</div>
+											
+										</div>
+									</div>
+
+								</div>
+
+								<!-- // OFFICE CLOSED MSG PREVIEW -->
+								<div class="col-xs-12 col-sm-8 col-md-8 col-lg-8"
+									style="background-image: url(data:image/gif;base64,R0lGODlhEAAQAJEAAAAAAP////X19f///yH5BAEAAAMALAAAAAAQABAAAAIflG+hq4jM3IFLJhqswNly/XkcBpIiVaInlLJr9FZWAQA7);">
+									<div class="td-widget-preview-wrapper"
+										style="width:375px; position: sticky;position: -webkit-sticky;top: 40px; margin: auto;"
+										[ngStyle]="{'width':  (newInnerWidth < 490 ) ? 'auto' : '' }">
+										<div class="card td-widget-preview-card" style="margin-top: 21px;">
+											<div class="card-content td-widget-preview-card-content"
+												[ngStyle]="{'background-color': primaryColor}">
+
+												<span class="card-header-center">
+													{{company_name}} {{ selected_translation?.AGENT_AVAILABLE }}
+												</span>
+
+												<span class="card-header-left">
+													<svg aria-labelledby="altIconTitle" height="20px" role="img"
+														viewBox="0 0 24 24" width="24px"
+														xmlns="http://www.w3.org/2000/svg"
+														style="fill: rgb(255, 255, 255);">
+														<path d="M0 0h24v24H0V0z" fill="none"></path>
+														<path
+															d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z">
+														</path>
+													</svg>
+												</span>
+
+												<span class="card-header-right">
+													<span class="option-icon">
+														<svg aria-labelledby="altIconTitle" height="21"
+															viewBox="0 0 24 24" width="21"
+															xmlns="http://www.w3.org/2000/svg"
+															style="fill: rgb(255, 255, 255);">
+															<path d="M0 0h24v24H0V0z" fill="none"></path>
+															<path
+																d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z">
+															</path>
+														</svg>
+													</span>
+													<span class="td-preview-close-icon">
+														<svg aria-labelledby="altIconTitle" height="21px" role="img"
+															viewBox="0 0 24 24" width="21px"
+															xmlns="http://www.w3.org/2000/svg"
+															style="fill: rgb(255, 255, 255);">
+															<path d="M0 0h24v24H0V0z" fill="none"></path>
+															<path
+																d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z">
+															</path>
+														</svg>
+													</span>
+												</span>
+											</div>
+
+											<div class="card-footer td-widget-preview-card-footer">
+												<div class="td-widget-preview-slide-in-left" role="messaggio">Bot</div>
+
+												<div class="td-widget-preview-avatar-image">
+													<img src="assets/img/avatar_bot_tiledesk.svg">
+												</div>
+
+												<div class="td-widget-preview-msg_receive">
+													<p [innerHTML]="officeClosedMsg"
+														class="td-widget-preview-msg_receive-p"></p>
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 

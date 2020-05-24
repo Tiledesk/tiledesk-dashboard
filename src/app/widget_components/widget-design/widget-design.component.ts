@@ -115,8 +115,10 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
   public placeholderWelcomeMsg: string;
   public onlineMsg: string; // LABEL_FIRST_MSG
   public offlineMsg: string; // LABEL_FIRST_MSG_NO_AGENTS
+  public officeClosedMsg: string; // LABEL_FIRST_MSG_OPERATING_HOURS_CLOSED
   placeholderOnlineMsg: string;
   placeholderOfflineMsg: string;
+  placeholderofficeClosedMsg: string;
   placeholderCalloutTitle: string;
   placeholderCalloutMsg: string;
   isVisible: boolean;
@@ -149,6 +151,7 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
 
     this.translateOnlineMsgSuccessNoticationMsg();
     this.translateOfflineMsgSuccessNoticationMsg();
+    this.translateOfficeClosedSuccessNoticationMsg();
     this.getSectionSelected();
     this.translateGetTranslationErrorMsg();
     this.getLabels();
@@ -280,6 +283,10 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
         this.offlineMsg = this.selected_translation["LABEL_FIRST_MSG_NO_AGENTS"];
         console.log('Multilanguage (widget-design) ***** selected translation ONLINE MSG : ', this.onlineMsg, '- OFFLINE MSG: ', this.offlineMsg);
 
+        // ---------------------------------------------------------------
+        // @ Office closed msgs
+        // ---------------------------------------------------------------
+        this.officeClosedMsg = this.selected_translation["LABEL_FIRST_MSG_OPERATING_HOURS_CLOSED"];
       }
     });
   }
@@ -320,6 +327,13 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     // if (event.length === 0 || event) {  }
   }
 
+  onChangeOfficeClosedMsg(event) {
+    this.officeClosedMsg = event;
+    console.log('Multilanguage (widget-design) - OFFICE CLOSED MSG CHANGE: ', this.officeClosedMsg);
+    // if (event.length === 0 || event) {  }
+  }
+  
+
 
   // ------------------------------------------------------------------------------------
   // Select language
@@ -350,8 +364,8 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     this.selected_translation["CALLOUT_MSG_PLACEHOLDER"] = this.calloutMsg;
     this.selected_translation["LABEL_FIRST_MSG"] = this.onlineMsg;
     this.selected_translation["LABEL_FIRST_MSG_NO_AGENTS"] = this.offlineMsg;
-
-
+    this.selected_translation["LABEL_FIRST_MSG_OPERATING_HOURS_CLOSED"] = this.officeClosedMsg;
+  
     console.log('Multilanguage (widget-design) ***** saveTranslation: ', this.selected_translation);
 
     this.saveLabels()
@@ -362,9 +376,12 @@ export class WidgetDesignComponent extends WidgetDesignBaseComponent implements 
     this.widgetService.editLabels(this.selectedLangCode.toUpperCase(), this.selected_translation)
       .subscribe((labels: any) => {
         console.log('Multilanguage (widget-design) - saveTranslation RES ', labels);
+
+
       }, error => {
         console.log('Multilanguage (widget-design) - saveTranslation - ERROR ', error)
       }, () => {
+        this.notify.showWidgetStyleUpdateNotification(this.updateWidgetSuccessNoticationMsg, 2, 'done');
         console.log('Multilanguage (widget-design) - saveTranslation * COMPLETE *')
       });
   }

@@ -20,6 +20,7 @@ export class WidgetDesignBaseComponent extends WidgetSharedComponent implements 
 
   onlineMsgSuccessNoticationMsg: string;
   offlineMsgSuccessNoticationMsg: string;
+  updateWidgetSuccessNoticationMsg: string;
   errorNoticationMsg: string;
 
   public widgetDefaultSettings =
@@ -119,6 +120,23 @@ export class WidgetDesignBaseComponent extends WidgetSharedComponent implements 
         // console.log('»» WIDGET SERVICE -  translateOfflineMsgSuccessNoticationMsg * COMPLETE *');
       });
   }
+
+  
+
+  translateOfficeClosedSuccessNoticationMsg() {
+    this.translate.get('UpdateDeptGreetingsSuccessNoticationMsg')
+      .subscribe((text: string) => {
+
+        this.updateWidgetSuccessNoticationMsg = text;
+        // console.log('»» WIDGET SERVICE - translateOfflineMsgSuccessNoticationMsg ', text)
+      }, (error) => {
+        // console.log('»» WIDGET SERVICE -  translateOnlineMsgSuccessNoticationMsg - ERROR ', error);
+      }, () => {
+        // console.log('»» WIDGET SERVICE -  translateOfflineMsgSuccessNoticationMsg * COMPLETE *');
+      });
+  }
+
+ 
 
   translateGetTranslationErrorMsg() {
     this.translate.get('UserEditAddPage.AnErrorHasOccurred')
