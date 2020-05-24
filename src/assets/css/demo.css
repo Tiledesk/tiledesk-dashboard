@@ -1,8 +1,8 @@
-my-app .main-panel .main-content .card{
-    animation-duration: 750ms;
-    opacity: 0;
-    animation-name: fadeIn;
-    animation-fill-mode: forwards;
+my-app .main-panel .main-content .card {
+  animation-duration: 750ms;
+  opacity: 0;
+  animation-name: fadeIn;
+  animation-fill-mode: forwards;
 }
 
 @keyframes fadeIn {
@@ -14,89 +14,148 @@ my-app .main-panel .main-content .card{
     opacity: 1;
   }
 }
-@media (min-width: 992px){
-    .typo-line{
-        padding-left: 140px;
-        margin-bottom: 40px;
-        position: relative;
-    }
+@media (min-width: 992px) {
+  .typo-line {
+    padding-left: 140px;
+    margin-bottom: 40px;
+    position: relative;
+  }
 
-    .typo-line .category{
-        transform: translateY(-50%);
-        top: 50%;
-        left: 0px;
-        position: absolute;
-    }
-}
-
-#map{
-    position:relative;
-    width:100%;
-    height: calc(100% - 60px);
-    margin-top: 70px;
-}
-
-.places-buttons .btn{
-    margin-bottom: 30px
-}
-
-.space-70{
-    height: 70px;
-    display: block;
-}
-
-.sidebar .nav > li.active-pro{
+  .typo-line .category {
+    transform: translateY(-50%);
+    top: 50%;
+    left: 0px;
     position: absolute;
-    width: 100%;
-    bottom: 10px;
+  }
+}
+
+#map {
+  position: relative;
+  width: 100%;
+  height: calc(100% - 60px);
+  margin-top: 70px;
+}
+
+.places-buttons .btn {
+  margin-bottom: 30px;
+}
+
+.space-70 {
+  height: 70px;
+  display: block;
+}
+
+.sidebar .nav > li.active-pro {
+  position: absolute;
+  width: 100%;
+  bottom: 10px;
 }
 @media (max-width: 991px) {
-    .sidebar .nav > li.active-pro{
-        position: relative;
-        width: 100%;
-        bottom: 10px;
-    }
-    .sidebar .nav > li.active-pro > a{
-        margin-top: 20px;
-
-    }
+  .sidebar .nav > li.active-pro {
+    position: relative;
+    width: 100%;
+    bottom: 10px;
+  }
+  .sidebar .nav > li.active-pro > a {
+    margin-top: 20px;
+  }
 }
-
 
 /* /* START - SETTINGS SUB MENU - WHEN THE ITEM ARE ACTIVE */
-.sidebar .nav > li.active-custom > a{
-    color: #E25242;
-    background-color: #eeeeee
+.sidebar .nav > li.active-custom > a {
+  color: #e25242;
+  background-color: #eeeeee;
 }
-.sidebar .nav > li.active-custom > a >i{
-    color: #E25242
+.sidebar .nav > li.active-custom > a > i {
+  color: #e25242;
 }
 /*  END SETTINGS SUB MENU */
 
-.tim-row{
-    margin-bottom: 20px;
+.tim-row {
+  margin-bottom: 20px;
 }
 
-.tim-typo{
-    padding-left: 25%;
-    margin-bottom: 40px;
-    position: relative;
+.tim-typo {
+  padding-left: 25%;
+  margin-bottom: 40px;
+  position: relative;
 }
-.tim-typo .tim-note{
-    bottom: 10px;
-    color: #c0c1c2;
-    display: block;
-    font-weight: 400;
-    font-size: 13px;
-    line-height: 13px;
-    left: 0;
-    margin-left: 20px;
-    position: absolute;
-    width: 260px;
+.tim-typo .tim-note {
+  bottom: 10px;
+  color: #c0c1c2;
+  display: block;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 13px;
+  left: 0;
+  margin-left: 20px;
+  position: absolute;
+  width: 260px;
 }
-.tim-row{
-    padding-top: 50px;
+.tim-row {
+  padding-top: 50px;
 }
-.tim-row h3{
-    margin-top: 0;
+.tim-row h3 {
+  margin-top: 0;
+}
+
+/* Base styling*/
+
+/* CSS Tooltip Generator */
+/* http://www.menucool.com/tooltip/css-tooltip */
+.tool_tip {
+  display: inline-block;
+  position: relative;
+  /* border-bottom:1px dotted #666; */
+  text-align: left;
+}
+
+.tool_tip h4 {
+  margin: 3px 0;
+  font-size: 13px;
+  margin-top: 0px;
+}
+
+.tool_tip .top {
+  min-width: 200px;
+  max-width: 400px;
+  top: -20px;
+  left: 50%;
+  transform: translate(-30%, -100%);
+  padding: 10px 10px;
+  color: #ffffff;
+  background-color: #394f5a;
+  font-weight: normal;
+  font-size: 12px;
+  border-radius: 8px;
+  position: absolute;
+  z-index: 99999999;
+  box-sizing: border-box;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+  display: none;
+}
+
+.tool_tip:hover .top {
+  display: block;
+}
+
+.tool_tip .top i {
+  position: absolute;
+  top: 100%;
+  left: 30%;
+  margin-left: -15px;
+  width: 30px;
+  height: 15px;
+  overflow: hidden;
+}
+
+.tool_tip .top i::after {
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  background-color: #394f5a;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
