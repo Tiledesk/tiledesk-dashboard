@@ -60,7 +60,7 @@ export class BotService {
   }
 
   /**
-   * READ (GET)
+   * READ (GET) !! NOT USED
    */
   public getMongDbBots(): Observable<Bot[]> {
     const url = this.MONGODB_BASE_URL;
