@@ -21,7 +21,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="card" style="padding-top: 25px;padding-bottom: 25px;">
+                <div class="card" style="padding-top: 0px;padding-bottom: 25px;">
                     <!-- <div class="row">
                         <div class="col-md-12">
                             <ul class="nav nav-pills nav-pills-info custom"
@@ -44,243 +44,147 @@
                     <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
                     <!-- style="border-top:1px solid #eee" -->
-                    <div *ngIf="!showSpinner" class="card-content" >
+                    <div *ngIf="!showSpinner" class="card-content">
 
-                        <label
-                            style="height: 36px; padding-top: 20px; padding-left: 16px; padding-right: 16px; text-align: right; margin-top:12px; color: #7695a5 "
-                            class="col-sm-2 avatar_label">
-                            Avatar
-                        </label>
-                        <div class="col-sm-10">
-                            <!-- src="assets/img/no_image_user.png" -->
-                            <!-- 2F5b7af638109dc06fedefe063 -->
-                            <!-- userProfileImageExist: {{ userProfileImageExist }} - userImageHasBeenUploaded:{{ userImageHasBeenUploaded }} -->
-                            <!-- src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{userId}}%2Fphoto.jpg?alt=media"  -->
-                            <div class="card-avatar" style="padding-bottom:15px; min-height: 95px;">
-                                <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
-                                    style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
-                                    class="user-img" [src]="getUserProfileImage()" />
-
-                                <img *ngIf="userProfileImageExist === false && userImageHasBeenUploaded !== true"
-                                    style="vertical-align: middle; width: 80px; height: 80px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;"
-                                    class="user-img" src="assets/img/no_image_user.png" />
-                                <!-- <img style="vertical-align: middle; width: 60px; height: 60px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" 
-                                class="user-img" src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{userId}}%2F8a533bcc-59df-421a-98f0-f499ca40fbdf-01-01-1529932001.jpeg?alt=media" 
-                                onerror="this.onerror=null; this.src='assets/img/no_image_user.png';"/> -->
-
-                                <input class="inputfile" name="file" id="file" type="file" (change)="upload($event)"
-                                    accept=".jpg" />
-                                <label class="btn btn-white" for="file"
-                                    style="padding-left:15px; padding-right:15px; text-transform: none; color: #7695a5">
-
-
-                                    <span *ngIf="!showSpinnerInUploadImageBtn">
-                                        {{ "UserProfile.UploadImage" | translate }}
-                                    </span>
-                                    <span *ngIf="showSpinnerInUploadImageBtn">
-                                        {{ 'VisitorsPage.Loading' | translate }}
-                                        <i class="fa fa-spinner fa-spin"></i>
-                                    </span>
-                                </label>
-
-                                <!-- Upload immagine -->
-                                <!-- <button style="padding-left:16px; padding-right:16px; font-size:0.8em" type="submit" class="btn btn-white" (click)='uploadUserAvatar()'>
-                                    {{ "UserProfile.UploadImage" | translate }}
-                                </button> -->
-
-                            </div>
-                        </div>
-
-                        <label class="col-sm-2 custom-label">
-                            <!-- Nome -->
-                            {{ "UserProfile.Name" | translate }}
-                        </label>
-                        <div class="col-sm-10">
-                            <input (input)="onEditFirstname($event.target.value)" [(ngModel)]="userFirstname" class=""
-                                type="text" placeholder='{{ "UserProfile.Name" | translate }}'>
-                        </div>
-
-                        <label class="col-sm-2 custom-label">
-                            <!-- Cognome -->
-                            {{ "UserProfile.Lastname" | translate }}
-                        </label>
-                        <div class="col-sm-10">
-                            <input (input)="onEditLastname($event.target.value)" [(ngModel)]="userLastname" class=""
-                                type="text" placeholder='{{ "UserProfile.Lastname" | translate }}'>
-                        </div>
-
-                        <label class="col-sm-2 custom-label">
-                            Email
-                        </label>
-                        <div class="col-sm-10">
-                            <input style="color:#808080" [(ngModel)]="user.email" class="" type="text"
-                                placeholder="Email"
-                                [ngClass]="{'pending-email-verification' : emailverified === false }" disabled>
-                        </div>
-
-                        <label class="col-sm-2 custom-label">
-                            {{ 'UsersPage.Role' | translate }}
-                        </label>
-                        <div class="col-sm-10">
-                            <input style="color:#808080" [(ngModel)]="userRole" class="" type="text"
-                                placeholder="{{ 'UsersPage.Role' | translate }}" disabled>
-                        </div>
-
-                        <label class="col-sm-2 custom-label">
-                            <!-- ID Utente -->
-                            {{ "UserProfile.UserId" | translate }}
-                        </label>
-                        <div class="col-sm-10">
-                            <input style="color: #808080" [(ngModel)]="user._id" class="" type="text"
-                                placeholder='{{ "UserProfile.UserId" | translate }}' disabled>
-                        </div>
-
-                        <!-- USER PHOTO -->
-                        <!-- <label style="height: 36px; padding-top: 7px; padding-left: 16px; padding-right: 16px; text-align: right;" class="col-sm-2">Avatar</label>
-                        <div class="col-sm-10">
-                            <div class="card-avatar" style="padding-bottom:15px">
-                                <img style="vertical-align: middle; width: 60px; height: 60px; border-radius: 50%; border: 1px solid #eee; margin-right: 15px;" class="img" src="assets/img/no_image_user.png" />
-                                <button style="padding-left:16px; padding-right:16px; font-size:0.8em" type="submit" class="btn btn-white" >Upload immagine</button>
-                            </div> 
-                        </div> -->
-
-
-                        <span *ngIf="emailverified == false">
-                            <label class="col-sm-2"></label>
-                            <div class="col-sm-10" style="padding-top: 15px;">
-                                <i class="material-icons"
-                                    style="vertical-align: middle; color:#f44336;">error_outline</i>
-                                <span style="vertical-align: middle; color:#f44336;">
-                                    <!-- {{ "UserProfile.PendingEmailVerification" | translate }} -->
-                                    {{ "UserProfile.YourAccountIsPending" | translate }}
-                                    <a (click)="resendVerificationEmail()"
-                                        style="cursor: pointer; color: #03a5e8">{{ "UserProfile.ClickHereToResend" | translate }}
-                                    </a>
+                        <div class="row">
+                            <div class="col-md-12">
+                              <h3 class="card_title__underlined" style="">
+                                <span class="card_title__underline">
+                                  {{ "UserProfile.YourDetails" | translate }}
                                 </span>
+                              </h3>
+                            </div>
+                            <div class="col-md-12">
+                              <div class="section-subtitle"> </div>
+                            </div>
+                          </div>
+
+                        <div class="row">
+                            <label class="col-sm-2 avatar_label">
+                                Avatar
+                            </label>
+                            <div class="col-sm-10">
+                                <div class="card-avatar" style="padding-bottom:15px; min-height: 95px;">
+                                    <img *ngIf="userProfileImageExist === true || userImageHasBeenUploaded === true"
+                                        class="user-img user-profile-image" [src]="getUserProfileImage()" />
+
+                                    <img *ngIf="userProfileImageExist === false && userImageHasBeenUploaded !== true"
+                                        class="user-img user-profile-image" src="assets/img/no_image_user.png" />
+
+                                    <input class="inputfile" name="file" id="file" type="file" (change)="upload($event)"
+                                        accept=".jpg" />
+                                    <label class="btn btn-white" for="file"
+                                        style="padding-left:15px; padding-right:15px; text-transform: none; color: #7695a5">
+                                        <span *ngIf="!showSpinnerInUploadImageBtn">
+                                            {{ "UserProfile.UploadImage" | translate }}
+                                        </span>
+                                        <span *ngIf="showSpinnerInUploadImageBtn">
+                                            {{ 'VisitorsPage.Loading' | translate }}
+                                            <i class="fa fa-spinner fa-spin"></i>
+                                        </span>
+                                    </label>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <label class="col-sm-2">
+                                
+                            </label>
+                            <div class="col-sm-10" style="margin-bottom: 12px;">
+                                
+                                <span style="color: #7695a5; font-size: 12px; display: block;"> {{ "UserProfile.PreferredSize" | translate }}</span>
+                                <!-- <span style="display: block;color: #7695a5; font-size: 12px; display: block;"> {{ "UserProfile.AddYourOwnPicture" | translate }}</span> -->
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="col-sm-2 custom-label">
+                                {{ "UserProfile.Name" | translate }}
+                            </label>
+                            <div class="col-sm-10">
+                                <input (input)="onEditFirstname($event.target.value)" [(ngModel)]="userFirstname"
+                                    class="" type="text" placeholder='{{ "UserProfile.Name" | translate }}'>
                             </div>
 
-                        </span>
+                            <label class="col-sm-2 custom-label">
+                                <!-- Cognome -->
+                                {{ "UserProfile.Lastname" | translate }}
+                            </label>
+                            <div class="col-sm-10">
+                                <input (input)="onEditLastname($event.target.value)" [(ngModel)]="userLastname" class=""
+                                    type="text" placeholder='{{ "UserProfile.Lastname" | translate }}'>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="col-sm-2 custom-label">
+                                Email
+                            </label>
+                            <div class="col-sm-10">
+                                <input style="color:#808080" [(ngModel)]="user.email" class="" type="text"
+                                    placeholder="Email"
+                                    [ngClass]="{'pending-email-verification' : emailverified === false }" disabled>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="col-sm-2 custom-label">
+                                {{ 'UsersPage.Role' | translate }}
+                            </label>
+                            <div class="col-sm-10">
+                                <input style="color:#808080" [(ngModel)]="userRole" class="" type="text"
+                                    placeholder="{{ 'UsersPage.Role' | translate }}" disabled>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <label class="col-sm-2 custom-label">
+                             
+                                {{ "UserProfile.UserId" | translate }}
+                            </label>
+                            <div class="col-sm-10">
+                                <input style="color: #808080" [(ngModel)]="user._id" class="" type="text"
+                                    placeholder='{{ "UserProfile.UserId" | translate }}' disabled>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <span *ngIf="emailverified == false">
+                                <label class="col-sm-2"></label>
+                                <div class="col-sm-10" style="padding-top: 15px;">
+                                    <i class="material-icons"
+                                        style="vertical-align: middle; color:#f44336;">error_outline</i>
+                                    <span style="vertical-align: middle; color:#f44336;">
+                                        <!-- {{ "UserProfile.PendingEmailVerification" | translate }} -->
+                                        {{ "UserProfile.YourAccountIsPending" | translate }}
+
+                                    </span>
+                                    <span style="display: block; margin-left: 28px;">
+                                        <a (click)="resendVerificationEmail()"
+                                            style="cursor: pointer; color: #03a5e8">{{ "UserProfile.ClickHereToResend" | translate }}
+                                        </a>
+                                    </span>
+                                </div>
+
+                            </span>
+                        </div>
 
                         <!-- SPACER -->
                         <div class="col-sm-12 spacer" style="height:15px"></div>
 
-
-                        <label style="" class="col-sm-2"></label>
-                        <div class="col-sm-10 ">
-                            <button class="btn btn-primary" (click)="updateCurrentUserFirstnameLastname()"
-                                [disabled]="!HAS_EDIT_FIRSTNAME && !HAS_EDIT_LASTNAME">
-                                <!-- Aggiorna Profilo-->
-                               {{ "UserProfile.UpdateProfile" | translate }}
-                            </button>
-
-                            <!-- <button class="btn btn-success" (click)="goToChangePsw()" >
-                                {{ "UserProfile.ChangePsw" | translate }}
-                            </button> -->
+                        <div class="row">
+                            <label class="col-sm-2"></label>
+                            <div class="col-sm-10 ">
+                                <button class="btn btn-primary" (click)="updateCurrentUserFirstnameLastname()"
+                                    [disabled]="!HAS_EDIT_FIRSTNAME && !HAS_EDIT_LASTNAME">
+                                    {{ "UserProfile.UpdateProfile" | translate }}
+                                </button>
+                            </div>
                         </div>
-
-                        <!-- <form>
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <div class="form-group form-black label-floating is-empty">
-                                        <label class="control-label">Company (disabled)</label>
-                                        <input type="text" class="form-control" disabled>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group form-black label-floating is-empty">
-                                        <label class="control-label">Username</label>
-                                        <input type="text" class="form-control" >
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group form-black label-floating is-empty">
-                                        <label class="control-label">Email address</label>
-                                        <input type="email" class="form-control" >
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group form-black label-floating is-empty">
-                                        <label class="control-label">Fist Name</label>
-                                        <input type="text" class="form-control" >
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group form-black label-floating is-empty">
-                                        <label class="control-label">Last Name</label>
-                                        <input type="text" class="form-control" >
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group form-black label-floating is-empty">
-                                        <label class="control-label">Adress</label>
-                                        <input type="text" class="form-control" >
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group form-black label-floating is-empty">
-                                        <label class="control-label">City</label>
-                                        <input type="text" class="form-control" >
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group form-black label-floating is-empty">
-                                        <label class="control-label">Country</label>
-                                        <input type="text" class="form-control" >
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group form-black label-floating is-empty">
-                                        <label class="control-label">Postal Code</label>
-                                        <input type="text" class="form-control" >
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <label>About Me</label>
-                                        <div class="form-group form-black label-floating is-empty">
-                                            <label class="control-label"> Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo.</label>
-                                            <textarea class="form-control" rows="5"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button type="submit" class="btn btn-danger pull-right">Update Profile</button>
-                            <div class="clearfix"></div>
-                        </form> -->
                     </div>
                 </div>
             </div>
-            <!-- <div class="col-md-4">
-                <div class="card card-profile">
-                    <div class="card-avatar">
-                        <a href="#pablo">
-                            <img class="img" src="../assets/img/faces/marc.jpg" />
-                        </a>
-                    </div>
 
-                    <div class="content">
-                        <h6 class="category text-gray">CEO / Co-Founder</h6>
-                        <h4 class="card-title">Alec Thompson</h4>
-                        <p class="card-content">
-                            Don't be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
-                        </p>
-                        <a href="#pablo" class="btn btn-danger btn-round">Follow</a>
-                    </div>
-                </div>
-            </div> -->
         </div>
     </div>
 </div>

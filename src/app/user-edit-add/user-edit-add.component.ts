@@ -73,6 +73,10 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
 
   anErrorOccurredWhileUpdatingNoticationMsg: string;
   successfullyUpdatedNoticationMsg: string;
+
+  public_Key: string;
+  isVisibleAdvancedFeatureChatLimit: boolean
+
   constructor(
     private router: Router,
     private auth: AuthService,
@@ -114,6 +118,36 @@ export class UserEditAddComponent implements OnInit, OnDestroy {
     this.getLoggedUser();
     this.getUserRole();
     this.hasChangedAvailabilityStatusInSidebar();
+    this.getOSCODE();
+  }
+
+  getOSCODE() {
+
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    console.log('AppConfigService getAppConfig (PROJECT-EDIT-ADD) public_Key', this.public_Key);
+    let keys = this.public_Key.split("-");
+    console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) keys', keys)
+    keys.forEach(key => {
+
+
+      if (key.includes("PSA")) {
+        console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key', key);
+        let psa = key.split(":");
+        console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - pay key&value', psa);
+        if (psa[1] === "F") {
+          this.isVisibleAdvancedFeatureChatLimit = false;
+        } else {
+          this.isVisibleAdvancedFeatureChatLimit = true;
+        }
+      }
+    });
+
+
+    if (!this.public_Key.includes("PSA")) {
+      console.log('PUBLIC-KEY (PROJECT-EDIT-ADD) - key.includes("PSA")', this.public_Key.includes("PSA"));
+      this.isVisibleAdvancedFeatureChatLimit = false;
+    }
+
   }
 
   getLoggedUser() {
