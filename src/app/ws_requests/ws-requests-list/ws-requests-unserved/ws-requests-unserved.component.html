@@ -298,7 +298,7 @@
 
               <span *ngIf="request?.requester_is_verified === true" class="tooltipx">
               
-                <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                <svg [ngClass]="{'verified-icon-requester-undefined': !request?.lead?.fullname }" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                   xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6" width="17"
                   height="17" style="position: relative;left: -41px;top: 1px;" xml:space="preserve">
                   <style type="text/css">
@@ -332,8 +332,8 @@
               <span class="lead_data">
 
                 {{ request?.lead?.fullname }}
-                <span *ngIf="!request?.lead?.fullname">
-                  n.a.
+                <span *ngIf="!request?.lead?.fullname"  [ngClass]="{'requester_fullname_initial-undefined' : !request?.lead?.fullname}">
+                  n/a
                 </span>
 
                 <span class="requester-email"
@@ -342,7 +342,7 @@
                 </span>
                 <span class="requester-email" *ngIf="!request?.lead?.email"
                   [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
-                  n.a.
+                  <!-- n.a. -->
                 </span>
               </span>
             </span>

@@ -257,8 +257,21 @@ span .switch-agent-admin-requests-btn {
 }
 
 .requester_fullname-undefined {
-  padding: 4px 4px;
+  // padding: 4px 4px;
+  padding: 5px 4px;
+  top: -4px;
+  font-size: 11px;
 }
+
+.requester_fullname_initial-undefined {
+  position: relative;
+  top: -3px;
+}
+
+.verified-icon-requester-undefined {
+  top: -8px !important;
+}
+
 
 .requester-verified {
   position: relative;

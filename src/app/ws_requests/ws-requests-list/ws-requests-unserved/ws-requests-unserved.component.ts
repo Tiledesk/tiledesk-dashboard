@@ -12,7 +12,7 @@ import { takeUntil } from 'rxjs/operators'
 import { UsersService } from '../../../services/users.service';
 import { browserRefresh } from '../../../app.component';
 import { FaqKbService } from '../../../services/faq-kb.service';
-
+import { DepartmentService } from '../../../services/mongodb-department.service';
 @Component({
   selector: 'appdashboard-ws-requests-unserved',
   templateUrl: './ws-requests-unserved.component.html',
@@ -34,6 +34,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   timeout: any;
   public browserRefresh: boolean;
   displayNoRequestString = false;
+  depts: any;
 
   constructor(
     public botLocalDbService: BotLocalDbService,
@@ -43,7 +44,8 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     public appConfigService: AppConfigService,
     public wsRequestsService: WsRequestsService,
     public usersService: UsersService,
-    public faqKbService: FaqKbService
+    public faqKbService: FaqKbService,
+    private departmentService: DepartmentService
   ) {
 
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService);
@@ -52,6 +54,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   ngOnInit() {
     this.getStorageBucket();
     this.getCurrentProject();
+    this.getDepartments();
     // this.getUnservedRequestsLength();
     // this.getWsRequestsUnservedLength()
     console.log('% »»» WebSocketJs WF - onData (ws-requests-unserved) - wsRequestsUnserved', this.wsRequestsUnserved)
@@ -59,6 +62,19 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     // this.getCount();
     this.detectBrowserRefresh();
   }
+
+  getDepartments() {
+    this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
+      console.log('% »»» WebSocketJs WF +++++ ws-requests--- unserved GET DEPTS RESPONSE ', _departments);
+      this.depts = _departments;
+
+    }, error => {
+      console.log('% »»» WebSocketJs WF +++++ ws-requests--- unserved GET DEPTS - ERROR: ', error);
+    }, () => {
+      console.log('% »»» WebSocketJs WF +++++ ws-requests--- unserved GET DEPTS * COMPLETE *')
+    });
+  }
+
 
   ngAfterViewInit() {
     // const elemTable = <HTMLElement>document.querySelector('.unserved_requests_table tbody');
@@ -229,7 +245,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   }
 
   goToWsRequestsNoRealtimeUnserved() {
-    this.router.navigate(['project/' + this.projectId + '/wsrequests-all/' + '100' ]);
+    this.router.navigate(['project/' + this.projectId + '/wsrequests-all/' + '100']);
   }
 
   // ======================== ARCHIVE A REQUEST ========================
@@ -250,6 +266,21 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     // console.log('% »»» WebSocketJs WF WS-RL - trackByFn ', request );
     if (!request) return null
     return index; // unique id corresponding to the item
+  }
+
+  dept_replace(deptid) {
+    // console.log('% »»» WebSocketJs WF +++++ ws-requests--- unserved - dept_replace deptid', deptid)
+    // console.log('% »»» WebSocketJs WF +++++ ws-requests--- served - dept_replace depts', this.depts)
+    if (this.depts) {
+      const foundDept = this.depts.filter((obj: any) => {
+
+        return obj._id === deptid;
+
+      });
+      // console.log('% »»» WebSocketJs WF +++++ ws-requests--- unserved - dept_replace foundDept', foundDept)
+
+      return deptid = foundDept[0]['name'];
+    }
   }
 
 
