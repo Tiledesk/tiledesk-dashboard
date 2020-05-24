@@ -172,6 +172,7 @@
                           <ng-option [value]="''">{{ 'HistoryPage.AllAgents' | translate }}</ng-option>
                           <ng-option *ngFor="let agent of user_and_bot_array" [value]="agent._id">
                             {{ agent.firstname }} {{ agent.lastname }}
+                            
                           </ng-option>
                         </ng-select>
                       </div>
@@ -386,15 +387,95 @@
                   </td> -->
 
                   <!-- ===== REQUEST FIRST TEXT ===== -->
-                  <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
-                    <p class="column-td" [innerHTML]="getRequestText(request?.first_text)">
-                    </p>
+                  <td [ngClass]="{'padding_5' : request?.tags?.length > 0}"
+                    (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
+                    <p class="column-td" [innerHTML]="getRequestText(request?.first_text)"> </p>
+                    <!-- 
+                    // ---------------------------------------
+                    // Request Tag
+                    // --------------------------------------- -->
+                    <section style="max-width: 210px;" *ngIf="request?.tags?.length > 0">
+
+                      <div style="display: inline-block;" *ngFor="let tag of request?.tags;  let i=index">
+                        <div *ngIf="i<2">
+                          <div class="icon-container" style="display: inline-block;">
+                            <svg style="width: 10px; height: auto;" aria-hidden="true" focusable="false"
+                              data-prefix="fas" data-icon="tag" class="svg-inline--fa-tag-icon fa-tag fa-w-16"
+                              role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+
+                              <path [ngStyle]="{'fill':tag.color}" class="tag_icon_in_ws_msgs"
+                                d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
+                              </path>
+                            </svg>
+
+                            <span style="font-size: 11px; color: #7695a5; position: relative; top: -2px; left: -2px;">
+                              {{ tag.tag}}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- 
+                      // --------------------------------------------------------------------
+                      // Display more tags
+                      // -------------------------------------------------------------------- -->
+                      <div [id]="'more_tags_btn_for_request_' + request?.request_id" style="display: inline-block;"
+                        *ngIf="request?.tags?.length > 2">
+                        <a (click)="$event.stopPropagation(); displayMoreTags(request?.request_id)" style="font-size: 11px;
+               color: rgba(0, 0, 0, 0.54) !important;
+               position: relative;
+               top: -2px;">... {{request?.tags?.length - 2}} {{'more' | translate}}
+                        </a>
+                      </div>
+
+                      <!-- 
+                      // --------------------------------------------------------------------
+                      // Tag from 3 to ... 
+                      // -------------------------------------------------------------------- -->
+                      <div (click)="$event.stopPropagation(); displayLessTag(request?.request_id)"
+                        [id]="'more_tags_for_request_' + request?.request_id" style="display: none"
+                        *ngIf="request?.tags?.length > 2">
+                        <div style="display: inline-block;" *ngFor="let tag of request?.tags;  let i=index">
+                          <div *ngIf="i >= 2">
+                            <div class="icon-container" style="display: inline-block;">
+                              <svg style="width: 10px; height: auto;" aria-hidden="true" focusable="false"
+                                data-prefix="fas" data-icon="tag" class="svg-inline--fa-tag-icon fa-tag fa-w-16"
+                                role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+
+                                <path [ngStyle]="{'fill':tag.color}" class="tag_icon_in_ws_msgs"
+                                  d="M0 252.118V48C0 21.49 21.49 0 48 0h204.118a48 48 0 0 1 33.941 14.059l211.882 211.882c18.745 18.745 18.745 49.137 0 67.882L293.823 497.941c-18.745 18.745-49.137 18.745-67.882 0L14.059 286.059A48 48 0 0 1 0 252.118zM112 64c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48z">
+                                </path>
+                              </svg>
+
+                              <span style="font-size: 11px; color: #7695a5; position: relative; top: -2px; left: -2px;">
+                                {{ tag.tag}}
+                              </span>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- 
+                      // --------------------------------------------------------------------
+                      // Display more tags
+                      // -------------------------------------------------------------------- -->
+                      <!-- <div  [id]="'less_tags_btn_for_request_' + request?.request_id" style="display: none" *ngIf="request?.tags?.length > 2">
+                      <a  (click)="$event.stopPropagation(); displayLessTag(request?.request_id)" style="font-size: 11px;
+                      color: rgba(0, 0, 0, 0.54) !important;
+                      position: relative;
+                      top: -2px;"> display less
+                      </a>
+                    </div> -->
+                    </section>
+
+
+
                   </td>
 
                   <!-- ===== REQUESTER FULL NAME ===== -->
                   <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer;white-space: nowrap;
-                  width: 1%;" rel="tooltip"
-                    title="{{ request?.requester_id }}">
+                  width: 1%;" rel="tooltip" title="{{ request?.requester_id }}">
 
                     <span class="requester-avatar-wrapper">
                       <span class="requester-avatar"
@@ -403,7 +484,7 @@
                         <span style="color: #ffffff"> {{ request?.requester_fullname_initial }} </span>
                       </span>
                       <span *ngIf="request?.requester_is_verified === true" class="tooltipx">
-                        <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                        <svg [ngClass]="{'verified-icon-requester-undefined': !request?.lead?.fullname }" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                           xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6" width="17"
                           height="17" style="position: relative;left: -41px;top: 1px;" xml:space="preserve">
                           <style type="text/css">
@@ -436,8 +517,8 @@
 
                       <span class="lead_data">
                         {{ request?.lead?.fullname }}
-                        <span *ngIf="!request?.lead?.fullname">
-                          n.a.
+                        <span *ngIf="!request?.lead?.fullname" [ngClass]="{'requester_fullname_initial-undefined' : !request?.lead?.fullname}">
+                          n/a
                         </span>
 
                         <span class="requester-email"
@@ -446,7 +527,7 @@
                         </span>
                         <span class="requester-email" *ngIf="!request?.lead?.email"
                           [ngClass]="{'requester-verified-email' : request?.requester_is_verified === true}">
-                          n.a.
+                          <!-- n.a. -->
                         </span>
                       </span>
 

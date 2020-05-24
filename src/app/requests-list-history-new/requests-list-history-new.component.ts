@@ -186,6 +186,41 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
     }
   }
 
+  // --------------------------------------------------
+  // @ Tags - display more tags
+  // --------------------------------------------------
+  displayMoreTags(requestid) {
+    // console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - id request ", requestid);
+    const hiddenTagsElem = <HTMLElement>document.querySelector(`#more_tags_for_request_${requestid}`);
+    console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - hiddenTagsElem ", hiddenTagsElem);
+    hiddenTagsElem.style.display = "inline-block";
+
+    const moreTagsBtn = <HTMLElement>document.querySelector(`#more_tags_btn_for_request_${requestid}`);
+    console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - moreTagsBtn ", moreTagsBtn);
+    moreTagsBtn.style.display = "none";
+
+    // const lessTagsBtn = <HTMLElement>document.querySelector(`#less_tags_btn_for_request_${requestid}`);
+    // console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - lessTagsBtn ", lessTagsBtn);
+    // lessTagsBtn.style.display = "inline-block";
+  }
+
+  // --------------------------------------------------
+  // @ Tags - display ledd tags
+  // --------------------------------------------------
+  displayLessTag(requestid) {
+    const hiddenTagsElem = <HTMLElement>document.querySelector(`#more_tags_for_request_${requestid}`);
+    console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - hiddenTagsElem ", hiddenTagsElem);
+    hiddenTagsElem.style.display = "none";
+
+    const moreTagsBtn = <HTMLElement>document.querySelector(`#more_tags_btn_for_request_${requestid}`);
+    console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - moreTagsBtn ", moreTagsBtn);
+    moreTagsBtn.style.display = "inline-block";
+
+    // const lessTagsBtn = <HTMLElement>document.querySelector(`#less_tags_btn_for_request_${requestid}`);
+    // console.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - lessTagsBtn ", lessTagsBtn);
+    // lessTagsBtn.style.display = "none";
+  }
+
   openModalSubsExpiredOrGoToPricing() {
     if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
       this.notify.displaySubscripionHasExpiredModal(true, this.prjct_profile_name, this.subscription_end_date);
@@ -223,7 +258,7 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
 
       if (bots) {
         bots.forEach(bot => {
-          this.user_and_bot_array.push({ '_id': 'bot_' + bot._id, 'firstname': bot.name + ' (bot)' });
+          this.user_and_bot_array.push({ '_id': 'bot_' + bot._id, 'firstname': bot.name + ' (bot)', 'descrip': bot.description });
         });
       }
       console.log('!!! NEW REQUESTS HISTORY  - BOTS & USERS ARRAY ', this.user_and_bot_array);
@@ -581,6 +616,8 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
         this.totalPagesNo_roundToUp = Math.ceil(totalPagesNo);
         console.log('!!! NEW REQUESTS HISTORY - TOTAL PAGES No ROUND TO UP ', this.totalPagesNo_roundToUp);
 
+
+
         // const firstIndex = requestsPerPage * this.pageNo;
         // console.log('!!! NEW REQUESTS HISTORY - firstIndex ', firstIndex);
 
@@ -617,8 +654,8 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
               newFillColour = getColorBck(request.lead.fullname)
             } else {
 
-              newInitials = 'n.a.';
-              newFillColour = '#eeeeee';
+              newInitials = 'N/A';
+              newFillColour = 'rgb(98, 100, 167)';
             }
 
             request.requester_fullname_initial = newInitials;
@@ -703,9 +740,12 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
       const user = this.usersLocalDbService.getMemberFromStorage(member_id);
       if (user) {
         // console.log('user ', user)
-        const lastnameInizial = user['lastname'].charAt(0);
-        // '- ' +
-        return member_id = user['firstname'] + ' ' + lastnameInizial + '.'
+
+        if (user['lastname']) {
+          const lastnameInizial = user['lastname'].charAt(0);
+          // '- ' +
+          return member_id = user['firstname'] + ' ' + lastnameInizial + '.'
+        }
       } else {
         // '- ' +
         return member_id
@@ -731,7 +771,7 @@ export class RequestsListHistoryNewComponent implements OnInit, OnDestroy {
       this.router.navigate(['project/' + this.projectId + '/bots', bot_id, botType]);
 
     } else {
-      this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
+      // this.router.navigate(['project/' + this.projectId + '/member/' + member_id]);
 
       const filteredProjectUser = this.projectUsersArray.filter((obj: any) => {
         return obj.id_user._id === member_id;
