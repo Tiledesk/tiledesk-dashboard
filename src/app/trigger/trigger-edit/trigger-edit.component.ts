@@ -2,7 +2,7 @@ import { ContactsService } from './../../services/contacts.service';
 import { BasetriggerComponent } from './../basetrigger/basetrigger.component';
 import { Trigger } from './../../models/trigger-model';
 import { NotifyService } from 'app/core/notify.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 // USED FOR go back last page
@@ -23,7 +23,6 @@ import { FaqKbService } from '../../services/faq-kb.service';
 export class TriggerEditComponent extends BasetriggerComponent implements OnInit {
 
   showSpinner = true;
-
   triggeriD: string;
 
   // condition: any;           --> get from BaseTriggerComponent
@@ -51,6 +50,15 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
   submitted = false;
 
   actionsGROUP: any;
+  selectedConditions: any;
+  loadingActions: boolean;
+
+  IS_PRE_BUILT_TRIGGER = false;
+  PRE_BUILT_TRIGGER_CODE: string;
+  resetSettingModal = 'none'
+  HAS_CLICKED_RESET_SETTINGS: boolean;
+  RESET_SETTINGS_HAS_ERROR = false;
+  RESET_SETTINGS_COMPLETED = false;
   // messageCondition: string;    --> get from BaseTriggerComponent
   // messageAction: string;       --> get from BaseTriggerComponent
   // messageServerError: string;  --> get from BaseTriggerComponent
@@ -70,7 +78,8 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
   }
 
   ngOnInit() {
-
+    super.ngOnInit()
+    this.selectedConditions = "request.statusRequestStatus"
     this.triggerForm = this.formBuilder.group({
       _id: '',
       name: ['', Validators.required],
@@ -89,8 +98,20 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
     });
 
     this.triggeriD = this.route.snapshot.params['triggerId'];
+
+    // -------------------------------------------------------------------
+    // Get trigger by id
+    // -------------------------------------------------------------------
     this.triggerService.getTriggerById(this.triggeriD).subscribe((triggerDetail: any) => {
       console.log('TRIGGER (EDIT) ->>>>> GET TRIGGER BY ID RES ', triggerDetail);
+
+      // -------------------------------------------------------------------
+      // If exist the property 'code' display the button 'reset to defaults'
+      // -------------------------------------------------------------------
+      if (triggerDetail.code) {
+        this.IS_PRE_BUILT_TRIGGER = true;
+        this.PRE_BUILT_TRIGGER_CODE = triggerDetail.code;
+      }
 
       this.setFormValue(triggerDetail)
 
@@ -105,6 +126,39 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
 
     this.temp_act = this.action
     console.log('form', this.triggerForm.value)
+
+  }
+
+  openModalConfirmResetSettings() {
+    this.HAS_CLICKED_RESET_SETTINGS = null;
+    this.RESET_SETTINGS_COMPLETED = false;
+    this.resetSettingModal = 'block'
+  }
+
+  closeResetSettingsModal() {
+    this.resetSettingModal = 'none'
+  }
+
+  resetSettings() {
+    // this.resetSettingModal = 'none'
+    this.HAS_CLICKED_RESET_SETTINGS = true;
+
+    this.triggerService.resetPreBuiltTriggerToDefault(this.PRE_BUILT_TRIGGER_CODE).subscribe((defaulttrigger: any) => {
+      console.log('TRIGGER (EDIT) ->>>>> RESET TRIGGER RES ', defaulttrigger);
+
+      this.setFormValue(defaulttrigger);
+
+    }, (error) => {
+      console.log('TRIGGER (EDIT) - RESET TRIGGER  - ERROR ', error);
+      this.RESET_SETTINGS_HAS_ERROR = true;
+      this.RESET_SETTINGS_COMPLETED = true;
+      
+    }, () => {
+      console.log('TRIGGER (EDIT) -  RESET TRIGGER  - COMPLETED ');
+      this.RESET_SETTINGS_HAS_ERROR = false;
+      this.RESET_SETTINGS_COMPLETED = true;
+     
+    });
 
   }
 
@@ -133,6 +187,9 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
 
   setFormValue(trigger: Trigger): void {
     console.log('TRIGGER (EDIT) - setFormValue TRIGGER_detail', trigger);
+
+
+
 
     // check whitch array of conditions exist
     if (Array.isArray(trigger.conditions.all) && trigger.conditions.all.length) {
@@ -181,18 +238,26 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
           type: this.condition.filter(b => b.triggerType === trigger.trigger.key).filter(c => c.key === cond.key)[0].type
         }))
 
+      console.log('TRIGGER (EDIT) - conditionsGROUP', conditionsGROUP)
 
 
-      console.log('All condition array (condition.filter)', this.condition.filter(b => b.triggerType === trigger.trigger.key))
-      console.log('Found condition', this.condition.filter(a => a.triggerType === trigger.trigger.key).filter(b => b.key === trigger.conditions[this.conditionType.split('.')[1]][0].key));
-      const conditions_array = this.formBuilder.array(conditionsGROUP)
+
+      console.log('TRIGGER (EDIT) All condition array (condition.filter)', this.condition.filter(b => b.triggerType === trigger.trigger.key))
+      console.log('TRIGGER (EDIT) Found condition', this.condition.filter(a => a.triggerType === trigger.trigger.key).filter(b => b.key === trigger.conditions[this.conditionType.split('.')[1]][0].key));
+
+      const conditions_array = this.formBuilder.array(conditionsGROUP);
+
       const cond_triggerFormNewArray = this.triggerForm.get('conditions') as FormGroup
+
       cond_triggerFormNewArray.setControl(this.conditionType.split('.')[1], conditions_array)
+      console.log('TRIGGER (EDIT) - cond_triggerFormNewArray', cond_triggerFormNewArray)
+
     } else {
       this.createCondition()
     }
 
-
+    console.log('TRIGGER (EDIT) - setFormValue triggerForm ', this.triggerForm);
+    console.log('TRIGGER (EDIT) ->>>>> setFormValue (EDIT) - Conditions: ', trigger.conditions);
     console.log('TRIGGER (EDIT) ->>>>> setFormValue (EDIT) - Actions: ', trigger.actions);
 
     // (same as conditions) After mapping trigger.condition to custom formBuilder group,
@@ -229,6 +294,7 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
     // - request.participants.leave (i.e. 'Participant leave request')
     // - request.department.route
     // - request.status.update
+    // - request.department.bot.launch
     // --------------------------------------------------------------------------------------------------------------------------------------------
     this.actionsGROUP.forEach(actions => {
       console.log('TRIGGER (EDIT) ->>>>> actionsGROUP actions value : ', actions.value);
@@ -241,7 +307,9 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
         (actions.value.key === 'request.participants.join') ||
         (actions.value.key === 'request.participants.leave') ||
         (actions.value.key === 'request.department.route') ||
-        (actions.value.key === 'request.status.update')
+        (actions.value.key === 'request.status.update') ||
+        (actions.value.key === 'request.tags.add') ||
+        (actions.value.key === 'request.department.bot.launch')
       ) {
         for (const key in parameters.controls) {
           console.log('TRIGGER ->>>>> onSelectedAction - parameters.controls key: ', key);
@@ -253,7 +321,9 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
     console.log('TRIGGER (EDIT) ->>>>> setFormValue  - actionsGROUP: ', this.actionsGROUP);
     const actions_array = this.formBuilder.array(this.actionsGROUP)
     this.triggerForm.setControl('actions', actions_array)
+
     this.temp_cond = this.condition.filter(b => b.triggerType === trigger.trigger.key);
+    console.log('TRIGGER (EDIT) ->>>>> setFormValue  - temp_cond: ', this.temp_cond);
   }
 
   doFullNameValue(act) {
@@ -283,6 +353,26 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
         }
       }
 
+
+      // --------------------------------------------------
+      // Parameters has the key sender instead of fullname
+      // --------------------------------------------------
+      if (act.parameters.sender) {
+        console.log('TRIGGER (EDIT) action had parameter sender:', act.parameters.sender)
+
+
+        if (act.parameters['sender'].indexOf('bot_') === -1) {
+          return fullNameValue = act.parameters['sender']
+        }
+
+        // if the value of member has the prefix 'bot_'
+        if (act.parameters['sender'].indexOf('bot_') !== -1) {
+          return fullNameValue = act.parameters['sender'].slice(4)
+        }
+
+
+      }
+
       // -------------------------------------------------------
       // Parameters has the key departmentid instead of fullname 
       // -------------------------------------------------------
@@ -296,6 +386,14 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
       if (act.parameters.status) {
         return fullNameValue = act.parameters['status']
       }
+
+
+      // -------------------------------------------------------
+      // Parameters has the key tag instead of fullname 
+      // -------------------------------------------------------
+      if (act.parameters.tag) {
+        return fullNameValue = act.parameters['tag']
+      }
     }
   }
 
@@ -304,12 +402,14 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
       fact: 'fact',
       path: [undefined, Validators.required],
       operator: [undefined, Validators.required],
-      value: [undefined, Validators.required],
+      value: [undefined, Validators.required], //
       type: undefined,
       key: undefined,
       placeholder: undefined
     })
   }
+
+
 
   createAction(): FormGroup {
     return this.formBuilder.group({
@@ -408,33 +508,96 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
     } else {
       this.temp_cond = this.condition.filter(b => b.triggerType === 'message.received');
     }
+
+    // ------------------------------------------------------------------------------------
+    // if user select NEW EVENT in run trigger the only action available is request.create
+    // ------------------------------------------------------------------------------------
+    if (value === 'event.emit') {
+
+      this.actions = this.triggerForm.get('actions') as FormArray;
+      console.log('TRIGGER (ADD) - onTriggerKey  this.actions', this.actions);
+
+      if (this.actions.length !== null) {
+        for (let i = 1; i < this.actions.length; i++) {
+          this.actions.removeAt(i);
+        }
+        this.actions.reset();
+      } else {
+        this.actions.reset();
+      }
+
+      this.loadingActions = true;
+
+      this.temp_act = this.action.filter(a => a.key === 'request.create');
+
+      setTimeout(() => {
+        this.loadingActions = false;
+      }, 500);
+    } else {
+      this.temp_act = this.action
+    }
+
+
     console.log('temp_cond', this.temp_cond);
   }
 
 
   onSelectedCondition($event: any, condition: FormGroup) {
-    this.submitted = false; // allow to reset errorMsg on screen
-    console.log('VALUE', $event);
 
-    console.log('condition before', condition)
+    // SEE COMMENT IN onSelectedAction in trigger.add.comp
+    if (
+      ($event.key === 'request.lead.attributes.departmentId') ||
+      ($event.key === "request.department.name") ||
+      ($event.key === 'message.attributes.departmentId')
+    ) {
+      this.getDepartments();
+    }
+
+    // x risolvere bug Expression has changed after it was checked. Previous value: 'ng-valid: false'. Current value: 'ng-valid: true'.
+    // che si verifica quando ad ngModel gli passo l'id del default department
+    // ho tolto a value required in  createCondition() e lo metto a tutti gli altri
+
+    if ($event.key !== 'request.lead.attributes.departmentId' || $event.key !== "request.department.name") {
+      // resolve bug Expression has changed after it was checked. Previous value: 'ng-valid: false'. Current value: 'ng-valid: true'.
+      const value = condition.get('value')
+      console.log('TRIGGER (EDIT) ->>>>> conditionsGROUP actions parameters : ', value);
+      Validators.required(value)
+      value.updateValueAndValidity();
+    }
+
+    this.submitted = false; // allow to reset errorMsg on screen
+    console.log('TRIGGER (EDIT) onSelectedCondition VALUE ($event) ', $event);
+
+    console.log('TRIGGER (EDIT) onSelectedCondition - condition before', condition)
+
+
+
+
     // set current value of selectedCondition filtering condition array by unique key : key
     // set conditionFormArray by using selectedCondition value:
     // - type , operator, key, placeholder
-    const selectedCondition = this.condition.filter(b => b.key === $event.key)[0]
+    const selectedCondition = this.condition.filter(b => b.key === $event.key)[0];
+    console.log('TRIGGER (EDIT) onSelectedCondition selectedCondition', selectedCondition)
     condition.patchValue({
+      'path': selectedCondition.id, // nk added
       'type': selectedCondition.type,
       'operator': this.options[selectedCondition.type + 'Opt'][0].id,
       'value': undefined,
       'key': selectedCondition.key,
       'placeholder': selectedCondition.placeholder
     });
-    console.log('condition after', condition);
+    console.log('TRIGGER (EDIT) onSelectedCondition - condition after', condition);
 
   }
 
   onSelectedAction(event, action) {
     console.log('TRIGGER (EDIT) ->>>>> VALUE', event)
     console.log('TRIGGER (EDIT) ->>>>> action before', action);
+
+    // SEE COMMENT IN onSelectedAction in trigger.add.comp
+    if ((event === 'request.create') || (event === 'request.department.route')) {
+      this.getDepartments();
+    }
 
     // nk 
     // --------------------------------------------------------------------------------------------------------------------------------------------
@@ -446,6 +609,7 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
     // - request.participants.leave (i.e. 'Participant leave request')
     // - request.department.route
     // - request.status.update
+    // - request.department.bot.launch
     // --------------------------------------------------------------------------------------------------------------------------------------------
     if (
       (event === 'request.department.route.self') ||
@@ -454,7 +618,9 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
       (event === 'request.participants.join') ||
       (event === 'request.participants.leave') ||
       (event === 'request.department.route') ||
-      (event === 'request.status.update')
+      (event === 'request.status.update') ||
+      (event === 'request.tags.add') ||
+      (event === 'request.department.bot.launch')
     ) {
       const parameters = action.get('parameters');
       console.log('TRIGGER ->>>>> onSelectedAction (EDIT) - ACTIONS PARAMETER: ', parameters);
@@ -530,17 +696,21 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
       // - request.department.route.self (i.e. 'Reassign to the same department')
       // - request.close (i.e. 'Close request') 
       // - request.reopen (i.e. 'Reopen request') 
+      // - request.department.bot.launch (i.e. 'Launch department bot') 
       // --------------------------------------------------------------------------------------------------------------------------------------------
-      if ((this.triggerForm.value.actions[w].key === "request.department.route.self") ||
+      if (
+        (this.triggerForm.value.actions[w].key === "request.department.route.self") ||
         (this.triggerForm.value.actions[w].key === 'request.close') ||
-        (this.triggerForm.value.actions[w].key === 'request.reopen')) {
+        (this.triggerForm.value.actions[w].key === 'request.reopen') ||
+        (this.triggerForm.value.actions[w].key === 'request.department.bot.launch')
+      ) {
         delete this.triggerForm.value.actions[w].parameters
       }
 
 
       // nk 
       // --------------------------------------------------------------------------------------------------------------------------------------------
-      // Rename the parameters key 'fullName' in 'member' and add the string 'bot_' if the select agent is a bot.
+      // Rename the parameters key 'fullName' in 'member', delete parameter control 'text' and add the string 'bot_' if the select agent is a bot
       // Actions key for which it is made:
       // - request.participants.join (i.e. 'Participant join request')
       // - request.participants.leave (i.e. 'Participant leave request')
@@ -583,15 +753,54 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
 
       // nk 
       // --------------------------------------------------------------------------------------------------------------------------------------------
+      // Rename the parameters key 'fullName' in 'sender', and add the string 'bot_' if the select agent is a bot
+      // Actions key for which it is made:
+      // - 'message.send' (i.e. 'Send message to visitor')
+      // --------------------------------------------------------------------------------------------------------------------------------------------
+      if (
+        (this.triggerForm.value.actions[w].key === 'message.send')
+      ) {
+        console.log('TRIGGER ->>>>> onSubmit action key is: ', this.triggerForm.value.actions[w].key);
+
+        // ----------------------------------------------------------------
+        // search the id of the selected agent (fullnameValue) in 
+        // the bots array and, if it is found, add the string 'bot_' to it
+        // ----------------------------------------------------------------
+        const fullnameValue = this.triggerForm.value.actions[w].parameters.fullName
+        console.log('TRIGGER ->>>>> onSubmit parameters fullname value ', fullnameValue);
+
+        let foundBot = this.bots.find(bot => bot._id === fullnameValue);
+        console.log('TRIGGER ->>>>> onSubmit foundBot ', foundBot);
+
+        if (foundBot !== undefined) {
+          this.triggerForm.value.actions[w].parameters.fullName = 'bot_' + fullnameValue
+        }
+
+        console.log('TRIGGER ->>>>> onSubmit parameters: ', this.triggerForm.value.actions[w].parameters);
+        console.log('TRIGGER ->>>>> onSubmit bots: ', this.bots);
+
+        // -------------------------------------------------------
+        // Rename the key fullName in member
+        // -------------------------------------------------------
+        if (this.triggerForm.value.actions[w].parameters.hasOwnProperty("fullName")) {
+          this.renameKey(this.triggerForm.value.actions[w].parameters, 'fullName', 'sender');
+        }
+      }
+
+      // nk 
+      // --------------------------------------------------------------------------------------------------------------------------------------------
       // Rename the parameters key 'fullName' in 'departmentid' if the Actions key is 
       // - request.department.route (i.e. 'Assign to department')
       // Rename the parameters key 'fullName' in 'status' if the Actions key is  
       // - request.status.update (i.e. 'Change request status')
+      // Rename the parameters key 'fullName' in 'tag' and delete parameter control 'text' if the Actions key is  
+      // - request.tags.add (i.e. 'Assign Label')
       // --------------------------------------------------------------------------------------------------------------------------------------------
 
       if (
         (this.triggerForm.value.actions[w].key === 'request.department.route') ||
-        (this.triggerForm.value.actions[w].key === 'request.status.update')
+        (this.triggerForm.value.actions[w].key === 'request.status.update') ||
+        (this.triggerForm.value.actions[w].key === 'request.tags.add')
       ) {
         console.log('TRIGGER ->>>>> onSubmit action key is: ', this.triggerForm.value.actions[w].key);
 
@@ -603,16 +812,29 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
         console.log('TRIGGER ->>>>> onSubmit parameters: ', this.triggerForm.value.actions[w].parameters);
 
         // -------------------------------------------------------
-        // Rename the key fullName in departmentid
+        // Rename 
         // -------------------------------------------------------
         if (this.triggerForm.value.actions[w].parameters.hasOwnProperty("fullName")) {
 
+          // -------------------------------------------------------
+          // in departmentid if key is request.department.route
+          // -------------------------------------------------------
           if (this.triggerForm.value.actions[w].key === 'request.department.route') {
             this.renameKey(this.triggerForm.value.actions[w].parameters, 'fullName', 'departmentid');
           }
 
+          // -------------------------------------------------------
+          // in status if key is request.status.update
+          // -------------------------------------------------------
           if (this.triggerForm.value.actions[w].key === 'request.status.update') {
             this.renameKey(this.triggerForm.value.actions[w].parameters, 'fullName', 'status');
+          }
+
+          // -------------------------------------------------------
+          // in tag if key is request.tags.add
+          // -------------------------------------------------------
+          if (this.triggerForm.value.actions[w].key === 'request.tags.add') {
+            this.renameKey(this.triggerForm.value.actions[w].parameters, 'fullName', 'tag');
           }
         }
       }

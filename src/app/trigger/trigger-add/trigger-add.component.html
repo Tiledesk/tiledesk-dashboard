@@ -5,18 +5,18 @@
   {{ "Trigger.AddTrigger" | translate }}
 </div>
 
-<div class="main-content" style="padding-top:0px">
+<div class="main-content" style="padding-top:0px; padding-left: 0px;padding-right: 0px;">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-12">
-        <div class="card card-padding card-custom-trigger">
-          <div class="card-content" style="">
+      <div class="col-md-12" style="padding-left: 10px;padding-right: 10px;">
+        <div class="card card-padding card-custom-trigger" style="margin-top: 5px !important;">
+          <div class="card-content">
 
             <loading-spinner *ngIf="showSpinner"></loading-spinner>
             <div class="row" *ngIf="!showSpinner">
               <form (ngSubmit)="onSubmit()" [formGroup]="triggerForm">
 
-                <div class=" form-group row" style="border-bottom: solid 1px #ddd">
+                <div class="form-group row" style="border-bottom: solid 1px #ddd">
 
                   <label class="col-sm-2 custom-label" style="white-space: nowrap">
                     {{ "Trigger.Add_Edit.TriggerStatus" | translate }}
@@ -32,11 +32,13 @@
                     </div>
                     <!-- <button class='btn-with-border-effect ' type='button' (click)="onEnableDisable(true)" [ngClass]="{'li-active' : triggerForm.value.enabled === true}">{{ "Trigger.Add_Edit.TriggerENABLED" | translate }}</button>
                         <button class='btn-with-border-effect ' type='button' (click)="onEnableDisable(false)" [ngClass]="{'li-active' : triggerForm.value.enabled === false}">{{ "Trigger.Add_Edit.TriggerDISABLED" | translate }}</button> -->
-                        <!-- font-style: oblique -->
-                      <div class="row" style="margin-left: 0px; font-size: 12px;color: #7695a5; line-height: 1.2em;font-weight: 100;">
+                    <!-- font-style: oblique -->
+                    <div class="row"
+                      style="margin-left: 0px; font-size: 12px;color: #7695a5; line-height: 1.2em;font-weight: 100;">
                       <!-- {{ "Trigger.Add_Edit.SetTheStatusOfTriggerByDefaultIsSetToENABLED" | translate }} -->
-                      <span> {{ "Trigger.Add_Edit.SetTheStatusOfTrigger" | translate }} </span> 
-                      <span style="display: block;"> {{ "Trigger.Add_Edit.ByDefaultIsSetToENABLED" | translate }} </span>
+                      <span> {{ "Trigger.Add_Edit.SetTheStatusOfTrigger" | translate }} </span>
+                      <span style="display: block;"> {{ "Trigger.Add_Edit.ByDefaultIsSetToENABLED" | translate }}
+                      </span>
                     </div>
                   </div>
 
@@ -47,7 +49,7 @@
                   <div class="form-group row" style="margin-top: 16px;">
                     <label class="col-sm-2 custom-label">{{ "Trigger.Add_Edit.TriggerName" | translate }}</label>
                     <div class="col-sm-4">
-                      <input type="text" class="custom-input" style="width: 100%" formControlName="name" />
+                      <input [ngClass]="{'form-submitted': submitted}" type="text" class="custom-input" style="width: 100%" formControlName="name" />
                       <div *ngIf="form.name.invalid && submitted" class="row is-invalid">
                         {{ "Trigger.Add_Edit.TriggerRequiredFieldError" | translate }}</div>
                     </div>
@@ -93,13 +95,14 @@
                   </div>
 
                   <div class="form-group row">
-                    <label class="col-sm-2 custom-label" >
+                    <label class="col-sm-2 custom-label"  style="white-space: nowrap">
                       {{ "Trigger.Add_Edit.CheckConditions" | translate }}
                     </label>
                     <div class="col-sm-4">
                       <ng-select formControlName="conditionALL_ANY"
                         placeholder='{{ "Trigger.Add_Edit.CheckConditions_dropdownElements.Placeholder" | translate }}'
-                        (change)="conditionTriggerValue($event)" [searchable]="false" [clearable]="false" style="width: 100%;">
+                        (change)="conditionTriggerValue($event)" [searchable]="false" [clearable]="false"
+                        style="width: 100%;">
                         <ng-option [value]="'all'">
                           {{ "Trigger.Add_Edit.CheckConditions_dropdownElements.CheckAllConditions" | translate }}
                         </ng-option>
@@ -119,9 +122,9 @@
 
                           <div class="form-group row condition">
                             <!-- -----first condition------- -->
-                          
+
                             <div class="col-sm-3">
-                              <ng-select class="custom-select" (change)="onSelectedCondition($event, condition)"
+                              <ng-select  class="custom-select" (change)="onSelectedCondition($event, condition)"
                                 formControlName="path" [items]="temp_cond" bindLabel="label_key" bindValue="id"
                                 groupBy="groupId"
                                 placeholder='{{ "Trigger.Add_Edit.ConditionPlaceholder" | translate }}'
@@ -174,12 +177,16 @@
                             </div>
 
                             <!-- -----third condition------- -->
-                            <div class="col-sm-3" *ngIf="condition.value.type==='string' || condition.value.type==='int'" style="padding-right: 3px;">
-                              <input class="custom-input" formControlName="value" 
-                              [type]="condition.value.type === 'string' ? 'text' : 'number'" [min]="condition.value.type === 'string' ? '' : '1'">
+                            <div class="col-sm-3"
+                              *ngIf="condition.value.type==='string' || condition.value.type==='int'"
+                              style="padding-right: 3px;">
+                              <input class="custom-input" formControlName="value"
+                                [type]="condition.value.type === 'string' ? 'text' : 'number'"
+                                [min]="condition.value.type === 'string' ? '' : '1'">
                             </div>
                             <div class="col-sm-3"
-                              *ngIf="condition.value.type==='boolean' || condition.value.type==='keyExist'" style="padding-right: 3px;">
+                              *ngIf="condition.value.type==='boolean' || condition.value.type==='keyExist'"
+                              style="padding-right: 3px;">
                               <ng-select class="custom-select" formControlName="value"
                                 [placeholder]="condition.value.placeholder" [searchable]="false" [clearable]="false">
                                 <ng-option *ngFor="let oper of operator[condition.value.path]" [value]="oper.id">
@@ -265,20 +272,49 @@
 
 
                             <!-- -----third condition------- -->
-                            <div class="col-sm-3" *ngIf="condition.value.type==='string' || condition.value.type==='int'" style="padding-right: 3px;">
-                              <!-- type="text" -->
-                              <input class="custom-input" formControlName="value" 
-                               [type]="condition.value.type === 'string' ? 'text' : 'number'" [min]="condition.value.type === 'string' ? '' : '1'">
-                            </div>
-                            
                             <div class="col-sm-3"
-                              *ngIf="condition.value.type==='boolean' || condition.value.type==='keyExist'" style="padding-right: 3px;">
-                              <ng-select class="custom-select" formControlName="value"
-                                [placeholder]="condition.value.placeholder" [searchable]="false" [clearable]="false">
-                                <ng-option *ngFor="let oper of operator[condition.value.path]" [value]="oper.id">
-                                  {{oper.label_key}}</ng-option>
-                              </ng-select>
+                              *ngIf="condition.value.type==='string' || condition.value.type==='int'"
+                              style="padding-right: 3px;">
+                              <!-- type="text" -->
+                              <input class="custom-input" formControlName="value"
+                                [type]="condition.value.type === 'string' ? 'text' : 'number'"
+                                [min]="condition.value.type === 'string' ? '' : '1'">
                             </div>
+
+                            <!-- // condition with a department selection (the Default Department is selected by default) -->
+                            <div *ngIf="condition.value.key === 'request.lead.attributes.departmentId' || 
+                                        condition.value.key === 'request.department.name' ||
+                                        condition.value.key === 'message.attributes.departmentId'">
+
+                              <div class="col-sm-3"
+                                *ngIf="condition.value.type==='boolean' || condition.value.type==='keyExist'"
+                                style="padding-right: 3px;">
+                                <ng-select class="custom-select" [(ngModel)]="default_dept_id" formControlName="value"
+                                  [placeholder]="condition.value.placeholder" [searchable]="false" [clearable]="false">
+                                  <ng-option *ngFor="let oper of operator[condition.value.path]" [value]="oper.id">
+                                    {{oper.label_key}}</ng-option>
+                                </ng-select>
+                              </div>
+
+                            </div>
+
+                            <!-- // condition with other selection 'message.status' (VisitorServed) - request.departmentHasBot - 
+                              request.isOpen (OfficesAreOpen) - request.statusVisitorServed - 'request.language' (VisitorCountryRegion) -->
+                            <div *ngIf="condition.value.key !== 'request.lead.attributes.departmentId' && 
+                                        condition.value.key !== 'request.department.name' &&
+                                        condition.value.key !== 'message.attributes.departmentId'">
+                              <div class="col-sm-3"
+                                *ngIf="condition.value.type==='boolean' || condition.value.type==='keyExist'"
+                                style="padding-right: 3px;">
+                                <ng-select class="custom-select" formControlName="value"
+                                  [placeholder]="condition.value.placeholder" [searchable]="false" [clearable]="false">
+                                  <ng-option *ngFor="let oper of operator[condition.value.path]" [value]="oper.id">
+                                    {{oper.label_key}}</ng-option>
+                                </ng-select>
+                              </div>
+                            </div>
+
+
 
                             <div class="add-remove-icons-wrap" style="">
                               <span class="icon" style="padding-right:8px; cursor: pointer;" (click)=removeCondition(i)>
@@ -304,12 +340,13 @@
                 <!-- >>>>>>>>>>>>-------section AZIONI TRIGGER START------<<<<<<<<< -->
                 <div>
                   <div class="form-group row condition" style="background-color: #fff">
-                    <label class="col-sm-12 custom-label" style="text-align: left!important;height: 17px;white-space: nowrap;padding-left: 0px!important;">
+                    <label class="col-sm-12 custom-label"
+                      style="text-align: left!important;height: 17px;white-space: nowrap;padding-left: 0px!important;">
                       {{ "Trigger.Add_Edit.PerformFollowingActions" | translate }}
                     </label>
                   </div>
 
-                
+
                   <!-- 
                   // ---------------------------------------------------------------
                   // ARRAY !!!ACTIONS!!! START
@@ -320,74 +357,112 @@
                       <div [formGroupName]="j">
 
                         <div class="form-group row condition">
-                         
+
                           <!-- 
                           // ---------------------------
                           // First condition
                           // --------------------------- -->
                           <div class="col-sm-3">
-                            <ng-select class="custom-select" formControlName="key"
+                            <ng-select #myselect class="custom-select" formControlName="key"
                               (change)="onSelectedAction($event, action)"
                               placeholder='{{ "Trigger.Add_Edit.ActionPlaceholder" | translate }}' [searchable]="false"
-                              [clearable]="false"> 
+                              [clearable]="false" [loading]=loadingActions loadingText='Loading...' #myselect>
+
                               <ng-option *ngFor="let act of temp_act" [value]="act.key">{{act.label_key}}</ng-option>
                             </ng-select>
                             <div *ngIf="form.actions.controls[j].invalid && submitted && action.value.type!=='select'"
                               class="row is-invalid">
-                                {{ "Trigger.Add_Edit.CompileAllField_error" | translate }}
+                              {{ "Trigger.Add_Edit.CompileAllField_error" | translate }}
                             </div>
-                            
+
                             <!-- // display error message if the action key is request.create -->
-                            <div *ngIf="form.actions.controls[j].invalid && submitted && action.value.key ==='request.create'" 
+                            <div
+                              *ngIf="form.actions.controls[j].invalid && submitted && action.value.key ==='request.create'"
                               class="row is-invalid">
                               {{ "Trigger.Add_Edit.CompileAllField_error" | translate }}
                             </div>
                           </div>
 
                           <!-- ->  {{ action.value.key }} -->
-                          <div
-                            *ngIf="action.value.key !== 'request.department.route.self' && action.value.key !== 'request.close' && action.value.key !== 'request.reopen'"
-                            formGroupName="parameters">
+                          <div *ngIf="action.value.key !== 'request.department.route.self' && 
+                            action.value.key !== 'request.close' && 
+                            action.value.key !== 'request.reopen' &&
+                            action.value.key !== 'request.department.bot.launch'" formGroupName="parameters">
 
-                            
+
                             <!-- 
-                            // ---------------------------
-                            // Second condition
-                            // --------------------------- -->
+                            // ----------------------------------------------------------------------------------------
+                            // @ Action Second condition
+                            // ---------------------------------------------------------------------------------------- -->
                             <div class="col-sm-3" *ngIf="action.value.type==='input' ">
                               <input class="custom-input" formControlName="fullName" type="text"
                                 [placeholder]="action.value.placeholder">
                             </div>
+
                             <div class="col-sm-3" *ngIf="action.value.type==='select'">
-                              <ng-select class="custom-select " formControlName="fullName"
-                                [placeholder]="action.value.placeholder" [searchable]="false" [clearable]="false">
-                                <ng-option *ngFor="let operator of operator[action.value.key]" [value]="operator.id">
-                                  {{operator.label_key}}</ng-option>
-                              </ng-select>
+
+                              <!-- // actions with a department selection (the Default Department is selected by default) -->
+                              <div
+                                *ngIf="action.value.key === 'request.create' || action.value.key === 'request.department.route'">
+
+                                <ng-select class="custom-select" [(ngModel)]="default_dept_id"
+                                  formControlName="fullName" [placeholder]="action.value.placeholder"
+                                  [searchable]="false" [clearable]="false">
+                                  <ng-option *ngFor="let operator of operator[action.value.key]" [value]="operator.id">
+                                    {{operator.label_key}}
+                                  </ng-option>
+                                </ng-select>
+                              </div>
+
+                              <!-- // actions with other select: request.status.update - request.participants.join - request.participants.leave  -->
+                              <div
+                                *ngIf="action.value.key !== 'request.create' && action.value.key !== 'request.department.route'">
+                                <ng-select class="custom-select" formControlName="fullName"
+                                  [placeholder]="action.value.placeholder" [searchable]="false" [clearable]="false">
+                                  <ng-option *ngFor="let operator of operator[action.value.key]" [value]="operator.id">
+                                    {{operator.label_key}}
+                                  </ng-option>
+                                </ng-select>
+                              </div>
                             </div>
 
                             <!-- 
-                            // ---------------------------
-                            // Third condition
-                            // --------------------------- -->
-                            <div class="col-sm-3" *ngIf="action.value.type==='input'" style="padding-right: 3px;">
+                            // ----------------------------------------------------------------------------------
+                            // @ Action Third condition
+                            // ----------------------------------------------------------------------------------
+                            // -------------------------------------------------------------------------------------------------
+                            // note: the text input field is not displayed  if the action key is request.tags.add
+                            // note: the text input field is displayed if the action key is message.send (that is a select type)
+                            // ------------------------------------------------------------------------------------------------- -->
+                            <div class="col-sm-3" 
+                              *ngIf="(action.value.type==='input' || action.value.key === 'message.send') && (action.value.key !== 'request.tags.add')"
+                              style="padding-right: 3px;">
+
                               <input class="custom-input" formControlName="text" type="text"
                                 placeholder='{{ "Trigger.MessagePlaceholder" | translate }}'>
                             </div>
 
-                            <!-- // display text input if the action key is request.create -->
-                            <div class="col-sm-3" *ngIf="action.value.key==='request.create'" style="padding-right: 3px;">
+                            <!-- 
+                            // --------------------------------------------------------------------
+                            //  display the text input if the action key is request.create 
+                            // -------------------------------------------------------------------- -->
+                            <div class="col-sm-3" *ngIf="action.value.key === 'request.create'"
+                              style="padding-right: 3px;">
+
                               <input class="custom-input" formControlName="text" type="text"
                                 placeholder='{{ "Trigger.MessagePlaceholder" | translate }}'>
                             </div>
 
 
                             <div class="col-sm-3" *ngIf="action.value.type==='none'" style="padding-right: 3px;">
-                              <input class="custom-input" style="display: none;" formControlName="fullName"
-                                type="text" value="none" [placeholder]="action.value.placeholder">
-                              <input class="custom-input" style="display: none;" formControlName="text"
-                                type="text" value="none" placeholder='{{ "Trigger.MessagePlaceholder" | translate }}'>
+
+                              <input class="custom-input" style="display: none;" formControlName="fullName" type="text"
+                                value="none" [placeholder]="action.value.placeholder">
+                              <input class="custom-input" style="display: none;" formControlName="text" type="text"
+                                value="none" placeholder='{{ "Trigger.MessagePlaceholder" | translate }}'>
                             </div>
+
+
                           </div>
 
 
@@ -507,7 +582,8 @@
                 <div class="icon-fix"></div>
               </div>
             </div>
-            <h3 style="text-align: center;  color: #8894ab; font-size: 22px; margin-bottom: 10px;margin-top: 10px;min-height: 33px;">
+            <h3
+              style="text-align: center;  color: #8894ab; font-size: 22px; margin-bottom: 10px;margin-top: 10px;min-height: 33px;">
               {{ "Trigger.Error" | translate }}
             </h3>
           </span>
@@ -526,7 +602,8 @@
               </div>
             </div>
 
-            <h3 style="text-align: center;  color: #8894ab; font-size: 22px; margin-bottom: 10px;margin-top: 10px;min-height: 33px;">
+            <h3
+              style="text-align: center;  color: #8894ab; font-size: 22px; margin-bottom: 10px;margin-top: 10px;min-height: 33px;">
               {{ "Trigger.Error" | translate }}
             </h3>
           </span>
