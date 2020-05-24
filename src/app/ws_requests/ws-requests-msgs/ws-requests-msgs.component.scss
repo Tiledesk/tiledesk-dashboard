@@ -301,6 +301,11 @@
         margin: 0;
         color: #2b2b2b;
       }
+      .ow {
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        hyphens: auto;
+      }
       .timestamp {
         font-size: 11px;
         position: absolute;
@@ -895,13 +900,22 @@ and also iPads specifically.
 }
 
 .requester_fullname-undefined {
-  padding-left: 3px;
+  // padding-left: 3px;
+  padding-left: 1px;
+  font-size: 15px;
+  padding-top: 11px;
 }
 
 .requester-verified {
   position: relative;
   left: -20px;
   // margin-left: 3px !important;
+}
+
+.chat-panel-mode-requester-verified {
+  position: relative;
+  left: -89px !important;
+  top: -22px !important;
 }
 
 .requester-status-icon {
@@ -1941,7 +1955,7 @@ and also iPads specifically.
 
 // --------------------------------
 // NK start CUSTOM SCROLL BAR
-// -------------------------------- 
+// --------------------------------
 // /* width */
 // ::-webkit-scrollbar {
 //   width: 8px;
@@ -1955,7 +1969,7 @@ and also iPads specifically.
 // /* Handle */
 // ::-webkit-scrollbar-thumb {
 //   background: #888;
- 
+
 // }
 
 // /* Handle on hover */

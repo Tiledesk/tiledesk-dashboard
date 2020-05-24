@@ -178,6 +178,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   project_name: string;
 
   DISABLE_ADD_NOTE_AND_TAGS = false;
+  DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = false;
   // @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
 
   //   cities3 = [
@@ -479,6 +480,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   subscribeToWs_RequestById(id_request) {
     console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp »»»»»»»»»» CALLING SUBSCRIBE Request-By-Id: ', id_request)
     // Start websocket subscription
+    // NOTE_nk: comment  this.wsRequestsService.subscribeTo_wsRequestById(id_request)
     this.wsRequestsService.subscribeTo_wsRequestById(id_request);
     // Get request
     this.getWsRequestById$();
@@ -649,9 +651,11 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             if (this.currentUserID !== member && this.CURRENT_USER_ROLE === 'agent') {
               console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById CURRENT USER NOT IN PARTICIPANT AND IS AGENT');
               this.DISABLE_ADD_NOTE_AND_TAGS = true;
+              this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = true;
             } else if (this.currentUserID === member && this.CURRENT_USER_ROLE === 'agent') {
               console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById CURRENT USER IS IN PARTICIPANT AND IS AGENT');
               this.DISABLE_ADD_NOTE_AND_TAGS = false;
+              this.DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS = false;
             }
 
             console.log('% »»» WebSocketJs WF >>> ws-msgs--- comp - getWsRequestById member ', member);
@@ -666,8 +670,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
             } else {
               this.bot_participant_id = ''
             }
-
-
           });
 
           // this.requester_id = this.request.requester ??? 
@@ -714,12 +716,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // @ Source page
           // ---------------------------------------------------------
           let stripHere = 20;
+          let sourcePageStripHere = 30;
           if (this.CHAT_PANEL_MODE) {
             stripHere = 10;
+            sourcePageStripHere = 10;
           }
           if (this.request.sourcePage) {
 
-            this.sourcePageCutted = this.request.sourcePage.substring(0, stripHere) + '...';
+            this.sourcePageCutted = this.request.sourcePage.substring(0, sourcePageStripHere) + '...';
             console.log('% Ws-REQUESTS-Msgs getWsRequestById - > SOURCE PAGE CUTTED: ', this.sourcePageCutted);
           }
 
@@ -733,6 +737,16 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
             this.requestidCutted = this.request.request_id.substring(0, stripHere) + '...';
             console.log('% Ws-REQUESTS-Msgs getWsRequestById - > request id CUTTED: ', this.requestidCutted);
+          }
+
+
+          // ---------------------------------------------------------
+          // Requester is authenticated
+          // ---------------------------------------------------------
+          if (this.request.requester != null && this.request.requester.isAuthenticated === true) {
+            this.REQUESTER_IS_VERIFIED = true;
+          } else {
+            this.REQUESTER_IS_VERIFIED = false;
           }
 
 
@@ -873,6 +887,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
           // this.isSubscribedToMsgs = true;
 
           // if (!this.isSubscribedToMsgs) {
+          // NOTE_nk: comment this.subscribeToWs_MsgsByRequestId
           this.subscribeToWs_MsgsByRequestId(this.id_request);
           // }
 
@@ -1085,7 +1100,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
 
   goBack() {
     this._location.back();
-
   }
 
   detectMobile() {
@@ -1659,6 +1673,14 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/wsrequest/' + this.id_request + '/messages'
     window.open(url, '_blank');
   }
+
+  goToProjectHomeInNewTab() {
+    // target="_blank" routerLink="project/{{id_project}}/wsrequest/{{id_request}}/messages"
+    const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/home'
+    window.open(url, '_blank');
+  }
+
+
 
   goToContactDetailsInNewTab() {
     // this.router.navigate(['project/' + this.id_project + '/contact', this.contact_id]);

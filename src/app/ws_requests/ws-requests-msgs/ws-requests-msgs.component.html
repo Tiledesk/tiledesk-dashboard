@@ -43,6 +43,7 @@
                           [ngClass]="{'requester_fullname-undefined' : !request?.lead?.fullname}">
                           <span style="color: #ffffff"> {{ requester_fullname_initial }} </span>
                         </span>
+                      
                         <span *ngIf="REQUESTER_IS_VERIFIED === true" class="tooltipx">
                           <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6"
@@ -256,7 +257,7 @@
 
                               </span>
                             </p>
-                            <p class="message" style="word-break: break-all;">
+                            <p class="message ow">
                               {{ message?.text }}
                             </p>
                             <span class="timestamp"> {{ message?.createdAt | date: 'd/M/y HH:mm:ss'}} </span>
@@ -323,7 +324,7 @@
                               {{ message.senderFullname }}
                               <!-- +353 87 1234 567<span> ~ John</span> -->
                             </p>
-                            <p class="message" style="word-break: break-all;">{{ message.text }}</p>
+                            <p class="message ow">{{ message.text }}</p>
                             <span class="timestamp"> {{ message.createdAt | date: 'd/M/y HH:mm:ss'}}</span>
                           </div>
                           <div class="bubble-arrow alt"></div>
@@ -466,7 +467,7 @@
                         <span style="color: #ffffff"> {{ requester_fullname_initial }} </span>
                       </span>
                       <span *ngIf="REQUESTER_IS_VERIFIED === true" class="tooltipx">
-                        <svg version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
+                        <svg  [ngClass]="{'chat-panel-mode-requester-verified' : CHAT_PANEL_MODE === true }" version="1.1" id="Livello_1" xmlns="http://www.w3.org/2000/svg"
                           xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 26.6 26.6" width="17"
                           height="17" style="position: relative;left: -61px;top: -7px;" xml:space="preserve">
                           <style type="text/css">
@@ -816,7 +817,7 @@
                         </span>
                       </a>
                       <ul class="dropdown-menu">
-                        <li [ngClass]="{'disable-dropdown-menu-btn' : request?.status == 1000}">
+                        <li [ngClass]="{'disable-dropdown-menu-btn' : request?.status == 1000 || DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true}">
                           <a (click)='openArchiveRequestModal(request?.request_id)'
                             style="padding-left: 15px; padding-right: 15px;">
                             <i class="material-icons" style="padding-right: 5px;">close</i>
@@ -828,7 +829,7 @@
                         </li>
                         <li class="divider"></li>
                         <!-- [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_AGENT === true}" -->
-                        <li>
+                        <li [ngClass]="{'disable-dropdown-menu-btn' : DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true}">
                           <a (click)='openSelectUsersModal(action = "reassign")'
                             style="padding-left: 15px; padding-right: 15px;">
                             <i class="material-icons" style="padding-right: 5px;">swap_horiz</i>
@@ -839,7 +840,7 @@
                           </a>
                         </li>
                         <!-- [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_AGENT === true}" -->
-                        <li>
+                        <li [ngClass]="{'disable-dropdown-menu-btn' : DISABLE_BTN_AGENT_NO_IN_PARTICIPANTS === true}">
                           <a (click)='openSelectUsersModal(action = "invite")'
                             style="padding-left: 15px; padding-right: 15px;">
                             <i class="material-icons" style="padding-right: 5px;">person_add</i>
@@ -904,7 +905,7 @@
                 <div *ngIf="CHAT_PANEL_MODE === true" class="row" style="margin-top:5px">
                   <!-- border-top: 1px solid #e1eef4;" -->
                   <div class="col-sm-12">
-                    <p class="" style="margin-bottom: 0px;;margin-top: 8px;">
+                    <p  (click)="goToProjectHomeInNewTab()" class="" style="margin-bottom: 0px;;margin-top: 8px;">
                       <i class="material-icons" style="vertical-align: middle; color: #394f5a;font-size:16px">apps</i>
                       <span style="position: relative;top: 1px;">
                         <span
@@ -914,6 +915,9 @@
                         <span style="color: #7695a5; font-weight: 500; font-size: 12px;">
                           {{ project_name }}
                         </span>
+                        <i (click)="goToProjectHomeInNewTab()" class="material-icons"
+                        style="vertical-align: middle; color: #394f5a;font-size:12px; cursor: pointer;">open_in_new</i>
+
                       </span>
                     </p>
                   </div>
@@ -1102,7 +1106,7 @@
                   </div>
                 </div>
 
-                <!-- 
+              <!-- 
               // ---------------------------------------------------------------------
               // Source page - note when a requets is internal source page there isn't
               // --------------------------------------------------------------------- -->
@@ -1405,11 +1409,11 @@
 
 
                 <!-- 
-              // -----------------------------------------------------------------------------
-              // Tags
-              // ----------------------------------------------------------------------------- -->
+                // -----------------------------------------------------------------------------
+                // Tags
+                // ----------------------------------------------------------------------------- -->
                 <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
-              <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
+                <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
                 <div class="row" style="">
                   <div class="col-sm-12" style="border-bottom: 1px solid #dadde1;">
                     <p class="row-header">
@@ -1449,7 +1453,7 @@
 
                       <!-- 
                       // ------------------------------------------------------------------------------------------------------------
-                      // Btn Add Labels (note: is disabled if if the current user has agent role and is not among the participants)
+                      // Btn Add Labels (note: is disabled if the current user has agent role and is not among the participants)
                       // ------------------------------------------------------------------------------------------------------------ -->
                       <button class="btn btn-xs btn-primary ws_msgs_small_btn add_tag_btn"
                         style="margin-top: 4px;  margin-bottom: 6px;" (click)="toggleAddTagInputAndGetTags()"
@@ -1633,9 +1637,9 @@
 
 
                 <!-- 
-          // -----------------------------------------------------------------------------
-          // Requester  !! is not dispalyed (now is displayed as title of the left card)
-          // ----------------------------------------------------------------------------- -->
+                // -----------------------------------------------------------------------------
+                // Requester  !! is not dispalyed (now is displayed as title of the left card)
+                // ----------------------------------------------------------------------------- -->
                 <div class="card right-card"
                   style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px; display: none;">
                   <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;">
@@ -1725,10 +1729,10 @@
 
                         <p class="row-body" style="margin-bottom:6px;padding-bottom:0px; margin-top:6px;">
 
-                          <!-- 
-                    // ------------------------------------------------------
-                    // no more get from request attributes but from lead 
-                    // ------------------------------------------------------ -->
+                        <!-- 
+                        // ------------------------------------------------------
+                        // no more get from request attributes but from lead 
+                        // ------------------------------------------------------ -->
 
                           <!-- <a *ngIf="user_email !== 'n.a.'" href="mailto:{{user_email}}">{{ user_email }}</a>
                      <a *ngIf="user_email === 'n.a.'" style="color:#7695a5;">{{ user_email }}</a> -->
@@ -1758,10 +1762,10 @@
                 </div>
 
 
-                <!-- 
-          // ------------------------------------------------------
-          // DEPARTMENT !! is not dispalyed (now is dispalyed in the first card)
-          // ------------------------------------------------------ -->
+                      <!-- 
+                // ------------------------------------------------------
+                // DEPARTMENT !! is not dispalyed (now is dispalyed in the first card)
+                // ------------------------------------------------------ -->
                 <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
             <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
                 <div class="row" style="display: none;">
@@ -1805,10 +1809,10 @@
           </div> -->
 
 
-                <!-- 
-          // ------------------------------------------------------
-          // Rating 
-          // ------------------------------------------------------ -->
+              <!-- 
+              // ------------------------------------------------------
+              // Rating 
+              // ------------------------------------------------------ -->
                 <!-- <div class="card right-card" style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px;">
             <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;"> -->
                 <div class="row" style="">
@@ -1846,9 +1850,9 @@
           </div> -->
 
                 <!-- 
-          // ------------------------------------------------------
-          // source page !! This is not diaìspayed (now is dispalyed in the first card)
-          // ------------------------------------------------------ -->
+                // ------------------------------------------------------
+                // source page !! This is not diaìspayed (now is dispalyed in the first card)
+                // ------------------------------------------------------ -->
                 <div class="card right-card"
                   style="padding-top:5px; padding-bottom:5px; margin-top: 5px;margin-bottom: 5px; display: none;">
                   <div class="card-content" style="padding-top: 5px;padding-bottom: 5px;">
@@ -1863,9 +1867,9 @@
                         <p class="row-body" style="margin-bottom:0px; word-wrap: break-word;">
 
                           <!-- 
-                  // ----------------------------------------------------------------
-                  // no more get from request attributes but directly from request 
-                  // ---------------------------------------------------------------- -->
+                          // ----------------------------------------------------------------
+                          // no more get from request attributes but directly from request 
+                          // ---------------------------------------------------------------- -->
                           <a href="{{request?.sourcePage}}" target="_blank">{{request?.sourcePage}}</a>
                         </p>
                       </div>
@@ -2374,8 +2378,6 @@
           // Reassign to a dept
           // ------------------------------------------------------------------------------ -->
           <section *ngIf="actionInModal === 'reassign' && departments?.length > 1">
-
-
             <!-- 
             // ---------------------------------------------------------------------------------------------
             // modal subtitle
@@ -2996,7 +2998,6 @@
 
 
 <div *ngIf="OPEN_RIGHT_SIDEBAR === true" class="view-side">
-  <!-- (valueChange)='closeRightSidebar($event)' -->
   <appdashboard-ws-train-bot [ngStyle]="{'height':train_bot_sidebar_height }" [selectedQuestion]="selectedQuestion"
     (valueChange)='handleCloseRightSidebar($event)'></appdashboard-ws-train-bot>
 </div>
