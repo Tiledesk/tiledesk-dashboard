@@ -286,11 +286,13 @@
 
                   </span>
                 </span>
-                <span class="truncate" style="margin-top: 11px; display: block;font-size: 18px; margin-left: 5px;white-space: nowrap;"
+                <span class="truncate"
+                  style="margin-top: 11px; display: block;font-size: 18px; margin-left: 5px;white-space: nowrap;"
                   [ngClass]="{'contact-verified' : CONTACT_IS_VERIFIED === true}">
                   {{ contact_details?.fullname }}
                 </span>
-                <span *ngIf="!contact_details?.fullname" style="margin-top: 11px; display: block;font-size: 18px; margin-left: 5px;" 
+                <span *ngIf="!contact_details?.fullname"
+                  style="margin-top: 11px; display: block;font-size: 18px; margin-left: 5px;"
                   [ngClass]="{'contact-verified' : CONTACT_IS_VERIFIED === true}">
                   n/a
                 </span>
@@ -400,34 +402,34 @@
               </div>
             </div>
 
-              <!-- 
+            <!-- 
               // ---------------------------------------------------------------------
               // Company
               // --------------------------------------------------------------------- -->
-              <div class="row">
-                <div class="col-sm-12">
-  
-                  <p style="margin-bottom: 0px;margin-top: 3px;">
-                    <i class="material-icons"
-                      style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;">business</i>
-                    <span style="position: relative;top: 1px;">
-                      <span
-                        style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                        {{ "Company" | translate }}
-                      </span>
+            <div class="row">
+              <div class="col-sm-12">
 
-                      <span *ngIf="contact_details?.company"
-                      style="color: #7695a5; font-weight: 500; font-size: 12px;">  {{ contact_details?.company }}</span>
-                    
-                   
-                      <span *ngIf="!contact_details?.company"
-                        style="color: #7695a5; font-weight: 500; font-size: 12px;">n/a</span>
+                <p style="margin-bottom: 0px;margin-top: 3px;">
+                  <i class="material-icons"
+                    style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;">business</i>
+                  <span style="position: relative;top: 1px;">
+                    <span
+                      style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                      {{ "Company" | translate }}
                     </span>
-                  </p>
-                </div>
-              </div>
 
-      
+                    <span *ngIf="contact_details?.company" style="color: #7695a5; font-weight: 500; font-size: 12px;">
+                      {{ contact_details?.company }}</span>
+
+
+                    <span *ngIf="!contact_details?.company"
+                      style="color: #7695a5; font-weight: 500; font-size: 12px;">n/a</span>
+                  </span>
+                </p>
+              </div>
+            </div>
+
+
 
             <!-- 
               // ---------------------------------------------------------------------
@@ -605,33 +607,33 @@
             // Note
             // --------------------------------------------------------------------- -->
             <div class="row" style="margin-top:5px">
-              <div class="col-sm-12"  style="border-bottom: 1px solid #dadde1;padding-bottom: 4px;">
+              <div class="col-sm-12" style="border-bottom: 1px solid #dadde1;padding-bottom: 4px;">
                 <p style="margin-bottom: 0px;">
 
-                  <span class="showPosts"> 
+                  <span class="showPosts">
                     <span class="greekCross">
 
                       <span style="white-space: nowrap; margin-right: 3px;">
-                  <i class="material-icons"
-                    style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;">subject</i>
-                
-                  <!-- <span style="position: relative;top: 1px;"> -->
-                    <span
-                      style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
-                     Note
-                    </span>
+                        <i class="material-icons"
+                          style="vertical-align: middle; color: #394f5a;font-size:14px;  margin-left: 1px;">subject</i>
 
-                  </span>
-                  </span>
+                        <!-- <span style="position: relative;top: 1px;"> -->
+                        <span
+                          style="font-size: 12px; color: #394f5a; font-weight: 500;font-family: 'Google Sans', sans-serif !important;">
+                          Note
+                        </span>
+
+                      </span>
+                    </span>
                     <span *ngIf="contact_details?.note" style="color: #7695a5; font-weight: 500; font-size: 12px;">
                       {{ contact_details?.note }}
                     </span>
 
                     <span *ngIf="!contact_details?.note"
-                    style="color: #7695a5; font-weight: 500; font-size: 12px;">n/a</span>
-                  <!-- </span> -->
+                      style="color: #7695a5; font-weight: 500; font-size: 12px;">n/a</span>
+                    <!-- </span> -->
 
-                </span>
+                  </span>
                 </p>
               </div>
             </div>
@@ -680,7 +682,7 @@
                         <!-- [id]="attribute?.attributeName +'_arrow_icon'" -->
                         <!-- [ngClass]="{'down' : attributeFullText === true}" -->
                         <div *ngIf="attribute?.attributeValueL + 180 > rightSidebarWidth" class="col-xs-2"
-                          style="white-space: nowrap;width: 1%;">
+                          style="text-align: right;">
                           <i [id]="attribute?.attributeName +'_arrow_icon'" class="material-icons rotate"
                             style="cursor: pointer; color: #394f5a; font-size:18px;"
                             (click)="toggleShowAllString(attribute?.attributeName +'_value', attribute?.attributeName +'_arrow_icon', 'isActive_' + i)">
