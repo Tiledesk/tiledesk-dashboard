@@ -130,6 +130,19 @@ export class TriggerService {
     return this.http.delete<[]>(this.SERVER_BASE_PATH + this.projectID + '/modules/triggers/' + triggerID, { headers: headers });
   }
 
+  resetPreBuiltTriggerToDefault(triggercode: any): Observable<[]> {
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': this.TOKEN,
+    });
+
+    const url = this.SERVER_BASE_PATH + this.projectID + '/modules/triggers/' + triggercode + '/reset'
+    console.log('RESET TRIGGER TO DEFAULT URL: ', url)
+    return this.http.put<[]>(url, null, { headers: headers });
+
+  }
+
 
 
 
