@@ -17,7 +17,7 @@ export class FaqKbService {
   // BASE_URL = environment.mongoDbConfig.BASE_URL;  // replaced
   // SERVER_BASE_PATH = environment.SERVER_BASE_URL;  // now get from appconfig
   // DLGFLW_BOT_CREDENTIAL_BASE_URL = environment.botcredendialsURL; // now get from appconfig
-  
+
   SERVER_BASE_PATH: string;
   DLGFLW_BOT_CREDENTIAL_BASE_URL: string;
 
@@ -130,8 +130,27 @@ export class FaqKbService {
     headers.append('Authorization', this.TOKEN);
     return this.http
       .get(url, { headers })
-      .map((response) => response.json());
+      .map(
+        (response) => {
+          const data = response.json();
+          // Does something on data.data
+          console.log('GET FAQ-KB BY PROJECT ID URL data', data);
+
+          data.forEach(d => {
+            console.log('GET FAQ-KB BY PROJECT ID URL data d', d);
+            if (d.description) {
+              let stripHere = 20;
+              d['truncated_desc'] = d.description.substring(0, stripHere) + '...';
+            }
+          });
+
+
+          // return the modified data:
+          return data;
+        })
   }
+
+
 
   /**
    * READ DETAIL (GET BY ID)
@@ -154,7 +173,7 @@ export class FaqKbService {
    * @param fullName
    */
   // public addMongoDbFaqKb(name: string, urlfaqkb: string, is_external_bot: boolean) {
-  public addMongoDbFaqKb(name: string, urlfaqkb: string, bottype: string) {
+  public addMongoDbFaqKb(name: string, urlfaqkb: string, bottype: string, description: string) {
     const headers = new Headers();
     headers.append('Accept', 'application/json');
     headers.append('Content-type', 'application/json');
@@ -162,7 +181,7 @@ export class FaqKbService {
     const options = new RequestOptions({ headers });
 
     // const isPreDeploy = false
-    const body = { 'name': name, 'url': urlfaqkb, 'id_project': this.project._id, 'type': bottype };
+    const body = { 'name': name, 'url': urlfaqkb, 'id_project': this.project._id, 'type': bottype, 'description': description };
 
 
     /* FOR PRE */
@@ -295,7 +314,7 @@ export class FaqKbService {
    * @param id
    * @param fullName
    */
-  public updateMongoDbFaqKb(id: string, name: string, urlfaqkb: string, bottype: string) {
+  public updateMongoDbFaqKb(id: string, name: string, urlfaqkb: string, bottype: string, faqKb_description: string) {
 
     let url = this.FAQKB_URL + id;
     // url = url += `${id}`;
@@ -307,7 +326,7 @@ export class FaqKbService {
     headers.append('Authorization', this.TOKEN);
     const options = new RequestOptions({ headers });
 
-    const body = { 'name': name, 'url': urlfaqkb, 'type': bottype };
+    const body = { 'name': name, 'url': urlfaqkb, 'type': bottype, 'description': faqKb_description };
 
     // let botType = ''
     // if (is_external_bot === true) {
