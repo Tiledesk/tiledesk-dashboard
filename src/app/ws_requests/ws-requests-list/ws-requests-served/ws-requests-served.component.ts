@@ -280,7 +280,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   //   }
   // }
 
-  // !!! Not used
+  
   goToBotProfile(bot_id, bot_type) {
     let botType = ''
     if (bot_type === 'internal') {
@@ -300,7 +300,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     this.getProjectuserbyUseridAndGoToEditProjectuser(member_id);
   }
 
-  // SERVED_BY: add this if not exist -->
+  // // !!! Not used -SERVED_BY add this if not exist -->
   getProjectuserbyUseridAndGoToEditProjectuser(member_id: string) {
     this.usersService.getProjectUserByUserId(member_id)
       .subscribe((projectUser: any) => {
@@ -387,9 +387,28 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
         }
       } else {
         // '- ' +
-        return member_id
+        // return member_id
+        // this._getProjectUserByUserId(member_id)
       }
     }
   }
+
+
+  _getProjectUserByUserId(member_id) {
+    this.usersService.getProjectUserByUserId(member_id)
+      .subscribe((projectUser: any) => {
+        console.log('% Ws-REQUESTS-served GET projectUser by USER-ID ', projectUser)
+        if (projectUser) {
+          console.log('% Ws-REQUESTS-served projectUser id', projectUser);
+
+         
+        }
+      }, (error) => {
+        console.log('% Ws-REQUESTS-served GET projectUser by USER-ID - ERROR ', error);
+      }, () => {
+        console.log('% Ws-REQUESTS-served GET projectUser by USER-ID * COMPLETE *');
+      });
+  }
+
 
 }
